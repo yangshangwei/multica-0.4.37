@@ -13,6 +13,7 @@ import {
   clearLoggedInCookie,
 } from "@/features/auth/auth-cookie";
 import { detectWebOS } from "@/platform/client-os";
+import { loadOrCreateWebDeviceIdentity } from "@/features/auth/device-identity";
 
 // Legacy token in localStorage → keep this session in token mode so users who
 // logged in before the cookie-auth migration stay authed. They migrate to
@@ -65,6 +66,15 @@ export function WebProviders({
     [],
   );
   const localeAdapter = useMemo(() => createBrowserCookieLocaleAdapter(), []);
+  // Intranet device auth. Resolved once per mount and passed down whether or
+  // not the deployment offers it: the capability is negotiated from
+  // /api/config, so a browser that can present an id costs nothing on a
+  // deployment with the switch off. Undefined during SSR and wherever
+  // localStorage is unavailable, which leaves the normal login page in place.
+  const deviceAuth = useMemo(
+    () => loadOrCreateWebDeviceIdentity() ?? undefined,
+    [],
+  );
   return (
     <CoreProvider
       apiBaseUrl={apiBaseUrl}
@@ -82,6 +92,7 @@ export function WebProviders({
         clearLoggedInCookie();
       }}
       identity={identity}
+      deviceAuth={deviceAuth}
       locale={locale}
       resources={resources}
       localeAdapter={localeAdapter}

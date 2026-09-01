@@ -210,6 +210,11 @@ export function AuthInitializer({
     let retryAfterFlight = false;
     let retryIndex = 0;
     let loggedTransientFailure = false;
+    // Latched on the first device-login attempt so a 401 can hand off to it
+    // exactly once. Without this, a device session that is itself rejected —
+    // or a workspace fetch that 401s after a successful device login — would
+    // bounce back into minting another one.
+    let deviceAuthAttempted = false;
     let retryTimer: ReturnType<typeof setTimeout> | undefined;
 
     const onAuthSuccess = (user: User) => {
@@ -296,6 +301,18 @@ export function AuthInitializer({
       } catch (err) {
         if (cancelled) return;
         if (err instanceof ApiError && err.status === 401) {
+          // No session, or one that has expired. On a deployment that mints
+          // sessions from a device id, get one instead of rendering a login
+          // page. This is the only way the web app reaches the device path at
+          // all: its auth lives in an HttpOnly cookie it cannot read, so
+          // "signed out" is not a branch it can take before asking. The
+          // handoff runs through resume() in the finally below because
+          // attemptDeviceAuth refuses to start while a call is in flight.
+          if (deviceId && !deviceAuthAttempted) {
+            resume = attemptDeviceAuth;
+            retryAfterFlight = true;
+            return;
+          }
           rejectSession();
           return;
         }
@@ -315,7 +332,7 @@ export function AuthInitializer({
         inFlight = false;
         if (retryAfterFlight && !cancelled && !settled) {
           retryAfterFlight = false;
-          void attempt();
+          void resume();
         }
       }
     };
@@ -334,6 +351,7 @@ export function AuthInitializer({
         retryTimer = undefined;
       }
       inFlight = true;
+      deviceAuthAttempted = true;
 
       try {
         // The capability is a server declaration, never a probe: /auth/device
@@ -386,14 +404,16 @@ export function AuthInitializer({
         inFlight = false;
         if (retryAfterFlight && !cancelled && !settled) {
           retryAfterFlight = false;
-          void attemptDeviceAuth();
+          void resume();
         }
       }
     };
 
     // Which attempt the retry machinery drives. The device path swaps it in so
-    // an `online` event or a backoff tick retries the login that is actually
-    // pending, instead of a getMe with no token behind it.
+    // an `online` event, a backoff tick, or the handoff out of a 401 retries the
+    // login that is actually pending, instead of a getMe with no session behind
+    // it. Declared after both attempts because it names one of them; every call
+    // site runs later still.
     let resume: () => Promise<void> = attempt;
 
     const retryNow = () => {

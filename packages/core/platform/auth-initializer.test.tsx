@@ -408,3 +408,165 @@ describe("AuthInitializer device auth", () => {
     expect(storage.snapshot().multica_token).toBe("token-1");
   });
 });
+
+// The web app's session lives in an HttpOnly cookie it cannot read, so it has
+// no "signed out" branch to take before asking the server. Its only signal is a
+// 401 from getMe, which is where the device path has to be reachable from.
+describe("AuthInitializer device auth in cookie mode", () => {
+  const deviceAuth = { deviceId: "b".repeat(32), deviceName: "web-macos-bbbbbbbb" };
+  const unauthorized = () =>
+    new ApiError("unauthorized", 401, "Unauthorized");
+
+  beforeEach(() => {
+    configStore.setState({ deviceAuthAvailable: false });
+  });
+
+  it("signs in from the device identity after the cookie session comes back 401", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "device-jwt", user: fakeUser });
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogin } = renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    expect(deviceLogin).toHaveBeenCalledWith(
+      deviceAuth.deviceId,
+      deviceAuth.deviceName,
+    );
+    expect(useAuthStore.getState().user).toEqual(fakeUser);
+    expect(onLogin).toHaveBeenCalled();
+    // Cookie mode: /auth/device set the HttpOnly cookies. Mirroring the bearer
+    // token into localStorage is the exact exposure the cookie migration
+    // exists to remove.
+    expect(storage.snapshot().multica_token).toBeUndefined();
+  });
+
+  it("settles logged out on a 401 when the client has no device identity", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogout } = renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    expect(onLogout).toHaveBeenCalled();
+    // The deployment offers device auth; this client has nothing to present, so
+    // the login page is still the right answer. Regression guard for every
+    // platform that passes no identity.
+    expect(deviceLogin).not.toHaveBeenCalled();
+  });
+
+  it("settles logged out on a 401 when the deployment does not offer device auth", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({}),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogout } = renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    expect(deviceLogin).not.toHaveBeenCalled();
+    expect(onLogout).toHaveBeenCalled();
+  });
+
+  it("leaves a live cookie session alone", async () => {
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    renderInitializer({
+      api,
+      storage: makeStorage(),
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().user).toEqual(fakeUser);
+    });
+    expect(deviceLogin).not.toHaveBeenCalled();
+  });
+
+  it("does not mint a second identity when the warmed workspace list 401s", async () => {
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "device-jwt", user: fakeUser });
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+      listWorkspaces: vi.fn().mockRejectedValue(unauthorized()),
+    } as Partial<ApiClient>);
+    renderInitializer({
+      api,
+      storage: makeStorage(),
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    // A session that cannot read its own workspace list is broken in a way
+    // another identity would not fix — and each attempt would leave one more
+    // member row behind.
+    expect(deviceLogin).toHaveBeenCalledTimes(1);
+  });
+
+  it("re-mints a desktop session whose stored token has expired", async () => {
+    const storage = makeStorage({ multica_token: "stale-token" });
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "fresh-jwt", user: fakeUser });
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    renderInitializer({ api, storage, deviceAuth });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    // Token mode keeps persisting: the desktop app has no cookie jar to fall
+    // back on, and the expired token must not outlive the session it named.
+    expect(storage.snapshot().multica_token).toBe("fresh-jwt");
+    expect(deviceLogin).toHaveBeenCalledTimes(1);
+  });
+});
