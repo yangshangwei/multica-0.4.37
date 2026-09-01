@@ -130,12 +130,16 @@ backend:
     # every caller. Bootstrap the workspace with this false, then flip to
     # true so users can only join via invitation.
     disableWorkspaceCreation: false
-    # Intranet device auth (off by default). Enabling it means any client that
-    # can reach the backend mints its own identity in the shared workspace and
-    # never logs in - there is no authentication left in front of that
-    # workspace. Read SELF_HOSTING.md "Intranet Mode - No Login" first.
+    # Intranet device auth (ON by default for self-hosted). It means any client
+    # that can reach the backend mints its own identity in the shared workspace
+    # and never logs in - there is no authentication left in front of that
+    # workspace. Read SELF_HOSTING.md "Intranet Mode - No Login" first, and put
+    # the deployment behind a trusted network or set enabled to "false".
     deviceAuth:
-      enabled: false
+      # Empty takes the server default, which is ON for a self-hosted chart
+      # install: read the paragraph above before leaving it that way. Set to
+      # "false" to require the normal login page.
+      enabled: ""
       # Shared workspace every device joins. Created on first use; an existing
       # workspace with this slug is reused and never modified.
       workspaceSlug: intranet
