@@ -481,6 +481,31 @@ process_group_id() {
   ps -p "$1" -o pgid= 2>/dev/null | tr -d ' ' || true
 }
 
+parent_process_id() {
+  ps -p "$1" -o ppid= 2>/dev/null | tr -d ' ' || true
+}
+
+# Walk pid's parent chain looking for ancestor. A task runner is free to put its
+# children in a fresh process group -- turbo does, so the Next.js listener under
+# `pnpm dev:web` reports a pgid that is neither the launcher's pid nor anything
+# this script chose -- and the parent chain is what still proves the listener
+# descends from the process we launched. The chain is only walked while every
+# link is alive, so a listener that reparented to init after its launcher died
+# cannot be claimed. The hop bound keeps a pid cycle from spinning forever.
+process_ancestry_includes() {
+  local pid=$1 ancestor=$2 hops=0
+  [ -n "$pid" ] && [ -n "$ancestor" ] || return 1
+  while [ "$hops" -lt 32 ]; do
+    case "$pid" in
+      ''|0|1|*[!0-9]*) return 1 ;;
+    esac
+    [ "$pid" = "$ancestor" ] && return 0
+    pid="$(parent_process_id "$pid")"
+    hops=$((hops + 1))
+  done
+  return 1
+}
+
 listener_belongs_to_component() {
   local component=$1 port=$2 launcher listener recorded
   launcher="$(component_pid "$component" || true)"
@@ -488,7 +513,8 @@ listener_belongs_to_component() {
   [ -n "$launcher" ] && [ -n "$listener" ] || return 1
   recorded="$(cat "$(listener_pid_file "$component")" 2>/dev/null || true)"
   [ -n "$recorded" ] && [ "$listener" = "$recorded" ] && return 0
-  [ "$(process_group_id "$listener")" = "$launcher" ]
+  [ "$(process_group_id "$listener")" = "$launcher" ] && return 0
+  process_ancestry_includes "$listener" "$launcher"
 }
 
 health_belongs_to_api() {
@@ -570,8 +596,13 @@ start_web() {
       listener="$(port_listener_pid "$FRONTEND_PORT")"
       if ! listener_belongs_to_component web "$FRONTEND_PORT"; then
         stop_component web
-        die "Web on :$FRONTEND_PORT is not owned by the process group this environment launched."
+        die "Web on :$FRONTEND_PORT is not owned by this environment: neither its process group nor its parent chain reaches the launcher."
       fi
+      # Same reason start_desktop records its renderer: the listener sits under
+      # a task runner that gave it its own process group, so the recorded pid is
+      # what keeps later checks cheap and lets stop_component release the port
+      # even once the group kill has missed it.
+      printf '%s\n' "$listener" > "$(listener_pid_file web)"
       ok "web serving http://localhost:$FRONTEND_PORT (pid ${listener:-?})"
       return 0
     fi

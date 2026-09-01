@@ -175,6 +175,55 @@ if bash -c 'source "$1"; api_started_after '\''{"status":"ok"}'\'' 1' _ "$root_d
 fi
 
 # ---------------------------------------------------------------------------
+# A listener that was moved into its own process group still belongs to the
+# launcher it descends from.
+#
+# This is the regression that made `make up` fail on its default components:
+# turbo starts each task in a fresh process group, so the Next.js dev server
+# that `web-dev` had just started reported a pgid that was not the launcher's
+# pid, pgid equality read that as a stranger on the port, and up killed the
+# server it had launched a second earlier and exited 1.
+# ---------------------------------------------------------------------------
+detached_fixture="$tmp_dir/detached-child.mjs"
+cat > "$detached_fixture" <<'EOF'
+import { spawn } from "node:child_process";
+import { writeFileSync } from "node:fs";
+
+// detached: true calls setsid(), which is what a task runner does to the task it
+// starts: the child lands outside this process's group while staying its child.
+const child = spawn("sleep", ["30"], { detached: true, stdio: "ignore" });
+writeFileSync(process.argv[2], String(child.pid));
+setTimeout(() => {}, 30_000);
+EOF
+
+detached_pid_file="$tmp_dir/detached-child.pid"
+node "$detached_fixture" "$detached_pid_file" &
+fixture_launcher=$!
+for _ in $(seq 1 50); do
+  if [ -s "$detached_pid_file" ]; then break; fi
+  sleep 0.1
+done
+[ -s "$detached_pid_file" ] || fail "process-group fixture never reported its child"
+detached_child="$(cat "$detached_pid_file")"
+
+fixture_pgid="$(bash -c 'source "$1"; process_group_id "$2"' _ \
+  "$root_dir/scripts/dev-env.sh" "$detached_child")"
+[ "$fixture_pgid" != "$fixture_launcher" ] \
+  || fail "fixture did not reproduce a child outside its launcher's process group"
+
+bash -c 'source "$1"; process_ancestry_includes "$2" "$3"' _ \
+  "$root_dir/scripts/dev-env.sh" "$detached_child" "$fixture_launcher" \
+  || fail "a process whose parent chain reaches the launcher was not recognised as ours"
+
+if bash -c 'source "$1"; process_ancestry_includes "$2" "$3"' _ \
+  "$root_dir/scripts/dev-env.sh" "$$" "$detached_child"; then
+  fail "an unrelated process was claimed as a descendant"
+fi
+
+kill "$detached_child" "$fixture_launcher" 2>/dev/null || true
+wait "$fixture_launcher" 2>/dev/null || true
+
+# ---------------------------------------------------------------------------
 # Unknown names and components fail loudly instead of doing something else.
 # ---------------------------------------------------------------------------
 status=0
