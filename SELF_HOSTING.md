@@ -173,40 +173,44 @@ multica daemon status
 
 ## Intranet Mode — No Login
 
-On an isolated intranet, every login flow above may be unavailable: no mail relay to deliver a verification code, no reachable Google OAuth. Device auth closes that gap by trading a per-machine identifier for a session, so the desktop app boots straight into a shared workspace with nothing to type.
+On an isolated intranet, every login flow above may be unavailable: no mail relay to deliver a verification code, no reachable Google OAuth. Device auth closes that gap by trading a per-client identifier for a session, so the desktop app and the web app both boot straight into a shared workspace with nothing to type.
 
-> **Enabling this removes authentication.** Anyone who can reach the backend port can mint an identity, read and write every issue in the shared workspace, and queue agent tasks that spend your runtime and model quota. `ALLOW_SIGNUP` does **not** gate it — that flag governs human signup and says nothing about this path. The only thing protecting the deployment is the network in front of it, so turn it on only where every client that can reach the server is already trusted.
+**This is on by default for a self-hosted deployment.** It is off only when the server is serving `multica.ai`. You do not have to set anything to get no-login startup; you have to set something to switch it off.
+
+> **This means the deployment has no authentication.** Anyone who can reach the backend port can mint an identity, read and write every issue in the shared workspace, and queue agent tasks that spend your runtime and model quota. `ALLOW_SIGNUP` does **not** gate it — that flag governs human signup and says nothing about this path. The only thing protecting the deployment is the network in front of it. Keep the backend on a trusted network, or set `MULTICA_DEVICE_AUTH_ENABLED=false` and use the login flows above.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `MULTICA_DEVICE_AUTH_ENABLED` | `false` | Master switch. `true` enables `POST /auth/device` and advertises the capability through `/api/config`. |
+| `MULTICA_DEVICE_AUTH_ENABLED` | on, except on `multica.ai` | Master switch over `POST /auth/device` and the capability advertised through `/api/config`. Leave it empty for the default; `false`, `0`, `no` and `off` all require a login, `true`, `1`, `yes` and `on` all force it on. |
 | `MULTICA_DEVICE_AUTH_WORKSPACE` | `intranet` | Slug of the one shared workspace every device joins. Created on first use; an existing workspace with this slug is reused and never modified. A reserved or malformed slug falls back to the default. |
 | `MULTICA_DEVICE_AUTH_WORKSPACE_NAME` | `Intranet` | Display name used only when that workspace is created. |
 | `MULTICA_DEVICE_AUTH_ROLE` | `member` | Role for every device after the first (`admin` or `member`). The device whose first boot created the workspace becomes its `owner`. |
 
 How it works:
 
-1. Each desktop installation generates a random id on first launch and stores it in its user-data directory as `device-identity.json`, alongside a display name of the form `user@hostname`.
-2. On a launch with no saved session, the app reads `/api/config`. If the deployment declares device auth it posts the id to `/auth/device` and gets a session; if not, it shows the normal login page.
-3. The backend maps that id to a user — creating one the first time it sees it — adds it to the shared workspace, and marks it onboarded. Later launches resolve to the same member, so issues, comments and inbox items keep belonging to the same person.
+1. Each client generates a random id the first time it runs. The desktop app stores it in its user-data directory as `device-identity.json` with a display name of the form `user@hostname`; a browser stores it in `localStorage` under `multica_device_id` and appears as `web-<os>-<id prefix>`, since it can read neither a username nor a hostname.
+2. When a client has no working session it reads `/api/config`. If the deployment declares device auth it posts the id to `/auth/device` and gets a session; if not, it shows the normal login page. The desktop app checks before rendering anything; the web app finds out when its session cookie comes back rejected, which is the only signal it has.
+3. The backend maps that id to a user — creating one the first time it sees it — adds it to the shared workspace, and marks it onboarded. Later visits resolve to the same member, so issues, comments and inbox items keep belonging to the same person.
 
-Identity is per machine rather than per person, which is what keeps assignment, mentions, inbox and activity meaningful: each client appears in the member list as `user@hostname`. Two consequences to plan for:
+Identity is per client rather than per person, which is what keeps assignment, mentions, inbox and activity meaningful: each one appears in the member list under its own name. Consequences to plan for:
 
-- Losing or deleting a machine's `device-identity.json` joins as a **new** member on the next launch. Its earlier issues stay with the old identity.
-- Copying that file to a second machine makes both machines the **same** member.
+- One person using both the desktop app and a browser is **two** members, and the same person in two browsers is two more. Assign work to the one they actually use.
+- Losing or deleting a machine's `device-identity.json`, or clearing site data for the web app, joins as a **new** member next time. Earlier issues stay with the old identity.
+- Copying `device-identity.json` to a second machine makes both machines the **same** member.
+- Signing out works, and is a one-visit affair: the next launch or page load mints a session again. There is nothing to sign out of on a deployment with no login.
 
-Enable it on the Docker stack by setting the switch in `.env` and restarting the backend:
+Nothing has to be configured to enable this. Point the desktop app at your server the usual way — `~/.multica/desktop.json` with your own `apiUrl` and `wsUrl` (see [Manual CLI Configuration](#manual-cli-configuration) for where that file lives) — and open the web app at your own origin. Both negotiate the capability from `/api/config`.
+
+To require a login instead, set the switch and restart the backend:
 
 ```bash
-echo "MULTICA_DEVICE_AUTH_ENABLED=true" >> .env
+echo "MULTICA_DEVICE_AUTH_ENABLED=false" >> .env
 docker compose -f docker-compose.selfhost.yml up -d backend
 ```
 
-On Kubernetes the same settings live under `backend.config.deviceAuth.*` in `values.yaml` (`enabled`, `workspaceSlug`, `workspaceName`, `role`). After `helm upgrade` the backend pod rolls automatically because the ConfigMap hash changes.
+On Kubernetes the same settings live under `backend.config.deviceAuth.*` in `values.yaml` (`enabled`, `workspaceSlug`, `workspaceName`, `role`); `enabled: ""` takes the default and `enabled: "false"` turns it off. After `helm upgrade` the backend pod rolls automatically because the ConfigMap hash changes.
 
-Point the desktop app at your server the usual way — `~/.multica/desktop.json` with your own `apiUrl` and `wsUrl` (see [Manual CLI Configuration](#manual-cli-configuration) for where that file lives). Device auth itself needs no client configuration: the app negotiates it from `/api/config`.
-
-To turn it off, set the switch back to `false` and restart. Clients fall back to the login page on their next launch, but sessions already issued stay valid until they expire — rotate `JWT_SECRET` if you need them dead immediately. Device users and their data are left in place; they are identifiable by their `@device.multica.local` email suffix.
+Turning it off sends clients back to the login page on their next launch, but sessions already issued stay valid until they expire — rotate `JWT_SECRET` if you need them dead immediately. Device users and their data are left in place; they are identifiable by their `@device.multica.local` email suffix.
 
 If the deployment has no outbound access at all, see [Air-gapped / Offline Deployment](#air-gapped--offline-deployment) for how to get the images and installers in.
 
@@ -289,9 +293,9 @@ POSTGRES_PASSWORD=<openssl rand -hex 24>   # keep DATABASE_URL's password in syn
 
 MULTICA_PUBLIC_URL=http://<server-host>:8080
 MULTICA_APP_URL=http://<server-host>:3000
-
-MULTICA_DEVICE_AUTH_ENABLED=true
 ```
+
+Device auth needs no line here: it is on by default for a self-hosted deployment, which is what lets these clients start with no login. Add `MULTICA_DEVICE_AUTH_ENABLED=false` if you would rather they didn't.
 
 Leave `RESEND_API_KEY` and `GOOGLE_CLIENT_ID` empty — neither is reachable, and the web UI hides the Google button when the client id is unset. With device auth on you need no mail path at all; if you want email login as a fallback, point `SMTP_HOST` at an internal relay, otherwise verification codes only ever appear in the backend logs.
 
