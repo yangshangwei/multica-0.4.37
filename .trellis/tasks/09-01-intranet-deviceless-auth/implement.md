@@ -78,6 +78,61 @@
 - [ ] 手工：本地起后端并置开关为 true，用两份不同的 Electron userData 模拟两台设备，验证 PRD 验收标准里的双设备协作项（互相分配、@提及、inbox）。 —— **未执行：需要一个跑起来的后端**（本机无 Docker/PostgreSQL）。
 - [ ] 手工：置开关为 false 重启，确认桌面端回到登录页且邮箱验证码登录仍正常。 —— **未执行：需要一个跑起来的后端**（本机无 Docker/PostgreSQL）。
 
+## S11 默认开启 + web 端免登录（2026-09-01 用户变更）
+
+用户要求：「Web 版和桌面版我都不需要登录，请帮我默认开启」。这推翻了 PRD 里的两条决策
+（默认关闭、不改 web 端登录门），两条都已在 `prd.md` 就地改写并标注变更来源。
+
+- [x] 服务端默认值反转：`DeviceAuthEnabledFromEnv()`（`auth_device.go`）取代 router 里的
+  `os.Getenv(...) == "true"`。自托管默认开，仅 `MULTICA_APP_URL`/`FRONTEND_ORIGIN` 指向
+  multica.ai 时默认关。**falsey 拼写全部识别**（`false`/`0`/`no`/`off`，大小写与空格无关）：
+  默认这个方向下，一个没被识别的 `0` 会把运维正要关掉的东西给他打开。
+- [x] 启动 WARN 带上关闭方法（`MULTICA_DEVICE_AUTH_ENABLED=false`）——默认开启意味着运维
+  从没设过这个变量，没有别的途径知道它叫什么。
+- [x] web 设备标识 `apps/web/features/auth/device-identity.ts`：localStorage 存 32 位 hex，
+  显示名 `web-<os>-<id 前 8 位>`。存储不可读或不可写时返回 null 而不是发一个新 id ——
+  写不进去的存储会在每次刷新时铸造一个新成员，把一个人的 issue 摊到一堆成员上。
+- [x] `web-providers.tsx` 把 `deviceAuth` 透传给 `CoreProvider`。
+- [x] `auth-initializer.tsx` 从 401 接管设备登录。这是 web 唯一能走到设备路径的方式：
+  它的会话在读不到的 HttpOnly cookie 里，「已登出」不是它能先行判断的分支。
+  `deviceAuthAttempted` 闩锁保证每次挂载只接管一次——否则设备会话自己被拒、或设备登录成功
+  后 workspace 列表 401，都会回头再铸一个身份，每次多留一行 member。
+  `resume()` 取代两处硬编码的重试目标，让退避与 `online` 事件重试的是真正挂起的那次登录。
+- [x] 部署面默认值同步：`.env.example` 留空即默认开启并写明关闭方式；Helm `values.yaml`
+  的 `deviceAuth.enabled` 从 `false` 改为 `""`（空值取服务端默认）。
+- [x] 测试：`auth-initializer.test.tsx` 新增 cookie 模式 6 例（401 接管、无设备身份、
+  部署不提供、活跃会话不打扰、workspace 401 不二次铸造、token 过期重铸）；
+  `device-identity.test.ts` 10 例；`auth_device_test.go` 的 `TestDeviceAuthEnabledFromEnv` 11 例。
+
+### 真实验证（2026-09-01，非人工推断）
+
+一次性 PostgreSQL（`pgvector/pgvector:pg17`，独立端口，跑完删除）+ 真实后端进程：
+
+| 项 | 结果 |
+| --- | --- |
+| 默认（未设变量）`/api/config` | `device_auth_available=true`，启动 WARN 带关闭方法 |
+| `POST /auth/device` 首次 | token 320 字节、`onboarded_at` 非空、下发 `multica_auth`+`multica_csrf` HttpOnly cookie |
+| 同 device_id 二次 | 同一 user id（幂等） |
+| 第二个 device_id | 同一 `intranet` workspace，A=owner / B=member |
+| 库内真值 | 2 device user、2 member 行、7 个 issue status |
+| `MULTICA_DEVICE_AUTH_ENABLED=false` | 无 WARN、config 不含该字段、端点 403、零写入 |
+| `go test ./internal/handler/... ./internal/middleware/...` | ok 36.8s / 1.4s，exit 0 |
+| `go build ./...` / `go vet` | 通过 |
+| `pnpm typecheck` | 9/9 |
+| `pnpm test` | 5/5 task，411 文件 4892 用例 |
+| `scripts/dev-env.test.sh` / `scripts/selfhost-config.test.sh` | exit 0 |
+
+仍未核验：桌面端与浏览器的真实 UI 首启（本轮只验证到 HTTP/DB 契约层），以及双设备在 UI 上
+互相分配 / @提及 / inbox 的协作项。
+
+### 已知取舍
+
+- web 首次访问站点根路径 `/` 时，`multica_logged_in` cookie 尚不存在，proxy 放行到落地页，
+  设备登录完成后由 `RedirectIfAuthenticated` 跳进 workspace——会闪一下落地页。这是既有行为
+  （任何首次登录的用户都会经历），第二次访问起 proxy 用 cookie 在服务端直接重定向。
+- `isOfficialCloudDeployment()` 精确匹配 `multica.ai`，不含 `www.multica.ai`。沿用既有 daemon
+  配置的判定口径，未在本次改动中扩大。
+
 ## 提交划分
 
 1. `feat(server): add device auth switch and capability declaration`（S1）
@@ -86,6 +141,8 @@
 4. `feat(core): auto device login on tokenless boot`（S4）
 5. `feat(desktop): persist device identity and wire device auth`（S5）
 6. `docs: document intranet device auth for self-hosting`（S6）
+7. `feat(web): sign in from a browser device identity`（S11 web 部分）
+8. `feat(server): default device auth on for self-hosted deployments`（S11 默认值部分）
 
 ## 回滚点
 
