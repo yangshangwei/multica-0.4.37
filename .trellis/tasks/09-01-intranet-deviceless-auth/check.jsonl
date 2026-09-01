@@ -1,0 +1,2 @@
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "This change spans DB provisioning, handler contract, /api/config declaration, core schema/store, and desktop main/preload — the exact shape the guide is for."}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "Device provisioning must reuse CreateWorkspace's transaction pattern, issuestatus.Ensure, findOrCreateUser and the existing LoginResponse shape rather than fork parallel paths."}

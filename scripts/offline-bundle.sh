@@ -1,0 +1,269 @@
+#!/usr/bin/env bash
+# Build an air-gapped install bundle: the three container images the self-hosted
+# stack runs, plus the compose file and env template needed to start them on a
+# machine with no registry access.
+#
+# Run this on a machine WITH network. Nothing here can run inside the air gap:
+# the backend image build runs `go mod download` and the web image build runs
+# `pnpm install`, both of which need upstream package registries.
+#
+# Deliberately builds from the current checkout rather than pulling the
+# published GHCR images: an offline site is usually offline because it runs a
+# build the public images do not have (intranet device auth, for one), and
+# pulling `:latest` would ship something else than the checkout under review.
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+COMPOSE_FILE="docker-compose.selfhost.yml"
+BUILD_OVERLAY="docker-compose.selfhost.build.yml"
+# Tags the build overlay assigns. Read back from it rather than repeated here,
+# so a rename in the overlay cannot leave this script saving nothing.
+BACKEND_IMAGE="$(sed -n 's/^[[:space:]]*image:[[:space:]]*\(multica-backend:[^[:space:]]*\).*/\1/p' "$BUILD_OVERLAY" | head -1)"
+WEB_IMAGE="$(sed -n 's/^[[:space:]]*image:[[:space:]]*\(multica-web:[^[:space:]]*\).*/\1/p' "$BUILD_OVERLAY" | head -1)"
+# The database image is a literal in the compose file (no env override), so the
+# bundle has to carry that exact tag or `docker compose up` reaches for a
+# registry that is not there.
+DB_IMAGE="$(sed -n '/^[[:space:]]*postgres:/,/^[[:space:]]*[a-z]/s/^[[:space:]]*image:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$COMPOSE_FILE" | head -1)"
+
+OUT_DIR="dist/offline"
+DRY_RUN=0
+# Defaults to the architecture the overwhelming majority of servers run, NOT to
+# the build host. Getting this wrong is the worst failure this script can
+# produce: an arm64 bundle built on a developer laptop loads fine and then every
+# container dies with "exec format error" on the x86 server, after someone has
+# already carried it across the air gap. A slow emulated build is visible here;
+# a wrong-architecture bundle is only visible there.
+PLATFORM="linux/amd64"
+
+usage() {
+  cat <<'USAGE'
+Usage: scripts/offline-bundle.sh [--output DIR] [--platform PLAT] [--dry-run]
+
+  --output DIR     Where to write the bundle (default: dist/offline)
+  --platform PLAT  Target platform for the images (default: linux/amd64).
+                   Use linux/arm64 for an ARM server. Building for an
+                   architecture other than the host's runs under emulation
+                   and is slow.
+  --dry-run        Print the plan and stage nothing. Touches no images.
+USAGE
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --output)
+      [ $# -ge 2 ] || { echo "--output needs a directory" >&2; exit 1; }
+      OUT_DIR="$2"
+      shift 2
+      ;;
+    --platform)
+      [ $# -ge 2 ] || { echo "--platform needs a value, e.g. linux/amd64" >&2; exit 1; }
+      PLATFORM="$2"
+      shift 2
+      ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+done
+
+for var in BACKEND_IMAGE WEB_IMAGE DB_IMAGE; do
+  if [ -z "${!var}" ]; then
+    echo "Could not read $var out of the compose files." >&2
+    echo "Their service/image shape changed; update scripts/offline-bundle.sh to match." >&2
+    exit 1
+  fi
+done
+
+IMAGES_ARCHIVE="$OUT_DIR/multica-images.tar.gz"
+
+host_platform() {
+  case "$(uname -m)" in
+    x86_64|amd64) echo "linux/amd64" ;;
+    arm64|aarch64) echo "linux/arm64" ;;
+    *) echo "unknown" ;;
+  esac
+}
+
+echo "==> Air-gapped bundle plan"
+echo "    platform      : $PLATFORM"
+echo "    backend image : $BACKEND_IMAGE (built from this checkout)"
+echo "    web image     : $WEB_IMAGE (built from this checkout)"
+echo "    database image: $DB_IMAGE (pulled)"
+echo "    output        : $OUT_DIR"
+
+if [ "$PLATFORM" != "$(host_platform)" ]; then
+  echo ""
+  echo "    NOTE: $PLATFORM is not this machine's architecture, so both image"
+  echo "    builds run under emulation. Expect this to take a long time (the"
+  echo "    Go build and the web build are the slow parts). Building on a"
+  echo "    native $PLATFORM host instead is much faster."
+fi
+
+if [ "$DRY_RUN" = "1" ]; then
+  echo "==> --dry-run: stopping before build."
+  exit 0
+fi
+
+# Env overrides first: a checkout that is not a git working tree (an exported
+# tarball, a vendored copy) otherwise stamps "dev/unknown" into the manifest,
+# and then nobody at the offline site can answer "which build is this?".
+VERSION="${VERSION:-$(git describe --tags --match 'v[0-9]*' --always --dirty 2>/dev/null || echo dev)}"
+COMMIT="${COMMIT:-$(git rev-parse --short HEAD 2>/dev/null || echo unknown)}"
+DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+mkdir -p "$OUT_DIR"
+
+# Compose interpolates the whole file before it builds anything, and the backend
+# service declares JWT_SECRET with `:?` so an unset value aborts. The real secret
+# belongs to the offline machine, not to this build host — it is generated there,
+# in its own .env — so feed the interpolation a placeholder. It reaches no image:
+# JWT_SECRET is a runtime environment variable of the backend service, not a
+# build arg.
+echo "==> Building images for $PLATFORM from the current checkout..."
+VERSION="$VERSION" COMMIT="$COMMIT" DATE="$DATE" DOCKER_DEFAULT_PLATFORM="$PLATFORM" \
+  JWT_SECRET="${JWT_SECRET:-build-time-placeholder-not-shipped}" \
+  docker compose -f "$COMPOSE_FILE" -f "$BUILD_OVERLAY" build
+
+# --platform matters here too: the database image is multi-arch, and `docker
+# pull` without it would fetch the build host's architecture.
+echo "==> Pulling $DB_IMAGE for $PLATFORM..."
+docker pull --platform "$PLATFORM" "$DB_IMAGE"
+
+# --platform is what keeps the archive to one architecture. Without it, `docker
+# save` writes every platform the local store happens to hold for a tag — the
+# database image is multi-arch, so a machine that pulled it natively at some
+# point would ship both, silently inflating what someone has to carry across
+# the air gap.
+echo "==> Saving images to $IMAGES_ARCHIVE..."
+docker save --platform "$PLATFORM" "$BACKEND_IMAGE" "$WEB_IMAGE" "$DB_IMAGE" | gzip >"$IMAGES_ARCHIVE"
+
+echo "==> Staging compose file and env template..."
+cp "$COMPOSE_FILE" "$OUT_DIR/"
+cp .env.example "$OUT_DIR/"
+
+archive_bytes="$(wc -c <"$IMAGES_ARCHIVE" | tr -d ' ')"
+if command -v shasum >/dev/null 2>&1; then
+  archive_sha="$(shasum -a 256 "$IMAGES_ARCHIVE" | awk '{print $1}')"
+elif command -v sha256sum >/dev/null 2>&1; then
+  archive_sha="$(sha256sum "$IMAGES_ARCHIVE" | awk '{print $1}')"
+else
+  archive_sha="unavailable (no shasum/sha256sum on the build machine)"
+fi
+
+cat >"$OUT_DIR/MANIFEST.txt" <<MANIFEST
+Multica air-gapped bundle
+built:    $DATE
+version:  $VERSION
+commit:   $COMMIT
+platform: $PLATFORM
+
+images:
+  $BACKEND_IMAGE
+  $WEB_IMAGE
+  $DB_IMAGE
+
+multica-images.tar.gz
+  bytes:  $archive_bytes
+  sha256: $archive_sha
+MANIFEST
+
+# The import side is three commands nobody remembers under pressure, and the
+# image-name overrides are the step whose omission looks like a broken build
+# rather than a missing setting. Ship them next to the tarball.
+cat >"$OUT_DIR/README.md" <<README
+# Multica air-gapped bundle
+
+Built from commit \`$COMMIT\` ($VERSION) on $DATE for **$PLATFORM**. See
+\`MANIFEST.txt\` for the image list and archive checksum.
+
+If the server is not $PLATFORM, stop here — the containers will load and then
+fail to execute. Rebuild the bundle with \`--platform\` set to that server's
+architecture.
+
+## Install on the offline machine
+
+\`\`\`bash
+docker load -i multica-images.tar.gz
+cp .env.example .env
+\`\`\`
+
+Then edit \`.env\`. These are the settings this bundle needs:
+
+\`\`\`
+# Point Compose at the images you just loaded instead of the registry.
+MULTICA_BACKEND_IMAGE=${BACKEND_IMAGE%%:*}
+MULTICA_WEB_IMAGE=${WEB_IMAGE%%:*}
+MULTICA_IMAGE_TAG=${BACKEND_IMAGE##*:}
+
+JWT_SECRET=<openssl rand -hex 32>
+POSTGRES_PASSWORD=<openssl rand -hex 24>
+# Keep DATABASE_URL's password in sync with POSTGRES_PASSWORD.
+
+# Reachable from the client machines, not localhost.
+MULTICA_PUBLIC_URL=http://<server-host>:8080
+MULTICA_APP_URL=http://<server-host>:3000
+
+# Intranet mode: clients get a session from a device id, with no login step.
+# This removes authentication for the shared workspace — read
+# SELF_HOSTING.md "Intranet Mode - No Login" first.
+MULTICA_DEVICE_AUTH_ENABLED=true
+\`\`\`
+
+Start it:
+
+\`\`\`bash
+docker compose -f docker-compose.selfhost.yml up -d
+curl -sf http://localhost:8080/health
+curl -s http://localhost:8080/api/config    # expect "device_auth_available":true
+\`\`\`
+
+Compose publishes both ports on \`127.0.0.1\` by default, so other machines
+cannot reach them yet. Bind them to the LAN or put a reverse proxy in front —
+skipping this looks exactly like device auth failing to work.
+
+Migrations are not a separate step: the backend container runs them before the
+API starts.
+
+## Client machines
+
+The desktop installers are NOT in this bundle — build them from the same commit
+with \`cd apps/desktop && pnpm package\` and distribute them yourself. Device
+auth needs the app and the server to come from the same build.
+
+On each machine, write \`~/.multica/desktop.json\`:
+
+\`\`\`json
+{
+  "schemaVersion": 1,
+  "apiUrl": "http://<server-host>:8080",
+  "wsUrl": "ws://<server-host>:8080/ws",
+  "appUrl": "http://<server-host>:3000"
+}
+\`\`\`
+
+## Agents
+
+Agents run through an agent CLI on the runtime machine, which needs a model
+endpoint. With no egress, assigning an issue to an agent will not run it until
+an internal OpenAI-compatible gateway is reachable.
+README
+
+echo ""
+echo "✓ Bundle ready in $OUT_DIR"
+ls -1 "$OUT_DIR"
+echo ""
+echo "Next: copy that directory into the air-gapped network and follow its README.md."
+echo "Desktop installers are separate — build them from this same commit with:"
+echo "  (cd apps/desktop && pnpm package)"
