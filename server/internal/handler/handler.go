@@ -96,11 +96,15 @@ type Config struct {
 	// Turning it on means the shared workspace has NO authentication: anyone
 	// who can reach this server's port can mint an identity, read and write
 	// every issue in it, and queue agent tasks that spend runtime and model
-	// quota. Hence off by default. It is deliberately NOT gated on
-	// AllowSignup — that flag governs human signup, and an operator who
-	// disabled signup has said nothing about this path — so the only
-	// mitigation is network isolation in front of the server. Populated from
-	// MULTICA_DEVICE_AUTH_ENABLED.
+	// quota. It is deliberately NOT gated on AllowSignup — that flag governs
+	// human signup, and an operator who disabled signup has said nothing about
+	// this path — so the only mitigation is network isolation in front of the
+	// server.
+	//
+	// It is nonetheless ON by default for self-hosted deployments, and off only
+	// on the official cloud: see DeviceAuthEnabledFromEnv, which resolves
+	// MULTICA_DEVICE_AUTH_ENABLED into this field, for that decision and how an
+	// operator turns it back off.
 	DeviceAuthEnabled bool
 	// DeviceAuthWorkspaceSlug and DeviceAuthWorkspaceName name the ONE shared
 	// workspace every device identity joins. Device users are separate
@@ -439,10 +443,13 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 
 	// Say it once, at boot, where an operator reading the log can still act on
 	// it: with device auth on, the shared workspace is readable and writable
-	// by anyone who can reach this port. The effective slug and role are
-	// logged because both can be silently corrected from their env values.
+	// by anyone who can reach this port. This is the default for a self-hosted
+	// deployment, so the line carries the opt-out — an operator who never set
+	// the variable has no other reason to know its name. The effective slug and
+	// role are logged because both can be silently corrected from their env
+	// values.
 	if cfg.DeviceAuthEnabled {
-		slog.Warn("device auth enabled: any client that can reach this server can mint an identity in the shared workspace without logging in",
+		slog.Warn("device auth enabled: any client that can reach this server can mint an identity in the shared workspace without logging in; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login",
 			"workspace_slug", cfg.deviceAuthWorkspaceSlug(),
 			"member_role", cfg.deviceAuthRole(),
 		)

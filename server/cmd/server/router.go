@@ -422,7 +422,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		AllowedEmailDomains:      splitAndTrim(os.Getenv("ALLOWED_EMAIL_DOMAINS")),
 		DisableWorkspaceCreation: os.Getenv("DISABLE_WORKSPACE_CREATION") == "true",
 		VCSIntegrationEnabled:    os.Getenv("MULTICA_VCS_INTEGRATION_ENABLED") == "true",
-		DeviceAuthEnabled:        os.Getenv("MULTICA_DEVICE_AUTH_ENABLED") == "true",
+		DeviceAuthEnabled:        handler.DeviceAuthEnabledFromEnv(),
 		DeviceAuthWorkspaceSlug:  strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_WORKSPACE")),
 		DeviceAuthWorkspaceName:  strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_WORKSPACE_NAME")),
 		DeviceAuthRole:           strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_ROLE")),

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -74,6 +75,29 @@ type DeviceLoginRequest struct {
 	// DeviceName is the label other members see. The desktop app sends
 	// "<os user>@<hostname>"; empty falls back to the device id's head.
 	DeviceName string `json:"device_name"`
+}
+
+// DeviceAuthEnabledFromEnv resolves the device-auth switch for a deployment.
+//
+// The default is ON. The deployments this feature exists for are the ones where
+// no login can be completed at all — an intranet with no mail relay and no
+// reachable OAuth provider — and there an operator who must first discover an
+// env var has an app that never opens. The official cloud is the exception:
+// "no login" there would not mean "the office", it would mean "the internet",
+// so the default flips off when this server is serving multica.ai.
+//
+// MULTICA_DEVICE_AUTH_ENABLED overrides either way. Both spellings of the
+// falsey value are accepted deliberately: with the default this way round, a
+// "0" or "no" that fell through to the default would hand an operator who
+// meant to disable the feature the exact deployment they were trying to avoid.
+func DeviceAuthEnabledFromEnv() bool {
+	switch strings.ToLower(strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_ENABLED"))) {
+	case "true", "1", "yes", "on":
+		return true
+	case "false", "0", "no", "off":
+		return false
+	}
+	return !isOfficialCloudDeployment()
 }
 
 // deviceAuthWorkspaceSlug returns the effective shared-workspace slug. An

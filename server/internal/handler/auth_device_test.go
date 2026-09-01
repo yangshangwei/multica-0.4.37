@@ -265,6 +265,44 @@ func TestDeviceUserNameFallsBackToDeviceID(t *testing.T) {
 	}
 }
 
+// The switch defaults ON so an intranet deployment opens without anyone
+// discovering an env var, and OFF on the official cloud, where the same default
+// would publish a workspace to the internet. Every falsey spelling has to be
+// honoured: with the default this way round, an unrecognized "0" would enable
+// the exact thing the operator was turning off.
+func TestDeviceAuthEnabledFromEnv(t *testing.T) {
+	cases := []struct {
+		name   string
+		env    string
+		appURL string
+		want   bool
+	}{
+		{"unset_self_hosted", "", "http://multica.lan:3000", true},
+		{"unset_local_dev", "", "http://localhost:3000", true},
+		{"unset_no_app_url", "", "", true},
+		{"unset_official_cloud", "", "https://multica.ai", false},
+		{"explicit_true_on_cloud", "true", "https://multica.ai", true},
+		{"explicit_false_self_hosted", "false", "http://multica.lan:3000", false},
+		{"zero_disables", "0", "http://multica.lan:3000", false},
+		{"no_disables", "No", "http://multica.lan:3000", false},
+		{"off_disables", " OFF ", "http://multica.lan:3000", false},
+		{"one_enables", "1", "https://multica.ai", true},
+		{"garbage_falls_back_to_default", "maybe", "https://multica.ai", false},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv("MULTICA_DEVICE_AUTH_ENABLED", tc.env)
+			t.Setenv("MULTICA_APP_URL", tc.appURL)
+			t.Setenv("FRONTEND_ORIGIN", "")
+			if got := DeviceAuthEnabledFromEnv(); got != tc.want {
+				t.Fatalf("DeviceAuthEnabledFromEnv() with env=%q app_url=%q: want %v, got %v",
+					tc.env, tc.appURL, tc.want, got)
+			}
+		})
+	}
+}
+
 func TestDeviceAuthConfigDefaults(t *testing.T) {
 	cases := []struct {
 		name     string
