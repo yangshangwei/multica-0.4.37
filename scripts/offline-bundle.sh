@@ -119,7 +119,14 @@ fi
 # Env overrides first: a checkout that is not a git working tree (an exported
 # tarball, a vendored copy) otherwise stamps "dev/unknown" into the manifest,
 # and then nobody at the offline site can answer "which build is this?".
-VERSION="${VERSION:-$(git describe --tags --match 'v[0-9]*' --always --dirty 2>/dev/null || echo dev)}"
+#
+# Never `--always`: this VERSION is stamped into the bundled multica CLI too
+# (Dockerfile builds ./cmd/multica with -X main.version), and its bare-hash
+# fallback parses as neither semver nor the git-describe shape — so the CLI
+# version gates fail closed and agent-create refuses the daemon at the offline
+# site. Synthesize the describe shape from HEAD instead, which those gates
+# exempt as a dev build. Keep in sync with the Makefile's VERSION.
+VERSION="${VERSION:-$(git describe --tags --match 'v[0-9]*' --dirty 2>/dev/null || echo "v0.0.0-0-g$(git rev-parse --short HEAD 2>/dev/null || echo 0000000)")}"
 COMMIT="${COMMIT:-$(git rev-parse --short HEAD 2>/dev/null || echo unknown)}"
 DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 

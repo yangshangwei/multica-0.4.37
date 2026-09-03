@@ -477,6 +477,20 @@ checkout_commit() {
   git -C "${DIR:-$REPO_ROOT}" rev-parse --short HEAD 2>/dev/null || printf 'unknown'
 }
 
+# The version string stamped into the CLI binary, matching the Makefile's
+# VERSION. The daemon reports it as `cli_version` at registration, and the
+# server + frontend version gates (server/pkg/agent/version.go,
+# packages/core/runtimes/cli-version.ts) fail closed on anything they cannot
+# parse as semver or the git-describe shape. An unstamped build reports the
+# `version = "dev"` default from cmd/multica/main.go and is refused for
+# agent-create; so is `git describe --always`'s bare-hash fallback. Hence no
+# `--always` here: a tagless checkout synthesizes the describe shape instead.
+checkout_cli_version() {
+  local repo="${DIR:-$REPO_ROOT}"
+  git -C "$repo" describe --tags --match 'v[0-9]*' --dirty 2>/dev/null \
+    || printf 'v0.0.0-0-g%s' "$(git -C "$repo" rev-parse --short HEAD 2>/dev/null || printf '0000000')"
+}
+
 process_group_id() {
   ps -p "$1" -o pgid= 2>/dev/null | tr -d ' ' || true
 }
@@ -716,8 +730,14 @@ start_daemon() {
   # `go run` the toolchain deletes that binary when the launcher exits, so the
   # daemon registers, heartbeats, and then fails every task with
   # "fork/exec .../go-build.../exe/multica: no such file or directory".
+  #
+  # Stamped, never bare: an unstamped binary reports cli_version "dev", which
+  # the agent-create version gate reads as "daemon did not report a version"
+  # and refuses. Keep these ldflags in sync with the Makefile's `build` target.
   info "Building $MULTICA_BIN (a go run daemon would fail every task later)."
-  (cd "$REPO_ROOT/server" && go build -o bin/multica ./cmd/multica) || die "Failed to build the multica CLI."
+  (cd "$REPO_ROOT/server" && go build \
+    -ldflags "-X main.version=$(checkout_cli_version) -X main.commit=$(checkout_commit) -X main.date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
+    -o bin/multica ./cmd/multica) || die "Failed to build the multica CLI."
 
   "${CLEAN_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
     "$MULTICA_BIN" daemon start --profile "$PROFILE" 2>&1 | sed 's/^/    /' || true

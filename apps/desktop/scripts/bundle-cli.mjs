@@ -78,7 +78,7 @@ const destBinary = join(destDir, binName);
 // `v[0-9]*` must reach git as one literal argument; routing it through a shell
 // string breaks on Windows, where cmd.exe keeps the POSIX single quotes and
 // git matches no tag — degrading the bundled CLI's version to the
-// 0.0.0-g<hash> fallback.
+// v0.0.0-0-g<hash> fallback below.
 function git(...args) {
   try {
     return execFileSync("git", args, { encoding: "utf-8" }).trim();
@@ -106,10 +106,17 @@ async function exists(p) {
 }
 
 if (hasGo()) {
-  const version =
-    git("describe", "--tags", "--match", "v[0-9]*", "--always", "--dirty") ||
-    "dev";
   const commit = git("rev-parse", "--short", "HEAD") || "unknown";
+  // Never `--always`, and never a bare "dev": both produce a string the CLI
+  // version gates (server/pkg/agent/version.go,
+  // packages/core/runtimes/cli-version.ts) parse as neither semver nor the
+  // git-describe shape, so they fail closed and agent-create refuses a daemon
+  // this app just built. A tagless checkout synthesizes the describe shape
+  // from HEAD instead, which those gates exempt as a dev build. Keep in sync
+  // with the Makefile's VERSION and scripts/dev-env.sh.
+  const version =
+    git("describe", "--tags", "--match", "v[0-9]*", "--dirty") ||
+    `v0.0.0-0-g${commit === "unknown" ? "0000000" : commit}`;
   const date = new Date().toISOString().replace(/\.\d+Z$/, "Z");
   const ldflags = `-X main.version=${version} -X main.commit=${commit} -X main.date=${date}`;
 
