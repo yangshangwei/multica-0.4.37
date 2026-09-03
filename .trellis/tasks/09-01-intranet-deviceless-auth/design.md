@@ -71,7 +71,7 @@ name  = <清洗后的 device_name>，缺省 device-<device_id 前 8 位>
 
 `Commit` 之后才 `issueJWT`，并复用既有的 analytics 事件与 `notifyDaemonWorkspacesChanged`。
 
-为什么必须 stamp onboarding：桌面端的硬不变量是 `onboarded_at != null` 才能进入 dashboard（`apps/desktop/src/renderer/src/App.tsx:215-260` 的 overlay 路由），否则设备用户会被 onboarding overlay 拦住，"打开即用"直接不成立。
+为什么第 5 步只在有共享 workspace 时 stamp onboarding：桌面端的硬不变量是 `onboarded_at != null` 才能进入 dashboard（`apps/desktop/src/renderer/src/App.tsx:215-260` 的 overlay 路由）。配了共享 workspace 时，设备的工作区与 membership 在这一步之前就已存在，没什么可 onboard 的，不 stamp 就会被 overlay 拦住、"打开即用"不成立；缺省无共享 workspace 时反过来——没有任何工作区可打开，被 overlay 拦住引导自建才是正确状态，因此这一步不执行（2026-09-03 变更）。
 
 ## 数据流（桌面端首次启动）
 
@@ -117,7 +117,7 @@ renderer  AuthInitializer 的"无 token"分支
 
 开关打开即意味着该部署没有鉴权：任何能访问后端端口的人都可以自助获得身份、自建工作区，并触发 agent 任务（消耗 runtime 与模型额度）；若配置了共享 workspace，还能读写其中已有的全部数据。用户已明确选择不做来源限制，缓解手段因此只剩三项：
 
-1. 开关默认关闭，必须显式打开；
+1. 官方云端默认关闭；自建部署默认打开（`DeviceAuthEnabledFromEnv`：非 multica.ai 即 true），因为这个功能存在的场景恰恰是「不设 env 就永远登不进来」，需要关闭的部署显式置 `false`；
 2. 打开时在服务端启动日志打 WARN，说明当前无鉴权；
 3. 文档显式写明风险，并点明 `/auth/device` 不受 `ALLOW_SIGNUP` 约束。
 
