@@ -223,7 +223,7 @@ MULTICA_PUBLIC_URL=http://<server-host>:8080
 MULTICA_APP_URL=http://<server-host>:3000
 
 # Intranet mode: clients get a session from a device id, with no login step.
-# This removes authentication for the shared workspace — read
+# This removes authentication from the deployment — read
 # SELF_HOSTING.md "Intranet Mode - No Login" first.
 MULTICA_DEVICE_AUTH_ENABLED=true
 \`\`\`

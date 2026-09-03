@@ -82,7 +82,7 @@ Changes take effect after restarting the backend / compose stack. The web UI rea
 3. Set `DISABLE_WORKSPACE_CREATION=true` and restart the backend. Optionally set `ALLOW_SIGNUP=false` at the same time if you also want to block new account creation.
 4. Going forward, additional users join via invitation only — the "Create workspace" affordance is hidden in the UI and any direct API call returns 403.
 
-> Note: none of these variables gate intranet device auth (`MULTICA_DEVICE_AUTH_ENABLED`). That switch mints identities from a machine id without any signup step, so a deployment locked down with `ALLOW_SIGNUP=false` is still wide open if device auth is on. See [Intranet Mode — No Login](SELF_HOSTING.md#intranet-mode--no-login).
+> Note: none of these variables gate intranet device auth (`MULTICA_DEVICE_AUTH_ENABLED`). That switch mints identities from a machine id without any signup step, so a deployment locked down with `ALLOW_SIGNUP=false` is still wide open if device auth is on. If you keep device auth on alongside `DISABLE_WORKSPACE_CREATION=true`, also set `MULTICA_DEVICE_AUTH_WORKSPACE` so each device joins the workspace you bootstrapped instead of being asked for one this flag forbids it to create. See [Intranet Mode — No Login](SELF_HOSTING.md#intranet-mode--no-login).
 
 > Note: setting `ALLOW_SIGNUP=false` blocks **all** new account creation, including users who already have a pending invitation. If you need invited users to be able to sign up but not create their own workspaces, keep `ALLOW_SIGNUP=true` (optionally combined with `ALLOWED_EMAIL_DOMAINS` / `ALLOWED_EMAILS`) and only flip `DISABLE_WORKSPACE_CREATION=true`.
 

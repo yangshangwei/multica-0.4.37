@@ -38,10 +38,10 @@ DeviceAuthAvailable bool `json:"device_auth_available,omitempty"`
 
 | 变量 | 缺省 | 说明 |
 | --- | --- | --- |
-| `MULTICA_DEVICE_AUTH_ENABLED` | `false` | 唯一总开关 |
-| `MULTICA_DEVICE_AUTH_WORKSPACE` | `intranet` | 共享 workspace slug（已确认不在保留 slug 列表内） |
-| `MULTICA_DEVICE_AUTH_WORKSPACE_NAME` | `Intranet` | 首次创建时的显示名 |
-| `MULTICA_DEVICE_AUTH_ROLE` | `member` | 后续设备的角色（`admin` / `member`）；首个开通设备取 `owner` |
+| `MULTICA_DEVICE_AUTH_ENABLED` | 自托管开启，multica.ai 关闭 | 唯一总开关（2026-09-01 变更） |
+| `MULTICA_DEVICE_AUTH_WORKSPACE` | 空 = 无共享 workspace | 配置后所有设备加入该 slug 并跳过 onboarding；缺省下首启进 onboarding 自建（2026-09-03 变更）。保留 / 非法 slug 读作空 |
+| `MULTICA_DEVICE_AUTH_WORKSPACE_NAME` | 由 slug 反推 | 仅在创建该 workspace 时用到（`acme-intranet` → `Acme Intranet`） |
+| `MULTICA_DEVICE_AUTH_ROLE` | `member` | 后续设备的角色（`admin` / `member`）；首个开通设备取 `owner`。仅在配置了共享 workspace 时生效 |
 
 ## 设备身份如何落库（关键取舍）
 
@@ -64,9 +64,10 @@ name  = <清洗后的 device_name>，缺省 device-<device_id 前 8 位>
 在单个事务内完成（`h.TxStarter.Begin`，与 `CreateWorkspace` 同一 pattern，见 `server/internal/handler/workspace.go:254`）：
 
 1. `GetUserByEmail` / `CreateUser`
-2. `GetWorkspaceBySlug` / `CreateWorkspace` + `issuestatus.Ensure` —— 复用 `CreateWorkspace` 的 seeding，遵守 MUL-6243 的不变量：workspace 不得在没有状态目录时可见
-3. `CreateMember` —— 已存在则跳过；workspace 由本次调用创建时取 `owner`，否则取配置角色
-4. `MarkUserOnboarded` —— `COALESCE(onboarded_at, now())` 已经是幂等的
+2. 未配置共享 workspace slug（缺省）时直接 `Commit` 返回，后面三步都不执行：身份有了，工作区交给 onboarding
+3. `GetWorkspaceBySlug` / `CreateWorkspace` + `issuestatus.Ensure` —— 复用 `CreateWorkspace` 的 seeding，遵守 MUL-6243 的不变量：workspace 不得在没有状态目录时可见
+4. `CreateMember` —— 已存在则跳过；workspace 由本次调用创建时取 `owner`，否则取配置角色
+5. `MarkUserOnboarded` —— `COALESCE(onboarded_at, now())` 已经是幂等的；只有走到这一步（即有共享 workspace）才标记
 
 `Commit` 之后才 `issueJWT`，并复用既有的 analytics 事件与 `notifyDaemonWorkspacesChanged`。
 
@@ -114,7 +115,7 @@ renderer  AuthInitializer 的"无 token"分支
 
 ## 安全后果（已确认接受）
 
-开关打开即意味着该部署的默认 workspace 没有鉴权：任何能访问后端端口的人都可以自助获得身份、读写全量数据，并触发 agent 任务（消耗 runtime 与模型额度）。用户已明确选择不做来源限制，缓解手段因此只剩三项：
+开关打开即意味着该部署没有鉴权：任何能访问后端端口的人都可以自助获得身份、自建工作区，并触发 agent 任务（消耗 runtime 与模型额度）；若配置了共享 workspace，还能读写其中已有的全部数据。用户已明确选择不做来源限制，缓解手段因此只剩三项：
 
 1. 开关默认关闭，必须显式打开；
 2. 打开时在服务端启动日志打 WARN，说明当前无鉴权；

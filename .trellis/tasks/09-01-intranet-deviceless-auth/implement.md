@@ -5,7 +5,7 @@
 ## S1 服务端开关与能力声明
 
 - [x] 在 handler 配置里读取 `MULTICA_DEVICE_AUTH_ENABLED` / `MULTICA_DEVICE_AUTH_WORKSPACE` / `MULTICA_DEVICE_AUTH_WORKSPACE_NAME` / `MULTICA_DEVICE_AUTH_ROLE`，缺省值见 `design.md`。
-- [x] 开关为 true 时在服务启动日志打一条 WARN：该部署的默认 workspace 无鉴权。
+- [x] 开关为 true 时在服务启动日志打一条 WARN：该部署无鉴权（配置了共享 workspace 时额外说明其中数据可读写；slug 非法被忽略时再补一条）。
 - [x] `AppConfig` 增加 `DeviceAuthAvailable bool` + `device_auth_available,omitempty`，在 `GetConfig` 中按开关赋值。
 - [x] 测试：`server/internal/handler/config_test.go` 覆盖开关开/关两种 `/api/config` 响应。
 
@@ -113,7 +113,7 @@
 | 默认（未设变量）`/api/config` | `device_auth_available=true`，启动 WARN 带关闭方法 |
 | `POST /auth/device` 首次 | token 320 字节、`onboarded_at` 非空、下发 `multica_auth`+`multica_csrf` HttpOnly cookie |
 | 同 device_id 二次 | 同一 user id（幂等） |
-| 第二个 device_id | 同一 `intranet` workspace，A=owner / B=member |
+| 第二个 device_id | 同一 `intranet` workspace，A=owner / B=member（该轮显式配置了 slug；2026-09-03 起缺省不再共享） |
 | 库内真值 | 2 device user、2 member 行、7 个 issue status |
 | `MULTICA_DEVICE_AUTH_ENABLED=false` | 无 WARN、config 不含该字段、端点 403、零写入 |
 | `go test ./internal/handler/... ./internal/middleware/...` | ok 36.8s / 1.4s，exit 0 |

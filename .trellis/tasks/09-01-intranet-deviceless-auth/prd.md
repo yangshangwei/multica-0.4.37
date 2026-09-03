@@ -15,6 +15,10 @@
    要求运维先发现一个环境变量名，等于给了他一个永远打不开的应用。官方云是例外——那里的
    「免登录」不是「办公室」而是「整个互联网」。`MULTICA_DEVICE_AUTH_ENABLED` 双向覆盖默认值。
 5. **覆盖端（2026-09-01 用户变更）**：web 与桌面端都要免登录，不再只做桌面端。
+6. **共享 workspace 默认值（2026-09-03 用户变更，ART-7）**：默认**不**再自动加入任何共享 workspace。
+   设备登录只建立身份，首启照常进入 onboarding，由成员自己命名工作区；只有运维显式设置
+   `MULTICA_DEVICE_AUTH_WORKSPACE=<slug>` 时，所有设备才加入同一个空间并跳过 onboarding。
+   理由：session 不等于 workspace，把人直接放进一个谁都没选过的默认工作区，比多走一步命名更糟。
 
 ## Requirements
 
@@ -28,11 +32,12 @@
 
 ### R2 自动开通
 
-- 首次为某 `device_id` 建立：`user` 行、共享默认 workspace（不存在时创建，含内置 issue 状态）、`member` 行。
-- 三者在同一个应用层事务内完成，任一失败不留半成品。
-- 默认 workspace slug 可配置，缺省 `intranet`（已确认不在保留 slug 列表内）；已存在则直接复用，不修改其任何属性。
-- 首个开通设备为 `owner`，后续设备角色可配置，缺省 `member`。
-- 设备用户必须同时被标记为已完成 onboarding。桌面端的硬不变量是 `onboarded_at != null` 才能进入 dashboard，否则会被 onboarding overlay 拦在应用外，"打开即用"不成立。
+- 首次为某 `device_id` 建立 `user` 行。**默认到此为止**（2026-09-03 变更）：不建 `member`、不建 workspace、不标记 onboarding，客户端因此走 onboarding 引导成员自己创建工作区。
+- 仅当配置了共享 workspace slug 时，同一次调用继续建立该 workspace（不存在时创建，含内置 issue 状态）与 `member` 行。
+- 上述写入在同一个应用层事务内完成，任一失败不留半成品。
+- 共享 workspace slug 由 `MULTICA_DEVICE_AUTH_WORKSPACE` 指定，**缺省为空 = 无共享 workspace**；保留或非法 slug 一律读作空（而不是回落到某个别的 workspace）；已存在则直接复用，不修改其任何属性。缺省显示名由 slug 反推（`acme-intranet` → `Acme Intranet`）。
+- 首个开通设备为 `owner`，后续设备角色可配置，缺省 `member`；角色只在配置了共享 workspace 时才有意义。
+- 只有加入共享 workspace 的设备用户才被标记为已完成 onboarding。桌面端的硬不变量是 `onboarded_at != null` 才能进入 dashboard——有共享 workspace 时这让"打开即用"成立；没有时被 onboarding overlay 拦住正是想要的状态，因为没有任何工作区可打开。
 - `ALLOW_SIGNUP` / `DISABLE_WORKSPACE_CREATION` 不影响本路径：它们治理的是人工注册和用户自建 workspace。
 
 ### R3 服务端能力声明
@@ -83,6 +88,7 @@
 - [x] 开关**默认**打开：未设置 `MULTICA_DEVICE_AUTH_ENABLED` 时 `/api/config` 返回 `device_auth_available=true`，启动日志有 WARN 并带上关闭方法。
 - [x] 重复调用 `POST /auth/device` 不产生重复 `user` / `member` 行（同一 device_id 两次调用返回同一 user id；库里 2 设备 = 2 user + 2 member）。
 - [x] 第二台设备首启后成为同一 workspace 的第二个成员（A=owner，B=member，同一 `intranet` workspace）。
+      ※ 2026-09-03 起这条只在显式配置 `MULTICA_DEVICE_AUTH_WORKSPACE` 时成立；缺省下两台设备各自命名自己的工作区。
 - [x] 自动创建的 workspace issue 状态齐全（7 个内置状态）。
 - [x] 设备用户 `onboarded_at` 非空——否则会被 onboarding 拦在 dashboard 外，"打开即用"不成立。
 - [x] `POST /auth/device` 下发 HttpOnly 会话 cookie（`multica_auth` + `multica_csrf`），这是 web 端能用的前提。
@@ -91,10 +97,21 @@
 - [x] `pnpm typecheck`（9/9）与 `pnpm test`（5/5 task，411 文件 4892 用例）通过。
 - [x] SELF_HOSTING 文档写明开关、变量与风险。
 
-未核验（需要真实跑起来的前端，本轮只验证到 HTTP/DB 契约层）：
+已核验（2026-09-03，ART-7 默认值变更；worktree 独立数据库 `multica_worktree_297`）：
 
-- [ ] 干净环境首启桌面端，零人工输入直接进入 issues 页面。
-- [ ] 干净浏览器首访 web，零人工输入直接进入 issues 页面。
+- [x] 未配置 `MULTICA_DEVICE_AUTH_WORKSPACE` 时首启只建身份：无 `member` 行、不创建 `intranet` workspace、`onboarded_at` 为空（客户端因此进入 onboarding）。
+- [x] 已完成 onboarding 的设备重复登录不会被打回 onboarding（`onboarded_at` 保留）。
+- [x] 保留 / 非法 slug 读作空；配置了 slug 时显示名由 slug 反推。
+- [x] `go build ./...`、`go vet ./internal/handler`、`gofmt -l` 干净。
+- [x] `go test ./internal/handler/ ./internal/middleware/...`（ok 41.6s / 1.1s）与 `-run TestDevice` 全绿。
+- [x] `scripts/selfhost-config.test.sh` exit 0。
+- [x] SELF_HOSTING / SELF_HOSTING_ADVANCED / `.env.example` / helm values / compose / offline-bundle 全部改写为"缺省无共享 workspace"。
+
+未核验：
+
+- [ ] `scripts/helm-config.test.sh`：本机没有 `helm`，只做了 values.yaml 的人工检查（改动仅两个标量值 + 注释，configmap 模板对二者都加引号）。
+- [ ] 干净环境首启桌面端，走完 onboarding 命名自己的工作区（本轮只验证到 HTTP/DB 契约层）。
+- [ ] 干净浏览器首访 web，零人工输入拿到身份并进入 onboarding（配置了共享 workspace 时才直接进 issues 页面）。
 - [ ] 同一台机器重启后仍是同一身份：此前创建的 issue 作者与被分配人不变。
 - [ ] 双方可互相分配 issue、@提及、收到 inbox 通知。
 - [ ] 可正常建 issue 并在看板拖动。

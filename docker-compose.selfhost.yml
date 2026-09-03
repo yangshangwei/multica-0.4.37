@@ -105,8 +105,9 @@ services:
       ALLOWED_EMAIL_DOMAINS: ${ALLOWED_EMAIL_DOMAINS:-}
       DISABLE_WORKSPACE_CREATION: ${DISABLE_WORKSPACE_CREATION:-}
       # Intranet device auth. With this true, any client that can reach this
-      # port mints its own identity in the shared workspace below and needs no
-      # login — see SELF_HOSTING.md "Intranet Mode - No Login" before enabling.
+      # port mints its own identity and needs no login; each first launch then
+      # names its own workspace unless MULTICA_DEVICE_AUTH_WORKSPACE names one
+      # to share — see SELF_HOSTING.md "Intranet Mode - No Login" first.
       MULTICA_DEVICE_AUTH_ENABLED: ${MULTICA_DEVICE_AUTH_ENABLED:-}
       MULTICA_DEVICE_AUTH_WORKSPACE: ${MULTICA_DEVICE_AUTH_WORKSPACE:-}
       MULTICA_DEVICE_AUTH_WORKSPACE_NAME: ${MULTICA_DEVICE_AUTH_WORKSPACE_NAME:-}

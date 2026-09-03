@@ -92,7 +92,7 @@ Open http://localhost:3000 in your browser. The Docker self-host stack defaults 
 - **Without email configured:** the verification code is generated server-side and printed to the backend container logs (look for `[DEV] Verification code for ...:`). Useful for one-off testing on a single machine.
 - **Deterministic local/private testing:** set `APP_ENV=development` and `MULTICA_DEV_VERIFICATION_CODE=888888` in `.env`, then restart the backend. This fixed code is ignored when `APP_ENV=production`.
 
-- **Intranet with no mail relay and no reachable OAuth:** none of the above may be possible. See [Intranet Mode — No Login](#intranet-mode--no-login), which lets the desktop app open straight into a shared workspace — at the cost of removing authentication for it.
+- **Intranet with no mail relay and no reachable OAuth:** none of the above may be possible. See [Intranet Mode — No Login](#intranet-mode--no-login), which lets the desktop and web apps open with nothing to type — at the cost of removing authentication from the deployment.
 
 Changes to `ALLOW_SIGNUP`, `DISABLE_WORKSPACE_CREATION`, and `GOOGLE_CLIENT_ID` also take effect after restarting the backend / compose stack. The web UI reads all three from `/api/config` at runtime, so no web rebuild is needed. See [Advanced Configuration → Signup Controls](SELF_HOSTING_ADVANCED.md#signup-controls-optional) for the recommended sequence to lock down workspace creation.
 
@@ -173,27 +173,32 @@ multica daemon status
 
 ## Intranet Mode — No Login
 
-On an isolated intranet, every login flow above may be unavailable: no mail relay to deliver a verification code, no reachable Google OAuth. Device auth closes that gap by trading a per-client identifier for a session, so the desktop app and the web app both boot straight into a shared workspace with nothing to type.
+On an isolated intranet, every login flow above may be unavailable: no mail relay to deliver a verification code, no reachable Google OAuth. Device auth closes that gap by trading a per-client identifier for a session, so the desktop app and the web app both start with nothing to type.
+
+A session is not a workspace. By default the first launch lands in the ordinary onboarding flow and the member names a workspace of their own, exactly like a signup on the cloud — no device opens into a workspace nobody chose. An operator whose intranet really is one shared space names it with `MULTICA_DEVICE_AUTH_WORKSPACE`; every device then joins that workspace and skips onboarding.
 
 **This is on by default for a self-hosted deployment.** It is off only when the server is serving `multica.ai`. You do not have to set anything to get no-login startup; you have to set something to switch it off.
 
-> **This means the deployment has no authentication.** Anyone who can reach the backend port can mint an identity, read and write every issue in the shared workspace, and queue agent tasks that spend your runtime and model quota. `ALLOW_SIGNUP` does **not** gate it — that flag governs human signup and says nothing about this path. The only thing protecting the deployment is the network in front of it. Keep the backend on a trusted network, or set `MULTICA_DEVICE_AUTH_ENABLED=false` and use the login flows above.
+> **This means the deployment has no authentication.** Anyone who can reach the backend port can mint an identity, create workspaces, and queue agent tasks that spend your runtime and model quota — and, with a shared workspace configured, read and write every issue already in it. `ALLOW_SIGNUP` does **not** gate it — that flag governs human signup and says nothing about this path. The only thing protecting the deployment is the network in front of it. Keep the backend on a trusted network, or set `MULTICA_DEVICE_AUTH_ENABLED=false` and use the login flows above.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `MULTICA_DEVICE_AUTH_ENABLED` | on, except on `multica.ai` | Master switch over `POST /auth/device` and the capability advertised through `/api/config`. Leave it empty for the default; `false`, `0`, `no` and `off` all require a login, `true`, `1`, `yes` and `on` all force it on. |
-| `MULTICA_DEVICE_AUTH_WORKSPACE` | `intranet` | Slug of the one shared workspace every device joins. Created on first use; an existing workspace with this slug is reused and never modified. A reserved or malformed slug falls back to the default. |
-| `MULTICA_DEVICE_AUTH_WORKSPACE_NAME` | `Intranet` | Display name used only when that workspace is created. |
-| `MULTICA_DEVICE_AUTH_ROLE` | `member` | Role for every device after the first (`admin` or `member`). The device whose first boot created the workspace becomes its `owner`. |
+| `MULTICA_DEVICE_AUTH_WORKSPACE` | none | Slug of the one shared workspace every device joins instead of onboarding into its own. Unset — the default — sends every first launch through onboarding. Created on first use; an existing workspace with this slug is reused and never modified. A reserved or malformed slug is ignored and reads the same as unset, so a typo asks devices to create their own rather than pointing them at some other workspace. |
+| `MULTICA_DEVICE_AUTH_WORKSPACE_NAME` | derived from the slug | Display name used only when that workspace is created. Unset reads the slug back as a name: `acme-intranet` becomes `Acme Intranet`. |
+| `MULTICA_DEVICE_AUTH_ROLE` | `member` | Role for every device after the first (`admin` or `member`). The device whose first boot created the workspace becomes its `owner`. Only consulted when a shared workspace is configured. |
+
+If you also set `DISABLE_WORKSPACE_CREATION=true` (see [Signup Controls](SELF_HOSTING_ADVANCED.md#signup-controls-optional)), name a shared workspace here as well: without one, onboarding asks every new device for a workspace the backend then refuses to create, and the app has nothing to open.
 
 How it works:
 
 1. Each client generates a random id the first time it runs. The desktop app stores it in its user-data directory as `device-identity.json` with a display name of the form `user@hostname`; a browser stores it in `localStorage` under `multica_device_id` and appears as `web-<os>-<id prefix>`, since it can read neither a username nor a hostname.
 2. When a client has no working session it reads `/api/config`. If the deployment declares device auth it posts the id to `/auth/device` and gets a session; if not, it shows the normal login page. The desktop app checks before rendering anything; the web app finds out when its session cookie comes back rejected, which is the only signal it has.
-3. The backend maps that id to a user — creating one the first time it sees it — adds it to the shared workspace, and marks it onboarded. Later visits resolve to the same member, so issues, comments and inbox items keep belonging to the same person.
+3. The backend maps that id to a user, creating one the first time it sees it. With no shared workspace configured it stops there, and the client runs onboarding so the member can name a workspace. With one configured it also adds the device to that workspace and marks it onboarded, which is what lets the app open straight onto the board. Either way later visits resolve to the same member, so issues, comments and inbox items keep belonging to the same person.
 
 Identity is per client rather than per person, which is what keeps assignment, mentions, inbox and activity meaningful: each one appears in the member list under its own name. Consequences to plan for:
 
+- With no shared workspace configured, each client names **its own** workspace on first launch, so a second machine starts on an empty board instead of joining the first one's. Set `MULTICA_DEVICE_AUTH_WORKSPACE=<slug>` before the first client boots if the deployment is meant to be one shared space.
 - One person using both the desktop app and a browser is **two** members, and the same person in two browsers is two more. Assign work to the one they actually use.
 - Losing or deleting a machine's `device-identity.json`, or clearing site data for the web app, joins as a **new** member next time. Earlier issues stay with the old identity.
 - Copying `device-identity.json` to a second machine makes both machines the **same** member.
@@ -208,7 +213,7 @@ echo "MULTICA_DEVICE_AUTH_ENABLED=false" >> .env
 docker compose -f docker-compose.selfhost.yml up -d backend
 ```
 
-On Kubernetes the same settings live under `backend.config.deviceAuth.*` in `values.yaml` (`enabled`, `workspaceSlug`, `workspaceName`, `role`); `enabled: ""` takes the default and `enabled: "false"` turns it off. After `helm upgrade` the backend pod rolls automatically because the ConfigMap hash changes.
+On Kubernetes the same settings live under `backend.config.deviceAuth.*` in `values.yaml` (`enabled`, `workspaceSlug`, `workspaceName`, `role`); `enabled: ""` takes the default and `enabled: "false"` turns it off, and `workspaceSlug: ""` — the chart default — is the no-shared-workspace shape described above. After `helm upgrade` the backend pod rolls automatically because the ConfigMap hash changes.
 
 Turning it off sends clients back to the login page on their next launch, but sessions already issued stay valid until they expire — rotate `JWT_SECRET` if you need them dead immediately. Device users and their data are left in place; they are identifiable by their `@device.multica.local` email suffix.
 
