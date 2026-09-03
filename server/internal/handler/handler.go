@@ -107,18 +107,21 @@ type Config struct {
 	// operator turns it back off.
 	DeviceAuthEnabled bool
 	// DeviceAuthWorkspaceSlug and DeviceAuthWorkspaceName name the ONE shared
-	// workspace every device identity joins. Device users are separate
-	// identities — so assignment, mentions, inbox and activity still mean
-	// something — but they collaborate in a single space instead of each
-	// getting a private one. Read them through Config.deviceAuthWorkspaceSlug
-	// / deviceAuthWorkspaceName, which apply the defaults and reject a slug
-	// that a user-created workspace could not have. From
-	// MULTICA_DEVICE_AUTH_WORKSPACE / MULTICA_DEVICE_AUTH_WORKSPACE_NAME.
+	// workspace every device identity joins. Empty — the default — means this
+	// deployment has no such workspace: a device gets an identity and then the
+	// onboarding flow, where the member names a workspace of their own, rather
+	// than opening into one they never chose. Naming a slug here opts an
+	// intranet that really is a single shared space back into auto-joining it.
+	// Read them through Config.deviceAuthWorkspaceSlug / deviceAuthWorkspaceName,
+	// which reject a slug a user-created workspace could not have and derive an
+	// unset name from the slug. From MULTICA_DEVICE_AUTH_WORKSPACE /
+	// MULTICA_DEVICE_AUTH_WORKSPACE_NAME.
 	DeviceAuthWorkspaceSlug string
 	DeviceAuthWorkspaceName string
 	// DeviceAuthRole is the member role granted to every device except the one
-	// whose first boot created the workspace (that one takes "owner", since no
-	// invite flow exists here to hand ownership over later). Read through
+	// whose first boot created the shared workspace (that one takes "owner",
+	// since no invite flow exists here to hand ownership over later). Only
+	// consulted when DeviceAuthWorkspaceSlug names a workspace. Read through
 	// Config.deviceAuthRole, which normalizes anything but "admin" back to
 	// "member". From MULTICA_DEVICE_AUTH_ROLE.
 	DeviceAuthRole string
@@ -442,17 +445,31 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 	}
 
 	// Say it once, at boot, where an operator reading the log can still act on
-	// it: with device auth on, the shared workspace is readable and writable
-	// by anyone who can reach this port. This is the default for a self-hosted
+	// it: with device auth on, anyone who can reach this port can mint an
+	// identity without logging in. This is the default for a self-hosted
 	// deployment, so the line carries the opt-out — an operator who never set
-	// the variable has no other reason to know its name. The effective slug and
-	// role are logged because both can be silently corrected from their env
-	// values.
+	// the variable has no other reason to know its name. What that identity
+	// reaches depends on the shared workspace, so the two cases say different
+	// things: with one configured, every existing issue in it is readable and
+	// writable; without one, each device only gets the workspace it creates.
 	if cfg.DeviceAuthEnabled {
-		slog.Warn("device auth enabled: any client that can reach this server can mint an identity in the shared workspace without logging in; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login",
-			"workspace_slug", cfg.deviceAuthWorkspaceSlug(),
-			"member_role", cfg.deviceAuthRole(),
-		)
+		if slug := cfg.deviceAuthWorkspaceSlug(); slug != "" {
+			slog.Warn("device auth enabled with a shared workspace: any client that can reach this server can mint an identity in it without logging in, and read and write everything already there; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or unset MULTICA_DEVICE_AUTH_WORKSPACE to have each device create its own workspace instead",
+				"workspace_slug", slug,
+				"member_role", cfg.deviceAuthRole(),
+			)
+		} else {
+			slog.Warn("device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace")
+		}
+		// A slug that failed validation reads as "no shared workspace", which
+		// looks identical to never having set the variable. Name it, or the
+		// operator's next clue is that devices are being asked to create a
+		// workspace they thought was already configured.
+		if cfg.DeviceAuthWorkspaceSlug != "" && cfg.deviceAuthWorkspaceSlug() == "" {
+			slog.Warn("ignoring MULTICA_DEVICE_AUTH_WORKSPACE: not a workspace slug this server would accept (lowercase alphanumerics and dashes, not a reserved route); devices will create their own workspaces",
+				"value", cfg.DeviceAuthWorkspaceSlug,
+			)
+		}
 	}
 
 	var daemonHub *daemonws.Hub

@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/auth"
@@ -21,18 +22,22 @@ import (
 )
 
 // Device auth is the intranet login path: a client that can present a stable
-// device id gets a session without a mail relay, an OAuth provider, or a human
-// typing anything. See Config.DeviceAuthEnabled for what enabling it costs.
+// device id gets a session without a mail relay and without an OAuth provider.
+// See Config.DeviceAuthEnabled for what enabling it costs.
 //
 // The identity is per device, not one shared account, because everything above
 // the auth layer is built on distinguishable actors: an issue has an assignee,
 // a comment has an author, an inbox belongs to someone. Collapsing every
 // client onto one user would keep the app running and make all of that
 // meaningless.
+//
+// What it does NOT decide is which workspace that identity works in. A session
+// is not a workspace: by default a first boot lands in the onboarding flow and
+// the member names their own workspace, exactly like a signup on the cloud.
+// An operator who wants every device to share one space names it explicitly
+// (Config.DeviceAuthWorkspaceSlug) — see provisionDeviceIdentity.
 const (
-	defaultDeviceAuthWorkspaceSlug = "intranet"
-	defaultDeviceAuthWorkspaceName = "Intranet"
-	defaultDeviceAuthRole          = "member"
+	defaultDeviceAuthRole = "member"
 
 	// deviceUserEmailDomain carries the device→user mapping in the existing
 	// "user".email unique index instead of a new table: the uniqueness that
@@ -100,23 +105,48 @@ func DeviceAuthEnabledFromEnv() bool {
 	return !isOfficialCloudDeployment()
 }
 
-// deviceAuthWorkspaceSlug returns the effective shared-workspace slug. An
-// operator-supplied value passes the same gate as a user-created one: a
+// deviceAuthWorkspaceSlug returns the shared workspace every device joins, or
+// "" when this deployment has none — the default. Empty is what sends a first
+// boot into the onboarding flow instead of a workspace nobody chose.
+//
+// An operator-supplied value passes the same gate as a user-created one, and a
+// value that fails it reads as unset rather than as some other workspace: a
 // reserved slug would collide with a global route, and a malformed one would
 // fail the insert on somebody's first boot instead of at configuration time.
 func (c Config) deviceAuthWorkspaceSlug() string {
 	slug := strings.ToLower(strings.TrimSpace(c.DeviceAuthWorkspaceSlug))
 	if slug == "" || !workspaceSlugPattern.MatchString(slug) || isReservedSlug(slug) {
-		return defaultDeviceAuthWorkspaceSlug
+		return ""
 	}
 	return slug
 }
 
-func (c Config) deviceAuthWorkspaceName() string {
+// deviceAuthWorkspaceName is the display name for the shared workspace, applied
+// only on the boot that creates it. An unset name is derived from the slug the
+// operator did name, so configuring only MULTICA_DEVICE_AUTH_WORKSPACE cannot
+// produce a workspace called something unrelated to it.
+func (c Config) deviceAuthWorkspaceName(slug string) string {
 	if name := strings.TrimSpace(c.DeviceAuthWorkspaceName); name != "" {
 		return name
 	}
-	return defaultDeviceAuthWorkspaceName
+	return workspaceNameFromSlug(slug)
+}
+
+// workspaceNameFromSlug reads a slug back as a display name: "acme-intranet"
+// becomes "Acme Intranet". Empty segments are dropped rather than capitalized,
+// so no slug — including the empty one, which means this deployment has no
+// shared workspace to name — can turn a display name into an index panic.
+func workspaceNameFromSlug(slug string) string {
+	words := make([]string, 0, strings.Count(slug, "-")+1)
+	for _, part := range strings.Split(slug, "-") {
+		if part == "" {
+			continue
+		}
+		runes := []rune(part)
+		runes[0] = unicode.ToUpper(runes[0])
+		words = append(words, string(runes))
+	}
+	return strings.Join(words, " ")
 }
 
 // deviceAuthRole is the role for every device except the workspace creator.
@@ -242,10 +272,17 @@ func (h *Handler) DeviceLogin(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// provisionDeviceIdentity resolves the user, the shared workspace and the
-// membership for one device id, creating whichever of the three is missing.
-// All of it commits together: a user without membership, or a workspace
+// provisionDeviceIdentity resolves the identity behind one device id, and the
+// shared workspace and membership when the deployment has a shared workspace at
+// all. All of it commits together: a user without membership, or a workspace
 // without its status catalog, is a state the app cannot render.
+//
+// With no shared workspace configured — the default — this establishes the user
+// and stops. The device then reaches the app the way every other new account
+// does: un-onboarded, no workspace, held in the onboarding flow until the
+// member has named one of their own. Auto-joining a workspace nobody asked for
+// is the behavior this default exists to avoid; an operator whose intranet
+// really is one shared space opts back in by naming its slug.
 func (h *Handler) provisionDeviceIdentity(ctx context.Context, deviceID, deviceName string) (deviceProvisionResult, error) {
 	var out deviceProvisionResult
 
@@ -274,12 +311,20 @@ func (h *Handler) provisionDeviceIdentity(ctx context.Context, deviceID, deviceN
 	}
 
 	slug := h.cfg.deviceAuthWorkspaceSlug()
+	if slug == "" {
+		if err := tx.Commit(ctx); err != nil {
+			return out, err
+		}
+		out.user = user
+		return out, nil
+	}
+
 	ws, err := qtx.GetWorkspaceBySlug(ctx, slug)
 	switch {
 	case err == nil:
 	case isNotFound(err):
 		ws, err = qtx.CreateWorkspace(ctx, db.CreateWorkspaceParams{
-			Name:        h.cfg.deviceAuthWorkspaceName(),
+			Name:        h.cfg.deviceAuthWorkspaceName(slug),
 			Slug:        slug,
 			IssuePrefix: defaultIssuePrefixFromSlug(slug),
 		})
@@ -324,9 +369,11 @@ func (h *Handler) provisionDeviceIdentity(ctx context.Context, deviceID, deviceN
 
 	// onboarded_at != null is the only path into the dashboard (the desktop
 	// shell routes an un-onboarded user to the onboarding overlay), and a
-	// device identity has nothing left to onboard — its workspace and
-	// membership exist by the time this runs. The query COALESCEs, so a
-	// returning device that somehow reaches this branch is unaffected.
+	// device that lands in the shared workspace has nothing left to onboard —
+	// its workspace and membership exist by the time this runs. Only this
+	// branch may stamp it: without a shared workspace there is nowhere for the
+	// dashboard to open, so being held in onboarding is the correct state. The
+	// query COALESCEs, so a returning device is unaffected either way.
 	if !user.OnboardedAt.Valid {
 		user, err = qtx.MarkUserOnboarded(ctx, user.ID)
 		if err != nil {

@@ -31,6 +31,19 @@ func enableDeviceAuth(t *testing.T, slug, role string) {
 	dbfx.Cleanup(t, `DELETE FROM issue_status WHERE workspace_id IN (SELECT id FROM workspace WHERE slug = $1)`, slug)
 }
 
+// enableDeviceAuthWithoutSharedWorkspace is the default deployment shape: the
+// switch is on and no workspace is named, so a device login establishes an
+// identity and joins nothing.
+func enableDeviceAuthWithoutSharedWorkspace(t *testing.T) {
+	t.Helper()
+	orig := testHandler.cfg
+	t.Cleanup(func() { testHandler.cfg = orig })
+	testHandler.cfg.DeviceAuthEnabled = true
+	testHandler.cfg.DeviceAuthWorkspaceSlug = ""
+	testHandler.cfg.DeviceAuthWorkspaceName = ""
+	testHandler.cfg.DeviceAuthRole = ""
+}
+
 // callDeviceLogin posts one device login and schedules the device user's
 // removal. Handler-created users are outside the suite fixture, so nothing
 // else would clean them up.
@@ -117,9 +130,11 @@ func TestDeviceLoginProvisionsIdentityAndWorkspace(t *testing.T) {
 	if out.User.Name != "artisan@mac-mini" {
 		t.Fatalf("user name: want the client label, got %q", out.User.Name)
 	}
-	// onboarded_at != null is the only path into the desktop dashboard; a
-	// device identity that lands un-onboarded is held behind the onboarding
-	// overlay and "opens straight into the app" stops being true.
+	// onboarded_at != null is the only path into the desktop dashboard. A
+	// device joined to the configured shared workspace has somewhere to land
+	// and nothing left to onboard, so this branch — and only this branch —
+	// stamps it; see TestDeviceLoginWithoutSharedWorkspaceProvisionsIdentityOnly
+	// for the default deployment, where it must stay null.
 	if out.User.OnboardedAt == nil {
 		t.Fatal("onboarded_at: want a timestamp so the shell lets this user in, got null")
 	}
@@ -132,6 +147,56 @@ func TestDeviceLoginProvisionsIdentityAndWorkspace(t *testing.T) {
 	// auto-provisioned workspace is only usable with its catalog seeded.
 	if n := dbfx.Count(t, `SELECT count(*) FROM issue_status WHERE workspace_id = $1`, wsID); n != 7 {
 		t.Fatalf("built-in issue statuses: want 7, got %d", n)
+	}
+}
+
+// The default deployment names no shared workspace, so a first boot gets an
+// identity and nothing else: no membership, no auto-created workspace, and no
+// onboarding stamp. That is what makes the shell run the onboarding flow, where
+// the member names a workspace of their own instead of opening into one nobody
+// chose (ART-7).
+func TestDeviceLoginWithoutSharedWorkspaceProvisionsIdentityOnly(t *testing.T) {
+	const deviceID = "eeee000011112222333344445555666e"
+	enableDeviceAuthWithoutSharedWorkspace(t)
+
+	var out LoginResponse
+	callDeviceLogin(t, deviceID, "fresh-install").Want(http.StatusOK).JSON(&out)
+
+	if out.Token == "" {
+		t.Fatal("token: want a session for a device with no workspace, got empty string")
+	}
+	if out.User.OnboardedAt != nil {
+		t.Fatalf("onboarded_at: want null so the onboarding flow runs, got %v", *out.User.OnboardedAt)
+	}
+	if n := dbfx.Count(t, `SELECT count(*) FROM member WHERE user_id = $1`, out.User.ID); n != 0 {
+		t.Fatalf("memberships for a device that configured no shared workspace: want 0, got %d", n)
+	}
+	// The slug this used to fall back to when the variable was unset. Nothing
+	// may create it implicitly any more — an operator who wants it says so.
+	if n := dbfx.Count(t, `SELECT count(*) FROM workspace WHERE slug = 'intranet'`); n != 0 {
+		t.Fatalf("workspaces auto-created under the former default slug: want 0, got %d", n)
+	}
+}
+
+// A device that already onboarded keeps its stamp: the no-shared-workspace path
+// returns the user row as it found it, so a second login (expired token, new
+// session) cannot send a settled member back through onboarding.
+func TestDeviceLoginWithoutSharedWorkspaceKeepsAnEarlierOnboarding(t *testing.T) {
+	const deviceID = "eeee111122223333444455556666777f"
+	enableDeviceAuthWithoutSharedWorkspace(t)
+
+	var first LoginResponse
+	callDeviceLogin(t, deviceID, "returning-device").Want(http.StatusOK).JSON(&first)
+	// Stand in for the onboarding the member completed between the two logins.
+	dbfx.Exec(t, `UPDATE "user" SET onboarded_at = now() WHERE id = $1`, first.User.ID)
+
+	var second LoginResponse
+	callDeviceLogin(t, deviceID, "returning-device").Want(http.StatusOK).JSON(&second)
+	if second.User.ID != first.User.ID {
+		t.Fatalf("user id: want the same identity %q, got %q", first.User.ID, second.User.ID)
+	}
+	if second.User.OnboardedAt == nil {
+		t.Fatal("onboarded_at: want the completed onboarding preserved, got null")
 	}
 }
 
@@ -303,6 +368,10 @@ func TestDeviceAuthEnabledFromEnv(t *testing.T) {
 	}
 }
 
+// An empty slug is the load-bearing value here: it is what stops a device
+// login from auto-joining a workspace, so every input that is not a workspace
+// slug this server would accept has to read as empty rather than as some
+// workspace the operator never named.
 func TestDeviceAuthConfigDefaults(t *testing.T) {
 	cases := []struct {
 		name     string
@@ -311,29 +380,35 @@ func TestDeviceAuthConfigDefaults(t *testing.T) {
 		wantName string
 		wantRole string
 	}{
-		{"unset", Config{}, "intranet", "Intranet", "member"},
+		{"unset", Config{}, "", "", "member"},
 		{
 			"custom",
 			Config{DeviceAuthWorkspaceSlug: "Office", DeviceAuthWorkspaceName: "Office HQ", DeviceAuthRole: "ADMIN"},
 			"office", "Office HQ", "admin",
 		},
+		// The name follows the slug the operator did name, so configuring one
+		// variable cannot produce a workspace called something unrelated.
+		{"name_derived_from_slug", Config{DeviceAuthWorkspaceSlug: "acme-intranet"}, "acme-intranet", "Acme Intranet", "member"},
 		// A reserved slug would collide with a global route and a malformed one
 		// would fail the insert on somebody's first boot rather than at
-		// configuration time. Both fall back to the default instead.
-		{"reserved_slug", Config{DeviceAuthWorkspaceSlug: "login"}, "intranet", "Intranet", "member"},
-		{"malformed_slug", Config{DeviceAuthWorkspaceSlug: "not a slug!"}, "intranet", "Intranet", "member"},
+		// configuration time. Both read as "no shared workspace".
+		{"reserved_slug", Config{DeviceAuthWorkspaceSlug: "login"}, "", "", "member"},
+		{"malformed_slug", Config{DeviceAuthWorkspaceSlug: "not a slug!"}, "", "", "member"},
 		// owner belongs to the device that created the workspace, and nothing
 		// the member.role CHECK would reject may reach it.
-		{"role_owner_not_selectable", Config{DeviceAuthRole: "owner"}, "intranet", "Intranet", "member"},
-		{"role_unrecognized", Config{DeviceAuthRole: "superuser"}, "intranet", "Intranet", "member"},
+		{"role_owner_not_selectable", Config{DeviceAuthRole: "owner"}, "", "", "member"},
+		{"role_unrecognized", Config{DeviceAuthRole: "superuser"}, "", "", "member"},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			if got := tc.cfg.deviceAuthWorkspaceSlug(); got != tc.wantSlug {
-				t.Fatalf("slug: want %q, got %q", tc.wantSlug, got)
+			slug := tc.cfg.deviceAuthWorkspaceSlug()
+			if slug != tc.wantSlug {
+				t.Fatalf("slug: want %q, got %q", tc.wantSlug, slug)
 			}
-			if got := tc.cfg.deviceAuthWorkspaceName(); got != tc.wantName {
+			// Only meaningful with a slug to create a workspace under; the
+			// rejected cases assert the empty string the caller never uses.
+			if got := tc.cfg.deviceAuthWorkspaceName(slug); got != tc.wantName {
 				t.Fatalf("name: want %q, got %q", tc.wantName, got)
 			}
 			if got := tc.cfg.deviceAuthRole(); got != tc.wantRole {
