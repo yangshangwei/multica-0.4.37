@@ -121,4 +121,9 @@ describe("HelpLauncher", () => {
     // The rest of the menu is unaffected by the gate.
     expect(screen.getByText("Docs")).toBeInTheDocument();
   });
+
+  it("does not include the removed Discord entry", () => {
+    render(<HelpLauncher />);
+    expect(screen.queryByText("Discord")).not.toBeInTheDocument();
+  });
 });
