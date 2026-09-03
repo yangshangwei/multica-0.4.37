@@ -131,21 +131,26 @@ backend:
     # true so users can only join via invitation.
     disableWorkspaceCreation: false
     # Intranet device auth (ON by default for self-hosted). It means any client
-    # that can reach the backend mints its own identity in the shared workspace
-    # and never logs in - there is no authentication left in front of that
-    # workspace. Read SELF_HOSTING.md "Intranet Mode - No Login" first, and put
-    # the deployment behind a trusted network or set enabled to "false".
+    # that can reach the backend mints its own identity and never logs in - the
+    # deployment has no authentication left. Read SELF_HOSTING.md "Intranet Mode
+    # - No Login" first, and put the deployment behind a trusted network or set
+    # enabled to "false".
     deviceAuth:
       # Empty takes the server default, which is ON for a self-hosted chart
       # install: read the paragraph above before leaving it that way. Set to
       # "false" to require the normal login page.
       enabled: ""
-      # Shared workspace every device joins. Created on first use; an existing
-      # workspace with this slug is reused and never modified.
-      workspaceSlug: intranet
-      workspaceName: Intranet
+      # One shared workspace every device joins instead of onboarding into its
+      # own. Empty - the default - sends every first launch through onboarding,
+      # where the member names their own workspace. A named slug is created on
+      # first use; an existing workspace with it is reused and never modified.
+      workspaceSlug: ""
+      # Display name, applied only when that workspace is created. Empty derives
+      # it from the slug.
+      workspaceName: ""
       # Role for every device after the first. admin or member; the device that
-      # created the workspace becomes its owner.
+      # created the workspace becomes its owner. Only consulted when
+      # workspaceSlug names a workspace.
       role: member
     # Self-host-only VCS integration (Forgejo / Gitea / GitLab). The official
     # chart enables the product surface by default; operators must also provide
