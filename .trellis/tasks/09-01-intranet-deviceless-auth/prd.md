@@ -38,7 +38,7 @@
 - 共享 workspace slug 由 `MULTICA_DEVICE_AUTH_WORKSPACE` 指定，**缺省为空 = 无共享 workspace**；保留或非法 slug 一律读作空（而不是回落到某个别的 workspace）；已存在则直接复用，不修改其任何属性。缺省显示名由 slug 反推（`acme-intranet` → `Acme Intranet`）。
 - 首个开通设备为 `owner`，后续设备角色可配置，缺省 `member`；角色只在配置了共享 workspace 时才有意义。
 - 只有加入共享 workspace 的设备用户才被标记为已完成 onboarding。桌面端的硬不变量是 `onboarded_at != null` 才能进入 dashboard——有共享 workspace 时这让"打开即用"成立；没有时被 onboarding overlay 拦住正是想要的状态，因为没有任何工作区可打开。
-- `ALLOW_SIGNUP` / `DISABLE_WORKSPACE_CREATION` 不影响本路径：它们治理的是人工注册和用户自建 workspace。
+- `ALLOW_SIGNUP` 不影响本路径：它治理的是人工注册。`DISABLE_WORKSPACE_CREATION` 在 2026-09-03 变更后不再无关——缺省无共享 workspace 时，设备会被 onboarding 要求创建一个该开关禁止创建的工作区，只剩登出一条路。服务端启动时对这个组合发出告警，文档要求这类部署显式配置 `MULTICA_DEVICE_AUTH_WORKSPACE`。
 
 ### R3 服务端能力声明
 
