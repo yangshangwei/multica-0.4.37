@@ -460,6 +460,15 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 			)
 		} else {
 			slog.Warn("device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace")
+			// The one combination that leaves a device with nowhere to go: it
+			// gets a session and lands in onboarding, which asks it to create
+			// the workspace this flag makes the API refuse. Neither setting is
+			// wrong on its own and the dead end only shows up on somebody's
+			// first launch, so name it here rather than let the operator
+			// diagnose it from a 403 in a browser console.
+			if cfg.DisableWorkspaceCreation {
+				slog.Warn("device auth enabled with DISABLE_WORKSPACE_CREATION=true and no shared workspace: a new device is sent to onboarding and then refused the workspace it is asked to create, leaving logout as its only action; set MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to the workspace devices should join")
+			}
 		}
 		// A slug that failed validation reads as "no shared workspace", which
 		// looks identical to never having set the variable. Name it, or the

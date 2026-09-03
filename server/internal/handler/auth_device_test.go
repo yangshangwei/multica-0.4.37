@@ -1,13 +1,19 @@
 package handler
 
 import (
+	"bytes"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
+	"github.com/multica-ai/multica/server/internal/analytics"
+	"github.com/multica-ai/multica/server/internal/events"
+	"github.com/multica-ai/multica/server/internal/realtime"
 	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 // enableDeviceAuth points device auth at a workspace slug this test owns and
@@ -413,6 +419,47 @@ func TestDeviceAuthConfigDefaults(t *testing.T) {
 			}
 			if got := tc.cfg.deviceAuthRole(); got != tc.wantRole {
 				t.Fatalf("role: want %q, got %q", tc.wantRole, got)
+			}
+		})
+	}
+}
+
+// The boot warning for the one device-auth shape that leaves a new device with
+// nothing it can do: onboarding asks it to name a workspace and
+// DISABLE_WORKSPACE_CREATION makes the API refuse to create one, so logout is
+// the only action left. Neither setting is wrong alone and the dead end only
+// appears on somebody's first launch, which is why New says it at startup
+// rather than leaving the operator to read a 403 out of a browser console.
+func TestDeviceAuthWarnsWhenOnboardingCannotCreateAWorkspace(t *testing.T) {
+	if testPool == nil {
+		t.Skip("database not available")
+	}
+
+	const want = "DISABLE_WORKSPACE_CREATION=true and no shared workspace"
+
+	cases := []struct {
+		name string
+		cfg  Config
+		warn bool
+	}{
+		{"dead_end", Config{DeviceAuthEnabled: true, DisableWorkspaceCreation: true}, true},
+		// The operator named the workspace devices join, so no device is ever
+		// asked to create one.
+		{"shared_workspace_named", Config{DeviceAuthEnabled: true, DisableWorkspaceCreation: true, DeviceAuthWorkspaceSlug: "devauth-warn"}, false},
+		{"creation_allowed", Config{DeviceAuthEnabled: true}, false},
+		{"device_auth_off", Config{DisableWorkspaceCreation: true}, false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			var logs bytes.Buffer
+			prev := slog.Default()
+			slog.SetDefault(slog.New(slog.NewTextHandler(&logs, &slog.HandlerOptions{Level: slog.LevelInfo})))
+			t.Cleanup(func() { slog.SetDefault(prev) })
+
+			New(db.New(testPool), testPool, realtime.NewHub(), events.New(), nil, nil, nil, analytics.NoopClient{}, tc.cfg)
+
+			if got := strings.Contains(logs.String(), want); got != tc.warn {
+				t.Fatalf("boot log mentions %q: got %v, want %v\nlog:\n%s", want, got, tc.warn, logs.String())
 			}
 		})
 	}
