@@ -36,7 +36,7 @@ describe("loadRuntimeConfig", () => {
     });
   });
 
-  it("marks packaged config as needing setup when absent", async () => {
+  it("marks packaged config as private-only when absent", async () => {
     const dir = await mkdtemp(join(tmpdir(), "multica-desktop-config-"));
     await expect(
       loadRuntimeConfig({
@@ -44,7 +44,11 @@ describe("loadRuntimeConfig", () => {
         configPath: join(dir, "missing.json"),
         env: {},
       }),
-    ).resolves.toEqual({ ok: false, needsSetup: true, error: { message: "Runtime config is not configured" } });
+    ).resolves.toEqual({
+      ok: false,
+      needsSetup: true,
+      error: { message: "Runtime config is not configured" },
+    });
   });
 
   it("parses a valid packaged desktop.json", async () => {
@@ -83,20 +87,4 @@ describe("loadRuntimeConfig", () => {
     }
   });
 
-  it("marks missing config as private-only when required by the build", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "multica-desktop-config-"));
-    await expect(
-      loadRuntimeConfig({
-        isDev: false,
-        configPath: join(dir, "missing.json"),
-        env: {},
-        requireRuntimeConfig: true,
-      }),
-    ).resolves.toEqual({
-      ok: false,
-      needsSetup: true,
-      requirePrivate: true,
-      error: { message: "Runtime config is not configured" },
-    });
-  });
 });

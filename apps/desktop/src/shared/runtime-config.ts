@@ -11,14 +11,7 @@ export interface RuntimeConfigError {
 
 export type RuntimeConfigResult =
   | { ok: true; config: RuntimeConfig; source: "configured" | "dev" }
-  | { ok: false; error: RuntimeConfigError; needsSetup?: boolean; requirePrivate?: boolean };
-
-export const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = Object.freeze({
-  schemaVersion: 1,
-  apiUrl: "https://api.multica.ai",
-  wsUrl: "wss://api.multica.ai/ws",
-  appUrl: "https://multica.ai",
-});
+  | { ok: false; error: RuntimeConfigError; needsSetup?: boolean };
 
 const LOCAL_DEV_RUNTIME_CONFIG: RuntimeConfig = Object.freeze({
   schemaVersion: 1,

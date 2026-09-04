@@ -21,7 +21,6 @@ export function RuntimeConfigSettingsTab() {
         <DesktopEndpointSetupPage
           embedded
           initialError={runtimeConfig.error.message}
-          requirePrivate={runtimeConfig.requirePrivate}
         />
       )}
     </SettingsTab>

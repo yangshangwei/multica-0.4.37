@@ -9,12 +9,9 @@ import { RESOURCES } from "@multica/views/locales";
 import type { SupportedLocale } from "@multica/core/i18n";
 import { CheckCircle2, Loader2, Server, XCircle } from "lucide-react";
 
-type Mode = "cloud" | "private";
 interface Copy {
   title: string;
   description: string;
-  cloud: string;
-  private: string;
   address: string;
   placeholder: string;
   test: string;
@@ -43,8 +40,6 @@ function copyForLocale(locale: string): Copy {
   return {
     title: translated.title,
     description: translated.description,
-    cloud: translated.cloud,
-    private: translated.private,
     address: translated.address,
     placeholder: translated.address_placeholder,
     test: translated.test,
@@ -71,31 +66,20 @@ function validate(value: string, required: string, invalid: string): string | nu
 export function DesktopEndpointSetupPage({
   initialError,
   initialApiUrl,
-  requirePrivate = false,
   embedded = false,
 }: {
   initialError?: string;
   initialApiUrl?: string;
-  requirePrivate?: boolean;
   embedded?: boolean;
 }) {
   const t = useMemo(() => copyForLocale(window.desktopAPI.systemLocale), []);
-  const initialAddress = initialApiUrl ?? (requirePrivate ? "" : "https://api.multica.ai");
-  const [mode, setMode] = useState<Mode>(
-    requirePrivate || initialAddress !== "https://api.multica.ai" ? "private" : "cloud",
-  );
+  const initialAddress = initialApiUrl ?? "";
   const [address, setAddress] = useState(initialAddress);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<{ kind: "success" | "failure"; message: string } | null>(null);
   const [testing, setTesting] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const onModeChange = (next: Mode) => {
-    if (requirePrivate && next === "cloud") return;
-    setMode(next);
-    setAddress(next === "cloud" ? "https://api.multica.ai" : "");
-    setError(null); setStatus(null);
-  };
   const onTest = async () => {
     const validation = validate(address, t.required, t.invalid);
     setError(validation); setStatus(null);
@@ -125,10 +109,7 @@ export function DesktopEndpointSetupPage({
       <section className="w-full max-w-md">
         <div className="mb-8 text-center"><MulticaIcon bordered size="lg" /><h1 className="mt-5 text-title font-semibold">{t.title}</h1><p className="mt-2 text-body text-muted-foreground">{t.description}</p></div>
         {initialError && <Alert variant="destructive" className="mb-5"><XCircle /><AlertDescription>{initialError}</AlertDescription></Alert>}
-        {!requirePrivate && <div className="mb-5 grid grid-cols-2 rounded-lg border bg-muted/40 p-1" role="tablist">
-          {([["cloud", t.cloud], ["private", t.private]] as const).map(([value, label]) => <button key={value} type="button" role="tab" aria-selected={mode === value} className={`rounded-md px-3 py-2 text-body font-medium transition ${mode === value ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground"}`} onClick={() => onModeChange(value)}>{label}</button>)}
-        </div>}
-        <div className="space-y-2"><Label htmlFor="runtime-address">{t.address}</Label><div className="relative"><Server className="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground" /><Input id="runtime-address" className="pl-9" value={address} onBlur={() => setError(validate(address, t.required, t.invalid))} onChange={(e) => { setAddress(e.target.value); setError(null); setStatus(null); }} placeholder={t.placeholder} aria-invalid={Boolean(error)} aria-describedby={error ? "runtime-address-error" : undefined} readOnly={mode === "cloud"} /></div>{error && <p id="runtime-address-error" className="text-caption text-destructive">{error}</p>}</div>
+        <div className="space-y-2"><Label htmlFor="runtime-address">{t.address}</Label><div className="relative"><Server className="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground" /><Input id="runtime-address" className="pl-9" value={address} onBlur={() => setError(validate(address, t.required, t.invalid))} onChange={(e) => { setAddress(e.target.value); setError(null); setStatus(null); }} placeholder={t.placeholder} aria-invalid={Boolean(error)} aria-describedby={error ? "runtime-address-error" : undefined} /></div>{error && <p id="runtime-address-error" className="text-caption text-destructive">{error}</p>}</div>
         {status && <Alert className="mt-4" variant={status.kind === "failure" ? "destructive" : "default"}>{status.kind === "success" ? <CheckCircle2 className="text-success" /> : <XCircle />}<AlertDescription>{status.message}</AlertDescription></Alert>}
         <div className="mt-6 flex gap-2"><Button type="button" variant="outline" className="flex-1" disabled={testing || saving} onClick={() => void onTest()}>{testing && <Loader2 className="animate-spin" />}{testing ? t.testing : t.test}</Button><Button type="button" className="flex-1" disabled={testing || saving || Boolean(error) || Boolean(validate(address, t.required, t.invalid))} onClick={() => void onSave()}>{saving && <Loader2 className="animate-spin" />}{saving ? t.saving : t.save}</Button></div>
       </section>

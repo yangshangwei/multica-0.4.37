@@ -624,7 +624,6 @@ if (!gotTheLock) {
       readonly VITE_API_URL?: string;
       readonly VITE_WS_URL?: string;
       readonly VITE_APP_URL?: string;
-      readonly VITE_REQUIRE_RUNTIME_CONFIG?: string;
     };
 
     deviceIdentity = loadOrCreateDeviceIdentity(
@@ -642,9 +641,6 @@ if (!gotTheLock) {
         wsUrl: viteEnv.VITE_WS_URL,
         appUrl: viteEnv.VITE_APP_URL,
       },
-      requireRuntimeConfig:
-        process.env.REQUIRE_RUNTIME_CONFIG === "1" ||
-        viteEnv.VITE_REQUIRE_RUNTIME_CONFIG === "1",
     });
 
     electronApp.setAppUserModelId(
