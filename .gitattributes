@@ -2,6 +2,12 @@
 *.sh text eol=lf
 docker/entrypoint.sh text eol=lf
 
+# Batch files must keep CRLF in the working tree. cmd.exe reads a .bat by
+# byte offset, and an LF-only file can break `goto`/label resolution and
+# multi-line blocks. core.autocrlf=input does not convert on checkout, so
+# without this rule a Windows clone gets LF-only .bat files.
+*.bat text eol=crlf
+
 # Default behavior
 * text=auto
 
