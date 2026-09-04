@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Alert, AlertDescription } from "@multica/ui/components/ui/alert";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
@@ -67,10 +67,16 @@ export function DesktopEndpointSetupPage({
   initialError,
   initialApiUrl,
   embedded = false,
+  secondaryAction,
 }: {
   initialError?: string;
   initialApiUrl?: string;
   embedded?: boolean;
+  /** Rendered under the Test/Save row, inside the same centred column. The
+   *  login page's "back to sign-in" lives here rather than as a sibling below
+   *  this component: `embedded` claims the full height of its container, so a
+   *  sibling would sit below the fold with nothing hinting it is there. */
+  secondaryAction?: ReactNode;
 }) {
   const t = useMemo(() => copyForLocale(window.desktopAPI.systemLocale), []);
   const initialAddress = initialApiUrl ?? "";
@@ -112,6 +118,7 @@ export function DesktopEndpointSetupPage({
         <div className="space-y-2"><Label htmlFor="runtime-address">{t.address}</Label><div className="relative"><Server className="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground" /><Input id="runtime-address" className="pl-9" value={address} onBlur={() => setError(validate(address, t.required, t.invalid))} onChange={(e) => { setAddress(e.target.value); setError(null); setStatus(null); }} placeholder={t.placeholder} aria-invalid={Boolean(error)} aria-describedby={error ? "runtime-address-error" : undefined} /></div>{error && <p id="runtime-address-error" className="text-caption text-destructive">{error}</p>}</div>
         {status && <Alert className="mt-4" variant={status.kind === "failure" ? "destructive" : "default"}>{status.kind === "success" ? <CheckCircle2 className="text-success" /> : <XCircle />}<AlertDescription>{status.message}</AlertDescription></Alert>}
         <div className="mt-6 flex gap-2"><Button type="button" variant="outline" className="flex-1" disabled={testing || saving} onClick={() => void onTest()}>{testing && <Loader2 className="animate-spin" />}{testing ? t.testing : t.test}</Button><Button type="button" className="flex-1" disabled={testing || saving || Boolean(error) || Boolean(validate(address, t.required, t.invalid))} onClick={() => void onSave()}>{saving && <Loader2 className="animate-spin" />}{saving ? t.saving : t.save}</Button></div>
+        {secondaryAction && <div className="mt-3">{secondaryAction}</div>}
       </section>
     </main>
   </div>;

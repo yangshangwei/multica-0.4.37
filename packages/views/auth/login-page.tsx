@@ -45,6 +45,11 @@ interface CliCallbackConfig {
 interface LoginPageProps {
   /** Logo element rendered above the title */
   logo?: ReactNode;
+  /** Overrides the sign-in step's title. Desktop passes the backend host so a
+   *  private deployment stops looking like the managed cloud. */
+  title?: ReactNode;
+  /** Overrides the sign-in step's description. */
+  description?: ReactNode;
   /** Called after successful login. The workspace list is seeded into React
    *  Query before this fires, so the caller can compute a destination URL. */
   onSuccess: () => void;
@@ -61,6 +66,12 @@ interface LoginPageProps {
    *  app?" prompt; desktop omits it (a download prompt inside the app
    *  would be absurd). */
   extra?: ReactNode;
+  /** Slot rendered below a divider at the very bottom of the card, on the
+   *  sign-in AND code steps. Desktop puts the connected server's identity
+   *  there, so someone waiting on a code can still check which deployment
+   *  they are talking to without leaving the step. Unlike `extra`, this is
+   *  secondary information rather than another action. */
+  footer?: ReactNode;
 }
 
 // ---------------------------------------------------------------------------
@@ -99,12 +110,15 @@ export function validateCliCallback(cliCallback: string): boolean {
 
 export function LoginPage({
   logo,
+  title,
+  description,
   onSuccess,
   google,
   cliCallback,
   onTokenObtained,
   onGoogleLogin,
   extra,
+  footer,
 }: LoginPageProps) {
   const { t } = useT("auth");
   const qc = useQueryClient();
@@ -383,7 +397,7 @@ export function LoginPage({
               </button>
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-3">
             <Button
               type="button"
               variant="ghost"
@@ -396,6 +410,11 @@ export function LoginPage({
             >
               {t(($) => $.common.back)}
             </Button>
+            {footer && (
+              <div className="w-full border-t border-surface-border pt-3">
+                {footer}
+              </div>
+            )}
           </CardFooter>
         </Card>
       </div>
@@ -411,11 +430,11 @@ export function LoginPage({
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           {logo && <div className="mx-auto mb-4">{logo}</div>}
-          <CardTitle className="text-display-sm">
-            {t(($) => $.signin.title)}
+          <CardTitle className="text-display-sm break-words">
+            {title ?? t(($) => $.signin.title)}
           </CardTitle>
           <CardDescription>
-            {t(($) => $.signin.description)}
+            {description ?? t(($) => $.signin.description)}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -480,6 +499,11 @@ export function LoginPage({
             </Button>
           )}
           {extra && <div className="w-full pt-1 text-center">{extra}</div>}
+          {footer && (
+            <div className="w-full border-t border-surface-border pt-3">
+              {footer}
+            </div>
+          )}
         </CardFooter>
       </Card>
     </div>

@@ -105,3 +105,24 @@ B 真正指出的问题是：当前登录页完全没有暴露「我连的是哪
 2. **阶段 2（缺陷修复）**：device-auth 的「以本机身份继续」入口 + 该部署上侧边栏退出项的处理。如果你的部署已经开了 device auth，这一阶段应该提到阶段 1 之前。
 3. **阶段 3**：「切换服务器」内联入口 + 不可达状态的重试/切换出路。
 4. **阶段 4（可选）**：后端 `email_auth_available` 声明，把邮箱表单也纳入「按服务器声明渲染」。
+
+---
+
+## 实现记录（阶段 1—3 已落地）
+
+部署方确认这台私有化实例开着 device auth（自建默认 ON，见 `DeviceAuthEnabledFromEnv`），邮箱验证码对它毫无用处，所以 D2 排到最前面，和阶段 1、3 一起实现。
+
+落地的文件：
+
+- `packages/views/auth/login-page.tsx`：新增可选 `title` / `description` 覆盖与 `footer` slot（`footer` 在 email 和 code 两步都渲染，隔一条分割线）。不传即现状，Web 端行为不变。
+- `apps/desktop/src/renderer/src/pages/login.tsx`：标题取 `apiUrl` 的 host；Google 按钮按 `googleClientId` 门禁；`deviceAuthAvailable && deviceIdentity` 时改为单个「以本机身份继续」并在成功后按 verifyCode 的方式回填 workspace 列表；内联「切换服务器」；页脚服务器身份行带可达性探测。
+- `apps/desktop/src/renderer/src/pages/endpoint-setup.tsx`：新增 `secondaryAction` slot。
+- `packages/views/locales/{en,zh-Hans,ko,ja}/auth.json`：新增 `desktop.signin.*`。
+- 测试：`packages/views/auth/login-page.test.tsx`（slot 覆盖）、`apps/desktop/src/renderer/src/pages/login.test.tsx`（9 例，覆盖 host 标题、Google 门禁、device 分支与失败、探测失败的重试、切换服务器预填）。
+
+与本文两处不同，都是实现时才看清的：
+
+1. **不可达状态没有做成整页阻塞。** `runtime-config:test` 是 `redirect: "manual"` 的 `/health` 探测，走重定向代理的部署会探测失败但应用本身连得上（`endpoint-setup.tsx` 的「保存并继续」也不信这个探测结果）。所以探测只染色页脚：红点 + 「无法连接到该服务器 · 重试」 + 原始错误各占一行，登录动作始终可用。
+2. **「返回登录」放进了 `DesktopEndpointSetupPage` 的新 `secondaryAction` slot**，而不是作为它的兄弟节点。`embedded` 的根节点是 `min-h-full`，兄弟节点会被挤到首屏之外 —— 一个看不见的退路等于没有退路。
+
+未做：阶段 4 的后端 `email_auth_available`。这台部署走 device 分支，邮箱表单本来就不出现；该字段只对「既没有 device auth 也没有邮件中继」的部署有意义，等真出现那种部署再加。侧边栏「退出登录」也保持原样：本文原来建议在 device-auth 部署上改成「切换服务器」，理由是退出等于自锁；自锁修好之后，退出登录有了真实落地页，这条建议的前提就没了。

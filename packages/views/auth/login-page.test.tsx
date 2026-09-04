@@ -697,6 +697,55 @@ describe("LoginPage", () => {
     ).toBeInTheDocument();
   });
 
+  // -------------------------------------------------------------------------
+  // Title / description / footer slots (private deployment identity)
+  // -------------------------------------------------------------------------
+
+  it("renders the title and description overrides instead of the defaults", () => {
+    renderWithI18n(
+      <LoginPage
+        onSuccess={onSuccess}
+        title="Sign in to multica.example.com"
+        description="Use your account on this deployment."
+      />,
+    );
+
+    expect(
+      screen.getByText("Sign in to multica.example.com"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Use your account on this deployment."),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/^sign in to multica$/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/enter your email to get a login code/i),
+    ).not.toBeInTheDocument();
+  });
+
+  it("keeps the footer slot on the email step and on the code step", async () => {
+    mockSendCode.mockResolvedValueOnce(undefined);
+    renderWithI18n(
+      <LoginPage
+        onSuccess={onSuccess}
+        footer={<span data-testid="server-identity">multica.example.com</span>}
+      />,
+    );
+
+    expect(screen.getByTestId("server-identity")).toBeInTheDocument();
+
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText(/email/i), "test@example.com");
+    await user.click(screen.getByRole("button", { name: /continue/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/check your email/i)).toBeInTheDocument();
+    });
+
+    // Someone waiting on a code that never arrives has to be able to check
+    // which deployment they asked for it from, without leaving the step.
+    expect(screen.getByTestId("server-identity")).toBeInTheDocument();
+  });
+
 });
 
 // ---------------------------------------------------------------------------
