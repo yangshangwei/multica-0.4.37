@@ -14,14 +14,14 @@ import { installNavigationGestures } from "./navigation-gestures";
 import { installNavigationGuard } from "./navigation-guard";
 import { createRendererWebPreferences } from "./renderer-web-preferences";
 import { getAppVersion } from "./app-version";
-import { loadRuntimeConfig } from "./runtime-config-loader";
+import { loadRuntimeConfig, saveRuntimeConfig } from "./runtime-config-loader";
 import {
   deviceIdentityFilePath,
   loadOrCreateDeviceIdentity,
   systemDeviceName,
 } from "./device-identity";
 import type { DeviceIdentity } from "../shared/device-identity";
-import type { RuntimeConfigResult } from "../shared/runtime-config";
+import { parseRuntimeConfig, type RuntimeConfigResult } from "../shared/runtime-config";
 import {
   RENDERER_ROUTE_CONTEXT_CHANNEL,
   sanitizeRendererRouteContext,
@@ -727,6 +727,60 @@ if (!gotTheLock) {
     // blocking error and must not silently fall back to the cloud defaults.
     ipcMain.on("runtime-config:get", (event) => {
       event.returnValue = runtimeConfigResult;
+    });
+
+    ipcMain.handle("runtime-config:test", async (event, value: unknown) => {
+      if (!BrowserWindow.fromWebContents(event.sender) || typeof value !== "string") {
+        return { ok: false, category: "invalid", message: "Invalid server address" };
+      }
+      let apiUrl: string;
+      try {
+        apiUrl = parseRuntimeConfig(JSON.stringify({ schemaVersion: 1, apiUrl: value })).apiUrl;
+      } catch {
+        return { ok: false, category: "invalid", message: "Enter a valid http or https URL" };
+      }
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000);
+      const started = Date.now();
+      try {
+        const response = await fetch(`${apiUrl}/health`, {
+          signal: controller.signal,
+          redirect: "manual",
+          headers: { accept: "application/json, text/plain;q=0.9" },
+        });
+        if (response.status >= 300 && response.status < 400) {
+          return { ok: false, category: "redirect", message: "Health check redirected unexpectedly" };
+        }
+        if (!response.ok) {
+          return { ok: false, category: "http", message: `Server responded with HTTP ${response.status}` };
+        }
+        return { ok: true, latencyMs: Date.now() - started };
+      } catch (error) {
+        if (controller.signal.aborted) return { ok: false, category: "timeout", message: "Connection timed out" };
+        const code = error && typeof error === "object" && "cause" in error
+          ? String((error as { cause?: { code?: string } }).cause?.code ?? "")
+          : "";
+        if (code.includes("CERT") || code.includes("TLS")) return { ok: false, category: "tls", message: "TLS certificate validation failed" };
+        if (code.includes("ENOTFOUND") || code.includes("EAI_AGAIN")) return { ok: false, category: "dns", message: "Server address could not be resolved" };
+        return { ok: false, category: "network", message: "Could not connect to the server" };
+      } finally {
+        clearTimeout(timer);
+      }
+    });
+
+    ipcMain.handle("runtime-config:save", async (event, input: unknown) => {
+      if (!BrowserWindow.fromWebContents(event.sender) || !input || typeof input !== "object") {
+        return { ok: false, message: "Invalid runtime configuration" };
+      }
+      try {
+        const config = parseRuntimeConfig(JSON.stringify({ schemaVersion: 1, ...(input as Record<string, unknown>) }));
+        const saved = await saveRuntimeConfig(config);
+        runtimeConfigResult = { ok: true, source: "configured", config: saved };
+        BrowserWindow.fromWebContents(event.sender)?.webContents.reload();
+        return { ok: true, config: saved };
+      } catch (error) {
+        return { ok: false, message: error instanceof Error ? error.message : "Could not save server configuration" };
+      }
     });
 
     // Sync IPC, same reason as the runtime config above: the renderer needs

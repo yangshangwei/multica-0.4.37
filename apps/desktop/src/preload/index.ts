@@ -134,6 +134,9 @@ const desktopAPI = {
   },
   /** Validated runtime endpoint config, or a blocking config error. */
   runtimeConfig,
+  testRuntimeConfig: (apiUrl: string) => ipcRenderer.invoke("runtime-config:test", apiUrl),
+  saveRuntimeConfig: (input: { apiUrl: string; appUrl?: string; wsUrl?: string }) =>
+    ipcRenderer.invoke("runtime-config:save", input),
   /** Stable identity of this installation, used only on deployments that
    *  declare intranet device auth. Null when main could not resolve one. */
   deviceIdentity,

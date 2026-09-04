@@ -1,8 +1,7 @@
 import { app } from "electron";
-import { readFile } from "fs/promises";
-import { join } from "path";
+import { mkdir, readFile, rename, unlink, writeFile } from "fs/promises";
+import { dirname, join } from "path";
 import {
-  DEFAULT_RUNTIME_CONFIG,
   parseRuntimeConfig,
   runtimeConfigFromDevEnv,
   type RuntimeConfig,
@@ -17,7 +16,7 @@ export async function loadRuntimeConfig(options: {
 }): Promise<RuntimeConfigResult> {
   if (options.isDev) {
     try {
-      return { ok: true, config: runtimeConfigFromDevEnv(options.env) };
+      return { ok: true, source: "dev", config: runtimeConfigFromDevEnv(options.env) };
     } catch (err) {
       return { ok: false, error: { message: errorMessage(err) } };
     }
@@ -26,10 +25,10 @@ export async function loadRuntimeConfig(options: {
   const configPath = options.configPath ?? desktopConfigPath();
   try {
     const raw = await readFile(configPath, "utf-8");
-    return { ok: true, config: parseRuntimeConfig(raw) };
+    return { ok: true, source: "configured", config: parseRuntimeConfig(raw) };
   } catch (err) {
     if (isMissingFileError(err)) {
-      return { ok: true, config: { ...DEFAULT_RUNTIME_CONFIG } };
+      return { ok: false, needsSetup: true, error: { message: "Runtime config is not configured" } };
     }
     return {
       ok: false,
@@ -38,6 +37,27 @@ export async function loadRuntimeConfig(options: {
       },
     };
   }
+}
+
+export async function saveRuntimeConfig(
+  config: RuntimeConfig,
+  configPath = desktopConfigPath(),
+): Promise<RuntimeConfig> {
+  const normalized = parseRuntimeConfig(JSON.stringify(config));
+  const dir = dirname(configPath);
+  await mkdir(dir, { recursive: true });
+  const tempPath = `${configPath}.${process.pid}.${Date.now()}.tmp`;
+  try {
+    await writeFile(tempPath, `${JSON.stringify(normalized, null, 2)}\n`, {
+      encoding: "utf-8",
+      mode: 0o600,
+    });
+    await rename(tempPath, configPath);
+  } catch (error) {
+    try { await unlink(tempPath); } catch { /* best effort */ }
+    throw error;
+  }
+  return normalized;
 }
 
 export function desktopConfigPath(): string {

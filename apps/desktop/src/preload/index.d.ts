@@ -1,5 +1,5 @@
 import { ElectronAPI } from "@electron-toolkit/preload";
-import type { RuntimeConfigResult } from "../shared/runtime-config";
+import type { RuntimeConfig, RuntimeConfigResult } from "../shared/runtime-config";
 import type { DeviceIdentity } from "../shared/device-identity";
 import type { NavigationGesture } from "../shared/navigation-gestures";
 import type { RendererRouteContextInput } from "../shared/renderer-route-context";
@@ -30,6 +30,14 @@ interface DesktopAPI {
   onSystemLocaleChanged: (callback: (locale: string) => void) => () => void;
   /** Validated runtime endpoint config, or a blocking config error. */
   runtimeConfig: RuntimeConfigResult;
+  testRuntimeConfig: (apiUrl: string) => Promise<
+    | { ok: true; latencyMs: number }
+    | { ok: false; category: "invalid" | "dns" | "tls" | "timeout" | "http" | "redirect" | "network"; message: string }
+  >;
+  saveRuntimeConfig: (input: { apiUrl: string; appUrl?: string; wsUrl?: string }) => Promise<
+    | { ok: true; config: RuntimeConfig }
+    | { ok: false; message: string }
+  >;
   /** Stable identity of this installation, used only where the server declares
    *  intranet device auth. Null when main could not resolve one. */
   deviceIdentity: DeviceIdentity | null;

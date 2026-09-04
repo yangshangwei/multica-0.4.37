@@ -14,6 +14,7 @@ import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
 import { Toaster } from "@multica/ui/components/ui/sonner";
 import { DesktopLoginPage } from "./pages/login";
 import { DesktopAuthRecoveryPage } from "./pages/auth-recovery";
+import { DesktopEndpointSetupPage } from "./pages/endpoint-setup";
 import { DesktopShell } from "./components/desktop-layout";
 import { UpdateNotification } from "./components/update-notification";
 import { IssueWindow } from "./components/issue-window";
@@ -333,22 +334,6 @@ function AppContent() {
   return user ? <DesktopShell /> : <DesktopLoginPage />;
 }
 
-function BlockingRuntimeConfigError({ message }: { message: string }) {
-  return (
-    <div className="flex h-screen items-center justify-center bg-background p-8 text-foreground">
-      <div className="max-w-xl rounded-lg border bg-card p-6 shadow-sm">
-        <h1 className="text-title font-semibold">Desktop configuration error</h1>
-        <p className="mt-3 text-body text-muted-foreground">
-          Multica Desktop could not load <code>~/.multica/desktop.json</code>. Fix or remove the file and restart the app.
-        </p>
-        <pre className="mt-4 whitespace-pre-wrap rounded-md bg-muted p-3 text-caption text-muted-foreground">
-          {message}
-        </pre>
-      </div>
-    </div>
-  );
-}
-
 // On logout, wipe desktop-only in-memory state and stop the daemon so that
 // a subsequent login as a different user never inherits the previous user's
 // tabs, overlay, or credentials. Zustand persist only writes to localStorage;
@@ -492,7 +477,9 @@ export default function App() {
           )}
         </CoreProvider>
       ) : (
-        <BlockingRuntimeConfigError message={runtimeConfigResult.error.message} />
+        <DesktopEndpointSetupPage
+          initialError={runtimeConfigResult.needsSetup ? undefined : runtimeConfigResult.error.message}
+        />
       )}
       <Toaster />
       {windowContext.kind === "main" && <UpdateNotification />}

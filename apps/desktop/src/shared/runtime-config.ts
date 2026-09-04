@@ -10,8 +10,8 @@ export interface RuntimeConfigError {
 }
 
 export type RuntimeConfigResult =
-  | { ok: true; config: RuntimeConfig }
-  | { ok: false; error: RuntimeConfigError };
+  | { ok: true; config: RuntimeConfig; source: "configured" | "dev" }
+  | { ok: false; error: RuntimeConfigError; needsSetup?: boolean };
 
 export const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = Object.freeze({
   schemaVersion: 1,
@@ -148,6 +148,9 @@ function normalizeHttpUrl(value: string, field: string): string {
   }
   if (url.protocol !== "http:" && url.protocol !== "https:") {
     throw new Error(`Invalid desktop runtime config: ${field} must use http or https`);
+  }
+  if (url.username || url.password) {
+    throw new Error(`Invalid desktop runtime config: ${field} must not contain credentials`);
   }
   url.search = "";
   url.hash = "";

@@ -26,6 +26,8 @@ describe("loadRuntimeConfig", () => {
       }),
     ).resolves.toEqual({
       ok: true,
+      source: "dev",
+      source: "dev",
       config: {
         schemaVersion: 1,
         apiUrl: "http://localhost:8080",
@@ -35,7 +37,7 @@ describe("loadRuntimeConfig", () => {
     });
   });
 
-  it("uses cloud defaults when packaged config is absent", async () => {
+  it("marks packaged config as needing setup when absent", async () => {
     const dir = await mkdtemp(join(tmpdir(), "multica-desktop-config-"));
     await expect(
       loadRuntimeConfig({
@@ -43,15 +45,7 @@ describe("loadRuntimeConfig", () => {
         configPath: join(dir, "missing.json"),
         env: {},
       }),
-    ).resolves.toEqual({
-      ok: true,
-      config: {
-        schemaVersion: 1,
-        apiUrl: "https://api.multica.ai",
-        wsUrl: "wss://api.multica.ai/ws",
-        appUrl: "https://multica.ai",
-      },
-    });
+    ).resolves.toEqual({ ok: false, needsSetup: true, error: { message: "Runtime config is not configured" } });
   });
 
   it("parses a valid packaged desktop.json", async () => {
@@ -66,6 +60,8 @@ describe("loadRuntimeConfig", () => {
       loadRuntimeConfig({ isDev: false, configPath, env: {} }),
     ).resolves.toEqual({
       ok: true,
+      source: "configured",
+      source: "configured",
       config: {
         schemaVersion: 1,
         apiUrl: "https://api.example.com",
