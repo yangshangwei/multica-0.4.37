@@ -13,6 +13,7 @@ export async function loadRuntimeConfig(options: {
   isDev: boolean;
   env: RuntimeConfigEnv;
   configPath?: string;
+  requireRuntimeConfig?: boolean;
 }): Promise<RuntimeConfigResult> {
   if (options.isDev) {
     try {
@@ -28,7 +29,12 @@ export async function loadRuntimeConfig(options: {
     return { ok: true, source: "configured", config: parseRuntimeConfig(raw) };
   } catch (err) {
     if (isMissingFileError(err)) {
-      return { ok: false, needsSetup: true, error: { message: "Runtime config is not configured" } };
+      return {
+        ok: false,
+        needsSetup: true,
+        ...(options.requireRuntimeConfig === true ? { requirePrivate: true } : {}),
+        error: { message: "Runtime config is not configured" },
+      };
     }
     return {
       ok: false,

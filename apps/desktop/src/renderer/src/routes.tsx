@@ -34,6 +34,7 @@ import { useT } from "@multica/views/i18n";
 import { Download, Server } from "lucide-react";
 import { DaemonSettingsTab } from "./components/daemon-settings-tab";
 import { UpdatesSettingsTab } from "./components/updates-settings-tab";
+import { RuntimeConfigSettingsTab } from "./components/runtime-config-settings-tab";
 import { WorkspaceRouteLayout } from "./components/workspace-route-layout";
 import { DesktopRouteErrorPage } from "./components/route-error-page";
 
@@ -52,6 +53,12 @@ function DesktopSettingsRoute() {
           label: "Daemon",
           icon: Server,
           content: <DaemonSettingsTab />,
+        },
+        {
+          value: "server",
+          label: t(($) => $.desktop.tabs.server),
+          icon: Server,
+          content: <RuntimeConfigSettingsTab />,
         },
         {
           value: "updates",

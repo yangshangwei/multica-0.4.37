@@ -479,6 +479,7 @@ export default function App() {
       ) : (
         <DesktopEndpointSetupPage
           initialError={runtimeConfigResult.needsSetup ? undefined : runtimeConfigResult.error.message}
+          requirePrivate={runtimeConfigResult.requirePrivate ?? !runtimeConfigResult.needsSetup}
         />
       )}
       <Toaster />

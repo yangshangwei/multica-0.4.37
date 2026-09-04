@@ -27,7 +27,6 @@ describe("loadRuntimeConfig", () => {
     ).resolves.toEqual({
       ok: true,
       source: "dev",
-      source: "dev",
       config: {
         schemaVersion: 1,
         apiUrl: "http://localhost:8080",
@@ -61,7 +60,6 @@ describe("loadRuntimeConfig", () => {
     ).resolves.toEqual({
       ok: true,
       source: "configured",
-      source: "configured",
       config: {
         schemaVersion: 1,
         apiUrl: "https://api.example.com",
@@ -83,5 +81,22 @@ describe("loadRuntimeConfig", () => {
       expect(result.error.message).toContain(configPath);
       expect(result.error.message).toContain("Invalid desktop runtime config JSON");
     }
+  });
+
+  it("marks missing config as private-only when required by the build", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "multica-desktop-config-"));
+    await expect(
+      loadRuntimeConfig({
+        isDev: false,
+        configPath: join(dir, "missing.json"),
+        env: {},
+        requireRuntimeConfig: true,
+      }),
+    ).resolves.toEqual({
+      ok: false,
+      needsSetup: true,
+      requirePrivate: true,
+      error: { message: "Runtime config is not configured" },
+    });
   });
 });
