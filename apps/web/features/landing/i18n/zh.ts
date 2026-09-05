@@ -294,6 +294,26 @@ export function createZhDict(allowSignup: boolean): LandingDict {
     },
     entries: [
       {
+        version: "0.4.40",
+        date: "2026-09-05",
+        title: "运行时、MCP 与会话体验的选择性更新",
+        changes: [],
+        features: [
+          "可以直接刷新智能体选择器中的运行时模型目录。",
+          "自动发现已安装的 Claude Code 模型，并标记当前不可用的模型。",
+          "配置或替换 MCP 服务器连接时，不会丢失已分配的智能体。",
+          "支持 Claude Fable 5.1，并补齐对应定价。",
+        ],
+        improvements: [
+          "私有运行时不可见时，共享智能体仍会显示隐私安全的在线状态。",
+          "登录会话过期后会回到登录页，并清理旧客户端状态。",
+        ],
+        fixes: [
+          "定时自动化任务继续使用触发器创建者的授权。",
+          "任务交接时的工作目录和缓存检出更可靠。",
+        ],
+      },
+      {
         version: "0.4.37",
         date: "2026-08-31",
         title: "Issue 列表更快、长任务更稳、多语言文案更全",

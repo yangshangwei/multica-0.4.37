@@ -54,7 +54,7 @@ cd /opt/multica-upgrade
   --deployment-dir /opt/multica \
   --backend-image registry.intra.example.com/multica-backend \
   --web-image registry.intra.example.com/multica-web \
-  --image-tag v0.4.37 \
+  --image-tag v0.4.40 \
   --yes
 ```
 

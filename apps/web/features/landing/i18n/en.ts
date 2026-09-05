@@ -294,6 +294,26 @@ export function createEnDict(allowSignup: boolean): LandingDict {
     },
     entries: [
       {
+        version: "0.4.40",
+        date: "2026-09-05",
+        title: "Selective runtime, MCP, and session improvements",
+        changes: [],
+        features: [
+          "Refresh runtime model catalogs directly from agent model pickers.",
+          "Discover installed Claude Code models and identify unavailable entries.",
+          "Configure and replace MCP server connections without losing agent assignments.",
+          "Use Claude Fable 5.1 with its matching pricing.",
+        ],
+        improvements: [
+          "Shared agents expose a privacy-safe presence state when private runtimes are hidden.",
+          "Expired sessions return to sign-in and clear stale client state.",
+        ],
+        fixes: [
+          "Scheduled automation keeps the trigger creator's authorization.",
+          "Task handoffs handle worktrees and cached checkouts more reliably.",
+        ],
+      },
+      {
         version: "0.4.37",
         date: "2026-08-31",
         title: "Faster Issue lists, steadier long runs, and more complete localization",
