@@ -52,6 +52,10 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@tanstack/react-query", () => ({
+  // Identity, which is what the real one is for our purposes: callers build an
+  // options object and hand it straight to the useQuery stub below. Needed because
+  // the header's approval-count query is declared with queryOptions().
+  queryOptions: (options: unknown) => options,
   useQuery: (options: { queryKey?: readonly unknown[] }) => {
     const key = options.queryKey?.[0];
     if (key === "agents") {

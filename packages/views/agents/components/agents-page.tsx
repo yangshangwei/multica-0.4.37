@@ -6,6 +6,7 @@ import {
   Bot,
   Lock,
   Plus,
+  ShieldCheck,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
@@ -34,6 +35,7 @@ import {
   type AgentSortField,
 } from "@multica/core/agents/stores";
 import { useAuthStore } from "@multica/core/auth";
+import { agentApprovalListOptions } from "@multica/core/agent-approvals";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import {
@@ -267,12 +269,50 @@ function PageHeaderBar({
         label: t(($) => $.page.learn_more),
       }}
       actions={
-        <CollectionPageHeaderAction
-          icon={Plus}
-          label={t(($) => $.page.new_agent)}
-          onClick={onCreate}
-        />
+        <>
+          <ApprovalQueueAction />
+          <CollectionPageHeaderAction
+            icon={Plus}
+            label={t(($) => $.page.new_agent)}
+            onClick={onCreate}
+          />
+        </>
       }
+    />
+  );
+}
+
+/**
+ * The way into the approval queue, and the only place a person is told something
+ * is waiting there.
+ *
+ * A request an Operator agent files is worthless if nobody sees it, so this counts
+ * the waiting ones rather than only linking. The count query is the one the
+ * (workspace_id, status, created_at DESC) index exists for, and it is shared with
+ * the queue page's own cache entry, so opening the page from here costs no second
+ * fetch. The button renders with or without a count: an empty queue still has to
+ * be findable before the first request arrives.
+ */
+function ApprovalQueueAction() {
+  const { t } = useT("agents");
+  const wsId = useWorkspaceId();
+  const paths = useWorkspacePaths();
+  const navigation = useNavigation();
+  const { data: waiting = [] } = useQuery(
+    agentApprovalListOptions(wsId, "pending"),
+  );
+
+  const label = waiting.length
+    ? `${t(($) => $.approvals.open_button)} ${waiting.length}`
+    : t(($) => $.approvals.open_button);
+
+  return (
+    <CollectionPageHeaderAction
+      icon={ShieldCheck}
+      label={label}
+      aria-label={t(($) => $.approvals.open_button)}
+      className={waiting.length ? "text-foreground" : undefined}
+      onClick={() => navigation.push(paths.agentApprovals())}
     />
   );
 }

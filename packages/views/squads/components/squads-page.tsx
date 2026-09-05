@@ -10,6 +10,7 @@ import {
   Loader2,
   MoreHorizontal,
   Plus,
+  Sparkles,
   Trash2,
   Users,
   X,
@@ -915,11 +916,23 @@ export function SquadsPage() {
         title={t(($) => $.page.title)}
         count={squads.length}
         actions={
-          <CollectionPageHeaderAction
-            icon={Plus}
-            label={t(($) => $.page.new_button)}
-            onClick={() => useModalStore.getState().open("create-squad")}
-          />
+          <>
+            {/* Templates come first: for a team that has not wired a squad
+                before, a staffed roster with a routing policy is a better
+                starting point than an empty leader picker. */}
+            <CollectionPageHeaderAction
+              icon={Sparkles}
+              label={t(($) => $.page.template_button)}
+              onClick={() =>
+                useModalStore.getState().open("staff-squad-template")
+              }
+            />
+            <CollectionPageHeaderAction
+              icon={Plus}
+              label={t(($) => $.page.new_button)}
+              onClick={() => useModalStore.getState().open("create-squad")}
+            />
+          </>
         }
       />
 
@@ -930,13 +943,25 @@ export function SquadsPage() {
           icon={Users}
           title={t(($) => $.page.empty_no_squads)}
           actions={
-            <Button
-              size="sm"
-              onClick={() => useModalStore.getState().open("create-squad")}
-            >
-              <Plus aria-hidden="true" className="size-3.5" />
-              {t(($) => $.page.new_button)}
-            </Button>
+            <>
+              <Button
+                size="sm"
+                onClick={() =>
+                  useModalStore.getState().open("staff-squad-template")
+                }
+              >
+                <Sparkles aria-hidden="true" className="size-3.5" />
+                {t(($) => $.page.template_button)}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => useModalStore.getState().open("create-squad")}
+              >
+                <Plus aria-hidden="true" className="size-3.5" />
+                {t(($) => $.page.new_button)}
+              </Button>
+            </>
           }
         />
       ) : (

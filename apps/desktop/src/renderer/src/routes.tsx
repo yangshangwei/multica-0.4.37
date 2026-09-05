@@ -22,9 +22,11 @@ import { SkillsPage } from "@multica/views/skills";
 import { DesktopRuntimesPage } from "./components/desktop-runtimes-page";
 import { DesktopAgentsPage } from "./components/desktop-agents-page";
 import {
+  AgentApprovalsPage,
   AiCreateAgentPage,
   ChooseCreateMethodPage,
   ManualCreateAgentPage,
+  TemplateCreateAgentPage,
 } from "@multica/views/agents";
 import { SquadsPage, SquadDetailPage as SquadDetailPageView } from "@multica/views/squads/components";
 import { InboxPage } from "@multica/views/inbox";
@@ -200,6 +202,18 @@ export const appRoutes: RouteObject[] = [
             path: "agents/new/manual",
             element: <ManualCreateAgentPage />,
             handle: { title: "Create Agent" },
+          },
+          {
+            path: "agents/new/template",
+            element: <TemplateCreateAgentPage />,
+            handle: { title: "Create Agent" },
+          },
+          {
+            // Static, so it resolves ahead of agents/:id — the same ordering
+            // agents/new relies on.
+            path: "agents/approvals",
+            element: <AgentApprovalsPage />,
+            handle: { title: "Approvals" },
           },
           {
             path: "agents/new/ai",

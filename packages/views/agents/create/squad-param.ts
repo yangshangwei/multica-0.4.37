@@ -13,11 +13,22 @@
  */
 export function createPathWithParams(
   path: string,
-  params: { squad?: string | null; runtime?: string | null },
+  params: {
+    squad?: string | null;
+    runtime?: string | null;
+    /**
+     * Which built-in role the template flow is configuring. A query param
+     * rather than a path segment because it is a choice inside one screen's
+     * flow, not a destination — going back to the role list is the same route
+     * without it.
+     */
+    template?: string | null;
+  },
 ): string {
   const query = new URLSearchParams();
   if (params.squad) query.set("squad", params.squad);
   if (params.runtime) query.set("runtime", params.runtime);
+  if (params.template) query.set("template", params.template);
   const suffix = query.toString();
   return suffix ? `${path}?${suffix}` : path;
 }

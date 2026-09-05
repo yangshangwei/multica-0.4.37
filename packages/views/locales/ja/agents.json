@@ -963,6 +963,86 @@
       "pick_hint": "続きを選んでください。"
     }
   },
+  "role_templates": {
+    "title": "ロールテンプレートから始める",
+    "description": "各ロールには指示・担当範囲・必要な Skills が含まれます。作成後はすべてワークスペースのものとして編集できます。",
+    "step_pick": "ロールを選ぶ",
+    "empty": "このサーバーにはロールテンプレートがありません。",
+    "load_failed": "ロールテンプレートを読み込めませんでした。",
+    "version": "テンプレート v{{version}}",
+    "instructions_label": "ロールの指示",
+    "instructions_note": "エージェントにコピーされ、作成後に編集できます",
+    "skills_label": "このロールが追加する Skills",
+    "skills_note": "ワークスペースに無い場合は追加されます。同名の Skill がある場合はそのまま再利用し、上書きしません。",
+    "skills_empty": "このロールは Skills を追加しません。",
+    "autonomy": {
+      "observer": "オブザーバー",
+      "contributor": "コントリビューター",
+      "coordinator": "コーディネーター",
+      "operator": "オペレーター"
+    },
+    "autonomy_hint": {
+      "observer": "読む・分析する・コメントするのみ。ステータスや担当の変更、課題の作成はできません。",
+      "contributor": "隔離ブランチでコードとテストを書き、与えられた課題を進めます。本番操作はできません。",
+      "coordinator": "作業の割り当てを担当します（サブ課題・メンション・スクワッド・自動化）。本番操作はできません。",
+      "operator": "高リスク操作を実行できますが、人間が承認したその 1 件のみです。"
+    }
+  },
+  "approvals": {
+    "title": "承認",
+    "tagline": "エージェントが人の承認を求めている高リスクな操作です。",
+    "learn_more": "詳しく見る",
+    "open_button": "承認",
+    "filter_pending": "未処理",
+    "filter_all": "すべて",
+    "empty_pending": "あなたを待っている申請はありません",
+    "empty_pending_hint": "本番リリース、本番データへのマイグレーション、認証情報の参照、外部への通知、取り消せない削除に行き当たったエージェントは、そこで停止して計画をここに提出します。",
+    "empty_all": "承認申請はまだありません",
+    "load_failed": "承認キューを読み込めませんでした。",
+    "retry": "再試行",
+    "unknown_agent": "不明なエージェント",
+    "filed": "{{when}}に申請",
+    "decided": "{{when}}に決定",
+    "executed_at": "{{when}}に実行",
+    "plan_label": "計画",
+    "plan_empty": "この申請には計画が付いていないため、何が実行されるのか分かりません。",
+    "decision_note_label": "決定メモ",
+    "execution_note_label": "エージェントの報告",
+    "show_detail": "計画を表示",
+    "hide_detail": "計画を隠す",
+    "approve": "承認",
+    "reject": "却下",
+    "withdraw": "取り下げ",
+    "note_label": "メモ（任意）",
+    "note_placeholder": "その判断の理由。決定と一緒に記録されます。",
+    "confirm_approve_title": "この1つの操作を承認しますか？",
+    "confirm_approve_body": "{{agent}} に、下記の操作だけを実行する許可を与えます。引数を変えた再試行、次の手順、後日の同じ操作は、この承認には含まれません。",
+    "confirm_approve_warning": "ここに残るのは承認の記録で、サンドボックスではありません。task はそのマシンでデーモンを実行しているユーザーの権限で動きます。",
+    "confirm_reject_title": "この申請を却下しますか？",
+    "confirm_reject_body": "{{agent}} は計画を保持したまま作業を差し戻します。同じ申請を繰り返さないよう、理由を書いてください。",
+    "confirm_withdraw_title": "この申請を取り下げますか？",
+    "confirm_withdraw_body": "決定が記録されないままキューから外れます。エージェントは新しく申請できます。",
+    "confirm_approve_action": "この操作を承認",
+    "keep_open": "そのままにする",
+    "approved_toast": "承認しました。{{agent}} はこの1つの操作を実行できます。",
+    "rejected_toast": "却下しました。",
+    "withdrawn_toast": "申請を取り下げました。",
+    "decide_failed": "決定を記録できませんでした。",
+    "status": {
+      "pending": "未処理",
+      "approved": "承認済み",
+      "rejected": "却下",
+      "executed": "実行済み",
+      "cancelled": "取り下げ"
+    },
+    "risk": {
+      "production_release": "本番リリース",
+      "database_migration": "本番データのマイグレーション",
+      "secret_access": "認証情報の参照",
+      "external_notification": "外部への通知",
+      "destructive_operation": "取り消せない削除"
+    }
+  },
   "actions": {
     "selected_other": "{{count}} 件選択中",
     "clear_selection": "選択を解除"

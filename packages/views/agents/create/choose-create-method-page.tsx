@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, FileText, MessageSquare } from "lucide-react";
+import { ChevronRight, FileText, MessageSquare, Sparkles } from "lucide-react";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { cn } from "@multica/ui/lib/utils";
 import { AppLink, useBackOrReplace, useNavigation } from "../../navigation";
@@ -33,6 +33,7 @@ export function ChooseCreateMethodPage() {
       <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-10">
         <CreateMethodChooser
           blankHref={withSquadParam(paths.newAgentManual(), squadId)}
+          templateHref={withSquadParam(paths.newAgentTemplate(), squadId)}
           aiHref={withSquadParam(paths.newAgentAi(), squadId)}
         />
       </main>
@@ -42,9 +43,13 @@ export function ChooseCreateMethodPage() {
 
 export function CreateMethodChooser({
   blankHref,
+  templateHref,
   aiHref,
 }: {
   blankHref: string;
+  /** Optional so a caller that predates role templates keeps compiling with two
+   *  cards; every in-tree caller passes it. */
+  templateHref?: string;
   aiHref: string;
 }) {
   const { t } = useT("agents");
@@ -55,6 +60,16 @@ export function CreateMethodChooser({
       description: t(($) => $.creation_studio.modes.blank.description),
       href: blankHref,
     },
+    ...(templateHref
+      ? [
+          {
+            icon: Sparkles,
+            title: t(($) => $.creation_studio.modes.template.title),
+            description: t(($) => $.creation_studio.modes.template.description),
+            href: templateHref,
+          },
+        ]
+      : []),
     {
       icon: MessageSquare,
       title: t(($) => $.creation_studio.modes.ai.title),
@@ -76,7 +91,7 @@ export function CreateMethodChooser({
           {t(($) => $.creation_studio.choose_description)}
         </p>
       </div>
-      <div className="mx-auto mt-9 grid max-w-3xl gap-4 md:grid-cols-2">
+      <div className="mx-auto mt-9 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {modes.map(
             ({ icon: Icon, title, description, href, recommended }) => (
               <AppLink

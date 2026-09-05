@@ -48,6 +48,7 @@ export function AgentConfigurationPanel({
   onRuntimeSelect,
   runtimeSwitchPending = false,
   runtimeSwitchInFlight = false,
+  roleTemplate,
 }: {
   draft: AgentDraft;
   onChange: (draft: AgentDraft) => void;
@@ -66,6 +67,18 @@ export function AgentConfigurationPanel({
   runtimeSwitchPending?: boolean;
   /** A rebind request is in flight. */
   runtimeSwitchInFlight?: boolean;
+  /**
+   * Present when this agent is being created from a built-in role template.
+   *
+   * The role's instructions and skills are the backend's to apply — the create
+   * request does not carry them — so showing editable fields for either would
+   * offer control that does not exist. They render as read-only facts instead,
+   * with the note that both become editable on the agent once it exists.
+   */
+  roleTemplate?: {
+    instructions: string;
+    skillNames: string[];
+  };
 }) {
   const { t } = useT("agents");
   const conversationStartersSupported = useConfigStore(
@@ -156,39 +169,48 @@ export function AgentConfigurationPanel({
         description={t(($) => $.creation_studio.sections.behavior_hint)}
       >
         <SettingsCard>
-          <DraftFieldRow
-            compact
-            label={t(($) => $.create_dialog.instructions.label)}
-            htmlFor="agent-create-instructions"
-          >
-            <Textarea
-              id="agent-create-instructions"
-              name="agent-instructions"
-              autoComplete="off"
-              aria-label={t(($) => $.create_dialog.instructions.label)}
-              value={draft.instructions}
-              onChange={(event) => set("instructions", event.target.value)}
-              placeholder={t(
-                ($) => $.create_dialog.instructions.editor_placeholder,
-              )}
-              rows={compact ? 9 : 12}
-              className="min-h-44 resize-y font-mono text-label leading-6"
+          {roleTemplate ? (
+            <RoleTemplateBehaviour
+              instructions={roleTemplate.instructions}
+              skillNames={roleTemplate.skillNames}
             />
-          </DraftFieldRow>
-          {conversationStartersSupported ? (
-            <div className="px-4 py-4">
-              <ConversationStartersEditor
-                value={draft.conversationStarters}
-                onChange={(value) => set("conversationStarters", value)}
-              />
-            </div>
-          ) : null}
-          <div className="px-4 py-4">
-            <SkillMultiSelect
-              selectedIds={draft.skillIds}
-              onChange={(ids) => set("skillIds", ids)}
-            />
-          </div>
+          ) : (
+            <>
+              <DraftFieldRow
+                compact
+                label={t(($) => $.create_dialog.instructions.label)}
+                htmlFor="agent-create-instructions"
+              >
+                <Textarea
+                  id="agent-create-instructions"
+                  name="agent-instructions"
+                  autoComplete="off"
+                  aria-label={t(($) => $.create_dialog.instructions.label)}
+                  value={draft.instructions}
+                  onChange={(event) => set("instructions", event.target.value)}
+                  placeholder={t(
+                    ($) => $.create_dialog.instructions.editor_placeholder,
+                  )}
+                  rows={compact ? 9 : 12}
+                  className="min-h-44 resize-y font-mono text-label leading-6"
+                />
+              </DraftFieldRow>
+              {conversationStartersSupported ? (
+                <div className="px-4 py-4">
+                  <ConversationStartersEditor
+                    value={draft.conversationStarters}
+                    onChange={(value) => set("conversationStarters", value)}
+                  />
+                </div>
+              ) : null}
+              <div className="px-4 py-4">
+                <SkillMultiSelect
+                  selectedIds={draft.skillIds}
+                  onChange={(ids) => set("skillIds", ids)}
+                />
+              </div>
+            </>
+          )}
         </SettingsCard>
       </SettingsSection>
 
@@ -459,5 +481,64 @@ function DraftFieldRow({
       )}
       <div className="min-w-0">{children}</div>
     </div>
+  );
+}
+
+/**
+ * The behaviour section for an agent being created from a role template: the
+ * instructions and skills the backend will apply, shown as they are.
+ *
+ * Read-only here and editable afterwards is the whole contract of a template
+ * copy, so the note says so explicitly — without it the section reads as a
+ * permanent restriction rather than a starting point.
+ */
+function RoleTemplateBehaviour({
+  instructions,
+  skillNames,
+}: {
+  instructions: string;
+  skillNames: string[];
+}) {
+  const { t } = useT("agents");
+  return (
+    <>
+      <div className="space-y-2 px-4 py-4">
+        <div className="flex items-baseline justify-between gap-3">
+          <span className="text-caption font-medium">
+            {t(($) => $.role_templates.instructions_label)}
+          </span>
+          <span className="text-micro text-muted-foreground">
+            {t(($) => $.role_templates.instructions_note)}
+          </span>
+        </div>
+        <pre className="max-h-72 overflow-y-auto whitespace-pre-wrap rounded-md border bg-muted/40 p-3 font-mono text-micro leading-5 text-muted-foreground">
+          {instructions}
+        </pre>
+      </div>
+      <div className="space-y-2 border-t px-4 py-4">
+        <span className="block text-caption font-medium">
+          {t(($) => $.role_templates.skills_label)}
+        </span>
+        {skillNames.length === 0 ? (
+          <span className="text-caption text-muted-foreground">
+            {t(($) => $.role_templates.skills_empty)}
+          </span>
+        ) : (
+          <div className="flex flex-wrap gap-1.5">
+            {skillNames.map((name) => (
+              <span
+                key={name}
+                className="rounded-full border bg-muted px-2 py-0.5 font-mono text-micro text-muted-foreground"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        )}
+        <span className="block text-micro text-muted-foreground">
+          {t(($) => $.role_templates.skills_note)}
+        </span>
+      </div>
+    </>
   );
 }
