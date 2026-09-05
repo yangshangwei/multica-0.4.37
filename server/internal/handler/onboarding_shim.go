@@ -35,6 +35,7 @@ import (
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/middleware"
 	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/dbid"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -263,8 +264,8 @@ func (h *Handler) BootstrapOnboardingRuntime(w http.ResponseWriter, r *http.Requ
 		issue, err = qtx.CreateIssue(r.Context(), db.CreateIssueParams{
 			ID:            dbid.NewV7(),
 			WorkspaceID:   wsUUID,
-			Title:         onboardingIssueTitle,
-			Description:   strOrNullText(description),
+			Title:         util.SanitizeTextForPostgres(onboardingIssueTitle),
+			Description:   strOrNullText(util.SanitizeTextForPostgres(description)),
 			Status:        "todo",
 			Priority:      "high",
 			AssigneeType:  pgtype.Text{String: "agent", Valid: true},
@@ -427,8 +428,8 @@ func (h *Handler) BootstrapOnboardingNoRuntime(w http.ResponseWriter, r *http.Re
 		issue, err = qtx.CreateIssue(r.Context(), db.CreateIssueParams{
 			ID:            dbid.NewV7(),
 			WorkspaceID:   wsUUID,
-			Title:         noRuntimeIssueTitle,
-			Description:   strOrNullText(noRuntimeIssueDescription(userBefore.Language)),
+			Title:         util.SanitizeTextForPostgres(noRuntimeIssueTitle),
+			Description:   strOrNullText(util.SanitizeTextForPostgres(noRuntimeIssueDescription(userBefore.Language))),
 			Status:        "todo",
 			Priority:      "high",
 			AssigneeType:  pgtype.Text{String: "member", Valid: true},

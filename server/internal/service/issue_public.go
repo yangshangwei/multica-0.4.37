@@ -6,6 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -41,10 +42,10 @@ func (s *IssueService) UpdateContent(ctx context.Context, issue db.Issue, patch 
 		params.ExpectedRevision = pgtype.Int8{Int64: *patch.ExpectedRevision, Valid: true}
 	}
 	if patch.Title != nil {
-		params.Title = pgtype.Text{String: *patch.Title, Valid: true}
+		params.Title = pgtype.Text{String: util.SanitizeTextForPostgres(*patch.Title), Valid: true}
 	}
 	if patch.Description != nil {
-		params.Description = pgtype.Text{String: *patch.Description, Valid: true}
+		params.Description = pgtype.Text{String: util.SanitizeTextForPostgres(*patch.Description), Valid: true}
 	}
 
 	updated, err := s.Queries.UpdateIssue(ctx, params)

@@ -133,6 +133,14 @@ type IssueCreateOpts struct {
 	AssignedAgentRunFireAt time.Time
 }
 
+func sanitizeIssueCreateParams(p IssueCreateParams) IssueCreateParams {
+	p.Title = util.SanitizeTextForPostgres(p.Title)
+	if p.Description.Valid {
+		p.Description.String = util.SanitizeTextForPostgres(p.Description.String)
+	}
+	return p
+}
+
 // ErrActiveDuplicate signals that the duplicate guard found an active
 // issue with the same (workspace, project, parent, title) tuple and
 // AllowDuplicate was false. The IssueCreateResult.DuplicateIssue field is
@@ -212,6 +220,7 @@ type IssueCreateResult struct {
 // Caller-owned validation is limited to transport-shaped checks: title
 // required, RFC3339 date format, assignee pair sanity.
 func (s *IssueService) Create(ctx context.Context, p IssueCreateParams, opts IssueCreateOpts) (IssueCreateResult, error) {
+	p = sanitizeIssueCreateParams(p)
 	issueCountPolicy := ResolveIssueCountPolicy(ctx, s.Entitlements, p.WorkspaceID)
 	tx, err := s.TxStarter.Begin(ctx)
 	if err != nil {

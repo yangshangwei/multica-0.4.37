@@ -695,8 +695,8 @@ func (s *AutopilotService) dispatchCreateIssue(ctx context.Context, ap db.Autopi
 	issue, err := qtx.CreateIssueWithOrigin(ctx, db.CreateIssueWithOriginParams{
 		ID:           dbid.NewV7(),
 		WorkspaceID:  ap.WorkspaceID,
-		Title:        title,
-		Description:  description,
+		Title:        util.SanitizeTextForPostgres(title),
+		Description:  pgtype.Text{String: util.SanitizeTextForPostgres(description.String), Valid: description.Valid},
 		Status:       "todo",
 		Priority:     "none",
 		AssigneeType: pgtype.Text{String: ap.AssigneeType, Valid: true},

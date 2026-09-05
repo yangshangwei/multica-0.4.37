@@ -3379,10 +3379,10 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 
 	// COALESCE fields — only set when explicitly provided
 	if req.Title != nil {
-		params.Title = pgtype.Text{String: *req.Title, Valid: true}
+		params.Title = pgtype.Text{String: util.SanitizeTextForPostgres(*req.Title), Valid: true}
 	}
 	if req.Description != nil {
-		params.Description = pgtype.Text{String: *req.Description, Valid: true}
+		params.Description = pgtype.Text{String: util.SanitizeTextForPostgres(*req.Description), Valid: true}
 	}
 	// statusKeyForGuard is the resolved key when this request sets a status, and
 	// empty otherwise. Empty means "this write does not touch status", which the
@@ -4160,10 +4160,10 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if req.Updates.Title != nil {
-			params.Title = pgtype.Text{String: *req.Updates.Title, Valid: true}
+			params.Title = pgtype.Text{String: util.SanitizeTextForPostgres(*req.Updates.Title), Valid: true}
 		}
 		if req.Updates.Description != nil {
-			params.Description = pgtype.Text{String: *req.Updates.Description, Valid: true}
+			params.Description = pgtype.Text{String: util.SanitizeTextForPostgres(*req.Updates.Description), Valid: true}
 		}
 		if req.Updates.Status != nil {
 			params.Status = pgtype.Text{String: batchStatusKey, Valid: true}
