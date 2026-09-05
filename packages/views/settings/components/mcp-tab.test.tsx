@@ -536,10 +536,10 @@ describe("McpTab", () => {
 
   // The document is write-only, so the screen must never imply it is showing
   // a saved configuration: it says an edit replaces the entry.
-  it("states that saved configurations are write-only", () => {
+  it("states that saved configurations are not shown again", () => {
     render(<McpTab />, { wrapper: Wrapper });
 
-    expect(screen.getByText(/write-only/)).toBeInTheDocument();
+    expect(screen.getByText(/saved URLs.*aren't shown again/)).toBeInTheDocument();
   });
 
   it("survives a payload that is not an array", () => {
