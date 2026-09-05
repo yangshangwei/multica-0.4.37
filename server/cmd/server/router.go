@@ -1991,6 +1991,10 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Route("/api/squads", func(r chi.Router) {
 				r.Get("/", h.ListSquads)
 				r.Post("/", h.CreateSquad)
+				r.Get("/templates", h.ListSquadTemplates)
+				// Staffs the roster and the squad in one transaction, reusing any
+				// agent the workspace already has for a role.
+				r.Post("/from-template", h.CreateSquadFromTemplate)
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetSquad)
 					r.Put("/", h.UpdateSquad)
@@ -2000,6 +2004,21 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Post("/members", h.AddSquadMember)
 					r.Delete("/members", h.RemoveSquadMember)
 					r.Patch("/members/role", h.UpdateSquadMemberRole)
+				})
+			})
+
+			// Human approval boundary for high-risk agent actions. An agent files a
+			// request and polls its own; a person decides it. The decision route
+			// carries RequireHumanActor, and DecideAgentApproval repeats the check
+			// itself — it is the one gate the whole mechanism rests on.
+			r.Route("/api/agent-approvals", func(r chi.Router) {
+				r.Get("/", h.ListAgentApprovals)
+				r.Post("/", h.CreateAgentApproval)
+				r.Route("/{approvalId}", func(r chi.Router) {
+					r.Get("/", h.GetAgentApproval)
+					r.With(handler.RequireHumanActor).Post("/decision", h.DecideAgentApproval)
+					r.Post("/execution", h.RecordAgentApprovalExecution)
+					r.Post("/cancel", h.CancelAgentApproval)
 				})
 			})
 
@@ -2086,6 +2105,13 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				// cannot mint an agent carrying `system_key` and thereby claim
 				// the system instruction layer. Idempotent per workspace.
 				r.Post("/mika", h.CreateMikaAgent)
+				// Built-in role templates. Static paths, so chi matches them ahead
+				// of /{id} — same shape /mika already relies on.
+				r.Get("/templates", h.ListAgentRoleTemplates)
+				// Creates an ORDINARY workspace agent seeded from a template. The
+				// public create endpoint deliberately does not accept template_key
+				// or autonomy_level, so provenance and policy stay server decisions.
+				r.Post("/from-template", h.CreateAgentFromTemplate)
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetAgent)
 					r.Put("/", h.UpdateAgent)

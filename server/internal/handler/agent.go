@@ -81,12 +81,22 @@ type AgentResponse struct {
 	SystemKey string `json:"system_key,omitempty"`
 	// SystemInstructions is the read-only product half of a system agent's
 	// prompt, filled from the server binary. Empty for ordinary agents.
-	SystemInstructions string          `json:"system_instructions,omitempty"`
-	AvatarURL          *string         `json:"avatar_url"`
-	RuntimeMode        string          `json:"runtime_mode"`
-	RuntimeConfig      any             `json:"runtime_config"`
-	CustomArgs         []string        `json:"custom_args"`
-	McpConfig          json.RawMessage `json:"mcp_config"`
+	SystemInstructions string `json:"system_instructions,omitempty"`
+	// TemplateKey and TemplateVersion record the built-in role template this
+	// agent was copied from, and the version of that template at the time. Empty
+	// for a hand-authored agent. They are provenance only: the instructions on the
+	// row are the workspace's, and a newer template never rewrites them.
+	TemplateKey     string `json:"template_key,omitempty"`
+	TemplateVersion int32  `json:"template_version,omitempty"`
+	// AutonomyLevel is the declared policy the server enforces on this agent's own
+	// API requests. Empty means no policy declared, which is every agent created
+	// before role templates existed.
+	AutonomyLevel string          `json:"autonomy_level,omitempty"`
+	AvatarURL     *string         `json:"avatar_url"`
+	RuntimeMode   string          `json:"runtime_mode"`
+	RuntimeConfig any             `json:"runtime_config"`
+	CustomArgs    []string        `json:"custom_args"`
+	McpConfig     json.RawMessage `json:"mcp_config"`
 	// custom_env is intentionally NOT serialized on agent resources. The
 	// agent_list/get/create/update/archive/restore responses and WS events
 	// only expose coarse metadata (has_custom_env, custom_env_key_count) so
@@ -215,6 +225,9 @@ func (h *Handler) agentToResponse(a db.Agent) AgentResponse {
 		ConversationStarters:     conversationStarters,
 		SystemKey:                a.SystemKey.String,
 		SystemInstructions:       systemInstructionsFor(a),
+		TemplateKey:              a.TemplateKey,
+		TemplateVersion:          a.TemplateVersion,
+		AutonomyLevel:            a.AutonomyLevel,
 		AvatarURL:                h.resolveAvatarURLPtr(textToPtr(a.AvatarUrl)),
 		RuntimeMode:              a.RuntimeMode,
 		RuntimeConfig:            rc,
@@ -1305,14 +1318,48 @@ func normaliseAgentConversationStarters(starters []AgentConversationStarter) ([]
 }
 
 func (h *Handler) CreateAgent(w http.ResponseWriter, r *http.Request) {
-	workspaceID := h.resolveWorkspaceID(r)
-
 	var req CreateAgentRequest
 	rawFields, err := decodeJSONBodyWithRawFields(r.Body, &req)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
 	}
+	// A hand-authored agent has no template provenance and no declared autonomy
+	// level, which is what every agent created before role templates carries.
+	h.createAgentFromRequest(w, r, req, rawFields, agentTemplateProvenance{})
+}
+
+// agentTemplateProvenance records which built-in role template a created agent
+// was copied from. Zero for a hand-authored one.
+//
+// It is a separate argument rather than a field on CreateAgentRequest because the
+// public API must not accept it: a client that could set template_key would be
+// able to claim provenance its agent does not have, and one that could set
+// autonomy_level on create could mint an Operator without going through a
+// template at all. Both are server decisions.
+type agentTemplateProvenance struct {
+	Key      string
+	Version  int32
+	Autonomy string
+}
+
+// createAgentFromRequest is the whole of agent creation after the request body has
+// been read: validation, permission resolution, the insert, skill attachment, the
+// broadcast and the response.
+//
+// Split out so the role-template flow (agent_template.go) creates agents through
+// exactly this path instead of a parallel one. Every rule that applies to a
+// hand-built agent — runtime access, thinking-level and service-tier validation,
+// the name-uniqueness conflict, invocation permission — therefore applies to a
+// template agent too, for free and without a second place to keep in step.
+func (h *Handler) createAgentFromRequest(
+	w http.ResponseWriter,
+	r *http.Request,
+	req CreateAgentRequest,
+	rawFields map[string]json.RawMessage,
+	provenance agentTemplateProvenance,
+) {
+	workspaceID := h.resolveWorkspaceID(r)
 
 	ownerID, ok := requireUserID(w, r)
 	if !ok {
@@ -1504,6 +1551,9 @@ func (h *Handler) CreateAgent(w http.ResponseWriter, r *http.Request) {
 		ServiceTier:              pgtype.Text{String: req.ServiceTier, Valid: req.ServiceTier != ""},
 		ConversationStarters:     sp,
 		ComposioToolkitAllowlist: allowlist,
+		TemplateKey:              provenance.Key,
+		TemplateVersion:          provenance.Version,
+		AutonomyLevel:            provenance.Autonomy,
 	})
 	if err != nil {
 		// Unique constraint on (workspace_id, name) — return a clear conflict error
@@ -1610,6 +1660,13 @@ type UpdateAgentRequest struct {
 	// ServiceTier follows the same tri-state contract as ThinkingLevel:
 	// omitted preserves, empty clears, and non-empty sets a Codex catalog ID.
 	ServiceTier *string `json:"service_tier"`
+	// AutonomyLevel is tri-state in the same shape, and works with a single
+	// COALESCE because the cleared value is the empty string rather than NULL:
+	// omitted sends nil and preserves, "" is not null so it overwrites with "no
+	// policy", and a named level sets it. Restricted to the agent owner and
+	// workspace owner/admin — raising an agent's own ceiling is the one edit an
+	// agent actor must never make about itself.
+	AutonomyLevel *string `json:"autonomy_level"`
 	// ComposioToolkitAllowlist is a tri-state, same pattern as
 	// thinking_level, mcp_config:
 	//   - field omitted → no change (column preserved as-is)
@@ -1839,6 +1896,25 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.Instructions != nil {
 		params.Instructions = pgtype.Text{String: *req.Instructions, Valid: true}
+	}
+	if req.AutonomyLevel != nil {
+		// Human-only, and checked here rather than on the route: an agent task token
+		// carries its OWNER's user id, so canManageAgent alone would let an agent
+		// PATCH itself to `operator` and pass every later policy check. The rest of
+		// this endpoint stays open to agent actors, which is existing behaviour — it
+		// is specifically the policy ceiling that an agent must not be able to move.
+		if isMachineCredentialActor(r) {
+			writeError(w, http.StatusForbidden, "autonomy_level can only be changed by a person")
+			return
+		}
+		level := strings.TrimSpace(*req.AutonomyLevel)
+		if level != "" && !service.IsKnownAutonomyLevel(level) {
+			writeError(w, http.StatusBadRequest, "autonomy_level must be observer, contributor, coordinator, operator, or empty")
+			return
+		}
+		// Empty string is not NULL, so COALESCE overwrites with it — that is the
+		// documented way to clear the policy back to "none declared".
+		params.AutonomyLevel = pgtype.Text{String: level, Valid: true}
 	}
 	if req.ConversationStarters != nil {
 		conversationStarters, err := normaliseAgentConversationStarters(*req.ConversationStarters)
