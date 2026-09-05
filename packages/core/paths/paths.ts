@@ -38,12 +38,21 @@ function workspaceScoped(slug: string) {
     // The two creation methods behind the chooser. Each is a real route so a
     // half-filled form survives a refresh and can be linked to directly.
     newAgentManual: () => `${ws}/agents/new/manual`,
+    // The role-template flow. One route for both of its steps: which role is
+    // being configured rides in `?template=`, because a role is a choice inside
+    // the flow rather than a destination of its own.
+    newAgentTemplate: () => `${ws}/agents/new/template`,
     newAgentAi: () => `${ws}/agents/new/ai`,
     // One creation conversation. It is a durable object, not a step of the
     // route above: it survives leaving the studio and is resumed later, so it
     // owns an address instead of being a query param on the "start one" screen.
     newAgentAiSession: (sessionId: string) =>
       `${ws}/agents/new/ai/${encode(sessionId)}`,
+    // The human approval queue for high-risk agent actions. Nested under agents
+    // rather than given a top-level segment: it is a queue about agents, and the
+    // person who reviews it is the person who manages them. Static, so it resolves
+    // ahead of agents/:id on both routers, the same way agents/new does.
+    agentApprovals: () => `${ws}/agents/approvals`,
     agentDetail: (id: string) => `${ws}/agents/${encode(id)}`,
     // Deep link behind "customize" in a chat's empty state: the agent's
     // Instructions tab, scrolled to the conversation starters that produced

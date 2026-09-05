@@ -87,6 +87,12 @@ import type {
   WebhookDelivery,
   WorkspaceMcpServer,
 } from "../types";
+import type {
+  AgentApproval,
+  AgentRoleTemplate,
+  SquadTemplate,
+  StaffedSquad,
+} from "../types/agent-template";
 import type { CloudRuntimeNode } from "../runtimes/cloud-runtime";
 import type { CreateFeedbackResponse } from "../feedback/types";
 
@@ -2068,6 +2074,11 @@ export const SquadSchema = z.object({
   archived_by: z.string().nullable().optional().transform((v) => v ?? null),
   member_count: z.number().default(0),
   member_preview: z.array(SquadMemberPreviewSchema).default([]),
+  // Provenance of a squad staffed from a built-in template. Optional: hand-built
+  // squads carry neither, and a backend that predates squad templates sends
+  // neither.
+  template_key: z.string().optional(),
+  template_version: z.number().optional(),
 }).loose();
 
 export const SquadListSchema = z.array(SquadSchema);
@@ -3365,4 +3376,132 @@ export const EMPTY_JOIN_SHARE_LINK_RESPONSE: {
   },
   workspace_id: "",
   workspace_slug: "",
+};
+
+// ---------------------------------------------------------------------------
+// Built-in role and squad templates, and the approval boundary (Phase 1).
+//
+// Every field except the identifying key carries a default so a client pointed
+// at a newer backend that adds one, or an older one that omits one, still
+// renders. Enum-shaped values stay `z.string()` on purpose — an autonomy level
+// or risk class this client has never heard of must reach the UI as text rather
+// than fail the whole payload; the consuming code branches with a default.
+// ---------------------------------------------------------------------------
+
+export const AgentRoleTemplateSchema = z.object({
+  key: z.string(),
+  version: z.number().default(0),
+  name: z.string().default(""),
+  title: z.string().default(""),
+  description: z.string().default(""),
+  autonomy_level: z.string().default(""),
+  avatar_emoji: z.string().default(""),
+  max_concurrent_tasks: z.number().default(1),
+  skill_names: z.array(z.string()).default([]),
+  instructions: z.string().default(""),
+}).loose();
+
+export const AgentRoleTemplateListResponseSchema = z.object({
+  templates: z.array(AgentRoleTemplateSchema).default([]),
+}).loose();
+
+export const EMPTY_AGENT_ROLE_TEMPLATE_LIST: AgentRoleTemplate[] = [];
+
+const SquadTemplateRoleSchema = z.object({
+  template_key: z.string(),
+  title: z.string().default(""),
+  name: z.string().default(""),
+  autonomy_level: z.string().default(""),
+  avatar_emoji: z.string().default(""),
+  role: z.string().default(""),
+}).loose();
+
+// The leader seat is `.partial()`-shaped through defaults rather than optional:
+// a squad template with no readable leader is not renderable as a squad, and an
+// empty template_key is what the UI checks.
+const SquadTemplateLeaderSchema = SquadTemplateRoleSchema.extend({
+  template_key: z.string().default(""),
+});
+
+export const SquadTemplateSchema = z.object({
+  key: z.string(),
+  version: z.number().default(0),
+  name: z.string().default(""),
+  title: z.string().default(""),
+  description: z.string().default(""),
+  avatar_emoji: z.string().default(""),
+  instructions: z.string().default(""),
+  leader: SquadTemplateLeaderSchema.default({
+    template_key: "",
+    title: "",
+    name: "",
+    autonomy_level: "",
+    avatar_emoji: "",
+    role: "",
+  }),
+  members: z.array(SquadTemplateRoleSchema).default([]),
+}).loose();
+
+export const SquadTemplateListResponseSchema = z.object({
+  templates: z.array(SquadTemplateSchema).default([]),
+}).loose();
+
+export const EMPTY_SQUAD_TEMPLATE_LIST: SquadTemplate[] = [];
+
+export const StaffedSquadSchema = z.object({
+  squad: SquadSchema,
+  created_agent_ids: z.array(z.string()).default([]),
+  reused_agent_ids: z.array(z.string()).default([]),
+}).loose();
+
+export const EMPTY_STAFFED_SQUAD: StaffedSquad = {
+  squad: EMPTY_SQUAD,
+  created_agent_ids: [],
+  reused_agent_ids: [],
+};
+
+export const AgentApprovalSchema = z.object({
+  id: z.string(),
+  workspace_id: z.string().default(""),
+  agent_id: z.string().default(""),
+  task_id: z.string().nullable().optional().transform((v) => v ?? null),
+  issue_id: z.string().nullable().optional().transform((v) => v ?? null),
+  risk_class: z.string().default(""),
+  summary: z.string().default(""),
+  plan: z.string().default(""),
+  // Anything other than the five known values must be treated as "not approved"
+  // by the consumer, which is why this is not a zod enum.
+  status: z.string().default("pending"),
+  decided_by: z.string().nullable().optional().transform((v) => v ?? null),
+  decided_at: z.string().nullable().optional().transform((v) => v ?? null),
+  decision_note: z.string().default(""),
+  executed_at: z.string().nullable().optional().transform((v) => v ?? null),
+  execution_note: z.string().default(""),
+  created_at: z.string().default(""),
+  updated_at: z.string().default(""),
+}).loose();
+
+export const AgentApprovalListResponseSchema = z.object({
+  approvals: z.array(AgentApprovalSchema).default([]),
+}).loose();
+
+export const EMPTY_AGENT_APPROVAL_LIST: AgentApproval[] = [];
+
+export const EMPTY_AGENT_APPROVAL: AgentApproval = {
+  id: "",
+  workspace_id: "",
+  agent_id: "",
+  task_id: null,
+  issue_id: null,
+  risk_class: "",
+  summary: "",
+  plan: "",
+  status: "pending",
+  decided_by: null,
+  decided_at: null,
+  decision_note: "",
+  executed_at: null,
+  execution_note: "",
+  created_at: "",
+  updated_at: "",
 };

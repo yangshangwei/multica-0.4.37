@@ -222,6 +222,15 @@ import type {
   CreateCommentSubIssueAgentRequest,
   CreateCommentSubIssueRequest,
 } from "../types";
+import type {
+  AgentApproval,
+  AgentRoleTemplate,
+  ApprovalStatus,
+  CreateAgentFromTemplateRequest,
+  CreateSquadFromTemplateRequest,
+  SquadTemplate,
+  StaffedSquad,
+} from "../types/agent-template";
 import type { OnboardingCompletionPath } from "../onboarding/types";
 import type {
   CreateFeedbackResponse,
@@ -238,6 +247,9 @@ import { createRequestId, createSafeId } from "../utils";
 import { getCurrentSlug } from "../platform/workspace-storage";
 import { parseWithFallback } from "./schema";
 import {
+  AgentApprovalListResponseSchema,
+  AgentApprovalSchema,
+  AgentRoleTemplateListResponseSchema,
   AgentTaskListSchema,
   AttachmentResponseSchema,
   CancelTaskResponseSchema,
@@ -286,7 +298,12 @@ import {
   EMPTY_SEARCH_ISSUES_RESPONSE,
   EMPTY_SEARCH_PROJECTS_RESPONSE,
   EMPTY_SQUAD,
+  EMPTY_AGENT_APPROVAL,
+  EMPTY_AGENT_APPROVAL_LIST,
+  EMPTY_AGENT_ROLE_TEMPLATE_LIST,
   EMPTY_SQUAD_LIST,
+  EMPTY_SQUAD_TEMPLATE_LIST,
+  EMPTY_STAFFED_SQUAD,
   EMPTY_SQUAD_MEMBER_STATUS_LIST,
   EMPTY_TIMELINE_ENTRIES,
   EMPTY_USER,
@@ -322,6 +339,8 @@ import {
   SearchProjectsResponseSchema,
   SquadSchema,
   SquadListSchema,
+  SquadTemplateListResponseSchema,
+  StaffedSquadSchema,
   SquadMemberStatusListResponseSchema,
   SubscribersListSchema,
   TimelineEntriesSchema,
@@ -1487,6 +1506,131 @@ export class ApiClient {
       method: "POST",
       body: JSON.stringify(data),
     });
+  }
+
+  /**
+   * The built-in role templates a person can staff an agent from.
+   *
+   * Workspace-independent — templates ship with the backend binary — so the
+   * result is safe to cache for the session. `language` only selects the
+   * localized label and description; instructions are English by design, as
+   * every agent-harness text in this product is.
+   */
+  async listAgentRoleTemplates(language?: string): Promise<AgentRoleTemplate[]> {
+    const query = language ? `?language=${encodeURIComponent(language)}` : "";
+    const raw = await this.fetch<unknown>(`/api/agents/templates${query}`);
+    return parseWithFallback(
+      raw,
+      AgentRoleTemplateListResponseSchema,
+      { templates: EMPTY_AGENT_ROLE_TEMPLATE_LIST },
+      { endpoint: "GET /api/agents/templates" },
+    ).templates as AgentRoleTemplate[];
+  }
+
+  /**
+   * Creates an ordinary workspace agent from a role template.
+   *
+   * The request carries no instructions, autonomy level or skills: those come
+   * from the template on the backend, so a client cannot claim a role's
+   * provenance while supplying its own prompt.
+   */
+  async createAgentFromTemplate(
+    data: CreateAgentFromTemplateRequest,
+  ): Promise<Agent> {
+    return this.fetch("/api/agents/from-template", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  /** The built-in squad templates, with their rosters. */
+  async listSquadTemplates(language?: string): Promise<SquadTemplate[]> {
+    const query = language ? `?language=${encodeURIComponent(language)}` : "";
+    const raw = await this.fetch<unknown>(`/api/squads/templates${query}`);
+    return parseWithFallback(
+      raw,
+      SquadTemplateListResponseSchema,
+      { templates: EMPTY_SQUAD_TEMPLATE_LIST },
+      { endpoint: "GET /api/squads/templates" },
+    ).templates as SquadTemplate[];
+  }
+
+  /**
+   * Staffs a squad from a template: creates the roster agents that do not exist
+   * yet, the squad, and its membership, in one backend transaction.
+   *
+   * An agent the workspace already has for a role is REUSED as it stands — the
+   * returned id lists say which, and the caller should tell the user, because a
+   * reused agent keeps whatever the workspace already changed about it.
+   */
+  async createSquadFromTemplate(
+    data: CreateSquadFromTemplateRequest,
+  ): Promise<StaffedSquad> {
+    const raw = await this.fetch<unknown>("/api/squads/from-template", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    return parseWithFallback(raw, StaffedSquadSchema, EMPTY_STAFFED_SQUAD, {
+      endpoint: "POST /api/squads/from-template",
+    }) as StaffedSquad;
+  }
+
+  /**
+   * The workspace's approval queue for high-risk agent actions.
+   *
+   * A person sees every request; an agent calling this sees only its own. The
+   * backend decides which, from the credential — there is no parameter for it.
+   */
+  async listAgentApprovals(params?: {
+    status?: ApprovalStatus;
+    limit?: number;
+  }): Promise<AgentApproval[]> {
+    const query = new URLSearchParams();
+    if (params?.status) query.set("status", params.status);
+    if (params?.limit) query.set("limit", String(params.limit));
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    const raw = await this.fetch<unknown>(`/api/agent-approvals${suffix}`);
+    return parseWithFallback(
+      raw,
+      AgentApprovalListResponseSchema,
+      { approvals: EMPTY_AGENT_APPROVAL_LIST },
+      { endpoint: "GET /api/agent-approvals" },
+    ).approvals as AgentApproval[];
+  }
+
+  async getAgentApproval(id: string): Promise<AgentApproval> {
+    const raw = await this.fetch<unknown>(`/api/agent-approvals/${id}`);
+    return parseWithFallback(raw, AgentApprovalSchema, EMPTY_AGENT_APPROVAL, {
+      endpoint: "GET /api/agent-approvals/:id",
+    }) as AgentApproval;
+  }
+
+  /**
+   * Records a person's decision. Rejected for machine credentials on the
+   * backend — this is the one write in the approval flow an agent can never
+   * perform, and the reason the mechanism is worth having.
+   */
+  async decideAgentApproval(
+    id: string,
+    data: { decision: "approve" | "reject"; note?: string },
+  ): Promise<AgentApproval> {
+    const raw = await this.fetch<unknown>(
+      `/api/agent-approvals/${id}/decision`,
+      { method: "POST", body: JSON.stringify(data) },
+    );
+    return parseWithFallback(raw, AgentApprovalSchema, EMPTY_AGENT_APPROVAL, {
+      endpoint: "POST /api/agent-approvals/:id/decision",
+    }) as AgentApproval;
+  }
+
+  /** Withdraws a request whose plan no longer applies. */
+  async cancelAgentApproval(id: string): Promise<AgentApproval> {
+    const raw = await this.fetch<unknown>(`/api/agent-approvals/${id}/cancel`, {
+      method: "POST",
+    });
+    return parseWithFallback(raw, AgentApprovalSchema, EMPTY_AGENT_APPROVAL, {
+      endpoint: "POST /api/agent-approvals/:id/cancel",
+    }) as AgentApproval;
   }
 
   /**

@@ -23,6 +23,11 @@ export interface Squad {
   archived_by: string | null;
   member_count?: number;
   member_preview?: SquadMemberPreview[];
+  /** The built-in squad template this squad was staffed from, and its version.
+   *  Absent for a hand-built squad. Provenance only — the instructions on the
+   *  row are the workspace's from the moment it is created. */
+  template_key?: string;
+  template_version?: number;
 }
 
 export interface SquadMember {

@@ -82,6 +82,14 @@ describe("bucketDiagnosticPath", () => {
 
   it("keeps static segments that share a slot with an id", () => {
     expect(bucketDiagnosticPath("/acme/agents/new")).toBe("/:slug/agents/new");
+    // The role-template flow keeps both of its steps on one route; the picked
+    // role is a query param, so the bucket is the same either way.
+    expect(bucketDiagnosticPath("/acme/agents/new/template")).toBe(
+      "/:slug/agents/new/template",
+    );
+    expect(bucketDiagnosticPath("/acme/agents/approvals")).toBe(
+      "/:slug/agents/approvals",
+    );
     expect(bucketDiagnosticPath("/acme/agents")).toBe("/:slug/agents");
   });
 

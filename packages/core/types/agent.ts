@@ -25,6 +25,21 @@ export type AgentVisibility = "workspace" | "private";
 //   - team target: reserved, INERT in v1 (never grants)
 // ---------------------------------------------------------------------------
 
+/**
+ * How far an agent may act on its own before a person has to be in the loop.
+ * Cumulative: each level may do everything the level below it may.
+ *
+ * The backend enforces this on agent-actor requests AND states it in the prompt
+ * the agent claims, so the two cannot drift. An agent with no level declared is
+ * unrestricted by this policy — treat an absent value as "no policy", never as
+ * the lowest level, or the UI will claim a limit the backend does not apply.
+ */
+export type AgentAutonomyLevel =
+  | "observer"
+  | "contributor"
+  | "coordinator"
+  | "operator";
+
 export type AgentPermissionMode = "private" | "public_to";
 
 /**
@@ -489,6 +504,16 @@ export interface Agent {
   /** Read-only product half of a system agent's prompt, served from the
    *  backend binary. Absent for ordinary agents. */
   system_instructions?: string;
+  /** The built-in role template this agent was copied from, and the version of
+   *  that template at copy time. Absent for a hand-authored agent. Provenance
+   *  only: the instructions on the row are the workspace's, and a newer
+   *  template never rewrites them. */
+  template_key?: string;
+  template_version?: number;
+  /** Declared autonomy policy the backend enforces on this agent's own API
+   *  requests. Absent means no policy declared, which is every agent created
+   *  before role templates — those keep behaving exactly as they did. */
+  autonomy_level?: AgentAutonomyLevel;
   avatar_url: string | null;
   runtime_mode: AgentRuntimeMode;
   runtime_config: Record<string, unknown>;

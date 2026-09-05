@@ -7,7 +7,30 @@ export type {
   UpdateIssueStatusRequest,
 } from "./issue-status";
 export type {
+  AgentRoleTemplate,
+  SquadTemplate,
+  SquadTemplateRole,
+  StaffedSquad,
+  CreateAgentFromTemplateRequest,
+  CreateSquadFromTemplateRequest,
+  AgentApproval,
+  ApprovalRiskClass,
+  ApprovalStatus,
+  CreateAgentApprovalRequest,
+} from "./agent-template";
+export {
+  AGENT_AUTONOMY_LEVELS,
+  APPROVAL_RISK_CLASSES,
+  APPROVAL_STATUSES,
+  isKnownAutonomyLevel,
+  isKnownApprovalRiskClass,
+  isKnownApprovalStatus,
+  isApprovalActionable,
+  isApprovalPending,
+} from "./agent-template";
+export type {
   Agent,
+  AgentAutonomyLevel,
   AgentConversationStarter,
   AgentStatus,
   AgentRuntimeMode,

@@ -7,6 +7,7 @@ type ModalType =
   | "quick-create-issue"
   | "create-project"
   | "create-squad"
+  | "staff-squad-template"
   | "feedback"
   | "issue-set-parent"
   | "issue-add-child"
