@@ -2186,6 +2186,22 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	if agent.SystemKey.String == service.MikaSystemKey {
 		resp.Agent.Instructions = service.ComposeMikaInstructions(agent.Name, agent.Instructions)
 	}
+	// The autonomy policy is layered in the same way and for the same reason: it
+	// ships with the binary, is never written to the agent row, and therefore cannot
+	// be edited away by a workspace or drift from what the server actually enforces
+	// on this agent's own API requests (agent_autonomy.go).
+	//
+	// Appended AFTER the agent's instructions and BEFORE the squad briefing, so a
+	// leader reads its role, then its ceiling, then its roster. An agent with no
+	// declared level gets nothing added — that is every agent created before role
+	// templates existed, and their prompts must not change.
+	if policy := service.AutonomyBriefing(agent.AutonomyLevel); policy != "" {
+		if strings.TrimSpace(resp.Agent.Instructions) == "" {
+			resp.Agent.Instructions = policy
+		} else {
+			resp.Agent.Instructions = resp.Agent.Instructions + "\n\n" + policy
+		}
+	}
 	if useSkillRefs {
 		_, skillRefs, err := h.TaskService.LoadAgentSkillBundles(r.Context(), task.AgentID)
 		if err != nil {

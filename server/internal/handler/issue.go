@@ -2819,6 +2819,12 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Autonomy: creating work is not analysis. An Observer that finds something
+	// worth filing reports it in a comment and names who should file it.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "create issues") {
+		return
+	}
+
 	status := req.Status
 	if status == "" {
 		status = "todo"
@@ -3345,6 +3351,21 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	// Track which fields were explicitly present in JSON (even if null)
 	var rawFields map[string]json.RawMessage
 	json.Unmarshal(bodyBytes, &rawFields)
+
+	// Autonomy: an Observer analyses and comments, so it must not move work.
+	// Everything else about this endpoint is unchanged, including for agent actors —
+	// it is specifically status and assignment that decide what the workspace does
+	// next. Agents with no declared level pass, which is every agent created before
+	// role templates existed.
+	//
+	// Read from rawFields, not from the decoded pointers: the assignee block below
+	// treats an explicitly null assignee_id as "unassign", and a null decodes to a
+	// nil pointer, so a pointer-based gate would let an Observer unassign work.
+	if requestTouchesIssueDirection(rawFields) {
+		if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "change an issue's status or assignee") {
+			return
+		}
+	}
 
 	// Pre-fill nullable fields (bare sqlc.narg) with current values
 	params := db.UpdateIssueParams{
@@ -4077,6 +4098,17 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	}
 
 	workspaceID := h.resolveWorkspaceID(r)
+	// Autonomy: the same rule UpdateIssue applies, because this endpoint writes the
+	// same fields. A batch of one is otherwise an exact bypass of it, which is what
+	// the first version of the autonomy gate shipped with — hence one shared
+	// predicate (requestTouchesIssueDirection) rather than two hand-kept lists.
+	// Runs before the status and project lookups below, and before any write, so a
+	// refusal costs a query and changes nothing.
+	if requestTouchesIssueDirection(rawUpdates) {
+		if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "change an issue's status or assignee") {
+			return
+		}
+	}
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
 	if !ok {
 		return

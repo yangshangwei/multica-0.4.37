@@ -13,6 +13,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/dbid"
@@ -36,6 +37,11 @@ type SquadResponse struct {
 	ArchivedBy    *string                      `json:"archived_by"`
 	MemberCount   int                          `json:"member_count"`
 	MemberPreview []SquadMemberPreviewResponse `json:"member_preview"`
+	// TemplateKey and TemplateVersion record the built-in squad template this squad
+	// was staffed from. Provenance only — the instructions on the row are the
+	// workspace's from the moment it is created.
+	TemplateKey     string `json:"template_key,omitempty"`
+	TemplateVersion int32  `json:"template_version,omitempty"`
 }
 
 type SquadMemberPreviewResponse struct {
@@ -62,19 +68,21 @@ type SquadMemberResponse struct {
 
 func (h *Handler) squadToResponse(s db.Squad) SquadResponse {
 	return SquadResponse{
-		ID:            uuidToString(s.ID),
-		WorkspaceID:   uuidToString(s.WorkspaceID),
-		Name:          s.Name,
-		Description:   s.Description,
-		Instructions:  s.Instructions,
-		AvatarURL:     h.resolveAvatarURLPtr(textToPtr(s.AvatarUrl)),
-		LeaderID:      uuidToString(s.LeaderID),
-		CreatorID:     uuidToString(s.CreatorID),
-		CreatedAt:     timestampToString(s.CreatedAt),
-		UpdatedAt:     timestampToString(s.UpdatedAt),
-		ArchivedAt:    timestampToPtr(s.ArchivedAt),
-		ArchivedBy:    uuidToPtr(s.ArchivedBy),
-		MemberPreview: []SquadMemberPreviewResponse{},
+		ID:              uuidToString(s.ID),
+		WorkspaceID:     uuidToString(s.WorkspaceID),
+		Name:            s.Name,
+		Description:     s.Description,
+		Instructions:    s.Instructions,
+		AvatarURL:       h.resolveAvatarURLPtr(textToPtr(s.AvatarUrl)),
+		LeaderID:        uuidToString(s.LeaderID),
+		CreatorID:       uuidToString(s.CreatorID),
+		CreatedAt:       timestampToString(s.CreatedAt),
+		UpdatedAt:       timestampToString(s.UpdatedAt),
+		ArchivedAt:      timestampToPtr(s.ArchivedAt),
+		ArchivedBy:      uuidToPtr(s.ArchivedBy),
+		MemberPreview:   []SquadMemberPreviewResponse{},
+		TemplateKey:     s.TemplateKey,
+		TemplateVersion: s.TemplateVersion,
 	}
 }
 
@@ -231,6 +239,11 @@ func (h *Handler) CreateSquad(w http.ResponseWriter, r *http.Request) {
 	// also member-creatable; management stays creator-scoped (MUL-4223).
 	member, ok := h.requireWorkspaceMember(w, r, workspaceID, "workspace not found")
 	if !ok {
+		return
+	}
+	// Autonomy: wiring a squad decides how future work is routed, which is what a
+	// Coordinator is for. A contributor that thinks a squad is needed says so.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "create squads") {
 		return
 	}
 

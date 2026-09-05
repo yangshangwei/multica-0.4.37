@@ -643,6 +643,13 @@ func (h *Handler) requireAutopilotAccessManagement(w http.ResponseWriter, r *htt
 }
 
 func (h *Handler) CreateAutopilot(w http.ResponseWriter, r *http.Request) {
+	// Autonomy: standing automation outlives the turn that created it and can wake
+	// other agents on a schedule. That is coordination, not contribution, so an
+	// Implementer or a reviewer cannot leave one behind.
+	if !h.requireAgentAutonomy(w, r, h.resolveWorkspaceID(r), service.AutonomyCoordinator, "create automation") {
+		return
+	}
+
 	var req CreateAutopilotRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
@@ -875,6 +882,11 @@ func (h *Handler) UpdateAutopilot(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if !h.requireAutopilotWrite(w, r, prev, workspaceID) {
+		return
+	}
+	// Same reasoning as create: changing what an automation does, or re-enabling one,
+	// is a coordination decision.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "change automation") {
 		return
 	}
 
