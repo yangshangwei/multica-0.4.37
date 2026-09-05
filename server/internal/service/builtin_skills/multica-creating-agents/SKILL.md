@@ -32,7 +32,9 @@ it again. Unbound is orthogonal to archived.
 
 `agent get` returns the persisted agent including `runtime_id`, `model`,
 `thinking_level`, `service_tier`, `custom_args`, `has_custom_env`,
-`custom_env_key_count`, and `skills`. It never returns plaintext `custom_env`.
+`custom_env_key_count`, `skills`, and — for an agent created from a built-in role
+template — `template_key`, `template_version` and `autonomy_level`. It never
+returns plaintext `custom_env`.
 
 ## Core model
 
@@ -115,6 +117,41 @@ multica agent copy <source-agent-id> --runtime-id <target> --model <model>  # cr
   the same secret-safe flags as `agent create` (`--custom-env*`, `--mcp-config*`,
   `--runtime-config`), or with `agent env set` after the copy exists.
 - `--no-skills` skips copying the source's skill bindings.
+
+## Creating from a built-in role template
+
+`POST /api/agents/from-template` creates an ordinary agent seeded from one of the
+platform's role templates (`GET /api/agents/templates` lists them, with the full
+instructions text). There is no CLI command for this yet — it is the web
+creation flow's third starting point.
+
+The request carries only `template_key`, `runtime_id` and the few things a person
+chooses: `name`, `model`, `thinking_level`, `service_tier`, `permission_mode` +
+`invocation_targets`, `language`. Instructions, default skills, concurrency cap
+and `autonomy_level` come from the server. `POST /api/agents` accepts NEITHER
+`template_key` NOR `autonomy_level` — a client cannot claim a template's
+provenance or mint an autonomy level through the ordinary create.
+
+What the template create does that the ordinary one does not:
+
+- copies the role's instructions onto the row (editable afterwards; a release
+  never overwrites them) and records `template_key` + `template_version`;
+- materializes the role's skills as workspace skills and binds them in the same
+  transaction — unlike `agent create`, which binds nothing. A workspace skill
+  that already carries that name is reused AS IS and never overwritten;
+- sets `autonomy_level` from the template.
+
+`autonomy_level` (`observer` / `contributor` / `coordinator` / `operator`, or
+empty for no declared policy) is enforced on the agent's OWN API requests, not
+just displayed. An `observer` agent's issue status/assignee change and issue
+create are rejected with 403 — on every route that writes those fields, including
+`POST /api/issues/batch-update`, and including an explicitly null assignee;
+automation and squad writes need `coordinator`;
+recording a high-risk action needs `operator` plus an approved request
+(`multica approval --help`). An empty level is unrestricted, which is what every
+agent created before role templates carries. Only a person can change the value:
+`PUT /api/agents/{id}` rejects `autonomy_level` from a task token, even though
+that token carries the owner's user id.
 
 ## Field contracts
 
@@ -366,6 +403,10 @@ State-changing (require an explicit instruction — do not run speculatively):
   unknown provider-level literal is — model-specific gaps fail at run time.
 - "`set` and `add` are interchangeable for skills." `set` replaces all
   bindings; using it when you meant `add` silently removes capabilities.
+- "A template agent is a special kind of agent." It is not — same table, same
+  Access, same task lifecycle. `template_key` is provenance, not status.
+- "Upgrading Multica updates template agents' instructions." It does not. The
+  text was copied at creation and belongs to the workspace.
 
 ## References
 

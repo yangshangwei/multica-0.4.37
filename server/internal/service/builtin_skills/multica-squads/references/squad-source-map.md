@@ -76,6 +76,43 @@ Contracts:
 - leader is auto-added as member with role `leader` (squad.go:258-263);
 - updating `leader_id` auto-adds new leader as member if missing (squad.go:340-347).
 
+## Template Staffing
+
+Source:
+
+```text
+server/internal/handler/squad_template.go          # ListSquadTemplates, CreateSquadFromTemplate, provisionSquadTemplate, resolveTemplateAgentInTx
+server/internal/service/builtin_squad_templates.go # SquadTemplate registry, TemplateKeys()
+server/pkg/db/queries/squad.sql                    # CreateSquadFromTemplate
+server/pkg/db/queries/agent.sql                    # GetAgentByWorkspaceAndTemplateKey
+```
+
+Contracts:
+
+- `GET /api/squads/templates` is workspace-independent: the registry ships with
+  the binary, so the answer is identical for every workspace on the server;
+- staffing is ONE transaction (`provisionSquadTemplate`) covering the missing
+  role agents, the squad row and every `squad_member` row — a partially staffed
+  squad is not a reachable state;
+- provisioning order is leader first (`SquadTemplate.TemplateKeys`), because the
+  squad row cannot be written without `leader_id`;
+- two advisory locks in a fixed order: per (workspace, template) for the squad,
+  then per workspace for role-skill materialization, which is shared between
+  templates. Fixed order is what keeps two concurrent stafflings from
+  deadlocking;
+- an existing agent whose `template_key` matches is REUSED unchanged
+  (`resolveTemplateAgentInTx`) — the template is deliberately not re-applied, so
+  edited instructions, a lowered autonomy level and a different runtime all
+  survive;
+- a name collision with a NON-template agent returns 409
+  (`agentNameConflictError`) rather than adopting it;
+- the leader is created from an unlisted role template at `coordinator`
+  autonomy; member seats keep their own role's default level;
+- access defaults to `private` — `parsePermissionInput` is called with an
+  explicit `"private"` fallback, because its zero value is an EMPTY
+  `permission_mode`, which is not NULL and would survive the column's COALESCE
+  default as an invalid mode.
+
 ## Leader Briefing
 
 Source:

@@ -148,6 +148,29 @@ On create, the backend attempts to add the leader as a squad member with role
 `leader`. When updating `leader_id`, if the new leader is not already a member,
 the backend adds the new leader as a squad member with role `leader`.
 
+### Staffing from a built-in squad template
+
+`GET /api/squads/templates` lists the platform's squad templates;
+`POST /api/squads/from-template` staffs one. No CLI command yet — this is the
+Squads page's "Use a template" action.
+
+One transaction creates the missing role agents, the squad, and the whole roster,
+so a failure leaves nothing behind. Routing is unchanged: the leader receives the
+work and dispatches by `@mention` exactly as in a hand-built squad. What the
+template supplies is the roster and the `instructions` (the leader's routing
+policy), copied onto the row and workspace-owned from then on.
+
+Two behaviors matter when debugging one:
+
+- An agent already created from a role template is REUSED as it stands — same
+  agent in both built-in squads, including instructions the workspace edited. The
+  response reports `created_agent_ids` and `reused_agent_ids` separately.
+- If a non-template agent already holds a role's default name, the request fails
+  with 409 rather than adopting an agent whose instructions it cannot vouch for.
+
+`squad.template_key` / `template_version` record the provenance. They are not
+status: a staffed squad is an ordinary squad.
+
 ## Leader briefing
 
 For squad leader tasks, Multica appends a squad leader briefing to the leader

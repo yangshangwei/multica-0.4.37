@@ -11,16 +11,49 @@ On the workspace **Agents** page, click **New agent**.
 
 ## Starting points
 
-The creation page offers two options:
+The creation page offers three options:
 
 | Option | When it fits |
 |---|---|
 | **Start blank** | You already know the agent's responsibilities and want to fill in every field yourself. |
+| **Use a template** | You want one of the standard engineering roles — analyst, architect, implementer, QA, reviewer, security, release, writer. |
 | **Build with AI** | Describe the goal first and let the Agent Builder ask the key questions and generate a draft. |
 
 Build with AI needs an online runtime for the Builder conversation. Either way, you can review and edit the final configuration before creating.
 
 ![Agent creation starting points: Start blank and Build with AI](/images/docs/quickstart-new-agent.webp)
+
+## Role templates
+
+**Use a template** starts from one of the eight built-in engineering roles:
+
+| Role | What it produces | Autonomy |
+|---|---|---|
+| **Product Analyst** | Open questions, acceptance criteria, risks, a suggested split | Observer |
+| **Architect** | The approach, boundaries, compatibility, and an ADR when the decision will outlive the issue | Observer |
+| **Implementer** | The change and its tests on an isolated branch, plus what was verified | Contributor |
+| **QA Engineer** | A test plan, automated checks, and minimal reproductions | Contributor |
+| **Code Reviewer** | Findings with file, line, severity, and the failure each one causes | Observer |
+| **Security Reviewer** | Authorization, secrets, injection, dependency and data-exposure findings | Observer |
+| **Release Engineer** | A release plan with a rollback, and approval requests for anything touching production | Operator |
+| **Technical Writer** | The changelog, API reference, and runbook the change requires | Observer |
+
+Each template carries responsibilities, what the role must NOT do, what it reads, the output format, its definition of done, and when to escalate to a person. The picker shows the full instructions before you create anything.
+
+There is deliberately no separate frontend, backend, or mobile role. Those are the same Implementer with different [skills](/skills) and project resources attached — splitting by stack multiplies prompts that all say the same thing.
+
+### What a template create actually does
+
+The result is an ordinary agent. It has no special status, and every rule that applies to a hand-built agent applies to it.
+
+- **Instructions are copied to the agent.** You can edit them immediately, and a Multica update never overwrites your edit. The agent records which template and version it came from, so a future release can offer you a diff instead of a replacement.
+- **The role's skills are added to your workspace.** If a skill of that name already exists — because you staffed the role before, or edited it — that skill is reused exactly as it stands. Nothing overwrites it.
+- **Access defaults to "Only me"**, the same default a blank agent gets. Widen it deliberately.
+- **The name, runtime, model, and Access are yours to choose** on the review step.
+
+<Callout type="info">
+Creating a second agent from the same template attaches the same skill rows, so editing a role skill reaches every agent using it.
+</Callout>
 
 ## Required fields
 

@@ -393,11 +393,30 @@ func TestCreatingAgentsSkillCoversAgentCreationContracts(t *testing.T) {
 		}
 	}
 
+	// Role templates shipped, so the skill now has to state the real endpoint and
+	// the two properties an agent gets wrong about it: the copy is the
+	// workspace's, and autonomy is enforced rather than displayed.
+	mustContainTemplates := []string{
+		"POST /api/agents/from-template",
+		"GET /api/agents/templates",
+		"`template_key`",
+		"`autonomy_level`",
+		"reused AS IS and never overwritten",
+		"Only a person can change the value",
+	}
+	for _, want := range mustContainTemplates {
+		if !strings.Contains(body, want) {
+			t.Errorf("creating-agents skill missing role-template contract %q", want)
+		}
+	}
+
 	mustNotContain := []string{
+		// A CLI flag for the template create does not exist; naming one sends the
+		// agent to `multica agent create --from-template`, which fails.
 		"--from-template",
+		// The endpoint lives under /api/agents, not at a top-level collection.
 		"/api/agent-templates",
 		"template_slug",
-		"curated template",
 		"copy this parameter list",
 		// De-coaching: this skill states source-backed contracts, it does not
 		// teach a generic how-to methodology.
@@ -407,7 +426,7 @@ func TestCreatingAgentsSkillCoversAgentCreationContracts(t *testing.T) {
 	}
 	for _, forbidden := range mustNotContain {
 		if strings.Contains(body, forbidden) {
-			t.Errorf("creating-agents skill should not teach immature template content or generic how-to coaching %q", forbidden)
+			t.Errorf("creating-agents skill should not name a nonexistent entry point or teach generic how-to coaching %q", forbidden)
 		}
 	}
 
@@ -438,6 +457,12 @@ func TestSquadsSkillCoversLeaderRoutingContract(t *testing.T) {
 		"mention://squad/<squad-id>",
 		"recording squad activity",
 		"references/squad-source-map.md",
+		// Squad templates shipped: the skill must name the real entry point and
+		// the reuse rule, which is the surprising half when debugging a staffed
+		// squad that shares an agent with another one.
+		"POST /api/squads/from-template",
+		"REUSED as it stands",
+		"`squad.template_key`",
 		// The debugging quick-start must stay a bounded two-step read
 		// (MUL-5442): a roots-only scan alone never returns reply bodies,
 		// where mention triggers and failure reasons usually live — and it

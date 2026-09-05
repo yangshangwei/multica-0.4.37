@@ -34,6 +34,39 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | `agent env get` | 1024 | `GET /api/agents/{id}/env` (1034) | `multica agent env get --help` |
 | `agent env set` | 1059 | `PUT /api/agents/{id}/env` with full `custom_env` map (1079) | `multica agent env set --help` |
 
+## Role templates — `server/internal/service/builtin_agent_templates*.go`, `server/internal/handler/agent_template.go`
+
+| Contract | Location | Behavior | Safe check |
+|---|---|---|---|
+| Roster of eight listed role templates | `builtin_agent_templates_roster.go` `builtinAgentRoleTemplates` | Product-ordered slice; `Listed: false` marks the two squad-leader definitions, which `AgentRoleTemplates()` filters out of the picker | `curl` / UI: `GET /api/agents/templates` |
+| Role prompt copied, not layered | `builtin_agent_templates.go` `AgentRoleTemplate.Instructions` + `agent_template.go` `CreateAgentFromTemplate` | The embedded INSTRUCTIONS.md text is written into `agent.instructions` at create, so a release never overwrites a workspace's edit (the opposite trade-off from Mika in `builtin_agents.go`) | `multica agent get <id> --output json` — `instructions` holds the full role text |
+| Provenance is server-set | `agent.go` `agentTemplateProvenance` + `CreateAgent` | `template_key`, `template_version`, `autonomy_level` are arguments to the shared create path, not fields of `CreateAgentRequest`; the public create cannot set them | `POST /api/agents` with `template_key` → response has an empty `template_key` |
+| Template create reuses the ordinary create path | `agent.go` `createAgentFromRequest` | Runtime access, thinking/service-tier validation, name-conflict 409 and invocation permission all apply unchanged | read `createAgentFromRequest` |
+| Role skills are materialized, never overwritten | `agent_template.go` `materializeRoleSkillsInTx` | Reuse-or-create keyed on skill name; there is no update path, so an edited workspace skill is bound as it stands. `config.origin.type = builtin_role_skill`, which `refreshableOriginSource` does not recognise — "update from source" cannot refetch it | `multica skill list --output json`; the row's `config.origin` |
+| Concurrent materialization is lock-serialized | `agent_template.go` `lockRoleSkillMaterialization` | Advisory lock per workspace, because two templates can name one role skill and a unique-violation inside a transaction cannot be recovered from | read the lock helper |
+
+## Autonomy enforcement — `server/internal/handler/agent_autonomy.go`
+
+| Contract | Location | Behavior | Safe check |
+|---|---|---|---|
+| Applies only to agent actors | `agent_autonomy.go` `agentActorAutonomy` | Resolves the acting agent through `resolveActor`; a human request returns early and is never gated | read `requireAgentAutonomy` |
+| An undeclared level passes everything | `builtin_agent_templates.go` `AutonomyAtLeast` | Empty or unrecognised level returns true for every requirement, so agents that predate role templates are unaffected | `go test ./internal/service -run TestAutonomyAtLeast_UndeclaredPasses` |
+| Observer cannot move work | `issue.go` `UpdateIssue`, `BatchUpdateIssues`, `CreateIssue` | Status/assignee change and issue create require `contributor`; the check runs before the write. Both write routes share one predicate, `agent_autonomy.go` `requestTouchesIssueDirection`, keyed on FIELD PRESENCE in the raw body — an explicitly null `assignee_id` unassigns and decodes to a nil pointer, so a pointer-based gate would miss it | `go test ./internal/handler -run 'TestUpdateIssue_ObserverAgentCannotChangeStatus|TestBatchUpdateIssues_ObserverAgentCannotChangeStatus'` |
+| A person is never gated on either route | `issue.go` both handlers | The gate returns early for a non-agent actor, so nothing about human issue editing changed | `go test ./internal/handler -run TestBatchUpdateIssues_HumanIsUnaffectedByAgentPolicy` |
+| Automation and squads need coordinator | `autopilot.go` `CreateAutopilot`/`UpdateAutopilot`, `squad.go` `CreateSquad` | Standing automation and routing wiring are coordination decisions | `go test ./internal/handler -run TestCreateAutopilot_ContributorAgentCannotCreate` |
+| An agent cannot raise its own ceiling | `agent.go` `UpdateAgent` | `autonomy_level` writes are rejected for machine credentials, because a task token carries the OWNER's user id and would pass `canManageAgent` | `go test ./internal/handler -run TestUpdateAgent_AgentActorCannotRaiseItsOwnAutonomy` |
+| The prompt and the enforcement agree | `builtin_agent_autonomy.go` `AutonomyBriefing` + `daemon.go` claim | The policy section is appended at claim from the binary, never stored on the row | `go test ./internal/handler -run TestClaim_InjectsAutonomyPolicyAfterTheAgentsOwnInstructions` |
+| The prompt does not overclaim | `builtin_agent_autonomy.go` `autonomyObserverBody` | Names which calls the server actually refuses (status, assignee, issue create) and says the rest is the agent's own half of the contract — priority and parent are not gated | read the Observer body |
+
+## Approval boundary — `server/internal/handler/agent_approval.go`, `server/cmd/multica/cmd_approval.go`
+
+| Contract | Location | Behavior | Safe check |
+|---|---|---|---|
+| Only a person decides | `agent_approval.go` `DecideAgentApproval` + router `RequireHumanActor` | Checked twice — middleware and handler — because this is the single gate the mechanism rests on | `go test ./internal/handler -run TestDecideAgentApproval_AgentCannotDecide` |
+| Execution requires approval AND operator | `agent_approval.go` `RecordAgentApprovalExecution` | `MarkAgentApprovalRequestExecuted` matches only `status='approved'`; the level check rejects a contributor holding an approval | `go test ./internal/handler -run TestRecordExecution` |
+| Identity comes from the token | `agent_approval.go` `CreateAgentApproval` | An agent actor's `agent_id` is taken from the task token, never from the body | `go test ./internal/handler -run TestCreateAgentApproval_AgentIdentityComesFromTheToken` |
+| CLI has no approve command | `cmd_approval.go` | `request`, `list`, `get`, `executed`, `cancel` only — an approve command would fail by design for every caller holding a task token | `multica approval --help` |
+
 ## Copy command — `server/cmd/multica/cmd_agent_copy.go`
 
 | Contract | Line | Behavior | Safe check |

@@ -64,6 +64,35 @@ Workspace `owner`s and `admin`s can see and manage every agent, but cannot bypas
 
 Configuration that may contain credentials, such as environment variables and MCP, has stricter read rules — see [Create and configure an agent](/agents-create#environment-variables-and-credentials).
 
+## Autonomy and the approval boundary
+
+An agent created from a [role template](/agents-create#role-templates) also carries an **autonomy level**: how far it may act on its own before a person has to be in the loop. The levels are cumulative.
+
+| Level | May | May not |
+|---|---|---|
+| **Observer** | Read, analyse, comment | Change status or assignment, create issues, edit files |
+| **Contributor** | Everything above, plus write code and tests on an isolated branch, run builds, move the issues it was given | Operate production, create standing automation |
+| **Coordinator** | Everything above, plus create sub-issues, mention members to dispatch work, manage squads and automation | Operate production, accept its own squad's work |
+| **Operator** | Everything above, plus carry out a high-risk action a person has approved | Act on any high-risk action without an approval |
+
+This is not only a label. Multica applies it in two places at once: the API rejects the calls the level forbids when the agent makes them, and the same rules are added to the agent's prompt on every run, from the server, where a workspace cannot edit them away.
+
+An agent with no level declared — every agent created before role templates existed — is unaffected. Nothing about its behaviour changes.
+
+An agent keeps the level its template gave it. Only a person can change that level — an agent cannot raise its own ceiling, even though it acts with its owner's identity — and the agent's settings screen does not offer that control yet.
+
+### High-risk actions need a person
+
+Five classes of action always need an explicit human approval, one approval per action: production releases, migrations against live data, credential access, external announcements, and irreversible deletions.
+
+An Operator agent that reaches one of these produces the plan — the commands, the expected effect, the rollback — files an approval request, and stops. Requests land in **Approvals**, reachable from the agents page, where a person reads the plan and approves or rejects it. The decision, who made it, and what the agent then reported are all recorded there. An approval covers only the single action it describes: not a retry with different arguments, not the next step, not the same action later.
+
+Only a person can decide a request. An agent cannot approve its own, and cannot approve another agent's.
+
+<Callout type="warning">
+This is an auditable boundary, not a sandbox. A task runs with the permissions of the user running the [daemon](/daemon-runtimes), so an agent's file and system access is whatever that user has. Autonomy levels and approvals record and gate what Multica mediates; keeping production credentials out of a development runtime is what actually keeps them out of reach.
+</Callout>
+
 ## Online, offline, and workload status
 
 The agent list shows two kinds of status side by side:
