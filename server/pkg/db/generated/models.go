@@ -53,6 +53,28 @@ type Agent struct {
 	DisabledRuntimeSkills []byte      `json:"disabled_runtime_skills"`
 	ServiceTier           pgtype.Text `json:"service_tier"`
 	ConversationStarters  []byte      `json:"conversation_starters"`
+	TemplateKey           string      `json:"template_key"`
+	TemplateVersion       int32       `json:"template_version"`
+	AutonomyLevel         string      `json:"autonomy_level"`
+}
+
+type AgentApprovalRequest struct {
+	ID            pgtype.UUID        `json:"id"`
+	WorkspaceID   pgtype.UUID        `json:"workspace_id"`
+	AgentID       pgtype.UUID        `json:"agent_id"`
+	TaskID        pgtype.UUID        `json:"task_id"`
+	IssueID       pgtype.UUID        `json:"issue_id"`
+	RiskClass     string             `json:"risk_class"`
+	Summary       string             `json:"summary"`
+	Plan          string             `json:"plan"`
+	Status        string             `json:"status"`
+	DecidedBy     pgtype.UUID        `json:"decided_by"`
+	DecidedAt     pgtype.Timestamptz `json:"decided_at"`
+	DecisionNote  string             `json:"decision_note"`
+	ExecutedAt    pgtype.Timestamptz `json:"executed_at"`
+	ExecutionNote string             `json:"execution_note"`
+	CreatedAt     pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt     pgtype.Timestamptz `json:"updated_at"`
 }
 
 type AgentBuilderDraft struct {
@@ -1259,18 +1281,20 @@ type SkillToLabel struct {
 }
 
 type Squad struct {
-	ID           pgtype.UUID        `json:"id"`
-	WorkspaceID  pgtype.UUID        `json:"workspace_id"`
-	Name         string             `json:"name"`
-	Description  string             `json:"description"`
-	LeaderID     pgtype.UUID        `json:"leader_id"`
-	CreatorID    pgtype.UUID        `json:"creator_id"`
-	CreatedAt    pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
-	ArchivedAt   pgtype.Timestamptz `json:"archived_at"`
-	ArchivedBy   pgtype.UUID        `json:"archived_by"`
-	AvatarUrl    pgtype.Text        `json:"avatar_url"`
-	Instructions string             `json:"instructions"`
+	ID              pgtype.UUID        `json:"id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	Name            string             `json:"name"`
+	Description     string             `json:"description"`
+	LeaderID        pgtype.UUID        `json:"leader_id"`
+	CreatorID       pgtype.UUID        `json:"creator_id"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+	ArchivedAt      pgtype.Timestamptz `json:"archived_at"`
+	ArchivedBy      pgtype.UUID        `json:"archived_by"`
+	AvatarUrl       pgtype.Text        `json:"avatar_url"`
+	Instructions    string             `json:"instructions"`
+	TemplateKey     string             `json:"template_key"`
+	TemplateVersion int32              `json:"template_version"`
 }
 
 type SquadMember struct {

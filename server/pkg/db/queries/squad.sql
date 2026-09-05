@@ -3,6 +3,17 @@ INSERT INTO squad (workspace_id, name, description, leader_id, creator_id, avata
 VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING *;
 
+-- name: CreateSquadFromTemplate :one
+-- Same insert as CreateSquad plus the leader briefing and template provenance.
+-- Kept separate rather than widening CreateSquad: instructions are set on this
+-- path only, and a squad created by hand must keep starting with none.
+INSERT INTO squad (
+    workspace_id, name, description, leader_id, creator_id, avatar_url,
+    instructions, template_key, template_version
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+RETURNING *;
+
 -- name: GetSquad :one
 SELECT * FROM squad WHERE id = $1;
 

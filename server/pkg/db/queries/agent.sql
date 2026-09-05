@@ -38,6 +38,21 @@ FOR UPDATE;
 SELECT * FROM agent
 WHERE id = $1 AND workspace_id = $2 AND kind = 'user';
 
+-- name: GetAgentByWorkspaceAndTemplateKey :one
+-- The workspace's live agent for a given built-in role template, oldest first.
+--
+-- Squad-template provisioning reuses one rather than creating a second: a team
+-- that staffs both built-in squads wants one Implementer in both rosters, not two
+-- agents with the same instructions competing for the same runtime. Oldest wins so
+-- the answer is stable once a workspace has one.
+SELECT * FROM agent
+WHERE workspace_id = $1
+  AND template_key = $2
+  AND kind = 'user'
+  AND archived_at IS NULL
+ORDER BY created_at ASC
+LIMIT 1;
+
 -- name: LockAgentForAutopilotAssignment :one
 -- Serializes creating, retargeting, or resuming an active Autopilot with
 -- Runtime teardown. Teardown takes FOR UPDATE on this same Agent row before it
@@ -58,14 +73,18 @@ INSERT INTO agent (
     runtime_config, runtime_id, visibility, max_concurrent_tasks, owner_id,
     instructions, custom_env, custom_args, mcp_config, model, thinking_level,
     service_tier, conversation_starters,
-    composio_toolkit_allowlist, permission_mode
+    composio_toolkit_allowlist, permission_mode,
+    template_key, template_version, autonomy_level
 ) VALUES (
     $1, $2, $3, $4, $5,
     $6, $7, $8, $9, $10,
     $11, $12, $13, $14, $15, $16,
     $17, COALESCE(sqlc.narg('conversation_starters')::jsonb, '[]'::jsonb),
     sqlc.narg('composio_toolkit_allowlist')::text[],
-    COALESCE(sqlc.narg('permission_mode'), 'private')
+    COALESCE(sqlc.narg('permission_mode'), 'private'),
+    COALESCE(sqlc.narg('template_key'), ''),
+    COALESCE(sqlc.narg('template_version'), 0),
+    COALESCE(sqlc.narg('autonomy_level'), '')
 )
 RETURNING *;
 
@@ -144,6 +163,7 @@ UPDATE agent SET
     service_tier = COALESCE(sqlc.narg('service_tier'), service_tier),
     conversation_starters = COALESCE(sqlc.narg('conversation_starters'), conversation_starters),
     composio_toolkit_allowlist = COALESCE(sqlc.narg('composio_toolkit_allowlist')::text[], composio_toolkit_allowlist),
+    autonomy_level = COALESCE(sqlc.narg('autonomy_level'), autonomy_level),
     updated_at = now()
 WHERE id = $1
 RETURNING *;
