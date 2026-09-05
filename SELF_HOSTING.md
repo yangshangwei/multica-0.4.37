@@ -241,6 +241,20 @@ make offline-bundle OUT=/media/usb/multica
 
 It builds `multica-backend:dev` and `multica-web:dev` from this checkout, pulls the database image the compose file pins, and writes `dist/offline/`:
 
+For an **upgrade of an existing offline deployment**, use the versioned archive
+target instead:
+
+```bash
+make offline-upgrade-bundle PLATFORM=linux/amd64
+# or: make offline-upgrade-bundle PLATFORM=linux/arm64
+```
+
+This produces a `multica-server-upgrade-*.tar.gz` containing the images, the
+Compose file, `offline-upgrade.sh`, and the Chinese operator guide at
+[`docs/offline-upgrade.zh-CN.md`](docs/offline-upgrade.zh-CN.md). The upgrade
+script preserves the existing `.env` and Docker volumes, dumps PostgreSQL
+before restarting backend/frontend, and waits for `/healthz`.
+
 | File | Purpose |
 | --- | --- |
 | `multica-images.tar.gz` | All three images, for `docker load` |
