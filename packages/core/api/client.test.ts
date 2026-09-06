@@ -2684,4 +2684,138 @@ describe("ApiClient session expiry", () => {
     expect(store.getState().expired).toBe(true);
     expect(storage.getItem("multica_token")).toBeNull();
   });
+
+  // A 401 only ends the session it belongs to (2026-09-06 audit, finding 3).
+  // When a request sent under an earlier credential is answered 401 after a
+  // newer login replaced that credential, the rejection is about the old
+  // session: the new user, status, stored token and the session-expired
+  // callback must all stay untouched. Bearer mode re-logs in through
+  // setToken; cookie mode through verifyCode, where the client never sees a
+  // token at all.
+  function deferredResponse(): {
+    promise: Promise<Response>;
+    resolve: (res: Response) => void;
+  } {
+    let resolve!: (res: Response) => void;
+    const promise = new Promise<Response>((r) => {
+      resolve = r;
+    });
+    return { promise, resolve };
+  }
+
+  function unauthorizedResponse(): Response {
+    return new Response(JSON.stringify({ error: "missing authorization" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  function loginResponse(userId: string): Response {
+    return new Response(
+      JSON.stringify({
+        token: `fresh-${userId}`,
+        user: { id: userId, email: `${userId}@example.com` },
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  const stale401Cases: Array<
+    [string, "bearer" | "cookie", (client: ApiClient) => Promise<unknown>]
+  > = [
+    ["listProjects", "bearer", (client) => client.listProjects()],
+    ["listProjects", "cookie", (client) => client.listProjects()],
+    [
+      "uploadFile",
+      "bearer",
+      (client) =>
+        client.uploadFile(new File(["hi"], "hi.png", { type: "image/png" })),
+    ],
+    [
+      "uploadFile",
+      "cookie",
+      (client) =>
+        client.uploadFile(new File(["hi"], "hi.png", { type: "image/png" })),
+    ],
+    [
+      "publishPluginPackage",
+      "bearer",
+      (client) =>
+        client.publishPluginPackage(
+          "ws-1",
+          new File(["bundle"], "bundle.zip", { type: "application/zip" }),
+        ),
+    ],
+    [
+      "publishPluginPackage",
+      "cookie",
+      (client) =>
+        client.publishPluginPackage(
+          "ws-1",
+          new File(["bundle"], "bundle.zip", { type: "application/zip" }),
+        ),
+    ],
+  ];
+
+  it.each(stale401Cases)(
+    "keeps the re-logged-in session when a stale 401 lands after re-login (%s, %s mode)",
+    async (_path, mode, startRequest) => {
+      // The first fetch hangs until the test releases it, so the re-login
+      // provably happens while the stale request is still in flight.
+      const held = deferredResponse();
+      let call = 0;
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(() => {
+          call += 1;
+          return call === 1
+            ? held.promise
+            : Promise.resolve(loginResponse("u2"));
+        }),
+      );
+
+      const storage = makeStorage(
+        mode === "bearer" ? { multica_token: "stale-token" } : {},
+      );
+      const session: { store?: ReturnType<typeof createAuthStore> } = {};
+      let unauthorizedCalls = 0;
+      const client = new ApiClient("https://api.example.test", {
+        onUnauthorized: () => {
+          unauthorizedCalls += 1;
+          session.store?.getState().sessionExpired();
+        },
+      });
+      const store = createAuthStore({
+        api: client,
+        storage,
+        cookieAuth: mode === "cookie",
+      });
+      session.store = store;
+      store.setState({
+        user: { id: "u1", email: "u1@example.com" } as User,
+        isLoading: false,
+        status: "authenticated",
+      });
+      if (mode === "bearer") client.setToken("stale-token");
+
+      const request = startRequest(client);
+      expect(call).toBe(1);
+
+      // Re-login under a fresh credential while the first request hangs.
+      // Bearer mode lands in setToken with the new token; cookie mode only
+      // rotates the HttpOnly cookie the client cannot see.
+      await store.getState().verifyCode("u2@example.com", "654321");
+
+      held.resolve(unauthorizedResponse());
+      await expect(request).rejects.toThrow();
+
+      expect(unauthorizedCalls).toBe(0);
+      expect(store.getState().user).toMatchObject({ id: "u2" });
+      expect(store.getState().status).toBe("authenticated");
+      expect(store.getState().expired).toBe(false);
+      expect(storage.getItem("multica_token")).toBe(
+        mode === "bearer" ? "fresh-u2" : null,
+      );
+    },
+  );
 });

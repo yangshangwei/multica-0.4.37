@@ -685,6 +685,14 @@ function dingTalkGroupSearch(params: ListDingTalkGroupsParams): string {
 export class ApiClient {
   private baseUrl: string;
   private token: string | null = null;
+  /**
+   * Monotonic counter of credential changes: every login, logout and session
+   * teardown bumps it. Request paths that can react to a 401 capture the
+   * epoch their headers were built under and hand it back, so a 401 answering
+   * a request sent under a superseded credential cannot tear down the session
+   * that replaced it (2026-09-06 audit, finding 3).
+   */
+  private authEpoch = 0;
   private logger: Logger;
   private options: ApiClientOptions;
 
@@ -700,6 +708,13 @@ export class ApiClient {
 
   setToken(token: string | null) {
     this.token = token;
+    this.bumpAuthEpoch();
+  }
+
+  /** Marks the active credential as changed, so requests still in flight
+   *  under the previous one stop speaking for the session. */
+  private bumpAuthEpoch(): void {
+    this.authEpoch += 1;
   }
 
   private readCsrfToken(): string | null {
@@ -724,8 +739,14 @@ export class ApiClient {
     return headers;
   }
 
-  private handleUnauthorized() {
+  private handleUnauthorized(sentEpoch: number) {
+    // A 401 only ends the session whose credential it answered. When the
+    // epoch has moved, a newer login already replaced the credential this
+    // request was sent under, so the rejection speaks about the old session
+    // and must leave the current one — token, user, callback — untouched.
+    if (sentEpoch !== this.authEpoch) return;
     this.token = null;
+    this.bumpAuthEpoch();
     // Workspace id is owned by the URL-driven workspace-storage singleton
     // (set by [workspaceSlug]/layout.tsx). On 401, the auth flow navigates
     // to /login which leaves the workspace route, and the next workspace
@@ -769,6 +790,10 @@ export class ApiClient {
     const start = Date.now();
     const method = init?.method ?? "GET";
 
+    // Captured where the headers are built: this is the credential the
+    // request speaks for, and the 401 handler below compares it against the
+    // credential that is current when the answer lands.
+    const sentEpoch = this.authEpoch;
     const headers: Record<string, string> = {
       "X-Request-ID": rid,
       ...this.authHeaders(),
@@ -785,7 +810,7 @@ export class ApiClient {
     });
 
     if (!res.ok) {
-      if (res.status === 401) this.handleUnauthorized();
+      if (res.status === 401) this.handleUnauthorized(sentEpoch);
       const { message, body } = await this.parseErrorBody(res, `API error: ${res.status} ${res.statusText}`);
       const logLevel = res.status === 404 ? "warn" : "error";
       this.logger[logLevel](`← ${res.status} ${path}`, { rid, duration: `${Date.now() - start}ms`, error: message });
@@ -817,17 +842,26 @@ export class ApiClient {
   }
 
   async verifyCode(email: string, code: string): Promise<LoginResponse> {
-    return this.fetch("/auth/verify-code", {
+    const response = await this.fetch<LoginResponse>("/auth/verify-code", {
       method: "POST",
       body: JSON.stringify({ email, code }),
     });
+    // A successful login replaces the credential: a fresh HttpOnly cookie in
+    // cookie mode, or a token the caller passes to setToken in bearer mode.
+    // Bumped here because cookie-mode logins never pass through setToken, and
+    // requests still in flight under the old credential are now stale.
+    this.bumpAuthEpoch();
+    return response;
   }
 
   async googleLogin(code: string, redirectUri: string): Promise<LoginResponse> {
-    return this.fetch("/auth/google", {
+    const response = await this.fetch<LoginResponse>("/auth/google", {
       method: "POST",
       body: JSON.stringify({ code, redirect_uri: redirectUri }),
     });
+    // Same credential rotation as verifyCode, for the Google sign-in path.
+    this.bumpAuthEpoch();
+    return response;
   }
 
   /**
@@ -840,6 +874,8 @@ export class ApiClient {
       method: "POST",
       body: JSON.stringify({ device_id: deviceId, device_name: deviceName ?? "" }),
     });
+    // Same credential rotation as verifyCode, for the intranet device path.
+    this.bumpAuthEpoch();
     return parseWithFallback<LoginResponse>(raw, LoginResponseSchema, EMPTY_LOGIN_RESPONSE, {
       endpoint: "POST /auth/device",
     });
@@ -2859,14 +2895,19 @@ export class ApiClient {
     const formData = new FormData();
     formData.append("bundle", bundle);
 
+    // Epoch captured where the headers are built, so a 401 answering this
+    // multipart upload can be checked against the credential it was sent
+    // under — see fetchRaw.
+    const sentEpoch = this.authEpoch;
+    const headers = this.authHeaders();
     const res = await fetch(`${this.baseUrl}/api/workspaces/${workspaceId}/plugins/packages`, {
       method: "POST",
-      headers: this.authHeaders(),
+      headers,
       body: formData,
       credentials: "include",
     });
     if (!res.ok) {
-      if (res.status === 401) this.handleUnauthorized();
+      if (res.status === 401) this.handleUnauthorized(sentEpoch);
       throw new Error(await this.parseErrorMessage(res, `Publishing failed: ${res.status}`));
     }
     const raw = (await res.json()) as unknown;
@@ -3327,16 +3368,21 @@ export class ApiClient {
     const start = Date.now();
     this.logger.info("→ POST /api/upload-file", { rid });
 
+    // Epoch captured where the headers are built, so a 401 answering this
+    // multipart upload can be checked against the credential it was sent
+    // under — see fetchRaw.
+    const sentEpoch = this.authEpoch;
+    const headers = this.authHeaders();
     const res = await fetch(`${this.baseUrl}/api/upload-file`, {
       method: "POST",
-      headers: this.authHeaders(),
+      headers,
       body: formData,
       credentials: "include",
       signal,
     });
 
     if (!res.ok) {
-      if (res.status === 401) this.handleUnauthorized();
+      if (res.status === 401) this.handleUnauthorized(sentEpoch);
       const message = await this.parseErrorMessage(res, `Upload failed: ${res.status}`);
       this.logger.error(`← ${res.status} /api/upload-file`, { rid, duration: `${Date.now() - start}ms`, error: message });
       throw new Error(message);
