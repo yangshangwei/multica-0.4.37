@@ -156,27 +156,3 @@ channel:
 #
 # prompt_injection:
 #   skip_keyword: "no-trellis"   # "" disables the escape hatch entirely
-
-# Auto-detected monorepo packages
-packages:
-  desktop:
-    path: apps/desktop
-  docs:
-    path: apps/docs
-  mobile:
-    path: apps/mobile
-  web:
-    path: apps/web
-  core:
-    path: packages/core
-  eslint-config:
-    path: packages/eslint-config
-  plugin-sdk:
-    path: packages/plugin-sdk
-  tsconfig:
-    path: packages/tsconfig
-  ui:
-    path: packages/ui
-  views:
-    path: packages/views
-default_package: @multica/desktop
