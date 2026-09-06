@@ -104,10 +104,16 @@ Contracts:
   (`resolveTemplateAgentInTx`) — the template is deliberately not re-applied, so
   edited instructions, a lowered autonomy level and a different runtime all
   survive;
+- reused agents pass the same wiring permission check as explicit squad writes;
+  its invocation-target and membership reads use the staffing transaction's
+  connection, so provisioning does not require a spare pool connection;
 - a name collision with a NON-template agent returns 409
   (`agentNameConflictError`) rather than adopting it;
 - the leader is created from an unlisted role template at `coordinator`
   autonomy; member seats keep their own role's default level;
+- declared agent callers need Coordinator, and cannot staff a template whose
+  maximum role level exceeds their own; human and undeclared callers retain
+  the existing membership and runtime access rules;
 - access defaults to `private` — `parsePermissionInput` is called with an
   explicit `"private"` fallback, because its zero value is an EMPTY
   `permission_mode`, which is not NULL and would survive the column's COALESCE

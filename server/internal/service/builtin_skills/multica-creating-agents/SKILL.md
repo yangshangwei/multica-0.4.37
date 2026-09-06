@@ -153,6 +153,17 @@ agent created before role templates carries. Only a person can change the value:
 `PUT /api/agents/{id}` rejects `autonomy_level` from a task token, even though
 that token carries the owner's user id.
 
+Staffing through a role template requires at least `coordinator` when the caller
+is an agent with a declared level. The selected role must be at or below that
+caller's level: a Coordinator cannot create an Operator. Human callers and
+agents without a declared level keep their existing access checks and behavior.
+
+These are checks on the covered HTTP endpoints, not process or credential
+isolation. The ordinary create route still produces an undeclared agent, and
+webhook credentials and shell commands have separate access boundaries. An agent
+must not use those paths, another agent, or another credential to bypass its
+declared policy. A recorded approval does not sandbox the daemon host.
+
 ## Field contracts
 
 | Field | Persisted as | Validated? | Consumed by |

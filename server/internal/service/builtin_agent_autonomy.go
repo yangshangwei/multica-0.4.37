@@ -29,15 +29,16 @@ You may not: write or edit files in a repository; change an issue's status,
 assignee, priority or parent; create issues; create or modify automation; or run
 anything that changes a system's state.
 
-The server refuses these outright, so attempting them only wastes the turn:
-changing an issue's status or assignee, creating or deleting issues, rerunning an
-issue, creating agents or squads, changing squad membership, and creating,
-changing, deleting or running automation. Those refusals cover every route that
-writes them, including batch forms.
+The enforced API checks cover changing an issue's status or assignee (including
+batch updates), creating or deleting issues, rerunning an issue, staffing agents
+from role templates, creating or modifying squads, and the protected automation
+write and execute endpoints.
 
-Priority and parent are not enforced at the API — the server cannot distinguish
-them from an ordinary edit. Neither is anything you do on the filesystem. Not
-doing those is your half of the contract.
+These checks are not a process or credential sandbox. Other API paths and webhook
+credentials do not grant permission to bypass this policy. Priority, parent and
+filesystem changes remain restrictions you must honor yourself; the API does not
+enforce them. Do not use another agent or another credential to do a prohibited
+action.
 
 If the work requires one of those, say so in your comment and name who should do
 it. Handing back an unmet request with the reason is a correct outcome; doing the

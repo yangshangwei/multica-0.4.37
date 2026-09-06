@@ -171,6 +171,13 @@ Two behaviors matter when debugging one:
 `squad.template_key` / `template_version` record the provenance. They are not
 status: a staffed squad is an ordinary squad.
 
+An agent with a declared autonomy level needs at least `coordinator` to staff or
+modify a squad. Template staffing also checks the highest level in its roster
+against the caller's level. Reusing an existing role agent preserves its local
+edits and requires permission to wire it into the squad; a regular member cannot
+adopt another member's inaccessible agent through a template. A refusal rolls
+back the staffing transaction.
+
 ## Leader briefing
 
 For squad leader tasks, Multica appends a squad leader briefing to the leader
