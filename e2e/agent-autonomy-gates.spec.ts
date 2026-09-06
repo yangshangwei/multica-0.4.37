@@ -36,6 +36,7 @@ const OTHER_EMAIL = `e2e-autonomy-other-${RUN_ID}@multica.ai`;
 /** Autonomy levels, lowest to highest. Mirrors service.AutonomyLevel. */
 const OBSERVER = "observer";
 const CONTRIBUTOR = "contributor";
+const COORDINATOR = "coordinator";
 const OPERATOR = "operator";
 
 /**
@@ -71,6 +72,7 @@ let ownerUserId: string;
 /** An agent per level, each with a task row so it can act. */
 let observer: Actor;
 let contributor: Actor;
+let coordinator: Actor;
 let operator: Actor;
 
 async function sql<T = Record<string, unknown>>(query: string, params: unknown[] = []): Promise<T[]> {
@@ -169,10 +171,12 @@ async function grantTaskToken(agentId: string, userId = ownerUserId): Promise<Ac
 test.beforeAll(async () => {
   ownerApi = new TestApiClient();
   await ownerApi.login(OWNER_EMAIL, "E2E Autonomy Owner");
+  const workspaceSlug = `e2e-autonomy-${RUN_ID}`;
   const workspace = await ownerApi.ensureWorkspace(
     `E2E Autonomy WS ${RUN_ID}`,
-    `e2e-autonomy-${RUN_ID}`,
+    workspaceSlug,
   );
+  expect(workspace.slug, "cleanup must only own this run's isolated workspace").toBe(workspaceSlug);
   workspaceId = workspace.id;
   ownerToken = ownerApi.getToken()!;
 
@@ -183,26 +187,36 @@ test.beforeAll(async () => {
   observer = await staffRole("product-analyst", `Observer ${RUN_ID}`);
   contributor = await staffRole("implementer", `Contributor ${RUN_ID}`);
   operator = await staffRole("release-engineer", `Operator ${RUN_ID}`);
+  // Coordinator templates are unlisted. A person can set a dedicated agent's
+  // level, and its existing task token must then follow that declared policy.
+  coordinator = await staffRole("implementer", `Coordinator ${RUN_ID}`);
+  const configured = await call(`/api/agents/${coordinator.agentId}`, {
+    method: "PUT",
+    body: { autonomy_level: COORDINATOR },
+  });
+  expect(configured.status, `owner setting a coordinator should pass: ${configured.text}`).toBe(200);
+  expect((configured.json as { autonomy_level: string }).autonomy_level).toBe(COORDINATOR);
 });
 
 test.afterAll(async () => {
-  // Ordered so no row outlives what points at it: the workspace goes last.
-  await sql(`DELETE FROM task_token WHERE workspace_id = $1`, [workspaceId]);
-  await sql(
-    `DELETE FROM agent_task_queue WHERE agent_id IN (SELECT id FROM agent WHERE workspace_id = $1)`,
+  // The API owns the dependency graph, including rows without foreign keys.
+  if (workspaceId) {
+    const deleted = await call(`/api/workspaces/${workspaceId}`, { method: "DELETE" });
+    expect(deleted.status, `isolated workspace cleanup should succeed: ${deleted.text}`).toBe(204);
+  }
+  await sql(`DELETE FROM "user" WHERE email = ANY($1::text[])`, [[OWNER_EMAIL, OTHER_EMAIL]]);
+  if (!workspaceId) return;
+
+  // These workspace-owned records have no foreign keys to cascade through.
+  const remaining = await sql<{ issue_status: number; autopilot_rule_version: number }>(
+    `SELECT
+       (SELECT count(*)::int FROM issue_status WHERE workspace_id = $1) AS issue_status,
+       (SELECT count(*)::int FROM autopilot_rule_version WHERE workspace_id = $1) AS autopilot_rule_version`,
     [workspaceId],
   );
-  await sql(`DELETE FROM agent_approval_request WHERE workspace_id = $1`, [workspaceId]);
-  await sql(`DELETE FROM autopilot WHERE workspace_id = $1`, [workspaceId]);
-  await sql(`DELETE FROM squad_member WHERE squad_id IN (SELECT id FROM squad WHERE workspace_id = $1)`, [
-    workspaceId,
+  expect(remaining, `teardown must remove status and rule-version rows for ${workspaceId}`).toEqual([
+    { issue_status: 0, autopilot_rule_version: 0 },
   ]);
-  await sql(`DELETE FROM squad WHERE workspace_id = $1`, [workspaceId]);
-  await sql(`DELETE FROM issue WHERE workspace_id = $1`, [workspaceId]);
-  await sql(`DELETE FROM agent WHERE workspace_id = $1`, [workspaceId]);
-  await sql(`DELETE FROM agent_runtime WHERE workspace_id = $1`, [workspaceId]);
-  await sql(`DELETE FROM workspace WHERE id = $1`, [workspaceId]);
-  await sql(`DELETE FROM "user" WHERE email = ANY($1::text[])`, [[OWNER_EMAIL, OTHER_EMAIL]]);
 });
 
 test.describe("role templates: provenance is a server decision", () => {
@@ -423,11 +437,7 @@ test.describe("autonomy escalation", () => {
     expect(res.status, `observer staffing must be refused: ${res.text}`).toBe(403);
   });
 
-  test("an Operator cannot mint an agent above its own level", async () => {
-    // release-engineer is Operator, the top of the ladder, so it clears the
-    // Coordinator requirement. The ceiling is the second, separate gate: it may
-    // staff at or below itself, and a squad whose roster tops out at Coordinator
-    // is below it, so that is allowed. What it must not do is exceed itself.
+  test("an Operator may staff agents at or below its own level", async () => {
     const allowed = await call("/api/agents/from-template", {
       method: "POST",
       body: { template_key: "implementer", runtime_id: runtimeId, name: `Below ${RUN_ID}` },
@@ -443,21 +453,73 @@ test.describe("autonomy escalation", () => {
     expect(equal.status, `operator staffing its own level should pass: ${equal.text}`).toBe(201);
   });
 
-  test("a Contributor cannot mint an Operator", async () => {
-    // The escalation this closes: a level that cannot promote itself creates a
-    // higher one instead and routes the work through it.
+  test("a Coordinator cannot mint an Operator", async () => {
+    // Coordinator clears the staffing minimum, so only the separate level
+    // ceiling can refuse this request. A Contributor would fail too early.
     const res = await call("/api/agents/from-template", {
       method: "POST",
       body: { template_key: "release-engineer", runtime_id: runtimeId, name: `Escalate ${RUN_ID}` },
-      actor: contributor,
+      actor: coordinator,
     });
     expect(res.status).toBe(403);
+    expect(res.text).toContain(
+      "your autonomy level is coordinator, so you cannot create an agent at operator",
+    );
 
     const rows = await sql(`SELECT id FROM agent WHERE workspace_id = $1 AND name = $2`, [
       workspaceId,
       `Escalate ${RUN_ID}`,
     ]);
     expect(rows, "the refused agent must not exist").toHaveLength(0);
+  });
+
+  test("a Coordinator may staff lower-level agents and an equal-level squad leader", async () => {
+    const lower = await call("/api/agents/from-template", {
+      method: "POST",
+      body: { template_key: "implementer", runtime_id: runtimeId, name: `Coordinator Lower ${RUN_ID}` },
+      actor: coordinator,
+    });
+    expect(lower.status, `coordinator staffing a contributor should pass: ${lower.text}`).toBe(201);
+    expect((lower.json as { autonomy_level: string }).autonomy_level).toBe(CONTRIBUTOR);
+
+    // The only built-in Coordinator roles are squad leaders. This creates one
+    // at the caller's level instead of merely reusing an already staffed agent.
+    const equal = await call("/api/squads/from-template", {
+      method: "POST",
+      body: { template_key: "bug-fix", runtime_id: runtimeId, name: `Coordinator Peers ${RUN_ID}` },
+      actor: coordinator,
+    });
+    expect(equal.status, `coordinator staffing its own level should pass: ${equal.text}`).toBe(201);
+    const staffed = equal.json as { squad: { leader_id: string }; created_agent_ids: string[] };
+    expect(staffed.created_agent_ids).toContain(staffed.squad.leader_id);
+    const leaders = await sql<{ autonomy_level: string }>(
+      `SELECT autonomy_level FROM agent WHERE id = $1`,
+      [staffed.squad.leader_id],
+    );
+    expect(leaders[0].autonomy_level).toBe(COORDINATOR);
+  });
+
+  test("an agent without a declared level retains its staffing access", async () => {
+    const created = await call("/api/agents", {
+      method: "POST",
+      body: { name: `Legacy ${RUN_ID}`, runtime_id: runtimeId },
+    });
+    expect(created.status, `creating an undeclared agent should pass: ${created.text}`).toBe(201);
+    const agentId = (created.json as { id: string }).id;
+    const rows = await sql<{ autonomy_level: string }>(
+      `SELECT autonomy_level FROM agent WHERE id = $1`,
+      [agentId],
+    );
+    expect(rows[0].autonomy_level).toBe("");
+    const legacy = await grantTaskToken(agentId);
+
+    const staffed = await call("/api/agents/from-template", {
+      method: "POST",
+      body: { template_key: "release-engineer", runtime_id: runtimeId, name: `Legacy Staffed ${RUN_ID}` },
+      actor: legacy,
+    });
+    expect(staffed.status, `legacy staffing access should be preserved: ${staffed.text}`).toBe(201);
+    expect((staffed.json as { autonomy_level: string }).autonomy_level).toBe(OPERATOR);
   });
 
   test("an agent cannot promote itself through UpdateAgent", async () => {
@@ -602,7 +664,7 @@ test.describe("squad staffing from a template", () => {
     const feature = templates.find((t) => t.key === "feature-delivery");
     expect(feature, "feature-delivery must be offered").toBeTruthy();
     // The leader is always a coordinator — that is what makes the roster routable.
-    expect(feature!.leader.autonomy_level).toBe("coordinator");
+    expect(feature!.leader.autonomy_level).toBe(COORDINATOR);
 
     const created = await call("/api/squads/from-template", {
       method: "POST",
@@ -635,9 +697,14 @@ test.describe("squad staffing from a template", () => {
   });
 
   test("an existing role agent is reused, not re-applied", async () => {
-    // The workspace already has an Observer product-analyst whose level a person
-    // may have lowered. Staffing a second squad is not consent to undo that, so
-    // the row must come back untouched.
+    // Staffing must retain the workspace's edited briefing on the exact agent
+    // being reused, rather than restoring the template or creating a duplicate.
+    const instructions = `Keep the workspace's analyst briefing ${RUN_ID}.`;
+    const edited = await call(`/api/agents/${observer.agentId}`, {
+      method: "PUT",
+      body: { instructions },
+    });
+    expect(edited.status, `owner editing the analyst should pass: ${edited.text}`).toBe(200);
     const before = await sql<{ id: string; autonomy_level: string; instructions: string }>(
       `SELECT id, autonomy_level, instructions FROM agent
         WHERE workspace_id = $1 AND template_key = 'product-analyst'
@@ -645,12 +712,15 @@ test.describe("squad staffing from a template", () => {
       [workspaceId],
     );
     expect(before).toHaveLength(1);
+    expect(before[0].id).toBe(observer.agentId);
+    expect(before[0].instructions).toBe(instructions);
 
     const created = await call("/api/squads/from-template", {
       method: "POST",
       body: { template_key: "bug-fix", runtime_id: runtimeId, name: `Bug Squad ${RUN_ID}` },
     });
     expect(created.status, `second squad should staff: ${created.text}`).toBe(201);
+    expect((created.json as { reused_agent_ids: string[] }).reused_agent_ids).toContain(observer.agentId);
 
     const after = await sql<{ autonomy_level: string; instructions: string }>(
       `SELECT autonomy_level, instructions FROM agent WHERE id = $1`,
