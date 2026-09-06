@@ -143,6 +143,18 @@ func (h *Handler) CreateAgentFromTemplate(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	// Staffing a role is a coordination decision, so it carries the same
+	// requirement CreateSquad does.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "create agents") {
+		return
+	}
+	// And it may not hand out a level above the caller's own: this route decides
+	// autonomy_level server-side, which is what makes it an escalation path that
+	// UpdateAgent's guard cannot see.
+	if !h.requireAgentMayGrantAutonomy(w, r, workspaceID, template.Autonomy) {
+		return
+	}
+
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace id")
 	if !ok {
 		return

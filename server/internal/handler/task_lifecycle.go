@@ -169,6 +169,13 @@ func (h *Handler) RerunIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// A rerun dispatches a task, which is the same "decide what happens next" the
+	// status and assignee gate covers — otherwise an Observer that cannot move an
+	// issue can still enqueue work against it.
+	if !h.requireAgentAutonomy(w, r, uuidToString(issue.WorkspaceID), service.AutonomyContributor, "rerun issues") {
+		return
+	}
+
 	// Body is optional. A zero-length body or `{}` keeps the legacy
 	// assignee-driven rerun behaviour the CLI relies on.
 	var req RerunIssueRequest

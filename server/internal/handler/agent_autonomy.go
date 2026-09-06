@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
+	"strings"
 
 	"github.com/multica-ai/multica/server/internal/logger"
 	"github.com/multica-ai/multica/server/internal/service"
@@ -87,6 +88,34 @@ func autonomyDenialMessage(level string, want service.AutonomyLevel, action stri
 		". Report what is needed and hand it to a human or an agent at that level instead."
 }
 
+// requireAgentMayGrantAutonomy allows the request unless an agent actor is trying
+// to create an agent at a level above its own.
+//
+// UpdateAgent already refuses to let a machine credential move autonomy_level
+// (agent.go), because an agent's task token carries its owner's user id and would
+// otherwise pass canManageAgent. A route that hands out a level on creation is the
+// same escalation by another door: an Observer that cannot promote itself can
+// instead mint an Operator and route the work through that. This closes it.
+//
+// An actor with no declared level has no ceiling, which matches
+// service.AutonomyAtLeast: it is already unrestricted, so nothing it creates can
+// widen what it is able to do.
+func (h *Handler) requireAgentMayGrantAutonomy(w http.ResponseWriter, r *http.Request, workspaceID string, granted service.AutonomyLevel) bool {
+	level, isAgent := h.agentActorAutonomy(r, workspaceID)
+	if !isAgent || !service.IsKnownAutonomyLevel(level) {
+		return true
+	}
+	if service.AutonomyAtLeast(level, granted) {
+		return true
+	}
+	slog.Info("autonomy: denied agent granting a level above its own",
+		append(logger.RequestAttrs(r), "autonomy_level", level, "granted", string(granted))...)
+	writeError(w, http.StatusForbidden,
+		"your autonomy level is "+level+", so you cannot create an agent at "+string(granted)+
+			". Only a person can create an agent above your own level.")
+	return false
+}
+
 // issueDirectionFields are the issue fields whose presence turns a write from an
 // edit into a decision about what the workspace does next. They are the fields the
 // Observer level is defined against, and every endpoint that can write them has to
@@ -101,11 +130,33 @@ var issueDirectionFields = []string{"status", "assignee_type", "assignee_id"}
 // Keyed on PRESENCE in the raw field map, never on a non-nil pointer: the write
 // paths treat `{"assignee_id": null}` as "unassign" and read that from this same
 // map, so a pointer-based gate misses it entirely and the request goes through.
+//
+// Matched case-INSENSITIVELY, because encoding/json is: `{"Status":"done"}`
+// populates a field tagged `json:"status"`, so the write happens, while an exact
+// map lookup for "status" finds nothing and the gate never fires. That divergence
+// let an Observer set status and was reachable on both write routes. Callers that
+// can also see the decoded struct should OR this with a pointer check — see
+// requestSetsIssueDirection.
 func requestTouchesIssueDirection(rawFields map[string]json.RawMessage) bool {
-	for _, field := range issueDirectionFields {
-		if _, present := rawFields[field]; present {
-			return true
+	for key := range rawFields {
+		lowered := strings.ToLower(key)
+		for _, field := range issueDirectionFields {
+			if lowered == field {
+				return true
+			}
 		}
 	}
 	return false
+}
+
+// requestSetsIssueDirection is the gate the issue write paths use: the folded
+// presence check OR the decoded pointers.
+//
+// Both halves are load-bearing. Presence catches an explicit null (`assignee_id:
+// null` means unassign, and decodes to a nil pointer). Pointers catch anything a
+// future key-name transform would hide from the raw map. Either one alone has a
+// hole; together they do not.
+func requestSetsIssueDirection(rawFields map[string]json.RawMessage, status, assigneeType, assigneeID *string) bool {
+	return requestTouchesIssueDirection(rawFields) ||
+		status != nil || assigneeType != nil || assigneeID != nil
 }

@@ -364,6 +364,11 @@ func (h *Handler) UpdateSquad(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusForbidden, "insufficient permissions")
 		return
 	}
+	// squad.instructions is the leader's routing policy, appended verbatim to its
+	// briefing, so editing this squad reaches every member's next turn.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "change a squad") {
+		return
+	}
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
 	if !ok {
 		return
@@ -506,6 +511,9 @@ func (h *Handler) DeleteSquad(w http.ResponseWriter, r *http.Request) {
 	}
 	if !canManageSquad(member, squad) {
 		writeError(w, http.StatusForbidden, "insufficient permissions")
+		return
+	}
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "archive a squad") {
 		return
 	}
 
@@ -792,6 +800,12 @@ func (h *Handler) AddSquadMember(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusForbidden, "insufficient permissions")
 		return
 	}
+	// The Coordinator briefing reserves managing squad membership to that level, so
+	// the API has to as well — deciding who is on a squad is deciding who work gets
+	// routed to.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "change squad membership") {
+		return
+	}
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
 	if !ok {
 		return
@@ -881,6 +895,9 @@ func (h *Handler) RemoveSquadMember(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusForbidden, "insufficient permissions")
 		return
 	}
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "change squad membership") {
+		return
+	}
 
 	var req struct {
 		MemberType string `json:"member_type"`
@@ -935,6 +952,9 @@ func (h *Handler) UpdateSquadMemberRole(w http.ResponseWriter, r *http.Request) 
 	}
 	if !canManageSquad(member, squad) {
 		writeError(w, http.StatusForbidden, "insufficient permissions")
+		return
+	}
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "change squad membership") {
 		return
 	}
 

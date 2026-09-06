@@ -1386,8 +1386,14 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.With(authRL).Post("/auth/send-code", h.SendCode)
 	r.With(authVerifyRL).Post("/auth/verify-code", h.VerifyCode)
 	r.With(authRL).Post("/auth/google", h.GoogleLogin)
-	// Intranet device login (off unless MULTICA_DEVICE_AUTH_ENABLED=true). It
-	// takes the verify-tier limiter rather than authRL: this is the request
+	// Intranet device login. ON BY DEFAULT for self-hosted deployments —
+	// DeviceAuthEnabledFromEnv returns !isOfficialCloudDeployment() when
+	// MULTICA_DEVICE_AUTH_ENABLED is unset, so an empty value does not mean off.
+	// Any client that can reach this route mints its own identity; whether that
+	// identity can reach an existing workspace depends on
+	// MULTICA_DEVICE_AUTH_WORKSPACE. See handler.DeviceAuthEnabledFromEnv.
+	//
+	// It takes the verify-tier limiter rather than authRL: this is the request
 	// that completes a login, not one that sends a code, and a handful of
 	// machines rebooting behind one NATed intranet address must not be turned
 	// away by a 5/min budget they share.

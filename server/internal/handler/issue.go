@@ -3358,10 +3358,12 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	// next. Agents with no declared level pass, which is every agent created before
 	// role templates existed.
 	//
-	// Read from rawFields, not from the decoded pointers: the assignee block below
-	// treats an explicitly null assignee_id as "unassign", and a null decodes to a
-	// nil pointer, so a pointer-based gate would let an Observer unassign work.
-	if requestTouchesIssueDirection(rawFields) {
+	// Presence in rawFields OR a non-nil decoded pointer. Presence alone is what
+	// catches an explicitly null assignee_id ("unassign" decodes to a nil pointer);
+	// the pointers are what catch a key whose case the raw map cannot match, since
+	// encoding/json fills the struct case-insensitively. Either check alone has a
+	// hole.
+	if requestSetsIssueDirection(rawFields, req.Status, req.AssigneeType, req.AssigneeID) {
 		if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "change an issue's status or assignee") {
 			return
 		}
@@ -3904,6 +3906,14 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Deleting work is at least as much a decision about direction as moving it,
+	// and an Observer is told it may not do either. Contributor rather than
+	// Operator: an issue is workspace data, and the Operator level is reserved for
+	// production and credentials.
+	if !h.requireAgentAutonomy(w, r, uuidToString(issue.WorkspaceID), service.AutonomyContributor, "delete issues") {
+		return
+	}
+
 	h.TaskService.CancelTasksForIssue(r.Context(), issue.ID)
 	// Fail any linked autopilot runs before delete (ON DELETE SET NULL clears issue_id).
 	_ = h.AutopilotService.FailAutopilotRunsByIssue(r.Context(), issue.ID)
@@ -4059,11 +4069,19 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Detect which fields in "updates" were explicitly set (including null).
+	//
+	// Resolved case-insensitively, matching how encoding/json filled req.Updates: a
+	// capital "Updates" populates the struct (so the writes below happen) while an
+	// exact lookup leaves this map nil, which silently emptied every presence check
+	// keyed off it — including the autonomy gate.
 	var rawTop map[string]json.RawMessage
 	json.Unmarshal(bodyBytes, &rawTop)
 	var rawUpdates map[string]json.RawMessage
-	if raw, exists := rawTop["updates"]; exists {
-		json.Unmarshal(raw, &rawUpdates)
+	for key, raw := range rawTop {
+		if strings.EqualFold(key, "updates") {
+			json.Unmarshal(raw, &rawUpdates)
+			break
+		}
 	}
 
 	// Short-circuit when no mutation field is present in `updates`. Without
@@ -4101,10 +4119,14 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	// Autonomy: the same rule UpdateIssue applies, because this endpoint writes the
 	// same fields. A batch of one is otherwise an exact bypass of it, which is what
 	// the first version of the autonomy gate shipped with — hence one shared
-	// predicate (requestTouchesIssueDirection) rather than two hand-kept lists.
+	// predicate (requestSetsIssueDirection) rather than two hand-kept lists.
 	// Runs before the status and project lookups below, and before any write, so a
 	// refusal costs a query and changes nothing.
-	if requestTouchesIssueDirection(rawUpdates) {
+	//
+	// The decoded pointers matter twice as much here: rawUpdates is empty whenever
+	// the outer key's case did not match (`{"Updates":{...}}`), while req.Updates is
+	// populated regardless, so the raw map alone missed this route entirely.
+	if requestSetsIssueDirection(rawUpdates, req.Updates.Status, req.Updates.AssigneeType, req.Updates.AssigneeID) {
 		if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "change an issue's status or assignee") {
 			return
 		}
@@ -4436,6 +4458,10 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 	}
 
 	workspaceID := h.resolveWorkspaceID(r)
+	// Same rule as DeleteIssue: a batch of one must not be a way around it.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "delete issues") {
+		return
+	}
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
 	if !ok {
 		return

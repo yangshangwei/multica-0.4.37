@@ -157,6 +157,21 @@ func (h *Handler) CreateSquadFromTemplate(w http.ResponseWriter, r *http.Request
 		writeError(w, http.StatusBadRequest, "runtime_id is required")
 		return
 	}
+
+	// Same requirement CreateSquad carries: routing work between agents is a
+	// coordination decision. Without this, an agent refused by POST /api/squads
+	// could staff an entire roster here instead.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "create squads") {
+		return
+	}
+	// A roster can contain a level above the caller's own — the leader is always a
+	// coordinator — so the ceiling is checked against the most privileged member.
+	if maxAutonomy := template.MaxAutonomy(); maxAutonomy != "" {
+		if !h.requireAgentMayGrantAutonomy(w, r, workspaceID, maxAutonomy) {
+			return
+		}
+	}
+
 	runtimeUUID, ok := parseUUIDOrBadRequest(w, req.RuntimeID, "runtime_id")
 	if !ok {
 		return
@@ -203,18 +218,27 @@ func (h *Handler) CreateSquadFromTemplate(w http.ResponseWriter, r *http.Request
 	}
 
 	staged, err := h.provisionSquadTemplate(r.Context(), squadTemplateProvisionInput{
-		Template:    template,
-		WorkspaceID: wsUUID,
-		OwnerID:     member.UserID,
-		Runtime:     runtime,
-		Permission:  perm,
-		Language:    language,
-		SquadName:   squadName,
+		Template:          template,
+		WorkspaceID:       wsUUID,
+		OwnerID:           member.UserID,
+		Runtime:           runtime,
+		Permission:        perm,
+		Language:          language,
+		SquadName:         squadName,
+		Member:            member,
+		WorkspaceIDString: workspaceID,
 	})
 	if err != nil {
 		var conflict *agentNameConflictError
 		if errors.As(err, &conflict) {
 			writeError(w, http.StatusConflict, "an agent named \""+conflict.Name+"\" already exists in this workspace but was not created from this template; rename it or create the squad manually")
+			return
+		}
+		// Same shape as the name conflict: a 409 a person can resolve, and the
+		// transaction has already rolled back, so no squad or agent is left behind.
+		var notWireable errTemplateAgentNotWireable
+		if errors.As(err, &notWireable) {
+			writeError(w, http.StatusConflict, notWireable.Error())
 			return
 		}
 		slog.Warn("create squad from template failed",
@@ -278,6 +302,26 @@ type squadTemplateProvisionInput struct {
 	Permission  resolvedPermission
 	Language    string
 	SquadName   string
+	// Member is the acting workspace member, needed because reusing an existing
+	// role agent has to pass the same memberCanWireAgent check every other squad
+	// wiring path applies. Without it this route could pull another member's
+	// private agent into a squad the caller controls.
+	Member db.Member
+	// WorkspaceIDString is the same id as WorkspaceID, in the string form
+	// canInvokeAgent takes.
+	WorkspaceIDString string
+}
+
+// errTemplateAgentNotWireable reports that the workspace already has this role's
+// agent, but the caller may not attach it to a squad. Distinct from the
+// name-conflict error: the row is a legitimate template agent, so re-creating it
+// is not the answer either — a person with access has to do the staffing.
+type errTemplateAgentNotWireable struct {
+	roleName string
+}
+
+func (e errTemplateAgentNotWireable) Error() string {
+	return "this workspace already has a " + e.roleName + " you do not have access to invoke; ask its owner or a workspace admin to staff this squad"
 }
 
 // squadTemplateProvisionResult reports what the transaction did.
@@ -416,6 +460,20 @@ func (h *Handler) resolveTemplateAgentInTx(
 		TemplateKey: templateKey,
 	})
 	if err == nil {
+		// The lookup keys only on workspace + template_key, so it happily finds an
+		// agent owned by a different member with private access. Every other path that
+		// wires an agent into a squad — CreateSquad, leader rotation, AddSquadMember —
+		// runs this predicate for exactly that reason (MUL-4223); staffing is the
+		// fourth and must not be the exception. Otherwise the caller ends up
+		// controlling squad.instructions, which is appended verbatim to the leader's
+		// briefing, for an agent they cannot even invoke.
+		if !h.memberCanWireAgent(ctx, in.Member, existing, in.WorkspaceIDString) {
+			roleName := templateKey
+			if role, ok := service.AgentRoleTemplateByKey(templateKey); ok {
+				roleName = role.DefaultName
+			}
+			return db.Agent{}, false, errTemplateAgentNotWireable{roleName: roleName}
+		}
 		// Reuse as-is. Notably we do NOT re-apply the template: the workspace may
 		// have edited this agent's instructions, lowered its autonomy, or moved it to
 		// another runtime, and staffing a second squad is not consent to undo that.

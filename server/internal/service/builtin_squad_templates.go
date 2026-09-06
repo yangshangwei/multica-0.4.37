@@ -81,6 +81,24 @@ func (t SquadTemplate) TemplateKeys() []string {
 	return keys
 }
 
+// MaxAutonomy returns the highest level any agent in this roster would be created
+// at, which is what an autonomy ceiling has to be checked against: staffing one
+// squad can mint several agents, and the most privileged one decides whether the
+// call is an escalation. Unrecognised keys contribute nothing.
+func (t SquadTemplate) MaxAutonomy() AutonomyLevel {
+	highest := AutonomyLevel("")
+	for _, key := range t.TemplateKeys() {
+		role, ok := AgentRoleTemplateByKey(key)
+		if !ok || !IsKnownAutonomyLevel(string(role.Autonomy)) {
+			continue
+		}
+		if highest == "" || !AutonomyAtLeast(string(highest), role.Autonomy) {
+			highest = role.Autonomy
+		}
+	}
+	return highest
+}
+
 var builtinSquadTemplates = []SquadTemplate{
 	{
 		Key:               "feature-delivery",

@@ -611,6 +611,14 @@ func (h *Handler) memberCanWriteAutopilot(ctx context.Context, ap db.Autopilot, 
 // executing request. On failure it writes the response (404 when the caller is
 // not a member of the workspace, 403 otherwise) and returns false; the caller
 // must return early. On success it returns true.
+//
+// It also carries the autonomy gate for standing automation, which is why the
+// trigger, secret and execute routes do not each repeat it: CreateAutopilot and
+// UpdateAutopilot gate themselves because they run before an autopilot row
+// exists to authorize against, but everything that edits triggers, rotates a
+// webhook token, sets a signing secret or fires a run reaches the workspace
+// through this one predicate. Adding a route that mutates an autopilot without
+// coming through here would reopen the hole this closes.
 func (h *Handler) requireAutopilotWrite(w http.ResponseWriter, r *http.Request, ap db.Autopilot, workspaceID string) bool {
 	member, ok := h.workspaceMember(w, r, workspaceID)
 	if !ok {
@@ -618,6 +626,9 @@ func (h *Handler) requireAutopilotWrite(w http.ResponseWriter, r *http.Request, 
 	}
 	if !h.memberCanWriteAutopilot(r.Context(), ap, member) {
 		writeError(w, http.StatusForbidden, "only the autopilot creator, a workspace admin, or a granted collaborator can manage this autopilot")
+		return false
+	}
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "change or run automation") {
 		return false
 	}
 	return true
@@ -1182,6 +1193,13 @@ func (h *Handler) parseAutopilotProjectID(
 func (h *Handler) DeleteAutopilot(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	workspaceID := h.resolveWorkspaceID(r)
+
+	// Deleting standing automation is the same authority as creating it. This route
+	// resolves ownership itself rather than through requireAutopilotWrite, so it
+	// needs its own gate.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "delete automation") {
+		return
+	}
 
 	idUUID, ok := parseUUIDOrBadRequest(w, id, "autopilot id")
 	if !ok {
@@ -1895,6 +1913,11 @@ func (h *Handler) DeleteAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 	autopilotID := chi.URLParam(r, "id")
 	triggerID := chi.URLParam(r, "triggerId")
 	workspaceID := h.resolveWorkspaceID(r)
+
+	// Like DeleteAutopilot, this one authorizes without requireAutopilotWrite.
+	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyCoordinator, "delete automation triggers") {
+		return
+	}
 
 	autopilotUUID, ok := parseUUIDOrBadRequest(w, autopilotID, "autopilot id")
 	if !ok {
