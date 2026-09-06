@@ -634,6 +634,36 @@ func (h *Handler) requireAutopilotWrite(w http.ResponseWriter, r *http.Request, 
 	return true
 }
 
+// requireAutomationPrincipal resolves the human a trigger's runs are authorized
+// as and accountable to, and writes the failure response itself when there is
+// none (the caller must return early, before any row is written):
+//
+//   - a member actor is their own principal — today's behavior;
+//   - an agent actor (a task token, or a member token paired with the
+//     X-Agent-ID/X-Task-ID headers) is judged by the top of its delegation
+//     chain: the task's originator_user_id, the same human canInvokeAgent
+//     judges every direct assignment by. The runtime owner whose user id the
+//     task token carries is NOT that human — a task token must not be able to
+//     spend its runtime owner's invoke rights on standing automation;
+//   - a chain with no human originator (originator_user_id NULL, or a terminal
+//     task, which lends nothing) cannot authorize standing automation: the
+//     trigger's dispatch would fail closed on every firing, so creation fails
+//     closed too with a 403 the caller can act on.
+func (h *Handler) requireAutomationPrincipal(w http.ResponseWriter, r *http.Request, workspaceID string) (pgtype.UUID, bool) {
+	userID := requestUserID(r)
+	if userID == "" {
+		writeError(w, http.StatusUnauthorized, "user not authenticated")
+		return pgtype.UUID{}, false
+	}
+	actorType, actorID := h.resolveActor(r, userID, workspaceID)
+	principal := h.invokeOriginatorFromRequest(r, actorType, actorID)
+	if principal == "" {
+		writeError(w, http.StatusForbidden, "automation needs a human authorizer: the acting task has no originator")
+		return pgtype.UUID{}, false
+	}
+	return parseUUID(principal), true
+}
+
 // requireAutopilotAccessManagement enforces the narrower predicate used by the
 // collaborator (access list) endpoints: only the autopilot's creator or a
 // workspace owner/admin may grant or revoke access. A granted collaborator
@@ -1399,6 +1429,15 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	publisherID := parseUUID(userID)
+	// The trigger's created_by is the immutable authorization principal every
+	// later dispatch acts as (MUL-6951), so it follows the delegation chain,
+	// not the credential: an agent actor's trigger records the task's
+	// originator. published_by and the rule-version publisher below keep the
+	// acting identity — they are config-responsibility audit values (MUL-6951).
+	principalID, ok := h.requireAutomationPrincipal(w, r, workspaceID)
+	if !ok {
+		return
+	}
 
 	var req CreateAutopilotTriggerRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -1497,7 +1536,7 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 			writeError(w, http.StatusInternalServerError, "failed to encode event_filters")
 			return
 		}
-		trigger, err := h.createWebhookTriggerWithMintedToken(r, ap, ptrToText(req.Label), provider, eventFiltersBytes, publisherID)
+		trigger, err := h.createWebhookTriggerWithMintedToken(r, ap, ptrToText(req.Label), provider, eventFiltersBytes, publisherID, principalID)
 		if err != nil {
 			writeError(w, http.StatusInternalServerError, "failed to create trigger")
 			return
@@ -1537,9 +1576,12 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 		PublishedByType: pgtype.Text{String: "member", Valid: publisherID.Valid},
 		PublishedByID:   publisherID,
 		// created_by is the AUTHORIZATION principal and is immutable: the run acts
-		// as this member forever, so no edit may move it (MUL-6951).
-		CreatedByType: pgtype.Text{String: "member", Valid: publisherID.Valid},
-		CreatedByID:   publisherID,
+		// as this member forever, so no edit may move it (MUL-6951). For an agent
+		// actor it is the task's originator — the human the delegation chain
+		// names — never the runtime owner the credential belongs to; see
+		// requireAutomationPrincipal.
+		CreatedByType: pgtype.Text{String: "member", Valid: principalID.Valid},
+		CreatedByID:   principalID,
 	})
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to create trigger")
@@ -1582,6 +1624,7 @@ func (h *Handler) createWebhookTriggerWithMintedToken(
 	provider string,
 	eventFilters []byte,
 	publisherID pgtype.UUID,
+	principalID pgtype.UUID,
 ) (db.AutopilotTrigger, error) {
 	ctx := r.Context()
 	for attempt := 0; attempt < 3; attempt++ {
@@ -1608,9 +1651,10 @@ func (h *Handler) createWebhookTriggerWithMintedToken(
 			PublishedByType: pgtype.Text{String: "member", Valid: publisherID.Valid},
 			PublishedByID:   publisherID,
 			// Immutable authorization principal — see the schedule path above
-			// (MUL-6951).
-			CreatedByType: pgtype.Text{String: "member", Valid: publisherID.Valid},
-			CreatedByID:   publisherID,
+			// (MUL-6951). Like there, an agent actor's chain names the human:
+			// principalID is the task's originator, not the token's user.
+			CreatedByType: pgtype.Text{String: "member", Valid: principalID.Valid},
+			CreatedByID:   principalID,
 		})
 		if err != nil {
 			tx.Rollback(ctx)
