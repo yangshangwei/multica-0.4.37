@@ -231,7 +231,25 @@ Note that `make selfhost` is not an option here twice over: it needs GHCR, and t
 
 ### On the networked machine
 
-**1. Export the server bundle**
+**1. Build the complete offline installer**
+
+For a single package containing the server images and a Desktop installer from
+the same checkout, use:
+
+```bash
+make offline-installer                              # linux/amd64 + host Desktop target
+make offline-installer PLATFORM=linux/arm64         # ARM server
+make offline-installer DESKTOP_TARGET=mac-arm64     # explicit Desktop target
+make offline-installer OUT=/media/usb/multica        # custom output directory
+```
+
+This produces `dist/offline-installer/multica-offline-*.tar.gz`. The package
+contains `server/` (PostgreSQL, backend, frontend images, Compose file and env
+template) and `desktop/` (the Electron installer and update metadata), all
+built from the same revision. The archive includes SHA-256 checksums and a
+top-level README.
+
+If you only need the server images, the lower-level command remains available:
 
 ```bash
 make offline-bundle                             # images for linux/amd64
@@ -265,9 +283,11 @@ before restarting backend/frontend, and waits for `/healthz`.
 
 Images are built for **linux/amd64** by default, not for the build host. That default is deliberate: an arm64 bundle built on an Apple Silicon laptop loads without complaint and then every container exits with `exec format error` on an x86 server — after somebody has already carried it across the air gap. Building for an architecture other than the host's runs under emulation and is slow; the script says so before it starts. Building on a native host of the target architecture is much faster.
 
-**2. Build the desktop installers**
+**2. Build the desktop installers separately (optional)**
 
-Installers are per platform and signing is site-specific, so they are not part of the bundle. **Build each one on that platform** — this is what CI does (`.github/workflows/desktop-smoke.yml` packages Windows on `windows-latest`, Linux on `ubuntu-latest`):
+Installers are per platform and signing is site-specific. The unified command
+above packages one requested target; to produce additional targets, build each
+one on that platform — this is what CI does (`.github/workflows/desktop-smoke.yml` packages Windows on `windows-latest`, Linux on `ubuntu-latest`):
 
 ```bash
 cd apps/desktop

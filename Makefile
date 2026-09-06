@@ -1,4 +1,4 @@
-.PHONY: help makehelp dev server daemon cli multica build test migrate-up migrate-down sqlc seed clean setup start stop check worktree-env setup-main start-main stop-main check-main setup-worktree start-worktree stop-worktree check-worktree remove-worktree db-up db-down db-drop db-reset selfhost selfhost-build offline-bundle offline-upgrade-bundle selfhost-stop up down status list destroy gc env-exec api-dev web-dev desktop-dev
+.PHONY: help makehelp dev server daemon cli multica build test migrate-up migrate-down sqlc seed clean setup start stop check worktree-env setup-main start-main stop-main check-main setup-worktree start-worktree stop-worktree check-worktree remove-worktree db-up db-down db-drop db-reset selfhost selfhost-build offline-bundle offline-installer offline-upgrade-bundle selfhost-stop up down status list destroy gc env-exec api-dev web-dev desktop-dev
 
 MAIN_ENV_FILE ?= .env
 WORKTREE_ENV_FILE ?= .env.worktree
@@ -140,6 +140,10 @@ selfhost-build: ## Build backend/web from the current checkout and start the sel
 offline-bundle: ## Build and export an air-gapped install bundle (images + compose + env template)
 	$(REQUIRE_COMPOSE)
 	@bash scripts/offline-bundle.sh $(if $(OUT),--output $(OUT),) $(if $(PLATFORM),--platform $(PLATFORM),)
+
+offline-installer: ## Build one air-gapped package with server images and a Desktop installer
+	$(REQUIRE_COMPOSE)
+	@bash scripts/offline-installer.sh $(if $(OUT),--output $(OUT),) $(if $(PLATFORM),--platform $(PLATFORM),) $(if $(DESKTOP_TARGET),--desktop-target $(DESKTOP_TARGET),)
 
 offline-upgrade-bundle: ## Build a versioned tarball for upgrading an offline server
 	$(REQUIRE_COMPOSE)
