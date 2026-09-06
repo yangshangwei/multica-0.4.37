@@ -467,7 +467,9 @@ func (h *Handler) resolveTemplateAgentInTx(
 		// fourth and must not be the exception. Otherwise the caller ends up
 		// controlling squad.instructions, which is appended verbatim to the leader's
 		// briefing, for an agent they cannot even invoke.
-		if !h.memberCanWireAgent(ctx, in.Member, existing, in.WorkspaceIDString) {
+		// Use this transaction for every permission read; acquiring another pool
+		// connection while staffing holds its transaction can exhaust the pool.
+		if !memberCanWireAgentWithQueries(ctx, qtx, in.Member, existing, in.WorkspaceIDString) {
 			roleName := templateKey
 			if role, ok := service.AgentRoleTemplateByKey(templateKey); ok {
 				roleName = role.DefaultName

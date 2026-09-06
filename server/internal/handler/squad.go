@@ -142,11 +142,15 @@ func canManageSquad(member db.Member, squad db.Squad) bool {
 // creator from smuggling an agent they cannot invoke into a squad and reaching
 // it through squad routing (MUL-4223).
 func (h *Handler) memberCanWireAgent(ctx context.Context, member db.Member, agent db.Agent, workspaceID string) bool {
+	return memberCanWireAgentWithQueries(ctx, h.Queries, member, agent, workspaceID)
+}
+
+func memberCanWireAgentWithQueries(ctx context.Context, queries *db.Queries, member db.Member, agent db.Agent, workspaceID string) bool {
 	if roleAllowed(member.Role, "owner", "admin") {
 		return true
 	}
 	uid := uuidToString(member.UserID)
-	return h.canInvokeAgent(ctx, agent, "member", uid, uid, workspaceID)
+	return invokeAgentDecision(ctx, queries, agent, "member", uid, uid, workspaceID)
 }
 
 // loadSquadInWorkspace loads a squad scoped to the current workspace.
