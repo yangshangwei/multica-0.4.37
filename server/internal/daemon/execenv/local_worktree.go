@@ -636,11 +636,37 @@ func (w *LocalWorktree) Finalize(logger *slog.Logger) (finalOutcome LocalWorktre
 			w.Branch, quotedPaths(unmerged), w.Path, w.GitRoot)
 	}
 
-	// The check above reads the index, which staging clears. An agent that ran
-	// `git add` over a conflicted file — the command its own replay instructions
-	// give it — leaves no unmerged entry while the markers are still in the
-	// content, and the commit below would deliver them. Read the content too.
-	if markers := stagedConflictMarkerPaths(w.Path); len(markers) > 0 {
+	// Treat "can't tell" like "dirty": committing costs an empty commit at
+	// worst, while assuming clean risks deleting the agent's edits.
+	dirty, statusErr := worktreeIsDirty(w.Path)
+	if statusErr != nil {
+		if logger != nil {
+			logger.Warn("execenv: inspect worktree status failed; committing defensively",
+				"path", w.Path, "error", statusErr)
+		}
+		dirty = true
+	}
+	if dirty {
+		if out, stageErr := runGit(w.Path, "add", "-A"); stageErr != nil {
+			outcome.Branch = ""
+			outcome.PreservedPath = w.Path
+			return outcome, fmt.Errorf("could not stage the agent's changes for branch %s: %s: %w; "+
+				"the work is preserved in the worktree at %s", w.Branch, strings.TrimSpace(out), stageErr, w.Path)
+		}
+	}
+
+	// Check after the final staging step: the agent may have edited either a
+	// clean or a conflicted file since its last git add. Commit this exact index
+	// below, without staging again. The earlier unmerged check must stay before
+	// staging, which would otherwise clear Git's unresolved entries.
+	markers, markerErr := stagedConflictMarkerPaths(w.Path)
+	if markerErr != nil {
+		outcome.Branch = ""
+		outcome.PreservedPath = w.Path
+		return outcome, fmt.Errorf("could not inspect staged changes for branch %s: %w; "+
+			"the work is preserved in the worktree at %s", w.Branch, markerErr, w.Path)
+	}
+	if len(markers) > 0 {
 		outcome.Branch = ""
 		outcome.PreservedPath = w.Path
 		if logger != nil {
@@ -654,18 +680,8 @@ func (w *LocalWorktree) Finalize(logger *slog.Logger) (finalOutcome LocalWorktre
 			w.Branch, quotedPaths(markers), w.Path, w.GitRoot)
 	}
 
-	// Treat "can't tell" like "dirty": committing costs an empty commit at
-	// worst, while assuming clean risks deleting the agent's edits.
-	dirty, statusErr := worktreeIsDirty(w.Path)
-	if statusErr != nil {
-		if logger != nil {
-			logger.Warn("execenv: inspect worktree status failed; committing defensively",
-				"path", w.Path, "error", statusErr)
-		}
-		dirty = true
-	}
 	if dirty {
-		committed, err := w.commitAll(logger)
+		committed, err := commitStaged(w.Path, "chore(agent): uncommitted changes from task", false)
 		if err != nil {
 			outcome.PreservedPath = w.Path
 			if logger != nil {
@@ -849,15 +865,6 @@ func commitBaseline(worktreePath string, continued, dirty bool) (string, error) 
 	return tip, nil
 }
 
-// commitAll stages and commits everything the agent left behind. Returns
-// whether a commit was actually created; an error means the changes are still
-// only on disk and the caller must not delete the worktree.
-func (w *LocalWorktree) commitAll(logger *slog.Logger) (bool, error) {
-	// Never --allow-empty here: an empty commit would make a read-only turn look
-	// like it produced work and leave its branch behind.
-	return commitEverything(w.Path, "chore(agent): uncommitted changes from task", false)
-}
-
 // commitEverything returns (false, nil) for the benign "there was nothing to
 // commit" case and (false, err) for a real failure — the distinction callers
 // need to decide whether the tree is safe to discard.
@@ -865,6 +872,12 @@ func commitEverything(worktreePath, message string, allowEmpty bool) (bool, erro
 	if out, err := runGit(worktreePath, "add", "-A"); err != nil {
 		return false, fmt.Errorf("git add: %s: %w", strings.TrimSpace(out), err)
 	}
+	return commitStaged(worktreePath, message, allowEmpty)
+}
+
+// commitStaged leaves the index unchanged so Finalize commits the snapshot it
+// checked. Baseline capture uses commitEverything to stage before committing.
+func commitStaged(worktreePath, message string, allowEmpty bool) (bool, error) {
 	// --no-verify: the user's commit hooks are written for the user's own
 	// workflow (interactive linters, test suites, signing prompts) and a hook
 	// failure here would mean losing the agent's work to save a lint run. Note
@@ -1541,48 +1554,138 @@ func unmergedPaths(worktreePath string) ([]string, error) {
 	return paths, nil
 }
 
-// stagedConflictMarkerPaths lists staged files that still carry conflict markers.
-//
-// unmergedPaths asks the INDEX, and staging a conflicted file clears its unmerged
-// entry — so `git add <file>` or a bare `git add -A` marks the conflict "resolved"
-// as far as that check can tell, and the markers go into the delivered commit. The
-// replay instructions hand the agent that exact command ("`git add <file>` marks
-// each one done"), followed by "Do not commit conflict markers", which is a
-// request rather than a check. This is the check.
-//
-// `git diff --cached --check` reports leftover markers by design and exits
-// non-zero when it finds any. It also flags whitespace errors on the same exit
-// code, so only the marker diagnostic is matched: refusing to deliver a branch
-// over a trailing space would be its own defect.
-// runGit rather than runGitStdout: git signals "markers found" with exit 2, and
-// runGitStdout discards its output on a non-zero exit, which would report every
-// conflicted delivery as clean.
-func stagedConflictMarkerPaths(worktreePath string) []string {
-	out, err := runGit(worktreePath, "diff", "--cached", "--check")
-	if err == nil {
+// stagedConflictMarkerPaths finds new groups in staged regular-file blobs.
+// Git's human-facing --check diagnostics also flag valid Markdown underlines
+// and echo source text after whitespace warnings, so they cannot decide whether
+// the staged content contains an unresolved conflict group. Compare against the
+// previous blob so an unrelated edit does not reject a committed example.
+func stagedConflictMarkerPaths(worktreePath string) ([]string, error) {
+	out, err := runGitStdout(worktreePath, "diff", "--cached", "--raw", "--no-abbrev", "--find-renames",
+		"--no-ext-diff", "--no-textconv", "--no-color", "--diff-filter=ACMRT", "-z")
+	if err != nil {
+		return nil, fmt.Errorf("list staged files: %w", err)
+	}
+	if out == "" {
+		return nil, nil
+	}
+	// Raw records carry metadata NUL path NUL, with another path for a rename
+	// or copy. Object IDs keep colon/newline paths out of diagnostic parsing.
+	// Skip symlinks and gitlinks rather than following targets or reading commits.
+	records := strings.Split(strings.TrimSuffix(out, "\x00"), "\x00")
+	var paths []string
+	for i := 0; i < len(records); {
+		fields := strings.Fields(records[i])
+		if len(fields) != 5 || i+1 >= len(records) {
+			return nil, errors.New("invalid staged-file metadata from git diff")
+		}
+		path := records[i+1]
+		i += 2
+		if fields[4][0] == 'R' || fields[4][0] == 'C' {
+			if i >= len(records) {
+				return nil, errors.New("invalid renamed-file record from git diff")
+			}
+			path = records[i]
+			i++
+		}
+		if fields[1] != "100644" && fields[1] != "100755" {
+			continue
+		}
+		oldRegular := fields[0] == ":100644" || fields[0] == ":100755"
+		if oldRegular && fields[2] == fields[3] {
+			continue
+		}
+		content, err := runGitStdout(worktreePath, "cat-file", "blob", fields[3])
+		if err != nil {
+			return nil, fmt.Errorf("read staged file %q: %w", path, err)
+		}
+		markerSize, err := stagedConflictMarkerSize(worktreePath, path)
+		if err != nil {
+			return nil, err
+		}
+		stagedGroups := conflictMarkerGroups(content, markerSize)
+		if len(stagedGroups) == 0 {
+			continue
+		}
+		var priorGroups map[string]int
+		if oldRegular {
+			previous, err := runGitStdout(worktreePath, "cat-file", "blob", fields[2])
+			if err != nil {
+				return nil, fmt.Errorf("read previous version of %q: %w", path, err)
+			}
+			priorGroups = conflictMarkerGroups(previous, markerSize)
+		}
+		for group, count := range stagedGroups {
+			if count > priorGroups[group] {
+				paths = append(paths, path)
+				break
+			}
+		}
+	}
+	return paths, nil
+}
+
+func stagedConflictMarkerSize(worktreePath, path string) (int, error) {
+	out, err := runGitStdout(worktreePath, "check-attr", "--cached", "-z", "conflict-marker-size", "--", path)
+	if err != nil {
+		return 0, fmt.Errorf("read conflict-marker-size for %q: %w", path, err)
+	}
+	fields := strings.Split(out, "\x00")
+	if len(fields) != 4 || fields[0] != path || fields[1] != "conflict-marker-size" || fields[3] != "" {
+		return 0, fmt.Errorf("invalid conflict-marker-size record for %q", path)
+	}
+	// Git uses seven characters when the attribute is absent or invalid.
+	size, err := strconv.ParseInt(fields[2], 10, 32)
+	if err != nil || size <= 0 {
+		return 7, nil
+	}
+	return int(size), nil
+}
+
+// Count complete opening/separator/closing groups of equal width. Keeping each
+// group's text lets an existing fixture survive edits outside that group, while
+// counting duplicates prevents it from exempting a newly introduced copy.
+func conflictMarkerGroups(content string, markerSize int) map[string]int {
+	if strings.IndexByte(content, 0) >= 0 {
 		return nil
 	}
-	seen := make(map[string]struct{})
-	var paths []string
-	for _, line := range strings.Split(out, "\n") {
-		if !strings.Contains(line, "leftover conflict marker") {
+	complete := make(map[string]int)
+	opening := -1
+	separated := false
+	offset := 0
+	for rawLine := range strings.SplitAfterSeq(content, "\n") {
+		start := offset
+		offset += len(rawLine)
+		line := strings.TrimSuffix(strings.TrimSuffix(rawLine, "\n"), "\r")
+		if line == "" || (line[0] != '<' && line[0] != '=' && line[0] != '>') {
 			continue
 		}
-		// Lines read "path:line: leftover conflict marker".
-		path := line
-		if idx := strings.Index(line, ":"); idx > 0 {
-			path = line[:idx]
+		width := 1
+		for width < len(line) && line[width] == line[0] {
+			width++
 		}
-		if path == "" {
+		if width != markerSize || (width < len(line) && line[width] != ' ') {
 			continue
 		}
-		if _, dup := seen[path]; dup {
-			continue
+		switch line[0] {
+		case '<':
+			if opening < 0 {
+				opening = start
+			}
+		case '=':
+			if opening >= 0 && width == len(line) {
+				separated = true
+			}
+		case '>':
+			if opening >= 0 && separated {
+				// A closing-line terminator separates the group from later prose;
+				// adding it at EOF does not create another conflict group.
+				complete[content[opening:start+len(line)]]++
+				opening = -1
+				separated = false
+			}
 		}
-		seen[path] = struct{}{}
-		paths = append(paths, path)
 	}
-	return paths
+	return complete
 }
 
 // abortCherryPick returns the worktree to the branch tip. Used only where the
