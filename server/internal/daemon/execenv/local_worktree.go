@@ -521,11 +521,63 @@ func PrepareLocalWorktree(params LocalWorktreeParams, logger *slog.Logger) (*Loc
 // in the daemon log is not an acceptable substitute for the user's changes. The
 // surviving worktree stays registered in the user's repo, so `git worktree list`
 // points straight at it.
-func (w *LocalWorktree) Finalize(logger *slog.Logger) (LocalWorktreeOutcome, error) {
+func (w *LocalWorktree) Finalize(logger *slog.Logger) (finalOutcome LocalWorktreeOutcome, finalErr error) {
 	if w == nil {
 		return LocalWorktreeOutcome{}, nil
 	}
 	outcome := LocalWorktreeOutcome{Branch: w.Branch}
+
+	// Every path below that keeps the worktree leaves the branch checked out in
+	// it, and git refuses to check the same branch out twice. The next turn's
+	// `worktree add <path> <branch>` therefore fails with "already used by
+	// worktree", falls back to an alt branch name, and — because tracksState is
+	// `plan.tracksState && actualBranch == plan.name` — records nothing. The turn
+	// after that reads the same stale state and forks from the same frozen tip, so
+	// every subsequent turn lands on its own island and the conflict is never
+	// concluded. A preserved worktree is kept on purpose, so `git worktree prune`
+	// never reclaims it and the conversation cannot recover on its own.
+	//
+	// Detaching costs nothing: the commits, the index and the working tree are all
+	// still there for a human to recover from, and the branch ref is left exactly
+	// where it was. It only stops a dead directory from holding a name the
+	// conversation still needs.
+	//
+	// Keyed on the outcome rather than written at each return so a preserve path
+	// added later cannot forget it.
+	defer func() {
+		if finalOutcome.PreservedPath == "" {
+			return
+		}
+		// `git checkout --detach` cannot be used: it refuses outright with "you
+		// need to resolve your current index first" whenever the index holds
+		// unmerged entries, which is the single most important case to release —
+		// a preserved conflict. Rewriting HEAD from a symbolic ref to the commit
+		// it already points at touches neither the index nor the working tree, so
+		// the conflict, the staged state and the agent's files are all left
+		// exactly as a human would need to find them.
+		head, headErr := runGitTrimmed(finalOutcome.PreservedPath, "rev-parse", "HEAD")
+		if headErr != nil {
+			if logger != nil {
+				logger.Warn("execenv: could not read preserved worktree HEAD; leaving the branch checked out there",
+					"path", finalOutcome.PreservedPath, "branch", w.Branch, "error", headErr)
+			}
+			return
+		}
+		if out, detachErr := runGit(finalOutcome.PreservedPath, "update-ref", "--no-deref", "HEAD", head); detachErr != nil {
+			// Best-effort: the caller is already returning an error naming the
+			// preserved path, and failing here would replace a recoverable state
+			// with a less informative one.
+			if logger != nil {
+				logger.Warn("execenv: could not detach preserved worktree from its branch; the next turn will fork an alt branch instead of continuing",
+					"path", finalOutcome.PreservedPath, "branch", w.Branch, "output", strings.TrimSpace(out), "error", detachErr)
+			}
+			return
+		}
+		if logger != nil {
+			logger.Info("execenv: preserved worktree detached so the conversation branch stays available to the next turn",
+				"path", finalOutcome.PreservedPath, "branch", w.Branch)
+		}
+	}()
 
 	unlock, err := lockGitRoot(w.GitRoot, logger)
 	if err != nil {
@@ -582,6 +634,24 @@ func (w *LocalWorktree) Finalize(logger *slog.Logger) (LocalWorktreeOutcome, err
 				"the worktree is preserved at %s (listed by `git worktree list` in %s) — resolve the conflict there, "+
 				"or re-run the task and let the agent finish the merge",
 			w.Branch, quotedPaths(unmerged), w.Path, w.GitRoot)
+	}
+
+	// The check above reads the index, which staging clears. An agent that ran
+	// `git add` over a conflicted file — the command its own replay instructions
+	// give it — leaves no unmerged entry while the markers are still in the
+	// content, and the commit below would deliver them. Read the content too.
+	if markers := stagedConflictMarkerPaths(w.Path); len(markers) > 0 {
+		outcome.Branch = ""
+		outcome.PreservedPath = w.Path
+		if logger != nil {
+			logger.Error("execenv: staged files still carry conflict markers; nothing committed, worktree kept",
+				"path", w.Path, "branch", w.Branch, "files", markers)
+		}
+		return outcome, fmt.Errorf(
+			"refusing to deliver branch %s: %s still contain conflict markers, staged as though the merge were resolved; "+
+				"the worktree is preserved at %s (listed by `git worktree list` in %s) — finish the merge there, "+
+				"or re-run the task and let the agent resolve it properly",
+			w.Branch, quotedPaths(markers), w.Path, w.GitRoot)
 	}
 
 	// Treat "can't tell" like "dirty": committing costs an empty commit at
@@ -1469,6 +1539,50 @@ func unmergedPaths(worktreePath string) ([]string, error) {
 		}
 	}
 	return paths, nil
+}
+
+// stagedConflictMarkerPaths lists staged files that still carry conflict markers.
+//
+// unmergedPaths asks the INDEX, and staging a conflicted file clears its unmerged
+// entry — so `git add <file>` or a bare `git add -A` marks the conflict "resolved"
+// as far as that check can tell, and the markers go into the delivered commit. The
+// replay instructions hand the agent that exact command ("`git add <file>` marks
+// each one done"), followed by "Do not commit conflict markers", which is a
+// request rather than a check. This is the check.
+//
+// `git diff --cached --check` reports leftover markers by design and exits
+// non-zero when it finds any. It also flags whitespace errors on the same exit
+// code, so only the marker diagnostic is matched: refusing to deliver a branch
+// over a trailing space would be its own defect.
+// runGit rather than runGitStdout: git signals "markers found" with exit 2, and
+// runGitStdout discards its output on a non-zero exit, which would report every
+// conflicted delivery as clean.
+func stagedConflictMarkerPaths(worktreePath string) []string {
+	out, err := runGit(worktreePath, "diff", "--cached", "--check")
+	if err == nil {
+		return nil
+	}
+	seen := make(map[string]struct{})
+	var paths []string
+	for _, line := range strings.Split(out, "\n") {
+		if !strings.Contains(line, "leftover conflict marker") {
+			continue
+		}
+		// Lines read "path:line: leftover conflict marker".
+		path := line
+		if idx := strings.Index(line, ":"); idx > 0 {
+			path = line[:idx]
+		}
+		if path == "" {
+			continue
+		}
+		if _, dup := seen[path]; dup {
+			continue
+		}
+		seen[path] = struct{}{}
+		paths = append(paths, path)
+	}
+	return paths
 }
 
 // abortCherryPick returns the worktree to the branch tip. Used only where the
