@@ -4045,6 +4045,18 @@ type BatchUpdateIssuesRequest struct {
 	Updates  UpdateIssueRequest `json:"updates"`
 }
 
+// batchIssueUpdateFields merges repeated objects the same way the Updates struct
+// does. An outer null must be a no-op, while null values inside an object still
+// record explicit field presence (for example, an assignee to clear).
+type batchIssueUpdateFields map[string]json.RawMessage
+
+func (fields *batchIssueUpdateFields) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		return nil
+	}
+	return json.Unmarshal(data, (*map[string]json.RawMessage)(fields))
+}
+
 func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -4068,21 +4080,17 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Detect which fields in "updates" were explicitly set (including null).
-	//
-	// Resolved case-insensitively, matching how encoding/json filled req.Updates: a
-	// capital "Updates" populates the struct (so the writes below happen) while an
-	// exact lookup leaves this map nil, which silently emptied every presence check
-	// keyed off it — including the autonomy gate.
-	var rawTop map[string]json.RawMessage
-	json.Unmarshal(bodyBytes, &rawTop)
-	var rawUpdates map[string]json.RawMessage
-	for key, raw := range rawTop {
-		if strings.EqualFold(key, "updates") {
-			json.Unmarshal(raw, &rawUpdates)
-			break
-		}
+	// Decode every occurrence in input order, including exact duplicate keys and
+	// case variants. Choosing one entry from a map loses fields that req.Updates
+	// merged from earlier objects and makes explicit-null edits nondeterministic.
+	var raw struct {
+		Updates batchIssueUpdateFields `json:"updates"`
 	}
+	if err := json.Unmarshal(bodyBytes, &raw); err != nil {
+		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+	rawUpdates := raw.Updates
 
 	// Short-circuit when no mutation field is present in `updates`. Without
 	// this, the loop below runs N no-op UPDATEs (every if-guard skips, every
@@ -4122,10 +4130,6 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	// predicate (requestSetsIssueDirection) rather than two hand-kept lists.
 	// Runs before the status and project lookups below, and before any write, so a
 	// refusal costs a query and changes nothing.
-	//
-	// The decoded pointers matter twice as much here: rawUpdates is empty whenever
-	// the outer key's case did not match (`{"Updates":{...}}`), while req.Updates is
-	// populated regardless, so the raw map alone missed this route entirely.
 	if requestSetsIssueDirection(rawUpdates, req.Updates.Status, req.Updates.AssigneeType, req.Updates.AssigneeID) {
 		if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "change an issue's status or assignee") {
 			return
