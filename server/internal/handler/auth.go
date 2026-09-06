@@ -660,6 +660,15 @@ func (h *Handler) GoogleLogin(w http.ResponseWriter, r *http.Request) {
 // This allows cookie-authenticated browser sessions to obtain a bearer token
 // that can be handed off to the CLI via the cli_callback redirect.
 func (h *Handler) IssueCliToken(w http.ResponseWriter, r *http.Request) {
+	// Human-only, twice over: the route rejects machine credentials and so
+	// does this handler, mirroring DecideAgentApproval. Minting a JWT is the
+	// first step of the laundering chain (task token → JWT → human-only
+	// writes such as self-promotion), so the check must not depend on one
+	// line of router wiring staying correct.
+	if isMachineCredentialActor(r) {
+		writeError(w, http.StatusForbidden, "only a person can mint credentials")
+		return
+	}
 	userID, ok := requireUserID(w, r)
 	if !ok {
 		return

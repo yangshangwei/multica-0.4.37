@@ -1551,7 +1551,16 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		// server/internal/handler/onboarding_shim.go.
 		r.Post("/api/me/onboarding/runtime-bootstrap", h.BootstrapOnboardingRuntime)
 		r.Post("/api/me/onboarding/no-runtime-bootstrap", h.BootstrapOnboardingNoRuntime)
-		r.Post("/api/cli-token", h.IssueCliToken)
+		// IMPORTANT — the CLI token exchange is human-only. An mat_ task
+		// token (or mcn_ cloud PAT) carries its owner's user id, so without
+		// this gate a running agent could mint a clean human JWT here and
+		// present it wherever the task token is refused — the
+		// credential-laundering chain the 2026-09-06 audit demonstrated
+		// (mint a JWT/PAT as the agent, then self-promote and self-approve
+		// with it). The browser → CLI handoff this route exists for always
+		// arrives on a human JWT or cookie, which RequireHumanActor passes.
+		// See handler/actor_guards.go for the full rationale.
+		r.With(handler.RequireHumanActor).Post("/api/cli-token", h.IssueCliToken)
 		r.Post("/api/upload-file", h.UploadFile)
 		r.Post("/api/feedback", h.CreateFeedback)
 		r.With(handler.RequireHumanActor).Post("/api/client-usage", h.UpsertClientUsage)
@@ -1798,7 +1807,17 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/invitations/{id}/decline", h.DeclineInvitation)
 		r.Post("/api/share-links/join", h.JoinByShareLink)
 
+		// Personal access tokens are account-level credential management,
+		// so the whole group is human-only (see /api/cli-token above and
+		// handler/actor_guards.go): creating a PAT is minting a human
+		// credential — the second step of the laundering chain — listing
+		// exposes token names and prefixes, and revoking is a denial of
+		// service against the owner. The daemon's PAT renewal and the CLI
+		// login flow ride a mul_ PAT / browser JWT, which
+		// RequireHumanActor classifies as human, so both keep working.
 		r.Route("/api/tokens", func(r chi.Router) {
+			r.Use(handler.RequireHumanActor)
+
 			r.Get("/", h.ListPersonalAccessTokens)
 			r.Post("/", h.CreatePersonalAccessToken)
 			r.Post("/current/renew", h.RenewCurrentPersonalAccessToken)

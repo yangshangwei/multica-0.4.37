@@ -58,6 +58,15 @@ type CreatePATRequest struct {
 }
 
 func (h *Handler) CreatePersonalAccessToken(w http.ResponseWriter, r *http.Request) {
+	// Human-only, twice over: the route rejects machine credentials and so
+	// does this handler, mirroring DecideAgentApproval. A minted PAT is a
+	// permanent human credential usable wherever the machine credential that
+	// requested it is refused, so the check must not depend on one line of
+	// router wiring staying correct.
+	if isMachineCredentialActor(r) {
+		writeError(w, http.StatusForbidden, "only a person can mint credentials")
+		return
+	}
 	userID, ok := requireUserID(w, r)
 	if !ok {
 		return

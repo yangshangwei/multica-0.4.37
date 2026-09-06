@@ -162,7 +162,11 @@ These are checks on the covered HTTP endpoints, not process or credential
 isolation. The ordinary create route still produces an undeclared agent, and
 webhook credentials and shell commands have separate access boundaries. An agent
 must not use those paths, another agent, or another credential to bypass its
-declared policy. A recorded approval does not sandbox the daemon host.
+declared policy. The most direct such path is closed server-side: a task token
+(`mat_`) or cloud PAT (`mcn_`) gets 403 from `POST /api/cli-token` and from
+every `/api/tokens` route — create, list, renew and revoke — so an agent cannot
+mint a JWT or personal access token in its owner's name and re-enter as a human
+caller. A recorded approval does not sandbox the daemon host.
 
 ## Field contracts
 
