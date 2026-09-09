@@ -80,3 +80,32 @@ Repaired the seven merge-review findings with regression-first changes, preserve
   `.trellis/spec/core/frontend/api-client-auth-epoch.md`（authEpoch 模式）。
 - `pnpm --filter @multica/core exec ...` 在嵌套于主检出的 worktree 里会解析到
   主检出的包——要用 worktree 本地 `./node_modules/.bin/` 直接调用。
+
+
+## Session 2: 归档内网设备免登录
+
+**Date**: 2026-09-09
+**Task**: 归档内网设备免登录
+**Branch**: `feat/docs-in-app`
+
+### Summary
+
+用户确认真实桌面端、Web、身份持久性、双设备协作、看板及 Helm 验收均已测试通过；更新验收记录并归档 09-01-intranet-deviceless-auth。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `fb7b6bd64` | (see git log) |
+| `f98bc0282` | (see git log) |
+| `af0e9018f` | (see git log) |
+| `6abc07db2` | (see git log) |
+| `a82ad43ed` | (see git log) |
+| `404860c19` | (see git log) |
+| `1052e3586` | (see git log) |
+| `670608882` | (see git log) |
+| `7d10feef0` | (see git log) |
+
+### Status
+
+[OK] **Completed**

@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 1
-- **Last Active**: 2026-09-06
+- **Total Sessions**: 2
+- **Last Active**: 2026-09-09
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~47 | Active |
+| `journal-1.md` | ~111 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 2 | 2026-09-09 | 归档内网设备免登录 | `fb7b6bd64`, `f98bc0282`, `af0e9018f`, `6abc07db2`, `a82ad43ed`, `404860c19`, `1052e3586`, `670608882`, `7d10feef0` | `feat/docs-in-app` |
 | 1 | 2026-09-06 | Prepare agent autonomy changes for main | `665a2c05f`, `2560b3b1d`, `6e4256ae3`, `066665951`, `4859dadf5` | `fix/agent-autonomy-gates` |
 <!-- @@@/auto:session-history -->
 
