@@ -1,0 +1,38 @@
+{
+  "slug": "providers",
+  "title": "AI 编程工具对照",
+  "description": "比较 Multica 支持的 AI 编程工具，以及模型、MCP、会话和 Skill 的差异。",
+  "body": "Multica 不会替代你使用的 AI 编程工具。运行时会调用电脑上已经安装并登录的工具，再把执行进度和结果写回 issue。\n\n如果你已经在使用其中一款，通常可以直接沿用。选择工具时的四个判断维度：\n\n- 电脑上是否已经安装；\n- 账号可以使用哪些模型；\n- 是否需要由 Multica 配置 MCP；\n- 团队要复用哪些 skill。\n\n安装方法见 [安装 AI 编程工具](/install-agent-runtime)。\n\n## 支持的工具\n\n| 工具 | 检测命令 | 会话恢复 | Multica 管理 MCP | Skill 注入位置 |\n|---|---|---:|---:|---|\n| Antigravity | `agy` | ✓ | — | `.agents/skills/` |\n| Claude Code | `claude` | ✓ | ✓ | `.claude/skills/` |\n| CodeBuddy | `codebuddy` | ✓ | ✓ | `.codebuddy/skills/` |\n| CodeArts | `codearts` | ✓ | ✓ | `.codeartsdoer/skills/` |\n| Codex | `codex` | ✓ | ✓ | `$CODEX_HOME/skills/` |\n| GitHub Copilot CLI | `copilot` | ✓ | — | `.github/skills/` |\n| Cursor Agent | `cursor-agent` | ✓ | ✓ | `.cursor/skills/` |\n| DeepSeek Harness | `dsh` | ✓ | ✓ | `.dsh/skills/` |\n| DevEco Code | `deveco` | ✓ | — | `.deveco/skills/` |\n| Grok | `grok` | ✓ | ✓ | `.grok/skills/` |\n| Hermes | `hermes` | ✓ | ✓ | 单次执行的 `HERMES_HOME/skills/` |\n| Kimi CLI | `kimi` | ✓ | ✓ | `.kimi/skills/` |\n| Kiro CLI | `kiro-cli` | ✓ | ✓ | `.kiro/skills/` |\n| MiniMax Code | `mcode` | — | ✓ | `.minimax/skills/` |\n| OpenClaw | `openclaw` | ✓ | ✓ | `skills/` |\n| OpenCode | `opencode` | ✓ | ✓ | `.opencode/skills/` |\n| Pi | `pi` | ✓ | — | `.pi/skills/` |\n| Oh-My-Pi | `omp` | ✓ | — | `.omp/skills/` |\n| Qoder CLI | `qodercli` | ✓ | ✓ | `.qoder/skills/` |\n| Qoder CN CLI | `qoderclicn` | ✓ | ✓ | `.qoder/skills/` |\n| Qwen Code | `qwen` | ✓ | ✓ | `.qwen/skills/` |\n| QwenPaw | `qwenpaw` | ✓ | ✓ | 单次执行的工作区 `skills/` |\n| Reasonix | `reasonix` | ✓ | ✓ | `.reasonix/skills/` |\n| Trae CLI | `traecli` | ✓ | ✓ | `.traecli/skills/` |\n| Dim | `dim` | ✓ | ✓ | — |\n\n\"Multica 管理 MCP\" 表示你可以在智能体配置中填写 MCP server，由 Multica 在执行前传给对应工具。它不代表该工具本身没有其他 MCP 配置方式。\n\n## 模型来源\n\n创建智能体时，模型列表来自对应的运行时。有些工具提供固定的模型名称，有些会根据本机配置、登录账号和订阅权益返回可用模型。\n\n不选择模型时，Multica 使用该工具的默认设置。列表为空时，先确认运行时在线并且工具已经登录，再刷新模型列表。\n\nQwenPaw 和 MiniMax Code 是例外：它们不接受在 Multica 侧选择的模型，因此选择框不可用，显示为\"由运行时管理\"。请改在工具自身的配置里选择模型。模型列表为空属于正常情况，并不表示运行时离线。\n\nDeepSeek Harness 的模型目录由运行时自身提供（`dsh --profile multica --list-models`）。它的模型 id 采用 `provider/model` 形式（例如 `deepseek-official/deepseek-chat`），请从列表中选择完整 id。\n\n:::info\n不同工具可能使用不同的模型名称。更换 AI 编程工具后，原有的模型值在新工具中无效，需要重新选择。\n:::\n\n## 会话恢复\n\n表格中标记 ✓ 的工具支持在后续执行中继续已有会话。前提是原来的会话仍然存在，并且任务由能够访问它的运行时执行。MiniMax Code 0.1.2 尚未通过 ACP 声明会话加载能力，因此后续执行会新建 MCode 会话。\n\nMultica 会保存工具返回的会话标识。下一次在同一 issue 中继续工作时，运行时会尝试恢复这段会话；无法恢复时，会创建一个新会话继续执行。Pi 保存的是本地会话文件路径，因此更依赖原来的电脑和文件。\n\n有关重试和会话恢复的规则，见 [执行任务](/tasks#手动重试)。\n\n## MCP 配置\n\nAntigravity、GitHub Copilot CLI、DevEco Code 和 Pi 暂不读取智能体中的 MCP 配置，因此创建智能体时不会显示这一项。\n\n:::warning\nMCP server 的命令、参数和环境变量会随智能体配置保存在服务器端。不要把不需要共享的本地凭据直接写入配置。\n:::\n\n## Skill 注入方式\n\n执行开始前，Multica 会把智能体绑定的 skill 写入上表对应的位置，让工具通过自己的原生机制发现它们。\n\n仓库里原本存在的 skill 不会被覆盖。如果名称冲突，Multica 会为注入的副本使用另一个目录名；执行结束后，只清理自己创建的文件。\n\nCodex、Hermes 和 OpenClaw 的处理稍有不同：\n\n- Codex 使用单次执行的 `CODEX_HOME`，不会把 skill 写进系统级 Codex 目录。\n- Hermes 使用单次执行的 `HERMES_HOME`。已有的本地配置仍然可以被读取，但绑定的 skill 与会话数据按任务隔离。这套隔离只在智能体绑定了 skill 时启用，没有绑定 skill 的任务使用本机原有的 Hermes 主目录。\n- OpenClaw 使用当前任务工作目录下的 `skills/`，并由单次执行配置把该目录设为工作区。\n\n如何创建和绑定 skill，见 [Skills](/skills)。\n\n## 接下来\n\n- [创建和配置智能体](/agents-create) — 模型与思考强度设置。\n- [安装 AI 编程工具](/install-agent-runtime) — 安装与检测步骤。\n- [守护进程与运行时](/daemon-runtimes) — 运行时注册与并发。",
+  "toc": [
+    {
+      "depth": 2,
+      "title": "支持的工具",
+      "id": "支持的工具"
+    },
+    {
+      "depth": 2,
+      "title": "模型来源",
+      "id": "模型来源"
+    },
+    {
+      "depth": 2,
+      "title": "会话恢复",
+      "id": "会话恢复"
+    },
+    {
+      "depth": 2,
+      "title": "MCP 配置",
+      "id": "mcp-配置"
+    },
+    {
+      "depth": 2,
+      "title": "Skill 注入方式",
+      "id": "skill-注入方式"
+    },
+    {
+      "depth": 2,
+      "title": "接下来",
+      "id": "接下来"
+    }
+  ]
+}

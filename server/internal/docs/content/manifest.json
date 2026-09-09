@@ -1,0 +1,354 @@
+{
+  "title": "Multica 文档",
+  "groups": [
+    {
+      "label": "开始使用",
+      "items": [
+        {
+          "slug": "index",
+          "title": "欢迎"
+        },
+        {
+          "slug": "cloud-quickstart",
+          "title": "快速上手",
+          "description": "连接一台电脑，创建你的第一个智能体，并让它完成第一个任务。"
+        },
+        {
+          "slug": "concepts",
+          "title": "核心概念",
+          "description": "一页认识 Multica 的全部核心对象，以及它们之间的关系。"
+        },
+        {
+          "slug": "how-multica-works",
+          "title": "Multica 的工作方式",
+          "description": "Multica 记录并协调工作，连接的电脑负责执行。"
+        },
+        {
+          "slug": "tutorial",
+          "title": "完整教程",
+          "description": "从空工作区开始，用一个个人网站项目走完 Multica 的全部核心流程：创建智能体、用 issue 交付、组建小队、沉淀 skill、配置自动化。"
+        },
+        {
+          "slug": "self-host-quickstart",
+          "title": "自托管快速上手",
+          "description": "用 Docker Compose 启动 Multica，完成登录，并连接第一台执行电脑。"
+        }
+      ]
+    },
+    {
+      "label": "工作区",
+      "items": [
+        {
+          "slug": "workspaces",
+          "title": "工作区",
+          "description": "工作区是团队、工作和智能体配置彼此隔离的边界。"
+        },
+        {
+          "slug": "members-roles",
+          "title": "成员与权限",
+          "description": "邀请成员，并用 owner、admin 和 member 三种角色管理工作区权限。"
+        }
+      ]
+    },
+    {
+      "label": "Issue 与项目",
+      "items": [
+        {
+          "slug": "issues",
+          "title": "Issues",
+          "description": "Issue 保存一项工作的上下文、负责人、状态和执行记录。"
+        },
+        {
+          "slug": "projects",
+          "title": "项目",
+          "description": "用项目组织相关 issue，并为它们提供共同的目标、计划和执行上下文。"
+        },
+        {
+          "slug": "project-resources",
+          "title": "项目资源",
+          "description": "为项目关联 GitHub 仓库或本地目录，让后续执行获得稳定的工作上下文。"
+        }
+      ]
+    },
+    {
+      "label": "智能体",
+      "items": [
+        {
+          "slug": "agents",
+          "title": "智能体",
+          "description": "智能体是在工作区中反复使用的一套身份、能力和执行配置。"
+        },
+        {
+          "slug": "agents-create",
+          "title": "创建和配置智能体",
+          "description": "选择起点，定义智能体的职责、能力、运行方式和 Access。"
+        },
+        {
+          "slug": "skills",
+          "title": "Skills",
+          "description": "把常用的指令、步骤和资料整理成可供多个智能体复用的 skill。"
+        },
+        {
+          "slug": "squads",
+          "title": "小队",
+          "description": "由一名 leader 协调多名智能体或成员，把工作交给合适的人。"
+        }
+      ]
+    },
+    {
+      "label": "日常协作",
+      "items": [
+        {
+          "slug": "triggering-agents",
+          "title": "让智能体开始工作",
+          "description": "触发智能体的四种方式，以及触发之后去哪里查看进展。"
+        },
+        {
+          "slug": "assigning-issues",
+          "title": "分配 issue 给智能体",
+          "description": "让智能体负责一条 issue，并决定是否立即开始执行。"
+        },
+        {
+          "slug": "comments",
+          "title": "评论",
+          "description": "在 issue 中补充信息、回复讨论、@成员或智能体，并保留完整的协作记录。"
+        },
+        {
+          "slug": "mentioning-agents",
+          "title": "在评论中 @智能体",
+          "description": "在 issue 的评论中 @智能体或继续回复，让它处理新的信息而不改变负责人。"
+        },
+        {
+          "slug": "chat",
+          "title": "与智能体对话",
+          "description": "和智能体一对一独立聊天，整段对话完全私人。智能体默认没有任何 issue 上下文、也不会自动建 issue——但你明确要求时，它会以你的工作区权限代你操作。"
+        },
+        {
+          "slug": "inbox",
+          "title": "收件箱与订阅",
+          "description": "集中查看分配、提及、评论和智能体失败等需要跟进的动态。"
+        }
+      ]
+    },
+    {
+      "label": "运行时与执行",
+      "items": [
+        {
+          "slug": "tasks",
+          "title": "执行任务",
+          "description": "了解智能体的一次执行如何排队、运行、停止和重试。"
+        },
+        {
+          "slug": "daemon-runtimes",
+          "title": "守护进程与运行时",
+          "description": "了解 Multica 如何连接电脑、发现 AI 编程工具并执行任务。"
+        },
+        {
+          "slug": "install-agent-runtime",
+          "title": "安装 AI 编程工具",
+          "description": "安装并登录一款受支持的 AI 编程工具，让 Multica 在本机执行任务。"
+        },
+        {
+          "slug": "providers",
+          "title": "AI 编程工具对照",
+          "description": "比较 Multica 支持的 AI 编程工具，以及模型、MCP、会话和 Skill 的差异。"
+        }
+      ]
+    },
+    {
+      "label": "自动化",
+      "items": [
+        {
+          "slug": "autopilots",
+          "title": "自动化",
+          "description": "按时间或 Webhook 自动把重复工作交给智能体。"
+        }
+      ]
+    },
+    {
+      "label": "集成",
+      "items": [
+        {
+          "slug": "channels",
+          "title": "聊天集成",
+          "description": "把 Multica 智能体接入飞书、Lark、Slack、钉钉、企业微信或 Telegram，在团队已有的聊天工具中使用。"
+        },
+        {
+          "slug": "lark-bot-integration",
+          "title": "飞书 Bot",
+          "description": "把智能体接入飞书，在私聊或群聊中直接交代工作。"
+        },
+        {
+          "slug": "slack-bot-integration",
+          "title": "Slack Bot",
+          "description": "为智能体创建一个 Slack Bot，在私聊、频道以及 /issue、/new、/clear 命令中使用它。"
+        },
+        {
+          "slug": "dingtalk-bot-integration",
+          "title": "钉钉 Bot",
+          "description": "把智能体接入钉钉，在私聊或群聊中直接交代工作。"
+        },
+        {
+          "slug": "telegram-bot-integration",
+          "title": "Telegram Bot 接入",
+          "description": "把 Multica 智能体接入你自己的 Telegram Bot，支持私聊、群聊 @、forum topic 和 /issue。"
+        },
+        {
+          "slug": "github-integration",
+          "title": "GitHub 集成",
+          "description": "把 pull request 与 Multica issue 关联，并在 issue 中查看开发进展。"
+        },
+        {
+          "slug": "vcs-integration",
+          "title": "自托管 Git 代码托管",
+          "description": "为每个工作区连接自托管的 Forgejo、Gitea 或 GitLab 实例，使引用了 issue 编号的 Pull Request / Merge Request 自动关联到对应 issue，在合并时将其移动到「完成」，并展示 CI 状态。"
+        }
+      ]
+    },
+    {
+      "label": "客户端",
+      "items": [
+        {
+          "slug": "desktop-app",
+          "title": "桌面应用",
+          "description": "安装 Multica Desktop，使用桌面标签页和内置守护进程，并连接自托管实例。"
+        },
+        {
+          "slug": "mobile-app",
+          "title": "移动 App（iOS）",
+          "description": "从源码把 Multica 安装到 iPhone，并连接 Cloud 或自托管实例。"
+        }
+      ]
+    },
+    {
+      "label": "自托管",
+      "items": [
+        {
+          "slug": "security-model",
+          "title": "安全模型",
+          "description": "一个 Multica 任务能访问运行它的机器上的哪些内容，以及真正的隔离边界在哪里。"
+        },
+        {
+          "slug": "environment-variables",
+          "title": "环境变量",
+          "description": "自托管 Multica 常用的服务端、存储、集成和运行时配置。"
+        },
+        {
+          "slug": "auth-setup",
+          "title": "登录与注册",
+          "description": "配置邮箱验证码、Google 登录和新用户注册范围。"
+        },
+        {
+          "slug": "troubleshooting",
+          "title": "故障排查",
+          "description": "排查连接、执行、实时更新、邮件和自托管服务中的常见问题。"
+        }
+      ]
+    },
+    {
+      "label": "参考",
+      "items": [
+        {
+          "slug": "cli",
+          "title": "使用 CLI",
+          "description": "安装并登录 Multica CLI，在终端中管理工作区、issue、智能体和运行时。"
+        },
+        {
+          "slug": "auth-tokens",
+          "title": "认证与令牌",
+          "description": "了解浏览器登录、个人访问令牌，以及智能体执行时使用的临时凭据。"
+        }
+      ]
+    },
+    {
+      "label": "社区",
+      "items": [
+        {
+          "slug": "community-maintained",
+          "title": "社区维护的功能区域",
+          "description": "Multica 中哪些部分由社区贡献者维护、这对支持意味着什么，以及在这些区域遇到问题该怎么反馈。"
+        }
+      ]
+    },
+    {
+      "label": "参与开发",
+      "items": [
+        {
+          "slug": "developers/contributing",
+          "title": "参与开发",
+          "description": "配置 Multica 本地开发环境，运行测试，并按仓库约定提交改动。"
+        },
+        {
+          "slug": "developers/architecture",
+          "title": "项目架构",
+          "description": "了解 Multica 的客户端、Go 服务、执行守护进程和共享前端包如何协作。"
+        },
+        {
+          "slug": "developers/conventions",
+          "title": "开发规范",
+          "description": "代码命名规范、i18n 翻译术语表、中文风格指南的唯一权威来源。"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    "images/docs/agent-access-settings.webp",
+    "images/docs/assign-confirm-dialog.webp",
+    "images/docs/autopilot-schedule.webp",
+    "images/docs/chat-conversation.webp",
+    "images/docs/concepts-core-objects.webp",
+    "images/docs/how-a-run-works.webp",
+    "images/docs/members-roster.webp",
+    "images/docs/mention-trigger-preview.webp",
+    "images/docs/project-detail.webp",
+    "images/docs/quickstart-add-computer.webp",
+    "images/docs/quickstart-new-agent.webp",
+    "images/docs/quickstart-new-issue.webp",
+    "images/docs/quickstart-run-result.webp",
+    "images/docs/runtime-machine-detail.webp",
+    "images/docs/task-transcript.webp",
+    "images/docs/tutorial-agent-detail.webp",
+    "images/docs/tutorial-autopilot-create.webp",
+    "images/docs/tutorial-autopilot-detail.webp",
+    "images/docs/tutorial-autopilot-issue.webp",
+    "images/docs/tutorial-chat-ask-in-issue.webp",
+    "images/docs/tutorial-chat-create-engineer.webp",
+    "images/docs/tutorial-chat-create-repo.webp",
+    "images/docs/tutorial-chat-engineer-reply.webp",
+    "images/docs/tutorial-chat-fab.webp",
+    "images/docs/tutorial-chat-update-instructions.webp",
+    "images/docs/tutorial-comment-mention-reviewer.webp",
+    "images/docs/tutorial-create-agent-form.webp",
+    "images/docs/tutorial-create-with-agent.webp",
+    "images/docs/tutorial-create-workspace-form.webp",
+    "images/docs/tutorial-create-workspace-menu.webp",
+    "images/docs/tutorial-empty-workspace.webp",
+    "images/docs/tutorial-engineer-fixed.webp",
+    "images/docs/tutorial-engineer-instructions.webp",
+    "images/docs/tutorial-engineer-updated-instructions.webp",
+    "images/docs/tutorial-execution-log.webp",
+    "images/docs/tutorial-helper-create-squad.webp",
+    "images/docs/tutorial-invite-member.webp",
+    "images/docs/tutorial-issue-done.webp",
+    "images/docs/tutorial-issue-engineer-working.webp",
+    "images/docs/tutorial-issue-pr-linked.webp",
+    "images/docs/tutorial-issue-review-comment.webp",
+    "images/docs/tutorial-issue-squad-created.webp",
+    "images/docs/tutorial-new-issue-agent-mode.webp",
+    "images/docs/tutorial-repo-settings.webp",
+    "images/docs/tutorial-reviewer-detail.webp",
+    "images/docs/tutorial-reviewer-findings.webp",
+    "images/docs/tutorial-reviewer-recheck.webp",
+    "images/docs/tutorial-runtime-detail.webp",
+    "images/docs/tutorial-runtimes-list.webp",
+    "images/docs/tutorial-site-localhost.webp",
+    "images/docs/tutorial-skill-detail.webp",
+    "images/docs/tutorial-skill-new-modal.webp",
+    "images/docs/tutorial-skills-list.webp",
+    "images/docs/tutorial-squad-delivery.webp",
+    "images/docs/tutorial-squad-detail.webp",
+    "images/docs/tutorial-squad-dispatch.webp",
+    "images/docs/workspace-overview.webp",
+    "images/docs/workspace-settings.webp"
+  ]
+}

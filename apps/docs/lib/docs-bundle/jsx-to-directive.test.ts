@@ -89,6 +89,12 @@ describe("jsxToDirective", () => {
     );
   });
 
+  it("throws when a registered leaf contains unsupported attribute syntax", () => {
+    expect(() => jsxToDirective(`<VideoEmbed provider={provider} />`)).toThrow(
+      /Unsupported attributes/,
+    );
+  });
+
   it("drops the fumadocs Callout import line", () => {
     const input = [
       `import { Callout } from "fumadocs-ui/components/callout";`,

@@ -57,6 +57,8 @@ jobs:
               - 'knip.jsonc'
               - '.github/workflows/ci.yml'
               - 'scripts/generate-reserved-slugs.mjs'
+              - 'scripts/generate-docs-bundle.mjs'
+              - 'server/internal/docs/content/**'
               - 'server/internal/handler/reserved_slugs.json'
               - 'scripts/check-ui-wildcard-exports.mjs'
               - 'scripts/check-ui-wildcard-exports.test.sh'
@@ -275,6 +277,19 @@ jobs:
         run: |
           pnpm generate:reserved-slugs
           git diff --exit-code -- packages/core/paths/reserved-slugs.ts
+
+      - name: Verify in-app docs bundle is up to date
+        if: ${{ needs.changes.outputs.frontend == 'true' }}
+        # Pages and assets are committed for go:embed. Rebuilding here catches
+        # source edits, stale files, and incomplete meta navigation in one check.
+        run: |
+          pnpm generate:docs-bundle
+          git diff --exit-code -- server/internal/docs/content
+          untracked="$(git ls-files --others --exclude-standard -- server/internal/docs/content)"
+          if [ -n "$untracked" ]; then
+            printf 'Untracked generated docs files:\n%s\n' "$untracked"
+            exit 1
+          fi
 
       - name: Build, type check, and lint
         if: ${{ needs.changes.outputs.frontend == 'true' }}
