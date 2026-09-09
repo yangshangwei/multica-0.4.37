@@ -84,6 +84,39 @@ func TestACPManagedTerminalRunsAndReturnsOutput(t *testing.T) {
 	}
 }
 
+func TestACPManagedTerminalPreservesWindowsUnicodeShellOutput(t *testing.T) {
+	if runtime.GOOS != "windows" {
+		t.Skip("Windows cmd.exe code-page behavior only applies on Windows")
+	}
+	t.Parallel()
+
+	c := &hermesClient{
+		terminalCtx: cxtBackground(),
+		terminalCwd: t.TempDir(),
+		terminalEnv: os.Environ(),
+		terminals:   make(map[string]*acpTerminal),
+	}
+	created, err := c.acpTerminalCreate(json.RawMessage(`{"command":"echo 标题 / 中文 / 😀"}`))
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	id := created["terminalId"].(string)
+	if _, err := c.acpTerminalResponse("terminal/wait_for_exit", json.RawMessage(`{"terminalId":`+jsonString(id)+`}`)); err != nil {
+		t.Fatalf("wait: %v", err)
+	}
+	output, err := c.acpTerminalResponse("terminal/output", json.RawMessage(`{"terminalId":`+jsonString(id)+`}`))
+	if err != nil {
+		t.Fatalf("output: %v", err)
+	}
+	got := output["output"].(string)
+	if !strings.Contains(got, "标题 / 中文 / 😀") {
+		t.Fatalf("output = %q, want the original Unicode text", got)
+	}
+	if err := c.acpTerminalRelease(id); err != nil {
+		t.Fatalf("release: %v", err)
+	}
+}
+
 func TestACPManagedTerminalBoundsOutputToTail(t *testing.T) {
 	t.Parallel()
 

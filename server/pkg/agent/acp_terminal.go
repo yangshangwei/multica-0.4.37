@@ -65,6 +65,12 @@ func (t *acpTerminal) snapshot() (output string, truncated bool, exitStatus *acp
 	defer t.mu.Unlock()
 
 	raw := append([]byte(nil), t.output...)
+	// Legacy Windows code pages can only be decoded reliably once the process
+	// has exited and the byte stream is complete. Before then, invalid UTF-8 may
+	// simply be a multibyte rune split across adjacent pipe reads.
+	if t.exitStatus != nil {
+		raw = normalizeTerminalOutput(raw)
+	}
 	// A pipe read may split a multibyte rune across Write calls. Do not expose
 	// that incomplete suffix; a later snapshot will include it once complete.
 	if len(raw) > 0 {
@@ -150,10 +156,9 @@ func (c *hermesClient) acpTerminalCreate(params json.RawMessage) (map[string]any
 	var cmd *exec.Cmd
 	if len(p.Args) > 0 {
 		cmd = NewCommand(p.Command, nil).exec(c.terminalContext(), p.Args...)
-	} else if runtime.GOOS == "windows" {
-		cmd = NewCommand("cmd.exe", nil).exec(c.terminalContext(), "/d", "/s", "/c", p.Command)
 	} else {
-		cmd = NewCommand("/bin/sh", nil).exec(c.terminalContext(), "-c", p.Command)
+		shell, args := acpTerminalShellCommand(p.Command)
+		cmd = NewCommand(shell, nil).exec(c.terminalContext(), args...)
 	}
 	hideAgentWindow(cmd)
 	cmd.Dir = cwd
