@@ -128,13 +128,16 @@ vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "workspace-1",
 }));
 
-vi.mock("@multica/core/paths", () => ({
-  useWorkspacePaths: () => ({
-    newAgent: () => "/test-workspace/agents/new",
-    newAgentManual: () => "/test-workspace/agents/new/manual",
-    agentDetail: (id: string) => `/test-workspace/agents/${id}`,
-  }),
-}));
+// Derived from the real path factory rather than a hand-written literal: a
+// stub that lists only the routes this page used at the time silently breaks
+// when the page starts linking somewhere new.
+vi.mock("@multica/core/paths", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/paths")>();
+  return {
+    ...actual,
+    useWorkspacePaths: () => actual.paths.workspace("test-workspace"),
+  };
+});
 
 vi.mock("@multica/core/workspace/queries", () => ({
   agentListOptions: () => ({ queryKey: ["agents"] }),

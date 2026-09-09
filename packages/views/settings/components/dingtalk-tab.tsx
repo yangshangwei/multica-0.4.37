@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ChevronDown, ChevronRight, ExternalLink, Info, Trash2 } from "lucide-react";
+import { BookOpen, ChevronDown, ChevronRight, Info, Trash2 } from "lucide-react";
 import { cn } from "@multica/ui/lib/utils";
 import { Button } from "@multica/ui/components/ui/button";
 import { Card, CardContent } from "@multica/ui/components/ui/card";
@@ -51,7 +51,9 @@ import type {
   DingTalkInstallation,
 } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
-import { openExternal } from "../../platform";
+import { DOCS_SLUGS } from "@multica/core/docs";
+import { paths, useWorkspaceSlug } from "@multica/core/paths";
+import { AppLink } from "../../navigation";
 import { useT, useTimeAgo } from "../../i18n";
 
 const dingTalkChatManagePermission = "qyapi_chat_manage";
@@ -800,21 +802,6 @@ function InstallationRow({
   );
 }
 
-// dingtalkDocsUrl points at the DingTalk integration guide on the docs site,
-// localized to the viewer's language. The docs site uses /<lang>/ path
-// prefixes (English has none), matching the convention used elsewhere in the
-// app for doc links.
-function dingtalkDocsUrl(lang: string | undefined): string {
-  const prefix = lang?.startsWith("zh")
-    ? "/zh"
-    : lang?.startsWith("ja")
-      ? "/ja"
-      : lang?.startsWith("ko")
-        ? "/ko"
-        : "";
-  return `https://multica.ai/docs${prefix}/dingtalk-bot-integration`;
-}
-
 // DingTalkAgentBindButton is the per-agent CTA exposed from the agent detail
 // page. DingTalk uses the bring-your-own-app model: the button opens a dialog
 // where an authorized manager pastes the AppKey (client id) + AppSecret (client
@@ -848,7 +835,15 @@ export function DingTalkAgentBindButton({
    */
   onShowConnectedDetails?: () => void;
 }) {
-  const { t, i18n } = useT("settings");
+  const { t } = useT("settings");
+  // Nullable rather than useWorkspacePaths(): that hook throws outside a
+  // workspace route, and this button is a leaf that other surfaces embed (the
+  // agent inspector's Integrations tab, for one). The docs link is an
+  // affordance, so it drops out rather than taking the dialog down with it.
+  const workspaceSlug = useWorkspaceSlug();
+  const docsHref = workspaceSlug
+    ? paths.workspace(workspaceSlug).docsPage(DOCS_SLUGS.dingtalkBot)
+    : null;
   const wsId = useWorkspaceId();
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
@@ -967,15 +962,19 @@ export function DingTalkAgentBindButton({
               {t(($) => $.dingtalk.byo_dialog_title)}
             </DialogTitle>
 
-            <button
-              type="button"
-              onClick={() => openExternal(dingtalkDocsUrl(i18n.language))}
-              className="inline-flex w-fit items-center gap-1.5 text-caption text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-              data-testid="dingtalk-byo-docs-link"
-            >
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-              {t(($) => $.dingtalk.byo_docs_link)}
-            </button>
+            {/* In-app: the guide is served by this deployment, so an intranet
+                install can actually reach it. Dropped outside a workspace
+                route, where there is no slug to address it with. */}
+            {docsHref ? (
+              <AppLink
+                href={docsHref}
+                className="inline-flex w-fit items-center gap-1.5 text-caption text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                data-testid="dingtalk-byo-docs-link"
+              >
+                <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />
+                {t(($) => $.dingtalk.byo_docs_link)}
+              </AppLink>
+            ) : null}
           </DialogHeader>
 
           <div className="space-y-4 p-5">

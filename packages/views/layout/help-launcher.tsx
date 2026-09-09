@@ -19,10 +19,11 @@ import {
 } from "@multica/ui/components/ui/dropdown-menu";
 import { useModalStore } from "@multica/core/modals";
 import { useConfigStore } from "@multica/core/config";
+import { paths, useWorkspaceSlug } from "@multica/core/paths";
+import { AppLink } from "../navigation";
 import { isDesktopShell } from "../platform/local-directory";
 import { useT } from "../i18n";
 
-const DOCS_URL = "https://multica.ai/docs";
 const CHANGELOG_URL = "https://multica.ai/changelog";
 // Absolute, including on self-hosted deployments: the installers we ship are
 // the same binaries either way, and the desktop client can point at a
@@ -33,6 +34,10 @@ const DOWNLOAD_URL = "https://multica.ai/download";
 export function HelpLauncher() {
   const { t } = useT("layout");
   const serverVersion = useConfigStore((state) => state.serverVersion);
+  // Nullable on purpose: this menu lives in the dashboard sidebar, which is
+  // always workspace-scoped, but reading the slug defensively keeps the Help
+  // menu from being the thing that throws if it is ever mounted elsewhere.
+  const workspaceSlug = useWorkspaceSlug();
   // Web-only: offering "download the desktop app" inside the desktop app is
   // nonsense, and this sidebar is shared — apps/desktop renders the same
   // AppSidebar as the web dashboard, so the entry has to be gated here.
@@ -76,15 +81,23 @@ export function HelpLauncher() {
             <DropdownMenuSeparator />
           </>
         )}
-        <DropdownMenuItem
-          render={
-            <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" />
-          }
-        >
-          <BookOpen className="h-3.5 w-3.5" />
-          {t(($) => $.help.docs)}
-          <ArrowUpRight className="size-3 translate-y-px text-faint-foreground" />
-        </DropdownMenuItem>
+        {/* Documentation is served by the deployment this client is connected
+            to, so this is an in-app destination rather than a link off to
+            multica.ai — an intranet install cannot reach the public site at
+            all. No ArrowUpRight for the same reason: nothing leaves the app.
+            "Change log" and "Desktop app" below stay external, because the
+            release assets they point at genuinely are not in this
+            deployment. */}
+        {workspaceSlug ? (
+          <DropdownMenuItem
+            render={
+              <AppLink href={paths.workspace(workspaceSlug).docs()} />
+            }
+          >
+            <BookOpen className="h-3.5 w-3.5" />
+            {t(($) => $.help.docs)}
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem
           render={
             <a

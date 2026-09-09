@@ -72,13 +72,16 @@ vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "ws-1",
 }));
 
-// Partial mock: SkillIcon resolves its icon from the real WORKSPACE_PAGES.
-vi.mock("@multica/core/paths", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@multica/core/paths")>()),
-  useWorkspacePaths: () => ({
-    skillDetail: (id: string) => `/acme/skills/${id}`,
-  }),
-}));
+// Partial mock: SkillIcon resolves its icon from the real WORKSPACE_PAGES, and
+// the paths come from the real factory so a route this page starts linking to
+// later cannot be missing from a hand-written stub.
+vi.mock("@multica/core/paths", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/paths")>();
+  return {
+    ...actual,
+    useWorkspacePaths: () => actual.paths.workspace("acme"),
+  };
+});
 
 vi.mock("@multica/core/workspace/queries", () => ({
   skillListOptions: () => ({ queryKey: ["skills"] }),

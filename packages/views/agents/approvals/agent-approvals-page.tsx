@@ -4,7 +4,9 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, ShieldCheck } from "lucide-react";
 import { agentApprovalListOptions } from "@multica/core/agent-approvals";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { useWorkspacePaths } from "@multica/core/paths";
 import type { AgentApproval, ApprovalStatus } from "@multica/core/types";
 import { isApprovalPending } from "@multica/core/types";
 import { agentListOptions } from "@multica/core/workspace/queries";
@@ -54,6 +56,8 @@ export function AgentApprovalsPage() {
     return byId;
   }, [agents]);
 
+  const paths = useWorkspacePaths();
+
   const waitingCount = useMemo(
     () => approvals.filter((entry) => isApprovalPending(entry.status)).length,
     [approvals],
@@ -67,7 +71,7 @@ export function AgentApprovalsPage() {
         count={waitingCount}
         description={t(($) => $.approvals.tagline)}
         learnMore={{
-          href: "https://multica.ai/docs/agents",
+          href: paths.docsPage(DOCS_SLUGS.agents),
           label: t(($) => $.approvals.learn_more),
         }}
         actions={

@@ -3,7 +3,9 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { WorkspaceSlugProvider } from "@multica/core/paths";
 import type { RuntimeProfile } from "@multica/core/types";
+import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import enCommon from "../../locales/en/common.json";
 import enRuntimes from "../../locales/en/runtimes.json";
 
@@ -78,6 +80,20 @@ function profile(overrides: Partial<RuntimeProfile> = {}): RuntimeProfile {
   };
 }
 
+// The setup-guide link is an in-app AppLink now that the docs ship with the
+// deployment, so the dialog needs workspace + navigation context.
+function navAdapter(): NavigationAdapter {
+  return {
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+    pathname: "/acme/runtimes",
+    searchParams: new URLSearchParams(),
+    hash: "",
+    getShareableUrl: (path: string) => path,
+  };
+}
+
 function renderDialog({
   intent,
   machineName,
@@ -93,6 +109,8 @@ function renderDialog({
 } = {}) {
   const view = render(
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
+     <WorkspaceSlugProvider slug="acme">
+      <NavigationProvider value={navAdapter()}>
       <RuntimeProfilesDialog
         wsId="ws-1"
         intent={intent}
@@ -101,6 +119,8 @@ function renderDialog({
         onClose={onClose}
         onProfileCreated={onProfileCreated}
       />
+      </NavigationProvider>
+     </WorkspaceSlugProvider>
     </I18nProvider>,
   );
   return { ...view, onClose };
@@ -237,7 +257,7 @@ describe("RuntimeProfilesDialog", () => {
     expect(screen.getByText(/from Studio Mac/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View setup guide" })).toHaveAttribute(
       "href",
-      "https://multica.ai/docs/daemon-runtimes#custom-runtime-profiles",
+      `/acme/docs/daemon-runtimes#${encodeURIComponent("自定义运行时配置")}`,
     );
     expect(screen.getByText("Step 1 of 2")).toBeInTheDocument();
     expect(

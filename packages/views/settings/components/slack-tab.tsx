@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ChevronRight, ExternalLink, Trash2 } from "lucide-react";
+import { BookOpen, ChevronRight, ExternalLink, Trash2 } from "lucide-react";
 import { SlackMark } from "./slack-mark";
 import { cn } from "@multica/ui/lib/utils";
 import { Button } from "@multica/ui/components/ui/button";
@@ -35,6 +35,9 @@ import { slackInstallationsOptions, slackKeys } from "@multica/core/slack";
 import { api } from "@multica/core/api";
 import type { SlackInstallation } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { DOCS_SLUGS } from "@multica/core/docs";
+import { paths, useWorkspaceSlug } from "@multica/core/paths";
+import { AppLink } from "../../navigation";
 import { openExternal } from "../../platform";
 import { useT } from "../../i18n";
 
@@ -236,21 +239,6 @@ function InstallationRow({
 // shows how to create the Slack app + copy its two tokens is recorded.
 const SLACK_BYO_VIDEO_URL = "";
 
-// slackDocsUrl points at the Slack integration guide on the docs site,
-// localized to the viewer's language. The docs site uses /<lang>/ path
-// prefixes (English has none), matching the convention used elsewhere in the
-// app for doc links (e.g. the autopilots webhook docs link).
-function slackDocsUrl(lang: string | undefined): string {
-  const prefix = lang?.startsWith("zh")
-    ? "/zh"
-    : lang?.startsWith("ja")
-      ? "/ja"
-      : lang?.startsWith("ko")
-        ? "/ko"
-        : "";
-  return `https://multica.ai/docs${prefix}/slack-bot-integration`;
-}
-
 // SlackAgentBindButton is the per-agent CTA exposed from the agent detail page.
 // Slack uses the bring-your-own-app model: the button opens a dialog where the
 // admin pastes the bot token (xoxb-) + app-level token (xapp-) of the Slack app
@@ -276,7 +264,14 @@ export function SlackAgentBindButton({
    */
   onShowConnectedDetails?: () => void;
 }) {
-  const { t, i18n } = useT("settings");
+  const { t } = useT("settings");
+  // Nullable rather than useWorkspacePaths(): that hook throws outside a
+  // workspace route, and this button is a leaf other surfaces embed. The docs
+  // link is an affordance, so it drops out rather than taking the dialog with it.
+  const workspaceSlug = useWorkspaceSlug();
+  const docsHref = workspaceSlug
+    ? paths.workspace(workspaceSlug).docsPage(DOCS_SLUGS.slackBot)
+    : null;
   const wsId = useWorkspaceId();
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
@@ -392,15 +387,20 @@ export function SlackAgentBindButton({
             </button>
           ) : null}
 
-          <button
-            type="button"
-            onClick={() => openExternal(slackDocsUrl(i18n.language))}
-            className="inline-flex w-fit items-center gap-2 text-body font-medium text-primary underline-offset-2 hover:underline"
-            data-testid="slack-byo-docs-link"
-          >
-            <ExternalLink className="h-4 w-4" />
-            {t(($) => $.slack.byo_docs_link)}
-          </button>
+          {/* In-app: this guide ships with the deployment, so it must not be
+              handed to the system browser (which an intranet install cannot
+              reach anyway). Dropped outside a workspace route, where there is
+              no slug to address it with. */}
+          {docsHref ? (
+            <AppLink
+              href={docsHref}
+              className="inline-flex w-fit items-center gap-2 text-body font-medium text-primary underline-offset-2 hover:underline"
+              data-testid="slack-byo-docs-link"
+            >
+              <BookOpen className="h-4 w-4" />
+              {t(($) => $.slack.byo_docs_link)}
+            </AppLink>
+          ) : null}
 
           <div className="space-y-4">
             <div className="space-y-1.5">

@@ -16,6 +16,14 @@
  * board. The Runtimes page owns the follow-up Mika bootstrap once a runtime
  * appears, so this guide does not ask the member to copy an agent prompt.
  *
+ * The documentation link below is a slug-less in-app path (`/docs/...`), not an
+ * `https://multica.ai/docs/...` URL: an intranet deployment cannot reach the
+ * public site, and this text is PERSISTED into an issue description that a
+ * reader opens later, possibly from a different workspace. `openLink` prefixes
+ * the reader's current workspace slug at click time for a known route segment
+ * (see WORKSPACE_ROUTE_SEGMENTS in editor/utils/link-handler.ts), so baking one
+ * workspace's slug in here would be wrong.
+ *
  * Note: server's deprecation shim (`onboarding_shim.go:noRuntimeIssueTitle`)
  * still uses the bare English string for its title-based dedupe — that
  * codepath only runs for pre-v3 desktop builds and never overlaps with
@@ -45,7 +53,7 @@ That gives you the project-management layer first. Once a runtime is connected, 
 
 ## Install your first agent runtime
 
-Full guide: https://multica.ai/docs/install-agent-runtime
+Full guide: /docs/install-agent-runtime
 
 For English users, the fastest first path is Codex:
 
@@ -87,7 +95,7 @@ const zh = `欢迎来到 Multica。
 
 ## 安装第一个 Agent 运行时
 
-完整文档:https://multica.ai/docs/install-agent-runtime
+完整文档:/docs/install-agent-runtime
 
 中文用户建议先装 Kimi CLI:
 
@@ -128,7 +136,7 @@ runtime이 준비되기 전에는 다음을 해볼 수 있습니다:
 
 ## 첫 agent runtime 설치하기
 
-전체 가이드: https://multica.ai/docs/install-agent-runtime
+전체 가이드: /docs/install-agent-runtime
 
 한국어 사용자는 Codex로 시작하는 것이 가장 빠릅니다:
 
@@ -170,7 +178,7 @@ runtime が準備できる前に、次のことを試せます:
 
 ## 最初の agent runtime をインストールする
 
-詳しいガイド: https://multica.ai/docs/install-agent-runtime
+詳しいガイド: /docs/install-agent-runtime
 
 日本語ユーザーには、Codex で始めるのが最も速い経路です:
 

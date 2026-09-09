@@ -37,6 +37,7 @@ import {
 import { useAuthStore } from "@multica/core/auth";
 import { agentApprovalListOptions } from "@multica/core/agent-approvals";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useWorkspacePaths } from "@multica/core/paths";
 import {
   agentListOptions,
@@ -258,6 +259,7 @@ function PageHeaderBar({
   onCreate: () => void;
 }) {
   const { t } = useT("agents");
+  const paths = useWorkspacePaths();
   return (
     <CollectionPageHeader
       icon={Bot}
@@ -265,7 +267,7 @@ function PageHeaderBar({
       count={totalCount}
       description={t(($) => $.page.tagline)}
       learnMore={{
-        href: "https://multica.ai/docs/agents",
+        href: paths.docsPage(DOCS_SLUGS.agents),
         label: t(($) => $.page.learn_more),
       }}
       actions={

@@ -12,13 +12,56 @@ import {
   EmptyTitle,
 } from "@multica/ui/components/ui/empty";
 import { cn } from "@multica/ui/lib/utils";
+import { AppLink } from "../navigation";
 import { PageHeader } from "./page-header";
+
+const LEARN_MORE_CLASS =
+  "underline decoration-muted-foreground/30 underline-offset-4 transition-colors hover:text-foreground";
+
+/**
+ * The header's supporting link, which since the in-app documentation landed can
+ * point either outside the app or at a route inside it.
+ *
+ * A root-relative href has to go through `AppLink`: the desktop renderer is
+ * served from `file://`, where a plain `<a target="_blank">` resolves an in-app
+ * path to `file:///{path}` — the shell's http/https allowlist then drops it and
+ * the click does nothing at all. External links keep the plain anchor, because
+ * handing an off-app URL to the router would be the opposite mistake.
+ */
+function LearnMoreLink({ href, label }: { href: string; label: ReactNode }) {
+  if (href.startsWith("/")) {
+    return (
+      <AppLink href={href} className={LEARN_MORE_CLASS}>
+        {label}
+      </AppLink>
+    );
+  }
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={LEARN_MORE_CLASS}
+    >
+      {label}
+    </a>
+  );
+}
 
 interface CollectionPageHeaderProps {
   icon: LucideIcon;
   title: ReactNode;
   count?: number;
   description?: ReactNode;
+  /**
+   * Supporting "learn more" link after the description.
+   *
+   * A root-relative href is an in-app destination and is navigated in-app; a
+   * href with a scheme opens in the browser. The distinction matters on desktop,
+   * where the renderer runs at `file://` — a route path in a plain
+   * `<a target="_blank">` there resolves to `file:///…` and the click does
+   * nothing at all.
+   */
   learnMore?: {
     href: string;
     label: ReactNode;
@@ -59,14 +102,7 @@ export function CollectionPageHeader({
             {learnMore ? (
               <>
                 {" "}
-                <a
-                  href={learnMore.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline decoration-muted-foreground/30 underline-offset-4 transition-colors hover:text-foreground"
-                >
-                  {learnMore.label}
-                </a>
+                <LearnMoreLink {...learnMore} />
               </>
             ) : null}
           </p>

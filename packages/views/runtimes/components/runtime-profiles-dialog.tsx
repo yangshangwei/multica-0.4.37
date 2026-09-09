@@ -5,7 +5,6 @@ import type { FormEvent } from "react";
 import {
   ChevronDown,
   ChevronLeft,
-  ExternalLink,
   Loader2,
   Pencil,
   Plus,
@@ -51,6 +50,8 @@ import {
   type RuntimeCatalogEntry,
   type RuntimeCatalogSections,
 } from "./runtime-profile-catalog";
+import { useWorkspaceSlug } from "@multica/core/paths";
+import { AppLink } from "../../navigation";
 import { useT } from "../../i18n";
 import { customRuntimeDocsHref } from "./runtime-docs";
 
@@ -77,7 +78,8 @@ export function RuntimeProfilesDialog({
   onProfileCreated?: (profile: RuntimeProfile) => void;
   onClose: () => void;
 }) {
-  const { t, i18n } = useT("runtimes");
+  const { t } = useT("runtimes");
+  const workspaceSlug = useWorkspaceSlug();
   const { data: profiles = [], isLoading } = useQuery(
     runtimeProfileListOptions(wsId),
   );
@@ -105,7 +107,7 @@ export function RuntimeProfilesDialog({
     entries.find((entry) => entry.id === selectedId) ?? null;
   const openCreateForm = () =>
     setState({ surface: "form", mode: "create", step: "family" });
-  const docsHref = customRuntimeDocsHref(i18n.language);
+  const docsHref = customRuntimeDocsHref(workspaceSlug);
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
@@ -167,15 +169,14 @@ export function RuntimeProfilesDialog({
                   })
                 : t(($) => $.profiles.dialog_description)}
             </span>{" "}
-            <a
+            {docsHref ? (
+            <AppLink
               href={docsHref}
-              target="_blank"
-              rel="noopener noreferrer"
               className="mt-1 inline-flex items-center gap-1 rounded-sm font-medium text-foreground underline underline-offset-2 transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t(($) => $.profiles.learn_more)}
-              <ExternalLink aria-hidden="true" className="h-3 w-3" />
-            </a>
+            </AppLink>
+            ) : null}
           </DialogDescription>
         </DialogHeader>
 

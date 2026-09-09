@@ -553,7 +553,7 @@ func TestBootstrapOnboardingNoRuntimeCreatesSingleGuideIssue(t *testing.T) {
 	}
 	for _, want := range []string{
 		"Try Multica first",
-		"https://multica.ai/docs/install-agent-runtime",
+		"/docs/install-agent-runtime",
 		"npm i -g @openai/codex",
 	} {
 		if !strings.Contains(description, want) {
@@ -657,7 +657,7 @@ func TestBootstrapOnboardingNoRuntimeUsesChineseGuideForChineseUsers(t *testing.
 	}
 	for _, want := range []string{
 		"先体验项目管理功能",
-		"https://multica.ai/docs/install-agent-runtime",
+		"/docs/install-agent-runtime",
 		"中文用户建议先装 Kimi CLI",
 		"kimi --version",
 	} {

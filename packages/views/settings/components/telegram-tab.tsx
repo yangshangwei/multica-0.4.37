@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ChevronRight, ExternalLink, Trash2 } from "lucide-react";
+import { BookOpen, ChevronRight, ExternalLink, Trash2 } from "lucide-react";
 import { TelegramMark } from "./telegram-mark";
 import { cn } from "@multica/ui/lib/utils";
 import { Button } from "@multica/ui/components/ui/button";
@@ -35,6 +35,9 @@ import { telegramInstallationsOptions, telegramKeys } from "@multica/core/telegr
 import { api } from "@multica/core/api";
 import type { TelegramInstallation } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { DOCS_SLUGS } from "@multica/core/docs";
+import { paths, useWorkspaceSlug } from "@multica/core/paths";
+import { AppLink } from "../../navigation";
 import { openExternal } from "../../platform";
 import { useT } from "../../i18n";
 
@@ -230,19 +233,6 @@ function InstallationRow({
   );
 }
 
-// telegramDocsUrl points at the Telegram integration guide on the docs site,
-// localized like the Slack docs link.
-function telegramDocsUrl(lang: string | undefined): string {
-  const prefix = lang?.startsWith("zh")
-    ? "/zh"
-    : lang?.startsWith("ja")
-      ? "/ja"
-      : lang?.startsWith("ko")
-        ? "/ko"
-        : "";
-  return `https://multica.ai/docs${prefix}/telegram-bot-integration`;
-}
-
 // TelegramAgentBindButton is the per-agent CTA on the agent detail page.
 // Telegram uses the paste-a-token model: the admin creates a bot with
 // @BotFather and pastes its token; the backend validates via getMe before
@@ -261,7 +251,14 @@ export function TelegramAgentBindButton({
    * handler so management actions live in one place. */
   onShowConnectedDetails?: () => void;
 }) {
-  const { t, i18n } = useT("settings");
+  const { t } = useT("settings");
+  // Nullable rather than useWorkspacePaths(): that hook throws outside a
+  // workspace route, and this button is a leaf other surfaces embed. The docs
+  // link is an affordance, so it drops out rather than taking the dialog with it.
+  const workspaceSlug = useWorkspaceSlug();
+  const docsHref = workspaceSlug
+    ? paths.workspace(workspaceSlug).docsPage(DOCS_SLUGS.telegramBot)
+    : null;
   const wsId = useWorkspaceId();
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
@@ -368,15 +365,19 @@ export function TelegramAgentBindButton({
             {t(($) => $.telegram.connect_dialog_description)}
           </p>
 
-          <button
-            type="button"
-            onClick={() => openExternal(telegramDocsUrl(i18n.language))}
-            className="inline-flex w-fit items-center gap-2 text-body font-medium text-primary underline-offset-2 hover:underline"
-            data-testid="telegram-docs-link"
-          >
-            <ExternalLink className="h-4 w-4" />
-            {t(($) => $.telegram.connect_docs_link)}
-          </button>
+          {/* In-app: this deployment serves the guide, so an intranet install
+              can reach it. Dropped outside a workspace route, where there is no
+              slug to address it with. */}
+          {docsHref ? (
+            <AppLink
+              href={docsHref}
+              className="inline-flex w-fit items-center gap-2 text-body font-medium text-primary underline-offset-2 hover:underline"
+              data-testid="telegram-docs-link"
+            >
+              <BookOpen className="h-4 w-4" />
+              {t(($) => $.telegram.connect_docs_link)}
+            </AppLink>
+          ) : null}
 
           <div className="space-y-1.5">
             <Label htmlFor="telegram-bot-token">

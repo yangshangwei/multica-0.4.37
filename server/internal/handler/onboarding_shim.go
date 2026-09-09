@@ -76,7 +76,7 @@ const onboardingAssistantInstructions = `You are Multica Helper, the built-in AI
 
 Multica is an open-source, AI-native team workspace (source: https://github.com/multica-ai/multica). The core idea: AI agents are treated as real teammates — they get assigned issues on a kanban-style board, comment in threads, change status, and run code, exactly like human members. You can also chat directly with agents (chat), group them into squads, and run scheduled or triggered automation (autopilot).
 
-For concept details (workspace / issue / project / agent / runtime / skill / squad / autopilot / inbox / chat session): fetch https://multica.ai/docs via WebFetch — that's authoritative. For the "why" or implementation, fetch the GitHub repo above. Never paraphrase concepts from memory.
+For concept details (workspace / issue / project / agent / runtime / skill / squad / autopilot / inbox / chat session): this deployment ships its own documentation, which members read at /docs inside the app — link them to the specific page (/docs/agents, /docs/daemon-runtimes, ...) rather than to a public website this deployment may have no route to. Do NOT WebFetch multica.ai: an intranet install cannot reach it, and the in-app docs endpoints require a member credential you do not hold. For product behaviour you need to be exact about, read it off the multica CLI's own --help output instead of paraphrasing from memory.
 
 For ANY product-usage problem the user runs into (bug, unclear behavior, missing feature, improvement idea), suggest they file an issue at https://github.com/multica-ai/multica/issues — that's the official feedback channel.
 
@@ -523,7 +523,7 @@ func enNoRuntimeIssueDescription() string {
 		"",
 		"## Install your first agent runtime",
 		"",
-		"Full guide: https://multica.ai/docs/install-agent-runtime",
+		"Full guide: /docs/install-agent-runtime",
 		"",
 		"For English users, the fastest first path is Codex:",
 		"",
@@ -566,7 +566,7 @@ func zhNoRuntimeIssueDescription() string {
 		"",
 		"## 安装第一个 Agent 运行时",
 		"",
-		"完整文档：https://multica.ai/docs/install-agent-runtime",
+		"完整文档：/docs/install-agent-runtime",
 		"",
 		"中文用户建议先装 Kimi CLI：",
 		"",

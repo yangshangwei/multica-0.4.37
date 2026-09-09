@@ -5,6 +5,8 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { WorkspaceSlugProvider } from "@multica/core/paths";
+import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import enCommon from "../../locales/en/common.json";
 import enSettings from "../../locales/en/settings.json";
 
@@ -103,10 +105,24 @@ import { TelegramAgentBindButton, TelegramTab } from "./telegram-tab";
 
 const TEST_RESOURCES = { en: { common: enCommon, settings: enSettings } };
 
+function navAdapter(): NavigationAdapter {
+  return {
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+    pathname: "/acme/settings",
+    searchParams: new URLSearchParams(),
+    hash: "",
+    getShareableUrl: (path: string) => path,
+  };
+}
+
 function renderUI(children: ReactNode) {
   return render(
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
-      {children}
+      <WorkspaceSlugProvider slug="acme">
+        <NavigationProvider value={navAdapter()}>{children}</NavigationProvider>
+      </WorkspaceSlugProvider>
     </I18nProvider>,
   );
 }
@@ -138,13 +154,16 @@ describe("TelegramAgentBindButton", () => {
     expect(mockOpenExternal).not.toHaveBeenCalled();
   });
 
-  it("opens the localized Telegram setup guide", async () => {
+  // The setup guide used to be handed to the system browser at
+  // multica.ai/docs, which an intranet install cannot reach. It is now the
+  // in-app reader, so it must be a real in-app link rather than an
+  // openExternal call.
+  it("links to the in-app Telegram setup guide", async () => {
     renderUI(<TelegramAgentBindButton agentId="agent-1" agentName="Bot" />);
     await userEvent.click(screen.getByTestId("telegram-agent-connect"));
-    await userEvent.click(await screen.findByTestId("telegram-docs-link"));
-    expect(mockOpenExternal).toHaveBeenCalledWith(
-      "https://multica.ai/docs/telegram-bot-integration",
-    );
+    const link = await screen.findByTestId("telegram-docs-link");
+    expect(link).toHaveAttribute("href", "/acme/docs/telegram-bot-integration");
+    expect(mockOpenExternal).not.toHaveBeenCalled();
   });
 
   it("does not report success for a malformed install response", async () => {

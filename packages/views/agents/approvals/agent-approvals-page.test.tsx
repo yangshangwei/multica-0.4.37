@@ -5,7 +5,9 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { WorkspaceSlugProvider } from "@multica/core/paths";
 import type { AgentApproval } from "@multica/core/types";
+import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import enAgents from "../../locales/en/agents.json";
 
 const mockListApprovals = vi.hoisted(() => vi.fn());
@@ -56,15 +58,35 @@ function approval(overrides: Partial<AgentApproval> = {}): AgentApproval {
   };
 }
 
+function navAdapter(): NavigationAdapter {
+  return {
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+    pathname: "/acme/agents/approvals",
+    searchParams: new URLSearchParams(),
+    hash: "",
+    getShareableUrl: (path: string) => path,
+  };
+}
+
 function renderQueue() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
+  // The queue is a workspace-scoped route, and its "learn more" link is now an
+  // in-app AppLink into the bundled docs rather than an external URL. That needs
+  // both a slug (useWorkspacePaths() throws without one) and navigation context,
+  // so this mounts the page the way the router does.
   return render(
     <I18nProvider locale="en" resources={{ en: { agents: enAgents } }}>
-      <QueryClientProvider client={queryClient}>
-        <AgentApprovalsPage />
-      </QueryClientProvider>
+      <WorkspaceSlugProvider slug="acme">
+        <NavigationProvider value={navAdapter()}>
+          <QueryClientProvider client={queryClient}>
+            <AgentApprovalsPage />
+          </QueryClientProvider>
+        </NavigationProvider>
+      </WorkspaceSlugProvider>
     </I18nProvider>,
   );
 }

@@ -2,7 +2,9 @@ import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { configStore } from "@multica/core/config";
+import { WorkspaceSlugProvider } from "@multica/core/paths";
 import enLayout from "../locales/en/layout.json";
+import { NavigationProvider, type NavigationAdapter } from "../navigation";
 import { isDesktopShell } from "../platform/local-directory";
 import { HelpLauncher } from "./help-launcher";
 
@@ -73,6 +75,37 @@ vi.mock("@multica/ui/components/ui/dropdown-menu", async () => {
   };
 });
 
+// The Docs entry is an in-app destination now, so it needs both the workspace
+// slug it addresses and a navigation adapter for AppLink. Rendering without
+// them is a real case too — see the last test — so the providers live in a
+// helper rather than a blanket wrapper.
+function navAdapter(): NavigationAdapter {
+  return {
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+    pathname: "/acme/issues",
+    searchParams: new URLSearchParams(),
+    hash: "",
+    getShareableUrl: (path: string) => path,
+  };
+}
+
+function renderHelp(slug: string | null = "acme") {
+  const ui = (
+    <NavigationProvider value={navAdapter()}>
+      <HelpLauncher />
+    </NavigationProvider>
+  );
+  return render(
+    slug ? (
+      <WorkspaceSlugProvider slug={slug}>{ui}</WorkspaceSlugProvider>
+    ) : (
+      ui
+    ),
+  );
+}
+
 beforeEach(() => {
   vi.mocked(isDesktopShell).mockReturnValue(false);
 });
@@ -83,13 +116,13 @@ afterEach(() => {
 
 describe("HelpLauncher", () => {
   it("does not show a version row when the server omits it", () => {
-    render(<HelpLauncher />);
+    renderHelp();
     expect(screen.queryByText(/Server version/)).not.toBeInTheDocument();
   });
 
   it("shows the server version once /api/config resolves it", () => {
     configStore.getState().setServerVersion("1.2.3");
-    render(<HelpLauncher />);
+    renderHelp();
     expect(screen.getByText("Server version 1.2.3")).toBeInTheDocument();
   });
 
@@ -99,7 +132,7 @@ describe("HelpLauncher", () => {
   // boundary sits above the sidebar. Rendering here must not throw.
   it("renders the version row without a missing-group crash", () => {
     configStore.getState().setServerVersion("9.9.9");
-    expect(() => render(<HelpLauncher />)).not.toThrow();
+    expect(() => renderHelp()).not.toThrow();
     expect(screen.getByText("Server version 9.9.9")).toBeInTheDocument();
   });
 
@@ -107,7 +140,7 @@ describe("HelpLauncher", () => {
   // no entry anywhere in the app, so users had to remember the URL or detour
   // through the marketing site. The Help menu is the persistent home for it.
   it("links to the download page on web", () => {
-    render(<HelpLauncher />);
+    renderHelp();
     const link = screen.getByRole("link", { name: /Desktop app/ });
     expect(link).toHaveAttribute("href", "https://multica.ai/download");
   });
@@ -116,14 +149,42 @@ describe("HelpLauncher", () => {
   // this gate the desktop app would offer to download the desktop app.
   it("hides the download entry inside the desktop shell", () => {
     vi.mocked(isDesktopShell).mockReturnValue(true);
-    render(<HelpLauncher />);
+    renderHelp();
     expect(screen.queryByText("Desktop app")).not.toBeInTheDocument();
     // The rest of the menu is unaffected by the gate.
     expect(screen.getByText("Docs")).toBeInTheDocument();
   });
 
+  // The docs entry was `https://multica.ai/docs` — dead on any deployment
+  // without public internet, which is the entire reason in-app docs exist. It is
+  // now a workspace-scoped in-app route, and carries no external-link glyph
+  // because nothing leaves the app.
+  it("points the docs entry at the in-app reader", () => {
+    renderHelp("acme");
+    const link = screen.getByRole("link", { name: /Docs/ });
+    expect(link).toHaveAttribute("href", "/acme/docs");
+  });
+
+  // Change log and Desktop app still point at release assets that genuinely are
+  // not part of this deployment, so those two stay external.
+  it("keeps the change log external", () => {
+    renderHelp();
+    expect(screen.getByRole("link", { name: /Change log/ })).toHaveAttribute(
+      "href",
+      "https://multica.ai/changelog",
+    );
+  });
+
+  // The menu must not be the thing that throws if it is ever mounted outside a
+  // workspace route: the entry is dropped, the rest of the menu still renders.
+  it("omits the docs entry with no workspace in scope, without crashing", () => {
+    expect(() => renderHelp(null)).not.toThrow();
+    expect(screen.queryByText("Docs")).not.toBeInTheDocument();
+    expect(screen.getByText("Change log")).toBeInTheDocument();
+  });
+
   it("does not include the removed Discord entry", () => {
-    render(<HelpLauncher />);
+    renderHelp();
     expect(screen.queryByText("Discord")).not.toBeInTheDocument();
   });
 });

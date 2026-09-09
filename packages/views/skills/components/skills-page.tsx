@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useAuthStore } from "@multica/core/auth";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useWorkspacePaths } from "@multica/core/paths";
 import {
   agentListOptions,
@@ -175,6 +176,7 @@ function PageHeaderBar({
   onCreate: () => void;
 }) {
   const { t } = useT("skills");
+  const paths = useWorkspacePaths();
   return (
     <CollectionPageHeader
       icon={SkillIcon}
@@ -182,7 +184,7 @@ function PageHeaderBar({
       count={totalCount}
       description={t(($) => $.page.tagline)}
       learnMore={{
-        href: "https://multica.ai/docs/skills",
+        href: paths.docsPage(DOCS_SLUGS.skills),
         label: t(($) => $.page.learn_more),
       }}
       actions={

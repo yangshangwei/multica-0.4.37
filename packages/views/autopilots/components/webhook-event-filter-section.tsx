@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { X, Plus, Filter, ExternalLink } from "lucide-react";
+import { X, Plus, Filter, CircleQuestionMark } from "lucide-react";
 import { cn } from "@multica/ui/lib/utils";
+import { DOCS_ANCHORS, DOCS_SLUGS } from "@multica/core/docs";
+import { paths, useWorkspaceSlug } from "@multica/core/paths";
 import type { WebhookEventFilter } from "@multica/core/types";
+import { AppLink } from "../../navigation";
 import { useT } from "../../i18n";
 
 interface WebhookEventFilterSectionProps {
@@ -15,12 +18,23 @@ export function WebhookEventFilterSection({
   filters,
   onChange,
 }: WebhookEventFilterSectionProps) {
-  const { t, i18n } = useT("autopilots");
+  const { t } = useT("autopilots");
   const [newEvent, setNewEvent] = useState("");
   const [newActions, setNewActions] = useState("");
-  const docsHref = i18n.language?.startsWith("zh")
-    ? `https://multica.ai/docs/zh/autopilots#${encodeURIComponent("事件过滤")}`
-    : "https://multica.ai/docs/autopilots#event-filters";
+  // Was `#事件过滤` in Chinese and `#event-filters` in English, and neither has
+  // ever existed — the heading reads "过滤事件". The anchor now comes from
+  // DOCS_ANCHORS, which docs-anchor-parity.test.ts checks against the bundle.
+  //
+  // Nullable slug rather than useWorkspacePaths(): this section renders inside
+  // the autopilot dialog, which the tests mount bare and which is not
+  // guaranteed to sit under a workspace route. The link drops instead of
+  // throwing, matching the slack/dingtalk/telegram tabs.
+  const workspaceSlug = useWorkspaceSlug();
+  const docsHref = workspaceSlug
+    ? paths
+        .workspace(workspaceSlug)
+        .docsPage(DOCS_SLUGS.autopilots, DOCS_ANCHORS.webhookEventFilters)
+    : null;
 
   const addFilter = () => {
     const event = newEvent.trim();
@@ -45,16 +59,18 @@ export function WebhookEventFilterSection({
       <div className="flex items-center gap-1.5 text-micro font-semibold tracking-[0.08em] text-muted-foreground uppercase">
         <Filter className="size-3" />
         {t(($) => $.dialog.event_filter_label)}
-        <a
-          href={docsHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={t(($) => $.dialog.event_filter_docs_link_label)}
-          title={t(($) => $.dialog.event_filter_docs_link_label)}
-          className="ml-0.5 inline-flex items-center text-faint-foreground hover:text-foreground transition-colors"
-        >
-          <ExternalLink className="size-3" />
-        </a>
+        {docsHref ? (
+          <AppLink
+            href={docsHref}
+            aria-label={t(($) => $.dialog.event_filter_docs_link_label)}
+            title={t(($) => $.dialog.event_filter_docs_link_label)}
+            className="ml-0.5 inline-flex items-center text-faint-foreground hover:text-foreground transition-colors"
+          >
+            {/* Not an external-link glyph any more: this opens the documentation
+                inside the app rather than handing the reader to a browser. */}
+            <CircleQuestionMark className="size-3" />
+          </AppLink>
+        ) : null}
       </div>
 
       {filters.length > 0 && (

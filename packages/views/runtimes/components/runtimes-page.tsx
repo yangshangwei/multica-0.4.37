@@ -15,7 +15,11 @@ import { useAuthStore } from "@multica/core/auth";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { memberNeedsMikaSetup, useBootstrapMika } from "@multica/core/onboarding";
 import { MIKA_PLACEHOLDER_EMOJI } from "../../onboarding/components/mika-intro";
-import { useRequiredWorkspaceSlug, useWorkspacePaths } from "@multica/core/paths";
+import {
+  useRequiredWorkspaceSlug,
+  useWorkspacePaths,
+  useWorkspaceSlug,
+} from "@multica/core/paths";
 import { agentTaskSnapshotOptions } from "@multica/core/agents";
 import { chatSessionsOptions } from "@multica/core/chat/queries";
 import { runtimeProfileListOptions } from "@multica/core/runtimes";
@@ -383,17 +387,23 @@ function PageHeaderBar({
   cloudRuntimeEnabled: boolean;
   onOpenCloudRuntime: () => void;
 }) {
-  const { t, i18n } = useT("runtimes");
+  const { t } = useT("runtimes");
+  const workspaceSlug = useWorkspaceSlug();
+  const docsHref = daemonRuntimesDocsHref(workspaceSlug);
   return (
     <CollectionPageHeader
       icon={Server}
       title={t(($) => $.page.title)}
       count={totalCount}
       description={t(($) => $.page.tagline)}
-      learnMore={{
-        href: daemonRuntimesDocsHref(i18n.language),
-        label: t(($) => $.page.learn_more),
-      }}
+      {...(docsHref
+        ? {
+            learnMore: {
+              href: docsHref,
+              label: t(($) => $.page.learn_more),
+            },
+          }
+        : {})}
       actions={
         <>
           {cloudRuntimeEnabled && (
