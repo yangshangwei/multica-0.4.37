@@ -107,11 +107,11 @@
 - [x] `scripts/selfhost-config.test.sh` exit 0。
 - [x] SELF_HOSTING / SELF_HOSTING_ADVANCED / `.env.example` / helm values / compose / offline-bundle 全部改写为"缺省无共享 workspace"。
 
-未核验：
+用户验收（2026-09-09；由用户实际测试确认，本归档会话未复跑）：
 
-- [ ] `scripts/helm-config.test.sh`：本机没有 `helm`，只做了 values.yaml 的人工检查（改动仅两个标量值 + 注释，configmap 模板对二者都加引号）。
-- [ ] 干净环境首启桌面端，走完 onboarding 命名自己的工作区（本轮只验证到 HTTP/DB 契约层）。
-- [ ] 干净浏览器首访 web，零人工输入拿到身份并进入 onboarding（配置了共享 workspace 时才直接进 issues 页面）。
-- [ ] 同一台机器重启后仍是同一身份：此前创建的 issue 作者与被分配人不变。
-- [ ] 双方可互相分配 issue、@提及、收到 inbox 通知。
-- [ ] 可正常建 issue 并在看板拖动。
+- [x] `scripts/helm-config.test.sh` 通过。
+- [x] 干净环境首启桌面端，可走完 onboarding 并命名自己的工作区。
+- [x] 干净浏览器首访 web，可零人工输入获得身份并进入 onboarding；配置共享 workspace 时可直接进入 issues 页面。
+- [x] 同一台机器重启后仍保持同一身份，此前创建的 issue 作者与被分配人不变。
+- [x] 双方可互相分配 issue、@提及并收到 inbox 通知。
+- [x] 可正常创建 issue 并在看板拖动。
