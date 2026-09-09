@@ -21,9 +21,10 @@
   "children": [],
   "parent": null,
   "relatedFiles": [
-    "docs-in-app-design.md"
+    "docs-in-app-design.md",
+    "apps/docs/lib/docs-bundle/jsx-to-directive.mjs"
   ],
-  "notes": "HelpLauncher 在 main 上仍然存在（删它的 382d77f9c 只在 fix/cli-windows-text-encoding 上），所以 sidebar footer 入口不是新增，而是把 help-launcher.tsx:25 的 DOCS_URL 改成应用内跳转。",
+  "notes": "HelpLauncher 在 main 上仍然存在（删它的 382d77f9c 只在 fix/cli-windows-text-encoding 上），所以 sidebar footer 入口不是新增，而是把 help-launcher.tsx:25 的 DOCS_URL 改成应用内跳转。\n\n锚点 parity 已发现两个既有失效锚点（公网文档站现在就是坏的，不是本任务引入）：\n1. webhook-event-filter-section.tsx:22-23 链到 #event-filters / #事件过滤，但 autopilots.mdx:79 的标题是 'Filter events' / '过滤事件'（词序相反），四语言全部失效。\n2. runtime-docs.ts 的 ko 分支链到 #사용자-지정-런타임-프로필，但 daemon-runtimes.ko.mdx:82 的标题是 '사용자 지정 런타임 설정'（설정 ≠ 프로필）。\nzh / en / ja 的 daemon-runtimes 锚点是对的。修法在 L5：以文档标题为准改产品代码里的锚点，并让 parity 测试覆盖，这样它们不能再悄悄漂移。",
   "meta": {
     "design_doc": "docs-in-app-design.md",
     "content_locale": "zh only（UI 文案四语齐全）",

@@ -109,3 +109,49 @@ Repaired the seven merge-review findings with regression-first changes, preserve
 ### Status
 
 [OK] **Completed**
+
+
+## Session 3: 归档内置研发智能体第一阶段
+
+**Date**: 2026-09-09
+**Task**: 归档内置研发智能体第一阶段
+**Branch**: `feat/docs-in-app`
+
+### Summary
+
+确认 09-05-builtin-dev-agents 的实现与后续自治门禁加固均已合入 main，验收项全部完成，归档任务。
+
+### Main Changes
+
+- 归档 09-05-builtin-dev-agents：8 个角色模板、2 个 Squad 模板、四级自治与人工审批边界
+- 核对 feat/builtin-dev-agents 相对 main 落后 16、领先 0，功能与加固提交均已是 main 祖先
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f495f2716` | (see git log) |
+| `ca3a79d18` | (see git log) |
+| `d75e8642b` | (see git log) |
+| `a7b503ee0` | (see git log) |
+| `f31d33fa2` | (see git log) |
+| `652cd60b9` | (see git log) |
+| `68be48e1d` | (see git log) |
+| `caa8b88c1` | (see git log) |
+| `661929c7b` | (see git log) |
+| `ed26fd842` | (see git log) |
+| `886be2898` | (see git log) |
+| `665a2c05f` | (see git log) |
+| `2560b3b1d` | (see git log) |
+
+### Testing
+
+- [OK] 已有证据：64 包 Go race 通过、pnpm test 417 文件 4996 项、模板创建 E2E 连续两次通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 后续范围：自治等级设置页控件、审批实时事件、模板灰度与升级差异、per-role runtime
