@@ -11,6 +11,7 @@ import (
 
 	"github.com/multica-ai/multica/server/internal/cli"
 	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/util"
 )
 
 // `multica approval` — the CLI half of the human approval boundary.
@@ -67,7 +68,13 @@ func runApprovalRequest(cmd *cobra.Command, _ []string) error {
 		if err != nil {
 			return fmt.Errorf("read --plan-file: %w", err)
 		}
-		plan = string(contents)
+		// A plan is the artifact a human reads before authorising an action they
+		// cannot easily undo. Mojibake here is worse than a failed command:
+		// it makes the thing under review unreadable at the moment of decision.
+		plan, err = util.DecodeTextFileBytes(contents, "file content for --plan-file")
+		if err != nil {
+			return err
+		}
 	}
 
 	client, err := newAPIClient(cmd)

@@ -38,6 +38,10 @@ import (
 // to a native command), so Chinese / Cyrillic / any non-ASCII content
 // arrives as `?`. Reading a UTF-8 file directly bypasses the shell's pipe
 // re-encoding entirely. See issues #2198 / #2236 / #2376.
+//
+// Both byte sources run through util.DecodeTextFileBytes, which accepts the
+// UTF-16 that PowerShell writes when the caller forgets to name an encoding
+// and refuses what it cannot identify without guessing.
 func resolveTextFlag(cmd *cobra.Command, flagName string) (string, bool, error) {
 	stdinFlag := flagName + "-stdin"
 	fileFlag := flagName + "-file"
@@ -64,7 +68,11 @@ func resolveTextFlag(cmd *cobra.Command, flagName string) (string, bool, error) 
 		if err != nil {
 			return "", false, fmt.Errorf("read stdin for --%s: %w", stdinFlag, err)
 		}
-		body := strings.TrimSuffix(string(data), "\n")
+		body, err := util.DecodeTextFileBytes(data, fmt.Sprintf("stdin content for --%s", stdinFlag))
+		if err != nil {
+			return "", false, err
+		}
+		body = strings.TrimSuffix(body, "\n")
 		if body == "" {
 			return "", false, fmt.Errorf("stdin content for --%s is empty", stdinFlag)
 		}
@@ -78,7 +86,11 @@ func resolveTextFlag(cmd *cobra.Command, flagName string) (string, bool, error) 
 		if err != nil {
 			return "", false, fmt.Errorf("read file for --%s: %w", fileFlag, err)
 		}
-		body := strings.TrimSuffix(string(data), "\n")
+		body, err := util.DecodeTextFileBytes(data, fmt.Sprintf("file content for --%s", fileFlag))
+		if err != nil {
+			return "", false, err
+		}
+		body = strings.TrimSuffix(body, "\n")
 		if body == "" {
 			return "", false, fmt.Errorf("file content for --%s is empty", fileFlag)
 		}

@@ -12,11 +12,11 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-	"unicode/utf8"
 
 	"github.com/spf13/cobra"
 
 	"github.com/multica-ai/multica/server/internal/cli"
+	"github.com/multica-ai/multica/server/internal/util"
 )
 
 var skillCmd = &cobra.Command{
@@ -265,14 +265,18 @@ func resolveSkillContentFlag(cmd *cobra.Command) (string, bool, error) {
 	return "", false, nil
 }
 
+// skillContentBytesToString shares the encoding boundary with issue bodies via
+// util.DecodeTextFileBytes: a SKILL.md is authored by the same agents on the
+// same Windows hosts, so it meets the same PowerShell encoding defaults.
 func skillContentBytesToString(data []byte, label string) (string, bool, error) {
 	if len(data) == 0 {
 		return "", false, fmt.Errorf("%s is empty", label)
 	}
-	if !utf8.Valid(data) {
-		return "", false, fmt.Errorf("%s must be valid UTF-8", label)
+	body, err := util.DecodeTextFileBytes(data, label)
+	if err != nil {
+		return "", false, err
 	}
-	return string(data), true, nil
+	return body, true, nil
 }
 
 func runSkillList(cmd *cobra.Command, _ []string) error {

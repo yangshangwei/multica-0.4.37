@@ -14,6 +14,7 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"unicode/utf16"
 
 	"github.com/spf13/cobra"
 
@@ -175,6 +176,74 @@ func TestResolveTextFlag(t *testing.T) {
 		want := "标题 / Заголовок\n\n中文段落 with `code` and \"quotes\"."
 		if got != want {
 			t.Errorf("got %q, want %q", got, want)
+		}
+	})
+
+	t.Run("UTF-8 BOM is treated as an encoding marker", func(t *testing.T) {
+		dir := t.TempDir()
+		t.Chdir(dir)
+		body := append([]byte{0xEF, 0xBB, 0xBF}, []byte("标题 / 中文\n")...)
+		if err := os.WriteFile("bom.md", body, 0o644); err != nil {
+			t.Fatalf("write tempfile: %v", err)
+		}
+		c := newFlagTestCmd("description")
+		_ = c.Flags().Set("description-file", "bom.md")
+		got, ok, err := resolveTextFlag(c, "description")
+		if err != nil || !ok {
+			t.Fatalf("unexpected: ok=%v err=%v", ok, err)
+		}
+		if got != "标题 / 中文" {
+			t.Errorf("got %q, want BOM-free UTF-8 content", got)
+		}
+	})
+
+	// The encoding boundary itself is util.DecodeTextFileBytes; its full matrix
+	// (UTF-16 both endiannesses, BOM-less sniffing, ANSI refusal, surrogate and
+	// NUL handling) lives in internal/util/text_encoding_test.go. These two
+	// cases cover only the wiring: that --description-file reaches the decoder
+	// and that a refusal keeps its actionable text.
+	t.Run("UTF-16LE file from PowerShell Out-File is decoded", func(t *testing.T) {
+		dir := t.TempDir()
+		t.Chdir(dir)
+		// The byte shape `"标题 / 中文" | Out-File description.md` produces on
+		// PowerShell 5.1: UTF-16LE, BOM, trailing newline. Encoded here rather
+		// than transcribed so the fixture cannot drift from what it claims.
+		body := []byte{0xFF, 0xFE}
+		for _, u := range utf16.Encode([]rune("标题 / 中文\n")) {
+			body = append(body, byte(u), byte(u>>8))
+		}
+		if err := os.WriteFile("utf16.md", body, 0o644); err != nil {
+			t.Fatalf("write tempfile: %v", err)
+		}
+		c := newFlagTestCmd("description")
+		_ = c.Flags().Set("description-file", "utf16.md")
+		got, ok, err := resolveTextFlag(c, "description")
+		if err != nil || !ok {
+			t.Fatalf("unexpected: ok=%v err=%v", ok, err)
+		}
+		if got != "标题 / 中文" {
+			t.Errorf("got %q, want the decoded UTF-16LE body", got)
+		}
+	})
+
+	t.Run("BOM-less ANSI file is refused with an actionable hint", func(t *testing.T) {
+		dir := t.TempDir()
+		t.Chdir(dir)
+		// `Set-Content` on a CP936 machine: no BOM, so the code page would have
+		// to be guessed, and a wrong guess is silent mojibake.
+		if err := os.WriteFile("ansi.md", []byte{0xD6, 0xD0, 0xCE, 0xC4}, 0o644); err != nil {
+			t.Fatalf("write tempfile: %v", err)
+		}
+		c := newFlagTestCmd("description")
+		_ = c.Flags().Set("description-file", "ansi.md")
+		_, _, err := resolveTextFlag(c, "description")
+		if err == nil {
+			t.Fatal("expected BOM-less ANSI to be refused")
+		}
+		for _, want := range []string{"--description-file", "no BOM to decode from", "UTF8Encoding"} {
+			if !strings.Contains(err.Error(), want) {
+				t.Errorf("error %q does not mention %q", err, want)
+			}
 		}
 	})
 
