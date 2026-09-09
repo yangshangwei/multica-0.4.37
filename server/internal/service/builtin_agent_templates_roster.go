@@ -186,8 +186,9 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"ja": "変更そのものを根拠に、変更履歴・API ドキュメント・Runbook を書きます。",
 		},
 	},
-	// The two squad-leader definitions. Unlisted: they are provisioned by the squad
-	// templates, which also create the roster the leader routes to.
+	// The squad-leader definitions, one per built-in squad template. Unlisted: they
+	// are provisioned by the squad templates, which also create the roster the leader
+	// routes to.
 	//
 	// Coordinator rather than Observer, because routing IS the work: a leader has to
 	// mention members and, on the issues its own squad owns, move the parent forward.
@@ -233,6 +234,132 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"zh": "先定性缺陷并确认可复现，再分别安排修复和回归测试。",
 			"ko": "결함을 트리아지하고 재현을 확인한 뒤, 수정과 회귀 테스트를 배분합니다.",
 			"ja": "不具合をトリアージして再現を確認し、修正と回帰テストを割り当てます。",
+		},
+	},
+	{
+		Key:                "review-gate-lead",
+		Version:            1,
+		DefaultName:        "Review Gate Lead",
+		AvatarEmoji:        "🚧",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-requirement-clarification"},
+		Titles: map[string]string{
+			"en": "Review Gate Lead",
+			"zh": "合并门禁负责人",
+			"ko": "리뷰 게이트 리드",
+			"ja": "レビューゲート リード",
+		},
+		Descriptions: map[string]string{
+			"en": "Routes a finished change through code, security and verification review, then reports one verdict.",
+			"zh": "把已完成的改动依次交给代码审查、安全审查和验证，最后给出一个结论。",
+			"ko": "완성된 변경을 코드·보안·검증 리뷰로 라우팅한 뒤 하나의 결론을 보고합니다.",
+			"ja": "完成した変更をコード・セキュリティ・検証レビューに回し、一つの結論を報告します。",
+		},
+	},
+	{
+		Key:                "discovery-lead",
+		Version:            1,
+		DefaultName:        "Discovery Lead",
+		AvatarEmoji:        "🔭",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-requirement-clarification"},
+		Titles: map[string]string{
+			"en": "Discovery Lead",
+			"zh": "需求预研负责人",
+			"ko": "디스커버리 리드",
+			"ja": "ディスカバリー リード",
+		},
+		Descriptions: map[string]string{
+			"en": "Turns an open question into a decidable one — criteria and an approach, with no code written.",
+			"zh": "把一个开放问题变成可决策的输入：验收标准和技术方案，不写任何代码。",
+			"ko": "열린 질문을 판단 가능한 형태로 바꿉니다: 기준과 접근 방식, 코드는 작성하지 않습니다.",
+			"ja": "未確定の問いを判断可能にします。基準と方針を示し、コードは書きません。",
+		},
+	},
+	{
+		Key:                "docs-lead",
+		Version:            1,
+		DefaultName:        "Docs Lead",
+		AvatarEmoji:        "📚",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-requirement-clarification"},
+		Titles: map[string]string{
+			"en": "Docs Lead",
+			"zh": "文档同步负责人",
+			"ko": "문서 리드",
+			"ja": "ドキュメント リード",
+		},
+		Descriptions: map[string]string{
+			"en": "Routes documentation that a shipped change requires, and has its accuracy checked against the diff.",
+			"zh": "安排已合并改动所需的文档，并对照 diff 核对准确性。",
+			"ko": "배포된 변경에 필요한 문서를 배분하고, diff와 대조해 정확성을 검증합니다.",
+			"ja": "リリース済みの変更に必要なドキュメントを割り当て、diff と照合して正確性を確認します。",
+		},
+	},
+	{
+		Key:                "maintenance-lead",
+		Version:            1,
+		DefaultName:        "Maintenance Lead",
+		AvatarEmoji:        "🧹",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-requirement-clarification"},
+		Titles: map[string]string{
+			"en": "Maintenance Lead",
+			"zh": "例行维护负责人",
+			"ko": "유지보수 리드",
+			"ja": "メンテナンス リード",
+		},
+		Descriptions: map[string]string{
+			"en": "Routes upgrades, CVE patches and flaky-test cleanup one item at a time, never as a batch.",
+			"zh": "把依赖升级、CVE 修补和不稳定测试清理逐项安排，绝不打包。",
+			"ko": "업그레이드, CVE 패치, 불안정 테스트 정리를 한 건씩 배분하며 묶어 처리하지 않습니다.",
+			"ja": "アップグレード・CVE 対応・不安定テストの整理を一件ずつ割り当て、まとめて扱いません。",
+		},
+	},
+	{
+		Key:                "release-lead",
+		Version:            1,
+		DefaultName:        "Release Lead",
+		AvatarEmoji:        "📦",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-requirement-clarification"},
+		Titles: map[string]string{
+			"en": "Release Lead",
+			"zh": "发布负责人",
+			"ko": "릴리스 리드",
+			"ja": "リリース リード",
+		},
+		Descriptions: map[string]string{
+			"en": "Gets a release verified, documented and rollback-ready before a human approves the production step.",
+			"zh": "在人类批准生产动作之前，先让发布通过验证、文档齐备、回滚方案就绪。",
+			"ko": "사람이 프로덕션 단계를 승인하기 전에 릴리스의 검증·문서·롤백 준비를 마칩니다.",
+			"ja": "人間が本番作業を承認する前に、リリースの検証・文書・ロールバック準備を整えます。",
+		},
+	},
+	{
+		Key:                "incident-lead",
+		Version:            1,
+		DefaultName:        "Incident Lead",
+		AvatarEmoji:        "🚨",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-requirement-clarification"},
+		Titles: map[string]string{
+			"en": "Incident Lead",
+			"zh": "事故响应负责人",
+			"ko": "인시던트 리드",
+			"ja": "インシデント リード",
+		},
+		Descriptions: map[string]string{
+			"en": "Stops the bleeding first: mitigation over diagnosis, rollback over a fix, root cause in a separate issue.",
+			"zh": "先止血：缓解优先于定性，回滚优先于修复，根因另开 issue。",
+			"ko": "먼저 출혈을 막습니다: 진단보다 완화, 수정보다 롤백, 근본 원인은 별도 이슈로.",
+			"ja": "まず止血します。診断より緩和、修正よりロールバック、根本原因は別 issue へ。",
 		},
 	},
 }

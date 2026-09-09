@@ -273,6 +273,55 @@ func TestCreateSquad_ContributorAgentCannotCreate(t *testing.T) {
 		Want(http.StatusForbidden)
 }
 
+// TestCreateSquadFromTemplate_CoordinatorCannotStaffAnOperatorRoster covers the
+// ceiling a squad template raises above its own leader: staffing mints every agent in
+// the roster, so the level that has to be granted is the roster's highest, not the
+// leader's. Release and Incident seat a Release Engineer (operator), which a
+// coordinator may not create — the same rule that stops it minting a lone operator
+// through POST /api/agents/from-template.
+func TestCreateSquadFromTemplate_CoordinatorCannotStaffAnOperatorRoster(t *testing.T) {
+	agentID, taskID := autonomyTestAgent(t, "Autonomy Coordinator Staffing", "coordinator")
+
+	agentsBefore := dbfx.Count(t, `SELECT COUNT(*) FROM agent WHERE workspace_id = $1`, testWorkspaceID)
+	squadsBefore := dbfx.Count(t, `SELECT COUNT(*) FROM squad WHERE workspace_id = $1`, testWorkspaceID)
+
+	for _, templateKey := range []string{"release", "incident"} {
+		t.Run(templateKey, func(t *testing.T) {
+			req := asAgent(newRequest("POST", "/api/squads/from-template", map[string]any{
+				"template_key": templateKey,
+				"runtime_id":   handlerTestRuntimeID(t),
+			}), agentID, taskID)
+			testutil.Call(t, testHandler.CreateSquadFromTemplate, withURLParam(req, "workspaceId", testWorkspaceID)).
+				Want(http.StatusForbidden)
+		})
+	}
+
+	// The refusal happens before anything is written, so no half-staffed roster is
+	// left behind for the caller to discover later.
+	if got := dbfx.Count(t, `SELECT COUNT(*) FROM agent WHERE workspace_id = $1`, testWorkspaceID); got != agentsBefore {
+		t.Errorf("agents after refused staffing = %d, want %d", got, agentsBefore)
+	}
+	if got := dbfx.Count(t, `SELECT COUNT(*) FROM squad WHERE workspace_id = $1`, testWorkspaceID); got != squadsBefore {
+		t.Errorf("squads after refused staffing = %d, want %d", got, squadsBefore)
+	}
+}
+
+// TestCreateSquadFromTemplate_CoordinatorMayStaffAContributorRoster is the other half
+// of the ceiling: the refusal above must come from the roster's operator seat, not
+// from squad staffing being coordinator-only. Review Gate tops out at contributor.
+func TestCreateSquadFromTemplate_CoordinatorMayStaffAContributorRoster(t *testing.T) {
+	agentID, taskID := autonomyTestAgent(t, "Autonomy Coordinator Review Gate", "coordinator")
+
+	var out CreateSquadFromTemplateResponse
+	req := asAgent(newRequest("POST", "/api/squads/from-template", map[string]any{
+		"template_key": "review-gate",
+		"runtime_id":   handlerTestRuntimeID(t),
+	}), agentID, taskID)
+	testutil.Call(t, testHandler.CreateSquadFromTemplate, withURLParam(req, "workspaceId", testWorkspaceID)).
+		Want(http.StatusCreated).JSON(&out)
+	cleanupStaffedSquad(t, out.Squad.ID, append(append([]string{}, out.CreatedAgents...), out.ReusedAgents...))
+}
+
 func TestCreateAutopilot_ContributorAgentCannotCreate(t *testing.T) {
 	agentID, taskID := autonomyTestAgent(t, "Autonomy Contributor Autopilot", "contributor")
 	target := createHandlerTestAgent(t, "Autonomy Autopilot Target", nil)

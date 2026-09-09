@@ -4143,10 +4143,10 @@ type GetAgentByWorkspaceAndTemplateKeyParams struct {
 
 // The workspace's live agent for a given built-in role template, oldest first.
 //
-// Squad-template provisioning reuses one rather than creating a second: a team
-// that staffs both built-in squads wants one Implementer in both rosters, not two
-// agents with the same instructions competing for the same runtime. Oldest wins so
-// the answer is stable once a workspace has one.
+// Squad-template provisioning reuses one rather than creating a second: a team that
+// staffs several built-in squads wants one Implementer seated in each roster that
+// names it, not one agent per squad with the same instructions competing for the
+// same runtime. Oldest wins so the answer is stable once a workspace has one.
 func (q *Queries) GetAgentByWorkspaceAndTemplateKey(ctx context.Context, arg GetAgentByWorkspaceAndTemplateKeyParams) (Agent, error) {
 	row := q.db.QueryRow(ctx, getAgentByWorkspaceAndTemplateKey, arg.WorkspaceID, arg.TemplateKey)
 	var i Agent

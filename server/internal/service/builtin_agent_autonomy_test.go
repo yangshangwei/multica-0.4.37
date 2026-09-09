@@ -166,15 +166,23 @@ func TestApprovalRiskClasses_MatchMigrationCheck(t *testing.T) {
 	}
 }
 
-// TestSquadTemplates_RosterIsCoherent pins the two pilot squads and the invariant
+// TestSquadTemplates_RosterIsCoherent pins the built-in squads and the invariant
 // that makes them provisionable: every seat names a template that exists, the leader
 // is one of the unlisted coordinators, and the routing policy is present.
+//
+// The order is product-controlled and load-bearing: the picker renders the registry
+// as given, and the two squads whose roster reaches `operator` (release, incident)
+// are deliberately last so permission rises monotonically down the list.
 func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 	templates := SquadTemplates()
-	if len(templates) != 2 {
-		t.Fatalf("squad roster = %d templates, want 2 (feature-delivery, bug-fix)", len(templates))
+	wantKeys := []string{
+		"feature-delivery", "bug-fix",
+		"review-gate", "discovery", "docs", "maintenance",
+		"release", "incident",
 	}
-	wantKeys := []string{"feature-delivery", "bug-fix"}
+	if len(templates) != len(wantKeys) {
+		t.Fatalf("squad roster = %d templates, want %d (%s)", len(templates), len(wantKeys), strings.Join(wantKeys, ", "))
+	}
 	for i, key := range wantKeys {
 		if templates[i].Key != key {
 			t.Errorf("squad[%d].Key = %q, want %q", i, templates[i].Key, key)
@@ -218,6 +226,80 @@ func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 		}
 		if !strings.Contains(instructions, "Never mark it done") && !strings.Contains(instructions, "never mark it done") {
 			t.Errorf("%s: routing policy must state that the leader does not mark work done", template.Key)
+		}
+	}
+}
+
+// TestSquadTemplates_StaffOnlyTheEightWorkingRoles guards the decision the role
+// roster rests on: a new squad is a new ROUTING POLICY over the existing eight
+// roles, never a new role. Adding a ninth working role to fill a seat would be the
+// per-stack template explosion builtinAgentRoleTemplates deliberately refused, and
+// it would arrive here first — a squad seat is the only place a role becomes
+// reachable without editing the picker's own test.
+func TestSquadTemplates_StaffOnlyTheEightWorkingRoles(t *testing.T) {
+	listed := map[string]bool{}
+	for _, template := range AgentRoleTemplates() {
+		listed[template.Key] = true
+	}
+	for _, squad := range SquadTemplates() {
+		for _, slot := range squad.Members {
+			if !listed[slot.TemplateKey] {
+				t.Errorf("%s: seat %q is not one of the listed working roles", squad.Key, slot.TemplateKey)
+			}
+		}
+	}
+}
+
+// TestSquadTemplates_LeadersAreOneToOne pins that each squad has its own leader
+// definition. Sharing one lead between two squads would make the routing policy the
+// only difference between them, and the policy lives on the squad row where a
+// workspace may edit it — so a shared lead's judgement would drift out of step with
+// whichever squad edited last.
+func TestSquadTemplates_LeadersAreOneToOne(t *testing.T) {
+	seen := map[string]string{}
+	for _, squad := range SquadTemplates() {
+		if other, ok := seen[squad.LeaderTemplateKey]; ok {
+			t.Errorf("squads %q and %q share leader %q; each squad needs its own", other, squad.Key, squad.LeaderTemplateKey)
+			continue
+		}
+		seen[squad.LeaderTemplateKey] = squad.Key
+	}
+	for _, template := range AllAgentRoleTemplates() {
+		if template.Listed {
+			continue
+		}
+		if _, ok := seen[template.Key]; !ok {
+			t.Errorf("lead template %q leads no squad, so nothing can provision it", template.Key)
+		}
+	}
+}
+
+// TestSquadTemplates_MaxAutonomyMatchesRoster pins each squad's authorization
+// ceiling as a contract rather than a coincidence of its roster. MaxAutonomy is what
+// CreateSquadFromTemplate checks the caller against, so a seat added to release or
+// incident that quietly raised another squad to `operator` would change who may
+// staff it — a permission change that must be a deliberate edit here.
+func TestSquadTemplates_MaxAutonomyMatchesRoster(t *testing.T) {
+	want := map[string]AutonomyLevel{
+		"feature-delivery": AutonomyCoordinator,
+		"bug-fix":          AutonomyCoordinator,
+		"review-gate":      AutonomyCoordinator,
+		"discovery":        AutonomyCoordinator,
+		"docs":             AutonomyCoordinator,
+		"maintenance":      AutonomyCoordinator,
+		// The two rosters that seat the Release Engineer. Staffing either one mints an
+		// Operator, so only a caller allowed to grant Operator may do it.
+		"release":  AutonomyOperator,
+		"incident": AutonomyOperator,
+	}
+	for _, squad := range SquadTemplates() {
+		expected, ok := want[squad.Key]
+		if !ok {
+			t.Errorf("squad %q has no declared autonomy ceiling in this test; add it deliberately", squad.Key)
+			continue
+		}
+		if got := squad.MaxAutonomy(); got != expected {
+			t.Errorf("%s MaxAutonomy() = %q, want %q", squad.Key, got, expected)
 		}
 	}
 }

@@ -41,10 +41,10 @@ WHERE id = $1 AND workspace_id = $2 AND kind = 'user';
 -- name: GetAgentByWorkspaceAndTemplateKey :one
 -- The workspace's live agent for a given built-in role template, oldest first.
 --
--- Squad-template provisioning reuses one rather than creating a second: a team
--- that staffs both built-in squads wants one Implementer in both rosters, not two
--- agents with the same instructions competing for the same runtime. Oldest wins so
--- the answer is stable once a workspace has one.
+-- Squad-template provisioning reuses one rather than creating a second: a team that
+-- staffs several built-in squads wants one Implementer seated in each roster that
+-- names it, not one agent per squad with the same instructions competing for the
+-- same runtime. Oldest wins so the answer is stable once a workspace has one.
 SELECT * FROM agent
 WHERE workspace_id = $1
   AND template_key = $2

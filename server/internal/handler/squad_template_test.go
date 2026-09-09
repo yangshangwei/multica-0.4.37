@@ -43,7 +43,14 @@ func staffSquad(t *testing.T, templateKey string, extra map[string]any) CreateSq
 	return out
 }
 
-func TestListSquadTemplates_ReturnsBothPilots(t *testing.T) {
+// TestListSquadTemplates_ReturnsTheWholeRoster checks the picker payload: every
+// squad this binary ships is offered, in the registry's product order, and each one
+// arrives renderable — a leader seat, member seats with role notes, and a policy.
+//
+// The count is a literal rather than len(service.SquadTemplates()) so that shipping a
+// ninth squad has to be a deliberate edit here, the same way the listed-role roster
+// is pinned in service.
+func TestListSquadTemplates_ReturnsTheWholeRoster(t *testing.T) {
 	var out struct {
 		Templates []SquadTemplateResponse `json:"templates"`
 	}
@@ -51,10 +58,28 @@ func TestListSquadTemplates_ReturnsBothPilots(t *testing.T) {
 		newRequest("GET", "/api/squads/templates?language=zh", nil)).
 		Want(http.StatusOK).JSON(&out)
 
-	if len(out.Templates) != 2 {
-		t.Fatalf("squad templates = %d, want 2", len(out.Templates))
+	if len(out.Templates) != 8 {
+		t.Fatalf("squad templates = %d, want 8", len(out.Templates))
+	}
+	wantKeys := []string{
+		"feature-delivery", "bug-fix",
+		"review-gate", "discovery", "docs", "maintenance",
+		"release", "incident",
+	}
+	for i, key := range wantKeys {
+		if out.Templates[i].Key != key {
+			t.Errorf("template[%d].Key = %q, want %q (the picker renders registry order)", i, out.Templates[i].Key, key)
+		}
 	}
 	for _, template := range out.Templates {
+		// language=zh above: the localized copy must actually be localized, or the
+		// picker shows an English card inside a Chinese screen.
+		if template.Title == "" {
+			t.Errorf("%s: no localized title", template.Key)
+		}
+		if template.Description == "" {
+			t.Errorf("%s: no localized description", template.Key)
+		}
 		if template.Leader.TemplateKey == "" {
 			t.Errorf("%s: leader seat is empty", template.Key)
 		}
@@ -174,6 +199,45 @@ func TestCreateSquadFromTemplate_ReusesExistingRoleAgents(t *testing.T) {
 		`SELECT COUNT(*) FROM agent WHERE workspace_id = $1 AND template_key = 'implementer' AND archived_at IS NULL`,
 		testWorkspaceID); count != 1 {
 		t.Errorf("%d implementers in the workspace, want 1", count)
+	}
+}
+
+// TestCreateSquadFromTemplate_StaffsASecondBatchSquad covers the squads added after
+// the two pilots. review-gate is the useful one to pin: its roster overlaps
+// feature-delivery on two seats, so one call exercises both halves of staffing a
+// later squad — the seats it has to create, and the role agents it must reuse
+// rather than duplicate.
+func TestCreateSquadFromTemplate_StaffsASecondBatchSquad(t *testing.T) {
+	staffSquad(t, "feature-delivery", nil)
+	gate := staffSquad(t, "review-gate", nil)
+
+	template, ok := service.SquadTemplateByKey("review-gate")
+	if !ok {
+		t.Fatal("review-gate template missing")
+	}
+	if gate.Squad.Instructions != template.Instructions() {
+		t.Error("squad instructions are not the template's routing policy verbatim")
+	}
+	// Its own lead plus the Security Reviewer; the Code Reviewer and QA Engineer came
+	// from feature-delivery.
+	if len(gate.CreatedAgents) != 2 {
+		t.Errorf("review-gate created %d agents, want 2 (its lead and the security reviewer)", len(gate.CreatedAgents))
+	}
+	if len(gate.ReusedAgents) != 2 {
+		t.Errorf("review-gate reused %d agents, want 2 (code reviewer, QA engineer)", len(gate.ReusedAgents))
+	}
+	if count := dbfx.Count(t, `SELECT COUNT(*) FROM squad_member WHERE squad_id = $1`, gate.Squad.ID); count != len(template.Members)+1 {
+		t.Errorf("squad_member rows = %d, want %d", count, len(template.Members)+1)
+	}
+	// Each template's autonomy ceiling is pinned in
+	// service/builtin_agent_autonomy_test.go (TestSquadTemplates_MaxAutonomyMatchesRoster);
+	// the gate that reads it is TestCreateSquadFromTemplate_CoordinatorCannotStaffAnOperatorRoster.
+	//
+	// One Code Reviewer in the workspace, seated in both squads.
+	if count := dbfx.Count(t,
+		`SELECT COUNT(*) FROM agent WHERE workspace_id = $1 AND template_key = 'code-reviewer' AND archived_at IS NULL`,
+		testWorkspaceID); count != 1 {
+		t.Errorf("%d code reviewers in the workspace, want 1", count)
 	}
 }
 

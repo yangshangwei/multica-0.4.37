@@ -154,6 +154,13 @@ the backend adds the new leader as a squad member with role `leader`.
 `POST /api/squads/from-template` staffs one. No CLI command yet — this is the
 Squads page's "Use a template" action.
 
+Eight templates ship with the binary: `feature-delivery`, `bug-fix`,
+`review-gate`, `discovery`, `docs`, `maintenance`, `release`, `incident`. They
+are eight rosters and eight routing policies, not eight execution models — every
+one produces an ordinary squad. Their rosters draw on the same eight working role
+templates and overlap heavily, so the difference between two of them lives in the
+squad `instructions`, not in the seats.
+
 One transaction creates the missing role agents, the squad, and the whole roster,
 so a failure leaves nothing behind. Routing is unchanged: the leader receives the
 work and dispatches by `@mention` exactly as in a hand-built squad. What the
@@ -162,9 +169,10 @@ policy), copied onto the row and workspace-owned from then on.
 
 Two behaviors matter when debugging one:
 
-- An agent already created from a role template is REUSED as it stands — same
-  agent in both built-in squads, including instructions the workspace edited. The
-  response reports `created_agent_ids` and `reused_agent_ids` separately.
+- An agent already created from a role template is REUSED as it stands — the same
+  agent is seated in every built-in squad whose roster names that role, including
+  instructions the workspace edited. The response reports `created_agent_ids` and
+  `reused_agent_ids` separately.
 - If a non-template agent already holds a role's default name, the request fails
   with 409 rather than adopting an agent whose instructions it cannot vouch for.
 
@@ -173,10 +181,17 @@ status: a staffed squad is an ordinary squad.
 
 An agent with a declared autonomy level needs at least `coordinator` to staff or
 modify a squad. Template staffing also checks the highest level in its roster
-against the caller's level. Reusing an existing role agent preserves its local
-edits and requires permission to wire it into the squad; a regular member cannot
-adopt another member's inaccessible agent through a template. A refusal rolls
-back the staffing transaction.
+against the caller's level. In practice that splits the eight in two: `release`
+and `incident` seat the Release Engineer, so their ceiling is `operator` and a
+`coordinator` agent is refused with 403 — nothing may create an agent more
+privileged than itself. The other six have a `coordinator` ceiling (every leader
+seat is a coordinator) and a `coordinator` agent can staff them. Human and
+undeclared callers are unaffected either way.
+
+Reusing an existing role agent preserves its local edits and requires permission
+to wire it into the squad; a regular member cannot adopt another member's
+inaccessible agent through a template. A refusal rolls back the staffing
+transaction.
 
 ## Leader briefing
 
