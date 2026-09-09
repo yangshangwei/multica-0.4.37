@@ -155,3 +155,42 @@ Repaired the seven merge-review findings with regression-first changes, preserve
 ### Next Steps
 
 - 后续范围：自治等级设置页控件、审批实时事件、模板灰度与升级差异、per-role runtime
+
+
+## Session 4: 应用内文档 P0 完成归档
+
+**Date**: 2026-09-10
+**Task**: 应用内文档 P0 完成归档
+**Branch**: `main`
+
+### Summary
+
+确认应用内文档 P0 的 L1-L5 六个提交全部落在 main，任务标记 completed，补写 implement.md，推送 origin/main。
+
+### Main Changes
+
+- L1 内容管道：jsx-to-directive + parse-page 生成器，bundle 提交进仓库，CI 校验新鲜度
+- L2 后端：go:embed 三端点（manifest/page/assets），manifest 白名单防越权，CLI 二进制不增重
+- L3 core：zod+parseWithFallback 解析、TanStack Query、docsHref() 唯一寻址、锚点 parity 测试
+- L4 渲染：packages/views/docs/ 自有组件树，图片 src 重写，内链走 navigation，UI 文案四语
+- L5 入口：9 处硬编码 multica.ai/docs 收敛到 docsHref()，help-launcher 重指，智能体 WebFetch/issue URL 改本部署
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `61c73d738` | (see git log) |
+| `0ef6b1dfa` | (see git log) |
+| `0c96d792b` | (see git log) |
+| `af68f1075` | (see git log) |
+| `91ea4362a` | (see git log) |
+| `3a8f1050d` | (see git log) |
+
+### Testing
+
+- [OK] 各层测试随提交落地（生成器矩阵、Go 端点矩阵、core malformed-response、views 渲染 216 行）
+- [OK] 收尾会话未重跑全量 pipeline，以各层提交时验证记录为准
+
+### Status
+
+[OK] **Completed**
