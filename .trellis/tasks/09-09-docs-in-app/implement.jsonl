@@ -1,0 +1,5 @@
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "一个特性穿过构建期生成器、Go embed 与路由、core schema/queries、views 渲染、web 与桌面两端路由和四个 locale 包——只有每一层对 slug、锚点形态和资产路径的理解一致，改动才是正确的。"}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "渲染必须复用 packages/ui/markdown 这个既有原语而不是分叉出第二个产品渲染器（RichContent 的 docstring 明确禁止），locale 前缀语义复用 apps/docs/lib/locale-link.ts 的 prefixLocale，P1 的搜索分词器要从 apps/docs 的 search route 抽成共享模块而非重写。"}
+{"file": ".trellis/spec/server/index.md", "reason": "新增三个 handler 与路由注册，需遵守既有 handler 边界与 UUID/输入校验约定。"}
+{"file": ".trellis/spec/views/frontend/directory-structure.md", "reason": "新增 packages/views/docs/ 目录，需符合既有分层与命名约定。"}
+{"file": ".trellis/spec/views/frontend/state-management.md", "reason": "文档是服务端状态，必须走 TanStack Query 而非 Zustand，query key 与失效策略需符合既有约定。"}

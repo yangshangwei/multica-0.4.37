@@ -1,0 +1,32 @@
+{
+  "id": "docs-in-app",
+  "name": "docs-in-app",
+  "title": "应用内文档：内网部署的文档分发（P0）",
+  "description": "文档内容嵌进后端二进制作为唯一分发源，客户端原生渲染 markdown，产品里 9 处硬编码的 multica.ai/docs 链接收敛到一个解析器。内容保持 apps/docs/content/docs/ 单一来源，P0 只做中文正文，UI 文案四语齐全。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-09",
+  "completedAt": null,
+  "branch": "feat/docs-in-app",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "docs-in-app-design.md"
+  ],
+  "notes": "HelpLauncher 在 main 上仍然存在（删它的 382d77f9c 只在 fix/cli-windows-text-encoding 上），所以 sidebar footer 入口不是新增，而是把 help-launcher.tsx:25 的 DOCS_URL 改成应用内跳转。",
+  "meta": {
+    "design_doc": "docs-in-app-design.md",
+    "content_locale": "zh only（UI 文案四语齐全）",
+    "rollout_phase": "P0（管道 + 后端 + 渲染 + 解析器 + 入口）"
+  }
+}
