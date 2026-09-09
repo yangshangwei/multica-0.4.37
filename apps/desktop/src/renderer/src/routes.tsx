@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { createMemoryRouter, Outlet, useMatches } from "react-router-dom";
+import { createMemoryRouter, Outlet, useMatches, useParams } from "react-router-dom";
 import type { RouteObject } from "react-router-dom";
 import { IssueDetailPage } from "./pages/issue-detail-page";
 import { ProjectDetailPage } from "./pages/project-detail-page";
@@ -31,6 +31,7 @@ import {
 import { SquadsPage, SquadDetailPage as SquadDetailPageView } from "@multica/views/squads/components";
 import { InboxPage } from "@multica/views/inbox";
 import { ChatPage } from "@multica/views/chat";
+import { DocsPage } from "@multica/views/docs";
 import { SettingsPage } from "@multica/views/settings";
 import { useT } from "@multica/views/i18n";
 import { Download, Server } from "lucide-react";
@@ -71,6 +72,19 @@ function DesktopSettingsRoute() {
       ]}
     />
   );
+}
+
+/**
+ * Wraps `DocsPage` so it can read the slug out of the splat param.
+ *
+ * A docs slug can contain a slash (`developers/contributing`), so the route is
+ * `docs/*` and the whole remainder is the slug. Undefined at `/docs` itself,
+ * which is the index.
+ */
+function DocsRoute() {
+  const params = useParams();
+  const slug = params["*"] ?? "";
+  return <DocsPage slug={slug || undefined} />;
 }
 
 /**
@@ -252,6 +266,16 @@ export const appRoutes: RouteObject[] = [
             path: "usage",
             element: <DashboardPage />,
             handle: { title: "Usage" },
+          },
+          // In-app documentation. An ordinary session route, not a
+          // WindowOverlay: it is workspace-scoped and belongs in a tab.
+          { path: "docs", element: <DocsRoute />, handle: { title: "Docs" } },
+          {
+            // A splat rather than `:page` because a docs slug can nest —
+            // `developers/contributing` is two segments.
+            path: "docs/*",
+            element: <DocsRoute />,
+            handle: { title: "Docs" },
           },
           {
             path: "settings",

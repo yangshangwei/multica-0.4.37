@@ -1,0 +1,39 @@
+{
+  "title": "文档",
+  "index": {
+    "description": "本部署所运行版本对应的文档。",
+    "empty": "这台服务器没有发布任何文档页面。"
+  },
+  "toc": {
+    "heading": "本页内容"
+  },
+  "content_language_notice": "文档目前只有中文版本。",
+  "server_version": "文档对应 {{version}}",
+  "loading": "正在加载文档…",
+  "error": {
+    "title": "文档加载失败",
+    "description": "请求本部署的文档没有成功。检查与服务器的连接后重试。",
+    "retry": "重试"
+  },
+  "unavailable": {
+    "title": "这台服务器没有文档",
+    "description": "本部署运行的 Multica 版本还不包含应用内文档。升级服务器后即可在这里阅读。"
+  },
+  "not_found": {
+    "title": "页面不存在",
+    "description": "这个文档页面不属于本服务器运行的版本。",
+    "back": "回到文档目录"
+  },
+  "video": {
+    "play": "播放：{{title}}",
+    "fallback_label": "观看视频",
+    "unavailable": "这个视频无法在此播放。",
+    "slow_prompt": "加载缓慢或无法播放？",
+    "watch_on": "在 {{site}} 观看"
+  },
+  "community": {
+    "discord": "Discord",
+    "github": "GitHub",
+    "x": "X（Twitter）"
+  }
+}

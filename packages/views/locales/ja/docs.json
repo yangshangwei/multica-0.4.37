@@ -1,0 +1,39 @@
+{
+  "title": "ドキュメント",
+  "index": {
+    "description": "このデプロイが実行しているバージョンのドキュメントです。",
+    "empty": "このサーバーはドキュメントページを公開していません。"
+  },
+  "toc": {
+    "heading": "このページの内容"
+  },
+  "content_language_notice": "ドキュメント本文は現在中国語のみです。",
+  "server_version": "{{version}} のドキュメント",
+  "loading": "ドキュメントを読み込んでいます…",
+  "error": {
+    "title": "ドキュメントを読み込めませんでした",
+    "description": "このデプロイのドキュメントへのリクエストが失敗しました。サーバーへの接続を確認して再試行してください。",
+    "retry": "再試行"
+  },
+  "unavailable": {
+    "title": "このサーバーにドキュメントはありません",
+    "description": "このデプロイが実行している Multica のバージョンはアプリ内ドキュメントを同梱していません。サーバーをアップグレードするとここで読めます。"
+  },
+  "not_found": {
+    "title": "ページが見つかりません",
+    "description": "このドキュメントページは、サーバーが実行しているバージョンに含まれていません。",
+    "back": "ドキュメント一覧に戻る"
+  },
+  "video": {
+    "play": "再生：{{title}}",
+    "fallback_label": "動画を見る",
+    "unavailable": "この動画はここでは再生できません。",
+    "slow_prompt": "読み込みが遅い、または再生できませんか？",
+    "watch_on": "{{site}} で見る"
+  },
+  "community": {
+    "discord": "Discord",
+    "github": "GitHub",
+    "x": "X（Twitter）"
+  }
+}

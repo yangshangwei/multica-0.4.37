@@ -24,6 +24,7 @@ import enUsage from "./en/usage.json";
 import enUi from "./en/ui.json";
 import enSquads from "./en/squads.json";
 import enBilling from "./en/billing.json";
+import enDocs from "./en/docs.json";
 import zhHansCommon from "./zh-Hans/common.json";
 import zhHansAuth from "./zh-Hans/auth.json";
 import zhHansSettings from "./zh-Hans/settings.json";
@@ -49,6 +50,7 @@ import zhHansUsage from "./zh-Hans/usage.json";
 import zhHansUi from "./zh-Hans/ui.json";
 import zhHansSquads from "./zh-Hans/squads.json";
 import zhHansBilling from "./zh-Hans/billing.json";
+import zhHansDocs from "./zh-Hans/docs.json";
 import koCommon from "./ko/common.json";
 import koAuth from "./ko/auth.json";
 import koSettings from "./ko/settings.json";
@@ -67,6 +69,7 @@ import koProjects from "./ko/projects.json";
 import koAutopilots from "./ko/autopilots.json";
 import koSkills from "./ko/skills.json";
 import koChat from "./ko/chat.json";
+import koDocs from "./ko/docs.json";
 import koModals from "./ko/modals.json";
 import koRuntimes from "./ko/runtimes.json";
 import koLayout from "./ko/layout.json";
@@ -92,6 +95,7 @@ import jaProjects from "./ja/projects.json";
 import jaAutopilots from "./ja/autopilots.json";
 import jaSkills from "./ja/skills.json";
 import jaChat from "./ja/chat.json";
+import jaDocs from "./ja/docs.json";
 import jaModals from "./ja/modals.json";
 import jaRuntimes from "./ja/runtimes.json";
 import jaLayout from "./ja/layout.json";
@@ -130,6 +134,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     ui: enUi,
     squads: enSquads,
     billing: enBilling,
+    docs: enDocs,
   },
   "zh-Hans": {
     common: zhHansCommon,
@@ -157,6 +162,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     ui: zhHansUi,
     squads: zhHansSquads,
     billing: zhHansBilling,
+    docs: zhHansDocs,
   },
   ko: {
     common: koCommon,
@@ -177,6 +183,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     autopilots: koAutopilots,
     skills: koSkills,
     chat: koChat,
+    docs: koDocs,
     modals: koModals,
     runtimes: koRuntimes,
     layout: koLayout,
@@ -204,6 +211,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     autopilots: jaAutopilots,
     skills: jaSkills,
     chat: jaChat,
+    docs: jaDocs,
     modals: jaModals,
     runtimes: jaRuntimes,
     layout: jaLayout,
