@@ -1369,6 +1369,16 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// #6024).
 	r.Get("/api/avatars/{sig}/*", h.ServeAvatar)
 
+	// In-app documentation images, embedded in this binary. Public for the same
+	// <img src> reason as avatars above — the desktop renderer's opaque file://
+	// origin sends neither the SameSite=Strict cookie nor an Authorization
+	// header. Unlike avatars there is no signature, because there is nothing
+	// tenant-scoped to sign: these are this build's own published screenshots,
+	// byte-identical for every caller and already public on the docs site. Only
+	// paths listed in the embedded manifest resolve. The manifest and page
+	// endpoints stay in the authenticated group below.
+	r.Get("/api/docs/assets/*", h.ServeDocsAsset)
+
 	// Hosted plugin documents are capability-authenticated and intentionally
 	// outside the session middleware: the configured content origin must stay
 	// cookie-free. The encrypted path token binds the installation, immutable
@@ -1538,6 +1548,15 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		// against it. Sits in the user-scoped group for that reason: there is
 		// no workspace in the path to gate on.
 		// --- User-scoped routes (no workspace context required) ---
+		//
+		// In-app documentation. Authenticated like any other product API even
+		// though the content is not confidential — there is no reason to widen
+		// the unauthenticated surface. Not workspace-scoped: the bundle is a
+		// property of this build, identical for every workspace. The images
+		// these pages reference are served publicly (see /api/docs/assets/*).
+		r.Get("/api/docs/manifest", h.GetDocsManifest)
+		r.Get("/api/docs/page", h.GetDocsPage)
+
 		r.Get("/api/me", h.GetMe)
 		r.Patch("/api/me", h.UpdateMe)
 		r.Patch("/api/me/onboarding", h.PatchOnboarding)
