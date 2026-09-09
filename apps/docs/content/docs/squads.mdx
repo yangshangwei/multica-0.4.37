@@ -11,19 +11,28 @@ Squads solve the question of who the work goes to. They don't merge multiple age
 
 ## Start from a template
 
-The **Squads** page offers **Use a template**, which staffs a whole squad in one step. Two are built in:
+The **Squads** page offers **Use a template**, which staffs a whole squad in one step. Eight are built in:
 
 | Template | Roster | Routes by |
 |---|---|---|
 | **Feature Delivery Squad** | Lead, Product Analyst, Architect, Implementer, QA Engineer, Code Reviewer | What the issue currently lacks: criteria, a design, the change, proof it works, a review |
 | **Bug Fix Squad** | Lead, Product Analyst, Implementer, QA Engineer | Triage, reproduce, fix with a regression test, verify |
+| **Review Gate Squad** | Lead, Code Reviewer, Security Reviewer, QA Engineer | What the change has not been read for yet: correctness, security, proof it works |
+| **Discovery Squad** | Lead, Product Analyst, Architect | Whether the question is "what would count as done" or "how would we build it" — answers only, no code |
+| **Docs Squad** | Lead, Technical Writer, Code Reviewer | Which document the shipped change invalidated, then whether the draft matches the code |
+| **Maintenance Squad** | Lead, Implementer, QA Engineer, Security Reviewer | One dependency, CVE or flaky test at a time, each with its own verification |
+| **Release Squad** | Lead, Release Engineer, QA Engineer, Technical Writer | Release readiness: a rollback that exists, a verified build, notes that match |
+| **Incident Response Squad** | Lead, Product Analyst, Implementer, Release Engineer, QA Engineer | Restoring service first; cause and permanent fix afterwards, in a separate issue |
+
+The eight are not eight execution models — every one of them is an ordinary squad whose leader routes by @mention. What a template supplies is the roster and the routing policy, which is the part teams get wrong when they wire several agents together for the first time. Rosters overlap on purpose: Incident Response and Bug Fix seat nearly the same roles and route them in opposite orders, because for an incident, restoring service outranks understanding the defect.
 
 Staffing a template creates the [role-template agents](/agents-create#role-templates) the roster needs, the squad, and its membership together. Nothing about how squads run changes: the leader still receives the work and still dispatches by @mention.
 
-Two things are worth knowing before you click:
+Three things are worth knowing before you click:
 
-- **Roles you already have are reused, exactly as they stand.** If you staffed the Feature Delivery squad and then staff the Bug Fix squad, both use the same Implementer — including any instructions you edited. Staffing a second squad never overwrites an agent.
+- **Roles you already have are reused, exactly as they stand.** If you staffed the Feature Delivery squad and then staff the Review Gate squad, both use the same Code Reviewer and QA Engineer — including any instructions you edited. Staffing a second squad never overwrites an agent.
 - **Access defaults to "Only me"** on the agents it creates, so nothing widens silently. A squad the whole team assigns work to wants the workspace option.
+- **Release and Incident Response seat a Release Engineer**, which is an `operator`-level agent. Staffing either one therefore creates an Operator, so an agent doing the staffing needs to be allowed to grant that level — a `coordinator` agent can staff the other six but not these two, since nothing may create an agent more privileged than itself. A person staffing them is unaffected. See [Autonomy and the approval boundary](/agents#autonomy-and-the-approval-boundary).
 
 If an agent already holds a role's default name but did not come from that template, staffing stops and says so rather than adopting an agent whose instructions it cannot vouch for. Rename yours, or build the squad by hand.
 

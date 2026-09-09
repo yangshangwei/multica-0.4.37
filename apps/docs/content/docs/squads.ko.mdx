@@ -11,19 +11,28 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ## 템플릿으로 시작
 
-**스쿼드** 페이지의 **템플릿 사용**으로 스쿼드를 한 번에 구성할 수 있습니다. 내장 템플릿은 두 개입니다.
+**스쿼드** 페이지의 **템플릿 사용**으로 스쿼드를 한 번에 구성할 수 있습니다. 내장 템플릿은 여덟 개입니다.
 
 | 템플릿 | 구성원 | 라우팅 기준 |
 |---|---|---|
 | **Feature Delivery Squad** | 리드, Product Analyst, Architect, Implementer, QA Engineer, Code Reviewer | 이슈에 지금 없는 것: 수용 기준, 설계, 변경, 동작 증명, 리뷰 |
 | **Bug Fix Squad** | 리드, Product Analyst, Implementer, QA Engineer | 트리아지, 재현, 회귀 테스트 포함 수정, 검증 |
+| **Review Gate Squad** | 리드, Code Reviewer, Security Reviewer, QA Engineer | 이 diff에 아직 없는 검토: 정확성, 보안, 동작 증명 |
+| **Discovery Squad** | 리드, Product Analyst, Architect | 질문이 "무엇을 완료로 볼 것인가"인지 "어떻게 만들 것인가"인지. 결론만 내고 코드는 쓰지 않습니다 |
+| **Docs Squad** | 리드, Technical Writer, Code Reviewer | 출시된 변경이 어떤 문서를 낡게 만들었는지, 그리고 초안이 코드와 일치하는지 |
+| **Maintenance Squad** | 리드, Implementer, QA Engineer, Security Reviewer | 의존성·CVE·flaky 테스트를 한 번에 하나씩, 각각 검증과 함께 |
+| **Release Squad** | 리드, Release Engineer, QA Engineer, Technical Writer | 릴리스 준비 상태: 롤백이 존재하는지, 빌드가 검증됐는지, 릴리스 노트가 일치하는지 |
+| **Incident Response Squad** | 리드, Product Analyst, Implementer, Release Engineer, QA Engineer | 서비스 복구 우선. 원인과 항구적 수정은 별도 이슈로 나중에 |
+
+여덟 개가 여덟 가지 실행 모델은 아닙니다. 모두 리더가 @멘션으로 라우팅하는 평범한 스쿼드입니다. 템플릿이 제공하는 것은 구성원과 라우팅 정책이며, 여러 에이전트를 처음 조합할 때 팀이 틀리는 부분이 바로 그것입니다. 구성이 겹치는 것은 의도적입니다. Incident Response와 Bug Fix는 거의 같은 역할을 반대 순서로 라우팅합니다. 장애 상황에서는 결함을 이해하는 것보다 서비스 복구가 우선이기 때문입니다.
 
 템플릿으로 만들면 필요한 [역할 템플릿 에이전트](/agents-create#역할-템플릿), 스쿼드, 구성원 관계를 함께 생성합니다. 스쿼드의 동작 방식은 그대로입니다. 리더가 작업을 받고 @멘션으로 배정합니다.
 
-시작하기 전에 알아둘 점이 두 가지 있습니다.
+시작하기 전에 알아둘 점이 세 가지 있습니다.
 
-- **이미 있는 역할은 그대로 재사용됩니다.** Feature Delivery를 만든 뒤 Bug Fix를 만들면 두 스쿼드가 같은 Implementer를 사용합니다. 수정한 지침도 유지됩니다. 두 번째 스쿼드 생성이 에이전트를 덮어쓰는 일은 없습니다.
+- **이미 있는 역할은 그대로 재사용됩니다.** Feature Delivery를 만든 뒤 Review Gate를 만들면 두 스쿼드가 같은 Code Reviewer와 QA Engineer를 사용합니다. 수정한 지침도 유지됩니다. 두 번째 스쿼드 생성이 에이전트를 덮어쓰는 일은 없습니다.
 - **생성되는 에이전트의 Access 기본값은 "나만"** 입니다. 암묵적으로 넓어지지 않습니다. 팀 전체가 배정하는 스쿼드라면 워크스페이스를 선택하세요.
+- **Release와 Incident Response에는 Release Engineer가 들어갑니다.** `operator` 수준의 에이전트입니다. 따라서 이 두 스쿼드를 만들면 Operator가 생성되므로, 에이전트가 대신 만들 때는 그 수준을 부여할 권한이 있어야 합니다. `coordinator` 에이전트는 나머지 여섯 개는 만들 수 있지만 이 두 개는 만들 수 없습니다. 자신보다 권한이 높은 에이전트는 만들 수 없기 때문입니다. 사람이 만들 때는 영향을 받지 않습니다. [자율 수준과 승인 경계](/agents#자율-수준과-승인-경계)를 참고하세요.
 
 어떤 에이전트가 이미 역할의 기본 이름을 쓰고 있고 그 템플릿에서 만든 것이 아니라면, 생성은 중단되고 이유를 알려줍니다. 지침을 보증할 수 없는 에이전트를 스쿼드에 넣지 않기 위함입니다. 이름을 바꾸거나 직접 만드세요.
 
