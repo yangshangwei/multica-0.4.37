@@ -42,6 +42,31 @@ describe("paths.workspace(slug)", () => {
   it("URL-encodes special characters in ids", () => {
     expect(ws.issueDetail("id with space")).toBe("/acme/issues/id%20with%20space");
   });
+
+  it("builds docs paths", () => {
+    expect(ws.docs()).toBe("/acme/docs");
+    expect(ws.docsPage("agents")).toBe("/acme/docs/agents");
+  });
+
+  // The bundle nests pages under a directory, so "/" inside a docs slug is a
+  // route separator. Encoding the whole slug would emit %2F and the route
+  // would not match.
+  it("keeps the separator in a nested docs slug", () => {
+    expect(ws.docsPage("developers/contributing")).toBe(
+      "/acme/docs/developers/contributing",
+    );
+  });
+
+  // Heading ids come from github-slugger, which leaves non-ASCII text as-is.
+  // The builder encodes so a Chinese anchor survives the URL.
+  it("encodes a docs anchor", () => {
+    expect(ws.docsPage("daemon-runtimes", "自定义运行时配置")).toBe(
+      `/acme/docs/daemon-runtimes#${encodeURIComponent("自定义运行时配置")}`,
+    );
+    expect(ws.docsPage("autopilots", "event-filters")).toBe(
+      "/acme/docs/autopilots#event-filters",
+    );
+  });
 });
 
 describe("paths (global)", () => {

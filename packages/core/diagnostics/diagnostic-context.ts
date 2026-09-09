@@ -82,6 +82,14 @@ const WORKSPACE_ROUTES: readonly RoutePattern[] = [
   ["skills", ":id"],
   ["settings"],
   ["attachments", ":id", "preview"],
+  // In-app documentation. A page slug is a published page name from the
+  // manifest, not user data, but it is bucketed like every other parameter so
+  // this table stays one rule rather than a rule plus an exception. The second
+  // parameter slot is the nested form: `developers/contributing` is one slug in
+  // the bundle and two segments in the URL.
+  ["docs"],
+  ["docs", ":page"],
+  ["docs", ":page", ":subpage"],
 ];
 
 const GLOBAL_ROUTES: readonly RoutePattern[] = [

@@ -15,6 +15,15 @@
 const encode = (id: string) => encodeURIComponent(id);
 
 /**
+ * Encodes a docs slug, which is the one id here that legitimately contains
+ * "/": the bundle nests a page as `developers/contributing`. Encoding the
+ * whole thing would turn the separator into %2F and stop the route from
+ * matching, so each segment is encoded on its own.
+ */
+const encodeDocsSlug = (slug: string) =>
+  slug.split("/").filter(Boolean).map(encode).join("/");
+
+/**
  * `?focus=` token that scrolls the agent's Instructions tab to its
  * conversation-starters editor and flashes it. Lives here because it is URL
  * vocabulary: `agentConversationStarters()` writes it and the tab reads it,
@@ -77,6 +86,17 @@ function workspaceScoped(slug: string) {
     skillDetail: (id: string) => `${ws}/skills/${encode(id)}`,
     settings: () => `${ws}/settings`,
     attachmentPreview: (id: string) => `${ws}/attachments/${encode(id)}/preview`,
+    // In-app documentation. Workspace-scoped rather than a root /docs because
+    // on web the root path is claimed by next.config.ts's beforeFiles rewrite
+    // whenever DOCS_URL is set, which would intercept it ahead of the Next
+    // router.
+    //
+    // `anchor` is a raw heading id, not a pre-encoded one: github-slugger emits
+    // Unicode ("自定义运行时配置"), which is why every existing call site wraps it
+    // in encodeURIComponent. Encoding it here is what lets those call sites stop.
+    docs: () => `${ws}/docs`,
+    docsPage: (slug: string, anchor?: string) =>
+      `${ws}/docs/${encodeDocsSlug(slug)}${anchor ? `#${encode(anchor)}` : ""}`,
   };
 }
 

@@ -242,6 +242,13 @@ import type {
   CreateCloudRuntimeNodeRequest,
   ListCloudRuntimeNodesParams,
 } from "../runtimes/cloud-runtime";
+import type { DocsManifest, DocsPage } from "../docs/types";
+import {
+  DocsManifestSchema,
+  DocsPageSchema,
+  EMPTY_DOCS_MANIFEST,
+  EMPTY_DOCS_PAGE,
+} from "../docs/schema";
 import { type Logger, noopLogger } from "../logger";
 import { createRequestId, createSafeId } from "../utils";
 import { getCurrentSlug } from "../platform/workspace-storage";
@@ -4928,5 +4935,48 @@ export class ApiClient {
       EMPTY_REDEEM_TELEGRAM_BINDING_TOKEN_RESPONSE,
       { endpoint: "POST /api/telegram/binding/redeem" },
     );
+  }
+
+  /**
+   * Navigation manifest for the documentation embedded in the API binary.
+   *
+   * A deployment older than the in-app docs feature has no such route and
+   * answers 404, which surfaces here as an ApiError — the caller treats that as
+   * "this backend has no in-app docs" rather than as a failure to report.
+   */
+  async getDocsManifest(): Promise<DocsManifest> {
+    const raw = await this.fetch<unknown>("/api/docs/manifest");
+    return parseWithFallback(raw, DocsManifestSchema, EMPTY_DOCS_MANIFEST, {
+      endpoint: "GET /api/docs/manifest",
+    });
+  }
+
+  async getDocsPage(slug: string): Promise<DocsPage> {
+    const search = new URLSearchParams({ slug });
+    const raw = await this.fetch<unknown>(`/api/docs/page?${search.toString()}`);
+    return parseWithFallback(raw, DocsPageSchema, EMPTY_DOCS_PAGE, {
+      endpoint: "GET /api/docs/page",
+    });
+  }
+
+  /**
+   * Absolute URL for an image a documentation page references.
+   *
+   * Absolute because the desktop renderer is served from file://, where the
+   * root-relative `/images/docs/x.webp` written in the markdown source cannot
+   * resolve. The endpoint is unauthenticated for the same reason (see
+   * ServeDocsAsset), so this is a plain URL rather than a fetch.
+   *
+   * `assetPath` is the manifest-relative path (`images/docs/x.webp`); each
+   * segment is encoded so a space or CJK character in a filename survives,
+   * while the separators stay separators.
+   */
+  docsAssetUrl(assetPath: string): string {
+    const encoded = assetPath
+      .split("/")
+      .filter(Boolean)
+      .map(encodeURIComponent)
+      .join("/");
+    return `${this.baseUrl}/api/docs/assets/${encoded}`;
   }
 }
