@@ -14,7 +14,7 @@ Multica 是人和 AI 智能体一起工作的平台。这篇教程从零开始�
 
 **开始前准备：**
 
-- 一个 Multica 账号（[multica.ai](https://multica.ai) 注册）
+- 一个本部署的 Multica 账号（由管理员开通，或通过邀请加入）
 - 一台安装并登录了至少一款 AI 编程工具的电脑，例如 Claude Code 或 Codex；全部支持的工具见[安装 AI 编程工具](/install-agent-runtime)
 
 ## 创建工作区
@@ -28,7 +28,7 @@ Multica 是人和 AI 智能体一起工作的平台。这篇教程从零开始�
 创建时填两项：
 
 - **名称**：展示给成员，之后可以修改。
-- **工作区 URL**：地址中的 slug，例如 `multica.ai/my-team` 里的 `my-team`，创建后不可修改。
+- **工作区 URL**：地址中的 slug，例如 `multica.example.com/my-team` 里的 `my-team`，创建后不可修改。
 
 ![创建工作区页面](/images/docs/tutorial-create-workspace-form.webp)
 
@@ -40,7 +40,7 @@ Multica 是人和 AI 智能体一起工作的平台。这篇教程从零开始�
 
 智能体在你连接的电脑上执行工作，用的就是这台电脑上安装的 AI 编程工具。
 
-教程用 [Multica Desktop](https://multica.ai/download) 演示：下载并登录后，它会自动把这台电脑注册为运行时，并检测已安装的 AI 编程工具。打开侧边栏底部的 **配置 → 运行时**，确认这台电脑已经在线：
+教程用 Multica Desktop 演示：安装并登录后，它会自动把这台电脑注册为运行时，并检测已安装的 AI 编程工具（安装包由管理员从内部分发渠道提供，见[桌面应用](/desktop-app)）。打开侧边栏底部的 **配置 → 运行时**，确认这台电脑已经在线：
 
 ![运行时列表，这台电脑在线](/images/docs/tutorial-runtimes-list.webp)
 
@@ -92,9 +92,9 @@ request is ambiguous, ask before acting.
 
 ## 准备网站仓库
 
-网站的代码放在 GitHub 仓库里。仓库的创建和绑定同样交给智能体——前提是这台电脑安装并登录了 [GitHub CLI](https://cli.github.com)。
+网站的代码放在内网 Git 服务的仓库里。本教程用 `<内网 Git 服务器>` 指代它的地址，由管理员提供；Multica 支持的自托管代码托管见[自托管 Git 代码托管](/vcs-integration)。仓库的创建和绑定同样交给智能体——前提是这台电脑已经配置好访问内网 Git 服务的命令行凭据。
 
-在**聊天**中选择 Engineer，告诉它：在我的 GitHub 账号下创建一个名为 `personal-website` 的空仓库（这台电脑上有 GitHub CLI），然后用 `multica repo add` 注册进这个工作区。Engineer 会在本地创建仓库、把它注册进工作区，并回复仓库地址。消息里没有指定可见性，它会按默认创建并在回复里说明；公开或私有都不影响后续步骤。
+在**聊天**中选择 Engineer，告诉它：在内网 Git 服务器 `<内网 Git 服务器>` 上创建一个名为 `personal-website` 的空仓库，然后用 `multica repo add` 注册进这个工作区。Engineer 会在本地创建仓库、把它注册进工作区，并回复仓库地址。消息里没有指定可见性，它会按默认创建并在回复里说明；公开或私有都不影响后续步骤。
 
 ![聊天，Engineer 回复仓库已创建并注册](/images/docs/tutorial-chat-create-repo.webp)
 
@@ -102,9 +102,9 @@ request is ambiguous, ask before acting.
 
 ![设置中的代码仓库列表](/images/docs/tutorial-repo-settings.webp)
 
-不用 GitHub CLI 的话，也可以自己在 GitHub 创建仓库，在同一页面手动添加，效果相同。
+也可以自己先在内网 Git 服务上创建仓库，在同一页面手动添加，效果相同。
 
-最后在同一页面点**连接 GitHub**，按提示授权这个仓库。连接后，引用了 issue 编号的 pull request 会自动关联到对应 issue，PR 状态和 CI 结果直接显示在 issue 里。
+最后在同一页面连接 Git 集成，按提示授权这个仓库（支持的代码托管和配置方式见[自托管 Git 代码托管](/vcs-integration)）。连接后，引用了 issue 编号的 pull request 会自动关联到对应 issue，PR 状态和 CI 结果直接显示在 issue 里。
 
 ## 第一条 issue：建站
 
@@ -119,7 +119,7 @@ Work in the personal-website repository registered in this workspace.
 
 Start from a template instead of scaffolding from scratch:
 
-pnpm dlx shadcn@latest init --preset b5rR41Mtnc --template next --pointer
+pnpm dlx shadcn@latest init --preset <preset-id> --registry <internal-registry> --template next --pointer
 
 Run the command, commit the template as-is, then build on top of it.
 
@@ -129,8 +129,8 @@ The site is for a photographer. It needs:
 - My work — a selection of photos
 - Contact — an email link that is easy to find
 - Pricing — decide where a pricing table fits and how to present it
-- Use placeholder images (Unsplash or picsum.photos) wherever a photo
-  belongs, and list where I should replace them with my own work
+- Use local placeholder images wherever a photo belongs, and list
+  where I should replace them with my own work
 
 Design:
 
@@ -142,6 +142,8 @@ Design:
 
 Open a pull request when it is ready.
 ```
+
+模板命令依赖包源和模板注册表。内网部署下，由管理员提供可用的内网 npm 镜像与模板注册表地址——写入仓库的 `.npmrc`，或在命令中通过 `--registry` 显式传入；`<preset-id>` 等具体取值同样由管理员提供。占位图使用本地文件，不依赖外部图床。
 
 这条描述里有三类信息：约束（从指定模板开始）、内容要求（逐条列出）、留白（风格交给 Engineer 分析）。要求写意图和边界，实现方式留给智能体。
 
@@ -181,7 +183,7 @@ Engineer 的回复分两部分：本地服务已经启动，给出访问地址�
 
 ![本地运行的网站首页](/images/docs/tutorial-site-localhost.webp)
 
-回到 issue，右侧的 **Pull Request** 区域也出现了 PR 卡片，显示状态和改动规模，点击直接打开 GitHub 上的 PR；配置了 CI 的仓库还会显示 check 结果：
+回到 issue，右侧的 **Pull Request** 区域也出现了 PR 卡片，显示状态和改动规模，点击直接打开 Git 服务上的 PR；配置了 CI 的仓库还会显示 check 结果：
 
 ![issue 右侧出现 PR 卡片](/images/docs/tutorial-issue-pr-linked.webp)
 

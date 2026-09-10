@@ -25,8 +25,10 @@ Skill 是工作区中可以复用的一组工作方法。它以 `SKILL.md` 为�
 |---|---|
 | **手动创建** | 从空白的 `SKILL.md` 开始编写。 |
 | **从本地导入** | 选择包含 `SKILL.md` 的文件夹，或这台电脑上的 `.skill` / `.zip` 压缩包。 |
-| **从 URL 导入** | 从 GitHub、ClawHub 或 Skills.sh 导入已经发布的 skill。 |
+| **从 URL 导入** | 从内网可达的 URL 导入 skill 压缩包，例如托管在内网 Git 服务上的地址。 |
 | **从运行时复制** | 扫描连接电脑上的 skill，并把选中的内容复制到工作区。 |
+
+公网的 skill 市场在内网不可达；团队要共享的 skill 由管理员或成员维护在内网 Git 服务上，再用上面的方式导入。
 
 从运行时复制的是当时的文件快照。之后本地文件发生变化，不会自动更新工作区中的版本；需要重新导入或在 Multica 中编辑。
 
@@ -40,7 +42,7 @@ multica skill import --file ./review-helper.skill
 
 ## 更新已导入的 skill
 
-从 GitHub、ClawHub 或 Skills.sh 导入的 skill 会记住它的来源。要拉取最新版本，在 skill 页面点击**更新**（或在列表行菜单里选「从来源更新」），也可以用 CLI：
+从 URL 导入的 skill 会记住它的来源地址（必须是内网可达地址，例如内网 Git 服务上托管的压缩包）。要拉取最新版本，在 skill 页面点击**更新**（或在列表行菜单里选「从来源更新」），也可以用 CLI：
 
 ```bash
 multica skill refresh <skill-id>

@@ -1,31 +1,17 @@
 ---
 title: 登录与注册
-description: 配置邮箱验证码、Google 登录和新用户注册范围。
+description: 配置邮箱验证码和新用户注册范围。
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
-Multica 默认使用邮箱验证码登录，也可以增加 Google OAuth。已经存在的用户始终可以再次登录；注册限制只决定是否允许创建新账号。
+Multica 默认使用邮箱验证码登录。已经存在的用户始终可以再次登录；注册限制只决定是否允许创建新账号。
 
 ## 邮箱验证码
 
 用户输入邮箱后，Multica 会发送一个 6 位验证码。验证码 10 分钟内有效，验证成功后浏览器获得登录 cookie。
 
-邮件可以通过 Resend 或 SMTP 发送。两者同时配置时，`SMTP_HOST` 优先。
-
-### 使用 Resend
-
-1. 在 [Resend](https://resend.com/) 验证发信域名并创建 API key。
-2. 设置：
-
-   ```dotenv
-   RESEND_API_KEY=re_xxxxxxxxxxxxxxxx
-   RESEND_FROM_EMAIL=noreply@example.com
-   ```
-
-3. 重启 API 服务。
-
-`RESEND_FROM_EMAIL` 必须属于已经在 Resend 验证的域名。
+邮件通过 SMTP 发送。
 
 ### 使用 SMTP
 
@@ -47,7 +33,7 @@ SMTP_FROM_EMAIL=noreply@example.com
 | STARTTLS | `SMTP_PORT=587`，默认会在服务器支持时升级 TLS |
 | 隐式 TLS | `SMTP_PORT=465`，或显式设置 `SMTP_TLS=implicit` |
 
-如果没有设置 `SMTP_FROM_EMAIL`，会回退到 `RESEND_FROM_EMAIL`。私有 CA 或自签证书需要把 CA 加入容器信任库；`SMTP_TLS_INSECURE=true` 会跳过证书校验，只应在可信内网中临时使用。
+如果没有设置 `SMTP_FROM_EMAIL`，建议显式设置，避免发件地址不符合内网邮件网关的要求。私有 CA 或自签证书需要把 CA 加入容器信任库；`SMTP_TLS_INSECURE=true` 会跳过证书校验，只应在可信内网中临时使用。
 
 有些严格的 relay 还要求合法的 EHLO 名称：
 
@@ -59,7 +45,7 @@ SMTP_EHLO_NAME=mail.example.com
 
 服务器仍可启动，但验证码和邀请链接只会写入日志，不会发送邮件。这适合本地开发，不适合生产环境。
 
-启动日志会说明当前使用的是 `Resend API`、`SMTP relay` 还是 `DEV mode`。
+启动日志会说明当前使用的是 `SMTP relay` 还是 `DEV mode`。
 
 ## 本地固定验证码
 
@@ -73,29 +59,8 @@ MULTICA_DEV_VERIFICATION_CODE=888888
 验证码必须是 6 位数字。`APP_ENV=production` 时固定验证码会被忽略。
 
 <Callout type="warning">
-不要在公网实例中启用固定验证码。生产环境的组合是 `APP_ENV=production` 加空的 `MULTICA_DEV_VERIFICATION_CODE`。
+不要在多人可访问的实例中启用固定验证码。生产环境的组合是 `APP_ENV=production` 加空的 `MULTICA_DEV_VERIFICATION_CODE`。
 </Callout>
-
-## Google 登录
-
-1. 在 [Google Cloud Console](https://console.cloud.google.com/) 创建 OAuth 2.0 client。
-2. 把 Multica 前端的回调地址加入 **Authorized redirect URIs**：
-
-   ```text
-   https://multica.example.com/auth/callback
-   ```
-
-3. 设置：
-
-   ```dotenv
-   GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
-   GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxx
-   GOOGLE_REDIRECT_URI=https://multica.example.com/auth/callback
-   ```
-
-4. 重启 API 服务。
-
-Google Console 与 `GOOGLE_REDIRECT_URI` 中的地址必须完全一致，包括协议、端口和结尾斜杠。配置生效后，登录页会出现 Google 登录按钮；前端镜像不需要重新构建。
 
 ## 注册范围控制
 

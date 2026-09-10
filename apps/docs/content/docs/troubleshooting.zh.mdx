@@ -132,7 +132,7 @@ curl -fsS <server-url>/health
 
 ## 验证码与邀请邮件未送达
 
-先查看 backend 启动日志。日志会说明当前使用 `SMTP relay`、`Resend API` 还是 `DEV mode`：
+先查看 backend 启动日志。日志会说明当前使用 `SMTP relay` 还是 `DEV mode`：
 
 ```bash
 docker compose -f docker-compose.selfhost.yml logs backend \
@@ -140,10 +140,9 @@ docker compose -f docker-compose.selfhost.yml logs backend \
 ```
 
 - **DEV mode**：邮件不会发出，验证码和邀请链接只写入 backend 日志；
-- **Resend**：确认 API key 有效，且发件地址的域名已经验证；
 - **SMTP**：确认主机、端口、凭据和发件地址，并从错误日志判断失败发生在连接、TLS、认证还是投递阶段。
 
-`SMTP_HOST` 和 Resend 同时配置时，Multica 会优先使用 SMTP。配置方式见[登录与注册](/auth-setup#邮箱验证码)。
+SMTP 配置方式见[登录与注册](/auth-setup#邮箱验证码)。
 
 <Callout type="warning">
 生产环境不要依赖日志中的验证码，也不要启用固定本地测试验证码。
@@ -205,7 +204,7 @@ lsof -nP -iTCP:8080 -sTCP:LISTEN   # macOS / Linux
 netstat -ano | findstr :8080       # Windows
 ```
 
-如果它是另一个 Multica checkout，先在那个目录运行 `make stop`。否则正常停止占用端口的程序，或修改当前服务端口。公网 80/443 由 Caddy、Nginx 等反向代理监听。
+如果它是另一个 Multica checkout，先在那个目录运行 `make stop`。否则正常停止占用端口的程序，或修改当前服务端口。80/443 由 Caddy、Nginx 等反向代理监听。
 
 ## 日志位置
 
@@ -228,7 +227,7 @@ multica daemon stop
 multica daemon start --foreground
 ```
 
-仍然无法定位时，到 [GitHub Issues](https://github.com/multica-ai/multica/issues) 搜索已有问题或提交新的 issue。
+仍然无法定位时，请联系内部支持渠道，反馈报错信息、相关日志、CLI 版本和操作系统。
 
 ## 接下来
 

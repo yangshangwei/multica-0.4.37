@@ -20,10 +20,12 @@ Multica 是 Go backend 与 pnpm monorepo。最简单的本地启动方式是 `ma
 ## 第一次启动
 
 ```bash
-git clone https://github.com/multica-ai/multica.git
+git clone <内网镜像仓库>/multica.git
 cd multica
 make dev
 ```
+
+仓库在内网镜像仓库中的地址由管理员提供。
 
 主 checkout 会使用 `.env`。文件不存在时，`make dev` 会从 `.env.example` 创建；然后启动共享 PostgreSQL、安装依赖、执行 migration，并运行 API 与 Web。
 
@@ -34,7 +36,7 @@ Web: http://localhost:3000
 API: http://localhost:8080
 ```
 
-本地固定验证码来自开发环境配置。不要把本地 `.env` 用到公网部署。
+本地固定验证码来自开发环境配置。不要把本地 `.env` 用到正式部署。
 
 ## 在 worktree 中开发
 
@@ -78,6 +80,8 @@ make build            # 构建 server、CLI 和 migrate 二进制
 ```
 
 ### 前端
+
+依赖默认从公网 npm 源拉取。内网环境先在用户目录或仓库中配置内网 npm 镜像（`.npmrc` 的 `registry` 指向内网源，地址由管理员提供），再运行安装命令：
 
 ```bash
 pnpm install

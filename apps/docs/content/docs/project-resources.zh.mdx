@@ -70,7 +70,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ### `worktree` —— “并行”
 
-每条任务拿到你仓库的一个独立 [git worktree](https://git-scm.com/docs/git-worktree)，建在运行时自己的工作区目录里。**同一目录上的任务并发执行，谁都不用排队**，并且都不会写你的工作副本。
+每条任务拿到你仓库的一个独立 git worktree，建在运行时自己的工作区目录里。**同一目录上的任务并发执行，谁都不用排队**，并且都不会写你的工作副本。
 
 要求这个目录是一个至少有一次提交的 git 仓库。如果不是，任务会明确报错，而不是悄悄退回串行。那台机器上的运行时也必须实现了该模式。运行时在连接时会声明这项能力，Multica 判断的是这个声明而不是版本号 —— 一个开发构建完全可能带着看起来足够新的版本号，却根本没有对应的实现。这个声明会被检查两次：只要那台机器的运行时没有声明该能力，保存资源就会被拒绝，并提示去升级那台机器上的 App；每条任务在被真正领取时还会再按领取它的运行时检查一次 —— 所以资源保存之后才降级的机器，其任务会被带原因取消，而不是悄悄原地跑掉。选择 `worktree` 就是在要求隔离，把它换成“直接改你的工作副本”永远不是兜底方案。
 
@@ -103,16 +103,16 @@ Multica 清理执行环境时不会删除关联的本地目录。智能体对该
 ## 使用 CLI 管理资源
 
 ```bash
-# 创建项目时关联仓库
+# 创建项目时关联仓库（仓库地址由管理员提供，指向内网 Git 服务）
 multica project create \
   --title "Agent UX" \
-  --repo https://github.com/multica-ai/multica
+  --repo <内网 Git 服务器>/multica.git
 
 # 查看和添加资源
 multica project resource list <project-id>
 multica project resource add <project-id> \
   --type github_repo \
-  --url https://github.com/multica-ai/multica \
+  --url <内网 Git 服务器>/multica.git \
   --ref main
 
 # 关联指定守护进程上的本地目录

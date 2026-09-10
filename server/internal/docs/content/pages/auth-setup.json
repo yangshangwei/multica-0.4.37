@@ -1,18 +1,13 @@
 {
   "slug": "auth-setup",
   "title": "登录与注册",
-  "description": "配置邮箱验证码、Google 登录和新用户注册范围。",
-  "body": "Multica 默认使用邮箱验证码登录，也可以增加 Google OAuth。已经存在的用户始终可以再次登录；注册限制只决定是否允许创建新账号。\n\n## 邮箱验证码\n\n用户输入邮箱后，Multica 会发送一个 6 位验证码。验证码 10 分钟内有效，验证成功后浏览器获得登录 cookie。\n\n邮件可以通过 Resend 或 SMTP 发送。两者同时配置时，`SMTP_HOST` 优先。\n\n### 使用 Resend\n\n1. 在 [Resend](https://resend.com/) 验证发信域名并创建 API key。\n2. 设置：\n\n   ```dotenv\n   RESEND_API_KEY=re_xxxxxxxxxxxxxxxx\n   RESEND_FROM_EMAIL=noreply@example.com\n   ```\n\n3. 重启 API 服务。\n\n`RESEND_FROM_EMAIL` 必须属于已经在 Resend 验证的域名。\n\n### 使用 SMTP\n\n最少需要设置主机和发件地址：\n\n```dotenv\nSMTP_HOST=smtp.example.com\nSMTP_PORT=587\nSMTP_USERNAME=multica\nSMTP_PASSWORD=<password>\nSMTP_FROM_EMAIL=noreply@example.com\n```\n\n常见连接方式：\n\n| 场景 | 配置 |\n|---|---|\n| 内网匿名 relay | `SMTP_PORT=25`，用户名和密码留空 |\n| STARTTLS | `SMTP_PORT=587`，默认会在服务器支持时升级 TLS |\n| 隐式 TLS | `SMTP_PORT=465`，或显式设置 `SMTP_TLS=implicit` |\n\n如果没有设置 `SMTP_FROM_EMAIL`，会回退到 `RESEND_FROM_EMAIL`。私有 CA 或自签证书需要把 CA 加入容器信任库；`SMTP_TLS_INSECURE=true` 会跳过证书校验，只应在可信内网中临时使用。\n\n有些严格的 relay 还要求合法的 EHLO 名称：\n\n```dotenv\nSMTP_EHLO_NAME=mail.example.com\n```\n\n### 无邮件服务时的行为\n\n服务器仍可启动，但验证码和邀请链接只会写入日志，不会发送邮件。这适合本地开发，不适合生产环境。\n\n启动日志会说明当前使用的是 `Resend API`、`SMTP relay` 还是 `DEV mode`。\n\n## 本地固定验证码\n\n本地自动化测试可以设置固定验证码：\n\n```dotenv\nAPP_ENV=development\nMULTICA_DEV_VERIFICATION_CODE=888888\n```\n\n验证码必须是 6 位数字。`APP_ENV=production` 时固定验证码会被忽略。\n\n:::warning\n不要在公网实例中启用固定验证码。生产环境的组合是 `APP_ENV=production` 加空的 `MULTICA_DEV_VERIFICATION_CODE`。\n:::\n\n## Google 登录\n\n1. 在 [Google Cloud Console](https://console.cloud.google.com/) 创建 OAuth 2.0 client。\n2. 把 Multica 前端的回调地址加入 **Authorized redirect URIs**：\n\n   ```text\n   https://multica.example.com/auth/callback\n   ```\n\n3. 设置：\n\n   ```dotenv\n   GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com\n   GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxx\n   GOOGLE_REDIRECT_URI=https://multica.example.com/auth/callback\n   ```\n\n4. 重启 API 服务。\n\nGoogle Console 与 `GOOGLE_REDIRECT_URI` 中的地址必须完全一致，包括协议、端口和结尾斜杠。配置生效后，登录页会出现 Google 登录按钮；前端镜像不需要重新构建。\n\n## 注册范围控制\n\n三个变量共同决定新账号能否创建：\n\n| 变量 | 作用 |\n|---|---|\n| `ALLOWED_EMAILS` | 允许的完整邮箱，多个值用逗号分隔 |\n| `ALLOWED_EMAIL_DOMAINS` | 允许的邮箱域名，多个值用逗号分隔 |\n| `ALLOW_SIGNUP` | 未配置任何白名单时，是否允许注册；默认 `true` |\n\n判断顺序如下：\n\n1. 邮箱命中 `ALLOWED_EMAILS`，允许；\n2. 或域名命中 `ALLOWED_EMAIL_DOMAINS`，允许；\n3. 未命中时，如果 `ALLOW_SIGNUP=false`，拒绝；\n4. `ALLOW_SIGNUP=true` 但设置了任意白名单且未命中，仍然拒绝；\n5. 没有设置白名单且 `ALLOW_SIGNUP=true`，允许。\n\n常见配置：\n\n```dotenv\n# 只允许公司域名\nALLOW_SIGNUP=false\nALLOWED_EMAIL_DOMAINS=company.com\n\n# 再放行一位外部协作者\nALLOWED_EMAILS=partner@example.net\n```\n\n:::info\n两个白名单在 `ALLOW_SIGNUP=false` 时也可以作为明确的例外名单。\n:::\n\n## 邀请与注册限制\n\n邀请不会自动绕过注册限制：\n\n- 对方已经有 Multica 账号时，可以登录并接受邀请；\n- 对方还没有账号时，邮箱必须符合上面的注册规则。\n\n在关闭开放注册的实例中邀请新成员时，先把对方邮箱加入 `ALLOWED_EMAILS`。账号创建并接受邀请后，可以再从名单中移除。\n\n## 登录有效期\n\n浏览器登录默认保持 30 天。可以用 `AUTH_TOKEN_TTL` 调整，支持 Go duration 或正整数秒数：\n\n```dotenv\nAUTH_TOKEN_TTL=720h\n```\n\n修改后需要重启 API 服务。这个值只影响之后签发的登录 cookie 和 JWT，不会延长已经签发的令牌。\n\n## 接下来\n\n- [环境变量](/environment-variables) — 完整变量参考。\n- [认证与令牌](/auth-tokens) — 登录会话与令牌类型。\n- [成员与权限](/members-roles) — 邀请与角色。",
+  "description": "配置邮箱验证码和新用户注册范围。",
+  "body": "Multica 默认使用邮箱验证码登录。已经存在的用户始终可以再次登录；注册限制只决定是否允许创建新账号。\n\n## 邮箱验证码\n\n用户输入邮箱后，Multica 会发送一个 6 位验证码。验证码 10 分钟内有效，验证成功后浏览器获得登录 cookie。\n\n邮件通过 SMTP 发送。\n\n### 使用 SMTP\n\n最少需要设置主机和发件地址：\n\n```dotenv\nSMTP_HOST=smtp.example.com\nSMTP_PORT=587\nSMTP_USERNAME=multica\nSMTP_PASSWORD=<password>\nSMTP_FROM_EMAIL=noreply@example.com\n```\n\n常见连接方式：\n\n| 场景 | 配置 |\n|---|---|\n| 内网匿名 relay | `SMTP_PORT=25`，用户名和密码留空 |\n| STARTTLS | `SMTP_PORT=587`，默认会在服务器支持时升级 TLS |\n| 隐式 TLS | `SMTP_PORT=465`，或显式设置 `SMTP_TLS=implicit` |\n\n如果没有设置 `SMTP_FROM_EMAIL`，建议显式设置，避免发件地址不符合内网邮件网关的要求。私有 CA 或自签证书需要把 CA 加入容器信任库；`SMTP_TLS_INSECURE=true` 会跳过证书校验，只应在可信内网中临时使用。\n\n有些严格的 relay 还要求合法的 EHLO 名称：\n\n```dotenv\nSMTP_EHLO_NAME=mail.example.com\n```\n\n### 无邮件服务时的行为\n\n服务器仍可启动，但验证码和邀请链接只会写入日志，不会发送邮件。这适合本地开发，不适合生产环境。\n\n启动日志会说明当前使用的是 `SMTP relay` 还是 `DEV mode`。\n\n## 本地固定验证码\n\n本地自动化测试可以设置固定验证码：\n\n```dotenv\nAPP_ENV=development\nMULTICA_DEV_VERIFICATION_CODE=888888\n```\n\n验证码必须是 6 位数字。`APP_ENV=production` 时固定验证码会被忽略。\n\n:::warning\n不要在多人可访问的实例中启用固定验证码。生产环境的组合是 `APP_ENV=production` 加空的 `MULTICA_DEV_VERIFICATION_CODE`。\n:::\n\n## 注册范围控制\n\n三个变量共同决定新账号能否创建：\n\n| 变量 | 作用 |\n|---|---|\n| `ALLOWED_EMAILS` | 允许的完整邮箱，多个值用逗号分隔 |\n| `ALLOWED_EMAIL_DOMAINS` | 允许的邮箱域名，多个值用逗号分隔 |\n| `ALLOW_SIGNUP` | 未配置任何白名单时，是否允许注册；默认 `true` |\n\n判断顺序如下：\n\n1. 邮箱命中 `ALLOWED_EMAILS`，允许；\n2. 或域名命中 `ALLOWED_EMAIL_DOMAINS`，允许；\n3. 未命中时，如果 `ALLOW_SIGNUP=false`，拒绝；\n4. `ALLOW_SIGNUP=true` 但设置了任意白名单且未命中，仍然拒绝；\n5. 没有设置白名单且 `ALLOW_SIGNUP=true`，允许。\n\n常见配置：\n\n```dotenv\n# 只允许公司域名\nALLOW_SIGNUP=false\nALLOWED_EMAIL_DOMAINS=company.com\n\n# 再放行一位外部协作者\nALLOWED_EMAILS=partner@example.net\n```\n\n:::info\n两个白名单在 `ALLOW_SIGNUP=false` 时也可以作为明确的例外名单。\n:::\n\n## 邀请与注册限制\n\n邀请不会自动绕过注册限制：\n\n- 对方已经有 Multica 账号时，可以登录并接受邀请；\n- 对方还没有账号时，邮箱必须符合上面的注册规则。\n\n在关闭开放注册的实例中邀请新成员时，先把对方邮箱加入 `ALLOWED_EMAILS`。账号创建并接受邀请后，可以再从名单中移除。\n\n## 登录有效期\n\n浏览器登录默认保持 30 天。可以用 `AUTH_TOKEN_TTL` 调整，支持 Go duration 或正整数秒数：\n\n```dotenv\nAUTH_TOKEN_TTL=720h\n```\n\n修改后需要重启 API 服务。这个值只影响之后签发的登录 cookie 和 JWT，不会延长已经签发的令牌。\n\n## 接下来\n\n- [环境变量](/environment-variables) — 完整变量参考。\n- [认证与令牌](/auth-tokens) — 登录会话与令牌类型。\n- [成员与权限](/members-roles) — 邀请与角色。",
   "toc": [
     {
       "depth": 2,
       "title": "邮箱验证码",
       "id": "邮箱验证码"
-    },
-    {
-      "depth": 3,
-      "title": "使用 Resend",
-      "id": "使用-resend"
     },
     {
       "depth": 3,
@@ -28,11 +23,6 @@
       "depth": 2,
       "title": "本地固定验证码",
       "id": "本地固定验证码"
-    },
-    {
-      "depth": 2,
-      "title": "Google 登录",
-      "id": "google-登录"
     },
     {
       "depth": 2,

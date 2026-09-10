@@ -9,11 +9,6 @@
           "title": "欢迎"
         },
         {
-          "slug": "cloud-quickstart",
-          "title": "快速上手",
-          "description": "连接一台电脑，创建你的第一个智能体，并让它完成第一个任务。"
-        },
-        {
           "slug": "concepts",
           "title": "核心概念",
           "description": "一页认识 Multica 的全部核心对象，以及它们之间的关系。"
@@ -169,36 +164,6 @@
       "label": "集成",
       "items": [
         {
-          "slug": "channels",
-          "title": "聊天集成",
-          "description": "把 Multica 智能体接入飞书、Lark、Slack、钉钉、企业微信或 Telegram，在团队已有的聊天工具中使用。"
-        },
-        {
-          "slug": "lark-bot-integration",
-          "title": "飞书 Bot",
-          "description": "把智能体接入飞书，在私聊或群聊中直接交代工作。"
-        },
-        {
-          "slug": "slack-bot-integration",
-          "title": "Slack Bot",
-          "description": "为智能体创建一个 Slack Bot，在私聊、频道以及 /issue、/new、/clear 命令中使用它。"
-        },
-        {
-          "slug": "dingtalk-bot-integration",
-          "title": "钉钉 Bot",
-          "description": "把智能体接入钉钉，在私聊或群聊中直接交代工作。"
-        },
-        {
-          "slug": "telegram-bot-integration",
-          "title": "Telegram Bot 接入",
-          "description": "把 Multica 智能体接入你自己的 Telegram Bot，支持私聊、群聊 @、forum topic 和 /issue。"
-        },
-        {
-          "slug": "github-integration",
-          "title": "GitHub 集成",
-          "description": "把 pull request 与 Multica issue 关联，并在 issue 中查看开发进展。"
-        },
-        {
           "slug": "vcs-integration",
           "title": "自托管 Git 代码托管",
           "description": "为每个工作区连接自托管的 Forgejo、Gitea 或 GitLab 实例，使引用了 issue 编号的 Pull Request / Merge Request 自动关联到对应 issue，在合并时将其移动到「完成」，并展示 CI 状态。"
@@ -212,11 +177,6 @@
           "slug": "desktop-app",
           "title": "桌面应用",
           "description": "安装 Multica Desktop，使用桌面标签页和内置守护进程，并连接自托管实例。"
-        },
-        {
-          "slug": "mobile-app",
-          "title": "移动 App（iOS）",
-          "description": "从源码把 Multica 安装到 iPhone，并连接 Cloud 或自托管实例。"
         }
       ]
     },
@@ -236,7 +196,7 @@
         {
           "slug": "auth-setup",
           "title": "登录与注册",
-          "description": "配置邮箱验证码、Google 登录和新用户注册范围。"
+          "description": "配置邮箱验证码和新用户注册范围。"
         },
         {
           "slug": "troubleshooting",
@@ -257,16 +217,6 @@
           "slug": "auth-tokens",
           "title": "认证与令牌",
           "description": "了解浏览器登录、个人访问令牌，以及智能体执行时使用的临时凭据。"
-        }
-      ]
-    },
-    {
-      "label": "社区",
-      "items": [
-        {
-          "slug": "community-maintained",
-          "title": "社区维护的功能区域",
-          "description": "Multica 中哪些部分由社区贡献者维护、这对支持意味着什么，以及在这些区域遇到问题该怎么反馈。"
         }
       ]
     },
