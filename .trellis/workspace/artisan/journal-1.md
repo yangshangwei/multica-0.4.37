@@ -194,3 +194,27 @@ Repaired the seven merge-review findings with regression-first changes, preserve
 ### Status
 
 [OK] **Completed**
+
+
+## Session 5: 内网部署文档裁剪与验收
+
+**Date**: 2026-09-10
+**Task**: 内网部署文档裁剪与验收
+**Branch**: `main`
+
+### Summary
+
+为内网部署裁剪内嵌中文文档：删除 9 个公网依赖页面（云快速上手、四个 IM bot、channels、GitHub 云集成、community-maintained、mobile-app），改写 4 个获取通道依赖公网的页面（self-host-quickstart、install-agent-runtime、tutorial、desktop-app），局部裁剪 7 页并清理产品侧深链（DOCS_SLUGS、设置页 bot Tab、help-launcher 公网菜单项、引导模板 curl 命令）与 6 个死 locale key；验收时发现并修复 CodeBlock 缺 use client 导致 web 文档页 500 的既有 bug，并将 project-resources/projects/issues 三页的 GitHub 默认措辞中性化。产物：bundle 36 页、pnpm test 5022 用例全绿、Go docs/handler 测试通过。新 spec：.trellis/spec/docs/frontend/docs-bundle.md。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b59aa6d61` | (see git log) |
+| `ecae52ac7` | (see git log) |
+| `e3ca9cba6` | (see git log) |
+| `e70228ba9` | (see git log) |
+
+### Status
+
+[OK] **Completed**
