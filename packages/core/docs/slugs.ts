@@ -22,11 +22,8 @@ export const DOCS_SLUGS = {
   agents: "agents",
   autopilots: "autopilots",
   daemonRuntimes: "daemon-runtimes",
-  dingtalkBot: "dingtalk-bot-integration",
   installAgentRuntime: "install-agent-runtime",
   skills: "skills",
-  slackBot: "slack-bot-integration",
-  telegramBot: "telegram-bot-integration",
 } as const;
 
 /**

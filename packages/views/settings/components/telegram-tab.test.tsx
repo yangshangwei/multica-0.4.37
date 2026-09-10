@@ -154,15 +154,13 @@ describe("TelegramAgentBindButton", () => {
     expect(mockOpenExternal).not.toHaveBeenCalled();
   });
 
-  // The setup guide used to be handed to the system browser at
-  // multica.ai/docs, which an intranet install cannot reach. It is now the
-  // in-app reader, so it must be a real in-app link rather than an
-  // openExternal call.
-  it("links to the in-app Telegram setup guide", async () => {
+  // The Telegram setup guide page is gone from the intranet docs trim — the
+  // platform is unreachable from an intranet deployment, so the dialog must
+  // not link to a page that no longer exists.
+  it("does not link to a docs page from the connect dialog", async () => {
     renderUI(<TelegramAgentBindButton agentId="agent-1" agentName="Bot" />);
     await userEvent.click(screen.getByTestId("telegram-agent-connect"));
-    const link = await screen.findByTestId("telegram-docs-link");
-    expect(link).toHaveAttribute("href", "/acme/docs/telegram-bot-integration");
+    expect(screen.queryByTestId("telegram-docs-link")).toBeNull();
     expect(mockOpenExternal).not.toHaveBeenCalled();
   });
 

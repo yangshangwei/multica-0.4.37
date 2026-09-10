@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { BookOpen, ChevronRight, ExternalLink, Trash2 } from "lucide-react";
+import { ChevronRight, ExternalLink, Trash2 } from "lucide-react";
 import { SlackMark } from "./slack-mark";
 import { cn } from "@multica/ui/lib/utils";
 import { Button } from "@multica/ui/components/ui/button";
@@ -35,9 +35,6 @@ import { slackInstallationsOptions, slackKeys } from "@multica/core/slack";
 import { api } from "@multica/core/api";
 import type { SlackInstallation } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
-import { DOCS_SLUGS } from "@multica/core/docs";
-import { paths, useWorkspaceSlug } from "@multica/core/paths";
-import { AppLink } from "../../navigation";
 import { openExternal } from "../../platform";
 import { useT } from "../../i18n";
 
@@ -265,13 +262,6 @@ export function SlackAgentBindButton({
   onShowConnectedDetails?: () => void;
 }) {
   const { t } = useT("settings");
-  // Nullable rather than useWorkspacePaths(): that hook throws outside a
-  // workspace route, and this button is a leaf other surfaces embed. The docs
-  // link is an affordance, so it drops out rather than taking the dialog with it.
-  const workspaceSlug = useWorkspaceSlug();
-  const docsHref = workspaceSlug
-    ? paths.workspace(workspaceSlug).docsPage(DOCS_SLUGS.slackBot)
-    : null;
   const wsId = useWorkspaceId();
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
@@ -385,21 +375,6 @@ export function SlackAgentBindButton({
               <ExternalLink className="h-4 w-4" />
               {t(($) => $.slack.byo_video_cta)}
             </button>
-          ) : null}
-
-          {/* In-app: this guide ships with the deployment, so it must not be
-              handed to the system browser (which an intranet install cannot
-              reach anyway). Dropped outside a workspace route, where there is
-              no slug to address it with. */}
-          {docsHref ? (
-            <AppLink
-              href={docsHref}
-              className="inline-flex w-fit items-center gap-2 text-body font-medium text-primary underline-offset-2 hover:underline"
-              data-testid="slack-byo-docs-link"
-            >
-              <BookOpen className="h-4 w-4" />
-              {t(($) => $.slack.byo_docs_link)}
-            </AppLink>
           ) : null}
 
           <div className="space-y-4">

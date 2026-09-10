@@ -96,8 +96,10 @@ import { SlackAgentBindButton, SlackTab } from "./slack-tab";
 
 const TEST_RESOURCES = { en: { common: enCommon, settings: enSettings } };
 
-// The docs link in the connect dialog is an in-app AppLink now, so the tree
-// needs the workspace slug it addresses and a navigation adapter to route with.
+// The tree renders under the same providers it meets in the app: a workspace
+// slug and a navigation adapter. The connect dialog no longer links out to a
+// docs page (the Slack guide is gone from the intranet docs trim), but the
+// providers keep the test environment honest about the real mount context.
 function navAdapter(): NavigationAdapter {
   return {
     push: vi.fn(),

@@ -55,26 +55,21 @@ That gives you the project-management layer first. Once a runtime is connected, 
 
 Full guide: /docs/install-agent-runtime
 
-For English users, the fastest first path is Codex:
+For English users, the fastest first path is Codex. This deployment has no
+public internet access, so ask your administrator for the offline installer
+or internal package mirror for the runtime CLI. Once it is installed:
 
-1. Make sure Node.js is installed.
-2. Install Codex:
-   npm i -g @openai/codex
-3. Sign in:
-   codex
-4. Confirm your terminal can find it:
+1. Confirm your terminal can find it:
    which codex
    codex --version
-5. Wait for Multica to pick it up. A running daemon re-checks for newly
+2. Wait for Multica to pick it up. A running daemon re-checks for newly
    installed CLIs every couple of minutes, so no restart is normally needed.
    To apply it immediately:
    multica daemon restart
    In the desktop app, open any local runtime and click Restart. Quitting and
    reopening the app is NOT enough — the daemon keeps running in the background.
-6. Return to Runtimes and refresh. You should see a Codex runtime online.
-7. Open Runtimes. The page will offer **Start with Mika**; use it to create Mika and open the guided first chat.
-
-Codex reference: https://developers.openai.com/codex/cli
+3. Return to Runtimes and refresh. You should see a Codex runtime online.
+4. Open Runtimes. The page will offer **Start with Mika**; use it to create Mika and open the guided first chat.
 
 Mika will turn one real goal into an issue, start it with the right agent, and suggest reusable specialists when your workflow needs them.`;
 
@@ -97,25 +92,19 @@ const zh = `欢迎来到 Multica。
 
 完整文档:/docs/install-agent-runtime
 
-中文用户建议先装 Kimi CLI:
+中文用户建议先装 Kimi CLI。本部署无法访问公网，请向管理员获取运行时 CLI 的离线安装包或内网镜像。安装完成后：
 
-1. 在 macOS / Linux 终端安装 Kimi CLI:
-   curl -LsSf https://code.kimi.com/install.sh | bash
-   Windows PowerShell:
-   Invoke-RestMethod https://code.kimi.com/install.ps1 | Invoke-Expression
-2. 确认终端能找到 Kimi:
+1. 确认终端能找到 Kimi:
    kimi --version
-3. 在你想让 Kimi 工作的项目目录里启动一次:
+2. 在你想让 Kimi 工作的项目目录里启动一次:
    kimi
-4. 首次启动后输入 /login,按提示完成 Kimi Code 或 API key 配置。
-5. 等 Multica 识别到它。运行中的守护进程每隔几分钟会重新检查一次新装的 CLI,通常不需要重启。
+3. 首次启动后输入 /login,按提示完成 Kimi Code 或 API key 配置。
+4. 等 Multica 识别到它。运行中的守护进程每隔几分钟会重新检查一次新装的 CLI,通常不需要重启。
    想立刻生效:
    multica daemon restart
    桌面端请打开任意一个本机 runtime 并点 Restart。退出再打开 app 是不够的 —— 守护进程会继续在后台运行。
-6. 回到 Runtimes 页面刷新。你应该能看到一个在线的 Kimi 运行时。
-7. 打开"运行时"页面。页面会显示 **和 Mika 开始**；点击后会创建 Mika，并进入引导式的首次对话。
-
-Kimi CLI 官方文档:https://moonshotai.github.io/kimi-cli/zh/guides/getting-started.html
+5. 回到 Runtimes 页面刷新。你应该能看到一个在线的 Kimi 运行时。
+6. 打开"运行时"页面。页面会显示 **和 Mika 开始**；点击后会创建 Mika，并进入引导式的首次对话。
 
 Mika 会把一个真实目标转化为任务，交给合适的智能体启动执行，并在工作流需要时建议添加可复用的 specialist。`;
 
@@ -138,26 +127,19 @@ runtime이 준비되기 전에는 다음을 해볼 수 있습니다:
 
 전체 가이드: /docs/install-agent-runtime
 
-한국어 사용자는 Codex로 시작하는 것이 가장 빠릅니다:
+한국어 사용자는 Codex로 시작하는 것이 가장 빠릅니다. 이 배포는 공용 인터넷에 접근할 수 없으므로, 관리자에게서 런타임 CLI의 오프라인 설치 프로그램이나 내부 패키지 미러를 받으세요. 설치 후:
 
-1. Node.js가 설치되어 있는지 확인합니다.
-2. Codex를 설치합니다:
-   npm i -g @openai/codex
-3. 로그인합니다:
-   codex
-4. 터미널에서 찾을 수 있는지 확인합니다:
+1. 터미널에서 찾을 수 있는지 확인합니다:
    which codex
    codex --version
-5. Multica가 인식할 때까지 기다립니다. 실행 중인 daemon은 몇 분마다 새로 설치된 CLI를
+2. Multica가 인식할 때까지 기다립니다. 실행 중인 daemon은 몇 분마다 새로 설치된 CLI를
    다시 확인하므로 보통 재시작이 필요하지 않습니다.
    바로 적용하려면:
    multica daemon restart
    데스크톱 앱에서는 아무 로컬 runtime을 열고 Restart를 누르세요. 앱을 종료하고 다시 여는
    것만으로는 충분하지 않습니다 — daemon은 백그라운드에서 계속 실행됩니다.
-6. Runtimes로 돌아가 새로고침합니다. Codex runtime이 online으로 보여야 합니다.
-7. Runtimes를 엽니다. **Mika와 시작**을 눌러 Mika를 만들고 안내되는 첫 채팅을 시작합니다.
-
-Codex 참고 문서: https://developers.openai.com/codex/cli
+3. Runtimes로 돌아가 새로고침합니다. Codex runtime이 online으로 보여야 합니다.
+4. Runtimes를 엽니다. **Mika와 시작**을 눌러 Mika를 만들고 안내되는 첫 채팅을 시작합니다.
 
 Mika가 실제 목표 하나를 태스크로 만들고 적합한 에이전트와 실행을 시작하며, 워크플로에 필요할 때 재사용 가능한 specialist를 제안합니다.`;
 
@@ -180,26 +162,19 @@ runtime が準備できる前に、次のことを試せます:
 
 詳しいガイド: /docs/install-agent-runtime
 
-日本語ユーザーには、Codex で始めるのが最も速い経路です:
+日本語ユーザーには、Codex で始めるのが最も速い経路です。このデプロイは公共インターネットに接続できないため、管理者からランタイム CLI のオフラインインストーラーまたは内部パッケージミラーを受け取ってください。インストール後:
 
-1. Node.js がインストールされていることを確認します。
-2. Codex をインストールします:
-   npm i -g @openai/codex
-3. サインインします:
-   codex
-4. ターミナルから見つけられるか確認します:
+1. ターミナルから見つけられるか確認します:
    which codex
    codex --version
-5. Multica が認識するまで待ちます。動作中の daemon は数分ごとに新しくインストールされた
+2. Multica が認識するまで待ちます。動作中の daemon は数分ごとに新しくインストールされた
    CLI を再チェックするため、通常は再起動は不要です。
    すぐに反映したい場合:
    multica daemon restart
    デスクトップアプリではローカル runtime を開いて Restart を押してください。アプリを終了して
    開き直すだけでは不十分です — daemon はバックグラウンドで動き続けます。
-6. Runtimes に戻って再読み込みします。Codex runtime が online と表示されるはずです。
-7. Runtimes を開き、**Mika と始める**を選びます。Mika が作成され、案内付きの最初のチャットが開きます。
-
-Codex のリファレンス: https://developers.openai.com/codex/cli
+3. Runtimes に戻って再読み込みします。Codex runtime が online と表示されるはずです。
+4. Runtimes を開き、**Mika と始める**を選びます。Mika が作成され、案内付きの最初のチャットが開きます。
 
 Mika は実際の目標を 1 つのタスクにし、適切なエージェントで実行を開始し、ワークフローに必要なときは再利用可能な specialist を提案します。`;
 

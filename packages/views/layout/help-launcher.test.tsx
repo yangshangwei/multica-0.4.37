@@ -1,19 +1,11 @@
 import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { configStore } from "@multica/core/config";
 import { WorkspaceSlugProvider } from "@multica/core/paths";
 import enLayout from "../locales/en/layout.json";
 import { NavigationProvider, type NavigationAdapter } from "../navigation";
-import { isDesktopShell } from "../platform/local-directory";
 import { HelpLauncher } from "./help-launcher";
-
-// The download entry is gated on the desktop-shell probe, which reads a
-// preload-injected bridge that jsdom never has. Mock it so both platforms are
-// reachable from the same suite.
-vi.mock("../platform/local-directory", () => ({
-  isDesktopShell: vi.fn(() => false),
-}));
 
 // react-i18next isn't initialised in the views test env, so resolve the
 // selector against the real en/layout.json to assert on actual copy.
@@ -106,10 +98,6 @@ function renderHelp(slug: string | null = "acme") {
   );
 }
 
-beforeEach(() => {
-  vi.mocked(isDesktopShell).mockReturnValue(false);
-});
-
 afterEach(() => {
   configStore.getState().setServerVersion("");
 });
@@ -136,23 +124,12 @@ describe("HelpLauncher", () => {
     expect(screen.getByText("Server version 9.9.9")).toBeInTheDocument();
   });
 
-  // MUL-6462: after web onboarding the desktop download CTA was unreachable —
-  // no entry anywhere in the app, so users had to remember the URL or detour
-  // through the marketing site. The Help menu is the persistent home for it.
-  it("links to the download page on web", () => {
-    renderHelp();
-    const link = screen.getByRole("link", { name: /Desktop app/ });
-    expect(link).toHaveAttribute("href", "https://multica.ai/download");
-  });
-
-  // AppSidebar is shared: apps/desktop renders the same component tree. Without
-  // this gate the desktop app would offer to download the desktop app.
-  it("hides the download entry inside the desktop shell", () => {
-    vi.mocked(isDesktopShell).mockReturnValue(true);
+  // Intranet trim: the desktop-download entry pointed at multica.ai release
+  // assets, which an intranet deployment cannot reach. It is gone entirely
+  // rather than left as a dead link — on web and desktop alike.
+  it("does not include the desktop download entry", () => {
     renderHelp();
     expect(screen.queryByText("Desktop app")).not.toBeInTheDocument();
-    // The rest of the menu is unaffected by the gate.
-    expect(screen.getByText("Docs")).toBeInTheDocument();
   });
 
   // The docs entry was `https://multica.ai/docs` — dead on any deployment
@@ -165,14 +142,11 @@ describe("HelpLauncher", () => {
     expect(link).toHaveAttribute("href", "/acme/docs");
   });
 
-  // Change log and Desktop app still point at release assets that genuinely are
-  // not part of this deployment, so those two stay external.
-  it("keeps the change log external", () => {
+  // Intranet trim: same reasoning as the download entry — the change log
+  // lived at multica.ai/changelog, unreachable from an intranet deployment.
+  it("does not include the change log entry", () => {
     renderHelp();
-    expect(screen.getByRole("link", { name: /Change log/ })).toHaveAttribute(
-      "href",
-      "https://multica.ai/changelog",
-    );
+    expect(screen.queryByText("Change log")).not.toBeInTheDocument();
   });
 
   // The menu must not be the thing that throws if it is ever mounted outside a
@@ -180,7 +154,7 @@ describe("HelpLauncher", () => {
   it("omits the docs entry with no workspace in scope, without crashing", () => {
     expect(() => renderHelp(null)).not.toThrow();
     expect(screen.queryByText("Docs")).not.toBeInTheDocument();
-    expect(screen.getByText("Change log")).toBeInTheDocument();
+    expect(screen.getByText("Feedback")).toBeInTheDocument();
   });
 
   it("does not include the removed Discord entry", () => {
