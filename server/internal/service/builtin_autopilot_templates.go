@@ -48,8 +48,17 @@ type AutopilotTemplate struct {
 	// issue) or "run_only" (the agent runs and only files an issue when it finds
 	// something worth one).
 	ExecutionMode string
-	// AvatarEmoji is rendered through the same `emoji:` marker every other avatar
-	// uses, so no surface needs to special-case a template autopilot.
+	// IssueTitleTemplate is the starting issue title for create_issue runs.
+	// Non-empty only for create_issue templates — run_only never creates the
+	// issue itself, so there is no title to template. Like the prompt and the
+	// cron, this is content COPIED into the created autopilot, which the
+	// workspace may edit afterwards. `{{date}}` is the only supported
+	// placeholder (see ValidateIssueTitleTemplate); without it a daily summary
+	// files thirty identically-named issues in a month.
+	IssueTitleTemplate string
+	// AvatarEmoji decorates the picker card. It is picker-only: the autopilot
+	// table has no avatar column, so the created instance does not carry it and
+	// no surface outside the template picker ever renders it.
 	AvatarEmoji string
 	// Category is a stable english slug grouping the picker cards (e.g.
 	// "repo-health"). Localized labels live in Categories; nothing keys off the

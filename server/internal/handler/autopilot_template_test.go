@@ -144,6 +144,19 @@ func TestAutopilotTemplateCreate_WritesAutopilotAndTriggerTogether(t *testing.T)
 	if created.Autopilot.ExecutionMode != template.ExecutionMode {
 		t.Errorf("execution_mode = %q, want %q", created.Autopilot.ExecutionMode, template.ExecutionMode)
 	}
+	// A create_issue template stamps {{date}} into the issue title so a month
+	// of runs produces distinguishable issues rather than thirty rows named
+	// "Daily Change Review". Absent here, dispatch falls back to the autopilot
+	// title and the whole point of the template's cadence is lost.
+	if created.Autopilot.IssueTitleTemplate == nil || *created.Autopilot.IssueTitleTemplate != template.IssueTitleTemplate {
+		t.Errorf("issue_title_template = %v, want the template's %q", created.Autopilot.IssueTitleTemplate, template.IssueTitleTemplate)
+	}
+	// Provenance surfaced on the response, not just in the database: a client
+	// needs it to offer the upgrade diff a later template version implies.
+	if created.Autopilot.TemplateKey != template.Key || created.Autopilot.TemplateVersion != template.Version {
+		t.Errorf("response provenance = (%q, %d), want (%q, %d)",
+			created.Autopilot.TemplateKey, created.Autopilot.TemplateVersion, template.Key, template.Version)
+	}
 	if created.Autopilot.Status != "active" {
 		t.Errorf("status = %q, want active", created.Autopilot.Status)
 	}
@@ -157,14 +170,18 @@ func TestAutopilotTemplateCreate_WritesAutopilotAndTriggerTogether(t *testing.T)
 		t.Error("trigger has no next_run_at; the scheduler claims work by that column")
 	}
 
-	// Provenance and the trigger row as the database actually holds them — the
-	// response could be right while the write was not.
+	// Provenance, the issue title template and the trigger row as the database
+	// actually holds them — the response could be right while the write was not.
 	var templateKey string
 	var templateVersion int32
-	dbfx.QueryRow(t, `SELECT template_key, template_version FROM autopilot WHERE id = $1`, created.Autopilot.ID).
-		Scan(&templateKey, &templateVersion)
+	var issueTitleTemplate *string
+	dbfx.QueryRow(t, `SELECT template_key, template_version, issue_title_template FROM autopilot WHERE id = $1`, created.Autopilot.ID).
+		Scan(&templateKey, &templateVersion, &issueTitleTemplate)
 	if templateKey != template.Key || templateVersion != template.Version {
 		t.Errorf("stored provenance = (%q, %d), want (%q, %d)", templateKey, templateVersion, template.Key, template.Version)
+	}
+	if issueTitleTemplate == nil || *issueTitleTemplate != template.IssueTitleTemplate {
+		t.Errorf("stored issue_title_template = %v, want the template's %q", issueTitleTemplate, template.IssueTitleTemplate)
 	}
 
 	var cron, timezone string
@@ -201,9 +218,15 @@ func TestAutopilotTemplateCreate_RunOnlyTemplateKeepsItsMode(t *testing.T) {
 	cleanupTemplateAutopilot(t, created.Autopilot.ID)
 
 	var executionMode string
-	dbfx.QueryRow(t, `SELECT execution_mode FROM autopilot WHERE id = $1`, created.Autopilot.ID).Scan(&executionMode)
+	var issueTitleTemplate *string
+	dbfx.QueryRow(t, `SELECT execution_mode, issue_title_template FROM autopilot WHERE id = $1`, created.Autopilot.ID).Scan(&executionMode, &issueTitleTemplate)
 	if executionMode != "run_only" {
 		t.Errorf("execution_mode = %q, want run_only", executionMode)
+	}
+	// run_only templates carry no issue title template: they never create the
+	// issue themselves, so prefilling a title would be dead, misleading config.
+	if issueTitleTemplate != nil {
+		t.Errorf("issue_title_template = %q, want NULL for a run_only template", *issueTitleTemplate)
 	}
 	// Absent timezone means UTC, the same fallback the scheduler applies.
 	if created.Trigger.Timezone == nil || *created.Trigger.Timezone != "UTC" {

@@ -47,11 +47,18 @@ type AutopilotResponse struct {
 	PauseReason        *string `json:"pause_reason"`
 	ExecutionMode      string  `json:"execution_mode"`
 	IssueTitleTemplate *string `json:"issue_title_template"`
-	CreatedByType      string  `json:"created_by_type"`
-	CreatedByID        string  `json:"created_by_id"`
-	LastRunAt          *string `json:"last_run_at"`
-	CreatedAt          string  `json:"created_at"`
-	UpdatedAt          string  `json:"updated_at"`
+	// TemplateKey / TemplateVersion are provenance for rows created from a
+	// built-in template (POST /api/autopilots/from-template): which template the
+	// copy came from and at which version, so a later release can offer an
+	// upgrade diff. Zero values mean not template-created — hand-built rows and
+	// every row that predates the template columns.
+	TemplateKey     string  `json:"template_key"`
+	TemplateVersion int32   `json:"template_version"`
+	CreatedByType   string  `json:"created_by_type"`
+	CreatedByID     string  `json:"created_by_id"`
+	LastRunAt       *string `json:"last_run_at"`
+	CreatedAt       string  `json:"created_at"`
+	UpdatedAt       string  `json:"updated_at"`
 
 	// List-endpoint-only derived fields (absent on the detail/create/update
 	// responses and on older servers — clients must treat them as optional).
@@ -210,6 +217,8 @@ func autopilotToResponse(a db.Autopilot, subscribers []db.AutopilotSubscriber) A
 		PauseReason:        textToPtr(a.PauseReason),
 		ExecutionMode:      a.ExecutionMode,
 		IssueTitleTemplate: textToPtr(a.IssueTitleTemplate),
+		TemplateKey:        a.TemplateKey,
+		TemplateVersion:    a.TemplateVersion,
 		CreatedByType:      a.CreatedByType,
 		CreatedByID:        uuidToString(a.CreatedByID),
 		LastRunAt:          timestampToPtr(a.LastRunAt),

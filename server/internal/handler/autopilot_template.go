@@ -246,14 +246,18 @@ func (h *Handler) CreateAutopilotFromTemplate(w http.ResponseWriter, r *http.Req
 		// buildIssueDescription writes it into the issue a create_issue run
 		// opens, and a run_only dispatch hands the same text to the agent. The
 		// localized card Description is picker copy and must never land here.
-		Description:     pgtype.Text{String: template.Prompt(), Valid: true},
-		ExecutionMode:   template.ExecutionMode,
-		CreatedByID:     creatorID,
-		ProjectID:       projectID,
-		PublishedByID:   creatorID,
-		Subscribers:     subscribers,
-		TemplateKey:     template.Key,
-		TemplateVersion: template.Version,
+		Description:   pgtype.Text{String: template.Prompt(), Valid: true},
+		ExecutionMode: template.ExecutionMode,
+		// Every create_issue template carries one so each period's issue is
+		// tellable apart ({{date}} is the only supported placeholder). run_only
+		// templates leave it empty, and Valid=false is exactly that write.
+		IssueTitleTemplate: pgtype.Text{String: template.IssueTitleTemplate, Valid: template.IssueTitleTemplate != ""},
+		CreatedByID:        creatorID,
+		ProjectID:          projectID,
+		PublishedByID:      creatorID,
+		Subscribers:        subscribers,
+		TemplateKey:        template.Key,
+		TemplateVersion:    template.Version,
 	})
 	if err != nil {
 		if errors.Is(err, errAutopilotSubscriberInsert) {

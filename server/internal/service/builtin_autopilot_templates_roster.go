@@ -28,7 +28,9 @@ package service
 // stale-pr-reminder, dependency-audit, documentation-check) are patrols: they run,
 // and only file an issue when there is something real to file. create_issue
 // templates (release-readiness, daily-change-review, bug-triage,
-// weekly-progress-report) are summaries: every period lands one issue by design.
+// weekly-progress-report) are summaries: every period lands one issue by design,
+// and each stamps {{date}} into the issue title so a month of runs produces
+// distinguishable issues rather than thirty rows named "Daily Change Review".
 var builtinAutopilotTemplates = []AutopilotTemplate{
 	{
 		Key:            "workday-repo-audit",
@@ -40,7 +42,7 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		Category:       "repo-health",
 		Categories: map[string]string{
 			"en": "Repo Health",
-			"zh": "REPO 健康",
+			"zh": "仓库健康",
 			"ko": "레포 상태",
 			"ja": "リポジトリ健全性",
 		},
@@ -58,13 +60,14 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		},
 	},
 	{
-		Key:            "release-readiness",
-		Version:        1,
-		Listed:         true,
-		CronExpression: "0 17 * * 1",
-		ExecutionMode:  "create_issue",
-		AvatarEmoji:    "🚦",
-		Category:       "release-prep",
+		Key:                "release-readiness",
+		Version:            1,
+		Listed:             true,
+		CronExpression:     "0 17 * * 1",
+		ExecutionMode:      "create_issue",
+		IssueTitleTemplate: "Release Readiness — {{date}}",
+		AvatarEmoji:        "🚦",
+		Category:           "release-prep",
 		Categories: map[string]string{
 			"en": "Release Prep",
 			"zh": "发布准备",
@@ -85,13 +88,14 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		},
 	},
 	{
-		Key:            "daily-change-review",
-		Version:        1,
-		Listed:         true,
-		CronExpression: "0 18 * * *",
-		ExecutionMode:  "create_issue",
-		AvatarEmoji:    "🔎",
-		Category:       "periodic-review",
+		Key:                "daily-change-review",
+		Version:            1,
+		Listed:             true,
+		CronExpression:     "0 18 * * *",
+		ExecutionMode:      "create_issue",
+		IssueTitleTemplate: "Daily Change Review — {{date}}",
+		AvatarEmoji:        "🔎",
+		Category:           "periodic-review",
 		Categories: map[string]string{
 			"en": "Periodic Review",
 			"zh": "定期评审",
@@ -127,7 +131,7 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		},
 		Titles: map[string]string{
 			"en": "Hourly Queue Check",
-			"zh": "每小时排队检查",
+			"zh": "每小时队列巡检",
 			"ko": "시간별 큐 점검",
 			"ja": "毎時キュー点検",
 		},
@@ -166,13 +170,14 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		},
 	},
 	{
-		Key:            "bug-triage",
-		Version:        1,
-		Listed:         true,
-		CronExpression: "0 9 * * 1-5",
-		ExecutionMode:  "create_issue",
-		AvatarEmoji:    "🐛",
-		Category:       "triage",
+		Key:                "bug-triage",
+		Version:            1,
+		Listed:             true,
+		CronExpression:     "0 9 * * 1-5",
+		ExecutionMode:      "create_issue",
+		IssueTitleTemplate: "Bug Triage — {{date}}",
+		AvatarEmoji:        "🐛",
+		Category:           "triage",
 		Categories: map[string]string{
 			"en": "Triage",
 			"zh": "分诊",
@@ -193,13 +198,14 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		},
 	},
 	{
-		Key:            "weekly-progress-report",
-		Version:        1,
-		Listed:         true,
-		CronExpression: "0 17 * * 1",
-		ExecutionMode:  "create_issue",
-		AvatarEmoji:    "📊",
-		Category:       "release-prep",
+		Key:                "weekly-progress-report",
+		Version:            1,
+		Listed:             true,
+		CronExpression:     "0 17 * * 1",
+		ExecutionMode:      "create_issue",
+		IssueTitleTemplate: "Weekly Progress Report — {{date}}",
+		AvatarEmoji:        "📊",
+		Category:           "release-prep",
 		Categories: map[string]string{
 			"en": "Release Prep",
 			"zh": "发布准备",
@@ -229,7 +235,7 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		Category:       "repo-health",
 		Categories: map[string]string{
 			"en": "Repo Health",
-			"zh": "REPO 健康",
+			"zh": "仓库健康",
 			"ko": "레포 상태",
 			"ja": "リポジトリ健全性",
 		},

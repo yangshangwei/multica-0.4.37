@@ -204,6 +204,35 @@ func TestAutopilotTemplates_PatrolPromptsCarryDeduplicationGuidance(t *testing.T
 	}
 }
 
+// TestAutopilotTemplates_IssueTitleTemplates pins how a create_issue run's
+// issues stay tellable apart. Without a title template the created autopilot
+// falls back to its own title at dispatch, so a daily summary files thirty
+// identically-named issues in a month. Only create_issue templates carry one —
+// run_only never creates the issue itself, so there is no title to template.
+func TestAutopilotTemplates_IssueTitleTemplates(t *testing.T) {
+	for _, template := range builtinAutopilotTemplates {
+		if template.ExecutionMode == "create_issue" {
+			if template.IssueTitleTemplate == "" {
+				t.Errorf("%s: create_issue template has no issue title template; every run would file an issue named after the autopilot itself", template.Key)
+				continue
+			}
+			if !strings.Contains(template.IssueTitleTemplate, "{{date}}") {
+				t.Errorf("%s: issue title template %q carries no {{date}}; one issue per period needs the period in the title", template.Key, template.IssueTitleTemplate)
+			}
+			// The from-template endpoint copies this verbatim; a template that
+			// fails validation would surface as a 500 on a later edit, not at
+			// the registry where it belongs.
+			if err := ValidateIssueTitleTemplate(template.IssueTitleTemplate); err != nil {
+				t.Errorf("%s: issue title template %q does not validate: %v", template.Key, template.IssueTitleTemplate, err)
+			}
+		} else if template.ExecutionMode == "run_only" {
+			if template.IssueTitleTemplate != "" {
+				t.Errorf("%s: run_only template sets issue title template %q, but run_only never creates an issue to title", template.Key, template.IssueTitleTemplate)
+			}
+		}
+	}
+}
+
 // TestAutopilotTemplates_LocalizedCopyIsComplete keeps the picker from showing an
 // English label inside an otherwise translated screen.
 func TestAutopilotTemplates_LocalizedCopyIsComplete(t *testing.T) {

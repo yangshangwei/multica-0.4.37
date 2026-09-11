@@ -33,6 +33,13 @@ Execution modes:
 
 `issue-title-template` only supports `{{date}}`. Do not invent `{{trigger_id}}`, `{{branch}}`, or other variables.
 
+## Built-in templates
+
+The built-in automation roster ships with the server binary. Two HTTP endpoints expose it (there is no CLI subcommand for either yet):
+
+- `GET /api/autopilots/templates?language=` lists the roster with localized card copy (en/zh/ja/ko). Read-only and workspace-independent — every workspace on the server gets the same answer.
+- `POST /api/autopilots/from-template` creates an autopilot AND its schedule trigger in one transaction. The request body carries only `template_key`, `assignee_id`, and optional `assignee_type` / `project_id` / `timezone` / `language` / `subscribers`; the title, prompt, issue title template, cron, and execution mode come from the server-side template, so a client cannot claim a template's provenance while supplying its own prompt. The result is an ordinary, fully editable autopilot stamped with `template_key` / `template_version` provenance.
+
 ## CLI
 
 ```bash
