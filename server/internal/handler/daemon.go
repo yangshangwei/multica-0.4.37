@@ -2203,7 +2203,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 		}
 	}
 	if useSkillRefs {
-		_, skillRefs, err := h.TaskService.LoadAgentSkillBundles(r.Context(), task.AgentID)
+		_, skillRefs, err := h.TaskService.LoadAgentSkillBundles(r.Context(), *task)
 		if err != nil {
 			return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.rejectClaimSkillLoad(task, err)
 		}
@@ -2215,7 +2215,10 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 			return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.rejectClaimSkillLoad(task, err)
 		}
 		agentSkillCount = len(skills)
-		builtinSkills := h.TaskService.BuiltinSkills()
+		builtinSkills, err := h.TaskService.TaskBuiltinSkills(r.Context(), *task)
+		if err != nil {
+			return resp, deliveredCommentIDs, agentSkillCount, builtinSkillCount, h.rejectClaimSkillLoad(task, err)
+		}
 		builtinSkillCount = len(builtinSkills)
 		skills = append(skills, builtinSkills...)
 		resp.Agent.Skills = skills
@@ -3490,7 +3493,7 @@ func (h *Handler) ResolveTaskSkillBundles(w http.ResponseWriter, r *http.Request
 	// so serving these out of the agent's full bundle set meant reading and
 	// hashing every skill the agent has, once per request, to return one of
 	// them — quadratic in skill count across a cold dispatch.
-	allowed, err := h.TaskService.LoadRequestedAgentSkillBundles(r.Context(), task.AgentID, wanted)
+	allowed, err := h.TaskService.LoadRequestedAgentSkillBundles(r.Context(), task, wanted)
 	if err != nil {
 		// 5xx, not a partial answer: the daemon's resolve retry can recover a
 		// transient read, and a bundle assembled from a failed read would pass

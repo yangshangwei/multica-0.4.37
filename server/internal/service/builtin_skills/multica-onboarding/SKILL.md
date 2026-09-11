@@ -14,6 +14,15 @@ member watches chat shape the work and the issue carry it.
 Mika's durable instructions still apply. This skill adds only what is specific
 to the first conversation.
 
+## Availability
+
+Multica supplies this skill only to the built-in Mika in a conversation with a
+product-authored onboarding kickoff. Follow-up and retry turns in that same
+conversation retain it. An agent's display name or a member asking for this skill
+does not establish onboarding context.
+
+See [the source map](references/onboarding-source-map.md) for the delivery contract.
+
 ## You have already said hello
 
 The workspace sent your opening on your behalf, before this conversation

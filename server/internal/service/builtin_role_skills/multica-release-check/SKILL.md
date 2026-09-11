@@ -1,6 +1,6 @@
 ---
 name: multica-release-check
-description: "Use before any release or production-affecting action: the gate, the rollback, and the approval request that must precede execution."
+description: "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution."
 user-invocable: false
 ---
 
@@ -8,13 +8,15 @@ user-invocable: false
 
 ## When to use
 
-Before proposing a release, and before any action that reaches an environment you
-cannot reset: deploy, migration against live data, credential read, package
-publish, external announcement, or anything destructive.
+When preparing a release or a high-risk action: deploy, migration against live
+data, credential read, package publish, external announcement, or anything
+destructive. The checks depend on the action; every high-risk action still needs
+an Operator and its own recorded human approval.
 
-## The gate
+## The release gate
 
-Establish and record each of these before proposing anything:
+For an actual release, establish and record the applicable items before asking
+for approval:
 
 1. **Scope** — the exact commit range, version and artifacts. Not "latest".
 2. **Build** — the project's build command, run, with its result.
@@ -26,12 +28,36 @@ Establish and record each of these before proposing anything:
 6. **Rollback** — the exact sequence that returns to the current state, and the
    point past which it stops working.
 
-A gate item you did not run is a gate failure, not a blank.
+Mark an item `N/A` only when it does not apply, and explain why — for example,
+"Migrations: N/A — no schema or data changes in this release." An applicable
+check you did not verify is a gate failure. Missing access or an unavailable test
+environment does not make a check inapplicable.
+
+## Checks for a standalone high-risk action
+
+For an action outside a release, verify its exact target, scope, expected effect,
+how the result will be checked, and its recovery or irreversibility. Use the
+checks that establish readiness for that action:
+
+- **Credential read** — establish which credential is needed, why, who may receive
+  it, and how it will be kept out of logs and shared output. Do not read the
+  credential while preparing the request.
+- **External announcement** — prepare the exact content, recipients or channel,
+  timing, and how delivery will be confirmed or corrected.
+- **Live migration or destructive operation** — identify the affected data or
+  resources, validate the commands in an appropriate test environment, and verify
+  backups, recovery limits and any ordering constraints that apply.
+
+A standalone credential read or announcement does not need an unrelated build,
+test suite, commit range or migration review. If using the release checklist to
+record it, mark those items `N/A` with reasons. Applicable checks still have to
+pass before requesting execution approval.
 
 ## The approval boundary
 
-For each action that touches production, file one approval request describing that
-one action, then stop and wait:
+Only an Operator may execute a high-risk action. As an Operator, file one approval
+request for each action describing that action, then stop at its execution
+boundary and wait:
 
 ```bash
 multica approval request \
@@ -54,7 +80,12 @@ longer than a line — the plan is what the reviewer actually reads.
 - If an approved action fails partway, stop and report. Do not improvise against
   production.
 
-Without an approved request, the deliverable is the plan.
+Before approval, complete permitted preparation: read-only inspection, builds,
+tests and reversible local work. This does not authorize a credential read or
+another high-risk action needed by those checks; request approval for that action
+separately. Without an approved request, deliver the plan and preparation results,
+and leave the high-risk action unexecuted. Other roles hand the plan to a human
+or an Operator.
 
 ## Recording execution
 
@@ -74,9 +105,9 @@ stale request in the queue: `multica approval cancel <approval-id>`.
 
 ## Output
 
-Follow the output format in your instructions: scope, gate, ordered plan with
-reversibility per step, rollback, and the approvals needed. After execution, list
-what ran and what did not, with reasons.
+Follow the output format in your instructions: scope, applicable checks and any
+`N/A` reasons, ordered plan with reversibility per step, recovery limits, and the
+approvals needed. After execution, list what ran and what did not, with reasons.
 
 ## Stop and ask a human when
 

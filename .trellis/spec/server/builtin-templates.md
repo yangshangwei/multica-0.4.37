@@ -2,6 +2,33 @@
 
 > Contracts for the server-embedded template registries (`builtin_agent_templates*`, `builtin_squad_templates*`, `builtin_autopilot_templates*`). A template is pre-fill content copied into an ordinary instance at creation — never a new entity kind.
 
+## Role instructions, skills, and autonomy must agree
+
+Default role skills describe work the role can actually deliver. Architect stays
+Observer and returns a proposed ADR draft in an issue comment for an Implementer
+or human to save; Technical Writer is Contributor and edits documentation only
+on an isolated branch. Only Feature Delivery and Discovery leads default to
+requirement clarification; other leads use their existing routing instructions.
+
+Increment template and role-skill versions for material behavior changes. These
+defaults apply when creating agents or materializing a missing role skill;
+existing workspace copies are reused without overwriting customized content.
+`builtin_agent_templates_test.go` pins the full role-to-skill and autonomy maps.
+
+## Onboarding skills require task provenance
+
+`BuiltinSkills()` returns general platform skills. Use `TaskBuiltinSkills` for
+dispatch: `multica-onboarding` requires the task's own built-in Mika and a
+persisted `onboarding_kickoff` in its chat session. The session marker preserves
+availability for follow-up and retry turns. Do not use display names, prompt
+text, or only the current input batch to decide eligibility.
+
+Both inline and slim claims, and subsequent bundle resolution, must use the same
+scope. A failed scope read must fail the request rather than silently omit the
+skill. General builtin downloads do not query onboarding scope. Regression
+coverage lives in `daemon_builtin_skills_scope_test.go` and
+`builtin_skill_scope_test.go`.
+
 ## Convention: create_issue autopilot templates must carry a `{{date}}` issue title template
 
 **What**: Every built-in autopilot template with `ExecutionMode: "create_issue"` must set `IssueTitleTemplate` to `"<English title> — {{date}}"` (em dash). Every `run_only` template must leave it empty so the column lands NULL.

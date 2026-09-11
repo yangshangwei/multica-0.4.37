@@ -3,6 +3,7 @@ package service
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -68,7 +69,7 @@ func TestAgentRoleTemplates_AutonomyDefaults(t *testing.T) {
 		"code-reviewer":     AutonomyObserver,
 		"security-reviewer": AutonomyObserver,
 		"release-engineer":  AutonomyOperator,
-		"technical-writer":  AutonomyObserver,
+		"technical-writer":  AutonomyContributor,
 	}
 	for key, expected := range want {
 		template, ok := AgentRoleTemplateByKey(key)
@@ -162,6 +163,41 @@ func TestAgentRoleTemplates_RoleSkillsExist(t *testing.T) {
 			if skill.Version < 1 {
 				t.Errorf("role skill %q version = %d, want >= 1", skill.Name, skill.Version)
 			}
+		}
+	}
+}
+
+func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
+	want := map[string][]string{
+		"product-analyst":       {"multica-requirement-clarification"},
+		"architect":             {"multica-architecture-decision-record"},
+		"implementer":           {"multica-test-report"},
+		"qa-engineer":           {"multica-test-report"},
+		"code-reviewer":         {"multica-code-review"},
+		"security-reviewer":     {"multica-security-review"},
+		"release-engineer":      {"multica-release-check"},
+		"technical-writer":      {"multica-documentation-change"},
+		"feature-delivery-lead": {"multica-requirement-clarification"},
+		"discovery-lead":        {"multica-requirement-clarification"},
+		"bug-fix-lead":          nil,
+		"review-gate-lead":      nil,
+		"docs-lead":             nil,
+		"maintenance-lead":      nil,
+		"release-lead":          nil,
+		"incident-lead":         nil,
+	}
+	templates := AllAgentRoleTemplates()
+	if len(templates) != len(want) {
+		t.Fatalf("roster has %d templates, skill mapping covers %d", len(templates), len(want))
+	}
+	for _, template := range templates {
+		expected, ok := want[template.Key]
+		if !ok {
+			t.Errorf("%s has no expected default skill mapping", template.Key)
+			continue
+		}
+		if !slices.Equal(template.RoleSkills, expected) {
+			t.Errorf("%s role skills = %v, want %v", template.Key, template.RoleSkills, expected)
 		}
 	}
 }

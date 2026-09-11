@@ -15,6 +15,23 @@ WHERE project_id = $1 AND workspace_id = $2;
 SELECT * FROM chat_session
 WHERE id = $1;
 
+-- name: ChatSessionHasOnboardingKickoff :one
+-- Use product-owned identity and message provenance, including kickoff history
+-- from earlier turns so onboarding skills survive follow-ups and retries.
+SELECT EXISTS (
+    SELECT 1
+    FROM chat_session AS cs
+    JOIN agent AS a ON a.id = cs.agent_id AND a.workspace_id = cs.workspace_id
+    WHERE cs.id = sqlc.arg('chat_session_id')
+      AND a.id = sqlc.arg('agent_id')
+      AND a.system_key = sqlc.arg('system_key')
+      AND EXISTS (
+          SELECT 1 FROM chat_message AS m
+          WHERE m.chat_session_id = cs.id
+            AND m.message_kind = 'onboarding_kickoff'
+      )
+);
+
 -- name: GetChatSessionInWorkspace :one
 SELECT * FROM chat_session
 WHERE id = $1 AND workspace_id = $2;

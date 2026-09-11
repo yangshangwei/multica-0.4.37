@@ -90,6 +90,37 @@ func (q *Queries) AdvanceCancelledChatSessionPointer(ctx context.Context, taskID
 	return err
 }
 
+const chatSessionHasOnboardingKickoff = `-- name: ChatSessionHasOnboardingKickoff :one
+SELECT EXISTS (
+    SELECT 1
+    FROM chat_session AS cs
+    JOIN agent AS a ON a.id = cs.agent_id AND a.workspace_id = cs.workspace_id
+    WHERE cs.id = $1
+      AND a.id = $2
+      AND a.system_key = $3
+      AND EXISTS (
+          SELECT 1 FROM chat_message AS m
+          WHERE m.chat_session_id = cs.id
+            AND m.message_kind = 'onboarding_kickoff'
+      )
+)
+`
+
+type ChatSessionHasOnboardingKickoffParams struct {
+	ChatSessionID pgtype.UUID `json:"chat_session_id"`
+	AgentID       pgtype.UUID `json:"agent_id"`
+	SystemKey     pgtype.Text `json:"system_key"`
+}
+
+// Use product-owned identity and message provenance, including kickoff history
+// from earlier turns so onboarding skills survive follow-ups and retries.
+func (q *Queries) ChatSessionHasOnboardingKickoff(ctx context.Context, arg ChatSessionHasOnboardingKickoffParams) (bool, error) {
+	row := q.db.QueryRow(ctx, chatSessionHasOnboardingKickoff, arg.ChatSessionID, arg.AgentID, arg.SystemKey)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
 const chatSessionHasPublicUserMessage = `-- name: ChatSessionHasPublicUserMessage :one
 SELECT EXISTS (
     SELECT 1 FROM chat_message

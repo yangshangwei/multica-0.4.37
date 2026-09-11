@@ -34,7 +34,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "architect",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Architect",
 		AvatarEmoji:        "📐",
@@ -144,7 +144,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "release-engineer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Release Engineer",
 		AvatarEmoji:        "🚦",
@@ -166,11 +166,11 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "technical-writer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Technical Writer",
 		AvatarEmoji:        "📝",
-		Autonomy:           AutonomyObserver,
+		Autonomy:           AutonomyContributor,
 		MaxConcurrentTasks: 3,
 		RoleSkills:         []string{"multica-documentation-change"},
 		Titles: map[string]string{
@@ -217,12 +217,11 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "bug-fix-lead",
-		Version:            1,
+		Version:            2,
 		DefaultName:        "Bug Fix Lead",
 		AvatarEmoji:        "🚑",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
-		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Bug Fix Lead",
 			"zh": "缺陷修复负责人",
@@ -238,12 +237,11 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "review-gate-lead",
-		Version:            1,
+		Version:            2,
 		DefaultName:        "Review Gate Lead",
 		AvatarEmoji:        "🚧",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
-		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Review Gate Lead",
 			"zh": "合并门禁负责人",
@@ -280,12 +278,11 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "docs-lead",
-		Version:            1,
+		Version:            2,
 		DefaultName:        "Docs Lead",
 		AvatarEmoji:        "📚",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
-		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Docs Lead",
 			"zh": "文档同步负责人",
@@ -301,12 +298,11 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "maintenance-lead",
-		Version:            1,
+		Version:            2,
 		DefaultName:        "Maintenance Lead",
 		AvatarEmoji:        "🧹",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
-		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Maintenance Lead",
 			"zh": "例行维护负责人",
@@ -322,12 +318,11 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "release-lead",
-		Version:            1,
+		Version:            2,
 		DefaultName:        "Release Lead",
 		AvatarEmoji:        "📦",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
-		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Release Lead",
 			"zh": "发布负责人",
@@ -343,12 +338,11 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "incident-lead",
-		Version:            1,
+		Version:            2,
 		DefaultName:        "Incident Lead",
 		AvatarEmoji:        "🚨",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
-		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Incident Lead",
 			"zh": "事故响应负责人",

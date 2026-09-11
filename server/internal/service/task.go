@@ -6434,17 +6434,21 @@ func (s *TaskService) skillsWithFiles(ctx context.Context, skills []db.Skill) ([
 	return result, nil
 }
 
-// LoadAgentSkillBundles returns every skill visible to an agent, including
-// built-ins, with stable bundle hashes and lightweight refs for slim claims.
+// LoadAgentSkillBundles returns every skill visible to the task's agent,
+// including task-scoped built-ins, with hashes and refs for slim claims.
 // It fails closed on a workspace-skill read error for the reason in
 // LoadAgentSkills: a bundle set built from a partial read is indistinguishable
 // from a correct one.
-func (s *TaskService) LoadAgentSkillBundles(ctx context.Context, agentID pgtype.UUID) ([]AgentSkillData, []AgentSkillRefData, error) {
-	skills, err := s.LoadAgentSkills(ctx, agentID)
+func (s *TaskService) LoadAgentSkillBundles(ctx context.Context, task db.AgentTaskQueue) ([]AgentSkillData, []AgentSkillRefData, error) {
+	skills, err := s.LoadAgentSkills(ctx, task.AgentID)
 	if err != nil {
 		return nil, nil, err
 	}
-	skills = append(skills, s.BuiltinSkills()...)
+	builtins, err := s.TaskBuiltinSkills(ctx, task)
+	if err != nil {
+		return nil, nil, err
+	}
+	skills = append(skills, builtins...)
 	bundles, refs := BuildAgentSkillBundles(skills)
 	return bundles, refs, nil
 }
@@ -6478,7 +6482,7 @@ type AgentSkillBundleRef struct {
 // whole agent on every request: N requests, each reading and hashing all N
 // skills to return one. Loading only what was asked for makes that linear,
 // which is why the resolve path must not reuse LoadAgentSkillBundles.
-func (s *TaskService) LoadRequestedAgentSkillBundles(ctx context.Context, agentID pgtype.UUID, refs []AgentSkillBundleRef) (map[string]AgentSkillData, error) {
+func (s *TaskService) LoadRequestedAgentSkillBundles(ctx context.Context, task db.AgentTaskQueue, refs []AgentSkillBundleRef) (map[string]AgentSkillData, error) {
 	requestedIDs := make([]pgtype.UUID, 0, len(refs))
 	seenWorkspace := make(map[string]struct{}, len(refs))
 	wantBuiltin := make(map[string]struct{}, len(refs))
@@ -6507,7 +6511,7 @@ func (s *TaskService) LoadRequestedAgentSkillBundles(ctx context.Context, agentI
 	var requested []AgentSkillData
 	if len(requestedIDs) > 0 {
 		skills, err := s.Queries.ListAgentSkillsByIDs(ctx, db.ListAgentSkillsByIDsParams{
-			AgentID:  agentID,
+			AgentID:  task.AgentID,
 			SkillIds: requestedIDs,
 		})
 		if err != nil {
@@ -6525,7 +6529,17 @@ func (s *TaskService) LoadRequestedAgentSkillBundles(ctx context.Context, agentI
 		}
 	}
 	if len(wantBuiltin) > 0 {
-		for _, builtin := range s.BuiltinSkills() {
+		builtins := s.BuiltinSkills()
+		if _, requested := wantBuiltin[BuiltinSkillID(mikaOnboardingSkillName)]; requested {
+			// General built-ins need no database read. Check task scope only
+			// when resolving onboarding, not once per general bundle download.
+			var err error
+			builtins, err = s.TaskBuiltinSkills(ctx, task)
+			if err != nil {
+				return nil, err
+			}
+		}
+		for _, builtin := range builtins {
 			if _, ok := wantBuiltin[BuiltinSkillID(builtin.Name)]; ok {
 				requested = append(requested, builtin)
 			}

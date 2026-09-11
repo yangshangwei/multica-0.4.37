@@ -56,7 +56,15 @@ multica autopilot trigger-rotate-url <autopilot-id> <trigger-id> --yes --output 
 
 Use `trigger` only when the user explicitly asks for a manual run. Use `trigger-rotate-url` only when rotating a webhook URL; the old URL stops being valid.
 
-`autopilot get` redacts `webhook_token`, `webhook_path`, and `webhook_url` by default while reporting whether a token exists and its non-sensitive hint. Only add `--show-secrets` when the user explicitly asks to retrieve the live webhook credential; the command warns on stderr. Do not paste webhook tokens or signing material into comments, logs, docs, or PRs.
+`autopilot get` redacts `webhook_token`, `webhook_path`, and `webhook_url` by default while reporting whether a token exists and its non-sensitive hint. Keep ordinary inspection redacted.
+
+An agent may add `--show-secrets` only when all three conditions hold: the user
+explicitly requested the live webhook credential, the agent's autonomy level is
+`operator`, and a recorded human approval for `secret_access` is `approved` and
+covers this exact read. Other roles hand the request to a human or an Operator;
+a user request alone does not replace the approval. The flag warns on stderr,
+but does not grant permission or enforce this approval policy. Do not paste
+webhook tokens or signing material into comments, logs, docs, or PRs.
 
 ## Debugging
 

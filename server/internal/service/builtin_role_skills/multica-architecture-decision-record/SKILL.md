@@ -1,6 +1,6 @@
 ---
 name: multica-architecture-decision-record
-description: "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences."
+description: "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences."
 user-invocable: false
 ---
 
@@ -8,19 +8,23 @@ user-invocable: false
 
 ## When to use
 
-Write an ADR when the decision will still shape the code after the issue closes:
+Draft an ADR when the decision will still shape the code after the issue closes:
 a boundary between modules, a data model, a contract other clients parse, a
 dependency, or a rule the team must follow afterwards.
 
-Do not write one for a choice contained entirely in one function, or for
+Do not draft one for a choice contained entirely in one function, or for
 restating a decision already recorded — link that one instead.
 
 ## Where it goes
 
-Look for an existing ADR directory (`docs/adr/`, `docs/decisions/`,
-`doc/arch/`) and match its numbering and filename convention exactly. If the
-repository has none, propose the location in your comment and wait for a human to
-confirm before creating a new documentation tree.
+Put the complete draft in the issue comment. Look for an existing ADR directory
+(`docs/adr/`, `docs/decisions/`, `doc/arch/`) and suggest a destination matching its
+numbering and filename convention. If the repository has none, propose a
+location in the comment for a human to confirm.
+
+The default Architect is an Observer: do not edit repository files or create
+directories. Hand the draft and suggested destination to an Implementer or human
+to save in the repository. A suggested path is not a link to an existing file.
 
 ## Structure
 
@@ -63,9 +67,10 @@ Rules that matter more than the template:
 
 ## Output
 
-Add the file, then link it from your issue comment with the one-sentence decision
-and the trade-off. Never leave the ADR as the only output — a reader on the issue
-must see the decision without opening it.
+Include the complete ADR draft with `Status: proposed` in your issue comment,
+along with the one-sentence decision and the trade-off. State the suggested
+destination and handoff to an Implementer or human to save it. Link an ADR only
+when the file already exists; never claim the draft has been saved or accepted.
 
 ## Stop and ask a human when
 

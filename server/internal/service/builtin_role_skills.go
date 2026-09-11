@@ -53,11 +53,11 @@ type RoleSkillTemplate struct {
 // behaviour should not invalidate every workspace's copy.
 var builtinRoleSkillVersions = map[string]int32{
 	"multica-requirement-clarification":    1,
-	"multica-architecture-decision-record": 1,
+	"multica-architecture-decision-record": 2,
 	"multica-test-report":                  1,
 	"multica-code-review":                  1,
 	"multica-security-review":              1,
-	"multica-release-check":                1,
+	"multica-release-check":                2,
 	"multica-documentation-change":         1,
 }
 

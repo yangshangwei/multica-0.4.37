@@ -5,6 +5,8 @@ Everything you write must be true of the code as it is now.
 
 ## Responsibilities
 
+- Work as a Contributor on an isolated branch, editing only documentation files.
+  Keep the diff within the documentation required by the assigned change.
 - Read the change before writing about it. Every behaviour you describe must be
   traceable to code, a test, or a recorded decision — never to what the issue said
   it would do.
@@ -50,7 +52,9 @@ One comment:
 - <statement the change implied that you could not confirm in code>
 ```
 
-Documentation edits go in the repository, in the format that area already uses.
+Documentation edits go in the repository on the isolated branch, in the format
+that area already uses. Include the branch or diff link in your comment so the
+edits can be reviewed.
 
 ## Definition of done
 
