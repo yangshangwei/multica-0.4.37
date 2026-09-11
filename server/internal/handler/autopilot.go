@@ -777,42 +777,28 @@ func (h *Handler) CreateAutopilot(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	autopilot, err := qtx.CreateAutopilot(r.Context(), db.CreateAutopilotParams{
+	autopilot, err := h.createAutopilotInTx(r.Context(), qtx, createAutopilotInTxInput{
 		WorkspaceID:        wsUUID,
 		Title:              req.Title,
 		AssigneeType:       assigneeType,
 		AssigneeID:         assigneeUUID,
-		Status:             "active",
 		ExecutionMode:      req.ExecutionMode,
-		CreatedByType:      "member",
 		CreatedByID:        parseUUID(userID),
 		Description:        ptrToText(req.Description),
 		IssueTitleTemplate: ptrToText(req.IssueTitleTemplate),
 		ProjectID:          projectID,
+		PublishedByID:      parseUUID(userID),
+		Subscribers:        subscribers,
 	})
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to create autopilot")
-		return
-	}
-
-	// Creating an autopilot IS a substantive publish: append rule-version v1 with
-	// the creating member as publisher, so every autopilot has an accountable
-	// human at dispatch time (MUL-4302 §3.4).
-	if err := h.recordAutopilotRuleVersion(r.Context(), qtx, autopilot, "member", parseUUID(userID)); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to create autopilot")
-		return
-	}
-
-	for _, subscriber := range subscribers {
-		if err := qtx.AddAutopilotSubscriber(r.Context(), db.AddAutopilotSubscriberParams{
-			AutopilotID: autopilot.ID,
-			UserType:    "member",
-			UserID:      subscriber.UserID,
-		}); err != nil {
+		if errors.Is(err, errAutopilotSubscriberInsert) {
 			writeError(w, http.StatusInternalServerError, "failed to add autopilot subscriber")
 			return
 		}
+		writeError(w, http.StatusInternalServerError, "failed to create autopilot")
+		return
 	}
+
 	if err := tx.Commit(r.Context()); err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to create autopilot")
 		return
@@ -837,6 +823,81 @@ func (h *Handler) CreateAutopilot(w http.ResponseWriter, r *http.Request) {
 type autopilotSubscriberCandidate struct {
 	UserID     pgtype.UUID
 	InputIndex int
+}
+
+// createAutopilotInTxInput carries everything the in-transaction create body
+// needs. status and created_by_type are not fields: every caller creates an
+// active member-owned autopilot, so leaving them as literals inside keeps a
+// caller from inventing a state the rest of the autopilot code does not expect.
+type createAutopilotInTxInput struct {
+	WorkspaceID        pgtype.UUID
+	Title              string
+	AssigneeType       string
+	AssigneeID         pgtype.UUID
+	ExecutionMode      string
+	CreatedByID        pgtype.UUID
+	Description        pgtype.Text
+	IssueTitleTemplate pgtype.Text
+	ProjectID          pgtype.UUID
+	// PublishedByID is the rule-version publisher — the member accountable for
+	// this config. It is the creating member on every path today but stays a
+	// separate field because published_by and created_by mean different things
+	// (MUL-6951) and only the former moves on a later edit.
+	PublishedByID pgtype.UUID
+	Subscribers   []autopilotSubscriberCandidate
+	// TemplateKey/TemplateVersion record which builtin template this row was
+	// copied from. Zero values mean the autopilot was configured by hand, which
+	// is every row created outside the from-template path.
+	TemplateKey     string
+	TemplateVersion int32
+}
+
+// errAutopilotSubscriberInsert marks a failure of the subscriber loop so the
+// caller can keep writing the distinct message that step has always returned.
+var errAutopilotSubscriberInsert = errors.New("failed to add autopilot subscriber")
+
+// createAutopilotInTx runs the write body shared by every autopilot create
+// path: insert the row, append rule-version v1, attach subscribers. The caller
+// owns the transaction, so it must already hold the subscriber locks and have
+// validated the assignee — this function assumes both and only writes.
+//
+// Creating an autopilot IS a substantive publish: rule-version v1 names the
+// creating member as publisher so every autopilot has an accountable human at
+// dispatch time (MUL-4302 §3.4).
+func (h *Handler) createAutopilotInTx(ctx context.Context, qtx *db.Queries, in createAutopilotInTxInput) (db.Autopilot, error) {
+	autopilot, err := qtx.CreateAutopilot(ctx, db.CreateAutopilotParams{
+		WorkspaceID:        in.WorkspaceID,
+		Title:              in.Title,
+		AssigneeType:       in.AssigneeType,
+		AssigneeID:         in.AssigneeID,
+		Status:             "active",
+		ExecutionMode:      in.ExecutionMode,
+		CreatedByType:      "member",
+		CreatedByID:        in.CreatedByID,
+		Description:        in.Description,
+		IssueTitleTemplate: in.IssueTitleTemplate,
+		ProjectID:          in.ProjectID,
+		TemplateKey:        in.TemplateKey,
+		TemplateVersion:    in.TemplateVersion,
+	})
+	if err != nil {
+		return db.Autopilot{}, err
+	}
+
+	if err := h.recordAutopilotRuleVersion(ctx, qtx, autopilot, "member", in.PublishedByID); err != nil {
+		return db.Autopilot{}, err
+	}
+
+	for _, subscriber := range in.Subscribers {
+		if err := qtx.AddAutopilotSubscriber(ctx, db.AddAutopilotSubscriberParams{
+			AutopilotID: autopilot.ID,
+			UserType:    "member",
+			UserID:      subscriber.UserID,
+		}); err != nil {
+			return db.Autopilot{}, fmt.Errorf("%w: %w", errAutopilotSubscriberInsert, err)
+		}
+	}
+	return autopilot, nil
 }
 
 // parseAutopilotSubscribers validates the wire shape without reading mutable
@@ -1505,10 +1566,9 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 	// kind-specific normalization. Webhook triggers ignore cron/timezone/
 	// next_run_at — they're fired on demand.
 	var (
-		nextRunAt    pgtype.Timestamptz
-		cronText     pgtype.Text
-		tzText       pgtype.Text
-		webhookToken pgtype.Text
+		nextRunAt pgtype.Timestamptz
+		cronText  pgtype.Text
+		tzText    pgtype.Text
 	)
 	switch req.Kind {
 	case "schedule":
@@ -1559,35 +1619,15 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 	defer tx.Rollback(r.Context())
 	qtx := h.Queries.WithTx(tx)
 
-	trigger, err := qtx.CreateAutopilotTrigger(r.Context(), db.CreateAutopilotTriggerParams{
-		AutopilotID:    ap.ID,
-		Kind:           req.Kind,
-		Enabled:        true,
+	trigger, err := h.createScheduleTriggerInTx(r.Context(), qtx, ap, createScheduleTriggerInTxInput{
 		CronExpression: cronText,
 		Timezone:       tzText,
 		NextRunAt:      nextRunAt,
 		Label:          ptrToText(req.Label),
-		WebhookToken:   webhookToken,
-		// published_by records who is currently responsible for this trigger's
-		// CONFIG: seeded to the creator, re-stamped to whoever later substantively
-		// edits it (MUL-4302). Since MUL-6951 it no longer decides anything about a
-		// run — neither authorization nor the task's accountable human — so an edit
-		// moves this column alone.
-		PublishedByType: pgtype.Text{String: "member", Valid: publisherID.Valid},
-		PublishedByID:   publisherID,
-		// created_by is the AUTHORIZATION principal and is immutable: the run acts
-		// as this member forever, so no edit may move it (MUL-6951). For an agent
-		// actor it is the task's originator — the human the delegation chain
-		// names — never the runtime owner the credential belongs to; see
-		// requireAutomationPrincipal.
-		CreatedByType: pgtype.Text{String: "member", Valid: principalID.Valid},
-		CreatedByID:   principalID,
+		PublishedByID:  publisherID,
+		PrincipalID:    principalID,
 	})
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to create trigger")
-		return
-	}
-	if err := h.recordAutopilotRuleVersion(r.Context(), qtx, ap, "member", publisherID); err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to create trigger")
 		return
 	}
@@ -1602,6 +1642,69 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 		"trigger":      resp,
 	})
 	writeJSON(w, http.StatusCreated, resp)
+}
+
+// createScheduleTriggerInTxInput carries the per-request half of a schedule
+// trigger. kind and enabled are not fields: this body only ever writes an
+// enabled schedule trigger, and a webhook trigger takes the minted-token path
+// instead. NextRunAt is computed by the caller, which owns the 400 a bad cron
+// expression must produce.
+type createScheduleTriggerInTxInput struct {
+	CronExpression pgtype.Text
+	Timezone       pgtype.Text
+	NextRunAt      pgtype.Timestamptz
+	Label          pgtype.Text
+	// PublishedByID is the acting member: a config-responsibility audit value
+	// that a later substantive edit re-stamps.
+	PublishedByID pgtype.UUID
+	// PrincipalID is the immutable authorization principal every later dispatch
+	// acts as — for an agent actor, the delegation chain's originator rather
+	// than the credential's owner. See requireAutomationPrincipal.
+	PrincipalID pgtype.UUID
+}
+
+// createScheduleTriggerInTx runs the write body shared by every schedule
+// trigger create path: insert the trigger and republish the autopilot's rule
+// version atomically. A new trigger changes what / when the rule fires — a
+// substantive publish (MUL-4302 §3.4) — so a failed version write must roll the
+// trigger back rather than leave future dispatches attributed to the previous
+// publisher. The caller owns the transaction.
+func (h *Handler) createScheduleTriggerInTx(
+	ctx context.Context,
+	qtx *db.Queries,
+	ap db.Autopilot,
+	in createScheduleTriggerInTxInput,
+) (db.AutopilotTrigger, error) {
+	trigger, err := qtx.CreateAutopilotTrigger(ctx, db.CreateAutopilotTriggerParams{
+		AutopilotID:    ap.ID,
+		Kind:           "schedule",
+		Enabled:        true,
+		CronExpression: in.CronExpression,
+		Timezone:       in.Timezone,
+		NextRunAt:      in.NextRunAt,
+		Label:          in.Label,
+		// published_by records who is currently responsible for this trigger's
+		// CONFIG: seeded to the creator, re-stamped to whoever later substantively
+		// edits it (MUL-4302). Since MUL-6951 it no longer decides anything about a
+		// run — neither authorization nor the task's accountable human — so an edit
+		// moves this column alone.
+		PublishedByType: pgtype.Text{String: "member", Valid: in.PublishedByID.Valid},
+		PublishedByID:   in.PublishedByID,
+		// created_by is the AUTHORIZATION principal and is immutable: the run acts
+		// as this member forever, so no edit may move it (MUL-6951). For an agent
+		// actor it is the task's originator — the human the delegation chain
+		// names — never the runtime owner the credential belongs to; see
+		// requireAutomationPrincipal.
+		CreatedByType: pgtype.Text{String: "member", Valid: in.PrincipalID.Valid},
+		CreatedByID:   in.PrincipalID,
+	})
+	if err != nil {
+		return db.AutopilotTrigger{}, err
+	}
+	if err := h.recordAutopilotRuleVersion(ctx, qtx, ap, "member", in.PublishedByID); err != nil {
+		return db.AutopilotTrigger{}, err
+	}
+	return trigger, nil
 }
 
 // createWebhookTriggerWithMintedToken atomically creates a webhook trigger

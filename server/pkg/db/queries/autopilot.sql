@@ -56,11 +56,11 @@ FOR UPDATE;
 INSERT INTO autopilot (
     workspace_id, title, description, assignee_type, assignee_id,
     status, execution_mode, issue_title_template, project_id,
-    created_by_type, created_by_id
+    created_by_type, created_by_id, template_key, template_version
 ) VALUES (
     $1, $2, sqlc.narg('description'), $3, $4,
     $5, $6, sqlc.narg('issue_title_template'), sqlc.narg('project_id'),
-    $7, $8
+    $7, $8, $9, $10
 ) RETURNING *;
 
 -- name: UpdateAutopilot :one

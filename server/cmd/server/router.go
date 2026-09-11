@@ -2075,6 +2075,14 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Post("/", h.CreateAutopilot)
 				r.Get("/cron-preview", h.CronPreview)
 				r.Get("/usage", h.GetAutopilotQuotaUsage)
+				// Built-in automation templates. Static paths, so chi matches
+				// them ahead of /{id} — the same shape /cron-preview relies on.
+				r.Get("/templates", h.ListAutopilotTemplates)
+				// Creates an ORDINARY autopilot plus its schedule trigger in one
+				// transaction. The public create endpoint deliberately does not
+				// accept template_key, and this one does not accept a prompt or
+				// a cron, so provenance stays a server decision.
+				r.Post("/from-template", h.CreateAutopilotFromTemplate)
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetAutopilot)
 					r.Patch("/", h.UpdateAutopilot)
