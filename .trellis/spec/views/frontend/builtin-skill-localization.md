@@ -7,7 +7,8 @@ Use `useSkillPresentation()` from `packages/views/skills/hooks/use-skill-present
 - A name alone does not identify a built-in workspace skill. Require a known canonical name and matching `config.origin.type === "builtin_role_skill"` and `config.origin.name`.
 - Compact `AgentSkillSummary` records omit `config`. Enrich them by UUID from the workspace skill query, or keep their stored text while metadata is unavailable.
 - Only the built-in role-template catalog may call `getBuiltinRoleSkillPresentation(name, t)` without workspace provenance. Do not synthesize origin metadata for arbitrary records.
-- Translate a saved description only when it matches the canonical English default. Preserve customized descriptions and renamed skills. The source-sync tests compare defaults with the embedded server SKILL.md files.
+- Translate a saved description only when it matches a current or recognized historical English default. Preserve customized descriptions and renamed skills. The source-sync tests compare current defaults with the embedded server SKILL.md files.
+- Workspace copies keep historical defaults after a template update. Retain explicit translations for known shipped descriptions, matched by their full text; neither a version marker nor a matching prefix proves a description is unmodified.
 - Origin metadata is editable product metadata, not an authorization or integrity guarantee.
 
 ## Language and search

@@ -29,6 +29,20 @@ const names = [
   ["multica-test-report", "测试报告"],
 ] as const;
 
+// Defaults shipped in ca3a79d18 and retained by existing workspace copies.
+const legacyDescriptions = [
+  [
+    "multica-release-check",
+    "Use before any release or production-affecting action: the gate, the rollback, and the approval request that must precede execution.",
+    "用于发布或影响生产环境的操作前：完成必要检查、准备回滚方案，并在执行前申请审批。",
+  ],
+  [
+    "multica-architecture-decision-record",
+    "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences.",
+    "用于会影响后续工作的技术决策：编写 ADR，记录背景、决策、被否决的备选方案，以及决策的影响。",
+  ],
+] as const;
+
 function builtin(name: keyof typeof en.builtin_role_skills): SkillPresentationInput {
   return {
     name,
@@ -38,6 +52,34 @@ function builtin(name: keyof typeof en.builtin_role_skills): SkillPresentationIn
 }
 
 describe("built-in role skill presentation", () => {
+  it.each(legacyDescriptions)(
+    "translates the historical default for %s without changing the workspace copy",
+    (name, description, chinese) => {
+      const skill = { ...builtin(name), description };
+      const before = structuredClone(skill);
+      for (const locale of ["en", "zh-Hans"] as const) {
+        const instance = createI18n(locale, {
+          [locale]: { skills: locale === "en" ? en : zh },
+        });
+        const presentation = getSkillPresentation(skill, instance.getFixedT(locale, "skills"));
+        expect(presentation.description).toBe(locale === "en" ? description : chinese);
+        expect(presentation.searchText).toContain(chinese.toLowerCase());
+        expect(presentation.searchText).toContain(description.toLowerCase());
+      }
+      expect(skill).toEqual(before);
+    },
+  );
+
+  it.each(legacyDescriptions)(
+    "preserves a customized historical description for %s",
+    (name, description, chinese) => {
+      const custom = `${description} Review only changes requested by our team.`;
+      const presentation = getSkillPresentation({ ...builtin(name), description: custom }, zhT);
+      expect(presentation.description).toBe(custom);
+      expect(presentation.searchText).not.toContain(chinese.toLowerCase());
+    },
+  );
+
   it.each(["en", "zh-Hans"] as const)(
     "supports bilingual search when only the %s locale is mounted",
     (locale) => {

@@ -248,6 +248,36 @@ describe("SkillsPage built-in skill presentation", () => {
     },
   };
 
+  it("displays and searches the two historical defaults from existing workspace copies", async () => {
+    mocks.skills = [
+      {
+        ...importedSkill,
+        name: "multica-release-check",
+        description: "Use before any release or production-affecting action: the gate, the rollback, and the approval request that must precede execution.",
+        config: { origin: { type: "builtin_role_skill", name: "multica-release-check", version: 1 } },
+      },
+      {
+        ...importedSkill,
+        id: "skill-2",
+        name: "multica-architecture-decision-record",
+        description: "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences.",
+        config: { origin: { type: "builtin_role_skill", name: "multica-architecture-decision-record", version: 1 } },
+      },
+    ];
+    renderPage(makeAdapter(), "zh-Hans");
+    expect(await screen.findByText("发布检查")).toBeInTheDocument();
+    expect(screen.getByText(/完成必要检查、准备回滚方案/)).toBeInTheDocument();
+    expect(screen.getByText(/编写 ADR，记录背景、决策/)).toBeInTheDocument();
+
+    const search = screen.getByRole("textbox", { name: "Search skills" });
+    fireEvent.change(search, { target: { value: "申请审批" } });
+    expect(screen.getByText("发布检查")).toBeInTheDocument();
+    expect(screen.queryByText("架构决策记录")).not.toBeInTheDocument();
+    fireEvent.change(search, { target: { value: "rejected alternatives" } });
+    expect(screen.getByText("架构决策记录")).toBeInTheDocument();
+    expect(screen.queryByText("发布检查")).not.toBeInTheDocument();
+  });
+
   it("shows the Chinese name and purpose while navigation keeps the skill ID", async () => {
     mocks.skills = [builtInSkill];
     const adapter = makeAdapter();

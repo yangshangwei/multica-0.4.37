@@ -2,6 +2,7 @@
   "builtin_role_skills": {
     "multica-release-check": {
       "name": "multica-release-check",
+      "description_v1": "Use before any release or production-affecting action: the gate, the rollback, and the approval request that must precede execution.",
       "description": "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution."
     },
     "multica-documentation-change": {
@@ -14,6 +15,7 @@
     },
     "multica-architecture-decision-record": {
       "name": "multica-architecture-decision-record",
+      "description_v1": "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences.",
       "description": "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences."
     },
     "multica-code-review": {

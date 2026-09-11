@@ -39,9 +39,20 @@ export function getBuiltinRoleSkillPresentation(
   const chinese = zhSkills.builtin_role_skills[key];
   const description = storedDescription ?? sourceDescription;
   const hasDefaultDescription = description.trim() === sourceDescription.trim();
-  const translatedDescription = hasDefaultDescription
+  let translatedDescription = hasDefaultDescription
     ? t(($) => $.builtin_role_skills[key].description)
     : description;
+  let chineseDescription = hasDefaultDescription ? chinese.description : "";
+
+  // Existing workspace copies retain shipped defaults when templates change.
+  // Recognize the exact old text so customized descriptions still stay untouched.
+  if (
+    (key === "multica-release-check" || key === "multica-architecture-decision-record") &&
+    description.trim() === enSkills.builtin_role_skills[key].description_v1.trim()
+  ) {
+    translatedDescription = t(($) => $.builtin_role_skills[key].description_v1);
+    chineseDescription = zhSkills.builtin_role_skills[key].description_v1;
+  }
   const searchNames = [name, name.replace(/[-_]+/g, " "), chinese.name]
     .map((value) => value.toLowerCase());
 
@@ -52,7 +63,7 @@ export function getBuiltinRoleSkillPresentation(
     searchText: [
       ...searchNames,
       description,
-      ...(hasDefaultDescription ? [chinese.description] : []),
+      ...(chineseDescription ? [chineseDescription] : []),
     ].join("\n").toLowerCase(),
     isBuiltin: true,
   };

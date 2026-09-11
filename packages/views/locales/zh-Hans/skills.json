@@ -2,6 +2,7 @@
   "builtin_role_skills": {
     "multica-release-check": {
       "name": "发布检查",
+      "description_v1": "用于发布或影响生产环境的操作前：完成必要检查、准备回滚方案，并在执行前申请审批。",
       "description": "用于发布准备或高风险操作：选择适用检查、准备恢复方案，并在执行前获得人工批准。"
     },
     "multica-documentation-change": {
@@ -14,6 +15,7 @@
     },
     "multica-architecture-decision-record": {
       "name": "架构决策记录",
+      "description_v1": "用于会影响后续工作的技术决策：编写 ADR，记录背景、决策、被否决的备选方案，以及决策的影响。",
       "description": "用于会影响后续工作的技术决策：在任务评论中起草 ADR，说明背景、决策、备选方案和后果，交由实施者或人工保存。"
     },
     "multica-code-review": {
