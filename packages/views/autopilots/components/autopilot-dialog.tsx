@@ -87,13 +87,24 @@ export interface AutopilotInitial {
   subscriber_user_ids?: string[];
 }
 
+// What a create-mode dialog starts from: a blank form. Edit mode reads its
+// values from the autopilot row instead (the template flow creates through
+// its own endpoint, not this dialog).
+const BLANK_INITIAL: AutopilotInitial = {
+  title: "",
+  description: "",
+  project_id: null,
+  assignee_type: "agent",
+  assignee_id: "",
+  execution_mode: "create_issue",
+  subscriber_user_ids: [],
+};
+
 export type AutopilotDialogProps =
   | {
       mode: "create";
       open: boolean;
       onOpenChange: (v: boolean) => void;
-      initial?: Partial<AutopilotInitial>;
-      initialSchedule?: Pick<ScheduleConfig, "time" | "days">;
     }
   | {
       mode: "edit";
@@ -146,19 +157,17 @@ export function AutopilotDialog(props: AutopilotDialogProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const isCreate = props.mode === "create";
-  const initial: Partial<AutopilotInitial> = isCreate
-    ? props.initial ?? {}
-    : props.initial;
+  const initial: AutopilotInitial = isCreate ? BLANK_INITIAL : props.initial;
 
-  const [title, setTitle] = useState(initial.title ?? "");
-  const [description, setDescription] = useState(initial.description ?? "");
-  const [projectId, setProjectId] = useState<string | null>(initial.project_id ?? null);
+  const [title, setTitle] = useState(initial.title);
+  const [description, setDescription] = useState(initial.description);
+  const [projectId, setProjectId] = useState<string | null>(initial.project_id);
   const [assigneeType, setAssigneeType] = useState<AutopilotAssigneeType>(
-    initial.assignee_type ?? "agent",
+    initial.assignee_type,
   );
-  const [assigneeId, setAssigneeId] = useState<string>(initial.assignee_id ?? "");
+  const [assigneeId, setAssigneeId] = useState<string>(initial.assignee_id);
   const [executionMode, setExecutionMode] = useState<AutopilotExecutionMode>(
-    initial.execution_mode ?? "create_issue",
+    initial.execution_mode,
   );
   const [subscriberUserIds, setSubscriberUserIds] = useState<string[]>(
     initial.subscriber_user_ids ?? [],
@@ -173,9 +182,7 @@ export function AutopilotDialog(props: AutopilotDialogProps) {
 
   const initialCfg: ScheduleConfig = (() => {
     if (isCreate) {
-      const tpl = props.initialSchedule;
-      const fallback = getDefaultScheduleConfig(browserTimezone());
-      return tpl ? { ...fallback, ...tpl } : fallback;
+      return getDefaultScheduleConfig(browserTimezone());
     }
     if (existingSchedule?.cron_expression) {
       return parseCron(existingSchedule.cron_expression, existingSchedule.timezone ?? "UTC");
@@ -567,7 +574,7 @@ export function AutopilotDialog(props: AutopilotDialogProps) {
               <TitleEditor
                 ref={titleEditorRef}
                 autoFocus={isCreate}
-                defaultValue={initial.title ?? ""}
+                defaultValue={initial.title}
                 placeholder={t(($) => $.dialog.title_placeholder)}
                 className="text-display-sm font-semibold tracking-tight"
                 onChange={setTitle}
@@ -596,7 +603,7 @@ export function AutopilotDialog(props: AutopilotDialogProps) {
             <div className="flex-1 min-h-0 px-6 pb-6 flex flex-col lg:h-full">
               <div className="min-h-[200px] lg:min-h-0 lg:h-full overflow-y-auto rounded-lg border border-border bg-background transition-colors focus-within:border-input px-4 py-3">
                 <ContentEditor
-                  defaultValue={initial.description ?? ""}
+                  defaultValue={initial.description}
                   placeholder={t(($) => $.dialog.description_placeholder)}
                   onUpdate={setDescription}
                   debounceMs={300}

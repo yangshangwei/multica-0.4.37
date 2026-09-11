@@ -2260,6 +2260,10 @@ export const AutopilotSchema = z.object({
   can_write: z.boolean().optional(),
   // Narrower per-caller access-management capability (detail endpoint only).
   can_manage_access: z.boolean().optional(),
+  // Template provenance; absent on older servers and on hand-created rows —
+  // no default, missing stays undefined rather than reading as "template v0".
+  template_key: z.string().optional(),
+  template_version: z.number().optional(),
 }).loose();
 
 export const ListAutopilotsResponseSchema = z.object({

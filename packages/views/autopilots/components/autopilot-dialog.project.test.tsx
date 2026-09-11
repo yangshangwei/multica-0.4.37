@@ -157,16 +157,7 @@ function renderCreateDialog() {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return renderWithI18n(
     <QueryClientProvider client={qc}>
-      <AutopilotDialog
-        mode="create"
-        open
-        onOpenChange={vi.fn()}
-        initial={{
-          assignee_type: "agent",
-          assignee_id: "agent-1",
-          execution_mode: "run_only",
-        }}
-      />
+      <AutopilotDialog mode="create" open onOpenChange={vi.fn()} />
     </QueryClientProvider>,
   );
 }
@@ -226,6 +217,13 @@ describe("AutopilotDialog project section", () => {
     renderCreateDialog();
 
     await user.type(screen.getByLabelText("title"), "Push fleet repo to GitHub");
+    // The blank dialog defaults to create_issue with no assignee: both are
+    // chosen in the UI, the way a person creating one would.
+    await user.click(screen.getByRole("button", { name: /Run only/ }));
+    await user.click(
+      screen.getByRole("button", { name: /Select agent or squad/ }),
+    );
+    await user.click(await screen.findByRole("button", { name: /Scout/ }));
     await user.click(screen.getByRole("button", { name: "pick Fleet" }));
     await user.click(screen.getByRole("button", { name: "Create autopilot" }));
 

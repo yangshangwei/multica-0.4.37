@@ -264,6 +264,24 @@ describe("autopilot template picker", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("says so when the deep-linked template is not one this server ships", async () => {
+    // The key can only be ruled out once the list has loaded, so the verdict
+    // arrives after the fetch settles — not before it.
+    searchParams.value = new URLSearchParams("template=unknown-key");
+    renderPage();
+
+    expect(
+      await screen.findByText(enAutopilots.template_picker.not_found),
+    ).toBeInTheDocument();
+    // An honest dead end, not a picker behind it: no card grid renders.
+    expect(
+      screen.queryByRole("button", { name: /Workday repo audit/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Release readiness/ }),
+    ).not.toBeInTheDocument();
+  });
+
   it("keeps the blank creation flow reachable from the picker", async () => {
     renderPage();
     const user = userEvent.setup();

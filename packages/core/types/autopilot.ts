@@ -62,6 +62,12 @@ export interface Autopilot {
   // owners/admins, NOT by granted collaborators. Detail-endpoint-only; absent
   // on older servers (fall back to can_write).
   can_manage_access?: boolean;
+  // Template provenance: the built-in template this row was created from, and
+  // the version whose prompt / schedule / output mode were copied onto it.
+  // Empty / 0 / missing means the autopilot was created by hand or by an
+  // older server that had no template registry.
+  template_key?: string;
+  template_version?: number;
 }
 
 export interface WebhookEventFilter {

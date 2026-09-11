@@ -21,7 +21,7 @@ const TEMPLATE = {
   version: 1,
   category: "maintenance",
   category_label: "维护",
-  title: "每小时排队检查",
+  title: "每小时队列巡检",
   description: "Looks for stuck work every hour",
   cron_expression: "0 * * * *",
   execution_mode: "run_only",
@@ -119,6 +119,10 @@ const AUTOPILOT = {
   issue_title_template: null,
   created_by_type: "member",
   created_by_id: "user-1",
+  // Provenance from the template the row was created from. Older servers and
+  // hand-created rows omit both.
+  template_key: "hourly-queue-check",
+  template_version: 3,
   last_run_at: null,
   created_at: "2026-09-11T00:00:00Z",
   updated_at: "2026-09-11T00:00:00Z",
@@ -155,6 +159,10 @@ describe("CreateAutopilotFromTemplateResponseSchema", () => {
     const parsed = fromTemplate({ autopilot: AUTOPILOT, trigger: TRIGGER });
     expect(parsed.autopilot.id).toBe("autopilot-1");
     expect(parsed.autopilot.execution_mode).toBe("run_only");
+    // Provenance survives the round trip: the row says which template, and
+    // which version of it, its content came from.
+    expect(parsed.autopilot.template_key).toBe("hourly-queue-check");
+    expect(parsed.autopilot.template_version).toBe(3);
     expect(parsed.trigger).toMatchObject({
       id: "trigger-1",
       cron_expression: "0 * * * *",

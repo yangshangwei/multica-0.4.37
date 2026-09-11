@@ -70,6 +70,17 @@ export function TemplateCreateAutopilotPage() {
 
   const { data: templates, isLoading, isError } = useAutopilotTemplates();
   const template = findAutopilotTemplate(templates, templateKey);
+  // A deep link to a key this server does not ship — an honest dead end beats
+  // a picker that silently pretends the link never happened. Only verdict-able
+  // once the list has actually loaded: while loading or after a failed load
+  // the picker's own states speak, and a missing key over an unread list
+  // would report the load, not the key.
+  const templateMissing =
+    Boolean(templateKey) &&
+    !isLoading &&
+    !isError &&
+    templates !== undefined &&
+    template === null;
 
   return (
     <AutopilotCreateShell
@@ -86,7 +97,9 @@ export function TemplateCreateAutopilotPage() {
           : backOrReplace(paths.autopilots())
       }
     >
-      {template ? (
+      {templateMissing ? (
+        <TemplateNotFoundStep />
+      ) : template ? (
         <TemplateConfigureStep template={template} />
       ) : (
         <AutopilotTemplatePicker
@@ -101,6 +114,33 @@ export function TemplateCreateAutopilotPage() {
         />
       )}
     </AutopilotCreateShell>
+  );
+}
+
+/**
+ * The `?template=` deep link named a key the server does not ship — an older
+ * binary, an offline deployment, a typo. Centered, with one way out: back to
+ * the picker, where every template the server does ship is one click away.
+ */
+function TemplateNotFoundStep() {
+  const { t } = useT("autopilots");
+  const paths = useWorkspacePaths();
+  const navigation = useNavigation();
+  return (
+    <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-10">
+      <div className="m-auto flex flex-col items-center gap-3 text-center">
+        <p className="text-body text-muted-foreground">
+          {t(($) => $.template_picker.not_found)}
+        </p>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => navigation.replace(paths.newAutopilotTemplate())}
+        >
+          {t(($) => $.template_picker.back)}
+        </Button>
+      </div>
+    </main>
   );
 }
 
