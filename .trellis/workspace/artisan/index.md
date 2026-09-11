@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 6
-- **Last Active**: 2026-09-11
+- **Total Sessions**: 7
+- **Last Active**: 2026-09-12
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~243 | Active |
+| `journal-1.md` | ~278 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 7 | 2026-09-12 | Built-in role skill Chinese presentation | `a99cfe687` | `feat/agent-skills-localization` |
 | 6 | 2026-09-11 | Autopilot 模板 review 后续修复 | `779dbda3a`, `2ecf6c5a7`, `05dc0edf4` | `main` |
 | 5 | 2026-09-10 | 内网部署文档裁剪与验收 | `b59aa6d61`, `ecae52ac7`, `e3ca9cba6`, `e70228ba9` | `main` |
 | 4 | 2026-09-10 | 应用内文档 P0 完成归档 | `61c73d738`, `0ef6b1dfa`, `0c96d792b`, `af68f1075`, `91ea4362a`, `3a8f1050d` | `main` |

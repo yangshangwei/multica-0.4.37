@@ -241,3 +241,38 @@ Repaired the seven merge-review findings with regression-first changes, preserve
 ### Status
 
 [OK] **Completed**
+
+
+## Session 7: Built-in role skill Chinese presentation
+
+**Date**: 2026-09-12
+**Task**: Built-in role skill Chinese presentation
+**Branch**: `feat/agent-skills-localization`
+
+### Summary
+
+Localized seven built-in role skill titles and purposes across shared UI with bilingual search, stable identifiers, preserved user content, and verified single-locale behavior.
+
+### Main Changes
+
+- Added a shared provenance-aware presentation resolver and integrated lists, details, agent views, selectors, and tab titles.
+- Kept slash suggestions responsive offline and ranked English and Chinese names consistently.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a99cfe687` | (see git log) |
+
+### Testing
+
+- [OK] 5081 views tests passed; full repository typecheck passed; views lint had zero errors.
+- [OK] 13 actual-component browser checks passed with a 94/100 visual verdict; pre-existing lint, Knip, and narrow-grid findings are documented.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Implementation complete; task archived with verification evidence.
