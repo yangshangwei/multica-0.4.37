@@ -41,6 +41,12 @@ function workspaceScoped(slug: string) {
     projects: () => `${ws}/projects`,
     projectDetail: (id: string) => `${ws}/projects/${encode(id)}`,
     autopilots: () => `${ws}/autopilots`,
+    // The built-in automation templates, and the entry point behind the list's
+    // "New autopilot" action — which is what keeps the templates reachable in a
+    // workspace that already has autopilots. One route for both of its steps:
+    // which template is being configured rides in `?template=`, the same choice-
+    // inside-a-flow the agent role templates make (newAgentTemplate above).
+    newAutopilotTemplate: () => `${ws}/autopilots/new/template`,
     autopilotDetail: (id: string) => `${ws}/autopilots/${encode(id)}`,
     agents: () => `${ws}/agents`,
     newAgent: () => `${ws}/agents/new`,

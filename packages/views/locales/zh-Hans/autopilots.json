@@ -2,6 +2,7 @@
   "page": {
     "title": "自动化",
     "new_autopilot": "新建自动化",
+    "browse_templates": "浏览模板",
     "start_blank": "从空白开始",
     "table": {
       "name": "名称",
@@ -40,31 +41,22 @@
     "days_ago": "{{count}} 天前",
     "months_ago": "{{count}} 个月前"
   },
-  "templates": {
-    "daily_news": {
-      "title": "每日新闻摘要",
-      "summary": "搜索并汇总今天的新闻给团队"
-    },
-    "pr_review": {
-      "title": "PR review 提醒",
-      "summary": "标记需要 review 的滞留 pull request"
-    },
-    "bug_triage": {
-      "title": "Bug 分诊",
-      "summary": "评估并安排新提交的 bug"
-    },
-    "weekly_progress": {
-      "title": "每周进度报告",
-      "summary": "汇总团队本周进展"
-    },
-    "dependency_audit": {
-      "title": "依赖审计",
-      "summary": "扫描安全漏洞和过时的依赖包"
-    },
-    "documentation_check": {
-      "title": "文档检查",
-      "summary": "检查近期改动是否缺失文档"
-    }
+  "template_picker": {
+    "eyebrow": "创建自动化",
+    "title": "从自动化模板开始",
+    "description": "每个模板都自带任务说明、执行周期和输出模式。选一个、指定执行方即可创建，创建后所有内容都可以修改。",
+    "step_pick": "选择模板",
+    "step_configure": "检查并配置",
+    "back": "返回",
+    "continue": "继续",
+    "empty": "此服务端未内置自动化模板。",
+    "load_failed": "无法加载自动化模板。",
+    "version": "模板 v{{version}}",
+    "blank_hint": "都不合适？",
+    "schedule_label": "运行周期",
+    "prompt_label": "交给智能体做的事",
+    "prompt_note": "会复制到自动化，创建后可编辑",
+    "assignee_hint": "模板无法预知这个工作区有哪些智能体，请选择运行它的一方。"
   },
   "detail": {
     "not_found": "未找到该自动化",

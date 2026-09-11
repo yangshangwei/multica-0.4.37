@@ -10,6 +10,7 @@ export {
 } from "./queries";
 export {
   useCreateAutopilot,
+  useCreateAutopilotFromTemplate,
   useUpdateAutopilot,
   useDeleteAutopilot,
   useTriggerAutopilot,

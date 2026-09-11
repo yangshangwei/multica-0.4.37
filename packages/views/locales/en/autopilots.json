@@ -2,6 +2,7 @@
   "page": {
     "title": "Autopilot",
     "new_autopilot": "New autopilot",
+    "browse_templates": "Browse templates",
     "start_blank": "Start from scratch",
     "table": {
       "name": "Name",
@@ -40,31 +41,22 @@
     "days_ago": "{{count}}d ago",
     "months_ago": "{{count}}mo ago"
   },
-  "templates": {
-    "daily_news": {
-      "title": "Daily news digest",
-      "summary": "Search and summarize today's news for the team"
-    },
-    "pr_review": {
-      "title": "PR review reminder",
-      "summary": "Flag stale pull requests that need review"
-    },
-    "bug_triage": {
-      "title": "Bug triage",
-      "summary": "Assess and prioritize new bug reports"
-    },
-    "weekly_progress": {
-      "title": "Weekly progress report",
-      "summary": "Compile a weekly summary of team progress"
-    },
-    "dependency_audit": {
-      "title": "Dependency audit",
-      "summary": "Scan for security vulnerabilities and outdated packages"
-    },
-    "documentation_check": {
-      "title": "Documentation check",
-      "summary": "Review recent changes for documentation gaps"
-    }
+  "template_picker": {
+    "eyebrow": "Autopilot creation",
+    "title": "Start from an automation template",
+    "description": "Every template brings a brief, a schedule and an output mode. Pick one, choose who runs it, and edit anything about it afterwards.",
+    "step_pick": "Pick a template",
+    "step_configure": "Review and configure",
+    "back": "Go back",
+    "continue": "Continue",
+    "empty": "This server ships no autopilot templates.",
+    "load_failed": "Could not load the autopilot templates.",
+    "version": "Template v{{version}}",
+    "blank_hint": "None of these fit?",
+    "schedule_label": "Runs",
+    "prompt_label": "What the agent is asked to do",
+    "prompt_note": "Copied to the autopilot — editable afterwards",
+    "assignee_hint": "A template cannot know which agents this workspace has. Pick the one that runs it."
   },
   "detail": {
     "not_found": "Autopilot not found",

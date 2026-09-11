@@ -2,6 +2,7 @@
   "page": {
     "title": "オートパイロット",
     "new_autopilot": "新規オートパイロット",
+    "browse_templates": "テンプレートを見る",
     "start_blank": "ゼロから始める",
     "table": {
       "name": "名前",
@@ -40,31 +41,22 @@
     "days_ago": "{{count}} 日前",
     "months_ago": "{{count}} か月前"
   },
-  "templates": {
-    "daily_news": {
-      "title": "日次ニュースダイジェスト",
-      "summary": "今日のニュースを検索し、チーム向けに要約します"
-    },
-    "pr_review": {
-      "title": "PR レビューのリマインダー",
-      "summary": "レビューが必要な滞留中の Pull request を表示します"
-    },
-    "bug_triage": {
-      "title": "バグのトリアージ",
-      "summary": "新しいバグレポートを評価し、優先順位を付けます"
-    },
-    "weekly_progress": {
-      "title": "週次進捗レポート",
-      "summary": "チームの進捗を週次でまとめます"
-    },
-    "dependency_audit": {
-      "title": "依存関係の監査",
-      "summary": "セキュリティ脆弱性と古いパッケージをスキャンします"
-    },
-    "documentation_check": {
-      "title": "ドキュメントの点検",
-      "summary": "最近の変更にドキュメントの不足がないか確認します"
-    }
+  "template_picker": {
+    "eyebrow": "オートパイロット作成",
+    "title": "自動化テンプレートから始める",
+    "description": "各テンプレートには作業指示・実行スケジュール・出力モードが含まれます。選んで実行者を指定するだけで作成でき、作成後はすべて編集できます。",
+    "step_pick": "テンプレートを選ぶ",
+    "step_configure": "確認して設定",
+    "back": "戻る",
+    "continue": "続ける",
+    "empty": "このサーバーにはオートパイロットテンプレートがありません。",
+    "load_failed": "オートパイロットテンプレートを読み込めませんでした。",
+    "version": "テンプレート v{{version}}",
+    "blank_hint": "どれも合いませんか？",
+    "schedule_label": "実行",
+    "prompt_label": "エージェントに依頼する内容",
+    "prompt_note": "オートパイロットにコピーされ、作成後に編集できます",
+    "assignee_hint": "テンプレートはこのワークスペースのエージェントを知りません。実行する担当を選んでください。"
   },
   "detail": {
     "not_found": "オートパイロットが見つかりません",

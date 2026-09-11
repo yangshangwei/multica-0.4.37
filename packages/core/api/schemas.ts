@@ -4,7 +4,9 @@ import type {
   AgentBuilderSession,
   AgentBuilderSessionSummary,
   Attachment,
+  Autopilot,
   AutopilotRun,
+  AutopilotTrigger,
   BillingBalance,
   BillingBatchesPage,
   BillingCheckoutSessionStatus,
@@ -93,6 +95,10 @@ import type {
   SquadTemplate,
   StaffedSquad,
 } from "../types/agent-template";
+import type {
+  AutopilotTemplate,
+  CreateAutopilotFromTemplateResponse,
+} from "../types/autopilot-template";
 import type { CloudRuntimeNode } from "../runtimes/cloud-runtime";
 import type { CreateFeedbackResponse } from "../feedback/types";
 
@@ -2222,14 +2228,14 @@ export const EMPTY_LIST_WEBHOOK_DELIVERIES_RESPONSE: ListWebhookDeliveriesRespon
 };
 
 // ---------------------------------------------------------------------------
-// Autopilot list schema. Enums (`status`, `execution_mode`, `trigger_kinds`,
+// Autopilot row schema. Enums (`status`, `execution_mode`, `trigger_kinds`,
 // `last_run_status`) stay `z.string()` so future server-side values degrade
 // to a generic UI fallback. The three derived fields (trigger_kinds /
 // next_run_at / last_run_status) are list-endpoint-only and absent on older
 // servers — optional by contract, the list renders "—" without them.
 // ---------------------------------------------------------------------------
 
-const AutopilotListItemSchema = z.object({
+export const AutopilotSchema = z.object({
   id: z.string(),
   workspace_id: z.string(),
   title: z.string(),
@@ -2257,7 +2263,7 @@ const AutopilotListItemSchema = z.object({
 }).loose();
 
 export const ListAutopilotsResponseSchema = z.object({
-  autopilots: z.array(AutopilotListItemSchema).default([]),
+  autopilots: z.array(AutopilotSchema).default([]),
   total: z.number().default(0),
 }).loose();
 
@@ -2328,6 +2334,119 @@ export const CronPreviewResponseSchema = z.object({
 
 export const UNREADABLE_CRON_PREVIEW_RESPONSE: CronPreviewResponse = {
   next_runs: null,
+};
+
+// ---------------------------------------------------------------------------
+// Built-in autopilot templates and the from-template creation result.
+//
+// Same rules as the role/squad template boundary: every field except the
+// identifying `key` carries a default so a client pointed at a newer backend
+// that adds one, or an older one that omits one, still renders a card.
+// `execution_mode` stays `z.string()` on purpose — a mode this build has never
+// heard of must reach the picker as text rather than fail the whole payload,
+// and the consuming switch carries a `default`.
+// ---------------------------------------------------------------------------
+
+export const AutopilotTemplateSchema = z.object({
+  key: z.string(),
+  version: z.number().default(0),
+  category: z.string().default(""),
+  category_label: z.string().default(""),
+  title: z.string().default(""),
+  description: z.string().default(""),
+  cron_expression: z.string().default(""),
+  execution_mode: z.string().default(""),
+  avatar_emoji: z.string().default(""),
+  prompt: z.string().default(""),
+}).loose();
+
+export const AutopilotTemplateListResponseSchema = z.object({
+  templates: z.array(AutopilotTemplateSchema).default([]),
+}).loose();
+
+export const EMPTY_AUTOPILOT_TEMPLATE_LIST: AutopilotTemplate[] = [];
+
+const AutopilotTriggerEventFilterSchema = z.object({
+  event: z.string().default(""),
+  actions: z.array(z.string()).optional(),
+}).loose();
+
+// Trigger row, as returned by the trigger and from-template endpoints. Every
+// nullable column is normalized to `null` rather than left `undefined` so
+// callers can optional-chain once instead of testing both.
+export const AutopilotTriggerSchema = z.object({
+  id: z.string(),
+  autopilot_id: z.string().default(""),
+  kind: z.string().default("schedule"),
+  // Conservative default: a trigger whose enabled flag did not survive the
+  // wire must not be presented as scheduled to fire.
+  enabled: z.boolean().default(false),
+  cron_expression: z.string().nullable().optional().transform((v) => v ?? null),
+  timezone: z.string().nullable().optional().transform((v) => v ?? null),
+  next_run_at: z.string().nullable().optional().transform((v) => v ?? null),
+  webhook_token: z.string().nullable().optional().transform((v) => v ?? null),
+  webhook_path: z.string().nullable().optional().transform((v) => v ?? null),
+  webhook_url: z.string().nullable().optional().transform((v) => v ?? null),
+  label: z.string().nullable().optional().transform((v) => v ?? null),
+  event_filters: z.array(AutopilotTriggerEventFilterSchema).nullable().optional()
+    .transform((v) => v ?? null),
+  last_fired_at: z.string().nullable().optional().transform((v) => v ?? null),
+  created_at: z.string().default(""),
+  updated_at: z.string().default(""),
+}).loose();
+
+// The two rows POST /api/autopilots/from-template wrote. Both are required:
+// the endpoint exists precisely so an automation arrives with its schedule or
+// not at all, so a payload missing either half is not a usable result.
+export const CreateAutopilotFromTemplateResponseSchema = z.object({
+  autopilot: AutopilotSchema,
+  trigger: AutopilotTriggerSchema,
+}).loose();
+
+// Conservative fallback for an unreadable creation response: paused, run_only,
+// and a disabled trigger, so a drifted payload never reads as "an active
+// automation that opens issues". `autopilot.id === ""` is what callers check
+// before navigating to the row they think they just created.
+export const EMPTY_AUTOPILOT: Autopilot = {
+  id: "",
+  workspace_id: "",
+  title: "",
+  description: null,
+  project_id: null,
+  assignee_type: "agent",
+  assignee_id: "",
+  status: "paused",
+  execution_mode: "run_only",
+  issue_title_template: null,
+  created_by_type: "",
+  created_by_id: "",
+  last_run_at: null,
+  created_at: "",
+  updated_at: "",
+};
+
+export const EMPTY_AUTOPILOT_TRIGGER: AutopilotTrigger = {
+  id: "",
+  autopilot_id: "",
+  kind: "schedule",
+  enabled: false,
+  cron_expression: null,
+  timezone: null,
+  next_run_at: null,
+  webhook_token: null,
+  webhook_path: null,
+  webhook_url: null,
+  label: null,
+  event_filters: null,
+  last_fired_at: null,
+  created_at: "",
+  updated_at: "",
+};
+
+export const EMPTY_CREATE_AUTOPILOT_FROM_TEMPLATE_RESPONSE:
+  CreateAutopilotFromTemplateResponse = {
+  autopilot: EMPTY_AUTOPILOT,
+  trigger: EMPTY_AUTOPILOT_TRIGGER,
 };
 
 export const EMPTY_WEBHOOK_DELIVERY: WebhookDelivery = {

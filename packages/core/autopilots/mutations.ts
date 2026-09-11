@@ -7,6 +7,7 @@ import type {
   UpdateAutopilotRequest,
   ListAutopilotsResponse,
   GetAutopilotResponse,
+  CreateAutopilotFromTemplateRequest,
   CreateAutopilotTriggerRequest,
   UpdateAutopilotTriggerRequest,
 } from "../types";
@@ -24,6 +25,32 @@ export function useCreateAutopilot() {
       );
     },
     onSettled: () => {
+      qc.invalidateQueries({ queryKey: autopilotKeys.list(wsId) });
+    },
+  });
+}
+
+/**
+ * Stands up an autopilot and its schedule trigger from a built-in template.
+ *
+ * One request, one backend transaction: unlike the hand-built pair (create the
+ * autopilot, then create its trigger) there is no state in which the autopilot
+ * landed and its schedule did not, so this mutation has no half-created
+ * automation to clean up on failure.
+ *
+ * No optimistic insert. The row's server-assigned identity is what the caller
+ * navigates to, and the flow leaves the picker on success — the two conditions
+ * under which this repo does not patch a cache ahead of the server.
+ */
+export function useCreateAutopilotFromTemplate() {
+  const qc = useQueryClient();
+  const wsId = useWorkspaceId();
+  return useMutation({
+    mutationFn: (data: CreateAutopilotFromTemplateRequest) =>
+      api.createAutopilotFromTemplate(data),
+    onSettled: () => {
+      // The list carries derived trigger columns (trigger_kinds, next_run_at)
+      // the create response does not, so refetch rather than splice.
       qc.invalidateQueries({ queryKey: autopilotKeys.list(wsId) });
     },
   });

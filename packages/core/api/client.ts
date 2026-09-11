@@ -141,6 +141,9 @@ import type {
   CreateAutopilotTriggerRequest,
   UpdateAutopilotTriggerRequest,
   ListAutopilotsResponse,
+  AutopilotTemplate,
+  CreateAutopilotFromTemplateRequest,
+  CreateAutopilotFromTemplateResponse,
   CronPreviewResponse,
   GetAutopilotResponse,
   AutopilotCollaboratorsResponse,
@@ -328,6 +331,10 @@ import {
   EMPTY_LIST_AUTOPILOTS_RESPONSE,
   AutopilotRunSchema,
   AutopilotQuotaUsageSchema,
+  AutopilotTemplateListResponseSchema,
+  EMPTY_AUTOPILOT_TEMPLATE_LIST,
+  CreateAutopilotFromTemplateResponseSchema,
+  EMPTY_CREATE_AUTOPILOT_FROM_TEMPLATE_RESPONSE,
   FALLBACK_AUTOPILOT_RUN,
   CronPreviewResponseSchema,
   UNREADABLE_CRON_PREVIEW_RESPONSE,
@@ -4326,6 +4333,49 @@ export class ApiClient {
       method: "POST",
       body: JSON.stringify(data),
     });
+  }
+
+  /**
+   * The built-in autopilot templates a person can stand an automation up from.
+   *
+   * Workspace-independent — templates ship with the backend binary — so the
+   * result is safe to cache for the session. `language` only selects the
+   * localized title, description and category label; the prompt is English by
+   * design, as every agent-harness text in this product is.
+   */
+  async listAutopilotTemplates(language?: string): Promise<AutopilotTemplate[]> {
+    const query = language ? `?language=${encodeURIComponent(language)}` : "";
+    const raw = await this.fetch<unknown>(`/api/autopilots/templates${query}`);
+    return parseWithFallback(
+      raw,
+      AutopilotTemplateListResponseSchema,
+      { templates: EMPTY_AUTOPILOT_TEMPLATE_LIST },
+      { endpoint: "GET /api/autopilots/templates" },
+    ).templates as AutopilotTemplate[];
+  }
+
+  /**
+   * Creates an ordinary autopilot and its schedule trigger from a template, in
+   * one backend transaction.
+   *
+   * The request carries no title, prompt, cadence or execution mode: those come
+   * from the template on the backend, so a client cannot claim a template's
+   * provenance while supplying its own prompt. Both rows come back because the
+   * automation either exists with its schedule or does not exist at all.
+   */
+  async createAutopilotFromTemplate(
+    data: CreateAutopilotFromTemplateRequest,
+  ): Promise<CreateAutopilotFromTemplateResponse> {
+    const raw = await this.fetch<unknown>("/api/autopilots/from-template", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    return parseWithFallback(
+      raw,
+      CreateAutopilotFromTemplateResponseSchema,
+      EMPTY_CREATE_AUTOPILOT_FROM_TEMPLATE_RESPONSE,
+      { endpoint: "POST /api/autopilots/from-template" },
+    );
   }
 
   async updateAutopilot(id: string, data: UpdateAutopilotRequest): Promise<Autopilot> {

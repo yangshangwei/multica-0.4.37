@@ -3,16 +3,11 @@
 import { useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
-  BarChart3,
-  Bug,
   Clock,
   Code,
-  FileSearch,
-  GitPullRequest,
-  Newspaper,
+  LayoutTemplate,
   Pause,
   Plus,
-  Shield,
   Webhook,
   Zap,
 } from "lucide-react";
@@ -44,7 +39,7 @@ import {
   type ListGridSortDirection,
 } from "@multica/ui/components/ui/list-grid";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
-import { useRowLink } from "../../navigation";
+import { useRowLink, useNavigation } from "../../navigation";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { formatInTimeZone } from "../../common/format-in-time-zone";
 import {
@@ -58,7 +53,6 @@ import {
   AutopilotBatchToolbar,
   AutopilotRowActions,
 } from "./autopilot-list-actions";
-import type { ScheduleConfig } from "./schedule-editor/model";
 import { useT, useTimeAgo } from "../../i18n";
 
 // Column template — single source of truth for header, rows, and skeletons.
@@ -117,94 +111,6 @@ function columnTrackVars(
     "--apc-minw": `${minWidth}px`,
   } as React.CSSProperties;
 }
-
-// ---------------------------------------------------------------------------
-// Templates for the empty state (unchanged from the previous page version).
-// Prompts stay raw English because they're injected directly into the
-// agent's task input.
-// ---------------------------------------------------------------------------
-
-type TemplateId =
-  | "daily_news"
-  | "pr_review"
-  | "bug_triage"
-  | "weekly_progress"
-  | "dependency_audit"
-  | "documentation_check";
-
-interface AutopilotTemplate {
-  id: TemplateId;
-  prompt: string;
-  icon: typeof Zap;
-  schedule: Pick<ScheduleConfig, "time" | "days">;
-}
-
-const WEEKDAYS: ScheduleConfig["days"] = { kind: "weekly", daysOfWeek: [1, 2, 3, 4, 5] };
-const MONDAY: ScheduleConfig["days"] = { kind: "weekly", daysOfWeek: [1] };
-
-const TEMPLATES: AutopilotTemplate[] = [
-  {
-    id: "daily_news",
-    prompt: `1. Search the web for news and announcements published today only (strictly today's date)
-2. Filter for topics relevant to our team and industry
-3. For each item, write a short summary including: title, source, key takeaways
-4. Compile everything into a single digest post
-5. Post the digest as a comment on this issue and @mention all workspace members`,
-    icon: Newspaper,
-    schedule: { time: { kind: "at", time: "09:00" }, days: { kind: "every" } },
-  },
-  {
-    id: "pr_review",
-    prompt: `1. List all open pull requests in the repository
-2. Identify PRs that have been open for more than 24 hours without a review
-3. For each stale PR, note the author, age, and a one-line summary of the change
-4. Post a comment on this issue listing all stale PRs with links
-5. @mention the team to remind them to review`,
-    icon: GitPullRequest,
-    schedule: { time: { kind: "at", time: "10:00" }, days: WEEKDAYS },
-  },
-  {
-    id: "bug_triage",
-    prompt: `1. List all backlog issues that have not been prioritized
-2. For each issue, read the description and any attached logs or screenshots
-3. Assess severity (critical / high / medium / low) based on user impact and scope
-4. Set the priority field on the issue accordingly
-5. Add a comment explaining your assessment and suggested next steps`,
-    icon: Bug,
-    schedule: { time: { kind: "at", time: "09:00" }, days: WEEKDAYS },
-  },
-  {
-    id: "weekly_progress",
-    prompt: `1. Gather all issues completed (status "done") in the past 7 days
-2. Gather all issues currently in progress
-3. Identify any blocked issues and their blockers
-4. Calculate key metrics: issues closed, issues opened, net change
-5. Write a structured weekly report with sections: Completed, In Progress, Blocked, Metrics
-6. Post the report as a comment on this issue`,
-    icon: BarChart3,
-    schedule: { time: { kind: "at", time: "17:00" }, days: MONDAY },
-  },
-  {
-    id: "dependency_audit",
-    prompt: `1. Run dependency audit tools on the project (npm audit, go vuln check, etc.)
-2. Identify any packages with known security vulnerabilities
-3. List outdated packages that are more than 2 major versions behind
-4. For each finding, note the severity, affected package, and recommended fix
-5. Post a summary report as a comment with actionable items`,
-    icon: Shield,
-    schedule: { time: { kind: "at", time: "08:00" }, days: MONDAY },
-  },
-  {
-    id: "documentation_check",
-    prompt: `1. List all code changes merged in the past 7 days (via git log)
-2. For each significant change, check if related documentation was updated
-3. Identify any new APIs, config options, or features missing documentation
-4. Create a list of documentation gaps with file paths and suggested content
-5. Post the findings as a comment on this issue`,
-    icon: FileSearch,
-    schedule: { time: { kind: "at", time: "14:00" }, days: MONDAY },
-  },
-];
 
 // ---------------------------------------------------------------------------
 // Cells
@@ -602,6 +508,7 @@ export function AutopilotsPage() {
   const { t } = useT("autopilots");
   const wsId = useWorkspaceId();
   const wsPaths = useWorkspacePaths();
+  const navigation = useNavigation();
   const rowLink = useRowLink();
   const {
     data: autopilots = [],
@@ -611,8 +518,6 @@ export function AutopilotsPage() {
   } = useQuery(autopilotListOptions(wsId));
 
   const [createOpen, setCreateOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] =
-    useState<AutopilotTemplate | null>(null);
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(
     new Set(),
   );
@@ -734,11 +639,6 @@ export function AutopilotsPage() {
     overscan: 10,
   });
 
-  const openCreate = (template?: AutopilotTemplate) => {
-    setSelectedTemplate(template ?? null);
-    setCreateOpen(true);
-  };
-
   const selectedRows = rows.filter((a) => selectedIds.has(a.id));
   const allSelected = rows.length > 0 && selectedRows.length === rows.length;
   const someSelected = selectedRows.length > 0 && !allSelected;
@@ -772,7 +672,11 @@ export function AutopilotsPage() {
           <CollectionPageHeaderAction
             icon={Plus}
             label={t(($) => $.page.new_autopilot)}
-            onClick={() => openCreate()}
+            // The template picker, not the blank dialog: it is where the
+            // built-in automations live, and routing the header action through
+            // it is what makes them reachable in a workspace that already has
+            // autopilots. The blank form is one click further, inside it.
+            onClick={() => navigation.push(wsPaths.newAutopilotTemplate())}
           />
         }
       />
@@ -801,47 +705,38 @@ export function AutopilotsPage() {
           <LoadingSkeleton />
         </div>
       ) : showEmpty ? (
-        <div className="flex flex-col items-center px-5 py-16">
-          <Zap className="mb-3 h-10 w-10 text-faint-foreground" />
-          <p className="text-body text-muted-foreground">
-            {t(($) => $.page.empty.title)}
-          </p>
-          <p className="mb-6 mt-1 text-caption text-muted-foreground">
-            {t(($) => $.page.empty.hint)}
-          </p>
-          <div className="grid w-full max-w-3xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {TEMPLATES.map((tpl) => {
-              const Icon = tpl.icon;
-              return (
-                <button
-                  key={tpl.id}
-                  type="button"
-                  className="flex items-start gap-3 rounded-lg border p-3 text-left transition-colors hover:bg-accent/40"
-                  onClick={() => openCreate(tpl)}
-                >
-                  <Icon className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
-                  <div className="min-w-0">
-                    <div className="text-body font-medium">
-                      {t(($) => $.templates[tpl.id].title)}
-                    </div>
-                    <div className="mt-0.5 line-clamp-2 text-caption text-muted-foreground">
-                      {t(($) => $.templates[tpl.id].summary)}
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-          <Button
-            size="sm"
-            variant="outline"
-            className="mt-4"
-            onClick={() => openCreate()}
-          >
-            <Plus className="mr-1 h-3.5 w-3.5" />
-            {t(($) => $.page.start_blank)}
-          </Button>
-        </div>
+        // The zero-autopilot workspace gets the same destination the header
+        // action uses. The built-in templates live behind it now, so the empty
+        // state points at them instead of restating a few of them inline.
+        <CollectionPageState
+          icon={Zap}
+          title={t(($) => $.page.empty.title)}
+          description={t(($) => $.page.empty.hint)}
+          actions={
+            <>
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => navigation.push(wsPaths.newAutopilotTemplate())}
+              >
+                <LayoutTemplate
+                  className="mr-1 h-3.5 w-3.5"
+                  aria-hidden="true"
+                />
+                {t(($) => $.page.browse_templates)}
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={() => setCreateOpen(true)}
+              >
+                <Plus className="mr-1 h-3.5 w-3.5" aria-hidden="true" />
+                {t(($) => $.page.start_blank)}
+              </Button>
+            </>
+          }
+        />
       ) : (
         <>
           <AutopilotListToolbar
@@ -964,18 +859,6 @@ export function AutopilotsPage() {
           mode="create"
           open={createOpen}
           onOpenChange={setCreateOpen}
-          initial={
-            selectedTemplate
-              ? {
-                  // Template title pulls from i18n so the user-visible default
-                  // matches their locale, while the prompt body stays raw EN
-                  // since it's injected directly into the agent task.
-                  title: t(($) => $.templates[selectedTemplate.id].title),
-                  description: selectedTemplate.prompt,
-                }
-              : undefined
-          }
-          initialSchedule={selectedTemplate ? selectedTemplate.schedule : undefined}
         />
       )}
     </div>

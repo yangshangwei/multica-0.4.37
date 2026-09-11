@@ -300,6 +300,11 @@ export type {
   ListWebhookDeliveriesResponse,
 } from "./autopilot";
 export type {
+  AutopilotTemplate,
+  CreateAutopilotFromTemplateRequest,
+  CreateAutopilotFromTemplateResponse,
+} from "./autopilot-template";
+export type {
   Squad,
   SquadMember,
   SquadMemberType,
