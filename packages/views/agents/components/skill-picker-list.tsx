@@ -8,6 +8,7 @@ import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { Input } from "@multica/ui/components/ui/input";
 import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../../i18n";
+import { useSkillPresentation } from "../../skills/hooks/use-skill-presentation";
 
 interface SkillPickerListProps {
   /** Skills to show. Callers filter (e.g. exclude already-attached
@@ -60,16 +61,19 @@ export function SkillPickerList({
   className,
 }: SkillPickerListProps) {
   const { t } = useT("agents");
+  const presentSkill = useSkillPresentation();
   const [query, setQuery] = useState("");
 
+  const presentedSkills = skills.map((skill) => ({
+    skill,
+    presentation: presentSkill(skill),
+  }));
   const trimmedQuery = query.trim().toLowerCase();
   const filtered = trimmedQuery
-    ? skills.filter((s) => {
-        const name = s.name.toLowerCase();
-        const description = s.description?.toLowerCase() ?? "";
-        return name.includes(trimmedQuery) || description.includes(trimmedQuery);
-      })
-    : skills;
+    ? presentedSkills.filter(({ presentation }) =>
+        presentation.searchText.includes(trimmedQuery),
+      )
+    : presentedSkills;
 
   const resolvedEmpty =
     emptyMessage ?? t(($) => $.create_dialog.skills_section.list_empty_default);
@@ -102,7 +106,7 @@ export function SkillPickerList({
         ) : filtered.length === 0 ? (
           <div className="py-6 text-center text-caption text-muted-foreground">{resolvedNoMatch}</div>
         ) : (
-          filtered.map((skill) => {
+          filtered.map(({ skill, presentation }) => {
             const isSelected = selectedIds.has(skill.id);
             return (
               <button
@@ -125,10 +129,10 @@ export function SkillPickerList({
                 />
                 <SkillIcon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-body font-medium">{skill.name}</div>
-                  {skill.description ? (
+                  <div className="truncate text-body font-medium">{presentation.name}</div>
+                  {presentation.description ? (
                     <div className="truncate text-caption text-muted-foreground">
-                      {skill.description}
+                      {presentation.description}
                     </div>
                   ) : null}
                 </div>

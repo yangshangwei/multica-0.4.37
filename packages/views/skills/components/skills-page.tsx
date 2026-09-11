@@ -62,6 +62,8 @@ import {
   CollectionPageState,
 } from "../../layout/collection-page";
 import { canEditSkill } from "../hooks/use-can-edit-skill";
+import { useSkillPresentation } from "../hooks/use-skill-presentation";
+import type { SkillPresentation } from "../lib/skill-presentation";
 import { originSourceUrl, readOrigin, type OriginInfo } from "../lib/origin";
 import { CreateSkillDialog } from "./create-skill-dialog";
 import {
@@ -76,7 +78,7 @@ import {
   SkillRowActions,
   type SkillActionsContext,
 } from "./skill-list-actions";
-import { useT, useTimeAgo } from "../../i18n";
+import { useLocale, useT, useTimeAgo } from "../../i18n";
 
 // Column template — single source of truth for header, rows, and skeletons.
 // Tracks: [edge 0.75rem] [checkbox 1rem] [name, only fr track]
@@ -163,6 +165,8 @@ export interface SkillRow {
   canEdit: boolean;
 }
 
+type PresentedSkillRow = SkillRow & { presentation: SkillPresentation };
+
 // ---------------------------------------------------------------------------
 // Page header bar — uses shared PageHeader so the mobile sidebar trigger and
 // h-12 chrome stay consistent with every other dashboard list page.
@@ -238,14 +242,24 @@ function CheckboxCell({
   );
 }
 
-function NameCell({ row }: { row: SkillRow }) {
+function NameCell({ row }: { row: PresentedSkillRow }) {
   const { t } = useT("skills");
-  const { skill, canEdit } = row;
+  const { skill, canEdit, presentation } = row;
   return (
     <ListGridCell className="gap-1.5">
-      <span className="min-w-0 truncate text-body font-medium">
-        {skill.name}
-      </span>
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-body font-medium" title={skill.name}>
+          {presentation.name}
+        </div>
+        {presentation.isBuiltin && presentation.description && (
+          <div
+            className="truncate text-caption text-muted-foreground"
+            title={presentation.description}
+          >
+            {presentation.description}
+          </div>
+        )}
+      </div>
       {!canEdit && (
         <Tooltip>
           <TooltipTrigger
@@ -587,6 +601,8 @@ function LoadingSkeleton() {
 
 export default function SkillsPage() {
   const { t } = useT("skills");
+  const locale = useLocale();
+  const presentSkill = useSkillPresentation();
   const wsId = useWorkspaceId();
   const paths = useWorkspacePaths();
   const navigation = useNavigation();
@@ -669,7 +685,7 @@ export default function SkillsPage() {
   };
 
   // Full assembled set — toolbar option lists and counts derive from this.
-  const allRows = useMemo<SkillRow[]>(() => {
+  const allRows = useMemo<PresentedSkillRow[]>(() => {
     return skills.map((skill) => {
       const origin = readOrigin(skill);
       const runtime =
@@ -678,6 +694,7 @@ export default function SkillsPage() {
           : null;
       return {
         skill,
+        presentation: presentSkill(skill),
         agents: assignments.get(skill.id) ?? [],
         creator: skill.created_by
           ? membersById.get(skill.created_by) ?? null
@@ -687,13 +704,13 @@ export default function SkillsPage() {
         canEdit: canEditSkill(skill, { userId: currentUserId, role: myRole }),
       };
     });
-  }, [skills, assignments, membersById, runtimesById, currentUserId, myRole]);
+  }, [skills, assignments, membersById, runtimesById, currentUserId, myRole, presentSkill]);
 
-  // Visible rows: name search + filters, then sort.
-  const rows = useMemo<SkillRow[]>(() => {
+  // Search names and descriptions in both languages, then sort the visible labels.
+  const rows = useMemo<PresentedSkillRow[]>(() => {
     const q = search.trim().toLowerCase();
     const filtered = allRows.filter((row) => {
-      if (q && !row.skill.name.toLowerCase().includes(q)) return false;
+      if (q && !row.presentation.searchText.includes(q)) return false;
       if (filters.usage.length > 0) {
         const usage = row.agents.length > 0 ? "used" : "unused";
         if (!filters.usage.includes(usage)) return false;
@@ -723,12 +740,12 @@ export default function SkillsPage() {
     const dir = sortDirection === "asc" ? 1 : -1;
     filtered.sort((a, b) => {
       if (sortField === "name") {
-        return a.skill.name.localeCompare(b.skill.name) * dir;
+        return a.presentation.name.localeCompare(b.presentation.name, locale) * dir;
       }
       if (sortField === "usedBy") {
         return (
           (a.agents.length - b.agents.length) * dir ||
-          a.skill.name.localeCompare(b.skill.name)
+          a.presentation.name.localeCompare(b.presentation.name, locale)
         );
       }
       if (sortField === "created") {
@@ -742,7 +759,7 @@ export default function SkillsPage() {
       );
     });
     return filtered;
-  }, [allRows, search, filters, sortField, sortDirection]);
+  }, [allRows, search, filters, sortField, sortDirection, locale]);
 
   // Row virtualization — Linear-style: the virtualizer only does the math
   // (visible index range + offsets); the DOM stays ours. Offsets become
@@ -901,7 +918,7 @@ export default function SkillsPage() {
                 className={`cursor-pointer ${
                   selectedIds.has(row.skill.id) ? "bg-accent/30" : ""
                 }`}
-                {...rowLink(paths.skillDetail(row.skill.id), row.skill.name)}
+                {...rowLink(paths.skillDetail(row.skill.id), row.presentation.name)}
               >
                 <CheckboxCell
                   checked={selectedIds.has(row.skill.id)}

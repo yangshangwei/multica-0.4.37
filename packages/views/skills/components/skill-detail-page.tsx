@@ -68,6 +68,8 @@ import { cn } from "@multica/ui/lib/utils";
 import { AppLink, useNavigation } from "../../navigation";
 import { BreadcrumbHeader } from "../../layout/breadcrumb-header";
 import { useCanEditSkill } from "../hooks/use-can-edit-skill";
+import { useSkillPresentation } from "../hooks/use-skill-presentation";
+import type { SkillPresentation } from "../lib/skill-presentation";
 import { useSkillPermissions } from "@multica/core/permissions";
 import { CapabilityBanner } from "@multica/ui/components/common/capability-banner";
 import {
@@ -278,27 +280,20 @@ function useOriginLabel(origin: OriginInfo | null, runtime: AgentRuntime | null)
 }
 
 /**
- * Identity strip under the breadcrumb: mark, name, and the counts that say
- * what this skill is made of. One line, because everything a reader would
- * scroll past it for is a field on the Overview tab.
- *
- * The description is not repeated here. It used to be, above an editable copy
- * of itself two tabs' worth of chrome below — every visit to a page whose only
- * verbs are edit, add and delete paid for a read-only restatement of a field
- * the next screenful lets you change. The list this page is reached from
- * already carries the description for anyone deciding whether to open it.
- *
- * The agent detail header still has the taller form. Bringing it across is a
- * separate change to a page this branch does not otherwise touch.
+ * The localized identity is display-only. A translated purpose is separate
+ * from the raw editable properties so reading a different language never
+ * changes the instructions an agent will receive.
  */
 function SkillIdentity({
   skill,
+  presentation,
   origin,
   originRuntime,
   agentCount,
   creator,
 }: {
   skill: Skill;
+  presentation: SkillPresentation;
   origin: OriginInfo | null;
   originRuntime: AgentRuntime | null;
   agentCount: number;
@@ -317,9 +312,14 @@ function SkillIdentity({
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border bg-muted text-muted-foreground">
             <SkillIcon className="h-4 w-4" aria-hidden="true" />
           </div>
-          <h1 className="min-w-0 truncate font-mono text-title font-semibold tracking-tight">
-
-            {skill.name}
+          <h1
+            className={cn(
+              "min-w-0 truncate text-title font-semibold tracking-tight",
+              presentation.name === skill.name && "font-mono",
+            )}
+            title={skill.name}
+          >
+            {presentation.name}
           </h1>
         </div>
         <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted-foreground sm:ml-auto">
@@ -374,6 +374,11 @@ function SkillIdentity({
           </span>
         </div>
       </div>
+      {presentation.description !== skill.description && (
+        <p className="mx-auto mt-2 max-w-[1440px] text-body leading-relaxed text-muted-foreground">
+          {presentation.description}
+        </p>
+      )}
     </div>
   );
 }
@@ -746,6 +751,7 @@ function FilesTab({
 
 export function SkillDetailPage({ skillId }: { skillId: string }) {
   const { t } = useT("skills");
+  const presentSkill = useSkillPresentation();
   const wsId = useWorkspaceId();
   const qc = useQueryClient();
   const paths = useWorkspacePaths();
@@ -1127,6 +1133,8 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
     );
   }
 
+  const presentation = presentSkill(skill);
+
   // Segments reuse the overview field labels so the pill and the fields it
   // points at never use different words for the same thing.
   const changedParts = [
@@ -1154,8 +1162,13 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
       <BreadcrumbHeader
         segments={[{ href: paths.skills(), label: t(($) => $.page.title) }]}
         leaf={
-          <span className="truncate font-mono text-caption text-foreground">
-            {skill.name}
+          <span
+            className={cn(
+              "truncate text-caption text-foreground",
+              presentation.name === skill.name && "font-mono",
+            )}
+          >
+            {presentation.name}
           </span>
         }
         actions={
@@ -1239,6 +1252,7 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
 
       <SkillIdentity
         skill={skill}
+        presentation={presentation}
         origin={origin}
         originRuntime={originRuntime}
         agentCount={skillAgents.length}
@@ -1389,11 +1403,11 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
             <DialogDescription>
               {skillAgents.length > 0
                 ? t(($) => $.detail.delete_dialog.description_with_agents, {
-                    name: skill.name,
+                    name: presentation.name,
                     count: skillAgents.length,
                   })
                 : t(($) => $.detail.delete_dialog.description_no_agents, {
-                    name: skill.name,
+                    name: presentation.name,
                   })}
             </DialogDescription>
           </DialogHeader>

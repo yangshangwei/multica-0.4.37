@@ -8,7 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
-import type { QueryClient } from "@tanstack/react-query";
+import { onlineManager, type QueryClient } from "@tanstack/react-query";
+import { getI18n } from "react-i18next";
 import type { SuggestionOptions } from "@tiptap/suggestion";
 import { PluginKey } from "@tiptap/pm/state";
 import { useAuthStore } from "@multica/core/auth";
@@ -16,9 +17,14 @@ import { useChatStore } from "@multica/core/chat";
 import { getCurrentWsId } from "@multica/core/platform";
 import { canAssignAgentToIssue } from "@multica/core/permissions";
 import { isImeComposing } from "@multica/core/utils";
-import { workspaceKeys } from "@multica/core/workspace/queries";
-import type { Agent, MemberWithUser } from "@multica/core/types";
+import { skillListOptions, workspaceKeys } from "@multica/core/workspace/queries";
+import type { Agent, MemberWithUser, SkillSummary } from "@multica/core/types";
 import { useT } from "../../i18n";
+import { useSkillPresentation } from "../../skills/hooks/use-skill-presentation";
+import {
+  getSkillPresentation,
+  type SkillPresentationInput,
+} from "../../skills/lib/skill-presentation";
 import {
   createSuggestionPopupRender,
 } from "./suggestion-popup";
@@ -36,6 +42,8 @@ export type BuiltinCommandKey = "note";
 export interface SlashCommandItem {
   id: string;
   label: string;
+  /** Workspace metadata for display only; label remains the invocation name. */
+  skill?: SkillPresentationInput;
   /** Raw description (skill picker). Built-in commands use descriptionKey. */
   description?: string;
   /**
@@ -69,6 +77,7 @@ export const SlashCommandList = forwardRef<
   SlashCommandListProps
 >(function SlashCommandList({ items, query, command, hideOnEmpty = false }, ref) {
   const { t } = useT("editor");
+  const presentSkill = useSkillPresentation();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -125,8 +134,8 @@ export const SlashCommandList = forwardRef<
     );
   }
 
-  // Built-in commands carry an i18n key so the visible description stays
-  // localized; skills carry a raw description string from their config.
+  // Built-in commands carry an i18n key; workspace skills use their provenance
+  // to resolve live copy while leaving the command's raw label unchanged.
   const describe = (item: SlashCommandItem): string | undefined =>
     item.descriptionKey === "note"
       ? t(($) => $.slash_command.commands.note)
@@ -139,7 +148,8 @@ export const SlashCommandList = forwardRef<
     // Single height authority — mirrors MentionList.
     <div className="rounded-md border bg-popover py-1 shadow-md w-72 max-h-[min(300px,var(--suggestion-available-height,300px))] overflow-y-auto">
       {items.map((item, index) => {
-        const description = describe(item);
+        const presentation = item.skill ? presentSkill(item.skill) : null;
+        const description = presentation?.description ?? describe(item);
         return (
           <button
             key={item.id}
@@ -151,7 +161,7 @@ export const SlashCommandList = forwardRef<
             }`}
             onClick={() => selectItem(index)}
           >
-            <span className="font-medium">/{item.label}</span>
+            <span className="font-medium">/{presentation?.name ?? item.label}</span>
             {description && (
               <span className="truncate text-muted-foreground">
                 {description}
@@ -166,21 +176,28 @@ export const SlashCommandList = forwardRef<
 
 const NO_MATCH = 4;
 
+interface SearchableSkill {
+  name: string;
+  searchNames?: string[];
+  description?: string;
+  searchText?: string;
+}
+
 /** Returns the match tier: exact name, prefix, substring, then description. */
 function skillMatchRank(
-  skill: { name: string; description?: string },
+  skill: SearchableSkill,
   q: string,
 ): number {
-  const name = skill.name.toLowerCase();
-  if (name === q) return 0;
-  if (name.startsWith(q)) return 1;
-  if (name.includes(q)) return 2;
-  if ((skill.description ?? "").toLowerCase().includes(q)) return 3;
+  const names = skill.searchNames ?? [skill.name.toLowerCase()];
+  if (names.some((name) => name === q)) return 0;
+  if (names.some((name) => name.startsWith(q))) return 1;
+  if (names.some((name) => name.includes(q))) return 2;
+  if ((skill.searchText ?? skill.description ?? "").toLowerCase().includes(q)) return 3;
   return NO_MATCH;
 }
 
 /** Ranks matches by relevance while preserving configured order within each tier. */
-function rankSkillMatches<T extends { name: string; description?: string }>(
+function rankSkillMatches<T extends SearchableSkill>(
   skills: T[],
   q: string,
 ): T[] {
@@ -192,7 +209,7 @@ function rankSkillMatches<T extends { name: string; description?: string }>(
     .map((entry) => entry.skill);
 }
 
-function buildItems(qc: QueryClient, query: string): SlashCommandItem[] {
+async function buildItems(qc: QueryClient, query: string): Promise<SlashCommandItem[]> {
   const wsId = getCurrentWsId();
   if (!wsId) return [];
 
@@ -215,10 +232,58 @@ function buildItems(qc: QueryClient, query: string): SlashCommandItem[] {
     availableAgents[0] ??
     null;
 
+  const assignedSkills = activeAgent?.skills ?? [];
+  if (assignedSkills.length === 0) return [];
+
   const q = query.toLowerCase();
-  return rankSkillMatches(activeAgent?.skills ?? [], q)
-    .slice(0, MAX_ITEMS)
-    .map((s) => ({ id: s.id, label: s.name, description: s.description ?? "" }));
+  const matchingItems = (workspaceSkills: SkillSummary[]): SlashCommandItem[] => {
+    const skillsById = new Map(workspaceSkills.map((skill) => [skill.id, skill]));
+    // Suggestion callbacks run outside React; read the current locale for
+    // search, while SlashCommandList resolves its visible copy reactively.
+    const t = getI18n()?.getFixedT(null, "skills");
+    const searchableSkills = assignedSkills.map((assigned) => {
+      const metadata = skillsById.get(assigned.id);
+      const skill = metadata?.name === assigned.name ? metadata : undefined;
+      const presentation = skill && t ? getSkillPresentation(skill, t) : null;
+      const item: SlashCommandItem = {
+        id: assigned.id,
+        label: assigned.name,
+        description: assigned.description ?? "",
+        ...(skill ? { skill } : {}),
+      };
+      return {
+        name: assigned.name,
+        searchNames: presentation?.searchNames,
+        description: assigned.description,
+        searchText: presentation?.searchText,
+        item,
+      };
+    });
+    return rankSkillMatches(searchableSkills, q)
+      .slice(0, MAX_ITEMS)
+      .map(({ item }) => item);
+  };
+
+  const skillOptions = skillListOptions(wsId);
+  const cachedSkills = qc.getQueryData(skillOptions.queryKey);
+  const cachedItems = matchingItems(cachedSkills ?? []);
+  if (
+    !onlineManager.isOnline() ||
+    qc.getQueryState(skillOptions.queryKey)?.fetchStatus === "paused"
+  ) {
+    return cachedItems;
+  }
+
+  const freshSkills = qc.fetchQuery({
+    ...skillOptions,
+    staleTime: 30 * 1000,
+    retry: false,
+  }).catch(() => cachedSkills ?? []);
+
+  // Existing choices must not depend on a refresh. Only a cold-cache query
+  // with no raw match needs provenance before it can offer a translation.
+  if (cachedSkills !== undefined || cachedItems.length > 0) return cachedItems;
+  return matchingItems(await freshSkills);
 }
 
 export function createSlashCommandSuggestion(qc: QueryClient): Omit<

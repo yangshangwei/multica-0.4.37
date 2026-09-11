@@ -42,6 +42,7 @@ import { Switch } from "@multica/ui/components/ui/switch";
 import { cn } from "@multica/ui/lib/utils";
 import { SkillAddDialog } from "../skill-add-dialog";
 import { useT } from "../../../i18n";
+import { useSkillPresentation } from "../../../skills/hooks/use-skill-presentation";
 
 type SelectedSkill =
   | { kind: "workspace"; id: string }
@@ -60,9 +61,13 @@ export function SkillsTab({
   canEdit?: boolean;
 }) {
   const { t } = useT("agents");
+  const presentSkill = useSkillPresentation();
   const qc = useQueryClient();
   const wsId = useWorkspaceId();
   const { data: workspaceSkills = [] } = useQuery(skillListOptions(wsId));
+  const workspaceSkillsById = new Map(
+    workspaceSkills.map((skill) => [skill.id, skill]),
+  );
   const canReadRuntime =
     runtime != null && isRuntimeUsableForUser(runtime, currentUserId ?? null);
   const runtimeId =
@@ -176,6 +181,9 @@ export function SkillsTab({
         ) : (
           <ul className="divide-y rounded-lg border bg-surface-raised/40">
             {agent.skills.map((skill) => {
+              const presentation = presentSkill(
+                workspaceSkillsById.get(skill.id) ?? skill,
+              );
               const enabled = skill.enabled !== false;
               const busy = busyId === skill.id;
               return (
@@ -195,10 +203,10 @@ export function SkillsTab({
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className={cn("block text-body font-medium", !enabled && "text-muted-foreground")}>
-                        {skill.name}
+                        {presentation.name}
                       </span>
                       <span className="block truncate text-caption text-muted-foreground">
-                        {skill.description || t(($) => $.tab_body.skills.no_description)}
+                        {presentation.description || t(($) => $.tab_body.skills.no_description)}
                       </span>
                     </span>
                   </button>
@@ -211,7 +219,7 @@ export function SkillsTab({
                           checked={enabled}
                           onCheckedChange={(checked) => handleToggle(skill.id, checked)}
                           aria-label={t(($) => $.tab_body.skills.toggle_aria, {
-                            name: skill.name,
+                            name: presentation.name,
                           })}
                         />
                       )}
@@ -221,7 +229,7 @@ export function SkillsTab({
                         onClick={() => handleRemove(skill.id)}
                         disabled={busyId !== null}
                         aria-label={t(($) => $.tab_body.skills.remove_aria, {
-                          name: skill.name,
+                          name: presentation.name,
                         })}
                         className="text-muted-foreground hover:text-destructive"
                       >
@@ -441,9 +449,13 @@ function SkillDetailDialog({
   loading: boolean;
 }) {
   const { t } = useT("agents");
+  const presentSkill = useSkillPresentation();
   const runtimeSkill = selected?.kind === "runtime" ? selected.skill : null;
-  const title = runtimeSkill?.name || workspaceSkill?.name || t(($) => $.tab_body.skills.detail_title);
-  const description = runtimeSkill?.description || workspaceSkill?.description;
+  const workspacePresentation = workspaceSkill
+    ? presentSkill(workspaceSkill)
+    : null;
+  const title = runtimeSkill?.name || workspacePresentation?.name || t(($) => $.tab_body.skills.detail_title);
+  const description = runtimeSkill?.description || workspacePresentation?.description;
 
   return (
     <Dialog open={selected !== null} onOpenChange={onOpenChange}>

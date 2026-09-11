@@ -1,16 +1,23 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Skill } from "@multica/core/types";
+import type { SupportedLocale } from "@multica/core/i18n";
+import { api } from "@multica/core/api";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
 import enSkills from "../../locales/en/skills.json";
+import zhCommon from "../../locales/zh-Hans/common.json";
+import zhSkills from "../../locales/zh-Hans/skills.json";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 
-const TEST_RESOURCES = { en: { common: enCommon, skills: enSkills } };
+const TEST_RESOURCES = {
+  en: { common: enCommon, skills: enSkills },
+  "zh-Hans": { common: zhCommon, skills: zhSkills },
+};
 
 const skillRef = vi.hoisted(() => ({ current: null as unknown }));
 const agentsRef = vi.hoisted(() => ({ current: [] as unknown[] }));
@@ -112,7 +119,10 @@ const baseSkill: Skill = {
   ],
 };
 
-function renderPage(searchParams = new URLSearchParams()) {
+function renderPage(
+  searchParams = new URLSearchParams(),
+  locale: SupportedLocale = "en",
+) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
@@ -126,16 +136,21 @@ function renderPage(searchParams = new URLSearchParams()) {
     hash: "",
     getShareableUrl: (path) => path,
   };
-  render(
-    <I18nProvider locale="en" resources={TEST_RESOURCES}>
+  const page = (language: SupportedLocale) => (
+    <I18nProvider locale={language} resources={TEST_RESOURCES}>
       <NavigationProvider value={navigation}>
         <QueryClientProvider client={queryClient}>
           <SkillDetailPage skillId="skill-1" />
         </QueryClientProvider>
       </NavigationProvider>
-    </I18nProvider>,
+    </I18nProvider>
   );
-  return { replace, queryClient };
+  const result = render(page(locale));
+  return {
+    replace,
+    queryClient,
+    changeLocale: (language: SupportedLocale) => result.rerender(page(language)),
+  };
 }
 
 /** Publishes a new server version of the skill, as a `skill:updated` event would. */
@@ -188,6 +203,68 @@ describe("SkillDetailPage tabs", () => {
         "aria-selected",
       ),
     ).toBe("true");
+  });
+});
+
+describe("SkillDetailPage built-in skill presentation", () => {
+  it("preserves a dirty draft across a locale change and saves only raw properties", async () => {
+    const name = "multica-code-review";
+    const skill = {
+      ...baseSkill,
+      name,
+      description: enSkills.builtin_role_skills[name].description,
+      content: `---\nname: ${name}\n---\n\n# Code review\n`,
+      config: { origin: { type: "builtin_role_skill", name, version: 1 } },
+    };
+    skillRef.current = skill;
+    const { changeLocale } = renderPage(new URLSearchParams(), "zh-Hans");
+    const edited = "Review only the billing changes.";
+    fireEvent.change(await screen.findByRole("textbox", { name: "描述" }), {
+      target: { value: edited },
+    });
+
+    changeLocale("en");
+    expect(await screen.findByRole("textbox", { name: "Description" })).toHaveValue(edited);
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(name);
+    vi.mocked(api.updateSkill).mockResolvedValueOnce({ ...skill, description: edited });
+    await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
+    await waitFor(() => expect(api.updateSkill).toHaveBeenCalledWith(
+      skill.id,
+      expect.objectContaining({
+        name,
+        description: edited,
+        content: skill.content,
+      }),
+    ));
+  });
+
+  it("localizes the heading and purpose without translating the editable properties", async () => {
+    const name = "multica-code-review";
+    const description = enSkills.builtin_role_skills[name].description;
+    skillRef.current = {
+      ...baseSkill,
+      name,
+      description,
+      content: `---\nname: ${name}\n---\n\n# Code review\n`,
+      config: { origin: { type: "builtin_role_skill", name, version: 1 } },
+    };
+    const { changeLocale } = renderPage(new URLSearchParams(), "zh-Hans");
+
+    expect(await screen.findByRole("heading", { name: "代码审查" })).toBeInTheDocument();
+    expect(screen.getByText(zhSkills.builtin_role_skills[name].description)).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "名称" })).toHaveValue(name);
+    expect(screen.getByRole("textbox", { name: "描述" })).toHaveValue(description);
+    expect(screen.queryByRole("button", { name: "保存修改" })).not.toBeInTheDocument();
+
+    changeLocale("en");
+    expect(await screen.findByRole("heading", { name })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(name);
+    expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue(description);
+    expect(screen.queryByRole("button", { name: "Save changes" })).not.toBeInTheDocument();
+
+    changeLocale("zh-Hans");
+    fireEvent.click(await screen.findByRole("tab", { name: "文件 2" }));
+    expect((await screen.findByTestId("preview")).textContent).toContain("# Code review");
   });
 });
 

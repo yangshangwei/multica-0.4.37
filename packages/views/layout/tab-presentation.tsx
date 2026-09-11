@@ -34,6 +34,7 @@ import { ProjectIcon } from "../projects/components/project-icon";
 import { ActorAvatar } from "../common/actor-avatar";
 import { getInboxDisplayTitle } from "../inbox/components/inbox-display";
 import { useT } from "../i18n";
+import { useSkillPresentation } from "../skills/hooks/use-skill-presentation";
 import { ROUTE_ICON_COMPONENTS } from "./route-icon-components";
 
 /**
@@ -75,6 +76,7 @@ const PENDING_RESOURCE_KEYS: ReadonlySet<TabLabelKey> = new Set<TabLabelKey>([
 /** Gather cached entity data for a subject. All reads are cache-only. */
 function useTabEntityData(subject: TabSubject, wsId: string): TabEntityData {
   const { t: chatT } = useT("chat");
+  const presentSkill = useSkillPresentation();
 
   // Read both inbox lists cache-only; the archived view keeps its own list, so
   // an archived selection has to resolve against the archived cache — the same
@@ -153,7 +155,7 @@ function useTabEntityData(subject: TabSubject, wsId: string): TabEntityData {
       if (autopilot) data.autopilot = { title: autopilot.autopilot.title };
       break;
     case "skill":
-      if (skill) data.skill = { name: skill.name };
+      if (skill) data.skill = { name: presentSkill(skill).name };
       break;
     case "actor": {
       const name =

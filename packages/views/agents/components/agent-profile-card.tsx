@@ -9,7 +9,11 @@ import {
   runtimeDisplayLabel,
   type RuntimeHealth,
 } from "@multica/core/runtimes";
-import { agentListOptions, memberListOptions } from "@multica/core/workspace/queries";
+import {
+  agentListOptions,
+  memberListOptions,
+  skillListOptions,
+} from "@multica/core/workspace/queries";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { runtimeListOptions } from "@multica/core/runtimes/queries";
 import { useWorkspacePaths } from "@multica/core/paths";
@@ -20,6 +24,7 @@ import { HealthIcon } from "../../runtimes/components/shared";
 import { availabilityConfig } from "../presence";
 import { VisibilityBadge } from "./visibility-badge";
 import { useT } from "../../i18n";
+import { useSkillPresentation } from "../../skills/hooks/use-skill-presentation";
 
 interface AgentProfileCardProps {
   agentId: string;
@@ -27,6 +32,7 @@ interface AgentProfileCardProps {
 
 export function AgentProfileCard({ agentId }: AgentProfileCardProps) {
   const { t } = useT("agents");
+  const presentSkill = useSkillPresentation();
   const wsId = useWorkspaceId();
   const p = useWorkspacePaths();
   const { data: agents = [], isLoading: agentsLoading } = useQuery(agentListOptions(wsId));
@@ -34,6 +40,13 @@ export function AgentProfileCard({ agentId }: AgentProfileCardProps) {
   const { data: runtimes = [] } = useQuery(runtimeListOptions(wsId));
 
   const agent = agents.find((a) => a.id === agentId);
+  const { data: workspaceSkills = [] } = useQuery({
+    ...skillListOptions(wsId),
+    enabled: !!wsId && (agent?.skills.length ?? 0) > 0,
+  });
+  const workspaceSkillsById = new Map(
+    workspaceSkills.map((skill) => [skill.id, skill]),
+  );
 
   if (agentsLoading && !agent) {
     return (
@@ -124,7 +137,11 @@ export function AgentProfileCard({ agentId }: AgentProfileCardProps) {
         <RuntimeRow agent={agent} runtime={runtime} />
         <ModelRow model={agent.model} thinkingLevel={agent.thinking_level} />
         {agent.skills.length > 0 && (
-          <SkillsRow skills={agent.skills.map((s) => s.name)} />
+          <SkillsRow
+            skills={agent.skills.map((skill) =>
+              presentSkill(workspaceSkillsById.get(skill.id) ?? skill).name,
+            )}
+          />
         )}
         {owner && <MetaRow label={t(($) => $.profile_card.owner_label)} value={owner.name} />}
       </div>

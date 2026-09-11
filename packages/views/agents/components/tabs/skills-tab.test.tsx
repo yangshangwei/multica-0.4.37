@@ -2,14 +2,12 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Agent, AgentRuntime } from "@multica/core/types";
-import { I18nProvider } from "@multica/core/i18n/react";
-import enCommon from "../../../locales/en/common.json";
-import enAgents from "../../../locales/en/agents.json";
-
-const TEST_RESOURCES = { en: { common: enCommon, agents: enAgents } };
+import type { Agent, AgentRuntime, SkillSummary } from "@multica/core/types";
+import type { SupportedLocale } from "@multica/core/i18n";
+import zhSkills from "../../../locales/zh-Hans/skills.json";
+import { renderWithI18n } from "../../../test/i18n";
 
 const mockListSkills = vi.hoisted(() => vi.fn());
 const mockGetSkill = vi.hoisted(() => vi.fn());
@@ -119,10 +117,32 @@ const onlineRuntime: AgentRuntime = {
   updated_at: "2026-07-11T00:00:00Z",
 };
 
+const builtinSkill: SkillSummary = {
+  id: "skill-review",
+  workspace_id: "ws-1",
+  name: "multica-code-review",
+  description:
+    "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report.",
+  config: {
+    origin: { type: "builtin_role_skill", name: "multica-code-review" },
+  },
+  created_by: null,
+  created_at: "2026-09-12T00:00:00Z",
+  updated_at: "2026-09-12T00:00:00Z",
+};
+
+const assignedBuiltinSkill = {
+  id: builtinSkill.id,
+  name: builtinSkill.name,
+  description: builtinSkill.description,
+  enabled: true,
+};
+
 function renderSkillsTab(
   agentOverrides: Partial<Agent> = {},
   runtime: AgentRuntime | null = null,
   currentUserId: string | null = "user-1",
+  locale: SupportedLocale = "en",
 ) {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -132,16 +152,15 @@ function renderSkillsTab(
     },
   });
 
-  return render(
-    <I18nProvider locale="en" resources={TEST_RESOURCES}>
-      <QueryClientProvider client={queryClient}>
-        <SkillsTab
-          agent={{ ...agent, ...agentOverrides }}
-          runtime={runtime}
-          currentUserId={currentUserId}
-        />
-      </QueryClientProvider>
-    </I18nProvider>,
+  return renderWithI18n(
+    <QueryClientProvider client={queryClient}>
+      <SkillsTab
+        agent={{ ...agent, ...agentOverrides }}
+        runtime={runtime}
+        currentUserId={currentUserId}
+      />
+    </QueryClientProvider>,
+    { locale },
   );
 }
 
@@ -191,6 +210,39 @@ describe("SkillsTab", () => {
       false,
     );
     expect(mockRemoveAgentSkill).not.toHaveBeenCalled();
+  });
+
+  it("localizes an assigned built-in using its workspace metadata and retains its toggle ID", async () => {
+    const user = userEvent.setup();
+    mockListSkills.mockResolvedValue([builtinSkill]);
+    renderSkillsTab({ skills: [assignedBuiltinSkill] }, null, "user-1", "zh-Hans");
+
+    expect(await screen.findByText("代码审查")).toBeInTheDocument();
+    expect(screen.getByText(zhSkills.builtin_role_skills["multica-code-review"].description)).toBeInTheDocument();
+    expect(screen.queryByText(builtinSkill.description)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("switch", { name: /代码审查/ }));
+
+    expect(mockSetAgentSkillEnabled).toHaveBeenCalledWith("agent-1", builtinSkill.id, false);
+    expect(mockRemoveAgentSkill).not.toHaveBeenCalled();
+  });
+
+  it("localizes a workspace preview title without translating its source content", async () => {
+    const user = userEvent.setup();
+    const content = "# multica-code-review\n\nReview the original English instructions.";
+    mockListSkills.mockResolvedValue([builtinSkill]);
+    mockGetSkill.mockResolvedValue({ ...builtinSkill, content, files: [] });
+    renderSkillsTab({ skills: [assignedBuiltinSkill] }, null, "user-1", "zh-Hans");
+
+    await user.click(await screen.findByRole("button", { name: /^代码审查/ }));
+
+    expect(await screen.findByRole("heading", { name: "代码审查" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toHaveTextContent(
+      zhSkills.builtin_role_skills["multica-code-review"].description,
+    );
+    expect(screen.getByText(/Review the original English instructions\./).textContent).toBe(content);
+    expect(mockGetSkill).toHaveBeenCalledWith(builtinSkill.id);
+    expect(screen.queryByText(builtinSkill.description)).not.toBeInTheDocument();
   });
 
   it("shows inherited skills discovered from the assigned runtime", async () => {

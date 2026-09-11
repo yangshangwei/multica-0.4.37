@@ -53,6 +53,7 @@ import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../../i18n";
 import { useIntentNavigate } from "../../navigation";
 import { isRefreshableOrigin, readOrigin } from "../lib/origin";
+import { useSkillPresentation } from "../hooks/use-skill-presentation";
 import { RefreshSkillDialog } from "./refresh-skill-dialog";
 import type { SkillRow } from "./skills-page";
 
@@ -152,6 +153,7 @@ const MAX_SKILL_CHIPS = 3;
 const MAX_TOOLTIP_NAMES = 10;
 
 function SkillChips({ skills }: { skills: SkillSummary[] }) {
+  const presentSkill = useSkillPresentation();
   const visible = skills.slice(0, MAX_SKILL_CHIPS);
   const overflow = skills.slice(MAX_SKILL_CHIPS);
   const chipClass =
@@ -160,7 +162,7 @@ function SkillChips({ skills }: { skills: SkillSummary[] }) {
     <div className="flex flex-wrap items-center gap-1">
       {visible.map((s) => (
         <span key={s.id} className={chipClass}>
-          {s.name}
+          {presentSkill(s).name}
         </span>
       ))}
       {overflow.length > 0 && (
@@ -175,7 +177,7 @@ function SkillChips({ skills }: { skills: SkillSummary[] }) {
           <TooltipContent side="bottom" className="max-w-64">
             {overflow
               .slice(0, MAX_TOOLTIP_NAMES)
-              .map((s) => s.name)
+              .map((s) => presentSkill(s).name)
               .join(", ")}
             {overflow.length > MAX_TOOLTIP_NAMES ? "…" : ""}
           </TooltipContent>
@@ -420,6 +422,7 @@ export function DeleteSkillsDialog({
   onDeleted?: () => void;
 }) {
   const { t } = useT("skills");
+  const presentSkill = useSkillPresentation();
   const qc = useQueryClient();
   const [deleting, setDeleting] = useState(false);
   const single = rows.length === 1 ? rows[0] : null;
@@ -465,11 +468,11 @@ export function DeleteSkillsDialog({
             {single
               ? single.agents.length > 0
                 ? t(($) => $.detail.delete_dialog.description_with_agents, {
-                    name: single.skill.name,
+                    name: presentSkill(single.skill).name,
                     count: single.agents.length,
                   })
                 : t(($) => $.detail.delete_dialog.description_no_agents, {
-                    name: single.skill.name,
+                    name: presentSkill(single.skill).name,
                   })
               : t(($) => $.actions.delete_dialog_desc, { count })}
           </DialogDescription>
@@ -661,6 +664,7 @@ export function SkillRowActions({
   ctx: SkillActionsContext;
 }) {
   const { t } = useT("skills");
+  const presentSkill = useSkillPresentation();
   const { t: tCommon } = useT("common");
   const paths = useWorkspacePaths();
   const intentNavigate = useIntentNavigate();
@@ -694,7 +698,7 @@ export function SkillRowActions({
               intentNavigate(
                 paths.skillDetail(row.skill.id),
                 "foreground-tab",
-                row.skill.name,
+                presentSkill(row.skill).name,
               )
             }
           >

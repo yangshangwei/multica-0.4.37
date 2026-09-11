@@ -4,6 +4,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, screen } from "@testing-library/react";
 import type { SkillSummary } from "@multica/core/types";
+import type { SupportedLocale } from "@multica/core/i18n";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 
@@ -116,7 +117,21 @@ vi.mock("@multica/ui/components/ui/tooltip", () => ({
   TooltipContent: () => null,
 }));
 vi.mock("./create-skill-dialog", () => ({ CreateSkillDialog: () => null }));
-vi.mock("./skill-list-toolbar", () => ({ SkillListToolbar: () => null }));
+vi.mock("./skill-list-toolbar", () => ({
+  SkillListToolbar: ({
+    search,
+    onSearchChange,
+  }: {
+    search: string;
+    onSearchChange: (value: string) => void;
+  }) => (
+    <input
+      aria-label="Search skills"
+      value={search}
+      onChange={(event) => onSearchChange(event.target.value)}
+    />
+  ),
+}));
 vi.mock("./skill-list-actions", () => ({
   SkillBatchToolbar: () => null,
   SkillRowActions: () => null,
@@ -153,11 +168,12 @@ function makeAdapter(
   };
 }
 
-function renderPage(adapter: NavigationAdapter) {
-  renderWithI18n(
+function renderPage(adapter: NavigationAdapter, locale: SupportedLocale = "en") {
+  return renderWithI18n(
     <NavigationProvider value={adapter}>
       <SkillsPage />
     </NavigationProvider>,
+    { locale },
   );
 }
 
@@ -218,5 +234,57 @@ describe("SkillsPage source link vs row navigation", () => {
       "/acme/skills/skill-1",
       "animations",
     );
+  });
+});
+
+describe("SkillsPage built-in skill presentation", () => {
+  const builtInSkill: SkillSummary = {
+    ...importedSkill,
+    name: "multica-code-review",
+    description:
+      "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report.",
+    config: {
+      origin: { type: "builtin_role_skill", name: "multica-code-review", version: 1 },
+    },
+  };
+
+  it("shows the Chinese name and purpose while navigation keeps the skill ID", async () => {
+    mocks.skills = [builtInSkill];
+    const adapter = makeAdapter();
+    renderPage(adapter, "zh-Hans");
+
+    const name = await screen.findByText("代码审查");
+    expect(screen.getByText(/检查正确性、兼容性和失败场景/)).toBeInTheDocument();
+    middleClick(name);
+    expect(adapter.openInNewTab).toHaveBeenCalledWith(
+      "/acme/skills/skill-1",
+      "代码审查",
+    );
+  });
+
+  it("finds the same row by Chinese purpose and English identifier", async () => {
+    mocks.skills = [builtInSkill, { ...importedSkill, id: "skill-2" }];
+    renderPage(makeAdapter(), "zh-Hans");
+    const search = screen.getByRole("textbox", { name: "Search skills" });
+
+    fireEvent.change(search, { target: { value: "兼容性" } });
+    expect(await screen.findByText("代码审查")).toBeInTheDocument();
+    expect(screen.queryByText("animations")).not.toBeInTheDocument();
+
+    fireEvent.change(search, { target: { value: "MULTICA-CODE-REVIEW" } });
+    expect(screen.getByText("代码审查")).toBeInTheDocument();
+    expect(screen.queryByText("animations")).not.toBeInTheDocument();
+
+    fireEvent.change(search, { target: { value: "unmatched phrase" } });
+    expect(screen.queryByText("代码审查")).not.toBeInTheDocument();
+  });
+
+  it("supports Chinese search while reading the English interface", async () => {
+    mocks.skills = [builtInSkill];
+    renderPage(makeAdapter());
+    fireEvent.change(screen.getByRole("textbox", { name: "Search skills" }), {
+      target: { value: "代码审查" },
+    });
+    expect(await screen.findByText("multica-code-review")).toBeInTheDocument();
   });
 });

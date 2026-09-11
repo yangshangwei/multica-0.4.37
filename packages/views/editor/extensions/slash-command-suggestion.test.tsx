@@ -1,14 +1,19 @@
-import { act, render } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
 import { createRef, type ReactNode } from "react";
-import { beforeAll, describe, expect, it, vi } from "vitest";
-import { I18nProvider } from "@multica/core/i18n/react";
-import { workspaceKeys } from "@multica/core/workspace/queries";
-import type { Agent, MemberWithUser } from "@multica/core/types";
-import type { QueryClient } from "@tanstack/react-query";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { createI18n, I18nProvider } from "@multica/core/i18n/react";
+import { api } from "@multica/core/api";
+import { skillListOptions, workspaceKeys } from "@multica/core/workspace/queries";
+import type { Agent, MemberWithUser, SkillSummary } from "@multica/core/types";
+import { onlineManager, QueryClient } from "@tanstack/react-query";
 import enEditor from "../../locales/en/editor.json";
+import enSkills from "../../locales/en/skills.json";
+import zhEditor from "../../locales/zh-Hans/editor.json";
+import zhSkills from "../../locales/zh-Hans/skills.json";
 
 const TEST_RESOURCES = {
-  en: { editor: enEditor },
+  en: { editor: enEditor, skills: enSkills },
+  "zh-Hans": { editor: zhEditor, skills: zhSkills },
 };
 
 function I18nWrapper({ children }: { children: ReactNode }) {
@@ -23,8 +28,16 @@ beforeAll(() => {
   Element.prototype.scrollIntoView = vi.fn();
 });
 
+beforeEach(() => {
+  createI18n("en", TEST_RESOURCES);
+});
+
 vi.mock("@multica/core/platform", () => ({
   getCurrentWsId: () => "ws-1",
+}));
+
+vi.mock("@multica/core/api", () => ({
+  api: { listSkills: vi.fn() },
 }));
 
 const authState = { user: { id: "u1" } as { id: string } | null };
@@ -79,26 +92,41 @@ function agent(overrides: Partial<Agent>): Agent {
 function fakeQc(data: {
   members?: Array<Pick<MemberWithUser, "user_id" | "name" | "role">>;
   agents?: Agent[];
+  skills?: SkillSummary[];
+  fetchSkills?: () => Promise<SkillSummary[]>;
 }): QueryClient {
   const map = new Map<string, unknown>();
   map.set(JSON.stringify(workspaceKeys.members("ws-1")), data.members ?? []);
   map.set(JSON.stringify(workspaceKeys.agents("ws-1")), data.agents ?? []);
+  if (data.skills !== undefined) {
+    map.set(JSON.stringify(workspaceKeys.skills("ws-1")), data.skills);
+  }
   return {
     getQueryData: (key: readonly unknown[]) => map.get(JSON.stringify(key)),
+    getQueryState: () => undefined,
+    fetchQuery: data.fetchSkills ?? (() => Promise.resolve(data.skills ?? [])),
   } as unknown as QueryClient;
 }
 
-function items(qc: QueryClient, query = ""): SlashCommandItem[] {
+async function items(qc: QueryClient, query = ""): Promise<SlashCommandItem[]> {
   const config = createSlashCommandSuggestion(qc);
-  return config.items!({
+  return await config.items!({
     query,
     editor: {} as never,
     signal: new AbortController().signal,
-  }) as SlashCommandItem[];
+  });
+}
+
+// An existing suggestion must settle before a network response is available.
+function immediateItems(qc: QueryClient, query = "") {
+  return Promise.race([
+    items(qc, query),
+    new Promise<"still waiting">((resolve) => setTimeout(() => resolve("still waiting"), 0)),
+  ]);
 }
 
 describe("slash command suggestion items", () => {
-  it("returns all active agent skills when query is empty", () => {
+  it("returns all active agent skills when query is empty", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -113,10 +141,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc).map((i) => i.label)).toEqual(["deploy", "review"]);
+    expect((await items(qc)).map((i) => i.label)).toEqual(["deploy", "review"]);
   });
 
-  it("filters skills by name case-insensitively", () => {
+  it("filters skills by name case-insensitively", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -131,10 +159,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc, "dep").map((i) => i.id)).toEqual(["s1"]);
+    expect((await items(qc, "dep")).map((i) => i.id)).toEqual(["s1"]);
   });
 
-  it("filters skills by description", () => {
+  it("filters skills by description", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -149,10 +177,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc, "pull").map((i) => i.id)).toEqual(["s2"]);
+    expect((await items(qc, "pull")).map((i) => i.id)).toEqual(["s2"]);
   });
 
-  it("ranks name prefix matches above description-only matches", () => {
+  it("ranks name prefix matches above description-only matches", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -168,10 +196,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc, "wa").map((i) => i.id)).toEqual(["s3", "s2"]);
+    expect((await items(qc, "wa")).map((i) => i.id)).toEqual(["s3", "s2"]);
   });
 
-  it("ranks an exact name match ahead of a longer prefix match", () => {
+  it("ranks an exact name match ahead of a longer prefix match", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -186,10 +214,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc, "review").map((i) => i.id)).toEqual(["s2", "s1"]);
+    expect((await items(qc, "review")).map((i) => i.id)).toEqual(["s2", "s1"]);
   });
 
-  it("ranks a name prefix above a mid-name match", () => {
+  it("ranks a name prefix above a mid-name match", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -204,10 +232,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc, "rev").map((i) => i.id)).toEqual(["s2", "s1"]);
+    expect((await items(qc, "rev")).map((i) => i.id)).toEqual(["s2", "s1"]);
   });
 
-  it("keeps the configured skill order within a match tier", () => {
+  it("keeps the configured skill order within a match tier", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -222,10 +250,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc, "deploy").map((i) => i.id)).toEqual(["s1", "s2"]);
+    expect((await items(qc, "deploy")).map((i) => i.id)).toEqual(["s1", "s2"]);
   });
 
-  it("keeps a name match inside the 20-item cap when description hits fill it", () => {
+  it("keeps a name match inside the 20-item cap when description hits fill it", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -244,12 +272,12 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    const result = items(qc, "wa");
+    const result = await items(qc, "wa");
     expect(result).toHaveLength(20);
     expect(result[0]?.id).toBe("s-named");
   });
 
-  it("tolerates skills with missing descriptions from cached API data", () => {
+  it("tolerates skills with missing descriptions from cached API data", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -263,23 +291,22 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(() => items(qc, "dep")).not.toThrow();
-    expect(items(qc, "dep")).toEqual([
+    expect(await items(qc, "dep")).toEqual([
       { id: "s1", label: "deploy", description: "" },
     ]);
   });
 
-  it("returns empty when the active agent has no skills", () => {
+  it("returns empty when the active agent has no skills", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
       agents: [agent({ id: "agent-1", skills: [] })],
     });
 
-    expect(items(qc)).toEqual([]);
+    expect(await items(qc)).toEqual([]);
   });
 
-  it("caps results at 20", () => {
+  it("caps results at 20", async () => {
     chatState.selectedAgentId = "agent-1";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -295,10 +322,10 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc)).toHaveLength(20);
+    expect(await items(qc)).toHaveLength(20);
   });
 
-  it("falls back to the first available agent when selectedAgentId is stale", () => {
+  it("falls back to the first available agent when selectedAgentId is stale", async () => {
     chatState.selectedAgentId = "missing";
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
@@ -310,19 +337,19 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc).map((i) => i.id)).toEqual(["s1"]);
+    expect((await items(qc)).map((i) => i.id)).toEqual(["s1"]);
   });
 
-  it("returns empty when no agents exist", () => {
+  it("returns empty when no agents exist", async () => {
     const qc = fakeQc({
       members: [{ user_id: "u1", name: "Alice", role: "member" }],
       agents: [],
     });
 
-    expect(items(qc)).toEqual([]);
+    expect(await items(qc)).toEqual([]);
   });
 
-  it("excludes skills from private agents the user cannot access", () => {
+  it("excludes skills from private agents the user cannot access", async () => {
     chatState.selectedAgentId = "private-agent";
     const qc = fakeQc({
       members: [
@@ -341,7 +368,199 @@ describe("slash command suggestion items", () => {
       ],
     });
 
-    expect(items(qc)).toEqual([]);
+    expect(await items(qc)).toEqual([]);
+  });
+});
+
+// Canonical copy/provenance cases live in skills/lib/skill-presentation.test.ts.
+describe("built-in role skill slash suggestions", () => {
+  const canonicalName = "multica-code-review";
+  const skill: SkillSummary = {
+    id: "review-skill",
+    workspace_id: "ws-1",
+    name: canonicalName,
+    description: enSkills.builtin_role_skills[canonicalName].description,
+    config: { origin: { type: "builtin_role_skill", name: canonicalName } },
+    created_by: "u1",
+    created_at: "",
+    updated_at: "",
+  };
+
+  function configuredClient(
+    fetchSkills?: () => Promise<SkillSummary[]>,
+    workspaceSkills = [skill],
+  ) {
+    chatState.selectedAgentId = "agent-1";
+    return fakeQc({
+      members: [{ user_id: "u1", name: "Alice", role: "member" }],
+      agents: [agent({ skills: [{ id: skill.id, name: skill.name, description: skill.description }] })],
+      skills: workspaceSkills,
+      fetchSkills,
+    });
+  }
+
+  it("finds an assigned skill by Chinese purpose and English identifier in either locale", async () => {
+    const qc = configuredClient();
+
+    for (const locale of ["en", "zh-Hans"] as const) {
+      createI18n(locale, TEST_RESOURCES);
+      for (const query of ["代码审查", "MULTICA-CODE-REVIEW", "actionable"]) {
+        expect((await items(qc, query)).map((item) => item.id)).toEqual([skill.id]);
+      }
+      const purpose = zhSkills.builtin_role_skills[canonicalName].description;
+      expect((await items(qc, purpose)).map((item) => item.id)).toEqual([skill.id]);
+    }
+  });
+
+  it("uses assigned UUIDs rather than matching unrelated workspace skills by name", async () => {
+    chatState.selectedAgentId = "agent-1";
+    const qc = fakeQc({
+      members: [{ user_id: "u1", name: "Alice", role: "member" }],
+      agents: [agent({ skills: [{ id: "custom-copy", name: canonicalName, description: "Custom review" }] })],
+      skills: [skill],
+    });
+
+    expect(await items(qc, "代码审查")).toEqual([]);
+    expect(await items(qc, canonicalName)).toEqual([
+      { id: "custom-copy", label: canonicalName, description: "Custom review" },
+    ]);
+  });
+
+  it("keeps raw assigned suggestions available when metadata loading fails", async () => {
+    const qc = configuredClient(() => Promise.reject(new Error("offline")), []);
+
+    expect((await items(qc, canonicalName)).map(({ id, label }) => ({ id, label })))
+      .toEqual([{ id: skill.id, label: canonicalName }]);
+  });
+
+  it("uses cached metadata immediately while its refresh is still unresolved", async () => {
+    const refresh = vi.fn(() => new Promise<SkillSummary[]>(() => {}));
+    const qc = configuredClient(refresh);
+
+    expect(await immediateItems(qc, "代码审查")).toEqual([
+      expect.objectContaining({ id: skill.id, label: canonicalName, skill }),
+    ]);
+    expect(refresh).toHaveBeenCalledOnce();
+  });
+
+  it("keeps cold-cache raw matches immediate while metadata loads", async () => {
+    chatState.selectedAgentId = "agent-1";
+    const qc = fakeQc({
+      members: [{ user_id: "u1", name: "Alice", role: "member" }],
+      agents: [agent({ skills: [{ id: skill.id, name: skill.name, description: skill.description }] })],
+      fetchSkills: () => new Promise<SkillSummary[]>(() => {}),
+    });
+
+    for (const query of ["", canonicalName, "actionable"]) {
+      expect(await immediateItems(qc, query)).toEqual([
+        { id: skill.id, label: canonicalName, description: skill.description },
+      ]);
+    }
+  });
+
+  it("loads provenance for a cold-cache query that has no raw match", async () => {
+    chatState.selectedAgentId = "agent-1";
+    const qc = fakeQc({
+      members: [{ user_id: "u1", name: "Alice", role: "member" }],
+      agents: [agent({ skills: [{ id: skill.id, name: skill.name, description: skill.description }] })],
+      fetchSkills: () => Promise.resolve([skill]),
+    });
+
+    expect((await items(qc, "代码审查")).map((item) => item.id)).toEqual([skill.id]);
+  });
+
+  it("never waits on offline-paused metadata for cached or cold suggestions", async () => {
+    chatState.selectedAgentId = "agent-1";
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    qc.setQueryData(workspaceKeys.members("ws-1"), [{ user_id: "u1", name: "Alice", role: "member" }]);
+    qc.setQueryData(workspaceKeys.agents("ws-1"), [
+      agent({ skills: [{ id: skill.id, name: skill.name, description: skill.description }] }),
+    ]);
+    qc.setQueryData(workspaceKeys.skills("ws-1"), [skill], { updatedAt: 1 });
+    const fetchSkills = vi.mocked(api.listSkills).mockResolvedValue([skill]);
+    onlineManager.setOnline(false);
+    try {
+      expect(await immediateItems(qc)).toEqual([
+        expect.objectContaining({ id: skill.id, label: canonicalName }),
+      ]);
+      qc.removeQueries({ queryKey: workspaceKeys.skills("ws-1"), exact: true });
+      expect(await immediateItems(qc, canonicalName)).toEqual([
+        { id: skill.id, label: canonicalName, description: skill.description },
+      ]);
+      expect(await immediateItems(qc, "代码审查")).toEqual([]);
+      void qc.fetchQuery({ ...skillListOptions("ws-1"), retry: false }).catch(() => []);
+      expect(qc.getQueryState(workspaceKeys.skills("ws-1"))?.fetchStatus).toBe("paused");
+      // A previously paused request may not resume as soon as connectivity
+      // changes (for example while its QueryClient has no mounted observer).
+      onlineManager.setOnline(true);
+      expect(await immediateItems(qc, "代码审查")).toEqual([]);
+      expect(fetchSkills).not.toHaveBeenCalled();
+    } finally {
+      qc.clear();
+      onlineManager.setOnline(true);
+      fetchSkills.mockReset();
+    }
+  });
+
+  it("ranks an exact Chinese name before description hits in the English UI", async () => {
+    createI18n("en", { en: TEST_RESOURCES.en });
+    chatState.selectedAgentId = "agent-1";
+    const qc = fakeQc({
+      members: [{ user_id: "u1", name: "Alice", role: "member" }],
+      agents: [agent({ skills: [
+        ...Array.from({ length: 20 }, (_, index) => ({
+          id: `description-${index}`,
+          name: `custom-${index}`,
+          description: "与代码审查有关的自定义说明",
+        })),
+        { id: skill.id, name: skill.name, description: skill.description },
+      ] })],
+      skills: [skill],
+    });
+
+    const results = await items(qc, "代码审查");
+    expect(results).toHaveLength(20);
+    expect(results[0]?.id).toBe(skill.id);
+  });
+
+  it("updates the visible language while inserting the unchanged slash command identity", async () => {
+    const qc = configuredClient();
+    const skillItems = await items(qc);
+    const insertContentAt = vi.fn().mockReturnThis();
+    const chain = { focus: vi.fn().mockReturnThis(), insertContentAt, run: vi.fn() };
+    const editor = {
+      chain: () => chain,
+      view: { state: { selection: { $to: { nodeAfter: null } } } },
+    };
+    const suggestion = createSlashCommandSuggestion(qc);
+    const command = (props: SlashCommandItem) => suggestion.command!({
+      editor,
+      range: { from: 1, to: 2 },
+      props,
+    } as never);
+    const list = <SlashCommandList items={skillItems} query="" command={command} />;
+    const view = render(
+      <I18nProvider locale="zh-Hans" resources={TEST_RESOURCES}>
+        {list}
+      </I18nProvider>,
+    );
+
+    expect(view.getByText("/代码审查")).toBeInTheDocument();
+    expect(view.getByText(zhSkills.builtin_role_skills[canonicalName].description)).toBeInTheDocument();
+    window.getSelection()?.collapse(view.container, 0);
+    fireEvent.click(view.getByRole("button"));
+    expect(insertContentAt).toHaveBeenCalledWith({ from: 1, to: 2 }, [
+      { type: "slashCommand", attrs: { id: skill.id, label: canonicalName, mentionSuggestionChar: "/" } },
+      { type: "text", text: " " },
+    ]);
+
+    view.rerender(
+      <I18nProvider locale="en" resources={TEST_RESOURCES}>
+        {list}
+      </I18nProvider>,
+    );
+    expect(view.getByText(`/${canonicalName}`)).toBeInTheDocument();
+    expect(view.queryByText("/代码审查")).not.toBeInTheDocument();
   });
 });
 

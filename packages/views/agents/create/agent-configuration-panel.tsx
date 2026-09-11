@@ -17,6 +17,7 @@ import { cn } from "@multica/ui/lib/utils";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { AvatarUploadControl } from "../../common/avatar-upload-control";
 import { useT } from "../../i18n";
+import { getBuiltinRoleSkillPresentation } from "../../skills/lib/skill-presentation";
 import {
   SettingsCard,
   SettingsSection,
@@ -486,7 +487,7 @@ function DraftFieldRow({
 
 /**
  * The behaviour section for an agent being created from a role template: the
- * instructions and skills the backend will apply, shown as they are.
+ * instructions the backend will apply, alongside localized skill labels.
  *
  * Read-only here and editable afterwards is the whole contract of a template
  * copy, so the note says so explicitly — without it the section reads as a
@@ -500,6 +501,7 @@ function RoleTemplateBehaviour({
   skillNames: string[];
 }) {
   const { t } = useT("agents");
+  const { t: skillsT } = useT("skills");
   return (
     <>
       <div className="space-y-2 px-4 py-4">
@@ -525,14 +527,18 @@ function RoleTemplateBehaviour({
           </span>
         ) : (
           <div className="flex flex-wrap gap-1.5">
-            {skillNames.map((name) => (
-              <span
-                key={name}
-                className="rounded-full border bg-muted px-2 py-0.5 font-mono text-micro text-muted-foreground"
-              >
-                {name}
-              </span>
-            ))}
+            {skillNames.map((name) => {
+              const presentation = getBuiltinRoleSkillPresentation(name, skillsT);
+              return (
+                <span
+                  key={name}
+                  title={presentation?.description}
+                  className="rounded-full border bg-muted px-2 py-0.5 font-mono text-micro text-muted-foreground"
+                >
+                  {presentation?.name ?? name}
+                </span>
+              );
+            })}
           </div>
         )}
         <span className="block text-micro text-muted-foreground">

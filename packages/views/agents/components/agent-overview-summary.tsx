@@ -1,16 +1,19 @@
 "use client";
 
 import { Bot, Server } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import type {
   Agent,
   AgentRuntime,
   MemberWithUser,
 } from "@multica/core/types";
 import { runtimeDisplayLabel } from "@multica/core/runtimes";
+import { skillListOptions } from "@multica/core/workspace/queries";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { useT } from "../../i18n";
 import { VisibilityBadge } from "./visibility-badge";
 import { AgentPerformanceSummary } from "./tabs/activity-tab";
+import { useSkillPresentation } from "../../skills/hooks/use-skill-presentation";
 
 interface AgentOverviewSummaryProps {
   agent: Agent;
@@ -29,6 +32,14 @@ export function AgentOverviewSummary({
   owner,
 }: AgentOverviewSummaryProps) {
   const { t } = useT("agents");
+  const presentSkill = useSkillPresentation();
+  const { data: workspaceSkills = [] } = useQuery({
+    ...skillListOptions(agent.workspace_id),
+    enabled: !!agent.workspace_id && agent.skills.length > 0,
+  });
+  const workspaceSkillsById = new Map(
+    workspaceSkills.map((skill) => [skill.id, skill]),
+  );
   const runtimeOnline = runtime?.status === "online";
 
   return (
@@ -101,7 +112,7 @@ export function AgentOverviewSummary({
                 key={skill.id}
                 className="max-w-full truncate rounded-md border border-surface-border bg-surface-hover px-2 py-1 text-caption text-muted-foreground"
               >
-                {skill.name}
+                {presentSkill(workspaceSkillsById.get(skill.id) ?? skill).name}
               </span>
             ))}
           </div>

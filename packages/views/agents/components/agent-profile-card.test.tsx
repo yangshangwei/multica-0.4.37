@@ -1,12 +1,11 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
-import { I18nProvider } from "@multica/core/i18n/react";
-import enCommon from "../../locales/en/common.json";
+import { screen, cleanup } from "@testing-library/react";
+import type { SupportedLocale } from "@multica/core/i18n";
+import type { SkillSummary } from "@multica/core/types";
+import { renderWithI18n } from "../../test/i18n";
 import enAgents from "../../locales/en/agents.json";
-
-const TEST_RESOURCES = { en: { common: enCommon, agents: enAgents } };
 
 vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "ws-1",
@@ -45,11 +44,13 @@ vi.mock("../../navigation", () => ({
 const mockAgents = vi.hoisted(() => ({ current: [] as unknown[] }));
 const mockMembers = vi.hoisted(() => ({ current: [] as unknown[] }));
 const mockRuntimes = vi.hoisted(() => ({ current: [] as unknown[] }));
+const mockSkills = vi.hoisted(() => ({ current: [] as SkillSummary[] }));
 
-// Distinguish the three list queries the card spreads into useQuery by their
+// Distinguish the list queries the card spreads into useQuery by their
 // query-key shape:
 //   ["workspaces", wsId, "agents"]   — agent list
 //   ["workspaces", wsId, "members"]  — member list
+//   ["workspaces", wsId, "skills"]   — skill list
 //   ["runtimes",   wsId, "list"]     — runtime list
 vi.mock("@tanstack/react-query", async () => {
   const actual = await vi.importActual<typeof import("@tanstack/react-query")>(
@@ -64,6 +65,9 @@ vi.mock("@tanstack/react-query", async () => {
       }
       if (key[0] === "workspaces" && key[2] === "members") {
         return { data: mockMembers.current, isLoading: false };
+      }
+      if (key[0] === "workspaces" && key[2] === "skills") {
+        return { data: mockSkills.current, isLoading: false };
       }
       if (key[0] === "runtimes") {
         return { data: mockRuntimes.current, isLoading: false };
@@ -123,12 +127,8 @@ function makeAgent(overrides: Record<string, unknown> = {}) {
   };
 }
 
-function renderCard() {
-  return render(
-    <I18nProvider locale="en" resources={TEST_RESOURCES}>
-      <AgentProfileCard agentId="agent-1" />
-    </I18nProvider>,
-  );
+function renderCard(locale: SupportedLocale = "en") {
+  return renderWithI18n(<AgentProfileCard agentId="agent-1" />, { locale });
 }
 
 beforeEach(() => {
@@ -136,7 +136,55 @@ beforeEach(() => {
   cleanup();
   mockMembers.current = [];
   mockRuntimes.current = [];
+  mockSkills.current = [];
   mockAgents.current = [makeAgent()];
+});
+
+describe("AgentProfileCard — Skills row", () => {
+  it("uses matching workspace metadata to localize an assigned skill", () => {
+    const skill: SkillSummary = {
+      id: "skill-review",
+      workspace_id: "ws-1",
+      name: "multica-code-review",
+      description: "",
+      config: {
+        origin: { type: "builtin_role_skill", name: "multica-code-review" },
+      },
+      created_by: null,
+      created_at: "2026-09-12T00:00:00Z",
+      updated_at: "2026-09-12T00:00:00Z",
+    };
+    mockSkills.current = [skill];
+    mockAgents.current = [makeAgent({ skills: [{ id: skill.id, name: skill.name, description: "" }] })];
+
+    renderCard("zh-Hans");
+
+    expect(screen.getByText("代码审查")).toBeInTheDocument();
+    expect(screen.queryByText(skill.name)).not.toBeInTheDocument();
+  });
+
+  it("keeps the stored name until metadata for the same skill ID is available", () => {
+    mockSkills.current = [{
+      id: "different-skill",
+      workspace_id: "ws-1",
+      name: "multica-code-review",
+      description: "",
+      config: {
+        origin: { type: "builtin_role_skill", name: "multica-code-review" },
+      },
+      created_by: null,
+      created_at: "2026-09-12T00:00:00Z",
+      updated_at: "2026-09-12T00:00:00Z",
+    }];
+    mockAgents.current = [makeAgent({
+      skills: [{ id: "skill-review", name: "multica-code-review", description: "" }],
+    })];
+
+    renderCard("zh-Hans");
+
+    expect(screen.getByText("multica-code-review")).toBeInTheDocument();
+    expect(screen.queryByText("代码审查")).not.toBeInTheDocument();
+  });
 });
 
 describe("AgentProfileCard — Runtime row", () => {

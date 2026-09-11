@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { ReactNode } from "react";
 import { render, renderHook } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { I18nProvider } from "@multica/core/i18n/react";
+import type { SupportedLocale } from "@multica/core/i18n";
 import { issueDetailOptions } from "@multica/core/issues/queries";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { chatSessionsOptions } from "@multica/core/chat/queries";
@@ -9,8 +11,17 @@ import {
   inboxListOptions,
   archivedInboxListOptions,
 } from "@multica/core/inbox/queries";
-import { agentListOptions } from "@multica/core/workspace/queries";
+import { agentListOptions, skillDetailOptions } from "@multica/core/workspace/queries";
 import { runtimeListOptions } from "@multica/core/runtimes/queries";
+import enLayout from "../locales/en/layout.json";
+import enChat from "../locales/en/chat.json";
+import enSkills from "../locales/en/skills.json";
+import zhSkills from "../locales/zh-Hans/skills.json";
+
+const TEST_RESOURCES = {
+  en: { layout: enLayout, chat: enChat, skills: enSkills },
+  "zh-Hans": { skills: zhSkills },
+};
 
 // Mutable workspace stub so a test can simulate "workspace not resolved yet".
 const ws = vi.hoisted(() => ({ current: { id: "ws1", slug: "acme" } as { id: string; slug: string } | null }));
@@ -19,18 +30,6 @@ vi.mock("@multica/core/paths", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@multica/core/paths")>()),
   useCurrentWorkspace: () => ws.current,
 }));
-
-vi.mock("../i18n", async () => {
-  const layout = (await import("../locales/en/layout.json")).default;
-  const chat = (await import("../locales/en/chat.json")).default;
-  const bundles: Record<string, unknown> = { layout, chat };
-  return {
-    useT: (ns: string) => ({
-      t: (select: (b: Record<string, unknown>) => string) =>
-        select(bundles[ns] as Record<string, unknown>),
-    }),
-  };
-});
 
 // ActorAvatar reaches into workspace directory queries; the hook returns a
 // descriptor (not the rendered avatar), so the render test stubs it.
@@ -89,7 +88,9 @@ function presentationOf(url: string, fallback?: string) {
   const qc = makeClient();
   seed(qc);
   const wrapper = ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+    <I18nProvider locale="en" resources={TEST_RESOURCES}>
+      <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+    </I18nProvider>
   );
   return renderHook(() => useTabPresentation(url, fallback), { wrapper }).result
     .current;
@@ -121,6 +122,32 @@ describe("useTabPresentation — live from cache", () => {
       visual: { kind: "project-icon", icon: "🚀" },
       title: "Apollo",
     });
+  });
+
+  it("localizes a cached built-in skill title on language changes without fetching", () => {
+    const qc = makeClient();
+    const name = "multica-code-review";
+    const queryKey = skillDetailOptions("ws1", "review-skill").queryKey;
+    qc.setQueryData(queryKey, {
+      id: "review-skill",
+      name,
+      description: enSkills.builtin_role_skills[name].description,
+      config: { origin: { type: "builtin_role_skill", name } },
+    } as never);
+    let locale: SupportedLocale = "zh-Hans";
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <I18nProvider locale={locale} resources={TEST_RESOURCES}>
+        <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+      </I18nProvider>
+    );
+    const view = renderHook(() => useTabPresentation("/acme/skills/review-skill"), { wrapper });
+
+    expect(view.result.current.title).toBe("代码审查");
+    locale = "en";
+    view.rerender();
+    expect(view.result.current.title).toBe(name);
+    expect(qc.getQueryCache().getAll().every((query) => query.state.fetchStatus === "idle")).toBe(true);
+    expect(qc.getQueryData(queryKey)).toMatchObject({ name });
   });
 
   it("actor: avatar visual + resolved name", () => {

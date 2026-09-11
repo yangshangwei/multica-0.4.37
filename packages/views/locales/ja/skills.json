@@ -1,4 +1,34 @@
 {
+  "builtin_role_skills": {
+    "multica-release-check": {
+      "name": "multica-release-check",
+      "description": "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution."
+    },
+    "multica-documentation-change": {
+      "name": "multica-documentation-change",
+      "description": "Use when a change needs documentation: deciding what to write, keeping it true to the code, and finding what the change made wrong."
+    },
+    "multica-security-review": {
+      "name": "multica-security-review",
+      "description": "Use when reviewing a change for security: the checklist, how to report a finding without writing an exploit, and when to stop."
+    },
+    "multica-architecture-decision-record": {
+      "name": "multica-architecture-decision-record",
+      "description": "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences."
+    },
+    "multica-code-review": {
+      "name": "multica-code-review",
+      "description": "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report."
+    },
+    "multica-requirement-clarification": {
+      "name": "multica-requirement-clarification",
+      "description": "Use when a request is too vague to build or accept: derives open questions, acceptance criteria, risks and a work split from what the issue already contains."
+    },
+    "multica-test-report": {
+      "name": "multica-test-report",
+      "description": "Use when reporting that code was verified: what ran, the real result, what each new test proves, and what was not covered."
+    }
+  },
   "page": {
     "title": "スキル",
     "tagline": "このワークスペースのどのエージェントでも使用できる指示です。",
