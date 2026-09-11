@@ -276,3 +276,37 @@ Localized seven built-in role skill titles and purposes across shared UI with bi
 ### Next Steps
 
 - Implementation complete; task archived with verification evidence.
+
+
+## Session 8: Legacy role skill description localization
+
+**Date**: 2026-09-12
+**Task**: Legacy role skill description localization
+**Branch**: `feat/agent-skills-localization`
+
+### Summary
+
+Fixed the two historical release and ADR defaults that remained English in existing workspace copies.
+
+### Main Changes
+
+- Matched exact version 1 descriptions to accurate Chinese copy while retaining custom edits and stored instructions.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `548788037` | (see git log) |
+
+### Testing
+
+- [OK] 5086 views tests passed; typecheck and lint passed with unchanged baseline warnings.
+- [OK] 13 legacy and 13 latest browser checks passed; final visual verdict 96/100.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Correction complete and archived.
