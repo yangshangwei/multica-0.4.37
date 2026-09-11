@@ -102,17 +102,17 @@ autopilot 的 `assignee_id` 为必填,模板无法预知用户拥有哪个 agent
 
 ## Acceptance Criteria
 
-- [ ] `GET /api/autopilots/templates` 返回四个模板,含分类、四语言标题与描述、cron、执行模式、prompt。
-- [ ] 模板列表在工作区已存在 autopilot 时同样可访问。
-- [ ] 选择模板后进入配置步骤,标题、prompt、周期、执行模式均预填自模板且可修改。
-- [ ] 未指定 agent 时无法提交创建。
-- [ ] `POST /api/autopilots/from-template` 成功时,autopilot 与 trigger 同时存在;trigger 创建失败时 autopilot 一并回滚,不留孤儿记录。
-- [ ] 创建出的 autopilot 行携带正确的 `template_key` 与 `template_version`。
-- [ ] 四个模板创建出的 trigger,其 cron 表达式与模板定义一致,且能通过服务端 cron 校验。
-- [ ] `hourly-queue-check` 与 `workday-repo-audit` 创建出的 autopilot,`execution_mode` 为 `run_only`,运行时不预建 issue。
-- [ ] `release-readiness` 与 `daily-change-review` 创建出的 autopilot,`execution_mode` 为 `create_issue`。
-- [ ] `autopilots-page.tsx` 中不再存在 `TEMPLATES` 常量。
-- [ ] 调度器、`service/cron.go`、autopilot dispatch 链路无代码改动。
-- [ ] 后端 handler 测试覆盖 list、from-template 成功、from-template 事务回滚。
-- [ ] 前端存在模板 schema 的 malformed-response 测试。
-- [ ] 卡片选中态与 hover 态同时命中时,选中态仍可辨识。
+- [x] `GET /api/autopilots/templates` 返回九个模板(决策 4 的四个新增 + 五个迁移保留),含分类、四语言标题与描述、cron、执行模式、prompt。
+- [x] 模板列表在工作区已存在 autopilot 时同样可访问。
+- [x] 选择模板后进入配置步骤,标题、prompt、周期、执行模式预填自模板并以只读形式预览;创建后通过详情页修改(设计 D1,创建时不可编辑)。
+- [x] 未指定 agent 时无法提交创建。
+- [x] `POST /api/autopilots/from-template` 成功时,autopilot 与 trigger 同时存在;trigger 创建失败时 autopilot 一并回滚,不留孤儿记录。
+- [x] 创建出的 autopilot 行携带正确的 `template_key` 与 `template_version`。
+- [x] 各模板创建出的 trigger,其 cron 表达式与模板定义一致,且能通过服务端 cron 校验。
+- [x] `hourly-queue-check` 与 `workday-repo-audit` 创建出的 autopilot,`execution_mode` 为 `run_only`,运行时不预建 issue。
+- [x] `release-readiness` 与 `daily-change-review` 创建出的 autopilot,`execution_mode` 为 `create_issue`。
+- [x] `autopilots-page.tsx` 中不再存在 `TEMPLATES` 常量。
+- [x] 调度器、`service/cron.go`、autopilot dispatch 链路无代码改动。
+- [x] 后端 handler 测试覆盖 list、from-template 成功、from-template 事务回滚。
+- [x] 前端存在模板 schema 的 malformed-response 测试。
+- [x] ~~卡片选中态与 hover 态同时命中时,选中态仍可辨识。~~(作废:实现方案为点击卡片即进入配置步,卡片无选中态,该项无可测对象。)

@@ -7,6 +7,7 @@
 | Guide | Description | Status |
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
+| [Built-in Template Registries](./builtin-templates.md) | Autopilot template content contracts: `{{date}}` issue titles, server-decided fields | Active |
 
 ## See Also
 
