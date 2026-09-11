@@ -218,3 +218,26 @@ Repaired the seven merge-review findings with regression-first changes, preserve
 ### Status
 
 [OK] **Completed**
+
+
+## Session 6: Autopilot 模板 review 后续修复
+
+**Date**: 2026-09-11
+**Task**: Autopilot 模板 review 后续修复
+**Branch**: `main`
+
+### Summary
+
+完成 autopilot 模板功能的 review 后续修复并归档任务:四个 create_issue 模板补 {{date}} issue_title_template(核心:预建 issue 标题回落 autopilot.title 导致每期同名);AutopilotResponse 暴露 template_key/template_version 溯源;中文文案对齐术语表(仓库健康/每小时队列巡检);无效 ?template= deep-link 显示 not_found 提示;删除 AutopilotDialog 死代码 initial/initialSchedule;SKILL.md/source-map 补模板端点;新增 .trellis/spec/server/builtin-templates.md 契约沉淀。trellis-check 全量复跑:go build/vet、DB-backed handler 测试、typecheck、vitest、locale parity、lint 全绿。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `779dbda3a` | (see git log) |
+| `2ecf6c5a7` | (see git log) |
+| `05dc0edf4` | (see git log) |
+
+### Status
+
+[OK] **Completed**
