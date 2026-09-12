@@ -310,3 +310,35 @@ Fixed the two historical release and ADR defaults that remained English in exist
 ### Next Steps
 
 - Correction complete and archived.
+
+
+## Session 9: Chinese role skill bodies with explicit workspace updates
+
+**Date**: 2026-09-12
+**Task**: Chinese role skill bodies with explicit workspace updates
+**Branch**: `feat/agent-skills-localization`
+
+### Summary
+
+Localized seven source skill bodies and updated all seven matching 海卫三 workspace copies; preserved frontmatter, historical v1 behavior, metadata and 16 bindings.
+
+### Main Changes
+
+- Preserved distinct v1 release/ADR semantics while translating current v2 source templates.
+- Replaced the English-heading materialization assertion with exact source equality; recorded update and rollback evidence.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c9d6cae6b` | (see git log) |
+| `311bbf434` | (see git log) |
+
+### Testing
+
+- [OK] 55 Go top-level tests and 21 subtests; 66 frontend tests; go vet; cached typecheck and lint; independent review of 9 bodies and 8 scenarios.
+- [OK] Read back all 7 workspace updates and verified metadata, files, labels and 16 bindings.
+
+### Status
+
+[OK] **Completed**
