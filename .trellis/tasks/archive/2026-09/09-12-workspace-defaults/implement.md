@@ -20,7 +20,7 @@ backend and core start from the fixed contract. Project flow uses core, integrat
 - [x] Integrate, review spec compliance then code quality; fix findings.
 - [x] Typecheck, lint, TS/Go tests and Go vet; targeted browser flows and visual review.
 - [x] Update specs/docs/source maps affected by the changed behavior.
-- [ ] Commit only task-owned changes using Lore trailers, archive children and record journal.
+- [x] Commit only task-owned changes using Lore trailers, archive children and record journal.
 
 ## Validation commands
 Use corepack pnpm (10.28.2), not ambient pnpm.

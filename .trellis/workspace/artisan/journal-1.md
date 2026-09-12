@@ -374,3 +374,39 @@ Implemented the fifth skill creation method with seven built-in templates, local
 ### Status
 
 [OK] **Completed**
+
+
+## Session 11: 工作区内置能力与项目开箱即用
+
+**Date**: 2026-09-12
+**Task**: 工作区内置能力与项目开箱即用
+**Branch**: `feat/workspace-defaults`
+
+### Summary
+
+完成项目自动配队、内置目录、默认任务分配和自动化入口；需求、设计、拆解及验收已归档。
+
+### Main Changes
+
+- 新增可重试、权限受控的项目小队配置，复用已有角色和 skill。
+- 连接项目创建、内置目录、普通任务默认分配及自动化明确启用流程。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `af2977950` | (see git log) |
+| `ef494ddd3` | (see git log) |
+
+### Testing
+
+- [OK] 8015 项 TS 测试覆盖、65 个 Go 包、相关 race/vet、类型检查和 lint 通过。
+- [OK] 3 个 Playwright 场景及桌面/窄屏视觉检查通过；未运行真实模型。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 功能实施无待办；独立分支保留供审阅。
