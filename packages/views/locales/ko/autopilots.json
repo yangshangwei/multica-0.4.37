@@ -57,7 +57,13 @@
     "schedule_label": "실행",
     "prompt_label": "에이전트에게 맡기는 일",
     "prompt_note": "오토파일럿에 복사되며 만든 뒤 수정할 수 있습니다",
-    "assignee_hint": "템플릿은 이 워크스페이스에 어떤 에이전트가 있는지 알 수 없습니다. 실행할 담당을 선택하세요."
+    "assignee_hint": "템플릿은 이 워크스페이스에 어떤 에이전트가 있는지 알 수 없습니다. 실행할 담당을 선택하세요.",
+    "enable": "자동화 활성화",
+    "enabling": "활성화 중...",
+    "enable_hint": "활성화하면 자동화가 생성되고 일정에 따라 실행됩니다. 상세 페이지에서 일시 중지하거나 바로 실행할 수 있습니다.",
+    "assignee_unavailable": "미리 선택된 담당자를 사용할 수 없습니다. 실행 권한이 있는 에이전트 또는 스쿼드를 선택하세요.",
+    "project_unavailable": "미리 선택된 프로젝트를 이 워크스페이스에서 사용할 수 없습니다. 다른 프로젝트를 선택하거나 연결 없이 계속하세요.",
+    "choices_load_failed": "프로젝트 및 담당자 목록을 불러오지 못했습니다."
   },
   "detail": {
     "not_found": "오토파일럿을 찾을 수 없습니다",
@@ -416,7 +422,8 @@
     "agents_group": "에이전트",
     "squads_group": "스쿼드",
     "agent_runtime_required": "이 에이전트를 선택하기 전에 런타임을 연결하세요",
-    "squad_runtime_required": "선택하기 전에 이 스쿼드 리더에 런타임을 연결하세요"
+    "squad_runtime_required": "선택하기 전에 이 스쿼드 리더에 런타임을 연결하세요",
+    "invocation_not_allowed": "이 담당자를 실행할 권한이 없습니다."
   },
   "timezone_picker": {
     "search_placeholder": "시간대 검색..."
@@ -451,5 +458,17 @@
       "confirm": "영구 삭제",
       "deleting": "삭제 중…"
     }
+  },
+  "catalog": {
+    "title": "기본 템플릿",
+    "description": "반복 태스크를 선택하고 일정을 확인한 다음 활성화하세요."
+  },
+  "project_section": {
+    "title": "자동화",
+    "empty": "이 프로젝트에는 아직 자동화가 없습니다.",
+    "add": "자동화 추가",
+    "load_failed": "프로젝트 자동화를 불러오지 못했습니다.",
+    "next_run": "다음 실행: {{time}}",
+    "status_unknown": "상태를 확인할 수 없습니다"
   }
 }

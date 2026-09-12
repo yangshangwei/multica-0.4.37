@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -18,9 +18,15 @@ import {
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useCreateAutopilotFromTemplate } from "@multica/core/autopilots/mutations";
+import { isAgentRuntimeBound } from "@multica/core/agents";
+import {
+  canAssignAgentToIssue,
+  useCurrentMember,
+} from "@multica/core/permissions";
 import { projectListOptions } from "@multica/core/projects/queries";
 import {
   agentListOptions,
+  memberListOptions,
   squadListOptions,
 } from "@multica/core/workspace/queries";
 import type {
@@ -41,6 +47,11 @@ import {
   findAutopilotTemplate,
   useAutopilotTemplates,
 } from "../use-autopilot-templates";
+import {
+  autopilotTemplateDefaultsFromSearch,
+  autopilotTemplateHref,
+  type AutopilotTemplateDefaults,
+} from "../template-create-defaults";
 import { AutopilotDialog } from "./autopilot-dialog";
 import { AgentPicker, type AssigneeSelection } from "./pickers/agent-picker";
 import { TimezonePicker } from "./pickers/timezone-picker";
@@ -61,12 +72,23 @@ import type { ScheduleConfig } from "./schedule-editor/model";
  * template's provenance while supplying its own brief. Every one of them is
  * editable on the autopilot afterwards.
  */
-export function TemplateCreateAutopilotPage() {
+export function TemplateCreateAutopilotRoute() {
+  const navigation = useNavigation();
+  return (
+    <TemplateCreateAutopilotPage
+      {...autopilotTemplateDefaultsFromSearch(navigation.searchParams)}
+    />
+  );
+}
+
+export function TemplateCreateAutopilotPage(defaults: AutopilotTemplateDefaults) {
   const { t } = useT("autopilots");
+  const wsId = useWorkspaceId();
   const paths = useWorkspacePaths();
   const navigation = useNavigation();
   const backOrReplace = useBackOrReplace();
   const templateKey = navigation.searchParams.get("template");
+  const pickerHref = autopilotTemplateHref(paths.newAutopilotTemplate(), defaults);
 
   const { data: templates, isLoading, isError } = useAutopilotTemplates();
   const template = findAutopilotTemplate(templates, templateKey);
@@ -93,14 +115,14 @@ export function TemplateCreateAutopilotPage() {
       // the flow: picking the wrong template is the likely reason to go back.
       onBack={() =>
         template
-          ? navigation.replace(paths.newAutopilotTemplate())
+          ? navigation.replace(pickerHref)
           : backOrReplace(paths.autopilots())
       }
     >
       {templateMissing ? (
-        <TemplateNotFoundStep />
+        <TemplateNotFoundStep pickerHref={pickerHref} />
       ) : template ? (
-        <TemplateConfigureStep template={template} />
+        <TemplateConfigureStep key={wsId} template={template} {...defaults} />
       ) : (
         <AutopilotTemplatePicker
           templates={templates ?? []}
@@ -108,7 +130,7 @@ export function TemplateCreateAutopilotPage() {
           failed={isError}
           onPick={(key) =>
             navigation.push(
-              `${paths.newAutopilotTemplate()}?template=${encodeURIComponent(key)}`,
+              autopilotTemplateHref(paths.newAutopilotTemplate(), defaults, key),
             )
           }
         />
@@ -122,9 +144,8 @@ export function TemplateCreateAutopilotPage() {
  * binary, an offline deployment, a typo. Centered, with one way out: back to
  * the picker, where every template the server does ship is one click away.
  */
-function TemplateNotFoundStep() {
+function TemplateNotFoundStep({ pickerHref }: { pickerHref: string }) {
   const { t } = useT("autopilots");
-  const paths = useWorkspacePaths();
   const navigation = useNavigation();
   return (
     <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-10">
@@ -135,7 +156,7 @@ function TemplateNotFoundStep() {
         <Button
           size="sm"
           variant="outline"
-          onClick={() => navigation.replace(paths.newAutopilotTemplate())}
+          onClick={() => navigation.replace(pickerHref)}
         >
           {t(($) => $.template_picker.back)}
         </Button>
@@ -334,7 +355,10 @@ function AutopilotTemplatePicker({
   );
 }
 
-function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
+function TemplateConfigureStep({
+  template,
+  ...initialDefaults
+}: { template: AutopilotTemplate } & AutopilotTemplateDefaults) {
   const { t } = useT("autopilots");
   const locale = useLocale();
   const wsId = useWorkspaceId();
@@ -342,22 +366,83 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
   const navigation = useNavigation();
   const describe = useDescribeSchedule();
 
-  const [assignee, setAssignee] = useState<AssigneeSelection | null>(null);
-  const [projectId, setProjectId] = useState<string | null>(null);
+  const [defaults] = useState(() => ({
+    projectId: initialDefaults.initialProjectId,
+    assignee:
+      initialDefaults.initialAssigneeType && initialDefaults.initialAssigneeId
+        ? {
+            type: initialDefaults.initialAssigneeType,
+            id: initialDefaults.initialAssigneeId,
+          }
+        : null,
+  }));
+  const suggestedAssignee = defaults.assignee;
+  // Undefined means untouched while the workspace choices are loading. Any
+  // user selection, including clearing the project, ends default seeding.
+  const [assignee, setAssignee] = useState<AssigneeSelection | null>();
+  const [projectId, setProjectId] = useState<string | null>();
   const [timezone, setTimezone] = useState(() => browserTimezone());
 
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
-  const { data: squads = [] } = useQuery(squadListOptions(wsId));
-  const { data: projects = [] } = useQuery(projectListOptions(wsId));
+  const agentsQuery = useQuery(agentListOptions(wsId));
+  const squadsQuery = useQuery(squadListOptions(wsId));
+  const projectsQuery = useQuery(projectListOptions(wsId));
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const { userId, role } = useCurrentMember(wsId);
+  const agents = agentsQuery.data ?? [];
+  const squads = squadsQuery.data ?? [];
+  const projects = projectsQuery.data ?? [];
+  const assigneeChoicesReady =
+    agentsQuery.isSuccess && squadsQuery.isSuccess && membersQuery.isSuccess &&
+    userId !== null && role !== null;
+  const canSelectAssignee = (selection: AssigneeSelection | null | undefined) => {
+    if (!selection || !assigneeChoicesReady || role === null) return false;
+    const squad =
+      selection.type === "squad"
+        ? squads.find((item) =>
+            item.id === selection.id && item.workspace_id === wsId && !item.archived_at,
+          )
+        : null;
+    const agentId = selection.type === "agent" ? selection.id : squad?.leader_id;
+    const agent = agents.find((item) =>
+      item.id === agentId && item.workspace_id === wsId && !item.archived_at,
+    );
+    return !!agent && isAgentRuntimeBound(agent) &&
+      canAssignAgentToIssue(agent, { userId, role }).allowed;
+  };
+  const suggestedAssigneeAllowed = canSelectAssignee(suggestedAssignee);
+  const suggestedProject = projects.find((project) =>
+    project.id === defaults.projectId && project.workspace_id === wsId,
+  );
+
+  useEffect(() => {
+    if (assignee !== undefined || !assigneeChoicesReady) return;
+    setAssignee(suggestedAssigneeAllowed ? suggestedAssignee : null);
+  }, [assignee, assigneeChoicesReady, suggestedAssignee, suggestedAssigneeAllowed]);
+
+  useEffect(() => {
+    if (projectId !== undefined || !projectsQuery.isSuccess) return;
+    setProjectId(suggestedProject?.id ?? null);
+  }, [projectId, projectsQuery.isSuccess, suggestedProject?.id]);
 
   const assigneeName =
-    assignee === null
+    !assignee
       ? null
       : (assignee.type === "squad"
           ? squads.find((squad) => squad.id === assignee.id)?.name
           : agents.find((agent) => agent.id === assignee.id)?.name) ?? null;
   const selectedProject =
-    projects.find((project) => project.id === projectId) ?? null;
+    projects.find((project) =>
+      project.id === projectId && project.workspace_id === wsId,
+    ) ?? null;
+  const assigneeAvailable = canSelectAssignee(assignee);
+  const projectAvailable = projectId === null || selectedProject !== null;
+  const choicesFailed =
+    agentsQuery.isError || squadsQuery.isError || projectsQuery.isError || membersQuery.isError;
+  const assigneeUnavailable =
+    assigneeChoicesReady && !assigneeAvailable && !!(assignee || suggestedAssignee);
+  const projectUnavailable = projectsQuery.isSuccess && (
+    projectId ? !selectedProject : !!defaults.projectId && !suggestedProject
+  );
 
   const create = useCreateAutopilotFromTemplate();
   const mode = knownExecutionMode(template.execution_mode);
@@ -379,14 +464,16 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
       : null;
 
   const handleCreate = async () => {
-    if (assignee === null || create.isPending) return;
+    if (!assignee || !assigneeAvailable || !projectAvailable || create.isPending) {
+      return;
+    }
     setUnreadableResponse(false);
     try {
       const created = await create.mutateAsync({
         template_key: template.key,
         assignee_id: assignee.id,
         assignee_type: assignee.type,
-        project_id: projectId,
+        project_id: projectId ?? null,
         timezone,
         // Selects which localized title lands on the row. The prompt is
         // English on every server, by design.
@@ -476,8 +563,9 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
               {t(($) => $.template_picker.assignee_hint)}
             </p>
             <AgentPicker
-              assignee={assignee}
+              assignee={assignee ?? null}
               onChange={setAssignee}
+              canSelect={canSelectAssignee}
               align="start"
               triggerRender={
                 <button
@@ -509,6 +597,11 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
                 </button>
               }
             />
+            {assigneeUnavailable && (
+              <p className="mt-2 text-caption text-destructive">
+                {t(($) => $.template_picker.assignee_unavailable)}
+              </p>
+            )}
           </div>
 
           <div>
@@ -517,7 +610,7 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
               {t(($) => $.dialog.project_hint)}
             </p>
             <ProjectPicker
-              projectId={projectId}
+              projectId={projectId ?? null}
               onUpdate={(updates) => setProjectId(updates.project_id ?? null)}
               align="start"
               triggerRender={
@@ -545,6 +638,11 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
                 </button>
               }
             />
+            {projectUnavailable && (
+              <p className="mt-2 text-caption text-destructive">
+                {t(($) => $.template_picker.project_unavailable)}
+              </p>
+            )}
           </div>
 
           <div>
@@ -559,6 +657,25 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
             />
           </div>
         </section>
+
+        <p className="mt-4 text-caption text-muted-foreground">
+          {t(($) => $.template_picker.enable_hint)}
+        </p>
+        {choicesFailed && (
+          <div className="mt-3 flex items-center gap-3">
+            <p role="alert" className="text-caption text-destructive">
+              {t(($) => $.template_picker.choices_load_failed)}
+            </p>
+            <Button size="sm" variant="outline" onClick={() => {
+              void agentsQuery.refetch();
+              void squadsQuery.refetch();
+              void projectsQuery.refetch();
+              void membersQuery.refetch();
+            }}>
+              {t(($) => $.page.retry)}
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="pe-chat-launcher sticky bottom-0 mt-8 flex items-center justify-between gap-3 border-t bg-background/95 py-3 pl-5 backdrop-blur">
@@ -574,13 +691,13 @@ function TemplateConfigureStep({ template }: { template: AutopilotTemplate }) {
           type="button"
           className="ml-auto shrink-0"
           onClick={() => void handleCreate()}
-          disabled={assignee === null || create.isPending}
+          disabled={!assigneeAvailable || !projectAvailable || create.isPending}
           aria-busy={create.isPending || undefined}
         >
           {create.isPending && <Loader2 className="size-4 animate-spin" />}
           {create.isPending
-            ? t(($) => $.dialog.creating)
-            : t(($) => $.dialog.create)}
+            ? t(($) => $.template_picker.enabling)
+            : t(($) => $.template_picker.enable)}
         </Button>
       </div>
     </div>
@@ -592,7 +709,7 @@ function FieldLabel({
   required,
 }: {
   children: React.ReactNode;
-  /** The sighted user's advance warning that this field blocks Create. */
+  /** The sighted user's advance warning that this field blocks enabling. */
   required?: boolean;
 }) {
   return (

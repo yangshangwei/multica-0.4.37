@@ -118,7 +118,7 @@ describe("onboarding step shell", () => {
 
     const compact = container.querySelector("main .md\\:hidden")!;
     expect(compact).not.toBeNull();
-    expect(compact.textContent).toContain("Meet Mika");
+    expect(compact.textContent).toContain("Connect a runtime");
     expect(compact.querySelector("button")).not.toBeNull();
   });
 
@@ -154,7 +154,7 @@ describe("onboarding progress rail", () => {
     const rail = within(container.querySelector("aside")!);
     expect(rail.getByText("About you")).toBeInTheDocument();
     expect(rail.getByText("Workspace")).toBeInTheDocument();
-    expect(rail.getByText("Meet Mika")).toBeInTheDocument();
+    expect(rail.getByText("Connect a runtime")).toBeInTheDocument();
   });
 
   it("marks the current step for assistive tech", () => {

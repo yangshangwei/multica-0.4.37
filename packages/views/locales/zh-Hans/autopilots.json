@@ -57,7 +57,13 @@
     "schedule_label": "运行周期",
     "prompt_label": "交给智能体做的事",
     "prompt_note": "会复制到自动化，创建后可编辑",
-    "assignee_hint": "模板无法预知这个工作区有哪些智能体，请选择运行它的一方。"
+    "assignee_hint": "模板无法预知这个工作区有哪些智能体，请选择运行它的一方。",
+    "enable": "启用自动化",
+    "enabling": "启用中...",
+    "enable_hint": "启用后将创建自动化并开始按计划运行。你可以在详情页暂停或立即运行。",
+    "assignee_unavailable": "预选的执行者不可用，请选择你有权运行的智能体或小队。",
+    "project_unavailable": "预选项目在此工作区中不可用，请选择其他项目或不关联项目。",
+    "choices_load_failed": "无法加载项目和执行者选项。"
   },
   "detail": {
     "not_found": "未找到该自动化",
@@ -416,7 +422,8 @@
     "agents_group": "智能体",
     "squads_group": "小队",
     "agent_runtime_required": "请先为该智能体绑定运行时",
-    "squad_runtime_required": "请先为该小队的负责人绑定运行时"
+    "squad_runtime_required": "请先为该小队的负责人绑定运行时",
+    "invocation_not_allowed": "你没有运行此执行者的权限。"
   },
   "timezone_picker": {
     "search_placeholder": "搜索时区..."
@@ -451,5 +458,17 @@
       "confirm": "永久删除",
       "deleting": "删除中…"
     }
+  },
+  "catalog": {
+    "title": "内置模板",
+    "description": "选择周期任务，确认计划后启用。"
+  },
+  "project_section": {
+    "title": "自动化",
+    "empty": "此项目还没有自动化。",
+    "add": "添加自动化",
+    "load_failed": "无法加载项目自动化。",
+    "next_run": "下次运行：{{time}}",
+    "status_unknown": "状态暂不可用"
   }
 }

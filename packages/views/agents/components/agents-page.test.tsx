@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
-import type { Agent } from "@multica/core/types";
+import { fireEvent, screen, within } from "@testing-library/react";
+import type { Agent, AgentRoleTemplate } from "@multica/core/types";
 import type { AgentActivity } from "@multica/core/agents";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
@@ -19,6 +19,10 @@ import { AgentsPage } from "./agents-page";
 const mocks = vi.hoisted(() => ({
   agents: [] as Agent[],
   agentsLoading: false,
+  templates: [] as AgentRoleTemplate[],
+  templatesError: false,
+  templatesPending: false,
+  refetchTemplates: vi.fn(),
   runCounts: [] as Array<{ agent_id: string; run_count: number }>,
   runCountsPending: false,
   activity: {
@@ -49,6 +53,16 @@ const mocks = vi.hoisted(() => ({
     toggleFilter: vi.fn(),
     clearFilters: vi.fn(),
   },
+}));
+
+vi.mock("../create/use-role-templates", () => ({
+  useRoleTemplates: () => ({
+    data: mocks.templates,
+    isLoading: false,
+    isPending: mocks.templatesPending,
+    isError: mocks.templatesError,
+    refetch: mocks.refetchTemplates,
+  }),
 }));
 
 vi.mock("@tanstack/react-query", () => ({
@@ -226,9 +240,9 @@ function makeAdapter(
   };
 }
 
-function renderPage() {
-  renderWithI18n(
-    <NavigationProvider value={makeAdapter()}>
+function renderPage(adapter = makeAdapter()) {
+  return renderWithI18n(
+    <NavigationProvider value={adapter}>
       <AgentsPage />
     </NavigationProvider>,
   );
@@ -244,8 +258,12 @@ function betaPrecedesAlpha(): boolean {
 }
 
 beforeEach(() => {
+  vi.clearAllMocks();
   mocks.agents = [ALPHA, BETA];
   mocks.agentsLoading = false;
+  mocks.templates = [];
+  mocks.templatesError = false;
+  mocks.templatesPending = false;
   mocks.runCounts = [];
   mocks.runCountsPending = false;
   mocks.activity = { byAgent: new Map(), loading: false };
@@ -261,6 +279,64 @@ beforeEach(() => {
     models: [],
     access: [],
   };
+});
+
+const REVIEW_TEMPLATE: AgentRoleTemplate = {
+  key: "code-reviewer", version: 1, name: "Reviewer", title: "Code reviewer",
+  description: "Review changes and report actionable findings.", instructions: "Review the diff.",
+  autonomy_level: "contributor", avatar_emoji: "", max_concurrent_tasks: 1, skill_names: [],
+};
+
+describe("AgentsPage built-in catalog", () => {
+  it("shows pending catalogs as loading even when the network request is paused", () => {
+    mocks.templatesPending = true;
+    renderPage();
+    const catalog = screen.getByRole("region", { name: "Built-in agents" });
+    expect(within(catalog).getByRole("status")).toHaveTextContent("Loading built-in agents...");
+    expect(within(catalog).queryByText("No built-in agents are available.")).not.toBeInTheDocument();
+  });
+
+  it("shows templates in an empty workspace and opens the existing template flow without creating an agent", () => {
+    mocks.agents = [];
+    mocks.templates = [REVIEW_TEMPLATE];
+    const adapter = makeAdapter();
+    renderPage(adapter);
+
+    const catalog = screen.getByRole("region", { name: "Built-in agents" });
+    expect(within(catalog).getByText(REVIEW_TEMPLATE.description)).toBeInTheDocument();
+    expect(screen.getByText("No agents yet")).toBeInTheDocument();
+    expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
+    fireEvent.click(within(catalog).getByRole("button", { name: "View template" }));
+    expect(adapter.push).toHaveBeenCalledWith("/test-workspace/agents/new/template?template=code-reviewer");
+  });
+
+  it("opens only a live instance with matching template identity, including a renamed instance", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [
+      makeAgent({ id: "same-name", name: "Reviewer" }),
+      makeAgent({ id: "archived", name: "Old reviewer", template_key: "code-reviewer", archived_at: "2026-09-01T00:00:00Z" }),
+      makeAgent({ id: "renamed", name: "Payments reviewer", template_key: "code-reviewer" }),
+    ];
+    const adapter = makeAdapter();
+    renderPage(adapter);
+
+    fireEvent.click(within(screen.getByRole("region", { name: "Built-in agents" })).getByRole("button", { name: "Open agent" }));
+    expect(adapter.push).toHaveBeenCalledWith("/test-workspace/agents/renamed");
+  });
+
+  it("does not label a same-name custom agent as a template instance and lets a failed catalog retry", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [makeAgent({ name: "Reviewer" })];
+    const view = renderPage();
+    expect(within(screen.getByRole("region", { name: "Built-in agents" })).queryByRole("button", { name: "Open agent" })).not.toBeInTheDocument();
+
+    mocks.templatesError = true;
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    fireEvent.click(within(screen.getByRole("region", { name: "Built-in agents" })).getByRole("button", { name: "Retry" }));
+    expect(mocks.refetchTemplates).toHaveBeenCalledOnce();
+    expect(screen.getByTestId("agent-list-toolbar")).toBeInTheDocument();
+    expect(screen.getByText("Reviewer")).toBeInTheDocument();
+  });
 });
 
 describe("AgentsPage listReady gate", () => {

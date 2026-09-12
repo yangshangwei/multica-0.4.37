@@ -24,6 +24,8 @@ This directory contains guidelines for frontend development. Fill in each file w
 
 ---
 
+Project execution defaults: see [the shared contract](../../server/project-execution-squad.md).
+
 ## How to Fill These Guidelines
 
 For each guideline file:

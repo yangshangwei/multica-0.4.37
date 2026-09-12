@@ -26,6 +26,8 @@ export interface IssueSurfaceProps {
   modes: IssueSurfaceMode[];
   surfaceKey?: string;
   createDefaults?: IssueCreateDefaults;
+  /** Defaults for unconstrained creation; explicit scope, view and action choices win. */
+  fallbackCreateDefaults?: IssueCreateDefaults;
   /** Server-owned membership search shared by non-Table issue surfaces. */
   search?: string;
 }

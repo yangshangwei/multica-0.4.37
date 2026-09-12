@@ -48,6 +48,7 @@ import {
   CollectionPageState,
 } from "../../layout/collection-page";
 import { AutopilotDialog } from "./autopilot-dialog";
+import { AutopilotTemplateCatalog } from "./autopilot-template-catalog";
 import { AutopilotListToolbar, actorFilterValue } from "./autopilot-list-toolbar";
 import {
   AutopilotBatchToolbar,
@@ -681,6 +682,8 @@ export function AutopilotsPage() {
         }
       />
 
+      <AutopilotTemplateCatalog />
+
       {listError ? (
         <CollectionPageState
           role="alert"
@@ -705,9 +708,6 @@ export function AutopilotsPage() {
           <LoadingSkeleton />
         </div>
       ) : showEmpty ? (
-        // The zero-autopilot workspace gets the same destination the header
-        // action uses. The built-in templates live behind it now, so the empty
-        // state points at them instead of restating a few of them inline.
         <CollectionPageState
           icon={Zap}
           title={t(($) => $.page.empty.title)}

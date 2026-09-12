@@ -2,7 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Project } from "@multica/core/types";
+import type { Agent, Project, Squad } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { ProjectDetail } from "./project-detail";
@@ -15,6 +15,9 @@ const mocks = vi.hoisted(() => ({
   push: vi.fn(),
   recordVisit: vi.fn(),
   toastSuccess: vi.fn(),
+  project: null as Project | null,
+  agents: [] as Agent[],
+  squads: [] as Squad[],
 }));
 
 vi.mock("@multica/ui/lib/clipboard", () => ({
@@ -25,13 +28,16 @@ vi.mock("@tanstack/react-query", () => ({
   useQuery: (options: { queryKey?: readonly unknown[] }) => {
     switch (options.queryKey?.[0]) {
       case "project-detail":
-        return { data: PROJECT, isLoading: false };
+        return { data: mocks.project, isLoading: false };
       case "members":
         return {
           data: [{ user_id: "user-1", name: "User One", role: mocks.role }],
           isLoading: false,
         };
       case "agents":
+        return { data: mocks.agents, isLoading: false };
+      case "squads":
+        return { data: mocks.squads, isLoading: false };
       case "pins":
         return { data: [], isLoading: false };
       default:
@@ -58,6 +64,7 @@ vi.mock("@multica/core/pins", () => ({
 vi.mock("@multica/core/workspace/queries", () => ({
   memberListOptions: () => ({ queryKey: ["members"] }),
   agentListOptions: () => ({ queryKey: ["agents"] }),
+  squadListOptions: () => ({ queryKey: ["squads"] }),
 }));
 
 vi.mock("@multica/core/hooks", () => ({
@@ -219,7 +226,15 @@ vi.mock("../../issues/components/priority-icon", () => ({
 }));
 
 vi.mock("./project-resources-section", () => ({
-  ProjectResourcesSection: () => null,
+  ProjectResourcesSection: () => <section aria-label="Project resources" />,
+}));
+
+vi.mock("./project-squad-section", () => ({
+  ProjectSquadSection: ({ project }: { project: Project }) => <section aria-label="Execution squad" data-project-id={project.id} />,
+}));
+
+vi.mock("./project-automations-section", () => ({
+  ProjectAutomationsSection: ({ projectId, defaultSquadId }: { projectId: string; defaultSquadId?: string | null }) => <section aria-label="Project automations" data-project-id={projectId} data-squad-id={defaultSquadId} />,
 }));
 
 vi.mock("./project-start-date-picker", () => ({
@@ -231,7 +246,9 @@ vi.mock("./project-due-date-picker", () => ({
 }));
 
 vi.mock("../../issues/surface/issue-surface", () => ({
-  IssueSurface: () => null,
+  IssueSurface: ({ fallbackCreateDefaults }: { fallbackCreateDefaults?: object }) => <section aria-label="Project issues">
+    <output aria-label="Project issue defaults">{JSON.stringify(fallbackCreateDefaults)}</output>
+  </section>,
 }));
 
 vi.mock("../../layout/breadcrumb-header", () => ({
@@ -273,6 +290,18 @@ const PROJECT: Project = {
   issue_count: 3,
   done_count: 1,
   resource_count: 0,
+  execution_squad: { state: "configured", squad_id: "delivery-squad" },
+};
+
+const PROJECT_LEADER: Agent = {
+  id: "project-leader", workspace_id: "workspace-1", runtime_id: "runtime-1", owner_id: "user-1", name: "Delivery leader",
+  permission_mode: "private", invocation_targets: [], archived_at: null, archived_by: null,
+  description: "", instructions: "", avatar_url: null, runtime_mode: "local", runtime_config: {}, custom_args: [],
+  visibility: "private", status: "idle", max_concurrent_tasks: 1, model: "", skills: [], created_at: "", updated_at: "",
+};
+const PROJECT_SQUAD: Squad = {
+  id: "delivery-squad", workspace_id: "workspace-1", name: "Delivery squad", description: "", instructions: "", avatar_url: null,
+  leader_id: PROJECT_LEADER.id, creator_id: "user-1", created_at: "", updated_at: "", archived_at: null, archived_by: null,
 };
 
 function renderProjectDetail() {
@@ -295,6 +324,9 @@ function renderProjectDetail() {
 
 beforeEach(() => {
   mocks.role = "admin";
+  mocks.project = PROJECT;
+  mocks.agents = [PROJECT_LEADER];
+  mocks.squads = [PROJECT_SQUAD];
   mocks.copyText.mockReset().mockResolvedValue(true);
   mocks.deleteProject.mockReset();
   mocks.getShareableUrl.mockClear();
@@ -304,6 +336,35 @@ beforeEach(() => {
 });
 
 describe("ProjectDetail sharing", () => {
+  it("supplies its configured invocable squad to ordinary project issue creation", () => {
+    renderProjectDetail();
+    expect(JSON.parse(screen.getByLabelText("Project issue defaults").textContent || "null")).toEqual({
+      assignee_type: "squad", assignee_id: "delivery-squad", status: "todo",
+    });
+  });
+
+  it.each(["missing", "archived", "private", "not-configured"])("does not prefill a %s squad default", (state) => {
+    if (state === "missing") mocks.squads = [];
+    if (state === "archived") mocks.squads = [{ ...PROJECT_SQUAD, archived_at: "2026-09-12T00:00:00Z" }];
+    if (state === "private") mocks.agents = [{ ...PROJECT_LEADER, owner_id: "another-owner" }];
+    if (state === "not-configured") mocks.project = { ...PROJECT, execution_squad: { state: "failed", squad_id: PROJECT_SQUAD.id } };
+    renderProjectDetail();
+    expect(screen.getByLabelText("Project issue defaults")).toBeEmptyDOMElement();
+  });
+
+  it("places execution above issues and project automation entry below resources", () => {
+    renderProjectDetail();
+    const squad = screen.getByRole("region", { name: "Execution squad" });
+    const issues = screen.getByRole("region", { name: "Project issues" });
+    const resources = screen.getByRole("region", { name: "Project resources" });
+    const automations = screen.getByRole("region", { name: "Project automations" });
+    expect(squad).toHaveAttribute("data-project-id", "project-1");
+    expect(squad.compareDocumentPosition(issues) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(resources.compareDocumentPosition(automations) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(automations).toHaveAttribute("data-project-id", "project-1");
+    expect(automations).toHaveAttribute("data-squad-id", "delivery-squad");
+  });
+
   it("copies the platform shareable URL instead of the renderer URL", async () => {
     const user = userEvent.setup();
     renderProjectDetail();

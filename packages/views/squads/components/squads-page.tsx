@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
+  AlertCircle,
   ArrowDown,
   ArrowUp,
   ChevronDown,
@@ -92,6 +93,7 @@ import {
 } from "../../layout/collection-page";
 import { useT } from "../../i18n";
 import { PAGE_TOOLBAR } from "../../layout/page-header";
+import { BuiltinSquadCatalog } from "./builtin-squad-catalog";
 
 // Column template — the simplest member of the ListGrid family (squads are
 // the fewest entity, 1-5 rows): subgrid template + var tracks + two-zone
@@ -779,7 +781,7 @@ export function SquadsPage() {
   const rowLink = useRowLink();
   const currentUser = useAuthStore((s) => s.user);
 
-  const { data: squads = [], isLoading } = useQuery({
+  const { data: squads = [], isLoading, error: listError, refetch: refetchSquads } = useQuery({
     ...squadListOptions(wsId),
     enabled: !!wsId,
   });
@@ -936,7 +938,17 @@ export function SquadsPage() {
         }
       />
 
-      {isLoading ? (
+      <BuiltinSquadCatalog key={wsId} squads={squads} />
+
+      {listError ? (
+        <CollectionPageState
+          role="alert"
+          tone="destructive"
+          icon={AlertCircle}
+          title={t(($) => $.page.list_error)}
+          actions={<Button type="button" size="sm" variant="outline" onClick={() => void refetchSquads()}>{t(($) => $.catalog.retry)}</Button>}
+        />
+      ) : isLoading ? (
         <LoadingSkeleton />
       ) : squads.length === 0 ? (
         <CollectionPageState

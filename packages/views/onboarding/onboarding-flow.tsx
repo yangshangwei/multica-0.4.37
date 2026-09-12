@@ -81,19 +81,19 @@ function mergeQuestionnaire(
 
 /**
  * Shell's onComplete contract carries the workspace plus an optional
- * destination. Runtime-connected onboarding opens the real Mika conversation
- * started by the final step; other exits land on the workspace issue list.
+ * destination. Workspace setup lands on Projects, with Mika still available
+ * in chat after connecting a runtime.
  *
  * Three exit shapes feed onComplete:
  *   - Skip-existing (Welcome): completeOnboarding marks onboarded; navigate
  *     to the existing workspace's issue list.
  *   - Runtime-skipped (no runtime on Step 3): completeOnboarding marks
  *     onboarded; we push a {choice:"skip"} welcome signal and navigate
- *     to the workspace. The welcome hook in the workspace shell creates
+ *     to Projects. The welcome hook in the workspace shell creates
  *     one install-runtime guide issue on landing.
  *   - Runtime-connected: create or repair the workspace's Mika on the selected
  *     runtime, start one hidden onboarding kickoff, mark onboarding complete,
- *     and open Mika's real chat. No fixed specialist team is created.
+ *     and open Projects. Specialists are prepared only when chosen for a project.
  *
  * This file never touches createAgent / createIssue. The runtime-skipped
  * guide flow remains in `packages/views/workspace/welcome-after-onboarding.tsx`.
@@ -255,9 +255,7 @@ function OnboardingStepFlow({
   const handleRuntimeNext = useCallback(
     async (rt: AgentRuntime | null, model?: string) => {
       if (!workspace) return;
-      // A connected runtime provisions only Mika and immediately opens the
-      // real interactive onboarding conversation. Specialists are created
-      // later, only when the member's actual workflow justifies them.
+      // Mika remains available in chat; project setup is the next visible step.
       if (rt) {
         const contentLang = pickContentLang(i18n.language);
         try {
@@ -265,17 +263,14 @@ function OnboardingStepFlow({
           // the latest snapshot here so the server-authored kickoff can read
           // reliable role/use-case context instead of racing the last PATCH.
           await saveQuestionnaire(answers);
-          const result = await bootstrapMika.mutateAsync({
+          await bootstrapMika.mutateAsync({
             workspaceSlug: workspace.slug,
             runtimeId: rt.id,
             model,
             ...getMikaOnboarding(contentLang),
           });
           await completeOnboarding("full", workspace.id);
-          onComplete(workspace, {
-            kind: "chat",
-            sessionId: result.chatSession.id,
-          });
+          onComplete(workspace, { kind: "projects" });
         } catch (err) {
           toast.error(
             err instanceof Error
@@ -298,7 +293,7 @@ function OnboardingStepFlow({
         workspaceId: workspace.id,
         choice: "skip",
       });
-      onComplete(workspace, undefined);
+      onComplete(workspace, { kind: "projects" });
     },
     [answers, bootstrapMika, i18n.language, workspace, onComplete, t],
   );
@@ -429,6 +424,7 @@ function OnboardingStepFlow({
 export type OnboardingMode = "first_run" | "new_workspace";
 
 export type OnboardingDestination =
+  | { kind: "projects" }
   | { kind: "issue"; issueId: string }
   | {
       kind: "chat";

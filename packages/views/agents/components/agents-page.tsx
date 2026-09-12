@@ -72,6 +72,7 @@ import {
 } from "../../layout/collection-page";
 import { availabilityConfig } from "../presence";
 import { AgentRowActions } from "./agent-row-actions";
+import { BuiltinAgentCatalog } from "./builtin-agent-catalog";
 import {
   AgentListToolbar,
   countActiveFilterDimensions,
@@ -332,6 +333,7 @@ function ListError({
   return (
     <div className="flex flex-1 min-h-0 flex-col">
       <PageHeaderBar totalCount={0} onCreate={onCreate} />
+      <BuiltinAgentCatalog agents={[]} />
       <CollectionPageState
         role="alert"
         tone="destructive"
@@ -1080,6 +1082,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
         totalCount={totalCount}
         onCreate={() => navigation.push(paths.newAgent())}
       />
+      <BuiltinAgentCatalog agents={agents} />
 
       {isLoading || (!showEmpty && !listReady) ? (
         <div className="flex-1 overflow-y-auto @container">

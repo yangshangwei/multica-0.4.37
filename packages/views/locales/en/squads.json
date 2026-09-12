@@ -14,7 +14,8 @@
     },
     "no_matches": "No squads match",
     "row_menu": "Squad actions",
-    "archive_action": "Archive"
+    "archive_action": "Archive",
+    "list_error": "Could not load squads."
   },
   "inspector": {
     "details_section": "Details",
@@ -145,5 +146,37 @@
     "filter_active_count_one": "{{count}} filter",
     "filter_active_count_other": "{{count}} filters",
     "clear_filters": "Clear filters"
+  },
+  "catalog": {
+    "title": "Built-in squads",
+    "description": "Choose a roster for a new or existing project.",
+    "loading": "Loading built-in squads...",
+    "error": "Could not load built-in squads.",
+    "empty": "No built-in squads are available.",
+    "retry": "Retry",
+    "use_for_project": "Use for project",
+    "open_instance": "Open squad"
+  },
+  "use_for_project": {
+    "title": "Use {{name}} for a project",
+    "description": "Set the default squad for future issues. Existing issues and customizations stay as they are.",
+    "project_label": "Project",
+    "new_project": "Create a project",
+    "no_projects": "Create a project to use this squad.",
+    "projects_loading": "Loading projects...",
+    "projects_error": "Could not load projects.",
+    "resources_loading": "Loading project resources...",
+    "resources_error": "Could not load the project's resources.",
+    "runtime_label": "Execution runtime",
+    "connect_later": "Connect later",
+    "runtime_hint": "Choose a runtime for this project, or save the squad choice and connect one later.",
+    "runtimes_error": "Could not load runtimes.",
+    "agents_error": "Could not check the workspace assistant runtime.",
+    "runtime_unavailable": "This runtime is no longer available. Choose another or connect later.",
+    "offline": "Offline",
+    "apply": "Use for project",
+    "applying": "Preparing squad...",
+    "cancel": "Cancel",
+    "failed": "Could not update the project's squad. Try again."
   }
 }

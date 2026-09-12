@@ -17,6 +17,7 @@ Work that a single issue can describe does not need a project. Projects fit a gr
 | **Status** | `planned`, `in_progress`, `paused`, `completed`, or `cancelled`. |
 | **Priority** | `urgent`, `high`, `medium`, `low`, or `none`. |
 | **Lead** | A member or an agent — who coordinates the project. |
+| **Execution squad** | The default squad for new work in this project; separate from its lead. |
 | **Start and target dates** | The project's planned time range. |
 | **Issues and progress** | The work in the project and how much of it is finished. |
 | **Resources** | Linked GitHub repositories or local directories on specific computers. |
@@ -63,6 +64,18 @@ Any workspace member can create and edit projects; only `owner` and `admin` can 
 <Callout type="warning">
 Deleting a project does not delete its issues: they detach and stay in the workspace. The project's description, status, and resources are permanently deleted.
 </Callout>
+
+## Start with an execution squad
+
+In **Create Project**, choose the project's repository or local directory and an **Execution squad**. Feature Delivery is recommended; you can choose another built-in template, an existing squad you may invoke, or no squad. With an eligible runtime selected, Multica prepares the missing agents and role skills and reuses existing workspace copies without replacing their customizations.
+
+You can save a project before connecting a runtime. The project keeps your choice and offers connection or setup recovery. Above its issue list, the squad section shows current availability, including every agent's actual runtime and local-directory mapping. Changing the project default affects future issue defaults, not existing assignments.
+
+Use **Hand to squad** to open an issue with the project and squad selected. Review the execution hint and confirm creation to start it. Creating a project or browsing templates does not run agents.
+
+### Add recurring work
+
+The project's **Automations** section opens the built-in automation templates with the project and default squad preselected. Review the executor, schedule and timezone, then choose **Enable automation**. That final action creates the automation and starts its schedule. Existing automation details provide pause, resume and run-now controls.
 
 ## Next steps
 

@@ -15,6 +15,7 @@ import {
   type IssueSurfaceMutationOptions,
 } from "./actions-context";
 import type { IssueCreateDefaults } from "./types";
+import { mergeIssueCreateDefaults } from "./create-defaults";
 import { useT } from "../../i18n";
 
 export type MoveIssueUpdates = Pick<
@@ -113,7 +114,7 @@ export function useIssueSurfaceActions({
     (defaults?: IssueCreateDefaults) => {
       useModalStore
         .getState()
-        .open("create-issue", { ...createDefaults, ...defaults });
+        .open("create-issue", mergeIssueCreateDefaults(createDefaults, defaults));
     },
     [createDefaults],
   );

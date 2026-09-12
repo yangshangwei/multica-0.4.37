@@ -13,7 +13,8 @@ import { projectDetailOptions } from "@multica/core/projects/queries";
 import { useUpdateProject, useDeleteProject } from "@multica/core/projects/mutations";
 import { pinListOptions } from "@multica/core/pins";
 import { useCreatePin, useDeletePin } from "@multica/core/pins";
-import { memberListOptions, agentListOptions } from "@multica/core/workspace/queries";
+import { memberListOptions, agentListOptions, squadListOptions } from "@multica/core/workspace/queries";
+import { canAssignAgentToIssue } from "@multica/core/permissions";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useIssuesScope } from "@multica/core/issues/stores";
 import { useRecentContextStore } from "@multica/core/chat";
@@ -26,9 +27,12 @@ import { currentPath, useNavigation } from "../../navigation";
 import { TitleEditor, ContentEditor, type ContentEditorRef } from "../../editor";
 import { PriorityIcon } from "../../issues/components/priority-icon";
 import { ProjectResourcesSection } from "./project-resources-section";
+import { ProjectSquadSection } from "./project-squad-section";
+import { ProjectAutomationsSection } from "./project-automations-section";
 import { ProjectStartDatePicker } from "./project-start-date-picker";
 import { ProjectDueDatePicker } from "./project-due-date-picker";
 import { IssueSurface } from "../../issues/surface/issue-surface";
+import type { IssueCreateDefaults } from "../../issues/surface/types";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Button } from "@multica/ui/components/ui/button";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@multica/ui/components/ui/resizable";
@@ -126,8 +130,20 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
     () => ({ type: "project" as const, projectId, actorKind: issueTab }),
     [projectId, issueTab],
   );
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
+  const { data: members = [], isPending: membersPending, isError: membersError } = useQuery(memberListOptions(wsId));
+  const { data: agents = [], isPending: agentsPending, isError: agentsError } = useQuery(agentListOptions(wsId));
+  const { data: squads = [], isPending: squadsPending, isError: squadsError } = useQuery(squadListOptions(wsId));
+  const projectCreateDefaults = useMemo<IssueCreateDefaults | undefined>(() => {
+    const config = project?.execution_squad;
+    if (config?.state !== "configured" || !config.squad_id || membersPending || agentsPending || squadsPending || membersError || agentsError || squadsError) return undefined;
+    const squad = squads.find((item) => item.id === config.squad_id && item.workspace_id === wsId && !item.archived_at);
+    const leader = agents.find((item) => item.id === squad?.leader_id && item.workspace_id === wsId && !item.archived_at);
+    if (!squad || !leader || !canAssignAgentToIssue(leader, {
+      userId: userId ?? null,
+      role: members.find((member) => member.user_id === userId)?.role ?? null,
+    }).allowed) return undefined;
+    return { assignee_type: "squad", assignee_id: squad.id, status: "todo" };
+  }, [project?.execution_squad, wsId, userId, members, agents, squads, membersPending, agentsPending, squadsPending, membersError, agentsError, squadsError]);
   const { getActorName } = useActorName();
   const updateProject = useUpdateProject();
   const deleteProject = useDeleteProject();
@@ -470,6 +486,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
 
       {/* Resources */}
       <ProjectResourcesSection projectId={projectId} />
+      <ProjectAutomationsSection projectId={project.id} defaultSquadId={project.execution_squad?.squad_id ?? null} />
     </div>
   );
 
@@ -548,9 +565,11 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
             }
           />
 
+          <ProjectSquadSection key={project.id} project={project} />
           <IssueSurface
             scope={issueScope}
             modes={["board", "list", "table", "swimlane", "gantt"]}
+            fallbackCreateDefaults={projectCreateDefaults}
           />
           </div>
         </ResizablePanel>

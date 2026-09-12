@@ -66,6 +66,7 @@ import { useSkillPresentation } from "../hooks/use-skill-presentation";
 import type { SkillPresentation } from "../lib/skill-presentation";
 import { originSourceUrl, readOrigin, type OriginInfo } from "../lib/origin";
 import { CreateSkillDialog } from "./create-skill-dialog";
+import { BuiltinSkillCatalog } from "./builtin-skill-catalog";
 import {
   useSkillsViewStore,
   DEFAULT_HIDDEN_COLUMNS,
@@ -626,7 +627,7 @@ export default function SkillsPage() {
     runtimeListOptions(wsId),
   );
 
-  const [createOpen, setCreateOpen] = useState(false);
+  const [creation, setCreation] = useState<{ templateName?: string } | null>(null);
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(
     new Set(),
   );
@@ -793,7 +794,8 @@ export default function SkillsPage() {
   if (listError) {
     return (
       <div className="flex flex-1 min-h-0 flex-col">
-        <PageHeaderBar totalCount={0} onCreate={() => setCreateOpen(true)} />
+        <PageHeaderBar totalCount={0} onCreate={() => setCreation({})} />
+        <BuiltinSkillCatalog skills={[]} onView={(templateName) => setCreation({ templateName })} />
         <CollectionPageState
           role="alert"
           tone="destructive"
@@ -815,6 +817,13 @@ export default function SkillsPage() {
             </Button>
           }
         />
+        {creation && (
+          <CreateSkillDialog
+            initialTemplateName={creation.templateName}
+            onClose={() => setCreation(null)}
+            onCreated={handleCreated}
+          />
+        )}
       </div>
     );
   }
@@ -842,8 +851,9 @@ export default function SkillsPage() {
     <div className="relative flex flex-1 min-h-0 flex-col">
       <PageHeaderBar
         totalCount={totalCount}
-        onCreate={() => setCreateOpen(true)}
+        onCreate={() => setCreation({})}
       />
+      <BuiltinSkillCatalog skills={skills} onView={(templateName) => setCreation({ templateName })} />
 
       {supportingQueryDown && (
         <div
@@ -861,7 +871,7 @@ export default function SkillsPage() {
         </div>
       ) : showEmpty ? (
         <div className="flex flex-1 items-center justify-center">
-          <EmptyState onCreate={() => setCreateOpen(true)} />
+          <EmptyState onCreate={() => setCreation({})} />
         </div>
       ) : (
         <>
@@ -972,9 +982,10 @@ export default function SkillsPage() {
         onClear={() => setSelectedIds(new Set())}
       />
 
-      {createOpen && (
+      {creation && (
         <CreateSkillDialog
-          onClose={() => setCreateOpen(false)}
+          initialTemplateName={creation.templateName}
+          onClose={() => setCreation(null)}
           onCreated={handleCreated}
         />
       )}

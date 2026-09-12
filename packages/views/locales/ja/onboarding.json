@@ -11,8 +11,8 @@
       "description": "名前と URL を決める。"
     },
     "runtime": {
-      "label": "Mika を知る",
-      "description": "最初のエージェント仲間と、その実行環境。"
+      "label": "ランタイムを接続",
+      "description": "エージェントを実行する環境を選びます。"
     }
   },
   "welcome": {
@@ -22,7 +22,7 @@
     "headline_emphasis": "ワークスペースに。",
     "lede": "同僚に仕事を任せるようにタスクを割り当てるだけ。エージェントが引き受け、ステータスを更新し、完了したらコメントします。",
     "lede_web": "デスクトップ版にはランタイムが同梱されており、何もインストールする必要はありません。ご自身の CLI を接続するには、ウェブで続けてください。",
-    "lede_desktop": "完了するころには、実際のエージェントがあなたの最初のタスクに返信しています。",
+    "lede_desktop": "ランタイムを接続して最初のプロジェクトを作成します。Mika にいつでも相談できます。",
     "download_desktop": "デスクトップ版をダウンロード",
     "continue_on_web": "ウェブで続ける",
     "start_exploring": "探索を始める",
@@ -203,7 +203,7 @@
     "scanning_headline": "このコンピュータを接続中…",
     "scanning_lede_prefix": "エージェントは、あなたがすでに持っている AI コーディングツールを通じて作業します — たとえば ",
     "scanning_lede_suffix": " など。このコンピュータにインストール済みのものを確認しています。",
-    "found_headline": "Mika はどこで動かしますか？",
+    "found_headline": "エージェントをどこで実行しますか？",
     "found_lede": "このコンピュータで見つかったエージェントランタイムです。あとで切り替えたり追加したりできます。",
     "runtime_count_other": "エージェントランタイム {{count}} 個",
     "status_all_online": "すべてオンライン",
@@ -224,10 +224,10 @@
     "refresh": "更新",
     "refreshing": "更新中…",
     "hint_selected": "選択中: {{name}}",
-    "hint_pick": "Mika と始めるには、上でエージェントランタイムを選んでください。",
+    "hint_pick": "ランタイムを選び、最初のプロジェクトを作成します。",
     "hint_waiting": "最初の結果を待っています…",
     "hint_skip_or_refresh": "インストール後に更新するか、スキップしてワークスペースに入ってください。",
-    "continue": "Mika と始める"
+    "continue": "プロジェクトへ進む"
   },
   "step_platform": {
     "eyebrow": "コンピュータを接続",

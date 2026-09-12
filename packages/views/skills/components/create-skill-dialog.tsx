@@ -614,12 +614,15 @@ function LocalForm({
 export function CreateSkillDialog({
   onClose,
   onCreated,
+  initialTemplateName,
 }: {
   onClose: () => void;
   onCreated?: (skill: Skill) => void;
+  initialTemplateName?: string;
 }) {
   const { t } = useT("skills");
-  const [method, setMethod] = useState<Method>("chooser");
+  const [method, setMethod] = useState<Method>(() => initialTemplateName ? "template" : "chooser");
+  const initialTemplate = useRef(initialTemplateName);
   const wsId = useWorkspaceId();
   const [discardOpen, setDiscardOpen] = useState(false);
   const pendingAction = useRef<(() => void) | null>(null);
@@ -641,6 +644,14 @@ export function CreateSkillDialog({
     if (newlyCreated) toast.success(t(($) => $.create.template.created));
     handleCreated(skill);
   });
+  const previewTemplate = useRef(templateSession.preview);
+  previewTemplate.current = templateSession.preview;
+
+  // A catalog entry seeds only the preview. Explicit adoption still owns the
+  // editable draft, so locale changes and refreshed catalogs cannot replace it.
+  useEffect(() => {
+    if (initialTemplate.current) previewTemplate.current(initialTemplate.current);
+  }, [wsId]);
 
   useEffect(() => {
     pendingAction.current = null;
