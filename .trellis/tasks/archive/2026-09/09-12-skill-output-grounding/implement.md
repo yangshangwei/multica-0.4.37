@@ -13,8 +13,8 @@
   type and static checks. Keep unrelated full E2E failures out of this revision.
 - [x] Update the three authorized skills in workspace 毕宿五, add the CSV reference,
   and reopen all content to verify persistence.
-- [ ] Record final evidence, commit with Lore trailers, and archive this revision
-  child. Keep the parent validation task in review.
+- [x] Record final evidence, commit with Lore trailers, and archive this revision
+  child. The parent validation task remains in review.
 
 ## Deferred to the later Codex evaluation
 
