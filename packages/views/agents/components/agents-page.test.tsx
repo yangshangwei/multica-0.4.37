@@ -292,17 +292,22 @@ describe("AgentsPage built-in catalog", () => {
     mocks.templatesPending = true;
     renderPage();
     const catalog = screen.getByRole("region", { name: "Built-in agents" });
+    fireEvent.click(within(catalog).getByRole("button", { name: /^Built-in agents/ }));
     expect(within(catalog).getByRole("status")).toHaveTextContent("Loading built-in agents...");
     expect(within(catalog).queryByText("No built-in agents are available.")).not.toBeInTheDocument();
   });
 
-  it("shows templates in an empty workspace and opens the existing template flow without creating an agent", () => {
+  it("keeps templates collapsed in an empty workspace and opens the existing flow on request", () => {
     mocks.agents = [];
     mocks.templates = [REVIEW_TEMPLATE];
     const adapter = makeAdapter();
     renderPage(adapter);
 
     const catalog = screen.getByRole("region", { name: "Built-in agents" });
+    const toggle = within(catalog).getByRole("button", { name: "Built-in agents 1" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(within(catalog).queryByRole("button", { name: "View template" })).not.toBeInTheDocument();
+    fireEvent.click(toggle);
     expect(within(catalog).getByText(REVIEW_TEMPLATE.description)).toBeInTheDocument();
     expect(screen.getByText("No agents yet")).toBeInTheDocument();
     expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
@@ -320,6 +325,7 @@ describe("AgentsPage built-in catalog", () => {
     const adapter = makeAdapter();
     renderPage(adapter);
 
+    fireEvent.click(screen.getByRole("button", { name: /^Built-in agents/ }));
     fireEvent.click(within(screen.getByRole("region", { name: "Built-in agents" })).getByRole("button", { name: "Open agent" }));
     expect(adapter.push).toHaveBeenCalledWith("/test-workspace/agents/renamed");
   });
@@ -328,6 +334,7 @@ describe("AgentsPage built-in catalog", () => {
     mocks.templates = [REVIEW_TEMPLATE];
     mocks.agents = [makeAgent({ name: "Reviewer" })];
     const view = renderPage();
+    fireEvent.click(screen.getByRole("button", { name: /^Built-in agents/ }));
     expect(within(screen.getByRole("region", { name: "Built-in agents" })).queryByRole("button", { name: "Open agent" })).not.toBeInTheDocument();
 
     mocks.templatesError = true;

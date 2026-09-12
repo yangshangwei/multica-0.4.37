@@ -23,7 +23,7 @@ export function BuiltinAgentCatalog({ agents }: { agents: readonly Agent[] }) {
         loading: t(($) => $.catalog.loading), error: t(($) => $.catalog.error),
         empty: t(($) => $.catalog.empty), retry: t(($) => $.catalog.retry),
       }}
-      loading={catalog.isPending} failed={catalog.isError} empty={templates.length === 0}
+      count={templates.length} loading={catalog.isPending} failed={catalog.isError} empty={templates.length === 0}
       onRetry={() => void catalog.refetch()}
     >
       {templates.map((template) => {

@@ -92,9 +92,13 @@ beforeEach(() => {
 });
 
 describe("SquadsPage built-in catalog", () => {
-  it("shows a usable template above the empty instance list and preserves custom creation", () => {
+  it("keeps templates collapsed above the empty list and preserves template and custom creation", () => {
     renderPage();
     const catalog = screen.getByRole("region", { name: "Built-in squads" });
+    const toggle = within(catalog).getByRole("button", { name: "Built-in squads 1" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(within(catalog).queryByRole("button", { name: "Use for project" })).not.toBeInTheDocument();
+    fireEvent.click(toggle);
     expect(within(catalog).getByText(TEMPLATE.description)).toBeInTheDocument();
     expect(screen.getByText("No squads yet. Create one to get started.")).toBeInTheDocument();
     expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
@@ -113,6 +117,7 @@ describe("SquadsPage built-in catalog", () => {
     const navigation = adapter();
     renderPage(navigation);
     const catalog = screen.getByRole("region", { name: "Built-in squads" });
+    fireEvent.click(within(catalog).getByRole("button", { name: /^Built-in squads/ }));
     fireEvent.click(within(catalog).getByRole("button", { name: "Open squad" }));
     expect(navigation.push).toHaveBeenCalledWith("/acme/squads/squad-1");
     const filter = screen.getByRole("button", { name: "Filter" });
@@ -123,6 +128,7 @@ describe("SquadsPage built-in catalog", () => {
   it("does not treat a matching name as a template instance", () => {
     mocks.squads = [{ ...SQUAD, name: TEMPLATE.name }];
     renderPage();
+    fireEvent.click(screen.getByRole("button", { name: /^Built-in squads/ }));
     expect(within(screen.getByRole("region", { name: "Built-in squads" })).queryByRole("button", { name: "Open squad" })).not.toBeInTheDocument();
   });
 
@@ -130,6 +136,7 @@ describe("SquadsPage built-in catalog", () => {
     mocks.templatesError = true;
     mocks.squads = [SQUAD];
     renderPage();
+    fireEvent.click(screen.getByRole("button", { name: /^Built-in squads/ }));
     fireEvent.click(within(screen.getByRole("region", { name: "Built-in squads" })).getByRole("button", { name: "Retry" }));
     expect(mocks.refetchTemplates).toHaveBeenCalledOnce();
     expect(screen.getByText(SQUAD.name)).toBeInTheDocument();

@@ -37,9 +37,13 @@ beforeEach(() => {
 });
 
 describe("automation catalog entry", () => {
-  it("shows templates directly above the empty list and keeps custom creation", async () => {
+  it("keeps templates collapsed above the empty list and reveals them on request", async () => {
     renderPage();
     const catalog = await screen.findByRole("region", { name: "Built-in templates" });
+    const toggle = await within(catalog).findByRole("button", { name: "Built-in templates 1" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(within(catalog).queryByRole("button", { name: /Daily change review/ })).not.toBeInTheDocument();
+    await userEvent.setup().click(toggle);
     await userEvent.setup().click(await within(catalog).findByRole("button", { name: /Daily change review/ }));
     expect(push).toHaveBeenCalledWith("/acme/autopilots/new/template?template=daily-change-review");
     expect(screen.getByText("No autopilots yet")).toBeInTheDocument();
@@ -55,6 +59,7 @@ describe("automation catalog entry", () => {
     renderPage();
     const catalog = await screen.findByRole("region", { name: "Built-in templates" });
     const filters = await screen.findByTestId("instance-filters");
+    expect(within(catalog).getByRole("button", { name: /^Built-in templates/ })).toHaveAttribute("aria-expanded", "false");
     expect(catalog.compareDocumentPosition(filters) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });

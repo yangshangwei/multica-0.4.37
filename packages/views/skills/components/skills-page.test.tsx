@@ -212,12 +212,16 @@ const REVIEW_TEMPLATE: SkillTemplate = {
 };
 
 describe("SkillsPage built-in catalog", () => {
-  it("keeps templates visible in an empty workspace and opens a preselected copy flow", () => {
+  it("keeps templates collapsed in an empty workspace and opens a preselected copy on request", () => {
     mocks.skills = [];
     mocks.templates = [REVIEW_TEMPLATE];
     renderPage(makeAdapter());
 
     const catalog = screen.getByRole("region", { name: "Built-in skills" });
+    const toggle = within(catalog).getByRole("button", { name: "Built-in skills 1" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(within(catalog).queryByRole("button", { name: "View template" })).not.toBeInTheDocument();
+    fireEvent.click(toggle);
     expect(within(catalog).getByText(REVIEW_TEMPLATE.description)).toBeInTheDocument();
     expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
     fireEvent.click(within(catalog).getByRole("button", { name: "View template" }));
@@ -235,6 +239,7 @@ describe("SkillsPage built-in catalog", () => {
     fireEvent.change(screen.getByRole("textbox", { name: "Search skills" }), { target: { value: "nothing matches" } });
 
     const catalog = screen.getByRole("region", { name: "Built-in skills" });
+    fireEvent.click(within(catalog).getByRole("button", { name: /^Built-in skills/ }));
     expect(within(catalog).getByText(REVIEW_TEMPLATE.name)).toBeInTheDocument();
     fireEvent.click(within(catalog).getByRole("button", { name: "Open skill" }));
     expect(adapter.push).toHaveBeenCalledWith("/acme/skills/copy-id");
@@ -245,6 +250,7 @@ describe("SkillsPage built-in catalog", () => {
     mocks.skills = [{ ...importedSkill, name: REVIEW_TEMPLATE.name, config: {} }];
     const adapter = makeAdapter();
     const view = renderPage(adapter);
+    fireEvent.click(screen.getByRole("button", { name: /^Built-in skills/ }));
     expect(within(screen.getByRole("region", { name: "Built-in skills" })).queryByRole("button", { name: "Open skill" })).not.toBeInTheDocument();
 
     mocks.templatesError = true;
