@@ -342,3 +342,35 @@ Localized seven source skill bodies and updated all seven matching 海卫三 wor
 ### Status
 
 [OK] **Completed**
+
+
+## Session 10: Template-based skill creation with protected drafts
+
+**Date**: 2026-09-12
+**Task**: Template-based skill creation with protected drafts
+**Branch**: `feat/agent-skills-localization`
+
+### Summary
+
+Implemented the fifth skill creation method with seven built-in templates, local editing, independent copies, metadata preservation and bounded uncertain-result recovery.
+
+### Main Changes
+
+- Added read-only catalog; reused ordinary creation and shared cache/navigation; preserved template identity and YAML types.
+- Kept unresolved submissions independent from edit mode and protected newer edits when opening recovered results; fixed narrow keyboard focus.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0008e8665` | (see git log) |
+| `078c73ca4` | (see git log) |
+
+### Testing
+
+- [OK] Core 1855 and views 5114 tests passed; final Go 30 test events without skips; earlier 223 backend regressions with documented optional skips.
+- [OK] Real Web creation/navigation, Chinese desktop/narrow screenshots and keyboard assertions passed; visual verdict 96; typecheck/lint/go vet passed.
+
+### Status
+
+[OK] **Completed**
