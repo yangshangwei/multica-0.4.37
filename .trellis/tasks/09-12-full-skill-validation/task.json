@@ -21,11 +21,15 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "Validation evidence collected; full acceptance is not passing. E2E has 10 failures and 2 collection-blocked cases; real-agent completion is blocked by configured model services. Do not mark complete or archive until remaining acceptance criteria are resolved.",
+  "notes": "Claude quota recovery retest completed: 14 main scenarios and 1 diagnostic finished; expected skill selection met throughout. Independent review found 3 content issues and 2 input/role clarifications. Prior E2E 10 failures and 2 collection-blocked cases remain; full acceptance is not passing.",
   "meta": {
     "tested_commit": "fe38a164bd5abebaff0115e4c031db0d19c57eb3",
     "validation_status": "not_fully_passed",
-    "real_agent_status": "blocked_by_provider",
-    "summary_path": ".omx/reports/skill-descriptions-full-validation-20260912/SUMMARY.md"
+    "real_agent_status": "claude_completed_with_content_findings",
+    "summary_path": ".omx/reports/skill-descriptions-full-validation-20260912/SUMMARY.md",
+    "claude_retry_report": ".omx/reports/skill-descriptions-full-validation-20260912/real-agent/claude-retest",
+    "claude_retest_main_completed": 14,
+    "claude_retest_diagnostic_completed": 1,
+    "claude_retest_semantic_review": ".omx/reports/skill-descriptions-full-validation-20260912/real-agent/claude-retest/SEMANTIC_REVIEW.md"
   }
 }
