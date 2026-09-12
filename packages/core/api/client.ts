@@ -98,6 +98,7 @@ import type {
   CancelTaskResponse,
   Project,
   CreateProjectRequest,
+  ConfigureProjectSquadRequest,
   UpdateProjectRequest,
   ListProjectsResponse,
   ProjectResource,
@@ -352,6 +353,9 @@ import {
   RuntimeUsageListSchema,
   SearchIssuesResponseSchema,
   SearchProjectsResponseSchema,
+  ProjectSchema,
+  ListProjectsResponseSchema,
+  ListProjectResourcesResponseSchema,
   SquadSchema,
   SquadListSchema,
   SquadTemplateListResponseSchema,
@@ -559,7 +563,7 @@ export class SkillCreationUnconfirmedError extends Error {
   }
 }
 
-function skillRequestInit(options?: SkillRequestOptions): RequestInit {
+function workspaceRequestInit(options?: { workspaceId?: string; signal?: AbortSignal }): RequestInit {
   return {
     signal: options?.signal,
     // The server resolves a slug before a UUID. Clear the ambient slug when
@@ -569,6 +573,19 @@ function skillRequestInit(options?: SkillRequestOptions): RequestInit {
       "X-Workspace-Slug": "",
     },
   };
+}
+
+function sameResourceIdentity(actual: string, expected: string): boolean {
+  if (actual === expected) return true;
+  // UUID parsers accept uppercase/compact references and return canonical
+  // strings. Compare their identities, while keeping opaque IDs exact.
+  const normalize = (value: string) => value
+    .replace(/^urn:uuid:/i, "")
+    .replace(/^\{(.+)\}$/, "$1")
+    .replaceAll("-", "")
+    .toLowerCase();
+  const canonical = normalize(actual);
+  return /^[0-9a-f]{32}$/.test(canonical) && canonical === normalize(expected);
 }
 
 function assertAgentConversationStartersWriteSupported(data: {
@@ -3260,7 +3277,7 @@ export class ApiClient {
   async listSkillTemplates(workspaceId: string, signal?: AbortSignal): Promise<SkillTemplate[]> {
     const raw = await this.fetch<unknown>(
       "/api/skills/templates",
-      skillRequestInit({ workspaceId, signal }),
+      workspaceRequestInit({ workspaceId, signal }),
     );
     return parseWithFallback(
       raw,
@@ -3271,14 +3288,14 @@ export class ApiClient {
   }
 
   async listSkills(options?: SkillRequestOptions): Promise<SkillSummary[]> {
-    const raw = await this.fetch<unknown>("/api/skills", skillRequestInit(options));
+    const raw = await this.fetch<unknown>("/api/skills", workspaceRequestInit(options));
     return parseWithFallback(raw, SkillListSchema, EMPTY_SKILL_LIST, {
       endpoint: "GET /api/skills",
     });
   }
 
   async getSkill(id: string, options?: SkillRequestOptions): Promise<Skill> {
-    const raw = await this.fetch<unknown>(`/api/skills/${id}`, skillRequestInit(options));
+    const raw = await this.fetch<unknown>(`/api/skills/${id}`, workspaceRequestInit(options));
     return parseWithFallback(raw, SkillSchema, EMPTY_SKILL, {
       endpoint: "GET /api/skills/:id",
     });
@@ -3287,7 +3304,7 @@ export class ApiClient {
   async createSkill(data: CreateSkillRequest, options?: SkillRequestOptions): Promise<Skill> {
     const workspaceId = options?.workspaceId ?? getCurrentWsId();
     const response = await this.fetchRaw("/api/skills", {
-      ...skillRequestInit(options),
+      ...workspaceRequestInit(options),
       method: "POST",
       body: JSON.stringify(data),
       extraHeaders: { "Content-Type": "application/json" },
@@ -3837,28 +3854,59 @@ export class ApiClient {
   }
 
   // Projects
-  async listProjects(params?: { status?: string }): Promise<ListProjectsResponse> {
+  private parseProjectResponse(raw: unknown, endpoint: string, workspaceId?: string, id?: string): Project {
+    const project = parseWithFallback<Project | null>(raw, ProjectSchema, null, { endpoint });
+    if (!project || (workspaceId !== undefined && !sameResourceIdentity(project.workspace_id, workspaceId)) ||
+      (id !== undefined && !sameResourceIdentity(project.id, id))) {
+      throw new Error(`${endpoint} returned an invalid project response`);
+    }
+    return project;
+  }
+
+  async listProjects(
+    params?: { status?: string },
+    options?: { workspaceId?: string; signal?: AbortSignal },
+  ): Promise<ListProjectsResponse> {
     const search = new URLSearchParams();
     if (params?.status) search.set("status", params.status);
-    return this.fetch(`/api/projects?${search}`);
-  }
-
-  async getProject(id: string): Promise<Project> {
-    return this.fetch(`/api/projects/${id}`);
-  }
-
-  async createProject(data: CreateProjectRequest): Promise<Project> {
-    return this.fetch("/api/projects", {
-      method: "POST",
-      body: JSON.stringify(data),
+    const raw = await this.fetch<unknown>(`/api/projects?${search}`, workspaceRequestInit(options));
+    const result = parseWithFallback<ListProjectsResponse>(raw, ListProjectsResponseSchema, { projects: [], total: 0 }, {
+      endpoint: "GET /api/projects",
     });
+    if (options?.workspaceId && result.projects.some((project) => !sameResourceIdentity(project.workspace_id, options.workspaceId!))) {
+      throw new Error("GET /api/projects returned a different workspace");
+    }
+    return result;
   }
 
-  async updateProject(id: string, data: UpdateProjectRequest): Promise<Project> {
-    return this.fetch(`/api/projects/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
+  async getProject(id: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<Project> {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(id)}`, workspaceRequestInit(options));
+    return this.parseProjectResponse(raw, "GET /api/projects/:id", options?.workspaceId, id);
+  }
+
+  async createProject(data: CreateProjectRequest, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<Project> {
+    const raw = await this.fetch<unknown>("/api/projects", {
+      ...workspaceRequestInit(options), method: "POST", body: JSON.stringify(data),
     });
+    return this.parseProjectResponse(raw, "POST /api/projects", options?.workspaceId);
+  }
+
+  async updateProject(id: string, data: UpdateProjectRequest, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<Project> {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(id)}`, {
+      ...workspaceRequestInit(options), method: "PUT", body: JSON.stringify(data),
+    });
+    return this.parseProjectResponse(raw, "PUT /api/projects/:id", options?.workspaceId, id);
+  }
+
+  async configureProjectSquad(
+    id: string,
+    data: ConfigureProjectSquadRequest,
+    options?: { workspaceId?: string; signal?: AbortSignal },
+  ): Promise<Project> {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(id)}/execution-squad`, {
+      ...workspaceRequestInit(options), method: "PUT", body: JSON.stringify(data),
+    });
+    return this.parseProjectResponse(raw, "PUT /api/projects/:id/execution-squad", options?.workspaceId, id);
   }
 
   async deleteProject(id: string): Promise<void> {
@@ -3868,8 +3916,18 @@ export class ApiClient {
   // Project resources
   async listProjectResources(
     projectId: string,
+    options?: { workspaceId?: string; signal?: AbortSignal },
   ): Promise<ListProjectResourcesResponse> {
-    return this.fetch(`/api/projects/${projectId}/resources`);
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/resources`, workspaceRequestInit(options));
+    const result = parseWithFallback<ListProjectResourcesResponse | null>(raw, ListProjectResourcesResponseSchema, null, {
+      endpoint: "GET /api/projects/:id/resources",
+    });
+    if (!result || result.resources.some((resource) =>
+      !sameResourceIdentity(resource.project_id, projectId) ||
+      (options?.workspaceId !== undefined && !sameResourceIdentity(resource.workspace_id, options.workspaceId)))) {
+      throw new Error("GET /api/projects/:id/resources returned an invalid resource list");
+    }
+    return result;
   }
 
   async createProjectResource(

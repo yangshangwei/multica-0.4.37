@@ -16,7 +16,7 @@ export const projectResourceKeys = {
 export function projectResourcesOptions(wsId: string, projectId: string) {
   return queryOptions({
     queryKey: projectResourceKeys.list(wsId, projectId),
-    queryFn: () => api.listProjectResources(projectId),
+    queryFn: ({ signal }) => api.listProjectResources(projectId, { workspaceId: wsId, signal }),
     select: (data) => data.resources,
   });
 }

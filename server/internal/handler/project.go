@@ -43,24 +43,26 @@ type ProjectResponse struct {
 	// /api/projects/{id}/resources. Resources themselves stay out of this
 	// payload to keep parent metadata and child collections separate; clients
 	// that need the list call ListProjectResources directly.
-	ResourceCount int64 `json:"resource_count"`
+	ResourceCount  int64                 `json:"resource_count"`
+	ExecutionSquad ProjectExecutionSquad `json:"execution_squad"`
 }
 
 func projectToResponse(p db.Project) ProjectResponse {
 	return ProjectResponse{
-		ID:          uuidToString(p.ID),
-		WorkspaceID: uuidToString(p.WorkspaceID),
-		Title:       p.Title,
-		Description: textToPtr(p.Description),
-		Icon:        textToPtr(p.Icon),
-		Status:      p.Status,
-		Priority:    p.Priority,
-		LeadType:    textToPtr(p.LeadType),
-		LeadID:      uuidToPtr(p.LeadID),
-		StartDate:   dateToPtr(p.StartDate),
-		DueDate:     dateToPtr(p.DueDate),
-		CreatedAt:   timestampToString(p.CreatedAt),
-		UpdatedAt:   timestampToString(p.UpdatedAt),
+		ID:             uuidToString(p.ID),
+		WorkspaceID:    uuidToString(p.WorkspaceID),
+		Title:          p.Title,
+		Description:    textToPtr(p.Description),
+		Icon:           textToPtr(p.Icon),
+		Status:         p.Status,
+		Priority:       p.Priority,
+		LeadType:       textToPtr(p.LeadType),
+		LeadID:         uuidToPtr(p.LeadID),
+		StartDate:      dateToPtr(p.StartDate),
+		DueDate:        dateToPtr(p.DueDate),
+		CreatedAt:      timestampToString(p.CreatedAt),
+		UpdatedAt:      timestampToString(p.UpdatedAt),
+		ExecutionSquad: readProjectSquadSelection(p.ExecutionSquad).ProjectExecutionSquad,
 	}
 }
 
@@ -99,16 +101,17 @@ func (h *Handler) loadProjectResourceCount(ctx context.Context, projectID pgtype
 }
 
 type CreateProjectRequest struct {
-	Title       string                                `json:"title"`
-	Description *string                               `json:"description"`
-	Icon        *string                               `json:"icon"`
-	Status      string                                `json:"status"`
-	Priority    string                                `json:"priority"`
-	LeadType    *string                               `json:"lead_type"`
-	LeadID      *string                               `json:"lead_id"`
-	StartDate   *string                               `json:"start_date"`
-	DueDate     *string                               `json:"due_date"`
-	Resources   []CreateProjectResourceRequestPayload `json:"resources,omitempty"`
+	Title          string                                `json:"title"`
+	Description    *string                               `json:"description"`
+	Icon           *string                               `json:"icon"`
+	Status         string                                `json:"status"`
+	Priority       string                                `json:"priority"`
+	LeadType       *string                               `json:"lead_type"`
+	LeadID         *string                               `json:"lead_id"`
+	StartDate      *string                               `json:"start_date"`
+	DueDate        *string                               `json:"due_date"`
+	Resources      []CreateProjectResourceRequestPayload `json:"resources,omitempty"`
+	ExecutionSquad *ConfigureProjectSquadRequest         `json:"execution_squad,omitempty"`
 }
 
 // CreateProjectResourceRequestPayload mirrors CreateProjectResourceRequest but
@@ -367,17 +370,33 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	var squadInput *projectSquadInput
+	var executionSquad []byte
+	if req.ExecutionSquad != nil {
+		in, ok := h.validateProjectSquadChoice(w, r, wsUUID, *req.ExecutionSquad)
+		if !ok {
+			return
+		}
+		encoded, err := json.Marshal(in.Selection)
+		if err != nil {
+			writeError(w, http.StatusInternalServerError, "failed to save execution squad selection")
+			return
+		}
+		squadInput = &in
+		executionSquad = encoded
+	}
 	createParams := db.CreateProjectParams{
-		WorkspaceID: wsUUID,
-		Title:       req.Title,
-		Description: ptrToText(req.Description),
-		Icon:        ptrToText(req.Icon),
-		Status:      status,
-		LeadType:    leadType,
-		LeadID:      leadID,
-		Priority:    priority,
-		StartDate:   startDate,
-		DueDate:     dueDate,
+		WorkspaceID:    wsUUID,
+		Title:          req.Title,
+		Description:    ptrToText(req.Description),
+		Icon:           ptrToText(req.Icon),
+		Status:         status,
+		LeadType:       leadType,
+		LeadID:         leadID,
+		Priority:       priority,
+		StartDate:      startDate,
+		DueDate:        dueDate,
+		ExecutionSquad: executionSquad,
 	}
 
 	// Without resources, keep the simple non-tx path.
@@ -387,6 +406,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 			h.writeProjectWriteError(w, r, err, "create")
 			return
 		}
+		project = h.prepareCreatedProjectSquad(r.Context(), project, squadInput)
 		resp := projectToResponse(project)
 		h.publish(protocol.EventProjectCreated, workspaceID, "member", userID, map[string]any{"project": resp})
 		writeJSON(w, http.StatusCreated, resp)
@@ -442,6 +462,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to commit project create")
 		return
 	}
+	project = h.prepareCreatedProjectSquad(r.Context(), project, squadInput)
 
 	resourceResp := make([]ProjectResourceResponse, len(resourceRows))
 	for i, row := range resourceRows {
@@ -800,7 +821,7 @@ func buildProjectSearchQuery(phrase string, terms []string, includeClosed bool) 
 	query := fmt.Sprintf(`SELECT p.id, p.workspace_id, p.title, p.description, p.icon,
 		p.status, p.priority, p.lead_type, p.lead_id,
 		p.start_date, p.due_date,
-		p.created_at, p.updated_at,
+		p.created_at, p.updated_at, p.execution_squad,
 		COUNT(*) OVER() AS total_count,
 		%s AS match_source
 	FROM project p
@@ -882,6 +903,7 @@ func (h *Handler) SearchProjects(w http.ResponseWriter, r *http.Request) {
 				&row.project.DueDate,
 				&row.project.CreatedAt,
 				&row.project.UpdatedAt,
+				&row.project.ExecutionSquad,
 				&row.totalCount,
 				&row.matchSource,
 			); err != nil {

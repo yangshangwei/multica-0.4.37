@@ -310,6 +310,9 @@ type squadTemplateProvisionInput struct {
 	// WorkspaceIDString is the same id as WorkspaceID, in the string form
 	// canInvokeAgent takes.
 	WorkspaceIDString string
+	// Project defaults must be invocable on the requested machine as well as
+	// wireable. The explicit template endpoint keeps its existing wiring rules.
+	ValidateAgent func(context.Context, *db.Queries, db.Agent) error
 }
 
 // errTemplateAgentNotWireable reports that the workspace already has this role's
@@ -347,21 +350,39 @@ func (h *Handler) provisionSquadTemplate(ctx context.Context, in squadTemplatePr
 		return result, err
 	}
 	defer tx.Rollback(ctx)
-	qtx := h.Queries.WithTx(tx)
+	if err := lockSquadTemplateProvisioning(ctx, tx, in); err != nil {
+		return result, err
+	}
+	result, err = h.materializeSquadTemplateInTx(ctx, tx, in)
+	if err != nil {
+		return result, err
+	}
+	if err := tx.Commit(ctx); err != nil {
+		return result, err
+	}
+	return result, nil
+}
 
+func lockSquadTemplateProvisioning(ctx context.Context, tx pgx.Tx, in squadTemplateProvisionInput) error {
 	if _, err := tx.Exec(ctx,
 		"SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
 		"squad-template:"+uuidToString(in.WorkspaceID)+":"+in.Template.Key,
 	); err != nil {
-		return result, err
+		return err
 	}
 	// Role skills are shared across templates, so their lock is workspace-wide and
 	// separate from the per-template one above. Taken here, once, rather than inside
 	// the per-role loop: acquiring it in a fixed order relative to the template lock
 	// is what keeps two concurrent stafflings from deadlocking.
-	if err := lockRoleSkillMaterialization(ctx, tx, in.WorkspaceID); err != nil {
-		return result, err
-	}
+	return lockRoleSkillMaterialization(ctx, tx, in.WorkspaceID)
+}
+
+// materializeSquadTemplateInTx leaves commit ownership with the caller so a
+// project reference and every new roster/skill row can commit together. Callers
+// must take lockSquadTemplateProvisioning before looking up or creating a squad.
+func (h *Handler) materializeSquadTemplateInTx(ctx context.Context, tx pgx.Tx, in squadTemplateProvisionInput) (squadTemplateProvisionResult, error) {
+	var result squadTemplateProvisionResult
+	qtx := h.Queries.WithTx(tx)
 
 	// Leader first: it is both the squad's leader_id and its first member, and the
 	// squad row cannot be written without it.
@@ -375,6 +396,11 @@ func (h *Handler) provisionSquadTemplate(ctx context.Context, in squadTemplatePr
 		agent, created, err := h.resolveTemplateAgentInTx(ctx, qtx, in, templateKey)
 		if err != nil {
 			return result, err
+		}
+		if in.ValidateAgent != nil {
+			if err := in.ValidateAgent(ctx, qtx, agent); err != nil {
+				return result, err
+			}
 		}
 		agentsByRole[templateKey] = agent
 		if created {
@@ -441,9 +467,6 @@ func (h *Handler) provisionSquadTemplate(ctx context.Context, in squadTemplatePr
 		}
 	}
 
-	if err := tx.Commit(ctx); err != nil {
-		return result, err
-	}
 	return result, nil
 }
 
