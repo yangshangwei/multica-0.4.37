@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 13
+- **Total Sessions**: 14
 - **Last Active**: 2026-09-13
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~481 | Active |
+| `journal-1.md` | ~515 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 14 | 2026-09-13 | Desktop changelog and automatic release history | `b0bec41a6`, `ca6d82dcb` | `main` |
 | 13 | 2026-09-13 | 内置自动化模板中文化与验收 | `01353260b`, `b2cd5408b` | `main` |
 | 12 | 2026-09-12 | 工作区内置能力与项目开箱即用 | `af2977950`, `ef494ddd3` | `feat/workspace-defaults` |
 | 11 | 2026-09-12 | Ground skill output revisions and preserve deferred Codex acceptance | `3a08c3b19`, `391d16b43` | `feat/agent-skills-localization` |

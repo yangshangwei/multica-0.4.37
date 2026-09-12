@@ -479,3 +479,37 @@ Completed source-backed ADR guidance, CSV reference guidance and final-file docu
 ### Status
 
 [OK] **Completed**
+
+
+## Session 14: Desktop changelog and automatic release history
+
+**Date**: 2026-09-13
+**Task**: Desktop changelog and automatic release history
+**Branch**: `main`
+
+### Summary
+
+Implemented and archived the desktop Help reader, deployment feed, cumulative commit-driven publication, and offline installation.
+
+### Main Changes
+
+- Preserved unrelated working-tree changes through partial staging; staged-only backend tests passed.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b0bec41a6` | (see git log) |
+| `ca6d82dcb` | (see git log) |
+
+### Testing
+
+- [OK] 8109 TS tests, full Go suites/vet, 43 release cases, 3 browser/Electron cases, desktop/web builds and visual review 94/100 passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Production releases use .github/RELEASING.md; unrelated legacy plugin E2E collection still references removed buildSurfaceDocument.
