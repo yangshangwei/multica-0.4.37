@@ -13,6 +13,16 @@ grep -n "func runSkillImport"           server/cmd/multica/cmd_skill.go
 grep -n "func IsReservedContentPath"    server/internal/skill/reserved.go
 ```
 
+## Built-in template copies are separate from imports
+
+| Behavior | File:line |
+|---|---|
+| Authenticated read-only template catalog; no workspace materialization | `server/internal/handler/skill_template.go:26` (`ListSkillTemplates`) |
+| Local template preview/editing before explicit creation | `packages/views/skills/components/template-skill-create-panel.tsx:30` (`TemplateSkillCreatePanel`) |
+| Distinct copy metadata and `template_source`, without official origin | `packages/core/skills/template-draft.ts:68` (`buildSkillTemplateCreateRequest`) |
+| Ordinary `POST /api/skills` creation and response validation | `packages/core/api/client.ts:3287` (`createSkill`) |
+| Independent UUID, unchanged source and no automatic bindings | `server/cmd/server/skill_template_test.go:60` (`TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings`) |
+
 ## Import endpoint and route
 
 | Behavior | File:line |

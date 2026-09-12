@@ -23,6 +23,26 @@ Use `searchText` for matching and `searchNames` for name-ranking tiers. Both lan
 - Cached or raw matching slash choices must not await a metadata refresh. Refresh online in the background; skip offline/paused metadata requests. Only an online cold-cache query that cannot match raw text needs to await provenance.
 - Detail localization must stay outside draft seeding, dirty checks, and save payloads. Test both pristine and edited drafts across a locale change.
 
+## Creating a template copy
+
+The authenticated `/api/skills/templates` catalog is a separate type without a
+workspace UUID. Use its canonical name for selection and the existing built-in
+presentation resolver for display. User-initiated copy creation may seed a NEW
+draft's description from the current localized purpose; later locale or query
+updates must not reseed it. Existing workspace edits still preserve stored text.
+
+Keep template session state in the root creation dialog so switching back to the
+method chooser does not discard edits. Preview selection is separate from the
+draft source. Only explicit template adoption replaces a draft, and only the
+final create action writes a skill. Copies keep distinct names and informational
+`config.template_source`, never official `origin` metadata or agent permissions.
+
+An unconfirmed submission is independent from the editor step. Returning to
+editing must retain the close warning and recovery action. Opening an older
+recovered result must also protect any newer draft changes. Pin create/recovery
+requests to the originating workspace (including clearing an ambient slug), and
+never navigate on a late response after timeout, unmount or workspace change.
+
 ## Verification
 
 Run the pure presentation/source-sync suite, skill list/detail and picker suites, slash suggestion/extension suites, tab presentation suite, and locale parity. Use a single-locale provider in at least one regression test so complete test resource bundles do not hide production failures.

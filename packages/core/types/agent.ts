@@ -848,6 +848,15 @@ export interface UpdateAgentEnvRequest {
 
 // Skills
 
+/** Registry content copied into a new skill; it has no persisted identity. */
+export interface SkillTemplate {
+  name: string;
+  version: number;
+  description: string;
+  content: string;
+  files: { path: string; content: string }[];
+}
+
 /**
  * Lightweight skill shape returned by list endpoints (`GET /api/skills`,
  * `GET /api/agents/:id/skills`). The full SKILL.md `content` is intentionally

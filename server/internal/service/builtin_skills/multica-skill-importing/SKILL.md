@@ -21,8 +21,8 @@ Every claim below is traced to source in
 ## The invariant
 
 A skill is installed for Multica only when it exists in the current workspace's
-skill database. The single supported path that puts it there is the workspace
-import endpoint. It accepts either a hosted URL or an uploaded local archive
+skill database. This import workflow uses the workspace import endpoint. It
+accepts either a hosted URL or an uploaded local archive
 (`.skill` / `.zip`), driven by this CLI:
 
 ```bash
@@ -44,6 +44,16 @@ part (the `.skill` / `.zip` bytes) and an `on_conflict` field. `--url` and
 
 Do not finish with `npx skills add`. That installs into an external/local skill
 environment, not the Multica workspace DB, so Multica cannot manage or bind it.
+
+## Built-in template copies
+
+The workspace UI also offers **Modify from template**. It reads the built-in
+catalog through `GET /api/skills/templates`, edits a local copy, and saves a new
+ordinary skill through `POST /api/skills`. Previewing does not create a workspace
+record. A copy has a distinct name and informational `config.template_source`,
+not official `builtin_role_skill` origin metadata; agent binding is still
+separate. Do not send a built-in template name to the external import or refresh
+flow. This skill covers URL and archive imports, not template selection.
 
 ## Supported URL source families
 

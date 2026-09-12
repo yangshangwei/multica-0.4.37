@@ -66,6 +66,7 @@ export type {
   AgentEnvResponse,
   UpdateAgentEnvRequest,
   Skill,
+  SkillTemplate,
   SkillSummary,
   AgentSkillSummary,
   DisabledRuntimeSkill,

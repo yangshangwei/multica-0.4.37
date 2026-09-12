@@ -271,6 +271,10 @@
         "title": "手動で作成",
         "desc": "空の SKILL.md から作成します。"
       },
+      "template": {
+        "title": "テンプレートから編集",
+        "desc": "テンプレートを選び、編集して自分の skill を作成します。"
+      },
       "local": {
         "title": "ローカルからインポート",
         "desc": "SKILL.md を含むフォルダ、または .skill / .zip を選択します。"
@@ -326,6 +330,50 @@
       "fallback_error": "インポートに失敗しました",
       "cancel": "キャンセル",
       "toast_imported": "スキルをインポートしました"
+    },
+    "template": {
+      "search_placeholder": "テンプレートを検索...",
+      "list_label": "Skill テンプレート",
+      "preview_label": "テンプレートのプレビュー",
+      "independent_hint": "元のテンプレートを変更せず、独立したコピーを作成します。",
+      "use_template": "このテンプレートを使う",
+      "loading": "テンプレートを読み込み中...",
+      "load_failed": "テンプレートを読み込めません。再試行するか、手動で作成してください。",
+      "empty": "利用できるテンプレートはありません。",
+      "no_matches": "一致するテンプレートはありません。",
+      "retry": "再試行",
+      "back_to_methods": "作成方法に戻る",
+      "back_to_templates": "テンプレート一覧に戻る",
+      "choose_another": "テンプレートを選び直す",
+      "source_template": "元のテンプレート: {{name}}",
+      "name_hint": "コピーには、このワークスペースで重複しない新しい名前を付けてください。",
+      "name_required": "Skill の名前を入力してください。",
+      "reserved_name": "この名前は組み込みテンプレート用です。別の名前を使ってください。",
+      "body_label": "本文",
+      "body_required": "本文を入力してから作成してください。",
+      "view_label": "本文の表示",
+      "included_files": "付属ファイル",
+      "invalid_template": "このテンプレートを読み取れません。別のテンプレートを選ぶか、再試行してください。",
+      "create": "Skill を作成",
+      "creating": "作成中...",
+      "created": "Skill を作成しました",
+      "create_failed": "作成できませんでした。変更内容は保持されています。",
+      "conflict": "同じ名前の skill が存在します。名前を変更して再試行してください。",
+      "result_unknown": "作成結果を確認できていません。別のコピーを作成する前に確認してください。",
+      "timeout_unknown": "リクエストがタイムアウトしました。作成済みの可能性があるため、再試行の前に結果を確認してください。",
+      "check_result": "作成結果を確認",
+      "checking": "確認中...",
+      "no_confirmed_result": "まだ結果を確認できません。再度確認するか、ワークスペースの skill 一覧を確認してください。",
+      "matching_candidate": "内容と作成者が送信したコピーと一致します。",
+      "different_candidate": "同じ名前の skill がありますが、内容または作成者が異なります。開いて確認してください。",
+      "open_skill": "Skill を開く",
+      "continue_editing": "編集を続ける",
+      "retry_hint": "再送信する前に、このコピーがまだ作成されていないことを確認してください。",
+      "discard_title": "変更を破棄しますか？",
+      "discard_description": "このコピーへの変更はまだ保存されていません。",
+      "discard_unknown_description": "下書きを破棄します。閉じても、サーバーへ送信済みの作成リクエストは取り消されません。",
+      "keep_editing": "変更を保持",
+      "discard": "変更を破棄"
     }
   },
   "runtime_import": {

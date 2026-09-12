@@ -23,6 +23,16 @@ vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "ws-1",
 }));
 
+vi.mock("@multica/core/auth", () => {
+  const state = { user: { id: "user-1" } };
+  return {
+    useAuthStore: Object.assign(
+      (selector?: (value: typeof state) => unknown) => selector ? selector(state) : state,
+      { getState: () => state },
+    ),
+  };
+});
+
 vi.mock("@multica/core/skills", async () => {
   const actual = await vi.importActual<
     typeof import("@multica/core/skills")
@@ -126,20 +136,22 @@ describe("CreateSkillDialog local import", () => {
     });
   });
 
-  it("lists Import from local as the second method", () => {
+  it("lists template creation second and retains the existing method order", () => {
     renderDialog();
     const cards = screen.getAllByRole("button");
     const titles = cards
       .map((el) => el.textContent ?? "")
       .filter((text) =>
-        /Create manually|Import from local|Import from URL|Copy from runtime/.test(
+        /Create manually|Modify from template|Import from local|Import from URL|Copy from runtime/.test(
           text,
         ),
       );
     expect(titles[0]).toContain("Create manually");
-    expect(titles[1]).toContain("Import from local");
-    expect(titles[2]).toContain("Import from URL");
-    expect(titles[3]).toContain("Copy from runtime");
+    expect(titles).toHaveLength(5);
+    expect(titles[1]).toContain("Modify from template");
+    expect(titles[2]).toContain("Import from local");
+    expect(titles[3]).toContain("Import from URL");
+    expect(titles[4]).toContain("Copy from runtime");
   });
 
   it("opens the folder picker when Import from local is clicked", () => {

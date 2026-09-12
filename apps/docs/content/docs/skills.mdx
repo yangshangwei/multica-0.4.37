@@ -19,11 +19,12 @@ Add a skill to an [agent](/agents) and the agent uses its guidance when executin
 
 ## Creating or importing a skill
 
-On the workspace **Skills** page, choose "New skill". Four options are available:
+On the workspace **Skills** page, choose "New skill". Five options are available:
 
 | Option | When it fits |
 |---|---|
 | **Create manually** | Start writing from a blank `SKILL.md`. |
+| **Modify from template** | Preview a built-in template, edit a copy, and create your own skill. |
 | **Import from local** | Pick a folder that contains `SKILL.md`, or a `.skill` / `.zip` archive on this computer. |
 | **Import from URL** | Import a published skill from GitHub, ClawHub, or Skills.sh. |
 | **Copy from a runtime** | Scan skills on a connected computer and copy the selected ones into the workspace. |
@@ -37,6 +38,14 @@ multica skill import --file ./review-helper.skill
 ```
 
 If a skill with the same name already exists in the workspace, the import can stop, overwrite the existing content, save under a new name, or skip. Overwriting through import is limited to the skill's creator; a workspace `admin` who can edit the skill in the app still cannot overwrite it via import. To pull a newer version of a skill that is already in the workspace, use [Updating an imported skill](#updating-an-imported-skill) instead.
+
+## Starting from a template
+
+Choose **Modify from template**, select one of the seven built-in role templates, and read its instructions. Select **Use this template** to edit the copy's name, description, and Markdown body. **Create skill** saves the copy and opens its detail page; browsing or cancelling creates nothing.
+
+The copy needs a distinct name, such as `multica-code-review-copy`. It is an ordinary editable skill: the original template and existing workspace skills stay unchanged, and no agent assignments or permissions are copied. Add the new skill to agents separately. Later template updates do not replace your copy.
+
+Returning to the template list keeps your draft. Switching templates or closing asks before discarding manual changes. If creation times out, use **Check creation result** before submitting again: stopping the wait does not cancel an operation already received by the server. A recovered result is offered for you to inspect.
 
 ## Updating an imported skill
 

@@ -286,6 +286,10 @@
         "title": "Create manually",
         "desc": "Start from a blank SKILL.md."
       },
+      "template": {
+        "title": "Modify from template",
+        "desc": "Choose a template, then edit your own skill."
+      },
       "local": {
         "title": "Import from local",
         "desc": "Pick a folder with SKILL.md, or a .skill / .zip archive."
@@ -342,6 +346,50 @@
       "fallback_error": "Import failed",
       "cancel": "Cancel",
       "toast_imported": "Skill imported"
+    },
+    "template": {
+      "search_placeholder": "Search templates...",
+      "list_label": "Skill templates",
+      "preview_label": "Template preview",
+      "independent_hint": "Create an independent copy without changing the template.",
+      "use_template": "Use this template",
+      "loading": "Loading templates...",
+      "load_failed": "Could not load templates. Try again or create a skill manually.",
+      "empty": "No templates are available.",
+      "no_matches": "No matching templates.",
+      "retry": "Try again",
+      "back_to_methods": "Back to creation methods",
+      "back_to_templates": "Back to templates",
+      "choose_another": "Choose another template",
+      "source_template": "Based on {{name}}",
+      "name_hint": "Use a new name for your copy. It must be unique in this workspace.",
+      "name_required": "Enter a name for this skill.",
+      "reserved_name": "Use a different name. This name belongs to a built-in template.",
+      "body_label": "Instructions",
+      "body_required": "Add instructions before creating the skill.",
+      "view_label": "Instructions view",
+      "included_files": "Included files",
+      "invalid_template": "This template could not be read. Choose another template or try again.",
+      "create": "Create skill",
+      "creating": "Creating...",
+      "created": "Skill created",
+      "create_failed": "Could not create the skill. Your changes have been kept.",
+      "conflict": "A skill with this name already exists. Change the name and try again.",
+      "result_unknown": "The creation result is not confirmed. Check before creating another copy.",
+      "timeout_unknown": "The request took too long. The skill may have been created; check the result before trying again.",
+      "check_result": "Check creation result",
+      "checking": "Checking...",
+      "no_confirmed_result": "No result could be confirmed yet. Try checking again or inspect the workspace skill list.",
+      "matching_candidate": "Content and creator match the submitted copy.",
+      "different_candidate": "A skill has this name, but its content or creator differs. Review it before continuing.",
+      "open_skill": "Open skill",
+      "continue_editing": "Continue editing",
+      "retry_hint": "Before submitting again, check that this copy has not already been created.",
+      "discard_title": "Discard your changes?",
+      "discard_description": "Your changes to this copy have not been saved.",
+      "discard_unknown_description": "Your draft will be discarded. Closing does not cancel a request already sent to the server.",
+      "keep_editing": "Keep editing",
+      "discard": "Discard changes"
     }
   },
   "runtime_import": {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import {
   AlertCircle,
   ArrowLeft,
@@ -9,6 +9,7 @@ import {
   FileArchive,
   FolderOpen,
   HardDrive,
+  LayoutTemplate,
   Loader2,
   Pencil,
   Plus,
@@ -26,14 +27,23 @@ import {
 import { useWorkspaceId } from "@multica/core/hooks";
 import { isImeComposing } from "@multica/core/utils";
 import {
-  skillDetailOptions,
-  workspaceKeys,
+  cacheSkillResponse as seedAfterCreate,
 } from "@multica/core/workspace/queries";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
 } from "@multica/ui/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@multica/ui/components/ui/alert-dialog";
 import {
   Tooltip,
   TooltipContent,
@@ -47,23 +57,15 @@ import { useScrollFade } from "@multica/ui/hooks/use-scroll-fade";
 import { cn } from "@multica/ui/lib/utils";
 import { openExternal } from "../../platform";
 import { RuntimeLocalSkillImportPanel } from "./runtime-local-skill-import-panel";
+import { TemplateSkillCreatePanel } from "./template-skill-create-panel";
+import { useTemplateSkillSession } from "../hooks/use-template-skill-session";
 import { useT } from "../../i18n";
 import { isNameConflictError } from "../lib/utils";
 
-type Method = "chooser" | "manual" | "local" | "url" | "runtime";
-
-function seedAfterCreate(
-  qc: ReturnType<typeof useQueryClient>,
-  wsId: string,
-  skill: Skill,
-) {
-  qc.setQueryData(skillDetailOptions(wsId, skill.id).queryKey, skill);
-  qc.invalidateQueries({ queryKey: workspaceKeys.skills(wsId) });
-  qc.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) });
-}
+type Method = "chooser" | "manual" | "template" | "local" | "url" | "runtime";
 
 // ---------------------------------------------------------------------------
-// Chooser — initial method picker (4 cards)
+// Chooser — initial method picker
 // ---------------------------------------------------------------------------
 
 function MethodChooser({ onChoose }: { onChoose: (m: Method) => void }) {
@@ -73,12 +75,13 @@ function MethodChooser({ onChoose }: { onChoose: (m: Method) => void }) {
     icon: typeof Plus;
   }[] = [
     { key: "manual", icon: Plus },
+    { key: "template", icon: LayoutTemplate },
     { key: "local", icon: FolderOpen },
     { key: "url", icon: Download },
     { key: "runtime", icon: HardDrive },
   ];
   return (
-    <div className="grid gap-2 p-5">
+    <div className="grid min-h-0 flex-1 gap-2 overflow-y-auto p-5">
       {methods.map(({ key, icon: Icon }) => (
         <button
           key={key}
@@ -617,6 +620,9 @@ export function CreateSkillDialog({
 }) {
   const { t } = useT("skills");
   const [method, setMethod] = useState<Method>("chooser");
+  const wsId = useWorkspaceId();
+  const [discardOpen, setDiscardOpen] = useState(false);
+  const pendingAction = useRef<(() => void) | null>(null);
   const [localPrepared, setLocalPrepared] = useState<PreparedSkillArchive | null>(
     null,
   );
@@ -630,6 +636,31 @@ export function CreateSkillDialog({
     onCreated?.(skill);
     onClose();
   };
+
+  const templateSession = useTemplateSkillSession(wsId, (skill, newlyCreated) => {
+    if (newlyCreated) toast.success(t(($) => $.create.template.created));
+    handleCreated(skill);
+  });
+
+  useEffect(() => {
+    pendingAction.current = null;
+    setDiscardOpen(false);
+  }, [wsId]);
+
+  const confirmDiscard = (action: () => void) => {
+    if (templateSession.busy) return;
+    if (templateSession.dirty || templateSession.hasUnconfirmedSubmission) {
+      pendingAction.current = action;
+      setDiscardOpen(true);
+    } else {
+      action();
+    }
+  };
+
+  const requestClose = () => confirmDiscard(() => {
+    templateSession.reset();
+    onClose();
+  });
 
   const beginLocalSelection = (): number => {
     const next = localGeneration.current + 1;
@@ -659,7 +690,8 @@ export function CreateSkillDialog({
     archiveInputRef.current?.click();
   };
 
-  const handleChoose = (next: Method) => {
+  const switchMethod = (next: Method) => {
+    if (next !== "template") templateSession.reset();
     if (next === "local") {
       // Switch first so cancelling the picker still lands on the local
       // panel (choose-folder / choose-archive), rather than silently
@@ -670,6 +702,21 @@ export function CreateSkillDialog({
     }
     resetLocal();
     setMethod(next);
+  };
+
+  const handleChoose = (next: Method) => {
+    if (next === "template") switchMethod(next);
+    else confirmDiscard(() => switchMethod(next));
+  };
+
+  const handleBack = () => {
+    if (templateSession.busy) return;
+    if (method === "template" && templateSession.step === "editor") {
+      templateSession.backToTemplates();
+      return;
+    }
+    resetLocal();
+    setMethod("chooser");
   };
 
   const onFolderPicked = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -706,17 +753,26 @@ export function CreateSkillDialog({
   };
 
   const wide = method === "runtime";
+  const fromTemplate = method === "template";
+  const backLabel = fromTemplate
+    ? templateSession.step === "editor"
+      ? t(($) => $.create.template.back_to_templates)
+      : t(($) => $.create.template.back_to_methods)
+    : t(($) => $.create.back_aria);
 
   return (
-    <Dialog open onOpenChange={(v) => !v && onClose()}>
+    <>
+    <Dialog open onOpenChange={(v) => !v && requestClose()}>
       <DialogContent
         showCloseButton={false}
         className={cn(
           "flex flex-col gap-0 overflow-hidden p-0",
           "!transition-all !duration-300 !ease-out",
-          wide
-            ? "!h-[min(600px,85vh)] !max-w-2xl !w-full"
-            : "!h-auto !max-h-[85vh] !max-w-md !w-full",
+          fromTemplate
+            ? "!h-[min(720px,85dvh)] !max-w-4xl !w-[calc(100%-2rem)]"
+            : wide
+              ? "!h-[min(600px,85vh)] !max-w-2xl !w-[calc(100%-2rem)]"
+              : "!h-auto !max-h-[85vh] !max-w-md !w-[calc(100%-2rem)]",
         )}
       >
         {/* Header */}
@@ -728,18 +784,16 @@ export function CreateSkillDialog({
                   render={
                     <button
                       type="button"
-                      onClick={() => {
-                        resetLocal();
-                        setMethod("chooser");
-                      }}
+                      onClick={handleBack}
+                      disabled={templateSession.busy}
                       className="-ml-1 mt-px rounded-sm p-1 text-faint-foreground transition-colors hover:bg-accent/60 hover:text-muted-foreground"
-                      aria-label={t(($) => $.create.back_aria)}
+                      aria-label={backLabel}
                     >
                       <ArrowLeft className="h-3.5 w-3.5" />
                     </button>
                   }
                 />
-                <TooltipContent side="bottom">{t(($) => $.create.back)}</TooltipContent>
+                <TooltipContent side="bottom">{backLabel}</TooltipContent>
               </Tooltip>
             )}
             <div className="min-w-0">
@@ -756,7 +810,8 @@ export function CreateSkillDialog({
               render={
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={requestClose}
+                  disabled={templateSession.busy}
                   className="rounded-sm p-1 text-faint-foreground transition-colors hover:bg-accent/60 hover:text-muted-foreground"
                   aria-label={t(($) => $.create.close_aria)}
                 >
@@ -797,6 +852,23 @@ export function CreateSkillDialog({
             onCancel={() => setMethod("chooser")}
           />
         )}
+        {method === "template" && (
+          <TemplateSkillCreatePanel
+            workspaceId={wsId}
+            session={templateSession}
+            onBack={handleBack}
+            onUseTemplate={(template, names, description) => {
+              const applyTemplate = () => templateSession.useTemplate(template, names, description);
+              if (templateSession.draft && templateSession.draft.templateName !== template.name) confirmDiscard(applyTemplate);
+              else applyTemplate();
+            }}
+            onOpenCandidate={(candidate) => {
+              const open = () => templateSession.openCandidate(candidate.skill);
+              if (candidate.matches && candidate.matchesDraft) open();
+              else confirmDiscard(open);
+            }}
+          />
+        )}
         {method === "local" && (
           <LocalForm
             key={localEpoch}
@@ -825,5 +897,30 @@ export function CreateSkillDialog({
         )}
       </DialogContent>
     </Dialog>
+    <AlertDialog open={discardOpen} onOpenChange={(open) => {
+      setDiscardOpen(open);
+      if (!open) pendingAction.current = null;
+    }}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t(($) => $.create.template.discard_title)}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {templateSession.hasUnconfirmedSubmission
+              ? t(($) => $.create.template.discard_unknown_description)
+              : t(($) => $.create.template.discard_description)}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t(($) => $.create.template.keep_editing)}</AlertDialogCancel>
+          <AlertDialogAction onClick={() => {
+            const action = pendingAction.current;
+            pendingAction.current = null;
+            setDiscardOpen(false);
+            action?.();
+          }}>{t(($) => $.create.template.discard)}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 }

@@ -271,6 +271,10 @@
         "title": "직접 만들기",
         "desc": "빈 SKILL.md에서 시작합니다."
       },
+      "template": {
+        "title": "템플릿에서 수정",
+        "desc": "템플릿을 선택하고 수정하여 나만의 skill을 만듭니다."
+      },
       "local": {
         "title": "로컬에서 가져오기",
         "desc": "SKILL.md가 있는 폴더 또는 .skill / .zip을 선택합니다."
@@ -326,6 +330,50 @@
       "fallback_error": "가져오기 실패",
       "cancel": "취소",
       "toast_imported": "스킬을 가져왔습니다"
+    },
+    "template": {
+      "search_placeholder": "템플릿 검색...",
+      "list_label": "Skill 템플릿",
+      "preview_label": "템플릿 미리보기",
+      "independent_hint": "원본 템플릿을 변경하지 않고 독립된 사본을 만듭니다.",
+      "use_template": "이 템플릿 사용",
+      "loading": "템플릿 불러오는 중...",
+      "load_failed": "템플릿을 불러올 수 없습니다. 다시 시도하거나 직접 만들어 주세요.",
+      "empty": "사용할 수 있는 템플릿이 없습니다.",
+      "no_matches": "일치하는 템플릿이 없습니다.",
+      "retry": "다시 시도",
+      "back_to_methods": "생성 방식으로 돌아가기",
+      "back_to_templates": "템플릿 목록으로 돌아가기",
+      "choose_another": "다른 템플릿 선택",
+      "source_template": "원본 템플릿: {{name}}",
+      "name_hint": "이 워크스페이스에서 중복되지 않는 새 이름을 사용하세요.",
+      "name_required": "Skill 이름을 입력하세요.",
+      "reserved_name": "기본 제공 템플릿의 이름입니다. 사본에는 다른 이름을 사용하세요.",
+      "body_label": "본문",
+      "body_required": "본문을 입력한 후 생성하세요.",
+      "view_label": "본문 보기",
+      "included_files": "첨부 파일",
+      "invalid_template": "이 템플릿을 읽을 수 없습니다. 다른 템플릿을 선택하거나 다시 시도하세요.",
+      "create": "Skill 생성",
+      "creating": "생성 중...",
+      "created": "Skill이 생성되었습니다",
+      "create_failed": "생성하지 못했습니다. 수정 내용은 유지됩니다.",
+      "conflict": "같은 이름의 skill이 이미 있습니다. 이름을 바꾼 후 다시 시도하세요.",
+      "result_unknown": "생성 결과를 확인하지 못했습니다. 다른 사본을 만들기 전에 확인하세요.",
+      "timeout_unknown": "요청 시간이 초과되었습니다. 이미 생성되었을 수 있으므로 다시 시도하기 전에 결과를 확인하세요.",
+      "check_result": "생성 결과 확인",
+      "checking": "확인 중...",
+      "no_confirmed_result": "아직 결과를 확인할 수 없습니다. 다시 확인하거나 워크스페이스의 skill 목록을 살펴보세요.",
+      "matching_candidate": "내용과 생성자가 제출한 사본과 일치합니다.",
+      "different_candidate": "같은 이름의 skill이 있지만 내용이나 생성자가 다릅니다. 열어서 확인하세요.",
+      "open_skill": "Skill 열기",
+      "continue_editing": "계속 편집",
+      "retry_hint": "다시 제출하기 전에 이 사본이 아직 생성되지 않았는지 확인하세요.",
+      "discard_title": "변경 사항을 버릴까요?",
+      "discard_description": "이 사본의 변경 사항이 아직 저장되지 않았습니다.",
+      "discard_unknown_description": "초안을 버립니다. 창을 닫아도 서버에 이미 보낸 생성 요청은 취소되지 않습니다.",
+      "keep_editing": "변경 사항 유지",
+      "discard": "변경 사항 버리기"
     }
   },
   "runtime_import": {

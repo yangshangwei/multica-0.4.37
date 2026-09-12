@@ -1,6 +1,7 @@
 export {
   ApiClient,
   ApiError,
+  SkillCreationUnconfirmedError,
   clientErrorMessage,
   dispatchReasonCode,
   errorCode,
@@ -9,6 +10,7 @@ export {
 } from "./client";
 export type {
   ApiClientOptions,
+  SkillRequestOptions,
   ClientRuntimeSnapshot,
   ClientUsageRequest,
 } from "./client";

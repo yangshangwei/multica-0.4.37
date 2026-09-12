@@ -82,6 +82,8 @@ import type {
   ShareLink,
   ShareLinkInfo,
   Skill,
+  SkillSummary,
+  SkillTemplate,
   SkillImportResult,
   Squad,
   TimelineEntry,
@@ -3343,6 +3345,32 @@ export const SkillSchema = z.object({
   updated_at: z.string().optional().default(""),
   files: z.array(SkillFileSchema).optional().default([]),
 }).loose();
+
+export const SkillSummarySchema = SkillSchema.omit({ content: true, files: true }).extend({
+  enabled: z.boolean().optional(),
+});
+
+export const SkillListSchema = z.array(SkillSummarySchema);
+export const EMPTY_SKILL_LIST: SkillSummary[] = [];
+
+// Catalog entries are editable source documents, not persisted Skill records.
+// Missing identity or content must never produce a usable blank template.
+export const SkillTemplateSchema = z.object({
+  name: z.string().refine((value) => value.trim().length > 0),
+  version: z.number().default(0),
+  description: z.string().default(""),
+  content: z.string().refine((value) => value.trim().length > 0),
+  files: z.array(z.object({
+    path: z.string(),
+    content: z.string(),
+  }).loose()).default([]),
+}).loose();
+
+export const SkillTemplateListResponseSchema = z.object({
+  templates: z.array(SkillTemplateSchema).default([]),
+}).loose();
+
+export const EMPTY_SKILL_TEMPLATE_LIST: SkillTemplate[] = [];
 
 export const EMPTY_SKILL: Skill = {
   id: "",

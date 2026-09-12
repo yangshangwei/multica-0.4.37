@@ -271,6 +271,10 @@
         "title": "手动创建",
         "desc": "从空白 SKILL.md 开始写。"
       },
+      "template": {
+        "title": "从模板中修改",
+        "desc": "选择现成模板，修改后创建自己的 skill。"
+      },
       "local": {
         "title": "从本地导入",
         "desc": "选择包含 SKILL.md 的文件夹，或 .skill / .zip 压缩包。"
@@ -326,6 +330,50 @@
       "fallback_error": "导入失败",
       "cancel": "取消",
       "toast_imported": "已导入 skill"
+    },
+    "template": {
+      "search_placeholder": "搜索模板...",
+      "list_label": "Skill 模板",
+      "preview_label": "模板预览",
+      "independent_hint": "创建独立副本，不影响原模板。",
+      "use_template": "使用此模板",
+      "loading": "正在加载模板...",
+      "load_failed": "无法加载模板。请重试，或返回手动创建。",
+      "empty": "暂无可用模板。",
+      "no_matches": "没有匹配的模板。",
+      "retry": "重试",
+      "back_to_methods": "返回创建方式",
+      "back_to_templates": "返回模板列表",
+      "choose_another": "重新选择模板",
+      "source_template": "基于 {{name}}",
+      "name_hint": "为副本取一个新名称，工作区内不能重名。",
+      "name_required": "请输入 skill 名称。",
+      "reserved_name": "此名称属于内置模板，请为副本使用其他名称。",
+      "body_label": "正文",
+      "body_required": "请填写正文后再创建。",
+      "view_label": "正文视图",
+      "included_files": "附属文件",
+      "invalid_template": "无法读取此模板，请选择其他模板或重试。",
+      "create": "创建 skill",
+      "creating": "正在创建...",
+      "created": "Skill 已创建",
+      "create_failed": "创建失败，已保留你的修改。",
+      "conflict": "工作区内已有同名 skill，请修改名称后重试。",
+      "result_unknown": "尚未确认创建结果，请先核对再创建其他副本。",
+      "timeout_unknown": "请求等待超时，但 skill 可能已经创建。请先核对结果再重试。",
+      "check_result": "核对创建结果",
+      "checking": "正在核对...",
+      "no_confirmed_result": "暂未找到可确认的结果。请稍后重试，或查看工作区的 skill 列表。",
+      "matching_candidate": "内容和创建者与提交的副本一致。",
+      "different_candidate": "已有同名 skill，但内容或创建者不同，请打开核对。",
+      "open_skill": "打开 skill",
+      "continue_editing": "继续编辑",
+      "retry_hint": "再次提交前，请确认这份副本尚未创建。",
+      "discard_title": "放弃修改？",
+      "discard_description": "你对这份副本的修改尚未保存。",
+      "discard_unknown_description": "将放弃当前草稿。关闭窗口不会撤销已经发送到服务端的创建请求。",
+      "keep_editing": "保留修改",
+      "discard": "放弃修改"
     }
   },
   "runtime_import": {

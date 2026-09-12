@@ -37,6 +37,16 @@ compare-and-swap contract: compare before writing and verify afterwards, without
 claiming those checks eliminate concurrent-write races. New tasks receive the
 updated body through the existing content-hash cache.
 
+## Skill template catalog
+
+`GET /api/skills/templates` returns the seven role-skill templates under the
+existing authenticated workspace route group. It reads the embedded registry,
+does not materialize workspace rows, and returns no database identity. The UI
+edits a snapshot and creates a new ordinary skill via `POST /api/skills`.
+`config.template_source` is editable information, not authorization or official
+provenance. Existing workspace instances, assignments and autonomy levels remain
+independent from this read-only catalog.
+
 ## Onboarding skills require task provenance
 
 `BuiltinSkills()` returns general platform skills. Use `TaskBuiltinSkills` for

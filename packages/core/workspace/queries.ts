@@ -1,6 +1,6 @@
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { api } from "../api";
-import type { Agent, Squad, Workspace } from "../types";
+import type { Agent, Skill, Squad, Workspace } from "../types";
 
 export const workspaceKeys = {
   all: (wsId: string) => ["workspaces", wsId] as const,
@@ -19,6 +19,7 @@ export const workspaceKeys = {
   squadMemberStatus: (wsId: string, squadId: string) =>
     ["workspaces", wsId, "squads", squadId, "members-status"] as const,
   skills: (wsId: string) => ["workspaces", wsId, "skills"] as const,
+  skillTemplates: (wsId: string) => ["workspaces", wsId, "skill-templates"] as const,
   assigneeFrequency: (wsId: string) => ["workspaces", wsId, "assignee-frequency"] as const,
   mcpServers: (wsId: string) => ["workspaces", wsId, "mcp-servers"] as const,
 };
@@ -122,7 +123,15 @@ export function squadMemberStatusOptions(wsId: string, squadId: string) {
 export function skillListOptions(wsId: string) {
   return queryOptions({
     queryKey: workspaceKeys.skills(wsId),
-    queryFn: () => api.listSkills(),
+    queryFn: ({ signal }) => api.listSkills({ workspaceId: wsId, signal }),
+  });
+}
+
+export function skillTemplateListOptions(wsId: string) {
+  return queryOptions({
+    queryKey: workspaceKeys.skillTemplates(wsId),
+    queryFn: ({ signal }) => api.listSkillTemplates(wsId, signal),
+    enabled: !!wsId,
   });
 }
 
@@ -132,6 +141,12 @@ export function skillDetailOptions(wsId: string, skillId: string) {
     queryFn: () => api.getSkill(skillId),
     enabled: !!skillId,
   });
+}
+
+export function cacheSkillResponse(queryClient: QueryClient, wsId: string, skill: Skill) {
+  queryClient.setQueryData(skillDetailOptions(wsId, skill.id).queryKey, skill);
+  queryClient.invalidateQueries({ queryKey: workspaceKeys.skills(wsId) });
+  queryClient.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) });
 }
 
 /**

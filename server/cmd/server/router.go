@@ -2215,6 +2215,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Route("/api/skills", func(r chi.Router) {
 				r.Get("/", h.ListSkills)
 				r.Post("/", h.CreateSkill)
+				r.Get("/templates", h.ListSkillTemplates)
 				r.Get("/search", h.SearchSkills)
 				r.Post("/import", h.ImportSkill)
 				r.Route("/{id}", func(r chi.Router) {

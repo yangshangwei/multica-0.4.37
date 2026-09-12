@@ -56,6 +56,7 @@ import type {
   User,
   Skill,
   SkillSummary,
+  SkillTemplate,
   CreateSkillRequest,
   UpdateSkillRequest,
   SetAgentSkillsRequest,
@@ -254,7 +255,7 @@ import {
 } from "../docs/schema";
 import { type Logger, noopLogger } from "../logger";
 import { createRequestId, createSafeId } from "../utils";
-import { getCurrentSlug } from "../platform/workspace-storage";
+import { getCurrentSlug, getCurrentWsId } from "../platform/workspace-storage";
 import { parseWithFallback } from "./schema";
 import {
   AgentApprovalListResponseSchema,
@@ -448,7 +449,11 @@ import {
   RuntimeModelListRequestSchema,
   MALFORMED_RUNTIME_MODEL_LIST_REQUEST,
   SkillSchema,
+  SkillListSchema,
+  SkillTemplateListResponseSchema,
   EMPTY_SKILL,
+  EMPTY_SKILL_LIST,
+  EMPTY_SKILL_TEMPLATE_LIST,
   SkillImportResultSchema,
   EMPTY_SKILL_IMPORT_RESULT,
   IssueViewSchema,
@@ -506,6 +511,11 @@ export interface ApiClientOptions {
   identity?: ApiClientIdentity;
 }
 
+export interface SkillRequestOptions {
+  workspaceId?: string;
+  signal?: AbortSignal;
+}
+
 export interface ClientRuntimeSnapshot {
   probe_result: "success" | "error";
   runtime_count?: number;
@@ -539,6 +549,26 @@ export class ApiError extends Error {
     this.statusText = statusText;
     this.body = body;
   }
+}
+
+/** A successful write may have committed, but its response cannot identify it. */
+export class SkillCreationUnconfirmedError extends Error {
+  constructor() {
+    super("Skill creation could not be confirmed from the server response.");
+    this.name = "SkillCreationUnconfirmedError";
+  }
+}
+
+function skillRequestInit(options?: SkillRequestOptions): RequestInit {
+  return {
+    signal: options?.signal,
+    // The server resolves a slug before a UUID. Clear the ambient slug when
+    // targeting a captured workspace, including recovery after a tab switch.
+    headers: options?.workspaceId === undefined ? undefined : {
+      "X-Workspace-ID": options.workspaceId,
+      "X-Workspace-Slug": "",
+    },
+  };
 }
 
 function assertAgentConversationStartersWriteSupported(data: {
@@ -1563,8 +1593,8 @@ export class ApiClient {
    *
    * Workspace-independent — templates ship with the backend binary — so the
    * result is safe to cache for the session. `language` only selects the
-   * localized label and description; instructions are English by design, as
-   * every agent-harness text in this product is.
+   * localized label and description; instructions remain the canonical
+   * template body, independent of the viewer's UI language.
    */
   async listAgentRoleTemplates(language?: string): Promise<AgentRoleTemplate[]> {
     const query = language ? `?language=${encodeURIComponent(language)}` : "";
@@ -3227,19 +3257,57 @@ export class ApiClient {
   }
 
   // Skills
-  async listSkills(): Promise<SkillSummary[]> {
-    return this.fetch("/api/skills");
+  async listSkillTemplates(workspaceId: string, signal?: AbortSignal): Promise<SkillTemplate[]> {
+    const raw = await this.fetch<unknown>(
+      "/api/skills/templates",
+      skillRequestInit({ workspaceId, signal }),
+    );
+    return parseWithFallback(
+      raw,
+      SkillTemplateListResponseSchema,
+      { templates: EMPTY_SKILL_TEMPLATE_LIST },
+      { endpoint: "GET /api/skills/templates" },
+    ).templates;
   }
 
-  async getSkill(id: string): Promise<Skill> {
-    return this.fetch(`/api/skills/${id}`);
+  async listSkills(options?: SkillRequestOptions): Promise<SkillSummary[]> {
+    const raw = await this.fetch<unknown>("/api/skills", skillRequestInit(options));
+    return parseWithFallback(raw, SkillListSchema, EMPTY_SKILL_LIST, {
+      endpoint: "GET /api/skills",
+    });
   }
 
-  async createSkill(data: CreateSkillRequest): Promise<Skill> {
-    return this.fetch("/api/skills", {
+  async getSkill(id: string, options?: SkillRequestOptions): Promise<Skill> {
+    const raw = await this.fetch<unknown>(`/api/skills/${id}`, skillRequestInit(options));
+    return parseWithFallback(raw, SkillSchema, EMPTY_SKILL, {
+      endpoint: "GET /api/skills/:id",
+    });
+  }
+
+  async createSkill(data: CreateSkillRequest, options?: SkillRequestOptions): Promise<Skill> {
+    const workspaceId = options?.workspaceId ?? getCurrentWsId();
+    const response = await this.fetchRaw("/api/skills", {
+      ...skillRequestInit(options),
       method: "POST",
       body: JSON.stringify(data),
+      extraHeaders: { "Content-Type": "application/json" },
     });
+    let raw: unknown;
+    try {
+      raw = await response.json();
+    } catch {
+      throw new SkillCreationUnconfirmedError();
+    }
+    const skill = parseWithFallback(raw, SkillSchema, EMPTY_SKILL, {
+      endpoint: "POST /api/skills",
+    });
+    if (
+      !skill.id.trim() || !skill.workspace_id.trim() ||
+      (workspaceId !== null && skill.workspace_id !== workspaceId)
+    ) {
+      throw new SkillCreationUnconfirmedError();
+    }
+    return skill;
   }
 
   async updateSkill(id: string, data: UpdateSkillRequest): Promise<Skill> {
@@ -4273,7 +4341,7 @@ export class ApiClient {
     }) as Squad;
   }
 
-  async updateSquad(id: string, data: { name?: string; description?: string; instructions?: string; leader_id?: string; avatar_url?: string }): Promise<Squad> {
+  async updateSquad(id: string, data: { name?: string; description?: string; instructions?: string; expected_instructions?: string; expected_updated_at?: string; leader_id?: string; avatar_url?: string }): Promise<Squad> {
     const raw = await this.fetch<unknown>(`/api/squads/${id}`, { method: "PUT", body: JSON.stringify(data) });
     return parseWithFallback(raw, SquadSchema, EMPTY_SQUAD, {
       endpoint: "PUT /api/squads/:id",
