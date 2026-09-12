@@ -374,3 +374,40 @@ Implemented the fifth skill creation method with seven built-in templates, local
 ### Status
 
 [OK] **Completed**
+
+
+## Session 11: Ground skill output revisions and preserve deferred Codex acceptance
+
+**Date**: 2026-09-12
+**Task**: Ground skill output revisions and preserve deferred Codex acceptance
+**Branch**: `feat/agent-skills-localization`
+
+### Summary
+
+Completed source-backed ADR guidance, CSV reference guidance and final-file documentation reporting; synchronized workspace 毕宿五. Local checks passed. User deferred real regression to a later Codex run.
+
+### Main Changes
+
+- Revised three skill bodies, versioned behavior changes and bundled the CSV reference without changing discovery metadata.
+- Added a reusable local evaluation harness with complete skill snapshots, literal search evidence and opt-in account access.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `3a08c3b19` | (see git log) |
+| `391d16b43` | (see git log) |
+
+### Testing
+
+- [OK] Go template/catalog checks, go vet, views typecheck and 61 focused frontend tests passed.
+- [OK] Offline harness: macOS 21 passed plus 1 filesystem skip; isolated Linux 22 passed with no skips.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- On user resumption, add a native Codex adapter and compare baseline/revised skill outputs under the same model and tools with independent semantic review.
+- Parent full validation remains in review for prior E2E failures and uncollectable cases.
