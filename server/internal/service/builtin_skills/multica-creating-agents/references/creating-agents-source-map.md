@@ -7,6 +7,15 @@ surrounding context (not the number) is the anchor.
 
 ## Verification
 
+Instruction update preconditions are implemented in
+`server/internal/handler/instructions_precondition.go`, the `UpdateAgent`
+handler, and `server/pkg/db/queries/agent.sql` (`UpdateAgent`). Paired
+`expected_instructions`/`expected_updated_at` fields compare workspace, full
+original body and timestamp atomically. `GetAgent`/`UpdateAgent` expose the
+capability header and preserve timestamp precision. Regression evidence is in
+`server/internal/handler/instructions_precondition_test.go`; 409 responses do
+not publish an update. Older replicas do not enforce the optional fields.
+
 ```bash
 # Conformance eval for this skill (and the shared template invariants):
 go test ./internal/service -run TestCreatingAgentsSkillCoversAgentCreationContracts

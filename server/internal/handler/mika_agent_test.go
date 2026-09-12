@@ -68,7 +68,7 @@ func TestCreateMikaAgent_ServerOwnsTheDefinition(t *testing.T) {
 	if resp.Instructions != "" {
 		t.Fatalf("instructions must start empty, got %q", resp.Instructions)
 	}
-	if !strings.Contains(resp.SystemInstructions, "You are Mika") {
+	if !strings.Contains(resp.SystemInstructions, "你是 Mika，") {
 		t.Fatalf("system_instructions should carry the product prompt, got %q", resp.SystemInstructions)
 	}
 
@@ -134,19 +134,19 @@ func TestComposeMikaInstructions(t *testing.T) {
 	}
 	// Without notes the prompt must not end by announcing a section that has
 	// nothing under it.
-	if strings.Contains(system, "Workspace notes below add") {
+	if strings.Contains(system, "## 工作区补充") {
 		t.Fatalf("the notes rule must not appear when there are no notes:\n%s", system)
 	}
 
-	composed := service.ComposeMikaInstructions(service.MikaDefaultName, "Our main repo is acme/platform.")
+	composed := service.ComposeMikaInstructions(service.MikaDefaultName, "主仓库是 acme/platform。")
 	if !strings.HasPrefix(composed, system) {
 		t.Fatal("the system layer must lead the composed prompt")
 	}
 	for _, want := range []string{
-		"## Workspace notes",
-		"Workspace notes below add",
-		"Added by this workspace's admins",
-		"Our main repo is acme/platform.",
+		"## 工作区补充",
+		"以下工作区补充说明团队的上下文和偏好",
+		"由本工作区管理员添加：",
+		"主仓库是 acme/platform。",
 	} {
 		if !strings.Contains(composed, want) {
 			t.Fatalf("composed prompt missing %q:\n%s", want, composed)
@@ -159,18 +159,18 @@ func TestComposeMikaInstructions(t *testing.T) {
 // agent.
 func TestMikaSystemInstructionsUsesTheCurrentDisplayName(t *testing.T) {
 	renamed := service.MikaSystemInstructions("Jarvis")
-	if !strings.HasPrefix(renamed, "You are Jarvis,") {
+	if !strings.HasPrefix(renamed, "你是 Jarvis，") {
 		t.Fatalf("prompt should open as the current name:\n%s", renamed[:120])
 	}
 	if strings.Contains(renamed, "{{AGENT_NAME}}") {
 		t.Fatal("the name placeholder must be substituted")
 	}
 	// The product identity is still stated, just not as the display name.
-	if !strings.Contains(renamed, "built-in system agent (Mika)") {
+	if !strings.Contains(renamed, "Multica 内置的系统智能体（Mika）") {
 		t.Fatal("prompt should still identify itself as Multica's built-in agent")
 	}
 
-	if blank := service.MikaSystemInstructions("   "); !strings.HasPrefix(blank, "You are Mika,") {
+	if blank := service.MikaSystemInstructions("   "); !strings.HasPrefix(blank, "你是 Mika，") {
 		t.Fatalf("a blank name should fall back to the default:\n%s", blank[:120])
 	}
 }

@@ -778,16 +778,22 @@ UPDATE squad SET
     instructions = COALESCE($6, instructions),
     updated_at = now()
 WHERE id = $1
+  AND workspace_id = $7::uuid
+  AND ($8::text IS NULL OR instructions = $8)
+  AND ($9::timestamptz IS NULL OR updated_at = $9)
 RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version
 `
 
 type UpdateSquadParams struct {
-	ID           pgtype.UUID `json:"id"`
-	Name         pgtype.Text `json:"name"`
-	Description  pgtype.Text `json:"description"`
-	LeaderID     pgtype.UUID `json:"leader_id"`
-	AvatarUrl    pgtype.Text `json:"avatar_url"`
-	Instructions pgtype.Text `json:"instructions"`
+	ID                   pgtype.UUID        `json:"id"`
+	Name                 pgtype.Text        `json:"name"`
+	Description          pgtype.Text        `json:"description"`
+	LeaderID             pgtype.UUID        `json:"leader_id"`
+	AvatarUrl            pgtype.Text        `json:"avatar_url"`
+	Instructions         pgtype.Text        `json:"instructions"`
+	ExpectedWorkspaceID  pgtype.UUID        `json:"expected_workspace_id"`
+	ExpectedInstructions pgtype.Text        `json:"expected_instructions"`
+	ExpectedUpdatedAt    pgtype.Timestamptz `json:"expected_updated_at"`
 }
 
 func (q *Queries) UpdateSquad(ctx context.Context, arg UpdateSquadParams) (Squad, error) {
@@ -798,6 +804,9 @@ func (q *Queries) UpdateSquad(ctx context.Context, arg UpdateSquadParams) (Squad
 		arg.LeaderID,
 		arg.AvatarUrl,
 		arg.Instructions,
+		arg.ExpectedWorkspaceID,
+		arg.ExpectedInstructions,
+		arg.ExpectedUpdatedAt,
 	)
 	var i Squad
 	err := row.Scan(

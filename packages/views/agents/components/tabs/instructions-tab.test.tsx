@@ -11,12 +11,16 @@ import enAgents from "../../../locales/en/agents.json";
 // The conversation-starter editor previews the chat empty state, so it reads the
 // chat namespace for the built-in defaults it renders when nothing is set.
 import enChat from "../../../locales/en/chat.json";
+import zhCommon from "../../../locales/zh-Hans/common.json";
+import zhAgents from "../../../locales/zh-Hans/agents.json";
+import zhChat from "../../../locales/zh-Hans/chat.json";
 import { NavigationProvider } from "../../../navigation";
 import type { NavigationAdapter } from "../../../navigation";
 import { InstructionsTab } from "./instructions-tab";
 
 const TEST_RESOURCES = {
   en: { common: enCommon, agents: enAgents, chat: enChat },
+  "zh-Hans": { common: zhCommon, agents: zhAgents, chat: zhChat },
 };
 const persistedPrompt = {
   label: "Review a PR",
@@ -48,10 +52,24 @@ const baseAgent: Agent = {
   archived_by: null,
 };
 
-function tab(agent: Agent, onSave = vi.fn().mockResolvedValue(undefined)) {
+function tab(
+  agent: Agent,
+  onSave = vi.fn().mockResolvedValue(undefined),
+  {
+    locale = "en",
+    onDirtyChange,
+  }: {
+    locale?: "en" | "zh-Hans";
+    onDirtyChange?: (dirty: boolean) => void;
+  } = {},
+) {
   return (
-    <I18nProvider locale="en" resources={TEST_RESOURCES}>
-      <InstructionsTab agent={agent} onSave={onSave} />
+    <I18nProvider locale={locale} resources={{ [locale]: TEST_RESOURCES[locale] }}>
+      <InstructionsTab
+        agent={agent}
+        onSave={onSave}
+        onDirtyChange={onDirtyChange}
+      />
     </I18nProvider>
   );
 }
@@ -174,6 +192,127 @@ describe("InstructionsTab persisted-state synchronization", () => {
     expect(onSave).toHaveBeenCalledWith({
       instructions: "Updated instructions.",
     });
+  });
+});
+
+describe("InstructionsTab canonical instruction content", () => {
+  beforeEach(() => {
+    configStore.getState().setAgentConversationStartersSupported(false);
+  });
+
+  it("saves Chinese Markdown verbatim and reloads it in an English UI", async () => {
+    const agent = { ...baseAgent, instructions: "# 职责\n\n审查提交的代码。" };
+    const edited =
+      "# 职责\n\n逐项复核中文任务。\n- 保留 `task_id` 和 `in_review`。\n- 智能体名称：{{AGENT_NAME}}。\n";
+    const onSave = vi.fn<(updates: { instructions: string }) => Promise<void>>()
+      .mockResolvedValue(undefined);
+    const user = userEvent.setup();
+    const { unmount } = render(tab(agent, onSave, { locale: "zh-Hans" }));
+    const editor = screen.getByRole("textbox", {
+      name: zhAgents.tab_body.instructions.system_prompt_label,
+    });
+    expect(editor).toHaveValue(agent.instructions);
+
+    await user.clear(editor);
+    await user.paste(edited);
+    await user.click(screen.getByRole("button", { name: "保存" }));
+
+    expect(onSave).toHaveBeenCalledExactlyOnceWith({ instructions: edited });
+    const [saved] = onSave.mock.calls[0]!;
+    unmount();
+    render(tab({ ...agent, instructions: saved.instructions }, onSave));
+
+    expect(screen.getByRole("textbox", { name: "System prompt" })).toHaveValue(edited);
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+  });
+
+  it("keeps a pristine Chinese instruction body clean across locale changes", async () => {
+    const agent = { ...baseAgent, instructions: "# 职责\n\n只审查任务指定的变更。" };
+    const onSave = vi.fn().mockResolvedValue(undefined);
+    const onDirtyChange = vi.fn();
+    const { rerender } = render(
+      tab(agent, onSave, { locale: "zh-Hans", onDirtyChange }),
+    );
+
+    rerender(tab(agent, onSave, { locale: "en", onDirtyChange }));
+
+    expect(await screen.findByRole("textbox", { name: "System prompt" })).toHaveValue(
+      agent.instructions,
+    );
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+
+    rerender(tab(agent, onSave, { locale: "zh-Hans", onDirtyChange }));
+
+    expect(await screen.findByRole("textbox", {
+      name: zhAgents.tab_body.instructions.system_prompt_label,
+    })).toHaveValue(agent.instructions);
+    expect(screen.getByRole("button", { name: "保存" })).toBeDisabled();
+    expect(onDirtyChange).not.toHaveBeenCalledWith(true);
+    expect(onSave).not.toHaveBeenCalled();
+  });
+
+  it("keeps an unsaved Chinese draft across locale changes and saves that draft", async () => {
+    const onSave = vi.fn().mockResolvedValue(undefined);
+    const onDirtyChange = vi.fn();
+    const user = userEvent.setup();
+    const { rerender } = render(
+      tab(baseAgent, onSave, { locale: "zh-Hans", onDirtyChange }),
+    );
+    const edited = "# 团队规则\n\n只审查本次任务的变更，保留 `multica issue` 命令。\n";
+    const editor = screen.getByRole("textbox", {
+      name: zhAgents.tab_body.instructions.system_prompt_label,
+    });
+    await user.clear(editor);
+    await user.paste(edited);
+
+    rerender(tab(baseAgent, onSave, { locale: "en", onDirtyChange }));
+
+    expect(await screen.findByRole("textbox", { name: "System prompt" })).toHaveValue(edited);
+    expect(screen.getByRole("button", { name: "Save" })).toBeEnabled();
+
+    rerender(tab(baseAgent, onSave, { locale: "zh-Hans", onDirtyChange }));
+
+    expect(await screen.findByRole("textbox", {
+      name: zhAgents.tab_body.instructions.system_prompt_label,
+    })).toHaveValue(edited);
+    expect(onDirtyChange).toHaveBeenLastCalledWith(true);
+    expect(onSave).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "保存" }));
+    expect(onSave).toHaveBeenCalledExactlyOnceWith({ instructions: edited });
+  });
+
+  it("keeps Mika's Chinese system layer read-only while saving only workspace notes", async () => {
+    const agent = {
+      ...baseAgent,
+      name: "Mika",
+      instructions: "# 工作区补充\n\n主要仓库是 github.com/acme/platform。",
+      system_instructions: "# Mika\n\n你是工作区系统助手，遵循任务的语言回复。",
+    };
+    const onSave = vi.fn().mockResolvedValue(undefined);
+    const user = userEvent.setup();
+    const { rerender } = render(tab(agent, onSave, { locale: "zh-Hans" }));
+    await user.click(screen.getByRole("button", { name: "查看" }));
+
+    const systemLayer = screen.getByText(agent.system_instructions, {
+      normalizer: (text) => text,
+    });
+    expect(systemLayer.tagName).toBe("PRE");
+    expect(screen.getAllByRole("textbox")).toHaveLength(1);
+    const editor = screen.getByRole("textbox", { name: "工作区补充" });
+    expect(editor).toHaveValue(agent.instructions);
+
+    const edited = "# 工作区补充\n\n团队偏好中文沟通。周五不部署。\n";
+    await user.clear(editor);
+    await user.paste(edited);
+    const updatedSystem = "# Mika\n\n你是工作区系统助手，先检查任务上下文再回复。";
+    rerender(tab({ ...agent, system_instructions: updatedSystem }, onSave, {
+      locale: "zh-Hans",
+    }));
+
+    expect(screen.getByText(updatedSystem, { normalizer: (text) => text }).tagName).toBe("PRE");
+    expect(screen.getByRole("textbox", { name: "工作区补充" })).toHaveValue(edited);
+    await user.click(screen.getByRole("button", { name: "保存" }));
+    expect(onSave).toHaveBeenCalledExactlyOnceWith({ instructions: edited });
   });
 });
 

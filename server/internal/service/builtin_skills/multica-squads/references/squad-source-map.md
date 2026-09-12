@@ -54,6 +54,14 @@ Use `--help` for exact flags before writes.
 
 ## Create / Update
 
+Conditional instruction writes use
+`server/internal/handler/instructions_precondition.go`, `UpdateSquad`, and
+`server/pkg/db/queries/squad.sql` (`UpdateSquad`). Paired expected body/timestamp
+fields are checked in the SQL WHERE together with workspace identity. A stale
+write returns 409 and the surrounding transaction rolls back before any event.
+`GetSquad`/`UpdateSquad` expose `X-Multica-Instructions-Precondition: 1` and full
+timestamp precision. Tests: `server/internal/handler/instructions_precondition_test.go`.
+
 Source:
 
 ```text

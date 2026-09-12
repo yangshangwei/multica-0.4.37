@@ -170,6 +170,15 @@ caller. A recorded approval does not sandbox the daemon host.
 
 ## Field contracts
 
+For an HTTP instruction update that must preserve concurrent edits, first read
+`GET /api/agents/{id}` and require `X-Multica-Instructions-Precondition: 1`.
+Send `instructions`, `expected_instructions` (the exact original body), and
+`expected_updated_at` (the complete returned timestamp) together to PUT. A stale
+body or timestamp returns 409 without saving or publishing an update; reload and
+review the new content before trying again. These optional fields have no CLI
+flags and require a fully upgraded API deployment, since older servers ignore
+unknown fields. Omitting both preserves ordinary update behavior.
+
 | Field | Persisted as | Validated? | Consumed by |
 |---|---|---|---|
 | `name` | `agent.name` | required, 400 if empty | listings, runtime payload |

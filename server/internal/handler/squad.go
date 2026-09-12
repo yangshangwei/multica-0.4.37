@@ -3,12 +3,14 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/logger"
@@ -77,7 +79,7 @@ func (h *Handler) squadToResponse(s db.Squad) SquadResponse {
 		LeaderID:        uuidToString(s.LeaderID),
 		CreatorID:       uuidToString(s.CreatorID),
 		CreatedAt:       timestampToString(s.CreatedAt),
-		UpdatedAt:       timestampToString(s.UpdatedAt),
+		UpdatedAt:       instructionsUpdateTimestamp(s.UpdatedAt),
 		ArchivedAt:      timestampToPtr(s.ArchivedAt),
 		ArchivedBy:      uuidToPtr(s.ArchivedBy),
 		MemberPreview:   []SquadMemberPreviewResponse{},
@@ -350,6 +352,7 @@ func (h *Handler) GetSquad(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to load squad member preview")
 		return
 	}
+	w.Header().Set(instructionsPreconditionHeader, "1")
 	writeJSON(w, http.StatusOK, resp)
 }
 
@@ -379,18 +382,31 @@ func (h *Handler) UpdateSquad(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		Name         *string `json:"name"`
-		Description  *string `json:"description"`
-		Instructions *string `json:"instructions"`
-		LeaderID     *string `json:"leader_id"`
-		AvatarURL    *string `json:"avatar_url"`
+		Name                 *string `json:"name"`
+		Description          *string `json:"description"`
+		Instructions         *string `json:"instructions"`
+		ExpectedInstructions *string `json:"expected_instructions"`
+		ExpectedUpdatedAt    *string `json:"expected_updated_at"`
+		LeaderID             *string `json:"leader_id"`
+		AvatarURL            *string `json:"avatar_url"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+	rawFields, err := decodeJSONBodyWithRawFields(r.Body, &req)
+	if err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
 	}
 
-	params := db.UpdateSquadParams{ID: squad.ID}
+	expectedInstructions, expectedUpdatedAt, err := parseInstructionsPrecondition(req.Instructions, req.ExpectedInstructions, req.ExpectedUpdatedAt, rawFields)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	params := db.UpdateSquadParams{
+		ID:                   squad.ID,
+		ExpectedWorkspaceID:  squad.WorkspaceID,
+		ExpectedInstructions: expectedInstructions,
+		ExpectedUpdatedAt:    expectedUpdatedAt,
+	}
 	if req.Name != nil {
 		params.Name = pgtype.Text{String: *req.Name, Valid: true}
 	}
@@ -472,6 +488,10 @@ func (h *Handler) UpdateSquad(w http.ResponseWriter, r *http.Request) {
 
 	updated, err := qtx.UpdateSquad(r.Context(), params)
 	if err != nil {
+		if expectedUpdatedAt.Valid && errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusConflict, "squad changed since it was read; reload before updating instructions")
+			return
+		}
 		writeError(w, http.StatusInternalServerError, "failed to update squad")
 		return
 	}
@@ -499,6 +519,7 @@ func (h *Handler) UpdateSquad(w http.ResponseWriter, r *http.Request) {
 			"autopilot": autopilotToResponse(autopilot, nil),
 		})
 	}
+	w.Header().Set(instructionsPreconditionHeader, "1")
 	writeJSON(w, http.StatusOK, resp)
 }
 

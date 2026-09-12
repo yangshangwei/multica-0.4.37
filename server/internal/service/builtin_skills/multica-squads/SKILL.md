@@ -50,6 +50,14 @@ Important consequences:
 
 ## CLI
 
+For concurrent-edit protection through HTTP, require
+`X-Multica-Instructions-Precondition: 1` from `GET /api/squads/{id}` and send
+`instructions` with both `expected_instructions` and the full
+`expected_updated_at` to PUT. A mismatch returns 409 and rolls back the entire
+update, including a newly added leader seat. Reload and review before retrying.
+These optional fields are HTTP-only and require every API replica to be upgraded;
+ordinary updates without them retain their existing behavior.
+
 Squad commands:
 
 ```bash

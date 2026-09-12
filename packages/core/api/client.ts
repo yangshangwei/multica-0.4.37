@@ -1563,8 +1563,8 @@ export class ApiClient {
    *
    * Workspace-independent — templates ship with the backend binary — so the
    * result is safe to cache for the session. `language` only selects the
-   * localized label and description; instructions are English by design, as
-   * every agent-harness text in this product is.
+   * localized label and description; instructions remain the canonical
+   * template body, independent of the viewer's UI language.
    */
   async listAgentRoleTemplates(language?: string): Promise<AgentRoleTemplate[]> {
     const query = language ? `?language=${encodeURIComponent(language)}` : "";
@@ -4273,7 +4273,7 @@ export class ApiClient {
     }) as Squad;
   }
 
-  async updateSquad(id: string, data: { name?: string; description?: string; instructions?: string; leader_id?: string; avatar_url?: string }): Promise<Squad> {
+  async updateSquad(id: string, data: { name?: string; description?: string; instructions?: string; expected_instructions?: string; expected_updated_at?: string; leader_id?: string; avatar_url?: string }): Promise<Squad> {
     const raw = await this.fetch<unknown>(`/api/squads/${id}`, { method: "PUT", body: JSON.stringify(data) });
     return parseWithFallback(raw, SquadSchema, EMPTY_SQUAD, {
       endpoint: "PUT /api/squads/:id",

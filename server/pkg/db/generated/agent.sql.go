@@ -8385,31 +8385,37 @@ UPDATE agent SET
     autonomy_level = COALESCE($21, autonomy_level),
     updated_at = now()
 WHERE id = $1
+  AND workspace_id = $22::uuid
+  AND ($23::text IS NULL OR instructions = $23)
+  AND ($24::timestamptz IS NULL OR updated_at = $24)
 RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level
 `
 
 type UpdateAgentParams struct {
-	ID                       pgtype.UUID `json:"id"`
-	Name                     pgtype.Text `json:"name"`
-	Description              pgtype.Text `json:"description"`
-	AvatarUrl                pgtype.Text `json:"avatar_url"`
-	RuntimeConfig            []byte      `json:"runtime_config"`
-	RuntimeMode              pgtype.Text `json:"runtime_mode"`
-	RuntimeID                pgtype.UUID `json:"runtime_id"`
-	Visibility               pgtype.Text `json:"visibility"`
-	PermissionMode           pgtype.Text `json:"permission_mode"`
-	Status                   pgtype.Text `json:"status"`
-	MaxConcurrentTasks       pgtype.Int4 `json:"max_concurrent_tasks"`
-	Instructions             pgtype.Text `json:"instructions"`
-	CustomEnv                []byte      `json:"custom_env"`
-	CustomArgs               []byte      `json:"custom_args"`
-	McpConfig                []byte      `json:"mcp_config"`
-	Model                    pgtype.Text `json:"model"`
-	ThinkingLevel            pgtype.Text `json:"thinking_level"`
-	ServiceTier              pgtype.Text `json:"service_tier"`
-	ConversationStarters     []byte      `json:"conversation_starters"`
-	ComposioToolkitAllowlist []string    `json:"composio_toolkit_allowlist"`
-	AutonomyLevel            pgtype.Text `json:"autonomy_level"`
+	ID                       pgtype.UUID        `json:"id"`
+	Name                     pgtype.Text        `json:"name"`
+	Description              pgtype.Text        `json:"description"`
+	AvatarUrl                pgtype.Text        `json:"avatar_url"`
+	RuntimeConfig            []byte             `json:"runtime_config"`
+	RuntimeMode              pgtype.Text        `json:"runtime_mode"`
+	RuntimeID                pgtype.UUID        `json:"runtime_id"`
+	Visibility               pgtype.Text        `json:"visibility"`
+	PermissionMode           pgtype.Text        `json:"permission_mode"`
+	Status                   pgtype.Text        `json:"status"`
+	MaxConcurrentTasks       pgtype.Int4        `json:"max_concurrent_tasks"`
+	Instructions             pgtype.Text        `json:"instructions"`
+	CustomEnv                []byte             `json:"custom_env"`
+	CustomArgs               []byte             `json:"custom_args"`
+	McpConfig                []byte             `json:"mcp_config"`
+	Model                    pgtype.Text        `json:"model"`
+	ThinkingLevel            pgtype.Text        `json:"thinking_level"`
+	ServiceTier              pgtype.Text        `json:"service_tier"`
+	ConversationStarters     []byte             `json:"conversation_starters"`
+	ComposioToolkitAllowlist []string           `json:"composio_toolkit_allowlist"`
+	AutonomyLevel            pgtype.Text        `json:"autonomy_level"`
+	ExpectedWorkspaceID      pgtype.UUID        `json:"expected_workspace_id"`
+	ExpectedInstructions     pgtype.Text        `json:"expected_instructions"`
+	ExpectedUpdatedAt        pgtype.Timestamptz `json:"expected_updated_at"`
 }
 
 // composio_toolkit_allowlist is set wholesale: the API layer is responsible
@@ -8441,6 +8447,9 @@ func (q *Queries) UpdateAgent(ctx context.Context, arg UpdateAgentParams) (Agent
 		arg.ConversationStarters,
 		arg.ComposioToolkitAllowlist,
 		arg.AutonomyLevel,
+		arg.ExpectedWorkspaceID,
+		arg.ExpectedInstructions,
+		arg.ExpectedUpdatedAt,
 	)
 	var i Agent
 	err := row.Scan(
