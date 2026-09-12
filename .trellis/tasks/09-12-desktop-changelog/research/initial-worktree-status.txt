@@ -1,0 +1,40 @@
+ M .env.example
+ M SELF_HOSTING.md
+ M apps/docs/content/docs/environment-variables.mdx
+ M apps/docs/content/docs/environment-variables.zh.mdx
+ M deploy/helm/multica/templates/configmap.yaml
+ M deploy/helm/multica/values.yaml
+ M docker-compose.selfhost.yml
+ M packages/core/api/schemas.ts
+ M packages/core/config/index.ts
+ M packages/core/platform/auth-initializer.test.tsx
+ M packages/core/platform/auth-initializer.tsx
+ M packages/views/agents/components/agent-overview-pane.test.tsx
+ M packages/views/agents/components/agent-overview-pane.tsx
+ M packages/views/agents/components/agents-page.test.tsx
+ M packages/views/agents/components/builtin-agent-catalog.tsx
+ M packages/views/agents/components/tabs/integrations-tab.test.tsx
+ M packages/views/agents/components/tabs/integrations-tab.tsx
+ M packages/views/autopilots/components/autopilot-template-catalog.tsx
+ M packages/views/autopilots/components/autopilots-page.test.tsx
+ M packages/views/common/builtin-template-catalog.tsx
+ M packages/views/settings/components/integrations-tab.test.tsx
+ M packages/views/settings/components/integrations-tab.tsx
+ M packages/views/skills/components/builtin-skill-catalog.tsx
+ M packages/views/skills/components/skills-page.test.tsx
+ M packages/views/squads/components/builtin-squad-catalog.tsx
+ M packages/views/squads/components/squads-page.test.tsx
+ M scripts/helm-config.test.sh
+ M server/cmd/server/main.go
+ M server/cmd/server/router.go
+ M server/internal/docs/content/pages/environment-variables.json
+ M server/internal/handler/config.go
+ M server/internal/handler/dingtalk.go
+ M server/internal/handler/dingtalk_test.go
+ M server/internal/handler/handler.go
+?? .trellis/tasks/09-12-chinese-autopilot-templates/
+?? .trellis/tasks/09-12-desktop-changelog/
+?? .trellis/tasks/09-12-intranet-messaging-integrations/
+?? packages/core/api/messaging-config.test.ts
+?? packages/views/common/builtin-template-catalog.test.tsx
+?? server/cmd/server/messaging_integrations_test.go

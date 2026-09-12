@@ -3,6 +3,7 @@
 import {
   BookOpen,
   CircleHelp,
+  FileText,
   MessageCircle,
 } from "lucide-react";
 import {
@@ -42,12 +43,9 @@ export function HelpLauncher() {
         sideOffset={8}
         className="min-w-40 max-w-56"
       >
-        {/* Every entry here is an intranet deployment can actually serve: the
-            docs live in this deployment, feedback goes to its own API. The
-            change-log and desktop-download entries that pointed at
-            multica.ai release assets are gone — an intranet install cannot
-            reach the public site, so those were permanent dead links. */}
+        {/* Reference pages and feedback are served by this deployment. */}
         {workspaceSlug ? (
+          <>
           <DropdownMenuItem
             render={
               <AppLink href={paths.workspace(workspaceSlug).docs()} />
@@ -56,6 +54,13 @@ export function HelpLauncher() {
             <BookOpen className="h-3.5 w-3.5" />
             {t(($) => $.help.docs)}
           </DropdownMenuItem>
+          <DropdownMenuItem
+            render={<AppLink href={paths.workspace(workspaceSlug).changelog()} />}
+          >
+            <FileText aria-hidden="true" className="h-3.5 w-3.5" />
+            {t(($) => $.help.changelog)}
+          </DropdownMenuItem>
+          </>
         ) : null}
         <DropdownMenuItem
           onClick={() => useModalStore.getState().open("feedback")}

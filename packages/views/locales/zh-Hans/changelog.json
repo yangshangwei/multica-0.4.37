@@ -1,0 +1,65 @@
+{
+  "title": "变更说明",
+  "description": "了解 Multica 的新功能与改进。",
+  "refresh": "刷新",
+  "refreshing": "刷新中...",
+  "loading": "正在加载变更说明...",
+  "navigation": "浏览版本",
+  "all_releases": "全部版本",
+  "undated": "日期未知",
+  "versions": {
+    "desktop": "当前桌面版本",
+    "server": "当前服务端版本",
+    "latest": "最新稳定版本",
+    "unknown": "暂不可用",
+    "none": "当前分支尚未发布版本"
+  },
+  "source": {
+    "fork": "当前分支",
+    "upstream": "Multica 官方",
+    "unknown": "其他来源"
+  },
+  "status": {
+    "published": "已发布",
+    "prerelease": "预发布",
+    "unreleased": "未发布",
+    "unknown": "发布状态未知",
+    "latest": "最新稳定版"
+  },
+  "category": {
+    "features": "新功能",
+    "improvements": "改进",
+    "fixes": "修复",
+    "other": "其他更新"
+  },
+  "preview_notice": "以下变更已提交到代码库，尚未正式发布。",
+  "upstream_notice": "摘自 Multica 官方变更说明，不代表当前分支已发布此版本。",
+  "no_details": "此版本暂未提供具体变更内容。",
+  "refresh_error": "暂时无法刷新，仍显示此前加载的变更内容。",
+  "stale_warning": "服务端暂时无法更新变更说明，当前显示最近可用的内容。",
+  "missing": {
+    "title": "当前部署的历史中还没有此版本。",
+    "description": "你仍可在下方阅读已有的更新。"
+  },
+  "empty": {
+    "title": "暂无变更说明",
+    "description": "此服务器有可用的更新记录后，会显示在这里。"
+  },
+  "unavailable": {
+    "title": "此服务器暂不支持变更说明",
+    "description": "当前服务端版本尚未提供更新记录，可在服务器升级后重试。"
+  },
+  "error": {
+    "title": "无法加载变更说明",
+    "description": "暂时无法从服务器读取变更内容，请检查连接后重试。",
+    "retry": "重试"
+  },
+  "desktop": {
+    "ready": "更新已就绪",
+    "description": "下次启动时将更新至 {{version}}。",
+    "changelog": "查看变更说明",
+    "restart": "立即重启",
+    "dismiss": "关闭更新通知",
+    "workspace_required": "打开工作区后即可查看变更说明。"
+  }
+}

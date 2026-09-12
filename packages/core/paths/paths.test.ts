@@ -49,6 +49,16 @@ describe("paths.workspace(slug)", () => {
     expect(ws.docsPage("agents")).toBe("/acme/docs/agents");
   });
 
+  it("builds changelog links with distinct release identities and updater versions", () => {
+    expect(ws.changelog()).toBe("/acme/changelog");
+    expect(ws.changelog({ releaseId: "fork:example/multica:v1.0.0" })).toBe(
+      "/acme/changelog#fork%3Aexample%2Fmultica%3Av1.0.0",
+    );
+    expect(ws.changelog({ version: "0.4.37+desktop" })).toBe(
+      "/acme/changelog?version=0.4.37%2Bdesktop",
+    );
+  });
+
   // The bundle nests pages under a directory, so "/" inside a docs slug is a
   // route separator. Encoding the whole slug would emit %2F and the route
   // would not match.

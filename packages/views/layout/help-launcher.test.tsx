@@ -142,11 +142,10 @@ describe("HelpLauncher", () => {
     expect(link).toHaveAttribute("href", "/acme/docs");
   });
 
-  // Intranet trim: same reasoning as the download entry — the change log
-  // lived at multica.ai/changelog, unreachable from an intranet deployment.
-  it("does not include the change log entry", () => {
+  it("opens changelog from the configured deployment inside the app", () => {
     renderHelp();
-    expect(screen.queryByText("Change log")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Changelog" })).toHaveAttribute("href", "/acme/changelog");
+    expect(screen.getByRole("link", { name: "Changelog" })).not.toHaveAttribute("target");
   });
 
   // The menu must not be the thing that throws if it is ever mounted outside a
@@ -154,6 +153,7 @@ describe("HelpLauncher", () => {
   it("omits the docs entry with no workspace in scope, without crashing", () => {
     expect(() => renderHelp(null)).not.toThrow();
     expect(screen.queryByText("Docs")).not.toBeInTheDocument();
+    expect(screen.queryByText("Changelog")).not.toBeInTheDocument();
     expect(screen.getByText("Feedback")).toBeInTheDocument();
   });
 

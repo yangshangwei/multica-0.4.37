@@ -29,6 +29,7 @@ DB_IMAGE="$(sed -n '/^[[:space:]]*postgres:/,/^[[:space:]]*[a-z]/s/^[[:space:]]*
 
 OUT_DIR="dist/offline"
 DRY_RUN=0
+CHANGELOG_INPUT="${CHANGELOG_ARTIFACT:-server/internal/changelog/content/changelog.json}"
 # Defaults to the architecture the overwhelming majority of servers run, NOT to
 # the build host. Getting this wrong is the worst failure this script can
 # produce: an arm64 bundle built on a developer laptop loads fine and then every
@@ -39,7 +40,7 @@ PLATFORM="linux/amd64"
 
 usage() {
   cat <<'USAGE'
-Usage: scripts/offline-bundle.sh [--output DIR] [--platform PLAT] [--dry-run]
+Usage: scripts/offline-bundle.sh [--output DIR] [--platform PLAT] [--changelog JSON] [--dry-run]
 
   --output DIR     Where to write the bundle (default: dist/offline)
   --platform PLAT  Target platform for the images (default: linux/amd64).
@@ -47,6 +48,8 @@ Usage: scripts/offline-bundle.sh [--output DIR] [--platform PLAT] [--dry-run]
                    architecture other than the host's runs under emulation
                    and is slow.
   --dry-run        Print the plan and stage nothing. Touches no images.
+  --changelog JSON Cumulative feed to embed and distribute (default: embedded
+                   seed, or CHANGELOG_ARTIFACT). Local previews stay unreleased.
 USAGE
 }
 
@@ -65,6 +68,11 @@ while [ $# -gt 0 ]; do
     --dry-run)
       DRY_RUN=1
       shift
+      ;;
+    --changelog)
+      [ $# -ge 2 ] || { echo "--changelog needs a JSON file" >&2; exit 1; }
+      CHANGELOG_INPUT="$2"
+      shift 2
       ;;
     -h|--help)
       usage
@@ -102,6 +110,7 @@ echo "    backend image : $BACKEND_IMAGE (built from this checkout)"
 echo "    web image     : $WEB_IMAGE (built from this checkout)"
 echo "    database image: $DB_IMAGE (pulled)"
 echo "    output        : $OUT_DIR"
+echo "    changelog     : $CHANGELOG_INPUT"
 
 if [ "$PLATFORM" != "$(host_platform)" ]; then
   echo ""
@@ -132,6 +141,22 @@ DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 mkdir -p "$OUT_DIR"
 
+# Stage a validated artifact inside Docker's context without modifying the
+# checked-in fallback. The exact bytes also travel in the offline package.
+command -v node >/dev/null 2>&1 || { echo "Node 22 is required on the bundle build machine" >&2; exit 1; }
+mkdir -p "$ROOT_DIR/.changelog-build"
+CHANGELOG_BUILD_DIR="$(mktemp -d "$ROOT_DIR/.changelog-build/offline.XXXXXX")"
+trap 'rm -rf "$CHANGELOG_BUILD_DIR"' EXIT
+node scripts/publish-changelog.mjs --input "$CHANGELOG_INPUT" --destination "$CHANGELOG_BUILD_DIR/changelog.json"
+CHANGELOG_ARTIFACT_PATH="${CHANGELOG_BUILD_DIR#"$ROOT_DIR"/}/changelog.json"
+mkdir -p "$OUT_DIR/changelog" "$OUT_DIR/scripts"
+cp "$CHANGELOG_BUILD_DIR/changelog.json" "$OUT_DIR/changelog/changelog.json"
+for helper in changelog-lib.mjs publish-changelog.mjs install-changelog.mjs; do
+  cp "scripts/$helper" "$OUT_DIR/scripts/$helper"
+done
+cp scripts/install-changelog.sh "$OUT_DIR/install-changelog.sh"
+chmod 0755 "$OUT_DIR/install-changelog.sh"
+
 # Compose interpolates the whole file before it builds anything, and the backend
 # service declares JWT_SECRET with `:?` so an unset value aborts. The real secret
 # belongs to the offline machine, not to this build host — it is generated there,
@@ -140,6 +165,7 @@ mkdir -p "$OUT_DIR"
 # build arg.
 echo "==> Building images for $PLATFORM from the current checkout..."
 VERSION="$VERSION" COMMIT="$COMMIT" DATE="$DATE" DOCKER_DEFAULT_PLATFORM="$PLATFORM" \
+  CHANGELOG_ARTIFACT_PATH="$CHANGELOG_ARTIFACT_PATH" \
   JWT_SECRET="${JWT_SECRET:-build-time-placeholder-not-shipped}" \
   docker compose -f "$COMPOSE_FILE" -f "$BUILD_OVERLAY" build
 
@@ -175,6 +201,7 @@ built:    $DATE
 version:  $VERSION
 commit:   $COMMIT
 platform: $PLATFORM
+changelog: changelog/changelog.json
 
 images:
   $BACKEND_IMAGE
@@ -231,7 +258,8 @@ MULTICA_DEVICE_AUTH_ENABLED=true
 Start it:
 
 \`\`\`bash
-docker compose -f docker-compose.selfhost.yml up -d
+bash install-changelog.sh --deployment-dir "\$PWD"
+docker compose -f docker-compose.selfhost.yml up -d --pull never
 curl -sf http://localhost:8080/health
 curl -s http://localhost:8080/api/config    # expect "device_auth_available":true
 \`\`\`
@@ -242,6 +270,13 @@ skipping this looks exactly like device auth failing to work.
 
 Migrations are not a separate step: the backend container runs them before the
 API starts.
+
+The changelog installer validates the bundled cumulative feed, runs the publisher
+using Node in the already-loaded frontend image, and saves only
+\`CHANGELOG_FILE\` / \`CHANGELOG_DIRECTORY\` in \`.env\`. No host Node installation
+or network pull is required. The containing directory is mounted read-only in
+the backend, which sees atomic replacements without a restart. Keep
+\`changelog/changelog.json\` as the next generator's \`--history\` input.
 
 ## Client machines
 

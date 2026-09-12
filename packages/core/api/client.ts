@@ -248,6 +248,8 @@ import type {
   ListCloudRuntimeNodesParams,
 } from "../runtimes/cloud-runtime";
 import type { DocsManifest, DocsPage } from "../docs/types";
+import type { ChangelogFeed } from "../changelog/types";
+import { parseChangelog } from "../changelog/schema";
 import {
   DocsManifestSchema,
   DocsPageSchema,
@@ -5111,6 +5113,11 @@ export class ApiClient {
       EMPTY_REDEEM_TELEGRAM_BINDING_TOKEN_RESPONSE,
       { endpoint: "POST /api/telegram/binding/redeem" },
     );
+  }
+
+  /** Cumulative release history served by the configured deployment. */
+  async getChangelog(): Promise<ChangelogFeed> {
+    return parseChangelog(await this.fetch<unknown>("/api/changelog"));
   }
 
   /**

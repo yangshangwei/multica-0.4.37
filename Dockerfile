@@ -12,6 +12,11 @@ RUN cd server && go mod download
 # Copy server source
 COPY server/ ./server/
 
+# Offline bundles may stage the same cumulative feed they will install on the
+# target. Copy that exact artifact before compilation without editing the seed.
+ARG CHANGELOG_ARTIFACT_PATH=server/internal/changelog/content/changelog.json
+COPY ${CHANGELOG_ARTIFACT_PATH} ./server/internal/changelog/content/changelog.json
+
 # Build binaries
 ARG VERSION=dev
 ARG COMMIT=unknown

@@ -6,6 +6,8 @@
 
 升级包包含后端、前端和 PostgreSQL 镜像。后端启动时会自动执行数据库迁移。升级过程中不要执行 `docker compose down -v`，也不要删除 `pgdata` 或 `backend_uploads` 数据卷。
 
+升级包也包含累计变更说明和发布工具。桌面端与 Web 的“帮助 → 变更说明”从本部署读取这些记录，不需要访问官网。发布器会复用已导入的前端镜像运行，使用 `--pull never`，目标机无需另装 Node。
+
 ## 一、把升级包传入服务器
 
 通过 U 盘或内网把 `multica-server-upgrade-*.tar.gz` 以及对应的 `.sha256` 文件传到服务器。升级包必须与服务器架构一致：
@@ -36,10 +38,11 @@ cd /opt/multica-upgrade
 2. 导入后端、前端和 PostgreSQL 镜像；
 3. 将当前 PostgreSQL 导出到 `/opt/multica/backups/<时间>/database.sql`；
 4. 备份当前 `.env`；
-5. 使用升级包中的 Compose 文件启动后端和前端；
-6. 等待 `/healthz` 返回成功。
+5. 校验变更说明，在日志目录中原子替换 `changelog.json`，并持久化日志路径；
+6. 使用升级包中的 Compose 文件启动后端和前端；
+7. 等待 `/healthz` 返回成功。
 
-脚本不会覆盖 `/opt/multica/.env`，不会删除 Docker 数据卷。
+脚本只更新 `/opt/multica/.env` 中的 `CHANGELOG_FILE` 和 `CHANGELOG_DIRECTORY`，保留其余设置和 Docker 数据卷。默认日志目录为 `/opt/multica/changelog`；已配置目录会继续使用。Compose 挂载整个目录，容器内的日志路径为 `/app/data/changelog/changelog.json`。已有非空且不兼容的 `CHANGELOG_FILE` 会使升级停止，需先核对配置。
 
 不加 `--yes` 时脚本会在执行前显示版本、镜像和备份目录并要求确认：
 
@@ -69,6 +72,16 @@ curl -fsS http://127.0.0.1:8080/healthz
 ```
 
 如果后端端口不是 `8080`，使用现有 `.env` 中配置的端口。
+
+在客户端打开“帮助 → 变更说明”，核对本次版本、来源和具体更新。已经打开的页面每 60 秒检查新内容，也可以点“刷新”。首次安装这项功能需要正常升级客户端；之后单独发布新说明无需重新安装或重启客户端。
+
+需要只更新说明而不升级镜像时，先确保新包中的镜像已导入，再运行：
+
+```bash
+bash /opt/multica-upgrade/install-changelog.sh --deployment-dir /opt/multica
+```
+
+记录必须先通过现有内网交付方式到达服务器。不要直接编辑正在使用的 JSON，不要将单个文件以 bind mount 或 Kubernetes `subPath` 挂载。文件无效或不可读时，页面会保留最近可用内容并提示尚未同步；重新发布有效文件即可恢复。
 
 ## 四、失败处理
 

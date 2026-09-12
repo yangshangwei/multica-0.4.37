@@ -1,0 +1,65 @@
+{
+  "title": "変更履歴",
+  "description": "Multica の新機能と改善をご覧ください。",
+  "refresh": "更新",
+  "refreshing": "更新中...",
+  "loading": "変更履歴を読み込み中...",
+  "navigation": "リリースを探す",
+  "all_releases": "すべてのリリース",
+  "undated": "日付不明",
+  "versions": {
+    "desktop": "デスクトップのバージョン",
+    "server": "実行中のサーバー",
+    "latest": "最新の安定版",
+    "unknown": "取得できません",
+    "none": "このフォークには公開済みリリースがありません"
+  },
+  "source": {
+    "fork": "このフォーク",
+    "upstream": "Multica 公式",
+    "unknown": "その他の提供元"
+  },
+  "status": {
+    "published": "公開済み",
+    "prerelease": "プレリリース",
+    "unreleased": "未リリース",
+    "unknown": "公開状態不明",
+    "latest": "最新の安定版"
+  },
+  "category": {
+    "features": "新機能",
+    "improvements": "改善",
+    "fixes": "修正",
+    "other": "その他の変更"
+  },
+  "preview_notice": "コミット済みですが、まだリリースされていない変更です。",
+  "upstream_notice": "Multica 公式の変更履歴に基づく内容です。このフォークのリリースを示すものではありません。",
+  "no_details": "このリリースの変更内容はまだ提供されていません。",
+  "refresh_error": "更新できませんでした。前回読み込んだ内容を表示しています。",
+  "stale_warning": "サーバーが変更履歴を更新できませんでした。最後に取得できた内容を表示しています。",
+  "missing": {
+    "title": "この環境の履歴には指定されたリリースがありません。",
+    "description": "以下で取得済みの更新内容をご覧いただけます。"
+  },
+  "empty": {
+    "title": "変更履歴はまだありません",
+    "description": "このサーバーで更新内容が利用可能になると、ここに表示されます。"
+  },
+  "unavailable": {
+    "title": "このサーバーでは変更履歴を利用できません",
+    "description": "現在のサーバーは変更履歴に対応していません。サーバーの更新後に再試行できます。"
+  },
+  "error": {
+    "title": "変更履歴を読み込めません",
+    "description": "サーバーから変更内容を取得できませんでした。接続を確認して再試行してください。",
+    "retry": "再試行"
+  },
+  "desktop": {
+    "ready": "更新の準備ができました",
+    "description": "次回の起動時に {{version}} が適用されます。",
+    "changelog": "変更履歴を見る",
+    "restart": "今すぐ再起動",
+    "dismiss": "更新通知を閉じる",
+    "workspace_required": "変更履歴を見るにはワークスペースを開いてください。"
+  }
+}

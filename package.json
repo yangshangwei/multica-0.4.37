@@ -28,7 +28,9 @@
     "clean": "turbo clean && rm -rf node_modules",
     "ui:add": "cd packages/ui && npx shadcn@latest add",
     "generate:reserved-slugs": "node scripts/generate-reserved-slugs.mjs",
-    "generate:docs-bundle": "node scripts/generate-docs-bundle.mjs"
+    "generate:docs-bundle": "node scripts/generate-docs-bundle.mjs",
+    "changelog:generate": "node scripts/generate-changelog.mjs",
+    "changelog:publish": "node scripts/publish-changelog.mjs"
   },
   "engines": {
     "node": ">=22"

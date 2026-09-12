@@ -25,6 +25,10 @@ import enUi from "./en/ui.json";
 import enSquads from "./en/squads.json";
 import enBilling from "./en/billing.json";
 import enDocs from "./en/docs.json";
+import enChangelog from "./en/changelog.json";
+import zhHansChangelog from "./zh-Hans/changelog.json";
+import jaChangelog from "./ja/changelog.json";
+import koChangelog from "./ko/changelog.json";
 import zhHansCommon from "./zh-Hans/common.json";
 import zhHansAuth from "./zh-Hans/auth.json";
 import zhHansSettings from "./zh-Hans/settings.json";
@@ -135,6 +139,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     squads: enSquads,
     billing: enBilling,
     docs: enDocs,
+    changelog: enChangelog,
   },
   "zh-Hans": {
     common: zhHansCommon,
@@ -163,6 +168,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     squads: zhHansSquads,
     billing: zhHansBilling,
     docs: zhHansDocs,
+    changelog: zhHansChangelog,
   },
   ko: {
     common: koCommon,
@@ -184,6 +190,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     skills: koSkills,
     chat: koChat,
     docs: koDocs,
+    changelog: koChangelog,
     modals: koModals,
     runtimes: koRuntimes,
     layout: koLayout,
@@ -212,6 +219,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     skills: jaSkills,
     chat: jaChat,
     docs: jaDocs,
+    changelog: jaChangelog,
     modals: jaModals,
     runtimes: jaRuntimes,
     layout: jaLayout,

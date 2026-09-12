@@ -45,6 +45,23 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 
 在 Kubernetes 中设置 shutdown hold 时，`terminationGracePeriodSeconds` 要大于 hold 与实际退出所需时间之和。
 
+## 变更说明
+
+桌面端和 Web 的“帮助 → 变更说明”从当前部署读取发布记录，无需访问公网。默认使用 API 构建中包含的记录；如需在不重启 API 的情况下发布新记录，配置以下变量。
+
+| 变量 | 默认值 | 说明 |
+|---|---|---|
+| `CHANGELOG_FILE` | 空 | API 可读取的累计日志 JSON 文件；为空时使用内置记录 |
+| `CHANGELOG_DIRECTORY` | `./changelog` | Docker Compose 挂载的宿主机目录；容器内对应 `/app/data/changelog` |
+
+使用 Docker Compose 时，在 `.env` 中设置 `CHANGELOG_FILE=/app/data/changelog/changelog.json`。先将有效的发版日志放入宿主机目录，再通过 `docker compose up -d backend` 使路径配置生效。之后每次发版只需原子替换文件，已打开的页面会在 60 秒内发起下一次检查，也可以手动刷新。
+
+日志由发版工具从提交记录生成，并保留以前的正式版、预发布版和官方来源说明。不要直接编辑正在使用的文件；有 Node 的发布机可以运行 `node scripts/publish-changelog.mjs --input <发版产物>/changelog.json --destination ./changelog/changelog.json`。离线安装和升级包会通过已导入的前端镜像运行发布器，目标机无需额外安装 Node。
+
+挂载整个目录，不要把单个文件作为 bind mount 或 Kubernetes `subPath` 挂载，否则原子替换后容器可能仍读取旧文件。Helm 部署可用 `backend.changelog.existingClaim` 挂载已有的日志卷，并将 `backend.config.changelogFile` 设为 `/app/data/changelog/changelog.json`；多副本需要所有 API 实例可读的共享卷。
+
+文件最大为 2 MiB。文件不可读或格式错误时，API 保留当前进程最后读取成功的内容，并返回 `is_stale: true`；还没有成功读取过文件时，则显示内置记录并提示尚未同步。首次启用路径配置需要重建容器，后续更新文件不需要。内网客户端只能看到已经交付到本部署的记录。
+
 ## 对外地址与浏览器访问
 
 | 变量 | 默认值 | 说明 |

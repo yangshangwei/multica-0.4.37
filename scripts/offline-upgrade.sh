@@ -25,7 +25,8 @@ Options:
   --yes                 Skip the confirmation prompt
   -h, --help            Show this help
 
-The script never removes Docker volumes and never changes the deployment .env.
+The script never removes Docker volumes. It preserves deployment .env values
+except CHANGELOG_FILE and CHANGELOG_DIRECTORY, which enable the installed feed.
 It uses the compose file shipped in this package with the deployment's .env.
 USAGE
 }
@@ -79,6 +80,7 @@ DEPLOYMENT_DIR="$(cd "$DEPLOYMENT_DIR" 2>/dev/null && pwd)" || die "deployment d
 [ -f "$PACKAGE_DIR/multica-images.tar.gz" ] || die "missing package image archive"
 [ -f "$PACKAGE_DIR/docker-compose.selfhost.yml" ] || die "missing package compose file"
 [ -f "$PACKAGE_DIR/MANIFEST.txt" ] || die "missing package manifest"
+[ -f "$PACKAGE_DIR/install-changelog.sh" ] || die "missing package changelog installer"
 command -v docker >/dev/null 2>&1 || die "docker is required"
 docker compose version >/dev/null 2>&1 || die "Docker Compose plugin is required"
 
@@ -90,7 +92,7 @@ case "$(uname -m)" in
 esac
 [ "$manifest_platform" = "$host_platform" ] || die "package platform is $manifest_platform, server platform is $host_platform"
 
-manifest_images="$(sed -n '/^images:/,/^$/{s/^  //p}' "$PACKAGE_DIR/MANIFEST.txt")"
+manifest_images="$(sed -n '/^images:/,/^$/{s/^  //p;}' "$PACKAGE_DIR/MANIFEST.txt")"
 default_backend_image="$(printf '%s\n' "$manifest_images" | sed -n '1p')"
 default_web_image="$(printf '%s\n' "$manifest_images" | sed -n '2p')"
 [ -n "$default_backend_image" ] && [ -n "$default_web_image" ] || die "invalid image list in MANIFEST.txt"
@@ -112,7 +114,7 @@ echo "Deploy:    $DEPLOYMENT_DIR"
 echo "Backup:    $BACKUP_DIR"
 echo ""
 echo "The script will import images, dump PostgreSQL, and recreate backend/frontend."
-echo "Existing .env and Docker volumes will be kept."
+echo "Existing settings and Docker volumes will be kept; changelog paths will be saved."
 if [ "$ASSUME_YES" -ne 1 ]; then
   printf 'Continue? [y/N] '
   read -r answer
@@ -137,7 +139,7 @@ fi
 echo "==> Loading images"
 docker load -i "$PACKAGE_DIR/multica-images.tar.gz"
 
-compose=(docker compose --env-file "$DEPLOYMENT_DIR/.env" -f "$PACKAGE_DIR/docker-compose.selfhost.yml")
+compose=(docker compose --project-directory "$DEPLOYMENT_DIR" --env-file "$DEPLOYMENT_DIR/.env" -f "$PACKAGE_DIR/docker-compose.selfhost.yml")
 
 echo "==> Backing up PostgreSQL to $BACKUP_DIR/database.sql"
 "${compose[@]}" exec -T postgres \
@@ -145,6 +147,9 @@ echo "==> Backing up PostgreSQL to $BACKUP_DIR/database.sql"
   >"$BACKUP_DIR/database.sql"
 
 cp "$DEPLOYMENT_DIR/.env" "$BACKUP_DIR/.env"
+
+echo "==> Installing the cumulative changelog with the loaded frontend image"
+bash "$PACKAGE_DIR/install-changelog.sh" --deployment-dir "$DEPLOYMENT_DIR" --web-image "$WEB_IMAGE:$IMAGE_TAG"
 
 echo "==> Starting the upgraded services"
 MULTICA_BACKEND_IMAGE="$BACKEND_IMAGE" \

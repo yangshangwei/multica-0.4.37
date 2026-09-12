@@ -32,6 +32,7 @@ import { SquadsPage, SquadDetailPage as SquadDetailPageView } from "@multica/vie
 import { InboxPage } from "@multica/views/inbox";
 import { ChatPage } from "@multica/views/chat";
 import { DocsPage } from "@multica/views/docs";
+import { ChangelogPage } from "@multica/views/changelog";
 import { SettingsPage } from "@multica/views/settings";
 import { useT } from "@multica/views/i18n";
 import { Download, Server } from "lucide-react";
@@ -85,6 +86,10 @@ function DocsRoute() {
   const params = useParams();
   const slug = params["*"] ?? "";
   return <DocsPage slug={slug || undefined} />;
+}
+
+function ChangelogRoute() {
+  return <ChangelogPage desktopVersion={window.desktopAPI.appInfo.version || null} />;
 }
 
 /**
@@ -278,6 +283,7 @@ export const appRoutes: RouteObject[] = [
           // In-app documentation. An ordinary session route, not a
           // WindowOverlay: it is workspace-scoped and belongs in a tab.
           { path: "docs", element: <DocsRoute />, handle: { title: "Docs" } },
+          { path: "changelog", element: <ChangelogRoute />, handle: { title: "Changelog" } },
           {
             // A splat rather than `:page` because a docs slug can nest —
             // `developers/contributing` is two segments.

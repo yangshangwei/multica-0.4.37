@@ -11,13 +11,15 @@ cd "$ROOT_DIR"
 
 OUT_DIR="dist/offline-upgrade"
 PLATFORM="linux/amd64"
+CHANGELOG_ARGS=()
 
 usage() {
   cat <<'USAGE'
-Usage: scripts/build-offline-upgrade.sh [--output DIR] [--platform PLAT]
+Usage: scripts/build-offline-upgrade.sh [--output DIR] [--platform PLAT] [--changelog JSON]
 
   --output DIR     Output directory (default: dist/offline-upgrade)
   --platform PLAT  Image target (default: linux/amd64; use linux/arm64 for ARM)
+  --changelog JSON Cumulative feed to embed and install (defaults to seed)
 USAGE
 }
 
@@ -31,6 +33,11 @@ while [ $# -gt 0 ]; do
     --platform)
       [ $# -ge 2 ] || { echo "--platform needs a value" >&2; exit 1; }
       PLATFORM="$2"
+      shift 2
+      ;;
+    --changelog)
+      [ $# -ge 2 ] || { echo "--changelog needs a JSON file" >&2; exit 1; }
+      CHANGELOG_ARGS=(--changelog "$2")
       shift 2
       ;;
     -h|--help)
@@ -57,7 +64,7 @@ rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR"
 
 echo "==> Building runtime bundle from commit $(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
-bash scripts/offline-bundle.sh --output "$PACKAGE_DIR" --platform "$PLATFORM"
+bash scripts/offline-bundle.sh --output "$PACKAGE_DIR" --platform "$PLATFORM" "${CHANGELOG_ARGS[@]+"${CHANGELOG_ARGS[@]}"}"
 
 # The generic offline bundle README describes first installation. An upgrade
 # archive must be self-contained for the operator on the existing server, so

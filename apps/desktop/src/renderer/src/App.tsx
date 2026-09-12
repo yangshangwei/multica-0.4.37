@@ -16,7 +16,7 @@ import { DesktopLoginPage } from "./pages/login";
 import { DesktopAuthRecoveryPage } from "./pages/auth-recovery";
 import { DesktopEndpointSetupPage } from "./pages/endpoint-setup";
 import { DesktopShell } from "./components/desktop-layout";
-import { UpdateNotification } from "./components/update-notification";
+import { UpdateNotification, UpdateNotificationNavigationProvider } from "./components/update-notification";
 import { IssueWindow } from "./components/issue-window";
 import { useTabStore } from "./stores/tab-store";
 import { useWindowOverlayStore } from "./stores/window-overlay-store";
@@ -450,6 +450,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
+      <UpdateNotificationNavigationProvider>
       {runtimeConfigResult.ok ? (
         <CoreProvider
           apiBaseUrl={runtimeConfigResult.config.apiUrl}
@@ -485,7 +486,8 @@ export default function App() {
         />
       )}
       <Toaster />
-      {windowContext.kind === "main" && <UpdateNotification />}
+      {windowContext.kind === "main" && <UpdateNotification locale={locale} />}
+      </UpdateNotificationNavigationProvider>
     </ThemeProvider>
   );
 }

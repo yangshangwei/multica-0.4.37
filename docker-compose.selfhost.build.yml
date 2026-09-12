@@ -11,6 +11,7 @@ services:
         VERSION: ${VERSION:-dev}
         COMMIT: ${COMMIT:-unknown}
         DATE: ${DATE:-unknown}
+        CHANGELOG_ARTIFACT_PATH: ${CHANGELOG_ARTIFACT_PATH:-server/internal/changelog/content/changelog.json}
 
   frontend:
     image: multica-web:dev

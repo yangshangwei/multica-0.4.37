@@ -1,0 +1,41 @@
+# Architecture review
+
+Date: 2026-09-13. Reviewer: bounded Architect pass; no implementation or subagents.
+
+**Verdict: REVISE two bounded implementation contracts, then proceed.** The selected architecture meets the requested scope and needs no redesign, new dependency, CMS, public runtime fetch, or production release credentials. The leader acknowledged both clarifications below and will put them into `design.md` / `implement.md` before implementation handoff.
+
+## Required clarifications
+
+1. **Run the offline publisher using an available runtime.** `design.md`'s intranet publication step invokes the Node publisher, but `scripts/offline-upgrade.sh:82` checks only Docker and Compose; `scripts/build-offline-upgrade.sh:6` explicitly promises that the target needs only Docker. Merely putting an `.mjs` file in the archive does not make that procedure runnable. Reuse the already-loaded frontend image, which contains Node 22 (`Dockerfile.web:53`): run the shipped publisher with `docker run --pull never --entrypoint node`, mount its complete script/helper directory and input read-only, and mount the stable destination directory read-write. Choose explicit permissions/user handling so the existing `nextjs` image user does not prevent publication. Use the destination directory configured for the deployment, not a path accidentally resolved relative to an extracted upgrade package. Test the packaged path with host Node absent and no image pull; include helper modules in the archive. This preserves the existing target-host dependency contract.
+
+2. **Serialize the entire file-read/validate/snapshot operation.** `design.md` currently says to replace the last-valid snapshot under synchronization after reading and validating. An assignment-only lock allows request A to read old content, request B to read and retain newly published content, and A to finish late and restore the old snapshot. Hold a per-reader lock across the bounded read, validation, success/failure decision, and last-valid snapshot update, or enforce equivalent generation ordering. Keep response bytes immutable after releasing the lock. Add a controlled concurrent-read regression plus a race-enabled reader test; invalid-source responses must retain the newest successfully accepted snapshot. This is small with the planned 2 MiB bound and avoids a global cache or watcher.
+
+## Contracts approved
+
+- **API and state ownership:** `GET /api/changelog` fits the existing authenticated, non-workspace route group beside docs (`server/cmd/server/router.go:1545`). The feed stays in deployment-keyed React Query; the view and platform boundaries follow `CLAUDE.md`. An explicit invalid sentinel around `parseWithFallback` can yield a handled query error without destroying cached content. No changes to global API failure semantics are necessary.
+- **Hot reload and failure honesty:** Request-time path reopening observes atomic replacement. Last-valid data, explicit `is_stale`/`warning`, and ETags derived from the full response cover source failure without misreporting freshness. Keep essential malformed data distinct from valid empty history. Browser-managed conditional caching can use the existing transport; do not introduce manual 304 handling without accounting for `ApiClient.fetchRaw`, which rejects non-OK responses.
+- **Desktop integration:** The ordinary workspace tab matches docs. Shared Help needs the web wrapper and the nullable-workspace guard. The updater currently subscribes outside the shell providers, so retain event ownership before moving only navigation/UI into provider scope. The plan correctly calls out active-tab visibility, `useNavigation().hash`, independent installed/server versions, and one normal upgrade for clients predating the feature.
+- **History provenance:** Explicit repository-qualified identities, immutable refs, ancestry-based bases, a mandatory cumulative `--history`, and separate unpublished/upstream labels address this snapshot fork's unrelated imported tags. The initial official v0.4.37 entry and frozen fork preview are supported by the recorded research. Dirty filesystem content must never enter a published release. Seed selection is a bootstrap condition, not a recovery path after failed download.
+- **Publication order:** Generate once, install exact bytes before backend builds, and publish the fork Release only after verification plus backend/web manifests succeed. The fork job must remain independent of the upstream-only `release`/Homebrew job. A draft until all assets upload is the right assembly boundary. Entire-workflow serialization starts before history retrieval; per-tag serialization is insufficient.
+- **Verification scope:** The planned generator → atomic file → unchanged running API → already-mounted reader acceptance is necessary. Unit checks of query options or helper fixtures alone would not prove the freshness or YAML dependency requirements. No remote production publication is required to verify this future mechanism.
+
+## Implementation review checkpoints
+
+These are existing-contract checks, not additional architecture gates:
+
+- Exercise `first release → prerelease → stable → retry an older tag`. Ensure release listing/retry behavior cannot select a shortened history, drop a prerelease, or overwrite a conflicting immutable asset. Preserve source/repository identity when finding the previous fork base; never choose solely by highest semver or `/releases/latest`.
+- Make saved-file validation equally strict in Node and Go for schema version, duplicate IDs, date/status combinations, item text, and size. Keep client enum handling permissive and neutral. If history is allowed to carry published entries from another fork repository, define the owning repository explicitly for latest/base selection; otherwise reject such mixed-fork input at generation rather than treating any `source=fork` entry as this deployment's latest.
+- Confirm that offline build scripts put the exact selected feed into the embedded path before Docker compilation and ship/install those same bytes afterward. Test runtime publication separately from a server restart so redeployment cannot mask a missing hot-read path.
+- Keep stable deployment directory mounts in Compose/Helm and the documented intranet procedure. Single-file mounts or paths inside a disposable upgrade directory would undermine atomic replacement after a later delivery.
+
+## Strongest viable counterargument
+
+An embedded-only feed is substantially simpler and naturally binds release notes to the server artifact that was actually installed. Existing offline upgrades already replace backend images, so for operators who only want notes when upgrading the server it could satisfy daily use without mutable files, synchronization, extra mounts, or last-valid state. The chosen hot-file design adds an operational delivery step and allows the latest published version to differ from the running server version. It cannot discover a release artifact that never reaches the intranet.
+
+That counterargument does not satisfy this PRD's explicit requirement to publish new content to a running server and show it in an existing client without restart. The additional file handoff is justified only because the bundle/upgrade path actually carries and installs it and the UI separates installed, running, and published version meanings.
+
+## Tradeoff and synthesis
+
+The real tension is independent release visibility versus immutable-build simplicity. A deployment-owned hot file gives intranet operators independent publication and keeps credentials/public network access out of clients; it transfers freshness responsibility to the existing artifact-delivery process. Whole-workflow serialization also favors cumulative-history correctness over simultaneous releases. Those costs are proportionate to this request.
+
+Keep the selected architecture. Record the two concrete clarifications, implement the three bounded lanes, and verify the handoff end to end. The contract already excludes unrelated binary-updater migration, new infrastructure, and fabrication of a production release. This review inspected planning/research and the relevant release, Docker, API, and desktop touchpoints; it did not run implementation tests and is not a claim of functional completion.

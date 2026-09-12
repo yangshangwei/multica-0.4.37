@@ -8,6 +8,7 @@ cd "$ROOT_DIR"
 OUT_DIR="dist/offline-installer"
 SERVER_PLATFORM="linux/amd64"
 DESKTOP_TARGET=""
+CHANGELOG_ARGS=()
 
 usage() {
   cat <<'USAGE'
@@ -17,6 +18,7 @@ Usage: scripts/offline-installer.sh [options]
   --platform PLAT          Server image platform (default: linux/amd64)
   --desktop-target TARGET  mac-arm64, mac-x64, linux-x64, linux-arm64,
                            win-x64, or win-arm64
+  --changelog JSON         Cumulative feed to embed and install (defaults to seed)
   -h, --help               Show this help.
 USAGE
 }
@@ -36,6 +38,11 @@ while [ $# -gt 0 ]; do
     --desktop-target)
       [ $# -ge 2 ] || { echo "--desktop-target needs a value" >&2; exit 1; }
       DESKTOP_TARGET="$2"
+      shift 2
+      ;;
+    --changelog)
+      [ $# -ge 2 ] || { echo "--changelog needs a JSON file" >&2; exit 1; }
+      CHANGELOG_ARGS=(--changelog "$2")
       shift 2
       ;;
     -h|--help)
@@ -82,7 +89,7 @@ rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR/desktop"
 
 echo "==> Building server bundle for $SERVER_PLATFORM"
-bash scripts/offline-bundle.sh --output "$PACKAGE_DIR/server" --platform "$SERVER_PLATFORM"
+VERSION="$VERSION" bash scripts/offline-bundle.sh --output "$PACKAGE_DIR/server" --platform "$SERVER_PLATFORM" "${CHANGELOG_ARGS[@]+"${CHANGELOG_ARGS[@]}"}"
 
 echo "==> Building Desktop installer for $DESKTOP_LABEL"
 MULTICA_DESKTOP_VERSION="${VERSION#v}" \
@@ -98,10 +105,10 @@ fi
 cp "${desktop_artifacts[@]}" "$PACKAGE_DIR/desktop/"
 shopt -u nullglob
 
-cat >"$PACKAGE_DIR/README.md" <<README
+cat >"$PACKAGE_DIR/README.md" <<'README'
 # Multica offline installer
 
-This package contains the server images and the $DESKTOP_LABEL Desktop
+This package contains the server images and the selected-platform Desktop
 installer built from the same checkout and git revision.
 
 ## Server
@@ -117,9 +124,14 @@ Set a strong `JWT_SECRET`, the PostgreSQL password, and reachable
 `server/README.md`, then start the stack:
 
 ```bash
-docker compose -f docker-compose.selfhost.yml up -d
+bash install-changelog.sh --deployment-dir "$PWD"
+docker compose -f docker-compose.selfhost.yml up -d --pull never
 curl -sf http://localhost:8080/health
 ```
+
+The changelog installer runs with the already-loaded frontend image; the
+offline server does not need a host Node installation. It atomically installs
+the validated feed and persists its directory configuration in `.env`.
 
 ## Desktop
 

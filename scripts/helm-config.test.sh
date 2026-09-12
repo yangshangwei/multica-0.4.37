@@ -36,6 +36,7 @@ require_rendered_value "$default_config" 'MULTICA_VCS_INTEGRATION_ENABLED: "true
 require_rendered_value "$default_config" 'MULTICA_CLOUD_URL: ""'
 require_rendered_value "$default_config" 'MULTICA_DATABASE_STARTUP_TIMEOUT: "3m"'
 require_rendered_value "$default_config" 'MULTICA_DATABASE_CONNECT_TIMEOUT: "5s"'
+require_rendered_value "$default_config" 'CHANGELOG_FILE: ""'
 # A chart install must not put every device into a workspace nobody chose: with
 # no slug, device auth establishes the identity and the client runs onboarding,
 # where the member names their own workspace (ART-7). The old default shipped
@@ -49,6 +50,7 @@ default_backend="$(
     --show-only templates/backend.yaml
 )"
 require_rendered_value "$default_backend" 'failureThreshold: 60'
+reject_rendered_value "$default_backend" 'name: changelog'
 liveness_block="$(sed -n '/livenessProbe:/,/resources:/p' <<<"$default_backend")"
 require_rendered_value "$liveness_block" 'path: /health'
 reject_rendered_value "$liveness_block" 'path: /healthz'
@@ -76,5 +78,27 @@ shared_workspace_config="$(
     --set-string backend.config.deviceAuth.workspaceSlug=acme-intranet
 )"
 require_rendered_value "$shared_workspace_config" 'MULTICA_DEVICE_AUTH_WORKSPACE: "acme-intranet"'
+
+changelog_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.changelogFile=/app/data/changelog/changelog.json
+)"
+require_rendered_value "$changelog_config" 'CHANGELOG_FILE: "/app/data/changelog/changelog.json"'
+
+# Mount the directory rather than one file: an atomic publication replaces the
+# inode, and a subPath file mount would keep serving the previous release.
+changelog_backend="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/backend.yaml \
+    --set backend.uploads.persistence.enabled=false \
+    --set-string backend.changelog.existingClaim=release-history
+)"
+require_rendered_value "$changelog_backend" 'name: changelog'
+require_rendered_value "$changelog_backend" 'mountPath: /app/data/changelog'
+require_rendered_value "$changelog_backend" 'readOnly: true'
+require_rendered_value "$changelog_backend" 'claimName: "release-history"'
+reject_rendered_value "$changelog_backend" 'subPath:'
+reject_rendered_value "$changelog_backend" 'name: uploads'
 
 echo "helm config rendering ok"

@@ -370,7 +370,8 @@ Install the desktop package, then write `desktop.json` on each machine — `~/.m
 - **Agents cannot run.** This is the significant one. The agent CLI on the runtime machine needs a model endpoint; with no egress, assigning an issue to an agent parks it. The fix is an internal OpenAI-compatible gateway plus a CLI that accepts a base-URL override — and `MULTICA_LLM_BASE_URL` can point the server's own helper calls (chat titles, quick actions) at the same gateway.
 - **Desktop auto-update.** The updater feed is GitHub Releases, so upgrades mean rebuilding the bundle and redistributing installers.
 - **Third-party integrations.** Slack, Lark, DingTalk, WeCom, Telegram, and GitHub all need egress and a publicly reachable webhook URL. Importing skills from GitHub likewise.
-- **Google sign-in**, and any docs/changelog link in the Help menu (they point at multica.ai).
+- **Google sign-in** requires internet access. Help documentation and changelog
+  pages are served by this deployment and remain available on the intranet.
 
 PostHog analytics disables itself — a self-hosted server returns an empty key, so the client ships nothing.
 
@@ -676,6 +677,55 @@ If the selected GHCR tag has not been published yet, fall back to `make selfhost
 > **Upgrading from `v0.3.4` to `v0.3.5+` fails with `refusing to drop legacy daily rollups: ...`?** That's migration `103`'s fail-closed guard: it requires `task_usage_hourly` to be seeded before the legacy daily rollups are dropped. As of MUL-2957 `migrate up` runs that backfill automatically right before applying `103`, so the upgrade completes in a single invocation. If you are still on a pre-MUL-2957 binary or the auto-hook fails, run `backfill_task_usage_hourly` manually first, then re-run the upgrade. Full instructions in [Advanced Configuration → Usage Dashboard Rollup](SELF_HOSTING_ADVANCED.md#usage-dashboard-rollup).
 
 ---
+
+## In-App Changelog
+
+Desktop and web users open **Help → Changelog** to read release notes from this
+deployment. An open reader checks every minute and refreshes when reopened,
+focused, or reconnected. Binary auto-update preferences do not control these
+checks. Clients need one upgrade to acquire the page; later note updates do not
+require reinstalling the client.
+
+The API includes an embedded baseline. To publish notes independently of API
+restarts, use the cumulative `changelog.json` produced by the release pipeline:
+
+1. Install the validated artifact into a deployment-owned directory with
+   `node scripts/publish-changelog.mjs --input /path/to/release/changelog.json --destination ./changelog/changelog.json`.
+2. Set `CHANGELOG_FILE=/app/data/changelog/changelog.json` in the deployment's
+   `.env`. Compose mounts `${CHANGELOG_DIRECTORY:-./changelog}` read-only at
+   `/app/data/changelog`; use an absolute host directory if publishing from a
+   different working directory.
+3. Recreate the backend once with your normal Compose command so it receives
+   the new path. Subsequent atomic file replacements need no restart.
+
+Mount the **directory**, never a single-file bind mount or Kubernetes `subPath`.
+Atomic rename changes the inode, so a single-file mount can keep the old notes.
+For Helm, set `backend.changelog.existingClaim` to the existing history volume
+and `backend.config.changelogFile` to `/app/data/changelog/changelog.json`.
+Publish through a writer pod; multiple API replicas need shared readable storage.
+
+Offline bundles carry the same feed and `install-changelog.sh`. Run
+`bash /path/to/bundle/install-changelog.sh --deployment-dir /path/to/deployment`
+after loading the bundled images, before starting the stack. It runs the
+publisher in the already-loaded frontend image with `--pull never`, so the
+target needs Docker/Compose but no host Node installation. Upgrade bundles
+invoke this step and preserve unrelated `.env` settings. See the bundle README
+for the optional `--web-image` override.
+
+The authenticated `GET /api/changelog` response reports `server_version`,
+`feed_source`, `is_stale`, and a public warning code. If a file is invalid,
+unreadable, or larger than 2 MiB, the API retains its last valid snapshot and
+marks it stale. Before the first successful file read it uses the embedded
+baseline with the same warning. Restore or republish a valid artifact to recover.
+
+Release generation uses an immutable ancestor range and the prior cumulative
+history, retaining stable releases, prereleases, and attributed upstream notes.
+The first fork release requires an explicit reachable baseline; imported
+upstream tags are not proof of a release of this fork. Current local work is
+labeled **Unreleased** until published. See [the release procedure](.github/RELEASING.md)
+for commit trailers, exact commands, CI publication, and history handoff.
+An intranet deployment sees a release only after its artifact is transferred
+and installed there.
 
 ## Manual Docker Compose Setup
 

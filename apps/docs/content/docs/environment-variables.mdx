@@ -45,6 +45,23 @@ You also need to pick an email service, otherwise verification codes and invitat
 
 When setting a shutdown hold on Kubernetes, `terminationGracePeriodSeconds` must exceed the hold plus the time the actual shutdown needs.
 
+## Changelog
+
+Desktop and web read **Help → Changelog** from the connected deployment, without public internet access. The default is the history embedded in the API build. Configure a file to publish new notes without restarting the API.
+
+| Variable | Default | Description |
+|---|---|---|
+| `CHANGELOG_FILE` | empty | Cumulative JSON file readable by the API; empty uses embedded history |
+| `CHANGELOG_DIRECTORY` | `./changelog` | Compose host directory mounted at `/app/data/changelog` |
+
+For Compose, set `CHANGELOG_FILE=/app/data/changelog/changelog.json` in `.env`, install a valid release artifact in the host directory, then recreate the backend with `docker compose up -d backend`. Later atomic file replacements are picked up by the running API; an open reader checks every 60 seconds and offers manual refresh.
+
+The release tools generate notes from committed changes and retain prior stable releases, prereleases, and attributed upstream entries. Do not edit the live file in place. A publisher with Node can run `node scripts/publish-changelog.mjs --input <release-artifact>/changelog.json --destination ./changelog/changelog.json`. Offline installation and upgrade bundles run the publisher in the already-loaded frontend image, so target hosts do not need Node.
+
+Mount the containing directory, not a single file or Kubernetes `subPath`, so atomic rename remains visible. Helm supports `backend.changelog.existingClaim` for an existing history volume and `backend.config.changelogFile=/app/data/changelog/changelog.json`; all backend replicas must be able to read the shared volume.
+
+Files are limited to 2 MiB. Unreadable or invalid content preserves the process's last successful snapshot with `is_stale: true`; before the first successful read, the API serves the embedded history with the same warning. Enabling the path initially requires container recreation; later content updates do not. Disconnected clients see releases only after the artifact reaches their deployment.
+
 ## Public URLs and browser access
 
 | Variable | Default | Description |

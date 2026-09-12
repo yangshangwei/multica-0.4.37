@@ -101,6 +101,8 @@ function workspaceScoped(slug: string) {
     // Unicode ("自定义运行时配置"), which is why every existing call site wraps it
     // in encodeURIComponent. Encoding it here is what lets those call sites stop.
     docs: () => `${ws}/docs`,
+    changelog: (selection?: { releaseId?: string; version?: string }) =>
+      `${ws}/changelog${selection?.version ? `?version=${encode(selection.version)}` : ""}${selection?.releaseId ? `#${encode(selection.releaseId)}` : ""}`,
     docsPage: (slug: string, anchor?: string) =>
       `${ws}/docs/${encodeDocsSlug(slug)}${anchor ? `#${encode(anchor)}` : ""}`,
   };

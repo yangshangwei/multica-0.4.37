@@ -69,6 +69,7 @@ var corsAllowedHeaders = []string{
 	"Content-Type",
 	"Idempotency-Key",
 	"If-Match",
+	"If-None-Match",
 	"X-Workspace-ID",
 	"X-Workspace-Slug",
 	"X-Request-ID",
@@ -440,6 +441,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		LLMDefaultModel:          strings.TrimSpace(os.Getenv("MULTICA_LLM_DEFAULT_MODEL")),
 		LLMMaxRetries:            opts.LLMMaxRetries,
 		ServerVersion:            normalizeServerVersion(version),
+		ChangelogFile:            strings.TrimSpace(os.Getenv("CHANGELOG_FILE")),
 	}
 	h := handler.New(queries, pool, hub, bus, emailSvc, store, cfSigner, analyticsClient, signupConfig, daemonHub)
 	invitationRateLimits := handler.DefaultInvitationRateLimits()
@@ -1556,6 +1558,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		// these pages reference are served publicly (see /api/docs/assets/*).
 		r.Get("/api/docs/manifest", h.GetDocsManifest)
 		r.Get("/api/docs/page", h.GetDocsPage)
+		// Release history belongs to the deployment, not a selected workspace.
+		r.Get("/api/changelog", h.GetChangelog)
 
 		r.Get("/api/me", h.GetMe)
 		r.Patch("/api/me", h.UpdateMe)

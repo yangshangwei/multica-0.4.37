@@ -45,6 +45,7 @@ export type RouteIconName =
 
 /** i18n label key (under the `layout.nav` namespace) for a page. */
 export type NavLabelKey =
+  | "changelog"
   | "inbox"
   | "chat"
   | "my_issues"
@@ -61,6 +62,7 @@ export type NavLabelKey =
 
 /** Stable identifier for each workspace navigation page. */
 export type WorkspacePageKey =
+  | "changelog"
   | "inbox"
   | "chat"
   | "myIssues"
@@ -104,6 +106,7 @@ export const WORKSPACE_PAGES: Record<WorkspacePageKey, WorkspacePage> = {
   // real icon and a translated title for it instead of the `unknown` fallback;
   // the sidebar's own nav list is explicit, so this does not add a nav row.
   docs: { segment: "docs", icon: "BookOpen", navKey: "docs" },
+  changelog: { segment: "changelog", icon: "FileText", navKey: "changelog" },
   settings: { segment: "settings", icon: "Settings", navKey: "settings" },
 };
 

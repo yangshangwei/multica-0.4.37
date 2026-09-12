@@ -76,6 +76,11 @@ postgres:
 # Backend (Go API + WS server)
 # -----------------------------------------------------------------------------
 backend:
+  changelog:
+    # Optional existing claim containing changelog.json. Publish through a
+    # writer pod, and use ReadWriteMany when sharing across backend replicas.
+    # The whole directory is mounted so atomic file replacement stays visible.
+    existingClaim: ""
   # Concurrent backend pods are now safe to start: cmd/migrate uses a
   # Postgres session-level advisory lock to serialize the startup
   # `migrate up` run, so late-arriving pods queue and then no-op (see
@@ -110,6 +115,9 @@ backend:
         - ReadWriteOnce
   # All non-secret backend env. Secret values come from `existingSecret`.
   config:
+    # Empty uses the embedded history. For the claim above, set this to
+    # /app/data/changelog/changelog.json to enable updates without a restart.
+    changelogFile: ""
     # The migrator and API server retry transient PostgreSQL startup failures
     # within this budget. Set to 0 to restore fail-fast startup behavior.
     databaseStartupTimeout: 3m

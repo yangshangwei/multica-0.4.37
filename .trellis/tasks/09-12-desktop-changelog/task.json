@@ -1,0 +1,31 @@
+{
+  "id": "desktop-changelog",
+  "name": "desktop-changelog",
+  "title": "桌面端变更说明与自动发布日志",
+  "description": "Add an in-app desktop changelog and a commit-driven release feed that works for intranet clients; deliver Trellis PRD, technical design, tasks and verified acceptance.",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": "changelog",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-12",
+  "completedAt": null,
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "09-13-changelog-feed",
+    "09-13-changelog-release",
+    "09-13-changelog-ui"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "Acceptance passed; unrelated legacy plugin E2E collection failure is documented in the parent verification.md.",
+  "meta": {},
+  "acceptance_result": "passed_with_documented_repository_e2e_baseline_limit"
+}

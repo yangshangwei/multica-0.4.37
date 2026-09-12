@@ -12,6 +12,13 @@ permissions:
   contents: write
   packages: write
 
+# Cumulative release history is shared across tags. Serialize before discovery,
+# not merely around upload, so two successful builds cannot lose each other's
+# entries. GitHub may replace a pending run; only completed runs are releases.
+concurrency:
+  group: changelog-release-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -45,6 +52,14 @@ jobs:
             echo "is_stable=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Setup Node for changelog checks
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify changelog generation, publication and release graph
+        run: node --test scripts/*changelog*.test.mjs
+
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -73,6 +88,42 @@ jobs:
       - name: Record emergency vulnerability-scan bypass
         if: ${{ vars.ALLOW_VULN_BYPASS_FOR_TAG == github.ref_name }}
         run: echo "::warning::govulncheck was explicitly skipped for ${GITHUB_REF_NAME}; see .github/RELEASING.md"
+
+  changelog:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout complete fork history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare cumulative changelog once
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.verify.outputs.tag_name }}
+        run: |
+          node scripts/release-changelog.mjs prepare \
+            --repository "$GITHUB_REPOSITORY" --tag "$TAG_NAME" \
+            --seed server/internal/changelog/content/changelog.json \
+            --first-base f1c059edee4ec39d464915e9c9a83cf6c0c37925 \
+            --output-dir .release-changelog
+
+      - name: Preserve exact generated build and publication artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-changelog
+          path: |
+            .release-changelog/changelog.json
+            .release-changelog/changelog.md
+            .release-changelog/changelog-metadata.json
+          if-no-files-found: error
+          retention-days: 30
 
   release:
     needs: verify
@@ -115,7 +166,7 @@ jobs:
   # manifest list. This avoids QEMU emulation, which was making the Next.js
   # arm64 build run for 30+ minutes per release.
   docker-backend-build:
-    needs: verify
+    needs: [verify, changelog]
     strategy:
       fail-fast: false
       matrix:
@@ -133,6 +184,15 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Download generated changelog
+        uses: actions/download-artifact@v4
+        with:
+          name: release-changelog
+          path: .release-changelog
+
+      - name: Install exact embedded changelog before compilation
+        run: cp .release-changelog/changelog.json server/internal/changelog/content/changelog.json
 
       - name: Compute backend image labels
         id: meta
@@ -232,7 +292,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/multica-backend:${{ steps.meta.outputs.version }}
 
   docker-web-build:
-    needs: verify
+    needs: [verify, changelog]
     strategy:
       fail-fast: false
       matrix:
@@ -250,6 +310,15 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Download generated changelog
+        uses: actions/download-artifact@v4
+        with:
+          name: release-changelog
+          path: .release-changelog
+
+      - name: Install exact embedded changelog before compilation
+        run: cp .release-changelog/changelog.json server/internal/changelog/content/changelog.json
 
       - name: Compute web image labels
         id: meta
@@ -347,6 +416,41 @@ jobs:
         run: |
           docker buildx imagetools inspect \
             ghcr.io/${{ github.repository_owner }}/multica-web:${{ steps.meta.outputs.version }}
+
+  # This job has no dependency on the upstream-only GoReleaser/Homebrew job.
+  # Failed verification or either failed image manifest prevents publication.
+  publish-changelog:
+    needs: [verify, changelog, docker-backend-merge, docker-web-merge]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout publication helper
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Download exact built changelog
+        uses: actions/download-artifact@v4
+        with:
+          name: release-changelog
+          path: .release-changelog
+
+      - name: Publish this repository's verified changelog assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERIFY_RESULT: ${{ needs.verify.result }}
+          TAG_NAME: ${{ needs.verify.outputs.tag_name }}
+          BACKEND_RESULT: ${{ needs.docker-backend-merge.result }}
+          WEB_RESULT: ${{ needs.docker-web-merge.result }}
+        run: |
+          node scripts/release-changelog.mjs publish \
+            --repository "$GITHUB_REPOSITORY" --tag "$TAG_NAME" \
+            --input .release-changelog/changelog.json \
+            --notes-file .release-changelog/changelog.md \
+            --metadata .release-changelog/changelog-metadata.json \
+            --verify "$VERIFY_RESULT" --backend "$BACKEND_RESULT" --web "$WEB_RESULT"
 
   helm-chart:
     needs: [verify, docker-backend-merge, docker-web-merge]

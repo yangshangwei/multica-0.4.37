@@ -14,6 +14,13 @@ function present(url: string, data: TabEntityData = {}) {
 }
 
 describe("resolveTabPresentation — pages", () => {
+  it("recognizes changelog version and release deep links as the same localized page", () => {
+    expect(present("/acme/changelog?version=0.4.37#fork%3Atest%2Frepo%3Av1")).toEqual({
+      visual: { kind: "icon", icon: "FileText" },
+      title: { kind: "nav", navKey: "changelog" },
+    });
+  });
+
   it("uses the page icon and localized page name", () => {
     expect(present("/acme/issues")).toEqual({
       visual: { kind: "icon", icon: "ListTodo" },
