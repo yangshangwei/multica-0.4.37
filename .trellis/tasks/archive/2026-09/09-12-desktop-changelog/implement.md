@@ -27,7 +27,7 @@ Owner: D. Depends on: planning review.
 
 1. Review PRD/design/this plan against the research artifacts, including runtime fields `server_version`, `feed_source`, `is_stale`, `warning`.
 2. Populate `implement.jsonl` and `check.jsonl` with relevant spec indexes and the three research files; no code-file manifest entries.
-3. Add lane tasks/checklist and affected files to `task.json`, then run `python3 .trellis/scripts/task.py start .trellis/tasks/09-12-desktop-changelog` using the active Trellis session identity.
+3. Add lane tasks/checklist and affected files to `task.json`, then run `python3 .trellis/scripts/task.py start .trellis/tasks/archive/2026-09/09-12-desktop-changelog` using the active Trellis session identity.
 4. Freeze an inspected target commit and local v0.4.37 base for preview generation. Do not read a moving HEAD repeatedly during generation.
 5. Establish shared fixtures: valid seed, updated feed, invalid/oversized feed, empty feed, unknown client enum. Fixture metadata must make synthetic releases unmistakable.
 
