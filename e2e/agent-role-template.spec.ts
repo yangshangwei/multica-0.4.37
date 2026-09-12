@@ -47,7 +47,7 @@ const TEMPLATES = [
     max_concurrent_tasks: 3,
     skill_names: ["multica-code-review"],
     instructions:
-      "# Code Reviewer\n\n## Responsibilities\n\nRead the diff, report findings with file and line.",
+      "# 代码审查员\n\n## 职责\n\n阅读 diff，给出包含文件位置和行号的发现。",
   },
 ];
 
@@ -172,7 +172,7 @@ test.describe("agent role templates", () => {
     // skill the role brings.
     await waitForPageText(page, "Role instructions");
     await expect(
-      page.getByText("Read the diff, report findings with file and line."),
+      page.getByText("阅读 diff，给出包含文件位置和行号的发现。"),
     ).toBeVisible();
     await expect(page.getByText("multica-code-review")).toBeVisible();
     // The role's prompt is not an editable field on this step.

@@ -15,6 +15,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
@@ -248,7 +249,7 @@ func (h *Handler) agentToResponse(a db.Agent) AgentResponse {
 		Skills:                   []AgentSkillSummary{},
 		DisabledRuntimeSkills:    decodeDisabledRuntimeSkills(a.DisabledRuntimeSkills),
 		CreatedAt:                timestampToString(a.CreatedAt),
-		UpdatedAt:                timestampToString(a.UpdatedAt),
+		UpdatedAt:                instructionsUpdateTimestamp(a.UpdatedAt),
 		ArchivedAt:               timestampToPtr(a.ArchivedAt),
 		ArchivedBy:               uuidToPtr(a.ArchivedBy),
 	}
@@ -1228,6 +1229,7 @@ func (h *Handler) GetAgent(w http.ResponseWriter, r *http.Request) {
 		redactComposioToolkitAllowlist(&resp)
 	}
 
+	w.Header().Set(instructionsPreconditionHeader, "1")
 	writeJSON(w, http.StatusOK, resp)
 }
 
@@ -1622,6 +1624,8 @@ type UpdateAgentRequest struct {
 	Name                 *string                     `json:"name"`
 	Description          *string                     `json:"description"`
 	Instructions         *string                     `json:"instructions"`
+	ExpectedInstructions *string                     `json:"expected_instructions,omitempty"`
+	ExpectedUpdatedAt    *string                     `json:"expected_updated_at,omitempty"`
 	ConversationStarters *[]AgentConversationStarter `json:"conversation_starters"`
 	AvatarURL            *string                     `json:"avatar_url"`
 	RuntimeID            *string                     `json:"runtime_id"`
@@ -1881,8 +1885,16 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	expectedInstructions, expectedUpdatedAt, err := parseInstructionsPrecondition(req.Instructions, req.ExpectedInstructions, req.ExpectedUpdatedAt, rawFields)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	params := db.UpdateAgentParams{
-		ID: existing.ID,
+		ID:                   existing.ID,
+		ExpectedWorkspaceID:  existing.WorkspaceID,
+		ExpectedInstructions: expectedInstructions,
+		ExpectedUpdatedAt:    expectedUpdatedAt,
 	}
 	if req.Name != nil {
 		params.Name = pgtype.Text{String: *req.Name, Valid: true}
@@ -2203,6 +2215,10 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 
 	updated, err := h.Queries.UpdateAgent(r.Context(), params)
 	if err != nil {
+		if expectedUpdatedAt.Valid && errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusConflict, "agent changed since it was read; reload before updating instructions")
+			return
+		}
 		// Unique constraint on (workspace_id, name) — mirror CreateAgent and
 		// return a clear conflict instead of a 500 that leaks the raw
 		// constraint name. The name can still be held by an *archived* agent
@@ -2300,6 +2316,7 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 	} else if uuidToString(updated.OwnerID) != userID {
 		redactComposioToolkitAllowlist(&resp)
 	}
+	w.Header().Set(instructionsPreconditionHeader, "1")
 	writeJSON(w, http.StatusOK, resp)
 }
 

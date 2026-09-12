@@ -17,6 +17,23 @@ existing workspace copies are reused without overwriting customized content.
 
 ## Role skill body language and explicit workspace updates
 
+Role, squad-leader, squad, and Mika instruction bodies are authored in
+Simplified Chinese. Picker language still selects labels and descriptions only;
+the instructions editor shows the canonical persisted body. Preserve CLI syntax,
+protocol values, the Mika name placeholder, and each role's behavior when
+translating. Existing copies are never retranslated when a viewer changes locale.
+
+Use the explicit maintenance workflow in `scripts/localize-agent-instructions.md`
+for existing instructions. Template key/version alone cannot identify an
+unmodified copy: compare the full historical body, and translate that version's
+rules. Agent/squad PUT supports paired `expected_instructions` and
+`expected_updated_at` fields with an atomic SQL comparison. Echo GET's complete
+RFC3339 timestamp, discover `X-Multica-Instructions-Precondition: 1`, and finish
+upgrading every API replica before relying on this optional-field contract.
+Stale writes return 409 without updates or events; successful writes keep the
+normal notification path. Conditional rollback also compares the recorded
+post-write timestamp and validates the original backup hash.
+
 The seven `builtin_role_skills/*/SKILL.md` bodies use Simplified Chinese. Keep
 their original frontmatter, canonical names, English discovery descriptions,
 CLI syntax and protocol/status values unchanged. Translate the working method,

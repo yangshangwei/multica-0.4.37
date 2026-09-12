@@ -82,6 +82,9 @@ UPDATE squad SET
     instructions = COALESCE(sqlc.narg('instructions'), instructions),
     updated_at = now()
 WHERE id = $1
+  AND workspace_id = @expected_workspace_id::uuid
+  AND (sqlc.narg('expected_instructions')::text IS NULL OR instructions = sqlc.narg('expected_instructions'))
+  AND (sqlc.narg('expected_updated_at')::timestamptz IS NULL OR updated_at = sqlc.narg('expected_updated_at'))
 RETURNING *;
 
 -- name: ArchiveSquad :one

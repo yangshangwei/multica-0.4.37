@@ -221,10 +221,10 @@ func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 		}
 		// The status rule is the one squads get wrong: dispatching is not delivery,
 		// and `done` is a human's call.
-		if !strings.Contains(instructions, "Parent issue status") {
+		if !strings.Contains(instructions, "## 父任务状态") {
 			t.Errorf("%s: routing policy does not state the parent-issue status rule", template.Key)
 		}
-		if !strings.Contains(instructions, "Never mark it done") && !strings.Contains(instructions, "never mark it done") {
+		if !strings.Contains(instructions, "绝不将父任务标记为 `done`") {
 			t.Errorf("%s: routing policy must state that the leader does not mark work done", template.Key)
 		}
 	}

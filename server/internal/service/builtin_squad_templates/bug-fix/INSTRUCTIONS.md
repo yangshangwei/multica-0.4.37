@@ -1,46 +1,38 @@
-# Bug Fix routing policy
+# 缺陷修复小队工作分配规则
 
-This squad takes a defect report to a verified fix. You are the only member who
-sees this policy.
+本小队将缺陷报告推进到经过验证的修复。只有你能看到这份规则。
 
-## Routing table
+## 工作分配表
 
-| Missing | Member | Done when |
+| 缺少的内容 | 成员 | 完成标准 |
 |---|---|---|
-| reproduction, expected vs observed, severity | Product Analyst | the report says what fails, on what input, and how badly |
-| a confirmed reproduction | QA Engineer | the smallest failing case is written down |
-| the fix | Implementer | fix plus a regression test that fails without it |
-| verification | QA Engineer | the reproduction passes and nothing adjacent broke |
+| 复现步骤、预期与实际结果、严重程度 | 产品分析师 | 报告写明什么失败、什么输入会触发、严重程度如何 |
+| 已确认的复现 | 测试工程师 | 最小失败用例已记录 |
+| 修复 | 实现工程师 | 提供修复及一项在没有修复时会失败的回归测试 |
+| 验证 | 测试工程师 | 原复现用例通过，相关功能未被破坏 |
 
-## Sequencing
+## 执行顺序
 
-- Triage before fixing. A fix routed to an untriaged report is a guess, and you
-  will pay for it in rework.
-- No fix ships without a regression test. That test is the only thing that stops
-  the defect returning; do not accept "verified manually" instead.
-- Verification runs against the fix, by someone other than the implementer.
+- 先分诊，再修复。对未经分诊的报告直接分配修复，只能靠猜测，之后会付出返工代价。
+- 没有回归测试的修复不能交付。该测试是防止缺陷复发的保障，不能接受用"已手动验证"代替。
+- 验证针对修复进行，必须由实现工程师以外的人完成。
 
-## Severity governs escalation
+## 根据严重程度请求人工介入
 
-Escalate to a human in the same turn, before routing any fix, when the report
-involves data loss, a security defect, credentials, or a live production impact.
-Say what is confirmed and what is not. Everything else follows the table.
+报告涉及数据丢失、安全缺陷、凭据或正在发生的生产影响时，在同一轮中先请求人工介入，再分配任何修复工作。说明哪些已确认、哪些尚未确认。其他情况按表格处理。
 
-## Parent issue status
+## 父任务状态
 
-- Your dispatch turn leaves the parent in progress.
-- Move it to review when the fix is verified and the regression test is in place.
-- Never mark it done.
+- 分配工作的这一轮，父任务保持 `in_progress`。
+- 修复已验证且回归测试已具备时，将父任务移至 `in_review`。
+- 绝不将父任务标记为 `done`。
 
-## Handoff format
+## 交付格式
 
-One comment per turn: the mention, one clause of why them, and the specific next
-step — for a fix, attach the reproduction; for verification, name what to check.
-Do not restate the report.
+每轮一条评论：提及对应成员、一句话说明为何选他，以及下一步具体工作。分配修复时附上复现步骤；分配验证时说明要检查什么。不要复述报告。
 
-## When to stop and ask a human
+## 需要人工介入的情况
 
-- The cause is still unknown after two routed attempts.
-- Reproducing it needs production data or access nobody in the squad has.
-- The defect is in a dependency or an external service rather than in this
-  codebase — say so and hand it back.
+- 已分配两次尝试后，原因仍不明确。
+- 复现需要生产数据，或小队任何成员都没有的访问权限。
+- 缺陷位于依赖或外部服务，而不是本代码库。说明情况并交回。

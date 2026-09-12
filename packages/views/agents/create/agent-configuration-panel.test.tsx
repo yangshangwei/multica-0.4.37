@@ -25,9 +25,17 @@ const draft: AgentDraft = {
 };
 
 describe("AgentConfigurationPanel role skills", () => {
-  it("localizes trusted template skill labels without changing template instructions or the draft", () => {
+  it.each([
+    {
+      source: "English",
+      instructions: "# Reviewer\n\nRead the diff before reporting findings.",
+    },
+    {
+      source: "Chinese",
+      instructions: "# 代码审查员\n\n先检查差异，再报告发现。\n保留 `multica issue` 和 `in_review`。\n",
+    },
+  ])("localizes trusted template skill labels without changing $source instructions or the draft", ({ instructions }) => {
     const onChange = vi.fn();
-    const instructions = "# Reviewer\n\nRead the diff before reporting findings.";
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
@@ -57,7 +65,7 @@ describe("AgentConfigurationPanel role skills", () => {
     );
     expect(screen.getByText("安全审查")).toBeInTheDocument();
     expect(screen.getByText("future-role-skill")).toBeInTheDocument();
-    expect(screen.getByText(/Read the diff before reporting findings\./).textContent).toBe(instructions);
+    expect(screen.getByText(instructions, { normalizer: (text) => text }).textContent).toBe(instructions);
     expect(onChange).not.toHaveBeenCalled();
   });
 });

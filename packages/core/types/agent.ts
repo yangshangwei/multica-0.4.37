@@ -758,6 +758,9 @@ export interface UpdateAgentRequest {
   name?: string;
   description?: string;
   instructions?: string;
+  /** Supply both preconditions with instructions to reject concurrent edits. */
+  expected_instructions?: string;
+  expected_updated_at?: string;
   conversation_starters?: AgentConversationStarter[];
   avatar_url?: string;
   runtime_id?: string;

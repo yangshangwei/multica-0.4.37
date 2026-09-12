@@ -100,15 +100,15 @@ func TestAgentRoleTemplates_AutonomyDefaults(t *testing.T) {
 // rewriting an agent from scratch.
 func TestAgentRoleTemplates_InstructionsCarryTheContract(t *testing.T) {
 	required := []string{
-		"## Not your job",
-		"## Definition of done",
-		"## Escalate to a human when",
+		"## 不负责的事项",
+		"## 完成标准",
+		"## 需要人工介入的情况",
 	}
 	// A working role lists responsibilities; a squad leader's equivalent is its
 	// routing table. Either satisfies "this prompt says what the role does" — an
 	// exact heading match here would only push the leaders into a section name that
 	// reads wrong for them.
-	statesWhatItDoes := []string{"## Responsibilities", "## How you route"}
+	statesWhatItDoes := []string{"## 职责", "## 如何分配工作"}
 	for _, template := range AllAgentRoleTemplates() {
 		instructions := template.Instructions()
 		if strings.TrimSpace(instructions) == "" {
@@ -126,7 +126,7 @@ func TestAgentRoleTemplates_InstructionsCarryTheContract(t *testing.T) {
 		// Squad leaders describe inputs and output through the routing table and the
 		// squad's own policy, so only the working roles carry these two.
 		if template.Listed {
-			for _, heading := range []string{"## Inputs you should read first", "## Output format"} {
+			for _, heading := range []string{"## 输入", "## 交付格式"} {
 				if !strings.Contains(instructions, heading) {
 					t.Errorf("%s: instructions are missing %q", template.Key, heading)
 				}

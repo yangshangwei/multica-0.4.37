@@ -120,8 +120,8 @@ type AgentRoleTemplate struct {
 	// role on purpose: the failure mode of this feature is prompt bloat, and the
 	// instructions already carry the role's own contract.
 	RoleSkills []string
-	// Titles and Descriptions are the localized picker copy. Instructions stay
-	// English-only, matching every other agent-harness text in this repo.
+	// Titles and Descriptions are the localized picker copy. Instructions are one
+	// canonical Simplified Chinese body, copied independently of the picker locale.
 	Titles       map[string]string
 	Descriptions map[string]string
 	// Listed is false for the squad-leader definitions. They are real templates —
