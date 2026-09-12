@@ -62,9 +62,17 @@ const TEMPLATES = [
   },
 ];
 
-async function login(page: Page): Promise<string> {
+async function login(page: Page): Promise<{
+  slug: string;
+  workspaceId: string;
+  userId: string;
+}> {
   const api = new TestApiClient();
-  await api.login(EMAIL, NAME);
+  const auth = await api.login(EMAIL, NAME);
+  const userId: unknown = auth.user?.id;
+  if (typeof userId !== "string" || !userId) {
+    throw new Error("login did not return a user id");
+  }
   const workspace = await api.ensureWorkspace(
     `E2E Autopilot Template WS ${E2E_WORKER}`,
     `e2e-ap-tpl-${E2E_WORKER}-${E2E_RUN_ID}`,
@@ -76,12 +84,12 @@ async function login(page: Page): Promise<string> {
     localStorage.setItem("multica_token", value);
     localStorage.setItem("multica:chat:isOpen", "false");
   }, token);
-  return workspace.slug;
+  return { slug: workspace.slug, workspaceId: workspace.id, userId };
 }
 
 /** Mocks the template catalog, one selectable agent, and the create call.
  *  Returns a getter for the create body the flow actually sent. */
-async function mockTemplateApis(page: Page) {
+async function mockTemplateApis(page: Page, workspaceId: string, userId: string) {
   const captured: { body?: Record<string, unknown> } = {};
 
   await page.route("**/api/autopilots/templates**", (route) =>
@@ -92,9 +100,9 @@ async function mockTemplateApis(page: Page) {
     }),
   );
 
-  // The assignee picker reads the workspace agent list. It must contain an
-  // online, non-archived agent or the create button never leaves its disabled
-  // state and the body assertion below can never run.
+  // The assignee picker reads the workspace agent list. It must contain a
+  // runtime-bound, non-archived agent in this workspace that the current user
+  // can invoke, or Enable stays disabled and the body assertion cannot run.
   await page.route("**/api/agents?**", (route) =>
     route.fulfill({
       status: 200,
@@ -102,7 +110,7 @@ async function mockTemplateApis(page: Page) {
       body: JSON.stringify([
         {
           id: AGENT_ID,
-          workspace_id: "ws",
+          workspace_id: workspaceId,
           runtime_id: RUNTIME_ID,
           name: "E2E Reviewer",
           description: "",
@@ -111,14 +119,14 @@ async function mockTemplateApis(page: Page) {
           runtime_mode: "local",
           runtime_config: {},
           custom_args: [],
-          visibility: "public",
+          visibility: "workspace",
           permission_mode: "public_to",
-          invocation_targets: [],
+          invocation_targets: [{ target_type: "workspace", target_id: null }],
           status: "idle",
           runtime_availability: "online",
           max_concurrent_tasks: 3,
           model: "",
-          owner_id: "user",
+          owner_id: userId,
           skills: [],
           template_key: "",
           template_version: 0,
@@ -140,7 +148,7 @@ async function mockTemplateApis(page: Page) {
       body: JSON.stringify({
         autopilot: {
           id: CREATED_AUTOPILOT_ID,
-          workspace_id: "ws",
+          workspace_id: workspaceId,
           title: "Hourly Queue Check",
           description: TEMPLATES[1].prompt,
           assignee_type: "agent",
@@ -152,7 +160,7 @@ async function mockTemplateApis(page: Page) {
           template_key: "hourly-queue-check",
           template_version: 1,
           created_by_type: "member",
-          created_by_id: "user",
+          created_by_id: userId,
           created_at: "2026-09-01T00:00:00Z",
           updated_at: "2026-09-01T00:00:00Z",
         },
@@ -179,8 +187,8 @@ test.describe("autopilot templates", () => {
   test("picks a template, requires an assignee, and creates without claiming the prompt", async ({
     page,
   }) => {
-    const slug = await login(page);
-    const createdBody = await mockTemplateApis(page);
+    const { slug, workspaceId, userId } = await login(page);
+    const createdBody = await mockTemplateApis(page, workspaceId, userId);
 
     await page.goto(`/${slug}/autopilots/new/template`);
 
@@ -207,14 +215,16 @@ test.describe("autopilot templates", () => {
     ).toBeVisible();
 
     // A template cannot know which agents a workspace has, so the flow cannot be
-    // one click: the create button stays disabled until an assignee is chosen.
-    const createButton = page.getByRole("button", { name: "Create autopilot" });
+    // one click: Enable stays disabled until an assignee is chosen.
+    const createButton = page.getByRole("button", { name: "Enable automation" });
     await expect(createButton).toBeDisabled();
 
     // The assignee control is a popover, so the agent only exists in the DOM
     // once its trigger is opened.
     await page.getByRole("button", { name: "Select agent or squad" }).click();
-    await page.getByText("E2E Reviewer").first().click();
+    // The background chat launcher can also name this agent; select the
+    // actual option inside the open picker instead of a page-wide text match.
+    await page.getByRole("dialog").getByRole("button", { name: /E2E Reviewer/ }).click();
     await expect(createButton).toBeEnabled();
     await createButton.click();
 

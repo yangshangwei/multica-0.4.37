@@ -46,6 +46,13 @@ FOR UPDATE;
 SELECT * FROM agent_runtime
 WHERE id = $1 AND workspace_id = $2;
 
+-- name: LockRuntimeForProjectSquad :one
+-- Lock the requested binding before agents, matching runtime teardown's order.
+-- This also stabilizes owner/visibility during project template materialization.
+SELECT * FROM agent_runtime
+WHERE id = $1 AND workspace_id = $2
+FOR SHARE;
+
 -- name: UpsertAgentRuntime :one
 -- (xmax = 0) AS inserted distinguishes a fresh insert (true) from an upsert
 -- that updated an existing row (false). Analytics reads this to fire

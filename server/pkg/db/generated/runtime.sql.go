@@ -842,6 +842,44 @@ func (q *Queries) LockAgentRuntime(ctx context.Context, id pgtype.UUID) (AgentRu
 	return i, err
 }
 
+const lockRuntimeForProjectSquad = `-- name: LockRuntimeForProjectSquad :one
+SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name FROM agent_runtime
+WHERE id = $1 AND workspace_id = $2
+FOR SHARE
+`
+
+type LockRuntimeForProjectSquadParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Lock the requested binding before agents, matching runtime teardown's order.
+// This also stabilizes owner/visibility during project template materialization.
+func (q *Queries) LockRuntimeForProjectSquad(ctx context.Context, arg LockRuntimeForProjectSquadParams) (AgentRuntime, error) {
+	row := q.db.QueryRow(ctx, lockRuntimeForProjectSquad, arg.ID, arg.WorkspaceID)
+	var i AgentRuntime
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.DaemonID,
+		&i.Name,
+		&i.RuntimeMode,
+		&i.Provider,
+		&i.Status,
+		&i.DeviceInfo,
+		&i.Metadata,
+		&i.LastSeenAt,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.OwnerID,
+		&i.LegacyDaemonID,
+		&i.Visibility,
+		&i.ProfileID,
+		&i.CustomName,
+	)
+	return i, err
+}
+
 const lockRuntimesForMerge = `-- name: LockRuntimesForMerge :many
 SELECT id FROM agent_runtime
 WHERE id = ANY($1::uuid[])

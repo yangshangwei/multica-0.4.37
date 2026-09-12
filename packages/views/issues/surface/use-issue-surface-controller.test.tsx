@@ -458,6 +458,53 @@ describe("useIssueSurfaceController", () => {
     expect(openModal).toHaveBeenCalledWith("create-issue", expected);
   });
 
+  // Pair merge policy is covered once in create-defaults.test.ts. These tests
+  // pin its controller/action wiring and the surface constraints around it.
+  it("uses a project fallback for normal creation and preserves a group's explicit clear", () => {
+    const { result } = renderHook(() => useIssueSurfaceController({
+      scope: { type: "project", projectId: "p1" },
+      modes: ["list"],
+      fallbackCreateDefaults: { project_id: "wrong-project", assignee_type: "squad", assignee_id: "project-squad", status: "todo" },
+    }), { wrapper: makeWrapper(qc) });
+
+    act(() => result.current.openCreateIssue());
+    expect(openModal).toHaveBeenLastCalledWith("create-issue", {
+      project_id: "p1", assignee_type: "squad", assignee_id: "project-squad", status: "todo",
+    });
+    act(() => result.current.openCreateIssue({ assignee_id: null, status: "backlog" }));
+    expect(openModal).toHaveBeenLastCalledWith("create-issue", {
+      project_id: "p1", assignee_type: null, assignee_id: null, status: "backlog",
+    });
+  });
+
+  it("keeps query-plan and caller defaults above the project fallback", () => {
+    const { result } = renderHook(() => useIssueSurfaceController({
+      scope: { type: "actor", actorType: "member", actorId: "scope-member", relation: "assigned" },
+      modes: ["list"],
+      fallbackCreateDefaults: { assignee_type: "squad", assignee_id: "project-squad", status: "todo" },
+      createDefaults: { assignee_type: "agent", assignee_id: "caller-agent", status: "backlog" },
+    }), { wrapper: makeWrapper(qc, "actor:member:scope-member:assigned") });
+
+    act(() => result.current.openCreateIssue());
+    expect(openModal).toHaveBeenLastCalledWith("create-issue", {
+      assignee_type: "agent", assignee_id: "caller-agent", status: "backlog",
+    });
+  });
+
+  it.each(["assignee", "unassigned", "members-scope"] as const)("suppresses the project fallback for %s constraints", (constraint) => {
+    const store = getIssueSurfaceViewStore("project:p1");
+    if (constraint === "assignee") store.setState({ assigneeFilters: [{ type: "member", id: "view-member" }] });
+    if (constraint === "unassigned") store.setState({ includeNoAssignee: true });
+    const { result } = renderHook(() => useIssueSurfaceController({
+      scope: { type: "project", projectId: "p1", actorKind: constraint === "members-scope" ? "members" : "all" },
+      modes: ["list"],
+      fallbackCreateDefaults: { assignee_type: "squad", assignee_id: "project-squad", status: "todo" },
+    }), { wrapper: makeWrapper(qc) });
+
+    act(() => result.current.openCreateIssue());
+    expect(openModal).toHaveBeenLastCalledWith("create-issue", { project_id: "p1" });
+  });
+
   it("clears surface selection when the view mode changes within the same scope", async () => {
     const store = getIssueSurfaceViewStore("my:user-1:assigned");
     store.getState().setViewMode("list");

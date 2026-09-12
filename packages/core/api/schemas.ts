@@ -1318,9 +1318,17 @@ export const EMPTY_SEARCH_ISSUES_RESPONSE: SearchIssuesResponse = {
   total: 0,
 };
 
-const ProjectSchema = z.object({
-  id: z.string(),
-  workspace_id: z.string(),
+export const ProjectExecutionSquadSchema = z.object({
+  state: z.enum(["none", "needs_runtime", "configured", "failed"]),
+  template_key: z.string().min(1).nullable().optional(),
+  squad_id: z.string().min(1).nullable().optional(),
+  runtime_id: z.string().min(1).nullable().optional(),
+  error_code: z.string().nullable().optional(),
+}).loose();
+
+export const ProjectSchema = z.object({
+  id: z.string().trim().min(1),
+  workspace_id: z.string().trim().min(1),
   title: z.string(),
   description: z.string().nullable(),
   icon: z.string().nullable(),
@@ -1338,6 +1346,42 @@ const ProjectSchema = z.object({
   issue_count: z.number().default(0),
   done_count: z.number().default(0),
   resource_count: z.number().default(0),
+  execution_squad: ProjectExecutionSquadSchema.nullable().default(null).catch({
+    state: "failed", error_code: "invalid_configuration",
+  }),
+}).loose();
+
+export const ListProjectsResponseSchema = z.object({
+  projects: z.array(ProjectSchema).default([]),
+  total: z.number().default(0),
+}).loose();
+
+export const ProjectResourceSchema = z.object({
+  id: z.string().trim().min(1),
+  project_id: z.string().trim().min(1),
+  workspace_id: z.string().trim().min(1),
+  resource_type: z.string(),
+  resource_ref: z.record(z.string(), z.unknown()),
+  label: z.string().nullable().default(null),
+  position: z.number().default(0),
+  created_at: z.string().default(""),
+  created_by: z.string().nullable().default(null),
+}).loose().superRefine((resource, context) => {
+  if (resource.resource_type !== "local_directory") return;
+  const ref = resource.resource_ref;
+  if (typeof ref.daemon_id !== "string" || !ref.daemon_id.trim() ||
+    typeof ref.local_path !== "string" || !ref.local_path.trim()) {
+    context.addIssue({
+      code: "custom", path: ["resource_ref"],
+      message: "A local directory must identify its machine and path",
+    });
+  }
+});
+
+export const ListProjectResourcesResponseSchema = z.object({
+  // An absent list is not proof that the project has no execution constraint.
+  resources: z.array(ProjectResourceSchema),
+  total: z.number().default(0),
 }).loose();
 
 const SearchProjectResultSchema = ProjectSchema.extend({

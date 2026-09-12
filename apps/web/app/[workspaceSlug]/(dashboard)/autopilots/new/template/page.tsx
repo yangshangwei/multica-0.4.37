@@ -1,7 +1,7 @@
 "use client";
 
-import { TemplateCreateAutopilotPage } from "@multica/views/autopilots/components";
+import { TemplateCreateAutopilotRoute } from "@multica/views/autopilots/components";
 
 export default function Page() {
-  return <TemplateCreateAutopilotPage />;
+  return <TemplateCreateAutopilotRoute />;
 }

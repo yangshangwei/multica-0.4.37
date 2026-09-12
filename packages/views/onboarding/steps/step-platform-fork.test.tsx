@@ -157,9 +157,9 @@ describe("StepPlatformFork", () => {
     expect(
       within(dialog).getByText(/waiting for your computer/i),
     ).toBeInTheDocument();
-    // Starting with Mika stays disabled while no runtime is selected.
+    // Continuing to Projects stays disabled while no runtime is selected.
     expect(
-      within(dialog).getByRole("button", { name: /start with mika/i }),
+      within(dialog).getByRole("button", { name: /continue to projects/i }),
     ).toBeDisabled();
   });
 
@@ -183,7 +183,7 @@ describe("StepPlatformFork", () => {
     ).toBeInTheDocument();
 
     const connect = within(dialog).getByRole("button", {
-      name: /start with mika/i,
+      name: /continue to projects/i,
     });
     expect(connect).toBeEnabled();
     await user.click(connect);

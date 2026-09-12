@@ -62,6 +62,7 @@ export function IssueSurface({
   modes,
   surfaceKey,
   createDefaults,
+  fallbackCreateDefaults,
   search,
   renderHeader,
   renderEmpty,
@@ -151,6 +152,7 @@ export function IssueSurface({
         scope={effectiveScope}
         modes={modes}
         createDefaults={createDefaults}
+        fallbackCreateDefaults={fallbackCreateDefaults}
         search={search}
         renderHeader={renderHeader}
         renderEmpty={renderEmpty}
@@ -169,6 +171,7 @@ function IssueSurfaceContent({
   scope,
   modes,
   createDefaults,
+  fallbackCreateDefaults,
   search,
   renderHeader,
   renderEmpty,
@@ -183,6 +186,7 @@ function IssueSurfaceContent({
     scope,
     modes,
     createDefaults,
+    fallbackCreateDefaults,
     search,
   });
   const [tableLoadedIssues, setTableLoadedIssues] = useState<Issue[]>([]);

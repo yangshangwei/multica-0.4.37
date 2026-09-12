@@ -11,7 +11,7 @@ export const projectKeys = {
 export function projectListOptions(wsId: string) {
   return queryOptions({
     queryKey: projectKeys.list(wsId),
-    queryFn: () => api.listProjects(),
+    queryFn: ({ signal }) => api.listProjects(undefined, { workspaceId: wsId, signal }),
     select: (data) => data.projects,
   });
 }
@@ -19,6 +19,6 @@ export function projectListOptions(wsId: string) {
 export function projectDetailOptions(wsId: string, id: string) {
   return queryOptions({
     queryKey: projectKeys.detail(wsId, id),
-    queryFn: () => api.getProject(id),
+    queryFn: ({ signal }) => api.getProject(id, { workspaceId: wsId, signal }),
   });
 }

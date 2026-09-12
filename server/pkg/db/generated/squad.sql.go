@@ -637,6 +637,54 @@ func (q *Queries) ListSquadsByMember(ctx context.Context, arg ListSquadsByMember
 	return items, nil
 }
 
+const listSquadsByTemplateForProject = `-- name: ListSquadsByTemplateForProject :many
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad
+WHERE workspace_id = $1 AND template_key = $2 AND archived_at IS NULL
+ORDER BY created_at ASC, id ASC
+FOR SHARE
+`
+
+type ListSquadsByTemplateForProjectParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	TemplateKey string      `json:"template_key"`
+}
+
+// The caller holds the workspace/template advisory lock before this lookup.
+func (q *Queries) ListSquadsByTemplateForProject(ctx context.Context, arg ListSquadsByTemplateForProjectParams) ([]Squad, error) {
+	rows, err := q.db.Query(ctx, listSquadsByTemplateForProject, arg.WorkspaceID, arg.TemplateKey)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Squad{}
+	for rows.Next() {
+		var i Squad
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorkspaceID,
+			&i.Name,
+			&i.Description,
+			&i.LeaderID,
+			&i.CreatorID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.ArchivedAt,
+			&i.ArchivedBy,
+			&i.AvatarUrl,
+			&i.Instructions,
+			&i.TemplateKey,
+			&i.TemplateVersion,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const lockSquadForAutopilotAssignment = `-- name: LockSquadForAutopilotAssignment :one
 SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad
 WHERE id = $1 AND workspace_id = $2

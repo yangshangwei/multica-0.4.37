@@ -40,6 +40,13 @@ FOR UPDATE;
 -- name: ListSquads :many
 SELECT * FROM squad WHERE workspace_id = $1 AND archived_at IS NULL ORDER BY created_at ASC;
 
+-- name: ListSquadsByTemplateForProject :many
+-- The caller holds the workspace/template advisory lock before this lookup.
+SELECT * FROM squad
+WHERE workspace_id = $1 AND template_key = $2 AND archived_at IS NULL
+ORDER BY created_at ASC, id ASC
+FOR SHARE;
+
 -- name: ListSquadMemberPreviewRows :many
 -- Static squad membership summary for list/hover previews. This deliberately
 -- excludes derived runtime/task status; the squad detail members-status

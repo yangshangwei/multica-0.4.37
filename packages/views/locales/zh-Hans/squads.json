@@ -14,7 +14,8 @@
     },
     "no_matches": "没有匹配的小队",
     "row_menu": "小队操作",
-    "archive_action": "归档"
+    "archive_action": "归档",
+    "list_error": "无法加载小队。"
   },
   "inspector": {
     "details_section": "详情",
@@ -141,5 +142,37 @@
     "filter_label": "筛选",
     "filter_active_count_other": "{{count}} 项筛选",
     "clear_filters": "清除筛选"
+  },
+  "catalog": {
+    "title": "内置小队",
+    "description": "为新项目或已有项目选择小队。",
+    "loading": "正在加载内置小队...",
+    "error": "无法加载内置小队。",
+    "empty": "暂无内置小队。",
+    "retry": "重试",
+    "use_for_project": "用于项目",
+    "open_instance": "打开小队"
+  },
+  "use_for_project": {
+    "title": "将{{name}}用于项目",
+    "description": "为后续任务设置默认小队，保留已有任务和自定义配置。",
+    "project_label": "项目",
+    "new_project": "创建项目",
+    "no_projects": "创建一个项目，即可使用此小队。",
+    "projects_loading": "正在加载项目...",
+    "projects_error": "无法加载项目。",
+    "resources_loading": "正在加载项目资源...",
+    "resources_error": "无法加载项目资源。",
+    "runtime_label": "执行运行时",
+    "connect_later": "稍后连接",
+    "runtime_hint": "选择项目使用的运行时，也可以先保存小队选择，稍后再连接。",
+    "runtimes_error": "无法加载运行时。",
+    "agents_error": "无法查询工作区助手使用的运行时。",
+    "runtime_unavailable": "此运行时已不可用，请选择其他运行时或稍后连接。",
+    "offline": "离线",
+    "apply": "用于项目",
+    "applying": "正在准备小队...",
+    "cancel": "取消",
+    "failed": "无法更新项目小队，请重试。"
   }
 }

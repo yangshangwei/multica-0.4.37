@@ -43,6 +43,7 @@ import {
   useCreateIssueSurfaceSelection,
 } from "./selection-context";
 import type { IssueCreateDefaults } from "./types";
+import { mergeIssueCreateDefaults } from "./create-defaults";
 import {
   useIssueSurfaceActions,
   type MoveIssueUpdates,
@@ -61,6 +62,7 @@ interface UseIssueSurfaceControllerInput {
   scope: IssueScope;
   modes: IssueSurfaceMode[];
   createDefaults?: IssueCreateDefaults;
+  fallbackCreateDefaults?: IssueCreateDefaults;
   search?: string;
 }
 
@@ -202,6 +204,7 @@ export function useIssueSurfaceController({
   scope,
   modes,
   createDefaults,
+  fallbackCreateDefaults,
   search = "",
 }: UseIssueSurfaceControllerInput): IssueSurfaceController {
   const wsId = useWorkspaceId();
@@ -253,8 +256,20 @@ export function useIssueSurfaceController({
   }, [allowedModes, fallbackMode, setViewMode, viewMode]);
 
   const resolvedCreateDefaults = useMemo(
-    () => ({ ...queryPlan.createDefaults, ...createDefaults }),
-    [createDefaults, queryPlan.createDefaults],
+    () => {
+      const allowedTypes = queryPlan.queryFilter.assignee_types;
+      const fallbackType = fallbackCreateDefaults?.assignee_type;
+      // Saved-view constraints are already applied to the view store. Keep
+      // their existing creation behavior when they constrain the assignee.
+      const constrained = assigneeFilters.length > 0 || includeNoAssignee ||
+        (fallbackType && allowedTypes && !allowedTypes.includes(fallbackType));
+      return mergeIssueCreateDefaults(
+        constrained ? undefined : fallbackCreateDefaults,
+        queryPlan.createDefaults,
+        createDefaults,
+      );
+    },
+    [assigneeFilters.length, includeNoAssignee, createDefaults, fallbackCreateDefaults, queryPlan],
   );
 
   const dateParams = useMemo(

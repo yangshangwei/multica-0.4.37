@@ -38,13 +38,12 @@ export function useSquadTemplates() {
 /**
  * Maps an app locale onto the language the backend has template copy for.
  *
- * `zh-Hans` is the app's locale id; the backend's key is `zh`. An unknown locale
- * is passed through and the backend falls back to English, so a new app language
- * degrades to readable rather than empty.
+ * Regional locale variants share one supported language. Unknown locales use
+ * the backend's English fallback and the same catalog cache entry.
  */
-export function templateLanguageFor(locale: string): string {
-  if (locale.startsWith("zh")) return "zh";
-  return locale;
+export function templateLanguageFor(locale: string): "en" | "zh" | "ja" | "ko" {
+  const language = locale.trim().toLowerCase().split(/[-_]/)[0];
+  return language === "zh" || language === "ja" || language === "ko" ? language : "en";
 }
 
 /** Finds a template by key in a possibly-still-loading list. */

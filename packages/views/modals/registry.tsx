@@ -41,7 +41,7 @@ export function ModalRegistry() {
       );
       break;
     case "create-project":
-      activeModal = <CreateProjectModal onClose={close} />;
+      activeModal = <CreateProjectModal onClose={close} data={data} />;
       break;
     case "create-squad":
       activeModal = <CreateSquadModal onClose={close} />;

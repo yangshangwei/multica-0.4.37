@@ -1,5 +1,15 @@
 export { projectKeys, projectListOptions, projectDetailOptions } from "./queries";
-export { useCreateProject, useUpdateProject, useDeleteProject } from "./mutations";
+export { useCreateProject, useUpdateProject, useDeleteProject, useConfigureProjectSquad } from "./mutations";
+export {
+  DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY,
+  eligibleProjectRuntimes,
+  selectProjectRuntime,
+  projectLocalDaemonIds,
+  getProjectSquadReadiness,
+  type ProjectRuntimeSelectionOptions,
+  type ProjectSquadReadiness,
+} from "./execution-squad";
+export type { ProjectExecutionSquad, ConfigureProjectSquadRequest } from "../types/project";
 export { useProjectDraftStore } from "./draft-store";
 export {
   useProjectViewStore,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { CalendarClock, CalendarDays, ChevronRight, FolderOpen, GitBranch, Maximize2, Minimize2, MoreHorizontal, Pencil, Search, X as XIcon, UserMinus } from "lucide-react";
 
 /**
@@ -23,7 +23,7 @@ function GithubIcon({ className }: { className?: string }) {
 }
 import { useQuery } from "@tanstack/react-query";
 import { useCreateProject } from "@multica/core/projects/mutations";
-import { useProjectDraftStore } from "@multica/core/projects";
+import { DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY, useProjectDraftStore } from "@multica/core/projects";
 import {
   PROJECT_STATUS_CONFIG,
   PROJECT_STATUS_ORDER,
@@ -33,7 +33,7 @@ import { useWorkspaceId } from "@multica/core/hooks";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import { memberListOptions, agentListOptions } from "@multica/core/workspace/queries";
 import { useActorName } from "@multica/core/workspace/hooks";
-import type { ProjectStatus, ProjectPriority } from "@multica/core/types";
+import type { ConfigureProjectSquadRequest, ProjectStatus, ProjectPriority } from "@multica/core/types";
 import { cn } from "@multica/ui/lib/utils";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTitle } from "@multica/ui/components/ui/dialog";
@@ -51,7 +51,7 @@ import { ContentEditor, type ContentEditorRef, TitleEditor } from "../editor";
 import { PriorityIcon } from "../issues/components/priority-icon";
 import { ActorAvatar } from "../common/actor-avatar";
 import { useNavigation } from "../navigation";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import {
   useProjectStatusLabels,
@@ -59,6 +59,7 @@ import {
 } from "../projects/components/labels";
 import { ProjectStartDatePicker } from "../projects/components/project-start-date-picker";
 import { ProjectDueDatePicker } from "../projects/components/project-due-date-picker";
+import { ProjectSquadPicker } from "../projects/components/project-squad-picker";
 import { PillButton } from "../common/pill-button";
 import { githubShortLabel } from "../common/github-url";
 import {
@@ -74,6 +75,7 @@ import {
 import { useConfigStore } from "@multica/core/config";
 import type { LocalDirectoryExecutionMode } from "@multica/core/types";
 import { LocalDirectoryModeOptions } from "../projects/components/local-directory-mode-dialog";
+import { templateLanguageFor } from "../agents/create/use-role-templates";
 
 /**
  * Builds the resource_ref for a local directory attached during project
@@ -126,8 +128,12 @@ function RepoUrlText({
   );
 }
 
-export function CreateProjectModal({ onClose }: { onClose: () => void }) {
+export function CreateProjectModal({ onClose, data }: {
+  onClose: () => void;
+  data?: Record<string, unknown> | null;
+}) {
   const { t } = useT("modals");
+  const locale = useLocale();
   // The execution-mode copy lives in the projects namespace alongside the
   // resource panel's, so both entry points describe the choice identically.
   const { t: tProjects } = useT("projects");
@@ -136,6 +142,12 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
   const workspaceName = workspace?.name;
   const wsPaths = useWorkspacePaths();
   const wsId = useWorkspaceId();
+  const submitScopeRef = useRef({ active: true });
+  useLayoutEffect(() => {
+    const scope = { active: true };
+    submitScopeRef.current = scope;
+    return () => { scope.active = false; };
+  }, [wsId]);
   const { data: members = [] } = useQuery(memberListOptions(wsId));
   const { data: agents = [] } = useQuery(agentListOptions(wsId));
   const { getActorName } = useActorName();
@@ -145,6 +157,18 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
   const draft = useProjectDraftStore((s) => s.draft);
   const setDraft = useProjectDraftStore((s) => s.setDraft);
   const clearDraft = useProjectDraftStore((s) => s.clearDraft);
+
+  const [executionSquad, setExecutionSquad] = useState<ConfigureProjectSquadRequest>(() => {
+    if (typeof data?.squad_template_key === "string" && data.squad_template_key) {
+      return { template_key: data.squad_template_key };
+    }
+    if (typeof data?.squad_id === "string" && data.squad_id) {
+      return { squad_id: data.squad_id };
+    }
+    return draft.executionSquad === undefined
+      ? { template_key: DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY }
+      : draft.executionSquad ?? {};
+  });
 
   const [title, setTitle] = useState(draft.title);
   const descEditorRef = useRef<ContentEditorRef>(null);
@@ -348,6 +372,10 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         },
       ];
     }
+    const submittedScope = submitScopeRef.current;
+    const pendingDescription = descEditorRef.current?.flushPendingUpdate?.();
+    if (pendingDescription != null) setDraft({ description: pendingDescription });
+    const submittedDraft = useProjectDraftStore.getState().draft;
     setSubmitting(true);
     try {
       const project = await createProject.mutateAsync({
@@ -362,19 +390,29 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         due_date: dueDate || undefined,
         // Server attaches these in the same transaction as the project.
         resources,
+        execution_squad: executionSquad.template_key
+          ? { ...executionSquad, language: templateLanguageFor(locale) }
+          : executionSquad,
       });
+      if (!submittedScope.active) return;
+      // Flush delayed editor changes before comparing the singleton draft.
+      // A reopened modal or an edit during the request owns its newer draft.
+      const lateDescription = descEditorRef.current?.flushPendingUpdate?.();
+      if (lateDescription != null) setDraft({ description: lateDescription });
+      toast.success(t(($) => $.create_project.toast_created));
+      if (useProjectDraftStore.getState().draft !== submittedDraft) return;
       clearDraft();
       onClose();
-      toast.success(t(($) => $.create_project.toast_created));
       router.push(wsPaths.projectDetail(project.id));
     } catch (err) {
+      if (!submittedScope.active) return;
       toast.error(
         err instanceof Error && err.message
           ? err.message
           : t(($) => $.create_project.toast_failed),
       );
     } finally {
-      setSubmitting(false);
+      if (submitScopeRef.current.active) setSubmitting(false);
     }
   };
 
@@ -401,7 +439,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
           "!transition-all !duration-300 !ease-out",
           isExpanded
             ? "!max-w-4xl !w-full !h-5/6 !-translate-y-1/2"
-            : "!max-w-2xl !w-full !h-96 !-translate-y-1/2",
+            : "!max-w-2xl !w-full !h-[min(42rem,85dvh)] !-translate-y-1/2",
         )}
       >
         <DialogTitle className="sr-only">{t(($) => $.create_project.title)}</DialogTitle>
@@ -481,24 +519,331 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="flex-1 min-h-0 overflow-y-auto px-5">
-          <ContentEditor
-            ref={descEditorRef}
-            defaultValue={draft.description}
-            placeholder={t(($) => $.create_project.description_placeholder)}
-            onUpdate={(md) => setDraft({ description: md })}
-            debounceMs={500}
-          />
+          <div className={cn("overflow-y-auto", isExpanded ? "h-48" : "h-24")}>
+            <ContentEditor
+              ref={descEditorRef}
+              defaultValue={draft.description}
+              placeholder={t(($) => $.create_project.description_placeholder)}
+              onUpdate={(md) => setDraft({ description: md })}
+              debounceMs={500}
+            />
+          </div>
           <p className="mt-1 text-caption text-muted-foreground">
             {t(($) => $.create_project.description_hint)}
           </p>
+          <div className="mt-5 space-y-5 pb-4">
+            <div role="group" aria-label={tProjects(($) => $.resources.section_header)} className="space-y-2">
+              <div className="flex min-w-0 items-center justify-between gap-3">
+                <span className="text-caption font-medium">{tProjects(($) => $.resources.section_header)}</span>
+                <Popover
+                  open={repoPopoverOpen}
+                  onOpenChange={(v) => {
+                    setRepoPopoverOpen(v);
+                    if (!v) setRepoSearch("");
+                  }}
+                >
+                  <PopoverTrigger
+                    render={
+                      <PillButton>
+                        {sourceMode === "local" ? (
+                          <>
+                            <FolderOpen className="size-3" />
+                            <span className="max-w-[12rem] truncate">
+                              {selectedLocalPath
+                                ? selectedLocalLabel ?? selectedLocalPath
+                                : t(($) => $.create_project.source_pill_local)}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <GithubIcon className="size-3" />
+                            <span>
+                              {selectedRepos.length === 0
+                                ? t(($) => $.create_project.repos_pill)
+                                : t(($) => $.create_project.repos_pill_count, { count: selectedRepos.length })}
+                            </span>
+                          </>
+                        )}
+                      </PillButton>
+                    }
+                  />
+                  <PopoverContent side="top" align="start" className="w-72 p-2 space-y-2">
+                    {/* Source mode is binary — repo OR local directory, never both.
+                        Local option is desktop-only because a local_directory
+                        resource has to be pinned to a daemon_id, which doesn't
+                        exist on the web. */}
+                    {desktop && (
+                      <div className="grid grid-cols-2 gap-1 rounded-md bg-muted/60 p-0.5">
+                        <button
+                          type="button"
+                          onClick={() => handleSourceModeChange("repos")}
+                          className={cn(
+                            "rounded px-2 py-1 text-caption transition-colors",
+                            sourceMode === "repos"
+                              ? "bg-background shadow-sm font-medium"
+                              : "text-muted-foreground hover:text-foreground",
+                          )}
+                        >
+                          {t(($) => $.create_project.source_tab_repos)}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleSourceModeChange("local")}
+                          className={cn(
+                            "rounded px-2 py-1 text-caption transition-colors",
+                            sourceMode === "local"
+                              ? "bg-background shadow-sm font-medium"
+                              : "text-muted-foreground hover:text-foreground",
+                          )}
+                        >
+                          {t(($) => $.create_project.source_tab_local)}
+                        </button>
+                      </div>
+                    )}
+
+                    {sourceMode === "repos" ? (
+                      <>
+                        <div className="text-caption font-medium text-muted-foreground">
+                          {t(($) => $.create_project.repos_heading)}
+                        </div>
+                        {workspaceRepos.length > 0 ? (
+                          <>
+                            <div className="relative">
+                              <Search className="pointer-events-none absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                              <input
+                                type="text"
+                                value={repoSearch}
+                                onChange={(e) => setRepoSearch(e.target.value)}
+                                aria-label={t(($) => $.create_project.repos_search_placeholder)}
+                                placeholder={t(($) => $.create_project.repos_search_placeholder)}
+                                className="h-8 w-full rounded-md border bg-transparent pl-7 pr-2 text-caption outline-none placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
+                              />
+                            </div>
+                            <div className="max-h-48 space-y-1 overflow-y-auto">
+                              {filteredWorkspaceRepos.length === 0 && repoQuery && (
+                                <p className="py-2 text-center text-caption text-muted-foreground">
+                                  {t(($) => $.create_project.repos_search_empty)}
+                                </p>
+                              )}
+                              {filteredWorkspaceRepos.map((repo) => {
+                                const checked = selectedRepos.includes(repo.url);
+                                return (
+                                  <button
+                                    type="button"
+                                    key={repo.url}
+                                    onClick={() => toggleRepo(repo.url)}
+                                    className={cn(
+                                      "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-caption hover:bg-accent transition-colors",
+                                      checked && "bg-accent",
+                                    )}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={checked}
+                                      readOnly
+                                      className="size-3.5"
+                                    />
+                                    <GithubIcon className="size-3.5" />
+                                    <RepoUrlText url={repo.url} />
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </>
+                        ) : (
+                          <p className="text-caption text-muted-foreground">
+                            {t(($) => $.create_project.repos_empty)}
+                          </p>
+                        )}
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            addCustomRepo();
+                          }}
+                          className="flex items-center gap-1.5 pt-1 border-t"
+                        >
+                          <input
+                            type="text"
+                            value={customRepoUrl}
+                            onChange={(e) => setCustomRepoUrl(e.target.value)}
+                            placeholder={t(($) => $.create_project.repos_url_placeholder)}
+                            className="flex-1 bg-transparent text-caption px-2 py-1 outline-none placeholder:text-muted-foreground"
+                          />
+                          <Button
+                            type="submit"
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 px-2 text-caption"
+                            disabled={!customRepoUrl.trim()}
+                          >
+                            {t(($) => $.create_project.repos_add)}
+                          </Button>
+                        </form>
+                        {selectedRepos.length > 0 && (
+                          <div className="space-y-1 pt-1 border-t">
+                            <div className="text-micro font-medium text-muted-foreground uppercase tracking-wider">
+                              {t(($) => $.create_project.repos_selected)}
+                            </div>
+                            {selectedRepos.map((url) => (
+                              <div
+                                key={url}
+                                className="flex items-center gap-2 text-caption"
+                              >
+                                <GithubIcon className="size-3 text-muted-foreground" />
+                                <RepoUrlText url={url} />
+                                <button
+                                  type="button"
+                                  onClick={() => toggleRepo(url)}
+                                  className="text-muted-foreground hover:text-foreground"
+                                >
+                                  <XIcon className="size-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-caption font-medium text-muted-foreground">
+                          {t(($) => $.create_project.local_heading)}
+                        </div>
+                        {/* Daemon must be online — daemon_id is required to bind
+                            the resource. If it's offline, surface why and disable
+                            the picker; once it boots we re-render automatically
+                            via useLocalDaemonStatus. */}
+                        {daemonStatus.daemonId && daemonStatus.running ? (
+                          <p className="text-micro text-muted-foreground">
+                            {t(($) => $.create_project.local_on_device, {
+                              device: daemonStatus.deviceName ?? t(($) => $.create_project.local_this_machine),
+                            })}
+                          </p>
+                        ) : (
+                          <p className="text-micro text-amber-600 dark:text-amber-400">
+                            {t(($) => $.create_project.local_daemon_offline)}
+                          </p>
+                        )}
+
+                        {selectedLocalPath ? (
+                          <div className="rounded-md border px-2 py-2 space-y-1">
+                            <div className="flex items-start gap-2 text-caption">
+                              <FolderOpen className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+                              <div className="min-w-0 flex-1">
+                                {selectedLocalLabel && (
+                                  <div className="font-medium truncate">{selectedLocalLabel}</div>
+                                )}
+                                <div className="font-mono text-micro text-muted-foreground break-all">
+                                  {selectedLocalPath}
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={clearLocalDirectory}
+                                className="text-muted-foreground hover:text-foreground"
+                                aria-label={t(($) => $.create_project.local_clear)}
+                              >
+                                <XIcon className="size-3" />
+                              </button>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <Popover open={localModeOpen} onOpenChange={setLocalModeOpen}>
+                                <PopoverTrigger
+                                  render={
+                                    <Button
+                                      type="button"
+                                      size="sm"
+                                      variant="ghost"
+                                      // Sized to its (short) label so the wider
+                                      // "Change directory…" beside it fits whole.
+                                      className="h-6 shrink-0 text-caption"
+                                    >
+                                      {effectiveLocalMode === "worktree" ? (
+                                        <GitBranch className="size-3 shrink-0" />
+                                      ) : (
+                                        <Pencil className="size-3 shrink-0" />
+                                      )}
+                                      {/* Short labels: the panel is ~380px wide and
+                                          two buttons share it, so the full option
+                                          titles truncate to uselessness. The picker
+                                          below carries the full wording. */}
+                                      <span className="truncate">
+                                        {effectiveLocalMode === "worktree"
+                                          ? tProjects(($) => $.resources.mode_badge_worktree)
+                                          : tProjects(($) => $.resources.mode_badge_in_place)}
+                                      </span>
+                                    </Button>
+                                  }
+                                />
+                                <PopoverContent align="start" className="w-80 p-2">
+                                  <LocalDirectoryModeOptions
+                                    value={effectiveLocalMode}
+                                    onChange={(mode) => {
+                                      setLocalMode(mode);
+                                      setLocalModeOpen(false);
+                                    }}
+                                    unavailableReason={worktreeUnavailableReason}
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="ghost"
+                                className="h-6 flex-1 min-w-0 text-caption"
+                                onClick={handlePickLocalDirectory}
+                                disabled={localPicking || !daemonStatus.running}
+                              >
+                                <span className="truncate">
+                                  {t(($) => $.create_project.local_change)}
+                                </span>
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="w-full text-caption"
+                            onClick={handlePickLocalDirectory}
+                            disabled={localPicking || !daemonStatus.running}
+                          >
+                            <FolderOpen className="size-3" />
+                            {localPicking
+                              ? t(($) => $.create_project.local_picking)
+                              : t(($) => $.create_project.local_pick)}
+                          </Button>
+                        )}
+
+                        {localPickError && (
+                          <p className="text-micro text-destructive">{localPickError}</p>
+                        )}
+
+                        <p className="text-micro text-muted-foreground leading-snug">
+                          {t(($) => $.create_project.local_hint)}
+                        </p>
+                      </>
+                    )}
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <p className="text-caption text-muted-foreground">{t(($) => $.create_project.resources_hint)}</p>
+            </div>
+            <ProjectSquadPicker
+              value={executionSquad}
+              onChange={(choice) => {
+                setExecutionSquad(choice);
+                setDraft({ executionSquad: choice });
+              }}
+              localDaemonId={sourceMode === "local" && selectedLocalPath ? daemonStatus.daemonId : null}
+              disabled={submitting}
+            />
+          </div>
         </div>
 
         {/* Property toolbar — mirrors the create-issue footer: a wrapping pill
             row whose low-frequency fields (start/due date) collapse into a ⋯
-            overflow, with the primary action in a separate bar below.
-            Repos lives here alongside the property pills for now. Once we
-            support more resource types (Linear / Notion / Figma / Slack), pull
-            them out into a dedicated Resources strip above this footer. */}
+            overflow, with the primary action in a separate bar below. */}
         <div className="flex items-center gap-1.5 px-4 py-2 shrink-0 flex-wrap">
           <DropdownMenu>
             <DropdownMenuTrigger
@@ -655,298 +1000,6 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
               onOpenChange={setDueDatePickerOpen}
             />
           )}
-
-          <Popover
-            open={repoPopoverOpen}
-            onOpenChange={(v) => {
-              setRepoPopoverOpen(v);
-              if (!v) setRepoSearch("");
-            }}
-          >
-            <PopoverTrigger
-              render={
-                <PillButton>
-                  {sourceMode === "local" ? (
-                    <>
-                      <FolderOpen className="size-3" />
-                      <span className="max-w-[12rem] truncate">
-                        {selectedLocalPath
-                          ? selectedLocalLabel ?? selectedLocalPath
-                          : t(($) => $.create_project.source_pill_local)}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <GithubIcon className="size-3" />
-                      <span>
-                        {selectedRepos.length === 0
-                          ? t(($) => $.create_project.repos_pill)
-                          : t(($) => $.create_project.repos_pill_count, { count: selectedRepos.length })}
-                      </span>
-                    </>
-                  )}
-                </PillButton>
-              }
-            />
-            <PopoverContent side="top" align="start" className="w-72 p-2 space-y-2">
-              {/* Source mode is binary — repo OR local directory, never both.
-                  Local option is desktop-only because a local_directory
-                  resource has to be pinned to a daemon_id, which doesn't
-                  exist on the web. */}
-              {desktop && (
-                <div className="grid grid-cols-2 gap-1 rounded-md bg-muted/60 p-0.5">
-                  <button
-                    type="button"
-                    onClick={() => handleSourceModeChange("repos")}
-                    className={cn(
-                      "rounded px-2 py-1 text-caption transition-colors",
-                      sourceMode === "repos"
-                        ? "bg-background shadow-sm font-medium"
-                        : "text-muted-foreground hover:text-foreground",
-                    )}
-                  >
-                    {t(($) => $.create_project.source_tab_repos)}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleSourceModeChange("local")}
-                    className={cn(
-                      "rounded px-2 py-1 text-caption transition-colors",
-                      sourceMode === "local"
-                        ? "bg-background shadow-sm font-medium"
-                        : "text-muted-foreground hover:text-foreground",
-                    )}
-                  >
-                    {t(($) => $.create_project.source_tab_local)}
-                  </button>
-                </div>
-              )}
-
-              {sourceMode === "repos" ? (
-                <>
-                  <div className="text-caption font-medium text-muted-foreground">
-                    {t(($) => $.create_project.repos_heading)}
-                  </div>
-                  {workspaceRepos.length > 0 ? (
-                    <>
-                      <div className="relative">
-                        <Search className="pointer-events-none absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-                        <input
-                          type="text"
-                          value={repoSearch}
-                          onChange={(e) => setRepoSearch(e.target.value)}
-                          aria-label={t(($) => $.create_project.repos_search_placeholder)}
-                          placeholder={t(($) => $.create_project.repos_search_placeholder)}
-                          className="h-8 w-full rounded-md border bg-transparent pl-7 pr-2 text-caption outline-none placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
-                        />
-                      </div>
-                      <div className="max-h-48 space-y-1 overflow-y-auto">
-                        {filteredWorkspaceRepos.length === 0 && repoQuery && (
-                          <p className="py-2 text-center text-caption text-muted-foreground">
-                            {t(($) => $.create_project.repos_search_empty)}
-                          </p>
-                        )}
-                        {filteredWorkspaceRepos.map((repo) => {
-                          const checked = selectedRepos.includes(repo.url);
-                          return (
-                            <button
-                              type="button"
-                              key={repo.url}
-                              onClick={() => toggleRepo(repo.url)}
-                              className={cn(
-                                "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-caption hover:bg-accent transition-colors",
-                                checked && "bg-accent",
-                              )}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={checked}
-                                readOnly
-                                className="size-3.5"
-                              />
-                              <GithubIcon className="size-3.5" />
-                              <RepoUrlText url={repo.url} />
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-caption text-muted-foreground">
-                      {t(($) => $.create_project.repos_empty)}
-                    </p>
-                  )}
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      addCustomRepo();
-                    }}
-                    className="flex items-center gap-1.5 pt-1 border-t"
-                  >
-                    <input
-                      type="text"
-                      value={customRepoUrl}
-                      onChange={(e) => setCustomRepoUrl(e.target.value)}
-                      placeholder={t(($) => $.create_project.repos_url_placeholder)}
-                      className="flex-1 bg-transparent text-caption px-2 py-1 outline-none placeholder:text-muted-foreground"
-                    />
-                    <Button
-                      type="submit"
-                      size="sm"
-                      variant="ghost"
-                      className="h-6 px-2 text-caption"
-                      disabled={!customRepoUrl.trim()}
-                    >
-                      {t(($) => $.create_project.repos_add)}
-                    </Button>
-                  </form>
-                  {selectedRepos.length > 0 && (
-                    <div className="space-y-1 pt-1 border-t">
-                      <div className="text-micro font-medium text-muted-foreground uppercase tracking-wider">
-                        {t(($) => $.create_project.repos_selected)}
-                      </div>
-                      {selectedRepos.map((url) => (
-                        <div
-                          key={url}
-                          className="flex items-center gap-2 text-caption"
-                        >
-                          <GithubIcon className="size-3 text-muted-foreground" />
-                          <RepoUrlText url={url} />
-                          <button
-                            type="button"
-                            onClick={() => toggleRepo(url)}
-                            className="text-muted-foreground hover:text-foreground"
-                          >
-                            <XIcon className="size-3" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <>
-                  <div className="text-caption font-medium text-muted-foreground">
-                    {t(($) => $.create_project.local_heading)}
-                  </div>
-                  {/* Daemon must be online — daemon_id is required to bind
-                      the resource. If it's offline, surface why and disable
-                      the picker; once it boots we re-render automatically
-                      via useLocalDaemonStatus. */}
-                  {daemonStatus.daemonId && daemonStatus.running ? (
-                    <p className="text-micro text-muted-foreground">
-                      {t(($) => $.create_project.local_on_device, {
-                        device: daemonStatus.deviceName ?? t(($) => $.create_project.local_this_machine),
-                      })}
-                    </p>
-                  ) : (
-                    <p className="text-micro text-amber-600 dark:text-amber-400">
-                      {t(($) => $.create_project.local_daemon_offline)}
-                    </p>
-                  )}
-
-                  {selectedLocalPath ? (
-                    <div className="rounded-md border px-2 py-2 space-y-1">
-                      <div className="flex items-start gap-2 text-caption">
-                        <FolderOpen className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
-                        <div className="min-w-0 flex-1">
-                          {selectedLocalLabel && (
-                            <div className="font-medium truncate">{selectedLocalLabel}</div>
-                          )}
-                          <div className="font-mono text-micro text-muted-foreground break-all">
-                            {selectedLocalPath}
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={clearLocalDirectory}
-                          className="text-muted-foreground hover:text-foreground"
-                          aria-label={t(($) => $.create_project.local_clear)}
-                        >
-                          <XIcon className="size-3" />
-                        </button>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Popover open={localModeOpen} onOpenChange={setLocalModeOpen}>
-                          <PopoverTrigger
-                            render={
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="ghost"
-                                // Sized to its (short) label so the wider
-                                // "Change directory…" beside it fits whole.
-                                className="h-6 shrink-0 text-caption"
-                              >
-                                {effectiveLocalMode === "worktree" ? (
-                                  <GitBranch className="size-3 shrink-0" />
-                                ) : (
-                                  <Pencil className="size-3 shrink-0" />
-                                )}
-                                {/* Short labels: the panel is ~380px wide and
-                                    two buttons share it, so the full option
-                                    titles truncate to uselessness. The picker
-                                    below carries the full wording. */}
-                                <span className="truncate">
-                                  {effectiveLocalMode === "worktree"
-                                    ? tProjects(($) => $.resources.mode_badge_worktree)
-                                    : tProjects(($) => $.resources.mode_badge_in_place)}
-                                </span>
-                              </Button>
-                            }
-                          />
-                          <PopoverContent align="start" className="w-80 p-2">
-                            <LocalDirectoryModeOptions
-                              value={effectiveLocalMode}
-                              onChange={(mode) => {
-                                setLocalMode(mode);
-                                setLocalModeOpen(false);
-                              }}
-                              unavailableReason={worktreeUnavailableReason}
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="ghost"
-                          className="h-6 flex-1 min-w-0 text-caption"
-                          onClick={handlePickLocalDirectory}
-                          disabled={localPicking || !daemonStatus.running}
-                        >
-                          <span className="truncate">
-                            {t(($) => $.create_project.local_change)}
-                          </span>
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      className="w-full text-caption"
-                      onClick={handlePickLocalDirectory}
-                      disabled={localPicking || !daemonStatus.running}
-                    >
-                      <FolderOpen className="size-3" />
-                      {localPicking
-                        ? t(($) => $.create_project.local_picking)
-                        : t(($) => $.create_project.local_pick)}
-                    </Button>
-                  )}
-
-                  {localPickError && (
-                    <p className="text-micro text-destructive">{localPickError}</p>
-                  )}
-
-                  <p className="text-micro text-muted-foreground leading-snug">
-                    {t(($) => $.create_project.local_hint)}
-                  </p>
-                </>
-              )}
-            </PopoverContent>
-          </Popover>
 
           {/* Overflow — always the last child so it stays at the end of the
               wrap flow. Only rendered while a date is still collapsible; when

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
+import type { ComponentProps } from "react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -17,9 +18,25 @@ import enAutopilots from "../../locales/en/autopilots.json";
 const mockListTemplates = vi.hoisted(() => vi.fn());
 const mockCreateFromTemplate = vi.hoisted(() => vi.fn());
 const mockPush = vi.hoisted(() => vi.fn());
+const mockReplace = vi.hoisted(() => vi.fn());
+const mockListAgents = vi.hoisted(() => vi.fn());
+const mockListSquads = vi.hoisted(() => vi.fn());
+const mockListProjects = vi.hoisted(() => vi.fn());
+const mockListMembers = vi.hoisted(() => vi.fn());
 const searchParams = vi.hoisted(() => ({ value: new URLSearchParams() }));
 
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "ws-test" }));
+
+vi.mock("@multica/core/auth", async (importOriginal) => {
+  const state = { user: { id: "user-1" } };
+  return {
+    ...(await importOriginal<typeof import("@multica/core/auth")>()),
+    useAuthStore: Object.assign(
+      (selector: (value: typeof state) => unknown) => selector(state),
+      { getState: () => state },
+    ),
+  };
+});
 
 vi.mock("@multica/core/paths", () => ({
   useCurrentWorkspace: () => ({ name: "Acme" }),
@@ -33,7 +50,7 @@ vi.mock("@multica/core/paths", () => ({
 vi.mock("../../navigation", () => ({
   useNavigation: () => ({
     push: mockPush,
-    replace: vi.fn(),
+    replace: mockReplace,
     searchParams: searchParams.value,
   }),
   useBackOrReplace: () => vi.fn(),
@@ -61,26 +78,22 @@ vi.mock("@multica/core/autopilots/mutations", () => ({
 vi.mock("@multica/core/workspace/queries", () => ({
   agentListOptions: (wsId: string) => ({
     queryKey: ["agents", wsId],
-    queryFn: async () => [
-      {
-        id: "agent-1",
-        name: "Scout",
-        description: "Researches things",
-        archived_at: null,
-        runtime_id: "runtime-1",
-      },
-    ],
+    queryFn: mockListAgents,
   }),
   squadListOptions: (wsId: string) => ({
     queryKey: ["squads", wsId],
-    queryFn: async () => [],
+    queryFn: mockListSquads,
+  }),
+  memberListOptions: (wsId: string) => ({
+    queryKey: ["members", wsId],
+    queryFn: mockListMembers,
   }),
 }));
 
 vi.mock("@multica/core/projects/queries", () => ({
   projectListOptions: (wsId: string) => ({
     queryKey: ["projects", wsId],
-    queryFn: async () => [],
+    queryFn: mockListProjects,
   }),
 }));
 
@@ -111,8 +124,10 @@ vi.mock("../../common/actor-avatar", () => ({
 }));
 
 vi.mock("../../projects/components/project-picker", () => ({
-  ProjectPicker: ({ triggerRender }: { triggerRender: React.ReactElement }) =>
-    triggerRender,
+  ProjectPicker: ({ triggerRender, onUpdate }: {
+    triggerRender: React.ReactElement;
+    onUpdate: (updates: { project_id: string | null }) => void;
+  }) => <div>{triggerRender}<button onClick={() => onUpdate({ project_id: null })}>Clear project</button></div>,
 }));
 
 vi.mock("./subscriber-multi-select", () => ({
@@ -125,7 +140,7 @@ vi.mock("./pickers/timezone-picker", () => ({
   ),
 }));
 
-import { TemplateCreateAutopilotPage } from "./template-create-autopilot-page";
+import { TemplateCreateAutopilotPage, TemplateCreateAutopilotRoute } from "./template-create-autopilot-page";
 
 const TEMPLATES: AutopilotTemplate[] = [
   {
@@ -178,19 +193,39 @@ const TEMPLATES: AutopilotTemplate[] = [
   },
 ];
 
-function renderPage() {
+function renderPage(props: ComponentProps<typeof TemplateCreateAutopilotPage> = {}, fromRoute = false) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return renderWithI18n(
+  const page = (nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>) => (
     <QueryClientProvider client={qc}>
-      <TemplateCreateAutopilotPage />
-    </QueryClientProvider>,
+      {fromRoute ? <TemplateCreateAutopilotRoute /> : <TemplateCreateAutopilotPage {...nextProps} />}
+    </QueryClientProvider>
   );
+  const result = renderWithI18n(page(props));
+  return { ...result, qc, rerenderPage: (nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>) => result.rerender(page(nextProps)) };
 }
+
+const AGENTS = [{
+  id: "agent-1", workspace_id: "ws-test", name: "Scout",
+  description: "Researches things", archived_at: null, runtime_id: "runtime-1",
+  owner_id: "user-1", permission_mode: "private", invocation_targets: [],
+}, {
+  id: "leader-1", workspace_id: "ws-test", name: "Lead",
+  archived_at: null, runtime_id: "runtime-1", owner_id: "user-1",
+  permission_mode: "private", invocation_targets: [],
+}];
+const SQUADS = [{ id: "squad-1", workspace_id: "ws-test", name: "Delivery", leader_id: "leader-1", archived_at: null }];
+const PROJECTS = [{ id: "project-1", workspace_id: "ws-test", title: "Fleet", icon: null }];
 
 beforeEach(() => {
   vi.clearAllMocks();
   searchParams.value = new URLSearchParams();
   mockListTemplates.mockResolvedValue(TEMPLATES);
+  mockListAgents.mockResolvedValue(AGENTS);
+  mockListSquads.mockResolvedValue(SQUADS);
+  mockListProjects.mockResolvedValue(PROJECTS);
+  mockListMembers.mockResolvedValue([
+    { id: "member-1", workspace_id: "ws-test", user_id: "user-1", role: "admin" },
+  ]);
 });
 
 describe("autopilot template picker", () => {
@@ -231,6 +266,21 @@ describe("autopilot template picker", () => {
         "/acme/autopilots/new/template?template=release-readiness",
       ),
     );
+  });
+
+  it("routes project defaults through template selection and back on both platforms", async () => {
+    searchParams.value = new URLSearchParams("project_id=project-1&assignee_type=squad&assignee_id=squad-1");
+    const { rerenderPage } = renderPage({}, true);
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole("button", { name: /Release readiness/ }));
+    expect(mockPush).toHaveBeenCalledWith("/acme/autopilots/new/template?template=release-readiness&project_id=project-1&assignee_type=squad&assignee_id=squad-1");
+    searchParams.value = new URLSearchParams("template=release-readiness&project_id=project-1&assignee_type=squad&assignee_id=squad-1");
+    rerenderPage({});
+    expect(await screen.findByRole("button", { name: /Delivery/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Fleet/ })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Go back" }));
+    expect(mockReplace).toHaveBeenCalledWith("/acme/autopilots/new/template?project_id=project-1&assignee_type=squad&assignee_id=squad-1");
+    expect(mockCreateFromTemplate).not.toHaveBeenCalled();
   });
 
   it("shows placeholders rather than an empty grid while templates load", () => {
@@ -320,7 +370,7 @@ describe("autopilot template configure step", () => {
     const user = userEvent.setup();
 
     const createButton = await screen.findByRole("button", {
-      name: enAutopilots.dialog.create,
+      name: "Enable automation",
     });
     expect(createButton).toBeDisabled();
     // The disabled control is not a dead end: the reason is on the field.
@@ -350,7 +400,7 @@ describe("autopilot template configure step", () => {
     );
     await user.click(await screen.findByRole("button", { name: /Scout/ }));
     await user.click(
-      screen.getByRole("button", { name: enAutopilots.dialog.create }),
+      screen.getByRole("button", { name: "Enable automation" }),
     );
 
     await waitFor(() =>
@@ -400,7 +450,7 @@ describe("autopilot template configure step", () => {
     );
     await user.click(await screen.findByRole("button", { name: /Scout/ }));
     await user.click(
-      screen.getByRole("button", { name: enAutopilots.dialog.create }),
+      screen.getByRole("button", { name: "Enable automation" }),
     );
 
     expect(
@@ -408,5 +458,95 @@ describe("autopilot template configure step", () => {
     ).toHaveTextContent(enAutopilots.dialog.toast_create_failed);
     expect(mockPush).not.toHaveBeenCalled();
     expect(toast.success).not.toHaveBeenCalled();
+  });
+
+  it("prefills the current project and squad without creating until Enable", async () => {
+    mockCreateFromTemplate.mockResolvedValue({ autopilot: { id: "ap-1" }, trigger: { id: "tr-1" } });
+    renderPage({ initialProjectId: "project-1", initialAssigneeType: "squad", initialAssigneeId: "squad-1" });
+    expect(await screen.findByRole("button", { name: /Delivery/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Fleet/ })).toBeInTheDocument();
+    expect(mockCreateFromTemplate).not.toHaveBeenCalled();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Enable automation" }));
+    await waitFor(() => expect(mockCreateFromTemplate).toHaveBeenCalledWith(expect.objectContaining({
+      project_id: "project-1", assignee_type: "squad", assignee_id: "squad-1",
+    })));
+  });
+
+  it("keeps user edits when workspace lists refetch or route defaults change", async () => {
+    mockCreateFromTemplate.mockResolvedValue({ autopilot: { id: "ap-1" }, trigger: { id: "tr-1" } });
+    const { qc, rerenderPage } = renderPage({ initialProjectId: "project-1", initialAssigneeType: "squad", initialAssigneeId: "squad-1" });
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole("button", { name: /Delivery/ }));
+    await user.click(await screen.findByRole("button", { name: /Scout/ }));
+    await user.click(screen.getByRole("button", { name: "Clear project" }));
+    rerenderPage({ initialProjectId: "project-1", initialAssigneeType: "squad", initialAssigneeId: "missing-squad" });
+    await act(async () => { await qc.invalidateQueries(); });
+    expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Enable automation" }));
+    await waitFor(() => expect(mockCreateFromTemplate).toHaveBeenCalledWith(expect.objectContaining({
+      project_id: null, assignee_type: "agent", assignee_id: "agent-1",
+    })));
+  });
+
+  it("keeps an explicitly cleared project when its initial choices arrive late", async () => {
+    let resolveProjects!: (projects: typeof PROJECTS) => void;
+    mockListProjects.mockReturnValue(new Promise<typeof PROJECTS>((resolve) => { resolveProjects = resolve; }));
+    renderPage({ initialProjectId: "project-1", initialAssigneeType: "squad", initialAssigneeId: "squad-1" });
+    await screen.findByRole("button", { name: /Delivery/ });
+    await userEvent.setup().click(screen.getByRole("button", { name: "Clear project" }));
+    await act(async () => { resolveProjects(PROJECTS); });
+    expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enable automation" })).toBeEnabled();
+  });
+
+  it("retries failed membership without consuming the suggested assignee or replacing edits", async () => {
+    mockListMembers.mockRejectedValueOnce(new Error("membership unavailable"));
+    const { qc } = renderPage({
+      initialProjectId: "project-1",
+      initialAssigneeType: "squad",
+      initialAssigneeId: "squad-1",
+    });
+    await waitFor(() => {
+      expect(qc.getQueryState(["members", "ws-test"])?.status).toBe("error");
+      expect(qc.getQueryState(["agents", "ws-test"])?.status).toBe("success");
+      expect(qc.getQueryState(["squads", "ws-test"])?.status).toBe("success");
+      expect(qc.getQueryState(["projects", "ws-test"])?.status).toBe("success");
+    });
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      enAutopilots.template_picker.choices_load_failed,
+    );
+    expect(screen.queryByText(enAutopilots.template_picker.assignee_unavailable))
+      .not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enable automation" })).toBeDisabled();
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Clear project" }));
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+
+    expect(await screen.findByRole("button", { name: /Delivery/ })).toBeInTheDocument();
+    expect(mockListMembers).toHaveBeenCalledTimes(2);
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enable automation" })).toBeEnabled();
+    expect(mockCreateFromTemplate).not.toHaveBeenCalled();
+  });
+
+  it("blocks Enable if invocation permission is revoked after defaults were seeded", async () => {
+    const { qc } = renderPage({ initialAssigneeType: "squad", initialAssigneeId: "squad-1" });
+    expect(await screen.findByRole("button", { name: /Delivery/ })).toBeInTheDocument();
+    await act(async () => { qc.setQueryData(["agents", "ws-test"], AGENTS.map((agent) => ({ ...agent, owner_id: "another-user" }))); });
+    await waitFor(() => expect(screen.getByRole("button", { name: "Enable automation" })).toBeDisabled());
+    expect(mockCreateFromTemplate).not.toHaveBeenCalled();
+  });
+
+  it("does not prefill a foreign project or a private squad leader even for an admin", async () => {
+    mockListProjects.mockResolvedValue([{ ...PROJECTS[0], workspace_id: "other-workspace" }]);
+    mockListAgents.mockResolvedValue(AGENTS.map((agent) => ({ ...agent, owner_id: "another-user" })));
+    renderPage({ initialProjectId: "project-1", initialAssigneeType: "squad", initialAssigneeId: "squad-1" });
+    expect(await screen.findByText("The suggested assignee is unavailable. Choose an agent or squad you can run.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Select agent or squad/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enable automation" })).toBeDisabled();
+    expect(mockCreateFromTemplate).not.toHaveBeenCalled();
   });
 });

@@ -2,6 +2,23 @@ export type ProjectStatus = "planned" | "in_progress" | "paused" | "completed" |
 
 export type ProjectPriority = "urgent" | "high" | "medium" | "low" | "none";
 
+export interface ProjectExecutionSquad {
+  // Configuration state is separate from the actual runtime's availability.
+  state: "none" | "needs_runtime" | "configured" | "failed";
+  template_key?: string | null;
+  squad_id?: string | null;
+  // Requested runtime; reused agents keep their actual runtime bindings.
+  runtime_id?: string | null;
+  error_code?: string | null;
+}
+
+export interface ConfigureProjectSquadRequest {
+  template_key?: string;
+  squad_id?: string;
+  runtime_id?: string;
+  language?: "en" | "zh" | "ja" | "ko";
+}
+
 export interface Project {
   id: string;
   workspace_id: string;
@@ -21,6 +38,7 @@ export interface Project {
   issue_count: number;
   done_count: number;
   resource_count: number;
+  execution_squad?: ProjectExecutionSquad | null;
 }
 
 export interface CreateProjectRequest {
@@ -36,6 +54,7 @@ export interface CreateProjectRequest {
   // Resources to attach in the same transaction as the project. Server returns
   // 4xx (and rolls back) if any one is invalid or duplicate.
   resources?: CreateProjectResourceRequest[];
+  execution_squad?: ConfigureProjectSquadRequest;
 }
 
 export interface UpdateProjectRequest {

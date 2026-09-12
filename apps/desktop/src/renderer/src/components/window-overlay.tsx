@@ -69,7 +69,9 @@ function WindowOverlayInner() {
           runtimesPending={runtimesPending}
           onComplete={(ws, destination) => {
             close();
-            if (ws && destination?.kind === "chat") {
+            if (ws && destination?.kind === "projects") {
+              push(paths.workspace(ws.slug).projects());
+            } else if (ws && destination?.kind === "chat") {
               push(paths.workspace(ws.slug).chatSession(destination.sessionId));
             } else if (ws && destination?.kind === "issue") {
               push(paths.workspace(ws.slug).issueDetail(destination.issueId));
@@ -90,7 +92,9 @@ function WindowOverlayInner() {
         <OnboardingFlow
           onComplete={(ws, destination) => {
             close();
-            if (ws && destination?.kind === "chat") {
+            if (ws && destination?.kind === "projects") {
+              push(paths.workspace(ws.slug).projects());
+            } else if (ws && destination?.kind === "chat") {
               push(
                 paths.workspace(ws.slug).chatSession(destination.sessionId),
               );

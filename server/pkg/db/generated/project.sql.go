@@ -26,23 +26,24 @@ func (q *Queries) CountIssuesByProject(ctx context.Context, projectID pgtype.UUI
 const createProject = `-- name: CreateProject :one
 INSERT INTO project (
     workspace_id, title, description, icon, status,
-    lead_type, lead_id, priority, start_date, due_date
+    lead_type, lead_id, priority, start_date, due_date, execution_squad
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-) RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE($11::jsonb, '{}'::jsonb)
+) RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad
 `
 
 type CreateProjectParams struct {
-	WorkspaceID pgtype.UUID `json:"workspace_id"`
-	Title       string      `json:"title"`
-	Description pgtype.Text `json:"description"`
-	Icon        pgtype.Text `json:"icon"`
-	Status      string      `json:"status"`
-	LeadType    pgtype.Text `json:"lead_type"`
-	LeadID      pgtype.UUID `json:"lead_id"`
-	Priority    string      `json:"priority"`
-	StartDate   pgtype.Date `json:"start_date"`
-	DueDate     pgtype.Date `json:"due_date"`
+	WorkspaceID    pgtype.UUID `json:"workspace_id"`
+	Title          string      `json:"title"`
+	Description    pgtype.Text `json:"description"`
+	Icon           pgtype.Text `json:"icon"`
+	Status         string      `json:"status"`
+	LeadType       pgtype.Text `json:"lead_type"`
+	LeadID         pgtype.UUID `json:"lead_id"`
+	Priority       string      `json:"priority"`
+	StartDate      pgtype.Date `json:"start_date"`
+	DueDate        pgtype.Date `json:"due_date"`
+	ExecutionSquad []byte      `json:"execution_squad"`
 }
 
 func (q *Queries) CreateProject(ctx context.Context, arg CreateProjectParams) (Project, error) {
@@ -57,6 +58,7 @@ func (q *Queries) CreateProject(ctx context.Context, arg CreateProjectParams) (P
 		arg.Priority,
 		arg.StartDate,
 		arg.DueDate,
+		arg.ExecutionSquad,
 	)
 	var i Project
 	err := row.Scan(
@@ -73,6 +75,7 @@ func (q *Queries) CreateProject(ctx context.Context, arg CreateProjectParams) (P
 		&i.Priority,
 		&i.StartDate,
 		&i.DueDate,
+		&i.ExecutionSquad,
 	)
 	return i, err
 }
@@ -93,7 +96,7 @@ func (q *Queries) DeleteProject(ctx context.Context, arg DeleteProjectParams) er
 }
 
 const getProjectInWorkspace = `-- name: GetProjectInWorkspace :one
-SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date FROM project
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad FROM project
 WHERE id = $1 AND workspace_id = $2
 `
 
@@ -119,6 +122,7 @@ func (q *Queries) GetProjectInWorkspace(ctx context.Context, arg GetProjectInWor
 		&i.Priority,
 		&i.StartDate,
 		&i.DueDate,
+		&i.ExecutionSquad,
 	)
 	return i, err
 }
@@ -166,7 +170,7 @@ func (q *Queries) GetProjectIssueStats(ctx context.Context, arg GetProjectIssueS
 }
 
 const listProjects = `-- name: ListProjects :many
-SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date FROM project
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad FROM project
 WHERE workspace_id = $1
   AND ($2::text IS NULL OR status = $2)
   AND ($3::text IS NULL OR priority = $3)
@@ -202,6 +206,7 @@ func (q *Queries) ListProjects(ctx context.Context, arg ListProjectsParams) ([]P
 			&i.Priority,
 			&i.StartDate,
 			&i.DueDate,
+			&i.ExecutionSquad,
 		); err != nil {
 			return nil, err
 		}
@@ -253,6 +258,41 @@ func (q *Queries) LockProjectForDelete(ctx context.Context, arg LockProjectForDe
 	return id, err
 }
 
+const lockProjectForExecutionSquad = `-- name: LockProjectForExecutionSquad :one
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad FROM project
+WHERE id = $1 AND workspace_id = $2
+FOR UPDATE
+`
+
+type LockProjectForExecutionSquadParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Shares the exclusive project lock with deletion. The selection revision is
+// compared under this lock before any template resources are materialized.
+func (q *Queries) LockProjectForExecutionSquad(ctx context.Context, arg LockProjectForExecutionSquadParams) (Project, error) {
+	row := q.db.QueryRow(ctx, lockProjectForExecutionSquad, arg.ID, arg.WorkspaceID)
+	var i Project
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Title,
+		&i.Description,
+		&i.Icon,
+		&i.Status,
+		&i.LeadType,
+		&i.LeadID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Priority,
+		&i.StartDate,
+		&i.DueDate,
+		&i.ExecutionSquad,
+	)
+	return i, err
+}
+
 const updateProject = `-- name: UpdateProject :one
 UPDATE project SET
     title = COALESCE($2, title),
@@ -266,7 +306,7 @@ UPDATE project SET
     due_date = $10,
     updated_at = now()
 WHERE id = $1
-RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date
+RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad
 `
 
 type UpdateProjectParams struct {
@@ -310,6 +350,41 @@ func (q *Queries) UpdateProject(ctx context.Context, arg UpdateProjectParams) (P
 		&i.Priority,
 		&i.StartDate,
 		&i.DueDate,
+		&i.ExecutionSquad,
+	)
+	return i, err
+}
+
+const updateProjectExecutionSquad = `-- name: UpdateProjectExecutionSquad :one
+UPDATE project SET execution_squad = $3, updated_at = now()
+WHERE id = $1 AND workspace_id = $2
+RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad
+`
+
+type UpdateProjectExecutionSquadParams struct {
+	ID             pgtype.UUID `json:"id"`
+	WorkspaceID    pgtype.UUID `json:"workspace_id"`
+	ExecutionSquad []byte      `json:"execution_squad"`
+}
+
+func (q *Queries) UpdateProjectExecutionSquad(ctx context.Context, arg UpdateProjectExecutionSquadParams) (Project, error) {
+	row := q.db.QueryRow(ctx, updateProjectExecutionSquad, arg.ID, arg.WorkspaceID, arg.ExecutionSquad)
+	var i Project
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Title,
+		&i.Description,
+		&i.Icon,
+		&i.Status,
+		&i.LeadType,
+		&i.LeadID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Priority,
+		&i.StartDate,
+		&i.DueDate,
+		&i.ExecutionSquad,
 	)
 	return i, err
 }

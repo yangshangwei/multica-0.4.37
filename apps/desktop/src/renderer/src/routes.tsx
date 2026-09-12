@@ -16,7 +16,7 @@ import { AttachmentPreviewRoute } from "./pages/attachment-preview-page";
 import { IssuesPage } from "@multica/views/issues/components";
 import { ProjectsPage } from "@multica/views/projects/components";
 import { DashboardPage } from "@multica/views/dashboard";
-import { AutopilotsPage, TemplateCreateAutopilotPage } from "@multica/views/autopilots/components";
+import { AutopilotsPage, TemplateCreateAutopilotRoute } from "@multica/views/autopilots/components";
 import { MyIssuesPage } from "@multica/views/my-issues";
 import { SkillsPage } from "@multica/views/skills";
 import { DesktopRuntimesPage } from "./components/desktop-runtimes-page";
@@ -180,7 +180,7 @@ export const appRoutes: RouteObject[] = [
             // ordering agents/new relies on. A workspace-scoped session route,
             // not a WindowOverlay: overlays are for pre-workspace one-shots.
             path: "autopilots/new/template",
-            element: <TemplateCreateAutopilotPage />,
+            element: <TemplateCreateAutopilotRoute />,
             handle: { title: "Autopilot" },
           },
           {

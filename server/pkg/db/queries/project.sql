@@ -9,6 +9,18 @@ ORDER BY created_at DESC;
 SELECT * FROM project
 WHERE id = $1 AND workspace_id = $2;
 
+-- name: LockProjectForExecutionSquad :one
+-- Shares the exclusive project lock with deletion. The selection revision is
+-- compared under this lock before any template resources are materialized.
+SELECT * FROM project
+WHERE id = $1 AND workspace_id = $2
+FOR UPDATE;
+
+-- name: UpdateProjectExecutionSquad :one
+UPDATE project SET execution_squad = $3, updated_at = now()
+WHERE id = $1 AND workspace_id = $2
+RETURNING *;
+
 -- name: LockProjectForChatSessionCreate :one
 -- Conflicts with project deletion so a chat session cannot commit a soft
 -- project reference after the delete transaction has swept existing sessions.
@@ -26,9 +38,9 @@ FOR UPDATE;
 -- name: CreateProject :one
 INSERT INTO project (
     workspace_id, title, description, icon, status,
-    lead_type, lead_id, priority, start_date, due_date
+    lead_type, lead_id, priority, start_date, due_date, execution_squad
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE(sqlc.narg('execution_squad')::jsonb, '{}'::jsonb)
 ) RETURNING *;
 
 -- name: UpdateProject :one

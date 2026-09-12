@@ -16,9 +16,8 @@ import { CliInstallInstructions, OnboardingFlow } from "@multica/views/onboardin
  * web (matching `WindowOverlay` on desktop); content is the shared
  * `<OnboardingFlow />`. Kept minimal — guard on auth, render, exit.
  *
- * Runtime-connected onboarding opens the Mika session that the final step
- * created and started. Other exits land on the workspace issues list, or root
- * when no workspace exists.
+ * Workspace setup opens Projects, with Mika available in chat. Returning-user
+ * exits land on the workspace issues list, or root when no workspace exists.
  *
  * `CliInstallInstructions` is passed in as the `runtimeInstructions`
  * slot so the flow can render it inside the CLI dialog. The commands it
@@ -71,7 +70,9 @@ export default function OnboardingPage() {
       <OnboardingFlow
         onComplete={(ws, destination) => {
           completingRef.current = true;
-          if (ws && destination?.kind === "chat") {
+          if (ws && destination?.kind === "projects") {
+            router.push(paths.workspace(ws.slug).projects());
+          } else if (ws && destination?.kind === "chat") {
             router.push(
               paths.workspace(ws.slug).chatSession(destination.sessionId),
             );

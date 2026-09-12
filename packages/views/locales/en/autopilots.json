@@ -57,7 +57,13 @@
     "schedule_label": "Runs",
     "prompt_label": "What the agent is asked to do",
     "prompt_note": "Copied to the autopilot — editable afterwards",
-    "assignee_hint": "A template cannot know which agents this workspace has. Pick the one that runs it."
+    "assignee_hint": "A template cannot know which agents this workspace has. Pick the one that runs it.",
+    "enable": "Enable automation",
+    "enabling": "Enabling...",
+    "enable_hint": "Enabling creates this automation and starts its schedule. You can pause it or run it now from its details.",
+    "assignee_unavailable": "The suggested assignee is unavailable. Choose an agent or squad you can run.",
+    "project_unavailable": "The suggested project is unavailable in this workspace. Choose another project or continue without one.",
+    "choices_load_failed": "Could not load the project and assignee choices."
   },
   "detail": {
     "not_found": "Autopilot not found",
@@ -416,7 +422,8 @@
     "agents_group": "Agents",
     "squads_group": "Squads",
     "agent_runtime_required": "Bind a runtime before selecting this agent",
-    "squad_runtime_required": "Bind a runtime to this squad's leader before selecting it"
+    "squad_runtime_required": "Bind a runtime to this squad's leader before selecting it",
+    "invocation_not_allowed": "You do not have permission to run this assignee."
   },
   "timezone_picker": {
     "search_placeholder": "Search timezone..."
@@ -454,5 +461,17 @@
       "confirm": "Delete permanently",
       "deleting": "Deleting…"
     }
+  },
+  "catalog": {
+    "title": "Built-in templates",
+    "description": "Choose a recurring task, review its schedule, then enable it."
+  },
+  "project_section": {
+    "title": "Automations",
+    "empty": "No automations for this project yet.",
+    "add": "Add automation",
+    "load_failed": "Could not load project automations.",
+    "next_run": "Next run: {{time}}",
+    "status_unknown": "Status unavailable"
   }
 }

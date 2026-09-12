@@ -1,6 +1,6 @@
 ---
 name: multica-projects-and-resources
-description: "Use when creating, inspecting, updating, or debugging Multica projects and their resources (github_repo, local_directory)."
+description: "Use when creating, inspecting, updating, or debugging Multica projects, their execution squad defaults, and resources (github_repo, local_directory)."
 user-invocable: false
 allowed-tools: Bash(multica *)
 ---
@@ -31,6 +31,32 @@ Common resource types:
 - `github_repo` — durable GitHub repo context, with `resource_ref.url`, optional checkout `ref`, and optional prompt-only `default_branch_hint`;
 - `local_directory` — daemon-local path context, with `resource_ref.local_path`, `daemon_id`, optional label, and
   optional `execution_mode` (`in_place`, the default, or `worktree`).
+
+## Project execution squad
+
+Project API responses include `execution_squad`, the saved default for future tasks. Older servers may omit it.
+Its `state` is `none`, `needs_runtime`, `configured`, or `failed`. `configured` means a squad instance is assigned;
+check the current squad, its agents, and their actual runtimes before promising that work can start.
+
+`POST /api/projects` accepts optional `execution_squad`. `PUT /api/projects/{id}/execution-squad` changes the
+selection and returns the complete project. Both accept `template_key` or `squad_id`, never both. A template
+may also carry `runtime_id` and `language` (`en`, `zh`, `ja`, `ko`). A template without a runtime saves
+`needs_runtime`; an empty object clears the default. These are API fields, not new project CLI flags.
+
+Project configuration reuses an invocable, unarchived matching squad and preserves customized role agents and
+skills. It never rebinds a reused agent to the requested runtime. Every actual execution machine needs its own
+matching `local_directory` when the project uses local directories. Private-runtime and agent-invocation
+permissions still apply; agent callers also need Coordinator autonomy and may not create roles above their own level.
+
+If squad preparation fails after project creation, the project remains saved: POST returns 201 with
+`state=failed`; a PUT preparation failure returns 200 with the failed selection. Retry the retained choice with
+PUT after resolving the problem. Do not repeat the project POST. Safe `error_code` values are
+`agent_name_conflict`, `agent_access_denied`, `agent_unavailable`, `runtime_unavailable`, `runtime_mismatch`,
+`squad_unavailable`, and `preparation_failed`.
+
+Changing or clearing this default leaves shared squads, agents, and skills intact and does not change existing
+issue assignments. Reads never prepare a replacement for an archived or deleted squad; recovery is an explicit
+configuration request. Preparing a default does not enqueue a task.
 
 ## CLI
 

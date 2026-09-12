@@ -124,7 +124,7 @@ function deferred<T>() {
   return { promise, resolve };
 }
 
-function renderDialog(locale: TestLocale = "en") {
+function renderDialog(locale: TestLocale = "en", initialTemplateName?: string) {
   const onClose = vi.fn();
   const onCreated = vi.fn();
   const queryClient = new QueryClient({
@@ -135,7 +135,7 @@ function renderDialog(locale: TestLocale = "en") {
     // Match production: only the active locale is mounted initially.
     <I18nProvider locale={language} resources={{ [language]: LOCALES[language] }}>
       <QueryClientProvider client={queryClient}>
-        <CreateSkillDialog onClose={onClose} onCreated={onCreated} />
+        <CreateSkillDialog initialTemplateName={initialTemplateName} onClose={onClose} onCreated={onCreated} />
       </QueryClientProvider>
     </I18nProvider>
   );
@@ -210,6 +210,24 @@ afterEach(() => {
 });
 
 describe("CreateSkillDialog template creation", () => {
+  it("opens the catalog's selected template and never reseeds an edited copy on locale or catalog changes", async () => {
+    const { changeContext, queryClient } = renderDialog("en", REPORT_NAME);
+    const selected = await screen.findByRole("button", { name: /^multica-test-report/ });
+    expect(selected).toHaveAttribute("aria-pressed", "true");
+    expectNoWrites();
+    fireEvent.click(screen.getByRole("button", { name: "Use this template" }));
+    expect(await screen.findByRole("textbox", { name: "Name" })).toHaveValue(`${REPORT_NAME}-copy`);
+    editDraft();
+    changeContext({ locale: "zh-Hans" });
+    act(() => {
+      queryClient.setQueryData(workspaceKeys.skillTemplates("ws-1"), createCatalog());
+    });
+    expect(screen.getByRole("textbox", { name: zhSkills.create.manual.name_label })).toHaveValue("billing-review");
+    expect(screen.getByRole("textbox", { name: zhSkills.create.manual.description_label })).toHaveValue(EDITED_DESCRIPTION);
+    expect(screen.getByRole("textbox", { name: zhSkills.create.template.body_label })).toHaveValue(EDITED_BODY);
+    expectNoWrites();
+  });
+
   it("keeps preview and editing local, then creates an independent synchronized copy", async () => {
     const originalCatalog = structuredClone(catalog);
     const { onCreated, onClose, queryClient } = renderDialog();

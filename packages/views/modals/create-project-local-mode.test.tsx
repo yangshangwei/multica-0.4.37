@@ -66,7 +66,8 @@ vi.mock("@multica/core/projects/mutations", () => ({
   useCreateProject: () => ({ mutateAsync: createProjectMock }),
 }));
 
-vi.mock("@multica/core/projects", () => ({
+vi.mock("@multica/core/projects", async () => ({
+  ...await vi.importActual<Record<string, unknown>>("@multica/core/projects"),
   useProjectDraftStore: (selector: (state: unknown) => unknown) =>
     selector({
       draft: {
@@ -131,6 +132,9 @@ vi.mock("../projects/components/project-start-date-picker", () => ({
 }));
 vi.mock("../projects/components/project-due-date-picker", () => ({
   ProjectDueDatePicker: () => <button type="button">Due date</button>,
+}));
+vi.mock("../projects/components/project-squad-picker", () => ({
+  ProjectSquadPicker: () => null,
 }));
 
 // Desktop-only surface: without these the Local directory tab never renders.

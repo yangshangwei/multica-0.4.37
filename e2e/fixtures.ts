@@ -345,6 +345,61 @@ export class TestApiClient {
     return this.token;
   }
 
+  /** Authenticated setup/verification for isolated feature workspaces. */
+  async requestJSON<T>(path: string, options: { method?: string; body?: unknown } = {}): Promise<T> {
+    const response = await this.authedFetch(path, {
+      method: options.method,
+      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+    });
+    if (!response.ok) throw new Error(`${options.method ?? "GET"} ${path} failed: ${response.status}`);
+    return response.json() as Promise<T>;
+  }
+
+  /** A registered-looking runtime with no process, credentials or model attached. */
+  async seedProjectRuntime(): Promise<{ id: string; daemon_id: string }> {
+    if (!this.workspaceId || !this.email) throw new Error("Runtime fixture requires an authenticated workspace");
+    const client = new pg.Client(DATABASE_URL);
+    await client.connect();
+    try {
+      const result = await client.query<{ id: string; daemon_id: string }>(
+        `INSERT INTO agent_runtime
+          (workspace_id, daemon_id, name, runtime_mode, provider, status,
+           device_info, metadata, last_seen_at, owner_id, visibility)
+         SELECT $1, gen_random_uuid(), 'E2E isolated runtime', 'local', 'codex', 'online',
+           'Test fixture; no daemon process', '{"capabilities":["rpc-v1"],"cli_version":"0.4.40"}'::jsonb,
+           now(), id, 'private' FROM "user" WHERE email = $2 RETURNING id, daemon_id`,
+        [this.workspaceId, this.email],
+      );
+      if (!result.rows[0]) throw new Error("Runtime fixture owner was not found");
+      return result.rows[0];
+    } finally {
+      await client.end();
+    }
+  }
+
+  async countIssueDispatches(issueId: string): Promise<number> {
+    const client = new pg.Client(DATABASE_URL);
+    await client.connect();
+    try {
+      const result = await client.query<{ count: string }>(
+        `SELECT count(*) FROM agent_task_queue task
+         JOIN agent ON agent.id = task.agent_id
+         WHERE task.issue_id = $1 AND agent.workspace_id = $2`,
+        [issueId, this.workspaceId],
+      );
+      return Number(result.rows[0].count);
+    } finally {
+      await client.end();
+    }
+  }
+
+  /** Explicit cleanup for the per-test workspace, never the shared default one. */
+  async deleteFeatureWorkspace(id: string) {
+    if (id !== this.workspaceId) throw new Error("Refusing to delete a different fixture workspace");
+    const response = await this.authedFetch(`/api/workspaces/${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (!response.ok && response.status !== 404) throw new Error(`Workspace cleanup failed: ${response.status}`);
+  }
+
   getEmail() {
     if (!this.email) {
       throw new Error("Test API client is not logged in");

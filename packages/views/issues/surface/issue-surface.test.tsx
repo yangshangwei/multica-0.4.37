@@ -12,6 +12,7 @@ import {
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { setApiInstance } from "@multica/core/api";
+import { useModalStore } from "@multica/core/modals";
 import type { ApiClient } from "@multica/core/api/client";
 import {
   getIssueSurfaceViewStore,
@@ -812,6 +813,25 @@ describe("IssueSurface — filtered empty state", () => {
 
     await screen.findByText("detail.empty_issues_title");
     expect(screen.queryByText("filtered_empty.title")).toBeNull();
+  });
+
+  it("uses the project squad fallback from the center New Issue action", async () => {
+    const open = vi.spyOn(useModalStore.getState(), "open").mockImplementation(() => {});
+    render(
+      <QueryClientProvider client={qc}>
+        <IssueSurface
+          scope={{ type: "project", projectId: "pf" }}
+          modes={["list"]}
+          fallbackCreateDefaults={{ assignee_type: "squad", assignee_id: "project-squad", status: "todo" }}
+          renderHeader={() => null}
+          batchToolbar="never"
+        />
+      </QueryClientProvider>,
+    );
+    fireEvent.click(await screen.findByRole("button", { name: "detail.empty_issues_new_button" }));
+    expect(open).toHaveBeenCalledExactlyOnceWith("create-issue", {
+      project_id: "pf", assignee_type: "squad", assignee_id: "project-squad", status: "todo",
+    });
   });
 });
 

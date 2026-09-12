@@ -28,12 +28,14 @@ export function AgentPicker({
   trigger: customTrigger,
   triggerRender,
   align = "start",
+  canSelect,
 }: {
   assignee: AssigneeSelection | null;
   onChange: (next: AssigneeSelection) => void;
   trigger?: React.ReactNode;
   triggerRender?: React.ReactElement;
   align?: "start" | "center" | "end";
+  canSelect?: (selection: AssigneeSelection) => boolean;
 }) {
   const { t } = useT("autopilots");
   const wsId = useWorkspaceId();
@@ -110,15 +112,16 @@ export function AgentPicker({
             <PickerSection label={t(($) => $.agent_picker.agents_group)}>
               {filteredAgents.map((a) => {
                 const runtimeBound = isAgentRuntimeBound(a);
+                const selectable = canSelect?.({ type: "agent", id: a.id }) ?? true;
                 return (
                   <PickerItem
                     key={a.id}
                     selected={isSelected("agent", a.id)}
-                    disabled={!runtimeBound}
+                    disabled={!runtimeBound || !selectable}
                     tooltip={
-                      runtimeBound
-                        ? undefined
-                        : t(($) => $.agent_picker.agent_runtime_required)
+                      !runtimeBound
+                        ? t(($) => $.agent_picker.agent_runtime_required)
+                        : !selectable ? t(($) => $.agent_picker.invocation_not_allowed) : undefined
                     }
                     onClick={() => handlePick("agent", a.id)}
                   >
@@ -134,15 +137,16 @@ export function AgentPicker({
               {filteredSquads.map((s) => {
                 const leader = agentsById.get(s.leader_id);
                 const runtimeBound = !!leader && isAgentRuntimeBound(leader);
+                const selectable = canSelect?.({ type: "squad", id: s.id }) ?? true;
                 return (
                   <PickerItem
                     key={s.id}
                     selected={isSelected("squad", s.id)}
-                    disabled={!runtimeBound}
+                    disabled={!runtimeBound || !selectable}
                     tooltip={
-                      runtimeBound
-                        ? undefined
-                        : t(($) => $.agent_picker.squad_runtime_required)
+                      !runtimeBound
+                        ? t(($) => $.agent_picker.squad_runtime_required)
+                        : !selectable ? t(($) => $.agent_picker.invocation_not_allowed) : undefined
                     }
                     onClick={() => handlePick("squad", s.id)}
                   >

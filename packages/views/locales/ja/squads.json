@@ -14,7 +14,8 @@
     },
     "no_matches": "該当するスカッドはありません",
     "row_menu": "スカッドの操作",
-    "archive_action": "アーカイブ"
+    "archive_action": "アーカイブ",
+    "list_error": "スクワッドを読み込めませんでした。"
   },
   "inspector": {
     "details_section": "詳細",
@@ -141,5 +142,37 @@
     "filter_label": "フィルター",
     "filter_active_count_other": "{{count}} 件のフィルター",
     "clear_filters": "フィルターをクリア"
+  },
+  "catalog": {
+    "title": "組み込みスクワッド",
+    "description": "新規または既存のプロジェクトに使う編成を選びます。",
+    "loading": "組み込みスクワッドを読み込み中...",
+    "error": "組み込みスクワッドを読み込めませんでした。",
+    "empty": "利用できる組み込みスクワッドはありません。",
+    "retry": "再試行",
+    "use_for_project": "プロジェクトで使う",
+    "open_instance": "スクワッドを開く"
+  },
+  "use_for_project": {
+    "title": "{{name}}をプロジェクトで使う",
+    "description": "今後のタスクに使う既定のスクワッドを設定します。既存のタスクやカスタマイズは保持されます。",
+    "project_label": "プロジェクト",
+    "new_project": "プロジェクトを作成",
+    "no_projects": "このスクワッドを使うプロジェクトを作成してください。",
+    "projects_loading": "プロジェクトを読み込み中...",
+    "projects_error": "プロジェクトを読み込めませんでした。",
+    "resources_loading": "プロジェクトのリソースを読み込み中...",
+    "resources_error": "プロジェクトのリソースを読み込めませんでした。",
+    "runtime_label": "実行ランタイム",
+    "connect_later": "後で接続",
+    "runtime_hint": "プロジェクトのランタイムを選ぶか、スクワッドの選択を保存して後で接続できます。",
+    "runtimes_error": "ランタイムを読み込めませんでした。",
+    "agents_error": "ワークスペースのアシスタントのランタイムを確認できませんでした。",
+    "runtime_unavailable": "このランタイムは利用できなくなりました。別のランタイムを選ぶか、後で接続してください。",
+    "offline": "オフライン",
+    "apply": "プロジェクトで使う",
+    "applying": "スクワッドを準備中...",
+    "cancel": "キャンセル",
+    "failed": "プロジェクトのスクワッドを更新できませんでした。再試行してください。"
   }
 }

@@ -956,8 +956,9 @@ export function ProjectsPage() {
         <CollectionPageState
           icon={FolderKanban}
           title={t(($) => $.page.empty)}
+          description={t(($) => $.page.empty_hint)}
           actions={
-            <Button size="sm" variant="outline" onClick={openCreateProject}>
+            <Button size="sm" onClick={openCreateProject}>
               {t(($) => $.page.create_first)}
             </Button>
           }

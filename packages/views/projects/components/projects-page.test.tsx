@@ -251,6 +251,15 @@ beforeEach(() => {
 });
 
 describe("ProjectsPage compact row navigation", () => {
+  it("guides a new workspace into its first project", async () => {
+    const user = userEvent.setup();
+    mocks.projects = [];
+    renderProjects();
+    expect(screen.getByText("Choose a repository and an execution squad to get your first issue moving.")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Create your first project" }));
+    expect(mocks.openModal).toHaveBeenCalledWith("create-project");
+  });
+
   it("renders the project name as text, not a title link", () => {
     renderProjects();
 

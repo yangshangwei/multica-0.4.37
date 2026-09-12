@@ -196,6 +196,8 @@ export type {
   Project,
   ProjectStatus,
   ProjectPriority,
+  ProjectExecutionSquad,
+  ConfigureProjectSquadRequest,
   CreateProjectRequest,
   UpdateProjectRequest,
   ListProjectsResponse,

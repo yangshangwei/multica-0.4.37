@@ -46,7 +46,9 @@ export default function Page() {
         mode="new_workspace"
         onCancel={onCancel}
         onComplete={(ws, destination) => {
-          if (ws && destination?.kind === "chat") {
+          if (ws && destination?.kind === "projects") {
+            router.push(paths.workspace(ws.slug).projects());
+          } else if (ws && destination?.kind === "chat") {
             router.push(
               paths.workspace(ws.slug).chatSession(destination.sessionId),
             );
