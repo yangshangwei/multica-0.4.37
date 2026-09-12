@@ -51,12 +51,20 @@ from today's template; do not silently upgrade behavior while localizing.
 
 Grounding changes to the ADR, requirement-clarification and documentation skills
 are material behavior changes, not translation-only edits. Their versions are
-3, 2 and 2 respectively. ADR facts need supporting task/code/document evidence;
-CSV advice uses the linked `references/csv-export-safety.md`; documentation
-summaries must follow searches of the final files and disclose coverage limits.
+3, 3 and 2 respectively. ADR facts need supporting task/code/document evidence;
+requirement clarification separates known requirements from unverified technical
+advice; documentation summaries must follow searches of the final files and
+disclose coverage limits. Requirement-clarification version 3 retains the generic
+evidence rules and removes CSV-specific routing from the default role skill.
+CSV regression review material lives in
+`scripts/skill-eval/references/csv-export-safety.md`, outside distributed skill
+bundles and model fixtures. Preserve the original CSV case inputs so the reviewer
+reference does not become a supplied answer.
 Supporting references must ship in `RoleSkillTemplate.Files` and in any native
 evaluation snapshot or explicit workspace update. The reference-delivery test
-in `builtin_agent_templates_test.go` protects this boundary.
+`TestRoleSkillTemplates_FilesMatchSource` in `builtin_agent_templates_test.go`
+checks complete bundles against source files without requiring a domain-specific
+attachment on a general-purpose role skill.
 
 `skill update --content-file` replaces the entire stored content but does not
 synchronize frontmatter into database metadata. When updating a description,

@@ -46,6 +46,20 @@ The runner currently supports Claude Code only and has no automatic provider
 fallback. Reusing these fixtures in a future Codex run requires an explicit
 native invocation adapter and fresh execution evidence.
 
+## Requirement clarification regression review
+
+Keep `P01_requirement` and `G02_csv_targets` as CSV regression cases with their
+original prompts and fixture files. Review their actual requirements, questions
+and safety claims against [CSV export safety](references/csv-export-safety.md).
+The reference is reviewer-only material: it is not part of any distributed role
+skill, and the runner does not copy it into a model's fixture or skill snapshot.
+
+The requirement-clarification skill keeps the general rules for evidence-backed
+advice and explicit unknowns. CSV-specific facts belong to this review material
+or the task's own relevant sources, rather than the default role skill. A model
+without enough evidence should leave a safety claim unverified; matching wording
+from the reference is not an acceptance criterion.
+
 ## Search evidence and boundaries
 
 `search` is read-only, literal and case-sensitive. Its `paths` are explicit

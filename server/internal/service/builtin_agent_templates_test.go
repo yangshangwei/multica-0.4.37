@@ -1,6 +1,7 @@
 package service
 
 import (
+	"io/fs"
 	"os"
 	"path/filepath"
 	"slices"
@@ -202,31 +203,54 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 	}
 }
 
-// A linked reference must travel with the template that agents receive, not
-// merely exist beside SKILL.md in the source checkout.
-func TestRequirementClarificationSkillIncludesCSVReference(t *testing.T) {
-	const referencePath = "references/csv-export-safety.md"
-	skill, ok := RoleSkillTemplateByName("multica-requirement-clarification")
-	if !ok {
-		t.Fatal("requirement clarification must be a registered role skill")
+// Compare complete bundles with their sources without requiring a particular
+// role to carry domain-specific reference material.
+func TestRoleSkillTemplates_FilesMatchSource(t *testing.T) {
+	for _, skill := range RoleSkillTemplates() {
+		t.Run(skill.Name, func(t *testing.T) {
+			dir := filepath.Join("builtin_role_skills", skill.Name)
+			want := make(map[string]string)
+			err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {
+				if err != nil || entry.IsDir() {
+					return err
+				}
+				relative, err := filepath.Rel(dir, path)
+				if err != nil {
+					return err
+				}
+				content, err := os.ReadFile(path)
+				if err != nil {
+					return err
+				}
+				want[filepath.ToSlash(relative)] = string(content)
+				return nil
+			})
+			if err != nil {
+				t.Fatalf("read skill source bundle: %v", err)
+			}
+			if skill.Content != want["SKILL.md"] {
+				t.Error("template content differs from source SKILL.md")
+			}
+			delete(want, "SKILL.md")
+			if len(skill.Files) != len(want) {
+				t.Errorf("template has %d supporting files, source has %d", len(skill.Files), len(want))
+			}
+			for _, file := range skill.Files {
+				content, ok := want[file.Path]
+				if !ok {
+					t.Errorf("unexpected or duplicate supporting file %q", file.Path)
+					continue
+				}
+				if file.Content != content {
+					t.Errorf("supporting file %q differs from source", file.Path)
+				}
+				delete(want, file.Path)
+			}
+			for path := range want {
+				t.Errorf("template is missing supporting file %q", path)
+			}
+		})
 	}
-	if !strings.Contains(skill.Content, "]("+referencePath+")") {
-		t.Fatal("requirement clarification must link its CSV safety reference")
-	}
-	for _, file := range skill.Files {
-		if file.Path != referencePath {
-			continue
-		}
-		want, err := os.ReadFile(filepath.Join("builtin_role_skills", skill.Name, referencePath))
-		if err != nil {
-			t.Fatalf("read source reference: %v", err)
-		}
-		if strings.TrimSpace(file.Content) == "" || file.Content != string(want) {
-			t.Fatal("template must deliver the complete CSV reference unchanged")
-		}
-		return
-	}
-	t.Fatal("template must include the linked CSV reference as a supporting file")
 }
 
 // TestRoleSkillTemplates_EveryEmbeddedSkillIsRegistered walks the embedded
