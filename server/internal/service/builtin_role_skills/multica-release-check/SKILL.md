@@ -1,6 +1,6 @@
 ---
 name: multica-release-check
-description: "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution."
+description: "准备发布或高风险操作时使用。交付适用检查结果和恢复方案；每项高风险操作须单独取得人工审批后，由 operator 执行。"
 user-invocable: false
 ---
 

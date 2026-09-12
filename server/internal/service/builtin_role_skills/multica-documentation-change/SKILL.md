@@ -1,6 +1,6 @@
 ---
 name: multica-documentation-change
-description: "Use when a change needs documentation: deciding what to write, keeping it true to the code, and finding what the change made wrong."
+description: "需要核对或更新变更相关文档时使用。依据实际代码行为修正受影响的说明，明确无需更新的情况；不修改代码、测试或配置。"
 user-invocable: false
 ---
 

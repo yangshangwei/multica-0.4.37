@@ -34,21 +34,25 @@ Stale writes return 409 without updates or events; successful writes keep the
 normal notification path. Conditional rollback also compares the recorded
 post-write timestamp and validates the original backup hash.
 
-The seven `builtin_role_skills/*/SKILL.md` bodies use Simplified Chinese. Keep
-their original frontmatter, canonical names, English discovery descriptions,
-CLI syntax and protocol/status values unchanged. Translate the working method,
-not the role's permissions or business rules. These body translations do not
+The seven `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
+Simplified Chinese. Descriptions state when the skill applies and its concrete
+result, preserving important delivery and authority boundaries without repeating
+the workflow. Keep canonical names, other frontmatter, CLI syntax and
+protocol/status values unchanged. Translate the working method, not the role's
+permissions or business rules. These translations do not
 set a global response language or change the role instructions' output contract.
 
 Language-only edits keep the existing behavior version; bundle hashes already
 track content changes. Materialization must continue to reuse existing workspace
 copies unchanged. Updating an existing copy is an explicit content update scoped
-to the intended workspace, with its original frontmatter and customizations
+to the intended workspace, with unrelated frontmatter and customizations
 preserved. Historical bodies need their own translation when their rules differ
 from today's template; do not silently upgrade behavior while localizing.
 
 `skill update --content-file` replaces the entire stored content but does not
-synchronize frontmatter into database metadata. Omit `files` and unrelated fields
+synchronize frontmatter into database metadata. When updating a description,
+send both `description` and the content with matching frontmatter through the
+normal update API. Omit `files` and unrelated fields
 to preserve supporting files, bindings and labels. The endpoint has no atomic
 compare-and-swap contract: compare before writing and verify afterwards, without
 claiming those checks eliminate concurrent-write races. New tasks receive the

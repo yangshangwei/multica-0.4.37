@@ -35,14 +35,17 @@ export function getBuiltinRoleSkillPresentation(
 
   // Production mounts only the current locale. Read secondary-language
   // search copy from the catalogs instead of asking i18next for an unloaded locale.
-  const sourceDescription = enSkills.builtin_role_skills[key].description;
+  const english = enSkills.builtin_role_skills[key];
   const chinese = zhSkills.builtin_role_skills[key];
-  const description = storedDescription ?? sourceDescription;
-  const hasDefaultDescription = description.trim() === sourceDescription.trim();
+  const description = storedDescription ?? chinese.description;
+  const hasDefaultDescription = [chinese.description, english.description]
+    .some((value) => description.trim() === value.trim());
   let translatedDescription = hasDefaultDescription
     ? t(($) => $.builtin_role_skills[key].description)
     : description;
-  let chineseDescription = hasDefaultDescription ? chinese.description : "";
+  let searchDescriptions = hasDefaultDescription
+    ? [chinese.description, english.description]
+    : [];
 
   // Existing workspace copies retain shipped defaults when templates change.
   // Recognize the exact old text so customized descriptions still stay untouched.
@@ -51,7 +54,10 @@ export function getBuiltinRoleSkillPresentation(
     description.trim() === enSkills.builtin_role_skills[key].description_v1.trim()
   ) {
     translatedDescription = t(($) => $.builtin_role_skills[key].description_v1);
-    chineseDescription = zhSkills.builtin_role_skills[key].description_v1;
+    searchDescriptions = [
+      zhSkills.builtin_role_skills[key].description_v1,
+      enSkills.builtin_role_skills[key].description_v1,
+    ];
   }
   const searchNames = [name, name.replace(/[-_]+/g, " "), chinese.name]
     .map((value) => value.toLowerCase());
@@ -63,7 +69,7 @@ export function getBuiltinRoleSkillPresentation(
     searchText: [
       ...searchNames,
       description,
-      ...(chineseDescription ? [chineseDescription] : []),
+      ...searchDescriptions,
     ].join("\n").toLowerCase(),
     isBuiltin: true,
   };

@@ -1,6 +1,6 @@
 ---
 name: multica-test-report
-description: "Use when reporting that code was verified: what ran, the real result, what each new test proves, and what was not covered."
+description: "汇报代码变更的验证结果时使用。记录实际执行的检查和结果，说明新增测试验证了什么，以及未运行或未覆盖的部分。"
 user-invocable: false
 ---
 

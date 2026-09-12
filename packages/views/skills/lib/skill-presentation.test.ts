@@ -43,10 +43,13 @@ const legacyDescriptions = [
   ],
 ] as const;
 
-function builtin(name: keyof typeof en.builtin_role_skills): SkillPresentationInput {
+function builtin(
+  name: keyof typeof en.builtin_role_skills,
+  description = zh.builtin_role_skills[name].description,
+): SkillPresentationInput {
   return {
     name,
-    description: en.builtin_role_skills[name].description,
+    description,
     config: { origin: { type: "builtin_role_skill", name, version: 1 } },
   };
 }
@@ -109,12 +112,13 @@ describe("built-in role skill presentation", () => {
     expect(translated.description).toBe(zh.builtin_role_skills[name].description);
     expect(translated.isBuiltin).toBe(true);
     expect(english.name).toBe(name);
-    expect(english.description).toBe(skill.description);
+    expect(english.description).toBe(en.builtin_role_skills[name].description);
     for (const presentation of [translated, english]) {
       expect(presentation.searchText).toContain(chinese);
       expect(presentation.searchText).toContain(name);
       expect(presentation.searchText).toContain(skill.description.toLowerCase());
       expect(presentation.searchText).toContain(translated.description.toLowerCase());
+      expect(presentation.searchText).toContain(english.description.toLowerCase());
     }
     expect(skill).toEqual(before);
   });
@@ -124,9 +128,19 @@ describe("built-in role skill presentation", () => {
       new URL(`../../../../server/internal/service/builtin_role_skills/${name}/SKILL.md`, import.meta.url),
       "utf8",
     );
-    expect(en.builtin_role_skills[name].description).toBe(
+    expect(zh.builtin_role_skills[name].description).toBe(
       parseFrontmatter(content).frontmatter?.description,
     );
+  });
+
+  it.each(names)("still translates the previous English default for %s", (name) => {
+    const skill = builtin(name, en.builtin_role_skills[name].description);
+    const before = structuredClone(skill);
+    expect(getSkillPresentation(skill, zhT).description).toBe(
+      zh.builtin_role_skills[name].description,
+    );
+    expect(getSkillPresentation(skill, enT).description).toBe(skill.description);
+    expect(skill).toEqual(before);
   });
 
   it.each([
@@ -145,18 +159,24 @@ describe("built-in role skill presentation", () => {
     });
   });
 
-  it("preserves a user-renamed skill and a customized description", () => {
-    const skill = builtin("multica-code-review");
-    const renamed = { ...skill, name: "team-review" };
-    expect(getSkillPresentation(renamed, zhT).name).toBe("team-review");
+  it.each(["Review only the billing migration.", "只审查计费迁移。"])(
+    "preserves a user-renamed skill and a customized description (%s)",
+    (description) => {
+      const skill = builtin("multica-code-review");
+      const renamed = { ...skill, name: "team-review" };
+      expect(getSkillPresentation(renamed, zhT).name).toBe("team-review");
 
-    const custom = { ...skill, description: "Review only the billing migration." };
-    const presentation = getSkillPresentation(custom, zhT);
-    expect(presentation.name).toBe("代码审查");
-    expect(presentation.description).toBe(custom.description);
-    expect(presentation.searchText).toContain("billing migration");
-    expect(presentation.searchText).not.toContain("兼容性");
-  });
+      const custom = { ...skill, description };
+      const presentation = getSkillPresentation(custom, zhT);
+      expect(presentation.name).toBe("代码审查");
+      expect(presentation.description).toBe(custom.description);
+      expect(presentation.searchText).toContain(description.toLowerCase());
+      expect(presentation.searchText).not.toContain("兼容性");
+      expect(presentation.searchText).not.toContain(
+        en.builtin_role_skills["multica-code-review"].description.toLowerCase(),
+      );
+    },
+  );
 
   it("treats unknown built-ins as ordinary skills", () => {
     const skill = {

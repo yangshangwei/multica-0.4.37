@@ -1,6 +1,6 @@
 ---
 name: multica-requirement-clarification
-description: "Use when a request is too vague to build or accept: derives open questions, acceptance criteria, risks and a work split from what the issue already contains."
+description: "需求尚不清楚、难以实施或验收时使用。根据任务已有信息整理待确认问题、可核验的验收标准、风险与工作拆分，将业务决策交由人工确认。"
 user-invocable: false
 ---
 

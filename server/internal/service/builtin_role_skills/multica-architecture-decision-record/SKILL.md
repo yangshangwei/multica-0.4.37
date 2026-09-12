@@ -1,6 +1,6 @@
 ---
 name: multica-architecture-decision-record
-description: "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences."
+description: "技术决策会约束后续工作时使用。在任务评论中起草架构决策记录（ADR），说明背景、决策、被否决的备选方案和决策的影响，交由实现工程师或人工保存。"
 user-invocable: false
 ---
 

@@ -284,7 +284,7 @@ describe("SkillsPage built-in skill presentation", () => {
     renderPage(adapter, "zh-Hans");
 
     const name = await screen.findByText("代码审查");
-    expect(screen.getByText(/检查正确性、兼容性和失败场景/)).toBeInTheDocument();
+    expect(screen.getByText(/围绕正确性、兼容性和失败场景/)).toBeInTheDocument();
     middleClick(name);
     expect(adapter.openInNewTab).toHaveBeenCalledWith(
       "/acme/skills/skill-1",
