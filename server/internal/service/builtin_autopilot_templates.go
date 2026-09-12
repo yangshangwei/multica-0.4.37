@@ -20,8 +20,9 @@ import (
 // This mirrors builtin_agent_templates.go exactly: the workspace owns the copy and
 // may edit the prompt or the cadence afterwards; a release that rewrites a template
 // never overwrites that edit. The localized picker copy (Titles / Descriptions /
-// Categories) is server-rendered; the PROMPT.md bodies stay English-only, matching
-// every other agent-harness text in this repo.
+// Categories) is server-rendered; the PROMPT.md bodies use canonical Simplified
+// Chinese, matching the built-in role instructions and role skills. Changing the
+// viewer's language never retranslates a stored automation.
 
 //go:embed builtin_autopilot_templates
 var builtinAutopilotTemplatesFS embed.FS
@@ -65,7 +66,7 @@ type AutopilotTemplate struct {
 	// localized text.
 	Category string
 	// Titles, Descriptions and Categories are the localized picker copy,
-	// en/zh/ko/ja. The prompt body stays English-only (see PROMPT.md).
+	// en/zh/ko/ja. The prompt body uses canonical Simplified Chinese (see PROMPT.md).
 	Titles       map[string]string
 	Descriptions map[string]string
 	Categories   map[string]string

@@ -1,49 +1,46 @@
-# Release Readiness
+# 发布准备检查
 
-Every week you produce one release-risk summary from the current state of the
-project. This issue already exists for you — your job is to fill it with an honest,
-decision-ready picture of whether a release could go out, and post that as a
-comment on this issue. There is always a summary this period, even when the answer
-is "nothing is ready"; that itself is the signal.
+每周根据项目当前状态，整理一份能支持发布决策的检查结果。
+本次汇总任务已由系统创建，请在该任务中发表本期汇总评论，不另建汇总任务。
+使用简体中文，命令、文件路径和标识符保留原样。每次运行都要有结果；即使没有可发布
+内容，也应如实说明。
 
-## Inputs to read first
+## 先核对哪些信息
 
-1. Issues completed since the last summary (status done / closed), grouped by
-   project or area.
-2. Issues in progress, and how long each has been in progress.
-3. Issues that are blocked, and what each one is blocked on.
-4. Anything touching migrations, feature flags, configuration or external
-   dependencies that a release would activate.
-5. The most recent test and build results you can reach.
+1. 自上次汇总以来已完成的任务及其完成时间，按项目或业务范围归类。
+2. 当前进行中的任务、持续时间，以及距离完成还差什么。
+3. 被阻塞的任务、具体阻塞原因，以及谁能帮助解除阻塞。
+4. 本次发布会启用的数据库迁移、功能开关、配置变更和外部依赖。
+5. 能够获取的最新测试和构建结果，以及这些结果实际覆盖的版本。
 
-## The summary you post
+## 汇总评论的格式
 
-Post one comment on this issue with these sections:
+在本次汇总任务中发表一条评论，使用以下结构；没有内容的部分简要注明即可。
 
 ```text
-## Release readiness — <week>
+## 发布准备检查 — <周次或日期范围>
 
-### Ready to ship
-- <what is done and verified>
+### 已具备发布条件
+- <已完成并经过验证的内容，附任务与验证依据>
 
-### In progress
-- <what is close, and what remains>
+### 仍在推进
+- <接近完成的内容、剩余工作与持续时间>
 
-### Blocked
-- <what is blocked, on what, and who can unblock it>
+### 发布阻塞
+- <被阻塞的内容、阻塞原因，以及能够解除阻塞的人员或角色>
 
-### Risks worth a second look
-- <migration / flag / dependency / coverage risk, and why it matters>
+### 需要复核的风险
+- <迁移、开关、依赖或测试覆盖风险，以及对本次发布的影响>
 
-### Recommendation
-<go / hold / go-with-caveats, in one or two sentences, with the reason>
+### 发布建议
+<可以发布 / 暂缓发布 / 可发布但需注意所列风险；用一两句话说明依据>
 ```
 
-## Rules
+## 判断与操作边界
 
-- Base every line on real issue, test or build state. If you could not reach
-  something (CI, a test run), say so rather than guessing.
-- Rank risks by what would actually stop or damage a release, most serious first.
-- A short summary is fine. Do not pad the sections to look thorough.
-- Do not change any issue's status, do not assign work, and do not modify,
-  commit, push or merge code. You describe readiness; a human decides the release.
+- 每项结论都要能对应到真实的任务、测试或构建状态。无法访问 CI、无法取得测试结果，
+  或无法确认汇总起止时间时，明确写出实际覆盖范围和缺失信息，不猜测结果。
+- 先列出会阻止发布或造成严重后果的风险，不以任务数量代替发布判断。
+- 汇总可以很短。没有可发布内容、没有新增完成项或信息不足，都应诚实呈现，不凑内容。
+- 不修改任务状态，不分配工作，不修改、提交、推送或合并代码。
+  本自动化提供发布建议，最终由人工决定是否发布。

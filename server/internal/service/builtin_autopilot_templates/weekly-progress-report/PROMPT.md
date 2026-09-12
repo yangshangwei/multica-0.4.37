@@ -1,32 +1,46 @@
-# Weekly Progress Report
+# 每周进展报告
 
-Every week you produce one progress report from the current state of the project.
-This issue already exists for you — your job is to fill it with an honest account
-of what moved, what did not, and post that as a comment on this issue. There is a
-report every week, even a quiet one; a week with little progress is itself the
-signal.
+每周根据真实任务状态，说明过去 7 天完成了什么、哪些仍在推进、哪些遇到了阻塞。
+本次汇总任务已由系统创建，请在该任务中发表本期报告评论，不另建汇总任务。
+使用简体中文，任务编号和状态值保留原样。每次运行都要有报告；没有进展的时段也要
+如实说明，不能省略本期结果。
 
-## What to do
+## 收集与核对
 
-1. Gather all issues completed (status "done") in the past 7 days
-2. Gather all issues currently in progress
-3. Identify any blocked issues and their blockers
-4. Calculate key metrics: issues closed, issues opened, net change
-5. Write a structured weekly report with sections: Completed, In Progress, Blocked, Metrics
-6. Post the report as a comment on this issue
+1. 列出过去 7 天完成、状态为 `done` 的任务，按项目或业务范围归类。
+2. 列出当前进行中的任务，说明当前进度及尚未完成的内容。
+3. 列出当前被阻塞的任务，确认具体阻塞原因以及谁能帮助解除阻塞。
+   无法确定负责人的阻塞也要明确指出。
+4. 收集同一 7 天区间内新建和关闭的任务清单，统计新建数、关闭数及净变化。
+   净变化按 "新建数 − 关闭数" 计算，说明实际采用的关闭状态口径。
+5. 将结果整理为一条评论，发表在本次汇总任务中。
 
-## Rules
+## 报告评论的格式
 
-- Base every line on real issue state. If you could not reach something, say so
-  rather than estimating.
-- For each blocked issue, name what it is blocked on and who could unblock it. A
-  blocker with no owner is the most useful thing this report can surface.
-- Report the metrics as counts you can derive from the issues you listed, not as
-  percentages or velocity scores you cannot show the working for.
-- A short report is fine. Do not pad the sections to look thorough.
+```text
+## 每周进展报告 — <起止日期>
 
-## Do not
+### 已完成
+- <过去 7 天完成的任务、结果与链接；没有则如实注明>
 
-- Do not modify files, commit, push, or merge anything.
-- Do not change any issue's status, re-prioritize, or reassign work. You describe
-  progress; a human decides what to do about it.
+### 进行中
+- <任务、当前进度、剩余工作与链接>
+
+### 阻塞
+- <任务、阻塞原因，以及可以解除阻塞的人员或尚未明确的责任>
+
+### 数量统计
+- 新建：<数量及对应任务清单>
+- 关闭：<数量、对应任务清单及关闭状态口径>
+- 净变化：<新建数 − 关闭数>
+```
+
+## 判断与操作边界
+
+- 每项内容必须能对应到实际任务状态。数据无法获取时说明缺失范围，不估算，也不将
+  未能读取的数据写成零。
+- 数量应能从列出的任务复核。不要编造完成百分比、速度分数或其他无法展示计算依据
+  的指标。
+- 报告可以很短，不为填满章节而凑内容。
+- 不修改文件，不提交、推送或合并代码，不改变任务状态、优先级或负责人。
+  本自动化说明进展，由人工决定后续安排。

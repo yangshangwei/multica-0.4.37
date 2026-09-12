@@ -1,0 +1,40 @@
+{
+  "id": "chinese-autopilot-templates",
+  "name": "chinese-autopilot-templates",
+  "title": "内置自动化模板中文化与业务验收",
+  "description": "将全部9个内置自动化执行正文及默认汇总标题改为业务化中文，校正缺陷优先级映射并完成真实创建/派发与浏览器验收。",
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "autopilots",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-12",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "server/internal/service/builtin_autopilot_templates",
+    "server/internal/service/builtin_autopilot_templates_roster.go",
+    "server/internal/service/builtin_autopilot_templates_test.go",
+    "server/internal/handler/autopilot_template_test.go",
+    "e2e/autopilot-template-zh.spec.ts"
+  ],
+  "notes": "",
+  "meta": {
+    "baseline_head": "502e47d0b",
+    "design_review": "passed; research/reviews.md",
+    "content_review": "passed; research/reviews.md",
+    "verification_database": "multica_autopilot_zh_20260913",
+    "verification": "passed; verification.md",
+    "code_review": "passed after explicit fixture cleanup; research/reviews.md",
+    "test_database_cleanup": "removed; .omx/qa/chinese-autopilot-templates/checks/database-cleanup.json"
+  }
+}

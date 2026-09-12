@@ -4466,8 +4466,8 @@ export class ApiClient {
    *
    * Workspace-independent — templates ship with the backend binary — so the
    * result is safe to cache for the session. `language` only selects the
-   * localized title, description and category label; the prompt is English by
-   * design, as every agent-harness text in this product is.
+   * localized title, description and category label; the prompt retains the
+   * canonical Chinese template body, independently of the viewer's UI language.
    */
   async listAutopilotTemplates(language?: string): Promise<AutopilotTemplate[]> {
     const query = language ? `?language=${encodeURIComponent(language)}` : "";

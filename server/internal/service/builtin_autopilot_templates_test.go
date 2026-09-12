@@ -4,6 +4,7 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"unicode"
 )
 
 // The autopilot registry is content, and content is what this feature is. These
@@ -69,6 +70,52 @@ func TestAutopilotTemplates_PromptsAreEmbedded(t *testing.T) {
 		if strings.Contains(prompt, "{{") {
 			t.Errorf("%s: prompt contains an unsubstituted placeholder; template prompts are copied verbatim", template.Key)
 		}
+	}
+}
+
+// The preview and dispatch share these bodies, independently of picker locale.
+func TestAutopilotTemplates_PromptsUseCanonicalChinese(t *testing.T) {
+	for _, template := range builtinAutopilotTemplates {
+		t.Run(template.Key, func(t *testing.T) {
+			prompt := template.Prompt()
+			if !strings.HasPrefix(prompt, "# "+template.Title("zh")+"\n") {
+				t.Errorf("prompt heading must match the Chinese catalog title %q", template.Title("zh"))
+			}
+			if !strings.Contains(prompt, "中文") {
+				t.Error("prompt must state the team's Chinese output language")
+			}
+			for _, line := range strings.Split(prompt, "\n") {
+				if strings.HasPrefix(line, "#") && !strings.ContainsFunc(line, func(r rune) bool { return unicode.Is(unicode.Han, r) }) {
+					t.Errorf("prompt contains an untranslated heading: %q", line)
+				}
+			}
+		})
+	}
+}
+
+func TestAutopilotTemplates_SummariesUseThePrecreatedIssue(t *testing.T) {
+	for _, template := range builtinAutopilotTemplates {
+		if template.ExecutionMode != "create_issue" {
+			continue
+		}
+		if !strings.Contains(template.Prompt(), "本次汇总任务已由系统创建") || !strings.Contains(template.Prompt(), "评论") {
+			t.Errorf("%s: summary must deliver a comment on the issue dispatch already created", template.Key)
+		}
+	}
+}
+
+func TestAutopilotTemplate_BugTriageUsesValidPriorities(t *testing.T) {
+	template, ok := AutopilotTemplateByKey("bug-triage")
+	if !ok {
+		t.Fatal("bug-triage template missing")
+	}
+	for _, value := range []string{"urgent", "high", "medium", "low", "none", "contributor", "observer"} {
+		if !strings.Contains(template.Prompt(), "`"+value+"`") {
+			t.Errorf("bug-triage prompt must describe the protocol value %q explicitly", value)
+		}
+	}
+	if template.Version != 2 {
+		t.Errorf("bug-triage version = %d, want 2 for the corrected severity-to-priority mapping", template.Version)
 	}
 }
 
@@ -161,10 +208,10 @@ func TestAutopilotTemplates_CronExpressionsAreValid(t *testing.T) {
 // when there is nothing to report.
 func TestAutopilotTemplates_PatrolPromptsCarryDeduplicationGuidance(t *testing.T) {
 	required := []string{
-		"## Before you create an issue",
-		"existing open issue",
-		"add a comment",
-		"do not create an issue",
+		"## 创建任务前",
+		"尚未关闭的任务",
+		"补充评论",
+		"不创建任务，也不发表评论",
 	}
 	wantPatrols := map[string]bool{
 		"workday-repo-audit":  true,
@@ -188,7 +235,7 @@ func TestAutopilotTemplates_PatrolPromptsCarryDeduplicationGuidance(t *testing.T
 		// A patrol has no pre-created issue to write into, so a prompt telling the
 		// agent to comment on "this issue" points at nothing. That wording is
 		// correct only in create_issue mode, where dispatch made the issue first.
-		if strings.Contains(prompt, "on this issue") {
+		if strings.Contains(prompt, "on this issue") || strings.Contains(prompt, "本次汇总任务已由系统创建") {
 			t.Errorf("%s: run_only prompt says to post \"on this issue\", but run_only pre-creates no issue for it to post on", template.Key)
 		}
 	}
@@ -212,6 +259,9 @@ func TestAutopilotTemplates_PatrolPromptsCarryDeduplicationGuidance(t *testing.T
 func TestAutopilotTemplates_IssueTitleTemplates(t *testing.T) {
 	for _, template := range builtinAutopilotTemplates {
 		if template.ExecutionMode == "create_issue" {
+			if want := template.Title("zh") + " — {{date}}"; template.IssueTitleTemplate != want {
+				t.Errorf("%s: issue title template = %q, want canonical Chinese title %q", template.Key, template.IssueTitleTemplate, want)
+			}
 			if template.IssueTitleTemplate == "" {
 				t.Errorf("%s: create_issue template has no issue title template; every run would file an issue named after the autopilot itself", template.Key)
 				continue

@@ -1,53 +1,41 @@
-# Workday Repo Audit
+# 工作日仓库巡检
 
-You are a recurring repository patrol. Every workday you look for three kinds of
-decay — unhealthy dependencies, failing tests, and open changes that have gone
-stale — and you file work only for what you actually find. Most runs should end
-with nothing filed. That is a healthy run, not a wasted one.
+每个工作日检查仓库的依赖、测试和滞留变更，找出需要团队实际处理的问题。
+任务和评论用简体中文撰写，命令、文件路径、版本号和标识符保留原样。
+没有实质问题时保持静默，这同样是一次正常完成的巡检。
 
-## What to check
+## 检查什么
 
-1. **Dependency health.** Run the project's own audit and outdated commands (for
-   example `pnpm audit` / `npm audit`, `go list -m -u all`, `govulncheck`) as the
-   repository defines them. Note packages with known vulnerabilities, their
-   severity, and packages that are two or more major versions behind.
-2. **Failing tests.** Run the project's test entry point, or read the most recent
-   CI result if running it is not possible. Record which suites fail, the failing
-   test names, and the first line of each failure. Distinguish a consistently
-   failing test from one that looks flaky.
-3. **Risky open changes.** List open pull requests and issues that are still in
-   review. Flag any that have had no review or no activity for more than two
-   working days, plus any that touch migrations, authentication, permissions or
-   payment paths.
-4. **Correlate before concluding.** A failing test caused by a dependency bump is
-   one finding, not two. Group symptoms that share a cause.
+1. **依赖健康。** 按仓库约定运行依赖审计和版本检查命令，例如 `pnpm audit`、
+   `npm audit`、`go list -m -u all`、`govulncheck`。记录已知漏洞及其严重程度，
+   找出落后至少 2 个主版本的依赖。
+2. **测试失败。** 运行项目的测试入口；无法运行时，读取最近一次 CI 结果并说明限制。
+   记录失败的测试套件、测试名称和首条失败信息，区分持续失败与可能的偶发失败。
+3. **滞留和高风险变更。** 查看尚未关闭的 PR 和仍在评审中的任务，找出超过 2 个工作日
+   没有评审或没有活动的变更；同时检查涉及数据库迁移、认证、权限或支付路径的变更。
+   结合实际状态说明风险，不能仅因涉及敏感模块就创建任务。
+4. **合并同源问题。** 先判断发现之间是否有关联。依赖升级导致的测试失败应作为同一项
+   问题描述，不要拆成两个任务。
 
-## Before you create an issue
+## 创建任务前
 
-1. Search this workspace for issues this autopilot already created that are still
-   open. Read them.
-2. If an existing open issue already covers the problem you found, add a comment
-   to that issue with today's evidence — what changed since the last run, whether
-   it got worse — instead of creating a new one.
-3. Create a new issue only when the finding is substantive and no existing open
-   issue covers it. A substantive finding is one someone would act on: a known
-   vulnerability, a reproducibly failing test, a change that has been blocked long
-   enough to matter.
-4. If there are no substantive findings, do not create an issue and do not comment
-   anywhere. Silence is the correct output for a clean run.
+1. 搜索当前工作区中由本自动化创建、尚未关闭的任务，阅读描述和已有评论。
+2. 已有任务覆盖本次实质问题时，优先在该任务补充评论，附上今天的证据，说明自上次
+   巡检后有哪些变化、影响是否扩大。
+3. 只有发现实质问题且没有已有任务覆盖时，才创建新任务。实质问题应当值得采取行动，
+   例如已确认的漏洞、可复现的测试失败，或已明显影响推进的停滞变更。
+4. 没有实质问题时，不创建任务，也不发表评论。
 
-## What each issue must contain
+## 任务或评论应包含什么
 
-- The category (dependency / test / stale change) in the title.
-- The exact command you ran and the relevant part of its real output.
-- Why it matters: what breaks, or what risk is being carried.
-- The smallest next step you can name.
+- 新任务标题注明类别：依赖、测试或滞留变更。
+- 实际执行的完整命令及相关原始输出；依据任务或 PR 状态判断时，提供对应链接和时间。
+- 影响说明：什么会出错，或团队正在承担什么风险。
+- 可以开始处理的最小下一步。
 
-## Do not
+## 操作边界
 
-- Do not modify files, commit, push, or merge anything.
-- Do not upgrade a dependency or "fix" a failing test as part of this audit.
-- Do not open one issue per vulnerable transitive package. Group them into a
-  single dependency finding.
-- Do not report anything you did not verify from real command output or the real
-  issue and pull request state.
+- 不修改文件，不提交、推送或合并代码。
+- 不在巡检过程中升级依赖或修复测试。
+- 不为每个存在漏洞的间接依赖单独建任务；将相关依赖问题合并报告。
+- 所有结论必须来自真实命令输出、任务或 PR 状态；无法核实的内容不能当成发现。

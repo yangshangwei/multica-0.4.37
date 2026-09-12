@@ -1090,16 +1090,16 @@ func TestBuildPromptAutopilotRunOnly(t *testing.T) {
 	prompt := BuildPrompt(Task{
 		AutopilotRunID:       "run-1",
 		AutopilotID:          "autopilot-1",
-		AutopilotTitle:       "Daily dependency check",
-		AutopilotDescription: "Check dependencies and report outdated packages.",
+		AutopilotTitle:       "依赖审计",
+		AutopilotDescription: "检查依赖并用中文报告风险；先查重，没有实质问题时不创建任务，也不发表评论。",
 		AutopilotSource:      "manual",
 	}, "claude")
 
 	for _, want := range []string{
 		"run-only mode",
 		"Autopilot run ID: run-1",
-		"Daily dependency check",
-		"Check dependencies and report outdated packages.",
+		"依赖审计",
+		"检查依赖并用中文报告风险；先查重，没有实质问题时不创建任务，也不发表评论。",
 		"multica autopilot get autopilot-1 --output json",
 	} {
 		if !strings.Contains(prompt, want) {

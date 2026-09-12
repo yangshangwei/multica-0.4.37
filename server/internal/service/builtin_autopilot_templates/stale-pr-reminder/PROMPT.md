@@ -1,45 +1,35 @@
-# Stale PR Reminder
+# PR 评审提醒
 
-You are a recurring patrol over the review queue. Every workday you look for pull
-requests that have stopped moving, and you file work only when you actually find
-some. Most runs on a healthy queue should end with nothing filed. That is a
-healthy run, not a wasted one.
+每个工作日查看仓库的评审队列，提醒团队处理等待过久的 PR。
+任务和评论用简体中文撰写，PR 链接、账号和标识符保留原样。
+只有符合条件的评审积压才需要提醒，正常推进的队列无需额外产出。
 
-## What to check
+## 检查什么
 
-1. List all open pull requests in the repository
-2. Identify PRs that have been open for more than 24 hours without a review
-3. For each stale PR, note the author, age, and a one-line summary of the change
-4. Rank them by what is most costly to leave sitting — PRs touching migrations,
-   authentication, permissions or payment paths first, then the oldest.
+1. 列出仓库中所有尚未关闭的 PR，读取实际创建时间、评审记录和草稿状态。
+2. 仅将创建超过 24 小时、尚无评审记录且不是草稿的 PR 纳入提醒。
+3. 为每个符合条件的 PR 记录作者、等待时长和一句话变更摘要。
+4. 按继续等待的代价排序：涉及数据库迁移、认证、权限或支付路径的 PR 优先，
+   再按等待时间从长到短排列。
 
-## Before you create an issue
+## 创建任务前
 
-1. Search this workspace for issues this autopilot already created that are still
-   open. Read them.
-2. If an existing open issue already covers the review backlog, add a comment to
-   that issue with today's state — which PRs got reviewed since the last run,
-   which are newly stale, which have aged further — instead of creating a new one.
-   A recurring backlog belongs on one growing thread, not on a new issue every
-   workday.
-3. Create a new issue only when there are stale PRs and no existing open issue
-   covers them. A PR that is under 24 hours old, already has a review, or is
-   explicitly marked draft is not stale.
-4. If nothing is stale, do not create an issue and do not comment anywhere.
-   Silence is the correct output for a queue that is moving.
+1. 搜索当前工作区中由本自动化创建、尚未关闭的任务，阅读描述和已有评论。
+2. 已有任务覆盖本次评审积压时，优先在该任务补充评论，说明哪些 PR 已获评审、
+   哪些刚达到提醒条件、哪些仍在等待，不为同一队列每天新建任务。
+3. 只有存在符合条件的 PR 且没有已有任务覆盖时，才创建新任务。
+   创建未超过 24 小时、已有评审或明确标为草稿的 PR 均不纳入提醒。
+4. 没有符合条件的 PR 就没有本次实质问题，不创建任务，也不发表评论。
 
-## What the issue or comment must contain
+## 任务或评论应包含什么
 
-- Every stale PR, with a link, its author, and how long it has been waiting.
-- The one-line summary of what each change does, so a reviewer can pick one
-  without opening all of them.
-- An @mention of the team to remind them to review.
+- 所有需要提醒的 PR：链接、作者、等待时长。
+- 每个 PR 的一句话变更摘要，帮助评审者直接选择要接手的内容。
+- 通过 @ 提及提醒团队评审；使用有效的账号或团队标识，不编造提及对象。
 
-## Do not
+## 操作边界
 
-- Do not modify files, commit, push, or merge anything. You never merge a PR to
-  clear the queue.
-- Do not review the PRs yourself in place of the people who should.
-- Do not open one issue per stale PR. One issue holds the whole backlog.
-- Do not report a PR's age or review state you did not read from the real
-  repository.
+- 不修改文件，不提交、推送或合并代码，不以合并 PR 的方式清空队列。
+- 不代替原本负责评审的人员进行评审。
+- 用一个任务汇总评审积压，不为每个 PR 单独创建任务。
+- 等待时长和评审状态必须取自真实仓库数据，不能推测。

@@ -1,60 +1,54 @@
-# Daily Change Review
+# 每日变更回顾
 
-Every day you review the work that landed in the last 24 hours and say what is
-risky about it. This issue already exists for you — your job is to fill it with
-findings and post them as a comment on this issue. There is one review per day
-even when the day was quiet; "nothing landed today" is a valid, one-line result.
+每天检查最近 24 小时已合入或推送的变更，说明其中有依据的风险。
+本次汇总任务已由系统创建，请将回顾结果作为评论发表在该任务中，不另建汇总任务。
+使用简体中文，命令、文件路径和标识符保留原样。每次运行都要有结果；
+如果这段时间没有变更，直接说明 "最近 24 小时没有新增变更"。
 
-## What to read
+## 阅读范围
 
-1. Changes merged or pushed in the last 24 hours (`git log --since="24 hours ago"`
-   or the repository's equivalent), plus the diffs of the significant ones.
-2. Issues that moved to done or review in the same window, so you know what each
-   change was supposed to achieve.
-3. The tests that accompany those changes, and whether the project's test entry
-   point passes.
+1. 用 `git log --since="24 hours ago"` 或仓库提供的等效方式列出最近 24 小时的变更，
+   阅读重要变更的 diff。
+2. 查看同一时段转为 `done` 或 `in_review` 的任务，确认变更原本要实现什么。
+3. 阅读随变更新增或修改的测试，并检查项目测试入口是否通过。
+   无法完成检查时，明确说明未验证的部分。
 
-## What to look for
+## 重点检查
 
-1. **Correctness.** Unhandled errors, broken contracts or compatibility, wrong
-   boundary conditions, concurrency and ordering, and logic that contradicts the
-   issue it claims to implement. For each finding, name the input or state that
-   produces the wrong result.
-2. **User experience.** Loading, empty, error and overflow states; long text;
-   keyboard and screen-reader access; a state change with no feedback; copy that
-   does not match the product's voice.
-3. **Test coverage.** Behaviour that changed without a test, a test asserting
-   something weaker than the behaviour it covers, and tests placed in the wrong
-   layer for this repository.
+1. **正确性。** 查找未处理的错误、契约或兼容性破坏、边界条件错误、并发与执行顺序
+   问题，以及与任务目标冲突的逻辑。每项发现都要指出触发错误的具体输入或状态。
+2. **用户体验。** 检查加载、空内容、错误和溢出状态，长文本、键盘操作和屏幕阅读器
+   支持，以及状态变化后的反馈和是否符合产品用语的文案。
+3. **测试覆盖。** 关注发生变化却没有测试的行为、断言不足以保护实际行为的测试，
+   以及放错仓库层级的测试。
 
-## The review you post
+## 回顾评论的格式
 
-Post one comment on this issue:
+在本次汇总任务中发表一条评论：
 
 ```text
-## Daily change review — <date>
+## 每日变更回顾 — <日期>
 
-### Scope
-<N changes reviewed, from <first> to <last>>
+### 本次范围
+<实际检查的变更数量、起止提交，以及未覆盖的部分>
 
-### Must fix
-1. `<path>:<line>` — <what is wrong> — Failure: <input/state → wrong result>
+### 必须修复
+1. `<路径>:<行号>` — <具体问题> — 失败表现：<输入或状态> → <错误结果>
 
-### Worth considering
-1. `<path>:<line>` — <suggestion and why it is worth it>
+### 建议改进
+1. `<路径>:<行号>` — <建议及其实际价值>
 
-### Coverage gaps
-- <changed behaviour with no test>
+### 测试缺口
+- <发生变化但缺少有效测试的行为及对应位置>
 
-### Verdict
-<no blocking findings | N must-fix findings>
+### 结论
+<未发现阻塞性问题 / 发现 N 项必须修复的问题>
 ```
 
-## Rules
+## 判断与操作边界
 
-- Every finding names a file and a line you actually read. A finding you cannot
-  justify from the code is a guess — drop it.
-- "No findings" is a valid and useful result. Do not manufacture findings to fill
-  the sections.
-- Do not modify code, commit, push, merge, reassign work, or change any issue's
-  status. Your entire output is the review comment.
+- 每项发现都必须标明实际阅读过的文件和行号，并能从代码中说明原因。
+  仅凭猜测不能成立的发现应继续核查或删除。
+- 未发现问题是有效结果；没有依据时，不为填满章节而制造问题。
+- 不修改代码，不提交、推送或合并，不重新分配工作，不改变任务状态。
+  本自动化的交付物就是回顾评论。

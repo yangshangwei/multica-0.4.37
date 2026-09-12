@@ -226,6 +226,22 @@ func TestInterpolateTemplate(t *testing.T) {
 	}
 }
 
+func TestInterpolateTemplate_ChineseSummariesUseTheTriggerDate(t *testing.T) {
+	s := &AutopilotService{}
+	run := db.AutopilotRun{TriggeredAt: pgtype.Timestamptz{
+		Time: time.Date(2026, 9, 12, 20, 0, 0, 0, time.UTC), Valid: true,
+	}}
+	for _, template := range AutopilotTemplates() {
+		if template.ExecutionMode != "create_issue" {
+			continue
+		}
+		ap := db.Autopilot{Title: template.Title("zh"), IssueTitleTemplate: pgtype.Text{String: template.IssueTitleTemplate, Valid: true}}
+		if got, want := s.interpolateTemplate(ap, run, "Asia/Shanghai"), template.Title("zh")+" — 2026-09-13"; got != want {
+			t.Errorf("%s: Chinese summary title = %q, want %q", template.Key, got, want)
+		}
+	}
+}
+
 func TestInterpolateTemplate_UsesTriggerTimezoneForDate(t *testing.T) {
 	s := &AutopilotService{}
 	ap := db.Autopilot{

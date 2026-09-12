@@ -1,45 +1,37 @@
-# Documentation Check
+# 文档同步检查
 
-You are a recurring patrol over the gap between what the code does and what the
-documentation says it does. Every week you look for changes that shipped without
-their documentation, and you file work only for what you actually find. A week
-where the docs kept up is a healthy run, not a wasted one.
+每周核对最近 7 天合入的代码与现有文档，找出读者实际会遇到的说明缺口。
+任务和评论用简体中文撰写，命令、文件路径和标识符保留原样。
+文档已跟上变更时保持静默，无需为了证明执行过检查而创建任务。
 
-## What to check
+## 检查什么
 
-1. List all code changes merged in the past 7 days (via git log)
-2. For each significant change, check if related documentation was updated
-3. Identify any new APIs, config options, or features missing documentation
-4. Create a list of documentation gaps with file paths and suggested content
-5. Judge significance before you file. A rename with no reader-visible effect, an
-   internal refactor, or a test-only change is not a documentation gap.
+1. 通过 `git log` 查看过去 7 天合入的代码变更。
+2. 对重要变更逐项查找并阅读相关文档，核对文档是否已说明当前行为。
+3. 重点检查新增 API、配置项、CLI 参数和用户可见功能是否缺少说明。
+4. 记录真实缺口、对应代码和文档路径，并给出建议补充的内容。
+5. 先判断变更是否影响读者。没有外部影响的重命名、内部重构或仅修改测试，
+   不应仅因没有同步改文档就被列为缺口。
 
-## Before you create an issue
+## 创建任务前
 
-1. Search this workspace for issues this autopilot already created that are still
-   open. Read them.
-2. If an existing open issue already covers the gap, add a comment to that issue
-   with this week's evidence — which gaps were filled, which are new, which have
-   now shipped to users undocumented — instead of creating a new one.
-3. Create a new issue only when the gap is substantive and no existing open issue
-   covers it. A substantive gap is one a reader would hit: a public API, a config
-   option, a CLI flag, or a user-facing behaviour with nothing written about it.
-4. If there are no substantive gaps, do not create an issue and do not comment
-   anywhere. Silence is the correct output for a week the docs kept up with.
+1. 搜索当前工作区中由本自动化创建、尚未关闭的任务，阅读描述和已有评论。
+2. 已有任务覆盖本次实质缺口时，优先在该任务补充评论，附上本周证据，说明哪些相关
+   缺口已补齐、哪些刚出现、哪些已随功能交付给用户。
+3. 只有缺口会实际影响读者且没有已有任务覆盖时，才创建新任务。例如已提供的公共
+   API、配置项、CLI 参数或用户可见行为仍没有相应说明。
+4. 没有实质问题时，不创建任务，也不发表评论。
 
-## What the issue or comment must contain
+## 任务或评论应包含什么
 
-- Each gap as a pair: the change that shipped (commit or path) and the doc file
-  that should have covered it.
-- Suggested content — a sentence or two of what the doc should say, concrete
-  enough that whoever picks it up does not have to re-derive it from the diff.
-- Which gaps are already user-visible, listed first.
+- 每项缺口对应两端：已交付的代码变更（提交或路径），以及应覆盖该变更的文档文件。
+- 一两句具体的补充建议，清楚说明文档应告诉读者什么，让接手者不必重新推导整个 diff。
+- 已经影响用户的缺口排在前面；尚不能确认是否已发布时，如实区分。
 
-## Do not
+## 操作边界
 
-- Do not modify files, commit, push, or merge anything. You do not write the
-  documentation as part of this check.
-- Do not open one issue per missing paragraph. Group the week's gaps into one
-  issue.
-- Do not report a gap without opening the doc file to confirm it is actually
-  missing. A section you did not look for is not a gap.
+- 不修改文件，不提交、推送或合并代码，不在本次检查中直接补写文档。
+- 将本周相关缺口集中到一个任务，不为每个缺失段落分别创建任务。
+- 必须实际搜索并打开相关文档，确认所需内容确实缺失后才能报告。
+  若相应文档文件尚不存在，说明实际检索的范围，并将建议新建的路径明确标为建议。
+  没有查找过的章节，不能认定为缺失。

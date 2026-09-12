@@ -1,60 +1,60 @@
-# Bug Triage
+# 缺陷分级
 
-Every workday you triage the bug reports nobody has prioritized yet, and you
-produce one triage result. This issue already exists for you — your job is to fill
-it with what you triaged and what you decided. There is a triage result every run,
-even when the queue was empty; "no unprioritized issues today" is a valid,
-one-line result.
+每个工作日评估尚未分级的缺陷，说明用户影响，并在权限允许时设置优先级。
+本次汇总任务已由系统创建，请在该任务中发表本期汇总评论，不另建汇总任务。
+使用简体中文，命令、文件路径和协议值保留原样。每次运行都要有结果；
+如果没有待分级的缺陷，直接说明 "本次没有尚未分级的缺陷"。
 
-## This template writes to issues
+## 先确认写入权限
 
-Step 4 below sets the `priority` field on other issues. That is a write, not a
-read, so the agent running this autopilot needs enough autonomy to change issue
-attributes — at least `contributor`; an `observer` agent is allowed to read and
-comment only, and the server will refuse the priority change.
+本模板会修改源任务的 `priority`。执行智能体至少需要 `contributor` 权限；
+`observer` 只能读取和发表评论，不得将优先级建议描述为已经应用。
+服务端是否接受写入，以实际返回结果为准。
 
-If a priority write is refused, do not stop and do not fail silently. Carry on
-with the assessment and put the priority you recommend in the comment instead,
-worded so a human can apply it in one action:
+写入被拒绝时，继续评估其他缺陷，在源任务的评论中写明建议值、尚未应用及实际原因，
+让有权限的人员能够直接处理。例如：
 
 ```text
-Recommended priority: high (could not set it — this agent's autonomy is read-only)
+建议优先级：high。尚未应用：本智能体仅有 observer 权限，请有权限的人员确认后设置。
 ```
 
-Then say in your summary on this issue that the priorities were recommended rather
-than applied, so nobody assumes the queue is sorted when it is not.
+本次汇总评论也必须区分已经设置和仅提出建议的任务，不能让团队误以为分级已经完成。
 
-## What to do
+## 按顺序处理
 
-1. List all backlog issues that have not been prioritized
-2. For each issue, read the description and any attached logs or screenshots
-3. Assess severity (critical / high / medium / low) based on user impact and scope
-4. Set the priority field on the issue accordingly
-5. Add a comment explaining your assessment and suggested next steps
+1. 列出当前工作区中处于 `backlog`、尚未分级的缺陷任务。
+   `priority` 为 `none` 表示未分级；已有其他优先级的任务不重新分级。
+2. 阅读每个任务的描述，以及已有日志、截图和复现信息，确认影响范围与临时解决办法。
+3. 根据下表评估严重程度，说明具体影响、受影响用户和对应证据。
+4. 证据充分且有写入权限时，仅修改 `priority`，使用下表中的合法值。
+   只在服务端确认成功后记录为 "已设置"；被拒绝则保留建议并继续处理。
+5. 在源任务补充评论，解释判断依据、实际处理结果和建议的下一步。
+6. 在本次汇总任务中发表一条评论，列出已评估的任务及链接，区分 "已设置优先级"、
+   "仅建议，尚未应用" 和 "证据不足，保留未分级"，并列出需要补充的信息。
 
-## How to assess severity
+## 严重程度与优先级
 
-- **critical** — data loss, a security hole, or the product unusable for everyone,
-  with no workaround.
-- **high** — a core flow is broken, or many users are affected, and the workaround
-  is bad enough that people will not find it.
-- **medium** — a real defect in a non-core path, or one with a workaround a user
-  can reasonably reach.
-- **low** — cosmetic, rare, or already mitigated.
+严重程度描述缺陷影响，写入时必须使用对应的 `priority` 值：
 
-Name the impact and the scope that put each issue in its band. "Feels important"
-is not an assessment.
+| 严重程度 | `priority` 值 | 判断依据 |
+| --- | --- | --- |
+| 严重 | `urgent` | 数据丢失、安全漏洞，或所有用户都无法使用产品，且没有可行的临时解决办法。 |
+| 高 | `high` | 核心流程中断或大量用户受影响，现有绕行办法难以发现或使用。 |
+| 中 | `medium` | 非核心路径存在实际缺陷，或用户能合理采用临时解决办法。 |
+| 低 | `low` | 外观问题、很少触发，或影响已经得到缓解。 |
 
-## What to leave alone
+`none` 不是严重程度，而是尚未分级。不得将严重程度名称直接写入 `priority`。
+判断必须来自任务中的实际证据，不能以 "感觉很重要" 代替影响分析。
 
-- An issue whose report you cannot understand: do not guess a priority. Comment
-  asking for the specific thing you need — repro steps, a version, a log line —
-  and leave it unprioritized.
-- An issue that already has a priority. It has been triaged; do not re-triage it.
+## 哪些任务保持原样
 
-## Do not
+- 信息不足、无法理解或不能确认影响的缺陷：保留 `none`，在源任务评论中明确索要
+  所缺的复现步骤、版本、日志等信息，不猜测优先级。
+- 已有优先级的任务：保持原值，不重复分级，也不覆盖他人的判断。
 
-- Do not modify files, commit, push, or merge anything.
-- Do not change any issue's status, assign it, or close it. Priority is the only
-  field this autopilot touches.
-- Do not report a severity you cannot justify from what you read in the issue.
+## 操作边界
+
+- 不修改文件，不提交、推送或合并代码，不在分级时修复缺陷。
+- 不改变任务状态，不设置或更换负责人，不关闭任务。唯一可以修改的任务字段是
+  `priority`，且必须遵守执行智能体的权限。
+- 不能依据已读材料解释的严重程度，不得报告为确定结论。

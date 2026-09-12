@@ -99,9 +99,41 @@ skill. General builtin downloads do not query onboarding scope. Regression
 coverage lives in `daemon_builtin_skills_scope_test.go` and
 `builtin_skill_scope_test.go`.
 
+## Autopilot prompt language and business boundaries
+
+The nine `builtin_autopilot_templates/*/PROMPT.md` bodies use canonical
+Simplified Chinese, following the role-instruction and role-skill convention.
+Locale selects catalog labels and the title stored on a newly created autopilot;
+it does not select another execution body. The preview, `autopilot.description`,
+and the dispatched brief must preserve the same content. Template releases and
+locale changes never rewrite existing workspace copies.
+
+Keep the five `run_only` patrols distinct from the four `create_issue` summaries.
+Patrols search the workspace for their existing open issues before creating work,
+append evidence to an existing issue when it covers the finding, and create no
+issue or comment when there is no substantive finding. Summaries comment on the
+issue dispatch already created, including for an empty reporting period. A
+missing check result is not a verified failure or a zero count.
+
+The bug-triage template is version 2 because it explicitly maps severity to the
+supported `priority` values: `urgent`, `high`, `medium`, and `low`. `none` remains
+unprioritized when evidence is insufficient. Contributor authority is required
+by its instructions to change priority; observers recommend in comments. State
+whether each write was applied or only recommended, according to the actual
+response. Do not assume that every priority write has a dedicated server-side
+observer rejection: the task's autonomy policy must also be respected. The other
+eight templates retain version 1 for language-only wording changes.
+
+`TestAutopilotTemplateCreate_ChineseTemplatesDispatchVerbatim` covers all nine
+templates through real database creation, schedule dispatch and daemon claim;
+`e2e/autopilot-template-zh.spec.ts` covers the Chinese browser flow with real APIs
+and an isolated runtime fixture. Neither check launches a real model. Content
+review must still compare the prompts' evidence, thresholds and authority rules;
+string assertions alone do not establish semantic equivalence.
+
 ## Convention: create_issue autopilot templates must carry a `{{date}}` issue title template
 
-**What**: Every built-in autopilot template with `ExecutionMode: "create_issue"` must set `IssueTitleTemplate` to `"<English title> — {{date}}"` (em dash). Every `run_only` template must leave it empty so the column lands NULL.
+**What**: Every built-in autopilot template with `ExecutionMode: "create_issue"` must set `IssueTitleTemplate` to `"<Chinese title> — {{date}}"` (em dash), using its canonical Chinese catalog title. Every `run_only` template must leave it empty so the column lands NULL.
 
 **Why**: `dispatchCreateIssue` creates the issue BEFORE the agent runs, and `interpolateTemplate` (`server/internal/service/autopilot.go`) falls back to `ap.Title` when `issue_title_template` is empty. A `create_issue` template without `{{date}}` produces an identically-titled issue every period — 30 indistinguishable "每日变更回顾" issues in a month. `run_only` opens no issue, so a title template there would be dead weight.
 
@@ -112,7 +144,7 @@ coverage lives in `daemon_builtin_skills_scope_test.go` and
 {
     Key:              "daily-change-review",
     ExecutionMode:    "create_issue",
-    IssueTitleTemplate: "Daily Change Review — {{date}}",
+    IssueTitleTemplate: "每日变更回顾 — {{date}}",
     ...
 }
 
@@ -126,12 +158,12 @@ coverage lives in `daemon_builtin_skills_scope_test.go` and
 // Bad — create_issue without {{date}}: every run opens an identically-titled issue
 {
     ExecutionMode:      "create_issue",
-    IssueTitleTemplate: "Daily Change Review",  // rejected by the roster test
+    IssueTitleTemplate: "每日变更回顾",  // rejected by the roster test
     ...
 }
 ```
 
-**Enforcement**: `TestAutopilotTemplates_IssueTitleTemplates` (`server/internal/service/builtin_autopilot_templates_test.go`) asserts every create_issue template is non-empty, contains `{{date}}`, and passes `ValidateIssueTitleTemplate`; every run_only template is the empty string. `{{date}}` is the only placeholder `ValidateIssueTitleTemplate` accepts — do not add others without updating that validator and its docs.
+**Enforcement**: `TestAutopilotTemplates_IssueTitleTemplates` (`server/internal/service/builtin_autopilot_templates_test.go`) asserts every create_issue template uses its Chinese title, contains `{{date}}`, and passes `ValidateIssueTitleTemplate`; every run_only template is the empty string. `{{date}}` is the only placeholder `ValidateIssueTitleTemplate` accepts — do not add others without updating that validator and its docs. A schedule dispatch uses its trigger's timezone; a manual run without a trigger ID keeps the existing UTC fallback.
 
 ## Gotcha: template-decided fields come from the server, never the request
 

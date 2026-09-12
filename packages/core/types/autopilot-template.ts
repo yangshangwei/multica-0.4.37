@@ -40,7 +40,7 @@ export interface AutopilotTemplate {
    */
   execution_mode: string;
   avatar_emoji: string;
-  /** The full English prompt, exactly as it will be copied onto the row. */
+  /** The canonical Chinese prompt, exactly as it will be copied onto the row. */
   prompt: string;
 }
 
@@ -61,7 +61,7 @@ export interface CreateAutopilotFromTemplateRequest {
   project_id?: string | null;
   /** The schedule trigger's timezone. Omitted means UTC. */
   timezone?: string;
-  /** Selects the localized title stored on the row. The prompt stays English. */
+  /** Selects the localized title; the prompt retains its canonical Chinese body. */
   language?: string;
   subscribers?: AutopilotSubscriberInput[];
 }

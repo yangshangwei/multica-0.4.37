@@ -17,12 +17,14 @@ import (
 
 // cleanupTemplateAutopilot removes an autopilot this test created through the
 // API. Rows the API creates are outside dbfx's cleanup ledger, so each test that
-// creates one has to name it. Deleting the autopilot takes its trigger, rule
-// versions and subscribers with it.
+// creates one has to name it. Subscribers and rule versions have no foreign
+// keys, so clean them up explicitly before deleting the autopilot.
 func cleanupTemplateAutopilot(t *testing.T, autopilotID string) {
 	t.Helper()
 	t.Cleanup(func() {
-		testPool.Exec(context.Background(), `DELETE FROM autopilot WHERE id = $1`, autopilotID)
+		dbfx.Exec(t, `DELETE FROM autopilot_subscriber WHERE autopilot_id = $1`, autopilotID)
+		dbfx.Exec(t, `DELETE FROM autopilot_rule_version WHERE autopilot_id = $1`, autopilotID)
+		dbfx.Exec(t, `DELETE FROM autopilot WHERE id = $1`, autopilotID)
 	})
 }
 
@@ -85,6 +87,10 @@ func TestListAutopilotTemplates_ReturnsTheRosterWithPrompts(t *testing.T) {
 			// here would mean the embedded file failed to load in the built binary.
 			t.Errorf("%s: prompt is empty", template.Key)
 		}
+		canonical, ok := service.AutopilotTemplateByKey(template.Key)
+		if !ok || template.Prompt != canonical.Prompt() {
+			t.Errorf("%s: preview differs from the body used by creation", template.Key)
+		}
 		if template.ExecutionMode != "create_issue" && template.ExecutionMode != "run_only" {
 			t.Errorf("%s: execution_mode = %q, want create_issue or run_only", template.Key, template.ExecutionMode)
 		}
@@ -97,6 +103,142 @@ func TestListAutopilotTemplates_ReturnsTheRosterWithPrompts(t *testing.T) {
 	audit := findAutopilotTemplate(t, out.Templates, "workday-repo-audit")
 	if audit.Title == "Workday Repo Audit" {
 		t.Errorf("title for language=zh = %q, want the localized label", audit.Title)
+	}
+}
+
+// Exercise the real creation, schedule dispatch and daemon claim for every
+// template. The registry owns wording checks; this owns unchanged delivery.
+func TestAutopilotTemplateCreate_ChineseTemplatesDispatchVerbatim(t *testing.T) {
+	ctx := context.Background()
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, template := range service.AutopilotTemplates() {
+		t.Run(template.Key, func(t *testing.T) {
+			daemonID := "chinese-template-" + template.Key
+			runtimeID := dbfx.Runtime(t, "Chinese template runtime", testutil.Cols{
+				"daemon_id":    daemonID,
+				"runtime_mode": "local",
+				"provider":     "codex",
+				"metadata":     testutil.Raw(`'{"capabilities":["rpc-v1"],"cli_version":"0.4.40"}'::jsonb`),
+			})
+			agentID := dbfx.Agent(t, "自动化验收智能体", runtimeID, testutil.Cols{"runtime_mode": "local"})
+			var created CreateAutopilotFromTemplateResponse
+			testutil.Call(t, testHandler.CreateAutopilotFromTemplate,
+				newRequest(http.MethodPost, "/api/autopilots/from-template", map[string]any{
+					"template_key": template.Key,
+					"assignee_id":  agentID,
+					"language":     "zh",
+					"timezone":     "Asia/Shanghai",
+					// Unknown content fields must not override the registry snapshot.
+					"title":                "Client override",
+					"description":          "Client override",
+					"prompt":               "Client override",
+					"cron_expression":      "* * * * *",
+					"execution_mode":       "invalid",
+					"issue_title_template": "Client override",
+					"subscribers": []map[string]string{
+						{"user_type": "member", "user_id": testUserID},
+					},
+				})).Want(http.StatusCreated).JSON(&created)
+			cleanupTemplateAutopilot(t, created.Autopilot.ID)
+			dbfx.Cleanup(t, `DELETE FROM issue WHERE origin_type = 'autopilot' AND origin_id = $1`, created.Autopilot.ID)
+			dbfx.Cleanup(t, `DELETE FROM agent_task_queue WHERE agent_id = $1`, agentID)
+
+			stored, err := testHandler.Queries.GetAutopilot(ctx, parseUUID(created.Autopilot.ID))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if stored.Title != template.Title("zh") || !stored.Description.Valid || stored.Description.String != template.Prompt() {
+				t.Fatal("stored Chinese title/body differs from the template preview")
+			}
+			if stored.ExecutionMode != template.ExecutionMode || stored.IssueTitleTemplate.String != template.IssueTitleTemplate {
+				t.Fatal("client content fields overrode the template's execution configuration")
+			}
+			if created.Autopilot.TemplateKey != template.Key || created.Autopilot.TemplateVersion != template.Version {
+				t.Fatal("creation lost template provenance")
+			}
+			if created.Trigger.CronExpression == nil || *created.Trigger.CronExpression != template.CronExpression ||
+				created.Trigger.Timezone == nil || *created.Trigger.Timezone != "Asia/Shanghai" || created.Trigger.NextRunAt == nil {
+				t.Fatal("creation lost the template's schedule or selected timezone")
+			}
+
+			run, err := testHandler.AutopilotService.DispatchAutopilotForPlan(ctx, stored, parseUUID(created.Trigger.ID), "schedule", nil, time.Now().UTC())
+			if err != nil || run == nil {
+				t.Fatalf("scheduled dispatch: run=%v err=%v", run, err)
+			}
+			if template.ExecutionMode == "create_issue" {
+				if !run.IssueID.Valid {
+					t.Fatalf("summary dispatch did not create an issue: status=%s", run.Status)
+				}
+				var title, description string
+				dbfx.QueryRow(t, `SELECT title, description FROM issue WHERE id = $1`, run.IssueID).Scan(&title, &description)
+				wantTitle := template.Title("zh") + " — " + run.TriggeredAt.Time.In(location).Format("2006-01-02")
+				if title != wantTitle || !strings.HasPrefix(description, template.Prompt()+"\n") {
+					t.Fatalf("summary lost its Chinese dated title or prompt: title=%q, want=%q", title, wantTitle)
+				}
+				if count := dbfx.Count(t, `SELECT count(*) FROM issue_subscriber WHERE issue_id = $1 AND user_type = 'member' AND user_id = $2 AND reason = 'autopilot'`, run.IssueID, testUserID); count != 1 {
+					t.Fatalf("summary subscribers = %d, want 1", count)
+				}
+			} else {
+				if run.IssueID.Valid || !run.TaskID.Valid {
+					t.Fatalf("patrol must enqueue a task without pre-creating an issue: status=%s", run.Status)
+				}
+				if count := dbfx.Count(t, `SELECT count(*) FROM issue WHERE origin_type = 'autopilot' AND origin_id = $1`, stored.ID); count != 0 {
+					t.Fatalf("patrol created %d issues before the agent found anything", count)
+				}
+			}
+
+			var claimed struct {
+				Task *AgentTaskResponse `json:"task"`
+			}
+			claimRequest := withURLParam(newDaemonTokenRequest(http.MethodPost,
+				"/api/daemon/runtimes/"+runtimeID+"/claim", nil, testWorkspaceID, daemonID), "runtimeId", runtimeID)
+			testutil.Call(t, testHandler.ClaimTaskByRuntime, claimRequest).Want(http.StatusOK).JSON(&claimed)
+			if claimed.Task == nil || claimed.Task.AgentID != agentID {
+				t.Fatal("dispatch did not produce a claimable task for the selected agent")
+			}
+			if template.ExecutionMode == "run_only" {
+				if claimed.Task.AutopilotDescription != template.Prompt() || claimed.Task.AutopilotTitle != template.Title("zh") || claimed.Task.IssueID != "" {
+					t.Fatal("daemon claim changed the Chinese patrol prompt or introduced an issue")
+				}
+			} else if claimed.Task.IssueID != uuidToString(run.IssueID) {
+				t.Fatal("daemon claim points to a different summary issue")
+			}
+		})
+	}
+}
+
+func TestAutopilotTemplateCreate_UserEditsRemainIndependent(t *testing.T) {
+	agentID := createHandlerTestAgent(t, "Editable Chinese automation", nil)
+	var created CreateAutopilotFromTemplateResponse
+	testutil.Call(t, testHandler.CreateAutopilotFromTemplate,
+		newRequest(http.MethodPost, "/api/autopilots/from-template", map[string]any{
+			"template_key": "daily-change-review", "assignee_id": agentID, "language": "zh",
+		})).Want(http.StatusCreated).JSON(&created)
+	cleanupTemplateAutopilot(t, created.Autopilot.ID)
+
+	const customBody = "# 团队变更回顾\n\n只检查本项目的导入流程，用中文列出实际发现。"
+	const customTitle = "团队回顾 — {{date}}"
+	request := withURLParam(newRequest(http.MethodPatch, "/api/autopilots/"+created.Autopilot.ID, map[string]any{
+		"description": customBody, "issue_title_template": customTitle,
+	}), "id", created.Autopilot.ID)
+	testutil.Call(t, testHandler.UpdateAutopilot, request).Want(http.StatusOK)
+
+	for _, language := range []string{"zh", "en", "ja", "ko"} {
+		testutil.Call(t, testHandler.ListAutopilotTemplates,
+			newRequest(http.MethodGet, "/api/autopilots/templates?language="+language, nil)).Want(http.StatusOK)
+	}
+	stored, err := testHandler.Queries.GetAutopilot(context.Background(), parseUUID(created.Autopilot.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if stored.Description.String != customBody || stored.IssueTitleTemplate.String != customTitle {
+		t.Fatal("template reads overwrote the workspace's customized body or issue title")
+	}
+	if stored.Title != "每日变更回顾" {
+		t.Fatalf("viewing another language renamed the persisted automation: %q", stored.Title)
 	}
 }
 

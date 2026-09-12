@@ -40,6 +40,8 @@ The built-in automation roster ships with the server binary. Two HTTP endpoints 
 - `GET /api/autopilots/templates?language=` lists the roster with localized card copy (en/zh/ja/ko). Read-only and workspace-independent — every workspace on the server gets the same answer.
 - `POST /api/autopilots/from-template` creates an autopilot AND its schedule trigger in one transaction. The request body carries only `template_key`, `assignee_id`, and optional `assignee_type` / `project_id` / `timezone` / `language` / `subscribers`; the title, prompt, issue title template, cron, and execution mode come from the server-side template, so a client cannot claim a template's provenance while supplying its own prompt. The result is an ordinary, fully editable autopilot stamped with `template_key` / `template_version` provenance.
 
+The built-in prompts and dated summary issue titles use canonical Simplified Chinese. `language` selects catalog labels and the new autopilot's title, not its execution language. Creation copies the full prompt into `description`; later template releases or language changes never overwrite an existing workspace copy. The bug-triage template maps severity to the supported priorities `urgent` / `high` / `medium` / `low`; `none` stays unprioritized when evidence is insufficient, and read-only agents recommend rather than apply changes.
+
 ## CLI
 
 ```bash

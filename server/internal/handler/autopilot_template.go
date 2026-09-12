@@ -100,8 +100,8 @@ type CreateAutopilotFromTemplateRequest struct {
 	// Timezone is the schedule trigger's timezone. Absent means UTC, the same
 	// fallback the scheduler applies to a trigger that has none.
 	Timezone *string `json:"timezone"`
-	// Language selects the localized title stored on the row. The prompt stays
-	// English, matching every other agent-harness text in this product.
+	// Language selects the localized title stored on the row. The prompt and
+	// issue title template retain their canonical Simplified Chinese content.
 	Language    string            `json:"language"`
 	Subscribers []SubscriberInput `json:"subscribers"`
 }
