@@ -18,10 +18,12 @@
   "commit": null,
   "pr_url": null,
   "subtasks": [],
-  "children": [],
+  "children": [
+    "09-12-skill-output-grounding"
+  ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "Claude quota recovery retest completed: 14 main scenarios and 1 diagnostic finished; expected skill selection met throughout. Independent review found 3 content issues and 2 input/role clarifications. Prior E2E 10 failures and 2 collection-blocked cases remain; full acceptance is not passing.",
+  "notes": "Claude quota recovery retest completed: 14 main scenarios and 1 diagnostic finished; expected skill selection met throughout. Independent review found 3 content issues and 2 input/role clarifications. The grounding revision child implemented the three content corrections, passed local verification and synchronized workspace 毕宿五. User deferred fresh behavioral regression to Codex; current harness is Claude-only. Prior E2E 10 failures and 2 collection-blocked cases remain; full acceptance is not passing.",
   "meta": {
     "tested_commit": "fe38a164bd5abebaff0115e4c031db0d19c57eb3",
     "validation_status": "not_fully_passed",
@@ -30,6 +32,10 @@
     "claude_retry_report": ".omx/reports/skill-descriptions-full-validation-20260912/real-agent/claude-retest",
     "claude_retest_main_completed": 14,
     "claude_retest_diagnostic_completed": 1,
-    "claude_retest_semantic_review": ".omx/reports/skill-descriptions-full-validation-20260912/real-agent/claude-retest/SEMANTIC_REVIEW.md"
+    "claude_retest_semantic_review": ".omx/reports/skill-descriptions-full-validation-20260912/real-agent/claude-retest/SEMANTIC_REVIEW.md",
+    "grounding_revision_status": "implemented_and_locally_verified",
+    "grounding_regression_status": "deferred_by_user",
+    "grounding_next_runtime": "Codex",
+    "grounding_report": ".omx/reports/skill-output-grounding-20260912/SUMMARY.md"
   }
 }

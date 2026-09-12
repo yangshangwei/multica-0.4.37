@@ -202,6 +202,33 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 	}
 }
 
+// A linked reference must travel with the template that agents receive, not
+// merely exist beside SKILL.md in the source checkout.
+func TestRequirementClarificationSkillIncludesCSVReference(t *testing.T) {
+	const referencePath = "references/csv-export-safety.md"
+	skill, ok := RoleSkillTemplateByName("multica-requirement-clarification")
+	if !ok {
+		t.Fatal("requirement clarification must be a registered role skill")
+	}
+	if !strings.Contains(skill.Content, "]("+referencePath+")") {
+		t.Fatal("requirement clarification must link its CSV safety reference")
+	}
+	for _, file := range skill.Files {
+		if file.Path != referencePath {
+			continue
+		}
+		want, err := os.ReadFile(filepath.Join("builtin_role_skills", skill.Name, referencePath))
+		if err != nil {
+			t.Fatalf("read source reference: %v", err)
+		}
+		if strings.TrimSpace(file.Content) == "" || file.Content != string(want) {
+			t.Fatal("template must deliver the complete CSV reference unchanged")
+		}
+		return
+	}
+	t.Fatal("template must include the linked CSV reference as a supporting file")
+}
+
 // TestRoleSkillTemplates_EveryEmbeddedSkillIsRegistered walks the embedded
 // directory rather than the version map, so a skill added on disk without a version
 // fails here instead of silently never materializing.

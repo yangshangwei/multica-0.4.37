@@ -1,0 +1,56 @@
+{
+  "id": "skill-output-grounding",
+  "name": "skill-output-grounding",
+  "title": "Ground skill outputs in verifiable evidence",
+  "description": "Revise unsupported ADR background, CSV safety advice and inaccurate documentation summaries; complete local verification and workspace synchronization. Real Codex regression is deferred by the user.",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": "skills",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-12",
+  "completedAt": null,
+  "branch": "feat/agent-skills-localization",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "09-12-full-skill-validation",
+  "relatedFiles": [
+    "server/internal/service/builtin_role_skills.go",
+    "server/internal/service/builtin_agent_templates_test.go",
+    "server/internal/service/builtin_role_skills/multica-architecture-decision-record/SKILL.md",
+    "server/internal/service/builtin_role_skills/multica-requirement-clarification/SKILL.md",
+    "server/internal/service/builtin_role_skills/multica-requirement-clarification/references/csv-export-safety.md",
+    "server/internal/service/builtin_role_skills/multica-documentation-change/SKILL.md",
+    ".trellis/spec/server/builtin-templates.md",
+    "scripts/skill-eval/README.md",
+    "scripts/skill-eval/cases.json",
+    "scripts/skill-eval/fixture_server.py",
+    "scripts/skill-eval/runner.py",
+    "scripts/skill-eval/test_fixture_server.py",
+    "scripts/skill-eval/test_runner.py"
+  ],
+  "notes": "Revisions and local verification completed; synchronized three skills and the CSV reference to 毕宿五. Real-model regression deferred by user; current harness remains Claude-only. Parent full validation is not passing.",
+  "meta": {
+    "revision_status": "implemented_and_locally_verified",
+    "real_agent_regression_status": "deferred_by_user",
+    "next_runtime": "Codex",
+    "native_codex_adapter_ready": false,
+    "semantic_improvement_verified": false,
+    "report_path": ".omx/reports/skill-output-grounding-20260912/SUMMARY.md",
+    "workspace_sync_report": ".omx/reports/skill-output-grounding-20260912/workspace-sync.json",
+    "offline_macos": {
+      "passed": 21,
+      "skipped": 1
+    },
+    "offline_linux": {
+      "passed": 22,
+      "skipped": 0
+    }
+  }
+}
