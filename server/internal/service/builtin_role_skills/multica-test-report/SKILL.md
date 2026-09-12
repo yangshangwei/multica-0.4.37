@@ -4,64 +4,52 @@ description: "Use when reporting that code was verified: what ran, the real resu
 user-invocable: false
 ---
 
-# Test reports
+# 测试报告
 
-## When to use
+## 何时使用
 
-Any turn that claims a change works. The report is what makes the claim checkable
-by someone who did not watch the run.
+任何声称变更可用的回复都应提供测试报告，让没有旁观执行过程的人也能核验这一结论。
 
-## Rules
+## 规则
 
-1. **Report only runs you performed.** Never write a command you did not execute,
-   and never describe an expected result as an observed one. "Tests pass" without
-   a command is not a report.
-2. **A new test must fail without the change.** Confirm it: revert or stub the
-   change, watch the test fail, restore. A test that passes either way proves
-   nothing, and this step is what catches it.
-3. **Report failures.** A suite that fails goes in the report, with the failing
-   names and the message. Removing a failing test, marking it skipped, or
-   loosening an assertion to get a green run is falsification.
-4. **Say what you did not run.** A skipped suite, an environment you could not
-   reach, a platform you cannot test on — each is a line in the report, not an
-   omission.
-5. **Give real numbers.** Counts of tests run, passed, failed, skipped, taken from
-   the runner's own output.
+1. **只报告自己实际执行过的检查。** 不得写入未执行的命令，也不得把预期结果当作实测结果。
+   只写 "测试通过" 而没有命令，不算报告。
+2. **新增测试必须在没有这次改动时失败。** 验证方式：临时撤回改动或用桩替换，确认测试失败，
+   再恢复改动。无论是否有改动都通过的测试不能提供证明，这一步就是为了发现这种情况。
+3. **如实报告失败。** 测试套件失败时，必须在报告中列出失败的测试名称和错误消息。
+   为了让测试通过而删除失败测试、将其标为跳过或放宽断言，属于造假。
+4. **说明未运行的部分。** 跳过的套件、无法访问的环境、无法测试的平台，都应各列一项，不能省略。
+5. **提供真实数量。** 执行、通过、失败和跳过的测试数，必须来自测试运行器自身的输出。
 
-## Choosing the layer
+## 选择测试层级
 
-Put each test where the repository already puts that kind of test, and give each
-behaviour one canonical home:
+沿用仓库对同类测试的放置方式，每种行为只设一个权威测试位置：
 
-- pure logic, parsing, state transitions, permission matrices → the unit test file
-  next to the code;
-- component and page behaviour → the component test, covering the happy path,
-  wiring and named regressions;
-- cross-process and end-to-end flows → the e2e suite, sparingly.
+- 纯逻辑、解析、状态转换、权限矩阵 → 放在代码旁的单元测试文件；
+- 组件和页面行为 → 放在组件测试中，覆盖正常路径、组件连接与已明确的回归场景；
+- 跨进程和端到端流程 → 放在 e2e 套件中，控制使用范围。
 
-Do not re-run a helper's full matrix through a slower layer. Point at the
-canonical test in a comment instead.
+不要在更慢的测试层重复运行辅助函数的完整测试矩阵，在注释中指向权威测试即可。
 
-## Output
+## 输出
 
 ```text
-## Test plan
-- <behaviour> — <how it is checked> — <file>
+## 测试计划
+- <行为> — <检查方式> — <文件>
 
-## Results
-- `<command>` — <passed>/<total> passed, <failed> failed, <skipped> skipped
-  - FAILED <test name> — <message>
+## 结果
+- `<命令>` — <通过数>/<总数> 通过，<失败数> 失败，<跳过数> 跳过
+  - FAILED <测试名称> — <错误消息>
 
-## Proof the new tests bite
-- <test> — fails without the change: <how you confirmed>
+## 新增测试能捕获问题的证据
+- <测试> — 没有这次改动时会失败：<确认方式>
 
-## Not run
-- <suite or platform> — <why>
+## 未运行
+- <套件或平台> — <原因>
 ```
 
-## Stop and ask a human when
+## 以下情况停止并询问人工
 
-- A failure looks like data loss, a permission hole, or a security defect.
-- Verifying the behaviour needs production data, real credentials, or a live
-  external service.
-- The acceptance criteria cannot be tested as written.
+- 失败看起来涉及数据丢失、权限漏洞或安全缺陷。
+- 验证行为需要生产数据、真实凭证或正在运行的外部服务。
+- 按现有表述无法测试验收标准。

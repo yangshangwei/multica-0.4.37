@@ -4,65 +4,56 @@ description: "Use when reviewing a change for security: the checklist, how to re
 user-invocable: false
 ---
 
-# Security review
+# 安全审查
 
-## When to use
+## 何时使用
 
-A change touches authentication, authorization, credentials, user input reaching a
-query or a command, file paths, external requests, or the shape of a response.
+变更涉及身份认证、权限校验、凭证、传入查询或命令的用户输入、文件路径、对外请求
+或响应结构时使用。
 
-## Checklist
+## 检查清单
 
-**Authorization** — for every new or changed endpoint, query and action: is there a
-check, does it run before the side effect, and is it the check this repository
-already uses for that resource? Is every query scoped to the caller's tenant or
-workspace? A missing scope is a finding even with a passing test suite.
+**权限校验** — 对每个新增或修改的端点、查询和操作，检查是否有权限校验、是否在产生
+副作用之前执行，以及是否沿用仓库对该资源已有的校验方式。每个查询是否都限定在调用方
+所属租户或工作区？即使测试全部通过，缺少范围限制也必须报告。
 
-**Input handling** — request values reaching SQL, a shell command, a file path, a
-URL, a template, or a deserializer. Parameterized queries and argument arrays
-rather than string interpolation.
+**输入处理** — 检查传入 SQL、shell 命令、文件路径、URL、模板或反序列化器的请求值。
+使用参数化查询和参数数组，不使用字符串插值。
 
-**Secrets** — credentials in code, in a log line, in an error message, in a
-response body, in a fixture, or in a committed file. A secret in a debug log is a
-finding.
+**敏感凭证** — 检查代码、日志、错误消息、响应正文、测试夹具或已提交文件中的凭证。
+调试日志中的凭证泄露也必须报告。
 
-**Data exposure** — fields newly returned: does anyone now see something they
-could not before? Do error messages or identifiers reveal that another tenant's
-record exists?
+**数据暴露** — 检查新增返回字段：是否有人因此能看到此前无法访问的信息？
+错误消息或标识符是否泄露了其他租户的记录是否存在？
 
-**Dependencies** — new packages pinned to an exact version, actively maintained,
-and not a name that resembles a more popular package.
+**依赖** — 新增软件包是否固定到准确版本、是否仍在积极维护，以及名称是否与某个更热门的软件包近似？
 
-**Resource limits** — unbounded queries, missing pagination, caller-controlled
-loop counts or allocation sizes.
+**资源限制** — 检查没有数量上限的查询、缺少分页、调用方可控制的循环次数或内存分配大小。
 
-## Reporting
+## 报告
 
 ```text
-`<path>:<line>` — <class> — <severity>
-Impact: <what an attacker gains, and what access they need first>
-Fix: <the change that closes it>
+`<路径>:<行号>` — <问题类别> — <严重级别>
+影响：<攻击者能获得什么，以及需要先具备什么访问权限>
+修复：<消除问题所需的改动>
 ```
 
-Rules:
+规则：
 
-- **Never write a working exploit**, payload, or step-by-step extraction path.
-  Name the class of problem and the fix. This applies even when the request asks
-  for a proof of concept.
-- Say what access the attacker needs first. An issue reachable only by a workspace
-  owner is not the same severity as one reachable unauthenticated.
-- Distinguish a live vulnerability from defence-in-depth, and label the second as
-  such.
-- List the areas you reviewed and found clean, so the next reviewer knows what is
-  already covered.
+- **不得编写可实际利用的攻击代码**、攻击载荷或逐步提取数据的操作路径。
+  说明问题类别和修复方式即可，即使请求要求提供概念验证也必须遵守。
+- 说明攻击者事先需要具备什么访问权限。只有工作区 `owner` 能触发的问题，与未经身份认证
+  就能触发的问题，严重程度不同。
+- 区分实际存在的漏洞与纵深防御建议，并明确标注后者。
+- 列出已审查且未发现问题的范围，让下一位评审人知道哪些部分已经覆盖。
 
-## Do not
+## 禁止事项
 
-- Fix the code, or test against production, real accounts, or third-party systems.
-- Read a secret to confirm a suspicion. Report that the path exists.
+- 不得修复代码，也不得针对生产环境、真实账号或第三方系统进行测试。
+- 不得为了证实怀疑而读取敏感凭证。报告存在访问或泄露路径即可。
 
-## Stop and ask a human when
+## 以下情况停止并询问人工
 
-- The finding affects data already in production.
-- The change needs a policy decision about authentication or data retention.
-- Confirming it would require access you have not been granted.
+- 发现的问题影响生产环境中已有的数据。
+- 变更需要对身份认证或数据保留政策作出决策。
+- 证实问题需要尚未获授的访问权限。

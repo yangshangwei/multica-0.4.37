@@ -4,56 +4,48 @@ description: "Use when a change needs documentation: deciding what to write, kee
 user-invocable: false
 ---
 
-# Documentation changes
+# 文档更新
 
-## When to use
+## 何时使用
 
-A change alters observable behaviour, a command, an API field, a configuration
-key, a limit, or a rule other people follow.
+变更改变了可观察行为、命令、API 字段、配置键、限制，或其他人需要遵循的规则时使用。
 
-## Decide what the change actually requires
+## 判断实际需要更新什么
 
-Work from the diff, not from the issue's promises:
+以 diff 中的实际改动为依据，不以任务中承诺的内容为依据：
 
-| The change | What it requires |
+| 变更内容 | 需要更新的文档 |
 |---|---|
-| user-visible behaviour | the user-facing page for that feature |
-| API field or endpoint | the reference entry, plus its compatibility note |
-| CLI command or flag | the command reference and any example using it |
-| operational step | the runbook, at the step that changed |
-| a rule others must follow | the conventions document |
-| bug fix with no behaviour change | often nothing — say so |
+| 用户可见的行为 | 该功能面向用户的说明页面 |
+| API 字段或端点 | 对应参考条目及兼容性说明 |
+| CLI 命令或参数 | 命令参考，以及所有使用它的示例 |
+| 运维步骤 | 操作手册中发生变化的步骤 |
+| 他人必须遵循的规则 | 规范文档 |
+| 没有行为变化的缺陷修复 | 通常无需更新，应明确说明 |
 
-"Nothing to document" is a valid, common result. Write it as a finding rather than
-producing a page to have produced something.
+"无需更新文档" 是有效且常见的结果。将它作为核查结论写明，不要为了交付内容而硬写一页。
 
-## Keep it true
+## 保证内容准确
 
-- Every statement must be traceable to code, a test, or a recorded decision. If
-  you inferred it, verify it or leave it out.
-- Read the tests. They usually state the real contract more precisely than the
-  issue does.
-- Use the project's glossary term, not a synonym. When the code and the docs
-  disagree on a name, report the mismatch instead of adding a third name.
-- Match the surrounding document: structure, depth, terminology and, for
-  user-facing copy, its voice and language.
+- 每条陈述都必须能追溯到代码、测试或已记录的决策。推断出来的内容应先验证，否则不要写入。
+- 阅读测试。测试对实际契约的描述通常比任务更准确。
+- 使用项目术语表中的词，不用同义词替换。代码与文档命名不一致时，报告差异，不要再引入第三种名称。
+- 与上下文文档保持一致，包括结构、详细程度和术语；面向用户的文案还应保持语气和语言一致。
 
-## Find what is now wrong
+## 找出已经过时的说明
 
-Search the documentation for the old behaviour — the old field name, flag,
-default, or limit — and list every place that still describes it. A change that
-invalidates a page and leaves it standing has not been documented. Fix what is in
-scope; list the rest with the correction needed.
+在文档中搜索旧行为，包括旧字段名、参数、默认值或限制，列出所有仍在描述它们的位置。
+变更使页面内容失效却未修正，就不算完成文档更新。修正范围内的内容；其余内容列出位置
+及所需修改。
 
-## Do not
+## 禁止事项
 
-- Change code, tests or configuration, including renaming something to match your
-  text.
-- Document behaviour that does not exist yet.
-- Add a summary of the summary, a "conclusion", or an empty heading.
+- 不得修改代码、测试或配置，包括为了与文案一致而重命名。
+- 不得描述尚未实现的行为。
+- 不得给摘要再写摘要、添加 "结论"，或留下空标题。
 
-## Stop and ask a human when
+## 以下情况停止并询问人工
 
-- The code and the intended behaviour disagree — that is a defect report.
-- Documenting it honestly would expose a security-sensitive detail.
-- It needs a product decision about user-facing naming.
+- 代码与预期行为不一致，应作为缺陷报告。
+- 如实记录会暴露安全敏感细节。
+- 面向用户的命名需要产品决策。

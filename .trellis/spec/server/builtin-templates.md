@@ -15,6 +15,28 @@ defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
 `builtin_agent_templates_test.go` pins the full role-to-skill and autonomy maps.
 
+## Role skill body language and explicit workspace updates
+
+The seven `builtin_role_skills/*/SKILL.md` bodies use Simplified Chinese. Keep
+their original frontmatter, canonical names, English discovery descriptions,
+CLI syntax and protocol/status values unchanged. Translate the working method,
+not the role's permissions or business rules. These body translations do not
+set a global response language or change the role instructions' output contract.
+
+Language-only edits keep the existing behavior version; bundle hashes already
+track content changes. Materialization must continue to reuse existing workspace
+copies unchanged. Updating an existing copy is an explicit content update scoped
+to the intended workspace, with its original frontmatter and customizations
+preserved. Historical bodies need their own translation when their rules differ
+from today's template; do not silently upgrade behavior while localizing.
+
+`skill update --content-file` replaces the entire stored content but does not
+synchronize frontmatter into database metadata. Omit `files` and unrelated fields
+to preserve supporting files, bindings and labels. The endpoint has no atomic
+compare-and-swap contract: compare before writing and verify afterwards, without
+claiming those checks eliminate concurrent-write races. New tasks receive the
+updated body through the existing content-hash cache.
+
 ## Onboarding skills require task provenance
 
 `BuiltinSkills()` returns general platform skills. Use `TaskBuiltinSkills` for

@@ -4,76 +4,68 @@ description: "Use when a technical decision will constrain later work: drafts a 
 user-invocable: false
 ---
 
-# Architecture decision records
+# 架构决策记录
 
-## When to use
+## 何时使用
 
-Draft an ADR when the decision will still shape the code after the issue closes:
-a boundary between modules, a data model, a contract other clients parse, a
-dependency, or a rule the team must follow afterwards.
+当一项决策在任务关闭后仍会影响代码时，起草 ADR，例如模块边界、数据模型、其他客户端
+需要解析的数据契约、依赖，或团队今后必须遵循的规则。
 
-Do not draft one for a choice contained entirely in one function, or for
-restating a decision already recorded — link that one instead.
+完全局限在一个函数内的选择无需起草 ADR；已有记录的决策也不必重写，链接原记录即可。
 
-## Where it goes
+## 交付位置
 
-Put the complete draft in the issue comment. Look for an existing ADR directory
-(`docs/adr/`, `docs/decisions/`, `doc/arch/`) and suggest a destination matching its
-numbering and filename convention. If the repository has none, propose a
-location in the comment for a human to confirm.
+将完整草案写入任务评论。查找已有的 ADR 目录（`docs/adr/`、`docs/decisions/`、
+`doc/arch/`），按现有编号和文件名规范提出建议保存路径。如果仓库没有 ADR 目录，
+在评论中提出建议位置，交由人工确认。
 
-The default Architect is an Observer: do not edit repository files or create
-directories. Hand the draft and suggested destination to an Implementer or human
-to save in the repository. A suggested path is not a link to an existing file.
+默认架构师的权限为 `observer`：不得编辑仓库文件或创建目录。将草案和建议保存路径
+交给实现工程师或人工，由其保存到仓库。建议路径不代表文件已经存在，不能作为现有文件的链接。
 
-## Structure
+## 结构
 
 ```markdown
-# <number>. <decision, as a statement>
+# <编号>. <用陈述句表述决策>
 
 Date: <YYYY-MM-DD>
 Status: proposed
 
-## Context
+## 背景
 
-<the forces: what the system does today, the constraint that makes this a
-decision rather than a preference, and what happens if nothing changes>
+<影响决策的因素：系统当前如何运行、哪些约束使它成为需要权衡的决策而非个人偏好，
+以及保持现状会有什么结果>
 
-## Decision
+## 决策
 
-<what we will do, in the present tense, naming real modules and paths>
+<用现在时说明要采取的做法，写明实际模块和路径>
 
-## Consequences
+## 影响
 
-<what becomes easier, what becomes harder, what we now have to maintain, and
-what this forecloses>
+<哪些事情变得更容易、哪些变得更难、今后需要维护什么，以及这一决策排除了哪些选择>
 
-## Alternatives considered
+## 考虑过的备选方案
 
-### <alternative>
-<why it was plausible, and the specific trade-off that ruled it out>
+### <备选方案>
+<为什么它原本可行，以及哪项具体权衡导致它被否决>
 ```
 
-Rules that matter more than the template:
+以下规则比模板更重要：
 
-- **Status starts at `proposed`.** Only a human moves it to `accepted`. An agent
-  marking its own decision accepted is the thing this record exists to prevent.
-- **Context must contain a constraint**, not a summary of the feature. If the
-  context does not explain why a reasonable engineer might choose otherwise,
-  there is no decision to record.
-- **At least one real alternative.** "Do nothing" counts only when it was
-  genuinely viable.
-- **Consequences include the costs.** An ADR listing only benefits is marketing.
+- **初始状态必须是 `proposed`。** 只有人工可以将其改为 `accepted`。
+  这份记录正是为了防止智能体自行接受自己的决策。
+- **背景必须包含约束**，不能只概述功能。如果背景没有说明为什么合理的工程判断也可能
+  得出另一种选择，就没有需要记录的决策。
+- **至少提供一个实际可行的备选方案。** 只有保持现状确实可行时，"不做任何改动" 才算备选方案。
+- **影响必须包含代价。** 只列好处的 ADR 是宣传材料。
 
-## Output
+## 输出
 
-Include the complete ADR draft with `Status: proposed` in your issue comment,
-along with the one-sentence decision and the trade-off. State the suggested
-destination and handoff to an Implementer or human to save it. Link an ADR only
-when the file already exists; never claim the draft has been saved or accepted.
+在任务评论中给出标记为 `Status: proposed` 的完整 ADR 草案，并用一句话概括决策及其权衡。
+说明建议保存路径，交给实现工程师或人工保存。只有 ADR 文件已经存在时才能提供链接；
+不得声称草案已经保存或获接受。
 
-## Stop and ask a human when
+## 以下情况停止并询问人工
 
-- The decision needs a new dependency, data store, or irreversible migration.
-- It reverses or narrows an existing accepted ADR.
-- Two alternatives differ mainly in cost or team taste rather than correctness.
+- 决策需要引入新的依赖、数据存储，或不可逆的迁移。
+- 决策会推翻已接受的 ADR，或缩小其适用范围。
+- 两个备选方案的主要差别在于成本或团队偏好，而非正确性。

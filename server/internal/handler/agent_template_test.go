@@ -124,8 +124,12 @@ func TestCreateAgentFromTemplate_CopiesTheRoleOntoAnOrdinaryAgent(t *testing.T) 
 	var content, description string
 	dbfx.QueryRow(t, `SELECT content, description FROM skill WHERE workspace_id = $1 AND name = $2`,
 		testWorkspaceID, "multica-code-review").Scan(&content, &description)
-	if !strings.Contains(content, "# Code review") {
-		t.Errorf("materialized skill content does not look like the embedded SKILL.md: %.60q", content)
+	roleSkill, ok := service.RoleSkillTemplateByName("multica-code-review")
+	if !ok {
+		t.Fatal("multica-code-review skill missing from the registry")
+	}
+	if content != roleSkill.Content {
+		t.Error("materialized skill content is not the embedded SKILL.md verbatim")
 	}
 	if description == "" {
 		t.Error("materialized skill has no description; the frontmatter summary was dropped")

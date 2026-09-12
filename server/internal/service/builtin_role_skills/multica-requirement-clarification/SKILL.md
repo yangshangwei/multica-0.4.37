@@ -4,60 +4,56 @@ description: "Use when a request is too vague to build or accept: derives open q
 user-invocable: false
 ---
 
-# Requirement clarification
+# 需求澄清
 
-## When to use
+## 何时使用
 
-A request states a wish rather than an outcome; acceptance is undefined; or two
-readers of the same issue would build different things.
+需求只表达了愿望，没有说明预期结果；验收方式尚未定义；或两个人读完同一任务，
+会做出不同的东西时使用。
 
-Do not use this to interrogate a request that is already decidable. If the issue
-and its links answer everything, say so and move on.
+需求已经清楚到可以作出判断时，不要继续盘问。如果任务及其链接已经回答了所有问题，
+直接说明并继续后续工作。
 
-## Before asking anything
+## 提问之前
 
-Read, in this order, and treat each as already answered:
+按以下顺序阅读，并将其中已给出的信息视为已回答：
 
-1. the issue title, description and every comment;
-2. everything the issue links to, including other issues;
-3. the acceptance criteria of the two most similar recent issues in this
-   workspace — they show the shape this team accepts;
-4. the code or documents the request names.
+1. 任务标题、描述和全部评论；
+2. 任务链接的所有内容，包括其他任务；
+3. 工作区中近期最相似的两个任务的验收标准，以了解团队接受的交付标准；
+4. 需求明确提到的代码或文档。
 
-A question whose answer is in one of those four is noise, and it teaches the team
-that your questions can be ignored.
+如果答案已经出现在以上四类内容中，再问就是噪声，也会让团队觉得你的问题可以忽略。
 
-## Deriving the criteria
+## 推导验收标准
 
-For each criterion, write the observation that settles it — something a reader
-can check by looking at the result. Convert every adjective into a check:
+为每条标准写出能判定是否满足的可观察结果，让读者查看结果就能核验。
+将每个形容词转成具体检查，例如：
 
-| Requested as | Written as |
+| 原始要求 | 可核验的表述 |
 |---|---|
-| "should be fast" | "the list renders within 200 ms for 1000 rows" |
-| "handle errors" | "a 500 from the API shows the retry state, and the draft survives" |
-| "make it configurable" | "the interval is read from `X`; an absent value falls back to 30s" |
+| "要快" | "列表有 1000 行时，在 200 ms 内完成渲染" |
+| "处理错误" | "API 返回 500 时显示可重试状态，并保留草稿" |
+| "支持配置" | "从 `X` 读取间隔；未设置时回退为 30s" |
 
-Cover the empty state, the failure path and the permission-denied case, not only
-the success path. If you cannot state a check, that is an open question, not a
-criterion.
+除成功路径外，还要覆盖空状态、失败路径和无权限的情况。如果无法写出具体检查方式，
+这就是待确认问题，还不能作为验收标准。
 
-## Ranking open questions
+## 待确认问题的排序
 
-Order questions by what they block, and say so explicitly: a question that blocks
-the whole change comes before one that blocks a detail. Mark any question that is
-a product or business decision — those go to a human, not to another agent.
+按问题阻塞的工作排序，并明确说明：阻塞整个变更的问题优先于只影响某个细节的问题。
+标明涉及产品或业务决策的问题，将其交给人工，而非其他智能体。
 
-## Output
+## 输出
 
-Follow the output format in your instructions. Additional rules:
+遵循角色指令中的输出格式，并遵守以下规则：
 
-- Number the open questions so replies can reference them.
-- Never invent a question to fill the section. "No open questions" is a result.
-- Never answer a business question yourself, even when the answer seems obvious.
+- 为待确认问题编号，方便回复时引用。
+- 不得为了填满章节而编造问题。"没有待确认问题" 也是有效结果。
+- 不得自行回答业务问题，即使答案看起来显而易见。
 
-## Stop and ask a human when
+## 以下情况停止并询问人工
 
-- The request contradicts a decision the workspace already recorded.
-- The requester and a stakeholder in the thread want different outcomes.
-- Answering a blocking question needs access to a system you cannot read.
+- 需求与工作区已记录的决策矛盾。
+- 提出需求的人与讨论中的相关方期望不同的结果。
+- 回答阻塞性问题需要访问你无法读取的系统。

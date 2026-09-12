@@ -4,65 +4,55 @@ description: "Use when reviewing a diff: what to look for, how to state a findin
 user-invocable: false
 ---
 
-# Code review
+# 代码审查
 
-## When to use
+## 何时使用
 
-Any review of a change, whether requested on an issue, a pull request, or a
-working tree.
+审查任何变更时使用，包括任务、拉取请求或工作树中的变更。
 
-## What to look for, in order
+## 按顺序检查什么
 
-1. **Correctness** — does it do what the acceptance criteria say, for the inputs
-   it will actually receive? Off-by-one, null and empty cases, wrong operator,
-   inverted condition, error swallowed.
-2. **Contracts** — does any caller, stored row, or installed client still parse
-   what this now returns? A field that changed type or disappeared is a finding
-   even when every test passes.
-3. **Error and failure paths** — what happens when the call fails, the row is
-   missing, the user lacks permission, or the operation runs twice.
-4. **Concurrency and ordering** — two of these at once; a retry; a partial write.
-5. **Coverage** — did the behaviour that changed get a test that would fail
-   without the change?
-6. **Reuse** — does this reimplement something the repository already has? Name
-   the existing helper by path.
-7. **Scope** — files changed that the issue did not require.
+1. **正确性** — 对实际会收到的输入，是否满足验收标准？检查边界偏差、null 和空值、
+   运算符错误、条件反转及错误被吞掉等问题。
+2. **契约** — 变更后的返回数据是否仍与调用方、已存储的数据行及已安装客户端兼容？
+   即使所有测试通过，字段类型改变或字段消失也应报告。
+3. **错误与失败路径** — 调用失败、数据行不存在、用户没有权限或操作重复执行时会怎样？
+4. **并发与顺序** — 两次操作同时发生、重试或只完成部分写入时会怎样？
+5. **覆盖范围** — 发生变化的行为是否有测试覆盖，且该测试在没有这次改动时会失败？
+6. **复用** — 是否重新实现了仓库已有的能力？指出现有辅助函数及其路径。
+7. **范围** — 是否修改了任务并不要求改动的文件？
 
-## How to write a finding
+## 如何描述发现
 
-Each finding needs four things, and is not a finding without them:
+每条发现必须具备以下四项，缺少任何一项都不能算作一条发现：
 
 ```text
-`<path>:<line>` — <severity: must-fix | consider>
-<what is wrong, in one sentence>
-Failure: <concrete input or state> → <wrong output or crash>
+`<路径>:<行号>` — <严重级别：must-fix | consider>
+<用一句话说明问题>
+失败表现：<具体输入或状态> → <错误输出或崩溃>
 ```
 
-If you cannot fill in the `Failure:` line from the code, you have a suspicion,
-not a finding. Investigate it or drop it.
+如果无法根据代码填写 "失败表现：" 这一行，就只是怀疑，还不能算作发现。
+继续调查，或放弃这条意见。
 
-Severity means consequence, not confidence:
+严重级别取决于后果，不取决于确信程度：
 
-- **must-fix** — produces a wrong result, loses data, breaks a contract, or opens
-  a permission hole;
-- **consider** — real improvement, no failure attached.
+- **must-fix** — 会产生错误结果、丢失数据、破坏契约，或造成权限漏洞；
+- **consider** — 确实有改进价值，但不涉及具体故障。
 
-## What not to report
+## 不应报告什么
 
-- Style the repository has not adopted, or a rewrite in your preferred idiom.
-- Findings that require code you did not read.
-- Restating what the diff obviously does.
-- Padding an empty review. "No blocking findings" is the correct output when the
-  change is fine.
+- 仓库尚未采用的风格要求，或按个人偏好重写的建议。
+- 需要依赖尚未阅读的代码才能成立的发现。
+- 复述 diff 中显而易见的改动。
+- 为了凑数而填充空审查。变更没有问题时，正确输出就是 "未发现阻塞性问题"。
 
-## Do not
+## 禁止事项
 
-Edit the code, push a commit, apply your own suggestion, or change the issue's
-status. The review is the whole deliverable.
+不得编辑代码、推送提交、应用自己的建议或改变任务状态。审查报告就是全部交付物。
 
-## Stop and ask a human when
+## 以下情况停止并询问人工
 
-- The diff is too large to review honestly — ask for a split.
-- The change is correct but conflicts with a recorded decision.
-- You find a security-relevant defect: mark it must-fix and say it needs a
-  security review before merge.
+- diff 太大，无法进行充分审查，应请求拆分。
+- 变更本身正确，但与已记录的决策冲突。
+- 发现安全相关缺陷：标记为 `must-fix`，并说明合并前需要安全审查。

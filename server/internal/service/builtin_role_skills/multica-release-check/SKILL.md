@@ -4,60 +4,48 @@ description: "Use when preparing a release or a high-risk action: choose the app
 user-invocable: false
 ---
 
-# Release checks
+# 发布检查
 
-## When to use
+## 何时使用
 
-When preparing a release or a high-risk action: deploy, migration against live
-data, credential read, package publish, external announcement, or anything
-destructive. The checks depend on the action; every high-risk action still needs
-an Operator and its own recorded human approval.
+准备发布或高风险操作时使用，包括部署、针对线上数据的迁移、读取凭证、发布软件包、
+对外公告，以及任何破坏性操作。检查项取决于具体操作；每项高风险操作仍须由
+`operator` 执行，并单独取得有记录的人工审批。
 
-## The release gate
+## 发布前的必备检查
 
-For an actual release, establish and record the applicable items before asking
-for approval:
+实际发布前，先完成并记录适用项，再申请审批：
 
-1. **Scope** — the exact commit range, version and artifacts. Not "latest".
-2. **Build** — the project's build command, run, with its result.
-3. **Tests** — the suites the project gates on, run, with real counts.
-4. **Migrations** — every migration in the range, and for each: is it reversible,
-   does it lock a table, and does it depend on a deploy ordering.
-5. **Irreversibility** — list every step that cannot be undone. This list decides
-   whether the release is ready, not the test result.
-6. **Rollback** — the exact sequence that returns to the current state, and the
-   point past which it stops working.
+1. **范围** — 明确提交范围、版本和产物，不能只写 "latest"。
+2. **构建** — 运行项目的构建命令，记录命令及结果。
+3. **测试** — 运行项目要求通过的测试套件，记录真实数量。
+4. **迁移** — 列出范围内的每项迁移，逐项说明：是否可逆、是否锁表、是否依赖部署顺序。
+5. **不可逆操作** — 列出所有无法撤销的步骤。这份清单决定发布是否准备就绪，不能仅凭测试结果判断。
+6. **回滚** — 给出恢复到当前状态的准确操作顺序，并指出越过哪个节点后回滚会失效。
 
-Mark an item `N/A` only when it does not apply, and explain why — for example,
-"Migrations: N/A — no schema or data changes in this release." An applicable
-check you did not verify is a gate failure. Missing access or an unavailable test
-environment does not make a check inapplicable.
+只有确实不适用的项目才能标记为 `N/A`，并说明原因，例如：
+"迁移：N/A — 本次发布不涉及数据库结构或数据变更。" 适用却未验证的检查项视为未通过。
+缺少访问权限或测试环境不可用，不代表检查项不适用。
 
-## Checks for a standalone high-risk action
+## 独立高风险操作的检查
 
-For an action outside a release, verify its exact target, scope, expected effect,
-how the result will be checked, and its recovery or irreversibility. Use the
-checks that establish readiness for that action:
+对于发布之外的操作，核实具体目标、范围、预期效果、结果核验方式，以及恢复方式或
+不可逆性。选择能证明该操作已准备就绪的检查项：
 
-- **Credential read** — establish which credential is needed, why, who may receive
-  it, and how it will be kept out of logs and shared output. Do not read the
-  credential while preparing the request.
-- **External announcement** — prepare the exact content, recipients or channel,
-  timing, and how delivery will be confirmed or corrected.
-- **Live migration or destructive operation** — identify the affected data or
-  resources, validate the commands in an appropriate test environment, and verify
-  backups, recovery limits and any ordering constraints that apply.
+- **读取凭证** — 明确需要哪个凭证、用途、允许谁接收，以及如何避免凭证进入日志和共享输出。
+  准备审批请求时不得读取凭证。
+- **对外公告** — 准备准确内容、收件人或发布渠道、发送时间，以及确认送达或更正的方式。
+- **线上迁移或破坏性操作** — 明确受影响的数据或资源，在合适的测试环境验证命令，
+  并核验备份、恢复限制及适用的执行顺序约束。
 
-A standalone credential read or announcement does not need an unrelated build,
-test suite, commit range or migration review. If using the release checklist to
-record it, mark those items `N/A` with reasons. Applicable checks still have to
-pass before requesting execution approval.
+独立的凭证读取或公告操作，无需执行与之无关的构建、测试套件、提交范围核对或迁移审查。
+如果使用发布清单记录，将这些项目标记为 `N/A` 并说明原因。
+申请执行审批前，适用的检查项仍须全部通过。
 
-## The approval boundary
+## 审批边界
 
-Only an Operator may execute a high-risk action. As an Operator, file one approval
-request for each action describing that action, then stop at its execution
-boundary and wait:
+只有 `operator` 可以执行高风险操作。若你是 `operator`，必须为每项操作单独提交审批请求，
+说明该操作，然后在执行前停下并等待：
 
 ```bash
 multica approval request \
@@ -68,49 +56,42 @@ multica approval request \
 multica approval get <approval-id> --output json   # has a person decided yet?
 ```
 
-Risk classes: `production_release`, `database_migration`, `secret_access`,
-`external_notification`, `destructive_operation`. Use `--plan-file` for anything
-longer than a line — the plan is what the reviewer actually reads.
+风险类别：`production_release`、`database_migration`、`secret_access`、
+`external_notification`、`destructive_operation`。内容超过一行时使用 `--plan-file`，
+评审人实际审阅的是这份计划。
 
-- One request per action. An approval for a migration is not an approval to deploy.
-- The request must name the risk class, the exact commands, and the rollback.
-- Never proceed on a comment that sounds like agreement. Only a recorded human
-  decision counts.
-- Never approve your own request.
-- If an approved action fails partway, stop and report. Do not improvise against
-  production.
+- 每项操作单独申请。迁移获批不代表部署也获批。
+- 请求必须写明风险类别、准确命令和回滚方式。
+- 不得凭一条看似同意的评论继续执行。只有正式记录的人工决定才有效。
+- 不得批准自己的请求。
+- 已获批的操作中途失败时，停止并报告。不得在线上环境临时尝试计划外操作。
 
-Before approval, complete permitted preparation: read-only inspection, builds,
-tests and reversible local work. This does not authorize a credential read or
-another high-risk action needed by those checks; request approval for that action
-separately. Without an approved request, deliver the plan and preparation results,
-and leave the high-risk action unexecuted. Other roles hand the plan to a human
-or an Operator.
+审批前先完成允许的准备工作：只读检查、构建、测试及可逆的本地操作。
+这不代表检查过程中需要的凭证读取或其他高风险操作也已获授权；必须为该操作单独申请审批。
+没有获批请求时，交付计划和准备结果，高风险操作保持未执行。其他角色将计划交给人工
+或 `operator`。
 
-## Recording execution
+## 记录执行情况
 
-After an approved action, record what you ran, what happened, and whether it
-matched the expectation — including partial success:
+执行获批操作后，记录运行了什么、实际发生了什么、是否符合预期；部分成功也必须如实记录：
 
 ```bash
 multica approval executed <approval-id> --note "deployed; health checks green"
 ```
 
-That call is rejected unless the request is approved and your autonomy level is
-`operator`, so it cannot be used to walk an unapproved action forward. An action
-whose result you did not verify is not done.
+只有请求已获批且你的自主权限级别为 `operator` 时，这个调用才会被接受，因此不能用它
+推进尚未获批的操作。未核验结果的操作不算完成。
 
-If the plan changes before a decision arrives, withdraw it rather than leaving a
-stale request in the queue: `multica approval cancel <approval-id>`.
+人工决定尚未作出时，如果计划发生变化，应撤回请求，避免过期请求留在队列中：
+`multica approval cancel <approval-id>`。
 
-## Output
+## 输出
 
-Follow the output format in your instructions: scope, applicable checks and any
-`N/A` reasons, ordered plan with reversibility per step, recovery limits, and the
-approvals needed. After execution, list what ran and what did not, with reasons.
+遵循角色指令中的输出格式，包含范围、适用检查项及所有 `N/A` 原因、按顺序排列并逐步
+说明可逆性的计划、恢复限制和所需审批。执行后，列出已执行和未执行的内容，并说明原因。
 
-## Stop and ask a human when
+## 以下情况停止并询问人工
 
-- The gate fails or a migration cannot be rolled back.
-- An approved action produced an unexpected result.
-- You lack a credential, environment or permission — ask; do not route around it.
+- 必备检查未通过，或迁移无法回滚。
+- 获批操作产生了意外结果。
+- 缺少凭证、环境或权限。应询问人工，不得绕过限制。
