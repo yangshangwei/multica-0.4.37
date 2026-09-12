@@ -1,0 +1,31 @@
+{
+  "id": "full-skill-validation",
+  "name": "full-skill-validation",
+  "title": "Validate repository tests and Chinese skill behavior",
+  "description": "Run all repository unit tests, database integration tests, full E2E, and real-agent selection and invocation checks for the seven localized skills.",
+  "status": "review",
+  "dev_type": null,
+  "scope": "verification",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-12",
+  "completedAt": null,
+  "branch": "feat/agent-skills-localization",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "Validation evidence collected; full acceptance is not passing. E2E has 10 failures and 2 collection-blocked cases; real-agent completion is blocked by configured model services. Do not mark complete or archive until remaining acceptance criteria are resolved.",
+  "meta": {
+    "tested_commit": "fe38a164bd5abebaff0115e4c031db0d19c57eb3",
+    "validation_status": "not_fully_passed",
+    "real_agent_status": "blocked_by_provider",
+    "summary_path": ".omx/reports/skill-descriptions-full-validation-20260912/SUMMARY.md"
+  }
+}
