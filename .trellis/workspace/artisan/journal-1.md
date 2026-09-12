@@ -447,3 +447,35 @@ Completed source-backed ADR guidance, CSV reference guidance and final-file docu
 ### Next Steps
 
 - 功能实施无待办；独立分支保留供审阅。
+
+
+## Session 13: 内置自动化模板中文化与验收
+
+**Date**: 2026-09-13
+**Task**: 内置自动化模板中文化与验收
+**Branch**: `main`
+
+### Summary
+
+9 个内置自动化模板已按业务编写为中文，中文日期标题、缺陷优先级映射及仅运行说明同步完成。真实创建、编辑、派发、领取和中文浏览器验收通过，Trellis 任务已归档。
+
+### Main Changes
+
+- 9 份执行正文、中文名称和摘要；4 个中文日期任务标题；缺陷分级使用合法优先级并明确权限边界。
+- 复用既有创建与派发链路，补充真实数据库和浏览器回归，修复测试订阅及规则版本清理。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `01353260b` | (see git log) |
+| `b2cd5408b` | (see git log) |
+
+### Testing
+
+- [OK] 8040 项 TypeScript 测试、最终 486 项自动化专项、66 个 Go 包 race、lint/typecheck/go vet 通过。
+- [OK] 两条 Chromium 流程通过；1440/390 预览和生成任务页视觉验收 97/pass；临时工作区和数据库已清理。
+
+### Status
+
+[OK] **Completed**

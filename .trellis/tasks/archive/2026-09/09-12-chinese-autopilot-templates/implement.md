@@ -38,7 +38,7 @@
 - [x] 全量：`pnpm lint`、`pnpm typecheck`、`pnpm test`、`make test`、Go vet / 仓库静态检查。
 - [x] 独立审查任务全量差异与 R1–R7，对照原文验证业务语义；修复后复验。
 - [x] 更新 `.trellis/spec/server/builtin-templates.md` 的中文正文、标题和 priority 合同，仅保留本任务增量。
-- [ ] 记录实际命令、结果、截图与覆盖范围到 `verification.md`，勾选 PRD，完成任务归档和日志。仅提交本任务拥有的差异，按 Lore 协议记录；保留其他已有工作。
+- [x] 记录实际命令、结果、截图与覆盖范围到 `verification.md`，勾选 PRD，完成任务归档和日志。仅提交本任务拥有的差异，按 Lore 协议记录；保留其他已有工作。
 
 ## 审查与授权记录
 
