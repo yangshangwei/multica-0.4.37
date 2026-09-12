@@ -1,0 +1,33 @@
+{
+  "id": "requirement-skill-scope",
+  "name": "requirement-skill-scope",
+  "title": "Keep requirement clarification independent of CSV evaluation fixtures",
+  "description": "Retain generic evidence rules, move CSV guidance to reviewer-only evaluation references, update tests and synchronize the approved workspace skill without altering custom content.",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-12",
+  "completedAt": "2026-09-13",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "588127c140aee0ca888792ed08ba94e292406fd3",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "server/internal/service/builtin_agent_templates_test.go",
+    "server/internal/service/builtin_role_skills.go",
+    "server/internal/service/builtin_role_skills/multica-requirement-clarification/SKILL.md",
+    "scripts/skill-eval/references/csv-export-safety.md",
+    "scripts/skill-eval/README.md",
+    ".trellis/spec/server/builtin-templates.md"
+  ],
+  "notes": "Source, focused checks and the explicit 毕宿五 workspace update completed; native model regression remains outside this task.",
+  "meta": {}
+}
