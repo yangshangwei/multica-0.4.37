@@ -25,6 +25,7 @@ data:
   MULTICA_DEVICE_AUTH_WORKSPACE_NAME: {{ .Values.backend.config.deviceAuth.workspaceName | quote }}
   MULTICA_DEVICE_AUTH_ROLE: {{ .Values.backend.config.deviceAuth.role | quote }}
   MULTICA_VCS_INTEGRATION_ENABLED: {{ .Values.backend.config.vcsIntegrationEnabled | quote }}
+  MULTICA_MESSAGING_INTEGRATIONS_ENABLED: {{ .Values.backend.config.messagingIntegrationsEnabled | quote }}
   MULTICA_CLOUD_URL: {{ .Values.backend.config.cloud.url | quote }}
   GOOGLE_CLIENT_ID: {{ .Values.backend.config.googleClientId | quote }}
   GOOGLE_REDIRECT_URI: {{ .Values.backend.config.googleRedirectUri | quote }}

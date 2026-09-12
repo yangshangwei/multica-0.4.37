@@ -159,8 +159,20 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 
 ## 外部集成
 
+完全隔离的内网部署，在 API 服务的环境变量中设置：
+
+```dotenv
+MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false
+MULTICA_VCS_INTEGRATION_ENABLED=true
+```
+
+第一项统一关闭飞书、Slack、钉钉、企业微信和 Telegram 的后台连接及绑定接口，设置页和智能体详情也会隐藏对应入口。已保存的安装记录和凭据会保留。开关未设置时默认为 `true`；恢复为 `true` 并重启 API 服务后，仍需各渠道的加密密钥和可用网络才能连接。
+
+第二项独立保留内网 GitLab、Gitea、Forgejo 集成；连接时还需设置 `MULTICA_VCS_SECRET_KEY`，并确保 Multica 与 Git 服务在内网互通。修改 Compose 的 `.env` 后，执行 `docker compose -f docker-compose.selfhost.yml up -d backend` 重新创建 API 容器，并刷新客户端。Helm 部署对应 `backend.config.messagingIntegrationsEnabled: false` 与 `backend.config.vcsIntegrationEnabled: true`。
+
 | 集成 | 变量 | 说明 |
 |---|---|---|
+| 外部通讯 | `MULTICA_MESSAGING_INTEGRATIONS_ENABLED` | 默认 `true`；设为 `false` 统一关闭五种通讯集成，不影响自托管 Git |
 | GitHub | `GITHUB_APP_SLUG` | GitHub App slug |
 | GitHub | `GITHUB_WEBHOOK_SECRET` | Webhook HMAC 与连接 state 签名密钥 |
 | GitHub | `GITHUB_APP_ID` | PR 卡片的 CI 状态、可合并性和"从 GitHub 选择"仓库都需要它 |

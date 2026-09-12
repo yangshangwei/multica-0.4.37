@@ -76,6 +76,11 @@ type Config struct {
 	// invitation only. The public /api/config endpoint mirrors this flag so
 	// the UI can hide every "Create workspace" affordance — see #3433.
 	DisableWorkspaceCreation bool
+	// MessagingIntegrationsDisabled prevents all external messaging providers
+	// from being wired, even when saved credentials and encryption keys exist.
+	// The zero value preserves historical behavior for embedders and tests.
+	// VCS integrations are governed independently by VCSIntegrationEnabled.
+	MessagingIntegrationsDisabled bool
 	// VCSIntegrationEnabled gates the self-hosted Git provider integration
 	// (Forgejo / Gitea / GitLab) at the deployment level, independent of whether
 	// MULTICA_VCS_SECRET_KEY is set. It is the product boundary: the feature is

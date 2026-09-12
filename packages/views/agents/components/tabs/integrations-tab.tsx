@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Agent } from "@multica/core/types";
 import { useAuthStore } from "@multica/core/auth";
+import { useConfigStore } from "@multica/core/config";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { larkInstallationsOptions } from "@multica/core/lark";
 import { slackInstallationsOptions } from "@multica/core/slack";
@@ -44,6 +45,13 @@ import { useT } from "../../../i18n";
  * drift.
  */
 export function IntegrationsTab({ agent }: { agent: Agent }) {
+  const messagingIntegrationsEnabled = useConfigStore((s) => s.messagingIntegrationsEnabled);
+  if (!messagingIntegrationsEnabled) return null;
+
+  return <MessagingIntegrationsContent agent={agent} />;
+}
+
+function MessagingIntegrationsContent({ agent }: { agent: Agent }) {
   const { t } = useT("agents");
   const { t: ts } = useT("settings");
   const wsId = useWorkspaceId();

@@ -519,6 +519,10 @@ func boolToInt(value bool) int {
 // Sessions and message history are retained. A later successfully addressed
 // message from the same group observes it again automatically.
 func (h *Handler) ForgetDingTalkGroup(w http.ResponseWriter, r *http.Request) {
+	if h.DingTalkInstall == nil {
+		writeError(w, http.StatusServiceUnavailable, "dingtalk integration not enabled")
+		return
+	}
 	wsUUID, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "workspace id")
 	if !ok {
 		return

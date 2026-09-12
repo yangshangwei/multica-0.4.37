@@ -25,6 +25,7 @@ import { IntegrationChannelIcon } from "./integration-channel-icon";
 // integration owns its own description and install flow.
 export function IntegrationsTab() {
   const { t } = useT("settings");
+  const messagingIntegrationsEnabled = useConfigStore((s) => s.messagingIntegrationsEnabled);
 
   const composioEnabled = useFeatureEnabled(COMPOSIO_MCP_APPS_FLAG, false);
   const composioToolkits = useQuery({
@@ -41,71 +42,81 @@ export function IntegrationsTab() {
 
   return (
     <SettingsTab title={t(($) => $.page.tabs.integrations)}>
-      <SettingsSection
-        title={
-          <span className="flex items-center gap-2">
-            <IntegrationChannelIcon channel="lark" />
-            {t(($) => $.lark.section_title)}
-          </span>
-        }
-        description={t(($) => $.lark.page_description)}
-      >
-        <LarkTab />
-      </SettingsSection>
+      {messagingIntegrationsEnabled && (
+        <SettingsSection
+          title={
+            <span className="flex items-center gap-2">
+              <IntegrationChannelIcon channel="lark" />
+              {t(($) => $.lark.section_title)}
+            </span>
+          }
+          description={t(($) => $.lark.page_description)}
+        >
+          <LarkTab />
+        </SettingsSection>
+      )}
       {composioEnabled && !composioUnconfigured && (
         <SettingsSection title={t(($) => $.composio.section_title)}>
           <ComposioTab />
         </SettingsSection>
       )}
-      <SettingsSection
-        title={
-          <span className="flex items-center gap-2">
-            <IntegrationChannelIcon channel="slack" />
-            {t(($) => $.slack.section_title)}
-          </span>
-        }
-        description={t(($) => $.slack.page_description)}
-      >
-        <SlackTab />
-      </SettingsSection>
-      <SettingsSection
-        title={
-          <span className="flex items-center gap-2">
-            <IntegrationChannelIcon channel="dingtalk" />
-            {t(($) => $.dingtalk.section_title)}
-          </span>
-        }
-        description={t(($) => $.dingtalk.page_description)}
-      >
-        <DingTalkTab />
-      </SettingsSection>
+      {messagingIntegrationsEnabled && (
+        <SettingsSection
+          title={
+            <span className="flex items-center gap-2">
+              <IntegrationChannelIcon channel="slack" />
+              {t(($) => $.slack.section_title)}
+            </span>
+          }
+          description={t(($) => $.slack.page_description)}
+        >
+          <SlackTab />
+        </SettingsSection>
+      )}
+      {messagingIntegrationsEnabled && (
+        <SettingsSection
+          title={
+            <span className="flex items-center gap-2">
+              <IntegrationChannelIcon channel="dingtalk" />
+              {t(($) => $.dingtalk.section_title)}
+            </span>
+          }
+          description={t(($) => $.dingtalk.page_description)}
+        >
+          <DingTalkTab />
+        </SettingsSection>
+      )}
       {vcsAvailable && (
         <SettingsSection title={t(($) => $.vcs.section_title)}>
           <VCSTab />
         </SettingsSection>
       )}
-      <SettingsSection
-        title={
-          <span className="flex items-center gap-2">
-            <IntegrationChannelIcon channel="wecom" />
-            {t(($) => $.wecom.section_title)}
-          </span>
-        }
-        description={t(($) => $.wecom.page_description)}
-      >
-        <WecomTab />
-      </SettingsSection>
-      <SettingsSection
-        title={
-          <span className="flex items-center gap-2">
-            <IntegrationChannelIcon channel="telegram" />
-            {t(($) => $.telegram.section_title)}
-          </span>
-        }
-        description={t(($) => $.telegram.page_description)}
-      >
-        <TelegramTab />
-      </SettingsSection>
+      {messagingIntegrationsEnabled && (
+        <SettingsSection
+          title={
+            <span className="flex items-center gap-2">
+              <IntegrationChannelIcon channel="wecom" />
+              {t(($) => $.wecom.section_title)}
+            </span>
+          }
+          description={t(($) => $.wecom.page_description)}
+        >
+          <WecomTab />
+        </SettingsSection>
+      )}
+      {messagingIntegrationsEnabled && (
+        <SettingsSection
+          title={
+            <span className="flex items-center gap-2">
+              <IntegrationChannelIcon channel="telegram" />
+              {t(($) => $.telegram.section_title)}
+            </span>
+          }
+          description={t(($) => $.telegram.page_description)}
+        >
+          <TelegramTab />
+        </SettingsSection>
+      )}
     </SettingsTab>
   );
 }

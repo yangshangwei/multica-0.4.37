@@ -474,7 +474,7 @@ func main() {
 				relay = sharded
 				daemonWakeup = daemonws.NewRelayNotifier(daemonHub, sharded)
 			}
-			if wecomRelay != nil {
+			if wecomRelay != nil && envBool("MULTICA_MESSAGING_INTEGRATIONS_ENABLED", true) {
 				// LeaseSettle comes from the supervisor's own knob rather than
 				// from a constant here: the re-offer chain exists to outlast a
 				// lease move, and how long that takes is the supervisor's poll

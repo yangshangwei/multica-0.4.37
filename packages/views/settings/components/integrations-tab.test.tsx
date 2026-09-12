@@ -80,7 +80,28 @@ describe("Settings IntegrationsTab", () => {
     configStore.getState().setFeatureFlags({ [COMPOSIO_MCP_APPS_FLAG]: true });
     // Reset the self-host-only VCS gate to its default (hidden) so tests stay
     // isolated; individual tests opt in below.
-    configStore.getState().setAuthConfig({ allowSignup: true, vcsIntegrationAvailable: false });
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      vcsIntegrationAvailable: false,
+      messagingIntegrationsEnabled: true,
+    });
+  });
+
+  it("keeps self-hosted Git while omitting all messaging sections when disabled by deployment", () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      vcsIntegrationAvailable: true,
+      messagingIntegrationsEnabled: false,
+    });
+
+    renderTab();
+
+    expect(screen.getByRole("heading", { name: enSettings.vcs.section_title })).toBeInTheDocument();
+    expect(screen.getByTestId("vcs-tab")).toBeInTheDocument();
+    for (const channel of ["lark", "slack", "dingtalk", "wecom", "telegram"]) {
+      expect(screen.queryByTestId(`integration-channel-icon-${channel}`)).toBeNull();
+      expect(screen.queryByTestId(`${channel}-tab`)).toBeNull();
+    }
   });
 
   it("hides Composio and disables the toolkits query when the feature flag is off", () => {

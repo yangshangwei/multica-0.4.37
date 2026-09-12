@@ -8,7 +8,7 @@ import type {
   MemberWithUser,
 } from "@multica/core/types";
 import { providerSupportsMcpConfig } from "@multica/core/agents";
-import { useFeatureEnabled } from "@multica/core/config";
+import { useConfigStore, useFeatureEnabled } from "@multica/core/config";
 import { COMPOSIO_MCP_APPS_FLAG } from "@multica/core/feature-flags";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { larkInstallationsOptions } from "@multica/core/lark";
@@ -155,6 +155,7 @@ export function AgentOverviewPane({
   const wsId = useWorkspaceId();
   const navigation = useNavigation();
   const urlView = navigation.searchParams.get("view");
+  const messagingIntegrationsEnabled = useConfigStore((s) => s.messagingIntegrationsEnabled);
   const composioMCPAppsEnabled = useFeatureEnabled(
     COMPOSIO_MCP_APPS_FLAG,
     false,
@@ -168,30 +169,32 @@ export function AgentOverviewPane({
 
   const { data: larkListing } = useQuery({
     ...larkInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && messagingIntegrationsEnabled,
   });
   const { data: slackListing } = useQuery({
     ...slackInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && messagingIntegrationsEnabled,
   });
   const { data: dingtalkListing } = useQuery({
     ...dingtalkInstallationsOptions(wsId),
+    enabled: !!wsId && messagingIntegrationsEnabled,
   });
   const { data: wecomListing } = useQuery({
     ...wecomInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && messagingIntegrationsEnabled,
   });
   const { data: telegramListing } = useQuery({
     ...telegramInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && messagingIntegrationsEnabled,
   });
 
   const integrationsConfigured =
-    larkListing?.configured === true ||
-    slackListing?.configured === true ||
-    dingtalkListing?.configured === true ||
-    wecomListing?.configured === true ||
-    telegramListing?.configured === true;
+    messagingIntegrationsEnabled &&
+    (larkListing?.configured === true ||
+      slackListing?.configured === true ||
+      dingtalkListing?.configured === true ||
+      wecomListing?.configured === true ||
+      telegramListing?.configured === true);
 
   const visibleCapabilityTabs = useMemo(() => {
     const showMcp = runtime
@@ -296,6 +299,14 @@ export function AgentOverviewPane({
   };
 
   useEffect(() => {
+    if (
+      !messagingIntegrationsEnabled &&
+      (activeView === "integrations" || urlView === "integrations")
+    ) {
+      lastUrlViewRef.current = urlView;
+      commitView("overview");
+      return;
+    }
     if (urlView === lastUrlViewRef.current) return;
     lastUrlViewRef.current = urlView;
     if (urlView === null) {
@@ -305,13 +316,17 @@ export function AgentOverviewPane({
     if (isDetailTab(urlView) && visibleViews.has(urlView)) {
       setActiveView(urlView);
     }
-  }, [urlView, visibleViews]);
+  }, [activeView, commitView, messagingIntegrationsEnabled, urlView, visibleViews]);
 
   useEffect(() => {
     if (navIntent == null) return;
-    if (visibleViews.has(navIntent)) requestView(navIntent);
+    const next =
+      navIntent === "integrations" && !messagingIntegrationsEnabled
+        ? "overview"
+        : navIntent;
+    if (visibleViews.has(next)) requestView(next);
     onNavIntentHandled?.();
-  }, [navIntent, onNavIntentHandled, requestView, visibleViews]);
+  }, [messagingIntegrationsEnabled, navIntent, onNavIntentHandled, requestView, visibleViews]);
 
   const secondaryTabs =
     activeSection === "capabilities"

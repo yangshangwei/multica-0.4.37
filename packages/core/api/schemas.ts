@@ -755,6 +755,9 @@ export interface AppConfigResponse {
    * (self-host only; off on the managed cloud). Absent/false hides the whole
    * Settings → Integrations "Git providers" section. */
   vcs_integration_available?: boolean;
+  /** Deployment policy for Lark, Slack, DingTalk, WeCom, and Telegram.
+   * Older servers omit it and retain their historical messaging behavior. */
+  messaging_integrations_enabled?: boolean;
   feature_flags?: Record<string, boolean>;
   /** Whether this server understands local_directory `execution_mode` and
    * gates worktree mode at save time. Absent on every server that predates this
@@ -967,6 +970,8 @@ export const AppConfigSchema = z.object({
   daemon_app_url: OptionalStringSchema,
   workspace_creation_disabled: BooleanWithDefaultSchema(false).optional(),
   vcs_integration_available: BooleanWithDefaultSchema(false).optional(),
+  // Omission means an older server; malformed supplied values fail closed.
+  messaging_integrations_enabled: BooleanWithDefaultSchema(false).default(true),
   feature_flags: FeatureFlagsSchema,
   local_worktree_supported: BooleanWithDefaultSchema(false),
   agent_conversation_starters_supported: BooleanWithDefaultSchema(false),
@@ -983,6 +988,7 @@ export const EMPTY_APP_CONFIG: AppConfigResponse = {
   daemon_app_url: "",
   workspace_creation_disabled: false,
   vcs_integration_available: false,
+  messaging_integrations_enabled: false,
   // Fail closed: an unreadable config must not look like a server that
   // validates execution_mode.
   local_worktree_supported: false,

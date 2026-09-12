@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { Agent } from "@multica/core/types";
+import { configStore } from "@multica/core/config";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../../locales/en/common.json";
 import enAgents from "../../../locales/en/agents.json";
@@ -35,9 +36,11 @@ const groupsRef = vi.hoisted(() => ({
     refetch: vi.fn(),
   },
 }));
+const queryCalls = vi.hoisted(() => [] as unknown[][]);
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: (opts: { queryKey: unknown[]; enabled?: boolean }) => {
+    queryCalls.push(opts.queryKey);
     if (opts.enabled === false) return { data: undefined };
     const key = JSON.stringify(opts.queryKey);
     if (key.includes("members")) return { data: membersRef.current };
@@ -215,6 +218,11 @@ function renderTab(children: ReactNode) {
 
 function resetFixtures() {
   vi.clearAllMocks();
+  queryCalls.length = 0;
+  configStore.getState().setAuthConfig({
+    allowSignup: true,
+    messagingIntegrationsEnabled: true,
+  });
   membersRef.current = [{ user_id: "user-1", role: "owner" }];
   installationsRef.current = {
     installations: [],
@@ -231,6 +239,18 @@ function resetFixtures() {
 
 describe("IntegrationsTab", () => {
   beforeEach(resetFixtures);
+
+  it("mounts no provider queries or bind controls when messaging is disabled", () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      messagingIntegrationsEnabled: false,
+    });
+
+    const { container } = renderTab(<IntegrationsTab agent={agent} />);
+
+    expect(container).toBeEmptyDOMElement();
+    expect(queryCalls).toEqual([]);
+  });
 
   it.each([
     { role: "owner", ownsAgent: false, permissionMode: "private", canManage: true },

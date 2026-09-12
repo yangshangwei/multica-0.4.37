@@ -418,30 +418,31 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	origins := allowedOrigins()
 
 	signupConfig := handler.Config{
-		AllowSignup:              os.Getenv("ALLOW_SIGNUP") != "false",
-		AllowedEmails:            splitAndTrim(os.Getenv("ALLOWED_EMAILS")),
-		AllowedEmailDomains:      splitAndTrim(os.Getenv("ALLOWED_EMAIL_DOMAINS")),
-		DisableWorkspaceCreation: os.Getenv("DISABLE_WORKSPACE_CREATION") == "true",
-		VCSIntegrationEnabled:    os.Getenv("MULTICA_VCS_INTEGRATION_ENABLED") == "true",
-		DeviceAuthEnabled:        handler.DeviceAuthEnabledFromEnv(),
-		DeviceAuthWorkspaceSlug:  strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_WORKSPACE")),
-		DeviceAuthWorkspaceName:  strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_WORKSPACE_NAME")),
-		DeviceAuthRole:           strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_ROLE")),
-		PublicURL:                strings.TrimRight(strings.TrimSpace(os.Getenv("MULTICA_PUBLIC_URL")), "/"),
-		AppURL:                   appURLFromEnv(),
-		TrustedProxies:           parseTrustedProxies(os.Getenv("MULTICA_TRUSTED_PROXIES")),
-		CloudURL:                 strings.TrimSpace(os.Getenv("MULTICA_CLOUD_URL")),
-		CloudTimeout:             35 * time.Second,
-		AttachmentDownloadMode:   os.Getenv("ATTACHMENT_DOWNLOAD_MODE"),
-		AttachmentDownloadURLTTL: envDuration("ATTACHMENT_DOWNLOAD_URL_TTL", 30*time.Minute),
-		AttachmentFrameAncestors: origins,
-		PluginSurfaceOrigin:      strings.TrimRight(strings.TrimSpace(os.Getenv("MULTICA_PLUGIN_SURFACE_ORIGIN")), "/"),
-		LLMAPIKey:                strings.TrimSpace(os.Getenv("MULTICA_LLM_API_KEY")),
-		LLMBaseURL:               strings.TrimSpace(os.Getenv("MULTICA_LLM_BASE_URL")),
-		LLMDefaultModel:          strings.TrimSpace(os.Getenv("MULTICA_LLM_DEFAULT_MODEL")),
-		LLMMaxRetries:            opts.LLMMaxRetries,
-		ServerVersion:            normalizeServerVersion(version),
-		ChangelogFile:            strings.TrimSpace(os.Getenv("CHANGELOG_FILE")),
+		AllowSignup:                   os.Getenv("ALLOW_SIGNUP") != "false",
+		AllowedEmails:                 splitAndTrim(os.Getenv("ALLOWED_EMAILS")),
+		AllowedEmailDomains:           splitAndTrim(os.Getenv("ALLOWED_EMAIL_DOMAINS")),
+		DisableWorkspaceCreation:      os.Getenv("DISABLE_WORKSPACE_CREATION") == "true",
+		MessagingIntegrationsDisabled: !envBool("MULTICA_MESSAGING_INTEGRATIONS_ENABLED", true),
+		VCSIntegrationEnabled:         os.Getenv("MULTICA_VCS_INTEGRATION_ENABLED") == "true",
+		DeviceAuthEnabled:             handler.DeviceAuthEnabledFromEnv(),
+		DeviceAuthWorkspaceSlug:       strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_WORKSPACE")),
+		DeviceAuthWorkspaceName:       strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_WORKSPACE_NAME")),
+		DeviceAuthRole:                strings.TrimSpace(os.Getenv("MULTICA_DEVICE_AUTH_ROLE")),
+		PublicURL:                     strings.TrimRight(strings.TrimSpace(os.Getenv("MULTICA_PUBLIC_URL")), "/"),
+		AppURL:                        appURLFromEnv(),
+		TrustedProxies:                parseTrustedProxies(os.Getenv("MULTICA_TRUSTED_PROXIES")),
+		CloudURL:                      strings.TrimSpace(os.Getenv("MULTICA_CLOUD_URL")),
+		CloudTimeout:                  35 * time.Second,
+		AttachmentDownloadMode:        os.Getenv("ATTACHMENT_DOWNLOAD_MODE"),
+		AttachmentDownloadURLTTL:      envDuration("ATTACHMENT_DOWNLOAD_URL_TTL", 30*time.Minute),
+		AttachmentFrameAncestors:      origins,
+		PluginSurfaceOrigin:           strings.TrimRight(strings.TrimSpace(os.Getenv("MULTICA_PLUGIN_SURFACE_ORIGIN")), "/"),
+		LLMAPIKey:                     strings.TrimSpace(os.Getenv("MULTICA_LLM_API_KEY")),
+		LLMBaseURL:                    strings.TrimSpace(os.Getenv("MULTICA_LLM_BASE_URL")),
+		LLMDefaultModel:               strings.TrimSpace(os.Getenv("MULTICA_LLM_DEFAULT_MODEL")),
+		LLMMaxRetries:                 opts.LLMMaxRetries,
+		ServerVersion:                 normalizeServerVersion(version),
+		ChangelogFile:                 strings.TrimSpace(os.Getenv("CHANGELOG_FILE")),
 	}
 	h := handler.New(queries, pool, hub, bus, emailSvc, store, cfSigner, analyticsClient, signupConfig, daemonHub)
 	invitationRateLimits := handler.DefaultInvitationRateLimits()
@@ -553,6 +554,12 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		opts,
 	)
 
+	// The deployment policy overrides every messaging key below so retained
+	// credentials cannot start connectors or outbound work on isolated networks.
+	if signupConfig.MessagingIntegrationsDisabled {
+		slog.Info("messaging integrations disabled (MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false)")
+	}
+
 	// Lark integration. Only wired when MULTICA_LARK_SECRET_KEY is set:
 	// the InstallationService refuses to fall back to plaintext storage
 	// for app_secret, and the BindingTokenService cannot mint usable
@@ -561,7 +568,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// continues to start so self-host deployments that have not opted
 	// in to Lark are unaffected. Feishu registers its Factory + ResolverSet
 	// into the channel engine above.
-	if larkKey, err := secretbox.LoadKey("MULTICA_LARK_SECRET_KEY"); err == nil {
+	if larkKey, err := secretbox.LoadKey("MULTICA_LARK_SECRET_KEY"); !signupConfig.MessagingIntegrationsDisabled && err == nil {
 		box, err := secretbox.New(larkKey)
 		if err != nil {
 			slog.Error("lark: secretbox.New failed; lark integration disabled", "error", err)
@@ -731,7 +738,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				}
 			}
 		}
-	} else {
+	} else if !signupConfig.MessagingIntegrationsDisabled {
 		slog.Info("lark integration disabled (MULTICA_LARK_SECRET_KEY not set)")
 	}
 
@@ -757,7 +764,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// installation is a bring-your-own-app (BYO) install carrying its OWN
 	// app-level token, so a per-installation Slack Factory is registered and the
 	// Supervisor drives one Socket Mode connection per installation (like Feishu).
-	if slackKey, err := secretbox.LoadKey("MULTICA_SLACK_SECRET_KEY"); err == nil {
+	if slackKey, err := secretbox.LoadKey("MULTICA_SLACK_SECRET_KEY"); !signupConfig.MessagingIntegrationsDisabled && err == nil {
 		box, err := secretbox.New(slackKey)
 		if err != nil {
 			slog.Error("slack: secretbox.New failed; slack integration disabled", "error", err)
@@ -838,14 +845,14 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			}
 			slog.Info("slack integration enabled (BYO per-installation socket mode)")
 		}
-	} else {
+	} else if !signupConfig.MessagingIntegrationsDisabled {
 		slog.Info("slack integration disabled (MULTICA_SLACK_SECRET_KEY not set)")
 	}
 
 	// DingTalk uses one outbound Stream connection per BYO installation. The
 	// AppSecret is encrypted at rest and the integration is inert unless its
 	// dedicated deployment key is configured.
-	if dingtalkKey, err := secretbox.LoadKey("MULTICA_DINGTALK_SECRET_KEY"); err == nil {
+	if dingtalkKey, err := secretbox.LoadKey("MULTICA_DINGTALK_SECRET_KEY"); !signupConfig.MessagingIntegrationsDisabled && err == nil {
 		box, err := secretbox.New(dingtalkKey)
 		if err != nil {
 			slog.Error("dingtalk: secretbox.New failed; integration disabled", "error", err)
@@ -888,7 +895,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			}
 			slog.Info("dingtalk integration enabled (BYO per-installation stream mode)")
 		}
-	} else {
+	} else if !signupConfig.MessagingIntegrationsDisabled {
 		slog.Info("dingtalk integration disabled (MULTICA_DINGTALK_SECRET_KEY not set)")
 	}
 
@@ -902,7 +909,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// skipped and the wecom Web-UI endpoints return 503; existing deployments
 	// are unaffected. The smart-bot flow does NOT require any public HTTP
 	// callback, so nothing else needs to be exposed to the internet.
-	if wecomKey, err := secretbox.LoadKey("MULTICA_WECOM_SECRET_KEY"); err == nil {
+	if wecomKey, err := secretbox.LoadKey("MULTICA_WECOM_SECRET_KEY"); !signupConfig.MessagingIntegrationsDisabled && err == nil {
 		box, err := secretbox.New(wecomKey)
 		if err != nil {
 			slog.Error("wecom: secretbox.New failed; wecom integration disabled", "error", err)
@@ -1069,7 +1076,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				}
 			}
 		}
-	} else {
+	} else if !signupConfig.MessagingIntegrationsDisabled {
 		slog.Info("wecom integration disabled (MULTICA_WECOM_SECRET_KEY not set)")
 	}
 
@@ -1080,7 +1087,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// the event bus. Gated by MULTICA_TELEGRAM_SECRET_KEY (the at-rest token
 	// encryption key); when unset the handlers return 503 and no Factory is
 	// registered.
-	if telegramKey, err := secretbox.LoadKey("MULTICA_TELEGRAM_SECRET_KEY"); err == nil {
+	if telegramKey, err := secretbox.LoadKey("MULTICA_TELEGRAM_SECRET_KEY"); !signupConfig.MessagingIntegrationsDisabled && err == nil {
 		box, err := secretbox.New(telegramKey)
 		if err != nil {
 			slog.Error("telegram: secretbox.New failed; telegram integration disabled", "error", err)
@@ -1113,7 +1120,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			}
 			slog.Info("telegram integration enabled (per-installation long polling)")
 		}
-	} else {
+	} else if !signupConfig.MessagingIntegrationsDisabled {
 		slog.Info("telegram integration disabled (MULTICA_TELEGRAM_SECRET_KEY not set)")
 	}
 

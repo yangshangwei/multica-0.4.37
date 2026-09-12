@@ -658,6 +658,33 @@ SELECT
 	}
 }
 
+func TestForgetDingTalkGroup_DisabledPreservesObservation(t *testing.T) {
+	previousInstall := testHandler.DingTalkInstall
+	testHandler.DingTalkInstall = nil
+	t.Cleanup(func() { testHandler.DingTalkInstall = previousInstall })
+	agentID := dbfx.Agent(t, "Disabled DingTalk agent", "")
+	installationID := dbfx.Insert(t, "channel_installation", testutil.Cols{
+		"workspace_id":      testWorkspaceID,
+		"agent_id":          agentID,
+		"channel_type":      "dingtalk",
+		"config":            []byte(`{"app_id":"retained-dingtalk"}`),
+		"installer_user_id": testUserID,
+		"status":            "active",
+	})
+	dbfx.InsertNoID(t, "dingtalk_group_presence", testutil.Cols{
+		"workspace_id":       testWorkspaceID,
+		"installation_id":    installationID,
+		"conversation_id":    "retained-group",
+		"conversation_title": "Retained group",
+	}, "installation_id = $1", installationID)
+	req := newRequestAs(testUserID, http.MethodDelete, "/", nil)
+	req = withURLParams(req, "id", testWorkspaceID, "installationId", installationID, "conversationId", "retained-group")
+	testutil.Call(t, testHandler.ForgetDingTalkGroup, req).Want(http.StatusServiceUnavailable)
+	if got := dbfx.Count(t, "SELECT count(*) FROM dingtalk_group_presence WHERE installation_id = $1", installationID); got != 1 {
+		t.Fatalf("disabled integration removed the saved group: count=%d", got)
+	}
+}
+
 func TestRevokeDingTalkInstallation_AuthorizesAgentOwnerAndAdmins(t *testing.T) {
 	wireDingTalkInstallService(t)
 	agentID, ownerID, memberID := privateAgentTestFixture(t)

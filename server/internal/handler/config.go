@@ -37,6 +37,11 @@ type AppConfig struct {
 	DaemonServerURL string `json:"daemon_server_url,omitempty"`
 	DaemonAppURL    string `json:"daemon_app_url,omitempty"`
 
+	// MessagingIntegrationsEnabled is the deployment policy for external
+	// messaging providers. Emit this field even when false so clients can
+	// distinguish a disabled deployment from an older server.
+	MessagingIntegrationsEnabled bool `json:"messaging_integrations_enabled"`
+
 	// VCSIntegrationAvailable mirrors the MULTICA_VCS_INTEGRATION_ENABLED
 	// deployment switch so the Settings UI can hide the whole self-hosted Git
 	// provider section on deployments where it is off (the managed cloud),
@@ -117,6 +122,7 @@ func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 	}
 	config.CdnSigned = h.CFSigner != nil
 	config.DaemonServerURL, config.DaemonAppURL = daemonSetupURLsFromEnv()
+	config.MessagingIntegrationsEnabled = !h.cfg.MessagingIntegrationsDisabled
 	config.VCSIntegrationAvailable = h.cfg.VCSIntegrationEnabled
 	config.DeviceAuthAvailable = h.cfg.DeviceAuthEnabled
 	config.FeatureFlags = featureflags.EvaluateFrontendPublicFlags(r.Context(), h.FeatureFlags)

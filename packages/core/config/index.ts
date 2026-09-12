@@ -20,6 +20,9 @@ interface ConfigState {
   // section is hidden. Defaults to false so unknown / older servers and the
   // managed cloud (which omits the field) keep it hidden.
   vcsIntegrationAvailable: boolean;
+  // Deployment policy for external messaging providers, independent of Git.
+  // Hidden until config loads; a successful older-server response enables it.
+  messagingIntegrationsEnabled: boolean;
   // Whether this deployment mints a session from a device id alone
   // (intranet device auth). Defaults to false and must stay false for any
   // server that does not declare it: the endpoint answers 403 both when the
@@ -48,6 +51,7 @@ interface ConfigState {
     googleClientId?: string;
     workspaceCreationDisabled?: boolean;
     vcsIntegrationAvailable?: boolean;
+    messagingIntegrationsEnabled?: boolean;
     deviceAuthAvailable?: boolean;
   }) => void;
   setDaemonConfig: (config: {
@@ -69,6 +73,7 @@ export const configStore = createStore<ConfigState>((set) => ({
   daemonAppUrl: "",
   workspaceCreationDisabled: false,
   vcsIntegrationAvailable: false,
+  messagingIntegrationsEnabled: false,
   deviceAuthAvailable: false,
   featureFlags: {},
   serverVersion: "",
@@ -80,6 +85,7 @@ export const configStore = createStore<ConfigState>((set) => ({
     googleClientId = "",
     workspaceCreationDisabled = false,
     vcsIntegrationAvailable = false,
+    messagingIntegrationsEnabled = true,
     deviceAuthAvailable = false,
   }) =>
     set({
@@ -87,6 +93,7 @@ export const configStore = createStore<ConfigState>((set) => ({
       googleClientId,
       workspaceCreationDisabled,
       vcsIntegrationAvailable,
+      messagingIntegrationsEnabled,
       deviceAuthAvailable,
     }),
   setDaemonConfig: ({ daemonServerUrl = "", daemonAppUrl = "" }) =>

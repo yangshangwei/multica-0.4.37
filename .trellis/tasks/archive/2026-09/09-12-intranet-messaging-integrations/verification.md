@@ -21,10 +21,10 @@
 
 ## Local runtime
 
-The existing checkout `.env` now sets messaging to false and VCS to true. Only the checkout's API component was restarted. The running API at localhost:18572 reports `messaging_integrations_enabled=false` and `vcs_integration_available=true`. Web was temporarily started for verification; the existing desktop was used for the final visual checks.
+The existing checkout `.env` now sets messaging to false and VCS to true. Only the checkout's API component was restarted. The running API at localhost:18572 reports `messaging_integrations_enabled=false` and `vcs_integration_available=true`. Web was temporarily started for verification and then stopped; the existing desktop was used for the final visual checks. The disposable test database and temporary test credentials/tools were removed.
 
 ## Limits
 
 - No live public messaging providers or cross-replica Redis deliveries were exercised.
 - The local VCS encryption key is still unset. The Git integration entry remains available, but connecting an actual intranet Git service still requires its encryption key, instance URL, and access token.
-- Existing unrelated catalog and skill changes were preserved. This task did not commit, push, publish, or deploy to a remote server.
+- Existing unrelated catalog and skill changes were preserved. The user requested committing these implementation changes to local `main`. Trellis archival separately committed this task's planning/verification artifacts; nothing was pushed, published, or deployed to a remote server.

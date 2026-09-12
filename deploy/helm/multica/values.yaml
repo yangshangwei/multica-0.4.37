@@ -160,6 +160,9 @@ backend:
       # created the workspace becomes its owner. Only consulted when
       # workspaceSlug names a workspace.
       role: member
+    # Set false on isolated networks to disable Lark, Slack, DingTalk, WeCom,
+    # and Telegram connections/bindings and hide their UI. Git is independent.
+    messagingIntegrationsEnabled: true
     # Self-host-only VCS integration (Forgejo / Gitea / GitLab). The official
     # chart enables the product surface by default; operators must also provide
     # MULTICA_VCS_SECRET_KEY through existingSecret before connections work.

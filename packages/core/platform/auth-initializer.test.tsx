@@ -124,6 +124,52 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
+describe("AuthInitializer messaging deployment policy", () => {
+  it.each([
+    ["network failure", new TypeError("fetch failed")],
+    ["invalid JSON", new SyntaxError("Unexpected token")],
+    ["unavailable API", new ApiError("unavailable", 503, "Unavailable")],
+  ])("keeps messaging unavailable when startup config fails: %s", async (_label, error) => {
+    configStore.setState(configStore.getInitialState());
+    const api = makeApi({ getConfig: vi.fn().mockRejectedValue(error) });
+    const { unmount } = renderInitializer({ api });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().user).toEqual(fakeUser);
+    });
+    expect(configStore.getState().messagingIntegrationsEnabled).toBe(false);
+    unmount();
+  });
+
+  it("loads disabled messaging independently from enabled self-hosted Git", async () => {
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({
+        allow_signup: true,
+        messaging_integrations_enabled: false,
+        vcs_integration_available: true,
+      }),
+    });
+    renderInitializer({ api });
+
+    await waitFor(() => {
+      expect(configStore.getState().messagingIntegrationsEnabled).toBe(false);
+      expect(configStore.getState().vcsIntegrationAvailable).toBe(true);
+    });
+  });
+
+  it("restores historical messaging availability when connecting to an older server", async () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      messagingIntegrationsEnabled: false,
+    });
+    renderInitializer({ api: makeApi() });
+
+    await waitFor(() => {
+      expect(configStore.getState().messagingIntegrationsEnabled).toBe(true);
+    });
+  });
+});
+
 describe("AuthInitializer recovery", () => {
   it("keeps the token and recovers on the online event after a network failure", async () => {
     const storage = makeStorage({ multica_token: "token-1" });

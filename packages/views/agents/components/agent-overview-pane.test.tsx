@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Agent, AgentRuntime } from "@multica/core/types";
+import { configStore } from "@multica/core/config";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
 import enAgents from "../../locales/en/agents.json";
@@ -59,32 +60,66 @@ const larkListingRef = vi.hoisted(() => ({
 const slackListingRef = vi.hoisted(() => ({
   current: { installations: [] as unknown[], configured: false },
 }));
+const dingtalkListingRef = vi.hoisted(() => ({
+  current: { installations: [] as unknown[], configured: false },
+}));
+const wecomListingRef = vi.hoisted(() => ({
+  current: { installations: [] as unknown[], configured: false },
+}));
 const telegramListingRef = vi.hoisted(() => ({
   current: { installations: [] as unknown[], configured: false },
 }));
+const providerQueryCalls = vi.hoisted(() => [] as string[]);
 vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "ws-1",
 }));
 vi.mock("@multica/core/lark", () => ({
   larkInstallationsOptions: () => ({
     queryKey: ["lark", "installations"],
-    queryFn: () => Promise.resolve(larkListingRef.current),
+    queryFn: () => {
+      providerQueryCalls.push("lark");
+      return Promise.resolve(larkListingRef.current);
+    },
   }),
 }));
 vi.mock("@multica/core/slack", () => ({
   slackInstallationsOptions: () => ({
     queryKey: ["slack", "installations"],
-    queryFn: () => Promise.resolve(slackListingRef.current),
+    queryFn: () => {
+      providerQueryCalls.push("slack");
+      return Promise.resolve(slackListingRef.current);
+    },
+  }),
+}));
+vi.mock("@multica/core/dingtalk", () => ({
+  dingtalkInstallationsOptions: () => ({
+    queryKey: ["dingtalk", "installations"],
+    queryFn: () => {
+      providerQueryCalls.push("dingtalk");
+      return Promise.resolve(dingtalkListingRef.current);
+    },
+  }),
+}));
+vi.mock("@multica/core/wecom", () => ({
+  wecomInstallationsOptions: () => ({
+    queryKey: ["wecom", "installations"],
+    queryFn: () => {
+      providerQueryCalls.push("wecom");
+      return Promise.resolve(wecomListingRef.current);
+    },
   }),
 }));
 vi.mock("@multica/core/telegram", () => ({
   telegramInstallationsOptions: () => ({
     queryKey: ["telegram", "installations"],
-    queryFn: () => Promise.resolve(telegramListingRef.current),
+    queryFn: () => {
+      providerQueryCalls.push("telegram");
+      return Promise.resolve(telegramListingRef.current);
+    },
   }),
 }));
 
-import { AgentOverviewPane } from "./agent-overview-pane";
+import { AgentOverviewPane, type DetailTab } from "./agent-overview-pane";
 
 const baseAgent: Agent = {
   id: "agent-1",
@@ -133,21 +168,32 @@ function makeRuntime(provider: string): AgentRuntime {
 
 function renderPane(
   runtimes: AgentRuntime[],
-  { canEdit = true }: { canEdit?: boolean } = {},
+  {
+    canEdit = true,
+    view,
+    navIntent,
+    onNavIntentHandled,
+    queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    }),
+  }: {
+    canEdit?: boolean;
+    view?: DetailTab;
+    navIntent?: DetailTab;
+    onNavIntentHandled?: () => void;
+    queryClient?: QueryClient;
+  } = {},
 ) {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-  });
   const navigation: NavigationAdapter = {
     push: vi.fn(),
     replace: vi.fn(),
     back: vi.fn(),
     pathname: "/acme/agents/agent-1",
-    searchParams: new URLSearchParams(),
+    searchParams: new URLSearchParams(view ? { view } : {}),
     hash: "",
     getShareableUrl: (path) => path,
   };
-  return render(
+  const result = render(
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
       <NavigationProvider value={navigation}>
         <QueryClientProvider client={queryClient}>
@@ -159,11 +205,14 @@ function renderPane(
             members={[]}
             onUpdate={vi.fn().mockResolvedValue(undefined)}
             canEdit={canEdit}
+            navIntent={navIntent}
+            onNavIntentHandled={onNavIntentHandled}
           />
         </QueryClientProvider>
       </NavigationProvider>
     </I18nProvider>,
   );
+  return { ...result, navigation, queryClient };
 }
 
 function openCapabilities() {
@@ -175,8 +224,15 @@ function openSettings() {
 }
 
 beforeEach(() => {
+  configStore.getState().setAuthConfig({
+    allowSignup: true,
+    messagingIntegrationsEnabled: true,
+  });
+  providerQueryCalls.length = 0;
   larkListingRef.current = { installations: [], configured: false };
   slackListingRef.current = { installations: [], configured: false };
+  dingtalkListingRef.current = { installations: [], configured: false };
+  wecomListingRef.current = { installations: [], configured: false };
   telegramListingRef.current = { installations: [], configured: false };
 });
 
@@ -218,6 +274,89 @@ describe("AgentOverviewPane MCP tab visibility", () => {
 });
 
 describe("AgentOverviewPane Integrations tab visibility", () => {
+  it("does not fetch messaging providers when disabled by deployment", () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      messagingIntegrationsEnabled: false,
+    });
+
+    renderPane([makeRuntime("claude")]);
+
+    expect(providerQueryCalls).toEqual([]);
+  });
+
+  it("hides the disabled Integrations tab even when configured providers remain cached", () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      messagingIntegrationsEnabled: false,
+    });
+    const queryClient = new QueryClient();
+    for (const channel of ["lark", "slack", "dingtalk", "wecom", "telegram"]) {
+      queryClient.setQueryData([channel, "installations"], {
+        installations: [],
+        configured: true,
+      });
+    }
+
+    renderPane([makeRuntime("claude")], { queryClient });
+    openCapabilities();
+
+    expect(screen.queryByRole("tab", { name: /^Integrations$/i })).not.toBeInTheDocument();
+    expect(providerQueryCalls).toEqual([]);
+  });
+
+  it("normalizes a saved Integrations URL to Overview when messaging is disabled", () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      messagingIntegrationsEnabled: false,
+    });
+
+    const { navigation } = renderPane([makeRuntime("claude")], {
+      view: "integrations",
+    });
+
+    expect(screen.getByRole("tab", { name: /^Overview$/i })).toHaveAttribute("aria-selected", "true");
+    expect(navigation.replace).toHaveBeenCalledWith("/acme/agents/agent-1");
+    expect(screen.queryByText("integrations-tab")).not.toBeInTheDocument();
+  });
+
+  it("recovers from an already selected Integrations tab when the policy disables it", async () => {
+    larkListingRef.current = { installations: [], configured: true };
+    const { navigation } = renderPane([makeRuntime("claude")]);
+    openCapabilities();
+    fireEvent.click(await screen.findByRole("tab", { name: /^Integrations$/i }));
+    expect(screen.getByRole("tab", { name: /^Integrations$/i })).toHaveAttribute("aria-selected", "true");
+
+    act(() => {
+      configStore.getState().setAuthConfig({
+        allowSignup: true,
+        messagingIntegrationsEnabled: false,
+      });
+    });
+
+    expect(screen.getByRole("tab", { name: /^Overview$/i })).toHaveAttribute("aria-selected", "true");
+    expect(navigation.replace).toHaveBeenLastCalledWith("/acme/agents/agent-1");
+    expect(screen.queryByText("integrations-tab")).not.toBeInTheDocument();
+  });
+
+  it("resolves an imperative Integrations intent to Overview when messaging is disabled", () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      messagingIntegrationsEnabled: false,
+    });
+    const onNavIntentHandled = vi.fn();
+
+    const { navigation } = renderPane([makeRuntime("claude")], {
+      view: "work",
+      navIntent: "integrations",
+      onNavIntentHandled,
+    });
+
+    expect(screen.getByRole("tab", { name: /^Overview$/i })).toHaveAttribute("aria-selected", "true");
+    expect(navigation.replace).toHaveBeenLastCalledWith("/acme/agents/agent-1");
+    expect(onNavIntentHandled).toHaveBeenCalled();
+  });
+
   it("shows the Integrations tab once the deployment has Lark configured", async () => {
     larkListingRef.current = { installations: [], configured: true };
     renderPane([makeRuntime("claude")]);

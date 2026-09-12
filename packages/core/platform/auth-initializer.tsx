@@ -83,6 +83,7 @@ export function AuthInitializer({
           workspaceCreationDisabled: cfg.workspace_creation_disabled === true,
           // Absent/false on the managed cloud and older servers → section hidden.
           vcsIntegrationAvailable: cfg.vcs_integration_available === true,
+          messagingIntegrationsEnabled: cfg.messaging_integrations_enabled,
           // Absent on the managed cloud, on older servers, and on every
           // self-hosted deployment that did not opt in — all of which answer
           // /auth/device with a 403.
