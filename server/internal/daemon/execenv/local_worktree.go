@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -1023,6 +1024,17 @@ func captureUserSnapshot(gitRoot, envRoot, headSHA string, logger *slog.Logger) 
 	// not a failure — read-tree rebuilds a correct index, merely a colder one —
 	// so the fallback runs on any error from the add, not just from the copy.
 	seeded := seedSnapshotIndex(gitRoot, indexPath)
+	if !seeded {
+		// A failed copy or timestamp restore may have left a partial index or
+		// one whose fresh mtime would hide a racy-clean edit. Discard it before
+		// rebuilding; starting from HEAD also retains tracked ignored files.
+		if err := os.Remove(indexPath); err != nil && !errors.Is(err, os.ErrNotExist) {
+			return "", fmt.Errorf("clear unusable snapshot index: %w", err)
+		}
+		if out, err := runGitEnv(gitRoot, env, "read-tree", headSHA); err != nil {
+			return "", fmt.Errorf("git read-tree: %s: %w", strings.TrimSpace(out), err)
+		}
+	}
 	addArgs := append([]string{"add", "-A", "--"}, snapshotExcludes()...)
 	if out, err := runGitEnv(gitRoot, env, addArgs...); err != nil {
 		if !seeded {
@@ -1058,6 +1070,7 @@ func captureUserSnapshot(gitRoot, envRoot, headSHA string, logger *slog.Logger) 
 // seedSnapshotIndex copies the repository's index to path, reporting whether it
 // got one. Read as a plain file rather than through git: git would want the
 // index lock, and this copy exists precisely to avoid waiting on it.
+// The caller must discard any copy left behind when this returns false.
 func seedSnapshotIndex(gitRoot, path string) bool {
 	src, err := runGitTrimmed(gitRoot, "rev-parse", "--git-path", "index")
 	if err != nil || src == "" {
@@ -1066,7 +1079,30 @@ func seedSnapshotIndex(gitRoot, path string) bool {
 	if !filepath.IsAbs(src) {
 		src = filepath.Join(gitRoot, src)
 	}
-	return copyFile(src, path) == nil
+	in, err := os.Open(src)
+	if err != nil {
+		return false
+	}
+	defer in.Close()
+	// Git distrusts cached file stats whose mtime reaches the index timestamp.
+	// Giving a copied index today's mtime can turn a same-size, same-timestamp
+	// edit into an apparently clean file. Take the timestamp before copying,
+	// from the same descriptor, so an atomic index replacement cannot pair
+	// these bytes with a newer index's timestamp.
+	info, err := in.Stat()
+	if err != nil || !info.Mode().IsRegular() {
+		return false
+	}
+	out, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
+	if err != nil {
+		return false
+	}
+	_, copyErr := io.Copy(out, in)
+	closeErr := out.Close()
+	if copyErr != nil || closeErr != nil {
+		return false
+	}
+	return os.Chtimes(path, info.ModTime(), info.ModTime()) == nil
 }
 
 // snapshotExcludes keeps the daemon's own sidecars out of the user's snapshot.
