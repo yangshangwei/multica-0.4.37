@@ -19,7 +19,9 @@ func testLogger() *slog.Logger {
 }
 
 func TestGitEnv(t *testing.T) {
-	t.Parallel()
+	// This case owns the empty-config fixture; the host may already inject
+	// Git config entries for credentials or URL rewrites.
+	t.Setenv("GIT_CONFIG_COUNT", "0")
 	env := gitEnv()
 
 	// Must contain GIT_TERMINAL_PROMPT=0.
@@ -58,6 +60,9 @@ func TestGitEnv(t *testing.T) {
 			}
 		}
 		return false
+	}
+	if !envHas(env, "GIT_CONFIG_COUNT=1") {
+		t.Error("gitEnv() must append exactly one config entry to the empty fixture")
 	}
 	if !envHas(env, "GIT_CONFIG_KEY_0=safe.directory") {
 		t.Error("gitEnv() must include GIT_CONFIG_KEY_0=safe.directory (no pre-existing config)")
@@ -107,6 +112,9 @@ func TestGitEnvPreservesExistingConfig(t *testing.T) {
 	}
 	if !envHas("GIT_CONFIG_KEY_1=http.extraHeader") {
 		t.Error("existing GIT_CONFIG_KEY_1 was lost")
+	}
+	if !envHas("GIT_CONFIG_VALUE_1=Authorization: Bearer tok") {
+		t.Error("existing GIT_CONFIG_VALUE_1 was lost")
 	}
 }
 
