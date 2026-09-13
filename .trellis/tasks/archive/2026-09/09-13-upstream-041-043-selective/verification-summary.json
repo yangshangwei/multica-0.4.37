@@ -1,0 +1,392 @@
+{
+  "status": "complete",
+  "base": "8e123db4801a9867a1f81e68cc87410e040aa1b6",
+  "verified_production_commit": "efb3c251ced56bd84dbd484952e68310c51de7e2",
+  "branch": "fix/upstream-041-043-selective",
+  "worktree": "/Volumes/artisan/code/2026/multica-upstream-fixes-041-043",
+  "source_commits": [
+    {
+      "source": "51803b3b3bc0c262f53b052c3a806fefcb0ab005",
+      "local": "0a987e2c8efbfd102a58a88c3e286ac2af079d6c",
+      "files": [
+        "server/internal/handler/daemon.go",
+        "server/internal/handler/daemon_task_lookup_test.go",
+        "server/internal/service/task.go"
+      ]
+    },
+    {
+      "source": "6194a8b3a7a1d5c7ede34c5fc8bf527f3d6e04c9",
+      "local": "181b56fcc48e15f4a8956eef66f998af550cf147",
+      "files": [
+        "server/internal/daemon/execenv/codex_home.go",
+        "server/internal/daemon/execenv/execenv.go",
+        "server/internal/daemon/execenv/execenv_test.go"
+      ]
+    },
+    {
+      "source": "4852784076d016ac5bfe9d20970b2e6edcda5b86",
+      "local": "e6999e17a835ea77f6488c726530e30ba549bda9",
+      "files": [
+        "server/internal/daemon/daemon.go",
+        "server/internal/daemon/tool_output_preview.go",
+        "server/internal/daemon/tool_output_preview_test.go"
+      ]
+    },
+    {
+      "source": "9d3613653e310bbbed5ae294efd8f405e3b722aa",
+      "local": "42d38d0136c1c2408b7302175aa1d15e0f62977b",
+      "files": [
+        "server/internal/service/task_complete_race_test.go",
+        "server/pkg/taskfailure/classify.go",
+        "server/pkg/taskfailure/classify_test.go"
+      ]
+    },
+    {
+      "source": "71ee15422e93b341859506b3496c80073669ad01",
+      "local": "97275b3bf43ebea81a9997ed7530543e713e6f7c",
+      "files": [
+        "packages/views/editor/extensions/list-item.ts",
+        "packages/views/editor/extensions/list-keyboard.test.ts"
+      ]
+    },
+    {
+      "source": "440ef8aa16c4ae58e8ef83e4d866078ff8837b16",
+      "local": "f34feb83b97833832e5ec45d0d7e6f45852d11ed",
+      "files": [
+        "packages/views/modals/quick-create-issue.test.tsx",
+        "packages/views/modals/quick-create-issue.tsx"
+      ]
+    },
+    {
+      "source": "b566b5fd4e7c8409f227802571d43d46d37f2bd7",
+      "local": "0495e73f86d49023ccb605ab0a2cd50070ebd4ce",
+      "files": [
+        "server/internal/handler/inbox.go",
+        "server/internal/handler/inbox_test.go"
+      ]
+    },
+    {
+      "source": "ca47495fcc3c4d2d0d6c7a421e45ddd0de98f0fd",
+      "local": "ab289ec8424c95f266a1ab138978fb3f65bf7cf5",
+      "files": [
+        "server/internal/daemon/codex_compaction_annotation_test.go",
+        "server/internal/daemon/daemon.go",
+        "server/pkg/agent/codex.go",
+        "server/pkg/agent/codex_compaction_test.go"
+      ]
+    },
+    {
+      "source": "a419cf20eff151be4b4da82205957f62c32603f8",
+      "local": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1",
+      "files": [
+        "packages/views/inbox/components/inbox-page.tsx"
+      ]
+    }
+  ],
+  "additional_production_fix": "efb3c251c",
+  "test_environment_fix": "d143ffdd2",
+  "production_files": [
+    "packages/views/editor/extensions/list-item.ts",
+    "packages/views/inbox/components/inbox-page.tsx",
+    "packages/views/modals/quick-create-issue.tsx",
+    "server/internal/daemon/daemon.go",
+    "server/internal/daemon/execenv/codex_home.go",
+    "server/internal/daemon/execenv/execenv.go",
+    "server/internal/daemon/execenv/local_worktree.go",
+    "server/internal/daemon/tool_output_preview.go",
+    "server/internal/handler/daemon.go",
+    "server/internal/handler/inbox.go",
+    "server/internal/service/task.go",
+    "server/pkg/agent/codex.go",
+    "server/pkg/taskfailure/classify.go"
+  ],
+  "test_files": [
+    "e2e/upstream-selected-fixes.spec.ts",
+    "packages/views/editor/extensions/list-keyboard.test.ts",
+    "packages/views/inbox/components/inbox-page.test.tsx",
+    "packages/views/modals/quick-create-issue.test.tsx",
+    "server/internal/daemon/codex_compaction_annotation_test.go",
+    "server/internal/daemon/codex_reuse_fallback_test.go",
+    "server/internal/daemon/execenv/execenv_test.go",
+    "server/internal/daemon/execenv/snapshot_index_stat_test.go",
+    "server/internal/daemon/repocache/cache_test.go",
+    "server/internal/daemon/tool_output_preview_test.go",
+    "server/internal/handler/daemon_task_lookup_test.go",
+    "server/internal/handler/inbox_test.go",
+    "server/internal/service/task_complete_race_test.go",
+    "server/pkg/agent/codex_compaction_test.go",
+    "server/pkg/taskfailure/classify_test.go"
+  ],
+  "frontend_tests": 8127,
+  "frontend_test_files": 687,
+  "mobile_tests": 115,
+  "mobile_test_files": 20,
+  "go_test_events": {
+    "pass": 13898,
+    "skip": 9
+  },
+  "go_packages": {
+    "pass": 73,
+    "skip": 2
+  },
+  "go_statement_coverage": "69.8%",
+  "go_skips": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+      "reason": "migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "test": "TestCLIConfig_UnknownFieldsArePreserved",
+      "reason": "config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestIsDriveRoot",
+      "reason": "local_directory_test.go:383: windows-only behaviour"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+      "reason": "autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+      "reason": "skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+      "reason": "acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+      "reason": "codex_test.go:3195: Linux signal/reap semantics regression"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestPiExecuteAttachesStdinPipe",
+      "reason": "pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+      "reason": "claude_test.go:755: root-only preflight assertion"
+    }
+  ],
+  "dependency_suite_skips": [],
+  "e2e_stats": {
+    "startTime": "2026-09-13T06:15:29.716Z",
+    "duration": 169984.859,
+    "expected": 82,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "checks": {
+    "typecheck": {
+      "exit_code": 0,
+      "duration_seconds": 78.38,
+      "command": [
+        "pnpm",
+        "typecheck",
+        "--concurrency=1"
+      ],
+      "environment": "none",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "ts-full": {
+      "exit_code": 0,
+      "duration_seconds": 281.02,
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "test",
+        "--filter=!@multica/mobile",
+        "--force",
+        "--concurrency=1",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "environment": "none",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "lint": {
+      "exit_code": 0,
+      "duration_seconds": 14.84,
+      "command": [
+        "pnpm",
+        "lint",
+        "--concurrency=1"
+      ],
+      "environment": "none",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "mobile-unit": {
+      "exit_code": 0,
+      "duration_seconds": 4.14,
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/mobile",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "environment": "none",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "mobile-typecheck": {
+      "exit_code": 0,
+      "duration_seconds": 6.56,
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/mobile",
+        "typecheck"
+      ],
+      "environment": "none",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "mobile-ios-harness": {
+      "exit_code": 0,
+      "duration_seconds": 0.93,
+      "command": [
+        "bash",
+        "apps/mobile/scripts/ios-run.test.sh"
+      ],
+      "environment": "none",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "go-vet-complete": {
+      "exit_code": 0,
+      "duration_seconds": 5.48,
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "environment": "go",
+      "head": "efb3c251ced56bd84dbd484952e68310c51de7e2"
+    },
+    "go-build-complete": {
+      "exit_code": 0,
+      "duration_seconds": 10.71,
+      "command": [
+        "go",
+        "build",
+        "./..."
+      ],
+      "environment": "go",
+      "head": "efb3c251ced56bd84dbd484952e68310c51de7e2"
+    },
+    "web-build": {
+      "exit_code": 0,
+      "duration_seconds": 388.3,
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/web",
+        "build"
+      ],
+      "environment": "app",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "desktop-build": {
+      "exit_code": 0,
+      "duration_seconds": 6.91,
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/desktop",
+        "exec",
+        "electron-vite",
+        "build"
+      ],
+      "environment": "app",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "ui-exports": {
+      "exit_code": 0,
+      "duration_seconds": 2.6,
+      "command": [
+        "pnpm",
+        "check:ui-exports"
+      ],
+      "environment": "none",
+      "head": "1e64edc9c301006fa1b6baa4cd472385ffd5f0c1"
+    },
+    "go-complete": {
+      "exit_code": 0,
+      "duration_seconds": 490.37,
+      "command": [
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-p=2",
+        "-parallel=2",
+        "-timeout=25m",
+        "-coverprofile=../.omx/reports/upstream-041-043/go-coverage-complete.out",
+        "./..."
+      ],
+      "environment": "go",
+      "head": "efb3c251ced56bd84dbd484952e68310c51de7e2"
+    },
+    "e2e-accepted": {
+      "exit_code": 0,
+      "duration_seconds": 171.26,
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--workers=1",
+        "--reporter=line,json",
+        "--output=.omx/reports/upstream-041-043/e2e-accepted-artifacts"
+      ],
+      "environment": "app",
+      "head": "efb3c251ced56bd84dbd484952e68310c51de7e2"
+    }
+  },
+  "remaining_limits": [
+    "Native Windows/Linux and authenticated real agent CLIs were not executed",
+    "Nine existing Go conditional/platform cases remain skipped",
+    "Existing lint warnings remain; no lint errors",
+    "No injected filesystem Chtimes failure was executed"
+  ],
+  "service_cleanup": {
+    "stopped_services": [
+      {
+        "service": "api-accepted",
+        "pid": 52001,
+        "signal": "SIGTERM"
+      },
+      {
+        "service": "web-production",
+        "pid": 20237,
+        "signal": "SIGTERM"
+      },
+      {
+        "service": "desktop-renderer",
+        "pid": 55113,
+        "signal": "SIGTERM"
+      }
+    ],
+    "redis_stopped": "multica-upstream-fixes-redis-20260913",
+    "preserved_databases": [
+      "multica_multica_upstream_fixes_041_043_949",
+      "multica_multica_upstream_fixes_041_043_949_go"
+    ],
+    "postgres_container_preserved": "multica-postgres-1",
+    "worktree_preserved": "/Volumes/artisan/code/2026/multica-upstream-fixes-041-043"
+  }
+}
