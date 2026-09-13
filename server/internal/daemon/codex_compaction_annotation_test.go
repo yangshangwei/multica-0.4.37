@@ -35,6 +35,8 @@ func TestAnnotateCodexRetiredCompaction(t *testing.T) {
 			"config.toml",
 			"--disable remote_compaction_v2",
 			"-c features.remote_compaction_v2=false",
+			"MULTICA_CODEX_ARGS",
+			"restart the daemon",
 		} {
 			if !strings.Contains(got, want) {
 				t.Errorf("hint must mention %q, got: %s", want, got)

@@ -9290,8 +9290,9 @@ const codexRetiredCompactionHint = " [multica] codex could not compact this conv
 	"off, so look in both places it can be off: `[features]` in the codex config this agent uses " +
 	"(~/.codex/config.toml by default), and the codex launch arguments on the agent, the daemon, or a " +
 	"custom runtime profile (`--disable remote_compaction_v2`, `-c features.remote_compaction_v2=false`). " +
-	"Remove it wherever it appears — or set it to true — and run this task again; both sources are re-read " +
-	"on the next run. The one place not to edit is the per-task codex config this run used: it is " +
+	"Remove it wherever it appears — or set it to true. For daemon launch arguments such as " +
+	"`MULTICA_CODEX_ARGS`, restart the daemon to reload the setting. Then run this task again. " +
+	"The one place not to edit is the per-task codex config this run used: it is " +
 	"regenerated from your shared one every run, so a change there is lost. A thread stuck this way " +
 	"continues where it left off once compaction works."
 
