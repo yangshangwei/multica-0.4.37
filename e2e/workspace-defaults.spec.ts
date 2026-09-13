@@ -44,12 +44,17 @@ async function createProject(page: Page, workspace: Workspace, title: string, sc
 test.describe("workspace built-in defaults", () => {
   test.setTimeout(120_000);
 
-  test("shows built-in resources immediately and retains a project without a runtime", async ({ page }, info) => {
+  test("keeps built-in resources available on request and retains a project without a runtime", async ({ page }, info) => {
     const { api, workspace } = await signIn(page, "no-runtime");
     try {
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.goto(`/${workspace.slug}/squads`);
       await expect(page.getByRole("heading", { name: /built-in/i })).toBeVisible();
+      const catalogToggle = page.getByRole("region", { name: "Built-in squads" }).getByRole("button", { name: /^Built-in squads/ });
+      await expect(catalogToggle).toHaveAttribute("aria-expanded", "false");
+      await expect(page.getByText("Feature Delivery Squad", { exact: true })).toHaveCount(0);
+      await catalogToggle.click();
+      await expect(catalogToggle).toHaveAttribute("aria-expanded", "true");
       await expect(page.getByText("Feature Delivery Squad", { exact: true }).first()).toBeVisible();
       await page.screenshot({ path: info.outputPath("builtin-squads-desktop.png"), animations: "disabled" });
       await page.goto(`/${workspace.slug}/skills`);
