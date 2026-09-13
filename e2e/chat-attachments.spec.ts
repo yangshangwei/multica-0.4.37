@@ -41,6 +41,7 @@ test.describe("Chat attachments", () => {
   let createdSessionId: string | null = null;
   let createdAgentId: string | null = null;
   let createdRuntimeId: string | null = null;
+  let workspaceSlug: string | null = null;
 
   test.beforeEach(async () => {
     api = await createTestApi();
@@ -51,8 +52,14 @@ test.describe("Chat attachments", () => {
   test.afterEach(async () => {
     try {
       if (pgClient) {
-        if (createdSessionId) {
-          await pgClient.query(`DELETE FROM chat_session WHERE id = $1`, [createdSessionId]);
+        if (createdSessionId && workspaceSlug) {
+          const response = await authedFetch(api, `/api/chat/sessions/${createdSessionId}`, {
+            method: "DELETE",
+            headers: { "X-Workspace-Slug": workspaceSlug },
+          });
+          if (!response.ok && response.status !== 404) {
+            throw new Error(`Chat session cleanup failed: ${response.status}`);
+          }
         }
         if (createdAgentId) {
           await pgClient.query(`DELETE FROM agent WHERE id = $1`, [createdAgentId]);
@@ -67,6 +74,7 @@ test.describe("Chat attachments", () => {
       createdSessionId = null;
       createdAgentId = null;
       createdRuntimeId = null;
+      workspaceSlug = null;
       await api.cleanup();
     }
   });
@@ -75,13 +83,14 @@ test.describe("Chat attachments", () => {
     expect(pgClient).not.toBeNull();
     const pgc = pgClient!;
 
-    // Resolve the workspace + caller so we can seed an agent/runtime/session
+    // Resolve the workspace + caller so we can seed an agent and runtime
     // directly via SQL. Going through the HTTP API would require modelling
     // local-daemon ownership which isn't needed for this contract test.
     const workspaces = await api.getWorkspaces();
     const ws = workspaces[0]!;
     api.setWorkspaceSlug(ws.slug);
     api.setWorkspaceId(ws.id);
+    workspaceSlug = ws.slug;
 
     const userRow = await pgc.query(
       `SELECT id FROM "user" WHERE email = $1 LIMIT 1`,
@@ -90,7 +99,7 @@ test.describe("Chat attachments", () => {
     if (userRow.rows.length === 0) throw new Error("e2e user missing");
     const userId = userRow.rows[0].id as string;
 
-    // Seed runtime + agent + chat_session.
+    // Seed a runtime and agent without starting a real agent process.
     const runtimeIns = await pgc.query(
       `INSERT INTO agent_runtime (
          workspace_id, daemon_id, name, runtime_mode, provider, status,
@@ -113,13 +122,15 @@ test.describe("Chat attachments", () => {
     );
     createdAgentId = agentIns.rows[0].id as string;
 
-    const sessionIns = await pgc.query(
-      `INSERT INTO chat_session (workspace_id, agent_id, creator_id, title, status)
-       VALUES ($1, $2, $3, 'E2E Chat Attachment Session', 'active')
-       RETURNING id`,
-      [ws.id, createdAgentId, userId],
-    );
-    createdSessionId = sessionIns.rows[0].id as string;
+    // Use the public creation path so this empty session is explicitly
+    // member-visible; raw internal sessions deliberately reject uploads.
+    const sessionRes = await authedFetch(api, "/api/chat/sessions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Workspace-Slug": ws.slug },
+      body: JSON.stringify({ agent_id: createdAgentId, title: "E2E Chat Attachment Session" }),
+    });
+    expect(sessionRes.status, await sessionRes.clone().text()).toBe(201);
+    createdSessionId = ((await sessionRes.json()) as { id: string }).id;
 
     // 1. Upload a small PNG against the chat session.
     const pngBytes = Buffer.from([
@@ -134,7 +145,7 @@ test.describe("Chat attachments", () => {
       body: form,
       headers: { "X-Workspace-Slug": ws.slug },
     });
-    expect(uploadRes.status).toBe(200);
+    expect(uploadRes.status, await uploadRes.clone().text()).toBe(200);
     const uploaded = (await uploadRes.json()) as UploadRow;
     expect(uploaded.chat_session_id).toBe(createdSessionId);
     expect(uploaded.chat_message_id).toBeNull();
@@ -163,8 +174,8 @@ test.describe("Chat attachments", () => {
     );
     expect(after.rows[0]?.chat_message_id).toBe(sendBody.message_id);
 
-    // 4. Clean up the attachment we created (chat_session cascade handles the
-    //    rest in afterEach via chat_session row deletion).
+    // 4. Remove the attachment row; the session API tears down dependent
+    //    messages and queued work explicitly in afterEach.
     await pgc.query(`DELETE FROM attachment WHERE id = $1`, [uploaded.id]);
   });
 });
