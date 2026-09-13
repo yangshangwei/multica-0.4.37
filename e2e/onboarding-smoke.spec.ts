@@ -18,6 +18,7 @@ test("onboarding — welcome → about you (answer path)", async ({ page }) => {
   const api = new TestApiClient();
   await api.login(EMAIL, "OBv3 Tester");
   const token = api.getToken();
+  if (!token) throw new Error("E2E login did not return an auth token");
 
   await page.addInitScript((t) => {
     localStorage.setItem("multica_token", t);
@@ -42,7 +43,7 @@ test("onboarding — welcome → about you (answer path)", async ({ page }) => {
   await expect(page.locator('[data-slot="stepper-title"]')).toHaveText([
     "About you",
     "Workspace",
-    "Meet Mika",
+    "Connect a runtime",
   ]);
   await expect(
     page.locator('[aria-current="step"]').filter({ hasText: "About you" }),
@@ -65,11 +66,11 @@ test("onboarding — welcome → about you (answer path)", async ({ page }) => {
   await page.screenshot({ path: `${SHOTS_DIR}/03-workspace.png` });
 
   // 4. Runtime step — the rail should now show two completed steps and mark
-  //    "Meet Mika" current.
+  //    "Connect a runtime" current.
   await page.getByRole("textbox").first().fill(`Rail QA ${Date.now()}`);
   await page.getByRole("button", { name: /^Create /i }).click();
   await expect(
-    page.locator('[aria-current="step"]').filter({ hasText: "Meet Mika" }),
+    page.locator('[aria-current="step"]').filter({ hasText: "Connect a runtime" }),
   ).toBeVisible({ timeout: 20000 });
   await page.waitForTimeout(800);
   await page.screenshot({ path: `${SHOTS_DIR}/06-runtime.png` });
@@ -79,6 +80,7 @@ test("onboarding — one skip clears the whole questionnaire step", async ({ pag
   const api = new TestApiClient();
   await api.login(`skip-${Date.now()}@localhost`, "Skipper");
   const token = api.getToken();
+  if (!token) throw new Error("E2E login did not return an auth token");
 
   await page.addInitScript((t) => localStorage.setItem("multica_token", t), token);
   await page.goto("/onboarding", { waitUntil: "domcontentloaded" });
@@ -105,6 +107,7 @@ test("onboarding — zh-Hans renders Chinese labels", async ({ page, context, ba
   const api = new TestApiClient();
   await api.login(`zh-${Date.now()}@localhost`, "中文用户");
   const token = api.getToken();
+  if (!token) throw new Error("E2E login did not return an auth token");
 
   await page.addInitScript((t) => localStorage.setItem("multica_token", t), token);
   await page.goto("/onboarding", { waitUntil: "domcontentloaded" });
