@@ -513,3 +513,24 @@ Implemented and archived the desktop Help reader, deployment feed, cumulative co
 ### Next Steps
 
 - Production releases use .github/RELEASING.md; unrelated legacy plugin E2E collection still references removed buildSurfaceDocument.
+
+
+## Session 15: Fork release tag line and desktop updateUrl
+
+**Date**: 2026-09-14
+**Task**: Fork release tag line and desktop updateUrl
+**Branch**: `main`
+
+### Summary
+
+Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4.43 sat outside main's ancestry. Preserved them as upstream-v* refs, deleted the bare copies, set remote.upstream.tagOpt=--no-tags, and tagged 9a6816401 as v0.4.44 (not pushed). Added optional updateUrl to desktop.json so Desktop takes electron-updater generic-provider updates from an operator-controlled static directory; login-page save now preserves it. Documented the field in four doc locales and the fork tag rule plus intranet update layout in RELEASING.md. Desktop vitest 598 pass, typecheck and lint pass, independent review found zero defects.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `9a6816401` | (see git log) |
+
+### Status
+
+[OK] **Completed**
