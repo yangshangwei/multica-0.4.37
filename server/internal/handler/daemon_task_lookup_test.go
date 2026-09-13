@@ -2,15 +2,18 @@ package handler
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"strings"
 	"testing"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/multica-ai/multica/server/internal/middleware"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // The daemon interrupts a running agent the moment a task-status poll answers
@@ -149,6 +152,68 @@ func TestGetTaskStatus_ForeignWorkspace_Returns404(t *testing.T) {
 	testutil.Call(t, testHandler.GetTaskStatus, req).Want(http.StatusNotFound)
 }
 
+func TestListTaskMessagesByUser_WorkspaceLookupFailureIsRetryable(t *testing.T) {
+	runtimeID := dbfx.Runtime(t, "Message lookup runtime")
+	agentID := dbfx.Agent(t, "Message lookup agent", runtimeID)
+	issueID := dbfx.Issue(t, "Message lookup issue")
+	taskID := dbfx.Task(t, agentID, testutil.Cols{"runtime_id": runtimeID, "issue_id": issueID})
+	const content = "The agent is still working."
+	dbfx.Insert(t, "task_message", testutil.Cols{
+		"task_id": taskID, "seq": 1, "type": "text", "content": content,
+	})
+	fault := &lookupFaultPool{DBTX: testPool, query: "GetIssue"}
+	h := &Handler{Queries: db.New(testPool), TaskService: &service.TaskService{Queries: db.New(fault)}}
+	req := testutil.WithHeaders(
+		testutil.JSONRequest(http.MethodGet, "/api/tasks/"+taskID+"/messages", nil),
+		"X-User-ID", testUserID, "X-Workspace-ID", testWorkspaceID,
+	)
+	req = withURLParam(req, "taskId", taskID)
+	wrapped := middleware.RequireWorkspaceMember(h.Queries)(http.HandlerFunc(h.ListTaskMessagesByUser)).ServeHTTP
+	w := testutil.Call(t, wrapped, req).Want(http.StatusInternalServerError)
+	if !fault.called {
+		t.Fatal("workspace lookup fault was not exercised")
+	}
+	if strings.Contains(w.Body.String(), "task not found") || strings.Contains(w.Body.String(), content) {
+		t.Fatalf("lookup failure must neither report absence nor expose messages: %s", w.Body.String())
+	}
+
+	// A retry after the lookup recovers must return the original transcript.
+	var messages []protocol.TaskMessagePayload
+	wrapped = middleware.RequireWorkspaceMember(testHandler.Queries)(http.HandlerFunc(testHandler.ListTaskMessagesByUser)).ServeHTTP
+	testutil.Call(t, wrapped, req).Want(http.StatusOK).JSON(&messages)
+	if len(messages) != 1 || messages[0].TaskID != taskID || messages[0].Content != content {
+		t.Fatalf("recovered transcript = %+v, want the task's unchanged message", messages)
+	}
+}
+
+func TestListTaskMessagesByUser_ForeignWorkspaceMatchesMissingTask(t *testing.T) {
+	runtimeID := dbfx.Runtime(t, "Private transcript runtime")
+	agentID := dbfx.Agent(t, "Private transcript agent", runtimeID)
+	issueID := dbfx.Issue(t, "Private transcript issue")
+	taskID := dbfx.Task(t, agentID, testutil.Cols{"runtime_id": runtimeID, "issue_id": issueID})
+	dbfx.Insert(t, "task_message", testutil.Cols{
+		"task_id": taskID, "seq": 1, "type": "text", "content": "Private transcript",
+	})
+	otherWorkspace := dbfx.Workspace(t, "Other transcript workspace", "transcript-other-"+uuid.NewString())
+	dbfx.Member(t, otherWorkspace, testUserID, "owner")
+	wrapped := middleware.RequireWorkspaceMember(testHandler.Queries)(http.HandlerFunc(testHandler.ListTaskMessagesByUser)).ServeHTTP
+
+	var missingBody string
+	for _, id := range []string{uuid.NewString(), taskID} {
+		req := testutil.WithHeaders(
+			testutil.JSONRequest(http.MethodGet, "/api/tasks/"+id+"/messages", nil),
+			"X-User-ID", testUserID, "X-Workspace-ID", otherWorkspace,
+		)
+		req = withURLParam(req, "taskId", id)
+		w := testutil.Call(t, wrapped, req).Want(http.StatusNotFound)
+		if id != taskID {
+			missingBody = w.Body.String()
+		} else if w.Body.String() != missingBody {
+			t.Fatalf("foreign task response = %q, want the same response as a missing task %q", w.Body.String(), missingBody)
+		}
+	}
+}
+
 // TestResolveTaskWorkspaceIDChecked_SeparatesAbsenceFromFailure asserts the
 // distinction at the service boundary, where the two callers now rely on it.
 func TestResolveTaskWorkspaceIDChecked_SeparatesAbsenceFromFailure(t *testing.T) {
@@ -198,6 +263,48 @@ func TestResolveTaskWorkspaceIDChecked_SeparatesAbsenceFromFailure(t *testing.T)
 		// callers depend on that and must not start panicking on a blip.
 		if ws := svc.ResolveTaskWorkspaceID(ctx, task); ws != "" {
 			t.Fatalf("best-effort resolver should still return \"\", got %q", ws)
+		}
+	})
+
+	t.Run("later association resolves despite an earlier query failure", func(t *testing.T) {
+		chatID := dbfx.ChatSession(t, agentID)
+		taskID := dbfx.Task(t, agentID, testutil.Cols{
+			"runtime_id": runtimeID, "issue_id": issueID, "chat_session_id": chatID,
+		})
+		task, err := testHandler.Queries.GetAgentTask(ctx, parseUUID(taskID))
+		if err != nil {
+			t.Fatal(err)
+		}
+		fault := &lookupFaultPool{DBTX: testPool, query: "GetIssue"}
+		svc := &service.TaskService{Queries: db.New(fault)}
+		got, err := svc.ResolveTaskWorkspaceIDChecked(ctx, task)
+		if !fault.called {
+			t.Fatal("earlier issue lookup fault was not exercised")
+		}
+		if got != testWorkspaceID || err != nil {
+			t.Fatalf("workspace=%q err=%v, want the chat's workspace %q / nil", got, err, testWorkspaceID)
+		}
+	})
+
+	t.Run("quick-create resolves workspace from context JSONB", func(t *testing.T) {
+		payload, err := json.Marshal(service.QuickCreateContext{
+			Type: service.QuickCreateContextType, WorkspaceID: testWorkspaceID,
+			RequesterID: testUserID, Prompt: "Create a task from this request",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		taskID := dbfx.Task(t, agentID, testutil.Cols{"runtime_id": runtimeID, "context": payload})
+		task, err := testHandler.Queries.GetAgentTask(ctx, parseUUID(taskID))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if task.IssueID.Valid || task.ChatSessionID.Valid || task.AutopilotRunID.Valid {
+			t.Fatal("quick-create fixture unexpectedly has a linked entity")
+		}
+		got, err := testHandler.TaskService.ResolveTaskWorkspaceIDChecked(ctx, task)
+		if got != testWorkspaceID || err != nil {
+			t.Fatalf("workspace=%q err=%v, want context workspace %q / nil", got, err, testWorkspaceID)
 		}
 	})
 }

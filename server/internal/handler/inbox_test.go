@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -287,6 +288,10 @@ func TestInboxListsShipCommentPreviewNotFullComment(t *testing.T) {
 	archivedIssue := dbfx.Issue(t, "Archived comment issue", testutil.Cols{"workspace_id": workspaceID})
 	fullComment := strings.Repeat("A long agent reply. ", 300)
 	issueLessBody := strings.Repeat("An issue-less notice. ", 300)
+	commentIDs := map[string]string{
+		activeIssue:   dbfx.Comment(t, activeIssue, fullComment),
+		archivedIssue: dbfx.Comment(t, archivedIssue, fullComment),
+	}
 
 	insert := func(cols testutil.Cols) {
 		base := testutil.Cols{
@@ -301,8 +306,14 @@ func TestInboxListsShipCommentPreviewNotFullComment(t *testing.T) {
 		}
 		dbfx.Insert(t, "inbox_item", base)
 	}
-	insert(testutil.Cols{"type": "new_comment", "issue_id": activeIssue, "body": fullComment})
-	insert(testutil.Cols{"type": "new_comment", "issue_id": archivedIssue, "body": fullComment, "archived": true})
+	insert(testutil.Cols{
+		"type": "new_comment", "issue_id": activeIssue, "body": fullComment,
+		"details": testutil.Raw(fmt.Sprintf(`'{"comment_id":%q}'::jsonb`, commentIDs[activeIssue])),
+	})
+	insert(testutil.Cols{
+		"type": "new_comment", "issue_id": archivedIssue, "body": fullComment, "archived": true,
+		"details": testutil.Raw(fmt.Sprintf(`'{"comment_id":%q}'::jsonb`, commentIDs[archivedIssue])),
+	})
 	insert(testutil.Cols{"type": "autopilot_paused", "body": issueLessBody})
 
 	wantPreview := string([]rune(fullComment)[:inboxListBodyPreviewLimit-1]) + "…"
@@ -310,6 +321,15 @@ func TestInboxListsShipCommentPreviewNotFullComment(t *testing.T) {
 		t.Helper()
 		for _, item := range items {
 			if item.IssueID != nil && *item.IssueID == issueID {
+				var details struct {
+					CommentID string `json:"comment_id"`
+				}
+				if err := json.Unmarshal(item.Details, &details); err != nil {
+					t.Fatalf("decode comment anchor: %v", err)
+				}
+				if details.CommentID != commentIDs[issueID] {
+					t.Fatalf("comment anchor = %q, want %q for issue %s", details.CommentID, commentIDs[issueID], issueID)
+				}
 				if item.Body == nil {
 					t.Fatalf("item for issue %s has no body", issueID)
 				}
@@ -354,6 +374,53 @@ func TestInboxListsShipCommentPreviewNotFullComment(t *testing.T) {
 		`SELECT count(*) FROM inbox_item WHERE workspace_id = $1 AND type = 'new_comment' AND body = $2`,
 		workspaceID, fullComment); got != 2 {
 		t.Errorf("stored full comments = %d, want 2", got)
+	}
+}
+
+func TestInboxStateChangesReturnFullCommentBody(t *testing.T) {
+	workspaceID := dbfx.Workspace(t, "Inbox full comment responses", "inbox-full-body-"+uuid.NewString())
+	dbfx.Member(t, workspaceID, testUserID, "owner")
+	fullComment := strings.Repeat("完整的评论内容🙂 ", 100)
+	for _, tc := range []struct {
+		name     string
+		handler  http.HandlerFunc
+		read     bool
+		archived bool
+	}{
+		{"read", testHandler.MarkInboxRead, true, false},
+		{"archive", testHandler.ArchiveInboxItem, false, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			issueID := dbfx.Issue(t, "Full comment response", testutil.Cols{"workspace_id": workspaceID})
+			commentID := dbfx.Comment(t, issueID, fullComment)
+			itemID := dbfx.Insert(t, "inbox_item", testutil.Cols{
+				"workspace_id": workspaceID, "recipient_type": "member", "recipient_id": testUserID,
+				"type": "new_comment", "severity": "info", "issue_id": issueID,
+				"title": "New comment", "body": fullComment,
+				"details": testutil.Raw(fmt.Sprintf(`'{"comment_id":%q}'::jsonb`, commentID)),
+			})
+			req := withURLParam(inboxRequest(http.MethodPost, "/api/inbox/"+itemID+"/"+tc.name, workspaceID), "id", itemID)
+			var item InboxItemResponse
+			testutil.Call(t, inboxWorkspaceHandler(tc.handler), req).Want(http.StatusOK).JSON(&item)
+			if item.ID != itemID || item.Read != tc.read || item.Archived != tc.archived {
+				t.Fatalf("state response = %+v, want id=%s read=%v archived=%v", item, itemID, tc.read, tc.archived)
+			}
+			if item.Body == nil || *item.Body != fullComment {
+				t.Fatal("single-item state response lost the full comment body")
+			}
+			var details struct {
+				CommentID string `json:"comment_id"`
+			}
+			if err := json.Unmarshal(item.Details, &details); err != nil {
+				t.Fatalf("decode comment anchor: %v", err)
+			}
+			if details.CommentID != commentID {
+				t.Fatalf("comment anchor = %q, want %q", details.CommentID, commentID)
+			}
+			if got := dbfx.Count(t, "SELECT count(*) FROM inbox_item WHERE id = $1 AND body = $2", itemID, fullComment); got != 1 {
+				t.Fatal("state change altered the stored comment body")
+			}
+		})
 	}
 }
 

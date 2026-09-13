@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
+import { isValidElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { toast } from "sonner";
 import { ApiError } from "@multica/core/api";
@@ -599,6 +600,48 @@ describe("InboxPage", () => {
 
     expect(screen.queryByTestId("list")).not.toBeNull();
   });
+
+  it.each([TABLET, DESKTOP])(
+    "suppresses the detail's duplicate sidebar trigger in the %ipx split layout",
+    (width) => {
+      reset();
+      layout.width = width;
+      listData.active = [item({ details: { comment_id: "comment-1" } })];
+
+      render(<InboxPage />);
+      fireEvent.click(screen.getByTestId("row"));
+
+      expect(screen.getByTestId("list")).toBeInTheDocument();
+      expect(issueDetailProps.at(-1)).toMatchObject({
+        leadingAction: false,
+        highlightCommentId: "comment-1",
+      });
+    },
+  );
+
+  it.each([PHONE, FOLD_INNER])(
+    "keeps a working detail back action in the %ipx compact layout",
+    (width) => {
+      reset();
+      layout.width = width;
+      listData.active = [item()];
+
+      render(<InboxPage />);
+      fireEvent.click(screen.getByTestId("row"));
+      expect(screen.queryByTestId("list")).not.toBeInTheDocument();
+
+      // IssueDetail is mocked above; mount the actual host-supplied action to
+      // exercise its callback without repeating the detail's component suite.
+      const backAction = issueDetailProps.at(-1)?.leadingAction;
+      expect(isValidElement(backAction)).toBe(true);
+      if (!isValidElement(backAction)) throw new Error("Missing compact back action");
+      const back = render(backAction);
+      fireEvent.click(back.getByRole("button"));
+
+      expect(screen.getByTestId("list")).toBeInTheDocument();
+      expect(replace).toHaveBeenLastCalledWith("/acme/inbox");
+    },
+  );
 
   function renderWithActiveItem() {
     reset();
