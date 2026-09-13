@@ -21,7 +21,7 @@ import {
   systemDeviceName,
 } from "./device-identity";
 import type { DeviceIdentity } from "../shared/device-identity";
-import { parseRuntimeConfig, type RuntimeConfigResult } from "../shared/runtime-config";
+import { mergeRuntimeConfigInput, parseRuntimeConfig, type RuntimeConfigResult } from "../shared/runtime-config";
 import {
   RENDERER_ROUTE_CONTEXT_CHANNEL,
   sanitizeRendererRouteContext,
@@ -773,7 +773,13 @@ if (!gotTheLock) {
         return { ok: false, message: "Invalid runtime configuration" };
       }
       try {
-        const config = parseRuntimeConfig(JSON.stringify({ schemaVersion: 1, ...(input as Record<string, unknown>) }));
+        const current =
+          runtimeConfigResult.ok && runtimeConfigResult.source === "configured"
+            ? runtimeConfigResult.config
+            : null;
+        const config = parseRuntimeConfig(
+          JSON.stringify(mergeRuntimeConfigInput(current, input as Record<string, unknown>)),
+        );
         const saved = await saveRuntimeConfig(config);
         runtimeConfigResult = { ok: true, source: "configured", config: saved };
         BrowserWindow.fromWebContents(event.sender)?.webContents.reload();
@@ -906,7 +912,11 @@ if (!gotTheLock) {
     desktopInitialized = true;
     createWindow();
 
-    setupAutoUpdater(() => mainWindow);
+    setupAutoUpdater(() => mainWindow, {
+      updateUrl: runtimeConfigResult.ok
+        ? runtimeConfigResult.config.updateUrl
+        : undefined,
+    });
     setupDaemonManager(() => mainWindow);
     setupLocalDirectory(() => mainWindow);
 

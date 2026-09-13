@@ -109,6 +109,20 @@ Desktop 默认连接 Multica Cloud。连接自托管实例时，在用户目录�
 }
 ```
 
+### 从自己的服务器获取更新
+
+Desktop 默认检查打包时内置的发布源，这对公开版本没问题，但自托管部署如果自己构建 Desktop，就需要把更新器指向自己控制的静态目录。在配置里加 `updateUrl`：
+
+```json
+{
+  "schemaVersion": 1,
+  "apiUrl": "https://api.example.com",
+  "updateUrl": "https://updates.example.com/desktop"
+}
+```
+
+`updateUrl` 必须使用 `http` 或 `https`，且不能包含凭据。目录里放 `pnpm package` 已经生成的文件即可，不需要改名：Windows 是 `latest.yml`（arm64 为 `latest-arm64.yml`）加 `.exe` 和 `.exe.blockmap`，macOS 是 `latest-mac.yml`（Intel 为 `latest-x64-mac.yml`）加 `.zip` 和 `.blockmap`，Linux 是 `latest-linux.yml` 加 AppImage。任何静态文件服务都可以；把上一个版本的 `.blockmap` 和新版本放在一起，客户端就只下载变化的块。不写 `updateUrl` 时恢复内置发布源。在登录页保存服务器地址不会改动这个字段。
+
 保存后重启 Desktop，配置只在启动时读取一次。两种失败的表现不同，据此可以快速区分：
 
 - **文件没找到**（目录不对，或文件名不是 `desktop.json`）：Desktop 使用默认的 Cloud 配置，不报错。所以如果 Desktop 仍然显示 Cloud 地址且没有任何配置错误，说明文件不在 Desktop 查找的位置。

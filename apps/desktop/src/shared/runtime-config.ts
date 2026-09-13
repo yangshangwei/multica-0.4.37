@@ -3,6 +3,11 @@ export interface RuntimeConfig {
   apiUrl: string;
   wsUrl: string;
   appUrl: string;
+  // Base URL of a static directory that serves electron-builder's update
+  // metadata (`latest*.yml`, installers, `.blockmap`). When set, Desktop
+  // takes automatic updates from there instead of the publish feed baked
+  // into the package, which lets an intranet deployment ship its own builds.
+  updateUrl?: string;
 }
 
 export interface RuntimeConfigError {
@@ -65,14 +70,29 @@ export function parseRuntimeConfig(raw: string): RuntimeConfig {
   const apiUrl = requiredString(obj.apiUrl, "apiUrl");
   const appUrl = optionalString(obj.appUrl, "appUrl");
   const wsUrl = optionalString(obj.wsUrl, "wsUrl");
+  const updateUrl = optionalString(obj.updateUrl, "updateUrl");
 
   const normalizedApiUrl = normalizeHttpUrl(apiUrl, "apiUrl");
-  return {
+  const config: RuntimeConfig = {
     schemaVersion: 1,
     apiUrl: normalizedApiUrl,
     wsUrl: wsUrl ? normalizeWsUrl(wsUrl, "wsUrl") : deriveWsUrl(normalizedApiUrl),
     appUrl: appUrl ? normalizeHttpUrl(appUrl, "appUrl") : deriveAppUrl(normalizedApiUrl),
   };
+  if (updateUrl) config.updateUrl = normalizeHttpUrl(updateUrl, "updateUrl");
+  return config;
+}
+
+// The login page submits only the server URLs it shows. Fields an operator
+// wrote by hand (`updateUrl`) must survive that save, so seed them from the
+// currently loaded file before the submitted values are layered on top.
+export function mergeRuntimeConfigInput(
+  current: RuntimeConfig | null,
+  input: Record<string, unknown>,
+): Record<string, unknown> {
+  const preserved: Record<string, unknown> = {};
+  if (current?.updateUrl) preserved.updateUrl = current.updateUrl;
+  return { schemaVersion: 1, ...preserved, ...input };
 }
 
 export function deriveWsUrl(apiUrl: string): string {

@@ -111,6 +111,20 @@ Desktop은 기본적으로 Multica Cloud에 연결됩니다. 자체 호스팅 �
 }
 ```
 
+### 자체 서버에서 업데이트 받기
+
+Desktop은 빌드할 때 포함된 릴리스 피드를 확인합니다. 공개 릴리스에는 문제가 없지만, 자체 호스팅 환경에서 직접 빌드한 Desktop을 배포한다면 업데이트 경로를 직접 관리하는 정적 디렉터리로 돌려야 합니다. `updateUrl`을 추가하세요:
+
+```json
+{
+  "schemaVersion": 1,
+  "apiUrl": "https://api.example.com",
+  "updateUrl": "https://updates.example.com/desktop"
+}
+```
+
+`updateUrl`은 `http` 또는 `https`를 사용해야 하며 자격 증명을 포함할 수 없습니다. 디렉터리에는 `pnpm package`가 만드는 파일을 그대로 두면 됩니다. Windows는 `latest.yml`(arm64는 `latest-arm64.yml`)과 `.exe`, `.exe.blockmap`, macOS는 `latest-mac.yml`(Intel은 `latest-x64-mac.yml`)과 `.zip`, `.blockmap`, Linux는 `latest-linux.yml`과 AppImage입니다. 어떤 정적 파일 서버든 사용할 수 있습니다. 이전 버전의 `.blockmap`을 새 버전 옆에 두면 클라이언트는 바뀐 블록만 내려받습니다. `updateUrl`을 생략하면 기본 피드로 돌아갑니다. 로그인 페이지에서 서버 주소를 저장해도 이 필드는 그대로 유지됩니다.
+
 저장한 뒤 Desktop을 다시 시작합니다. 이 설정은 시작할 때 한 번만 읽습니다. 두 가지 실패는 다르게 나타나므로 이를 보고 빠르게 구분할 수 있습니다.
 
 - **파일을 찾지 못한 경우**(디렉터리가 다르거나 파일 이름이 `desktop.json`이 아닌 경우): Desktop은 기본 Cloud 설정을 사용하고 오류를 표시하지 않습니다. 따라서 Desktop이 여전히 Cloud 주소를 표시하고 설정 오류도 없다면, 파일이 Desktop이 찾는 위치에 없다는 뜻입니다.

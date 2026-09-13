@@ -18,6 +18,7 @@ const ctx = vi.hoisted(() => ({
   })),
   downloadUpdate: vi.fn(),
   quitAndInstall: vi.fn(),
+  setFeedURL: vi.fn(),
   getVersion: vi.fn(() => "0.3.17"),
   userDataPath: "",
 }));
@@ -37,6 +38,7 @@ vi.mock("electron-updater", () => {
     checkForUpdates: ctx.checkForUpdates,
     downloadUpdate: ctx.downloadUpdate,
     quitAndInstall: ctx.quitAndInstall,
+    setFeedURL: ctx.setFeedURL,
   };
   return { autoUpdater };
 });
@@ -166,6 +168,7 @@ describe("setupAutoUpdater", () => {
     ctx.checkForUpdates.mockClear();
     ctx.downloadUpdate.mockClear();
     ctx.quitAndInstall.mockClear();
+    ctx.setFeedURL.mockClear();
     ctx.getVersion.mockClear();
   });
 
@@ -173,6 +176,22 @@ describe("setupAutoUpdater", () => {
     vi.clearAllTimers();
     vi.useRealTimers();
     rmSync(ctx.userDataPath, { recursive: true, force: true });
+  });
+
+  it("keeps the built-in publish feed when no updateUrl is configured", () => {
+    setupAutoUpdater(() => null);
+
+    expect(ctx.setFeedURL).not.toHaveBeenCalled();
+  });
+
+  it("points electron-updater at a configured generic updateUrl", () => {
+    setupAutoUpdater(() => null, { updateUrl: "https://updates.example.com/desktop" });
+
+    expect(ctx.setFeedURL).toHaveBeenCalledTimes(1);
+    expect(ctx.setFeedURL).toHaveBeenCalledWith({
+      provider: "generic",
+      url: "https://updates.example.com/desktop",
+    });
   });
 
   it("enables automatic background updates by default", async () => {

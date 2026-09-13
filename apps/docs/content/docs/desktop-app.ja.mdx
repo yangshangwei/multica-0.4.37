@@ -111,6 +111,20 @@ Desktop はデフォルトで Multica Cloud に接続します。セルフホス
 }
 ```
 
+### 自分のサーバーから更新を取得する
+
+Desktop はビルド時に組み込まれたリリースフィードを確認します。公開リリースではそれで問題ありませんが、セルフホスト環境で独自の Desktop ビルドを配布する場合は、更新先を自分が管理する静的ディレクトリに向ける必要があります。`updateUrl` を追加してください:
+
+```json
+{
+  "schemaVersion": 1,
+  "apiUrl": "https://api.example.com",
+  "updateUrl": "https://updates.example.com/desktop"
+}
+```
+
+`updateUrl` は `http` または `https` を使い、認証情報を含めてはいけません。ディレクトリには `pnpm package` が生成するファイルをそのまま置きます: Windows は `latest.yml`（arm64 は `latest-arm64.yml`）と `.exe`、`.exe.blockmap`、macOS は `latest-mac.yml`（Intel は `latest-x64-mac.yml`）と `.zip`、`.blockmap`、Linux は `latest-linux.yml` と AppImage です。静的ファイルサーバーであれば何でも構いません。前バージョンの `.blockmap` を新バージョンと並べて置くと、クライアントは変更されたブロックだけをダウンロードします。`updateUrl` を省略すると組み込みのフィードに戻ります。ログインページでサーバーアドレスを保存してもこのフィールドは変わりません。
+
 保存後に Desktop を再起動します。この設定は起動時に一度だけ読み込まれます。2 つの失敗の現れ方は異なるため、これが切り分けの手がかりになります:
 
 - **ファイルが見つからない**（ディレクトリが違う、またはファイル名が `desktop.json` ではない）: Desktop はデフォルトの Cloud 設定を使い、エラーは表示しません。つまり Desktop が Cloud のアドレスを表示したままで設定エラーも出ない場合、ファイルは Desktop が探している場所にありません。

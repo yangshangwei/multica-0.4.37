@@ -10,6 +10,29 @@ formulae, and container images.
 The verification job runs the Go tests and `govulncheck` before any publishing
 job starts. The vulnerability scan is fail-closed by default.
 
+### Fork tags and imported upstream tags
+
+Every build stamp — `make build`, the Desktop package, the CLI bundled into it,
+and the release images — comes from `git describe --tags --match 'v[0-9]*'`,
+which only walks the ancestry of the commit being built. A `v*` tag that points
+at an upstream commit outside `main`'s history is therefore invisible to every
+build and only makes the tag list lie about what is current.
+
+- Create fork tags only on commits reachable from `main`. The first fork tag is
+  `v0.4.44`; continue from there.
+- Keep imported upstream tags under the `upstream-v<version>` prefix. Fetch the
+  upstream remote with tags disabled so bare `v*` tags never come back:
+
+  ```bash
+  git config remote.upstream.tagOpt --no-tags
+  git fetch upstream 'refs/tags/v*:refs/tags/upstream-v*'
+  ```
+
+- Never reuse or move an imported tag. A version number upstream already
+  published is skipped, not reclaimed.
+- Desktop auto-update requires monotonic versions, so a fork tag must be higher
+  than any Desktop build already installed on the target deployment.
+
 ## Changelog artifacts and fork releases
 
 The same tag push also generates a cumulative, deployment-owned changelog.
@@ -218,6 +241,41 @@ node --test scripts/*changelog*.test.mjs
 # Optional real-container smoke: requires an already-loaded frontend image.
 MULTICA_RUN_DOCKER_CHANGELOG_SMOKE=1 node --test scripts/offline-changelog.test.mjs
 ```
+
+### Delivering Desktop updates to an intranet deployment
+
+Installed Desktops check the publish feed compiled into the package. A
+deployment that ships its own Desktop builds points them at a static directory
+instead by setting `updateUrl` in each client's `~/.multica/desktop.json`
+(see the Desktop documentation). The directory serves the packaging output
+unchanged; nothing is renamed:
+
+```text
+<updateUrl>/
+  latest.yml                                    # Windows x64 metadata
+  latest-arm64.yml                              # Windows arm64 metadata
+  multica-desktop-<version>-windows-<arch>.exe
+  multica-desktop-<version>-windows-<arch>.exe.blockmap
+  latest-mac.yml                                # macOS arm64 metadata
+  latest-x64-mac.yml                            # macOS x64 metadata
+  multica-desktop-<version>-mac-<arch>.zip
+  multica-desktop-<version>-mac-<arch>.zip.blockmap
+  latest-linux.yml                              # Linux x64 metadata
+  latest-linux-arm64.yml                        # Linux arm64 metadata
+  multica-desktop-<version>-linux-<arch>.AppImage
+```
+
+Copy the new version's files in, then replace the `latest*.yml` files last so a
+client never reads metadata for an installer that is not there yet. Keep the
+previous version's `.blockmap` alongside the new one; electron-updater uses it
+for differential downloads. Clients poll hourly and on startup, download in the
+background, and install on the next quit.
+
+`updateUrl` only takes effect when `desktop.json` parses. A client whose file
+is invalid shows the configuration error and, because no configuration was
+loaded, falls back to the feed compiled into the package. On an intranet that
+fallback fails harmlessly, but a machine with internet access would check the
+upstream release feed, so fix the file rather than leaving it broken.
 
 ## Emergency vulnerability-scan bypass
 

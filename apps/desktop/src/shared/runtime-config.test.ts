@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import {
   deriveWsUrl,
+  mergeRuntimeConfigInput,
   parseRuntimeConfig,
   runtimeConfigFromDevEnv,
 } from "./runtime-config";
@@ -55,6 +56,65 @@ describe("runtime config", () => {
       apiUrl: "https://api.example.com",
       wsUrl: "wss://ws.example.com/socket",
       appUrl: "https://app.example.com",
+    });
+  });
+
+  it("accepts and normalizes an optional updateUrl", () => {
+    expect(
+      parseRuntimeConfig(
+        JSON.stringify({
+          schemaVersion: 1,
+          apiUrl: "https://api.example.com",
+          updateUrl: "https://updates.example.com/desktop/?x=1#frag",
+        }),
+      ),
+    ).toEqual({
+      schemaVersion: 1,
+      apiUrl: "https://api.example.com",
+      wsUrl: "wss://api.example.com/ws",
+      appUrl: "https://example.com",
+      updateUrl: "https://updates.example.com/desktop",
+    });
+  });
+
+  it("omits updateUrl when it is not configured", () => {
+    expect(
+      parseRuntimeConfig(
+        JSON.stringify({ schemaVersion: 1, apiUrl: "https://api.example.com" }),
+      ),
+    ).not.toHaveProperty("updateUrl");
+  });
+
+  it("rejects an updateUrl that is empty, non-http, or carries credentials", () => {
+    for (const updateUrl of ["", "ftp://updates.example.com", "https://u:p@updates.example.com"]) {
+      expect(() =>
+        parseRuntimeConfig(
+          JSON.stringify({ schemaVersion: 1, apiUrl: "https://api.example.com", updateUrl }),
+        ),
+      ).toThrow(/updateUrl/);
+    }
+  });
+
+  it("preserves a configured updateUrl when the login page saves server URLs", () => {
+    const current = parseRuntimeConfig(
+      JSON.stringify({
+        schemaVersion: 1,
+        apiUrl: "https://api.old.example.com",
+        updateUrl: "https://updates.example.com/desktop",
+      }),
+    );
+
+    expect(
+      parseRuntimeConfig(
+        JSON.stringify(mergeRuntimeConfigInput(current, { apiUrl: "https://api.new.example.com" })),
+      ),
+    ).toMatchObject({
+      apiUrl: "https://api.new.example.com",
+      updateUrl: "https://updates.example.com/desktop",
+    });
+    expect(mergeRuntimeConfigInput(null, { apiUrl: "https://api.new.example.com" })).toEqual({
+      schemaVersion: 1,
+      apiUrl: "https://api.new.example.com",
     });
   });
 

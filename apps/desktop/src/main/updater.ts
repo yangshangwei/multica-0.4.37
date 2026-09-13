@@ -109,7 +109,22 @@ function checkForUpdatesOnce(): Promise<unknown> {
   return p;
 }
 
-export function setupAutoUpdater(getMainWindow: () => BrowserWindow | null): void {
+export interface AutoUpdaterOptions {
+  // Operator-configured static update directory from desktop.json. Absent
+  // means the publish feed compiled into the package (GitHub Releases).
+  updateUrl?: string;
+}
+
+export function setupAutoUpdater(
+  getMainWindow: () => BrowserWindow | null,
+  options: AutoUpdaterOptions = {},
+): void {
+  if (options.updateUrl) {
+    // The generic provider reads `autoUpdater.channel`, so the per-arch
+    // channel files chosen above (`latest-x64-mac.yml`, `latest-arm64.yml`)
+    // resolve against the configured directory exactly as they do on GitHub.
+    autoUpdater.setFeedURL({ provider: "generic", url: options.updateUrl });
+  }
   const preferencesFilePath = updaterPreferencesPath(app.getPath("userData"));
   let automaticUpdatesEnabled =
     DEFAULT_UPDATER_PREFERENCES.automaticUpdates;

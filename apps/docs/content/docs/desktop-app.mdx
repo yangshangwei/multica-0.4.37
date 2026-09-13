@@ -111,6 +111,20 @@ Usually `apiUrl` alone is enough. Override explicitly only when the derivation d
 }
 ```
 
+### Taking updates from your own server
+
+Desktop checks the release feed it was built with, which is fine for the public release but wrong for a self-hosted deployment that ships its own Desktop builds. Add `updateUrl` to point the updater at a static directory you control:
+
+```json
+{
+  "schemaVersion": 1,
+  "apiUrl": "https://api.example.com",
+  "updateUrl": "https://updates.example.com/desktop"
+}
+```
+
+`updateUrl` must use `http` or `https` and must not contain credentials. The directory serves the files `pnpm package` already produces, unchanged: `latest.yml` (`latest-arm64.yml` on arm64) and the `.exe` plus `.exe.blockmap` for Windows, `latest-mac.yml` (`latest-x64-mac.yml` on Intel) with the `.zip` and `.blockmap` for macOS, and `latest-linux.yml` with the AppImage for Linux. Any static file server works; keep the previous version's `.blockmap` next to the new one so clients download only the changed blocks. Leaving `updateUrl` out restores the built-in feed. Saving a server address from the login page keeps this field as it was.
+
 Restart Desktop after saving — the file is read once at startup. The two failure modes look different, which is the fastest way to tell them apart:
 
 - **File not found** (wrong directory, or a filename that isn't exactly `desktop.json`) — Desktop uses the default Cloud configuration and shows no error. So if Desktop still reports a Cloud address and no configuration error, the file is not where Desktop is looking.
