@@ -11,6 +11,7 @@ import type { TestApiClient, TestTableIssueSeed } from "./fixtures";
 type TableRequestBody = {
   group?: { kind?: string };
   group_key?: string | null;
+  hierarchy?: { enabled?: boolean };
   parent_id?: string | null;
   page?: { limit?: number; cursor?: string | null };
 };
@@ -102,7 +103,10 @@ test.describe("Issue Table server grouping", () => {
       const path = apiPath(request);
       if (path === "/api/issues/table/rows") {
         lastObservedRequestAt = Date.now();
-        tableRowRequests.push(tableBody(request));
+        const body = tableBody(request);
+        // Board uses this endpoint with hierarchy disabled. Its startup can
+        // finish while the view menu opens, before Table has been selected.
+        if (body.hierarchy?.enabled === true) tableRowRequests.push(body);
       }
       if (path === "/api/issues" || path === "/api/issues/query") {
         lastObservedRequestAt = Date.now();
@@ -148,7 +152,12 @@ test.describe("Issue Table server grouping", () => {
       .filter({ hasText: "Backlog" })
       .first();
     await expect(backlogGroup).toContainText("501");
-    await expect(page.getByText(/Loaded \d+ of 1001/)).toBeVisible();
+    await expect(
+      page.getByRole("button", {
+        name: `E2E Table Large ${run} 0000`,
+        exact: true,
+      }),
+    ).toBeVisible();
     await expect(
       page.getByText(/Grouping and hierarchy are paused/),
     ).toHaveCount(0);
@@ -200,11 +209,19 @@ test.describe("Issue Table server grouping", () => {
     await reloadAppPage(page);
     await switchToTable(page);
 
+    const groupsResponsePromise = page.waitForResponse(
+      (response) =>
+        apiPath(response.request()) === "/api/issues/table/groups" &&
+        tableBody(response.request()).group?.kind === "status" &&
+        response.status() === 200,
+    );
     const todoRootPromise = page.waitForResponse((response) => {
       if (apiPath(response.request()) !== "/api/issues/table/rows") return false;
       const body = tableBody(response.request());
       return (
+        body.group?.kind === "status" &&
         body.group_key === "status:todo" &&
+        body.hierarchy?.enabled === true &&
         body.parent_id === null &&
         response.status() === 200
       );
@@ -212,31 +229,49 @@ test.describe("Issue Table server grouping", () => {
     const todoChildrenPromise = page.waitForResponse((response) => {
       if (apiPath(response.request()) !== "/api/issues/table/rows") return false;
       const body = tableBody(response.request());
-      return body.parent_id === parent.id && response.status() === 200;
+      return (
+        body.group?.kind === "status" &&
+        body.group_key === "status:todo" &&
+        body.hierarchy?.enabled === true &&
+        body.parent_id === parent.id &&
+        response.status() === 200
+      );
     });
     const doneRootPromise = page.waitForResponse((response) => {
       if (apiPath(response.request()) !== "/api/issues/table/rows") return false;
       const body = tableBody(response.request());
       return (
+        body.group?.kind === "status" &&
         body.group_key === "status:done" &&
+        body.hierarchy?.enabled === true &&
         body.parent_id === null &&
         response.status() === 200
       );
     });
 
     await groupByStatus(page);
-    const [todoRootResponse, todoChildrenResponse, doneRootResponse] =
-      await Promise.all([
-        todoRootPromise,
-        todoChildrenPromise,
-        doneRootPromise,
-      ]);
+    const [
+      groupsResponse,
+      todoRootResponse,
+      todoChildrenResponse,
+      doneRootResponse,
+    ] = await Promise.all([
+      groupsResponsePromise,
+      todoRootPromise,
+      todoChildrenPromise,
+      doneRootPromise,
+    ]);
+    const groups = (await groupsResponse.json()) as TableGroupsResponse;
     const todoRoot = (await todoRootResponse.json()) as TableRowsResponse;
     const todoChildren =
       (await todoChildrenResponse.json()) as TableRowsResponse;
     const doneRoot = (await doneRootResponse.json()) as TableRowsResponse;
 
-    expect(todoRoot.total).toBe(3);
+    // Group totals come from /groups; branch pages skip the query-wide count.
+    expect(groups.total).toBe(3);
+    expect(
+      Object.fromEntries(groups.groups.map((group) => [group.key, group.count])),
+    ).toEqual({ "status:todo": 2, "status:done": 1 });
     expect(todoRoot.rows).toEqual([
       expect.objectContaining({
         issue: expect.objectContaining({ id: parent.id, title: parentTitle }),
@@ -279,6 +314,7 @@ test.describe("Issue Table server grouping", () => {
     );
     const moved = seeds.at(-1);
     if (!moved) throw new Error("Cursor fixture was not created");
+    const expectedIds = seeds.map((issue) => issue.id).sort();
     await reloadAppPage(page);
 
     const firstHeadPromise = page.waitForResponse((response) => {
@@ -286,26 +322,41 @@ test.describe("Issue Table server grouping", () => {
       const body = tableBody(response.request());
       return (
         body.group?.kind === "none" &&
+        body.hierarchy?.enabled === true &&
+        body.parent_id === null &&
         (body.page?.cursor === null || body.page?.cursor === undefined) &&
         response.status() === 200
       );
     });
     await switchToTable(page);
     const firstHead = (await (await firstHeadPromise).json()) as TableRowsResponse;
+    expect(firstHead.total).toBe(60);
+    expect(firstHead.rows).toHaveLength(50);
     const staleCursor = firstHead.next_cursor;
     expect(staleCursor).toBeTruthy();
 
     const firstTailPromise = page.waitForResponse((response) => {
       if (apiPath(response.request()) !== "/api/issues/table/rows") return false;
       const body = tableBody(response.request());
-      return body.page?.cursor === staleCursor && response.status() === 200;
+      return (
+        body.group?.kind === "none" &&
+        body.hierarchy?.enabled === true &&
+        body.parent_id === null &&
+        body.page?.cursor === staleCursor &&
+        response.status() === 200
+      );
     });
     const tableScroller = page.locator("table").locator("..");
     await tableScroller.evaluate((element) => {
       element.scrollTop = element.scrollHeight;
     });
-    await firstTailPromise;
-    await expect(page.getByText("Loaded 60 of 60", { exact: true })).toBeVisible();
+    const firstTail = (await (await firstTailPromise).json()) as TableRowsResponse;
+    expect(firstTail.rows).toHaveLength(10);
+    expect(firstTail.next_cursor).toBeNull();
+    expect(
+      [...firstHead.rows, ...firstTail.rows].map((row) => row.issue.id).sort(),
+    ).toEqual(expectedIds);
+    await expect(page.getByText("No more", { exact: true })).toBeVisible();
 
     const postUpdateResponses: Array<{
       body: TableRequestBody;
@@ -318,8 +369,16 @@ test.describe("Issue Table server grouping", () => {
       ) {
         return;
       }
+      const body = tableBody(response.request());
+      if (
+        body.group?.kind !== "none" ||
+        body.hierarchy?.enabled !== true ||
+        body.parent_id !== null
+      ) {
+        return;
+      }
       postUpdateResponses.push({
-        body: tableBody(response.request()),
+        body,
         payload: (await response.json()) as TableRowsResponse,
       });
     };
@@ -340,6 +399,9 @@ test.describe("Issue Table server grouping", () => {
       ({ body }) =>
         body.page?.cursor === null || body.page?.cursor === undefined,
     )?.payload;
+    expect(freshHead?.total).toBe(60);
+    expect(freshHead?.rows).toHaveLength(50);
+    expect(freshHead?.rows[0]?.issue.id).toBe(moved.id);
     const freshCursor = freshHead?.next_cursor;
     expect(freshCursor).toBeTruthy();
     expect(freshCursor).not.toBe(staleCursor);
@@ -359,13 +421,23 @@ test.describe("Issue Table server grouping", () => {
     const freshTail = postUpdateResponses.find(
       ({ body }) => body.page?.cursor === freshCursor,
     )?.payload;
+    expect(freshTail?.rows).toHaveLength(10);
+    expect(freshTail?.next_cursor).toBeNull();
     const refreshedIds = [
       ...(freshHead?.rows ?? []),
       ...(freshTail?.rows ?? []),
     ].map((row) => row.issue.id);
-    expect(new Set(refreshedIds).size).toBe(60);
+    expect(refreshedIds.sort()).toEqual(expectedIds);
     expect(refreshedIds).toContain(moved.id);
-    await expect(page.getByText("Loaded 60 of 60", { exact: true })).toBeVisible();
+    // The old tail may finish an in-flight refetch. It must not replace the
+    // fresh tail: this boundary row would be missing under the old cursor.
+    await expect(
+      page.getByRole("button", {
+        name: `E2E Table Cursor ${run} 49`,
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.getByText("No more", { exact: true })).toBeVisible();
     page.off("response", collectResponse);
   });
 
