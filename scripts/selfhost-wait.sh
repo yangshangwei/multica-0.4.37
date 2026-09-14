@@ -82,7 +82,7 @@ echo "  Backend:  ${backend_url}"
 echo ""
 if [ "$mode" = "build" ]; then
   echo "Built images locally via docker-compose.selfhost.build.yml."
-  echo "Local tags: multica-backend:dev and multica-web:dev."
+  echo "Local tags: multica-backend:${VERSION:-dev} and multica-web:${VERSION:-dev}."
 else
   echo "Images: ${MULTICA_BACKEND_IMAGE:-ghcr.io/multica-ai/multica-backend}:${MULTICA_IMAGE_TAG:-latest}"
   echo "        ${MULTICA_WEB_IMAGE:-ghcr.io/multica-ai/multica-web}:${MULTICA_IMAGE_TAG:-latest}"

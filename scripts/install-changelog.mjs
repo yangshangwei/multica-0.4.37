@@ -15,15 +15,16 @@ function regularFile(path, optional = false) {
   }
 }
 
-function configuredEnv(contents, directory) {
+function configuredEnv(contents, directory, images) {
   // Preserve full unrelated assignments, including multiline quoted values.
-  // Only the two changelog assignments are replaced; the file is never sourced.
+  // Only selected assignments are replaced; the file is never sourced.
+  const replacedKeys = new Set(["CHANGELOG_FILE", "CHANGELOG_DIRECTORY", ...Object.keys(images)]);
   const lines = contents.match(/[^\n]*(?:\n|$)/g).filter(Boolean);
   const kept = [];
   let quote = null;
   let dropping = false;
   for (const line of lines) {
-    if (!quote) dropping = /^\s*(?:export\s+)?CHANGELOG_(?:FILE|DIRECTORY)\s*=/.test(line);
+    if (!quote) dropping = replacedKeys.has(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=/.exec(line)?.[1]);
     if (!dropping) kept.push(line);
     let start = 0;
     if (!quote) {
@@ -44,18 +45,29 @@ function configuredEnv(contents, directory) {
   // Compose keeps backslashes literally in single quotes, making trailing
   // backslashes ambiguous. Double quotes support escaped slashes/quotes;
   // doubled dollars prevent dotenv interpolation from changing a path.
-  const value = directory.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\$/g, () => "$$");
-  return `${text}${text && !text.endsWith("\n") ? "\n" : ""}CHANGELOG_FILE='${CONTAINER_CHANGELOG_FILE}'\nCHANGELOG_DIRECTORY="${value}"\n`;
+  const escaped = (value) => value.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\$/g, () => "$$");
+  const imageValues = Object.entries(images).map(([key, value]) => `${key}="${escaped(value)}"\n`).join("");
+  return `${text}${text && !text.endsWith("\n") ? "\n" : ""}CHANGELOG_FILE='${CONTAINER_CHANGELOG_FILE}'\nCHANGELOG_DIRECTORY="${escaped(directory)}"\n${imageValues}`;
 }
 
 export function installChangelog(options) {
   if (options["current-file"] && options["current-file"] !== CONTAINER_CHANGELOG_FILE) throw new Error("existing CHANGELOG_FILE is incompatible with the bundled directory mount");
   if (!options.directory?.startsWith("/") || /[\r\n]/.test(options.directory) || options.directory.includes("\0")) throw new Error("changelog directory must be an absolute single-line host path");
+  const imageOptions = ["backend-image", "web-image", "image-tag"];
+  const images = {};
+  if (imageOptions.some((key) => Object.hasOwn(options, key))) {
+    if (imageOptions.some((key) => typeof options[key] !== "string" || !options[key].trim() || /[\r\n\0]/.test(options[key]))) {
+      throw new Error("image selections require nonempty single-line backend-image, web-image and image-tag values");
+    }
+    images.MULTICA_BACKEND_IMAGE = options["backend-image"];
+    images.MULTICA_WEB_IMAGE = options["web-image"];
+    images.MULTICA_IMAGE_TAG = options["image-tag"];
+  }
   const { bytes, feed } = readFeed(options.input);
   const envStat = regularFile(options["deployment-env"]);
   const oldStat = regularFile(options.destination, true);
   const previous = oldStat ? readBounded(options.destination) : null;
-  const env = configuredEnv(readFileSync(options["deployment-env"], "utf8"), options.directory);
+  const env = configuredEnv(readFileSync(options["deployment-env"], "utf8"), options.directory, images);
   let stagedEnv;
   let stagedFeed;
   let replaced = false;
@@ -85,7 +97,7 @@ export function installChangelog(options) {
 }
 
 if (isMain(import.meta.url)) runMain(() => {
-  const options = parseArguments(process.argv.slice(2), ["input", "destination", "deployment-env", "directory", "current-file"], ["input", "destination", "deployment-env", "directory"]);
+  const options = parseArguments(process.argv.slice(2), ["input", "destination", "deployment-env", "directory", "current-file", "backend-image", "web-image", "image-tag"], ["input", "destination", "deployment-env", "directory"]);
   const feed = installChangelog(options);
   process.stdout.write(`Installed ${feed.releases.length} changelog entries and saved deployment feed configuration\n`);
 });

@@ -112,6 +112,9 @@ selfhost: ## Create .env if needed, then pull and start the official self-hosted
 	$(COMPOSE) -f docker-compose.selfhost.yml up -d
 	@bash scripts/selfhost-wait.sh official
 
+# Keep local image tags at dev unless a caller or env file selects a version.
+# Declare this before the generic git-derived VERSION default below.
+selfhost-build: export VERSION ?= dev
 selfhost-build: ## Build backend/web from the current checkout and start the self-hosted stack
 	$(REQUIRE_COMPOSE)
 	@if [ ! -f .env ]; then \

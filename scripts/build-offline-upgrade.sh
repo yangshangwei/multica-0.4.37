@@ -64,7 +64,7 @@ rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR"
 
 echo "==> Building runtime bundle from commit $(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
-bash scripts/offline-bundle.sh --output "$PACKAGE_DIR" --platform "$PLATFORM" "${CHANGELOG_ARGS[@]+"${CHANGELOG_ARGS[@]}"}"
+VERSION="$VERSION" bash scripts/offline-bundle.sh --output "$PACKAGE_DIR" --platform "$PLATFORM" "${CHANGELOG_ARGS[@]+"${CHANGELOG_ARGS[@]}"}"
 
 # The generic offline bundle README describes first installation. An upgrade
 # archive must be self-contained for the operator on the existing server, so

@@ -38,11 +38,13 @@ cd /opt/multica-upgrade
 2. 导入后端、前端和 PostgreSQL 镜像；
 3. 将当前 PostgreSQL 导出到 `/opt/multica/backups/<时间>/database.sql`；
 4. 备份当前 `.env`；
-5. 校验变更说明，在日志目录中原子替换 `changelog.json`，并持久化日志路径；
+5. 校验变更说明，在日志目录中原子替换 `changelog.json`，并保存日志路径和选定的镜像配置；
 6. 使用升级包中的 Compose 文件启动后端和前端；
 7. 等待 `/healthz` 返回成功。
 
-脚本只更新 `/opt/multica/.env` 中的 `CHANGELOG_FILE` 和 `CHANGELOG_DIRECTORY`，保留其余设置和 Docker 数据卷。默认日志目录为 `/opt/multica/changelog`；已配置目录会继续使用。Compose 挂载整个目录，容器内的日志路径为 `/app/data/changelog/changelog.json`。已有非空且不兼容的 `CHANGELOG_FILE` 会使升级停止，需先核对配置。
+脚本更新 `/opt/multica/.env` 中的 `MULTICA_BACKEND_IMAGE`、`MULTICA_WEB_IMAGE`、`MULTICA_IMAGE_TAG`、`CHANGELOG_FILE` 和 `CHANGELOG_DIRECTORY`，保留其余设置、文件权限和 Docker 数据卷。镜像选择会持久保存，之后在部署目录直接执行 `docker compose -f docker-compose.selfhost.yml up -d --pull never` 仍会使用本次升级的版本，无需重新传入镜像环境变量。
+
+默认日志目录为 `/opt/multica/changelog`；已配置目录会继续使用。Compose 挂载整个目录，容器内的日志路径为 `/app/data/changelog/changelog.json`。已有非空且不兼容的 `CHANGELOG_FILE` 会使升级停止，需先核对配置。
 
 不加 `--yes` 时脚本会在执行前显示版本、镜像和备份目录并要求确认：
 
@@ -65,13 +67,14 @@ cd /opt/multica-upgrade
 
 ```bash
 cd /opt/multica
+docker compose -f docker-compose.selfhost.yml config --images
 docker compose -f docker-compose.selfhost.yml ps
 docker compose -f docker-compose.selfhost.yml logs --tail=200 backend
 curl -fsS http://127.0.0.1:8080/health
 curl -fsS http://127.0.0.1:8080/healthz
 ```
 
-如果后端端口不是 `8080`，使用现有 `.env` 中配置的端口。
+确认镜像列表中的后端和前端标签是本次升级版本。如果后端端口不是 `8080`，使用现有 `.env` 中配置的端口。
 
 在客户端打开“帮助 → 变更说明”，核对本次版本、来源和具体更新。已经打开的页面每 60 秒检查新内容，也可以点“刷新”。首次安装这项功能需要正常升级客户端；之后单独发布新说明无需重新安装或重启客户端。
 
@@ -84,6 +87,10 @@ bash /opt/multica-upgrade/install-changelog.sh --deployment-dir /opt/multica
 记录必须先通过现有内网交付方式到达服务器。不要直接编辑正在使用的 JSON，不要将单个文件以 bind mount 或 Kubernetes `subPath` 挂载。文件无效或不可读时，页面会保留最近可用内容并提示尚未同步；重新发布有效文件即可恢复。
 
 ## 四、失败处理
+
+配置写入阶段失败时，脚本不会开始重建服务；如果 `.env` 写入失败，发布器会尝试恢复此前的变更说明，并报告恢复失败的情况。原 `.env` 和数据库导出保留在备份目录。
+
+开始重建容器后，如果启动或健康检查失败，脚本会以非零状态退出，保留已保存的新版本镜像选择和变更说明。容器、数据库迁移与配置写入不是一个原子事务，脚本不会自动回退容器或数据库。此时可能已有部分服务更新，恢复前应检查实际运行状态与迁移结果。
 
 先查看日志和备份：
 

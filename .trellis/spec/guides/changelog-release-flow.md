@@ -104,6 +104,15 @@ stable-release badge.
   quoting alone does not make Docker's CSV valid.
 - Preserve unrelated `.env` settings. Stage both outputs; install the feed
   atomically and restore it if configuration finalization fails.
+- An offline upgrade also persists the selected `MULTICA_BACKEND_IMAGE`,
+  `MULTICA_WEB_IMAGE` and `MULTICA_IMAGE_TAG` through that same staged writer.
+  A later ordinary Compose command must keep the installed version without
+  transient environment overrides. Feed-only installs omit these optional
+  inputs and continue to update only changelog settings.
+- Configuration/feed installation and container/database upgrades are separate
+  operations. A container start or health-check failure retains the selected
+  version and backup, and reports that container/database rollback was not
+  performed; never describe this as an atomic deployment transaction.
 
 ## Canonical evidence
 

@@ -18,14 +18,6 @@ cd "$ROOT_DIR"
 
 COMPOSE_FILE="docker-compose.selfhost.yml"
 BUILD_OVERLAY="docker-compose.selfhost.build.yml"
-# Tags the build overlay assigns. Read back from it rather than repeated here,
-# so a rename in the overlay cannot leave this script saving nothing.
-BACKEND_IMAGE="$(sed -n 's/^[[:space:]]*image:[[:space:]]*\(multica-backend:[^[:space:]]*\).*/\1/p' "$BUILD_OVERLAY" | head -1)"
-WEB_IMAGE="$(sed -n 's/^[[:space:]]*image:[[:space:]]*\(multica-web:[^[:space:]]*\).*/\1/p' "$BUILD_OVERLAY" | head -1)"
-# The database image is a literal in the compose file (no env override), so the
-# bundle has to carry that exact tag or `docker compose up` reaches for a
-# registry that is not there.
-DB_IMAGE="$(sed -n '/^[[:space:]]*postgres:/,/^[[:space:]]*[a-z]/s/^[[:space:]]*image:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$COMPOSE_FILE" | head -1)"
 
 OUT_DIR="dist/offline"
 DRY_RUN=0
@@ -86,6 +78,30 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+# Env overrides first: a checkout that is not a git working tree (an exported
+# tarball, a vendored copy) otherwise stamps "dev/unknown" into the manifest,
+# and then nobody at the offline site can answer "which build is this?".
+#
+# Never `--always`: this VERSION is stamped into the bundled multica CLI too
+# (Dockerfile builds ./cmd/multica with -X main.version), and its bare-hash
+# fallback parses as neither semver nor the git-describe shape — so the CLI
+# version gates fail closed and agent-create refuses the daemon at the offline
+# site. Synthesize the describe shape from HEAD instead, which those gates
+# exempt as a dev build. Keep in sync with the Makefile's VERSION.
+VERSION="${VERSION:-$(git describe --tags --match 'v[0-9]*' --dirty 2>/dev/null || echo "v0.0.0-0-g$(git rev-parse --short HEAD 2>/dev/null || echo 0000000)")}"
+
+# Resolve the same versioned tags that Compose builds. Reading the YAML text
+# would save literal interpolation expressions or a different checkout's dev
+# images. --images prints no runtime environment values or build-host secrets.
+RESOLVED_IMAGES="$(VERSION="$VERSION" JWT_SECRET="${JWT_SECRET:-build-time-placeholder-not-shipped}" \
+  docker compose -f "$COMPOSE_FILE" -f "$BUILD_OVERLAY" config --images)"
+BACKEND_IMAGE="$(printf '%s\n' "$RESOLVED_IMAGES" | sed -n '/^multica-backend:/p' | head -1)"
+WEB_IMAGE="$(printf '%s\n' "$RESOLVED_IMAGES" | sed -n '/^multica-web:/p' | head -1)"
+# The database image is a literal in the compose file (no env override), so the
+# bundle has to carry that exact tag or `docker compose up` reaches for a
+# registry that is not there.
+DB_IMAGE="$(sed -n '/^[[:space:]]*postgres:/,/^[[:space:]]*[a-z]/s/^[[:space:]]*image:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$COMPOSE_FILE" | head -1)"
+
 for var in BACKEND_IMAGE WEB_IMAGE DB_IMAGE; do
   if [ -z "${!var}" ]; then
     echo "Could not read $var out of the compose files." >&2
@@ -125,17 +141,6 @@ if [ "$DRY_RUN" = "1" ]; then
   exit 0
 fi
 
-# Env overrides first: a checkout that is not a git working tree (an exported
-# tarball, a vendored copy) otherwise stamps "dev/unknown" into the manifest,
-# and then nobody at the offline site can answer "which build is this?".
-#
-# Never `--always`: this VERSION is stamped into the bundled multica CLI too
-# (Dockerfile builds ./cmd/multica with -X main.version), and its bare-hash
-# fallback parses as neither semver nor the git-describe shape — so the CLI
-# version gates fail closed and agent-create refuses the daemon at the offline
-# site. Synthesize the describe shape from HEAD instead, which those gates
-# exempt as a dev build. Keep in sync with the Makefile's VERSION.
-VERSION="${VERSION:-$(git describe --tags --match 'v[0-9]*' --dirty 2>/dev/null || echo "v0.0.0-0-g$(git rev-parse --short HEAD 2>/dev/null || echo 0000000)")}"
 COMMIT="${COMMIT:-$(git rev-parse --short HEAD 2>/dev/null || echo unknown)}"
 DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 

@@ -25,13 +25,17 @@ Options:
   --yes                 Skip the confirmation prompt
   -h, --help            Show this help
 
-The script never removes Docker volumes. It preserves deployment .env values
-except CHANGELOG_FILE and CHANGELOG_DIRECTORY, which enable the installed feed.
+The script never removes Docker volumes. It saves MULTICA_BACKEND_IMAGE,
+MULTICA_WEB_IMAGE, MULTICA_IMAGE_TAG, CHANGELOG_FILE and CHANGELOG_DIRECTORY
+in deployment .env while preserving other settings.
 It uses the compose file shipped in this package with the deployment's .env.
 USAGE
 }
 
 die() { echo "ERROR: $*" >&2; exit 1; }
+fail_upgrade() {
+  die "upgrade is incomplete; selected image settings remain saved. Containers and database were not rolled back. Inspect logs and the backup at $BACKUP_DIR before recovery."
+}
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -114,7 +118,7 @@ echo "Deploy:    $DEPLOYMENT_DIR"
 echo "Backup:    $BACKUP_DIR"
 echo ""
 echo "The script will import images, dump PostgreSQL, and recreate backend/frontend."
-echo "Existing settings and Docker volumes will be kept; changelog paths will be saved."
+echo "Selected images and changelog paths will be saved; other settings and Docker volumes will be kept."
 if [ "$ASSUME_YES" -ne 1 ]; then
   printf 'Continue? [y/N] '
   read -r answer
@@ -148,14 +152,17 @@ echo "==> Backing up PostgreSQL to $BACKUP_DIR/database.sql"
 
 cp "$DEPLOYMENT_DIR/.env" "$BACKUP_DIR/.env"
 
-echo "==> Installing the cumulative changelog with the loaded frontend image"
-bash "$PACKAGE_DIR/install-changelog.sh" --deployment-dir "$DEPLOYMENT_DIR" --web-image "$WEB_IMAGE:$IMAGE_TAG"
+echo "==> Installing the cumulative changelog and saving selected runtime images"
+bash "$PACKAGE_DIR/install-changelog.sh" --deployment-dir "$DEPLOYMENT_DIR" \
+  --web-image "$WEB_IMAGE:$IMAGE_TAG" --backend-image "$BACKEND_IMAGE" --image-tag "$IMAGE_TAG"
 
 echo "==> Starting the upgraded services"
-MULTICA_BACKEND_IMAGE="$BACKEND_IMAGE" \
+if ! MULTICA_BACKEND_IMAGE="$BACKEND_IMAGE" \
 MULTICA_WEB_IMAGE="$WEB_IMAGE" \
 MULTICA_IMAGE_TAG="$IMAGE_TAG" \
-  "${compose[@]}" up -d --pull never backend frontend
+  "${compose[@]}" up -d --pull never backend frontend; then
+  fail_upgrade
+fi
 
 backend_port="$("${compose[@]}" port backend 8080 | sed -n 's/.*:\([0-9][0-9]*\)$/\1/p' | head -1)"
 [ -n "$backend_port" ] || backend_port=8080
@@ -173,7 +180,7 @@ done
 if [ "$healthy" -ne 1 ]; then
   echo "Backend did not become healthy. Recent logs:" >&2
   "${compose[@]}" logs --tail=120 backend >&2 || true
-  die "upgrade is incomplete; inspect logs before attempting rollback"
+  fail_upgrade
 fi
 
 echo ""

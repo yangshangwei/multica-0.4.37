@@ -5,6 +5,9 @@ set -euo pipefail
 PACKAGE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEPLOYMENT_DIR=""
 WEB_IMAGE=""
+BACKEND_IMAGE=""
+IMAGE_TAG=""
+CONFIGURE_IMAGES=0
 die() { echo "ERROR: $*" >&2; exit 1; }
 
 # Docker parses each --mount argument as CSV after shell argv parsing. Quote
@@ -19,9 +22,12 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --deployment-dir) [ $# -ge 2 ] || die "--deployment-dir needs a value"; DEPLOYMENT_DIR="$2"; shift 2 ;;
     --web-image) [ $# -ge 2 ] || die "--web-image needs a value"; WEB_IMAGE="$2"; shift 2 ;;
+    --backend-image) [ $# -ge 2 ] || die "--backend-image needs a value"; BACKEND_IMAGE="$2"; CONFIGURE_IMAGES=1; shift 2 ;;
+    --image-tag) [ $# -ge 2 ] || die "--image-tag needs a value"; IMAGE_TAG="$2"; CONFIGURE_IMAGES=1; shift 2 ;;
     -h|--help)
-      echo "Usage: install-changelog.sh --deployment-dir DIR [--web-image loaded-image:tag]"
+      echo "Usage: install-changelog.sh --deployment-dir DIR [--web-image loaded-image:tag] [--backend-image repository --image-tag tag]"
       echo "Validate/install the feed and persist its directory in the deployment .env. Docker and Compose are required; host Node is not."
+      echo "Providing backend-image and image-tag also saves the selected backend/frontend images for subsequent Compose runs."
       exit 0 ;;
     *) die "unknown argument: $1" ;;
   esac
@@ -41,6 +47,10 @@ if [ -z "$WEB_IMAGE" ]; then
   WEB_IMAGE="$(sed -n '/^images:/,/^$/{s/^  //p;}' "$PACKAGE_DIR/MANIFEST.txt" | sed -n '2p')"
 fi
 [ -n "$WEB_IMAGE" ] || die "could not resolve the loaded frontend image"
+if [ "$CONFIGURE_IMAGES" = "1" ]; then
+  [ -n "$BACKEND_IMAGE" ] && [ -n "$IMAGE_TAG" ] || die "image selections require both --backend-image and --image-tag"
+  [ "${WEB_IMAGE##*:}" = "$IMAGE_TAG" ] && [ "${WEB_IMAGE%:*}" != "$WEB_IMAGE" ] || die "loaded frontend image must use the selected image tag"
+fi
 
 # Compose resolves dotenv escaping and precedence; never execute an operator's
 # .env as shell code. Keep its project directory independent of package location.
@@ -84,6 +94,9 @@ mkdir -p "$directory"
 directory="$(cd "$directory" && pwd)"
 args=(--input /changelog-input/changelog.json --destination /changelog-output/changelog.json --deployment-env /deployment/.env --directory "$directory")
 [ -z "$configured_file" ] || args+=(--current-file "$configured_file")
+if [ "$CONFIGURE_IMAGES" = "1" ]; then
+  args+=(--backend-image "$BACKEND_IMAGE" --web-image "${WEB_IMAGE%:*}" --image-tag "$IMAGE_TAG")
+fi
 
 docker run --rm --pull never --network none --entrypoint node --user "$(id -u):$(id -g)" \
   --mount "type=bind,$(mount_source "$PACKAGE_DIR/scripts"),dst=/changelog-tools,readonly" \

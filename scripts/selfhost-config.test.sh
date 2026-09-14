@@ -555,7 +555,7 @@ if ! grep -Fq 'bash scripts/offline-bundle.sh' Makefile; then
   exit 1
 fi
 
-bundle_plan="$(bash scripts/offline-bundle.sh --dry-run)"
+bundle_plan="$(VERSION=dev bash scripts/offline-bundle.sh --dry-run)"
 compose_db_image="$(
   sed -n '/^[[:space:]]*postgres:/,/^[[:space:]]*[a-z]/s/^[[:space:]]*image:[[:space:]]*\([^[:space:]]*\).*/\1/p' \
     docker-compose.selfhost.yml | head -1

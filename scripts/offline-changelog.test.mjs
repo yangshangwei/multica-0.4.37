@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { scratch, scripts, seed } from "./changelog-test-helpers.mjs";
+
+const composeAvailable = spawnSync("docker", ["compose", "version"], { encoding: "utf8" }).status === 0;
 
 function offlineFixture(t, directory) {
   const cwd = directory ?? scratch(t);
@@ -49,6 +51,9 @@ else if (args[0] === 'run') {
 } else if (args[0] === 'compose' && args.includes('build')) {
   if (!process.env.CHANGELOG_ARTIFACT_PATH?.startsWith('.changelog-build/')) process.exit(44);
   writeFileSync(process.env.DOCKER_LOG + '.embedded', readFileSync(process.env.CHANGELOG_ARTIFACT_PATH));
+} else if (args[0] === 'compose' && args.includes('config') && args.includes('--images')) {
+  const version = process.env.VERSION || 'dev';
+  process.stdout.write(['multica-backend:' + version, 'multica-web:' + version, 'pgvector/pgvector:pg17'].join('\\n') + '\\n');
 } else if (args[0] === 'compose' && args.includes('config')) {
   const env = readFileSync(args[args.indexOf('--env-file') + 1], 'utf8');
   const values = {};
@@ -63,6 +68,7 @@ else if (args[0] === 'run') {
   process.stdout.write(JSON.stringify({ services: { backend: { environment: { CHANGELOG_FILE: values.CHANGELOG_FILE }, volumes: [{ type: 'bind', source, target: '/app/data/changelog' }] } } }));
 } else if (args[0] === 'compose' && args.includes('port')) process.stdout.write('127.0.0.1:8080\\n');
 else if (args[0] === 'compose' && args.includes('exec')) process.stdout.write('fixture database dump\\n');
+else if (args[0] === 'compose' && args.includes('up') && process.env.FAIL_UP === '1') process.exit(46);
 `);
   chmodSync(fake, 0o755);
   writeFileSync(join(cwd, "bin/curl"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
@@ -71,6 +77,24 @@ else if (args[0] === 'compose' && args.includes('exec')) process.stdout.write('f
 }
 
 function bash(cwd, env, ...args) { return spawnSync("/bin/bash", args, { cwd, env, encoding: "utf8" }); }
+
+function upgradeFixture(t) {
+  const fixture = offlineFixture(t);
+  fixture.env.VERSION = "v0.4.45";
+  const platform = process.arch === "arm64" ? "linux/arm64" : "linux/amd64";
+  const built = bash(fixture.cwd, fixture.env, "scripts/build-offline-upgrade.sh", "--output", "upgrade", "--platform", platform);
+  assert.equal(built.status, 0, built.stderr);
+  const packageDir = join(fixture.cwd, "upgrade", `multica-server-upgrade-v0.4.45-${platform.replace("/", "-")}`);
+  const deployment = join(fixture.cwd, "deployment");
+  mkdirSync(deployment);
+  const preservedEnv = "# Existing deployment\nJWT_SECRET=preserve-secret\nPOSTGRES_PASSWORD=preserve-password\nOTHER_KEY=preserve-value\nPRIVATE_NOTE='first line\nMULTICA_IMAGE_TAG=inside-note\nlast line'\n";
+  const originalEnv = preservedEnv + "MULTICA_BACKEND_IMAGE=old-backend\nexport MULTICA_WEB_IMAGE=old-web\nMULTICA_IMAGE_TAG=dev\nCHANGELOG_DIRECTORY=custom-feed\n";
+  writeFileSync(join(deployment, ".env"), originalEnv, { mode: 0o600 });
+  cpSync(join(packageDir, "docker-compose.selfhost.yml"), join(deployment, "docker-compose.selfhost.yml"));
+  const backup = join(deployment, "backups/fixture");
+  const withoutNode = { ...fixture.env, PATH: `${join(fixture.cwd, "bin")}:/usr/bin:/bin:/usr/sbin:/sbin` };
+  return { ...fixture, packageDir, deployment, backup, withoutNode, preservedEnv, originalEnv };
+}
 
 test("offline bundle carries exact feed and every publisher helper, then installs without host Node", (t) => {
   const fixture = offlineFixture(t);
@@ -120,6 +144,60 @@ test("upgrade archive includes publication tools and upgrade performs the handof
   const restarted = calls.findIndex((args) => args[0] === "compose" && args.includes("up"));
   assert.ok(installed > 0 && restarted > installed);
   assert.ok(calls[restarted].includes("--project-directory"));
+});
+
+test("upgraded deployments retain exact image selection in later Compose invocations", { skip: !composeAvailable }, async (t) => {
+  for (const overrides of [false, true]) {
+    await t.test(overrides ? "explicit registry and tag" : "package images", (t) => {
+      const f = upgradeFixture(t);
+      const backend = overrides ? "registry.intra.example.com:5000/multica-backend" : "multica-backend";
+      const web = overrides ? "registry.intra.example.com:5000/multica-web" : "multica-web";
+      const tag = overrides ? "v0.4.45-custom" : "v0.4.45";
+      const args = overrides ? ["--backend-image", backend, "--web-image", web, "--image-tag", tag] : [];
+      const result = bash(f.packageDir, f.withoutNode, "offline-upgrade.sh", "--deployment-dir", f.deployment, "--backup-dir", f.backup, "--yes", ...args);
+      assert.equal(result.status, 0, result.stderr);
+      // This is real Compose parsing after the upgrade process has exited:
+      // no image overrides and no Docker daemon/container are involved.
+      const env = { ...process.env };
+      for (const name of ["MULTICA_BACKEND_IMAGE", "MULTICA_WEB_IMAGE", "MULTICA_IMAGE_TAG", "JWT_SECRET"]) delete env[name];
+      const parsed = spawnSync("docker", ["compose", "--project-directory", f.deployment, "--env-file", join(f.deployment, ".env"), "-f", join(f.deployment, "docker-compose.selfhost.yml"), "config", "--format", "json"], { env, encoding: "utf8" });
+      assert.equal(parsed.status, 0, parsed.stderr);
+      const { services } = JSON.parse(parsed.stdout);
+      assert.equal(services.backend.image, `${backend}:${tag}`);
+      assert.equal(services.frontend.image, `${web}:${tag}`);
+      assert.equal(services.backend.environment.JWT_SECRET, "preserve-secret");
+      assert.ok(readFileSync(join(f.deployment, ".env"), "utf8").startsWith(f.preservedEnv));
+      assert.equal(statSync(join(f.deployment, ".env")).mode & 0o777, 0o600);
+      assert.equal(readFileSync(join(f.backup, ".env"), "utf8"), f.originalEnv);
+      assert.equal((result.stdout + result.stderr).includes("preserve-secret"), false);
+    });
+  }
+});
+
+test("upgrade failures retain backups and never claim container or database rollback", async (t) => {
+  for (const failure of ["FAIL_CONTAINER", "FAIL_UP", "FAIL_HEALTH"]) {
+    await t.test(failure, (t) => {
+      const f = upgradeFixture(t);
+      writeFileSync(join(f.cwd, "bin/curl"), "#!/bin/sh\n[ \"${FAIL_HEALTH:-0}\" != 1 ]\n", { mode: 0o755 });
+      writeFileSync(join(f.cwd, "bin/sleep"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
+      const result = bash(f.packageDir, { ...f.withoutNode, [failure]: "1" }, "offline-upgrade.sh", "--deployment-dir", f.deployment, "--backup-dir", f.backup, "--yes");
+      assert.notEqual(result.status, 0);
+      assert.equal(readFileSync(join(f.backup, ".env"), "utf8"), f.originalEnv);
+      const current = readFileSync(join(f.deployment, ".env"), "utf8");
+      const calls = readFileSync(f.env.DOCKER_LOG, "utf8").trim().split("\n").map(JSON.parse);
+      if (failure === "FAIL_CONTAINER") {
+        assert.equal(current, f.originalEnv);
+        assert.equal(calls.some((args) => args[0] === "compose" && args.includes("up")), false);
+      } else {
+        assert.match(current, /^MULTICA_IMAGE_TAG=["']?v0\.4\.45["']?$/m);
+        assert.match(result.stderr, /upgrade is incomplete/);
+        assert.match(result.stderr, /not rolled back/);
+        assert.ok(current.startsWith(f.preservedEnv));
+      }
+      assert.equal(result.stdout.includes("✓ Upgrade completed"), false);
+      assert.equal((result.stdout + result.stderr).includes("preserve-secret"), false);
+    });
+  }
 });
 
 test("missing image execution or malformed bundled feed leaves existing feed and config unchanged", (t) => {

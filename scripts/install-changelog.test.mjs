@@ -34,6 +34,47 @@ test("installer durably enables hot feed while preserving unrelated env values",
   assert.equal(readdirSync(setup.cwd).some((name) => name.endsWith(".tmp")), false);
 });
 
+test("installer optionally saves all selected images with the feed while preserving multiline values", (t) => {
+  const setup = fixture(t);
+  const preserved = "JWT_SECRET=keep-exactly\nPRIVATE_NOTE='first line\nMULTICA_IMAGE_TAG=inside-note\nlast line'\n";
+  writeFileSync(setup.envFile, preserved + "export MULTICA_BACKEND_IMAGE=old-backend\nMULTICA_WEB_IMAGE=old-web\nMULTICA_IMAGE_TAG=dev\n");
+  const result = cli("install-changelog.mjs", setup.cwd, [...setup.args,
+    "--backend-image", "registry.intra:5000/multica-backend", "--web-image", "registry.intra:5000/multica-web", "--image-tag", "v0.4.45",
+  ]);
+  assert.equal(result.status, 0, result.stderr);
+  const env = readFileSync(setup.envFile, "utf8");
+  assert.ok(env.startsWith(preserved));
+  assert.match(env, /^MULTICA_BACKEND_IMAGE=["']?registry\.intra:5000\/multica-backend["']?$/m);
+  assert.match(env, /^MULTICA_WEB_IMAGE=["']?registry\.intra:5000\/multica-web["']?$/m);
+  assert.match(env, /^MULTICA_IMAGE_TAG=["']?v0\.4\.45["']?$/m);
+  assert.equal(env.includes("old-backend"), false);
+  assert.equal(env.includes("old-web"), false);
+  assert.equal(readFileSync(setup.destination, "utf8"), readFileSync(setup.input, "utf8"));
+});
+
+test("feed-only installation leaves existing image selection unchanged", (t) => {
+  const setup = fixture(t);
+  const images = "MULTICA_BACKEND_IMAGE=existing-backend\nMULTICA_WEB_IMAGE=existing-web\nMULTICA_IMAGE_TAG=existing-tag\n";
+  writeFileSync(setup.envFile, images + setup.oldEnv);
+  const result = cli("install-changelog.mjs", setup.cwd, setup.args);
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(readFileSync(setup.envFile, "utf8").startsWith(images));
+});
+
+test("partial or multiline image selections fail before changing the feed or deployment env", (t) => {
+  for (const imageArgs of [
+    ["--backend-image", "multica-backend"],
+    ["--backend-image", "multica-backend", "--web-image", "multica-web", "--image-tag", "v0.4.45\nOTHER_KEY=replaced"],
+  ]) {
+    const setup = fixture(t);
+    const result = cli("install-changelog.mjs", setup.cwd, [...setup.args, ...imageArgs]);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /image selections/);
+    assert.equal(readFileSync(setup.envFile, "utf8"), setup.oldEnv);
+    assert.equal(readFileSync(setup.destination, "utf8"), "previous feed bytes");
+  }
+});
+
 test("invalid feed and incompatible existing path leave feed and env untouched", (t) => {
   const setup = fixture(t);
   const incompatible = cli("install-changelog.mjs", setup.cwd, [...setup.args, "--current-file", "/custom/notes.json"]);
@@ -77,7 +118,7 @@ test("failed env finalization restores the previous feed and removes staged file
   });
   syncBuiltinESMExports();
   try {
-    assert.throws(() => installChangelog({ input: setup.input, destination: setup.destination, "deployment-env": setup.envFile, directory: "/srv/changelog" }), /fixture env finalization failure/);
+    assert.throws(() => installChangelog({ input: setup.input, destination: setup.destination, "deployment-env": setup.envFile, directory: "/srv/changelog", "backend-image": "multica-backend", "web-image": "multica-web", "image-tag": "v0.4.45" }), /fixture env finalization failure/);
     assert.equal(readFileSync(setup.destination, "utf8"), "previous feed bytes");
     assert.equal(readFileSync(setup.envFile, "utf8"), setup.oldEnv);
     assert.equal(readdirSync(setup.cwd).some((name) => name.endsWith(".tmp")), false);

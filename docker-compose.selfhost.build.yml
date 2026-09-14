@@ -3,7 +3,7 @@
 
 services:
   backend:
-    image: multica-backend:dev
+    image: multica-backend:${VERSION:-dev}
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,9 +14,9 @@ services:
         CHANGELOG_ARTIFACT_PATH: ${CHANGELOG_ARTIFACT_PATH:-server/internal/changelog/content/changelog.json}
 
   frontend:
-    image: multica-web:dev
+    image: multica-web:${VERSION:-dev}
     build:
       context: .
       dockerfile: Dockerfile.web
       args:
-        NEXT_PUBLIC_APP_VERSION: dev
+        NEXT_PUBLIC_APP_VERSION: ${VERSION:-dev}
