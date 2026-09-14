@@ -25,6 +25,7 @@ func TestListSkillTemplates_ReturnsVerbatimCatalogWithoutDatabase(t *testing.T) 
 		"multica-architecture-decision-record",
 		"multica-code-review",
 		"multica-documentation-change",
+		"multica-progress-report",
 		"multica-release-check",
 		"multica-requirement-clarification",
 		"multica-security-review",

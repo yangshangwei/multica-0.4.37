@@ -13,16 +13,16 @@ import (
 // PROMPT.md is actually readable, and the de-duplication guidance the patrol
 // templates depend on to stay quiet.
 
-// TestAutopilotTemplates_ListedRosterIsNine pins the product decision. Four
+// TestAutopilotTemplates_ListedRosterIsTen pins the product decision. Four
 // general-purpose templates cover the four cadences (hourly, workday, daily,
-// weekly) and both execution modes; five specific ones follow for teams that
+// weekly) and both execution modes; six specific ones follow for teams that
 // already know the need. Order is what the picker renders, so this asserts the
 // sequence and not just the count — adding, removing or reordering a listed
 // template is a product change and should have to edit this list deliberately.
-func TestAutopilotTemplates_ListedRosterIsNine(t *testing.T) {
+func TestAutopilotTemplates_ListedRosterIsTen(t *testing.T) {
 	want := []string{
 		"workday-repo-audit", "release-readiness", "daily-change-review", "hourly-queue-check",
-		"stale-pr-reminder", "bug-triage", "weekly-progress-report",
+		"stale-pr-reminder", "bug-triage", "daily-progress-report", "weekly-progress-report",
 		"dependency-audit", "documentation-check",
 	}
 	listed := AutopilotTemplates()
@@ -37,6 +37,102 @@ func TestAutopilotTemplates_ListedRosterIsNine(t *testing.T) {
 		if listed[i].Key != key {
 			t.Errorf("listed[%d].Key = %q, want %q (order is product-controlled)", i, listed[i].Key, key)
 		}
+	}
+}
+
+func TestAutopilotTemplates_ProgressReportDefaults(t *testing.T) {
+	anchor := time.Date(2026, 6, 21, 11, 0, 0, 0, time.UTC)
+	for _, tt := range []struct {
+		key     string
+		version int32
+		title   string
+		cron    string
+		window  string
+		nextRun time.Time
+	}{
+		{
+			key: "daily-progress-report", version: 1, title: "每日进展报告",
+			cron: "0 18 * * *", window: "过去 24 小时",
+			nextRun: time.Date(2026, 6, 22, 10, 0, 0, 0, time.UTC),
+		},
+		{
+			key: "weekly-progress-report", version: 2, title: "每周进展报告",
+			cron: "0 17 * * 1", window: "过去 7 天",
+			nextRun: time.Date(2026, 6, 22, 9, 0, 0, 0, time.UTC),
+		},
+	} {
+		t.Run(tt.key, func(t *testing.T) {
+			template, ok := AutopilotTemplateByKey(tt.key)
+			if !ok {
+				t.Fatal("progress report template missing")
+			}
+			if template.Version != tt.version || template.Title("zh") != tt.title {
+				t.Errorf("version/title = %d/%q, want %d/%q", template.Version, template.Title("zh"), tt.version, tt.title)
+			}
+			if template.ExecutionMode != "create_issue" || template.IssueTitleTemplate != tt.title+" — {{date}}" {
+				t.Error("each report must create one dated summary issue")
+			}
+			if template.CronExpression != tt.cron {
+				t.Errorf("cron = %q, want %q", template.CronExpression, tt.cron)
+			}
+			nextRun, err := NextOccurrenceAfterUTC(template.CronExpression, "Asia/Shanghai", anchor)
+			if err != nil || !nextRun.Equal(tt.nextRun) {
+				t.Errorf("next run in the chosen timezone = %s, %v; want %s", nextRun, err, tt.nextRun)
+			}
+			if !strings.Contains(template.Prompt(), tt.window) {
+				t.Errorf("report must use its own window %q", tt.window)
+			}
+		})
+	}
+}
+
+// The instructions narrow the reporting workflow even when the executing agent
+// has Contributor capability: it should only close out its own report issue.
+func TestAutopilotTemplates_ProgressReportEvidenceAndCloseout(t *testing.T) {
+	for _, key := range []string{"daily-progress-report", "weekly-progress-report"} {
+		t.Run(key, func(t *testing.T) {
+			template, ok := AutopilotTemplateByKey(key)
+			if !ok {
+				t.Fatal("progress report template missing")
+			}
+			prompt := template.Prompt()
+			for _, required := range []string{
+				"起止时间", "时区", "分页", "状态变更历史", "任务编号或链接",
+				"新建数 − 关闭数", "关闭状态口径", "排除日报、周报",
+				"没有进展", "未能读取的数据写成零", "业务任务只读",
+				"不另建汇总任务", "评论发表成功后", "仅将本次汇总任务", "`in_review`", "`observer`",
+			} {
+				if !strings.Contains(prompt, required) {
+					t.Errorf("report instructions are missing %q", required)
+				}
+			}
+			if strings.Contains(prompt, "不改变任务状态、优先级或负责人") {
+				t.Error("a blanket status prohibition would prevent the report issue from completing its run")
+			}
+		})
+	}
+}
+
+func TestAutopilotTemplates_ProgressReportAllowsTemporaryCommentFiles(t *testing.T) {
+	for _, key := range []string{"daily-progress-report", "weekly-progress-report"} {
+		t.Run(key, func(t *testing.T) {
+			template, ok := AutopilotTemplateByKey(key)
+			if !ok {
+				t.Fatal("progress report template missing")
+			}
+			prompt := template.Prompt()
+			for _, required := range []string{
+				"不修改仓库文件", "仅为发表报告评论", "当前工作目录", "UTF-8",
+				"临时正文文件", "`--content-file`", "清理", "不得覆盖已有文件",
+			} {
+				if !strings.Contains(prompt, required) {
+					t.Errorf("report instructions must permit safe CLI comment delivery: missing %q", required)
+				}
+			}
+			if strings.Contains(prompt, "不修改文件") {
+				t.Error("a blanket file prohibition conflicts with the runtime's required --content-file workflow")
+			}
+		})
 	}
 }
 
@@ -131,6 +227,7 @@ func TestAutopilotTemplates_ExecutionModes(t *testing.T) {
 		"hourly-queue-check":     "run_only",
 		"stale-pr-reminder":      "run_only",
 		"bug-triage":             "create_issue",
+		"daily-progress-report":  "create_issue",
 		"weekly-progress-report": "create_issue",
 		"dependency-audit":       "run_only",
 		"documentation-check":    "run_only",
@@ -172,6 +269,7 @@ func TestAutopilotTemplates_CronExpressionsAreValid(t *testing.T) {
 		"hourly-queue-check":     time.Date(2026, 6, 21, 1, 0, 0, 0, time.UTC),
 		"stale-pr-reminder":      time.Date(2026, 6, 22, 10, 0, 0, 0, time.UTC),
 		"bug-triage":             time.Date(2026, 6, 22, 9, 0, 0, 0, time.UTC),
+		"daily-progress-report":  time.Date(2026, 6, 21, 18, 0, 0, 0, time.UTC),
 		"weekly-progress-report": time.Date(2026, 6, 22, 17, 0, 0, 0, time.UTC),
 		"dependency-audit":       time.Date(2026, 6, 22, 8, 0, 0, 0, time.UTC),
 		"documentation-check":    time.Date(2026, 6, 22, 14, 0, 0, 0, time.UTC),

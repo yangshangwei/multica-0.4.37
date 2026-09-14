@@ -42,8 +42,8 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 		newRequest("GET", "/api/agents/templates?language=zh", nil)).
 		Want(http.StatusOK).JSON(&out)
 
-	if len(out.Templates) != 8 {
-		t.Fatalf("templates = %d, want 8", len(out.Templates))
+	if len(out.Templates) != 9 {
+		t.Fatalf("templates = %d, want 9", len(out.Templates))
 	}
 	for _, template := range out.Templates {
 		if template.Key == "" || template.Name == "" {
@@ -62,6 +62,10 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 	analyst := findTemplate(t, out.Templates, "product-analyst")
 	if analyst.Title == "Product Analyst" {
 		t.Errorf("title for language=zh = %q, want the localized label", analyst.Title)
+	}
+	reporter := findTemplate(t, out.Templates, "progress-reporter")
+	if reporter.Title != "进展报告员" || reporter.Name != "Progress Reporter" {
+		t.Errorf("reporter title/name = %q/%q, want 进展报告员/Progress Reporter", reporter.Title, reporter.Name)
 	}
 }
 
@@ -139,6 +143,111 @@ func TestCreateAgentFromTemplate_CopiesTheRoleOntoAnOrdinaryAgent(t *testing.T) 
 		testWorkspaceID, "multica-code-review").Scan(&origin)
 	if origin != roleSkillOriginType {
 		t.Errorf("skill origin type = %q, want %q so 'update from source' cannot offer to refetch it", origin, roleSkillOriginType)
+	}
+}
+
+func TestCreateAgentFromTemplate_ProgressReporterUsesServerDefaults(t *testing.T) {
+	cleanupRoleSkill(t, "multica-progress-report")
+	var created AgentResponse
+	testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+		"template_key":         "progress-reporter",
+		"runtime_id":           handlerTestRuntimeID(t),
+		"language":             "zh",
+		"instructions":         "Replace the reporting instructions",
+		"autonomy_level":       "operator",
+		"max_concurrent_tasks": 9,
+		"template_version":     9,
+		"skill_ids":            []string{},
+	})).Want(http.StatusCreated).JSON(&created)
+	cleanupTemplateAgent(t, created.ID)
+
+	template, ok := service.AgentRoleTemplateByKey("progress-reporter")
+	if !ok {
+		t.Fatal("progress-reporter template missing from the registry")
+	}
+	if created.Name != "Progress Reporter" || created.Description != template.Description("zh") {
+		t.Errorf("reporter name/description = %q/%q, want the default name and Chinese description", created.Name, created.Description)
+	}
+	if created.TemplateKey != template.Key || created.TemplateVersion != 1 {
+		t.Errorf("reporter provenance = %q v%d, want progress-reporter v1", created.TemplateKey, created.TemplateVersion)
+	}
+	if created.Instructions != template.Instructions() {
+		t.Error("reporter instructions must be copied verbatim from the server, independently of language or client input")
+	}
+	if created.AutonomyLevel != "contributor" || created.MaxConcurrentTasks != 1 || created.PermissionMode != "private" {
+		t.Errorf("reporter policy = %s/%d/%s, want contributor/1/private", created.AutonomyLevel, created.MaxConcurrentTasks, created.PermissionMode)
+	}
+	if len(created.Skills) != 1 || created.Skills[0].Name != "multica-progress-report" {
+		t.Fatalf("reporter skills = %+v, want only multica-progress-report", created.Skills)
+	}
+
+	skill, ok := service.RoleSkillTemplateByName("multica-progress-report")
+	if !ok {
+		t.Fatal("multica-progress-report skill missing from the registry")
+	}
+	var content, description, origin, version string
+	dbfx.QueryRow(t, `SELECT content, description, config->'origin'->>'type', config->'origin'->>'version' FROM skill WHERE id = $1`,
+		created.Skills[0].ID).Scan(&content, &description, &origin, &version)
+	if content != skill.Content || description != skill.Description || origin != roleSkillOriginType || version != "1" {
+		t.Error("reporter's materialized role skill must preserve the embedded body, description and v1 provenance")
+	}
+}
+
+func TestCreateAgentFromTemplate_ProgressReporterPreservesWorkspaceCopies(t *testing.T) {
+	const editedSkill = "# 团队进展报告\n\n只汇总移动端项目。\n"
+	skillID := dbfx.Insert(t, "skill", testutil.Cols{
+		"workspace_id": testWorkspaceID,
+		"name":         "multica-progress-report",
+		"description":  "团队自定义统计口径",
+		"content":      editedSkill,
+		"created_by":   testUserID,
+	})
+	runtimeID := handlerTestRuntimeID(t)
+	var first AgentResponse
+	testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+		"template_key": "progress-reporter",
+		"runtime_id":   runtimeID,
+		"name":         "Daily Reporter",
+		"language":     "zh",
+	})).Want(http.StatusCreated).JSON(&first)
+	cleanupTemplateAgent(t, first.ID)
+	const editedInstructions = "只报告已批准的移动端任务，保留团队自定义的统计规则。"
+	testutil.Call(t, testHandler.UpdateAgent, withURLParam(newRequest("PUT", "/api/agents/"+first.ID, map[string]any{
+		"instructions": editedInstructions,
+	}), "id", first.ID)).Want(http.StatusOK)
+
+	var second AgentResponse
+	testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+		"template_key": "progress-reporter",
+		"runtime_id":   runtimeID,
+		"name":         "Weekly Reporter",
+		"language":     "en",
+	})).Want(http.StatusCreated).JSON(&second)
+	cleanupTemplateAgent(t, second.ID)
+
+	var existing AgentResponse
+	testutil.Call(t, testHandler.GetAgent, withURLParam(newRequest("GET", "/api/agents/"+first.ID, nil),
+		"id", first.ID)).Want(http.StatusOK).JSON(&existing)
+	if existing.Instructions != editedInstructions {
+		t.Error("creating another reporter or changing catalog language must not overwrite the existing agent's instructions")
+	}
+	template, ok := service.AgentRoleTemplateByKey("progress-reporter")
+	if !ok || second.Instructions != template.Instructions() {
+		t.Error("a new reporter must copy the canonical template independently of existing agents")
+	}
+	for _, agent := range []AgentResponse{existing, second} {
+		if len(agent.Skills) != 1 || agent.Skills[0].ID != skillID {
+			t.Errorf("%s skills = %+v, want the same existing progress report skill %s", agent.Name, agent.Skills, skillID)
+		}
+	}
+	var content, description string
+	dbfx.QueryRow(t, `SELECT content, description FROM skill WHERE id = $1`, skillID).Scan(&content, &description)
+	if content != editedSkill || description != "团队自定义统计口径" {
+		t.Error("creating reporters must reuse the customized role skill without rewriting its content or description")
+	}
+	if count := dbfx.Count(t, `SELECT COUNT(*) FROM skill WHERE workspace_id = $1 AND name = $2`,
+		testWorkspaceID, "multica-progress-report"); count != 1 {
+		t.Errorf("progress report skill copies = %d, want 1", count)
 	}
 }
 

@@ -27,6 +27,7 @@ const names = [
   ["multica-code-review", "代码审查"],
   ["multica-requirement-clarification", "需求澄清"],
   ["multica-test-report", "测试报告"],
+  ["multica-progress-report", "进展报告"],
 ] as const;
 
 // Defaults shipped in ca3a79d18 and retained by existing workspace copies.
@@ -55,6 +56,11 @@ function builtin(
 }
 
 describe("built-in role skill presentation", () => {
+  it("labels the progress report skill in the built-in catalog", () => {
+    expect(getBuiltinRoleSkillPresentation("multica-progress-report", zhT)?.name)
+      .toBe("进展报告");
+  });
+
   it.each(legacyDescriptions)(
     "translates the historical default for %s without changing the workspace copy",
     (name, description, chinese) => {

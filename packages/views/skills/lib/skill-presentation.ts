@@ -11,6 +11,7 @@ const BUILTIN_ROLE_SKILL_NAMES = [
   "multica-code-review",
   "multica-requirement-clarification",
   "multica-test-report",
+  "multica-progress-report",
 ] as const;
 
 export type SkillPresentationInput = Pick<SkillSummary, "name" | "description"> &

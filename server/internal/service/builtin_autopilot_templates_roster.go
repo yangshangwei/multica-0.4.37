@@ -3,17 +3,18 @@ package service
 // The built-in autopilot roster. Order is product-controlled — the picker renders
 // it as given — so this is a slice rather than a map.
 //
-// Nine templates in two groups, and the grouping is the ordering intent:
+// Ten templates in two groups, and the grouping is the ordering intent:
 //
 //   - The first four (workday-repo-audit, release-readiness, daily-change-review,
 //     hourly-queue-check) are the general-purpose set. They cover four cadences
 //     (workday, weekly, daily, hourly) and both execution modes, so a workspace
 //     with no particular problem in mind finds a reasonable default in the first
 //     row of the picker.
-//   - The next five are the specific automations: review queue, triage,
+//   - The next six are the specific automations: review queue, triage,
 //     reporting, dependencies, documentation. They are narrower — a team adopts
 //     one because it already has that need — so they sit after the general set
-//     rather than pushing it below the fold.
+//     rather than pushing it below the fold. Daily and weekly progress reports
+//     sit together so either cadence is a direct choice.
 //
 // Order within each group is by how often a template is expected to be adopted,
 // not by cadence or alphabetically. Appending to the end is the safe edit;
@@ -27,7 +28,7 @@ package service
 // Across the roster, run_only templates (workday-repo-audit, hourly-queue-check,
 // stale-pr-reminder, dependency-audit, documentation-check) are patrols: they run,
 // and only file an issue when there is something real to file. create_issue
-// templates (release-readiness, daily-change-review, bug-triage,
+// templates (release-readiness, daily-change-review, bug-triage, daily-progress-report,
 // weekly-progress-report) are summaries: every period lands one issue by design,
 // and each stamps {{date}} into the issue title so a month of runs produces
 // distinguishable issues rather than thirty rows named "Daily Change Review".
@@ -198,8 +199,36 @@ var builtinAutopilotTemplates = []AutopilotTemplate{
 		},
 	},
 	{
-		Key:                "weekly-progress-report",
+		Key:                "daily-progress-report",
 		Version:            1,
+		Listed:             true,
+		CronExpression:     "0 18 * * *",
+		ExecutionMode:      "create_issue",
+		IssueTitleTemplate: "每日进展报告 — {{date}}",
+		AvatarEmoji:        "📊",
+		Category:           "release-prep",
+		Categories: map[string]string{
+			"en": "Release Prep",
+			"zh": "发布准备",
+			"ko": "릴리스 준비",
+			"ja": "リリース準備",
+		},
+		Titles: map[string]string{
+			"en": "Daily progress report",
+			"zh": "每日进展报告",
+			"ko": "일일 진행 보고서",
+			"ja": "日次進捗レポート",
+		},
+		Descriptions: map[string]string{
+			"en": "Summarize the last 24 hours of completed work, ongoing tasks, and blockers with traceable counts.",
+			"zh": "汇总近 24 小时完成的任务、当前进展和阻塞，并列出可核对的任务数量。",
+			"ko": "지난 24시간 동안 완료된 태스크, 진행 중인 작업, 장애 요인과 확인 가능한 수치를 정리합니다.",
+			"ja": "過去24時間の完了タスク・進行中の作業・阻害要因を、確認できる件数とともにまとめます。",
+		},
+	},
+	{
+		Key:                "weekly-progress-report",
+		Version:            2,
 		Listed:             true,
 		CronExpression:     "0 17 * * 1",
 		ExecutionMode:      "create_issue",

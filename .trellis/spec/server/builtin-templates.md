@@ -10,6 +10,14 @@ or human to save; Technical Writer is Contributor and edits documentation only
 on an isolated branch. Only Feature Delivery and Discovery leads default to
 requirement clarification; other leads use their existing routing instructions.
 
+Progress Reporter is the ninth listed role. It uses Contributor only so a
+successfully delivered report can move its own assigned report issue to
+`in_review`; its instructions keep business issues and repository files
+read-only. Its sole default role skill is `multica-progress-report`, and its
+concurrency cap is one. Contributor is an existing permission level, not a
+report-only API sandbox; never claim the role's narrower instructions add a
+new server-enforced boundary.
+
 Increment template and role-skill versions for material behavior changes. These
 defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
@@ -34,7 +42,7 @@ Stale writes return 409 without updates or events; successful writes keep the
 normal notification path. Conditional rollback also compares the recorded
 post-write timestamp and validates the original backup hash.
 
-The seven `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
+The eight `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
 Simplified Chinese. Descriptions state when the skill applies and its concrete
 result, preserving important delivery and authority boundaries without repeating
 the workflow. Keep canonical names, other frontmatter, CLI syntax and
@@ -77,7 +85,7 @@ updated body through the existing content-hash cache.
 
 ## Skill template catalog
 
-`GET /api/skills/templates` returns the seven role-skill templates under the
+`GET /api/skills/templates` returns the eight role-skill templates under the
 existing authenticated workspace route group. It reads the embedded registry,
 does not materialize workspace rows, and returns no database identity. The UI
 edits a snapshot and creates a new ordinary skill via `POST /api/skills`.
@@ -101,14 +109,14 @@ coverage lives in `daemon_builtin_skills_scope_test.go` and
 
 ## Autopilot prompt language and business boundaries
 
-The nine `builtin_autopilot_templates/*/PROMPT.md` bodies use canonical
+The ten `builtin_autopilot_templates/*/PROMPT.md` bodies use canonical
 Simplified Chinese, following the role-instruction and role-skill convention.
 Locale selects catalog labels and the title stored on a newly created autopilot;
 it does not select another execution body. The preview, `autopilot.description`,
 and the dispatched brief must preserve the same content. Template releases and
 locale changes never rewrite existing workspace copies.
 
-Keep the five `run_only` patrols distinct from the four `create_issue` summaries.
+Keep the five `run_only` patrols distinct from the five `create_issue` summaries.
 Patrols search the workspace for their existing open issues before creating work,
 append evidence to an existing issue when it covers the finding, and create no
 issue or comment when there is no substantive finding. Summaries comment on the
@@ -122,14 +130,36 @@ by its instructions to change priority; observers recommend in comments. State
 whether each write was applied or only recommended, according to the actual
 response. Do not assume that every priority write has a dedicated server-side
 observer rejection: the task's autonomy policy must also be respected. The other
-eight templates retain version 1 for language-only wording changes.
+templates keep their existing versions unless their behavior changes.
 
-`TestAutopilotTemplateCreate_ChineseTemplatesDispatchVerbatim` covers all nine
+Daily Progress Report v1 is immediately before Weekly Progress Report v2 in
+the roster. Daily uses `0 18 * * *` and the preceding 24 hours; weekly keeps
+`0 17 * * 1` and the preceding seven days. Both are `create_issue` summaries
+with dated titles. Template adoption selects timezone and execution context;
+source queries must separately apply the requested workspace/project filter.
+
+Both reporting prompts require paginated evidence and status history for
+period completions, disclose truncation/missing data, and exclude reporting
+issues from business counts. A successful report comment permits only the
+current report issue to enter `in_review`. `TaskService.CompleteTask` does not
+change issue status; `SyncRunFromIssue` completes a create-issue run on
+`in_review` or `done`. An Observer can post a report but cannot make that
+transition. Weekly v2 repairs the previous blanket status prohibition;
+existing v1 workspace copies are deliberately preserved.
+
+`TestAutopilotTemplateCreate_ChineseTemplatesDispatchVerbatim` covers all ten
 templates through real database creation, schedule dispatch and daemon claim;
 `e2e/autopilot-template-zh.spec.ts` covers the Chinese browser flow with real APIs
 and an isolated runtime fixture. Neither check launches a real model. Content
 review must still compare the prompts' evidence, thresholds and authority rules;
 string assertions alone do not establish semantic equivalence.
+
+`autopilot_template_progress_test.go` covers daily/weekly comment delivery and
+review closeout, Observer refusal and unchanged source tasks with real DB
+fixtures. Its handler harness invokes the sync callback explicitly;
+`e2e/progress-reporting.spec.ts` verifies the real server listener wiring and
+the role/catalog/adoption UI. E2E report comments are explicit fixtures, not
+evidence that an LLM independently gathered or summarized the data.
 
 ## Convention: create_issue autopilot templates must carry a `{{date}}` issue title template
 

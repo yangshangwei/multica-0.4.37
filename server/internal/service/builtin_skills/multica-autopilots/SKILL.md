@@ -42,6 +42,21 @@ The built-in automation roster ships with the server binary. Two HTTP endpoints 
 
 The built-in prompts and dated summary issue titles use canonical Simplified Chinese. `language` selects catalog labels and the new autopilot's title, not its execution language. Creation copies the full prompt into `description`; later template releases or language changes never overwrite an existing workspace copy. The bug-triage template maps severity to the supported priorities `urgent` / `high` / `medium` / `low`; `none` stays unprioritized when evidence is insufficient, and read-only agents recommend rather than apply changes.
 
+`daily-progress-report` (v1) and `weekly-progress-report` (v2) are adjacent
+summary templates. Daily is `0 18 * * *` with a 24-hour window; weekly is
+`0 17 * * 1` with a seven-day window. One `progress-reporter` agent can own
+both. Select the timezone explicitly and state the source-query scope; linking
+a project supplies execution context and report ownership, not automatic query
+filtering. Reports exclude reporting issues from business counts.
+
+These reporting templates post on the issue already created for this run.
+Only after the report comment succeeds may the current report issue move to
+`in_review`, completing the run; business issues stay read-only. This requires
+Contributor authority. An Observer posts the report and names the remaining
+human review transition instead of bypassing its policy. A model task finishing
+does not itself close an issue or complete a `create_issue` run. Existing saved
+weekly v1 prompts are not rewritten when v2 ships.
+
 ## CLI
 
 ```bash

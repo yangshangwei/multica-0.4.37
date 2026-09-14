@@ -16,7 +16,7 @@ The creation page offers three options:
 | Option | When it fits |
 |---|---|
 | **Start blank** | You already know the agent's responsibilities and want to fill in every field yourself. |
-| **Use a template** | You want one of the standard engineering roles — analyst, architect, implementer, QA, reviewer, security, release, writer. |
+| **Use a template** | You want an engineering or progress-reporting role: analysis, architecture, implementation, QA, review, security, release, documentation, or daily and weekly reports. |
 | **Build with AI** | Describe the goal first and let the Agent Builder ask the key questions and generate a draft. |
 
 Build with AI needs an online runtime for the Builder conversation. Either way, you can review and edit the final configuration before creating.
@@ -25,7 +25,7 @@ Build with AI needs an online runtime for the Builder conversation. Either way, 
 
 ## Role templates
 
-**Use a template** starts from one of the eight built-in engineering roles:
+**Use a template** starts from one of nine built-in roles:
 
 | Role | What it produces | Autonomy |
 |---|---|---|
@@ -36,9 +36,12 @@ Build with AI needs an online runtime for the Builder conversation. Either way, 
 | **Code Reviewer** | Findings with file, line, severity, and the failure each one causes | Observer |
 | **Security Reviewer** | Authorization, secrets, injection, dependency and data-exposure findings | Observer |
 | **Release Engineer** | A release plan with a rollback, and approval requests for anything touching production | Operator |
-| **Technical Writer** | The changelog, API reference, and runbook the change requires | Observer |
+| **Technical Writer** | The changelog, API reference, and runbook the change requires | Contributor |
+| **Progress Reporter** | Daily and weekly reports with traceable task counts, progress and blockers | Contributor |
 
 Each template carries responsibilities, what the role must NOT do, what it reads, the output format, its definition of done, and when to escalate to a person. The picker shows the full instructions before you create anything.
+
+**Progress Reporter** includes the progress-report skill and runs one task at a time. The same agent can own both [daily and weekly report autopilots](/autopilots#daily-and-weekly-reports). It reads business issues, posts a report on the issue created for this run, and moves only that report issue to `in_review` after successful delivery. The report states its scope, timezone and time window, and marks unavailable data as missing rather than zero.
 
 There is deliberately no separate frontend, backend, or mobile role. Those are the same Implementer with different [skills](/skills) and project resources attached — splitting by stack multiplies prompts that all say the same thing.
 

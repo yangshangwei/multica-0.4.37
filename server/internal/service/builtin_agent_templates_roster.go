@@ -4,7 +4,7 @@ package service
 // given, roughly in the order a change moves through a team — so this is a slice
 // rather than a map.
 //
-// Deliberately eight roles, not twenty. Technology-specific variants (frontend,
+// Deliberately nine roles, not twenty. Technology-specific variants (frontend,
 // backend, mobile, data) are NOT separate templates: they are the same
 // Implementer with different skills and project resources attached. Splitting by
 // stack multiplies prompts that all say the same thing and leaves a team picking
@@ -184,6 +184,28 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"zh": "根据改动本身写出需要的变更日志、API 文档和运维手册。",
 			"ko": "변경 자체를 근거로 체인지로그, API 문서, 런북을 작성합니다.",
 			"ja": "変更そのものを根拠に、変更履歴・API ドキュメント・Runbook を書きます。",
+		},
+	},
+	{
+		Key:                "progress-reporter",
+		Version:            1,
+		Listed:             true,
+		DefaultName:        "Progress Reporter",
+		AvatarEmoji:        "📊",
+		Autonomy:           AutonomyContributor,
+		MaxConcurrentTasks: 1,
+		RoleSkills:         []string{"multica-progress-report"},
+		Titles: map[string]string{
+			"en": "Progress Reporter",
+			"zh": "进展报告员",
+			"ko": "진행 보고 담당자",
+			"ja": "進捗レポーター",
+		},
+		Descriptions: map[string]string{
+			"en": "Writes daily and weekly progress reports from real issue history, with traceable counts, blockers and data gaps.",
+			"zh": "根据任务和状态变更历史生成日报、周报，说明进展、阻塞、可核对的统计和数据缺口。",
+			"ko": "실제 태스크와 상태 변경 이력을 바탕으로 일일·주간 보고서를 작성하고, 진행 상황·차단 요인·검증 가능한 집계·누락 데이터를 정리합니다.",
+			"ja": "タスクと状態変更の履歴から日報・週報を作成し、進捗、ブロッカー、確認可能な集計、データの不足を示します。",
 		},
 	},
 	// The squad-leader definitions, one per built-in squad template. Unlisted: they

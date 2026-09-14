@@ -141,6 +141,13 @@ What the template create does that the ordinary one does not:
   that already carries that name is reused AS IS and never overwritten;
 - sets `autonomy_level` from the template.
 
+The listed `progress-reporter` role supports both daily and weekly progress
+reporting. It supplies `multica-progress-report`, uses concurrency one, and has
+Contributor authority so it can move its assigned report issue to `in_review`
+after successfully posting the report. Its narrower instructions keep business
+issues and repository files read-only. It is an ordinary role template, not a
+second system agent or a new permission level.
+
 `autonomy_level` (`observer` / `contributor` / `coordinator` / `operator`, or
 empty for no declared policy) is enforced on the agent's OWN API requests, not
 just displayed. An `observer` agent's issue status/assignee change and issue

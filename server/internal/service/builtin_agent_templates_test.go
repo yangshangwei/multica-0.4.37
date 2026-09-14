@@ -14,21 +14,21 @@ import (
 // every role prompt has to carry, and the fact that every skill and leader a
 // template names actually exists in this binary.
 
-// TestAgentRoleTemplates_ListedRosterIsEight pins the product decision. Eight was
-// chosen over a per-stack explosion of near-identical prompts; a ninth listed role
-// is a product change and should have to edit this number deliberately.
-func TestAgentRoleTemplates_ListedRosterIsEight(t *testing.T) {
+// TestAgentRoleTemplates_ListedRosterIsNine pins the product decision. New listed
+// roles must address distinct work rather than duplicate a role for each stack.
+func TestAgentRoleTemplates_ListedRosterIsNine(t *testing.T) {
 	listed := AgentRoleTemplates()
-	if len(listed) != 8 {
+	if len(listed) != 9 {
 		names := make([]string, 0, len(listed))
 		for _, template := range listed {
 			names = append(names, template.Key)
 		}
-		t.Fatalf("listed roster = %d templates (%s), want 8", len(listed), strings.Join(names, ", "))
+		t.Fatalf("listed roster = %d templates (%s), want 9", len(listed), strings.Join(names, ", "))
 	}
 	want := []string{
 		"product-analyst", "architect", "implementer", "qa-engineer",
 		"code-reviewer", "security-reviewer", "release-engineer", "technical-writer",
+		"progress-reporter",
 	}
 	for i, key := range want {
 		if listed[i].Key != key {
@@ -71,6 +71,7 @@ func TestAgentRoleTemplates_AutonomyDefaults(t *testing.T) {
 		"security-reviewer": AutonomyObserver,
 		"release-engineer":  AutonomyOperator,
 		"technical-writer":  AutonomyContributor,
+		"progress-reporter": AutonomyContributor,
 	}
 	for key, expected := range want {
 		template, ok := AgentRoleTemplateByKey(key)
@@ -178,6 +179,7 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 		"security-reviewer":     {"multica-security-review"},
 		"release-engineer":      {"multica-release-check"},
 		"technical-writer":      {"multica-documentation-change"},
+		"progress-reporter":     {"multica-progress-report"},
 		"feature-delivery-lead": {"multica-requirement-clarification"},
 		"discovery-lead":        {"multica-requirement-clarification"},
 		"bug-fix-lead":          nil,
@@ -200,6 +202,67 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 		if !slices.Equal(template.RoleSkills, expected) {
 			t.Errorf("%s role skills = %v, want %v", template.Key, template.RoleSkills, expected)
 		}
+	}
+}
+
+func TestAgentRoleTemplate_ProgressReporterDefaults(t *testing.T) {
+	template, ok := AgentRoleTemplateByKey("progress-reporter")
+	if !ok {
+		t.Fatal("progress-reporter template missing from the roster")
+	}
+	if !template.Listed || template.Version != 1 || template.MaxConcurrentTasks != 1 {
+		t.Errorf("reporter defaults = listed:%t version:%d concurrency:%d, want true, 1, 1", template.Listed, template.Version, template.MaxConcurrentTasks)
+	}
+	if template.DefaultName != "Progress Reporter" || template.Title("zh") != "进展报告员" {
+		t.Errorf("reporter names = %q / %q, want Progress Reporter / 进展报告员", template.DefaultName, template.Title("zh"))
+	}
+}
+
+func TestRoleSkillTemplates_RosterIsEight(t *testing.T) {
+	want := []string{
+		"multica-architecture-decision-record", "multica-code-review",
+		"multica-documentation-change", "multica-progress-report", "multica-release-check",
+		"multica-requirement-clarification", "multica-security-review", "multica-test-report",
+	}
+	templates := RoleSkillTemplates()
+	if len(templates) != len(want) {
+		t.Fatalf("role skill roster = %d, want %d", len(templates), len(want))
+	}
+	for i, name := range want {
+		if templates[i].Name != name {
+			t.Errorf("role skill[%d] = %q, want %q", i, templates[i].Name, name)
+		}
+	}
+}
+
+// Reporting content is the feature's executable policy. Keep the role and its
+// reusable method aligned on evidence, scope, and permitted writes.
+func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
+	role, ok := AgentRoleTemplateByKey("progress-reporter")
+	if !ok {
+		t.Fatal("progress-reporter template missing from the roster")
+	}
+	skill, ok := RoleSkillTemplateByName("multica-progress-report")
+	if !ok {
+		t.Fatal("multica-progress-report skill missing from the registry")
+	}
+	if skill.Version != 1 {
+		t.Errorf("progress report skill version = %d, want 1", skill.Version)
+	}
+	for name, body := range map[string]string{"role": role.Instructions(), "skill": skill.Content} {
+		t.Run(name, func(t *testing.T) {
+			for _, contract := range []string{
+				"日报", "周报", "时区", "截止时间", "分页", "状态变更历史",
+				"updated_at", "done", "关闭", "报告任务", "只读", "证据不足",
+				"缺失", "评论发表成功", "in_review", "不另建报告任务",
+				"临时评论正文文件", "工作目录", "UTF-8", "--content-file",
+				"不覆盖已有文件", "删除本次创建的临时文件",
+			} {
+				if !strings.Contains(body, contract) {
+					t.Errorf("missing reporting contract %q", contract)
+				}
+			}
+		})
 	}
 }
 

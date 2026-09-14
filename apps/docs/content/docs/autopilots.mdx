@@ -23,6 +23,23 @@ Open **Autopilot** in the sidebar, pick a template or start from scratch, then c
 
 An autopilot is enabled by default after saving; **Run now** manually executes the full flow once at any time.
 
+## Daily and weekly reports
+
+**Daily Progress Report** and **Weekly Progress Report** appear next to each other in the template catalog. Create either independently:
+
+| Template | Default schedule | Reporting window |
+|---|---|---|
+| **Daily Progress Report** | Every day at 18:00 | 24 hours before this report's cutoff |
+| **Weekly Progress Report** | Monday at 17:00 | Seven days before this report's cutoff |
+
+Schedules use the selected timezone, such as `Asia/Shanghai`. The template creation page lets you select the assignee, project and timezone; edit the Runbook and schedule from the detail page after creation.
+
+Create a **Progress Reporter** from the [role catalog](/agents-create#role-templates) and assign both autopilots to it. State whether each report covers the workspace or one project. Linking a project sets the report issue's project and execution context; the agent must still filter its source-issue queries to the requested scope.
+
+Reports cite task history and comments, list completions, ongoing work and blockers, and give verifiable new/closed/net counts. Reporting issues themselves are excluded from business counts. An empty period still gets a report, while missing data is disclosed rather than counted as zero.
+
+Each run creates a dated report issue. After posting its report comment successfully, the reporter moves only that issue to `in_review`, completing the autopilot run while leaving source issues unchanged. An Observer assignee needs a member to make that review transition. Template updates never rewrite saved autopilots; edit an older weekly Runbook to adopt the new closeout rule.
+
 ## Choose an execution mode
 
 | Mode | Behavior | Best for |

@@ -55,6 +55,7 @@ const TEMPLATE_KEYS = [
   "hourly-queue-check",
   "stale-pr-reminder",
   "bug-triage",
+  "daily-progress-report",
   "weekly-progress-report",
   "dependency-audit",
   "documentation-check",

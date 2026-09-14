@@ -111,7 +111,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     const catalog: { templates: TemplateSnapshot[] } = await (
       await request("/api/skills/templates")
     ).json();
-    expect(catalog.templates).toHaveLength(7);
+    expect(catalog.templates).toHaveLength(8);
     const source = catalog.templates.find((item) => item.name === TEMPLATE_NAME);
     expect(source).toBeDefined();
     const catalogBefore = JSON.stringify(catalog);

@@ -23,7 +23,7 @@ import (
 // This is deliberately the opposite trade-off from Mika (builtin_agents.go),
 // whose prompt is layered in from the server binary on every claim and therefore
 // hot-updatable but not editable. Mika is one product-owned assistant; these are
-// eight starting points a team is expected to make their own.
+// starting points a team is expected to make their own.
 
 //go:embed builtin_agent_templates
 var builtinAgentTemplatesFS embed.FS
