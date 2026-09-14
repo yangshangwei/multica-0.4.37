@@ -54,6 +54,24 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: node scripts/package.mjs --${{ matrix.target }} --x64 --arm64 --publish never
 
+      - name: Smoke-test Windows x64 installer and bundled CLI
+        if: matrix.target == 'win'
+        working-directory: apps/desktop
+        shell: pwsh
+        timeout-minutes: 10
+        run: |
+          $version = node --input-type=module -e 'import { deriveVersion } from "./scripts/package.mjs"; const version = process.env.MULTICA_DESKTOP_VERSION?.trim() || deriveVersion(); if (!version) process.exit(1); process.stdout.write(version);'
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($version)) { throw 'Could not derive the packaged desktop version' }
+          ./scripts/smoke-windows-installer.ps1 -ArtifactRoot ./dist -ExpectedVersion $version -ReportPath "$env:RUNNER_TEMP/multica-windows-x64-installer-smoke.json"
+
+      - name: Upload Windows installer verification
+        if: always() && matrix.target == 'win'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64-installer-verification
+          path: ${{ runner.temp }}/multica-windows-x64-installer-smoke.json
+          if-no-files-found: warn
+
       - name: Upload Desktop artifacts (${{ matrix.target }})
         uses: actions/upload-artifact@v4
         with:

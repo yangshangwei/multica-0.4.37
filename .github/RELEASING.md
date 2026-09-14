@@ -99,6 +99,24 @@ the full downloaded history. This base selection never permits resetting
 history to the seed. Existing ancestral publications still take precedence;
 incomparable ancestral bases require an explicit `--base`.
 
+## Windows desktop verification
+
+Fork tag publication does not run the upstream-only Desktop release job. Use
+the existing manual smoke workflow to build installers for the selected ref:
+
+```bash
+gh workflow run desktop-smoke.yml --ref v0.4.45 --repo yangshangwei/multica-0.4.37
+```
+
+Its Windows job silently installs the x64 package into a fresh runner temp
+directory and runs only the bundled `multica.exe version --output json`. It
+checks the installed executable and CLI architecture, matching versions, and
+the installer's SHA-256 before uploading `desktop-win`. Inspect the separate
+`windows-x64-installer-verification` artifact even when the job fails. This is
+native installer and CLI validation, not a Windows GUI or model execution test.
+The build uses `--publish never`; upload verified files explicitly to this fork,
+never through the upstream electron-builder publish configuration.
+
 ## Writing public notes
 
 The generator includes merged non-merge commits, meaningful Conventional
