@@ -19,6 +19,12 @@ import {
 import { useLocaleAdapter } from "@multica/core/i18n/react";
 import { useAuthStore } from "@multica/core/auth";
 import { useCommentComposerStore } from "@multica/core/issues/stores";
+import {
+  MANUAL_CREATE_FIELDS,
+  QUICK_CREATE_FIELDS,
+  useIssueCreateSettingsStore,
+} from "@multica/core/issues/stores/issue-create-settings-store";
+import { useChatStore } from "@multica/core/chat";
 import { api } from "@multica/core/api";
 import { browserTimezone, timezoneOptions } from "../../common/timezone-select";
 import { useT } from "../../i18n";
@@ -165,6 +171,9 @@ export function PreferencesTab() {
           <StickyCommentBarRow />
         </SettingsCard>
       </SettingsSection>
+
+      <IssueCreateFieldsSections />
+      <FloatingChatSection />
     </SettingsTab>
   );
 }
@@ -190,6 +199,103 @@ function StickyCommentBarRow() {
         aria-label={t(($) => $.preferences.sticky_comment_bar.title)}
       />
     </SettingsRow>
+  );
+}
+
+/**
+ * Create-issue field visibility — the two sections that used to be the
+ * standalone "Issue" tab. One group per create mode (agent quick create /
+ * manual create), each a switch list of the fields that mode keeps on its
+ * dialog toolbar. Persisted client-side per workspace; a field toggled off
+ * stays reachable from the dialog's ⋯ overflow and re-surfaces automatically
+ * while it holds a value, so hiding is never destructive.
+ */
+function IssueCreateFieldsSections() {
+  const { t } = useT("settings");
+  const quickFields = useIssueCreateSettingsStore((s) => s.quickCreateFields);
+  const setQuickVisible = useIssueCreateSettingsStore((s) => s.setQuickCreateFieldVisible);
+  const manualFields = useIssueCreateSettingsStore((s) => s.manualCreateFields);
+  const setManualVisible = useIssueCreateSettingsStore((s) => s.setManualCreateFieldVisible);
+
+  const savedToast = () =>
+    toast.success(t(($) => $.auto_save.toast_saved), { id: "settings-auto-save" });
+
+  return (
+    <>
+      <SettingsSection
+        title={t(($) => $.issue.quick_create_title)}
+        description={t(($) => $.issue.quick_create_description)}
+      >
+        <SettingsCard>
+          {QUICK_CREATE_FIELDS.map((field) => (
+            <SettingsRow key={field} label={t(($) => $.issue.fields[field])}>
+              <Switch
+                checked={quickFields.includes(field)}
+                onCheckedChange={(checked) => {
+                  setQuickVisible(field, checked);
+                  savedToast();
+                }}
+                aria-label={t(($) => $.issue.fields[field])}
+              />
+            </SettingsRow>
+          ))}
+        </SettingsCard>
+      </SettingsSection>
+
+      <SettingsSection
+        title={t(($) => $.issue.manual_create_title)}
+        description={t(($) => $.issue.manual_create_description)}
+      >
+        <SettingsCard>
+          {MANUAL_CREATE_FIELDS.map((field) => (
+            <SettingsRow key={field} label={t(($) => $.issue.fields[field])}>
+              <Switch
+                checked={manualFields.includes(field)}
+                onCheckedChange={(checked) => {
+                  setManualVisible(field, checked);
+                  savedToast();
+                }}
+                aria-label={t(($) => $.issue.fields[field])}
+              />
+            </SettingsRow>
+          ))}
+        </SettingsCard>
+      </SettingsSection>
+    </>
+  );
+}
+
+/**
+ * Floating chat window toggle — the section that used to be the standalone
+ * "Chat" tab. When off, the FAB / overlay never mount and Chat is reachable
+ * only from its dedicated tab. The preference is a persisted client setting
+ * (`floatingChatEnabled`), so it applies immediately without a round-trip.
+ */
+function FloatingChatSection() {
+  const { t } = useT("settings");
+  const enabled = useChatStore((s) => s.floatingChatEnabled);
+  const setEnabled = useChatStore((s) => s.setFloatingChatEnabled);
+
+  return (
+    <SettingsSection title={t(($) => $.chat.floating_title)}>
+      <SettingsCard>
+        <SettingsRow
+          label={t(($) => $.chat.floating_label)}
+          description={t(($) => $.chat.floating_hint)}
+        >
+          <Switch
+            checked={enabled}
+            onCheckedChange={(checked) => {
+              setEnabled(checked);
+              toast.success(t(($) => $.auto_save.toast_saved), {
+                id: "settings-auto-save",
+              });
+            }}
+            aria-label={t(($) => $.chat.floating_label)}
+          />
+        </SettingsRow>
+      </SettingsCard>
+    </SettingsSection>
   );
 }
 

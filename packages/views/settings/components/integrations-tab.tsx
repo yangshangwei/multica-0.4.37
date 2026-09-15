@@ -1,6 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { GitHubTab } from "./github-tab";
+import { GitHubMark } from "./github-mark";
 import { LarkTab } from "./lark-tab";
 import { ComposioTab } from "./composio-tab";
 import { SlackTab } from "./slack-tab";
@@ -17,12 +19,13 @@ import { SettingsSection, SettingsTab } from "./settings-layout";
 import { IntegrationChannelIcon } from "./integration-channel-icon";
 
 // Integrations is the umbrella tab for third-party platform connections.
-// GitHub has its own top-level tab (see github-tab.tsx); everything else
-// — currently Lark, Composio, Slack, Telegram, the self-hosted Git providers
-// (Forgejo / Gitea / GitLab), and WeCom smart-bot, with Linear etc. to follow —
-// lives in here under its own section heading so additional integrations slot
-// in without changing the IA. IntegrationsTab is just the host; each
-// integration owns its own description and install flow.
+// GitHub settings lead the page as its first section (they used to be a
+// separate top-level tab); everything else — currently Lark, Composio,
+// Slack, Telegram, the self-hosted Git providers (Forgejo / Gitea / GitLab),
+// and WeCom smart-bot, with Linear etc. to follow — lives in here under its
+// own section heading so additional integrations slot in without changing
+// the IA. IntegrationsTab is just the host; each integration owns its own
+// description and install flow.
 export function IntegrationsTab() {
   const { t } = useT("settings");
   const messagingIntegrationsEnabled = useConfigStore((s) => s.messagingIntegrationsEnabled);
@@ -42,6 +45,17 @@ export function IntegrationsTab() {
 
   return (
     <SettingsTab title={t(($) => $.page.tabs.integrations)}>
+      <SettingsSection
+        title={
+          <span className="flex items-center gap-2">
+            <GitHubMark className="h-4 w-4" />
+            {t(($) => $.github.section_title)}
+          </span>
+        }
+        description={t(($) => $.github.page_description)}
+      >
+        <GitHubTab />
+      </SettingsSection>
       {messagingIntegrationsEnabled && (
         <SettingsSection
           title={

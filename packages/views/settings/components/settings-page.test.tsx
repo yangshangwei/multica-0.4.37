@@ -16,15 +16,11 @@ const stub = vi.hoisted(
 );
 vi.mock("./account-tab", stub("AccountTab"));
 vi.mock("./preferences-tab", stub("PreferencesTab"));
-vi.mock("./chat-tab", stub("ChatTab"));
-vi.mock("./issue-tab", stub("IssueTab"));
 vi.mock("./tokens-tab", stub("TokensTab"));
 vi.mock("./workspace-tab", stub("WorkspaceTab"));
 vi.mock("./members-tab", stub("MembersTab"));
 vi.mock("./repositories-tab", stub("RepositoriesTab"));
-vi.mock("./github-tab", stub("GitHubTab"));
 vi.mock("./integrations-tab", stub("IntegrationsTab"));
-vi.mock("./labs-tab", stub("LabsTab"));
 vi.mock("./notifications-tab", stub("NotificationsTab"));
 vi.mock("./labels-tab", stub("LabelsTab"));
 vi.mock("./properties-tab", stub("PropertiesTab"));
@@ -32,10 +28,6 @@ vi.mock("./quick-actions-tab", stub("QuickActionsTab"));
 vi.mock("./keyboard-shortcuts-tab", stub("KeyboardShortcutsTab"));
 vi.mock("./plugins-tab", stub("PluginsTab"));
 vi.mock("./billing-tab", stub("BillingTab"));
-
-vi.mock("@multica/core/paths", () => ({
-  useCurrentWorkspace: () => ({ name: "Acme" }),
-}));
 
 const replace = vi.fn();
 const navigationState = { search: "" };
@@ -115,6 +107,54 @@ describe("SettingsPage nav trigger", () => {
     ).not.toBeInTheDocument();
     expect(screen.getByText("Settings")).toBeInTheDocument();
   });
+});
+
+describe("SettingsPage nav groups", () => {
+  // The full ordering matrix — groups, items, flag gating, injected tabs —
+  // is pinned canonically in settings-nav.test.ts (node environment). This
+  // suite covers only what the DOM shell adds on top: the headings render,
+  // collapsed tabs are gone, and legacy URLs land on their new home.
+  it("renders the four group headings", () => {
+    renderWithI18n(<SettingsPage />);
+
+    expect(screen.getByText("Personal")).toBeInTheDocument();
+    expect(screen.getByText("Workspace")).toBeInTheDocument();
+    expect(screen.getByText("Issues")).toBeInTheDocument();
+    expect(screen.getByText("Connections")).toBeInTheDocument();
+  });
+
+  it("no longer offers the collapsed Issue/Chat/GitHub/Labs tabs", () => {
+    renderWithI18n(<SettingsPage />);
+
+    for (const name of ["Issue", "Chat", "GitHub", "Labs"]) {
+      expect(screen.queryByRole("tab", { name })).not.toBeInTheDocument();
+    }
+  });
+
+  it("lands the legacy ?tab=github URL on the Integrations tab", () => {
+    // The Go backend redirects GitHub App installs back to
+    // /settings?tab=github (handler/github.go, githubSettingsURL); GitHub
+    // settings now live inside Integrations.
+    navigationState.search = "tab=github";
+
+    renderWithI18n(<SettingsPage />);
+
+    expect(screen.getByText("IntegrationsTab")).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Integrations" }),
+    ).toHaveAttribute("aria-selected", "true");
+  });
+
+  it.each(["labs", "chat", "issue"])(
+    "falls back to the default tab for ?tab=%s",
+    (legacy) => {
+      navigationState.search = `tab=${legacy}`;
+
+      renderWithI18n(<SettingsPage />);
+
+      expect(screen.getByText("AccountTab")).toBeInTheDocument();
+    },
+  );
 });
 
 describe("SettingsPage Plugin feature flag", () => {

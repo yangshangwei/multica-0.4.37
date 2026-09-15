@@ -51,6 +51,22 @@ vi.mock("@multica/core/api", () => ({
   api: { updateMe: mockUpdateMe },
 }));
 
+// Callable-store mock (CLAUDE.md pattern) — the real useChatStore is a
+// Proxy singleton that throws until registerChatStore() runs at app boot.
+const chatState = vi.hoisted(() => ({
+  floatingChatEnabled: false,
+  setFloatingChatEnabled: (v: boolean) => {
+    chatState.floatingChatEnabled = v;
+  },
+}));
+vi.mock("@multica/core/chat", () => ({
+  useChatStore: Object.assign(
+    (selector?: (s: typeof chatState) => unknown) =>
+      selector ? selector(chatState) : chatState,
+    { getState: () => chatState },
+  ),
+}));
+
 vi.mock("sonner", () => ({
   toast: {
     warning: mockToastWarning,
@@ -82,6 +98,11 @@ vi.mock("@multica/core/auth", async () => {
 
 import { PreferencesTab } from "./preferences-tab";
 import { useCommentComposerStore } from "@multica/core/issues/stores";
+import {
+  DEFAULT_MANUAL_CREATE_FIELDS,
+  DEFAULT_QUICK_CREATE_FIELDS,
+  useIssueCreateSettingsStore,
+} from "@multica/core/issues/stores/issue-create-settings-store";
 
 const TEST_RESOURCES = {
   en: { common: enCommon, auth: enAuth, settings: enSettings },
@@ -335,6 +356,103 @@ describe("PreferencesTab — Sticky comment bar", () => {
 
     expect(useCommentComposerStore.getState().sticky).toBe(false);
     expect(toggle).toHaveAttribute("aria-checked", "false");
+    expect(mockToastSuccess).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("PreferencesTab — Create-issue field visibility", () => {
+  // Migrated from the standalone IssueTab suite when the tab merged into
+  // Preferences. Named queries instead of positional indexing: the merged
+  // page also renders the sticky-comment-bar and floating-chat switches, so
+  // index-based lookup across all switches would be brittle.
+  beforeEach(() => {
+    vi.clearAllMocks();
+    userRef.current = null;
+    useIssueCreateSettingsStore.setState({
+      quickCreateFields: DEFAULT_QUICK_CREATE_FIELDS,
+      manualCreateFields: DEFAULT_MANUAL_CREATE_FIELDS,
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    useIssueCreateSettingsStore.setState({
+      quickCreateFields: DEFAULT_QUICK_CREATE_FIELDS,
+      manualCreateFields: DEFAULT_MANUAL_CREATE_FIELDS,
+    });
+  });
+
+  it("renders a switch per create-mode field with the persisted selection", () => {
+    render(<PreferencesTab />, { wrapper: I18nWrapper });
+
+    // Quick create (agent mode): project on, priority/due date off.
+    expect(screen.getAllByRole("switch", { name: "Project" })[0]).toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Priority" })[0]).not.toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Due date" })[0]).not.toBeChecked();
+
+    // Manual create keeps the classic toolbar; dates start hidden. Index [1]
+    // picks the manual row of a name that both sections carry.
+    expect(screen.getAllByRole("switch", { name: "Status" })[0]).toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Priority" })[1]).toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Assignee" })[0]).toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Project" })[1]).toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Labels" })[0]).toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Start date" })[0]).not.toBeChecked();
+    expect(screen.getAllByRole("switch", { name: "Due date" })[1]).not.toBeChecked();
+  });
+
+  it("persists enabling a quick create field", async () => {
+    const user = userEvent.setup();
+    render(<PreferencesTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getAllByRole("switch", { name: "Priority" })[0]!);
+
+    expect(useIssueCreateSettingsStore.getState().quickCreateFields).toEqual([
+      "project",
+      "priority",
+    ]);
+  });
+
+  it("persists hiding a manual create field without touching quick create", async () => {
+    const user = userEvent.setup();
+    render(<PreferencesTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getAllByRole("switch", { name: "Labels" })[0]!);
+
+    expect(useIssueCreateSettingsStore.getState().manualCreateFields).toEqual([
+      "status",
+      "priority",
+      "assignee",
+      "project",
+    ]);
+    expect(useIssueCreateSettingsStore.getState().quickCreateFields).toEqual([
+      "project",
+    ]);
+  });
+});
+
+describe("PreferencesTab — Floating chat", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    userRef.current = null;
+    chatState.floatingChatEnabled = false;
+  });
+
+  afterEach(() => {
+    cleanup();
+    chatState.floatingChatEnabled = false;
+  });
+
+  it("toggles the floating window and confirms with a saved toast", async () => {
+    const user = userEvent.setup();
+    render(<PreferencesTab />, { wrapper: I18nWrapper });
+
+    const toggle = screen.getByRole("switch", { name: "Floating chat window" });
+    expect(toggle).toHaveAttribute("aria-checked", "false");
+
+    await user.click(toggle);
+
+    expect(chatState.floatingChatEnabled).toBe(true);
     expect(mockToastSuccess).toHaveBeenCalledTimes(1);
   });
 });

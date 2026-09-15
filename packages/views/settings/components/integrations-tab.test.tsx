@@ -33,6 +33,10 @@ vi.mock("@multica/core/composio", () => ({
   composioToolkitsOptions: () => ({ queryKey: ["composio", "toolkits"] }),
 }));
 
+vi.mock("./github-tab", () => ({
+  GitHubTab: () => <div data-testid="github-tab" />,
+}));
+
 vi.mock("./lark-tab", () => ({
   LarkTab: () => <div data-testid="lark-tab" />,
 }));
@@ -85,6 +89,18 @@ describe("Settings IntegrationsTab", () => {
       vcsIntegrationAvailable: false,
       messagingIntegrationsEnabled: true,
     });
+  });
+
+  it("renders the GitHub section first, ahead of the platform sections", () => {
+    // GitHub settings used to be a top-level tab; after the collapse they
+    // lead the Integrations page so the backend's ?tab=github install
+    // callback lands on them without scrolling.
+    renderTab();
+
+    const headings = screen.getAllByRole("heading", { level: 3 });
+    expect(headings[0]).toHaveTextContent("GitHub");
+    expect(screen.getByTestId("github-tab")).toBeInTheDocument();
+    expect(screen.getByText(enSettings.github.page_description)).toBeInTheDocument();
   });
 
   it("keeps self-hosted Git while omitting all messaging sections when disabled by deployment", () => {

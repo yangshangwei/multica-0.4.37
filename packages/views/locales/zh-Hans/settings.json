@@ -269,7 +269,6 @@
     "floating_hint": "在每个页面右下角显示悬浮聊天按钮。默认关闭——打开后可随处召唤聊天；关闭时，聊天只在此标签页中可用。"
   },
   "issue": {
-    "description": "选择各创建方式的工具栏中常驻显示的字段。隐藏的字段仍可从 ⋯ 菜单使用，有值时会自动显示。",
     "quick_create_title": "通过智能体创建",
     "quick_create_description": "快速创建工具栏中显示的字段。",
     "manual_create_title": "手动创建",
@@ -318,21 +317,21 @@
   },
   "page": {
     "title": "设置",
-    "my_account": "我的账号",
-    "workspace_fallback": "工作区",
+    "groups": {
+      "account": "个人设置",
+      "workspace": "工作区管理",
+      "issue": "任务配置",
+      "connections": "连接与扩展"
+    },
     "tabs": {
       "profile": "个人资料",
       "preferences": "偏好设置",
       "shortcuts": "快捷键",
-      "issue": "任务",
-      "chat": "聊天",
       "notifications": "通知",
       "tokens": "API Token",
       "general": "常规",
       "repositories": "代码仓库",
-      "github": "GitHub",
       "integrations": "集成",
-      "labs": "实验室",
       "members": "成员",
       "labels": "标签",
       "issue_statuses": "任务状态",
@@ -703,12 +702,8 @@
     "confirm": "删除工作区",
     "deleting": "删除中..."
   },
-  "labs": {
-    "section_placeholder_title": "暂无实验",
-    "section_placeholder_description": "实验性功能上线后会出现在这里。当前实验室页面是空的。",
-    "toast_failed": "更新设置失败"
-  },
   "github": {
+    "section_title": "GitHub",
     "page_description": "连接 GitHub App、控制 Pull Request 如何出现在 Multica 中，并决定智能体在 commit 记录里留下哪些痕迹。",
     "section_master": "启用 GitHub 功能",
     "master_description_on": "关闭后，所有 GitHub 入口都会被隐藏，也不再产生新的副作用。后台已有数据不会被删除。团队不使用 GitHub？在这里直接关掉即可。",

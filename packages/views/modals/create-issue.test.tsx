@@ -463,7 +463,7 @@ vi.mock("../issues/components", () => ({
       onClick={() => onOpenChange?.(false)}
     />
   ),
-  // Labels can now be hidden via Settings → Issue and revealed from the
+  // Labels can now be hidden via Settings → Preferences and revealed from the
   // overflow, so surface open/onOpenChange like the date pickers.
   LabelPicker: ({ open, onOpenChange }: { open?: boolean; onOpenChange?: (v: boolean) => void }) => (
     <div
@@ -1428,7 +1428,7 @@ describe("CreateIssueModal", () => {
     expect(screen.queryByTestId("due-date-picker")).not.toBeInTheDocument();
   });
 
-  it("hides toolbar fields turned off in Settings → Issue and re-reveals them from the overflow", async () => {
+  it("hides toolbar fields turned off in Settings → Preferences and re-reveals them from the overflow", async () => {
     const user = userEvent.setup();
     mockCreateSettingsStore.manualCreateFields = ["status", "priority", "assignee", "project"];
 
@@ -1456,7 +1456,7 @@ describe("CreateIssueModal", () => {
     expect(screen.queryByRole("button", { name: /Set labels/i })).not.toBeInTheDocument();
   });
 
-  it("renders due date inline when enabled in Settings → Issue", () => {
+  it("renders due date inline when enabled in Settings → Preferences", () => {
     mockCreateSettingsStore.manualCreateFields = [...DEFAULT_MANUAL_FIELDS, "due_date"];
 
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
@@ -1465,7 +1465,7 @@ describe("CreateIssueModal", () => {
     expect(screen.queryByRole("button", { name: /Set due date/i })).not.toBeInTheDocument();
   });
 
-  it("routes Customize fields to Settings → Issue and closes the dialog", async () => {
+  it("routes Customize fields to Settings → Preferences and closes the dialog", async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
 
@@ -1474,7 +1474,7 @@ describe("CreateIssueModal", () => {
     await user.click(screen.getByRole("button", { name: /Customize fields/i }));
 
     expect(onClose).toHaveBeenCalled();
-    expect(mockPush).toHaveBeenCalledWith("/ws-test/settings?tab=issue");
+    expect(mockPush).toHaveBeenCalledWith("/ws-test/settings?tab=preferences");
   });
 
   // MUL-5181: switching to agent must PRESERVE the manual draft. The agent

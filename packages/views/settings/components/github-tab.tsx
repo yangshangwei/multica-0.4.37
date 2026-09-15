@@ -30,7 +30,6 @@ import { api } from "@multica/core/api";
 import type { Workspace } from "@multica/core/types";
 import { AppLink, useNavigation } from "../../navigation";
 import { useT } from "../../i18n";
-import { SettingsTab } from "./settings-layout";
 import { GitHubMark } from "./github-mark";
 
 type SettingsKey =
@@ -128,43 +127,41 @@ export function GitHubTab() {
 
   const repositoriesHref = `${navigation.pathname}?tab=repositories`;
 
+  // Section body for the GitHub block on the Integrations page. The section
+  // heading and description come from the host (integrations-tab.tsx); the
+  // h4 sub-headings stay one level below the host's h3.
   return (
-    <SettingsTab
-      title={t(($) => $.page.tabs.github)}
-      description={t(($) => $.github.page_description)}
-    >
-      <section className="space-y-3">
-        <Card>
-          <CardContent>
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="rounded-md border bg-muted/50 p-2 text-muted-foreground">
-                  <GitHubMark className="h-4 w-4" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="github-master" className="text-body font-medium">
-                    {t(($) => $.github.section_master)}
-                  </Label>
-                  <p className="text-body text-muted-foreground">
-                    {flags.enabled
-                      ? t(($) => $.github.master_description_on)
-                      : t(($) => $.github.master_description_off)}
-                  </p>
-                </div>
+    <div className="space-y-6">
+      <Card>
+        <CardContent>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="rounded-md border bg-muted/50 p-2 text-muted-foreground">
+                <GitHubMark className="h-4 w-4" />
               </div>
-              <Switch
-                id="github-master"
-                checked={flags.enabled}
-                onCheckedChange={(v) => persistSetting("github_enabled", v)}
-                disabled={!canManage || savingKey === "github_enabled"}
-              />
+              <div className="space-y-1">
+                <Label htmlFor="github-master" className="text-body font-medium">
+                  {t(($) => $.github.section_master)}
+                </Label>
+                <p className="text-body text-muted-foreground">
+                  {flags.enabled
+                    ? t(($) => $.github.master_description_on)
+                    : t(($) => $.github.master_description_off)}
+                </p>
+              </div>
             </div>
-          </CardContent>
-        </Card>
-      </section>
+            <Switch
+              id="github-master"
+              checked={flags.enabled}
+              onCheckedChange={(v) => persistSetting("github_enabled", v)}
+              disabled={!canManage || savingKey === "github_enabled"}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <section className="space-y-3">
-        <h2 className="text-body font-semibold">{t(($) => $.github.section_connection)}</h2>
+        <h4 className="text-body font-semibold">{t(($) => $.github.section_connection)}</h4>
         <Card>
           <CardContent className="space-y-4">
             <div className="flex items-start justify-between gap-4">
@@ -255,7 +252,7 @@ export function GitHubTab() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-body font-semibold">{t(($) => $.github.section_features)}</h2>
+        <h4 className="text-body font-semibold">{t(($) => $.github.section_features)}</h4>
         <Card className="gap-0 py-0">
           <CardContent className="divide-y divide-surface-border px-0">
             <FeatureRow
@@ -308,7 +305,7 @@ export function GitHubTab() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-body font-semibold">{t(($) => $.github.section_repositories)}</h2>
+        <h4 className="text-body font-semibold">{t(($) => $.github.section_repositories)}</h4>
         <Card>
           <CardContent>
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -356,7 +353,7 @@ export function GitHubTab() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </SettingsTab>
+    </div>
   );
 }
 

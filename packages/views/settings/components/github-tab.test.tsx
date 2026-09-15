@@ -104,7 +104,7 @@ vi.mock("../../navigation/context", () => ({
     replace: vi.fn(),
     back: vi.fn(),
     pathname: "/acme/settings",
-    searchParams: new URLSearchParams("tab=github"),
+    searchParams: new URLSearchParams("tab=integrations"),
     hash: "",
     getShareableUrl: (p: string) => `https://app.example${p}`,
   }),

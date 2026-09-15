@@ -269,7 +269,6 @@
     "floating_hint": "Show the floating chat button in the corner of every page. Off by default — turn it on to summon chat anywhere; when off, Chat lives only in this tab."
   },
   "issue": {
-    "description": "Choose which fields each create dialog keeps on its toolbar. Hidden fields stay available from the ⋯ menu and reappear while they hold a value.",
     "quick_create_title": "Create with agent",
     "quick_create_description": "Fields shown in the quick create toolbar.",
     "manual_create_title": "Create manually",
@@ -318,21 +317,21 @@
   },
   "page": {
     "title": "Settings",
-    "my_account": "My Account",
-    "workspace_fallback": "Workspace",
+    "groups": {
+      "account": "Personal",
+      "workspace": "Workspace",
+      "issue": "Issues",
+      "connections": "Connections"
+    },
     "tabs": {
       "profile": "Profile",
       "preferences": "Preferences",
       "shortcuts": "Shortcuts",
-      "issue": "Issue",
-      "chat": "Chat",
       "notifications": "Notifications",
       "tokens": "API Tokens",
       "general": "General",
       "repositories": "Repositories",
-      "github": "GitHub",
       "integrations": "Integrations",
-      "labs": "Labs",
       "members": "Members",
       "labels": "Labels",
       "issue_statuses": "Issue Statuses",
@@ -705,12 +704,8 @@
     "confirm": "Delete workspace",
     "deleting": "Deleting..."
   },
-  "labs": {
-    "section_placeholder_title": "No experiments yet",
-    "section_placeholder_description": "Experimental settings will land here as they ship. Today this tab is intentionally empty.",
-    "toast_failed": "Failed to update setting"
-  },
   "github": {
+    "section_title": "GitHub",
     "page_description": "Connect a GitHub App, control how Pull Requests show up inside Multica, and decide what your agents leave behind in commit history.",
     "section_master": "Enable GitHub features",
     "master_description_on": "When off, every GitHub UI affordance is hidden and no new side-effects are written. Existing data is kept on the backend. Not a development team? Just turn it off here.",

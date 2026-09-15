@@ -15,7 +15,7 @@ Self-hosted Multica can also connect self-hosted Forgejo, Gitea, or GitLab insta
 
 A workspace owner or admin can complete the connection:
 
-1. Open **Settings → GitHub**.
+1. Open **Settings → Integrations → GitHub**.
 2. Turn on the GitHub integration master switch.
 3. Click **Connect GitHub**.
 4. In GitHub, pick the account or organization and authorize all repositories or a chosen subset.
@@ -29,7 +29,7 @@ The **GitHub connection** decides which repositories Multica receives PR events 
 
 ## Feature switches
 
-**Settings → GitHub** has four switches:
+**Settings → Integrations → GitHub** has four switches:
 
 | Switch | Effect |
 |---|---|
@@ -99,7 +99,7 @@ For example, a PR that references both `MUL-1` and `ENG-2` can link in two works
 
 ## Disconnect
 
-Clicking **Disconnect** in **Settings → GitHub** only removes the relationship between the current Multica workspace and the installation; it does not uninstall the App from GitHub for you. Existing PR records are kept, and new events stop flowing into that workspace.
+Clicking **Disconnect** in **Settings → Integrations → GitHub** only removes the relationship between the current Multica workspace and the installation; it does not uninstall the App from GitHub for you. Existing PR records are kept, and new events stop flowing into that workspace.
 
 To revoke repository authorization on the GitHub side, uninstall the App or adjust its repository scope from your personal or organization GitHub App installations page. After uninstalling, every Multica workspace linked to that installation stops receiving events.
 
@@ -169,7 +169,7 @@ When upgrading an existing deployment, run the regular database migrations first
 make migrate-up
 ```
 
-Restart the API server, then complete the connection in **Settings → GitHub**.
+Restart the API server, then complete the connection in **Settings → Integrations → GitHub**.
 
 ## Troubleshooting
 
