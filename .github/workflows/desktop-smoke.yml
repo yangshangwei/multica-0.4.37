@@ -14,8 +14,10 @@ jobs:
         include:
           - os: ubuntu-latest
             target: linux
+            architectures: --x64 --arm64
           - os: windows-latest
             target: win
+            architectures: --x64 --ia32 --arm64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -52,24 +54,33 @@ jobs:
         working-directory: apps/desktop
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
-        run: node scripts/package.mjs --${{ matrix.target }} --x64 --arm64 --publish never
+        run: node scripts/package.mjs --${{ matrix.target }} ${{ matrix.architectures }} --publish never
 
-      - name: Smoke-test Windows x64 installer and bundled CLI
+      - name: Smoke-test Windows x64 and ia32 installers and bundled CLIs
         if: matrix.target == 'win'
         working-directory: apps/desktop
         shell: pwsh
-        timeout-minutes: 10
+        timeout-minutes: 12
         run: |
           $version = node --input-type=module -e 'import { deriveVersion } from "./scripts/package.mjs"; const version = process.env.MULTICA_DESKTOP_VERSION?.trim() || deriveVersion(); if (!version) process.exit(1); process.stdout.write(version);'
           if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($version)) { throw 'Could not derive the packaged desktop version' }
-          ./scripts/smoke-windows-installer.ps1 -ArtifactRoot ./dist -ExpectedVersion $version -ReportPath "$env:RUNNER_TEMP/multica-windows-x64-installer-smoke.json"
+          ./scripts/smoke-windows-installer.ps1 -ArtifactRoot ./dist -ExpectedVersion $version -ExpectedArch x64 -ReportPath "$env:RUNNER_TEMP/multica-windows-x64-installer-smoke.json"
+          ./scripts/smoke-windows-installer.ps1 -ArtifactRoot ./dist -ExpectedVersion $version -ExpectedArch ia32 -ReportPath "$env:RUNNER_TEMP/multica-windows-ia32-installer-smoke.json"
 
-      - name: Upload Windows installer verification
+      - name: Upload Windows x64 installer verification
         if: always() && matrix.target == 'win'
         uses: actions/upload-artifact@v4
         with:
           name: windows-x64-installer-verification
           path: ${{ runner.temp }}/multica-windows-x64-installer-smoke.json
+          if-no-files-found: warn
+
+      - name: Upload Windows ia32 installer verification
+        if: always() && matrix.target == 'win'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-ia32-installer-verification
+          path: ${{ runner.temp }}/multica-windows-ia32-installer-smoke.json
           if-no-files-found: warn
 
       - name: Upload Desktop artifacts (${{ matrix.target }})

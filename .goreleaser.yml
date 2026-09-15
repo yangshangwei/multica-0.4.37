@@ -21,6 +21,13 @@ builds:
     goarch:
       - amd64
       - arm64
+      - "386"
+    # The 32-bit Desktop CLI and its auto-install archive are Windows-only.
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: linux
+        goarch: "386"
 
 archives:
   # Legacy archive name kept so already-released CLIs (whose `multica update`

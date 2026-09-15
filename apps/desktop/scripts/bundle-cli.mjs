@@ -29,7 +29,7 @@ const PLATFORM_TO_GOOS = {
   win32: "windows",
 };
 
-const SUPPORTED_ARCHS = new Set(["x64", "arm64"]);
+const SUPPORTED_ARCHS = new Set(["x64", "arm64", "ia32"]);
 
 function runtimePlatformFromArgs(argv) {
   const flagIndex = argv.indexOf("--target-platform");
@@ -51,11 +51,14 @@ function normalizeRuntimePlatform(platform) {
   );
 }
 
-function normalizeRuntimeArch(arch) {
+function normalizeRuntimeArch(arch, platform) {
+  if (arch === "ia32" && platform !== "win32") {
+    throw new Error("[bundle-cli] ia32 is supported only on win32.");
+  }
   if (SUPPORTED_ARCHS.has(arch)) return arch;
   throw new Error(
     `[bundle-cli] unsupported target architecture: ${arch}. ` +
-      "Use x64 or arm64.",
+      "Use x64 or arm64; ia32 is supported only on win32.",
   );
 }
 
@@ -66,9 +69,9 @@ function binaryNameForPlatform(platform) {
 const targetPlatform = normalizeRuntimePlatform(
   runtimePlatformFromArgs(process.argv.slice(2)),
 );
-const targetArch = normalizeRuntimeArch(runtimeArchFromArgs(process.argv.slice(2)));
+const targetArch = normalizeRuntimeArch(runtimeArchFromArgs(process.argv.slice(2)), targetPlatform);
 const goos = PLATFORM_TO_GOOS[targetPlatform];
-const goarch = targetArch === "x64" ? "amd64" : targetArch;
+const goarch = { x64: "amd64", arm64: "arm64", ia32: "386" }[targetArch];
 const binName = binaryNameForPlatform(targetPlatform);
 const srcBinary = join(serverDir, "bin", `${goos}-${goarch}`, binName);
 const destDir = join(repoRoot, "apps", "desktop", "resources", "bin");

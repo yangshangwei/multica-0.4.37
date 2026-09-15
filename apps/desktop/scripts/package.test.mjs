@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -243,6 +244,7 @@ describe("resolveBuildMatrix", () => {
       { platform: "mac", arch: "arm64" },
       { platform: "mac", arch: "x64" },
       { platform: "win", arch: "x64" },
+      { platform: "win", arch: "ia32" },
       { platform: "win", arch: "arm64" },
       { platform: "linux", arch: "x64" },
       { platform: "linux", arch: "arm64" },
@@ -263,6 +265,32 @@ describe("resolveBuildMatrix", () => {
         "arm64",
       ),
     ).toThrow(/unsupported Desktop CLI architecture/);
+  });
+
+  it("builds Windows x64, ia32 and arm64 together without replacing a requested arch", () => {
+    expect(
+      resolveBuildMatrix(
+        parsePackageArgs(["--win", "--x64", "--ia32", "--arm64"]),
+        "darwin",
+        "arm64",
+      ),
+    ).toEqual([
+      { platform: "win", arch: "x64" },
+      { platform: "win", arch: "ia32" },
+      { platform: "win", arch: "arm64" },
+    ]);
+  });
+
+  it("can package on a native Windows ia32 host", () => {
+    expect(resolveBuildMatrix(parsePackageArgs([]), "win32", "ia32")).toEqual([
+      { platform: "win", arch: "ia32" },
+    ]);
+  });
+
+  it.each(["--mac", "--linux", "-mw"])("rejects ia32 for %s before packaging", (platformFlag) => {
+    expect(() =>
+      resolveBuildMatrix(parsePackageArgs([platformFlag, "--ia32"]), "darwin", "arm64"),
+    ).toThrow(/ia32.*Windows/i);
   });
 });
 
@@ -320,6 +348,26 @@ describe("builderArgsForTarget", () => {
       "--publish",
       "always",
       "-c.directories.output=dist/win-x64",
+    ]);
+  });
+
+  it("keeps Windows ia32 output and update metadata separate from x64", () => {
+    expect(
+      builderArgsForTarget(
+        { platform: "win", arch: "ia32" },
+        parsePackageArgs(["--win", "nsis", "--x64", "--ia32", "--publish", "never"]),
+        "0.4.46",
+        { hostPlatform: "win32", useScopedOutputDir: true },
+      ),
+    ).toEqual([
+      "-c.extraMetadata.version=0.4.46",
+      "--win",
+      "nsis",
+      "--ia32",
+      "--publish",
+      "never",
+      "-c.directories.output=dist/win-ia32",
+      "-c.publish.channel=latest-ia32",
     ]);
   });
 

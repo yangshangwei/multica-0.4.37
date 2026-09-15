@@ -12,10 +12,11 @@ function platformArchiveDescriptor(
   const archMap: Record<string, string> = {
     x64: "amd64",
     arm64: "arm64",
+    ia32: "386",
   };
   const os = osMap[platform];
   const mappedArch = archMap[arch];
-  if (!os || !mappedArch) {
+  if (!os || !mappedArch || (arch === "ia32" && platform !== "win32")) {
     throw new Error(
       `unsupported platform for CLI auto-install: ${platform}/${arch}`,
     );

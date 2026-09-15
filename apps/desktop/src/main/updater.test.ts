@@ -56,9 +56,34 @@ vi.mock("electron", () => ({
 
 import {
   configureMacX64UpdateChannel,
+  configureWindowsIa32UpdateChannel,
   setupAutoUpdater,
 } from "./updater";
 import { updaterPreferencesPath } from "./updater-preferences";
+
+describe("Windows ia32 update channel", () => {
+  it("uses the ia32 feed without permitting a downgrade", () => {
+    const updater = { channel: null, allowDowngrade: true };
+
+    configureWindowsIa32UpdateChannel(updater, "win32", "ia32");
+
+    expect(updater).toEqual({ channel: "latest-ia32", allowDowngrade: false });
+  });
+
+  it.each([
+    ["win32", "x64"],
+    ["win32", "arm64"],
+    ["darwin", "x64"],
+    ["darwin", "arm64"],
+    ["linux", "ia32"],
+  ] as const)("preserves the existing %s/%s update configuration", (platform, arch) => {
+    const updater = { channel: "existing-channel", allowDowngrade: true };
+
+    configureWindowsIa32UpdateChannel(updater, platform, arch);
+
+    expect(updater).toEqual({ channel: "existing-channel", allowDowngrade: true });
+  });
+});
 
 describe("macOS x64 update channel", () => {
   it("does not touch established architecture paths", () => {

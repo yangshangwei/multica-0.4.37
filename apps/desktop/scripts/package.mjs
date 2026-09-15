@@ -64,11 +64,12 @@ const ARCH_FLAGS = new Map([
   ["--universal", "universal"],
 ]);
 
-const SUPPORTED_CLI_ARCHS = new Set(["x64", "arm64"]);
+const SUPPORTED_CLI_ARCHS = new Set(["x64", "arm64", "ia32"]);
 const MAC_ALL_PLATFORM_TARGETS = [
   { platform: "mac", arch: "arm64" },
   { platform: "mac", arch: "x64" },
   { platform: "win", arch: "x64" },
+  { platform: "win", arch: "ia32" },
   { platform: "win", arch: "arm64" },
   { platform: "linux", arch: "x64" },
   { platform: "linux", arch: "arm64" },
@@ -290,8 +291,11 @@ export function resolveBuildMatrix(parsed, platform = process.platform, arch = p
   if (unsupported.length > 0) {
     throw new Error(
       `[package] unsupported Desktop CLI architecture(s): ${unsupported.join(", ")}. ` +
-        "Use --x64 or --arm64.",
+        "Use --x64, --arm64, or --ia32 (Windows only).",
     );
+  }
+  if (archs.includes("ia32") && platforms.some((value) => value !== "win")) {
+    throw new Error("[package] ia32 is supported only for Windows. Use --win --ia32.");
   }
 
   return platforms.flatMap((targetPlatform) =>
@@ -341,13 +345,16 @@ export function builderArgsForTarget(
     );
   }
   // electron-builder only adds an architecture suffix to Linux update
-  // metadata. Windows x64/arm64 would both publish `latest.yml`, while macOS
+  // metadata. Windows x64/ia32/arm64 would all publish `latest.yml`, while macOS
   // arm64/x64 would both publish `latest-mac.yml`. Keep the established x64
   // Windows and arm64 macOS feeds unchanged for installed clients, and route
   // the additional architectures to explicit channels. updater.ts pins the
   // matching channel at runtime.
   if (target.platform === "win" && target.arch === "arm64") {
     builderArgs.push("-c.publish.channel=latest-arm64");
+  }
+  if (target.platform === "win" && target.arch === "ia32") {
+    builderArgs.push("-c.publish.channel=latest-ia32");
   }
   if (target.platform === "mac" && target.arch === "x64") {
     // Scope the Electron 39 platform floor to the new Intel package so this

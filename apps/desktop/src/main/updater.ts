@@ -32,6 +32,22 @@ interface ChannelConfigurableUpdater {
   allowDowngrade: boolean;
 }
 
+export function configureWindowsIa32UpdateChannel(
+  updater: ChannelConfigurableUpdater,
+  platform: NodeJS.Platform = process.platform,
+  arch: string = process.arch,
+): void {
+  if (platform !== "win32" || arch !== "ia32") return;
+
+  // Keep 32-bit clients off the established Windows x64 latest.yml feed.
+  // Setting a channel enables downgrades in electron-updater; selecting an
+  // architecture must retain the usual monotonic version checks.
+  updater.channel = "latest-ia32";
+  updater.allowDowngrade = false;
+}
+
+configureWindowsIa32UpdateChannel(autoUpdater);
+
 export function configureMacX64UpdateChannel(
   updater: ChannelConfigurableUpdater,
   platform: NodeJS.Platform = process.platform,
@@ -121,7 +137,7 @@ export function setupAutoUpdater(
 ): void {
   if (options.updateUrl) {
     // The generic provider reads `autoUpdater.channel`, so the per-arch
-    // channel files chosen above (`latest-x64-mac.yml`, `latest-arm64.yml`)
+    // channel files chosen above (including `latest-ia32.yml`)
     // resolve against the configured directory exactly as they do on GitHub.
     autoUpdater.setFeedURL({ provider: "generic", url: options.updateUrl });
   }

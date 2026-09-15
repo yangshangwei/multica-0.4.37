@@ -105,17 +105,29 @@ Fork tag publication does not run the upstream-only Desktop release job. Use
 the existing manual smoke workflow to build installers for the selected ref:
 
 ```bash
-gh workflow run desktop-smoke.yml --ref v0.4.45 --repo yangshangwei/multica-0.4.37
+gh workflow run desktop-smoke.yml --ref v0.4.46 --repo yangshangwei/multica-0.4.37
 ```
 
-Its Windows job silently installs the x64 package into a fresh runner temp
-directory and runs only the bundled `multica.exe version --output json`. It
-checks the installed executable and CLI architecture, matching versions, and
-the installer's SHA-256 before uploading `desktop-win`. Inspect the separate
-`windows-x64-installer-verification` artifact even when the job fails. This is
-native installer and CLI validation, not a Windows GUI or model execution test.
+Its Windows job builds x64, ia32 and arm64 in one packaging invocation, with
+separate `dist/win-<arch>` directories. It silently installs x64 and ia32 into
+fresh runner temp directories and runs only each bundled
+`multica.exe version --output json`. The ia32 check runs through Windows' native
+32-bit compatibility support on the x64 runner. It checks both installed PE
+architectures, matching versions, and the installer's SHA-256 before uploading
+`desktop-win`. Inspect both `windows-x64-installer-verification` and
+`windows-ia32-installer-verification` even when the job fails. The arm64 package
+is built but not installed by this job. These are installer and CLI checks;
+they do not exercise the Windows GUI or models.
+
+Windows x86 means the `windows-ia32.exe` package: both `Multica.exe` and the
+bundled CLI must be 32-bit PE machine `0x14c`, and the CLI reports `arch: 386`.
+The existing `windows-x64.exe` package is x86-64, with PE machine `0x8664` and
+CLI `arch: amd64`. The NSIS installer loader itself is not evidence of the
+application's architecture. macOS and Linux ia32 targets remain unsupported.
+
 The build uses `--publish never`; upload verified files explicitly to this fork,
-never through the upstream electron-builder publish configuration.
+never through the upstream electron-builder publish configuration. A subsequent
+`package.mjs` invocation clears `dist`, so preserve outputs before starting one.
 
 ## Writing public notes
 
@@ -271,6 +283,7 @@ unchanged; nothing is renamed:
 ```text
 <updateUrl>/
   latest.yml                                    # Windows x64 metadata
+  latest-ia32.yml                               # Windows x86 / ia32 metadata
   latest-arm64.yml                              # Windows arm64 metadata
   multica-desktop-<version>-windows-<arch>.exe
   multica-desktop-<version>-windows-<arch>.exe.blockmap

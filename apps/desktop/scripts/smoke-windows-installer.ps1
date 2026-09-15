@@ -4,6 +4,7 @@ param(
     [Parameter(Mandatory)][string]$ArtifactRoot,
     [Parameter(Mandatory)][string]$ExpectedVersion,
     [Parameter(Mandatory)][string]$ReportPath,
+    [ValidateSet('x64', 'ia32')][string]$ExpectedArch = 'x64',
     [ValidateRange(1, 600)][int]$InstallerTimeoutSeconds = 300,
     [ValidateRange(1, 60)][int]$CliTimeoutSeconds = 30
 )
@@ -39,11 +40,15 @@ function Get-PeMachine {
 
 $ReportPath = [System.IO.Path]::GetFullPath($ReportPath)
 $ExpectedVersion = $ExpectedVersion.Trim() -replace '^v', ''
+$expectedPeMachine = if ($ExpectedArch -eq 'ia32') { 0x014c } else { 0x8664 }
+$expectedGoArch = if ($ExpectedArch -eq 'ia32') { '386' } else { 'amd64' }
+$peMachineHex = '0x{0:x}' -f $expectedPeMachine
 $verification = [ordered]@{
     schema_version = 1
-    scope = 'native_windows_x64_installer_and_bundled_cli'
+    scope = "native_windows_${ExpectedArch}_installer_and_bundled_cli"
     status = 'failed'
     expected_version = $ExpectedVersion
+    expected_arch = $ExpectedArch
     source_commit = $env:GITHUB_SHA
     source_ref = $env:GITHUB_REF
     started_at = [DateTime]::UtcNow.ToString('o')
@@ -61,10 +66,10 @@ try {
         throw 'This smoke test requires a native Windows x64 runner'
     }
     if ([string]::IsNullOrWhiteSpace($env:RUNNER_TEMP)) { throw 'RUNNER_TEMP is required for an isolated installation' }
-    $pattern = [regex]::new('^multica-desktop-(?<version>\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)-windows-x64\.exe$', 'IgnoreCase')
-    $installers = @(Get-ChildItem -LiteralPath $ArtifactRoot -Recurse -File -Filter '*-windows-x64.exe' |
+    $pattern = [regex]::new('^multica-desktop-(?<version>\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)-windows-' + [regex]::Escape($ExpectedArch) + '\.exe$', 'IgnoreCase')
+    $installers = @(Get-ChildItem -LiteralPath $ArtifactRoot -Recurse -File -Filter "*-windows-$ExpectedArch.exe" |
         Where-Object { $pattern.IsMatch($_.Name) })
-    if ($installers.Count -ne 1) { throw "Expected exactly one versioned Windows x64 installer; found $($installers.Count)" }
+    if ($installers.Count -ne 1) { throw "Expected exactly one versioned Windows $ExpectedArch installer; found $($installers.Count)" }
     $installer = $installers[0]
     $installerVersion = $pattern.Match($installer.Name).Groups['version'].Value
     $verification.installer = [ordered]@{
@@ -93,20 +98,20 @@ try {
     $cliPath = Join-Path $installDirectory 'resources/app.asar.unpacked/resources/bin/multica.exe'
     foreach ($path in @($desktopPath, $cliPath)) {
         if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Installed binary is missing: $path" }
-        if ((Get-PeMachine -Path $path) -ne 0x8664) { throw "Installed binary is not x64: $path" }
+        if ((Get-PeMachine -Path $path) -ne $expectedPeMachine) { throw "Installed binary is not ${ExpectedArch}: $path" }
     }
     $productVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($desktopPath).ProductVersion
     $numericVersion = [regex]::Match($ExpectedVersion, '^\d+\.\d+\.\d+').Value
     if ($productVersion -notmatch ('^' + [regex]::Escape($numericVersion) + '(?:\.\d+)?$')) {
         throw 'Installed desktop product version does not match the installer version'
     }
-    $verification.desktop = [ordered]@{ path = $desktopPath; pe_machine = '0x8664'; product_version = $productVersion }
+    $verification.desktop = [ordered]@{ path = $desktopPath; pe_machine = $peMachineHex; product_version = $productVersion }
 
     # Execute only the CLI inside this installation. Never launch Multica.exe,
     # look up a CLI on PATH, or start a daemon, agent, or desktop service.
     $stdoutPath = Join-Path $smokeRoot 'cli-version.stdout.json'
     $stderrPath = Join-Path $smokeRoot 'cli-version.stderr.txt'
-    $verification.cli = [ordered]@{ path = $cliPath; pe_machine = '0x8664'; arguments = @('version', '--output', 'json'); exit_code = $null; stdout = $null; stderr = $null; reported = $null }
+    $verification.cli = [ordered]@{ path = $cliPath; pe_machine = $peMachineHex; arguments = @('version', '--output', 'json'); exit_code = $null; stdout = $null; stderr = $null; reported = $null }
     $cliProcess = Start-Process -FilePath $cliPath -ArgumentList 'version --output json' -WorkingDirectory $smokeRoot -PassThru -NoNewWindow -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
     Wait-SmokeProcess -Process $cliProcess -TimeoutSeconds $CliTimeoutSeconds -Label 'Bundled CLI version'
     $verification.cli.exit_code = $cliProcess.ExitCode
@@ -115,10 +120,10 @@ try {
     if ($cliProcess.ExitCode -ne 0) { throw "Bundled CLI version exited with code $($cliProcess.ExitCode)" }
     $cliVersion = $verification.cli.stdout | ConvertFrom-Json -AsHashtable
     $verification.cli.reported = $cliVersion
-    if ($cliVersion['os'] -cne 'windows' -or $cliVersion['arch'] -cne 'amd64') { throw 'Bundled CLI reports a different OS or architecture' }
+    if ($cliVersion['os'] -cne 'windows' -or $cliVersion['arch'] -cne $expectedGoArch) { throw 'Bundled CLI reports a different OS or architecture' }
     if (($cliVersion['version'] -replace '^v', '') -cne $ExpectedVersion) { throw 'Bundled CLI version does not match the installer version' }
     $verification.status = 'passed'
-    Write-Host "Windows x64 installer and bundled CLI verified: $ExpectedVersion"
+    Write-Host "Windows $ExpectedArch installer and bundled CLI verified: $ExpectedVersion"
 } catch {
     $verification.error = $_.Exception.Message
     throw

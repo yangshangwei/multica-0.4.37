@@ -115,3 +115,17 @@ docker compose -f docker-compose.selfhost.yml up -d --pull never backend fronten
 - 附件不在 PostgreSQL dump 中；重要附件还需要单独备份 `backend_uploads` 数据卷。
 - 后端和前端应尽量从同一源码提交构建，避免 API 与页面版本不匹配。
 - 内网完全无外网时，Agent 仍需要能够访问内网 LLM 网关，否则任务不会真正执行。
+
+## 六、选择 Windows 桌面端架构
+
+桌面端安装器单独提供，不在服务端升级归档中。按客户端架构选择文件：
+
+| 客户端架构 | 安装器文件名 | 自动更新元数据 |
+| --- | --- | --- |
+| Windows x86，32 位 | `multica-desktop-<版本>-windows-ia32.exe` | `latest-ia32.yml` |
+| Windows x64，64 位 | `multica-desktop-<版本>-windows-x64.exe` | `latest.yml` |
+| Windows ARM64 | `multica-desktop-<版本>-windows-arm64.exe` | `latest-arm64.yml` |
+
+ia32 安装器中的桌面程序和 CLI 均为 32 位；x64 安装器用于 x86-64。Linux 服务端的 `linux/amd64` 与 Windows 客户端架构独立选择。
+
+内网更新目录应保留原始安装器文件名、对应的 `.exe.blockmap` 和各自的元数据文件。先放入安装器及 blockmap，再替换 `latest*.yml`，不要用 ia32 的元数据覆盖 x64 的 `latest.yml`。客户端继续使用 `%USERPROFILE%\.multica\desktop.json` 中配置的 `updateUrl`。
