@@ -590,3 +590,42 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 18: E2E 遗留失败分类与生产 web 运行规则
+
+**Date**: 2026-09-16
+**Task**: E2E 遗留失败分类与生产 web 运行规则
+**Branch**: `main`
+
+### Summary
+
+把 09-12 全量验证遗留的 10 条 E2E 失败与 2 条收集阻塞分类完毕：产品 bug 为 0，10 项是陈旧 harness、2 项是 next dev 冷编译超时；规则写入 spec，任务归档。
+
+### Main Changes
+
+- 逐条判据落到 e2e-failure-classification.md：10 项陈旧 harness 已由 5 个 test-only 提交修好（bfaabf6f7、99b266707、4d2804fef、eb8baaf3f、0b3ae5e80），每个只碰 1 个 spec 文件、零产品代码。
+- comments.spec.ts:25 与 navigation.spec.ts:12 归为运行环境：那次跑的是 next dev --webpack，冷编译实测 30.4–35.8s，挤爆 15/30/60s 三档预算；两个 spec 至今一行未改。
+- 新增 .trellis/spec/web/frontend/e2e-run-environment.md，并在 web 索引与 guides 索引挂入口；含误判特征与「不得据此改定位器」的禁令。
+- 任务 09-12-full-skill-validation 归档，notes 与 4 个 meta 键记录分类结论、分类文档、绿色证据与绿色提交。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `8ff63fb51` | (see git log) |
+| `76ce84a39` | (see git log) |
+
+### Testing
+
+- [OK] 本次未重跑 E2E。全绿证据取自既有报告 .omx/reports/main-upstream-merge-20260913/e2e-summary.json：提交 23d771ca7，82 expected / 0 unexpected / 0 skipped / 0 flaky，运行于 next build + next start，10 条原失败与 2 条原阻塞全部 expected。
+- [OK] 该证据不在当前 HEAD（ee759228e）上；日志记的 2026-09-15 85/85 未找到报告目录，只算旁证。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 在 HEAD 上重跑全套 E2E，消除证据与 HEAD 的差距。
+- 交给 Codex 的 grounding 行为回归仍未执行，是原任务唯一未闭合的验收项。
