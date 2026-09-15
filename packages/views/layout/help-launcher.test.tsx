@@ -164,8 +164,8 @@ describe("HelpLauncher", () => {
 });
 
 // Platform build info (desktop's SidebarVersion) rides in this menu rather than
-// as a second sidebar-footer column. The slot is a plain node on purpose — see
-// the MUL-4819 note in help-launcher.tsx — so these only pin placement.
+// as a second sidebar-footer column. Desktop's real-menu integration tests pin
+// keyboard selection and dismissal; these assertions cover slot placement.
 describe("HelpLauncher version slot", () => {
   it("renders the platform's build info", () => {
     renderHelp("acme", <span>Desktop version 0.4.40</span>);

@@ -1,4 +1,5 @@
 import { cn } from "@multica/ui/lib/utils";
+import { DropdownMenuItem } from "@multica/ui/components/ui/dropdown-menu";
 import { paths, useWorkspaceSlug } from "@multica/core/paths";
 import { useT } from "@multica/views/i18n";
 import { useNavigation } from "@multica/views/navigation";
@@ -8,10 +9,9 @@ import { useNavigation } from "@multica/views/navigation";
  * directly above the server version. Desktop-only: the version comes from the
  * preload bridge, and web has no equivalent (its slot stays empty).
  *
- * Deliberately a plain button rather than a DropdownMenuItem: the Base UI menu
- * parts require ancestors that live in HelpLauncher, invisible from here, and a
- * version row that got those wrong is exactly how MUL-4819 black-screened the
- * app. The styling matches the server-version label next to it.
+ * HelpLauncher supplies the menu context for this item, including keyboard
+ * navigation and dismissal on selection. Only Menu.GroupLabel needs a Group
+ * ancestor; the version action can sit directly in the menu.
  *
  * A packaged build reports the release tag; a dev build reports the full
  * `git describe` string, which is wider than the menu, so the label wraps and
@@ -54,18 +54,17 @@ export function SidebarVersion() {
   if (!workspaceSlug) return <span className={rowClassName}>{label}</span>;
 
   return (
-    <button
-      type="button"
+    <DropdownMenuItem
       title={t(($) => $.desktop.version.tooltip, { version })}
       onClick={() =>
         push(`${paths.workspace(workspaceSlug).settings()}?tab=updates`)
       }
       className={cn(
         rowClassName,
-        "w-full cursor-pointer rounded-md text-left transition-colors hover:bg-accent hover:text-foreground",
+        "block w-full cursor-pointer rounded-md text-left transition-colors hover:bg-accent hover:text-foreground",
       )}
     >
       {label}
-    </button>
+    </DropdownMenuItem>
   );
 }

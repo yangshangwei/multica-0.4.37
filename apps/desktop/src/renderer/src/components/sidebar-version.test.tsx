@@ -1,7 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { WorkspaceSlugProvider } from "@multica/core/paths";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@multica/ui/components/ui/dropdown-menu";
 import { RESOURCES } from "@multica/views/locales";
 import { SidebarVersion, desktopAppVersion } from "./sidebar-version";
 
@@ -18,17 +24,25 @@ function setAppVersion(version: string) {
   });
 }
 
-// Real i18n and real `paths`: the point of this suite is that the key exists in
-// the bundle and the pushed path matches what the settings route actually
-// registers, neither of which a mocked translator or path builder would catch.
-function renderVersion(slug: string | null = "acme") {
-  return render(
+// Keep i18n, paths and menu primitives real: a plain button can navigate while
+// being unreachable by menu keys and leaving the popup open after selection.
+async function renderVersion(slug: string | null = "acme") {
+  const view = render(
     <I18nProvider locale="en" resources={RESOURCES}>
       <WorkspaceSlugProvider slug={slug}>
-        <SidebarVersion />
+        <DropdownMenu>
+          <DropdownMenuTrigger>Help</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Feedback</DropdownMenuItem>
+            <SidebarVersion />
+          </DropdownMenuContent>
+        </DropdownMenu>
       </WorkspaceSlugProvider>
     </I18nProvider>,
   );
+  fireEvent.click(screen.getByRole("button", { name: "Help" }));
+  await screen.findByRole("menu");
+  return view;
 }
 
 describe("SidebarVersion", () => {
@@ -37,31 +51,50 @@ describe("SidebarVersion", () => {
     setAppVersion("0.4.40");
   });
 
-  it("shows the running desktop version", () => {
-    renderVersion();
+  it("shows the running desktop version as a menu item", async () => {
+    await renderVersion();
 
     expect(
-      screen.getByRole("button", { name: "Desktop version 0.4.40" }),
+      screen.getByRole("menuitem", { name: "Desktop version 0.4.40" }),
     ).toBeInTheDocument();
   });
 
-  it("opens the updates tab of settings when clicked", () => {
-    renderVersion();
+  it("closes the menu when opening settings updates by click", async () => {
+    await renderVersion();
 
-    fireEvent.click(screen.getByRole("button", { name: "Desktop version 0.4.40" }));
+    fireEvent.click(screen.getByText("Desktop version 0.4.40"));
 
     expect(push).toHaveBeenCalledWith("/acme/settings?tab=updates");
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+    expect(screen.getByRole("button", { name: "Help" })).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("reaches the version with arrow keys and selects it with Enter", async () => {
+    await renderVersion();
+
+    fireEvent.keyDown(screen.getByRole("menu"), { key: "Home" });
+    const feedback = screen.getByRole("menuitem", { name: "Feedback" });
+    await waitFor(() => expect(feedback).toHaveFocus());
+
+    fireEvent.keyDown(feedback, { key: "ArrowDown" });
+    const version = screen.getByText("Desktop version 0.4.40");
+    await waitFor(() => expect(version).toHaveFocus());
+    fireEvent.keyDown(version, { key: "Enter" });
+    fireEvent.keyUp(version, { key: "Enter" });
+
+    expect(push).toHaveBeenCalledWith("/acme/settings?tab=updates");
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
   // A dev build's version is a full `git describe` string, wider than the help
   // menu, so the row wraps. The tooltip is then the only place the "check for
   // updates" call to action survives alongside the commit and dirty marker —
   // which is exactly what a bug report needs.
-  it("keeps the whole dev version in the tooltip", () => {
+  it("keeps the whole dev version in the tooltip", async () => {
     setAppVersion("0.4.37-2-gabc1234-dirty");
-    renderVersion();
+    await renderVersion();
 
-    expect(screen.getByRole("button")).toHaveAttribute(
+    expect(screen.getByText("Desktop version 0.4.37-2-gabc1234-dirty")).toHaveAttribute(
       "title",
       expect.stringContaining("0.4.37-2-gabc1234-dirty"),
     );
@@ -70,21 +103,22 @@ describe("SidebarVersion", () => {
   // `fetchAppInfo` in the preload falls back to the literal "unknown" when the
   // synchronous IPC fails, and to "" if main ever answers with an empty string.
   // Neither is worth a menu row — "unknown" reads as a broken build.
-  it.each(["unknown", ""])("renders nothing for version %j", (version) => {
+  it.each(["unknown", ""])("renders nothing for version %j", async (version) => {
     setAppVersion(version);
-    const { container } = renderVersion();
+    await renderVersion();
 
-    expect(container).toBeEmptyDOMElement();
+    expect(screen.queryByText(/Desktop version/)).not.toBeInTheDocument();
   });
 
   // The sidebar only mounts under a resolved workspace, so this is defensive:
   // nothing above it is an error boundary, and a version row is not worth
   // risking a blank window over.
-  it("stays unclickable without a workspace in context", () => {
-    renderVersion(null);
+  it("stays unclickable without a workspace in context", async () => {
+    await renderVersion(null);
 
     expect(screen.getByText("Desktop version 0.4.40")).toBeInTheDocument();
-    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    expect(screen.queryByRole("menuitem", { name: /Desktop version/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Desktop version/ })).not.toBeInTheDocument();
   });
 });
 

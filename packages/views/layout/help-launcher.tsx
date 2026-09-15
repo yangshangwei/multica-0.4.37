@@ -70,11 +70,9 @@ export function HelpLauncher({ versionSlot }: { versionSlot?: ReactNode } = {}) 
           {t(($) => $.help.feedback)}
         </DropdownMenuItem>
         {(versionSlot || serverVersion) && <DropdownMenuSeparator />}
-        {/* Platform-supplied build info (desktop passes its app version). The
-            slot must render plain elements, NOT Base UI menu parts: their
-            required ancestors live in this file, invisible from the app that
-            fills the slot — which is how MUL-4819 shipped a version row that
-            crashed the app on open. See the DropdownMenuGroup note below. */}
+        {/* Platform build info inherits this menu's context. Interactive rows
+            use DropdownMenuItem for keyboard navigation and dismissal; only
+            DropdownMenuLabel requires a DropdownMenuGroup ancestor. */}
         {versionSlot}
         {serverVersion && (
           /* DropdownMenuLabel renders Base UI's Menu.GroupLabel, which reads a
