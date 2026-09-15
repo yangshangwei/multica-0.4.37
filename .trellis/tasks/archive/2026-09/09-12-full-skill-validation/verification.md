@@ -83,3 +83,24 @@ probe and diagnostic; no proxy bill was reconciled. Detailed reports are under
 and `semantic-review.json` in the master report directory. Prior failures remain
 preserved. Existing E2E failures were not rerun or changed by this Claude retry;
 full task acceptance remains in review.
+
+## E2E failure classification, 2026-09-16
+
+The 10 remaining failures and 2 collection-blocked cases were classified against
+the current tree: **0 product bugs**. Ten were stale harness, repaired test-side
+by `bfaabf6f7`, `99b266707`, `4d2804fef`, `eb8baaf3f` and `0b3ae5e80`, each
+touching exactly one spec file and no product source. The other two,
+`comments.spec.ts:25` and `navigation.spec.ts:12`, were dev-server cold-compile
+timeouts: that run used `next dev --webpack` with route compiles up to 35.8 s
+against 15–60 s test budgets, and neither spec has been modified since.
+
+All 12 pass in `.omx/reports/main-upstream-merge-20260913/e2e-summary.json` at
+commit `23d771ca7` — 82 expected, 0 unexpected, 0 skipped, 0 flaky — run against
+`next build` + `next start`. That is not `HEAD`, and the suite was not re-run at
+`HEAD` for this classification.
+
+Full reasoning, per-case evidence and the follow-up rule that E2E must not run
+against `next dev`: `e2e-failure-classification.md`.
+
+This closes the E2E blocker. The remaining acceptance gap is the grounding
+behavioral regression the user deferred to Codex.
