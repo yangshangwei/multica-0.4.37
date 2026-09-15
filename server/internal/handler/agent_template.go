@@ -33,9 +33,11 @@ import (
 type AgentRoleTemplateResponse struct {
 	Key     string `json:"key"`
 	Version int32  `json:"version"`
-	// Name is the default agent name; Title is the localized role label. They are
-	// separate because the name is stored (and renameable) while the title is
-	// picker copy that follows the reader's language.
+	// Name is the default agent name in the requested language — the string that
+	// lands on agent.name when the caller does not override it. Title is the
+	// localized role label for the picker; the two carry the same text today but
+	// stay separate fields because the name is stored (and renameable) while the
+	// title is picker copy. DefaultName remains the English fallback.
 	Name               string   `json:"name"`
 	Title              string   `json:"title"`
 	Description        string   `json:"description"`
@@ -69,7 +71,7 @@ func agentRoleTemplateToResponse(template service.AgentRoleTemplate, language st
 	return AgentRoleTemplateResponse{
 		Key:                template.Key,
 		Version:            template.Version,
-		Name:               template.DefaultName,
+		Name:               template.Title(language),
 		Title:              template.Title(language),
 		Description:        template.Description(language),
 		AutonomyLevel:      string(template.Autonomy),
@@ -180,7 +182,11 @@ func (h *Handler) CreateAgentFromTemplate(w http.ResponseWriter, r *http.Request
 	language := templateLanguageFromRequest(req.Language)
 	name := strings.TrimSpace(req.Name)
 	if name == "" {
-		name = template.DefaultName
+		// The default name follows the request language — a zh picker creates a
+		// 产品分析师, not "Product Analyst". Squad instructions and docs already
+		// refer to roles by their localized labels, so the stored name and the
+		// routing copy stay in step.
+		name = template.Title(language)
 	}
 	avatar := agentEmojiAvatarPrefix + template.AvatarEmoji
 

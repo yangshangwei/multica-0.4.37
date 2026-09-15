@@ -64,8 +64,10 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 		t.Errorf("title for language=zh = %q, want the localized label", analyst.Title)
 	}
 	reporter := findTemplate(t, out.Templates, "progress-reporter")
-	if reporter.Title != "进展报告员" || reporter.Name != "Progress Reporter" {
-		t.Errorf("reporter title/name = %q/%q, want 进展报告员/Progress Reporter", reporter.Title, reporter.Name)
+	// The name is the default agent name and follows the request language like
+	// every other picker string; the English DefaultName is only the fallback.
+	if reporter.Title != "进展报告员" || reporter.Name != "进展报告员" {
+		t.Errorf("reporter title/name = %q/%q, want 进展报告员/进展报告员", reporter.Title, reporter.Name)
 	}
 }
 
@@ -165,8 +167,10 @@ func TestCreateAgentFromTemplate_ProgressReporterUsesServerDefaults(t *testing.T
 	if !ok {
 		t.Fatal("progress-reporter template missing from the registry")
 	}
-	if created.Name != "Progress Reporter" || created.Description != template.Description("zh") {
-		t.Errorf("reporter name/description = %q/%q, want the default name and Chinese description", created.Name, created.Description)
+	// No name override and language=zh: the default name is the localized label,
+	// not the English DefaultName.
+	if created.Name != "进展报告员" || created.Description != template.Description("zh") {
+		t.Errorf("reporter name/description = %q/%q, want the localized default name and Chinese description", created.Name, created.Description)
 	}
 	if created.TemplateKey != template.Key || created.TemplateVersion != 1 {
 		t.Errorf("reporter provenance = %q v%d, want progress-reporter v1", created.TemplateKey, created.TemplateVersion)

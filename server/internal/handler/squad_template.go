@@ -92,9 +92,11 @@ func squadTemplateToResponse(template service.SquadTemplate, language string) Sq
 
 func squadTemplateRoleToResponse(role service.AgentRoleTemplate, language, roleNote string) SquadTemplateRoleResponse {
 	return SquadTemplateRoleResponse{
-		TemplateKey:   role.Key,
-		Title:         role.Title(language),
-		Name:          role.DefaultName,
+		TemplateKey: role.Key,
+		Title:       role.Title(language),
+		// Same localized default the provisioning below stores as agent.name, so
+		// what the roster card shows is what gets created.
+		Name:          role.Title(language),
 		AutonomyLevel: string(role.Autonomy),
 		AvatarEmoji:   role.AvatarEmoji,
 		Role:          roleNote,
@@ -495,7 +497,7 @@ func (h *Handler) resolveTemplateAgentInTx(
 		if !memberCanWireAgentWithQueries(ctx, qtx, in.Member, existing, in.WorkspaceIDString) {
 			roleName := templateKey
 			if role, ok := service.AgentRoleTemplateByKey(templateKey); ok {
-				roleName = role.DefaultName
+				roleName = role.Title(in.Language)
 			}
 			return db.Agent{}, false, errTemplateAgentNotWireable{roleName: roleName}
 		}
@@ -519,8 +521,11 @@ func (h *Handler) resolveTemplateAgentInTx(
 	}
 
 	created, err := qtx.CreateAgent(ctx, db.CreateAgentParams{
-		WorkspaceID:        in.WorkspaceID,
-		Name:               template.DefaultName,
+		WorkspaceID: in.WorkspaceID,
+		// The default name follows the staffing language, matching the single-agent
+		// template path: a zh request seats a 实现工程师, and the localized label is
+		// also what the squad's own routing policy calls each seat.
+		Name:               template.Title(in.Language),
 		Description:        template.Description(in.Language),
 		Instructions:       template.Instructions(),
 		AvatarUrl:          pgtype.Text{String: agentEmojiAvatarPrefix + template.AvatarEmoji, Valid: true},
@@ -544,7 +549,7 @@ func (h *Handler) resolveTemplateAgentInTx(
 			// from the template — a hand-built "Implementer", most likely. Reusing it
 			// would silently adopt an agent with unknown instructions into a squad
 			// that assumes the role's contract, so this is a decision for a person.
-			return db.Agent{}, false, &agentNameConflictError{Name: template.DefaultName}
+			return db.Agent{}, false, &agentNameConflictError{Name: template.Title(in.Language)}
 		}
 		return db.Agent{}, false, err
 	}

@@ -116,7 +116,10 @@ Contracts:
   its invocation-target and membership reads use the staffing transaction's
   connection, so provisioning does not require a spare pool connection;
 - a name collision with a NON-template agent returns 409
-  (`agentNameConflictError`) rather than adopting it;
+  (`agentNameConflictError`) rather than adopting it. The name staffed onto each
+  seat is the role's localized label for the request's `language`
+  (`AgentRoleTemplate.Title`, English fallback), so the 409 comparison and the
+  roster card's `name` field are language-relative too;
 - the leader is created from an unlisted role template at `coordinator`
   autonomy; member seats keep their own role's default level;
 - declared agent callers need Coordinator, and cannot staff a template whose

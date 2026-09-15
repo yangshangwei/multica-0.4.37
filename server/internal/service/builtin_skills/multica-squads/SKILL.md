@@ -183,6 +183,9 @@ Two behaviors matter when debugging one:
   `reused_agent_ids` separately.
 - If a non-template agent already holds a role's default name, the request fails
   with 409 rather than adopting an agent whose instructions it cannot vouch for.
+  The default name is the role's localized label for the request's `language`
+  (English fallback), so a `zh` staffing conflicts with a hand-built
+  实现工程师, not "Implementer".
 
 `squad.template_key` / `template_version` record the provenance. They are not
 status: a staffed squad is an ordinary squad.

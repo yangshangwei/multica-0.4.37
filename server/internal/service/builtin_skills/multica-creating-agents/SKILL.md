@@ -139,6 +139,10 @@ What the template create does that the ordinary one does not:
 - materializes the role's skills as workspace skills and binds them in the same
   transaction — unlike `agent create`, which binds nothing. A workspace skill
   that already carries that name is reused AS IS and never overwritten;
+- seeds the default `agent.name` from the role's localized label for the
+  request's `language` when `name` is omitted (English fallback): `language=zh`
+  creates a 产品分析师, not "Product Analyst". Squad template staffing seats its
+  agents under the same rule;
 - sets `autonomy_level` from the template.
 
 The listed `progress-reporter` role supports both daily and weekly progress
