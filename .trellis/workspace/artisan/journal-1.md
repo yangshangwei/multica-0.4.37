@@ -629,3 +629,30 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 
 - 在 HEAD 上重跑全套 E2E，消除证据与 HEAD 的差距。
 - 交给 Codex 的 grounding 行为回归仍未执行，是原任务唯一未闭合的验收项。
+
+
+## Session 19: 侧边栏分组与中文命名落地，设置页四分组与守护进程中文化收尾
+
+**Date**: 2026-09-16
+**Task**: 侧边栏分组与中文命名落地，设置页四分组与守护进程中文化收尾
+**Branch**: `main`
+
+### Summary
+
+侧边栏按参考稿重组为「工作 / AI 团队」两组，统计与设置下沉到 footer（滚动区外）；帮助按钮左对齐，桌面版本号折入帮助菜单，desktopAppVersion() 判空防止版本加载失败时悬挂空分隔线。中文导航命名迭代后落定：小队→AI小队（全局 106 处，含 e2e 定位器、⌘K 关键词、术语表新增 Squad→AI小队）、Skills→技能库（skill 正文按术语表保留小写英文）。settings-nav-groups（设置页四分组 + 冗余入口收敛）由并行会话 4b 实现并 check 9/9 通过，本会话独立复验后归档；desktop-daemon-chinese（守护进程设置全面 i18n 化，行为零变化）原会话随重启丢失，本会话逐行核查后接力提交。过程事故一次：提交时误收并行会话暂存的删除，已当场 pathspec 重做修正，此后审查与提交不再同链。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `3b035dae4` | (see git log) |
+| `bacf2e3e3` | (see git log) |
+| `28aced756` | (see git log) |
+| `fb35f9ab0` | (see git log) |
+| `fdb65ecba` | (see git log) |
+| `421cd5bad` | (see git log) |
+| `756030e2a` | (see git log) |
+
+### Status
+
+[OK] **Completed**
