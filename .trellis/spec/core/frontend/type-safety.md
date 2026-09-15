@@ -32,7 +32,13 @@ Questions to answer:
 
 <!-- Runtime validation patterns (Zod, Yup, io-ts, etc.) -->
 
-(To be filled by the team)
+Successful API responses must retain valid resource identity when an optional
+collection is empty. Go nil slices serialize as `null`; Zod `.default([])` only
+handles missing values. Initialize successful server response collections to
+empty slices and normalize documented nullable collections at the client
+boundary with `.nullish().transform((items) => items ?? [])`. Keep essential
+resource fields and invalid collection types strict. See `StaffedSquadSchema`
+and `agent-template-schemas.test.ts` for the template-creation regression.
 
 ---
 

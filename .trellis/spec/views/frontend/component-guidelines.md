@@ -82,7 +82,14 @@ const LEGACY_WORKSPACE_TAB_REDIRECTS: Record<string, string> = {
 
 <!-- A11y requirements and patterns -->
 
-(To be filled by the team)
+Interactive content supplied through a platform slot still inherits its React
+menu context. Use `DropdownMenuItem` for actions inside `HelpLauncher` so arrow
+keys, typeahead and dismissal work. A plain button can navigate successfully
+while remaining absent from keyboard navigation and leaving the popup open.
+Only `DropdownMenuLabel` (`Menu.GroupLabel`) requires a `DropdownMenuGroup`;
+do not generalize that requirement to all menu parts. Verify menu actions with
+the real primitives, as `sidebar-version.test.tsx` and
+`e2e/desktop-settings.spec.ts` do, rather than replacing the whole menu with divs.
 
 ---
 

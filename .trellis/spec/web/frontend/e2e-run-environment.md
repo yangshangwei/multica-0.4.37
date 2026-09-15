@@ -55,3 +55,18 @@ An E2E result is only interpretable with its server mode. Record the launch comm
 and commit for both API and web alongside the results, as
 `.omx/reports/main-upstream-merge-20260913/web.running.json` and `e2e-summary.json` do.
 A pass/fail count with no server provenance cannot be compared against an earlier run.
+
+## Shared test services
+
+Redis enables the real per-IP auth budget (five send-code requests per minute by
+default). A full E2E run creates many synthetic accounts from loopback. Configure
+`RATE_LIMIT_AUTH` and `RATE_LIMIT_AUTH_VERIFY` for the task-only API's test
+throughput; do not change production defaults or weaken login assertions. Go
+Redis integration tests require `REDIS_TEST_URL`, using a separate Redis instance
+because fixtures flush their assigned logical databases.
+
+Live changelog tests mutate a task-owned feed. Enter cleanup protection before
+authentication, fixture setup or publication; a setup failure must leave the
+original feed and remove temporary repositories. Do not run two publication
+tests against the same feed concurrently. The raw source seed and published
+release history are never writable test targets.
