@@ -51,6 +51,26 @@ import { useT } from "../../i18n";
  *     skip it; going back is always safe.
  */
 /**
+ * The rail's exit row. The runtime step's CTA ("Continue to projects" /
+ * 「进入项目」) ends onboarding and lands on the workspace Projects page —
+ * that page is the product, not another step in this flow. The rail still
+ * previews it as a final display-only row so the CTA's promise is visible
+ * before it is clicked: never current, never clickable, the same muted
+ * treatment as a future step. It renders via the `project` entry of
+ * `step_nav`, not through `ONBOARDING_STEP_ORDER`, so the persisted-step
+ * navigation (back links, advanceFrom) never sees it.
+ */
+const PROJECT_EXIT = "project_exit" as const;
+
+type RailItem = OnboardingStep | typeof PROJECT_EXIT;
+
+/** Persisted steps plus the exit row, in rail display order. */
+const RAIL_ITEMS: readonly RailItem[] = [
+  ...ONBOARDING_STEP_ORDER,
+  PROJECT_EXIT,
+];
+
+/**
  * The rail's job — where am I, and how do I go back — at widths too narrow to
  * hold the rail itself. Rendered only below `md`, where StepSidebar is hidden.
  *
@@ -100,9 +120,13 @@ export function StepProgressBar({
         aria-hidden
         className="flex flex-1 items-center gap-1.5"
       >
-        {ONBOARDING_STEP_ORDER.map((stepId, index) => (
+        {/* RAIL_ITEMS, not ONBOARDING_STEP_ORDER: the segments must agree
+            with the rail's row count. The exit segment can never fill while
+            this bar is mounted — reaching it means onboarding already
+            ended and this chrome unmounted. */}
+        {RAIL_ITEMS.map((item, index) => (
           <span
-            key={stepId}
+            key={item}
             className={cn(
               "h-1 flex-1 rounded-full transition-colors",
               index <= currentIndex ? "bg-foreground" : "bg-border",
@@ -194,12 +218,18 @@ export function StepSidebar({
               className="flex w-full flex-col items-start justify-center gap-0"
             >
               <StepperNav className="w-full">
-                {ONBOARDING_STEP_ORDER.map((stepId, index) => {
+                {RAIL_ITEMS.map((item, index) => {
                   const isDone = index < currentIndex;
                   const isCurrent = index === currentIndex;
-                  const isLast = index === ONBOARDING_STEP_ORDER.length - 1;
+                  const isLast = index === RAIL_ITEMS.length - 1;
+                  const isExit = item === PROJECT_EXIT;
+                  // The exit row sits after the last persisted step, so the
+                  // index math alone keeps it perpetually "future": never
+                  // done, never current, and therefore never a link.
                   const canReturn = isDone && !!onStepChange && !backDisabled;
-                  const key = stepId as Exclude<OnboardingStep, "welcome">;
+                  const key = isExit
+                    ? "project"
+                    : (item as Exclude<OnboardingStep, "welcome">);
 
                   const body = (
                     <>
@@ -244,7 +274,7 @@ export function StepSidebar({
 
                   return (
                     <StepperItem
-                      key={stepId}
+                      key={item}
                       step={index + 1}
                       completed={isDone}
                       className="relative w-full items-start not-last:flex-1"
@@ -252,10 +282,10 @@ export function StepSidebar({
                         ? { "aria-current": "step" as const }
                         : {})}
                     >
-                      {canReturn ? (
+                      {canReturn && !isExit ? (
                         <button
                           type="button"
-                          onClick={() => onStepChange(stepId)}
+                          onClick={() => onStepChange(item)}
                           className="flex w-full items-start gap-3 rounded-md pb-6 text-left transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
                           {body}

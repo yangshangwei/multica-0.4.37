@@ -197,4 +197,50 @@ describe("onboarding progress rail", () => {
 
     expect(screen.queryByRole("button", { name: /about you/i })).toBeNull();
   });
+
+  // The runtime step's CTA ("Continue to projects") ends onboarding and lands
+  // on the Projects page. The rail previews that destination as a final
+  // display-only row so the CTA's promise is visible before it is clicked —
+  // it is not a persisted step and must never act like one.
+  it("previews the projects exit as an inert final row", () => {
+    const { container } = renderShell({ currentStep: "runtime" });
+
+    const rail = within(container.querySelector("aside")!);
+    expect(rail.getByText("First project")).toBeInTheDocument();
+
+    // Not a link, not marked current — it happens after the flow ends.
+    expect(
+      screen.queryByRole("button", { name: /first project/i }),
+    ).toBeNull();
+    const current = container.querySelector('[aria-current="step"]')!;
+    expect(current.textContent).not.toContain("First project");
+  });
+
+  // The exit row rides along on every step, not just runtime — the point is
+  // to announce what the whole flow is heading toward.
+  it("shows the projects exit row from the first step on", () => {
+    const { container } = renderShell({ currentStep: "about_you" });
+
+    const rail = within(container.querySelector("aside")!);
+    expect(rail.getByText("First project")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /first project/i }),
+    ).toBeNull();
+  });
+
+  // The compact bar spends its height on segments; its count must agree with
+  // the rail's rows (three steps plus the exit), or "how far along" reads
+  // differently at the two widths.
+  it("keeps the compact bar's segment count in step with the rail", () => {
+    const { container } = renderShell({ currentStep: "runtime" });
+
+    const compact = container.querySelector("main .md\\:hidden")!;
+    const segments = compact.querySelector("span[aria-hidden]")!.children;
+    expect(segments).toHaveLength(4);
+    // Runtime is step 3 of 4 — the exit segment stays unfilled.
+    const filled = Array.from(segments).filter((s) =>
+      s.className.includes("bg-foreground"),
+    );
+    expect(filled).toHaveLength(3);
+  });
 });

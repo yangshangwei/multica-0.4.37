@@ -27,6 +27,12 @@ import type { OnboardingStep } from "./types";
  * Runtime is the final form step. A connected path provisions Mika and opens
  * the interactive onboarding chat as part of the runtime step's submit action;
  * that chat is the product experience itself, not another progress-screen step.
+ *
+ * The step after runtime — landing on the workspace Projects page, which the
+ * runtime step's CTA ("Continue to projects") promises — is likewise not a
+ * persisted step. The onboarding rail previews it as a display-only exit row
+ * (see `PROJECT_EXIT` in packages/views/onboarding/components/step-sidebar.tsx)
+ * so the rail agrees with the CTA without gaining a navigable step.
  */
 export const ONBOARDING_STEP_ORDER: readonly OnboardingStep[] = [
   "about_you",
