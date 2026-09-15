@@ -569,3 +569,24 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 17: 引导侧栏同步「进入项目」终点项
+
+**Date**: 2026-09-15
+**Task**: 引导侧栏同步「进入项目」终点项
+**Branch**: `main`
+
+### Summary
+
+方案 A 落地：onboarding 侧栏（StepSidebar）在三个持久化步骤后新增「进入项目」展示型终点行（PROJECT_EXIT，永不点亮/不可点击），移动端进度条分段同步为 4；step_nav.project 文案补齐 en/zh-Hans/ja/ko 四语言；ONBOARDING_STEP_ORDER 与流程导航逻辑不动，step-order.ts 注释补充设计决策。新增 4 个 step-shell 测试；onboarding+locales 271 测试、pnpm typecheck、eslint 全部通过。桌面端 dev 已重启供人工验证。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `3a9755183` | (see git log) |
+
+### Status
+
+[OK] **Completed**
