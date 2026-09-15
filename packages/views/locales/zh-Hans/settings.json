@@ -1132,8 +1132,55 @@
   },
   "desktop": {
     "tabs": {
+      "daemon": "守护进程",
       "updates": "更新",
       "server": "服务器"
+    },
+    "daemon": {
+      "title": "守护进程",
+      "description": "设置本地智能体守护进程如何随桌面应用启动和停止。",
+      "auto_start_title": "登录后自动启动",
+      "auto_start_description": "登录后自动启动守护进程。桌面应用运行期间，会持续监控并维护自动或手动启动的守护进程。",
+      "auto_stop_title": "退出应用时自动停止",
+      "auto_stop_description": "退出桌面应用时停止守护进程。关闭此选项后，守护进程会继续在后台运行。",
+      "cli_status": "CLI 状态",
+      "cli_checking": "检查中...",
+      "cli_installed": "已安装 multica CLI，可通过 PATH 环境变量找到并调用。",
+      "cli_missing": "未找到 multica CLI。安装后即可管理守护进程。",
+      "installation_guide": "查看安装指南",
+      "auth_expired_title": "登录已过期",
+      "auth_expired_description": "本地守护进程身份验证失败，当前设备暂时无法执行任务。请重新登录以恢复运行。",
+      "sign_in_again": "重新登录",
+      "externally_managed_prefix": "此设备的守护进程运行在应用无法直接管理的环境中（例如 WSL2），应用无法启动或停止它。请在对应环境中执行以下命令来启动或停止：",
+      "externally_managed_suffix": "。",
+      "diagnostics_title": "诊断信息",
+      "diagnostics_description": "查看守护进程的标识和连接信息，便于反馈问题或排查运行时未显示的原因。",
+      "state": "运行状态",
+      "uptime": "已运行时长",
+      "pid": "进程 ID（PID）",
+      "daemon_id": "守护进程 ID",
+      "profile": "配置档案",
+      "default_profile": "默认（default）",
+      "server_url": "服务器地址",
+      "device_name": "设备名称",
+      "workspaces": "工作区数量",
+      "toast_saved": "已保存守护进程设置",
+      "toast_save_failed": "无法保存守护进程设置",
+      "states": {
+        "running": "运行中",
+        "stopped": "已停止",
+        "starting": "启动中...",
+        "stopping": "停止中...",
+        "installing_cli": "正在安装 CLI...",
+        "cli_not_found": "安装失败",
+        "recovery_paused": "自动恢复已暂停",
+        "auth_expired": "需要登录"
+      },
+      "uptime_units": {
+        "h": "{{value}} 小时",
+        "m": "{{value}} 分钟",
+        "s": "{{value}} 秒"
+      }
     },
     "runtime_config": {
       "title": "服务器地址",

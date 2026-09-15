@@ -1132,8 +1132,55 @@
   },
   "desktop": {
     "tabs": {
+      "daemon": "デーモン",
       "updates": "アップデート",
       "server": "サーバー"
+    },
+    "daemon": {
+      "title": "デーモン",
+      "description": "ローカルのエージェントデーモンがデスクトップアプリと連動する動作を設定します。",
+      "auto_start_title": "ログイン後に自動起動",
+      "auto_start_description": "ログイン時にデーモンを起動します。アプリの実行中は、自動起動・手動起動のどちらのデーモンも監視し、稼働を維持します。",
+      "auto_stop_title": "アプリ終了時に自動停止",
+      "auto_stop_description": "デスクトップアプリの終了時にデーモンを停止します。オフにすると、デーモンはバックグラウンドで動作し続けます。",
+      "cli_status": "CLI の状態",
+      "cli_checking": "確認中...",
+      "cli_installed": "multica CLI はインストール済みで、PATH から利用できます。",
+      "cli_missing": "multica CLI が見つかりません。デーモンを管理するにはインストールしてください。",
+      "installation_guide": "インストールガイド",
+      "auth_expired_title": "ログインの有効期限切れ",
+      "auth_expired_description": "ローカルデーモンの認証に失敗したため、このデバイスではタスクを実行できません。再度ログインして復旧してください。",
+      "sign_in_again": "再度ログイン",
+      "externally_managed_prefix": "このデバイスのデーモンは WSL2 など、アプリの管理外の環境で動作しているため、アプリから起動・停止できません。その環境内で次のコマンドを実行してください：",
+      "externally_managed_suffix": "。",
+      "diagnostics_title": "診断情報",
+      "diagnostics_description": "識別情報と接続情報を確認できます。不具合の報告やランタイムが表示されない原因の調査に役立ちます。",
+      "state": "動作状態",
+      "uptime": "稼働時間",
+      "pid": "プロセス ID（PID）",
+      "daemon_id": "デーモン ID",
+      "profile": "設定プロファイル",
+      "default_profile": "デフォルト（default）",
+      "server_url": "サーバー URL",
+      "device_name": "デバイス名",
+      "workspaces": "ワークスペース数",
+      "toast_saved": "デーモン設定を保存しました",
+      "toast_save_failed": "デーモン設定を保存できませんでした",
+      "states": {
+        "running": "稼働中",
+        "stopped": "停止中",
+        "starting": "起動中...",
+        "stopping": "停止処理中...",
+        "installing_cli": "CLI をインストール中...",
+        "cli_not_found": "インストール失敗",
+        "recovery_paused": "自動復旧を一時停止中",
+        "auth_expired": "ログインが必要"
+      },
+      "uptime_units": {
+        "h": "{{value}}時間",
+        "m": "{{value}}分",
+        "s": "{{value}}秒"
+      }
     },
     "runtime_config": {
       "title": "サーバーアドレス",

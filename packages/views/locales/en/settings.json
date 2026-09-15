@@ -1135,8 +1135,55 @@
   },
   "desktop": {
     "tabs": {
+      "daemon": "Daemon",
       "updates": "Updates",
       "server": "Server"
+    },
+    "daemon": {
+      "title": "Daemon",
+      "description": "Configure how the local agent daemon behaves with the desktop app.",
+      "auto_start_title": "Auto-start on launch",
+      "auto_start_description": "Start the daemon when you log in. While the app is open, it supervises both auto-started and manually started daemons.",
+      "auto_stop_title": "Auto-stop on quit",
+      "auto_stop_description": "Stop the daemon when the desktop app is closed. Disable this to keep the daemon running in the background.",
+      "cli_status": "CLI Status",
+      "cli_checking": "Checking...",
+      "cli_installed": "multica CLI is installed and available in PATH.",
+      "cli_missing": "multica CLI not found. Install it to enable daemon management.",
+      "installation_guide": "Installation Guide",
+      "auth_expired_title": "Sign-in expired",
+      "auth_expired_description": "The local daemon couldn't authenticate, so this device can't take tasks. Sign in again to restore it.",
+      "sign_in_again": "Sign in again",
+      "externally_managed_prefix": "This device's daemon runs outside the app — for example inside WSL2 — so the app can't start or stop it. Start or stop it from that environment with",
+      "externally_managed_suffix": ".",
+      "diagnostics_title": "Diagnostics",
+      "diagnostics_description": "Identification and connection details. Useful when filing a bug report or investigating why a runtime isn't showing up.",
+      "state": "State",
+      "uptime": "Uptime",
+      "pid": "PID",
+      "daemon_id": "Daemon ID",
+      "profile": "Profile",
+      "default_profile": "default",
+      "server_url": "Server URL",
+      "device_name": "Device name",
+      "workspaces": "Workspaces",
+      "toast_saved": "Daemon settings saved",
+      "toast_save_failed": "Failed to save daemon settings",
+      "states": {
+        "running": "Running",
+        "stopped": "Stopped",
+        "starting": "Starting...",
+        "stopping": "Stopping...",
+        "installing_cli": "Setting up...",
+        "cli_not_found": "Setup Failed",
+        "recovery_paused": "Recovery paused",
+        "auth_expired": "Sign-in required"
+      },
+      "uptime_units": {
+        "h": "{{value}}h",
+        "m": "{{value}}m",
+        "s": "{{value}}s"
+      }
     },
     "runtime_config": {
       "title": "Server address",
