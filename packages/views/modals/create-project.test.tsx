@@ -202,6 +202,12 @@ beforeEach(() => {
 });
 
 describe("CreateProjectModal", () => {
+  it("makes the required project title explicit in Chinese", () => {
+    renderWithI18n(<CreateProjectModal onClose={vi.fn()} />, { locale: "zh-Hans" });
+
+    expect(screen.getByPlaceholderText("请输入项目标题（必填）")).toBeInTheDocument();
+  });
+
   it("exposes full repository URLs in the repository picker", () => {
     render(<CreateProjectModal onClose={vi.fn()} />);
 
