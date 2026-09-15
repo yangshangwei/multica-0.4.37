@@ -112,12 +112,6 @@ test("generated publication reaches an open reader and a fresh client without re
   const initialNote = "初始验收记录：支持在应用内阅读版本更新。";
   const updateNote = "热更新验收记录：无需重新打开页面即可看到新发布。";
   const git = (...args: string[]) => execFileSync("git", args, { cwd: repository, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
-  execFileSync("git", ["init", "--initial-branch=main", repository], { stdio: "ignore" });
-  git("config", "user.name", "Changelog fixture");
-  git("config", "user.email", "fixture@example.invalid");
-  git("commit", "--allow-empty", "-m", "chore: fixture baseline");
-  const base = git("rev-parse", "HEAD");
-  writeFileSync(history, JSON.stringify({ schema_version: 1, generated_at: "2026-09-01T00:00:00Z", releases: [] }));
   const generate = (version: string, input: string, output: string, baseRef?: string) => {
     execFileSync(process.execPath, [
       join(root, "scripts/generate-changelog.mjs"), "--ref", version,
@@ -130,15 +124,24 @@ test("generated publication reaches an open reader and a fresh client without re
   const publish = (input: string) => execFileSync(process.execPath, [
     join(root, "scripts/publish-changelog.mjs"), "--input", input, "--destination", fixtureFeed!,
   ], { cwd: root, stdio: "pipe" });
-  git("commit", "--allow-empty", "-m", "feat: initial changelog", "-m", `Release-note: ${initialNote}`);
-  git("tag", "v0.0.1");
-  generate("v0.0.1", history, first, base);
-  publish(first);
   const api = new TestApiClient();
-  await api.login(`changelog-live-${Date.now()}@example.invalid`, "Changelog live acceptance");
-  const workspace = await api.ensureWorkspace("Changelog live acceptance", `changelog-live-${Date.now()}`);
-  await api.markUserOnboarded();
+  let workspace: { id: string; slug: string } | undefined;
   try {
+    // A failed login/setup must not strand a temporary release feed for later
+    // readers. Guard the entire fixture lifetime before publishing anything.
+    await api.login(`changelog-live-${Date.now()}@example.invalid`, "Changelog live acceptance");
+    workspace = await api.ensureWorkspace("Changelog live acceptance", `changelog-live-${Date.now()}`);
+    await api.markUserOnboarded();
+    execFileSync("git", ["init", "--initial-branch=main", repository], { stdio: "ignore" });
+    git("config", "user.name", "Changelog fixture");
+    git("config", "user.email", "fixture@example.invalid");
+    git("commit", "--allow-empty", "-m", "chore: fixture baseline");
+    const base = git("rev-parse", "HEAD");
+    writeFileSync(history, JSON.stringify({ schema_version: 1, generated_at: "2026-09-01T00:00:00Z", releases: [] }));
+    git("commit", "--allow-empty", "-m", "feat: initial changelog", "-m", `Release-note: ${initialNote}`);
+    git("tag", "v0.0.1");
+    generate("v0.0.1", history, first, base);
+    publish(first);
     const initialHealth = await (await fetch(`${fixtureApi}/health`)).json();
     await openAuthenticated(page, api, workspace.slug);
     await expect(page.getByText(initialNote, { exact: true })).toBeVisible();
@@ -189,10 +192,16 @@ test("generated publication reaches an open reader and a fresh client without re
       contentType: "application/json",
     });
   } finally {
-    const restore = join(directory, "restore.json");
-    writeFileSync(restore, previous);
-    publish(restore);
-    await api.deleteFeatureWorkspace(workspace.id);
-    rmSync(directory, { recursive: true, force: true });
+    try {
+      const restore = join(directory, "restore.json");
+      writeFileSync(restore, previous);
+      publish(restore);
+    } finally {
+      try {
+        if (workspace) await api.deleteFeatureWorkspace(workspace.id);
+      } finally {
+        rmSync(directory, { recursive: true, force: true });
+      }
+    }
   }
 });

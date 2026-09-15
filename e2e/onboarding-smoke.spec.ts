@@ -3,7 +3,7 @@ import { TestApiClient } from "./fixtures";
 import { waitForPageText } from "./helpers";
 
 // Smoke test for the onboarding flow: welcome → About you (role +
-// use case on ONE screen) → workspace → runtime. The source question
+// use case on ONE screen) → workspace → runtime → Projects. The source question
 // is intentionally absent — it moved to the workspace source-backfill
 // prompt (MUL-5159). Captures screenshots for review. Uses a unique
 // email per run so the user is always a fresh, un-onboarded user
@@ -14,7 +14,7 @@ const SHOTS_DIR = "../shots-rail";
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
-test("onboarding — welcome → about you (answer path)", async ({ page }) => {
+test("onboarding — answer path completes on Projects after skipping runtime", async ({ page }) => {
   const api = new TestApiClient();
   await api.login(EMAIL, "OBv3 Tester");
   const token = api.getToken();
@@ -44,7 +44,16 @@ test("onboarding — welcome → about you (answer path)", async ({ page }) => {
     "About you",
     "Workspace",
     "Connect a runtime",
+    "First project",
   ]);
+  const projectExit = page.locator('[data-slot="stepper-item"]').filter({
+    has: page.getByText("First project", { exact: true }),
+  });
+  await expect(projectExit).toHaveCount(1);
+  await expect(projectExit).not.toHaveAttribute("aria-current", "step");
+  await expect(projectExit.locator('button, a, [role="button"]')).toHaveCount(0);
+  await projectExit.getByText("First project", { exact: true }).click();
+  await expect(page.getByText("Tell us a bit about you.")).toBeVisible();
   await expect(
     page.locator('[aria-current="step"]').filter({ hasText: "About you" }),
   ).toBeVisible();
@@ -68,12 +77,40 @@ test("onboarding — welcome → about you (answer path)", async ({ page }) => {
   // 4. Runtime step — the rail should now show two completed steps and mark
   //    "Connect a runtime" current.
   await page.getByRole("textbox").first().fill(`Rail QA ${Date.now()}`);
+  const created = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === "/api/workspaces" && response.request().method() === "POST",
+  );
   await page.getByRole("button", { name: /^Create /i }).click();
-  await expect(
-    page.locator('[aria-current="step"]').filter({ hasText: "Connect a runtime" }),
-  ).toBeVisible({ timeout: 20000 });
-  await page.waitForTimeout(800);
-  await page.screenshot({ path: `${SHOTS_DIR}/06-runtime.png` });
+  const response = await created;
+  expect(response.status()).toBe(201);
+  const workspace: { id: string; slug: string } = await response.json();
+  api.setWorkspaceId(workspace.id);
+  api.setWorkspaceSlug(workspace.slug);
+  try {
+    await expect(
+      page.locator('[aria-current="step"]').filter({ hasText: "Connect a runtime" }),
+    ).toBeVisible({ timeout: 20000 });
+    await expect(projectExit).not.toHaveAttribute("aria-current", "step");
+    await expect(projectExit.locator('button, a, [role="button"]')).toHaveCount(0);
+    await expect(page.getByText("How did you hear about Multica?")).toHaveCount(0);
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: `${SHOTS_DIR}/06-runtime.png` });
+
+    // The rail previews the exit; only the runtime CTA finalizes onboarding.
+    // The welcome dialog's Got it action subsequently opens the setup guide,
+    // so verify the Projects landing before dismissing that dialog.
+    const completed = page.waitForResponse((result) =>
+      new URL(result.url()).pathname === "/api/me/onboarding/complete" && result.request().method() === "POST",
+    );
+    await page.getByRole("button", { name: /Skip for now/ }).click();
+    expect((await completed).ok()).toBe(true);
+    await expect(page).toHaveURL(`/${workspace.slug}/projects`);
+    await expect(page.getByRole("group", { name: "Onboarding steps" })).toHaveCount(0);
+    await expect(page.getByRole("dialog", { name: "Welcome to Multica" })).toBeVisible();
+    await page.screenshot({ path: `${SHOTS_DIR}/07-projects.png` });
+  } finally {
+    await api.deleteFeatureWorkspace(workspace.id);
+  }
 });
 
 test("onboarding — one skip clears the whole questionnaire step", async ({ page }) => {
