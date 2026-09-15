@@ -415,13 +415,15 @@ interface AppSidebarProps {
   topSlot?: React.ReactNode;
   /** Rendered in the header between workspace switcher and new-issue button (e.g. search trigger) */
   searchSlot?: React.ReactNode;
+  /** Rendered at the left edge of SidebarFooter, opposite HelpLauncher (e.g. desktop app version) */
+  footerSlot?: React.ReactNode;
   /** Extra className for SidebarHeader */
   headerClassName?: string;
   /** Extra style for SidebarHeader */
   headerStyle?: React.CSSProperties;
 }
 
-export function AppSidebar({ topSlot, searchSlot, headerClassName, headerStyle }: AppSidebarProps = {}) {
+export function AppSidebar({ topSlot, searchSlot, footerSlot, headerClassName, headerStyle }: AppSidebarProps = {}) {
   const { t } = useT("layout");
   const { pathname, push } = useNavigation();
   const user = useAuthStore((s) => s.user);
@@ -876,7 +878,17 @@ export function AppSidebar({ topSlot, searchSlot, headerClassName, headerStyle }
         </SidebarContent>
 
         <SidebarFooter className="p-2">
-          <div className="flex items-center justify-end gap-1">
+          {/* Help stays pinned to the right edge whether or not the platform
+              fills the left one, so web's footer looks exactly as it did
+              before desktop started parking its version here. */}
+          <div
+            data-testid="sidebar-footer-row"
+            className={cn(
+              "flex min-w-0 items-center gap-1",
+              footerSlot ? "justify-between" : "justify-end",
+            )}
+          >
+            {footerSlot}
             <HelpLauncher />
           </div>
         </SidebarFooter>

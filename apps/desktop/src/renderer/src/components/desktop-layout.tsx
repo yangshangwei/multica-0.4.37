@@ -34,6 +34,7 @@ import {
 } from "@/platform/navigation";
 import { TabBar } from "./tab-bar";
 import { TabContent } from "./tab-content";
+import { SidebarVersion } from "./sidebar-version";
 import { WindowOverlay } from "./window-overlay";
 import { UpdateNotificationNavigationBridge } from "./update-notification";
 
@@ -289,7 +290,13 @@ export function DesktopShell() {
           >
             {slug && <GlobalShortcuts />}
             {slug && <WindowToolbar />}
-            {slug && <AppSidebar topSlot={<SidebarTopSpacer />} searchSlot={<SearchTrigger />} />}
+            {slug && (
+              <AppSidebar
+                topSlot={<SidebarTopSpacer />}
+                searchSlot={<SearchTrigger />}
+                footerSlot={<SidebarVersion />}
+              />
+            )}
             {/* Right side: header + content container */}
             <div className="flex flex-1 min-w-0 flex-col">
               <MainTopBar />

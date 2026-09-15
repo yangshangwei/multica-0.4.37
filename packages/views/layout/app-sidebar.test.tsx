@@ -429,3 +429,30 @@ describe("personal nav — Chat", () => {
     expect(chatBadge(container)).toHaveAttribute("aria-label", "5");
   });
 });
+
+// The footer is the one row both shells share but only desktop fills: it owns
+// the desktop version (see apps/desktop's SidebarVersion). Web passes no slot,
+// so the assertions below pin that web's footer is untouched by the addition.
+describe("footer slot", () => {
+  function footerRow(container: HTMLElement) {
+    return container.querySelector("[data-testid='sidebar-footer-row']");
+  }
+
+  it("renders what the platform puts in it", () => {
+    render(<AppSidebar footerSlot={<span>v0.4.40</span>} />);
+    expect(screen.getByText("v0.4.40")).toBeInTheDocument();
+  });
+
+  // HelpLauncher sat alone at the right edge before the slot existed, and still
+  // has to when nothing fills the left — otherwise adding the desktop version
+  // would have quietly recentred web's help button.
+  it("keeps the help button right-aligned when no slot is passed", () => {
+    const { container } = render(<AppSidebar />);
+    expect(footerRow(container)).toHaveClass("justify-end");
+  });
+
+  it("pushes the slot to the left of the help button when one is passed", () => {
+    const { container } = render(<AppSidebar footerSlot={<span>v0.4.40</span>} />);
+    expect(footerRow(container)).toHaveClass("justify-between");
+  });
+});
