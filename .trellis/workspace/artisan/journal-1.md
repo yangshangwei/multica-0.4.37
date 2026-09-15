@@ -534,3 +534,38 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 16: 进展报告员、日报模板与 v0.4.45 内网发布
+
+**Date**: 2026-09-15
+**Task**: 进展报告员、日报模板与 v0.4.45 内网发布
+**Branch**: `feat/progress-reporter-daily`
+
+### Summary
+
+新增一名内置报告员与相邻日报模板；85项完整E2E及源代码检查通过，v0.4.45已发布，Linux升级与Windows原生安装及11项上传资产摘要均已验证。
+
+### Main Changes
+
+- 复用既有角色、skill和自动化调度；业务任务只读，本期报告提交审核后收尾。
+- 修正内网镜像版本注入和持久化，保留原配置与数据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e2d3f8891` | (see git log) |
+| `19eca1ebd` | (see git log) |
+| `ff41da457` | (see git log) |
+| `88522b444` | (see git log) |
+
+### Testing
+
+- [OK] 85/85全套Web和Electron E2E；8139项TypeScript测试；Go race、vet和漏洞扫描通过。
+- [OK] Windows原生x64安装及CLI版本通过；从v0.4.42真实升级至v0.4.45并重建后数据、JWT和版本均保留。
+- [OK] 11个交付资产的GitHub SHA256与本地成品一致；模型内容以两份Codex离线样例验证，Claude429未计通过。
+
+### Status
+
+[OK] **Completed**
