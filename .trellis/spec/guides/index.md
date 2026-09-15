@@ -66,6 +66,16 @@ These guides help you **ask the right questions before coding**.
 
 **Verification rule**: Every CRITICAL/WARNING finding must be verified against the actual code before prioritizing. Budget ~35% false-positive rate for AI reviews.
 
+### Before Running or Blaming an E2E Failure
+
+- [ ] Is the web target a production server (`next build` + `next start`) rather than `next dev`?
+- [ ] Do the failures cluster on the first visit to a route and pass on a later visit?
+- [ ] Did you record the API/web launch command and commit next to the results?
+
+A `next dev` cold compile takes up to 36 s and blows the 15 s / 30 s / 60 s test budgets, so it produces failures that look like product bugs.
+
+→ Read [E2E Run Environment](../web/frontend/e2e-run-environment.md)
+
 ---
 
 ## Pre-Modification Rule (CRITICAL)
