@@ -142,24 +142,32 @@ type NavLabelKey =
 // Nav icons are NOT declared here: they are derived from each item's
 // destination path at render time, so the sidebar and the desktop tab bar
 // always agree. See route-icon-components.tsx.
-const personalNav: { key: NavKey; labelKey: NavLabelKey }[] = [
+type NavItem = { key: NavKey; labelKey: NavLabelKey };
+
+const personalNav: NavItem[] = [
   { key: "inbox", labelKey: "inbox" },
-  { key: "chat", labelKey: "chat" },
   { key: "myIssues", labelKey: "my_issues" },
+  { key: "chat", labelKey: "chat" },
 ];
 
-const workspaceNav: { key: NavKey; labelKey: NavLabelKey }[] = [
+const workNav: NavItem[] = [
   { key: "issues", labelKey: "issues" },
   { key: "projects", labelKey: "projects" },
   { key: "autopilots", labelKey: "autopilots" },
-  { key: "agents", labelKey: "agents" },
-  { key: "squads", labelKey: "squads" },
-  { key: "usage", labelKey: "usage" },
 ];
 
-const configureNav: { key: NavKey; labelKey: NavLabelKey }[] = [
-  { key: "runtimes", labelKey: "runtimes" },
+const aiTeamNav: NavItem[] = [
+  { key: "agents", labelKey: "agents" },
+  { key: "squads", labelKey: "squads" },
   { key: "skills", labelKey: "skills" },
+  { key: "runtimes", labelKey: "runtimes" },
+];
+
+// Analytics and Settings live in the footer, outside SidebarContent's scroll
+// area: enough pins overflow the nav, and Settings has to stay one click away
+// instead of being scrolled off the bottom.
+const bottomNav: NavItem[] = [
+  { key: "usage", labelKey: "usage" },
   { key: "settings", labelKey: "settings" },
 ];
 
@@ -167,6 +175,40 @@ function DraftDot() {
   const hasDraft = useIssueDraftStore((s) => s.hasDraft());
   if (!hasDraft) return null;
   return <span className="absolute top-0 right-0 size-1.5 rounded-full bg-brand" />;
+}
+
+/**
+ * One top-level nav row. Every nav group renders through this, which is what
+ * keeps their active and hover treatment identical across the four sections.
+ * The icon is derived from the destination path rather than passed in, so the
+ * sidebar and the desktop tab bar always agree — see route-icon-components.tsx.
+ */
+function NavRow({
+  href,
+  label,
+  isActive,
+  trailing,
+}: {
+  href: string;
+  label: string;
+  isActive: boolean;
+  /** Right-aligned adornment, e.g. an unread count. */
+  trailing?: React.ReactNode;
+}) {
+  const Icon = routeIconForPath(href);
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        isActive={isActive}
+        render={<AppLink href={href} />}
+        className="text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
+      >
+        <Icon />
+        <span>{label}</span>
+        {trailing}
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
 }
 
 /**
@@ -415,15 +457,15 @@ interface AppSidebarProps {
   topSlot?: React.ReactNode;
   /** Rendered in the header between workspace switcher and new-issue button (e.g. search trigger) */
   searchSlot?: React.ReactNode;
-  /** Rendered at the left edge of SidebarFooter, opposite HelpLauncher (e.g. desktop app version) */
-  footerSlot?: React.ReactNode;
+  /** Build info for the help menu's version block (e.g. the desktop app version) */
+  versionSlot?: React.ReactNode;
   /** Extra className for SidebarHeader */
   headerClassName?: string;
   /** Extra style for SidebarHeader */
   headerStyle?: React.CSSProperties;
 }
 
-export function AppSidebar({ topSlot, searchSlot, footerSlot, headerClassName, headerStyle }: AppSidebarProps = {}) {
+export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, headerStyle }: AppSidebarProps = {}) {
   const { t } = useT("layout");
   const { pathname, push } = useNavigation();
   const user = useAuthStore((s) => s.user);
@@ -758,33 +800,28 @@ export function AppSidebar({ topSlot, searchSlot, footerSlot, headerClassName, h
               <SidebarMenu className="gap-0.5">
                 {personalNav.map((item) => {
                   const href = p[item.key]();
-                  const Icon = routeIconForPath(href);
-                  const isActive = isNavActive(pathname, href);
+                  const unread =
+                    item.key === "inbox"
+                      ? unreadCount
+                      : item.key === "chat"
+                        ? chatUnreadCount
+                        : 0;
                   return (
-                    <SidebarMenuItem key={item.key}>
-                      <SidebarMenuButton
-                        isActive={isActive}
-                        render={<AppLink href={href} />}
-                        className="text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
-                      >
-                        <Icon />
-                        <span>{t(($) => $.nav[item.labelKey])}</span>
-                        {item.key === "inbox" && unreadCount > 0 && (
+                    <NavRow
+                      key={item.key}
+                      href={href}
+                      label={t(($) => $.nav[item.labelKey])}
+                      isActive={isNavActive(pathname, href)}
+                      trailing={
+                        unread > 0 ? (
                           <CappedNumberFlow
-                            value={unreadCount}
+                            value={unread}
                             animated={false}
                             className="ml-auto text-caption"
                           />
-                        )}
-                        {item.key === "chat" && chatUnreadCount > 0 && (
-                          <CappedNumberFlow
-                            value={chatUnreadCount}
-                            animated={false}
-                            className="ml-auto text-caption"
-                          />
-                        )}
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
+                        ) : undefined
+                      }
+                    />
                   );
                 })}
               </SidebarMenu>
@@ -827,24 +864,21 @@ export function AppSidebar({ topSlot, searchSlot, footerSlot, headerClassName, h
           )}
 
           <SidebarGroup>
-            <SidebarGroupLabel>{t(($) => $.sidebar.workspace_group)}</SidebarGroupLabel>
+            <SidebarGroupLabel>{t(($) => $.sidebar.work_group)}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
-                {workspaceNav.map((item) => {
+                {workNav.map((item) => {
                   const href = p[item.key]();
-                  const Icon = routeIconForPath(href);
-                  const isActive = !isActivePinnedRoute && isNavActive(pathname, href);
                   return (
-                    <SidebarMenuItem key={item.key}>
-                      <SidebarMenuButton
-                        isActive={isActive}
-                        render={<AppLink href={href} />}
-                        className="text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
-                      >
-                        <Icon />
-                        <span>{t(($) => $.nav[item.labelKey])}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    <NavRow
+                      key={item.key}
+                      href={href}
+                      label={t(($) => $.nav[item.labelKey])}
+                      // A pinned issue / project sits under this group's path
+                      // prefix, so the pin owns the highlight and the parent
+                      // row stands down. No other group can collide with a pin.
+                      isActive={!isActivePinnedRoute && isNavActive(pathname, href)}
+                    />
                   );
                 })}
               </SidebarMenu>
@@ -852,24 +886,18 @@ export function AppSidebar({ topSlot, searchSlot, footerSlot, headerClassName, h
           </SidebarGroup>
 
           <SidebarGroup>
-            <SidebarGroupLabel>{t(($) => $.sidebar.configure_group)}</SidebarGroupLabel>
+            <SidebarGroupLabel>{t(($) => $.sidebar.ai_team_group)}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
-                {configureNav.map((item) => {
+                {aiTeamNav.map((item) => {
                   const href = p[item.key]();
-                  const Icon = routeIconForPath(href);
-                  const isActive = isNavActive(pathname, href);
                   return (
-                    <SidebarMenuItem key={item.key}>
-                      <SidebarMenuButton
-                        isActive={isActive}
-                        render={<AppLink href={href} />}
-                        className="text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
-                      >
-                        <Icon />
-                        <span>{t(($) => $.nav[item.labelKey])}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    <NavRow
+                      key={item.key}
+                      href={href}
+                      label={t(($) => $.nav[item.labelKey])}
+                      isActive={isNavActive(pathname, href)}
+                    />
                   );
                 })}
               </SidebarMenu>
@@ -878,18 +906,28 @@ export function AppSidebar({ topSlot, searchSlot, footerSlot, headerClassName, h
         </SidebarContent>
 
         <SidebarFooter className="p-2">
-          {/* Help stays pinned to the right edge whether or not the platform
-              fills the left one, so web's footer looks exactly as it did
-              before desktop started parking its version here. */}
+          <SidebarMenu className="gap-0.5">
+            {bottomNav.map((item) => {
+              const href = p[item.key]();
+              return (
+                <NavRow
+                  key={item.key}
+                  href={href}
+                  label={t(($) => $.nav[item.labelKey])}
+                  isActive={isNavActive(pathname, href)}
+                />
+              );
+            })}
+          </SidebarMenu>
+          {/* Help sits at the left edge, on the same inset as the nav rows
+              above it. Platform build info is no longer a second footer column:
+              it rides inside the help menu next to the server version, so the
+              row holds exactly one control on web and desktop alike. */}
           <div
             data-testid="sidebar-footer-row"
-            className={cn(
-              "flex min-w-0 items-center gap-1",
-              footerSlot ? "justify-between" : "justify-end",
-            )}
+            className="flex min-w-0 items-center"
           >
-            {footerSlot}
-            <HelpLauncher />
+            <HelpLauncher versionSlot={versionSlot} />
           </div>
         </SidebarFooter>
         <SidebarRail />

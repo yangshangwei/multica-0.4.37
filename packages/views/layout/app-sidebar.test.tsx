@@ -92,7 +92,11 @@ vi.mock("@multica/ui/components/ui/tooltip", () => ({
 vi.mock("../common/use-app-foreground", () => ({
   useAppForeground: () => appForeground.current,
 }));
-vi.mock("./help-launcher", () => ({ HelpLauncher: () => null }));
+vi.mock("./help-launcher", () => ({
+  HelpLauncher: ({ versionSlot }: { versionSlot?: React.ReactNode }) => (
+    <div data-testid="help-launcher">{versionSlot}</div>
+  ),
+}));
 vi.mock("../auth", () => ({ useLogout: () => vi.fn() }));
 vi.mock("../issues/components/status-icon", () => ({ StatusIcon: () => <span /> }));
 vi.mock("../navigation", () => ({
@@ -430,29 +434,95 @@ describe("personal nav — Chat", () => {
   });
 });
 
-// The footer is the one row both shells share but only desktop fills: it owns
-// the desktop version (see apps/desktop's SidebarVersion). Web passes no slot,
-// so the assertions below pin that web's footer is untouched by the addition.
-describe("footer slot", () => {
-  function footerRow(container: HTMLElement) {
-    return container.querySelector("[data-testid='sidebar-footer-row']");
+// The four sections and their order ARE the sidebar's information architecture:
+// personal → pinned → Work → AI Team, with Analytics and Settings parked in the
+// footer. The SidebarGroup primitives are mocked to fragments here, so document
+// order of the rendered links is what proves group membership. The group *labels*
+// are not asserted: `t($ => $.sidebar.work_group)` is typechecked against
+// locales/en/layout.json by i18n/resources-types.ts, and locales/parity.test.ts
+// covers the other three bundles — this suite never initialises i18next.
+describe("nav structure", () => {
+  function navHrefs(container: HTMLElement) {
+    return Array.from(container.querySelectorAll("button[data-href]")).map((el) =>
+      el.getAttribute("data-href"),
+    );
   }
 
-  it("renders what the platform puts in it", () => {
-    render(<AppSidebar footerSlot={<span>v0.4.40</span>} />);
-    expect(screen.getByText("v0.4.40")).toBeInTheDocument();
+  beforeEach(() => {
+    navigation.current = { pathname: "/acme/issues" };
+    // data: null hides the default pin, leaving only the nav rows.
+    detail.current = { isPending: false, isError: false, data: null, error: null };
+    inboxItems.current = [];
+    chatSessions.current = [];
+    chatStore.current = { activeSessionId: null, isOpen: false };
+    summary.current = [];
+    workspaces.current = [];
   });
 
-  // HelpLauncher sat alone at the right edge before the slot existed, and still
-  // has to when nothing fills the left — otherwise adding the desktop version
-  // would have quietly recentred web's help button.
-  it("keeps the help button right-aligned when no slot is passed", () => {
+  it("renders every section in order", () => {
     const { container } = render(<AppSidebar />);
-    expect(footerRow(container)).toHaveClass("justify-end");
+    expect(navHrefs(container)).toEqual([
+      // personal
+      "/acme/inbox",
+      "/acme/my-issues",
+      "/acme/chat",
+      // Work
+      "/acme/issues",
+      "/acme/projects",
+      "/acme/autopilots",
+      // AI Team
+      "/acme/agents",
+      "/acme/squads",
+      "/acme/skills",
+      "/acme/runtimes",
+      // footer
+      "/acme/usage",
+      "/acme/settings",
+    ]);
   });
 
-  it("pushes the slot to the left of the help button when one is passed", () => {
-    const { container } = render(<AppSidebar footerSlot={<span>v0.4.40</span>} />);
-    expect(footerRow(container)).toHaveClass("justify-between");
+  // Analytics and Settings belong to SidebarFooter, not SidebarContent: the
+  // footer sits outside the scroll area, so no number of pins can push Settings
+  // out of reach. SidebarFooter is a fragment here, so the evidence is that both
+  // rows precede the footer's own help row in document order.
+  it("puts Analytics and Settings in the footer, above the help row", () => {
+    const { container } = render(<AppSidebar />);
+    const footerRow = container.querySelector("[data-testid='sidebar-footer-row']");
+    expect(footerRow).not.toBeNull();
+
+    for (const href of ["/acme/usage", "/acme/settings"]) {
+      const row = container.querySelector(`button[data-href="${href}"]`);
+      expect(row, href).not.toBeNull();
+      expect(
+        row!.compareDocumentPosition(footerRow!) & Node.DOCUMENT_POSITION_FOLLOWING,
+        `${href} should render before the footer help row`,
+      ).toBeTruthy();
+    }
+  });
+
+  it("highlights Settings from the footer when its route is open", () => {
+    navigation.current = { pathname: "/acme/settings/general" };
+    const { container } = render(<AppSidebar />);
+    expect(container.querySelector('button[data-href="/acme/settings"]')).toHaveAttribute(
+      "data-active",
+      "true",
+    );
+  });
+});
+
+// Build info used to sit at the left edge of this row, opposite a right-aligned
+// help button. It rides inside the help menu now (next to the server version),
+// so the row holds one left-aligned control and AppSidebar's only remaining job
+// is forwarding the slot — the rendering contract is HelpLauncher's, covered in
+// help-launcher.test.tsx.
+describe("version slot", () => {
+  it("forwards the platform's build info to the help menu", () => {
+    render(<AppSidebar versionSlot={<span>v0.4.40</span>} />);
+    expect(screen.getByTestId("help-launcher")).toHaveTextContent("v0.4.40");
+  });
+
+  it("leaves the help menu without build info on web", () => {
+    render(<AppSidebar />);
+    expect(screen.getByTestId("help-launcher")).toBeEmptyDOMElement();
   });
 });

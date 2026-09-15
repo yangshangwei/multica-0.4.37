@@ -6,6 +6,7 @@ import {
   FileText,
   MessageCircle,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +22,7 @@ import { paths, useWorkspaceSlug } from "@multica/core/paths";
 import { AppLink } from "../navigation";
 import { useT } from "../i18n";
 
-export function HelpLauncher() {
+export function HelpLauncher({ versionSlot }: { versionSlot?: ReactNode } = {}) {
   const { t } = useT("layout");
   const serverVersion = useConfigStore((state) => state.serverVersion);
   // Nullable on purpose: this menu lives in the dashboard sidebar, which is
@@ -68,20 +69,24 @@ export function HelpLauncher() {
           <MessageCircle className="h-3.5 w-3.5" />
           {t(($) => $.help.feedback)}
         </DropdownMenuItem>
+        {(versionSlot || serverVersion) && <DropdownMenuSeparator />}
+        {/* Platform-supplied build info (desktop passes its app version). The
+            slot must render plain elements, NOT Base UI menu parts: their
+            required ancestors live in this file, invisible from the app that
+            fills the slot — which is how MUL-4819 shipped a version row that
+            crashed the app on open. See the DropdownMenuGroup note below. */}
+        {versionSlot}
         {serverVersion && (
-          <>
-            <DropdownMenuSeparator />
-            {/* DropdownMenuLabel renders Base UI's Menu.GroupLabel, which reads
-                a Menu.Group context and throws if it has no Group ancestor. It
-                must always be wrapped in a DropdownMenuGroup — without it the
-                Help menu crashes the whole app on open (no error boundary sits
-                above the sidebar). */}
-            <DropdownMenuGroup>
-              <DropdownMenuLabel className="font-normal break-words">
-                {t(($) => $.help.server_version, { version: serverVersion })}
-              </DropdownMenuLabel>
-            </DropdownMenuGroup>
-          </>
+          /* DropdownMenuLabel renders Base UI's Menu.GroupLabel, which reads a
+             Menu.Group context and throws if it has no Group ancestor. It must
+             always be wrapped in a DropdownMenuGroup — without it the Help menu
+             crashes the whole app on open (no error boundary sits above the
+             sidebar). */
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="font-normal break-words">
+              {t(($) => $.help.server_version, { version: serverVersion })}
+            </DropdownMenuLabel>
+          </DropdownMenuGroup>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

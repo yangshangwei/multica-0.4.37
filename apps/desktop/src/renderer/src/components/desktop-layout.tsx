@@ -34,7 +34,7 @@ import {
 } from "@/platform/navigation";
 import { TabBar } from "./tab-bar";
 import { TabContent } from "./tab-content";
-import { SidebarVersion } from "./sidebar-version";
+import { SidebarVersion, desktopAppVersion } from "./sidebar-version";
 import { WindowOverlay } from "./window-overlay";
 import { UpdateNotificationNavigationBridge } from "./update-notification";
 
@@ -294,7 +294,7 @@ export function DesktopShell() {
               <AppSidebar
                 topSlot={<SidebarTopSpacer />}
                 searchSlot={<SearchTrigger />}
-                footerSlot={<SidebarVersion />}
+                versionSlot={desktopAppVersion() ? <SidebarVersion /> : undefined}
               />
             )}
             {/* Right side: header + content container */}

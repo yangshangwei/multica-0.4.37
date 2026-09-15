@@ -83,10 +83,10 @@ function navAdapter(): NavigationAdapter {
   };
 }
 
-function renderHelp(slug: string | null = "acme") {
+function renderHelp(slug: string | null = "acme", versionSlot?: ReactNode) {
   const ui = (
     <NavigationProvider value={navAdapter()}>
-      <HelpLauncher />
+      <HelpLauncher versionSlot={versionSlot} />
     </NavigationProvider>
   );
   return render(
@@ -160,5 +160,29 @@ describe("HelpLauncher", () => {
   it("does not include the removed Discord entry", () => {
     renderHelp();
     expect(screen.queryByText("Discord")).not.toBeInTheDocument();
+  });
+});
+
+// Platform build info (desktop's SidebarVersion) rides in this menu rather than
+// as a second sidebar-footer column. The slot is a plain node on purpose — see
+// the MUL-4819 note in help-launcher.tsx — so these only pin placement.
+describe("HelpLauncher version slot", () => {
+  it("renders the platform's build info", () => {
+    renderHelp("acme", <span>Desktop version 0.4.40</span>);
+    expect(screen.getByText("Desktop version 0.4.40")).toBeInTheDocument();
+  });
+
+  it("shows platform and server versions together", () => {
+    configStore.getState().setServerVersion("1.2.3");
+    renderHelp("acme", <span>Desktop version 0.4.40</span>);
+    expect(screen.getByText("Desktop version 0.4.40")).toBeInTheDocument();
+    expect(screen.getByText("Server version 1.2.3")).toBeInTheDocument();
+  });
+
+  // Web fills neither slot, so the whole version block stays out of the menu.
+  // (The separator itself can't be asserted here — the mock renders it null.)
+  it("renders nothing extra when no version is available", () => {
+    renderHelp();
+    expect(screen.queryByText(/version/i)).not.toBeInTheDocument();
   });
 });
