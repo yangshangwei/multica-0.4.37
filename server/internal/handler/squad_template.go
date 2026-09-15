@@ -383,7 +383,10 @@ func lockSquadTemplateProvisioning(ctx context.Context, tx pgx.Tx, in squadTempl
 // project reference and every new roster/skill row can commit together. Callers
 // must take lockSquadTemplateProvisioning before looking up or creating a squad.
 func (h *Handler) materializeSquadTemplateInTx(ctx context.Context, tx pgx.Tx, in squadTemplateProvisionInput) (squadTemplateProvisionResult, error) {
-	var result squadTemplateProvisionResult
+	result := squadTemplateProvisionResult{
+		CreatedAgentIDs: []string{},
+		ReusedAgentIDs:  []string{},
+	}
 	qtx := h.Queries.WithTx(tx)
 
 	// Leader first: it is both the squad's leader_id and its first member, and the

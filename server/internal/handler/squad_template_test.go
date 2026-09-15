@@ -202,6 +202,28 @@ func TestCreateSquadFromTemplate_ReusesExistingRoleAgents(t *testing.T) {
 	}
 }
 
+func TestCreateSquadFromTemplate_EmptyAgentListsAreArrays(t *testing.T) {
+	first := staffSquad(t, "discovery", nil)
+	if len(first.CreatedAgents) == 0 {
+		t.Fatal("first staffing created no agents")
+	}
+	// Decoding JSON [] gives a non-nil slice; null or an omitted field does not.
+	if first.ReusedAgents == nil || len(first.ReusedAgents) != 0 {
+		t.Errorf("all-new staffing reused_agent_ids = %#v, want an empty JSON array", first.ReusedAgents)
+	}
+
+	second := staffSquad(t, "discovery", map[string]any{"name": "Second Discovery Squad"})
+	if second.Squad.ID == first.Squad.ID {
+		t.Error("second staffing did not create a new squad")
+	}
+	if second.CreatedAgents == nil || len(second.CreatedAgents) != 0 {
+		t.Errorf("all-reused staffing created_agent_ids = %#v, want an empty JSON array", second.CreatedAgents)
+	}
+	if len(second.ReusedAgents) != len(first.CreatedAgents) {
+		t.Errorf("second staffing reused %d agents, want %d", len(second.ReusedAgents), len(first.CreatedAgents))
+	}
+}
+
 // TestCreateSquadFromTemplate_StaffsASecondBatchSquad covers the squads added after
 // the two pilots. review-gate is the useful one to pin: its roster overlaps
 // feature-delivery on two seats, so one call exercises both halves of staffing a

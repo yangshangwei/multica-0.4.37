@@ -117,20 +117,22 @@ describe("SquadTemplateListResponseSchema", () => {
 });
 
 describe("StaffedSquadSchema", () => {
+  const squad = {
+    id: "squad-1",
+    workspace_id: "ws-1",
+    name: "Bug Fix Squad",
+    leader_id: "agent-1",
+    creator_id: "user-1",
+    created_at: "2026-09-01T00:00:00Z",
+    updated_at: "2026-09-01T00:00:00Z",
+    template_key: "bug-fix",
+    template_version: 1,
+  };
+
   it("parses the created / reused split", () => {
     const parsed = parseWithFallback(
       {
-        squad: {
-          id: "squad-1",
-          workspace_id: "ws-1",
-          name: "Bug Fix Squad",
-          leader_id: "agent-1",
-          creator_id: "user-1",
-          created_at: "2026-09-01T00:00:00Z",
-          updated_at: "2026-09-01T00:00:00Z",
-          template_key: "bug-fix",
-          template_version: 1,
-        },
+        squad,
         created_agent_ids: ["agent-1"],
         reused_agent_ids: ["agent-2", "agent-3"],
       },
@@ -141,6 +143,44 @@ describe("StaffedSquadSchema", () => {
     expect(parsed.squad.template_key).toBe("bug-fix");
     expect(parsed.created_agent_ids).toEqual(["agent-1"]);
     expect(parsed.reused_agent_ids).toHaveLength(2);
+  });
+
+  it.each([
+    { scenario: "all-new agents", created: ["agent-1"], reused: null },
+    { scenario: "all-reused agents", created: null, reused: ["agent-1"] },
+    { scenario: "omitted agent lists", created: undefined, reused: undefined },
+    { scenario: "null agent lists", created: null, reused: null },
+  ])("preserves the created squad with $scenario", ({ created, reused }) => {
+    const parsed = parseWithFallback(
+      { squad, created_agent_ids: created, reused_agent_ids: reused },
+      StaffedSquadSchema,
+      EMPTY_STAFFED_SQUAD,
+      { endpoint: "POST /api/squads/from-template" },
+    );
+
+    expect(parsed.squad).toMatchObject(squad);
+    expect(parsed.created_agent_ids).toEqual(created ?? []);
+    expect(parsed.reused_agent_ids).toEqual(reused ?? []);
+  });
+
+  it.each([null, {}, { ...squad, id: 42 }])(
+    "still rejects an invalid squad %j when the agent lists are null",
+    (invalidSquad) => {
+      expect(parseWithFallback(
+        { squad: invalidSquad, created_agent_ids: null, reused_agent_ids: null },
+        StaffedSquadSchema,
+        EMPTY_STAFFED_SQUAD,
+        { endpoint: "POST /api/squads/from-template" },
+      )).toBe(EMPTY_STAFFED_SQUAD);
+    },
+  );
+
+  it.each(["agent-1", [42]])("rejects a malformed agent list %j", (ids) => {
+    expect(StaffedSquadSchema.safeParse({
+      squad,
+      created_agent_ids: ids,
+      reused_agent_ids: [],
+    }).success).toBe(false);
   });
 
   it("falls back when the squad is missing", () => {

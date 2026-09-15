@@ -3651,8 +3651,10 @@ export const EMPTY_SQUAD_TEMPLATE_LIST: SquadTemplate[] = [];
 
 export const StaffedSquadSchema = z.object({
   squad: SquadSchema,
-  created_agent_ids: z.array(z.string()).default([]),
-  reused_agent_ids: z.array(z.string()).default([]),
+  // Older servers encode empty Go slices as null. Preserve the created squad
+  // and normalize those optional lists without relaxing its identity schema.
+  created_agent_ids: z.array(z.string()).nullish().transform((ids) => ids ?? []),
+  reused_agent_ids: z.array(z.string()).nullish().transform((ids) => ids ?? []),
 }).loose();
 
 export const EMPTY_STAFFED_SQUAD: StaffedSquad = {
