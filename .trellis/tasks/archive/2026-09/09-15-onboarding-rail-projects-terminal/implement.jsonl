@@ -1,0 +1,3 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/views/frontend/component-guidelines.md", "reason": "StepSidebar/StepProgressBar 是 packages/views 共享组件，需遵循 views 组件规范"}
+{"file": ".trellis/spec/views/frontend/quality-guidelines.md", "reason": "views 层质量要求（测试位置、locale 约定）"}
