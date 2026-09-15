@@ -123,7 +123,7 @@ async function createFromPreview(
 ): Promise<AutopilotDetail> {
   const create = page.getByRole("button", { name: "启用自动化", exact: true });
   await expect(create).toBeDisabled();
-  await page.getByRole("button", { name: "选择智能体或小队", exact: true }).click();
+  await page.getByRole("button", { name: "选择智能体或AI小队", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: new RegExp(AGENT_NAME) }).click();
   await expect(create).toBeEnabled();
   const responsePromise = page.waitForResponse((response) =>

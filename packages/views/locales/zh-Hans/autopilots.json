@@ -61,7 +61,7 @@
     "enable": "启用自动化",
     "enabling": "启用中...",
     "enable_hint": "启用后将创建自动化并开始按计划运行。你可以在详情页暂停或立即运行。",
-    "assignee_unavailable": "预选的执行者不可用，请选择你有权运行的智能体或小队。",
+    "assignee_unavailable": "预选的执行者不可用，请选择你有权运行的智能体或AI小队。",
     "project_unavailable": "预选项目在此工作区中不可用，请选择其他项目或不关联项目。",
     "choices_load_failed": "无法加载项目和执行者选项。"
   },
@@ -283,7 +283,7 @@
     "section_agent": "智能体",
     "section_assignee": "执行方",
     "select_agent": "选择智能体",
-    "select_assignee": "选择智能体或小队",
+    "select_assignee": "选择智能体或AI小队",
     "section_project": "关联项目",
     "project_hint": "同时决定运行时的执行环境 —— 该项目的仓库或本地目录",
     "no_project": "不关联项目",
@@ -317,7 +317,7 @@
     "schedule_empty": "还没有时间表——这个自动化只在手动触发时运行。",
     "schedule_add": "添加时间表",
     "error_title_required": "请填写自动化名称。",
-    "error_assignee_required": "请选择运行该自动化的智能体或小队。",
+    "error_assignee_required": "请选择运行该自动化的智能体或AI小队。",
     "output_modes": {
       "create_issue": {
         "label": "创建任务",
@@ -416,13 +416,13 @@
     }
   },
   "agent_picker": {
-    "filter_placeholder": "筛选智能体或小队...",
+    "filter_placeholder": "筛选智能体或AI小队...",
     "select_agent": "选择智能体",
-    "select_assignee": "选择智能体或小队",
+    "select_assignee": "选择智能体或AI小队",
     "agents_group": "智能体",
-    "squads_group": "小队",
+    "squads_group": "AI小队",
     "agent_runtime_required": "请先为该智能体绑定运行时",
-    "squad_runtime_required": "请先为该小队的负责人绑定运行时",
+    "squad_runtime_required": "请先为该AI小队的负责人绑定运行时",
     "invocation_not_allowed": "你没有运行此执行者的权限。"
   },
   "timezone_picker": {

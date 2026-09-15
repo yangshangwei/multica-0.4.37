@@ -1,21 +1,21 @@
 {
   "page": {
-    "title": "小队",
-    "new_button": "新建小队",
+    "title": "AI小队",
+    "new_button": "新建AI小队",
     "template_button": "使用模板",
-    "empty_no_squads": "还没有小队，创建一个开始吧。",
-    "empty_no_match": "没有匹配筛选条件的小队。",
+    "empty_no_squads": "还没有AI小队，创建一个开始吧。",
+    "empty_no_match": "没有匹配筛选条件的AI小队。",
     "table": {
-      "name": "小队",
+      "name": "AI小队",
       "leader": "队长",
       "members": "成员",
       "creator": "创建者",
       "created": "创建时间"
     },
-    "no_matches": "没有匹配的小队",
-    "row_menu": "小队操作",
+    "no_matches": "没有匹配的AI小队",
+    "row_menu": "AI小队操作",
     "archive_action": "归档",
-    "list_error": "无法加载小队。"
+    "list_error": "无法加载AI小队。"
   },
   "inspector": {
     "details_section": "详情",
@@ -26,16 +26,16 @@
     "member": "成员"
   },
   "archive_dialog": {
-    "title": "归档这个小队？",
-    "description": "“{{name}}” 将被归档，该小队当前承接的任务会转交给小队负责人。此操作无法撤销，如需恢复路由请新建小队。",
+    "title": "归档这个AI小队？",
+    "description": "“{{name}}” 将被归档，该AI小队当前承接的任务会转交给AI小队负责人。此操作无法撤销，如需恢复路由请新建AI小队。",
     "cancel": "取消",
     "confirm": "归档",
     "archiving": "归档中…",
-    "success": "已归档小队"
+    "success": "已归档AI小队"
   },
   "name_editor": {
-    "title": "重命名小队",
-    "placeholder": "小队名称",
+    "title": "重命名AI小队",
+    "placeholder": "AI小队名称",
     "required": "名称不能为空",
     "cancel": "取消",
     "save": "保存",
@@ -44,7 +44,7 @@
   },
   "add_member_dialog": {
     "title": "添加成员",
-    "description": "添加工作区成员或智能体到这个小队。",
+    "description": "添加工作区成员或智能体到这个AI小队。",
     "label_member": "成员",
     "label_role": "角色",
     "label_optional": "（可选）",
@@ -64,7 +64,7 @@
     "title": "编辑描述",
     "placeholder_empty": "添加描述",
     "cancel": "取消",
-    "responsibility_placeholder": "这个小队负责什么？",
+    "responsibility_placeholder": "这个AI小队负责什么？",
     "save": "保存"
   },
   "discard_changes_dialog": {
@@ -75,13 +75,13 @@
   },
   "members_tab": {
     "section_title": "成员",
-    "section_count_other": "该小队有 {{count}} 名成员",
+    "section_count_other": "该AI小队有 {{count}} 名成员",
     "add_member_button": "添加成员",
     "create_agent_button": "创建智能体",
     "leader_chip": "队长",
     "view_agent_tooltip": "打开智能体详情",
-    "make_leader_tooltip": "设为小队负责人",
-    "remove_member_tooltip": "从小队移除",
+    "make_leader_tooltip": "设为AI小队负责人",
+    "remove_member_tooltip": "从AI小队移除",
     "status_working": "工作中",
     "status_idle": "空闲",
     "status_offline": "离线",
@@ -111,11 +111,11 @@
     "role_update_failed": "更新角色失败",
     "leader_updated": "队长已更新",
     "leader_update_failed": "更新队长失败",
-    "archive_failed": "归档小队失败",
+    "archive_failed": "归档AI小队失败",
     "instructions_saved": "指引已保存"
   },
   "profile_card": {
-    "unavailable": "小队不可用",
+    "unavailable": "AI小队不可用",
     "detail_link": "详情 →",
     "archived": "已归档",
     "member_count_other": "{{count}} 名成员",
@@ -123,7 +123,7 @@
     "more_members_other": "还有 {{count}} 人"
   },
   "instructions_tab": {
-    "description": "小队指引会在队长智能体处理分配给该小队的任务时注入到它的 prompt 中。可用来给队长提供贯穿全队的指导、协作规范，或每次 task 都应遵循的上下文。",
+    "description": "AI小队指引会在队长智能体处理分配给该AI小队的任务时注入到它的 prompt 中。可用来给队长提供贯穿全队的指导、协作规范，或每次 task 都应遵循的上下文。",
     "unsaved_changes": "有未保存的修改",
     "save_button": "保存",
     "placeholder": "例如：始终先编写失败测试。提交应保持小而独立。"
@@ -138,41 +138,41 @@
     "direction_asc": "升序",
     "direction_desc": "降序",
     "section_columns": "列",
-    "result_count_title": "当前结果 / 全部小队",
+    "result_count_title": "当前结果 / 全部AI小队",
     "filter_label": "筛选",
     "filter_active_count_other": "{{count}} 项筛选",
     "clear_filters": "清除筛选"
   },
   "catalog": {
-    "title": "内置小队",
-    "description": "为新项目或已有项目选择小队。",
-    "loading": "正在加载内置小队...",
-    "error": "无法加载内置小队。",
-    "empty": "暂无内置小队。",
+    "title": "内置AI小队",
+    "description": "为新项目或已有项目选择AI小队。",
+    "loading": "正在加载内置AI小队...",
+    "error": "无法加载内置AI小队。",
+    "empty": "暂无内置AI小队。",
     "retry": "重试",
     "use_for_project": "用于项目",
-    "open_instance": "打开小队"
+    "open_instance": "打开AI小队"
   },
   "use_for_project": {
     "title": "将{{name}}用于项目",
-    "description": "为后续任务设置默认小队，保留已有任务和自定义配置。",
+    "description": "为后续任务设置默认AI小队，保留已有任务和自定义配置。",
     "project_label": "项目",
     "new_project": "创建项目",
-    "no_projects": "创建一个项目，即可使用此小队。",
+    "no_projects": "创建一个项目，即可使用此AI小队。",
     "projects_loading": "正在加载项目...",
     "projects_error": "无法加载项目。",
     "resources_loading": "正在加载项目资源...",
     "resources_error": "无法加载项目资源。",
     "runtime_label": "执行运行时",
     "connect_later": "稍后连接",
-    "runtime_hint": "选择项目使用的运行时，也可以先保存小队选择，稍后再连接。",
+    "runtime_hint": "选择项目使用的运行时，也可以先保存AI小队选择，稍后再连接。",
     "runtimes_error": "无法加载运行时。",
     "agents_error": "无法查询工作区助手使用的运行时。",
     "runtime_unavailable": "此运行时已不可用，请选择其他运行时或稍后连接。",
     "offline": "离线",
     "apply": "用于项目",
-    "applying": "正在准备小队...",
+    "applying": "正在准备AI小队...",
     "cancel": "取消",
-    "failed": "无法更新项目小队，请重试。"
+    "failed": "无法更新项目AI小队，请重试。"
   }
 }

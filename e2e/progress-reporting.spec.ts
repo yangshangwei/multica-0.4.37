@@ -188,7 +188,7 @@ async function createReportAutomation(page: Page, api: TestApiClient, template: 
   await expect(page.getByRole("button", { name: /^时区: Shanghai GMT\+8$/ })).toBeVisible();
   const create = page.getByRole("button", { name: "启用自动化", exact: true });
   await expect(create).toBeDisabled();
-  await page.getByRole("button", { name: "选择智能体或小队", exact: true }).click();
+  await page.getByRole("button", { name: "选择智能体或AI小队", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: new RegExp(reporter.name) }).click();
   await expect(create).toBeEnabled();
   const pending = page.waitForResponse((response) =>

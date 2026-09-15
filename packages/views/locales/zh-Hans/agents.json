@@ -278,7 +278,7 @@
   },
   "creation_studio": {
     "title": "创建智能体",
-    "squad_title": "为小队创建智能体",
+    "squad_title": "为AI小队创建智能体",
     "duplicate_title": "复制 {{name}}",
     "back": "返回",
     "eyebrow": "创建智能体",
@@ -359,7 +359,7 @@
     "duplicate_env_notice": "指令、skill 和命令行参数会被复制。环境变量、MCP 服务器和本机运行时配置不会复制。",
     "duplicate_runtime_reset_notice": "原运行时当前不可用，副本已改用其他运行时。模型、思考等级和速度只在所选运行时上有效，因此已被清空。",
     "create_and_open": "创建并打开",
-    "create_and_add": "创建并加入小队",
+    "create_and_add": "创建并加入AI小队",
     "creating": "正在创建…",
     "create_failed": "无法创建智能体。",
     "name_conflict": "工作区中已存在同名智能体。",
@@ -396,7 +396,7 @@
     "autonomy_hint": {
       "observer": "只读取、分析和评论；不能改状态或负责人，也不能创建工作项。",
       "contributor": "在隔离分支上写代码和测试，并推进被指派的 issue；不能操作生产。",
-      "coordinator": "负责路由：子任务、@提及、小队和自动化；不能操作生产。",
+      "coordinator": "负责路由：子任务、@提及、AI小队和自动化；不能操作生产。",
       "operator": "可以执行高风险动作，但仅限人工已审批的那一个动作，一次审批对应一次动作。"
     }
   },
@@ -493,7 +493,7 @@
     "cancel": "取消",
     "create_failed_toast": "创建智能体失败",
     "skill_attach_failed_toast": "智能体已创建，但 skill 关联失败：{{error}}",
-    "squad_join_failed_toast": "智能体\"{{name}}\"已创建，但加入小队失败：{{error}}。你可以在 Members 标签里手动添加。",
+    "squad_join_failed_toast": "智能体\"{{name}}\"已创建，但加入AI小队失败：{{error}}。你可以在 Members 标签里手动添加。",
     "instructions": {
       "label": "指令",
       "placeholder_blank": "点击撰写指令…",
@@ -540,7 +540,7 @@
       "unsaved_changes": "未保存的修改"
     },
     "instructions": {
-      "intro": "设定智能体的角色和工作规则，支持 Markdown。执行时还会叠加平台规则、小队协作规则及已绑定的 skill。",
+      "intro": "设定智能体的角色和工作规则，支持 Markdown。执行时还会叠加平台规则、AI小队协作规则及已绑定的 skill。",
       "system_prompt_label": "系统指令",
       "placeholder": "定义这个智能体的角色、专长和工作风格。\n\n# 示例\n你是一名专注 React 和 TypeScript 的前端工程师。\n\n## 工作风格\n- 写小而聚焦的 PR——每个逻辑变更一个 commit\n- 优先组合而不是继承\n- 新组件总是配单元测试\n\n## 约束\n- 未经明确批准不要修改 shared/ 下的 type\n- 遵循 features/ 中现有的组件模式",
       "system_layer_label": "由 Multica 维护",
