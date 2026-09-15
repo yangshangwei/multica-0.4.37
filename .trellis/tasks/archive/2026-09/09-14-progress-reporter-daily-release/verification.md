@@ -1,6 +1,6 @@
 # Verification and release evidence
 
-Source verification is complete; publication and final installer checks are still pending.
+Source verification, publication and final artifact validation are complete.
 
 ## Source and integration checks
 
@@ -41,6 +41,23 @@ Source verification is complete; publication and final installer checks are stil
 - `.omx/reports/progress-reporting-model-eval/semantic-review.json`: independent actual-output review and hashes.
 - `.omx/state/progress-reporting-e2e/ralph-progress.json`: visual verdict.
 
-## Remaining release work
+## Released artifacts and final checks
 
-Commit and push; verify fork CI; create v0.4.45 from main; wait for publication; build and smoke the Linux amd64 upgrade archive; build and verify Windows x64/x86-64 installer; upload exact artifacts/checksums and document upgrade instructions. Native Windows installer/CLI verification is now part of the existing manual workflow; actual Windows execution remains a release gate.
+- PR #1 merged to main: https://github.com/yangshangwei/multica-0.4.37/pull/1
+- Release: https://github.com/yangshangwei/multica-0.4.37/releases/tag/v0.4.45
+- Immutable release source: `88522b44478fc59ccf1a6a4556b8ffa99d1ca01d`.
+- PR CI `34899068659` and main CI `34905382224`: passed.
+- Release workflow `34905861554`: passed.
+- Branch Windows build/install `34899554181` and final tagged build/install `34906105951`: passed. Final Windows JSON confirms the exact installer was silently installed and x64 desktop/CLI versions matched; GUI and report-model execution are explicitly not claimed.
+- Final Windows installer: 177,516,218 bytes, SHA256 `82c9a7f40b78d0437039d0d6461727b720d8ebbc68b781dbf92c7a6ce101ed2d`. ASAR, renderer assets, PE/build metadata, updater SHA512 and all 8,513 blockmap chunks verified.
+- Final Linux amd64 upgrade archive: 287,449,725 bytes, SHA256 `88fe470265f2356166b7708bb37ded1e5966627eb1df1e3d391def51392ac56e`. On macOS use `COPYFILE_DISABLE=1` for the outer tar: the first archive included AppleDouble metadata; the final clean archive preserves all 12 payload file hashes exactly.
+- Actual upgrade `upgrade-smoke-2`: passed all ten check groups and scoped cleanup. A prior v0.4.42 deployment retained its API task, SQL sentinel, JWT, secrets and ports; the new image selection survived a normal Compose force-recreation with transient overrides removed. Backend/CLI commit and version, actual web X-Client-Version, nine-role/ten-template catalogs and published feed all matched. The controller ran in genuine Rosetta x86_64 Bash and the services in Linux amd64 containers; architecture checks and health responses were not spoofed.
+- Eleven uploaded delivery assets were verified against GitHub's actual SHA256 digests and byte sizes; the three original changelog assets were retained.
+- Delivery directory: `dist/release/v0.4.45/` in the primary checkout. It includes installers, individual/combined checksums, Chinese upgrade instructions and verification summaries.
+- Preserve `%USERPROFILE%\.multica\desktop.json` and its `updateUrl` for intranet desktop updates; omitted updateUrl still uses the original upstream feed.
+
+## Operational notes
+
+- Use a task-local Corepack shim directory at the front of PATH for Turbo subprocesses: this host's outer pnpm shim is v11 while the project uses v10.28.2. No global package-manager settings were changed.
+- This host's Lore pre-tool hook recognizes only its fixed Lore keys in the final footer. Use an inline message ending in those keys plus `Co-authored-by: OmX <omx@oh-my-codex.dev>`; custom public-note trailers in that footer make the entire block unrecognized. These commits therefore use public-facing Conventional subjects. The guard was not disabled or modified.
+- Test web/static servers and the task-owned API were stopped after successful validation. The primary local API was rebuilt to the released source. After amd64 image loading, restore the shared development PostgreSQL image to native arm64 with its original `multica_pgdata` volume; data health was rechecked.

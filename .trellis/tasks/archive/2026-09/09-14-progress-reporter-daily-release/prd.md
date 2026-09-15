@@ -27,7 +27,7 @@ The user accepted the preceding recommendation and explicitly requested implemen
 - [x] Chinese UI screenshots match the supplied catalog style, without clipped content.
 - [x] Focused and full E2E, TypeScript checks/tests/lint, Go tests/vet, relevant packaging checks pass with saved logs.
 - [x] Independent spec and code review findings resolved.
-- [ ] Main, remote and v0.4.45 identify the verified source; release workflow finishes successfully.
-- [ ] Offline archive starts against an isolated database, serves version 0.4.45 and both new catalogs, includes upgrade script/changelog/checksum.
-- [ ] Windows artifact architecture, embedded CLI, renderer version, archive integrity and update metadata are verified.
-- [ ] Deliverables are downloaded/present locally and linked with concise verification limits.
+- [x] Main, remote and v0.4.45 identify the verified source; release workflow finishes successfully.
+- [x] Offline archive starts against an isolated database, serves version 0.4.45 and both new catalogs, includes upgrade script/changelog/checksum.
+- [x] Windows artifact architecture, embedded CLI, renderer version, archive integrity and update metadata are verified.
+- [x] Deliverables are downloaded/present locally and linked with concise verification limits.
