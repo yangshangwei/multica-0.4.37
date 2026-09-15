@@ -105,13 +105,13 @@ try {
     if ($productVersion -notmatch ('^' + [regex]::Escape($numericVersion) + '(?:\.\d+)?$')) {
         throw 'Installed desktop product version does not match the installer version'
     }
-    $verification.desktop = [ordered]@{ path = $desktopPath; pe_machine = $peMachineHex; product_version = $productVersion }
+    $verification.desktop = [ordered]@{ path = $desktopPath; pe_machine = $peMachineHex; product_version = $productVersion; sha256 = (Get-FileHash -LiteralPath $desktopPath -Algorithm SHA256).Hash.ToLowerInvariant() }
 
     # Execute only the CLI inside this installation. Never launch Multica.exe,
     # look up a CLI on PATH, or start a daemon, agent, or desktop service.
     $stdoutPath = Join-Path $smokeRoot 'cli-version.stdout.json'
     $stderrPath = Join-Path $smokeRoot 'cli-version.stderr.txt'
-    $verification.cli = [ordered]@{ path = $cliPath; pe_machine = $peMachineHex; arguments = @('version', '--output', 'json'); exit_code = $null; stdout = $null; stderr = $null; reported = $null }
+    $verification.cli = [ordered]@{ path = $cliPath; pe_machine = $peMachineHex; sha256 = (Get-FileHash -LiteralPath $cliPath -Algorithm SHA256).Hash.ToLowerInvariant(); arguments = @('version', '--output', 'json'); exit_code = $null; stdout = $null; stderr = $null; reported = $null }
     $cliProcess = Start-Process -FilePath $cliPath -ArgumentList 'version --output json' -WorkingDirectory $smokeRoot -PassThru -NoNewWindow -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
     Wait-SmokeProcess -Process $cliProcess -TimeoutSeconds $CliTimeoutSeconds -Label 'Bundled CLI version'
     $verification.cli.exit_code = $cliProcess.ExitCode
