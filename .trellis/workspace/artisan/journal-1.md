@@ -656,3 +656,31 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 20: V0.4.46 发布收尾：升级 smoke 修复并全量交付
+
+**Date**: 2026-09-16
+**Task**: V0.4.46 发布收尾：升级 smoke 修复并全量交付
+**Branch**: `main`
+
+### Summary
+
+接续上会话中断的发布流程：确认提交推送与 tag/Release 已完成（v0.4.46 -> ee2fe8a3f，desktop-smoke 在 main 与 tag 上均绿）。修复升级 smoke 的三个 harness 缺陷后，真实 V0.4.45->V0.4.46 离线升级 12 项检查全过（JWT/任务/SQL/附件/数据卷/配置持久化，Rosetta amd64）；三个缺陷均为环境适配：containerd 存储 inspect --platform 远端解析幽灵镜像、docker load 不重指 tag（需手动切 amd64 pg tag，cleanup 自动恢复）、Python 3.14 Request.method 条件赋值。上传 17 个交付资产到 release（三个大文件逐个传），重新下载核对 16 条 SHA256SUMS 全部一致；产出 README-v0.4.46.zh-CN.md 与验证 JSON。PRD 八条验收逐条核对通过，任务归档。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a0eddb811` | (see git log) |
+| `7138920d0` | (see git log) |
+| `12db2f808` | (see git log) |
+| `b6be6ba1e` | (see git log) |
+| `2dfd0c43c` | (see git log) |
+| `5ec932f12` | (see git log) |
+| `43f6fc10e` | (see git log) |
+| `ee2fe8a3f` | (see git log) |
+
+### Status
+
+[OK] **Completed**

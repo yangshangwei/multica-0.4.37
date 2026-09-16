@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 19
+- **Total Sessions**: 20
 - **Last Active**: 2026-09-16
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~658 | Active |
+| `journal-1.md` | ~686 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 20 | 2026-09-16 | V0.4.46 发布收尾：升级 smoke 修复并全量交付 | `a0eddb811`, `7138920d0`, `12db2f808`, `b6be6ba1e`, `2dfd0c43c`, `5ec932f12`, `43f6fc10e`, `ee2fe8a3f` | `main` |
 | 19 | 2026-09-16 | 侧边栏分组与中文命名落地，设置页四分组与守护进程中文化收尾 | `3b035dae4`, `bacf2e3e3`, `28aced756`, `fb35f9ab0`, `fdb65ecba`, `421cd5bad`, `756030e2a` | `main` |
 | 18 | 2026-09-16 | E2E 遗留失败分类与生产 web 运行规则 | `8ff63fb51`, `76ce84a39` | `main` |
 | 17 | 2026-09-15 | 引导侧栏同步「进入项目」终点项 | `3a9755183` | `main` |
