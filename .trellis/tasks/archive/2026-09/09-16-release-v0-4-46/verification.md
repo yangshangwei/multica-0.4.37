@@ -79,11 +79,53 @@ the existing release pipeline is reused.
 - Mobile has an independent release cadence and is excluded by the repository's
   root test/build scripts. This release targets Web/server and Desktop.
 
+## Offline upgrade verification
+
+The prepared real V0.4.45-to-V0.4.46 upgrade ran on 2026-09-16 with all 12
+checks passing (`upgrade-smoke-74205122b47a7234cc77/linux-upgrade-verification.json`):
+exact final archive and operator sources, real Rosetta x86_64 shell, cached
+previous amd64 images, isolated deployment configuration, actual previous
+V0.4.45 API/CLI/Web, prior device login + issue + SQL + uploaded-file sentinels,
+pre-upgrade backups, loaded image layers, post-upgrade original JWT with durable
+task/SQL/file bytes, ordinary Compose recreation preserving data volumes, the
+authenticated cumulative feed with exact mounted bytes, and the upgraded Web
+carrying the packaged version. The development PostgreSQL tag and its native
+arm64 image were restored during cleanup; the running development containers
+were unchanged.
+
+Three harness-only defects were fixed in `.omx/reports/release-v0.4.46/upgrade_smoke.py`
+before the successful run (no product code changed): the containerd image store
+resolves `docker image inspect --platform` against remote manifests, so the
+native PostgreSQL selection now reads the local tag and running containers; the
+FAIL path now prints a full traceback; and Python 3.14 only sets
+`urllib.request.Request.method` when a method was passed, so the failure message
+uses `get_method()`. The amd64 pgvector tag also had to be restored manually
+before the run because a containerd-store `docker load` does not retag, unlike
+the classic store the harness was designed for.
+
 ## Remaining publication gates
 
-1. Commit/push source and verify the Windows candidate build/install.
-2. Create the immutable v0.4.46 tag; complete Release and tagged Windows jobs.
-3. Build the exact cumulative-feed Linux amd64 intranet archive.
-4. Run the prepared real V0.4.45-to-V0.4.46 upgrade, with original task, attachment,
-   SQL sentinel, JWT, secrets, ports, backup and ordinary recreation checks.
-5. Upload validated assets, verify remote hashes, and provide delivery links.
+1. Commit/push source and verify the Windows candidate build/install. **Done.**
+2. Create the immutable v0.4.46 tag; complete Release and tagged Windows jobs. **Done.**
+3. Build the exact cumulative-feed Linux amd64 intranet archive. **Done.**
+4. Run the prepared real V0.4.45-to-V0.4.46 upgrade. **Done.**
+5. Upload validated assets, verify remote hashes, and provide delivery links. **Done.**
+
+## Publication result (2026-09-16)
+
+All 17 deliverable assets were uploaded to
+https://github.com/yangshangwei/multica-0.4.37/releases/tag/v0.4.46 (20 assets
+total with the generated changelog set). The complete release was re-downloaded
+and all 16 `SHA256SUMS-v0.4.46.txt` entries verified OK against the published
+bytes, including both Windows installers, the server upgrade archive, update
+metadata and all verification JSON. The three large uploads completed as
+individual `gh release upload` invocations after the first batched attempt
+stalled without transferring them.
+
+PRD acceptance audit: E2E/regression evidence current on the release commit
+(91 passed); lint/typecheck/unit/race/static/packaging gates passed; native
+Windows x64+ia32 install verification with documented WOW64 limitation; the
+tag resolves to the pushed main commit `ee2fe8a3f`; the release carries the
+intranet upgrade installer, both Windows desktop artifacts and matching notes;
+the real V0.4.45-to-V0.4.46 offline upgrade passed all 12 persistence checks;
+published hashes match local deliverables byte for byte.
