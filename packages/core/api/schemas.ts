@@ -91,6 +91,7 @@ import type {
   WebhookDelivery,
   WorkspaceMcpServer,
 } from "../types";
+import type { ListVCSConnectionsResponse, VCSProvider } from "../types/vcs";
 import type {
   AgentApproval,
   AgentRoleTemplate,
@@ -3707,4 +3708,31 @@ export const EMPTY_AGENT_APPROVAL: AgentApproval = {
   execution_note: "",
   created_at: "",
   updated_at: "",
+};
+
+// ---- VCS (token-based Git providers) ----
+// `provider` is a server-driven enum; consumers switch on it with a default
+// branch, so an unknown value must still parse instead of blanking the list.
+export const VCSConnectionSchema = z.object({
+  id: z.string(),
+  workspace_id: z.string().optional().default(""),
+  provider: z.custom<VCSProvider>((v) => typeof v === "string" && v.length > 0),
+  instance_url: z.string(),
+  account_login: z.string().optional().default(""),
+  webhook_url: z.string().optional().default(""),
+  webhook_path: z.string().optional().default(""),
+  created_at: z.string().optional().default(""),
+}).loose();
+
+export const ListVCSConnectionsResponseSchema = z.object({
+  connections: z.array(VCSConnectionSchema).default([]),
+  available: z.boolean().optional(),
+  configured: z.boolean().optional(),
+  can_manage: z.boolean().optional(),
+}).loose();
+
+export const EMPTY_LIST_VCS_CONNECTIONS_RESPONSE: ListVCSConnectionsResponse = {
+  connections: [],
+  configured: false,
+  can_manage: false,
 };

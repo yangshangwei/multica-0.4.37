@@ -24,6 +24,29 @@ afterEach(() => {
 // app in past incidents. The contract is: a malformed response degrades to
 // an empty/safe shape, never throws into React.
 describe("ApiClient schema fallback", () => {
+  describe("VCS connections", () => {
+    it("falls back to an empty list when the connections response is malformed", async () => {
+      stubFetchJson({ connections: "not-an-array", available: true });
+      const client = new ApiClient("https://api.example.test");
+      await expect(client.listVCSConnections("ws-1")).resolves.toEqual({
+        connections: [],
+        configured: false,
+        can_manage: false,
+      });
+    });
+
+    it("keeps a connection whose provider is unknown to this build", async () => {
+      stubFetchJson({
+        connections: [{ id: "c1", provider: "bitbucket", instance_url: "https://bb.example" }],
+        available: true,
+      });
+      const client = new ApiClient("https://api.example.test");
+      const out = await client.listVCSConnections("ws-1");
+      expect(out.connections).toHaveLength(1);
+      expect(out.connections[0]).toMatchObject({ provider: "bitbucket", instance_url: "https://bb.example" });
+    });
+  });
+
   describe("GitHub repository import", () => {
     it("falls back safely when installation or repository responses are malformed", async () => {
       stubFetchJson({ installations: "not-an-array", configured: true });
