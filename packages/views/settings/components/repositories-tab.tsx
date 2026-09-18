@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { LoaderCircle, Plus, Search, Trash2 } from "lucide-react";
+import { GitBranch, LoaderCircle, Plus, Search, Trash2 } from "lucide-react";
 import { Input } from "@multica/ui/components/ui/input";
 import { Button } from "@multica/ui/components/ui/button";
 import { Badge } from "@multica/ui/components/ui/badge";
@@ -38,6 +38,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useAuthStore } from "@multica/core/auth";
+import { useConfigStore } from "@multica/core/config";
+import { useRepoProvider } from "@multica/core/vcs";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useCurrentWorkspace } from "@multica/core/paths";
 import { memberListOptions, workspaceKeys } from "@multica/core/workspace/queries";
@@ -141,6 +143,24 @@ export function RepositoriesTab() {
   const githubConnectConfigured = githubData?.configured === true;
   const githubBrowseConfigured =
     githubData?.repository_browse_configured === true;
+  // Deployments without a GitHub App (intranet installs on a private GitLab)
+  // get a connect button for the token-based Git providers instead. It leads
+  // to the Integrations tab, where the connection form lives; repos are then
+  // added here by URL. Once a provider is connected the button carries its
+  // name; before that it defaults to GitLab, this deployment's target host.
+  const vcsAvailable = useConfigStore((s) => s.vcsIntegrationAvailable);
+  const repoProvider = useRepoProvider(wsId);
+  const showVCSConnect =
+    vcsAvailable && !githubConnectConfigured && githubInstallations.length === 0;
+  const vcsProviderName =
+    repoProvider.kind === "git" || repoProvider.kind === "github"
+      ? "GitLab"
+      : repoProvider.name;
+  const openIntegrations = () => {
+    const params = new URLSearchParams(navigation.searchParams);
+    params.set("tab", "integrations");
+    navigation.replace(`${navigation.pathname}?${params.toString()}`);
+  };
   const githubRepositoriesQuery = useInfiniteQuery({
     ...githubInstallationRepositoriesOptions(wsId, selectedInstallationID),
     enabled:
@@ -436,6 +456,12 @@ export function RepositoriesTab() {
                   <Plus className="size-3.5" />
                   {t(($) => $.repositories.add)}
                 </Button>
+                {showVCSConnect ? (
+                  <Button size="sm" onClick={openIntegrations}>
+                    <GitBranch className="size-3.5" />
+                    {t(($) => $.repositories.connect_vcs, { provider: vcsProviderName })}
+                  </Button>
+                ) : (
                 <Button
                   size="sm"
                   onClick={handleGitHubAction}
@@ -460,6 +486,7 @@ export function RepositoriesTab() {
                     ? t(($) => $.repositories.choose_from_github)
                     : t(($) => $.repositories.connect_github)}
                 </Button>
+                )}
               </div>
               {!allUrlsValid ? (
                 <span className="text-caption text-muted-foreground">

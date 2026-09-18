@@ -20,6 +20,7 @@ import {
   useUpdateProjectResource,
 } from "@multica/core/projects";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { useRepoProvider, type RepoProviderPresentation } from "@multica/core/vcs";
 import { useCurrentWorkspace } from "@multica/core/paths";
 import type {
   GithubRepoResourceRef,
@@ -106,6 +107,7 @@ export function ProjectResourcesSection({ projectId }: { projectId: string }) {
   const { t } = useT("projects");
   const wsId = useWorkspaceId();
   const workspace = useCurrentWorkspace();
+  const repoProvider = useRepoProvider(wsId);
   const daemonStatus = useLocalDaemonStatus();
   const [open, setOpen] = useState(true);
   const [addOpen, setAddOpen] = useState(false);
@@ -423,7 +425,7 @@ export function ProjectResourcesSection({ projectId }: { projectId: string }) {
             />
             <PopoverContent align="start" className="w-72 p-2 space-y-2">
               <div className="text-caption font-medium text-muted-foreground">
-                {t(($) => $.resources.popover_title)}
+                {t(($) => $.resources.popover_title, { provider: repoProvider.name })}
               </div>
               {workspace?.repos && workspace.repos.length > 0 && (
                 <>
@@ -483,6 +485,7 @@ export function ProjectResourcesSection({ projectId }: { projectId: string }) {
                 </>
               )}
               <CustomRepoForm
+                provider={repoProvider}
                 onSubmit={async (url) => {
                   await handleAttach(url);
                   setAddOpen(false);
@@ -814,8 +817,10 @@ function LocalDirectoryRow({
 }
 
 function CustomRepoForm({
+  provider,
   onSubmit,
 }: {
+  provider: RepoProviderPresentation;
   onSubmit: (url: string) => Promise<void> | void;
 }) {
   const { t } = useT("projects");
@@ -839,7 +844,10 @@ function CustomRepoForm({
         type="text"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        placeholder={t(($) => $.resources.url_placeholder)}
+        placeholder={t(($) => $.resources.url_placeholder, {
+          https: provider.httpsExample,
+          ssh: provider.sshExample,
+        })}
         className="flex-1 bg-transparent text-caption px-2 py-1 outline-none placeholder:text-muted-foreground"
       />
       <Button

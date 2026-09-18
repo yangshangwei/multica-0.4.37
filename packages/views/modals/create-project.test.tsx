@@ -16,6 +16,24 @@ const mocks = vi.hoisted(() => ({
   clearDraft: vi.fn(),
   draft: {} as Record<string, unknown>,
   workspaceId: "workspace-1",
+  // Neutral by default; a test swaps in a branded provider to check the copy.
+  repoProvider: {
+    kind: "git",
+    name: "Git",
+    httpsExample: "https://git.example.com/group/repo",
+    sshExample: "git@git.example.com:group/repo.git",
+  } as {
+    kind: "github" | "gitlab" | "forgejo" | "gitea" | "git";
+    name: string;
+    httpsExample: string;
+    sshExample: string;
+  },
+}));
+
+// The resolver's provider matrix is covered in @multica/core/vcs/repo-provider.test.ts;
+// here we only pin that the modal threads the result into its copy.
+vi.mock("@multica/core/vcs", () => ({
+  useRepoProvider: () => mocks.repoProvider,
 }));
 
 vi.mock("@tanstack/react-query", () => ({
@@ -195,6 +213,12 @@ import { CreateProjectModal } from "./create-project";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mocks.repoProvider = {
+    kind: "git",
+    name: "Git",
+    httpsExample: "https://git.example.com/group/repo",
+    sshExample: "git@git.example.com:group/repo.git",
+  };
   mocks.draft = { title: "", description: "", status: "planned", priority: "medium" };
   mocks.workspaceId = "workspace-1";
   mocks.setDraft.mockImplementation((partial) => { mocks.draft = { ...mocks.draft, ...partial }; });
@@ -215,6 +239,33 @@ describe("CreateProjectModal", () => {
     // same URL would stack a browser tooltip on top of it (MUL-4836).
     expect(screen.getByRole("tooltip", { name: longRepoUrl })).toBeInTheDocument();
     expect(screen.queryByTitle(longRepoUrl)).toBeNull();
+  });
+
+  it("names the repo picker after the Git host the workspace is connected to", () => {
+    mocks.repoProvider = {
+      kind: "gitlab",
+      name: "GitLab",
+      httpsExample: "https://gitlab.corp.example/group/repo",
+      sshExample: "git@gitlab.corp.example:group/repo.git",
+    };
+    renderWithI18n(<CreateProjectModal onClose={vi.fn()} />);
+
+    expect(screen.getByText("Attach GitLab repos to this project")).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(
+        "https://gitlab.corp.example/group/repo or git@gitlab.corp.example:group/repo.git",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/GitHub/)).not.toBeInTheDocument();
+  });
+
+  it("stays neutral in Chinese when no Git host is connected", () => {
+    renderWithI18n(<CreateProjectModal onClose={vi.fn()} />, { locale: "zh-Hans" });
+
+    expect(screen.getByText("为此项目关联 Git 仓库")).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("https://git.example.com/group/repo 或 git@git.example.com:group/repo.git"),
+    ).toBeInTheDocument();
   });
 
   it("reveals the start/due date pickers from the ⋯ overflow menu", async () => {

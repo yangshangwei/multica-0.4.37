@@ -54,6 +54,23 @@ const githubRepositoriesRef = vi.hoisted(() => ({
 const searchParamsRef = vi.hoisted(() => ({
   current: new URLSearchParams("tab=repositories"),
 }));
+const configRef = vi.hoisted(() => ({ current: { vcsIntegrationAvailable: false } }));
+const repoProviderRef = vi.hoisted(() => ({
+  current: { kind: "git", name: "Git", httpsExample: "", sshExample: "" },
+}));
+
+vi.mock("@multica/core/config", () => ({
+  useConfigStore: Object.assign(
+    (selector?: (state: { vcsIntegrationAvailable: boolean }) => unknown) =>
+      selector ? selector(configRef.current) : configRef.current,
+    { getState: () => configRef.current },
+  ),
+}));
+
+// Provider resolution is covered in @multica/core/vcs/repo-provider.test.ts.
+vi.mock("@multica/core/vcs", () => ({
+  useRepoProvider: () => repoProviderRef.current,
+}));
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: (options: { queryKey: readonly unknown[] }) => {
@@ -146,6 +163,8 @@ describe("RepositoriesTab — automatic updates", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers({ shouldAdvanceTime: true });
+    configRef.current = { vcsIntegrationAvailable: false };
+    repoProviderRef.current = { kind: "git", name: "Git", httpsExample: "", sshExample: "" };
     workspaceRef.current = {
       id: "workspace-1",
       name: "Test Workspace",
@@ -338,6 +357,38 @@ describe("RepositoriesTab — automatic updates", () => {
       );
     });
     open.mockRestore();
+  });
+
+  it("offers a GitLab connection that leads to Integrations when no GitHub App is configured", async () => {
+    const user = setupUser();
+    configRef.current = { vcsIntegrationAvailable: true };
+    githubRef.current = {
+      installations: [],
+      configured: false,
+      repository_browse_configured: false,
+      can_manage: true,
+    };
+    render(<RepositoriesTab />, { wrapper: I18nWrapper });
+
+    expect(screen.queryByRole("button", { name: "Connect GitHub" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Connect GitLab" }));
+
+    expect(mockNavReplace).toHaveBeenCalledWith("/acme/settings?tab=integrations");
+    expect(mockGetGitHubConnectURL).not.toHaveBeenCalled();
+  });
+
+  it("names the connect button after an already connected Git provider", () => {
+    configRef.current = { vcsIntegrationAvailable: true };
+    repoProviderRef.current = { kind: "forgejo", name: "Forgejo", httpsExample: "", sshExample: "" };
+    githubRef.current = {
+      installations: [],
+      configured: false,
+      repository_browse_configured: false,
+      can_manage: true,
+    };
+    render(<RepositoriesTab />, { wrapper: I18nWrapper });
+
+    expect(screen.getByRole("button", { name: "Connect Forgejo" })).toBeInTheDocument();
   });
 
   it("keeps GitHub import disabled when repository browsing is unavailable", () => {

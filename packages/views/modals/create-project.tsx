@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useLayoutEffect } from "react";
-import { CalendarClock, CalendarDays, ChevronRight, FolderOpen, GitBranch, Maximize2, Minimize2, MoreHorizontal, Pencil, Search, X as XIcon, UserMinus } from "lucide-react";
+import { CalendarClock, CalendarDays, ChevronRight, FolderGit, FolderOpen, GitBranch, Maximize2, Minimize2, MoreHorizontal, Pencil, Search, X as XIcon, UserMinus } from "lucide-react";
 
 /**
  * GitHub mark — lucide-react v1 dropped brand icons, so we inline the
@@ -21,6 +21,19 @@ function GithubIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/**
+ * Repo row icon. Only GitHub has a brand mark here; every other host
+ * (self-hosted GitLab, Forgejo, Gitea, or nothing connected) gets the
+ * neutral folder-git glyph rather than a wrong brand.
+ */
+function RepoIcon({ kind, className }: { kind: RepoProviderKind; className?: string }) {
+  return kind === "github" ? (
+    <GithubIcon className={className} />
+  ) : (
+    <FolderGit className={className} />
+  );
+}
 import { useQuery } from "@tanstack/react-query";
 import { useCreateProject } from "@multica/core/projects/mutations";
 import { DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY, useProjectDraftStore } from "@multica/core/projects";
@@ -30,6 +43,7 @@ import {
   PROJECT_PRIORITY_ORDER,
 } from "@multica/core/projects/config";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { useRepoProvider, type RepoProviderKind } from "@multica/core/vcs";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import { memberListOptions, agentListOptions } from "@multica/core/workspace/queries";
 import { useActorName } from "@multica/core/workspace/hooks";
@@ -194,6 +208,11 @@ export function CreateProjectModal({ onClose, data }: {
   const [repoSearch, setRepoSearch] = useState("");
   const [customRepoUrl, setCustomRepoUrl] = useState("");
   const workspaceRepos = workspace?.repos ?? [];
+  // Names the picker after the Git host this workspace is actually connected
+  // to (a private GitLab on an intranet, GitHub on the cloud, or neutral).
+  const repoProvider = useRepoProvider(wsId);
+  const repoCopy = { provider: repoProvider.name };
+  const repoUrlExamples = { https: repoProvider.httpsExample, ssh: repoProvider.sshExample };
   const repoQuery = repoSearch.trim().toLowerCase();
   const filteredWorkspaceRepos = workspaceRepos.filter((repo) =>
     repo.url.toLowerCase().includes(repoQuery),
@@ -584,7 +603,7 @@ export function CreateProjectModal({ onClose, data }: {
                               : "text-muted-foreground hover:text-foreground",
                           )}
                         >
-                          {t(($) => $.create_project.source_tab_repos)}
+                          {t(($) => $.create_project.source_tab_repos, repoCopy)}
                         </button>
                         <button
                           type="button"
@@ -604,7 +623,7 @@ export function CreateProjectModal({ onClose, data }: {
                     {sourceMode === "repos" ? (
                       <>
                         <div className="text-caption font-medium text-muted-foreground">
-                          {t(($) => $.create_project.repos_heading)}
+                          {t(($) => $.create_project.repos_heading, repoCopy)}
                         </div>
                         {workspaceRepos.length > 0 ? (
                           <>
@@ -643,7 +662,7 @@ export function CreateProjectModal({ onClose, data }: {
                                       readOnly
                                       className="size-3.5"
                                     />
-                                    <GithubIcon className="size-3.5" />
+                                    <RepoIcon kind={repoProvider.kind} className="size-3.5" />
                                     <RepoUrlText url={repo.url} />
                                   </button>
                                 );
@@ -666,7 +685,7 @@ export function CreateProjectModal({ onClose, data }: {
                             type="text"
                             value={customRepoUrl}
                             onChange={(e) => setCustomRepoUrl(e.target.value)}
-                            placeholder={t(($) => $.create_project.repos_url_placeholder)}
+                            placeholder={t(($) => $.create_project.repos_url_placeholder, repoUrlExamples)}
                             className="flex-1 bg-transparent text-caption px-2 py-1 outline-none placeholder:text-muted-foreground"
                           />
                           <Button
@@ -689,7 +708,7 @@ export function CreateProjectModal({ onClose, data }: {
                                 key={url}
                                 className="flex items-center gap-2 text-caption"
                               >
-                                <GithubIcon className="size-3 text-muted-foreground" />
+                                <RepoIcon kind={repoProvider.kind} className="size-3 text-muted-foreground" />
                                 <RepoUrlText url={url} />
                                 <button
                                   type="button"
