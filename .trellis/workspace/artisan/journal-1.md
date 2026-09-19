@@ -684,3 +684,39 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 21: 仓库文案跟随实际连接的 Git 托管方，GitLab 个人授权方案暂缓落盘
+
+**Date**: 2026-09-18
+**Task**: 仓库文案跟随实际连接的 Git 托管方，GitLab 个人授权方案暂缓落盘
+**Branch**: `main`
+
+### Summary
+
+自建 GitLab 部署里「设置 → 仓库」的「连接 GitHub」指向一个装不上的 GitHub App，本会话让仓库相关文案跟随工作区实际连接的托管方。三层落地：api 层把 GET /api/workspaces/:id/vcs/connections 从裸 fetch 改为 parseWithFallback + ListVCSConnectionsResponseSchema，畸形响应降级为空列表，未知 provider 仍保留该连接交由消费方兜底；core/vcs 新增 resolveRepoProvider / useRepoProvider，恰好连接一个品牌时采用其名称与实例派生的示例克隆 URL，未连接或多品牌混连退回中性「Git」，同品牌跨实例则保留品牌名但不拿单一 host 充当示例；views 层的仓库连接按钮、创建项目弹窗与项目资源区的文案和示例 URL 统一跟随 provider，没有 GitHub App 时按钮显示「连接 {{provider}}」并跳转「设置 → 集成」，GitHub 之外改用中性图标，四语言 key 同步补齐。另落盘 2026-09-13 讨论的私有 GitLab 个人授权与 MR 归属需求/设计两份文档，文档首行即标注「暂缓，未实施」，第 15 章写明恢复前需用户再次确认，不因文档存在或方案审查通过而自动启动实施。c313866bb 是 Session 19 收尾后补的零散提交（帮助菜单中文四字统一），此前未入账，在此一并补记。本会话为事后补记，下列测试结论引自各提交的验证记录，未在补记时复跑。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c313866bb` | (see git log) |
+| `34b382e77` | (see git log) |
+| `f5ddbee12` | (see git log) |
+| `7eb2f3155` | (see git log) |
+| `d9f11b53a` | (see git log) |
+
+### Testing
+
+- [OK] repo-provider.test.ts 覆盖空输入、畸形响应、单品牌、跨实例与未知 provider 九种情形
+- [OK] schema.test.ts 新增两条 malformed-response 用例
+- [OK] repositories-tab.test.tsx 与 create-project.test.tsx 共 31 用例，含「无 GitHub App 时按钮显示 Connect GitLab 且跳转 integrations」
+- [OK] 语言包 parity 184 用例、pnpm typecheck 9/9
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 私有 GitLab 个人授权若要推进，先完成设计文档第 15 章的 P0 决策（GitLab 版本与 scope、A/B 部署路线、旧 owner/成员映射、授权有效期与对账时限），不直接进入实施
