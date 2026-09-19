@@ -45,6 +45,20 @@ draft source. Only explicit template adoption replaces a draft, and only the
 final create action writes a skill. Copies keep distinct names and informational
 `config.template_source`, never official `origin` metadata or agent permissions.
 
+Group the picker by provenance, derived purely from `presentation.isBuiltin`:
+platform built-ins (name in the role-skill catalog, resolver returns non-null)
+versus deployment-provided (operator-mounted, inline fallback with
+`isBuiltin: false`). Render a group's section only when it is non-empty, and
+split AFTER search filtering so both groups stay searchable. The deployment
+group heading carries its count and an inline, external-link-free hint that these
+come from the server's mounted skill-template directory (see the server
+`builtin-templates.md` mounted-directory scenario and the self-host quickstart).
+When no deployment templates exist — computed off the UNFILTERED catalog so an
+empty search never hides it — show a persistent muted hint that an operator can
+mount public templates. Do not add a `新建 skill` chooser entry or an in-UI
+directory-config form: the channel is passive/filesystem-backed, and the mount
+path is operator territory, not an end-user action.
+
 An unconfirmed submission is independent from the editor step. Returning to
 editing must retain the close warning and recovery action. Opening an older
 recovered result must also protect any newer draft changes. Pin create/recovery

@@ -44,7 +44,12 @@
 - R4 畸形条目（缺 SKILL.md、frontmatter 无 name / 非法名 / 目录逃逸）被跳过并记日志，不让整个模板列表崩溃或报错。
 - R5 名字与 embed role skill 冲突时行为确定：embed 赢，挂载侧同名条目以告警跳过（内网文件不能覆盖平台内容）。
 - R6 `ListSkillTemplates` 响应仍经现有 zod schema 解析；新增字段（若有）向后兼容。
-- R7 部署文档（SELF_HOSTING / offline-bundle 说明）补一段「如何投放 skill 模板」。
+- R7 部署文档（SELF_HOSTING / offline-bundle / self-host-quickstart en+zh）补一段「如何投放 skill 模板」。
+- R8 「从模板中修改」面板显式呈现模板来源与可扩充性：
+  - R8.1 分组：模板按来源分「平台内置」与「本部署提供」两组，各带组标题；某组为空则不渲染该组标题。搜索、选中、键盘行为在分组后保持不变。
+  - R8.2 来源引导：「本部署提供」组标题带条数 + 一个 `ⓘ` 内联说明（tooltip 或灰字），说明这些模板由本部署在服务器 skill 模板目录投放、放入即自动出现。**内联文案，不含外链**（内网无外网）。
+  - R8.3 空状态安利：当没有「本部署提供」模板时，面板底部常驻一行 muted 说明，告知可在服务器模板目录投放公共模板供所有工作区使用（同样内联、无外链）。
+  - R8.4 四语言（en/zh-Hans/ja/ko）文案齐备，通过 locale parity 测试。
 
 ## Acceptance Criteria
 
@@ -55,6 +60,7 @@
 - [ ] AC5 含 `references/*` 附属文件的模板，选中后附属文件随模板进入创建流程并落库。
 - [ ] AC6 挂载条目名与 embed role skill（如 `multica-code-review`）冲突时，返回的是 embed 版本，挂载同名条目被跳过。
 - [ ] AC7 `ListSkillTemplates` 响应经 zod 解析；构造一个畸形响应的前端测试证明添加流程不崩。
+- [ ] AC8 「从模板中修改」面板：存在挂载模板时分「平台内置」「本部署提供」两组、后者带条数与内联来源说明；无挂载模板时底部显示空状态安利；两种状态均无外链。分组不破坏搜索/选中/键盘行为。四语言 parity 通过。
 
 ## Out of Scope
 

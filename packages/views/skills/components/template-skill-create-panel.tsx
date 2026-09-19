@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, ArrowLeft, Check, Loader2, Search } from "lucide-react";
+import { AlertCircle, ArrowLeft, Check, Info, Loader2, Search } from "lucide-react";
 import type { SkillTemplate } from "@multica/core/types";
 import { parseFrontmatter } from "@multica/core/skills";
 import { skillListOptions, skillTemplateListOptions } from "@multica/core/workspace/queries";
@@ -10,6 +10,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { Textarea } from "@multica/ui/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@multica/ui/components/ui/tooltip";
 import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../../i18n";
 import { RichContent } from "../../rich-content";
@@ -45,11 +46,48 @@ export function TemplateSkillCreatePanel({ workspaceId, session, onUseTemplate, 
       name: template.name,
       description: template.description,
       searchText: `${template.name}\n${template.description}`.toLowerCase(),
+      isBuiltin: false,
     },
   }));
   const query = search.trim().toLowerCase();
   const filtered = presentations.filter(({ presentation }) => presentation.searchText.includes(query));
   const selected = filtered.find(({ template }) => template.name === session.previewName) ?? filtered[0];
+  // Source is a pure derivation: platform built-ins have a known role-skill
+  // presentation; everything else is mounted by this deployment. Backend keeps
+  // built-ins first and sorts each group by name, so grouping preserves order.
+  const builtinGroup = filtered.filter(({ presentation }) => presentation.isBuiltin);
+  const deploymentGroup = filtered.filter(({ presentation }) => !presentation.isBuiltin);
+  const hasDeploymentTemplates = presentations.some(({ presentation }) => !presentation.isBuiltin);
+  const renderTemplateRow = ({ template, presentation }: (typeof filtered)[number]) => {
+    const active = template.name === selected?.template.name;
+    return (
+      <button
+        key={template.name}
+        type="button"
+        aria-pressed={active}
+        onClick={(event) => {
+          selectedRow.current = event.currentTarget;
+          session.preview(template.name);
+          setMobilePreview(true);
+          requestAnimationFrame(() => {
+            if (listPanel.current && getComputedStyle(listPanel.current).display === "none") {
+              useTemplateButton.current?.focus();
+            }
+          });
+        }}
+        className={cn(
+          "flex w-full items-start gap-2 rounded-md px-3 py-3 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          active && "bg-accent text-foreground",
+        )}
+      >
+        <span className="min-w-0 flex-1">
+          <span className={cn("block break-words text-body", active ? "font-semibold" : "font-medium")}>{presentation.name}</span>
+          <span className="mt-1 line-clamp-2 text-caption text-muted-foreground">{presentation.description}</span>
+        </span>
+        {active && <Check className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />}
+      </button>
+    );
+  };
   const error = session.error;
   const showError = error ? (
     <div role="alert" className="flex items-start gap-2 rounded-md bg-destructive/10 p-3 text-caption text-destructive">
@@ -95,39 +133,46 @@ export function TemplateSkillCreatePanel({ workspaceId, session, onUseTemplate, 
                   className="pl-8"
                 />
               </div>
-              <div aria-label={t(($) => $.create.template.list_label)} className="min-h-0 flex-1 space-y-1 overflow-y-auto px-2 pb-3">
+              <div aria-label={t(($) => $.create.template.list_label)} className="min-h-0 flex-1 space-y-2 overflow-y-auto px-2 pb-3">
                 {filtered.length === 0 ? (
                   <p className="px-3 py-5 text-caption text-muted-foreground">{t(($) => $.create.template.no_matches)}</p>
-                ) : filtered.map(({ template, presentation }) => {
-                  const active = template.name === selected?.template.name;
-                  return (
-                    <button
-                      key={template.name}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={(event) => {
-                        selectedRow.current = event.currentTarget;
-                        session.preview(template.name);
-                        setMobilePreview(true);
-                        requestAnimationFrame(() => {
-                          if (listPanel.current && getComputedStyle(listPanel.current).display === "none") {
-                            useTemplateButton.current?.focus();
-                          }
-                        });
-                      }}
-                      className={cn(
-                        "flex w-full items-start gap-2 rounded-md px-3 py-3 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                        active && "bg-accent text-foreground",
-                      )}
-                    >
-                      <span className="min-w-0 flex-1">
-                        <span className={cn("block break-words text-body", active ? "font-semibold" : "font-medium")}>{presentation.name}</span>
-                        <span className="mt-1 line-clamp-2 text-caption text-muted-foreground">{presentation.description}</span>
-                      </span>
-                      {active && <Check className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />}
-                    </button>
-                  );
-                })}
+                ) : (
+                  <>
+                    {builtinGroup.length > 0 && (
+                      <section aria-label={t(($) => $.create.template.group_builtin)} className="space-y-1">
+                        <p className="px-3 pt-1 text-caption font-medium text-muted-foreground">{t(($) => $.create.template.group_builtin)}</p>
+                        {builtinGroup.map(renderTemplateRow)}
+                      </section>
+                    )}
+                    {deploymentGroup.length > 0 && (
+                      <section aria-label={t(($) => $.create.template.group_deployment_label)} className="space-y-1">
+                        <div className="flex items-center gap-1 px-3 pt-1">
+                          <span className="text-caption font-medium text-muted-foreground">
+                            {t(($) => $.create.template.group_deployment, { count: deploymentGroup.length })}
+                          </span>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <button
+                                  type="button"
+                                  aria-label={t(($) => $.create.template.group_deployment_info)}
+                                  className="rounded-sm p-0.5 text-faint-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                >
+                                  <Info className="size-3.5" aria-hidden="true" />
+                                </button>
+                              }
+                            />
+                            <TooltipContent side="bottom" className="max-w-xs">{t(($) => $.create.template.group_deployment_info)}</TooltipContent>
+                          </Tooltip>
+                        </div>
+                        {deploymentGroup.map(renderTemplateRow)}
+                      </section>
+                    )}
+                  </>
+                )}
+                {!hasDeploymentTemplates && (
+                  <p className="px-3 pt-2 text-caption leading-relaxed text-muted-foreground">{t(($) => $.create.template.deployment_empty_hint)}</p>
+                )}
               </div>
             </div>
             <div className={cn("min-h-0 flex-col md:flex", mobilePreview ? "flex" : "hidden")}>
