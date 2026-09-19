@@ -14,6 +14,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/logger"
 	"github.com/multica-ai/multica/server/internal/service"
+	skillpkg "github.com/multica-ai/multica/server/internal/skill"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -324,13 +325,17 @@ func (h *Handler) materializeRoleSkillsInTx(
 			Name:        roleSkill.Name,
 			Description: roleSkill.Description,
 			Content:     roleSkill.Content,
-			Config: map[string]any{
+			Config: skillpkg.NormalizePresentation(map[string]any{
 				"origin": map[string]any{
 					"type":    roleSkillOriginType,
 					"name":    roleSkill.Name,
 					"version": roleSkill.Version,
 				},
-			},
+				"presentation": map[string]any{
+					"category": roleSkill.Category,
+					"icon":     roleSkill.Icon,
+				},
+			}),
 			Files: files,
 		})
 		if err != nil {

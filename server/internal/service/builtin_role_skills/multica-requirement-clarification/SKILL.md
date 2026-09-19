@@ -2,6 +2,9 @@
 name: multica-requirement-clarification
 description: "需求尚不清楚、难以实施或验收时使用。根据任务已有信息整理待确认问题、可核验的验收标准、风险与工作拆分，将业务决策交由人工确认。"
 user-invocable: false
+metadata:
+  category: research
+  icon: message-circle-question
 ---
 
 # 需求澄清

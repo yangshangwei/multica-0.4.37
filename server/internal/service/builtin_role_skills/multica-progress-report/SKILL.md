@@ -2,6 +2,9 @@
 name: multica-progress-report
 description: "汇总工作区或项目的日报、周报时使用。核对任务与状态变更历史，在当前报告任务中交付可追溯的进展、统计和数据缺口；不修改业务任务。"
 user-invocable: false
+metadata:
+  category: writing
+  icon: chart-no-axes-column
 ---
 
 # 进展报告

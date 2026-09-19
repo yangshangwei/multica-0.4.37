@@ -25,17 +25,38 @@ var frontmatterPattern = regexp.MustCompile(`(?s)\A---\r?\n(.*?\r?\n)---`)
 // valid sibling key, and the coercion mirrors the TS parseFrontmatter in
 // packages/core/skills/frontmatter.ts so both sides agree on the same input.
 func ParseSkillFrontmatter(content string) (name, description string) {
+	fm := ParseSkillFrontmatterMeta(content)
+	return fm.Name, fm.Description
+}
+
+// Frontmatter is the structured view of a SKILL.md header. Name and
+// Description come from the top-level keys; Category and Icon come from the
+// optional `metadata:` mapping, which is where author-supplied presentation
+// hints live so they never collide with the reserved top-level keys. Values
+// are passed through as written — validation against the category/icon
+// whitelists happens in presentation.go. A `metadata.tags` entry is ignored:
+// skill labels are workspace labels, never frontmatter.
+type Frontmatter struct {
+	Name        string
+	Description string
+	Category    string
+	Icon        string
+}
+
+// ParseSkillFrontmatterMeta parses the frontmatter block into a Frontmatter.
+// Absent or malformed frontmatter yields the zero value.
+func ParseSkillFrontmatterMeta(content string) Frontmatter {
 	if !strings.HasPrefix(content, "---") {
-		return "", ""
+		return Frontmatter{}
 	}
 	match := frontmatterPattern.FindStringSubmatch(content)
 	if match == nil {
-		return "", ""
+		return Frontmatter{}
 	}
 
 	var fm map[string]any
 	if err := yaml.Unmarshal([]byte(match[1]), &fm); err != nil {
-		return "", ""
+		return Frontmatter{}
 	}
 	// Trimmed because both fields are single-line labels wherever they are
 	// consumed, while YAML block scalars (`description: |`, `description: >`)
@@ -43,8 +64,21 @@ func ParseSkillFrontmatter(content string) (name, description string) {
 	// imported skill differ from its own trimmed form, which the skill detail
 	// page read as an unsaved edit (MUL-5645). Normalize at the parse seam so
 	// no import path has to remember to.
-	return strings.TrimSpace(coerceFrontmatterValue(fm["name"])),
-		strings.TrimSpace(coerceFrontmatterValue(fm["description"]))
+	out := Frontmatter{
+		Name:        strings.TrimSpace(coerceFrontmatterValue(fm["name"])),
+		Description: strings.TrimSpace(coerceFrontmatterValue(fm["description"])),
+	}
+	meta, ok := fm["metadata"].(map[string]any)
+	if !ok {
+		return out
+	}
+	if s, isStr := meta["category"].(string); isStr {
+		out.Category = strings.TrimSpace(s)
+	}
+	if s, isStr := meta["icon"].(string); isStr {
+		out.Icon = strings.TrimSpace(s)
+	}
+	return out
 }
 
 // coerceFrontmatterValue renders a decoded YAML value as a string, mirroring the

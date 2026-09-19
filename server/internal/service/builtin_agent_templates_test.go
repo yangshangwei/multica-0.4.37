@@ -7,6 +7,8 @@ import (
 	"slices"
 	"strings"
 	"testing"
+
+	"github.com/multica-ai/multica/server/internal/skill"
 )
 
 // The registry is content, and content is what this feature is. These tests pin the
@@ -392,4 +394,38 @@ func containsAny(body string, candidates []string) bool {
 		}
 	}
 	return false
+}
+
+// TestRoleSkillTemplates_PresentationDefaults pins the category/icon each role
+// skill declares in its frontmatter `metadata` block. These seed
+// config.presentation on materialization, so a missing or misspelled value
+// would silently file a role skill under "other" with the generic icon.
+func TestRoleSkillTemplates_PresentationDefaults(t *testing.T) {
+	want := map[string][2]string{
+		"multica-requirement-clarification":    {"research", "message-circle-question"},
+		"multica-architecture-decision-record": {"engineering", "landmark"},
+		"multica-code-review":                  {"engineering", "git-pull-request"},
+		"multica-security-review":              {"engineering", "shield-check"},
+		"multica-test-report":                  {"engineering", "flask-conical"},
+		"multica-release-check":                {"operations", "rocket"},
+		"multica-documentation-change":         {"writing", "book-open"},
+		"multica-progress-report":              {"writing", "chart-no-axes-column"},
+	}
+	templates := RoleSkillTemplates()
+	if len(templates) != len(want) {
+		t.Fatalf("got %d role skills, want %d", len(templates), len(want))
+	}
+	for _, tpl := range templates {
+		exp, ok := want[tpl.Name]
+		if !ok {
+			t.Errorf("unexpected role skill %q", tpl.Name)
+			continue
+		}
+		if tpl.Category != exp[0] || tpl.Icon != exp[1] {
+			t.Errorf("%s: category/icon = %q/%q, want %q/%q", tpl.Name, tpl.Category, tpl.Icon, exp[0], exp[1])
+		}
+		if !skill.IsCategory(tpl.Category) || !skill.IsIconName(tpl.Icon) {
+			t.Errorf("%s: category %q or icon %q is not on the whitelist", tpl.Name, tpl.Category, tpl.Icon)
+		}
+	}
 }

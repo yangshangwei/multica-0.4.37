@@ -2,6 +2,9 @@
 name: multica-documentation-change
 description: "需要核对或更新变更相关文档时使用。依据实际代码行为修正受影响的说明，明确无需更新的情况；不修改代码、测试或配置。"
 user-invocable: false
+metadata:
+  category: writing
+  icon: book-open
 ---
 
 # 文档更新

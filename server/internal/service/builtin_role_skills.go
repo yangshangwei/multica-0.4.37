@@ -43,8 +43,13 @@ type RoleSkillTemplate struct {
 	// Description mirrors the SKILL.md frontmatter so the workspace row and the
 	// file agree without a second source of truth.
 	Description string
-	Content     string
-	Files       []AgentSkillFileData
+	// Category and Icon are the presentation defaults declared in the SKILL.md
+	// frontmatter `metadata` block. Written into config.presentation when the
+	// skill is materialized; empty for a mounted template that declares none.
+	Category string
+	Icon     string
+	Content  string
+	Files    []AgentSkillFileData
 }
 
 // builtinRoleSkillVersions is the release-side version of each role skill.
@@ -76,11 +81,13 @@ func RoleSkillTemplateByName(name string) (RoleSkillTemplate, bool) {
 	if err != nil {
 		return RoleSkillTemplate{}, false
 	}
-	_, description := skill.ParseSkillFrontmatter(string(content))
+	fm := skill.ParseSkillFrontmatterMeta(string(content))
 	loaded := RoleSkillTemplate{
 		Name:        name,
 		Version:     version,
-		Description: description,
+		Description: fm.Description,
+		Category:    fm.Category,
+		Icon:        fm.Icon,
 		Content:     string(content),
 	}
 	// Supporting files keep their relative path so nested references survive,

@@ -126,6 +126,19 @@ the relevant fields:
 - `skill.id` / `skill.name` / `skill.description`.
 - `skill.config.origin` (provenance: which source the skill was imported from —
   set only when the source supplied an origin, so treat it as possibly absent).
+- `skill.config.presentation` (`category` / `icon`, both optional). The
+  server validates these against a fixed category set and icon whitelist on
+  every write and returns 400 naming the bad field. On import they are seeded
+  from the SKILL.md frontmatter `metadata.category` / `metadata.icon` when
+  present; invalid author values are dropped silently, so a bad metadata block
+  never fails an import. Frontmatter `metadata.tags` is not read.
+- Skill labels are workspace labels (`resource_type=skill`, managed under
+  Settings → Labels), not part of `config.presentation`. `POST /api/skills`
+  accepts an optional `label_ids` array and attaches them in the create
+  transaction (400 `label_ids: label not found in this workspace` when an id
+  is unknown, belongs to another workspace, or is not skill-scoped). The
+  workspace skill list (`GET /api/skills`) embeds each skill's `labels` array;
+  import does not attach labels.
 - `skill.files` / files count.
 - `skill.created_at` / `skill.updated_at`.
 - `existing_skill.id` / `existing_skill.name` when status is `conflict`,

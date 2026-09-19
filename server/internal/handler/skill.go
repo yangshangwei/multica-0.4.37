@@ -69,6 +69,10 @@ type SkillSummaryResponse struct {
 	CreatedBy   *string `json:"created_by"`
 	CreatedAt   string  `json:"created_at"`
 	UpdatedAt   string  `json:"updated_at"`
+	// Labels are the workspace labels (resource_type = skill) attached to the
+	// skill. Always a JSON array: the workspace list fills it in one batched
+	// query; other summary shapes leave it empty rather than null.
+	Labels []LabelResponse `json:"labels"`
 	// Enabled is only populated for agent-scoped skill responses. Workspace
 	// skill lists describe the skill itself, so they omit assignment state.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -233,7 +237,41 @@ func skillSummaryToResponse(
 		CreatedBy:   uuidToPtr(createdBy),
 		CreatedAt:   timestampToString(createdAt),
 		UpdatedAt:   timestampToString(updatedAt),
+		Labels:      []LabelResponse{},
 	}
+}
+
+// labelsBySkill returns the skill-scoped labels of the given skills, keyed by
+// skill UUID string. A skill without labels has no entry; callers substitute
+// an empty slice. Label rendering is non-critical, so a query failure logs and
+// returns an empty map instead of failing the list call.
+func (h *Handler) labelsBySkill(ctx context.Context, wsUUID pgtype.UUID, skillIDs []pgtype.UUID) map[string][]LabelResponse {
+	out := map[string][]LabelResponse{}
+	if len(skillIDs) == 0 {
+		return out
+	}
+	rows, err := h.Queries.ListLabelsForSkills(ctx, db.ListLabelsForSkillsParams{
+		SkillIds:    skillIDs,
+		WorkspaceID: wsUUID,
+	})
+	if err != nil {
+		slog.Warn("ListLabelsForSkills failed", "error", err)
+		return out
+	}
+	for _, r := range rows {
+		skillID := uuidToString(r.SkillID)
+		out[skillID] = append(out[skillID], labelToResponse(db.IssueLabel{
+			ID:           r.ID,
+			WorkspaceID:  r.WorkspaceID,
+			Name:         r.Name,
+			Color:        r.Color,
+			CreatedAt:    r.CreatedAt,
+			UpdatedAt:    r.UpdatedAt,
+			ResourceType: r.ResourceType,
+			Description:  r.Description,
+		}))
+	}
+	return out
 }
 
 func skillFileToResponse(f db.SkillFile) SkillFileResponse {
@@ -267,6 +305,22 @@ func contentHash(content string) string {
 	return hex.EncodeToString(sum[:])
 }
 
+// validateSkillConfigPresentation checks an untyped request config's
+// presentation block and returns its normalized form. A config that is not a
+// JSON object (nil, or a client sending a bare value) is passed through
+// unchanged so the existing storage behaviour for such payloads is preserved;
+// only an object gets the whitelist validation.
+func validateSkillConfigPresentation(config any) (any, error) {
+	obj, ok := config.(map[string]any)
+	if !ok {
+		return config, nil
+	}
+	if err := skillpkg.ValidatePresentation(obj); err != nil {
+		return nil, err
+	}
+	return skillpkg.NormalizePresentation(obj), nil
+}
+
 // --- Request structs ---
 
 type CreateSkillRequest struct {
@@ -275,6 +329,9 @@ type CreateSkillRequest struct {
 	Content     string                   `json:"content"`
 	Config      any                      `json:"config"`
 	Files       []CreateSkillFileRequest `json:"files,omitempty"`
+	// LabelIDs are workspace labels (resource_type = skill) to attach in the
+	// same transaction as the create. Each must exist in this workspace.
+	LabelIDs []string `json:"label_ids,omitempty"`
 }
 
 type CreateSkillFileRequest struct {
@@ -349,12 +406,21 @@ func (h *Handler) ListSkills(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	skillIDs := make([]pgtype.UUID, len(skills))
+	for i, s := range skills {
+		skillIDs[i] = s.ID
+	}
+	labels := h.labelsBySkill(r.Context(), parseUUID(workspaceID), skillIDs)
+
 	resp := make([]SkillSummaryResponse, len(skills))
 	for i, s := range skills {
 		resp[i] = skillSummaryToResponse(
 			s.ID, s.WorkspaceID, s.Name, s.Description, s.Config,
 			s.CreatedBy, s.CreatedAt, s.UpdatedAt,
 		)
+		if attached := labels[resp[i].ID]; len(attached) > 0 {
+			resp[i].Labels = attached
+		}
 	}
 
 	writeJSON(w, http.StatusOK, resp)
@@ -505,6 +571,25 @@ func (h *Handler) CreateSkill(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	config, err := validateSkillConfigPresentation(req.Config)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	labelIDs, ok := parseUUIDSliceOrBadRequest(w, req.LabelIDs, "label_ids")
+	if !ok {
+		return
+	}
+	// Every label must exist in this workspace with the skill scope before the
+	// create runs, so a bad id yields a 400 with nothing written rather than a
+	// skill that silently lost part of its requested labels.
+	for _, labelID := range labelIDs {
+		label, lerr := h.Queries.GetLabel(r.Context(), db.GetLabelParams{ID: labelID, WorkspaceID: workspaceUUID})
+		if lerr != nil || label.ResourceType != "skill" {
+			writeError(w, http.StatusBadRequest, "label_ids: label not found in this workspace")
+			return
+		}
+	}
 
 	resp, err := h.createSkillWithFiles(r.Context(), skillCreateInput{
 		WorkspaceID: workspaceUUID,
@@ -512,8 +597,9 @@ func (h *Handler) CreateSkill(w http.ResponseWriter, r *http.Request) {
 		Name:        req.Name,
 		Description: req.Description,
 		Content:     req.Content,
-		Config:      req.Config,
+		Config:      config,
 		Files:       req.Files,
+		LabelIDs:    labelIDs,
 	})
 	if err != nil {
 		if isUniqueViolation(err) {
@@ -575,6 +661,14 @@ func (h *Handler) UpdateSkill(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusBadRequest, "invalid file path: "+f.Path)
 			return
 		}
+	}
+	if req.Config != nil {
+		config, err := validateSkillConfigPresentation(req.Config)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		req.Config = config
 	}
 
 	tx, err := h.TxStarter.Begin(r.Context())
@@ -2208,6 +2302,14 @@ func (h *Handler) resolveImportSkillConflict(w http.ResponseWriter, r *http.Requ
 			})
 			return
 		}
+		if err := skillpkg.ValidatePresentation(config); err != nil {
+			writeJSON(w, http.StatusBadRequest, SkillImportResult{
+				Status:        "failed",
+				Reason:        err.Error(),
+				ExistingSkill: &existingInfo,
+			})
+			return
+		}
 		resp, err := h.overwriteSkillWithFiles(r.Context(), skillOverwriteInput{
 			WorkspaceID:   workspaceUUID,
 			TargetSkillID: existing.ID,
@@ -2215,7 +2317,7 @@ func (h *Handler) resolveImportSkillConflict(w http.ResponseWriter, r *http.Requ
 			ExpectedName:  name,
 			Description:   imported.description,
 			Content:       imported.content,
-			Config:        config,
+			Config:        skillpkg.NormalizePresentation(config),
 			Files:         files,
 		})
 		if err != nil {
@@ -2382,6 +2484,19 @@ func (h *Handler) finishSkillImport(w http.ResponseWriter, r *http.Request, work
 	if imported.origin != nil {
 		config["origin"] = imported.origin
 	}
+	// Seed presentation (category / icon) from the author's frontmatter
+	// metadata. Invalid values are dropped, never rejected: a third-party
+	// SKILL.md with a typo in its metadata must still import.
+	if _, has := config["presentation"]; !has {
+		if seed := skillpkg.PresentationFromFrontmatter(skillpkg.ParseSkillFrontmatterMeta(imported.content)); seed != nil {
+			config["presentation"] = seed
+		}
+	}
+	if err := skillpkg.ValidatePresentation(config); err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	config = skillpkg.NormalizePresentation(config)
 	name := sanitizeNullBytes(imported.name)
 
 	if structuredResult {

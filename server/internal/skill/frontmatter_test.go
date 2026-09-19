@@ -1,6 +1,9 @@
 package skill
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestParseSkillFrontmatter(t *testing.T) {
 	tests := []struct {
@@ -152,6 +155,59 @@ func TestParseSkillFrontmatter(t *testing.T) {
 			}
 			if gotDesc != tt.wantDesc {
 				t.Errorf("description: got %q, want %q", gotDesc, tt.wantDesc)
+			}
+		})
+	}
+}
+
+func TestParseSkillFrontmatterMeta(t *testing.T) {
+	tests := []struct {
+		name    string
+		content string
+		want    Frontmatter
+	}{
+		{
+			name:    "no metadata block",
+			content: "---\nname: foo\ndescription: bar\n---\nbody",
+			want:    Frontmatter{Name: "foo", Description: "bar"},
+		},
+		{
+			name:    "metadata with category and icon",
+			content: "---\nname: foo\ndescription: bar\nmetadata:\n  category: engineering\n  icon: shield-check\n---\nbody",
+			want:    Frontmatter{Name: "foo", Description: "bar", Category: "engineering", Icon: "shield-check"},
+		},
+		{
+			// Labels are workspace labels; author-written tags are not read.
+			name:    "metadata tags are ignored",
+			content: "---\nname: foo\nmetadata:\n  category: data\n  tags: [a, b]\n---\nbody",
+			want:    Frontmatter{Name: "foo", Category: "data"},
+		},
+		{
+			name:    "metadata not a mapping is ignored",
+			content: "---\nname: foo\nmetadata: just text\n---\nbody",
+			want:    Frontmatter{Name: "foo"},
+		},
+		{
+			name:    "non-string category and icon ignored",
+			content: "---\nname: foo\nmetadata:\n  category: 3\n  icon: [x]\n---\nbody",
+			want:    Frontmatter{Name: "foo"},
+		},
+		{
+			name:    "values are passed through unvalidated",
+			content: "---\nname: foo\nmetadata:\n  category: ' nope '\n  icon: Nope\n---\nbody",
+			want:    Frontmatter{Name: "foo", Category: "nope", Icon: "Nope"},
+		},
+		{
+			name:    "no frontmatter",
+			content: "plain body",
+			want:    Frontmatter{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := ParseSkillFrontmatterMeta(tt.content)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Fatalf("got %#v, want %#v", got, tt.want)
 			}
 		})
 	}

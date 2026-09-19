@@ -2,6 +2,9 @@
 name: multica-security-review
 description: "审查代码变更的安全风险时使用。区分实际漏洞与加固建议，报告风险成立条件、影响和修复建议；不修改代码或编写攻击代码。"
 user-invocable: false
+metadata:
+  category: engineering
+  icon: shield-check
 ---
 
 # 安全审查

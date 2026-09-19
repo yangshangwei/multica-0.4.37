@@ -19,6 +19,9 @@ type skillCreateInput struct {
 	Content     string
 	Config      any
 	Files       []CreateSkillFileRequest
+	// LabelIDs are pre-validated skill-scoped workspace labels attached inside
+	// the create transaction. Template materialization and import leave it nil.
+	LabelIDs []pgtype.UUID
 }
 
 // createSkillWithFilesInTx writes a skill plus its supporting files using the
@@ -63,6 +66,16 @@ func createSkillWithFilesInTx(ctx context.Context, qtx *db.Queries, input skillC
 			return SkillWithFilesResponse{}, err
 		}
 		fileResps = append(fileResps, skillFileToResponse(sf))
+	}
+
+	for _, labelID := range input.LabelIDs {
+		if err := qtx.AttachLabelToSkill(ctx, db.AttachLabelToSkillParams{
+			SkillID:     skill.ID,
+			LabelID:     labelID,
+			WorkspaceID: input.WorkspaceID,
+		}); err != nil {
+			return SkillWithFilesResponse{}, err
+		}
 	}
 
 	return SkillWithFilesResponse{

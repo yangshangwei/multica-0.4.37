@@ -7,11 +7,15 @@ import (
 // SkillTemplateResponse is editable source content, without workspace identity
 // or official provenance. Copies are created through the ordinary skill API.
 type SkillTemplateResponse struct {
-	Name        string                      `json:"name"`
-	Version     int32                       `json:"version"`
-	Description string                      `json:"description"`
-	Content     string                      `json:"content"`
-	Files       []SkillTemplateFileResponse `json:"files"`
+	Name        string `json:"name"`
+	Version     int32  `json:"version"`
+	Description string `json:"description"`
+	// Category and Icon are presentation defaults from the template's
+	// frontmatter metadata; omitted when the template declares none.
+	Category string                      `json:"category,omitempty"`
+	Icon     string                      `json:"icon,omitempty"`
+	Content  string                      `json:"content"`
+	Files    []SkillTemplateFileResponse `json:"files"`
 }
 
 type SkillTemplateFileResponse struct {
@@ -36,6 +40,8 @@ func (h *Handler) ListSkillTemplates(w http.ResponseWriter, r *http.Request) {
 			Name:        template.Name,
 			Version:     template.Version,
 			Description: template.Description,
+			Category:    template.Category,
+			Icon:        template.Icon,
 			Content:     template.Content,
 			Files:       files,
 		})

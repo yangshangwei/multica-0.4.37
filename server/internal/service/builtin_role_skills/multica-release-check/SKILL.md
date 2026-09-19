@@ -2,6 +2,9 @@
 name: multica-release-check
 description: "准备发布或高风险操作时使用。交付适用检查结果和恢复方案；每项高风险操作须单独取得人工审批后，由 operator 执行。"
 user-invocable: false
+metadata:
+  category: operations
+  icon: rocket
 ---
 
 # 发布检查

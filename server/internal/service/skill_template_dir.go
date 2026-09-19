@@ -132,8 +132,8 @@ func loadMountedSkillTemplate(dir, name string) (RoleSkillTemplate, bool) {
 		slog.Warn("skill templates: SKILL.md exceeds the per-file size limit", "name", name, "bytes", len(content))
 		return RoleSkillTemplate{}, false
 	}
-	fmName, description := skill.ParseSkillFrontmatter(string(content))
-	if fmName == "" {
+	fm := skill.ParseSkillFrontmatterMeta(string(content))
+	if fm.Name == "" {
 		// The directory name is authoritative for the template name, but an entry
 		// whose frontmatter carries no name is malformed content and is skipped.
 		slog.Warn("skill templates: SKILL.md frontmatter has no name", "name", name)
@@ -146,7 +146,9 @@ func loadMountedSkillTemplate(dir, name string) (RoleSkillTemplate, bool) {
 	return RoleSkillTemplate{
 		Name:        name, // directory name is authoritative, matching plugin skills
 		Version:     mountedSkillTemplateVersion,
-		Description: description,
+		Description: fm.Description,
+		Category:    fm.Category,
+		Icon:        fm.Icon,
 		Content:     string(content),
 		Files:       files,
 	}, true
