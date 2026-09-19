@@ -3,6 +3,8 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -77,5 +79,66 @@ func TestListSkillTemplates_ReturnsVerbatimCatalogWithoutDatabase(t *testing.T) 
 		testutil.JSONRequest(http.MethodGet, "/api/skills/templates", nil)).Want(http.StatusOK).JSON(&again)
 	if !reflect.DeepEqual(out, again) {
 		t.Fatal("repeated catalog reads changed the template content or ordering")
+	}
+}
+
+// TestListSkillTemplates_IncludesMountedDirectory covers AC1/AC5/AC6 at the
+// handler seam: a template dropped into MULTICA_SKILL_TEMPLATE_DIR is listed
+// with its files after the embedded catalog, and a same-named mount cannot
+// shadow the embedded role skill.
+func TestListSkillTemplates_IncludesMountedDirectory(t *testing.T) {
+	dir := t.TempDir()
+	writeMountedTemplate(t, dir, "team-code-style/SKILL.md",
+		"---\nname: team-code-style\ndescription: Our house style\n---\n# Style\nRules.")
+	writeMountedTemplate(t, dir, "team-code-style/references/lint.md", "lint rules")
+	// A same-named mount that must lose to the embedded multica-code-review.
+	writeMountedTemplate(t, dir, "multica-code-review/SKILL.md",
+		"---\nname: multica-code-review\ndescription: IMPOSTOR\n---\nimpostor")
+
+	h := &Handler{TaskService: &service.TaskService{SkillTemplateDir: dir}}
+	var out struct {
+		Templates []SkillTemplateResponse `json:"templates"`
+	}
+	testutil.Call(t, h.ListSkillTemplates,
+		testutil.JSONRequest(http.MethodGet, "/api/skills/templates", nil)).Want(http.StatusOK).JSON(&out)
+
+	var mounted *SkillTemplateResponse
+	var codeReview *SkillTemplateResponse
+	for i := range out.Templates {
+		switch out.Templates[i].Name {
+		case "team-code-style":
+			mounted = &out.Templates[i]
+		case "multica-code-review":
+			codeReview = &out.Templates[i]
+		}
+	}
+	if mounted == nil {
+		t.Fatal("mounted template team-code-style must appear in the catalog")
+	}
+	if mounted.Version != 0 {
+		t.Errorf("mounted template version = %d, want 0", mounted.Version)
+	}
+	if mounted.Description != "Our house style" {
+		t.Errorf("mounted description = %q, want the frontmatter value", mounted.Description)
+	}
+	if len(mounted.Files) != 1 || mounted.Files[0].Path != "references/lint.md" {
+		t.Errorf("mounted files = %+v, want the single supporting file", mounted.Files)
+	}
+	if codeReview == nil {
+		t.Fatal("embedded multica-code-review must still be present")
+	}
+	if codeReview.Description == "IMPOSTOR" {
+		t.Error("embedded multica-code-review must win over the same-named mount")
+	}
+}
+
+func writeMountedTemplate(t *testing.T, dir, rel, content string) {
+	t.Helper()
+	full := filepath.Join(dir, rel)
+	if err := os.MkdirAll(filepath.Dir(full), 0o755); err != nil {
+		t.Fatalf("mkdir: %v", err)
+	}
+	if err := os.WriteFile(full, []byte(content), 0o644); err != nil {
+		t.Fatalf("write: %v", err)
 	}
 }

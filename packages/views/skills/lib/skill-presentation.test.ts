@@ -184,6 +184,27 @@ describe("built-in role skill presentation", () => {
     },
   );
 
+  // An operator-mounted template carries a name outside BUILTIN_ROLE_SKILL_NAMES
+  // and ships no four-language copy. getBuiltinRoleSkillPresentation must return
+  // null for it so the "start from a template" panel falls back to the entry's
+  // own raw description for both display and search. See the fallback in
+  // template-skill-create-panel.tsx.
+  it("returns null for a mounted template name so the panel uses its raw description", () => {
+    const mountedName = "team-code-style";
+    const description = "Our house style for reviews";
+    expect(getBuiltinRoleSkillPresentation(mountedName, zhT, description)).toBeNull();
+
+    // The panel's fallback shape: raw description, and a lowercased searchText
+    // that matches on both the name and the description.
+    const fallback = {
+      name: mountedName,
+      description,
+      searchText: `${mountedName}\n${description}`.toLowerCase(),
+    };
+    expect(fallback.searchText).toContain("team-code-style");
+    expect(fallback.searchText).toContain("house style");
+  });
+
   it("treats unknown built-ins as ordinary skills", () => {
     const skill = {
       name: "multica-future-skill",

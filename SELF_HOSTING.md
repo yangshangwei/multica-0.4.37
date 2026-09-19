@@ -728,6 +728,61 @@ for commit trailers, exact commands, CI publication, and history handoff.
 An intranet deployment sees a release only after its artifact is transferred
 and installed there.
 
+## Deploying Skill Templates
+
+When a workspace owner creates a skill and picks **Start from a template**, the
+picker lists the built-in role skills plus any templates this deployment mounts.
+This lets an intranet deployment ship its own starting content — house style
+guides, debugging playbooks, review checklists — without a code change, a
+rebuild, an offline bundle, or a database migration.
+
+A template is only pre-fill content. Selecting one copies its `SKILL.md` (and any
+supporting files) into the ordinary new-skill editor; saving produces a normal
+workspace skill the owner can edit, rename, delete, and assign to agents. A
+mounted template is never a platform-official skill and is never auto-attached to
+any agent.
+
+To add one:
+
+1. Create a directory per template under the mounted templates directory, each
+   holding a `SKILL.md`:
+
+   ```
+   skill-templates/
+     my-debug-helper/
+       SKILL.md
+       references/steps.md      # optional supporting files
+     team-code-style/
+       SKILL.md
+   ```
+
+   The folder name is the template name and must match `^[A-Za-z0-9_-]+$`. The
+   `SKILL.md` needs YAML frontmatter with at least a `name`; its `description` is
+   shown in the picker. Supporting files travel with the template into the editor.
+
+2. Compose mounts `${SKILL_TEMPLATE_DIRECTORY:-./skill-templates}` read-only at
+   `/app/data/skill-templates` and points `MULTICA_SKILL_TEMPLATE_DIR` there. Drop
+   a folder in and it appears on the next listing — no restart needed. Set
+   `SKILL_TEMPLATE_DIRECTORY` in `.env` to publish from an absolute host path.
+
+Rules the scanner enforces:
+
+- A malformed entry (missing `SKILL.md`, frontmatter with no `name`, an illegal
+  folder name, or a path that tries to escape the directory) is skipped with a
+  log warning; the rest of the catalog still lists.
+- If a mounted template's name collides with a built-in role skill (e.g.
+  `multica-code-review`), the built-in wins and the mounted entry is skipped. To
+  offer a variant of a platform template, ship it under a different name.
+- Per-file and total size limits apply; an oversized entry is skipped.
+
+Leaving `MULTICA_SKILL_TEMPLATE_DIR` empty, or mounting an empty/absent
+directory, disables the mounted channel and leaves the built-in role skills as
+the only templates.
+
+Offline bundles carry this compose file, so an air-gapped deployment gets the
+mount and env wiring by default; drop template folders into the deployment's
+`skill-templates/` directory before or after starting the stack.
+
 ## Manual Docker Compose Setup
 
 If you prefer running Docker Compose steps manually instead of `make selfhost`:

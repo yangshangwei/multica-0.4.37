@@ -1,0 +1,3 @@
+{"file": ".trellis/spec/server/builtin-templates.md", "reason": "内置模板注册表的内容契约：模板字段由服务端决定、稳定顺序、embed 目录模式，本任务的挂载目录来源必须与之一致"}
+{"file": ".trellis/spec/views/frontend/builtin-skill-localization.md", "reason": "展示身份、双语搜索与原始指令保留规则；确认挂载模板不写多语言文案时前端如何兜底渲染/搜索"}
+{"file": "CLAUDE.md", "reason": "根级硬约束：无数据库迁移则不加迁移、API 响应必须过 parseWithFallback+zod、Go 错误检查与 gofmt、测试分层规则"}

@@ -2,8 +2,6 @@ package handler
 
 import (
 	"net/http"
-
-	"github.com/multica-ai/multica/server/internal/service"
 )
 
 // SkillTemplateResponse is editable source content, without workspace identity
@@ -21,10 +19,13 @@ type SkillTemplateFileResponse struct {
 	Content string `json:"content"`
 }
 
-// ListSkillTemplates reads the embedded catalog without materializing workspace
-// skills. Authentication and workspace membership are enforced by the router.
+// ListSkillTemplates reads the embedded catalog plus any operator-mounted
+// templates, without materializing workspace skills. Authentication and
+// workspace membership are enforced by the router. Mounted entries carry
+// version 0 and the same response shape, so the existing zod schema and the
+// "start from a template" panel need no change.
 func (h *Handler) ListSkillTemplates(w http.ResponseWriter, r *http.Request) {
-	templates := service.RoleSkillTemplates()
+	templates := h.TaskService.SkillTemplates()
 	out := make([]SkillTemplateResponse, 0, len(templates))
 	for _, template := range templates {
 		files := make([]SkillTemplateFileResponse, 0, len(template.Files))

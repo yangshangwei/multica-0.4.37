@@ -191,6 +191,25 @@ echo "==> Staging compose file and env template..."
 cp "$COMPOSE_FILE" "$OUT_DIR/"
 cp .env.example "$OUT_DIR/"
 
+# Stage an empty skill-templates directory so the compose read-only mount lands
+# on a directory the operator can drop <name>/SKILL.md folders into. An empty
+# directory is a valid "nothing mounted" state — the built-in role skills stay
+# the only templates until a folder is added.
+mkdir -p "$OUT_DIR/skill-templates"
+cat >"$OUT_DIR/skill-templates/README.txt" <<'SKILLDOC'
+Drop one folder per skill template here, each holding a SKILL.md:
+
+  skill-templates/
+    my-debug-helper/
+      SKILL.md
+      references/steps.md   # optional supporting files
+
+The folder name is the template name and must match ^[A-Za-z0-9_-]+$. The
+SKILL.md needs YAML frontmatter with at least a `name`; its `description` shows
+in the "start from a template" picker. A new folder appears on the next listing
+with no restart. See SELF_HOSTING.md "Deploying Skill Templates" for the rules.
+SKILLDOC
+
 archive_bytes="$(wc -c <"$IMAGES_ARCHIVE" | tr -d ' ')"
 if command -v shasum >/dev/null 2>&1; then
   archive_sha="$(shasum -a 256 "$IMAGES_ARCHIVE" | awk '{print $1}')"

@@ -53,4 +53,27 @@ describe("SkillTemplateListResponseSchema", () => {
   ])("cannot turn malformed catalog response %# into a usable blank template", (raw) => {
     expect(parseCatalog(raw)).toEqual([]);
   });
+
+  // AC7: an operator-mounted template comes back as an ordinary catalog entry —
+  // version 0, a non-built-in name, and no special provenance — and must parse
+  // just like a shipped one. The existing add flow reads exactly these fields.
+  it("accepts a mounted template with version 0 and a non-built-in name", () => {
+    const mounted = {
+      name: "team-code-style",
+      version: 0,
+      description: "Our house style",
+      content: "---\nname: team-code-style\n---\n# Style\n",
+      files: [{ path: "references/lint.md", content: "lint rules" }],
+    };
+    expect(parseCatalog({ templates: [mounted] })).toEqual([mounted]);
+  });
+
+  // A malformed mounted entry must not take down the whole add flow: the
+  // fallback yields an empty catalog, and parsing never throws.
+  it("falls back to an empty catalog when a mounted entry is malformed", () => {
+    expect(() =>
+      parseCatalog({ templates: [{ name: "team-code-style", version: 0, content: "" }] }),
+    ).not.toThrow();
+    expect(parseCatalog({ templates: [{ name: "team-code-style", version: 0, content: "" }] })).toEqual([]);
+  });
 });

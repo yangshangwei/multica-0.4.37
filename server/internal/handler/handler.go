@@ -10,6 +10,7 @@ import (
 	"math"
 	"net/http"
 	"net/netip"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -530,6 +531,10 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 	// backs auto-titling. A deployment with no MULTICA_LLM_* configuration gets
 	// a disabled client, which turns the feature off rather than failing.
 	taskSvc.QuickActions = llmClient
+	// Mounted skill-template directory, read the same way PluginService reads
+	// MULTICA_PLUGIN_DIR. Empty when unset, which keeps the template catalog at
+	// exactly the embedded role skills.
+	taskSvc.SkillTemplateDir = strings.TrimSpace(os.Getenv("MULTICA_SKILL_TEMPLATE_DIR"))
 	h := &Handler{
 		Queries:                      queries,
 		DB:                           executor,

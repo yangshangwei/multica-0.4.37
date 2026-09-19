@@ -93,6 +93,59 @@ edits a snapshot and creates a new ordinary skill via `POST /api/skills`.
 provenance. Existing workspace instances, assignments and autonomy levels remain
 independent from this read-only catalog.
 
+### Scenario: operator-mounted skill-template directory
+
+**1. Scope / Trigger** — Infra/env wiring: air-gapped deployments cannot pull
+skills from clawhub/skills.sh/github, so the catalog gains a second source read
+from a read-only mounted directory. Handler source switched from
+`service.RoleSkillTemplates()` to `TaskService.SkillTemplates()`.
+
+**2. Signatures**
+- `func (s *TaskService) SkillTemplates() []RoleSkillTemplate` — nil-safe;
+  `RoleSkillTemplates()` (embed, stable order) first, then mounted entries.
+- `scanSkillTemplateDir(dir string, embedNames map[string]struct{}) []RoleSkillTemplate`.
+
+**3. Contracts**
+- Env: `MULTICA_SKILL_TEMPLATE_DIR` (optional). Read once at handler assembly,
+  `TrimSpace`d into `TaskService.SkillTemplateDir`. Empty/unset = embed-only.
+- Compose: `${SKILL_TEMPLATE_DIRECTORY:-./skill-templates}:/app/data/skill-templates:ro`;
+  default env points at that mount.
+- On-disk: `<name>/SKILL.md` (+ optional supporting files), byte-identical shape
+  to `builtin_role_skills/<name>/`. Directory name is the authoritative template
+  `Name`; frontmatter still parsed for `description`.
+- Response: unchanged `SkillTemplateResponse` (`name/version/description/content/files`);
+  mounted entries carry `version: 0`. No frontend or `SkillTemplateListResponseSchema`
+  change — `version` already `.default(0)`.
+
+**4. Validation & Error Matrix** (each is skip-one-entry + `slog.Warn`, never a list-level failure)
+- name fails `^[A-Za-z0-9_-]+$` (also blocks `..`, `/`, `\`, dot-prefix) -> skip
+- top-level entry is a symlink (`entry.Type()&os.ModeSymlink`) -> skip, SKILL.md never read
+- not a directory / missing `SKILL.md` / frontmatter has no `name` -> skip
+- name clashes with an embed role skill -> skip (embed wins, D4)
+- supporting file is a symlink, or per-file (1 MiB) / total (8 MiB) / count (256) cap exceeded -> skip file
+- dir unset / missing / unreadable -> embed-only, no error (missing dir is not `slog.Warn`ed)
+
+**5. Good/Base/Bad Cases**
+- Good: `team-style/SKILL.md` + `references/lint.md` -> lists after embed with files.
+- Base: env unset -> byte-identical to the prior embed-only catalog.
+- Bad: `sneaky` symlinked to an external dir -> not listed, body not leaked.
+
+**6. Tests Required** — `skill_template_dir_test.go`: `EmbedOnlyWhenDirUnset`
+(nil/`{}`/empty), `MissingDirIsEmbedOnly`, `MountedEntryWithFiles`,
+`MalformedEntriesSkipped`, `OversizedSkillMdSkipped`, `PathEscapeSkipped`
+(supporting-file symlink), `TopLevelSymlinkSkipped`, `EmbedWinsOnNameClash`.
+`skill_template_test.go`: `IncludesMountedDirectory` + the retained verbatim
+embed-only test (nil `TaskService`). Frontend: `skill-template-schemas.test.ts`
+(version-0/non-builtin parse + malformed-mount fallback) and
+`skill-presentation.test.ts` (mounted name -> null -> raw-description panel fallback).
+
+**7. Wrong vs Correct**
+- Wrong: `os.Stat(<name>)` to test IsDir — follows a top-level symlink and reads
+  its `SKILL.md`, leaking an out-of-tree body even though supporting files are refused.
+- Correct: check `entry.Type()&os.ModeSymlink != 0` first (link's own mode, no
+  follow) and skip; then `entry.IsDir()`. Symlink refusal is uniform across the
+  top-level entry and supporting files.
+
 ## Onboarding skills require task provenance
 
 `BuiltinSkills()` returns general platform skills. Use `TaskBuiltinSkills` for

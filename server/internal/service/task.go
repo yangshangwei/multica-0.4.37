@@ -53,6 +53,12 @@ type TaskService struct {
 	// FeatureFlags is the server-side toggle router. Nil is valid and returns
 	// each call site's default.
 	FeatureFlags *featureflag.Service
+	// SkillTemplateDir is MULTICA_SKILL_TEMPLATE_DIR: a server directory an
+	// operator (typically an intranet deployment) fills with skill templates to
+	// offer in "new skill → start from a template" alongside the embedded role
+	// skills. Empty disables the mounted channel, so SkillTemplates() returns
+	// exactly the embedded catalog. Mirrors PluginService.LocalDir.
+	SkillTemplateDir string
 	// EmptyClaim caches "this runtime has no queued task" so the daemon
 	// poll path can skip a Postgres scan on the steady-state empty case.
 	// Optional — a nil cache disables the fast path and every claim
