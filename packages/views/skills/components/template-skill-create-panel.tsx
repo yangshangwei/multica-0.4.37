@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, ArrowLeft, Check, Info, Loader2, Search } from "lucide-react";
+import { AlertCircle, ArrowLeft, Check, Loader2, Search } from "lucide-react";
 import type { SkillTemplate } from "@multica/core/types";
 import { parseFrontmatter } from "@multica/core/skills";
 import { skillListOptions, skillTemplateListOptions } from "@multica/core/workspace/queries";
@@ -10,7 +10,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { Textarea } from "@multica/ui/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@multica/ui/components/ui/tooltip";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
 import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../../i18n";
 import { RichContent } from "../../rich-content";
@@ -33,6 +33,7 @@ export function TemplateSkillCreatePanel({ workspaceId, session, onUseTemplate, 
   const catalog = useQuery(skillTemplateListOptions(workspaceId));
   const skills = useQuery(skillListOptions(workspaceId));
   const [search, setSearch] = useState("");
+  const [sourceTab, setSourceTab] = useState<"builtin" | "deployment">("builtin");
   const [mobilePreview, setMobilePreview] = useState(false);
   const [filePath, setFilePath] = useState(SKILL_MD);
   const listPanel = useRef<HTMLDivElement>(null);
@@ -133,47 +134,49 @@ export function TemplateSkillCreatePanel({ workspaceId, session, onUseTemplate, 
                   className="pl-8"
                 />
               </div>
-              <div aria-label={t(($) => $.create.template.list_label)} className="min-h-0 flex-1 space-y-2 overflow-y-auto px-2 pb-3">
-                {filtered.length === 0 ? (
-                  <p className="px-3 py-5 text-caption text-muted-foreground">{t(($) => $.create.template.no_matches)}</p>
-                ) : (
-                  <>
-                    {builtinGroup.length > 0 && (
-                      <section aria-label={t(($) => $.create.template.group_builtin)} className="space-y-1">
-                        <p className="px-3 pt-1 text-caption font-medium text-muted-foreground">{t(($) => $.create.template.group_builtin)}</p>
-                        {builtinGroup.map(renderTemplateRow)}
-                      </section>
-                    )}
-                    {deploymentGroup.length > 0 && (
-                      <section aria-label={t(($) => $.create.template.group_deployment_label)} className="space-y-1">
-                        <div className="flex items-center gap-1 px-3 pt-1">
-                          <span className="text-caption font-medium text-muted-foreground">
-                            {t(($) => $.create.template.group_deployment, { count: deploymentGroup.length })}
-                          </span>
-                          <Tooltip>
-                            <TooltipTrigger
-                              render={
-                                <button
-                                  type="button"
-                                  aria-label={t(($) => $.create.template.group_deployment_info)}
-                                  className="rounded-sm p-0.5 text-faint-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                                >
-                                  <Info className="size-3.5" aria-hidden="true" />
-                                </button>
-                              }
-                            />
-                            <TooltipContent side="bottom" className="max-w-xs">{t(($) => $.create.template.group_deployment_info)}</TooltipContent>
-                          </Tooltip>
-                        </div>
-                        {deploymentGroup.map(renderTemplateRow)}
-                      </section>
-                    )}
-                  </>
-                )}
-                {!hasDeploymentTemplates && (
-                  <p className="px-3 pt-2 text-caption leading-relaxed text-muted-foreground">{t(($) => $.create.template.deployment_empty_hint)}</p>
-                )}
-              </div>
+              <Tabs
+                value={sourceTab}
+                onValueChange={(value) => setSourceTab(value === "deployment" ? "deployment" : "builtin")}
+                className="min-h-0 flex-1 gap-2"
+              >
+                <TabsList className="mx-3 shrink-0 self-stretch">
+                  <TabsTrigger value="builtin" className="flex-1 gap-1.5">
+                    <span>{t(($) => $.create.template.group_builtin)}</span>
+                    <span className="text-caption tabular-nums text-muted-foreground">{builtinGroup.length}</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="deployment" className="flex-1 gap-1.5">
+                    <span>{t(($) => $.create.template.group_deployment_label)}</span>
+                    <span className="text-caption tabular-nums text-muted-foreground">{deploymentGroup.length}</span>
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent
+                  value="builtin"
+                  aria-label={t(($) => $.create.template.group_builtin)}
+                  className="min-h-0 flex-1 space-y-1 overflow-y-auto px-2 pb-3"
+                >
+                  {builtinGroup.length > 0 ? (
+                    builtinGroup.map(renderTemplateRow)
+                  ) : (
+                    <p className="px-3 py-5 text-caption text-muted-foreground">{t(($) => $.create.template.no_matches)}</p>
+                  )}
+                </TabsContent>
+                <TabsContent
+                  value="deployment"
+                  aria-label={t(($) => $.create.template.group_deployment_label)}
+                  className="min-h-0 flex-1 space-y-1 overflow-y-auto px-2 pb-3"
+                >
+                  <p className="px-3 pb-1 pt-1 text-caption leading-relaxed text-muted-foreground">
+                    {hasDeploymentTemplates
+                      ? t(($) => $.create.template.group_deployment_info)
+                      : t(($) => $.create.template.deployment_empty_hint)}
+                  </p>
+                  {deploymentGroup.length > 0
+                    ? deploymentGroup.map(renderTemplateRow)
+                    : hasDeploymentTemplates && (
+                        <p className="px-3 py-5 text-caption text-muted-foreground">{t(($) => $.create.template.no_matches)}</p>
+                      )}
+                </TabsContent>
+              </Tabs>
             </div>
             <div className={cn("min-h-0 flex-col md:flex", mobilePreview ? "flex" : "hidden")}>
               <div className="shrink-0 px-4 pt-3 md:hidden">

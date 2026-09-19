@@ -112,55 +112,64 @@ beforeEach(() => {
 
 afterEach(() => cleanup());
 
-describe("TemplateSkillCreatePanel source grouping", () => {
-  it("splits built-in and mounted templates into two labelled groups with a count", async () => {
+const builtinTab = () => screen.getByRole("tab", { name: new RegExp(enSkills.create.template.group_builtin) });
+const deploymentTab = () => screen.getByRole("tab", { name: new RegExp(enSkills.create.template.group_deployment_label) });
+
+describe("TemplateSkillCreatePanel source tabs", () => {
+  it("splits built-in and mounted templates into two tabs each showing its count", async () => {
     mocks.listSkillTemplates.mockResolvedValue([builtinTemplate(), mountedTemplate()]);
     renderDialog();
     await openTemplates();
 
-    expect(screen.getByText(enSkills.create.template.group_builtin)).toBeInTheDocument();
-    expect(screen.getByText("Provided by this deployment (1)")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) })).toBeInTheDocument();
-    // Inline source guidance, queryable by the info trigger's label.
-    expect(
-      screen.getByRole("button", { name: enSkills.create.template.group_deployment_info }),
-    ).toBeInTheDocument();
-    // No mounted templates missing => no empty-state promo.
+    // Two tabs, each labelled with its group and a live count.
+    expect(builtinTab()).toBeInTheDocument();
+    expect(deploymentTab()).toHaveAccessibleName(/Provided by this deployment\s*1/);
+
+    // Built-in tab is active by default: its row shows, the mounted row does not yet.
+    expect(screen.getByRole("button", { name: new RegExp(`^${BUILTIN_NAME}`) })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) })).not.toBeInTheDocument();
+
+    // Switching to the deployment tab reveals the mounted row and the inline source guidance.
+    fireEvent.click(deploymentTab());
+    expect(await screen.findByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) })).toBeInTheDocument();
+    expect(screen.getByText(enSkills.create.template.group_deployment_info)).toBeInTheDocument();
+    // Templates exist here, so the empty-state promo must not show.
     expect(screen.queryByText(enSkills.create.template.deployment_empty_hint)).not.toBeInTheDocument();
   });
 
-  it("shows only the built-in group and a persistent promo when nothing is mounted", async () => {
+  it("keeps the deployment tab as an empty-state promo when nothing is mounted", async () => {
     mocks.listSkillTemplates.mockResolvedValue([builtinTemplate()]);
     renderDialog();
     await openTemplates();
 
-    expect(screen.getByText(enSkills.create.template.group_builtin)).toBeInTheDocument();
-    // The deployment section (and its info trigger) must be absent, not just its label text.
-    expect(
-      screen.queryByRole("button", { name: enSkills.create.template.group_deployment_info }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByText(enSkills.create.template.deployment_empty_hint)).toBeInTheDocument();
+    // Both tabs still render; the deployment tab counts zero.
+    expect(builtinTab()).toBeInTheDocument();
+    expect(deploymentTab()).toHaveAccessibleName(/Provided by this deployment\s*0/);
+
+    // Its panel shows the promo, not the "these come from ..." provenance line.
+    fireEvent.click(deploymentTab());
+    expect(await screen.findByText(enSkills.create.template.deployment_empty_hint)).toBeInTheDocument();
+    expect(screen.queryByText(enSkills.create.template.group_deployment_info)).not.toBeInTheDocument();
   });
 
-  it("keeps search filtering across groups and preserves selection", async () => {
+  it("keeps search filtering live per tab and preserves selection", async () => {
     mocks.listSkillTemplates.mockResolvedValue([builtinTemplate(), mountedTemplate()]);
     renderDialog();
     await openTemplates();
 
-    // Selecting the mounted row still previews it and marks it pressed.
-    const mountedRow = screen.getByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) });
+    // Select the mounted row from the deployment tab; it previews and stays pressed.
+    fireEvent.click(deploymentTab());
+    const mountedRow = await screen.findByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) });
     fireEvent.click(mountedRow);
     await waitFor(() => expect(mountedRow).toHaveAttribute("aria-pressed", "true"));
 
-    // Searching for the mounted template hides the built-in group entirely.
+    // Searching for the mounted template drops the built-in tab's count to zero
+    // while the deployment tab keeps its match.
     fireEvent.change(screen.getByRole("textbox", { name: enSkills.create.template.search_placeholder }), {
       target: { value: "house code style" },
     });
-    await waitFor(() =>
-      expect(screen.queryByRole("button", { name: new RegExp(`^${BUILTIN_NAME}`) })).not.toBeInTheDocument(),
-    );
-    expect(screen.queryByText(enSkills.create.template.group_builtin)).not.toBeInTheDocument();
-    expect(screen.getByText("Provided by this deployment (1)")).toBeInTheDocument();
+    await waitFor(() => expect(builtinTab()).toHaveAccessibleName(/Platform built-in\s*0/));
+    expect(deploymentTab()).toHaveAccessibleName(/Provided by this deployment\s*1/);
     expect(screen.getByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) })).toBeInTheDocument();
   });
 });
