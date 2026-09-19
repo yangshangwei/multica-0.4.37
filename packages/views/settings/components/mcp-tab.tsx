@@ -29,6 +29,7 @@ import { McpServerDialog } from "../../agents/components/tabs/mcp-server-dialog"
 import type { ManagedMcpServer } from "../../agents/components/tabs/mcp-config-model";
 import { McpServerRow } from "../../common/mcp-server-row";
 import { useT } from "../../i18n";
+import { McpBuiltinCatalog } from "./mcp-builtin-catalog";
 import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
 
 /**
@@ -69,6 +70,10 @@ export function McpTab() {
   const [editingServer, setEditingServer] = useState<WorkspaceMcpServer | null>(
     null,
   );
+  const [presetDraft, setPresetDraft] = useState<{
+    name: string;
+    config: Record<string, unknown>;
+  } | null>(null);
   const [renamingServer, setRenamingServer] =
     useState<WorkspaceMcpServer | null>(null);
   const [renameDraft, setRenameDraft] = useState("");
@@ -196,6 +201,19 @@ export function McpTab() {
       title={t(($) => $.mcp.title)}
       description={t(($) => $.mcp.description)}
     >
+      {canManage ? (
+        <McpBuiltinCatalog
+          wsId={wsId}
+          existingNames={existingNames}
+          onAdd={(preset) => {
+            cancelRename();
+            setEditingServer(null);
+            setPresetDraft(preset);
+            setEditorOpen(true);
+          }}
+        />
+      ) : null}
+
       <SettingsSection
         title={t(($) => $.mcp.servers_title)}
         description={t(($) => $.mcp.write_only_note)}
@@ -207,6 +225,7 @@ export function McpTab() {
               onClick={() => {
                 cancelRename();
                 setEditingServer(null);
+                setPresetDraft(null);
                 setEditorOpen(true);
               }}
             >
@@ -275,6 +294,7 @@ export function McpTab() {
                   onRenameStart={() => startRename(server)}
                   onConfigure={() => {
                     cancelRename();
+                    setPresetDraft(null);
                     setEditingServer(server);
                     setEditorOpen(true);
                   }}
@@ -297,9 +317,13 @@ export function McpTab() {
       <McpServerDialog
         open={editorOpen}
         server={dialogServer}
+        preset={presetDraft}
         existingNames={existingNames}
         replacementMode={editingServer !== null}
-        onOpenChange={setEditorOpen}
+        onOpenChange={(open) => {
+          setEditorOpen(open);
+          if (!open) setPresetDraft(null);
+        }}
         onSave={handleSaveServer}
       />
 

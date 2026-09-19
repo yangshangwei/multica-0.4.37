@@ -25,6 +25,8 @@ export function BuiltinTemplateCatalog({
   empty,
   onRetry,
   listClassName,
+  className,
+  defaultOpen = false,
   children,
 }: {
   copy: CatalogCopy;
@@ -34,13 +36,22 @@ export function BuiltinTemplateCatalog({
   empty: boolean;
   onRetry: () => void;
   listClassName?: string;
+  /** Overrides the default list-header shell. Callers outside a bordered list
+   *  (e.g. the settings page) pass their own spacing here. */
+  className?: string;
+  /** Opens the catalog expanded. Defaults closed, matching the list-page uses. */
+  defaultOpen?: boolean;
   children: ReactNode;
 }) {
   const headingId = useId();
   const countId = useId();
   return (
-    <section aria-labelledby={headingId} aria-busy={loading} className="shrink-0 border-b px-4 py-2 @container">
-      <Collapsible defaultOpen={false}>
+    <section
+      aria-labelledby={headingId}
+      aria-busy={loading}
+      className={cn("shrink-0 border-b px-4 py-2 @container", className)}
+    >
+      <Collapsible defaultOpen={defaultOpen}>
         <h2>
           <CollapsibleTrigger aria-labelledby={loading || failed ? headingId : `${headingId} ${countId}`} className="group/catalog flex min-h-9 w-full items-center gap-2 rounded-md text-left text-body font-semibold transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-150 group-data-[panel-open]/catalog:rotate-90 motion-reduce:transition-none" aria-hidden="true" />

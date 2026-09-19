@@ -18,6 +18,7 @@ export type {
   ApprovalStatus,
   CreateAgentApprovalRequest,
 } from "./agent-template";
+export type { McpServerTemplate } from "./mcp-template";
 export {
   AGENT_AUTONOMY_LEVELS,
   APPROVAL_RISK_CLASSES,

@@ -1645,6 +1645,12 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					// The payload is names and transports only; the stored
 					// entries are write-only.
 					r.Get("/mcp-servers", h.ListWorkspaceMcpServers)
+					// The built-in MCP catalog — member-visible for the same
+					// reason: an agent owner browses it to pre-fill the add
+					// form. Static path, so chi matches it ahead of the
+					// {serverId} routes below; the catalog is credential-free
+					// public content and ships with the binary.
+					r.Get("/mcp-servers/templates", h.ListMcpServerTemplates)
 					// Installed Plugins are member-visible so a member can
 					// see what is mounted in their workspace and which scopes
 					// it holds; install / configure / remove stay admin-only.

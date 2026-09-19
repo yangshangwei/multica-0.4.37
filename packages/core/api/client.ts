@@ -57,6 +57,7 @@ import type {
   Skill,
   SkillSummary,
   SkillTemplate,
+  McpServerTemplate,
   CreateSkillRequest,
   UpdateSkillRequest,
   SetAgentSkillsRequest,
@@ -459,9 +460,11 @@ import {
   SkillSchema,
   SkillListSchema,
   SkillTemplateListResponseSchema,
+  McpServerTemplateListResponseSchema,
   EMPTY_SKILL,
   EMPTY_SKILL_LIST,
   EMPTY_SKILL_TEMPLATE_LIST,
+  EMPTY_MCP_SERVER_TEMPLATE_LIST,
   SkillImportResultSchema,
   EMPTY_SKILL_IMPORT_RESULT,
   IssueViewSchema,
@@ -2848,6 +2851,30 @@ export class ApiClient {
     return parseWithFallback(raw, WorkspaceMcpServerListSchema, [] as WorkspaceMcpServer[], {
       endpoint: "GET /api/workspaces/{id}/mcp-servers",
     });
+  }
+
+  /**
+   * The built-in MCP catalog, in the reader's language. Config is served in
+   * full because these templates are credential-free public content the
+   * workspace has not yet adopted; selecting one pre-fills the add form and
+   * still saves an ordinary write-only workspace server.
+   */
+  async listMcpServerTemplates(
+    workspaceId: string,
+    language?: string,
+    signal?: AbortSignal,
+  ): Promise<McpServerTemplate[]> {
+    const query = language ? `?language=${encodeURIComponent(language)}` : "";
+    const raw = await this.fetch<unknown>(
+      `/api/workspaces/${workspaceId}/mcp-servers/templates${query}`,
+      workspaceRequestInit({ workspaceId, signal }),
+    );
+    return parseWithFallback(
+      raw,
+      McpServerTemplateListResponseSchema,
+      { templates: EMPTY_MCP_SERVER_TEMPLATE_LIST },
+      { endpoint: "GET /api/workspaces/{id}/mcp-servers/templates" },
+    ).templates as McpServerTemplate[];
   }
 
   /**

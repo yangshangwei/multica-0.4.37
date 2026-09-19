@@ -208,6 +208,7 @@ function formSupportsServer(server: ManagedMcpServer): boolean {
 export function McpServerDialog({
   open,
   server,
+  preset = null,
   existingNames,
   lockName = false,
   replacementMode = false,
@@ -217,6 +218,13 @@ export function McpServerDialog({
 }: {
   open: boolean;
   server: ManagedMcpServer | null;
+  /**
+   * Seeds a NEW server's name and config from a built-in template. Purely an
+   * initial fill: the dialog still opens in "add" mode (title, primary button,
+   * and duplicate-name validation all treat it as a create), and the user may
+   * edit or clear anything before saving. Only honored when `server` is null.
+   */
+  preset?: { name: string; config: Record<string, unknown> } | null;
   existingNames: Set<string>;
   /**
    * Pins the name while editing. Callers whose backend has no atomic rename
@@ -255,22 +263,38 @@ export function McpServerDialog({
 
   useEffect(() => {
     if (!open) return;
-    const config = replacementMode ? {} : (server?.config ?? {});
-    setName(server?.name ?? "");
+    // A preset is a template fill for a NEW server; it is ignored while editing
+    // an existing one and never overrides replacement mode's blank start.
+    const usePreset = !server && !replacementMode && preset !== null;
+    const config = replacementMode
+      ? {}
+      : usePreset
+        ? preset.config
+        : (server?.config ?? {});
+    setName(usePreset ? preset.name : (server?.name ?? ""));
     // A caller on an older backend may have only the safe transport summary.
     // Seeding from `formFromConfig({})` there would open an HTTP form for a
     // known stdio server, so take the transport from the summary.
     setForm(
       !server
-        ? emptyForm()
+        ? Object.keys(config).length > 0
+          ? formFromConfig(config)
+          : emptyForm()
         : Object.keys(config).length > 0
           ? formFromConfig(config)
           : { ...emptyForm(), transport: server.transport === "stdio" ? "stdio" : "http" },
     );
     setJsonText(JSON.stringify(config, null, 2));
-    setMode(server && !formSupportsServer(server) ? "json" : "form");
+    // The preset config decides the initial editor the same way a saved entry
+    // does: a transport the guided form cannot express opens on JSON.
+    setMode(
+      (server && !formSupportsServer(server)) ||
+        (usePreset && !formCanExpressConfig(config))
+        ? "json"
+        : "form",
+    );
     setSaveAttempted(false);
-  }, [open, replacementMode, server]);
+  }, [open, replacementMode, server, preset]);
 
   // The form is unavailable — not merely unselected — for entries it cannot
   // represent, so switching to it cannot rewrite them either.

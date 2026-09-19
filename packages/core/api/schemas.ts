@@ -98,6 +98,7 @@ import type {
   SquadTemplate,
   StaffedSquad,
 } from "../types/agent-template";
+import type { McpServerTemplate } from "../types/mcp-template";
 import type {
   AutopilotTemplate,
   CreateAutopilotFromTemplateResponse,
@@ -3422,6 +3423,30 @@ export const SkillTemplateListResponseSchema = z.object({
 }).loose();
 
 export const EMPTY_SKILL_TEMPLATE_LIST: SkillTemplate[] = [];
+
+// Built-in MCP catalog entries. `key` is the identity and is kept strict — a
+// blank key would produce a template that cannot save (the add form rejects the
+// empty name). Everything else defaults so a newer backend that adds a field,
+// or an older one that omits one, still renders. `config` is served in full
+// (these templates are credential-free) and stays a permissive record; the
+// client derives transport from it, so no transport field is expected.
+export const McpServerTemplateSchema = z.object({
+  key: z.string().refine((value) => value.trim().length > 0),
+  title: z.string().default(""),
+  description: z.string().default(""),
+  config: z.record(z.string(), z.unknown()).default({}),
+}).loose();
+
+// Go serializes an empty slice as `null`, which `.default([])` does NOT catch —
+// only a missing key. Normalize the nullable collection at the boundary.
+export const McpServerTemplateListResponseSchema = z.object({
+  templates: z
+    .array(McpServerTemplateSchema)
+    .nullish()
+    .transform((templates) => templates ?? []),
+}).loose();
+
+export const EMPTY_MCP_SERVER_TEMPLATE_LIST: McpServerTemplate[] = [];
 
 export const EMPTY_SKILL: Skill = {
   id: "",

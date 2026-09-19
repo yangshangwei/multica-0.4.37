@@ -235,4 +235,88 @@ describe("McpServerDialog", () => {
       headers: { First: "one", Updated: "four" },
     });
   });
+
+  describe("built-in template preset", () => {
+    const chromePreset = {
+      name: "chrome-devtools",
+      config: { command: "npx", args: ["-y", "chrome-devtools-mcp@latest"] },
+    };
+
+    it("pre-fills a new server from the preset but stays in add mode", async () => {
+      const user = userEvent.setup();
+      const { onSave } = renderDialog({ preset: chromePreset });
+
+      // Add mode: create title and Add button, not the edit/Save affordances.
+      expect(screen.getByText("Add MCP Server")).toBeTruthy();
+      expect(screen.getByRole("button", { name: "Add" })).toBeTruthy();
+      expect(
+        (screen.getByLabelText("Server name") as HTMLInputElement).value,
+      ).toBe("chrome-devtools");
+      expect((screen.getByLabelText("Command") as HTMLInputElement).value).toBe(
+        "npx",
+      );
+
+      await user.click(screen.getByRole("button", { name: "Add" }));
+      await waitFor(() =>
+        expect(onSave).toHaveBeenCalledWith("chrome-devtools", {
+          command: "npx",
+          args: ["-y", "chrome-devtools-mcp@latest"],
+        }),
+      );
+    });
+
+    it("shows the same preset config in the JSON editor", async () => {
+      const user = userEvent.setup();
+      renderDialog({ preset: chromePreset });
+
+      await user.click(screen.getByRole("tab", { name: "JSON" }));
+      const json = screen.getByLabelText(
+        "MCP server JSON configuration",
+      ) as HTMLTextAreaElement;
+      expect(JSON.parse(json.value)).toEqual(chromePreset.config);
+    });
+
+    it("still rejects a preset whose name duplicates an existing server", async () => {
+      const user = userEvent.setup();
+      const { onSave } = renderDialog({
+        preset: chromePreset,
+        existingNames: new Set(["chrome-devtools"]),
+      });
+
+      await user.click(screen.getByRole("button", { name: "Add" }));
+      expect(
+        screen.getByText("A server with this name already exists."),
+      ).toBeTruthy();
+      expect(onSave).not.toHaveBeenCalled();
+    });
+
+    it("lets the user edit the pre-filled config before saving", async () => {
+      const user = userEvent.setup();
+      const { onSave } = renderDialog({ preset: chromePreset });
+
+      await user.clear(screen.getByLabelText("Command"));
+      await user.type(screen.getByLabelText("Command"), "bunx");
+      await user.click(screen.getByRole("button", { name: "Add" }));
+
+      await waitFor(() =>
+        expect(onSave).toHaveBeenCalledWith("chrome-devtools", {
+          command: "bunx",
+          args: ["-y", "chrome-devtools-mcp@latest"],
+        }),
+      );
+    });
+
+    it("opens an http preset on the visual editor with the url filled", () => {
+      renderDialog({
+        preset: {
+          name: "context7",
+          config: { type: "http", url: "https://mcp.context7.com/mcp" },
+        },
+      });
+
+      expect((screen.getByLabelText("Server URL") as HTMLInputElement).value).toBe(
+        "https://mcp.context7.com/mcp",
+      );
+    });
+  });
 });
