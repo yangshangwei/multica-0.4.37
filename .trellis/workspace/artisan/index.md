@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 22
+- **Total Sessions**: 23
 - **Last Active**: 2026-09-19
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~745 | Active |
+| `journal-1.md` | ~766 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 23 | 2026-09-19 | 内置 MCP Server 预设模板目录 | `34bdbd3d5` | `feat/builtin-skill-presets` |
 | 22 | 2026-09-19 | 内网可投放的 Skill 模板库 | `8af415532`, `0793c05a1`, `9fa79f149` | `feat/builtin-skill-presets` |
 | 21 | 2026-09-18 | 仓库文案跟随实际连接的 Git 托管方，GitLab 个人授权方案暂缓落盘 | `c313866bb`, `34b382e77`, `f5ddbee12`, `7eb2f3155`, `d9f11b53a` | `main` |
 | 20 | 2026-09-16 | V0.4.46 发布收尾：升级 smoke 修复并全量交付 | `a0eddb811`, `7138920d0`, `12db2f808`, `b6be6ba1e`, `2dfd0c43c`, `5ec932f12`, `43f6fc10e`, `ee2fe8a3f` | `main` |

@@ -743,3 +743,24 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 23: 内置 MCP Server 预设模板目录
+
+**Date**: 2026-09-19
+**Task**: 内置 MCP Server 预设模板目录
+**Branch**: `feat/builtin-skill-presets`
+
+### Summary
+
+设置→MCP 页新增服务端内嵌的内置模板目录：行内「添加」把配置预填进现有添加弹窗，保存后即普通只写工作区 MCP Server（仍需单独分配给智能体）。服务端 McpServerTemplates() 名册首批三条免密钥 stdio（chrome-devtools/playwright/sequential-thinking，context7 按用户要求移除），只读接口 GET /mcp-servers/templates 挂成员可见分组；名册测试守 key 格式/唯一/config 有效/四语齐备/无密钥五条。core 侧 zod schema（全字段 default+loose）+ 客户端 parseWithFallback + malformed-response 测试。views 复用 builtin-template-catalog（新增可选 className/defaultOpen，既有四处零变化），mcp-server-dialog 增可选 preset 预填仍是「添加」态，重名行禁用显示「已添加」。四语 i18n + 文档 source-map。trellis-check 全绿：typecheck/lint/core/views(隔离)/go service/go handler(mcp) 通过，AC1–AC6 全覆盖；mcp_template handler 用例只读不碰 DB 是真跑过。收口两处非本次问题：pnpm test 整包下 mcp-tab/skill-panel 3 个 flake 隔离复跑全绿；go handler 一批 project/squad DB 用例因本机开发库缺 execution_squad 列而假红（需克隆已迁移模板库跑）。未纳入提交的无关项：skills/template-skill-create-panel 的分组→tab 改造与 .dev-skill-templates/（属 skill 模板线的另一路工作）。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `34bdbd3d5` | (see git log) |
+
+### Status
+
+[OK] **Completed**
