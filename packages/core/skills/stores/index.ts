@@ -8,5 +8,6 @@ export {
   type SkillOriginType,
   type SkillSortDirection,
   type SkillSortField,
+  type SkillViewMode,
   type SkillsViewState,
 } from "./view-store";

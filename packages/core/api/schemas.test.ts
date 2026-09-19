@@ -72,6 +72,7 @@ import {
   EMPTY_LIST_ISSUE_STATUSES_RESPONSE,
   EMPTY_ISSUE_STATUS_ENTRY,
 } from "./schemas";
+import { EMPTY_SKILL_LIST, SkillListSchema } from "./schemas";
 import { parseWithFallback } from "./schema";
 
 const baseIssue = {
@@ -2051,5 +2052,59 @@ describe("issue status catalog schemas", () => {
       { endpoint: "POST /api/issue-statuses" },
     );
     expect(parsed).toEqual(EMPTY_ISSUE_STATUS_ENTRY);
+  });
+});
+
+// Skill summaries embed their workspace labels (`skill_to_label`). Older
+// servers omit the field and a malformed array must not drop the list.
+describe("SkillListSchema labels", () => {
+  const baseSkill = {
+    id: "skill-1",
+    workspace_id: "ws-1",
+    name: "lint-fixer",
+    description: "",
+    config: {},
+    created_by: "user-1",
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+  };
+  const label = {
+    id: "lbl-1",
+    workspace_id: "ws-1",
+    resource_type: "skill",
+    name: "quality",
+    color: "#3b82f6",
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+  };
+
+  function parse(raw: unknown) {
+    return parseWithFallback(raw, SkillListSchema, EMPTY_SKILL_LIST, {
+      endpoint: "GET /api/skills",
+    });
+  }
+
+  it("defaults a missing labels field to an empty array", () => {
+    const [skill] = parse([baseSkill]);
+    expect(skill?.labels).toEqual([]);
+  });
+
+  it("keeps well-formed labels with their color", () => {
+    const [skill] = parse([{ ...baseSkill, labels: [label] }]);
+    expect(skill?.labels).toEqual([
+      expect.objectContaining({ id: "lbl-1", name: "quality", color: "#3b82f6" }),
+    ]);
+  });
+
+  it("falls back to no labels for one summary when its labels are malformed, keeping the rest", () => {
+    const skills = parse([
+      { ...baseSkill, labels: "not-an-array" },
+      { ...baseSkill, id: "skill-2", labels: [{ id: "lbl-2" }] },
+      { ...baseSkill, id: "skill-3", labels: [label] },
+    ]);
+    expect(skills.map((s) => s.id)).toEqual(["skill-1", "skill-2", "skill-3"]);
+    expect(skills[0]?.labels).toEqual([]);
+    expect(skills[1]?.labels).toEqual([]);
+    expect(skills[2]?.labels).toHaveLength(1);
   });
 });

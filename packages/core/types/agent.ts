@@ -1,4 +1,5 @@
 import type { ChatSession } from "./chat";
+import type { Label } from "./label";
 
 export type AgentStatus = "idle" | "working" | "blocked" | "error" | "offline";
 
@@ -856,6 +857,9 @@ export interface SkillTemplate {
   name: string;
   version: number;
   description: string;
+  /** Presentation defaults from the template's frontmatter metadata. */
+  category?: string;
+  icon?: string;
   content: string;
   files: { path: string; content: string }[];
 }
@@ -879,6 +883,12 @@ export interface SkillSummary {
   updated_at: string;
 	/** Present only when returned from an agent-scoped assignment endpoint. */
 	enabled?: boolean;
+  /**
+   * Workspace labels (`resource_type = "skill"`) attached to this skill,
+   * embedded by `GET /api/skills`. Older servers omit it; consumers treat a
+   * missing value as no labels.
+   */
+  labels?: Label[];
 }
 
 export interface Skill extends SkillSummary {
@@ -901,6 +911,12 @@ export interface CreateSkillRequest {
   content?: string;
   config?: Record<string, unknown>;
   files?: { path: string; content: string }[];
+  /**
+   * Workspace label ids (`resource_type = "skill"`) to attach in the same
+   * transaction as the create. The server rejects ids from another
+   * workspace or scope with 400.
+   */
+  label_ids?: string[];
 }
 
 /** Structured body of POST /api/skills/import when uploading an archive. */

@@ -1,9 +1,18 @@
 import { isMap, isScalar, parseDocument, visit } from "yaml";
 import type { CreateSkillRequest, SkillTemplate } from "../types";
+import {
+  EMPTY_SKILL_PRESENTATION,
+  isSkillCategory,
+  isSkillIconName,
+  writeSkillPresentationMeta,
+} from "./presentation";
 
 export interface SkillTemplateDraft {
   templateName: string;
   templateVersion: number;
+  /** Template-declared presentation defaults; unknown values are dropped. */
+  templateCategory: string | null;
+  templateIcon: string | null;
   sourceContent: string;
   name: string;
   description: string;
@@ -57,6 +66,8 @@ export function createSkillTemplateDraft(
   return {
     templateName: template.name,
     templateVersion: template.version,
+    templateCategory: isSkillCategory(template.category) ? template.category : null,
+    templateIcon: isSkillIconName(template.icon) ? template.icon : null,
     sourceContent: template.content,
     name,
     description: description ?? template.description,
@@ -91,8 +102,15 @@ export function buildSkillTemplateCreateRequest(draft: SkillTemplateDraft): Crea
     description: draft.description,
     content: `---${newline}${frontmatter}---${newline}${draft.body}`,
     files: draft.files.map(({ path, content }) => ({ path, content })),
-    config: {
-      template_source: { name: draft.templateName, version: draft.templateVersion },
-    },
+    config: writeSkillPresentationMeta(
+      { template_source: { name: draft.templateName, version: draft.templateVersion } },
+      {
+        ...EMPTY_SKILL_PRESENTATION,
+        category: isSkillCategory(draft.templateCategory)
+          ? draft.templateCategory
+          : EMPTY_SKILL_PRESENTATION.category,
+        icon: isSkillIconName(draft.templateIcon) ? draft.templateIcon : null,
+      },
+    ),
   };
 }

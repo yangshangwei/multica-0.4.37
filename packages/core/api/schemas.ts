@@ -3400,6 +3400,10 @@ export const SkillSchema = z.object({
 
 export const SkillSummarySchema = SkillSchema.omit({ content: true, files: true }).extend({
   enabled: z.boolean().optional(),
+  // Workspace labels attached through `skill_to_label`, embedded by the list
+  // endpoint. Older servers omit the field; a malformed array must not drop
+  // the whole skill list, so it falls back to empty per summary.
+  labels: z.array(LabelSchema).optional().catch(undefined).default([]),
 });
 
 export const SkillListSchema = z.array(SkillSummarySchema);
@@ -3411,6 +3415,8 @@ export const SkillTemplateSchema = z.object({
   name: z.string().refine((value) => value.trim().length > 0),
   version: z.number().default(0),
   description: z.string().default(""),
+  category: z.string().optional(),
+  icon: z.string().optional(),
   content: z.string().refine((value) => value.trim().length > 0),
   files: z.array(z.object({
     path: z.string(),

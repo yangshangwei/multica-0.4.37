@@ -46,6 +46,8 @@ describe("createSkillTemplateDraft", () => {
     expect(createSkillTemplateDraft(template, [], "审查修改并报告问题")).toEqual({
       templateName: NAME,
       templateVersion: 3,
+      templateCategory: null,
+      templateIcon: null,
       sourceContent: template.content,
       name: `${NAME}-copy`,
       description: "审查修改并报告问题",
@@ -243,5 +245,24 @@ describe("buildSkillTemplateCreateRequest", () => {
     const draft = createSkillTemplateDraft(makeTemplate(), []);
     draft.sourceContent = "---\nname: [broken\n---\nbody";
     expect(() => buildSkillTemplateCreateRequest(draft)).toThrow(/YAML|frontmatter/i);
+  });
+});
+
+describe("template presentation defaults", () => {
+  it("carries valid category/icon into config.presentation and drops unknown values", () => {
+    const template = { ...makeTemplate(), category: "engineering", icon: "git-pull-request" };
+    const draft = createSkillTemplateDraft(template, []);
+    expect(draft.templateCategory).toBe("engineering");
+    expect(draft.templateIcon).toBe("git-pull-request");
+    expect(buildSkillTemplateCreateRequest(draft).config).toEqual({
+      template_source: { name: template.name, version: template.version },
+      presentation: { category: "engineering", icon: "git-pull-request" },
+    });
+
+    const bogus = createSkillTemplateDraft({ ...makeTemplate(), category: "nope", icon: "x" }, []);
+    expect(bogus.templateCategory).toBeNull();
+    expect(buildSkillTemplateCreateRequest(bogus).config).toEqual({
+      template_source: { name: template.name, version: template.version },
+    });
   });
 });

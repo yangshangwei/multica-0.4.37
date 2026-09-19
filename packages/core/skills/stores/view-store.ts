@@ -7,6 +7,7 @@ import {
   registerForWorkspaceRehydration,
 } from "../../platform/workspace-storage";
 import { defaultStorage } from "../../platform/storage";
+import type { SkillCategory } from "../presentation";
 
 // View preferences for the skills list page: sort, column visibility, and
 // filters. Persisted per workspace (workspace-aware storage), per user/device
@@ -14,7 +15,15 @@ import { defaultStorage } from "../../platform/storage";
 // they are session-scoped, and persisting them would greet returning users
 // with an inexplicably narrowed list.
 
-export type SkillSortField = "name" | "usedBy" | "updated" | "created";
+export type SkillSortField =
+  | "name"
+  | "category"
+  | "usedBy"
+  | "updated"
+  | "created";
+
+/** Card grid or the classic table. Persisted per workspace. */
+export type SkillViewMode = "card" | "list";
 
 export type SkillSortDirection = "asc" | "desc";
 
@@ -24,6 +33,7 @@ export const SKILL_SORT_DEFAULT_DIRECTION: Record<
   SkillSortDirection
 > = {
   name: "asc",
+  category: "asc",
   usedBy: "desc",
   updated: "desc",
   created: "desc",
@@ -39,31 +49,39 @@ export type SkillOriginType =
 /** Multi-select filter state. Empty array per dimension = inactive. */
 export interface SkillListFilters {
   usage: ("used" | "unused")[];
+  categories: SkillCategory[];
   origins: SkillOriginType[];
   agents: string[];
   creators: string[];
+  /** Workspace label ids (`resource_type = "skill"`); a skill matches when it carries any of them. */
+  labels: string[];
 }
 
 export const EMPTY_SKILL_FILTERS: SkillListFilters = {
   usage: [],
+  categories: [],
   origins: [],
   agents: [],
   creators: [],
+  labels: [],
 };
 
 // User-hideable columns. Name and the structural columns (checkbox, kebab)
 // are always visible.
 export type SkillColumnKey =
+  | "category"
+  | "labels"
   | "usedBy"
   | "source"
   | "creator"
   | "updated"
   | "created";
 
-/** Source and created are opt-in: hidden until the user enables them. */
-export const DEFAULT_HIDDEN_COLUMNS: SkillColumnKey[] = ["source", "created"];
+/** Labels, source and created are opt-in: hidden until the user enables them. */
+export const DEFAULT_HIDDEN_COLUMNS: SkillColumnKey[] = ["labels", "source", "created"];
 
 export interface SkillsViewState {
+  viewMode: SkillViewMode;
   sortField: SkillSortField;
   sortDirection: SkillSortDirection;
   hiddenColumns: SkillColumnKey[];
@@ -76,10 +94,15 @@ export interface SkillsViewState {
   setSortDirection: (direction: SkillSortDirection) => void;
   toggleColumn: (key: SkillColumnKey) => void;
   toggleFilter: (key: keyof SkillListFilters, value: string) => void;
+  /** Sidebar semantics: a category is single-select; picking the active one
+   *  clears the dimension. `null` clears explicitly ("All"). */
+  selectCategory: (category: SkillCategory | null) => void;
   clearFilters: () => void;
+  setViewMode: (mode: SkillViewMode) => void;
 }
 
 const DEFAULTS = {
+  viewMode: "card" as SkillViewMode,
   sortField: "updated" as SkillSortField,
   sortDirection: SKILL_SORT_DEFAULT_DIRECTION.updated,
   hiddenColumns: DEFAULT_HIDDEN_COLUMNS,
@@ -125,12 +148,23 @@ export const useSkillsViewStore = create<SkillsViewState>()(
             : [...list, value];
           return { filters: { ...state.filters, [key]: next } };
         }),
+      selectCategory: (category) =>
+        set((state) => {
+          const current = state.filters.categories;
+          const next =
+            category === null || (current.length === 1 && current[0] === category)
+              ? []
+              : [category];
+          return { filters: { ...state.filters, categories: next } };
+        }),
       clearFilters: () => set({ filters: EMPTY_SKILL_FILTERS }),
+      setViewMode: (mode) => set({ viewMode: mode }),
     }),
     {
       name: "multica_skills_view",
       storage: createJSONStorage(() => createWorkspaceAwareStorage(defaultStorage)),
       partialize: (state) => ({
+        viewMode: state.viewMode,
         sortField: state.sortField,
         sortDirection: state.sortDirection,
         hiddenColumns: state.hiddenColumns,
