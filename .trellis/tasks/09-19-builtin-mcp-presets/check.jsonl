@@ -1,0 +1,6 @@
+{"file": ".trellis/spec/server/builtin-templates.md", "reason": "核对目录接口是否真的不落库、不返回数据库身份，以及是否意外引入了不诚实的来源标记"}
+{"file": ".trellis/spec/core/frontend/type-safety.md", "reason": "核对 zod schema 全字段默认值、.loose()、以及 malformed-response 测试是否齐备"}
+{"file": ".trellis/spec/views/frontend/quality-guidelines.md", "reason": "核对新组件的测试归属层级、可访问性与状态处理（加载/失败/空/已添加）"}
+{"file": ".trellis/spec/views/frontend/builtin-skill-localization.md", "reason": "核对四语言覆盖与 parity 测试，确认条目文案未被硬编码进前端"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "本改动横跨 Go 名册 → handler → core schema → views，需逐层核对数据形状与失败路径不被吞掉"}
+{"file": ".trellis/spec/server/security-boundaries.md", "reason": "核对新端点的成员/管理员分层，以及目录响应中确实不含任何凭据材料"}

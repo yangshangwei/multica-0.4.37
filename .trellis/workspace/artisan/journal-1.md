@@ -720,3 +720,26 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Next Steps
 
 - 私有 GitLab 个人授权若要推进，先完成设计文档第 15 章的 P0 决策（GitLab 版本与 scope、A/B 部署路线、旧 owner/成员映射、授权有效期与对账时限），不直接进入实施
+
+
+## Session 22: 内网可投放的 Skill 模板库
+
+**Date**: 2026-09-19
+**Task**: 内网可投放的 Skill 模板库
+**Branch**: `feat/builtin-skill-presets`
+
+### Summary
+
+新增 embed + MULTICA_SKILL_TEMPLATE_DIR 挂载目录合并的 skill 模板来源（embed 赢冲突、拒符号链接/逃逸、大小上限、单条失败仅跳过），handler 改调 TaskService.SkillTemplates()，前端零改动即可列出；「从模板中修改」面板按 presentation.isBuiltin 分「平台内置/本部署提供」两组、带来源 ⓘ 与空状态安利；docker-compose 只读挂载 + offline-bundle 空目录 + SELF_HOSTING/self-host-quickstart(en+zh) 文档；spec 记录挂载目录契约与分组约定。docker 部署时宿主机 ./skill-templates ↔ 容器 /app/data/skill-templates。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `8af415532` | (see git log) |
+| `0793c05a1` | (see git log) |
+| `9fa79f149` | (see git log) |
+
+### Status
+
+[OK] **Completed**

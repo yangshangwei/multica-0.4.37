@@ -1,0 +1,7 @@
+{"file": ".trellis/spec/server/builtin-templates.md", "reason": "内置模板注册表的既有契约：模板是创建时拷贝进普通实例的预填内容、目录接口读内嵌注册表不落库不返回数据库身份、以及「模板决定的字段绝不来自请求」的来源诚实性告诫（本任务据此决定不记 template_key）"}
+{"file": ".trellis/spec/core/frontend/type-safety.md", "reason": "新增的目录接口响应必须过 parseWithFallback + zod 并带 malformed-response 测试，禁止直接 cast"}
+{"file": ".trellis/spec/core/frontend/state-management.md", "reason": "目录是服务端全局静态内容而非工作区数据，query key 与 staleTime 的取法需对齐既有 useRoleTemplates 惯例"}
+{"file": ".trellis/spec/views/frontend/component-guidelines.md", "reason": "设置页新分区与共享目录组件扩展需遵循 views 组件边界与设计令牌规则"}
+{"file": ".trellis/spec/views/frontend/builtin-skill-localization.md", "reason": "内置内容的本地化分工：条目文案由服务端按 language 下发，外壳文案进 locale 文件，四语言 parity"}
+{"file": ".trellis/spec/server/security-boundaries.md", "reason": "新端点挂在工作区成员可见分组，需确认与既有 MCP 路由的鉴权分层一致"}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "本任务的主要风险是另造一套目录 UI/数据层；先例已有四处，需强制复用"}
