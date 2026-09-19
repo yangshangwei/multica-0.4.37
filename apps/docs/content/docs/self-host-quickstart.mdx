@@ -266,6 +266,52 @@ Back in Multica, once an online runtime appears in the runtime list, create an a
 
 When the run shows as completed and the agent's reply appears in the timeline, the self-hosted service, the computer, and the AI coding tool are all connected. For detailed steps, see steps 3-5 of the [quickstart](/cloud-quickstart).
 
+## Ship your own skill templates
+
+When a workspace owner creates a skill and picks **Start from a template**, the picker lists the built-in role skills plus any templates this deployment mounts. This lets an intranet install ship its own starting content — house style guides, debugging playbooks, review checklists — with no code change, no rebuild, no offline bundle, and no database migration. Selecting a template only pre-fills the editor; saving produces an ordinary workspace skill the owner can edit, rename, delete, and assign.
+
+`docker-compose.selfhost.yml` already wires this up, so you only manage a host directory:
+
+```yaml
+# backend.volumes — host directory mounted read-only into the container
+- ${SKILL_TEMPLATE_DIRECTORY:-./skill-templates}:/app/data/skill-templates:ro
+# backend.environment — where the backend scans, inside the container
+MULTICA_SKILL_TEMPLATE_DIR: ${MULTICA_SKILL_TEMPLATE_DIR:-/app/data/skill-templates}
+```
+
+`/app/data/skill-templates` is the path **inside the container** — leave it and `MULTICA_SKILL_TEMPLATE_DIR` at their defaults. You only touch the **host** directory, which defaults to `./skill-templates` next to the compose file. One folder per template, each holding a `SKILL.md`:
+
+```
+your-deployment-dir/
+  docker-compose.selfhost.yml
+  .env
+  skill-templates/               ← drop templates here
+    my-debug-helper/
+      SKILL.md
+      references/steps.md         ← optional supporting files
+    team-code-style/
+      SKILL.md
+```
+
+- The folder name is the template name and must match `^[A-Za-z0-9_-]+$` (no dots, slashes, or non-ASCII).
+- `SKILL.md` needs YAML frontmatter with at least a `name`; its `description` shows in the picker. Supporting files travel with the template into the editor.
+- Drop a folder in and it appears on the next listing — **no restart needed** (the directory is scanned per request). Changing `.env`, however, does need `docker compose up -d`.
+
+For a fixed location that does not depend on where you run `docker compose`, set an absolute host path in `.env` (recommended for production):
+
+```bash
+SKILL_TEMPLATE_DIRECTORY=/srv/multica/skill-templates
+```
+
+The scanner is defensive — a bad entry is skipped with a log warning, never breaking the rest of the catalog:
+
+- Missing `SKILL.md`, frontmatter with no `name`, an illegal folder name, or a path escaping the directory → skipped.
+- A name that collides with a built-in role skill (e.g. `multica-code-review`) → the built-in wins, the mounted entry is skipped. Ship a variant under a different name.
+- Per-file and total size limits apply; an oversized entry is skipped.
+- An empty, absent, or unset directory disables the channel and leaves the built-in role skills as the only templates.
+
+Offline bundles carry this compose file and a pre-created `skill-templates/` directory, so an air-gapped install gets the mount and env wiring by default — just drop template folders in before or after starting the stack.
+
 ## Common admin commands
 
 Run all of these from the `multica` repository directory:

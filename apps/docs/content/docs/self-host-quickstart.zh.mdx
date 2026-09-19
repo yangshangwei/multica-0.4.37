@@ -255,6 +255,52 @@ multica daemon status
 
 执行日志变为"已完成"、时间线中出现智能体的回复，说明自托管服务、执行电脑和 AI 编程工具已经连通。详细步骤见[完整教程](/tutorial)。
 
+## 投放自己的 Skill 模板
+
+工作区 owner 新建 skill 时选择**从模板中修改**，选择器里会列出平台内置的 role skill，外加本部署自己挂载的模板。这让内网部署无需改代码、不重新构建、不重出离线包、不做数据库迁移，就能提供自己的起始内容——团队代码规范、排障手册、审查清单等。选中模板只是把内容预填进编辑器；保存后得到的是一条普通工作区 skill，可编辑、重命名、删除、分配给智能体。
+
+`docker-compose.selfhost.yml` 已经把这套接线配好，你只需要管理宿主机上的一个目录：
+
+```yaml
+# backend.volumes —— 把宿主机目录只读挂进容器
+- ${SKILL_TEMPLATE_DIRECTORY:-./skill-templates}:/app/data/skill-templates:ro
+# backend.environment —— 后端在容器内扫描的路径
+MULTICA_SKILL_TEMPLATE_DIR: ${MULTICA_SKILL_TEMPLATE_DIR:-/app/data/skill-templates}
+```
+
+`/app/data/skill-templates` 是**容器内部**的路径——它和 `MULTICA_SKILL_TEMPLATE_DIR` 都保持默认、不用动。你只操作**宿主机**目录，默认是 compose 文件同级的 `./skill-templates`。一个模板一个文件夹，每个文件夹里放一个 `SKILL.md`：
+
+```
+你的部署目录/
+  docker-compose.selfhost.yml
+  .env
+  skill-templates/               ← 模板放这里
+    my-debug-helper/
+      SKILL.md
+      references/steps.md         ← 可选的附属文件
+    team-code-style/
+      SKILL.md
+```
+
+- 文件夹名就是模板名，必须匹配 `^[A-Za-z0-9_-]+$`（不能有点、斜杠或非 ASCII 字符）。
+- `SKILL.md` 需要 YAML frontmatter，至少要有 `name`；它的 `description` 会显示在选择器里。附属文件会随模板一起进入编辑器。
+- 丢一个文件夹进去，下次打开列表就出现——**无需重启**（目录是每次请求扫描的）。但改 `.env` 需要执行 `docker compose up -d` 才生效。
+
+如果不想依赖"在哪运行 `docker compose`"这套相对路径，在 `.env` 里写死宿主机绝对路径（生产推荐）：
+
+```bash
+SKILL_TEMPLATE_DIRECTORY=/srv/multica/skill-templates
+```
+
+扫描是防御式的——坏条目只会被跳过并记一条日志告警，不会拖垮整个目录：
+
+- 缺 `SKILL.md`、frontmatter 没有 `name`、文件夹名非法、或路径试图逃出目录 → 跳过。
+- 名字与内置 role skill 冲突（如 `multica-code-review`）→ 内置赢，挂载条目被跳过。想提供变体就换个名字发布。
+- 有单文件与总大小上限；超限条目被跳过。
+- 目录为空、不存在或未配置 → 关闭该通道，只保留内置 role skill 作为模板。
+
+离线包携带了这份 compose 文件和一个预建的 `skill-templates/` 目录，所以隔离网络的部署默认就有挂载与环境变量接线——启动前后往目录里丢模板文件夹即可。
+
 ## 常用管理命令
 
 以下命令都在 `multica` 仓库目录中运行：
