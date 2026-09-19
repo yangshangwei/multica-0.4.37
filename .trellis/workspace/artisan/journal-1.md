@@ -764,3 +764,27 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 24: 技能库分类、图标与卡片视图（标签复用工作区标签）
+
+**Date**: 2026-09-20
+**Task**: 技能库分类、图标与卡片视图（标签复用工作区标签）
+**Branch**: `main`
+
+### Summary
+
+技能库新增固定 6 分类 + Lucide 图标白名单，存于 skill.config.presentation（category / icon），Go 与 TS 常量对拍；8 个内置角色 skill 预设分类图标，导入时从 frontmatter metadata 种子填充。页面改为左侧分类栏（窄容器折叠横向 chips）+ 卡片 / 列表可切换（按行虚拟化，视图模式按工作区持久化），列表新增分类 / 标签列，工具栏新增分类与标签筛选，新建与详情页可编辑分类 / 图标，批量「设置分类」，分类空态预填新建。中途用户决定放弃自由文本 tags、改用现有工作区标签：删除 tags 校验与存储，GET /api/skills 用 ListLabelsForSkills 批量内嵌 labels，POST /api/skills 支持 label_ids 并在创建事务内挂接，ResourceLabelPicker 增加草稿模式，卡片 / 列表用 LabelChip 展示。trellis-check 全绿（typecheck / lint / core / views / go skill+service / DB-backed handler 克隆库），自修 5 处（卡片 kebab hover 组名、卡片无匹配空态、分类空态误判、视图切换 active 态同 hover、批量设置分类无权限文案）。浏览器目视验证：暗 / 亮色卡片与列表、标签筛选菜单、600px 容器 chips、卡片 hover 操作菜单均正常；pnpm test 整包 mcp-tab / skill-template flake 单跑通过。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d017c292f` | (see git log) |
+| `6f5817444` | (see git log) |
+| `3c766dd12` | (see git log) |
+| `a9d034dc6` | (see git log) |
+
+### Status
+
+[OK] **Completed**
