@@ -11,9 +11,16 @@ import {
   Plus,
 } from "lucide-react";
 import { SkillIcon } from "../lib/skill-icon";
+import {
+  SKILL_CATEGORIES,
+  readSkillPresentationMeta,
+  type SkillCategory,
+  type SkillPresentationMeta,
+} from "@multica/core/skills";
 import type {
   Agent,
   AgentRuntime,
+  Label,
   MemberWithUser,
   Skill,
   SkillSummary,
@@ -32,6 +39,7 @@ import {
 } from "@multica/core/workspace/queries";
 import { runtimeDisplayLabel, runtimeListOptions } from "@multica/core/runtimes";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
+import { Badge } from "@multica/ui/components/ui/badge";
 import { Button } from "@multica/ui/components/ui/button";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import {
@@ -74,6 +82,13 @@ import {
   type SkillSortField,
 } from "@multica/core/skills/stores";
 import { SkillListToolbar } from "./skill-list-toolbar";
+import { SkillCategorySidebar } from "./skill-category-sidebar";
+import { SkillCategoryChips } from "./skill-category-chips";
+import { SkillCardGrid } from "./skill-card-grid";
+import { SkillPresentationIcon } from "./skill-presentation-icon";
+import { useSkillListFacets } from "../hooks/use-skill-list-facets";
+import { LabelChip } from "../../labels/label-chip";
+import { useSkillCategoryLabels } from "../hooks/use-skill-category-labels";
 import {
   SkillBatchToolbar,
   SkillRowActions,
@@ -83,8 +98,8 @@ import { useLocale, useT, useTimeAgo } from "../../i18n";
 
 // Column template — single source of truth for header, rows, and skeletons.
 // Tracks: [edge 0.75rem] [checkbox 1rem] [name, only fr track]
-// [usedBy] [source] [creator] [updated] [created] [kebab 1.75rem]
-// [edge 0.75rem].
+// [category] [labels] [usedBy] [source] [creator] [updated] [created]
+// [kebab 1.75rem] [edge 0.75rem].
 // Content cells carry a default px-2 from list-grid.tsx
 // (structural columns opt out with px-0), so the narrow edge tracks plus
 // cell padding land content 20px from the container edge. Non-core cells
@@ -110,7 +125,7 @@ import { useLocale, useT, useTimeAgo } from "../../i18n";
 //   (name + usedBy), no horizontal scroll, column toggles don't apply.
 const GRID_COLS =
   "grid-cols-[0.75rem_1rem_minmax(120px,1fr)_var(--lgc-usedby)_1.75rem_0.75rem] " +
-  "@2xl:grid-cols-[0.75rem_1rem_minmax(200px,1fr)_var(--lgc-usedby)_var(--lgc-source)_var(--lgc-creator)_var(--lgc-updated)_var(--lgc-created)_1.75rem_0.75rem]";
+  "@2xl:grid-cols-[0.75rem_1rem_minmax(200px,1fr)_var(--lgc-category)_var(--lgc-labels)_var(--lgc-usedby)_var(--lgc-source)_var(--lgc-creator)_var(--lgc-updated)_var(--lgc-created)_1.75rem_0.75rem]";
 
 // h-12 rows. The virtualizer's fixed-size contract: every row renders at
 // exactly this height, which is what lets it skip per-row measurement.
@@ -119,6 +134,8 @@ const ROW_HEIGHT = 48;
 // Single source for hideable column widths: track vars and the grid's
 // min-width derive from the same numbers.
 const COLUMN_WIDTHS: Record<SkillColumnKey, number> = {
+  category: 128,
+  labels: 176,
   usedBy: 144,
   source: 152,
   creator: 144,
@@ -127,9 +144,9 @@ const COLUMN_WIDTHS: Record<SkillColumnKey, number> = {
 };
 
 // Fixed tracks (edges 12+12, checkbox 16, name min 200, kebab 28) plus the
-// 9 gap-x-3 gaps between the wide template's 10 tracks (zero-width tracks
-// still carry gaps).
-const FIXED_TRACKS_WIDTH = 268 + 9 * 12;
+// 11 gap-x-3 gaps between the wide template's 12 tracks (gaps = tracks − 1;
+// zero-width tracks still carry gaps).
+const FIXED_TRACKS_WIDTH = 268 + 11 * 12;
 
 function columnTrackVars(
   isVisible: (key: SkillColumnKey) => boolean,
@@ -143,6 +160,8 @@ function columnTrackVars(
       0,
     );
   return {
+    "--lgc-category": width("category"),
+    "--lgc-labels": width("labels"),
     "--lgc-usedby": width("usedBy"),
     "--lgc-source": width("source"),
     "--lgc-creator": width("creator"),
@@ -159,6 +178,8 @@ export type SortField = SkillSortField;
 
 export interface SkillRow {
   skill: SkillSummary;
+  /** Workspace labels embedded on the summary; `[]` for older servers. */
+  labels: Label[];
   agents: Agent[];
   creator: MemberWithUser | null;
   runtime: AgentRuntime | null;
@@ -166,7 +187,11 @@ export interface SkillRow {
   canEdit: boolean;
 }
 
-type PresentedSkillRow = SkillRow & { presentation: SkillPresentation };
+export type PresentedSkillRow = SkillRow & {
+  presentation: SkillPresentation;
+  /** Category / icon from `config.presentation`, tolerant-parsed. */
+  meta: SkillPresentationMeta;
+};
 
 // ---------------------------------------------------------------------------
 // Page header bar — uses shared PageHeader so the mobile sidebar trigger and
@@ -245,9 +270,10 @@ function CheckboxCell({
 
 function NameCell({ row }: { row: PresentedSkillRow }) {
   const { t } = useT("skills");
-  const { skill, canEdit, presentation } = row;
+  const { skill, canEdit, presentation, meta } = row;
   return (
-    <ListGridCell className="gap-1.5">
+    <ListGridCell className="gap-2">
+      <SkillPresentationIcon meta={meta} size="sm" />
       <div className="min-w-0 flex-1">
         <div className="truncate text-body font-medium" title={skill.name}>
           {presentation.name}
@@ -270,6 +296,36 @@ function NameCell({ row }: { row: PresentedSkillRow }) {
           />
           <TooltipContent>{t(($) => $.table.lock_tooltip)}</TooltipContent>
         </Tooltip>
+      )}
+    </ListGridCell>
+  );
+}
+
+function CategoryCell({ meta }: { meta: SkillPresentationMeta }) {
+  const labels = useSkillCategoryLabels();
+  return (
+    <ListGridCell className="hidden gap-1.5 text-caption text-muted-foreground @2xl:flex">
+      <SkillPresentationIcon meta={{ category: meta.category, icon: null }} size="sm" className="size-4 rounded" />
+      <span className="min-w-0 truncate">{labels[meta.category]}</span>
+    </ListGridCell>
+  );
+}
+
+const LIST_LABELS_SHOWN = 2;
+
+function LabelsCell({ labels }: { labels: Label[] }) {
+  const { t } = useT("skills");
+  const visible = labels.slice(0, LIST_LABELS_SHOWN);
+  const extra = labels.length - visible.length;
+  return (
+    <ListGridCell className="hidden gap-1 overflow-hidden @2xl:flex">
+      {visible.map((label) => (
+        <LabelChip key={label.id} label={label} className="max-w-20" />
+      ))}
+      {extra > 0 && (
+        <Badge variant="outline">
+          {t(($) => $.table.labels_more, { count: extra })}
+        </Badge>
       )}
     </ListGridCell>
   );
@@ -441,6 +497,30 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
   );
 }
 
+function CategoryEmptyState({
+  category,
+  onCreate,
+}: {
+  category: SkillCategory;
+  onCreate: () => void;
+}) {
+  const { t } = useT("skills");
+  const labels = useSkillCategoryLabels();
+  return (
+    <CollectionPageState
+      icon={SkillIcon}
+      title={t(($) => $.categories.empty_title, { category: labels[category] })}
+      description={t(($) => $.categories.empty_hint)}
+      actions={
+        <Button type="button" onClick={onCreate} size="sm">
+          <Plus aria-hidden="true" className="size-3" />
+          {t(($) => $.page.new_skill)}
+        </Button>
+      }
+    />
+  );
+}
+
 // ---------------------------------------------------------------------------
 // List
 // ---------------------------------------------------------------------------
@@ -493,6 +573,24 @@ function SkillListHeader({
       <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
         {t(($) => $.table.name)}
       </ListGridHeaderCell>
+      {isColVisible("category") ? (
+        <ListGridHeaderCell
+          className="hidden @2xl:flex"
+          sorted={sorted("category")}
+          onSort={() => onSort("category")}
+        >
+          {t(($) => $.table.category)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
+      {isColVisible("labels") ? (
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          {t(($) => $.table.labels)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
       {isColVisible("usedBy") ? (
         <ListGridHeaderCell
           sorted={sorted("usedBy")}
@@ -555,6 +653,10 @@ function LoadingSkeleton() {
         <ListGridHeaderCell>
           <Skeleton className="h-3 w-12" />
         </ListGridHeaderCell>
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          <Skeleton className="h-3 w-10" />
+        </ListGridHeaderCell>
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
         <ListGridHeaderCell>
           <Skeleton className="h-3 w-14" />
         </ListGridHeaderCell>
@@ -574,9 +676,14 @@ function LoadingSkeleton() {
       {Array.from({ length: 5 }).map((_, i) => (
         <ListGridRow key={i} className="hover:bg-transparent">
           <span aria-hidden="true" />
-          <ListGridCell>
+          <ListGridCell className="gap-2">
+            <Skeleton className="size-6 rounded-md" />
             <Skeleton className="h-3.5 w-40 max-w-full" />
           </ListGridCell>
+          <ListGridCell className="hidden @2xl:flex">
+            <Skeleton className="h-3 w-16" />
+          </ListGridCell>
+          <ListGridCell className="hidden px-0 @2xl:flex" />
           <ListGridCell>
             <Skeleton className="h-5 w-14" />
           </ListGridCell>
@@ -627,7 +734,10 @@ export default function SkillsPage() {
     runtimeListOptions(wsId),
   );
 
-  const [creation, setCreation] = useState<{ templateName?: string } | null>(null);
+  const [creation, setCreation] = useState<{
+    templateName?: string;
+    category?: SkillCategory;
+  } | null>(null);
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(
     new Set(),
   );
@@ -647,6 +757,9 @@ export default function SkillsPage() {
   const toggleColumn = useSkillsViewStore((s) => s.toggleColumn);
   const toggleFilter = useSkillsViewStore((s) => s.toggleFilter);
   const clearFilters = useSkillsViewStore((s) => s.clearFilters);
+  const selectCategory = useSkillsViewStore((s) => s.selectCategory);
+  const viewMode = useSkillsViewStore((s) => s.viewMode);
+  const setViewMode = useSkillsViewStore((s) => s.setViewMode);
 
   const isColVisible = (key: SkillColumnKey) => !hiddenColumns.includes(key);
 
@@ -695,7 +808,9 @@ export default function SkillsPage() {
           : null;
       return {
         skill,
+        labels: skill.labels ?? [],
         presentation: presentSkill(skill),
+        meta: readSkillPresentationMeta(skill.config),
         agents: assignments.get(skill.id) ?? [],
         creator: skill.created_by
           ? membersById.get(skill.created_by) ?? null
@@ -707,11 +822,32 @@ export default function SkillsPage() {
     });
   }, [skills, assignments, membersById, runtimesById, currentUserId, myRole, presentSkill]);
 
-  // Search names and descriptions in both languages, then sort the visible labels.
+  const facets = useSkillListFacets(allRows);
+
+  // Search names and descriptions in both languages (plus label names),
+  // then sort the visible rows.
   const rows = useMemo<PresentedSkillRow[]>(() => {
     const q = search.trim().toLowerCase();
     const filtered = allRows.filter((row) => {
-      if (q && !row.presentation.searchText.includes(q)) return false;
+      if (
+        q &&
+        !row.presentation.searchText.includes(q) &&
+        !row.labels.some((label) => label.name.toLowerCase().includes(q))
+      ) {
+        return false;
+      }
+      if (
+        filters.labels.length > 0 &&
+        !row.labels.some((label) => filters.labels.includes(label.id))
+      ) {
+        return false;
+      }
+      if (
+        filters.categories.length > 0 &&
+        !filters.categories.includes(row.meta.category)
+      ) {
+        return false;
+      }
       if (filters.usage.length > 0) {
         const usage = row.agents.length > 0 ? "used" : "unused";
         if (!filters.usage.includes(usage)) return false;
@@ -742,6 +878,14 @@ export default function SkillsPage() {
     filtered.sort((a, b) => {
       if (sortField === "name") {
         return a.presentation.name.localeCompare(b.presentation.name, locale) * dir;
+      }
+      if (sortField === "category") {
+        return (
+          (SKILL_CATEGORIES.indexOf(a.meta.category) -
+            SKILL_CATEGORIES.indexOf(b.meta.category)) *
+            dir ||
+          a.presentation.name.localeCompare(b.presentation.name, locale)
+        );
       }
       if (sortField === "usedBy") {
         return (
@@ -820,6 +964,7 @@ export default function SkillsPage() {
         {creation && (
           <CreateSkillDialog
             initialTemplateName={creation.templateName}
+            initialPresentation={creation.category ? { category: creation.category } : undefined}
             onClose={() => setCreation(null)}
             onCreated={handleCreated}
           />
@@ -830,6 +975,14 @@ export default function SkillsPage() {
 
   const totalCount = skills.length;
   const showEmpty = !isLoading && totalCount === 0;
+  // A single selected category that has no skills at all gets its own empty
+  // state with a pre-filled "New skill" entry. Counted off the unfiltered
+  // facets: when a search or another filter is what narrowed the list to
+  // zero, the plain "no matches" state is the honest one.
+  const soleCategory =
+    filters.categories.length === 1 ? filters.categories[0] : undefined;
+  const categoryEmpty =
+    soleCategory && facets.categoryCounts[soleCategory] === 0 ? soleCategory : null;
   const supportingQueryDown =
     !!agentsError || !!membersError || !!runtimesError;
 
@@ -887,9 +1040,44 @@ export default function SkillsPage() {
             onSortDirectionChange={setSortDirection}
             hiddenColumns={hiddenColumns}
             onToggleColumn={toggleColumn}
-            allRows={allRows}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            facets={facets}
             visibleCount={rows.length}
           />
+          {/* Category navigation: sidebar in wide containers, a chip row
+              below the toolbar in narrow ones. Both are mounted and the
+              container query picks one, so no JS width measurement. */}
+          <div className="flex min-h-0 flex-1 flex-col @container">
+          <SkillCategoryChips
+            className="@2xl:hidden"
+            facets={facets}
+            filters={filters}
+            onSelectCategory={selectCategory}
+          />
+          <div className="flex min-h-0 flex-1">
+          <SkillCategorySidebar
+            className="hidden @2xl:block"
+            facets={facets}
+            filters={filters}
+            onSelectCategory={selectCategory}
+            onToggleOrigin={(origin) => toggleFilter("origins", origin)}
+          />
+          {categoryEmpty ? (
+            <div className="flex flex-1 items-center justify-center">
+              <CategoryEmptyState
+                category={categoryEmpty}
+                onCreate={() => setCreation({ category: categoryEmpty })}
+              />
+            </div>
+          ) : viewMode === "card" ? (
+            <SkillCardGrid
+              rows={rows}
+              ctx={actionsCtx}
+              selectedIds={selectedIds}
+              onToggleSelected={toggleSelected}
+            />
+          ) : (
           <div
             ref={listScrollRef}
             className="min-h-0 flex-1 overflow-auto @container"
@@ -935,6 +1123,16 @@ export default function SkillsPage() {
                   onToggle={() => toggleSelected(row.skill.id)}
                 />
                 <NameCell row={row} />
+                {isColVisible("category") ? (
+                  <CategoryCell meta={row.meta} />
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
+                {isColVisible("labels") ? (
+                  <LabelsCell labels={row.labels} />
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
                 {isColVisible("usedBy") ? (
                   <UsedByCell agents={row.agents} />
                 ) : (
@@ -973,6 +1171,9 @@ export default function SkillsPage() {
             </ListGridBody>
           </ListGrid>
           </div>
+          )}
+          </div>
+          </div>
         </>
       )}
 
@@ -985,6 +1186,7 @@ export default function SkillsPage() {
       {creation && (
         <CreateSkillDialog
           initialTemplateName={creation.templateName}
+          initialPresentation={creation.category ? { category: creation.category } : undefined}
           onClose={() => setCreation(null)}
           onCreated={handleCreated}
         />

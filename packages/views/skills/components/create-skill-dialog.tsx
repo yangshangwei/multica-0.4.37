@@ -20,15 +20,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@multica/core/api";
 import type { Skill } from "@multica/core/types";
 import {
+  EMPTY_SKILL_PRESENTATION,
   prepareSkillArchiveFromPickerFiles,
   wrapExistingSkillArchive,
+  writeSkillPresentationMeta,
   type PreparedSkillArchive,
+  type SkillPresentationMeta,
 } from "@multica/core/skills";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { isImeComposing } from "@multica/core/utils";
-import {
-  cacheSkillResponse as seedAfterCreate,
-} from "@multica/core/workspace/queries";
+import { cacheSkillResponse as seedAfterCreate } from "@multica/core/workspace/queries";
 import {
   Dialog,
   DialogContent,
@@ -58,6 +59,8 @@ import { cn } from "@multica/ui/lib/utils";
 import { openExternal } from "../../platform";
 import { RuntimeLocalSkillImportPanel } from "./runtime-local-skill-import-panel";
 import { TemplateSkillCreatePanel } from "./template-skill-create-panel";
+import { SkillPresentationFields } from "./skill-presentation-fields";
+import { ResourceLabelPicker } from "../../labels/resource-label-picker";
 import { useTemplateSkillSession } from "../hooks/use-template-skill-session";
 import { useT } from "../../i18n";
 import { isNameConflictError } from "../lib/utils";
@@ -112,9 +115,11 @@ function MethodChooser({ onChoose }: { onChoose: (m: Method) => void }) {
 // ---------------------------------------------------------------------------
 
 function ManualForm({
+  initialPresentation,
   onCreated,
   onCancel,
 }: {
+  initialPresentation?: Partial<SkillPresentationMeta>;
   onCreated: (skill: Skill) => void;
   onCancel: () => void;
 }) {
@@ -123,6 +128,15 @@ function ManualForm({
   const wsId = useWorkspaceId();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  // Seeded once from the caller (e.g. a category empty state pre-filling
+  // its category); later prop changes never overwrite what the user picked.
+  const [presentation, setPresentation] = useState<SkillPresentationMeta>(() => ({
+    ...EMPTY_SKILL_PRESENTATION,
+    ...initialPresentation,
+  }));
+  // Draft-mode label selection: workspace `skill` labels picked before the
+  // skill exists, attached by the server in the create transaction.
+  const [labelIds, setLabelIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -134,9 +148,12 @@ function ManualForm({
     setLoading(true);
     setError("");
     try {
+      const config = writeSkillPresentationMeta(undefined, presentation);
       const skill = await api.createSkill({
         name: trimmed,
         description: description.trim(),
+        ...(Object.keys(config).length > 0 ? { config } : {}),
+        ...(labelIds.length > 0 ? { label_ids: labelIds } : {}),
       });
       seedAfterCreate(qc, wsId, skill);
       toast.success(t(($) => $.create.manual.toast_created));
@@ -195,6 +212,23 @@ function ManualForm({
             placeholder={t(($) => $.create.manual.description_placeholder)}
             rows={3}
             className="resize-none"
+          />
+        </div>
+
+        <SkillPresentationFields
+          value={presentation}
+          onChange={setPresentation}
+        />
+
+        <div className="space-y-1.5">
+          <span className="block text-caption text-muted-foreground">
+            {t(($) => $.detail.overview.labels)}
+          </span>
+          <ResourceLabelPicker
+            resourceType="skill"
+            selectedIds={labelIds}
+            onSelectedIdsChange={setLabelIds}
+            canEdit
           />
         </div>
 
@@ -615,10 +649,13 @@ export function CreateSkillDialog({
   onClose,
   onCreated,
   initialTemplateName,
+  initialPresentation,
 }: {
   onClose: () => void;
   onCreated?: (skill: Skill) => void;
   initialTemplateName?: string;
+  /** Pre-fills the manual form's category / icon (e.g. from a category empty state). */
+  initialPresentation?: Partial<SkillPresentationMeta>;
 }) {
   const { t } = useT("skills");
   const [method, setMethod] = useState<Method>(() => initialTemplateName ? "template" : "chooser");
@@ -859,6 +896,7 @@ export function CreateSkillDialog({
         {method === "chooser" && <MethodChooser onChoose={handleChoose} />}
         {method === "manual" && (
           <ManualForm
+            initialPresentation={initialPresentation}
             onCreated={handleCreated}
             onCancel={() => setMethod("chooser")}
           />

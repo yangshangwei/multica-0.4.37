@@ -38,6 +38,10 @@ vi.mock("@multica/core/workspace/queries", () => ({
     queryKey: ["members", wsId],
     queryFn: () => Promise.resolve(membersRef.current),
   }),
+  skillListOptions: (wsId: string) => ({
+    queryKey: ["skills", wsId],
+    queryFn: () => Promise.resolve([]),
+  }),
   selectSkillAssignments: () => new Map(),
   workspaceKeys: {
     skills: (wsId: string) => ["skills", wsId],
@@ -545,5 +549,82 @@ describe("SkillDetailPage origin link", () => {
     expect(
       screen.queryByRole("link", { name: "Imported · GitHub" }),
     ).toBeNull();
+  });
+});
+
+describe("SkillDetailPage presentation metadata", () => {
+  it("renders the header tile with the stored category and preserves origin on save", async () => {
+    const skill: Skill = {
+      ...baseSkill,
+      config: {
+        origin: { type: "github", source_url: "https://github.com/acme/x" },
+        presentation: { category: "writing", icon: "megaphone" },
+      },
+    };
+    skillRef.current = skill;
+    renderPage();
+    await screen.findByRole("tab", { name: "Overview" });
+    expect(
+      document.querySelector('[data-category="writing"]'),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Save changes/ })).toBeNull();
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("combobox", { name: "Category" }));
+    await user.click(await screen.findByRole("option", { name: "Engineering" }));
+    expect(screen.getByText("Changed: Category")).toBeTruthy();
+    // The header tile previews the unsaved category.
+    expect(document.querySelector('[data-category="engineering"]')).toBeInTheDocument();
+
+    vi.mocked(api.updateSkill).mockResolvedValueOnce({
+      ...skill,
+      updated_at: "2026-07-29T10:00:00Z",
+    });
+    await user.click(screen.getByRole("button", { name: /Save changes/ }));
+    await waitFor(() => expect(api.updateSkill).toHaveBeenCalled());
+    expect(vi.mocked(api.updateSkill).mock.calls[0]?.[1]).toEqual(
+      expect.objectContaining({
+        config: {
+          origin: { type: "github", source_url: "https://github.com/acme/x" },
+          presentation: { category: "engineering", icon: "megaphone" },
+        },
+      }),
+    );
+  });
+
+  it("does not send config when only the description changed", async () => {
+    renderPage();
+    fireEvent.change(await screen.findByLabelText("Description"), {
+      target: { value: "changed" },
+    });
+    vi.mocked(api.updateSkill).mockResolvedValueOnce({
+      ...baseSkill,
+      description: "changed",
+      updated_at: "2026-07-29T10:00:00Z",
+    });
+    await userEvent.click(screen.getByRole("button", { name: /Save changes/ }));
+    await waitFor(() => expect(api.updateSkill).toHaveBeenCalled());
+    expect(vi.mocked(api.updateSkill).mock.calls[0]?.[1]).not.toHaveProperty("config");
+  });
+
+  it("keeps an edited category across a locale change", async () => {
+    const user = userEvent.setup();
+    const { changeLocale } = renderPage();
+    await screen.findByRole("tab", { name: "Overview" });
+    await user.click(screen.getByRole("combobox", { name: "Category" }));
+    await user.click(await screen.findByRole("option", { name: "Data" }));
+    changeLocale("zh-Hans");
+    expect(await screen.findByRole("combobox", { name: "分类" })).toHaveTextContent("数据处理");
+    expect(screen.getByRole("button", { name: "保存修改" })).toBeInTheDocument();
+  });
+
+  it("renders the fields read-only for viewers without edit rights", async () => {
+    canEditRef.current = false;
+    renderPage();
+    await screen.findByRole("tab", { name: "Overview" });
+    // Base UI Select flags a disabled trigger via `data-disabled` (and the
+    // native `disabled` attribute on its button), not `aria-disabled`.
+    expect(screen.getByRole("combobox", { name: "Category" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Pick an icon" })).toBeDisabled();
   });
 });

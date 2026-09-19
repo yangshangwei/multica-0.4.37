@@ -18,7 +18,12 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-import { SkillIcon } from "../lib/skill-icon";
+import {
+  EMPTY_SKILL_PRESENTATION,
+  readSkillPresentationMeta,
+  writeSkillPresentationMeta,
+  type SkillPresentationMeta,
+} from "@multica/core/skills";
 import type {
   Agent,
   AgentRuntime,
@@ -86,6 +91,8 @@ import {
   type SkillActionsContext,
 } from "./skill-list-actions";
 import { RefreshSkillDialog } from "./refresh-skill-dialog";
+import { SkillPresentationFields } from "./skill-presentation-fields";
+import { SkillPresentationIcon } from "./skill-presentation-icon";
 import { useT } from "../../i18n";
 import { ResourceLabelPicker } from "../../labels/resource-label-picker";
 
@@ -93,12 +100,14 @@ const SKILL_MD = "SKILL.md";
 
 type DraftFile = { id?: string; path: string; content: string };
 
-/** The four editable fields, as one snapshot. */
+/** The five editable fields, as one snapshot. */
 type SkillDraft = {
   name: string;
   description: string;
   content: string;
   files: DraftFile[];
+  /** Category / icon, read tolerantly from `config.presentation`. */
+  presentation: SkillPresentationMeta;
 };
 
 /**
@@ -125,7 +134,13 @@ function toDraft(s: Skill): SkillDraft {
       path: f.path,
       content: f.content,
     })),
+    presentation: readSkillPresentationMeta(s.config),
   };
+}
+
+/** Canonical snapshot of presentation metadata for dirty checks. */
+function presentationSignature(meta: SkillPresentationMeta): string {
+  return JSON.stringify([meta.category, meta.icon]);
 }
 
 /**
@@ -155,7 +170,9 @@ function hasLocalEdits(draft: SkillDraft, baseline: SkillDraft | null): boolean 
     draft.name.trim() !== baseline.name ||
     draft.description.trim() !== baseline.description ||
     draft.content !== baseline.content ||
-    fileSignature(draft.files) !== fileSignature(baseline.files)
+    fileSignature(draft.files) !== fileSignature(baseline.files) ||
+    presentationSignature(draft.presentation) !==
+      presentationSignature(baseline.presentation)
   );
 }
 
@@ -287,6 +304,7 @@ function useOriginLabel(origin: OriginInfo | null, runtime: AgentRuntime | null)
 function SkillIdentity({
   skill,
   presentation,
+  meta,
   origin,
   originRuntime,
   agentCount,
@@ -294,6 +312,8 @@ function SkillIdentity({
 }: {
   skill: Skill;
   presentation: SkillPresentation;
+  /** Draft presentation metadata, so the tile previews an unsaved category. */
+  meta: SkillPresentationMeta;
   origin: OriginInfo | null;
   originRuntime: AgentRuntime | null;
   agentCount: number;
@@ -309,9 +329,7 @@ function SkillIdentity({
     <div className="shrink-0 border-b px-4 py-3 sm:px-6">
       <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-x-4 gap-y-1.5">
         <div className="flex min-w-0 items-center gap-2.5">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border bg-muted text-muted-foreground">
-            <SkillIcon className="h-4 w-4" aria-hidden="true" />
-          </div>
+          <SkillPresentationIcon meta={meta} size="lg" />
           <h1
             className={cn(
               "min-w-0 truncate text-title font-semibold tracking-tight",
@@ -447,21 +465,25 @@ function OverviewTab({
   skill,
   name,
   description,
+  presentationMeta,
   canEdit,
   creatorName,
   skillAgents,
   onNameChange,
   onDescriptionChange,
+  onPresentationChange,
   onAddToAgents,
 }: {
   skill: Skill;
   name: string;
   description: string;
+  presentationMeta: SkillPresentationMeta;
   canEdit: boolean;
   creatorName: string | null;
   skillAgents: Agent[];
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
+  onPresentationChange: (value: SkillPresentationMeta) => void;
   onAddToAgents: () => void;
 }) {
   const { t } = useT("skills");
@@ -507,6 +529,13 @@ function OverviewTab({
               })}
             </p>
           </PropertyRow>
+
+          <SkillPresentationFields
+            layout="rows"
+            value={presentationMeta}
+            onChange={onPresentationChange}
+            disabled={!canEdit}
+          />
 
           <PropertyRow label={t(($) => $.detail.overview.labels)}>
             <ResourceLabelPicker
@@ -772,7 +801,6 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
   const { data: runtimes = [], error: runtimesError } = useQuery(
     runtimeListOptions(wsId),
   );
-
   const assignments = useMemo(() => selectSkillAssignments(agents), [agents]);
 
   const canEdit = useCanEditSkill(skill, wsId);
@@ -795,6 +823,11 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState<DraftFile[]>([]);
+  // Named apart from `presentation` (the localized display identity below):
+  // this one is the editable category / icon draft.
+  const [presentationMeta, setPresentationMeta] = useState<SkillPresentationMeta>(
+    EMPTY_SKILL_PRESENTATION,
+  );
   const [selectedPath, setSelectedPath] = useState(SKILL_MD);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -837,8 +870,20 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
     [navigation],
   );
 
-  const draftRef = useRef({ name, description, content, files });
-  draftRef.current = { name, description, content, files };
+  const draftRef = useRef<SkillDraft>({
+    name,
+    description,
+    content,
+    files,
+    presentation: presentationMeta,
+  });
+  draftRef.current = {
+    name,
+    description,
+    content,
+    files,
+    presentation: presentationMeta,
+  };
 
   const seededKeyRef = useRef<string | null>(null);
 
@@ -860,6 +905,7 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
     setDescription(seeded.description);
     setContent(seeded.content);
     setFiles(seeded.files);
+    setPresentationMeta(seeded.presentation);
     baselineRef.current = seeded;
   }, []);
 
@@ -904,7 +950,16 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
     }
 
     adoptServerVersion(skill, !sameSkill);
-  }, [skill, wsId, adoptServerVersion, name, description, content, files]);
+  }, [
+    skill,
+    wsId,
+    adoptServerVersion,
+    name,
+    description,
+    content,
+    files,
+    presentationMeta,
+  ]);
 
   const creator = useMemo<MemberWithUser | null>(
     () =>
@@ -948,7 +1003,12 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
   const dirtySummary = useMemo(() => {
     const baseline = baselineRef.current;
     if (!baseline) {
-      return { nameChanged: false, descChanged: false, changedFileCount: 0 };
+      return {
+        nameChanged: false,
+        descChanged: false,
+        presentationChanged: false,
+        changedFileCount: 0,
+      };
     }
     const baselineById = new Map(
       baseline.files.flatMap((f) => (f.id ? [[f.id, f] as const] : [])),
@@ -968,13 +1028,17 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
     return {
       nameChanged: name.trim() !== baseline.name,
       descChanged: description.trim() !== baseline.description,
+      presentationChanged:
+        presentationSignature(presentationMeta) !==
+        presentationSignature(baseline.presentation),
       changedFileCount,
     };
-  }, [name, description, content, files]);
+  }, [name, description, content, files, presentationMeta]);
 
   const isDirty =
     dirtySummary.nameChanged ||
     dirtySummary.descChanged ||
+    dirtySummary.presentationChanged ||
     dirtySummary.changedFileCount > 0;
 
   const handleSave = async () => {
@@ -989,6 +1053,10 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
         content,
         files: files.filter((f) => f.path.trim()),
       };
+      // Merge over the server config so `origin` / `template_source` survive.
+      if (dirtySummary.presentationChanged) {
+        payload.config = writeSkillPresentationMeta(skill.config, presentationMeta);
+      }
       const updated = await api.updateSkill(skill.id, payload);
       qc.setQueryData(skillDetailOptions(wsId, skill.id).queryKey, updated);
       adoptServerVersion(updated);
@@ -1140,6 +1208,9 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
   const changedParts = [
     dirtySummary.nameChanged ? t(($) => $.detail.overview.name) : null,
     dirtySummary.descChanged ? t(($) => $.detail.overview.description) : null,
+    dirtySummary.presentationChanged
+      ? t(($) => $.presentation.category_label)
+      : null,
     dirtySummary.changedFileCount > 0
       ? t(($) => $.detail.save_bar.changed_files, {
           count: dirtySummary.changedFileCount,
@@ -1253,6 +1324,7 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
       <SkillIdentity
         skill={skill}
         presentation={presentation}
+        meta={presentationMeta}
         origin={origin}
         originRuntime={originRuntime}
         agentCount={skillAgents.length}
@@ -1314,11 +1386,13 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
             skill={skill}
             name={name}
             description={description}
+            presentationMeta={presentationMeta}
             canEdit={canEdit}
             creatorName={creator?.name ?? null}
             skillAgents={skillAgents}
             onNameChange={setName}
             onDescriptionChange={setDescription}
+            onPresentationChange={setPresentationMeta}
             onAddToAgents={() => setShowAddToAgents(true)}
           />
         ) : (

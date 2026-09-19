@@ -10,6 +10,7 @@ import {
   Plus,
   RotateCw,
   Search,
+  Tag,
   Trash2,
   X,
 } from "lucide-react";
@@ -17,6 +18,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { Agent, SkillSummary } from "@multica/core/types";
 import { api } from "@multica/core/api";
+import {
+  SKILL_CATEGORIES,
+  readSkillPresentationMeta,
+  writeSkillPresentationMeta,
+  type SkillCategory,
+} from "@multica/core/skills";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
@@ -55,6 +62,7 @@ import { useIntentNavigate } from "../../navigation";
 import { isRefreshableOrigin, readOrigin } from "../lib/origin";
 import { useSkillPresentation } from "../hooks/use-skill-presentation";
 import { RefreshSkillDialog } from "./refresh-skill-dialog";
+import { SkillPresentationIcon } from "./skill-presentation-icon";
 import type { SkillRow } from "./skills-page";
 
 // Shared context the row kebab and the batch toolbar both need. Assembled
@@ -649,6 +657,123 @@ export function UpdateSkillsDialog({
 }
 
 // ---------------------------------------------------------------------------
+// Bulk set-category (batch toolbar)
+// ---------------------------------------------------------------------------
+
+/**
+ * Writes `presentation.category` on every editable selected skill, keeping
+ * each skill's own icon (and its `origin` / `template_source`); label
+ * attachments live outside config and are untouched.
+ * Same shape as bulk update: sequential, per-item failure tolerance, one
+ * toast at the end. Skills the user cannot edit are skipped up front, so a
+ * 403 never appears as a "failed" count.
+ */
+export async function setSkillsCategory(
+  rows: SkillRow[],
+  category: SkillCategory,
+): Promise<{ updated: number; failed: number; skipped: number }> {
+  let updated = 0;
+  let failed = 0;
+  let skipped = 0;
+  for (const row of rows) {
+    if (!row.canEdit) {
+      skipped++;
+      continue;
+    }
+    const meta = readSkillPresentationMeta(row.skill.config);
+    if (meta.category === category) {
+      updated++;
+      continue;
+    }
+    try {
+      await api.updateSkill(row.skill.id, {
+        config: writeSkillPresentationMeta(row.skill.config, { ...meta, category }),
+      });
+      updated++;
+    } catch {
+      failed++;
+    }
+  }
+  return { updated, failed, skipped };
+}
+
+function SetCategoryMenu({
+  rows,
+  ctx,
+  onDone,
+}: {
+  rows: SkillRow[];
+  ctx: SkillActionsContext;
+  onDone?: () => void;
+}) {
+  const { t } = useT("skills");
+  const qc = useQueryClient();
+  const [busy, setBusy] = useState(false);
+  const editable = rows.filter((r) => r.canEdit);
+
+  const handlePick = async (category: SkillCategory) => {
+    if (busy || editable.length === 0) return;
+    setBusy(true);
+    try {
+      const { updated, failed } = await setSkillsCategory(rows, category);
+      qc.invalidateQueries({ queryKey: workspaceKeys.skills(ctx.wsId) });
+      if (failed === 0) {
+        toast.success(t(($) => $.actions.set_category_toast, { count: updated }));
+        onDone?.();
+      } else {
+        toast.error(t(($) => $.actions.set_category_failed_toast));
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const trigger = (
+    <Button
+      variant="ghost"
+      size="sm"
+      disabled={busy || editable.length === 0}
+      className={cn(editable.length === 0 && "pointer-events-none")}
+    >
+      {busy ? (
+        <Loader2 className="mr-1 size-3.5 animate-spin" />
+      ) : (
+        <Tag className="mr-1 size-3.5" />
+      )}
+      {t(($) => $.actions.set_category)}
+    </Button>
+  );
+
+  if (editable.length === 0) {
+    return (
+      <Tooltip>
+        <TooltipTrigger render={<span className="inline-flex">{trigger}</span>} />
+        <TooltipContent side="top">
+          {t(($) => $.actions.set_category_no_permission)}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={trigger} />
+      <DropdownMenuContent align="center" side="top" className="w-48">
+        {SKILL_CATEGORIES.map((category) => (
+          <DropdownMenuItem key={category} onClick={() => handlePick(category)}>
+            <SkillPresentationIcon
+              meta={{ category, icon: null }}
+              size="sm"
+            />
+            {t(($) => $.categories[category])}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Row kebab
 // ---------------------------------------------------------------------------
 
@@ -834,6 +959,8 @@ export function SkillBatchToolbar({
           <Plus className="mr-1 size-3.5" />
           {t(($) => $.actions.add_to_agent)}
         </Button>
+
+        <SetCategoryMenu rows={rows} ctx={ctx} onDone={onClear} />
 
         {updatable.length > 0 ? (
           updateButton

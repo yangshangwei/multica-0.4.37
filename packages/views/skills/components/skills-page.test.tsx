@@ -3,7 +3,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, screen, within } from "@testing-library/react";
-import type { SkillSummary, SkillTemplate } from "@multica/core/types";
+import type { Label, SkillSummary, SkillTemplate } from "@multica/core/types";
 import type { SupportedLocale } from "@multica/core/i18n";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
@@ -20,14 +20,18 @@ const mocks = vi.hoisted(() => ({
   templatesError: false,
   refetchTemplates: vi.fn(),
   viewState: {
+    // The row-anchor regression rig below lives in the LIST view.
+    viewMode: "list" as string,
     sortField: "name",
     sortDirection: "asc" as string,
     hiddenColumns: [] as string[],
     filters: {
       usage: [] as string[],
+      categories: [] as string[],
       origins: [] as string[],
       agents: [] as string[],
       creators: [] as string[],
+      labels: [] as string[],
     },
     toggleSort: vi.fn(),
     setSortField: vi.fn(),
@@ -35,6 +39,8 @@ const mocks = vi.hoisted(() => ({
     toggleColumn: vi.fn(),
     toggleFilter: vi.fn(),
     clearFilters: vi.fn(),
+    selectCategory: vi.fn(),
+    setViewMode: vi.fn(),
   },
 }));
 
@@ -124,25 +130,55 @@ vi.mock("@multica/ui/components/ui/tooltip", () => ({
   TooltipContent: () => null,
 }));
 vi.mock("./create-skill-dialog", () => ({
-  CreateSkillDialog: ({ initialTemplateName }: { initialTemplateName?: string }) => (
-    <div role="dialog" aria-label="Create skill" data-template-name={initialTemplateName} />
-  ),
-}));
-vi.mock("./skill-list-toolbar", () => ({
-  SkillListToolbar: ({
-    search,
-    onSearchChange,
+  CreateSkillDialog: ({
+    initialTemplateName,
+    initialPresentation,
   }: {
-    search: string;
-    onSearchChange: (value: string) => void;
+    initialTemplateName?: string;
+    initialPresentation?: { category?: string };
   }) => (
-    <input
-      aria-label="Search skills"
-      value={search}
-      onChange={(event) => onSearchChange(event.target.value)}
+    <div
+      role="dialog"
+      aria-label="Create skill"
+      data-template-name={initialTemplateName}
+      data-category={initialPresentation?.category}
     />
   ),
 }));
+// The toolbar keeps its real exports (originIcon & co. feed the sidebar and
+// the card); only the component is replaced with a search box plus the view
+// toggle so the page-level wiring stays observable.
+vi.mock("./skill-list-toolbar", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./skill-list-toolbar")>();
+  return {
+    ...actual,
+    SkillListToolbar: ({
+      search,
+      onSearchChange,
+      viewMode,
+      onViewModeChange,
+    }: {
+      search: string;
+      onSearchChange: (value: string) => void;
+      viewMode: string;
+      onViewModeChange: (mode: "card" | "list") => void;
+    }) => (
+      <>
+        <input
+          aria-label="Search skills"
+          value={search}
+          onChange={(event) => onSearchChange(event.target.value)}
+        />
+        <button
+          type="button"
+          aria-label="Card view"
+          aria-pressed={viewMode === "card"}
+          onClick={() => onViewModeChange("card")}
+        />
+      </>
+    ),
+  };
+});
 vi.mock("./skill-list-actions", () => ({
   SkillBatchToolbar: () => null,
   SkillRowActions: () => null,
@@ -203,6 +239,9 @@ beforeEach(() => {
   mocks.skills = [importedSkill];
   mocks.templates = [];
   mocks.templatesError = false;
+  mocks.viewState.viewMode = "list";
+  mocks.viewState.filters.categories = [];
+  mocks.viewState.filters.labels = [];
 });
 
 const REVIEW_TEMPLATE: SkillTemplate = {
@@ -385,5 +424,121 @@ describe("SkillsPage built-in skill presentation", () => {
       target: { value: "代码审查" },
     });
     expect(await screen.findByText("multica-code-review")).toBeInTheDocument();
+  });
+});
+
+// Category / view-mode wiring. Filter predicate and count matrices are covered
+// in @multica/core (presentation.test.ts, view-store.test.ts) and
+// use-skill-list-facets.test.ts; this suite keeps the page-level wiring.
+describe("SkillsPage categories and view mode", () => {
+  const qualityLabel: Label = {
+    id: "lbl-quality",
+    workspace_id: "ws-1",
+    resource_type: "skill",
+    name: "quality",
+    color: "#22c55e",
+    created_at: "2026-07-28T18:11:37Z",
+    updated_at: "2026-07-28T18:11:37Z",
+  };
+  const engineeringSkill: SkillSummary = {
+    ...importedSkill,
+    id: "skill-eng",
+    name: "lint-fixer",
+    config: { presentation: { category: "engineering" } },
+    labels: [qualityLabel],
+  };
+
+  it("narrows the list to the selected category and counts it in the sidebar", () => {
+    mocks.skills = [importedSkill, engineeringSkill];
+    mocks.viewState.filters.categories = ["engineering"];
+    renderPage(makeAdapter());
+
+    expect(screen.getByText("lint-fixer")).toBeInTheDocument();
+    expect(screen.queryByText("animations")).not.toBeInTheDocument();
+
+    const sidebar = screen.getByRole("navigation", { name: "Categories" });
+    const engineering = within(sidebar).getByRole("button", { name: /Engineering/ });
+    expect(engineering).toHaveAttribute("data-active");
+    expect(engineering).toHaveTextContent("1");
+    expect(within(sidebar).getByRole("button", { name: /^All/ })).toHaveTextContent("2");
+
+    fireEvent.click(within(sidebar).getByRole("button", { name: /Writing/ }));
+    expect(mocks.viewState.selectCategory).toHaveBeenCalledWith("writing");
+  });
+
+  it("renders the category and labels columns with LabelChip in list view", () => {
+    mocks.skills = [importedSkill, engineeringSkill];
+    renderPage(makeAdapter());
+    expect(screen.getByRole("columnheader", { name: /Category/ })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /Labels/ })).toBeInTheDocument();
+    // The label renders as a colored chip carrying the workspace label color.
+    const chip = screen.getByTitle("quality");
+    expect(chip).toHaveStyle({ backgroundColor: "#22c55e" });
+    // A skill without labels (older server shape) renders no chip.
+    expect(screen.getAllByTitle("quality")).toHaveLength(1);
+  });
+
+  it("matches the search against label names", () => {
+    mocks.skills = [importedSkill, engineeringSkill];
+    renderPage(makeAdapter());
+    fireEvent.change(screen.getByRole("textbox", { name: "Search skills" }), {
+      target: { value: "quality" },
+    });
+    expect(screen.getByText("lint-fixer")).toBeInTheDocument();
+    expect(screen.queryByText("animations")).not.toBeInTheDocument();
+  });
+
+  it("keeps only skills carrying a selected label filter", () => {
+    mocks.skills = [importedSkill, engineeringSkill];
+    mocks.viewState.filters.labels = ["lbl-quality"];
+    renderPage(makeAdapter());
+    expect(screen.getByText("lint-fixer")).toBeInTheDocument();
+    expect(screen.queryByText("animations")).not.toBeInTheDocument();
+  });
+
+  it("routes the view toggle to the store and renders cards in card mode", () => {
+    renderPage(makeAdapter());
+    fireEvent.click(screen.getByRole("button", { name: "Card view" }));
+    expect(mocks.viewState.setViewMode).toHaveBeenCalledWith("card");
+
+    mocks.viewState.viewMode = "card";
+    mocks.skills = [importedSkill];
+    renderPage(makeAdapter());
+    expect(screen.getAllByTestId("skill-card").length).toBeGreaterThan(0);
+  });
+
+  it("shows the category empty state and pre-fills the create dialog", () => {
+    mocks.skills = [importedSkill];
+    mocks.viewState.filters.categories = ["data"];
+    renderPage(makeAdapter());
+
+    const empty = screen.getByText(/No skills in "Data" yet/).closest("[data-slot=empty]")!;
+    fireEvent.click(within(empty as HTMLElement).getByRole("button", { name: "New skill" }));
+    expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute(
+      "data-category",
+      "data",
+    );
+  });
+
+  it("shows plain no-matches, not the category empty state, when a search narrows a populated category", () => {
+    mocks.skills = [importedSkill, engineeringSkill];
+    mocks.viewState.filters.categories = ["engineering"];
+    renderPage(makeAdapter());
+    fireEvent.change(screen.getByRole("textbox", { name: "Search skills" }), {
+      target: { value: "nothing matches" },
+    });
+    expect(screen.getByText("No matches")).toBeInTheDocument();
+    expect(screen.queryByText(/No skills in "Engineering" yet/)).not.toBeInTheDocument();
+  });
+
+  it("renders the no-matches state inside the card grid too", () => {
+    mocks.viewState.viewMode = "card";
+    mocks.skills = [importedSkill];
+    renderPage(makeAdapter());
+    fireEvent.change(screen.getByRole("textbox", { name: "Search skills" }), {
+      target: { value: "nothing matches" },
+    });
+    expect(screen.queryAllByTestId("skill-card")).toHaveLength(0);
+    expect(screen.getByText("No matches")).toBeInTheDocument();
   });
 });

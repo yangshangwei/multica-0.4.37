@@ -98,7 +98,10 @@
     "source_runtime_unknown": "来自某个运行时",
     "source_clawhub": "来自 ClawHub",
     "source_skills_sh": "来自 Skills.sh",
-    "source_github": "来自 GitHub"
+    "source_github": "来自 GitHub",
+    "category": "分类",
+    "labels": "标签",
+    "labels_more": "+{{count}}"
   },
   "actions": {
     "row_menu": "操作",
@@ -133,7 +136,11 @@
     "cancel": "取消",
     "add_confirm": "添加（{{num}}）",
     "adding": "添加中...",
-    "added_multi_toast_other": "已添加到 {{count}} 个智能体"
+    "added_multi_toast_other": "已添加到 {{count}} 个智能体",
+    "set_category": "设置分类",
+    "set_category_toast_other": "已为 {{count}} 个 skill 设置分类",
+    "set_category_failed_toast": "设置分类失败",
+    "set_category_no_permission": "选中项中没有你可以编辑的 skill"
   },
   "toolbar": {
     "result_count_title": "当前结果 / 全部 skill",
@@ -145,7 +152,10 @@
     "sort_by": "排序",
     "direction_asc": "升序",
     "direction_desc": "降序",
-    "section_columns": "显示列"
+    "section_columns": "显示列",
+    "view_card": "卡片视图",
+    "view_list": "列表视图",
+    "section_categories": "分类"
   },
   "detail": {
     "all_skills": "全部 skill",
@@ -465,5 +475,26 @@
     "retry": "重试",
     "view_template": "查看模板",
     "open_instance": "打开 skill"
+  },
+  "categories": {
+    "all": "全部",
+    "research": "研究分析",
+    "writing": "写作沟通",
+    "engineering": "编程开发",
+    "operations": "运维发布",
+    "data": "数据处理",
+    "other": "其他",
+    "empty_title": "\"{{category}}\" 下还没有 skill",
+    "empty_hint": "把已有 skill 归入这个分类，或新建一个。",
+    "section_title": "分类",
+    "section_sources": "来源"
+  },
+  "presentation": {
+    "category_label": "分类",
+    "icon_label": "图标",
+    "icon_follow_category": "跟随分类",
+    "icon_pick": "选择图标",
+    "used_by_count_other": "{{count}} 个智能体",
+    "used_by_none": "未使用"
   }
 }

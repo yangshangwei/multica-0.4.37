@@ -14,15 +14,16 @@ import type { SkillActionsContext } from "./skill-list-actions";
 const TEST_RESOURCES = { en: { common: enCommon, skills: enSkills } };
 
 vi.mock("@multica/core/api", () => ({
-  api: { refreshSkill: vi.fn() },
+  api: { refreshSkill: vi.fn(), updateSkill: vi.fn() },
 }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import { api } from "@multica/core/api";
 import { toast } from "sonner";
-import { UpdateSkillsDialog } from "./skill-list-actions";
+import { SkillBatchToolbar, UpdateSkillsDialog } from "./skill-list-actions";
 
 const refreshSkill = vi.mocked(api.refreshSkill);
+const updateSkill = vi.mocked(api.updateSkill);
 
 function makeRow(id: string): SkillRow {
   const skill: SkillSummary = {
@@ -39,6 +40,7 @@ function makeRow(id: string): SkillRow {
   };
   return {
     skill,
+    labels: [],
     agents: [],
     creator: null,
     runtime: null,
@@ -137,5 +139,73 @@ describe("UpdateSkillsDialog", () => {
     expect(refreshSkill.mock.calls.map(([id]) => id)).toEqual(["a", "b"]);
     // Partial success keeps the selection: onUpdated only fires on a clean run.
     expect(onUpdated).not.toHaveBeenCalled();
+  });
+});
+
+function renderToolbar(rows: SkillRow[], onClear = vi.fn()) {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  render(
+    <I18nProvider locale="en" resources={TEST_RESOURCES}>
+      <QueryClientProvider client={queryClient}>
+        <SkillBatchToolbar rows={rows} ctx={ctx} onClear={onClear} />
+      </QueryClientProvider>
+    </I18nProvider>,
+  );
+  return { onClear };
+}
+
+describe("SkillBatchToolbar set category", () => {
+  it("writes the category on each editable skill, keeping origin and icon", async () => {
+    updateSkill.mockResolvedValue({} as never);
+    const a = makeRow("a");
+    a.skill.config = {
+      ...a.skill.config,
+      presentation: { category: "writing", icon: "bug" },
+    };
+    const b = makeRow("b");
+    const locked = makeRow("c");
+    locked.canEdit = false;
+    const { onClear } = renderToolbar([a, b, locked]);
+
+    await userEvent.click(screen.getByRole("button", { name: "Set category" }));
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Engineering" }));
+
+    await waitFor(() => expect(onClear).toHaveBeenCalled());
+    expect(updateSkill.mock.calls.map(([id]) => id)).toEqual(["a", "b"]);
+    expect(updateSkill.mock.calls[0]?.[1]).toEqual({
+      config: {
+        origin: { type: "github", source_url: "https://github.com/acme/a" },
+        presentation: { category: "engineering", icon: "bug" },
+      },
+    });
+    expect(updateSkill.mock.calls[1]?.[1]).toEqual({
+      config: {
+        origin: { type: "github", source_url: "https://github.com/acme/b" },
+        presentation: { category: "engineering" },
+      },
+    });
+    expect(toast.success).toHaveBeenCalledWith("Category set on 2 skills");
+  });
+
+  it("reports a failure toast and keeps the selection when an update fails", async () => {
+    updateSkill.mockImplementation((id: string) =>
+      id === "a" ? Promise.reject(new Error("boom")) : Promise.resolve({} as never),
+    );
+    const { onClear } = renderToolbar([makeRow("a"), makeRow("b")]);
+    await userEvent.click(screen.getByRole("button", { name: "Set category" }));
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Data" }));
+    await waitFor(() => expect(toast.error).toHaveBeenCalledWith("Failed to set category"));
+    expect(updateSkill.mock.calls.map(([id]) => id)).toEqual(["a", "b"]);
+    expect(onClear).not.toHaveBeenCalled();
+  });
+
+  it("disables the action when nothing selected is editable", () => {
+    const locked = makeRow("a");
+    locked.canEdit = false;
+    renderToolbar([locked]);
+    expect(screen.getByRole("button", { name: "Set category" })).toBeDisabled();
+    expect(updateSkill).not.toHaveBeenCalled();
   });
 });

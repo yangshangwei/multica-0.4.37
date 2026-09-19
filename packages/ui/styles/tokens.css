@@ -34,6 +34,14 @@
     --color-success: var(--success);
     --color-warning: var(--warning);
     --color-info: var(--info);
+    /* Skill category tones: one hue per fixed skill category. Used only via
+       the skill presentation icon / sidebar so the palette stays coherent. */
+    --color-skill-research: var(--skill-research);
+    --color-skill-writing: var(--skill-writing);
+    --color-skill-engineering: var(--skill-engineering);
+    --color-skill-operations: var(--skill-operations);
+    --color-skill-data: var(--skill-data);
+    --color-skill-other: var(--skill-other);
     --color-brand: var(--brand);
     --color-brand-foreground: var(--brand-foreground);
     --color-accent-foreground: var(--accent-foreground);
@@ -210,6 +218,12 @@
     --success: oklch(0.55 0.16 145);
     --warning: oklch(0.75 0.16 85);
     --info: oklch(0.55 0.18 250);
+    --skill-research: oklch(0.55 0.18 300);
+    --skill-writing: oklch(0.62 0.15 70);
+    --skill-engineering: oklch(0.55 0.16 255);
+    --skill-operations: oklch(0.60 0.18 35);
+    --skill-data: oklch(0.55 0.13 190);
+    --skill-other: oklch(0.55 0.02 286);
     --scrollbar-thumb: oklch(0 0 0 / 10%);
     --scrollbar-thumb-hover: oklch(0 0 0 / 18%);
     --scrollbar-track: transparent;
@@ -280,6 +294,12 @@
     --success: oklch(0.65 0.15 145);
     --warning: oklch(0.70 0.16 85);
     --info: oklch(0.65 0.18 250);
+    --skill-research: oklch(0.72 0.16 300);
+    --skill-writing: oklch(0.76 0.14 70);
+    --skill-engineering: oklch(0.72 0.16 255);
+    --skill-operations: oklch(0.72 0.16 35);
+    --skill-data: oklch(0.72 0.12 190);
+    --skill-other: oklch(0.72 0.02 286);
     --scrollbar-thumb: oklch(1 0 0 / 8%);
     --scrollbar-thumb-hover: oklch(1 0 0 / 18%);
     --scrollbar-track: transparent;

@@ -10,12 +10,16 @@ const TEST_RESOURCES = {
 };
 
 const mockImportSkillArchive = vi.hoisted(() => vi.fn());
+const mockCreateSkill = vi.hoisted(() => vi.fn());
+const mockListSkills = vi.hoisted(() => vi.fn());
 const mockPrepareFromPicker = vi.hoisted(() => vi.fn());
 const mockWrap = vi.hoisted(() => vi.fn());
 
 vi.mock("@multica/core/api", () => ({
   api: {
     importSkillArchive: (...args: unknown[]) => mockImportSkillArchive(...args),
+    createSkill: (...args: unknown[]) => mockCreateSkill(...args),
+    listSkills: (...args: unknown[]) => mockListSkills(...args),
   },
 }));
 
@@ -47,6 +51,40 @@ vi.mock("@multica/core/skills", async () => {
 
 vi.mock("sonner", () => ({
   toast: { success: vi.fn(), error: vi.fn() },
+}));
+
+// Draft-mode stub: the real picker needs the workspace label catalog query.
+// The stub exposes one button per fake label that toggles it through
+// `onSelectedIdsChange`, which is the only contract the dialog relies on.
+vi.mock("../../labels/resource-label-picker", () => ({
+  ResourceLabelPicker: ({
+    resourceId,
+    selectedIds = [],
+    onSelectedIdsChange,
+  }: {
+    resourceId?: string;
+    selectedIds?: string[];
+    onSelectedIdsChange?: (ids: string[]) => void;
+  }) => (
+    <div data-testid="label-picker" data-resource-id={resourceId ?? ""}>
+      {["lbl-1", "lbl-2"].map((id) => (
+        <button
+          key={id}
+          type="button"
+          aria-pressed={selectedIds.includes(id)}
+          onClick={() =>
+            onSelectedIdsChange?.(
+              selectedIds.includes(id)
+                ? selectedIds.filter((v) => v !== id)
+                : [...selectedIds, id],
+            )
+          }
+        >
+          {id}
+        </button>
+      ))}
+    </div>
+  ),
 }));
 
 import { CreateSkillDialog } from "./create-skill-dialog";
@@ -97,7 +135,11 @@ function installLiveFileList(input: HTMLInputElement, files: File[]) {
   });
 }
 
-function renderDialog(onCreated = vi.fn(), onClose = vi.fn()) {
+function renderDialog(
+  onCreated = vi.fn(),
+  onClose = vi.fn(),
+  props: Partial<Parameters<typeof CreateSkillDialog>[0]> = {},
+) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
@@ -107,7 +149,7 @@ function renderDialog(onCreated = vi.fn(), onClose = vi.fn()) {
     ...render(
       <I18nProvider locale="en" resources={TEST_RESOURCES}>
         <QueryClientProvider client={queryClient}>
-          <CreateSkillDialog onClose={onClose} onCreated={onCreated} />
+          <CreateSkillDialog onClose={onClose} onCreated={onCreated} {...props} />
         </QueryClientProvider>
       </I18nProvider>,
     ),
@@ -117,6 +159,7 @@ function renderDialog(onCreated = vi.fn(), onClose = vi.fn()) {
 describe("CreateSkillDialog local import", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockListSkills.mockResolvedValue([]);
     mockPrepareFromPicker.mockResolvedValue(PREPARED_OK);
     mockWrap.mockReturnValue({
       ...PREPARED_OK,
@@ -349,5 +392,97 @@ describe("CreateSkillDialog local import", () => {
     expect(
       screen.queryByText(/a skill with this name already exists/i),
     ).not.toBeInTheDocument();
+  });
+});
+
+describe("CreateSkillDialog manual presentation", () => {
+  const created = {
+    id: "skill-2",
+    workspace_id: "ws-1",
+    name: "new-skill",
+    description: "",
+    content: "",
+    config: {},
+    files: [],
+    created_by: "user-1",
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockListSkills.mockResolvedValue([]);
+    mockCreateSkill.mockResolvedValue(created);
+  });
+
+  function openManual() {
+    const card = screen
+      .getAllByRole("button")
+      .find((el) => /Create manually/.test(el.textContent ?? ""));
+    if (!card) throw new Error("manual card missing");
+    fireEvent.click(card);
+  }
+
+  it("omits config when the presentation is untouched", async () => {
+    renderDialog();
+    openManual();
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "new-skill" } });
+    fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+    await waitFor(() => expect(mockCreateSkill).toHaveBeenCalled());
+    expect(mockCreateSkill.mock.calls[0]?.[0]).toEqual({
+      name: "new-skill",
+      description: "",
+    });
+  });
+
+  it("submits config.presentation with the picked icon", async () => {
+    renderDialog();
+    openManual();
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "new-skill" } });
+    fireEvent.click(screen.getByRole("button", { name: "Pick an icon" }));
+    fireEvent.click(await screen.findByRole("button", { name: "rocket" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+    await waitFor(() => expect(mockCreateSkill).toHaveBeenCalled());
+    expect(mockCreateSkill.mock.calls[0]?.[0]).toEqual({
+      name: "new-skill",
+      description: "",
+      config: {
+        presentation: { category: "other", icon: "rocket" },
+      },
+    });
+  });
+
+  it("renders the label picker in draft mode and submits the chosen ids as label_ids", async () => {
+    renderDialog();
+    openManual();
+    // No resource id: the skill does not exist yet, so the picker must not
+    // try to attach labels on its own.
+    expect(screen.getByTestId("label-picker")).toHaveAttribute("data-resource-id", "");
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "new-skill" } });
+    fireEvent.click(screen.getByRole("button", { name: "lbl-1" }));
+    fireEvent.click(screen.getByRole("button", { name: "lbl-2" }));
+    fireEvent.click(screen.getByRole("button", { name: "lbl-1" }));
+    expect(screen.getByRole("button", { name: "lbl-2" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+    await waitFor(() => expect(mockCreateSkill).toHaveBeenCalled());
+    expect(mockCreateSkill.mock.calls[0]?.[0]).toEqual({
+      name: "new-skill",
+      description: "",
+      label_ids: ["lbl-2"],
+    });
+  });
+
+  it("seeds the category from initialPresentation", async () => {
+    renderDialog(vi.fn(), vi.fn(), { initialPresentation: { category: "data" } });
+    openManual();
+    expect(screen.getByRole("combobox", { name: "Category" }).textContent).toContain("Data");
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "new-skill" } });
+    fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+    await waitFor(() => expect(mockCreateSkill).toHaveBeenCalled());
+    expect(mockCreateSkill.mock.calls[0]?.[0]).toEqual({
+      name: "new-skill",
+      description: "",
+      config: { presentation: { category: "data" } },
+    });
   });
 });

@@ -10,6 +10,7 @@ import {
   useAttachResourceLabel,
   useDetachResourceLabel,
 } from "@multica/core/labels";
+import type { Label } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import {
@@ -20,29 +21,78 @@ import {
 import { useT } from "../i18n";
 import { LabelChip } from "./label-chip";
 
+interface ResourceLabelPickerProps {
+  resourceType: "agent" | "skill";
+  /**
+   * The resource whose labels are edited. Omit for **draft mode** (e.g. the
+   * create-skill dialog, where the resource doesn't exist yet): pass
+   * `selectedIds` + `onSelectedIdsChange` instead and submit the ids with the
+   * create request. Mirrors the issue `LabelPicker` draft-mode convention.
+   */
+  resourceId?: string;
+  /** Draft-mode selection. Ignored when `resourceId` is set. */
+  selectedIds?: string[];
+  /** Draft-mode change handler. Ignored when `resourceId` is set. */
+  onSelectedIdsChange?: (ids: string[]) => void;
+  canEdit: boolean;
+}
+
+/**
+ * Two modes:
+ * - **Attached mode** (`resourceId` set): selection comes from the resource's
+ *   own labels query; toggling hits attach/detach.
+ * - **Draft mode** (`resourceId` omitted): selection is held by the caller as
+ *   ids and resolved against the workspace catalog; nothing is persisted here.
+ */
 export function ResourceLabelPicker({
   resourceType,
   resourceId,
+  selectedIds = [],
+  onSelectedIdsChange,
   canEdit,
-}: {
-  resourceType: "agent" | "skill";
-  resourceId: string;
-  canEdit: boolean;
-}) {
+}: ResourceLabelPickerProps) {
   const { t } = useT("labels");
   const wsId = useWorkspaceId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const isDraft = resourceId === undefined;
   const { data: catalog = [] } = useQuery(labelListOptions(wsId, resourceType));
-  const { data: selected = [] } = useQuery(
-    resourceLabelsOptions(wsId, resourceType, resourceId),
+  // `resourceLabelsOptions` disables itself for an empty id, so the draft
+  // path never fires the by-resource read.
+  const { data: attached = [] } = useQuery(
+    resourceLabelsOptions(wsId, resourceType, resourceId ?? ""),
   );
-  const attach = useAttachResourceLabel(resourceType, resourceId);
-  const detach = useDetachResourceLabel(resourceType, resourceId);
-  const selectedIds = useMemo(() => new Set(selected.map((label) => label.id)), [selected]);
+  // Hooks must run unconditionally; in draft mode the empty id is never used
+  // because toggling routes through onSelectedIdsChange instead.
+  const attach = useAttachResourceLabel(resourceType, resourceId ?? "");
+  const detach = useDetachResourceLabel(resourceType, resourceId ?? "");
+
+  // Draft mode resolves ids against the catalog (dropping any id whose label
+  // was deleted meanwhile) and preserves the user's selection order.
+  const selected = useMemo<Label[]>(() => {
+    if (!isDraft) return attached;
+    return selectedIds
+      .map((id) => catalog.find((label) => label.id === id))
+      .filter((label): label is Label => Boolean(label));
+  }, [isDraft, attached, selectedIds, catalog]);
+  const selectedIdSet = useMemo(() => new Set(selected.map((label) => label.id)), [selected]);
   const filtered = catalog.filter((label) =>
     label.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
+
+  const toggle = (labelId: string) => {
+    if (isDraft) {
+      onSelectedIdsChange?.(
+        selectedIdSet.has(labelId)
+          ? selectedIds.filter((id) => id !== labelId)
+          : [...selectedIds, labelId],
+      );
+    } else if (selectedIdSet.has(labelId)) {
+      detach.mutate(labelId);
+    } else {
+      attach.mutate(labelId);
+    }
+  };
 
   const content = selected.length > 0 ? (
     <div className="flex flex-wrap justify-start gap-1 sm:justify-end">
@@ -93,14 +143,12 @@ export function ResourceLabelPicker({
         </div>
         <div className="max-h-64 space-y-0.5 overflow-y-auto">
           {filtered.map((label) => {
-            const isSelected = selectedIds.has(label.id);
+            const isSelected = selectedIdSet.has(label.id);
             return (
               <button
                 key={label.id}
                 type="button"
-                onClick={() =>
-                  isSelected ? detach.mutate(label.id) : attach.mutate(label.id)
-                }
+                onClick={() => toggle(label.id)}
                 className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-body hover:bg-accent"
               >
                 <span

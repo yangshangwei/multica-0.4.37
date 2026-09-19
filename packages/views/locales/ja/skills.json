@@ -98,7 +98,10 @@
     "source_runtime_unknown": "ランタイムから",
     "source_clawhub": "ClawHub から",
     "source_skills_sh": "Skills.sh から",
-    "source_github": "GitHub から"
+    "source_github": "GitHub から",
+    "category": "カテゴリ",
+    "labels": "ラベル",
+    "labels_more": "+{{count}}"
   },
   "actions": {
     "row_menu": "操作",
@@ -133,7 +136,11 @@
     "cancel": "キャンセル",
     "add_confirm": "追加（{{num}}）",
     "adding": "追加中...",
-    "added_multi_toast_other": "{{count}} 件のエージェントに追加しました"
+    "added_multi_toast_other": "{{count}} 件のエージェントに追加しました",
+    "set_category": "カテゴリを設定",
+    "set_category_toast_other": "{{count}} 個の skill にカテゴリを設定しました",
+    "set_category_failed_toast": "カテゴリの設定に失敗しました",
+    "set_category_no_permission": "選択した項目に編集できる skill がありません"
   },
   "toolbar": {
     "result_count_title": "該当スキル / 全スキル",
@@ -145,7 +152,10 @@
     "sort_by": "並び替え",
     "direction_asc": "昇順",
     "direction_desc": "降順",
-    "section_columns": "表示する列"
+    "section_columns": "表示する列",
+    "view_card": "カード表示",
+    "view_list": "リスト表示",
+    "section_categories": "カテゴリ"
   },
   "detail": {
     "all_skills": "すべてのスキル",
@@ -465,5 +475,26 @@
     "retry": "再試行",
     "view_template": "テンプレートを見る",
     "open_instance": "スキルを開く"
+  },
+  "categories": {
+    "all": "すべて",
+    "research": "調査・分析",
+    "writing": "文書・コミュニケーション",
+    "engineering": "開発",
+    "operations": "運用・リリース",
+    "data": "データ処理",
+    "other": "その他",
+    "empty_title": "「{{category}}」にはまだ skill がありません",
+    "empty_hint": "既存の skill をこのカテゴリに移すか、新しく作成してください。",
+    "section_title": "カテゴリ",
+    "section_sources": "ソース"
+  },
+  "presentation": {
+    "category_label": "カテゴリ",
+    "icon_label": "アイコン",
+    "icon_follow_category": "カテゴリに従う",
+    "icon_pick": "アイコンを選択",
+    "used_by_count_other": "{{count}} 個のエージェント",
+    "used_by_none": "未使用"
   }
 }

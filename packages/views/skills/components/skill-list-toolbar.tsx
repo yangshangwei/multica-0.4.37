@@ -7,11 +7,13 @@ import {
   Download,
   Filter,
   HardDrive,
+  LayoutGrid,
+  List,
   Pencil,
   Search,
   X,
 } from "lucide-react";
-import type { Agent, MemberWithUser } from "@multica/core/types";
+import { SKILL_CATEGORIES } from "@multica/core/skills";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { Button } from "@multica/ui/components/ui/button";
 import {
@@ -45,14 +47,19 @@ import {
   type SkillOriginType,
   type SkillSortDirection,
   type SkillSortField,
+  type SkillViewMode,
 } from "@multica/core/skills/stores";
 import { useT } from "../../i18n";
-import type { SkillRow } from "./skills-page";
+import type { SkillListFacets } from "../hooks/use-skill-list-facets";
+import { useSkillCategoryLabels } from "../hooks/use-skill-category-labels";
+import { SkillPresentationIcon } from "./skill-presentation-icon";
 import { PAGE_TOOLBAR } from "../../layout/page-header";
 
 export type OriginType = SkillOriginType;
 
 const COLUMN_KEYS: SkillColumnKey[] = [
+  "category",
+  "labels",
   "usedBy",
   "source",
   "creator",
@@ -60,20 +67,22 @@ const COLUMN_KEYS: SkillColumnKey[] = [
   "created",
 ];
 
-const SORT_FIELDS: SkillSortField[] = ["name", "usedBy", "updated", "created"];
+const SORT_FIELDS: SkillSortField[] = ["name", "category", "usedBy", "updated", "created"];
 
 export function countActiveFilterDimensions(
   filters: SkillListFilters,
 ): number {
   let count = 0;
   if (filters.usage.length > 0) count++;
+  if (filters.categories.length > 0) count++;
   if (filters.origins.length > 0) count++;
   if (filters.agents.length > 0) count++;
   if (filters.creators.length > 0) count++;
+  if (filters.labels.length > 0) count++;
   return count;
 }
 
-const ORIGIN_TYPES: OriginType[] = [
+export const ORIGIN_TYPES: OriginType[] = [
   "manual",
   "runtime_local",
   "clawhub",
@@ -81,10 +90,22 @@ const ORIGIN_TYPES: OriginType[] = [
   "github",
 ];
 
-function originIcon(type: OriginType) {
+export function originIcon(type: OriginType) {
   if (type === "manual") return <Pencil className="size-3.5" />;
   if (type === "runtime_local") return <HardDrive className="size-3.5" />;
   return <Download className="size-3.5" />;
+}
+
+/** Generic (runtime-agnostic) labels per origin type, for option lists. */
+export function useOriginLabels(): Record<OriginType, string> {
+  const { t } = useT("skills");
+  return {
+    manual: t(($) => $.table.source_manual),
+    runtime_local: t(($) => $.table.source_runtime_unknown),
+    clawhub: t(($) => $.table.source_clawhub),
+    skills_sh: t(($) => $.table.source_skills_sh),
+    github: t(($) => $.table.source_github),
+  };
 }
 
 export function SkillListToolbar({
@@ -99,7 +120,9 @@ export function SkillListToolbar({
   onSortDirectionChange,
   hiddenColumns,
   onToggleColumn,
-  allRows,
+  viewMode,
+  onViewModeChange,
+  facets,
   visibleCount,
 }: {
   search: string;
@@ -113,8 +136,10 @@ export function SkillListToolbar({
   onSortDirectionChange: (direction: SkillSortDirection) => void;
   hiddenColumns: SkillColumnKey[];
   onToggleColumn: (key: SkillColumnKey) => void;
-  /** Unfiltered rows — option lists and counts derive from the full set. */
-  allRows: SkillRow[];
+  viewMode: SkillViewMode;
+  onViewModeChange: (mode: SkillViewMode) => void;
+  /** Option lists and counts, derived from the UNFILTERED rows. */
+  facets: SkillListFacets;
   /** Rows surviving search + filters — shown as "n / total" when narrowed. */
   visibleCount: number;
 }) {
@@ -123,40 +148,20 @@ export function SkillListToolbar({
   const activeCount = countActiveFilterDimensions(filters);
   const hasActiveFilters = activeCount > 0;
 
-  // Option lists with counts, derived from the unfiltered rows so toggling
-  // one dimension doesn't make the others' options vanish.
-  const usedCount = allRows.filter((r) => r.agents.length > 0).length;
-  const unusedCount = allRows.length - usedCount;
-
-  const originCounts = new Map<OriginType, number>();
-  const agentOptions = new Map<string, { agent: Agent; count: number }>();
-  const creatorOptions = new Map<
-    string,
-    { member: MemberWithUser; count: number }
-  >();
-  for (const row of allRows) {
-    originCounts.set(row.originType, (originCounts.get(row.originType) ?? 0) + 1);
-    for (const agent of row.agents) {
-      const entry = agentOptions.get(agent.id);
-      if (entry) entry.count += 1;
-      else agentOptions.set(agent.id, { agent, count: 1 });
-    }
-    if (row.creator) {
-      const entry = creatorOptions.get(row.creator.user_id);
-      if (entry) entry.count += 1;
-      else creatorOptions.set(row.creator.user_id, { member: row.creator, count: 1 });
-    }
-  }
-
-  const ORIGIN_LABELS: Record<OriginType, string> = {
-    manual: t(($) => $.table.source_manual),
-    runtime_local: t(($) => $.table.source_runtime_unknown),
-    clawhub: t(($) => $.table.source_clawhub),
-    skills_sh: t(($) => $.table.source_skills_sh),
-    github: t(($) => $.table.source_github),
-  };
+  const {
+    usedCount,
+    unusedCount,
+    originCounts,
+    agentOptions,
+    creatorOptions,
+    labelOptions,
+  } = facets;
+  const ORIGIN_LABELS = useOriginLabels();
+  const CATEGORY_LABELS = useSkillCategoryLabels();
 
   const COLUMN_LABELS: Record<SkillColumnKey, string> = {
+    category: t(($) => $.table.category),
+    labels: t(($) => $.table.labels),
     usedBy: t(($) => $.table.used_by),
     source: t(($) => $.table.source),
     creator: t(($) => $.table.created_by),
@@ -166,6 +171,7 @@ export function SkillListToolbar({
 
   const SORT_LABELS: Record<SkillSortField, string> = {
     name: t(($) => $.table.name),
+    category: t(($) => $.table.category),
     usedBy: t(($) => $.table.used_by),
     updated: t(($) => $.table.updated),
     created: t(($) => $.table.created),
@@ -199,7 +205,7 @@ export function SkillListToolbar({
             title={t(($) => $.toolbar.result_count_title)}
             className="hidden shrink-0 text-caption tabular-nums text-muted-foreground md:inline"
           >
-            {visibleCount} / {allRows.length}
+            {visibleCount} / {facets.total}
           </span>
         )}
       </div>
@@ -285,6 +291,39 @@ export function SkillListToolbar({
               </DropdownMenuSubContent>
             </DropdownMenuSub>
 
+            {/* Category */}
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <span className="flex-1">
+                  {t(($) => $.toolbar.section_categories)}
+                </span>
+                {filters.categories.length > 0 && (
+                  <span className="text-caption font-medium text-primary">
+                    {filters.categories.length}
+                  </span>
+                )}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="w-auto min-w-48">
+                {SKILL_CATEGORIES.map((category) => (
+                  <DropdownMenuCheckboxItem
+                    key={category}
+                    checked={filters.categories.includes(category)}
+                    onCheckedChange={() => onToggleFilter("categories", category)}
+                    className={FILTER_ITEM_CLASS}
+                  >
+                    <HoverCheck checked={filters.categories.includes(category)} />
+                    <SkillPresentationIcon
+                      meta={{ category, icon: null }}
+                      size="sm"
+                      className="size-4 rounded"
+                    />
+                    {CATEGORY_LABELS[category]}
+                    {countBadge(facets.categoryCounts[category])}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+
             {/* Source */}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
@@ -313,6 +352,41 @@ export function SkillListToolbar({
                 )}
               </DropdownMenuSubContent>
             </DropdownMenuSub>
+
+            {/* Labels — only offered once at least one skill carries a
+                workspace label, so an empty catalog never shows a dead
+                submenu. */}
+            {labelOptions.size > 0 && (
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <span className="flex-1">{t(($) => $.table.labels)}</span>
+                  {filters.labels.length > 0 && (
+                    <span className="text-caption font-medium text-primary">
+                      {filters.labels.length}
+                    </span>
+                  )}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className="max-h-72 w-auto min-w-48 overflow-y-auto">
+                  {[...labelOptions.values()].map(({ label, count }) => (
+                    <DropdownMenuCheckboxItem
+                      key={label.id}
+                      checked={filters.labels.includes(label.id)}
+                      onCheckedChange={() => onToggleFilter("labels", label.id)}
+                      className={FILTER_ITEM_CLASS}
+                    >
+                      <HoverCheck checked={filters.labels.includes(label.id)} />
+                      <span
+                        className="size-2.5 shrink-0 rounded-full"
+                        style={{ backgroundColor: label.color }}
+                        aria-hidden
+                      />
+                      <span className="min-w-0 truncate">{label.name}</span>
+                      {countBadge(count)}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            )}
 
             {/* Used by */}
             <DropdownMenuSub>
@@ -495,6 +569,41 @@ export function SkillListToolbar({
             </div>
           </PopoverContent>
         </Popover>
+
+        {/* Card / list view toggle. Persisted in the view store. Same visual
+            contract as SegmentedToggle: the active option lifts to
+            bg-background with a shadow, which hover (text colour only) never
+            touches, so the selected mode stays identifiable under the cursor. */}
+        <div className="ml-1 flex items-center gap-0.5 rounded-md bg-muted p-0.5">
+          {(
+            [
+              ["card", LayoutGrid, t(($) => $.toolbar.view_card)],
+              ["list", List, t(($) => $.toolbar.view_list)],
+            ] as const
+          ).map(([mode, Icon, label]) => (
+            <Tooltip key={mode}>
+              <TooltipTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label={label}
+                    aria-pressed={viewMode === mode}
+                    onClick={() => onViewModeChange(mode)}
+                    className={
+                      viewMode === mode
+                        ? "h-6 w-6 rounded-sm bg-background text-foreground shadow-sm hover:bg-background"
+                        : "h-6 w-6 rounded-sm text-muted-foreground hover:bg-transparent hover:text-foreground"
+                    }
+                  >
+                    <Icon className="size-3.5" />
+                  </Button>
+                }
+              />
+              <TooltipContent side="bottom">{label}</TooltipContent>
+            </Tooltip>
+          ))}
+        </div>
       </div>
     </div>
   );

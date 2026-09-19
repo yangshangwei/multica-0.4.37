@@ -98,7 +98,10 @@
     "source_runtime_unknown": "런타임에서 가져옴",
     "source_clawhub": "ClawHub에서 가져옴",
     "source_skills_sh": "Skills.sh에서 가져옴",
-    "source_github": "GitHub에서 가져옴"
+    "source_github": "GitHub에서 가져옴",
+    "category": "카테고리",
+    "labels": "라벨",
+    "labels_more": "+{{count}}"
   },
   "actions": {
     "row_menu": "작업",
@@ -133,7 +136,11 @@
     "cancel": "취소",
     "add_confirm": "추가 ({{num}})",
     "adding": "추가 중...",
-    "added_multi_toast_other": "에이전트 {{count}}개에 추가했습니다"
+    "added_multi_toast_other": "에이전트 {{count}}개에 추가했습니다",
+    "set_category": "카테고리 설정",
+    "set_category_toast_other": "skill {{count}}개에 카테고리를 설정했습니다",
+    "set_category_failed_toast": "카테고리 설정 실패",
+    "set_category_no_permission": "선택한 항목에 편집할 수 있는 skill이 없습니다"
   },
   "toolbar": {
     "result_count_title": "일치하는 스킬 / 전체 스킬",
@@ -145,7 +152,10 @@
     "sort_by": "정렬",
     "direction_asc": "오름차순",
     "direction_desc": "내림차순",
-    "section_columns": "표시 열"
+    "section_columns": "표시 열",
+    "view_card": "카드 보기",
+    "view_list": "목록 보기",
+    "section_categories": "카테고리"
   },
   "detail": {
     "all_skills": "모든 스킬",
@@ -465,5 +475,26 @@
     "retry": "다시 시도",
     "view_template": "템플릿 보기",
     "open_instance": "스킬 열기"
+  },
+  "categories": {
+    "all": "전체",
+    "research": "조사·분석",
+    "writing": "문서·커뮤니케이션",
+    "engineering": "개발",
+    "operations": "운영·릴리스",
+    "data": "데이터 처리",
+    "other": "기타",
+    "empty_title": "\"{{category}}\"에 아직 skill이 없습니다",
+    "empty_hint": "기존 skill을 이 카테고리로 옮기거나 새로 만드세요.",
+    "section_title": "카테고리",
+    "section_sources": "출처"
+  },
+  "presentation": {
+    "category_label": "카테고리",
+    "icon_label": "아이콘",
+    "icon_follow_category": "카테고리 기본값 사용",
+    "icon_pick": "아이콘 선택",
+    "used_by_count_other": "에이전트 {{count}}개",
+    "used_by_none": "미사용"
   }
 }
