@@ -67,6 +67,30 @@ describe("ApiClient skill templates", () => {
     ).resolves.toEqual([]);
   });
 
+  it("keeps a template whose presentation metadata is malformed, dropping only those fields", async () => {
+    const base = {
+      name: "multica-code-review",
+      version: 2,
+      description: "Review changes",
+      content: "---\nname: multica-code-review\n---\n# 审查\n",
+      files: [],
+    };
+    stubJson({
+      templates: [
+        { ...base, category: "engineering", icon: "git-pull-request" },
+        { ...base, name: "typed-wrong", category: 3, icon: ["bug"] },
+        { ...base, name: "absent" },
+      ],
+    });
+
+    const templates = await new ApiClient(BASE_URL).listSkillTemplates("ws-original");
+    expect(templates.map((t) => t.name)).toEqual(["multica-code-review", "typed-wrong", "absent"]);
+    expect(templates[0]).toMatchObject({ category: "engineering", icon: "git-pull-request" });
+    expect(templates[1]?.category).toBeUndefined();
+    expect(templates[1]?.icon).toBeUndefined();
+    expect(templates[2]?.category).toBeUndefined();
+  });
+
   it.each([400, 404])("keeps old-backend HTTP %s errors available to the caller", async (status) => {
     stubJson({ error: "invalid skill id" }, status);
     await expect(

@@ -3415,8 +3415,12 @@ export const SkillTemplateSchema = z.object({
   name: z.string().refine((value) => value.trim().length > 0),
   version: z.number().default(0),
   description: z.string().default(""),
-  category: z.string().optional(),
-  icon: z.string().optional(),
+  // Presentation defaults from the template's frontmatter metadata. Additive
+  // display data: a malformed value must drop the field, not the whole
+  // catalog entry (and with it the catalog). `createSkillTemplateDraft`
+  // re-checks both against the whitelists anyway.
+  category: z.string().optional().catch(undefined),
+  icon: z.string().optional().catch(undefined),
   content: z.string().refine((value) => value.trim().length > 0),
   files: z.array(z.object({
     path: z.string(),

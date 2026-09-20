@@ -163,6 +163,19 @@ export const useSkillsViewStore = create<SkillsViewState>()(
     {
       name: "multica_skills_view",
       storage: createJSONStorage(() => createWorkspaceAwareStorage(defaultStorage)),
+      // v1 added the opt-in `labels` column. A v0 payload persisted
+      // `hiddenColumns` before that column existed, so its absence there means
+      // "never seen", not "chosen to show": hide it, as a fresh workspace
+      // would. The `merge` below cannot tell those two cases apart, which is
+      // why this is a versioned migration and not a default backfill.
+      version: 1,
+      migrate: (persisted, version) => {
+        const p = persisted as Partial<SkillsViewState> | undefined;
+        if (version === 0 && p?.hiddenColumns && !p.hiddenColumns.includes("labels")) {
+          return { ...p, hiddenColumns: [...p.hiddenColumns, "labels"] } as SkillsViewState;
+        }
+        return persisted as SkillsViewState;
+      },
       partialize: (state) => ({
         viewMode: state.viewMode,
         sortField: state.sortField,
@@ -176,11 +189,17 @@ export const useSkillsViewStore = create<SkillsViewState>()(
       merge: (persisted, current) => {
         if (!persisted) return { ...current, ...DEFAULTS };
         const p = persisted as Partial<SkillsViewState>;
+        // DEFAULTS sit between `current` and the payload: a key the payload
+        // never stored (a v0 payload has no `viewMode`) must fall back to its
+        // default, not to the previous workspace's in-memory value — after a
+        // migration persist writes the merged state straight back, which
+        // would make that leak permanent.
         // Deep-merge filters so a payload persisted before a new filter
         // dimension existed still gets that key's default instead of
         // dropping it to undefined (which crashes `.length` reads).
         return {
           ...current,
+          ...DEFAULTS,
           ...p,
           filters: { ...EMPTY_SKILL_FILTERS, ...(p.filters ?? {}) },
         };
