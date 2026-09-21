@@ -63,6 +63,7 @@ func TestGetConfigIncludesRuntimeAuthConfig(t *testing.T) {
 	t.Setenv("MULTICA_DAEMON_SERVER_URL", "")
 	t.Setenv("MULTICA_PUBLIC_URL", "https://api.example.com/")
 	t.Setenv("MULTICA_APP_URL", "https://app.example.com/")
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND", " curl -fsSL https://packages.internal/multica/install.sh | bash ")
 
 	req := httptest.NewRequest(http.MethodGet, "/api/config", nil)
 	w := httptest.NewRecorder()
@@ -103,6 +104,9 @@ func TestGetConfigIncludesRuntimeAuthConfig(t *testing.T) {
 	}
 	if cfg.DaemonAppURL != "https://app.example.com" {
 		t.Fatalf("daemon_app_url: want https://app.example.com, got %q", cfg.DaemonAppURL)
+	}
+	if cfg.CliInstallCommand != "curl -fsSL https://packages.internal/multica/install.sh | bash" {
+		t.Fatalf("cli_install_command: got %q", cfg.CliInstallCommand)
 	}
 }
 

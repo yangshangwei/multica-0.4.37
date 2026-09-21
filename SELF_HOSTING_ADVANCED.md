@@ -209,6 +209,9 @@ These are configured on each user's machine, not on the server:
 | `MULTICA_DAEMON_POLL_INTERVAL` | `30s` | Catch-up poll for tasks; WebSocket wake signals normally deliver work sooner |
 | `MULTICA_DAEMON_HEARTBEAT_INTERVAL` | `15s` | Heartbeat frequency |
 
+The server-only `MULTICA_CLI_INSTALL_COMMAND` variable is documented in the
+[air-gapped deployment section](SELF_HOSTING.md#air-gapped--offline-deployment).
+
 Agent-specific overrides:
 
 | Variable | Description |

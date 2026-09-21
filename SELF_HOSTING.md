@@ -365,6 +365,20 @@ Install the desktop package, then write `desktop.json` on each machine — `~/.m
 
 `wsUrl` matters as much as `apiUrl`: with only the API pointed at your server, requests work but live updates keep dialling the cloud, so the app looks like it needs a manual refresh for everything.
 
+If the web UI's **添加电脑 / Add a computer** dialog must work without GitHub,
+set `MULTICA_CLI_INSTALL_COMMAND` in the server environment to the complete
+command served by your internal artifact repository, then recreate the backend
+container. For example:
+
+```dotenv
+MULTICA_CLI_INSTALL_COMMAND=curl -fsSL https://packages.internal/multica/install.sh | bash
+```
+
+The value is displayed and copied as-is; it is never executed by the server.
+If it is empty, the dialog keeps the public GitHub installer command. You can
+also distribute the CLI archive or an offline installer manually and set this
+to the corresponding internal command.
+
 ### What does not work offline
 
 - **Agents cannot run.** This is the significant one. The agent CLI on the runtime machine needs a model endpoint; with no egress, assigning an issue to an agent parks it. The fix is an internal OpenAI-compatible gateway plus a CLI that accepts a base-URL override — and `MULTICA_LLM_BASE_URL` can point the server's own helper calls (chat titles, quick actions) at the same gateway.

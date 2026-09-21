@@ -752,6 +752,8 @@ export interface AppConfigResponse {
   analytics_environment?: string;
   daemon_server_url?: string;
   daemon_app_url?: string;
+  /** Operator-provided CLI install command for internal/offline distributions. */
+  cli_install_command?: string;
   workspace_creation_disabled?: boolean;
   /** Whether this deployment offers the self-hosted Git provider integration
    * (self-host only; off on the managed cloud). Absent/false hides the whole
@@ -970,6 +972,7 @@ export const AppConfigSchema = z.object({
   analytics_environment: OptionalStringSchema,
   daemon_server_url: OptionalStringSchema,
   daemon_app_url: OptionalStringSchema,
+  cli_install_command: OptionalStringSchema,
   workspace_creation_disabled: BooleanWithDefaultSchema(false).optional(),
   vcs_integration_available: BooleanWithDefaultSchema(false).optional(),
   // Omission means an older server; malformed supplied values fail closed.
@@ -988,6 +991,7 @@ export const EMPTY_APP_CONFIG: AppConfigResponse = {
   google_client_id: "",
   daemon_server_url: "",
   daemon_app_url: "",
+  cli_install_command: "",
   workspace_creation_disabled: false,
   vcs_integration_available: false,
   messaging_integrations_enabled: false,

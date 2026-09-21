@@ -221,6 +221,15 @@ docker compose -f docker-compose.selfhost.yml logs backend \
 
 先安装 Multica CLI。安装包由管理员从内部分发渠道提供（与服务器镜像同源的发布产物），获取后把 `multica` 放入 `PATH` 中的目录；具体地址由管理员提供。
 
+如果服务器完全不能访问 GitHub，请在服务端 `.env` 设置
+`MULTICA_CLI_INSTALL_COMMAND`，把“添加电脑”弹窗中的第一条命令替换为内网制品库命令，例如：
+
+```dotenv
+MULTICA_CLI_INSTALL_COMMAND=curl -fsSL https://packages.internal/multica/install.sh | bash
+```
+
+该命令只会展示并复制到用户剪贴板，不会由服务端执行。也可以把离线压缩包或安装器放到内网后，将对应的完整安装命令填入此变量。
+
 如果 Multica 服务也在这台电脑上，运行：
 
 ```bash

@@ -36,6 +36,12 @@ type AppConfig struct {
 	// with the operator's own domains instead of Multica Cloud defaults.
 	DaemonServerURL string `json:"daemon_server_url,omitempty"`
 	DaemonAppURL    string `json:"daemon_app_url,omitempty"`
+	// CliInstallCommand lets self-hosted operators publish the command their
+	// users should run to install the CLI from an internal artifact mirror.
+	// It is intentionally a complete command because air-gapped deployments
+	// may distribute a tarball, a package-manager command, or an internal
+	// installer script.
+	CliInstallCommand string `json:"cli_install_command,omitempty"`
 
 	// MessagingIntegrationsEnabled is the deployment policy for external
 	// messaging providers. Emit this field even when false so clients can
@@ -122,6 +128,7 @@ func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 	}
 	config.CdnSigned = h.CFSigner != nil
 	config.DaemonServerURL, config.DaemonAppURL = daemonSetupURLsFromEnv()
+	config.CliInstallCommand = strings.TrimSpace(os.Getenv("MULTICA_CLI_INSTALL_COMMAND"))
 	config.MessagingIntegrationsEnabled = !h.cfg.MessagingIntegrationsDisabled
 	config.VCSIntegrationAvailable = h.cfg.VCSIntegrationEnabled
 	config.DeviceAuthAvailable = h.cfg.DeviceAuthEnabled

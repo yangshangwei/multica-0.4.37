@@ -44,6 +44,7 @@ function resetConfigStore() {
     googleClientId: "",
     daemonServerUrl: "",
     daemonAppUrl: "",
+    cliInstallCommand: "",
     workspaceCreationDisabled: false,
   });
 }
@@ -51,6 +52,7 @@ function resetConfigStore() {
 function renderDialog(config?: {
   daemonServerUrl?: string;
   daemonAppUrl?: string;
+  cliInstallCommand?: string;
 }) {
   resetConfigStore();
   if (config) {
@@ -103,6 +105,19 @@ describe("ConnectRemoteDialog", () => {
     );
     expect(baseElement).toHaveTextContent(
       "multica config set app_url https://app.example.com",
+    );
+  });
+
+  it("uses the operator-provided CLI install command", () => {
+    const { baseElement } = renderDialog({
+      cliInstallCommand: "curl -fsSL https://packages.internal/multica/install.sh | bash",
+    });
+
+    expect(baseElement).toHaveTextContent(
+      "curl -fsSL https://packages.internal/multica/install.sh | bash",
+    );
+    expect(baseElement).not.toHaveTextContent(
+      "raw.githubusercontent.com/multica-ai/multica",
     );
   });
 

@@ -677,6 +677,7 @@ describe("ApiClient schema fallback", () => {
         allow_signup: true,
         daemon_server_url: { wrong: "shape" },
         daemon_app_url: 123,
+        cli_install_command: { wrong: "shape" },
         workspace_creation_disabled: false,
         feature_flags: { composio_mcp_apps: true },
       });
@@ -686,7 +687,20 @@ describe("ApiClient schema fallback", () => {
       expect(config.allow_signup).toBe(true);
       expect(config.daemon_server_url).toBeUndefined();
       expect(config.daemon_app_url).toBeUndefined();
+      expect(config.cli_install_command).toBeUndefined();
       expect(config.feature_flags?.composio_mcp_apps).toBe(true);
+    });
+
+    it("accepts an operator-provided internal CLI install command", async () => {
+      stubFetchJson({
+        cdn_domain: "",
+        allow_signup: true,
+        cli_install_command: "curl -fsSL https://packages.internal/multica/install.sh | bash",
+      });
+      const client = new ApiClient("https://api.example.test");
+      expect((await client.getConfig()).cli_install_command).toBe(
+        "curl -fsSL https://packages.internal/multica/install.sh | bash",
+      );
     });
 
     // Absent and non-boolean both have to read as "this server will not mint a

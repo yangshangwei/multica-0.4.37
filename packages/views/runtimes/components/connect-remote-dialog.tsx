@@ -234,6 +234,7 @@ function InstructionsStep({ onClose }: { onClose: () => void }) {
   const { t } = useT("runtimes");
   const daemonServerUrl = useConfigStore((s) => s.daemonServerUrl);
   const daemonAppUrl = useConfigStore((s) => s.daemonAppUrl);
+  const cliInstallCommand = useConfigStore((s) => s.cliInstallCommand);
   const { setupCmd, tokenCmd } = daemonCommands(daemonServerUrl, daemonAppUrl);
   return (
     <>
@@ -251,7 +252,7 @@ function InstructionsStep({ onClose }: { onClose: () => void }) {
           <CommandStep
             n={1}
             label={t(($) => $.connect.step1_label)}
-            cmd={INSTALL_CMD}
+            cmd={cliInstallCommand.trim() || INSTALL_CMD}
             copyAria={t(($) => $.connect.copy_aria)}
           />
 
