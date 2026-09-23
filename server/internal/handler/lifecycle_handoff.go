@@ -55,21 +55,29 @@ type lifecyclePreventionTaskRequest struct {
 }
 
 type lifecycleRolloutEvidenceRequest struct {
-	ApprovedDigest   string                          `json:"approved_digest"`
-	ArtifactDigest   string                          `json:"artifact_digest"`
-	Baseline         map[string]float64              `json:"baseline"`
-	WindowComplete   bool                            `json:"window_complete"`
-	Signals          []lifecycleRolloutSignalRequest `json:"signals"`
-	RollbackApproved bool                            `json:"rollback_approved"`
-	RollbackExecuted bool                            `json:"rollback_executed"`
+	ApprovedDigest    string                            `json:"approved_digest"`
+	ArtifactDigest    string                            `json:"artifact_digest"`
+	Baseline          map[string]float64                `json:"baseline"`
+	ObservationWindow lifecycleObservationWindowRequest `json:"observation_window"`
+	WindowComplete    bool                              `json:"window_complete"`
+	Signals           []lifecycleRolloutSignalRequest   `json:"signals"`
+	RollbackApproved  bool                              `json:"rollback_approved"`
+	RollbackExecuted  bool                              `json:"rollback_executed"`
 }
 
 type lifecycleAgentEvaluationRequest struct {
+	ArtifactDigest   string                                `json:"artifact_digest"`
 	BaselineVersion  string                                `json:"baseline_version"`
 	CandidateVersion string                                `json:"candidate_version"`
 	SkillVersion     string                                `json:"skill_version"`
 	MCPVersion       string                                `json:"mcp_version"`
 	Cases            []lifecycleAgentEvaluationCaseRequest `json:"cases"`
+}
+
+type lifecycleObservationWindowRequest struct {
+	StartedAt string `json:"started_at"`
+	EndedAt   string `json:"ended_at"`
+	Complete  bool   `json:"complete"`
 }
 
 type lifecycleRolloutSignalRequest struct {
@@ -158,11 +166,15 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			"mitigation_complete": req.MitigationComplete, "separate_follow_up": req.SeparateFollowUp,
 		}
 	case "incident-learning":
-		if req.Prevention == nil {
+		if req.Prevention == nil && len(req.ExistingPreventionTasks) == 0 {
 			writeError(w, http.StatusBadRequest, "incident-learning requires prevention task evidence")
 			return
 		}
 		prevention := req.Prevention
+		if err := h.validateExistingLifecyclePreventionTasks(r, issue, req.ExistingPreventionTasks); err != nil {
+			h.writeLifecycleError(w, err)
+			return
+		}
 		if strings.TrimSpace(req.FollowUpIssueID) == "" {
 			if saved := parseIssueMetadata(issue.Metadata); saved != nil {
 				if savedHandoff, ok := saved["lifecycle_handoff"].(map[string]any); ok {
@@ -172,21 +184,23 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 				}
 			}
 		}
-		if strings.TrimSpace(prevention.Issue) == "" {
-			prevention.Issue = prevention.Title
-		}
-		related := prevention.RelatedIncident
-		if related == "" {
-			related = uuidToString(issue.ID)
-		}
 		validation := service.IncidentLearningEvidence{
 			SourceIssue: uuidToString(issue.ID), Facts: req.Facts, Inferences: req.Inferences,
 			Unknowns: req.Unknowns, ExistingPreventionTasks: req.ExistingPreventionTasks,
-			PreventionTasks: []service.PreventionTaskEvidence{{
+		}
+		if prevention != nil {
+			if strings.TrimSpace(prevention.Issue) == "" {
+				prevention.Issue = prevention.Title
+			}
+			related := prevention.RelatedIncident
+			if related == "" {
+				related = uuidToString(issue.ID)
+			}
+			validation.PreventionTasks = []service.PreventionTaskEvidence{{
 				Issue: prevention.Issue, Title: prevention.Title, Owner: prevention.Owner,
 				Priority: prevention.Priority, AcceptanceSignal: prevention.AcceptanceSignal,
 				RelatedIncident: related,
-			}},
+			}}
 		}
 		// The source issue identifier is not needed for the contract's linkage
 		// check beyond being stable and non-empty; UUID is always available.
@@ -196,21 +210,24 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			return
 		}
 		var err error
-		followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
-		if err != nil {
-			h.writeLifecycleError(w, err)
-			return
-		}
-		if err := h.persistPreventionMetadata(r, followUp, issue, *prevention); err != nil {
-			writeError(w, http.StatusInternalServerError, "failed to persist prevention evidence")
-			return
+		if prevention != nil {
+			followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
+			if err != nil {
+				h.writeLifecycleError(w, err)
+				return
+			}
+			if err := h.persistPreventionMetadata(r, followUp, issue, *prevention); err != nil {
+				writeError(w, http.StatusInternalServerError, "failed to persist prevention evidence")
+				return
+			}
 		}
 		decision = service.LifecycleDecisionContinue
 		evidence = map[string]any{
 			"facts": req.Facts, "inferences": req.Inferences, "unknowns": req.Unknowns,
+			"existing_prevention_tasks": req.ExistingPreventionTasks,
 			"prevention": map[string]any{
-				"owner": prevention.Owner, "priority": prevention.Priority,
-				"acceptance_signal": prevention.AcceptanceSignal,
+				"owner": lifecyclePreventionOwner(prevention), "priority": lifecyclePreventionPriority(prevention),
+				"acceptance_signal": lifecyclePreventionAcceptanceSignal(prevention),
 			},
 		}
 	case "rollout":
@@ -220,13 +237,16 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 		}
 		rollout := service.RolloutEvidence{
 			ApprovedDigest: req.Rollout.ApprovedDigest, ArtifactDigest: req.Rollout.ArtifactDigest,
-			Baseline: req.Rollout.Baseline, WindowComplete: req.Rollout.WindowComplete,
-			Signals: lifecycleRolloutSignals(req.Rollout.Signals), RollbackApproved: req.Rollout.RollbackApproved,
+			Baseline: req.Rollout.Baseline, WindowComplete: req.Rollout.ObservationWindow.Complete,
+			ObservationWindowStart: req.Rollout.ObservationWindow.StartedAt,
+			ObservationWindowEnd:   req.Rollout.ObservationWindow.EndedAt,
+			Signals:                lifecycleRolloutSignals(req.Rollout.Signals), RollbackApproved: req.Rollout.RollbackApproved,
 			RollbackExecuted: req.Rollout.RollbackExecuted,
 		}
 		decision = service.EvaluateRolloutEvidence(rollout)
 		evidence = map[string]any{"approved_digest": rollout.ApprovedDigest, "artifact_digest": rollout.ArtifactDigest,
-			"baseline": rollout.Baseline, "window_complete": rollout.WindowComplete, "signals": rollout.Signals,
+			"baseline": rollout.Baseline, "observation_window": req.Rollout.ObservationWindow,
+			"window_complete": rollout.WindowComplete, "signals": rollout.Signals,
 			"rollback_approved": rollout.RollbackApproved, "rollback_executed": rollout.RollbackExecuted}
 	case "agent-evaluation":
 		if req.AgentEvaluation == nil {
@@ -234,12 +254,13 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			return
 		}
 		eval := service.AgentEvaluationEvidence{
+			ArtifactDigest:  req.AgentEvaluation.ArtifactDigest,
 			BaselineVersion: req.AgentEvaluation.BaselineVersion, CandidateVersion: req.AgentEvaluation.CandidateVersion,
 			SkillVersion: req.AgentEvaluation.SkillVersion, MCPVersion: req.AgentEvaluation.MCPVersion,
 			Cases: lifecycleAgentEvaluationCases(req.AgentEvaluation.Cases),
 		}
 		decision = service.ValidateAgentEvaluation(eval)
-		evidence = map[string]any{"baseline_version": eval.BaselineVersion, "candidate_version": eval.CandidateVersion,
+		evidence = map[string]any{"artifact_digest": eval.ArtifactDigest, "baseline_version": eval.BaselineVersion, "candidate_version": eval.CandidateVersion,
 			"skill_version": eval.SkillVersion, "mcp_version": eval.MCPVersion, "cases": eval.Cases}
 		if strings.TrimSpace(req.FollowUpIssueID) != "" || strings.TrimSpace(req.FollowUpTitle) != "" {
 			var err error
@@ -295,7 +316,7 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 
 func (h *Handler) resolveOrCreateLifecycleFollowUp(r *http.Request, source db.Issue, req lifecycleHandoffRequest, actorType, actorID string) (db.Issue, bool, bool, string, error) {
 	if strings.TrimSpace(req.FollowUpIssueID) != "" {
-		issue, err := h.resolveLifecycleIssue(r, req.FollowUpIssueID, source.WorkspaceID)
+		issue, err := h.resolveLifecycleIssue(r, req.FollowUpIssueID, source.WorkspaceID, source.ID)
 		if err != nil {
 			return db.Issue{}, false, false, "", err
 		}
@@ -356,9 +377,12 @@ func lifecycleAssignee(req lifecycleHandoffRequest) (pgtype.Text, pgtype.UUID, e
 	return pgtype.Text{String: req.AssigneeType, Valid: true}, id, nil
 }
 
-func (h *Handler) resolveLifecycleIssue(r *http.Request, raw string, workspaceID pgtype.UUID) (db.Issue, error) {
+func (h *Handler) resolveLifecycleIssue(r *http.Request, raw string, workspaceID, parentIssueID pgtype.UUID) (db.Issue, error) {
 	workspace := uuidToString(workspaceID)
 	if issue, ok := h.resolveIssueByIdentifier(r.Context(), raw, workspace); ok {
+		if !sameLifecycleParent(issue, parentIssueID) {
+			return db.Issue{}, errors.New("follow-up issue is not a child of the source issue")
+		}
 		return issue, nil
 	}
 	id, err := util.ParseUUID(raw)
@@ -369,7 +393,67 @@ func (h *Handler) resolveLifecycleIssue(r *http.Request, raw string, workspaceID
 	if err != nil {
 		return db.Issue{}, errors.New("follow-up issue not found in this workspace")
 	}
+	if !sameLifecycleParent(issue, parentIssueID) {
+		return db.Issue{}, errors.New("follow-up issue is not a child of the source issue")
+	}
 	return issue, nil
+}
+
+func sameLifecycleParent(issue db.Issue, parentID pgtype.UUID) bool {
+	return issue.ParentIssueID.Valid && parentID.Valid && uuidToString(issue.ParentIssueID) == uuidToString(parentID)
+}
+
+func (h *Handler) validateExistingLifecyclePreventionTasks(r *http.Request, source db.Issue, identifiers []string) error {
+	for _, raw := range identifiers {
+		if strings.TrimSpace(raw) == "" {
+			return errors.New("existing_prevention_tasks contains an empty issue identifier")
+		}
+		prevention, err := h.resolveLifecycleIssueWithoutParent(r, raw, source.WorkspaceID)
+		if err != nil {
+			return fmt.Errorf("existing prevention task %q: %w", raw, err)
+		}
+		if uuidToString(prevention.ID) == uuidToString(source.ID) {
+			return errors.New("existing prevention task cannot be the source issue")
+		}
+	}
+	return nil
+}
+
+func (h *Handler) resolveLifecycleIssueWithoutParent(r *http.Request, raw string, workspaceID pgtype.UUID) (db.Issue, error) {
+	workspace := uuidToString(workspaceID)
+	if issue, ok := h.resolveIssueByIdentifier(r.Context(), raw, workspace); ok {
+		return issue, nil
+	}
+	id, err := util.ParseUUID(raw)
+	if err != nil {
+		return db.Issue{}, errors.New("issue not found")
+	}
+	issue, err := h.Queries.GetIssueInWorkspace(r.Context(), db.GetIssueInWorkspaceParams{ID: id, WorkspaceID: workspaceID})
+	if err != nil {
+		return db.Issue{}, errors.New("issue not found in this workspace")
+	}
+	return issue, nil
+}
+
+func lifecyclePreventionOwner(task *lifecyclePreventionTaskRequest) string {
+	if task == nil {
+		return ""
+	}
+	return task.Owner
+}
+
+func lifecyclePreventionPriority(task *lifecyclePreventionTaskRequest) string {
+	if task == nil {
+		return ""
+	}
+	return task.Priority
+}
+
+func lifecyclePreventionAcceptanceSignal(task *lifecyclePreventionTaskRequest) string {
+	if task == nil {
+		return ""
+	}
+	return task.AcceptanceSignal
 }
 
 func (h *Handler) persistPreventionMetadata(r *http.Request, prevention db.Issue, source db.Issue, task lifecyclePreventionTaskRequest) error {
@@ -438,7 +522,7 @@ func (h *Handler) recordLifecycleAuditComment(r *http.Request, issue db.Issue, a
 }
 
 func (h *Handler) writeLifecycleError(w http.ResponseWriter, err error) {
-	if errors.Is(err, pgx.ErrNoRows) || strings.Contains(err.Error(), "not found") {
+	if errors.Is(err, pgx.ErrNoRows) || strings.Contains(err.Error(), "not found") || strings.Contains(err.Error(), "not a child") {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}

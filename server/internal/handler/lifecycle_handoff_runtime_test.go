@@ -202,6 +202,37 @@ func TestCreateLifecycleHandoffIncidentLearningIsIdempotent(t *testing.T) {
 	})
 }
 
+func TestCreateLifecycleHandoffIncidentLearningLinksExistingPreventionTask(t *testing.T) {
+	if testHandler == nil || testPool == nil {
+		t.Skip("database not available")
+	}
+	sourceID := createCommentTriggerPreviewIssue(t, "runtime existing prevention source", "", "")
+	preventionID := createCommentTriggerPreviewIssue(t, "existing prevention task", "", "")
+	code, response := postLifecycleHandoffForTest(t, sourceID, map[string]any{
+		"kind": "incident-learning", "facts": []string{"alert fired"},
+		"inferences": []string{"retry amplified impact"}, "unknowns": []string{"impact window"},
+		"existing_prevention_tasks": []string{preventionID},
+	})
+	if code != http.StatusCreated || response.Decision != string(service.LifecycleDecisionContinue) || response.FollowUpIssueID != "" {
+		t.Fatalf("existing prevention handoff: status=%d response=%+v", code, response)
+	}
+	handoff, ok := response.Metadata["lifecycle_handoff"].(map[string]any)
+	if !ok {
+		t.Fatalf("response lifecycle handoff = %#v", response.Metadata["lifecycle_handoff"])
+	}
+	evidence, ok := handoff["evidence"].(map[string]any)
+	if !ok {
+		t.Fatalf("response evidence = %#v", handoff["evidence"])
+	}
+	linked, ok := evidence["existing_prevention_tasks"].([]any)
+	if !ok || len(linked) != 1 {
+		t.Fatalf("existing prevention evidence = %#v", evidence["existing_prevention_tasks"])
+	}
+	t.Cleanup(func() {
+		testPool.Exec(context.Background(), `DELETE FROM issue WHERE id = $1`, preventionID)
+	})
+}
+
 func TestCreateLifecycleHandoffRolloutMissingEvidenceIsUnknown(t *testing.T) {
 	if testHandler == nil || testPool == nil {
 		t.Skip("database not available")
@@ -210,7 +241,9 @@ func TestCreateLifecycleHandoffRolloutMissingEvidenceIsUnknown(t *testing.T) {
 	code, response := postLifecycleHandoffForTest(t, sourceID, map[string]any{
 		"kind": "rollout", "rollout": map[string]any{
 			"approved_digest": "sha256:a", "artifact_digest": "sha256:b",
-			"baseline": map[string]float64{"error_rate": 0}, "window_complete": true,
+			"baseline": map[string]float64{"error_rate": 0}, "observation_window": map[string]any{
+				"started_at": "2026-09-24T10:00:00Z", "ended_at": "2026-09-24T10:15:00Z", "complete": true,
+			},
 			"signals": []map[string]any{{"name": "error_rate", "value": 0, "threshold": 1}},
 		},
 	})
@@ -247,7 +280,7 @@ func TestCreateLifecycleHandoffAgentEvaluationQueuesEvaluatorFollowUp(t *testing
 		"kind": "agent-evaluation", "follow_up_title": "evaluate candidate agent release",
 		"assignee_type": "agent", "assignee_id": evaluatorID,
 		"agent_evaluation": map[string]any{
-			"baseline_version": "agent-1", "candidate_version": "agent-2",
+			"artifact_digest": "sha256:eval-2", "baseline_version": "agent-1", "candidate_version": "agent-2",
 			"skill_version": "skill-4", "mcp_version": "mcp-3", "cases": cases,
 		},
 	})
@@ -257,5 +290,23 @@ func TestCreateLifecycleHandoffAgentEvaluationQueuesEvaluatorFollowUp(t *testing
 	t.Cleanup(func() {
 		testPool.Exec(context.Background(), `DELETE FROM agent_task_queue WHERE issue_id = $1`, response.FollowUpIssueID)
 		testPool.Exec(context.Background(), `DELETE FROM issue WHERE id = $1`, response.FollowUpIssueID)
+	})
+}
+
+func TestCreateLifecycleHandoffRejectsUnrelatedFollowUp(t *testing.T) {
+	if testHandler == nil || testPool == nil {
+		t.Skip("database not available")
+	}
+	sourceID := createCommentTriggerPreviewIssue(t, "runtime unrelated source", "", "")
+	otherID := createCommentTriggerPreviewIssue(t, "runtime unrelated target", "", "")
+	code, _ := postLifecycleHandoffForTest(t, sourceID, map[string]any{
+		"kind": "rca", "route": "bug-fix", "cause_state": "unknown",
+		"follow_up_issue_id": otherID,
+	})
+	if code != http.StatusBadRequest {
+		t.Fatalf("unrelated follow-up status=%d, want 400", code)
+	}
+	t.Cleanup(func() {
+		testPool.Exec(context.Background(), `DELETE FROM issue WHERE id = $1`, otherID)
 	})
 }

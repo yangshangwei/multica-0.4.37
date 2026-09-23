@@ -243,7 +243,8 @@ func TestLifecycleHandoffFixtures_DeliveryArtifactsAreConsumable(t *testing.T) {
 	}
 	if got := EvaluateRolloutEvidence(RolloutEvidence{
 		ApprovedDigest: rollout.ApprovedDigest, ArtifactDigest: rollout.ArtifactDigest,
-		Baseline: rollout.Baseline, WindowComplete: rollout.ObservationWindow.Complete,
+		Baseline: rollout.Baseline, ObservationWindowStart: rollout.ObservationWindow.StartedAt,
+		ObservationWindowEnd: rollout.ObservationWindow.EndedAt, WindowComplete: rollout.ObservationWindow.Complete,
 		Signals: rolloutSignals, RollbackApproved: rollout.Rollback.Approved, RollbackExecuted: rollout.Rollback.Executed,
 	}); got != LifecycleDecision(rollout.Decision) {
 		t.Errorf("rollout contract = %q, want %q", got, rollout.Decision)
@@ -283,7 +284,7 @@ func TestLifecycleHandoffFixtures_AgentQualityGateHasReproducibleCases(t *testin
 		})
 	}
 	if got := ValidateAgentEvaluation(AgentEvaluationEvidence{
-		BaselineVersion: evaluation.BaselineVersion, CandidateVersion: evaluation.CandidateVersion,
+		ArtifactDigest: evaluation.ArtifactDigest, BaselineVersion: evaluation.BaselineVersion, CandidateVersion: evaluation.CandidateVersion,
 		SkillVersion: evaluation.SkillVersion, MCPVersion: evaluation.MCPVersion, Cases: evaluationCases,
 	}); got != LifecycleDecisionPass {
 		t.Errorf("agent evaluation contract = %q, want pass", got)

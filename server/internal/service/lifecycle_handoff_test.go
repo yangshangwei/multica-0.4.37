@@ -84,7 +84,8 @@ func TestValidateIncidentLearningRequiresOwnedPreventionEvidence(t *testing.T) {
 func TestEvaluateRolloutEvidenceFailsClosed(t *testing.T) {
 	base := RolloutEvidence{
 		ApprovedDigest: "sha256:release-1", ArtifactDigest: "sha256:release-1",
-		Baseline: map[string]float64{"error_rate": 0.2}, WindowComplete: true,
+		Baseline:               map[string]float64{"error_rate": 0.2},
+		ObservationWindowStart: "2026-09-24T10:00:00Z", ObservationWindowEnd: "2026-09-24T10:15:00Z", WindowComplete: true,
 		Signals: []RolloutSignalEvidence{{Name: "error_rate", Value: 0.4, Threshold: 1}},
 	}
 	if got := EvaluateRolloutEvidence(base); got != LifecycleDecisionContinue {
@@ -94,6 +95,8 @@ func TestEvaluateRolloutEvidenceFailsClosed(t *testing.T) {
 	for name, mutate := range map[string]func(*RolloutEvidence){
 		"digest mismatch": func(e *RolloutEvidence) { e.ArtifactDigest = "sha256:rebuilt" },
 		"window open":     func(e *RolloutEvidence) { e.WindowComplete = false },
+		"window missing":  func(e *RolloutEvidence) { e.ObservationWindowEnd = "" },
+		"window reversed": func(e *RolloutEvidence) { e.ObservationWindowEnd = e.ObservationWindowStart },
 		"missing baseline": func(e *RolloutEvidence) {
 			e.Baseline = nil
 		},
@@ -123,7 +126,7 @@ func TestEvaluateRolloutEvidenceFailsClosed(t *testing.T) {
 
 func TestValidateAgentEvaluationRequiresSixVersionedCaseCategories(t *testing.T) {
 	evidence := AgentEvaluationEvidence{
-		BaselineVersion: "agent-v1", CandidateVersion: "agent-v2", SkillVersion: "skill-v1", MCPVersion: "mcp-v1",
+		ArtifactDigest: "sha256:eval-1", BaselineVersion: "agent-v1", CandidateVersion: "agent-v2", SkillVersion: "skill-v1", MCPVersion: "mcp-v1",
 		Cases: []AgentEvaluationCaseEvidence{
 			{Category: "correctness", Trace: []string{"read", "answer"}, StopReason: "completed", Result: "confirmed"},
 			{Category: "tool-failure", Trace: []string{"timeout"}, StopReason: "tool-timeout", Result: "unknown"},
@@ -135,6 +138,10 @@ func TestValidateAgentEvaluationRequiresSixVersionedCaseCategories(t *testing.T)
 	}
 	if got := ValidateAgentEvaluation(evidence); got != LifecycleDecisionPass {
 		t.Fatalf("complete evaluation = %q, want pass", got)
+	}
+	evidence.ArtifactDigest = ""
+	if got := ValidateAgentEvaluation(evidence); got != LifecycleDecisionUnknown {
+		t.Fatalf("missing artifact digest evaluation = %q, want unknown", got)
 	}
 
 	evidence.Cases[0].Trace = nil

@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 // LifecycleDecision is the fail-closed outcome shared by lifecycle handoffs.
@@ -131,13 +132,15 @@ type RolloutSignalEvidence struct {
 // RolloutEvidence is deliberately independent of an observability provider.
 // A provider adapter can populate it later without gaining rollback authority.
 type RolloutEvidence struct {
-	ApprovedDigest   string
-	ArtifactDigest   string
-	Baseline         map[string]float64
-	WindowComplete   bool
-	Signals          []RolloutSignalEvidence
-	RollbackApproved bool
-	RollbackExecuted bool
+	ApprovedDigest         string
+	ArtifactDigest         string
+	Baseline               map[string]float64
+	ObservationWindowStart string
+	ObservationWindowEnd   string
+	WindowComplete         bool
+	Signals                []RolloutSignalEvidence
+	RollbackApproved       bool
+	RollbackExecuted       bool
 }
 
 // EvaluateRolloutEvidence returns a fail-closed decision. It never performs a
@@ -147,8 +150,18 @@ func EvaluateRolloutEvidence(input RolloutEvidence) LifecycleDecision {
 		strings.TrimSpace(input.ArtifactDigest) == "" ||
 		input.ApprovedDigest != input.ArtifactDigest ||
 		len(input.Baseline) == 0 ||
+		strings.TrimSpace(input.ObservationWindowStart) == "" ||
+		strings.TrimSpace(input.ObservationWindowEnd) == "" ||
 		!input.WindowComplete ||
 		len(input.Signals) == 0 {
+		return LifecycleDecisionUnknown
+	}
+	startedAt, err := time.Parse(time.RFC3339Nano, input.ObservationWindowStart)
+	if err != nil {
+		return LifecycleDecisionUnknown
+	}
+	endedAt, err := time.Parse(time.RFC3339Nano, input.ObservationWindowEnd)
+	if err != nil || !endedAt.After(startedAt) {
 		return LifecycleDecisionUnknown
 	}
 	thresholdExceeded := false
@@ -180,6 +193,7 @@ type AgentEvaluationCaseEvidence struct {
 }
 
 type AgentEvaluationEvidence struct {
+	ArtifactDigest   string
 	BaselineVersion  string
 	CandidateVersion string
 	SkillVersion     string
@@ -190,7 +204,8 @@ type AgentEvaluationEvidence struct {
 // ValidateAgentEvaluation requires a reproducible case for each quality
 // dimension before a review or release gate can claim a pass.
 func ValidateAgentEvaluation(input AgentEvaluationEvidence) LifecycleDecision {
-	if strings.TrimSpace(input.BaselineVersion) == "" ||
+	if strings.TrimSpace(input.ArtifactDigest) == "" ||
+		strings.TrimSpace(input.BaselineVersion) == "" ||
 		strings.TrimSpace(input.CandidateVersion) == "" ||
 		strings.TrimSpace(input.SkillVersion) == "" ||
 		strings.TrimSpace(input.MCPVersion) == "" {
