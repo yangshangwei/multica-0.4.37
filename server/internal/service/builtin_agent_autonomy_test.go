@@ -260,6 +260,27 @@ func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing
 	}
 }
 
+func TestSquadLeads_ExplainDiagnosticianHandoff(t *testing.T) {
+	want := map[string][]string{
+		"bug-fix-lead":     {"诊断工程师", "原因未知"},
+		"maintenance-lead": {"诊断工程师", "不稳定测试"},
+		"incident-lead":    {"诊断工程师", "独立后续任务", "不等待"},
+	}
+
+	for key, contracts := range want {
+		lead, ok := AgentRoleTemplateByKey(key)
+		if !ok {
+			t.Fatalf("leader template %q is missing", key)
+		}
+		instructions := lead.Instructions()
+		for _, contract := range contracts {
+			if !strings.Contains(instructions, contract) {
+				t.Errorf("%s instructions do not explain diagnostician handoff %q", key, contract)
+			}
+		}
+	}
+}
+
 // TestSquadTemplates_StaffOnlyListedWorkingRoles guards the decision the role
 // roster rests on: a new squad is a new ROUTING POLICY over listed roles, never an
 // excuse to mint a one-off role. A new unlisted working role would arrive here first

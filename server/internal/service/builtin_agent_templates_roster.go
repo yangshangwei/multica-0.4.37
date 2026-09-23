@@ -261,7 +261,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "bug-fix-lead",
-		Version:            2,
+		Version:            3,
 		DefaultName:        "Bug Fix Lead",
 		AvatarEmoji:        "🚑",
 		Autonomy:           AutonomyCoordinator,
@@ -273,10 +273,10 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"ja": "バグ修正リード",
 		},
 		Descriptions: map[string]string{
-			"en": "Triages a defect, gets it reproduced, then routes the fix and its regression test.",
-			"zh": "先定性缺陷并确认可复现，再分别安排修复和回归测试。",
-			"ko": "결함을 트리아지하고 재현을 확인한 뒤, 수정과 회귀 테스트를 배분합니다.",
-			"ja": "不具合をトリアージして再現を確認し、修正と回帰テストを割り当てます。",
+			"en": "Triages a defect, gets it reproduced, diagnoses unknown causes, then routes the fix and its regression test.",
+			"zh": "先定性缺陷并确认可复现；原因未知时先安排诊断，再分别安排修复和回归测试。",
+			"ko": "결함을 트리아지하고 재현을 확인한 뒤 원인이 불명확하면 진단을 거쳐 수정과 회귀 테스트를 배분합니다.",
+			"ja": "不具合をトリアージして再現を確認し、原因不明なら診断を経て修正と回帰テストを割り当てます。",
 		},
 	},
 	{
@@ -342,7 +342,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "maintenance-lead",
-		Version:            2,
+		Version:            3,
 		DefaultName:        "Maintenance Lead",
 		AvatarEmoji:        "🧹",
 		Autonomy:           AutonomyCoordinator,
@@ -354,10 +354,10 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"ja": "メンテナンス リード",
 		},
 		Descriptions: map[string]string{
-			"en": "Routes upgrades, CVE patches and flaky-test cleanup one item at a time, never as a batch.",
-			"zh": "把依赖升级、CVE 修补和不稳定测试清理逐项安排，绝不打包。",
-			"ko": "업그레이드, CVE 패치, 불안정 테스트 정리를 한 건씩 배분하며 묶어 처리하지 않습니다.",
-			"ja": "アップグレード・CVE 対応・不安定テストの整理を一件ずつ割り当て、まとめて扱いません。",
+			"en": "Routes upgrades, CVE patches and flaky-test cleanup one item at a time, diagnosing unknown failures before changes.",
+			"zh": "把依赖升级、CVE 修补和不稳定测试清理逐项安排；原因未知时先诊断，绝不打包。",
+			"ko": "업그레이드·CVE 패치·불안정 테스트 정리를 한 건씩 배분하며 원인 불명 실패는 변경 전에 진단합니다.",
+			"ja": "アップグレード・CVE 対応・不安定テストの整理を一件ずつ割り当て、原因不明の失敗は変更前に診断します。",
 		},
 	},
 	{
@@ -382,7 +382,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "incident-lead",
-		Version:            2,
+		Version:            3,
 		DefaultName:        "Incident Lead",
 		AvatarEmoji:        "🚨",
 		Autonomy:           AutonomyCoordinator,
@@ -394,10 +394,10 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"ja": "インシデント リード",
 		},
 		Descriptions: map[string]string{
-			"en": "Stops the bleeding first: mitigation over diagnosis, rollback over a fix, root cause in a separate issue.",
-			"zh": "先止血：缓解优先于定性，回滚优先于修复，根因另开 issue。",
-			"ko": "먼저 출혈을 막습니다: 진단보다 완화, 수정보다 롤백, 근본 원인은 별도 이슈로.",
-			"ja": "まず止血します。診断より緩和、修正よりロールバック、根本原因は別 issue へ。",
+			"en": "Stops the bleeding first: mitigation over diagnosis, rollback over a fix, then hands a separate root-cause follow-up to a diagnostician.",
+			"zh": "先止血：缓解优先于定性，回滚优先于修复；恢复后把独立根因后续任务交给诊断工程师。",
+			"ko": "먼저 출혈을 막습니다. 진단보다 완화, 수정보다 롤백을 우선하고 복구 후 별도 근본 원인 후속 작업을 진단 엔지니어에게 맡깁니다.",
+			"ja": "まず止血します。診断より緩和、修正よりロールバックを優先し、復旧後に別の根因調査を診断エンジニアへ渡します。",
 		},
 	},
 }

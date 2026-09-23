@@ -16,15 +16,15 @@ import { Callout } from "fumadocs-ui/components/callout";
 | テンプレート | メンバー構成 | ルーティングの基準 |
 |---|---|---|
 | **Feature Delivery Squad** | リード、Product Analyst、Architect、Implementer、QA Engineer、Code Reviewer | 課題に今足りないもの：受け入れ基準、設計、変更、動作の証明、レビュー |
-| **Bug Fix Squad** | リード、Product Analyst、Implementer、QA Engineer | トリアージ、再現、回帰テスト付き修正、検証 |
+| **Bug Fix Squad** | リード、Product Analyst、QA Engineer、Diagnostician、Implementer | トリアージ、再現、原因不明なら診断、回帰テスト付き修正、検証 |
 | **Review Gate Squad** | リード、Code Reviewer、Security Reviewer、QA Engineer | その差分にまだ足りない観点：正しさ、セキュリティ、動作の証明 |
 | **Discovery Squad** | リード、Product Analyst、Architect | 問いが「何をもって完了とするか」なのか「どう作るか」なのか。結論のみで、コードは書きません |
 | **Docs Squad** | リード、Technical Writer、Code Reviewer | 出荷済みの変更がどの文書を古くしたか、そして草稿がコードと一致しているか |
-| **Maintenance Squad** | リード、Implementer、QA Engineer、Security Reviewer | 依存関係・CVE・flaky テストを一度に 1 件ずつ、それぞれ検証付きで |
+| **Maintenance Squad** | リード、Security Reviewer、Diagnostician、Implementer、QA Engineer | 原因不明の flaky テストやアップグレード失敗を診断し、検証付きで一度に 1 件ずつ |
 | **Release Squad** | リード、Release Engineer、QA Engineer、Technical Writer | リリースの準備状況：ロールバックが存在するか、ビルドが検証済みか、記載が一致しているか |
-| **Incident Response Squad** | リード、Product Analyst、Implementer、Release Engineer、QA Engineer | まず復旧。原因と恒久対策は別の課題であとから |
+| **Incident Response Squad** | リード、Product Analyst、Implementer、Release Engineer、QA Engineer、Diagnostician | まず復旧し、その後に別の根因調査を Diagnostician へ渡す |
 
-8 つは 8 通りの実行モデルではありません。どれもリーダーが @メンションで割り当てる普通のスクワッドです。テンプレートが与えるのはメンバー構成とルーティング方針で、複数のエージェントを初めて組み合わせるときに間違えるのはそこです。構成の重複は意図的です。Incident Response と Bug Fix はほぼ同じロールを、逆の順序でルーティングします。障害対応では、不具合の理解よりも復旧が優先されるからです。
+8 つは 8 通りの実行モデルではありません。どれもリーダーが @メンションで割り当てる普通のスクワッドです。テンプレートが与えるのはメンバー構成とルーティング方針で、複数のエージェントを初めて組み合わせるときに間違えるのはそこです。構成の重複は意図的です。Incident Response と Bug Fix はほぼ同じロールを、逆の順序でルーティングします。障害対応では、不具合の理解よりも復旧が優先されるからです。Diagnostician は原因不明の失敗に限って使い、成功した配達・レビュー・リリースには追加しません。
 
 テンプレートからの作成は、必要な[ロールテンプレートのエージェント](/agents-create#ロールテンプレート)、スクワッド本体、メンバー関係をまとめて作ります。スクワッドの動作自体は変わりません。リーダーが作業を受け取り、@メンションで割り当てます。
 

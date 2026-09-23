@@ -165,9 +165,11 @@ Squads page's "Use a template" action.
 Eight templates ship with the binary: `feature-delivery`, `bug-fix`,
 `review-gate`, `discovery`, `docs`, `maintenance`, `release`, `incident`. They
 are eight rosters and eight routing policies, not eight execution models — every
-one produces an ordinary squad. Their rosters draw on the same eight working role
+one produces an ordinary squad. Their rosters draw on the same listed working role
 templates and overlap heavily, so the difference between two of them lives in the
-squad `instructions`, not in the seats.
+squad `instructions`, not in the seats. `diagnostician` is intentionally seated
+only in `bug-fix`, `maintenance`, and `incident`: it handles an unexplained
+failure, not routine delivery, review, discovery, documentation, or release work.
 
 One transaction creates the missing role agents, the squad, and the whole roster,
 so a failure leaves nothing behind. Routing is unchanged: the leader receives the
@@ -186,6 +188,14 @@ Two behaviors matter when debugging one:
   The default name is the role's localized label for the request's `language`
   (English fallback), so a `zh` staffing conflicts with a hand-built
   实现工程师, not "Implementer".
+
+The three diagnostic workflows have different boundaries:
+
+- `bug-fix` sends an observed failure to `diagnostician` after reproduction and
+  before an `implementer` changes code, when the cause is still unknown;
+- `maintenance` uses it only for an unexplained flaky test or upgrade failure;
+- `incident` restores service first, then assigns a separate, follow-up root-cause
+  task after recovery. Diagnosis must never delay mitigation.
 
 `squad.template_key` / `template_version` record the provenance. They are not
 status: a staffed squad is an ordinary squad.

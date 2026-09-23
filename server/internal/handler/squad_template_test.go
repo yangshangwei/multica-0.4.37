@@ -178,12 +178,12 @@ func TestCreateSquadFromTemplate_ReusesExistingRoleAgents(t *testing.T) {
 	if !ok {
 		t.Fatal("bug-fix template missing")
 	}
-	// Only its own lead is new; the analyst, implementer and QA already exist.
-	if len(second.CreatedAgents) != 1 {
-		t.Errorf("bug-fix created %d agents, want 1 (its lead)", len(second.CreatedAgents))
+	// Only its own lead and the diagnostician are new; the analyst, implementer and QA already exist.
+	if len(second.CreatedAgents) != 2 {
+		t.Errorf("bug-fix created %d agents, want 2 (its lead and diagnostician)", len(second.CreatedAgents))
 	}
-	if len(second.ReusedAgents) != len(bugFix.Members) {
-		t.Errorf("bug-fix reused %d agents, want %d", len(second.ReusedAgents), len(bugFix.Members))
+	if len(second.ReusedAgents) != len(bugFix.Members)-1 {
+		t.Errorf("bug-fix reused %d agents, want %d", len(second.ReusedAgents), len(bugFix.Members)-1)
 	}
 	firstAgents := map[string]bool{}
 	for _, agentID := range first.CreatedAgents {

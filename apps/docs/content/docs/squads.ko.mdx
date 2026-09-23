@@ -16,15 +16,15 @@ import { Callout } from "fumadocs-ui/components/callout";
 | 템플릿 | 구성원 | 라우팅 기준 |
 |---|---|---|
 | **Feature Delivery Squad** | 리드, Product Analyst, Architect, Implementer, QA Engineer, Code Reviewer | 이슈에 지금 없는 것: 수용 기준, 설계, 변경, 동작 증명, 리뷰 |
-| **Bug Fix Squad** | 리드, Product Analyst, Implementer, QA Engineer | 트리아지, 재현, 회귀 테스트 포함 수정, 검증 |
+| **Bug Fix Squad** | 리드, Product Analyst, QA Engineer, Diagnostician, Implementer | 트리아지·재현 후 원인이 불명확하면 진단하고 회귀 테스트 포함 수정·검증 |
 | **Review Gate Squad** | 리드, Code Reviewer, Security Reviewer, QA Engineer | 이 diff에 아직 없는 검토: 정확성, 보안, 동작 증명 |
 | **Discovery Squad** | 리드, Product Analyst, Architect | 질문이 "무엇을 완료로 볼 것인가"인지 "어떻게 만들 것인가"인지. 결론만 내고 코드는 쓰지 않습니다 |
 | **Docs Squad** | 리드, Technical Writer, Code Reviewer | 출시된 변경이 어떤 문서를 낡게 만들었는지, 그리고 초안이 코드와 일치하는지 |
-| **Maintenance Squad** | 리드, Implementer, QA Engineer, Security Reviewer | 의존성·CVE·flaky 테스트를 한 번에 하나씩, 각각 검증과 함께 |
+| **Maintenance Squad** | 리드, Security Reviewer, Diagnostician, Implementer, QA Engineer | 원인 불명의 flaky 테스트나 업그레이드 실패를 진단한 뒤 한 번에 하나씩 검증 |
 | **Release Squad** | 리드, Release Engineer, QA Engineer, Technical Writer | 릴리스 준비 상태: 롤백이 존재하는지, 빌드가 검증됐는지, 릴리스 노트가 일치하는지 |
-| **Incident Response Squad** | 리드, Product Analyst, Implementer, Release Engineer, QA Engineer | 서비스 복구 우선. 원인과 항구적 수정은 별도 이슈로 나중에 |
+| **Incident Response Squad** | 리드, Product Analyst, Implementer, Release Engineer, QA Engineer, Diagnostician | 서비스 복구 우선. 이후 별도 근본 원인 후속 작업을 Diagnostician에게 전달 |
 
-여덟 개가 여덟 가지 실행 모델은 아닙니다. 모두 리더가 @멘션으로 라우팅하는 평범한 스쿼드입니다. 템플릿이 제공하는 것은 구성원과 라우팅 정책이며, 여러 에이전트를 처음 조합할 때 팀이 틀리는 부분이 바로 그것입니다. 구성이 겹치는 것은 의도적입니다. Incident Response와 Bug Fix는 거의 같은 역할을 반대 순서로 라우팅합니다. 장애 상황에서는 결함을 이해하는 것보다 서비스 복구가 우선이기 때문입니다.
+여덟 개가 여덟 가지 실행 모델은 아닙니다. 모두 리더가 @멘션으로 라우팅하는 평범한 스쿼드입니다. 템플릿이 제공하는 것은 구성원과 라우팅 정책이며, 여러 에이전트를 처음 조합할 때 팀이 틀리는 부분이 바로 그것입니다. 구성이 겹치는 것은 의도적입니다. Incident Response와 Bug Fix는 거의 같은 역할을 반대 순서로 라우팅합니다. 장애 상황에서는 결함을 이해하는 것보다 서비스 복구가 우선이기 때문입니다. Diagnostician은 원인 불명의 실패에만 사용하며 성공적인 전달·리뷰·릴리스에 추가 진단 단계를 강제하지 않습니다.
 
 템플릿으로 만들면 필요한 [역할 템플릿 에이전트](/agents-create#역할-템플릿), 스쿼드, 구성원 관계를 함께 생성합니다. 스쿼드의 동작 방식은 그대로입니다. 리더가 작업을 받고 @멘션으로 배정합니다.
 

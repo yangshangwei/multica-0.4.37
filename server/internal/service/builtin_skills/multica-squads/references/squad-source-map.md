@@ -120,6 +120,11 @@ Contracts:
   seat is the role's localized label for the request's `language`
   (`AgentRoleTemplate.Title`, English fallback), so the 409 comparison and the
   roster card's `name` field are language-relative too;
+- the built-in `diagnostician` seat is conditional by workflow: `bug-fix` uses it
+  between reproduction and implementation when the cause is unknown,
+  `maintenance` uses it for unexplained flaky-test or upgrade failures, and
+  `incident` uses it only for a separate post-recovery follow-up; the other five
+  templates do not provision it;
 - the leader is created from an unlisted role template at `coordinator`
   autonomy; member seats keep their own role's default level;
 - declared agent callers need Coordinator, and cannot staff a template whose

@@ -29,6 +29,15 @@ inventing a minimal reproduction or fix direction. Data loss, security defects,
 or exposed credentials require reporting and stopping for human handling.
 These narrower role/skill instructions do not add a server-enforced sandbox.
 
+The default squad placement is deliberately narrow. `bug-fix` seats the
+Diagnostician between reproduction and implementation when the cause is unknown;
+`maintenance` seats it for unexplained flaky-test or upgrade failures; and
+`incident` seats it for a separate post-recovery root-cause follow-up without
+delaying mitigation. Feature delivery, review gate, discovery, docs, and release
+do not provision the role by default. The corresponding squad instructions and
+leader templates must describe the same handoff; changing only one layer creates
+conflicting routing advice at claim time.
+
 Increment template and role-skill versions for material behavior changes. These
 defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.

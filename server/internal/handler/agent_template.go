@@ -350,7 +350,7 @@ func (h *Handler) materializeRoleSkillsInTx(
 //
 // Needed because different templates can name the same role skill — every built-in
 // squad lead carries multica-requirement-clarification, and the eight rosters draw
-// on the same eight working roles. Staffing two of them at once would otherwise have
+// on the same listed working roles. Staffing two of them at once would otherwise have
 // both transactions miss the reuse lookup and collide on skill's unique
 // (workspace_id, name) index. The squad-template lock does not cover this — it is
 // keyed per template, and these are different templates.
