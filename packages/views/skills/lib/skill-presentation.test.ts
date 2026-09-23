@@ -6,6 +6,8 @@ import { createI18n } from "@multica/core/i18n/react";
 import { parseFrontmatter } from "@multica/core/skills/frontmatter";
 import en from "../../locales/en/skills.json";
 import zh from "../../locales/zh-Hans/skills.json";
+import ja from "../../locales/ja/skills.json";
+import ko from "../../locales/ko/skills.json";
 import {
   getBuiltinRoleSkillPresentation,
   getSkillPresentation,
@@ -25,6 +27,7 @@ const names = [
   ["multica-security-review", "安全审查"],
   ["multica-architecture-decision-record", "架构决策记录"],
   ["multica-code-review", "代码审查"],
+  ["multica-debugging", "根因分析"],
   ["multica-requirement-clarification", "需求澄清"],
   ["multica-test-report", "测试报告"],
   ["multica-progress-report", "进展报告"],
@@ -56,6 +59,40 @@ function builtin(
 }
 
 describe("built-in role skill presentation", () => {
+  it("recognizes debugging as a platform built-in before materialization", () => {
+    expect(getBuiltinRoleSkillPresentation("multica-debugging", zhT)).toMatchObject({
+      name: "根因分析",
+      isBuiltin: true,
+    });
+  });
+
+  it.each([
+    ["en", en, "multica-debugging"],
+    ["zh-Hans", zh, "根因分析"],
+    ["ja", ja, "根本原因分析"],
+    ["ko", ko, "근본 원인 분석"],
+  ] as const)("shows debugging in a provider with only %s loaded", (locale, catalog, name) => {
+    const instance = createI18n(locale, { [locale]: { skills: catalog } });
+    const t = instance.getFixedT(locale, "skills");
+    const skill = builtin("multica-debugging");
+    const before = structuredClone(skill);
+
+    expect(getBuiltinRoleSkillPresentation(skill.name, t)).toMatchObject({
+      name,
+      description: catalog.builtin_role_skills["multica-debugging"].description,
+      isBuiltin: true,
+    });
+    const presentation = getSkillPresentation(skill, t);
+    expect(presentation).toMatchObject({
+      name,
+      description: catalog.builtin_role_skills["multica-debugging"].description,
+      isBuiltin: true,
+    });
+    expect(presentation.searchNames).toContain(name.toLowerCase());
+    expect(presentation.searchText).toContain(presentation.description.toLowerCase());
+    expect(skill).toEqual(before);
+  });
+
   it("labels the progress report skill in the built-in catalog", () => {
     expect(getBuiltinRoleSkillPresentation("multica-progress-report", zhT)?.name)
       .toBe("进展报告");

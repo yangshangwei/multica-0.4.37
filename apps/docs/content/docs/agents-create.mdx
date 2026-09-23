@@ -16,7 +16,7 @@ The creation page offers three options:
 | Option | When it fits |
 |---|---|
 | **Start blank** | You already know the agent's responsibilities and want to fill in every field yourself. |
-| **Use a template** | You want an engineering or progress-reporting role: analysis, architecture, implementation, QA, review, security, release, documentation, or daily and weekly reports. |
+| **Use a template** | You want an engineering or progress-reporting role: analysis, architecture, implementation, QA, root-cause diagnosis, review, security, release, documentation, or daily and weekly reports. |
 | **Build with AI** | Describe the goal first and let the Agent Builder ask the key questions and generate a draft. |
 
 Build with AI needs an online runtime for the Builder conversation. Either way, you can review and edit the final configuration before creating.
@@ -25,7 +25,7 @@ Build with AI needs an online runtime for the Builder conversation. Either way, 
 
 ## Role templates
 
-**Use a template** starts from one of nine built-in roles:
+**Use a template** starts from one of ten built-in roles:
 
 | Role | What it produces | Autonomy |
 |---|---|---|
@@ -33,6 +33,7 @@ Build with AI needs an online runtime for the Builder conversation. Either way, 
 | **Architect** | The approach, boundaries, compatibility, and an ADR when the decision will outlive the issue | Observer |
 | **Implementer** | The change and its tests on an isolated branch, plus what was verified | Contributor |
 | **QA Engineer** | A test plan, automated checks, and minimal reproductions | Contributor |
+| **Diagnostician** | Evidence-backed root-cause conclusions and a minimal reproduction for the Implementer's regression tests | Contributor |
 | **Code Reviewer** | Findings with file, line, severity, and the failure each one causes | Observer |
 | **Security Reviewer** | Authorization, secrets, injection, dependency and data-exposure findings | Observer |
 | **Release Engineer** | A release plan with a rollback, and approval requests for anything touching production | Operator |
@@ -40,6 +41,8 @@ Build with AI needs an online runtime for the Builder conversation. Either way, 
 | **Progress Reporter** | Daily and weekly reports with traceable task counts, progress and blockers | Contributor |
 
 Each template carries responsibilities, what the role must NOT do, what it reads, the output format, its definition of done, and when to escalate to a person. The picker shows the full instructions before you create anything.
+
+**Diagnostician** includes `multica-debugging` as its only default skill and runs one task at a time. It reproduces failures and tests hypotheses on an isolated branch in development or test environments. Its report labels the cause as confirmed, suspected, or unresolved. A confirmed cause includes evidence, a minimal reproduction as a regression-test starting point, and a suggested fix direction for the Implementer; incomplete investigations state the missing evidence and next checks. It removes temporary instrumentation before handoff and does not submit the fix or change issue status. These limits are role instructions within the existing Contributor level, not an additional API sandbox.
 
 **Progress Reporter** includes the progress-report skill and runs one task at a time. The same agent can own both [daily and weekly report autopilots](/autopilots#daily-and-weekly-reports). It reads business issues, posts a report on the issue created for this run, and moves only that report issue to `in_review` after successful delivery. The report states its scope, timezone and time window, and marks unavailable data as missing rather than zero.
 
@@ -53,6 +56,8 @@ The result is an ordinary agent. It has no special status, and every rule that a
 - **The role's skills are added to your workspace.** If a skill of that name already exists — because you staffed the role before, or edited it — that skill is reused exactly as it stands. Nothing overwrites it.
 - **Access defaults to "Only me"**, the same default a blank agent gets. Widen it deliberately.
 - **The name, runtime, model, and Access are yours to choose** on the review step. The prefilled default name is the role's label in the interface language — a Chinese interface creates a 产品分析师, an English one a "Product Analyst".
+
+Updated defaults apply when creating an agent from a template or adding a missing role skill. Existing workspace agents and skill copies keep their current content.
 
 <Callout type="info">
 Creating a second agent from the same template attaches the same skill rows, so editing a role skill reaches every agent using it.

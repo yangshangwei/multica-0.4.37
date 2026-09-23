@@ -121,9 +121,9 @@ multica agent copy <source-agent-id> --runtime-id <target> --model <model>  # cr
 ## Creating from a built-in role template
 
 `POST /api/agents/from-template` creates an ordinary agent seeded from one of the
-platform's role templates (`GET /api/agents/templates` lists them, with the full
-instructions text). There is no CLI command for this yet — it is the web
-creation flow's third starting point.
+platform's ten listed role templates (`GET /api/agents/templates` lists them,
+with the full instructions text). There is no CLI command for this yet — it is
+the web creation flow's third starting point.
 
 The request carries only `template_key`, `runtime_id` and the few things a person
 chooses: `name`, `model`, `thinking_level`, `service_tier`, `permission_mode` +
@@ -151,6 +151,18 @@ Contributor authority so it can move its assigned report issue to `in_review`
 after successfully posting the report. Its narrower instructions keep business
 issues and repository files read-only. It is an ordinary role template, not a
 second system agent or a new permission level.
+
+The listed `diagnostician` role supplies only `multica-debugging`, uses
+concurrency one, and has Contributor authority. It reproduces an observed
+failure and tests hypotheses on an isolated branch in development/test
+environments. Its report grades the cause as confirmed, suspected, or unresolved.
+A confirmed cause includes evidence, a minimal reproduction for regression tests,
+and a suggested fix direction for the Implementer. Incomplete investigations
+state the evidence gaps and next checks. It removes temporary instrumentation
+before handoff and does not submit the fix or change issue status. Those limits
+are role/skill instructions, not an additional API sandbox. Updated defaults
+apply to new template-created agents and missing role skills; existing workspace
+copies remain unchanged.
 
 `autonomy_level` (`observer` / `contributor` / `coordinator` / `operator`, or
 empty for no declared policy) is enforced on the agent's OWN API requests, not

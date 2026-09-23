@@ -42,8 +42,8 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 		newRequest("GET", "/api/agents/templates?language=zh", nil)).
 		Want(http.StatusOK).JSON(&out)
 
-	if len(out.Templates) != 9 {
-		t.Fatalf("templates = %d, want 9", len(out.Templates))
+	if len(out.Templates) != 10 {
+		t.Fatalf("templates = %d, want 10", len(out.Templates))
 	}
 	for _, template := range out.Templates {
 		if template.Key == "" || template.Name == "" {
@@ -68,6 +68,90 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 	// every other picker string; the English DefaultName is only the fallback.
 	if reporter.Title != "进展报告员" || reporter.Name != "进展报告员" {
 		t.Errorf("reporter title/name = %q/%q, want 进展报告员/进展报告员", reporter.Title, reporter.Name)
+	}
+	diagnostician := findTemplate(t, out.Templates, "diagnostician")
+	if diagnostician.Title != "诊断工程师" || diagnostician.Name != "诊断工程师" {
+		t.Errorf("diagnostician title/name = %q/%q, want 诊断工程师/诊断工程师", diagnostician.Title, diagnostician.Name)
+	}
+}
+
+func TestCreateAgentFromTemplate_DiagnosticianCopiesAndPreservesWorkspaceContent(t *testing.T) {
+	cleanupRoleSkill(t, "multica-debugging")
+	runtimeID := handlerTestRuntimeID(t)
+	var first AgentResponse
+	testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+		"template_key":         "diagnostician",
+		"runtime_id":           runtimeID,
+		"language":             "zh",
+		"instructions":         "Ship the fix",
+		"autonomy_level":       "operator",
+		"max_concurrent_tasks": 9,
+		"template_version":     9,
+		"skill_ids":            []string{},
+	})).Want(http.StatusCreated).JSON(&first)
+	cleanupTemplateAgent(t, first.ID)
+
+	role, ok := service.AgentRoleTemplateByKey("diagnostician")
+	if !ok {
+		t.Fatal("diagnostician missing from registry")
+	}
+	if first.Name != "诊断工程师" || first.Description != role.Description("zh") || first.Instructions != role.Instructions() {
+		t.Error("diagnostician must copy the localized identity and canonical server instructions")
+	}
+	if first.TemplateKey != role.Key || first.TemplateVersion != 1 || first.AutonomyLevel != "contributor" || first.MaxConcurrentTasks != 1 || first.PermissionMode != "private" {
+		t.Errorf("diagnostician policy/provenance = %s v%d %s/%d/%s", first.TemplateKey, first.TemplateVersion, first.AutonomyLevel, first.MaxConcurrentTasks, first.PermissionMode)
+	}
+	if len(first.Skills) != 1 || first.Skills[0].Name != "multica-debugging" {
+		t.Fatalf("diagnostician skills = %+v, want only multica-debugging", first.Skills)
+	}
+	skillID := first.Skills[0].ID
+	var content, description, category, icon, origin string
+	var version int
+	dbfx.QueryRow(t, `SELECT content, description, config->'presentation'->>'category',
+		config->'presentation'->>'icon', config->'origin'->>'type', (config->'origin'->>'version')::int
+		FROM skill WHERE id = $1 AND workspace_id = $2`, skillID, testWorkspaceID).
+		Scan(&content, &description, &category, &icon, &origin, &version)
+	method, ok := service.RoleSkillTemplateByName("multica-debugging")
+	if !ok || content != method.Content || description != method.Description {
+		t.Error("materialized debugging skill must copy the complete embedded content and description")
+	}
+	if category != "quality" || icon != "microscope" || origin != roleSkillOriginType || version != 1 {
+		t.Errorf("debugging skill metadata = %s/%s/%s/v%d", category, icon, origin, version)
+	}
+
+	const customInstructions = "Investigate only the team's local test fixtures."
+	const customContent = "# Team debugging\n\nUse the team's reproduction harness."
+	const customDescription = "Team debugging method"
+	testutil.Call(t, testHandler.UpdateAgent, withURLParam(newRequest("PUT", "/api/agents/"+first.ID, map[string]any{
+		"instructions": customInstructions,
+	}), "id", first.ID)).Want(http.StatusOK)
+	testutil.Call(t, testHandler.UpdateSkill, withURLParam(newRequest("PUT", "/api/skills/"+skillID, map[string]any{
+		"content": customContent, "description": customDescription,
+	}), "id", skillID)).Want(http.StatusOK)
+
+	var second AgentResponse
+	testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+		"template_key": "diagnostician", "runtime_id": runtimeID, "language": "en",
+	})).Want(http.StatusCreated).JSON(&second)
+	cleanupTemplateAgent(t, second.ID)
+	if second.Name != "Diagnostician" || second.Instructions != role.Instructions() {
+		t.Error("new diagnostician must use canonical instructions independently of locale or existing agents")
+	}
+	if len(second.Skills) != 1 || second.Skills[0].ID != skillID {
+		t.Fatalf("second diagnostician skills = %+v, want existing skill %s", second.Skills, skillID)
+	}
+	var existing AgentResponse
+	testutil.Call(t, testHandler.GetAgent, withURLParam(newRequest("GET", "/api/agents/"+first.ID, nil), "id", first.ID)).
+		Want(http.StatusOK).JSON(&existing)
+	if existing.Instructions != customInstructions {
+		t.Error("creating a second diagnostician must preserve existing agent instructions")
+	}
+	dbfx.QueryRow(t, `SELECT content, description FROM skill WHERE id = $1`, skillID).Scan(&content, &description)
+	if content != customContent || description != customDescription {
+		t.Error("creating a second diagnostician must preserve the workspace's customized debugging skill")
+	}
+	if count := dbfx.Count(t, `SELECT COUNT(*) FROM skill WHERE workspace_id = $1 AND name = $2`, testWorkspaceID, "multica-debugging"); count != 1 {
+		t.Errorf("debugging skill copies = %d, want 1", count)
 	}
 }
 

@@ -4,7 +4,7 @@ package service
 // given, roughly in the order a change moves through a team — so this is a slice
 // rather than a map.
 //
-// Deliberately nine roles, not twenty. Technology-specific variants (frontend,
+// Deliberately ten roles, not twenty. Technology-specific variants (frontend,
 // backend, mobile, data) are NOT separate templates: they are the same
 // Implementer with different skills and project resources attached. Splitting by
 // stack multiplies prompts that all say the same thing and leaves a team picking
@@ -96,6 +96,28 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"zh": "决定用什么证明改动可用，把它自动化，并用最小用例复现缺陷。",
 			"ko": "변경이 동작함을 입증할 방법을 정하고 자동화하며, 최소 사례로 결함을 재현합니다.",
 			"ja": "変更が動く証明方法を決めて自動化し、最小ケースで不具合を再現します。",
+		},
+	},
+	{
+		Key:                "diagnostician",
+		Version:            1,
+		Listed:             true,
+		DefaultName:        "Diagnostician",
+		AvatarEmoji:        "🩺",
+		Autonomy:           AutonomyContributor,
+		MaxConcurrentTasks: 1,
+		RoleSkills:         []string{"multica-debugging"},
+		Titles: map[string]string{
+			"en": "Diagnostician",
+			"zh": "诊断工程师",
+			"ko": "진단 엔지니어",
+			"ja": "診断エンジニア",
+		},
+		Descriptions: map[string]string{
+			"en": "Turns an observed failure into an evidence-backed root cause: reproduces and minimizes it, tests hypotheses, and hands the fix direction to the implementer.",
+			"zh": "把一个可观察的失败查成带证据的根因结论：复现并最小化，提出并验证假设，给出修复方向；不提交正式修复。",
+			"ko": "관찰된 실패를 증거가 있는 근본 원인으로 좁혀 갑니다: 재현과 최소화, 가설 검증을 거쳐 수정 방향을 제안하며 수정 자체는 구현 엔지니어에게 맡깁니다.",
+			"ja": "観察された失敗を証拠のある根本原因に変えます。再現と最小化、仮説の検証を経て修正方針を示し、修正自体は実装エンジニアに任せます。",
 		},
 	},
 	{

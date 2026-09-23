@@ -15,7 +15,12 @@ Use `useSkillPresentation()` from `packages/views/skills/hooks/use-skill-present
 
 Production providers can mount only the current locale. `t(..., { lng: "another-locale" })` does not make an unloaded locale available. The presentation resolver reads secondary-language search text and source-description comparisons from the English and Chinese catalogs; current display strings still use the active i18next translator.
 
-Use `searchText` for matching and `searchNames` for name-ranking tiers. Both languages must rank as names regardless of the active UI language, or a Chinese exact-name match can disappear behind description matches and a result limit.
+Use `searchText` for matching and `searchNames` for name-ranking tiers. English and Chinese names and the current locale's displayed name must rank as names regardless of the active UI language. Include the current localized description in search text too; a Japanese or Korean label must remain searchable with only that locale loaded.
+
+Adding an embedded role skill also requires registering its canonical name in
+`BUILTIN_ROLE_SKILL_NAMES`, adding all four locale entries, and extending the
+source-sync test matrix. Otherwise the template picker treats it as
+deployment-provided and workspace skills fall back to untranslated source text.
 
 For a recognized default description, include both English and Chinese purposes
 in search text regardless of which language is persisted. Do not add default

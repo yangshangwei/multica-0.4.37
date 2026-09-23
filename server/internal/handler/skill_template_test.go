@@ -26,6 +26,7 @@ func TestListSkillTemplates_ReturnsVerbatimCatalogWithoutDatabase(t *testing.T) 
 	wantNames := []string{
 		"multica-architecture-decision-record",
 		"multica-code-review",
+		"multica-debugging",
 		"multica-documentation-change",
 		"multica-progress-report",
 		"multica-release-check",

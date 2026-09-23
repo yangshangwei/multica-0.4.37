@@ -9,6 +9,7 @@ const BUILTIN_ROLE_SKILL_NAMES = [
   "multica-security-review",
   "multica-architecture-decision-record",
   "multica-code-review",
+  "multica-debugging",
   "multica-requirement-clarification",
   "multica-test-report",
   "multica-progress-report",
@@ -60,16 +61,18 @@ export function getBuiltinRoleSkillPresentation(
       enSkills.builtin_role_skills[key].description_v1,
     ];
   }
-  const searchNames = [name, name.replace(/[-_]+/g, " "), chinese.name]
+  const translatedName = t(($) => $.builtin_role_skills[key].name);
+  const searchNames = [name, name.replace(/[-_]+/g, " "), chinese.name, translatedName]
     .map((value) => value.toLowerCase());
 
   return {
-    name: t(($) => $.builtin_role_skills[key].name),
+    name: translatedName,
     description: translatedDescription,
     searchNames,
     searchText: [
       ...searchNames,
       description,
+      translatedDescription,
       ...searchDescriptions,
     ].join("\n").toLowerCase(),
     isBuiltin: true,

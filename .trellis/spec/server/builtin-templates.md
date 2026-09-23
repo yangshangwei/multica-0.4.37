@@ -10,13 +10,24 @@ or human to save; Technical Writer is Contributor and edits documentation only
 on an isolated branch. Only Feature Delivery and Discovery leads default to
 requirement clarification; other leads use their existing routing instructions.
 
-Progress Reporter is the ninth listed role. It uses Contributor only so a
+Progress Reporter uses Contributor only so a
 successfully delivered report can move its own assigned report issue to
 `in_review`; its instructions keep business issues and repository files
 read-only. Its sole default role skill is `multica-progress-report`, and its
 concurrency cap is one. Contributor is an existing permission level, not a
 report-only API sandbox; never claim the role's narrower instructions add a
 new server-enforced boundary.
+
+Diagnostician brings the listed roster to ten roles and the role-skill catalog
+to nine entries. It uses Contributor, concurrency one, and only
+`multica-debugging` (`quality`, `microscope`). It reproduces an observed failure,
+tests hypotheses, and hands evidence and a suggested fix direction to the
+Implementer; it does not submit the fix or change issue status. Confirmed causes
+need a reproducible evidence chain and a concrete location/mechanism. Suspected
+or unresolved investigations may close with explicit evidence gaps rather than
+inventing a minimal reproduction or fix direction. Data loss, security defects,
+or exposed credentials require reporting and stopping for human handling.
+These narrower role/skill instructions do not add a server-enforced sandbox.
 
 Increment template and role-skill versions for material behavior changes. These
 defaults apply when creating agents or materializing a missing role skill;
@@ -42,7 +53,7 @@ Stale writes return 409 without updates or events; successful writes keep the
 normal notification path. Conditional rollback also compares the recorded
 post-write timestamp and validates the original backup hash.
 
-The eight `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
+The nine `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
 Simplified Chinese. Descriptions state when the skill applies and its concrete
 result, preserving important delivery and authority boundaries without repeating
 the workflow. Keep canonical names, other frontmatter, CLI syntax and
@@ -85,7 +96,7 @@ updated body through the existing content-hash cache.
 
 ## Skill template catalog
 
-`GET /api/skills/templates` returns the eight role-skill templates under the
+`GET /api/skills/templates` returns the nine role-skill templates under the
 existing authenticated workspace route group. It reads the embedded registry,
 does not materialize workspace rows, and returns no database identity. The UI
 edits a snapshot and creates a new ordinary skill via `POST /api/skills`.

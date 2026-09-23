@@ -16,21 +16,21 @@ import (
 // every role prompt has to carry, and the fact that every skill and leader a
 // template names actually exists in this binary.
 
-// TestAgentRoleTemplates_ListedRosterIsNine pins the product decision. New listed
+// TestAgentRoleTemplates_ListedRosterIsTen pins the product decision. New listed
 // roles must address distinct work rather than duplicate a role for each stack.
-func TestAgentRoleTemplates_ListedRosterIsNine(t *testing.T) {
+func TestAgentRoleTemplates_ListedRosterIsTen(t *testing.T) {
 	listed := AgentRoleTemplates()
-	if len(listed) != 9 {
+	if len(listed) != 10 {
 		names := make([]string, 0, len(listed))
 		for _, template := range listed {
 			names = append(names, template.Key)
 		}
-		t.Fatalf("listed roster = %d templates (%s), want 9", len(listed), strings.Join(names, ", "))
+		t.Fatalf("listed roster = %d templates (%s), want 10", len(listed), strings.Join(names, ", "))
 	}
 	want := []string{
 		"product-analyst", "architect", "implementer", "qa-engineer",
-		"code-reviewer", "security-reviewer", "release-engineer", "technical-writer",
-		"progress-reporter",
+		"diagnostician", "code-reviewer", "security-reviewer", "release-engineer",
+		"technical-writer", "progress-reporter",
 	}
 	for i, key := range want {
 		if listed[i].Key != key {
@@ -69,6 +69,7 @@ func TestAgentRoleTemplates_AutonomyDefaults(t *testing.T) {
 		"architect":         AutonomyObserver,
 		"implementer":       AutonomyContributor,
 		"qa-engineer":       AutonomyContributor,
+		"diagnostician":     AutonomyContributor,
 		"code-reviewer":     AutonomyObserver,
 		"security-reviewer": AutonomyObserver,
 		"release-engineer":  AutonomyOperator,
@@ -177,6 +178,7 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 		"architect":             {"multica-architecture-decision-record"},
 		"implementer":           {"multica-test-report"},
 		"qa-engineer":           {"multica-test-report"},
+		"diagnostician":         {"multica-debugging"},
 		"code-reviewer":         {"multica-code-review"},
 		"security-reviewer":     {"multica-security-review"},
 		"release-engineer":      {"multica-release-check"},
@@ -220,11 +222,12 @@ func TestAgentRoleTemplate_ProgressReporterDefaults(t *testing.T) {
 	}
 }
 
-func TestRoleSkillTemplates_RosterIsEight(t *testing.T) {
+func TestRoleSkillTemplates_RosterIsNine(t *testing.T) {
 	want := []string{
 		"multica-architecture-decision-record", "multica-code-review",
-		"multica-documentation-change", "multica-progress-report", "multica-release-check",
-		"multica-requirement-clarification", "multica-security-review", "multica-test-report",
+		"multica-debugging", "multica-documentation-change", "multica-progress-report",
+		"multica-release-check", "multica-requirement-clarification",
+		"multica-security-review", "multica-test-report",
 	}
 	templates := RoleSkillTemplates()
 	if len(templates) != len(want) {
@@ -265,6 +268,57 @@ func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+// Debugging content is the feature's executable policy. Keep the role and its
+// reusable method aligned on evidence grading and the no-fix boundary, and keep
+// the skill explicit about where it stops relative to its neighbours.
+func TestDiagnostician_EvidenceContract(t *testing.T) {
+	role, ok := AgentRoleTemplateByKey("diagnostician")
+	if !ok {
+		t.Fatal("diagnostician template missing from the roster")
+	}
+	if !role.Listed || role.Version != 1 || role.MaxConcurrentTasks != 1 {
+		t.Errorf("diagnostician defaults = listed:%t version:%d concurrency:%d, want true, 1, 1", role.Listed, role.Version, role.MaxConcurrentTasks)
+	}
+	for _, other := range AgentRoleTemplates() {
+		if other.Key != role.Key && other.AvatarEmoji == role.AvatarEmoji {
+			t.Errorf("diagnostician avatar must differ from %s", other.Key)
+		}
+	}
+	skill, ok := RoleSkillTemplateByName("multica-debugging")
+	if !ok {
+		t.Fatal("multica-debugging skill missing from the registry")
+	}
+	if skill.Version != 1 {
+		t.Errorf("debugging skill version = %d, want 1", skill.Version)
+	}
+	// Method and evidence grading travel with both the role and the skill:
+	// reproduce, minimize, hypothesize, verify, and grade every conclusion as
+	// confirmed, suspected, or not found — while shipping no fix and touching
+	// no production data.
+	shared := []string{
+		"复现", "最小用例", "假设", "插桩", "二分",
+		"已确认根因", "疑似", "未查明", "证据",
+		"实现工程师", "不负责提交修复", "contributor", "生产",
+		"隔离分支", "无修复时失败", "退出码", "已有改动",
+	}
+	for name, body := range map[string]string{"role": role.Instructions(), "skill": skill.Content} {
+		t.Run(name, func(t *testing.T) {
+			for _, contract := range shared {
+				if !strings.Contains(body, contract) {
+					t.Errorf("missing debugging contract %q", contract)
+				}
+			}
+		})
+	}
+	// R2 lives in the reusable method: the skill itself must draw the line
+	// against the verification and review skills it is most easily confused with.
+	for _, boundary := range []string{"multica-test-report", "multica-code-review"} {
+		if !strings.Contains(skill.Content, boundary) {
+			t.Errorf("debugging skill missing neighbour boundary %q", boundary)
+		}
 	}
 }
 
@@ -407,6 +461,7 @@ func TestRoleSkillTemplates_PresentationDefaults(t *testing.T) {
 		"multica-code-review":                  {"quality", "git-pull-request"},
 		"multica-security-review":              {"quality", "shield-check"},
 		"multica-test-report":                  {"quality", "flask-conical"},
+		"multica-debugging":                    {"quality", "microscope"},
 		"multica-release-check":                {"operations", "rocket"},
 		"multica-documentation-change":         {"writing", "book-open"},
 		"multica-progress-report":              {"writing", "chart-no-axes-column"},
