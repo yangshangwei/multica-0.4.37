@@ -11,6 +11,35 @@
       "unknowns": [],
       "separate_follow_up": true
     },
+    "rca_routes": [
+      {
+        "route": "bug-fix",
+        "cause_state": "known",
+        "decision": "direct-repair",
+        "reason": "The regression test and changed retry branch already identify the cause; the lead records the bypass before implementation.",
+        "mitigation_before_rca": false,
+        "separate_follow_up": false,
+        "downstream_repair_issue": "FIX-1042"
+      },
+      {
+        "route": "maintenance",
+        "cause_state": "unknown",
+        "decision": "diagnosis",
+        "reason": "The upgrade failure is intermittent and has no reproducible cause yet.",
+        "mitigation_before_rca": false,
+        "separate_follow_up": false,
+        "downstream_repair_issue": "FIX-UPGRADE-1042"
+      },
+      {
+        "route": "incident",
+        "cause_state": "unknown",
+        "decision": "post-recovery-rca",
+        "reason": "Recovery is complete; the independent RCA must not delay mitigation.",
+        "mitigation_before_rca": true,
+        "separate_follow_up": true,
+        "downstream_repair_issue": "FIX-1042"
+      }
+    ],
     "repair": {
       "issue": "FIX-1042",
       "diagnosis_ref": "INC-1042#comment-rca-1042",
@@ -178,6 +207,36 @@
       "candidate_version": "agent-v3",
       "trace_present": false,
       "expected_decision": "unknown"
+    },
+    {
+      "name": "contract-compatibility-missing-fallback",
+      "kind": "governance",
+      "governance_capability": "contract-compatibility",
+      "expected_decision": "hold"
+    },
+    {
+      "name": "threat-model-missing-boundary",
+      "kind": "governance",
+      "governance_capability": "threat-modeling",
+      "expected_decision": "unknown"
+    },
+    {
+      "name": "supply-chain-missing-provenance",
+      "kind": "governance",
+      "governance_capability": "supply-chain",
+      "expected_decision": "hold"
+    },
+    {
+      "name": "product-outcome-missing-baseline",
+      "kind": "governance",
+      "governance_capability": "product-outcome",
+      "expected_decision": "unknown"
+    },
+    {
+      "name": "disaster-recovery-drill-failed",
+      "kind": "governance",
+      "governance_capability": "disaster-recovery",
+      "expected_decision": "hold"
     }
   ]
 }
