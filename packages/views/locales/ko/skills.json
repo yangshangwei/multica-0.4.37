@@ -37,6 +37,22 @@
     "multica-progress-report": {
       "name": "진행 보고",
       "description": "워크스페이스나 프로젝트의 일일·주간 보고에 사용합니다. 태스크와 상태 변경 이력을 확인하고 원본 태스크를 수정하지 않은 채 현재 보고 태스크에 근거가 있는 진행 상황, 집계, 데이터 누락을 정리합니다."
+    },
+    "multica-reliability-engineering": {
+      "name": "신뢰성 엔지니어링",
+      "description": "런타임 신호를 SLI/SLO, 에러 버짓, 용량, 장애 완화와 복구 증거로 정리할 때 사용합니다. 누락된 신호는 unknown으로 표시하고 프로덕션 작업은 승인된 operator에게 맡깁니다."
+    },
+    "multica-agent-evaluation": {
+      "name": "에이전트 평가",
+      "description": "Agent·Skill·MCP 변경을 버전이 고정된 케이스로 정확성·안전성·비용·지연·드리프트 관점에서 평가합니다. 비식별화된 추적을 보존하고 프로덕션 설정은 변경하지 않습니다."
+    },
+    "multica-incident-learning": {
+      "name": "인시던트 학습",
+      "description": "복구 후 비식별화된 사실·가설·unknown을 구분하고 담당자·수용 신호·중복 링크가 있는 예방 작업을 만듭니다."
+    },
+    "multica-rollout-and-canary-verification": {
+      "name": "롤아웃 및 Canary 검증",
+      "description": "승인된 동일 불변 아티팩트를 고정된 관찰 창에서 기준선과 비교하고 신호·임계값·롤백 결과를 기록합니다. 재빌드 산출물은 섞지 않습니다."
     }
   },
   "page": {

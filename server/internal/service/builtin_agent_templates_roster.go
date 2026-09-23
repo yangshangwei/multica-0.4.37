@@ -4,7 +4,7 @@ package service
 // given, roughly in the order a change moves through a team — so this is a slice
 // rather than a map.
 //
-// Deliberately ten roles, not twenty. Technology-specific variants (frontend,
+// Deliberately twelve roles, not twenty. Technology-specific variants (frontend,
 // backend, mobile, data) are NOT separate templates: they are the same
 // Implementer with different skills and project resources attached. Splitting by
 // stack multiplies prompts that all say the same thing and leaves a team picking
@@ -230,6 +230,50 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"ja": "タスクと状態変更の履歴から日報・週報を作成し、進捗、ブロッカー、確認可能な集計、データの不足を示します。",
 		},
 	},
+	{
+		Key:                "reliability-engineer",
+		Version:            1,
+		Listed:             true,
+		DefaultName:        "Reliability Engineer",
+		AvatarEmoji:        "📡",
+		Autonomy:           AutonomyContributor,
+		MaxConcurrentTasks: 1,
+		RoleSkills:         []string{"multica-reliability-engineering"},
+		Titles: map[string]string{
+			"en": "Reliability Engineer",
+			"zh": "可靠性工程师",
+			"ko": "신뢰성 엔지니어",
+			"ja": "信頼性エンジニア",
+		},
+		Descriptions: map[string]string{
+			"en": "Turns runtime signals into SLO, error-budget, capacity and recovery evidence without taking unapproved production actions.",
+			"zh": "把运行信号整理成 SLO、错误预算、容量和恢复证据；不执行未经批准的生产操作。",
+			"ko": "런타임 신호를 SLO·에러 버짓·용량·복구 증거로 정리하며 승인되지 않은 프로덕션 작업은 수행하지 않습니다.",
+			"ja": "ランタイムのシグナルを SLO・エラーバジェット・容量・復旧の証拠に変換し、未承認の本番操作は行いません。",
+		},
+	},
+	{
+		Key:                "agent-evaluator",
+		Version:            1,
+		Listed:             true,
+		DefaultName:        "Agent Evaluator",
+		AvatarEmoji:        "🤖",
+		Autonomy:           AutonomyObserver,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-agent-evaluation"},
+		Titles: map[string]string{
+			"en": "Agent Evaluator",
+			"zh": "智能体评测工程师",
+			"ko": "에이전트 평가 엔지니어",
+			"ja": "エージェント評価エンジニア",
+		},
+		Descriptions: map[string]string{
+			"en": "Evaluates Agent, Skill and MCP changes with versioned cases for correctness, safety, cost, latency and drift.",
+			"zh": "用版本化用例评测 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟与漂移。",
+			"ko": "버전이 고정된 케이스로 Agent·Skill·MCP 변경의 정확성·안전성·비용·지연·드리프트를 평가합니다.",
+			"ja": "バージョン化したケースで Agent・Skill・MCP 変更の正確性・安全性・コスト・遅延・ドリフトを評価します。",
+		},
+	},
 	// The squad-leader definitions, one per built-in squad template. Unlisted: they
 	// are provisioned by the squad templates, which also create the roster the leader
 	// routes to.
@@ -362,11 +406,12 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "release-lead",
-		Version:            2,
+		Version:            3,
 		DefaultName:        "Release Lead",
 		AvatarEmoji:        "📦",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-rollout-and-canary-verification"},
 		Titles: map[string]string{
 			"en": "Release Lead",
 			"zh": "发布负责人",
@@ -382,11 +427,12 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "incident-lead",
-		Version:            3,
+		Version:            4,
 		DefaultName:        "Incident Lead",
 		AvatarEmoji:        "🚨",
 		Autonomy:           AutonomyCoordinator,
 		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-incident-learning"},
 		Titles: map[string]string{
 			"en": "Incident Lead",
 			"zh": "事故响应负责人",

@@ -37,6 +37,22 @@
     "multica-progress-report": {
       "name": "multica-progress-report",
       "description": "Use for daily or weekly workspace or project reports: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues."
+    },
+    "multica-reliability-engineering": {
+      "name": "multica-reliability-engineering",
+      "description": "Use to turn runtime signals into SLI/SLO, error-budget, capacity, degradation and recovery evidence; mark missing signals unknown and leave production actions to approved operators."
+    },
+    "multica-agent-evaluation": {
+      "name": "multica-agent-evaluation",
+      "description": "Use to evaluate Agent, Skill and MCP changes with versioned cases for correctness, safety, cost, latency and drift, preserving redacted traces without changing production configuration."
+    },
+    "multica-incident-learning": {
+      "name": "multica-incident-learning",
+      "description": "Use after recovery to separate redacted facts, hypotheses and unknowns, then create prevention tasks with owners, acceptance signals and duplicate links."
+    },
+    "multica-rollout-and-canary-verification": {
+      "name": "multica-rollout-and-canary-verification",
+      "description": "Use after an approved rollout to verify one immutable artifact against its baseline over a fixed observation window, recording signals, thresholds and rollback outcome."
     }
   },
   "page": {

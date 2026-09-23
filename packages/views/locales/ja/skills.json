@@ -37,6 +37,22 @@
     "multica-progress-report": {
       "name": "進捗レポート",
       "description": "ワークスペースやプロジェクトの日報・週報に使用します。タスクと状態変更の履歴を確認し、元のタスクを変更せずに、根拠をたどれる進捗、集計、データ不足を現在の報告タスクに記載します。"
+    },
+    "multica-reliability-engineering": {
+      "name": "信頼性エンジニアリング",
+      "description": "ランタイムのシグナルを SLI/SLO、エラーバジェット、容量、縮退、復旧の証拠に整理するときに使用します。欠落は unknown とし、本番操作は承認済みの operator に委ねます。"
+    },
+    "multica-agent-evaluation": {
+      "name": "エージェント評価",
+      "description": "Agent、Skill、MCP の変更をバージョン化ケースで正確性・安全性・コスト・遅延・ドリフトの観点から評価します。脱敏した軌跡を保存し、本番設定は変更しません。"
+    },
+    "multica-incident-learning": {
+      "name": "インシデント学習",
+      "description": "復旧後に脱敏した事実・仮説・unknown を分け、担当者・受け入れシグナル・重複リンク付きの予防タスクを作成します。"
+    },
+    "multica-rollout-and-canary-verification": {
+      "name": "ロールアウトと Canary の検証",
+      "description": "承認済みの同一不変アーティファクトを固定ウィンドウで基線と比較し、シグナル・閾値・ロールバック結果を記録します。再ビルド成果物は混ぜません。"
     }
   },
   "page": {

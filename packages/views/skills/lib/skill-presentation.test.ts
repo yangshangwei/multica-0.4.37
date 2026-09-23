@@ -31,6 +31,10 @@ const names = [
   ["multica-requirement-clarification", "需求澄清"],
   ["multica-test-report", "测试报告"],
   ["multica-progress-report", "进展报告"],
+  ["multica-reliability-engineering", "可靠性工程"],
+  ["multica-agent-evaluation", "智能体评测"],
+  ["multica-incident-learning", "事故学习"],
+  ["multica-rollout-and-canary-verification", "发布后与 Canary 验证"],
 ] as const;
 
 // Defaults shipped in ca3a79d18 and retained by existing workspace copies.
@@ -157,7 +161,7 @@ describe("built-in role skill presentation", () => {
     expect(english.name).toBe(name);
     expect(english.description).toBe(en.builtin_role_skills[name].description);
     for (const presentation of [translated, english]) {
-      expect(presentation.searchText).toContain(chinese);
+      expect(presentation.searchText).toContain(chinese.toLowerCase());
       expect(presentation.searchText).toContain(name);
       expect(presentation.searchText).toContain(skill.description.toLowerCase());
       expect(presentation.searchText).toContain(translated.description.toLowerCase());

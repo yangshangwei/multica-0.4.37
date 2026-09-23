@@ -57,15 +57,19 @@ type RoleSkillTemplate struct {
 // about a release, not about the prose: an editorial fix that changes no
 // behaviour should not invalidate every workspace's copy.
 var builtinRoleSkillVersions = map[string]int32{
-	"multica-requirement-clarification":    3,
-	"multica-architecture-decision-record": 3,
-	"multica-test-report":                  1,
-	"multica-code-review":                  1,
-	"multica-debugging":                    1,
-	"multica-security-review":              1,
-	"multica-release-check":                2,
-	"multica-documentation-change":         2,
-	"multica-progress-report":              1,
+	"multica-requirement-clarification":       3,
+	"multica-architecture-decision-record":    4,
+	"multica-test-report":                     1,
+	"multica-code-review":                     1,
+	"multica-debugging":                       1,
+	"multica-security-review":                 2,
+	"multica-release-check":                   3,
+	"multica-documentation-change":            2,
+	"multica-progress-report":                 2,
+	"multica-reliability-engineering":         1,
+	"multica-agent-evaluation":                1,
+	"multica-incident-learning":               1,
+	"multica-rollout-and-canary-verification": 1,
 }
 
 // RoleSkillTemplateByName loads one role skill from the binary.
@@ -129,7 +133,7 @@ func RoleSkillTemplates() []RoleSkillTemplate {
 }
 
 // sortStrings is a local insertion sort to keep this file free of a sort import
-// for one call; the slice is nine entries long.
+// for one call; the slice is thirteen entries long.
 func sortStrings(values []string) {
 	for i := 1; i < len(values); i++ {
 		for j := i; j > 0 && values[j] < values[j-1]; j-- {

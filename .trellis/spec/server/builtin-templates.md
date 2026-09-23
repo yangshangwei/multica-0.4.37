@@ -18,8 +18,8 @@ concurrency cap is one. Contributor is an existing permission level, not a
 report-only API sandbox; never claim the role's narrower instructions add a
 new server-enforced boundary.
 
-Diagnostician brings the listed roster to ten roles and the role-skill catalog
-to nine entries. It uses Contributor, concurrency one, and only
+Diagnostician brings the listed roster to twelve roles and the role-skill catalog
+to thirteen entries. It uses Contributor, concurrency one, and only
 `multica-debugging` (`quality`, `microscope`). It reproduces an observed failure,
 tests hypotheses, and hands evidence and a suggested fix direction to the
 Implementer; it does not submit the fix or change issue status. Confirmed causes
@@ -28,6 +28,28 @@ or unresolved investigations may close with explicit evidence gaps rather than
 inventing a minimal reproduction or fix direction. Data loss, security defects,
 or exposed credentials require reporting and stopping for human handling.
 These narrower role/skill instructions do not add a server-enforced sandbox.
+
+Reliability Engineer and Agent Evaluator are the two additional listed roles with
+independent evidence deliverables. Reliability Engineer uses Contributor,
+concurrency one, and `multica-reliability-engineering` (`operations`, `server`)
+to report SLI/SLO, error-budget, capacity, degradation and recovery evidence;
+it does not perform production operations. Agent Evaluator uses Observer,
+concurrency two, and `multica-agent-evaluation` (`quality`, `bot`) to run
+versioned Agent/Skill/MCP cases and report correctness, safety, cost, latency
+and drift; it does not replace code, security, QA or release review. Both roles
+mark missing baselines or signals as unknown and require human approval for
+production, credential, customer-data or paid-model actions.
+
+`multica-incident-learning` (`quality`, `repeat`) and
+`multica-rollout-and-canary-verification` (`operations`, `chart-line`) are
+available as lifecycle role-skill templates. Incident Lead carries the former
+and Release Lead carries the latter, so staffing the corresponding squads makes
+the post-action stage reachable without loading both skills into every Agent.
+The incident and release rosters also seat Reliability Engineer, while Review
+Gate and Release seat Agent Evaluator. The skills consume post-recovery evidence
+or an approved immutable artifact and observation window; both require
+unknown-state reporting and keep production actions behind the existing approval
+protocol.
 
 The default squad placement is deliberately narrow. `bug-fix` seats the
 Diagnostician between reproduction and implementation when the cause is unknown;
@@ -42,6 +64,12 @@ Increment template and role-skill versions for material behavior changes. These
 defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
 `builtin_agent_templates_test.go` pins the full role-to-skill and autonomy maps.
+
+The existing architecture, security, release and progress skills also carry the
+five governance checks identified by the lifecycle review: old-client/plugin
+contract matrices, trust-boundary and supply-chain/SBOM review, recovery/RPO/RTO
+evidence, and product-outcome baseline/window/result evidence. These remain
+composable responsibilities rather than five new listed roles.
 
 ## Role skill body language and explicit workspace updates
 
@@ -62,7 +90,7 @@ Stale writes return 409 without updates or events; successful writes keep the
 normal notification path. Conditional rollback also compares the recorded
 post-write timestamp and validates the original backup hash.
 
-The nine `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
+The thirteen `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
 Simplified Chinese. Descriptions state when the skill applies and its concrete
 result, preserving important delivery and authority boundaries without repeating
 the workflow. Keep canonical names, other frontmatter, CLI syntax and
@@ -105,7 +133,7 @@ updated body through the existing content-hash cache.
 
 ## Skill template catalog
 
-`GET /api/skills/templates` returns the nine role-skill templates under the
+`GET /api/skills/templates` returns the thirteen role-skill templates under the
 existing authenticated workspace route group. It reads the embedded registry,
 does not materialize workspace rows, and returns no database identity. The UI
 edits a snapshot and creates a new ordinary skill via `POST /api/skills`.

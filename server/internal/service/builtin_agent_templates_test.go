@@ -16,25 +16,33 @@ import (
 // every role prompt has to carry, and the fact that every skill and leader a
 // template names actually exists in this binary.
 
-// TestAgentRoleTemplates_ListedRosterIsTen pins the product decision. New listed
+// TestAgentRoleTemplates_ListedRosterIsTwelve pins the product decision. New listed
 // roles must address distinct work rather than duplicate a role for each stack.
-func TestAgentRoleTemplates_ListedRosterIsTen(t *testing.T) {
+func TestAgentRoleTemplates_ListedRosterIsTwelve(t *testing.T) {
 	listed := AgentRoleTemplates()
-	if len(listed) != 10 {
+	if len(listed) != 12 {
 		names := make([]string, 0, len(listed))
 		for _, template := range listed {
 			names = append(names, template.Key)
 		}
-		t.Fatalf("listed roster = %d templates (%s), want 10", len(listed), strings.Join(names, ", "))
+		t.Fatalf("listed roster = %d templates (%s), want 12", len(listed), strings.Join(names, ", "))
 	}
 	want := []string{
 		"product-analyst", "architect", "implementer", "qa-engineer",
 		"diagnostician", "code-reviewer", "security-reviewer", "release-engineer",
-		"technical-writer", "progress-reporter",
+		"technical-writer", "progress-reporter", "reliability-engineer", "agent-evaluator",
 	}
 	for i, key := range want {
 		if listed[i].Key != key {
 			t.Errorf("listed[%d].Key = %q, want %q (order is product-controlled)", i, listed[i].Key, key)
+		}
+	}
+}
+
+func TestAgentRoleTemplates_WorkloadGatedSpecialistsAreNotListed(t *testing.T) {
+	for _, key := range []string{"experience-validation-engineer", "migration-reviewer"} {
+		if _, ok := AgentRoleTemplateByKey(key); ok {
+			t.Errorf("workload-gated role %q is present in the default roster before its evidence threshold is met", key)
 		}
 	}
 }
@@ -65,16 +73,18 @@ func TestAgentRoleTemplates_UnlistedAreSquadLeaders(t *testing.T) {
 // change here should be a deliberate edit rather than a side effect.
 func TestAgentRoleTemplates_AutonomyDefaults(t *testing.T) {
 	want := map[string]AutonomyLevel{
-		"product-analyst":   AutonomyObserver,
-		"architect":         AutonomyObserver,
-		"implementer":       AutonomyContributor,
-		"qa-engineer":       AutonomyContributor,
-		"diagnostician":     AutonomyContributor,
-		"code-reviewer":     AutonomyObserver,
-		"security-reviewer": AutonomyObserver,
-		"release-engineer":  AutonomyOperator,
-		"technical-writer":  AutonomyContributor,
-		"progress-reporter": AutonomyContributor,
+		"product-analyst":      AutonomyObserver,
+		"architect":            AutonomyObserver,
+		"implementer":          AutonomyContributor,
+		"qa-engineer":          AutonomyContributor,
+		"diagnostician":        AutonomyContributor,
+		"code-reviewer":        AutonomyObserver,
+		"security-reviewer":    AutonomyObserver,
+		"release-engineer":     AutonomyOperator,
+		"technical-writer":     AutonomyContributor,
+		"progress-reporter":    AutonomyContributor,
+		"reliability-engineer": AutonomyContributor,
+		"agent-evaluator":      AutonomyObserver,
 	}
 	for key, expected := range want {
 		template, ok := AgentRoleTemplateByKey(key)
@@ -184,14 +194,16 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 		"release-engineer":      {"multica-release-check"},
 		"technical-writer":      {"multica-documentation-change"},
 		"progress-reporter":     {"multica-progress-report"},
+		"reliability-engineer":  {"multica-reliability-engineering"},
+		"agent-evaluator":       {"multica-agent-evaluation"},
 		"feature-delivery-lead": {"multica-requirement-clarification"},
 		"discovery-lead":        {"multica-requirement-clarification"},
 		"bug-fix-lead":          nil,
 		"review-gate-lead":      nil,
 		"docs-lead":             nil,
 		"maintenance-lead":      nil,
-		"release-lead":          nil,
-		"incident-lead":         nil,
+		"release-lead":          {"multica-rollout-and-canary-verification"},
+		"incident-lead":         {"multica-incident-learning"},
 	}
 	templates := AllAgentRoleTemplates()
 	if len(templates) != len(want) {
@@ -209,6 +221,32 @@ func TestAgentRoleTemplates_DefaultRoleSkills(t *testing.T) {
 	}
 }
 
+func TestLifecycleLeaderSkillsCarryPostActionBoundaries(t *testing.T) {
+	cases := map[string][]string{
+		"release-lead":  {"同一", "观察", "回滚"},
+		"incident-lead": {"预防", "unknown", "止血"},
+	}
+	for roleKey, required := range cases {
+		role, ok := AgentRoleTemplateByKey(roleKey)
+		if !ok {
+			t.Fatalf("role %q is missing", roleKey)
+		}
+		if len(role.RoleSkills) != 1 {
+			t.Fatalf("%s skills = %v, want exactly one lifecycle skill", roleKey, role.RoleSkills)
+		}
+		skill, ok := RoleSkillTemplateByName(role.RoleSkills[0])
+		if !ok {
+			t.Fatalf("%s skill %q is missing", roleKey, role.RoleSkills[0])
+		}
+		body := role.Instructions() + "\n" + skill.Content
+		for _, text := range required {
+			if !strings.Contains(body, text) {
+				t.Errorf("%s lifecycle contract missing %q", roleKey, text)
+			}
+		}
+	}
+}
+
 func TestAgentRoleTemplate_ProgressReporterDefaults(t *testing.T) {
 	template, ok := AgentRoleTemplateByKey("progress-reporter")
 	if !ok {
@@ -222,11 +260,13 @@ func TestAgentRoleTemplate_ProgressReporterDefaults(t *testing.T) {
 	}
 }
 
-func TestRoleSkillTemplates_RosterIsNine(t *testing.T) {
+func TestRoleSkillTemplates_RosterIsThirteen(t *testing.T) {
 	want := []string{
-		"multica-architecture-decision-record", "multica-code-review",
-		"multica-debugging", "multica-documentation-change", "multica-progress-report",
-		"multica-release-check", "multica-requirement-clarification",
+		"multica-agent-evaluation", "multica-architecture-decision-record", "multica-code-review",
+		"multica-debugging", "multica-documentation-change", "multica-incident-learning",
+		"multica-progress-report",
+		"multica-release-check", "multica-reliability-engineering",
+		"multica-requirement-clarification", "multica-rollout-and-canary-verification",
 		"multica-security-review", "multica-test-report",
 	}
 	templates := RoleSkillTemplates()
@@ -251,8 +291,8 @@ func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
 	if !ok {
 		t.Fatal("multica-progress-report skill missing from the registry")
 	}
-	if skill.Version != 1 {
-		t.Errorf("progress report skill version = %d, want 1", skill.Version)
+	if skill.Version != 2 {
+		t.Errorf("progress report skill version = %d, want 2 after adding product outcome evidence", skill.Version)
 	}
 	for name, body := range map[string]string{"role": role.Instructions(), "skill": skill.Content} {
 		t.Run(name, func(t *testing.T) {
@@ -268,6 +308,27 @@ func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestGovernanceCapabilitiesReuseExistingRoleSkills(t *testing.T) {
+	cases := map[string][]string{
+		"multica-architecture-decision-record": {"parseWithFallback", "兼容窗口", "插件"},
+		"multica-security-review":              {"威胁建模", "信任边界", "供应链", "SBOM"},
+		"multica-release-check":                {"artifact digest", "SBOM", "RPO/RTO", "恢复演练"},
+		"multica-progress-report":              {"产品结果", "baseline", "观察窗口", "unknown"},
+		"multica-reliability-engineering":      {"备份存在", "恢复演练通过", "RPO/RTO"},
+	}
+	for skillName, markers := range cases {
+		skill, ok := RoleSkillTemplateByName(skillName)
+		if !ok {
+			t.Fatalf("governance skill %q is missing", skillName)
+		}
+		for _, marker := range markers {
+			if !strings.Contains(skill.Content, marker) {
+				t.Errorf("%s missing governance contract %q", skillName, marker)
+			}
+		}
 	}
 }
 
@@ -318,6 +379,37 @@ func TestDiagnostician_EvidenceContract(t *testing.T) {
 	for _, boundary := range []string{"multica-test-report", "multica-code-review"} {
 		if !strings.Contains(skill.Content, boundary) {
 			t.Errorf("debugging skill missing neighbour boundary %q", boundary)
+		}
+	}
+}
+
+func TestReliabilityAndAgentEvaluator_EvidenceContracts(t *testing.T) {
+	cases := map[string][]string{
+		"reliability-engineer": {
+			"multica-reliability-engineering", "SLO", "错误预算", "容量", "恢复",
+			"unknown", "生产操作", "人工审批",
+		},
+		"agent-evaluator": {
+			"multica-agent-evaluation", "正确性", "安全性", "成本", "延迟", "漂移",
+			"脱敏", "unknown", "线上配置", "人工介入",
+		},
+	}
+	for roleKey, markers := range cases {
+		role, ok := AgentRoleTemplateByKey(roleKey)
+		if !ok {
+			t.Fatalf("%s template missing from the roster", roleKey)
+		}
+		if len(role.RoleSkills) != 1 {
+			t.Fatalf("%s default skills = %v, want exactly one", roleKey, role.RoleSkills)
+		}
+		skill, ok := RoleSkillTemplateByName(role.RoleSkills[0])
+		if !ok {
+			t.Fatalf("%s role skill %q missing from the registry", roleKey, role.RoleSkills[0])
+		}
+		for _, marker := range markers {
+			if !strings.Contains(role.Instructions(), marker) && !strings.Contains(skill.Content, marker) {
+				t.Errorf("%s role and skill are missing evidence contract %q", roleKey, marker)
+			}
 		}
 	}
 }
@@ -456,15 +548,19 @@ func containsAny(body string, candidates []string) bool {
 // would silently file a role skill under "other" with the generic icon.
 func TestRoleSkillTemplates_PresentationDefaults(t *testing.T) {
 	want := map[string][2]string{
-		"multica-requirement-clarification":    {"research", "message-circle-question"},
-		"multica-architecture-decision-record": {"design", "landmark"},
-		"multica-code-review":                  {"quality", "git-pull-request"},
-		"multica-security-review":              {"quality", "shield-check"},
-		"multica-test-report":                  {"quality", "flask-conical"},
-		"multica-debugging":                    {"quality", "microscope"},
-		"multica-release-check":                {"operations", "rocket"},
-		"multica-documentation-change":         {"writing", "book-open"},
-		"multica-progress-report":              {"writing", "chart-no-axes-column"},
+		"multica-requirement-clarification":       {"research", "message-circle-question"},
+		"multica-architecture-decision-record":    {"design", "landmark"},
+		"multica-code-review":                     {"quality", "git-pull-request"},
+		"multica-security-review":                 {"quality", "shield-check"},
+		"multica-test-report":                     {"quality", "flask-conical"},
+		"multica-debugging":                       {"quality", "microscope"},
+		"multica-release-check":                   {"operations", "rocket"},
+		"multica-documentation-change":            {"writing", "book-open"},
+		"multica-progress-report":                 {"writing", "chart-no-axes-column"},
+		"multica-reliability-engineering":         {"operations", "server"},
+		"multica-agent-evaluation":                {"quality", "bot"},
+		"multica-incident-learning":               {"quality", "repeat"},
+		"multica-rollout-and-canary-verification": {"operations", "chart-line"},
 	}
 	templates := RoleSkillTemplates()
 	if len(templates) != len(want) {

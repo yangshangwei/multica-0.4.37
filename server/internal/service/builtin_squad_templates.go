@@ -207,7 +207,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	// the picker increases monotonically down the list.
 	{
 		Key:               "review-gate",
-		Version:           1,
+		Version:           2,
 		DefaultName:       "Review Gate Squad",
 		AvatarEmoji:       "🚧",
 		LeaderTemplateKey: "review-gate-lead",
@@ -229,6 +229,12 @@ var builtinSquadTemplates = []SquadTemplate{
 				"zh": "检查改动是否有能抓住回归的测试覆盖",
 				"ko": "회귀를 잡아낼 테스트로 변경이 커버되는지 확인",
 				"ja": "回帰を捉えるテストで変更がカバーされているか確認",
+			}},
+			{TemplateKey: "agent-evaluator", Roles: map[string]string{
+				"en": "Evaluates Agent, Skill and MCP changes with versioned cases before the gate closes",
+				"zh": "在门禁关闭前用版本化用例评测 Agent、Skill 和 MCP 改动",
+				"ko": "게이트를 닫기 전에 버전 고정 케이스로 Agent·Skill·MCP 변경을 평가",
+				"ja": "ゲートを閉じる前に、バージョン化したケースで Agent・Skill・MCP の変更を評価",
 			}},
 		},
 		Titles: map[string]string{
@@ -357,7 +363,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "release",
-		Version:           1,
+		Version:           2,
 		DefaultName:       "Release Squad",
 		AvatarEmoji:       "📦",
 		LeaderTemplateKey: "release-lead",
@@ -380,6 +386,18 @@ var builtinSquadTemplates = []SquadTemplate{
 				"ko": "릴리스와 롤백을 준비하고, 프로덕션에 손대기 전 사람의 승인을 요청",
 				"ja": "リリースとロールバックを準備し、本番に触れる前に人間の承認を求める",
 			}},
+			{TemplateKey: "reliability-engineer", Roles: map[string]string{
+				"en": "Records the same-artifact baseline, observation window and recovery signals after release",
+				"zh": "发布后记录同一产物的基线、观察窗口和恢复信号",
+				"ko": "배포 후 동일 산출물의 기준선·관찰 창·복구 신호를 기록",
+				"ja": "リリース後に同一成果物のベースライン・観測期間・復旧シグナルを記録",
+			}},
+			{TemplateKey: "agent-evaluator", Roles: map[string]string{
+				"en": "Checks Agent/Skill/MCP evaluation evidence and drift before the release decision",
+				"zh": "发布决策前核对 Agent、Skill、MCP 的评测证据和漂移",
+				"ko": "릴리스 결정 전에 Agent·Skill·MCP 평가 증거와 드리프트를 확인",
+				"ja": "リリース判断前に Agent・Skill・MCP の評価証拠とドリフトを確認",
+			}},
 		},
 		Titles: map[string]string{
 			"en": "Release Squad",
@@ -396,7 +414,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "incident",
-		Version:           2,
+		Version:           3,
 		DefaultName:       "Incident Response Squad",
 		AvatarEmoji:       "🚨",
 		LeaderTemplateKey: "incident-lead",
@@ -430,6 +448,12 @@ var builtinSquadTemplates = []SquadTemplate{
 				"zh": "恢复后承接独立的根因调查，不让诊断拖延止血",
 				"ko": "복구 후 별도 근본 원인 후속 작업을 맡되 완화를 지연하지 않음",
 				"ja": "復旧後に別の根因調査を担当し、緩和を遅らせない",
+			}},
+			{TemplateKey: "reliability-engineer", Roles: map[string]string{
+				"en": "Measures recovery, SLO impact and missing signals, then proposes prevention work",
+				"zh": "量化恢复、SLO 影响和缺失信号，再提出预防工作",
+				"ko": "복구·SLO 영향·누락 신호를 정량화하고 예방 작업을 제안",
+				"ja": "復旧・SLO 影響・欠落シグナルを定量化し、予防作業を提案",
 			}},
 		},
 		Titles: map[string]string{

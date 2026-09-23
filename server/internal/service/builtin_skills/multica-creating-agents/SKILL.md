@@ -121,7 +121,7 @@ multica agent copy <source-agent-id> --runtime-id <target> --model <model>  # cr
 ## Creating from a built-in role template
 
 `POST /api/agents/from-template` creates an ordinary agent seeded from one of the
-platform's ten listed role templates (`GET /api/agents/templates` lists them,
+platform's twelve listed role templates (`GET /api/agents/templates` lists them,
 with the full instructions text). There is no CLI command for this yet — it is
 the web creation flow's third starting point.
 
@@ -163,6 +163,16 @@ before handoff and does not submit the fix or change issue status. Those limits
 are role/skill instructions, not an additional API sandbox. Updated defaults
 apply to new template-created agents and missing role skills; existing workspace
 copies remain unchanged.
+
+The listed `reliability-engineer` role supplies only
+`multica-reliability-engineering`, uses Contributor authority and concurrency
+one. It turns SLI/SLO, error-budget, capacity, degradation and recovery signals
+into evidence and follow-up tasks; it does not perform production operations.
+The listed `agent-evaluator` role supplies only `multica-agent-evaluation`, uses
+Observer authority and concurrency two. It evaluates versioned Agent/Skill/MCP
+cases for correctness, safety, cost, latency and drift, and does not change
+production configuration. Both roles mark missing baselines or signals as
+unknown and retain the existing human approval boundary.
 
 `autonomy_level` (`observer` / `contributor` / `coordinator` / `operator`, or
 empty for no declared policy) is enforced on the agent's OWN API requests, not

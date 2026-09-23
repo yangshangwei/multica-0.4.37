@@ -49,6 +49,19 @@ const TEMPLATES = [
     instructions:
       "# 代码审查员\n\n## 职责\n\n阅读 diff，给出包含文件位置和行号的发现。",
   },
+  {
+    key: "diagnostician",
+    version: 1,
+    name: "Diagnostician",
+    title: "Diagnostician",
+    description: "Turns an observed failure into an evidence-backed root cause.",
+    autonomy_level: "contributor",
+    avatar_emoji: "🩺",
+    max_concurrent_tasks: 1,
+    skill_names: ["multica-debugging"],
+    instructions:
+      "# 诊断工程师\n\n## 职责\n\n复现并最小化失败，验证假设，不提交正式修复。",
+  },
 ];
 
 async function login(page: Page): Promise<string> {
@@ -197,6 +210,41 @@ test.describe("agent role templates", () => {
     expect(body).not.toHaveProperty("skill_ids");
     expect(body).not.toHaveProperty("autonomy_level");
 
+    await expect(page).toHaveURL(new RegExp(`/${slug}/agents/${CREATED_AGENT_ID}`));
+  });
+
+  test("shows the diagnostician evidence contract and server-owned defaults", async ({
+    page,
+  }) => {
+    const slug = await login(page);
+    const createdBody = await mockTemplateApis(page);
+
+    await page.goto(`/${slug}/agents/new`);
+    await waitForPageText(page, "Use a template");
+    await page.getByText("Use a template").first().click();
+    await waitForPageText(page, "Start from a role template");
+
+    await expect(page.getByRole("button", { name: /Diagnostician/ })).toBeVisible();
+    await page.getByRole("button", { name: /Diagnostician/ }).click();
+    await waitForPageText(page, "Role instructions");
+    await expect(page.getByText("复现并最小化失败，验证假设，不提交正式修复。")).toBeVisible();
+    await expect(page.getByText("multica-debugging")).toBeVisible();
+    await expect(page.getByText("Contributor")).toBeVisible();
+    await page.getByRole("button", { name: /Create & open agent/ }).click();
+
+    await expect
+      .poll(() => createdBody(), { timeout: 10_000 })
+      .toMatchObject({
+        template_key: "diagnostician",
+        runtime_id: RUNTIME_ID,
+        name: "Diagnostician",
+        permission_mode: "private",
+      });
+
+    const body = createdBody() ?? {};
+    expect(body).not.toHaveProperty("instructions");
+    expect(body).not.toHaveProperty("skill_ids");
+    expect(body).not.toHaveProperty("autonomy_level");
     await expect(page).toHaveURL(new RegExp(`/${slug}/agents/${CREATED_AGENT_ID}`));
   });
 });

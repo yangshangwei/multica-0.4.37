@@ -260,6 +260,33 @@ func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing
 	}
 }
 
+func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
+	want := map[string][]string{
+		"review-gate": {"agent-evaluator"},
+		"release":     {"reliability-engineer", "agent-evaluator"},
+		"incident":    {"reliability-engineer"},
+	}
+	for _, squad := range SquadTemplates() {
+		seen := map[string]bool{}
+		for _, member := range squad.Members {
+			seen[member.TemplateKey] = true
+		}
+		for _, role := range want[squad.Key] {
+			if !seen[role] {
+				t.Errorf("%s does not route lifecycle evidence to %s", squad.Key, role)
+			}
+		}
+	}
+	release, _ := SquadTemplateByKey("release")
+	if !strings.Contains(release.Instructions(), "观察窗口") || !strings.Contains(release.Instructions(), "同一份产物") {
+		t.Error("release routing policy must require a same-artifact observation window")
+	}
+	incident, _ := SquadTemplateByKey("incident")
+	if !strings.Contains(incident.Instructions(), "复盘") || !strings.Contains(incident.Instructions(), "预防") {
+		t.Error("incident routing policy must route recovery evidence into learning and prevention")
+	}
+}
+
 func TestSquadLeads_ExplainDiagnosticianHandoff(t *testing.T) {
 	want := map[string][]string{
 		"bug-fix-lead":     {"诊断工程师", "原因未知"},

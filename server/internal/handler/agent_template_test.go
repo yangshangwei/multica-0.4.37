@@ -42,8 +42,8 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 		newRequest("GET", "/api/agents/templates?language=zh", nil)).
 		Want(http.StatusOK).JSON(&out)
 
-	if len(out.Templates) != 10 {
-		t.Fatalf("templates = %d, want 10", len(out.Templates))
+	if len(out.Templates) != 12 {
+		t.Fatalf("templates = %d, want 12", len(out.Templates))
 	}
 	for _, template := range out.Templates {
 		if template.Key == "" || template.Name == "" {
@@ -276,8 +276,8 @@ func TestCreateAgentFromTemplate_ProgressReporterUsesServerDefaults(t *testing.T
 	var content, description, origin, version string
 	dbfx.QueryRow(t, `SELECT content, description, config->'origin'->>'type', config->'origin'->>'version' FROM skill WHERE id = $1`,
 		created.Skills[0].ID).Scan(&content, &description, &origin, &version)
-	if content != skill.Content || description != skill.Description || origin != roleSkillOriginType || version != "1" {
-		t.Error("reporter's materialized role skill must preserve the embedded body, description and v1 provenance")
+	if content != skill.Content || description != skill.Description || origin != roleSkillOriginType || version != "2" {
+		t.Error("reporter's materialized role skill must preserve the embedded body, description and v2 provenance")
 	}
 }
 

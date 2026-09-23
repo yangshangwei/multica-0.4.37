@@ -37,6 +37,22 @@
     "multica-progress-report": {
       "name": "进展报告",
       "description": "汇总工作区或项目的日报、周报时使用。核对任务与状态变更历史，在当前报告任务中交付可追溯的进展、统计和数据缺口；不修改业务任务。"
+    },
+    "multica-reliability-engineering": {
+      "name": "可靠性工程",
+      "description": "把运行信号整理成 SLI/SLO、错误预算、容量、降级、恢复和灾备证据；生产操作仍需人工审批。"
+    },
+    "multica-agent-evaluation": {
+      "name": "智能体评测",
+      "description": "用版本化评测用例验证 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟和漂移。"
+    },
+    "multica-incident-learning": {
+      "name": "事故学习",
+      "description": "事故恢复后整理脱敏事实、未知项和预防任务；为每项措施指定负责人、验收信号和重复事故关联。"
+    },
+    "multica-rollout-and-canary-verification": {
+      "name": "发布后与 Canary 验证",
+      "description": "针对同一已批准发布产物核对基线、观察窗口、健康信号、阈值、结论和回滚结果；不把重建产物混入验证。"
     }
   },
   "page": {
