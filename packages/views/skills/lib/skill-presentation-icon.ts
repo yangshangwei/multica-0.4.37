@@ -128,17 +128,19 @@ export const SKILL_CATEGORY_TONE: Record<
   { text: string; bg: string; dot: string }
 > = {
   research: { text: "text-skill-research", bg: "bg-skill-research/12", dot: "bg-skill-research" },
-  writing: { text: "text-skill-writing", bg: "bg-skill-writing/12", dot: "bg-skill-writing" },
+  design: { text: "text-skill-design", bg: "bg-skill-design/12", dot: "bg-skill-design" },
   engineering: {
     text: "text-skill-engineering",
     bg: "bg-skill-engineering/12",
     dot: "bg-skill-engineering",
   },
+  quality: { text: "text-skill-quality", bg: "bg-skill-quality/12", dot: "bg-skill-quality" },
   operations: {
     text: "text-skill-operations",
     bg: "bg-skill-operations/12",
     dot: "bg-skill-operations",
   },
+  writing: { text: "text-skill-writing", bg: "bg-skill-writing/12", dot: "bg-skill-writing" },
   data: { text: "text-skill-data", bg: "bg-skill-data/12", dot: "bg-skill-data" },
   other: { text: "text-skill-other", bg: "bg-skill-other/12", dot: "bg-skill-other" },
 };

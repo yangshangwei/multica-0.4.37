@@ -31,18 +31,18 @@ describe("SkillCategorySidebar", () => {
     renderSidebar();
     const nav = screen.getByRole("navigation", { name: "Categories" });
     expect(within(nav).getByRole("button", { name: /^All/ })).toHaveAttribute("data-active");
-    expect(within(nav).getByRole("button", { name: /Engineering/ })).toHaveTextContent("2");
-    expect(within(nav).getByRole("button", { name: /Writing/ })).toHaveTextContent("1");
-    expect(within(nav).getByRole("button", { name: /Data/ })).toHaveTextContent("0");
+    expect(within(nav).getByRole("button", { name: /Development & integration/ })).toHaveTextContent("2");
+    expect(within(nav).getByRole("button", { name: /Collaboration & knowledge/ })).toHaveTextContent("1");
+    expect(within(nav).getByRole("button", { name: /Data & automation/ })).toHaveTextContent("0");
   });
 
   it("marks the selected category active and reports clicks", () => {
     const { onSelectCategory } = renderSidebar(["engineering"]);
     const nav = screen.getByRole("navigation", { name: "Categories" });
-    expect(within(nav).getByRole("button", { name: /Engineering/ })).toHaveAttribute("data-active");
+    expect(within(nav).getByRole("button", { name: /Development & integration/ })).toHaveAttribute("data-active");
     expect(within(nav).getByRole("button", { name: /^All/ })).not.toHaveAttribute("data-active");
 
-    fireEvent.click(within(nav).getByRole("button", { name: /Engineering/ }));
+    fireEvent.click(within(nav).getByRole("button", { name: /Development & integration/ }));
     expect(onSelectCategory).toHaveBeenCalledWith("engineering");
     fireEvent.click(within(nav).getByRole("button", { name: /^All/ }));
     expect(onSelectCategory).toHaveBeenCalledWith(null);

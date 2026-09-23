@@ -3,7 +3,7 @@ name: multica-architecture-decision-record
 description: "技术决策会约束后续工作时使用。在任务评论中起草架构决策记录（ADR），说明背景、决策、被否决的备选方案和决策的影响，交由实现工程师或人工保存。"
 user-invocable: false
 metadata:
-  category: engineering
+  category: design
   icon: landmark
 ---
 

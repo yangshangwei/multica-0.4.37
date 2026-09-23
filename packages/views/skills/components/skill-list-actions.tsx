@@ -1,20 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Check,
   ChevronRight,
   ExternalLink,
   Loader2,
+  Minus,
   MoreHorizontal,
   Plus,
   RotateCw,
   Search,
   Tag,
+  Tags,
   Trash2,
   X,
 } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { Agent, SkillSummary } from "@multica/core/types";
 import { api } from "@multica/core/api";
@@ -25,6 +27,7 @@ import {
   type SkillCategory,
 } from "@multica/core/skills";
 import { workspaceKeys } from "@multica/core/workspace/queries";
+import { labelListOptions } from "@multica/core/labels";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { Button } from "@multica/ui/components/ui/button";
@@ -50,6 +53,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@multica/ui/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@multica/ui/components/ui/popover";
 import {
   Tooltip,
   TooltipContent,
@@ -774,6 +782,214 @@ function SetCategoryMenu({
 }
 
 // ---------------------------------------------------------------------------
+// Bulk manage-labels (batch toolbar)
+// ---------------------------------------------------------------------------
+
+/**
+ * Tri-state of a workspace label across the selection, counting ONLY editable
+ * rows (the ones a bulk action can actually change): "all" when every editable
+ * skill carries it, "none" when no editable skill does, "some" in between. With
+ * no editable rows there is nothing to describe, so "none". Non-editable rows
+ * never affect the state — they are reported as skipped by {@link setSkillsLabel}.
+ */
+export type LabelBulkState = "all" | "some" | "none";
+
+export function deriveSkillLabelState(
+  rows: SkillRow[],
+  labelId: string,
+): LabelBulkState {
+  let editable = 0;
+  let have = 0;
+  for (const row of rows) {
+    if (!row.canEdit) continue;
+    editable++;
+    if (row.labels.some((label) => label.id === labelId)) have++;
+  }
+  if (editable === 0 || have === 0) return "none";
+  return have === editable ? "all" : "some";
+}
+
+/**
+ * Applies one workspace label to every editable selected skill. The direction
+ * is derived, not passed: "all editable already have it" removes from all,
+ * anything else adds to all — the deterministic toggle the design specifies.
+ *
+ * Same shape as {@link setSkillsCategory}: reuses the single-resource
+ * attach/detach API, runs sequentially with per-item failure tolerance, and a
+ * skill already in the target state costs no request. Skills the user cannot
+ * edit are skipped up front, so a 403 never appears as a "failed" count.
+ * Labels live outside `config`, so this never touches presentation metadata.
+ */
+export async function setSkillsLabel(
+  rows: SkillRow[],
+  labelId: string,
+): Promise<{
+  action: "add" | "remove";
+  updated: number;
+  failed: number;
+  skipped: number;
+}> {
+  const action: "add" | "remove" =
+    deriveSkillLabelState(rows, labelId) === "all" ? "remove" : "add";
+  let updated = 0;
+  let failed = 0;
+  let skipped = 0;
+  for (const row of rows) {
+    if (!row.canEdit) {
+      skipped++;
+      continue;
+    }
+    const has = row.labels.some((label) => label.id === labelId);
+    if ((action === "add" && has) || (action === "remove" && !has)) {
+      updated++;
+      continue;
+    }
+    try {
+      if (action === "add") {
+        await api.attachLabelToResource("skill", row.skill.id, labelId);
+      } else {
+        await api.detachLabelFromResource("skill", row.skill.id, labelId);
+      }
+      updated++;
+    } catch {
+      failed++;
+    }
+  }
+  return { action, updated, failed, skipped };
+}
+
+function ManageLabelsMenu({
+  rows,
+  ctx,
+}: {
+  rows: SkillRow[];
+  ctx: SkillActionsContext;
+}) {
+  const { t } = useT("skills");
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const editable = rows.filter((r) => r.canEdit);
+  // wsId comes from the shared actions context, so this menu never depends on
+  // being rendered under a WorkspaceIdProvider.
+  const { data: catalog = [] } = useQuery({
+    ...labelListOptions(ctx.wsId, "skill"),
+    enabled: open,
+  });
+
+  const trimmed = query.trim().toLowerCase();
+  const filtered = useMemo(
+    () => catalog.filter((label) => label.name.toLowerCase().includes(trimmed)),
+    [catalog, trimmed],
+  );
+
+  const handlePick = async (labelId: string, name: string) => {
+    if (busyId || editable.length === 0) return;
+    setBusyId(labelId);
+    try {
+      const { action, updated, failed } = await setSkillsLabel(rows, labelId);
+      qc.invalidateQueries({ queryKey: workspaceKeys.skills(ctx.wsId) });
+      if (failed === 0) {
+        toast.success(
+          action === "add"
+            ? t(($) => $.actions.manage_labels_added_toast, { name, count: updated })
+            : t(($) => $.actions.manage_labels_removed_toast, { name, count: updated }),
+        );
+      } else {
+        toast.error(
+          t(($) => $.actions.manage_labels_partial_toast, { count: updated, failed }),
+        );
+      }
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const trigger = (
+    <Button
+      variant="ghost"
+      size="sm"
+      disabled={editable.length === 0}
+      className={cn(editable.length === 0 && "pointer-events-none")}
+    >
+      <Tags className="mr-1 size-3.5" />
+      {t(($) => $.actions.manage_labels)}
+    </Button>
+  );
+
+  if (editable.length === 0) {
+    return (
+      <Tooltip>
+        <TooltipTrigger render={<span className="inline-flex">{trigger}</span>} />
+        <TooltipContent side="top">
+          {t(($) => $.actions.manage_labels_no_permission)}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <Popover
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (!next) setQuery("");
+      }}
+    >
+      <PopoverTrigger render={trigger} />
+      <PopoverContent align="center" side="top" className="w-72 p-2">
+        <div className="relative mb-2">
+          <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            autoFocus
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={t(($) => $.actions.manage_labels_search)}
+            className="h-8 pl-8 text-body"
+          />
+        </div>
+        <div className="max-h-64 space-y-0.5 overflow-y-auto">
+          {filtered.map((label) => {
+            const state = deriveSkillLabelState(rows, label.id);
+            return (
+              <button
+                key={label.id}
+                type="button"
+                disabled={busyId !== null}
+                aria-pressed={state === "all"}
+                onClick={() => handlePick(label.id, label.name)}
+                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-body hover:bg-accent disabled:opacity-60"
+              >
+                <span
+                  className="size-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: label.color }}
+                />
+                <span className="min-w-0 flex-1 truncate">{label.name}</span>
+                {busyId === label.id ? (
+                  <Loader2 className="size-3.5 shrink-0 animate-spin text-muted-foreground" />
+                ) : state === "all" ? (
+                  <Check className="size-3.5 shrink-0 text-primary" />
+                ) : state === "some" ? (
+                  <Minus className="size-3.5 shrink-0 text-muted-foreground" />
+                ) : null}
+              </button>
+            );
+          })}
+          {filtered.length === 0 ? (
+            <p className="px-2 py-6 text-center text-caption text-muted-foreground">
+              {catalog.length === 0
+                ? t(($) => $.actions.manage_labels_empty)
+                : t(($) => $.actions.manage_labels_no_results)}
+            </p>
+          ) : null}
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Row kebab
 // ---------------------------------------------------------------------------
 
@@ -961,6 +1177,8 @@ export function SkillBatchToolbar({
         </Button>
 
         <SetCategoryMenu rows={rows} ctx={ctx} onDone={onClear} />
+
+        <ManageLabelsMenu rows={rows} ctx={ctx} />
 
         {updatable.length > 0 ? (
           updateButton

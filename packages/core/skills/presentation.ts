@@ -12,11 +12,18 @@
 // (`resource_type = "skill"`) attached through `skill_to_label` and embedded
 // on `SkillSummary.labels` by the list endpoint.
 
+// Fixed display order: the first five trace the delivery path from planning to
+// release; the last three are supporting capabilities that span multiple
+// stages. `design` and `quality` were added after the original six — the six
+// stable keys are preserved (no JSONB migration) and only gain new display
+// names. See docs/skills for the primary-category vs. label model.
 export const SKILL_CATEGORIES = [
   "research",
-  "writing",
+  "design",
   "engineering",
+  "quality",
   "operations",
+  "writing",
   "data",
   "other",
 ] as const;
@@ -87,12 +94,14 @@ export type SkillIconName = (typeof SKILL_ICON_NAMES)[number];
 
 /** Icon shown when a skill has no explicit icon override. */
 export const SKILL_CATEGORY_DEFAULT_ICON: Record<SkillCategory, SkillIconName> = {
-  research: "microscope",
-  writing: "pen-line",
+  research: "list-checks",
+  design: "landmark",
   engineering: "code",
+  quality: "clipboard-check",
   operations: "rocket",
+  writing: "book-open-text",
   data: "database",
-  other: "book-open-text",
+  other: "wrench",
 };
 
 export interface SkillPresentationMeta {

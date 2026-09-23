@@ -571,7 +571,7 @@ describe("SkillDetailPage presentation metadata", () => {
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("combobox", { name: "Category" }));
-    await user.click(await screen.findByRole("option", { name: "Engineering" }));
+    await user.click(await screen.findByRole("option", { name: "Development & integration" }));
     expect(screen.getByText("Changed: Category")).toBeTruthy();
     // The header tile previews the unsaved category.
     expect(document.querySelector('[data-category="engineering"]')).toBeInTheDocument();
@@ -612,9 +612,9 @@ describe("SkillDetailPage presentation metadata", () => {
     const { changeLocale } = renderPage();
     await screen.findByRole("tab", { name: "Overview" });
     await user.click(screen.getByRole("combobox", { name: "Category" }));
-    await user.click(await screen.findByRole("option", { name: "Data" }));
+    await user.click(await screen.findByRole("option", { name: "Data & automation" }));
     changeLocale("zh-Hans");
-    expect(await screen.findByRole("combobox", { name: "分类" })).toHaveTextContent("数据处理");
+    expect(await screen.findByRole("combobox", { name: "分类" })).toHaveTextContent("数据与自动化");
     expect(screen.getByRole("button", { name: "保存修改" })).toBeInTheDocument();
   });
 

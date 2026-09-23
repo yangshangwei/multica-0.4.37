@@ -25,7 +25,8 @@ describe("computeSkillListFacets", () => {
     const facets = computeSkillListFacets([]);
     expect(facets.total).toBe(0);
     expect(facets.categoryCounts).toEqual({
-      research: 0, writing: 0, engineering: 0, operations: 0, data: 0, other: 0,
+      research: 0, design: 0, engineering: 0, quality: 0,
+      operations: 0, writing: 0, data: 0, other: 0,
     });
     expect(facets.originCounts.size).toBe(0);
     expect(facets.labelOptions.size).toBe(0);

@@ -403,10 +403,10 @@ func containsAny(body string, candidates []string) bool {
 func TestRoleSkillTemplates_PresentationDefaults(t *testing.T) {
 	want := map[string][2]string{
 		"multica-requirement-clarification":    {"research", "message-circle-question"},
-		"multica-architecture-decision-record": {"engineering", "landmark"},
-		"multica-code-review":                  {"engineering", "git-pull-request"},
-		"multica-security-review":              {"engineering", "shield-check"},
-		"multica-test-report":                  {"engineering", "flask-conical"},
+		"multica-architecture-decision-record": {"design", "landmark"},
+		"multica-code-review":                  {"quality", "git-pull-request"},
+		"multica-security-review":              {"quality", "shield-check"},
+		"multica-test-report":                  {"quality", "flask-conical"},
 		"multica-release-check":                {"operations", "rocket"},
 		"multica-documentation-change":         {"writing", "book-open"},
 		"multica-progress-report":              {"writing", "chart-no-axes-column"},

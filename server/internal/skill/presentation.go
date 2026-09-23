@@ -16,8 +16,10 @@ import (
 // labels (issue_label rows with resource_type = 'skill') attached through
 // skill_to_label, managed by the label handlers.
 
-// Categories is the fixed category set, in display order.
-var Categories = []string{"research", "writing", "engineering", "operations", "data", "other"}
+// Categories is the fixed category set, in display order. The first five trace
+// the delivery path from planning to release; the last three span multiple
+// stages. Mirrors SKILL_CATEGORIES in packages/core/skills/presentation.ts.
+var Categories = []string{"research", "design", "engineering", "quality", "operations", "writing", "data", "other"}
 
 // DefaultCategory is what a skill without a valid category falls back to.
 const DefaultCategory = "other"
@@ -80,12 +82,14 @@ var IconNames = []string{
 
 // CategoryDefaultIcon is the icon drawn when a skill has no explicit override.
 var CategoryDefaultIcon = map[string]string{
-	"research":    "microscope",
-	"writing":     "pen-line",
+	"research":    "list-checks",
+	"design":      "landmark",
 	"engineering": "code",
+	"quality":     "clipboard-check",
 	"operations":  "rocket",
+	"writing":     "book-open-text",
 	"data":        "database",
-	"other":       "book-open-text",
+	"other":       "wrench",
 }
 
 var (

@@ -33,8 +33,8 @@ describe("SkillPresentationFields category", () => {
     const user = userEvent.setup();
     const { onChange } = renderFields();
     await user.click(screen.getByRole("combobox", { name: "Category" }));
-    expect(await screen.findAllByRole("option")).toHaveLength(6);
-    await user.click(screen.getByRole("option", { name: "Engineering" }));
+    expect(await screen.findAllByRole("option")).toHaveLength(8);
+    await user.click(screen.getByRole("option", { name: "Development & integration" }));
     expect(onChange).toHaveBeenCalledWith({
       ...EMPTY_SKILL_PRESENTATION,
       category: "engineering",
@@ -45,7 +45,7 @@ describe("SkillPresentationFields category", () => {
     const user = userEvent.setup();
     const { onChange } = renderFields({ category: "writing", icon: null });
     await user.click(screen.getByRole("combobox", { name: "Category" }));
-    await user.click(await screen.findByRole("option", { name: "Data" }));
+    await user.click(await screen.findByRole("option", { name: "Data & automation" }));
     expect(onChange).toHaveBeenCalledWith({ category: "data", icon: null });
   });
 });

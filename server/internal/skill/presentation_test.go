@@ -76,7 +76,7 @@ func TestNormalizePresentation(t *testing.T) {
 			config: map[string]any{"presentation": map[string]any{"category": "engineering", "icon": "code"}},
 			want:   map[string]any{"presentation": map[string]any{"category": "engineering"}}},
 		{name: "icon equal to other default dropped entirely",
-			config: map[string]any{"presentation": map[string]any{"icon": "book-open-text"}},
+			config: map[string]any{"presentation": map[string]any{"icon": "wrench"}},
 			want:   map[string]any{}},
 		{name: "icon override kept and category written for default bucket",
 			config: map[string]any{"presentation": map[string]any{"icon": "bell"}},

@@ -11,6 +11,32 @@ import {
 } from "./presentation";
 
 describe("skill presentation constants", () => {
+  it("lists the eight categories in the delivery-lifecycle order", () => {
+    expect([...SKILL_CATEGORIES]).toEqual([
+      "research",
+      "design",
+      "engineering",
+      "quality",
+      "operations",
+      "writing",
+      "data",
+      "other",
+    ]);
+  });
+
+  it("maps every category to its lifecycle default icon", () => {
+    expect(SKILL_CATEGORY_DEFAULT_ICON).toEqual({
+      research: "list-checks",
+      design: "landmark",
+      engineering: "code",
+      quality: "clipboard-check",
+      operations: "rocket",
+      writing: "book-open-text",
+      data: "database",
+      other: "wrench",
+    });
+  });
+
   it("every category has a default icon inside the whitelist", () => {
     for (const category of SKILL_CATEGORIES) {
       expect(SKILL_ICON_NAMES).toContain(SKILL_CATEGORY_DEFAULT_ICON[category]);
@@ -98,11 +124,19 @@ describe("writeSkillPresentationMeta", () => {
 
   it("omits an icon equal to the category default and writes category for icon-only meta", () => {
     expect(
-      writeSkillPresentationMeta({}, { category: "research", icon: "microscope" }),
+      writeSkillPresentationMeta({}, { category: "research", icon: "list-checks" }),
     ).toEqual({ presentation: { category: "research" } });
     expect(
       writeSkillPresentationMeta({}, { category: "other", icon: "rocket" }),
     ).toEqual({ presentation: { category: "other", icon: "rocket" } });
+  });
+
+  it("round-trips the two lifecycle categories added after the original six", () => {
+    for (const category of ["design", "quality"] as const) {
+      const written = writeSkillPresentationMeta({}, { category, icon: null });
+      expect(written).toEqual({ presentation: { category } });
+      expect(readSkillPresentationMeta(written)).toEqual({ category, icon: null });
+    }
   });
 
   it("does not carry a legacy tags key through a write", () => {

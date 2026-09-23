@@ -14,16 +14,38 @@ import type { SkillActionsContext } from "./skill-list-actions";
 const TEST_RESOURCES = { en: { common: enCommon, skills: enSkills } };
 
 vi.mock("@multica/core/api", () => ({
-  api: { refreshSkill: vi.fn(), updateSkill: vi.fn() },
+  api: {
+    refreshSkill: vi.fn(),
+    updateSkill: vi.fn(),
+    listLabels: vi.fn(),
+    attachLabelToResource: vi.fn(),
+    detachLabelFromResource: vi.fn(),
+  },
 }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
+import type { Label } from "@multica/core/types";
 import { api } from "@multica/core/api";
 import { toast } from "sonner";
-import { SkillBatchToolbar, UpdateSkillsDialog } from "./skill-list-actions";
+import {
+  SkillBatchToolbar,
+  UpdateSkillsDialog,
+  deriveSkillLabelState,
+  setSkillsLabel,
+} from "./skill-list-actions";
 
 const refreshSkill = vi.mocked(api.refreshSkill);
 const updateSkill = vi.mocked(api.updateSkill);
+const listLabels = vi.mocked(api.listLabels);
+const attachLabelToResource = vi.mocked(api.attachLabelToResource);
+const detachLabelFromResource = vi.mocked(api.detachLabelFromResource);
+
+const bug: Label = { id: "l-bug", name: "bug", color: "#ef4444" } as Label;
+const docs: Label = { id: "l-docs", name: "docs", color: "#3b82f6" } as Label;
+
+function withLabels(row: SkillRow, labels: Label[]): SkillRow {
+  return { ...row, labels };
+}
 
 function makeRow(id: string): SkillRow {
   const skill: SkillSummary = {
@@ -170,7 +192,7 @@ describe("SkillBatchToolbar set category", () => {
     const { onClear } = renderToolbar([a, b, locked]);
 
     await userEvent.click(screen.getByRole("button", { name: "Set category" }));
-    await userEvent.click(await screen.findByRole("menuitem", { name: "Engineering" }));
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Development & integration" }));
 
     await waitFor(() => expect(onClear).toHaveBeenCalled());
     expect(updateSkill.mock.calls.map(([id]) => id)).toEqual(["a", "b"]);
@@ -195,7 +217,7 @@ describe("SkillBatchToolbar set category", () => {
     );
     const { onClear } = renderToolbar([makeRow("a"), makeRow("b")]);
     await userEvent.click(screen.getByRole("button", { name: "Set category" }));
-    await userEvent.click(await screen.findByRole("menuitem", { name: "Data" }));
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Data & automation" }));
     await waitFor(() => expect(toast.error).toHaveBeenCalledWith("Failed to set category"));
     expect(updateSkill.mock.calls.map(([id]) => id)).toEqual(["a", "b"]);
     expect(onClear).not.toHaveBeenCalled();
@@ -207,5 +229,128 @@ describe("SkillBatchToolbar set category", () => {
     renderToolbar([locked]);
     expect(screen.getByRole("button", { name: "Set category" })).toBeDisabled();
     expect(updateSkill).not.toHaveBeenCalled();
+  });
+});
+
+describe("deriveSkillLabelState", () => {
+  it("reports all / some / none across the editable rows only", () => {
+    const a = withLabels(makeRow("a"), [bug]);
+    const b = withLabels(makeRow("b"), [bug]);
+    const c = withLabels(makeRow("c"), []);
+    expect(deriveSkillLabelState([a, b], bug.id)).toBe("all");
+    expect(deriveSkillLabelState([a, c], bug.id)).toBe("some");
+    expect(deriveSkillLabelState([c], bug.id)).toBe("none");
+  });
+
+  it("ignores non-editable rows and returns none when nothing is editable", () => {
+    const editableHas = withLabels(makeRow("a"), [bug]);
+    const lockedMissing = withLabels(makeRow("b"), []);
+    lockedMissing.canEdit = false;
+    // The locked row lacks the label but must not drag the state to "some".
+    expect(deriveSkillLabelState([editableHas, lockedMissing], bug.id)).toBe("all");
+
+    const lockedOnly = withLabels(makeRow("c"), [bug]);
+    lockedOnly.canEdit = false;
+    expect(deriveSkillLabelState([lockedOnly], bug.id)).toBe("none");
+  });
+});
+
+describe("setSkillsLabel", () => {
+  it("adds the label to editable rows that lack it, skipping locked and already-tagged rows", async () => {
+    attachLabelToResource.mockResolvedValue({} as never);
+    const has = withLabels(makeRow("a"), [bug]);
+    const missing = withLabels(makeRow("b"), []);
+    const locked = withLabels(makeRow("c"), []);
+    locked.canEdit = false;
+
+    const result = await setSkillsLabel([has, missing, locked], bug.id);
+
+    expect(result).toEqual({ action: "add", updated: 2, failed: 0, skipped: 1 });
+    // Only the editable row missing the label triggers a network call.
+    expect(attachLabelToResource.mock.calls).toEqual([["skill", "b", bug.id]]);
+    expect(detachLabelFromResource).not.toHaveBeenCalled();
+  });
+
+  it("removes the label from every editable row when they all carry it", async () => {
+    detachLabelFromResource.mockResolvedValue({} as never);
+    const a = withLabels(makeRow("a"), [bug]);
+    const b = withLabels(makeRow("b"), [bug]);
+
+    const result = await setSkillsLabel([a, b], bug.id);
+
+    expect(result).toEqual({ action: "remove", updated: 2, failed: 0, skipped: 0 });
+    expect(detachLabelFromResource.mock.calls.map((c) => c[1])).toEqual(["a", "b"]);
+    expect(attachLabelToResource).not.toHaveBeenCalled();
+  });
+
+  it("counts a per-item failure without stranding the rest", async () => {
+    attachLabelToResource.mockImplementation((_t, id: string) =>
+      id === "a" ? Promise.reject(new Error("boom")) : Promise.resolve({} as never),
+    );
+    const a = withLabels(makeRow("a"), []);
+    const b = withLabels(makeRow("b"), []);
+
+    const result = await setSkillsLabel([a, b], bug.id);
+
+    expect(result).toEqual({ action: "add", updated: 1, failed: 1, skipped: 0 });
+    expect(attachLabelToResource.mock.calls.map((c) => c[1])).toEqual(["a", "b"]);
+  });
+});
+
+describe("SkillBatchToolbar manage labels", () => {
+  it("adds a not-yet-applied label to the editable selection and reports success", async () => {
+    listLabels.mockResolvedValue({ labels: [bug, docs] } as never);
+    attachLabelToResource.mockResolvedValue({} as never);
+    const a = withLabels(makeRow("a"), []);
+    const b = withLabels(makeRow("b"), []);
+    renderToolbar([a, b]);
+
+    await userEvent.click(screen.getByRole("button", { name: "Manage labels" }));
+    await userEvent.click(await screen.findByRole("button", { name: /bug/ }));
+
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith('Added "bug" to 2 skills'),
+    );
+    expect(attachLabelToResource.mock.calls.map((c) => c[1])).toEqual(["a", "b"]);
+  });
+
+  it("marks an all-applied label pressed and removes it on click", async () => {
+    listLabels.mockResolvedValue({ labels: [bug] } as never);
+    detachLabelFromResource.mockResolvedValue({} as never);
+    const a = withLabels(makeRow("a"), [bug]);
+    const b = withLabels(makeRow("b"), [bug]);
+    renderToolbar([a, b]);
+
+    await userEvent.click(screen.getByRole("button", { name: "Manage labels" }));
+    const row = await screen.findByRole("button", { name: /bug/ });
+    expect(row).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(row);
+
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith('Removed "bug" from 2 skills'),
+    );
+    expect(detachLabelFromResource.mock.calls.map((c) => c[1])).toEqual(["a", "b"]);
+  });
+
+  it("reports a partial failure toast", async () => {
+    listLabels.mockResolvedValue({ labels: [bug] } as never);
+    attachLabelToResource.mockImplementation((_t, id: string) =>
+      id === "a" ? Promise.reject(new Error("boom")) : Promise.resolve({} as never),
+    );
+    renderToolbar([withLabels(makeRow("a"), []), withLabels(makeRow("b"), [])]);
+
+    await userEvent.click(screen.getByRole("button", { name: "Manage labels" }));
+    await userEvent.click(await screen.findByRole("button", { name: /bug/ }));
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith("Updated 1, 1 failed"),
+    );
+  });
+
+  it("disables manage labels when nothing selected is editable", () => {
+    const locked = makeRow("a");
+    locked.canEdit = false;
+    renderToolbar([locked]);
+    expect(screen.getByRole("button", { name: "Manage labels" })).toBeDisabled();
   });
 });

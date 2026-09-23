@@ -30,9 +30,10 @@ function activeCategory(filters: SkillListFilters): SkillCategory | null {
 }
 
 /**
- * Wide-container (≥ @2xl) category navigation: "All" + the six categories
- * with counts, then a secondary "Sources" group that toggles the same
- * `filters.origins` dimension the toolbar's Filter dropdown edits.
+ * Wide-container (≥ @2xl) category navigation: "All" + every
+ * `SKILL_CATEGORIES` entry with counts, then a secondary "Sources" group
+ * that toggles the same `filters.origins` dimension the toolbar's Filter
+ * dropdown edits.
  */
 export function SkillCategorySidebar({
   facets,

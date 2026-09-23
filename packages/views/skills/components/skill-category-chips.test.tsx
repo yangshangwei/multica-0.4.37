@@ -36,23 +36,23 @@ describe("SkillCategoryChips", () => {
     expect(all).toHaveAttribute("aria-pressed", "true");
     expect(all).toHaveAttribute("data-active");
     expect(all).toHaveTextContent("3");
-    expect(within(group).getByRole("button", { name: /Engineering/ })).toHaveTextContent("2");
-    expect(within(group).getByRole("button", { name: /Writing/ })).toHaveTextContent("1");
-    expect(within(group).getByRole("button", { name: /Data/ })).toHaveTextContent("0");
-    // Seven chips: All + six categories. No source buttons in the narrow row.
-    expect(within(group).getAllByRole("button")).toHaveLength(7);
+    expect(within(group).getByRole("button", { name: /Development & integration/ })).toHaveTextContent("2");
+    expect(within(group).getByRole("button", { name: /Collaboration & knowledge/ })).toHaveTextContent("1");
+    expect(within(group).getByRole("button", { name: /Data & automation/ })).toHaveTextContent("0");
+    // Nine chips: All + eight categories. No source buttons in the narrow row.
+    expect(within(group).getAllByRole("button")).toHaveLength(9);
     expect(within(group).queryByRole("button", { name: /GitHub/ })).toBeNull();
   });
 
   it("marks the selected category active and reports single-select clicks", () => {
     const { onSelectCategory } = renderChips(["engineering"]);
     const group = screen.getByRole("group", { name: "Categories" });
-    const engineering = within(group).getByRole("button", { name: /Engineering/ });
+    const engineering = within(group).getByRole("button", { name: /Development & integration/ });
     expect(engineering).toHaveAttribute("aria-pressed", "true");
     expect(engineering).toHaveAttribute("data-active");
     expect(within(group).getByRole("button", { name: /^All/ })).toHaveAttribute("aria-pressed", "false");
 
-    fireEvent.click(within(group).getByRole("button", { name: /Writing/ }));
+    fireEvent.click(within(group).getByRole("button", { name: /Collaboration & knowledge/ }));
     expect(onSelectCategory).toHaveBeenCalledWith("writing");
     fireEvent.click(within(group).getByRole("button", { name: /^All/ }));
     expect(onSelectCategory).toHaveBeenCalledWith(null);

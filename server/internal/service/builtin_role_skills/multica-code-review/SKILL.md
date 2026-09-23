@@ -3,7 +3,7 @@ name: multica-code-review
 description: "审查任务、拉取请求或工作树中的变更时使用。围绕正确性、兼容性和失败场景，给出有代码依据、可执行的审查意见；不修改代码。"
 user-invocable: false
 metadata:
-  category: engineering
+  category: quality
   icon: git-pull-request
 ---
 

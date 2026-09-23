@@ -104,6 +104,45 @@ Some AI coding tools also read project-level skills directly from the code repos
 
 Runtime-local skills already installed on a connected computer (Claude Code and Codex) show up in the agent's **Skills** tab and can be disabled per agent. Disabling likewise requires permission to modify the agent.
 
+## Organizing skills
+
+The **Skills** page organizes a library along three independent dimensions: a single primary category, any number of labels, and the source a skill came from. Keeping them separate is what lets you browse a large library without collapsing "where it belongs", "what it's about", and "where it came from" into one axis.
+
+### Primary category
+
+Every skill has exactly one primary category, answering "where does this skill mainly belong in the software delivery lifecycle?" The first five trace the delivery path from planning to release; the last three are supporting capabilities that span the whole flow.
+
+| Category | Covers |
+|---|---|
+| **Planning & requirements** | Requirement clarification, scoping, acceptance criteria |
+| **Design & architecture** | Technical design, architecture decision records, interface design |
+| **Development & integration** | Writing and integrating code |
+| **Testing & quality** | Code review, security review, tests, quality reports |
+| **Release & operations** | Release checks, deployment, operations |
+| **Collaboration & knowledge** | Documentation, progress reports, team communication |
+| **Data & automation** | Data processing, scripting, automation |
+| **General tools** | Anything that doesn't fit a single stage above |
+
+Pick the category from the skill's create or detail page, or set it for several skills at once with **Set category** in the selection toolbar. A skill that spans stages keeps one primary category and expresses the rest through labels.
+
+### Labels
+
+Labels are the multi-select, cross-cutting axis: they answer "what domain, platform, working style, artifact, or risk does this skill apply to?" A skill can carry several, and the skills list can filter and search by them.
+
+A readable naming convention groups labels by dimension. The system treats the whole name as opaque — it does not parse the prefix, create these labels for you, or attach any behavior to them, so adopt only the ones your team needs:
+
+- **Domain**: `domain/product`, `domain/frontend`, `domain/backend`, `domain/data`, `domain/AI`, `domain/security`, `domain/infra`, `domain/docs`
+- **Platform**: `platform/Web`, `platform/Desktop`, `platform/Mobile`, `platform/Server`, `platform/CLI`, `platform/Cloud`
+- **Method**: `method/analyze`, `method/generate`, `method/review`, `method/automate`, `method/report`
+- **Artifact**: `artifact/PRD`, `artifact/ADR`, `artifact/API`, `artifact/code`, `artifact/test`, `artifact/release`, `artifact/runbook`
+- **Risk**: `risk/production`, `risk/security-sensitive`, `risk/destructive`
+
+Apply labels from a skill's detail page, or to several skills at once with **Manage labels** in the selection toolbar: clicking a label adds it to every editable selected skill, or removes it if they all already have it.
+
+<Callout type="warning">
+Labels are for organizing and finding skills only. A `risk/production` or `risk/destructive` label documents intent — it does not grant permissions, and it never replaces the execution approvals and security boundaries an agent must still go through.
+</Callout>
+
 ## Edit permissions
 
 Any workspace member can create or import a skill. The creator and workspace `owner`s and `admin`s can modify or delete it; other members can view and use it, but cannot overwrite its content.

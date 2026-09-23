@@ -457,12 +457,12 @@ describe("SkillsPage categories and view mode", () => {
     expect(screen.queryByText("animations")).not.toBeInTheDocument();
 
     const sidebar = screen.getByRole("navigation", { name: "Categories" });
-    const engineering = within(sidebar).getByRole("button", { name: /Engineering/ });
+    const engineering = within(sidebar).getByRole("button", { name: /Development & integration/ });
     expect(engineering).toHaveAttribute("data-active");
     expect(engineering).toHaveTextContent("1");
     expect(within(sidebar).getByRole("button", { name: /^All/ })).toHaveTextContent("2");
 
-    fireEvent.click(within(sidebar).getByRole("button", { name: /Writing/ }));
+    fireEvent.click(within(sidebar).getByRole("button", { name: /Collaboration & knowledge/ }));
     expect(mocks.viewState.selectCategory).toHaveBeenCalledWith("writing");
   });
 
@@ -512,7 +512,7 @@ describe("SkillsPage categories and view mode", () => {
     mocks.viewState.filters.categories = ["data"];
     renderPage(makeAdapter());
 
-    const empty = screen.getByText(/No skills in "Data" yet/).closest("[data-slot=empty]")!;
+    const empty = screen.getByText(/No skills in "Data & automation" yet/).closest("[data-slot=empty]")!;
     fireEvent.click(within(empty as HTMLElement).getByRole("button", { name: "New skill" }));
     expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute(
       "data-category",
