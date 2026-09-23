@@ -21,7 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Built-in Skill Localization](./builtin-skill-localization.md) | Display identity, bilingual search, and raw instruction preservation | Active |
-| [Skill Presentation](./skill-presentation.md) | Category / icon in `config.presentation`, workspace labels, parity and rendering rules | Active |
+| [Skill Presentation](./skill-presentation.md) | Category / icon in `config.presentation`, workspace labels, parity and rollout rules, batch label management | Active |
 
 ---
 
