@@ -1,0 +1,30 @@
+{
+  "id": "lifecycle-runtime-handoffs",
+  "name": "lifecycle-runtime-handoffs",
+  "title": "生命周期运行时交接闭环",
+  "description": "将 RCA、incident-learning、发布后验证和 Agent 评测从静态契约接入现有 issue/comment/task queue，保持 fail-closed 和人工审批边界。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-24",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "09-24-lifecycle-dual-loops",
+  "relatedFiles": [
+    "server/internal/handler/lifecycle_handoff.go",
+    "server/internal/handler/lifecycle_handoff_runtime_test.go",
+    "server/cmd/server/router.go"
+  ],
+  "notes": "",
+  "meta": {}
+}
