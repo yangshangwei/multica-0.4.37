@@ -230,13 +230,42 @@ func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 	}
 }
 
-// TestSquadTemplates_StaffOnlyTheEightWorkingRoles guards the decision the role
-// roster rests on: a new squad is a new ROUTING POLICY over the existing eight
-// roles, never a new role. Adding a ninth working role to fill a seat would be the
-// per-stack template explosion builtinAgentRoleTemplates deliberately refused, and
-// it would arrive here first — a squad seat is the only place a role becomes
-// reachable without editing the picker's own test.
-func TestSquadTemplates_StaffOnlyTheEightWorkingRoles(t *testing.T) {
+func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing.T) {
+	want := map[string][]string{
+		"bug-fix":     {"原因未知", "诊断工程师", "实现工程师"},
+		"maintenance": {"原因未知", "诊断工程师", "不稳定测试"},
+		"incident":    {"独立后续任务", "诊断工程师", "不等待"},
+	}
+
+	for _, squad := range SquadTemplates() {
+		diagnosticians := 0
+		for _, member := range squad.Members {
+			if member.TemplateKey == "diagnostician" {
+				diagnosticians++
+			}
+		}
+
+		required, shouldSeat := want[squad.Key]
+		if shouldSeat && diagnosticians != 1 {
+			t.Errorf("%s seats %d diagnosticians, want exactly 1", squad.Key, diagnosticians)
+		}
+		if !shouldSeat && diagnosticians != 0 {
+			t.Errorf("%s seats %d diagnosticians, want none: RCA is not part of this squad's default workflow", squad.Key, diagnosticians)
+		}
+		for _, contract := range required {
+			if !strings.Contains(squad.Instructions(), contract) {
+				t.Errorf("%s routing policy does not explain diagnostician boundary %q", squad.Key, contract)
+			}
+		}
+	}
+}
+
+// TestSquadTemplates_StaffOnlyListedWorkingRoles guards the decision the role
+// roster rests on: a new squad is a new ROUTING POLICY over listed roles, never an
+// excuse to mint a one-off role. A new unlisted working role would arrive here first
+// because a squad seat is the only place it becomes reachable without editing the
+// picker's own test.
+func TestSquadTemplates_StaffOnlyListedWorkingRoles(t *testing.T) {
 	listed := map[string]bool{}
 	for _, template := range AgentRoleTemplates() {
 		listed[template.Key] = true

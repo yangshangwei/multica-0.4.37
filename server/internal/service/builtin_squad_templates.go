@@ -153,7 +153,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "bug-fix",
-		Version:           1,
+		Version:           2,
 		DefaultName:       "Bug Fix Squad",
 		AvatarEmoji:       "🐞",
 		LeaderTemplateKey: "bug-fix-lead",
@@ -164,17 +164,23 @@ var builtinSquadTemplates = []SquadTemplate{
 				"ko": "리포트 트리아지: 재현, 기대 대비 실제, 심각도",
 				"ja": "報告のトリアージ：再現手順、期待と実際、重大度",
 			}},
+			{TemplateKey: "qa-engineer", Roles: map[string]string{
+				"en": "Reproduces the failure before a fix and verifies the repaired behavior",
+				"zh": "在修复前复现失败，并验证修复后的行为",
+				"ko": "수정 전에 실패를 재현하고 수정된 동작을 검증",
+				"ja": "修正前に失敗を再現し、修正後の動作を検証",
+			}},
+			{TemplateKey: "diagnostician", Roles: map[string]string{
+				"en": "Finds the evidence-backed cause when the failure is not yet explained",
+				"zh": "失败原因未知时定位带证据的根因",
+				"ko": "실패 원인이 설명되지 않을 때 증거가 있는 원인을 찾음",
+				"ja": "失敗の原因がまだ説明できないとき、証拠に基づく根因を特定",
+			}},
 			{TemplateKey: "implementer", Roles: map[string]string{
 				"en": "Fixes the defect and adds the regression test",
 				"zh": "修复缺陷并补上回归测试",
 				"ko": "결함을 수정하고 회귀 테스트를 추가",
 				"ja": "不具合を修正し回帰テストを追加",
-			}},
-			{TemplateKey: "qa-engineer", Roles: map[string]string{
-				"en": "Reproduces the defect and verifies the fix",
-				"zh": "复现缺陷并验证修复结果",
-				"ko": "결함을 재현하고 수정을 검증",
-				"ja": "不具合を再現し修正を検証",
 			}},
 		},
 		Titles: map[string]string{
@@ -184,13 +190,13 @@ var builtinSquadTemplates = []SquadTemplate{
 			"ja": "バグ修正スクワッド",
 		},
 		Descriptions: map[string]string{
-			"en": "Triage, reproduce, fix with a regression test, verify — with severity deciding what escalates.",
-			"zh": "定性、复现、带回归测试地修复、验证；严重级别决定何时上报。",
-			"ko": "트리아지·재현·회귀 테스트 포함 수정·검증, 심각도에 따라 에스컬레이션.",
-			"ja": "トリアージ・再現・回帰テスト付き修正・検証。重大度に応じて人へエスカレーション。",
+			"en": "Triage, reproduce, diagnose unknown causes, fix with a regression test, verify — with severity deciding what escalates.",
+			"zh": "定性、复现；原因不明时先做带证据的诊断，再带回归测试修复、验证；严重级别决定何时上报。",
+			"ko": "트리아지·재현 후 원인이 불명확하면 진단하고, 회귀 테스트 포함 수정·검증을 진행하며 심각도에 따라 에스컬레이션.",
+			"ja": "トリアージ・再現後、原因不明なら診断し、回帰テスト付きで修正・検証。重大度に応じてエスカレーション。",
 		},
 	},
-	// The remaining six reuse the same eight working roles. What differs is the
+	// The remaining six use the listed working roles. What differs is the
 	// routing policy, which is the point: a squad is an orchestration of roles, so
 	// two squads sharing a roster but disagreeing about sequencing and about what
 	// escalates are genuinely different squads. Incident and Bug Fix are the clearest
@@ -306,11 +312,23 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "maintenance",
-		Version:           1,
+		Version:           2,
 		DefaultName:       "Maintenance Squad",
 		AvatarEmoji:       "🧹",
 		LeaderTemplateKey: "maintenance-lead",
 		Members: []SquadRoleSlot{
+			{TemplateKey: "security-reviewer", Roles: map[string]string{
+				"en": "Confirms an advisory applies here and that the fix closes it",
+				"zh": "确认安全公告在本项目是否成立，以及修复是否真的闭合",
+				"ko": "권고가 여기에 해당하는지, 수정이 실제로 닫는지 확인",
+				"ja": "アドバイザリが自プロジェクトに該当するか、修正が実際に閉じるかを確認",
+			}},
+			{TemplateKey: "diagnostician", Roles: map[string]string{
+				"en": "Finds why a flaky test or upgrade failure occurs when the cause is unknown",
+				"zh": "不稳定测试或升级失败原因未知时定位根因",
+				"ko": "불안정 테스트나 업그레이드 실패의 원인이 불명확할 때 원인을 찾음",
+				"ja": "不安定なテストやアップグレード失敗の原因が不明なとき根因を特定",
+			}},
 			{TemplateKey: "implementer", Roles: map[string]string{
 				"en": "Makes one upgrade or cleanup at a time, with its tests",
 				"zh": "一次只做一个升级或清理，并带上测试",
@@ -323,12 +341,6 @@ var builtinSquadTemplates = []SquadTemplate{
 				"ko": "업그레이드가 정상 동작을 바꾸지 않았음을 검증",
 				"ja": "アップグレードが正常な挙動を変えていないことを検証",
 			}},
-			{TemplateKey: "security-reviewer", Roles: map[string]string{
-				"en": "Confirms an advisory applies here and that the fix closes it",
-				"zh": "确认安全公告在本项目是否成立，以及修复是否真的闭合",
-				"ko": "권고가 여기에 해당하는지, 수정이 실제로 닫는지 확인",
-				"ja": "アドバイザリが自プロジェクトに該当するか、修正が実際に閉じるかを確認",
-			}},
 		},
 		Titles: map[string]string{
 			"en": "Maintenance Squad",
@@ -337,10 +349,10 @@ var builtinSquadTemplates = []SquadTemplate{
 			"ja": "メンテナンス スクワッド",
 		},
 		Descriptions: map[string]string{
-			"en": "Dependency upgrades, advisories and flaky tests — one at a time, each separately revertable.",
-			"zh": "依赖升级、安全公告和不稳定测试：一次一件，每件都能单独回滚。",
-			"ko": "의존성 업그레이드·권고·플레이키 테스트를 하나씩, 각각 되돌릴 수 있게 처리합니다.",
-			"ja": "依存アップグレード・アドバイザリ・不安定テストを一件ずつ、個別に戻せる形で処理します。",
+			"en": "Dependency upgrades, advisories and flaky tests — diagnose unknown failures, then change one item at a time.",
+			"zh": "依赖升级、安全公告和不稳定测试：原因未知时先诊断，再一次处理一项，并确保可回滚。",
+			"ko": "의존성 업그레이드·권고·플레이키 테스트는 원인 불명 실패를 먼저 진단하고 한 번에 하나씩 되돌릴 수 있게 처리합니다.",
+			"ja": "依存アップグレード・アドバイザリ・不安定テストは、原因不明の失敗を診断してから一件ずつ個別に戻せる形で処理します。",
 		},
 	},
 	{
@@ -384,7 +396,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "incident",
-		Version:           1,
+		Version:           2,
 		DefaultName:       "Incident Response Squad",
 		AvatarEmoji:       "🚨",
 		LeaderTemplateKey: "incident-lead",
@@ -413,6 +425,12 @@ var builtinSquadTemplates = []SquadTemplate{
 				"ko": "로그만이 아니라 사용자 관점에서 복구를 확인",
 				"ja": "ログだけでなくユーザー側から復旧を確認",
 			}},
+			{TemplateKey: "diagnostician", Roles: map[string]string{
+				"en": "Owns the separate root-cause follow-up after recovery, without delaying mitigation",
+				"zh": "恢复后承接独立的根因调查，不让诊断拖延止血",
+				"ko": "복구 후 별도 근본 원인 후속 작업을 맡되 완화를 지연하지 않음",
+				"ja": "復旧後に別の根因調査を担当し、緩和を遅らせない",
+			}},
 		},
 		Titles: map[string]string{
 			"en": "Incident Response Squad",
@@ -421,10 +439,10 @@ var builtinSquadTemplates = []SquadTemplate{
 			"ja": "インシデント対応 スクワッド",
 		},
 		Descriptions: map[string]string{
-			"en": "Restore service first, diagnose second — rollback beats a fix, and the post-mortem is a separate issue.",
-			"zh": "先恢复服务，再查原因：回滚优于修复，复盘另开 issue。",
-			"ko": "먼저 서비스를 복구하고 그 다음 원인을 봅니다. 롤백이 수정보다 우선이며, 회고는 별도 이슈입니다.",
-			"ja": "まず復旧、次に原因。ロールバックが修正に優先し、振り返りは別 issue にします。",
+			"en": "Restore service first, then hand a separate root-cause follow-up to a diagnostician — rollback beats a fix.",
+			"zh": "先恢复服务，再把独立的根因后续任务交给诊断工程师；回滚优于修复。",
+			"ko": "먼저 서비스를 복구한 뒤 별도의 근본 원인 후속 작업을 진단 엔지니어에게 맡깁니다. 롤백이 수정보다 우선입니다.",
+			"ja": "まず復旧し、その後に別の根因調査を診断エンジニアへ渡します。修正よりロールバックを優先します。",
 		},
 	},
 }
