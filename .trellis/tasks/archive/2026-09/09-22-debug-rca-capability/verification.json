@@ -1,0 +1,149 @@
+{
+  "status": "passed",
+  "checked_at": "2026-09-23T03:30:21.986987+00:00",
+  "base_revision": "a045506eb512c3328a5773a5cbf7228db5cd1ad4",
+  "environment": {
+    "postgres": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "database": "multica_rca_verify_4ebce7bc2f",
+    "migration_ledger": "480|456_project_execution_squad",
+    "redis_image": "valkey/valkey:7.2.11-alpine",
+    "isolated_resources_removed": true,
+    "cleaned_at": "2026-09-23T03:29:14.602728+00:00"
+  },
+  "go_tests": {
+    "command": [
+      "bash",
+      "../scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "./internal/service/...",
+      "./internal/handler/..."
+    ],
+    "exit_code": 0,
+    "totals": {
+      "github.com/multica-ai/multica/server/internal/service": {
+        "pass": 656,
+        "top_level_pass": 418
+      },
+      "github.com/multica-ai/multica/server/internal/handler": {
+        "pass": 3702,
+        "top_level_pass": 2196,
+        "skip": 2,
+        "top_level_skip": 2
+      }
+    },
+    "packages": {
+      "github.com/multica-ai/multica/server/internal/service": {
+        "action": "pass",
+        "elapsed": 32.128
+      },
+      "github.com/multica-ai/multica/server/internal/handler": {
+        "action": "pass",
+        "elapsed": 79.451
+      }
+    },
+    "changed_during_run": [],
+    "failed": [],
+    "skipped": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+        "output": "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500\n    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant\n--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)\n"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+        "output": "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration\n    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test\n--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)\n"
+      }
+    ],
+    "completed_at": "2026-09-23T03:28:47.304649+00:00"
+  },
+  "additional_checks": [
+    {
+      "command": "go build ./...",
+      "cwd": "server",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/service/... ./internal/handler/...",
+      "cwd": "server",
+      "exit_code": 0
+    },
+    {
+      "command": "go test ./internal/service/... -run 'BuiltinSkill|RoleSkill|AgentRoleTemplate|Diagnostician' -count=1",
+      "cwd": "server",
+      "exit_code": 0
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run skills/lib/skill-presentation.test.ts",
+      "cwd": ".",
+      "exit_code": 0,
+      "tests_passed": 51
+    },
+    {
+      "command": "pnpm --filter @multica/views typecheck",
+      "cwd": ".",
+      "exit_code": 0
+    },
+    {
+      "command": "pnpm --filter @multica/views exec eslint skills/lib/skill-presentation.ts skills/lib/skill-presentation.test.ts",
+      "cwd": ".",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "cwd": ".",
+      "exit_code": 0
+    },
+    {
+      "command": "gofmt -l server/internal/service/builtin_agent_templates_roster.go server/internal/service/builtin_agent_templates_test.go server/internal/service/builtin_role_skills.go server/internal/handler/agent_template_test.go server/internal/handler/skill_template_test.go",
+      "cwd": ".",
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "text_review": "text-review.md",
+  "source_sha256": {
+    "server/internal/service/builtin_agent_templates/diagnostician/INSTRUCTIONS.md": "8bf28a67ec257b6b99e768599559e5bb77beb5ebcf3c1f21b947076e44cb2b70",
+    "server/internal/service/builtin_role_skills/multica-debugging/SKILL.md": "9ec7cebab613d511db67f31951f000733fd93ffda6954cd8de9af2439ae838b9",
+    "server/internal/service/builtin_agent_templates_roster.go": "ec152a601f975f94f17ea476aba33a287a23d77e456977e3438b431ddeace081",
+    "server/internal/service/builtin_role_skills.go": "ff19aed9280cb0fae7aec570dfb3f38fcdcc9ed9735e0b5830d914b43e348568",
+    "server/internal/service/builtin_agent_templates_test.go": "492c49aaac1e116edffd603f72537d1d6d805a872768853911766c74846cc47d",
+    "server/internal/handler/agent_template_test.go": "0bdc2ba5103be4888ed09559d82baf61b9bd56f9a401b8a3ee5b16dbe9e80801",
+    "server/internal/handler/skill_template_test.go": "f5c15cb5eaaf9c5bc1371dbfaecf4915ddd49fb3736f6634ad4a535074fa3048",
+    "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md": "244ce1f9cd6ccdadc82d6599d6fa528dd3ef93a8c27c0ba74dca2bd8fdfb4696",
+    "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md": "cd33cd99ff953743ea10c9ffd8f830e5e5320ce9e9da0ac7f6672ce5c2e70e65",
+    "packages/views/skills/lib/skill-presentation.ts": "055c681ef262fe7c540ddbf570afa8df1d4d89f7ae16e0cc2df76934d9d17fc5",
+    "packages/views/skills/lib/skill-presentation.test.ts": "38c36726244445da2ebdc319d6cc17fa1758cbc78d231c1377fcb21f5c365e2c",
+    "packages/views/locales/en/skills.json": "3dbd912468e3724563228cee7cc8802c43281c44e15114b0a4807f46788d79ab",
+    "packages/views/locales/zh-Hans/skills.json": "a1fce5eda0b4af231c54c83afaa9f6662f15c55f6c82ecb4827ec9f507247b76",
+    "packages/views/locales/ja/skills.json": "665a3b8fc9b7a753f313904486981e57207d03ddfceee77541fd9c76bf93fd14",
+    "packages/views/locales/ko/skills.json": "f2d1ad8d8181f623a627005eabd227160d60cf52e6ece2047c61070b578e721a"
+  },
+  "logs": {
+    "directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rca-verification-20260923-9l0z4g50",
+    "sha256": {
+      "migrate.log": "e36f43621952a80698b5bb5fa6796f6a7008784080db1704558eaa2c0678d0d8",
+      "tests.jsonl": "cbba235f2119e7ec128f6938520c69edf2c6d7569db081e057cb6bca7b96a5e1",
+      "tests.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test-summary.json": "41a7728dcf7f076ea24c77abc99a9473b8bb34da5117471a23e31dcc34530da5",
+      "source-sha256.json": "7ed17a9e9303d706d4762638967382f6a7407d206bc6441fe8d778491632a290"
+    }
+  },
+  "limitations": [
+    "Two pre-existing explicit handler skips; no database/Redis availability skips.",
+    "Static text review and template tests do not prove real-model RCA performance.",
+    "Frontend verification covers skill presentation tests, views typecheck and changed TypeScript lint, not browser E2E or the full frontend test suite."
+  ],
+  "delivery": {
+    "committed": true,
+    "archived": true,
+    "published": false,
+    "work_commit": "e348b009aef1db3a22c7b8cda84df387c3fadf17",
+    "archive_path": ".trellis/tasks/archive/2026-09/09-22-debug-rca-capability"
+  }
+}
