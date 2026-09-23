@@ -788,3 +788,26 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 25: skill-lifecycle-taxonomy：审计、视觉验收与收尾
+
+**Date**: 2026-09-23
+**Task**: skill-lifecycle-taxonomy：审计、视觉验收与收尾
+**Branch**: `main`
+
+### Summary
+
+完成八分类生命周期任务 Step 7 与 Phase 3：独立 trellis-check 审计抓出并修复 zh-Hans/ja/ko 死 _one 复数键（parity 3 例失败，修复后 5365 全绿，主会话独立复跑确认）；修复侧栏过期 six-categories 注释；Playwright 宽/窄/暗色+中英文视觉验收 13 张截图，两项展示层发现（英文分类名截断、390px 批量栏溢出）留档未修待设计决策；skill-presentation spec 补上线顺序与批量标签契约；feat/docs/chore 三笔提交入库。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `28c91e13d` | (see git log) |
+| `a54668d2f` | (see git log) |
+| `864e95f59` | (see git log) |
+
+### Status
+
+[OK] **Completed**
