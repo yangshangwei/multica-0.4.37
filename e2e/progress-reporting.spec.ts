@@ -233,7 +233,7 @@ test("publishes one built-in reporter and adjacent daily and weekly templates", 
   const { templates } = await api.requestJSON<{ templates: ReportTemplate[] }>("/api/autopilots/templates?language=zh");
   await attachJSON(testInfo, "real-reporting-catalogs", { roles, templates });
 
-  expect.soft(roles).toHaveLength(9);
+  expect.soft(roles).toHaveLength(10);
   expect.soft(roles.filter((role) => role.key === ROLE_KEY)).toHaveLength(1);
   expect.soft(templates).toHaveLength(10);
   const dailyIndex = templates.findIndex((template) => template.key === DAILY_KEY);
