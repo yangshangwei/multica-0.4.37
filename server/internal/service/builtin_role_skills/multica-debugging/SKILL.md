@@ -59,6 +59,10 @@ metadata:
 
 没查到根因是有效结果，不要为了给结论而把疑似说成已确认。
 
+## 交接字段
+
+在 bug-fix、maintenance 或 incident 小队中交接时，评论应明确 `route`、`cause_state`、`reason`、`downstream_repair_issue`。已知原因直达修复必须写 bypass reason；maintenance 的未知原因必须创建诊断后续；incident 必须写明 `mitigation_complete` 和 `separate_follow_up`，让止血与 RCA 保持独立。
+
 ## 输出
 
 ```text

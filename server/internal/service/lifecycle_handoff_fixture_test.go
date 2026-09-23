@@ -18,9 +18,20 @@ type lifecycleHandoffFixture struct {
 
 type deliveryFixture struct {
 	RCA              rcaFixture              `json:"rca"`
+	RCARoutes        []rcaRouteFixture       `json:"rca_routes"`
 	Repair           repairFixture           `json:"repair"`
 	IncidentLearning incidentLearningFixture `json:"incident_learning"`
 	Rollout          rolloutFixture          `json:"rollout"`
+}
+
+type rcaRouteFixture struct {
+	Route                 string `json:"route"`
+	CauseState            string `json:"cause_state"`
+	Decision              string `json:"decision"`
+	Reason                string `json:"reason"`
+	MitigationBeforeRCA   bool   `json:"mitigation_before_rca"`
+	SeparateFollowUp      bool   `json:"separate_follow_up"`
+	DownstreamRepairIssue string `json:"downstream_repair_issue"`
 }
 
 type rcaFixture struct {
@@ -117,6 +128,7 @@ type lifecycleFailureCase struct {
 	BaselineVersion        string `json:"baseline_version"`
 	CandidateVersion       string `json:"candidate_version"`
 	TracePresent           bool   `json:"trace_present"`
+	GovernanceCapability   string `json:"governance_capability"`
 	ExpectedDecision       string `json:"expected_decision"`
 }
 
@@ -141,6 +153,35 @@ func TestLifecycleHandoffFixtures_DeliveryArtifactsAreConsumable(t *testing.T) {
 	}
 	if !fixture.Delivery.RCA.SeparateFollowUp {
 		t.Fatal("RCA fixture must be a separate follow-up so incident mitigation is not blocked")
+	}
+	if len(fixture.Delivery.RCARoutes) != 3 {
+		t.Fatalf("RCA route fixture count = %d, want 3", len(fixture.Delivery.RCARoutes))
+	}
+	seenRoutes := map[string]bool{}
+	for _, route := range fixture.Delivery.RCARoutes {
+		seenRoutes[route.Route] = true
+		decision, err := ValidateRCARoute(RCARouteInput{
+			Route: route.Route, CauseState: route.CauseState, Reason: route.Reason,
+			MitigationComplete: route.MitigationBeforeRCA, SeparateFollowUp: route.SeparateFollowUp,
+			DownstreamRepairIssue: route.DownstreamRepairIssue,
+		})
+		if err != nil || decision != LifecycleDecision(route.Decision) {
+			t.Errorf("RCA route %q contract = %q, %v; want %q", route.Route, decision, err, route.Decision)
+		}
+		if route.Route == "bug-fix" && (route.CauseState != "known" || route.Decision != "direct-repair" || route.Reason == "") {
+			t.Errorf("bug-fix known-cause bypass must preserve a reason: %+v", route)
+		}
+		if route.Route == "maintenance" && (route.CauseState != "unknown" || route.Decision != "diagnosis" || route.DownstreamRepairIssue == "") {
+			t.Errorf("maintenance unknown cause must route diagnosis before repair: %+v", route)
+		}
+		if route.Route == "incident" && (!route.MitigationBeforeRCA || !route.SeparateFollowUp || route.Decision != "post-recovery-rca") {
+			t.Errorf("incident route must mitigate before an independent RCA: %+v", route)
+		}
+	}
+	for _, route := range []string{"bug-fix", "maintenance", "incident"} {
+		if !seenRoutes[route] {
+			t.Errorf("RCA route fixture missing %q", route)
+		}
 	}
 	expectedDiagnosisRef := fixture.Delivery.RCA.SourceIssue + "#" + fixture.Delivery.RCA.CommentID
 	if fixture.Delivery.Repair.Issue == "" || fixture.Delivery.Repair.Issue == fixture.Delivery.RCA.SourceIssue || fixture.Delivery.Repair.DiagnosisRef != expectedDiagnosisRef || fixture.Delivery.Repair.RegressionTest == "" {
@@ -171,6 +212,20 @@ func TestLifecycleHandoffFixtures_DeliveryArtifactsAreConsumable(t *testing.T) {
 			t.Errorf("prevention task %q points to %q, want source incident %q", task.Title, task.RelatedIncident, learning.SourceIssue)
 		}
 	}
+	preventionTasks := make([]PreventionTaskEvidence, 0, len(learning.PreventionTasks))
+	for _, task := range learning.PreventionTasks {
+		preventionTasks = append(preventionTasks, PreventionTaskEvidence{
+			Issue: task.Issue, Title: task.Title, Owner: task.Owner, Priority: task.Priority,
+			AcceptanceSignal: task.AcceptanceSignal, RelatedIncident: task.RelatedIncident,
+		})
+	}
+	if err := ValidateIncidentLearning(IncidentLearningEvidence{
+		SourceIssue: learning.SourceIssue, Facts: learning.Facts, Inferences: learning.Inferences,
+		Unknowns: learning.Unknowns, ExistingPreventionTasks: learning.ExistingPreventionTasks,
+		DuplicateIncidentLinks: learning.DuplicateIncidentLinks, PreventionTasks: preventionTasks,
+	}); err != nil {
+		t.Errorf("incident-learning contract rejected fixture: %v", err)
+	}
 
 	rollout := fixture.Delivery.Rollout
 	if rollout.ApprovedDigest != rollout.ArtifactDigest || len(rollout.Baseline) == 0 || len(rollout.Signals) == 0 {
@@ -181,6 +236,17 @@ func TestLifecycleHandoffFixtures_DeliveryArtifactsAreConsumable(t *testing.T) {
 	}
 	if rollout.Decision != "rollback-recommendation" || rollout.Rollback.Approved || rollout.Rollback.Executed {
 		t.Fatalf("rollout fixture must recommend, but not execute, an unapproved rollback: %+v", rollout)
+	}
+	rolloutSignals := make([]RolloutSignalEvidence, 0, len(rollout.Signals))
+	for _, signal := range rollout.Signals {
+		rolloutSignals = append(rolloutSignals, RolloutSignalEvidence{Name: signal.Name, Value: signal.Value, Threshold: signal.Threshold})
+	}
+	if got := EvaluateRolloutEvidence(RolloutEvidence{
+		ApprovedDigest: rollout.ApprovedDigest, ArtifactDigest: rollout.ArtifactDigest,
+		Baseline: rollout.Baseline, WindowComplete: rollout.ObservationWindow.Complete,
+		Signals: rolloutSignals, RollbackApproved: rollout.Rollback.Approved, RollbackExecuted: rollout.Rollback.Executed,
+	}); got != LifecycleDecision(rollout.Decision) {
+		t.Errorf("rollout contract = %q, want %q", got, rollout.Decision)
 	}
 }
 
@@ -210,12 +276,24 @@ func TestLifecycleHandoffFixtures_AgentQualityGateHasReproducibleCases(t *testin
 			t.Errorf("evaluation fixture is missing required category %q", category)
 		}
 	}
+	evaluationCases := make([]AgentEvaluationCaseEvidence, 0, len(evaluation.Cases))
+	for _, testCase := range evaluation.Cases {
+		evaluationCases = append(evaluationCases, AgentEvaluationCaseEvidence{
+			Category: testCase.Category, Trace: testCase.Trace, StopReason: testCase.StopReason, Result: testCase.Result,
+		})
+	}
+	if got := ValidateAgentEvaluation(AgentEvaluationEvidence{
+		BaselineVersion: evaluation.BaselineVersion, CandidateVersion: evaluation.CandidateVersion,
+		SkillVersion: evaluation.SkillVersion, MCPVersion: evaluation.MCPVersion, Cases: evaluationCases,
+	}); got != LifecycleDecisionPass {
+		t.Errorf("agent evaluation contract = %q, want pass", got)
+	}
 }
 
 func TestLifecycleHandoffFixtures_FailureCasesProduceExplicitStops(t *testing.T) {
 	fixture := loadLifecycleHandoffFixture(t)
-	if len(fixture.Failures) != 5 {
-		t.Fatalf("failure fixture count = %d, want 5", len(fixture.Failures))
+	if len(fixture.Failures) != 10 {
+		t.Fatalf("failure fixture count = %d, want 10", len(fixture.Failures))
 	}
 	for _, failure := range fixture.Failures {
 		t.Run(failure.Name, func(t *testing.T) {
@@ -243,6 +321,10 @@ func TestLifecycleHandoffFixtures_FailureCasesProduceExplicitStops(t *testing.T)
 			case "agent-evaluation":
 				if failure.BaselineVersion == "" || failure.CandidateVersion == "" || failure.TracePresent || failure.ExpectedDecision != "unknown" {
 					t.Fatalf("missing-trace evaluation must stop as unknown: %+v", failure)
+				}
+			case "governance":
+				if failure.GovernanceCapability == "" || failure.ExpectedDecision == "pass" {
+					t.Fatalf("governance failure must identify a capability and stop: %+v", failure)
 				}
 			default:
 				t.Fatalf("unknown failure kind %q", failure.Kind)

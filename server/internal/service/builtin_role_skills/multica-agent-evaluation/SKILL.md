@@ -21,6 +21,8 @@ metadata:
 - 正确性回归、成本或延迟超阈值、结果稳定性。
 - 模型、提示词、Skill、MCP、权限或数据变化造成的漂移。
 
+评测交接必须提供 baseline/candidate Agent 版本、Skill/MCP 版本和每个 case 的 `category`、脱敏 `trace`、`stop_reason`、`result`。正确性、工具失败、安全、成本、延迟和漂移各至少一个 case；缺 trace 或缺越权拒绝 case 时结论为 `unknown` 或 `hold`。
+
 ## 交付与边界
 
 保存脱敏输入摘要、工具调用、停止原因、实际结果和判定。每项结论标记 confirmed、suspected 或 unknown，并附复现条件。评测不替代代码审查、安全审查、QA 回归或发布审批；不修改线上配置、不读取凭据、不执行发布/回滚。需要付费模型、真实客户数据或生产操作时先请求人工介入。
