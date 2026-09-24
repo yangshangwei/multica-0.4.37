@@ -15,6 +15,8 @@ const BUILTIN_ROLE_SKILL_NAMES = [
   "multica-progress-report",
   "multica-reliability-engineering",
   "multica-agent-evaluation",
+  "multica-experience-validation",
+  "multica-migration-review",
   "multica-incident-learning",
   "multica-rollout-and-canary-verification",
 ] as const;

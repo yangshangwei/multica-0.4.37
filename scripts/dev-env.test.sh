@@ -278,4 +278,271 @@ printf 'n\n' | dev_env destroy orphan-902 > "$out" 2>&1 || fail "declining destr
 require_contains "$out" "Cancelled."
 [ -d "$MULTICA_DEV_HOME/envs/orphan-902" ] || fail "declined destroy removed the environment anyway"
 
+
+# Production Web is built before launch; reuse requires mode, source, build and
+# configuration identity in addition to listener ownership. Unknown listeners
+# are never stopped, including when a previous build has a different mode.
+web_fixture="$tmp_dir/web-fixture.sh"
+cat > "$web_fixture" <<'FIXTURE'
+set -euo pipefail
+source "$1/scripts/dev-env.sh"
+fixture_dir=$2
+scenario=$3
+REPO_ROOT="$fixture_dir/checkout"
+DIR="$REPO_ROOT"
+STATE_DIR="$fixture_dir/state"
+LOG_DIR="$fixture_dir/logs"
+FRONTEND_PORT=13999
+BACKEND_PORT=18999
+WEB_MODE=production
+ENV_FILE=.env
+ENVS_DIR="$fixture_dir/registry/envs"
+mkdir -p "$REPO_ROOT/apps/web/.next" "$STATE_DIR" "$LOG_DIR"
+launched=false
+fixture_source_id=source-one
+eval "$(declare -f checkout_source_id | sed '1s/checkout_source_id/actual_checkout_source_id/')"
+if [ "$scenario" = next-mode ] || [ "$scenario" = real-source-change ]; then
+  git -C "$REPO_ROOT" init -q
+  printf '.next/\n.multica/\n' > "$REPO_ROOT/.gitignore"
+  printf 'import "./.next/dev/types/routes.d.ts";\n' > "$REPO_ROOT/apps/web/next-env.d.ts"
+  printf 'export const value = 1;\n' > "$REPO_ROOT/apps/web/source.ts"
+  git -C "$REPO_ROOT" add .gitignore apps/web/next-env.d.ts apps/web/source.ts
+  git -C "$REPO_ROOT" -c user.name=Fixture -c user.email=fixture@example.invalid commit -qm 'Record fixture input'
+fi
+curl() { [ -f "$fixture_dir/launched" ]; }
+port_free() { [ "$scenario" != stranger ]; }
+port_listener_pid() { printf 456; }
+listener_belongs_to_component() { [ -f "$fixture_dir/launched" ]; }
+checkout_commit() { printf testcommit; }
+checkout_source_id() {
+  if [ "$scenario" = next-mode ] || [ "$scenario" = real-source-change ]; then
+    actual_checkout_source_id
+  else
+    printf '%s' "$fixture_source_id"
+  fi
+}
+component_pid() { printf '%s' "$$"; }
+stop_component() { echo stop >> "$fixture_dir/calls"; }
+describe_port_owner() { printf stranger; }
+pnpm() {
+  echo "pnpm $*" >> "$fixture_dir/calls"
+  [ "$scenario" != build-failure ] || return 17
+  printf 'test-build\n' > "$REPO_ROOT/apps/web/.next/BUILD_ID"
+  if [ "$scenario" = next-mode ] || [ "$scenario" = real-source-change ]; then
+    printf 'import "./.next/types/routes.d.ts";\n' > "$REPO_ROOT/apps/web/next-env.d.ts"
+  fi
+  if [ "$scenario" = real-source-change ]; then printf 'export const value = 2;\n' > "$REPO_ROOT/apps/web/source.ts"; fi
+  if [ "$scenario" = config-change ]; then printf 'DOCS_URL=http://changed\n' > "$REPO_ROOT/.env"; fi
+}
+launch_detached() {
+  echo "launch $*" >> "$fixture_dir/calls"
+  [ -s "$REPO_ROOT/apps/web/.next/BUILD_ID" ]
+  printf '%s\n' "$$" > "$(pid_file web)"
+  launched=true
+  touch "$fixture_dir/launched"
+}
+if [ "$scenario" = active-other ]; then
+  mkdir -p "$ENVS_DIR/other"
+  {
+    write_manifest_value NAME other
+    write_manifest_value DIR "$REPO_ROOT"
+    write_manifest_value OFFSET 999
+    write_manifest_value PROFILE other
+    write_manifest_value FRONTEND_PORT 13998
+  } > "$ENVS_DIR/other/manifest.env"
+fi
+start_web
+if [ "$scenario" = next-mode ]; then
+  web_identity_matches
+  exit 0
+fi
+[ "$scenario" = success ] || exit 1
+[ "$(json_field "$(cat "$STATE_DIR/web.running.json")" mode)" = production ]
+[ "$(json_field "$(cat "$STATE_DIR/web.running.json")" build_id)" = test-build ]
+start_web
+[ "$(grep -c '^launch ' "$fixture_dir/calls")" -eq 1 ]
+fixture_source_id=source-two
+! web_identity_matches || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
+fixture_source_id=source-one
+REMOTE_API_URL=http://localhost:18998
+! web_identity_matches || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
+REMOTE_API_URL=http://localhost:18999
+WEB_MODE=development
+! web_identity_matches || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
+WEB_MODE=production
+printf 'changed-build\n' > "$REPO_ROOT/apps/web/.next/BUILD_ID"
+! web_identity_matches || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
+FIXTURE
+for scenario in success next-mode real-source-change stranger build-failure config-change active-other; do
+  mkdir -p "$tmp_dir/web-$scenario"
+  status=0
+  bash "$web_fixture" "$root_dir" "$tmp_dir/web-$scenario" "$scenario" > "$out" 2>&1 || status=$?
+  if [ "$scenario" = success ] || [ "$scenario" = next-mode ]; then
+    [ "$status" = 0 ] || { cat "$out"; fail "production Web fixture failed"; }
+    require_contains "$tmp_dir/web-$scenario/calls" 'launch web pnpm --dir'
+    require_contains "$tmp_dir/web-$scenario/calls" 'exec next start --port 13999'
+  else
+    [ "$status" -ne 0 ] || fail "$scenario unexpectedly succeeded"
+    if [ -f "$tmp_dir/web-$scenario/calls" ]; then
+      ! grep -Eq '^launch |^stop' "$tmp_dir/web-$scenario/calls" || fail "$scenario launched/stopped a service"
+    fi
+  fi
+done
+
+
+# Focused production runs must rebuild an owned API after dirty source/config
+# changes even if HEAD is unchanged. Development keeps its existing reuse rule.
+api_fixture="$tmp_dir/api-fixture.sh"
+cat > "$api_fixture" <<'FIXTURE'
+set -euo pipefail
+source "$1/scripts/dev-env.sh"
+fixture_dir=$2
+scenario=$3
+STATE_DIR="$fixture_dir/state"
+LOG_DIR="$fixture_dir/logs"
+WEB_MODE=production
+ENV_FILE=.env
+BACKEND_PORT=18999
+mkdir -p "$STATE_DIR" "$LOG_DIR"
+launched=false
+fixture_source_id=source-one
+fixture_config_id=config-one
+fixture_health='{"pid":456,"commit":"testcommit","started_at":"2026-09-24T00:00:00Z"}'
+health_json() { [ "$launched" = true ] && printf '%s' "$fixture_health"; }
+health_belongs_to_api() { [ "$launched" = true ]; }
+api_started_after() { return 0; }
+sleep() { echo "Unexpected API readiness wait in fixture" >&2; return 1; }
+port_free() { [ "$launched" = false ]; }
+checkout_commit() { printf testcommit; }
+checkout_source_id() { printf '%s' "$fixture_source_id"; }
+api_configuration_id() { printf '%s' "$fixture_config_id"; }
+component_pid() { [ "$launched" = true ] && printf '%s' "$$"; }
+stop_component() { echo stop >> "$fixture_dir/calls"; launched=false; }
+launch_detached() {
+  echo launch >> "$fixture_dir/calls"
+  launched=true
+  printf '%s\n' "$$" > "$(pid_file api)"
+  if [ "$scenario" = changing-source ]; then fixture_source_id=source-two; fi
+  if [ "$scenario" = changing-config ]; then fixture_config_id=config-two; fi
+}
+start_api
+[ "$scenario" = success ] || exit 1
+[ "$(json_field "$(cat "$STATE_DIR/api.running.json")" listener_pid)" = 456 ]
+start_api
+[ "$(grep -c '^launch$' "$fixture_dir/calls")" -eq 1 ]
+fixture_source_id=source-two
+! api_identity_matches "$fixture_health" testcommit || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
+WEB_MODE=development
+api_identity_matches "$fixture_health" testcommit
+WEB_MODE=production
+start_api
+[ "$(grep -c '^launch$' "$fixture_dir/calls")" -eq 2 ]
+fixture_config_id=config-two
+start_api
+[ "$(grep -c '^launch$' "$fixture_dir/calls")" -eq 3 ]
+FIXTURE
+for scenario in success changing-source changing-config; do
+  mkdir -p "$tmp_dir/api-$scenario"
+  status=0
+  bash "$api_fixture" "$root_dir" "$tmp_dir/api-$scenario" "$scenario" > "$out" 2>&1 || status=$?
+  if [ "$scenario" = success ]; then
+    [ "$status" = 0 ] || { cat "$out"; fail "production API fixture failed"; }
+  else
+    [ "$status" -ne 0 ] || fail "$scenario unexpectedly reused an API"
+    require_contains "$tmp_dir/api-$scenario/calls" stop
+  fi
+done
+
+
+# Two check runs can allocate distinct ports but must serialize the shared
+# checkout build output. Hold barriers before build completion and PID capture.
+lock_fixture="$tmp_dir/lock-fixture.sh"
+cat > "$lock_fixture" <<'FIXTURE'
+set -euo pipefail
+source "$1/scripts/dev-env.sh"
+REPO_ROOT=$2
+WEB_MODE=production
+scenario=$3
+start_web_locked() {
+  printf '%s\n' "$scenario" >> "$REPO_ROOT/builders"
+  [ "$scenario" != failure ] || return 41
+  touch "$REPO_ROOT/building"
+  for _ in $(seq 1 100); do
+    [ -f "$REPO_ROOT/release-build" ] && break
+    sleep 0.05
+  done
+  [ -f "$REPO_ROOT/release-build" ]
+  touch "$REPO_ROOT/launching"
+  for _ in $(seq 1 100); do
+    [ -f "$REPO_ROOT/release-launch" ] && break
+    sleep 0.05
+  done
+  [ -f "$REPO_ROOT/release-launch" ]
+  touch "$REPO_ROOT/listener-registered"
+}
+start_web
+FIXTURE
+lock_checkout="$tmp_dir/lock-checkout"
+mkdir -p "$lock_checkout"
+bash "$lock_fixture" "$root_dir" "$lock_checkout" first > "$tmp_dir/first-builder.log" 2>&1 &
+first_builder=$!
+for _ in $(seq 1 100); do
+  [ -f "$lock_checkout/building" ] && break
+  sleep 0.05
+done
+[ -f "$lock_checkout/building" ] || fail "first builder missed barrier"
+if bash "$lock_fixture" "$root_dir" "$lock_checkout" second > "$out" 2>&1; then
+  fail "second builder entered during build"
+fi
+require_contains "$out" 'Refusing to modify the shared build output'
+touch "$lock_checkout/release-build"
+for _ in $(seq 1 100); do
+  [ -f "$lock_checkout/launching" ] && break
+  sleep 0.05
+done
+[ -f "$lock_checkout/launching" ] || fail "first builder missed launch barrier"
+if bash "$lock_fixture" "$root_dir" "$lock_checkout" second > "$out" 2>&1; then
+  fail "second builder entered between build and PID registration"
+fi
+[ "$(cat "$lock_checkout/builders")" = first ] || fail "concurrent builder touched output"
+touch "$lock_checkout/release-launch"
+wait "$first_builder" || { cat "$tmp_dir/first-builder.log"; fail "first builder failed"; }
+[ -f "$lock_checkout/listener-registered" ] || fail "lock released before PID registration"
+[ ! -d "$lock_checkout/.multica/web-build.lock.d" ] || fail "successful build leaked lock"
+status=0
+bash "$lock_fixture" "$root_dir" "$lock_checkout" failure > "$out" 2>&1 || status=$?
+[ "$status" = 41 ] || fail "build failure lost its exit status"
+[ ! -d "$lock_checkout/.multica/web-build.lock.d" ] || fail "failed build leaked lock"
+
+
+# Only the generated Next dev/prod route-types import is normalized. Other
+# changes in that same declaration, file identity, and app source still matter.
+source_checkout="$tmp_dir/source-checkout"
+mkdir -p "$source_checkout/apps/web" "$source_checkout/packages/core"
+git -C "$source_checkout" init -q
+printf 'import "./.next/dev/types/routes.d.ts";\n' > "$source_checkout/apps/web/next-env.d.ts"
+printf 'export const original = true;\n' > "$source_checkout/packages/core/example.ts"
+git -C "$source_checkout" add .
+git -C "$source_checkout" -c user.name=Fixture -c user.email=fixture@example.invalid commit -qm 'Record fingerprint fixture'
+source_fingerprint() {
+  bash -c 'source "$1"; DIR=$2; checkout_source_id' _ "$root_dir/scripts/dev-env.sh" "$source_checkout"
+}
+original_fingerprint="$(source_fingerprint)"
+printf 'import "./.next/types/routes.d.ts";\n' > "$source_checkout/apps/web/next-env.d.ts"
+[ "$(source_fingerprint)" = "$original_fingerprint" ] || fail "generated Next mode switch changed identity"
+printf 'declare const modified: string;\n' >> "$source_checkout/apps/web/next-env.d.ts"
+[ "$(source_fingerprint)" != "$original_fingerprint" ] || fail "other next-env declaration edit was ignored"
+printf 'import "./.next/types/routes.d.ts";\n' > "$source_checkout/apps/web/next-env.d.ts"
+chmod +x "$source_checkout/apps/web/next-env.d.ts"
+[ "$(source_fingerprint)" != "$original_fingerprint" ] || fail "next-env file-mode edit was ignored"
+chmod -x "$source_checkout/apps/web/next-env.d.ts"
+rm "$source_checkout/apps/web/next-env.d.ts"
+[ "$(source_fingerprint)" != "$original_fingerprint" ] || fail "next-env deletion was ignored"
+printf 'import "./.next/types/routes.d.ts";\n' > "$source_checkout/apps/web/next-env.d.ts"
+printf 'export const original = false;\n' > "$source_checkout/packages/core/example.ts"
+[ "$(source_fingerprint)" != "$original_fingerprint" ] || fail "tracked source edit was ignored"
+printf 'export const original = true;\n' > "$source_checkout/packages/core/example.ts"
+printf 'export const added = true;\n' > "$source_checkout/packages/core/new.ts"
+[ "$(source_fingerprint)" != "$original_fingerprint" ] || fail "untracked source edit was ignored"
+
 echo "✓ dev-env.sh registry behaviour verified"

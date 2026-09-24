@@ -251,6 +251,23 @@ const REVIEW_TEMPLATE: SkillTemplate = {
 };
 
 describe("SkillsPage built-in catalog", () => {
+  it.each(["multica-experience-validation", "multica-migration-review"])(
+    "opens the materialized official %s instance instead of an unverified namesake",
+    (name) => {
+      mocks.templates = [{ ...REVIEW_TEMPLATE, name }];
+      mocks.skills = [
+        { ...importedSkill, id: "same-name", name, config: {} },
+        { ...importedSkill, id: "official-id", name, config: { origin: { type: "builtin_role_skill", name, version: 1 } } },
+      ];
+      const adapter = makeAdapter();
+      renderPage(adapter);
+      const catalog = screen.getByRole("region", { name: "Built-in skills" });
+      fireEvent.click(within(catalog).getByRole("button", { name: /^Built-in skills/ }));
+      fireEvent.click(within(catalog).getByRole("button", { name: "Open skill" }));
+      expect(adapter.push).toHaveBeenCalledWith("/acme/skills/official-id");
+    },
+  );
+
   it("keeps templates collapsed in an empty workspace and opens a preselected copy on request", () => {
     mocks.skills = [];
     mocks.templates = [REVIEW_TEMPLATE];

@@ -419,3 +419,17 @@ func (h *Handler) canEnqueueSquadLeader(ctx context.Context, leaderID pgtype.UUI
 	}
 	return h.canInvokeAgent(ctx, agent, actorType, actorID, originatorUserID, workspaceID)
 }
+
+// trustedIssueCreationTask is shared by ordinary and lifecycle creates. A header
+// is evidence only when it belongs to the resolved agent in this workspace.
+func (h *Handler) trustedIssueCreationTask(r *http.Request, actorType, actorID string, workspaceID pgtype.UUID) (db.AgentTaskQueue, bool) {
+	if actorType != "agent" {
+		return db.AgentTaskQueue{}, false
+	}
+	taskID, err := util.ParseUUID(r.Header.Get("X-Task-ID"))
+	if err != nil {
+		return db.AgentTaskQueue{}, false
+	}
+	task, err := h.Queries.GetAgentTaskInWorkspace(r.Context(), db.GetAgentTaskInWorkspaceParams{ID: taskID, WorkspaceID: workspaceID})
+	return task, err == nil && uuidToString(task.AgentID) == actorID && !isTerminalTaskStatus(task.Status)
+}

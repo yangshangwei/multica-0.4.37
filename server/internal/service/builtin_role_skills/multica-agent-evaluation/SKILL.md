@@ -23,6 +23,8 @@ metadata:
 
 评测交接必须提供 baseline/candidate Agent 版本、Skill/MCP 版本和每个 case 的 `category`、脱敏 `trace`、`stop_reason`、`result`。正确性、工具失败、安全、成本、延迟和漂移各至少一个 case；缺 trace 或缺越权拒绝 case 时结论为 `unknown` 或 `hold`。
 
+运行时 `correctness.result` 使用有限判定：`pass` / `confirmed` 表示该项满足，`fail` / `hold` 使门禁为 `hold`，`unknown` / `suspected` / 未识别值为 `unknown`。重复 correctness case 中的失败不能被另一条成功覆盖；缺版本、trace 或分类不得通过。安全 case 仍须 `blocked`；工具失败的 `unknown`、成本/延迟/漂移的 `hold` 可以描述预期的安全停止，不等同于错误答案。实现和回归位置见 [评测源码映射](references/evaluation-source-map.md)。
+
 ## 交付与边界
 
 保存脱敏输入摘要、工具调用、停止原因、实际结果和判定。每项结论标记 confirmed、suspected 或 unknown，并附复现条件。评测不替代代码审查、安全审查、QA 回归或发布审批；不修改线上配置、不读取凭据、不执行发布/回滚。需要付费模型、真实客户数据或生产操作时先请求人工介入。

@@ -760,13 +760,21 @@ func pendingSlotTakenErr(err error) bool {
 // Keeping this at the enqueue boundary (not inside the pure classifiers) means
 // owner_fallback needs the agent owner, which every enqueue path has in hand.
 func (s *TaskService) applyAttributionFallback(ctx context.Context, attr attribution.Result, agent db.Agent) (attribution.Result, error) {
+	var queries *db.Queries
+	if s != nil {
+		queries = s.Queries
+	}
+	return applyAttributionFallbackWithQueries(ctx, queries, attr, agent)
+}
+
+func applyAttributionFallbackWithQueries(ctx context.Context, queries *db.Queries, attr attribution.Result, agent db.Agent) (attribution.Result, error) {
 	if attr.Source != attribution.SourceUnattributed {
 		return attr, nil
 	}
-	if s == nil || s.Queries == nil || !agent.WorkspaceID.Valid {
+	if queries == nil || !agent.WorkspaceID.Valid {
 		return attr, fmt.Errorf("%w: workspace policy unavailable", ErrAttributionFailClosed)
 	}
-	failClosed, err := s.Queries.GetWorkspaceAttributionFailClosed(ctx, agent.WorkspaceID)
+	failClosed, err := queries.GetWorkspaceAttributionFailClosed(ctx, agent.WorkspaceID)
 	if err != nil {
 		// Cannot confirm the workspace allows fallback → fail closed rather than
 		// silently run an unattributable task.

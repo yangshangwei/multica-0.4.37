@@ -174,6 +174,15 @@ cases for correctness, safety, cost, latency and drift, and does not change
 production configuration. Both roles mark missing baselines or signals as
 unknown and retain the existing human approval boundary.
 
+The listed `migration-reviewer` role (template version 2) and `architect` role
+remain Observers. When migration evidence or old-client compatibility is missing,
+they report the evidence gaps, proposed follow-up issue, owner and acceptance
+criteria in the current issue comment. A squad lead with issue-creation authority
+or a person creates that follow-up; the Observer does not. The ADR role skill is
+version 6. These revisions apply to new agents and missing role skills only;
+existing instructions and skill copies, including customized files and bindings,
+remain unchanged and need an explicit workspace maintenance action to update.
+
 `autonomy_level` (`observer` / `contributor` / `coordinator` / `operator`, or
 empty for no declared policy) is enforced on the agent's OWN API requests, not
 just displayed. An `observer` agent's issue status/assignee change and issue

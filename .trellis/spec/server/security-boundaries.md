@@ -173,3 +173,44 @@ under `lifecycle_handoff`, `lifecycle_handoff_history`, `lifecycle_rca_evidence`
 and `lifecycle_rca_unknowns` as JSON strings. This also repairs reads of existing
 rows for installed clients without a migration. Internal history and prevention
 deduplication must read raw metadata through `util.JSONObjectOrEmpty`.
+
+## Scenario 4: Lifecycle evidence and dispatch are one committed operation
+
+`lifecycle_handoff_transaction.go` owns one transaction for child creation/reuse,
+child metadata, source latest/history, audit comment and queue insertion. It uses
+`IssueService.CreateInTx` and `TaskService.EnqueuePreparedIssueTaskInTx`; ordinary
+`IssueService.Create` retains its existing wrapper behavior. Never call the
+ordinary Create/enqueue wrappers inside the lifecycle transaction: they commit or
+publish independently. Prepare external MCP overlays before locks; recheck the
+agent/runtime, current authorization and trusted task attribution inside them.
+
+- Workspace KEY SHARE fence comes first. For title creation, the existing
+  duplicate advisory lock precedes owner/issue/counter locks. Existing source and
+  child rows use NO KEY UPDATE NOWAIT, sorted by UUID; owner locks also use
+  NOWAIT. This avoids waiting on a SourceContext create that already holds the
+  source before taking duplicate/counter locks. Retry only a rolled-back lock or
+  stale-snapshot attempt, never a commit with an uncertain outcome.
+- Whole metadata retains the 8 KiB `pg_column_size(jsonb)` constraint. Preserve
+  unrelated keys as RawMessage (large JSON integers must not round through
+  float64), append then cap history at 20, trim only oldest history to fit. If
+  latest plus the current history entry cannot fit, return 400 and roll back all
+  issue, counter, audit and task changes. Budget both source and child metadata.
+- Agent callers propagate the live, workspace-scoped task belonging to the
+  resolved actor. Originator and accountable remain distinct; neither an old
+  child's creator nor a runtime owner grants the current invocation rights.
+- Compatible pending issue/agent tasks reuse their real ID and return 201, with
+  unchanged note/attribution and no duplicate task notification. Compare squad
+  leader role, runtime, note, attribution and existing head-SHA semantics as
+  well as the database's issue/agent unique key. Incompatible work returns 409
+  with no writes. A unique violation must roll back its savepoint before reading
+  the winner; the outer transaction cannot continue in aborted state.
+- Commit precedes all events and wakeups. Notification failure does not convert
+  a committed operation into a failed HTTP request; daemon claim-candidate polls
+  can still discover the durable row. A failed/uncertain commit logs source,
+  child and task IDs for reconciliation and is never automatically replayed.
+
+Regression: `lifecycle_handoff_atomic_test.go` covers provenance, notes,
+whole-state rollback at each required write/commit, size boundaries, compatible
+and incompatible queue reuse, concurrent history/metadata, SourceContext lock
+order, external-overlay preparation, and poll recovery without notification.
+`lifecycle_handoff_authorization_test.go` retains the persisted-assignee matrix.

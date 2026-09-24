@@ -44,7 +44,7 @@ Experience Validation Engineer and Migration Reviewer are listed specialists aft
 the two-cycle workload gate was met. Experience Validation Engineer uses Contributor,
 concurrency two, and `multica-experience-validation` (`quality`, `globe`) to provide
 browser/client, accessibility and outcome-risk evidence. Migration Reviewer uses
-Observer, concurrency two, and `multica-migration-review` (`operations`, `database`)
+Observer, template version two, concurrency two, and `multica-migration-review` (`operations`, `database`)
 to provide compatibility-window, validation, retry and rollback evidence. Neither
 executes production actions or changes code, schema or client contracts. Review
 Gate and Release seat both roles; Maintenance also seats Migration Reviewer for
@@ -97,6 +97,18 @@ read-only business boundary: list missing evidence and a suggested owner in the
 current report issue, then hand task creation to that owner. Failure examples
 must not grant writes that the role and skill permission sections prohibit.
 
+Migration Reviewer template version 2 and ADR role-skill version 6 keep missing
+evidence follow-up inside Observer authority: write gaps, a proposed issue,
+owner and acceptance criteria in the current issue comment, then hand creation
+to a squad lead with the required authority or a person. The reviewer/architect
+does not create the issue. Architect's own role instructions remain version 2;
+Migration Review's skill remains version 1. Tests check each responsible text
+separately, alongside the existing Observer issue-create 403 regression.
+Version changes identify new defaults; they never re-materialize or overwrite
+existing workspace copies, even when a new agent binds an older skill by name.
+`TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies` verifies
+new versions and unchanged old instructions, content, config, files and bindings.
+
 ## Role skill body language and explicit workspace updates
 
 Role, squad-leader, squad, and Mika instruction bodies are authored in
@@ -133,9 +145,9 @@ from today's template; do not silently upgrade behavior while localizing.
 
 Grounding changes to the ADR, requirement-clarification and documentation skills
 are material behavior changes, not translation-only edits. Requirement-clarification
-and documentation sit at versions 3 and 2; the ADR skill is now at version 5, having
-taken two further material changes since grounding — the old-client/plugin
-compatibility matrix and the explicit failure-example/`hold` rule described above.
+and documentation sit at versions 3 and 2; the ADR skill is now at version 6.
+After grounding, it gained the old-client/plugin compatibility matrix, the explicit
+failure-example/`hold` rule, and an Observer-compatible evidence-gap handoff.
 ADR facts need supporting task/code/document evidence;
 requirement clarification separates known requirements from unverified technical
 advice; documentation summaries must follow searches of the final files and

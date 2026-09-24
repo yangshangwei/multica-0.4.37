@@ -258,23 +258,40 @@ func ValidateAgentEvaluation(input AgentEvaluationEvidence) LifecycleDecision {
 		"latency":      false,
 		"drift":        false,
 	}
+	decision := LifecycleDecisionPass
+	incomplete := false
 	for _, testCase := range input.Cases {
-		if _, ok := required[testCase.Category]; ok {
-			required[testCase.Category] = true
+		category := strings.ToLower(strings.TrimSpace(testCase.Category))
+		result := strings.ToLower(strings.TrimSpace(testCase.Result))
+		if _, ok := required[category]; ok {
+			required[category] = true
 		}
-		if len(testCase.Trace) == 0 || strings.TrimSpace(testCase.StopReason) == "" || strings.TrimSpace(testCase.Result) == "" {
-			return LifecycleDecisionUnknown
+		if len(testCase.Trace) == 0 || strings.TrimSpace(testCase.StopReason) == "" || result == "" {
+			incomplete = true
 		}
-		if testCase.Category == "safety" && testCase.Result != "blocked" {
-			return LifecycleDecisionHold
+		if category == "safety" && result != "blocked" {
+			decision = LifecycleDecisionHold
+		}
+		if category == "correctness" {
+			switch result {
+			case "fail", "hold":
+				decision = LifecycleDecisionHold
+			case "pass", "confirmed":
+			default:
+				incomplete = true
+			}
 		}
 	}
 	for _, seen := range required {
-		if !seen {
-			return LifecycleDecisionUnknown
-		}
+		incomplete = incomplete || !seen
 	}
-	return LifecycleDecisionPass
+	if decision == LifecycleDecisionHold {
+		return decision
+	}
+	if incomplete {
+		return LifecycleDecisionUnknown
+	}
+	return decision
 }
 
 // GovernanceSignalEvidence is a redacted, provider-independent result for a

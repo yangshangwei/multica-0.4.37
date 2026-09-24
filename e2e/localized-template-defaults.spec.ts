@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { test as base, expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import enSkills from "../packages/views/locales/en/skills.json" with { type: "json" };
+import zhSkills from "../packages/views/locales/zh-Hans/skills.json" with { type: "json" };
 
 interface LocalizedFixture {
   api: TestApiClient;
@@ -186,6 +188,56 @@ test("diagnostician API creation preserves workspace skill and agent copies", as
   await page.goto(`/${slug}/agents/${second.id}`);
   await expect(page.getByText("诊断工程师 · 第二副本", { exact: true }).first()).toBeVisible();
   await expect(page.getByText("multica-debugging", { exact: true })).toBeVisible();
+});
+
+test("specialist skills localize, search and open their official copies without rewriting stored content", async ({ page, localized }) => {
+  const { api, runtime, slug } = localized;
+  const specialists = [
+    { role: "experience-validation-engineer", skill: "multica-experience-validation" },
+    { role: "migration-reviewer", skill: "multica-migration-review" },
+  ] as const;
+  for (const { role } of specialists) {
+    await api.requestJSON("/api/agents/from-template", {
+      method: "POST",
+      body: { template_key: role, runtime_id: runtime.id, language: "zh", permission_mode: "private" },
+    });
+  }
+  const skills = await api.requestJSON<{ id: string; name: string }[]>("/api/skills");
+  const copies = await Promise.all(specialists.map(async ({ skill: name }) => {
+    const skill = skills.find((item) => item.name === name);
+    if (!skill) throw new Error(`Specialist did not materialize ${name}`);
+    const snapshot = await api.requestJSON(`/api/skills/${skill.id}`);
+    expect(snapshot).toMatchObject({ config: { origin: { type: "builtin_role_skill", name } } });
+    return { ...skill, name, snapshot };
+  }));
+  const writes: string[] = [];
+  page.on("request", (request) => {
+    if (["PUT", "PATCH", "POST"].includes(request.method()) && new URL(request.url()).pathname.startsWith("/api/skills")) {
+      writes.push(request.url());
+    }
+  });
+  for (const [locale, copy] of [["en", enSkills], ["zh-Hans", zhSkills]] as const) {
+    await setLocale(page, localized, locale);
+    for (const skill of copies) {
+      const displayed = copy.builtin_role_skills[skill.name];
+      await page.goto(`/${slug}/skills`);
+      const search = page.getByPlaceholder(copy.page.search_placeholder);
+      for (const purpose of [enSkills.builtin_role_skills[skill.name].description, zhSkills.builtin_role_skills[skill.name].description]) {
+        await search.fill(purpose);
+        await expect(page.getByText(displayed.name, { exact: true }).first()).toBeVisible();
+        await expect(page.getByText(displayed.description, { exact: true }).first()).toBeVisible();
+      }
+      const catalog = page.getByRole("region", { name: copy.catalog.title, exact: true });
+      await catalog.getByRole("button", { name: new RegExp(`^${copy.catalog.title}`) }).click();
+      const row = catalog.getByRole("listitem", { name: displayed.name, exact: true });
+      await row.getByRole("button", { name: copy.catalog.open_instance, exact: true }).click();
+      await expect(page).toHaveURL(`/${slug}/skills/${skill.id}`);
+      await expect(page.getByRole("heading", { level: 1, name: displayed.name, exact: true })).toBeVisible();
+      if (locale === "en") await expect(page.getByText(displayed.description, { exact: true })).toBeVisible();
+      expect(await api.requestJSON(`/api/skills/${skill.id}`)).toEqual(skill.snapshot);
+    }
+  }
+  expect(writes).toEqual([]);
 });
 
 test("Chinese squad staffing creates localized roles and English restaffing preserves customized agents", async ({ page, localized }, testInfo) => {

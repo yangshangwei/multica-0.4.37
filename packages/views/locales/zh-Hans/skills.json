@@ -48,7 +48,7 @@
     },
     "multica-experience-validation": {
       "name": "体验验证",
-      "description": "用浏览器、跨端和可访问性证据验证关键用户路径；缺少证据时标记 unknown，并报告结果风险。"
+      "description": "验证关键用户路径的浏览器、跨端和可访问性证据，记录结果风险与缺口；缺少证据时标记 unknown。"
     },
     "multica-incident-learning": {
       "name": "事故学习",
@@ -56,7 +56,7 @@
     },
     "multica-migration-review": {
       "name": "迁移审查",
-      "description": "审查 schema、API 和客户端迁移的兼容窗口、校验、幂等、重试和回滚证据；材料缺失时阻塞。"
+      "description": "审查 schema、API 和客户端迁移的兼容窗口、校验、幂等、重试与回滚证据；缺失材料时阻塞或标记 unknown。"
     },
     "multica-rollout-and-canary-verification": {
       "name": "发布后与 Canary 验证",

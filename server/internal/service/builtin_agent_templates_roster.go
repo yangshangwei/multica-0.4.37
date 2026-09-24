@@ -298,7 +298,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "migration-reviewer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Migration Reviewer",
 		AvatarEmoji:        "🗃️",

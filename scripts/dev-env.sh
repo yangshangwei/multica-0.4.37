@@ -41,6 +41,7 @@ WORKSPACE_SLUG="${MULTICA_DEV_WORKSPACE_SLUG:-dev}"
 
 ALL_COMPONENTS="api web daemon desktop"
 DEFAULT_COMPONENTS="api web"
+WEB_MODE="${MULTICA_WEB_MODE:-development}"
 
 # An agent runs with TMPDIR=/tmp/multica-task-<id>, deleted when the run ends.
 # Anything the Go toolchain builds there goes with it, so a binary started from
@@ -305,11 +306,15 @@ detect_env_file() {
   fi
 }
 
+env_file_path() {
+  case "$1" in /*) printf '%s' "$1" ;; *) printf '%s/%s' "${2:-$REPO_ROOT}" "$1" ;; esac
+}
+
 load_env_file() {
   local root="${2:-$REPO_ROOT}"
   set -a
   # shellcheck disable=SC1090
-  . "$root/$1"
+  . "$(env_file_path "$1" "$root")"
   set +a
   # shellcheck disable=SC1091
   . "$root/scripts/local-env.sh"
@@ -320,7 +325,8 @@ load_env_file() {
 # once. Setting it here removes the start → edit → restart detour, and is what
 # makes `up` able to log itself in without a human reading a log for a code.
 ensure_dev_code() {
-  local file="$REPO_ROOT/$1" tmp
+  local file tmp
+  file="$(env_file_path "$1")"
   if grep -qE '^MULTICA_DEV_VERIFICATION_CODE=[0-9]{6}$' "$file"; then
     return 0
   fi
@@ -335,7 +341,8 @@ ensure_dev_code() {
 }
 
 rewrite_env_ports() {
-  local file="$REPO_ROOT/$1" offset=$2 backend=$3 frontend=$4 db=$5 tmp database_url escaped_database_url
+  local file offset=$2 backend=$3 frontend=$4 db=$5 tmp database_url escaped_database_url
+  file="$(env_file_path "$1")"
   database_url="$(database_url_with_name "${DATABASE_URL:-}" "$db")" \
     || die "DATABASE_URL is not a valid PostgreSQL URL: ${DATABASE_URL:-<unset>}"
   escaped_database_url="$(printf '%s' "$database_url" | sed 's/[\\&|]/\\&/g')"
@@ -545,11 +552,18 @@ api_identity_matches() {
   reported_commit="$(json_field "$health" commit || true)"
   started_at="$(json_field "$health" started_at || true)"
   [ -n "$started_at" ] && [ "$reported_commit" = "$expected_commit" ] || return 1
-  [ "$launched_at" = 0 ] || api_started_after "$health" "$launched_at"
+  [ "$launched_at" = 0 ] || api_started_after "$health" "$launched_at" || return 1
+  if [ "$WEB_MODE" = production ]; then
+    local provenance
+    provenance="$(cat "$STATE_DIR/api.running.json" 2>/dev/null || true)"
+    [ "$(json_field "$provenance" source_id || true)" = "$(checkout_source_id)" ] || return 1
+    [ "$(json_field "$provenance" configuration_id || true)" = "$(api_configuration_id)" ] || return 1
+    [ "$(json_field "$provenance" launcher_pid || true)" = "$(component_pid api || true)" ] || return 1
+  fi
 }
 
 start_api() {
-  local launched_at health waited=0 expected_commit
+  local launched_at health waited=0 expected_commit source_id configuration_id
   expected_commit="$(checkout_commit)"
   if health="$(health_json)" && [ -n "$health" ] && component_pid api >/dev/null; then
     if api_identity_matches "$health" "$expected_commit"; then
@@ -557,7 +571,7 @@ start_api() {
       return 0
     fi
     if health_belongs_to_api "$health"; then
-      warn "api on :$BACKEND_PORT is ours but not commit $expected_commit; restarting it."
+      warn "api on :$BACKEND_PORT is ours but its commit/source/configuration differs; restarting it."
       stop_component api
     else
       die "Port $BACKEND_PORT answers /health, but its pid/commit does not match this environment. Refusing to reuse or kill it."
@@ -569,7 +583,14 @@ Run 'make down' here first — a leftover instance answers /health with 200 and 
   fi
 
   launched_at="$(now_epoch)"
-  launch_detached api make -C "$REPO_ROOT" -s api-dev ENV_FILE="$ENV_FILE"
+  source_id="$(checkout_source_id)"
+  configuration_id="$(api_configuration_id)"
+  # ENV_FILE is Bash-sourced, including task files written with printf %q.
+  # Make's include grammar does not undo those escapes (notably \? in URLs).
+  # Inherit the already-loaded environment instead of reparsing it with Make.
+  launch_detached api bash -c 'cd "$1/server"; exec go run -ldflags "$2" ./cmd/server' \
+    _ "$REPO_ROOT" "-X main.commit=$expected_commit"
+  write_component_provenance api "${APP_ENV:-development}" "" "go run -ldflags '-X main.commit=$expected_commit' ./cmd/server (cwd: $REPO_ROOT/server)" "$source_id" "$configuration_id"
   info "api launching (pid $(cat "$(pid_file api)")), log: $(log_file api)"
 
   while [ "$waited" -lt 300 ]; do
@@ -581,6 +602,7 @@ Run 'make down' here first — a leftover instance answers /health with 200 and 
         stop_component api
         die "Something else is serving :$BACKEND_PORT, or the launched api did not report pid/commit/started_at for commit $expected_commit."
       fi
+      record_component_listener api "$(json_field "$health" pid)"
       ok "api healthy at http://localhost:$BACKEND_PORT (pid $(json_field "$health" pid), commit $expected_commit)"
       return 0
     fi
@@ -591,18 +613,195 @@ Run 'make down' here first — a leftover instance answers /health with 200 and 
   die "api never became healthy. Log: $(log_file api)"
 }
 
+# Includes uncommitted source changes: a commit alone cannot identify a QA build.
+checkout_source_id() {
+  node - "${DIR:-$REPO_ROOT}" <<'JS'
+const { execFileSync } = require("node:child_process");
+const { readFileSync, lstatSync, readlinkSync } = require("node:fs");
+const { createHash } = require("node:crypto");
+const root = process.argv[2];
+const git = (...args) => execFileSync("git", ["-C", root, ...args], { maxBuffer: 32 * 1024 * 1024 });
+const hash = createHash("sha256");
+hash.update(git("rev-parse", "HEAD"));
+const nextEnvPath = "apps/web/next-env.d.ts";
+hash.update(git("diff", "HEAD", "--binary", "--", ".", `:(exclude)${nextEnvPath}`));
+// Next rewrites this generated route-types import when switching dev/build.
+// Normalize only that exact line; retain every other edit and the file mode.
+try {
+  const path = `${root}/${nextEnvPath}`;
+  const stat = lstatSync(path);
+  const content = stat.isSymbolicLink() ? readlinkSync(path) : readFileSync(path, "utf8").replace(
+    /^import "\.\/\.next\/dev\/types\/routes\.d\.ts";$/m,
+    'import "./.next/types/routes.d.ts";',
+  );
+  hash.update(JSON.stringify([nextEnvPath, stat.isSymbolicLink(), stat.mode & 0o111, content]));
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
+  hash.update(JSON.stringify([nextEnvPath, "missing"]));
+}
+const paths = git("ls-files", "--others", "--exclude-standard", "-z", "--", "apps", "packages", "server", "scripts").toString().split("\0").filter(Boolean).sort();
+for (const path of paths) {
+  if (path === nextEnvPath) continue;
+  hash.update(path);
+  hash.update(readFileSync(`${root}/${path}`));
+}
+process.stdout.write(hash.digest("hex"));
+JS
+}
+
+api_configuration_id() {
+  node - "$(env_file_path "${ENV_FILE:-.env}" "${DIR:-$REPO_ROOT}")" <<'JS'
+const fs = require("node:fs");
+const { createHash } = require("node:crypto");
+const hash = createHash("sha256");
+const keys = Object.keys(process.env).filter(key =>
+  /^(MULTICA_|RATE_LIMIT_|REDIS_|CHANNEL_|REALTIME_)/.test(key) ||
+  ["APP_ENV", "DATABASE_URL", "PORT", "FRONTEND_ORIGIN"].includes(key)
+).sort();
+// These runtime identity hints are deliberately removed by CLEAN_ENV at launch.
+const stripped = new Set(["MULTICA_SERVER_URL", "MULTICA_TOKEN", "MULTICA_WORKSPACE_ID", "MULTICA_DAEMON_PORT", "MULTICA_AGENT_ID", "MULTICA_AGENT_NAME", "MULTICA_TASK_ID", "MULTICA_TASK_SLOT", "MULTICA_TASK_CONFIG_ROOT", "MULTICA_TASK_WORKSPACES_ROOT", "MULTICA_WORKSPACES_ROOT"]);
+for (const key of keys) if (!stripped.has(key)) hash.update(JSON.stringify([key, process.env[key]]));
+const file = process.argv[2];
+hash.update(file);
+if (fs.existsSync(file)) hash.update(fs.readFileSync(file));
+process.stdout.write(hash.digest("hex"));
+JS
+}
+
+record_component_listener() {
+  printf '%s\n' "$2" > "$(listener_pid_file "$1")"
+  node - "$STATE_DIR/$1.running.json" "$2" <<'JS'
+const fs = require("node:fs");
+const file = process.argv[2];
+const data = JSON.parse(fs.readFileSync(file, "utf8"));
+data.listener_pid = Number(process.argv[3]);
+fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n");
+JS
+}
+
+web_configuration_id() {
+  node - "${DIR:-$REPO_ROOT}" "$(env_file_path "${ENV_FILE:-.env}" "${DIR:-$REPO_ROOT}")" "$BACKEND_PORT" "$FRONTEND_PORT" \
+    "${NEXT_PUBLIC_API_URL-http://localhost:$BACKEND_PORT}" "${NEXT_PUBLIC_WS_URL-ws://localhost:$BACKEND_PORT/ws}" "${REMOTE_API_URL:-http://localhost:$BACKEND_PORT}" <<'JS'
+const fs = require("node:fs");
+const { createHash } = require("node:crypto");
+const [root, envFile, ...settings] = process.argv.slice(2);
+const hash = createHash("sha256").update(JSON.stringify(settings));
+const keys = Object.keys(process.env).filter(key => (key.startsWith("NEXT_PUBLIC_") && !["NEXT_PUBLIC_API_URL", "NEXT_PUBLIC_WS_URL"].includes(key)) || ["DOCS_URL", "STANDALONE"].includes(key)).sort();
+for (const key of keys) hash.update(JSON.stringify([key, process.env[key]]));
+for (const file of new Set([envFile, `${root}/.env`, ...[".env", ".env.local", ".env.production", ".env.production.local"].map(name => `${root}/apps/web/${name}`)])) {
+  hash.update(file);
+  if (fs.existsSync(file)) hash.update(fs.readFileSync(file));
+}
+process.stdout.write(hash.digest("hex"));
+JS
+}
+
+write_component_provenance() {
+  local component=$1 mode=$2 build_id=$3 command=$4 source_id=$5 config_id=${6:-}
+  node - "${STATE_DIR}/${component}.running.json" "$component" "$mode" "$build_id" "$command" "$source_id" "$config_id" \
+    "$(checkout_commit)" "$(component_pid "$component")" "$(now_iso)" <<'JS'
+const fs = require("node:fs");
+const [file, component, mode, build_id, command, source_id, configuration_id, commit, launcher_pid, started_at] = process.argv.slice(2);
+fs.writeFileSync(file, JSON.stringify({ component, mode, build_id, command, source_id, configuration_id, commit, launcher_pid: Number(launcher_pid), started_at }, null, 2) + "\n");
+JS
+}
+
+web_identity_matches() {
+  local provenance build_id
+  listener_belongs_to_component web "$FRONTEND_PORT" || return 1
+  provenance="$(cat "$STATE_DIR/web.running.json" 2>/dev/null || true)"
+  [ "$(json_field "$provenance" commit || true)" = "$(checkout_commit)" ] || return 1
+  [ "$(json_field "$provenance" mode || true)" = "$WEB_MODE" ] || return 1
+  if [ "$WEB_MODE" = production ]; then
+    [ "$(json_field "$provenance" source_id || true)" = "$(checkout_source_id)" ] || return 1
+    [ "$(json_field "$provenance" configuration_id || true)" = "$(web_configuration_id)" ] || return 1
+    build_id="$(cat "${DIR:-$REPO_ROOT}/apps/web/.next/BUILD_ID" 2>/dev/null || true)"
+    [ -n "$build_id" ] && [ "$(json_field "$provenance" build_id || true)" = "$build_id" ] || return 1
+  fi
+}
+
+# A second registry entry can use another port while sharing this checkout's
+# .next directory. A production build must not replace a running Web's files.
+require_web_build_available() {
+  local candidate current_name="${NAME:-}" current_dir="${DIR:-$REPO_ROOT}"
+  while read -r candidate; do
+    [ -n "$candidate" ] && [ "$candidate" != "$current_name" ] || continue
+    if (
+      load_manifest "$candidate"
+      [ "$DIR" = "$current_dir" ] || exit 1
+      bind_paths
+      component_pid web >/dev/null || [ -n "$(port_listener_pid "$FRONTEND_PORT")" ]
+    ); then
+      die "Environment $candidate still uses this checkout's Web build. Stop that owned environment before rebuilding."
+    fi
+  done <<EOF
+$(list_env_names)
+EOF
+}
+
+acquire_web_build_lock() {
+  WEB_BUILD_LOCK_DIR="$REPO_ROOT/.multica/web-build.lock.d"
+  mkdir -p "$(dirname "$WEB_BUILD_LOCK_DIR")"
+  if ! mkdir "$WEB_BUILD_LOCK_DIR" 2>/dev/null; then
+    local holder
+    holder="$(cat "$WEB_BUILD_LOCK_DIR/pid" 2>/dev/null || true)"
+    die "A production Web build/start already holds $WEB_BUILD_LOCK_DIR (pid ${holder:-pending}). Refusing to modify the shared build output."
+  fi
+  printf '%s\n' "$$" > "$WEB_BUILD_LOCK_DIR/pid"
+}
+
+release_web_build_lock() {
+  rm -f "$WEB_BUILD_LOCK_DIR/pid"
+  rmdir "$WEB_BUILD_LOCK_DIR"
+}
+
 start_web() {
-  local waited=0 listener
+  if [ "$WEB_MODE" = production ]; then
+    (
+      acquire_web_build_lock
+      trap release_web_build_lock EXIT
+      trap 'exit 130' INT
+      trap 'exit 143' TERM
+      start_web_locked
+    )
+  else
+    start_web_locked
+  fi
+}
+
+start_web_locked() {
+  local waited=0 listener source_id configuration_id build_id="" command
+  case "$WEB_MODE" in development|production) ;; *) die "Invalid web mode: $WEB_MODE" ;; esac
+  export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL-http://localhost:$BACKEND_PORT}"
+  export NEXT_PUBLIC_WS_URL="${NEXT_PUBLIC_WS_URL-ws://localhost:$BACKEND_PORT/ws}"
+  export REMOTE_API_URL="${REMOTE_API_URL:-http://localhost:$BACKEND_PORT}"
   if curl -sf --max-time 15 "http://localhost:${FRONTEND_PORT}" >/dev/null 2>&1 \
-    && listener_belongs_to_component web "$FRONTEND_PORT"; then
-    ok "web already running on :$FRONTEND_PORT"
+    && web_identity_matches; then
+    ok "web already running on :$FRONTEND_PORT ($WEB_MODE, commit $(checkout_commit))"
     return 0
   fi
   if ! port_free "$FRONTEND_PORT"; then
-    die "Port $FRONTEND_PORT is busy: $(describe_port_owner "$FRONTEND_PORT"). Run 'make down' here first."
+    die "Port $FRONTEND_PORT is busy or its web mode/build identity differs: $(describe_port_owner "$FRONTEND_PORT"). Refusing to reuse or kill it."
   fi
 
-  launch_detached web make -C "$REPO_ROOT" -s web-dev ENV_FILE="$ENV_FILE"
+  source_id="$(checkout_source_id)"
+  configuration_id="$(web_configuration_id)"
+  if [ "$WEB_MODE" = production ]; then
+    require_web_build_available
+    info "Building production web; log: $LOG_DIR/web-build.log"
+    (cd "$REPO_ROOT" && pnpm --filter @multica/web build) > "$LOG_DIR/web-build.log" 2>&1 \
+      || die "Production web build failed. Log: $LOG_DIR/web-build.log"
+    build_id="$(cat "${DIR:-$REPO_ROOT}/apps/web/.next/BUILD_ID" 2>/dev/null || true)"
+    [ -n "$build_id" ] || die "Production web build did not create BUILD_ID."
+    [ "$source_id" = "$(checkout_source_id)" ] || die "Source changed during production build; rerun after edits finish."
+    [ "$configuration_id" = "$(web_configuration_id)" ] || die "Configuration changed during production build; rerun after edits finish."
+    command="pnpm --filter @multica/web exec next start --port $FRONTEND_PORT"
+    launch_detached web pnpm --dir "$REPO_ROOT" --filter @multica/web exec next start --port "$FRONTEND_PORT"
+  else
+    command="make web-dev ENV_FILE=$ENV_FILE"
+    launch_detached web make -C "$REPO_ROOT" -s web-dev ENV_FILE="$ENV_FILE"
+  fi
+  write_component_provenance web "$WEB_MODE" "$build_id" "$command" "$source_id" "$configuration_id"
   info "web launching (pid $(cat "$(pid_file web)")), log: $(log_file web)"
 
   while [ "$waited" -lt 300 ]; do
@@ -610,14 +809,10 @@ start_web() {
       listener="$(port_listener_pid "$FRONTEND_PORT")"
       if ! listener_belongs_to_component web "$FRONTEND_PORT"; then
         stop_component web
-        die "Web on :$FRONTEND_PORT is not owned by this environment: neither its process group nor its parent chain reaches the launcher."
+        die "Web on :$FRONTEND_PORT is not owned by this environment."
       fi
-      # Same reason start_desktop records its renderer: the listener sits under
-      # a task runner that gave it its own process group, so the recorded pid is
-      # what keeps later checks cheap and lets stop_component release the port
-      # even once the group kill has missed it.
-      printf '%s\n' "$listener" > "$(listener_pid_file web)"
-      ok "web serving http://localhost:$FRONTEND_PORT (pid ${listener:-?})"
+      record_component_listener web "$listener"
+      ok "web serving http://localhost:$FRONTEND_PORT (pid ${listener:-?}, $WEB_MODE, build ${build_id:-none})"
       return 0
     fi
     component_pid web >/dev/null || { tail -20 "$(log_file web)" | sed 's/^/    /' >&2; die "web exited during startup. Log: $(log_file web)"; }
@@ -917,6 +1112,7 @@ component_state() {
   case "$1" in
     api)
       local health
+      if [ -f "$(env_file_path "$ENV_FILE" "$DIR")" ]; then load_env_file "$ENV_FILE" "$DIR"; fi
       health="$(health_json || true)"
       if [ -n "$health" ] && api_identity_matches "$health" "$(checkout_commit)"; then
         printf 'running|http://localhost:%s|pid %s commit %s started %s' "$BACKEND_PORT" \
@@ -930,11 +1126,12 @@ component_state() {
       fi
       ;;
     web)
+      if [ -f "$(env_file_path "$ENV_FILE" "$DIR")" ]; then load_env_file "$ENV_FILE" "$DIR"; fi
       if curl -sf --max-time 10 "http://localhost:${FRONTEND_PORT}" >/dev/null 2>&1 \
-        && listener_belongs_to_component web "$FRONTEND_PORT"; then
-        printf 'running|http://localhost:%s|pid %s' "$FRONTEND_PORT" "$(port_listener_pid "$FRONTEND_PORT")"
+        && web_identity_matches; then
+        printf 'running|http://localhost:%s|pid %s mode %s commit %s build %s' "$FRONTEND_PORT" "$(port_listener_pid "$FRONTEND_PORT")" "$WEB_MODE" "$(checkout_commit)" "$(json_field "$(cat "$STATE_DIR/web.running.json")" build_id || echo none)"
       elif [ -n "$(port_listener_pid "$FRONTEND_PORT")" ]; then
-        printf 'mismatch|http://localhost:%s|listener is not owned by this environment' "$FRONTEND_PORT"
+        printf 'mismatch|http://localhost:%s|listener ownership, mode or build identity differs' "$FRONTEND_PORT"
       else
         printf 'stopped|http://localhost:%s|' "$FRONTEND_PORT"
       fi
@@ -1065,6 +1262,7 @@ bind_paths() {
   DESKTOP_USER_DATA_DIR="${DESKTOP_USER_DATA_DIR:-$(desktop_user_data_dir "$DESKTOP_APP_SUFFIX")}"
   DESKTOP_ENV_FILE="${DESKTOP_ENV_FILE:-$DIR/apps/desktop/.env.development.local}"
   EXPIRES_AT="${EXPIRES_AT:-}"
+  WEB_MODE="${WEB_MODE:-development}"
   MULTICA_BIN="$DIR/server/bin/multica"
   if [ ! -x "$MULTICA_BIN" ] && [ -x "$REPO_ROOT/server/bin/multica" ]; then
     MULTICA_BIN="$REPO_ROOT/server/bin/multica"
@@ -1081,6 +1279,7 @@ save_manifest() {
     write_manifest_value TTL_HOURS "$TTL_HOURS"
     write_manifest_value EXPIRES_AT "$EXPIRES_AT"
     write_manifest_value ENV_FILE "$ENV_FILE"
+    write_manifest_value WEB_MODE "$WEB_MODE"
     write_manifest_value OFFSET "$OFFSET"
     write_manifest_value BACKEND_PORT "$BACKEND_PORT"
     write_manifest_value FRONTEND_PORT "$FRONTEND_PORT"
@@ -1096,12 +1295,13 @@ save_manifest() {
 }
 
 cmd_up() {
-  local requested="$DEFAULT_COMPONENTS" name="" owner=human ttl=0 lifecycle_requested=0 comp
+  local requested="$DEFAULT_COMPONENTS" name="" owner=human ttl=0 lifecycle_requested=0 comp requested_web_mode="$WEB_MODE"
 
   while [ $# -gt 0 ]; do
     case "$1" in
       --components|-c) requested="$(printf '%s' "$2" | tr ',' ' ')"; shift 2 ;;
       --all) requested="$ALL_COMPONENTS"; shift ;;
+      --web-mode) requested_web_mode="$2"; shift 2 ;;
       --name) name="$2"; shift 2 ;;
       --ephemeral) owner=agent; lifecycle_requested=1; [ "$ttl" != 0 ] || ttl=24; shift ;;
       --ttl) ttl="$2"; owner=agent; lifecycle_requested=1; shift 2 ;;
@@ -1109,6 +1309,7 @@ cmd_up() {
     esac
   done
 
+  case "$requested_web_mode" in development|production) ;; *) die "Invalid web mode: $requested_web_mode" ;; esac
   [ -z "$name" ] || require_env_name "$name"
   [ "$ttl" = 0 ] || require_ttl "$ttl"
 
@@ -1150,12 +1351,12 @@ Start the rest with 'make up C=api,web', or run 'make up C=daemon' from your own
   fi
 
   step "Environment"
-  ENV_FILE="$(detect_env_file)"
-  if [ ! -f "$REPO_ROOT/$ENV_FILE" ]; then
+  ENV_FILE="${ENV_FILE:-$(detect_env_file)}"
+  if [ ! -f "$(env_file_path "$ENV_FILE")" ]; then
     if [ "$ENV_FILE" = .env.worktree ]; then
       bash "$REPO_ROOT/scripts/init-worktree-env.sh" "$ENV_FILE" >/dev/null
     else
-      cp "$REPO_ROOT/.env.example" "$REPO_ROOT/$ENV_FILE"
+      cp "$REPO_ROOT/.env.example" "$(env_file_path "$ENV_FILE")"
     fi
     info "Created $ENV_FILE"
   fi
@@ -1228,6 +1429,8 @@ Start the rest with 'make up C=api,web', or run 'make up C=daemon' from your own
   release_lock
   trap - EXIT
 
+  WEB_MODE="$requested_web_mode"
+  save_manifest
   bind_paths
   # The manifest is the source of truth from here on; re-export so every child
   # sees the same values the registry recorded.
@@ -1484,7 +1687,7 @@ usage() {
 Local development environments: named, listable, deletable.
 
   dev-env.sh up      [--components api,web,daemon,desktop] [--all]
-                     [--name N] [--ephemeral] [--ttl HOURS]
+                     [--name N] [--ephemeral] [--ttl HOURS] [--web-mode development|production]
   dev-env.sh status  [name] [--json]
   dev-env.sh list    [--json]
   dev-env.sh down    [name] [--components ...]

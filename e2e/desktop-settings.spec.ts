@@ -77,8 +77,8 @@ test("desktop Help selects Updates by keyboard and grouped settings show the sto
     await page.keyboard.press("ArrowDown");
     const menu = page.getByRole("menu");
     await expect(menu).toBeVisible();
-    await expect(menu.getByRole("menuitem", { name: "文档", exact: true })).toBeFocused();
-    for (const name of ["变更说明", "反馈", "桌面端版本 0.4.40-test"]) {
+    await expect(menu.getByRole("menuitem", { name: "使用文档", exact: true })).toBeFocused();
+    for (const name of ["变更说明", "意见反馈", "桌面端版本 0.4.40-test"]) {
       await page.keyboard.press("ArrowDown");
       await expect(menu.getByRole("menuitem", { name, exact: true })).toBeFocused();
     }

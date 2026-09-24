@@ -362,7 +362,7 @@ func TestGovernanceSkills_FailureExampleContracts(t *testing.T) {
 		version  int32
 		keywords []string
 	}{
-		"multica-architecture-decision-record": {5, []string{"失败样例", "旧客户端", "兼容窗口", "hold"}},
+		"multica-architecture-decision-record": {6, []string{"失败样例", "旧客户端", "兼容窗口", "hold"}},
 		"multica-release-check":                {4, []string{"失败样例", "备份", "恢复演练", "RPO", "hold"}},
 		"multica-security-review":              {3, []string{"失败样例", "信任边界", "供应链", "hold"}},
 		"multica-progress-report":              {4, []string{"失败样例", "baseline", "观察窗口", "unknown", "补证建议", "报告员不自行创建业务任务"}},
@@ -375,7 +375,7 @@ func TestGovernanceSkills_FailureExampleContracts(t *testing.T) {
 				t.Fatalf("governance skill %q is missing from the registry", skillName)
 			}
 			// The failure-example rule is a material behavior change; the release
-			// version must move with it so existing workspace copies re-materialize.
+			// version identifies newly materialized skills; existing copies stay intact.
 			if skill.Version != want.version {
 				t.Errorf("%s version = %d, want %d after the failure-example rule", skillName, skill.Version, want.version)
 			}
@@ -467,6 +467,41 @@ func TestReliabilityAndAgentEvaluator_EvidenceContracts(t *testing.T) {
 				t.Errorf("%s role and skill are missing evidence contract %q", roleKey, marker)
 			}
 		}
+	}
+}
+
+func TestObserverReviewers_HandEvidenceGapsToAuthorizedOwners(t *testing.T) {
+	for _, tc := range []struct {
+		roleKey     string
+		fromSkill   bool
+		forbidden   string
+		prohibition string
+	}{
+		{"migration-reviewer", false, "并创建补证任务", "审查员不自行创建任务"},
+		{"architect", true, "并创建兼容性修复任务", "架构师不自行创建任务"},
+	} {
+		t.Run(tc.roleKey, func(t *testing.T) {
+			role, ok := AgentRoleTemplateByKey(tc.roleKey)
+			if !ok || role.Autonomy != AutonomyObserver {
+				t.Fatalf("%s must remain an Observer", tc.roleKey)
+			}
+			body := role.Instructions()
+			if tc.fromSkill {
+				skill, ok := RoleSkillTemplateByName("multica-architecture-decision-record")
+				if !ok {
+					t.Fatal("ADR skill is missing")
+				}
+				body = skill.Content
+			}
+			if strings.Contains(body, tc.forbidden) {
+				t.Errorf("Observer contract still requires forbidden action %q", tc.forbidden)
+			}
+			for _, marker := range []string{"当前任务评论", "证据缺口", "建议任务", "负责人", "验收条件", "有创建权限", "创建", tc.prohibition} {
+				if !strings.Contains(body, marker) {
+					t.Errorf("%s evidence handoff is missing %q", tc.roleKey, marker)
+				}
+			}
+		})
 	}
 }
 

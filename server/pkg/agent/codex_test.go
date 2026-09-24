@@ -3784,6 +3784,18 @@ func TestCodexExecuteSemanticInactivityAllowsContinuousMessages(t *testing.T) {
 		t.Skip("shell-script fixture is POSIX-only")
 	}
 
+	// Keep the stream longer than one inactivity window, with ample room for
+	// subprocess scheduling between messages under the race-enabled suite.
+	// Measuring received messages below excludes initialization and cleanup.
+	const inactivityTimeout = time.Second
+	const messageCount = 25
+	var progress strings.Builder
+	for i := range messageCount {
+		fmt.Fprintf(&progress, "echo '{\"jsonrpc\":\"2.0\",\"method\":\"item/completed\",\"params\":{\"threadId\":\"thr-progress\",\"item\":{\"type\":\"agentMessage\",\"id\":\"msg-%d\",\"text\":\"still working\"}}}'\n", i)
+		fmt.Fprintf(&progress, "echo '{\"jsonrpc\":\"2.0\",\"method\":\"item/completed\",\"params\":{\"threadId\":\"thr-progress\",\"item\":{\"type\":\"commandExecution\",\"id\":\"cmd-%d\",\"aggregatedOutput\":\"ok\"}}}'\n", i)
+		progress.WriteString("sleep 0.05\n")
+	}
+
 	fakePath := writeFakeCodexAppServer(t, ""+
 		`read line`+"\n"+
 		`echo '{"jsonrpc":"2.0","id":1,"result":{}}'`+"\n"+
@@ -3793,19 +3805,47 @@ func TestCodexExecuteSemanticInactivityAllowsContinuousMessages(t *testing.T) {
 		`read line`+"\n"+
 		`echo '{"jsonrpc":"2.0","id":3,"result":{}}'`+"\n"+
 		`echo '{"jsonrpc":"2.0","method":"turn/started","params":{"threadId":"thr-progress","turn":{"id":"turn-progress"}}}'`+"\n"+
-		`sleep 0.05`+"\n"+
-		`echo '{"jsonrpc":"2.0","method":"item/completed","params":{"threadId":"thr-progress","item":{"type":"agentMessage","id":"msg-1","text":"still working"}}}'`+"\n"+
-		`sleep 0.05`+"\n"+
-		`echo '{"jsonrpc":"2.0","method":"item/completed","params":{"threadId":"thr-progress","item":{"type":"commandExecution","id":"cmd-1","aggregatedOutput":"ok"}}}'`+"\n"+
-		`sleep 0.05`+"\n"+
+		progress.String()+
 		`echo '{"jsonrpc":"2.0","method":"turn/completed","params":{"threadId":"thr-progress","turn":{"id":"turn-progress","status":"completed"}}}'`+"\n")
 
-	result := executeFakeCodex(t, fakePath, ExecOptions{
+	backend, err := New("codex", Config{ExecutablePath: fakePath, Logger: slog.Default()})
+	if err != nil {
+		t.Fatalf("new codex backend: %v", err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	session, err := backend.Execute(ctx, "prompt", ExecOptions{
 		Timeout:                   5 * time.Second,
-		SemanticInactivityTimeout: 90 * time.Millisecond,
+		SemanticInactivityTimeout: inactivityTimeout,
 	})
+	if err != nil {
+		t.Fatalf("execute: %v", err)
+	}
+	var firstProgress, lastProgress time.Time
+	var textCount, toolResultCount int
+	for msg := range session.Messages {
+		switch msg.Type {
+		case MessageText:
+			textCount++
+		case MessageToolResult:
+			toolResultCount++
+		default:
+			continue
+		}
+		lastProgress = time.Now()
+		if firstProgress.IsZero() {
+			firstProgress = lastProgress
+		}
+	}
+	result := <-session.Result
 	if result.Status != "completed" {
 		t.Fatalf("expected completed, got status=%q error=%q", result.Status, result.Error)
+	}
+	if textCount != messageCount || toolResultCount != messageCount {
+		t.Fatalf("expected %d text and tool-result messages, got %d text and %d tool-result", messageCount, textCount, toolResultCount)
+	}
+	if elapsed := lastProgress.Sub(firstProgress); elapsed <= inactivityTimeout {
+		t.Fatalf("progress spanned %s, must exceed the initial %s inactivity window", elapsed, inactivityTimeout)
 	}
 	if !strings.Contains(result.Output, "still working") {
 		t.Fatalf("expected streamed text in output, got %q", result.Output)

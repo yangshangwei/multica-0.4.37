@@ -47,8 +47,11 @@ test.use({ viewport: { width: 1440, height: 1000 }, trace: "retain-on-failure" }
 
 async function openPreferences(page: Page, slug: string) {
   await page.getByRole("link", { name: "Settings", exact: true }).click();
-  await expect(page).toHaveURL(new RegExp(`/${slug}/settings(?:\\?|$)`));
+  await expect(page).toHaveURL(`/${slug}/settings`);
+  await expect(page.getByRole("tab", { name: "Profile", exact: true })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("tab", { name: "Preferences", exact: true }).click();
+  await expect(page).toHaveURL(`/${slug}/settings?tab=preferences`);
+  await expect(page.getByRole("tab", { name: "Preferences", exact: true })).toHaveAttribute("aria-selected", "true");
   await expect(page.getByRole("heading", { name: "Preferences", exact: true })).toBeVisible();
 }
 
@@ -86,6 +89,7 @@ test("grouped settings remain reachable from the sidebar and floating chat survi
   await floating.check();
   await expect(launcher).toBeVisible();
   await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
   await expect(launcher).toBeVisible();
   await launcher.click();
@@ -116,6 +120,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await priority.uncheck();
 
   await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
   await openPreferences(page, slug);
   await expect(priority).not.toBeChecked();
@@ -151,6 +156,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await expect(priority).not.toBeChecked();
   await priority.check();
   await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
   await page.getByRole("button", { name: "New Issue", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "No priority", exact: true })).toBeVisible();
