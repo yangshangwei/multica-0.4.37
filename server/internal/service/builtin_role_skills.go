@@ -65,7 +65,7 @@ var builtinRoleSkillVersions = map[string]int32{
 	"multica-security-review":                 3,
 	"multica-release-check":                   4,
 	"multica-documentation-change":            2,
-	"multica-progress-report":                 3,
+	"multica-progress-report":                 4,
 	"multica-reliability-engineering":         2,
 	"multica-agent-evaluation":                1,
 	"multica-experience-validation":           1,

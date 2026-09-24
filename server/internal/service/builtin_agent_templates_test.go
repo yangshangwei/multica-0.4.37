@@ -309,8 +309,8 @@ func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
 	if !ok {
 		t.Fatal("multica-progress-report skill missing from the registry")
 	}
-	if skill.Version != 3 {
-		t.Errorf("progress report skill version = %d, want 3 after adding the failure-example governance rule", skill.Version)
+	if skill.Version != 4 {
+		t.Errorf("progress report skill version = %d, want 4 after preserving read-only evidence follow-up", skill.Version)
 	}
 	for name, body := range map[string]string{"role": role.Instructions(), "skill": skill.Content} {
 		t.Run(name, func(t *testing.T) {
@@ -365,7 +365,7 @@ func TestGovernanceSkills_FailureExampleContracts(t *testing.T) {
 		"multica-architecture-decision-record": {5, []string{"失败样例", "旧客户端", "兼容窗口", "hold"}},
 		"multica-release-check":                {4, []string{"失败样例", "备份", "恢复演练", "RPO", "hold"}},
 		"multica-security-review":              {3, []string{"失败样例", "信任边界", "供应链", "hold"}},
-		"multica-progress-report":              {3, []string{"失败样例", "baseline", "观察窗口", "unknown"}},
+		"multica-progress-report":              {4, []string{"失败样例", "baseline", "观察窗口", "unknown", "补证建议", "报告员不自行创建业务任务"}},
 		"multica-reliability-engineering":      {2, []string{"失败样例", "恢复演练", "unknown"}},
 	}
 	for skillName, want := range cases {

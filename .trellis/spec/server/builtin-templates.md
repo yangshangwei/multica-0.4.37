@@ -92,6 +92,11 @@ sourced upstream from the review gate, and the product-outcome check hands off t
 progress-report owner and stays `unknown` until a baseline and observation window
 exist.
 
+Progress-report version 4 keeps evidence-gap follow-up inside the report's
+read-only business boundary: list missing evidence and a suggested owner in the
+current report issue, then hand task creation to that owner. Failure examples
+must not grant writes that the role and skill permission sections prohibit.
+
 ## Role skill body language and explicit workspace updates
 
 Role, squad-leader, squad, and Mika instruction bodies are authored in

@@ -315,8 +315,8 @@ func TestCreateAgentFromTemplate_ProgressReporterUsesServerDefaults(t *testing.T
 	var content, description, origin, version string
 	dbfx.QueryRow(t, `SELECT content, description, config->'origin'->>'type', config->'origin'->>'version' FROM skill WHERE id = $1`,
 		created.Skills[0].ID).Scan(&content, &description, &origin, &version)
-	if content != skill.Content || description != skill.Description || origin != roleSkillOriginType || version != "3" {
-		t.Error("reporter's materialized role skill must preserve the embedded body, description and v3 provenance")
+	if content != skill.Content || description != skill.Description || origin != roleSkillOriginType || version != "4" {
+		t.Error("reporter's materialized role skill must preserve the embedded body, description and v4 provenance")
 	}
 }
 
