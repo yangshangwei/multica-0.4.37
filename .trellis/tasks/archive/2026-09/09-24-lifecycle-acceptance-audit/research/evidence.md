@@ -41,7 +41,7 @@
 | `09-24-lifecycle-implementation` | in_progress | 历史任务未归档 |
 | `09-24-lifecycle-closure` | in_progress | 历史任务仍有未勾选验收项 |
 | `09-24-lifecycle-runtime-handoffs` | in_progress | 运行时能力已有证据但任务未归档 |
-| `09-24-lifecycle-acceptance-audit` | in_progress | 当前任务，证据收口中 |
+| `09-24-lifecycle-acceptance-audit` | completed (archived) | 本任务证据已收口并归档；真实模型仍是授权阻塞 |
 
 不得把父任务标记 completed；当前状态矩阵明确存在未完成项。
 
