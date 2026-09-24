@@ -68,7 +68,9 @@ var builtinRoleSkillVersions = map[string]int32{
 	"multica-progress-report":                 2,
 	"multica-reliability-engineering":         1,
 	"multica-agent-evaluation":                1,
+	"multica-experience-validation":           1,
 	"multica-incident-learning":               1,
+	"multica-migration-review":                1,
 	"multica-rollout-and-canary-verification": 1,
 }
 
@@ -133,7 +135,7 @@ func RoleSkillTemplates() []RoleSkillTemplate {
 }
 
 // sortStrings is a local insertion sort to keep this file free of a sort import
-// for one call; the slice is thirteen entries long.
+// for one call; the slice is fifteen entries long.
 func sortStrings(values []string) {
 	for i := 1; i < len(values); i++ {
 		for j := i; j > 0 && values[j] < values[j-1]; j-- {

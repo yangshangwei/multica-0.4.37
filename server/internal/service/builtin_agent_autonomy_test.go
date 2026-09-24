@@ -262,8 +262,9 @@ func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing
 
 func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
 	want := map[string][]string{
-		"review-gate": {"agent-evaluator"},
-		"release":     {"reliability-engineer", "agent-evaluator"},
+		"review-gate": {"agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
+		"release":     {"reliability-engineer", "agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
+		"maintenance": {"migration-reviewer"},
 		"incident":    {"reliability-engineer"},
 	}
 	for _, squad := range SquadTemplates() {
@@ -280,6 +281,9 @@ func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
 	release, _ := SquadTemplateByKey("release")
 	if !strings.Contains(release.Instructions(), "观察窗口") || !strings.Contains(release.Instructions(), "同一份产物") {
 		t.Error("release routing policy must require a same-artifact observation window")
+	}
+	if !strings.Contains(release.Instructions(), "可访问性") || !strings.Contains(release.Instructions(), "旧客户端") {
+		t.Error("release routing policy must require experience and migration evidence when applicable")
 	}
 	incident, _ := SquadTemplateByKey("incident")
 	if !strings.Contains(incident.Instructions(), "复盘") || !strings.Contains(incident.Instructions(), "预防") {

@@ -46,9 +46,17 @@
       "name": "智能体评测",
       "description": "用版本化评测用例验证 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟和漂移。"
     },
+    "multica-experience-validation": {
+      "name": "体验验证",
+      "description": "用浏览器、跨端和可访问性证据验证关键用户路径；缺少证据时标记 unknown，并报告结果风险。"
+    },
     "multica-incident-learning": {
       "name": "事故学习",
       "description": "事故恢复后整理脱敏事实、未知项和预防任务；为每项措施指定负责人、验收信号和重复事故关联。"
+    },
+    "multica-migration-review": {
+      "name": "迁移审查",
+      "description": "审查 schema、API 和客户端迁移的兼容窗口、校验、幂等、重试和回滚证据；材料缺失时阻塞。"
     },
     "multica-rollout-and-canary-verification": {
       "name": "发布后与 Canary 验证",

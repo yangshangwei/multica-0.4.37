@@ -45,8 +45,9 @@ func TestSkillTemplateCatalog_RouterAndWorkspaceGates(t *testing.T) {
 					Templates []map[string]any `json:"templates"`
 				}
 				response.JSON(&out)
-				if len(out.Templates) != 8 {
-					t.Fatalf("templates = %d, want 8 in an empty workspace", len(out.Templates))
+				wantTemplates := len(service.RoleSkillTemplates())
+				if len(out.Templates) != wantTemplates {
+					t.Fatalf("templates = %d, want %d in an empty workspace", len(out.Templates), wantTemplates)
 				}
 			}
 		})

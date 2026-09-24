@@ -18,8 +18,8 @@ concurrency cap is one. Contributor is an existing permission level, not a
 report-only API sandbox; never claim the role's narrower instructions add a
 new server-enforced boundary.
 
-Diagnostician brings the listed roster to twelve roles and the role-skill catalog
-to thirteen entries. It uses Contributor, concurrency one, and only
+Diagnostician brings the listed roster to fourteen roles and the role-skill catalog
+to fifteen entries. It uses Contributor, concurrency one, and only
 `multica-debugging` (`quality`, `microscope`). It reproduces an observed failure,
 tests hypotheses, and hands evidence and a suggested fix direction to the
 Implementer; it does not submit the fix or change issue status. Confirmed causes
@@ -39,6 +39,18 @@ versioned Agent/Skill/MCP cases and report correctness, safety, cost, latency
 and drift; it does not replace code, security, QA or release review. Both roles
 mark missing baselines or signals as unknown and require human approval for
 production, credential, customer-data or paid-model actions.
+
+Experience Validation Engineer and Migration Reviewer are listed specialists after
+the two-cycle workload gate was met. Experience Validation Engineer uses Contributor,
+concurrency two, and `multica-experience-validation` (`quality`, `globe`) to provide
+browser/client, accessibility and outcome-risk evidence. Migration Reviewer uses
+Observer, concurrency two, and `multica-migration-review` (`operations`, `database`)
+to provide compatibility-window, validation, retry and rollback evidence. Neither
+executes production actions or changes code, schema or client contracts. Review
+Gate and Release seat both roles; Maintenance also seats Migration Reviewer for
+upgrades that change a contract or stored data. The corresponding squad
+instructions must describe the same handoff so routing advice does not conflict
+at claim time.
 
 `multica-incident-learning` (`quality`, `repeat`) and
 `multica-rollout-and-canary-verification` (`operations`, `chart-line`) are
@@ -90,7 +102,7 @@ Stale writes return 409 without updates or events; successful writes keep the
 normal notification path. Conditional rollback also compares the recorded
 post-write timestamp and validates the original backup hash.
 
-The thirteen `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
+The fifteen `builtin_role_skills/*/SKILL.md` bodies and discovery descriptions use
 Simplified Chinese. Descriptions state when the skill applies and its concrete
 result, preserving important delivery and authority boundaries without repeating
 the workflow. Keep canonical names, other frontmatter, CLI syntax and
@@ -133,7 +145,7 @@ updated body through the existing content-hash cache.
 
 ## Skill template catalog
 
-`GET /api/skills/templates` returns the thirteen role-skill templates under the
+`GET /api/skills/templates` returns the fifteen role-skill templates under the
 existing authenticated workspace route group. It reads the embedded registry,
 does not materialize workspace rows, and returns no database identity. The UI
 edits a snapshot and creates a new ordinary skill via `POST /api/skills`.

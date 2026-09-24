@@ -240,10 +240,10 @@ func TestCreateSquadFromTemplate_StaffsASecondBatchSquad(t *testing.T) {
 	if gate.Squad.Instructions != template.Instructions() {
 		t.Error("squad instructions are not the template's routing policy verbatim")
 	}
-	// Its own lead, Security Reviewer and Agent Evaluator; the Code Reviewer and QA
-	// Engineer came from feature-delivery.
-	if len(gate.CreatedAgents) != 3 {
-		t.Errorf("review-gate created %d agents, want 3 (lead, security reviewer and agent evaluator)", len(gate.CreatedAgents))
+	// Its own lead, Security Reviewer, Agent Evaluator and the two specialist roles;
+	// the Code Reviewer and QA Engineer came from feature-delivery.
+	if len(gate.CreatedAgents) != 5 {
+		t.Errorf("review-gate created %d agents, want 5 (lead, security reviewer, agent evaluator and two specialists)", len(gate.CreatedAgents))
 	}
 	if len(gate.ReusedAgents) != 2 {
 		t.Errorf("review-gate reused %d agents, want 2 (code reviewer, QA engineer)", len(gate.ReusedAgents))

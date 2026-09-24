@@ -4,7 +4,7 @@ package service
 // given, roughly in the order a change moves through a team — so this is a slice
 // rather than a map.
 //
-// Deliberately twelve roles, not twenty. Technology-specific variants (frontend,
+// Deliberately fourteen roles, not twenty. Technology-specific variants (frontend,
 // backend, mobile, data) are NOT separate templates: they are the same
 // Implementer with different skills and project resources attached. Splitting by
 // stack multiplies prompts that all say the same thing and leaves a team picking
@@ -272,6 +272,50 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 			"zh": "用版本化用例评测 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟与漂移。",
 			"ko": "버전이 고정된 케이스로 Agent·Skill·MCP 변경의 정확성·안전성·비용·지연·드리프트를 평가합니다.",
 			"ja": "バージョン化したケースで Agent・Skill・MCP 変更の正確性・安全性・コスト・遅延・ドリフトを評価します。",
+		},
+	},
+	{
+		Key:                "experience-validation-engineer",
+		Version:            1,
+		Listed:             true,
+		DefaultName:        "Experience Validation Engineer",
+		AvatarEmoji:        "🖥️",
+		Autonomy:           AutonomyContributor,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-experience-validation"},
+		Titles: map[string]string{
+			"en": "Experience Validation Engineer",
+			"zh": "体验验证工程师",
+			"ko": "사용자 경험 검증 엔지니어",
+			"ja": "体験検証エンジニア",
+		},
+		Descriptions: map[string]string{
+			"en": "Validates critical user journeys across browsers and clients with accessibility evidence and a concrete outcome risk.",
+			"zh": "用浏览器、跨端和可访问性证据验证关键用户路径，并说明结果风险。",
+			"ko": "브라우저와 클라이언트 전반의 핵심 사용자 여정을 접근성 증거와 결과 위험으로 검증합니다.",
+			"ja": "ブラウザとクライアントをまたぐ重要なユーザージャーニーを、アクセシビリティの証拠と成果リスクで検証します。",
+		},
+	},
+	{
+		Key:                "migration-reviewer",
+		Version:            1,
+		Listed:             true,
+		DefaultName:        "Migration Reviewer",
+		AvatarEmoji:        "🗃️",
+		Autonomy:           AutonomyObserver,
+		MaxConcurrentTasks: 2,
+		RoleSkills:         []string{"multica-migration-review"},
+		Titles: map[string]string{
+			"en": "Migration Reviewer",
+			"zh": "迁移审查员",
+			"ko": "마이그레이션 리뷰어",
+			"ja": "マイグレーションレビュアー",
+		},
+		Descriptions: map[string]string{
+			"en": "Reviews schema, API and client migrations for compatibility windows, validation, retry and rollback evidence.",
+			"zh": "审查 schema、API 和客户端迁移的兼容窗口、校验、重试和回滚证据。",
+			"ko": "스키마·API·클라이언트 마이그레이션의 호환 창, 검증, 재시도와 롤백 증거를 검토합니다.",
+			"ja": "スキーマ・API・クライアント移行の互換期間、検証、再試行、ロールバックの証拠を確認します。",
 		},
 	},
 	// The squad-leader definitions, one per built-in squad template. Unlisted: they

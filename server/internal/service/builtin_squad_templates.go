@@ -207,7 +207,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	// the picker increases monotonically down the list.
 	{
 		Key:               "review-gate",
-		Version:           2,
+		Version:           3,
 		DefaultName:       "Review Gate Squad",
 		AvatarEmoji:       "🚧",
 		LeaderTemplateKey: "review-gate-lead",
@@ -235,6 +235,18 @@ var builtinSquadTemplates = []SquadTemplate{
 				"zh": "在门禁关闭前用版本化用例评测 Agent、Skill 和 MCP 改动",
 				"ko": "게이트를 닫기 전에 버전 고정 케이스로 Agent·Skill·MCP 변경을 평가",
 				"ja": "ゲートを閉じる前に、バージョン化したケースで Agent・Skill・MCP の変更を評価",
+			}},
+			{TemplateKey: "experience-validation-engineer", Roles: map[string]string{
+				"en": "Validates critical browser/client journeys and accessibility evidence before the gate closes",
+				"zh": "门禁关闭前验证关键浏览器/客户端路径和可访问性证据",
+				"ko": "게이트를 닫기 전에 핵심 브라우저·클라이언트 경로와 접근성 증거를 검증",
+				"ja": "ゲートを閉じる前に、重要なブラウザ・クライアント経路とアクセシビリティの証拠を検証",
+			}},
+			{TemplateKey: "migration-reviewer", Roles: map[string]string{
+				"en": "Reviews migration compatibility, validation and recovery evidence before the gate closes",
+				"zh": "门禁关闭前审查迁移兼容性、校验和恢复证据",
+				"ko": "게이트를 닫기 전에 마이그레이션 호환성·검증·복구 증거를 검토",
+				"ja": "ゲートを閉じる前に、移行の互換性・検証・復旧の証拠を確認",
 			}},
 		},
 		Titles: map[string]string{
@@ -318,7 +330,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "maintenance",
-		Version:           2,
+		Version:           3,
 		DefaultName:       "Maintenance Squad",
 		AvatarEmoji:       "🧹",
 		LeaderTemplateKey: "maintenance-lead",
@@ -347,6 +359,12 @@ var builtinSquadTemplates = []SquadTemplate{
 				"ko": "업그레이드가 정상 동작을 바꾸지 않았음을 검증",
 				"ja": "アップグレードが正常な挙動を変えていないことを検証",
 			}},
+			{TemplateKey: "migration-reviewer", Roles: map[string]string{
+				"en": "Reviews compatibility and recovery evidence when an upgrade changes a contract or stored data",
+				"zh": "升级改变契约或存储数据时审查兼容性和恢复证据",
+				"ko": "업그레이드가 계약이나 저장 데이터를 바꾸면 호환성과 복구 증거를 검토",
+				"ja": "アップグレードが契約や保存データを変えるとき、互換性と復旧の証拠を確認",
+			}},
 		},
 		Titles: map[string]string{
 			"en": "Maintenance Squad",
@@ -363,7 +381,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "release",
-		Version:           2,
+		Version:           3,
 		DefaultName:       "Release Squad",
 		AvatarEmoji:       "📦",
 		LeaderTemplateKey: "release-lead",
@@ -397,6 +415,18 @@ var builtinSquadTemplates = []SquadTemplate{
 				"zh": "发布决策前核对 Agent、Skill、MCP 的评测证据和漂移",
 				"ko": "릴리스 결정 전에 Agent·Skill·MCP 평가 증거와 드리프트를 확인",
 				"ja": "リリース判断前に Agent・Skill・MCP の評価証拠とドリフトを確認",
+			}},
+			{TemplateKey: "experience-validation-engineer", Roles: map[string]string{
+				"en": "Validates critical journeys and accessibility on the exact artifact before approval",
+				"zh": "审批前在同一产物上验证关键路径和可访问性",
+				"ko": "승인 전에 동일 산출물에서 핵심 경로와 접근성을 검증",
+				"ja": "承認前に同一成果物で重要な経路とアクセシビリティを検証",
+			}},
+			{TemplateKey: "migration-reviewer", Roles: map[string]string{
+				"en": "Checks old-client compatibility, migration validation and rollback limits before approval",
+				"zh": "审批前核对旧客户端兼容性、迁移校验和回滚限制",
+				"ko": "승인 전에 구 클라이언트 호환성·마이그레이션 검증·롤백 한계를 확인",
+				"ja": "承認前に旧クライアント互換性・移行検証・ロールバック制限を確認",
 			}},
 		},
 		Titles: map[string]string{

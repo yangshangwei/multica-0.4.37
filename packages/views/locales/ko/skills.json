@@ -46,9 +46,17 @@
       "name": "에이전트 평가",
       "description": "Agent·Skill·MCP 변경을 버전이 고정된 케이스로 정확성·안전성·비용·지연·드리프트 관점에서 평가합니다. 비식별화된 추적을 보존하고 프로덕션 설정은 변경하지 않습니다."
     },
+    "multica-experience-validation": {
+      "name": "경험 검증",
+      "description": "브라우저·클라이언트 전반의 핵심 사용자 여정을 접근성·크로스 플랫폼 증거로 검증하고, 증거가 없으면 unknown과 결과 위험을 기록합니다."
+    },
     "multica-incident-learning": {
       "name": "인시던트 학습",
       "description": "복구 후 비식별화된 사실·가설·unknown을 구분하고 담당자·수용 신호·중복 링크가 있는 예방 작업을 만듭니다."
+    },
+    "multica-migration-review": {
+      "name": "마이그레이션 검토",
+      "description": "스키마·API·클라이언트 마이그레이션의 호환 창, 검증, 멱등성, 재시도와 롤백 증거를 검토하고 자료가 없으면 보류합니다."
     },
     "multica-rollout-and-canary-verification": {
       "name": "롤아웃 및 Canary 검증",

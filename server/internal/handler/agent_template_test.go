@@ -42,8 +42,8 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 		newRequest("GET", "/api/agents/templates?language=zh", nil)).
 		Want(http.StatusOK).JSON(&out)
 
-	if len(out.Templates) != 12 {
-		t.Fatalf("templates = %d, want 12", len(out.Templates))
+	if len(out.Templates) != 14 {
+		t.Fatalf("templates = %d, want 14", len(out.Templates))
 	}
 	for _, template := range out.Templates {
 		if template.Key == "" || template.Name == "" {
@@ -72,6 +72,45 @@ func TestListAgentRoleTemplates_ReturnsTheRosterWithInstructions(t *testing.T) {
 	diagnostician := findTemplate(t, out.Templates, "diagnostician")
 	if diagnostician.Title != "诊断工程师" || diagnostician.Name != "诊断工程师" {
 		t.Errorf("diagnostician title/name = %q/%q, want 诊断工程师/诊断工程师", diagnostician.Title, diagnostician.Name)
+	}
+	for _, key := range []string{"experience-validation-engineer", "migration-reviewer"} {
+		template := findTemplate(t, out.Templates, key)
+		if template.Key != key || strings.TrimSpace(template.Instructions) == "" {
+			t.Errorf("specialist template %q missing from API roster: %+v", key, template)
+		}
+	}
+}
+
+func TestCreateAgentFromTemplate_WorkloadBackedSpecialistsCopyTheirContracts(t *testing.T) {
+	runtimeID := handlerTestRuntimeID(t)
+	for _, tc := range []struct {
+		key   string
+		skill string
+	}{
+		{key: "experience-validation-engineer", skill: "multica-experience-validation"},
+		{key: "migration-reviewer", skill: "multica-migration-review"},
+	} {
+		t.Run(tc.key, func(t *testing.T) {
+			cleanupRoleSkill(t, tc.skill)
+			var out AgentResponse
+			testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+				"template_key": tc.key,
+				"runtime_id":   runtimeID,
+				"language":     "zh",
+			})).Want(http.StatusCreated).JSON(&out)
+			cleanupTemplateAgent(t, out.ID)
+
+			role, ok := service.AgentRoleTemplateByKey(tc.key)
+			if !ok {
+				t.Fatalf("template %q missing from registry", tc.key)
+			}
+			if out.TemplateKey != tc.key || out.TemplateVersion != role.Version || out.Instructions != role.Instructions() {
+				t.Errorf("%s provenance/instructions = %s v%d, want %s v%d and canonical body", tc.key, out.TemplateKey, out.TemplateVersion, tc.key, role.Version)
+			}
+			if len(out.Skills) != 1 || out.Skills[0].Name != tc.skill {
+				t.Errorf("%s skills = %+v, want %s", tc.key, out.Skills, tc.skill)
+			}
+		})
 	}
 }
 

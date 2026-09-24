@@ -121,7 +121,7 @@ multica agent copy <source-agent-id> --runtime-id <target> --model <model>  # cr
 ## Creating from a built-in role template
 
 `POST /api/agents/from-template` creates an ordinary agent seeded from one of the
-platform's twelve listed role templates (`GET /api/agents/templates` lists them,
+platform's fourteen listed role templates (`GET /api/agents/templates` lists them,
 with the full instructions text). There is no CLI command for this yet — it is
 the web creation flow's third starting point.
 

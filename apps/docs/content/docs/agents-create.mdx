@@ -25,7 +25,7 @@ Build with AI needs an online runtime for the Builder conversation. Either way, 
 
 ## Role templates
 
-**Use a template** starts from one of ten built-in roles:
+**Use a template** starts from one of fourteen built-in roles:
 
 | Role | What it produces | Autonomy |
 |---|---|---|
@@ -39,6 +39,10 @@ Build with AI needs an online runtime for the Builder conversation. Either way, 
 | **Release Engineer** | A release plan with a rollback, and approval requests for anything touching production | Operator |
 | **Technical Writer** | The changelog, API reference, and runbook the change requires | Contributor |
 | **Progress Reporter** | Daily and weekly reports with traceable task counts, progress and blockers | Contributor |
+| **Reliability Engineer** | SLO, error-budget, capacity and recovery evidence from runtime signals | Contributor |
+| **Agent Evaluator** | Versioned Agent, Skill and MCP cases with correctness, safety, cost, latency and drift conclusions | Observer |
+| **Experience Validation Engineer** | Browser/client critical-path, accessibility and outcome-risk evidence | Contributor |
+| **Migration Reviewer** | Compatibility-window, validation, retry and rollback evidence for schema/API/client migrations | Observer |
 
 Each template carries responsibilities, what the role must NOT do, what it reads, the output format, its definition of done, and when to escalate to a person. The picker shows the full instructions before you create anything.
 

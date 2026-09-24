@@ -46,9 +46,17 @@
       "name": "エージェント評価",
       "description": "Agent、Skill、MCP の変更をバージョン化ケースで正確性・安全性・コスト・遅延・ドリフトの観点から評価します。脱敏した軌跡を保存し、本番設定は変更しません。"
     },
+    "multica-experience-validation": {
+      "name": "体験検証",
+      "description": "ブラウザ・クライアントをまたぐ重要なユーザージャーニーをアクセシビリティとクロスプラットフォームの証拠で検証し、証拠がなければ unknown と成果リスクを記録します。"
+    },
     "multica-incident-learning": {
       "name": "インシデント学習",
       "description": "復旧後に脱敏した事実・仮説・unknown を分け、担当者・受け入れシグナル・重複リンク付きの予防タスクを作成します。"
+    },
+    "multica-migration-review": {
+      "name": "移行レビュー",
+      "description": "スキーマ・API・クライアント移行の互換期間、検証、冪等性、再試行、ロールバックの証拠を確認し、資料がなければ保留します。"
     },
     "multica-rollout-and-canary-verification": {
       "name": "ロールアウトと Canary の検証",
