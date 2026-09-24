@@ -470,5 +470,5 @@ bash scripts/desktop-updates.sh stop
 
 - [桌面端内网升级方案](desktop-intranet-update-plan.zh-CN.md)：设计约定、平台差异和验收标准。
 - [本机桌面更新下载服务](desktop-updates-local.zh-CN.md)：开发机上的启动、发布及配置工具。
-- [任务验证记录](../.trellis/tasks/09-24-desktop-intranet-updates/verification.md)：已有验证证据与尚未覆盖的范围。
+- [任务验证记录](../.trellis/tasks/archive/2026-09/09-24-desktop-intranet-updates/verification.md)：已有验证证据与尚未覆盖的范围。
 - [2026-09-24 手册复验记录](desktop-intranet-update-verification-2026-09-24.zh-CN.md)：逐项命令、实际结果、临时 Nginx 部署及未验收范围。

@@ -209,7 +209,7 @@ node --test scripts/offline-changelog.test.mjs
 
 ## 10. 原始证据
 
-- [机器可读复验摘要](../.trellis/tasks/09-24-desktop-intranet-updates/reverification-2026-09-24.json)：本次检查项、实际值、时间和范围限制。
+- [机器可读复验摘要](../.trellis/tasks/archive/2026-09/09-24-desktop-intranet-updates/reverification-2026-09-24.json)：本次检查项、实际值、时间和范围限制。
 - 本机完整命令输出：`.omx/reports/desktop-updates-recheck-20260924/results.json`。
 - 本机复验脚本：`.omx/reports/desktop-updates-recheck-20260924/verify.py`。
 - 首次重启检查失败及端口变化证据：同目录的 `results-before-port-fix.json` 和 `restart-port-probe.json`。
@@ -218,7 +218,7 @@ node --test scripts/offline-changelog.test.mjs
 
 ## 11. 新增运维脚本后的验证
 
-2026-09-24 北京时间 23:27:00 至 23:27:39，完成了新命令的实际 Docker 演练。持久保存的结果见[运维脚本验证摘要](../.trellis/tasks/09-24-desktop-intranet-updates/operations-verification.json)。
+2026-09-24 北京时间 23:27:00 至 23:27:39，完成了新命令的实际 Docker 演练。持久保存的结果见[运维脚本验证摘要](../.trellis/tasks/archive/2026-09/09-24-desktop-intranet-updates/operations-verification.json)。
 
 本次增加了 `updates.env` / `--env-file`、`export-image`、`collect` 和 `verify`。`publish`、`configure` 继续调用现有实现；HTTP 校验与发布工具复用同一套元数据引用校验。Shell 行为测试已加入 CI。
 

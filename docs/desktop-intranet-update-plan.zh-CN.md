@@ -368,7 +368,7 @@ pnpm -C apps/desktop exec vitest run \
 
 ### 12.1 本机实施验证
 
-Trellis 任务：`09-24-desktop-intranet-updates`。Nginx 在本机 `127.0.0.1:18080` 提供 `/desktop/` 下载，宿主机存储为 `data/desktop-updates/public`。
+Trellis 开发任务：[09-24-desktop-intranet-updates](../.trellis/tasks/archive/2026-09/09-24-desktop-intranet-updates/task.json)，已完成并归档；真实终端安装仍按操作手册单独验收。Nginx 在本机 `127.0.0.1:18080` 提供 `/desktop/` 下载，宿主机存储为 `data/desktop-updates/public`。
 
 - 已发布现有 `0.4.48-dirty` Windows ia32 测试包（不是正式稳定发布）。
 - 完整下载 165,407,520 字节，SHA-512 与打包元数据一致；blockmap 与源文件一致。

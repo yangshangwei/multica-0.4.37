@@ -16,4 +16,4 @@ Rollback: stop the separate Compose project without deleting host data; restore 
 - [x] Expand the operator runbook, add the env template and explain the separate business-server upgrade workflow.
 - [x] Exercise the real CLI against an isolated Nginx project and actual ia32 build; record ten checks in operations-verification.json. Real installed-client acceptance is still pending.
 
-Local implementation and HTTP acceptance are complete. Keep the task active for operator review and real installed-client acceptance. The existing dirty ia32 build was served unchanged with explicit prerelease opt-in. No user Desktop configuration was modified and no application was installed or restarted.
+Local implementation and HTTP acceptance are complete. The development task is archived at the user's request; real installed-client acceptance remains a deployment follow-up in the operator runbook. The existing dirty ia32 build was served unchanged with explicit prerelease opt-in. No user Desktop configuration was modified and no application was installed or restarted.

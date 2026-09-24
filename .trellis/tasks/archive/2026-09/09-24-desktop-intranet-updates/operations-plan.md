@@ -33,6 +33,7 @@ All lanes preserve other agents' edits and pre-existing unrelated dirty files. N
 All operator-helper and documentation work is implemented and locally verified.
 See [operations-verification.json](operations-verification.json) for ten actual
 Docker/HTTP checks and test counts, and
-[the operator runbook](../../../docs/desktop-intranet-update-runbook.zh-CN.md)
-for first deployment and repeated release steps. Keep this task in progress
-until signed installed-client acceptance is performed in the target intranet.
+[the operator runbook](../../../../../docs/desktop-intranet-update-runbook.zh-CN.md)
+for first deployment and repeated release steps. The development task is archived
+at the user's request. Signed installed-client acceptance remains a deployment
+follow-up in the runbook and is not claimed complete by this archive.
