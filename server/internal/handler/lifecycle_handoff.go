@@ -207,7 +207,7 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			return
 		}
 		if strings.TrimSpace(req.FollowUpIssueID) == "" {
-			if saved := parseIssueMetadata(issue.Metadata); saved != nil {
+			if saved := util.JSONObjectOrEmpty(issue.Metadata); saved != nil {
 				if savedHandoff, ok := saved["lifecycle_handoff"].(map[string]any); ok {
 					if preventionID, ok := savedHandoff["prevention_issue_id"].(string); ok {
 						req.FollowUpIssueID = preventionID
@@ -396,6 +396,9 @@ func (h *Handler) resolveOrCreateLifecycleFollowUp(r *http.Request, source db.Is
 		if err != nil {
 			return db.Issue{}, false, false, "", err
 		}
+		if err := h.authorizeLifecycleFollowUp(r, issue); err != nil {
+			return db.Issue{}, false, false, "", err
+		}
 		return issue, false, true, "", nil
 	}
 	if strings.TrimSpace(req.FollowUpTitle) == "" {
@@ -409,7 +412,7 @@ func (h *Handler) resolveOrCreateLifecycleFollowUp(r *http.Request, source db.Is
 		return db.Issue{}, false, false, "", err
 	}
 	if status, message := h.validateAssigneePair(r.Context(), r, uuidToString(source.WorkspaceID), assigneeType, assigneeID); status != 0 {
-		return db.Issue{}, false, false, "", fmt.Errorf("%s", message)
+		return db.Issue{}, false, false, "", lifecycleAssigneeError{status: status, message: message}
 	}
 	creatorID, err := util.ParseUUID(actorID)
 	if err != nil {
@@ -431,6 +434,9 @@ func (h *Handler) resolveOrCreateLifecycleFollowUp(r *http.Request, source db.Is
 		return ""
 	}()})
 	if errors.Is(err, service.ErrActiveDuplicate) && result.DuplicateIssue != nil {
+		if err := h.authorizeLifecycleFollowUp(r, *result.DuplicateIssue); err != nil {
+			return db.Issue{}, false, false, "", err
+		}
 		return *result.DuplicateIssue, false, true, "", nil
 	}
 	if err != nil {
@@ -438,6 +444,24 @@ func (h *Handler) resolveOrCreateLifecycleFollowUp(r *http.Request, source db.Is
 	}
 	return result.Issue, true, false, uuidToString(result.AssignedTaskID), nil
 }
+
+// authorizeLifecycleFollowUp checks the assignee on the issue that will be
+// reused. A request's proposed assignee is only relevant for a newly-created
+// issue; duplicate and explicit-ID paths must authorize the actual persisted
+// target before any metadata, audit, or queue side effects occur.
+func (h *Handler) authorizeLifecycleFollowUp(r *http.Request, followUp db.Issue) error {
+	if status, message := h.validateAssigneePair(r.Context(), r, uuidToString(followUp.WorkspaceID), followUp.AssigneeType, followUp.AssigneeID); status != 0 {
+		return lifecycleAssigneeError{status: status, message: message}
+	}
+	return nil
+}
+
+type lifecycleAssigneeError struct {
+	status  int
+	message string
+}
+
+func (e lifecycleAssigneeError) Error() string { return e.message }
 
 func lifecycleAssignee(req lifecycleHandoffRequest) (pgtype.Text, pgtype.UUID, error) {
 	if req.AssigneeType == "" && req.AssigneeID == "" {
@@ -627,6 +651,11 @@ func (h *Handler) recordLifecycleAuditComment(r *http.Request, issue db.Issue, a
 }
 
 func (h *Handler) writeLifecycleError(w http.ResponseWriter, err error) {
+	var assigneeErr lifecycleAssigneeError
+	if errors.As(err, &assigneeErr) {
+		writeError(w, assigneeErr.status, assigneeErr.message)
+		return
+	}
 	if errors.Is(err, pgx.ErrNoRows) || strings.Contains(err.Error(), "not found") || strings.Contains(err.Error(), "not a child") {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
@@ -659,7 +688,7 @@ func lifecycleGovernanceSignals(items []lifecycleGovernanceSignalRequest) []serv
 }
 
 func lifecycleHandoffHistory(raw []byte) []map[string]any {
-	metadata := parseIssueMetadata(raw)
+	metadata := util.JSONObjectOrEmpty(raw)
 	history := make([]map[string]any, 0, 20)
 	if values, ok := metadata["lifecycle_handoff_history"].([]any); ok {
 		for _, value := range values {

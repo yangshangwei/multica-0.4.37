@@ -256,9 +256,13 @@ func TestCreateLifecycleHandoffIncidentLearningLinksExistingPreventionTask(t *te
 	if code != http.StatusCreated || response.Decision != string(service.LifecycleDecisionContinue) || response.FollowUpIssueID != "" {
 		t.Fatalf("existing prevention handoff: status=%d response=%+v", code, response)
 	}
-	handoff, ok := response.Metadata["lifecycle_handoff"].(map[string]any)
+	handoffJSON, ok := response.Metadata["lifecycle_handoff"].(string)
 	if !ok {
 		t.Fatalf("response lifecycle handoff = %#v", response.Metadata["lifecycle_handoff"])
+	}
+	var handoff map[string]any
+	if err := json.Unmarshal([]byte(handoffJSON), &handoff); err != nil {
+		t.Fatal(err)
 	}
 	evidence, ok := handoff["evidence"].(map[string]any)
 	if !ok {

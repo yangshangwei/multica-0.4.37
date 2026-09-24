@@ -104,6 +104,33 @@ func TestIssueToMap_UnsetJSONBagsAreEmptyObjects(t *testing.T) {
 	}
 }
 
+func TestIssueToMap_LifecycleMetadataPreservesPrimitiveContract(t *testing.T) {
+	issue := fullyPopulatedIssue(t)
+	issue.Metadata = []byte(`{"lifecycle_handoff":{"kind":"rca"},"lifecycle_handoff_history":[{"kind":"rca"}],"lifecycle_rca_evidence":["regression"],"lifecycle_rca_unknowns":[],"pr_number":42}`)
+	for name, payload := range map[string]any{
+		"http":      issueToResponse(issue, "MUL"),
+		"websocket": service.IssueToMap(issue, "MUL"),
+	} {
+		t.Run(name, func(t *testing.T) {
+			raw, err := json.Marshal(payload)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var decoded struct {
+				Metadata map[string]json.RawMessage `json:"metadata"`
+			}
+			if err := json.Unmarshal(raw, &decoded); err != nil {
+				t.Fatal(err)
+			}
+			for key, value := range decoded.Metadata {
+				if err := validateIssueMetadataValue(value); err != nil {
+					t.Errorf("metadata[%q] breaks the installed-client contract: %v", key, err)
+				}
+			}
+		})
+	}
+}
+
 // A workspace lookup can fail on the chat path, which degrades the prefix to
 // "". The identifier is then rendered from the number alone rather than as a
 // stray "-42", and the chat reply and the broadcast payload must not disagree

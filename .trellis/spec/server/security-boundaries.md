@@ -139,3 +139,37 @@ if !ok { return }
 // ...
 CreatedByID: principalID, // the human the delegation chain names
 ```
+
+---
+
+## Scenario 3: Lifecycle follow-up reuse authorizes the persisted assignee
+
+`POST /api/issues/{id}/lifecycle-handoffs` can reuse a child through
+`follow_up_issue_id` or the issue service's duplicate-title result. Either
+path can enqueue the child's existing agent or squad leader, so workspace
+membership and validation of a requested replacement assignee are insufficient.
+
+- `authorizeLifecycleFollowUp` in `server/internal/handler/lifecycle_handoff.go`
+  applies `validateAssigneePair` to the **persisted** assignee before writing
+  follow-up evidence, source metadata, audit comments, or queued tasks.
+- The shared invoke gate evaluates the effective human originator for agent
+  callers and the leader for squad assignees. Reuse does not change ownership.
+- Both reuse and creation preserve the validator's HTTP status: lack of invoke
+  permission is 403; invalid assignee configuration is 400.
+- Explicit follow-ups must be children of the source. Duplicate lookup remains
+  scoped to workspace, project, and parent, so an identically titled child of
+  another source is not reused.
+
+Regression coverage:
+`go test ./internal/handler -run 'TestCreateLifecycleHandoff(ReuseAuthorization|CreatePreservesAssigneeErrorStatus|DuplicateTitleKeepsParentScope)$'`
+with a configured test database. It covers explicit and duplicate reuse of
+agent and squad assignees, authorized controls, error statuses, parent scope,
+and unchanged issues/comments/tasks on authorization denial.
+
+Lifecycle evidence remains structured in storage, but the issue metadata API
+contract allows only string, number, and boolean values. HTTP and WebSocket
+renderers share `util.IssueMetadataForResponse`, which sends structured values
+under `lifecycle_handoff`, `lifecycle_handoff_history`, `lifecycle_rca_evidence`,
+and `lifecycle_rca_unknowns` as JSON strings. This also repairs reads of existing
+rows for installed clients without a migration. Internal history and prevention
+deduplication must read raw metadata through `util.JSONObjectOrEmpty`.

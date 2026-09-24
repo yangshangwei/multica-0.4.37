@@ -7216,7 +7216,7 @@ func IssueToMap(issue db.Issue, issuePrefix string) map[string]any {
 		"updated_at":       util.TimestampToString(issue.UpdatedAt),
 		"last_activity_at": util.TimestampToNanoPtr(issue.LastActivityAt),
 		"revision":         issue.Revision,
-		"metadata":         util.JSONObjectOrEmpty(issue.Metadata),
+		"metadata":         util.IssueMetadataForResponse(issue.Metadata),
 		"properties":       util.JSONObjectOrEmpty(issue.Properties),
 	}
 }
