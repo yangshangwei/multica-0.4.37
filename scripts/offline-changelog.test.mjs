@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { scratch, scripts, seed } from "./changelog-test-helpers.mjs";
@@ -13,6 +13,9 @@ function offlineFixture(t, directory) {
   mkdirSync(join(cwd, "server/internal/changelog/content"), { recursive: true });
   mkdirSync(join(cwd, "docs"));
   mkdirSync(join(cwd, "bin"));
+  mkdirSync(join(cwd, "apps/desktop/scripts"), { recursive: true });
+  cpSync(resolve(scripts, "../apps/desktop/scripts/update-artifacts.mjs"), join(cwd, "apps/desktop/scripts/update-artifacts.mjs"));
+  symlinkSync(resolve(scripts, "../apps/desktop/node_modules"), join(cwd, "apps/desktop/node_modules"), "dir");
   for (const name of ["offline-bundle.sh", "offline-installer.sh", "build-offline-upgrade.sh", "offline-upgrade.sh", "changelog-lib.mjs", "publish-changelog.mjs", "install-changelog.sh", "install-changelog.mjs"]) {
     const source = join(scripts, name);
     if (existsSync(source)) cpSync(source, join(cwd, "scripts", name));
@@ -218,7 +221,17 @@ test("missing image execution or malformed bundled feed leaves existing feed and
   }
 });
 
-test("combined desktop/server archive forwards an explicit cumulative artifact and includes its installer", (t) => {
+test("combined archive rejects an unapproved prerelease before starting builds", (t) => {
+  const fixture = offlineFixture(t);
+  writeFileSync(join(fixture.cwd, "bin/pnpm"), "#!/bin/sh\nexit 92\n", { mode: 0o755 });
+  const built = bash(fixture.cwd, fixture.env, "scripts/offline-installer.sh", "--output", "combined", "--desktop-target", "win-ia32");
+  assert.notEqual(built.status, 0);
+  assert.match(built.stderr, /stable VERSION or add --allow-prerelease/);
+  assert.equal(existsSync(fixture.env.DOCKER_LOG), false, "no Docker build may start for a rejected desktop version");
+  assert.equal(existsSync(join(fixture.cwd, "combined")), false);
+});
+
+test("combined desktop/server archive forwards an explicit cumulative artifact and includes complete desktop update files", (t) => {
   const fixture = offlineFixture(t);
   const feed = seed();
   feed.releases[0].title = "Explicit offline artifact fixture";
@@ -226,15 +239,25 @@ test("combined desktop/server archive forwards an explicit cumulative artifact a
   writeFileSync(input, JSON.stringify(feed, null, 2) + "\n");
   writeFileSync(join(fixture.cwd, "bin/pnpm"), `#!${process.execPath}
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 if (!process.argv.includes('never')) process.exit(30);
-mkdirSync('apps/desktop/dist', { recursive: true });
-writeFileSync('apps/desktop/dist/multica-desktop-fixture.exe', 'fixture installer');
+if (!process.argv.includes('--ia32')) process.exit(31);
+const directory = 'apps/desktop/dist/win-ia32';
+mkdirSync(directory, { recursive: true });
+const name = 'multica-desktop-1.0.0-fixture-windows-ia32.exe';
+const bytes = 'fixture installer';
+const hash = createHash('sha512').update(bytes).digest('base64');
+writeFileSync(directory + '/' + name, bytes);
+writeFileSync(directory + '/' + name + '.blockmap', 'fixture blockmap');
+writeFileSync(directory + '/latest-ia32.yml', JSON.stringify({ version: '1.0.0-fixture', files: [{ url: name, sha512: hash, size: Buffer.byteLength(bytes) }], path: name, sha512: hash }));
+writeFileSync(directory + '/builder-debug.yml', 'debug');
 `, { mode: 0o755 });
-  const built = bash(fixture.cwd, fixture.env, "scripts/offline-installer.sh", "--output", "combined", "--desktop-target", "win-x64", "--changelog", input);
+  const built = bash(fixture.cwd, fixture.env, "scripts/offline-installer.sh", "--output", "combined", "--desktop-target", "win-ia32", "--allow-prerelease", "--changelog", input);
   assert.equal(built.status, 0, built.stderr);
   const archive = readdirSync(join(fixture.cwd, "combined")).find((name) => name.endsWith(".tar.gz"));
   const listing = spawnSync("tar", ["-tzf", join(fixture.cwd, "combined", archive)], { encoding: "utf8" });
-  for (const file of ["server/changelog/changelog.json", "server/install-changelog.sh", "server/scripts/install-changelog.mjs", "desktop/multica-desktop-fixture.exe"]) assert.ok(listing.stdout.includes(file), `combined archive omitted ${file}`);
+  for (const file of ["server/changelog/changelog.json", "server/install-changelog.sh", "server/scripts/install-changelog.mjs", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe.blockmap", "desktop/latest-ia32.yml"]) assert.ok(listing.stdout.includes(file), `combined archive omitted ${file}`);
+  assert.equal(listing.stdout.includes("builder-debug.yml"), false);
   const packageDir = join(fixture.cwd, "combined", archive.slice(0, -7));
   assert.equal(readFileSync(join(packageDir, "server/changelog/changelog.json"), "utf8"), readFileSync(input, "utf8"));
   assert.equal(readFileSync(fixture.env.DOCKER_LOG + ".embedded", "utf8"), readFileSync(input, "utf8"));

@@ -58,19 +58,19 @@ You can check runtime status and logs in Desktop's settings. If a tool isn't det
 
 ## Updating Desktop
 
-Auto-update is on by default. The app checks for and downloads new versions in the background; once a download finishes you can restart to install immediately or let it install on the next quit. You can also turn off automatic checks or check for new versions manually under **Settings → Updates**.
+Auto-update is on by default. An intranet deployment can use an [administrator-provided update directory](#taking-updates-from-your-own-server). The app checks for and downloads new versions in the background; once a download finishes you can restart to install immediately or let it install on the next quit. You can also turn off automatic checks or check for new versions manually under **Settings → Updates**. Turning off automatic checks does not cancel an update that has already downloaded.
 
 Updates are distributed per OS and CPU architecture:
 
-- Windows arm64 and macOS x64 (Intel) each use their own update feed;
+- Windows arm64, Windows ia32 (32-bit), and macOS x64 (Intel) each use their own update feed;
 - all other architectures use the default feed;
 - the app matches the update feed automatically — no manual selection needed;
 - on Linux, auto-update only works for `.AppImage`; update `.deb` and `.rpm` by installing a new package over the old one;
-- if auto-update fails, likewise install over the top with the matching installer from the downloads page.
+- if the update source is unavailable or auto-update fails, quit Desktop and install over the top with the matching installer supplied by your administrator or the downloads page.
 
 ## Connecting to a self-hosted instance
 
-Desktop connects to Multica Cloud by default. To connect to a self-hosted instance, create `desktop.json` inside the `.multica` directory of your home directory:
+Desktop requires a server address on first launch. Enter the address supplied by your administrator in the connection settings, or create `desktop.json` inside the `.multica` directory of your home directory:
 
 | Platform | Path |
 | --- | --- |
@@ -113,24 +113,36 @@ Usually `apiUrl` alone is enough. Override explicitly only when the derivation d
 
 ### Taking updates from your own server
 
-Desktop checks the release feed it was built with, which is fine for the public release but wrong for a self-hosted deployment that ships its own Desktop builds. Add `updateUrl` to point the updater at a static directory you control:
+An administrator can provide a static HTTP/HTTPS update directory, including on an intranet. Quit Desktop completely and back up the existing `desktop.json`. Preserve the business server addresses and other settings, and add or change only `updateUrl`. Replace the placeholders below with the addresses provided by your administrator:
 
 ```json
 {
   "schemaVersion": 1,
-  "apiUrl": "https://api.example.com",
-  "updateUrl": "https://updates.example.com/desktop"
+  "apiUrl": "https://<intranet-api-host>",
+  "updateUrl": "https://<intranet-download-host>/desktop"
 }
 ```
 
-`updateUrl` must use `http` or `https` and must not contain credentials. The directory serves the files `pnpm package` already produces, unchanged: `latest.yml` (`latest-arm64.yml` on arm64) and the `.exe` plus `.exe.blockmap` for Windows, `latest-mac.yml` (`latest-x64-mac.yml` on Intel) with the `.zip` and `.blockmap` for macOS, and `latest-linux.yml` with the AppImage for Linux. Any static file server works; keep the previous version's `.blockmap` next to the new one so clients download only the changed blocks. Leaving `updateUrl` out restores the built-in feed. Saving a server address from the login page keeps this field as it was.
+`updateUrl` points to the directory containing update metadata, not an installer file or a download page. It must use `http` or `https` and must not contain credentials; query parameters and fragments are removed. Clients must trust the certificate when using HTTPS. The service must return files directly, without redirecting to a browser login page.
 
-Restart Desktop after saving — the file is read once at startup. The two failure modes look different, which is the fastest way to tell them apart:
+Publish the files referenced by the generated metadata and their generated blockmaps, preserving the original names:
 
-- **File not found** (wrong directory, or a filename that isn't exactly `desktop.json`) — Desktop uses the default Cloud configuration and shows no error. So if Desktop still reports a Cloud address and no configuration error, the file is not where Desktop is looking.
-- **File found but invalid** JSON, version, or URLs — Desktop shows a configuration error and does not fall back to Cloud.
+| Platform and architecture | Update metadata | Auto-update artifacts |
+| --- | --- | --- |
+| Windows x64 / ARM64 / ia32 | `latest.yml` / `latest-arm64.yml` / `latest-ia32.yml` | `.exe`, `.exe.blockmap` |
+| macOS Apple Silicon / Intel | `latest-mac.yml` / `latest-x64-mac.yml` | `.zip` and generated blockmaps; `.dmg` is for manual installation |
+| Linux x64 / ARM64 | `latest-linux.yml` / `latest-linux-arm64.yml` | The matching `.AppImage` |
 
-Delete the file and restart to return to the default Cloud configuration.
+Keep older blockmaps to support differential downloads; clients may still fall back to a full download. Validate and publish installers before switching metadata so clients never discover a version whose files are unavailable.
+
+Restart Desktop completely, then check under **Settings → Updates**. `apiUrl` and `updateUrl` are independent: omitting `updateUrl` uses the built-in release feed, not the business server. Saving a business server address from the login page preserves this field. This file configuration applies to installed clients; development mode uses environment variables and cannot substitute for an installed-client upgrade test.
+
+Manual file changes are read at startup. Configuration failures fall into two cases:
+
+- **File not found** (wrong directory, or a filename that isn't exactly `desktop.json`) — Desktop requires server setup and does not automatically connect to Cloud.
+- **File found but invalid** JSON, version, or URLs — Desktop shows a configuration error; correct the file to continue.
+
+Deleting the file and restarting requires server setup again. To restore only the built-in update source, keep the file and remove `updateUrl`.
 
 <Callout type="warning">
 Desktop can only connect to addresses reachable from both the browser and the executing machine. If a remote self-hosted instance doesn't use HTTPS or doesn't proxy WebSocket, Desktop can't establish a connection; see the [self-host quickstart](/self-host-quickstart#3-choose-how-to-access) for the full configuration.

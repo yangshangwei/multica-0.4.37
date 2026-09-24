@@ -1,0 +1,33 @@
+{
+  "id": "desktop-intranet-updates",
+  "name": "desktop-intranet-updates",
+  "title": "桌面端内网更新与本机 Nginx 下载存储",
+  "description": "Implement host-persisted Nginx desktop release storage, validated publication, offline metadata collection and safe client configuration; deploy and smoke-test locally.",
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "desktop",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-24",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "docs/desktop-intranet-update-plan.zh-CN.md",
+    "docs/desktop-updates-local.zh-CN.md",
+    "docker-compose.desktop-updates.yml"
+  ],
+  "notes": "Local implementation and HTTP verification complete; service left running on 127.0.0.1:18080. Keep active for real installed-client acceptance; see verification.md. No global desktop configuration changed.",
+  "meta": {
+    "implementation_complete": true,
+    "real_client_acceptance": "pending"
+  }
+}

@@ -24,10 +24,17 @@ const ctx = vi.hoisted(() => ({
 }));
 
 vi.mock("electron-updater", () => {
+  let channel: string | null = null;
   const autoUpdater = {
     autoDownload: false,
     autoInstallOnAppQuit: false,
-    channel: undefined as string | undefined,
+    get channel() {
+      return channel;
+    },
+    set channel(value: string | null) {
+      channel = value;
+      this.allowDowngrade = true;
+    },
     allowDowngrade: false,
     on: vi.fn((event: string, handler: Handler) => {
       const handlers = ctx.handlers.get(event) ?? [];
@@ -60,6 +67,35 @@ import {
   setupAutoUpdater,
 } from "./updater";
 import { updaterPreferencesPath } from "./updater-preferences";
+
+describe("architecture update channels at startup", () => {
+  it.each([
+    ["win32", "arm64", "latest-arm64"],
+    ["win32", "ia32", "latest-ia32"],
+    ["darwin", "x64", "latest-x64"],
+  ] as const)(
+    "selects the %s/%s feed without enabling downgrades",
+    async (platform, arch, channel) => {
+      const platformDescriptor = Object.getOwnPropertyDescriptor(process, "platform")!;
+      const archDescriptor = Object.getOwnPropertyDescriptor(process, "arch")!;
+      try {
+        Object.defineProperty(process, "platform", { value: platform });
+        Object.defineProperty(process, "arch", { value: arch });
+        vi.resetModules();
+        const { autoUpdater } = await import("electron-updater");
+        autoUpdater.allowDowngrade = false;
+
+        await import("./updater");
+
+        expect(autoUpdater.channel).toBe(channel);
+        expect(autoUpdater.allowDowngrade).toBe(false);
+      } finally {
+        Object.defineProperty(process, "platform", platformDescriptor);
+        Object.defineProperty(process, "arch", archDescriptor);
+      }
+    },
+  );
+});
 
 describe("Windows ia32 update channel", () => {
   it("uses the ia32 feed without permitting a downgrade", () => {

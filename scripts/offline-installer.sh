@@ -9,6 +9,7 @@ OUT_DIR="dist/offline-installer"
 SERVER_PLATFORM="linux/amd64"
 DESKTOP_TARGET=""
 CHANGELOG_ARGS=()
+ARTIFACT_ARGS=()
 
 usage() {
   cat <<'USAGE'
@@ -17,7 +18,8 @@ Usage: scripts/offline-installer.sh [options]
   --output DIR             Output directory (default: dist/offline-installer)
   --platform PLAT          Server image platform (default: linux/amd64)
   --desktop-target TARGET  mac-arm64, mac-x64, linux-x64, linux-arm64,
-                           win-x64, or win-arm64
+                           win-x64, win-ia32, or win-arm64
+  --allow-prerelease       Allow intentional prerelease / selective test builds
   --changelog JSON         Cumulative feed to embed and install (defaults to seed)
   -h, --help               Show this help.
 USAGE
@@ -44,6 +46,10 @@ while [ $# -gt 0 ]; do
       [ $# -ge 2 ] || { echo "--changelog needs a JSON file" >&2; exit 1; }
       CHANGELOG_ARGS=(--changelog "$2")
       shift 2
+      ;;
+    --allow-prerelease)
+      ARTIFACT_ARGS=(--allow-prerelease)
+      shift
       ;;
     -h|--help)
       usage
@@ -73,11 +79,21 @@ case "$DESKTOP_TARGET" in
   linux-x64) DESKTOP_FLAGS=(--linux --x64); DESKTOP_LABEL="Linux x64" ;;
   linux-arm64) DESKTOP_FLAGS=(--linux --arm64); DESKTOP_LABEL="Linux arm64" ;;
   win-x64) DESKTOP_FLAGS=(--win --x64); DESKTOP_LABEL="Windows x64" ;;
+  win-ia32) DESKTOP_FLAGS=(--win --ia32); DESKTOP_LABEL="Windows ia32 (32-bit)" ;;
   win-arm64) DESKTOP_FLAGS=(--win --arm64); DESKTOP_LABEL="Windows arm64" ;;
   *) echo "Unsupported Desktop target: $DESKTOP_TARGET" >&2; exit 1 ;;
 esac
 
 VERSION="${VERSION:-v$(node -p "require('./apps/web/package.json').version")-selective}"
+node --input-type=module - "${VERSION#v}" "${ARTIFACT_ARGS[@]+"${ARTIFACT_ARGS[@]}"}" <<'NODE'
+import { validateUpdateVersion } from "./apps/desktop/scripts/update-artifacts.mjs";
+try {
+  validateUpdateVersion(process.argv[2], process.argv.includes("--allow-prerelease"));
+} catch (error) {
+  console.error(`Desktop version: ${error.message}`);
+  process.exitCode = 1;
+}
+NODE
 SAFE_VERSION="$(printf '%s' "$VERSION" | tr '/ ' '__' | tr -cd '[:alnum:]._-')"
 SAFE_SERVER_PLATFORM="$(printf '%s' "$SERVER_PLATFORM" | tr '/' '-')"
 PACKAGE_NAME="multica-offline-${SAFE_VERSION}-${SAFE_SERVER_PLATFORM}-${DESKTOP_TARGET}"
@@ -96,14 +112,9 @@ MULTICA_DESKTOP_VERSION="${VERSION#v}" \
 CSC_IDENTITY_AUTO_DISCOVERY="${CSC_IDENTITY_AUTO_DISCOVERY:-false}" \
   pnpm --filter @multica/desktop package -- "${DESKTOP_FLAGS[@]}" --publish never
 
-shopt -s nullglob
-desktop_artifacts=(apps/desktop/dist/multica-desktop-*)
-if [ "${#desktop_artifacts[@]}" -eq 0 ]; then
-  echo "Desktop packaging completed without an artifact in apps/desktop/dist" >&2
-  exit 1
-fi
-cp "${desktop_artifacts[@]}" "$PACKAGE_DIR/desktop/"
-shopt -u nullglob
+node apps/desktop/scripts/update-artifacts.mjs collect \
+  --source apps/desktop/dist --destination "$PACKAGE_DIR/desktop" \
+  "${ARTIFACT_ARGS[@]+"${ARTIFACT_ARGS[@]}"}"
 
 cat >"$PACKAGE_DIR/README.md" <<'README'
 # Multica offline installer
@@ -139,6 +150,11 @@ Install the file under `desktop/` on a matching client machine and configure
 the server endpoint on first launch. The installer and server images were built
 from the same revision. The macOS package is ad-hoc signed and not notarized
 without Apple credentials, so Gatekeeper may require right-click → Open.
+
+The directory also includes generated `latest*.yml`, update ZIPs and blockmaps.
+Keep the original names and bytes together when transferring them to an intranet
+update server. Publish installers first and atomically replace metadata last;
+do not upload this entire offline archive as an update installer.
 README
 
 if command -v shasum >/dev/null 2>&1; then

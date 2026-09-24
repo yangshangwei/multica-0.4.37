@@ -58,17 +58,21 @@ Desktop 会为每个工作区单独保存标签页。例如，你在工作区 A 
 
 ## 更新 Desktop
 
-Desktop 的自动更新依赖外部更新源，内网部署无法访问。升级方式是由管理员分发新版本的离线安装包，覆盖安装：
+Desktop 默认开启自动检查。管理员配置[内网更新源](#从自己的服务器获取更新)后，应用可以在内网检查并下载新版本。下载完成后，可选择立即重启安装，或在下次退出时安装。也可以在 **设置 → 更新** 中手动检查，或关闭后续自动检查。
+
+应用按操作系统和处理器架构选择更新文件，无需手动选择通道。Windows 和 macOS 支持应用内更新；Linux 的自动更新仅支持 `.AppImage`，`.deb` 和 `.rpm` 需要覆盖安装。
+
+尚未配置可访问的更新源，或自动更新失败时，由管理员提供对应版本的离线安装包：
 
 - Windows 覆盖安装 `.exe`，macOS 覆盖安装 `.dmg`；
 - Linux 上 `.AppImage` 直接替换文件，`.deb` 和 `.rpm` 覆盖安装；
 - 覆盖安装前先退出 Desktop，安装完成后重新打开。
 
-建议在 **设置 → 更新** 中关闭自动检查，避免应用反复尝试访问不可达的更新源。
+更新源暂不可用时，可以关闭自动检查，待管理员配置完成后再开启。关闭自动检查不会取消已经下载好的更新。
 
 ## 连接自托管实例
 
-Desktop 默认连接 Multica Cloud。连接自托管实例时，在用户目录的 `.multica` 下创建 `desktop.json`：
+Desktop 首次启动时需要配置业务服务器地址，可在连接设置界面填写管理员提供的地址，也可在用户目录的 `.multica` 下创建 `desktop.json`：
 
 | 平台 | 路径 |
 | --- | --- |
@@ -111,24 +115,36 @@ Desktop 默认连接 Multica Cloud。连接自托管实例时，在用户目录�
 
 ### 从自己的服务器获取更新
 
-Desktop 默认检查打包时内置的发布源，这对公开版本没问题，但自托管部署如果自己构建 Desktop，就需要把更新器指向自己控制的静态目录。在配置里加 `updateUrl`：
+内网部署由管理员提供 HTTP/HTTPS 静态更新目录。完整退出 Desktop，备份已有的 `desktop.json`，保留业务地址和其他配置，只新增或修改 `updateUrl`。下面的占位地址必须替换为管理员提供的实际地址：
 
 ```json
 {
   "schemaVersion": 1,
-  "apiUrl": "https://api.example.com",
-  "updateUrl": "https://updates.example.com/desktop"
+  "apiUrl": "https://<内网 API 域名>",
+  "updateUrl": "https://<内网下载服务域名>/desktop"
 }
 ```
 
-`updateUrl` 必须使用 `http` 或 `https`，且不能包含凭据。目录里放 `pnpm package` 已经生成的文件即可，不需要改名：Windows 是 `latest.yml`（arm64 为 `latest-arm64.yml`）加 `.exe` 和 `.exe.blockmap`，macOS 是 `latest-mac.yml`（Intel 为 `latest-x64-mac.yml`）加 `.zip` 和 `.blockmap`，Linux 是 `latest-linux.yml` 加 AppImage。任何静态文件服务都可以；把上一个版本的 `.blockmap` 和新版本放在一起，客户端就只下载变化的块。不写 `updateUrl` 时恢复内置发布源。在登录页保存服务器地址不会改动这个字段。
+`updateUrl` 指向包含更新元数据的目录，不是安装包文件或下载网页。它必须使用 `http` 或 `https`，不能包含用户名、密码；查询参数和片段不会保留。使用 HTTPS 时，客户端需要信任服务器证书。更新服务必须直接返回文件，不能跳转到网页登录页。
 
-保存后重启 Desktop，配置只在启动时读取一次。两种失败的表现不同，据此可以快速区分：
+管理员应保留打包工具生成的原始文件名，并一并发布元数据引用的安装包和生成的 blockmap：
 
-- **文件没找到**（目录不对，或文件名不是 `desktop.json`）：Desktop 使用默认的 Cloud 配置，不报错。所以如果 Desktop 仍然显示 Cloud 地址且没有任何配置错误，说明文件不在 Desktop 查找的位置。
-- **文件找到但无效**（JSON、版本或 URL 有问题）：Desktop 显示配置错误，不会自动回退到 Cloud。
+| 平台与架构 | 更新元数据 | 自动更新产物 |
+| --- | --- | --- |
+| Windows x64 / ARM64 / ia32 | `latest.yml` / `latest-arm64.yml` / `latest-ia32.yml` | `.exe`、`.exe.blockmap` |
+| macOS Apple Silicon / Intel | `latest-mac.yml` / `latest-x64-mac.yml` | `.zip` 及生成的 blockmap；`.dmg` 用于手工安装 |
+| Linux x64 / ARM64 | `latest-linux.yml` / `latest-linux-arm64.yml` | 对应架构的 `.AppImage` |
 
-删除该文件并重启即可恢复默认的 Cloud 配置。
+保留旧版本的 blockmap 有助于差量下载，但客户端也可能回退到完整下载。安装包校验通过后再发布元数据，避免客户端发现版本却下载不到文件。
+
+保存后完整重启 Desktop，在 **设置 → 更新** 中检查更新。`apiUrl` 与 `updateUrl` 相互独立：不写 `updateUrl` 时使用打包内置的发布源，不会自动改用业务服务器；在登录页保存业务服务器地址会保留已有的 `updateUrl`。上述文件配置用于正式安装的客户端，开发模式使用环境变量，不能用开发窗口代替真实升级验收。
+
+手工修改的配置只在启动时读取。配置加载失败时，可以按以下情况排查：
+
+- **文件没找到**（目录不对，或文件名不是 `desktop.json`）：Desktop 要求先配置业务服务器，不会自动连接 Cloud。
+- **文件找到但无效**（JSON、版本或 URL 有问题）：Desktop 显示配置错误，需要修正文件。
+
+删除该文件并重启后，需要重新配置业务服务器；只想恢复打包内置的更新源时，保留文件并移除 `updateUrl`。
 
 <Callout type="warning">
 Desktop 只能连接浏览器和执行电脑都能访问的地址。远程自托管实例未使用 HTTPS 或未代理 WebSocket 时，Desktop 无法建立连接；完整配置见[自托管快速上手](/self-host-quickstart#3-选择访问方式)。

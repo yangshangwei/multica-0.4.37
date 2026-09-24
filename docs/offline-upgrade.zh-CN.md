@@ -118,6 +118,8 @@ docker compose -f docker-compose.selfhost.yml up -d --pull never backend fronten
 
 ## 六、选择 Windows 桌面端架构
 
+桌面端在内网检查、下载和安装更新的完整方案，参见[桌面端内网升级方案](desktop-intranet-update-plan.zh-CN.md)。该文档包含现有能力、静态目录部署、客户端配置、发布步骤和待实施事项。
+
 桌面端安装器单独提供，不在服务端升级归档中。按客户端架构选择文件：
 
 | 客户端架构 | 安装器文件名 | 自动更新元数据 |

@@ -67,6 +67,19 @@ endef
 # instead of launching a full Docker Compose build, which is safer for onboarding.
 .DEFAULT_GOAL := help
 
+.PHONY: desktop-updates-up desktop-updates-down desktop-updates-status desktop-updates-publish
+desktop-updates-up: ## Start local Nginx for desktop downloads (preloaded image)
+	@bash scripts/desktop-updates.sh start
+
+desktop-updates-down: ## Stop desktop downloads without deleting stored releases
+	@bash scripts/desktop-updates.sh stop
+
+desktop-updates-status: ## Show the desktop download server and storage path
+	@bash scripts/desktop-updates.sh status
+
+desktop-updates-publish: ## Publish Desktop artifacts (SOURCE=dir, optional ALLOW_PRERELEASE=1)
+	@bash scripts/desktop-updates.sh publish "$(if $(SOURCE),$(SOURCE),apps/desktop/dist)" $(if $(filter 1,$(ALLOW_PRERELEASE)),--allow-prerelease,)
+
 ##@ Help
 
 help: ## Show available make targets and common local workflows

@@ -1,0 +1,39 @@
+name: multica-desktop-updates
+
+services:
+  desktop-updates:
+    image: ${DESKTOP_UPDATES_IMAGE:-nginx:stable-alpine@sha256:985220252f3863977e468f611ef118ebd01421289dd86ee1ae99cb068c3bce2b}
+    restart: unless-stopped
+    entrypoint: ["nginx", "-g", "daemon off;"]
+    user: "101:101"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    ports:
+      - "${DESKTOP_UPDATES_BIND:-127.0.0.1}:${DESKTOP_UPDATES_PORT:-18080}:8080"
+    volumes:
+      - type: bind
+        source: ./deploy/desktop-updates/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${DESKTOP_UPDATES_STORAGE:-./data/desktop-updates}/public
+        target: /srv/updates/desktop
+        read_only: true
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:uid=101,gid=101,mode=1770
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
