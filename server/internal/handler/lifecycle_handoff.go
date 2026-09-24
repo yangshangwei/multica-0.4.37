@@ -22,19 +22,23 @@ import (
 // evidence handoffs. The discriminator keeps the write path auditable while
 // allowing clients to submit exactly one kind of evidence per request.
 type lifecycleHandoffRequest struct {
-	Kind                string `json:"kind"`
-	Route               string `json:"route,omitempty"`
-	CauseState          string `json:"cause_state,omitempty"`
-	Reason              string `json:"reason,omitempty"`
-	MitigationComplete  bool   `json:"mitigation_complete,omitempty"`
-	SeparateFollowUp    bool   `json:"separate_follow_up,omitempty"`
-	FollowUpIssueID     string `json:"follow_up_issue_id,omitempty"`
-	FollowUpTitle       string `json:"follow_up_title,omitempty"`
-	FollowUpDescription string `json:"follow_up_description,omitempty"`
-	FollowUpPriority    string `json:"follow_up_priority,omitempty"`
-	AssigneeType        string `json:"assignee_type,omitempty"`
-	AssigneeID          string `json:"assignee_id,omitempty"`
-	HandoffNote         string `json:"handoff_note,omitempty"`
+	Kind                string   `json:"kind"`
+	Route               string   `json:"route,omitempty"`
+	CauseState          string   `json:"cause_state,omitempty"`
+	Reason              string   `json:"reason,omitempty"`
+	MitigationComplete  bool     `json:"mitigation_complete,omitempty"`
+	SeparateFollowUp    bool     `json:"separate_follow_up,omitempty"`
+	FollowUpIssueID     string   `json:"follow_up_issue_id,omitempty"`
+	FollowUpTitle       string   `json:"follow_up_title,omitempty"`
+	FollowUpDescription string   `json:"follow_up_description,omitempty"`
+	FollowUpPriority    string   `json:"follow_up_priority,omitempty"`
+	AssigneeType        string   `json:"assignee_type,omitempty"`
+	AssigneeID          string   `json:"assignee_id,omitempty"`
+	HandoffNote         string   `json:"handoff_note,omitempty"`
+	DiagnosisRef        string   `json:"diagnosis_ref,omitempty"`
+	RegressionTest      string   `json:"regression_test,omitempty"`
+	Conclusion          string   `json:"conclusion,omitempty"`
+	Evidence            []string `json:"evidence,omitempty"`
 
 	Facts                   []string                         `json:"facts,omitempty"`
 	Inferences              []string                         `json:"inferences,omitempty"`
@@ -168,6 +172,13 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			writeError(w, http.StatusBadRequest, err.Error())
 			return
 		}
+		if err := service.ValidateRCAArtifact(service.RCAArtifact{
+			DiagnosisRef: req.DiagnosisRef, RegressionTest: req.RegressionTest,
+			Conclusion: req.Conclusion, Evidence: req.Evidence, Unknowns: req.Unknowns,
+		}); err != nil {
+			writeError(w, http.StatusBadRequest, err.Error())
+			return
+		}
 		followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
 		if err != nil {
 			h.writeLifecycleError(w, err)
@@ -176,6 +187,14 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 		evidence = map[string]any{
 			"route": req.Route, "cause_state": req.CauseState, "reason": req.Reason,
 			"mitigation_complete": req.MitigationComplete, "separate_follow_up": req.SeparateFollowUp,
+			"diagnosis_ref": req.DiagnosisRef, "regression_test": req.RegressionTest,
+			"conclusion": req.Conclusion, "evidence": req.Evidence, "unknowns": req.Unknowns,
+		}
+		if followUp.ID.Valid {
+			if err := h.persistRCARepairMetadata(r, followUp, req); err != nil {
+				writeError(w, http.StatusInternalServerError, "failed to persist RCA repair evidence")
+				return
+			}
 		}
 	case "incident-learning":
 		if req.Prevention == nil && len(req.ExistingPreventionTasks) == 0 {
@@ -525,6 +544,35 @@ func (h *Handler) persistPreventionMetadata(r *http.Request, prevention db.Issue
 		}
 		if _, err := h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
 			ID: prevention.ID, WorkspaceID: prevention.WorkspaceID, Key: key, Value: bytes,
+		}); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (h *Handler) persistRCARepairMetadata(r *http.Request, repair db.Issue, req lifecycleHandoffRequest) error {
+	values := map[string]any{}
+	if strings.TrimSpace(req.DiagnosisRef) != "" {
+		values["lifecycle_diagnosis_ref"] = strings.TrimSpace(req.DiagnosisRef)
+		values["lifecycle_regression_test"] = strings.TrimSpace(req.RegressionTest)
+	}
+	if strings.TrimSpace(req.Conclusion) != "" {
+		values["lifecycle_rca_conclusion"] = strings.TrimSpace(req.Conclusion)
+	}
+	if len(req.Evidence) > 0 {
+		values["lifecycle_rca_evidence"] = req.Evidence
+	}
+	if len(req.Unknowns) > 0 {
+		values["lifecycle_rca_unknowns"] = req.Unknowns
+	}
+	for key, value := range values {
+		encoded, err := json.Marshal(value)
+		if err != nil {
+			return err
+		}
+		if _, err := h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
+			ID: repair.ID, WorkspaceID: repair.WorkspaceID, Key: key, Value: encoded,
 		}); err != nil {
 			return err
 		}

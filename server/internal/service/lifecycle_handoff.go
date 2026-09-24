@@ -34,6 +34,45 @@ type RCARouteInput struct {
 	DownstreamRepairIssue string
 }
 
+// RCAArtifact is the provider-independent evidence handed from diagnosis to
+// the implementation issue. References are optional for the initial
+// diagnosis task, but when present they must identify both the source and its
+// regression test.
+type RCAArtifact struct {
+	DiagnosisRef   string
+	RegressionTest string
+	Conclusion     string
+	Evidence       []string
+	Unknowns       []string
+}
+
+// ValidateRCAArtifact keeps a repair handoff from claiming a confirmed cause
+// without a traceable evidence item. An empty artifact is valid for the
+// diagnosis-first leg, where the diagnostician has not concluded yet.
+func ValidateRCAArtifact(input RCAArtifact) error {
+	diagnosisRef := strings.TrimSpace(input.DiagnosisRef)
+	regressionTest := strings.TrimSpace(input.RegressionTest)
+	conclusion := strings.TrimSpace(input.Conclusion)
+	if (diagnosisRef == "") != (regressionTest == "") {
+		return fmt.Errorf("RCA diagnosis_ref and regression_test must be provided together")
+	}
+	if conclusion == "" && (diagnosisRef != "" || len(input.Evidence) > 0 || len(input.Unknowns) > 0) {
+		return fmt.Errorf("RCA evidence requires a conclusion")
+	}
+	if conclusion != "" && conclusion != "confirmed" && conclusion != "suspected" && conclusion != "unknown" {
+		return fmt.Errorf("unsupported RCA conclusion %q", conclusion)
+	}
+	if conclusion == "confirmed" && len(input.Evidence) == 0 {
+		return fmt.Errorf("confirmed RCA requires evidence")
+	}
+	for _, item := range append(append([]string{}, input.Evidence...), input.Unknowns...) {
+		if strings.TrimSpace(item) == "" {
+			return fmt.Errorf("RCA evidence and unknowns cannot contain empty items")
+		}
+	}
+	return nil
+}
+
 // ValidateRCARoute enforces the distinction between a known-cause repair,
 // diagnosis-first maintenance, and incident recovery followed by RCA.
 func ValidateRCARoute(input RCARouteInput) (LifecycleDecision, error) {

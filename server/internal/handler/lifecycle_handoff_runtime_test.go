@@ -151,6 +151,46 @@ func TestCreateLifecycleHandoffBugFixKnownAndUnknownRoutes(t *testing.T) {
 	})
 }
 
+func TestCreateLifecycleHandoffPersistsRCARepairEvidence(t *testing.T) {
+	if testHandler == nil || testPool == nil {
+		t.Skip("database not available")
+	}
+	sourceID := createCommentTriggerPreviewIssue(t, "runtime RCA evidence source", "", "")
+	diagnosisRef := sourceID + "#comment-rca-runtime"
+	regressionTest := "TestRetryPolicyDoesNotDropAcknowledgements"
+	code, response := postLifecycleHandoffForTest(t, sourceID, map[string]any{
+		"kind": "rca", "route": "bug-fix", "cause_state": "known",
+		"reason":        "the redacted retry branch and regression test identify the cause",
+		"conclusion":    "confirmed",
+		"evidence":      []string{"retry branch stops acknowledging after the policy change"},
+		"unknowns":      []string{"dependency saturation interval"},
+		"diagnosis_ref": diagnosisRef, "regression_test": regressionTest,
+		"follow_up_title": "repair retry acknowledgement regression",
+	})
+	if code != http.StatusCreated || response.Decision != string(service.LifecycleDecisionDirectRepair) || response.FollowUpIssueID == "" {
+		t.Fatalf("RCA evidence handoff: status=%d response=%+v", code, response)
+	}
+	var diagnosis, regression, conclusion string
+	var evidence, unknowns []string
+	if err := testPool.QueryRow(context.Background(), `
+		SELECT metadata->>'lifecycle_diagnosis_ref',
+		       metadata->>'lifecycle_regression_test',
+		       metadata->>'lifecycle_rca_conclusion',
+		       ARRAY(SELECT jsonb_array_elements_text(metadata->'lifecycle_rca_evidence')),
+		       ARRAY(SELECT jsonb_array_elements_text(metadata->'lifecycle_rca_unknowns'))
+		FROM issue WHERE id = $1
+	`, response.FollowUpIssueID).Scan(&diagnosis, &regression, &conclusion, &evidence, &unknowns); err != nil {
+		t.Fatalf("read RCA repair evidence: %v", err)
+	}
+	if diagnosis != diagnosisRef || regression != regressionTest || conclusion != "confirmed" || len(evidence) != 1 || len(unknowns) != 1 {
+		t.Fatalf("repair evidence = ref=%q regression=%q conclusion=%q evidence=%v unknowns=%v", diagnosis, regression, conclusion, evidence, unknowns)
+	}
+	t.Cleanup(func() {
+		testPool.Exec(context.Background(), `DELETE FROM comment WHERE issue_id = $1`, response.FollowUpIssueID)
+		testPool.Exec(context.Background(), `DELETE FROM issue WHERE id = $1`, response.FollowUpIssueID)
+	})
+}
+
 func TestCreateLifecycleHandoffIncidentRequiresMitigation(t *testing.T) {
 	if testHandler == nil || testPool == nil {
 		t.Skip("database not available")

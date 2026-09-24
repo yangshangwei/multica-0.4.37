@@ -15,6 +15,7 @@ interface Agent {
   template_key: string;
   instructions: string;
   runtime_id: string;
+  skills?: Array<{ name: string }>;
 }
 
 interface StaffedSquad {
@@ -127,6 +128,64 @@ test("role picker defaults and omitted-name API creation follow Chinese and Engl
   }
   const agents = await api.requestJSON<Agent[]>("/api/agents");
   expect(agents.map((agent) => agent.name).sort()).toEqual(["Product Analyst", "产品分析师"].sort());
+});
+
+test("diagnostician API creation preserves workspace skill and agent copies", async ({ page, localized }) => {
+  const { api, runtime, slug } = localized;
+  const customSkill = await api.requestJSON<{ id: string }>("/api/skills", {
+    method: "POST",
+    body: {
+      name: "multica-debugging",
+      description: "Workspace-owned diagnostic contract",
+      content: "# Workspace diagnostic contract\n\nKeep this edited skill body.\n",
+    },
+  });
+
+  const first = await api.requestJSON<Agent>("/api/agents/from-template", {
+    method: "POST",
+    body: {
+      template_key: "diagnostician",
+      runtime_id: runtime.id,
+      language: "zh",
+      name: "诊断工程师 · 工作区定制",
+      permission_mode: "private",
+    },
+  });
+  expect(first).toMatchObject({
+    name: "诊断工程师 · 工作区定制",
+    template_key: "diagnostician",
+    template_version: 1,
+    autonomy_level: "contributor",
+    max_concurrent_tasks: 1,
+  });
+  expect(first.skills?.map((skill) => skill.name)).toEqual(["multica-debugging"]);
+
+  const preservedSkill = await api.requestJSON<{ content: string }>(`/api/skills/${customSkill.id}`);
+  expect(preservedSkill.content).toContain("Keep this edited skill body.");
+
+  await api.requestJSON(`/api/agents/${first.id}`, {
+    method: "PUT",
+    body: { instructions: "Workspace-specific diagnostician instructions must survive." },
+  });
+  const second = await api.requestJSON<Agent>("/api/agents/from-template", {
+    method: "POST",
+    body: {
+      template_key: "diagnostician",
+      runtime_id: runtime.id,
+      language: "zh",
+      name: "诊断工程师 · 第二副本",
+      permission_mode: "private",
+    },
+  });
+  expect(second.skills?.map((skill) => skill.name)).toEqual(["multica-debugging"]);
+  expect(await api.requestJSON<Agent>(`/api/agents/${first.id}`)).toMatchObject({
+    name: "诊断工程师 · 工作区定制",
+    instructions: "Workspace-specific diagnostician instructions must survive.",
+  });
+
+  await page.goto(`/${slug}/agents/${second.id}`);
+  await expect(page.getByText("诊断工程师 · 第二副本", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("multica-debugging", { exact: true })).toBeVisible();
 });
 
 test("Chinese squad staffing creates localized roles and English restaffing preserves customized agents", async ({ page, localized }, testInfo) => {

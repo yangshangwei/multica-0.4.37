@@ -188,3 +188,25 @@ func TestValidateGovernanceEvidenceFailsClosedAcrossCapabilities(t *testing.T) {
 		t.Fatalf("unknown governance capability = %q, want unknown", got)
 	}
 }
+
+func TestValidateRCAArtifactRequiresTraceableConfirmedEvidence(t *testing.T) {
+	cases := []struct {
+		name  string
+		input RCAArtifact
+		want  bool
+	}{
+		{name: "empty diagnosis leg is allowed", input: RCAArtifact{}, want: true},
+		{name: "reference requires regression test", input: RCAArtifact{DiagnosisRef: "INC-1#comment-1"}, want: false},
+		{name: "confirmed requires evidence", input: RCAArtifact{DiagnosisRef: "INC-1#comment-1", RegressionTest: "TestRetry", Conclusion: "confirmed"}, want: false},
+		{name: "unknown conclusion can carry gaps", input: RCAArtifact{Conclusion: "unknown", Unknowns: []string{"missing trace"}}, want: true},
+		{name: "suspected evidence is traceable", input: RCAArtifact{DiagnosisRef: "INC-1#comment-1", RegressionTest: "TestRetry", Conclusion: "suspected", Evidence: []string{"timing correlation"}}, want: true},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			err := ValidateRCAArtifact(tc.input)
+			if (err == nil) != tc.want {
+				t.Fatalf("ValidateRCAArtifact() error = %v, want valid=%t", err, tc.want)
+			}
+		})
+	}
+}

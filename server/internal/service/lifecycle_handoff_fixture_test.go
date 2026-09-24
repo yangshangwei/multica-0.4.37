@@ -199,6 +199,12 @@ func TestLifecycleHandoffFixtures_DeliveryArtifactsAreConsumable(t *testing.T) {
 	if fixture.Delivery.Repair.Issue == "" || fixture.Delivery.Repair.Issue == fixture.Delivery.RCA.SourceIssue || fixture.Delivery.Repair.DiagnosisRef != expectedDiagnosisRef || fixture.Delivery.Repair.RegressionTest == "" {
 		t.Fatalf("repair fixture does not consume the RCA comment and regression contract: %+v", fixture.Delivery.Repair)
 	}
+	if err := ValidateRCAArtifact(RCAArtifact{
+		DiagnosisRef: fixture.Delivery.Repair.DiagnosisRef, RegressionTest: fixture.Delivery.Repair.RegressionTest,
+		Conclusion: fixture.Delivery.RCA.Conclusion, Evidence: fixture.Delivery.RCA.Evidence, Unknowns: fixture.Delivery.RCA.Unknowns,
+	}); err != nil {
+		t.Fatalf("repair fixture RCA artifact is not consumable: %v", err)
+	}
 
 	learning := fixture.Delivery.IncidentLearning
 	if learning.SourceIssue != fixture.Delivery.RCA.SourceIssue || learning.Decision != "unknown" {
