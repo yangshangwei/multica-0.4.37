@@ -237,3 +237,63 @@ func ValidateAgentEvaluation(input AgentEvaluationEvidence) LifecycleDecision {
 	}
 	return LifecycleDecisionPass
 }
+
+// GovernanceSignalEvidence is a redacted, provider-independent result for a
+// single governance check. The status is deliberately small so callers cannot
+// turn a missing artifact into a successful gate.
+type GovernanceSignalEvidence struct {
+	Name   string `json:"name"`
+	Status string `json:"status"`
+	Detail string `json:"detail,omitempty"`
+}
+
+type GovernanceEvidence struct {
+	Capability string
+	Signals    []GovernanceSignalEvidence
+}
+
+var governanceRequiredSignals = map[string][]string{
+	"contract-compatibility": {"old-client-matrix", "plugin-boundary", "parse-with-fallback"},
+	"threat-modeling":        {"trust-boundaries", "abuse-paths", "mitigations"},
+	"supply-chain":           {"lockfile", "provenance", "sbom", "license-review"},
+	"product-outcome":        {"baseline", "observation-window", "observed-result", "owner"},
+	"disaster-recovery":      {"backup", "restore-drill", "rpo-rto", "degradation-path"},
+}
+
+// ValidateGovernanceEvidence is the shared fail-closed gate for the five
+// governance capabilities. A failed signal requires a human decision (hold),
+// while an absent or unknown signal stays unknown.
+func ValidateGovernanceEvidence(input GovernanceEvidence) LifecycleDecision {
+	capability := strings.TrimSpace(input.Capability)
+	required, ok := governanceRequiredSignals[capability]
+	if !ok {
+		return LifecycleDecisionUnknown
+	}
+	seen := make(map[string]string, len(input.Signals))
+	for _, signal := range input.Signals {
+		name := strings.TrimSpace(signal.Name)
+		status := strings.TrimSpace(signal.Status)
+		if name == "" || (status != "pass" && status != "fail" && status != "unknown") {
+			return LifecycleDecisionUnknown
+		}
+		if _, exists := seen[name]; exists {
+			return LifecycleDecisionUnknown
+		}
+		seen[name] = status
+	}
+	unknown := false
+	for _, name := range required {
+		switch seen[name] {
+		case "pass":
+			continue
+		case "fail":
+			return LifecycleDecisionHold
+		case "unknown", "":
+			unknown = true
+		}
+	}
+	if unknown {
+		return LifecycleDecisionUnknown
+	}
+	return LifecycleDecisionPass
+}

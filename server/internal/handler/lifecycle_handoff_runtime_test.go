@@ -259,6 +259,91 @@ func TestCreateLifecycleHandoffRolloutMissingEvidenceIsUnknown(t *testing.T) {
 	}
 }
 
+func TestCreateLifecycleHandoffGovernanceFailsClosed(t *testing.T) {
+	if testHandler == nil || testPool == nil {
+		t.Skip("database not available")
+	}
+	sourceID := createCommentTriggerPreviewIssue(t, "runtime governance source", "", "")
+	complete := map[string]any{
+		"kind": "governance", "governance": map[string]any{
+			"capability": "contract-compatibility", "signals": []map[string]any{
+				{"name": "old-client-matrix", "status": "pass", "detail": "desktop and plugin matrix checked"},
+				{"name": "plugin-boundary", "status": "pass"},
+				{"name": "parse-with-fallback", "status": "pass"},
+			},
+		},
+	}
+	code, response := postLifecycleHandoffForTest(t, sourceID, complete)
+	if code != http.StatusCreated || response.Decision != string(service.LifecycleDecisionPass) {
+		t.Fatalf("complete governance handoff: status=%d response=%+v", code, response)
+	}
+	missing := map[string]any{
+		"kind": "governance", "governance": map[string]any{
+			"capability": "contract-compatibility", "signals": []map[string]any{
+				{"name": "old-client-matrix", "status": "pass"},
+				{"name": "plugin-boundary", "status": "unknown"},
+			},
+		},
+	}
+	code, response = postLifecycleHandoffForTest(t, sourceID, missing)
+	if code != http.StatusCreated || response.Decision != string(service.LifecycleDecisionUnknown) {
+		t.Fatalf("incomplete governance handoff: status=%d response=%+v", code, response)
+	}
+	failed := map[string]any{
+		"kind": "governance", "governance": map[string]any{
+			"capability": "contract-compatibility", "signals": []map[string]any{
+				{"name": "old-client-matrix", "status": "fail"},
+				{"name": "plugin-boundary", "status": "pass"},
+				{"name": "parse-with-fallback", "status": "pass"},
+			},
+		},
+	}
+	code, response = postLifecycleHandoffForTest(t, sourceID, failed)
+	if code != http.StatusCreated || response.Decision != string(service.LifecycleDecisionHold) {
+		t.Fatalf("failed governance handoff: status=%d response=%+v", code, response)
+	}
+}
+
+func TestCreateLifecycleHandoffPreservesBoundedHistoryAcrossStages(t *testing.T) {
+	if testHandler == nil || testPool == nil {
+		t.Skip("database not available")
+	}
+	sourceID := createCommentTriggerPreviewIssue(t, "runtime cross-stage source", "", "")
+	code, rca := postLifecycleHandoffForTest(t, sourceID, map[string]any{
+		"kind": "rca", "route": "bug-fix", "cause_state": "known",
+		"reason": "regression is isolated", "follow_up_title": "repair cross-stage source",
+	})
+	if code != http.StatusCreated || rca.Decision != string(service.LifecycleDecisionDirectRepair) {
+		t.Fatalf("RCA handoff: status=%d response=%+v", code, rca)
+	}
+	code, rollout := postLifecycleHandoffForTest(t, sourceID, map[string]any{
+		"kind": "rollout", "rollout": map[string]any{
+			"approved_digest": "sha256:stage-1", "artifact_digest": "sha256:stage-1",
+			"baseline": map[string]float64{"error_rate": 0.1}, "observation_window": map[string]any{
+				"started_at": "2026-09-24T11:00:00Z", "ended_at": "2026-09-24T11:15:00Z", "complete": true,
+			},
+			"signals": []map[string]any{{"name": "error_rate", "value": 0.1, "threshold": 1}},
+		},
+	})
+	if code != http.StatusCreated || rollout.Decision != string(service.LifecycleDecisionContinue) {
+		t.Fatalf("rollout handoff: status=%d response=%+v", code, rollout)
+	}
+	var latest, historyLength int
+	if err := testPool.QueryRow(context.Background(), `
+		SELECT jsonb_array_length(metadata->'lifecycle_handoff_history'),
+		       CASE WHEN metadata->'lifecycle_handoff'->>'kind' = 'rollout' THEN 1 ELSE 0 END
+		FROM issue WHERE id = $1
+	`, sourceID).Scan(&historyLength, &latest); err != nil {
+		t.Fatalf("read lifecycle history: %v", err)
+	}
+	if historyLength != 2 || latest != 1 {
+		t.Fatalf("lifecycle history/latest = %d/%d, want 2/1", historyLength, latest)
+	}
+	t.Cleanup(func() {
+		testPool.Exec(context.Background(), `DELETE FROM issue WHERE id = $1`, rca.FollowUpIssueID)
+	})
+}
+
 func TestCreateLifecycleHandoffAgentEvaluationQueuesEvaluatorFollowUp(t *testing.T) {
 	if testHandler == nil || testPool == nil {
 		t.Skip("database not available")

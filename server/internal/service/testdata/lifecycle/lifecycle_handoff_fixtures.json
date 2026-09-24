@@ -103,7 +103,57 @@
         "executed": false,
         "outcome": "not-executed-awaiting-human-approval"
       }
-    }
+    },
+    "governance": [
+      {
+        "capability": "contract-compatibility",
+        "signals": [
+          {"name": "old-client-matrix", "status": "pass"},
+          {"name": "plugin-boundary", "status": "pass"},
+          {"name": "parse-with-fallback", "status": "pass"}
+        ],
+        "decision": "pass"
+      },
+      {
+        "capability": "threat-modeling",
+        "signals": [
+          {"name": "trust-boundaries", "status": "pass"},
+          {"name": "abuse-paths", "status": "pass"},
+          {"name": "mitigations", "status": "pass"}
+        ],
+        "decision": "pass"
+      },
+      {
+        "capability": "supply-chain",
+        "signals": [
+          {"name": "lockfile", "status": "pass"},
+          {"name": "provenance", "status": "pass"},
+          {"name": "sbom", "status": "pass"},
+          {"name": "license-review", "status": "pass"}
+        ],
+        "decision": "pass"
+      },
+      {
+        "capability": "product-outcome",
+        "signals": [
+          {"name": "baseline", "status": "pass"},
+          {"name": "observation-window", "status": "pass"},
+          {"name": "observed-result", "status": "pass"},
+          {"name": "owner", "status": "pass"}
+        ],
+        "decision": "pass"
+      },
+      {
+        "capability": "disaster-recovery",
+        "signals": [
+          {"name": "backup", "status": "pass"},
+          {"name": "restore-drill", "status": "pass"},
+          {"name": "rpo-rto", "status": "pass"},
+          {"name": "degradation-path", "status": "pass"}
+        ],
+        "decision": "pass"
+      }
+    ]
   },
   "agent_quality": {
     "artifact_digest": "sha256:agent-v3",

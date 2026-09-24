@@ -22,6 +22,7 @@ type deliveryFixture struct {
 	Repair           repairFixture           `json:"repair"`
 	IncidentLearning incidentLearningFixture `json:"incident_learning"`
 	Rollout          rolloutFixture          `json:"rollout"`
+	Governance       []governanceFixture     `json:"governance"`
 }
 
 type rcaRouteFixture struct {
@@ -95,6 +96,17 @@ type rollbackFixture struct {
 	Approved bool   `json:"approved"`
 	Executed bool   `json:"executed"`
 	Outcome  string `json:"outcome"`
+}
+
+type governanceFixture struct {
+	Capability string                    `json:"capability"`
+	Signals    []governanceSignalFixture `json:"signals"`
+	Decision   string                    `json:"decision"`
+}
+
+type governanceSignalFixture struct {
+	Name   string `json:"name"`
+	Status string `json:"status"`
 }
 
 type agentQualityFixture struct {
@@ -248,6 +260,18 @@ func TestLifecycleHandoffFixtures_DeliveryArtifactsAreConsumable(t *testing.T) {
 		Signals: rolloutSignals, RollbackApproved: rollout.Rollback.Approved, RollbackExecuted: rollout.Rollback.Executed,
 	}); got != LifecycleDecision(rollout.Decision) {
 		t.Errorf("rollout contract = %q, want %q", got, rollout.Decision)
+	}
+	if len(fixture.Delivery.Governance) != 5 {
+		t.Fatalf("governance fixture count = %d, want 5", len(fixture.Delivery.Governance))
+	}
+	for _, governance := range fixture.Delivery.Governance {
+		signals := make([]GovernanceSignalEvidence, 0, len(governance.Signals))
+		for _, signal := range governance.Signals {
+			signals = append(signals, GovernanceSignalEvidence{Name: signal.Name, Status: signal.Status})
+		}
+		if got := ValidateGovernanceEvidence(GovernanceEvidence{Capability: governance.Capability, Signals: signals}); got != LifecycleDecision(governance.Decision) {
+			t.Errorf("governance %q = %q, want %q", governance.Capability, got, governance.Decision)
+		}
 	}
 }
 

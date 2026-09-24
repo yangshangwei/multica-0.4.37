@@ -149,3 +149,42 @@ func TestValidateAgentEvaluationRequiresSixVersionedCaseCategories(t *testing.T)
 		t.Fatalf("missing trace evaluation = %q, want unknown", got)
 	}
 }
+
+func TestValidateGovernanceEvidenceFailsClosedAcrossCapabilities(t *testing.T) {
+	complete := func(capability string, names []string) GovernanceEvidence {
+		signals := make([]GovernanceSignalEvidence, 0, len(names))
+		for _, name := range names {
+			signals = append(signals, GovernanceSignalEvidence{Name: name, Status: "pass", Detail: "redacted evidence"})
+		}
+		return GovernanceEvidence{Capability: capability, Signals: signals}
+	}
+	cases := []struct {
+		capability string
+		names      []string
+	}{
+		{"contract-compatibility", []string{"old-client-matrix", "plugin-boundary", "parse-with-fallback"}},
+		{"threat-modeling", []string{"trust-boundaries", "abuse-paths", "mitigations"}},
+		{"supply-chain", []string{"lockfile", "provenance", "sbom", "license-review"}},
+		{"product-outcome", []string{"baseline", "observation-window", "observed-result", "owner"}},
+		{"disaster-recovery", []string{"backup", "restore-drill", "rpo-rto", "degradation-path"}},
+	}
+	for _, test := range cases {
+		t.Run(test.capability, func(t *testing.T) {
+			if got := ValidateGovernanceEvidence(complete(test.capability, test.names)); got != LifecycleDecisionPass {
+				t.Fatalf("complete governance = %q, want pass", got)
+			}
+			missing := complete(test.capability, test.names[:len(test.names)-1])
+			if got := ValidateGovernanceEvidence(missing); got != LifecycleDecisionUnknown {
+				t.Fatalf("missing governance signal = %q, want unknown", got)
+			}
+			failed := complete(test.capability, test.names)
+			failed.Signals[0].Status = "fail"
+			if got := ValidateGovernanceEvidence(failed); got != LifecycleDecisionHold {
+				t.Fatalf("failed governance signal = %q, want hold", got)
+			}
+		})
+	}
+	if got := ValidateGovernanceEvidence(GovernanceEvidence{Capability: "not-a-capability"}); got != LifecycleDecisionUnknown {
+		t.Fatalf("unknown governance capability = %q, want unknown", got)
+	}
+}

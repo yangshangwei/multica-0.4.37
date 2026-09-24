@@ -18,7 +18,7 @@ import (
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
-// lifecycleHandoffRequest is intentionally one API shape for the four
+// lifecycleHandoffRequest is intentionally one API shape for the five
 // evidence handoffs. The discriminator keeps the write path auditable while
 // allowing clients to submit exactly one kind of evidence per request.
 type lifecycleHandoffRequest struct {
@@ -43,6 +43,7 @@ type lifecycleHandoffRequest struct {
 	Prevention              *lifecyclePreventionTaskRequest  `json:"prevention,omitempty"`
 	Rollout                 *lifecycleRolloutEvidenceRequest `json:"rollout,omitempty"`
 	AgentEvaluation         *lifecycleAgentEvaluationRequest `json:"agent_evaluation,omitempty"`
+	Governance              *lifecycleGovernanceRequest      `json:"governance,omitempty"`
 }
 
 type lifecyclePreventionTaskRequest struct {
@@ -91,6 +92,17 @@ type lifecycleAgentEvaluationCaseRequest struct {
 	Trace      []string `json:"trace"`
 	StopReason string   `json:"stop_reason"`
 	Result     string   `json:"result"`
+}
+
+type lifecycleGovernanceRequest struct {
+	Capability string                             `json:"capability"`
+	Signals    []lifecycleGovernanceSignalRequest `json:"signals"`
+}
+
+type lifecycleGovernanceSignalRequest struct {
+	Name   string `json:"name"`
+	Status string `json:"status"`
+	Detail string `json:"detail,omitempty"`
 }
 
 type lifecycleHandoffResponse struct {
@@ -270,6 +282,28 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 				return
 			}
 		}
+	case "governance":
+		if req.Governance == nil {
+			writeError(w, http.StatusBadRequest, "governance evidence is required")
+			return
+		}
+		governance := service.GovernanceEvidence{
+			Capability: req.Governance.Capability,
+			Signals:    lifecycleGovernanceSignals(req.Governance.Signals),
+		}
+		decision = service.ValidateGovernanceEvidence(governance)
+		evidence = map[string]any{
+			"capability": governance.Capability,
+			"signals":    governance.Signals,
+		}
+		if strings.TrimSpace(req.FollowUpIssueID) != "" || strings.TrimSpace(req.FollowUpTitle) != "" {
+			var err error
+			followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
+			if err != nil {
+				h.writeLifecycleError(w, err)
+				return
+			}
+		}
 	default:
 		writeError(w, http.StatusBadRequest, "unsupported lifecycle handoff kind")
 		return
@@ -290,11 +324,34 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 		writeError(w, http.StatusBadRequest, "lifecycle evidence is too large")
 		return
 	}
+	history := lifecycleHandoffHistory(issue.Metadata)
+	history = append(history, metadata)
+	historyBytes, err := json.Marshal(history)
+	if err != nil || len(historyBytes) > 28000 {
+		for len(history) > 1 {
+			history = history[1:]
+			historyBytes, err = json.Marshal(history)
+			if err == nil && len(historyBytes) <= 28000 {
+				break
+			}
+		}
+	}
+	if err != nil || len(historyBytes) > 28000 {
+		writeError(w, http.StatusBadRequest, "lifecycle evidence history is too large")
+		return
+	}
 	updated, err := h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
 		ID: issue.ID, WorkspaceID: issue.WorkspaceID, Key: "lifecycle_handoff", Value: metadataBytes,
 	})
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to persist lifecycle evidence")
+		return
+	}
+	updated, err = h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
+		ID: issue.ID, WorkspaceID: issue.WorkspaceID, Key: "lifecycle_handoff_history", Value: historyBytes,
+	})
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to persist lifecycle evidence history")
 		return
 	}
 
@@ -543,4 +600,33 @@ func lifecycleAgentEvaluationCases(items []lifecycleAgentEvaluationCaseRequest) 
 		result[i] = service.AgentEvaluationCaseEvidence{Category: item.Category, Trace: item.Trace, StopReason: item.StopReason, Result: item.Result}
 	}
 	return result
+}
+
+func lifecycleGovernanceSignals(items []lifecycleGovernanceSignalRequest) []service.GovernanceSignalEvidence {
+	result := make([]service.GovernanceSignalEvidence, len(items))
+	for i, item := range items {
+		result[i] = service.GovernanceSignalEvidence{Name: item.Name, Status: item.Status, Detail: item.Detail}
+	}
+	return result
+}
+
+func lifecycleHandoffHistory(raw []byte) []map[string]any {
+	metadata := parseIssueMetadata(raw)
+	history := make([]map[string]any, 0, 20)
+	if values, ok := metadata["lifecycle_handoff_history"].([]any); ok {
+		for _, value := range values {
+			if entry, ok := value.(map[string]any); ok {
+				history = append(history, entry)
+			}
+		}
+	}
+	if len(history) == 0 {
+		if latest, ok := metadata["lifecycle_handoff"].(map[string]any); ok {
+			history = append(history, latest)
+		}
+	}
+	if len(history) > 20 {
+		history = history[len(history)-20:]
+	}
+	return history
 }
