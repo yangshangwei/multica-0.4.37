@@ -15,11 +15,11 @@
 
 ## Acceptance Criteria
 
-- [ ] 两个 skill 的输入、输出、停止条件、权限边界和未知证据处理写入模板并有单元测试。
-- [ ] 至少一个脱敏事故样例生成带 owner 和验收信号的预防任务；缺证据样例明确标记 unknown。
-- [ ] 至少一个发布样例记录 artifact digest、baseline、window、signals、decision 和 rollback outcome，且验证不会混用重建产物。
-- [ ] 重复事故与未关闭预防项可被发现并指向既有任务，不产生重复无主任务。
-- [ ] 与 incident/release squad 的路由、模板复制保护、本地化和文档保持一致。
+- [x] 两个 skill 的输入、输出、停止条件、权限边界和未知证据处理写入模板并有单元测试。
+- [x] 至少一个脱敏事故样例生成带 owner 和验收信号的预防任务；缺证据样例明确标记 unknown。
+- [x] 至少一个发布样例记录 artifact digest、baseline、window、signals、decision 和 rollback outcome，且验证不会混用重建产物。
+- [x] 重复事故与未关闭预防项可被发现并指向既有任务，不产生重复无主任务。
+- [x] 与 incident/release squad 的路由、模板复制保护、本地化和文档保持一致。
 
 ## Notes
 
