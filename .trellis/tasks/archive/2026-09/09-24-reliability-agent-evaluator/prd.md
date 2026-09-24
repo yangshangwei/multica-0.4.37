@@ -14,10 +14,10 @@
 
 ## Acceptance Criteria
 
-- [ ] 两个角色能从内置模板创建，skill 自动附着，权限、autonomy、本地化和既有 workspace copy 保护有测试。
-- [ ] 评测模板至少覆盖成功、工具失败、越权请求、成本/延迟超阈值和模型/工具漂移五类情况。
-- [ ] 可靠性演练至少覆盖一个 SLO 退化、一个队列堆积或依赖故障、一个恢复验证，并报告量化信号。
-- [ ] 角色不按 frontend/backend/mobile 拆分，且与现有 QA、security、release、diagnostician 的职责边界写入文档。
+- [x] 两个角色能从内置模板创建，skill 自动附着，权限、autonomy、本地化和既有 workspace copy 保护有测试。
+- [x] 评测模板至少覆盖成功、工具失败、越权请求、成本/延迟超阈值和模型/工具漂移五类情况。
+- [x] 可靠性演练至少覆盖一个 SLO 退化、一个队列堆积或依赖故障、一个恢复验证，并报告量化信号。
+- [x] 角色不按 frontend/backend/mobile 拆分，且与现有 QA、security、release、diagnostician 的职责边界写入文档。
 
 ## Notes
 
