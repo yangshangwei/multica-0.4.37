@@ -1,135 +1,151 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ==========================================================================
-# Full verification pipeline: typecheck → unit tests → Go tests → E2E
-# Usage: bash scripts/check.sh
-# ==========================================================================
+# Ordered local verification using the environment registry's allocation and
+# process ownership rules. No existing service is a verification target.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=dev-env.sh
+. "$SCRIPT_DIR/dev-env.sh"
 
-ENV_FILE="${ENV_FILE:-.env}"
-if [ ! -f "$ENV_FILE" ]; then
-  echo "Missing env file: $ENV_FILE"
-  echo "Create .env from .env.example, or run 'make worktree-env' and use .env.worktree."
-  exit 1
-fi
+CHECK_STARTED_API=false
+CHECK_STARTED_WEB=false
+CHECK_GO_DB_CREATED=false
+CHECK_COMPLETE=false
 
-set -a
-# shellcheck disable=SC1090
-. "$ENV_FILE"
-set +a
-
-# shellcheck disable=SC1091
-. scripts/local-env.sh
-
-BACKEND_PID=""
-FRONTEND_PID=""
-STARTED_BACKEND=false
-STARTED_FRONTEND=false
-EXIT_CODE=0
-
-# --------------------------------------------------------------------------
-# Cleanup: kill only services this script started
-# --------------------------------------------------------------------------
-cleanup() {
-  echo ""
-  if [ "$STARTED_BACKEND" = true ] && [ -n "$BACKEND_PID" ]; then
-    kill "$BACKEND_PID" 2>/dev/null && wait "$BACKEND_PID" 2>/dev/null || true
-    echo "    Stopped backend (PID $BACKEND_PID)"
+check_cleanup() {
+  local result=$? cleanup_failed=0
+  trap - EXIT INT TERM
+  if [ "$CHECK_STARTED_WEB" = true ]; then stop_component web || cleanup_failed=1; fi
+  if [ "$CHECK_STARTED_API" = true ]; then stop_component api || cleanup_failed=1; fi
+  if [ "$CHECK_GO_DB_CREATED" = true ]; then
+    # Never force-disconnect consumers; a surviving connection is a cleanup
+    # failure worth reporting, rather than permission to kill another process.
+    info "Dropping isolated Go database $CHECK_GO_DB_NAME"
+    psql "$(admin_database_url "$DATABASE_URL")" -v ON_ERROR_STOP=1 \
+      -c "DROP DATABASE \"$CHECK_GO_DB_NAME\"" >/dev/null || cleanup_failed=1
   fi
-  if [ "$STARTED_FRONTEND" = true ] && [ -n "$FRONTEND_PID" ]; then
-    kill "$FRONTEND_PID" 2>/dev/null && wait "$FRONTEND_PID" 2>/dev/null || true
-    echo "    Stopped frontend (PID $FRONTEND_PID)"
-  fi
-  echo ""
-  if [ "$EXIT_CODE" -eq 0 ]; then
+  if [ "$result" -eq 0 ] && { [ "$CHECK_COMPLETE" != true ] || [ "$cleanup_failed" -ne 0 ]; }; then result=1; fi
+  if [ "$result" -eq 0 ]; then
     echo "✓ All checks passed."
   else
-    echo "✗ Checks FAILED."
+    echo "✗ Checks FAILED (exit $result)."
   fi
-  exit "$EXIT_CODE"
+  exit "$result"
 }
-trap cleanup EXIT
 
-# --------------------------------------------------------------------------
-# Utility: wait until a port responds
-# --------------------------------------------------------------------------
-wait_for_port() {
-  local port=$1 name=$2 max_wait=${3:-60} path=${4:-/}
-  local elapsed=0
-  echo "    Waiting for $name on :$port..."
-  while ! curl -sf "http://localhost:${port}${path}" > /dev/null 2>&1; do
-    sleep 1
-    elapsed=$((elapsed + 1))
-    if [ "$elapsed" -ge "$max_wait" ]; then
-      echo "    ERROR: $name did not start within ${max_wait}s"
-      EXIT_CODE=1
-      exit 1
-    fi
+prepare_check_environment() {
+  local source_env=$1 offset task_id
+  task_id="$(date -u '+%Y%m%d%H%M%S')-$$"
+  acquire_lock
+  trap release_lock EXIT
+  offset="$(allocate_offset "$REPO_ROOT")" || die "No free verification slot."
+  NAME="check-$task_id"
+  DIR="$REPO_ROOT"
+  CREATED_AT="$(now_iso)"
+  OWNER=agent
+  TTL_HOURS=24
+  EXPIRES_AT="$(expires_at_after_hours "$TTL_HOURS")"
+  OFFSET="$offset"
+  BACKEND_PORT=$((18080 + offset))
+  FRONTEND_PORT=$((13000 + offset))
+  DB_NAME="multica_check_${task_id//-/_}_api"
+  CHECK_GO_DB_NAME="multica_check_${task_id//-/_}_go"
+  PROFILE="dev-$NAME"
+  WEB_MODE=production
+  bind_paths
+  ENV_FILE="$STATE_DIR/check.env"
+  cp "$source_env" "$ENV_FILE"
+  printf '\n' >> "$ENV_FILE"
+  # Use task-only database/URLs and classic auth. Explicit trailing assignments
+  # also cover older env files where those settings did not exist yet.
+  DATABASE_URL="$(database_url_with_name "$DATABASE_URL" "$DB_NAME")"
+  {
+    write_manifest_value PORT "$BACKEND_PORT"
+    write_manifest_value BACKEND_PORT "$BACKEND_PORT"
+    write_manifest_value FRONTEND_PORT "$FRONTEND_PORT"
+    write_manifest_value POSTGRES_DB "$DB_NAME"
+    write_manifest_value GO_TEST_DB_NAME "$CHECK_GO_DB_NAME"
+    write_manifest_value DATABASE_URL "$DATABASE_URL"
+    write_manifest_value FRONTEND_ORIGIN "http://localhost:$FRONTEND_PORT"
+    write_manifest_value CORS_ALLOWED_ORIGINS "http://localhost:$FRONTEND_PORT"
+    write_manifest_value ALLOWED_ORIGINS "http://localhost:$FRONTEND_PORT"
+    write_manifest_value PLAYWRIGHT_BASE_URL "http://localhost:$FRONTEND_PORT"
+    write_manifest_value MULTICA_PUBLIC_URL "http://localhost:$BACKEND_PORT"
+    write_manifest_value MULTICA_APP_URL "http://localhost:$FRONTEND_PORT"
+    write_manifest_value MULTICA_SERVER_URL "ws://localhost:$BACKEND_PORT/ws"
+    write_manifest_value LOCAL_UPLOAD_BASE_URL "http://localhost:$BACKEND_PORT"
+    write_manifest_value NEXT_PUBLIC_API_URL "http://localhost:$BACKEND_PORT"
+    write_manifest_value NEXT_PUBLIC_WS_URL "ws://localhost:$BACKEND_PORT/ws"
+    write_manifest_value REMOTE_API_URL "http://localhost:$BACKEND_PORT"
+    write_manifest_value MULTICA_DEVICE_AUTH_ENABLED false
+    write_manifest_value MULTICA_DEV_VERIFICATION_CODE "$DEV_CODE_DEFAULT"
+    write_manifest_value APP_ENV development
+    # Test accounts share a loopback IP. These overrides only reach this API.
+    write_manifest_value RATE_LIMIT_AUTH 1000
+    write_manifest_value RATE_LIMIT_AUTH_VERIFY 1000
+  } >> "$ENV_FILE"
+  chmod 600 "$ENV_FILE"
+  save_manifest
+  release_lock
+  trap - EXIT
+  load_env_file "$ENV_FILE"
+  export PORT="$BACKEND_PORT" FRONTEND_PORT DATABASE_URL POSTGRES_DB="$DB_NAME"
+  CHECK_GO_DATABASE_URL="$(database_url_with_name "$DATABASE_URL" "$CHECK_GO_DB_NAME")"
+}
+
+check_main() {
+  local source_env tool
+  cd "$REPO_ROOT"
+  source_env="$(env_file_path "${ENV_FILE:-$(detect_env_file)}")"
+  [ -f "$source_env" ] || die "Missing env file: $source_env"
+  for tool in node go pnpm psql lsof make; do
+    command -v "$tool" >/dev/null 2>&1 || die "Missing prerequisite: $tool (add its installed bin directory to PATH)."
   done
-  echo "    $name ready (${elapsed}s)"
+  load_env_file "$source_env"
+  prepare_check_environment "$source_env"
+  trap check_cleanup EXIT
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+  info "Verification environment: $NAME; logs and provenance: $STATE_DIR"
+  mkdir -p "$DEV_TMPDIR"
+  export TMPDIR="$DEV_TMPDIR" TMP="$DEV_TMPDIR" TEMP="$DEV_TMPDIR"
+
+  step "[1/6] Static checks"
+  pnpm exec turbo run lint typecheck --filter='!@multica/mobile' --concurrency=1 --force
+  pnpm check:ui-exports
+
+  step "[2/6] TypeScript tests (one package, two workers)"
+  pnpm exec turbo run test --filter='!@multica/mobile' --concurrency=1 --force -- --maxWorkers=2
+
+  step "[3/6] Script regressions and isolated Go tests"
+  bash "$SCRIPT_DIR/test-go.test.sh"
+  bash "$SCRIPT_DIR/dev-env.test.sh"
+  bash "$SCRIPT_DIR/check.test.sh"
+  ensure_database
+  psql "$(admin_database_url "$DATABASE_URL")" -v ON_ERROR_STOP=1 \
+    -c "CREATE DATABASE \"$CHECK_GO_DB_NAME\"" >/dev/null
+  CHECK_GO_DB_CREATED=true
+  (
+    export DATABASE_URL="$CHECK_GO_DATABASE_URL" POSTGRES_DB="$CHECK_GO_DB_NAME"
+    migrate_database
+    bash "$SCRIPT_DIR/test-go.sh" --race
+    cd "$REPO_ROOT/server"
+    go vet -p 2 ./...
+  )
+
+  step "[4/6] Isolated API"
+  migrate_database
+  CHECK_STARTED_API=true
+  start_api
+
+  step "[5/6] Production Web build and start"
+  CHECK_STARTED_WEB=true
+  start_web
+  print_status_json > "$STATE_DIR/verification.running.json"
+
+  step "[6/6] Playwright (one worker, zero retries)"
+  pnpm exec playwright test --workers=1 --retries=0 "$@"
+  CHECK_COMPLETE=true
 }
 
-# --------------------------------------------------------------------------
-# Step 0: Ensure DB
-# --------------------------------------------------------------------------
-echo "==> Using env file: $ENV_FILE"
-echo "==> Checking PostgreSQL..."
-bash scripts/ensure-postgres.sh "$ENV_FILE"
-
-# --------------------------------------------------------------------------
-# Step 1: TypeScript typecheck
-# --------------------------------------------------------------------------
-echo ""
-echo "==> [1/5] TypeScript typecheck..."
-pnpm typecheck || { EXIT_CODE=1; exit 1; }
-
-# --------------------------------------------------------------------------
-# Step 2: TypeScript unit tests (Vitest)
-# --------------------------------------------------------------------------
-echo ""
-echo "==> [2/5] TypeScript unit tests..."
-pnpm test || { EXIT_CODE=1; exit 1; }
-
-# --------------------------------------------------------------------------
-# Step 3: Go tests
-# --------------------------------------------------------------------------
-echo ""
-echo "==> [3/5] Go tests..."
-echo "==> Verifying Go test wrapper..."
-bash scripts/test-go.test.sh || { EXIT_CODE=1; exit 1; }
-echo "==> Running database migrations..."
-(cd server && go run ./cmd/migrate up) || { EXIT_CODE=1; exit 1; }
-bash scripts/test-go.sh || { EXIT_CODE=1; exit 1; }
-
-# --------------------------------------------------------------------------
-# Step 4: Start services for E2E (only if not already running)
-# --------------------------------------------------------------------------
-echo ""
-echo "==> [4/5] Starting services for E2E..."
-
-if curl -sf "http://localhost:${PORT}/health" > /dev/null 2>&1; then
-  echo "    Backend already running on :$PORT"
-else
-  echo "    Starting backend..."
-  (cd server && go run ./cmd/server) > /tmp/multica-check-backend.log 2>&1 &
-  BACKEND_PID=$!
-  STARTED_BACKEND=true
-  wait_for_port "$PORT" "Backend" 90 "/health"
-fi
-
-if curl -sf "http://localhost:${FRONTEND_PORT}" > /dev/null 2>&1; then
-  echo "    Frontend already running on :$FRONTEND_PORT"
-else
-  echo "    Starting frontend..."
-  pnpm dev:web > /tmp/multica-check-frontend.log 2>&1 &
-  FRONTEND_PID=$!
-  STARTED_FRONTEND=true
-  wait_for_port "$FRONTEND_PORT" "Frontend" 120 "/"
-fi
-
-# --------------------------------------------------------------------------
-# Step 5: E2E tests (Playwright)
-# --------------------------------------------------------------------------
-echo ""
-echo "==> [5/5] E2E tests (Playwright)..."
-pnpm exec playwright test || { EXIT_CODE=1; exit 1; }
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then check_main "$@"; fi
