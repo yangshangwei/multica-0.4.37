@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 25
-- **Last Active**: 2026-09-23
+- **Total Sessions**: 26
+- **Last Active**: 2026-09-24
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~813 | Active |
+| `journal-1.md` | ~834 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 26 | 2026-09-24 | 新增体验验证与迁移审查专项角色 | `c21d03a43` | `main` |
 | 25 | 2026-09-23 | skill-lifecycle-taxonomy：审计、视觉验收与收尾 | `28c91e13d`, `a54668d2f`, `864e95f59` | `main` |
 | 24 | 2026-09-20 | 技能库分类、图标与卡片视图（标签复用工作区标签） | `d017c292f`, `6f5817444`, `3c766dd12`, `a9d034dc6` | `main` |
 | 23 | 2026-09-19 | 内置 MCP Server 预设模板目录 | `34bdbd3d5` | `feat/builtin-skill-presets` |

@@ -811,3 +811,24 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 26: 新增体验验证与迁移审查专项角色
+
+**Date**: 2026-09-24
+**Task**: 新增体验验证与迁移审查专项角色
+**Branch**: `main`
+
+### Summary
+
+两周期 workload gate 达标后新增 experience-validation-engineer(Contributor)与 migration-reviewer(Observer)两个 listed 角色及其 role skill,接入 review-gate/release/maintenance 小队,更新 roster(14 角色/15 skill)、creating-agents 技能与源图、四语文档与 locale,并补齐 roster/autonomy/证据契约/小队路由测试。独立 trellis-check 通过 4 条验收标准;service 与模板测试绿,execution_squad 迁移缺失与 sweeper race 属无关环境失败。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c21d03a43` | (see git log) |
+
+### Status
+
+[OK] **Completed**
