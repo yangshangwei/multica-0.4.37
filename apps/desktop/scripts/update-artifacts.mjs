@@ -6,7 +6,7 @@ import { basename, dirname, isAbsolute, join, relative, resolve } from "node:pat
 import { pathToFileURL } from "node:url";
 import { parseUpdateInfo } from "electron-updater/out/providers/Provider.js";
 
-const metadataName = /^latest(?:-[A-Za-z0-9]+)*\.yml$/;
+export const metadataName = /^latest(?:-[A-Za-z0-9]+)*\.yml$/;
 const artifactName = /^multica-desktop-[A-Za-z0-9][A-Za-z0-9._+-]*\.(?:exe|dmg|zip|AppImage|deb|rpm|7z)(?:\.blockmap)?$/;
 const versionPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 
@@ -72,19 +72,9 @@ async function inventory(source) {
   return files;
 }
 
-function referenceFile(files, name, version) {
+function validateUpdateFilename(name, version) {
   if (typeof name !== "string" || !artifactName.test(name) || basename(name) !== name) throw new Error(`Unsafe update filename: ${String(name)}`);
   if (!name.startsWith(`multica-desktop-${version}-`)) throw new Error(`Update filename does not match version ${version}: ${name}`);
-  const file = files.get(name);
-  if (!file || file.metadata) throw new Error(`Missing referenced update artifact: ${name}`);
-  return file;
-}
-
-function verifyReference(files, info, key, version, requireSize = true) {
-  if (!info || typeof info !== "object" || Array.isArray(info)) throw new Error("Invalid update file record");
-  const file = referenceFile(files, info[key], version);
-  if ((requireSize || info.size !== undefined) && (!Number.isSafeInteger(info.size) || info.size <= 0 || info.size !== file.size)) throw new Error(`Update size mismatch: ${file.name}`);
-  if (typeof info.sha512 !== "string" || !/^[A-Za-z0-9+/]{86}==$/.test(info.sha512) || info.sha512 !== file.sha512) throw new Error(`Update SHA-512 mismatch: ${file.name}`);
 }
 
 export function validateUpdateVersion(value, allowPrerelease = false) {
@@ -93,18 +83,42 @@ export function validateUpdateVersion(value, allowPrerelease = false) {
   if (version[4] && !allowPrerelease) throw new Error(`Stable versions only: ${value}; set a stable VERSION or add --allow-prerelease for intentional test builds`);
 }
 
+// Share the metadata contract between offline publication and HTTP verification.
+export function updateReferences(info, allowPrerelease = false) {
+  validateUpdateVersion(info?.version, allowPrerelease);
+  if (!Array.isArray(info.files) || info.files.length === 0) throw new Error("No update files in metadata");
+  const references = new Map();
+  function add(reference, key, requireSize = true) {
+    if (!reference || typeof reference !== "object" || Array.isArray(reference)) throw new Error("Invalid update file record");
+    const name = reference[key];
+    validateUpdateFilename(name, info.version);
+    const { size, sha512 } = reference;
+    if ((requireSize || size !== undefined) && (!Number.isSafeInteger(size) || size <= 0)) throw new Error(`Invalid update size: ${name}`);
+    if (typeof sha512 !== "string" || !/^[A-Za-z0-9+/]{86}==$/.test(sha512)) throw new Error(`Invalid update SHA-512: ${name}`);
+    const previous = references.get(name);
+    if (previous && (previous.sha512 !== sha512 || (previous.size !== undefined && size !== undefined && previous.size !== size))) {
+      throw new Error(`Conflicting update references: ${name}`);
+    }
+    references.set(name, { name, size: size ?? previous?.size, sha512 });
+  }
+  for (const reference of info.files) add(reference, "url");
+  if (info.path !== undefined) add(info, "path", false);
+  if (info.packages !== undefined) {
+    if (!info.packages || typeof info.packages !== "object" || Array.isArray(info.packages)) throw new Error("Invalid update packages");
+    for (const reference of Object.values(info.packages)) add(reference, "path");
+  }
+  return [...references.values()];
+}
+
 async function validate(files, allowPrerelease) {
   for (const file of files.values()) {
     if (!file.metadata) continue;
     const info = parseUpdateInfo(await readFile(file.path, "utf8"), file.name, pathToFileURL(file.path));
-    validateUpdateVersion(info?.version, allowPrerelease);
-    if (!Array.isArray(info.files) || info.files.length === 0) throw new Error(`No update files in ${file.name}`);
-    for (const reference of info.files) verifyReference(files, reference, "url", info.version);
-    // Older clients still read these top-level fields even when files exists.
-    if (info.path !== undefined) verifyReference(files, info, "path", info.version, false);
-    if (info.packages !== undefined) {
-      if (!info.packages || typeof info.packages !== "object" || Array.isArray(info.packages)) throw new Error(`Invalid update packages in ${file.name}`);
-      for (const reference of Object.values(info.packages)) verifyReference(files, reference, "path", info.version);
+    for (const reference of updateReferences(info, allowPrerelease)) {
+      const artifact = files.get(reference.name);
+      if (!artifact || artifact.metadata) throw new Error(`Missing referenced update artifact: ${reference.name}`);
+      if (reference.size !== undefined && reference.size !== artifact.size) throw new Error(`Update size mismatch: ${reference.name}`);
+      if (reference.sha512 !== artifact.sha512) throw new Error(`Update SHA-512 mismatch: ${reference.name}`);
     }
   }
 }

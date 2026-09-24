@@ -1,0 +1,142 @@
+{
+  "started_at": "2026-09-24T15:27:00.314744+00:00",
+  "completed_at": "2026-09-24T15:27:39.818737+00:00",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "existing_feed_with_new_cli",
+      "evidence": {
+        "url": "http://127.0.0.1:18080/desktop",
+        "version": "0.4.48-dirty",
+        "metadata": {
+          "name": "latest-ia32.yml",
+          "cacheControl": "no-cache",
+          "bytes": 394
+        },
+        "artifacts": [
+          {
+            "name": "multica-desktop-0.4.48-dirty-windows-ia32.exe",
+            "bytes": 165407520,
+            "sha512": "gy6kj7te2nV68aCXU+VGunibV3lSW9PXWRQGki20NhUaD5w60X9agOGs99pLUmKccxt7RO9dlXaxOG95pG9JLA==",
+            "checksumVerified": true,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024
+          }
+        ],
+        "blockmaps": [
+          {
+            "name": "multica-desktop-0.4.48-dirty-windows-ia32.exe.blockmap",
+            "bytes": 173395,
+            "sha512": "uZgnfo1WGi4fivKXBZZ6iXJYNPgRTROUi/mm22mj1YnTOzzfITYf5Q2Qzhp1L1mGWRvYv9SoDcKySwv1fgk5Lg==",
+            "checksumVerified": false,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024,
+            "available": true
+          }
+        ],
+        "verifiedAt": "2026-09-24T15:27:02.032Z"
+      }
+    },
+    {
+      "name": "image_export_and_load",
+      "evidence": {
+        "bytes": 26886656,
+        "platform": "linux/arm64",
+        "tag": "multica-desktop-nginx:985220252f38-arm64"
+      }
+    },
+    {
+      "name": "minimal_deployment_with_saved_env",
+      "evidence": {
+        "url": "http://127.0.0.1:58298/desktop",
+        "storage": "/Volumes/artisan/code/2026/multica-0.4.37/data/desktop ops jis6zt1i/release storage",
+        "node_helpers_absent_at_start": true
+      }
+    },
+    {
+      "name": "collect_publish_verify_saved_config",
+      "evidence": {
+        "url": "http://127.0.0.1:58298/desktop",
+        "version": "0.4.48-dirty",
+        "metadata": {
+          "name": "latest-ia32.yml",
+          "cacheControl": "no-cache",
+          "bytes": 394
+        },
+        "artifacts": [
+          {
+            "name": "multica-desktop-0.4.48-dirty-windows-ia32.exe",
+            "bytes": 165407520,
+            "sha512": "gy6kj7te2nV68aCXU+VGunibV3lSW9PXWRQGki20NhUaD5w60X9agOGs99pLUmKccxt7RO9dlXaxOG95pG9JLA==",
+            "checksumVerified": true,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024
+          }
+        ],
+        "blockmaps": [
+          {
+            "name": "multica-desktop-0.4.48-dirty-windows-ia32.exe.blockmap",
+            "bytes": 173395,
+            "sha512": "uZgnfo1WGi4fivKXBZZ6iXJYNPgRTROUi/mm22mj1YnTOzzfITYf5Q2Qzhp1L1mGWRvYv9SoDcKySwv1fgk5Lg==",
+            "checksumVerified": false,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024,
+            "available": true
+          }
+        ],
+        "verifiedAt": "2026-09-24T15:27:36.387Z"
+      }
+    },
+    {
+      "name": "wrong_version_rejected",
+      "evidence": "Desktop update verification: Unexpected version 0.4.48-dirty; expected version 0.5.1"
+    },
+    {
+      "name": "configure_uses_saved_url",
+      "evidence": {
+        "url": "http://127.0.0.1:58298/desktop",
+        "preserved_fields_and_backup": true
+      }
+    },
+    {
+      "name": "fixed_port_restart_persistence",
+      "evidence": {
+        "url": "http://127.0.0.1:58298/desktop",
+        "artifacts_identical": true
+      }
+    },
+    {
+      "name": "status_inspects_actual_mount",
+      "evidence": "reported running storage despite different intended storage"
+    },
+    {
+      "name": "stop_preserves_releases",
+      "evidence": true
+    },
+    {
+      "name": "existing_service_preserved",
+      "evidence": {
+        "healthy": true,
+        "not_restarted": true
+      }
+    }
+  ],
+  "tests": {
+    "desktop_files": 10,
+    "desktop_passed": 162,
+    "shell_passed": 13,
+    "offline_passed": 12,
+    "offline_skipped": 3,
+    "desktop_typecheck": "passed",
+    "desktop_lint": "0 errors, 1 pre-existing Hook warning"
+  },
+  "limits": [
+    "ARM64 Docker rehearsal only; x64 image exporter covered by CLI regression tests",
+    "Existing Windows ia32 0.4.48-dirty installer; no signed stable cross-version install",
+    "No physically disconnected intranet, HTTPS certificate or real user-state acceptance"
+  ]
+}

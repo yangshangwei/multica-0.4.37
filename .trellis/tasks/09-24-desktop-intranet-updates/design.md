@@ -1,5 +1,7 @@
 # Design
 
+Operator helpers extend the same shell entry point with Compose-resolved persistent dotenv, architecture-specific offline image export, collection and HTTP verification. HTTP verification shares reference validation with the publisher, streams full files, and keeps optional blockmap transport evidence separate from metadata-backed checksum proof. Detailed commands and the business-server upgrade handoff live in the operator runbook; see operations-plan.md for implementation ownership and validation.
+
 Use a separate Docker Compose project with official Nginx stable Alpine. Port 18080 defaults to loopback and can bind a LAN address explicitly. Mount only ./data/desktop-updates/public read-only; private publication staging/backups remain outside the HTTP root. Enable GET/HEAD, Range, no-cache and a /health endpoint; deny directory listings and dotfiles. Pin the pulled image digest after verification.
 
 A desktop-side Node CLI reuses the installed electron-updater YAML parser (no new dependency). It collects generated latest*.yml and versioned installers/blockmaps from flat or platform/architecture subdirectories, rejects unsafe references and collisions, validates sizes/digests, stages copies privately, publishes immutable artifacts first and atomically renames each metadata file last. Stable versions are default; explicit --allow-prerelease supports existing local smoke-test builds. A local publication lock prevents concurrent writers. Offline installer uses the same collector.

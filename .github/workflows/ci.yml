@@ -68,6 +68,10 @@ jobs:
               - 'scripts/worktree-db.test.sh'
               - 'scripts/dev-env.sh'
               - 'scripts/dev-env.test.sh'
+              - 'scripts/desktop-updates.sh'
+              - 'scripts/desktop-updates.test.mjs'
+              - 'docker-compose.desktop-updates.yml'
+              - 'deploy/desktop-updates/**'
               - 'scripts/selfhost-wait.sh'
               # selfhost-config.test.sh asserts that the air-gapped bundle saves
               # exactly the images the compose files start.
@@ -267,6 +271,10 @@ jobs:
       - name: Test development environment registry
         if: ${{ needs.changes.outputs.frontend == 'true' }}
         run: bash scripts/dev-env.test.sh
+
+      - name: Test desktop download operations
+        if: ${{ needs.changes.outputs.frontend == 'true' }}
+        run: node --test scripts/desktop-updates.test.mjs
 
       - name: Verify reserved-slugs.ts is up to date
         if: ${{ needs.changes.outputs.frontend == 'true' }}

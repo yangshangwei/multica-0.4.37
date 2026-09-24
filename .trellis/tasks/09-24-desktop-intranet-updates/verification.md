@@ -1,5 +1,17 @@
 # Verification — 2026-09-24
 
+## Operator handoff follow-up
+
+The sections below retain the original implementation evidence. The subsequent
+runbook and shell-helper work is recorded in
+[operations-verification.json](operations-verification.json) and the
+[detailed re-verification report](../../../docs/desktop-intranet-update-verification-2026-09-24.zh-CN.md).
+That follow-up passed 162 desktop tests, 13 shell tests, 12 offline regressions
+(3 existing opt-in skips), desktop lint/typecheck and ten isolated Docker/HTTP
+checks. The saved configuration, image export, collect/publish/verify and
+temporary client configuration flows were exercised without restarting the
+existing service. Real installed-client acceptance remains pending.
+
 ## Running service
 
 - Compose project: `multica-desktop-updates`

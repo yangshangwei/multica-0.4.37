@@ -1,0 +1,178 @@
+{
+  "started_at": "2026-09-24T14:59:34.017584+00:00",
+  "completed_at": "2026-09-24T14:59:52.256940+00:00",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "document_static_checks",
+      "details": {
+        "local_link_targets": 28,
+        "bash_syntax_blocks": 12,
+        "fences_balanced": true,
+        "limit": "No remote links or Markdown fragment anchors checked; shell blocks parsed, not executed"
+      }
+    },
+    {
+      "name": "whitespace_checks",
+      "details": "tracked diff and new runbook passed"
+    },
+    {
+      "name": "existing_nginx_configuration",
+      "details": {
+        "health": "healthy",
+        "port_bindings": {
+          "8080/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "18080"
+            }
+          ]
+        },
+        "read_only_storage": "/Volumes/artisan/code/2026/multica-0.4.37/data/desktop-updates/public",
+        "nginx_syntax": "passed"
+      }
+    },
+    {
+      "name": "existing_nginx_http",
+      "details": {
+        "base": "http://127.0.0.1:18080",
+        "version": "0.4.48-dirty",
+        "metadata": "200, no-cache, identical to disk",
+        "head": 200,
+        "range": 206,
+        "bytes": 165407520,
+        "sha512": "gy6kj7te2nV68aCXU+VGunibV3lSW9PXWRQGki20NhUaD5w60X9agOGs99pLUmKccxt7RO9dlXaxOG95pG9JLA==",
+        "blockmap_identical": true,
+        "blocked_paths": {
+          "/desktop/": 404,
+          "/desktop/missing-verification-file.exe": 404,
+          "/desktop/.verification-private": 404,
+          "/backups/": 404,
+          "/staging/": 404
+        }
+      }
+    },
+    {
+      "name": "document_compose_config",
+      "details": {
+        "image": "multica-desktop-nginx:985220252f38",
+        "binding": "0.0.0.0:18080",
+        "public_storage": "/srv/multica-updates/public",
+        "read_only": true
+      }
+    },
+    {
+      "name": "image_save_load",
+      "details": {
+        "architecture": "linux/arm64",
+        "archive_bytes": 26896896,
+        "removed_temporary_tag_before_load": true
+      }
+    },
+    {
+      "name": "real_artifact_collect_publish",
+      "details": {
+        "source": "/Volumes/artisan/code/2026/multica-0.4.37/data/desktop-updates/public",
+        "stable_policy_rejected_dirty": true,
+        "explicit_test_prerelease_succeeded": true,
+        "files": [
+          "latest-ia32.yml",
+          "multica-desktop-0.4.48-dirty-windows-ia32.exe",
+          "multica-desktop-0.4.48-dirty-windows-ia32.exe.blockmap"
+        ]
+      }
+    },
+    {
+      "name": "invalid_release_rejected",
+      "details": {
+        "error": "Desktop updates: Update size mismatch: multica-desktop-0.4.48-dirty-windows-ia32.exe",
+        "published_metadata_and_artifacts_unchanged": true
+      }
+    },
+    {
+      "name": "isolated_nginx_http",
+      "details": {
+        "base": "http://127.0.0.1:58900",
+        "version": "0.4.48-dirty",
+        "metadata": "200, no-cache, identical to disk",
+        "head": 200,
+        "range": 206,
+        "bytes": 165407520,
+        "sha512": "gy6kj7te2nV68aCXU+VGunibV3lSW9PXWRQGki20NhUaD5w60X9agOGs99pLUmKccxt7RO9dlXaxOG95pG9JLA==",
+        "blockmap_identical": true,
+        "blocked_paths": {
+          "/desktop/": 404,
+          "/desktop/missing-verification-file.exe": 404,
+          "/desktop/.verification-private": 404,
+          "/backups/": 404,
+          "/staging/": 404
+        }
+      }
+    },
+    {
+      "name": "isolated_write_rejection",
+      "details": {
+        "status": 403,
+        "file_not_created": true
+      }
+    },
+    {
+      "name": "configuration_cli",
+      "details": {
+        "temporary_config_only": true,
+        "business_and_custom_fields_preserved": true,
+        "original_backup_matches": true,
+        "second_run_unchanged": true
+      }
+    },
+    {
+      "name": "isolated_restart_persistence",
+      "details": {
+        "base": "http://127.0.0.1:58900",
+        "version": "0.4.48-dirty",
+        "metadata": "200, no-cache, identical to disk",
+        "head": 200,
+        "range": 206,
+        "bytes": 165407520,
+        "sha512": "gy6kj7te2nV68aCXU+VGunibV3lSW9PXWRQGki20NhUaD5w60X9agOGs99pLUmKccxt7RO9dlXaxOG95pG9JLA==",
+        "blockmap_identical": true,
+        "blocked_paths": {
+          "/desktop/": 404,
+          "/desktop/missing-verification-file.exe": 404,
+          "/desktop/.verification-private": 404,
+          "/backups/": 404,
+          "/staging/": 404
+        }
+      }
+    },
+    {
+      "name": "isolated_cleanup",
+      "details": "temporary Compose project and image tag removed; temporary storage removed on context exit"
+    },
+    {
+      "name": "existing_service_preserved",
+      "details": {
+        "healthy": true,
+        "original_container_not_restarted": true
+      }
+    }
+  ],
+  "automated_tests": {
+    "desktop": {
+      "files_passed": 9,
+      "tests_passed": 121,
+      "failed": 0
+    },
+    "offline_scripts": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 3
+    }
+  },
+  "scope_limits": [
+    "Docker Desktop linux/arm64 on this machine; no physical intranet host deployment",
+    "Existing Windows ia32 0.4.48-dirty artifact; no signed stable client install",
+    "Image layers already present during image archive reload",
+    "No public-network disconnection or user-state retention acceptance"
+  ]
+}

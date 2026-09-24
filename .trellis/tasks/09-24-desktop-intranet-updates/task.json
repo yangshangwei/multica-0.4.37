@@ -23,11 +23,17 @@
   "relatedFiles": [
     "docs/desktop-intranet-update-plan.zh-CN.md",
     "docs/desktop-updates-local.zh-CN.md",
-    "docker-compose.desktop-updates.yml"
+    "docker-compose.desktop-updates.yml",
+    "scripts/desktop-updates.sh",
+    "apps/desktop/scripts/verify-updates.mjs",
+    "deploy/desktop-updates/updates.env.example",
+    "docs/desktop-intranet-update-runbook.zh-CN.md",
+    "docs/desktop-intranet-update-verification-2026-09-24.zh-CN.md"
   ],
-  "notes": "Local implementation and HTTP verification complete; service left running on 127.0.0.1:18080. Keep active for real installed-client acceptance; see verification.md. No global desktop configuration changed.",
+  "notes": "Local implementation, operator helpers and isolated Docker/HTTP verification complete. Operator runbook includes persistent configuration, image export, publication, HTTP checks and business-server upgrade handoff. Existing 127.0.0.1:18080 service preserved; real installed-client acceptance remains pending. See verification.md and operations-verification.json.",
   "meta": {
     "implementation_complete": true,
-    "real_client_acceptance": "pending"
+    "real_client_acceptance": "pending",
+    "operations_helpers_verified": true
   }
 }

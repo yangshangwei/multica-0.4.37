@@ -2,6 +2,8 @@
 
 本文档适用于已经拿到 Multica 服务端离线升级包、且服务器不能访问公网的场景。
 
+如果本次只发布桌面安装包，使用[桌面端内网部署与升级操作手册](desktop-intranet-update-runbook.zh-CN.md)中的 `publish` 和 `verify`，无需执行这里的后端和数据库升级。一次交付同时包含服务端与桌面端时，分别按两份手册完成验收；先根据该版本兼容性要求安排升级顺序，再开放桌面更新通道。下载服务健康不代表业务服务或客户端安装已经升级成功。
+
 升级包已经基于指定源码构建完成。内网服务器不需要源码、Node.js、pnpm 或 Go 工具链，只需要 Docker 和 Docker Compose。
 
 升级包包含后端、前端和 PostgreSQL 镜像。后端启动时会自动执行数据库迁移。升级过程中不要执行 `docker compose down -v`，也不要删除 `pgdata` 或 `backend_uploads` 数据卷。
@@ -118,7 +120,7 @@ docker compose -f docker-compose.selfhost.yml up -d --pull never backend fronten
 
 ## 六、选择 Windows 桌面端架构
 
-桌面端在内网检查、下载和安装更新的完整方案，参见[桌面端内网升级方案](desktop-intranet-update-plan.zh-CN.md)。该文档包含现有能力、静态目录部署、客户端配置、发布步骤和待实施事项。
+桌面端的首次部署和每次发包操作，参见[桌面端内网部署与升级操作手册](desktop-intranet-update-runbook.zh-CN.md)。其中包含固定 `updates.env`、离线镜像导出脚本、产物收集发布、自动 HTTP 校验和客户端配置；设计依据见[桌面端内网升级方案](desktop-intranet-update-plan.zh-CN.md)。
 
 桌面端安装器单独提供，不在服务端升级归档中。按客户端架构选择文件：
 

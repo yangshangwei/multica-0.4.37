@@ -2,9 +2,15 @@
 
 本服务实现[桌面端内网升级方案](desktop-intranet-update-plan.zh-CN.md)的静态文件存储与发布部分。Nginx 使用独立 Compose 项目，默认地址为 `http://127.0.0.1:18080/desktop`。桌面更新复用现有 `electron-updater`，无需修改业务 API。
 
+部署到内网服务器并持续发布新版本时，参见[桌面端内网部署与升级操作手册](desktop-intranet-update-runbook.zh-CN.md)，其中包含镜像离线导入、持久化配置、客户端 URL 和日常升级检查清单。
+
 ## 启动与停止
 
 需要本机 Docker Engine / Docker Desktop 和 Compose 插件。收集、发布产物还需要安装好仓库依赖；客户端配置脚本需要 Node.js 22.18 或更新版本。
+
+以下未指定配置文件的示例使用本机默认值。持续运维时，先从 [updates.env.example](../deploy/desktop-updates/updates.env.example) 创建仓库根目录的 `updates.env`，填写实际存储、监听、镜像和客户端 URL。管理脚本会自动读取它，也支持 `bash scripts/desktop-updates.sh --env-file /绝对路径/updates.env <命令>`。根目录 `updates.env` 已被 Git 忽略。
+
+配置按 Compose dotenv 规则解析，不作为 Shell 执行；进程中已有的同名环境变量优先。自定义配置下执行 `configure` 或 `verify` 时需要明确填写 `DESKTOP_UPDATES_URL`，避免把内网客户端错误地指向其自身的 `127.0.0.1`。
 
 首次在联网开发机准备镜像（固定 digest 与 Compose 一致）：
 
@@ -62,8 +68,7 @@ make desktop-updates-publish SOURCE=apps/desktop/dist ALLOW_PRERELEASE=1
 只整理离线交付文件、暂不发布时：
 
 ```bash
-node apps/desktop/scripts/update-artifacts.mjs collect \
-  --source apps/desktop/dist --destination dist/desktop-release
+bash scripts/desktop-updates.sh collect apps/desktop/dist dist/desktop-release
 ```
 
 离线组合打包 `scripts/offline-installer.sh` 也复用此收集逻辑，包含安装包、更新 YAML、ZIP 和生成的 blockmap。Windows 32 位可使用 `--desktop-target win-ia32`。显式指定稳定的 `VERSION`；测试构建需加 `--allow-prerelease`。
@@ -71,6 +76,17 @@ node apps/desktop/scripts/update-artifacts.mjs collect \
 ## 下载验证
 
 根据实际发布的平台选择 YAML，Windows ia32 使用 `latest-ia32.yml`，Windows x64 使用 `latest.yml`。
+
+自动验证会实际下载元数据引用的完整文件，检查预期版本、大小、SHA-512、HEAD 和 Range，并输出 JSON 证据。以当前本机测试包为例：
+
+```bash
+bash scripts/desktop-updates.sh verify latest-ia32.yml \
+  --expected-version 0.4.48-dirty
+```
+
+正式发包时将预期版本改为本次稳定版本，按每个实际发布通道分别检查。失败返回非零退出码；下载检查不证明安装或用户状态保留。当前测试包不会因为校验成功而成为正式稳定发布。
+
+手动排查时：
 
 ```bash
 curl -fsS http://127.0.0.1:18080/desktop/latest-ia32.yml
@@ -102,7 +118,7 @@ bash scripts/desktop-updates.sh configure --config /绝对路径/desktop.json
 DESKTOP_UPDATES_BIND=0.0.0.0 make desktop-updates-up
 ```
 
-也可将 `DESKTOP_UPDATES_BIND` 设为本机指定的内网地址。每次重新执行启动命令时都要使用相同的环境变量；不设置会恢复默认的本机监听。其他电脑的更新源必须填写下载服务器的内网 IP 或域名，不能填写 `127.0.0.1`：
+也可将 `DESKTOP_UPDATES_BIND` 设为本机指定的内网地址。建议将这些值保存到 `updates.env`；若仅通过临时环境变量设置且没有配置文件，下次未设置时仍会回到默认的本机监听。其他电脑的更新源必须填写下载服务器的内网 IP 或域名，不能填写 `127.0.0.1`：
 
 ```bash
 DESKTOP_UPDATES_URL=http://下载服务器内网IP:18080/desktop \
@@ -111,18 +127,20 @@ DESKTOP_UPDATES_URL=http://下载服务器内网IP:18080/desktop \
 
 端口可用 `DESKTOP_UPDATES_PORT` 修改；客户端可见地址通过 `DESKTOP_UPDATES_URL` 设置。长期内网部署应采用固定域名和受信任的 HTTPS 证书，TLS 可由已有内网反向代理终结。
 
-完全隔离环境先在联网机器保存镜像，再转入内网：
+完全隔离环境先在联网机器准备镜像，再转入内网。以下示例针对 Linux x64 下载服务器；ARM64 服务器将平台改为 `linux/arm64` 并使用脚本输出的对应标签：
 
 ```bash
-docker tag nginx:stable-alpine@sha256:985220252f3863977e468f611ef118ebd01421289dd86ee1ae99cb068c3bce2b \
-  multica-desktop-nginx:985220252f38
-docker save multica-desktop-nginx:985220252f38 -o nginx-desktop-updates.tar
-# 在内网服务器执行
-docker load -i nginx-desktop-updates.tar
-DESKTOP_UPDATES_IMAGE=multica-desktop-nginx:985220252f38 make desktop-updates-up
+bash scripts/desktop-updates.sh export-image nginx-desktop-updates.tar linux/amd64
 ```
 
-离线 `docker save/load` 不保证保留 RepoDigest，所以这里显式使用已导入的本地标签。镜像归档应来自已核验的固定 digest，同时复制 Compose、Nginx 配置和脚本。发布操作可在具有仓库依赖的内网构建机执行，再转移经验证的存储目录；Nginx 服务器本身不需要 Node.js。
+在内网服务器执行：
+
+```bash
+docker load -i nginx-desktop-updates.tar
+DESKTOP_UPDATES_IMAGE=multica-desktop-nginx:985220252f38-amd64 make desktop-updates-up
+```
+
+离线 `docker save/load` 不保证保留 RepoDigest，所以这里显式使用已导入的本地标签。长期运维将该标签写入 `updates.env`，以脚本实际输出为准。导出命令从 Compose 读取固定 digest，拒绝覆盖已有归档；同时转入 Compose、Nginx 配置、管理脚本和 env 模板即可启停服务。发布操作可在具有仓库依赖的内网运维机执行；Nginx 服务器本身不需要 Node.js，Node 发布和校验工具仍需要仓库及依赖。
 
 ## 故障与恢复
 

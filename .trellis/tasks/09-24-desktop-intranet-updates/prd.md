@@ -11,6 +11,7 @@ Implement the existing desktop intranet update plan and run an Nginx file server
 - Include metadata/blockmaps in offline installer delivery, including Windows ia32.
 - Prevent unintended Windows ARM64 downgrade when selecting its channel.
 - Document local use, intranet transport, failures and remaining real-client acceptance.
+- Provide persistent deployment configuration, architecture-specific offline image export and a repeatable HTTP verification command; keep a detailed operator runbook with release records and the separate business-server upgrade handoff.
 
 ## Acceptance
 - Nginx is running locally with a healthy endpoint, no directory listing, no-cache metadata, successful complete and HTTP Range downloads of actual existing build artifacts.
