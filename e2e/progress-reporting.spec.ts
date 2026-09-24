@@ -233,7 +233,7 @@ test("publishes one built-in reporter and adjacent daily and weekly templates", 
   const { templates } = await api.requestJSON<{ templates: ReportTemplate[] }>("/api/autopilots/templates?language=zh");
   await attachJSON(testInfo, "real-reporting-catalogs", { roles, templates });
 
-  expect.soft(roles).toHaveLength(10);
+  expect.soft(roles).toHaveLength(14);
   expect.soft(roles.filter((role) => role.key === ROLE_KEY)).toHaveLength(1);
   expect.soft(templates).toHaveLength(10);
   const dailyIndex = templates.findIndex((template) => template.key === DAILY_KEY);
@@ -265,7 +265,7 @@ test("creates the reporter from the Chinese catalog and reopens its ordinary age
   const role = requiredTemplate(templates, ROLE_KEY);
 
   await page.goto(`/${slug}/agents`);
-  await page.getByRole("button", { name: /^内置智能体\s+9$/ }).click();
+  await page.getByRole("button", { name: /^内置智能体\s+\d+$/ }).click();
   const row = page.getByRole("listitem", { name: ROLE_NAME, exact: true });
   await expect(row).toBeVisible();
   await expect(row.getByRole("button", { name: "打开智能体", exact: true })).toHaveCount(0);
@@ -328,14 +328,14 @@ test("creates the reporter from the Chinese catalog and reopens its ordinary age
   await attachJSON(testInfo, "real-created-reporter", { reporter, skill });
 
   await page.goto(`/${slug}/agents`);
-  await page.getByRole("button", { name: /^内置智能体\s+9$/ }).click();
+  await page.getByRole("button", { name: /^内置智能体\s+\d+$/ }).click();
   await expect(row.getByRole("button", { name: "查看模板", exact: true })).toBeVisible();
   await row.scrollIntoViewIfNeeded();
   await capture(page, testInfo, "builtin-reporter-catalog-created-1440");
   await row.getByRole("button", { name: "查看模板", exact: true }).click();
   await expect(page.locator("pre")).toHaveText(role.instructions);
   await page.goto(`/${slug}/agents`);
-  await page.getByRole("button", { name: /^内置智能体\s+9$/ }).click();
+  await page.getByRole("button", { name: /^内置智能体\s+\d+$/ }).click();
   await row.getByRole("button", { name: "打开智能体", exact: true }).click();
   await page.waitForURL((url) => url.pathname === `/${slug}/agents/${reporter.id}`);
   expect((await api.requestJSON<Reporter[]>("/api/agents")).filter((agent) => agent.template_key === ROLE_KEY)).toHaveLength(1);

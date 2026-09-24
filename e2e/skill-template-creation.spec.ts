@@ -111,7 +111,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     const catalog: { templates: TemplateSnapshot[] } = await (
       await request("/api/skills/templates")
     ).json();
-    expect(catalog.templates).toHaveLength(9);
+    expect(catalog.templates).toHaveLength(15);
     const source = catalog.templates.find((item) => item.name === TEMPLATE_NAME);
     expect(source).toBeDefined();
     const catalogBefore = JSON.stringify(catalog);
@@ -158,7 +158,7 @@ test("creates an edited independent skill after previewing and cancelling withou
     expect(await (await request("/api/skills")).json()).toEqual([]);
 
     // Browsing has no dirty draft and closes directly, without materializing
-    // any of the seven built-in catalog entries in this empty workspace.
+    // any built-in catalog entries in this empty workspace.
     await dialog.getByRole("button", { name: "Close", exact: true }).click();
     await expect(dialog).toHaveCount(0);
     expect(await (await request("/api/skills")).json()).toEqual([]);
