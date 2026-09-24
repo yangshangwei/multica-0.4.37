@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -109,6 +110,87 @@ func TestCreateAgentFromTemplate_WorkloadBackedSpecialistsCopyTheirContracts(t *
 			}
 			if len(out.Skills) != 1 || out.Skills[0].Name != tc.skill {
 				t.Errorf("%s skills = %+v, want %s", tc.key, out.Skills, tc.skill)
+			}
+		})
+	}
+}
+
+func TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies(t *testing.T) {
+	for _, tc := range []struct {
+		roleKey      string
+		skillName    string
+		roleVersion  int32
+		skillVersion int32
+	}{
+		{"migration-reviewer", "multica-migration-review", 2, 1},
+		{"architect", "multica-architecture-decision-record", 2, 6},
+	} {
+		t.Run(tc.roleKey, func(t *testing.T) {
+			cleanupRoleSkill(t, tc.skillName)
+			runtimeID := handlerTestRuntimeID(t)
+			var first AgentResponse
+			testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+				"template_key": tc.roleKey, "runtime_id": runtimeID, "language": "zh",
+			})).Want(http.StatusCreated).JSON(&first)
+			cleanupTemplateAgent(t, first.ID)
+			role, ok := service.AgentRoleTemplateByKey(tc.roleKey)
+			if !ok || first.TemplateVersion != tc.roleVersion || first.AutonomyLevel != "observer" || first.Instructions != role.Instructions() {
+				t.Fatalf("new %s must use v%d canonical Observer instructions", tc.roleKey, tc.roleVersion)
+			}
+			if len(first.Skills) != 1 || first.Skills[0].Name != tc.skillName {
+				t.Fatalf("unexpected skills: %+v", first.Skills)
+			}
+			skillID := first.Skills[0].ID
+			var fresh SkillWithFilesResponse
+			testutil.Call(t, testHandler.GetSkill, withURLParam(newRequest("GET", "/api/skills/"+skillID, nil), "id", skillID)).Want(http.StatusOK).JSON(&fresh)
+			source, ok := service.RoleSkillTemplateByName(tc.skillName)
+			if !ok || source.Version != tc.skillVersion || fresh.Content != source.Content || fresh.Description != source.Description {
+				t.Errorf("missing skill must materialize %s v%d with its current body and description", tc.skillName, tc.skillVersion)
+			}
+			var storedVersion int32
+			dbfx.QueryRow(t, `SELECT (config->'origin'->>'version')::int FROM skill WHERE id = $1`, skillID).Scan(&storedVersion)
+			if storedVersion != tc.skillVersion {
+				t.Errorf("origin version = %d, want %d", storedVersion, tc.skillVersion)
+			}
+
+			const instructions = "Workspace-owned review instructions."
+			testutil.Call(t, testHandler.UpdateAgent, withURLParam(newRequest("PUT", "/api/agents/"+first.ID, map[string]any{
+				"instructions": instructions,
+			}), "id", first.ID)).Want(http.StatusOK)
+			testutil.Call(t, testHandler.UpdateSkill, withURLParam(newRequest("PUT", "/api/skills/"+skillID, map[string]any{
+				"content":     "# Workspace review\nPreserve this method.",
+				"description": "Workspace-owned purpose",
+				"config":      map[string]any{"origin": map[string]any{"type": roleSkillOriginType, "name": tc.skillName, "version": 1}, "team_note": "preserve"},
+				"files":       []CreateSkillFileRequest{{Path: "references/team.md", Content: "Team evidence rules"}},
+			}), "id", skillID)).Want(http.StatusOK)
+			var before SkillWithFilesResponse
+			testutil.Call(t, testHandler.GetSkill, withURLParam(newRequest("GET", "/api/skills/"+skillID, nil), "id", skillID)).Want(http.StatusOK).JSON(&before)
+			if before.Description != "Workspace-owned purpose" || before.Content != "# Workspace review\nPreserve this method." || len(before.Files) != 1 || before.Files[0].Path != "references/team.md" || before.Files[0].Content != "Team evidence rules" {
+				t.Fatal("workspace customization fixture was not persisted")
+			}
+
+			var second AgentResponse
+			testutil.Call(t, testHandler.CreateAgentFromTemplate, newRequest("POST", "/api/agents/from-template", map[string]any{
+				"template_key": tc.roleKey, "runtime_id": runtimeID, "language": "en",
+			})).Want(http.StatusCreated).JSON(&second)
+			cleanupTemplateAgent(t, second.ID)
+			if second.Instructions != role.Instructions() {
+				t.Error("new agent must use the current role independently of the old agent")
+			}
+			var existing AgentResponse
+			testutil.Call(t, testHandler.GetAgent, withURLParam(newRequest("GET", "/api/agents/"+first.ID, nil), "id", first.ID)).Want(http.StatusOK).JSON(&existing)
+			if existing.Instructions != instructions {
+				t.Error("existing agent instructions were overwritten")
+			}
+			for _, agent := range []AgentResponse{existing, second} {
+				if len(agent.Skills) != 1 || agent.Skills[0].ID != skillID || !agent.Skills[0].Enabled {
+					t.Errorf("%s must retain the existing enabled skill binding: %+v", agent.ID, agent.Skills)
+				}
+			}
+			var after SkillWithFilesResponse
+			testutil.Call(t, testHandler.GetSkill, withURLParam(newRequest("GET", "/api/skills/"+skillID, nil), "id", skillID)).Want(http.StatusOK).JSON(&after)
+			if !reflect.DeepEqual(after, before) {
+				t.Error("existing skill identity, text, config, files and timestamps must remain unchanged")
 			}
 		})
 	}

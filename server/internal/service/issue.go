@@ -229,6 +229,71 @@ func (s *IssueService) Create(ctx context.Context, p IssueCreateParams, opts Iss
 	defer tx.Rollback(ctx)
 	qtx := s.Queries.WithTx(tx)
 
+	result, err := s.CreateInTx(ctx, tx, p, issueCountPolicy)
+	if err != nil {
+		return result, err
+	}
+	issue, labels := result.Issue, result.Labels
+	var assignedTask db.AgentTaskQueue
+
+	if !opts.AssignedAgentRunFireAt.IsZero() && s.shouldEnqueueAgentTaskWithQueries(ctx, qtx, issue) {
+		// The issue must never become visible without its media-gated assigned
+		// task. Inserting both rows through qtx makes the unique-index winner
+		// deterministic: any observer that can discover the committed issue also
+		// sees the inert deferred task and must merge into it.
+		assignedTask, err = s.TaskService.createDeferredChannelIssueTaskWithQueries(ctx, qtx, issue, opts.AssignedAgentRunFireAt)
+		if err != nil {
+			return IssueCreateResult{}, fmt.Errorf("create deferred channel issue task: %w", err)
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return IssueCreateResult{}, fmt.Errorf("commit: %w", err)
+	}
+
+	attachments := s.linkAttachments(ctx, issue, p.AttachmentIDs)
+
+	actorID := opts.ActorID
+	if actorID == "" {
+		actorID = util.UUIDToString(issue.CreatorID)
+	}
+
+	var assignedTaskID pgtype.UUID
+	if !opts.AssignedAgentRunFireAt.IsZero() {
+		assignedTaskID = assignedTask.ID
+		if assignedTaskID.Valid {
+			if err := s.TaskService.hydrateDeferredChannelIssueTaskOverlay(ctx, assignedTask); err != nil {
+				// Runtime overlays are best-effort on every enqueue path. The task is
+				// already durable and safely deferred, so an optional integration
+				// failure must not turn a committed issue into a retry duplicate.
+				slog.Warn("hydrate deferred channel issue task overlay failed",
+					"issue_id", util.UUIDToString(issue.ID),
+					"task_id", util.UUIDToString(assignedTask.ID),
+					"error", err)
+			}
+		} else if s.shouldEnqueueSquadLeaderOnAssign(ctx, issue) {
+			// AssignedAgentRunFireAt currently belongs to channel /issue, which
+			// always resolves an agent assignee. Preserve the ordinary squad path
+			// for any future caller that supplies the option with a squad.
+			s.enqueueSquadLeaderTask(ctx, issue, pgtype.UUID{}, p.CreatorType, actorID)
+		}
+	}
+
+	s.publishIssueCreated(issue, attachments, labels, p.CreatorType, actorID, opts)
+	s.captureCreatedAnalytics(issue, p.CreatorType, actorID, opts)
+	if opts.AssignedAgentRunFireAt.IsZero() {
+		assignedTaskID = s.maybeEnqueueOnAssign(ctx, issue, p.CreatorType, actorID, opts.AssignedAgentRunFireAt)
+	}
+
+	return IssueCreateResult{Issue: issue, Attachments: attachments, Labels: labels, AssignedTaskID: assignedTaskID}, nil
+}
+
+// CreateInTx creates an issue using the caller's transaction. It never commits,
+// enqueues ordinary assignments or publishes events. The caller must resolve the
+// entitlement policy before opening the transaction and finalize after commit.
+func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateParams, issueCountPolicy IssueCountPolicy) (IssueCreateResult, error) {
+	p = sanitizeIssueCreateParams(p)
+	qtx := s.Queries.WithTx(tx)
 	if p.SourceContext != nil {
 		if _, err := qtx.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{
 			ID: p.SourceContext.SourceIssueID, WorkspaceID: p.WorkspaceID,
@@ -344,7 +409,6 @@ func (s *IssueService) Create(ctx context.Context, p IssueCreateParams, opts Iss
 	}
 
 	var issue db.Issue
-	var assignedTask db.AgentTaskQueue
 	if p.OriginType.Valid {
 		issue, err = qtx.CreateIssueWithOrigin(ctx, db.CreateIssueWithOriginParams{
 			ID:            dbid.NewV7(),
@@ -465,56 +529,15 @@ func (s *IssueService) Create(ctx context.Context, p IssueCreateParams, opts Iss
 		}
 	}
 
-	if !opts.AssignedAgentRunFireAt.IsZero() && s.shouldEnqueueAgentTaskWithQueries(ctx, qtx, issue) {
-		// The issue must never become visible without its media-gated assigned
-		// task. Inserting both rows through qtx makes the unique-index winner
-		// deterministic: any observer that can discover the committed issue also
-		// sees the inert deferred task and must merge into it.
-		assignedTask, err = s.TaskService.createDeferredChannelIssueTaskWithQueries(ctx, qtx, issue, opts.AssignedAgentRunFireAt)
-		if err != nil {
-			return IssueCreateResult{}, fmt.Errorf("create deferred channel issue task: %w", err)
-		}
-	}
+	return IssueCreateResult{Issue: issue, Labels: labels}, nil
+}
 
-	if err := tx.Commit(ctx); err != nil {
-		return IssueCreateResult{}, fmt.Errorf("commit: %w", err)
-	}
-
-	attachments := s.linkAttachments(ctx, issue, p.AttachmentIDs)
-
-	actorID := opts.ActorID
-	if actorID == "" {
-		actorID = util.UUIDToString(issue.CreatorID)
-	}
-
-	var assignedTaskID pgtype.UUID
-	if !opts.AssignedAgentRunFireAt.IsZero() {
-		assignedTaskID = assignedTask.ID
-		if assignedTaskID.Valid {
-			if err := s.TaskService.hydrateDeferredChannelIssueTaskOverlay(ctx, assignedTask); err != nil {
-				// Runtime overlays are best-effort on every enqueue path. The task is
-				// already durable and safely deferred, so an optional integration
-				// failure must not turn a committed issue into a retry duplicate.
-				slog.Warn("hydrate deferred channel issue task overlay failed",
-					"issue_id", util.UUIDToString(issue.ID),
-					"task_id", util.UUIDToString(assignedTask.ID),
-					"error", err)
-			}
-		} else if s.shouldEnqueueSquadLeaderOnAssign(ctx, issue) {
-			// AssignedAgentRunFireAt currently belongs to channel /issue, which
-			// always resolves an agent assignee. Preserve the ordinary squad path
-			// for any future caller that supplies the option with a squad.
-			s.enqueueSquadLeaderTask(ctx, issue, pgtype.UUID{}, p.CreatorType, actorID)
-		}
-	}
-
-	s.publishIssueCreated(issue, attachments, labels, p.CreatorType, actorID, opts)
-	s.captureCreatedAnalytics(issue, p.CreatorType, actorID, opts)
-	if opts.AssignedAgentRunFireAt.IsZero() {
-		assignedTaskID = s.maybeEnqueueOnAssign(ctx, issue, p.CreatorType, actorID, opts.AssignedAgentRunFireAt)
-	}
-
-	return IssueCreateResult{Issue: issue, Attachments: attachments, Labels: labels, AssignedTaskID: assignedTaskID}, nil
+// FinalizeCreatedIssue publishes only committed issue state. It does not enqueue
+// work; atomic callers own their assignment queue row in the same transaction.
+func (s *IssueService) FinalizeCreatedIssue(result IssueCreateResult, actorType, actorID string) {
+	opts := IssueCreateOpts{ActorID: actorID}
+	s.publishIssueCreated(result.Issue, result.Attachments, result.Labels, actorType, actorID, opts)
+	s.captureCreatedAnalytics(result.Issue, actorType, actorID, opts)
 }
 
 // validateIssueLabels checks that every requested label exists in the

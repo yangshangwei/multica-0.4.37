@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
@@ -14,8 +14,6 @@ import (
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
-	"github.com/multica-ai/multica/server/pkg/dbid"
-	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // lifecycleHandoffRequest is intentionally one API shape for the five
@@ -143,6 +141,7 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
 	}
+	req.FollowUpTitle = util.SanitizeTextForPostgres(req.FollowUpTitle)
 	req.Kind = strings.TrimSpace(req.Kind)
 	if req.Kind == "" {
 		req.Kind = "rca"
@@ -150,10 +149,7 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 
 	actorType, actorID := h.resolveActor(r, userID, uuidToString(issue.WorkspaceID))
 	decision := service.LifecycleDecisionUnknown
-	var followUp db.Issue
-	created := false
-	reused := false
-	createdTaskID := ""
+	needsFollowUp := false
 	var evidence map[string]any
 
 	switch req.Kind {
@@ -179,23 +175,14 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			writeError(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
-		if err != nil {
-			h.writeLifecycleError(w, err)
-			return
-		}
+		needsFollowUp = true
 		evidence = map[string]any{
 			"route": req.Route, "cause_state": req.CauseState, "reason": req.Reason,
 			"mitigation_complete": req.MitigationComplete, "separate_follow_up": req.SeparateFollowUp,
 			"diagnosis_ref": req.DiagnosisRef, "regression_test": req.RegressionTest,
 			"conclusion": req.Conclusion, "evidence": req.Evidence, "unknowns": req.Unknowns,
 		}
-		if followUp.ID.Valid {
-			if err := h.persistRCARepairMetadata(r, followUp, req); err != nil {
-				writeError(w, http.StatusInternalServerError, "failed to persist RCA repair evidence")
-				return
-			}
-		}
+
 	case "incident-learning":
 		if req.Prevention == nil && len(req.ExistingPreventionTasks) == 0 {
 			writeError(w, http.StatusBadRequest, "incident-learning requires prevention task evidence")
@@ -206,15 +193,7 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			h.writeLifecycleError(w, err)
 			return
 		}
-		if strings.TrimSpace(req.FollowUpIssueID) == "" {
-			if saved := util.JSONObjectOrEmpty(issue.Metadata); saved != nil {
-				if savedHandoff, ok := saved["lifecycle_handoff"].(map[string]any); ok {
-					if preventionID, ok := savedHandoff["prevention_issue_id"].(string); ok {
-						req.FollowUpIssueID = preventionID
-					}
-				}
-			}
-		}
+
 		validation := service.IncidentLearningEvidence{
 			SourceIssue: uuidToString(issue.ID), Facts: req.Facts, Inferences: req.Inferences,
 			Unknowns: req.Unknowns, ExistingPreventionTasks: req.ExistingPreventionTasks,
@@ -240,18 +219,7 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			writeError(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		var err error
-		if prevention != nil {
-			followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
-			if err != nil {
-				h.writeLifecycleError(w, err)
-				return
-			}
-			if err := h.persistPreventionMetadata(r, followUp, issue, *prevention); err != nil {
-				writeError(w, http.StatusInternalServerError, "failed to persist prevention evidence")
-				return
-			}
-		}
+		needsFollowUp = prevention != nil
 		decision = service.LifecycleDecisionContinue
 		evidence = map[string]any{
 			"facts": req.Facts, "inferences": req.Inferences, "unknowns": req.Unknowns,
@@ -294,12 +262,7 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 		evidence = map[string]any{"artifact_digest": eval.ArtifactDigest, "baseline_version": eval.BaselineVersion, "candidate_version": eval.CandidateVersion,
 			"skill_version": eval.SkillVersion, "mcp_version": eval.MCPVersion, "cases": eval.Cases}
 		if strings.TrimSpace(req.FollowUpIssueID) != "" || strings.TrimSpace(req.FollowUpTitle) != "" {
-			var err error
-			followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
-			if err != nil {
-				h.writeLifecycleError(w, err)
-				return
-			}
+			needsFollowUp = true
 		}
 	case "governance":
 		if req.Governance == nil {
@@ -316,133 +279,19 @@ func (h *Handler) CreateLifecycleHandoff(w http.ResponseWriter, r *http.Request)
 			"signals":    governance.Signals,
 		}
 		if strings.TrimSpace(req.FollowUpIssueID) != "" || strings.TrimSpace(req.FollowUpTitle) != "" {
-			var err error
-			followUp, created, reused, createdTaskID, err = h.resolveOrCreateLifecycleFollowUp(r, issue, req, actorType, actorID)
-			if err != nil {
-				h.writeLifecycleError(w, err)
-				return
-			}
+			needsFollowUp = true
 		}
 	default:
 		writeError(w, http.StatusBadRequest, "unsupported lifecycle handoff kind")
 		return
 	}
 
-	metadata := map[string]any{
-		"kind": req.Kind, "decision": string(decision), "source_issue_id": uuidToString(issue.ID),
-		"evidence": evidence, "recorded_at": time.Now().UTC().Format(time.RFC3339Nano),
-	}
-	if followUp.ID.Valid {
-		metadata["follow_up_issue_id"] = uuidToString(followUp.ID)
-	}
-	if req.Kind == "incident-learning" && followUp.ID.Valid {
-		metadata["prevention_issue_id"] = uuidToString(followUp.ID)
-	}
-	metadataBytes, err := json.Marshal(metadata)
-	if err != nil || len(metadataBytes) > 7000 {
-		writeError(w, http.StatusBadRequest, "lifecycle evidence is too large")
+	result, err := h.persistLifecycleHandoff(r, issue, req, actorType, actorID, decision, evidence, needsFollowUp)
+	if err != nil {
+		h.writeLifecycleError(w, err)
 		return
 	}
-	history := lifecycleHandoffHistory(issue.Metadata)
-	history = append(history, metadata)
-	historyBytes, err := json.Marshal(history)
-	if err != nil || len(historyBytes) > 28000 {
-		for len(history) > 1 {
-			history = history[1:]
-			historyBytes, err = json.Marshal(history)
-			if err == nil && len(historyBytes) <= 28000 {
-				break
-			}
-		}
-	}
-	if err != nil || len(historyBytes) > 28000 {
-		writeError(w, http.StatusBadRequest, "lifecycle evidence history is too large")
-		return
-	}
-	updated, err := h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
-		ID: issue.ID, WorkspaceID: issue.WorkspaceID, Key: "lifecycle_handoff", Value: metadataBytes,
-	})
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to persist lifecycle evidence")
-		return
-	}
-	updated, err = h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
-		ID: issue.ID, WorkspaceID: issue.WorkspaceID, Key: "lifecycle_handoff_history", Value: historyBytes,
-	})
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to persist lifecycle evidence history")
-		return
-	}
-
-	queuedTaskID := ""
-	if created {
-		// IssueService already enqueued the assignment-triggered task.
-		queuedTaskID = createdTaskID
-	} else if followUp.ID.Valid {
-		queuedTaskID = h.enqueueExistingLifecycleFollowUp(r, followUp, actorType, actorID, req.HandoffNote)
-	}
-
-	commentID := h.recordLifecycleAuditComment(r, issue, actorType, actorID, req.Kind, decision, evidence, followUp)
-	writeJSON(w, http.StatusCreated, lifecycleHandoffResponse{
-		Kind: req.Kind, Decision: string(decision), SourceIssueID: uuidToString(issue.ID),
-		FollowUpIssueID: uuidToString(followUp.ID), FollowUpCreated: created, FollowUpReused: reused,
-		QueuedTaskID: queuedTaskID, AuditCommentID: commentID, Metadata: parseIssueMetadata(updated.Metadata),
-	})
-}
-
-func (h *Handler) resolveOrCreateLifecycleFollowUp(r *http.Request, source db.Issue, req lifecycleHandoffRequest, actorType, actorID string) (db.Issue, bool, bool, string, error) {
-	if strings.TrimSpace(req.FollowUpIssueID) != "" {
-		issue, err := h.resolveLifecycleIssue(r, req.FollowUpIssueID, source.WorkspaceID, source.ID)
-		if err != nil {
-			return db.Issue{}, false, false, "", err
-		}
-		if err := h.authorizeLifecycleFollowUp(r, issue); err != nil {
-			return db.Issue{}, false, false, "", err
-		}
-		return issue, false, true, "", nil
-	}
-	if strings.TrimSpace(req.FollowUpTitle) == "" {
-		return db.Issue{}, false, false, "", errors.New("follow_up_title is required when follow_up_issue_id is absent")
-	}
-	if h.IssueService == nil {
-		return db.Issue{}, false, false, "", errors.New("issue service unavailable")
-	}
-	assigneeType, assigneeID, err := lifecycleAssignee(req)
-	if err != nil {
-		return db.Issue{}, false, false, "", err
-	}
-	if status, message := h.validateAssigneePair(r.Context(), r, uuidToString(source.WorkspaceID), assigneeType, assigneeID); status != 0 {
-		return db.Issue{}, false, false, "", lifecycleAssigneeError{status: status, message: message}
-	}
-	creatorID, err := util.ParseUUID(actorID)
-	if err != nil {
-		return db.Issue{}, false, false, "", errors.New("invalid lifecycle actor")
-	}
-	priority := req.FollowUpPriority
-	if priority == "" {
-		priority = "none"
-	}
-	result, err := h.IssueService.Create(r.Context(), service.IssueCreateParams{
-		WorkspaceID: source.WorkspaceID, Title: req.FollowUpTitle,
-		Description: ptrToText(&req.FollowUpDescription), Status: "todo", Priority: priority,
-		AssigneeType: assigneeType, AssigneeID: assigneeID, CreatorType: actorType,
-		CreatorID: creatorID, ParentIssueID: source.ID,
-	}, service.IssueCreateOpts{ActorID: actorID, AnalyticsAgentID: func() string {
-		if assigneeType.Valid && assigneeType.String == "agent" {
-			return uuidToString(assigneeID)
-		}
-		return ""
-	}()})
-	if errors.Is(err, service.ErrActiveDuplicate) && result.DuplicateIssue != nil {
-		if err := h.authorizeLifecycleFollowUp(r, *result.DuplicateIssue); err != nil {
-			return db.Issue{}, false, false, "", err
-		}
-		return *result.DuplicateIssue, false, true, "", nil
-	}
-	if err != nil {
-		return db.Issue{}, false, false, "", err
-	}
-	return result.Issue, true, false, uuidToString(result.AssignedTaskID), nil
+	writeJSON(w, http.StatusCreated, result)
 }
 
 // authorizeLifecycleFollowUp checks the assignee on the issue that will be
@@ -556,101 +405,19 @@ func lifecyclePreventionAcceptanceSignal(task *lifecyclePreventionTaskRequest) s
 	return task.AcceptanceSignal
 }
 
-func (h *Handler) persistPreventionMetadata(r *http.Request, prevention db.Issue, source db.Issue, task lifecyclePreventionTaskRequest) error {
-	values := map[string]string{
-		"lifecycle_owner": task.Owner, "lifecycle_priority": task.Priority,
-		"lifecycle_acceptance_signal": task.AcceptanceSignal, "lifecycle_source_issue": uuidToString(source.ID),
-	}
-	for key, value := range values {
-		bytes, err := json.Marshal(value)
-		if err != nil {
-			return err
-		}
-		if _, err := h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
-			ID: prevention.ID, WorkspaceID: prevention.WorkspaceID, Key: key, Value: bytes,
-		}); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (h *Handler) persistRCARepairMetadata(r *http.Request, repair db.Issue, req lifecycleHandoffRequest) error {
-	values := map[string]any{}
-	if strings.TrimSpace(req.DiagnosisRef) != "" {
-		values["lifecycle_diagnosis_ref"] = strings.TrimSpace(req.DiagnosisRef)
-		values["lifecycle_regression_test"] = strings.TrimSpace(req.RegressionTest)
-	}
-	if strings.TrimSpace(req.Conclusion) != "" {
-		values["lifecycle_rca_conclusion"] = strings.TrimSpace(req.Conclusion)
-	}
-	if len(req.Evidence) > 0 {
-		values["lifecycle_rca_evidence"] = req.Evidence
-	}
-	if len(req.Unknowns) > 0 {
-		values["lifecycle_rca_unknowns"] = req.Unknowns
-	}
-	for key, value := range values {
-		encoded, err := json.Marshal(value)
-		if err != nil {
-			return err
-		}
-		if _, err := h.Queries.SetIssueMetadataKey(r.Context(), db.SetIssueMetadataKeyParams{
-			ID: repair.ID, WorkspaceID: repair.WorkspaceID, Key: key, Value: encoded,
-		}); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (h *Handler) enqueueExistingLifecycleFollowUp(r *http.Request, issue db.Issue, actorType, actorID, note string) string {
-	if h.TaskService == nil || !issue.AssigneeID.Valid || !issue.AssigneeType.Valid {
-		return ""
-	}
-	var task db.AgentTaskQueue
-	var err error
-	switch issue.AssigneeType.String {
-	case "agent":
-		task, err = h.TaskService.EnqueueTaskForIssueWithHandoff(r.Context(), issue, note, memberActorUserID(actorType, actorID))
-	case "squad":
-		if h.enqueueSquadLeaderTask(r.Context(), issue, pgtype.UUID{}, actorType, actorID, note) {
-			return "queued"
-		}
-	}
-	if err != nil || !task.ID.Valid {
-		return ""
-	}
-	return uuidToString(task.ID)
-}
-
-func (h *Handler) recordLifecycleAuditComment(r *http.Request, issue db.Issue, actorType, actorID, kind string, decision service.LifecycleDecision, evidence map[string]any, followUp db.Issue) string {
-	evidenceBytes, _ := json.Marshal(evidence)
-	content := fmt.Sprintf("lifecycle-handoff kind=%s decision=%s follow_up=%s evidence=%s", kind, decision, uuidToString(followUp.ID), evidenceBytes)
-	actorUUID, err := util.ParseUUID(actorID)
-	if err != nil {
-		return ""
-	}
-	var sourceTaskID pgtype.UUID
-	if task, ok := h.taskFromRequestHeader(r); ok && actorType == "agent" {
-		sourceTaskID = task.ID
-	}
-	created, err := h.Queries.CreateComment(r.Context(), db.CreateCommentParams{
-		ID: dbid.NewV7(), IssueID: issue.ID, WorkspaceID: issue.WorkspaceID,
-		AuthorType: actorType, AuthorID: actorUUID, Content: content, Type: "progress_update", SourceTaskID: sourceTaskID,
-	})
-	if err != nil {
-		return ""
-	}
-	resp := commentToResponse(created.Comment(), nil, nil)
-	resp.IssueRevision = created.IssueRevision
-	h.publish(protocol.EventCommentCreated, uuidToString(issue.WorkspaceID), actorType, actorID, map[string]any{
-		"comment": resp, "issue_title": issue.Title, "issue_revision": created.IssueRevision,
-	})
-	return uuidToString(created.ID)
-}
-
 func (h *Handler) writeLifecycleError(w http.ResponseWriter, err error) {
+	if errors.Is(err, errLifecycleMetadataTooLarge) {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	if errors.Is(err, service.ErrIssueTaskContextChanged) || errors.Is(err, service.ErrIssueTaskUnavailable) {
+		writeError(w, http.StatusConflict, err.Error())
+		return
+	}
+	if errors.Is(err, service.ErrAttributionFailClosed) {
+		writeError(w, http.StatusForbidden, err.Error())
+		return
+	}
 	var assigneeErr lifecycleAssigneeError
 	if errors.As(err, &assigneeErr) {
 		writeError(w, assigneeErr.status, assigneeErr.message)
@@ -660,7 +427,8 @@ func (h *Handler) writeLifecycleError(w http.ResponseWriter, err error) {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	writeError(w, http.StatusInternalServerError, err.Error())
+	slog.Error("lifecycle handoff failed", "error", err)
+	writeError(w, http.StatusInternalServerError, "failed to persist lifecycle handoff")
 }
 
 func lifecycleRolloutSignals(items []lifecycleRolloutSignalRequest) []service.RolloutSignalEvidence {

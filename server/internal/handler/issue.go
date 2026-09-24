@@ -2974,13 +2974,9 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		// validated against the DB. A member-forged X-Task-ID never reaches here
 		// because it would have resolved to creatorType=="member". We still
 		// re-check the task belongs to the acting agent before trusting it.
-		if taskIDHeader := r.Header.Get("X-Task-ID"); taskIDHeader != "" {
-			if taskUUID, perr := util.ParseUUID(taskIDHeader); perr == nil {
-				if task, terr := h.Queries.GetAgentTask(r.Context(), taskUUID); terr == nil && uuidToString(task.AgentID) == actualCreatorID {
-					originType = pgtype.Text{String: "agent_create", Valid: true}
-					originID = taskUUID
-				}
-			}
+		if task, ok := h.trustedIssueCreationTask(r, creatorType, actualCreatorID, wsUUID); ok {
+			originType = pgtype.Text{String: "agent_create", Valid: true}
+			originID = task.ID
 		}
 	}
 

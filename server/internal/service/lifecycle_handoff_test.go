@@ -210,3 +210,33 @@ func TestValidateRCAArtifactRequiresTraceableConfirmedEvidence(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateAgentEvaluationCorrectnessVerdicts(t *testing.T) {
+	for _, tc := range []struct {
+		result string
+		want   LifecycleDecision
+	}{
+		{"pass", LifecycleDecisionPass}, {"confirmed", LifecycleDecisionPass},
+		{" FAIL ", LifecycleDecisionHold}, {"hold", LifecycleDecisionHold},
+		{"unknown", LifecycleDecisionUnknown}, {"suspected", LifecycleDecisionUnknown},
+		{"arbitrary", LifecycleDecisionUnknown},
+	} {
+		t.Run(tc.result, func(t *testing.T) {
+			evidence := AgentEvaluationEvidence{ArtifactDigest: "sha256:1", BaselineVersion: "1", CandidateVersion: "2", SkillVersion: "1", MCPVersion: "1"}
+			for _, category := range []string{"correctness", "tool-failure", "safety", "cost", "latency", "drift"} {
+				result := "hold"
+				if category == "safety" {
+					result = "blocked"
+				}
+				if category == "correctness" {
+					result = tc.result
+				}
+				evidence.Cases = append(evidence.Cases, AgentEvaluationCaseEvidence{Category: category, Trace: []string{"observed"}, StopReason: "complete", Result: result})
+			}
+			evidence.Cases = append(evidence.Cases, AgentEvaluationCaseEvidence{Category: "correctness", Trace: []string{"ok"}, StopReason: "complete", Result: "pass"})
+			if got := ValidateAgentEvaluation(evidence); got != tc.want {
+				t.Fatalf("decision = %s, want %s", got, tc.want)
+			}
+		})
+	}
+}
