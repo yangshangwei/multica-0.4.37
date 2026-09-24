@@ -291,6 +291,77 @@ func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
 	}
 }
 
+// TestReleaseGateGovernanceDrill_Contract pins the release-gate governance drill:
+// the release routing policy strings together the five governance checks
+// (契约兼容, 安全, 供应链, 产品结果, 灾备恢复), reports which were skipped, keeps the
+// per-action approval language, and sources security/supply-chain/compat evidence
+// from the upstream review gate. It also checks each governance check still resolves
+// to a role skill that is attached to the role the drill routes it to.
+func TestReleaseGateGovernanceDrill_Contract(t *testing.T) {
+	reviewGate, ok := SquadTemplateByKey("review-gate")
+	if !ok {
+		t.Fatal("review-gate squad template is missing")
+	}
+	// The gate reports which reviews it skipped and where the upstream evidence
+	// (security, dependencies, compatibility window) originates.
+	for _, marker := range []string{"安全审查员", "依赖", "兼容窗口", "跳过"} {
+		if !strings.Contains(reviewGate.Instructions(), marker) {
+			t.Errorf("review-gate routing policy is missing upstream-evidence marker %q", marker)
+		}
+	}
+
+	release, ok := SquadTemplateByKey("release")
+	if !ok {
+		t.Fatal("release squad template is missing")
+	}
+	releaseInstructions := release.Instructions()
+	// Skip reporting and the five-check enumeration are added on top of the existing
+	// observation window, rollback and per-action approval contract, not in place of it.
+	for _, marker := range []string{"观察窗口", "回滚", "一次审批", "跳过", "治理检查"} {
+		if !strings.Contains(releaseInstructions, marker) {
+			t.Errorf("release routing policy is missing governance-drill marker %q", marker)
+		}
+	}
+	for _, check := range []string{"契约兼容", "安全", "供应链", "产品结果", "灾备恢复"} {
+		if !strings.Contains(releaseInstructions, check) {
+			t.Errorf("release routing policy does not name governance check %q", check)
+		}
+	}
+	// Each governance check resolves to a role skill that is actually attached to
+	// the role the drill routes it to. This is what keeps the artifact honest: the
+	// drill claims a handoff, and the roster has to back it.
+	governance := []struct {
+		skill string
+		role  string
+	}{
+		{"multica-architecture-decision-record", "architect"},
+		{"multica-security-review", "security-reviewer"},
+		{"multica-release-check", "release-engineer"},
+		{"multica-reliability-engineering", "reliability-engineer"},
+		{"multica-progress-report", "progress-reporter"},
+	}
+	for _, g := range governance {
+		if _, ok := RoleSkillTemplateByName(g.skill); !ok {
+			t.Errorf("governance skill %q does not resolve", g.skill)
+		}
+		role, ok := AgentRoleTemplateByKey(g.role)
+		if !ok {
+			t.Errorf("governance role %q is missing from the roster", g.role)
+			continue
+		}
+		attached := false
+		for _, name := range role.RoleSkills {
+			if name == g.skill {
+				attached = true
+				break
+			}
+		}
+		if !attached {
+			t.Errorf("%s does not carry governance skill %q (RoleSkills = %v)", g.role, g.skill, role.RoleSkills)
+		}
+	}
+}
+
 func TestSquadLeads_ExplainDiagnosticianHandoff(t *testing.T) {
 	want := map[string][]string{
 		"bug-fix-lead":     {"诊断工程师", "原因未知"},

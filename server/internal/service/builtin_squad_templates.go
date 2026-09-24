@@ -381,7 +381,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "release",
-		Version:           3,
+		Version:           4,
 		DefaultName:       "Release Squad",
 		AvatarEmoji:       "📦",
 		LeaderTemplateKey: "release-lead",

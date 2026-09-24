@@ -85,7 +85,12 @@ now carries an explicit `失败样例` rule that returns `hold` or `unknown` whe
 governing evidence (fallback/compatibility window, source and trust-boundary review,
 backup and recovery drill, product baseline/window) is missing, rather than accepting
 a passing build or a deferred-upgrade assumption as proof. These remain composable
-responsibilities rather than five new listed roles.
+responsibilities rather than five new listed roles. The release squad (template
+version 4) now strings these five checks into a release-gate drill and reports which
+it skipped: security, supply-chain and old-client/plugin compatibility evidence is
+sourced upstream from the review gate, and the product-outcome check hands off to the
+progress-report owner and stays `unknown` until a baseline and observation window
+exist.
 
 ## Role skill body language and explicit workspace updates
 
