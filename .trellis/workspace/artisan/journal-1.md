@@ -832,3 +832,24 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 27: 发布门禁治理演练：AC3/AC4 收尾
+
+**Date**: 2026-09-24
+**Task**: 发布门禁治理演练：AC3/AC4 收尾
+**Branch**: `main`
+
+### Summary
+
+完成 delivery-governance-recovery 的 AC3 与 AC4（AC1/AC2 已在 ed0fa7789 完成）。AC3：发布门禁治理演练把五项检查（契约兼容/安全/供应链/产品结果/灾备恢复）沿 review-gate→release 串起——release 小队指令新增「治理检查与跳过说明」：安全/供应链/兼容证据来自上游合并门禁，产品结果无席位交接给进度报告负责人并保持 unknown，每轮报告跳过项，逐项人工审批不削弱；release 小队模板版本 3→4。新增纯服务层测试 TestReleaseGateGovernanceDrill_Contract（两小队指令标记 + 五个治理技能解析并挂到对应角色）。演练文档 research/governance-release-gate-drill.md 与 builtin-templates.md 同步。独立 trellis-check 通过，go test ./internal/service 与 go vet 全绿；DB-backed handler 测试需迁移克隆库本次未跑。仅提交本任务 6 个文件，pre-existing 的 lifecycle 系列与 README-v0.4.48/SHA256SUMS 脏改动留给其他窗口。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `491e1127c` | (see git log) |
+
+### Status
+
+[OK] **Completed**
