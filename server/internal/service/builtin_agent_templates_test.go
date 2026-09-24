@@ -309,8 +309,8 @@ func TestProgressReporter_EvidenceAndCloseoutContract(t *testing.T) {
 	if !ok {
 		t.Fatal("multica-progress-report skill missing from the registry")
 	}
-	if skill.Version != 2 {
-		t.Errorf("progress report skill version = %d, want 2 after adding product outcome evidence", skill.Version)
+	if skill.Version != 3 {
+		t.Errorf("progress report skill version = %d, want 3 after adding the failure-example governance rule", skill.Version)
 	}
 	for name, body := range map[string]string{"role": role.Instructions(), "skill": skill.Content} {
 		t.Run(name, func(t *testing.T) {
@@ -347,6 +347,44 @@ func TestGovernanceCapabilitiesReuseExistingRoleSkills(t *testing.T) {
 				t.Errorf("%s missing governance contract %q", skillName, marker)
 			}
 		}
+	}
+}
+
+// The five governance skills each gained an explicit 失败样例 (failure-example)
+// rule during the delivery-governance-recovery work: a missing compatibility
+// window, an unverified dependency source, an absent backup/recovery drill,
+// failed post-recovery sampling, or a missing product baseline must resolve to
+// hold or unknown rather than a passing verdict. That is a material behavior
+// change, so each skill's release version has to advance in lockstep — see the
+// version rule in .trellis/spec/server/builtin-templates.md.
+func TestGovernanceSkills_FailureExampleContracts(t *testing.T) {
+	cases := map[string]struct {
+		version  int32
+		keywords []string
+	}{
+		"multica-architecture-decision-record": {5, []string{"失败样例", "旧客户端", "兼容窗口", "hold"}},
+		"multica-release-check":                {4, []string{"失败样例", "备份", "恢复演练", "RPO", "hold"}},
+		"multica-security-review":              {3, []string{"失败样例", "信任边界", "供应链", "hold"}},
+		"multica-progress-report":              {3, []string{"失败样例", "baseline", "观察窗口", "unknown"}},
+		"multica-reliability-engineering":      {2, []string{"失败样例", "恢复演练", "unknown"}},
+	}
+	for skillName, want := range cases {
+		t.Run(skillName, func(t *testing.T) {
+			skill, ok := RoleSkillTemplateByName(skillName)
+			if !ok {
+				t.Fatalf("governance skill %q is missing from the registry", skillName)
+			}
+			// The failure-example rule is a material behavior change; the release
+			// version must move with it so existing workspace copies re-materialize.
+			if skill.Version != want.version {
+				t.Errorf("%s version = %d, want %d after the failure-example rule", skillName, skill.Version, want.version)
+			}
+			for _, marker := range want.keywords {
+				if !strings.Contains(skill.Content, marker) {
+					t.Errorf("%s missing failure-example contract %q", skillName, marker)
+				}
+			}
+		})
 	}
 }
 

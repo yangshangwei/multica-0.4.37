@@ -77,11 +77,15 @@ defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
 `builtin_agent_templates_test.go` pins the full role-to-skill and autonomy maps.
 
-The existing architecture, security, release and progress skills also carry the
-five governance checks identified by the lifecycle review: old-client/plugin
+The existing architecture, security, release, reliability and progress skills also
+carry the five governance checks identified by the lifecycle review: old-client/plugin
 contract matrices, trust-boundary and supply-chain/SBOM review, recovery/RPO/RTO
-evidence, and product-outcome baseline/window/result evidence. These remain
-composable responsibilities rather than five new listed roles.
+evidence, and product-outcome baseline/window/result evidence. Each of these five
+now carries an explicit `失败样例` rule that returns `hold` or `unknown` when the
+governing evidence (fallback/compatibility window, source and trust-boundary review,
+backup and recovery drill, product baseline/window) is missing, rather than accepting
+a passing build or a deferred-upgrade assumption as proof. These remain composable
+responsibilities rather than five new listed roles.
 
 ## Role skill body language and explicit workspace updates
 
@@ -118,8 +122,11 @@ preserved. Historical bodies need their own translation when their rules differ
 from today's template; do not silently upgrade behavior while localizing.
 
 Grounding changes to the ADR, requirement-clarification and documentation skills
-are material behavior changes, not translation-only edits. Their versions are
-3, 3 and 2 respectively. ADR facts need supporting task/code/document evidence;
+are material behavior changes, not translation-only edits. Requirement-clarification
+and documentation sit at versions 3 and 2; the ADR skill is now at version 5, having
+taken two further material changes since grounding — the old-client/plugin
+compatibility matrix and the explicit failure-example/`hold` rule described above.
+ADR facts need supporting task/code/document evidence;
 requirement clarification separates known requirements from unverified technical
 advice; documentation summaries must follow searches of the final files and
 disclose coverage limits. Requirement-clarification version 3 retains the generic
