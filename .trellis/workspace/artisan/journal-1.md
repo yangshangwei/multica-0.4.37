@@ -853,3 +853,39 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Status
 
 [OK] **Completed**
+
+
+## Session 28: 桌面端内网更新开发完成归档
+
+**Date**: 2026-09-24
+**Task**: 桌面端内网更新开发完成归档
+**Branch**: `main`
+
+### Summary
+
+完成桌面下载服务、发布校验工具与详细升级手册；按用户要求归档开发任务，真实内网客户端安装继续作为部署验收项。
+
+### Main Changes
+
+- 已归档 09-24-desktop-intranet-updates，修正文档与上下文链接，保留实现和 HTTP 验证证据。
+- 交付固定 updates.env、镜像导出、产物收集发布和 HTTP 验证，后续升级按中文操作手册执行。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d04631603` | (see git log) |
+| `fece10f84` | (see git log) |
+
+### Testing
+
+- [OK] 实现阶段：162 项桌面测试、13 项 Shell 测试、12 项离线回归通过；3 项原有可选测试跳过；10 项 Docker/HTTP 实测通过。
+- [OK] 归档阶段：任务 completed、11 个文件保留、上下文校验、38 个本地链接和活动任务指针清理均确认。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 部署时按手册完成真实内网终端稳定版本 A → B 的签名安装、重启和用户状态验收。

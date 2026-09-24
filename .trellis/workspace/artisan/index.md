@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 27
+- **Total Sessions**: 28
 - **Last Active**: 2026-09-24
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~855 | Active |
+| `journal-1.md` | ~891 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 28 | 2026-09-24 | 桌面端内网更新开发完成归档 | `d04631603`, `fece10f84` | `main` |
 | 27 | 2026-09-24 | 发布门禁治理演练：AC3/AC4 收尾 | `491e1127c` | `main` |
 | 26 | 2026-09-24 | 新增体验验证与迁移审查专项角色 | `c21d03a43` | `main` |
 | 25 | 2026-09-23 | skill-lifecycle-taxonomy：审计、视觉验收与收尾 | `28c91e13d`, `a54668d2f`, `864e95f59` | `main` |
