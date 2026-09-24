@@ -88,6 +88,25 @@ function setup() {
 }
 
 describe("DataTable column resize", () => {
+  it("leaves no scroll-reset timer after a non-virtual table unmounts", () => {
+    vi.useFakeTimers();
+    try {
+      const { unmount } = render(<ResizableTable onSizingChange={vi.fn()} pinFirstColumn />);
+      const scroller = document.querySelector<HTMLElement>(".overflow-auto")!;
+      scroller.scrollLeft = 120;
+      act(() => {
+        scroller.dispatchEvent(new Event("scroll"));
+      });
+      expect(document.querySelector('[data-slot="data-table-pinned-shadow"]')).not.toBeNull();
+      unmount();
+      // A non-virtual table only needs its synchronous pinned-column shadow.
+      // A delayed virtualizer notification can outlive its React/DOM owner.
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("commits nothing when the handle is clicked without dragging", () => {
     const { onSizingChange, handle } = setup();
 

@@ -1,6 +1,6 @@
 // @vitest-environment node
 
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { createI18n } from "@multica/core/i18n/react";
 import { parseFrontmatter } from "@multica/core/skills/frontmatter";
@@ -21,21 +21,14 @@ const i18n = createI18n("zh-Hans", {
 const zhT = i18n.getFixedT("zh-Hans", "skills");
 const enT = i18n.getFixedT("en", "skills");
 
-const names = [
-  ["multica-release-check", "发布检查"],
-  ["multica-documentation-change", "文档更新"],
-  ["multica-security-review", "安全审查"],
-  ["multica-architecture-decision-record", "架构决策记录"],
-  ["multica-code-review", "代码审查"],
-  ["multica-debugging", "根因分析"],
-  ["multica-requirement-clarification", "需求澄清"],
-  ["multica-test-report", "测试报告"],
-  ["multica-progress-report", "进展报告"],
-  ["multica-reliability-engineering", "可靠性工程"],
-  ["multica-agent-evaluation", "智能体评测"],
-  ["multica-incident-learning", "事故学习"],
-  ["multica-rollout-and-canary-verification", "发布后与 Canary 验证"],
-] as const;
+const sourceDirectory = new URL("../../../../server/internal/service/builtin_role_skills/", import.meta.url);
+const embeddedNames = readdirSync(sourceDirectory, { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort();
+const names = Object.entries(zh.builtin_role_skills).map(([name, entry]) =>
+  [name as keyof typeof zh.builtin_role_skills, entry.name] as const,
+);
 
 // Defaults shipped in ca3a79d18 and retained by existing workspace copies.
 const legacyDescriptions = [
@@ -63,6 +56,57 @@ function builtin(
 }
 
 describe("built-in role skill presentation", () => {
+  it("covers every embedded role skill in all four locale catalogs", () => {
+    for (const catalog of [en, zh, ja, ko]) {
+      expect(Object.keys(catalog.builtin_role_skills).sort()).toEqual(embeddedNames);
+    }
+  });
+
+  it.each(embeddedNames)("recognizes the embedded template %s", (name) => {
+    expect(getBuiltinRoleSkillPresentation(name, enT)?.isBuiltin).toBe(true);
+  });
+
+  it.each([
+    ["en", en], ["zh-Hans", zh], ["ja", ja], ["ko", ko],
+  ] as const)("localizes real source descriptions with only %s loaded", (locale, catalog) => {
+    const instance = createI18n(locale, { [locale]: { skills: catalog } });
+    const t = instance.getFixedT(locale, "skills");
+    for (const [name] of names) {
+      const content = readFileSync(new URL(`${name}/SKILL.md`, sourceDirectory), "utf8");
+      const description = parseFrontmatter(content).frontmatter?.description;
+      expect(typeof description).toBe("string");
+      const skill = builtin(name, description);
+      const before = structuredClone(skill);
+      const presentation = getSkillPresentation(skill, t);
+      expect(presentation).toMatchObject({
+        name: catalog.builtin_role_skills[name].name,
+        description: catalog.builtin_role_skills[name].description,
+        isBuiltin: true,
+      });
+      for (const expected of [en.builtin_role_skills[name].description, zh.builtin_role_skills[name].description, presentation.description]) {
+        expect(presentation.searchText).toContain(expected.toLowerCase());
+      }
+      expect(skill).toEqual(before);
+    }
+  });
+
+  it.each(["multica-experience-validation", "multica-migration-review"] as const)(
+    "preserves customized and unverified copies of %s",
+    (name) => {
+      const skill = builtin(name);
+      const customDescription = `${skill.description} Team-specific scope.`;
+      const custom = { ...skill, description: customDescription };
+      expect(getSkillPresentation(custom, enT).description).toBe(customDescription);
+      expect(getSkillPresentation(custom, enT).searchText)
+        .not.toContain(en.builtin_role_skills[name].description.toLowerCase());
+      for (const input of [{ ...skill, config: undefined }, { ...skill, name: "team-customized" }]) {
+        expect(getSkillPresentation(input, enT)).toMatchObject({
+          name: input.name, description: input.description, isBuiltin: false,
+        });
+      }
+    },
+  );
+
   it("recognizes debugging as a platform built-in before materialization", () => {
     expect(getBuiltinRoleSkillPresentation("multica-debugging", zhT)).toMatchObject({
       name: "根因分析",

@@ -1,6 +1,7 @@
 import { test, expect, type Page, type TestInfo } from "@playwright/test";
 import { writeFile } from "node:fs/promises";
 import { TestApiClient } from "./fixtures";
+import enSkills from "../packages/views/locales/en/skills.json" with { type: "json" };
 
 // This is the real catalog → draft → create path. The source catalog and the
 // create request are never intercepted. Parsing edge cases belong to the core
@@ -143,6 +144,18 @@ test("creates an edited independent skill after previewing and cancelling withou
     await capture(page, testInfo, "small-chooser");
     await dialog.getByRole("button", { name: /^Modify from template/ }).click();
     await expect(dialog.getByRole("button", { name: "Use this template", exact: true })).toBeVisible();
+    // This fixture runs against the embed-only catalog. Both specialists must
+    // participate in the same official grouping and purpose search as older skills.
+    await expect(dialog.getByRole("tab", { name: /Platform built-in\s*15/ })).toBeVisible();
+    await expect(dialog.getByRole("tab", { name: /Provided by this deployment\s*0/ })).toBeVisible();
+    const templateSearch = dialog.getByRole("textbox", { name: enSkills.create.template.search_placeholder });
+    for (const name of ["multica-experience-validation", "multica-migration-review"] as const) {
+      await templateSearch.fill(enSkills.builtin_role_skills[name].description);
+      await expect(dialog.getByRole("tab", { name: /Platform built-in\s*1/ })).toBeVisible();
+      await expect(dialog.getByRole("button", { name: new RegExp(`^${name}`) }))
+        .toContainText(enSkills.builtin_role_skills[name].description);
+    }
+    await templateSearch.fill("");
     const templateRow = dialog.getByRole("button", { name: new RegExp(`^${TEMPLATE_NAME}\\b`) });
     const useTemplate = dialog.getByRole("button", { name: "Use this template", exact: true });
     await templateRow.focus();

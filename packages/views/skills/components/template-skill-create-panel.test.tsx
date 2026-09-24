@@ -116,6 +116,32 @@ const builtinTab = () => screen.getByRole("tab", { name: new RegExp(enSkills.cre
 const deploymentTab = () => screen.getByRole("tab", { name: new RegExp(enSkills.create.template.group_deployment_label) });
 
 describe("TemplateSkillCreatePanel source tabs", () => {
+  it.each([
+    ["multica-experience-validation", "验证关键用户路径的浏览器、跨端和可访问性证据，记录结果风险与缺口；缺少证据时标记 unknown。"],
+    ["multica-migration-review", "审查 schema、API 和客户端迁移的兼容窗口、校验、幂等、重试与回滚证据；缺失材料时阻塞或标记 unknown。"],
+  ] as const)(
+    "groups and searches the real source description for %s as built-in",
+    async (name, description) => {
+      const content = `---\nname: ${name}\ndescription: ${description}\n---\n`;
+      mocks.listSkillTemplates.mockResolvedValue([
+        builtinTemplate(), { name, version: 1, description, content, files: [] }, mountedTemplate(),
+      ]);
+      renderDialog();
+      await openTemplates();
+      expect(builtinTab()).toHaveAccessibleName(/Platform built-in\s*2/);
+      expect(deploymentTab()).toHaveAccessibleName(/Provided by this deployment\s*1/);
+      expect(screen.getByRole("button", { name: new RegExp(`^${name}`) })).toHaveTextContent(
+        enSkills.builtin_role_skills[name].description,
+      );
+      fireEvent.change(screen.getByRole("textbox", { name: enSkills.create.template.search_placeholder }), {
+        target: { value: enSkills.builtin_role_skills[name].description },
+      });
+      await waitFor(() => expect(builtinTab()).toHaveAccessibleName(/Platform built-in\s*1/));
+      expect(deploymentTab()).toHaveAccessibleName(/Provided by this deployment\s*0/);
+      expect(screen.getByRole("button", { name: new RegExp(`^${name}`) })).toBeInTheDocument();
+    },
+  );
+
   it("splits built-in and mounted templates into two tabs each showing its count", async () => {
     mocks.listSkillTemplates.mockResolvedValue([builtinTemplate(), mountedTemplate()]);
     renderDialog();
