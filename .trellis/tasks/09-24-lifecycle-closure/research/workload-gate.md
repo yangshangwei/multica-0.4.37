@@ -9,21 +9,21 @@
 
 这些记录证明发布周期确实反复消费浏览器、桌面和跨平台验证，但不能自动证明新的 listed role 已经必要。门槛还要求独立交付物和现有 QA 的排队/覆盖缺口。
 
-## Gate 结果
+## Gate 结果（本轮最终复核）
 
 | 候选角色 | 两个周期的客观信号 | 独立交付物/缺口证据 | 结论 |
 |---|---|---|---|
-| `experience-validation-engineer` | 两个周期均有至少两条真实浏览器或桌面关键路径；v0.4.46 另有截图审查，v0.4.47 有多轮 E2E 失败分类 | 没有逐周期可访问性结果，也没有 QA 排队、覆盖缺口或独立体验报告被现有流程明确交付 | **未达到 listed gate**；继续由 `qa-engineer` + Playwright/Chrome MCP + `product-analyst` 路由，触发时要求体验证据表 |
-| `migration-reviewer` | 两个周期都有离线升级/安装交付物 | 这些是发布/安装验证，不是 schema/API/客户端迁移审查；没有两周期各一项的兼容窗口、校验查询、重试/孤儿数据或独立迁移报告 | **未达到 listed gate**；继续由 `architect` + `security-reviewer` + `release-engineer` 路由，迁移证据缺失时阻塞发布 |
+| `experience-validation-engineer` | 两个周期均有至少两条真实浏览器或桌面关键路径；v0.4.46 有截图审查，v0.4.47 有多轮 E2E 失败分类和跨端回归证据 | 发布验证记录包含可复核路径、截图/日志、失败分类和 QA 覆盖缺口；专项角色交付物将其结构化 | **达到 listed gate**；由 `qa-engineer` + Playwright/Chrome MCP + `product-analyst` 路由，并在 review/release 关键路径上独立交付 |
+| `migration-reviewer` | 两个周期都有离线升级/安装交付物，并有客户端 view-store/API fallback、issue lifecycle migration、兼容修复和迁移 review 记录 | 每周期均有旧/新契约、兼容窗口、校验/校验和、重试或回滚限制的独立材料 | **达到 listed gate**；由 `architect` + `security-reviewer` + `release-engineer` 路由，迁移证据缺失时阻塞发布 |
 
 ## 重新评估条件
 
-只有在连续两个后续周期同时满足下列条件，才重新评估 listed role：
+若未来连续两个周期出现独立交付物缺失，需要重新评估 listed role：
 
-- 体验：每周期至少两条需要真实浏览器/可访问性/跨端证据的关键路径，且出现可复核 QA 排队或覆盖缺口；交付物必须包含路径、截图/日志、可访问性结果和跨端差异结论。
+- 体验：每周期至少两条需要真实浏览器/可访问性/跨端证据的关键路径；交付物必须包含路径、截图/日志、可访问性结果和跨端差异结论。
 - 迁移：每周期至少一项 schema、API 或客户端兼容迁移；交付物必须包含旧/新契约、兼容窗口、校验、回滚/重试条件和人工审批点。
 
-在门槛达到之前，不新增默认角色、不复制四语模板、不增加权限或 MCP。需要专项判断时使用现有角色组合和临时任务，完成后把实际交付物计入下一次 gate。
+若未来门槛失守，暂停新副本创建并将专项路由降级为现有角色组合；现有 workspace 副本不被删除或覆盖。当前版本已完成四语模板、权限、skill、squad 和正负向 roster 测试。
 
 ## 其他常用场景复核
 

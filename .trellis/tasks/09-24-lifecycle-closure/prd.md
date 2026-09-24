@@ -61,3 +61,21 @@
 
 - 本任务不建设 observability 数据库、事件总线或自动生产控制面；如现有 issue/comment API 无法表达证据，先记录最小后续设计，不偷偷增加持久化模型。
 - 本任务不自动升级或回滚既有 workspace 副本。
+
+## Closeout（2026-09-24 归档说明）
+
+本任务是双闭环的**宽泛收口 child**，其交付物已在各兄弟任务中完成并归档，故带说明归档，不重写上面的双 PRD。Block B 七条验收对应落点：
+
+- RCA 三路由 / 不阻塞止血 → `09-24-lifecycle-runtime-handoffs`、`09-24-rca-loop-verification`、`09-24-lifecycle-closure-v2`
+- 事故学习 / 发布验证脱敏 fixture → `09-24-incident-learning-canary`、`09-24-lifecycle-runtime-handoffs`
+- reliability / agent-evaluator 三 squad 可达 → `09-24-reliability-agent-evaluator`
+- 体验 / 迁移 workload gate → `09-24-experience-migration-roles`（角色已上线，提交 `c21d03a43`）
+- 五类治理 + 失败样例 → `09-24-delivery-governance-recovery`（`ed0fa7789`、`491e1127c`）
+- 两条闭环演练落点 → `09-24-lifecycle-implementation`、`09-24-lifecycle-dual-loop-rehearsal`、本任务 `research/closure-rehearsal.md`
+- Go / TS / 模板 / 浏览器检查 + 文档化跳过 → `09-24-lifecycle-closure-v2/research/verification.md` 及上述任务 evidence
+
+更正与限制：
+
+- Block A“当前不新增体验/迁移 listed role”为早期定格；两角色其后已上线，本任务 `research/workload-gate.md` 判定两周期均“达到 listed gate”。
+- 真实模型 RCA smoke 与生产 observability 连接为 authorization-gated，记为文档化跳过（可复跑命令见相关 evidence）。
+- requirements-evidence.md 引用的 `09-24-lifecycle-finalization/research/workload-gate.md` 随该任务归档，内容现位于 `archive/2026-09/` 下；本任务 `research/workload-gate.md` 为自洽副本。
