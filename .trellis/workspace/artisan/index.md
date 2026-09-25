@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 28
-- **Last Active**: 2026-09-24
+- **Total Sessions**: 29
+- **Last Active**: 2026-09-25
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~891 | Active |
+| `journal-1.md` | ~913 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 29 | 2026-09-25 | agent-discovery：验证、生产 web 浏览器证据与收尾 | `6d43b7b71`, `4064d94a8` | `feat/agent-discovery` |
 | 28 | 2026-09-24 | 桌面端内网更新开发完成归档 | `d04631603`, `fece10f84` | `main` |
 | 27 | 2026-09-24 | 发布门禁治理演练：AC3/AC4 收尾 | `491e1127c` | `main` |
 | 26 | 2026-09-24 | 新增体验验证与迁移审查专项角色 | `c21d03a43` | `main` |

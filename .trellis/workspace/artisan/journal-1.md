@@ -889,3 +889,25 @@ Diagnosed why every build stamped v0.4.37-N: imported upstream tags v0.4.38-v0.4
 ### Next Steps
 
 - 部署时按手册完成真实内网终端稳定版本 A → B 的签名安装、重启和用户状态验收。
+
+
+## Session 29: agent-discovery：验证、生产 web 浏览器证据与收尾
+
+**Date**: 2026-09-25
+**Task**: agent-discovery：验证、生产 web 浏览器证据与收尾
+**Branch**: `feat/agent-discovery`
+
+### Summary
+
+AC1-AC7 全部达成并归档。独立 trellis-check 全绿（typecheck/lint、core 35、views 481、parity 183），自修 3 类死 locale 键（BuiltinAgentCatalog 删除后残留的 catalog 块、CJK 无 CLDR one 类别的 _one 复数键、4 个未引用 discovery 键）。Go handler 契约测试在真实迁移克隆库上通过，含 TestListSquadsCompleteAgentMembership（agent_member_ids 全量成员：6 成员/3 预览/5 agent、共享专家跨队、空队编码空数组、归档与跨工作区排除），主会话与 check 各独立跑一次并清理克隆。AC6 生产 web 浏览器证据：先提交再手建可控 git worktree（隔离库 _467、端口 18547/13467，全程不碰 human live 环境 18572/13492），生产 next build 起 web+api，agent-role-template 与 agents-discovery 两规格 4/4 通过 + 1440/768/390 三档截图，断言无写请求/page error/横向溢出，完事销毁隔离环境。harness isolation:worktree 两次踩坑（快照取在提交前 HEAD；无改动停止时自动清除致恢复掉回主 checkout），改用手建持久 worktree + 绝对路径 cd 修复并写入记忆。spec 落 views/agent-discovery 契约。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6d43b7b71` | (see git log) |
+| `4064d94a8` | (see git log) |
+
+### Status
+
+[OK] **Completed**
