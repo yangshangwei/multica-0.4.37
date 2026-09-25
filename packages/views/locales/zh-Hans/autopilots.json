@@ -43,8 +43,8 @@
   },
   "template_picker": {
     "eyebrow": "创建自动化",
-    "title": "从自动化模板开始",
-    "description": "每个模板都自带任务说明、执行周期和输出模式。选一个、指定执行方即可创建，创建后所有内容都可以修改。",
+    "title": "从模板开始",
+    "description": "选择一个场景，再确认执行者与运行计划。",
     "step_pick": "选择模板",
     "step_configure": "检查并配置",
     "back": "返回",
@@ -58,9 +58,9 @@
     "prompt_label": "交给智能体做的事",
     "prompt_note": "会复制到自动化，创建后可编辑",
     "assignee_hint": "模板无法预知这个工作区有哪些智能体，请选择运行它的一方。",
-    "enable": "启用自动化",
-    "enabling": "启用中...",
-    "enable_hint": "启用后将创建自动化并开始按计划运行。你可以在详情页暂停或立即运行。",
+    "enable": "创建并启用",
+    "enabling": "创建中…",
+    "enable_hint": "创建后按计划运行。你可以在详情页暂停或立即运行。",
     "assignee_unavailable": "预选的执行者不可用，请选择你有权运行的智能体或AI小队。",
     "project_unavailable": "预选项目在此工作区中不可用，请选择其他项目或不关联项目。",
     "choices_load_failed": "无法加载项目和执行者选项。"
@@ -461,7 +461,20 @@
   },
   "catalog": {
     "title": "内置模板",
-    "description": "选择周期任务，确认计划后启用。"
+    "description": "选择周期任务，确认计划后启用。",
+    "filter_label": "按场景筛选模板",
+    "groups": {
+      "all": "全部",
+      "maintenance": "仓库维护",
+      "collaboration": "评审协作",
+      "reporting": "进展汇报"
+    },
+    "recommended": "推荐起点",
+    "view_template": "查看模板",
+    "follow_up": "按需跟进",
+    "creates_task": "每次创建任务",
+    "hint": "所有模板均可在创建后修改。运行前需指定智能体或AI小队。",
+    "default_schedule_note": "创建后可修改"
   },
   "project_section": {
     "title": "自动化",

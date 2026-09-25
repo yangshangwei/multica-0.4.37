@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import {
   ScrollRestorationProvider,
   type ScrollRestorationAdapter,
@@ -58,6 +59,7 @@ export function WebScrollRestorationProvider({
 }: {
   children: ReactNode;
 }) {
+  const pathname = usePathname();
   useEffect(() => {
     const onScroll = (e: Event) => {
       const el = e.target;
@@ -91,7 +93,7 @@ export function WebScrollRestorationProvider({
   const adapter = useMemo<ScrollRestorationAdapter>(
     () => ({
       get(containerKey) {
-        const key = mementoKey(window.location.pathname, containerKey);
+        const key = mementoKey(pathname, containerKey);
         const saved = savedOffsets.get(key);
         if (saved) {
           // The caller is about to restore this offset — shield the memento
@@ -102,16 +104,18 @@ export function WebScrollRestorationProvider({
       },
       getViewState(entryKey) {
         return savedViewState.get(
-          mementoKey(window.location.pathname, entryKey),
+          mementoKey(pathname, entryKey),
         );
       },
       setViewState(entryKey, value) {
-        const key = mementoKey(window.location.pathname, entryKey);
+        const key = mementoKey(pathname, entryKey);
         if (value === undefined) savedViewState.delete(key);
         else savedViewState.set(key, value);
       },
     }),
-    [],
+    // Render-time reads must follow Next's route, which can differ from
+    // window.location while a navigation is being prepared or committed.
+    [pathname],
   );
 
   return (

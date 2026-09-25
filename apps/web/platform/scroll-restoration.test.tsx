@@ -1,8 +1,12 @@
 // @vitest-environment jsdom
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { useRestoredScrollOffset } from "@multica/views/platform";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { useRestoredScrollOffset, useRestoredViewState, useViewStateWriter } from "@multica/views/platform";
 import { WebScrollRestorationProvider } from "./scroll-restoration";
+
+const route = vi.hoisted(() => ({ pathname: "/" }));
+vi.mock("next/navigation", () => ({ usePathname: () => route.pathname }));
+beforeEach(() => { route.pathname = window.location.pathname; });
 
 function ScrollProbe({ containerKey }: { containerKey: string }) {
   const restored = useRestoredScrollOffset(containerKey);
@@ -20,6 +24,24 @@ function scrollContainer(el: HTMLElement, top: number) {
 }
 
 describe("WebScrollRestorationProvider", () => {
+  it("reads the rendered route's view state before browser history commits", () => {
+    function ViewStateProbe() {
+      const value = useRestoredViewState("template-group");
+      const write = useViewStateWriter();
+      return <button onClick={() => write("template-group", "maintenance")}>{value ?? "all"}</button>;
+    }
+    const view = render(<WebScrollRestorationProvider><ViewStateProbe /></WebScrollRestorationProvider>);
+    fireEvent.click(screen.getByRole("button"));
+    // Next can render the destination while window.location still names the
+    // previous entry. Restoration must follow the rendered pathname.
+    route.pathname = "/autopilots/new/template";
+    view.rerender(<WebScrollRestorationProvider><ViewStateProbe /></WebScrollRestorationProvider>);
+    expect(screen.getByRole("button")).toHaveTextContent("all");
+    route.pathname = window.location.pathname;
+    view.rerender(<WebScrollRestorationProvider><ViewStateProbe /></WebScrollRestorationProvider>);
+    expect(screen.getByRole("button")).toHaveTextContent("maintenance");
+  });
+
   it("serves a captured container offset back for the same pathname", () => {
     const view = render(
       <WebScrollRestorationProvider>

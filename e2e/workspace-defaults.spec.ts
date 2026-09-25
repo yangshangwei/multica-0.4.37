@@ -182,11 +182,11 @@ test.describe("workspace built-in defaults", () => {
       await page.goto(`/${workspace.slug}/projects/${project.id}`);
       await page.getByRole("link", { name: "Add automation", exact: true }).click();
       await page.getByText("Daily Change Review", { exact: true }).first().click();
-      await expect(page.getByRole("button", { name: "Enable automation", exact: true })).toBeEnabled();
+      await expect(page.getByRole("button", { name: "Create and enable", exact: true })).toBeEnabled();
       expect((await api.requestJSON<{ autopilots: unknown[] }>("/api/autopilots")).autopilots).toHaveLength(0);
       await page.screenshot({ path: info.outputPath("automation-project-prefill.png"), animations: "disabled" });
       const createdAutomation = page.waitForResponse((response) => response.request().method() === "POST" && /\/api\/autopilots\/from-template$/.test(response.url()));
-      await page.getByRole("button", { name: "Enable automation", exact: true }).click();
+      await page.getByRole("button", { name: "Create and enable", exact: true }).click();
       const automationResponse = await createdAutomation;
       expect(automationResponse.status()).toBe(201);
       expect(automationResponse.request().postDataJSON()).toMatchObject({

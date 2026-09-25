@@ -186,7 +186,7 @@ async function expectReadablePreview(preview: Locator) {
 async function createReportAutomation(page: Page, api: TestApiClient, template: ReportTemplate, reporter: Reporter) {
   await expect(page.locator("pre")).toHaveText(template.prompt);
   await expect(page.getByRole("button", { name: /^时区: Shanghai GMT\+8$/ })).toBeVisible();
-  const create = page.getByRole("button", { name: "启用自动化", exact: true });
+  const create = page.getByRole("button", { name: "创建并启用", exact: true });
   await expect(create).toBeDisabled();
   await page.getByRole("button", { name: "选择智能体或AI小队", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: new RegExp(reporter.name) }).click();
@@ -352,8 +352,8 @@ test("adopts daily and weekly reports and completes fixture delivery on only the
   const weekly = requiredTemplate(templates, WEEKLY_KEY);
 
   await page.goto(`/${slug}/autopilots`);
-  await page.getByRole("button", { name: /^内置模板\s+10$/ }).click();
-  const catalog = page.getByRole("region", { name: "内置模板", exact: true });
+  const catalog = page.getByRole("region", { name: "从模板开始", exact: true });
+  await expect(catalog.getByRole("listitem")).toHaveCount(templates.length);
   const catalogTitles = await catalog.getByRole("listitem").allTextContents();
   const dailyIndex = catalogTitles.findIndex((title) => title.includes(daily.title));
   expect(dailyIndex).toBeGreaterThanOrEqual(0);
@@ -373,7 +373,7 @@ test("adopts daily and weekly reports and completes fixture delivery on only the
   const dailyAutomation = await createReportAutomation(page, api, daily, reporter);
 
   await page.goto(`/${slug}/autopilots/new/template`);
-  const pickerCards = page.locator("main button.group");
+  const pickerCards = page.getByRole("region", { name: "从模板开始", exact: true }).getByRole("listitem").getByRole("button");
   await expect(pickerCards).toHaveCount(10);
   const pickerTitles = await pickerCards.allTextContents();
   expect(pickerTitles[templates.findIndex((template) => template.key === DAILY_KEY)]).toContain(daily.title);

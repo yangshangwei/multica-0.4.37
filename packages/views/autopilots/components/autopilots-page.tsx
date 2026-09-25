@@ -5,7 +5,6 @@ import {
   AlertCircle,
   Clock,
   Code,
-  LayoutTemplate,
   Pause,
   Plus,
   Webhook,
@@ -49,6 +48,8 @@ import {
 } from "../../layout/collection-page";
 import { AutopilotDialog } from "./autopilot-dialog";
 import { AutopilotTemplateCatalog } from "./autopilot-template-catalog";
+import { useAutopilotTemplates } from "../use-autopilot-templates";
+import { autopilotTemplateHref } from "../template-create-defaults";
 import { AutopilotListToolbar, actorFilterValue } from "./autopilot-list-toolbar";
 import {
   AutopilotBatchToolbar,
@@ -672,17 +673,11 @@ export function AutopilotsPage() {
         actions={
           <CollectionPageHeaderAction
             icon={Plus}
-            label={t(($) => $.page.new_autopilot)}
-            // The template picker, not the blank dialog: it is where the
-            // built-in automations live, and routing the header action through
-            // it is what makes them reachable in a workspace that already has
-            // autopilots. The blank form is one click further, inside it.
-            onClick={() => navigation.push(wsPaths.newAutopilotTemplate())}
+            label={showEmpty ? t(($) => $.page.start_blank) : t(($) => $.page.new_autopilot)}
+            onClick={() => showEmpty ? setCreateOpen(true) : navigation.push(wsPaths.newAutopilotTemplate())}
           />
         }
       />
-
-      <AutopilotTemplateCatalog />
 
       {listError ? (
         <CollectionPageState
@@ -708,35 +703,7 @@ export function AutopilotsPage() {
           <LoadingSkeleton />
         </div>
       ) : showEmpty ? (
-        <CollectionPageState
-          icon={Zap}
-          title={t(($) => $.page.empty.title)}
-          description={t(($) => $.page.empty.hint)}
-          actions={
-            <>
-              <Button
-                type="button"
-                size="sm"
-                onClick={() => navigation.push(wsPaths.newAutopilotTemplate())}
-              >
-                <LayoutTemplate
-                  className="mr-1 h-3.5 w-3.5"
-                  aria-hidden="true"
-                />
-                {t(($) => $.page.browse_templates)}
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => setCreateOpen(true)}
-              >
-                <Plus className="mr-1 h-3.5 w-3.5" aria-hidden="true" />
-                {t(($) => $.page.start_blank)}
-              </Button>
-            </>
-          }
-        />
+        <EmptyAutopilots />
       ) : (
         <>
           <AutopilotListToolbar
@@ -862,5 +829,22 @@ export function AutopilotsPage() {
         />
       )}
     </div>
+  );
+}
+
+function EmptyAutopilots() {
+  const paths = useWorkspacePaths();
+  const navigation = useNavigation();
+  const { data: templates = [], isLoading, isError, refetch } = useAutopilotTemplates();
+  return (
+    <AutopilotTemplateCatalog
+      templates={templates}
+      loading={isLoading}
+      failed={isError}
+      onRetry={() => void refetch()}
+      onPick={(key) => navigation.push(autopilotTemplateHref(
+        paths.newAutopilotTemplate(), { initialReturnTo: "autopilots" }, key,
+      ))}
+    />
   );
 }

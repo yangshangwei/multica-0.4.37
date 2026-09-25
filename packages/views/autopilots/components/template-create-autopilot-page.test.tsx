@@ -229,13 +229,56 @@ beforeEach(() => {
 });
 
 describe("autopilot template picker", () => {
-  it("lists every template the server ships, with its category and description", async () => {
+  it("filters templates by scenario and carries the selection into configuration", async () => {
+    renderPage();
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole("button", { name: /Repository maintenance 2/ }));
+    expect(screen.getByRole("button", { name: /Workday repo audit/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Hourly queue check/ })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Release readiness/ })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /Workday repo audit/ }));
+    expect(mockPush).toHaveBeenCalledWith("/acme/autopilots/new/template?template=workday-repo-audit");
+  });
+
+  it("keeps unknown templates reachable without claiming patrol behavior", async () => {
+    mockListTemplates.mockResolvedValue([...TEMPLATES, {
+      ...TEMPLATES[0], key: "future-template", title: "Future template", category: "future", category_label: "Future",
+    }]);
+    renderPage();
+    const user = userEvent.setup();
+    const card = await screen.findByRole("button", { name: /Future template/ });
+    expect(card).not.toHaveTextContent(enAutopilots.catalog.follow_up);
+    await user.click(screen.getByRole("button", { name: /Repository maintenance/ }));
+    expect(screen.queryByRole("button", { name: /Future template/ })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "All 5" }));
+    await user.click(screen.getByRole("button", { name: /Future template/ }));
+    expect(mockPush).toHaveBeenCalledWith("/acme/autopilots/new/template?template=future-template");
+  });
+
+  it("returns to the originating empty gallery so its browsing state can restore", async () => {
+    searchParams.value = new URLSearchParams("template=workday-repo-audit&return_to=autopilots");
+    renderPage({}, true);
+    await screen.findByText(TEMPLATES[0]!.description);
+    await userEvent.setup().click(screen.getByRole("button", { name: "Go back" }));
+    expect(mockReplace).toHaveBeenCalledWith("/acme/autopilots");
+  });
+
+  it("retries a failed template load without losing the blank creation entry", async () => {
+    mockListTemplates.mockRejectedValueOnce(new Error("offline"));
+    renderPage();
+    expect(await screen.findByRole("alert")).toHaveTextContent(enAutopilots.template_picker.load_failed);
+    expect(screen.getByRole("button", { name: enAutopilots.page.start_blank })).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("button", { name: /Workday repo audit/ })).toBeInTheDocument();
+  });
+
+  it("lists every template the server ships, with its outcome and description", async () => {
     renderPage();
 
     const card = await screen.findByRole("button", {
       name: /Workday repo audit/,
     });
-    expect(card.textContent).toContain("Repo health");
+    expect(card.textContent).toContain(enAutopilots.catalog.follow_up);
     expect(card.textContent).toContain(
       "Checks dependency health and risky open changes.",
     );
@@ -370,7 +413,7 @@ describe("autopilot template configure step", () => {
     const user = userEvent.setup();
 
     const createButton = await screen.findByRole("button", {
-      name: "Enable automation",
+      name: enAutopilots.template_picker.enable,
     });
     expect(createButton).toBeDisabled();
     // The disabled control is not a dead end: the reason is on the field.
@@ -400,7 +443,7 @@ describe("autopilot template configure step", () => {
     );
     await user.click(await screen.findByRole("button", { name: /Scout/ }));
     await user.click(
-      screen.getByRole("button", { name: "Enable automation" }),
+      screen.getByRole("button", { name: enAutopilots.template_picker.enable }),
     );
 
     await waitFor(() =>
@@ -450,7 +493,7 @@ describe("autopilot template configure step", () => {
     );
     await user.click(await screen.findByRole("button", { name: /Scout/ }));
     await user.click(
-      screen.getByRole("button", { name: "Enable automation" }),
+      screen.getByRole("button", { name: enAutopilots.template_picker.enable }),
     );
 
     expect(
@@ -466,7 +509,7 @@ describe("autopilot template configure step", () => {
     expect(await screen.findByRole("button", { name: /Delivery/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Fleet/ })).toBeInTheDocument();
     expect(mockCreateFromTemplate).not.toHaveBeenCalled();
-    await userEvent.setup().click(screen.getByRole("button", { name: "Enable automation" }));
+    await userEvent.setup().click(screen.getByRole("button", { name: enAutopilots.template_picker.enable }));
     await waitFor(() => expect(mockCreateFromTemplate).toHaveBeenCalledWith(expect.objectContaining({
       project_id: "project-1", assignee_type: "squad", assignee_id: "squad-1",
     })));
@@ -482,7 +525,7 @@ describe("autopilot template configure step", () => {
     rerenderPage({ initialProjectId: "project-1", initialAssigneeType: "squad", initialAssigneeId: "missing-squad" });
     await act(async () => { await qc.invalidateQueries(); });
     expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Enable automation" }));
+    await user.click(screen.getByRole("button", { name: enAutopilots.template_picker.enable }));
     await waitFor(() => expect(mockCreateFromTemplate).toHaveBeenCalledWith(expect.objectContaining({
       project_id: null, assignee_type: "agent", assignee_id: "agent-1",
     })));
@@ -496,7 +539,7 @@ describe("autopilot template configure step", () => {
     await userEvent.setup().click(screen.getByRole("button", { name: "Clear project" }));
     await act(async () => { resolveProjects(PROJECTS); });
     expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Enable automation" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: enAutopilots.template_picker.enable })).toBeEnabled();
   });
 
   it("retries failed membership without consuming the suggested assignee or replacing edits", async () => {
@@ -517,7 +560,7 @@ describe("autopilot template configure step", () => {
     );
     expect(screen.queryByText(enAutopilots.template_picker.assignee_unavailable))
       .not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Enable automation" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: enAutopilots.template_picker.enable })).toBeDisabled();
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Clear project" }));
@@ -527,7 +570,7 @@ describe("autopilot template configure step", () => {
     expect(mockListMembers).toHaveBeenCalledTimes(2);
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Enable automation" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: enAutopilots.template_picker.enable })).toBeEnabled();
     expect(mockCreateFromTemplate).not.toHaveBeenCalled();
   });
 
@@ -535,7 +578,7 @@ describe("autopilot template configure step", () => {
     const { qc } = renderPage({ initialAssigneeType: "squad", initialAssigneeId: "squad-1" });
     expect(await screen.findByRole("button", { name: /Delivery/ })).toBeInTheDocument();
     await act(async () => { qc.setQueryData(["agents", "ws-test"], AGENTS.map((agent) => ({ ...agent, owner_id: "another-user" }))); });
-    await waitFor(() => expect(screen.getByRole("button", { name: "Enable automation" })).toBeDisabled());
+    await waitFor(() => expect(screen.getByRole("button", { name: enAutopilots.template_picker.enable })).toBeDisabled());
     expect(mockCreateFromTemplate).not.toHaveBeenCalled();
   });
 
@@ -546,7 +589,7 @@ describe("autopilot template configure step", () => {
     expect(await screen.findByText("The suggested assignee is unavailable. Choose an agent or squad you can run.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Select agent or squad/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /No project/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Enable automation" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: enAutopilots.template_picker.enable })).toBeDisabled();
     expect(mockCreateFromTemplate).not.toHaveBeenCalled();
   });
 });

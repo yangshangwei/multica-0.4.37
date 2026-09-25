@@ -43,8 +43,8 @@
   },
   "template_picker": {
     "eyebrow": "Autopilot creation",
-    "title": "Start from an automation template",
-    "description": "Every template brings a brief, a schedule and an output mode. Pick one, choose who runs it, and edit anything about it afterwards.",
+    "title": "Start from a template",
+    "description": "Choose a scenario, then review the assignee and schedule.",
     "step_pick": "Pick a template",
     "step_configure": "Review and configure",
     "back": "Go back",
@@ -58,9 +58,9 @@
     "prompt_label": "What the agent is asked to do",
     "prompt_note": "Copied to the autopilot — editable afterwards",
     "assignee_hint": "A template cannot know which agents this workspace has. Pick the one that runs it.",
-    "enable": "Enable automation",
-    "enabling": "Enabling...",
-    "enable_hint": "Enabling creates this automation and starts its schedule. You can pause it or run it now from its details.",
+    "enable": "Create and enable",
+    "enabling": "Creating…",
+    "enable_hint": "After creation, the automation runs on its schedule. You can pause it or run it manually from its detail page.",
     "assignee_unavailable": "The suggested assignee is unavailable. Choose an agent or squad you can run.",
     "project_unavailable": "The suggested project is unavailable in this workspace. Choose another project or continue without one.",
     "choices_load_failed": "Could not load the project and assignee choices."
@@ -325,7 +325,7 @@
       },
       "run_only": {
         "label": "Run only",
-        "description": "Silent run, no issue created"
+        "description": "Runs directly without creating an issue up front"
       }
     }
   },
@@ -464,7 +464,20 @@
   },
   "catalog": {
     "title": "Built-in templates",
-    "description": "Choose a recurring task, review its schedule, then enable it."
+    "description": "Choose a recurring task, review its schedule, then enable it.",
+    "filter_label": "Filter templates by scenario",
+    "groups": {
+      "all": "All",
+      "maintenance": "Repository maintenance",
+      "collaboration": "Review and coordination",
+      "reporting": "Progress reports"
+    },
+    "recommended": "Recommended starting point",
+    "view_template": "View template",
+    "follow_up": "Follow up as needed",
+    "creates_task": "Creates a task each run",
+    "hint": "Templates can be edited after creation. Choose an agent or squad before enabling.",
+    "default_schedule_note": "Editable after creation"
   },
   "project_section": {
     "title": "Automations",

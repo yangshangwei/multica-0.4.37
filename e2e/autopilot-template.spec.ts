@@ -66,6 +66,7 @@ async function login(page: Page): Promise<{
   slug: string;
   workspaceId: string;
   userId: string;
+  api: TestApiClient;
 }> {
   const api = new TestApiClient();
   const auth = await api.login(EMAIL, NAME);
@@ -84,7 +85,7 @@ async function login(page: Page): Promise<{
     localStorage.setItem("multica_token", value);
     localStorage.setItem("multica:chat:isOpen", "false");
   }, token);
-  return { slug: workspace.slug, workspaceId: workspace.id, userId };
+  return { slug: workspace.slug, workspaceId: workspace.id, userId, api };
 }
 
 /** Mocks the template catalog, one selectable agent, and the create call.
@@ -184,6 +185,37 @@ async function mockTemplateApis(page: Page, workspaceId: string, userId: string)
 }
 
 test.describe("autopilot templates", () => {
+  test("restores gallery filters and scroll with native and in-flow Back", async ({ page }) => {
+    const { slug, workspaceId, userId, api } = await login(page);
+    try {
+      const createdBody = await mockTemplateApis(page, workspaceId, userId);
+      await page.setViewportSize({ width: 360, height: 420 });
+      for (const entry of ["autopilots", "autopilots/new/template"]) {
+        await page.goto(`/${slug}/${entry}`);
+        const gallery = page.getByRole("region", { name: "Start from a template" });
+        await expect(gallery.getByRole("listitem")).toHaveCount(2);
+        await gallery.getByRole("button", { name: "Repository maintenance 1" }).click();
+        const card = gallery.getByRole("button", { name: /Hourly Queue Check/ });
+        await card.scrollIntoViewIfNeeded();
+        const scrollTop = await gallery.evaluate((element) => element.scrollTop);
+        expect(scrollTop).toBeGreaterThan(0);
+
+        for (const nativeBack of [true, false]) {
+          await card.click();
+          await expect(page.getByRole("button", { name: "Create and enable" })).toBeVisible();
+          if (nativeBack) await page.goBack();
+          else await page.getByRole("button", { name: "Go back", exact: true }).click();
+          await expect(page).toHaveURL(new RegExp(`/${entry}$`));
+          await expect(gallery.getByRole("button", { name: "Repository maintenance 1" })).toHaveAttribute("aria-pressed", "true");
+          await expect.poll(() => gallery.evaluate((element) => element.scrollTop)).toBe(scrollTop);
+        }
+      }
+      expect(createdBody()).toBeUndefined();
+    } finally {
+      await api.deleteFeatureWorkspace(workspaceId);
+    }
+  });
+
   test("picks a template, requires an assignee, and creates without claiming the prompt", async ({
     page,
   }) => {
@@ -193,16 +225,16 @@ test.describe("autopilot templates", () => {
     await page.goto(`/${slug}/autopilots/new/template`);
 
     // Step one is the template grid. Each card carries the three layers the
-    // product design calls for: category, title, description.
-    await waitForPageText(page, "Start from an automation template");
-    await expect(page.getByText("Periodic Review").first()).toBeVisible();
+    // product design calls for: outcome, title, description.
+    await waitForPageText(page, "Start from a template");
+    await expect(page.getByText("Creates a task each run").first()).toBeVisible();
     await expect(page.getByText("Daily Change Review").first()).toBeVisible();
     await expect(
       page.getByText(
         "Scans recent work and flags correctness, UX, and test-coverage risks.",
       ),
     ).toBeVisible();
-    await expect(page.getByText("Maintenance").first()).toBeVisible();
+    await expect(page.getByText("Follow up as needed").first()).toBeVisible();
     await expect(page.getByText("Hourly Queue Check").first()).toBeVisible();
 
     await page.getByRole("button", { name: /Hourly Queue Check/ }).first().click();
@@ -216,7 +248,7 @@ test.describe("autopilot templates", () => {
 
     // A template cannot know which agents a workspace has, so the flow cannot be
     // one click: Enable stays disabled until an assignee is chosen.
-    const createButton = page.getByRole("button", { name: "Enable automation" });
+    const createButton = page.getByRole("button", { name: "Create and enable" });
     await expect(createButton).toBeDisabled();
 
     // The assignee control is a popover, so the agent only exists in the DOM

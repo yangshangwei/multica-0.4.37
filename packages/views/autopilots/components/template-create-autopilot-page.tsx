@@ -6,13 +6,11 @@ import { toast } from "sonner";
 import {
   ArrowLeft,
   ChevronDown,
-  ChevronRight,
   Clock,
   FilePlus2,
   FolderKanban,
   Loader2,
   Play,
-  Plus,
   Rocket,
 } from "lucide-react";
 import { useWorkspaceId } from "@multica/core/hooks";
@@ -34,7 +32,6 @@ import type {
   AutopilotTemplate,
 } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
-import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { cn } from "@multica/ui/lib/utils";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { browserTimezone, timezoneOptions } from "../../common/timezone-select";
@@ -53,6 +50,7 @@ import {
   type AutopilotTemplateDefaults,
 } from "../template-create-defaults";
 import { AutopilotDialog } from "./autopilot-dialog";
+import { AutopilotTemplateCatalog } from "./autopilot-template-catalog";
 import { AgentPicker, type AssigneeSelection } from "./pickers/agent-picker";
 import { TimezonePicker } from "./pickers/timezone-picker";
 import { parseCron } from "./schedule-editor/cron-mapping";
@@ -88,9 +86,11 @@ export function TemplateCreateAutopilotPage(defaults: AutopilotTemplateDefaults)
   const navigation = useNavigation();
   const backOrReplace = useBackOrReplace();
   const templateKey = navigation.searchParams.get("template");
-  const pickerHref = autopilotTemplateHref(paths.newAutopilotTemplate(), defaults);
+  const pickerHref = defaults.initialReturnTo === "autopilots"
+    ? paths.autopilots()
+    : autopilotTemplateHref(paths.newAutopilotTemplate(), defaults);
 
-  const { data: templates, isLoading, isError } = useAutopilotTemplates();
+  const { data: templates, isLoading, isError, refetch } = useAutopilotTemplates();
   const template = findAutopilotTemplate(templates, templateKey);
   // A deep link to a key this server does not ship — an honest dead end beats
   // a picker that silently pretends the link never happened. Only verdict-able
@@ -111,8 +111,8 @@ export function TemplateCreateAutopilotPage(defaults: AutopilotTemplateDefaults)
           ? t(($) => $.template_picker.step_configure)
           : t(($) => $.template_picker.step_pick)
       }
-      // Back from the configure step returns to the template list, not out of
-      // the flow: picking the wrong template is the likely reason to go back.
+      // Return to the originating gallery so its route-scoped browsing state
+      // restores, including when the gallery was the empty automation list.
       onBack={() =>
         template
           ? navigation.replace(pickerHref)
@@ -128,6 +128,7 @@ export function TemplateCreateAutopilotPage(defaults: AutopilotTemplateDefaults)
           templates={templates ?? []}
           loading={isLoading}
           failed={isError}
+          onRetry={() => void refetch()}
           onPick={(key) =>
             navigation.push(
               autopilotTemplateHref(paths.newAutopilotTemplate(), defaults, key),
@@ -235,115 +236,26 @@ function AutopilotTemplatePicker({
   templates,
   loading,
   failed,
+  onRetry,
   onPick,
 }: {
   templates: AutopilotTemplate[];
   loading: boolean;
   failed: boolean;
+  onRetry: () => void;
   onPick: (key: string) => void;
 }) {
-  const { t } = useT("autopilots");
-  const describe = useDescribeSchedule();
   const [blankOpen, setBlankOpen] = useState(false);
-
   return (
-    <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-10">
-      <div className="m-auto w-full max-w-5xl">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-caption font-medium uppercase tracking-wider text-muted-foreground">
-            {t(($) => $.template_picker.eyebrow)}
-          </div>
-          <h2 className="mt-2 text-balance text-display-sm font-semibold tracking-tight">
-            {t(($) => $.template_picker.title)}
-          </h2>
-          <p className="mt-3 text-pretty text-body text-muted-foreground">
-            {t(($) => $.template_picker.description)}
-          </p>
-        </div>
-
-        {loading ? (
-          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {[0, 1, 2, 3].map((key) => (
-              <Skeleton key={key} className="h-40 rounded-xl" />
-            ))}
-          </div>
-        ) : failed || templates.length === 0 ? (
-          <p className="mt-9 text-center text-body text-muted-foreground">
-            {failed
-              ? t(($) => $.template_picker.load_failed)
-              : t(($) => $.template_picker.empty)}
-          </p>
-        ) : (
-          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {templates.map((template) => (
-              <button
-                key={template.key}
-                type="button"
-                onClick={() => onPick(template.key)}
-                className={cn(
-                  "group flex h-full flex-col items-start rounded-xl border bg-card p-4 text-left",
-                  "transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent/30",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                )}
-              >
-                <span
-                  className="flex size-9 items-center justify-center rounded-lg bg-muted text-title-sm"
-                  aria-hidden="true"
-                >
-                  {template.avatar_emoji}
-                </span>
-                <span className="mt-3 text-caption font-medium uppercase tracking-wider text-muted-foreground">
-                  {template.category_label}
-                </span>
-                <span className="mt-1 text-body font-semibold">
-                  {template.title}
-                </span>
-                <span className="mt-1.5 text-caption leading-5 text-muted-foreground">
-                  {template.description}
-                </span>
-                <span className="mt-auto flex w-full items-center gap-2 pt-4 text-caption">
-                  <Clock
-                    className="size-3.5 shrink-0 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                  <span className="min-w-0 truncate text-muted-foreground">
-                    {scheduleText(
-                      describe,
-                      template.cron_expression,
-                      browserTimezone(),
-                    )}
-                  </span>
-                  <span className="ml-auto flex shrink-0 items-center gap-1 font-medium text-foreground">
-                    {t(($) => $.template_picker.continue)}
-                    <ChevronRight
-                      className="size-3.5 transition-transform group-hover:translate-x-0.5"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* The blank flow is kept reachable from here, because this screen is
-            now what "New autopilot" opens. It is the same dialog the list used
-            to open, not a second creation path. */}
-        <div className="mt-9 flex flex-col items-center gap-2">
-          <p className="text-caption text-muted-foreground">
-            {t(($) => $.template_picker.blank_hint)}
-          </p>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => setBlankOpen(true)}
-          >
-            <Plus className="mr-1 size-3.5" aria-hidden="true" />
-            {t(($) => $.page.start_blank)}
-          </Button>
-        </div>
-      </div>
-
+    <>
+      <AutopilotTemplateCatalog
+        templates={templates}
+        loading={loading}
+        failed={failed}
+        onRetry={onRetry}
+        onPick={onPick}
+        onStartBlank={() => setBlankOpen(true)}
+      />
       {blankOpen && (
         <AutopilotDialog
           mode="create"
@@ -351,7 +263,7 @@ function AutopilotTemplatePicker({
           onOpenChange={setBlankOpen}
         />
       )}
-    </main>
+    </>
   );
 }
 
@@ -529,6 +441,7 @@ function TemplateConfigureStep({
             icon={Clock}
             label={t(($) => $.template_picker.schedule_label)}
             value={scheduleText(describe, template.cron_expression, timezone)}
+            hint={t(($) => $.catalog.default_schedule_note)}
           />
           {mode && ModeIcon && (
             <ReadonlyFact

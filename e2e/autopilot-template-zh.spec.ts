@@ -121,7 +121,7 @@ async function createFromPreview(
   template: Template,
   agentId: string,
 ): Promise<AutopilotDetail> {
-  const create = page.getByRole("button", { name: "启用自动化", exact: true });
+  const create = page.getByRole("button", { name: "创建并启用", exact: true });
   await expect(create).toBeDisabled();
   await page.getByRole("button", { name: "选择智能体或AI小队", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: new RegExp(AGENT_NAME) }).click();
@@ -240,7 +240,7 @@ test("adopts, edits and dispatches Chinese briefs through the real template API"
       page.goto(`/${slug}/autopilots/new/template`),
     ]);
     expect(catalogResponse.status()).toBe(200);
-    await expect(page.getByRole("heading", { name: "从自动化模板开始" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "从模板开始" })).toBeVisible();
     for (const template of templates) {
       await expect(page.getByRole("button", { name: new RegExp(template.title) }).first()).toBeVisible();
     }
