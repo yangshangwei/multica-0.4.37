@@ -8,6 +8,7 @@ export {
   type AgentsViewState,
   type AgentSortField,
   type AgentSortDirection,
+  type AgentGroupBy,
   type AgentColumnKey,
   type AgentListFilters,
 } from "./view-store";

@@ -23,6 +23,9 @@ export interface Squad {
   archived_by: string | null;
   member_count?: number;
   member_preview?: SquadMemberPreview[];
+  /** Complete agent membership, including the leader. Absent on older servers;
+   *  member_preview is truncated and cannot substitute for this list. */
+  agent_member_ids?: string[];
   /** The built-in squad template this squad was staffed from, and its version.
    *  Absent for a hand-built squad. Provenance only — the instructions on the
    *  row are the workspace's from the moment it is created. */

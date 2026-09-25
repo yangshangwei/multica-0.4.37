@@ -13,6 +13,8 @@ export const workspaceKeys = {
   agent: (wsId: string, agentId: string) =>
     ["workspaces", wsId, "agents", "detail", agentId] as const,
   squads: (wsId: string) => ["workspaces", wsId, "squads"] as const,
+  squadMembers: (wsId: string, squadId: string) =>
+    ["workspaces", wsId, "squads", squadId, "members"] as const,
   // Per-squad member status. Lives under the workspace key tree so
   // workspace switches naturally drop the cache, and so a broad
   // `["workspaces", wsId, "squads"]` invalidation covers it.
@@ -103,6 +105,16 @@ export function squadListOptions(wsId: string) {
     queryKey: workspaceKeys.squads(wsId),
     queryFn: () => api.listSquads(),
     enabled: !!wsId,
+  });
+}
+
+/** Full membership, fetched only when a selected legacy squad omits its list
+ *  projection. Shares the existing squad detail cache and WS invalidations. */
+export function squadMembersOptions(wsId: string, squadId: string) {
+  return queryOptions({
+    queryKey: workspaceKeys.squadMembers(wsId, squadId),
+    queryFn: () => api.listSquadMembers(squadId),
+    enabled: !!wsId && !!squadId,
   });
 }
 

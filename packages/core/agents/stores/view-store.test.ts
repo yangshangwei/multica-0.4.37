@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { useAgentsViewStore } from "./view-store";
+import { AGENT_DEFAULT_HIDDEN_COLUMNS, EMPTY_AGENT_FILTERS, useAgentsViewStore } from "./view-store";
 import { setCurrentWorkspace } from "../../platform/workspace-storage";
 
 const flush = () => new Promise((resolve) => queueMicrotask(() => resolve(null)));
@@ -26,7 +26,7 @@ beforeAll(() => {
 
 beforeEach(() => {
   localStorage.clear();
-  useAgentsViewStore.setState({ scope: "mine" });
+  useAgentsViewStore.setState({ scope: "mine", filters: EMPTY_AGENT_FILTERS });
   setCurrentWorkspace(null, null);
 });
 
@@ -54,12 +54,53 @@ describe("useAgentsViewStore", () => {
     const parsed = JSON.parse(raw as string);
     expect(Object.keys(parsed.state).sort()).toEqual([
       "filters",
+      "groupBy",
       "hiddenColumns",
       "scope",
       "sortDirection",
       "sortField",
     ]);
     expect(parsed.state.scope).toBe("all");
+  });
+
+  it("keeps filters inside the chosen ownership scope", () => {
+    useAgentsViewStore.getState().toggleFilter("availability", "online");
+    expect(useAgentsViewStore.getState().scope).toBe("mine");
+    useAgentsViewStore.getState().setScope("all");
+    useAgentsViewStore.getState().setScope("mine");
+    expect(useAgentsViewStore.getState().filters.availability).toEqual(["online"]);
+    useAgentsViewStore.getState().clearFilters();
+    expect(useAgentsViewStore.getState().scope).toBe("mine");
+  });
+
+  it("persists role grouping and new filters without changing existing columns", async () => {
+    localStorage.setItem("multica_agents_view:acme", JSON.stringify({
+      state: { hiddenColumns: ["runtime"], filters: { access: ["owner-only"] } }, version: 0,
+    }));
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState().hiddenColumns).toEqual(["runtime"]);
+    expect(useAgentsViewStore.getState().filters.roles).toEqual([]);
+    expect(useAgentsViewStore.getState().filters.squads).toEqual([]);
+    expect(useAgentsViewStore.getState().groupBy).toBe("role");
+    useAgentsViewStore.getState().toggleFilter("roles", "specialist");
+    useAgentsViewStore.getState().toggleFilter("squads", "squad-1");
+    useAgentsViewStore.getState().setGroupBy("none");
+    await flush();
+    const saved = JSON.parse(localStorage.getItem("multica_agents_view:acme")!);
+    expect(saved.state).toMatchObject({ groupBy: "none", hiddenColumns: ["runtime"], filters: { roles: ["specialist"], squads: ["squad-1"] } });
+  });
+
+  it("uses concise columns and role grouping only for fresh preferences", async () => {
+    setCurrentWorkspace("fresh", "ws_fresh");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState().hiddenColumns).toEqual([
+      "owner", "access", "runtime", "runs", "model", "created",
+    ]);
+    expect(useAgentsViewStore.getState().hiddenColumns).toEqual(AGENT_DEFAULT_HIDDEN_COLUMNS);
+    expect(useAgentsViewStore.getState().groupBy).toBe("role");
   });
 
   it("rehydrates a different saved scope on workspace switch", async () => {

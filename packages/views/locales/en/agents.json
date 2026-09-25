@@ -72,7 +72,7 @@
     "workload": "Workload",
     "runtime": "Runtime",
     "activity_7d": "Activity (7d)",
-    "runs": "Runs",
+    "runs": "Runs (30 days)",
     "last_active": "Last active",
     "model": "Model",
     "created": "Created",
@@ -387,7 +387,7 @@
   },
   "role_templates": {
     "title": "Start from a role template",
-    "description": "Each role ships with instructions, a working contract and the skills it needs. Everything becomes yours to edit once the agent exists.",
+    "description": "Open an existing agent, or create one from a role template.",
     "step_pick": "Pick a role",
     "empty": "This server ships no role templates.",
     "load_failed": "Could not load the role templates.",
@@ -408,7 +408,16 @@
       "contributor": "Writes code and tests on an isolated branch and moves the issues it was given. Cannot operate production.",
       "coordinator": "Routes work: sub-issues, mentions, squads and automation. Cannot operate production.",
       "operator": "May carry out a high-risk action — only one a person has approved, one approval per action."
-    }
+    },
+    "instances_none": "No agents created from this template.",
+    "instances_count_one": "{{count}} existing agent",
+    "instances_count_other": "{{count}} existing agents",
+    "instances_loading": "Loading existing agents...",
+    "instances_load_failed": "Could not load existing agents.",
+    "open_instance": "Open {{name}}",
+    "create_agent": "Create agent",
+    "create_another": "Create another",
+    "retry": "Retry"
   },
   "approvals": {
     "title": "Approvals",
@@ -1062,21 +1071,29 @@
     "direction_desc": "Descending",
     "section_columns": "Columns",
     "section_owner": "Owner",
-    "section_model": "Model"
+    "section_model": "Model",
+    "display_label": "Display"
   },
   "actions": {
     "selected_one": "{{count}} selected",
     "selected_other": "{{count}} selected",
     "clear_selection": "Clear selection"
   },
-  "catalog": {
-    "title": "Built-in agents",
-    "description": "Review a role's instructions and create your own agent.",
-    "loading": "Loading built-in agents...",
-    "error": "Could not load built-in agents.",
-    "empty": "No built-in agents are available.",
+  "discovery": {
+    "all_roles": "All roles",
+    "roles": {
+      "coordinator": "Coordinators",
+      "specialist": "Specialists",
+      "other": "Other agents"
+    },
+    "role_template": "Role template: {{title}}",
+    "role_hint": "Template origin. The agent’s description and instructions define its current responsibilities.",
+    "squads": "AI squads",
+    "all_squads": "All squads",
+    "leader": "Leader",
+    "membership_failed": "Could not load squad members.",
+    "metadata_failed": "Some role or squad information could not be loaded.",
     "retry": "Retry",
-    "view_template": "View template",
-    "open_instance": "Open agent"
+    "group_by": "Group by role"
   }
 }

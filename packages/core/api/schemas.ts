@@ -2148,6 +2148,9 @@ export const SquadSchema = z.object({
   archived_by: z.string().nullable().optional().transform((v) => v ?? null),
   member_count: z.number().default(0),
   member_preview: z.array(SquadMemberPreviewSchema).default([]),
+  // Missing/unreadable is unknown, not an empty roster. Selected legacy squads
+  // can resolve membership through their full member endpoint instead.
+  agent_member_ids: z.array(z.string()).optional().catch(undefined),
   // Provenance of a squad staffed from a built-in template. Optional: hand-built
   // squads carry neither, and a backend that predates squad templates sends
   // neither.
@@ -2156,6 +2159,15 @@ export const SquadSchema = z.object({
 }).loose();
 
 export const SquadListSchema = z.array(SquadSchema);
+export const SquadMemberSchema = z.object({
+  id: z.string(),
+  squad_id: z.string(),
+  member_type: z.string(),
+  member_id: z.string(),
+  role: z.string().default(""),
+  created_at: z.string().default(""),
+}).loose();
+export const SquadMemberListSchema = z.array(SquadMemberSchema);
 export const EMPTY_SQUAD_LIST: Squad[] = [];
 export const EMPTY_SQUAD: Squad = {
   id: "",

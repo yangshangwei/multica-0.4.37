@@ -361,6 +361,7 @@ import {
   ListProjectResourcesResponseSchema,
   SquadSchema,
   SquadListSchema,
+  SquadMemberListSchema,
   SquadTemplateListResponseSchema,
   StaffedSquadSchema,
   SquadMemberStatusListResponseSchema,
@@ -4453,7 +4454,14 @@ export class ApiClient {
   }
 
   async listSquadMembers(squadId: string): Promise<SquadMember[]> {
-    return this.fetch(`/api/squads/${squadId}/members`);
+    const raw = await this.fetch<unknown>(`/api/squads/${squadId}/members`);
+    const members = parseWithFallback<SquadMember[] | null>(raw, SquadMemberListSchema, null, {
+      endpoint: "GET /api/squads/:id/members",
+    });
+    // A failed roster read must remain retryable. Returning [] would make a
+    // selected-squad filter silently claim that the squad has no agents.
+    if (members === null) throw new Error("Unable to read squad members");
+    return members;
   }
 
   async addSquadMember(squadId: string, data: { member_type: string; member_id: string; role?: string }): Promise<SquadMember> {

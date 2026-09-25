@@ -70,7 +70,7 @@
     "workload": "작업량",
     "runtime": "런타임",
     "activity_7d": "활동(7일)",
-    "runs": "실행",
+    "runs": "실행 횟수 (30일)",
     "last_active": "최근 활동",
     "model": "모델",
     "created": "생성일",
@@ -862,7 +862,8 @@
     "direction_desc": "내림차순",
     "section_columns": "열",
     "section_owner": "소유자",
-    "section_model": "모델"
+    "section_model": "모델",
+    "display_label": "표시"
   },
   "creation_studio": {
     "title": "에이전트 만들기",
@@ -965,7 +966,7 @@
   },
   "role_templates": {
     "title": "역할 템플릿으로 시작",
-    "description": "각 역할에는 지침, 담당 범위, 필요한 Skills가 함께 제공됩니다. 생성한 뒤에는 모두 워크스페이스가 소유하며 자유롭게 수정할 수 있습니다.",
+    "description": "생성된 에이전트를 열거나 역할 템플릿으로 새 에이전트를 만드세요.",
     "step_pick": "역할 선택",
     "empty": "이 서버에는 역할 템플릿이 없습니다.",
     "load_failed": "역할 템플릿을 불러올 수 없습니다.",
@@ -986,7 +987,15 @@
       "contributor": "격리 브랜치에서 코드와 테스트를 작성하고 맡은 이슈를 진행합니다. 프로덕션 작업은 할 수 없습니다.",
       "coordinator": "작업 라우팅을 담당합니다(하위 이슈, 멘션, 스쿼드, 자동화). 프로덕션 작업은 할 수 없습니다.",
       "operator": "고위험 작업을 수행할 수 있지만, 사람이 승인한 해당 작업 하나에 한합니다."
-    }
+    },
+    "instances_none": "이 템플릿으로 만든 에이전트가 없습니다.",
+    "instances_count_other": "생성된 에이전트 {{count}}개",
+    "instances_loading": "생성된 에이전트 불러오는 중...",
+    "instances_load_failed": "생성된 에이전트를 불러올 수 없습니다.",
+    "open_instance": "{{name}} 열기",
+    "create_agent": "에이전트 만들기",
+    "create_another": "다른 에이전트 만들기",
+    "retry": "다시 시도"
   },
   "approvals": {
     "title": "승인",
@@ -1047,14 +1056,21 @@
     "selected_other": "{{count}}개 선택됨",
     "clear_selection": "선택 해제"
   },
-  "catalog": {
-    "title": "기본 에이전트",
-    "description": "역할의 지침을 확인하고 에이전트를 만드세요.",
-    "loading": "기본 에이전트 불러오는 중...",
-    "error": "기본 에이전트를 불러올 수 없습니다.",
-    "empty": "사용 가능한 기본 에이전트가 없습니다.",
+  "discovery": {
+    "all_roles": "모든 역할",
+    "roles": {
+      "coordinator": "조율 역할",
+      "specialist": "전문 역할",
+      "other": "기타 에이전트"
+    },
+    "role_template": "역할 템플릿: {{title}}",
+    "role_hint": "템플릿 출처입니다. 현재 역할은 에이전트의 설명과 지침을 따릅니다.",
+    "squads": "AI 스쿼드",
+    "all_squads": "모든 스쿼드",
+    "leader": "리더",
+    "membership_failed": "스쿼드 멤버를 불러올 수 없습니다.",
+    "metadata_failed": "일부 역할 또는 스쿼드 정보를 불러올 수 없습니다.",
     "retry": "다시 시도",
-    "view_template": "템플릿 보기",
-    "open_instance": "에이전트 열기"
+    "group_by": "역할별 그룹"
   }
 }

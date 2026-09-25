@@ -39,6 +39,8 @@ type SquadResponse struct {
 	ArchivedBy    *string                      `json:"archived_by"`
 	MemberCount   int                          `json:"member_count"`
 	MemberPreview []SquadMemberPreviewResponse `json:"member_preview"`
+	// Complete membership for directory filtering; the preview remains capped.
+	AgentMemberIDs []string `json:"agent_member_ids"`
 	// TemplateKey and TemplateVersion record the built-in squad template this squad
 	// was staffed from. Provenance only — the instructions on the row are the
 	// workspace's from the moment it is created.
@@ -53,8 +55,9 @@ type SquadMemberPreviewResponse struct {
 }
 
 type squadMemberSummary struct {
-	count   int
-	preview []SquadMemberPreviewResponse
+	count    int
+	preview  []SquadMemberPreviewResponse
+	agentIDs []string
 }
 
 type SquadMemberResponse struct {
@@ -83,6 +86,7 @@ func (h *Handler) squadToResponse(s db.Squad) SquadResponse {
 		ArchivedAt:      timestampToPtr(s.ArchivedAt),
 		ArchivedBy:      uuidToPtr(s.ArchivedBy),
 		MemberPreview:   []SquadMemberPreviewResponse{},
+		AgentMemberIDs:  []string{},
 		TemplateKey:     s.TemplateKey,
 		TemplateVersion: s.TemplateVersion,
 	}
@@ -101,6 +105,9 @@ func squadMemberToResponse(m db.SquadMember) SquadMemberResponse {
 
 func addSquadMemberPreview(summary *squadMemberSummary, memberType string, memberID pgtype.UUID, role string) {
 	summary.count++
+	if memberType == "agent" {
+		summary.agentIDs = append(summary.agentIDs, uuidToString(memberID))
+	}
 	if len(summary.preview) >= 3 {
 		return
 	}
@@ -117,6 +124,10 @@ func applySquadMemberSummary(resp *SquadResponse, summary *squadMemberSummary) {
 	}
 	resp.MemberCount = summary.count
 	resp.MemberPreview = summary.preview
+	resp.AgentMemberIDs = summary.agentIDs
+	if resp.AgentMemberIDs == nil {
+		resp.AgentMemberIDs = []string{}
+	}
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────

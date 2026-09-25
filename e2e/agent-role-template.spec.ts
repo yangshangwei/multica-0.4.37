@@ -17,6 +17,7 @@ const E2E_RUN_ID =
   process.env.E2E_RUN_ID ?? `${Date.now().toString(36)}-${process.pid.toString(36)}`;
 const EMAIL = `e2e-role-template-${E2E_WORKER}-${E2E_RUN_ID}@multica.ai`;
 const NAME = "E2E Role Template User";
+const workspacesToDelete: Array<{ api: TestApiClient; id: string }> = [];
 
 const RUNTIME_ID = "33333333-3333-4333-8333-333333333333";
 const RUNTIME_OWNER_ID = "55555555-5555-4555-8555-555555555555";
@@ -71,6 +72,7 @@ async function login(page: Page): Promise<string> {
     `E2E Role Template WS ${E2E_WORKER}`,
     `e2e-role-tpl-${E2E_WORKER}-${E2E_RUN_ID}`,
   );
+  workspacesToDelete.push({ api, id: workspace.id });
   await api.markUserOnboarded();
   const token = api.getToken();
   if (!token) throw new Error("login did not return a token");
@@ -161,6 +163,88 @@ async function mockTemplateApis(page: Page) {
 }
 
 test.describe("agent role templates", () => {
+  test.afterEach(async () => {
+    for (const { api, id } of workspacesToDelete.splice(0)) {
+      await api.deleteFeatureWorkspace(id);
+    }
+  });
+
+  test("opens existing members without mutation and restores template browsing", async ({ page }, info) => {
+    const slug = await login(page);
+    const createdBody = await mockTemplateApis(page);
+    const saved = (id: string, name: string, templateKey: string | null, archivedAt: string | null = null) => ({
+      id, name, workspace_id: "ws", runtime_id: RUNTIME_ID,
+      description: "Saved description remains unchanged.", instructions: "Saved instructions remain unchanged.",
+      avatar_url: null, runtime_mode: "local", runtime_config: {}, custom_args: [],
+      visibility: "private", permission_mode: "private", invocation_targets: [],
+      status: "idle", max_concurrent_tasks: 1, model: "", owner_id: RUNTIME_OWNER_ID,
+      skills: [], template_key: templateKey, template_version: 1, autonomy_level: "observer",
+      created_at: "2026-09-01T00:00:00Z", updated_at: "2026-09-01T00:00:00Z",
+      archived_at: archivedAt, archived_by: null,
+    });
+    const agents = [
+      saved("66666666-6666-4666-8666-666666666661", "Payments analyst", "product-analyst"),
+      saved("66666666-6666-4666-8666-666666666662", "Checkout analyst", "product-analyst"),
+      saved("66666666-6666-4666-8666-666666666663", "Release reviewer", "code-reviewer"),
+      saved("66666666-6666-4666-8666-666666666664", "Retired analyst", "product-analyst", "2026-09-24T00:00:00Z"),
+      saved("66666666-6666-4666-8666-666666666665", "Diagnostician", null),
+    ];
+    await page.route("**/api/agents?**", (route) => route.fulfill({ json: agents }));
+    for (const agent of agents) {
+      await page.route(`**/api/agents/${agent.id}`, (route) => route.fulfill({ json: agent }));
+    }
+    const mutationRequests: string[] = [];
+    const pageErrors: string[] = [];
+    page.on("request", (request) => {
+      const path = new URL(request.url()).pathname;
+      if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method()) && /^\/api\/(agents(?:\/|$)|squads\/[^/]+\/members$)/.test(path)) {
+        mutationRequests.push(`${request.method()} ${path}`);
+      }
+    });
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto(`/${slug}/agents/new/template`);
+    const analyst = page.getByRole("listitem", { name: "Product Analyst", exact: true });
+    await expect(analyst.getByText("2 existing agents", { exact: true })).toBeVisible();
+    await expect(analyst.getByRole("link", { name: "Open Checkout analyst", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Open Retired analyst", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("listitem", { name: "Code Reviewer", exact: true }).getByText("1 existing agent", { exact: true })).toBeVisible();
+    const diagnostician = page.getByRole("listitem", { name: "Diagnostician", exact: true });
+    await expect(diagnostician.getByText("No agents created from this template.", { exact: true })).toBeVisible();
+    await expect(analyst.getByRole("link", { name: "Create another", exact: true })).toHaveAttribute("href", `/${slug}/agents/new/template?template=product-analyst`);
+
+    for (const width of [1440, 768, 390]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.screenshot({ path: info.outputPath(`role-templates-${width}.png`), animations: "disabled" });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
+    await analyst.getByRole("link", { name: "Open Payments analyst", exact: true }).focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(new RegExp(`/agents/${agents[0].id}$`));
+    await expect(page.getByRole("heading", { name: "Payments analyst", exact: true })).toBeVisible();
+    await page.goBack();
+    await expect(analyst.getByText("2 existing agents", { exact: true })).toBeVisible();
+
+    await page.setViewportSize({ width: 390, height: 460 });
+    const gallery = page.locator('[data-tab-scroll-root="agent-role-templates"]');
+    const createLink = diagnostician.getByRole("link", { name: "Create agent", exact: true });
+    await createLink.scrollIntoViewIfNeeded();
+    const scrollTop = await gallery.evaluate((element) => element.scrollTop);
+    expect(scrollTop).toBeGreaterThan(0);
+    for (const nativeBack of [true, false]) {
+      await createLink.click();
+      await waitForPageText(page, "Role instructions");
+      if (nativeBack) await page.goBack();
+      else await page.getByRole("button", { name: "Go back", exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`/${slug}/agents/new/template$`));
+      await expect.poll(() => gallery.evaluate((element) => element.scrollTop)).toBe(scrollTop);
+    }
+    expect(createdBody()).toBeUndefined();
+    expect(mutationRequests).toEqual([]);
+    expect(pageErrors).toEqual([]);
+  });
+
   test("offers a template starting point and creates from a role", async ({
     page,
   }) => {
@@ -179,7 +263,7 @@ test.describe("agent role templates", () => {
     await expect(page.getByText("Product Analyst").first()).toBeVisible();
     await expect(page.getByText("Observer").first()).toBeVisible();
 
-    await page.getByRole("button", { name: /Code Reviewer/ }).first().click();
+    await page.getByRole("listitem", { name: "Code Reviewer", exact: true }).getByRole("link", { name: "Create agent", exact: true }).click();
 
     // Step two shows the instructions that will be copied, read-only, plus the
     // skill the role brings.
@@ -224,8 +308,8 @@ test.describe("agent role templates", () => {
     await page.getByText("Use a template").first().click();
     await waitForPageText(page, "Start from a role template");
 
-    await expect(page.getByRole("button", { name: /Diagnostician/ })).toBeVisible();
-    await page.getByRole("button", { name: /Diagnostician/ }).click();
+    await expect(page.getByRole("listitem", { name: "Diagnostician", exact: true })).toBeVisible();
+    await page.getByRole("listitem", { name: "Diagnostician", exact: true }).getByRole("link", { name: "Create agent", exact: true }).click();
     await waitForPageText(page, "Role instructions");
     await expect(page.getByText("复现并最小化失败，验证假设，不提交正式修复。")).toBeVisible();
     await expect(page.getByText("multica-debugging")).toBeVisible();

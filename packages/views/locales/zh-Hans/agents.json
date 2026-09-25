@@ -70,7 +70,7 @@
     "workload": "工作负载",
     "runtime": "运行时",
     "activity_7d": "活动（7 天）",
-    "runs": "运行次数",
+    "runs": "近 30 天运行次数",
     "last_active": "最近活跃",
     "model": "模型",
     "created": "创建时间",
@@ -377,7 +377,7 @@
   },
   "role_templates": {
     "title": "从角色模板开始",
-    "description": "每个角色都自带指令、工作边界和所需 Skills。创建后这些内容归你的工作区所有，可随时修改。",
+    "description": "打开已创建的智能体，或从角色模板创建新成员。",
     "step_pick": "选择角色",
     "empty": "此服务端未内置角色模板。",
     "load_failed": "无法加载角色模板。",
@@ -398,7 +398,15 @@
       "contributor": "在隔离分支上写代码和测试，并推进被指派的 issue；不能操作生产。",
       "coordinator": "负责路由：子任务、@提及、AI小队和自动化；不能操作生产。",
       "operator": "可以执行高风险动作，但仅限人工已审批的那一个动作，一次审批对应一次动作。"
-    }
+    },
+    "instances_none": "尚未从此模板创建智能体。",
+    "instances_count_other": "已创建 {{count}} 个智能体",
+    "instances_loading": "正在加载已创建的智能体...",
+    "instances_load_failed": "无法加载已创建的智能体。",
+    "open_instance": "打开 {{name}}",
+    "create_agent": "创建智能体",
+    "create_another": "再创建一个",
+    "retry": "重试"
   },
   "approvals": {
     "title": "审批",
@@ -1041,20 +1049,28 @@
     "direction_desc": "降序",
     "section_columns": "列",
     "section_owner": "owner",
-    "section_model": "模型"
+    "section_model": "模型",
+    "display_label": "显示"
   },
   "actions": {
     "selected_other": "已选 {{count}} 项",
     "clear_selection": "清除选择"
   },
-  "catalog": {
-    "title": "内置智能体",
-    "description": "查看角色的职责与指令，按需创建智能体副本。",
-    "loading": "正在加载内置智能体...",
-    "error": "无法加载内置智能体。",
-    "empty": "暂无内置智能体。",
+  "discovery": {
+    "all_roles": "全部角色",
+    "roles": {
+      "coordinator": "统筹角色",
+      "specialist": "专业角色",
+      "other": "其他智能体"
+    },
+    "role_template": "角色模板：{{title}}",
+    "role_hint": "此标签表示模板来源，当前职责以智能体的说明和指令为准。",
+    "squads": "AI小队",
+    "all_squads": "全部小队",
+    "leader": "队长",
+    "membership_failed": "无法加载小队成员。",
+    "metadata_failed": "部分角色或小队信息无法加载。",
     "retry": "重试",
-    "view_template": "查看模板",
-    "open_instance": "打开智能体"
+    "group_by": "按角色分组"
   }
 }

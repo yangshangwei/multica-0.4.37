@@ -8,7 +8,7 @@ import {
   Plus,
   ShieldCheck,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import type {
   Agent,
@@ -16,6 +16,12 @@ import type {
   MemberWithUser,
 } from "@multica/core/types";
 import {
+  buildAgentRoleMetadata,
+  buildAgentSquadMemberships,
+  resolveAgentRole,
+  type AgentRoleMetadata,
+  type AgentSquadMembership,
+  type AgentRoleKind,
   type AgentActivity,
   agentRunCounts30dOptions,
   effectiveAccessScope,
@@ -42,6 +48,8 @@ import { useWorkspacePaths } from "@multica/core/paths";
 import {
   agentListOptions,
   memberListOptions,
+  squadListOptions,
+  squadMembersOptions,
 } from "@multica/core/workspace/queries";
 import { runtimeDisplayLabel, runtimeListOptions } from "@multica/core/runtimes";
 import { Button } from "@multica/ui/components/ui/button";
@@ -62,7 +70,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@multica/ui/components/ui/tooltip";
-import { useNavigation, useRowLink } from "../../navigation";
+import { AppLink, rowLinkInteractiveProps, useNavigation, useRowLink } from "../../navigation";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { ProviderLogo } from "../../runtimes/components/provider-logo";
 import {
@@ -72,7 +80,8 @@ import {
 } from "../../layout/collection-page";
 import { availabilityConfig } from "../presence";
 import { AgentRowActions } from "./agent-row-actions";
-import { BuiltinAgentCatalog } from "./builtin-agent-catalog";
+import { useRoleTemplates, useSquadTemplates } from "../create/use-role-templates";
+import { AgentDiscoveryToolbar, AGENT_ROLE_ORDER } from "./agent-discovery-toolbar";
 import {
   AgentListToolbar,
   countActiveFilterDimensions,
@@ -153,6 +162,8 @@ export interface AgentListRow {
   owner: MemberWithUser | null;
   isOwnedByMe: boolean;
   canManage: boolean;
+  role?: AgentRoleMetadata | null;
+  squads?: readonly AgentSquadMembership[];
 }
 
 // Most recent activity bucket with runs, as "days ago" (0 = today).
@@ -169,13 +180,11 @@ function lastActiveDaysAgo(activity: AgentActivity | null): number | null {
 
 function matchesAgentSearch(row: AgentListRow, query: string): boolean {
   if (!query) return true;
-  const { agent } = row;
-  return (
-    agent.name.toLowerCase().includes(query) ||
-    matchesPinyin(agent.name, query) ||
-    (agent.description?.toLowerCase().includes(query) ?? false) ||
-    (agent.description ? matchesPinyin(agent.description, query) : false)
-  );
+  const terms = [row.agent.name, row.agent.description, row.role?.title,
+    ...(row.squads ?? []).map((squad) => squad.name)];
+  return terms.some((term) => !!term && (
+    term.toLowerCase().includes(query) || matchesPinyin(term, query)
+  ));
 }
 
 /**
@@ -191,6 +200,8 @@ export function rowMatchesFilters(
   query: string,
 ): boolean {
   if (!matchesAgentSearch(row, query.trim().toLowerCase())) return false;
+  if (filters.roles?.length && !filters.roles.includes(row.role?.kind ?? "other")) return false;
+  if (filters.squads?.length && !(row.squads ?? []).some((squad) => filters.squads.includes(squad.squadId))) return false;
   if (
     filters.availability.length > 0 &&
     (!row.presence || !filters.availability.includes(row.presence.availability))
@@ -333,7 +344,6 @@ function ListError({
   return (
     <div className="flex flex-1 min-h-0 flex-col">
       <PageHeaderBar totalCount={0} onCreate={onCreate} />
-      <BuiltinAgentCatalog agents={[]} />
       <CollectionPageState
         role="alert"
         tone="destructive"
@@ -411,6 +421,7 @@ function CheckboxCell({
 // Slack member list).
 function NameCell({ row }: { row: AgentListRow }) {
   const { t } = useT("agents");
+  const paths = useWorkspacePaths();
   const { agent, isOwnedByMe } = row;
   const isArchived = !!agent.archived_at;
   const isPrivate = agent.visibility === "private";
@@ -425,13 +436,19 @@ function NameCell({ row }: { row: AgentListRow }) {
       />
       <div className="min-w-0 flex-1">
         <div className="flex min-w-0 items-center gap-2">
-          <span
-            className={`min-w-0 truncate text-body font-medium ${
+          <AppLink
+            href={paths.agentDetail(agent.id)} newTabTitle={agent.name} {...rowLinkInteractiveProps}
+            className={`min-w-0 truncate rounded-sm text-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
               isArchived ? "text-muted-foreground" : ""
             }`}
           >
             {agent.name}
-          </span>
+          </AppLink>
+          {row.role && (
+            <span title={t(($) => $.discovery.role_hint)} className="hidden max-w-56 truncate rounded bg-muted px-1.5 py-0.5 text-micro text-muted-foreground @2xl:inline">
+              {t(($) => $.discovery.role_template, { title: row.role.title })}
+            </span>
+          )}
           {isPrivate && !isArchived && (
             <Tooltip>
               <TooltipTrigger
@@ -448,11 +465,20 @@ function NameCell({ row }: { row: AgentListRow }) {
             </span>
           )}
         </div>
-        {agent.description ? (
-          <div className="mt-0.5 truncate text-caption text-muted-foreground">
-            {agent.description}
-          </div>
-        ) : null}
+        <div className="mt-0.5 flex min-w-0 items-center gap-2 text-caption text-muted-foreground">
+          {agent.description && <span className="min-w-0 flex-1 truncate" title={agent.description}>{agent.description}</span>}
+          {(row.squads ?? []).length > 0 && (
+            <span className="hidden min-w-0 max-w-[45%] items-center gap-2 @2xl:flex">
+              {(row.squads ?? []).map((squad) => (
+                <AppLink key={squad.squadId} href={paths.squadDetail(squad.squadId)} newTabTitle={squad.name}
+                  {...rowLinkInteractiveProps} title={squad.name}
+                  className="min-w-0 truncate rounded-sm hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  {squad.name}{squad.isLeader ? ` · ${t(($) => $.discovery.leader)}` : ""}
+                </AppLink>
+              ))}
+            </span>
+          )}
+        </div>
       </div>
     </ListGridCell>
   );
@@ -828,6 +854,12 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     runtimeListOptions(wsId),
   );
   const { data: members = [] } = useQuery(memberListOptions(wsId));
+  const squadQuery = useQuery(squadListOptions(wsId));
+  const roleTemplatesQuery = useRoleTemplates();
+  const squadTemplatesQuery = useSquadTemplates();
+  const roleMetadata = useMemo(() => buildAgentRoleMetadata(
+    roleTemplatesQuery.data ?? [], squadTemplatesQuery.data ?? [],
+  ), [roleTemplatesQuery.data, squadTemplatesQuery.data]);
   const { data: runCountsRaw = [], isPending: runCountsPending } = useQuery(
     agentRunCounts30dOptions(wsId),
   );
@@ -848,6 +880,25 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   const sortDirection = useAgentsViewStore((s) => s.sortDirection);
   const hiddenColumns = useAgentsViewStore((s) => s.hiddenColumns);
   const filters = useAgentsViewStore((s) => s.filters);
+  const groupBy = useAgentsViewStore((s) => s.groupBy);
+  const setGroupBy = useAgentsViewStore((s) => s.setGroupBy);
+  const incompleteSelectedSquads = (squadQuery.data ?? []).filter((squad) =>
+    !squad.archived_at && squad.agent_member_ids === undefined && filters.squads?.includes(squad.id),
+  );
+  const membershipQueries = useQueries({ queries: incompleteSelectedSquads.map((squad) => squadMembersOptions(wsId, squad.id)) });
+  const resolvedMembers = new Map(incompleteSelectedSquads.flatMap((squad, index) => {
+    const data = membershipQueries[index]?.data;
+    return data ? [[squad.id, data] as const] : [];
+  }));
+  const membership = buildAgentSquadMemberships(squadQuery.data ?? [], resolvedMembers);
+  const membershipPending = !!filters.squads?.length && (
+    squadQuery.isPending || membershipQueries.some((query) => query.isPending)
+  );
+  const membershipFailed = !!filters.squads?.length && (
+    squadQuery.isError || membershipQueries.some((query) => query.isError)
+  );
+  const metadataPending = roleTemplatesQuery.isPending || squadTemplatesQuery.isPending;
+  const metadataFailed = roleTemplatesQuery.isError || squadTemplatesQuery.isError || squadQuery.isError;
   const handleSort = useAgentsViewStore((s) => s.toggleSort);
   const handleSortFieldSelect = useAgentsViewStore((s) => s.setSortField);
   const setSortDirection = useAgentsViewStore((s) => s.setSortDirection);
@@ -924,6 +975,8 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
       const activity = activityMap.get(agent.id) ?? null;
       return {
         agent,
+        role: resolveAgentRole(agent, roleMetadata),
+        squads: membership.byAgent.get(agent.id) ?? [],
         runtime: runtimesById.get(agent.runtime_id) ?? null,
         presence: presenceMap.get(agent.id) ?? null,
         activity,
@@ -944,6 +997,8 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     activityMap,
     runCountsById,
     isWorkspaceAdmin,
+    roleMetadata,
+    membership.byAgent,
   ]);
 
   // Visible rows: local search + filters, then sort.
@@ -1005,11 +1060,22 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   // double scrollbars) and clipped the last row under the horizontal
   // scrollbar. The sticky header pins inside this scroller; the vertical
   // scrollbar spans the full pane height (Linear's structure).
+  type DirectoryItem = { kind: "agent"; row: AgentListRow } | { kind: "group"; role: AgentRoleKind; count: number };
+  const directoryItems: DirectoryItem[] = groupBy === "role"
+    ? AGENT_ROLE_ORDER.flatMap((role): DirectoryItem[] => {
+        const grouped = rows.filter((row) => (row.role?.kind ?? "other") === role);
+        return grouped.length ? [{ kind: "group", role, count: grouped.length }, ...grouped.map((row): DirectoryItem => ({ kind: "agent", row }))] : [];
+      })
+    : rows.map((row) => ({ kind: "agent", row }));
   const listScrollRef = useRef<HTMLDivElement | null>(null);
   const rowVirtualizer = useVirtualizer({
-    count: rows.length,
+    count: directoryItems.length,
     getScrollElement: () => listScrollRef.current,
-    estimateSize: () => ROW_HEIGHT,
+    estimateSize: (index) => directoryItems[index]?.kind === "group" ? 36 : ROW_HEIGHT,
+    getItemKey: (index) => {
+      const item = directoryItems[index];
+      return item?.kind === "group" ? `group-${item.role}` : item?.row.agent.id ?? index;
+    },
     overscan: 10,
   });
 
@@ -1072,7 +1138,9 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   const listReady =
     (!needsActivity || !activityLoading) &&
     (!needsRunCounts || !runCountsPending) &&
-    (!needsPresence || !presenceLoading);
+    (!needsPresence || !presenceLoading) &&
+    (!metadataPending || (groupBy !== "role" && !filters.roles?.length)) &&
+    !membershipPending;
 
   return (
     // relative: positioning anchor for the batch toolbar (page-centered,
@@ -1082,7 +1150,6 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
         totalCount={totalCount}
         onCreate={() => navigation.push(paths.newAgent())}
       />
-      <BuiltinAgentCatalog agents={agents} />
 
       {isLoading || (!showEmpty && !listReady) ? (
         <div className="flex-1 overflow-y-auto @container">
@@ -1108,11 +1175,23 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
             onSortFieldChange={handleSortFieldSelect}
             onSortDirectionChange={setSortDirection}
             hiddenColumns={hiddenColumns}
+            groupBy={groupBy}
+            onGroupByChange={setGroupBy}
             onToggleColumn={toggleColumn}
             allRows={scopeRows}
             members={members}
             visibleCount={rows.length}
           />
+          <AgentDiscoveryToolbar rows={scopeRows} squads={squadQuery.data ?? []} filters={filters} onToggleFilter={toggleFilter} />
+          {(metadataFailed || membershipFailed) && (
+            <div role="alert" className="flex items-center gap-3 px-5 py-2 text-caption text-muted-foreground">
+              {t(($) => membershipFailed ? $.discovery.membership_failed : $.discovery.metadata_failed)}
+              <Button size="sm" variant="ghost" onClick={() => {
+                void squadQuery.refetch(); void roleTemplatesQuery.refetch(); void squadTemplatesQuery.refetch();
+                membershipQueries.forEach((query) => { void query.refetch(); });
+              }}>{t(($) => $.discovery.retry)}</Button>
+            </div>
+          )}
           <div
             ref={listScrollRef}
             className="min-h-0 flex-1 overflow-auto @container"
@@ -1137,14 +1216,21 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
                     virtualPadding.bottom + LIST_GRID_BOTTOM_CLEARANCE,
                 }}
               >
-                {rows.length === 0 && (
+                {!membershipFailed && rows.length === 0 && (
                   <div className="col-span-full py-16 text-center text-body text-muted-foreground">
                     {noMatchText}
                   </div>
                 )}
-                {virtualItems.map((vi) => {
-                  const row = rows[vi.index];
-                  if (!row) return null;
+                {!membershipFailed && virtualItems.map((vi) => {
+                  const item = directoryItems[vi.index];
+                  if (!item) return null;
+                  if (item.kind === "group") return (
+                    <div key={`group-${item.role}`} className="col-span-full flex h-9 items-center gap-2 bg-muted/40 px-5 text-caption font-semibold">
+                      {t(($) => $.discovery.roles[item.role])}
+                      <span className="font-normal tabular-nums text-muted-foreground">{item.count}</span>
+                    </div>
+                  );
+                  const row = item.row;
                   return (
                     <ListGridRow
                       key={row.agent.id}

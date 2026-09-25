@@ -8,6 +8,7 @@ import {
 } from "../../platform/workspace-storage";
 import { defaultStorage } from "../../platform/storage";
 import type { AccessScope } from "../effective-access";
+import type { AgentRoleKind } from "../discovery";
 
 // View preferences for the agents list page: scope, sort, column visibility,
 // and filters. Persisted per workspace, per user/device. Row selection is
@@ -26,6 +27,7 @@ export const AGENT_SCOPES: AgentsScope[] = ["mine", "all", "archived"];
 export type AgentSortField = "lastActive" | "name" | "runs" | "created";
 
 export type AgentSortDirection = "asc" | "desc";
+export type AgentGroupBy = "role" | "none";
 
 /** Per-field direction applied when the user switches TO that field. */
 export const AGENT_SORT_DEFAULT_DIRECTION: Record<
@@ -44,16 +46,14 @@ export interface AgentListFilters {
   availability: string[];
   /** Runtime ids. */
   runtimes: string[];
-  /** Owner user ids. Owner is the same person-axis as the Mine scope: the
-   *  "mine" scope is the clean no-filter personal view, and applying any
-   *  filter (owner or otherwise) leaves it for "all" — see setScope /
-   *  toggleFilter. So owner-as-filter and Mine never coexist, which keeps
-   *  the axis orthogonal (no "mine + owner=someone-else = empty" state). */
+  /** Owner user ids, intersected with the selected ownership scope. */
   owners: string[];
   /** Runtime-native model identifiers (e.g. claude / codex / gpt-…). */
   models: string[];
   /** Effective access-scope values (MUL-3963): workspace | specific-people | owner-only. */
   access: AccessScope[];
+  roles: AgentRoleKind[];
+  squads: string[];
 }
 
 export const EMPTY_AGENT_FILTERS: AgentListFilters = {
@@ -62,6 +62,8 @@ export const EMPTY_AGENT_FILTERS: AgentListFilters = {
   owners: [],
   models: [],
   access: [],
+  roles: [],
+  squads: [],
 };
 
 // User-hideable columns. Name and the structural columns (checkbox, kebab)
@@ -76,20 +78,26 @@ export type AgentColumnKey =
   | "model"
   | "created";
 
-/** Model and created are opt-in: hidden until the user enables them. Owner
- *  is shown by default (the user wants to see who owns each agent). */
+/** Management columns are opt-in for fresh preferences. Persisted column
+ *  arrays are retained exactly, including an intentionally empty array. */
 export const AGENT_DEFAULT_HIDDEN_COLUMNS: AgentColumnKey[] = [
+  "owner",
+  "access",
+  "runtime",
+  "runs",
   "model",
   "created",
 ];
 
 export interface AgentsViewState {
   scope: AgentsScope;
+  groupBy: AgentGroupBy;
   sortField: AgentSortField;
   sortDirection: AgentSortDirection;
   hiddenColumns: AgentColumnKey[];
   filters: AgentListFilters;
   setScope: (scope: AgentsScope) => void;
+  setGroupBy: (groupBy: AgentGroupBy) => void;
   /** Header click: toggles direction on the active field, otherwise switches
    *  to the field with its default direction. */
   toggleSort: (field: AgentSortField) => void;
@@ -105,6 +113,7 @@ const DEFAULTS = {
   // "mine" is the historical default — most members care about their own
   // agents first; admins flip to "all".
   scope: "mine" as AgentsScope,
+  groupBy: "role" as AgentGroupBy,
   sortField: "lastActive" as AgentSortField,
   sortDirection: AGENT_SORT_DEFAULT_DIRECTION.lastActive,
   hiddenColumns: AGENT_DEFAULT_HIDDEN_COLUMNS,
@@ -115,11 +124,8 @@ export const useAgentsViewStore = create<AgentsViewState>()(
   persist(
     (set) => ({
       ...DEFAULTS,
-      // "Mine" is the clean personal view: entering it clears all filters,
-      // so Mine never carries filters. Switching to all/archived leaves
-      // filters intact (you can carry "owner = Bob" between them).
-      setScope: (scope) =>
-        set(scope === "mine" ? { scope, filters: EMPTY_AGENT_FILTERS } : { scope }),
+      setScope: (scope) => set({ scope }),
+      setGroupBy: (groupBy) => set({ groupBy }),
       toggleSort: (field) =>
         set((state) =>
           state.sortField === field
@@ -153,11 +159,7 @@ export const useAgentsViewStore = create<AgentsViewState>()(
           const next = list.includes(value)
             ? list.filter((v) => v !== value)
             : [...list, value];
-          // Applying any filter leaves the clean "mine" view for "all" —
-          // Mine is the no-filter mode (see setScope). Archived keeps its
-          // own scope (it can carry filters).
-          const scope = state.scope === "mine" ? "all" : state.scope;
-          return { scope, filters: { ...state.filters, [key]: next } };
+          return { filters: { ...state.filters, [key]: next } };
         }),
       clearFilters: () => set({ filters: EMPTY_AGENT_FILTERS }),
     }),
@@ -168,6 +170,7 @@ export const useAgentsViewStore = create<AgentsViewState>()(
       ),
       partialize: (state) => ({
         scope: state.scope,
+        groupBy: state.groupBy,
         sortField: state.sortField,
         sortDirection: state.sortDirection,
         hiddenColumns: state.hiddenColumns,
@@ -185,6 +188,7 @@ export const useAgentsViewStore = create<AgentsViewState>()(
         // instead of dropping it to `undefined` and crashing `.length`.
         return {
           ...current,
+          ...DEFAULTS,
           ...p,
           filters: { ...EMPTY_AGENT_FILTERS, ...(p.filters ?? {}) },
         };

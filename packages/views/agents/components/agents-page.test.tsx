@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, screen, within } from "@testing-library/react";
-import type { Agent, AgentRoleTemplate } from "@multica/core/types";
+import { screen } from "@testing-library/react";
+import type { Agent, AgentRoleTemplate, Squad, SquadTemplate, SquadMember } from "@multica/core/types";
 import type { AgentActivity } from "@multica/core/agents";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
@@ -19,6 +19,11 @@ import { AgentsPage } from "./agents-page";
 const mocks = vi.hoisted(() => ({
   agents: [] as Agent[],
   agentsLoading: false,
+  squads: [] as Squad[],
+  squadTemplates: [] as SquadTemplate[],
+  squadMembers: [] as SquadMember[],
+  membershipPending: false,
+  membershipError: false,
   templates: [] as AgentRoleTemplate[],
   templatesError: false,
   templatesPending: false,
@@ -35,6 +40,8 @@ const mocks = vi.hoisted(() => ({
   },
   viewState: {
     scope: "all",
+    groupBy: "none",
+    setGroupBy: vi.fn(),
     sortField: "lastActive" as string,
     sortDirection: "desc" as string,
     hiddenColumns: ["model", "created"] as string[],
@@ -44,6 +51,8 @@ const mocks = vi.hoisted(() => ({
       owners: [] as string[],
       models: [] as string[],
       access: [] as string[],
+      roles: [] as string[],
+      squads: [] as string[],
     },
     setScope: vi.fn(),
     toggleSort: vi.fn(),
@@ -56,6 +65,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("../create/use-role-templates", () => ({
+  useSquadTemplates: () => ({ data: mocks.squadTemplates, isPending: false, isError: false, refetch: vi.fn() }),
   useRoleTemplates: () => ({
     data: mocks.templates,
     isLoading: false,
@@ -70,6 +80,10 @@ vi.mock("@tanstack/react-query", () => ({
   // options object and hand it straight to the useQuery stub below. Needed because
   // the header's approval-count query is declared with queryOptions().
   queryOptions: (options: unknown) => options,
+  useQueries: ({ queries }: { queries: unknown[] }) => queries.map(() => ({
+    data: mocks.membershipPending || mocks.membershipError ? undefined : mocks.squadMembers,
+    isPending: mocks.membershipPending, isError: mocks.membershipError, refetch: vi.fn(),
+  })),
   useQuery: (options: { queryKey?: readonly unknown[] }) => {
     const key = options.queryKey?.[0];
     if (key === "agents") {
@@ -80,6 +94,7 @@ vi.mock("@tanstack/react-query", () => ({
         refetch: vi.fn(),
       };
     }
+    if (key === "squads") return { data: mocks.squads, isPending: false, isError: false, refetch: vi.fn() };
     if (key === "agent-run-counts") {
       return { data: mocks.runCounts, isPending: mocks.runCountsPending };
     }
@@ -107,7 +122,8 @@ vi.mock("sonner", () => ({
   toast: { success: vi.fn(), error: vi.fn() },
 }));
 
-vi.mock("@multica/core/agents", () => ({
+vi.mock("@multica/core/agents", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/agents")>(),
   isAgentRuntimeBound: (agent: { runtime_id: string; runtime_bound?: boolean }) =>
     agent.runtime_bound !== false && agent.runtime_id.length > 0,
   agentRunCounts30dOptions: () => ({ queryKey: ["agent-run-counts"] }),
@@ -156,6 +172,8 @@ vi.mock("@multica/core/paths", async (importOriginal) => {
 vi.mock("@multica/core/workspace/queries", () => ({
   agentListOptions: () => ({ queryKey: ["agents"] }),
   memberListOptions: () => ({ queryKey: ["members"] }),
+  squadListOptions: () => ({ queryKey: ["squads"] }),
+  squadMembersOptions: (_ws: string, id: string) => ({ queryKey: ["squad-members", id] }),
   workspaceKeys: { agents: (wsId: string) => ["agents", wsId] },
 }));
 
@@ -261,6 +279,11 @@ beforeEach(() => {
   vi.clearAllMocks();
   mocks.agents = [ALPHA, BETA];
   mocks.agentsLoading = false;
+  mocks.squads = [];
+  mocks.squadTemplates = [];
+  mocks.squadMembers = [];
+  mocks.membershipPending = false;
+  mocks.membershipError = false;
   mocks.templates = [];
   mocks.templatesError = false;
   mocks.templatesPending = false;
@@ -269,6 +292,7 @@ beforeEach(() => {
   mocks.activity = { byAgent: new Map(), loading: false };
   mocks.presence = { byAgent: new Map(), loading: false };
   mocks.viewState.scope = "all";
+  mocks.viewState.groupBy = "none";
   mocks.viewState.sortField = "lastActive";
   mocks.viewState.sortDirection = "desc";
   mocks.viewState.hiddenColumns = ["model", "created"];
@@ -278,6 +302,8 @@ beforeEach(() => {
     owners: [],
     models: [],
     access: [],
+    roles: [],
+    squads: [],
   };
 });
 
@@ -287,62 +313,53 @@ const REVIEW_TEMPLATE: AgentRoleTemplate = {
   autonomy_level: "contributor", avatar_emoji: "", max_concurrent_tasks: 1, skill_names: [],
 };
 
-describe("AgentsPage built-in catalog", () => {
-  it("shows pending catalogs as loading even when the network request is paused", () => {
-    mocks.templatesPending = true;
+const RELEASE_SQUAD: Squad = {
+  id: "release", workspace_id: "workspace-1", name: "Release readiness", description: "", instructions: "",
+  avatar_url: null, leader_id: "lead", creator_id: "user-1", created_at: "2026-01-01", updated_at: "2026-01-01",
+  archived_at: null, archived_by: null, agent_member_ids: ["lead", "agent-alpha"],
+};
+
+describe("AgentsPage discovery", () => {
+  it("renders a shared expert once with links to both squads", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [makeAgent({ id: "agent-alpha", name: "Payments expert", template_key: "code-reviewer" })];
+    mocks.squads = [RELEASE_SQUAD, { ...RELEASE_SQUAD, id: "review", name: "Merge review" }];
+    mocks.viewState.groupBy = "role";
     renderPage();
-    const catalog = screen.getByRole("region", { name: "Built-in agents" });
-    fireEvent.click(within(catalog).getByRole("button", { name: /^Built-in agents/ }));
-    expect(within(catalog).getByRole("status")).toHaveTextContent("Loading built-in agents...");
-    expect(within(catalog).queryByText("No built-in agents are available.")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Payments expert" })).toHaveLength(1);
+    expect(screen.getByRole("link", { name: "Release readiness" })).toHaveAttribute("href", "/test-workspace/squads/release");
+    expect(screen.getByRole("link", { name: "Merge review" })).toHaveAttribute("href", "/test-workspace/squads/review");
+    expect(screen.getByText("Role template: Code reviewer")).toBeInTheDocument();
   });
 
-  it("keeps templates collapsed in an empty workspace and opens the existing flow on request", () => {
+  it("waits for a selected legacy squad roster and reports failure instead of no matches", () => {
+    mocks.squads = [{ ...RELEASE_SQUAD, agent_member_ids: undefined }];
+    mocks.viewState.filters.squads = ["release"];
+    mocks.membershipPending = true;
+    const view = renderPage();
+    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("skeleton").length).toBeGreaterThan(0);
+    mocks.membershipPending = false;
+    mocks.membershipError = true;
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load squad members.");
+    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
+  });
+
+  it("keeps templates in the creation flow instead of the saved directory", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    renderPage();
+    expect(screen.queryByRole("region", { name: "Built-in agents" })).not.toBeInTheDocument();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+  });
+
+  it("keeps the empty directory focused on creating its first agent", () => {
     mocks.agents = [];
     mocks.templates = [REVIEW_TEMPLATE];
-    const adapter = makeAdapter();
-    renderPage(adapter);
-
-    const catalog = screen.getByRole("region", { name: "Built-in agents" });
-    const toggle = within(catalog).getByRole("button", { name: "Built-in agents 1" });
-    expect(toggle).toHaveAttribute("aria-expanded", "false");
-    expect(within(catalog).queryByRole("button", { name: "View template" })).not.toBeInTheDocument();
-    fireEvent.click(toggle);
-    expect(within(catalog).getByText(REVIEW_TEMPLATE.description)).toBeInTheDocument();
+    renderPage();
     expect(screen.getByText("No agents yet")).toBeInTheDocument();
-    expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
-    fireEvent.click(within(catalog).getByRole("button", { name: "View template" }));
-    expect(adapter.push).toHaveBeenCalledWith("/test-workspace/agents/new/template?template=code-reviewer");
-  });
-
-  it("opens only a live instance with matching template identity, including a renamed instance", () => {
-    mocks.templates = [REVIEW_TEMPLATE];
-    mocks.agents = [
-      makeAgent({ id: "same-name", name: "Reviewer" }),
-      makeAgent({ id: "archived", name: "Old reviewer", template_key: "code-reviewer", archived_at: "2026-09-01T00:00:00Z" }),
-      makeAgent({ id: "renamed", name: "Payments reviewer", template_key: "code-reviewer" }),
-    ];
-    const adapter = makeAdapter();
-    renderPage(adapter);
-
-    fireEvent.click(screen.getByRole("button", { name: /^Built-in agents/ }));
-    fireEvent.click(within(screen.getByRole("region", { name: "Built-in agents" })).getByRole("button", { name: "Open agent" }));
-    expect(adapter.push).toHaveBeenCalledWith("/test-workspace/agents/renamed");
-  });
-
-  it("does not label a same-name custom agent as a template instance and lets a failed catalog retry", () => {
-    mocks.templates = [REVIEW_TEMPLATE];
-    mocks.agents = [makeAgent({ name: "Reviewer" })];
-    const view = renderPage();
-    fireEvent.click(screen.getByRole("button", { name: /^Built-in agents/ }));
-    expect(within(screen.getByRole("region", { name: "Built-in agents" })).queryByRole("button", { name: "Open agent" })).not.toBeInTheDocument();
-
-    mocks.templatesError = true;
-    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
-    fireEvent.click(within(screen.getByRole("region", { name: "Built-in agents" })).getByRole("button", { name: "Retry" }));
-    expect(mocks.refetchTemplates).toHaveBeenCalledOnce();
-    expect(screen.getByTestId("agent-list-toolbar")).toBeInTheDocument();
-    expect(screen.getByText("Reviewer")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Built-in agents" })).not.toBeInTheDocument();
   });
 });
 

@@ -6,6 +6,7 @@ import {
   ChevronDown,
   Filter,
   Search,
+  SlidersHorizontal,
   X,
 } from "lucide-react";
 import {
@@ -89,6 +90,8 @@ export function countActiveFilterDimensions(
   if (filters.owners.length > 0) count++;
   if (filters.models.length > 0) count++;
   if (filters.access.length > 0) count++;
+  if (filters.roles?.length) count++;
+  if (filters.squads?.length) count++;
   return count;
 }
 
@@ -108,6 +111,8 @@ export function AgentListToolbar({
   onSortFieldChange,
   onSortDirectionChange,
   hiddenColumns,
+  groupBy,
+  onGroupByChange,
   onToggleColumn,
   allRows,
   members,
@@ -127,6 +132,8 @@ export function AgentListToolbar({
   onSortFieldChange: (field: AgentSortField) => void;
   onSortDirectionChange: (direction: AgentSortDirection) => void;
   hiddenColumns: AgentColumnKey[];
+  groupBy: "role" | "none";
+  onGroupByChange: (groupBy: "role" | "none") => void;
   onToggleColumn: (key: AgentColumnKey) => void;
   /** Rows within the current scope, unfiltered — filter option lists and
    *  counts derive from this set. */
@@ -211,14 +218,14 @@ export function AgentListToolbar({
           styling and the <md dropdown collapse follow the issues header's
           scope buttons. */}
       <div className="flex min-w-0 items-center gap-2">
-        <div className="relative hidden shrink-0 md:block">
+        <div className="relative min-w-0 shrink-0">
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             aria-label={t(($) => $.page.search_placeholder)}
             placeholder={t(($) => $.page.search_placeholder)}
-            className="h-8 w-56 pl-8 text-body"
+            className="h-8 w-40 pl-8 text-body md:w-56"
           />
         </div>
 
@@ -290,6 +297,7 @@ export function AgentListToolbar({
             render={
               <Button
                 variant={hasActiveFilters ? "default" : "outline"}
+                aria-label={t(($) => $.toolbar.filter_label)}
                 size="sm"
                 className={
                   hasActiveFilters
@@ -437,9 +445,7 @@ export function AgentListToolbar({
               </DropdownMenuSubContent>
             </DropdownMenuSub>
 
-            {/* Owner — the same person-axis as the Mine scope. Picking an
-                owner here leaves the clean "mine" view for "all" (store
-                rule), so Mine + owner never coexist. */}
+            {/* Owner composes with the selected scope, like other filters. */}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <span className="flex-1">
@@ -521,13 +527,10 @@ export function AgentListToolbar({
                       variant="outline"
                       size="sm"
                       className="h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5"
+                      aria-label={t(($) => $.toolbar.display_label)}
                     >
-                      {sortDirection === "asc" ? (
-                        <ArrowUp className="size-3.5" />
-                      ) : (
-                        <ArrowDown className="size-3.5" />
-                      )}
-                      <span className="hidden md:inline">{sortLabel}</span>
+                      <SlidersHorizontal className="size-3.5" aria-hidden="true" />
+                      <span className="hidden md:inline">{t(($) => $.toolbar.display_label)}</span>
                     </Button>
                   }
                 />
@@ -538,6 +541,10 @@ export function AgentListToolbar({
             </TooltipContent>
           </Tooltip>
           <PopoverContent align="end" className="w-64 p-0">
+            <label className="flex items-center justify-between gap-2 border-b px-3 py-3 text-body">
+              {t(($) => $.discovery.group_by)}
+              <Switch size="sm" checked={groupBy === "role"} onCheckedChange={(checked) => onGroupByChange(checked ? "role" : "none")} />
+            </label>
             <div className="border-b px-3 py-2.5">
               <span className="text-caption font-medium text-muted-foreground">
                 {t(($) => $.toolbar.sort_by)}

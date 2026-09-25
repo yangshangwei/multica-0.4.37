@@ -62,7 +62,7 @@
     "workload": "作業量",
     "runtime": "ランタイム",
     "activity_7d": "アクティビティ（7日）",
-    "runs": "実行",
+    "runs": "実行数（30日間）",
     "last_active": "最終アクティブ",
     "model": "モデル",
     "created": "作成日時",
@@ -862,7 +862,8 @@
     "direction_desc": "降順",
     "section_columns": "列",
     "section_owner": "オーナー",
-    "section_model": "モデル"
+    "section_model": "モデル",
+    "display_label": "表示"
   },
   "creation_studio": {
     "title": "エージェントを作成",
@@ -965,7 +966,7 @@
   },
   "role_templates": {
     "title": "ロールテンプレートから始める",
-    "description": "各ロールには指示・担当範囲・必要な Skills が含まれます。作成後はすべてワークスペースのものとして編集できます。",
+    "description": "作成済みのエージェントを開くか、ロールテンプレートから新しく作成します。",
     "step_pick": "ロールを選ぶ",
     "empty": "このサーバーにはロールテンプレートがありません。",
     "load_failed": "ロールテンプレートを読み込めませんでした。",
@@ -986,7 +987,15 @@
       "contributor": "隔離ブランチでコードとテストを書き、与えられた課題を進めます。本番操作はできません。",
       "coordinator": "作業の割り当てを担当します（サブ課題・メンション・スクワッド・自動化）。本番操作はできません。",
       "operator": "高リスク操作を実行できますが、人間が承認したその 1 件のみです。"
-    }
+    },
+    "instances_none": "このテンプレートから作成されたエージェントはありません。",
+    "instances_count_other": "作成済み {{count}} 件",
+    "instances_loading": "作成済みのエージェントを読み込み中...",
+    "instances_load_failed": "作成済みのエージェントを読み込めませんでした。",
+    "open_instance": "{{name}} を開く",
+    "create_agent": "エージェントを作成",
+    "create_another": "別のエージェントを作成",
+    "retry": "再試行"
   },
   "approvals": {
     "title": "承認",
@@ -1047,14 +1056,21 @@
     "selected_other": "{{count}} 件選択中",
     "clear_selection": "選択を解除"
   },
-  "catalog": {
-    "title": "組み込みエージェント",
-    "description": "ロールの指示を確認して、自分のエージェントを作成します。",
-    "loading": "組み込みエージェントを読み込み中...",
-    "error": "組み込みエージェントを読み込めませんでした。",
-    "empty": "利用できる組み込みエージェントはありません。",
+  "discovery": {
+    "all_roles": "すべてのロール",
+    "roles": {
+      "coordinator": "調整役",
+      "specialist": "専門役",
+      "other": "その他のエージェント"
+    },
+    "role_template": "ロールテンプレート：{{title}}",
+    "role_hint": "テンプレートの出自です。現在の役割はエージェントの説明と指示に従います。",
+    "squads": "AIスクワッド",
+    "all_squads": "すべてのスクワッド",
+    "leader": "リーダー",
+    "membership_failed": "スクワッドのメンバーを読み込めませんでした。",
+    "metadata_failed": "一部のロールまたはスクワッド情報を読み込めませんでした。",
     "retry": "再試行",
-    "view_template": "テンプレートを見る",
-    "open_instance": "エージェントを開く"
+    "group_by": "ロールでグループ化"
   }
 }

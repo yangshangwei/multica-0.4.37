@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { runtimeDisplayLabel } from "@multica/core/runtimes";
 import { isKnownAutonomyLevel } from "@multica/core/types";
 import type { AgentRoleTemplate } from "@multica/core/types";
+import { agentListOptions } from "@multica/core/workspace/queries";
 import { cn } from "@multica/ui/lib/utils";
+import { Button } from "@multica/ui/components/ui/button";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
-import { useBackOrReplace, useNavigation } from "../../navigation";
+import { AppLink, useBackOrReplace, useNavigation } from "../../navigation";
 import { useT } from "../../i18n";
+import { useRestoredScrollRef, useRestoredViewState, useViewStateWriter } from "../../platform/scroll-restoration";
 import { AgentConfigurationPanel } from "./agent-configuration-panel";
 import { CreateAgentFooter } from "./create-agent-footer";
 import { AgentCreateChip, AgentCreateShell } from "./create-shell";
@@ -29,13 +33,14 @@ import { createPathWithParams, withSquadParam } from "./squad-param";
  */
 export function TemplateCreateAgentPage() {
   const { t } = useT("agents");
+  const wsId = useWorkspaceId();
   const paths = useWorkspacePaths();
   const navigation = useNavigation();
   const backOrReplace = useBackOrReplace();
   const squadId = navigation.searchParams.get("squad");
   const templateKey = navigation.searchParams.get("template");
 
-  const { data: templates, isLoading, isError } = useRoleTemplates();
+  const { data: templates, isPending, isError, refetch } = useRoleTemplates();
   const template = findRoleTemplate(templates, templateKey);
 
   return (
@@ -67,17 +72,12 @@ export function TemplateCreateAgentPage() {
         <TemplateConfigureStep template={template} squadId={squadId} />
       ) : (
         <RoleTemplatePicker
-          templates={templates ?? []}
-          loading={isLoading}
+          key={wsId}
+          templates={(templates ?? []).filter((role) => role.key)}
+          loading={isPending}
           failed={isError}
-          onPick={(key) =>
-            navigation.push(
-              createPathWithParams(paths.newAgentTemplate(), {
-                squad: squadId,
-                template: key,
-              }),
-            )
-          }
+          onRetry={() => void refetch()}
+          squadId={squadId}
         />
       )}
     </AgentCreateShell>
@@ -88,79 +88,146 @@ function RoleTemplatePicker({
   templates,
   loading,
   failed,
-  onPick,
+  onRetry,
+  squadId,
 }: {
   templates: AgentRoleTemplate[];
   loading: boolean;
   failed: boolean;
-  onPick: (key: string) => void;
+  onRetry: () => void;
+  squadId: string | null;
 }) {
   const { t } = useT("agents");
+  const wsId = useWorkspaceId();
+  const paths = useWorkspacePaths();
+  const {
+    data: agents = [],
+    isPending: agentsPending,
+    isError: agentsFailed,
+    refetch: refetchAgents,
+  } = useQuery(agentListOptions(wsId));
+  const instancesReady = !agentsPending && !agentsFailed;
+  const restoredScrollTop = useRestoredViewState("agent-role-template-scroll");
+  const writeViewState = useViewStateWriter();
+  const restoreScroll = useRestoredScrollRef("agent-role-templates");
+  const scrollElement = useRef<HTMLElement | null>(null);
+  const didRestore = useRef(false);
+  const attachScroll = useCallback((element: HTMLElement | null) => {
+    scrollElement.current = element;
+    // Both catalogs change the gallery height. Wait for the real instance
+    // links before restoring, or skeleton/empty content clamps the offset.
+    if (!element || loading || failed || !instancesReady || didRestore.current) return;
+    didRestore.current = true;
+    const savedTop = restoredScrollTop === undefined ? undefined : Number(restoredScrollTop);
+    if (savedTop !== undefined && Number.isFinite(savedTop) && savedTop >= 0) element.scrollTop = savedTop;
+    else restoreScroll(element);
+  }, [failed, instancesReady, loading, restoredScrollTop, restoreScroll]);
+  const rememberScroll = () => {
+    // The configure step shares this pathname and can replace ordinary scroll
+    // capture. Keep the gallery position in the platform's view-state channel.
+    writeViewState("agent-role-template-scroll", String(scrollElement.current?.scrollTop ?? 0));
+  };
+
   return (
-    <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-10">
-      <div className="m-auto w-full max-w-5xl">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-caption font-medium uppercase tracking-wider text-muted-foreground">
-            {t(($) => $.creation_studio.eyebrow)}
-          </div>
-          <h2 className="mt-2 text-balance text-display-sm font-semibold tracking-tight">
+    <main ref={attachScroll} data-tab-scroll-root="agent-role-templates" aria-busy={loading || agentsPending} className="min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8">
+      <div className="mx-auto w-full max-w-5xl">
+        <div className="max-w-2xl">
+          <h2 className="text-balance text-title-lg font-semibold">
             {t(($) => $.role_templates.title)}
           </h2>
-          <p className="mt-3 text-pretty text-body text-muted-foreground">
+          <p className="mt-2 text-pretty text-body text-muted-foreground">
             {t(($) => $.role_templates.description)}
           </p>
         </div>
 
         {loading ? (
-          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2, 3, 4, 5].map((key) => (
               <Skeleton key={key} className="h-40 rounded-xl" />
             ))}
           </div>
-        ) : failed || templates.length === 0 ? (
-          <p className="mt-9 text-center text-body text-muted-foreground">
-            {failed
-              ? t(($) => $.role_templates.load_failed)
-              : t(($) => $.role_templates.empty)}
+        ) : failed ? (
+          <div role="alert" className="mt-8 flex flex-wrap items-center gap-3 text-body text-muted-foreground">
+            <p>{t(($) => $.role_templates.load_failed)}</p>
+            <Button type="button" variant="outline" onClick={onRetry}>
+              {t(($) => $.role_templates.retry)}
+            </Button>
+          </div>
+        ) : templates.length === 0 ? (
+          <p className="mt-8 text-body text-muted-foreground">
+            {t(($) => $.role_templates.empty)}
           </p>
         ) : (
-          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {templates.map((template) => (
-              <button
-                key={template.key}
-                type="button"
-                onClick={() => onPick(template.key)}
-                className={cn(
-                  "group flex h-full flex-col items-start rounded-xl border bg-card p-4 text-left",
-                  "transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent/30",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                )}
-              >
-                <div className="flex w-full items-start justify-between gap-2">
-                  <span
-                    className="flex size-9 items-center justify-center rounded-lg bg-muted text-title-sm"
-                    aria-hidden="true"
-                  >
-                    {template.avatar_emoji}
-                  </span>
-                  <AutonomyBadge level={template.autonomy_level} />
-                </div>
-                <span className="mt-3 text-body font-semibold">
-                  {template.title}
-                </span>
-                <span className="mt-1.5 text-caption leading-5 text-muted-foreground">
-                  {template.description}
-                </span>
-                <span className="mt-auto flex items-center gap-1 pt-4 text-caption font-medium text-foreground">
-                  {t(($) => $.creation_studio.continue)}
-                  <ChevronRight
-                    className="size-3.5 transition-transform group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
-                </span>
-              </button>
-            ))}
-          </div>
+          <>
+            {agentsPending ? (
+              <p role="status" className="mt-6 text-caption text-muted-foreground">
+                {t(($) => $.role_templates.instances_loading)}
+              </p>
+            ) : agentsFailed ? (
+              <div role="alert" className="mt-6 flex flex-wrap items-center gap-3 text-caption text-muted-foreground">
+                <p>{t(($) => $.role_templates.instances_load_failed)}</p>
+                <Button type="button" size="sm" variant="outline" onClick={() => void refetchAgents()}>
+                  {t(($) => $.role_templates.retry)}
+                </Button>
+              </div>
+            ) : null}
+            <ul className="mt-6 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+              {templates.map((template) => {
+                const title = template.title || template.name;
+                const instances = instancesReady
+                  ? agents.filter((agent) => !agent.archived_at && agent.template_key === template.key)
+                  : [];
+                return (
+                  <li key={template.key} aria-label={title} className="flex min-w-0 flex-col items-start gap-3 border-t border-border py-5">
+                    <div className="flex w-full flex-wrap items-start justify-between gap-2">
+                      <h3 className="min-w-0 break-words text-body font-semibold">
+                        {template.avatar_emoji && <span aria-hidden="true" className="mr-2">{template.avatar_emoji}</span>}
+                        {title}
+                      </h3>
+                      <AutonomyBadge level={template.autonomy_level} />
+                    </div>
+                    <p className="break-words text-caption leading-5 text-muted-foreground">{template.description}</p>
+                    {instancesReady && (
+                      <div className="w-full min-w-0 text-caption">
+                        <p className="text-muted-foreground">
+                          {instances.length > 0
+                            ? t(($) => $.role_templates.instances_count, { count: instances.length })
+                            : t(($) => $.role_templates.instances_none)}
+                        </p>
+                        {instances.map((instance) => (
+                          <AppLink
+                            key={instance.id}
+                            href={paths.agentDetail(instance.id)}
+                            newTabTitle={instance.name}
+                            onClick={rememberScroll}
+                            onAuxClick={rememberScroll}
+                            className="flex min-h-11 min-w-0 max-w-full items-center rounded-sm py-1 font-medium underline decoration-muted-foreground/50 underline-offset-4 hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-9"
+                          >
+                            <span className="min-w-0 break-words">{t(($) => $.role_templates.open_instance, { name: instance.name })}</span>
+                          </AppLink>
+                        ))}
+                      </div>
+                    )}
+                    <AppLink
+                      href={createPathWithParams(paths.newAgentTemplate(), { squad: squadId, template: template.key })}
+                      onClick={rememberScroll}
+                      onAuxClick={rememberScroll}
+                      className={cn(
+                        "mt-auto flex min-h-11 items-center rounded-md px-3 py-2 text-caption font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-9",
+                        instances.length > 0
+                          ? "text-muted-foreground hover:bg-surface-hover hover:text-foreground"
+                          : "border border-border hover:bg-surface-hover",
+                      )}
+                    >
+                      {instances.length > 0
+                        ? t(($) => $.role_templates.create_another)
+                        : t(($) => $.role_templates.create_agent)}
+                    </AppLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
         )}
       </div>
     </main>

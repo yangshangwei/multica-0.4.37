@@ -58,6 +58,40 @@ function withAccess(
   return { ...filters, access: [value] };
 }
 
+describe("agent discovery filters", () => {
+  const specialist = () => makeRow({ name: "Payments expert" }, {
+    role: { templateKey: "code-reviewer", title: "Code reviewer", kind: "specialist" },
+    squads: [
+      { squadId: "review", name: "Merge review", isLeader: false },
+      { squadId: "release", name: "Release readiness", isLeader: false },
+    ],
+  });
+
+  it("combines role and squad with the existing filters", () => {
+    expect(rowMatchesFilters(specialist(), {
+      ...EMPTY_AGENT_FILTERS, roles: ["coordinator"], squads: ["release"],
+    }, "")).toBe(false);
+    expect(rowMatchesFilters(specialist(), {
+      ...EMPTY_AGENT_FILTERS, roles: ["specialist"], squads: ["another"],
+    }, "")).toBe(false);
+    expect(rowMatchesFilters(specialist(), {
+      ...EMPTY_AGENT_FILTERS, roles: ["specialist"], squads: ["review", "release"],
+    }, "payments")).toBe(true);
+  });
+
+  it("finds a renamed member by its known template or either squad", () => {
+    expect(rowMatchesFilters(specialist(), EMPTY_AGENT_FILTERS, "code reviewer")).toBe(true);
+    expect(rowMatchesFilters(specialist(), EMPTY_AGENT_FILTERS, "release readiness")).toBe(true);
+    expect(rowMatchesFilters(specialist(), EMPTY_AGENT_FILTERS, "merge review")).toBe(true);
+  });
+
+  it("keeps unknown roles in Other without inferring from their name", () => {
+    const unknown = makeRow({ name: "Release coordinator" });
+    expect(rowMatchesFilters(unknown, { ...EMPTY_AGENT_FILTERS, roles: ["other"] }, "")).toBe(true);
+    expect(rowMatchesFilters(unknown, { ...EMPTY_AGENT_FILTERS, roles: ["coordinator"] }, "")).toBe(false);
+  });
+});
+
 describe("rowMatchesFilters — access dimension", () => {
   const noFilters = EMPTY_AGENT_FILTERS;
 
