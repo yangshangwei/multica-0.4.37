@@ -27,7 +27,7 @@ vi.mock("@tanstack/react-query", () => ({
 }));
 vi.mock("@multica/core/projects", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@multica/core/projects")>()),
-  useConfigureProjectSquad: (wsId: string) => {
+  useConfigureProjectSquads: (wsId: string) => {
     mocks.configureWorkspace(wsId);
     return { mutateAsync: mocks.configure, isPending: false };
   },
@@ -101,7 +101,7 @@ describe("UseSquadForProjectDialog", () => {
     expect(mocks.configure).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "Use for project" }));
     await waitFor(() => expect(onClose).toHaveBeenCalledOnce());
-    expect(mocks.configure).toHaveBeenCalledWith({ id: PROJECT.id, template_key: TEMPLATE.key, language: "en" });
+    expect(mocks.configure).toHaveBeenCalledWith({ id: PROJECT.id, squads: [{ template_key: TEMPLATE.key, language: "en" }] });
     expect(mocks.configureWorkspace).toHaveBeenCalledWith("ws-1");
     expect(navigation.push).toHaveBeenCalledWith("/acme/projects/project-1");
   });
@@ -126,7 +126,7 @@ describe("UseSquadForProjectDialog", () => {
     rerender(<NavigationProvider value={navigation}><UseSquadForProjectDialog template={TEMPLATE} onClose={vi.fn()} /></NavigationProvider>);
     fireEvent.click(screen.getByRole("button", { name: "Use for project" }));
     await waitFor(() => expect(mocks.configure).toHaveBeenCalledOnce());
-    expect(mocks.configure).toHaveBeenCalledWith({ id: PROJECT.id, template_key: TEMPLATE.key, runtime_id: "project-machine", language: "en" });
+    expect(mocks.configure).toHaveBeenCalledWith({ id: PROJECT.id, squads: [{ template_key: TEMPLATE.key, runtime_id: "project-machine", language: "en" }] });
   });
 
   it("does not silently choose one of several eligible machines", async () => {
@@ -135,7 +135,7 @@ describe("UseSquadForProjectDialog", () => {
     chooseProject();
     expect(screen.getByRole("combobox", { name: "Execution runtime" })).toHaveTextContent("Connect later");
     fireEvent.click(screen.getByRole("button", { name: "Use for project" }));
-    await waitFor(() => expect(mocks.configure).toHaveBeenCalledWith({ id: PROJECT.id, template_key: TEMPLATE.key, language: "en" }));
+    await waitFor(() => expect(mocks.configure).toHaveBeenCalledWith({ id: PROJECT.id, squads: [{ template_key: TEMPLATE.key, language: "en" }] }));
   });
 
   it("retains the selection after a rejected save and retries explicitly", async () => {
@@ -168,4 +168,35 @@ describe("UseSquadForProjectDialog", () => {
     expect(navigation.push).not.toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
   });
+  it("adds the catalog template while retaining existing project candidates", async () => {
+    mocks.projects = [{ ...PROJECT, execution_squads: [
+      { state: "configured", squad_id: "existing-squad" },
+      { state: "needs_runtime", template_key: "review" },
+    ] }];
+    renderDialog();
+    chooseProject();
+    fireEvent.click(screen.getByRole("button", { name: "Use for project" }));
+    await waitFor(() => expect(mocks.configure).toHaveBeenCalledExactlyOnceWith({
+      id: PROJECT.id, squads: [
+        { squad_id: "existing-squad" }, { template_key: "review" },
+        { template_key: TEMPLATE.key, language: "en" },
+      ],
+    }));
+  });
+
+  it("updates an already selected catalog template in place", async () => {
+    mocks.projects = [{ ...PROJECT, execution_squads: [
+      { state: "needs_runtime", template_key: TEMPLATE.key },
+      { state: "configured", squad_id: "existing-squad" },
+    ] }];
+    renderDialog();
+    chooseProject();
+    fireEvent.click(screen.getByRole("button", { name: "Use for project" }));
+    await waitFor(() => expect(mocks.configure).toHaveBeenCalledExactlyOnceWith({
+      id: PROJECT.id, squads: [
+        { template_key: TEMPLATE.key, language: "en" }, { squad_id: "existing-squad" },
+      ],
+    }));
+  });
+
 });

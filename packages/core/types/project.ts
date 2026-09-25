@@ -39,6 +39,8 @@ export interface Project {
   done_count: number;
   resource_count: number;
   execution_squad?: ProjectExecutionSquad | null;
+  // Ordered candidates; the first is the default for future project issues.
+  execution_squads?: ProjectExecutionSquad[];
 }
 
 export interface CreateProjectRequest {
@@ -55,6 +57,7 @@ export interface CreateProjectRequest {
   // 4xx (and rolls back) if any one is invalid or duplicate.
   resources?: CreateProjectResourceRequest[];
   execution_squad?: ConfigureProjectSquadRequest;
+  execution_squads?: ConfigureProjectSquadRequest[];
 }
 
 export interface UpdateProjectRequest {

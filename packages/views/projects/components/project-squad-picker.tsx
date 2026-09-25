@@ -14,14 +14,7 @@ import { RuntimePicker } from "../../agents/components/inspector/runtime-picker"
 import { useSquadTemplates } from "../../agents/create/use-role-templates";
 import { useT } from "../../i18n";
 
-export function ProjectSquadPicker({ value, onChange, localDaemonId, localDaemonIds, disabled = false }: {
-  value: ConfigureProjectSquadRequest;
-  onChange: (value: ConfigureProjectSquadRequest) => void;
-  localDaemonId?: string | null;
-  localDaemonIds?: readonly string[];
-  disabled?: boolean;
-}) {
-  const { t } = useT("projects");
+export function useProjectSquadOptions(localDaemonId?: string | null, localDaemonIds?: readonly string[]) {
   const wsId = useWorkspaceId();
   const { userId, role, isLoading: memberLoading } = useCurrentMember(wsId);
   const { data: members = [] } = useQuery(memberListOptions(wsId));
@@ -29,7 +22,6 @@ export function ProjectSquadPicker({ value, onChange, localDaemonId, localDaemon
   const { data: squads = [] } = useQuery(squadListOptions(wsId));
   const { data: runtimes = [], isLoading: runtimesLoading, isError: runtimesError } = useQuery(runtimeListOptions(wsId));
   const { data: templates = [], isLoading: templatesLoading, isError: templatesError } = useSquadTemplates();
-  const requireManualRuntime = useRef(false);
 
   const eligibleRuntimes = useMemo(() => eligibleProjectRuntimes(runtimes, {
     workspaceId: wsId, userId, daemonId: localDaemonId, daemonIds: localDaemonIds,
@@ -40,6 +32,28 @@ export function ProjectSquadPicker({ value, onChange, localDaemonId, localDaemon
     workspaceId: wsId, userId, daemonId: localDaemonId, daemonIds: localDaemonIds,
     preferredRuntimeId: mika?.runtime_id,
   });
+
+  const availableSquads = squads.filter((squad) => {
+    const leader = agents.find((agent) => agent.id === squad.leader_id && agent.workspace_id === wsId);
+    return squad.workspace_id === wsId && !squad.archived_at && leader && !leader.archived_at &&
+      canAssignAgentToIssue(leader, { userId, role }).allowed;
+  });
+  return { userId, members, agents, runtimes, templates, eligibleRuntimes, suggestedRuntime,
+    availableSquads, runtimesLoading, runtimesError, agentsLoading, memberLoading, templatesLoading, templatesError };
+}
+
+export function ProjectSquadPicker({ value, onChange, localDaemonId, localDaemonIds, disabled = false }: {
+  value: ConfigureProjectSquadRequest;
+  onChange: (value: ConfigureProjectSquadRequest) => void;
+  localDaemonId?: string | null;
+  localDaemonIds?: readonly string[];
+  disabled?: boolean;
+}) {
+  const { t } = useT("projects");
+  const { userId, members, agents, runtimes, templates, eligibleRuntimes, suggestedRuntime,
+    availableSquads, runtimesLoading, runtimesError, agentsLoading, memberLoading, templatesLoading, templatesError,
+  } = useProjectSquadOptions(localDaemonId, localDaemonIds);
+  const requireManualRuntime = useRef(false);
 
   useEffect(() => {
     if (disabled || !value.template_key || runtimesLoading || runtimesError || agentsLoading || memberLoading) return;
@@ -53,11 +67,6 @@ export function ProjectSquadPicker({ value, onChange, localDaemonId, localDaemon
     }
   }, [value, eligibleRuntimes, suggestedRuntime, runtimesLoading, runtimesError, agentsLoading, memberLoading, disabled, onChange]);
 
-  const availableSquads = squads.filter((squad) => {
-    const leader = agents.find((agent) => agent.id === squad.leader_id && agent.workspace_id === wsId);
-    return squad.workspace_id === wsId && !squad.archived_at && leader && !leader.archived_at &&
-      canAssignAgentToIssue(leader, { userId, role }).allowed;
-  });
   const template = templates.find((item) => item.key === value.template_key);
   const squad = availableSquads.find((item) => item.id === value.squad_id);
   const squadLeader = squad ? agents.find((agent) => agent.id === squad.leader_id) : null;

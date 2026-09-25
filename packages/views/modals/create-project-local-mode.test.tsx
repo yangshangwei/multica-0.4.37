@@ -133,8 +133,8 @@ vi.mock("../projects/components/project-start-date-picker", () => ({
 vi.mock("../projects/components/project-due-date-picker", () => ({
   ProjectDueDatePicker: () => <button type="button">Due date</button>,
 }));
-vi.mock("../projects/components/project-squad-picker", () => ({
-  ProjectSquadPicker: () => null,
+vi.mock("../projects/components/project-squads-picker", () => ({
+  ProjectSquadsPicker: () => null,
 }));
 
 // Desktop-only surface: without these the Local directory tab never renders.

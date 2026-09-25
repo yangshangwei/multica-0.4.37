@@ -5,6 +5,7 @@ type Workspace = { id: string; slug: string };
 type Project = {
   id: string; title: string;
   execution_squad: { state: string; template_key?: string; squad_id?: string; runtime_id?: string };
+  execution_squads: { state: string; template_key?: string; squad_id?: string; runtime_id?: string }[];
 };
 
 async function signIn(page: Page, suffix: string) {
@@ -26,9 +27,9 @@ async function createProject(page: Page, workspace: Workspace, title: string, sc
   await page.goto(`/${workspace.slug}/projects`, { waitUntil: "domcontentloaded" });
   await page.getByRole("button", { name: /create.*project/i }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog.getByRole("combobox", { name: "Execution squad" })).toContainText(/feature delivery/i);
+  await expect(dialog.getByRole("button", { name: "Choose execution squads" })).toContainText(/feature delivery/i);
   await dialog.getByRole("textbox", { name: "Project title", exact: true }).fill(title);
-  await expect(dialog.getByRole("combobox", { name: "Execution squad" })).toBeInViewport();
+  await expect(dialog.getByRole("button", { name: "Choose execution squads" })).toBeInViewport();
   await expect(dialog.getByRole("button", { name: "Create Project", exact: true })).toBeEnabled();
   if (screenshotPath) await page.screenshot({ path: screenshotPath, animations: "disabled" });
   const saved = page.waitForResponse((response) => response.request().method() === "POST" && /\/api\/projects$/.test(response.url()));
@@ -37,12 +38,75 @@ async function createProject(page: Page, workspace: Workspace, title: string, sc
   expect(response.status()).toBe(201);
   const project = await response.json() as Project;
   await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/projects/${project.id}$`), { timeout: 30_000 });
-  await expect(page.getByRole("region", { name: "Execution squad", exact: true })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole("region", { name: "Execution squads", exact: true })).toBeVisible({ timeout: 30_000 });
   return project;
 }
 
 test.describe("workspace built-in defaults", () => {
   test.setTimeout(120_000);
+
+  test("saves multiple squads, supports select-all and clear, and keeps creation usable on narrow screens", async ({ page }, info) => {
+    const { api, workspace } = await signIn(page, "multi-squad");
+    try {
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      await page.goto(`/${workspace.slug}/projects`);
+      await page.getByRole("button", { name: /create.*project/i }).click();
+      const dialog = page.getByRole("dialog").first();
+      await dialog.getByRole("textbox", { name: "Project title", exact: true }).fill("Website launch");
+      await expect(dialog.getByText(/AI agents that plan, carry out, and review/)).toBeVisible();
+      await page.screenshot({ path: info.outputPath("create-project-desktop.png"), animations: "disabled" });
+      await dialog.getByRole("button", { name: "Choose execution squads" }).click();
+      await page.getByRole("button", { name: "Select all", exact: true }).click();
+      const checked = page.getByRole("checkbox", { checked: true });
+      expect(await checked.count()).toBeGreaterThan(1);
+      await page.getByRole("button", { name: "Clear", exact: true }).click();
+      await expect(checked).toHaveCount(0);
+      await page.getByRole("checkbox", { name: /Feature Delivery/i }).check();
+      await page.getByRole("checkbox", { name: /Bug Fix/i }).check();
+      await page.screenshot({ path: info.outputPath("create-project-multiselect.png"), animations: "disabled" });
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole("checkbox", { name: /Feature Delivery/i })).not.toBeVisible();
+      await page.setViewportSize({ width: 390, height: 844 });
+      await expect(dialog.getByRole("button", { name: "Create Project", exact: true })).toBeInViewport();
+      await page.screenshot({ path: info.outputPath("create-project-narrow.png"), animations: "disabled" });
+      const bounds = await dialog.boundingBox();
+      expect(bounds).not.toBeNull();
+      expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
+      await info.attach("narrow-layout", { contentType: "application/json", body: JSON.stringify(await page.evaluate(() => ({
+        viewport: innerWidth, documentWidth: document.documentElement.scrollWidth,
+        overflowingElements: [...document.querySelectorAll("body *")].filter((element) => {
+          const rect = element.getBoundingClientRect();
+          return rect.width > 0 && rect.right > innerWidth + 1 && getComputedStyle(element).visibility !== "hidden";
+        }).slice(0, 8).map((element) => ({ tag: element.tagName, classes: element.className })),
+      }))) });
+      const saved = page.waitForResponse((response) => response.request().method() === "POST" && /\/api\/projects$/.test(response.url()));
+      await dialog.getByRole("button", { name: "Create Project", exact: true }).click();
+      const response = await saved;
+      expect(response.status()).toBe(201);
+      const project = await response.json() as Project;
+      expect(project.execution_squads.map((squad) => squad.template_key)).toEqual(["feature-delivery", "bug-fix"]);
+      expect(project.execution_squad.template_key).toBe("feature-delivery");
+      await expect(page).toHaveURL(new RegExp(`/projects/${project.id}$`));
+      await page.reload();
+      await expect(page.getByText("Your project and squad choice are saved. Connect a runtime, then finish setup.")).toHaveCount(2);
+
+      await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
+      await page.context().addCookies([{ name: "multica-locale", value: "zh-Hans", url: new URL(page.url()).origin }]);
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      await page.goto(`/${workspace.slug}/projects`);
+      await page.getByRole("button", { name: "新建项目", exact: true }).click();
+      const localizedDialog = page.getByRole("dialog").first();
+      await localizedDialog.getByRole("textbox", { name: "请输入项目标题（必填）", exact: true }).fill("官网改版");
+      await expect(localizedDialog.getByText(/由多个智能体分工协作/)).toBeVisible();
+      await page.screenshot({ path: info.outputPath("create-project-zh-desktop.png"), animations: "disabled" });
+      await page.setViewportSize({ width: 390, height: 844 });
+      await expect(localizedDialog.getByRole("button", { name: "创建项目", exact: true })).toBeInViewport();
+      await page.screenshot({ path: info.outputPath("create-project-zh-narrow.png"), animations: "disabled" });
+    } finally {
+      await api.deleteFeatureWorkspace(workspace.id);
+    }
+  });
 
   test("keeps built-in resources available on request and retains a project without a runtime", async ({ page }, info) => {
     const { api, workspace } = await signIn(page, "no-runtime");

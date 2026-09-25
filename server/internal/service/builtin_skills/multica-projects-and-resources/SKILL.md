@@ -34,14 +34,19 @@ Common resource types:
 
 ## Project execution squad
 
-Project API responses include `execution_squad`, the saved default for future tasks. Older servers may omit it.
-Its `state` is `none`, `needs_runtime`, `configured`, or `failed`. `configured` means a squad instance is assigned;
-check the current squad, its agents, and their actual runtimes before promising that work can start.
+Project API responses include an ordered `execution_squads` list of choices for future tasks. The legacy
+`execution_squad` field exposes the first choice, or `state=none` for an empty list. Older servers may only
+return the singular field. Each choice has state `needs_runtime`, `configured`, or `failed`; configured
+means setup succeeded. Check the current squad, agents, and actual runtimes before promising work can start.
+Multiple selected squads are candidates, not broadcast recipients: each task is assigned to one squad.
 
-`POST /api/projects` accepts optional `execution_squad`. `PUT /api/projects/{id}/execution-squad` changes the
-selection and returns the complete project. Both accept `template_key` or `squad_id`, never both. A template
-may also carry `runtime_id` and `language` (`en`, `zh`, `ja`, `ko`). A template without a runtime saves
-`needs_runtime`; an empty object clears the default. These are API fields, not new project CLI flags.
+`POST /api/projects` accepts optional `execution_squads: [...]` or the legacy `execution_squad` object,
+never both. `PUT /api/projects/{id}/execution-squads` accepts `{squads: [...]}` and replaces the complete
+ordered list; an empty array clears it. Each item selects `template_key` or `squad_id`, never both. A
+template may also carry `runtime_id` and `language` (`en`, `zh`, `ja`, `ko`); without a runtime it saves
+`needs_runtime`. Empty items and duplicate choices are invalid. A template and a workspace instance that
+resolve to the same squad appear once, keeping the first choice. The legacy singular PUT replaces the
+whole list with one choice, or clears it with `{}`. These are API fields, not new project CLI flags.
 
 Project configuration reuses an invocable, unarchived matching squad and preserves customized role agents and
 skills. It never rebinds a reused agent to the requested runtime. Every actual execution machine needs its own
@@ -49,8 +54,8 @@ matching `local_directory` when the project uses local directories. Private-runt
 permissions still apply; agent callers also need Coordinator autonomy and may not create roles above their own level.
 
 If squad preparation fails after project creation, the project remains saved: POST returns 201 with
-`state=failed`; a PUT preparation failure returns 200 with the failed selection. Retry the retained choice with
-PUT after resolving the problem. Do not repeat the project POST. Safe `error_code` values are
+`state=failed` for the affected choice while other choices may succeed; PUT also returns 200 with per-choice
+states. Retry with the complete retained list after resolving the problem so other selections stay in place. Do not repeat the project POST. Safe `error_code` values are
 `agent_name_conflict`, `agent_access_denied`, `agent_unavailable`, `runtime_unavailable`, `runtime_mismatch`,
 `squad_unavailable`, and `preparation_failed`.
 

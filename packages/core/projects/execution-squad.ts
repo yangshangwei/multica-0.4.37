@@ -1,8 +1,41 @@
 import { isRuntimeUsableForUser } from "../runtimes/access";
 import { isAgentRuntimeBound } from "../agents/runtime-binding";
-import type { Agent, AgentRuntime, ProjectExecutionSquad, ProjectResource, Squad } from "../types";
+import type { Agent, AgentRuntime, ConfigureProjectSquadRequest, Project, ProjectExecutionSquad, ProjectResource, Squad } from "../types";
 
 export const DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY = "feature-delivery";
+
+export function getProjectExecutionSquads(project: Pick<Project, "execution_squad" | "execution_squads">): ProjectExecutionSquad[] {
+  return project.execution_squads ??
+    (project.execution_squad && project.execution_squad.state !== "none" ? [project.execution_squad] : []);
+}
+
+export function projectSquadSelection(config: ProjectExecutionSquad): ConfigureProjectSquadRequest {
+  if (config.template_key) {
+    return { template_key: config.template_key, ...(config.runtime_id ? { runtime_id: config.runtime_id } : {}) };
+  }
+  return config.squad_id ? { squad_id: config.squad_id } : {};
+}
+
+export function replaceProjectSquadSelection(
+  configs: readonly ProjectExecutionSquad[],
+  index: number,
+  request: ConfigureProjectSquadRequest,
+): ConfigureProjectSquadRequest[] {
+  const selections = configs.map(projectSquadSelection);
+  const existingIndex = configs.findIndex((config, position) => position !== index &&
+    (request.template_key ? config.template_key === request.template_key
+      : !!request.squad_id && config.squad_id === request.squad_id));
+  if (existingIndex !== -1) {
+    // Keep a configured template's provenance when its instance is picked.
+    if (request.template_key) selections[existingIndex] = request;
+    selections.splice(index, 1);
+  } else if (request.template_key || request.squad_id) {
+    selections.splice(index, 1, request);
+  } else {
+    selections.splice(index, 1);
+  }
+  return selections;
+}
 
 export interface ProjectRuntimeSelectionOptions {
   workspaceId: string;

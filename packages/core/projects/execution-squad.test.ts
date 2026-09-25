@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 import type { Agent, AgentRuntime, ProjectResource, Squad } from "../types";
-import { eligibleProjectRuntimes, getProjectSquadReadiness, projectLocalDaemonIds, selectProjectRuntime } from "./execution-squad";
+import { eligibleProjectRuntimes, getProjectExecutionSquads, getProjectSquadReadiness, projectLocalDaemonIds, projectSquadSelection, replaceProjectSquadSelection, selectProjectRuntime } from "./execution-squad";
 
 const runtime = (id: string, overrides: Partial<AgentRuntime> = {}): AgentRuntime => ({
   id, workspace_id: "ws-1", daemon_id: "machine-1", name: id, runtime_mode: "local",
@@ -11,6 +11,41 @@ const runtime = (id: string, overrides: Partial<AgentRuntime> = {}): AgentRuntim
 const SQUAD = { id: "squad-1", workspace_id: "ws-1", leader_id: "agent-1", archived_at: null } as Squad;
 const LEADER = { id: "agent-1", workspace_id: "ws-1", runtime_id: "actual-runtime", archived_at: null } as Agent;
 const CONFIG = { state: "configured" as const, squad_id: "squad-1", runtime_id: "requested-runtime" };
+
+describe("project candidate selections", () => {
+  it("reads old cached defaults but respects an explicitly cleared candidate list", () => {
+    expect(getProjectExecutionSquads({ execution_squad: CONFIG })).toEqual([CONFIG]);
+    expect(getProjectExecutionSquads({ execution_squad: CONFIG, execution_squads: [] })).toEqual([]);
+    expect(getProjectExecutionSquads({ execution_squad: { state: "none" } })).toEqual([]);
+  });
+
+  it("retains template provenance and the requested runtime when editing another candidate", () => {
+    expect(projectSquadSelection({ ...CONFIG, template_key: "delivery" })).toEqual({
+      template_key: "delivery", runtime_id: "requested-runtime",
+    });
+    expect(projectSquadSelection(CONFIG)).toEqual({ squad_id: "squad-1" });
+  });
+
+  it("updates an existing template in place instead of appending a duplicate", () => {
+    const configs = [{ ...CONFIG, template_key: "delivery" }, { ...CONFIG, squad_id: "squad-2" }];
+    expect(replaceProjectSquadSelection(configs, configs.length, { template_key: "delivery", runtime_id: "new-runtime" })).toEqual([
+      { template_key: "delivery", runtime_id: "new-runtime" }, { squad_id: "squad-2" },
+    ]);
+  });
+
+  it("recognizes a configured template's squad when it is chosen from existing squads", () => {
+    const configs = [{ ...CONFIG, template_key: "delivery" }, { ...CONFIG, squad_id: "squad-2" }];
+    expect(replaceProjectSquadSelection(configs, configs.length, { squad_id: "squad-1" })).toEqual([
+      { template_key: "delivery", runtime_id: "requested-runtime" }, { squad_id: "squad-2" },
+    ]);
+  });
+
+  it("merges an edited candidate with a squad that is already selected", () => {
+    const configs = [CONFIG, { ...CONFIG, squad_id: "squad-2" }];
+    expect(replaceProjectSquadSelection(configs, 0, { squad_id: "squad-2" })).toEqual([{ squad_id: "squad-2" }]);
+    expect(replaceProjectSquadSelection(configs, 1, { squad_id: "squad-1" })).toEqual([{ squad_id: "squad-1" }]);
+  });
+});
 
 describe("project runtime selection", () => {
   it("honors workspace, owner and project machine together", () => {

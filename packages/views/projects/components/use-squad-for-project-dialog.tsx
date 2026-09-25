@@ -9,14 +9,16 @@ import { useModalStore } from "@multica/core/modals";
 import { useWorkspacePaths } from "@multica/core/paths";
 import {
   eligibleProjectRuntimes,
+  getProjectExecutionSquads,
+  replaceProjectSquadSelection,
   projectLocalDaemonIds,
   projectResourcesOptions,
   selectProjectRuntime,
-  useConfigureProjectSquad,
+  useConfigureProjectSquads,
 } from "@multica/core/projects";
 import { projectListOptions } from "@multica/core/projects/queries";
 import { runtimeDisplayLabel, runtimeListOptions } from "@multica/core/runtimes";
-import type { SquadTemplate } from "@multica/core/types";
+import type { ConfigureProjectSquadRequest, SquadTemplate } from "@multica/core/types";
 import { agentListOptions } from "@multica/core/workspace/queries";
 import { Button } from "@multica/ui/components/ui/button";
 import {
@@ -46,7 +48,7 @@ export function UseSquadForProjectDialog({ template, onClose }: {
   const projects = useQuery(projectListOptions(wsId));
   const runtimes = useQuery(runtimeListOptions(wsId));
   const agents = useQuery(agentListOptions(wsId));
-  const configure = useConfigureProjectSquad(wsId);
+  const configure = useConfigureProjectSquads(wsId);
   const [projectId, setProjectId] = useState<string | null>(null);
   const [runtimeId, setRuntimeId] = useState<string | null>(null);
   const [error, setError] = useState(false);
@@ -92,12 +94,14 @@ export function UseSquadForProjectDialog({ template, onClose }: {
     pending.current = true;
     setError(false);
     try {
-      const updated = await configure.mutateAsync({
-        id: targetProjectId,
+      const selection: ConfigureProjectSquadRequest = {
         template_key: template.key,
         ...(selectedRuntimeId ? { runtime_id: selectedRuntimeId } : {}),
         language: templateLanguageFor(locale),
-      });
+      };
+      const configs = getProjectExecutionSquads(project);
+      const squads = replaceProjectSquadSelection(configs, configs.length, selection);
+      const updated = await configure.mutateAsync({ id: targetProjectId, squads });
       if (!mounted.current || currentWorkspace.current !== originWorkspace) return;
       if (updated.id !== targetProjectId || updated.workspace_id !== originWorkspace) {
         setError(true);

@@ -43,26 +43,37 @@ type ProjectResponse struct {
 	// /api/projects/{id}/resources. Resources themselves stay out of this
 	// payload to keep parent metadata and child collections separate; clients
 	// that need the list call ListProjectResources directly.
-	ResourceCount  int64                 `json:"resource_count"`
-	ExecutionSquad ProjectExecutionSquad `json:"execution_squad"`
+	ResourceCount   int64                   `json:"resource_count"`
+	ExecutionSquad  ProjectExecutionSquad   `json:"execution_squad"`
+	ExecutionSquads []ProjectExecutionSquad `json:"execution_squads"`
 }
 
 func projectToResponse(p db.Project) ProjectResponse {
+	selections := readProjectSquadSelections(p.ExecutionSquad)
+	squads := make([]ProjectExecutionSquad, 0, len(selections))
+	for _, selection := range selections {
+		squads = append(squads, selection.ProjectExecutionSquad)
+	}
+	defaultSquad := ProjectExecutionSquad{State: "none"}
+	if len(squads) > 0 {
+		defaultSquad = squads[0]
+	}
 	return ProjectResponse{
-		ID:             uuidToString(p.ID),
-		WorkspaceID:    uuidToString(p.WorkspaceID),
-		Title:          p.Title,
-		Description:    textToPtr(p.Description),
-		Icon:           textToPtr(p.Icon),
-		Status:         p.Status,
-		Priority:       p.Priority,
-		LeadType:       textToPtr(p.LeadType),
-		LeadID:         uuidToPtr(p.LeadID),
-		StartDate:      dateToPtr(p.StartDate),
-		DueDate:        dateToPtr(p.DueDate),
-		CreatedAt:      timestampToString(p.CreatedAt),
-		UpdatedAt:      timestampToString(p.UpdatedAt),
-		ExecutionSquad: readProjectSquadSelection(p.ExecutionSquad).ProjectExecutionSquad,
+		ID:              uuidToString(p.ID),
+		WorkspaceID:     uuidToString(p.WorkspaceID),
+		Title:           p.Title,
+		Description:     textToPtr(p.Description),
+		Icon:            textToPtr(p.Icon),
+		Status:          p.Status,
+		Priority:        p.Priority,
+		LeadType:        textToPtr(p.LeadType),
+		LeadID:          uuidToPtr(p.LeadID),
+		StartDate:       dateToPtr(p.StartDate),
+		DueDate:         dateToPtr(p.DueDate),
+		CreatedAt:       timestampToString(p.CreatedAt),
+		UpdatedAt:       timestampToString(p.UpdatedAt),
+		ExecutionSquad:  defaultSquad,
+		ExecutionSquads: squads,
 	}
 }
 
@@ -101,17 +112,32 @@ func (h *Handler) loadProjectResourceCount(ctx context.Context, projectID pgtype
 }
 
 type CreateProjectRequest struct {
-	Title          string                                `json:"title"`
-	Description    *string                               `json:"description"`
-	Icon           *string                               `json:"icon"`
-	Status         string                                `json:"status"`
-	Priority       string                                `json:"priority"`
-	LeadType       *string                               `json:"lead_type"`
-	LeadID         *string                               `json:"lead_id"`
-	StartDate      *string                               `json:"start_date"`
-	DueDate        *string                               `json:"due_date"`
-	Resources      []CreateProjectResourceRequestPayload `json:"resources,omitempty"`
-	ExecutionSquad *ConfigureProjectSquadRequest         `json:"execution_squad,omitempty"`
+	Title           string                                `json:"title"`
+	Description     *string                               `json:"description"`
+	Icon            *string                               `json:"icon"`
+	Status          string                                `json:"status"`
+	Priority        string                                `json:"priority"`
+	LeadType        *string                               `json:"lead_type"`
+	LeadID          *string                               `json:"lead_id"`
+	StartDate       *string                               `json:"start_date"`
+	DueDate         *string                               `json:"due_date"`
+	Resources       []CreateProjectResourceRequestPayload `json:"resources,omitempty"`
+	ExecutionSquad  *ConfigureProjectSquadRequest         `json:"execution_squad,omitempty"`
+	ExecutionSquads ProjectSquadChoices                   `json:"execution_squads,omitempty"`
+}
+
+func (req *CreateProjectRequest) UnmarshalJSON(data []byte) error {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(data, &fields); err != nil {
+		return err
+	}
+	_, singular := fields["execution_squad"]
+	_, plural := fields["execution_squads"]
+	if singular && plural {
+		return errors.New("choose execution_squad or execution_squads, not both")
+	}
+	type request CreateProjectRequest
+	return json.Unmarshal(data, (*request)(req))
 }
 
 // CreateProjectResourceRequestPayload mirrors CreateProjectResourceRequest but
@@ -370,20 +396,24 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var squadInput *projectSquadInput
-	var executionSquad []byte
+	var squadInputs []projectSquadInput
 	if req.ExecutionSquad != nil {
 		in, ok := h.validateProjectSquadChoice(w, r, wsUUID, *req.ExecutionSquad)
 		if !ok {
 			return
 		}
-		encoded, err := json.Marshal(in.Selection)
-		if err != nil {
-			writeError(w, http.StatusInternalServerError, "failed to save execution squad selection")
+		squadInputs = []projectSquadInput{in}
+	} else if req.ExecutionSquads != nil {
+		var ok bool
+		squadInputs, ok = h.validateProjectSquadChoices(w, r, wsUUID, req.ExecutionSquads)
+		if !ok {
 			return
 		}
-		squadInput = &in
-		executionSquad = encoded
+	}
+	executionSquad, err := json.Marshal(projectSquadSelections(squadInputs))
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to save execution squad selections")
+		return
 	}
 	createParams := db.CreateProjectParams{
 		WorkspaceID:    wsUUID,
@@ -406,7 +436,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 			h.writeProjectWriteError(w, r, err, "create")
 			return
 		}
-		project = h.prepareCreatedProjectSquad(r.Context(), project, squadInput)
+		project = h.prepareCreatedProjectSquads(r.Context(), project, squadInputs)
 		resp := projectToResponse(project)
 		h.publish(protocol.EventProjectCreated, workspaceID, "member", userID, map[string]any{"project": resp})
 		writeJSON(w, http.StatusCreated, resp)
@@ -462,7 +492,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to commit project create")
 		return
 	}
-	project = h.prepareCreatedProjectSquad(r.Context(), project, squadInput)
+	project = h.prepareCreatedProjectSquads(r.Context(), project, squadInputs)
 
 	resourceResp := make([]ProjectResourceResponse, len(resourceRows))
 	for i, row := range resourceRows {

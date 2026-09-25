@@ -3940,6 +3940,17 @@ export class ApiClient {
     return this.parseProjectResponse(raw, "PUT /api/projects/:id/execution-squad", options?.workspaceId, id);
   }
 
+  async configureProjectSquads(
+    id: string,
+    squads: ConfigureProjectSquadRequest[],
+    options?: { workspaceId?: string; signal?: AbortSignal },
+  ): Promise<Project> {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(id)}/execution-squads`, {
+      ...workspaceRequestInit(options), method: "PUT", body: JSON.stringify({ squads }),
+    });
+    return this.parseProjectResponse(raw, "PUT /api/projects/:id/execution-squads", options?.workspaceId, id);
+  }
+
   async deleteProject(id: string): Promise<void> {
     await this.fetch(`/api/projects/${id}`, { method: "DELETE" });
   }

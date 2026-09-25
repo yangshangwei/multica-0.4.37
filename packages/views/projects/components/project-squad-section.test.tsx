@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { Agent, AgentRuntime, Project, ProjectResource, Squad, SquadMemberStatus } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
@@ -40,7 +40,7 @@ vi.mock("@multica/core/permissions", async () => ({
   useCurrentMember: () => ({ userId: "user-1", role: "admin", isLoading: false }),
 }));
 vi.mock("@multica/core/projects/mutations", () => ({
-  useConfigureProjectSquad: (wsId: string) => {
+  useConfigureProjectSquads: (wsId: string) => {
     mocks.configureWorkspace(wsId);
     return { mutateAsync: mocks.configure, isPending: false };
   },
@@ -59,6 +59,7 @@ vi.mock("./project-squad-picker", () => ({
     <>
       <button disabled={disabled} onClick={() => onChange({})}>Choose no squad</button>
       <button disabled={disabled} onClick={() => onChange({ squad_id: "replacement-squad" })}>Choose replacement squad</button>
+      <button disabled={disabled} onClick={() => onChange({ squad_id: "squad-1" })}>Choose current squad</button>
     </>
   ),
 }));
@@ -166,8 +167,8 @@ describe("ProjectSquadSection", () => {
   });
 
   it.each([
-    ["Choose no squad", { id: "project-1" }],
-    ["Choose replacement squad", { id: "project-1", squad_id: "replacement-squad" }],
+    ["Choose no squad", { id: "project-1", squads: [] }],
+    ["Choose replacement squad", { id: "project-1", squads: [{ squad_id: "replacement-squad" }] }],
   ])("allows %s when the deleted default's roster returns 404", async (selection, request) => {
     const user = userEvent.setup();
     mocks.squads = [{ ...SQUAD, id: "replacement-squad", name: "Replacement squad" }];
@@ -207,7 +208,7 @@ describe("ProjectSquadSection", () => {
     expect(screen.getByText(/Your project is saved/)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry setup" }));
     await waitFor(() => expect(mocks.configure).toHaveBeenCalledWith({
-      id: "project-1", template_key: "feature-delivery", runtime_id: "requested-runtime", language: "en",
+      id: "project-1", squads: [{ template_key: "feature-delivery", runtime_id: "requested-runtime", language: "en" }],
     }));
     expect(mocks.configureWorkspace).toHaveBeenCalledWith("ws-1");
   });
@@ -231,7 +232,76 @@ describe("ProjectSquadSection", () => {
     expect(screen.getByText("This changes defaults for future issues. Existing issues keep their assignees.")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Choose no squad" }));
     await user.click(screen.getByRole("button", { name: "Save squad" }));
-    expect(mocks.configure).toHaveBeenCalledWith({ id: "project-1" });
+    expect(mocks.configure).toHaveBeenCalledWith({ id: "project-1", squads: [] });
     expect(mocks.open).not.toHaveBeenCalled();
   });
+  it("shows all candidates and dispatches only the explicitly chosen squad", async () => {
+    const user = userEvent.setup();
+    mocks.squads.push({ ...SQUAD, id: "squad-2", name: "Review team" });
+    renderWithI18n(<ProjectSquadSection project={{ ...PROJECT, execution_squads: [
+      PROJECT.execution_squad!, { state: "configured", squad_id: "squad-2" },
+    ] }} />);
+
+    expect(screen.getByRole("group", { name: "Delivery team" })).toBeInTheDocument();
+    await user.click(within(screen.getByRole("group", { name: "Review team" })).getByRole("button", { name: "Hand to squad" }));
+    expect(mocks.open).toHaveBeenCalledExactlyOnceWith("create-issue", {
+      project_id: "project-1", assignee_type: "squad", assignee_id: "squad-2", status: "todo",
+    });
+  });
+
+  it("removes a candidate while preserving the other configured squads", async () => {
+    const user = userEvent.setup();
+    mocks.squads.push({ ...SQUAD, id: "squad-2", name: "Review team" });
+    renderWithI18n(<ProjectSquadSection project={{ ...PROJECT, execution_squads: [
+      PROJECT.execution_squad!, { state: "configured", squad_id: "squad-2" },
+    ] }} />);
+    await user.click(screen.getByRole("button", { name: "Remove Review team" }));
+    expect(mocks.configure).toHaveBeenCalledExactlyOnceWith({
+      id: "project-1", squads: [{ template_key: "feature-delivery", runtime_id: "requested-runtime" }],
+    });
+  });
+
+  it("edits one candidate without replacing the others", async () => {
+    const user = userEvent.setup();
+    mocks.squads.push({ ...SQUAD, id: "squad-2", name: "Review team" });
+    renderWithI18n(<ProjectSquadSection project={{ ...PROJECT, execution_squads: [
+      PROJECT.execution_squad!, { state: "configured", squad_id: "squad-2" },
+    ] }} />);
+    const row = within(screen.getByRole("group", { name: "Review team" }));
+    await user.click(row.getByRole("button", { name: "Change squad" }));
+    await user.click(row.getByRole("button", { name: "Choose replacement squad" }));
+    await user.click(row.getByRole("button", { name: "Save squad" }));
+    expect(mocks.configure).toHaveBeenCalledExactlyOnceWith({
+      id: "project-1", squads: [
+        { template_key: "feature-delivery", runtime_id: "requested-runtime" },
+        { squad_id: "replacement-squad" },
+      ],
+    });
+  });
+
+  it("adds a candidate without replacing the default squad", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<ProjectSquadSection project={PROJECT} />);
+    await user.click(screen.getByRole("button", { name: "Add squad" }));
+    await user.click(screen.getByRole("button", { name: "Choose replacement squad" }));
+    await user.click(screen.getByRole("button", { name: "Save squad" }));
+    expect(mocks.configure).toHaveBeenCalledExactlyOnceWith({
+      id: "project-1", squads: [
+        { template_key: "feature-delivery", runtime_id: "requested-runtime" },
+        { squad_id: "replacement-squad" },
+      ],
+    });
+  });
+
+  it("does not submit duplicate candidates when adding an existing selection", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<ProjectSquadSection project={PROJECT} />);
+    await user.click(screen.getByRole("button", { name: "Add squad" }));
+    await user.click(screen.getByRole("button", { name: "Choose current squad" }));
+    await user.click(screen.getByRole("button", { name: "Save squad" }));
+    expect(mocks.configure).toHaveBeenCalledExactlyOnceWith({
+      id: "project-1", squads: [{ template_key: "feature-delivery", runtime_id: "requested-runtime" }],
+    });
+  });
+
 });

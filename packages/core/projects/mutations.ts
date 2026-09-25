@@ -32,6 +32,30 @@ export function useConfigureProjectSquad(wsId: string) {
   });
 }
 
+export function useConfigureProjectSquads(wsId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    // A scope change must detach the observer instead of replacing the
+    // callbacks of an in-flight mutation with another workspace's closures.
+    mutationKey: [...projectKeys.all(wsId), "configure-squads"],
+    mutationFn: ({ id, squads }: { id: string; squads: ConfigureProjectSquadRequest[] }) =>
+      api.configureProjectSquads(id, squads, { workspaceId: wsId }),
+    onSuccess: (project) => {
+      qc.setQueryData(projectKeys.detail(wsId, project.id), project);
+      qc.setQueryData<ListProjectsResponse>(projectKeys.list(wsId), (old) =>
+        old ? { ...old, projects: old.projects.map((item) => item.id === project.id ? project : item) } : old,
+      );
+    },
+    onSettled: (_data, _err, { id }) => Promise.all([
+      qc.invalidateQueries({ queryKey: projectKeys.detail(wsId, id) }),
+      qc.invalidateQueries({ queryKey: projectKeys.list(wsId) }),
+      qc.invalidateQueries({ queryKey: workspaceKeys.squads(wsId) }),
+      qc.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) }),
+      qc.invalidateQueries({ queryKey: workspaceKeys.skills(wsId) }),
+    ]),
+  });
+}
+
 export function useCreateProject() {
   const qc = useQueryClient();
   const wsId = useWorkspaceId();
@@ -48,7 +72,7 @@ export function useCreateProject() {
     },
     onSettled: (_data, _err, variables) => {
       qc.invalidateQueries({ queryKey: projectKeys.list(wsId) });
-      if (variables.execution_squad) {
+      if (variables.execution_squad || variables.execution_squads?.length) {
         qc.invalidateQueries({ queryKey: workspaceKeys.squads(wsId) });
         qc.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) });
         qc.invalidateQueries({ queryKey: workspaceKeys.skills(wsId) });

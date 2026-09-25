@@ -1,7 +1,10 @@
 export { projectKeys, projectListOptions, projectDetailOptions } from "./queries";
-export { useCreateProject, useUpdateProject, useDeleteProject, useConfigureProjectSquad } from "./mutations";
+export { useCreateProject, useUpdateProject, useDeleteProject, useConfigureProjectSquad, useConfigureProjectSquads } from "./mutations";
 export {
   DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY,
+  getProjectExecutionSquads,
+  projectSquadSelection,
+  replaceProjectSquadSelection,
   eligibleProjectRuntimes,
   selectProjectRuntime,
   projectLocalDaemonIds,

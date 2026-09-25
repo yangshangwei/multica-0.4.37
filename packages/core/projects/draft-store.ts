@@ -14,6 +14,8 @@ interface ProjectDraft {
   dueDate?: string;
   // Undefined uses the recommendation; null or an empty object opts out.
   executionSquad?: ConfigureProjectSquadRequest | null;
+  // Undefined restores the legacy choice or the recommendation; [] opts out.
+  executionSquads?: ConfigureProjectSquadRequest[];
 }
 
 const EMPTY_DRAFT: ProjectDraft = {
@@ -27,6 +29,7 @@ const EMPTY_DRAFT: ProjectDraft = {
   startDate: undefined,
   dueDate: undefined,
   executionSquad: undefined,
+  executionSquads: undefined,
 };
 
 export const useProjectDraftStore = createDraftStore<ProjectDraft>({

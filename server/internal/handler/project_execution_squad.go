@@ -8,6 +8,7 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"slices"
 	"sort"
 	"strings"
 
@@ -19,7 +20,7 @@ import (
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
-// ProjectExecutionSquad is a saved default, not a claim that its machine is
+// ProjectExecutionSquad is a saved execution choice, not a claim that its machine is
 // online. Live squad, agent and runtime availability remains independently read.
 type ProjectExecutionSquad struct {
 	State       string `json:"state"`
@@ -55,35 +56,61 @@ type projectSquadSelection struct {
 	Language string `json:"language,omitempty"`
 }
 
-func readProjectSquadSelection(data []byte) projectSquadSelection {
-	var selection projectSquadSelection
-	if len(data) == 0 || json.Unmarshal(data, &selection) != nil {
-		return projectSquadSelection{ProjectExecutionSquad: ProjectExecutionSquad{State: "none"}}
+// ProjectSquadChoices rejects null rather than treating malformed input as a clear.
+type ProjectSquadChoices []ConfigureProjectSquadRequest
+
+func (choices *ProjectSquadChoices) UnmarshalJSON(data []byte) error {
+	data = bytes.TrimSpace(data)
+	if len(data) == 0 || data[0] != '[' {
+		return errors.New("execution squads must be an array")
 	}
-	for _, id := range []string{selection.SquadID, selection.RuntimeID} {
-		var parsed pgtype.UUID
-		if id != "" && (parsed.Scan(id) != nil || !parsed.Valid) {
-			return projectSquadSelection{ProjectExecutionSquad: ProjectExecutionSquad{State: "none"}}
-		}
+	type requests ProjectSquadChoices
+	return json.Unmarshal(data, (*requests)(choices))
+}
+
+func readProjectSquadSelections(data []byte) []projectSquadSelection {
+	empty := []projectSquadSelection{}
+	data = bytes.TrimSpace(data)
+	if len(data) == 0 {
+		return empty
 	}
-	switch selection.State {
-	case "needs_runtime":
-		if selection.TemplateKey != "" {
-			return selection
-		}
-	case "configured":
-		if selection.SquadID != "" {
-			return selection
-		}
-	case "failed":
-		if selection.TemplateKey != "" || selection.SquadID != "" {
-			return selection
-		}
+	var entries []json.RawMessage
+	if data[0] == '{' {
+		entries = []json.RawMessage{data}
+	} else if json.Unmarshal(data, &entries) != nil {
+		return empty
 	}
-	return projectSquadSelection{
-		ProjectExecutionSquad: ProjectExecutionSquad{State: "none"},
-		Revision:              selection.Revision,
+	selections := make([]projectSquadSelection, 0, len(entries))
+	for _, entry := range entries {
+		var selection projectSquadSelection
+		if json.Unmarshal(entry, &selection) != nil {
+			return empty
+		}
+		for _, id := range []string{selection.SquadID, selection.RuntimeID} {
+			var parsed pgtype.UUID
+			if id != "" && (parsed.Scan(id) != nil || !parsed.Valid) {
+				return empty
+			}
+		}
+		switch selection.State {
+		case "needs_runtime":
+			if selection.TemplateKey == "" {
+				return empty
+			}
+		case "configured":
+			if selection.SquadID == "" {
+				return empty
+			}
+		case "failed":
+			if selection.TemplateKey == "" && selection.SquadID == "" {
+				return empty
+			}
+		default:
+			return empty
+		}
+		selections = append(selections, selection)
 	}
+	return selections
 }
 
 type projectSquadInput struct {
@@ -200,7 +227,66 @@ func sameProjectSquadChoice(a, b projectSquadSelection) bool {
 	return a.SquadID == b.SquadID
 }
 
+func (h *Handler) validateProjectSquadChoices(w http.ResponseWriter, r *http.Request, workspaceID pgtype.UUID, choices ProjectSquadChoices) ([]projectSquadInput, bool) {
+	if len(choices) == 0 {
+		// Clearing still requires the same membership and autonomy checks.
+		in, ok := h.validateProjectSquadChoice(w, r, workspaceID, ConfigureProjectSquadRequest{})
+		return []projectSquadInput{in}, ok
+	}
+	inputs := make([]projectSquadInput, 0, len(choices))
+	for _, choice := range choices {
+		in, ok := h.validateProjectSquadChoice(w, r, workspaceID, choice)
+		if !ok {
+			return nil, false
+		}
+		if in.Selection.State == "none" {
+			writeError(w, http.StatusBadRequest, "each execution squad requires template_key or squad_id")
+			return nil, false
+		}
+		for _, previous := range inputs {
+			if sameProjectSquadChoice(previous.Selection, in.Selection) {
+				writeError(w, http.StatusBadRequest, "duplicate execution squad selection")
+				return nil, false
+			}
+		}
+		inputs = append(inputs, in)
+	}
+	return inputs, true
+}
+
+func projectSquadSelections(inputs []projectSquadInput) []projectSquadSelection {
+	selections := make([]projectSquadSelection, 0, len(inputs))
+	for _, in := range inputs {
+		if in.Selection.State != "none" {
+			selections = append(selections, in.Selection)
+		}
+	}
+	return selections
+}
+
 func (h *Handler) ConfigureProjectSquad(w http.ResponseWriter, r *http.Request) {
+	var req *ConfigureProjectSquadRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req == nil {
+		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+	h.configureProjectSquadsResponse(w, r, ProjectSquadChoices{*req}, true)
+}
+
+func (h *Handler) ConfigureProjectSquads(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Squads ProjectSquadChoices `json:"squads"`
+	}
+	decoder := json.NewDecoder(r.Body)
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&req); err != nil || req.Squads == nil {
+		writeError(w, http.StatusBadRequest, "squads must be an array")
+		return
+	}
+	h.configureProjectSquadsResponse(w, r, req.Squads, false)
+}
+
+func (h *Handler) configureProjectSquadsResponse(w http.ResponseWriter, r *http.Request, choices ProjectSquadChoices, legacy bool) {
 	projectID, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "project id")
 	if !ok {
 		return
@@ -209,34 +295,41 @@ func (h *Handler) ConfigureProjectSquad(w http.ResponseWriter, r *http.Request) 
 	if !ok {
 		return
 	}
-	var req *ConfigureProjectSquadRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req == nil {
-		writeError(w, http.StatusBadRequest, "invalid request body")
-		return
+	var inputs []projectSquadInput
+	if legacy {
+		in, valid := h.validateProjectSquadChoice(w, r, workspaceID, choices[0])
+		if !valid {
+			return
+		}
+		inputs = []projectSquadInput{in}
+	} else {
+		var valid bool
+		inputs, valid = h.validateProjectSquadChoices(w, r, workspaceID, choices)
+		if !valid {
+			return
+		}
 	}
-	in, ok := h.validateProjectSquadChoice(w, r, workspaceID, *req)
-	if !ok {
-		return
-	}
-	project, staged, err := h.configureProjectSquad(r.Context(), projectID, workspaceID, in, "")
+	project, staged, err := h.configureProjectSquads(r.Context(), projectID, workspaceID, inputs, nil)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "project not found")
 			return
 		}
-		slog.WarnContext(r.Context(), "configure project execution squad failed", "project_id", uuidToString(projectID), "error", err)
-		writeError(w, http.StatusInternalServerError, "failed to save project execution squad")
+		slog.WarnContext(r.Context(), "configure project execution squads failed", "project_id", uuidToString(projectID), "error", err)
+		writeError(w, http.StatusInternalServerError, "failed to save project execution squads")
 		return
 	}
-	h.publishProjectSquadMaterialization(r.Context(), project, in, staged)
+	for i, materialized := range staged {
+		h.publishProjectSquadMaterialization(r.Context(), project, inputs[i], materialized)
+	}
 	resp := projectToResponse(project)
 	resp.IssueCount, resp.DoneCount = h.loadProjectIssueStats(r.Context(), workspaceID, projectID)
 	resp.ResourceCount = h.loadProjectResourceCount(r.Context(), projectID)
-	h.publish(protocol.EventProjectUpdated, uuidToString(workspaceID), in.ActorType, in.ActorID, map[string]any{"project": resp})
+	h.publish(protocol.EventProjectUpdated, uuidToString(workspaceID), inputs[0].ActorType, inputs[0].ActorID, map[string]any{"project": resp})
 	writeJSON(w, http.StatusOK, resp)
 }
 
-func (h *Handler) configureProjectSquad(ctx context.Context, projectID, workspaceID pgtype.UUID, in projectSquadInput, expectedRevision string) (db.Project, *squadTemplateProvisionResult, error) {
+func (h *Handler) configureProjectSquads(ctx context.Context, projectID, workspaceID pgtype.UUID, inputs []projectSquadInput, expected []projectSquadSelection) (db.Project, []*squadTemplateProvisionResult, error) {
 	tx, err := h.TxStarter.Begin(ctx)
 	if err != nil {
 		return db.Project{}, nil, err
@@ -247,45 +340,67 @@ func (h *Handler) configureProjectSquad(ctx context.Context, projectID, workspac
 	if err != nil {
 		return db.Project{}, nil, err
 	}
-	current := readProjectSquadSelection(project.ExecutionSquad)
-	if expectedRevision != "" && current.Revision != expectedRevision {
+	current := readProjectSquadSelections(project.ExecutionSquad)
+	if expected != nil && !slices.Equal(current, expected) {
 		return project, nil, nil
 	}
-	selection := in.Selection
-	if sameProjectSquadChoice(current, selection) && current.Revision != "" {
-		selection.Revision = current.Revision
-		selection.Language = current.Language
-		selection.SquadID = current.SquadID
+	if err := h.lockProjectSquadBatch(ctx, tx, workspaceID, inputs); err != nil {
+		return db.Project{}, nil, err
 	}
-	in.Selection = selection
-	var staged *squadTemplateProvisionResult
-	if selection.State != "none" && selection.State != "needs_runtime" {
-		// A failed SQL statement aborts its transaction. A savepoint lets us roll
-		// back all roster writes and still commit the selected failure state.
-		preparation, err := tx.Begin(ctx)
-		if err != nil {
-			return db.Project{}, nil, err
+	selections := make([]projectSquadSelection, 0, len(inputs))
+	staged := make([]*squadTemplateProvisionResult, len(inputs))
+	configuredIDs := make(map[string]bool)
+	for i, in := range inputs {
+		selection := in.Selection
+		if selection.State == "none" {
+			continue
 		}
-		squad, materialized, prepareErr := h.prepareProjectSquadInTx(ctx, preparation, project, in)
-		if prepareErr != nil {
-			if err := preparation.Rollback(ctx); err != nil {
+		for _, previous := range current {
+			if sameProjectSquadChoice(previous, selection) {
+				selection.Revision = previous.Revision
+				selection.Language = previous.Language
+				selection.SquadID = previous.SquadID
+				break
+			}
+		}
+		in.Selection = selection
+		if selection.State != "needs_runtime" {
+			// Each item owns a savepoint: one failed roster must not undo the
+			// successful choices or leave partial agents and skills behind.
+			preparation, err := tx.Begin(ctx)
+			if err != nil {
 				return db.Project{}, nil, err
 			}
-			selection.State = "failed"
-			selection.ErrorCode = projectSquadErrorCode(prepareErr)
-			slog.WarnContext(ctx, "project execution squad preparation failed", "project_id", uuidToString(projectID), "error_code", selection.ErrorCode, "error", prepareErr)
-		} else {
-			selection.State = "configured"
-			selection.SquadID = uuidToString(squad.ID)
-			selection.ErrorCode = ""
-			if err := preparation.Commit(ctx); err != nil {
-				return db.Project{}, nil, err
+			squad, materialized, prepareErr := h.prepareProjectSquadInTx(ctx, preparation, project, in)
+			if prepareErr != nil {
+				if err := preparation.Rollback(ctx); err != nil {
+					return db.Project{}, nil, err
+				}
+				selection.State = "failed"
+				selection.ErrorCode = projectSquadErrorCode(prepareErr)
+				slog.WarnContext(ctx, "project execution squad preparation failed", "project_id", uuidToString(projectID), "error_code", selection.ErrorCode, "error", prepareErr)
+			} else {
+				selection.State = "configured"
+				selection.SquadID = uuidToString(squad.ID)
+				selection.ErrorCode = ""
+				if err := preparation.Commit(ctx); err != nil {
+					return db.Project{}, nil, err
+				}
+				staged[i] = materialized
 			}
-			staged = materialized
 		}
+		if selection.State == "configured" {
+			// Selecting a template and its existing workspace instance offers
+			// the same squad twice. Keep the first resolved choice and order.
+			if configuredIDs[selection.SquadID] {
+				continue
+			}
+			configuredIDs[selection.SquadID] = true
+		}
+		selections = append(selections, selection)
 	}
-	if selection != current {
-		encoded, err := json.Marshal(selection)
+	if !slices.Equal(selections, current) || !bytes.HasPrefix(bytes.TrimSpace(project.ExecutionSquad), []byte("[")) {
+		encoded, err := json.Marshal(selections)
 		if err != nil {
 			return db.Project{}, nil, err
 		}
@@ -298,6 +413,43 @@ func (h *Handler) configureProjectSquad(ctx context.Context, projectID, workspac
 		return db.Project{}, nil, err
 	}
 	return project, staged, nil
+}
+
+func (h *Handler) lockProjectSquadBatch(ctx context.Context, tx pgx.Tx, workspaceID pgtype.UUID, inputs []projectSquadInput) error {
+	runtimes, templates := map[string]bool{}, map[string]bool{}
+	for _, in := range inputs {
+		if in.Selection.TemplateKey != "" && in.Selection.RuntimeID != "" {
+			runtimes[in.Selection.RuntimeID] = true
+			templates[in.Selection.TemplateKey] = true
+		}
+	}
+	ordered := func(keys map[string]bool) []string {
+		result := make([]string, 0, len(keys))
+		for key := range keys {
+			result = append(result, key)
+		}
+		sort.Strings(result)
+		return result
+	}
+	// Take every requested runtime before any agents, matching runtime teardown.
+	// A vanished runtime is handled as a per-choice preparation failure below.
+	qtx := h.Queries.WithTx(tx)
+	for _, id := range ordered(runtimes) {
+		if _, err := qtx.LockRuntimeForProjectSquad(ctx, db.LockRuntimeForProjectSquadParams{ID: parseUUID(id), WorkspaceID: workspaceID}); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			return err
+		}
+	}
+	// All template locks precede the shared role lock. Taking the role lock
+	// between templates deadlocks against a concurrent single-template request.
+	for _, key := range ordered(templates) {
+		if _, err := tx.Exec(ctx, "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", "squad-template:"+uuidToString(workspaceID)+":"+key); err != nil {
+			return err
+		}
+	}
+	if len(templates) > 0 {
+		return lockRoleSkillMaterialization(ctx, tx, workspaceID)
+	}
+	return nil
 }
 
 type projectSquadPreparationError string
@@ -453,16 +605,24 @@ func (h *Handler) loadInvocableProjectSquad(ctx context.Context, queries *db.Que
 	return squad, nil
 }
 
-func (h *Handler) prepareCreatedProjectSquad(ctx context.Context, project db.Project, in *projectSquadInput) db.Project {
-	if in == nil || in.Selection.State == "none" || in.Selection.State == "needs_runtime" {
+func (h *Handler) prepareCreatedProjectSquads(ctx context.Context, project db.Project, inputs []projectSquadInput) db.Project {
+	needsPreparation := false
+	for _, in := range inputs {
+		if in.Selection.State != "none" && in.Selection.State != "needs_runtime" {
+			needsPreparation = true
+		}
+	}
+	if !needsPreparation {
 		return project
 	}
-	prepared, staged, err := h.configureProjectSquad(ctx, project.ID, project.WorkspaceID, *in, in.Selection.Revision)
+	prepared, staged, err := h.configureProjectSquads(ctx, project.ID, project.WorkspaceID, inputs, projectSquadSelections(inputs))
 	if err != nil {
-		slog.WarnContext(ctx, "prepare saved project execution squad failed", "project_id", uuidToString(project.ID), "error", err)
+		slog.WarnContext(ctx, "prepare saved project execution squads failed", "project_id", uuidToString(project.ID), "error", err)
 		return project
 	}
-	h.publishProjectSquadMaterialization(ctx, prepared, *in, staged)
+	for i, materialized := range staged {
+		h.publishProjectSquadMaterialization(ctx, prepared, inputs[i], materialized)
+	}
 	return prepared
 }
 

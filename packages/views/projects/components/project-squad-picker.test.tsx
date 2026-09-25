@@ -47,6 +47,7 @@ vi.mock("../../agents/components/inspector/runtime-picker", () => ({
 }));
 
 import { ProjectSquadPicker } from "./project-squad-picker";
+import { ProjectSquadsPicker } from "./project-squads-picker";
 
 const RUNTIME: AgentRuntime = {
   id: "runtime-1", workspace_id: "ws-1", daemon_id: "machine-1", name: "Codex (machine-1)",
@@ -71,6 +72,14 @@ function Harness({ initial = { template_key: "feature-delivery" }, localDaemonId
   return <>
     <ProjectSquadPicker value={value} onChange={setValue} localDaemonId={localDaemonId} />
     <output aria-label="Saved choice">{JSON.stringify(value)}</output>
+  </>;
+}
+
+function MultiHarness({ initial = [{ template_key: "feature-delivery" }], localDaemonId }: { initial?: ConfigureProjectSquadRequest[]; localDaemonId?: string }) {
+  const [value, setValue] = useState(initial);
+  return <>
+    <ProjectSquadsPicker value={value} onChange={setValue} localDaemonId={localDaemonId} />
+    <output aria-label="Saved choices">{JSON.stringify(value)}</output>
   </>;
 }
 
@@ -158,5 +167,61 @@ describe("ProjectSquadPicker", () => {
     await user.click(await screen.findByRole("option", { name: "No execution squad" }));
     expect(screen.getByLabelText("Saved choice")).toHaveTextContent("{}");
     expect(screen.queryByLabelText("Runtime")).not.toBeInTheDocument();
+  });
+});
+
+describe("ProjectSquadsPicker", () => {
+  it("can defer an automatically suggested runtime without losing squads", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<MultiHarness />);
+    await user.click(await screen.findByRole("button", { name: "Connect later" }));
+    await user.click(screen.getByRole("button", { name: "Choose execution squads" }));
+    await user.click(screen.getByRole("checkbox", { name: /Bug triage/ }));
+    expect(JSON.parse(screen.getByLabelText("Saved choices").textContent!)).toEqual([
+      { template_key: "feature-delivery" }, { template_key: "bug-triage" },
+    ]);
+  });
+
+  it("does not select squads on another machine when choosing all", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<MultiHarness localDaemonId="other-machine" />);
+    await user.click(screen.getByRole("button", { name: "Choose execution squads" }));
+    expect(screen.getByRole("checkbox", { name: /My squad/ })).toHaveAttribute("aria-disabled", "true");
+    await user.click(screen.getByRole("button", { name: "Select all" }));
+    expect(JSON.parse(screen.getByLabelText("Saved choices").textContent!)).toEqual([
+      { template_key: "feature-delivery" }, { template_key: "bug-triage" },
+    ]);
+  });
+
+  it("explains squads and keeps multiple selections with their runtime", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<MultiHarness />);
+    expect(screen.getByText(/AI agents that plan, carry out, and review/)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Choose execution squads" }));
+    await user.click(screen.getByRole("checkbox", { name: /Bug triage/ }));
+    await waitFor(() => expect(JSON.parse(screen.getByLabelText("Saved choices").textContent!)).toEqual([
+      { template_key: "feature-delivery", runtime_id: "runtime-1" },
+      { template_key: "bug-triage", runtime_id: "runtime-1" },
+    ]));
+    expect(screen.getByRole("checkbox", { name: /Feature delivery/ })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: /Bug triage/ })).toBeChecked();
+  });
+
+  it("selects all available choices and retains an explicit empty selection", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<MultiHarness />);
+    await user.click(screen.getByRole("button", { name: "Choose execution squads" }));
+    await user.click(screen.getByRole("button", { name: "Select all" }));
+    await waitFor(() => expect(JSON.parse(screen.getByLabelText("Saved choices").textContent!)).toHaveLength(3));
+    await user.click(screen.getByRole("button", { name: "Clear" }));
+    expect(screen.getByLabelText("Saved choices")).toHaveTextContent("[]");
+    expect(screen.queryByLabelText("Runtime")).not.toBeInTheDocument();
+  });
+
+  it("preserves an unavailable saved choice until the user removes it", () => {
+    mocks.templates = [];
+    renderWithI18n(<MultiHarness initial={[{ template_key: "missing-template" }]} />);
+    expect(screen.getByLabelText("Saved choices")).toHaveTextContent("missing-template");
+    expect(screen.getByText(/This squad or template is unavailable/)).toBeInTheDocument();
   });
 });

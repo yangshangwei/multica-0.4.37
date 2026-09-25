@@ -30,6 +30,66 @@ describe("project execution API boundary", () => {
     const result = await new ApiClient(BASE).getProject(PROJECT.id);
     expect(result).toMatchObject({ id: PROJECT.id, start_date: null, resource_count: 0 });
     expect(result.execution_squad).toBeNull();
+    expect(result.execution_squads).toEqual([]);
+  });
+
+  it("normalizes a legacy default into the candidate list", async () => {
+    const execution_squad = { state: "configured", squad_id: "squad-1" };
+    respond({ ...PROJECT, execution_squad });
+    const result = await new ApiClient(BASE).getProject(PROJECT.id);
+    expect(result.execution_squads).toEqual([execution_squad]);
+  });
+
+  it("uses the first candidate as the default and preserves the order", async () => {
+    const execution_squads = [
+      { state: "configured", squad_id: "squad-1" },
+      { state: "needs_runtime", template_key: "review" },
+    ];
+    respond({ ...PROJECT, execution_squad: { state: "configured", squad_id: "old-default" }, execution_squads });
+    const result = await new ApiClient(BASE).getProject(PROJECT.id);
+    expect(result.execution_squads).toEqual(execution_squads);
+    expect(result.execution_squad).toEqual(execution_squads[0]);
+  });
+
+  it("keeps malformed candidates unavailable without dropping the valid candidates", async () => {
+    const valid = { state: "configured", squad_id: "squad-1" };
+    respond({ ...PROJECT, execution_squads: ["bad", valid, { state: "future_state" }] });
+    const result = await new ApiClient(BASE).getProject(PROJECT.id);
+    expect(result.execution_squads).toEqual([
+      { state: "failed", error_code: "invalid_configuration" }, valid,
+      { state: "failed", error_code: "invalid_configuration" },
+    ]);
+    expect(result.execution_squad?.state).toBe("failed");
+  });
+
+  it("does not restore a legacy default when the candidate list is explicitly empty", async () => {
+    respond({ ...PROJECT, execution_squad: { state: "configured", squad_id: "old-default" }, execution_squads: [] });
+    const result = await new ApiClient(BASE).getProject(PROJECT.id);
+    expect(result.execution_squads).toEqual([]);
+    expect(result.execution_squad).toBeNull();
+  });
+
+  it("fails closed for an unreadable candidate list", async () => {
+    respond({ ...PROJECT, execution_squads: "bad" });
+    const result = await new ApiClient(BASE).getProject(PROJECT.id);
+    expect(result.execution_squads).toEqual([{ state: "failed", error_code: "invalid_configuration" }]);
+  });
+
+  it("replaces all candidate squads within the captured workspace", async () => {
+    const execution_squads = [{ state: "configured", squad_id: "squad-1" }, { state: "needs_runtime", template_key: "review" }];
+    const request = respond({ ...PROJECT, execution_squads });
+    const squads = [{ squad_id: "squad-1" }, { template_key: "review" }];
+    const result = await new ApiClient(BASE).configureProjectSquads(PROJECT.id, squads, { workspaceId: "ws-1" });
+    expect(result.execution_squads).toEqual(execution_squads);
+    expect(request).toHaveBeenCalledWith(`${BASE}/api/projects/project-1/execution-squads`, expect.objectContaining({
+      method: "PUT", body: JSON.stringify({ squads }),
+      headers: expect.objectContaining({ "X-Workspace-ID": "ws-1", "X-Workspace-Slug": "" }),
+    }));
+  });
+
+  it("rejects a plural configuration response for another project", async () => {
+    respond({ ...PROJECT, id: "another-project", execution_squads: [] });
+    await expect(new ApiClient(BASE).configureProjectSquads(PROJECT.id, [], { workspaceId: "ws-1" })).rejects.toThrow();
   });
 
   it.each(["bad", { state: "configured", squad_id: 42 }, { state: "future_state" }])(
@@ -92,6 +152,15 @@ describe("project execution API boundary", () => {
     expect(request).toHaveBeenCalledWith(`${BASE}/api/projects`, expect.objectContaining({
       body: JSON.stringify(data), headers: expect.objectContaining({ "X-Workspace-ID": "ws-1" }),
     }));
+  });
+
+  it("submits every selected squad when creating a project", async () => {
+    const execution_squads = [{ state: "configured", squad_id: "squad-1" }, { state: "needs_runtime", template_key: "review" }];
+    const request = respond({ ...PROJECT, execution_squads }, 201);
+    const data = { title: "Launch", execution_squads: [{ squad_id: "squad-1" }, { template_key: "review" }] };
+    const result = await new ApiClient(BASE).createProject(data, { workspaceId: "ws-1" });
+    expect(result.execution_squads).toEqual(execution_squads);
+    expect(request).toHaveBeenCalledWith(`${BASE}/api/projects`, expect.objectContaining({ body: JSON.stringify(data) }));
   });
 
   it("pins project resource reads to the project workspace", async () => {

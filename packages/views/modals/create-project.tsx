@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useLayoutEffect } from "react";
-import { CalendarClock, CalendarDays, ChevronRight, FolderGit, FolderOpen, GitBranch, Maximize2, Minimize2, MoreHorizontal, Pencil, Search, X as XIcon, UserMinus } from "lucide-react";
+import { CalendarClock, CalendarDays, FolderGit, FolderOpen, GitBranch, Maximize2, Minimize2, MoreHorizontal, Pencil, Search, X as XIcon, UserMinus } from "lucide-react";
 
 /**
  * GitHub mark — lucide-react v1 dropped brand icons, so we inline the
@@ -73,7 +73,7 @@ import {
 } from "../projects/components/labels";
 import { ProjectStartDatePicker } from "../projects/components/project-start-date-picker";
 import { ProjectDueDatePicker } from "../projects/components/project-due-date-picker";
-import { ProjectSquadPicker } from "../projects/components/project-squad-picker";
+import { ProjectSquadsPicker } from "../projects/components/project-squads-picker";
 import { PillButton } from "../common/pill-button";
 import { githubShortLabel } from "../common/github-url";
 import {
@@ -172,16 +172,16 @@ export function CreateProjectModal({ onClose, data }: {
   const setDraft = useProjectDraftStore((s) => s.setDraft);
   const clearDraft = useProjectDraftStore((s) => s.clearDraft);
 
-  const [executionSquad, setExecutionSquad] = useState<ConfigureProjectSquadRequest>(() => {
+  const [executionSquads, setExecutionSquads] = useState<ConfigureProjectSquadRequest[]>(() => {
     if (typeof data?.squad_template_key === "string" && data.squad_template_key) {
-      return { template_key: data.squad_template_key };
+      return [{ template_key: data.squad_template_key }];
     }
     if (typeof data?.squad_id === "string" && data.squad_id) {
-      return { squad_id: data.squad_id };
+      return [{ squad_id: data.squad_id }];
     }
-    return draft.executionSquad === undefined
-      ? { template_key: DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY }
-      : draft.executionSquad ?? {};
+    if (draft.executionSquads !== undefined) return draft.executionSquads;
+    if (draft.executionSquad === undefined) return [{ template_key: DEFAULT_PROJECT_SQUAD_TEMPLATE_KEY }];
+    return draft.executionSquad?.template_key || draft.executionSquad?.squad_id ? [draft.executionSquad] : [];
   });
 
   const [title, setTitle] = useState(draft.title);
@@ -409,9 +409,8 @@ export function CreateProjectModal({ onClose, data }: {
         due_date: dueDate || undefined,
         // Server attaches these in the same transaction as the project.
         resources,
-        execution_squad: executionSquad.template_key
-          ? { ...executionSquad, language: templateLanguageFor(locale) }
-          : executionSquad,
+        execution_squads: executionSquads.map((choice) => choice.template_key
+          ? { ...choice, language: templateLanguageFor(locale) } : choice),
       });
       if (!submittedScope.active) return;
       // Flush delayed editor changes before comparing the singleton draft.
@@ -455,19 +454,16 @@ export function CreateProjectModal({ onClose, data }: {
         className={cn(
           "p-0 gap-0 flex flex-col overflow-hidden",
           "!top-1/2 !left-1/2 !-translate-x-1/2",
-          "!transition-all !duration-300 !ease-out",
+          "!transition-[width,height,max-width] !duration-200 !ease-out motion-reduce:!transition-none",
           isExpanded
-            ? "!max-w-4xl !w-full !h-5/6 !-translate-y-1/2"
-            : "!max-w-2xl !w-full !h-[min(42rem,85dvh)] !-translate-y-1/2",
+            ? "!max-w-4xl !w-[calc(100%-2rem)] !h-5/6 !-translate-y-1/2"
+            : "!max-w-2xl !w-[calc(100%-2rem)] !h-[min(46rem,90dvh)] !-translate-y-1/2",
         )}
       >
-        <DialogTitle className="sr-only">{t(($) => $.create_project.title)}</DialogTitle>
-
-        <div className="flex items-center justify-between px-5 pt-3 pb-2 shrink-0">
-          <div className="flex items-center gap-1.5 text-caption">
-            <span className="text-muted-foreground">{workspaceName}</span>
-            <ChevronRight className="size-3 text-faint-foreground" />
-            <span className="font-medium">{t(($) => $.create_project.title_breadcrumb)}</span>
+        <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-3 shrink-0">
+          <div className="min-w-0 space-y-1">
+            <DialogTitle className="text-title-lg font-semibold">{t(($) => $.create_project.title)}</DialogTitle>
+            <p className="truncate text-caption text-muted-foreground">{workspaceName}</p>
           </div>
           <div className="flex items-center gap-1">
             <Tooltip>
@@ -476,6 +472,7 @@ export function CreateProjectModal({ onClose, data }: {
                   <button
                     type="button"
                     onClick={() => setIsExpanded(!isExpanded)}
+                    aria-label={isExpanded ? t(($) => $.common.collapse_tooltip) : t(($) => $.common.expand_tooltip)}
                     className="rounded-sm p-1.5 opacity-70 hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
                   >
                     {isExpanded ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
@@ -494,6 +491,7 @@ export function CreateProjectModal({ onClose, data }: {
                   <button
                     type="button"
                     onClick={onClose}
+                    aria-label={t(($) => $.common.close)}
                     className="rounded-sm p-1.5 opacity-70 hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
                   >
                     <XIcon className="size-4" />
@@ -505,40 +503,46 @@ export function CreateProjectModal({ onClose, data }: {
           </div>
         </div>
 
-        <div className="px-5 pb-2 shrink-0">
-          <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
-            <PopoverTrigger
-              render={
-                <button
-                  type="button"
-                  className="text-display-sm cursor-pointer rounded-lg p-1 -ml-1 hover:bg-accent/60 transition-colors"
-                  title={t(($) => $.create_project.icon_tooltip)}
-                >
-                  {icon || "📁"}
-                </button>
-              }
-            />
-            <PopoverContent align="start" className="w-auto p-0">
-              <EmojiPicker
-                onSelect={(emoji) => {
-                  updateIcon(emoji);
-                  setIconPickerOpen(false);
-                }}
+        <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-5">
+          <div className="mb-4 space-y-2">
+            <p className="text-body font-medium">{t(($) => $.create_project.name_label)}</p>
+            <div className="flex items-center gap-3 rounded-lg border px-3 py-2 focus-within:border-ring focus-within:ring-1 focus-within:ring-ring">
+              <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
+                <PopoverTrigger
+                  render={
+                    <button
+                      type="button"
+                      className="shrink-0 text-title cursor-pointer rounded-md p-1 hover:bg-accent/60 transition-colors"
+                      title={t(($) => $.create_project.icon_tooltip)}
+                    >
+                      {icon || "📁"}
+                    </button>
+                  }
+                />
+                <PopoverContent align="start" className="w-auto p-0">
+                  <EmojiPicker
+                    onSelect={(emoji) => {
+                      updateIcon(emoji);
+                      setIconPickerOpen(false);
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
+              <TitleEditor
+                autoFocus
+                defaultValue={draft.title}
+                placeholder={t(($) => $.create_project.title_placeholder)}
+                className="min-w-0 flex-1 text-body-lg font-medium"
+                onChange={(v) => updateTitle(v)}
+                onSubmit={handleSubmit}
               />
-            </PopoverContent>
-          </Popover>
-          <TitleEditor
-            autoFocus
-            defaultValue={draft.title}
-            placeholder={t(($) => $.create_project.title_placeholder)}
-            className="text-title font-semibold"
-            onChange={(v) => updateTitle(v)}
-            onSubmit={handleSubmit}
-          />
-        </div>
-
-        <div className="flex-1 min-h-0 overflow-y-auto px-5">
-          <div className={cn("overflow-y-auto", isExpanded ? "h-48" : "h-24")}>
+            </div>
+          </div>
+          <div className="mb-2 flex items-center gap-2 text-body font-medium">
+            <span>{t(($) => $.create_project.description_label)}</span>
+            <span className="text-caption font-normal text-muted-foreground">{t(($) => $.create_project.optional)}</span>
+          </div>
+          <div className={cn("overflow-y-auto rounded-lg border px-3 py-2 focus-within:border-ring", isExpanded ? "h-40" : "h-20")}>
             <ContentEditor
               ref={descEditorRef}
               defaultValue={draft.description}
@@ -547,13 +551,10 @@ export function CreateProjectModal({ onClose, data }: {
               debounceMs={500}
             />
           </div>
-          <p className="mt-1 text-caption text-muted-foreground">
-            {t(($) => $.create_project.description_hint)}
-          </p>
-          <div className="mt-5 space-y-5 pb-4">
+          <div className="mt-4 space-y-4">
             <div role="group" aria-label={tProjects(($) => $.resources.section_header)} className="space-y-2">
               <div className="flex min-w-0 items-center justify-between gap-3">
-                <span className="text-caption font-medium">{tProjects(($) => $.resources.section_header)}</span>
+                <span className="text-body font-medium">{tProjects(($) => $.resources.section_header)} <span className="ml-1 text-caption font-normal text-muted-foreground">{t(($) => $.create_project.optional)}</span></span>
                 <Popover
                   open={repoPopoverOpen}
                   onOpenChange={(v) => {
@@ -575,7 +576,7 @@ export function CreateProjectModal({ onClose, data }: {
                           </>
                         ) : (
                           <>
-                            <GithubIcon className="size-3" />
+                            <RepoIcon kind={repoProvider.kind} className="size-3" />
                             <span>
                               {selectedRepos.length === 0
                                 ? t(($) => $.create_project.repos_pill)
@@ -848,11 +849,11 @@ export function CreateProjectModal({ onClose, data }: {
               </div>
               <p className="text-caption text-muted-foreground">{t(($) => $.create_project.resources_hint)}</p>
             </div>
-            <ProjectSquadPicker
-              value={executionSquad}
-              onChange={(choice) => {
-                setExecutionSquad(choice);
-                setDraft({ executionSquad: choice });
+            <ProjectSquadsPicker
+              value={executionSquads}
+              onChange={(choices) => {
+                setExecutionSquads(choices);
+                setDraft({ executionSquads: choices });
               }}
               localDaemonId={sourceMode === "local" && selectedLocalPath ? daemonStatus.daemonId : null}
               disabled={submitting}
@@ -863,204 +864,211 @@ export function CreateProjectModal({ onClose, data }: {
         {/* Property toolbar — mirrors the create-issue footer: a wrapping pill
             row whose low-frequency fields (start/due date) collapse into a ⋯
             overflow, with the primary action in a separate bar below. */}
-        <div className="flex items-center gap-1.5 px-4 py-2 shrink-0 flex-wrap">
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <PillButton>
-                  <span className={cn("size-2 rounded-full", PROJECT_STATUS_CONFIG[status].dotColor)} />
-                  <span>{projectStatusLabels[status]}</span>
-                </PillButton>
-              }
-            />
-            <DropdownMenuContent align="start" className="w-44">
-              {PROJECT_STATUS_ORDER.map((s) => (
-                <DropdownMenuItem key={s} onClick={() => updateStatus(s)}>
-                  <span className={cn("size-2 rounded-full", PROJECT_STATUS_CONFIG[s].dotColor)} />
-                  <span>{projectStatusLabels[s]}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <PillButton>
-                  <PriorityIcon priority={priority} />
-                  <span>{projectPriorityLabels[priority]}</span>
-                </PillButton>
-              }
-            />
-            <DropdownMenuContent align="start" className="w-44">
-              {PROJECT_PRIORITY_ORDER.map((pr) => (
-                <DropdownMenuItem key={pr} onClick={() => updatePriority(pr)}>
-                  <PriorityIcon priority={pr} />
-                  <span>{projectPriorityLabels[pr]}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Popover
-            open={leadOpen}
-            onOpenChange={(v) => {
-              setLeadOpen(v);
-              if (!v) setLeadFilter("");
-            }}
-          >
-            <PopoverTrigger
-              render={
-                <PillButton>
-                  {leadType && leadId ? (
-                    <>
-                      <ActorAvatar actorType={leadType} actorId={leadId} size="sm" showStatusDot />
-                      <span className="truncate">{leadLabel}</span>
-                    </>
-                  ) : (
-                    <span className="text-muted-foreground">{t(($) => $.create_project.lead)}</span>
-                  )}
-                </PillButton>
-              }
-            />
-            <PopoverContent align="start" className="w-52 p-0">
-              <div className="px-2 py-1.5 border-b">
-                <input
-                  type="text"
-                  value={leadFilter}
-                  onChange={(e) => setLeadFilter(e.target.value)}
-                  placeholder={t(($) => $.create_project.lead_placeholder)}
-                  className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
-                />
-              </div>
-              <div className="p-1 max-h-60 overflow-y-auto">
-                <button
-                  type="button"
-                  onClick={() => {
-                    updateLead(undefined, undefined);
-                    setLeadOpen(false);
-                  }}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-body hover:bg-accent transition-colors"
-                >
-                  <UserMinus className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-muted-foreground">{t(($) => $.create_project.no_lead)}</span>
-                </button>
-                {filteredMembers.length > 0 && (
-                  <>
-                    <div className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground uppercase tracking-wider">
-                      {t(($) => $.create_project.members_group)}
-                    </div>
-                    {filteredMembers.map((m) => (
-                      <button
-                        type="button"
-                        key={m.user_id}
-                        onClick={() => {
-                          updateLead("member", m.user_id);
-                          setLeadOpen(false);
-                        }}
-                        className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-body hover:bg-accent transition-colors"
-                      >
-                        <ActorAvatar actorType="member" actorId={m.user_id} size="sm" />
-                        <span>{m.name}</span>
-                      </button>
-                    ))}
-                  </>
-                )}
-                {filteredAgents.length > 0 && (
-                  <>
-                    <div className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground uppercase tracking-wider">
-                      {t(($) => $.create_project.agents_group)}
-                    </div>
-                    {filteredAgents.map((a) => (
-                      <button
-                        type="button"
-                        key={a.id}
-                        onClick={() => {
-                          updateLead("agent", a.id);
-                          setLeadOpen(false);
-                        }}
-                        className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-body hover:bg-accent transition-colors"
-                      >
-                        <ActorAvatar actorType="agent" actorId={a.id} size="sm" showStatusDot />
-                        <span>{a.name}</span>
-                      </button>
-                    ))}
-                  </>
-                )}
-                {filteredMembers.length === 0 &&
-                  filteredAgents.length === 0 &&
-                  leadFilter && (
-                    <div className="px-2 py-3 text-center text-body text-muted-foreground">
-                      {t(($) => $.create_project.no_results)}
-                    </div>
-                  )}
-              </div>
-            </PopoverContent>
-          </Popover>
-
-          {/* Start date — collapsed into ⋯ unless it has a value or was just
-              opened from the overflow (the calendar anchors on the inline pill). */}
-          {(startDate || startDatePickerOpen) && (
-            <ProjectStartDatePicker
-              startDate={startDate || null}
-              onUpdate={(u) => updateStartDate(u.start_date ?? "")}
-              triggerRender={<PillButton />}
-              open={startDatePickerOpen}
-              onOpenChange={setStartDatePickerOpen}
-            />
-          )}
-
-          {(dueDate || dueDatePickerOpen) && (
-            <ProjectDueDatePicker
-              dueDate={dueDate || null}
-              onUpdate={(u) => updateDueDate(u.due_date ?? "")}
-              triggerRender={<PillButton />}
-              open={dueDatePickerOpen}
-              onOpenChange={setDueDatePickerOpen}
-            />
-          )}
-
-          {/* Overflow — always the last child so it stays at the end of the
-              wrap flow. Only rendered while a date is still collapsible; when
-              both are set there is nothing left to add. */}
-          {(!startDate || !dueDate) && (
+        <div className="px-5 pb-3 shrink-0">
+          <p className="mb-2 text-caption text-muted-foreground">{t(($) => $.create_project.properties_label)} · {t(($) => $.create_project.optional)}</p>
+          <div className="flex items-center gap-1.5 flex-wrap">
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
-                  <PillButton aria-label={t(($) => $.create_project.more_options_aria)}>
-                    <MoreHorizontal className="size-3.5" />
+                  <PillButton>
+                    <span className={cn("size-2 rounded-full", PROJECT_STATUS_CONFIG[status].dotColor)} />
+                    <span>{projectStatusLabels[status]}</span>
                   </PillButton>
                 }
               />
-              <DropdownMenuContent align="start" className="w-auto">
-                {!dueDate && (
-                  <DropdownMenuItem onClick={() => setDueDatePickerOpen(true)}>
-                    <CalendarDays className="h-3.5 w-3.5" />
-                    {t(($) => $.create_project.set_due_date)}
+              <DropdownMenuContent align="start" className="w-44">
+                {PROJECT_STATUS_ORDER.map((s) => (
+                  <DropdownMenuItem key={s} onClick={() => updateStatus(s)}>
+                    <span className={cn("size-2 rounded-full", PROJECT_STATUS_CONFIG[s].dotColor)} />
+                    <span>{projectStatusLabels[s]}</span>
                   </DropdownMenuItem>
-                )}
-                {!startDate && (
-                  <DropdownMenuItem onClick={() => setStartDatePickerOpen(true)}>
-                    <CalendarClock className="h-3.5 w-3.5" />
-                    {t(($) => $.create_project.set_start_date)}
-                  </DropdownMenuItem>
-                )}
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
-          )}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={
+                  <PillButton>
+                    <PriorityIcon priority={priority} />
+                    <span>{projectPriorityLabels[priority]}</span>
+                  </PillButton>
+                }
+              />
+              <DropdownMenuContent align="start" className="w-44">
+                {PROJECT_PRIORITY_ORDER.map((pr) => (
+                  <DropdownMenuItem key={pr} onClick={() => updatePriority(pr)}>
+                    <PriorityIcon priority={pr} />
+                    <span>{projectPriorityLabels[pr]}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Popover
+              open={leadOpen}
+              onOpenChange={(v) => {
+                setLeadOpen(v);
+                if (!v) setLeadFilter("");
+              }}
+            >
+              <PopoverTrigger
+                render={
+                  <PillButton>
+                    {leadType && leadId ? (
+                      <>
+                        <ActorAvatar actorType={leadType} actorId={leadId} size="sm" showStatusDot />
+                        <span className="truncate">{leadLabel}</span>
+                      </>
+                    ) : (
+                      <span className="text-muted-foreground">{t(($) => $.create_project.lead)}</span>
+                    )}
+                  </PillButton>
+                }
+              />
+              <PopoverContent align="start" className="w-52 p-0">
+                <div className="px-2 py-1.5 border-b">
+                  <input
+                    type="text"
+                    value={leadFilter}
+                    onChange={(e) => setLeadFilter(e.target.value)}
+                    placeholder={t(($) => $.create_project.lead_placeholder)}
+                    className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
+                  />
+                </div>
+                <div className="p-1 max-h-60 overflow-y-auto">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      updateLead(undefined, undefined);
+                      setLeadOpen(false);
+                    }}
+                    className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-body hover:bg-accent transition-colors"
+                  >
+                    <UserMinus className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="text-muted-foreground">{t(($) => $.create_project.no_lead)}</span>
+                  </button>
+                  {filteredMembers.length > 0 && (
+                    <>
+                      <div className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground uppercase tracking-wider">
+                        {t(($) => $.create_project.members_group)}
+                      </div>
+                      {filteredMembers.map((m) => (
+                        <button
+                          type="button"
+                          key={m.user_id}
+                          onClick={() => {
+                            updateLead("member", m.user_id);
+                            setLeadOpen(false);
+                          }}
+                          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-body hover:bg-accent transition-colors"
+                        >
+                          <ActorAvatar actorType="member" actorId={m.user_id} size="sm" />
+                          <span>{m.name}</span>
+                        </button>
+                      ))}
+                    </>
+                  )}
+                  {filteredAgents.length > 0 && (
+                    <>
+                      <div className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground uppercase tracking-wider">
+                        {t(($) => $.create_project.agents_group)}
+                      </div>
+                      {filteredAgents.map((a) => (
+                        <button
+                          type="button"
+                          key={a.id}
+                          onClick={() => {
+                            updateLead("agent", a.id);
+                            setLeadOpen(false);
+                          }}
+                          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-body hover:bg-accent transition-colors"
+                        >
+                          <ActorAvatar actorType="agent" actorId={a.id} size="sm" showStatusDot />
+                          <span>{a.name}</span>
+                        </button>
+                      ))}
+                    </>
+                  )}
+                  {filteredMembers.length === 0 &&
+                    filteredAgents.length === 0 &&
+                    leadFilter && (
+                      <div className="px-2 py-3 text-center text-body text-muted-foreground">
+                        {t(($) => $.create_project.no_results)}
+                      </div>
+                    )}
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Start date — collapsed into ⋯ unless it has a value or was just
+                opened from the overflow (the calendar anchors on the inline pill). */}
+            {(startDate || startDatePickerOpen) && (
+              <ProjectStartDatePicker
+                startDate={startDate || null}
+                onUpdate={(u) => updateStartDate(u.start_date ?? "")}
+                triggerRender={<PillButton />}
+                open={startDatePickerOpen}
+                onOpenChange={setStartDatePickerOpen}
+              />
+            )}
+
+            {(dueDate || dueDatePickerOpen) && (
+              <ProjectDueDatePicker
+                dueDate={dueDate || null}
+                onUpdate={(u) => updateDueDate(u.due_date ?? "")}
+                triggerRender={<PillButton />}
+                open={dueDatePickerOpen}
+                onOpenChange={setDueDatePickerOpen}
+              />
+            )}
+
+            {/* Overflow — always the last child so it stays at the end of the
+                wrap flow. Only rendered while a date is still collapsible; when
+                both are set there is nothing left to add. */}
+            {(!startDate || !dueDate) && (
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <PillButton aria-label={t(($) => $.create_project.more_options_aria)}>
+                      <MoreHorizontal className="size-3.5" />
+                    </PillButton>
+                  }
+                />
+                <DropdownMenuContent align="start" className="w-auto">
+                  {!dueDate && (
+                    <DropdownMenuItem onClick={() => setDueDatePickerOpen(true)}>
+                      <CalendarDays className="h-3.5 w-3.5" />
+                      {t(($) => $.create_project.set_due_date)}
+                    </DropdownMenuItem>
+                  )}
+                  {!startDate && (
+                    <DropdownMenuItem onClick={() => setStartDatePickerOpen(true)}>
+                      <CalendarClock className="h-3.5 w-3.5" />
+                      {t(($) => $.create_project.set_start_date)}
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
         </div>
 
         {/* Footer action bar — primary action in its own strip, matching
             create-issue. */}
-        <div className="flex items-center justify-end border-t px-4 py-3 shrink-0">
-          <Button
-            size="sm"
-            onClick={handleSubmit}
-            disabled={!title.trim() || submitting}
-            className="shrink-0"
-          >
-            {submitting ? t(($) => $.create_project.submitting) : t(($) => $.create_project.submit)}
-          </Button>
+        <div className="flex items-center justify-between gap-3 border-t px-5 py-4 shrink-0">
+          <p className="text-caption text-muted-foreground">{t(($) => $.create_project.after_create_hint)}</p>
+          <div className="flex shrink-0 items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={onClose} disabled={submitting}>{t(($) => $.common.cancel)}</Button>
+            <Button
+              size="sm"
+              onClick={handleSubmit}
+              disabled={!title.trim() || submitting}
+              className="shrink-0"
+            >
+              {submitting ? t(($) => $.create_project.submitting) : t(($) => $.create_project.submit)}
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

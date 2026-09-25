@@ -109,13 +109,13 @@ vi.mock("../editor", () => {
 
 // The picker owns eligibility and runtime selection coverage. These assertions
 // pin the modal's prefill, draft, and create-request wiring at its boundary.
-vi.mock("../projects/components/project-squad-picker", () => ({
-  ProjectSquadPicker: ({ value, onChange }: {
-    value: Record<string, unknown>;
-    onChange: (value: Record<string, unknown>) => void;
+vi.mock("../projects/components/project-squads-picker", () => ({
+  ProjectSquadsPicker: ({ value, onChange }: {
+    value: Record<string, unknown>[];
+    onChange: (value: Record<string, unknown>[]) => void;
   }) => <div>
     <output aria-label="Execution squad">{JSON.stringify(value)}</output>
-    <button onClick={() => onChange({})}>Choose no squad</button>
+    <button onClick={() => onChange([])}>Choose no squad</button>
   </div>,
 }));
 
@@ -325,7 +325,7 @@ describe("CreateProjectModal", () => {
     await user.click(screen.getByRole("button", { name: "Create Project" }));
 
     await waitFor(() => expect(mocks.createProject).toHaveBeenCalledWith(expect.objectContaining({
-      title: "Release", execution_squad: { template_key: "feature-delivery", language: "en" },
+      title: "Release", execution_squads: [{ template_key: "feature-delivery", language: "en" }],
     })));
     expect(mocks.push).toHaveBeenCalledWith("/test-workspace/projects/project-1");
     expect(onClose).toHaveBeenCalledOnce();
@@ -337,19 +337,30 @@ describe("CreateProjectModal", () => {
   ])("honours a catalog prefill before a retained draft: %j", (data, expected) => {
     mocks.draft.executionSquad = { template_key: "feature-delivery", runtime_id: "old-runtime" };
     renderWithI18n(<CreateProjectModal data={data} onClose={vi.fn()} />);
-    expect(JSON.parse(screen.getByLabelText("Execution squad").textContent!)).toEqual(expected);
+    expect(JSON.parse(screen.getByLabelText("Execution squad").textContent!)).toEqual([expected]);
   });
 
   it("persists an explicit no-squad choice instead of reinstating the default", async () => {
     const user = userEvent.setup();
     mocks.draft.executionSquad = null;
     renderWithI18n(<CreateProjectModal onClose={vi.fn()} />);
-    expect(screen.getByLabelText("Execution squad")).toHaveTextContent("{}");
+    expect(screen.getByLabelText("Execution squad")).toHaveTextContent("[]");
     await user.click(screen.getByRole("button", { name: "Choose no squad" }));
     await user.type(screen.getByPlaceholderText("Project title"), "Solo");
     await user.click(screen.getByRole("button", { name: "Create Project" }));
-    expect(mocks.setDraft).toHaveBeenCalledWith({ executionSquad: {} });
-    expect(mocks.createProject).toHaveBeenCalledWith(expect.objectContaining({ execution_squad: {} }));
+    expect(mocks.setDraft).toHaveBeenCalledWith({ executionSquads: [] });
+    expect(mocks.createProject).toHaveBeenCalledWith(expect.objectContaining({ execution_squads: [] }));
+  });
+
+  it("restores and submits every retained squad in order", async () => {
+    const user = userEvent.setup();
+    mocks.draft.executionSquads = [{ template_key: "feature-delivery" }, { squad_id: "squad-2" }];
+    renderWithI18n(<CreateProjectModal onClose={vi.fn()} />);
+    await user.type(screen.getByPlaceholderText("Project title"), "Multi squad project");
+    await user.click(screen.getByRole("button", { name: "Create Project" }));
+    expect(mocks.createProject).toHaveBeenCalledWith(expect.objectContaining({ execution_squads: [
+      { template_key: "feature-delivery", language: "en" }, { squad_id: "squad-2" },
+    ] }));
   });
 
   it("opens the created project when preparation failed so it can be retried there", async () => {

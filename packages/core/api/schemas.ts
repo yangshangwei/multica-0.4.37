@@ -1338,7 +1338,9 @@ export const ProjectExecutionSquadSchema = z.object({
   error_code: z.string().nullable().optional(),
 }).loose();
 
-export const ProjectSchema = z.object({
+const invalidProjectSquad = { state: "failed" as const, error_code: "invalid_configuration" };
+
+const ProjectObjectSchema = z.object({
   id: z.string().trim().min(1),
   workspace_id: z.string().trim().min(1),
   title: z.string(),
@@ -1358,10 +1360,18 @@ export const ProjectSchema = z.object({
   issue_count: z.number().default(0),
   done_count: z.number().default(0),
   resource_count: z.number().default(0),
-  execution_squad: ProjectExecutionSquadSchema.nullable().default(null).catch({
-    state: "failed", error_code: "invalid_configuration",
-  }),
+  execution_squad: ProjectExecutionSquadSchema.nullable().default(null).catch(invalidProjectSquad),
+  execution_squads: z.array(ProjectExecutionSquadSchema.catch(invalidProjectSquad))
+    .nullish().catch([invalidProjectSquad]),
 }).loose();
+
+function normalizeProjectSquads<T extends z.infer<typeof ProjectObjectSchema>>(project: T) {
+  const execution_squads = project.execution_squads ??
+    (project.execution_squad && project.execution_squad.state !== "none" ? [project.execution_squad] : []);
+  return { ...project, execution_squads, execution_squad: execution_squads[0] ?? null };
+}
+
+export const ProjectSchema = ProjectObjectSchema.transform(normalizeProjectSquads);
 
 export const ListProjectsResponseSchema = z.object({
   projects: z.array(ProjectSchema).default([]),
@@ -1396,10 +1406,10 @@ export const ListProjectResourcesResponseSchema = z.object({
   total: z.number().default(0),
 }).loose();
 
-const SearchProjectResultSchema = ProjectSchema.extend({
+const SearchProjectResultSchema = ProjectObjectSchema.extend({
   match_source: z.string(),
   matched_snippet: z.string().optional(),
-}).loose();
+}).loose().transform(normalizeProjectSquads);
 
 export const SearchProjectsResponseSchema = z.object({
   projects: z.array(SearchProjectResultSchema).default([]),
