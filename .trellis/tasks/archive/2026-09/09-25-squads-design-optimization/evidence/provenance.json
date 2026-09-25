@@ -1,0 +1,26 @@
+{
+  "source_checkout": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "commit": "182d3bc9eb00baee5ad8a5b550e54bf039181233",
+  "web_mode": "production",
+  "web_url": "http://localhost:13593",
+  "api_url": "http://localhost:18572",
+  "web_build_id": "0uc6kjsQ0QwsFzvF8vSya",
+  "build_command": "make env-exec ARGS=\"-- pnpm --dir .omx/squads-design-validation/source/apps/web build\"",
+  "start_command": "make env-exec ARGS=\"-- env NEXT_PUBLIC_API_URL= NEXT_PUBLIC_WS_URL= REMOTE_API_URL=http://localhost:18572 pnpm --dir .omx/squads-design-validation/source/apps/web exec next start --port 13593\"",
+  "api_health": {
+    "status": "ok",
+    "pid": 85435,
+    "commit": "182d3bc9e",
+    "started_at": "2026-09-25T11:10:29Z"
+  },
+  "product_source_sha256": {
+    "packages/core/squads/stores/view-store.ts": "a56ab60bb7cb6689eed3cb2a5959b92b4fe9cd36451212b3c06f64f4bc35599c",
+    "packages/views/squads/components/squads-page.tsx": "b26da2dba7093840619b8063700aece88831ada0e50b6e1acc5f1e7549b065c0",
+    "packages/views/squads/components/builtin-squad-catalog.tsx": "f71637742818d91ef03fa6ae8f9e4c15f6f773eead32d88bb498dd3ce279ab64",
+    "packages/views/locales/en/squads.json": "07cfa7e9c9c2b0e7f3c37d7bf101297ea8b2e1165b97e722f537807f29b5cabd",
+    "packages/views/locales/zh-Hans/squads.json": "5034b37b7314b0b6a023cd16febae01207cbd2bfe379ec2a1b20459dc188c2a9",
+    "packages/views/locales/ja/squads.json": "e44975468666efe487af572ee79a76171dfbcf211fc0c937a6727e9f66b2095e",
+    "packages/views/locales/ko/squads.json": "73eb8bd054e40311d326872606a836ce606135ef0b40e9dfe1f6854a5aaf42f1"
+  },
+  "snapshot_verified_against_working_sources": true
+}
