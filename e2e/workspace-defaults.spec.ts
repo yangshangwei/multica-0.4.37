@@ -113,13 +113,12 @@ test.describe("workspace built-in defaults", () => {
     try {
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.goto(`/${workspace.slug}/squads`);
-      await expect(page.getByRole("heading", { name: /built-in/i })).toBeVisible();
-      const catalogToggle = page.getByRole("region", { name: "Built-in squads" }).getByRole("button", { name: /^Built-in squads/ });
-      await expect(catalogToggle).toHaveAttribute("aria-expanded", "false");
+      await expect(page.getByRole("tab", { name: "Workspace squads" })).toHaveAttribute("aria-selected", "true");
       await expect(page.getByText("Feature Delivery Squad", { exact: true })).toHaveCount(0);
-      await catalogToggle.click();
-      await expect(catalogToggle).toHaveAttribute("aria-expanded", "true");
-      await expect(page.getByText("Feature Delivery Squad", { exact: true }).first()).toBeVisible();
+      await page.getByRole("tab", { name: "Squad templates" }).click();
+      await expect(page.getByRole("tab", { name: "Squad templates" })).toHaveAttribute("aria-selected", "true");
+      await expect(page.getByRole("region", { name: "Squad templates" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Feature Delivery Squad", exact: true })).toBeVisible();
       await page.screenshot({ path: info.outputPath("builtin-squads-desktop.png"), animations: "disabled" });
       await page.goto(`/${workspace.slug}/skills`);
       await expect(page.getByRole("heading", { name: /built-in/i })).toBeVisible();

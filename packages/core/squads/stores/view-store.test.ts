@@ -100,4 +100,28 @@ describe("useSquadsViewStore", () => {
     expect(useSquadsViewStore.getState().scope).toBe("mine");
     expect(localStorage.getItem("multica_squads_view:acme")).not.toBeNull();
   });
+
+  it("preserves saved column choices and uses roster-focused defaults in a new workspace", async () => {
+    localStorage.setItem(
+      "multica_squads_view:acme",
+      JSON.stringify({ state: { hiddenColumns: ["created"] }, version: 0 }),
+    );
+
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useSquadsViewStore.getState().hiddenColumns).toEqual(["created"]);
+
+    setCurrentWorkspace("beta", "ws_b");
+    await flush();
+    await flush();
+    expect(useSquadsViewStore.getState().hiddenColumns).toEqual(["creator", "created"]);
+    useSquadsViewStore.getState().toggleColumn("creator");
+    expect(useSquadsViewStore.getState().hiddenColumns).toEqual(["created"]);
+
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useSquadsViewStore.getState().hiddenColumns).toEqual(["created"]);
+  });
 });

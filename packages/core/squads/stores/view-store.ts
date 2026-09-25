@@ -37,11 +37,9 @@ export const SQUAD_SORT_DEFAULT_DIRECTION: Record<
 // are always visible.
 export type SquadColumnKey = "members" | "creator" | "created";
 
-/** Created (date) is opt-in. Creator ("Created by") is shown by default —
- *  the user wants to see who made each squad. Note it's "Created by", NOT
- *  "Owner": the squad creator holds no management rights (archiving is
- *  workspace-admin only), so labelling it Owner would mislead. */
-export const SQUAD_DEFAULT_HIDDEN_COLUMNS: SquadColumnKey[] = ["created"];
+/** Provenance is opt-in so the default view emphasizes the working roster.
+ * Existing persisted column preferences remain unchanged. */
+export const SQUAD_DEFAULT_HIDDEN_COLUMNS: SquadColumnKey[] = ["creator", "created"];
 
 /** Multi-select filters — the categorical columns (leader, creator). Empty
  *  array per dimension = inactive. */

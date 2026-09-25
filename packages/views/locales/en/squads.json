@@ -2,7 +2,7 @@
   "page": {
     "title": "Squads",
     "new_button": "New Squad",
-    "template_button": "Use a template",
+    "template_button": "Create from template",
     "empty_no_squads": "No squads yet. Create one to get started.",
     "empty_no_match": "No squads match your filters.",
     "table": {
@@ -15,7 +15,13 @@
     "no_matches": "No squads match",
     "row_menu": "Squad actions",
     "archive_action": "Archive",
-    "list_error": "Could not load squads."
+    "list_error": "Could not load squads.",
+    "tabs": {
+      "workspace": "Workspace squads",
+      "templates": "Squad templates"
+    },
+    "custom_button": "Create custom squad",
+    "sort_name": "Name"
   },
   "inspector": {
     "details_section": "Details",
@@ -132,7 +138,7 @@
     "placeholder": "e.g. Always start by writing a failing test. Prefer small, atomic commits."
   },
   "scope": {
-    "mine": "Mine",
+    "mine": "Created by me",
     "all": "All"
   },
   "toolbar": {
@@ -148,14 +154,24 @@
     "clear_filters": "Clear filters"
   },
   "catalog": {
-    "title": "Built-in squads",
-    "description": "Choose a roster for a new or existing project.",
-    "loading": "Loading built-in squads...",
-    "error": "Could not load built-in squads.",
-    "empty": "No built-in squads are available.",
+    "title": "Squad templates",
+    "description": "Choose a workflow and apply it to a new or existing project.",
+    "loading": "Loading squad templates...",
+    "error": "Could not load squad templates.",
+    "empty": "No squad templates are available.",
     "retry": "Retry",
-    "use_for_project": "Use for project",
-    "open_instance": "Open squad"
+    "use_for_project": "Apply to project",
+    "existing_squads": "In workspace:",
+    "summaries": {
+      "feature_delivery": "Take a feature from requirements through implementation and review.",
+      "bug_fix": "Reproduce a bug, find its cause, and verify the fix with regression tests.",
+      "review_gate": "Review a finished change for correctness, security, and test coverage.",
+      "discovery": "Clarify a request and assess feasibility before committing to implementation.",
+      "docs": "Keep release notes, API docs, and runbooks aligned with shipped code.",
+      "maintenance": "Upgrade dependencies and resolve security advisories or flaky tests.",
+      "release": "Verify a release and prepare its notes and rollback before human approval.",
+      "incident": "Restore service, verify recovery, then investigate the root cause."
+    }
   },
   "use_for_project": {
     "title": "Use {{name}} for a project",

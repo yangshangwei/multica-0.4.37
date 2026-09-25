@@ -64,6 +64,22 @@ const LEGACY_WORKSPACE_TAB_REDIRECTS: Record<string, string> = {
 
 ## Props Conventions
 
+### Squad discovery and template identity
+
+The squad page keeps workspace instances separate from the template catalog.
+`?view=templates` opens the catalog; the default URL opens saved squads. Preserve
+unrelated query parameters and the hash when replacing the current view. A
+template-instance link must return to the catalog through browser Back.
+
+Match instances by `template_key`, never by the editable squad name. Concise
+catalog summaries are display copy only: pass the original template into project
+configuration and keep saved names, descriptions, and instructions untouched.
+Use `AppLink` with `rowLinkInteractiveProps` inside clickable rows so keyboard
+activation and modifier clicks do not invoke the row navigation fallback twice.
+
+Column defaults apply to fresh preferences. Do not migrate an existing
+`hiddenColumns` array when changing which provenance columns are initially shown.
+
 <!-- How props should be defined and typed -->
 
 (To be filled by the team)

@@ -2,7 +2,7 @@
   "page": {
     "title": "AI小队",
     "new_button": "新建AI小队",
-    "template_button": "使用模板",
+    "template_button": "从模板创建",
     "empty_no_squads": "还没有AI小队，创建一个开始吧。",
     "empty_no_match": "没有匹配筛选条件的AI小队。",
     "table": {
@@ -15,7 +15,13 @@
     "no_matches": "没有匹配的AI小队",
     "row_menu": "AI小队操作",
     "archive_action": "归档",
-    "list_error": "无法加载AI小队。"
+    "list_error": "无法加载AI小队。",
+    "tabs": {
+      "workspace": "工作区AI小队",
+      "templates": "AI小队模板"
+    },
+    "custom_button": "自定义创建",
+    "sort_name": "名称"
   },
   "inspector": {
     "details_section": "详情",
@@ -129,7 +135,7 @@
     "placeholder": "例如：始终先编写失败测试。提交应保持小而独立。"
   },
   "scope": {
-    "mine": "我的",
+    "mine": "我创建的",
     "all": "全部"
   },
   "toolbar": {
@@ -144,14 +150,24 @@
     "clear_filters": "清除筛选"
   },
   "catalog": {
-    "title": "内置AI小队",
-    "description": "为新项目或已有项目选择AI小队。",
-    "loading": "正在加载内置AI小队...",
-    "error": "无法加载内置AI小队。",
-    "empty": "暂无内置AI小队。",
+    "title": "AI小队模板",
+    "description": "选择适合的工作流程，应用到新项目或已有项目。",
+    "loading": "正在加载AI小队模板...",
+    "error": "无法加载AI小队模板。",
+    "empty": "暂无可用的AI小队模板。",
     "retry": "重试",
-    "use_for_project": "用于项目",
-    "open_instance": "打开AI小队"
+    "use_for_project": "应用到项目",
+    "existing_squads": "已有AI小队：",
+    "summaries": {
+      "feature_delivery": "从需求澄清到实现、测试和审查，完成新功能交付。",
+      "bug_fix": "复现缺陷、定位原因，通过回归测试验证修复。",
+      "review_gate": "审查已完成的改动，检查正确性、安全性和测试覆盖。",
+      "discovery": "在投入开发前澄清需求，评估可行性和成本。",
+      "docs": "为已交付的改动同步发布说明、API 文档和运维手册。",
+      "maintenance": "升级依赖，处理安全公告和不稳定测试。",
+      "release": "验证待发布版本，备好发布说明和回滚方案，等待人工审批。",
+      "incident": "先恢复服务并验证恢复情况，再调查根因。"
+    }
   },
   "use_for_project": {
     "title": "将{{name}}用于项目",

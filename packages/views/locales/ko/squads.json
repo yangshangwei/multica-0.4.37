@@ -2,7 +2,7 @@
   "page": {
     "title": "스쿼드",
     "new_button": "새 스쿼드",
-    "template_button": "템플릿 사용",
+    "template_button": "템플릿으로 만들기",
     "empty_no_squads": "아직 스쿼드가 없습니다. 하나 만들어 시작하세요.",
     "empty_no_match": "필터와 일치하는 스쿼드가 없습니다.",
     "table": {
@@ -15,7 +15,13 @@
     "no_matches": "일치하는 스쿼드가 없습니다",
     "row_menu": "스쿼드 작업",
     "archive_action": "보관",
-    "list_error": "스쿼드를 불러올 수 없습니다."
+    "list_error": "스쿼드를 불러올 수 없습니다.",
+    "tabs": {
+      "workspace": "워크스페이스 스쿼드",
+      "templates": "스쿼드 템플릿"
+    },
+    "custom_button": "사용자 지정 스쿼드 만들기",
+    "sort_name": "이름"
   },
   "inspector": {
     "details_section": "세부 정보",
@@ -129,7 +135,7 @@
     "placeholder": "예: 항상 실패하는 테스트부터 작성합니다. 커밋은 작고 독립적으로 유지합니다."
   },
   "scope": {
-    "mine": "내 스쿼드",
+    "mine": "내가 만든 스쿼드",
     "all": "전체"
   },
   "toolbar": {
@@ -144,14 +150,24 @@
     "clear_filters": "필터 지우기"
   },
   "catalog": {
-    "title": "기본 스쿼드",
-    "description": "새 프로젝트나 기존 프로젝트에 사용할 구성을 선택하세요.",
-    "loading": "기본 스쿼드 불러오는 중...",
-    "error": "기본 스쿼드를 불러올 수 없습니다.",
-    "empty": "사용 가능한 기본 스쿼드가 없습니다.",
+    "title": "스쿼드 템플릿",
+    "description": "워크플로를 선택해 새 프로젝트나 기존 프로젝트에 적용하세요.",
+    "loading": "스쿼드 템플릿을 불러오는 중...",
+    "error": "스쿼드 템플릿을 불러올 수 없습니다.",
+    "empty": "사용할 수 있는 스쿼드 템플릿이 없습니다.",
     "retry": "다시 시도",
-    "use_for_project": "프로젝트에 사용",
-    "open_instance": "스쿼드 열기"
+    "use_for_project": "프로젝트에 적용",
+    "existing_squads": "생성된 스쿼드:",
+    "summaries": {
+      "feature_delivery": "요구사항 정리부터 구현, 테스트, 리뷰까지 새 기능을 완성합니다.",
+      "bug_fix": "버그를 재현하고 원인을 찾아 회귀 테스트로 수정을 검증합니다.",
+      "review_gate": "완성된 변경의 정확성, 보안, 테스트 커버리지를 검토합니다.",
+      "discovery": "구현에 착수하기 전에 요청을 명확히 하고 실현 가능성과 비용을 검토합니다.",
+      "docs": "릴리스 노트, API 문서, 운영 절차를 배포된 코드에 맞춥니다.",
+      "maintenance": "의존성을 업그레이드하고 보안 권고와 불안정한 테스트를 처리합니다.",
+      "release": "릴리스를 검증하고 노트와 롤백을 준비한 뒤 사람의 승인을 기다립니다.",
+      "incident": "서비스를 복구하고 정상 동작을 확인한 뒤 근본 원인을 조사합니다."
+    }
   },
   "use_for_project": {
     "title": "{{name}}을(를) 프로젝트에 사용",
