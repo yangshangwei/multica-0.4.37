@@ -121,7 +121,10 @@ test.describe("workspace built-in defaults", () => {
       await expect(page.getByRole("heading", { name: "Feature Delivery Squad", exact: true })).toBeVisible();
       await page.screenshot({ path: info.outputPath("builtin-squads-desktop.png"), animations: "disabled" });
       await page.goto(`/${workspace.slug}/skills`);
-      await expect(page.getByRole("heading", { name: /built-in/i })).toBeVisible();
+      // Built-in skills moved from the inline catalog into the skill templates entry.
+      const skillTemplates = page.getByRole("region", { name: "Skill templates" });
+      await expect(skillTemplates.getByRole("button", { name: "Browse templates" })).toBeVisible();
+      await expect(skillTemplates.getByText(/Platform [1-9]/)).toBeVisible();
       // Built-in agent roles moved into the create flow's role-template picker.
       await page.goto(`/${workspace.slug}/agents/new/template`);
       await expect(page.getByRole("heading", { name: "Start from a role template", exact: true })).toBeVisible();
