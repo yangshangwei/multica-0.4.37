@@ -264,22 +264,26 @@ test("creates the reporter from the Chinese catalog and reopens its ordinary age
   const { templates } = await api.requestJSON<{ templates: RoleTemplate[] }>("/api/agents/templates?language=zh");
   const role = requiredTemplate(templates, ROLE_KEY);
 
-  await page.goto(`/${slug}/agents`);
-  await page.getByRole("button", { name: /^内置智能体\s+\d+$/ }).click();
+  // The built-in role catalog now lives in the create flow's role picker.
+  await page.goto(`/${slug}/agents/new/template`);
+  await expect(page.getByRole("heading", { name: "从角色模板开始", exact: true })).toBeVisible();
   const row = page.getByRole("listitem", { name: ROLE_NAME, exact: true });
   await expect(row).toBeVisible();
-  await expect(row.getByRole("button", { name: "打开智能体", exact: true })).toHaveCount(0);
+  // Zero-instance state: no "open agent" link yet, only the create/view action.
+  await expect(row.getByText("尚未从此模板创建智能体。", { exact: true })).toBeVisible();
+  await expect(row.getByRole("link", { name: `打开 ${ROLE_NAME}`, exact: true })).toHaveCount(0);
   await row.scrollIntoViewIfNeeded();
   await capture(page, testInfo, "builtin-reporter-catalog-1440");
-  await row.getByRole("button", { name: "查看模板", exact: true }).click();
+  // Entering the role shows its read-only role instructions.
+  await row.getByRole("link", { name: "创建智能体", exact: true }).click();
   await page.waitForURL((url) => url.searchParams.get("template") === ROLE_KEY);
   await expect(page.getByText("角色指令", { exact: true })).toBeVisible();
   await expect(page.locator("pre")).toHaveText(role.instructions);
 
-  // The other entry point is the same role picker pictured in the request.
+  // Re-enter the same role picker to create and open the agent.
   await page.goto(`/${slug}/agents/new/template`);
   await expect(page.getByRole("heading", { name: "从角色模板开始", exact: true })).toBeVisible();
-  const card = page.getByRole("button", { name: new RegExp(ROLE_NAME) });
+  const card = page.getByRole("listitem", { name: ROLE_NAME, exact: true });
   await expect(card).toHaveCount(1);
   await expect(card).toContainText("参与实现");
   await card.scrollIntoViewIfNeeded();
@@ -291,7 +295,7 @@ test("creates the reporter from the Chinese catalog and reopens its ordinary age
   expect(bounds!.x).toBeGreaterThanOrEqual(0);
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
   await capture(page, testInfo, "reporter-role-picker-390");
-  await card.click();
+  await card.getByRole("link", { name: "创建智能体", exact: true }).click();
   const preview = page.locator("pre");
   await expect(preview).toHaveText(role.instructions);
   await expectReadablePreview(preview);
@@ -327,16 +331,21 @@ test("creates the reporter from the Chinese catalog and reopens its ordinary age
   expect(skill.content).toMatch(/日报|周报/);
   await attachJSON(testInfo, "real-created-reporter", { reporter, skill });
 
-  await page.goto(`/${slug}/agents`);
-  await page.getByRole("button", { name: /^内置智能体\s+\d+$/ }).click();
-  await expect(row.getByRole("button", { name: "查看模板", exact: true })).toBeVisible();
+  await page.goto(`/${slug}/agents/new/template`);
+  await expect(page.getByRole("heading", { name: "从角色模板开始", exact: true })).toBeVisible();
+  // One-instance state: the created agent is now openable, and the role can
+  // still be viewed and reused.
+  await expect(row.getByText("已创建 1 个智能体", { exact: true })).toBeVisible();
+  await expect(row.getByRole("link", { name: `打开 ${ROLE_NAME}`, exact: true })).toBeVisible();
+  const reuseRole = row.getByRole("link", { name: "再创建一个", exact: true });
+  await expect(reuseRole).toBeVisible();
   await row.scrollIntoViewIfNeeded();
   await capture(page, testInfo, "builtin-reporter-catalog-created-1440");
-  await row.getByRole("button", { name: "查看模板", exact: true }).click();
+  await reuseRole.click();
+  await page.waitForURL((url) => url.searchParams.get("template") === ROLE_KEY);
   await expect(page.locator("pre")).toHaveText(role.instructions);
-  await page.goto(`/${slug}/agents`);
-  await page.getByRole("button", { name: /^内置智能体\s+\d+$/ }).click();
-  await row.getByRole("button", { name: "打开智能体", exact: true }).click();
+  await page.goto(`/${slug}/agents/new/template`);
+  await row.getByRole("link", { name: `打开 ${ROLE_NAME}`, exact: true }).click();
   await page.waitForURL((url) => url.pathname === `/${slug}/agents/${reporter.id}`);
   expect((await api.requestJSON<Reporter[]>("/api/agents")).filter((agent) => agent.template_key === ROLE_KEY)).toHaveLength(1);
 });
