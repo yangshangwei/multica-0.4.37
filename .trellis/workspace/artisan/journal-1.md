@@ -911,3 +911,36 @@ AC1-AC7 全部达成并归档。独立 trellis-check 全绿（typecheck/lint、c
 ### Status
 
 [OK] **Completed**
+
+
+## Session 30: Skill 模板入口实现与功能验收
+
+**Date**: 2026-09-27
+**Task**: Skill 模板入口实现与功能验收
+**Branch**: `plan/skill-library-template-entry`
+
+### Summary
+
+完成轻量模板入口、来源计数、关联 skill 与独立副本流程；修复列表失败后的焦点恢复、窄屏标签溢出和编辑器返回时的焦点竞态，已本地集成并归档。
+
+### Main Changes
+
+- 复用模板选择器，删除重复目录；摘要仅用于展示，完整内容和附件保留。
+- 保留原工作区并行修改；20 个功能源码路径与验收版本哈希一致。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4217c383b` | (see git log) |
+| `67cfc83d5` | (see git log) |
+
+### Testing
+
+- [OK] 451 项单测、7 项生产 Chromium E2E、views lint 和 Web/Desktop 类型检查通过；无失败、跳过或 flaky E2E。
+- [OK] 中英日韩宽窄屏截图与键盘检查通过；123 处文字对比度样本最低 5.38:1。
+- [OK] 原生 Electron 窗口未手测；桌面端通过适配器生命周期回归和类型检查。
+
+### Status
+
+[OK] **Completed**

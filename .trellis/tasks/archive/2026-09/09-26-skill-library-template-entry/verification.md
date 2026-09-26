@@ -76,3 +76,5 @@ Tab-fit assertions measure visible text rectangles. The shared, invisible `::aft
 ## Local integration
 
 Feature commit: `4217c383b7861deac809434e7b6d62d54c7d6124`. It was fast-forwarded into `plan/skill-library-template-entry`. All 20 verified feature source paths match the tested files, and hashes of the 10 preexisting unrelated working-tree files are unchanged.
+
+Documentation checks: 22 local Markdown links and all 12 context-manifest references resolve. The archival commit trailer accidentally reported 24 links; the measured result is 22.
