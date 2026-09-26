@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { WorkspaceSlugProvider } from "@multica/core/paths";
+import { NavigationProvider } from "../../navigation";
 import enCommon from "../../locales/en/common.json";
 import enSkills from "../../locales/en/skills.json";
 
@@ -149,7 +151,11 @@ function renderDialog(
     ...render(
       <I18nProvider locale="en" resources={TEST_RESOURCES}>
         <QueryClientProvider client={queryClient}>
-          <CreateSkillDialog onClose={onClose} onCreated={onCreated} {...props} />
+          <WorkspaceSlugProvider slug="acme">
+            <NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/acme/skills", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path }}>
+              <CreateSkillDialog onClose={onClose} onCreated={onCreated} {...props} />
+            </NavigationProvider>
+          </WorkspaceSlugProvider>
         </QueryClientProvider>
       </I18nProvider>,
     ),

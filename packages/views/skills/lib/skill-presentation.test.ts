@@ -10,6 +10,7 @@ import ja from "../../locales/ja/skills.json";
 import ko from "../../locales/ko/skills.json";
 import {
   getBuiltinRoleSkillPresentation,
+  getBuiltinRoleSkillSummary,
   getSkillPresentation,
   type SkillPresentationInput,
 } from "./skill-presentation";
@@ -239,6 +240,7 @@ describe("built-in role skill presentation", () => {
     {},
     { origin: null },
     { origin: "builtin_role_skill" },
+    { origin: Object.assign([], { type: "builtin_role_skill", name: "multica-code-review" }) },
     { origin: { type: "manual", name: "multica-code-review" } },
     { origin: { type: "builtin_role_skill", name: "multica-test-report" } },
   ])("does not translate an unverified workspace record (%j)", (config) => {
@@ -310,5 +312,53 @@ describe("built-in role skill presentation", () => {
   it("supports ordinary English phrases as well as hyphenated identifiers", () => {
     expect(getSkillPresentation(builtin("multica-code-review"), zhT).searchText)
       .toContain("code review");
+  });
+});
+
+describe("built-in role template summaries", () => {
+  it.each([
+    ["en", en], ["zh-Hans", zh], ["ja", ja], ["ko", ko],
+  ] as const)("uses concise display copy for every default with only %s loaded", (locale, catalog) => {
+    const instance = createI18n(locale, { [locale]: { skills: catalog } });
+    const t = instance.getFixedT(locale, "skills");
+
+    for (const [name] of names) {
+      const summary = catalog.builtin_role_skills[name].summary;
+      expect(summary.trim()).not.toBe("");
+      expect(summary.length).toBeLessThan(catalog.builtin_role_skills[name].description.length);
+      for (const description of [undefined, en.builtin_role_skills[name].description, ` ${zh.builtin_role_skills[name].description}\n`]) {
+        expect(getBuiltinRoleSkillSummary(name, t, description)).toBe(summary);
+      }
+    }
+  });
+
+  it.each(legacyDescriptions)("summarizes only the recognized historical English default for %s", (name, description, chinese) => {
+    expect(getBuiltinRoleSkillSummary(name, zhT, ` ${description}\n`))
+      .toBe(zh.builtin_role_skills[name].summary);
+    expect(getBuiltinRoleSkillSummary(name, zhT, chinese)).toBe(chinese);
+  });
+
+  it.each(names)("keeps a customized description for %s verbatim", (name) => {
+    const custom = ` ${en.builtin_role_skills[name].description} Team-specific scope.\n`;
+    expect(getBuiltinRoleSkillSummary(name, zhT, custom)).toBe(custom);
+    expect(getBuiltinRoleSkillSummary(name, enT, "")).toBe("");
+  });
+
+  it("does not treat a known-name prefix or an unknown template as a built-in", () => {
+    for (const name of ["multica-code-review-copy", "multica-future-skill", "team-review"]) {
+      expect(getBuiltinRoleSkillSummary(name, zhT, "Use our review checklist.")).toBeNull();
+    }
+  });
+
+  it("does not add summary copy to full descriptions or search text", () => {
+    const name = "multica-code-review";
+    const summary = getBuiltinRoleSkillSummary(name, enT);
+    const presentation = getBuiltinRoleSkillPresentation(name, enT);
+
+    expect(presentation?.description).toBe(en.builtin_role_skills[name].description);
+    expect(summary).not.toBe(presentation?.description);
+    expect(presentation?.searchText).not.toContain(summary?.toLowerCase());
+    expect(presentation?.searchText).toContain(en.builtin_role_skills[name].description.toLowerCase());
+    expect(presentation?.searchText).toContain(zh.builtin_role_skills[name].description.toLowerCase());
   });
 });

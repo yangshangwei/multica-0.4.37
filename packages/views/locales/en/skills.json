@@ -3,64 +3,79 @@
     "multica-release-check": {
       "name": "multica-release-check",
       "description_v1": "Use before any release or production-affecting action: the gate, the rollback, and the approval request that must precede execution.",
-      "description": "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution."
+      "description": "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution.",
+      "summary": "Check release readiness, plan recovery, and request approval."
     },
     "multica-documentation-change": {
       "name": "multica-documentation-change",
-      "description": "Use when a change needs documentation: deciding what to write, keeping it true to the code, and finding what the change made wrong."
+      "description": "Use when a change needs documentation: deciding what to write, keeping it true to the code, and finding what the change made wrong.",
+      "summary": "Identify documentation gaps and keep guidance aligned with code."
     },
     "multica-security-review": {
       "name": "multica-security-review",
-      "description": "Use when reviewing a change for security: the checklist, how to report a finding without writing an exploit, and when to stop."
+      "description": "Use when reviewing a change for security: the checklist, how to report a finding without writing an exploit, and when to stop.",
+      "summary": "Find security risks and report findings with supporting evidence."
     },
     "multica-architecture-decision-record": {
       "name": "multica-architecture-decision-record",
       "description_v1": "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences.",
-      "description": "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences."
+      "description": "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences.",
+      "summary": "Draft an ADR explaining a technical decision and its tradeoffs."
     },
     "multica-code-review": {
       "name": "multica-code-review",
-      "description": "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report."
+      "description": "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report.",
+      "summary": "Review changes for bugs, regressions, and compatibility."
     },
     "multica-debugging": {
       "name": "multica-debugging",
-      "description": "Use to investigate an observed failure whose cause is unknown, including intermittent or currently unreproducible failures. Reproduce, minimize, and test hypotheses to deliver a root-cause conclusion graded by evidence and a suggested fix direction; do not submit the fix."
+      "description": "Use to investigate an observed failure whose cause is unknown, including intermittent or currently unreproducible failures. Reproduce, minimize, and test hypotheses to deliver a root-cause conclusion graded by evidence and a suggested fix direction; do not submit the fix.",
+      "summary": "Investigate failures and establish the root cause with evidence."
     },
     "multica-requirement-clarification": {
       "name": "multica-requirement-clarification",
-      "description": "Use when a request is too vague to build or accept: derives open questions, acceptance criteria, risks and a work split from what the issue already contains."
+      "description": "Use when a request is too vague to build or accept: derives open questions, acceptance criteria, risks and a work split from what the issue already contains.",
+      "summary": "Clarify goals, acceptance criteria, risks, and the work needed."
     },
     "multica-test-report": {
       "name": "multica-test-report",
-      "description": "Use when reporting that code was verified: what ran, the real result, what each new test proves, and what was not covered."
+      "description": "Use when reporting that code was verified: what ran, the real result, what each new test proves, and what was not covered.",
+      "summary": "Report verification results, test evidence, and coverage gaps."
     },
     "multica-progress-report": {
       "name": "multica-progress-report",
-      "description": "Use for daily or weekly workspace or project reports: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues."
+      "description": "Use for daily or weekly workspace or project reports: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues.",
+      "summary": "Verify task progress and publish traceable periodic reports."
     },
     "multica-reliability-engineering": {
       "name": "multica-reliability-engineering",
-      "description": "Use to turn runtime signals into SLI/SLO, error-budget, capacity, degradation and recovery evidence; mark missing signals unknown and leave production actions to approved operators."
+      "description": "Use to turn runtime signals into SLI/SLO, error-budget, capacity, degradation and recovery evidence; mark missing signals unknown and leave production actions to approved operators.",
+      "summary": "Assess runtime signals, reliability targets, and recovery readiness."
     },
     "multica-agent-evaluation": {
       "name": "multica-agent-evaluation",
-      "description": "Use to evaluate Agent, Skill and MCP changes with versioned cases for correctness, safety, cost, latency and drift, preserving redacted traces without changing production configuration."
+      "description": "Use to evaluate Agent, Skill and MCP changes with versioned cases for correctness, safety, cost, latency and drift, preserving redacted traces without changing production configuration.",
+      "summary": "Compare agent correctness, safety, cost, latency, and drift."
     },
     "multica-experience-validation": {
       "name": "multica-experience-validation",
-      "description": "Use to validate critical browser/client journeys with accessibility and cross-platform evidence; mark missing evidence unknown and report outcome risk."
+      "description": "Use to validate critical browser/client journeys with accessibility and cross-platform evidence; mark missing evidence unknown and report outcome risk.",
+      "summary": "Validate key user journeys, accessibility, and platform behavior."
     },
     "multica-incident-learning": {
       "name": "multica-incident-learning",
-      "description": "Use after recovery to separate redacted facts, hypotheses and unknowns, then create prevention tasks with owners, acceptance signals and duplicate links."
+      "description": "Use after recovery to separate redacted facts, hypotheses and unknowns, then create prevention tasks with owners, acceptance signals and duplicate links.",
+      "summary": "Turn incident evidence into prevention tasks with clear owners."
     },
     "multica-migration-review": {
       "name": "multica-migration-review",
-      "description": "Use to review schema, API and client migrations for compatibility windows, validation, idempotency, retry and rollback evidence; hold when evidence is missing."
+      "description": "Use to review schema, API and client migrations for compatibility windows, validation, idempotency, retry and rollback evidence; hold when evidence is missing.",
+      "summary": "Review migration compatibility, retries, and rollback readiness."
     },
     "multica-rollout-and-canary-verification": {
       "name": "multica-rollout-and-canary-verification",
-      "description": "Use after an approved rollout to verify one immutable artifact against its baseline over a fixed observation window, recording signals, thresholds and rollback outcome."
+      "description": "Use after an approved rollout to verify one immutable artifact against its baseline over a fixed observation window, recording signals, thresholds and rollback outcome.",
+      "summary": "Compare a rollout with its baseline and record recovery outcomes."
     }
   },
   "page": {
@@ -257,7 +272,7 @@
         "warning": "Local edits to this skill will be overwritten. Agent assignments, labels, and creator are preserved.",
         "cancel": "Cancel",
         "confirm": "Update",
-        "refreshing": "Updating…"
+        "refreshing": "Updating..."
       }
     },
     "delete_dialog": {
@@ -447,7 +462,18 @@
       "discard_description": "Your changes to this copy have not been saved.",
       "discard_unknown_description": "Your draft will be discarded. Closing does not cancel a request already sent to the server.",
       "keep_editing": "Keep editing",
-      "discard": "Discard changes"
+      "discard": "Discard changes",
+      "refreshing": "Refreshing templates...",
+      "refresh_failed": "Could not refresh templates. Showing saved results.",
+      "clear_search": "Clear search",
+      "source_empty": "No templates from this source.",
+      "draft_title": "Create a copy",
+      "related_none": "No related skills in this workspace.",
+      "related_count_one": "{{count}} related skill in this workspace",
+      "related_count_other": "{{count}} related skills in this workspace",
+      "related_loading": "Loading related skills...",
+      "related_load_failed": "Could not load related skills.",
+      "related_refresh_failed": "Could not refresh related skills. Showing saved results."
     }
   },
   "runtime_import": {
@@ -555,5 +581,14 @@
     "used_by_count_one": "{{count}} agent",
     "used_by_count_other": "{{count}} agents",
     "used_by_none": "Unused"
+  },
+  "template_entry": {
+    "title": "Skill templates",
+    "description": "Preview a template, then create an independent workspace skill.",
+    "browse": "Browse templates",
+    "total_one": "{{count}} template",
+    "total_other": "{{count}} templates",
+    "builtin_count": "Platform {{count}}",
+    "deployment_count": "Deployment {{count}}"
   }
 }

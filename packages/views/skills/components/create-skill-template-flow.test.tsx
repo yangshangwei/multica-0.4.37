@@ -9,10 +9,13 @@ import type { SupportedLocale } from "@multica/core/i18n";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { parseFrontmatter } from "@multica/core/skills/frontmatter";
 import { skillDetailOptions, workspaceKeys } from "@multica/core/workspace/queries";
+import { WorkspaceSlugProvider } from "@multica/core/paths";
+import { NavigationProvider } from "../../navigation";
 import enCommon from "../../locales/en/common.json";
 import enSkills from "../../locales/en/skills.json";
 import zhCommon from "../../locales/zh-Hans/common.json";
 import zhSkills from "../../locales/zh-Hans/skills.json";
+import type { RelatedSkillNavigationRequest } from "./template-skill-create-panel";
 
 const mocks = vi.hoisted(() => ({
   workspaceId: "ws-1",
@@ -23,6 +26,7 @@ const mocks = vi.hoisted(() => ({
   updateSkill: vi.fn(),
   importSkillArchive: vi.fn(),
   setAgentSkills: vi.fn(),
+  requestOpenSkill: null as ((request: RelatedSkillNavigationRequest) => void) | null,
 }));
 
 vi.mock("@multica/core/api", async (importOriginal) => ({
@@ -58,6 +62,20 @@ vi.mock("../../rich-content", () => ({
   RichContent: ({ content }: { content: string }) => <div>{content}</div>,
 }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
+
+// Observe the panel's navigation boundary without replacing its UI or session.
+// In-flight tests can then exercise the root guard while picker controls are
+// unavailable, rather than relying only on their disabled attributes.
+vi.mock("./template-skill-create-panel", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./template-skill-create-panel")>();
+  return {
+    ...actual,
+    TemplateSkillCreatePanel(props: Parameters<typeof actual.TemplateSkillCreatePanel>[0]) {
+      mocks.requestOpenSkill = props.onRequestOpenSkill;
+      return <actual.TemplateSkillCreatePanel {...props} />;
+    },
+  };
+});
 
 import { CreateSkillDialog } from "./create-skill-dialog";
 
@@ -124,18 +142,26 @@ function deferred<T>() {
   return { promise, resolve };
 }
 
-function renderDialog(locale: TestLocale = "en", initialTemplateName?: string) {
+function renderDialog(locale: TestLocale = "en", templateName?: string, options: { direct?: boolean; desktop?: boolean } = {}) {
   const onClose = vi.fn();
   const onCreated = vi.fn();
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: Infinity } },
   });
   let language = locale;
+  let workspaceSlug = "acme";
+  let desktop = options.desktop ?? false;
+  const push = vi.fn();
+  const openInNewTab = vi.fn();
   const dialog = () => (
     // Match production: only the active locale is mounted initially.
     <I18nProvider locale={language} resources={{ [language]: LOCALES[language] }}>
       <QueryClientProvider client={queryClient}>
-        <CreateSkillDialog initialTemplateName={initialTemplateName} onClose={onClose} onCreated={onCreated} />
+        <WorkspaceSlugProvider slug={workspaceSlug}>
+          <NavigationProvider value={{ push, openInNewTab: desktop ? openInNewTab : undefined, replace: vi.fn(), back: vi.fn(), pathname: `/${workspaceSlug}/skills`, searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => `https://multica.test${path}` }}>
+            <CreateSkillDialog initialEntry={templateName || options.direct ? { kind: "templates", templateName } : undefined} onClose={onClose} onCreated={onCreated} />
+          </NavigationProvider>
+        </WorkspaceSlugProvider>
       </QueryClientProvider>
     </I18nProvider>
   );
@@ -144,8 +170,13 @@ function renderDialog(locale: TestLocale = "en", initialTemplateName?: string) {
     onClose,
     onCreated,
     queryClient,
-    changeContext(next: { locale?: TestLocale; workspaceId?: string }) {
+    push,
+    openInNewTab,
+    unmount: view.unmount,
+    changeContext(next: { locale?: TestLocale; workspaceId?: string; workspaceSlug?: string; desktop?: boolean }) {
       language = next.locale ?? language;
+      workspaceSlug = next.workspaceSlug ?? workspaceSlug;
+      desktop = next.desktop ?? desktop;
       mocks.workspaceId = next.workspaceId ?? mocks.workspaceId;
       view.rerender(dialog());
     },
@@ -198,6 +229,7 @@ function expectNoWrites() {
 beforeEach(() => {
   vi.resetAllMocks();
   mocks.workspaceId = "ws-1";
+  mocks.requestOpenSkill = null;
   catalog = createCatalog();
   mocks.listSkillTemplates.mockResolvedValue(catalog);
   mocks.listSkills.mockResolvedValue([]);
@@ -286,6 +318,29 @@ describe("CreateSkillDialog template creation", () => {
     fireEvent.click(screen.getByRole("button", { name: "Back to creation methods" }));
     expect(screen.queryByRole("button", { name: "Keep editing" })).not.toBeInTheDocument();
     await openTemplates();
+    await chooseReviewTemplate();
+    expectEditedDraft();
+    expectNoWrites();
+  });
+
+  it("moves focus into the persistent dialog before removing the editor navigation control", async () => {
+    const user = userEvent.setup();
+    renderDialog();
+    await openEditor();
+    editDraft();
+    const dialog = screen.getByRole("dialog", { name: "Create a copy" });
+    const chooseAnother = screen.getByRole("button", { name: "Choose another template" });
+    const handoffs: { connected: boolean; target: EventTarget | null }[] = [];
+    chooseAnother.addEventListener("blur", (event) => {
+      handoffs.push({ connected: chooseAnother.isConnected, target: event.relatedTarget });
+    });
+
+    await user.click(chooseAnother);
+
+    // A browser restores popup focus again on the next frame if its focused
+    // control disappears. Hand off before removal so that delayed restoration
+    // cannot overwrite a subsequently focused related link (the E2E regression).
+    expect(handoffs).toEqual([{ connected: true, target: dialog }]);
     await chooseReviewTemplate();
     expectEditedDraft();
     expectNoWrites();
@@ -597,5 +652,209 @@ describe("CreateSkillDialog template creation", () => {
     expect(onCreated).not.toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
     expect(mocks.createSkill).toHaveBeenCalledTimes(1);
+  });
+});
+
+
+// AppLink owns the complete gesture classifier matrix. These cases prove the
+// dialog guards, consumes and executes each adapter intent from that classifier.
+describe("CreateSkillDialog related-skill navigation", () => {
+  const gestures = [
+    { name: "Web push", desktop: false, event: {}, target: "push" },
+    { name: "Desktop push", desktop: true, event: {}, target: "push" },
+    { name: "Desktop background", desktop: true, event: { ctrlKey: true }, target: "background" },
+    { name: "Desktop foreground", desktop: true, event: { metaKey: true, shiftKey: true }, target: "foreground" },
+    { name: "Desktop middle", desktop: true, event: { button: 1 }, target: "background" },
+  ] as const;
+  const RELATED_ID = "related-review";
+  const path = `/acme/skills/${RELATED_ID}`;
+
+  beforeEach(() => {
+    mocks.listSkills.mockResolvedValue([savedSkill({ name: REVIEW_NAME, description: enSkills.builtin_role_skills[REVIEW_NAME].description }, {
+      id: RELATED_ID, config: { origin: { type: "builtin_role_skill", name: REVIEW_NAME } },
+    })]);
+  });
+
+  function activate(link: HTMLElement, event: { button?: number; ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean }) {
+    link.focus();
+    if (event.button === 1) fireEvent(link, new MouseEvent("auxclick", { ...event, bubbles: true, cancelable: true }));
+    else fireEvent.click(link, event);
+  }
+
+  it("opens unnamed direct browsing without creating or adopting a draft", async () => {
+    const result = renderDialog("en", undefined, { direct: true });
+    expect(await screen.findByRole("dialog", { name: "Template preview" })).toBeInTheDocument();
+    await screen.findByRole("button", { name: /^multica-code-review/ });
+    expect(screen.queryByRole("textbox", { name: "Name" })).not.toBeInTheDocument();
+    expect(result.onCreated).not.toHaveBeenCalled();
+    expectNoWrites();
+  });
+
+  it.each(gestures)("closes before a pristine $name without creation completion", async ({ desktop, event, target }) => {
+    const result = renderDialog("en", undefined, { direct: true, desktop });
+    const link = await screen.findByRole("link", { name: REVIEW_NAME });
+    const navigated = vi.fn(() => expect(result.onClose).toHaveBeenCalledTimes(1));
+    result.push.mockImplementation(navigated);
+    result.openInNewTab.mockImplementation(navigated);
+    activate(link, event);
+    expect(result.onClose).toHaveBeenCalledTimes(1);
+    if (target === "push") expect(result.push).toHaveBeenCalledExactlyOnceWith(path);
+    else if (target === "foreground") expect(result.openInNewTab).toHaveBeenCalledExactlyOnceWith(path, REVIEW_NAME, { activate: true });
+    else expect(result.openInNewTab).toHaveBeenCalledExactlyOnceWith(path, REVIEW_NAME);
+    expect(result.onCreated).not.toHaveBeenCalled();
+    expect(toast.success).not.toHaveBeenCalled();
+    expectNoWrites();
+  });
+
+  it.each(gestures)("guards and restores focus for dirty $name before consuming acceptance once", async ({ desktop, event, target }) => {
+    const result = renderDialog("en", undefined, { desktop });
+    await openEditor();
+    editDraft();
+    fireEvent.click(screen.getByRole("button", { name: "Choose another template" }));
+    const link = await screen.findByRole("link", { name: REVIEW_NAME });
+    activate(link, event);
+    expect(result.push).not.toHaveBeenCalled();
+    expect(result.openInNewTab).not.toHaveBeenCalled();
+    fireEvent.click(await screen.findByRole("button", { name: "Keep editing" }));
+    await waitFor(() => expect(link).toHaveFocus());
+    expect(result.onClose).not.toHaveBeenCalled();
+    await chooseReviewTemplate();
+    expectEditedDraft();
+    fireEvent.click(screen.getByRole("button", { name: "Choose another template" }));
+    activate(screen.getByRole("link", { name: REVIEW_NAME }), event);
+    const discard = await screen.findByRole("button", { name: "Discard changes" });
+    fireEvent.click(discard);
+    fireEvent.click(discard);
+    expect(result.onClose).toHaveBeenCalledTimes(1);
+    if (target === "push") expect(result.push).toHaveBeenCalledExactlyOnceWith(path);
+    else if (target === "foreground") expect(result.openInNewTab).toHaveBeenCalledExactlyOnceWith(path, REVIEW_NAME, { activate: true });
+    else expect(result.openInNewTab).toHaveBeenCalledExactlyOnceWith(path, REVIEW_NAME);
+    expect(result.onCreated).not.toHaveBeenCalled();
+    expect(toast.success).not.toHaveBeenCalled();
+    expectNoWrites();
+  });
+
+  it("uses the original background title/path after locale and list changes while discard is pending", async () => {
+    const result = renderDialog("en", undefined, { desktop: true });
+    await openEditor();
+    editDraft();
+    fireEvent.click(screen.getByRole("button", { name: "Choose another template" }));
+    activate(await screen.findByRole("link", { name: REVIEW_NAME }), { ctrlKey: true });
+    await screen.findByRole("alertdialog");
+    result.changeContext({ locale: "zh-Hans" });
+    act(() => result.queryClient.setQueryData(workspaceKeys.skills("ws-1"), []));
+    fireEvent.click(screen.getByRole("button", { name: zhSkills.create.template.discard }), { metaKey: true, shiftKey: true });
+    expect(result.openInNewTab).toHaveBeenCalledExactlyOnceWith(path, REVIEW_NAME);
+    expect(result.push).not.toHaveBeenCalled();
+    expect(result.onCreated).not.toHaveBeenCalled();
+  });
+
+  it.each(["uuid", "slug", "adapter"] as const)("cancels pending navigation when its source %s changes", async (changed) => {
+    const result = renderDialog("en", undefined, { desktop: true });
+    await openEditor();
+    editDraft();
+    fireEvent.click(screen.getByRole("button", { name: "Choose another template" }));
+    activate(await screen.findByRole("link", { name: REVIEW_NAME }), { ctrlKey: true });
+    const discard = await screen.findByRole("button", { name: "Discard changes" });
+    result.changeContext(changed === "uuid" ? { workspaceId: "ws-2" } : changed === "slug" ? { workspaceSlug: "other" } : { desktop: false });
+    fireEvent.click(discard);
+    expect(result.push).not.toHaveBeenCalled();
+    expect(result.openInNewTab).not.toHaveBeenCalled();
+    expect(result.onCreated).not.toHaveBeenCalled();
+  });
+
+  it("keeps web-native modified links outside the in-place guard", async () => {
+    const result = renderDialog();
+    await openEditor();
+    editDraft();
+    fireEvent.click(screen.getByRole("button", { name: "Choose another template" }));
+    const link = await screen.findByRole("link", { name: REVIEW_NAME });
+    for (const gesture of [{ metaKey: true }, { shiftKey: true }, { button: 1 }]) {
+      const event = new MouseEvent(gesture.button === 1 ? "auxclick" : "click", { ...gesture, bubbles: true, cancelable: true });
+      fireEvent(link, event);
+      expect(event.defaultPrevented).toBe(false);
+    }
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(result.onClose).not.toHaveBeenCalled();
+    expect(result.push).not.toHaveBeenCalled();
+    await chooseReviewTemplate();
+    expectEditedDraft();
+  });
+
+  it.each(["submitting", "checking"] as const)("suppresses related navigation while %s is busy", async (status) => {
+    const create = deferred<Skill>();
+    const check = deferred<Skill[]>();
+    if (status === "submitting") mocks.createSkill.mockReturnValueOnce(create.promise);
+    else mocks.createSkill.mockRejectedValueOnce(new SkillCreationUnconfirmedError());
+    const result = renderDialog("en", undefined, { desktop: true });
+    await openEditor();
+    fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+    if (status === "checking") {
+      const checkResult = await screen.findByRole("button", { name: "Check creation result" });
+      mocks.listSkills.mockReturnValueOnce(check.promise);
+      fireEvent.click(checkResult);
+      await screen.findByRole("button", { name: enSkills.create.template.checking });
+    }
+
+    expect(screen.getByRole("button", { name: "Choose another template" })).toBeDisabled();
+    // Push is shared by Web and Desktop; tab intents are Desktop-only.
+    for (const intent of ["push", "background-tab", "foreground-tab"] as const) {
+      act(() => mocks.requestOpenSkill!({
+        sourceWorkspaceId: "ws-1", sourceWorkspaceSlug: "acme",
+        skillId: RELATED_ID, path, title: REVIEW_NAME, intent,
+      }));
+    }
+    await userEvent.setup().keyboard("{Escape}");
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Create a copy" })).toBeInTheDocument();
+    expect(result.push).not.toHaveBeenCalled();
+    expect(result.openInNewTab).not.toHaveBeenCalled();
+    expect(result.onClose).not.toHaveBeenCalled();
+    expect(result.onCreated).not.toHaveBeenCalled();
+    expect(mocks.createSkill).toHaveBeenCalledTimes(1);
+    result.unmount();
+    await act(async () => {
+      create.resolve(savedSkill({ name: `${REVIEW_NAME}-copy` }));
+      check.resolve([]);
+    });
+  });
+
+  it.each(["dirty", "unconfirmed"] as const)("guards a %s copy before activating an existing Desktop tab unmounts the dialog", async (protection) => {
+    if (protection === "unconfirmed") mocks.createSkill.mockRejectedValueOnce(new SkillCreationUnconfirmedError());
+    const result = renderDialog("en", undefined, { desktop: true });
+    const existingTab = { path, active: false };
+    result.openInNewTab.mockImplementation((destination) => {
+      expect(result.onClose).toHaveBeenCalledTimes(1);
+      expect(destination).toBe(existingTab.path);
+      existingTab.active = true;
+      result.unmount();
+    });
+    await openEditor();
+    if (protection === "dirty") editDraft();
+    else {
+      fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+      fireEvent.click(await screen.findByRole("button", { name: "Continue editing" }));
+    }
+    fireEvent.click(screen.getByRole("button", { name: "Choose another template" }));
+    const link = await screen.findByRole("link", { name: REVIEW_NAME });
+    activate(link, { button: 1 });
+    expect(await screen.findByRole("alertdialog")).toHaveTextContent(protection === "unconfirmed"
+      ? enSkills.create.template.discard_unknown_description
+      : enSkills.create.template.discard_description);
+    expect(result.openInNewTab).not.toHaveBeenCalled();
+    expect(existingTab.active).toBe(false);
+    fireEvent.click(screen.getByRole("button", { name: "Keep editing" }));
+    await waitFor(() => expect(link).toHaveFocus());
+    expect(screen.getByRole("dialog", { name: "Template preview" })).toBeInTheDocument();
+    expect(existingTab.active).toBe(false);
+
+    activate(link, { button: 1 });
+    fireEvent.click(screen.getByRole("button", { name: "Discard changes" }));
+    expect(result.openInNewTab).toHaveBeenCalledExactlyOnceWith(path, REVIEW_NAME);
+    expect(existingTab.active).toBe(true);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(result.onCreated).not.toHaveBeenCalled();
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(mocks.createSkill).toHaveBeenCalledTimes(protection === "unconfirmed" ? 1 : 0);
   });
 });

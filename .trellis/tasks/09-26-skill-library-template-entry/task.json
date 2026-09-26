@@ -2,8 +2,8 @@
   "id": "skill-library-template-entry",
   "name": "skill-library-template-entry",
   "title": "Clarify skill library template discovery and workspace copies",
-  "description": "Planning: compact skill-template discovery, clear workspace relationships, and reuse of existing preview/copy flow.",
-  "status": "planning",
+  "description": "Compact template discovery with truthful source counts, complete related skill links, display-only summaries, guarded navigation and stable draft focus.",
+  "status": "in_progress",
   "dev_type": "frontend",
   "scope": "skills",
   "package": "views",
@@ -14,7 +14,7 @@
   "completedAt": null,
   "branch": "plan/skill-library-template-entry",
   "base_branch": "main",
-  "worktree_path": null,
+  "worktree_path": "/Volumes/artisan/code/2026/multica-skill-library-template-entry",
   "commit": null,
   "pr_url": null,
   "subtasks": [],
@@ -22,16 +22,30 @@
   "parent": null,
   "relatedFiles": [
     "packages/views/skills/components/skills-page.tsx",
-    "packages/views/skills/components/builtin-skill-catalog.tsx",
+    "packages/views/skills/components/skill-template-entry.tsx",
     "packages/views/skills/components/template-skill-create-panel.tsx",
-    "packages/views/skills/components/create-skill-dialog.tsx"
+    "packages/views/skills/components/create-skill-dialog.tsx",
+    "packages/views/skills/lib/skill-template-discovery.ts",
+    "e2e/skill-template-creation.spec.ts",
+    "e2e/localized-template-defaults.spec.ts"
   ],
-  "notes": "Planning complete and independently reviewed. Task remains planning; no product implementation started.",
+  "notes": "Implementation and all planned automated/visual checks passed; preparing verified local integration into plan/skill-library-template-entry.",
   "meta": {
-    "planning_only": true,
+    "planning_only": false,
     "base_commit": "14d64257ca11ac10516aa1d2566b3da8944b2aac",
     "review_status": "approved",
-    "implementation_authorized": false,
-    "review_iterations": 2
+    "implementation_authorized": true,
+    "review_iterations": 2,
+    "execution_branch": "work/skill-library-template-entry",
+    "verification": {
+      "views_tests": 451,
+      "browser_tests": 7,
+      "browser_failures": 0,
+      "browser_skipped": 0,
+      "browser_flaky": 0,
+      "contrast_samples": 123,
+      "minimum_contrast_ratio": 5.38,
+      "native_electron_smoke": false
+    }
   }
 }

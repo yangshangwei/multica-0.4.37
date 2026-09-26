@@ -73,8 +73,8 @@ import { canEditSkill } from "../hooks/use-can-edit-skill";
 import { useSkillPresentation } from "../hooks/use-skill-presentation";
 import type { SkillPresentation } from "../lib/skill-presentation";
 import { originSourceUrl, readOrigin, type OriginInfo } from "../lib/origin";
-import { CreateSkillDialog } from "./create-skill-dialog";
-import { BuiltinSkillCatalog } from "./builtin-skill-catalog";
+import { CreateSkillDialog, type SkillCreateEntry } from "./create-skill-dialog";
+import { SkillTemplateEntry } from "./skill-template-entry";
 import {
   useSkillsViewStore,
   DEFAULT_HIDDEN_COLUMNS,
@@ -201,9 +201,11 @@ export type PresentedSkillRow = SkillRow & {
 function PageHeaderBar({
   totalCount,
   onCreate,
+  buttonRef,
 }: {
   totalCount: number;
   onCreate: () => void;
+  buttonRef: React.Ref<HTMLButtonElement>;
 }) {
   const { t } = useT("skills");
   const paths = useWorkspacePaths();
@@ -219,6 +221,7 @@ function PageHeaderBar({
       }}
       actions={
         <CollectionPageHeaderAction
+          ref={buttonRef}
           icon={Plus}
           label={t(($) => $.page.new_skill)}
           onClick={onCreate}
@@ -480,7 +483,7 @@ function CreatorCell({ creator }: { creator: MemberWithUser | null }) {
 // Empty state
 // ---------------------------------------------------------------------------
 
-function EmptyState({ onCreate }: { onCreate: () => void }) {
+function EmptyState({ onCreate, buttonRef }: { onCreate: () => void; buttonRef: React.Ref<HTMLButtonElement> }) {
   const { t } = useT("skills");
   return (
     <CollectionPageState
@@ -488,7 +491,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
       title={t(($) => $.page.empty.title)}
       description={t(($) => $.page.empty.description)}
       actions={
-        <Button type="button" onClick={onCreate} size="sm">
+        <Button ref={buttonRef} type="button" onClick={onCreate} size="sm">
           <Plus aria-hidden="true" className="size-3" />
           {t(($) => $.page.new_skill)}
         </Button>
@@ -500,9 +503,11 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
 function CategoryEmptyState({
   category,
   onCreate,
+  buttonRef,
 }: {
   category: SkillCategory;
   onCreate: () => void;
+  buttonRef: React.Ref<HTMLButtonElement>;
 }) {
   const { t } = useT("skills");
   const labels = useSkillCategoryLabels();
@@ -512,7 +517,7 @@ function CategoryEmptyState({
       title={t(($) => $.categories.empty_title, { category: labels[category] })}
       description={t(($) => $.categories.empty_hint)}
       actions={
-        <Button type="button" onClick={onCreate} size="sm">
+        <Button ref={buttonRef} type="button" onClick={onCreate} size="sm">
           <Plus aria-hidden="true" className="size-3" />
           {t(($) => $.page.new_skill)}
         </Button>
@@ -734,9 +739,13 @@ export default function SkillsPage() {
     runtimeListOptions(wsId),
   );
 
+  const createButtonRef = useRef<HTMLButtonElement>(null);
+  const browseButtonRef = useRef<HTMLButtonElement>(null);
+  const emptyCreateButtonRef = useRef<HTMLButtonElement>(null);
   const [creation, setCreation] = useState<{
-    templateName?: string;
+    entry?: SkillCreateEntry;
     category?: SkillCategory;
+    triggerRef: React.RefObject<HTMLButtonElement | null>;
   } | null>(null);
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(
     new Set(),
@@ -934,45 +943,6 @@ export default function SkillsPage() {
     );
   };
 
-  // --- List request error ---
-  if (listError) {
-    return (
-      <div className="flex flex-1 min-h-0 flex-col">
-        <PageHeaderBar totalCount={0} onCreate={() => setCreation({})} />
-        <BuiltinSkillCatalog skills={[]} onView={(templateName) => setCreation({ templateName })} />
-        <CollectionPageState
-          role="alert"
-          tone="destructive"
-          icon={AlertCircle}
-          title={t(($) => $.page.list_error.title)}
-          description={
-            listError instanceof Error
-              ? listError.message
-              : t(($) => $.page.list_error.fallback)
-          }
-          actions={
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => refetchList()}
-            >
-              {t(($) => $.page.list_error.retry)}
-            </Button>
-          }
-        />
-        {creation && (
-          <CreateSkillDialog
-            initialTemplateName={creation.templateName}
-            initialPresentation={creation.category ? { category: creation.category } : undefined}
-            onClose={() => setCreation(null)}
-            onCreated={handleCreated}
-          />
-        )}
-      </div>
-    );
-  }
-
   const totalCount = skills.length;
   const showEmpty = !isLoading && totalCount === 0;
   // A single selected category that has no skills at all gets its own empty
@@ -999,14 +969,43 @@ export default function SkillsPage() {
   };
 
   return (
+    <>
+    {listError ? (
+      <div className="flex flex-1 min-h-0 flex-col">
+        <PageHeaderBar totalCount={skills.length} buttonRef={createButtonRef} onCreate={() => setCreation({ triggerRef: createButtonRef })} />
+        <SkillTemplateEntry workspaceId={wsId} buttonRef={browseButtonRef} onBrowse={() => setCreation({ entry: { kind: "templates" }, triggerRef: browseButtonRef })} />
+        <CollectionPageState
+          role="alert"
+          tone="destructive"
+          icon={AlertCircle}
+          title={t(($) => $.page.list_error.title)}
+          description={
+            listError instanceof Error
+              ? listError.message
+              : t(($) => $.page.list_error.fallback)
+          }
+          actions={
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => refetchList()}
+            >
+              {t(($) => $.page.list_error.retry)}
+            </Button>
+          }
+        />
+      </div>
+    ) : (
     // relative: positioning anchor for the batch toolbar (page-centered,
     // not viewport-centered).
     <div className="relative flex flex-1 min-h-0 flex-col">
       <PageHeaderBar
         totalCount={totalCount}
-        onCreate={() => setCreation({})}
+        buttonRef={createButtonRef}
+        onCreate={() => setCreation({ triggerRef: createButtonRef })}
       />
-      <BuiltinSkillCatalog skills={skills} onView={(templateName) => setCreation({ templateName })} />
+      <SkillTemplateEntry workspaceId={wsId} buttonRef={browseButtonRef} onBrowse={() => setCreation({ entry: { kind: "templates" }, triggerRef: browseButtonRef })} />
 
       {supportingQueryDown && (
         <div
@@ -1024,7 +1023,7 @@ export default function SkillsPage() {
         </div>
       ) : showEmpty ? (
         <div className="flex flex-1 items-center justify-center">
-          <EmptyState onCreate={() => setCreation({})} />
+          <EmptyState buttonRef={emptyCreateButtonRef} onCreate={() => setCreation({ triggerRef: emptyCreateButtonRef })} />
         </div>
       ) : (
         <>
@@ -1067,7 +1066,8 @@ export default function SkillsPage() {
             <div className="flex flex-1 items-center justify-center">
               <CategoryEmptyState
                 category={categoryEmpty}
-                onCreate={() => setCreation({ category: categoryEmpty })}
+                buttonRef={emptyCreateButtonRef}
+                onCreate={() => setCreation({ category: categoryEmpty, triggerRef: emptyCreateButtonRef })}
               />
             </div>
           ) : viewMode === "card" ? (
@@ -1183,14 +1183,18 @@ export default function SkillsPage() {
         onClear={() => setSelectedIds(new Set())}
       />
 
+    </div>
+    )}
       {creation && (
         <CreateSkillDialog
-          initialTemplateName={creation.templateName}
+          key={wsId}
+          initialEntry={creation.entry}
           initialPresentation={creation.category ? { category: creation.category } : undefined}
+          finalFocus={() => creation.triggerRef.current ?? createButtonRef.current}
           onClose={() => setCreation(null)}
           onCreated={handleCreated}
         />
       )}
-    </div>
+    </>
   );
 }

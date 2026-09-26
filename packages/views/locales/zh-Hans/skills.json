@@ -3,64 +3,79 @@
     "multica-release-check": {
       "name": "发布检查",
       "description_v1": "用于发布或影响生产环境的操作前：完成必要检查、准备回滚方案，并在执行前申请审批。",
-      "description": "准备发布或高风险操作时使用。交付适用检查结果和恢复方案；每项高风险操作须单独取得人工审批后，由 operator 执行。"
+      "description": "准备发布或高风险操作时使用。交付适用检查结果和恢复方案；每项高风险操作须单独取得人工审批后，由 operator 执行。",
+      "summary": "检查发布条件，准备回滚，并在执行前取得审批。"
     },
     "multica-documentation-change": {
       "name": "文档更新",
-      "description": "需要核对或更新变更相关文档时使用。依据实际代码行为修正受影响的说明，明确无需更新的情况；不修改代码、测试或配置。"
+      "description": "需要核对或更新变更相关文档时使用。依据实际代码行为修正受影响的说明，明确无需更新的情况；不修改代码、测试或配置。",
+      "summary": "梳理变更影响，补齐与代码一致的文档。"
     },
     "multica-security-review": {
       "name": "安全审查",
-      "description": "审查代码变更的安全风险时使用。区分实际漏洞与加固建议，报告风险成立条件、影响和修复建议；不修改代码或编写攻击代码。"
+      "description": "审查代码变更的安全风险时使用。区分实际漏洞与加固建议，报告风险成立条件、影响和修复建议；不修改代码或编写攻击代码。",
+      "summary": "检查安全风险，提交有依据的审查发现。"
     },
     "multica-architecture-decision-record": {
       "name": "架构决策记录",
       "description_v1": "用于会影响后续工作的技术决策：编写 ADR，记录背景、决策、被否决的备选方案，以及决策的影响。",
-      "description": "技术决策会约束后续工作时使用。在任务评论中起草架构决策记录（ADR），说明背景、决策、被否决的备选方案和决策的影响，交由实现工程师或人工保存。"
+      "description": "技术决策会约束后续工作时使用。在任务评论中起草架构决策记录（ADR），说明背景、决策、被否决的备选方案和决策的影响，交由实现工程师或人工保存。",
+      "summary": "梳理技术决策及取舍，起草可留档的 ADR。"
     },
     "multica-code-review": {
       "name": "代码审查",
-      "description": "审查任务、拉取请求或工作树中的变更时使用。围绕正确性、兼容性和失败场景，给出有代码依据、可执行的审查意见；不修改代码。"
+      "description": "审查任务、拉取请求或工作树中的变更时使用。围绕正确性、兼容性和失败场景，给出有代码依据、可执行的审查意见；不修改代码。",
+      "summary": "审查变更中的缺陷、兼容性和失败场景。"
     },
     "multica-debugging": {
       "name": "根因分析",
-      "description": "定位已观察到但原因未知的失败时使用，包括间歇性或暂时无法复现的失败。系统地复现、最小化、提出并验证假设，给出按证据分档的根因结论和建议修复方向；不提交正式修复。"
+      "description": "定位已观察到但原因未知的失败时使用，包括间歇性或暂时无法复现的失败。系统地复现、最小化、提出并验证假设，给出按证据分档的根因结论和建议修复方向；不提交正式修复。",
+      "summary": "复现故障、验证假设，给出有证据的根因结论。"
     },
     "multica-requirement-clarification": {
       "name": "需求澄清",
-      "description": "需求尚不清楚、难以实施或验收时使用。根据任务已有信息整理待确认问题、可核验的验收标准、风险与工作拆分，将业务决策交由人工确认。"
+      "description": "需求尚不清楚、难以实施或验收时使用。根据任务已有信息整理待确认问题、可核验的验收标准、风险与工作拆分，将业务决策交由人工确认。",
+      "summary": "厘清目标、疑问和验收条件，拆分可执行工作。"
     },
     "multica-test-report": {
       "name": "测试报告",
-      "description": "汇报代码变更的验证结果时使用。记录实际执行的检查和结果，说明新增测试验证了什么，以及未运行或未覆盖的部分。"
+      "description": "汇报代码变更的验证结果时使用。记录实际执行的检查和结果，说明新增测试验证了什么，以及未运行或未覆盖的部分。",
+      "summary": "汇总验证结果、测试证据和未覆盖范围。"
     },
     "multica-progress-report": {
       "name": "进展报告",
-      "description": "汇总工作区或项目的日报、周报时使用。核对任务与状态变更历史，在当前报告任务中交付可追溯的进展、统计和数据缺口；不修改业务任务。"
+      "description": "汇总工作区或项目的日报、周报时使用。核对任务与状态变更历史，在当前报告任务中交付可追溯的进展、统计和数据缺口；不修改业务任务。",
+      "summary": "核实任务进展，整理可追溯的周期报告。"
     },
     "multica-reliability-engineering": {
       "name": "可靠性工程",
-      "description": "把运行信号整理成 SLI/SLO、错误预算、容量、降级、恢复和灾备证据；生产操作仍需人工审批。"
+      "description": "把运行信号整理成 SLI/SLO、错误预算、容量、降级、恢复和灾备证据；生产操作仍需人工审批。",
+      "summary": "评估运行信号、可靠性目标和恢复能力。"
     },
     "multica-agent-evaluation": {
       "name": "智能体评测",
-      "description": "用版本化评测用例验证 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟和漂移。"
+      "description": "用版本化评测用例验证 Agent、Skill 和 MCP 变更的正确性、安全性、成本、延迟和漂移。",
+      "summary": "对比智能体的正确性、安全性、成本、延迟与表现变化。"
     },
     "multica-experience-validation": {
       "name": "体验验证",
-      "description": "验证关键用户路径的浏览器、跨端和可访问性证据，记录结果风险与缺口；缺少证据时标记 unknown。"
+      "description": "验证关键用户路径的浏览器、跨端和可访问性证据，记录结果风险与缺口；缺少证据时标记 unknown。",
+      "summary": "验证关键使用流程、无障碍和跨平台体验。"
     },
     "multica-incident-learning": {
       "name": "事故学习",
-      "description": "事故恢复后整理脱敏事实、未知项和预防任务；为每项措施指定负责人、验收信号和重复事故关联。"
+      "description": "事故恢复后整理脱敏事实、未知项和预防任务；为每项措施指定负责人、验收信号和重复事故关联。",
+      "summary": "梳理故障事实与未知项，形成有负责人的改进任务。"
     },
     "multica-migration-review": {
       "name": "迁移审查",
-      "description": "审查 schema、API 和客户端迁移的兼容窗口、校验、幂等、重试与回滚证据；缺失材料时阻塞或标记 unknown。"
+      "description": "审查 schema、API 和客户端迁移的兼容窗口、校验、幂等、重试与回滚证据；缺失材料时阻塞或标记 unknown。",
+      "summary": "检查迁移兼容性、重试和回滚准备。"
     },
     "multica-rollout-and-canary-verification": {
       "name": "发布后与 Canary 验证",
-      "description": "针对同一已批准发布产物核对基线、观察窗口、健康信号、阈值、结论和回滚结果；不把重建产物混入验证。"
+      "description": "针对同一已批准发布产物核对基线、观察窗口、健康信号、阈值、结论和回滚结果；不把重建产物混入验证。",
+      "summary": "对照基线观察上线结果，记录指标和回滚结论。"
     }
   },
   "page": {
@@ -428,7 +443,17 @@
       "discard_description": "你对这份副本的修改尚未保存。",
       "discard_unknown_description": "将放弃当前草稿。关闭窗口不会撤销已经发送到服务端的创建请求。",
       "keep_editing": "保留修改",
-      "discard": "放弃修改"
+      "discard": "放弃修改",
+      "refreshing": "正在刷新模板...",
+      "refresh_failed": "模板未能刷新，当前显示上次加载的结果。",
+      "clear_search": "清除搜索",
+      "source_empty": "此来源暂无模板。",
+      "draft_title": "创建副本",
+      "related_none": "工作区暂无相关 skill",
+      "related_count_other": "工作区已有 {{count}} 个相关 skill",
+      "related_loading": "正在加载相关 skill...",
+      "related_load_failed": "无法加载相关 skill。",
+      "related_refresh_failed": "相关 skill 未能刷新，当前显示上次加载的结果。"
     }
   },
   "runtime_import": {
@@ -534,5 +559,13 @@
     "icon_pick": "选择图标",
     "used_by_count_other": "{{count}} 个智能体",
     "used_by_none": "未使用"
+  },
+  "template_entry": {
+    "title": "Skill 模板",
+    "description": "预览模板，再创建独立的工作区 skill。",
+    "browse": "浏览模板",
+    "total_other": "{{count}} 个模板",
+    "builtin_count": "平台内置 {{count}}",
+    "deployment_count": "部署提供 {{count}}"
   }
 }

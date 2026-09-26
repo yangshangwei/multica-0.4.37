@@ -3,64 +3,79 @@
     "multica-release-check": {
       "name": "multica-release-check",
       "description_v1": "Use before any release or production-affecting action: the gate, the rollback, and the approval request that must precede execution.",
-      "description": "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution."
+      "description": "Use when preparing a release or a high-risk action: choose the applicable checks, prepare recovery, and obtain human approval before execution.",
+      "summary": "リリース条件と復旧手順を確認し、実行前の承認を求めます。"
     },
     "multica-documentation-change": {
       "name": "multica-documentation-change",
-      "description": "Use when a change needs documentation: deciding what to write, keeping it true to the code, and finding what the change made wrong."
+      "description": "Use when a change needs documentation: deciding what to write, keeping it true to the code, and finding what the change made wrong.",
+      "summary": "変更の影響を整理し、ドキュメントをコードと一致させます。"
     },
     "multica-security-review": {
       "name": "multica-security-review",
-      "description": "Use when reviewing a change for security: the checklist, how to report a finding without writing an exploit, and when to stop."
+      "description": "Use when reviewing a change for security: the checklist, how to report a finding without writing an exploit, and when to stop.",
+      "summary": "セキュリティリスクを調べ、根拠とともに報告します。"
     },
     "multica-architecture-decision-record": {
       "name": "multica-architecture-decision-record",
       "description_v1": "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences.",
-      "description": "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences."
+      "description": "Use when a technical decision will constrain later work: drafts a proposed ADR in the issue comment for an Implementer or human to save, with context, the decision, rejected alternatives and consequences.",
+      "summary": "技術判断と選択肢の比較を ADR の草案にまとめます。"
     },
     "multica-code-review": {
       "name": "multica-code-review",
-      "description": "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report."
+      "description": "Use when reviewing a diff: what to look for, how to state a finding so it is actionable, and what not to report.",
+      "summary": "変更に潜む不具合、回帰、互換性の問題をレビューします。"
     },
     "multica-debugging": {
       "name": "根本原因分析",
-      "description": "観測された失敗の原因が不明なときに使用します。断続的な異常や現時点で再現できない異常も対象です。再現、最小化、仮説検証を通じて、証拠の確かさを明示した根本原因の結論と修正方針を提示します。正式な修正は提出しません。"
+      "description": "観測された失敗の原因が不明なときに使用します。断続的な異常や現時点で再現できない異常も対象です。再現、最小化、仮説検証を通じて、証拠の確かさを明示した根本原因の結論と修正方針を提示します。正式な修正は提出しません。",
+      "summary": "失敗を再現して仮説を検証し、根拠のある原因を示します。"
     },
     "multica-requirement-clarification": {
       "name": "multica-requirement-clarification",
-      "description": "Use when a request is too vague to build or accept: derives open questions, acceptance criteria, risks and a work split from what the issue already contains."
+      "description": "Use when a request is too vague to build or accept: derives open questions, acceptance criteria, risks and a work split from what the issue already contains.",
+      "summary": "目的、未解決の疑問、受け入れ条件、作業範囲を明確にします。"
     },
     "multica-test-report": {
       "name": "multica-test-report",
-      "description": "Use when reporting that code was verified: what ran, the real result, what each new test proves, and what was not covered."
+      "description": "Use when reporting that code was verified: what ran, the real result, what each new test proves, and what was not covered.",
+      "summary": "検証結果、テストの根拠、未検証の範囲を報告します。"
     },
     "multica-progress-report": {
       "name": "進捗レポート",
-      "description": "ワークスペースやプロジェクトの日報・週報に使用します。タスクと状態変更の履歴を確認し、元のタスクを変更せずに、根拠をたどれる進捗、集計、データ不足を現在の報告タスクに記載します。"
+      "description": "ワークスペースやプロジェクトの日報・週報に使用します。タスクと状態変更の履歴を確認し、元のタスクを変更せずに、根拠をたどれる進捗、集計、データ不足を現在の報告タスクに記載します。",
+      "summary": "タスクの進捗を確認し、根拠をたどれる定期報告にまとめます。"
     },
     "multica-reliability-engineering": {
       "name": "信頼性エンジニアリング",
-      "description": "ランタイムのシグナルを SLI/SLO、エラーバジェット、容量、縮退、復旧の証拠に整理するときに使用します。欠落は unknown とし、本番操作は承認済みの operator に委ねます。"
+      "description": "ランタイムのシグナルを SLI/SLO、エラーバジェット、容量、縮退、復旧の証拠に整理するときに使用します。欠落は unknown とし、本番操作は承認済みの operator に委ねます。",
+      "summary": "稼働状況、信頼性の目標、復旧への備えを評価します。"
     },
     "multica-agent-evaluation": {
       "name": "エージェント評価",
-      "description": "Agent、Skill、MCP の変更をバージョン化ケースで正確性・安全性・コスト・遅延・ドリフトの観点から評価します。脱敏した軌跡を保存し、本番設定は変更しません。"
+      "description": "Agent、Skill、MCP の変更をバージョン化ケースで正確性・安全性・コスト・遅延・ドリフトの観点から評価します。脱敏した軌跡を保存し、本番設定は変更しません。",
+      "summary": "エージェントの正確性、安全性、コスト、遅延、性能変化を比較します。"
     },
     "multica-experience-validation": {
       "name": "体験検証",
-      "description": "ブラウザ・クライアントをまたぐ重要なユーザージャーニーをアクセシビリティとクロスプラットフォームの証拠で検証し、証拠がなければ unknown と成果リスクを記録します。"
+      "description": "ブラウザ・クライアントをまたぐ重要なユーザージャーニーをアクセシビリティとクロスプラットフォームの証拠で検証し、証拠がなければ unknown と成果リスクを記録します。",
+      "summary": "主要な操作フロー、アクセシビリティ、各環境での動作を検証します。"
     },
     "multica-incident-learning": {
       "name": "インシデント学習",
-      "description": "復旧後に脱敏した事実・仮説・unknown を分け、担当者・受け入れシグナル・重複リンク付きの予防タスクを作成します。"
+      "description": "復旧後に脱敏した事実・仮説・unknown を分け、担当者・受け入れシグナル・重複リンク付きの予防タスクを作成します。",
+      "summary": "障害の事実を整理し、担当者を定めた再発防止タスクにします。"
     },
     "multica-migration-review": {
       "name": "移行レビュー",
-      "description": "スキーマ・API・クライアント移行の互換期間、検証、冪等性、再試行、ロールバックの証拠を確認し、資料がなければ保留します。"
+      "description": "スキーマ・API・クライアント移行の互換期間、検証、冪等性、再試行、ロールバックの証拠を確認し、資料がなければ保留します。",
+      "summary": "移行時の互換性、再試行、ロールバックへの備えを確認します。"
     },
     "multica-rollout-and-canary-verification": {
       "name": "ロールアウトと Canary の検証",
-      "description": "承認済みの同一不変アーティファクトを固定ウィンドウで基線と比較し、シグナル・閾値・ロールバック結果を記録します。再ビルド成果物は混ぜません。"
+      "description": "承認済みの同一不変アーティファクトを固定ウィンドウで基線と比較し、シグナル・閾値・ロールバック結果を記録します。再ビルド成果物は混ぜません。",
+      "summary": "展開後の状態を基準と比較し、指標とロールバック結果を記録します。"
     }
   },
   "page": {
@@ -245,7 +260,7 @@
         "warning": "このスキルへのローカル編集は上書きされます。エージェントへの割り当て、ラベル、作成者は保持されます。",
         "cancel": "キャンセル",
         "confirm": "更新",
-        "refreshing": "更新中…"
+        "refreshing": "更新中..."
       }
     },
     "delete_dialog": {
@@ -428,7 +443,17 @@
       "discard_description": "このコピーへの変更はまだ保存されていません。",
       "discard_unknown_description": "下書きを破棄します。閉じても、サーバーへ送信済みの作成リクエストは取り消されません。",
       "keep_editing": "変更を保持",
-      "discard": "変更を破棄"
+      "discard": "変更を破棄",
+      "refreshing": "テンプレートを更新中...",
+      "refresh_failed": "テンプレートを更新できませんでした。前回の結果を表示しています。",
+      "clear_search": "検索をクリア",
+      "source_empty": "この提供元のテンプレートはありません。",
+      "draft_title": "コピーを作成",
+      "related_none": "このワークスペースに関連スキルはありません。",
+      "related_count_other": "このワークスペースの関連スキル：{{count}} 件",
+      "related_loading": "関連スキルを読み込み中...",
+      "related_load_failed": "関連スキルを読み込めませんでした。",
+      "related_refresh_failed": "関連スキルを更新できませんでした。前回の結果を表示しています。"
     }
   },
   "runtime_import": {
@@ -534,5 +559,13 @@
     "icon_pick": "アイコンを選択",
     "used_by_count_other": "{{count}} 個のエージェント",
     "used_by_none": "未使用"
+  },
+  "template_entry": {
+    "title": "スキルテンプレート",
+    "description": "テンプレートを確認して、ワークスペースに独立したスキルを作成します。",
+    "browse": "テンプレートを見る",
+    "total_other": "{{count}} 件のテンプレート",
+    "builtin_count": "標準 {{count}}",
+    "deployment_count": "環境提供 {{count}}"
   }
 }

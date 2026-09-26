@@ -21,6 +21,26 @@ const BUILTIN_ROLE_SKILL_NAMES = [
   "multica-rollout-and-canary-verification",
 ] as const;
 
+type BuiltinRoleSkillName = (typeof BUILTIN_ROLE_SKILL_NAMES)[number];
+
+function getDefaultDescriptionKey(
+  name: BuiltinRoleSkillName,
+  description: string,
+): "description" | "description_v1" | null {
+  const text = description.trim();
+  if ([zhSkills.builtin_role_skills[name].description, enSkills.builtin_role_skills[name].description]
+    .some((value) => text === value.trim())) return "description";
+
+  // Match only shipped historical defaults; a version or prefix cannot prove
+  // that a workspace description has not been customized.
+  if (
+    (name === "multica-release-check" || name === "multica-architecture-decision-record") &&
+    text === enSkills.builtin_role_skills[name].description_v1.trim()
+  ) return "description_v1";
+
+  return null;
+}
+
 export type SkillPresentationInput = Pick<SkillSummary, "name" | "description"> &
   Partial<Pick<SkillSummary, "config">>;
 
@@ -46,12 +66,11 @@ export function getBuiltinRoleSkillPresentation(
   const english = enSkills.builtin_role_skills[key];
   const chinese = zhSkills.builtin_role_skills[key];
   const description = storedDescription ?? chinese.description;
-  const hasDefaultDescription = [chinese.description, english.description]
-    .some((value) => description.trim() === value.trim());
-  let translatedDescription = hasDefaultDescription
+  const descriptionKey = getDefaultDescriptionKey(key, description);
+  let translatedDescription = descriptionKey === "description"
     ? t(($) => $.builtin_role_skills[key].description)
     : description;
-  let searchDescriptions = hasDefaultDescription
+  let searchDescriptions = descriptionKey === "description"
     ? [chinese.description, english.description]
     : [];
 
@@ -59,7 +78,7 @@ export function getBuiltinRoleSkillPresentation(
   // Recognize the exact old text so customized descriptions still stay untouched.
   if (
     (key === "multica-release-check" || key === "multica-architecture-decision-record") &&
-    description.trim() === enSkills.builtin_role_skills[key].description_v1.trim()
+    descriptionKey === "description_v1"
   ) {
     translatedDescription = t(($) => $.builtin_role_skills[key].description_v1);
     searchDescriptions = [
@@ -85,6 +104,21 @@ export function getBuiltinRoleSkillPresentation(
   };
 }
 
+/** Display-only template row copy; never use it to seed a skill description. */
+export function getBuiltinRoleSkillSummary(
+  name: string,
+  t: TFunction<"skills">,
+  storedDescription?: string,
+): string | null {
+  const key = BUILTIN_ROLE_SKILL_NAMES.find((candidate) => candidate === name);
+  if (!key) return null;
+
+  const description = storedDescription ?? zhSkills.builtin_role_skills[key].description;
+  return getDefaultDescriptionKey(key, description)
+    ? t(($) => $.builtin_role_skills[key].summary)
+    : description;
+}
+
 /** Workspace records need provenance; an English name alone is not enough. */
 export function getSkillPresentation(
   skill: SkillPresentationInput,
@@ -94,6 +128,7 @@ export function getSkillPresentation(
   if (
     origin &&
     typeof origin === "object" &&
+    !Array.isArray(origin) &&
     "type" in origin &&
     origin.type === "builtin_role_skill" &&
     "name" in origin &&

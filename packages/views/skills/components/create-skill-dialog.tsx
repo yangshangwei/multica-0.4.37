@@ -27,6 +27,7 @@ import {
   type PreparedSkillArchive,
   type SkillPresentationMeta,
 } from "@multica/core/skills";
+import { useRequiredWorkspaceSlug } from "@multica/core/paths";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { isImeComposing } from "@multica/core/utils";
 import { cacheSkillResponse as seedAfterCreate } from "@multica/core/workspace/queries";
@@ -58,7 +59,8 @@ import { useScrollFade } from "@multica/ui/hooks/use-scroll-fade";
 import { cn } from "@multica/ui/lib/utils";
 import { openExternal } from "../../platform";
 import { RuntimeLocalSkillImportPanel } from "./runtime-local-skill-import-panel";
-import { TemplateSkillCreatePanel } from "./template-skill-create-panel";
+import { TemplateSkillCreatePanel, type RelatedSkillNavigationRequest } from "./template-skill-create-panel";
+import { useNavigation } from "../../navigation";
 import { SkillPresentationFields } from "./skill-presentation-fields";
 import { ResourceLabelPicker } from "../../labels/resource-label-picker";
 import { useTemplateSkillSession } from "../hooks/use-template-skill-session";
@@ -645,22 +647,36 @@ function LocalForm({
 // Root dialog
 // ---------------------------------------------------------------------------
 
+export type SkillCreateEntry =
+  | { kind: "methods" }
+  | { kind: "templates"; templateName?: string };
+
 export function CreateSkillDialog({
   onClose,
   onCreated,
-  initialTemplateName,
+  initialEntry,
   initialPresentation,
+  finalFocus,
 }: {
   onClose: () => void;
   onCreated?: (skill: Skill) => void;
-  initialTemplateName?: string;
+  initialEntry?: SkillCreateEntry;
+  /** Resolve the live opening control after an intentional dismissal. */
+  finalFocus?: () => HTMLElement | null;
   /** Pre-fills the manual form's category / icon (e.g. from a category empty state). */
   initialPresentation?: Partial<SkillPresentationMeta>;
 }) {
   const { t } = useT("skills");
-  const [method, setMethod] = useState<Method>(() => initialTemplateName ? "template" : "chooser");
-  const initialTemplate = useRef(initialTemplateName);
+  const [method, setMethod] = useState<Method>(() => initialEntry?.kind === "templates" ? "template" : "chooser");
+  const initialTemplate = useRef(initialEntry?.kind === "templates" ? initialEntry.templateName : undefined);
   const wsId = useWorkspaceId();
+  const workspaceSlug = useRequiredWorkspaceSlug();
+  const navigation = useNavigation();
+  const currentContext = useRef({ wsId, workspaceSlug, navigation });
+  currentContext.current = { wsId, workspaceSlug, navigation };
+  const closed = useRef(false);
+  const dialogContentRef = useRef<HTMLDivElement>(null);
+  const discardReturnFocus = useRef<HTMLElement | null>(null);
   const [discardOpen, setDiscardOpen] = useState(false);
   const pendingAction = useRef<(() => void) | null>(null);
   const [localPrepared, setLocalPrepared] = useState<PreparedSkillArchive | null>(
@@ -692,12 +708,15 @@ export function CreateSkillDialog({
 
   useEffect(() => {
     pendingAction.current = null;
+    discardReturnFocus.current = null;
+    closed.current = false;
     setDiscardOpen(false);
-  }, [wsId]);
+  }, [wsId, workspaceSlug]);
 
   const confirmDiscard = (action: () => void) => {
-    if (templateSession.busy) return;
+    if (templateSession.busy || closed.current) return;
     if (templateSession.dirty || templateSession.hasUnconfirmedSubmission) {
+      discardReturnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       pendingAction.current = action;
       setDiscardOpen(true);
     } else {
@@ -706,9 +725,33 @@ export function CreateSkillDialog({
   };
 
   const requestClose = () => confirmDiscard(() => {
+    pendingAction.current = null;
+    closed.current = true;
     templateSession.reset();
     onClose();
   });
+
+  const requestOpenSkill = (request: RelatedSkillNavigationRequest) => {
+    // Capture the original gesture now; confirmation may run after the query,
+    // locale or route changes. Existing-skill navigation is not creation recovery.
+    const snapshot = Object.freeze({ ...request });
+    const contextMatches = () => snapshot.sourceWorkspaceId === currentContext.current.wsId
+      && snapshot.sourceWorkspaceSlug === currentContext.current.workspaceSlug;
+    if (!contextMatches()) return;
+    confirmDiscard(() => {
+      if (closed.current || !contextMatches()) return;
+      const adapter = currentContext.current.navigation;
+      if (snapshot.intent !== "push" && !adapter.openInNewTab) return;
+      pendingAction.current = null;
+      discardReturnFocus.current = null;
+      closed.current = true;
+      templateSession.reset();
+      onClose();
+      if (snapshot.intent === "push") adapter.push(snapshot.path);
+      else if (snapshot.intent === "foreground-tab") adapter.openInNewTab?.(snapshot.path, snapshot.title, { activate: true });
+      else adapter.openInNewTab?.(snapshot.path, snapshot.title);
+    });
+  };
 
   const beginLocalSelection = (): number => {
     const next = localGeneration.current + 1;
@@ -760,6 +803,9 @@ export function CreateSkillDialog({
   const handleBack = () => {
     if (templateSession.busy) return;
     if (method === "template" && templateSession.step === "editor") {
+      // Hand off focus before removing the editor control. Otherwise the
+      // dialog's deferred focus restoration can steal it from a preview link.
+      dialogContentRef.current?.focus({ preventScroll: true });
       templateSession.backToTemplates();
       return;
     }
@@ -812,7 +858,9 @@ export function CreateSkillDialog({
     <>
     <Dialog open onOpenChange={(v) => !v && requestClose()}>
       <DialogContent
+        ref={dialogContentRef}
         showCloseButton={false}
+        finalFocus={finalFocus ? () => closed.current ? finalFocus() : false : undefined}
         className={cn(
           "flex flex-col gap-0 overflow-hidden p-0",
           "!transition-all !duration-300 !ease-out",
@@ -846,7 +894,11 @@ export function CreateSkillDialog({
             )}
             <div className="min-w-0">
               <DialogTitle className="truncate text-title-sm font-medium">
-                {t(($) => $.create.method[method].title)}
+                {fromTemplate
+                  ? templateSession.step === "editor"
+                    ? t(($) => $.create.template.draft_title)
+                    : t(($) => $.create.template.preview_label)
+                  : t(($) => $.create.method[method].title)}
               </DialogTitle>
               <p className="mt-0.5 text-caption text-muted-foreground">
                 {t(($) => $.create.method[method].desc)}
@@ -903,7 +955,10 @@ export function CreateSkillDialog({
         )}
         {method === "template" && (
           <TemplateSkillCreatePanel
+            key={`${wsId}:${workspaceSlug}`}
             workspaceId={wsId}
+            workspaceSlug={workspaceSlug}
+            onRequestOpenSkill={requestOpenSkill}
             session={templateSession}
             onBack={handleBack}
             onUseTemplate={(template, names, description) => {
@@ -950,7 +1005,7 @@ export function CreateSkillDialog({
       setDiscardOpen(open);
       if (!open) pendingAction.current = null;
     }}>
-      <AlertDialogContent>
+      <AlertDialogContent finalFocus={() => discardReturnFocus.current?.isConnected ? discardReturnFocus.current : false}>
         <AlertDialogHeader>
           <AlertDialogTitle>{t(($) => $.create.template.discard_title)}</AlertDialogTitle>
           <AlertDialogDescription>

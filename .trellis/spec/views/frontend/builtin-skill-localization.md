@@ -54,25 +54,90 @@ presentation resolver for display. User-initiated copy creation may seed a NEW
 draft's description from the current localized purpose; later locale or query
 updates must not reseed it. Existing workspace edits still preserve stored text.
 
+The skills page has one compact template entry, separate from the workspace
+collection. Its totals come from valid named entries in the unfiltered template
+catalog, with platform and deployment counts labelled separately. Workspace
+header counts and facets still describe workspace skills. Open the shared
+creation dialog with `initialEntry: { kind: "templates" }` for direct browsing;
+New skill uses the method chooser. An optional named seed selects a preview only.
+
+Picker rows may use `builtin_role_skills.<name>.summary` through
+`getBuiltinRoleSkillSummary`. This is display copy only. Recognize the same exact
+current or shipped historical defaults as the full presentation resolver;
+customized and unknown/deployment descriptions stay verbatim. Keep the original
+template object, full `presentation.description`, search text, source-sync
+defaults, instruction body and supporting files unchanged. Preview and adoption
+use the full purpose, never the summary.
+
 Keep template session state in the root creation dialog so switching back to the
 method chooser does not discard edits. Preview selection is separate from the
 draft source. Only explicit template adoption replaces a draft, and only the
 final create action writes a skill. Copies keep distinct names and informational
 `config.template_source`, never official `origin` metadata or agent permissions.
 
-Group the picker by provenance, derived purely from `presentation.isBuiltin`:
+Group the picker into source tabs, derived purely from `presentation.isBuiltin`:
 platform built-ins (name in the role-skill catalog, resolver returns non-null)
 versus deployment-provided (operator-mounted, inline fallback with
-`isBuiltin: false`). Render a group's section only when it is non-empty, and
-split AFTER search filtering so both groups stay searchable. The deployment
-group heading carries its count and an inline, external-link-free hint that these
-come from the server's mounted skill-template directory (see the server
+`isBuiltin: false`). Keep both tabs available even when a source is empty, and
+derive tab result counts after search filtering. An initial valid named seed
+selects its source; otherwise use the first nonempty source, preferring platform
+built-ins. This also applies when catalog data is already cached. The preview
+must belong to the visible source/results, and adoption is disabled when none
+remain. Search and source changes do not adopt or replace a draft.
+
+Source labels must fit when Japanese or Korean wraps. The shared `TabsList`
+sets height with `group-data-horizontal/tabs:h-8`; a plain local `h-auto` cannot
+override that more-specific variant. Override the matching horizontal variant
+locally and let the triggers grow and stretch together. Keep narrow-screen
+footer help above the actions so long adoption labels cannot squeeze it into a
+thin column; preserve the desktop footer row.
+
+The deployment tab contains an inline, external-link-free hint explaining that
+templates come from the server's mounted directory (see the server
 `builtin-templates.md` mounted-directory scenario and the self-host quickstart).
-When no deployment templates exist — computed off the UNFILTERED catalog so an
-empty search never hides it — show a persistent muted hint that an operator can
-mount public templates. Do not add a `新建 skill` chooser entry or an in-UI
-directory-config form: the channel is passive/filesystem-backed, and the mount
-path is operator territory, not an end-user action.
+If no deployment templates exist in the UNFILTERED catalog, retain the muted
+operator-mount hint in that tab even during search. An empty source and a search
+with no matches are distinct states. Do not add a creation-method entry or an
+in-UI directory-config form: the channel is passive/filesystem-backed, and the
+mount path is operator territory, not an end-user action.
+
+Cold loading and a no-data query error must not claim zero templates or related
+skills. Successful empty data can. Cached data remains usable during refresh
+and after a failed refresh, with an explicit status/retry affordance. Mount the
+creation dialog once, outside the page's conditional list-error body, keyed only
+by workspace identity. Same-workspace failure/retry must preserve the edited
+draft, unconfirmed submission and pending discard/navigation action.
+
+Related workspace skills are all records with either a matching canonical name
+and verified built-in presentation, or exact `config.template_source.name`.
+Use `getRelatedWorkspaceSkills` to preserve query order and include each record
+once; do not choose an arbitrary first match. Show zero only with query data,
+otherwise loading/error, and render every named link for a nonzero result.
+Official instances are related skills, not independent copies. Source metadata
+does not prove content equality or grant permissions.
+
+Related links use real `AppLink` anchors. Every Desktop adapter intent (including
+background and middle opens, which can activate an existing tab) and Web
+in-place push pass through the root busy/dirty/unconfirmed guard. Snapshot the
+source workspace UUID/slug, destination ID/path, presented title and resolved
+intent at the original gesture. Confirmation consumes that snapshot once,
+resets/closes, then invokes the original adapter action; it must not call
+creation recovery, `onCreated`, or a success toast. Cancel preserves the draft
+and returns focus to the link. Web-native modified links retain browser behavior.
+Workspace changes clear pending actions and reject stale snapshots.
+
+The page supplies live creation-trigger refs for dialog final focus. Direct
+browsing autofocuses search before the dialog can record its previous focus,
+so relying on implicit focus restoration loses the opener. Resolve the current
+trigger after list failure/retry; do not restore an old dialog's focus merely
+because a workspace change unmounted it. Narrow preview Back restores its
+selected row, falling back to search if the row disappeared.
+
+Leaving the template editor must use the root back handler and move focus to
+the persistent dialog before removing a focused editor control. The narrow
+picker can keep its preview visible while hiding search, so search autofocus
+cannot provide this handoff. Otherwise Base UI schedules popup focus restoration
+on the next frame and can steal focus from a related link before Enter reaches it.
 
 An unconfirmed submission is independent from the editor step. Returning to
 editing must retain the close warning and recovery action. Opening an older
@@ -82,4 +147,10 @@ never navigate on a late response after timeout, unmount or workspace change.
 
 ## Verification
 
-Run the pure presentation/source-sync suite, skill list/detail and picker suites, slash suggestion/extension suites, tab presentation suite, and locale parity. Use a single-locale provider in at least one regression test so complete test resource bundles do not hide production failures.
+Run the pure presentation/source-sync and discovery suites, skill list/detail
+and picker suites, slash suggestion/extension suites, tab presentation suite,
+and locale parity. The root template-flow suite owns draft/recovery/navigation
+guards and snapshots; `skills-page-template-session.test.tsx` owns the real-page
+query-transition and opener-focus regressions. Render entry and phase labels
+with only each active locale (`en`, `zh-Hans`, `ja`, `ko`) loaded, so complete test
+resource bundles do not hide production failures.

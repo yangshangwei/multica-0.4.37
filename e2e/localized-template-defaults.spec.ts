@@ -3,6 +3,11 @@ import { test as base, expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import enSkills from "../packages/views/locales/en/skills.json" with { type: "json" };
 import zhSkills from "../packages/views/locales/zh-Hans/skills.json" with { type: "json" };
+import jaSkills from "../packages/views/locales/ja/skills.json" with { type: "json" };
+import koSkills from "../packages/views/locales/ko/skills.json" with { type: "json" };
+
+type SkillLocale = "en" | "zh-Hans" | "ja" | "ko";
+type SkillCopy = typeof enSkills | typeof zhSkills | typeof jaSkills | typeof koSkills;
 
 interface LocalizedFixture {
   api: TestApiClient;
@@ -63,7 +68,7 @@ const test = base.extend<{ localized: LocalizedFixture }>({
 
 test.use({ viewport: { width: 1440, height: 1000 }, trace: "retain-on-failure" });
 
-async function setLocale(page: Page, fixture: LocalizedFixture, locale: "en" | "zh-Hans") {
+async function setLocale(page: Page, fixture: LocalizedFixture, locale: SkillLocale) {
   await fixture.api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
   await page.context().addCookies([{ name: "multica-locale", value: locale, url: fixture.origin }]);
 }
@@ -191,7 +196,7 @@ test("diagnostician API creation preserves workspace skill and agent copies", as
   await expect(page.getByText("multica-debugging", { exact: true })).toBeVisible();
 });
 
-test("specialist skills localize, search and open their official copies without rewriting stored content", async ({ page, localized }) => {
+test("specialist skills localize, search and open their official copies without rewriting stored content", async ({ page, localized }, testInfo) => {
   const { api, runtime, slug } = localized;
   const specialists = [
     { role: "experience-validation-engineer", skill: "multica-experience-validation" },
@@ -213,32 +218,161 @@ test("specialist skills localize, search and open their official copies without 
   }));
   const writes: string[] = [];
   page.on("request", (request) => {
-    if (["PUT", "PATCH", "POST"].includes(request.method()) && new URL(request.url()).pathname.startsWith("/api/skills")) {
+    if (["PUT", "PATCH", "POST", "DELETE"].includes(request.method()) && new URL(request.url()).pathname.startsWith("/api/skills")) {
       writes.push(request.url());
     }
   });
+  const catalog = await api.requestJSON<{ templates: { name: string }[] }>("/api/skills/templates");
+  const visualStates: Record<string, unknown>[] = [];
+  const capture = async (state: string, locale: SkillLocale, copy: SkillCopy, theme: "light" | "dark") => {
+    await page.evaluate(() => document.fonts.ready);
+    const viewport = page.viewportSize()!;
+    await expect(page.locator("html")).toHaveClass(new RegExp(`\\b${theme}\\b`));
+    await expect.poll(() => page.evaluate(() =>
+      Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) <= window.innerWidth,
+    )).toBe(true);
+    const entry = page.getByRole("region", { name: copy.template_entry.title, exact: true, includeHidden: true });
+    const entryBounds = await entry.boundingBox();
+    expect(entryBounds).not.toBeNull();
+    expect(entryBounds!.height).toBeLessThanOrEqual(viewport.width >= 768 ? 64 : 112);
+    const openDialog = page.getByRole("dialog");
+    if (await openDialog.count()) {
+      await expect.poll(async () => {
+        const bounds = await openDialog.boundingBox();
+        return bounds !== null && bounds.x >= 0 && bounds.y >= 0
+          && bounds.x + bounds.width <= viewport.width
+          && bounds.y + bounds.height <= viewport.height;
+      }).toBe(true);
+      await expect.poll(() => openDialog.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+      await expect(openDialog.getByRole("button", { name: copy.create.template.use_template, exact: true })).toBeInViewport({ ratio: 1 });
+    }
+    const name = `skill-templates-${locale}-${theme}-${state}-${viewport.width}x${viewport.height}`;
+    const path = testInfo.outputPath(`${name}.png`);
+    await page.screenshot({ path, animations: "disabled" });
+    await testInfo.attach(name, { path, contentType: "image/png" });
+    visualStates.push({ name, locale, theme, viewport, entryHeight: entryBounds!.height,
+      templateCount: catalog.templates.length, workspaceSkillCount: skills.length });
+  };
   for (const [locale, copy] of [["en", enSkills], ["zh-Hans", zhSkills]] as const) {
     await setLocale(page, localized, locale);
-    for (const skill of copies) {
+    const theme = locale === "en" ? "light" : "dark";
+    await page.goto(`/${slug}/skills`);
+    await page.evaluate((value) => localStorage.setItem("theme", value), theme);
+    await page.reload();
+    await expect(page.locator("html")).toHaveClass(new RegExp(`\\b${theme}\\b`));
+    for (const [index, skill] of copies.entries()) {
       const displayed = copy.builtin_role_skills[skill.name];
+      await page.setViewportSize({ width: 1280, height: 720 });
       await page.goto(`/${slug}/skills`);
+      const entry = page.getByRole("region", { name: copy.template_entry.title, exact: true, includeHidden: true });
+      await expect(entry).toContainText(copy.template_entry.total_other.replace("{{count}}", String(catalog.templates.length)));
+      await expect(page.locator("header").getByText(String(skills.length), { exact: true })).toBeVisible();
+      if (index === 0) {
+        await capture("entry", locale, copy, theme);
+        await page.setViewportSize({ width: 375, height: 667 });
+        await expect(page.getByPlaceholder(copy.page.search_placeholder)).toBeHidden();
+        await capture("entry", locale, copy, theme);
+        await page.setViewportSize({ width: 360, height: 800 });
+        await capture("entry", locale, copy, theme);
+        await page.setViewportSize({ width: 1280, height: 720 });
+      }
       const search = page.getByPlaceholder(copy.page.search_placeholder);
       for (const purpose of [enSkills.builtin_role_skills[skill.name].description, zhSkills.builtin_role_skills[skill.name].description]) {
         await search.fill(purpose);
         await expect(page.getByText(displayed.name, { exact: true }).first()).toBeVisible();
         await expect(page.getByText(displayed.description, { exact: true }).first()).toBeVisible();
       }
-      const catalog = page.getByRole("region", { name: copy.catalog.title, exact: true });
-      await catalog.getByRole("button", { name: new RegExp(`^${copy.catalog.title}`) }).click();
-      const row = catalog.getByRole("listitem", { name: displayed.name, exact: true });
-      await row.getByRole("button", { name: copy.catalog.open_instance, exact: true }).click();
+      await expect(entry).toContainText(copy.template_entry.total_other.replace("{{count}}", String(catalog.templates.length)));
+      await entry.getByRole("button", { name: copy.template_entry.browse, exact: true }).click();
+      const preview = page.getByRole("dialog");
+      await expect(preview).toHaveAccessibleName(copy.create.template.preview_label);
+      await expect(preview.getByRole("textbox", { name: copy.create.template.search_placeholder })).toBeFocused();
+      await preview.getByRole("textbox", { name: copy.create.template.search_placeholder }).fill(skill.name);
+      const templateRow = preview.getByRole("button", { name: new RegExp(`^${displayed.name}`) });
+      await expect(templateRow).toContainText(displayed.summary);
+      if (index === 0) {
+        await capture("list", locale, copy, theme);
+        await page.setViewportSize({ width: 375, height: 667 });
+        await capture("list", locale, copy, theme);
+      }
+      await templateRow.focus();
+      await page.keyboard.press("Enter");
+      await expect(preview.getByText(displayed.description, { exact: true })).toBeVisible();
+      const relatedCount = "related_count_one" in copy.create.template
+        ? copy.create.template.related_count_one
+        : copy.create.template.related_count_other;
+      await expect(preview.getByText(relatedCount.replace("{{count}}", "1"), { exact: true })).toBeVisible();
+      const relatedLink = preview.getByRole("link", { name: displayed.name, exact: true });
+      await expect(relatedLink).toHaveAttribute("href", `/${slug}/skills/${skill.id}`);
+      if (index === 0) {
+        await expect(preview.getByRole("button", { name: copy.create.template.use_template, exact: true })).toBeFocused();
+        await capture("preview", locale, copy, theme);
+        await page.setViewportSize({ width: 1280, height: 720 });
+        await capture("preview", locale, copy, theme);
+      }
+      await relatedLink.focus();
+      await page.keyboard.press("Enter");
       await expect(page).toHaveURL(`/${slug}/skills/${skill.id}`);
+      await expect(preview).toHaveCount(0);
       await expect(page.getByRole("heading", { level: 1, name: displayed.name, exact: true })).toBeVisible();
       if (locale === "en") await expect(page.getByText(displayed.description, { exact: true })).toBeVisible();
       expect(await api.requestJSON(`/api/skills/${skill.id}`)).toEqual(skill.snapshot);
     }
   }
+  // These locales share the same creation semantics. Keep only the narrow
+  // label/keyboard smoke here; the full flow remains canonical above.
+  for (const [locale, copy, theme] of [["ja", jaSkills, "light"], ["ko", koSkills, "dark"]] as const) {
+    await setLocale(page, localized, locale);
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto(`/${slug}/skills`);
+    await page.evaluate((value) => localStorage.setItem("theme", value), theme);
+    await page.reload();
+    const entry = page.getByRole("region", { name: copy.template_entry.title, exact: true });
+    await expect(entry).toContainText(copy.template_entry.total_other.replace("{{count}}", String(catalog.templates.length)));
+    const browse = entry.getByRole("button", { name: copy.template_entry.browse, exact: true });
+    await expect(browse).toBeInViewport({ ratio: 1 });
+    await capture("entry", locale, copy, theme);
+    await browse.focus();
+    await page.keyboard.press("Enter");
+    const picker = page.getByRole("dialog", { name: copy.create.template.preview_label, exact: true });
+    const search = picker.getByRole("textbox", { name: copy.create.template.search_placeholder });
+    await expect(search).toBeFocused();
+    await capture("list", locale, copy, theme);
+    const title = picker.getByRole("heading", { name: copy.create.template.preview_label, exact: true });
+    await expect.poll(() => title.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+    await expect(picker.getByRole("tab")).toHaveCount(2);
+    for (const tab of await picker.getByRole("tab").all()) {
+      await expect(tab).toBeInViewport({ ratio: 1 });
+      await expect.poll(() => tab.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+      // The transparent ::after indicator extends scrollHeight below the tab.
+      // DOM range rectangles measure label/count fit and expose clipped text.
+      await expect.poll(() => tab.evaluate((element) => {
+        const bounds = element.getBoundingClientRect();
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const textBounds = Array.from(range.getClientRects()).filter((rect) => rect.width > 0 && rect.height > 0);
+        return textBounds.length > 0 && textBounds.every((rect) => rect.left >= bounds.left && rect.right <= bounds.right
+          && rect.top >= bounds.top && rect.bottom <= bounds.bottom);
+      })).toBe(true);
+    }
+    const displayed = copy.builtin_role_skills["multica-experience-validation"];
+    await search.fill("multica-experience-validation");
+    const row = picker.getByRole("button", { name: new RegExp(`^${displayed.name}`) });
+    await expect(row).toContainText(displayed.summary);
+    await row.focus();
+    await page.keyboard.press("Enter");
+    await expect(picker.getByText(displayed.description, { exact: true })).toBeVisible();
+    await capture("preview", locale, copy, theme);
+    await picker.getByRole("button", { name: copy.create.template.back_to_templates, exact: true }).click();
+    await expect(row).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(picker).toHaveCount(0);
+    await expect(browse).toBeFocused();
+  }
   expect(writes).toEqual([]);
+  await testInfo.attach("localized-skill-template-visual-evidence", {
+    body: Buffer.from(JSON.stringify({ visualStates, browserSkillWrites: writes }, null, 2)), contentType: "application/json",
+  });
 });
 
 test("Chinese squad staffing creates localized roles and English restaffing preserves customized agents", async ({ page, localized }, testInfo) => {
