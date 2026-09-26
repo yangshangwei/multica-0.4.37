@@ -1,6 +1,6 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import type { Agent, AgentRoleTemplate, Squad, SquadTemplate, SquadMember } from "@multica/core/types";
 import type { AgentActivity } from "@multica/core/agents";
 import { renderWithI18n } from "../../test/i18n";
@@ -19,12 +19,15 @@ import { AgentsPage } from "./agents-page";
 const mocks = vi.hoisted(() => ({
   agents: [] as Agent[],
   agentsLoading: false,
-  squads: [] as Squad[],
-  squadTemplates: [] as SquadTemplate[],
+  squads: [] as Squad[] | undefined,
+  squadsPending: false,
+  squadsError: false,
+  squadTemplates: [] as SquadTemplate[] | undefined,
+  squadTemplatesError: false,
   squadMembers: [] as SquadMember[],
   membershipPending: false,
   membershipError: false,
-  templates: [] as AgentRoleTemplate[],
+  templates: [] as AgentRoleTemplate[] | undefined,
   templatesError: false,
   templatesPending: false,
   refetchTemplates: vi.fn(),
@@ -65,7 +68,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("../create/use-role-templates", () => ({
-  useSquadTemplates: () => ({ data: mocks.squadTemplates, isPending: false, isError: false, refetch: vi.fn() }),
+  useSquadTemplates: () => ({ data: mocks.squadTemplates, isPending: false, isError: mocks.squadTemplatesError, refetch: vi.fn() }),
   useRoleTemplates: () => ({
     data: mocks.templates,
     isLoading: false,
@@ -94,7 +97,7 @@ vi.mock("@tanstack/react-query", () => ({
         refetch: vi.fn(),
       };
     }
-    if (key === "squads") return { data: mocks.squads, isPending: false, isError: false, refetch: vi.fn() };
+    if (key === "squads") return { data: mocks.squads, isPending: mocks.squadsPending, isError: mocks.squadsError, refetch: vi.fn() };
     if (key === "agent-run-counts") {
       return { data: mocks.runCounts, isPending: mocks.runCountsPending };
     }
@@ -186,7 +189,11 @@ vi.mock("@multica/core/runtimes", () => ({
 vi.mock("../../common/actor-avatar", () => ({ ActorAvatar: () => null }));
 vi.mock("./agent-row-actions", () => ({ AgentRowActions: () => null }));
 vi.mock("./agent-list-toolbar", () => ({
-  AgentListToolbar: () => <div data-testid="agent-list-toolbar" />,
+  AgentListToolbar: ({ search, onSearchChange }: { search: string; onSearchChange: (value: string) => void }) => (
+    <div data-testid="agent-list-toolbar">
+      <input aria-label="Search agents" value={search} onChange={(event) => onSearchChange(event.target.value)} />
+    </div>
+  ),
   countActiveFilterDimensions: () => 0,
 }));
 vi.mock("../presence", () => ({ availabilityConfig: {} }));
@@ -280,7 +287,10 @@ beforeEach(() => {
   mocks.agents = [ALPHA, BETA];
   mocks.agentsLoading = false;
   mocks.squads = [];
+  mocks.squadsPending = false;
+  mocks.squadsError = false;
   mocks.squadTemplates = [];
+  mocks.squadTemplatesError = false;
   mocks.squadMembers = [];
   mocks.membershipPending = false;
   mocks.membershipError = false;
@@ -320,6 +330,71 @@ const RELEASE_SQUAD: Squad = {
 };
 
 describe("AgentsPage discovery", () => {
+  it.each(["specialist", "other"])("does not claim %s filter results while role metadata is missing, then recovers after retry", (role) => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [makeAgent({ name: "Payments expert", template_key: "code-reviewer" }), ALPHA];
+    mocks.viewState.filters.roles = [role];
+    const view = renderPage();
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Some role or squad information could not be loaded.");
+    expect(screen.queryByText("No matches")).not.toBeInTheDocument();
+    expect(screen.queryByText("Payments expert")).not.toBeInTheDocument();
+    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All roles" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(mocks.refetchTemplates).toHaveBeenCalledOnce();
+
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.templatesError = false;
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByText(role === "specialist" ? "Payments expert" : "Alpha Agent")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "All roles" }));
+    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("roles", role);
+  });
+
+  it("keeps saved agents usable without inventing role groups when the squad template catalog fails", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.squadTemplates = undefined;
+    mocks.squadTemplatesError = true;
+    mocks.squads = [RELEASE_SQUAD];
+    mocks.agents = [makeAgent({ name: "Delivery lead", template_key: "delivery-lead" }), ALPHA];
+    mocks.viewState.groupBy = "role";
+    renderPage();
+
+    expect(screen.getByText("Delivery lead")).toBeInTheDocument();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(within(screen.getByRole("table")).queryByText("Other agents")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Other agents/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All roles" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "AI squads" })).toBeInTheDocument();
+    expect(mocks.viewState.setGroupBy).not.toHaveBeenCalled();
+  });
+
+  it("does not claim a role-name search has no matches when role metadata failed", () => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [makeAgent({ name: "Payments expert", template_key: "code-reviewer" })];
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Code reviewer" } });
+
+    expect(screen.queryByText('No agents match "Code reviewer".')).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Payments" } });
+    expect(screen.getByText("Payments expert")).toBeInTheDocument();
+  });
+
+  it("does not claim a squad-name search has no matches when squads failed", () => {
+    mocks.squads = undefined;
+    mocks.squadsError = true;
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Release readiness" } });
+
+    expect(screen.queryByText('No agents match "Release readiness".')).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+  });
+
   it("renders a shared expert once with links to both squads", () => {
     mocks.templates = [REVIEW_TEMPLATE];
     mocks.agents = [makeAgent({ id: "agent-alpha", name: "Payments expert", template_key: "code-reviewer" })];

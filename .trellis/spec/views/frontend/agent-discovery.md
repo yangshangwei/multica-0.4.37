@@ -48,11 +48,25 @@ infer role or capability from the editable name, avatar emoji, or autonomy level
 Other/All with no invented capability. The row label states template provenance
 ("角色模板：X"), not enforced current behavior.
 
+An unavailable role catalog is unknown, not empty. If either role catalog fails
+before providing data, keep unfiltered saved agents accessible without role
+grouping/counts, and retain All roles so persisted filters can be cleared. Gate
+role-filtered results and suppress definitive search-empty messages until the
+needed metadata is available. Do not expose hidden rows to select-all. Existing
+cached catalogs remain usable during a failed background refresh; retry must
+restore classification without changing saved grouping or filter preferences.
+
 ## Template picker instances — navigate, never mutate
 Match active instances by `template_key` + `!archived_at`; show all renamed
 instances, omit archived. Cards are non-interactive containers; existing members
 and "create another" are real `<AppLink>`s. Opening a member NEVER creates an
 agent or adds a squad member. Keep `squad` query params on creation links.
+
+The gallery's custom scroll view-state takes precedence over ordinary platform
+scroll capture because configuration shares its pathname. Update that view-state
+on gallery scrolling as well as card navigation, including scrolling to zero;
+otherwise sidebar/tab navigation can restore an older card-click position. Do
+not write clamped offsets from loading/error layouts before content restoration.
 
 ## Preferences & scope
 Fresh `AGENT_DEFAULT_HIDDEN_COLUMNS` is concise (owner/access/runtime/runs/model/

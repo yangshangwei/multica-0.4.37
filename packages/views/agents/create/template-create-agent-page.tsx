@@ -123,13 +123,16 @@ function RoleTemplatePicker({
     else restoreScroll(element);
   }, [failed, instancesReady, loading, restoredScrollTop, restoreScroll]);
   const rememberScroll = () => {
+    // Loading/error layouts can clamp scrollTop before restoration is possible.
+    if (!didRestore.current || loading || failed || !instancesReady) return;
     // The configure step shares this pathname and can replace ordinary scroll
-    // capture. Keep the gallery position in the platform's view-state channel.
+    // capture. Track scrolling too, so sidebar/tab navigation keeps the latest
+    // gallery position rather than the last card click.
     writeViewState("agent-role-template-scroll", String(scrollElement.current?.scrollTop ?? 0));
   };
 
   return (
-    <main ref={attachScroll} data-tab-scroll-root="agent-role-templates" aria-busy={loading || agentsPending} className="min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8">
+    <main ref={attachScroll} onScroll={rememberScroll} data-tab-scroll-root="agent-role-templates" aria-busy={loading || agentsPending} className="min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8">
       <div className="mx-auto w-full max-w-5xl">
         <div className="max-w-2xl">
           <h2 className="text-balance text-title-lg font-semibold">

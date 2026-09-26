@@ -899,6 +899,17 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   );
   const metadataPending = roleTemplatesQuery.isPending || squadTemplatesQuery.isPending;
   const metadataFailed = roleTemplatesQuery.isError || squadTemplatesQuery.isError || squadQuery.isError;
+  // A failed initial catalog is unknown, not an empty set of built-in roles.
+  // Cached data remains usable if only a background refresh failed.
+  const roleMetadataUnavailable =
+    (roleTemplatesQuery.isError && roleTemplatesQuery.data === undefined) ||
+    (squadTemplatesQuery.isError && squadTemplatesQuery.data === undefined);
+  const rolesReady = !metadataPending && !roleMetadataUnavailable;
+  const resultsUnavailable = membershipFailed || (!!filters.roles?.length && !rolesReady);
+  const searchMetadataIncomplete = !!search.trim() && (
+    !rolesReady || squadQuery.isPending ||
+    (squadQuery.isError && squadQuery.data === undefined)
+  );
   const handleSort = useAgentsViewStore((s) => s.toggleSort);
   const handleSortFieldSelect = useAgentsViewStore((s) => s.setSortField);
   const setSortDirection = useAgentsViewStore((s) => s.setSortDirection);
@@ -1061,7 +1072,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   // scrollbar. The sticky header pins inside this scroller; the vertical
   // scrollbar spans the full pane height (Linear's structure).
   type DirectoryItem = { kind: "agent"; row: AgentListRow } | { kind: "group"; role: AgentRoleKind; count: number };
-  const directoryItems: DirectoryItem[] = groupBy === "role"
+  const directoryItems: DirectoryItem[] = groupBy === "role" && rolesReady
     ? AGENT_ROLE_ORDER.flatMap((role): DirectoryItem[] => {
         const grouped = rows.filter((row) => (row.role?.kind ?? "other") === role);
         return grouped.length ? [{ kind: "group", role, count: grouped.length }, ...grouped.map((row): DirectoryItem => ({ kind: "agent", row }))] : [];
@@ -1087,12 +1098,13 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     [paths],
   );
 
-  const selectedRows = rows.filter((row) => selectedIds.has(row.agent.id));
-  const allSelected = rows.length > 0 && selectedRows.length === rows.length;
+  const selectableRows = resultsUnavailable ? [] : rows;
+  const selectedRows = selectableRows.filter((row) => selectedIds.has(row.agent.id));
+  const allSelected = selectableRows.length > 0 && selectedRows.length === selectableRows.length;
   const someSelected = selectedRows.length > 0 && !allSelected;
   const handleToggleAll = () => {
     setSelectedIds(
-      allSelected ? new Set() : new Set(rows.map((r) => r.agent.id)),
+      allSelected ? new Set() : new Set(selectableRows.map((r) => r.agent.id)),
     );
   };
 
@@ -1180,9 +1192,9 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
             onToggleColumn={toggleColumn}
             allRows={scopeRows}
             members={members}
-            visibleCount={rows.length}
+            visibleCount={resultsUnavailable ? 0 : rows.length}
           />
-          <AgentDiscoveryToolbar rows={scopeRows} squads={squadQuery.data ?? []} filters={filters} onToggleFilter={toggleFilter} />
+          <AgentDiscoveryToolbar rows={scopeRows} rolesReady={rolesReady} squads={squadQuery.data ?? []} filters={filters} onToggleFilter={toggleFilter} />
           {(metadataFailed || membershipFailed) && (
             <div role="alert" className="flex items-center gap-3 px-5 py-2 text-caption text-muted-foreground">
               {t(($) => membershipFailed ? $.discovery.membership_failed : $.discovery.metadata_failed)}
@@ -1216,12 +1228,12 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
                     virtualPadding.bottom + LIST_GRID_BOTTOM_CLEARANCE,
                 }}
               >
-                {!membershipFailed && rows.length === 0 && (
+                {!resultsUnavailable && !searchMetadataIncomplete && rows.length === 0 && (
                   <div className="col-span-full py-16 text-center text-body text-muted-foreground">
                     {noMatchText}
                   </div>
                 )}
-                {!membershipFailed && virtualItems.map((vi) => {
+                {!resultsUnavailable && virtualItems.map((vi) => {
                   const item = directoryItems[vi.index];
                   if (!item) return null;
                   if (item.kind === "group") return (

@@ -321,6 +321,8 @@ describe("TemplateCreateAgentPage role picker", () => {
     const second = renderPicker(makeNavigation(), wrap);
     await screen.findByRole("listitem", { name: "Product Analyst" });
     expect(screen.getByRole("main").scrollTop).toBe(0);
+    // A loading layout can clamp scrolling before the full gallery returns.
+    fireEvent.scroll(screen.getByRole("main"));
     resolveAgents([agent("payments", "Payments analyst")]);
     const existing = await screen.findByRole("link", { name: "Open Payments analyst" });
     await waitFor(() => expect(screen.getByRole("main").scrollTop).toBe(320));
@@ -332,5 +334,37 @@ describe("TemplateCreateAgentPage role picker", () => {
     renderPicker(makeNavigation(), wrap);
     await screen.findAllByText("No agents created from this template.");
     expect(screen.getByRole("main").scrollTop).toBe(0);
+  });
+
+  it.each([0, 180])("restores the latest gallery scroll at %i after leaving without a card click", async (latestTop) => {
+    const viewState = new Map<string, string>();
+    let capturedTop = 0;
+    const adapter = {
+      get: () => ({ top: capturedTop, height: 1400 }),
+      getViewState: (key: string) => viewState.get(key),
+      setViewState: (key: string, value: string | undefined) => {
+        if (value === undefined) viewState.delete(key);
+        else viewState.set(key, value);
+      },
+    };
+    const wrap = (children: ReactNode) => <ScrollRestorationProvider adapter={adapter}>{children}</ScrollRestorationProvider>;
+    const first = renderPicker(makeNavigation(), wrap);
+    const card = await screen.findByRole("listitem", { name: "Product Analyst" });
+    await within(card).findByText("No agents created from this template.");
+    screen.getByRole("main").scrollTop = 320;
+    await userEvent.setup().click(within(card).getByRole("link", { name: "Create agent" }));
+    first.unmount();
+
+    const second = renderPicker(makeNavigation(), wrap);
+    await screen.findAllByText("No agents created from this template.");
+    expect(screen.getByRole("main").scrollTop).toBe(320);
+    fireEvent.scroll(screen.getByRole("main"), { target: { scrollTop: latestTop } });
+    // Platform capture updates for sidebar/back/tab navigation as well as cards.
+    capturedTop = latestTop;
+    second.unmount();
+
+    renderPicker(makeNavigation(), wrap);
+    await screen.findAllByText("No agents created from this template.");
+    expect(screen.getByRole("main").scrollTop).toBe(latestTop);
   });
 });

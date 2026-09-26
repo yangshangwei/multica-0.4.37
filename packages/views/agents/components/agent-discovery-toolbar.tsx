@@ -21,8 +21,9 @@ export const AGENT_ROLE_ORDER: AgentRoleKind[] = [
   "coordinator", "specialist", "other",
 ];
 
-export function AgentDiscoveryToolbar({ rows, squads, filters, onToggleFilter }: {
+export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onToggleFilter }: {
   rows: AgentListRow[];
+  rolesReady: boolean;
   squads: Squad[];
   filters: AgentListFilters;
   onToggleFilter: (key: keyof AgentListFilters, value: string) => void;
@@ -50,7 +51,7 @@ export function AgentDiscoveryToolbar({ rows, squads, filters, onToggleFilter }:
         >
           {t(($) => $.discovery.all_roles)}
         </Button>
-        {AGENT_ROLE_ORDER.filter((kind) => counts.has(kind) || roles.includes(kind)).map((kind) => (
+        {rolesReady && AGENT_ROLE_ORDER.filter((kind) => counts.has(kind) || roles.includes(kind)).map((kind) => (
           <Button
             key={kind} size="sm" variant="ghost" aria-pressed={roles.includes(kind)}
             className={roles.includes(kind) ? "bg-accent font-semibold text-accent-foreground" : "text-muted-foreground"}
