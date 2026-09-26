@@ -1,6 +1,6 @@
 # Skill template discovery verification
 
-Status: implementation and automated verification complete; local integration is recorded below. Implementation branch: `work/skill-library-template-entry`; integration target: `plan/skill-library-template-entry`.
+Status: completed and locally integrated. Implementation branch: `work/skill-library-template-entry`; integration target: `plan/skill-library-template-entry`.
 
 ## Implementation and corrections
 
@@ -72,3 +72,7 @@ Tab-fit assertions measure visible text rectangles. The shared, invisible `::aft
 - Build base commit: `c53831eda`, with the task diff and new source files included in the fingerprint.
 - Checked at: 2026-09-27T00:15:28+08:00.
 - Test services stopped successfully; database and evidence retained.
+
+## Local integration
+
+Feature commit: `4217c383b7861deac809434e7b6d62d54c7d6124`. It was fast-forwarded into `plan/skill-library-template-entry`. All 20 verified feature source paths match the tested files, and hashes of the 10 preexisting unrelated working-tree files are unchanged.

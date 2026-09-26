@@ -3,7 +3,7 @@
   "name": "skill-library-template-entry",
   "title": "Clarify skill library template discovery and workspace copies",
   "description": "Compact template discovery with truthful source counts, complete related skill links, display-only summaries, guarded navigation and stable draft focus.",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "frontend",
   "scope": "skills",
   "package": "views",
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-09-26",
-  "completedAt": null,
+  "completedAt": "2026-09-27",
   "branch": "plan/skill-library-template-entry",
   "base_branch": "main",
   "worktree_path": "/Volumes/artisan/code/2026/multica-skill-library-template-entry",
-  "commit": null,
+  "commit": "4217c383b7861deac809434e7b6d62d54c7d6124",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -29,7 +29,7 @@
     "e2e/skill-template-creation.spec.ts",
     "e2e/localized-template-defaults.spec.ts"
   ],
-  "notes": "Implementation and all planned automated/visual checks passed; preparing verified local integration into plan/skill-library-template-entry.",
+  "notes": "Implementation, all automated checks and visual acceptance completed. Feature commit 4217c383b was fast-forwarded into plan/skill-library-template-entry; existing unrelated working-tree changes were preserved.",
   "meta": {
     "planning_only": false,
     "base_commit": "14d64257ca11ac10516aa1d2566b3da8944b2aac",
@@ -46,6 +46,8 @@
       "contrast_samples": 123,
       "minimum_contrast_ratio": 5.38,
       "native_electron_smoke": false
-    }
+    },
+    "implementation_review": "approved",
+    "integration_branch": "plan/skill-library-template-entry"
   }
 }
