@@ -1,5 +1,11 @@
 # Verification — agent-discovery
 
+Follow-up: the 2026-09-26 independent audit and repairs are recorded in
+[`audit-2026-09-26.md`](./audit-2026-09-26.md). That audit compares the original
+parent with `8600a3381`, verifies the subsequent E2E fixes, and adds regression
+coverage for metadata failures and gallery scroll restoration. The initial
+verification below is retained as historical evidence.
+
 Commit under test: `6d43b7b71` (feat(agents): find agents by role and squad, distinguish templates from members). Branch `feat/agent-discovery`.
 
 ## Code-level checks (independent trellis-check pass)

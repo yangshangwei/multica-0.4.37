@@ -9,16 +9,16 @@ Tech stack: Go/Chi, React, TanStack Query/Virtual, Zustand, Base UI, Vitest and 
 - [x] Review screenshot/source and capture approved scope in PRD.
 - [x] Inspect Trellis specs, current code, API completeness and test environment.
 - [x] Write technical design, explicit ownership, context manifests and verification plan.
-- [ ] Start Trellis task after confirming prior user approval covers this first iteration.
-- [ ] Data lane: failing tests, complete squad membership response and parser/query, discovery derivation helpers, filter/group/default preference contract.
-- [ ] Template lane: failing instance/navigation tests, template picker links/counts/loading/error/scroll restoration; update role-template E2E.
-- [ ] Directory lane: failing filtering/wiring tests, remove catalog, group rows, role/squad narrowing and membership labels, explicit Display and 30-day labels.
-- [ ] Leader: add all locale keys, integrate lanes and resolve type/test wiring issues.
-- [ ] Run bounded scoped tests, lint/typecheck/static checks, affected Go checks.
-- [ ] Prepare owned production Web/API and verify directory/template flows, multiple memberships and responsive rendering; save screenshots and visual verdict.
-- [ ] Independent integrated check and fixes, rerun only affected verification.
-- [ ] Update docs/spec and verification.md with evidence and material limitations.
-- [ ] Create atomic Lore commit, complete/archive task and record journal according to Trellis.
+- [x] Start Trellis task after confirming prior user approval covers this first iteration.
+- [x] Data lane: failing tests, complete squad membership response and parser/query, discovery derivation helpers, filter/group/default preference contract.
+- [x] Template lane: failing instance/navigation tests, template picker links/counts/loading/error/scroll restoration; update role-template E2E.
+- [x] Directory lane: failing filtering/wiring tests, remove catalog, group rows, role/squad narrowing and membership labels, explicit Display and 30-day labels.
+- [x] Leader: add all locale keys, integrate lanes and resolve type/test wiring issues.
+- [x] Run bounded scoped tests, lint/typecheck/static checks, affected Go checks.
+- [x] Prepare owned production Web/API and verify directory/template flows, multiple memberships and responsive rendering; save screenshots and visual verdict.
+- [x] Independent integrated check and fixes, rerun only affected verification.
+- [x] Update docs/spec and verification.md with evidence and material limitations.
+- [x] Create atomic Lore commit, complete/archive task and record journal according to Trellis.
 
 ## Commands
 
@@ -33,3 +33,9 @@ Tech stack: Go/Chi, React, TanStack Query/Virtual, Zustand, Base UI, Vitest and 
 ## Verification cautions
 
 Member preview is truncated and cannot drive filtering. Unknown role data never becomes a guessed capability. Do not overwrite existing preference arrays. Browsing links do not invoke mutations. Previous browser inspection could not use Desktop renderer in Chrome; use a production Web environment with recorded source identity. Do not build while edits or another registered Web build are running in this checkout.
+
+## Follow-up audit
+
+The checklist was reconciled with the implementation, archived task history, and
+fresh verification on 2026-09-26. See `audit-2026-09-26.md` for the independent
+parent/current comparison and repairs found after the initial completion.

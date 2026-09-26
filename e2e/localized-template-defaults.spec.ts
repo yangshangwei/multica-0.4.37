@@ -76,7 +76,8 @@ async function openDiscoveryStaffing(page: Page, fixture: LocalizedFixture, loca
     return url.pathname === "/api/squads/templates" && url.searchParams.get("language") === language;
   });
   await page.goto(`/${fixture.slug}/squads`);
-  await page.locator("header").getByRole("button", { name: locale === "zh-Hans" ? "使用模板" : "Use a template", exact: true }).click();
+  await page.locator("header").getByRole("button", { name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true }).click();
+  await page.getByRole("menuitem", { name: locale === "zh-Hans" ? "从模板创建" : "Create from template", exact: true }).click();
   expect((await catalog).status()).toBe(200);
   const dialog = page.getByRole("dialog");
   const name = locale === "zh-Hans" ? "需求预研小队" : "Discovery Squad";
