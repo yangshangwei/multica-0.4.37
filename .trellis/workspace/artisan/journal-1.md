@@ -982,3 +982,42 @@ AC1-AC7 全部达成并归档。独立 trellis-check 全绿（typecheck/lint、c
 ### Next Steps
 
 - 任务 worktree `/Volumes/artisan/code/2026/multica-retain-zh-en-locales` 与分支 `work/retain-zh-en-locales`（仍指向 e595d2313）仍保留；确认无需再取证后可用 `make remove-worktree WORKTREE=../multica-retain-zh-en-locales` 清理（会同时删除其数据库）。
+
+
+## Session 32: Upstream B1 backports: verification and local integration
+
+**Date**: 2026-09-27
+**Task**: Upstream B1 backports: verification and local integration
+**Branch**: `sync/upstream-b1`
+
+### Summary
+
+Backported CLI skill labels, revision-safe CLI comment editing, and accurate cache hit rate. Feature commits and targeted integration are verified; the aggregate parallel views run had one unrelated order-sensitive failure, followed by a passing serialized full views rerun.
+
+### Main Changes
+
+- Added skill label and comment update CLI commands while retaining existing API permissions and revision checks.
+- Corrected cache hit-rate denominator in issue and runtime usage views.
+- Recorded upstream lineage, deliberate exclusions, full verification and the parallel-test failure in the B1 ledger.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e2c2865a2` | (see git log) |
+| `0edab269d` | (see git log) |
+| `67d97e612` | (see git log) |
+
+### Testing
+
+- [OK] Go race suite, go vet, static lint/typecheck, and 113 focused cache tests passed.
+- [OK] Core 2057, docs 62, views 5446 serialized, Web 261, and Desktop 718 tests passed.
+- [OK] Production Web build and B1 CLI integration E2E passed 3/3 in both development and production modes.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Merge sync/upstream-b1 into local main; no remote push or release is authorized.

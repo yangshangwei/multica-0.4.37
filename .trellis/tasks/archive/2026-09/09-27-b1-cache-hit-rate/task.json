@@ -1,0 +1,30 @@
+{
+  "id": "b1-cache-hit-rate",
+  "name": "b1-cache-hit-rate",
+  "title": "B1 accurate cache hit rate",
+  "description": "Reproduce the wrong rendered cache-hit percentage with cache writes, then port the six-file patch. Cache read / (plain input + cache read + cache write); zero input is unavailable; near-100 percent must not round to an unjustified perfect hit. Preserve two locales, existing cost semantics and no dependency additions.",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-27",
+  "completedAt": "2026-09-27",
+  "branch": "sync/upstream-b1",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-upstream-b1",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "09-27-upstream-backport-b1",
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_authorized": "true",
+    "upstream_commit": "470fd1fc0dcbbb8b86a8d13c6b4c43b6f2a10e1f",
+    "scope": "B1 only"
+  }
+}
