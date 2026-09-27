@@ -52,10 +52,19 @@ jobs:
             echo "is_stable=true" >> "$GITHUB_OUTPUT"
           fi
 
+      # The combined offline archive tests run the desktop update-artifacts
+      # helper, which imports electron-updater from apps/desktop/node_modules.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node for changelog checks
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Verify changelog generation, publication and release graph
         run: node --test scripts/*changelog*.test.mjs
