@@ -95,12 +95,18 @@ while IFS= read -r device_var; do
   fi
 done < <(grep -oE '^MULTICA_DEVICE_AUTH_[A-Z_]+' .env.example)
 
-for script in scripts/dev.sh scripts/check.sh; do
-  if ! grep -Fq '. scripts/local-env.sh' "$script"; then
-    echo "$script must source scripts/local-env.sh for shared local env derivation."
-    exit 1
-  fi
-done
+if ! grep -Fq '. scripts/local-env.sh' scripts/dev.sh; then
+  echo "scripts/dev.sh must source scripts/local-env.sh for shared local env derivation."
+  exit 1
+fi
+
+# check.sh reaches the same derivation through dev-env.sh's load_env_file.
+if ! grep -Fq '. "$SCRIPT_DIR/dev-env.sh"' scripts/check.sh ||
+  ! grep -Eq '^[[:space:]]*load_env_file ' scripts/check.sh ||
+  ! sed -n '/^load_env_file()/,/^}/p' scripts/dev-env.sh | grep -Fq '. "$root/scripts/local-env.sh"'; then
+  echo "scripts/check.sh must load env through dev-env.sh load_env_file, which sources scripts/local-env.sh."
+  exit 1
+fi
 
 local_env="$(
   env -i PATH="$PATH" bash -c '
