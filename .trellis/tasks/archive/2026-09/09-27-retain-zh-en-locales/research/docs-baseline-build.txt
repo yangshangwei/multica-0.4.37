@@ -1,0 +1,41 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+   ▲ Next.js 15.5.18
+
+[MDX] updated map file in 18.698583999999983ms
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 11.3s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/185) ...
+   Generating static pages (46/185)
+   Generating static pages (92/185)
+   Generating static pages (138/185)
+ ✓ Generating static pages (185/185)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /_not-found                            997 B         104 kB
+├ ● /[lang]                              1.14 kB         147 kB
+├   ├ /en
+├   ├ /zh
+├   ├ /ko
+├   └ /ja
+├ ● /[lang]/[...slug]                      450 B         146 kB
+├   ├ /en/agents-create
+├   ├ /en/agents
+├   ├ /en/assigning-issues
+├   └ [+173 more paths]
+├ ƒ /api/search                          2.95 kB         106 kB
+└ ○ /sitemap.xml                           124 B         103 kB
++ First Load JS shared by all             103 kB
+  ├ chunks/21c89f72-084bb5e7347c667f.js  54.2 kB
+  ├ chunks/574-4e1c582bf3707f07.js       46.5 kB
+  └ other shared chunks (total)          2.09 kB
+
+
+ƒ Middleware                             32.5 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

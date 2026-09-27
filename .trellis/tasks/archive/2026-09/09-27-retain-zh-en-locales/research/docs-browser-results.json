@@ -1,0 +1,47 @@
+{
+  "baselineCommit": "e595d2313",
+  "baseline": {
+    "baseURL": "http://localhost:51425",
+    "languageOptions": [
+      "English",
+      "简体中文",
+      "한국어",
+      "日本語"
+    ],
+    "englishToChinese": true,
+    "chineseToEnglish": true,
+    "reload": true,
+    "alternates": [
+      "en",
+      "ja",
+      "ko",
+      "x-default",
+      "zh"
+    ],
+    "pageErrors": [
+      "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
+  },
+  "current": {
+    "baseURL": "http://localhost:51424",
+    "languageOptions": [
+      "English",
+      "简体中文"
+    ],
+    "englishToChinese": true,
+    "chineseToEnglish": true,
+    "reload": true,
+    "alternates": [
+      "en",
+      "x-default",
+      "zh"
+    ],
+    "pageErrors": [
+      "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
+  },
+  "newPageErrors": [],
+  "knownIssue": "Fumadocs English canonical rewrite has the same React #418 hydration errors in the four-language baseline and the two-language build."
+}
