@@ -39,9 +39,9 @@ Status: completed and locally integrated. Implementation branch: `work/skill-lib
 
 ## Test environment and reproducibility
 
-Evidence directory: `/Volumes/artisan/code/2026/multica-skill-library-template-entry/.omx/reports/skill-library-template-entry/`.
+Evidence directory: `.omx/reports/skill-library-template-entry/` of the task worktree `/Volumes/artisan/code/2026/multica-skill-library-template-entry`. The worktree was removed on 2026-09-27; its `.omx/` (including this directory) and `test-results/` are preserved in the main checkout's git-ignored local backup `.omx/worktree-backups/2026-09-27/multica-skill-library-template-entry-evidence.tar.gz`, with paths relative to the worktree root (`tar -xzf` to restore).
 
-The `skills-entry-qa` environment owns API port 18220, Web port 13140 and database `multica_multica_skill_library_template_entry_140`. Tests use classic development-code authentication and disposable per-test workspaces; catalog/create calls are real. The Web server uses `next build --webpack` followed by `next start`, not development compilation. Fixture workspaces are deleted in cleanup; the environment database is retained.
+The `skills-entry-qa` environment owned API port 18220, Web port 13140 and database `multica_multica_skill_library_template_entry_140`. Tests use classic development-code authentication and disposable per-test workspaces; catalog/create calls are real. The Web server uses `next build --webpack` followed by `next start`, not development compilation. Fixture workspaces are deleted in cleanup; the environment and its database were retained until they were removed with the worktree on 2026-09-27.
 
 Commands:
 

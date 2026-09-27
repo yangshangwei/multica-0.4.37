@@ -82,8 +82,8 @@ proxies. Neither problem required an application-code change.
 Compared baseline/current English menu and Chinese page at 1440×1000:
 **98 / pass**. Layout, font order and spacing remain consistent; removal of the
 two retired menu items is intentional. Pointer-hover differences between captures
-do not change layout. State is in
-`.omx/state/retain-zh-en-locales-docs/ralph-progress.json`.
+do not change layout. The verdict is archived in
+[docs-visual-verdict.json](docs-visual-verdict.json).
 
 The baseline server and temporary extraction directory were cleaned up after comparison.
 Its successful build log remains in `docs-baseline-build.txt`. The isolated backend
