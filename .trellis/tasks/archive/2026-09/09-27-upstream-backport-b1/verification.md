@@ -3,6 +3,7 @@
 Date: 2026-09-27
 Branch: `sync/upstream-b1`
 Base: `7845de31e6bc7d021bba6005bccdab44fc9958e6`
+Local integration: fast-forwarded `main` to `9ed9c8e018d332dd2493c95bba07ea1fbaf1e3bf`.
 
 ## Passed
 
@@ -15,6 +16,7 @@ Base: `7845de31e6bc7d021bba6005bccdab44fc9958e6`
 - Production Web build and API/Web startup passed; API health identified commit `67d97e612`.
 - `e2e/upstream-backports-cli.spec.ts` passed 3/3 against the isolated development API and 3/3 against production Web/API.
 - `git diff --check` passed for the feature changes and final bookkeeping.
+- Original checkout's untracked `.impeccable/` files retained their SHA-256 hashes across the merge.
 
 ## Aggregate Test Note
 

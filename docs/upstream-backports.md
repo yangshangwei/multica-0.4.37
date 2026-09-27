@@ -10,7 +10,7 @@ proof that all of its contents were imported.
 - Local base: `7845de31e6bc7d021bba6005bccdab44fc9958e6`.
 - Reviewed upstream boundary: `0a51a6cc433a926548f40ad6b01275468874cdaa`.
 - Execution branch: `sync/upstream-b1`.
-- Status: feature and integration verification complete; local merge pending. No remote push, release tag or deployment.
+- Status: verified and fast-forwarded into local `main` at `9ed9c8e018d332dd2493c95bba07ea1fbaf1e3bf`. No remote push, release tag or deployment.
 - No database migrations, dependency changes, retired locale resources or backend API implementation changes.
 
 | Feature | Upstream | Local commit | Import scope | Focused verification |

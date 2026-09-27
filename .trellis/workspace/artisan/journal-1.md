@@ -1020,4 +1020,4 @@ Backported CLI skill labels, revision-safe CLI comment editing, and accurate cac
 
 ### Next Steps
 
-- Merge sync/upstream-b1 into local main; no remote push or release is authorized.
+- B1 is merged into local main. No remote push, release tag or deployment was authorized.

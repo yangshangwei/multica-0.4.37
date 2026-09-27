@@ -8,4 +8,4 @@
 6. Built and started production Web/API from `67d97e612`. The B1 compiled CLI Playwright suite passed 3/3 against both development and production API/Web.
 7. `make check` stopped at the parallel views test failure and did not reach its remaining phases. Those Go, build, and B1 browser checks were run separately. The repository-wide Playwright suite was not run.
 8. Recorded upstream SHAs, verification, the parallel-run failure and the deliberate exclusions in `docs/upstream-backports.md`.
-9. Rechecked `main` at the original base. Local merge is the remaining handoff step and will preserve the feature commits. No remote push, release tag or deployment is in scope.
+9. Rechecked `main` at the original base and fast-forwarded it to `9ed9c8e018d332dd2493c95bba07ea1fbaf1e3bf`, preserving all three feature commits. Confirmed the original `.impeccable/` files were unchanged. No remote push, release tag or deployment was performed.
