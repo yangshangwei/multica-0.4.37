@@ -1,6 +1,6 @@
 ---
 name: multica-working-on-issues
-description: "Use when acting on a Multica issue beyond what the brief covers: PR linking vs close intent, reading a linked PR's real state, metadata keys, status-change side effects, sub-issue todo vs backlog."
+description: "Use when acting on a Multica issue beyond what the brief covers: PR linking vs close intent, reading a linked PR's real state, metadata keys, comment revision checks, status-change side effects, sub-issue todo vs backlog."
 user-invocable: false
 allowed-tools: Bash(multica *), Bash(git *), Bash(gh *)
 ---
@@ -126,6 +126,30 @@ If the command returns no linked PRs after a PR was opened, the link scanner did
 not observe a routable issue key in the PR title/body/branch — or the only match
 was a bare body mention, which links as `reference_only` and is hidden from this
 list (see the reference-only rule above).
+
+## Editing an existing comment
+
+Use `multica issue comment update --help` for the command's input flags and
+side effects. It takes a **comment ID**, not an issue ID, and requires the
+positive `revision` from a fresh, full read:
+
+```bash
+multica issue comment list <issue-id> --thread <comment-id> --full --output json
+multica issue comment update <comment-id> --content-file comment.md --expected-revision <revision>
+```
+
+Read the complete body before replacing it; do not edit from a `--summary`
+preview. Only the author or a workspace owner/admin may edit. A revision
+conflict returns an error without retrying: read the newest body, merge your
+change into it, then use its revision. Merely resending with the newer number
+would overwrite another editor's work.
+
+Changing the body is a new action: the server cancels in-flight runs triggered
+by the old comment and re-evaluates triggers under the editor's current
+invocation permissions. Read `trigger_outcomes` in the JSON response; a saved
+comment does not guarantee that every mentioned agent started. Existing
+attachments are preserved. This command cannot attach new files; use
+`multica issue comment add <issue-id> --attachment <path>` for those.
 
 ## Metadata: durable custom state
 

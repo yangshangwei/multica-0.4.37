@@ -21,6 +21,18 @@ The CLI resolves the issue ref, GETs the endpoint, and (for `--output json`)
 prints the raw `{"pull_requests": [...]}` body. Only `--output` is accepted; the
 default `table` shows `NUMBER STATE TITLE URL`.
 
+## `multica issue comment update` — revision-checked edits
+
+| Behavior | File:line |
+|---|---|
+| Cobra route, positive revision requirement, conflict retry guidance and side-effect help | `server/cmd/multica/cmd_issue.go:282` (`issueCommentUpdateCmd`, `init`) |
+| Input sources share existing escape, byte decoding and workdir guards | `server/cmd/multica/cmd_issue.go:45` (`resolveTextFlag`, `ensureFileFlagWithinWorkdir`) |
+| PUT sends only content and expected_revision; JSON stdout and success stderr; API errors return without retry | `server/cmd/multica/cmd_issue.go:2112` (`runIssueCommentUpdate`) |
+| Workspace-scoped comment lookup, author/admin permission, optional attachment replacement and strict revision checks | `server/internal/handler/comment.go:3181` (`UpdateComment`) |
+| Conditional content write and cancellation commit together; re-trigger uses the editing action's authority | `server/internal/handler/comment.go:3280` (`sourceTaskID`, `strictContentEdit`, `retriggerEditedComment`) |
+| Conflict response is HTTP 409 with expected/actual revision | `server/internal/handler/handler.go:641` (`writeRevisionConflict`) |
+| Route, request, file/stdin, output, mandatory revision and 403/409 regression coverage | `server/cmd/multica/cmd_issue_test.go` (`TestIssueCommentUpdateCommandRegistration`, `TestRunIssueCommentUpdate*`) |
+
 ## PR response shape
 
 `GitHubPullRequestResponse` struct: `server/internal/handler/github.go:58`. JSON

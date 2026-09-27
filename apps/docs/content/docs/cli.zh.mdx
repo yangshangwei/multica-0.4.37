@@ -92,6 +92,15 @@ multica issue create --title "升级说明" --description-stdin < notes.md
 multica issue comment add MUL-123 --content-stdin < review.md
 ```
 
+编辑评论前，先读取完整正文及当前 `revision`，再传入评论 ID 和该正数版本号：
+
+```bash
+multica issue comment list MUL-123 --thread <comment-id> --full --output json
+multica issue comment update <comment-id> --content-file comment.md --expected-revision <revision>
+```
+
+评论作者或工作区 owner/admin 可以编辑。遇到版本冲突，应重新读取最新正文、合并修改后再重试，不要只换成新版本号。修改正文可能取消该评论触发的活动 task，并按编辑者的调用权限重新触发工作。现有附件会保留；新文件请通过另一条评论上传。
+
 查看某次执行的消息，或停止 task：
 
 ```bash
@@ -220,7 +229,7 @@ CLI 配置文件包含可代表你访问 Multica 的令牌。不要提交到仓�
 | | `search <query>` | 搜索 issue | `--limit`、`--include-closed` |
 | | `children <id>` | 按阶段分组列出子 issue | |
 | | `pull-requests <id>` | 列出关联的 PR | |
-| | `comment list/add/delete/resolve/unresolve` | 管理评论 | `add`：`--content` / `--content-stdin` / `--content-file`、`--parent`、`--attachment`；`list`：`--since`、`--thread`、`--tail` |
+| | `comment list/add/update/delete/resolve/unresolve` | 管理评论 | `add` / `update`：`--content` / `--content-stdin` / `--content-file`；`update <comment-id>` 必须传 `--expected-revision`；`add`：`--parent`、`--attachment`；`list`：`--since`、`--thread`、`--tail` |
 | | `subscriber list/add/remove <issue-id>` | 管理订阅者 | `--user`、`--user-id`（缺省为当前用户） |
 | | `label list/add/remove <issue-id>` | 管理 issue 上的标签 | |
 | | `metadata list/get/set/delete <issue-id>` | 管理 issue 级键值元数据 | |
