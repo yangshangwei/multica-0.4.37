@@ -45,8 +45,15 @@ Role KIND (coordinator | specialist | other) derives from `agent.template_key`
 matched against `useRoleTemplates()` / `useSquadTemplates().leader` ONLY. Never
 infer role or capability from the editable name, avatar emoji, or autonomy level
 — those are user-owned and prove nothing. Unknown/custom agents stay in
-Other/All with no invented capability. The row label states template provenance
+the general-purpose / All group (internal key `other`) with no invented capability. The row label states template provenance
 ("角色模板：X"), not enforced current behavior.
+
+The group is labeled "General-purpose agents" ("通用智能体") in the directory.
+Its visible helper explains where to start, while custom-agent capabilities remain
+defined by their own descriptions and instructions. Mika-specific coordination
+copy requires an active agent with `system_key === "mika"` in the current scope
+and interpolates its saved name; never identify Mika by its editable name or
+apply its capabilities to every agent in the group.
 
 An unavailable role catalog is unknown, not empty. If either role catalog fails
 before providing data, keep unfiltered saved agents accessible without role

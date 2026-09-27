@@ -1084,8 +1084,10 @@
     "roles": {
       "coordinator": "Coordinators",
       "specialist": "Specialists",
-      "other": "Other agents"
+      "other": "General-purpose agents"
     },
+    "general_hint": "General-purpose help across tasks. Check each agent's description and instructions for its capabilities.",
+    "mika_hint": "Not sure who to ask? Start with {{name}}. This general-purpose assistant helps clarify your goal, create issues, and coordinate specialists when needed.",
     "role_template": "Role template: {{title}}",
     "role_hint": "Template origin. The agent’s description and instructions define its current responsibilities.",
     "squads": "AI squads",

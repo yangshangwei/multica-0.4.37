@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { ChevronDown, Users } from "lucide-react";
 import type { AgentRoleKind } from "@multica/core/agents";
 import type { Squad } from "@multica/core/types";
@@ -29,6 +30,7 @@ export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onTog
   onToggleFilter: (key: keyof AgentListFilters, value: string) => void;
 }) {
   const { t } = useT("agents");
+  const generalHintId = useId();
   const roles = filters.roles ?? [];
   const selectedSquads = filters.squads ?? [];
   const counts = new Map<AgentRoleKind, number>();
@@ -36,6 +38,8 @@ export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onTog
     const kind = row.role?.kind ?? "other";
     counts.set(kind, (counts.get(kind) ?? 0) + 1);
   }
+  const showGeneralHint = rolesReady && (counts.has("other") || roles.includes("other"));
+  const mika = rows.find(({ agent }) => agent.system_key === "mika" && !agent.archived_at)?.agent;
   const activeSquads = squads.filter((squad) => !squad.archived_at);
   const selectedName = selectedSquads.length === 1
     ? activeSquads.find((squad) => squad.id === selectedSquads[0])?.name
@@ -54,6 +58,7 @@ export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onTog
         {rolesReady && AGENT_ROLE_ORDER.filter((kind) => counts.has(kind) || roles.includes(kind)).map((kind) => (
           <Button
             key={kind} size="sm" variant="ghost" aria-pressed={roles.includes(kind)}
+            aria-describedby={kind === "other" && showGeneralHint ? generalHintId : undefined}
             className={roles.includes(kind) ? "bg-accent font-semibold text-accent-foreground" : "text-muted-foreground"}
             onClick={() => onToggleFilter("roles", kind)}
           >
@@ -88,6 +93,13 @@ export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onTog
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+      )}
+      {showGeneralHint && (
+        <p id={generalHintId} className="basis-full px-2 text-caption leading-relaxed text-muted-foreground">
+          {mika
+            ? t(($) => $.discovery.mika_hint, { name: mika.name })
+            : t(($) => $.discovery.general_hint)}
+        </p>
       )}
     </div>
   );

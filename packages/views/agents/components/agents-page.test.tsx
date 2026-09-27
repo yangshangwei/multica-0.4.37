@@ -365,8 +365,8 @@ describe("AgentsPage discovery", () => {
 
     expect(screen.getByText("Delivery lead")).toBeInTheDocument();
     expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
-    expect(within(screen.getByRole("table")).queryByText("Other agents")).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /^Other agents/ })).not.toBeInTheDocument();
+    expect(within(screen.getByRole("table")).queryByText("General-purpose agents")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^General-purpose agents/ })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "All roles" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "AI squads" })).toBeInTheDocument();
     expect(mocks.viewState.setGroupBy).not.toHaveBeenCalled();
@@ -435,6 +435,36 @@ describe("AgentsPage discovery", () => {
     renderPage();
     expect(screen.getByText("No agents yet")).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Built-in agents" })).not.toBeInTheDocument();
+  });
+
+  it("describes the general-purpose group without inventing capabilities when no Mika is active", () => {
+    // Name alone never identifies Mika, and an archived Mika does not count.
+    mocks.agents = [
+      ALPHA,
+      makeAgent({ id: "a-fake", name: "Mika" }),
+      makeAgent({ id: "a-mika", name: "Ava", system_key: "mika", archived_at: "2026-06-02T00:00:00Z" }),
+    ];
+    renderPage();
+    const hint = screen.getByText(/General-purpose help across tasks/);
+    expect(screen.getByRole("button", { name: /^General-purpose agents/ })).toHaveAttribute("aria-describedby", hint.id);
+    expect(screen.queryByText(/Not sure who to ask/)).not.toBeInTheDocument();
+  });
+
+  it("points to the active Mika by its saved name in the general-purpose hint", () => {
+    mocks.agents = [ALPHA, makeAgent({ id: "a-mika", name: "Ava", system_key: "mika" })];
+    renderPage();
+    const hint = screen.getByText(/Not sure who to ask\? Start with Ava\./);
+    expect(screen.getByRole("button", { name: /^General-purpose agents/ })).toHaveAttribute("aria-describedby", hint.id);
+    expect(screen.queryByText(/General-purpose help across tasks/)).not.toBeInTheDocument();
+  });
+
+  it("hides the general-purpose hint while role metadata is unavailable", () => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [ALPHA, makeAgent({ id: "a-mika", name: "Ava", system_key: "mika" })];
+    renderPage();
+    expect(screen.queryByText(/Not sure who to ask/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/General-purpose help across tasks/)).not.toBeInTheDocument();
   });
 });
 

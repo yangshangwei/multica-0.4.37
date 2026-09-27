@@ -156,7 +156,7 @@ test("agent discovery keeps role and squad identification accurate without chang
     await expect(page.getByRole("region", { name: /内置智能体/ })).toHaveCount(0);
     await expect(page.getByRole("button", { name: /^统筹角色\s*6$/ })).toBeVisible();
     await expect(page.getByRole("button", { name: /^专业角色\s*13$/ })).toBeVisible();
-    await expect(page.getByRole("button", { name: /^其他智能体\s*2$/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /^通用智能体\s*2$/ })).toBeVisible();
     await page.getByRole("button", { name: /^全部\s*22$/ }).click();
     await expect(page.getByRole("button", { name: /^专业角色\s*14$/ })).toBeVisible();
     await expect(page.getByRole("table").getByText(/^统筹角色\s*6$/)).toHaveCount(1);
@@ -195,7 +195,7 @@ test("agent discovery keeps role and squad identification accurate without chang
     await expect(agentRow(page, "协作空间专家")).toHaveCount(0);
     await expect(sharedRow).toBeVisible();
     await selectSquad(page, "全部小队");
-    await page.getByRole("button", { name: /^其他智能体\s*2$/ }).click();
+    await page.getByRole("button", { name: /^通用智能体\s*2$/ }).click();
     await expect(agentRow(page, "自定义文案助手")).toBeVisible();
     await expect(agentRow(page, "新版本智能体")).toBeVisible();
     await page.getByRole("button", { name: "全部角色", exact: true }).click();
