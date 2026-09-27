@@ -41,9 +41,9 @@ export function useSquadTemplates() {
  * Regional locale variants share one supported language. Unknown locales use
  * the backend's English fallback and the same catalog cache entry.
  */
-export function templateLanguageFor(locale: string): "en" | "zh" | "ja" | "ko" {
+export function templateLanguageFor(locale: string): "en" | "zh" {
   const language = locale.trim().toLowerCase().split(/[-_]/)[0];
-  return language === "zh" || language === "ja" || language === "ko" ? language : "en";
+  return language === "zh" ? "zh" : "en";
 }
 
 /** Finds a template by key in a possibly-still-loading list. */

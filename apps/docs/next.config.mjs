@@ -19,6 +19,16 @@ const config = {
         permanent: false,
       },
       {
+        source: "/ja/:path*",
+        destination: "/:path*",
+        permanent: true,
+      },
+      {
+        source: "/ko/:path*",
+        destination: "/:path*",
+        permanent: true,
+      },
+      {
         source: "/zh/getting-started/cloud-quickstart",
         destination: "/zh/cloud-quickstart",
         permanent: true,

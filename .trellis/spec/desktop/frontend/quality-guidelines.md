@@ -78,3 +78,19 @@ workspace (MUL-6243) and an issue cannot be created before its status resolves.
 Any code that creates a workspace outside `CreateWorkspace` must call
 `issuestatus.Ensure` in the same transaction. The seed is idempotent and
 concurrency-safe, so calling it for a pre-existing workspace is a cheap self-heal.
+
+## Isolated Electron browser acceptance
+
+Electron fixtures using a served renderer must explicitly configure both the
+local API URL and its isolated `DATABASE_URL`. Check that the API origin used
+by `TestApiClient` matches the native runtime-config fixture before creating
+accounts. The renderer origin must also be present in that API's CORS allowlist.
+An OPTIONS 200 without `Access-Control-Allow-Origin` is a rejected preflight,
+not successful authentication; it can leave the shell on its loading/login
+view. Serve built renderer assets on the task environment's allowed frontend
+port after stopping its Web listener, or configure an origin in that isolated
+environment. Do not weaken application CORS to make a test harness pass.
+
+`e2e/retained-languages-desktop.spec.ts` checks these prerequisites and runs the
+real renderer/preload with native agent services isolated. It preserves the
+profile between process launches to test language persistence after restart.

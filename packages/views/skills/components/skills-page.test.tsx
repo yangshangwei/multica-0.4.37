@@ -10,8 +10,6 @@ import { I18nProvider } from "@multica/core/i18n/react";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import enSkills from "../../locales/en/skills.json";
 import zhSkills from "../../locales/zh-Hans/skills.json";
-import jaSkills from "../../locales/ja/skills.json";
-import koSkills from "../../locales/ko/skills.json";
 
 // Regression rig for the Source cell's anchor living inside a `useRowLink`
 // row: the row handles BOTH click and auxclick, so the anchor must stop both
@@ -193,7 +191,7 @@ vi.mock("./skill-list-actions", () => ({
 import SkillsPage from "./skills-page";
 
 const SOURCE_URL = "https://github.com/anthropics/skills/tree/main/animations";
-const SKILLS_COPY = { en: enSkills, "zh-Hans": zhSkills, ja: jaSkills, ko: koSkills };
+const SKILLS_COPY = { en: enSkills, "zh-Hans": zhSkills, };
 
 const importedSkill: SkillSummary = {
   id: "skill-1",
@@ -260,7 +258,7 @@ const REVIEW_TEMPLATE: SkillTemplate = {
 // Provenance/relatedness matrices now live in skill-template-discovery.test.ts;
 // all related links live in the picker, outside the page collection.
 describe("SkillsPage template entry", () => {
-  it.each(["en", "zh-Hans", "ja", "ko"] as const)("renders the template entry with only %s loaded", (locale) => {
+  it.each(["en", "zh-Hans"] as const)("renders the template entry with only %s loaded", (locale) => {
     mocks.templates = [REVIEW_TEMPLATE];
     render(<I18nProvider locale={locale} resources={{ [locale]: RESOURCES[locale] }}>
       <NavigationProvider value={makeAdapter()}><SkillsPage /></NavigationProvider>

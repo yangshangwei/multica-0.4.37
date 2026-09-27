@@ -113,7 +113,7 @@ type CreateAgentFromTemplateRequest struct {
 	PermissionMode    *string                    `json:"permission_mode"`
 	InvocationTargets []AgentInvocationTargetDTO `json:"invocation_targets"`
 	// Language selects the localized description stored on the row. Instructions
-	// stay English, matching every other agent-harness text in this product.
+	// use the canonical template body independently of the requested locale.
 	Language string `json:"language"`
 }
 

@@ -4,8 +4,6 @@ import { prefixLocale } from "./locale-link";
 describe("prefixLocale", () => {
   it("prefixes root-relative paths with the active non-default locale", () => {
     expect(prefixLocale("/workspaces", "zh")).toBe("/zh/workspaces");
-    expect(prefixLocale("/workspaces", "ko")).toBe("/ko/workspaces");
-    expect(prefixLocale("/workspaces", "ja")).toBe("/ja/workspaces");
     expect(prefixLocale("/agents-create", "zh")).toBe("/zh/agents-create");
   });
 

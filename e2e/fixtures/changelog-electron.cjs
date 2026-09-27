@@ -53,7 +53,7 @@ app.whenReady().then(async () => {
     webPreferences: {
       preload: path.resolve(__dirname, "../../apps/desktop/out/preload/index.js"),
       contextIsolation: true, sandbox: true,
-      additionalArguments: ["--multica-locale=zh-CN"],
+      additionalArguments: [`--multica-locale=${process.env.CHANGELOG_ELECTRON_SYSTEM_LOCALE || "zh-CN"}`],
     },
   });
   await window.loadURL(rendererUrl);

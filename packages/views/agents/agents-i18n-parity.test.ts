@@ -2,15 +2,13 @@
 import { describe, expect, it } from "vitest";
 import en from "../locales/en/agents.json";
 import zhHans from "../locales/zh-Hans/agents.json";
-import ja from "../locales/ja/agents.json";
-import ko from "../locales/ko/agents.json";
 import { FAILURE_REASON_I18N_KEYS } from "./components/tabs/task-failure";
 import { taskStatusConfig } from "./config";
 import { availabilityConfig, workloadConfig } from "./presence";
 
-const LOCALES = { en, "zh-Hans": zhHans, ja, ko } as const;
+const LOCALES = { en, "zh-Hans": zhHans, } as const;
 
-describe("task failure reason i18n parity across all 4 locales", () => {
+describe("task failure reason i18n parity across both retained locales", () => {
   const expectedKeys = Object.values(FAILURE_REASON_I18N_KEYS).toSorted();
 
   it("covers every mapped reason with the exact same key set", () => {
@@ -61,7 +59,7 @@ describe("visual config tables carry no human-readable labels", () => {
     }
   });
 
-  it("keeps every availability and workload value translated in all 4 locales", () => {
+  it("keeps every availability and workload value translated in both retained locales", () => {
     for (const [name, locale] of Object.entries(LOCALES)) {
       for (const key of Object.keys(availabilityConfig)) {
         const value = (locale.availability as Record<string, string>)[key];
@@ -76,7 +74,7 @@ describe("visual config tables carry no human-readable labels", () => {
     }
   });
 
-  it("interpolates the presence status aria-label in all 4 locales", () => {
+  it("interpolates the presence status aria-label in both retained locales", () => {
     for (const [name, locale] of Object.entries(LOCALES)) {
       const phrase = locale.presence_status_aria;
       expect(typeof phrase, `${name}: presence_status_aria missing`).toBe("string");
@@ -105,7 +103,7 @@ describe("visual config tables carry no human-readable labels", () => {
  * the UI is making (#7411).
  */
 describe("failure reason vs raw diagnostics headings", () => {
-  it("ships both headings, distinct, in all 4 locales", () => {
+  it("ships both headings, distinct, in both retained locales", () => {
     for (const [name, locale] of Object.entries(LOCALES)) {
       const reason = locale.transcript.details_reason;
       const diagnostics = locale.transcript.details_diagnostics;
@@ -125,7 +123,7 @@ describe("failure reason vs raw diagnostics headings", () => {
  * gets a key added while the others lag (the i18next parity bug the
  * learnings researcher flagged).
  */
-describe("access-scope i18n parity across all 4 locales", () => {
+describe("access-scope i18n parity across both retained locales", () => {
   const accessScopeKeys = [
     "access.scope_labels.workspace",
     "access.scope_labels.specific_people",
@@ -145,7 +143,7 @@ describe("access-scope i18n parity across all 4 locales", () => {
 
   const ALL_NEW_KEYS = [...accessScopeKeys, ...bulkKeys, ...toolbarKeys];
 
-  it("all new keys are present in all 4 locales", () => {
+  it("all new keys are present in both retained locales", () => {
     for (const [name, loc] of Object.entries(LOCALES)) {
       for (const key of ALL_NEW_KEYS) {
         const parts = key.split(".");
@@ -202,7 +200,7 @@ describe("transcript patch summary i18n", () => {
     return typeof node === "string" ? node : "";
   };
 
-  it("is present in all 4 locales", () => {
+  it("is present in both retained locales", () => {
     for (const [name, loc] of Object.entries(LOCALES)) {
       expect(typeof read(loc), `${name}: ${KEY} missing`).toBe("string");
       expect(phraseOf(loc).length > 0, `${name}: ${KEY} is empty`).toBe(true);

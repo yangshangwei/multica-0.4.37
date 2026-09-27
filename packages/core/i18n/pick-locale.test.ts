@@ -20,16 +20,12 @@ describe("matchLocale", () => {
 
   it("matches a clean supported tag", () => {
     expect(matchLocale(["zh-Hans"])).toBe("zh-Hans");
-    expect(matchLocale(["ko"])).toBe("ko");
-    expect(matchLocale(["ja"])).toBe("ja");
     expect(matchLocale(["en"])).toBe("en");
   });
 
   it("collapses region-tagged BCP-47 to the supported base", () => {
     expect(matchLocale(["en-US"])).toBe("en");
     expect(matchLocale(["zh-Hans-CN"])).toBe("zh-Hans");
-    expect(matchLocale(["ko-KR"])).toBe("ko");
-    expect(matchLocale(["ja-JP"])).toBe("ja");
   });
 
   it("falls back to DEFAULT_LOCALE when no candidate matches", () => {
@@ -42,9 +38,14 @@ describe("matchLocale", () => {
 
   it("uses the first supported candidate when multiple appear", () => {
     expect(matchLocale(["fr", "zh-Hans", "en"])).toBe("zh-Hans");
-    expect(matchLocale(["fr", "ko-KR", "en"])).toBe("ko");
-    expect(matchLocale(["fr", "ja-JP", "en"])).toBe("ja");
+    expect(matchLocale(["ko-KR", "zh-CN", "en"])).toBe("zh-Hans");
+    expect(matchLocale(["ja-JP", "en"])).toBe("en");
   });
+
+  it.each(["ja", "ja-JP", "ko", "ko-KR"])(
+    "falls back to English for retired system language %s",
+    (locale) => expect(matchLocale([locale])).toBe("en"),
+  );
 
   it("returns DEFAULT_LOCALE for malformed BCP-47 tags rather than throwing", () => {
     expect(matchLocale(["----"])).toBe("en");
@@ -53,6 +54,15 @@ describe("matchLocale", () => {
 });
 
 describe("pickLocale", () => {
+  it.each(["ja", "ko"])(
+    "resolves saved %s to English ahead of Chinese system preferences",
+    (locale) => {
+      expect(pickLocale(makeAdapter({
+        getUserChoice: () => locale,
+        getSystemPreferences: () => ["zh-CN"],
+      }))).toBe("en");
+    },
+  );
   it("prefers explicit user choice over system signal", () => {
     const adapter = makeAdapter({
       getUserChoice: () => "zh-Hans",

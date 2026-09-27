@@ -14,6 +14,17 @@ import (
 // Creating an agent from a built-in role template, end to end through the HTTP
 // handlers against a real database.
 
+func TestTemplateLanguageFromRequestPreservesRetainedAndFallbackContracts(t *testing.T) {
+	for input, want := range map[string]string{
+		"en": "en", "zh": "zh", " zh ": "zh",
+		"ja": "en", "ko": "en", " ja ": "en", "": "en", "unknown": "en", "zh-Hans": "en",
+	} {
+		if got := templateLanguageFromRequest(input); got != want {
+			t.Errorf("template language %q = %q, want %q", input, got, want)
+		}
+	}
+}
+
 // cleanupTemplateAgent removes an agent this test created through the API. Rows the
 // API creates are outside dbfx's cleanup ledger, so each test that creates one has
 // to name it.

@@ -108,6 +108,7 @@ func readProjectSquadSelections(data []byte) []projectSquadSelection {
 		default:
 			return empty
 		}
+		selection.Language = normalizeRetiredLanguage(selection.Language)
 		selections = append(selections, selection)
 	}
 	return selections
@@ -139,10 +140,11 @@ func (h *Handler) validateProjectSquadChoice(w http.ResponseWriter, r *http.Requ
 		writeError(w, http.StatusBadRequest, "runtime_id requires template_key")
 		return in, false
 	}
+	req.Language = normalizeRetiredLanguage(req.Language)
 	switch req.Language {
-	case "", "en", "zh", "ja", "ko":
+	case "", "en", "zh":
 	default:
-		writeError(w, http.StatusBadRequest, "language must be en, zh, ja, or ko")
+		writeError(w, http.StatusBadRequest, "language must be en or zh")
 		return in, false
 	}
 	if !h.requireAgentAutonomy(w, r, ws, service.AutonomyCoordinator, "configure project execution squads") {

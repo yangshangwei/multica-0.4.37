@@ -6,8 +6,6 @@ import { createI18n } from "@multica/core/i18n/react";
 import { parseFrontmatter } from "@multica/core/skills/frontmatter";
 import en from "../../locales/en/skills.json";
 import zh from "../../locales/zh-Hans/skills.json";
-import ja from "../../locales/ja/skills.json";
-import ko from "../../locales/ko/skills.json";
 import {
   getBuiltinRoleSkillPresentation,
   getBuiltinRoleSkillSummary,
@@ -57,8 +55,8 @@ function builtin(
 }
 
 describe("built-in role skill presentation", () => {
-  it("covers every embedded role skill in all four locale catalogs", () => {
-    for (const catalog of [en, zh, ja, ko]) {
+  it("covers every embedded role skill in both retained locale catalogs", () => {
+    for (const catalog of [en, zh]) {
       expect(Object.keys(catalog.builtin_role_skills).sort()).toEqual(embeddedNames);
     }
   });
@@ -68,7 +66,7 @@ describe("built-in role skill presentation", () => {
   });
 
   it.each([
-    ["en", en], ["zh-Hans", zh], ["ja", ja], ["ko", ko],
+    ["en", en], ["zh-Hans", zh],
   ] as const)("localizes real source descriptions with only %s loaded", (locale, catalog) => {
     const instance = createI18n(locale, { [locale]: { skills: catalog } });
     const t = instance.getFixedT(locale, "skills");
@@ -118,8 +116,6 @@ describe("built-in role skill presentation", () => {
   it.each([
     ["en", en, "multica-debugging"],
     ["zh-Hans", zh, "根因分析"],
-    ["ja", ja, "根本原因分析"],
-    ["ko", ko, "근본 원인 분석"],
   ] as const)("shows debugging in a provider with only %s loaded", (locale, catalog, name) => {
     const instance = createI18n(locale, { [locale]: { skills: catalog } });
     const t = instance.getFixedT(locale, "skills");
@@ -272,7 +268,7 @@ describe("built-in role skill presentation", () => {
   );
 
   // An operator-mounted template carries a name outside BUILTIN_ROLE_SKILL_NAMES
-  // and ships no four-language copy. getBuiltinRoleSkillPresentation must return
+  // and ships no localized copy. getBuiltinRoleSkillPresentation must return
   // null for it so the "start from a template" panel falls back to the entry's
   // own raw description for both display and search. See the fallback in
   // template-skill-create-panel.tsx.
@@ -317,7 +313,7 @@ describe("built-in role skill presentation", () => {
 
 describe("built-in role template summaries", () => {
   it.each([
-    ["en", en], ["zh-Hans", zh], ["ja", ja], ["ko", ko],
+    ["en", en], ["zh-Hans", zh],
   ] as const)("uses concise display copy for every default with only %s loaded", (locale, catalog) => {
     const instance = createI18n(locale, { [locale]: { skills: catalog } });
     const t = instance.getFixedT(locale, "skills");

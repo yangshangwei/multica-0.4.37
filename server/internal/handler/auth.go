@@ -47,8 +47,6 @@ const devVerificationCodeEnv = "MULTICA_DEV_VERIFICATION_CODE"
 var supportedLanguages = map[string]struct{}{
 	"en":      {},
 	"zh-Hans": {},
-	"ko":      {},
-	"ja":      {},
 }
 
 type UserResponse struct {
@@ -74,6 +72,9 @@ type UserResponse struct {
 const MaxProfileDescriptionLen = 2000
 
 func (h *Handler) userToResponse(u db.User) UserResponse {
+	if u.Language.Valid {
+		u.Language.String = normalizeRetiredLanguage(u.Language.String)
+	}
 	// JSONB column is []byte with DEFAULT '{}', so it's never nil at the DB
 	// level. Defensive coalesce just in case a future ALTER makes the column
 	// nullable and some row comes back with no default applied.
@@ -738,7 +739,7 @@ func (h *Handler) UpdateMe(w http.ResponseWriter, r *http.Request) {
 		params.AvatarUrl = pgtype.Text{String: avatarURL, Valid: true}
 	}
 	if req.Language != nil {
-		lang := strings.TrimSpace(*req.Language)
+		lang := normalizeRetiredLanguage(strings.TrimSpace(*req.Language))
 		if _, ok := supportedLanguages[lang]; !ok {
 			writeError(w, http.StatusBadRequest, "unsupported language")
 			return

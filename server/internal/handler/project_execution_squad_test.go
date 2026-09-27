@@ -52,6 +52,77 @@ func projectExecutionRequest(f *testutil.Fixture, method, projectID string, body
 	return testutil.WithURLParams(req, "id", projectID, "workspaceId", f.WorkspaceID)
 }
 
+func TestProjectExecutionSquad_RetiredDeferredLanguagePreservesReadAndRetry(t *testing.T) {
+	for _, tc := range []struct {
+		language string
+		state    string
+		array    bool
+	}{{"ja", "needs_runtime", false}, {"ko", "failed", true}} {
+		t.Run(tc.language, func(t *testing.T) {
+			f := projectExecutionFixture(t)
+			runtimeID := f.Runtime(t, "Deferred locale runtime")
+			selection := projectSquadSelection{
+				ProjectExecutionSquad: ProjectExecutionSquad{State: tc.state, TemplateKey: "feature-delivery"},
+				Revision:              "legacy-revision", Language: tc.language,
+			}
+			if tc.state == "failed" {
+				selection.RuntimeID = runtimeID
+			}
+			var stored any = selection
+			if tc.array {
+				stored = []projectSquadSelection{selection}
+			}
+			encoded, err := json.Marshal(stored)
+			if err != nil {
+				t.Fatal(err)
+			}
+			projectID := f.Project(t, "Deferred locale", testutil.Cols{"execution_squad": encoded})
+			var before, beforeUpdated string
+			f.QueryRow(t, "SELECT execution_squad::text, updated_at::text FROM project WHERE id = $1", projectID).Scan(&before, &beforeUpdated)
+			var out ProjectResponse
+			testutil.Call(t, testHandler.GetProject, projectExecutionRequest(f, "GET", projectID, nil)).Want(http.StatusOK).JSON(&out)
+			var after, afterUpdated string
+			f.QueryRow(t, "SELECT execution_squad::text, updated_at::text FROM project WHERE id = $1", projectID).Scan(&after, &afterUpdated)
+			if before != after || beforeUpdated != afterUpdated {
+				t.Fatal("reading a retired deferred language wrote project storage")
+			}
+			consumed := readProjectSquadSelections([]byte(before))
+			if len(consumed) != 1 || consumed[0].Language != "en" || consumed[0].Revision != selection.Revision {
+				t.Errorf("legacy storage did not normalize only its language: %+v", consumed)
+			}
+			body := map[string]any{"template_key": "feature-delivery", "runtime_id": runtimeID, "language": tc.language}
+			testutil.Call(t, testHandler.ConfigureProjectSquad, projectExecutionRequest(f, "PUT", projectID, body)).Want(http.StatusOK).JSON(&out)
+			if out.ExecutionSquad.State != "configured" {
+				t.Fatalf("deferred legacy configuration did not finish: %+v", out.ExecutionSquad)
+			}
+			squadID := out.ExecutionSquad.SquadID
+			var name string
+			f.QueryRow(t, "SELECT name FROM squad WHERE id = $1", squadID).Scan(&name)
+			template, _ := service.SquadTemplateByKey("feature-delivery")
+			if name != template.Title("en") {
+				t.Errorf("new deferred squad name = %q, want English %q", name, template.Title("en"))
+			}
+			f.Exec(t, "UPDATE squad SET name = 'カスタム 이름', description = '사용자 설명', instructions = 'custom squad instructions' WHERE id = $1", squadID)
+			f.Exec(t, "UPDATE agent SET name = 'カスタム担当', description = '사용자 역할', instructions = 'custom role instructions' WHERE workspace_id = $1 AND template_key = 'implementer'", f.WorkspaceID)
+			f.QueryRow(t, "SELECT updated_at::text FROM project WHERE id = $1", projectID).Scan(&beforeUpdated)
+			testutil.Call(t, testHandler.ConfigureProjectSquad, projectExecutionRequest(f, "PUT", projectID, body)).Want(http.StatusOK).JSON(&out)
+			f.QueryRow(t, "SELECT updated_at::text FROM project WHERE id = $1", projectID).Scan(&afterUpdated)
+			if out.ExecutionSquad.SquadID != squadID || beforeUpdated != afterUpdated {
+				t.Fatal("legacy retry changed the squad identity or project revision")
+			}
+			var description, instructions string
+			f.QueryRow(t, "SELECT name, description, instructions FROM squad WHERE id = $1", squadID).Scan(&name, &description, &instructions)
+			if name != "カスタム 이름" || description != "사용자 설명" || instructions != "custom squad instructions" {
+				t.Fatal("legacy retry rewrote customized squad content")
+			}
+			f.QueryRow(t, "SELECT name, description, instructions FROM agent WHERE workspace_id = $1 AND template_key = 'implementer'", f.WorkspaceID).Scan(&name, &description, &instructions)
+			if name != "カスタム担当" || description != "사용자 역할" || instructions != "custom role instructions" {
+				t.Fatal("legacy retry rewrote customized role content")
+			}
+		})
+	}
+}
+
 func TestProjectExecutionSquad_CreateRetainsTemplateWithoutRuntime(t *testing.T) {
 	f := projectExecutionFixture(t)
 	var out executionSquadTestProject

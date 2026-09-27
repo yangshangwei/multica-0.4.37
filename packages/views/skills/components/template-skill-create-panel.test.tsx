@@ -7,10 +7,6 @@ import { I18nProvider } from "@multica/core/i18n/react";
 import { WorkspaceSlugProvider } from "@multica/core/paths";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { NavigationProvider } from "../../navigation";
-import jaCommon from "../../locales/ja/common.json";
-import jaSkills from "../../locales/ja/skills.json";
-import koCommon from "../../locales/ko/common.json";
-import koSkills from "../../locales/ko/skills.json";
 import enCommon from "../../locales/en/common.json";
 import enSkills from "../../locales/en/skills.json";
 import zhCommon from "../../locales/zh-Hans/common.json";
@@ -66,8 +62,6 @@ import { CreateSkillDialog } from "./create-skill-dialog";
 const LOCALES = {
   en: { common: enCommon, skills: enSkills },
   "zh-Hans": { common: zhCommon, skills: zhSkills },
-  ja: { common: jaCommon, skills: jaSkills },
-  ko: { common: koCommon, skills: koSkills },
 };
 type TestLocale = Extract<SupportedLocale, keyof typeof LOCALES>;
 

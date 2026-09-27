@@ -15,12 +15,12 @@ Use `useSkillPresentation()` from `packages/views/skills/hooks/use-skill-present
 
 Production providers can mount only the current locale. `t(..., { lng: "another-locale" })` does not make an unloaded locale available. The presentation resolver reads secondary-language search text and source-description comparisons from the English and Chinese catalogs; current display strings still use the active i18next translator.
 
-Use `searchText` for matching and `searchNames` for name-ranking tiers. English and Chinese names and the current locale's displayed name must rank as names regardless of the active UI language. Include the current localized description in search text too; a Japanese or Korean label must remain searchable with only that locale loaded.
+Use `searchText` for matching and `searchNames` for name-ranking tiers. English and Chinese names and the current locale's displayed name must rank as names regardless of the active UI language. Include the current localized description in search text too; a Chinese label must remain searchable with only that locale loaded.
 
 Adding an embedded role skill also requires registering its canonical name in
-`BUILTIN_ROLE_SKILL_NAMES`, adding all four locale entries, and keeping their Chinese default descriptions
+`BUILTIN_ROLE_SKILL_NAMES`, adding both supported locale entries, and keeping their Chinese default descriptions
 identical to the embedded frontmatter. The source-sync suite discovers the
-embedded directories and compares them with all four locale catalogs, then
+embedded directories and compares them with both supported locale catalogs, then
 checks presentation coverage; do not use a second manually maintained subset
 as proof that registration is complete. Otherwise the template picker treats it as
 deployment-provided and workspace skills fall back to untranslated source text.
@@ -85,7 +85,7 @@ built-ins. This also applies when catalog data is already cached. The preview
 must belong to the visible source/results, and adoption is disabled when none
 remain. Search and source changes do not adopt or replace a draft.
 
-Source labels must fit when Japanese or Korean wraps. The shared `TabsList`
+Source labels must fit when translated text wraps. The shared `TabsList`
 sets height with `group-data-horizontal/tabs:h-8`; a plain local `h-auto` cannot
 override that more-specific variant. Override the matching horizontal variant
 locally and let the triggers grow and stretch together. Keep narrow-screen
@@ -152,5 +152,5 @@ and picker suites, slash suggestion/extension suites, tab presentation suite,
 and locale parity. The root template-flow suite owns draft/recovery/navigation
 guards and snapshots; `skills-page-template-session.test.tsx` owns the real-page
 query-transition and opener-focus regressions. Render entry and phase labels
-with only each active locale (`en`, `zh-Hans`, `ja`, `ko`) loaded, so complete test
+with only each active locale (`en`, `zh-Hans`) loaded, so complete test
 resource bundles do not hide production failures.

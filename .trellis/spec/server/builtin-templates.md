@@ -2,6 +2,16 @@
 
 > Contracts for the server-embedded template registries (`builtin_agent_templates*`, `builtin_squad_templates*`, `builtin_autopilot_templates*`). A template is pre-fill content copied into an ordinary instance at creation — never a new entity kind.
 
+## Supported display languages
+
+Catalogs and Mika creation/onboarding support English (`en`) and Simplified
+Chinese (`zh`). User preferences use `zh-Hans` instead of `zh`; keep the API
+contracts distinct. Previously supported `ja`/`ko` requests resolve to English
+without changing other validation, whitespace, null or omission rules.
+User responses normalize retired preferences without writing storage; explicit
+preference writes save `en`. Removing a display language never retranslates
+workspace-owned names, descriptions, prompts, instructions or conversation text.
+
 ## Role instructions, skills, and autonomy must agree
 
 Default role skills describe work the role can actually deliver. Architect stays

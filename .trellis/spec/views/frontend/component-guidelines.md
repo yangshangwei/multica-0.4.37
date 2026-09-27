@@ -38,7 +38,7 @@ Questions to answer:
 - Each static item resolves its tab value as `value ?? key`. Renaming a `?tab=` value breaks every bookmark and the backend callback — treat it as a breaking URL change, not a refactor.
 - New `LEGACY_WORKSPACE_TAB_REDIRECTS` entries are allowed **only** for backend-driven URLs (a Go handler builds them). Internal links get edited at their source instead; never add a redirect for a link we control.
 - Group and item order is part of the design contract. The canonical ordering matrix is pinned in `settings-nav.test.ts` (node environment, no DOM); `settings-page.test.tsx` asserts only headings/wiring and points at that file.
-- Every group id needs a key under `page.groups` and every item key under `page.tabs` in **all four** locale files — `locales/parity.test.ts` fails otherwise.
+- Every group id needs a key under `page.groups` and every item key under `page.tabs` in **both supported** locale files — `locales/parity.test.ts` fails otherwise.
 - A group whose items are all flag-filtered must not render its heading (handled by `visibleSettingsNavGroups`, covered by test).
 
 **Wrong**:

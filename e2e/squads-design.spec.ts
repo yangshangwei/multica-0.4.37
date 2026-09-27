@@ -98,7 +98,7 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
     await expect(page.getByRole("menuitem", { name: "Create from template", exact: true })).toBeVisible();
     await expect(page.getByRole("menuitem", { name: "Create custom squad", exact: true })).toBeVisible();
     await page.keyboard.press("Escape");
-    for (const [locale, label] of [["zh-Hans", "AI小队模板"], ["ja", "テンプレート"]]) {
+    for (const [locale, label] of [["zh-Hans", "AI小队模板"], ["en", "Squad templates"]]) {
       await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
       await page.context().addCookies([{ name: "multica-locale", value: locale, url: new URL(page.url()).origin }]);
       await page.goto(`/${workspace.slug}/squads?view=templates`);

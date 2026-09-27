@@ -107,6 +107,12 @@ Conventional format: `feat(scope)`, `fix(scope)`, `refactor(scope)`, `docs`, `te
 
 This is the **mandatory** glossary for every translation PR. It used to live at `packages/views/locales/glossary.md`; that file has been removed and this page replaces it.
 
+The maintained interface languages are English (`en`) and Simplified Chinese
+(`zh-Hans`). English remains the default and fallback. Template content APIs
+and public documentation use `zh` for Chinese; keep those identifiers distinct.
+Retired Japanese/Korean preferences and client requests resolve to English.
+Existing content and the language of user conversations remain unchanged.
+
 ### The core distinction: everyday noun vs Multica-specific term
 
 Multica's product nouns split into two categories:
@@ -118,12 +124,12 @@ The Chinese pages under `apps/docs/content/docs/*.zh.mdx` are the de facto voice
 
 ### `issue` is the product's task — translate it
 
-`issue` is the English product name for the thing a user files and an agent works on. In every other locale it is **the everyday word for "task"**:
+`issue` is the English product name for the thing a user files and an agent works on. In Chinese it is **the everyday word for "task"**:
 
-| Entity | en | zh-Hans | ja | ko |
-| --- | --- | --- | --- | --- |
-| the filed unit of work (`issue`) | Issue | **任务** | **タスク** | **태스크** |
-| one agent execution run (`task`) | Task | `task` | **作業** | **작업** |
+| Entity | en | zh-Hans |
+| --- | --- | --- |
+| the filed unit of work (`issue`) | Issue | **任务** |
+| one agent execution run (`task`) | Task | `task` |
 
 Both nouns are user-visible and they are **not** the same thing — an issue can carry many runs. Never let one locale spell both with the same word, which is why the run keeps a visually distinct form in each locale.
 
@@ -134,7 +140,7 @@ What does not move:
 - **`skill`** keeps lowercase English in Chinese text — a Multica-specific concept with no established Chinese term; titles may capitalize as `Skills`. The one exception is the sidebar nav destination label, rendered as 「技能库」.
 - **`issue` in the "problem" sense** (runtime health) is a plain noun, not the entity: `{{count}} issues` on a machine card is `{{count}} 个异常`, not `任务`.
 
-**Why `issue` is translated while `skill` is not**: users file and read issues all day, and "issue" has no meaning in Chinese, Japanese, or Korean outside of dev jargon. The everyday task word is what people already say for this. `skill` is a Multica-specific concept where no local word carries the meaning.
+**Why `issue` is translated while `skill` is not**: users file and read issues all day, and "issue" has no meaning in Chinese outside of dev jargon. The everyday task word is what people already say for this. `skill` is a Multica-specific concept where no local word carries the meaning.
 
 Other product nouns follow the same "translate what has a settled local word" test:
 

@@ -8,8 +8,8 @@ describe("locale routing", () => {
   it("accepts only app-supported locale identifiers", () => {
     expect(isSupportedLocale("en")).toBe(true);
     expect(isSupportedLocale("zh-Hans")).toBe(true);
-    expect(isSupportedLocale("ko")).toBe(true);
-    expect(isSupportedLocale("ja")).toBe(true);
+    expect(isSupportedLocale("ko")).toBe(false);
+    expect(isSupportedLocale("ja")).toBe(false);
     expect(isSupportedLocale("zh")).toBe(false);
     expect(isSupportedLocale(null)).toBe(false);
   });
@@ -40,19 +40,27 @@ describe("locale routing", () => {
     ).toBe("zh-Hans");
   });
 
-  it("matches Korean browser language signals", () => {
+  it("falls back to English for Korean browser language signals", () => {
     expect(
       resolveLocaleFromSignals({
         acceptLanguage: "ko-KR,ko;q=0.9,en;q=0.8",
       }),
-    ).toBe("ko");
+    ).toBe("en");
   });
 
-  it("matches Japanese browser language signals", () => {
+  it("falls back to English for Japanese browser language signals", () => {
     expect(
       resolveLocaleFromSignals({
         acceptLanguage: "ja-JP,ja;q=0.9,en;q=0.8",
       }),
-    ).toBe("ja");
+    ).toBe("en");
+  });
+
+  it.each(["ja", "ko"])("normalizes a saved %s cookie before system preferences", (cookieLocale) => {
+    expect(resolveLocaleFromSignals({ cookieLocale, acceptLanguage: "zh-CN,en;q=0.9" })).toBe("en");
+  });
+
+  it("uses a retained secondary system language when no cookie exists", () => {
+    expect(resolveLocaleFromSignals({ acceptLanguage: "ja-JP,zh-CN;q=0.9,en;q=0.8" })).toBe("zh-Hans");
   });
 });

@@ -24,6 +24,12 @@ apps/docs/content/docs/*.zh.mdx + meta.zh.json
 
 - The generator packs **Chinese pages only** (`*.zh.mdx`). Other-language
   `.mdx` files serve the public docs site and never enter the binary.
+- The public site maintains English and Simplified Chinese only. Retired
+  Japanese/Korean docs URLs redirect permanently to the English counterpart
+  through `apps/docs/next.config.mjs`, with config-relative paths so the
+  `/docs` basePath appears once. Retired source deletion does not remove
+  Chinese embedded pages; preserve queries and verify redirects on a built
+  server before publication.
 - `server/internal/docs/content/` is **committed**: CI proves the embedded
   bytes have not drifted from the source. Always regenerate and commit after
   editing `.zh.mdx` or `meta.zh.json`.

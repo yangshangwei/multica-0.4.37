@@ -24,7 +24,7 @@ import (
 //  3. what happens next,
 //  4. the bridge to the starter cards rendered underneath.
 //
-// Deliberately NOT varied by role or use case. Seven use cases across four
+// Deliberately NOT varied by role or use case. Seven use cases across two
 // languages is a copy matrix nobody can keep coherent, and the questionnaire
 // still reaches the model — it rides the kickoff into the member's first real
 // turn, which is where tailoring actually pays. Nor is it varied by anything
@@ -48,22 +48,6 @@ Pick one below, or just tell me what you want to get done right now.`,
 接下来是这样：你说一个目标，我把它变成一个任务，交给合适的智能体开始跑，你能看着它推进。
 
 从下面选一个开始，或者直接告诉我你现在想做成什么。`,
-
-	"ja": `こんにちは。%[1]s へようこそ。Multica は、人と AI エージェントがタスクを通じて実際の仕事を進めるワークスペースです。
-
-私は %[2]s、ここの Chief of Staff です。やることを整理し、適したエージェントに引き継ぎ、いつでも最初に声をかけてもらえる存在でいます。
-
-進め方はこうです。目標をひとこと教えてください。私がそれをタスクにして、適したエージェントで動かします。進み方はそのまま見られます。
-
-下から一つ選ぶか、いま進めたいことをそのまま教えてください。`,
-
-	"ko": `안녕하세요, %[1]s에 오신 걸 환영합니다. Multica는 사람과 AI 에이전트가 태스크를 통해 실제 일을 함께 진행하는 워크스페이스입니다.
-
-저는 이곳의 Chief of Staff, %[2]s입니다. 할 일을 정리하고, 알맞은 에이전트를 붙이고, 언제든 먼저 말을 걸 수 있는 시작점이 되어 드립니다.
-
-시작은 이렇습니다. 목표를 한 줄로 알려주시면 제가 태스크로 만들어 알맞은 에이전트로 실행합니다. 진행 상황은 그대로 보실 수 있어요.
-
-아래에서 하나 고르시거나, 지금 해내고 싶은 일을 그대로 말씀해 주세요.`,
 }
 
 // buildMikaOnboardingOpening renders the opening for a language the caller has

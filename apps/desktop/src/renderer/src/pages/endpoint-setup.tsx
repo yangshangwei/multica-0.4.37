@@ -26,13 +26,7 @@ interface Copy {
 }
 
 function copyForLocale(locale: string): Copy {
-  const key: SupportedLocale = locale.startsWith("zh")
-    ? "zh-Hans"
-    : locale.startsWith("ko")
-      ? "ko"
-      : locale.startsWith("ja")
-        ? "ja"
-        : "en";
+  const key: SupportedLocale = locale.startsWith("zh") ? "zh-Hans" : "en";
   const auth = RESOURCES[key].auth as unknown as {
     desktop: { runtime_config: Record<string, string> };
   };

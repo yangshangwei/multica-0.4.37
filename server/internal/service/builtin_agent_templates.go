@@ -167,7 +167,7 @@ func localizedTemplateString(values map[string]string, language, fallback string
 
 // TemplateLanguages are the locales the picker copy is translated into. Matches
 // Mika's set (mika_agent.go) so the two built-in surfaces stay in step.
-var TemplateLanguages = []string{"en", "zh", "ko", "ja"}
+var TemplateLanguages = []string{"en", "zh"}
 
 // IsSupportedTemplateLanguage reports whether the locale has its own copy. An
 // unsupported value is not an error at the API boundary — it falls back to

@@ -40,8 +40,6 @@ const (
 var mikaAgentDescriptions = map[string]string{
 	"en": "Your workspace Chief of Staff. Mika turns goals into issues, coordinates agents, and helps build reusable workflows.",
 	"zh": "你的工作区 Chief of Staff。Mika 会把目标转化为任务、协调智能体，并帮你建立可复用的工作流。",
-	"ko": "워크스페이스의 Chief of Staff입니다. Mika가 목표를 태스크로 구체화하고 에이전트를 조율하며 재사용 가능한 워크플로 구성을 돕습니다.",
-	"ja": "ワークスペースの Chief of Staff。Mika は目標をタスクに落とし込み、エージェントを調整し、再利用できるワークフローづくりを支援します。",
 }
 
 type createMikaAgentRequest struct {
@@ -107,9 +105,10 @@ func (h *Handler) CreateMikaAgent(w http.ResponseWriter, r *http.Request) {
 // one, otherwise a freshly provisioned one. The bool pair is (created, ok);
 // when ok is false it has already written the error response.
 func (h *Handler) resolveMikaAgent(w http.ResponseWriter, r *http.Request, workspaceID, userID string, req createMikaAgentRequest) (db.Agent, bool, bool) {
+	req.Language = normalizeRetiredLanguage(req.Language)
 	description, ok := mikaAgentDescriptions[req.Language]
 	if !ok {
-		writeError(w, http.StatusBadRequest, "language must be en, zh, ko, or ja")
+		writeError(w, http.StatusBadRequest, "language must be en or zh")
 		return db.Agent{}, false, false
 	}
 	runtimeID, ok := parseUUIDOrBadRequest(w, req.RuntimeID, "runtime_id")

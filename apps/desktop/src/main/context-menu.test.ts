@@ -175,8 +175,8 @@ describe("installContextMenu — link items", () => {
     expect(lastMenuLabels()).toContain("复制链接地址");
   });
 
-  it("falls back to English when the OS preferred language is something we don't ship", () => {
-    ctx.preferredLanguagesRef.current = ["fr-FR"];
+  it.each(["fr-FR", "ja-JP", "ko-KR"])("falls back to English for unsupported OS language %s", (locale) => {
+    ctx.preferredLanguagesRef.current = [locale];
     const wc = makeWebContents();
     installContextMenu(wc as never);
     wc.fire(baseSelection({ linkURL: "https://multica.ai" }));

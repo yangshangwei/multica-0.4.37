@@ -56,7 +56,7 @@ describe("docsAlternates", () => {
     expect(docsAlternates(["agents"]).languages).not.toHaveProperty("ko");
   });
 
-  it("includes Korean hreflang when a real *.ko.mdx page exists", async () => {
+  it("omits retired hreflang even when a stale Korean MDX page exists", async () => {
     existingDocs.add("agents.ko.mdx");
     const { docsAlternates } = await import("./site");
 
@@ -65,13 +65,12 @@ describe("docsAlternates", () => {
       languages: {
         en: "https://www.multica.ai/docs/agents",
         zh: "https://www.multica.ai/docs/zh/agents",
-        ko: "https://www.multica.ai/docs/ko/agents",
         "x-default": "https://www.multica.ai/docs/agents",
       },
     });
   });
 
-  it("includes Japanese hreflang when a real *.ja.mdx page exists", async () => {
+  it("omits retired hreflang even when a stale Japanese MDX page exists", async () => {
     existingDocs.add("agents.ja.mdx");
     const { docsAlternates } = await import("./site");
 
@@ -80,7 +79,6 @@ describe("docsAlternates", () => {
       languages: {
         en: "https://www.multica.ai/docs/agents",
         zh: "https://www.multica.ai/docs/zh/agents",
-        ja: "https://www.multica.ai/docs/ja/agents",
         "x-default": "https://www.multica.ai/docs/agents",
       },
     });

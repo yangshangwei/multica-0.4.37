@@ -3,11 +3,9 @@ import { test as base, expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import enSkills from "../packages/views/locales/en/skills.json" with { type: "json" };
 import zhSkills from "../packages/views/locales/zh-Hans/skills.json" with { type: "json" };
-import jaSkills from "../packages/views/locales/ja/skills.json" with { type: "json" };
-import koSkills from "../packages/views/locales/ko/skills.json" with { type: "json" };
 
-type SkillLocale = "en" | "zh-Hans" | "ja" | "ko";
-type SkillCopy = typeof enSkills | typeof zhSkills | typeof jaSkills | typeof koSkills;
+type SkillLocale = "en" | "zh-Hans";
+type SkillCopy = typeof enSkills | typeof zhSkills;
 
 interface LocalizedFixture {
   api: TestApiClient;
@@ -321,7 +319,7 @@ test("specialist skills localize, search and open their official copies without 
   }
   // These locales share the same creation semantics. Keep only the narrow
   // label/keyboard smoke here; the full flow remains canonical above.
-  for (const [locale, copy, theme] of [["ja", jaSkills, "light"], ["ko", koSkills, "dark"]] as const) {
+  for (const [locale, copy, theme] of [["en", enSkills, "light"], ["zh-Hans", zhSkills, "dark"]] as const) {
     await setLocale(page, localized, locale);
     await page.setViewportSize({ width: 360, height: 800 });
     await page.goto(`/${slug}/skills`);

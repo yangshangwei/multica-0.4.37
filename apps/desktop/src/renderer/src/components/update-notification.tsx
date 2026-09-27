@@ -5,8 +5,6 @@ import { paths } from "@multica/core/paths";
 import { useNavigation } from "@multica/views/navigation";
 import en from "@multica/views/locales/en/changelog.json";
 import zhHans from "@multica/views/locales/zh-Hans/changelog.json";
-import ja from "@multica/views/locales/ja/changelog.json";
-import ko from "@multica/views/locales/ko/changelog.json";
 
 type OpenChangelog = ((version: string) => void) | null;
 const NotificationNavigation = createContext<{
@@ -35,7 +33,7 @@ export function UpdateNotificationNavigationBridge({ workspaceSlug }: { workspac
 
 // The prompt also renders before CoreProvider exists (endpoint setup/login).
 // Use the already-resolved App locale and shared resources at this boundary.
-const COPY = { en: en.desktop, "zh-Hans": zhHans.desktop, ja: ja.desktop, ko: ko.desktop };
+const COPY = { en: en.desktop, "zh-Hans": zhHans.desktop, };
 
 // Downloads run silently in the background (main process has
 // autoDownload=true). The renderer only renders UI once the package is fully

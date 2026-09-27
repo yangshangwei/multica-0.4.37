@@ -66,7 +66,7 @@ type AutopilotTemplate struct {
 	// localized text.
 	Category string
 	// Titles, Descriptions and Categories are the localized picker copy,
-	// en/zh/ko/ja. The prompt body uses canonical Simplified Chinese (see PROMPT.md).
+	// en/zh. The prompt body uses canonical Simplified Chinese (see PROMPT.md).
 	Titles       map[string]string
 	Descriptions map[string]string
 	Categories   map[string]string

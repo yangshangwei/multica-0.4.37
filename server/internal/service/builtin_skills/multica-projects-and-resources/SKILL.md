@@ -43,7 +43,7 @@ Multiple selected squads are candidates, not broadcast recipients: each task is 
 `POST /api/projects` accepts optional `execution_squads: [...]` or the legacy `execution_squad` object,
 never both. `PUT /api/projects/{id}/execution-squads` accepts `{squads: [...]}` and replaces the complete
 ordered list; an empty array clears it. Each item selects `template_key` or `squad_id`, never both. A
-template may also carry `runtime_id` and `language` (`en`, `zh`, `ja`, `ko`); without a runtime it saves
+template may also carry `runtime_id` and `language` (`en`, `zh`; legacy `ja`/`ko` use English); without a runtime it saves
 `needs_runtime`. Empty items and duplicate choices are invalid. A template and a workspace instance that
 resolve to the same squad appear once, keeping the first choice. The legacy singular PUT replaces the
 whole list with one choice, or clears it with `{}`. These are API fields, not new project CLI flags.

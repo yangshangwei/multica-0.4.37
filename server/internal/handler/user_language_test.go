@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/multica-ai/multica/server/internal/testutil"
 )
 
 func newLanguageTestUser(t *testing.T, email string) string {
@@ -78,8 +80,8 @@ func TestUpdateMeAcceptsKoreanLanguage(t *testing.T) {
 	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
 		t.Fatalf("decode response: %v", err)
 	}
-	if got, _ := resp["language"].(string); got != "ko" {
-		t.Fatalf("expected response language=ko, got %v", resp["language"])
+	if got, _ := resp["language"].(string); got != "en" {
+		t.Fatalf("expected response language=en, got %v", resp["language"])
 	}
 }
 
@@ -98,8 +100,66 @@ func TestUpdateMeAcceptsJapaneseLanguage(t *testing.T) {
 	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
 		t.Fatalf("decode response: %v", err)
 	}
-	if got, _ := resp["language"].(string); got != "ja" {
-		t.Fatalf("expected response language=ja, got %v", resp["language"])
+	if got, _ := resp["language"].(string); got != "en" {
+		t.Fatalf("expected response language=en, got %v", resp["language"])
+	}
+}
+
+func TestUserLanguageLegacyReadAndWriteCompatibility(t *testing.T) {
+	for _, language := range []string{"ja", "ko"} {
+		t.Run(language, func(t *testing.T) {
+			userID := dbfx.User(t, "Language Test", "language-legacy@multica.ai", testutil.Cols{"language": language})
+			var before string
+			dbfx.QueryRow(t, "SELECT updated_at::text FROM \"user\" WHERE id = $1", userID).Scan(&before)
+			var out UserResponse
+			req := testutil.WithHeaders(httptest.NewRequest("GET", "/api/me", nil), "X-User-ID", userID)
+			testutil.Call(t, testHandler.GetMe, req).Want(http.StatusOK).JSON(&out)
+			if out.Language == nil || *out.Language != "en" {
+				t.Errorf("legacy GET language = %v, want en", out.Language)
+			}
+			var persisted, after string
+			dbfx.QueryRow(t, "SELECT language, updated_at::text FROM \"user\" WHERE id = $1", userID).Scan(&persisted, &after)
+			if persisted != language || after != before {
+				t.Fatalf("GET mutated stored preference: %q/%q -> %q/%q", language, before, persisted, after)
+			}
+			for _, body := range []map[string]any{{"name": "Updated Name"}, {"language": nil}} {
+				req := testutil.WithHeaders(testutil.JSONRequest("PATCH", "/api/me", body), "X-User-ID", userID)
+				testutil.Call(t, testHandler.UpdateMe, req).Want(http.StatusOK).JSON(&out)
+				dbfx.QueryRow(t, "SELECT language FROM \"user\" WHERE id = $1", userID).Scan(&persisted)
+				if persisted != language || out.Language == nil || *out.Language != "en" {
+					t.Errorf("omitted/null update changed preference or returned retired value: stored=%q response=%v", persisted, out.Language)
+				}
+			}
+			req = testutil.WithHeaders(testutil.JSONRequest("PATCH", "/api/me", map[string]any{"language": " " + language + " "}), "X-User-ID", userID)
+			testutil.Call(t, testHandler.UpdateMe, req).Want(http.StatusOK).JSON(&out)
+			dbfx.QueryRow(t, "SELECT language FROM \"user\" WHERE id = $1", userID).Scan(&persisted)
+			if persisted != "en" || out.Language == nil || *out.Language != "en" {
+				t.Fatalf("explicit legacy write must save English: stored=%q response=%v", persisted, out.Language)
+			}
+		})
+	}
+}
+
+func TestUserLanguagePreservesUnsetAndRejectsOtherTags(t *testing.T) {
+	userID := dbfx.User(t, "No Preference", "language-unset@multica.ai")
+	req := testutil.WithHeaders(httptest.NewRequest("GET", "/api/me", nil), "X-User-ID", userID)
+	var out UserResponse
+	testutil.Call(t, testHandler.GetMe, req).Want(http.StatusOK).JSON(&out)
+	if out.Language != nil {
+		t.Fatalf("unset preference must remain null, got %q", *out.Language)
+	}
+	for _, language := range []any{nil, "zh", "ja-JP", "ko-KR", ""} {
+		want := http.StatusBadRequest
+		if language == nil {
+			want = http.StatusOK
+		}
+		req = testutil.WithHeaders(testutil.JSONRequest("PATCH", "/api/me", map[string]any{"language": language}), "X-User-ID", userID)
+		testutil.Call(t, testHandler.UpdateMe, req).Want(want)
+		var stored *string
+		dbfx.QueryRow(t, "SELECT language FROM \"user\" WHERE id = $1", userID).Scan(&stored)
+		if stored != nil {
+			t.Fatalf("null/invalid input %v invented preference %q", language, *stored)
+		}
 	}
 }
 

@@ -19,8 +19,13 @@ export function matchLocale(candidates: string[]): SupportedLocale {
   }
 }
 
+// Retired explicit choices keep their priority over system preferences.
+export function normalizeStoredLocale(locale: string): string {
+  return locale === "ja" || locale === "ko" ? DEFAULT_LOCALE : locale;
+}
+
 export function pickLocale(adapter: LocaleAdapter): SupportedLocale {
   const choice = adapter.getUserChoice();
-  if (choice) return matchLocale([choice]);
+  if (choice) return matchLocale([normalizeStoredLocale(choice)]);
   return matchLocale(adapter.getSystemPreferences());
 }

@@ -172,9 +172,8 @@ export function StepWorkspace({
   const handleNameChange = (value: string) => {
     setName(value);
     if (!slugTouched.current) {
-      // Locale decides whether Han characters are read as Chinese; see
-      // nameToWorkspaceSlug.
-      applySlug(nameToWorkspaceSlug(value, locale));
+      // Derive an editable slug while preserving non-Chinese text safeguards.
+      applySlug(nameToWorkspaceSlug(value));
     }
   };
 

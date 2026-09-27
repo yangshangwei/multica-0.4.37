@@ -36,7 +36,7 @@ type McpServerTemplate struct {
 	// must contain "command" or "url" (the form's missing-target rule) and must
 	// never carry credential material.
 	Config map[string]any
-	// Titles / Descriptions are the localized picker copy (en/zh/ko/ja), falling
+	// Titles / Descriptions are the localized picker copy (en/zh), falling
 	// back to English then the key. Unlike the config, this is display-only.
 	Titles       map[string]string
 	Descriptions map[string]string
@@ -69,14 +69,10 @@ func McpServerTemplates() []McpServerTemplate {
 			Titles: map[string]string{
 				"en": "Chrome DevTools",
 				"zh": "Chrome DevTools",
-				"ja": "Chrome DevTools",
-				"ko": "Chrome DevTools",
 			},
 			Descriptions: map[string]string{
 				"en": "Drive a real Chrome through the DevTools protocol: inspect the DOM, run scripts, and debug page behavior.",
 				"zh": "通过 DevTools 协议操控真实 Chrome：检查 DOM、执行脚本、调试页面行为。",
-				"ja": "DevTools プロトコルで実際の Chrome を操作します。DOM の確認、スクリプト実行、ページ挙動のデバッグ。",
-				"ko": "DevTools 프로토콜로 실제 Chrome을 제어합니다: DOM 검사, 스크립트 실행, 페이지 동작 디버깅.",
 			},
 		},
 		{
@@ -91,14 +87,10 @@ func McpServerTemplates() []McpServerTemplate {
 			Titles: map[string]string{
 				"en": "Playwright",
 				"zh": "Playwright",
-				"ja": "Playwright",
-				"ko": "Playwright",
 			},
 			Descriptions: map[string]string{
 				"en": "Automate a browser with Playwright: navigate pages, fill forms, and capture snapshots for the agent to act on.",
 				"zh": "用 Playwright 自动化浏览器：打开页面、填写表单、抓取快照供智能体处理。",
-				"ja": "Playwright でブラウザを自動化します。ページ遷移、フォーム入力、スナップショット取得。",
-				"ko": "Playwright로 브라우저를 자동화합니다: 페이지 이동, 폼 입력, 스냅샷 캡처.",
 			},
 		},
 		{
@@ -111,14 +103,10 @@ func McpServerTemplates() []McpServerTemplate {
 			Titles: map[string]string{
 				"en": "Sequential Thinking",
 				"zh": "顺序思考",
-				"ja": "順序思考",
-				"ko": "순차적 사고",
 			},
 			Descriptions: map[string]string{
 				"en": "A tool for breaking a problem into a revisable chain of thoughts, useful for planning and multi-step reasoning.",
 				"zh": "把问题拆成可修正的思考链，适合规划和多步推理。",
-				"ja": "問題を見直し可能な思考の連なりに分解します。計画立案や多段階の推論に有用です。",
-				"ko": "문제를 수정 가능한 사고의 연쇄로 나눕니다. 계획 수립과 다단계 추론에 유용합니다.",
 			},
 		},
 	}

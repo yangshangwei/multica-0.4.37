@@ -1,5 +1,7 @@
 # Projects and resources source map
 
+- `normalizeRetiredLanguage` maps legacy `ja`/`ko` to `en` before project choice validation and when `readProjectSquadSelections` consumes saved singleton/array JSON. New content-language values remain `en`/`zh`. `TestProjectExecutionSquad_RetiredDeferredLanguagePreservesReadAndRetry` covers no-write GET, delayed English materialization and unchanged customized instances on retry.
+
 - `server/cmd/multica/cmd_project.go` registers project `list`, `get`, `create`, `update`, `delete`, and `status`.
 - The same file registers `project resource list/add/update/remove`.
 - `project create --repo` attaches `github_repo` resources during project creation.

@@ -1,5 +1,6 @@
 import {
   matchLocale,
+  normalizeStoredLocale,
   SUPPORTED_LOCALES,
   type SupportedLocale,
 } from "@multica/core/i18n";
@@ -23,7 +24,7 @@ export function resolveLocaleFromSignals({
   acceptLanguage?: string | null;
 }): SupportedLocale {
   const candidates: string[] = [];
-  if (cookieLocale) candidates.push(cookieLocale);
+  if (cookieLocale) candidates.push(normalizeStoredLocale(cookieLocale));
 
   for (const part of (acceptLanguage ?? "").split(",")) {
     const tag = part.split(";")[0]?.trim();

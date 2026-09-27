@@ -16,7 +16,7 @@ export interface ConfigureProjectSquadRequest {
   template_key?: string;
   squad_id?: string;
   runtime_id?: string;
-  language?: "en" | "zh" | "ja" | "ko";
+  language?: "en" | "zh";
 }
 
 export interface Project {

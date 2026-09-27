@@ -8,6 +8,12 @@ POST /api/projects optionally accepts `execution_squads` or legacy `execution_sq
 
 ## Atomic materialization
 
+New label languages are `en` and `zh`. Retired `ja`/`ko` requests and
+stored deferred selections are interpreted as English. Normalize old singleton
+objects and array entries in memory, preserving revision and identity; GET must
+not rewrite the JSON. A configuration retry still reuses customized instances
+without replacing their names, descriptions or instructions.
+
 Use the existing role/skill/squad materializer inside the configuration transaction. Project row locks serialize configure/delete. Acquire every requested runtime in UUID order before agents, then all requested template locks in key order, then the workspace role-skill lock. Never acquire the role lock between template locks: a concurrent single-template creation can hold the next template while waiting on the role lock. Each choice owns a savepoint, so a failed item removes its partial resources while successful choices commit together with the project list. Compare the complete ordered selection, including each internal revision, across the create/preparation gap; checking only the first revision loses concurrent changes to later choices. Full-list retries match template_key/runtime_id or squad_id to preserve existing instance identity and customization.
 
 The explicit squad from-template endpoint retains its existing creation behavior. Project preparation alone reuses a valid accessible template squad. Never rebind or overwrite reused agents, skills or squad instructions. Clearing the default does not delete shared entities. Reads do not resurrect deleted/archived defaults.

@@ -88,7 +88,7 @@ describe("locale bundle parity", () => {
 });
 
 // Dead plural-key guard: a locale whose CLDR plural rules have no `one`
-// category (e.g. ja/ko/zh-Hans) resolves only `_other`, so any `_one` key in
+// category (e.g. zh-Hans) resolves only `_other`, so any `_one` key in
 // it is dead weight i18next never renders. Left unchecked these accumulate and
 // hide bugs — a missing `_other` silently falls back while the orphan `_one`
 // looks like coverage. i18next resolves plurals via Intl.PluralRules, so we

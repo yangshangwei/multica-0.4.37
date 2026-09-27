@@ -11,7 +11,7 @@ import { i18n } from "./i18n";
 //   - external links (`https:`, `mailto:`, `tel:`, etc.)
 //   - in-page anchors (`#section`)
 //   - relative paths (`./foo`, `../bar`)
-//   - paths already prefixed with a known locale
+//   - paths already prefixed with an active or retired locale
 //   - the default language (URLs are intentionally prefix-less under
 //     `hideLocale: 'default-locale'`)
 export function prefixLocale(href: string, lang: string): string {
@@ -23,7 +23,12 @@ export function prefixLocale(href: string, lang: string): string {
 
   const segments = href.split("/").filter(Boolean);
   const first = segments[0];
-  if (first && (i18n.languages as readonly string[]).includes(first)) {
+  if (
+    first &&
+    ((i18n.languages as readonly string[]).includes(first) ||
+      first === "ja" ||
+      first === "ko")
+  ) {
     return href;
   }
 

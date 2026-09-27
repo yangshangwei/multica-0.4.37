@@ -10,6 +10,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/testutil"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -116,6 +117,28 @@ func TestCreateMikaAgent_RejectsUnsupportedLanguage(t *testing.T) {
 	w := createMika(t, map[string]any{"runtime_id": handlerTestRuntimeID(t), "language": "fr"})
 	if w.Code != http.StatusBadRequest {
 		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+func TestCreateMikaAgent_RetiredLanguageUsesEnglishAndPreservesExistingContent(t *testing.T) {
+	for _, language := range []string{"ja", "ko"} {
+		t.Run(language, func(t *testing.T) {
+			cleanupMika(t)
+			body := map[string]any{"runtime_id": handlerTestRuntimeID(t), "language": language}
+			req := withChatTestWorkspaceCtx(t, newRequest("POST", "/api/agents/mika", body))
+			var first AgentResponse
+			testutil.Call(t, testHandler.CreateMikaAgent, req).Want(http.StatusCreated).JSON(&first)
+			if first.Description != mikaAgentDescriptions["en"] {
+				t.Errorf("retired locale description = %q, want English", first.Description)
+			}
+			dbfx.Exec(t, "UPDATE agent SET name = 'カスタム 이름', description = '사용자 설명', instructions = 'custom instructions' WHERE id = $1", first.ID)
+			req = withChatTestWorkspaceCtx(t, newRequest("POST", "/api/agents/mika", body))
+			var again AgentResponse
+			testutil.Call(t, testHandler.CreateMikaAgent, req).Want(http.StatusOK).JSON(&again)
+			if again.ID != first.ID || again.Name != "カスタム 이름" || again.Description != "사용자 설명" || again.Instructions != "custom instructions" {
+				t.Fatalf("retry replaced user-owned Mika identity/content: %+v", again)
+			}
+		})
 	}
 }
 

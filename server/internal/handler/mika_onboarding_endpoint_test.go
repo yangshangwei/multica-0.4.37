@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
@@ -241,6 +242,9 @@ func TestStartMikaOnboarding_RejectsBadInput(t *testing.T) {
 	}{
 		{"unsupported language", mikaSession, map[string]any{"language": "fr"}},
 		{"missing language", mikaSession, map[string]any{}},
+		{"null language", mikaSession, map[string]any{"language": nil}},
+		{"preference language tag", mikaSession, map[string]any{"language": "zh-Hans"}},
+		{"padded retired language", mikaSession, map[string]any{"language": " ja "}},
 		{"agent without the mika system_key", otherSession, map[string]any{"language": "en"}},
 	}
 	for _, tc := range tests {
@@ -257,5 +261,39 @@ func TestStartMikaOnboarding_RejectsBadInput(t *testing.T) {
 	}
 	if tasks := countSessionTasks(t, otherSession); tasks != 0 {
 		t.Fatalf("rejected requests must not enqueue work, got %d task(s)", tasks)
+	}
+}
+
+func TestStartMikaOnboarding_RetiredLanguageUsesEnglishAndDoesNotRepeat(t *testing.T) {
+	for _, language := range []string{"ja", "ko"} {
+		t.Run(language, func(t *testing.T) {
+			agentID := markAsMika(t, createHandlerTestAgent(t, "Mika", nil))
+			sessionID := createHandlerTestChatSession(t, agentID)
+			cleanupSessionTasks(t, sessionID)
+			request := func(language string) *http.Request {
+				return withChatTestWorkspaceCtx(t, withURLParam(
+					newRequest("POST", "/api/chat/sessions/"+sessionID+"/onboarding", map[string]any{"language": language}),
+					"sessionId", sessionID))
+			}
+			var first startMikaOnboardingResponse
+			testutil.Call(t, testHandler.StartMikaOnboarding, request(language)).Want(http.StatusCreated).JSON(&first)
+			var opening, kickoff, workspaceName string
+			dbfx.QueryRow(t, "SELECT name FROM workspace WHERE id = $1", testWorkspaceID).Scan(&workspaceName)
+			dbfx.QueryRow(t, "SELECT content FROM chat_message WHERE chat_session_id = $1 AND message_kind = $2",
+				sessionID, protocol.ChatMessageKindOnboardingOpening).Scan(&opening)
+			dbfx.QueryRow(t, "SELECT content FROM chat_message WHERE chat_session_id = $1 AND message_kind = $2",
+				sessionID, protocol.ChatMessageKindOnboardingKickoff).Scan(&kickoff)
+			if opening != buildMikaOnboardingOpening("en", "Mika", workspaceName) || !strings.Contains(kickoff, "continuing in English.") {
+				t.Errorf("retired language must select an English opening and kickoff: %q / %q", opening, kickoff)
+			}
+			var again startMikaOnboardingResponse
+			testutil.Call(t, testHandler.StartMikaOnboarding, request("zh")).Want(http.StatusOK).JSON(&again)
+			if !first.Started || again.Started || countSessionTasks(t, sessionID) != 0 {
+				t.Fatalf("onboarding was repeated or scheduled an agent: first=%+v again=%+v", first, again)
+			}
+			if count := dbfx.Count(t, "SELECT count(*) FROM chat_message WHERE chat_session_id = $1", sessionID); count != 2 {
+				t.Fatalf("retry wrote extra chat messages: %d", count)
+			}
+		})
 	}
 }
