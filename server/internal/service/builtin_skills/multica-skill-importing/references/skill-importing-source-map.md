@@ -77,6 +77,18 @@ archive path (below); a JSON body keeps the URL flow. Both converge on the share
 | Structured HTTP error body handling | `server/cmd/multica/cmd_skill.go:437-440`, `handleSkillImportError` at `:454` |
 | Prints structured result (`json` or table) | `server/cmd/multica/cmd_skill.go:443`, helper at `:497` |
 
+## CLI: labels after import
+
+| Behavior | File:line |
+|---|---|
+| `skill label list/add/remove` routes and output flags | `server/cmd/multica/cmd_skill_label.go:17` (`skillLabelCmd`, `init`) |
+| List, attach and detach use the existing skill label API | `server/cmd/multica/cmd_skill_label.go:59` (`runSkillLabelList`, `runSkillLabelAdd`, `runSkillLabelRemove`) |
+| Label prefixes are resolved by workspace and resource type; generic label lookup checks both issue and skill labels | `server/cmd/multica/cmd_id_resolver.go:409` (`resolveLabelID`, `fetchLabelCandidates`) |
+| `label list/create --resource-type`; optional description, including explicit clearing on update | `server/cmd/multica/cmd_label.go:56` (`validateLabelResourceType`, `runLabelCreate`, `runLabelUpdate`) |
+| Skill mutation permission and workspace/type validation stay on the server | `server/internal/handler/label.go:647` (`AttachLabelToSkill`, `DetachLabelFromSkill`) |
+| Preserve workspace and task identity on all requests | `server/cmd/multica/cmd_agent.go:254` (`newAPIClient`) |
+| Command registration, skill operations, issue-scoped prefixes and description regression tests | `server/cmd/multica/cmd_skill_test.go`, `server/cmd/multica/cmd_label_test.go` |
+
 ## Same-name conflict handling
 
 | Behavior | File:line |

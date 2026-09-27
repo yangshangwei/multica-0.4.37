@@ -12,6 +12,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func TestSkillLabelCommandsRegistered(t *testing.T) {
+	for _, action := range []string{"list", "add", "remove"} {
+		t.Run(action, func(t *testing.T) {
+			cmd, remaining, err := rootCmd.Find([]string{"skill", "label", action})
+			if err != nil {
+				t.Fatalf("find skill label %s: %v", action, err)
+			}
+			if got, want := cmd.CommandPath(), "multica skill label "+action; got != want || len(remaining) != 0 {
+				t.Fatalf("route = %q with remaining %v, want %q", got, remaining, want)
+			}
+		})
+	}
+}
+
 func newSkillImportTestCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "import"}
 	cmd.Flags().String("server-url", "", "")
@@ -667,5 +681,117 @@ func TestRunSkillFilesListRendersReadableSizes(t *testing.T) {
 	}
 	if !strings.Contains(out, "128 B") {
 		t.Errorf("expected an exact byte count for the small file, got %q", out)
+	}
+}
+
+func newSkillLabelTestCmd(action string) *cobra.Command {
+	cmd := &cobra.Command{Use: action}
+	cmd.Flags().String("output", "json", "")
+	cmd.Flags().Bool("full-id", false, "")
+	return cmd
+}
+
+func TestRunSkillLabelCommands(t *testing.T) {
+	t.Setenv("HOME", t.TempDir())
+	t.Setenv("MULTICA_WORKSPACE_ID", "ws-1")
+	t.Setenv("MULTICA_TOKEN", "mat_skill-label-test")
+	t.Setenv("MULTICA_AGENT_ID", "agent-1")
+	t.Setenv("MULTICA_TASK_ID", "task-1")
+
+	var lastMethod, lastPath string
+	var lastBody map[string]any
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("X-Workspace-ID") != "ws-1" || r.Header.Get("X-Agent-ID") != "agent-1" || r.Header.Get("X-Task-ID") != "task-1" {
+			t.Error("skill label request lost its workspace or task identity")
+		}
+		lastMethod = r.Method
+		lastPath = r.URL.Path
+		w.Header().Set("Content-Type", "application/json")
+		if r.Method == http.MethodGet && r.URL.Path == "/api/skills/skill-1/labels" {
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"labels": []map[string]any{
+					{"id": testLabelUUID, "name": "mattpocock", "color": "#3b82f6"},
+				},
+			})
+			return
+		}
+		if r.Method == http.MethodPost && r.URL.Path == "/api/skills/skill-1/labels" {
+			_ = json.NewDecoder(r.Body).Decode(&lastBody)
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"labels": []map[string]any{
+					{"id": testLabelUUID, "name": "mattpocock", "color": "#3b82f6"},
+				},
+			})
+			return
+		}
+		if r.Method == http.MethodDelete && r.URL.Path == "/api/skills/skill-1/labels/"+testLabelUUID {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		if r.Method == http.MethodGet && r.URL.Path == "/api/labels" {
+			if got := r.URL.Query().Get("resource_type"); got != "skill" || r.URL.Query().Get("workspace_id") != "ws-1" {
+				t.Fatalf("resource_type = %q, want skill", got)
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"labels": []map[string]any{
+					{"id": testLabelUUID, "name": "mattpocock", "color": "#3b82f6"},
+				},
+			})
+			return
+		}
+		http.NotFound(w, r)
+	}))
+	defer srv.Close()
+	t.Setenv("MULTICA_SERVER_URL", srv.URL)
+
+	// 1. List labels on skill
+	listCmd := newSkillLabelTestCmd("list")
+	out, err := captureStdout(t, func() error {
+		return runSkillLabelList(listCmd, []string{"skill-1"})
+	})
+	if err != nil {
+		t.Fatalf("runSkillLabelList: %v", err)
+	}
+	var gotList []map[string]any
+	if err := json.Unmarshal([]byte(out), &gotList); err != nil {
+		t.Fatalf("decode JSON: %v", err)
+	}
+	if len(gotList) != 1 || gotList[0]["name"] != "mattpocock" {
+		t.Fatalf("list output = %#v", gotList)
+	}
+
+	// 2. Add label to skill
+	addCmd := newSkillLabelTestCmd("add")
+	out, err = captureStdout(t, func() error {
+		return runSkillLabelAdd(addCmd, []string{"skill-1", testLabelUUID})
+	})
+	if err != nil {
+		t.Fatalf("runSkillLabelAdd: %v", err)
+	}
+	if lastMethod != http.MethodPost || lastPath != "/api/skills/skill-1/labels" {
+		t.Fatalf("add request: method=%s, path=%s", lastMethod, lastPath)
+	}
+	if lastBody["label_id"] != testLabelUUID {
+		t.Fatalf("add body: %#v, want label_id %s", lastBody, testLabelUUID)
+	}
+
+	// Short IDs from `label list --resource-type skill` resolve against skill labels.
+	_, err = captureStdout(t, func() error {
+		return runSkillLabelAdd(addCmd, []string{"skill-1", "1111"})
+	})
+	if err != nil {
+		t.Fatalf("runSkillLabelAdd with short label ID: %v", err)
+	}
+
+	// 3. Remove label from skill
+	removeCmd := newSkillLabelTestCmd("remove")
+	out, err = captureStdout(t, func() error {
+		return runSkillLabelRemove(removeCmd, []string{"skill-1", testLabelUUID})
+	})
+	if err != nil {
+		t.Fatalf("runSkillLabelRemove: %v", err)
+	}
+	if lastMethod != http.MethodGet || lastPath != "/api/skills/skill-1/labels" {
+		t.Fatalf("remove follow-up request: method=%s, path=%s", lastMethod, lastPath)
 	}
 }

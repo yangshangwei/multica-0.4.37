@@ -158,6 +158,29 @@ multica agent skills list <agent-id> --output json
 After the final `multica agent skills list <agent-id> --output json`, verify the
 target skill id is present before claiming the skill is available to that agent.
 
+## Labels after import
+
+When the user asks to label an imported skill, use workspace labels with
+`resource_type=skill`. List them before choosing an ID:
+
+```bash
+multica label list --resource-type skill --output json
+multica skill label add <skill-id> <label-id> --output json
+multica skill label list <skill-id> --output json
+```
+
+If the requested label does not exist, create it with
+`multica label create --name "<name>" --color "#3b82f6" --resource-type skill --output json`,
+then use its returned ID. `--description` is optional on create and update;
+`multica label update <label-id> --description ""` clears it.
+
+`multica skill label remove <skill-id> <label-id> --output json` detaches one
+label without deleting the label or changing agent-skill bindings. The label ID
+may be a full UUID or an unambiguous short prefix; skill label commands resolve
+prefixes only against this workspace's skill labels. The server still decides
+whether the caller may manage the skill. Read the resulting label list before
+claiming that a label was attached or removed; import itself does not label it.
+
 ## Additive add vs replace-all set
 
 `multica agent skills add` is additive: the server inserts the assignments without
