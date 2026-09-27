@@ -944,3 +944,41 @@ AC1-AC7 全部达成并归档。独立 trellis-check 全绿（typecheck/lint、c
 ### Status
 
 [OK] **Completed**
+
+
+## Session 31: 仅保留简体中文和英文：实现、验收与归档
+
+**Date**: 2026-09-27
+**Task**: 仅保留简体中文和英文：实现、验收与归档
+**Branch**: `main`
+
+### Summary
+
+产品、桌面端、后端模板、官网与文档站统一为 zh-Hans/en，删除 152 个日韩资源，兼容旧 ja/ko 偏好与 90 个旧文档地址；功能提交 372576209 已验收并归档。
+
+### Main Changes
+
+- 活跃界面语言收敛为 en 与 zh-Hans（内容与文档的中文标识仍为 zh）；删除 54 个共享 JSON、4 个官网/案例文件和 94 个文档文件，并移除对应注册表、选择器与模板文案。
+- 旧 ja/ko 偏好在 Web、Desktop、登录同步和后端边界统一归一为英文；已有用户内容、模板身份和偏好语义不变，无数据库 schema 或批量内容迁移。
+- 功能提交含 259 个源码路径，与验收清单逐项一致；仅排除在开发/生产构建间来回切换的 `apps/web/next-env.d.ts`，未跟踪的 `.impeccable/` 保持不动。
+- 原 Codex 会话提交功能代码后因模型额度耗尽（402）中断；后续会话修剪构建日志证据的行尾空格，补齐归档提交与本日志。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `372576209` | (see git log) |
+
+### Testing
+
+- [OK] 8,537 项 TypeScript 测试（core 2,057、views 5,439、Web 261、Desktop 718、Docs 62）、66 个 Go 包 race 测试与 go vet、lint 与类型检查通过。
+- [OK] 生产 Web 浏览器 9 项、真实 Electron 验收 2 项零重试通过（仅在 macOS 运行）；90 个旧文档地址全部 308 跳转到 200 的英文页并保留查询参数。
+- [OK] Docs 英文页 React #418 水合错误与基线 e595d2313 相同，属原有问题，无新增报错；归档后任务上下文校验、23 个本地 Markdown 链接和空白检查通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 任务 worktree `/Volumes/artisan/code/2026/multica-retain-zh-en-locales` 与分支 `work/retain-zh-en-locales`（仍指向 e595d2313）仍保留；确认无需再取证后可用 `make remove-worktree WORKTREE=../multica-retain-zh-en-locales` 清理（会同时删除其数据库）。
