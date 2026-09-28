@@ -2,14 +2,11 @@
 
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import type { Label, SkillSummary, SkillTemplate } from "@multica/core/types";
+import { fireEvent, screen, within } from "@testing-library/react";
+import type { Label, SkillSummary } from "@multica/core/types";
 import type { SupportedLocale } from "@multica/core/i18n";
-import { renderWithI18n, RESOURCES } from "../../test/i18n";
-import { I18nProvider } from "@multica/core/i18n/react";
+import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
-import enSkills from "../../locales/en/skills.json";
-import zhSkills from "../../locales/zh-Hans/skills.json";
 
 // Regression rig for the Source cell's anchor living inside a `useRowLink`
 // row: the row handles BOTH click and auxclick, so the anchor must stop both
@@ -19,9 +16,6 @@ import zhSkills from "../../locales/zh-Hans/skills.json";
 
 const mocks = vi.hoisted(() => ({
   skills: [] as SkillSummary[],
-  templates: [] as SkillTemplate[],
-  templatesError: false,
-  refetchTemplates: vi.fn(),
   viewState: {
     // The row-anchor regression rig below lives in the LIST view.
     viewMode: "list" as string,
@@ -49,9 +43,6 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: (options: { queryKey?: readonly unknown[] }) => {
-    if (options.queryKey?.[0] === "skill-templates") {
-      return { data: mocks.templates, isLoading: false, isPending: false, isError: mocks.templatesError, refetch: mocks.refetchTemplates };
-    }
     if (options.queryKey?.[0] === "skills") {
       return {
         data: mocks.skills,
@@ -101,7 +92,6 @@ vi.mock("@multica/core/paths", async (importOriginal) => {
 
 vi.mock("@multica/core/workspace/queries", () => ({
   skillListOptions: () => ({ queryKey: ["skills"] }),
-  skillTemplateListOptions: () => ({ queryKey: ["skill-templates"] }),
   agentListOptions: () => ({ queryKey: ["agents"] }),
   memberListOptions: () => ({ queryKey: ["members"] }),
   selectSkillAssignments: () => new Map(),
@@ -120,6 +110,15 @@ vi.mock("@multica/core/skills/stores", () => ({
   useSkillsViewStore: (selector: (state: unknown) => unknown) =>
     selector(mocks.viewState),
   DEFAULT_HIDDEN_COLUMNS: [],
+}));
+
+// Catalog behavior is covered in skill-library-catalog.test.tsx. This rig
+// isolates workspace row wiring; the real-page session suite covers integration.
+vi.mock("./skill-library-catalog", () => ({
+  SkillLibraryCatalog: ({ children, onPreview }: {
+    children: React.ReactNode;
+    onPreview: (name: string, trigger: HTMLButtonElement) => void;
+  }) => <>{children}<button onClick={(event) => onPreview("multica-code-review", event.currentTarget)}>Preview template</button></>,
 }));
 
 // View-layer children with heavy / portal deps — stubbed to keep the test on
@@ -191,7 +190,6 @@ vi.mock("./skill-list-actions", () => ({
 import SkillsPage from "./skills-page";
 
 const SOURCE_URL = "https://github.com/anthropics/skills/tree/main/animations";
-const SKILLS_COPY = { en: enSkills, "zh-Hans": zhSkills, };
 
 const importedSkill: SkillSummary = {
   id: "skill-1",
@@ -242,71 +240,19 @@ function middleClick(target: Element): MouseEvent {
 beforeEach(() => {
   vi.clearAllMocks();
   mocks.skills = [importedSkill];
-  mocks.templates = [];
-  mocks.templatesError = false;
   mocks.viewState.viewMode = "list";
   mocks.viewState.filters.categories = [];
   mocks.viewState.filters.labels = [];
 });
 
-const REVIEW_TEMPLATE: SkillTemplate = {
-  name: "multica-code-review", version: 1,
-  description: "Review changes and report actionable findings.",
-  content: "---\nname: multica-code-review\n---\nReview changes.", files: [],
-};
-
-// Provenance/relatedness matrices now live in skill-template-discovery.test.ts;
-// all related links live in the picker, outside the page collection.
-describe("SkillsPage template entry", () => {
-  it.each(["en", "zh-Hans"] as const)("renders the template entry with only %s loaded", (locale) => {
-    mocks.templates = [REVIEW_TEMPLATE];
-    render(<I18nProvider locale={locale} resources={{ [locale]: RESOURCES[locale] }}>
-      <NavigationProvider value={makeAdapter()}><SkillsPage /></NavigationProvider>
-    </I18nProvider>);
-    const copy = SKILLS_COPY[locale].template_entry;
-    const entry = screen.getByRole("region", { name: copy.title });
-    expect(within(entry).getByRole("button", { name: copy.browse })).toBeInTheDocument();
-    expect(entry).toHaveTextContent(copy.description);
-  });
-
-  it("opens unnamed template browsing from a compact entry while New skill keeps the chooser", () => {
-    mocks.skills = [];
-    mocks.templates = [REVIEW_TEMPLATE];
+describe("SkillsPage catalog integration", () => {
+  it("passes a selected template into preview while New skill keeps the chooser", () => {
     renderPage(makeAdapter());
-    const entry = screen.getByRole("region", { name: "Skill templates" });
-    expect(within(entry).queryByText(REVIEW_TEMPLATE.description)).not.toBeInTheDocument();
-    expect(within(entry).queryByRole("button", { expanded: false })).not.toBeInTheDocument();
-    fireEvent.click(within(entry).getByRole("button", { name: "Browse templates" }));
+    fireEvent.click(screen.getByRole("button", { name: "Preview template" }));
     expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute("data-entry", "templates");
-    expect(screen.getByRole("dialog", { name: "Create skill" })).not.toHaveAttribute("data-template-name");
+    expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute("data-template-name", "multica-code-review");
     fireEvent.click(screen.getAllByRole("button", { name: "New skill" })[0]!);
     expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute("data-entry", "methods");
-  });
-
-  it("counts each source separately from workspace totals and workspace search", () => {
-    mocks.templates = [REVIEW_TEMPLATE, { ...REVIEW_TEMPLATE, name: "team-template" }, { ...REVIEW_TEMPLATE, name: "" }];
-    mocks.skills = [importedSkill];
-    renderPage(makeAdapter());
-    const entry = screen.getByRole("region", { name: "Skill templates" });
-    expect(entry).toHaveTextContent("2 templates");
-    expect(entry).toHaveTextContent("Platform 1");
-    expect(entry).toHaveTextContent("Deployment 1");
-    expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).getByText("1")).toBeInTheDocument();
-    fireEvent.change(screen.getByRole("textbox", { name: "Search skills" }), { target: { value: "nothing matches" } });
-    expect(entry).toHaveTextContent("2 templates");
-    expect(within(entry).getByRole("button", { name: "Browse templates" })).toBeEnabled();
-  });
-
-  it("retains cached template counts and offers retry without hiding workspace search", () => {
-    mocks.templates = [REVIEW_TEMPLATE];
-    mocks.templatesError = true;
-    renderPage(makeAdapter());
-    const entry = screen.getByRole("region", { name: "Skill templates" });
-    expect(entry).toHaveTextContent("1 template");
-    expect(within(entry).getByRole("alert")).toHaveTextContent("Could not refresh templates");
-    fireEvent.click(within(entry).getByRole("button", { name: "Try again" }));
-    expect(mocks.refetchTemplates).toHaveBeenCalledOnce();
-    expect(screen.getByRole("textbox", { name: "Search skills" })).toBeInTheDocument();
   });
 });
 

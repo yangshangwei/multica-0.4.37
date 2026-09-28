@@ -117,9 +117,15 @@ function renderPage() {
   return { queryClient, navigation };
 }
 
+async function openMarketPreview() {
+  fireEvent.click(screen.getByRole("tab", { name: "Skill market" }));
+  const preview = await screen.findByRole("button", { name: "Preview multica-code-review" });
+  fireEvent.click(preview);
+  return preview;
+}
+
 async function openEditor() {
-  fireEvent.click(screen.getByRole("button", { name: "Browse templates" }));
-  fireEvent.click(await screen.findByRole("button", { name: /^multica-code-review/ }));
+  await openMarketPreview();
   const adopt = screen.getByRole("button", { name: "Use this template" });
   await waitFor(() => expect(adopt).toBeEnabled());
   fireEvent.click(adopt);
@@ -156,7 +162,7 @@ async function failWorkspaceRefresh(queryClient: QueryClient) {
     refresh.reject(new Error("Skills refresh unavailable"));
     await completed;
   });
-  await screen.findByText("Skills refresh unavailable");
+  await waitFor(() => expect(queryClient.getQueryState(workspaceKeys.skills(WORKSPACE.id))?.status).toBe("error"));
   expect(queryClient.getQueryData(workspaceKeys.skills(WORKSPACE.id))).toEqual([RELATED_SKILL]);
 }
 
@@ -176,7 +182,7 @@ async function retryWorkspaceRefresh(queryClient: QueryClient, skills = [RELATED
 
 beforeEach(() => {
   vi.resetAllMocks();
-  useSkillsViewStore.setState({ viewMode: "card", filters: EMPTY_SKILL_FILTERS });
+  useSkillsViewStore.setState({ viewMode: "card", filters: EMPTY_SKILL_FILTERS, libraryView: null, marketSource: "all", marketCategory: null, templatesCollapsed: false });
   mocks.listWorkspaces.mockResolvedValue([WORKSPACE]);
   mocks.listSkillTemplates.mockResolvedValue([TEMPLATE]);
   mocks.listSkills.mockResolvedValue([RELATED_SKILL]);
@@ -191,12 +197,43 @@ afterEach(() => {
 });
 
 describe("SkillsPage template-session lifetime", () => {
-  it.each(["Browse templates", "New skill"])("returns focus to %s after closing the template browser", async (entryName) => {
+  it("opens a selected market template and keeps browsing after creating its copy", async () => {
+    const { navigation } = renderPage();
+    await userEvent.click(await screen.findByRole("tab", { name: "Skill market" }));
+    await userEvent.click(await screen.findByRole("button", { name: "Preview multica-code-review" }));
+    const adopt = await screen.findByRole("button", { name: "Use this template" });
+    await waitFor(() => expect(adopt).toBeEnabled());
+    fireEvent.click(adopt);
+    editDraft();
+    mocks.createSkill.mockImplementationOnce(async (request) => ({
+      ...RELATED_SKILL,
+      name: request.name,
+      description: request.description,
+      content: request.content,
+      files: request.files ?? [],
+      config: request.config,
+    }));
+    fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(screen.getByRole("tab", { name: "Skill market" })).toHaveAttribute("aria-selected", "true");
+    expect(navigation.push).not.toHaveBeenCalled();
+    expect(toast.success).toHaveBeenCalledWith(enSkills.create.template.created, expect.objectContaining({
+      action: expect.objectContaining({ label: "View skill" }),
+    }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Preview multica-code-review" })).toHaveFocus());
+  });
+
+  it.each(["market", "New skill"])("returns focus to %s after closing the template browser", async (entryName) => {
     const user = userEvent.setup();
     renderPage();
-    const entry = screen.getByRole("button", { name: entryName });
-    await user.click(entry);
-    if (entryName === "New skill") await user.click(screen.getByRole("button", { name: /Modify from template/ }));
+    let entry: HTMLElement;
+    if (entryName === "market") {
+      entry = await openMarketPreview();
+    } else {
+      entry = screen.getByRole("button", { name: "New skill" });
+      await user.click(entry);
+      await user.click(screen.getByRole("button", { name: /Modify from template/ }));
+    }
     const search = await screen.findByRole("textbox", { name: enSkills.create.template.search_placeholder });
     await waitFor(() => expect(search).toHaveFocus());
 
@@ -206,17 +243,17 @@ describe("SkillsPage template-session lifetime", () => {
     expect(mocks.createSkill).not.toHaveBeenCalled();
   });
 
-  it("returns focus to the current browse button after cached list failure and retry", async () => {
+  it("returns focus to the market preview button after cached list failure and retry", async () => {
     const user = userEvent.setup();
     const { queryClient } = renderPage();
-    await user.click(screen.getByRole("button", { name: "Browse templates" }));
+    await openMarketPreview();
     await screen.findByRole("textbox", { name: enSkills.create.template.search_placeholder });
     await failWorkspaceRefresh(queryClient);
     await retryWorkspaceRefresh(queryClient);
 
     await user.click(screen.getByRole("button", { name: "Close" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
-    expect(screen.getByRole("button", { name: "Browse templates" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Preview multica-code-review" })).toHaveFocus();
   });
 
   it("retains an edited draft and its dirty guard across cached list failure and retry", async () => {

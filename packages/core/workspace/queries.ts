@@ -139,11 +139,18 @@ export function skillListOptions(wsId: string) {
   });
 }
 
-export function skillTemplateListOptions(wsId: string) {
+export function skillTemplateListOptions(wsId: string, { poll = false }: { poll?: boolean } = {}) {
   return queryOptions({
     queryKey: workspaceKeys.skillTemplates(wsId),
     queryFn: ({ signal }) => api.listSkillTemplates(wsId, signal),
     enabled: !!wsId,
+    // Mounted template files change without WebSocket events.
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchInterval: poll ? 30_000 : false,
+    refetchIntervalInBackground: false,
   });
 }
 

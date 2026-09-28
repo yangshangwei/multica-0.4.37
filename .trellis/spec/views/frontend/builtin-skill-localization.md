@@ -54,12 +54,14 @@ presentation resolver for display. User-initiated copy creation may seed a NEW
 draft's description from the current localized purpose; later locale or query
 updates must not reseed it. Existing workspace edits still preserve stored text.
 
-The skills page has one compact template entry, separate from the workspace
-collection. Its totals come from valid named entries in the unfiltered template
-catalog, with platform and deployment counts labelled separately. Workspace
-header counts and facets still describe workspace skills. Open the shared
-creation dialog with `initialEntry: { kind: "templates" }` for direct browsing;
-New skill uses the method chooser. An optional named seed selects a preview only.
+The skills page uses `SkillLibraryCatalog` for a compact deployment shelf and a
+separate market view. Its source totals come from valid named entries in the
+unfiltered template catalog; workspace header counts and facets still describe
+workspace skills. Catalog cards open the shared creation dialog with a named
+`initialEntry: { kind: "templates", templateName }`; New skill uses the method
+chooser. A named seed selects a preview only. See
+[Skill Market Discovery](./skill-market-discovery.md) for view preferences,
+filter scopes, in-place copy creation and focus behavior.
 
 Picker rows may use `builtin_role_skills.<name>.summary` through
 `getBuiltinRoleSkillSummary`. This is display copy only. Recognize the same exact
@@ -100,6 +102,16 @@ operator-mount hint in that tab even during search. An empty source and a search
 with no matches are distinct states. Do not add a creation-method entry or an
 in-UI directory-config form: the channel is passive/filesystem-backed, and the
 mount path is operator territory, not an end-user action.
+
+The template catalog changes outside workspace mutations: the server rescans
+the mounted directory on each request, without a WebSocket invalidation event.
+Its Query options must override the global infinite freshness so reopening,
+foregrounding or reconnecting can discover changes. Poll every 30 seconds only
+while the template picker is open and visible; the page's compact entry and
+the copy editor must not poll. Selecting the deployment source refreshes
+immediately, reusing an in-flight fetch. Refresh keeps source/search/selection
+where applicable and must never reseed an adopted draft. Exercise this policy
+with the production QueryClient defaults, not a bare library-default client.
 
 Cold loading and a no-data query error must not claim zero templates or related
 skills. Successful empty data can. Cached data remains usable during refresh

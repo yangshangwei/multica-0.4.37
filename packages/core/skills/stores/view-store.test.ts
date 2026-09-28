@@ -28,14 +28,11 @@ beforeAll(() => {
   }
 });
 
-beforeEach(() => {
-  localStorage.clear();
-  useSkillsViewStore.setState({
-    viewMode: "card",
-    filters: EMPTY_SKILL_FILTERS,
-    hiddenColumns: DEFAULT_HIDDEN_COLUMNS,
-  });
+beforeEach(async () => {
   setCurrentWorkspace(null, null);
+  localStorage.clear();
+  await useSkillsViewStore.persist.rehydrate();
+  await flush();
 });
 
 afterEach(() => {
@@ -46,6 +43,54 @@ describe("useSkillsViewStore", () => {
   it("defaults to the card view and hides labels/source/created", () => {
     expect(useSkillsViewStore.getState().viewMode).toBe("card");
     expect(DEFAULT_HIDDEN_COLUMNS).toEqual(["labels", "source", "created"]);
+  });
+
+  it("starts with an unresolved library view and unfiltered, expanded templates", () => {
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: null,
+      marketSource: "all",
+      marketCategory: null,
+      templatesCollapsed: false,
+    });
+  });
+
+  it("changes market preferences independently of workspace filters", () => {
+    const state = useSkillsViewStore.getState();
+    state.selectCategory("engineering");
+    state.toggleFilter("origins", "github");
+    state.setLibraryView("market");
+    state.setMarketSource("deployment");
+    state.setMarketCategory("data");
+    state.setTemplatesCollapsed(true);
+
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: "market",
+      marketSource: "deployment",
+      marketCategory: "data",
+      templatesCollapsed: true,
+      filters: { categories: ["engineering"], origins: ["github"] },
+    });
+
+    state.clearFilters();
+    expect(useSkillsViewStore.getState().marketCategory).toBe("data");
+    state.setLibraryView("workspace");
+    state.setMarketSource("builtin");
+    state.setMarketCategory(null);
+    state.setTemplatesCollapsed(false);
+
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: "workspace",
+      marketSource: "builtin",
+      marketCategory: null,
+      templatesCollapsed: false,
+    });
+
+    state.setLibraryView(null);
+    state.setMarketSource("all");
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: null,
+      marketSource: "all",
+    });
   });
 
   it("toggleFilter treats labels as a multi-select dimension of label ids", () => {
@@ -125,12 +170,130 @@ describe("useSkillsViewStore persistence", () => {
     expect(Object.keys(parsed.state).sort()).toEqual([
       "filters",
       "hiddenColumns",
+      "libraryView",
+      "marketCategory",
+      "marketSource",
       "sortDirection",
       "sortField",
+      "templatesCollapsed",
       "viewMode",
     ]);
     expect(parsed.state.viewMode).toBe("list");
     expect(parsed.version).toBe(1);
+  });
+
+  it("rehydrates saved market preferences after leaving the workspace", async () => {
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    const state = useSkillsViewStore.getState();
+    state.setLibraryView("market");
+    state.setMarketSource("deployment");
+    state.setMarketCategory("engineering");
+    state.setTemplatesCollapsed(true);
+
+    const raw = localStorage.getItem("multica_skills_view:acme");
+    expect(raw).not.toBeNull();
+    expect(JSON.parse(raw as string).state).toMatchObject({
+      libraryView: "market",
+      marketSource: "deployment",
+      marketCategory: "engineering",
+      templatesCollapsed: true,
+    });
+
+    setCurrentWorkspace(null, null);
+    await flush();
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: null,
+      marketSource: "all",
+      marketCategory: null,
+      templatesCollapsed: false,
+    });
+
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: "market",
+      marketSource: "deployment",
+      marketCategory: "engineering",
+      templatesCollapsed: true,
+    });
+  });
+
+  it("isolates market preferences across workspaces and resets unsaved workspaces", async () => {
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    const state = useSkillsViewStore.getState();
+    state.setLibraryView("market");
+    state.setMarketSource("deployment");
+    state.setMarketCategory("engineering");
+    state.setTemplatesCollapsed(true);
+
+    setCurrentWorkspace("beta", "ws_b");
+    await flush();
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: null,
+      marketSource: "all",
+      marketCategory: null,
+      templatesCollapsed: false,
+    });
+    state.setLibraryView("workspace");
+    state.setMarketSource("builtin");
+    state.setMarketCategory("writing");
+
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: "market",
+      marketSource: "deployment",
+      marketCategory: "engineering",
+      templatesCollapsed: true,
+    });
+
+    setCurrentWorkspace("beta", "ws_b");
+    await flush();
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: "workspace",
+      marketSource: "builtin",
+      marketCategory: "writing",
+      templatesCollapsed: false,
+    });
+  });
+
+  it.each([0, 1])("backfills market defaults when switching to a v%i payload without them", async (version) => {
+    localStorage.setItem(
+      "multica_skills_view:beta",
+      JSON.stringify({
+        state: { viewMode: "list", hiddenColumns: ["source", "created"] },
+        version,
+      }),
+    );
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    const state = useSkillsViewStore.getState();
+    state.setLibraryView("market");
+    state.setMarketSource("deployment");
+    state.setMarketCategory("engineering");
+    state.setTemplatesCollapsed(true);
+
+    setCurrentWorkspace("beta", "ws_b");
+    await flush();
+    await flush();
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: null,
+      marketSource: "all",
+      marketCategory: null,
+      templatesCollapsed: false,
+      viewMode: "list",
+    });
+
+    state.setSortField("name");
+    const beta = JSON.parse(localStorage.getItem("multica_skills_view:beta") as string);
+    expect(beta.state).toMatchObject({
+      libraryView: null,
+      marketSource: "all",
+      marketCategory: null,
+      templatesCollapsed: false,
+    });
   });
 
   it("keeps each workspace's view mode apart and resets where nothing is saved", async () => {

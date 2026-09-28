@@ -44,13 +44,23 @@ interface Props {
 
 export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, onUseTemplate, onBack, onOpenCandidate, onRequestOpenSkill }: Props) {
   const { t } = useT("skills");
-  const catalog = useQuery(skillTemplateListOptions(workspaceId));
+  const draft = session.draft;
+  const isPicker = session.step === "picker" || !draft;
+  const catalog = useQuery({
+    ...skillTemplateListOptions(workspaceId, { poll: isPicker }),
+    enabled: !!workspaceId && isPicker,
+  });
   const skills = useQuery(skillListOptions(workspaceId));
   const [search, setSearch] = useState("");
   const [chosenSource, setChosenSource] = useState<"builtin" | "deployment" | null>(null);
+  const [confirmedPreview, setConfirmedPreview] = useState<{
+    name: string;
+    source: "builtin" | "deployment";
+    requestedName: string | null;
+  } | null>(null);
   const navigation = useNavigation();
   const presentSkill = useSkillPresentation();
-  const [mobilePreview, setMobilePreview] = useState(false);
+  const [mobilePreview, setMobilePreview] = useState<boolean | null>(null);
   const [filePath, setFilePath] = useState(SKILL_MD);
   const listPanel = useRef<HTMLDivElement>(null);
   const searchInput = useRef<HTMLInputElement>(null);
@@ -64,9 +74,21 @@ export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, 
   const deploymentGroup = filtered.filter(({ source }) => source === "deployment");
   const hasBuiltinTemplates = items.some(({ source }) => source === "builtin");
   const seed = items.find(({ template }) => template.name === session.previewName);
-  const sourceTab = chosenSource ?? seed?.source ?? (hasBuiltinTemplates ? "builtin" : "deployment");
+  const previewMissing = catalog.data !== undefined && confirmedPreview !== null
+    && confirmedPreview.requestedName === session.previewName
+    && !items.some(({ template }) => template.name === confirmedPreview.name);
+  // A named catalog entry opens its detail on narrow screens too. Once the
+  // user goes Back, refreshing that seed must not reopen the detail.
+  const showMobilePreview = mobilePreview ?? (!!seed || previewMissing);
+  const sourceTab = chosenSource ?? seed?.source ?? confirmedPreview?.source ?? (hasBuiltinTemplates ? "builtin" : "deployment");
   const visibleItems = sourceTab === "builtin" ? builtinGroup : deploymentGroup;
-  const selected = visibleItems.find(({ template }) => template.name === session.previewName) ?? visibleItems[0];
+  const selected = previewMissing ? undefined : visibleItems.find(({ template }) => template.name === session.previewName) ?? visibleItems[0];
+  // Remember the displayed identity so a refresh cannot silently adopt a
+  // different template. An invalid initial seed still uses the normal fallback.
+  if (isPicker && selected && (confirmedPreview?.name !== selected.template.name
+    || confirmedPreview.requestedName !== session.previewName)) {
+    setConfirmedPreview({ name: selected.template.name, source: selected.source, requestedName: session.previewName });
+  }
   const hasDeploymentTemplates = items.some(({ source }) => source === "deployment");
   const hasCatalogData = catalog.data !== undefined;
   const catalogLoading = !hasCatalogData && catalog.isPending;
@@ -128,10 +150,11 @@ export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, 
     </div>
   ) : null;
 
-  if (session.step === "picker" || !session.draft) {
+  if (isPicker) {
     const unavailable = catalogFailed || (!catalogLoading && templates.length === 0);
     return (
       <>
+        {previewMissing && <p role="alert" className="shrink-0 border-b px-5 py-3 text-body text-muted-foreground">{t(($) => $.create.template.preview_unavailable)}</p>}
         {hasCatalogData && (catalog.isError || catalog.isFetching) && (
           <div role={catalog.isError ? "alert" : "status"} className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b px-5 py-2 text-caption text-muted-foreground">
             <span>{catalog.isError ? t(($) => $.create.template.refresh_failed) : t(($) => $.create.template.refreshing)}</span>
@@ -158,7 +181,7 @@ export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, 
           </div>
         ) : (
           <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[250px_minmax(0,1fr)]">
-            <div ref={listPanel} className={cn("min-h-0 flex-col md:flex md:border-r", mobilePreview ? "hidden" : "flex")}>
+            <div ref={listPanel} className={cn("min-h-0 flex-col md:flex md:border-r", showMobilePreview ? "hidden" : "flex")}>
               <div className="relative shrink-0 p-3">
                 <Search className="pointer-events-none absolute left-5.5 top-5.5 size-4 text-muted-foreground" aria-hidden="true" />
                 <Input
@@ -174,7 +197,11 @@ export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, 
               </div>
               <Tabs
                 value={sourceTab}
-                onValueChange={(value) => { setChosenSource(value === "deployment" ? "deployment" : "builtin"); setMobilePreview(false); }}
+                onValueChange={(value) => {
+                  setChosenSource(value === "deployment" ? "deployment" : "builtin");
+                  setMobilePreview(false);
+                  if (value === "deployment") void catalog.refetch({ cancelRefetch: false });
+                }}
                 className="min-h-0 flex-1 gap-2"
               >
                 <TabsList className="mx-3 min-h-8 w-auto shrink-0 items-stretch self-stretch group-data-horizontal/tabs:h-auto">
@@ -216,7 +243,7 @@ export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, 
                 </TabsContent>
               </Tabs>
             </div>
-            <div className={cn("min-h-0 flex-col md:flex", mobilePreview ? "flex" : "hidden")}>
+            <div className={cn("min-h-0 flex-col md:flex", showMobilePreview ? "flex" : "hidden")}>
               <div className="shrink-0 px-4 pt-3 md:hidden">
                 <Button variant="ghost" size="sm" onClick={() => {
                   setMobilePreview(false);
@@ -293,7 +320,6 @@ export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, 
     );
   }
 
-  const draft = session.draft;
   const sourceName = items.find(({ template }) => template.name === draft.templateName)?.presentation.name ?? draft.templateName;
   const reservedNames = templates.map((template) => template.name);
   const nameError = !draft.name.trim() ? "name_required" : reservedNames.includes(draft.name.trim()) ? "reserved_name" : null;

@@ -184,20 +184,16 @@ export function SkillListToolbar({
 
   return (
     <div className={PAGE_TOOLBAR}>
-      {/* Left: name search + result count. The count only appears while
-          search/filters narrow the list — in the idle state it would just
-          duplicate the total already shown in the page header. Below md the
-          search (and its count) disappear entirely, following the issues
-          header's small-screen treatment. */}
-      <div className="flex min-w-0 items-center gap-2">
-        <div className="relative hidden md:block">
+      {/* Keep search available in narrow workspaces; only the secondary count hides. */}
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <div className="relative min-w-0 w-full max-w-64">
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            aria-label={t(($) => $.page.search_placeholder)}
-            placeholder={t(($) => $.page.search_placeholder)}
-            className="h-8 w-64 pl-8 text-body"
+            aria-label={t(($) => $.market.workspace_search)}
+            placeholder={t(($) => $.market.workspace_search)}
+            className="h-8 w-full min-w-0 pl-8 text-body"
           />
         </div>
         {(hasActiveFilters || search.trim().length > 0) && (

@@ -44,7 +44,7 @@ async function capture(page: Page, testInfo: TestInfo, name: string) {
     path: screenshotPath,
     contentType: "image/png",
   });
-  const textStyles = await page.evaluate((entryTitle) => {
+  const textStyles = await page.evaluate(() => {
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
     const context = canvas.getContext("2d", { willReadFrequently: true });
@@ -55,8 +55,8 @@ async function capture(page: Page, testInfo: TestInfo, name: string) {
       context.fillRect(0, 0, 1, 1);
       return Array.from(context.getImageData(0, 0, 1, 1).data);
     };
-    const entry = Array.from(document.querySelectorAll("section[aria-label]"))
-      .find((element) => element.getAttribute("aria-label") === entryTitle);
+    const entry = Array.from(document.querySelectorAll('[role="tabpanel"]'))
+      .find((element) => element.getClientRects().length > 0);
     const popup = document.querySelector('[role="dialog"]');
     const related = Array.from(popup?.querySelectorAll('ul > li > a[href*="/skills/"]') ?? []);
     const samples = new Set([
@@ -81,7 +81,7 @@ async function capture(page: Page, testInfo: TestInfo, name: string) {
             fontSize: style.fontSize, fontWeight: style.fontWeight, fontFamily: style.fontFamily, backgroundLayers };
         }),
     };
-  }, enSkills.template_entry.title);
+  });
   await testInfo.attach(`${name}-text-styles`, {
     body: Buffer.from(JSON.stringify(textStyles, null, 2)), contentType: "application/json",
   });
@@ -161,20 +161,19 @@ test("creates an edited independent skill after previewing and cancelling withou
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto(`/${slug}/skills`);
     await expect(page.locator("html")).toHaveClass(/\blight\b/);
-    const templateEntry = page.getByRole("region", { name: enSkills.template_entry.title, exact: true });
-    const browseTemplates = templateEntry.getByRole("button", { name: enSkills.template_entry.browse, exact: true });
-    await expect(templateEntry).toBeVisible();
-    await expect(templateEntry).toContainText(enSkills.template_entry.total_other.replace("{{count}}", "15"));
-    await expect(templateEntry).toContainText(enSkills.template_entry.builtin_count.replace("{{count}}", "15"));
-    await expect(templateEntry).toContainText(enSkills.template_entry.deployment_count.replace("{{count}}", "0"));
+    const marketTab = page.getByRole("tab", { name: enSkills.market.title, exact: true });
+    const workspaceTab = page.getByRole("tab", { name: enSkills.market.workspace, exact: true });
+    const marketSearch = page.getByRole("textbox", { name: enSkills.market.search, exact: true });
+    const previewTemplate = page.getByRole("button", { name: `Preview ${TEMPLATE_NAME}`, exact: true });
+    await expect(marketTab).toHaveAttribute("aria-selected", "true");
+    await expect(marketTab).toContainText("15");
+    await expect(page.getByRole("tab", { name: enSkills.market.source_builtin, exact: true })).toContainText("15");
+    await expect(page.getByRole("tab", { name: enSkills.market.source_deployment, exact: true })).toContainText("0");
+    await expect(page.getByText(enSkills.market.deployment_empty, { exact: true })).toBeVisible();
+    await expect(previewTemplate).toBeVisible();
     await expect(page.locator("header").getByText("15", { exact: true })).toHaveCount(0);
-    await expect(templateEntry.getByRole("button")).toHaveCount(1);
-    await expect(templateEntry.getByRole("listitem")).toHaveCount(0);
-    const desktopEntryBounds = await templateEntry.boundingBox();
-    expect(desktopEntryBounds).not.toBeNull();
-    expect(desktopEntryBounds!.height).toBeLessThanOrEqual(64);
     await expectNoHorizontalOverflow(page);
-    await capture(page, testInfo, "desktop-template-entry");
+    await capture(page, testInfo, "desktop-skill-market");
     const newSkill = page.getByRole("button", { name: "New skill", exact: true }).first();
     await newSkill.click();
     const dialog = page.getByRole("dialog");
@@ -271,17 +270,14 @@ test("creates an edited independent skill after previewing and cancelling withou
     expect(await api.requestJSON("/api/skills")).toEqual([]);
     expect(browserSkillWrites).toEqual([]);
     await expect(page.getByPlaceholder(enSkills.page.search_placeholder)).toBeHidden();
-    const smallEntryBounds = await templateEntry.boundingBox();
-    expect(smallEntryBounds).not.toBeNull();
-    expect(smallEntryBounds!.height).toBeLessThanOrEqual(112);
+    await expect(marketTab).toHaveAttribute("aria-selected", "true");
+    await expectInViewport(page, marketSearch);
     await expectNoHorizontalOverflow(page);
-    await capture(page, testInfo, "small-template-entry");
+    await capture(page, testInfo, "small-skill-market");
     await page.setViewportSize({ width: 360, height: 800 });
-    const narrowEntryBounds = await templateEntry.boundingBox();
-    expect(narrowEntryBounds).not.toBeNull();
-    expect(narrowEntryBounds!.height).toBeLessThanOrEqual(112);
+    await expectInViewport(page, marketSearch);
     await expectNoHorizontalOverflow(page);
-    await capture(page, testInfo, "narrow-template-entry");
+    await capture(page, testInfo, "narrow-skill-market");
 
     // A workspace-owned skill with the canonical template name must never be
     // used as, or overwritten by, the built-in source. This row is disposable.
@@ -299,16 +295,17 @@ test("creates an edited independent skill after previewing and cancelling withou
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.reload();
     await expect(page.locator("header").getByText("1", { exact: true })).toBeVisible();
-    await browseTemplates.focus();
+    await expect(marketTab).toHaveAttribute("aria-selected", "true");
+    await previewTemplate.focus();
     await page.keyboard.press("Enter");
-    await expect(templateSearch).toBeFocused();
+    await expect(templateRow).toHaveAttribute("aria-pressed", "true");
+    await expect(dialog.getByText(enSkills.builtin_role_skills[TEMPLATE_NAME].description, { exact: true })).toBeVisible();
     await expect(dialog.getByRole("heading", { name: enSkills.create.template.preview_label, exact: true })).toBeVisible();
-    await capture(page, testInfo, "desktop-template-list");
+    await capture(page, testInfo, "desktop-direct-template-preview");
     await page.keyboard.press("Escape");
     await expect(dialog).toHaveCount(0);
-    await expect(browseTemplates).toBeFocused();
+    await expect(previewTemplate).toBeFocused();
     await page.keyboard.press("Enter");
-    await dialog.getByRole("button", { name: new RegExp(`^${TEMPLATE_NAME}\\b`) }).click();
     await expect(dialog).toContainText(TEMPLATE_HEADING);
     await expect(dialog.getByText(enSkills.create.template.related_none, { exact: true })).toBeVisible();
     const finalInstruction = dialog.getByRole("heading", { name: "交付与边界", exact: true });
@@ -380,8 +377,12 @@ test("creates an edited independent skill after previewing and cancelling withou
     const createResponse = await createResponsePromise;
     expect(createResponse.status()).toBe(201);
     const created: SkillSnapshot = await createResponse.json();
-    await expect(page).toHaveURL(new RegExp(`/${slug}/skills/${created.id}$`), { timeout: 30_000 });
     await expect(dialog).toHaveCount(0);
+    await expect(page).toHaveURL(new RegExp(`/${slug}/skills$`));
+    await expect(marketTab).toHaveAttribute("aria-selected", "true");
+    const createdLink = page.getByRole("article").filter({ has: previewTemplate })
+      .getByRole("link", { name: enSkills.market.open_created, exact: true });
+    await expect(createdLink).toHaveAttribute("href", `/${slug}/skills/${created.id}`);
     expect(browserSkillWrites).toEqual([{ method: "POST", path: "/api/skills" }]);
     const saved = await api.requestJSON<SkillSnapshot>(`/api/skills/${created.id}`);
     expect(saved.id).not.toBe(existing.id);
@@ -409,6 +410,8 @@ test("creates an edited independent skill after previewing and cancelling withou
     expect(JSON.stringify(await api.requestJSON("/api/skills/templates"))).toBe(catalogBefore);
     expect(await api.requestJSON(`/api/workspaces/${workspace.id}/members`)).toEqual(membersBefore);
     expect(await api.requestJSON("/api/agents")).toEqual(agentsBefore);
+    await createdLink.click();
+    await expect(page).toHaveURL(new RegExp(`/${slug}/skills/${created.id}$`), { timeout: 30_000 });
     await capture(page, testInfo, "small-created-detail");
     await page.setViewportSize({ width: 1280, height: 720 });
     await capture(page, testInfo, "desktop-created-detail");
@@ -428,11 +431,14 @@ test("creates an edited independent skill after previewing and cancelling withou
     await page.goto(`/${slug}/skills`);
     await expect(page.locator("html")).toHaveClass(/\bdark\b/);
     await expect(page.locator("header").getByText("3", { exact: true })).toBeVisible();
-    await expect(templateEntry).toContainText(enSkills.template_entry.total_other.replace("{{count}}", "15"));
+    await expect(marketTab).toContainText("15");
+    await workspaceTab.click();
+    await expect(page.getByRole("region", { name: enSkills.market.source_deployment, exact: true }))
+      .toContainText(enSkills.market.deployment_empty);
     await expectNoHorizontalOverflow(page);
     await capture(page, testInfo, "dark-workspace-skills");
-    await browseTemplates.click();
-    await dialog.getByRole("button", { name: new RegExp(`^${TEMPLATE_NAME}\\b`) }).click();
+    await marketTab.click();
+    await previewTemplate.click();
     await expect(dialog.getByRole("link", { name: copyName, exact: true })).toBeVisible();
     await expect(dialog.getByRole("link", { name: related.name, exact: true })).toBeVisible();
     await expect(dialog.getByText(enSkills.create.template.related_count_other.replace("{{count}}", "2"), { exact: true })).toBeVisible();
@@ -484,7 +490,8 @@ test("creates an edited independent skill after previewing and cancelling withou
       sourceVersion: source!.version,
       preservedWorkspaceSkillId: existing.id,
       templateCounts: { total: 15, builtin: 15, deployment: 0 },
-      entryHeights: { desktop: desktopEntryBounds!.height, small: smallEntryBounds!.height, narrow: narrowEntryBounds!.height },
+      marketCreationRetainedBrowsingContext: true,
+      createdSkillOpenedThroughCardLink: true,
       previewSkillCount: 0,
       cancelledSkillCount: 0,
       createdSkillCount: 1,

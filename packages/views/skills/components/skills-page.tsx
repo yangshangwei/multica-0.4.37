@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 import {
   AlertCircle,
   AlertTriangle,
@@ -74,7 +75,7 @@ import { useSkillPresentation } from "../hooks/use-skill-presentation";
 import type { SkillPresentation } from "../lib/skill-presentation";
 import { originSourceUrl, readOrigin, type OriginInfo } from "../lib/origin";
 import { CreateSkillDialog, type SkillCreateEntry } from "./create-skill-dialog";
-import { SkillTemplateEntry } from "./skill-template-entry";
+import { SkillLibraryCatalog } from "./skill-library-catalog";
 import {
   useSkillsViewStore,
   DEFAULT_HIDDEN_COLUMNS,
@@ -724,11 +725,12 @@ export default function SkillsPage() {
   const currentUserId = useAuthStore((s) => s.user?.id ?? null);
 
   const {
-    data: skills = [],
+    data: skillData,
     isLoading,
     error: listError,
     refetch: refetchList,
   } = useQuery(skillListOptions(wsId));
+  const skills = useMemo(() => skillData ?? [], [skillData]);
   const { data: agents = [], error: agentsError } = useQuery(
     agentListOptions(wsId),
   );
@@ -740,7 +742,7 @@ export default function SkillsPage() {
   );
 
   const createButtonRef = useRef<HTMLButtonElement>(null);
-  const browseButtonRef = useRef<HTMLButtonElement>(null);
+  const templateButtonRef = useRef<HTMLButtonElement>(null);
   const emptyCreateButtonRef = useRef<HTMLButtonElement>(null);
   const [creation, setCreation] = useState<{
     entry?: SkillCreateEntry;
@@ -934,6 +936,15 @@ export default function SkillsPage() {
     navigation.push(paths.skillDetail(skill.id));
   };
 
+  const handleTemplateCreated = (skill: Skill) => {
+    toast.success(t(($) => $.create.template.created), {
+      action: {
+        label: t(($) => $.market.open_created),
+        onClick: () => navigation.push(paths.skillDetail(skill.id)),
+      },
+    });
+  };
+
   const selectedRows = rows.filter((row) => selectedIds.has(row.skill.id));
   const allSelected = rows.length > 0 && selectedRows.length === rows.length;
   const someSelected = selectedRows.length > 0 && !allSelected;
@@ -970,43 +981,41 @@ export default function SkillsPage() {
 
   return (
     <>
-    {listError ? (
-      <div className="flex flex-1 min-h-0 flex-col">
-        <PageHeaderBar totalCount={skills.length} buttonRef={createButtonRef} onCreate={() => setCreation({ triggerRef: createButtonRef })} />
-        <SkillTemplateEntry workspaceId={wsId} buttonRef={browseButtonRef} onBrowse={() => setCreation({ entry: { kind: "templates" }, triggerRef: browseButtonRef })} />
-        <CollectionPageState
-          role="alert"
-          tone="destructive"
-          icon={AlertCircle}
-          title={t(($) => $.page.list_error.title)}
-          description={
-            listError instanceof Error
-              ? listError.message
-              : t(($) => $.page.list_error.fallback)
-          }
-          actions={
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => refetchList()}
-            >
-              {t(($) => $.page.list_error.retry)}
-            </Button>
-          }
-        />
-      </div>
-    ) : (
-    // relative: positioning anchor for the batch toolbar (page-centered,
-    // not viewport-centered).
     <div className="relative flex flex-1 min-h-0 flex-col">
       <PageHeaderBar
         totalCount={totalCount}
         buttonRef={createButtonRef}
         onCreate={() => setCreation({ triggerRef: createButtonRef })}
       />
-      <SkillTemplateEntry workspaceId={wsId} buttonRef={browseButtonRef} onBrowse={() => setCreation({ entry: { kind: "templates" }, triggerRef: browseButtonRef })} />
-
+      <SkillLibraryCatalog
+        key={wsId}
+        workspaceId={wsId}
+        skills={skillData}
+        skillsError={!!listError}
+        onPreview={(templateName, trigger) => {
+          templateButtonRef.current = trigger;
+          setCreation({ entry: { kind: "templates", templateName }, triggerRef: templateButtonRef });
+        }}
+        onCreate={(trigger) => {
+          templateButtonRef.current = trigger;
+          setCreation({ triggerRef: templateButtonRef });
+        }}
+      >
+      {listError ? (
+        <CollectionPageState
+          role="alert"
+          tone="destructive"
+          icon={AlertCircle}
+          title={t(($) => $.page.list_error.title)}
+          description={listError instanceof Error ? listError.message : t(($) => $.page.list_error.fallback)}
+          actions={
+            <Button type="button" variant="outline" size="sm" onClick={() => refetchList()}>
+              {t(($) => $.page.list_error.retry)}
+            </Button>
+          }
+        />
+      ) : (
+        <>
       {supportingQueryDown && (
         <div
           role="status"
@@ -1183,16 +1192,21 @@ export default function SkillsPage() {
         onClear={() => setSelectedIds(new Set())}
       />
 
+        </>
+      )}
+      </SkillLibraryCatalog>
     </div>
-    )}
       {creation && (
         <CreateSkillDialog
           key={wsId}
           initialEntry={creation.entry}
           initialPresentation={creation.category ? { category: creation.category } : undefined}
-          finalFocus={() => creation.triggerRef.current ?? createButtonRef.current}
+          finalFocus={() => creation.triggerRef.current?.isConnected
+            ? creation.triggerRef.current
+            : createButtonRef.current}
           onClose={() => setCreation(null)}
           onCreated={handleCreated}
+          onTemplateCreated={creation.entry?.kind === "templates" ? handleTemplateCreated : undefined}
         />
       )}
     </>

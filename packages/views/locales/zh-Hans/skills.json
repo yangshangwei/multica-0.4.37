@@ -453,7 +453,8 @@
       "related_count_other": "工作区已有 {{count}} 个相关 skill",
       "related_loading": "正在加载相关 skill...",
       "related_load_failed": "无法加载相关 skill。",
-      "related_refresh_failed": "相关 skill 未能刷新，当前显示上次加载的结果。"
+      "related_refresh_failed": "相关 skill 未能刷新，当前显示上次加载的结果。",
+      "preview_unavailable": "这个模板已不可用，请选择其他模板。"
     }
   },
   "runtime_import": {
@@ -559,6 +560,41 @@
     "icon_pick": "选择图标",
     "used_by_count_other": "{{count}} 个智能体",
     "used_by_none": "未使用"
+  },
+  "market": {
+    "title": "skill 市场",
+    "workspace": "工作区 skills",
+    "views_label": "技能库视图",
+    "sources_label": "模板来源",
+    "source_all": "全部",
+    "source_deployment": "本部署提供",
+    "source_builtin": "平台内置",
+    "template_count_other": "{{count}} 个模板",
+    "result_count_other": "找到 {{count}} 个模板",
+    "start_title": "从一个现成的模板开始",
+    "browse_title": "为下一项任务挑选模板",
+    "description": "在工作区创建独立副本，可自由修改，不会自动跟随模板更新。",
+    "search": "搜索市场模板",
+    "search_placeholder": "搜索市场中的模板...",
+    "workspace_search": "搜索工作区 skill...",
+    "preview": "预览并添加",
+    "preview_label": "预览 {{name}}",
+    "browse_all": "浏览全部模板",
+    "browse_builtin": "浏览平台模板",
+    "collapse": "收起模板",
+    "expand": "展开模板",
+    "related_none": "工作区暂无关联 skill",
+    "related_count_other": "工作区已有 {{count}} 个",
+    "view_related": "查看 skills",
+    "open_created": "查看 skill",
+    "workspace_unknown": "暂时无法获取工作区 skill 状态",
+    "deployment_empty": "本部署暂未提供共享模板。",
+    "builtin_empty": "暂无平台模板。",
+    "empty_title": "暂无可用模板",
+    "empty_description": "通过\"新建 skill\"从头创建，或导入已有内容。",
+    "search_empty": "没有与\"{{query}}\"匹配的模板。",
+    "filter_empty": "没有符合当前筛选条件的模板。",
+    "clear_filters": "清除筛选"
   },
   "template_entry": {
     "title": "Skill 模板",

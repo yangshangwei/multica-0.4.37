@@ -654,12 +654,15 @@ export type SkillCreateEntry =
 export function CreateSkillDialog({
   onClose,
   onCreated,
+  onTemplateCreated,
   initialEntry,
   initialPresentation,
   finalFocus,
 }: {
   onClose: () => void;
   onCreated?: (skill: Skill) => void;
+  /** Catalog creation can stay in context; explicitly opened recovery results still navigate. */
+  onTemplateCreated?: (skill: Skill) => void;
   initialEntry?: SkillCreateEntry;
   /** Resolve the live opening control after an intentional dismissal. */
   finalFocus?: () => HTMLElement | null;
@@ -694,6 +697,12 @@ export function CreateSkillDialog({
   };
 
   const templateSession = useTemplateSkillSession(wsId, (skill, newlyCreated) => {
+    if (newlyCreated && onTemplateCreated) {
+      closed.current = true;
+      onTemplateCreated(skill);
+      onClose();
+      return;
+    }
     if (newlyCreated) toast.success(t(($) => $.create.template.created));
     handleCreated(skill);
   });

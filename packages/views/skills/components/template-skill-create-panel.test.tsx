@@ -187,6 +187,80 @@ describe("TemplateSkillCreatePanel source tabs", () => {
     expect(screen.queryByText(enSkills.create.template.group_deployment_info)).not.toBeInTheDocument();
   });
 
+  it("discovers a newly mounted template when switching to the empty deployment source", async () => {
+    mocks.listSkillTemplates.mockResolvedValue([builtinTemplate()]);
+    renderDialog("en", true);
+    await screen.findByRole("button", { name: new RegExp(`^${BUILTIN_NAME}`) });
+    expect(deploymentTab()).toHaveAccessibleName(/Provided by this deployment\s*0/);
+
+    mocks.listSkillTemplates.mockResolvedValue([builtinTemplate(), mountedTemplate()]);
+    fireEvent.click(deploymentTab());
+
+    expect(await screen.findByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) })).toHaveAttribute("aria-pressed", "true");
+    expect(deploymentTab()).toHaveAccessibleName(/Provided by this deployment\s*1/);
+    expect(screen.getByRole("button", { name: "Use this template" })).toBeEnabled();
+    expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(2);
+    expect(mocks.createSkill).not.toHaveBeenCalled();
+  });
+
+  it("keeps an in-flight catalog scan when switching to deployment templates", async () => {
+    mocks.listSkillTemplates.mockResolvedValue([builtinTemplate()]);
+    const client = renderDialog("en", true);
+    await screen.findByRole("button", { name: new RegExp(`^${BUILTIN_NAME}`) });
+    let resolve!: (templates: SkillTemplate[]) => void;
+    mocks.listSkillTemplates.mockReturnValueOnce(new Promise<SkillTemplate[]>((done) => { resolve = done; }));
+    let refreshed!: Promise<void>;
+    await act(async () => {
+      refreshed = client.invalidateQueries({ queryKey: workspaceKeys.skillTemplates("ws-1") });
+    });
+    const signal: AbortSignal = mocks.listSkillTemplates.mock.calls.at(-1)?.[1];
+    fireEvent.click(deploymentTab());
+    expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(2);
+    expect(signal.aborted).toBe(false);
+    await act(async () => {
+      resolve([builtinTemplate(), mountedTemplate()]);
+      await refreshed;
+    });
+    expect(await screen.findByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) })).toBeInTheDocument();
+  });
+
+  it("polls while browsing, pauses for editing and refreshes immediately on returning to the picker", async () => {
+    vi.useFakeTimers();
+    let client: QueryClient | undefined;
+    try {
+      mocks.listSkillTemplates.mockResolvedValue([mountedTemplate()]);
+      client = renderDialog("en", true, MOUNTED_NAME, [mountedTemplate()]);
+      await act(async () => { await vi.advanceTimersByTimeAsync(1); });
+      expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(1);
+
+      const added = { ...mountedTemplate(), name: "team-review-policy" };
+      mocks.listSkillTemplates.mockResolvedValue([mountedTemplate(), added]);
+      await act(async () => { await vi.advanceTimersByTimeAsync(30_000); });
+      expect(screen.getByRole("button", { name: /^team-review-policy/ })).toBeInTheDocument();
+      expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(2);
+
+      fireEvent.click(screen.getByRole("button", { name: "Use this template" }));
+      fireEvent.change(screen.getByRole("textbox", { name: "Description" }), { target: { value: "My local description" } });
+      const updated = { ...mountedTemplate(), description: "Updated on the server" };
+      mocks.listSkillTemplates.mockResolvedValue([updated, added]);
+      await act(async () => { await vi.advanceTimersByTimeAsync(60_000); });
+      expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(2);
+      expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("My local description");
+
+      fireEvent.click(screen.getByRole("button", { name: "Choose another template" }));
+      await act(async () => { await vi.advanceTimersByTimeAsync(1); });
+      expect(mocks.listSkillTemplates).toHaveBeenCalledTimes(3);
+      expect(screen.getByRole("button", { name: new RegExp(`^${MOUNTED_NAME}`) })).toHaveTextContent(updated.description);
+      fireEvent.click(screen.getByRole("button", { name: "Use this template" }));
+      expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("My local description");
+      expect(mocks.createSkill).not.toHaveBeenCalled();
+    } finally {
+      cleanup();
+      client?.clear();
+      vi.useRealTimers();
+    }
+  });
+
   it("keeps search filtering live per tab and preserves selection", async () => {
     mocks.listSkillTemplates.mockResolvedValue([builtinTemplate(), mountedTemplate()]);
     renderDialog();
@@ -249,7 +323,7 @@ describe("TemplateSkillCreatePanel discovery states", () => {
     renderDialog();
     await openTemplates();
     fireEvent.click(deploymentTab());
-    expect(screen.getByRole("button", { name: "Use this template" })).toBeDisabled();
+    await waitFor(() => expect(screen.getByRole("button", { name: "Use this template" })).toBeDisabled());
     expect(screen.queryByText(/# Review/)).not.toBeInTheDocument();
     fireEvent.click(builtinTab());
     fireEvent.change(screen.getByRole("textbox", { name: enSkills.create.template.search_placeholder }), { target: { value: "no-such-template" } });
@@ -360,6 +434,41 @@ describe("TemplateSkillCreatePanel catalog lifecycle", () => {
     renderDialog("en", true, "missing-template");
     expect(await screen.findByRole("button", { name: new RegExp(`^${BUILTIN_NAME}`) })).toHaveAttribute("aria-pressed", "true");
     expect(builtinTab()).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("requires another explicit selection when the previewed template disappears", async () => {
+    const replacement = { ...mountedTemplate(), name: "team-review-policy" };
+    mocks.listSkillTemplates.mockResolvedValue([builtinTemplate(), mountedTemplate(), replacement]);
+    const client = renderDialog("en", true, MOUNTED_NAME);
+    expect(await screen.findByRole("heading", { name: MOUNTED_NAME })).toBeInTheDocument();
+
+    mocks.listSkillTemplates.mockResolvedValue([builtinTemplate(), replacement]);
+    await act(async () => { await client.invalidateQueries({ queryKey: workspaceKeys.skillTemplates("ws-1") }); });
+
+    await waitFor(() => expect(screen.getByRole("button", { name: "Use this template" })).toBeDisabled());
+    expect(screen.getByRole("alert")).toHaveTextContent("This template is no longer available. Choose another template.");
+    expect(deploymentTab()).toHaveAttribute("aria-selected", "true");
+    expect(screen.queryByRole("heading", { name: replacement.name })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: new RegExp(`^${replacement.name}`) }));
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Use this template" })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "Use this template" }));
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(`${replacement.name}-copy`);
+  });
+
+  it("keeps an adopted draft editable when its source disappears from the catalog", async () => {
+    mocks.listSkillTemplates.mockResolvedValue([mountedTemplate()]);
+    const client = renderDialog("en", true, MOUNTED_NAME);
+    await screen.findByRole("heading", { name: MOUNTED_NAME });
+    fireEvent.click(screen.getByRole("button", { name: "Use this template" }));
+    fireEvent.change(screen.getByRole("textbox", { name: "Description" }), { target: { value: "My local description" } });
+
+    await act(async () => { client.setQueryData(workspaceKeys.skillTemplates("ws-1"), []); });
+
+    expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("My local description");
+    expect(screen.getByRole("button", { name: "Create skill" })).toBeEnabled();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   it("distinguishes cold loading, successful empty data and a cached-empty refresh failure", async () => {
