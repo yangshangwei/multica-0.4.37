@@ -61,10 +61,11 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
     await expect(page.getByRole("menuitem", { name: "Archive", exact: true })).toBeVisible();
     await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/squads$`));
     await page.keyboard.press("Escape");
+    await expect(page.getByRole("menu")).toHaveCount(0);
 
-    await workspaceTab.focus();
-    await page.keyboard.press("ArrowRight");
-    await page.keyboard.press("Enter");
+    await workspaceTab.press("ArrowRight");
+    await expect(templateTab).toBeFocused();
+    await templateTab.press("Enter");
     await expect(templateTab).toHaveAttribute("aria-selected", "true");
     await expect(page).toHaveURL(/\?view=templates$/);
     await page.reload();
