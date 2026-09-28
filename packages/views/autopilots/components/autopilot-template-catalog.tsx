@@ -35,6 +35,14 @@ import { useDescribeSchedule } from "./schedule-editor/describe";
 const GROUPS = ["all", "maintenance", "collaboration", "reporting"] as const;
 type TemplateGroup = (typeof GROUPS)[number];
 
+// Reuse the skill library's category palette and light/dark theme tokens.
+const GROUP_ICON_TONES: Record<TemplateGroup, string> = {
+  all: "bg-skill-other/12 text-skill-other",
+  maintenance: "bg-skill-operations/12 text-skill-operations",
+  collaboration: "bg-skill-engineering/12 text-skill-engineering",
+  reporting: "bg-skill-data/12 text-skill-data",
+};
+
 // Display groups are intentionally independent of the server's categories.
 // Unrecognized templates stay available in All, in the server's original order.
 const PRESENTATION: Record<string, { group: TemplateGroup; icon: LucideIcon } | undefined> = {
@@ -170,7 +178,8 @@ export function AutopilotTemplateCatalog({
             </div>
             <ul className="grid gap-4 @xl:grid-cols-2 @4xl:grid-cols-3">
               {visibleTemplates.map((template) => {
-                const Icon = PRESENTATION[template.key]?.icon ?? Zap;
+                const presentation = PRESENTATION[template.key];
+                const Icon = presentation?.icon ?? Zap;
                 const output = template.execution_mode === "create_issue"
                   ? t(($) => $.catalog.creates_task)
                   : template.execution_mode === "run_only"
@@ -192,8 +201,16 @@ export function AutopilotTemplateCatalog({
                       }}
                       className="flex w-full min-w-0 flex-col rounded-lg border border-surface-border bg-surface p-5 text-left transition-colors hover:border-muted-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none"
                     >
-                      <span className="flex items-start gap-2.5 text-title-sm font-semibold">
-                        <Icon className="mt-1 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                      <span className="flex items-center gap-3 text-title-sm font-semibold">
+                        <span
+                          aria-hidden="true"
+                          className={cn(
+                            "inline-flex size-10 shrink-0 items-center justify-center rounded-lg",
+                            GROUP_ICON_TONES[presentation?.group ?? "all"],
+                          )}
+                        >
+                          <Icon className="size-5" />
+                        </span>
                         <span className="min-w-0 break-words">{template.title}</span>
                       </span>
                       <span className="mt-3 line-clamp-2 text-body text-muted-foreground">{template.description}</span>
