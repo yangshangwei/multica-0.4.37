@@ -28,6 +28,24 @@ content. Other agents, custom descriptions/titles, instructions, kickoff rows,
 issue assignments and task snapshots are untouched. Replay does not change
 content or timestamps already migrated.
 
+Migration `458_builtin_onboarding_display_name` handles the product-authored
+welcome that 457 deliberately left behind. Only built-ins already named
+`小阿孚` qualify, and only when the session still consists of exactly one
+unconsumed `onboarding_opening` and its paired `onboarding_kickoff`, with no
+task history. Match the complete shipped English/Chinese opening and its quoted
+kickoff block, then change the self-introduction in both together. Preserve
+workspace/profile text, message IDs, timestamps and all real conversation
+history. Lock the session before rechecking eligibility, using the same lock as
+the first-send path. Replay and down must not undo later member work.
+
+Source verification alone does not prove a rename has reached a running client.
+Check the actual desktop API URL, the responding backend commit and that
+database's migration ledger; then reload the client and verify the saved name,
+description, chat preview and opening. A client can load new local labels while
+still using a pre-rename backend. When multiple local environment records point
+at one checkout, select the environment by the desktop's proven API/DB identity,
+not the first registry entry matching the directory.
+
 Active **and archived** agents own their workspace names. A collision skips that
 builtin and reports its agent/workspace IDs while other workspaces proceed.
 The migration CLI must retain its `OnNotice` handler so PostgreSQL notices
