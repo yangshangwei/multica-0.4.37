@@ -33,6 +33,10 @@ LOCK_DIR="$DEV_HOME/lock.d"
 DEV_WORKSPACES_PARENT="${MULTICA_DEV_WORKSPACES_PARENT:-$HOME}"
 DEV_DESKTOP_APP_DATA="${MULTICA_DEV_DESKTOP_APP_DATA:-}"
 DEV_PROFILES_HOME="${MULTICA_DEV_PROFILES_HOME:-$HOME/.multica/profiles}"
+# Normalize directory separators before deriving the CLI's parent config root.
+while [ "$DEV_PROFILES_HOME" != / ] && [ "${DEV_PROFILES_HOME%/}" != "$DEV_PROFILES_HOME" ]; do
+  DEV_PROFILES_HOME="${DEV_PROFILES_HOME%/}"
+done
 
 DEV_EMAIL="${MULTICA_DEV_EMAIL:-dev@localhost}"
 DEV_CODE_DEFAULT=888888
@@ -60,6 +64,16 @@ CLEAN_ENV=(env
   -u MULTICA_TASK_ID -u MULTICA_TASK_SLOT
   -u MULTICA_TASK_CONFIG_ROOT -u MULTICA_TASK_WORKSPACES_ROOT
   -u MULTICA_WORKSPACES_ROOT)
+
+# CLI invocations must resolve profiles under this environment's isolated
+# DEV_PROFILES_HOME, never the operator's ~/.multica/profiles. The CLI itself
+# only honors MULTICA_TASK_CONFIG_ROOT (server/internal/cli multicaConfigRoot),
+# which maps <root>/profiles/<name> exactly like the home layout, so pointing
+# it at DEV_PROFILES_HOME/.. reproduces the same paths. Without this, a status
+# probe for a profile that only exists in the isolated home is answered with
+# unknown_profile from the real one — and a start/stop would touch the real
+# home's profile state.
+TASK_LOCAL_ENV=(MULTICA_TASK_CONFIG_ROOT="${DEV_PROFILES_HOME%/*}")
 
 # ---------------------------------------------------------------- output ----
 
@@ -934,10 +948,10 @@ start_daemon() {
     -ldflags "-X main.version=$(checkout_cli_version) -X main.commit=$(checkout_commit) -X main.date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
     -o bin/multica ./cmd/multica) || die "Failed to build the multica CLI."
 
-  "${CLEAN_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
+  "${CLEAN_ENV[@]}" "${TASK_LOCAL_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
     "$MULTICA_BIN" daemon start --profile "$PROFILE" 2>&1 | sed 's/^/    /' || true
 
-  status="$("${CLEAN_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
+  status="$("${CLEAN_ENV[@]}" "${TASK_LOCAL_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
     "$MULTICA_BIN" daemon status --profile "$PROFILE" --output json 2>/dev/null || true)"
   state="$(json_field "$status" status || echo unknown)"
   # `daemon status` reports "stopped" plus port_conflict when the daemon
@@ -1023,11 +1037,11 @@ stop_component() {
   case "$name" in
     daemon)
       if [ -x "$MULTICA_BIN" ]; then
-        if "${CLEAN_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
+        if "${CLEAN_ENV[@]}" "${TASK_LOCAL_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
           "$MULTICA_BIN" daemon stop --profile "$PROFILE" >/dev/null 2>&1; then
           ok "daemon stopped"
         else
-          status="$("${CLEAN_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
+          status="$("${CLEAN_ENV[@]}" "${TASK_LOCAL_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
             "$MULTICA_BIN" daemon status --profile "$PROFILE" --output json 2>/dev/null || true)"
           state="$(json_field "$status" status || echo stopped)"
           if [ "$state" = running ]; then
@@ -1139,7 +1153,7 @@ component_state() {
     daemon)
       local status state
       if [ -x "$MULTICA_BIN" ]; then
-        status="$("${CLEAN_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
+        status="$("${CLEAN_ENV[@]}" "${TASK_LOCAL_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" \
           "$MULTICA_BIN" daemon status --profile "$PROFILE" --output json 2>/dev/null || true)"
         state="$(json_field "$status" status || echo stopped)"
         printf '%s|%s|pid %s' "$state" "$PROFILE" "$(json_field "$status" pid || echo '-')"
@@ -1679,6 +1693,8 @@ cmd_exec() {
   export PORT="$BACKEND_PORT" FRONTEND_PORT DATABASE_URL POSTGRES_DB="$DB_NAME"
   export TMPDIR="$DEV_TMPDIR" TMP="$DEV_TMPDIR" TEMP="$DEV_TMPDIR"
   export MULTICA_DEV_PROFILE="$PROFILE"
+  # Arbitrary commands, not just the CLI: strip the task identity outright
+  # instead of redirecting it at this environment's profile root.
   exec "${CLEAN_ENV[@]}" MULTICA_WORKSPACES_ROOT="$WORKSPACES_ROOT" "$@"
 }
 

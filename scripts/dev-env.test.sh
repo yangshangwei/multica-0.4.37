@@ -138,6 +138,39 @@ node -e '
   }
 ' "$out" || fail "status --json is not machine-readable"
 
+# Daemon probes must find the same isolated profile whether its directory is
+# written with trailing slashes or without them. The fake CLI uses the real
+# CLI's task-root/profile layout and never reads the operator's configuration.
+profile_probe_home="$tmp_dir/profile probe/profiles"
+mkdir -p "$profile_probe_home/profile-probe"
+printf 'isolated profile\n' > "$profile_probe_home/profile-probe/config.json"
+profile_probe_cli="$tmp_dir/profile-probe-cli"
+cat > "$profile_probe_cli" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+[ "$1 $2 $3" = 'daemon status --profile' ]
+config="${MULTICA_TASK_CONFIG_ROOT:?}/profiles/$4/config.json"
+if [ ! -f "$config" ]; then
+  printf '{"status":"unknown_profile"}\n'
+  exit 1
+fi
+[ "$(cat "$config")" = 'isolated profile' ]
+printf '{"status":"running","pid":123}\n'
+EOF
+chmod +x "$profile_probe_cli"
+for profile_suffix in '' / ///; do
+  probe_state="$(MULTICA_DEV_PROFILES_HOME="$profile_probe_home$profile_suffix" \
+    MULTICA_TASK_CONFIG_ROOT=/task/config bash -c '
+      source "$1"
+      MULTICA_BIN=$2
+      PROFILE=profile-probe
+      WORKSPACES_ROOT=$3
+      component_state daemon
+    ' _ "$root_dir/scripts/dev-env.sh" "$profile_probe_cli" "$tmp_dir/workspaces")"
+  [ "$probe_state" = 'running|profile-probe|pid 123' ] \
+    || fail "daemon could not find isolated profile with suffix '$profile_suffix': $probe_state"
+done
+
 # ---------------------------------------------------------------------------
 # Stopping an environment that is not running is a no-op that SUCCEEDS.
 #
