@@ -1021,3 +1021,38 @@ Backported CLI skill labels, revision-safe CLI comment editing, and accurate cac
 ### Next Steps
 
 - B1 is merged into local main. No remote push, release tag or deployment was authorized.
+
+
+## Session 33: Complete 小阿孚 display-name rollout
+
+**Date**: 2026-09-28
+**Task**: Complete 小阿孚 display-name rollout
+**Branch**: `codex/rename-mika-xiaoafu`
+
+### Summary
+
+Verified bilingual defaults and guarded stored-content migration, fixed migration NOTICE logging, and archived the isolated rename task for parent integration.
+
+### Main Changes
+
+- Unify the default assistant name and shared onboarding copy while retaining system_key=mika and all UUID relationships.
+- Preserve customized content and history; skip active, archived and concurrent name conflicts with visible migration logs.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0e1303881` | (see git log) |
+| `51ddb2104` | (see git log) |
+
+### Testing
+
+- [OK] 30 TS tests passed; scoped handler/service/migration/CLI PostgreSQL race tests passed; 15 uncached nonmobile lint/typecheck tasks passed; Go vet and static checks passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Parent agent integrates codex/rename-mika-xiaoafu and completes the original-checkout acceptance checkbox; no push or deployment authorized here.

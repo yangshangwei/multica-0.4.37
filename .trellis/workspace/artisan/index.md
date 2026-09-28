@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 32
-- **Last Active**: 2026-09-27
+- **Total Sessions**: 33
+- **Last Active**: 2026-09-28
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1023 | Active |
+| `journal-1.md` | ~1058 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 33 | 2026-09-28 | Complete 小阿孚 display-name rollout | `0e1303881`, `51ddb2104` | `codex/rename-mika-xiaoafu` |
 | 32 | 2026-09-27 | Upstream B1 backports: verification and local integration | `e2c2865a2`, `0edab269d`, `67d97e612` | `sync/upstream-b1` |
 | 31 | 2026-09-27 | 仅保留简体中文和英文：实现、验收与归档 | `372576209` | `main` |
 | 30 | 2026-09-27 | Skill 模板入口实现与功能验收 | `4217c383b`, `67cfc83d5` | `plan/skill-library-template-entry` |
