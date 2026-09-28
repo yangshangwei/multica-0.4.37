@@ -1056,3 +1056,41 @@ Verified bilingual defaults and guarded stored-content migration, fixed migratio
 ### Next Steps
 
 - Parent agent integrates codex/rename-mika-xiaoafu and completes the original-checkout acceptance checkbox; no push or deployment authorized here.
+
+
+## Session 34: Complete skill market, project workspace and assistant rename
+
+**Date**: 2026-09-28
+**Task**: Complete skill market, project workspace and assistant rename
+**Branch**: `main`
+
+### Summary
+
+Completed and integrated all three approved tasks on local main; preserved unrelated workspace edits.
+
+### Main Changes
+
+- Discover deployment templates directly, preserve copy drafts and narrow search, and prevent silent preview substitution.
+- Keep issues central with compact squad readiness/default summary and a scrollable manager; await issue association.
+- Integrate 小阿孚 display-name migration and CLI collision notices without changing stable mika identity or custom content.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `12d12b920` | (see git log) |
+| `6e416c806` | (see git log) |
+| `0e1303881` | (see git log) |
+
+### Testing
+
+- [OK] 739 files and 8717 tests passed with bounded concurrency; 15 nonmobile lint/typecheck tasks passed.
+- [OK] Six production-browser scenarios passed including a corrected old-label locator rerun; scoped Go migration/notice checks passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No implementation work remains for these three tasks. Changes are local; remote publishing was not requested.

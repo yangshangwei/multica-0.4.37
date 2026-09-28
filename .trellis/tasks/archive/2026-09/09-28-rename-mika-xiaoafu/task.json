@@ -22,5 +22,9 @@
   "parent": null,
   "relatedFiles": [],
   "notes": "Implementation verified in its isolated worktree. Parent agent owns final local integration; no push or deployment. Migration notice logging scope approved during final review.",
-  "meta": {}
+  "meta": {
+    "integrated_into": "main",
+    "integration_head": "dd63e2a41",
+    "combined_verification": "739 files / 8717 tests; 15 lint/typecheck tasks; scoped Go migration checks"
+  }
 }

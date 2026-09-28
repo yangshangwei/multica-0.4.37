@@ -70,3 +70,7 @@ has an observed failing and passing PostgreSQL regression.
 - This branch does not touch the original checkout's skill-market changes.
   The parent agent owns local integration and its final combined verification;
   the PRD integration checkbox remains pending until that step completes.
+
+## Parent integration verification
+
+Fast-forwarded local main to `dd63e2a41`, preserving project/market edits. The combined repository passed 8,717 tests and all 15 nonmobile lint/typecheck tasks. Parent reran `go test -p 2 ./cmd/migrate ./internal/migrations -run 'MigrationPoolReports|BuiltinAgentDisplayName' -count=1` against the isolated verification database; both packages passed. No external deployment or push.
