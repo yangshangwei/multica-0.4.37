@@ -196,6 +196,9 @@ func avatarKeyFromServedURL(raw string) (string, bool) {
 // Google/GitHub profile URL), when it is not an allowed image type, or when
 // the deployment already serves the object publicly.
 func (h *Handler) resolveAvatarURL(raw string) string {
+	if raw == mikaAgentAvatarURL {
+		return h.absolutizeAvatarPath(raw)
+	}
 	if raw == "" || h.Storage == nil {
 		return raw
 	}

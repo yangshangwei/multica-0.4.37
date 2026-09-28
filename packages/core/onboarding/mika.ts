@@ -7,6 +7,9 @@ import type { Agent, ChatSession } from "../types";
  */
 export const MIKA_SYSTEM_KEY = "mika";
 
+/** Public asset served by the API, shared with the server's built-in default. */
+export const MIKA_AVATAR_PATH = "/api/avatars/builtin/afu-seal-v1.png";
+
 export function isMikaAgent(agent: Pick<Agent, "system_key">): boolean {
   return agent.system_key === MIKA_SYSTEM_KEY;
 }

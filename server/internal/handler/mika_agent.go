@@ -27,11 +27,7 @@ const (
 	mikaAgentMaxConcurrency = 3
 	mikaAgentVisibility     = "workspace"
 	mikaAgentPermissionMode = "public_to"
-	// Placeholder until Mika has real artwork. Uses the same `emoji:` marker
-	// every other agent avatar uses, so ActorAvatar renders it as text and no
-	// surface needs to special-case her. The previous value was a hand-rolled
-	// data-URI SVG, which only that one constant knew how to produce.
-	mikaAgentAvatarURL = agentEmojiAvatarPrefix + "🦄"
+	mikaAgentAvatarURL      = "/api/avatars/builtin/afu-seal-v1.png"
 )
 
 // mikaAgentDescriptions is user-facing copy, so it is localized. Unlike the

@@ -31,6 +31,7 @@ export {
 } from "./welcome-store";
 export {
   MIKA_SYSTEM_KEY,
+  MIKA_AVATAR_PATH,
   isMikaAgent,
   memberNeedsMikaSetup,
   workspaceNeedsMika,

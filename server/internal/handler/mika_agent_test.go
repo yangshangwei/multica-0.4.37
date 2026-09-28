@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -62,6 +63,12 @@ func TestCreateMikaAgent_ServerOwnsTheDefinition(t *testing.T) {
 			}
 			if resp.Name != "小阿孚" {
 				t.Fatalf("name = %q, want 小阿孚", resp.Name)
+			}
+			if resp.AvatarURL == nil {
+				t.Fatal("avatar_url is nil, want the built-in seal")
+			}
+			if *resp.AvatarURL != "/api/avatars/builtin/afu-seal-v1.png" {
+				t.Fatalf("avatar_url = %q, want the built-in seal", *resp.AvatarURL)
 			}
 			if resp.Description != mikaAgentDescriptions[language] || strings.Contains(resp.Description, "Mika") {
 				t.Fatalf("description = %q, want current %s default", resp.Description, language)
@@ -124,6 +131,34 @@ func TestCreateMikaAgent_RejectsUnsupportedLanguage(t *testing.T) {
 	w := createMika(t, map[string]any{"runtime_id": handlerTestRuntimeID(t), "language": "fr"})
 	if w.Code != http.StatusBadRequest {
 		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+func TestCreateMikaAgent_PreservesExistingAvatar(t *testing.T) {
+	for _, avatar := range []any{nil, "", "emoji:🦉", "https://example.test/custom.png"} {
+		t.Run(fmt.Sprint(avatar), func(t *testing.T) {
+			agentID := dbfx.Agent(t, "Custom assistant", handlerTestRuntimeID(t), testutil.Cols{
+				"system_key": "mika",
+				"avatar_url": avatar,
+			})
+			for range 2 {
+				req := withChatTestWorkspaceCtx(t, newRequest(http.MethodPost, "/api/agents/mika", map[string]any{
+					"runtime_id": handlerTestRuntimeID(t), "language": "en",
+				}))
+				var resp AgentResponse
+				testutil.Call(t, testHandler.CreateMikaAgent, req).Want(http.StatusOK).JSON(&resp)
+				if resp.ID != agentID {
+					t.Fatalf("retry returned another agent: %q, want %q", resp.ID, agentID)
+				}
+				if avatar == nil {
+					if resp.AvatarURL != nil {
+						t.Fatalf("cleared avatar replaced: %q", *resp.AvatarURL)
+					}
+				} else if resp.AvatarURL == nil || *resp.AvatarURL != avatar {
+					t.Fatalf("custom avatar changed: %v, want %q", resp.AvatarURL, avatar)
+				}
+			}
+		})
 	}
 }
 

@@ -1377,6 +1377,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// be avatar-class — see server/internal/handler/avatar.go (MUL-5393 /
 	// #6024).
 	r.Get("/api/avatars/{sig}/*", h.ServeAvatar)
+	// Built-in artwork is embedded public content, independent of user storage.
+	r.Get("/api/avatars/builtin/afu-seal-v1.png", h.ServeBuiltinAgentAvatar)
 
 	// In-app documentation images, embedded in this binary. Public for the same
 	// <img src> reason as avatars above — the desktop renderer's opaque file://

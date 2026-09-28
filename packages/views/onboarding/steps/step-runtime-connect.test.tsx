@@ -25,6 +25,10 @@ vi.mock("../components/use-runtime-picker", () => ({
   useRuntimePicker: () => mocks.pickerState,
 }));
 
+vi.mock("@multica/core/api", () => ({
+  api: { getBaseUrl: () => "https://api.example.test" },
+}));
+
 import { StepRuntimeConnect } from "./step-runtime-connect";
 
 function makeRuntime(overrides: Partial<AgentRuntime> = {}): AgentRuntime {

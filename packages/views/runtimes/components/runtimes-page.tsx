@@ -13,8 +13,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuthStore } from "@multica/core/auth";
 import { useWorkspaceId } from "@multica/core/hooks";
-import { memberNeedsMikaSetup, useBootstrapMika } from "@multica/core/onboarding";
-import { MIKA_PLACEHOLDER_EMOJI } from "../../onboarding/components/mika-intro";
+import {
+  MIKA_AVATAR_PATH,
+  memberNeedsMikaSetup,
+  useBootstrapMika,
+} from "@multica/core/onboarding";
+import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
+import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 import {
   useRequiredWorkspaceSlug,
   useWorkspacePaths,
@@ -287,13 +292,13 @@ function MikaSetupCard({
   return (
     <>
       <div className="mb-6 flex flex-col gap-4 rounded-xl border bg-card p-5 sm:flex-row sm:items-center">
-        <span
-          role="img"
-          aria-label={t(($) => $.mika_setup.title)}
-          className="flex size-10 shrink-0 select-none items-center justify-center rounded-full bg-muted text-title-lg leading-none"
-        >
-          {MIKA_PLACEHOLDER_EMOJI}
-        </span>
+        <ActorAvatar
+          name={t(($) => $.mika_setup.title)}
+          initials=""
+          avatarUrl={resolvePublicFileUrl(MIKA_AVATAR_PATH)}
+          isAgent
+          size="xl"
+        />
         <div className="min-w-0 flex-1">
           <h2 className="text-body font-semibold">
             {t(($) => $.mika_setup.title)}
