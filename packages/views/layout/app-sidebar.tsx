@@ -121,6 +121,7 @@ type NavKey =
   | "usage"
   | "runtimes"
   | "skills"
+  | "mcp"
   | "settings";
 
 // Static schema (key only) — labels resolved at render via useT("layout"),
@@ -137,6 +138,7 @@ type NavLabelKey =
   | "usage"
   | "runtimes"
   | "skills"
+  | "mcp"
   | "settings";
 
 // Nav icons are NOT declared here: they are derived from each item's
@@ -160,6 +162,7 @@ const aiTeamNav: NavItem[] = [
   { key: "agents", labelKey: "agents" },
   { key: "squads", labelKey: "squads" },
   { key: "skills", labelKey: "skills" },
+  { key: "mcp", labelKey: "mcp" },
   { key: "runtimes", labelKey: "runtimes" },
 ];
 

@@ -34,10 +34,14 @@ No real model account was used. Model output quality and semantic intent preserv
 
 ## Main integration verification — 2026-09-29
 
-- Audited all four local branches and five worktrees against main. Every worktree HEAD is an ancestor of main. The detached skill-market worktree's 38 product/test changes are already integrated; its only other difference is generated Next.js route typing. No additional merge was necessary.
+- Initial audit covered all four local branches and five worktrees against main. Every worktree HEAD is an ancestor of main. The detached skill-market worktree's 38 product/test changes are already integrated; its only other difference is generated Next.js route typing. No additional merge was necessary.
 - `make check` passed on the integrated working tree: 15 static tasks, 8705 TypeScript tests across core/views/web/desktop/docs, script regressions, isolated database-backed Go tests with the race detector, `go vet`, production Web build, and Playwright.
 - Playwright: 105 passed, 9 conditionally skipped. The skipped cases require dedicated device-auth, Electron renderer/preload, changelog-publication, or compiled-CLI fixtures.
 - Mobile `turbo run lint typecheck test --filter=@multica/mobile --concurrency=1 --force` passed, including 115 tests and the iOS launcher shell regressions.
 - Integration fixes: exclude Git-ignored gstack preview artifacts from ESLint; normalize trailing slashes in the local daemon profile root with a failing-then-passing shell regression; supply the API origin in the runtime-connect test after adoption of the built-in avatar.
 - Independent backend and frontend review found no remaining blocking issues. Existing lint warnings remain; no live model quality evaluation or production deployment was performed.
 - Full local logs: `/tmp/multica-main-check-20260929.log` and `/tmp/multica-mobile-check-20260929.log`.
+
+### Concurrent MCP branch integration
+
+The final audit discovered `codex/mcp-sidebar` at `978b5ed4a`, created and completed during this delivery. It merged without conflicts. Post-merge verification passed: 83 core path tests plus 165 sidebar, command-palette, MCP/settings and locale tests; 11 lint/typecheck tasks covering core/views/Web/desktop; and the Web production build including `/[workspaceSlug]/mcp`. No backend code changed in this later merge, so the earlier Go verification remains applicable. The final audit covers five local branches and six worktrees.

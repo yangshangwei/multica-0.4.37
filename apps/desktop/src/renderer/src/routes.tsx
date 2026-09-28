@@ -19,6 +19,7 @@ import { DashboardPage } from "@multica/views/dashboard";
 import { AutopilotsPage, TemplateCreateAutopilotRoute } from "@multica/views/autopilots/components";
 import { MyIssuesPage } from "@multica/views/my-issues";
 import { SkillsPage } from "@multica/views/skills";
+import { McpPage } from "@multica/views/mcp";
 import { DesktopRuntimesPage } from "./components/desktop-runtimes-page";
 import { DesktopAgentsPage } from "./components/desktop-agents-page";
 import {
@@ -214,6 +215,7 @@ export const appRoutes: RouteObject[] = [
             handle: { title: "Runtime" },
           },
           { path: "skills", element: <SkillsPage />, handle: { title: "Skills" } },
+          { path: "mcp", element: <McpPage />, handle: { title: "MCP" } },
           {
             path: "skills/:id",
             element: <SkillDetailPage />,

@@ -137,6 +137,7 @@ vi.mock("@multica/core/paths", async (importOriginal) => ({
     usage: () => "/acme/usage",
     runtimes: () => "/acme/runtimes",
     skills: () => "/acme/skills",
+    mcp: () => "/acme/mcp",
     settings: () => "/acme/settings",
     issueDetail: (id: string) => `/acme/issues/${id}`,
     projectDetail: (id: string) => `/acme/projects/${id}`,
@@ -474,6 +475,7 @@ describe("nav structure", () => {
       "/acme/agents",
       "/acme/squads",
       "/acme/skills",
+      "/acme/mcp",
       "/acme/runtimes",
       // footer
       "/acme/usage",
@@ -500,13 +502,15 @@ describe("nav structure", () => {
     }
   });
 
-  it("highlights Settings from the footer when its route is open", () => {
-    navigation.current = { pathname: "/acme/settings/general" };
+  it.each([
+    ["/acme/settings/general", "/acme/settings"],
+    ["/acme/mcp", "/acme/mcp"],
+  ])("highlights only the current navigation entry for %s", (pathname, href) => {
+    navigation.current = { pathname };
     const { container } = render(<AppSidebar />);
-    expect(container.querySelector('button[data-href="/acme/settings"]')).toHaveAttribute(
-      "data-active",
-      "true",
-    );
+    const activeItems = container.querySelectorAll('button[data-href][data-active="true"]');
+    expect(activeItems).toHaveLength(1);
+    expect(activeItems[0]).toHaveAttribute("data-href", href);
   });
 });
 
