@@ -1,8 +1,8 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Agent, Project, Squad } from "@multica/core/types";
+import type { Agent, Issue, Project, Squad } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { ProjectDetail } from "./project-detail";
@@ -15,6 +15,14 @@ const mocks = vi.hoisted(() => ({
   push: vi.fn(),
   recordVisit: vi.fn(),
   toastSuccess: vi.fn(),
+  toastError: vi.fn(),
+  openCreateIssue: vi.fn(),
+  linkIssue: vi.fn(),
+  pickerProps: null as null | {
+    open: boolean;
+    filterIssue?: (issue: Issue) => boolean;
+    onSelect: (issue: Issue) => void | boolean | Promise<void | boolean>;
+  },
   project: null as Project | null,
   agents: [] as Agent[],
   squads: [] as Squad[],
@@ -55,6 +63,10 @@ vi.mock("@multica/core/projects/mutations", () => ({
   useDeleteProject: () => ({ mutate: mocks.deleteProject }),
 }));
 
+vi.mock("@multica/core/issues/mutations", () => ({
+  useUpdateIssue: () => ({ mutateAsync: mocks.linkIssue }),
+}));
+
 vi.mock("@multica/core/pins", () => ({
   pinListOptions: () => ({ queryKey: ["pins"] }),
   useCreatePin: () => ({ mutate: vi.fn() }),
@@ -93,7 +105,7 @@ vi.mock("@multica/core/workspace/hooks", () => ({
 }));
 
 vi.mock("sonner", () => ({
-  toast: { success: mocks.toastSuccess },
+  toast: { success: mocks.toastSuccess, error: mocks.toastError },
 }));
 
 vi.mock("react-resizable-panels", () => ({
@@ -246,9 +258,24 @@ vi.mock("./project-due-date-picker", () => ({
 }));
 
 vi.mock("../../issues/surface/issue-surface", () => ({
-  IssueSurface: ({ fallbackCreateDefaults }: { fallbackCreateDefaults?: object }) => <section aria-label="Project issues">
+  IssueSurface: ({ fallbackCreateDefaults, isScopeEmpty, headerActions, renderEmpty }: {
+    fallbackCreateDefaults?: object;
+    isScopeEmpty?: boolean;
+    headerActions?: (context: { controller: { openCreateIssue: () => void } }) => React.ReactNode;
+    renderEmpty?: (context: { controller: { openCreateIssue: () => void } }) => React.ReactNode;
+  }) => <section aria-label="Project issues">
     <output aria-label="Project issue defaults">{JSON.stringify(fallbackCreateDefaults)}</output>
+    {isScopeEmpty
+      ? renderEmpty?.({ controller: { openCreateIssue: mocks.openCreateIssue } })
+      : headerActions?.({ controller: { openCreateIssue: mocks.openCreateIssue } })}
   </section>,
+}));
+
+vi.mock("../../modals/issue-picker-modal", () => ({
+  IssuePickerModal: (props: NonNullable<typeof mocks.pickerProps>) => {
+    mocks.pickerProps = props;
+    return props.open ? <div role="dialog" aria-label="Choose an existing issue" /> : null;
+  },
 }));
 
 vi.mock("../../layout/breadcrumb-header", () => ({
@@ -304,6 +331,14 @@ const PROJECT_SQUAD: Squad = {
   leader_id: PROJECT_LEADER.id, creator_id: "user-1", created_at: "", updated_at: "", archived_at: null, archived_by: null,
 };
 
+const UNLINKED_ISSUE: Issue = {
+  id: "existing-issue", workspace_id: "workspace-1", number: 8, identifier: "MUL-8",
+  title: "Review launch checklist", description: null, status: "in_review", priority: "high",
+  assignee_type: "squad", assignee_id: "existing-owner", creator_type: "member", creator_id: "user-1",
+  parent_issue_id: null, project_id: null, position: 1, stage: null, start_date: null, due_date: null,
+  metadata: {}, properties: {}, created_at: "2026-09-28T00:00:00Z", updated_at: "2026-09-28T00:00:00Z",
+};
+
 function renderProjectDetail() {
   const adapter: NavigationAdapter = {
     push: mocks.push,
@@ -333,6 +368,63 @@ beforeEach(() => {
   mocks.push.mockReset();
   mocks.recordVisit.mockReset();
   mocks.toastSuccess.mockReset();
+  mocks.toastError.mockReset();
+  mocks.openCreateIssue.mockReset();
+  mocks.linkIssue.mockReset().mockResolvedValue(UNLINKED_ISSUE);
+  mocks.pickerProps = null;
+});
+
+describe("ProjectDetail task workspace", () => {
+  it("focuses an empty project on its first issue and one create action", async () => {
+    mocks.project = { ...PROJECT, issue_count: 0, done_count: 0 };
+    renderProjectDetail();
+
+    expect(screen.getByText("Create your first issue")).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /^new issue$/i })).toHaveLength(1);
+    await userEvent.setup().click(screen.getByRole("button", { name: /^new issue$/i }));
+    expect(mocks.openCreateIssue).toHaveBeenCalledOnce();
+    expect(screen.getByRole("button", { name: "Link an existing issue" })).toBeInTheDocument();
+  });
+
+  it("provides a single toolbar creation action for a populated project", async () => {
+    renderProjectDetail();
+
+    expect(screen.queryByText("Create your first issue")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /^new issue$/i })).toHaveLength(1);
+    await userEvent.setup().click(screen.getByRole("button", { name: /^new issue$/i }));
+    expect(mocks.openCreateIssue).toHaveBeenCalledOnce();
+  });
+
+  it("links only an unassigned-project issue without changing its owner or status", async () => {
+    renderProjectDetail();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Link an existing issue" }));
+    expect(screen.getByRole("dialog", { name: "Choose an existing issue" })).toBeInTheDocument();
+    expect(mocks.pickerProps?.filterIssue?.(UNLINKED_ISSUE)).toBe(true);
+    expect(mocks.pickerProps?.filterIssue?.({ ...UNLINKED_ISSUE, project_id: "another-project" })).toBe(false);
+    expect(mocks.pickerProps?.filterIssue?.({ ...UNLINKED_ISSUE, workspace_id: "another-workspace" })).toBe(false);
+
+    await act(async () => {
+      expect(await mocks.pickerProps?.onSelect(UNLINKED_ISSUE)).toBe(true);
+    });
+    expect(mocks.linkIssue).toHaveBeenCalledExactlyOnceWith({ id: "existing-issue", project_id: "project-1" });
+    expect(mocks.toastSuccess).toHaveBeenCalledWith("MUL-8 linked to the project");
+  });
+
+  it("keeps a failed association retryable without reporting success", async () => {
+    mocks.linkIssue.mockRejectedValueOnce(new Error("Connection lost"));
+    renderProjectDetail();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Link an existing issue" }));
+
+    await act(async () => {
+      expect(await mocks.pickerProps?.onSelect(UNLINKED_ISSUE)).toBe(false);
+    });
+    expect(mocks.toastError).toHaveBeenCalledWith("Could not link the issue. Try again.");
+    expect(mocks.toastSuccess).not.toHaveBeenCalled();
+    await act(async () => {
+      expect(await mocks.pickerProps?.onSelect(UNLINKED_ISSUE)).toBe(true);
+    });
+    expect(mocks.linkIssue).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("ProjectDetail sharing", () => {

@@ -89,7 +89,9 @@ test.describe("workspace built-in defaults", () => {
       expect(project.execution_squad.template_key).toBe("feature-delivery");
       await expect(page).toHaveURL(new RegExp(`/projects/${project.id}$`));
       await page.reload();
+      await page.getByRole("button", { name: "Manage squads", exact: true }).click();
       await expect(page.getByText("Your project and squad choice are saved. Connect a runtime, then finish setup.")).toHaveCount(2);
+      await page.keyboard.press("Escape");
 
       await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
       await page.context().addCookies([{ name: "multica-locale", value: "zh-Hans", url: new URL(page.url()).origin }]);
@@ -121,10 +123,10 @@ test.describe("workspace built-in defaults", () => {
       await expect(page.getByRole("heading", { name: "Feature Delivery Squad", exact: true })).toBeVisible();
       await page.screenshot({ path: info.outputPath("builtin-squads-desktop.png"), animations: "disabled" });
       await page.goto(`/${workspace.slug}/skills`);
-      // Built-in skills moved from the inline catalog into the skill templates entry.
-      const skillTemplates = page.getByRole("region", { name: "Skill templates" });
-      await expect(skillTemplates.getByRole("button", { name: "Browse templates" })).toBeVisible();
-      await expect(skillTemplates.getByText(/Platform [1-9]/)).toBeVisible();
+      // An empty workspace exposes built-in templates directly in the market.
+      await expect(page.getByRole("tab", { name: "Skill market", exact: true })).toHaveAttribute("aria-selected", "true");
+      await expect(page.getByRole("tab", { name: "Platform built-ins", exact: true })).toBeVisible();
+      await expect(page.getByRole("button", { name: "Preview multica-code-review", exact: true })).toBeVisible();
       // Built-in agent roles moved into the create flow's role-template picker.
       await page.goto(`/${workspace.slug}/agents/new/template`);
       await expect(page.getByRole("heading", { name: "Start from a role template", exact: true })).toBeVisible();
@@ -132,9 +134,13 @@ test.describe("workspace built-in defaults", () => {
 
       const project = await createProject(page, workspace, "Starter without a runtime", info.outputPath("project-create-desktop.png"));
       expect(project.execution_squad).toMatchObject({ state: "needs_runtime", template_key: "feature-delivery" });
+      await page.getByRole("button", { name: "Manage squads", exact: true }).click();
       await expect(page.getByText("Your project and squad choice are saved. Connect a runtime, then finish setup.")).toBeVisible({ timeout: 30_000 });
       await page.reload();
+      await expect(page.getByText("The default squad is unavailable. Review its setup or choose another squad.")).toBeVisible();
+      await page.getByRole("button", { name: "Manage squads", exact: true }).click();
       await expect(page.getByText("Your project and squad choice are saved. Connect a runtime, then finish setup.")).toBeVisible({ timeout: 30_000 });
+      await page.keyboard.press("Escape");
       const saved = await api.requestJSON<{ projects: Project[] }>("/api/projects");
       expect(saved.projects).toHaveLength(1);
       expect((await api.requestJSON<unknown[]>("/api/squads"))).toHaveLength(0);
@@ -157,7 +163,7 @@ test.describe("workspace built-in defaults", () => {
       const project = await createProject(page, workspace, "Starter delivery");
       expect(project.execution_squad.state).toBe("configured");
       expect(project.execution_squad.squad_id).toBeTruthy();
-      await expect(page.getByRole("button", { name: "Hand to squad" })).toBeEnabled();
+      await expect(page.getByRole("region", { name: "Execution squads", exact: true })).toContainText("1 ready");
       await page.screenshot({ path: info.outputPath("project-ready-desktop.png"), animations: "disabled" });
       const squads = await api.requestJSON<{ id: string }[]>("/api/squads");
       expect(squads).toHaveLength(1);

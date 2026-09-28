@@ -64,6 +64,12 @@ vi.mock("@tanstack/react-virtual", () => ({
   }),
 }));
 
+vi.mock("../components/issues-header", () => ({
+  IssuesHeader: ({ actions }: { actions?: React.ReactNode }) => (
+    <header aria-label="Issue tools">{actions}</header>
+  ),
+}));
+
 const mockAuthUser = { id: "user-1", email: "test@test.com", name: "Test User" };
 vi.mock("@multica/core/auth", () => ({
   useAuthStore: Object.assign(
@@ -829,6 +835,84 @@ describe("IssueSurface — filtered empty state", () => {
       </QueryClientProvider>,
     );
     fireEvent.click(await screen.findByRole("button", { name: "detail.empty_issues_new_button" }));
+    expect(open).toHaveBeenCalledExactlyOnceWith("create-issue", {
+      project_id: "pf", assignee_type: "squad", assignee_id: "project-squad", status: "todo",
+    });
+  });
+
+  it.each(["table", "gantt"] as const)("shows the project's first-issue state in an empty %s scope", async (mode) => {
+    render(
+      <QueryClientProvider client={qc}>
+        <IssueSurface
+          scope={{ type: "project", projectId: "pf" }}
+          modes={[mode]}
+          isScopeEmpty
+          renderEmpty={() => <p>Create the first project issue</p>}
+          batchToolbar="never"
+        />
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText("Create the first project issue");
+    expect(screen.queryByRole("banner", { name: "Issue tools" })).not.toBeInTheDocument();
+  });
+
+  it("retains filter recovery when the project itself is empty", async () => {
+    const store = getIssueSurfaceViewStore("project:pf");
+    act(() => store.getState().toggleAgentRunningFilter());
+    render(
+      <QueryClientProvider client={qc}>
+        <IssueSurface
+          scope={{ type: "project", projectId: "pf" }}
+          modes={["list"]}
+          isScopeEmpty
+          renderEmpty={() => <p>Create the first project issue</p>}
+          batchToolbar="never"
+        />
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText("filtered_empty.title");
+    expect(screen.getByRole("banner", { name: "Issue tools" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "filtered_empty.clear_button" }));
+    await screen.findByText("Create the first project issue");
+    expect(screen.queryByRole("banner", { name: "Issue tools" })).not.toBeInTheDocument();
+  });
+
+  it("keeps the actor tabs available on an empty project", async () => {
+    render(
+      <QueryClientProvider client={qc}>
+        <IssueSurface
+          scope={{ type: "project", projectId: "pf", actorKind: "agents" }}
+          modes={["list"]}
+          isScopeEmpty
+          renderEmpty={() => <p>Create the first project issue</p>}
+          batchToolbar="never"
+        />
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText("Create the first project issue");
+    expect(screen.getByRole("banner", { name: "Issue tools" })).toBeInTheDocument();
+  });
+
+  it("runs a header creation action through the canonical project defaults", async () => {
+    const open = vi.spyOn(useModalStore.getState(), "open").mockImplementation(() => {});
+    render(
+      <QueryClientProvider client={qc}>
+        <IssueSurface
+          scope={{ type: "project", projectId: "pf" }}
+          modes={["list"]}
+          fallbackCreateDefaults={{ assignee_type: "squad", assignee_id: "project-squad", status: "todo" }}
+          headerActions={({ controller }) => (
+            <button onClick={() => controller.openCreateIssue()}>New project issue</button>
+          )}
+          batchToolbar="never"
+        />
+      </QueryClientProvider>,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "New project issue" }));
     expect(open).toHaveBeenCalledExactlyOnceWith("create-issue", {
       project_id: "pf", assignee_type: "squad", assignee_id: "project-squad", status: "todo",
     });

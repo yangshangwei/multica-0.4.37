@@ -49,8 +49,11 @@ export interface IssueSurfaceRenderContext {
 
 interface IssueSurfaceComponentProps extends IssueSurfaceProps {
   renderHeader?: (context: IssueSurfaceRenderContext) => ReactNode;
+  headerActions?: (context: IssueSurfaceRenderContext) => ReactNode;
   renderEmpty?: (context: IssueSurfaceRenderContext) => ReactNode;
   renderLoading?: (context: IssueSurfaceRenderContext) => ReactNode;
+  /** An authoritative unfiltered scope count, not the loaded row count. */
+  isScopeEmpty?: boolean;
   clientFilter?: (issue: Issue) => boolean;
   showClientEmpty?: (context: IssueSurfaceRenderContext) => boolean;
   batchToolbar?: "always" | "list" | "never";
@@ -65,8 +68,10 @@ export function IssueSurface({
   fallbackCreateDefaults,
   search,
   renderHeader,
+  headerActions,
   renderEmpty,
   renderLoading,
+  isScopeEmpty,
   clientFilter,
   showClientEmpty,
   batchToolbar = "always",
@@ -155,8 +160,10 @@ export function IssueSurface({
         fallbackCreateDefaults={fallbackCreateDefaults}
         search={search}
         renderHeader={renderHeader}
+        headerActions={headerActions}
         renderEmpty={renderEmpty}
         renderLoading={renderLoading}
+        isScopeEmpty={isScopeEmpty}
         clientFilter={clientFilter}
         showClientEmpty={showClientEmpty}
         batchToolbar={batchToolbar}
@@ -174,8 +181,10 @@ function IssueSurfaceContent({
   fallbackCreateDefaults,
   search,
   renderHeader,
+  headerActions,
   renderEmpty,
   renderLoading,
+  isScopeEmpty,
   clientFilter,
   showClientEmpty,
   batchToolbar,
@@ -189,6 +198,7 @@ function IssueSurfaceContent({
     fallbackCreateDefaults,
     search,
   });
+  const viewBaseline = useViewBaseline();
   const [tableLoadedIssues, setTableLoadedIssues] = useState<Issue[]>([]);
   const handleTableLoadedIssuesChange = useCallback((next: Issue[]) => {
     setTableLoadedIssues((current) =>
@@ -234,6 +244,13 @@ function IssueSurfaceContent({
     (batchToolbar === "always" ||
       controller.viewMode === "list" ||
       controller.viewMode === "table");
+  // Table owns its search input and recovery. Keep it mounted while a search
+  // is active even if the scope count changes to zero during that search.
+  const hasTableSearch = controller.viewMode === "table" && !!controller.tableSearch.trim();
+  const scopeIsEmpty = isScopeEmpty === true && !hasTableSearch;
+  const hideEmptyProjectHeader = scopeIsEmpty && scope.type === "project" &&
+    (!scope.actorKind || scope.actorKind === "all") && !viewBaseline &&
+    !controller.hasActiveFilters && !controller.isLoading && !controller.isStatusCatalogError;
 
   return (
     <IssueSurfaceActionsProvider actions={controller.actions}>
@@ -245,8 +262,9 @@ function IssueSurfaceContent({
       <IssueSurfaceSelectionProvider selection={controller.selection}>
         {renderHeader ? (
           renderHeader(renderContext)
-        ) : (
+        ) : hideEmptyProjectHeader ? null : (
           <IssuesHeader
+            actions={headerActions?.(renderContext)}
             scopedIssues={controller.surfaceIssues}
             workingAgents={controller.workingAgents}
             allowGantt={controller.allowGantt}
@@ -277,7 +295,7 @@ function IssueSurfaceContent({
           ) : (
             <IssueSurfaceSkeleton mode={controller.viewMode} />
           )
-        ) : controller.isEmpty || shouldShowClientEmpty ? (
+        ) : controller.isEmpty || scopeIsEmpty || shouldShowClientEmpty ? (
           // A filtered-empty surface is NOT an empty surface. Claiming "no
           // issues here yet" and offering to create one is wrong when the rows
           // exist and a filter is hiding them — and it is the state the

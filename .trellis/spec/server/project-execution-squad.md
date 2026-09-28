@@ -36,7 +36,15 @@ Pending or failed prerequisite queries block dispatch. A deleted default's roste
 
 Project lead remains separate from execution squads. The list offers candidate squads; selecting several never broadcasts one task to all of them. Each task still has one selected assignee. Project-local new-issue defaults may inherit the first squad, but explicit grouping, saved-view assignee constraints and user overrides win. Assignee type/id must be treated as a pair when higher-priority defaults replace or clear them. Existing issues are never reassigned by changing the project default.
 
-The explicit Hand to squad action opens ordinary issue creation with project/squad/todo, using the server trigger preview. Agent quick-create files an issue and is not an execution shortcut.
+The project canvas shows a bounded squad summary; full candidate descriptions, runtime details and configuration actions live in the Manage squads sheet. Readiness counts and the closed-sheet default warning use the same prerequisite queries and complete-roster checks as each management row. Loading, paused and failed checks must not imply ready. Configuration writes share one pending guard; a permanently missing roster still permits replacement/removal.
+
+Set as new issue default replaces the full ordered selection with that candidate first, preserving every other candidate and each template/runtime provenance value. Removing a candidate removes only its project association. Neither operation changes existing issue assignees.
+
+The explicit New issue with this squad menu action closes and unmounts the manager before opening ordinary issue creation with project/squad/todo, using the server trigger preview. This avoids stacking modal focus traps. Agent quick-create files an issue and is not an execution shortcut. No squad dispatch happens while browsing or configuring candidates.
+
+ProjectIssueSurface routes the single primary creation action through the canonical IssueSurface controller, preserving saved-view/grouping/explicit-assignee precedence. Authoritative `project.issue_count === 0` enables the first-issue state for table and Gantt as well as board/list. Loading and status-catalog errors take precedence; active filters, actor tabs, saved views and table searches retain their recovery/navigation controls.
+
+Link an existing issue offers only same-workspace issues with no current project, so an association never silently moves an issue from another project. It awaits the existing issue update mutation and sends only the issue ID and new project ID; assignee/status are unchanged and normal issue/project query invalidation owns refresh. IssuePickerModal accepts synchronous or awaited selection callbacks, prevents duplicate writes/dismissal while pending, and closes only after success. A rejected/false selection remains retryable, and a stale result cannot close a newly opened picker.
 
 Catalog templates remain separate from workspace instances and instance counts. Skill provenance is informational, never authorization. Automation templates are only materialized on explicit Enable; project navigation prefill must not overwrite user edits.
 
@@ -46,3 +54,4 @@ Catalog templates remain separate from workspace instances and instance counts. 
 - packages/core/api/project-execution.test.ts and projects/execution-*.test.*: parsing, workspace capture, defaults and runtime/roster readiness.
 - packages/views/projects/components/project-squad-*.test.tsx and modals/create-project*.test.tsx: flow, stale recovery and future task defaults.
 - e2e/workspace-defaults.spec.ts: real configuration, fake-runtime enqueue and explicit automation enable; never run an installed agent CLI.
+- e2e/project-squad-workspace.spec.ts: compact 1/8/20-candidate presentation, keyboard sheet management, ordered defaults, explicit creation, association recovery, table/Gantt emptiness and narrow layouts with real writes and a fake runtime.

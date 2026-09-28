@@ -31,7 +31,7 @@ import { ProjectSquadSection } from "./project-squad-section";
 import { ProjectAutomationsSection } from "./project-automations-section";
 import { ProjectStartDatePicker } from "./project-start-date-picker";
 import { ProjectDueDatePicker } from "./project-due-date-picker";
-import { IssueSurface } from "../../issues/surface/issue-surface";
+import { ProjectIssueSurface } from "./project-issue-surface";
 import type { IssueCreateDefaults } from "../../issues/surface/types";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Button } from "@multica/ui/components/ui/button";
@@ -566,9 +566,10 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           />
 
           <ProjectSquadSection key={project.id} project={project} />
-          <IssueSurface
+          <ProjectIssueSurface
+            key={project.id}
+            project={project}
             scope={issueScope}
-            modes={["board", "list", "table", "swimlane", "gantt"]}
             fallbackCreateDefaults={projectCreateDefaults}
           />
           </div>

@@ -81,7 +81,16 @@
     "no_issues_yet": "No issues yet",
     "toast_link_copied": "Link copied",
     "toast_project_deleted": "Project deleted",
-    "toast_move_issue_failed": "Failed to move issue"
+    "toast_move_issue_failed": "Failed to move issue",
+    "first_issue_title": "Create your first issue",
+    "first_issue_hint": "Describe what needs to be done. Choose a squad or another assignee when creating the issue.",
+    "link_existing": "Link an existing issue",
+    "link_existing_title": "Link an issue to this project",
+    "link_existing_hint": "Choose an issue that does not belong to a project yet.",
+    "link_success": "{{identifier}} linked to the project",
+    "link_failed": "Could not link the issue. Try again.",
+    "empty_view_title": "No issues in this view",
+    "empty_view_hint": "Choose another view or adjust the filters to find project issues."
   },
   "resources": {
     "section_header": "Resources",
@@ -239,6 +248,22 @@
     "add": "Add squad",
     "remove_named": "Remove {{name}}",
     "connect_later": "Connect later",
-    "runtime_label": "Where AI runs"
+    "runtime_label": "Where AI runs",
+    "summary_label": "AI squads",
+    "manage": "Manage squads",
+    "manage_description": "Choose which squads can handle project issues. Each issue has one assignee; the default is preselected for new issues.",
+    "available_count": "{{count}} ready",
+    "attention_count": "{{count}} need attention",
+    "checking_count": "Checking {{count}}",
+    "default_summary": "New issue default: {{name}}",
+    "new_issue_default": "New issue default",
+    "set_default": "Set as new issue default",
+    "default_unavailable": "The default squad is unavailable. Review its setup or choose another squad.",
+    "default_checking": "Checking the default squad’s availability.",
+    "actions": "Actions for {{name}}",
+    "runtime_details": "Runtime details",
+    "new_issue": "New issue with this squad",
+    "remove_description": "Only the project association is removed. Existing issues keep their assignees.",
+    "no_squads": "No squads linked"
   }
 }

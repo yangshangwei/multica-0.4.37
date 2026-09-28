@@ -80,7 +80,16 @@
     "no_issues_yet": "目前还没有任务",
     "toast_link_copied": "已复制链接",
     "toast_project_deleted": "已删除项目",
-    "toast_move_issue_failed": "移动任务失败"
+    "toast_move_issue_failed": "移动任务失败",
+    "first_issue_title": "创建第一条任务",
+    "first_issue_hint": "描述要完成的事情，创建时可以选择承接小队或其他负责人。",
+    "link_existing": "关联已有任务",
+    "link_existing_title": "关联任务到此项目",
+    "link_existing_hint": "选择尚未归属项目的任务。",
+    "link_success": "{{identifier}} 已关联到项目",
+    "link_failed": "无法关联任务，请重试。",
+    "empty_view_title": "当前视图没有任务",
+    "empty_view_hint": "切换视图或调整筛选条件，查看项目中的任务。"
   },
   "resources": {
     "section_header": "资源",
@@ -237,6 +246,22 @@
     "add": "添加AI小队",
     "remove_named": "移除{{name}}",
     "connect_later": "稍后连接",
-    "runtime_label": "AI 运行位置"
+    "runtime_label": "AI 运行位置",
+    "summary_label": "AI小队",
+    "manage": "管理AI小队",
+    "manage_description": "选择可承接项目任务的AI小队。每条任务只有一个负责人，创建时会预选默认小队。",
+    "available_count": "{{count}} 个可接收任务",
+    "attention_count": "{{count}} 个需处理",
+    "checking_count": "{{count}} 个检查中",
+    "default_summary": "新任务默认：{{name}}",
+    "new_issue_default": "新任务默认",
+    "set_default": "设为新任务默认",
+    "default_unavailable": "默认小队暂不可用，请检查配置或选择其他小队。",
+    "default_checking": "正在检查默认小队的可用性。",
+    "actions": "{{name}} 的操作",
+    "runtime_details": "运行信息",
+    "new_issue": "用此AI小队新建任务",
+    "remove_description": "仅解除与项目的关联，已有任务的负责人保持不变。",
+    "no_squads": "尚未关联AI小队"
   }
 }

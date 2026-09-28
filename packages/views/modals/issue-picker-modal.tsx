@@ -22,7 +22,8 @@ interface IssuePickerModalProps {
   title: string;
   description: string;
   excludeIds: string[];
-  onSelect: (issue: Issue) => void;
+  filterIssue?: (issue: Issue) => boolean;
+  onSelect: (issue: Issue) => void | boolean | Promise<void | boolean>;
 }
 
 export function IssuePickerModal({
@@ -31,12 +32,16 @@ export function IssuePickerModal({
   title,
   description,
   excludeIds,
+  filterIssue,
   onSelect,
 }: IssuePickerModalProps) {
   const { t } = useT("modals");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Issue[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [selectionFailed, setSelectionFailed] = useState(false);
+  const selectionRef = useRef<symbol | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const abortRef = useRef<AbortController>(undefined);
 
@@ -45,7 +50,15 @@ export function IssuePickerModal({
       setQuery("");
       setResults([]);
       setIsLoading(false);
+      setIsSelecting(false);
+      setSelectionFailed(false);
     }
+
+    return () => {
+      selectionRef.current = null;
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      abortRef.current?.abort();
+    };
   }, [open]);
 
   const search = useCallback(
@@ -71,7 +84,7 @@ export function IssuePickerModal({
             signal: controller.signal,
           });
           if (!controller.signal.aborted) {
-            setResults(res.issues.filter((i) => !excludeIds.includes(i.id)));
+            setResults(res.issues);
             setIsLoading(false);
           }
         } catch {
@@ -81,13 +94,44 @@ export function IssuePickerModal({
         }
       }, 300);
     },
-    [excludeIds],
+    [],
   );
+
+  const filteredResults = results.filter(
+    (issue) => !excludeIds.includes(issue.id) && (!filterIssue || filterIssue(issue)),
+  );
+
+  const selectIssue = async (issue: Issue) => {
+    if (selectionRef.current) return;
+    const selection = Symbol();
+    selectionRef.current = selection;
+    setIsSelecting(true);
+    setSelectionFailed(false);
+    try {
+      const result = await onSelect(issue);
+      if (selectionRef.current === selection && result !== false) {
+        onOpenChange(false);
+      }
+    } catch {
+      if (selectionRef.current === selection) setSelectionFailed(true);
+    } finally {
+      if (selectionRef.current === selection) {
+        selectionRef.current = null;
+        setIsSelecting(false);
+      }
+    }
+  };
 
   return (
     <CommandDialog
       open={open}
-      onOpenChange={onOpenChange}
+      onOpenChange={(nextOpen, eventDetails) => {
+        if (selectionRef.current) {
+          eventDetails.cancel();
+          return;
+        }
+        onOpenChange(nextOpen);
+      }}
       title={title}
       description={description}
     >
@@ -95,18 +139,28 @@ export function IssuePickerModal({
         <CommandInput
           placeholder={t(($) => $.issue_picker.search_placeholder)}
           value={query}
+          disabled={isSelecting}
           onValueChange={(v) => {
             setQuery(v);
+            setSelectionFailed(false);
             search(v);
           }}
         />
-        <CommandList>
+        <p aria-hidden="true" className="px-3 pt-2 text-caption text-muted-foreground">
+          {description}
+        </p>
+        {selectionFailed && (
+          <p role="alert" className="px-3 pt-2 text-body text-destructive">
+            {t(($) => $.issue_picker.select_failed)}
+          </p>
+        )}
+        <CommandList aria-busy={isSelecting}>
           {isLoading && (
             <div className="py-6 text-center text-body text-muted-foreground">
               {t(($) => $.issue_picker.searching)}
             </div>
           )}
-          {!isLoading && query.trim() && results.length === 0 && (
+          {!isLoading && query.trim() && filteredResults.length === 0 && (
             <CommandEmpty>{t(($) => $.issue_picker.no_results)}</CommandEmpty>
           )}
           {!isLoading && !query.trim() && (
@@ -114,16 +168,14 @@ export function IssuePickerModal({
               {t(($) => $.issue_picker.prompt_to_search)}
             </div>
           )}
-          {results.length > 0 && (
+          {filteredResults.length > 0 && (
             <CommandGroup>
-              {results.map((issue) => (
+              {filteredResults.map((issue) => (
                 <CommandItem
                   key={issue.id}
                   value={issue.id}
-                  onSelect={() => {
-                    onSelect(issue);
-                    onOpenChange(false);
-                  }}
+                  disabled={isSelecting}
+                  onSelect={() => void selectIssue(issue)}
                 >
                   <StatusIcon
                     status={issue.status}
