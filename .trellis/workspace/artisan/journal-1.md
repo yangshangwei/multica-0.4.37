@@ -1094,3 +1094,39 @@ Completed and integrated all three approved tasks on local main; preserved unrel
 ### Next Steps
 
 - No implementation work remains for these three tasks. Changes are local; remote publishing was not requested.
+
+
+## Session 35: Complete all 114 end-to-end cases with isolated desktop and auth fixtures
+
+**Date**: 2026-09-28
+**Task**: Complete all 114 end-to-end cases with isolated desktop and auth fixtures
+**Branch**: `codex/full-e2e-20260928`
+
+### Summary
+
+Final regular run 113/113 and device-auth 1/1; zero final failures, skips or flaky results. Updated two stale test interactions, with no product or CI changes.
+
+### Main Changes
+
+- Adapt localized skill acceptance to market tabs, visible narrow search and direct preview/back navigation.
+- Target desktop Help keyboard input at the locator to avoid a focus-to-global-key gap.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e042a5fa0` | (see git log) |
+| `b8afcf022` | (see git log) |
+
+### Testing
+
+- [OK] Production Chromium, Electron renderer/preload fixtures, task-built CLI and live changelog: 113 passed, one worker, zero retries.
+- [OK] Device auth isolation: 1 passed; desktop keyboard regression: 3 consecutive passes.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Test services stopped; reports and traces preserved under .omx/reports/full-e2e-20260928.

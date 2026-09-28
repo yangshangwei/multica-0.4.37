@@ -1,0 +1,34 @@
+{
+  "id": "full-e2e",
+  "name": "full-e2e",
+  "title": "Verify the full end-to-end suite and repair stale acceptance coverage",
+  "description": "Run all 114 E2E cases with isolated Web, Electron, CLI and auth-mode fixtures; repair stale test navigation.",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-28",
+  "completedAt": "2026-09-28",
+  "branch": "codex/full-e2e-20260928",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "b8afcf022ef2aff289285018018a3871dd56253b",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "e2e/localized-template-defaults.spec.ts",
+    "e2e/desktop-settings.spec.ts"
+  ],
+  "notes": "",
+  "meta": {
+    "test_commits": [
+      "e042a5fa0934ef1d2ded5ebdaf3cd81232f40592",
+      "b8afcf022ef2aff289285018018a3871dd56253b"
+    ]
+  }
+}
