@@ -1,0 +1,33 @@
+{
+  "id": "issue-description-ai",
+  "name": "issue-description-ai",
+  "title": "新建任务 AI 优化描述与指令",
+  "description": "Add safe inline AI optimization to manual descriptions and agent creation prompts, with preview, explicit adoption and undo.",
+  "status": "completed",
+  "dev_type": "fullstack",
+  "scope": "issues",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-29",
+  "completedAt": "2026-09-29",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/modals/issue-description-assist.tsx",
+    "packages/views/modals/create-issue.tsx",
+    "packages/views/modals/quick-create-issue.tsx",
+    "packages/core/api/client.ts",
+    "packages/core/issues/mutations.ts",
+    "server/internal/handler/issue_description_assist.go"
+  ],
+  "notes": "Non-streaming and streaming implementation verified. See streaming-plan.md and verification.md. No real model evaluation, commits or deployment; unrelated changes preserved.",
+  "meta": {}
+}

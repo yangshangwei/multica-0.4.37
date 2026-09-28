@@ -31,6 +31,7 @@ import type { InboxItem, Issue, IssueReaction } from "../types";
 import type {
   CreateCommentSubIssueManualRequest,
   CreateIssueRequest,
+  OptimizeIssueDescriptionRequest,
   ListIssuesCache,
   MoveIssueRequest,
   UpdateIssueRequest,
@@ -1138,5 +1139,18 @@ export function useUnsubscribeFromIssueSubtree(issueId: string) {
     onSettled: () => {
       qc.invalidateQueries({ queryKey: issueKeys.subscribersAll() });
     },
+  });
+}
+
+/** Text suggestions are temporary: do not write any issue cache or draft here. */
+export function useOptimizeIssueDescription(wsId: string) {
+  return useMutation({
+    mutationKey: ["issues", wsId, "optimize-description"],
+    mutationFn: ({ signal, onText, ...data }: OptimizeIssueDescriptionRequest & {
+      signal?: AbortSignal;
+      onText?: (text: string) => void;
+    }) => api.optimizeIssueDescription(data, { workspaceId: wsId, signal, onText }),
+    retry: false,
+    gcTime: 0,
   });
 }

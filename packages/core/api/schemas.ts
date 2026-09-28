@@ -3797,3 +3797,8 @@ export const EMPTY_LIST_VCS_CONNECTIONS_RESPONSE: ListVCSConnectionsResponse = {
   configured: false,
   can_manage: false,
 };
+
+export const OptimizeIssueDescriptionResponseSchema = z.object({
+  text: z.string().refine((text) => text.trim().length > 0),
+  questions: z.array(z.string()).nullish().transform((questions) => questions ?? []),
+});

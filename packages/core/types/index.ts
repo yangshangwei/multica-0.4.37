@@ -362,3 +362,5 @@ export type {
   WorkspaceSubscriptionSeatReconcileResult,
   CreateWorkspaceSubscriptionPortalResponse,
 } from "./billing";
+
+export type { OptimizeIssueDescriptionRequest, OptimizeIssueDescriptionResponse } from "./issue";

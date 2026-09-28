@@ -44,16 +44,23 @@
 //     Sends the tail of the conversation: up to 6 messages, the reply being
 //     answered capped at 3000 runes (2000 head + 1000 tail) and each older
 //     message at 800.
+//   - Issue description optimization —
+//     server/internal/handler/issue_description_assist.go. On explicit request,
+//     sends the current description or agent instructions (up to 20000 runes),
+//     optional title (500 runes), and creation mode. Markdown references are
+//     included; attachment file contents are never fetched or sent.
+//     Streaming clients receive provisional text deltas; only the final,
+//     validated JSON/Markdown result may be adopted as a task description.
 //
-// Both consumers send private chat content, which is why an unconfigured
+// These consumers send private content, which is why an unconfigured
 // deployment making zero upstream requests is a contract rather than a side
 // effect: New with no API key and no base URL returns a disabled client whose
 // every call fails with ErrNotConfigured before an HTTP request is ever built,
-// and both consumers check Enabled() before doing any work
+// and all consumers check Enabled() before doing generation work
 // (TestUnconfiguredClientMakesZeroUpstreamRequests). An operator who must not
 // let THIS layer send chat content leaves MULTICA_LLM_API_KEY and
 // MULTICA_LLM_BASE_URL empty; the product stays whole (client-derived chat
-// titles, no follow-up question buttons).
+// titles, no follow-up question buttons, ordinary issue creation without AI).
 //
 // The wrapper is intentionally small:
 //
@@ -379,6 +386,55 @@ func (c *Client) GenerateJSON(ctx context.Context, model, systemPrompt, userProm
 		return "", ErrNotConfigured
 	}
 
+	params := c.jsonCompletionParams(model, systemPrompt, userPrompt, temperature, maxCompletionTokens)
+
+	// The preferred request and its optional compatibility retry share one
+	// deadline, so a legacy gateway cannot double the caller's time budget.
+	ctx, cancel := withDefaultTimeout(ctx)
+	defer cancel()
+
+	// Some older OpenAI-compatible gateways have not implemented one or both
+	// modern fields. Negotiate only when the upstream explicitly identifies an
+	// unsupported parameter: validation fails before generation, and each field
+	// can be removed or replaced at most once under the shared deadline.
+	//
+	// This loop is a parameter-compatibility negotiation, NOT an error retry,
+	// and it is deliberately independent of Config.MaxRetries: it fires only on
+	// a 400 the SDK never retries, and its bound stays 2 whatever the transport
+	// budget is. The two do compose, though — each attempt below carries its own
+	// transport budget, so one call can cost up to two negotiation requests plus
+	// MaxRetries+1 on the final attempt.
+	var completion *openai.ChatCompletion
+	for compatibilityRetries := 0; ; compatibilityRetries++ {
+		var err error
+		completion, err = c.Chat(ctx, params)
+		if err == nil {
+			break
+		}
+		if compatibilityRetries >= 2 {
+			return "", err
+		}
+
+		if !negotiateJSONParameters(&params, err) {
+			return "", err
+		}
+	}
+	if len(completion.Choices) == 0 {
+		return "", errors.New("llm: upstream returned no choices")
+	}
+	choice := completion.Choices[0]
+	if choice.FinishReason == "length" {
+		return "", errors.New("llm: upstream reached the max completion token limit before producing complete JSON")
+	}
+	if strings.TrimSpace(choice.Message.Content) == "" {
+		return "", errors.New("llm: upstream returned empty JSON content")
+	}
+	return choice.Message.Content, nil
+}
+
+// jsonCompletionParams keeps one-shot and streaming structured generation on
+// the same model, response-format and parameter-compatibility policy.
+func (c *Client) jsonCompletionParams(model, systemPrompt, userPrompt string, temperature float64, maxCompletionTokens int64) openai.ChatCompletionNewParams {
 	messages := make([]openai.ChatCompletionMessageParamUnion, 0, 2)
 	if strings.TrimSpace(systemPrompt) != "" {
 		messages = append(messages, openai.SystemMessage(systemPrompt))
@@ -412,54 +468,20 @@ func (c *Client) GenerateJSON(ctx context.Context, model, systemPrompt, userProm
 		params.MaxCompletionTokens = openai.Int(maxCompletionTokens)
 	}
 
-	// The preferred request and its optional compatibility retry share one
-	// deadline, so a legacy gateway cannot double the caller's time budget.
-	ctx, cancel := withDefaultTimeout(ctx)
-	defer cancel()
+	return params
+}
 
-	// Some older OpenAI-compatible gateways have not implemented one or both
-	// modern fields. Negotiate only when the upstream explicitly identifies an
-	// unsupported parameter: validation fails before generation, and each field
-	// can be removed or replaced at most once under the shared deadline.
-	//
-	// This loop is a parameter-compatibility negotiation, NOT an error retry,
-	// and it is deliberately independent of Config.MaxRetries: it fires only on
-	// a 400 the SDK never retries, and its bound stays 2 whatever the transport
-	// budget is. The two do compose, though — each attempt below carries its own
-	// transport budget, so one call can cost up to two negotiation requests plus
-	// MaxRetries+1 on the final attempt.
-	var completion *openai.ChatCompletion
-	for compatibilityRetries := 0; ; compatibilityRetries++ {
-		var err error
-		completion, err = c.Chat(ctx, params)
-		if err == nil {
-			break
-		}
-		if compatibilityRetries >= 2 {
-			return "", err
-		}
-
-		switch {
-		case params.MaxCompletionTokens.Valid() && isUnsupportedParameter(err, "max_completion_tokens"):
-			params.MaxCompletionTokens = param.Opt[int64]{}
-			params.MaxTokens = openai.Int(maxCompletionTokens)
-		case params.ReasoningEffort != "" && isUnsupportedParameter(err, "reasoning_effort"):
-			params.ReasoningEffort = ""
-		default:
-			return "", err
-		}
+func negotiateJSONParameters(params *openai.ChatCompletionNewParams, err error) bool {
+	switch {
+	case params.MaxCompletionTokens.Valid() && isUnsupportedParameter(err, "max_completion_tokens"):
+		params.MaxTokens = params.MaxCompletionTokens
+		params.MaxCompletionTokens = param.Opt[int64]{}
+	case params.ReasoningEffort != "" && isUnsupportedParameter(err, "reasoning_effort"):
+		params.ReasoningEffort = ""
+	default:
+		return false
 	}
-	if len(completion.Choices) == 0 {
-		return "", errors.New("llm: upstream returned no choices")
-	}
-	choice := completion.Choices[0]
-	if choice.FinishReason == "length" {
-		return "", errors.New("llm: upstream reached the max completion token limit before producing complete JSON")
-	}
-	if strings.TrimSpace(choice.Message.Content) == "" {
-		return "", errors.New("llm: upstream returned empty JSON content")
-	}
-	return choice.Message.Content, nil
+	return true
 }
 
 func isUnsupportedParameter(err error, parameter string) bool {

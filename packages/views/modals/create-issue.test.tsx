@@ -51,6 +51,7 @@ const mockShowIssueLimitUpgradePrompt = vi.hoisted(() => vi.fn());
 // `api.uploadFile(file, ctx, signal)` (MUL-5181 L2). Tests drive uploads by
 // mocking that call; it resolves a plain server Attachment row.
 const mockApiUploadFile = vi.hoisted(() => vi.fn());
+const mockOptimizeDescription = vi.hoisted(() => vi.fn());
 
 const sourceContextPanelData = () => ({
   anchor_comment_id: "comment-source",
@@ -263,6 +264,7 @@ vi.mock("@multica/core/issues/stores/issue-create-settings-store", () => ({
 
 vi.mock("@multica/core/issues/mutations", () => ({
   useCreateIssue: () => ({ mutateAsync: mockCreateIssue }),
+  useOptimizeIssueDescription: () => ({ mutateAsync: mockOptimizeDescription }),
   useCreateCommentSubIssue: () => ({
     mutateAsync: ({ anchorCommentId, data }: {
       anchorCommentId: string;
@@ -336,6 +338,10 @@ vi.mock("@multica/core/api", async () => {
   };
 });
 
+vi.mock("../editor/readonly-content", () => ({
+  ReadonlyContent: ({ content }: { content: string }) => <div>{content}</div>,
+}));
+
 vi.mock("../editor", async () => {
   // Real submit gate (pure React) driven by the mock editor's
   // `hasActiveUploads` / `onUploadingChange`.
@@ -354,6 +360,12 @@ vi.mock("../editor", async () => {
     const inFlightRef = useRef(0);
     useImperativeHandle(ref, () => ({
       getMarkdown: () => valueRef.current,
+      focus: vi.fn(),
+      flushPendingUpdate: () => null,
+      adoptContent: (markdown: string) => {
+        valueRef.current = markdown;
+        setValue(markdown);
+      },
       clearContent: () => {
         valueRef.current = "";
         setValue("");
@@ -627,6 +639,7 @@ function renderModal(element: React.ReactElement) {
 describe("CreateIssueModal", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockOptimizeDescription.mockResolvedValue({ text: "Clarified request", questions: ["Confirm scope?"] });
     mockQuickCreateStore.keepOpen = false;
     mockCreateSettingsStore.manualCreateFields = DEFAULT_MANUAL_FIELDS;
     mockSetKeepOpen.mockImplementation((v: boolean) => {
@@ -708,6 +721,45 @@ describe("CreateIssueModal", () => {
     mockSetIssueProperty.mockResolvedValue({
       properties: { "property-tier": "option-enterprise" },
     });
+  });
+
+  it("clears the AI preview when continuous creation starts a new manual draft", async () => {
+    mockQuickCreateStore.keepOpen = true;
+    mockDraftStore.draft.manual.title = "Original title";
+    mockDraftStore.draft.manual.description = "Original description";
+    const onClose = vi.fn();
+    renderModal(<CreateIssueModal onClose={onClose} />);
+    await userEvent.click(screen.getByRole("button", { name: "AI optimize description" }));
+    await screen.findByText("Clarified request");
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    await waitFor(() => expect(screen.queryByText("Clarified request")).not.toBeInTheDocument());
+    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("");
+    expect(screen.getByRole("button", { name: "AI optimize description" })).toBeDisabled();
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("keeps AI preview out of submission until explicitly applied", async () => {
+    mockDraftStore.draft.manual.title = "Original title";
+    mockDraftStore.draft.manual.description = "Original description";
+    renderModal(<CreateIssueModal onClose={vi.fn()} />);
+    await userEvent.click(screen.getByRole("button", { name: "AI optimize description" }));
+    expect(await screen.findByText("Clarified request")).toBeInTheDocument();
+    expect(mockCreateIssue).not.toHaveBeenCalled();
+    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Original description");
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    expect(mockCreateIssue).toHaveBeenCalledWith(expect.objectContaining({ description: "Original description" }));
+  });
+
+  it("writes adopted AI text to the manual draft and supports undo", async () => {
+    mockDraftStore.draft.manual.description = "Original description";
+    renderModal(<CreateIssueModal onClose={vi.fn()} />);
+    await userEvent.click(screen.getByRole("button", { name: "AI optimize description" }));
+    await userEvent.click(await screen.findByRole("button", { name: "Apply and replace" }));
+    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Clarified request");
+    expect(mockDraftStore.draft.manual.description).toBe("Clarified request");
+    expect(mockDraftStore.draft.agent.prompt).toBe("");
+    await userEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Original description");
   });
 
   it("uses the same compact attachment control as agent mode", () => {
@@ -1297,7 +1349,7 @@ describe("CreateIssueModal", () => {
       />,
     );
 
-    const description = screen.getByPlaceholderText("Add description...").parentElement;
+    const description = screen.getByPlaceholderText("Add description...").closest(".overflow-y-auto");
     const sourceContext = document.querySelector<HTMLElement>('[data-slot="source-context-preview"]');
 
     expect(description).toHaveClass(

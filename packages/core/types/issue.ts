@@ -217,3 +217,15 @@ export interface Issue {
   /** Present only on issue detail responses for issues created from a comment. */
   source_context?: IssueSourceContext;
 }
+
+/** A text-only assist request; it never creates or dispatches an issue. */
+export interface OptimizeIssueDescriptionRequest {
+  text: string;
+  title?: string;
+  mode: "manual" | "agent";
+}
+
+export interface OptimizeIssueDescriptionResponse {
+  text: string;
+  questions: string[];
+}

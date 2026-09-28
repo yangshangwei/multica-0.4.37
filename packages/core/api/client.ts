@@ -1,6 +1,8 @@
 import { configStore } from "../config";
 import type {
   Issue,
+  OptimizeIssueDescriptionRequest,
+  OptimizeIssueDescriptionResponse,
   IssuePriority,
   CreateIssueRequest,
   MoveIssueRequest,
@@ -261,6 +263,8 @@ import { type Logger, noopLogger } from "../logger";
 import { createRequestId, createSafeId } from "../utils";
 import { getCurrentSlug, getCurrentWsId } from "../platform/workspace-storage";
 import { parseWithFallback } from "./schema";
+import { readIssueDescriptionStream, IssueDescriptionStreamError } from "./issue-description-stream";
+import { OptimizeIssueDescriptionResponseSchema } from "./schemas";
 import {
   AgentApprovalListResponseSchema,
   AgentApprovalSchema,
@@ -1217,6 +1221,38 @@ export class ApiClient {
       throw new Error("GET /api/issues/:id returned a malformed issue");
     }
     return issue;
+  }
+
+  async optimizeIssueDescription(
+    data: OptimizeIssueDescriptionRequest,
+    options: { workspaceId: string; signal?: AbortSignal; onText?: (text: string) => void },
+  ): Promise<OptimizeIssueDescriptionResponse> {
+    const response = await this.fetchRaw("/api/issues/optimize-description", {
+      ...workspaceRequestInit(options),
+      extraHeaders: { "Content-Type": "application/json", Accept: "text/event-stream" },
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    if (response.headers.get("Content-Type")?.split(";")[0]?.trim().toLowerCase() === "text/event-stream") {
+      try {
+        return await readIssueDescriptionStream(response, options);
+      } catch (error) {
+        if (error instanceof IssueDescriptionStreamError) {
+          throw new ApiError(error.message, 502, "Bad Gateway", { code: error.code });
+        }
+        throw error;
+      }
+    }
+    // An older API may still return its validated JSON response to an SSE request.
+    const raw: unknown = await response.json();
+    const result = parseWithFallback<OptimizeIssueDescriptionResponse | null>(
+      raw, OptimizeIssueDescriptionResponseSchema, null,
+      { endpoint: "POST /api/issues/optimize-description", redact: true },
+    );
+    if (!result) {
+      throw new ApiError("Invalid optimization response", 502, "Bad Gateway", { code: "ai_invalid_output" });
+    }
+    return result;
   }
 
   async createIssue(data: CreateIssueRequest): Promise<Issue> {

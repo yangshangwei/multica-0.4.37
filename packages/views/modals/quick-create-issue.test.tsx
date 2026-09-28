@@ -22,6 +22,7 @@ const mockShowIssueLimitUpgradePrompt = vi.hoisted(() => vi.fn());
 // Uploads flow through the module-level coordinator, which calls
 // `api.uploadFile(file, ctx, signal)` (MUL-5181 L2).
 const mockApiUploadFile = vi.hoisted(() => vi.fn());
+const mockOptimizeDescription = vi.hoisted(() => vi.fn());
 const mockNavigationPush = vi.hoisted(() => vi.fn());
 const mockSetShared = vi.hoisted(() => vi.fn());
 const mockSetManual = vi.hoisted(() => vi.fn());
@@ -123,8 +124,12 @@ const mockProjectsQuery = vi.hoisted(() => ({
 // exist and one's leader is reachable" and "no squads" cases without
 // re-mocking the whole module.
 const mockSquadsData = vi.hoisted(
-  () => ({ list: [] as Array<{ id: string; name: string; leader_id: string; archived_at: string | null }> }),
+  () => ({ list: [] as Array<{ id: string; name: string; leader_id: string; archived_at: string | null; template_key?: string; description?: string }> }),
 );
+
+const mockAgentsData = vi.hoisted(() => ({
+  list: [] as Array<{ id: string; name: string; archived_at: string | null; runtime_id: string; template_key?: string; description?: string }>,
+}));
 
 // Per-test override for the runtimes list. Non-admin members receive a
 // filtered list (ListVisibleAgentRuntimes) that omits other members' private
@@ -153,7 +158,7 @@ vi.mock("@tanstack/react-query", () => ({
         return { data: [{ user_id: "user-1", role: "admin" }] };
       case "agents":
         return {
-          data: [{ id: "agent-1", name: "Bohan", archived_at: null, runtime_id: "runtime-1" }],
+          data: mockAgentsData.list,
         };
       case "runtimes":
         return { data: mockRuntimesData.list };
@@ -324,6 +329,14 @@ vi.mock("@multica/ui/lib/utils", () => ({
   cn: (...values: Array<string | false | null | undefined>) => values.filter(Boolean).join(" "),
 }));
 
+vi.mock("@multica/core/issues/mutations", () => ({
+  useOptimizeIssueDescription: () => ({ mutateAsync: mockOptimizeDescription }),
+}));
+
+vi.mock("../editor/readonly-content", () => ({
+  ReadonlyContent: ({ content }: { content: string }) => <div>{content}</div>,
+}));
+
 vi.mock("../editor", async () => {
   // Real submit gate (pure React) driven by the mock editor's
   // `hasActiveUploads` / `onUploadingChange`.
@@ -355,6 +368,11 @@ vi.mock("../editor", async () => {
 
     useImperativeHandle(ref, () => ({
       getMarkdown: () => valueRef.current,
+      flushPendingUpdate: () => null,
+      adoptContent: (markdown: string) => {
+        valueRef.current = markdown;
+        setValue(markdown);
+      },
       clearContent: () => {
         valueRef.current = "";
         setValue("");
@@ -372,6 +390,7 @@ vi.mock("../editor", async () => {
     return (
       <>
         <textarea
+          aria-label="Issue prompt"
           value={value}
           placeholder={placeholder}
           onChange={(e) => {
@@ -510,6 +529,7 @@ function renderPanel(props: React.ComponentProps<typeof AgentCreatePanel>) {
 describe("AgentCreatePanel", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockOptimizeDescription.mockResolvedValue({ text: "Clarified request", questions: ["Confirm scope?"] });
     mockQuickCreateStore.lastActorType = null;
     mockQuickCreateStore.lastActorId = null;
     mockQuickCreateStore.lastProjectId = null;
@@ -533,6 +553,7 @@ describe("AgentCreatePanel", () => {
     mockProjectsQuery.data = [];
     mockProjectsQuery.isSuccess = true;
     mockSquadsData.list = [];
+    mockAgentsData.list = [{ id: "agent-1", name: "Bohan", archived_at: null, runtime_id: "runtime-1" }];
     mockRuntimesData.list = [{ id: "runtime-1", metadata: { cli_version: "1.2.3" } }];
     mockQuickCreateIssue.mockResolvedValue(undefined);
     mockCreateCommentSubIssue.mockResolvedValue({ task_id: "task-source-child" });
@@ -558,14 +579,68 @@ describe("AgentCreatePanel", () => {
     });
   });
 
+  it("clears the AI preview when continuous creation starts a new agent draft", async () => {
+    mockQuickCreateStore.keepOpen = true;
+    const onClose = vi.fn();
+    renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
+    await userEvent.click(screen.getByRole("button", { name: "AI optimize instructions" }));
+    await screen.findByText("Clarified request");
+    await userEvent.click(screen.getByRole("button", { name: /^Create$/ }));
+    await waitFor(() => expect(screen.queryByText("Clarified request")).not.toBeInTheDocument());
+    expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("");
+    expect(screen.getByRole("button", { name: "AI optimize instructions" })).toBeDisabled();
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("optimizes only the agent draft and creates with the adopted prompt", async () => {
+    renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+    await userEvent.click(screen.getByRole("button", { name: "AI optimize instructions" }));
+    expect(await screen.findByText("Clarified request")).toBeInTheDocument();
+    expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("Persisted draft prompt");
+    await userEvent.click(screen.getByRole("button", { name: "Apply and replace" }));
+    expect(mockIssueDraftStore.draft.agent.prompt).toBe("Clarified request");
+    expect(mockIssueDraftStore.draft.manual.description).toBe("");
+    await userEvent.click(screen.getByRole("button", { name: /^Create$/ }));
+    expect(mockQuickCreateIssue).toHaveBeenCalledWith(expect.objectContaining({ prompt: "Clarified request" }));
+  });
+
   it("loads the persisted prompt draft when no transient prompt is provided", () => {
     renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
 
     expect(
-      screen.getByPlaceholderText(
-        'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-      ),
+      screen.getByRole("textbox", { name: "Issue prompt" }),
     ).toHaveValue("Persisted draft prompt");
+  });
+
+  it("switches development scenarios between agents and squads without replacing the draft", async () => {
+    mockAgentsData.list = [
+      { id: "agent-1", name: "Review Partner", archived_at: null, runtime_id: "runtime-1", template_key: "code-reviewer" },
+      { id: "agent-2", name: "Test Partner", archived_at: null, runtime_id: "runtime-1", template_key: "qa-engineer" },
+    ];
+    mockSquadsData.list = [
+      { id: "squad-1", name: "Repair Team", leader_id: "agent-1", archived_at: null, template_key: "bug-fix" },
+      { id: "squad-2", name: "Discovery Team", leader_id: "agent-1", archived_at: null, template_key: "discovery" },
+    ];
+    const user = userEvent.setup();
+    renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
+    const reviewPlaceholder = editor.getAttribute("placeholder");
+
+    await user.click(screen.getByRole("button", { name: /Test Partner/ }));
+    expect(editor.getAttribute("placeholder")).not.toBe(reviewPlaceholder);
+    const testPlaceholder = editor.getAttribute("placeholder");
+
+    await user.click(screen.getByRole("button", { name: /Repair Team/ }));
+    expect(editor.getAttribute("placeholder")).not.toBe(testPlaceholder);
+    expect(editor.getAttribute("placeholder")).not.toBe(reviewPlaceholder);
+    const repairPlaceholder = editor.getAttribute("placeholder");
+
+    await user.click(screen.getByRole("button", { name: /Discovery Team/ }));
+    expect(editor.getAttribute("placeholder")).not.toBe(repairPlaceholder);
+    expect(editor).toHaveValue("Persisted draft prompt");
+    expect(mockIssueDraftStore.draft.agent.prompt).toBe("Persisted draft prompt");
+    expect(mockQuickCreateIssue).not.toHaveBeenCalled();
   });
 
   it("restores unfinished actor, project, priority, and due-date selections after remount", async () => {
@@ -616,9 +691,7 @@ describe("AgentCreatePanel", () => {
 
     renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
 
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
 
     await user.clear(editor);
     await user.type(editor, "New agent prompt");
@@ -689,9 +762,7 @@ describe("AgentCreatePanel", () => {
 
     renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
 
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     fireEvent.change(editor, { target: { value: "Half-typed request" } });
     await user.click(screen.getByRole("button", { name: "Customize fields..." }));
 
@@ -741,9 +812,7 @@ describe("AgentCreatePanel", () => {
     );
     const onClose = vi.fn();
     renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     fireEvent.change(editor, { target: { value: "Draft A prompt" } });
     fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
     await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalled());
@@ -772,9 +841,7 @@ describe("AgentCreatePanel", () => {
       () => new Promise((resolve) => { resolveCreate = resolve; }),
     );
     const view = renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     fireEvent.change(editor, { target: { value: "Draft A prompt" } });
     fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
     await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalled());
@@ -800,9 +867,7 @@ describe("AgentCreatePanel", () => {
       () => new Promise((resolve) => { resolveCreate = resolve; }),
     );
     const view = renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     fireEvent.change(editor, { target: { value: "Draft A prompt" } });
     fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
     await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalled());
@@ -825,9 +890,7 @@ describe("AgentCreatePanel", () => {
     await user.click(screen.getByRole("button", { name: "Mock editor upload" }));
     await waitFor(() => expect(mockApiUploadFile).toHaveBeenCalled());
 
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     await user.clear(editor);
     fireEvent.change(editor, {
       target: {
@@ -865,9 +928,7 @@ describe("AgentCreatePanel", () => {
     // squad row directly.
     await user.click(screen.getByRole("button", { name: /Frontend Squad/ }));
 
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     await user.clear(editor);
     await user.type(editor, "Investigate the regression");
 
@@ -927,9 +988,7 @@ describe("AgentCreatePanel", () => {
       await user.click(screen.getByRole("button", { name: /Bohan/ }));
       await user.click(screen.getByTestId("project-picker"));
       await user.type(
-        screen.getByPlaceholderText(
-          'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-        ),
+        screen.getByRole("textbox", { name: "Issue prompt" }),
         "Ship it",
       );
       await user.click(screen.getByRole("button", { name: /^Create$/i }));
@@ -1031,9 +1090,7 @@ describe("AgentCreatePanel", () => {
     // will be filed as a sub-issue.
     expect(screen.getByTestId("agent-sub-issue-chip")).toBeInTheDocument();
 
-    const editor = screen.getByPlaceholderText(
-      'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-    );
+    const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     await user.clear(editor);
     await user.type(editor, "Investigate the regression");
 
@@ -1068,7 +1125,7 @@ describe("AgentCreatePanel", () => {
 
     const prompt = screen.getByPlaceholderText(
       'Tell the agent what to do with this context, e.g. "continue investigating and fix the issue described here"',
-    ).parentElement;
+    ).closest(".overflow-y-auto");
     const sourceContext = document.querySelector<HTMLElement>('[data-slot="source-context-preview"]');
 
     expect(prompt).toHaveClass("flex-1", "min-h-[140px]", "overflow-y-auto");
@@ -1179,9 +1236,7 @@ describe("AgentCreatePanel", () => {
       ).not.toBeInTheDocument();
       // ...and Create is reachable (gated only by prompt content, as usual).
       await user.type(
-        screen.getByPlaceholderText(
-          'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-        ),
+        screen.getByRole("textbox", { name: "Issue prompt" }),
         "Ship it",
       );
       const create = screen.getByRole("button", { name: /^Create$/i });
@@ -1203,9 +1258,7 @@ describe("AgentCreatePanel", () => {
 
       expect(screen.getByText(/Create with agent needs ≥/i)).toBeInTheDocument();
       await user.type(
-        screen.getByPlaceholderText(
-          'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-        ),
+        screen.getByRole("textbox", { name: "Issue prompt" }),
         "Ship it",
       );
       expect(screen.getByRole("button", { name: /^Create$/i })).toBeDisabled();
@@ -1224,9 +1277,7 @@ describe("AgentCreatePanel", () => {
 
       renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
 
-      const editor = screen.getByPlaceholderText(
-        'Tell the agent what to do, e.g. "let Bohan fix the inbox loading slowness in the Web project"',
-      );
+      const editor = screen.getByRole("textbox", { name: "Issue prompt" });
 
       // Both presses inside ONE act: React cannot re-render between them, so
       // the second handler still closes over `submitting === false`. fireEvent

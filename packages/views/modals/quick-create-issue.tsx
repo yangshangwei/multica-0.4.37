@@ -85,6 +85,8 @@ import { useT } from "../i18n";
 import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";
+import { IssueDescriptionAssist } from "./issue-description-assist";
+import { getQuickCreateScenario } from "./quick-create-scenario";
 
 type ActorSelection =
   | { type: "agent"; id: string }
@@ -687,23 +689,40 @@ export function AgentCreatePanel({
             editor unbounded and pushed the modal past the viewport. */}
         <div
           {...dropZoneProps}
-          className="relative px-5 pb-3 flex flex-1 min-h-[140px] overflow-y-auto"
+          className="relative px-5 pb-3 flex flex-col flex-1 min-h-[140px] overflow-y-auto"
         >
-          <ContentEditor
-            ref={editorRef}
-            defaultValue={initialPrompt}
-            placeholder={anchorCommentId
-              ? t(($) => $.create_issue.agent.source_context_prompt_placeholder)
-              : t(($) => $.create_issue.agent.prompt_placeholder)}
-            onUpdate={(md) => {
-              setHasContent(md.trim().length > 0);
-              setAgent({ prompt: md });
-            }}
-            onUploadFile={handleUploadFile}
-            onUploadingChange={uploadGate.onUploadingChange}
+          <div className="flex flex-1 flex-col">
+            <ContentEditor
+              ref={editorRef}
+              defaultValue={initialPrompt}
+              placeholder={anchorCommentId
+                ? t(($) => $.create_issue.agent.source_context_prompt_placeholder)
+                : getQuickCreateScenario(t, selectedAgent, selectedSquad)}
+              onUpdate={(md) => {
+                setHasContent(md.trim().length > 0);
+                setAgent({ prompt: md });
+              }}
+              onUploadFile={handleUploadFile}
+              onUploadingChange={uploadGate.onUploadingChange}
+              attachments={pendingAttachments}
+              onSubmit={submit}
+              debounceMs={150}
+            />
+          </div>
+          <IssueDescriptionAssist
+            key={`${wsId}:${sentCount}`}
+            wsId={wsId}
+            mode="agent"
+            editorRef={editorRef}
+            value={initialPrompt}
             attachments={pendingAttachments}
-            onSubmit={submit}
-            debounceMs={150}
+            onChange={(prompt) => {
+              setHasContent(prompt.trim().length > 0);
+              setAgent({ prompt });
+            }}
+            uploading={gate.uploading}
+            isBlocked={gate.isBlocked}
+            submitting={submitting}
           />
           {isDragOver && <FileDropOverlay />}
         </div>

@@ -99,6 +99,7 @@ import { IssuePickerModal } from "./issue-picker-modal";
 import { useT } from "../i18n";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";
+import { IssueDescriptionAssist } from "./issue-description-assist";
 
 // ---------------------------------------------------------------------------
 // ManualCreatePanel — manual-mode body of the create-issue dialog. Renders
@@ -943,17 +944,32 @@ export function ManualCreatePanel({
             </div>
 
             {/* Description — takes remaining space */}
-            <div {...descDropZoneProps} className="relative flex flex-1 min-h-0 overflow-y-auto px-5">
-              <ContentEditor
-                ref={descEditorRef}
-                defaultValue={draft.manual.description}
-                placeholder={t(($) => $.create_issue.description_placeholder)}
-                onUpdate={(md) => setManual({ description: md })}
-                onSubmit={handleSubmit}
-                onUploadFile={handleUpload}
-                onUploadingChange={uploadGate.onUploadingChange}
-                debounceMs={500}
+            <div {...descDropZoneProps} className="relative flex flex-col flex-1 min-h-0 overflow-y-auto px-5">
+              <div className="flex flex-1 flex-col">
+                <ContentEditor
+                  ref={descEditorRef}
+                  defaultValue={draft.manual.description}
+                  placeholder={t(($) => $.create_issue.description_placeholder)}
+                  onUpdate={(md) => setManual({ description: md })}
+                  onSubmit={handleSubmit}
+                  onUploadFile={handleUpload}
+                  onUploadingChange={uploadGate.onUploadingChange}
+                  debounceMs={500}
+                  attachments={draftAttachments}
+                />
+              </div>
+              <IssueDescriptionAssist
+                key={`${wsId}:${formResetKey}`}
+                wsId={wsId}
+                mode="manual"
+                editorRef={descEditorRef}
+                value={draft.manual.description}
+                title={title}
                 attachments={draftAttachments}
+                onChange={(description) => setManual({ description })}
+                uploading={gate.uploading}
+                isBlocked={gate.isBlocked}
+                submitting={submitting}
               />
               {descDragOver && <FileDropOverlay />}
             </div>

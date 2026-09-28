@@ -39,9 +39,10 @@ func (c *countingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 // layer — agent runs reach a model by their own path, which no variable here
 // governs. See the package doc.)
 //
-// Both consumers of this package send private chat content upstream — the
+// Consumers of this package send private content upstream — the
 // first message of a chat session (auto-titling) and the tail of a conversation
-// (follow-up questions). "Leave the LLM variables empty" is the documented
+// (follow-up questions), or a submitted issue draft (description optimization).
+// "Leave the LLM variables empty" is the documented
 // answer for an operator whose policy forbids that (.env.example, the docs
 // environment-variables pages, and GitHub issue #7162), so the behaviour has to
 // be a tested guarantee rather than something that happens to be true today.
@@ -82,6 +83,10 @@ func TestUnconfiguredClientMakesZeroUpstreamRequests(t *testing.T) {
 			}},
 			{"GenerateJSON", func() error {
 				_, err := c.GenerateJSON(ctx, "", "system JSON", "private chat content", 0.3, 2048)
+				return err
+			}},
+			{"GenerateJSONStream", func() error {
+				_, err := c.GenerateJSONStream(ctx, "", "system JSON", "private chat content", 0.3, 2048, nil)
 				return err
 			}},
 		}
@@ -125,16 +130,18 @@ const openAISDKImportPrefix = "github.com/openai/openai-go"
 var documentedConsumers = map[string]string{
 	"internal/handler/chat_title.go":                  "chat auto-titling: the first user message of a new chat session",
 	"internal/service/chat_quick_actions_generate.go": "chat follow-up questions: the tail of the conversation",
+	"internal/handler/issue_description_assist.go":    "issue description optimization: submitted description, optional title and creation mode",
 }
 
 // clientCallSurface is every method on Client that can produce an upstream
 // request. Enabled and DefaultModel are deliberately absent: asking whether the
 // layer is on sends nothing, and consumers are expected to call it.
 var clientCallSurface = map[string]bool{
-	"Chat":         true,
-	"ChatStream":   true,
-	"GenerateText": true,
-	"GenerateJSON": true,
+	"Chat":               true,
+	"ChatStream":         true,
+	"GenerateText":       true,
+	"GenerateJSON":       true,
+	"GenerateJSONStream": true,
 }
 
 // methodNameCollisions are call sites the scan below flags by name without
@@ -183,7 +190,7 @@ func TestDocumentedConsumersAreTheOnlyCallers(t *testing.T) {
 			t.Errorf("undocumented consumer of this layer: %s calls %v.\n"+
 				"If it sends content upstream, it must be disclosed before it ships: add it to "+
 				"documentedConsumers, to this package's doc comment, and to the operator copy in "+
-				".env.example and apps/docs/content/docs/environment-variables*.mdx (all four locales).\n"+
+				".env.example and apps/docs/content/docs/environment-variables*.mdx (all maintained locales).\n"+
 				"If it is an unrelated type that merely shares a method name, add it to "+
 				"methodNameCollisions — never to documentedConsumers, which operators read as the "+
 				"list of things that send their chat content somewhere.", rel, methods)
