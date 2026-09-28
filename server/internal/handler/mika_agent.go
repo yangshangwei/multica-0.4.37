@@ -38,8 +38,8 @@ const (
 // instructions it is stored on the row: description is an owner-editable field
 // and the product does not reclaim it after creation.
 var mikaAgentDescriptions = map[string]string{
-	"en": "Your workspace Chief of Staff. Mika turns goals into issues, coordinates agents, and helps build reusable workflows.",
-	"zh": "你的工作区 Chief of Staff。Mika 会把目标转化为任务、协调智能体，并帮你建立可复用的工作流。",
+	"en": "Your workspace Chief of Staff. Turns goals into issues, coordinates agents, and helps build reusable workflows.",
+	"zh": "你的工作区 Chief of Staff。把目标转化为任务、协调智能体，并帮你建立可复用的工作流。",
 }
 
 type createMikaAgentRequest struct {
@@ -237,7 +237,7 @@ func (h *Handler) writeMikaAgentResponse(w http.ResponseWriter, r *http.Request,
 		// exists. Every step here is idempotent, so a retry converges — say so
 		// with an error rather than handing back a half-built flow.
 		slog.Warn("mika agent: get-or-create onboarding session failed", append(logger.RequestAttrs(r), "error", err, "agent_id", uuidToString(agent.ID))...)
-		writeError(w, http.StatusInternalServerError, "failed to open the Mika conversation")
+		writeError(w, http.StatusInternalServerError, "failed to open the workspace assistant conversation")
 		return
 	}
 	sessionResp := chatSessionToResponse(session)

@@ -1,14 +1,10 @@
 /**
- * Skip path: "Connect a runtime to start with Mika".
+ * Skip path: connect a runtime to start with the built-in assistant.
  *
  * Written to a new issue (assigned to the user themselves) by the welcome
  * hook when the user took the Skip exit on Step 3. Content is the
  * install-runtime tutorial; each supported locale can recommend the
  * quickest runtime path that best fits that audience.
- *
- * Title is stable — kept identical to the v2 server-side
- * `NoRuntimeIssueTitle` so any existing dedupe code elsewhere keeps
- * matching by title.
  */
 
 /**
@@ -30,8 +26,8 @@
  * the v3 frontend population, so the two title-spaces drifting is fine.
  */
 export const INSTALL_RUNTIME_ISSUE_TITLE = {
-  en: "Connect a runtime to start with Mika",
-  zh: "连接运行时，和 Mika 开始",
+  en: "Connect a runtime to start with 小阿孚",
+  zh: "连接运行时，开始使用小阿孚",
 } as const;
 
 const en = `Welcome to Multica.
@@ -67,9 +63,9 @@ or internal package mirror for the runtime CLI. Once it is installed:
    In the desktop app, open any local runtime and click Restart. Quitting and
    reopening the app is NOT enough — the daemon keeps running in the background.
 3. Return to Runtimes and refresh. You should see a Codex runtime online.
-4. Open Runtimes. The page will offer **Start with Mika**; use it to create Mika and open the guided first chat.
+4. Open Runtimes. The page will offer **Start with 小阿孚**; use it to create 小阿孚 and open the guided first chat.
 
-Mika will turn one real goal into an issue, start it with the right agent, and suggest reusable specialists when your workflow needs them.`;
+小阿孚 will turn one real goal into an issue, start it with the right agent, and suggest reusable specialists when your workflow needs them.`;
 
 const zh = `欢迎来到 Multica。
 
@@ -102,8 +98,8 @@ const zh = `欢迎来到 Multica。
    multica daemon restart
    桌面端请打开任意一个本机 runtime 并点 Restart。退出再打开 app 是不够的 —— 守护进程会继续在后台运行。
 5. 回到 Runtimes 页面刷新。你应该能看到一个在线的 Kimi 运行时。
-6. 打开"运行时"页面。页面会显示 **和 Mika 开始**；点击后会创建 Mika，并进入引导式的首次对话。
+6. 打开"运行时"页面。页面会显示 **开始使用小阿孚**；点击后会创建小阿孚，并进入引导式的首次对话。
 
-Mika 会把一个真实目标转化为任务，交给合适的智能体启动执行，并在工作流需要时建议添加可复用的 specialist。`;
+小阿孚会把一个真实目标转化为任务，交给合适的智能体启动执行，并在工作流需要时建议添加可复用的 specialist。`;
 
 export const INSTALL_RUNTIME_ISSUE_BODY = { en, zh, } as const;

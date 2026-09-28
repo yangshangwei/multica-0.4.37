@@ -44,44 +44,51 @@ func cleanupMika(t *testing.T) {
 // server-side: the caller sends only a runtime and a language, and everything
 // that makes Mika Mika is decided here.
 func TestCreateMikaAgent_ServerOwnsTheDefinition(t *testing.T) {
-	cleanupMika(t)
+	for _, language := range []string{"en", "zh"} {
+		t.Run(language, func(t *testing.T) {
+			cleanupMika(t)
 
-	w := createMika(t, map[string]any{
-		"runtime_id": handlerTestRuntimeID(t),
-		"language":   "en",
-	})
-	if w.Code != http.StatusCreated {
-		t.Fatalf("expected 201, got %d: %s", w.Code, w.Body.String())
-	}
-	resp := decodeAgent(t, w)
+			w := createMika(t, map[string]any{
+				"runtime_id": handlerTestRuntimeID(t),
+				"language":   language,
+			})
+			if w.Code != http.StatusCreated {
+				t.Fatalf("expected 201, got %d: %s", w.Code, w.Body.String())
+			}
+			resp := decodeAgent(t, w)
 
-	if resp.SystemKey != service.MikaSystemKey {
-		t.Fatalf("system_key = %q, want %q", resp.SystemKey, service.MikaSystemKey)
-	}
-	if resp.Name != service.MikaDefaultName {
-		t.Fatalf("name = %q, want %q", resp.Name, service.MikaDefaultName)
-	}
-	if resp.PermissionMode != mikaAgentPermissionMode {
-		t.Fatalf("permission_mode = %q, want %q", resp.PermissionMode, mikaAgentPermissionMode)
-	}
-	// The workspace half starts empty — the product half is never written to
-	// the row, which is what keeps a release from overwriting workspace notes.
-	if resp.Instructions != "" {
-		t.Fatalf("instructions must start empty, got %q", resp.Instructions)
-	}
-	if !strings.Contains(resp.SystemInstructions, "你是 Mika，") {
-		t.Fatalf("system_instructions should carry the product prompt, got %q", resp.SystemInstructions)
-	}
+			if resp.SystemKey != service.MikaSystemKey {
+				t.Fatalf("system_key = %q, want %q", resp.SystemKey, service.MikaSystemKey)
+			}
+			if resp.Name != "小阿孚" {
+				t.Fatalf("name = %q, want 小阿孚", resp.Name)
+			}
+			if resp.Description != mikaAgentDescriptions[language] || strings.Contains(resp.Description, "Mika") {
+				t.Fatalf("description = %q, want current %s default", resp.Description, language)
+			}
+			if resp.PermissionMode != mikaAgentPermissionMode {
+				t.Fatalf("permission_mode = %q, want %q", resp.PermissionMode, mikaAgentPermissionMode)
+			}
+			// The workspace half starts empty — the product half is never written to
+			// the row, which is what keeps a release from overwriting workspace notes.
+			if resp.Instructions != "" {
+				t.Fatalf("instructions must start empty, got %q", resp.Instructions)
+			}
+			if !strings.Contains(resp.SystemInstructions, "你是 小阿孚，") {
+				t.Fatalf("system_instructions should carry the product prompt, got %q", resp.SystemInstructions)
+			}
 
-	// kind stays 'user' so Mika keeps appearing in agent lists and assignment
-	// surfaces, and survives runtime teardown.
-	var kind string
-	if err := testPool.QueryRow(context.Background(),
-		`SELECT kind FROM agent WHERE id = $1`, resp.ID).Scan(&kind); err != nil {
-		t.Fatalf("load agent kind: %v", err)
-	}
-	if kind != "user" {
-		t.Fatalf("kind = %q, want \"user\" — 'system' hides the row and deletes it with its runtime", kind)
+			// kind stays 'user' so Mika keeps appearing in agent lists and assignment
+			// surfaces, and survives runtime teardown.
+			var kind string
+			if err := testPool.QueryRow(context.Background(),
+				`SELECT kind FROM agent WHERE id = $1`, resp.ID).Scan(&kind); err != nil {
+				t.Fatalf("load agent kind: %v", err)
+			}
+			if kind != "user" {
+				t.Fatalf("kind = %q, want \"user\" — 'system' hides the row and deletes it with its runtime", kind)
+			}
+		})
 	}
 }
 
@@ -181,20 +188,23 @@ func TestComposeMikaInstructions(t *testing.T) {
 // hardcoded "You are Mika" would contradict it the moment an owner renames the
 // agent.
 func TestMikaSystemInstructionsUsesTheCurrentDisplayName(t *testing.T) {
-	renamed := service.MikaSystemInstructions("Jarvis")
-	if !strings.HasPrefix(renamed, "你是 Jarvis，") {
-		t.Fatalf("prompt should open as the current name:\n%s", renamed[:120])
-	}
-	if strings.Contains(renamed, "{{AGENT_NAME}}") {
-		t.Fatal("the name placeholder must be substituted")
-	}
-	// The product identity is still stated, just not as the display name.
-	if !strings.Contains(renamed, "Multica 内置的系统智能体（Mika）") {
-		t.Fatal("prompt should still identify itself as Multica's built-in agent")
+	for _, name := range []string{"小阿孚", "自定义助手", "Jarvis"} {
+		t.Run(name, func(t *testing.T) {
+			renamed := service.MikaSystemInstructions(name)
+			if !strings.HasPrefix(renamed, "你是 "+name+"，") {
+				t.Fatalf("prompt should open as the current name:\n%s", renamed)
+			}
+			if strings.Contains(renamed, "{{AGENT_NAME}}") || strings.Contains(renamed, "Mika") {
+				t.Fatal("the prompt must use the current display name without the placeholder or former name")
+			}
+			if !strings.Contains(renamed, "Multica 内置的系统智能体") {
+				t.Fatal("prompt should still identify itself as Multica's built-in agent")
+			}
+		})
 	}
 
-	if blank := service.MikaSystemInstructions("   "); !strings.HasPrefix(blank, "你是 Mika，") {
-		t.Fatalf("a blank name should fall back to the default:\n%s", blank[:120])
+	if blank := service.MikaSystemInstructions("   "); !strings.HasPrefix(blank, "你是 小阿孚，") {
+		t.Fatalf("a blank name should fall back to the default:\n%s", blank)
 	}
 }
 

@@ -9,8 +9,10 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/multica-ai/multica/server/internal/attributionbackfill"
 	"github.com/multica-ai/multica/server/internal/chatoriginbackfill"
@@ -622,6 +624,19 @@ type runOptions struct {
 	Conditions map[string]migrationCondition
 }
 
+func newMigrationPool(ctx context.Context, databaseURL string, connectTimeout time.Duration) (*pgxpool.Pool, error) {
+	config, err := dbstartup.ParsePoolConfig(databaseURL, connectTimeout)
+	if err != nil {
+		return nil, err
+	}
+	// Data migrations can skip individual rows and report why through NOTICE.
+	// pgx discards those messages unless the connection supplies a handler.
+	config.ConnConfig.OnNotice = func(_ *pgconn.PgConn, notice *pgconn.Notice) {
+		slog.Info("migration notice", "severity", notice.Severity, "message", notice.Message)
+	}
+	return pgxpool.NewWithConfig(ctx, config)
+}
+
 func main() {
 	logger.Init()
 
@@ -642,7 +657,7 @@ func main() {
 	}
 
 	startupSettings := dbstartup.SettingsFromEnv()
-	pool, err := dbstartup.NewPool(context.Background(), dbURL, startupSettings.ConnectTimeout)
+	pool, err := newMigrationPool(context.Background(), dbURL, startupSettings.ConnectTimeout)
 	if err != nil {
 		slog.Error("unable to connect to database", "error", err)
 		os.Exit(1)

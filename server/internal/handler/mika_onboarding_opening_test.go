@@ -10,7 +10,7 @@ import (
 // would be a blank bubble under three starter cards.
 func TestMikaOnboardingOpeningCoversEveryAcceptedLanguage(t *testing.T) {
 	for language := range mikaOnboardingLanguages {
-		opening := buildMikaOnboardingOpening(language, "Mika", "Venus")
+		opening := buildMikaOnboardingOpening(language, "小阿孚", "Venus")
 		if strings.TrimSpace(opening) == "" {
 			t.Fatalf("language %q has no opening", language)
 		}
@@ -20,7 +20,7 @@ func TestMikaOnboardingOpeningCoversEveryAcceptedLanguage(t *testing.T) {
 		if !strings.Contains(opening, "Venus") {
 			t.Errorf("language %q dropped the workspace name: %s", language, opening)
 		}
-		if !strings.Contains(opening, "Mika") {
+		if !strings.Contains(opening, "小阿孚") {
 			t.Errorf("language %q dropped the agent name: %s", language, opening)
 		}
 		if !strings.Contains(opening, "Multica") {
@@ -33,8 +33,8 @@ func TestMikaOnboardingOpeningCoversEveryAcceptedLanguage(t *testing.T) {
 // name. Hardcoding "Mika" would have a renamed agent introduce itself under a
 // name the member never chose.
 func TestMikaOnboardingOpeningUsesTheCurrentDisplayName(t *testing.T) {
-	opening := buildMikaOnboardingOpening("en", "Ada", "Venus")
-	if !strings.Contains(opening, "I'm Ada,") {
+	opening := buildMikaOnboardingOpening("en", "自定义助手", "Venus")
+	if !strings.Contains(opening, "I'm 自定义助手,") {
 		t.Fatalf("opening does not introduce the renamed agent:\n%s", opening)
 	}
 	if strings.Contains(opening, "Mika") {
@@ -46,7 +46,7 @@ func TestMikaOnboardingOpeningUsesTheCurrentDisplayName(t *testing.T) {
 // the default rather than emit "I'm , your Chief of Staff".
 func TestMikaOnboardingOpeningFallsBackToTheDefaultName(t *testing.T) {
 	opening := buildMikaOnboardingOpening("en", "   ", "Venus")
-	if !strings.Contains(opening, "I'm Mika,") {
+	if !strings.Contains(opening, "I'm 小阿孚,") {
 		t.Fatalf("blank name did not fall back to the product default:\n%s", opening)
 	}
 }

@@ -1,22 +1,22 @@
 ---
 name: multica-onboarding
-description: "Use when a product-authored kickoff starts or resumes Mika's interactive onboarding for a Multica workspace. The opening greeting has already been sent; carry the member from their first message to one real, confirmed, issue-based execution and a clear handoff."
+description: "Use when a product-authored kickoff starts or resumes the built-in assistant's interactive onboarding for a Multica workspace. The opening greeting has already been sent; carry the member from their first message to one real, confirmed, issue-based execution and a clear handoff."
 user-invocable: false
 allowed-tools: Bash(multica *)
 ---
 
-# Onboard a member with Mika
+# Onboard a member with the workspace assistant
 
 Turn one of the member's real goals into one running issue. That single
 completed loop teaches the working model better than any explanation can: the
 member watches chat shape the work and the issue carry it.
 
-Mika's durable instructions still apply. This skill adds only what is specific
+Your durable instructions still apply. This skill adds only what is specific
 to the first conversation.
 
 ## Availability
 
-Multica supplies this skill only to the built-in Mika in a conversation with a
+Multica supplies this skill only to the built-in assistant in a conversation with a
 product-authored onboarding kickoff. Follow-up and retry turns in that same
 conversation retain it. An agent's display name or a member asking for this skill
 does not establish onboarding context.
@@ -97,7 +97,7 @@ changes the deliverable, the required access, or the assignee.
 Pick the shape:
 
 ```
-Default → one issue, assigned to Mika.
+Default → one issue, assigned to you.
 ├── Needs a capability you lack AND the member will reuse it → propose one specialist agent
 ├── Splits into 3+ issues sharing one outcome → propose a project
 └── Everything else → the default
@@ -121,7 +121,7 @@ deliverables, the proposed assignee, and any extra structure the goal needs —
 then ask one confirmation question.
 
 A clear yes authorizes the ordinary workspace operations in that preview.
-Anything beyond it follows Mika's durable confirmation rules.
+Anything beyond it follows your durable confirmation rules.
 
 ## Start work through an issue
 
@@ -152,8 +152,8 @@ Say what is observably true right now and where to watch it. Tell the member
 they can message you at any time, during or after the run, to read progress,
 change direction, or decide what comes next.
 
-Close on the working model: bring Mika any goal, Mika shapes and coordinates
-it, issues stay the source of truth for execution.
+Close on the working model: members bring you a goal, you shape and coordinate
+it, and issues stay the source of truth for execution.
 
 Never promise to report back when the issue finishes. Your turn ends when this
 reply is sent, and nothing wakes you when the run completes — a promised

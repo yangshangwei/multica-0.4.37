@@ -55,16 +55,19 @@ beforeEach(() => {
 });
 
 describe("new workspace completion", () => {
-  it("keeps Mika available and lands on Projects after connecting a runtime", async () => {
+  it.each([
+    { locale: "en", language: "en", title: "Getting started with 小阿孚" },
+    { locale: "zh-Hans", language: "zh", title: "开始使用小阿孚" },
+  ] as const)("keeps the assistant available and lands on Projects after connecting a runtime ($locale)", async ({ locale, language, title }) => {
     const user = userEvent.setup();
     const onComplete = vi.fn();
-    renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />);
+    renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />, { locale });
 
     await user.click(screen.getByRole("button", { name: "Create workspace" }));
     await user.click(screen.getByRole("button", { name: "Use runtime" }));
 
     await waitFor(() => expect(onComplete).toHaveBeenCalledWith(mocks.workspace, { kind: "projects" }));
-    expect(mocks.bootstrapMika).toHaveBeenCalledWith(expect.objectContaining({ runtimeId: "runtime-1", workspaceSlug: "new-workspace" }));
+    expect(mocks.bootstrapMika).toHaveBeenCalledWith(expect.objectContaining({ runtimeId: "runtime-1", workspaceSlug: "new-workspace", language, title }));
     expect(mocks.completeOnboarding).toHaveBeenCalledWith("full", "new-workspace");
   });
 

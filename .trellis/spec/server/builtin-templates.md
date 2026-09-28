@@ -12,6 +12,38 @@ User responses normalize retired preferences without writing storage; explicit
 preference writes save `en`. Removing a display language never retranslates
 workspace-owned names, descriptions, prompts, instructions or conversation text.
 
+## Built-in assistant display name and stored defaults
+
+The default assistant name is `小阿孚` in English and Chinese. Its stable identity
+is `system_key=mika`; preserve API paths, symbols and UUID relationships. Names
+must never establish builtin identity or skill authorization. Product system
+instructions and new opening messages interpolate the current saved name;
+workspace instructions and historical messages remain owner content.
+
+Migration `457_builtin_agent_display_name` renames only built-in rows still named
+`Mika`. It replaces only the exact shipped English/Chinese descriptions and the
+old titles `Getting started with Mika` / `和 Mika 开始`, and only on built-ins now
+named `小阿孚`. Custom-named or conflicted agents retain their complete saved
+content. Other agents, custom descriptions/titles, instructions, kickoff rows,
+issue assignments and task snapshots are untouched. Replay does not change
+content or timestamps already migrated.
+
+Active **and archived** agents own their workspace names. A collision skips that
+builtin and reports its agent/workspace IDs while other workspaces proceed.
+The migration CLI must retain its `OnNotice` handler so PostgreSQL notices
+reach the operator log; success alone does not mean every row was renamed.
+Resolve the conflicting name through the normal editing interface, then rerun
+this migration's idempotent SQL against the reviewed database. `migrate up` alone
+will not retry a recorded version. Do not delete migration-ledger rows or rename
+unrelated agents automatically to force the migration through.
+
+The down migration intentionally retains editable names, descriptions and titles:
+it cannot distinguish migrated defaults from later owner choices. Older code
+supports arbitrary display names, so code rollback is compatible. Restore an
+individual inspected name through the normal UI/API if required. Installed
+desktop clients need an update for bundled labels; scripts resolving `Mika` by
+name should use `小阿孚` or the stable agent UUID.
+
 ## Role instructions, skills, and autonomy must agree
 
 Default role skills describe work the role can actually deliver. Architect stays
