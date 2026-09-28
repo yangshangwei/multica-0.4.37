@@ -8,8 +8,9 @@ of both final runs. See summary.json for machine-readable accounting.
 
 ## Scope and environment
 
-Base source: `4924ac74c`, local main after the skill market, project workspace
-and 小阿孚 changes. An isolated worktree and PostgreSQL database were used.
+Final build: `68e237cd1`, including concurrent main commit `4db4fe48b`
+(the existing-conversation 小阿孚 rollout repair). The final tested files match
+commit `f6785ddfa`; its only change after the build is the test interaction below. An isolated worktree and PostgreSQL database were used.
 Production Web: localhost:13785. API: localhost:18865. The task-built Electron
 renderer was served from 127.0.0.1:50928, using the real preload/router/shell
 and the repository's native-service fixture. A task-built Multica CLI was
@@ -62,4 +63,20 @@ remote push or shared user data was involved. Original main-worktree edits were
 preserved. Task services are stopped after reporting; test data/artifacts remain
 available for inspection.
 
-Test fixes committed as `e042a5fa0`, `b8afcf022`.
+Test fixes committed as `e042a5fa0`, `b8afcf022`, `f6785ddfa`.
+
+## Final integration follow-up
+
+Main advanced during the first passing run. The new commit was merged into the
+isolated checkout, the API and production Web were rebuilt, and migration 458
+was applied. Both assistant display-name migration regression groups passed.
+The first integrated full run had 112 passes and a squad keyboard test failure:
+the test sent navigation keys immediately after dismissing a menu. It now waits
+for menu removal and verifies destination focus. It passed three consecutive
+repetitions, followed by a fresh complete 113/113 regular run and a new 1/1
+device-auth run on the integrated source. No automatic retries, disabled tests
+or increased timeouts were used. All 114 discovered cases are accounted for.
+
+The final test-only fixes touch three files: localized-template-defaults.spec.ts,
+desktop-settings.spec.ts and squads-design.spec.ts. Product changes from the
+concurrent main commit were preserved, not authored by this QA task.

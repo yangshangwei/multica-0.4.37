@@ -1130,3 +1130,38 @@ Final regular run 113/113 and device-auth 1/1; zero final failures, skips or fla
 ### Next Steps
 
 - Test services stopped; reports and traces preserved under .omx/reports/full-e2e-20260928.
+
+
+## Session 36: Reverify full E2E after concurrent assistant rollout integration
+
+**Date**: 2026-09-29
+**Task**: Reverify full E2E after concurrent assistant rollout integration
+**Branch**: `codex/full-e2e-20260928`
+
+### Summary
+
+Integrated main 4db4fe48b and repeated the complete 114-case suite. Final 113 regular and 1 device-auth cases passed with zero retries, failures or skips.
+
+### Main Changes
+
+- Preserved the concurrent existing-conversation migration and verified both display-name migration groups.
+- Waited for squad menu dismissal and asserted keyboard destination focus; retained all business assertions.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `68e237cd1` | (see git log) |
+| `f6785ddfa` | (see git log) |
+
+### Testing
+
+- [OK] Squad keyboard scenario passed three consecutive runs, then the integrated full suite passed 114/114.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No pending QA work. Task services stopped; exact commit, JSON, HTML and diagnostic history are in .omx/reports/full-e2e-20260928.

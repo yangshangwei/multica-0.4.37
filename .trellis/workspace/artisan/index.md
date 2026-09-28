@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 35
-- **Last Active**: 2026-09-28
+- **Total Sessions**: 36
+- **Last Active**: 2026-09-29
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1132 | Active |
+| `journal-1.md` | ~1167 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 36 | 2026-09-29 | Reverify full E2E after concurrent assistant rollout integration | `68e237cd1`, `f6785ddfa` | `codex/full-e2e-20260928` |
 | 35 | 2026-09-28 | Complete all 114 end-to-end cases with isolated desktop and auth fixtures | `e042a5fa0`, `b8afcf022` | `codex/full-e2e-20260928` |
 | 34 | 2026-09-28 | Complete skill market, project workspace and assistant rename | `12d12b920`, `6e416c806`, `0e1303881` | `main` |
 | 33 | 2026-09-28 | Complete 小阿孚 display-name rollout | `0e1303881`, `51ddb2104` | `codex/rename-mika-xiaoafu` |
