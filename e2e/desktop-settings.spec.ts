@@ -73,8 +73,7 @@ test("desktop Help selects Updates by keyboard and grouped settings show the sto
 
     const help = page.getByRole("button", { name: "帮助", exact: true });
     await expect(help).toBeVisible({ timeout: 45_000 });
-    await help.focus();
-    await page.keyboard.press("ArrowDown");
+    await help.press("ArrowDown");
     const menu = page.getByRole("menu");
     await expect(menu).toBeVisible();
     await expect(menu.getByRole("menuitem", { name: "使用文档", exact: true })).toBeFocused();
