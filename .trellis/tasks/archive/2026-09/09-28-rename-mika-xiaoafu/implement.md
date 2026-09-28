@@ -54,8 +54,8 @@ go test ./internal/handler -run 'Mika|ComposeMika' -count=1
 - [x] Run affected TS tests, `pnpm typecheck`, `pnpm lint`, appropriate Go tests, migration lint and Go vet.
 - [x] Update `.trellis/spec/server/builtin-templates.md` with display identity and collision recovery guidance.
 - [x] Record exact evidence and rollout limits in `verification.md`.
-- [ ] Commit only task-owned files using Lore trailers; hand off integration to the parent agent, preserving unrelated changes.
-- [ ] Finish Trellis bookkeeping after verification.
+- [x] Commit task-owned files with Lore trailers (`0e1303881`); hand off integration to the parent agent, preserving unrelated changes.
+- [x] Archive the verified implementation task; record the completion session in the following bookkeeping commit.
 
 ## Final-review repair
 
