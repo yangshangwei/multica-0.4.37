@@ -229,7 +229,7 @@ test("specialist skills localize, search and open their official copies without 
     await expect.poll(() => page.evaluate(() =>
       Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) <= window.innerWidth,
     )).toBe(true);
-    const entry = page.getByRole("region", { name: copy.template_entry.title, exact: true, includeHidden: true });
+    const entry = page.getByRole("tablist", { name: copy.market.views_label, exact: true, includeHidden: true });
     const entryBounds = await entry.boundingBox();
     expect(entryBounds).not.toBeNull();
     expect(entryBounds!.height).toBeLessThanOrEqual(viewport.width >= 768 ? 64 : 112);
@@ -262,26 +262,28 @@ test("specialist skills localize, search and open their official copies without 
       const displayed = copy.builtin_role_skills[skill.name];
       await page.setViewportSize({ width: 1280, height: 720 });
       await page.goto(`/${slug}/skills`);
-      const entry = page.getByRole("region", { name: copy.template_entry.title, exact: true, includeHidden: true });
-      await expect(entry).toContainText(copy.template_entry.total_other.replace("{{count}}", String(catalog.templates.length)));
+      await page.getByRole("tab", { name: copy.market.workspace, exact: true }).click();
+      const entry = page.getByRole("tablist", { name: copy.market.views_label, exact: true, includeHidden: true });
+      await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
       await expect(page.locator("header").getByText(String(skills.length), { exact: true })).toBeVisible();
       if (index === 0) {
         await capture("entry", locale, copy, theme);
         await page.setViewportSize({ width: 375, height: 667 });
-        await expect(page.getByPlaceholder(copy.page.search_placeholder)).toBeHidden();
+        await expect(page.getByRole("textbox", { name: copy.market.workspace_search, exact: true })).toBeVisible();
         await capture("entry", locale, copy, theme);
         await page.setViewportSize({ width: 360, height: 800 });
         await capture("entry", locale, copy, theme);
         await page.setViewportSize({ width: 1280, height: 720 });
       }
-      const search = page.getByPlaceholder(copy.page.search_placeholder);
+      const search = page.getByRole("textbox", { name: copy.market.workspace_search, exact: true });
       for (const purpose of [enSkills.builtin_role_skills[skill.name].description, zhSkills.builtin_role_skills[skill.name].description]) {
         await search.fill(purpose);
         await expect(page.getByText(displayed.name, { exact: true }).first()).toBeVisible();
         await expect(page.getByText(displayed.description, { exact: true }).first()).toBeVisible();
       }
-      await expect(entry).toContainText(copy.template_entry.total_other.replace("{{count}}", String(catalog.templates.length)));
-      await entry.getByRole("button", { name: copy.template_entry.browse, exact: true }).click();
+      await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
+      await entry.getByRole("tab", { name: copy.market.title, exact: true }).click();
+      await page.getByRole("button", { name: copy.market.preview_label.replace("{{name}}", displayed.name), exact: true }).click();
       const preview = page.getByRole("dialog");
       await expect(preview).toHaveAccessibleName(copy.create.template.preview_label);
       await expect(preview.getByRole("textbox", { name: copy.create.template.search_placeholder })).toBeFocused();
@@ -291,6 +293,7 @@ test("specialist skills localize, search and open their official copies without 
       if (index === 0) {
         await capture("list", locale, copy, theme);
         await page.setViewportSize({ width: 375, height: 667 });
+        await preview.getByRole("button", { name: copy.create.template.back_to_templates, exact: true }).click();
         await capture("list", locale, copy, theme);
       }
       await templateRow.focus();
@@ -325,14 +328,20 @@ test("specialist skills localize, search and open their official copies without 
     await page.goto(`/${slug}/skills`);
     await page.evaluate((value) => localStorage.setItem("theme", value), theme);
     await page.reload();
-    const entry = page.getByRole("region", { name: copy.template_entry.title, exact: true });
-    await expect(entry).toContainText(copy.template_entry.total_other.replace("{{count}}", String(catalog.templates.length)));
-    const browse = entry.getByRole("button", { name: copy.template_entry.browse, exact: true });
+    const entry = page.getByRole("tablist", { name: copy.market.views_label, exact: true });
+    await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
+    await entry.getByRole("tab", { name: copy.market.title, exact: true }).click();
+    const displayed = copy.builtin_role_skills["multica-experience-validation"];
+    const browse = page.getByRole("button", { name: copy.market.preview_label.replace("{{name}}", displayed.name), exact: true });
+    await browse.scrollIntoViewIfNeeded();
     await expect(browse).toBeInViewport({ ratio: 1 });
     await capture("entry", locale, copy, theme);
     await browse.focus();
     await page.keyboard.press("Enter");
     const picker = page.getByRole("dialog", { name: copy.create.template.preview_label, exact: true });
+    // A named market card opens details on narrow screens; Back exposes the
+    // original picker so its source tabs and keyboard behavior stay covered.
+    await picker.getByRole("button", { name: copy.create.template.back_to_templates, exact: true }).click();
     const search = picker.getByRole("textbox", { name: copy.create.template.search_placeholder });
     await expect(search).toBeFocused();
     await capture("list", locale, copy, theme);
@@ -353,7 +362,6 @@ test("specialist skills localize, search and open their official copies without 
           && rect.top >= bounds.top && rect.bottom <= bounds.bottom);
       })).toBe(true);
     }
-    const displayed = copy.builtin_role_skills["multica-experience-validation"];
     await search.fill("multica-experience-validation");
     const row = picker.getByRole("button", { name: new RegExp(`^${displayed.name}`) });
     await expect(row).toContainText(displayed.summary);
