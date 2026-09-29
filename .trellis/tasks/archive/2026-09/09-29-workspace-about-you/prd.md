@@ -33,3 +33,5 @@ redesign. Preserve unrelated work already present in the checkout.
   the flow props and tests.
 - Native UI automation is unavailable in this session; verification used the real
   shared flow rendered in DOM tests, not a live desktop click-through.
+- User acceptance: on 2026-09-29, the user manually tested the fix, confirmed it
+  works, and requested committing the code and archiving the task.
