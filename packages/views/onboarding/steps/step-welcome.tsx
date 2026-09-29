@@ -209,9 +209,9 @@ function WelcomeIllustration() {
         issueId="MCA-42"
         content={
           <>
-            <Mention>{t(($) => $.welcome.illustration.card1_mention_content)}</Mention>
+            <Mention>{t(($) => $.welcome.illustration.card1_mention_assignee)}</Mention>
             {t(($) => $.welcome.illustration.card1_body_prefix)}
-            <Mention>{t(($) => $.welcome.illustration.card1_mention_research)}</Mention>
+            <Mention>{t(($) => $.welcome.illustration.card1_mention_source)}</Mention>
             {t(($) => $.welcome.illustration.card1_body_suffix)}
           </>
         }
