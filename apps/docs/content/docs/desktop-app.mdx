@@ -113,7 +113,9 @@ Usually `apiUrl` alone is enough. Override explicitly only when the derivation d
 
 ### Taking updates from your own server
 
-An administrator can provide a static HTTP/HTTPS update directory, including on an intranet. Quit Desktop completely and back up the existing `desktop.json`. Preserve the business server addresses and other settings, and add or change only `updateUrl`. Replace the placeholders below with the addresses provided by your administrator:
+Saving a server address automatically writes `updateUrl` as `http://<api-host>:18080/desktop`. For example, `https://10.10.10.20:18443` uses `http://10.10.10.20:18080/desktop` for updates. The update service must be reachable at that address and serve the metadata and installers described below. Existing configuration files missing the field are filled in on startup.
+
+An administrator can override this default with a different HTTP/HTTPS update directory. Quit Desktop completely and back up the existing `desktop.json`. Preserve the business server addresses and other settings, and change only `updateUrl`. Replace the placeholders below with the addresses provided by your administrator:
 
 ```json
 {
@@ -135,14 +137,14 @@ Publish the files referenced by the generated metadata and their generated block
 
 Keep older blockmaps to support differential downloads; clients may still fall back to a full download. Validate and publish installers before switching metadata so clients never discover a version whose files are unavailable.
 
-Restart Desktop completely, then check under **Settings → Updates**. `apiUrl` and `updateUrl` are independent: omitting `updateUrl` uses the built-in release feed, not the business server. Saving a business server address from the login page preserves this field. This file configuration applies to installed clients; development mode uses environment variables and cannot substitute for an installed-client upgrade test.
+After manual file edits, restart Desktop completely and check under **Settings → Updates**. Saving a server in the connection screen takes effect on the next update check without restarting. The default update directory follows changes to the business server's hostname; a custom update address is preserved. Before a server is configured, Desktop does not check the built-in release feed. This file configuration applies to installed clients; development mode uses environment variables and cannot substitute for an installed-client upgrade test.
 
 Manual file changes are read at startup. Configuration failures fall into two cases:
 
 - **File not found** (wrong directory, or a filename that isn't exactly `desktop.json`) — Desktop requires server setup and does not automatically connect to Cloud.
 - **File found but invalid** JSON, version, or URLs — Desktop shows a configuration error; correct the file to continue.
 
-Deleting the file and restarting requires server setup again. To restore only the built-in update source, keep the file and remove `updateUrl`.
+Deleting the file and restarting requires server setup again. Removing only `updateUrl` restores the default same-host directory on the next startup.
 
 <Callout type="warning">
 Desktop can only connect to addresses reachable from both the browser and the executing machine. If a remote self-hosted instance doesn't use HTTPS or doesn't proxy WebSocket, Desktop can't establish a connection; see the [self-host quickstart](/self-host-quickstart#3-choose-how-to-access) for the full configuration.

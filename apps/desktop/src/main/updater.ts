@@ -104,8 +104,24 @@ function sendToLiveRenderer(
 // (see electronjs.org/docs/latest/api/auto-updater). Coalesce concurrent
 // callers onto the same in-flight promise.
 let inFlightCheck: Promise<unknown> | null = null;
-function checkForUpdatesOnce(): Promise<unknown> {
-  if (inFlightCheck) return inFlightCheck;
+let inFlightUpdateUrl: string | undefined;
+let inFlightDownload: { updateUrl: string | undefined; promise: Promise<unknown> } | null = null;
+function checkForUpdatesOnce(
+  updateUrl: string | undefined,
+  shouldCheck: () => boolean = () => true,
+): Promise<unknown> {
+  if (!shouldCheck()) return Promise.resolve(null);
+  if (inFlightCheck) {
+    if (inFlightUpdateUrl === updateUrl) return inFlightCheck;
+    return inFlightCheck.catch(() => {}).then(() => checkForUpdatesOnce(updateUrl, shouldCheck));
+  }
+  // electron-updater also coalesces downloads. Finish the old source before
+  // changing its provider so a new-source check cannot reuse an old download.
+  if (inFlightDownload && inFlightDownload.updateUrl !== updateUrl) {
+    return inFlightDownload.promise.then(() => checkForUpdatesOnce(updateUrl, shouldCheck));
+  }
+  if (updateUrl) autoUpdater.setFeedURL({ provider: "generic", url: updateUrl });
+  inFlightUpdateUrl = updateUrl;
   const p = autoUpdater
     .checkForUpdates()
     .then((result) => {
@@ -113,11 +129,18 @@ function checkForUpdatesOnce(): Promise<unknown> {
       // download (when autoDownload=true) is exposed on result.downloadPromise.
       // Without a handler a download failure becomes an unhandled rejection
       // in the main process — Node may terminate it on future versions.
-      void (result as { downloadPromise?: Promise<unknown> } | null)?.downloadPromise?.catch(
-        (err) => {
-          console.error("Failed to download update:", err);
-        },
-      );
+      const downloadPromise = (result as { downloadPromise?: Promise<unknown> } | null)?.downloadPromise;
+      if (downloadPromise) {
+        const download = {
+          updateUrl,
+          promise: downloadPromise.catch((err) => {
+            console.error("Failed to download update:", err);
+          }).finally(() => {
+            if (inFlightDownload === download) inFlightDownload = null;
+          }),
+        };
+        inFlightDownload = download;
+      }
       return result;
     })
     .finally(() => {
@@ -128,20 +151,19 @@ function checkForUpdatesOnce(): Promise<unknown> {
 }
 
 export interface AutoUpdaterOptions {
-  // Operator-configured static update directory from desktop.json. Absent
-  // means the publish feed compiled into the package (GitHub Releases).
-  updateUrl?: string;
+  // Read the current config before every check so first-time setup applies
+  // without restarting. An undefined result blocks checks until setup succeeds.
+  getUpdateUrl?: () => string | undefined;
 }
 
 export function setupAutoUpdater(
   getMainWindow: () => BrowserWindow | null,
   options: AutoUpdaterOptions = {},
 ): void {
-  if (options.updateUrl) {
-    // The generic provider reads `autoUpdater.channel`, so the per-arch
-    // channel files chosen above (including `latest-ia32.yml`)
-    // resolve against the configured directory exactly as they do on GitHub.
-    autoUpdater.setFeedURL({ provider: "generic", url: options.updateUrl });
+  const initialUpdateUrl = options.getUpdateUrl?.();
+  if (initialUpdateUrl) {
+    // Generic feeds retain the architecture-specific channel chosen above.
+    autoUpdater.setFeedURL({ provider: "generic", url: initialUpdateUrl });
   }
   const preferencesFilePath = updaterPreferencesPath(app.getPath("userData"));
   let automaticUpdatesEnabled =
@@ -160,7 +182,11 @@ export function setupAutoUpdater(
     void preferencesReady
       .then(() => {
         if (!automaticUpdatesEnabled) return;
-        return checkForUpdatesOnce();
+        const updateUrl = options.getUpdateUrl?.();
+        if (options.getUpdateUrl && !updateUrl) return;
+        return checkForUpdatesOnce(updateUrl, () =>
+          automaticUpdatesEnabled && options.getUpdateUrl?.() === updateUrl,
+        );
       })
       .catch((err) => {
         console.error(errorMessage, err);
@@ -276,7 +302,11 @@ export function setupAutoUpdater(
 
   ipcMain.handle("updater:check", async (): Promise<ManualUpdateCheckResult> => {
     try {
-      const result = (await checkForUpdatesOnce()) as
+      const updateUrl = options.getUpdateUrl?.();
+      if (options.getUpdateUrl && !updateUrl) {
+        throw new Error("Configure a server before checking for updates");
+      }
+      const result = (await checkForUpdatesOnce(updateUrl)) as
         | { updateInfo: { version: string }; isUpdateAvailable?: boolean }
         | null;
       const currentVersion = app.getVersion();

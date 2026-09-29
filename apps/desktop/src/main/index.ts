@@ -913,7 +913,7 @@ if (!gotTheLock) {
     createWindow();
 
     setupAutoUpdater(() => mainWindow, {
-      updateUrl: runtimeConfigResult.ok
+      getUpdateUrl: () => runtimeConfigResult.ok
         ? runtimeConfigResult.config.updateUrl
         : undefined,
     });

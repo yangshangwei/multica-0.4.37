@@ -21,6 +21,7 @@ describe("runtime config", () => {
       apiUrl: "https://congvc-x99.taila6fa8a.ts.net:18443",
       wsUrl: "wss://congvc-x99.taila6fa8a.ts.net:18443/ws",
       appUrl: "https://congvc-x99.taila6fa8a.ts.net:18443",
+      updateUrl: "http://congvc-x99.taila6fa8a.ts.net:18080/desktop",
     });
   });
 
@@ -34,6 +35,7 @@ describe("runtime config", () => {
       apiUrl: "https://api.multica.ai",
       wsUrl: "wss://api.multica.ai/ws",
       appUrl: "https://multica.ai",
+      updateUrl: "http://api.multica.ai:18080/desktop",
     });
   });
 
@@ -56,6 +58,7 @@ describe("runtime config", () => {
       apiUrl: "https://api.example.com",
       wsUrl: "wss://ws.example.com/socket",
       appUrl: "https://app.example.com",
+      updateUrl: "http://api.example.com:18080/desktop",
     });
   });
 
@@ -77,12 +80,30 @@ describe("runtime config", () => {
     });
   });
 
-  it("omits updateUrl when it is not configured", () => {
+  it.each([
+    ["http://10.10.10.20:8080", "http://10.10.10.20:18080/desktop"],
+    ["https://api.example.com:18443/api/?x=1#fragment", "http://api.example.com:18080/desktop"],
+    ["http://localhost:80", "http://localhost:18080/desktop"],
+    ["https://[2001:db8::1]:8443/api", "http://[2001:db8::1]:18080/desktop"],
+  ])("defaults the update directory for %s", (apiUrl, updateUrl) => {
     expect(
       parseRuntimeConfig(
-        JSON.stringify({ schemaVersion: 1, apiUrl: "https://api.example.com" }),
+        JSON.stringify({ schemaVersion: 1, apiUrl }),
       ),
-    ).not.toHaveProperty("updateUrl");
+    ).toHaveProperty("updateUrl", updateUrl);
+  });
+
+  it("moves the standard update directory when the server hostname changes", () => {
+    const current = parseRuntimeConfig(JSON.stringify({
+      schemaVersion: 1,
+      apiUrl: "https://old.example.com:8443",
+      updateUrl: "http://old.example.com:18080/desktop",
+    }));
+    const saved = parseRuntimeConfig(JSON.stringify(
+      mergeRuntimeConfigInput(current, { apiUrl: "https://new.example.com:9443" }),
+    ));
+
+    expect(saved.updateUrl).toBe("http://new.example.com:18080/desktop");
   });
 
   it("rejects an updateUrl that is empty, non-http, or carries credentials", () => {

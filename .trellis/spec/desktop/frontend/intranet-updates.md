@@ -1,9 +1,25 @@
 # Intranet desktop release storage
 
-The desktop main process already accepts `desktop.json.updateUrl` as a generic
-electron-updater feed. Missing business configuration requires setup; a missing
-update URL retains the packaged provider. Development mode does not load this
+The desktop main process uses `desktop.json.updateUrl` as a generic
+electron-updater feed. Installed configuration defaults to
+`http://<api-host>:18080/desktop`, independent of the business URL's protocol,
+port, or path. Preserve the full hostname (including `api.`) and IPv6 brackets.
+The packaged loader atomically backfills missing update URLs without changing
+other stored fields. Explicit custom sources remain untouched; saving a new
+server moves a source equal to the old server's default to the new host.
+If backfilling fails, log the write failure and keep the valid configuration
+and derived source available in memory. An explicit save still reports failures.
+
+Missing business configuration requires setup and prevents update checks.
+The updater reads the current configuration before every check, so a saved
+server takes effect without restarting the main process. Manual file edits
+still require a full restart. Development mode does not load or migrate this
 file or enable the packaged update flow.
+
+Coalesce checks only for the same update source. A different source must wait
+for the previous check and its download to settle before switching providers.
+Queued automatic checks must recheck the preference and current URL when they
+resume; disabling automatic updates or changing servers discards stale work.
 
 ## Release contracts
 

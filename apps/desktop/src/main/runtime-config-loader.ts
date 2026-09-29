@@ -25,7 +25,20 @@ export async function loadRuntimeConfig(options: {
   const configPath = options.configPath ?? desktopConfigPath();
   try {
     const raw = await readFile(configPath, "utf-8");
-    return { ok: true, source: "configured", config: parseRuntimeConfig(raw) };
+    const config = parseRuntimeConfig(raw);
+    // The parser validated the object. Migrate only the missing field so
+    // operator-owned and future fields survive the first upgraded launch.
+    const stored = JSON.parse(raw) as Record<string, unknown>;
+    if (stored.updateUrl === undefined) {
+      try {
+        await writeRuntimeConfig({ ...stored, updateUrl: config.updateUrl }, configPath);
+      } catch (error) {
+        // A read-only file must not block a valid business connection. The
+        // derived URL still works in memory; retry persistence on next launch.
+        console.warn(`Could not persist updateUrl in ${configPath}:`, error);
+      }
+    }
+    return { ok: true, source: "configured", config };
   } catch (err) {
     if (isMissingFileError(err)) {
       return {
@@ -48,11 +61,16 @@ export async function saveRuntimeConfig(
   configPath = desktopConfigPath(),
 ): Promise<RuntimeConfig> {
   const normalized = parseRuntimeConfig(JSON.stringify(config));
+  await writeRuntimeConfig(normalized, configPath);
+  return normalized;
+}
+
+async function writeRuntimeConfig(config: object, configPath: string): Promise<void> {
   const dir = dirname(configPath);
   await mkdir(dir, { recursive: true });
   const tempPath = `${configPath}.${process.pid}.${Date.now()}.tmp`;
   try {
-    await writeFile(tempPath, `${JSON.stringify(normalized, null, 2)}\n`, {
+    await writeFile(tempPath, `${JSON.stringify(config, null, 2)}\n`, {
       encoding: "utf-8",
       mode: 0o600,
     });
@@ -61,7 +79,6 @@ export async function saveRuntimeConfig(
     try { await unlink(tempPath); } catch { /* best effort */ }
     throw error;
   }
-  return normalized;
 }
 
 export function desktopConfigPath(): string {

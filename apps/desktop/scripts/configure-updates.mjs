@@ -7,11 +7,13 @@ import { parseArgs } from "node:util";
 import { parseRuntimeConfig } from "../src/shared/runtime-config.ts";
 
 export async function configureUpdates(configPath, updateUrl) {
+  if (typeof updateUrl !== "string" || !updateUrl.trim()) {
+    throw new Error("updateUrl must be a non-empty HTTP/HTTPS URL");
+  }
   const original = await readFile(configPath, "utf8");
   parseRuntimeConfig(original);
   const existing = JSON.parse(original);
   const normalized = parseRuntimeConfig(JSON.stringify({ ...existing, updateUrl }));
-  if (!normalized.updateUrl) throw new Error("updateUrl must be a non-empty HTTP/HTTPS URL");
   if (existing.updateUrl === normalized.updateUrl) return { changed: false, updateUrl: normalized.updateUrl };
 
   const suffix = randomUUID();

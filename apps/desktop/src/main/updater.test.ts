@@ -246,13 +246,68 @@ describe("setupAutoUpdater", () => {
   });
 
   it("points electron-updater at a configured generic updateUrl", () => {
-    setupAutoUpdater(() => null, { updateUrl: "https://updates.example.com/desktop" });
+    setupAutoUpdater(() => null, { getUpdateUrl: () => "https://updates.example.com/desktop" });
 
     expect(ctx.setFeedURL).toHaveBeenCalledTimes(1);
     expect(ctx.setFeedURL).toHaveBeenCalledWith({
       provider: "generic",
       url: "https://updates.example.com/desktop",
     });
+  });
+
+  it("waits for server setup and uses the saved update URL without restarting", async () => {
+    let updateUrl: string | undefined;
+    setupAutoUpdater(() => null, { getUpdateUrl: () => updateUrl });
+    await invokeIpc("updater:get-preferences");
+
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000 + 5_000);
+    expect(ctx.checkForUpdates).not.toHaveBeenCalled();
+    await expect(invokeIpc("updater:check")).resolves.toMatchObject({ ok: false });
+    expect(ctx.checkForUpdates).not.toHaveBeenCalled();
+
+    updateUrl = "http://10.10.10.20:18080/desktop";
+    await expect(invokeIpc("updater:check")).resolves.toMatchObject({ ok: true });
+    expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+
+    updateUrl = "http://10.10.10.30:18080/desktop";
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000);
+    expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    expect(ctx.checkForUpdates).toHaveBeenCalledTimes(2);
+  });
+
+  it("waits for an old source's check and download before checking a new source", async () => {
+    let updateUrl = "http://old.example.com:18080/desktop";
+    setupAutoUpdater(() => null, { getUpdateUrl: () => updateUrl });
+    await invokeIpc("updater:get-preferences");
+    let finishDownload!: () => void;
+    const downloadPromise = new Promise<void>((resolve) => { finishDownload = resolve; });
+    const oldResult = { updateInfo: { version: "0.3.19" }, isUpdateAvailable: true, downloadPromise };
+    let finishCheck!: (value: typeof oldResult) => void;
+    ctx.checkForUpdates.mockReturnValueOnce(new Promise<typeof oldResult>((resolve) => { finishCheck = resolve; }));
+
+    const oldCheck = invokeIpc("updater:check");
+    const sameSourceCheck = invokeIpc("updater:check");
+    updateUrl = "http://new.example.com:18080/desktop";
+    const newCheck = invokeIpc("updater:check");
+    try {
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: "http://old.example.com:18080/desktop" });
+
+      finishCheck(oldResult);
+      await expect(oldCheck).resolves.toMatchObject({ latestVersion: "0.3.19" });
+      await expect(sameSourceCheck).resolves.toMatchObject({ latestVersion: "0.3.19" });
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+
+      finishDownload();
+      await expect(newCheck).resolves.toMatchObject({ latestVersion: "0.3.18" });
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(2);
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    } finally {
+      finishCheck(oldResult);
+      finishDownload();
+      await Promise.all([oldCheck, sameSourceCheck, newCheck]);
+    }
   });
 
   it("enables automatic background updates by default", async () => {
@@ -264,6 +319,34 @@ describe("setupAutoUpdater", () => {
 
     await vi.advanceTimersByTimeAsync(5_000);
     expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(["disabled", "server changed"])("drops a queued automatic check when %s", async (change) => {
+    let updateUrl = "http://old.example.com:18080/desktop";
+    setupAutoUpdater(() => null, { getUpdateUrl: () => updateUrl });
+    await invokeIpc("updater:get-preferences");
+    let finishCheck!: (value: { updateInfo: { version: string }; isUpdateAvailable: boolean }) => void;
+    ctx.checkForUpdates.mockReturnValueOnce(new Promise((resolve) => { finishCheck = resolve; }));
+    await vi.advanceTimersByTimeAsync(5_000);
+    updateUrl = "http://queued.example.com:18080/desktop";
+    await vi.advanceTimersByTimeAsync(60 * 60 * 1000);
+    try {
+      if (change === "disabled") {
+        await invokeIpc("updater:set-automatic-updates", false);
+      } else {
+        updateUrl = "http://current.example.com:18080/desktop";
+      }
+      finishCheck({ updateInfo: { version: "0.3.18" }, isUpdateAvailable: false });
+      await vi.advanceTimersByTimeAsync(0);
+      expect(ctx.checkForUpdates).toHaveBeenCalledTimes(1);
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: "http://old.example.com:18080/desktop" });
+
+      await expect(invokeIpc("updater:check")).resolves.toMatchObject({ ok: true });
+      expect(ctx.setFeedURL).toHaveBeenLastCalledWith({ provider: "generic", url: updateUrl });
+    } finally {
+      finishCheck({ updateInfo: { version: "0.3.18" }, isUpdateAvailable: false });
+      await vi.advanceTimersByTimeAsync(0);
+    }
   });
 
   it("skips startup and periodic checks when automatic updates are disabled", async () => {

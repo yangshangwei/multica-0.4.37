@@ -98,7 +98,9 @@ Range 请求应返回 `206`，响应头包含 `Content-Range` 和 `Cache-Control
 
 ## 接入桌面客户端
 
-先在正式安装的 Desktop 中配置业务服务器，然后完整退出应用。执行以下命令会保留已有 JSON 字段，仅合并 `updateUrl`；原始文件备份到同目录的 `desktop.json.<唯一标识>.bak`：
+包含自动配置功能的 Desktop 会在保存业务服务器地址时写入 `http://业务服务器主机:18080/desktop`，旧配置缺少该字段时会在启动时补齐。
+
+使用其他下载主机、端口或协议，或者为 v0.5.2 配置首次升级时，先在正式安装的 Desktop 中配置业务服务器，再完整退出应用。执行以下命令会保留已有 JSON 字段，仅合并 `updateUrl`；原始文件备份到同目录的 `desktop.json.<唯一标识>.bak`：
 
 ```bash
 bash scripts/desktop-updates.sh configure

@@ -4,9 +4,8 @@ export interface RuntimeConfig {
   wsUrl: string;
   appUrl: string;
   // Base URL of a static directory that serves electron-builder's update
-  // metadata (`latest*.yml`, installers, `.blockmap`). When set, Desktop
-  // takes automatic updates from there instead of the publish feed baked
-  // into the package, which lets an intranet deployment ship its own builds.
+  // metadata (`latest*.yml`, installers, `.blockmap`). Installed configs
+  // default to http://<api-host>:18080/desktop; development omits this field.
   updateUrl?: string;
 }
 
@@ -78,21 +77,34 @@ export function parseRuntimeConfig(raw: string): RuntimeConfig {
     apiUrl: normalizedApiUrl,
     wsUrl: wsUrl ? normalizeWsUrl(wsUrl, "wsUrl") : deriveWsUrl(normalizedApiUrl),
     appUrl: appUrl ? normalizeHttpUrl(appUrl, "appUrl") : deriveAppUrl(normalizedApiUrl),
+    updateUrl: updateUrl
+      ? normalizeHttpUrl(updateUrl, "updateUrl")
+      : deriveUpdateUrl(normalizedApiUrl),
   };
-  if (updateUrl) config.updateUrl = normalizeHttpUrl(updateUrl, "updateUrl");
   return config;
 }
 
-// The login page submits only the server URLs it shows. Fields an operator
-// wrote by hand (`updateUrl`) must survive that save, so seed them from the
-// currently loaded file before the submitted values are layered on top.
+// Preserve custom update directories when the login page saves server URLs.
+// The standard directory follows the new server through the parser's default.
 export function mergeRuntimeConfigInput(
   current: RuntimeConfig | null,
   input: Record<string, unknown>,
 ): Record<string, unknown> {
   const preserved: Record<string, unknown> = {};
-  if (current?.updateUrl) preserved.updateUrl = current.updateUrl;
+  if (current?.updateUrl && current.updateUrl !== deriveUpdateUrl(current.apiUrl)) {
+    preserved.updateUrl = current.updateUrl;
+  }
   return { schemaVersion: 1, ...preserved, ...input };
+}
+
+function deriveUpdateUrl(apiUrl: string): string {
+  const url = new URL(apiUrl);
+  url.protocol = "http:";
+  url.port = "18080";
+  url.pathname = "/desktop";
+  url.search = "";
+  url.hash = "";
+  return url.toString();
 }
 
 export function deriveWsUrl(apiUrl: string): string {

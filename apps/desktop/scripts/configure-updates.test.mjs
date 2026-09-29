@@ -25,7 +25,7 @@ it("preserves business configuration and unknown fields, backs up exact bytes, a
   expect(await readFile(result.backupPath, "utf8")).toBe(raw);
 });
 
-it.each(["file:///tmp/update", "https://user:password@example.test/desktop", "not-a-url"])("rejects invalid update URL %s without touching the file", async (url) => {
+it.each([undefined, null, "", "file:///tmp/update", "https://user:password@example.test/desktop", "not-a-url"])("rejects invalid update URL %s without touching the file", async (url) => {
   const { dir, file, raw } = await fixture();
   await expect(configureUpdates(file, url)).rejects.toThrow();
   expect(await readFile(file, "utf8")).toBe(raw);
