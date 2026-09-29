@@ -59,3 +59,35 @@ stale cases (`listProjects` / `uploadFile` / `publishPluginPackage` × bearer /
 cookie) hold the first response, log in again, then release the 401 and assert
 user, status, stored token and the callback are untouched; a same-epoch case
 asserts the teardown still happens.
+
+## Identity recovery and downstream error consumers
+
+`GET /api/me` returns 401 when its session user no longer exists; database
+lookup failures return 500. Older servers report the missing user as 404 with
+the exact `user not found` error. Normalize only that method, path, status and
+message combination to 401. Other missing resources and profile writes must
+not end a session. Rejection must not send a cookie deletion: that response
+could reach the browser after a newer login.
+
+Guarding `onUnauthorized` alone is insufficient. `AuthInitializer` also
+consumes identity/workspace errors and must not expire a newer login itself.
+Auth `ApiError` instances expose a live `isStaleAuthResponse` check so a login
+completed during body parsing or rejection propagation is also protected.
+
+The client's separate `credentialEpoch` advances when a bearer credential is
+installed or explicitly cleared, after successful cookie/device login, and
+when cookie logout starts. Rejection teardown clears the client's token before
+the store callback; its subsequent null-to-null `setToken` does not advance
+this generation. Keep this distinction from `authEpoch`: duplicate 401s under
+React StrictMode must still let the active initializer attempt device login
+when no newer credential replaced the rejected session.
+
+The initializer stops stale identity recovery without logout or device-login
+handoff, and ignores stale workspace rejections. Error remapping must preserve
+the live ownership check. Manually constructed errors retain normal rejection
+behavior when no ownership check is supplied.
+
+Regression coverage lives in `platform/auth-initializer.test.tsx` (real client,
+bearer/cookie replacement, delayed body, workspace bootstrap and StrictMode
+device login), `api/missing-user-session.test.ts`, handler `auth_session_test.go`
+and `e2e/missing-user-session.spec.ts`.

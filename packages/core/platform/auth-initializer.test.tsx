@@ -5,7 +5,7 @@ import { act, render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { setApiInstance } from "../api";
-import { ApiError, type ApiClient } from "../api/client";
+import { ApiClient, ApiError } from "../api/client";
 import {
   createAuthStore,
   registerAuthStore,
@@ -81,12 +81,14 @@ function renderInitializer({
   cookieAuth = false,
   platform = "desktop",
   deviceAuth,
+  strictMode = false,
 }: {
   api: ApiClient;
   storage?: StorageAdapter;
   cookieAuth?: boolean;
   platform?: "desktop" | "web";
   deviceAuth?: { deviceId: string; deviceName?: string };
+  strictMode?: boolean;
 }) {
   const onLogin = vi.fn();
   const onLogout = vi.fn();
@@ -110,6 +112,7 @@ function renderInitializer({
         <div>child</div>
       </AuthInitializer>
     </QueryClientProvider>,
+    { reactStrictMode: strictMode },
   );
 
   return { ...result, onLogin, onLogout, queryClient };
@@ -122,6 +125,7 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.useRealTimers();
+  vi.unstubAllGlobals();
 });
 
 describe("AuthInitializer messaging deployment policy", () => {
@@ -171,6 +175,145 @@ describe("AuthInitializer messaging deployment policy", () => {
 });
 
 describe("AuthInitializer recovery", () => {
+  it.each([
+    { mode: "bearer", cookieAuth: false, status: 401 },
+    { mode: "bearer", cookieAuth: false, status: 404 },
+    { mode: "cookie", cookieAuth: true, status: 401 },
+    { mode: "cookie", cookieAuth: true, status: 404 },
+  ])(
+    "keeps a newer $mode login when the startup identity request returns $status",
+    async ({ cookieAuth, status }) => {
+      let release!: (response: Response) => void;
+      const pendingIdentity = new Promise<Response>((resolve) => {
+        release = resolve;
+      });
+      const currentUser = { ...fakeUser, id: "user-2", email: "new@example.com" };
+      vi.stubGlobal("fetch", vi.fn((url: string) => {
+        if (url.endsWith("/api/me")) return pendingIdentity;
+        if (url.endsWith("/auth/verify-code")) {
+          return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+        }
+        if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+        if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+        throw new Error(`Unexpected request: ${url}`);
+      }));
+      const storage = makeStorage(cookieAuth ? {} : { multica_token: "old-token" });
+      const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+      const api = new ApiClient("https://api.example.test", { onUnauthorized });
+      const getMe = vi.spyOn(api, "getMe");
+      const { onLogout } = renderInitializer({ api, storage, cookieAuth });
+
+      await waitFor(() => expect(getMe).toHaveBeenCalledOnce());
+      await act(async () => {
+        await useAuthStore.getState().verifyCode(currentUser.email, "123456");
+      });
+      expect(useAuthStore.getState().user).toEqual(currentUser);
+
+      await act(async () => {
+        release(Response.json({ error: "user not found" }, { status }));
+        await getMe.mock.results[0]!.value.catch(() => {});
+      });
+
+      // The ApiClient epoch guard alone is insufficient if initializer's
+      // catch tears down the newer session after receiving the stale error.
+      expect(onUnauthorized).not.toHaveBeenCalled();
+      expect(onLogout).not.toHaveBeenCalled();
+      expect(useAuthStore.getState()).toMatchObject({
+        user: currentUser,
+        status: "authenticated",
+        expired: false,
+      });
+      expect(storage.getItem("multica_token")).toBe(cookieAuth ? null : "new-token");
+    },
+  );
+
+  it("keeps a newer login when an already rejected identity response finishes reading its body", async () => {
+    let releaseBody!: (body: { error: string }) => void;
+    const rejectedIdentity = new Response(null, { status: 401 });
+    vi.spyOn(rejectedIdentity, "json").mockImplementation(() => new Promise((resolve) => {
+      releaseBody = resolve;
+    }));
+    const currentUser = { ...fakeUser, id: "user-2", email: "new@example.com" };
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/me")) return Promise.resolve(rejectedIdentity);
+      if (url.endsWith("/auth/verify-code")) {
+        return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+      }
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage({ multica_token: "old-token" });
+    const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+    const api = new ApiClient("https://api.example.test", { onUnauthorized });
+    const getMe = vi.spyOn(api, "getMe");
+    const { onLogout } = renderInitializer({ api, storage });
+
+    await waitFor(() => expect(onUnauthorized).toHaveBeenCalledOnce());
+    expect(onLogout).toHaveBeenCalledOnce();
+    expect(useAuthStore.getState().status).toBe("unauthenticated");
+    await act(async () => {
+      await useAuthStore.getState().verifyCode(currentUser.email, "123456");
+    });
+    expect(useAuthStore.getState().user).toEqual(currentUser);
+
+    await act(async () => {
+      releaseBody({ error: "user not found" });
+      await getMe.mock.results[0]!.value.catch(() => {});
+    });
+
+    expect(onUnauthorized).toHaveBeenCalledOnce();
+    expect(onLogout).toHaveBeenCalledOnce();
+    expect(useAuthStore.getState()).toMatchObject({
+      user: currentUser,
+      status: "authenticated",
+      expired: false,
+    });
+    expect(storage.getItem("multica_token")).toBe("new-token");
+  });
+
+  it("keeps a newer login when the previous workspace bootstrap returns 401", async () => {
+    let releaseWorkspaces!: (response: Response) => void;
+    const pendingWorkspaces = new Promise<Response>((resolve) => {
+      releaseWorkspaces = resolve;
+    });
+    const currentUser = { ...fakeUser, id: "user-2", email: "new@example.com" };
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/me")) return Promise.resolve(Response.json(fakeUser));
+      if (url.endsWith("/api/workspaces")) return pendingWorkspaces;
+      if (url.endsWith("/auth/verify-code")) {
+        return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+      }
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage({ multica_token: "old-token" });
+    const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+    const api = new ApiClient("https://api.example.test", { onUnauthorized });
+    const listWorkspaces = vi.spyOn(api, "listWorkspaces");
+    const { onLogout } = renderInitializer({ api, storage });
+
+    await waitFor(() => expect(listWorkspaces).toHaveBeenCalledOnce());
+    expect(useAuthStore.getState().user).toMatchObject(fakeUser);
+    await act(async () => {
+      await useAuthStore.getState().verifyCode(currentUser.email, "123456");
+    });
+    expect(useAuthStore.getState().user).toEqual(currentUser);
+
+    await act(async () => {
+      releaseWorkspaces(Response.json({ error: "unauthorized" }, { status: 401 }));
+      await listWorkspaces.mock.results[0]!.value.catch(() => {});
+    });
+
+    expect(onUnauthorized).not.toHaveBeenCalled();
+    expect(onLogout).not.toHaveBeenCalled();
+    expect(useAuthStore.getState()).toMatchObject({
+      user: currentUser,
+      status: "authenticated",
+      expired: false,
+    });
+    expect(storage.getItem("multica_token")).toBe("new-token");
+  });
+
   it("keeps the token and recovers on the online event after a network failure", async () => {
     const storage = makeStorage({ multica_token: "token-1" });
     const getMe = vi
@@ -581,6 +724,55 @@ describe("AuthInitializer device auth in cookie mode", () => {
 
   beforeEach(() => {
     configStore.setState({ deviceAuthAvailable: false });
+  });
+
+  it("restores device login when StrictMode's canceled identity request rejects the shared credential first", async () => {
+    const releaseIdentity: Array<(response: Response) => void> = [];
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/me")) {
+        return new Promise<Response>((resolve) => releaseIdentity.push(resolve));
+      }
+      if (url.endsWith("/api/config")) {
+        return Promise.resolve(Response.json({ device_auth_available: true }));
+      }
+      if (url.endsWith("/auth/device")) {
+        return Promise.resolve(Response.json({ token: "device-token", user: fakeUser }));
+      }
+      if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage();
+    const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+    const api = new ApiClient("https://api.example.test", { onUnauthorized });
+    const getMe = vi.spyOn(api, "getMe");
+    const deviceLogin = vi.spyOn(api, "deviceLogin");
+    renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+      strictMode: true,
+    });
+
+    await waitFor(() => expect(getMe).toHaveBeenCalledTimes(2));
+    await act(async () => {
+      releaseIdentity[0]!(Response.json({ error: "unauthorized" }, { status: 401 }));
+      await getMe.mock.results[0]!.value.catch(() => {});
+    });
+    expect(onUnauthorized).toHaveBeenCalledOnce();
+    expect(deviceLogin).not.toHaveBeenCalled();
+
+    await act(async () => {
+      releaseIdentity[1]!(Response.json({ error: "unauthorized" }, { status: 401 }));
+      await getMe.mock.results[1]!.value.catch(() => {});
+    });
+
+    await waitFor(() => expect(deviceLogin).toHaveBeenCalledOnce());
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("authenticated"));
+    expect(deviceLogin).toHaveBeenCalledWith(deviceAuth.deviceId, deviceAuth.deviceName);
+    expect(useAuthStore.getState().user).toMatchObject(fakeUser);
+    expect(storage.getItem("multica_token")).toBeNull();
   });
 
   it("signs in from the device identity after the cookie session comes back 401", async () => {

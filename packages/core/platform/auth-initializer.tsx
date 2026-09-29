@@ -271,7 +271,7 @@ export function AuthInitializer({
       void qc.fetchQuery(workspaceListOptions()).catch((err: unknown) => {
         if (cancelled) return;
         if (err instanceof ApiError && err.status === 401) {
-          rejectSession();
+          if (!err.isStaleAuthResponse) rejectSession();
           return;
         }
         // Workspace consumers observe this query directly. React Query owns
@@ -302,6 +302,14 @@ export function AuthInitializer({
       } catch (err) {
         if (cancelled) return;
         if (err instanceof ApiError && err.status === 401) {
+          if (err.isStaleAuthResponse) {
+            // A newer login owns the session now. Stop this boot attempt
+            // without expiring it or starting another device login.
+            settled = true;
+            window.removeEventListener("online", retryNow);
+            if (retryTimer !== undefined) clearTimeout(retryTimer);
+            return;
+          }
           // No session, or one that has expired. On a deployment that mints
           // sessions from a device id, get one instead of rendering a login
           // page. This is the only way the web app reaches the device path at
