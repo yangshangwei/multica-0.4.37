@@ -102,6 +102,7 @@ import {
 import { useT } from "../../i18n";
 import { PAGE_TOOLBAR } from "../../layout/page-header";
 import { BuiltinSquadCatalog } from "./builtin-squad-catalog";
+import { CreateSquadChooser } from "./create-squad-chooser";
 
 // Column template — the simplest member of the ListGrid family (squads are
 // a small collection): subgrid template + var tracks + two-zone
@@ -938,29 +939,7 @@ export function SquadsPage() {
         icon={Users}
         title={t(($) => $.page.title)}
         count={squads.length}
-        actions={
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button size="sm">
-                  <Plus className="size-3.5" aria-hidden="true" />
-                  {t(($) => $.page.new_button)}
-                  <ChevronDown className="size-3.5" aria-hidden="true" />
-                </Button>
-              }
-            />
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => useModalStore.getState().open("staff-squad-template")}>
-                <Sparkles className="size-3.5" aria-hidden="true" />
-                {t(($) => $.page.template_button)}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => useModalStore.getState().open("create-squad")}>
-                <Plus className="size-3.5" aria-hidden="true" />
-                {t(($) => $.page.custom_button)}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        }
+        actions={<CreateSquadChooser />}
       />
 
       <Tabs

@@ -142,18 +142,30 @@ describe("SquadsPage discovery and management", () => {
     expect(navigation.replace).toHaveBeenCalledWith("/acme/squads?context=project");
   });
 
-  it("preserves template and custom creation in one page action", async () => {
+  it("offers template and custom creation in a dismissible chooser", async () => {
     const user = userEvent.setup();
     mocks.squads = [SQUAD];
     renderPage();
-    screen.getByRole("button", { name: "New Squad" }).focus();
-    await user.keyboard("{ArrowDown}");
-    await user.click(screen.getByRole("menuitem", { name: "Create from template" }));
+    const trigger = screen.getByRole("button", { name: "New Squad" });
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    const chooser = screen.getByRole("dialog", { name: "New Squad" });
+    expect(chooser).toHaveAccessibleDescription("Choose how to create your squad.");
+    expect(within(chooser).getByRole("button", { name: /Create from template/ })).toBeVisible();
+    expect(within(chooser).getByRole("button", { name: /Create custom squad/ })).toBeVisible();
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+    expect(mocks.openModal).not.toHaveBeenCalled();
+
+    await user.click(trigger);
+    await user.click(screen.getByRole("button", { name: /Create from template/ }));
     expect(mocks.openModal).toHaveBeenCalledWith("staff-squad-template");
-    screen.getByRole("button", { name: "New Squad" }).focus();
-    await user.keyboard("{ArrowDown}");
-    await user.click(screen.getByRole("menuitem", { name: "Create custom squad" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    await user.click(trigger);
+    await user.click(screen.getByRole("button", { name: /Create custom squad/ }));
     expect(mocks.openModal).toHaveBeenCalledWith("create-squad");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("provides a native squad link and only navigates once for keyboard and pointer activation", async () => {
