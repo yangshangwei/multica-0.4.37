@@ -35,9 +35,9 @@ test("onboarding — answer path completes on Projects after skipping runtime", 
 
   // 2. About you step — both questions live on this one screen and the
   //    source question must NOT exist anywhere in the flow.
-  await expect(page.getByText("Tell us a bit about you.")).toBeVisible({ timeout: 10000 });
-  await expect(page.getByText("Which best describes you?")).toBeVisible();
-  await expect(page.getByText("What do you want to use Multica for?")).toBeVisible();
+  await expect(page.getByText("From SDLC to ADLC. Build with agents.")).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText("What's your role in the development process?")).toBeVisible();
+  await expect(page.getByText("What would you like to do with agents?")).toBeVisible();
   // The rail names every step and marks the current one; the ordinal
   // counter it replaced is gone.
   await expect(page.locator('[data-slot="stepper-title"]')).toHaveText([
@@ -53,7 +53,7 @@ test("onboarding — answer path completes on Projects after skipping runtime", 
   await expect(projectExit).not.toHaveAttribute("aria-current", "step");
   await expect(projectExit.locator('button, a, [role="button"]')).toHaveCount(0);
   await projectExit.getByText("First project", { exact: true }).click();
-  await expect(page.getByText("Tell us a bit about you.")).toBeVisible();
+  await expect(page.getByText("From SDLC to ADLC. Build with agents.")).toBeVisible();
   await expect(
     page.locator('[aria-current="step"]').filter({ hasText: "About you" }),
   ).toBeVisible();
@@ -62,8 +62,8 @@ test("onboarding — answer path completes on Projects after skipping runtime", 
   await page.screenshot({ path: `${SHOTS_DIR}/02-about-you.png` });
 
   // Answer both groups, then Continue → workspace step.
-  await page.getByRole("radio", { name: /Engineer \/ developer/i }).click();
-  await page.getByRole("checkbox", { name: /Ship code with AI agents/i }).click();
+  await page.getByRole("radio", { name: /Engineer/i }).click();
+  await page.getByRole("checkbox", { name: /Code & test with agents/i }).click();
   await page.getByRole("button", { name: "Continue" }).click();
 
   // 3. Workspace step
@@ -104,7 +104,8 @@ test("onboarding — answer path completes on Projects after skipping runtime", 
     );
     await page.getByRole("button", { name: /Skip for now/ }).click();
     expect((await completed).ok()).toBe(true);
-    await expect(page).toHaveURL(`/${workspace.slug}/projects`);
+    // The destination route can compile on its first visit in a dev server.
+    await expect(page).toHaveURL(`/${workspace.slug}/projects`, { timeout: 20000 });
     await expect(page.getByRole("group", { name: "Onboarding steps" })).toHaveCount(0);
     await expect(page.getByRole("dialog", { name: "Welcome to Multica" })).toBeVisible();
     await page.screenshot({ path: `${SHOTS_DIR}/07-projects.png` });
@@ -124,7 +125,7 @@ test("onboarding — one skip clears the whole questionnaire step", async ({ pag
   await waitForPageText(page, "Continue on web");
 
   await page.getByRole("button", { name: "Continue on web" }).click();
-  await expect(page.getByText("Tell us a bit about you.")).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText("From SDLC to ADLC. Build with agents.")).toBeVisible({ timeout: 10000 });
 
   // A single Skip covers role + use case — next stop is workspace.
   await page.getByRole("button", { name: "Skip" }).click();
@@ -157,8 +158,8 @@ test("onboarding — zh-Hans renders Chinese labels", async ({ page, context, ba
   await page.getByRole("button", { name: "在 web 端继续" }).click();
 
   // About-you screen — Chinese headline + both sub-questions.
-  await expect(page.getByText("简单介绍一下你自己。")).toBeVisible({ timeout: 10000 });
-  await expect(page.getByText("哪一项最符合你？")).toBeVisible();
+  await expect(page.getByText("从 SDLC 到 ADLC，开启智能体协作研发")).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText("你在研发协作中的角色是？")).toBeVisible();
   await page.waitForTimeout(500);
   await page.screenshot({ path: `${SHOTS_DIR}/05-about-you-zh.png` });
 });

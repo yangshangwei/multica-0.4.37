@@ -63,13 +63,15 @@ export function StepHeading({
 export function StepFooter({
   children,
   hint,
+  className,
 }: {
   children: ReactNode;
   /** Optional status line above the buttons (validation, progress). */
   hint?: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="mt-auto flex flex-col gap-2 pb-2 pt-10">
+    <div className={cn("mt-auto flex flex-col gap-2 pb-2 pt-10", className)}>
       {hint ? (
         <p aria-live="polite" className="text-caption text-muted-foreground">
           {hint}
@@ -140,7 +142,7 @@ export function StepShell({
           style={fadeStyle}
           className={cn("min-h-0 min-w-0 flex-1 overflow-y-auto", STEP_GUTTER)}
         >
-          <div className={STEP_COLUMN}>
+          <div className={cn(STEP_COLUMN, currentStep === "about_you" && "max-w-[44rem]")}>
             <StepProgressBar
               currentStep={currentStep}
               onBack={onBack}

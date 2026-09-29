@@ -45,10 +45,10 @@ describe("StepAboutYou", () => {
   it("renders both question groups on one screen", () => {
     renderStep();
     expect(
-      screen.getByText("Which best describes you?"),
+      screen.getByText("What's your role in the development process?"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("What do you want to use Multica for?"),
+      screen.getByText("What would you like to do with agents?"),
     ).toBeInTheDocument();
   });
 
@@ -71,7 +71,7 @@ describe("StepAboutYou", () => {
     const { onChange } = renderStep();
 
     await user.click(
-      screen.getByRole("checkbox", { name: /ship code with ai agents/i }),
+      screen.getByRole("checkbox", { name: /code & test with agents/i }),
     );
 
     expect(onChange).toHaveBeenCalledWith({
@@ -178,10 +178,10 @@ describe("StepAboutYou", () => {
       screen.getByRole("radio", { name: /designer/i }),
     ).toHaveAttribute("aria-checked", "true");
     expect(
-      screen.getByRole("checkbox", { name: /plan, brainstorm, research/i }),
+      screen.getByRole("checkbox", { name: /define requirements & prd/i }),
     ).toHaveAttribute("aria-checked", "true");
     expect(
-      screen.getByRole("checkbox", { name: /write, edit, publish/i }),
+      screen.getByRole("checkbox", { name: /write docs & launch content/i }),
     ).toHaveAttribute("aria-checked", "true");
   });
 });

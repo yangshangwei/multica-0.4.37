@@ -70,7 +70,8 @@
   },
   "questions": {
     "about_you": {
-      "question": "简单介绍一下你自己。"
+      "question": "从 SDLC 到 ADLC，开启智能体协作研发",
+      "description": "你把握目标和关键决策，智能体协作推进从需求到交付。"
     },
     "source": {
       "question": "你是从哪里了解到 Multica 的？",
@@ -90,31 +91,53 @@
       "other_placeholder": "例如：一档播客"
     },
     "role": {
-      "question": "哪一项最符合你？",
+      "question": "你在研发协作中的角色是？",
+      "hint": "单选",
       "engineer": "工程师 / 开发者",
       "product": "产品经理",
       "designer": "设计师",
       "founder": "创始人 / 高管",
       "marketing": "市场 / 增长",
-      "writer": "写作 / 内容",
-      "research": "研究员 / 分析师",
+      "writer": "技术写作 / 内容",
+      "research": "用户研究 / 分析",
       "ops": "运营 / 项目管理",
-      "student": "学生 / 个人使用",
+      "student": "学生 / 独立探索",
       "other": "其他",
-      "other_placeholder": "例如：教师、支持负责人"
+      "other_placeholder": "例如：测试工程师"
     },
     "use_case": {
-      "question": "你打算用 Multica 做什么？",
-      "ship_code": "让 AI 智能体帮我写代码",
-      "manage_team": "给团队做任务管理",
-      "personal_tasks": "管理我自己的任务",
-      "plan_research": "计划、头脑风暴、调研",
-      "write_publish": "写作、编辑、发布",
-      "automate_ops": "自动化日常运营",
-      "evaluate": "只是随便看看",
+      "question": "你想和智能体一起完成什么？",
+      "hint": "可多选",
+      "ship_code": "协作编码与测试",
+      "manage_team": "协调团队与智能体任务",
+      "personal_tasks": "推进个人研发任务",
+      "plan_research": "梳理需求与 PRD",
+      "write_publish": "编写文档与发布内容",
+      "automate_ops": "自动化研发工作流",
+      "evaluate": "先了解 ADLC",
       "other": "其他",
-      "other_placeholder": "例如：协调学习小组"
+      "other_placeholder": "例如：审查代码安全性"
     }
+  },
+  "lifecycle": {
+    "label": "从传统软件研发到智能体协作研发",
+    "sdlc": "SDLC",
+    "sdlc_description": "软件研发生命周期 · 人执行，工具辅助",
+    "requirements": "需求",
+    "design": "设计",
+    "implementation": "编码",
+    "testing": "测试",
+    "deployment": "部署",
+    "maintenance": "维护",
+    "adlc": "ADLC",
+    "adlc_description": "智能体驱动的研发生命周期 · 人定方向，智能体协作",
+    "goal": "目标与 PRD",
+    "context": "上下文与 skill",
+    "orchestration": "智能体编排",
+    "coding": "自主编码",
+    "validation": "持续测试",
+    "review": "评审与交付",
+    "feedback": "观察结果、反馈迭代，持续回到目标。"
   },
   "option_card": {
     "other_label": "其他",

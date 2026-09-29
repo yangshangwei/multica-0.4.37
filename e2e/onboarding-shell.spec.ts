@@ -60,11 +60,11 @@ test("onboarding — structural blocks match the column width on every step", as
   await waitForPageText(page, "Continue on web");
   await page.getByRole("button", { name: "Continue on web" }).click();
 
-  await page.getByText("Tell us a bit about you.").waitFor();
+  await page.getByText("From SDLC to ADLC. Build with agents.").waitFor();
   await expectFullWidthBlocks(page, "about you");
 
-  await page.getByRole("radio", { name: /Engineer \/ developer/i }).click();
-  await page.getByRole("checkbox", { name: /Ship code with AI agents/i }).click();
+  await page.getByRole("radio", { name: /Engineer/i }).click();
+  await page.getByRole("checkbox", { name: /Code & test with agents/i }).click();
   await page.getByRole("button", { name: "Continue" }).click();
 
   await page.getByRole("heading", { name: /Name your workspace/i }).waitFor();
@@ -97,7 +97,7 @@ test("onboarding — the shell survives step changes instead of re-mounting", as
   await page.goto("/onboarding", { waitUntil: "domcontentloaded" });
   await waitForPageText(page, "Continue on web");
   await page.getByRole("button", { name: "Continue on web" }).click();
-  await page.getByText("Tell us a bit about you.").waitFor();
+  await page.getByText("From SDLC to ADLC. Build with agents.").waitFor();
 
   // Tag the live nodes. A remount replaces the elements and drops the marks.
   await page.evaluate(() => {
@@ -105,8 +105,8 @@ test("onboarding — the shell survives step changes instead of re-mounting", as
     document.querySelector("main")?.setAttribute("data-persist-probe", "1");
   });
 
-  await page.getByRole("radio", { name: /Engineer \/ developer/i }).click();
-  await page.getByRole("checkbox", { name: /Ship code with AI agents/i }).click();
+  await page.getByRole("radio", { name: /Engineer/i }).click();
+  await page.getByRole("checkbox", { name: /Code & test with agents/i }).click();
   await page.getByRole("button", { name: "Continue" }).click();
   await page.getByRole("heading", { name: /Name your workspace/i }).waitFor();
 

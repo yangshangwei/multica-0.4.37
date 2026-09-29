@@ -70,7 +70,8 @@
   },
   "questions": {
     "about_you": {
-      "question": "Tell us a bit about you."
+      "question": "From SDLC to ADLC. Build with agents.",
+      "description": "You set the direction and make the key decisions. Agents collaborate from requirements to delivery."
     },
     "source": {
       "question": "How did you hear about Multica?",
@@ -90,31 +91,53 @@
       "other_placeholder": "e.g. a podcast I listen to"
     },
     "role": {
-      "question": "Which best describes you?",
-      "engineer": "Engineer / developer",
+      "question": "What's your role in the development process?",
+      "hint": "Choose one",
+      "engineer": "Engineer",
       "product": "Product manager",
       "designer": "Designer",
       "founder": "Founder / exec",
-      "marketing": "Marketing / growth",
-      "writer": "Writer / content",
-      "research": "Researcher / analyst",
-      "ops": "Operations / project mgmt",
-      "student": "Student / personal use",
+      "marketing": "Marketing",
+      "writer": "Technical writer",
+      "research": "Researcher",
+      "ops": "Project / ops",
+      "student": "Student / learner",
       "other": "Other",
-      "other_placeholder": "e.g. teacher, support lead"
+      "other_placeholder": "e.g. QA engineer"
     },
     "use_case": {
-      "question": "What do you want to use Multica for?",
-      "ship_code": "Ship code with AI agents",
-      "manage_team": "Manage tasks for my team",
-      "personal_tasks": "Organize my own tasks",
-      "plan_research": "Plan, brainstorm, research",
-      "write_publish": "Write, edit, publish",
-      "automate_ops": "Automate ops & workflows",
-      "evaluate": "Just exploring",
+      "question": "What would you like to do with agents?",
+      "hint": "Choose any that apply",
+      "ship_code": "Code & test with agents",
+      "manage_team": "Coordinate team & agents",
+      "personal_tasks": "Organize personal tasks",
+      "plan_research": "Define requirements & PRD",
+      "write_publish": "Write docs & launch content",
+      "automate_ops": "Automate workflows",
+      "evaluate": "Explore ADLC",
       "other": "Other",
-      "other_placeholder": "e.g. study group coordination"
+      "other_placeholder": "e.g. review code security"
     }
+  },
+  "lifecycle": {
+    "label": "From traditional to agentic software development",
+    "sdlc": "SDLC",
+    "sdlc_description": "Software Development Lifecycle · People execute, tools assist",
+    "requirements": "Requirements",
+    "design": "Design",
+    "implementation": "Code",
+    "testing": "Test",
+    "deployment": "Deploy",
+    "maintenance": "Maintain",
+    "adlc": "ADLC",
+    "adlc_description": "Agentic Development Lifecycle · People direct, agents collaborate",
+    "goal": "Goals & PRD",
+    "context": "Context & skills",
+    "orchestration": "Orchestrate agents",
+    "coding": "Autonomous coding",
+    "validation": "Continuous testing",
+    "review": "Review & deliver",
+    "feedback": "Observe, give feedback, and iterate on the goal."
   },
   "option_card": {
     "other_label": "Other",

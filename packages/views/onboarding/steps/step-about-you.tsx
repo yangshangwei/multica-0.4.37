@@ -28,6 +28,7 @@ import {
   IconOtherOptionCard,
   type QuestionOption,
 } from "../components/icon-option-card";
+import { DevelopmentLifecycle } from "../components/development-lifecycle";
 import { useT } from "../../i18n";
 
 /**
@@ -69,21 +70,21 @@ export function StepAboutYou({
     { slug: "product", icon: <Briefcase className="h-4 w-4" />, label: t(($) => $.questions.role.product) },
     { slug: "designer", icon: <Palette className="h-4 w-4" />, label: t(($) => $.questions.role.designer) },
     { slug: "founder", icon: <Rocket className="h-4 w-4" />, label: t(($) => $.questions.role.founder) },
-    { slug: "marketing", icon: <Megaphone className="h-4 w-4" />, label: t(($) => $.questions.role.marketing) },
-    { slug: "writer", icon: <PenLine className="h-4 w-4" />, label: t(($) => $.questions.role.writer) },
-    { slug: "research", icon: <Search className="h-4 w-4" />, label: t(($) => $.questions.role.research) },
     { slug: "ops", icon: <Settings2 className="h-4 w-4" />, label: t(($) => $.questions.role.ops) },
+    { slug: "research", icon: <Search className="h-4 w-4" />, label: t(($) => $.questions.role.research) },
+    { slug: "writer", icon: <PenLine className="h-4 w-4" />, label: t(($) => $.questions.role.writer) },
+    { slug: "marketing", icon: <Megaphone className="h-4 w-4" />, label: t(($) => $.questions.role.marketing) },
     { slug: "student", icon: <GraduationCap className="h-4 w-4" />, label: t(($) => $.questions.role.student) },
     { slug: "other", icon: <MoreHorizontal className="h-4 w-4" />, label: t(($) => $.questions.role.other), isOther: true },
   ];
 
   const useCaseOptions: QuestionOption[] = [
+    { slug: "plan_research", icon: <Brain className="h-4 w-4" />, label: t(($) => $.questions.use_case.plan_research) },
     { slug: "ship_code", icon: <Code2 className="h-4 w-4" />, label: t(($) => $.questions.use_case.ship_code) },
     { slug: "manage_team", icon: <ListChecks className="h-4 w-4" />, label: t(($) => $.questions.use_case.manage_team) },
-    { slug: "personal_tasks", icon: <User className="h-4 w-4" />, label: t(($) => $.questions.use_case.personal_tasks) },
-    { slug: "plan_research", icon: <Brain className="h-4 w-4" />, label: t(($) => $.questions.use_case.plan_research) },
-    { slug: "write_publish", icon: <FileEdit className="h-4 w-4" />, label: t(($) => $.questions.use_case.write_publish) },
     { slug: "automate_ops", icon: <Settings2 className="h-4 w-4" />, label: t(($) => $.questions.use_case.automate_ops) },
+    { slug: "write_publish", icon: <FileEdit className="h-4 w-4" />, label: t(($) => $.questions.use_case.write_publish) },
+    { slug: "personal_tasks", icon: <User className="h-4 w-4" />, label: t(($) => $.questions.use_case.personal_tasks) },
     { slug: "evaluate", icon: <Compass className="h-4 w-4" />, label: t(($) => $.questions.use_case.evaluate) },
     { slug: "other", icon: <MoreHorizontal className="h-4 w-4" />, label: t(($) => $.questions.use_case.other), isOther: true },
   ];
@@ -173,11 +174,17 @@ export function StepAboutYou({
 
   return (
     <>
-      <div className="flex flex-col gap-8 pt-2 sm:pt-6">
-        <StepHeading title={t(($) => $.questions.about_you.question)} />
+      <div className="flex flex-col gap-6 pt-2 sm:pt-4">
+        <StepHeading
+          title={t(($) => $.questions.about_you.question)}
+          description={t(($) => $.questions.about_you.description)}
+        />
+
+        <DevelopmentLifecycle />
 
         <QuestionGroup
           question={t(($) => $.questions.role.question)}
+          hint={t(($) => $.questions.role.hint)}
           options={roleOptions}
           selectedSlugs={roleSelected}
           otherValue={answers.role_other ?? ""}
@@ -189,6 +196,7 @@ export function StepAboutYou({
 
         <QuestionGroup
           question={t(($) => $.questions.use_case.question)}
+          hint={t(($) => $.questions.use_case.hint)}
           options={useCaseOptions}
           selectedSlugs={useCaseSlugs}
           otherValue={answers.use_case_other ?? ""}
@@ -198,10 +206,9 @@ export function StepAboutYou({
           onConfirm={confirmAdvance}
           multiSelect
         />
-
       </div>
 
-      <StepFooter hint={footerHint}>
+      <StepFooter hint={footerHint} className="pt-6">
         <Button className="w-full" disabled={!canContinue} onClick={confirmAdvance}>
           {t(($) => $.common.continue)}
         </Button>
@@ -216,12 +223,13 @@ export function StepAboutYou({
 StepAboutYou.displayName = "StepAboutYou";
 
 /**
- * One question group: sub-question label + a single column of option cards.
+ * One question group: sub-question label + wrapping option chips.
  * Selection semantics live in the parent's handlers; this stays a layout
  * shell so both groups render identically.
  */
 function QuestionGroup({
   question,
+  hint,
   options,
   selectedSlugs,
   otherValue,
@@ -232,6 +240,7 @@ function QuestionGroup({
   multiSelect = false,
 }: {
   question: string;
+  hint: string;
   options: readonly QuestionOption[];
   selectedSlugs: readonly string[];
   otherValue: string;
@@ -249,7 +258,10 @@ function QuestionGroup({
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-label font-medium text-foreground">{question}</h2>
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 className="text-body font-medium text-foreground">{question}</h2>
+        <p className="text-caption text-muted-foreground">{hint}</p>
+      </div>
       <fieldset
         role={multiSelect ? "group" : "radiogroup"}
         aria-label={question}
