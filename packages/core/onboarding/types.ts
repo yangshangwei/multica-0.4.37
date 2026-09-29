@@ -36,13 +36,20 @@ export type Role =
   | "engineer"
   | "product"
   | "designer"
+  | "architect"
+  | "qa"
+  | "devops"
+  | "security"
+  | "tech_lead"
+  | "project_manager"
+  | "other"
+  // Earlier clients persisted these roles; they are no longer offered in onboarding.
   | "founder"
   | "marketing"
   | "writer"
   | "research"
   | "ops"
-  | "student"
-  | "other";
+  | "student";
 
 export type UseCase =
   | "ship_code"

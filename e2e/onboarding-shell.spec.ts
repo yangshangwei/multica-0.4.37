@@ -63,7 +63,7 @@ test("onboarding — structural blocks match the column width on every step", as
   await page.getByText("From SDLC to ADLC. Build with agents.").waitFor();
   await expectFullWidthBlocks(page, "about you");
 
-  await page.getByRole("radio", { name: /Engineer/i }).click();
+  await page.getByRole("radio", { name: "Engineer", exact: true }).click();
   await page.getByRole("checkbox", { name: /Code & test with agents/i }).click();
   await page.getByRole("button", { name: "Continue" }).click();
 
@@ -105,7 +105,7 @@ test("onboarding — the shell survives step changes instead of re-mounting", as
     document.querySelector("main")?.setAttribute("data-persist-probe", "1");
   });
 
-  await page.getByRole("radio", { name: /Engineer/i }).click();
+  await page.getByRole("radio", { name: "Engineer", exact: true }).click();
   await page.getByRole("checkbox", { name: /Code & test with agents/i }).click();
   await page.getByRole("button", { name: "Continue" }).click();
   await page.getByRole("heading", { name: /Name your workspace/i }).waitFor();

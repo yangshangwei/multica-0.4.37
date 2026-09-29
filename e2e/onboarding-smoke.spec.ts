@@ -62,7 +62,7 @@ test("onboarding — answer path completes on Projects after skipping runtime", 
   await page.screenshot({ path: `${SHOTS_DIR}/02-about-you.png` });
 
   // Answer both groups, then Continue → workspace step.
-  await page.getByRole("radio", { name: /Engineer/i }).click();
+  await page.getByRole("radio", { name: "Engineer", exact: true }).click();
   await page.getByRole("checkbox", { name: /Code & test with agents/i }).click();
   await page.getByRole("button", { name: "Continue" }).click();
 

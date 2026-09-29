@@ -3,19 +3,19 @@
 import {
   Brain,
   Briefcase,
+  Bug,
   Code2,
   Compass,
   FileEdit,
-  GraduationCap,
+  GitBranch,
+  Layers,
   ListChecks,
-  Megaphone,
   MoreHorizontal,
   Palette,
-  PenLine,
-  Rocket,
-  Search,
   Settings2,
+  ShieldCheck,
   User,
+  Users,
 } from "lucide-react";
 import { Button } from "@multica/ui/components/ui/button";
 import type { QuestionnaireAnswers, Role, UseCase } from "@multica/core/onboarding";
@@ -69,12 +69,12 @@ export function StepAboutYou({
     { slug: "engineer", icon: <Code2 className="h-4 w-4" />, label: t(($) => $.questions.role.engineer) },
     { slug: "product", icon: <Briefcase className="h-4 w-4" />, label: t(($) => $.questions.role.product) },
     { slug: "designer", icon: <Palette className="h-4 w-4" />, label: t(($) => $.questions.role.designer) },
-    { slug: "founder", icon: <Rocket className="h-4 w-4" />, label: t(($) => $.questions.role.founder) },
-    { slug: "ops", icon: <Settings2 className="h-4 w-4" />, label: t(($) => $.questions.role.ops) },
-    { slug: "research", icon: <Search className="h-4 w-4" />, label: t(($) => $.questions.role.research) },
-    { slug: "writer", icon: <PenLine className="h-4 w-4" />, label: t(($) => $.questions.role.writer) },
-    { slug: "marketing", icon: <Megaphone className="h-4 w-4" />, label: t(($) => $.questions.role.marketing) },
-    { slug: "student", icon: <GraduationCap className="h-4 w-4" />, label: t(($) => $.questions.role.student) },
+    { slug: "architect", icon: <Layers className="h-4 w-4" />, label: t(($) => $.questions.role.architect) },
+    { slug: "qa", icon: <Bug className="h-4 w-4" />, label: t(($) => $.questions.role.qa) },
+    { slug: "devops", icon: <GitBranch className="h-4 w-4" />, label: t(($) => $.questions.role.devops) },
+    { slug: "security", icon: <ShieldCheck className="h-4 w-4" />, label: t(($) => $.questions.role.security) },
+    { slug: "tech_lead", icon: <Users className="h-4 w-4" />, label: t(($) => $.questions.role.tech_lead) },
+    { slug: "project_manager", icon: <ListChecks className="h-4 w-4" />, label: t(($) => $.questions.role.project_manager) },
     { slug: "other", icon: <MoreHorizontal className="h-4 w-4" />, label: t(($) => $.questions.role.other), isOther: true },
   ];
 

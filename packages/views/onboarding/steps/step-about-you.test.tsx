@@ -56,7 +56,7 @@ describe("StepAboutYou", () => {
     const user = userEvent.setup();
     const { onChange, onAdvance } = renderStep();
 
-    await user.click(screen.getByRole("radio", { name: /engineer/i }));
+    await user.click(screen.getByRole("radio", { name: "Engineer" }));
 
     expect(onChange).toHaveBeenCalledWith({
       role: "engineer",
