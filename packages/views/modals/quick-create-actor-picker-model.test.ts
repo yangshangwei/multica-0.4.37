@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
-import { actorKey, buildActorCatalog, actorShortcuts, searchActors, actorPage } from "./quick-create-actor-picker-model";
+import { projectActorSections, actorKey, buildActorCatalog, actorShortcuts, searchActors, actorPage } from "./quick-create-actor-picker-model";
 
 const agents = Array.from({ length: 500 }, (_, index) => ({
   id: String(index), name: `Agent ${String(index).padStart(3, "0")}`,
@@ -56,4 +56,16 @@ describe("quick-create actor projection", () => {
     expect(searchActors(catalog, "TAIL RESPONSIBILITY", "squad", "en")).toEqual([]);
     expect(actorPage([], 50)).toEqual({ items: [], remaining: 0 });
   });
+});
+
+
+it("budgets project, favorite and recent shortcuts without duplicate rows", () => {
+  const catalog = buildActorCatalog(Array.from({length:8},(_,i)=>({id:`a${i}`,name:`Agent${i}`,description:""})),
+    Array.from({length:4},(_,i)=>({id:`s${i}`,name:`Squad${i}`,description:""})));
+  const projects=Array.from({length:4},(_,i)=>({type:"squad" as const,id:`s${i}`}));
+  const favorites=[projects[3]!,...Array.from({length:4},(_,i)=>({type:"agent" as const,id:`a${i}`}))];
+  const recent=[projects[0]!,...Array.from({length:8},(_,i)=>({type:"agent" as const,id:`a${i}`}))];
+  const groups=projectActorSections(catalog,projects,favorites,recent,"all");
+  expect(groups.projects).toHaveLength(3);expect(groups.favorites).toHaveLength(3);expect(groups.recent).toHaveLength(2);
+  expect(groups.recent.map(actorKey)).toEqual(["agent:a4","agent:a5"]);
 });

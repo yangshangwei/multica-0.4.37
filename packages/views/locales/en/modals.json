@@ -284,7 +284,7 @@
       "generic_squad": "For example: {{name}}, we plan to add project member invitations. Please first check member responsibilities to establish what the squad can handle, list required material, suggested assignments, and acceptance checks, and identify support needed from other roles and next steps."
     },
     "agent": {
-      "created_by": "Created by",
+      "created_by": "Creation assistant",
       "select_agent_aria": "Select agent",
       "pick_an_agent": "Pick an agent…",
       "no_agents": "No agents or squads available.",
@@ -338,7 +338,34 @@
       "agents_refresh_failed": "Could not refresh agents. Showing saved results.",
       "squads_refresh_failed": "Could not refresh AI squads. Showing saved results.",
       "retry_agents": "Retry agents",
-      "retry_squads": "Retry AI squads"
+      "retry_squads": "Retry AI squads",
+      "default_badge": "Default",
+      "set_default": "Set current as default",
+      "clear_default": "Clear default",
+      "default_label": "Default: {{name}}",
+      "default_unavailable": "Default assistant is unavailable",
+      "project_group": "Project squads",
+      "all_project": "View all project squads ({{count}})",
+      "project_loading": "Loading project squads...",
+      "project_failed": "Could not load project squads.",
+      "retry_project": "Retry project",
+      "creator_hint": "Organizes your request and creates issues; the eventual assignee may differ.",
+      "no_project_matches": "No project squads match this filter."
+    },
+    "creator_recommendations": {
+      "choose": "Help me choose",
+      "loading": "Finding suitable assistants...",
+      "cancel": "Cancel",
+      "dismiss": "Dismiss recommendations",
+      "too_long": "Use up to 20,000 characters to get recommendations.",
+      "unavailable": "Recommendations are unavailable. You can still choose an assistant manually.",
+      "busy": "AI assistance is busy. Try again shortly.",
+      "timeout": "Recommendations timed out. Try again.",
+      "failed": "Could not recommend an assistant. Try again or choose manually.",
+      "empty": "No clear responsibility match found. You can still search or choose manually.",
+      "evidence": "Responsibility evidence:",
+      "use_named": "Use {{name}}",
+      "use": "Use assistant"
     }
   }
 }

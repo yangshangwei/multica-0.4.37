@@ -3,7 +3,7 @@ import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import { descriptionPreview } from "../issues/components/description-preview";
 
 export type ActorTypeFilter = "all" | QuickCreateActorRef["type"];
-export type ActorPickerView = "home" | "all" | "favorites";
+export type ActorPickerView = "home" | "all" | "favorites" | "project";
 export type ActorCatalogEntry = QuickCreateActorRef & {
   name: string;
   description: string;
@@ -58,4 +58,14 @@ export function searchActors(catalog: readonly ActorCatalogEntry[], query: strin
 
 export function actorPage(items: readonly ActorCatalogEntry[], limit: number) {
   return { items: items.slice(0, limit), remaining: Math.max(0, items.length - limit) };
+}
+
+
+export function projectActorSections(catalog: readonly ActorCatalogEntry[], project: readonly QuickCreateActorRef[], favorites: readonly QuickCreateActorRef[], recent: readonly QuickCreateActorRef[], type: ActorTypeFilter = "all") {
+  const projectKeys = new Set(project.map(actorKey));
+  const projectItems = actorShortcuts(catalog, project, [], type).favorites;
+  const rest = actorShortcuts(catalog.filter((actor) => !projectKeys.has(actorKey(actor))), favorites, recent, type);
+  const projects = projectItems.slice(0, 3);
+  const pinned = rest.favorites.slice(0, 3);
+  return { projects, favorites: pinned, recent: rest.recent.slice(0, Math.min(5, 8 - projects.length - pinned.length)) };
 }

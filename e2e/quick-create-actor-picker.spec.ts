@@ -50,11 +50,11 @@ async function setup(page: Page, info: TestInfo) {
 async function openCreate(page: Page, slug: string) {
   await page.goto(`/${slug}/issues`, { waitUntil: "domcontentloaded" });
   await page.getByRole("button", { name: "New Issue", exact: true }).first().click();
-  await expect(page.getByRole("button", { name: /^Created by/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Creation assistant/ })).toBeVisible();
 }
 
 async function openPicker(page: Page) {
-  await page.getByRole("button", { name: /^Created by/ }).click();
+  await page.getByRole("button", { name: /^Creation assistant/ }).click();
   await expect(page.getByPlaceholder(SEARCH, { exact: true })).toBeVisible();
 }
 
@@ -108,7 +108,7 @@ test("real API actors keep favorites and accepted recents local to their workspa
     await openCreate(page, workspace.slug);
     const editor = page.getByRole("dialog", { name: "Quick create issue", exact: true }).locator('[contenteditable="true"]').first();
     await editor.fill("Preserve this draft while pinning roles.");
-    const originalActor = await page.getByRole("button", { name: /^Created by/ }).textContent();
+    const originalActor = await page.getByRole("button", { name: /^Creation assistant/ }).textContent();
     await openPicker(page);
     await expect(items(page)).toHaveCount(5);
     for (const name of [...agents.slice(0, 3).map((agent) => agent.name), squad.name]) {
@@ -117,8 +117,8 @@ test("real API actors keep favorites and accepted recents local to their workspa
     }
     await expect(page.getByPlaceholder(SEARCH)).toBeVisible();
     await expect(editor).toHaveText("Preserve this draft while pinning roles.");
-    await expect(page.getByRole("button", { name: /^Created by/ })).toHaveText(originalActor!);
-    await page.getByRole("button", { name: /^Created by/ }).click();
+    await expect(page.getByRole("button", { name: /^Creation assistant/ })).toHaveText(originalActor!);
+    await page.getByRole("button", { name: /^Creation assistant/ }).click();
     await openPicker(page);
     await expect(items(page)).toHaveCount(3);
     await page.getByRole("button", { name: "View all favorites (4)", exact: true }).click();
@@ -133,7 +133,7 @@ test("real API actors keep favorites and accepted recents local to their workspa
     expect(response.status()).toBe(202);
     expect(response.request().postDataJSON()).toMatchObject({ agent_id: agents[3]!.id, prompt: "Preserve this draft while pinning roles." });
     expect(await response.json()).toMatchObject({ task_id: expect.any(String) });
-    await expect(page.getByRole("button", { name: /^Created by/ })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: /^Creation assistant/ })).toHaveCount(0);
     await openCreate(page, workspace.slug);
     await openPicker(page);
     await expect(page.getByText("Recently used", { exact: true })).toBeVisible();
@@ -250,7 +250,7 @@ test("keyboard actions preserve draft and reset stale choices in a narrow viewpo
     await expect(search).toBeVisible();
     await search.press("Enter");
     await expect(search).toHaveCount(0);
-    const trigger = page.getByRole("button", { name: /^Created by/ });
+    const trigger = page.getByRole("button", { name: /^Creation assistant/ });
     await expect(trigger).toContainText("Agent 007");
     await trigger.press("Enter");
     await expect(search).toHaveValue("");
@@ -349,7 +349,7 @@ test("desktop renderer supports picker search and pinning without starting a dae
     await page.screenshot({ path: evidencePath(info, "browser-actor-picker-desktop.png"), animations: "disabled" });
     await page.keyboard.press("Escape");
     await expect(search).toHaveCount(0);
-    await expect(page.getByRole("button", { name: /^Created by/ })).toBeFocused();
+    await expect(page.getByRole("button", { name: /^Creation assistant/ })).toBeFocused();
     expect(await desktop.evaluate(() => (globalThis as unknown as {
       changelogAcceptance: { daemonStarts: number; externalLinks: string[]; installCalls: number };
     }).changelogAcceptance)).toEqual({ daemonStarts: 0, externalLinks: [], installCalls: 0 });

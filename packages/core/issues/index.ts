@@ -17,3 +17,5 @@ export {
   type StatusFilterColumnsResult,
   normalizeStatusPatch,
 } from "./status-category";
+
+export { resolveQuickCreateCreator, type CreatorSelectionInput } from "./creator-selection";

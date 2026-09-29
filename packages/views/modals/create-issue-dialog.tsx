@@ -122,6 +122,7 @@ function CreateIssueDialogBody({
   const [mode, setMode] = useState<CreateMode>(initialMode);
   const [panelData, setPanelData] = useState(data ?? null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [needsAssistSpace, setNeedsAssistSpace] = useState(false);
   const effectiveData = sourceContextData
     ? { ...(panelData ?? {}), ...sourceContextData }
     : panelData;
@@ -152,7 +153,9 @@ function CreateIssueDialogBody({
           // content-driven height, capped for mobile browser chrome.
           isExpanded
             ? "!h-5/6 sm:!max-w-4xl"
-            : sourceContextData
+            : needsAssistSpace && !sourceContextExpanded
+              ? "!h-[600px] !max-h-[85dvh] sm:!max-w-2xl"
+              : sourceContextData
               ? sourceContextExpanded
                 ? "!h-5/6 sm:!max-w-2xl"
                 : "!h-96 sm:!max-w-xl"
@@ -177,6 +180,7 @@ function CreateIssueDialogBody({
             data={effectiveData}
             isExpanded={isExpanded}
             setIsExpanded={setIsExpanded}
+            onNeedsSpace={() => setNeedsAssistSpace(true)}
           />
         ) : (
           <ManualCreatePanel

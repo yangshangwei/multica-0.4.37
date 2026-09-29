@@ -108,6 +108,8 @@ const mockQuickCreateStore = {
   lastActorType: null as "agent" | "squad" | null,
   lastActorId: null as string | null,
   setLastActor: mockSetLastActor,
+  defaultActor: null as {type:"agent"|"squad";id:string}|null,
+  setDefaultActor: vi.fn(),
   recordSuccessfulActor: mockRecordSuccessfulActor,
   toggleFavoriteActor: mockToggleFavoriteActor,
   favoriteActors: [] as Array<{ type: "agent" | "squad"; id: string }>,
@@ -453,6 +455,8 @@ vi.mock("@multica/ui/components/ui/dialog", () => ({
 
 // The real primitive interaction matrix lives in quick-create-actor-picker.test.tsx.
 // This suite owns parent selection, draft and submission wiring only.
+vi.mock("./creator-recommendations", () => ({ CreatorRecommendations: () => null }));
+
 vi.mock("./quick-create-actor-picker", () => ({
   QuickCreateActorPicker: ({ actor, visibleAgents, visibleSquads, onPick }: {
     actor: { type: "agent" | "squad"; id: string } | null;
@@ -530,6 +534,7 @@ describe("AgentCreatePanel", () => {
     mockQuickCreateStore.recentActors = [];
     mockQuickCreateStore.resetGeneration = 0;
     mockOptimizeDescription.mockResolvedValue({ text: "Clarified request", questions: ["Confirm scope?"] });
+    mockQuickCreateStore.defaultActor = null;
     mockQuickCreateStore.lastActorType = null;
     mockQuickCreateStore.lastActorId = null;
     mockQuickCreateStore.lastProjectId = null;

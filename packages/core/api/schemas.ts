@@ -3802,3 +3802,11 @@ export const OptimizeIssueDescriptionResponseSchema = z.object({
   text: z.string().refine((text) => text.trim().length > 0),
   questions: z.array(z.string()).nullish().transform((questions) => questions ?? []),
 });
+
+export const RecommendIssueCreatorsResponseSchema = z.object({
+  recommendations: z.array(z.object({
+    actor_type: z.enum(["agent", "squad"]),
+    actor_id: z.string().uuid().transform((id) => id.toLowerCase()),
+    reason: z.string().refine((reason) => reason.trim().length > 0 && Array.from(reason).length <= 240),
+  })).max(3).refine((items) => new Set(items.map((item) => `${item.actor_type}:${item.actor_id}`)).size === items.length),
+});

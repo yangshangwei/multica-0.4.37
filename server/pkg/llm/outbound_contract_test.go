@@ -128,9 +128,10 @@ const openAISDKImportPrefix = "github.com/openai/openai-go"
 // operators: these files, and only these, ask this layer to send something
 // upstream. The value is the summary each one is documented with.
 var documentedConsumers = map[string]string{
-	"internal/handler/chat_title.go":                  "chat auto-titling: the first user message of a new chat session",
-	"internal/service/chat_quick_actions_generate.go": "chat follow-up questions: the tail of the conversation",
-	"internal/handler/issue_description_assist.go":    "issue description optimization: submitted description, optional title and creation mode",
+	"internal/handler/issue_creator_recommendation.go": "creator recommendations: submitted task text and bounded saved responsibility excerpts",
+	"internal/handler/chat_title.go":                   "chat auto-titling: the first user message of a new chat session",
+	"internal/service/chat_quick_actions_generate.go":  "chat follow-up questions: the tail of the conversation",
+	"internal/handler/issue_description_assist.go":     "issue description optimization: submitted description, optional title and creation mode",
 }
 
 // clientCallSurface is every method on Client that can produce an upstream

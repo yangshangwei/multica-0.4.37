@@ -26,6 +26,7 @@ export interface QuickCreateScope {
 }
 
 interface QuickCreatePreferences {
+  defaultActor: QuickCreateActorRef | null;
   lastActorType: QuickCreateActorType | null;
   lastActorId: string | null;
   keepOpen: boolean;
@@ -36,6 +37,7 @@ interface QuickCreatePreferences {
 interface QuickCreateState extends QuickCreatePreferences {
   hydratedScope: QuickCreateScope | null;
   resetGeneration: number;
+  setDefaultActor: (actor: QuickCreateActorRef | null, scope?: QuickCreateScope | null) => boolean;
   setLastActor: (type: QuickCreateActorType | null, id: string | null) => void;
   setKeepOpen: (value: boolean) => void;
   toggleFavoriteActor: (actor: QuickCreateActorRef, scope?: QuickCreateScope | null) => boolean;
@@ -45,6 +47,7 @@ interface QuickCreateState extends QuickCreatePreferences {
 const RECENT_ACTOR_LIMIT = 20;
 const STORAGE_KEY = "multica_quick_create";
 const defaults = (): QuickCreatePreferences => ({
+  defaultActor: null,
   lastActorType: null,
   lastActorId: null,
   keepOpen: false,
@@ -85,6 +88,7 @@ function preferences(value: unknown): QuickCreatePreferences {
   const data = value as Record<string, unknown>;
   const lastActor = actorRef({ type: data.lastActorType, id: data.lastActorId });
   return {
+    defaultActor: actorRef(data.defaultActor),
     lastActorType: lastActor?.type ?? null,
     lastActorId: lastActor?.id ?? null,
     keepOpen: data.keepOpen === true,
@@ -179,6 +183,12 @@ export const useQuickCreateStore = create<QuickCreateState>()(
       ...defaults(),
       hydratedScope: null,
       resetGeneration: 0,
+      setDefaultActor: (value, scope = captureQuickCreateScope()) => {
+        const actor = actorRef(value);
+        if ((value !== null && !actor) || !isQuickCreateScopeCurrent(scope) || !isQuickCreateStoreReady(get())) return false;
+        set({ defaultActor: actor });
+        return true;
+      },
       setLastActor: (type, id) => {
         if (!isQuickCreateStoreReady(get())) return;
         const actor = actorRef({ type, id });
@@ -212,8 +222,8 @@ export const useQuickCreateStore = create<QuickCreateState>()(
       name: STORAGE_KEY,
       storage: scopedStorage,
       skipHydration: true,
-      partialize: ({ lastActorType, lastActorId, keepOpen, favoriteActors, recentActors }) => ({
-        lastActorType, lastActorId, keepOpen, favoriteActors, recentActors,
+      partialize: ({ defaultActor, lastActorType, lastActorId, keepOpen, favoriteActors, recentActors }) => ({
+        defaultActor, lastActorType, lastActorId, keepOpen, favoriteActors, recentActors,
       }),
       onRehydrateStorage: () => {
         // The storage write gate makes this in-memory invalidation safe: it

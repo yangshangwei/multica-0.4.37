@@ -36,11 +36,44 @@ function Harness(props: Partial<QuickCreateActorPickerProps>) {
 }
 
 async function openPicker(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole("button", { name: /Created by/ }));
+  await user.click(screen.getByRole("button", { name: /Creation assistant/ }));
   return screen.findByPlaceholderText("Search names or responsibilities...");
 }
 
 describe("QuickCreateActorPicker", () => {
+  it("does not describe an unavailable project dataset as an empty project",async()=>{
+    const user=userEvent.setup();const projectActors=[{type:"squad" as const,id:"a"}];
+    const view=render(<Harness projectActors={projectActors}/>);await openPicker(user);
+    await user.click(screen.getByRole("button",{name:"View all project squads (1)"}));
+    view.rerender(<Harness projectActors={projectActors} projectState={{pending:false,error:true,hasData:false,onRetry:vi.fn()}}/>);
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByText("No project squads match this filter.")).not.toBeInTheDocument();
+  });
+
+  it("sets and clears default independently of selection and favorites", async () => {
+    const user=userEvent.setup();const onPick=vi.fn();const onSetDefault=vi.fn();
+    const view=render(<Harness onPick={onPick} onSetDefault={onSetDefault} defaultActor={null} />);
+    const input=await openPicker(user);
+    await user.click(screen.getByRole("button",{name:"Set current as default"}));
+    expect(onSetDefault).toHaveBeenCalledWith(a);expect(onPick).not.toHaveBeenCalled();expect(input).toHaveFocus();
+    view.rerender(<Harness onPick={onPick} onSetDefault={onSetDefault} defaultActor={a} />);
+    await user.click(screen.getByRole("button",{name:"Clear default"}));
+    expect(onSetDefault).toHaveBeenLastCalledWith(null);expect(onPick).not.toHaveBeenCalled();
+  });
+  it("exposes project squads without replacing the selected creator and keeps full search", async () => {
+    const user=userEvent.setup();const onPick=vi.fn();
+    render(<Harness onPick={onPick} projectActors={[{type:"squad",id:"a"}]} />);
+    const input=await openPicker(user);
+    expect(screen.getByRole("heading",{name:"Project squads"})).toBeInTheDocument();
+    expect(onPick).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button",{name:"View all project squads (1)"}));
+    expect(input).toHaveFocus();
+    await user.click(screen.getByRole("button",{name:"Agents"}));
+    expect(screen.getByText("No project squads match this filter.")).toBeInTheDocument();
+    await user.type(input,"documentation");
+    expect(screen.getByRole("button",{name:/Dana Agent Write documentation/})).toBeInTheDocument();
+  });
+
   it.each(["Browse all (5)", "View all favorites (1)", "Back to shortcuts", "Show more (5 remaining)", "Retry agents"])("keeps focus inside after %s so Escape dismisses one layer at a time", async (action) => {
     function NestedDialog() {
       const [open, setOpen] = useState(true);
@@ -72,7 +105,7 @@ describe("QuickCreateActorPicker", () => {
     await user.keyboard("{Escape}");
     expect(input).not.toBeInTheDocument();
     expect(screen.getByRole("dialog", {name: "Create an issue"})).toBeInTheDocument();
-    expect(screen.getByRole("button", {name: /Created by/})).toHaveFocus();
+    expect(screen.getByRole("button", {name: /Creation assistant/})).toHaveFocus();
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog", {name: "Create an issue"})).not.toBeInTheDocument();
   });
@@ -124,7 +157,7 @@ describe("QuickCreateActorPicker", () => {
     expect(reopened).toHaveValue("");
     expect(screen.getByRole("button", { name: "All" })).toHaveAttribute("aria-pressed", "true");
     await user.keyboard("{Escape}");
-    expect(screen.getByRole("button", { name: /Created by/ })).toHaveFocus();
+    expect(screen.getByRole("button", { name: /Creation assistant/ })).toHaveFocus();
   });
 
   it("types to select the first result, ignores IME, and arrows skip all pin controls", async () => {

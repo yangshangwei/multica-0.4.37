@@ -229,3 +229,14 @@ export interface OptimizeIssueDescriptionResponse {
   text: string;
   questions: string[];
 }
+
+/** A grounded suggestion only; adopting it never dispatches work. */
+export interface IssueCreatorRecommendation {
+  actor_type: "agent" | "squad";
+  actor_id: string;
+  reason: string;
+}
+
+export interface RecommendIssueCreatorsResponse {
+  recommendations: IssueCreatorRecommendation[];
+}

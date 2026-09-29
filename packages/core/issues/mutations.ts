@@ -1154,3 +1154,14 @@ export function useOptimizeIssueDescription(wsId: string) {
     gcTime: 0,
   });
 }
+
+/** Suggestions are explicit, uncached actions; no draft or entity cache writes. */
+export function useRecommendIssueCreators(wsId: string) {
+  return useMutation({
+    mutationKey: ["issues", wsId, "recommend-creators"],
+    mutationFn: ({ text, signal }: { text: string; signal?: AbortSignal }) =>
+      api.recommendIssueCreators(text, { workspaceId: wsId, signal }),
+    retry: false,
+    gcTime: 0,
+  });
+}

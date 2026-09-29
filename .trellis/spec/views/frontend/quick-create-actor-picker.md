@@ -80,3 +80,17 @@ if (scope && isQuickCreateScopeCurrent(scope)) {
   recordSuccessfulActor(submittedActor, scope);
 }
 ```
+
+
+## Phase 2: defaults, projects and explicit recommendations
+
+- `defaultActor` is a nullable typed local preference. `setDefaultActor(ref, capturedScope)` uses the same workspace/login/readiness guard as favorites. It never changes recent history or the current draft.
+- `resolveQuickCreateCreator` owns caller → draft → explicit default → last accepted → first eligible agent precedence. Unknown high-priority actor data waits instead of falling through; malformed actor kinds/blank IDs are skipped. Caller/draft resolution precedes preference hydration, saved fallbacks follow it.
+- Project candidates come from `getProjectExecutionSquads` (plural including [] wins) and only configured, currently eligible squad IDs. They are recommendations for the creator, not a change to the project's eventual-assignee contract. The first3 project candidates, first3 non-project favorites and remaining recents share an8-item home budget; full project browsing and full-catalog text search remain available.
+- `CreatorRecommendations` calls `useRecommendIssueCreators(wsId)` only on the explicit Help me choose button. Flush and read the current editor, keep at most3 locally validated suggestions, adopt only through the existing onPick path. No default/history/issue writes occur on recommendation or adoption.
+- A request captures text, project, actor, workspace/login/reset identity and description snapshots. Abort on context changes; an ignored abort still cannot publish stale data. Revalidate live editor text, identity, candidate eligibility and unchanged description before adopting.
+- Mutation `gcTime:0` alone does not clear an observed mutation. Reset the mutation observer on current-request settlement, clear/cancel and unmount, guarded by request identity. Retain only the visible local result/context; do not leave task text in the global mutation cache. `creator-recommendations-cache.test.tsx` exercises the real QueryClient.
+- New endpoint responses use Zod business-field validation while allowing harmless added fields. Missing/invalid/duplicate/over-limit results are errors, not authoritative no-match responses. Requests pin workspace UUID and forward AbortSignal; the mutation has no automatic retries.
+- Manual selection and task creation remain available without configured AI or on an older server returning404. The interface says Creation assistant to distinguish it from the final issue assignee.
+
+Tests: core creator-selection/API/preference suites; views creator-recommendations and cache suites plus phase1 picker regressions; `e2e/quick-create-actor-picker-phase2.spec.ts` covers realAPI defaults/projects, deterministic-provider recommendations, cancellation/failure, actual Electron and Chinese narrow layouts.

@@ -282,7 +282,7 @@
       "generic_squad": "例如：{{name}}，项目准备增加成员邀请功能，请先根据成员职责确认AI小队能承担的工作，列出所需资料、建议分工和验收方式，并说明需要其他角色配合的事项及下一步安排。"
     },
     "agent": {
-      "created_by": "创建者",
+      "created_by": "创建助手",
       "select_agent_aria": "选择智能体",
       "pick_an_agent": "选一个智能体...",
       "no_agents": "暂无可用智能体或AI小队。",
@@ -336,7 +336,34 @@
       "agents_refresh_failed": "无法刷新智能体，当前显示缓存结果。",
       "squads_refresh_failed": "无法刷新AI小队，当前显示缓存结果。",
       "retry_agents": "重试加载智能体",
-      "retry_squads": "重试加载AI小队"
+      "retry_squads": "重试加载AI小队",
+      "default_badge": "默认",
+      "set_default": "将当前助手设为默认",
+      "clear_default": "清除默认助手",
+      "default_label": "默认：{{name}}",
+      "default_unavailable": "默认助手暂不可用",
+      "project_group": "项目相关小队",
+      "all_project": "查看全部项目小队（{{count}}）",
+      "project_loading": "正在加载项目小队...",
+      "project_failed": "无法加载项目小队。",
+      "retry_project": "重试项目",
+      "creator_hint": "帮你整理需求并创建任务，与最终负责人可以不同。",
+      "no_project_matches": "当前筛选下没有项目小队。"
+    },
+    "creator_recommendations": {
+      "choose": "帮我选",
+      "loading": "正在查找合适的助手...",
+      "cancel": "取消",
+      "dismiss": "关闭推荐",
+      "too_long": "请将需求文字控制在 20,000 字以内再获取推荐。",
+      "unavailable": "推荐暂不可用，你仍可手动选择助手。",
+      "busy": "AI 辅助繁忙，请稍后重试。",
+      "timeout": "推荐超时，请重试。",
+      "failed": "暂时无法推荐助手，请重试或手动选择。",
+      "empty": "暂未找到有明确职责依据的助手，你仍可搜索或手动选择。",
+      "evidence": "职责依据：",
+      "use_named": "使用 {{name}}",
+      "use": "使用此助手"
     }
   }
 }

@@ -36,6 +36,7 @@ const DEFAULTS = {
   keepOpen: false,
   favoriteActors: [],
   recentActors: [],
+  defaultActor: null,
 };
 const agent = (id: string): QuickCreateActorRef => ({ type: "agent", id });
 const squad = (id: string): QuickCreateActorRef => ({ type: "squad", id });
@@ -75,6 +76,50 @@ afterEach(async () => {
 });
 
 describe("quick create preferences", () => {
+  it("sets and clears a default without changing recent, favorite or last-accepted choices", () => {
+    record(agent("last"));
+    const before = useQuickCreateStore.getState();
+    expect(before.setDefaultActor(squad("default"), captureQuickCreateScope())).toBe(true);
+    expect(useQuickCreateStore.getState()).toMatchObject({
+      defaultActor: squad("default"), lastActorId: "last", recentActors: [agent("last")], favoriteActors: [],
+    });
+    expect(useQuickCreateStore.getState().setDefaultActor(null)).toBe(true);
+    expect(useQuickCreateStore.getState().defaultActor).toBeNull();
+  });
+
+  it("restores defaults per workspace and clears them on logout", async () => {
+    useQuickCreateStore.getState().setDefaultActor(agent("a-default"));
+    await activate("b");
+    expect(useQuickCreateStore.getState().defaultActor).toBeNull();
+    useQuickCreateStore.getState().setDefaultActor(squad("b-default"));
+    await activate("a");
+    expect(useQuickCreateStore.getState().defaultActor).toEqual(agent("a-default"));
+    resetAllRegisteredDrafts();
+    expect(useQuickCreateStore.getState().defaultActor).toBeNull();
+  });
+
+  it("rejects a default write captured before workspace or session replacement", async () => {
+    const scope = captureQuickCreateScope();
+    setCurrentWorkspace("b", "ws-b");
+    expect(useQuickCreateStore.getState().setDefaultActor(agent("old"), scope)).toBe(false);
+    await activate("a");
+    resetAllRegisteredDrafts();
+    await activate("a");
+    expect(useQuickCreateStore.getState().setDefaultActor(agent("old"), scope)).toBe(false);
+    expect(useQuickCreateStore.getState().defaultActor).toBeNull();
+  });
+
+  it("normalizes absent or invalid defaults and strips persisted metadata", async () => {
+    for (const value of [undefined, null, { type: "human", id: "x" }, { type: "squad", id: " " }]) {
+      seed("b", { defaultActor: value });
+      await activate("b");
+      expect(useQuickCreateStore.getState().defaultActor).toBeNull();
+    }
+    seed("b", { defaultActor: { ...agent("valid"), name: "not persisted" } });
+    await activate("b");
+    expect(useQuickCreateStore.getState().defaultActor).toEqual(agent("valid"));
+  });
+
   it("does not read platform auth while the store module is initializing", () => {
     expect(authReadsAtImport).toBe(0);
   });
@@ -138,7 +183,7 @@ describe("quick create preferences", () => {
     record(squad("recent"));
     useQuickCreateStore.getState().setKeepOpen(true);
     expect(JSON.parse(storage.values.get(key("a"))!)).toEqual({
-      state: { lastActorType: "squad", lastActorId: "recent", keepOpen: true, favoriteActors: [agent("favorite")], recentActors: [squad("recent")] },
+      state: { lastActorType: "squad", lastActorId: "recent", keepOpen: true, favoriteActors: [agent("favorite")], recentActors: [squad("recent")], defaultActor: null },
       version: 0,
     });
     await activate("b");

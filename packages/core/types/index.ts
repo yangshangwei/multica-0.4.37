@@ -364,3 +364,5 @@ export type {
 } from "./billing";
 
 export type { OptimizeIssueDescriptionRequest, OptimizeIssueDescriptionResponse } from "./issue";
+
+export type { IssueCreatorRecommendation, RecommendIssueCreatorsResponse } from "./issue";
