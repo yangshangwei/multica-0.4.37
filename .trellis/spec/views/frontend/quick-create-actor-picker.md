@@ -94,3 +94,12 @@ if (scope && isQuickCreateScopeCurrent(scope)) {
 - Manual selection and task creation remain available without configured AI or on an older server returning404. The interface says Creation assistant to distinguish it from the final issue assignee.
 
 Tests: core creator-selection/API/preference suites; views creator-recommendations and cache suites plus phase1 picker regressions; `e2e/quick-create-actor-picker-phase2.spec.ts` covers realAPI defaults/projects, deterministic-provider recommendations, cancellation/failure, actual Electron and Chinese narrow layouts.
+
+
+## Actor hierarchy
+
+- Resolve current leaders through eligible squads' `leader_id`, never names or template provenance. Keep their saved descriptions and direct-selection identities unchanged.
+- Primary directory and shortcut rows show other agents and squads. Put leaders in the default-collapsed Planning and coordination section; search exposes matching leaders automatically.
+- Favorite navigation/counts include leaders even though their rows remain in the secondary section. Preserve defaults, recent history and stored references.
+- Explain that selecting a leader individually does not select their squad. No claim that a leader cannot implement is supported by this relationship.
+- Keep Creation assistant: assignment defaults to the selected actor, but an explicitly named assignee in the request takes precedence. This change does not lock backend assignment.

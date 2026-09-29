@@ -8,6 +8,7 @@ export type ActorCatalogEntry = QuickCreateActorRef & {
   name: string;
   description: string;
   preview: string;
+  leadsSquads: string[];
 };
 type SavedActor = { id: string; name: unknown; description?: unknown };
 
@@ -15,10 +16,16 @@ export const ACTOR_PAGE_SIZE = 50;
 export const actorKey = (actor: QuickCreateActorRef) => `${actor.type}:${actor.id}`;
 
 /** Inputs already obey the parent's permission/runtime eligibility rules. */
-export function buildActorCatalog(agents: readonly SavedActor[], squads: readonly SavedActor[]): ActorCatalogEntry[] {
+export function buildActorCatalog(agents: readonly SavedActor[], squads: readonly (SavedActor & { leader_id?: string })[]): ActorCatalogEntry[] {
+  const leaders = new Map<string, string[]>();
+  for (const squad of squads) {
+    if (squad.leader_id && typeof squad.name === "string") {
+      leaders.set(squad.leader_id, [...(leaders.get(squad.leader_id) ?? []), squad.name]);
+    }
+  }
   const project = (items: readonly SavedActor[], type: QuickCreateActorRef["type"]) => items.map((item) => {
     const description = typeof item.description === "string" ? item.description : "";
-    return { type, id: item.id, name: typeof item.name === "string" ? item.name : "", description, preview: descriptionPreview(description) };
+    return { type, id: item.id, name: typeof item.name === "string" ? item.name : "", description, preview: descriptionPreview(description), leadsSquads: type === "agent" ? leaders.get(item.id) ?? [] : [] };
   });
   return [...project(agents, "agent"), ...project(squads, "squad")];
 }

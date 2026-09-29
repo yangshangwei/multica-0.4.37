@@ -19,7 +19,7 @@ import { cn } from "@multica/ui/lib/utils";
 import type { AgentListRow } from "./agents-page";
 
 export const AGENT_ROLE_ORDER: AgentRoleKind[] = [
-  "coordinator", "specialist", "other",
+  "other", "specialist", "coordinator",
 ];
 
 export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onToggleFilter }: {

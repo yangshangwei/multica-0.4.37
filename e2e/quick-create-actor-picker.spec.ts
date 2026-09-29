@@ -110,6 +110,10 @@ test("real API actors keep favorites and accepted recents local to their workspa
     await editor.fill("Preserve this draft while pinning roles.");
     const originalActor = await page.getByRole("button", { name: /^Creation assistant/ }).textContent();
     await openPicker(page);
+    await expect(items(page)).toHaveCount(4);
+    const coordination = page.getByRole("button", { name: "Planning and coordination (1)" });
+    await expect(coordination).toHaveAttribute("aria-expanded", "false");
+    await coordination.click();
     await expect(items(page)).toHaveCount(5);
     for (const name of [...agents.slice(0, 3).map((agent) => agent.name), squad.name]) {
       await page.getByPlaceholder(SEARCH).fill(name);
@@ -122,6 +126,8 @@ test("real API actors keep favorites and accepted recents local to their workspa
     await openPicker(page);
     await expect(items(page)).toHaveCount(3);
     await page.getByRole("button", { name: "View all favorites (4)", exact: true }).click();
+    await expect(items(page)).toHaveCount(3);
+    await page.getByRole("button", { name: "Planning and coordination (1)" }).click();
     await expect(items(page)).toHaveCount(4);
     await expect(actorRow(page, "squad", squad.id)).toContainText("Coordinate delivery");
     // Searching from favorites must reach the unpinned actor too.
@@ -176,14 +182,17 @@ test("550 route-mocked actors remain searchable and pageable with browser render
     await expect(items(page)).toHaveCount(50);
     for (let count = 100; count <= 550; count += 50) {
       await page.getByRole("button", { name: /^Show more \(/ }).click();
-      await expect(items(page)).toHaveCount(count);
+      await expect(items(page)).toHaveCount(Math.min(count, 549));
     }
+    await page.getByRole("button", { name: "Planning and coordination (1)" }).click();
+    await expect(items(page)).toHaveCount(550);
     await expect(actorRow(page, "squad", actorId("squad", 49))).toBeVisible();
     const search = page.getByPlaceholder(SEARCH);
     await search.fill("responsibility-0499");
     await expect(items(page)).toHaveCount(1);
     await expect(actorRow(page, "agent", actorId("agent", 499))).toBeVisible();
     await search.fill("");
+    await page.getByRole("button", { name: "Planning and coordination (1)" }).click();
     await expect(items(page)).toHaveCount(50);
     await search.fill("squad-duty-0049");
     await page.getByRole("button", { name: "Agents", exact: true }).click();
@@ -263,6 +272,7 @@ test("keyboard actions preserve draft and reset stale choices in a narrow viewpo
     await expect(trigger).toContainText("Agent 007");
     await page.getByRole("button", { name: "All", exact: true }).click();
     await search.fill("");
+    await search.fill("Agent 000");
     const pin = page.getByRole("button", { name: "Pin Agent 000 to favorites", exact: true });
     await search.focus();
     for (let tab = 0; tab < 16 && !(await pin.evaluate((button) => button === document.activeElement)); tab++) await page.keyboard.press("Tab");
@@ -273,6 +283,7 @@ test("keyboard actions preserve draft and reset stale choices in a narrow viewpo
     await expect(unpin).toHaveAttribute("aria-pressed", "true");
     await expect(trigger).toContainText("Agent 007");
     await expect(editor).toHaveText("Keep my keyboard draft.");
+    await search.fill("");
     const browseAll = page.getByRole("button", { name: "Browse all (10)", exact: true });
     await browseAll.click();
     await expect(search).toBeFocused();

@@ -311,6 +311,11 @@
       "sub_issue_of": "作为 {{identifier}} 的子任务"
     },
     "actor_picker": {
+      "execution_group": "专项智能体与 AI 小队",
+      "coordination_group": "规划与协调（{{count}}）",
+      "coordinator_badge": "小队负责人",
+      "leads_squads": "牵头小队：{{names}}",
+      "coordinator_hint": "单独选择负责人不等于选择整个小队。需要成员协作时，请选择 AI 小队。",
       "search_placeholder": "搜索名称或职责...",
       "all": "全部",
       "agents": "智能体",
@@ -347,7 +352,7 @@
       "project_loading": "正在加载项目小队...",
       "project_failed": "无法加载项目小队。",
       "retry_project": "重试项目",
-      "creator_hint": "帮你整理需求并创建任务，与最终负责人可以不同。",
+      "creator_hint": "创建任务时默认分配给所选对象；正文明确指定负责人时，以正文为准。",
       "no_project_matches": "当前筛选下没有项目小队。"
     },
     "creator_recommendations": {

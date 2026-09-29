@@ -69,3 +69,17 @@ it("budgets project, favorite and recent shortcuts without duplicate rows", () =
   expect(groups.projects).toHaveLength(3);expect(groups.favorites).toHaveLength(3);expect(groups.recent).toHaveLength(2);
   expect(groups.recent.map(actorKey)).toEqual(["agent:a4","agent:a5"]);
 });
+
+
+it("groups actual squad leaders without inferring capabilities from names or templates", () => {
+  const catalog = buildActorCatalog([
+    { id: "lead", name: "Renamed agent", description: "Custom responsibilities" },
+    { id: "builder", name: "Implementation lead", description: "Build features" },
+  ], [
+    { id: "team", name: "Delivery", leader_id: "lead" },
+    { id: "other", name: "Review", leader_id: "lead" },
+  ]);
+  expect(catalog.find((item) => item.id === "lead")?.leadsSquads).toEqual(["Delivery", "Review"]);
+  expect(catalog.find((item) => item.id === "builder")?.leadsSquads).toEqual([]);
+  expect(catalog.find((item) => item.id === "team")?.leadsSquads).toEqual([]);
+});

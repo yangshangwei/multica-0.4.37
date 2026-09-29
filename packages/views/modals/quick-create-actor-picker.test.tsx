@@ -228,3 +228,33 @@ describe("QuickCreateActorPicker", () => {
     expect(screen.getByRole("button", {name:"Browse all (1)"})).toBeEnabled();
   });
 });
+
+
+it("folds squad leaders below execution choices, keeps them searchable and selects their own identity", async () => {
+  const user = userEvent.setup();
+  const onPick = vi.fn();
+  render(<Harness onPick={onPick} visibleSquads={[{ ...squads[0]!, leader_id: "a" }]} />);
+  const input = await openPicker(user);
+  expect(screen.queryByRole("button", { name: /Ada Squad leader/ })).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /Bob Agent/ })).toBeInTheDocument();
+  const disclosure = screen.getByRole("button", { name: "Planning and coordination (1)" });
+  expect(disclosure).toHaveAttribute("aria-expanded", "false");
+  await user.click(disclosure);
+  expect(disclosure).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByRole("button", { name: /Ada Squad leader/ })).toBeInTheDocument();
+  await user.click(disclosure);
+  await user.type(input, "Ada");
+  await user.keyboard("{Enter}");
+  expect(onPick).toHaveBeenCalledWith(a);
+});
+
+
+it("keeps leader-only favorites reachable without promoting leaders into primary rows", async () => {
+  const user = userEvent.setup();
+  render(<Harness favoriteActors={[a]} visibleSquads={[{ ...squads[0]!, leader_id: "a" }]} />);
+  await openPicker(user);
+  await user.click(screen.getByRole("button", { name: "View all favorites (1)" }));
+  expect(screen.queryByRole("button", { name: /Ada Squad leader/ })).not.toBeInTheDocument();
+  await user.click(screen.getByRole("button", { name: "Planning and coordination (1)" }));
+  expect(screen.getByRole("button", { name: /Ada Squad leader/ })).toBeInTheDocument();
+});

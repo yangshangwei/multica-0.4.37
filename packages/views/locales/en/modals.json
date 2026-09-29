@@ -313,6 +313,11 @@
       "sub_issue_of": "Sub-issue of {{identifier}}"
     },
     "actor_picker": {
+      "execution_group": "Specialists and squads",
+      "coordination_group": "Planning and coordination ({{count}})",
+      "coordinator_badge": "Squad leader",
+      "leads_squads": "Leads: {{names}}",
+      "coordinator_hint": "Selecting a leader alone does not select their squad. Choose the AI squad for member coordination.",
       "search_placeholder": "Search names or responsibilities...",
       "all": "All",
       "agents": "Agents",
@@ -349,7 +354,7 @@
       "project_loading": "Loading project squads...",
       "project_failed": "Could not load project squads.",
       "retry_project": "Retry project",
-      "creator_hint": "Organizes your request and creates issues; the eventual assignee may differ.",
+      "creator_hint": "Creates issues and defaults assignment to your selection. An assignee explicitly named in your request takes precedence.",
       "no_project_matches": "No project squads match this filter."
     },
     "creator_recommendations": {
