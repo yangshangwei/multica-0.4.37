@@ -558,12 +558,24 @@ export class ApiError extends Error {
   // identifiers instead of pattern-matching the human-readable message.
   readonly body?: unknown;
 
-  constructor(message: string, status: number, statusText: string, body?: unknown) {
+  constructor(
+    message: string,
+    status: number,
+    statusText: string,
+    body?: unknown,
+    private readonly isAuthResponseCurrent?: () => boolean,
+  ) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.statusText = statusText;
     this.body = body;
+  }
+
+  // Check when consumed: a login may finish while the error body is parsed
+  // or while the rejection propagates to the caller.
+  get isStaleAuthResponse(): boolean {
+    return this.isAuthResponseCurrent?.() === false;
   }
 }
 
@@ -685,7 +697,7 @@ function remapSkillImportError(err: unknown): unknown {
   const error = typeof body.error === "string" && body.error ? body.error : "";
   const message = reason || error;
   if (!message || message === err.message) return err;
-  return new ApiError(message, err.status, err.statusText, err.body);
+  return new ApiError(message, err.status, err.statusText, err.body, () => !err.isStaleAuthResponse);
 }
 
 function skillFromImportResult(raw: unknown, endpoint: string): Skill {
@@ -766,6 +778,9 @@ export class ApiClient {
    * that replaced it (2026-09-06 audit, finding 3).
    */
   private authEpoch = 0;
+  // Unlike authEpoch's 401 deduplication, this tracks credential replacement.
+  // Rejecting the same session twice must still allow device-auth recovery.
+  private credentialEpoch = 0;
   private logger: Logger;
   private options: ApiClientOptions;
 
@@ -780,6 +795,7 @@ export class ApiClient {
   }
 
   setToken(token: string | null) {
+    if (token !== null || this.token !== null) this.credentialEpoch += 1;
     this.token = token;
     this.bumpAuthEpoch();
   }
@@ -867,6 +883,7 @@ export class ApiClient {
     // request speaks for, and the 401 handler below compares it against the
     // credential that is current when the answer lands.
     const sentEpoch = this.authEpoch;
+    const sentCredentialEpoch = this.credentialEpoch;
     const headers: Record<string, string> = {
       "X-Request-ID": rid,
       ...this.authHeaders(),
@@ -885,9 +902,25 @@ export class ApiClient {
     if (!res.ok) {
       if (res.status === 401) this.handleUnauthorized(sentEpoch);
       const { message, body } = await this.parseErrorBody(res, `API error: ${res.status} ${res.statusText}`);
-      const logLevel = res.status === 404 ? "warn" : "error";
-      this.logger[logLevel](`← ${res.status} ${path}`, { rid, duration: `${Date.now() - start}ms`, error: message });
-      throw new ApiError(message, res.status, res.statusText, body);
+      // Older servers report a missing session user as 404. This exact identity
+      // response is terminal; missing routes/resources and outages are not.
+      const missingSessionUser = method === "GET" && path === "/api/me" &&
+        res.status === 404 && message === "user not found";
+      if (missingSessionUser) this.handleUnauthorized(sentEpoch);
+      const status = missingSessionUser ? 401 : res.status;
+      // Session rejection has a recovery path; console.error would open the
+      // development error overlay while the application returns to sign-in.
+      const logLevel = status === 401 || status === 404 ? "warn" : "error";
+      this.logger[logLevel](`← ${status} ${path}`, { rid, duration: `${Date.now() - start}ms`, error: message });
+      throw new ApiError(
+        message,
+        status,
+        missingSessionUser ? "Unauthorized" : res.statusText,
+        body,
+        status === 401
+          ? () => sentCredentialEpoch === this.credentialEpoch
+          : undefined,
+      );
     }
 
     this.logger.info(`← ${res.status} ${path}`, { rid, duration: `${Date.now() - start}ms` });
@@ -924,6 +957,7 @@ export class ApiClient {
     // Bumped here because cookie-mode logins never pass through setToken, and
     // requests still in flight under the old credential are now stale.
     this.bumpAuthEpoch();
+    this.credentialEpoch += 1;
     return response;
   }
 
@@ -934,6 +968,7 @@ export class ApiClient {
     });
     // Same credential rotation as verifyCode, for the Google sign-in path.
     this.bumpAuthEpoch();
+    this.credentialEpoch += 1;
     return response;
   }
 
@@ -949,12 +984,14 @@ export class ApiClient {
     });
     // Same credential rotation as verifyCode, for the intranet device path.
     this.bumpAuthEpoch();
+    this.credentialEpoch += 1;
     return parseWithFallback<LoginResponse>(raw, LoginResponseSchema, EMPTY_LOGIN_RESPONSE, {
       endpoint: "POST /auth/device",
     });
   }
 
   async logout(): Promise<void> {
+    this.credentialEpoch += 1;
     await this.fetch("/auth/logout", { method: "POST" });
   }
 

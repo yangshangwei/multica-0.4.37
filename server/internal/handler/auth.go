@@ -458,8 +458,12 @@ func (h *Handler) GetMe(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := h.Queries.GetUser(r.Context(), parseUUID(userID))
+	if isNotFound(err) {
+		writeError(w, http.StatusUnauthorized, "user not found")
+		return
+	}
 	if err != nil {
-		writeError(w, http.StatusNotFound, "user not found")
+		writeError(w, http.StatusInternalServerError, "failed to lookup user")
 		return
 	}
 
