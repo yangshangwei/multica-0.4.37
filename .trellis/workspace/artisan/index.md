@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 36
+- **Total Sessions**: 37
 - **Last Active**: 2026-09-29
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1167 | Active |
+| `journal-1.md` | ~1188 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 37 | 2026-09-29 | Complete workspace skill and template separation | `eb6b3d5af` | `main` |
 | 36 | 2026-09-29 | Reverify full E2E after concurrent assistant rollout integration | `68e237cd1`, `f6785ddfa` | `codex/full-e2e-20260928` |
 | 35 | 2026-09-28 | Complete all 114 end-to-end cases with isolated desktop and auth fixtures | `e042a5fa0`, `b8afcf022` | `codex/full-e2e-20260928` |
 | 34 | 2026-09-28 | Complete skill market, project workspace and assistant rename | `12d12b920`, `6e416c806`, `0e1303881` | `main` |

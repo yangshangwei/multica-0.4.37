@@ -1165,3 +1165,24 @@ Integrated main 4db4fe48b and repeated the complete 114-case suite. Final 113 re
 ### Next Steps
 
 - No pending QA work. Task services stopped; exact commit, JSON, HTML and diagnostic history are in .omx/reports/full-e2e-20260928.
+
+
+## Session 37: Complete workspace skill and template separation
+
+**Date**: 2026-09-29
+**Task**: Complete workspace skill and template separation
+**Branch**: `main`
+
+### Summary
+
+Separated workspace management from template discovery; removed duplicate shelf and collapse preference; preserved copy sessions, filters and keyboard focus. Verified 457 skill/locale tests, 43 docs tests, embedded Go docs, 15 forced static tasks, production Web build and four browser scenarios with English/Chinese responsive screenshots. Archived task; unrelated concurrent work excluded.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `eb6b3d5af` | (see git log) |
+
+### Status
+
+[OK] **Completed**
