@@ -40,6 +40,9 @@ successful write or emit a creation toast for it.
   the tablist and allow its surrounding row to wrap in narrow containers.
 - Counts belong to the respective tabs: workspace instances versus templates.
   The shared page heading has no redundant workspace count above the template view.
+- The template panel begins with search and source filters. Do not repeat the
+  tab context in an introductory heading; independent-copy guidance belongs in
+  the creation preview, where it informs adoption.
 - Only a successfully loaded empty workspace can initialize the market view.
   Explicit selection wins, including clicking the already-active Workspace tab
   while its data is still pending. Persist that gesture, not only a changed tab value.

@@ -127,7 +127,7 @@ test("discovers deployment templates and creates a workspace copy while keeping 
     const template = DEPLOYMENT_TEMPLATES[0]!;
     const preview = page.getByRole("button", { name: `Preview ${template.name}`, exact: true });
     await expect(market).toHaveAttribute("aria-selected", "true");
-    await expect(page.getByRole("heading", { name: "Start with a ready-made template" })).toBeVisible();
+    await expect(search).toBeVisible();
     await expect(preview).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await capture(page, testInfo, "wide-empty-market");

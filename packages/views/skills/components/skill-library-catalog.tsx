@@ -120,10 +120,6 @@ function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children
 
       <TabsContent value="market" className="min-h-0 min-w-0 overflow-y-auto px-4 pb-12 pt-4 @2xl/catalog:px-6">
         <div className="space-y-5">
-          <div className="space-y-1">
-            <h2 className="text-title font-medium">{workspaceLoaded && skills.length === 0 ? t(($) => $.market.start_title) : t(($) => $.market.browse_title)}</h2>
-            <p className="max-w-prose text-body text-muted-foreground">{t(($) => $.market.description)}</p>
-          </div>
           <div className="space-y-3">
             <div className="relative max-w-xl">
               <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
