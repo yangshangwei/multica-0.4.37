@@ -197,6 +197,7 @@ describe("ProjectSquadsPicker", () => {
     const user = userEvent.setup();
     renderWithI18n(<MultiHarness />);
     expect(screen.getByText(/AI agents that plan, carry out, and review/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Choose execution squads" })).toHaveTextContent("Default");
     await user.click(screen.getByRole("button", { name: "Choose execution squads" }));
     await user.click(screen.getByRole("checkbox", { name: /Bug triage/ }));
     await waitFor(() => expect(JSON.parse(screen.getByLabelText("Saved choices").textContent!)).toEqual([

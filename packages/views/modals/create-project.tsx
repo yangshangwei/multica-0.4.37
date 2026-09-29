@@ -457,7 +457,7 @@ export function CreateProjectModal({ onClose, data }: {
           "!transition-[width,height,max-width] !duration-200 !ease-out motion-reduce:!transition-none",
           isExpanded
             ? "!max-w-4xl !w-[calc(100%-2rem)] !h-5/6 !-translate-y-1/2"
-            : "!max-w-2xl !w-[calc(100%-2rem)] !h-[min(46rem,90dvh)] !-translate-y-1/2",
+            : "!max-w-2xl !w-[calc(100%-2rem)] !h-auto !max-h-[90dvh] !-translate-y-1/2",
         )}
       >
         <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-3 shrink-0">
@@ -503,7 +503,7 @@ export function CreateProjectModal({ onClose, data }: {
           </div>
         </div>
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-5">
+        <div className="flex-auto min-h-0 overflow-y-auto px-5 pb-5">
           <div className="mb-4 space-y-2">
             <p className="text-body font-medium">{t(($) => $.create_project.name_label)}</p>
             <div className="flex items-center gap-3 rounded-lg border px-3 py-2 focus-within:border-ring focus-within:ring-1 focus-within:ring-ring">
@@ -540,7 +540,6 @@ export function CreateProjectModal({ onClose, data }: {
           </div>
           <div className="mb-2 flex items-center gap-2 text-body font-medium">
             <span>{t(($) => $.create_project.description_label)}</span>
-            <span className="text-caption font-normal text-muted-foreground">{t(($) => $.create_project.optional)}</span>
           </div>
           <div className={cn("overflow-y-auto rounded-lg border px-3 py-2 focus-within:border-ring", isExpanded ? "h-40" : "h-20")}>
             <ContentEditor
@@ -553,8 +552,8 @@ export function CreateProjectModal({ onClose, data }: {
           </div>
           <div className="mt-4 space-y-4">
             <div role="group" aria-label={tProjects(($) => $.resources.section_header)} className="space-y-2">
-              <div className="flex min-w-0 items-center justify-between gap-3">
-                <span className="text-body font-medium">{tProjects(($) => $.resources.section_header)} <span className="ml-1 text-caption font-normal text-muted-foreground">{t(($) => $.create_project.optional)}</span></span>
+              <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
+                <span className="text-body font-medium">{tProjects(($) => $.resources.section_header)}</span>
                 <Popover
                   open={repoPopoverOpen}
                   onOpenChange={(v) => {
@@ -846,8 +845,8 @@ export function CreateProjectModal({ onClose, data }: {
                     )}
                   </PopoverContent>
                 </Popover>
+                <p className="text-caption text-muted-foreground">{t(($) => $.create_project.resources_hint)}</p>
               </div>
-              <p className="text-caption text-muted-foreground">{t(($) => $.create_project.resources_hint)}</p>
             </div>
             <ProjectSquadsPicker
               value={executionSquads}
@@ -865,7 +864,7 @@ export function CreateProjectModal({ onClose, data }: {
             row whose low-frequency fields (start/due date) collapse into a ⋯
             overflow, with the primary action in a separate bar below. */}
         <div className="px-5 pb-3 shrink-0">
-          <p className="mb-2 text-caption text-muted-foreground">{t(($) => $.create_project.properties_label)} · {t(($) => $.create_project.optional)}</p>
+          <p className="mb-2 text-caption text-muted-foreground">{t(($) => $.create_project.properties_label)}</p>
           <div className="flex items-center gap-1.5 flex-wrap">
             <DropdownMenu>
               <DropdownMenuTrigger

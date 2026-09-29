@@ -91,12 +91,12 @@ export function ProjectSquadsPicker({ value, onChange, localDaemonId, localDaemo
   };
 
   return (
-    <div className="min-w-0 space-y-3" role="group" aria-label={t(($) => $.execution_squad.label_plural)}>
+    <div className="min-w-0 space-y-3 rounded-xl bg-muted/40 p-4" role="group" aria-label={t(($) => $.execution_squad.label_plural)}>
       <div className="space-y-1">
         <div className="flex items-center gap-2 text-body font-medium">
           <Users className="size-4 text-muted-foreground" aria-hidden="true" />
           <span>{t(($) => $.execution_squad.label_plural)}</span>
-          <span className="text-caption font-normal text-muted-foreground">{t(($) => $.execution_squad.optional)}</span>
+          <span className="ml-auto text-caption font-normal text-muted-foreground">{t(($) => $.execution_squad.optional)}</span>
         </div>
         <p id={helpId} className="text-caption leading-relaxed text-muted-foreground">{t(($) => $.execution_squad.purpose)}</p>
       </div>
@@ -105,10 +105,13 @@ export function ProjectSquadsPicker({ value, onChange, localDaemonId, localDaemo
         <PopoverTrigger render={<Button
           type="button" variant="outline" disabled={disabled}
           aria-label={t(($) => $.execution_squad.choose_multiple)} aria-describedby={helpId}
-          className="h-auto min-h-10 w-full justify-between gap-3 py-2 text-body"
+          className="h-auto min-h-10 w-full justify-between gap-3 bg-background py-2 text-body"
         >
-          <span className="min-w-0 truncate">{value.length === 0 ? t(($) => $.execution_squad.choose)
-            : value.length === 1 ? titleFor(value[0]!) : t(($) => $.execution_squad.selected_count, { count: value.length })}</span>
+          <span className="flex min-w-0 items-center gap-2">
+            <span className="truncate">{value.length === 0 ? t(($) => $.execution_squad.choose)
+              : value.length === 1 ? titleFor(value[0]!) : t(($) => $.execution_squad.selected_count, { count: value.length })}</span>
+            {value.length === 1 && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-caption font-normal text-muted-foreground">{t(($) => $.execution_squad.default_badge)}</span>}
+          </span>
           <span className="flex shrink-0 items-center gap-2 text-caption text-muted-foreground">
             {t(($) => $.execution_squad.multiple)}<ChevronDown className="size-3.5" aria-hidden="true" />
           </span>
@@ -126,6 +129,7 @@ export function ProjectSquadsPicker({ value, onChange, localDaemonId, localDaemo
               </Button>
             </div>
           </div>
+          <p className="px-3 pt-2 text-caption text-muted-foreground">{t(($) => $.execution_squad.selection_hint)}</p>
           <div className="max-h-64 overflow-y-auto overscroll-contain p-1">
             {(["templates", "existing"] as const).map((group) => {
               const choices = options.filter((option) => option.group === group);
@@ -164,29 +168,29 @@ export function ProjectSquadsPicker({ value, onChange, localDaemonId, localDaemo
           </button>
         </span>)}
       </div>}
-      <p className="text-caption leading-relaxed text-muted-foreground">{value.length > 0
-        ? t(($) => $.execution_squad.selection_hint) : t(($) => $.execution_squad.skip_hint)}</p>
+      {value.length === 0 && <p className="text-caption leading-relaxed text-muted-foreground">{t(($) => $.execution_squad.skip_hint)}</p>}
       {templatesError && <p role="status" className="text-caption text-warning">{t(($) => $.execution_squad.catalog_failed)}</p>}
       {unavailable && <p role="status" className="text-caption text-warning">{t(($) => $.execution_squad.unavailable_hint)}</p>}
       {value.some((choice) => choice.squad_id && wrongMachine(choice.squad_id)) && <p role="status" className="text-caption text-warning">{t(($) => $.execution_squad.wrong_machine_hint)}</p>}
 
       {templateChoices.length > 0 && <div className="space-y-1.5">
-        {eligibleRuntimes.length > 0 && <div className="flex items-end gap-2">
-        <div className="min-w-0 flex-1 space-y-1.5">
-        <p className="text-caption font-medium">{t(($) => $.execution_squad.runtime_label)}</p>
-        <RuntimePicker value={runtimeId} runtimes={eligibleRuntimes} members={members} currentUserId={userId}
-          canEdit={!disabled} variant="field" showLabel={false}
-          onChange={(next) => {
-            requireManualRuntime.current.clear();
-            deferRuntime.current = false;
-            onChange(value.map((choice) => choice.template_key ? { ...choice, runtime_id: next } : choice));
-          }} />
-        </div>
-        {templateChoices.some((choice) => choice.runtime_id) && <Button type="button" size="sm" variant="ghost" disabled={disabled}
-          onClick={() => {
-            deferRuntime.current = true;
-            onChange(value.map((choice) => choice.template_key ? { template_key: choice.template_key } : choice));
-          }}>{t(($) => $.execution_squad.connect_later)}</Button>}
+        {eligibleRuntimes.length > 0 && <div className="min-w-0 space-y-1.5">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+            <p className="text-caption font-medium">{t(($) => $.execution_squad.runtime_label)}</p>
+            {templateChoices.some((choice) => choice.runtime_id) && <Button type="button" size="sm" variant="ghost" disabled={disabled}
+              className="h-auto px-1 py-0.5 text-caption font-normal text-muted-foreground"
+              onClick={() => {
+                deferRuntime.current = true;
+                onChange(value.map((choice) => choice.template_key ? { template_key: choice.template_key } : choice));
+              }}>{t(($) => $.execution_squad.connect_later)}</Button>}
+          </div>
+          <RuntimePicker value={runtimeId} runtimes={eligibleRuntimes} members={members} currentUserId={userId}
+            canEdit={!disabled} variant="field" showLabel={false} compact
+            onChange={(next) => {
+              requireManualRuntime.current.clear();
+              deferRuntime.current = false;
+              onChange(value.map((choice) => choice.template_key ? { ...choice, runtime_id: next } : choice));
+            }} />
         </div>}
         <p className="text-caption leading-relaxed text-muted-foreground">{runtimesError
           ? t(($) => $.execution_squad.runtime_load_failed)

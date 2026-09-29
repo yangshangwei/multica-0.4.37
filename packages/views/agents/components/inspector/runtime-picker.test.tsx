@@ -148,6 +148,13 @@ describe("RuntimePicker (agent settings)", () => {
     expect(screen.queryByText("other.local")).toBeNull();
   });
 
+  it.each(["online", "offline"] as const)("shows explicit %s status without losing device identity in compact fields", (status) => {
+    renderPicker({ compact: true, runtimes: [{ ...RT_CLAUDE, status }] });
+    const trigger = screen.getByRole("button", { name: new RegExp(`Runtime · Claude · Jiayuan's MacBook Pro · ${status}`) });
+    expect(trigger).toHaveTextContent("Jiayuan's MacBook Pro");
+    expect(screen.getByText(status, { exact: true })).toBeVisible();
+  });
+
   it("navigates back to the machine list and scopes it with Mine/All", () => {
     renderPicker();
     openPicker();

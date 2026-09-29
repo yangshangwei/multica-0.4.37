@@ -48,6 +48,7 @@ export function RuntimePicker({
   canEdit = true,
   variant = "chip",
   showLabel = true,
+  compact = false,
   onChange,
 }: {
   value: string;
@@ -58,6 +59,8 @@ export function RuntimePicker({
   canEdit?: boolean;
   variant?: "chip" | "field";
   showLabel?: boolean;
+  /** Show a bounded device subtitle and visible status in project configuration. */
+  compact?: boolean;
   onChange: (runtimeId: string) => Promise<void> | void;
 }) {
   const { t } = useT("agents");
@@ -112,6 +115,17 @@ export function RuntimePicker({
     : t(($) => $.pickers.runtime_none);
 
   const isOnline = selected?.status === "online";
+  const statusLabel = isOnline ? t(($) => $.pickers.runtime_online) : t(($) => $.pickers.runtime_offline);
+  const fieldLabel = selected ? (
+    <span className={compact ? "min-w-0 flex-1" : "min-w-0 flex-1 truncate"}>
+      <span className={compact ? "block truncate font-medium" : undefined}>{selectedLabel}</span>
+      {selectedMachine && selectedMachine.title !== selectedLabel && (
+        <span className={compact ? "block truncate text-caption text-muted-foreground" : "text-muted-foreground"}>
+          {!compact && " · "}{selectedMachine.title}
+        </span>
+      )}
+    </span>
+  ) : <span className="min-w-0 flex-1 truncate">{combinedLabel}</span>;
 
   if (!canEdit) {
     const icon = selected ? (
@@ -124,9 +138,9 @@ export function RuntimePicker({
     );
     if (variant === "field") {
       const control = (
-        <div className="flex min-h-10 items-center gap-2 rounded-lg border border-input bg-input/50 px-3 text-body text-muted-foreground">
+        <div className={`flex min-h-10 items-center gap-2 rounded-lg border border-input bg-input/50 px-3 text-body text-muted-foreground ${compact ? "py-2" : ""}`}>
           {icon}
-          <span className="min-w-0 flex-1 truncate">{combinedLabel}</span>
+          {compact ? fieldLabel : <span className="min-w-0 flex-1 truncate">{combinedLabel}</span>}
           {selected ? (
             <span
               className={`h-2 w-2 shrink-0 rounded-full ${
@@ -135,6 +149,7 @@ export function RuntimePicker({
               aria-hidden="true"
             />
           ) : null}
+          {selected && compact && <span className="shrink-0 text-caption">{statusLabel}</span>}
         </div>
       );
       if (!showLabel) return control;
@@ -251,7 +266,7 @@ export function RuntimePicker({
           type="button"
           className={
             variant === "field"
-              ? `${showLabel ? "mt-1.5 " : ""}flex min-h-10 w-full min-w-0 items-center gap-2 rounded-lg border border-input bg-transparent px-3 text-left text-body transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50`
+              ? `${showLabel ? "mt-1.5 " : ""}flex min-h-10 w-full min-w-0 items-center gap-2 rounded-lg border border-input ${compact ? "bg-background py-2" : "bg-transparent"} px-3 text-left text-body transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50`
               : CHIP_CLASS
           }
           aria-label={triggerTitle}
@@ -277,15 +292,7 @@ export function RuntimePicker({
             />
           )}
           {variant === "field" && selected ? (
-            <span className="min-w-0 flex-1 truncate">
-              {selectedLabel}
-              {selectedMachine && selectedMachine.title !== selectedLabel && (
-                <span className="text-muted-foreground">
-                  {" · "}
-                  {selectedMachine.title}
-                </span>
-              )}
-            </span>
+            fieldLabel
           ) : (
             <span
               className={
@@ -303,6 +310,9 @@ export function RuntimePicker({
                 isOnline ? "bg-success" : "bg-muted-foreground/40"
               }`}
             />
+          )}
+          {selected && variant === "field" && compact && (
+            <span className="shrink-0 text-caption text-muted-foreground">{statusLabel}</span>
           )}
           {variant === "field" ? (
             <ChevronDown
