@@ -17,10 +17,14 @@ import (
 // No transport is sent: the client derives it from Config via mcpTransport, so
 // echoing a server-computed value would just be a second source of truth.
 type McpServerTemplateResponse struct {
-	Key         string         `json:"key"`
-	Title       string         `json:"title"`
-	Description string         `json:"description"`
-	Config      map[string]any `json:"config"`
+	Version          string         `json:"version"`
+	Category         string         `json:"category"`
+	Requirements     []string       `json:"requirements"`
+	DocumentationURL string         `json:"documentation_url"`
+	Key              string         `json:"key"`
+	Title            string         `json:"title"`
+	Description      string         `json:"description"`
+	Config           map[string]any `json:"config"`
 }
 
 // ListMcpServerTemplates returns the built-in MCP catalog in the requested
@@ -35,10 +39,14 @@ func (h *Handler) ListMcpServerTemplates(w http.ResponseWriter, r *http.Request)
 	out := make([]McpServerTemplateResponse, 0, len(templates))
 	for _, template := range templates {
 		out = append(out, McpServerTemplateResponse{
-			Key:         template.Key,
-			Title:       template.Title(language),
-			Description: template.Description(language),
-			Config:      template.Config,
+			Key:              template.Key,
+			Version:          template.Version,
+			Category:         template.Category,
+			Requirements:     template.RequirementLabels(language),
+			DocumentationURL: template.DocumentationURL,
+			Title:            template.Title(language),
+			Description:      template.Description(language),
+			Config:           template.Config,
 		})
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"templates": out})

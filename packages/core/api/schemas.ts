@@ -3471,7 +3471,14 @@ export const McpServerTemplateSchema = z.object({
   title: z.string().default(""),
   description: z.string().default(""),
   config: z.record(z.string(), z.unknown()).default({}),
-}).loose();
+  version: z.string().trim().min(1).optional().catch(undefined),
+  category: z.string().optional().catch(undefined),
+  requirements: z.array(z.string()).optional().catch(undefined),
+  documentation_url: z.string().optional().catch(undefined),
+}).loose().transform(({ documentation_url, ...template }) => ({
+  ...template,
+  documentationUrl: documentation_url,
+}));
 
 // Go serializes an empty slice as `null`, which `.default([])` does NOT catch —
 // only a missing key. Normalize the nullable collection at the boundary.
@@ -3540,6 +3547,8 @@ export const EMPTY_SKILL_IMPORT_RESULT: SkillImportResult = {
  * newer backend still parses — the UI has a default branch for it.
  */
 export const WorkspaceMcpServerSchema = z.object({
+  template_key: z.string().trim().min(1).nullish().catch(null),
+  template_version: z.string().trim().min(1).nullish().catch(null),
   id: z.string().default(""),
   workspace_id: z.string().default(""),
   name: z.string().default(""),

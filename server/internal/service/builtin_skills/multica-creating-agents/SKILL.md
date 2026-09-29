@@ -410,8 +410,16 @@ shared server does not require re-listing it in `mcp_config` (they merge), and
 managed-but-empty `{}` no longer means anything about the workspace layer,
 because nothing is inherited in the first place.
 
-The stored entry is **write-only** — reads return the server's name and
-transport, never urls, commands, headers, or env, for any role.
+The stored entry is **write-only** — reads return the server's identity, name,
+transport and optional template source, never urls, commands, headers, or env,
+for any role. Human owners/admins can create a built-in recipe through
+`POST /api/workspaces/{id}/mcp-servers` with `name`, `template_key` and
+`template_version`, omitting `config`. The server resolves the current recipe;
+unknown or outdated versions and simultaneous custom config are rejected.
+Renaming preserves the source identity; replacing config clears it. This
+version identifies the recipe, not a pinned upstream executable release.
+Creation assigns no agents. A human agent owner or workspace owner/admin must
+explicitly assign the entry; agent actors cannot make either write.
 
 ## Skill binding
 

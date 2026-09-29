@@ -28,16 +28,18 @@ func (q *Queries) AddAgentMcpServer(ctx context.Context, arg AddAgentMcpServerPa
 }
 
 const createWorkspaceMcpServer = `-- name: CreateWorkspaceMcpServer :one
-INSERT INTO workspace_mcp_server (workspace_id, name, config, created_by)
-VALUES ($1, $2, $3, $4)
-RETURNING id, workspace_id, name, config, created_by, created_at, updated_at
+INSERT INTO workspace_mcp_server (workspace_id, name, config, created_by, template_key, template_version)
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version
 `
 
 type CreateWorkspaceMcpServerParams struct {
-	WorkspaceID pgtype.UUID `json:"workspace_id"`
-	Name        string      `json:"name"`
-	Config      []byte      `json:"config"`
-	CreatedBy   pgtype.UUID `json:"created_by"`
+	WorkspaceID     pgtype.UUID `json:"workspace_id"`
+	Name            string      `json:"name"`
+	Config          []byte      `json:"config"`
+	CreatedBy       pgtype.UUID `json:"created_by"`
+	TemplateKey     pgtype.Text `json:"template_key"`
+	TemplateVersion pgtype.Text `json:"template_version"`
 }
 
 func (q *Queries) CreateWorkspaceMcpServer(ctx context.Context, arg CreateWorkspaceMcpServerParams) (WorkspaceMcpServer, error) {
@@ -46,6 +48,8 @@ func (q *Queries) CreateWorkspaceMcpServer(ctx context.Context, arg CreateWorksp
 		arg.Name,
 		arg.Config,
 		arg.CreatedBy,
+		arg.TemplateKey,
+		arg.TemplateVersion,
 	)
 	var i WorkspaceMcpServer
 	err := row.Scan(
@@ -56,6 +60,8 @@ func (q *Queries) CreateWorkspaceMcpServer(ctx context.Context, arg CreateWorksp
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TemplateKey,
+		&i.TemplateVersion,
 	)
 	return i, err
 }
@@ -90,7 +96,7 @@ func (q *Queries) DeleteWorkspaceMcpServer(ctx context.Context, arg DeleteWorksp
 }
 
 const getWorkspaceMcpServer = `-- name: GetWorkspaceMcpServer :one
-SELECT id, workspace_id, name, config, created_by, created_at, updated_at FROM workspace_mcp_server
+SELECT id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version FROM workspace_mcp_server
 WHERE id = $1 AND workspace_id = $2
 `
 
@@ -110,12 +116,14 @@ func (q *Queries) GetWorkspaceMcpServer(ctx context.Context, arg GetWorkspaceMcp
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TemplateKey,
+		&i.TemplateVersion,
 	)
 	return i, err
 }
 
 const listAgentMcpServers = `-- name: ListAgentMcpServers :many
-SELECT s.id, s.workspace_id, s.name, s.config, s.created_at, s.updated_at, ams.enabled
+SELECT s.id, s.workspace_id, s.name, s.config, s.created_at, s.updated_at, s.template_key, s.template_version, ams.enabled
 FROM workspace_mcp_server s
 JOIN agent_mcp_server ams ON ams.server_id = s.id
 WHERE ams.agent_id = $1
@@ -123,13 +131,15 @@ ORDER BY s.name ASC
 `
 
 type ListAgentMcpServersRow struct {
-	ID          pgtype.UUID        `json:"id"`
-	WorkspaceID pgtype.UUID        `json:"workspace_id"`
-	Name        string             `json:"name"`
-	Config      []byte             `json:"config"`
-	CreatedAt   pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
-	Enabled     bool               `json:"enabled"`
+	ID              pgtype.UUID        `json:"id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	Name            string             `json:"name"`
+	Config          []byte             `json:"config"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+	TemplateKey     pgtype.Text        `json:"template_key"`
+	TemplateVersion pgtype.Text        `json:"template_version"`
+	Enabled         bool               `json:"enabled"`
 }
 
 // Every workspace server bound to this agent, enabled or not, for the agent
@@ -150,6 +160,8 @@ func (q *Queries) ListAgentMcpServers(ctx context.Context, agentID pgtype.UUID) 
 			&i.Config,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TemplateKey,
+			&i.TemplateVersion,
 			&i.Enabled,
 		); err != nil {
 			return nil, err
@@ -199,7 +211,7 @@ func (q *Queries) ListEnabledAgentMcpServers(ctx context.Context, agentID pgtype
 }
 
 const listWorkspaceMcpServers = `-- name: ListWorkspaceMcpServers :many
-SELECT id, workspace_id, name, config, created_by, created_at, updated_at FROM workspace_mcp_server
+SELECT id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version FROM workspace_mcp_server
 WHERE workspace_id = $1
 ORDER BY name ASC
 `
@@ -224,6 +236,8 @@ func (q *Queries) ListWorkspaceMcpServers(ctx context.Context, workspaceID pgtyp
 			&i.CreatedBy,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TemplateKey,
+			&i.TemplateVersion,
 		); err != nil {
 			return nil, err
 		}
@@ -320,9 +334,11 @@ const updateWorkspaceMcpServer = `-- name: UpdateWorkspaceMcpServer :one
 UPDATE workspace_mcp_server SET
     name = COALESCE($3, name),
     config = COALESCE($4, config),
+    template_key = CASE WHEN $4::jsonb IS NOT NULL THEN NULL ELSE template_key END,
+    template_version = CASE WHEN $4::jsonb IS NOT NULL THEN NULL ELSE template_version END,
     updated_at = now()
 WHERE id = $1 AND workspace_id = $2
-RETURNING id, workspace_id, name, config, created_by, created_at, updated_at
+RETURNING id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version
 `
 
 type UpdateWorkspaceMcpServerParams struct {
@@ -351,6 +367,8 @@ func (q *Queries) UpdateWorkspaceMcpServer(ctx context.Context, arg UpdateWorksp
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TemplateKey,
+		&i.TemplateVersion,
 	)
 	return i, err
 }

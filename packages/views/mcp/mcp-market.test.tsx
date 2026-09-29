@@ -1,0 +1,371 @@
+// @vitest-environment jsdom
+import type { ReactNode } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { I18nProvider } from "@multica/core/i18n/react";
+import type {
+  McpServerTemplate,
+  WorkspaceMcpServer,
+} from "@multica/core/types";
+import enSettings from "../locales/en/settings.json";
+import enAgents from "../locales/en/agents.json";
+import { McpLibraryCatalog } from "./mcp-market";
+import { McpSetupDialog } from "./mcp-setup-dialog";
+
+const mocks = vi.hoisted(() => ({
+  create: vi.fn(),
+  assign: vi.fn(),
+  custom: vi.fn(),
+  templates: [] as unknown[],
+  agents: [] as unknown[],
+}));
+vi.mock("../settings/hooks/use-mcp-server-templates", () => ({
+  useMcpServerTemplates: () => ({
+    data: mocks.templates,
+    isPending: false,
+    isError: false,
+    refetch: vi.fn(),
+  }),
+}));
+vi.mock("@multica/core/workspace/mutations", () => ({
+  useCreateWorkspaceMcpServerFromTemplate: () => ({
+    mutateAsync: mocks.create,
+    isPending: false,
+  }),
+  useAssignWorkspaceMcpServer: () => ({
+    mutateAsync: mocks.assign,
+    isPending: false,
+  }),
+}));
+vi.mock("@multica/core/workspace/queries", () => ({
+  agentListOptions: () => ({
+    queryKey: ["agents"],
+    queryFn: async () => mocks.agents,
+  }),
+}));
+const template: McpServerTemplate = {
+  key: "playwright",
+  title: "Playwright",
+  description: "Browse the web",
+  config: { command: "npx" },
+  version: "1",
+  category: "browser",
+  requirements: ["Node.js and npx"],
+};
+function Wrapper({ children }: { children: ReactNode }) {
+  return (
+    <QueryClientProvider
+      client={
+        new QueryClient({ defaultOptions: { queries: { retry: false } } })
+      }
+    >
+      <I18nProvider
+        locale="en"
+        resources={{ en: { settings: enSettings, agents: enAgents } }}
+      >
+        {children}
+      </I18nProvider>
+    </QueryClientProvider>
+  );
+}
+function renderCatalog(
+  props: Partial<Parameters<typeof McpLibraryCatalog>[0]> = {},
+) {
+  return render(
+    <McpLibraryCatalog
+      workspaceId="ws"
+      servers={[]}
+      loaded
+      canManage
+      onCustom={mocks.custom}
+      {...props}
+    >
+      <p>Workspace inventory</p>
+    </McpLibraryCatalog>,
+    { wrapper: Wrapper },
+  );
+}
+describe("MCP market", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.agents = [
+      { id: "a", name: "Ada" },
+      { id: "b", name: "Ben" },
+    ];
+    mocks.templates = [
+      template,
+      {
+        ...template,
+        key: "thinking",
+        title: "Sequential thinking",
+        category: "reasoning",
+      },
+    ];
+    mocks.create.mockResolvedValue({
+      id: "saved",
+      name: "playwright",
+      transport: "stdio",
+    });
+    mocks.assign.mockResolvedValue({ succeeded: ["a", "b"], failed: [] });
+  });
+  it("defaults a loaded empty workspace to market and lets members browse without creation", async () => {
+    const user = userEvent.setup();
+    renderCatalog({ canManage: false });
+    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    expect(
+      screen.getByRole("heading", { name: "Set up Playwright" }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: "Save and continue" }),
+    ).toBeNull();
+  });
+  it("keeps an explicit workspace choice while the library finishes loading", async () => {
+    const user = userEvent.setup();
+    const view = renderCatalog({ loaded: false });
+    await user.click(screen.getByRole("tab", { name: "Workspace" }));
+    view.rerender(
+      <McpLibraryCatalog
+        workspaceId="ws"
+        servers={[]}
+        loaded
+        canManage
+        onCustom={mocks.custom}
+      >
+        <p>Workspace inventory</p>
+      </McpLibraryCatalog>,
+    );
+    expect(screen.getByRole("tab", { name: "Workspace" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  });
+  it("filters by category and search without disabling renamed template instances", async () => {
+    const user = userEvent.setup();
+    renderCatalog({
+      servers: [
+        {
+          id: "existing",
+          workspace_id: "ws",
+          name: "qa-browser",
+          transport: "stdio",
+          created_at: "",
+          updated_at: "",
+          template_key: "playwright",
+        } satisfies WorkspaceMcpServer,
+      ],
+    });
+    await user.click(screen.getByRole("tab", { name: "MCP market" }));
+    expect(screen.getByText(/qa-browser/)).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Reasoning" }));
+    expect(
+      screen.queryByRole("button", { name: "View Playwright" }),
+    ).toBeNull();
+    await user.type(
+      screen.getByRole("searchbox", { name: "Search MCP templates" }),
+      "missing",
+    );
+    expect(screen.getByText("No matching templates")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(
+      screen.getByRole("button", { name: "View Playwright" }),
+    ).toBeEnabled();
+  });
+  it("keeps the saved ID after partial failure and retries only failed assignments", async () => {
+    const user = userEvent.setup();
+    mocks.assign
+      .mockResolvedValueOnce({
+        succeeded: ["a"],
+        failed: [{ agentId: "b", message: "Permission changed" }],
+      })
+      .mockResolvedValueOnce({ succeeded: ["b"], failed: [] });
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith({
+      name: "playwright",
+      templateKey: "playwright",
+      templateVersion: "1",
+    });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("heading", { name: "Choose agents" }),
+      ).toBeVisible(),
+    );
+    const ada = await screen.findByRole("checkbox", { name: "Ada" });
+    expect(ada).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Ben" })).not.toBeChecked();
+    expect(mocks.assign).not.toHaveBeenCalled();
+    await user.click(ada);
+    await user.click(screen.getByRole("checkbox", { name: "Ben" }));
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(await screen.findByText("Permission changed")).toBeVisible();
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    await user.click(screen.getByRole("button", { name: "Retry failed" }));
+    await waitFor(() =>
+      expect(mocks.assign).toHaveBeenLastCalledWith({
+        serverId: "saved",
+        agentIds: ["b"],
+      }),
+    );
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
+  });
+  it("retains the assignment step when the new saved configuration updates the library", async () => {
+    const user = userEvent.setup();
+    const view = renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    await screen.findByRole("heading", { name: "Choose agents" });
+    view.rerender(
+      <McpLibraryCatalog
+        workspaceId="ws"
+        servers={[
+          {
+            id: "saved",
+            workspace_id: "ws",
+            name: "playwright",
+            transport: "stdio",
+            created_at: "",
+            updated_at: "",
+            template_key: "playwright",
+          },
+        ]}
+        loaded
+        canManage
+        onCustom={mocks.custom}
+      >
+        <p>Workspace inventory</p>
+      </McpLibraryCatalog>,
+    );
+    expect(
+      screen.getByRole("heading", { name: "Choose agents" }),
+    ).toBeVisible();
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+  });
+  it("keeps a failed creation editable without granting access", async () => {
+    const user = userEvent.setup();
+    mocks.create.mockRejectedValueOnce(new Error("Server unavailable"));
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Server unavailable",
+    );
+    expect(
+      screen.getByRole("textbox", { name: "Configuration name" }),
+    ).toHaveValue("playwright");
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("resumes assignment for an existing custom configuration without creating again", async () => {
+    const user = userEvent.setup();
+    render(
+      <McpSetupDialog
+        workspaceId="ws"
+        initialServer={{
+          id: "custom",
+          workspace_id: "ws",
+          name: "my-tool",
+          transport: "http",
+          created_at: "",
+          updated_at: "",
+        }}
+        servers={[]}
+        canManage
+        onClose={vi.fn()}
+      />,
+      { wrapper: Wrapper },
+    );
+    await user.click(await screen.findByRole("checkbox", { name: "Ada" }));
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({
+      serverId: "custom",
+      agentIds: ["a"],
+    });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it("does not switch to an existing configuration while creation is pending", async () => {
+    const user = userEvent.setup();
+    let finishCreate!: (value: { id: string; name: string }) => void;
+    mocks.create.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishCreate = resolve;
+        }),
+    );
+    renderCatalog({
+      servers: [
+        {
+          id: "existing",
+          workspace_id: "ws",
+          name: "qa-browser",
+          transport: "stdio",
+          created_at: "",
+          updated_at: "",
+          template_key: "playwright",
+        },
+      ],
+    });
+    await user.click(screen.getByRole("tab", { name: "MCP market" }));
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(
+      screen.getByRole("button", { name: "Use qa-browser" }),
+    ).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Use qa-browser" }));
+    expect(screen.queryByRole("heading", { name: "Choose agents" })).toBeNull();
+    finishCreate({ id: "new-server", name: "playwright" });
+    await user.click(await screen.findByRole("checkbox", { name: "Ada" }));
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({
+      serverId: "new-server",
+      agentIds: ["a"],
+    });
+  });
+  it("only offers active user-created agents when inventory contains invalid or system entries", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [
+      null,
+      { id: "system", name: "Mika", system_key: "mika" },
+      { id: "archived", name: "Archived", archived_at: "2026-01-01" },
+      { id: "missing-name" },
+      { id: "a", name: "Ada" },
+    ];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(await screen.findByRole("checkbox", { name: "Ada" })).toBeVisible();
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+  });
+  it("can save and skip without assigning any agent", async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    await user.click(screen.getByRole("button", { name: "Skip for now" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("keeps old catalog entries on the ordinary custom path", async () => {
+    const user = userEvent.setup();
+    mocks.templates = [{ ...template, version: undefined }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(
+      screen.getByRole("button", { name: "Open custom configuration" }),
+    );
+    expect(mocks.custom).toHaveBeenCalledWith({
+      name: "playwright",
+      config: { command: "npx" },
+    });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+});

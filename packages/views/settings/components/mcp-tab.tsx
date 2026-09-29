@@ -29,7 +29,8 @@ import { McpServerDialog } from "../../agents/components/tabs/mcp-server-dialog"
 import type { ManagedMcpServer } from "../../agents/components/tabs/mcp-config-model";
 import { McpServerRow } from "../../common/mcp-server-row";
 import { useT } from "../../i18n";
-import { McpBuiltinCatalog } from "./mcp-builtin-catalog";
+import { McpLibraryCatalog } from "../../mcp/mcp-market";
+import { McpSetupDialog } from "../../mcp/mcp-setup-dialog";
 import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
 
 /**
@@ -38,9 +39,9 @@ import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
  * Two things shape this screen and are worth stating up front:
  *
  *  - A server added here is given to NO agent. It is a library entry, exactly
- *    like a workspace skill: an agent owner assigns it on the agent's own MCP
- *    tab, where it also gets a per-agent on/off toggle. Nothing here reaches an
- *    agent implicitly.
+ *    like a workspace skill: explicit assignment is a separate step, available
+ *    here or on the agent's MCP tab. Per-agent toggles stay on that tab.
+ *    Nothing here reaches an agent implicitly.
  *  - The stored configuration is WRITE-ONLY. The API returns names and
  *    transports, never urls / commands / headers / env, so there is no
  *    "current value" to prefill and replacing a server means supplying its
@@ -48,9 +49,13 @@ import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
  *    the write-only entry.
  */
 export function McpTab() {
-  const { t } = useT("settings");
   const workspace = useCurrentWorkspace();
   const wsId = workspace?.id ?? "";
+  return <McpWorkspaceTab key={wsId} wsId={wsId} />;
+}
+
+function McpWorkspaceTab({ wsId }: { wsId: string }) {
+  const { t } = useT("settings");
   const currentMember = useCurrentMember(wsId);
   const canManage =
     currentMember.role === "owner" || currentMember.role === "admin";
@@ -66,6 +71,8 @@ export function McpTab() {
     [servers],
   );
 
+  const [assigningServer, setAssigningServer] =
+    useState<WorkspaceMcpServer | null>(null);
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingServer, setEditingServer] = useState<WorkspaceMcpServer | null>(
     null,
@@ -79,9 +86,8 @@ export function McpTab() {
   const [renameDraft, setRenameDraft] = useState("");
   const [renameError, setRenameError] = useState("");
   const [renamePending, setRenamePending] = useState(false);
-  const [deletingServer, setDeletingServer] = useState<WorkspaceMcpServer | null>(
-    null,
-  );
+  const [deletingServer, setDeletingServer] =
+    useState<WorkspaceMcpServer | null>(null);
 
   // The dialog is shared with the agent MCP tab, which hands it the saved
   // entry to prefill. Here there is nothing to prefill — an edit always
@@ -201,26 +207,26 @@ export function McpTab() {
       title={t(($) => $.mcp.title)}
       description={t(($) => $.mcp.description)}
     >
-      {canManage ? (
-        <McpBuiltinCatalog
-          wsId={wsId}
-          existingNames={existingNames}
-          onAdd={(preset) => {
-            cancelRename();
-            setEditingServer(null);
-            setPresetDraft(preset);
-            setEditorOpen(true);
-          }}
-        />
-      ) : null}
-
-      <SettingsSection
-        title={t(($) => $.mcp.servers_title)}
-        description={t(($) => $.mcp.write_only_note)}
-        action={
+      <McpLibraryCatalog
+        workspaceId={wsId}
+        servers={serversQuery.data}
+        loaded={
+          !serversQuery.isLoading &&
+          !serversQuery.isError &&
+          serversQuery.data !== undefined
+        }
+        canManage={canManage}
+        onCustom={(preset) => {
+          cancelRename();
+          setEditingServer(null);
+          setPresetDraft(preset);
+          setEditorOpen(true);
+        }}
+        customAction={
           canManage ? (
             <Button
               size="sm"
+              variant="outline"
               disabled={renamePending}
               onClick={() => {
                 cancelRename();
@@ -235,85 +241,143 @@ export function McpTab() {
           ) : null
         }
       >
-        <SettingsCard>
-          {serversQuery.isLoading ? (
-            <div className="flex items-center justify-center py-8 text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
-            </div>
-          ) : servers.length === 0 ? (
-            <div className="px-4 py-8 text-center">
-              <Server className="mx-auto h-5 w-5 text-muted-foreground" />
-              <p className="mt-3 text-body font-medium">
-                {t(($) => $.mcp.empty_title)}
-              </p>
-              <p className="mx-auto mt-1 max-w-md text-caption leading-5 text-muted-foreground">
-                {t(($) => $.mcp.empty_description)}
-              </p>
-            </div>
-          ) : (
-            <ul className="divide-y divide-surface-border">
-              {servers.map((server) => (
-                <McpServerRow
-                  key={server.name}
-                  name={server.name}
-                  transport={server.transport}
-                  status={
-                    server.enabled === false ? (
-                      <Badge variant="secondary">
-                        {t(($) => $.mcp.disabled_badge)}
-                      </Badge>
-                    ) : undefined
-                  }
-                  canManage={canManage}
-                  actionsDisabled={renamePending}
-                  rename={
-                    renamingServer?.id === server.id
-                      ? {
-                          draft: renameDraft,
-                          error: renameError,
-                          pending: renamePending,
-                          onChange: (value) => {
-                            setRenameDraft(value);
-                            setRenameError("");
-                          },
-                          onCancel: cancelRename,
-                          onSubmit: () => void handleRename(),
-                        }
-                      : undefined
-                  }
-                  labels={{
-                    rename: t(($) => $.mcp.rename_action),
-                    renameAria: t(($) => $.mcp.rename_server),
-                    renameSave: t(($) => $.mcp.rename_save),
-                    renameCancel: t(($) => $.mcp.rename_cancel),
-                    configure: t(($) => $.mcp.replace_config),
-                    configureAria: t(($) => $.mcp.replace_config),
-                    remove: t(($) => $.mcp.remove_action),
-                    removeAria: t(($) => $.mcp.remove_server),
-                  }}
-                  onRenameStart={() => startRename(server)}
-                  onConfigure={() => {
-                    cancelRename();
-                    setPresetDraft(null);
-                    setEditingServer(server);
-                    setEditorOpen(true);
-                  }}
-                  onRemove={() => {
-                    cancelRename();
-                    setDeletingServer(server);
-                  }}
-                />
-              ))}
-            </ul>
-          )}
-        </SettingsCard>
-        {!canManage && !currentMember.isLoading ? (
-          <p className="px-0.5 text-caption text-muted-foreground">
-            {t(($) => $.mcp.admin_only_note)}
-          </p>
-        ) : null}
-      </SettingsSection>
+        <SettingsSection
+          title={t(($) => $.mcp.servers_title)}
+          description={t(($) => $.mcp.write_only_note)}
+        >
+          <SettingsCard>
+            {serversQuery.isLoading ? (
+              <div className="flex items-center justify-center py-8 text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+              </div>
+            ) : serversQuery.isError ? (
+              <div role="alert" className="space-y-3 px-4 py-6">
+                <p className="text-caption">
+                  {t(($) => $.mcp.market.workspace_error)}
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => void serversQuery.refetch()}
+                >
+                  {t(($) => $.mcp.market.retry)}
+                </Button>
+              </div>
+            ) : servers.length === 0 ? (
+              <div className="px-4 py-8 text-center">
+                <Server className="mx-auto h-5 w-5 text-muted-foreground" />
+                <p className="mt-3 text-body font-medium">
+                  {t(($) => $.mcp.empty_title)}
+                </p>
+                <p className="mx-auto mt-1 max-w-md text-caption leading-5 text-muted-foreground">
+                  {t(($) => $.mcp.empty_description)}
+                </p>
+              </div>
+            ) : (
+              <ul className="divide-y divide-surface-border">
+                {servers.map((server) => (
+                  <McpServerRow
+                    key={server.id}
+                    name={server.name}
+                    transport={server.transport}
+                    status={
+                      server.enabled === false ? (
+                        <Badge variant="secondary">
+                          {t(($) => $.mcp.disabled_badge)}
+                        </Badge>
+                      ) : undefined
+                    }
+                    details={
+                      <span className="mt-1 flex min-w-0 flex-wrap items-center gap-2">
+                        {server.template_key ? (
+                          <Badge
+                            variant="outline"
+                            className="max-w-full whitespace-normal break-all"
+                          >
+                            {t(($) => $.mcp.market.source, {
+                              name: server.template_key,
+                            })}
+                          </Badge>
+                        ) : null}
+                        {canManage ? (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            disabled={renamePending}
+                            onClick={() => {
+                              cancelRename();
+                              setAssigningServer(server);
+                            }}
+                            aria-label={t(($) => $.mcp.market.assign_server, {
+                              name: server.name,
+                            })}
+                          >
+                            {t(($) => $.mcp.market.assign)}
+                          </Button>
+                        ) : null}
+                      </span>
+                    }
+                    canManage={canManage}
+                    actionsDisabled={renamePending}
+                    rename={
+                      renamingServer?.id === server.id
+                        ? {
+                            draft: renameDraft,
+                            error: renameError,
+                            pending: renamePending,
+                            onChange: (value) => {
+                              setRenameDraft(value);
+                              setRenameError("");
+                            },
+                            onCancel: cancelRename,
+                            onSubmit: () => void handleRename(),
+                          }
+                        : undefined
+                    }
+                    labels={{
+                      rename: t(($) => $.mcp.rename_action),
+                      renameAria: t(($) => $.mcp.rename_server),
+                      renameSave: t(($) => $.mcp.rename_save),
+                      renameCancel: t(($) => $.mcp.rename_cancel),
+                      configure: t(($) => $.mcp.replace_config),
+                      configureAria: t(($) => $.mcp.replace_config),
+                      remove: t(($) => $.mcp.remove_action),
+                      removeAria: t(($) => $.mcp.remove_server),
+                    }}
+                    onRenameStart={() => startRename(server)}
+                    onConfigure={() => {
+                      cancelRename();
+                      setPresetDraft(null);
+                      setEditingServer(server);
+                      setEditorOpen(true);
+                    }}
+                    onRemove={() => {
+                      cancelRename();
+                      setDeletingServer(server);
+                    }}
+                  />
+                ))}
+              </ul>
+            )}
+          </SettingsCard>
+          {!canManage && !currentMember.isLoading ? (
+            <p className="px-0.5 text-caption text-muted-foreground">
+              {t(($) => $.mcp.admin_only_note)}
+            </p>
+          ) : null}
+        </SettingsSection>
+      </McpLibraryCatalog>
 
+      {assigningServer && canManage ? (
+        <McpSetupDialog
+          key={`${wsId}-${assigningServer.id}`}
+          workspaceId={wsId}
+          initialServer={assigningServer}
+          servers={serversQuery.data}
+          canManage
+          onClose={() => setAssigningServer(null)}
+        />
+      ) : null}
       <McpServerDialog
         open={editorOpen}
         server={dialogServer}
@@ -337,7 +401,9 @@ export function McpTab() {
           <AlertDialogHeader>
             <AlertDialogTitle>{t(($) => $.mcp.delete_title)}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t(($) => $.mcp.delete_description, { name: deletingServer?.name ?? "" })}
+              {t(($) => $.mcp.delete_description, {
+                name: deletingServer?.name ?? "",
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

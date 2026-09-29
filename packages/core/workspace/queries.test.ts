@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 import type { Agent, Workspace } from "../types";
 import { agentListOptions, workspaceBySlugOptions } from "./queries";
@@ -64,4 +65,12 @@ describe("agentListOptions", () => {
     ).toBe(false);
     expect(queryState([])).toBe(false);
   });
+});
+
+it("does not crash assignment discovery polling on malformed agent collections", () => {
+  const interval = agentListOptions("ws-1").refetchInterval;
+  if (typeof interval !== "function") throw new Error("Expected interval callback");
+  for (const data of [null, {}, "invalid", [null]]) {
+    expect(interval({ state: { data } } as never)).toBe(false);
+  }
 });

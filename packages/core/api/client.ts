@@ -2932,6 +2932,30 @@ export class ApiClient {
     });
   }
 
+  /** Creates an unassigned copy of a server-owned recipe, without accepting config. */
+  async createWorkspaceMcpServerFromTemplate(
+    workspaceId: string,
+    name: string,
+    templateKey: string,
+    templateVersion: string,
+  ): Promise<WorkspaceMcpServer> {
+    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/mcp-servers`,
+      {
+        ...workspaceRequestInit({ workspaceId }),
+        method: "POST",
+        body: JSON.stringify({ name, template_key: templateKey, template_version: templateVersion }),
+      },
+    );
+    const server = parseWithFallback(raw, WorkspaceMcpServerSchema, EMPTY_WORKSPACE_MCP_SERVER, {
+      endpoint: "POST /api/workspaces/{id}/mcp-servers",
+    });
+    if (!server.id.trim() || server.workspace_id !== workspaceId ||
+        server.template_key !== templateKey || server.template_version !== templateVersion) {
+      throw new Error("MCP server creation could not be confirmed. Refresh the workspace library before retrying.");
+    }
+    return server;
+  }
+
   /**
    * Renames a library entry, replaces its configuration, or both. Agents keep
    * their assignment across a rename because assignments key off the id.
@@ -2959,8 +2983,8 @@ export class ApiClient {
   }
 
   /** The workspace MCP servers assigned to this agent, with their toggles. */
-  async listAgentMcpServers(agentId: string): Promise<WorkspaceMcpServer[]> {
-    const raw = await this.fetch<unknown>(`/api/agents/${agentId}/mcp-servers`);
+  async listAgentMcpServers(agentId: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<WorkspaceMcpServer[]> {
+    const raw = await this.fetch<unknown>(`/api/agents/${agentId}/mcp-servers`, workspaceRequestInit(options));
     return parseWithFallback(raw, WorkspaceMcpServerListSchema, [] as WorkspaceMcpServer[], {
       endpoint: "GET /api/agents/{id}/mcp-servers",
     });
@@ -2970,8 +2994,9 @@ export class ApiClient {
    * Gives one workspace server to this agent. Every write returns the
    * resulting assignment list, so the client never has to guess the state.
    */
-  async addAgentMcpServer(agentId: string, serverId: string): Promise<WorkspaceMcpServer[]> {
+  async addAgentMcpServer(agentId: string, serverId: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<WorkspaceMcpServer[]> {
     const raw = await this.fetch<unknown>(`/api/agents/${agentId}/mcp-servers`, {
+      ...workspaceRequestInit(options),
       method: "POST",
       body: JSON.stringify({ server_id: serverId }),
     });

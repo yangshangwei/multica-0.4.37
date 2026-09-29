@@ -31,6 +31,9 @@ export interface Workspace {
  * per-agent toggle; the workspace library listing has no binding to report.
  */
 export interface WorkspaceMcpServer {
+  /** Trusted recipe identity; cleared whenever configuration is replaced. */
+  template_key?: string | null;
+  template_version?: string | null;
   id: string;
   workspace_id: string;
   name: string;

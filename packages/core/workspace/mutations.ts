@@ -102,6 +102,60 @@ export function useCreateWorkspaceMcpServer(wsId: string) {
   });
 }
 
+/** Creates a trusted template copy; creation itself never assigns an agent. */
+export function useCreateWorkspaceMcpServerFromTemplate(wsId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ name, templateKey, templateVersion }: {
+      name: string;
+      templateKey: string;
+      templateVersion: string;
+    }) => api.createWorkspaceMcpServerFromTemplate(wsId, name, templateKey, templateVersion),
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: workspaceKeys.mcpServers(wsId) }),
+  });
+}
+
+export interface McpAssignmentResult {
+  succeeded: string[];
+  failed: { agentId: string; message: string }[];
+}
+
+/** Additive assignment with per-agent confirmation and retry-safe existing bindings. */
+export function useAssignWorkspaceMcpServer(wsId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ serverId, agentIds }: { serverId: string; agentIds: string[] }): Promise<McpAssignmentResult> => {
+      const ids = [...new Set(agentIds)];
+      const outcomes = await Promise.allSettled(ids.map(async (agentId) => {
+        const existing = await api.listAgentMcpServers(agentId, { workspaceId: wsId });
+        const containsServer = (servers: typeof existing) => servers.some(
+          (server) => server.id === serverId && server.workspace_id === wsId,
+        );
+        // An existing disabled binding is still assigned. Do not change its toggle.
+        if (containsServer(existing)) return;
+        const assigned = await api.addAgentMcpServer(agentId, serverId, { workspaceId: wsId });
+        if (!containsServer(assigned)) throw new Error("MCP assignment could not be confirmed. Refresh and retry.");
+      }));
+      const result: McpAssignmentResult = { succeeded: [], failed: [] };
+      outcomes.forEach((outcome, index) => {
+        const agentId = ids[index]!;
+        if (outcome.status === "fulfilled") result.succeeded.push(agentId);
+        else result.failed.push({
+          agentId,
+          message: outcome.reason instanceof Error ? outcome.reason.message : "MCP assignment failed",
+        });
+      });
+      return result;
+    },
+    onSettled: (_result, _error, { agentIds }) => Promise.all(
+      [...new Set(agentIds)].map((agentId) => queryClient.invalidateQueries({
+        queryKey: ["agents", agentId, "mcp-servers"],
+      })),
+    ),
+  });
+}
+
 export function useUpdateWorkspaceMcpServer(wsId: string) {
   const queryClient = useQueryClient();
   return useMutation({

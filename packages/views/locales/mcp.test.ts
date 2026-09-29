@@ -10,8 +10,11 @@ import { RESOURCES } from "./index";
 const AGENT_KEYS = Object.keys(enAgents.tab_body.mcp_config) as Array<
   keyof typeof enAgents.tab_body.mcp_config
 >;
-const SETTINGS_KEYS = Object.keys(enSettings.mcp) as Array<
-  keyof typeof enSettings.mcp
+const SETTINGS_KEYS = Object.keys(enSettings.mcp).filter(
+  (key) => key !== "market",
+) as Array<Exclude<keyof typeof enSettings.mcp, "market">>;
+const MARKET_KEYS = Object.keys(enSettings.mcp.market) as Array<
+  keyof typeof enSettings.mcp.market
 >;
 
 describe("MCP locale contracts", () => {
@@ -29,6 +32,13 @@ describe("MCP locale contracts", () => {
               ns: "agents",
               ...params,
             }),
+        })),
+        ...MARKET_KEYS.map((key) => ({
+          namespace: "settings",
+          key: `mcp.market.${key}`,
+          source: enSettings.mcp.market[key],
+          resolve: (params: Record<string, string>) =>
+            i18n.t(($) => $.mcp.market[key], { ns: "settings", ...params }),
         })),
         ...SETTINGS_KEYS.map((key) => ({
           namespace: "settings",
@@ -88,14 +98,20 @@ describe("MCP locale contracts", () => {
     (locale) => {
       const i18n = createI18n(locale, RESOURCES);
       const name = "org.example-mcp";
-      const edit = i18n.t(($) => $.tab_body.mcp_config.dialog_edit_title_named, {
-        ns: "agents",
-        name,
-      });
-      const replace = i18n.t(($) => $.tab_body.mcp_config.dialog_replace_title, {
-        ns: "agents",
-        name,
-      });
+      const edit = i18n.t(
+        ($) => $.tab_body.mcp_config.dialog_edit_title_named,
+        {
+          ns: "agents",
+          name,
+        },
+      );
+      const replace = i18n.t(
+        ($) => $.tab_body.mcp_config.dialog_replace_title,
+        {
+          ns: "agents",
+          name,
+        },
+      );
       expect(edit).toContain(name);
       expect(replace).toContain(name);
       expect(edit).not.toBe(replace);

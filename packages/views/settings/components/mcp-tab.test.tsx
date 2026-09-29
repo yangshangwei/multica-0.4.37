@@ -24,6 +24,7 @@ const server = (over: Record<string, unknown>) => ({
 });
 
 const data = vi.hoisted(() => ({
+  wsId: "workspace-1",
   servers: [] as Array<Record<string, unknown>>,
   isLoading: false,
   role: "owner" as "owner" | "admin" | "member",
@@ -44,7 +45,7 @@ vi.mock("@multica/core/workspace/mutations", () => ({
 }));
 
 vi.mock("@multica/core/paths", () => ({
-  useCurrentWorkspace: () => ({ id: "workspace-1", name: "Acme", slug: "acme" }),
+  useCurrentWorkspace: () => ({ id: data.wsId, name: "Acme", slug: "acme" }),
 }));
 
 vi.mock("@multica/core/permissions", () => ({
@@ -70,6 +71,7 @@ function Wrapper({ children }: { children: ReactNode }) {
 describe("McpTab", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    data.wsId = "workspace-1";
     data.role = "owner";
     data.isLoading = false;
     data.servers = [
@@ -114,6 +116,16 @@ describe("McpTab", () => {
 
     expect(screen.getByLabelText(label)).toHaveValue("");
     expect(screen.getByLabelText(label)).toHaveAttribute("placeholder", example);
+  });
+
+  it("closes workspace-specific configuration drafts when workspace identity changes", async () => {
+    const user = userEvent.setup();
+    const view = render(<McpTab />, { wrapper: Wrapper });
+    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.type(screen.getByLabelText("Server name"), "old-workspace-draft");
+    data.wsId = "workspace-2";
+    view.rerender(<McpTab />);
+    expect(screen.queryByRole("dialog")).toBeNull();
   });
 
   it("adds a server to the library", async () => {
@@ -527,10 +539,12 @@ describe("McpTab", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders an empty state when the library is empty", () => {
+  it("opens the market for an empty library and keeps the workspace empty state accessible", async () => {
+    const user = userEvent.setup();
     data.servers = [];
     render(<McpTab />, { wrapper: Wrapper });
-
+    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveAttribute("aria-selected", "true");
+    await user.click(screen.getByRole("tab", { name: "Workspace" }));
     expect(screen.getByText("No shared MCP servers")).toBeInTheDocument();
   });
 
