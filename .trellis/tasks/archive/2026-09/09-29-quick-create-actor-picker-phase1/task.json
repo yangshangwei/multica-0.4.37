@@ -1,0 +1,72 @@
+{
+  "id": "quick-create-actor-picker-phase1",
+  "name": "quick-create-actor-picker-phase1",
+  "title": "降低快速创建任务时的智能体选择成本（第一期）",
+  "description": "常用固定、最近成功使用、职责摘要与搜索、智能体/AI小队筛选；产出需求、技术设计和实施验收计划。",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "quick-create",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-29",
+  "completedAt": "2026-09-29",
+  "branch": "codex/quick-create-actor-picker",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-actor-picker-phase1",
+  "commit": "3bd9fa30d22b2fd40c6d202d739ea8f0b71275a8",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/core/issues/stores/quick-create-store.ts",
+    "packages/core/issues/stores/quick-create-store.test.ts",
+    "packages/views/modals/quick-create-actor-picker-model.ts",
+    "packages/views/modals/quick-create-actor-picker-model.test.ts",
+    "packages/views/modals/quick-create-actor-picker.tsx",
+    "packages/views/modals/quick-create-actor-picker.test.tsx",
+    "packages/views/modals/quick-create-issue.tsx",
+    "packages/views/modals/quick-create-issue.test.tsx",
+    "packages/views/issues/components/pickers/property-picker.tsx",
+    "packages/views/issues/components/pickers/property-picker.test.tsx",
+    "packages/views/locales/en/modals.json",
+    "packages/views/locales/zh-Hans/modals.json",
+    "e2e/quick-create-actor-picker.spec.ts",
+    ".trellis/spec/views/frontend/quick-create-actor-picker.md",
+    ".trellis/spec/views/frontend/index.md"
+  ],
+  "notes": "第一期已实施并通过独立代码审查、全量 views 与 Web/Electron 验收。保留原目录并行修改；既存 core 路由诊断及 Knip 报告未改。",
+  "meta": {
+    "phase": "complete",
+    "planning_status": "reviewed_ready",
+    "platforms": [
+      "web",
+      "desktop"
+    ],
+    "planning_only": false,
+    "implementation_approved": true,
+    "affected_packages": [
+      "@multica/core",
+      "@multica/views"
+    ],
+    "planned_new_files": [
+      "packages/views/modals/quick-create-actor-picker.tsx",
+      "packages/views/modals/quick-create-actor-picker-model.ts",
+      "packages/views/modals/quick-create-actor-picker.test.tsx",
+      "packages/views/modals/quick-create-actor-picker-model.test.ts",
+      "packages/views/issues/components/pickers/property-picker.test.tsx",
+      "e2e/quick-create-actor-picker.spec.ts",
+      ".trellis/spec/views/frontend/quick-create-actor-picker.md"
+    ],
+    "review_result": "APPROVE",
+    "review_file": ".trellis/tasks/09-29-quick-create-actor-picker-phase1/research/plan-review.md",
+    "requirements_count": 7,
+    "acceptance_criteria_count": 14,
+    "acceptance_result": "pass",
+    "visual_score": 95,
+    "e2e_passed": 4,
+    "views_tests_passed": 5622
+  }
+}

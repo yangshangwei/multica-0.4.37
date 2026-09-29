@@ -1,0 +1,97 @@
+{
+  "dataset": "500 agents + 50 squads, API directory route mocks; real authenticated app",
+  "mode": "development",
+  "browser": "Chromium 145.0.7632.6",
+  "os": "darwin 25.2.0",
+  "cpu": "Apple M4",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "node": "v22.23.2",
+  "samples": [
+    {
+      "query": "Agent 000",
+      "durationMs": 16.700000000186265
+    },
+    {
+      "query": "responsibility-0023",
+      "durationMs": 19.90000000037253
+    },
+    {
+      "query": "Agent 046",
+      "durationMs": 20.299999999813735
+    },
+    {
+      "query": "responsibility-0069",
+      "durationMs": 19.299999999813735
+    },
+    {
+      "query": "Agent 092",
+      "durationMs": 20.800000000745058
+    },
+    {
+      "query": "responsibility-0115",
+      "durationMs": 20.700000000186265
+    },
+    {
+      "query": "Agent 138",
+      "durationMs": 6.7999999998137355
+    },
+    {
+      "query": "responsibility-0161",
+      "durationMs": 19.100000000558794
+    },
+    {
+      "query": "Agent 184",
+      "durationMs": 19.100000000558794
+    },
+    {
+      "query": "responsibility-0207",
+      "durationMs": 20.5
+    },
+    {
+      "query": "Agent 230",
+      "durationMs": 19.699999999254942
+    },
+    {
+      "query": "responsibility-0253",
+      "durationMs": 20.700000000186265
+    },
+    {
+      "query": "Agent 276",
+      "durationMs": 20.199999999254942
+    },
+    {
+      "query": "responsibility-0299",
+      "durationMs": 19.299999999813735
+    },
+    {
+      "query": "Agent 322",
+      "durationMs": 19.899999999441206
+    },
+    {
+      "query": "responsibility-0345",
+      "durationMs": 20.5
+    },
+    {
+      "query": "Agent 368",
+      "durationMs": 20.5
+    },
+    {
+      "query": "responsibility-0391",
+      "durationMs": 19.799999999813735
+    },
+    {
+      "query": "Agent 414",
+      "durationMs": 17.799999999813735
+    },
+    {
+      "query": "responsibility-0437",
+      "durationMs": 20.299999999813735
+    }
+  ],
+  "method": "Browser performance.now from captured native input event to first animation frame after the DOM contains the expected sole actor. Full saved-description and exact-name queries alternate; data is already loaded. Includes frame scheduling, excludes Playwright transport and initial network/compilation.",
+  "p95Ms": 20.700000000186265,
+  "targetMs": 100
+}
