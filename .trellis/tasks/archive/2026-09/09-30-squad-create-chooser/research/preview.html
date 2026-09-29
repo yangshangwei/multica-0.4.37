@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body><div id="root"></div><script type="module">
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { CreateSquadChooser } from '/@fs/Volumes/artisan/code/2026/multica-0.4.37/packages/views/squads/components/create-squad-chooser.tsx';
+import { I18nProvider } from '/@fs/Volumes/artisan/code/2026/multica-0.4.37/packages/core/i18n/react.ts';
+import { RESOURCES } from '/@fs/Volumes/artisan/code/2026/multica-0.4.37/packages/views/locales/index.ts';
+import '/src/globals.css';
+import '/@fs/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/node_modules/@fontsource-variable/inter/index.css';
+import { useModalStore } from '/@fs/Volumes/artisan/code/2026/multica-0.4.37/packages/core/modals/store.ts';
+import { Dialog, DialogContent, DialogTitle } from '/@fs/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/components/ui/dialog.tsx';
+function HandoffFixture() {
+  const modal = useModalStore(s => s.modal);
+  return modal ? React.createElement(Dialog, { open: true, onOpenChange: open => { if (!open) useModalStore.getState().close(); } }, React.createElement(DialogContent, null, React.createElement(DialogTitle, null, modal), React.createElement('input', { 'aria-label': 'Handoff focus' }))) : null;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(I18nProvider, { locale: new URLSearchParams(location.search).get('locale') ?? 'zh-Hans', resources: RESOURCES }, React.createElement('div', {style: { padding: '24px', display: 'flex', justifyContent: 'flex-end' }}, React.createElement(CreateSquadChooser), React.createElement(HandoffFixture))));
+</script></body></html>
