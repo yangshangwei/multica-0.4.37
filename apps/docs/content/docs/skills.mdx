@@ -19,12 +19,16 @@ Add a skill to an [agent](/agents) and the agent uses its guidance when executin
 
 ## Creating or importing a skill
 
+The library has two tabs: **Workspace skills** manages existing workspace content, while **Skill templates** offers starting points for new copies. Their counts refer to workspace skills and templates separately; a listed template is not automatically added to the workspace.
+
+Choose **From template** in the workspace tab to open the catalog. Filter by **Deployment-provided** or **Platform built-ins**. Deployment templates are maintained by the deployment operator, not skills installed in a runtime on this computer.
+
 On the workspace **Skills** page, choose "New skill". Five options are available:
 
 | Option | When it fits |
 |---|---|
 | **Create manually** | Start writing from a blank `SKILL.md`. |
-| **Modify from template** | Preview a built-in template, edit a copy, and create your own skill. |
+| **Modify from template** | Preview a platform or deployment-provided template, edit a copy, and create your own skill. |
 | **Import from local** | Pick a folder that contains `SKILL.md`, or a `.skill` / `.zip` archive on this computer. |
 | **Import from URL** | Import a published skill from GitHub, ClawHub, or Skills.sh. |
 | **Copy from a runtime** | Scan skills on a connected computer and copy the selected ones into the workspace. |
@@ -41,7 +45,9 @@ If a skill with the same name already exists in the workspace, the import can st
 
 ## Starting from a template
 
-Choose **Modify from template**, select one of the fifteen built-in role-skill templates, and read its instructions. Select **Use this template** to edit the copy's name, description, and Markdown body. **Create skill** saves the copy and opens its detail page; browsing or cancelling creates nothing.
+Choose **Preview template** in **Skill templates**, or open **Modify from template** through "New skill", and read the instructions. Select **Use this template** to edit the copy's name, description, and Markdown body. **Create skill** saves the copy; browsing or cancelling creates nothing.
+
+Creating from the catalog keeps you there with your filters intact and offers a link to the new skill. Creating through "New skill" opens the detail page. Template cards link to related workspace skills while remaining available for creating another independent copy.
 
 The copy needs a distinct name, such as `multica-code-review-copy`. It is an ordinary editable skill: the original template and existing workspace skills stay unchanged, and no agent assignments or permissions are copied. Add the new skill to agents separately. Later template updates do not replace your copy.
 

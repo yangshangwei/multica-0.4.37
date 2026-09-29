@@ -294,7 +294,8 @@ test("creates an edited independent skill after previewing and cancelling withou
 
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.reload();
-    await expect(page.locator("header").getByText("1", { exact: true })).toBeVisible();
+    await expect(page.locator("header").getByText("1", { exact: true })).toHaveCount(0);
+    await expect(workspaceTab).toContainText("1");
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     await previewTemplate.focus();
     await page.keyboard.press("Enter");
@@ -430,14 +431,19 @@ test("creates an edited independent skill after previewing and cancelling withou
     await page.evaluate(() => localStorage.setItem("theme", "dark"));
     await page.goto(`/${slug}/skills`);
     await expect(page.locator("html")).toHaveClass(/\bdark\b/);
-    await expect(page.locator("header").getByText("3", { exact: true })).toBeVisible();
+    await expect(page.locator("header").getByText("3", { exact: true })).toHaveCount(0);
+    await expect(workspaceTab).toContainText("3");
     await expect(marketTab).toContainText("15");
     await workspaceTab.click();
-    await expect(page.getByRole("region", { name: enSkills.market.source_deployment, exact: true }))
-      .toContainText(enSkills.market.deployment_empty);
+    await expect(page.getByRole("region", { name: enSkills.market.source_deployment, exact: true })).toHaveCount(0);
+    await expect(page.getByText(enSkills.market.deployment_empty, { exact: true })).toHaveCount(0);
+    await expect(previewTemplate).toHaveCount(0);
+    const fromTemplate = page.getByRole("button", { name: enSkills.market.from_template, exact: true });
+    await expectInViewport(page, fromTemplate);
     await expectNoHorizontalOverflow(page);
     await capture(page, testInfo, "dark-workspace-skills");
-    await marketTab.click();
+    await fromTemplate.click();
+    await expect(marketTab).toBeFocused();
     await previewTemplate.click();
     await expect(dialog.getByRole("link", { name: copyName, exact: true })).toBeVisible();
     await expect(dialog.getByRole("link", { name: related.name, exact: true })).toBeVisible();

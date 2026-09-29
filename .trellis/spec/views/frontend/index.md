@@ -25,7 +25,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Built-in Skill Localization](./builtin-skill-localization.md) | Display identity, bilingual search, and raw instruction preservation | Active |
 | [Skill Presentation](./skill-presentation.md) | Category / icon in `config.presentation`, workspace labels, parity and rollout rules, batch label management | Active |
-| [Skill Market Discovery](./skill-market-discovery.md) | Deployment shelf, catalog preferences, source filtering, copy navigation and focus | Active |
+| [Skill Template Discovery](./skill-market-discovery.md) | Workspace/template separation, catalog entry, source filtering, copy navigation and focus | Active |
 
 ---
 

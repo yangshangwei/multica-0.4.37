@@ -265,14 +265,18 @@ test("specialist skills localize, search and open their official copies without 
       await page.getByRole("tab", { name: copy.market.workspace, exact: true }).click();
       const entry = page.getByRole("tablist", { name: copy.market.views_label, exact: true, includeHidden: true });
       await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
-      await expect(page.locator("header").getByText(String(skills.length), { exact: true })).toBeVisible();
+      await expect(page.locator("header").getByText(String(skills.length), { exact: true })).toHaveCount(0);
+      await expect(entry.getByRole("tab", { name: copy.market.workspace, exact: true })).toContainText(String(skills.length));
+      const fromTemplate = page.getByRole("button", { name: copy.market.from_template, exact: true });
       if (index === 0) {
-        await capture("entry", locale, copy, theme);
+        await capture("workspace", locale, copy, theme);
         await page.setViewportSize({ width: 375, height: 667 });
         await expect(page.getByRole("textbox", { name: copy.market.workspace_search, exact: true })).toBeVisible();
-        await capture("entry", locale, copy, theme);
+        await expect(fromTemplate).toBeInViewport({ ratio: 1 });
+        await capture("workspace", locale, copy, theme);
         await page.setViewportSize({ width: 360, height: 800 });
-        await capture("entry", locale, copy, theme);
+        await expect(fromTemplate).toBeInViewport({ ratio: 1 });
+        await capture("workspace", locale, copy, theme);
         await page.setViewportSize({ width: 1280, height: 720 });
       }
       const search = page.getByRole("textbox", { name: copy.market.workspace_search, exact: true });
@@ -282,7 +286,8 @@ test("specialist skills localize, search and open their official copies without 
         await expect(page.getByText(displayed.description, { exact: true }).first()).toBeVisible();
       }
       await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
-      await entry.getByRole("tab", { name: copy.market.title, exact: true }).click();
+      await fromTemplate.click();
+      await expect(entry.getByRole("tab", { name: copy.market.title, exact: true })).toBeFocused();
       await page.getByRole("button", { name: copy.market.preview_label.replace("{{name}}", displayed.name), exact: true }).click();
       const preview = page.getByRole("dialog");
       await expect(preview).toHaveAccessibleName(copy.create.template.preview_label);
@@ -335,7 +340,7 @@ test("specialist skills localize, search and open their official copies without 
     const browse = page.getByRole("button", { name: copy.market.preview_label.replace("{{name}}", displayed.name), exact: true });
     await browse.scrollIntoViewIfNeeded();
     await expect(browse).toBeInViewport({ ratio: 1 });
-    await capture("entry", locale, copy, theme);
+    await capture("catalog", locale, copy, theme);
     await browse.focus();
     await page.keyboard.press("Enter");
     const picker = page.getByRole("dialog", { name: copy.create.template.preview_label, exact: true });

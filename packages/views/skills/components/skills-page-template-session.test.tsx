@@ -118,7 +118,7 @@ function renderPage() {
 }
 
 async function openMarketPreview() {
-  fireEvent.click(screen.getByRole("tab", { name: "Skill market" }));
+  fireEvent.click(screen.getByRole("tab", { name: "Skill templates" }));
   const preview = await screen.findByRole("button", { name: "Preview multica-code-review" });
   fireEvent.click(preview);
   return preview;
@@ -182,7 +182,7 @@ async function retryWorkspaceRefresh(queryClient: QueryClient, skills = [RELATED
 
 beforeEach(() => {
   vi.resetAllMocks();
-  useSkillsViewStore.setState({ viewMode: "card", filters: EMPTY_SKILL_FILTERS, libraryView: null, marketSource: "all", marketCategory: null, templatesCollapsed: false });
+  useSkillsViewStore.setState({ viewMode: "card", filters: EMPTY_SKILL_FILTERS, libraryView: null, marketSource: "all", marketCategory: null });
   mocks.listWorkspaces.mockResolvedValue([WORKSPACE]);
   mocks.listSkillTemplates.mockResolvedValue([TEMPLATE]);
   mocks.listSkills.mockResolvedValue([RELATED_SKILL]);
@@ -199,7 +199,7 @@ afterEach(() => {
 describe("SkillsPage template-session lifetime", () => {
   it("opens a selected market template and keeps browsing after creating its copy", async () => {
     const { navigation } = renderPage();
-    await userEvent.click(await screen.findByRole("tab", { name: "Skill market" }));
+    await userEvent.click(await screen.findByRole("tab", { name: "Skill templates" }));
     await userEvent.click(await screen.findByRole("button", { name: "Preview multica-code-review" }));
     const adopt = await screen.findByRole("button", { name: "Use this template" });
     await waitFor(() => expect(adopt).toBeEnabled());
@@ -215,7 +215,7 @@ describe("SkillsPage template-session lifetime", () => {
     }));
     fireEvent.click(screen.getByRole("button", { name: "Create skill" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
-    expect(screen.getByRole("tab", { name: "Skill market" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveAttribute("aria-selected", "true");
     expect(navigation.push).not.toHaveBeenCalled();
     expect(toast.success).toHaveBeenCalledWith(enSkills.create.template.created, expect.objectContaining({
       action: expect.objectContaining({ label: "View skill" }),

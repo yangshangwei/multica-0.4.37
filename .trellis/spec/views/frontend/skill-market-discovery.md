@@ -1,10 +1,11 @@
-# Skill market discovery
+# Skill template discovery
 
 ## Scope
 
 `SkillLibraryCatalog` separates workspace instances from reusable templates on the
-shared skills page. Its compact deployment shelf replaces the old count-only
-entry. Web and Desktop use the same component, query cache and copy editor.
+shared skills page. Workspace skills are managed in one tab; all reusable
+templates, including deployment-provided ones, live in the Skill templates tab.
+Web and Desktop use the same component, query cache and copy editor.
 
 ## Signatures
 
@@ -21,8 +22,9 @@ interface SkillLibraryCatalogProps {
 
 `useSkillsViewStore` owns `libraryView: "workspace" | "market" | null`,
 `marketSource: "all" | "deployment" | "builtin"`,
-`marketCategory: SkillCategory | null`, and `templatesCollapsed: boolean`, with
-matching setters. Its existing workspace-aware persistence resets missing
+`marketCategory: SkillCategory | null`, with matching setters. Internal `market`
+identifiers preserve existing preferences; user-facing copy says templates.
+There is no shelf or collapse preference. Workspace-aware persistence resets missing
 fields on rehydration; search stays local and resets when workspace identity changes.
 
 `CreateSkillDialog.onTemplateCreated?: (skill: Skill) => void` handles a newly
@@ -32,6 +34,12 @@ successful write or emit a creation toast for it.
 
 ## Contracts
 
+- The workspace panel never renders deployment templates or catalog loading/error/
+  empty-source messages. A compact From template action opens the template tab
+  and moves keyboard focus to its persistent tab trigger. Keep the action outside
+  the tablist and allow its surrounding row to wrap in narrow containers.
+- Counts belong to the respective tabs: workspace instances versus templates.
+  The shared page heading has no redundant workspace count above the template view.
 - Only a successfully loaded empty workspace can initialize the market view.
   Explicit selection wins, including clicking the already-active Workspace tab
   while its data is still pending. Persist that gesture, not only a changed tab value.
@@ -69,7 +77,8 @@ successful write or emit a creation toast for it.
 | Templates pending | Skeletons, no false zero source counts |
 | Templates fail without cache | Error + retry, no empty-market claim |
 | Templates fail with cache | Keep cards/counts and show refresh error |
-| Deployment source is truly empty | Compact hint and builtin discovery action |
+| Deployment source is truly empty | Hint and builtin discovery action in templates only |
+| Populated workspace | Existing collection and From template action, no template shelf |
 | Search removes all results | Preserve source count; clear-search/category action |
 | Source/category refresh | Retain valid selection, never adopt/reseed an editor |
 | Successful direct catalog copy | Stay in market, toast action, restore opener focus |
@@ -92,10 +101,16 @@ successful write or emit a creation toast for it.
   choice, active-tab intent, cache and copy links, locale-only resource loading.
 - `views/skills/components/skills-page-template-session.test.tsx`: real page/query
   lifetime, draft guards, market creation and opener focus through failures.
-- `e2e/skill-market.spec.ts`: production browser, wide/narrow discovery, real copy
-  creation and persisted preferences; only the template GET uses synthetic fixtures.
+- `e2e/skill-market.spec.ts`: production browser, wide/narrow discovery, shelf absence,
+  From template keyboard focus, distinct counts, real copy creation and persisted
+  preferences; only the template GET uses synthetic fixtures.
 - `e2e/skill-template-creation.spec.ts`: real builtin catalog and existing editing,
-  navigation/dirty guards after the market entry replaced the compact button.
+  navigation/dirty guards through the template catalog and ordinary creation entry.
+- `e2e/localized-template-defaults.spec.ts`: English/Chinese template entry,
+  separate tab counts and From template visibility at 375px/360px. Use distinct
+  workspace/catalog capture names so equal viewport sizes do not overwrite evidence.
+- `e2e/workspace-defaults.spec.ts`: a fresh workspace exposes Skill templates
+  without requiring a runtime; keep the tab name aligned with the locale contract.
 
 ## Wrong vs correct
 

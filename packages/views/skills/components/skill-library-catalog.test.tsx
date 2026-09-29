@@ -73,7 +73,7 @@ function renderCatalog({
 
 beforeEach(() => {
   vi.clearAllMocks();
-  useSkillsViewStore.setState({ libraryView: null, marketSource: "all", marketCategory: null, templatesCollapsed: false });
+  useSkillsViewStore.setState({ libraryView: null, marketSource: "all", marketCategory: null });
   mocks.listSkillTemplates.mockResolvedValue([DEPLOYMENT, BUILTIN]);
 });
 
@@ -84,32 +84,48 @@ afterEach(() => {
 
 describe("SkillLibraryCatalog", () => {
   // Source/category/search matrices live in ../lib/skill-market.test.ts.
-  it("shows the deployment shelf and opens the named preview with its keyboard trigger", async () => {
-    const user = userEvent.setup();
-    const { onPreview } = renderCatalog();
-    const preview = await screen.findByRole("button", { name: "Preview team-review" });
+  it("keeps deployment templates out of the workspace collection", async () => {
+    renderCatalog({ templates: [DEPLOYMENT, BUILTIN] });
+    await waitFor(() => expect(mocks.listSkillTemplates).toHaveBeenCalled());
     expect(screen.getByText("Workspace collection")).toBeVisible();
-    expect(screen.queryByRole("button", { name: "Preview multica-code-review" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Preview team-review" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Deployment-provided" })).not.toBeInTheDocument();
+  });
+
+  it("opens the template catalog from the workspace action without losing source preferences", async () => {
+    const user = userEvent.setup();
+    useSkillsViewStore.setState({ marketSource: "deployment", marketCategory: "quality" });
+    renderCatalog({ templates: [DEPLOYMENT, BUILTIN] });
+    const entry = screen.getByRole("button", { name: "From template" });
+    entry.focus();
+    await user.keyboard("{Enter}");
+    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveFocus();
+    expect(screen.getByRole("tab", { name: "Deployment-provided" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("button", { name: "Preview team-review" })).toBeVisible();
+    expect(screen.getByText("Workspace collection")).not.toBeVisible();
+    expect(useSkillsViewStore.getState().marketCategory).toBe("quality");
+  });
+
+  it("opens the named template preview with its keyboard trigger", async () => {
+    const user = userEvent.setup();
+    const { onPreview } = renderCatalog({ skills: [] });
+    const preview = await screen.findByRole("button", { name: "Preview team-review" });
+    expect(preview).toHaveTextContent("Preview template");
+    expect(screen.getAllByText("No workspace copy yet")).toHaveLength(2);
     preview.focus();
     await user.keyboard("{Enter}");
     expect(onPreview).toHaveBeenCalledWith(DEPLOYMENT.name, preview);
-    fireEvent.click(screen.getByRole("button", { name: "Collapse templates" }));
-    expect(screen.queryByRole("button", { name: "Preview team-review" })).not.toBeInTheDocument();
-    expect(useSkillsViewStore.getState().templatesCollapsed).toBe(true);
-    fireEvent.click(screen.getByRole("button", { name: "Browse all templates" }));
-    expect(screen.getByRole("tab", { name: "Skill market" })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByRole("tab", { name: "Deployment-provided" })).toHaveAttribute("aria-selected", "true");
   });
 
   it("defaults only a successfully loaded empty workspace to market and keeps an explicit choice", async () => {
     const { rerender } = renderCatalog({ skills: [], skillsError: true });
-    await screen.findByRole("button", { name: "Preview team-review" });
     expect(useSkillsViewStore.getState().libraryView).toBeNull();
     expect(screen.getByRole("tab", { name: "Workspace skills" })).toHaveAttribute("aria-selected", "true");
     rerender(undefined);
     expect(useSkillsViewStore.getState().libraryView).toBeNull();
     rerender([]);
-    expect(screen.getByRole("tab", { name: "Skill market" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveAttribute("aria-selected", "true");
     fireEvent.click(screen.getByRole("tab", { name: "Workspace skills" }));
     rerender([]);
     expect(screen.getByText("Workspace collection")).toBeVisible();
@@ -126,9 +142,8 @@ describe("SkillLibraryCatalog", () => {
 
   it("keeps the workspace collection mounted while the market is active", async () => {
     renderCatalog();
-    await screen.findByRole("button", { name: "Preview team-review" });
     const collection = screen.getByText("Workspace collection");
-    fireEvent.click(screen.getByRole("tab", { name: "Skill market" }));
+    fireEvent.click(screen.getByRole("tab", { name: "Skill templates" }));
     expect(collection).toBeInTheDocument();
     expect(collection).not.toBeVisible();
     fireEvent.click(screen.getByRole("tab", { name: "Workspace skills" }));
@@ -139,7 +154,7 @@ describe("SkillLibraryCatalog", () => {
   it("leaves counts unknown during cold loading", () => {
     mocks.listSkillTemplates.mockReturnValue(new Promise(() => {}));
     renderCatalog({ skills: [] });
-    expect(screen.getByRole("tab", { name: "Skill market" })).not.toHaveTextContent("0");
+    expect(screen.getByRole("tab", { name: "Skill templates" })).not.toHaveTextContent("0");
     expect(screen.getByRole("tab", { name: "Deployment-provided" })).not.toHaveTextContent("0");
     expect(screen.getByRole("status", { name: "Loading templates..." })).toBeVisible();
     expect(screen.queryByText("No templates available yet")).not.toBeInTheDocument();
@@ -148,7 +163,7 @@ describe("SkillLibraryCatalog", () => {
   it("composes market controls and clears an unavailable category when changing source", async () => {
     renderCatalog({ skills: [] });
     await screen.findByRole("button", { name: "Preview team-review" });
-    const search = screen.getByRole("textbox", { name: "Search market templates" });
+    const search = screen.getByRole("textbox", { name: "Search templates" });
     fireEvent.change(search, { target: { value: "review" } });
     fireEvent.click(screen.getByRole("button", { name: "Testing & quality" }));
     expect(screen.queryByRole("button", { name: "Preview multica-code-review" })).not.toBeInTheDocument();
@@ -161,7 +176,9 @@ describe("SkillLibraryCatalog", () => {
   it("offers every renamed related skill as a real link without opening the preview", async () => {
     const user = userEvent.setup();
     const { onPreview, navigation, rerender } = renderCatalog({ skills: [COPY, { ...COPY, id: "copy-two", name: "security-review" }] });
+    fireEvent.click(screen.getByRole("button", { name: "From template" }));
     await screen.findByRole("button", { name: "Preview team-review" });
+    expect(screen.getByText("2 related skills in this workspace")).toBeVisible();
     await user.click(screen.getByRole("button", { name: "View skills" }));
     const first = await screen.findByRole("menuitem", { name: "billing-review" });
     const second = screen.getByRole("menuitem", { name: "security-review" });
@@ -171,21 +188,21 @@ describe("SkillLibraryCatalog", () => {
     expect(navigation.push).toHaveBeenCalledWith("/acme/skills/copy-two");
     expect(onPreview).not.toHaveBeenCalled();
     rerender([COPY], true);
-    expect(screen.getByText("Workspace skill status unavailable")).toBeInTheDocument();
+    expect(screen.getAllByText("Workspace skill status unavailable")).toHaveLength(2);
     expect(screen.queryByRole("link", { name: "View skill" })).not.toBeInTheDocument();
   });
 
   it("keeps cached results and the search while a failed refresh exposes retry", async () => {
     mocks.listSkillTemplates.mockRejectedValue(new Error("Catalog unavailable"));
     renderCatalog({ skills: [], templates: [DEPLOYMENT, BUILTIN] });
-    fireEvent.change(screen.getByRole("textbox", { name: "Search market templates" }), { target: { value: "team" } });
+    fireEvent.change(screen.getByRole("textbox", { name: "Search templates" }), { target: { value: "team" } });
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent("Could not refresh templates");
     expect(screen.getByRole("button", { name: "Preview team-review" })).toBeVisible();
     mocks.listSkillTemplates.mockResolvedValue([DEPLOYMENT, BUILTIN]);
     fireEvent.click(within(alert).getByRole("button", { name: "Try again" }));
     await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
-    expect(screen.getByRole("textbox", { name: "Search market templates" })).toHaveValue("team");
+    expect(screen.getByRole("textbox", { name: "Search templates" })).toHaveValue("team");
   });
 
   it("distinguishes catalog failure from a successful empty catalog", async () => {
@@ -193,7 +210,7 @@ describe("SkillLibraryCatalog", () => {
     const { queryClient, onCreate } = renderCatalog({ skills: [] });
     await screen.findByRole("alert");
     expect(screen.queryByText("No templates available yet")).not.toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Skill market" })).not.toHaveTextContent("0");
+    expect(screen.getByRole("tab", { name: "Skill templates" })).not.toHaveTextContent("0");
     await act(async () => { queryClient.setQueryData(workspaceKeys.skillTemplates("ws-1"), []); });
     expect(await screen.findByText("No templates available yet")).toBeVisible();
     const create = screen.getByRole("button", { name: "New skill" });
@@ -201,21 +218,22 @@ describe("SkillLibraryCatalog", () => {
     expect(onCreate).toHaveBeenCalledWith(create);
   });
 
-  it("shows a compact builtin entry when deployment is empty, and distinguishes search misses", async () => {
+  it("keeps empty deployment guidance in the catalog and distinguishes search misses", async () => {
     mocks.listSkillTemplates.mockResolvedValue([BUILTIN]);
     const { rerender } = renderCatalog();
-    fireEvent.click(await screen.findByRole("button", { name: "Browse platform templates" }));
-    expect(screen.getByRole("tab", { name: "Platform built-ins" })).toHaveAttribute("aria-selected", "true");
+    await waitFor(() => expect(screen.getByRole("tab", { name: "Skill templates" })).toHaveTextContent("1"));
+    expect(screen.queryByText("This deployment has no shared templates yet.")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "From template" }));
     fireEvent.click(screen.getByRole("tab", { name: "Deployment-provided" }));
     expect(screen.getByText("This deployment has no shared templates yet.")).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "Browse platform templates" }));
-    fireEvent.change(screen.getByRole("textbox", { name: "Search market templates" }), { target: { value: "no-match" } });
+    fireEvent.change(screen.getByRole("textbox", { name: "Search templates" }), { target: { value: "no-match" } });
     expect(screen.getByText('No templates match "no-match".')).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
     expect(screen.getByRole("button", { name: "Preview multica-code-review" })).toBeVisible();
-    fireEvent.change(screen.getByRole("textbox", { name: "Search market templates" }), { target: { value: "old search" } });
+    fireEvent.change(screen.getByRole("textbox", { name: "Search templates" }), { target: { value: "old search" } });
     rerender([COPY], false, "ws-2");
-    expect(screen.getByRole("textbox", { name: "Search market templates" })).toHaveValue("");
+    expect(screen.getByRole("textbox", { name: "Search templates" })).toHaveValue("");
   });
 });
 

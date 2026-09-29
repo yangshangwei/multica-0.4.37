@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useSkillsViewStore, type SkillMarketSource } from "@multica/core/skills/stores";
 import type { SkillSummary } from "@multica/core/types";
 import { skillTemplateListOptions } from "@multica/core/workspace/queries";
 import { Button } from "@multica/ui/components/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@multica/ui/components/ui/collapsible";
 import { Input } from "@multica/ui/components/ui/input";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
-import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../../i18n";
 import { useSkillCategoryLabels } from "../hooks/use-skill-category-labels";
 import { filterSkillMarketItems, getSkillMarketCategories } from "../lib/skill-market";
@@ -33,7 +31,6 @@ export function SkillLibraryCatalog(props: SkillLibraryCatalogProps) {
 }
 
 const GRID_CLASS = "grid grid-cols-1 gap-3 @2xl/catalog:grid-cols-2 @5xl/catalog:grid-cols-3 @7xl/catalog:grid-cols-4";
-const SHELF_CARD_CLASS = ["", "hidden @2xl/catalog:block", "hidden @5xl/catalog:block", "hidden @7xl/catalog:block"];
 
 function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children, onPreview, onCreate }: SkillLibraryCatalogProps) {
   const { t } = useT("skills");
@@ -44,8 +41,7 @@ function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children
   const setSource = useSkillsViewStore((state) => state.setMarketSource);
   const category = useSkillsViewStore((state) => state.marketCategory);
   const setCategory = useSkillsViewStore((state) => state.setMarketCategory);
-  const collapsed = useSkillsViewStore((state) => state.templatesCollapsed);
-  const setCollapsed = useSkillsViewStore((state) => state.setTemplatesCollapsed);
+  const templateTabRef = useRef<HTMLButtonElement>(null);
   const [search, setSearch] = useState("");
   const workspaceLoaded = skills !== undefined && !skillsError;
   const view = libraryView ?? (workspaceLoaded && skills.length === 0 ? "market" : "workspace");
@@ -76,11 +72,6 @@ function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children
     if (next === "deployment") void catalog.refetch({ cancelRefetch: false });
   }
 
-  function browseSource(next: "deployment" | "builtin") {
-    selectSource(next);
-    setLibraryView("market");
-  }
-
   const status = catalog.isError ? (
     <div role="alert" className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
       <span>{hasData ? t(($) => $.create.template.refresh_failed) : t(($) => $.create.template.load_failed)}</span>
@@ -96,47 +87,34 @@ function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children
 
   return (
     <Tabs value={view} onValueChange={(next) => { if (next === "workspace" || next === "market") setLibraryView(next); }} className="min-h-0 min-w-0 flex-1 gap-0 @container/catalog">
-      <TabsList variant="line" aria-label={t(($) => $.market.views_label)} className="mx-4 mb-1 max-w-[calc(100%-2rem)] shrink-0 items-stretch group-data-horizontal/tabs:h-auto @2xl/catalog:mx-6">
-        <TabsTrigger value="workspace" onClick={() => setLibraryView("workspace")} aria-label={t(($) => $.market.workspace)} className="min-h-10 flex-none px-2 @2xl/catalog:px-3">
-          {t(($) => $.market.workspace)}
-          {workspaceLoaded && <span className="text-caption tabular-nums text-muted-foreground">{skills.length}</span>}
-        </TabsTrigger>
-        <TabsTrigger value="market" onClick={() => setLibraryView("market")} aria-label={t(($) => $.market.title)} className="min-h-10 flex-none px-2 @2xl/catalog:px-3">
-          {t(($) => $.market.title)}
-          {hasData && <span className="text-caption tabular-nums text-muted-foreground">{items.length}</span>}
-        </TabsTrigger>
-      </TabsList>
+      <div className="mx-4 mb-1 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 @2xl/catalog:mx-6">
+        <TabsList variant="line" aria-label={t(($) => $.market.views_label)} className="max-w-full shrink-0 items-stretch group-data-horizontal/tabs:h-auto">
+          <TabsTrigger value="workspace" onClick={() => setLibraryView("workspace")} aria-label={t(($) => $.market.workspace)} className="min-h-10 flex-none px-2 @2xl/catalog:px-3">
+            {t(($) => $.market.workspace)}
+            {workspaceLoaded && <span className="text-caption tabular-nums text-muted-foreground">{skills.length}</span>}
+          </TabsTrigger>
+          <TabsTrigger ref={templateTabRef} value="market" onClick={() => setLibraryView("market")} aria-label={t(($) => $.market.title)} className="min-h-10 flex-none px-2 @2xl/catalog:px-3">
+            {t(($) => $.market.title)}
+            {hasData && <span className="text-caption tabular-nums text-muted-foreground">{items.length}</span>}
+          </TabsTrigger>
+        </TabsList>
+        {view === "workspace" && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="ml-auto"
+            onClick={() => {
+              setLibraryView("market");
+              templateTabRef.current?.focus();
+            }}
+          >
+            {t(($) => $.market.from_template)}
+          </Button>
+        )}
+      </div>
 
       <TabsContent value="workspace" keepMounted className="flex min-h-0 min-w-0 flex-col data-hidden:hidden">
-        {view === "workspace" && <section aria-label={t(($) => $.market.source_deployment)} className="shrink-0 px-4 py-3 @2xl/catalog:px-6">
-          {hasData && deploymentItems.length === 0 ? (
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <p className="text-caption text-muted-foreground">{t(($) => $.market.deployment_empty)}</p>
-              <Button size="sm" variant="ghost" onClick={() => browseSource("builtin")}>{t(($) => $.market.browse_builtin)}</Button>
-            </div>
-          ) : (
-            <Collapsible open={!collapsed} onOpenChange={(open) => setCollapsed(!open)}>
-              <div className="flex flex-wrap items-center gap-2">
-                <h2 className="min-w-0 text-title font-medium">{t(($) => $.market.source_deployment)}</h2>
-                {hasData && <span className="text-caption text-muted-foreground">{t(($) => $.market.template_count, { count: deploymentItems.length })}</span>}
-                <div className="ml-auto flex items-center gap-1">
-                  <Button variant="ghost" size="sm" onClick={() => browseSource("deployment")}>{t(($) => $.market.browse_all)}</Button>
-                  <CollapsibleTrigger render={<Button variant="ghost" size="icon-sm" />} aria-label={collapsed ? t(($) => $.market.expand) : t(($) => $.market.collapse)}>
-                    {collapsed ? <ChevronDown aria-hidden className="size-4" /> : <ChevronUp aria-hidden className="size-4" />}
-                  </CollapsibleTrigger>
-                </div>
-              </div>
-              <CollapsibleContent>
-                {hasData ? (
-                  <ul className={cn(GRID_CLASS, "pt-3")}>
-                    {deploymentItems.slice(0, 4).map((item, index) => <li key={item.template.name} className={cn("min-w-0", SHELF_CARD_CLASS[index])}>{renderCard(item)}</li>)}
-                  </ul>
-                ) : !catalog.isError && <CatalogSkeleton label={t(($) => $.create.template.loading)} compact />}
-              </CollapsibleContent>
-            </Collapsible>
-          )}
-          {status && <div className="pt-2">{status}</div>}
-        </section>}
         {children}
       </TabsContent>
 
@@ -204,12 +182,12 @@ function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children
   );
 }
 
-function CatalogSkeleton({ label, compact = false }: { label: string; compact?: boolean }) {
+function CatalogSkeleton({ label }: { label: string }) {
   return (
-    <div role="status" aria-label={label} className={cn(GRID_CLASS, compact && "pt-3")}>
+    <div role="status" aria-label={label} className={GRID_CLASS}>
       <span className="sr-only">{label}</span>
-      {Array.from({ length: compact ? 4 : 6 }, (_, index) => (
-        <div key={index} className={cn("space-y-3 rounded-lg border p-4", compact && SHELF_CARD_CLASS[index])}>
+      {Array.from({ length: 6 }, (_, index) => (
+        <div key={index} className="space-y-3 rounded-lg border p-4">
           <Skeleton className="size-10 rounded-lg" />
           <Skeleton className="h-5 w-3/4" />
           <Skeleton className="h-10 w-full" />

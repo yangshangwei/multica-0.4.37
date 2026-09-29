@@ -200,11 +200,9 @@ export type PresentedSkillRow = SkillRow & {
 // ---------------------------------------------------------------------------
 
 function PageHeaderBar({
-  totalCount,
   onCreate,
   buttonRef,
 }: {
-  totalCount: number;
   onCreate: () => void;
   buttonRef: React.Ref<HTMLButtonElement>;
 }) {
@@ -214,7 +212,6 @@ function PageHeaderBar({
     <CollectionPageHeader
       icon={SkillIcon}
       title={t(($) => $.page.title)}
-      count={totalCount}
       description={t(($) => $.page.tagline)}
       learnMore={{
         href: paths.docsPage(DOCS_SLUGS.skills),
@@ -983,7 +980,6 @@ export default function SkillsPage() {
     <>
     <div className="relative flex flex-1 min-h-0 flex-col">
       <PageHeaderBar
-        totalCount={totalCount}
         buttonRef={createButtonRef}
         onCreate={() => setCreation({ triggerRef: createButtonRef })}
       />

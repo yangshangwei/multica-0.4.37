@@ -45,12 +45,11 @@ describe("useSkillsViewStore", () => {
     expect(DEFAULT_HIDDEN_COLUMNS).toEqual(["labels", "source", "created"]);
   });
 
-  it("starts with an unresolved library view and unfiltered, expanded templates", () => {
+  it("starts with an unresolved library view and unfiltered templates", () => {
     expect(useSkillsViewStore.getState()).toMatchObject({
       libraryView: null,
       marketSource: "all",
       marketCategory: null,
-      templatesCollapsed: false,
     });
   });
 
@@ -61,13 +60,11 @@ describe("useSkillsViewStore", () => {
     state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("data");
-    state.setTemplatesCollapsed(true);
 
     expect(useSkillsViewStore.getState()).toMatchObject({
       libraryView: "market",
       marketSource: "deployment",
       marketCategory: "data",
-      templatesCollapsed: true,
       filters: { categories: ["engineering"], origins: ["github"] },
     });
 
@@ -76,13 +73,11 @@ describe("useSkillsViewStore", () => {
     state.setLibraryView("workspace");
     state.setMarketSource("builtin");
     state.setMarketCategory(null);
-    state.setTemplatesCollapsed(false);
 
     expect(useSkillsViewStore.getState()).toMatchObject({
       libraryView: "workspace",
       marketSource: "builtin",
       marketCategory: null,
-      templatesCollapsed: false,
     });
 
     state.setLibraryView(null);
@@ -159,6 +154,41 @@ describe("useSkillsViewStore", () => {
 });
 
 describe("useSkillsViewStore persistence", () => {
+  it("stops persisting the retired shelf preference while retaining saved views and filters", async () => {
+    localStorage.setItem(
+      "multica_skills_view:acme",
+      JSON.stringify({
+        state: {
+          libraryView: "workspace",
+          marketSource: "deployment",
+          marketCategory: "quality",
+          templatesCollapsed: true,
+          viewMode: "list",
+          filters: { categories: ["engineering"] },
+        },
+        version: 1,
+      }),
+    );
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    expect(useSkillsViewStore.getState()).toMatchObject({
+      libraryView: "workspace",
+      marketSource: "deployment",
+      marketCategory: "quality",
+      viewMode: "list",
+      filters: { categories: ["engineering"] },
+    });
+    useSkillsViewStore.getState().setLibraryView("market");
+    const saved = JSON.parse(localStorage.getItem("multica_skills_view:acme") as string);
+    expect(saved.state).not.toHaveProperty("templatesCollapsed");
+    expect(saved.state).toMatchObject({
+      libraryView: "market",
+      marketSource: "deployment",
+      marketCategory: "quality",
+      viewMode: "list",
+    });
+  });
+
   it("persists the view mode under the workspace-namespaced key, without actions", async () => {
     setCurrentWorkspace("acme", "ws_a");
     await flush();
@@ -175,7 +205,6 @@ describe("useSkillsViewStore persistence", () => {
       "marketSource",
       "sortDirection",
       "sortField",
-      "templatesCollapsed",
       "viewMode",
     ]);
     expect(parsed.state.viewMode).toBe("list");
@@ -189,7 +218,6 @@ describe("useSkillsViewStore persistence", () => {
     state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("engineering");
-    state.setTemplatesCollapsed(true);
 
     const raw = localStorage.getItem("multica_skills_view:acme");
     expect(raw).not.toBeNull();
@@ -197,7 +225,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: "market",
       marketSource: "deployment",
       marketCategory: "engineering",
-      templatesCollapsed: true,
     });
 
     setCurrentWorkspace(null, null);
@@ -206,7 +233,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: null,
       marketSource: "all",
       marketCategory: null,
-      templatesCollapsed: false,
     });
 
     setCurrentWorkspace("acme", "ws_a");
@@ -215,7 +241,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: "market",
       marketSource: "deployment",
       marketCategory: "engineering",
-      templatesCollapsed: true,
     });
   });
 
@@ -226,7 +251,6 @@ describe("useSkillsViewStore persistence", () => {
     state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("engineering");
-    state.setTemplatesCollapsed(true);
 
     setCurrentWorkspace("beta", "ws_b");
     await flush();
@@ -234,7 +258,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: null,
       marketSource: "all",
       marketCategory: null,
-      templatesCollapsed: false,
     });
     state.setLibraryView("workspace");
     state.setMarketSource("builtin");
@@ -246,7 +269,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: "market",
       marketSource: "deployment",
       marketCategory: "engineering",
-      templatesCollapsed: true,
     });
 
     setCurrentWorkspace("beta", "ws_b");
@@ -255,7 +277,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: "workspace",
       marketSource: "builtin",
       marketCategory: "writing",
-      templatesCollapsed: false,
     });
   });
 
@@ -273,7 +294,6 @@ describe("useSkillsViewStore persistence", () => {
     state.setLibraryView("market");
     state.setMarketSource("deployment");
     state.setMarketCategory("engineering");
-    state.setTemplatesCollapsed(true);
 
     setCurrentWorkspace("beta", "ws_b");
     await flush();
@@ -282,7 +302,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: null,
       marketSource: "all",
       marketCategory: null,
-      templatesCollapsed: false,
       viewMode: "list",
     });
 
@@ -292,7 +311,6 @@ describe("useSkillsViewStore persistence", () => {
       libraryView: null,
       marketSource: "all",
       marketCategory: null,
-      templatesCollapsed: false,
     });
   });
 

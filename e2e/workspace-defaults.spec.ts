@@ -123,8 +123,8 @@ test.describe("workspace built-in defaults", () => {
       await expect(page.getByRole("heading", { name: "Feature Delivery Squad", exact: true })).toBeVisible();
       await page.screenshot({ path: info.outputPath("builtin-squads-desktop.png"), animations: "disabled" });
       await page.goto(`/${workspace.slug}/skills`);
-      // An empty workspace exposes built-in templates directly in the market.
-      await expect(page.getByRole("tab", { name: "Skill market", exact: true })).toHaveAttribute("aria-selected", "true");
+      // An empty workspace exposes built-in templates directly in the catalog.
+      await expect(page.getByRole("tab", { name: "Skill templates", exact: true })).toHaveAttribute("aria-selected", "true");
       await expect(page.getByRole("tab", { name: "Platform built-ins", exact: true })).toBeVisible();
       await expect(page.getByRole("button", { name: "Preview multica-code-review", exact: true })).toBeVisible();
       // Built-in agent roles moved into the create flow's role-template picker.
