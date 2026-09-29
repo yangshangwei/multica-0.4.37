@@ -1186,3 +1186,32 @@ Separated workspace management from template discovery; removed duplicate shelf 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 38: 快速创建助手第二期：默认、项目与手动推荐
+
+**Date**: 2026-09-30
+**Task**: 快速创建助手第二期：默认、项目与手动推荐
+**Branch**: `codex/quick-create-actor-picker-phase2`
+
+### Summary
+
+完成本地默认助手、项目相关小队、点击帮我选后推荐及显式采用；隔离本期增量并保留其他工作。
+
+### Main Changes
+
+- Trellis任务已归档至 archive/2026-09/09-30-quick-create-actor-picker-phase2，PRD、设计、审查和截图齐全。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `2fe13d1c2d9a4faa9b19fef765dc360404fa5b6a` | (see git log) |
+
+### Testing
+
+- [OK] Views 5636项、Web/Electron 8项通过；Go推荐测试、类型检查、lint、独立桌面构建通过。已有Core /mcp与Knip问题见verification.md。
+
+### Status
+
+[OK] **Completed**
