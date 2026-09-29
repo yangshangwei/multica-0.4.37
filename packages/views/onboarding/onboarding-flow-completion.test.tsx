@@ -29,8 +29,24 @@ vi.mock("@multica/core/onboarding", async () => ({
   saveQuestionnaire: mocks.saveQuestionnaire,
   useWelcomeStore: { getState: () => ({ set: mocks.welcome }) },
 }));
-vi.mock("./components/step-shell", () => ({ StepShell: ({ children }: { children: React.ReactNode }) => <div>{children}</div> }));
+vi.mock("./components/step-shell", () => ({
+  StepShell: ({ children, onBack, onStepChange }: {
+    children: React.ReactNode;
+    onBack?: () => void;
+    onStepChange?: (step: string) => void;
+  }) => <div>
+    {onBack && <button onClick={onBack}>Back</button>}
+    {onStepChange && <button onClick={() => onStepChange("about_you")}>Return to About you</button>}
+    {children}
+  </div>,
+}));
 vi.mock("./components/onboarding-logout-button", () => ({ OnboardingLogoutButton: () => null }));
+// The real questionnaire and navigation are covered by onboarding-flow-mode.test.tsx.
+vi.mock("./steps/step-about-you", () => ({
+  StepAboutYou: ({ onAdvance }: { onAdvance: () => void }) => (
+    <button onClick={onAdvance}>Continue questionnaire</button>
+  ),
+}));
 vi.mock("./steps/step-workspace", () => ({
   StepWorkspace: ({ onCreated }: { onCreated: (workspace: unknown) => void }) => (
     <button onClick={() => onCreated(mocks.workspace)}>Create workspace</button>
@@ -63,7 +79,10 @@ describe("new workspace completion", () => {
     const onComplete = vi.fn();
     renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />, { locale });
 
+    await user.click(screen.getByRole("button", { name: "Continue questionnaire" }));
     await user.click(screen.getByRole("button", { name: "Create workspace" }));
+    expect(screen.queryByRole("button", { name: "Back" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Return to About you" })).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Use runtime" }));
 
     await waitFor(() => expect(onComplete).toHaveBeenCalledWith(mocks.workspace, { kind: "projects" }));
@@ -76,6 +95,7 @@ describe("new workspace completion", () => {
     const onComplete = vi.fn();
     renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />);
 
+    await user.click(screen.getByRole("button", { name: "Continue questionnaire" }));
     await user.click(screen.getByRole("button", { name: "Create workspace" }));
     await user.click(screen.getByRole("button", { name: "Skip runtime" }));
 

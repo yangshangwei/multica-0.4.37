@@ -103,10 +103,9 @@ interface OnboardingFlowProps {
     workspace?: Workspace,
     destination?: OnboardingDestination,
   ) => void;
-  /** "new_workspace" is the same flow run by someone who already uses
-   *  Multica: it starts at the workspace step, because the intro and the
-   *  questionnaire only make sense once per person, and it always creates a
-   *  workspace rather than offering to continue with an existing one. */
+  /** "new_workspace" starts at About you with saved answers pre-filled,
+   *  skips the product intro, and always creates a workspace rather than
+   *  offering to continue with an existing one. */
   mode?: OnboardingMode;
   /** Required in "new_workspace" mode: first-run onboarding has no way out
    *  except signing out, but someone creating a second workspace must be able
@@ -145,13 +144,14 @@ function OnboardingStepFlow({
   // Questionnaire answers are server-persisted and pre-fill the per-
   // question steps on re-entry. That's the only piece of onboarding
   // state persisted across sessions — which step the user is on is
-  // deliberately not saved, so every entry starts at Welcome.
+  // deliberately not saved. First-run starts at Welcome; creating another
+  // workspace starts at About you.
   const storedQuestionnaire = mergeQuestionnaire(user.onboarding_questionnaire);
   const [answers, setAnswers] = useState<QuestionnaireAnswers>(storedQuestionnaire);
 
   const isNewWorkspace = mode === "new_workspace";
   const [step, setStep] = useState<OnboardingStep>(
-    isNewWorkspace ? "workspace" : "welcome",
+    isNewWorkspace ? "about_you" : "welcome",
   );
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   // Raised by whichever step has a request in flight; locks Back and the
@@ -299,12 +299,9 @@ function OnboardingStepFlow({
   );
 
   const handleBack = useCallback((from: OnboardingStep) => {
-    // The workspace step is the entry point in new-workspace mode, so its
-    // back affordance leaves the flow instead of walking into a step this
-    // mode deliberately skips. Only reachable before the workspace exists —
-    // see `runtimeStepBack` for why there is no way back into this step
-    // afterwards.
-    if (isNewWorkspace && from === "workspace") {
+    // About you is the entry point when creating another workspace, so Back
+    // cancels there. Back from the workspace form returns to the questionnaire.
+    if (isNewWorkspace && from === "about_you") {
       onCancel?.();
       return;
     }
@@ -319,10 +316,10 @@ function OnboardingStepFlow({
   }, [isNewWorkspace, onCancel]);
 
   // Once a workspace exists there is nothing left to cancel, so new-workspace
-  // mode drops the back affordance on the runtime step. Walking back would
-  // reach the workspace step, whose own back button means "leave" — and
-  // leaving there would strand a workspace with no runtime, no Mika, and no
-  // guidance. The remaining exits both end somewhere coherent: Skip runs the
+  // mode drops the back affordance on the runtime step. Walking back through
+  // the questionnaire would allow cancelling and strand a workspace with no
+  // runtime, no Mika, and no guidance. The remaining exits both end somewhere
+  // coherent: Skip runs the
   // runtime-skipped path (guide issue + land in the new workspace), and
   // continuing provisions Mika.
   // Log out lives at the foot of the progress rail rather than pinned to the
@@ -336,10 +333,9 @@ function OnboardingStepFlow({
 
   // The rail only ever walks backwards — it renders earlier steps as links and
   // later ones as plain text, because moving forward has to run the current
-  // step's validation and submit. New-workspace mode gets no rail navigation
-  // at all: it enters at the workspace step and, once that workspace exists,
-  // every step behind it is gone. Same invariant `runtimeStepBack` enforces.
-  const handleStepChange = isNewWorkspace ? undefined : setStep;
+  // step's validation and submit. Once a new workspace exists, earlier steps
+  // are locked. Same invariant `runtimeStepBack` enforces.
+  const handleStepChange = isNewWorkspace && workspace ? undefined : setStep;
 
   // ONE shell for the whole flow, rendered here rather than by each step.
   // Every step used to render its own <StepShell>, and because each step is a
