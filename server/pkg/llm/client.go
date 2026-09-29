@@ -39,11 +39,13 @@
 //   - Chat auto-titling — server/internal/handler/chat_title.go. Sends the
 //     first user message of a new chat session, verbatim and uncapped.
 //     Attachments are never included.
+//
 //   - Chat follow-up questions, a.k.a. quick actions —
 //     server/internal/service/chat_quick_actions_generate.go.
 //     Sends the tail of the conversation: up to 6 messages, the reply being
 //     answered capped at 3000 runes (2000 head + 1000 tail) and each older
 //     message at 800.
+//
 //   - Issue description optimization —
 //     server/internal/handler/issue_description_assist.go. On explicit request,
 //     sends the current description or agent instructions (up to 20000 runes),
@@ -51,6 +53,13 @@
 //     included; attachment file contents are never fetched or sent.
 //     Streaming clients receive provisional text deltas; only the final,
 //     validated JSON/Markdown result may be adopted as a task description.
+//
+//   - Creator recommendations — server/internal/handler/issue_creator_recommendation.go.
+//     On a human member's explicit request, sends task text (up to 20000 runes)
+//     and up to 40 saved responsibility excerpts (600 runes each), actor type
+//     and temporary candidate references. No actor names, database IDs,
+//     instructions, credentials or attachment contents are sent. The serialized
+//     payload is capped at 128 KiB. Suggestions never dispatch work.
 //
 // These consumers send private content, which is why an unconfigured
 // deployment making zero upstream requests is a contract rather than a side

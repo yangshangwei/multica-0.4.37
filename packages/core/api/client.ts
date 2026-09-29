@@ -3,6 +3,7 @@ import type {
   Issue,
   OptimizeIssueDescriptionRequest,
   OptimizeIssueDescriptionResponse,
+  RecommendIssueCreatorsResponse,
   IssuePriority,
   CreateIssueRequest,
   MoveIssueRequest,
@@ -264,7 +265,7 @@ import { createRequestId, createSafeId } from "../utils";
 import { getCurrentSlug, getCurrentWsId } from "../platform/workspace-storage";
 import { parseWithFallback } from "./schema";
 import { readIssueDescriptionStream, IssueDescriptionStreamError } from "./issue-description-stream";
-import { OptimizeIssueDescriptionResponseSchema } from "./schemas";
+import { OptimizeIssueDescriptionResponseSchema, RecommendIssueCreatorsResponseSchema } from "./schemas";
 import {
   AgentApprovalListResponseSchema,
   AgentApprovalSchema,
@@ -1221,6 +1222,25 @@ export class ApiClient {
       throw new Error("GET /api/issues/:id returned a malformed issue");
     }
     return issue;
+  }
+
+  async recommendIssueCreators(
+    text: string,
+    options: { workspaceId: string; signal?: AbortSignal },
+  ): Promise<RecommendIssueCreatorsResponse> {
+    const raw = await this.fetch<unknown>("/api/issues/recommend-creators", {
+      ...workspaceRequestInit(options),
+      method: "POST",
+      body: JSON.stringify({ text }),
+    });
+    const result = parseWithFallback<RecommendIssueCreatorsResponse | null>(
+      raw, RecommendIssueCreatorsResponseSchema, null,
+      { endpoint: "POST /api/issues/recommend-creators", redact: true },
+    );
+    if (!result) {
+      throw new ApiError("Invalid creator recommendation response", 502, "Bad Gateway", { code: "ai_invalid_output" });
+    }
+    return result;
   }
 
   async optimizeIssueDescription(

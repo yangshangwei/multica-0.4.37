@@ -31,10 +31,16 @@ import { useWorkspaceId } from "@multica/core/hooks";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import { AppLink, resolveClickIntent } from "../navigation";
 import { agentListOptions, squadListOptions } from "@multica/core/workspace/queries";
+import { resolveQuickCreateCreator } from "@multica/core/issues/creator-selection";
+import { getProjectExecutionSquads } from "@multica/core/projects";
 import { projectListOptions } from "@multica/core/projects/queries";
 import {
   useQuickCreateStore,
+  captureQuickCreateScope,
+  isQuickCreateScopeCurrent,
+  isQuickCreateStoreReady,
   type QuickCreateActorType,
+  type QuickCreateActorRef,
 } from "@multica/core/issues/stores/quick-create-store";
 import {
   useIssueCreateSettingsStore,
@@ -57,18 +63,11 @@ import {
   type SourceContextPreview,
   type Squad,
 } from "@multica/core/types";
-import { ActorAvatar } from "../common/actor-avatar";
 import { ClearablePillButton, PillButton } from "../common/pill-button";
 import { ProjectPicker } from "../projects/components/project-picker";
 import { DueDatePicker, PriorityIcon, PriorityPicker } from "../issues/components";
 import { canAssignAgent } from "../issues/components/pickers/assignee-picker";
 import { isAgentRuntimeBound } from "@multica/core/agents";
-import {
-  PropertyPicker,
-  PickerItem,
-  PickerSection,
-  PickerEmpty,
-} from "../issues/components/pickers/property-picker";
 import { useAuthStore } from "@multica/core/auth";
 import { memberListOptions } from "@multica/core/workspace/queries";
 import {
@@ -82,15 +81,15 @@ import {
 import { useIssueCreateUploads } from "./use-issue-create-uploads";
 import { FileUploadButton } from "@multica/ui/components/common/file-upload-button";
 import { useT } from "../i18n";
-import { matchesPinyin } from "../editor/extensions/pinyin-match";
+import { QuickCreateActorPicker } from "./quick-create-actor-picker";
+import { buildActorCatalog } from "./quick-create-actor-picker-model";
+import { CreatorRecommendations } from "./creator-recommendations";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";
 import { IssueDescriptionAssist } from "./issue-description-assist";
 import { getQuickCreateScenario } from "./quick-create-scenario";
 
-type ActorSelection =
-  | { type: "agent"; id: string }
-  | { type: "squad"; id: string };
+const EMPTY_ACTORS: QuickCreateActorRef[] = [];
 
 // AgentCreatePanel — agent-mode body of the create-issue dialog. Renders
 // only the inner content; the surrounding `<Dialog>` AND `<DialogContent>`
@@ -110,6 +109,7 @@ export function AgentCreatePanel({
   data,
   isExpanded,
   setIsExpanded,
+  onNeedsSpace,
 }: {
   onClose: () => void;
   onSwitchMode?: (carry?: Record<string, unknown> | null) => void;
@@ -119,6 +119,7 @@ export function AgentCreatePanel({
    *  expand preference persists when switching between agent and manual. */
   isExpanded: boolean;
   setIsExpanded: (v: boolean) => void;
+  onNeedsSpace?: () => void;
 }) {
   const { t } = useT("modals");
   const { t: tIssues } = useT("issues");
@@ -140,15 +141,18 @@ export function AgentCreatePanel({
   const sourceContextFailureMessage = useSourceContextFailureMessage();
   const showIssueLimitUpgradePrompt = useIssueLimitUpgradePrompt();
   const userId = useAuthStore((s) => s.user?.id);
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
-  const { data: squads = [] } = useQuery(squadListOptions(wsId));
+  const authStatus = useAuthStore((s) => s.status);
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const agentsQuery = useQuery(agentListOptions(wsId));
+  const squadsQuery = useQuery(squadListOptions(wsId));
+  const { data: members = [] } = membersQuery;
+  const { data: agents = [] } = agentsQuery;
+  const { data: squads = [] } = squadsQuery;
   // Pull `isSuccess` so the stale-id sweep below can distinguish "still
   // loading" from "loaded as empty". Reading length alone treats both as
   // empty and incorrectly clears a valid persisted preference on every open.
-  const { data: projects = [], isSuccess: projectsLoaded } = useQuery(
-    projectListOptions(wsId),
-  );
+  const projectsQuery = useQuery(projectListOptions(wsId));
+  const { data: projects = [], isSuccess: projectsLoaded } = projectsQuery;
 
   const memberRole = useMemo(
     () => members.find((m) => m.user_id === userId)?.role,
@@ -181,11 +185,27 @@ export function AgentCreatePanel({
     [squads, visibleAgentIds],
   );
 
-  const lastActorType = useQuickCreateStore((s) => s.lastActorType);
-  const lastActorId = useQuickCreateStore((s) => s.lastActorId);
-  const setLastActor = useQuickCreateStore((s) => s.setLastActor);
+  const preferencesReady = useQuickCreateStore((s) => isQuickCreateStoreReady(s, wsId, userId));
+  const resetGeneration = useQuickCreateStore((s) => s.resetGeneration);
+  const defaultActor = useQuickCreateStore((s) => preferencesReady ? s.defaultActor : null);
+  const setDefaultActor = useQuickCreateStore((s) => s.setDefaultActor);
+  const lastActorType = useQuickCreateStore((s) => preferencesReady ? s.lastActorType : null);
+  const lastActorId = useQuickCreateStore((s) => preferencesReady ? s.lastActorId : null);
+  const recordSuccessfulActor = useQuickCreateStore((s) => s.recordSuccessfulActor);
+  const toggleFavoriteActor = useQuickCreateStore((s) => s.toggleFavoriteActor);
+  const favoriteActors = useQuickCreateStore((s) => preferencesReady ? s.favoriteActors : EMPTY_ACTORS);
+  const recentActors = useQuickCreateStore((s) => preferencesReady ? s.recentActors : EMPTY_ACTORS);
+
+  useEffect(() => {
+    // Same-workspace login can leave the route mirror unchanged, so it does
+    // not trigger the normal workspace rehydration callback.
+    if (authStatus === "authenticated" && userId && captureQuickCreateScope(wsId, userId)
+      && !isQuickCreateStoreReady(useQuickCreateStore.getState(), wsId, userId)) {
+      void useQuickCreateStore.persist.rehydrate();
+    }
+  }, [wsId, userId, authStatus, resetGeneration]);
   const visibleFields = useIssueCreateSettingsStore((s) => s.quickCreateFields);
-  const keepOpen = useQuickCreateStore((s) => s.keepOpen);
+  const keepOpen = useQuickCreateStore((s) => preferencesReady && s.keepOpen);
   const setKeepOpen = useQuickCreateStore((s) => s.setKeepOpen);
   const setLastMode = useCreateModeStore((s) => s.setLastMode);
   // The agent draft (prompt + actor) and the shared fields (project, priority,
@@ -206,7 +226,7 @@ export function AgentCreatePanel({
     (
       type: QuickCreateActorType | "agent" | "squad" | null | undefined,
       id: string | null | undefined,
-    ): ActorSelection | null => {
+    ): QuickCreateActorRef | null => {
       if (!type || !id) return null;
       if (type === "squad" && visibleSquads.some((s) => s.id === id)) {
         return { type: "squad", id };
@@ -219,33 +239,23 @@ export function AgentCreatePanel({
     [visibleSquads, visibleAgentIds],
   );
 
-  const seedActor = useCallback((): ActorSelection | null => {
-    // Caller-provided seed wins (e.g. shell pre-seeds with `agent_id` /
-    // `squad_id`), then the persisted agent draft, the last successful pick,
-    // and finally the first visible agent.
-    const dataAgent = data?.agent_id as string | undefined;
-    const dataSquad = data?.squad_id as string | undefined;
-    return (
-      resolveActor("agent", dataAgent) ||
-      resolveActor("squad", dataSquad) ||
-      resolveActor(draft.agent.actorType, draft.agent.actorId) ||
-      resolveActor(lastActorType, lastActorId) ||
-      (visibleAgents[0]
-        ? ({ type: "agent", id: visibleAgents[0].id } as const)
-        : null)
-    );
-  }, [
-    resolveActor,
-    data?.agent_id,
-    data?.squad_id,
-    draft.agent.actorType,
-    draft.agent.actorId,
-    lastActorType,
-    lastActorId,
-    visibleAgents,
-  ]);
+  const seedActor = useCallback((): QuickCreateActorRef | null => {
+    const callers: QuickCreateActorRef[] = [];
+    if (typeof data?.agent_id === "string") callers.push({type:"agent",id:data.agent_id});
+    if (typeof data?.squad_id === "string") callers.push({type:"squad",id:data.squad_id});
+    return resolveQuickCreateCreator({
+      callers,
+      draftActor: draft.agent.actorType && draft.agent.actorId ? {type:draft.agent.actorType,id:draft.agent.actorId} : null,
+      defaultActor: defaultActor ?? null,
+      lastActor: lastActorType && lastActorId ? {type:lastActorType,id:lastActorId} : null,
+      agents: visibleAgents, squads: visibleSquads, preferencesReady,
+      agentsKnown: agentsQuery.data !== undefined && membersQuery.data !== undefined,
+      squadsKnown: squadsQuery.data !== undefined,
+    });
+  }, [data?.agent_id, data?.squad_id, draft.agent.actorType, draft.agent.actorId, defaultActor, lastActorType, lastActorId,
+    visibleAgents, visibleSquads, preferencesReady, agentsQuery.data, membersQuery.data, squadsQuery.data]);
 
-  const [actor, setActor] = useState<ActorSelection | null>(() => seedActor());
+  const [actor, setActor] = useState<QuickCreateActorRef | null>(() => seedActor());
 
   // Re-seed once visible lists resolve (queries may be empty on first render).
   useEffect(() => {
@@ -278,6 +288,14 @@ export function AgentCreatePanel({
     const seed = (data?.project_id as string | undefined) ?? draft.shared.projectId;
     return seed ?? null;
   });
+  const projectActors = useMemo<QuickCreateActorRef[]>(() => {
+    const project = projects.find((item) => item.id === projectId);
+    if (!project) return [];
+    const available = new Set(visibleSquads.map((item) => item.id));
+    const ids = getProjectExecutionSquads(project).flatMap((config) => config.state === "configured" && config.squad_id && available.has(config.squad_id) ? [config.squad_id] : []);
+    return [...new Set(ids)].map((id) => ({type:"squad",id}));
+  }, [projects, projectId, visibleSquads]);
+  const recommendationActors = useMemo(() => buildActorCatalog(visibleAgents, visibleSquads), [visibleAgents, visibleSquads]);
   const [priority, setPriority] = useState<IssuePriority>(
     (data?.priority as IssuePriority | undefined) ?? draft.shared.priority,
   );
@@ -371,10 +389,15 @@ export function AgentCreatePanel({
   // submit/switch time. `hasContent` mirrors emptiness so the Create button
   // can disable correctly without a controlled-input rerender on every keystroke.
   const editorRef = useRef<ContentEditorRef>(null);
+  const creatorRef = useRef<HTMLDivElement>(null);
+  const [recommendationText, setRecommendationText] = useState(initialPrompt);
   const [hasContent, setHasContent] = useState(initialPrompt.trim().length > 0);
   const [justSent, setJustSent] = useState(false);
   const [sentCount, setSentCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const pickActor = (next: QuickCreateActorRef) => {
+    setActor(next); setAgent({ actorType: next.type, actorId: next.id }); setError(null);
+  };
   const uploadGate = useUploadGate(editorRef);
   // Coordinator-owned uploads in the shared draft pool (MUL-5181, L2): a file
   // pasted into the prompt survives dialog close and mode switches, aborts on
@@ -429,6 +452,8 @@ export function AgentCreatePanel({
       const pendingPrompt = editorRef.current?.flushPendingUpdate?.();
       if (pendingPrompt != null) setAgent({ prompt: pendingPrompt });
       submittedDraftRef.current = useIssueDraftStore.getState().draft;
+      const submittedActor = actor;
+      const submittedScope = captureQuickCreateScope(wsId, userId);
       const activeAttachmentIds = pendingAttachments
         .filter((a) => contentReferencesAttachment(md, a))
         .map((a) => a.id);
@@ -462,8 +487,12 @@ export function AgentCreatePanel({
             ...(activeAttachmentIds.length > 0 ? { attachment_ids: activeAttachmentIds } : {}),
           });
         }
-        setLastActor(actor.type, actor.id);
-        setLastMode("agent");
+        // Acceptance can arrive after workspace or account changes. Keep
+        // the successful request, but never write into a replacement scope.
+        if (submittedScope && isQuickCreateScopeCurrent(submittedScope)) {
+          recordSuccessfulActor(submittedActor, submittedScope);
+          setLastMode("agent");
+        }
         toast.success(t(($) => $.create_issue.agent.toast_sent), {
           duration: 4000,
         });
@@ -556,6 +585,7 @@ export function AgentCreatePanel({
         // immediately type the next prompt.
         editorRef.current?.clearContent();
         setHasContent(false);
+        setRecommendationText("");
         setSentCount((c) => c + 1);
         setJustSent(true);
         setTimeout(() => setJustSent(false), 1500);
@@ -653,20 +683,52 @@ export function AgentCreatePanel({
             route to their leader agent on the backend; the leader runs the
             quick-create flow with the squad's Operating Protocol layered
             on top, so a squad pick is "ask this squad to file the issue". */}
-        <div className="px-5 pt-1 pb-2 shrink-0">
-          <ActorPicker
+        <div ref={creatorRef} className="px-5 pt-1 pb-2 shrink-0">
+          <QuickCreateActorPicker
             actor={actor}
             visibleAgents={visibleAgents}
             visibleSquads={visibleSquads}
             selectedAgent={selectedAgent}
             selectedSquad={selectedSquad}
-            onPick={(next) => {
-              setActor(next);
-              setAgent({ actorType: next.type, actorId: next.id });
-              setError(null);
+            favoriteActors={favoriteActors}
+            recentActors={recentActors}
+            preferencesReady={preferencesReady}
+            defaultActor={defaultActor}
+            onSetDefault={(ref) => {
+              const scope = captureQuickCreateScope(wsId, userId);
+              if (scope) setDefaultActor(ref, scope);
             }}
-            t={t}
+            projectActors={projectActors}
+            projectState={projectId ? {
+              pending: projectsQuery.isPending === true,
+              error: projectsQuery.isError === true,
+              hasData: projectsQuery.data !== undefined,
+              onRetry: () => { void projectsQuery.refetch(); },
+            } : undefined}
+            onToggleFavorite={(ref) => {
+              const scope = captureQuickCreateScope(wsId, userId);
+              if (scope) toggleFavoriteActor(ref, scope);
+            }}
+            agentState={{
+              pending: agentsQuery.isPending === true || membersQuery.isPending === true,
+              error: agentsQuery.isError === true || membersQuery.isError === true,
+              hasData: agentsQuery.data !== undefined && membersQuery.data !== undefined,
+              onRetry: () => { void agentsQuery.refetch(); void membersQuery.refetch(); },
+            }}
+            squadState={{
+              pending: squadsQuery.isPending === true,
+              error: squadsQuery.isError === true,
+              hasData: squadsQuery.data !== undefined,
+              onRetry: () => { void squadsQuery.refetch(); },
+            }}
+            onPick={pickActor}
           />
+          <CreatorRecommendations key={wsId} wsId={wsId} value={recommendationText} projectId={projectId} actor={actor}
+            identityKey={`${wsId}:${userId}:${authStatus}:${resetGeneration}`} editorRef={editorRef} actors={recommendationActors} onNeedsSpace={onNeedsSpace}
+            onPick={(next) => {
+              creatorRef.current?.querySelector<HTMLButtonElement>("button[data-slot=popover-trigger]")?.focus();
+              pickActor(next);
+            }} />
         </div>
 
         {selectedAgent && versionBlocked && (
@@ -700,6 +762,7 @@ export function AgentCreatePanel({
                 : getQuickCreateScenario(t, selectedAgent, selectedSquad)}
               onUpdate={(md) => {
                 setHasContent(md.trim().length > 0);
+                setRecommendationText(md);
                 setAgent({ prompt: md });
               }}
               onUploadFile={handleUploadFile}
@@ -718,6 +781,7 @@ export function AgentCreatePanel({
             attachments={pendingAttachments}
             onChange={(prompt) => {
               setHasContent(prompt.trim().length > 0);
+              setRecommendationText(prompt);
               setAgent({ prompt });
             }}
             uploading={gate.uploading}
@@ -948,127 +1012,5 @@ export function AgentCreatePanel({
           </Button>
         </div>
     </>
-  );
-}
-
-// ActorPicker — the "Created by" trigger + searchable popover listing
-// agents and squads. Lives in this file (not under issues/components/pickers)
-// because it composes the generic PropertyPicker with a quick-create-shaped
-// trigger styled to match the modal header row — promoting it would invite
-// reuse pressure on a UI that's deliberately tuned for this one surface.
-function ActorPicker({
-  actor,
-  visibleAgents,
-  visibleSquads,
-  selectedAgent,
-  selectedSquad,
-  onPick,
-  t,
-}: {
-  actor: ActorSelection | null;
-  visibleAgents: Agent[];
-  visibleSquads: Squad[];
-  selectedAgent: Agent | undefined;
-  selectedSquad: Squad | undefined;
-  onPick: (next: ActorSelection) => void;
-  t: ReturnType<typeof useT<"modals">>["t"];
-}) {
-  const [open, setOpen] = useState(false);
-  const [filter, setFilter] = useState("");
-  const query = filter.trim().toLowerCase();
-
-  const filteredAgents = useMemo(
-    () => visibleAgents.filter((a) => a.name.toLowerCase().includes(query) || matchesPinyin(a.name, query)),
-    [visibleAgents, query],
-  );
-  const filteredSquads = useMemo(
-    () => visibleSquads.filter((s) => s.name.toLowerCase().includes(query) || matchesPinyin(s.name, query)),
-    [visibleSquads, query],
-  );
-
-  const displayLabel = selectedSquad?.name ?? selectedAgent?.name;
-  const displayActor: ActorSelection | null = selectedSquad
-    ? { type: "squad", id: selectedSquad.id }
-    : selectedAgent
-      ? { type: "agent", id: selectedAgent.id }
-      : null;
-
-  return (
-    <PropertyPicker
-      open={open}
-      onOpenChange={(v: boolean) => {
-        setOpen(v);
-        if (!v) setFilter("");
-      }}
-      width="w-64"
-      align="start"
-      searchable
-      searchPlaceholder={t(($) => $.create_issue.agent.search_placeholder)}
-      onSearchChange={setFilter}
-      trigger={
-        <span className="flex items-center gap-2 text-caption text-muted-foreground hover:text-foreground transition-colors">
-          <span>{t(($) => $.create_issue.agent.created_by)}</span>
-          {displayActor && displayLabel ? (
-            <span className="flex items-center gap-1.5 text-foreground">
-              <ActorAvatar
-                actorType={displayActor.type}
-                actorId={displayActor.id}
-                size="sm"
-              />
-              {displayLabel}
-            </span>
-          ) : (
-            <span>{t(($) => $.create_issue.agent.pick_an_agent)}</span>
-          )}
-        </span>
-      }
-    >
-      {filteredAgents.length === 0 && filteredSquads.length === 0 ? (
-        query ? (
-          <PickerEmpty />
-        ) : (
-          <div className="px-2 py-1.5 text-caption text-muted-foreground">
-            {t(($) => $.create_issue.agent.no_agents)}
-          </div>
-        )
-      ) : (
-        <>
-          {filteredAgents.length > 0 && (
-            <PickerSection label={t(($) => $.create_issue.agent.agents_group)}>
-              {filteredAgents.map((a) => (
-                <PickerItem
-                  key={a.id}
-                  selected={actor?.type === "agent" && actor.id === a.id}
-                  onClick={() => {
-                    onPick({ type: "agent", id: a.id });
-                    setOpen(false);
-                  }}
-                >
-                  <ActorAvatar actorType="agent" actorId={a.id} size="sm" />
-                  <span className="truncate">{a.name}</span>
-                </PickerItem>
-              ))}
-            </PickerSection>
-          )}
-          {filteredSquads.length > 0 && (
-            <PickerSection label={t(($) => $.create_issue.agent.squads_group)}>
-              {filteredSquads.map((s) => (
-                <PickerItem
-                  key={s.id}
-                  selected={actor?.type === "squad" && actor.id === s.id}
-                  onClick={() => {
-                    onPick({ type: "squad", id: s.id });
-                    setOpen(false);
-                  }}
-                >
-                  <ActorAvatar actorType="squad" actorId={s.id} size="sm" />
-                  <span className="truncate">{s.name}</span>
-                </PickerItem>
-              ))}
-            </PickerSection>
-          )}
-        </>
-      )}
-    </PropertyPicker>
   );
 }

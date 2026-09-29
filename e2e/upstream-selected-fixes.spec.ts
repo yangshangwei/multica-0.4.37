@@ -318,7 +318,7 @@ test.describe("selectively merged upstream regressions", () => {
         await page.getByRole("button", { name: "New Issue", exact: true }).click();
         const dialog = page.getByRole("dialog", { name: "Quick create issue", exact: true });
         await expect(dialog).toBeVisible({ timeout: 30_000 });
-        await dialog.getByRole("button", { name: /Created by/ }).click();
+        await dialog.getByRole("button", { name: /Creation assistant/ }).click();
         await page.locator("button[data-picker-item]").filter({ hasText: agent.name }).click();
         await expect(dialog.getByText(/doesn't report a CLI version/)).toHaveCount(0);
         await dialog.locator('.ProseMirror[contenteditable="true"]').fill("Create a fixture issue without running a real CLI.");

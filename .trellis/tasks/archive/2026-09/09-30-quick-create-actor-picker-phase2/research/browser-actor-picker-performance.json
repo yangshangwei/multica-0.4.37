@@ -1,0 +1,99 @@
+{
+  "dataset": "500 agents + 50 squads, API directory route mocks; real authenticated app",
+  "mode": "unspecified (set ACTOR_PICKER_BUILD_MODE when collecting acceptance evidence)",
+  "browser": "Chromium 145.0.7632.6",
+  "os": "darwin 25.2.0",
+  "cpu": "Apple M4",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "node": "v22.23.2",
+  "samples": [
+    {
+      "query": "Agent 000",
+      "durationMs": 13
+    },
+    {
+      "query": "responsibility-0023",
+      "durationMs": 15.5
+    },
+    {
+      "query": "Agent 046",
+      "durationMs": 17.199999999254942
+    },
+    {
+      "query": "responsibility-0069",
+      "durationMs": 31.200000001117587
+    },
+    {
+      "query": "Agent 092",
+      "durationMs": 32.20000000111759
+    },
+    {
+      "query": "responsibility-0115",
+      "durationMs": 33.600000001490116
+    },
+    {
+      "query": "Agent 138",
+      "durationMs": 18.299999998882413
+    },
+    {
+      "query": "responsibility-0161",
+      "durationMs": 18.699999999254942
+    },
+    {
+      "query": "Agent 184",
+      "durationMs": 18.5
+    },
+    {
+      "query": "responsibility-0207",
+      "durationMs": 24.199999999254942
+    },
+    {
+      "query": "Agent 230",
+      "durationMs": 18
+    },
+    {
+      "query": "responsibility-0253",
+      "durationMs": 18.699999999254942
+    },
+    {
+      "query": "Agent 276",
+      "durationMs": 18.40000000037253
+    },
+    {
+      "query": "responsibility-0299",
+      "durationMs": 18.600000001490116
+    },
+    {
+      "query": "Agent 322",
+      "durationMs": 18.5
+    },
+    {
+      "query": "responsibility-0345",
+      "durationMs": 9.900000000372529
+    },
+    {
+      "query": "Agent 368",
+      "durationMs": 19.299999998882413
+    },
+    {
+      "query": "responsibility-0391",
+      "durationMs": 19.200000001117587
+    },
+    {
+      "query": "Agent 414",
+      "durationMs": 18.90000000037253
+    },
+    {
+      "query": "responsibility-0437",
+      "durationMs": 18.700000001117587
+    }
+  ],
+  "method": "Browser performance.now from captured native input event to first animation frame after the DOM contains the expected sole actor. Full saved-description and exact-name queries alternate; data is already loaded. Includes frame scheduling, excludes Playwright transport and initial network/compilation.",
+  "p95Ms": 32.20000000111759,
+  "targetMs": 100,
+  "verified_mode": "development",
+  "mode_evidence": "Task-owned make up environment actor-picker-phase2 started Next.js in development mode; original capture omitted ACTOR_PICKER_BUILD_MODE."
+}
