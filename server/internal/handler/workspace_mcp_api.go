@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/logger"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -22,13 +23,15 @@ import (
 // `Enabled` is only meaningful on the agent-scoped list, where it reflects the
 // binding's toggle; it is omitted on the workspace library listing.
 type WorkspaceMcpServerResponse struct {
-	ID          string `json:"id"`
-	WorkspaceID string `json:"workspace_id"`
-	Name        string `json:"name"`
-	Transport   string `json:"transport"`
-	Enabled     *bool  `json:"enabled,omitempty"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	TemplateKey     *string `json:"template_key"`
+	TemplateVersion *string `json:"template_version"`
+	ID              string  `json:"id"`
+	WorkspaceID     string  `json:"workspace_id"`
+	Name            string  `json:"name"`
+	Transport       string  `json:"transport"`
+	Enabled         *bool   `json:"enabled,omitempty"`
+	CreatedAt       string  `json:"created_at"`
+	UpdatedAt       string  `json:"updated_at"`
 }
 
 // mcpTransportOf classifies a server entry for display, and — because the
@@ -72,12 +75,14 @@ func mcpTransportOf(entry json.RawMessage) string {
 
 func workspaceMcpServerToResponse(server db.WorkspaceMcpServer) WorkspaceMcpServerResponse {
 	return WorkspaceMcpServerResponse{
-		ID:          uuidToString(server.ID),
-		WorkspaceID: uuidToString(server.WorkspaceID),
-		Name:        server.Name,
-		Transport:   mcpTransportOf(server.Config),
-		CreatedAt:   timestampToString(server.CreatedAt),
-		UpdatedAt:   timestampToString(server.UpdatedAt),
+		ID:              uuidToString(server.ID),
+		WorkspaceID:     uuidToString(server.WorkspaceID),
+		Name:            server.Name,
+		TemplateKey:     textToPtr(server.TemplateKey),
+		TemplateVersion: textToPtr(server.TemplateVersion),
+		Transport:       mcpTransportOf(server.Config),
+		CreatedAt:       timestampToString(server.CreatedAt),
+		UpdatedAt:       timestampToString(server.UpdatedAt),
 	}
 }
 
@@ -128,8 +133,10 @@ func (h *Handler) requireWorkspaceMcpWriter(w http.ResponseWriter, r *http.Reque
 // WorkspaceMcpServerRequest carries one server entry. `config` is the object
 // that sits under a name in `mcpServers`; it is write-only and never returned.
 type WorkspaceMcpServerRequest struct {
-	Name   string          `json:"name"`
-	Config json.RawMessage `json:"config"`
+	TemplateKey     *string         `json:"template_key"`
+	TemplateVersion *string         `json:"template_version"`
+	Name            string          `json:"name"`
+	Config          json.RawMessage `json:"config"`
 }
 
 // CreateWorkspaceMcpServer adds a server to the workspace library. It is bound
@@ -155,6 +162,31 @@ func (h *Handler) CreateWorkspaceMcpServer(w http.ResponseWriter, r *http.Reques
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
+	// Template identities are never accepted alongside client-controlled config.
+	if req.TemplateKey != nil || req.TemplateVersion != nil {
+		if req.TemplateKey == nil || req.TemplateVersion == nil || len(req.Config) > 0 {
+			writeError(w, http.StatusBadRequest, "template_key and template_version are required without config")
+			return
+		}
+		var matched bool
+		for _, template := range service.McpServerTemplates() {
+			if template.Key != *req.TemplateKey || template.Version != *req.TemplateVersion {
+				continue
+			}
+			config, err := json.Marshal(template.Config)
+			if err != nil {
+				writeError(w, http.StatusInternalServerError, "failed to prepare the MCP template")
+				return
+			}
+			req.Config = config
+			matched = true
+			break
+		}
+		if !matched {
+			writeError(w, http.StatusBadRequest, "unknown MCP template or outdated recipe version")
+			return
+		}
+	}
 	if err := validateWorkspaceMcpServerEntry(req.Config); err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
@@ -177,10 +209,12 @@ func (h *Handler) CreateWorkspaceMcpServer(w http.ResponseWriter, r *http.Reques
 	}
 
 	server, err := qtx.CreateWorkspaceMcpServer(r.Context(), db.CreateWorkspaceMcpServerParams{
-		WorkspaceID: idUUID,
-		Name:        name,
-		Config:      append([]byte(nil), req.Config...),
-		CreatedBy:   parseUUID(requestUserID(r)),
+		WorkspaceID:     idUUID,
+		TemplateKey:     ptrToText(req.TemplateKey),
+		TemplateVersion: ptrToText(req.TemplateVersion),
+		Name:            name,
+		Config:          append([]byte(nil), req.Config...),
+		CreatedBy:       parseUUID(requestUserID(r)),
 	})
 	if err != nil {
 		if isUniqueViolation(err) {
@@ -334,13 +368,15 @@ func (h *Handler) ListAgentMcpServers(w http.ResponseWriter, r *http.Request) {
 	for _, row := range rows {
 		enabled := row.Enabled
 		resp = append(resp, WorkspaceMcpServerResponse{
-			ID:          uuidToString(row.ID),
-			WorkspaceID: uuidToString(row.WorkspaceID),
-			Name:        row.Name,
-			Transport:   mcpTransportOf(row.Config),
-			Enabled:     &enabled,
-			CreatedAt:   timestampToString(row.CreatedAt),
-			UpdatedAt:   timestampToString(row.UpdatedAt),
+			ID:              uuidToString(row.ID),
+			WorkspaceID:     uuidToString(row.WorkspaceID),
+			Name:            row.Name,
+			TemplateKey:     textToPtr(row.TemplateKey),
+			TemplateVersion: textToPtr(row.TemplateVersion),
+			Transport:       mcpTransportOf(row.Config),
+			Enabled:         &enabled,
+			CreatedAt:       timestampToString(row.CreatedAt),
+			UpdatedAt:       timestampToString(row.UpdatedAt),
 		})
 	}
 	writeJSON(w, http.StatusOK, resp)
@@ -517,13 +553,15 @@ func (h *Handler) writeAgentMcpServers(w http.ResponseWriter, r *http.Request, a
 	for _, row := range rows {
 		enabled := row.Enabled
 		resp = append(resp, WorkspaceMcpServerResponse{
-			ID:          uuidToString(row.ID),
-			WorkspaceID: uuidToString(row.WorkspaceID),
-			Name:        row.Name,
-			Transport:   mcpTransportOf(row.Config),
-			Enabled:     &enabled,
-			CreatedAt:   timestampToString(row.CreatedAt),
-			UpdatedAt:   timestampToString(row.UpdatedAt),
+			ID:              uuidToString(row.ID),
+			WorkspaceID:     uuidToString(row.WorkspaceID),
+			Name:            row.Name,
+			TemplateKey:     textToPtr(row.TemplateKey),
+			TemplateVersion: textToPtr(row.TemplateVersion),
+			Transport:       mcpTransportOf(row.Config),
+			Enabled:         &enabled,
+			CreatedAt:       timestampToString(row.CreatedAt),
+			UpdatedAt:       timestampToString(row.UpdatedAt),
 		})
 	}
 	writeJSON(w, http.StatusOK, resp)

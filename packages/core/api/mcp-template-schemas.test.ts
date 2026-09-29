@@ -64,3 +64,22 @@ describe("McpServerTemplateListResponseSchema", () => {
     }
   });
 });
+
+it("maps market metadata and tolerates malformed optional metadata", () => {
+  const parsed = parse({ templates: [{
+    ...MCP_TEMPLATE, version: "1", category: "browser", requirements: ["Node.js"],
+    documentation_url: "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+  }] });
+  expect(parsed.templates[0]).toMatchObject({
+    version: "1", category: "browser", requirements: ["Node.js"],
+    documentationUrl: "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+  });
+  const malformed = parse({ templates: [{ ...MCP_TEMPLATE,
+    version: 2, category: false, requirements: "bad", documentation_url: ["bad"],
+  }] });
+  expect(malformed.templates[0]).toMatchObject({ key: MCP_TEMPLATE.key });
+  expect(malformed.templates[0]?.version).toBeUndefined();
+  expect(malformed.templates[0]?.category).toBeUndefined();
+  expect(malformed.templates[0]?.requirements).toBeUndefined();
+  expect(malformed.templates[0]?.documentationUrl).toBeUndefined();
+});

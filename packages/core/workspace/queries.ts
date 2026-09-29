@@ -56,9 +56,9 @@ export function agentListOptions(wsId: string) {
     // Projected unstable can age offline without an event; polling online also
     // covers a missed demotion. Offline recovery is event/reconnect-driven.
     refetchInterval: (query) =>
-      query.state.data?.some(
+      Array.isArray(query.state.data) && query.state.data.some(
         (agent) =>
-          !agent.archived_at &&
+          agent != null && !agent.archived_at &&
           (agent.runtime_availability === "online" ||
             agent.runtime_availability === "unstable"),
       )

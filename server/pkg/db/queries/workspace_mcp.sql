@@ -28,8 +28,8 @@ SELECT * FROM workspace_mcp_server
 WHERE id = $1 AND workspace_id = $2;
 
 -- name: CreateWorkspaceMcpServer :one
-INSERT INTO workspace_mcp_server (workspace_id, name, config, created_by)
-VALUES ($1, $2, $3, $4)
+INSERT INTO workspace_mcp_server (workspace_id, name, config, created_by, template_key, template_version)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING *;
 
 -- name: UpdateWorkspaceMcpServer :one
@@ -39,6 +39,8 @@ RETURNING *;
 UPDATE workspace_mcp_server SET
     name = COALESCE(sqlc.narg('name'), name),
     config = COALESCE(sqlc.narg('config'), config),
+    template_key = CASE WHEN sqlc.narg('config')::jsonb IS NOT NULL THEN NULL ELSE template_key END,
+    template_version = CASE WHEN sqlc.narg('config')::jsonb IS NOT NULL THEN NULL ELSE template_version END,
     updated_at = now()
 WHERE id = $1 AND workspace_id = $2
 RETURNING *;
@@ -55,7 +57,7 @@ DELETE FROM agent_mcp_server WHERE server_id = $1;
 -- name: ListAgentMcpServers :many
 -- Every workspace server bound to this agent, enabled or not, for the agent
 -- settings list. `enabled` comes from the binding.
-SELECT s.id, s.workspace_id, s.name, s.config, s.created_at, s.updated_at, ams.enabled
+SELECT s.id, s.workspace_id, s.name, s.config, s.created_at, s.updated_at, s.template_key, s.template_version, ams.enabled
 FROM workspace_mcp_server s
 JOIN agent_mcp_server ams ON ams.server_id = s.id
 WHERE ams.agent_id = $1

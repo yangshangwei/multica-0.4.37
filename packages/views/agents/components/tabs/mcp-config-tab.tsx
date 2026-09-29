@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  Loader2,
-  Lock,
-  Plus,
-  RefreshCw,
-  Server,
-} from "lucide-react";
+import { Loader2, Lock, Plus, RefreshCw, Server } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import type { Agent, AgentRuntime, WorkspaceMcpServer } from "@multica/core/types";
+import type {
+  Agent,
+  AgentRuntime,
+  WorkspaceMcpServer,
+} from "@multica/core/types";
 import { ApiError } from "@multica/core/api";
 import {
   isRuntimeUsableForUser,
@@ -59,6 +57,7 @@ import {
   type ManagedMcpServer,
 } from "./mcp-config-model";
 import { McpServerDialog } from "./mcp-server-dialog";
+import { McpAgentDiscovery } from "../../../mcp/mcp-agent-discovery";
 
 export function McpConfigTab({
   agent,
@@ -132,17 +131,20 @@ export function McpConfigTab({
     return names;
   }, [managedNames, assignedServers]);
 
+  const [marketOpen, setMarketOpen] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingServer, setEditingServer] = useState<ManagedMcpServer | null>(
     null,
   );
-  const [renamingServer, setRenamingServer] =
-    useState<ManagedMcpServer | null>(null);
+  const [renamingServer, setRenamingServer] = useState<ManagedMcpServer | null>(
+    null,
+  );
   const [renameDraft, setRenameDraft] = useState("");
   const [renameError, setRenameError] = useState("");
   const [renamePending, setRenamePending] = useState(false);
-  const [deletingServer, setDeletingServer] =
-    useState<ManagedMcpServer | null>(null);
+  const [deletingServer, setDeletingServer] = useState<ManagedMcpServer | null>(
+    null,
+  );
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => onDirtyChange?.(false), [onDirtyChange]);
@@ -280,7 +282,9 @@ export function McpConfigTab({
     });
 
   const handleToggleWorkspaceServer = (serverId: string, enabled: boolean) =>
-    runAssignmentAction(() => setServerEnabled.mutateAsync({ serverId, enabled }));
+    runAssignmentAction(() =>
+      setServerEnabled.mutateAsync({ serverId, enabled }),
+    );
 
   const handleRemoveWorkspaceServer = (serverId: string) =>
     runAssignmentAction(async () => {
@@ -406,13 +410,24 @@ export function McpConfigTab({
           <h3 className="text-body font-medium">
             {t(($) => $.tab_body.mcp_config.workspace_title)}
           </h3>
-          {canEdit && availableServers.length > 0 && (
-            <McpWorkspaceServerPicker
-              servers={availableServers}
-              disabled={addServer.isPending}
-              onSelect={(serverId) => void handleAddWorkspaceServer(serverId)}
-            />
-          )}
+          <div className="flex flex-wrap justify-end gap-2">
+            {canEdit ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setMarketOpen(true)}
+              >
+                {t(($) => $.tab_body.mcp_config.market_add_action)}
+              </Button>
+            ) : null}
+            {canEdit && availableServers.length > 0 && (
+              <McpWorkspaceServerPicker
+                servers={availableServers}
+                disabled={addServer.isPending}
+                onSelect={(serverId) => void handleAddWorkspaceServer(serverId)}
+              />
+            )}
+          </div>
         </div>
         {assignedQuery.isLoading ? (
           <McpNotice
@@ -428,7 +443,9 @@ export function McpConfigTab({
                 overridden={managedNames.has(server.name)}
                 canEdit={canEdit}
                 busy={setServerEnabled.isPending || removeServer.isPending}
-                onToggle={(enabled) => void handleToggleWorkspaceServer(server.id, enabled)}
+                onToggle={(enabled) =>
+                  void handleToggleWorkspaceServer(server.id, enabled)
+                }
                 onRemove={() => void handleRemoveWorkspaceServer(server.id)}
               />
             ))}
@@ -509,12 +526,33 @@ export function McpConfigTab({
               source: server.source,
               overridden: effectiveNames.has(server.name),
             }))}
-            disabledLabel={t(($) => $.tab_body.mcp_config.runtime_disabled_badge)}
-            overriddenLabel={t(($) => $.tab_body.mcp_config.runtime_overridden_badge)}
+            disabledLabel={t(
+              ($) => $.tab_body.mcp_config.runtime_disabled_badge,
+            )}
+            overriddenLabel={t(
+              ($) => $.tab_body.mcp_config.runtime_overridden_badge,
+            )}
           />
         )}
       </section>
 
+      {marketOpen && canEdit ? (
+        <McpAgentDiscovery
+          key={agent.id}
+          workspaceId={agent.workspace_id ?? ""}
+          context={{
+            agent,
+            managedNames,
+            runtimeNames: new Set(
+              (runtimeQuery.data?.mcpServers ?? []).map(
+                (server) => server.name,
+              ),
+            ),
+            unsupported: runtimeQuery.data?.mcpSupported === false,
+          }}
+          onClose={() => setMarketOpen(false)}
+        />
+      ) : null}
       {!redacted && (
         <McpServerDialog
           open={editorOpen}
@@ -628,7 +666,9 @@ function McpWorkspaceServerRow({
             ariaLabel={t(($) => $.tab_body.mcp_config.workspace_remove_aria, {
               name: server.name,
             })}
-            tooltipLabel={t(($) => $.tab_body.mcp_config.workspace_remove_action)}
+            tooltipLabel={t(
+              ($) => $.tab_body.mcp_config.workspace_remove_action,
+            )}
           />
         </div>
       )}
@@ -725,7 +765,13 @@ function McpServerList({
   );
 }
 
-function McpNotice({ text, loading = false }: { text: string; loading?: boolean }) {
+function McpNotice({
+  text,
+  loading = false,
+}: {
+  text: string;
+  loading?: boolean;
+}) {
   return (
     <div className="flex items-center gap-2 rounded-lg border border-dashed px-4 py-6 text-caption text-muted-foreground">
       {loading ? (

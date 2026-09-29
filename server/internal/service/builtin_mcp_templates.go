@@ -3,18 +3,9 @@ package service
 // Built-in MCP server templates: the product's shortlist of mainstream MCP
 // servers a workspace can add with one click.
 //
-// A template is NOT a new kind of entity. Selecting one pre-fills the ordinary
-// "add MCP server" form; saving produces an ordinary workspace MCP server row —
-// write-only, renameable, replaceable, deletable, and still unassigned to any
-// agent until an owner attaches it. The template's only contribution is the
-// starting configuration and its localized picker copy.
-//
-// Unlike the agent / autopilot registries, these carry NO Version and record NO
-// template_key on the created row. Provenance would be dishonest here: the add
-// form deliberately lets a user edit the config before saving, so a stored
-// "came from template X" stamp could describe a server that runs something else.
-// Not recording it also avoids a migration. See design notes in
-// .trellis/tasks/09-19-builtin-mcp-presets/design.md.
+// Templates create ordinary, write-only workspace entries through a trusted
+// key/version request. The version identifies the recipe, not the executable
+// package release. Renames preserve provenance; replacing config clears it.
 //
 // Config is public, credential-free content, so it is served in full — the
 // opposite of the write-only workspace library. The keyless invariant is pinned
@@ -24,16 +15,20 @@ package service
 // McpServerTemplate is one entry in the built-in MCP catalog.
 type McpServerTemplate struct {
 	// Key is the stable identity and the default server name. It must match the
-	// name grammar the add form enforces (^[A-Za-z0-9_-]+$) or a save from the
-	// pre-filled form would be rejected client-side.
+	// name grammar enforced by the server and add form (^[A-Za-z0-9_-]+$).
 	//
 	// For "chrome-devtools" and "playwright" the key AND the args below are load
 	// bearing: server/pkg/agent/browser_mcp_config.go keys its Windows browser
 	// fallback on exactly these names / package args. Renaming a key or changing
 	// the package token silently disables that fallback.
 	Key string
-	// Config is the raw MCP server entry copied verbatim into the add form. It
-	// must contain "command" or "url" (the form's missing-target rule) and must
+	// Version identifies the configuration recipe, independently of package versions.
+	Version          string
+	Category         string
+	DocumentationURL string
+	Requirements     map[string][]string
+	// Config is the raw MCP server entry previewed publicly and copied by the
+	// trusted creation handler. It must contain "command" or "url" and must
 	// never carry credential material.
 	Config map[string]any
 	// Titles / Descriptions are the localized picker copy (en/zh), falling
@@ -52,6 +47,14 @@ func (t McpServerTemplate) Description(language string) string {
 	return localizedTemplateString(t.Descriptions, language, "")
 }
 
+// RequirementLabels returns runtime prerequisites in the requested language.
+func (t McpServerTemplate) RequirementLabels(language string) []string {
+	if requirements, ok := t.Requirements[language]; ok {
+		return requirements
+	}
+	return t.Requirements["en"]
+}
+
 // McpServerTemplates returns the built-in roster in product-controlled order.
 //
 // A fresh map per entry per call keeps the exported config immutable: a handler
@@ -59,7 +62,14 @@ func (t McpServerTemplate) Description(language string) string {
 func McpServerTemplates() []McpServerTemplate {
 	return []McpServerTemplate{
 		{
-			Key: "chrome-devtools",
+			Key:              "chrome-devtools",
+			Version:          "1",
+			Category:         "browser",
+			DocumentationURL: "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+			Requirements: map[string][]string{
+				"en": {"Node.js and npx on the agent runtime", "Google Chrome installed on the agent runtime"},
+				"zh": {"智能体运行时需安装 Node.js 和 npx", "智能体运行时需安装 Google Chrome"},
+			},
 			// Official README standard config. `-y` keeps npx from prompting in
 			// a runtime without a TTY. Keyless.
 			Config: map[string]any{
@@ -76,7 +86,14 @@ func McpServerTemplates() []McpServerTemplate {
 			},
 		},
 		{
-			Key: "playwright",
+			Key:              "playwright",
+			Version:          "1",
+			Category:         "browser",
+			DocumentationURL: "https://github.com/microsoft/playwright-mcp",
+			Requirements: map[string][]string{
+				"en": {"Node.js and npx on the agent runtime", "Browser binaries available to the agent runtime"},
+				"zh": {"智能体运行时需安装 Node.js 和 npx", "智能体运行时需具备可用的浏览器程序"},
+			},
 			// Upstream shows `npx @playwright/mcp@latest`; we add `-y` because the
 			// agent runtime has no TTY and npx would otherwise block on a prompt.
 			// Keyless.
@@ -94,7 +111,14 @@ func McpServerTemplates() []McpServerTemplate {
 			},
 		},
 		{
-			Key: "sequential-thinking",
+			Key:              "sequential-thinking",
+			Version:          "1",
+			Category:         "reasoning",
+			DocumentationURL: "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
+			Requirements: map[string][]string{
+				"en": {"Node.js and npx on the agent runtime"},
+				"zh": {"智能体运行时需安装 Node.js 和 npx"},
+			},
 			// Official README config, verbatim. Keyless; runs entirely locally.
 			Config: map[string]any{
 				"command": "npx",
