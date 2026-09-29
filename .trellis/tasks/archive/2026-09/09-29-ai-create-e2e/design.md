@@ -1,0 +1,1 @@
+Go API18572 + Next13492 + isolated PostgreSQL multica_multica_0_4_37_492. Next app copy avoids active dev lock, shares live packages. Local compatible provider14592 deterministic JSON/SSE, real backend validation. Unique workspace fixtures cleaned via APIs.
