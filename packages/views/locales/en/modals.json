@@ -311,6 +311,34 @@
       "error_daemon_version": "This agent's daemon CLI ({{current}}) is below the required {{min}}. Upgrade the daemon to use Create with agent.",
       "error_unknown": "Failed to submit. Try again.",
       "sub_issue_of": "Sub-issue of {{identifier}}"
+    },
+    "actor_picker": {
+      "search_placeholder": "Search names or responsibilities...",
+      "all": "All",
+      "agents": "Agents",
+      "squads": "AI squads",
+      "agent": "Agent",
+      "squad": "AI squad",
+      "favorites": "Favorites",
+      "recent": "Recently used",
+      "all_favorites": "View all favorites ({{count}})",
+      "browse_all": "Browse all ({{count}})",
+      "back": "Back to shortcuts",
+      "show_more": "Show more ({{count}} remaining)",
+      "pin": "Pin {{name}} to favorites",
+      "unpin": "Unpin {{name}} from favorites",
+      "selected": "Selected",
+      "no_description": "No responsibility description",
+      "no_favorites": "No favorites yet",
+      "no_shortcuts": "No favorites or recently used actors of this type",
+      "no_matches": "No matching actors",
+      "loading": "Loading actors...",
+      "agents_failed": "Could not load agents",
+      "squads_failed": "Could not load AI squads",
+      "agents_refresh_failed": "Could not refresh agents. Showing saved results.",
+      "squads_refresh_failed": "Could not refresh AI squads. Showing saved results.",
+      "retry_agents": "Retry agents",
+      "retry_squads": "Retry AI squads"
     }
   }
 }

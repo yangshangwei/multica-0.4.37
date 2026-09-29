@@ -14,6 +14,15 @@ import userEvent from "@testing-library/user-event";
 const mockQuickCreateIssue = vi.hoisted(() => vi.fn());
 const mockCreateCommentSubIssue = vi.hoisted(() => vi.fn());
 const mockSetLastActor = vi.hoisted(() => vi.fn());
+const mockRecordSuccessfulActor = vi.hoisted(() => vi.fn());
+const mockToggleFavoriteActor = vi.hoisted(() => vi.fn());
+const mockCaptureScope = vi.hoisted(() => vi.fn());
+const mockIsScopeCurrent = vi.hoisted(() => vi.fn());
+const mockIsStoreReady = vi.hoisted(() => vi.fn());
+const mockRehydrate = vi.hoisted(() => vi.fn());
+const mockPreferenceScope = vi.hoisted(() => ({
+  workspaceSlug: "ws-test", workspaceId: "ws-test", userId: "user-1", resetGeneration: 0,
+}));
 const mockSetQuickCreateFieldVisible = vi.hoisted(() => vi.fn());
 const mockSetKeepOpen = vi.hoisted(() => vi.fn());
 const mockSetLastMode = vi.hoisted(() => vi.fn());
@@ -99,6 +108,12 @@ const mockQuickCreateStore = {
   lastActorType: null as "agent" | "squad" | null,
   lastActorId: null as string | null,
   setLastActor: mockSetLastActor,
+  recordSuccessfulActor: mockRecordSuccessfulActor,
+  toggleFavoriteActor: mockToggleFavoriteActor,
+  favoriteActors: [] as Array<{ type: "agent" | "squad"; id: string }>,
+  recentActors: [] as Array<{ type: "agent" | "squad"; id: string }>,
+  hydratedScope: mockPreferenceScope,
+  resetGeneration: 0,
   keepOpen: false,
   setKeepOpen: mockSetKeepOpen,
   // Not part of the store's interface any more (MUL-5862), but an older
@@ -229,8 +244,14 @@ vi.mock("@multica/core/projects/queries", () => ({
 }));
 
 vi.mock("@multica/core/issues/stores/quick-create-store", () => ({
-  useQuickCreateStore: (selector?: (state: typeof mockQuickCreateStore) => unknown) =>
-    (selector ? selector(mockQuickCreateStore) : mockQuickCreateStore),
+  useQuickCreateStore: Object.assign(
+    (selector?: (state: typeof mockQuickCreateStore) => unknown) =>
+      (selector ? selector(mockQuickCreateStore) : mockQuickCreateStore),
+    { getState: () => mockQuickCreateStore, persist: { rehydrate: mockRehydrate } },
+  ),
+  captureQuickCreateScope: mockCaptureScope,
+  isQuickCreateScopeCurrent: mockIsScopeCurrent,
+  isQuickCreateStoreReady: mockIsStoreReady,
 }));
 
 vi.mock("@multica/core/issues/stores/draft-store", () => ({
@@ -253,8 +274,8 @@ vi.mock("@multica/core/issues/stores/create-mode-store", () => ({
 }));
 
 vi.mock("@multica/core/auth", () => ({
-  useAuthStore: (selector?: (state: { user: { id: string } }) => unknown) =>
-    (selector ? selector({ user: { id: "user-1" } }) : { user: { id: "user-1" } }),
+  useAuthStore: (selector?: (state: { user: { id: string }; status: "authenticated" }) => unknown) =>
+    (selector ? selector({ user: { id: "user-1" }, status: "authenticated" }) : { user: { id: "user-1" }, status: "authenticated" }),
 }));
 
 // Use the REAL version-check helpers (not stubs): the fix hinges on how the
@@ -430,48 +451,20 @@ vi.mock("@multica/ui/components/ui/dialog", () => ({
   ),
 }));
 
-vi.mock("../issues/components/pickers/property-picker", () => ({
-  PropertyPicker: ({
-    trigger,
-    children,
-    searchPlaceholder,
-    onSearchChange,
-  }: {
-    trigger: ReactNode;
-    children: ReactNode;
-    searchPlaceholder?: string;
-    onSearchChange?: (v: string) => void;
-  }) => (
-    <>
-      {trigger}
-      <input
-        aria-label="actor-search"
-        placeholder={searchPlaceholder}
-        onChange={(e) => onSearchChange?.(e.target.value)}
-      />
-      {children}
-    </>
-  ),
-  PickerItem: ({
-    children,
-    onClick,
-    selected,
-  }: {
-    children: ReactNode;
-    onClick: () => void;
-    selected?: boolean;
-  }) => (
-    <button type="button" onClick={onClick} data-selected={selected ? "true" : "false"}>
-      {children}
-    </button>
-  ),
-  PickerSection: ({ label, children }: { label: string; children: ReactNode }) => (
-    <div>
-      <div data-testid="picker-section-label">{label}</div>
-      {children}
-    </div>
-  ),
-  PickerEmpty: () => <div data-testid="picker-empty" />,
+// The real primitive interaction matrix lives in quick-create-actor-picker.test.tsx.
+// This suite owns parent selection, draft and submission wiring only.
+vi.mock("./quick-create-actor-picker", () => ({
+  QuickCreateActorPicker: ({ actor, visibleAgents, visibleSquads, onPick }: {
+    actor: { type: "agent" | "squad"; id: string } | null;
+    visibleAgents: Array<{ id: string; name: string }>;
+    visibleSquads: Array<{ id: string; name: string }>;
+    onPick: (actor: { type: "agent" | "squad"; id: string }) => void;
+  }) => <>{(["agent", "squad"] as const).flatMap((type) =>
+    (type === "agent" ? visibleAgents : visibleSquads).map((item) => (
+      <button key={`${type}:${item.id}`} type="button"
+        data-selected={actor?.type === type && actor.id === item.id ? "true" : "false"}
+        onClick={() => onPick({ type, id: item.id })}>{item.name}</button>
+    )))}</>,
 }));
 
 vi.mock("@multica/ui/components/ui/button", () => ({
@@ -529,6 +522,13 @@ function renderPanel(props: React.ComponentProps<typeof AgentCreatePanel>) {
 describe("AgentCreatePanel", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockCaptureScope.mockImplementation(() => ({ ...mockPreferenceScope }));
+    mockIsScopeCurrent.mockReturnValue(true);
+    mockIsStoreReady.mockReturnValue(true);
+    mockRecordSuccessfulActor.mockReturnValue(true);
+    mockQuickCreateStore.favoriteActors = [];
+    mockQuickCreateStore.recentActors = [];
+    mockQuickCreateStore.resetGeneration = 0;
     mockOptimizeDescription.mockResolvedValue({ text: "Clarified request", questions: ["Confirm scope?"] });
     mockQuickCreateStore.lastActorType = null;
     mockQuickCreateStore.lastActorId = null;
@@ -577,6 +577,75 @@ describe("AgentCreatePanel", () => {
     mockSetKeepOpen.mockImplementation((value: boolean) => {
       mockQuickCreateStore.keepOpen = value;
     });
+  });
+
+  for (const sourceContext of [false, true]) {
+    it(`records the submitted actor only after accepted ${sourceContext ? "comment-context" : "ordinary"} creation`, async () => {
+      let accept!: () => void;
+      const request = sourceContext ? mockCreateCommentSubIssue : mockQuickCreateIssue;
+      request.mockImplementationOnce(() => new Promise<void>((resolve) => { accept = resolve; }));
+      mockAgentsData.list.push({ id: "agent-2", name: "Ada", archived_at: null, runtime_id: "runtime-1" });
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
+        data: sourceContext ? sourceContextPanelData : undefined });
+      fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+      await waitFor(() => expect(request).toHaveBeenCalledTimes(1));
+      expect(mockCaptureScope).toHaveBeenCalledWith("ws-test", "user-1");
+      fireEvent.click(screen.getByRole("button", { name: "Ada" }));
+      expect(screen.getByRole("button", { name: "Ada" })).toHaveAttribute("data-selected", "true");
+      expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
+      await act(async () => { accept(); });
+      expect(mockRecordSuccessfulActor).toHaveBeenCalledWith(
+        { type: "agent", id: "agent-1" }, mockPreferenceScope,
+      );
+    });
+
+    for (const identityChange of ["workspace switch", "same-user relogin"]) {
+      it(`skips stale preferences after ${identityChange} during ${sourceContext ? "comment-context" : "ordinary"} creation`, async () => {
+        let accept!: () => void;
+        const request = sourceContext ? mockCreateCommentSubIssue : mockQuickCreateIssue;
+        request.mockImplementationOnce(() => new Promise<void>((resolve) => { accept = resolve; }));
+        renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
+          data: sourceContext ? sourceContextPanelData : undefined });
+        fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+        await waitFor(() => expect(request).toHaveBeenCalledTimes(1));
+        mockIsScopeCurrent.mockReturnValue(false);
+        await act(async () => { accept(); });
+        expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
+        expect(mockSetLastActor).not.toHaveBeenCalled();
+        expect(mockToastSuccess).toHaveBeenCalled();
+      });
+    }
+
+    it(`does not record rejected ${sourceContext ? "comment-context" : "ordinary"} creation as recently used`, async () => {
+      const request = sourceContext ? mockCreateCommentSubIssue : mockQuickCreateIssue;
+      request.mockRejectedValueOnce(new Error("Temporarily unavailable"));
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
+        data: sourceContext ? sourceContextPanelData : undefined });
+      await userEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+      await screen.findByText("Temporarily unavailable");
+      expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
+    });
+  }
+
+  it.each(["last successful", "explicit", "draft"])("preserves %s actor priority through delayed preference hydration", (seed) => {
+    mockAgentsData.list.push({ id: "agent-2", name: "Ada", archived_at: null, runtime_id: "runtime-1" });
+    mockQuickCreateStore.lastActorType = "agent";
+    mockQuickCreateStore.lastActorId = "agent-2";
+    if (seed === "draft") {
+      mockIssueDraftStore.draft.agent.actorType = "agent";
+      mockIssueDraftStore.draft.agent.actorId = "agent-1";
+    }
+    mockIsStoreReady.mockReturnValue(false);
+    const props = { onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
+      data: seed === "explicit" ? { agent_id: "agent-1" } : undefined };
+    const panel = renderPanel(props);
+    expect(mockRehydrate).toHaveBeenCalledOnce();
+    expect(screen.getByRole("button", { name: "Bohan" })).toHaveAttribute("data-selected", seed === "last successful" ? "false" : "true");
+    mockIsStoreReady.mockReturnValue(true);
+    panel.rerender(<I18nProvider locale="en" resources={TEST_RESOURCES}><AgentCreatePanel {...props} /></I18nProvider>);
+    expect(screen.getByRole("button", { name: seed === "last successful" ? "Ada" : "Bohan" })).toHaveAttribute("data-selected", "true");
+    expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("Persisted draft prompt");
+    expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
   });
 
   it("clears the AI preview when continuous creation starts a new agent draft", async () => {
@@ -707,7 +776,7 @@ describe("AgentCreatePanel", () => {
       });
     });
 
-    expect(mockSetLastActor).toHaveBeenCalledWith("agent", "agent-1");
+    expect(mockRecordSuccessfulActor).toHaveBeenCalledWith({ type: "agent", id: "agent-1" }, mockPreferenceScope);
     // A successful create ends the whole unified draft.
     expect(mockClearDraft).toHaveBeenCalled();
     expect(mockSetLastMode).toHaveBeenCalledWith("agent");
@@ -941,7 +1010,7 @@ describe("AgentCreatePanel", () => {
         project_id: undefined,
       });
     });
-    expect(mockSetLastActor).toHaveBeenCalledWith("squad", "squad-1");
+    expect(mockRecordSuccessfulActor).toHaveBeenCalledWith({ type: "squad", id: "squad-1" }, mockPreferenceScope);
   });
 
   // Squads whose leader agent isn't visible (archived, private, etc.) must
@@ -999,7 +1068,7 @@ describe("AgentCreatePanel", () => {
         );
       });
       // The actor is still remembered — only the project memory is gone.
-      expect(mockSetLastActor).toHaveBeenCalledWith("agent", "agent-1");
+      expect(mockRecordSuccessfulActor).toHaveBeenCalledWith({ type: "agent", id: "agent-1" }, mockPreferenceScope);
     });
   });
 

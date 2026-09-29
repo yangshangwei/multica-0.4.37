@@ -19,6 +19,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Automation Template Discovery](./automation-template-discovery.md) | Empty-state routing, template semantics and two-step gallery restoration | Active |
 | [Agent Discovery](./agent-discovery.md) | Squad complete-membership contract, role provenance from template_key, template/member separation, preference & scope composition | Active |
 | [Issue Description Assist](./issue-description-assist.md) | Text-only AI suggestions, editor snapshots, protected Markdown and cancellation | Active |
+| [Quick-create Actor Picker](./quick-create-actor-picker.md) | Local favorites/recent actors, scoped hydration, full-description search and nested-picker focus | Active |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |

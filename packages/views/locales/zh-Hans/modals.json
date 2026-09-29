@@ -309,6 +309,34 @@
       "error_daemon_version": "该智能体的守护进程 CLI（{{current}}）低于要求的 {{min}}。请升级守护进程后再使用通过智能体创建。",
       "error_unknown": "提交失败，请重试。",
       "sub_issue_of": "作为 {{identifier}} 的子任务"
+    },
+    "actor_picker": {
+      "search_placeholder": "搜索名称或职责...",
+      "all": "全部",
+      "agents": "智能体",
+      "squads": "AI小队",
+      "agent": "智能体",
+      "squad": "AI小队",
+      "favorites": "我的常用",
+      "recent": "最近使用",
+      "all_favorites": "查看全部常用（{{count}}）",
+      "browse_all": "浏览全部（{{count}}）",
+      "back": "返回快捷视图",
+      "show_more": "显示更多（剩余 {{count}}）",
+      "pin": "将 {{name}} 固定为常用",
+      "unpin": "取消固定 {{name}}",
+      "selected": "已选择",
+      "no_description": "暂无职责描述",
+      "no_favorites": "暂无常用",
+      "no_shortcuts": "此类型暂无常用或最近使用",
+      "no_matches": "没有匹配的对象",
+      "loading": "正在加载创建对象...",
+      "agents_failed": "无法加载智能体",
+      "squads_failed": "无法加载AI小队",
+      "agents_refresh_failed": "无法刷新智能体，当前显示缓存结果。",
+      "squads_refresh_failed": "无法刷新AI小队，当前显示缓存结果。",
+      "retry_agents": "重试加载智能体",
+      "retry_squads": "重试加载AI小队"
     }
   }
 }

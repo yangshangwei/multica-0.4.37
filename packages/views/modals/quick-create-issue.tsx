@@ -34,7 +34,11 @@ import { agentListOptions, squadListOptions } from "@multica/core/workspace/quer
 import { projectListOptions } from "@multica/core/projects/queries";
 import {
   useQuickCreateStore,
+  captureQuickCreateScope,
+  isQuickCreateScopeCurrent,
+  isQuickCreateStoreReady,
   type QuickCreateActorType,
+  type QuickCreateActorRef,
 } from "@multica/core/issues/stores/quick-create-store";
 import {
   useIssueCreateSettingsStore,
@@ -57,18 +61,11 @@ import {
   type SourceContextPreview,
   type Squad,
 } from "@multica/core/types";
-import { ActorAvatar } from "../common/actor-avatar";
 import { ClearablePillButton, PillButton } from "../common/pill-button";
 import { ProjectPicker } from "../projects/components/project-picker";
 import { DueDatePicker, PriorityIcon, PriorityPicker } from "../issues/components";
 import { canAssignAgent } from "../issues/components/pickers/assignee-picker";
 import { isAgentRuntimeBound } from "@multica/core/agents";
-import {
-  PropertyPicker,
-  PickerItem,
-  PickerSection,
-  PickerEmpty,
-} from "../issues/components/pickers/property-picker";
 import { useAuthStore } from "@multica/core/auth";
 import { memberListOptions } from "@multica/core/workspace/queries";
 import {
@@ -82,15 +79,13 @@ import {
 import { useIssueCreateUploads } from "./use-issue-create-uploads";
 import { FileUploadButton } from "@multica/ui/components/common/file-upload-button";
 import { useT } from "../i18n";
-import { matchesPinyin } from "../editor/extensions/pinyin-match";
+import { QuickCreateActorPicker } from "./quick-create-actor-picker";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";
 import { IssueDescriptionAssist } from "./issue-description-assist";
 import { getQuickCreateScenario } from "./quick-create-scenario";
 
-type ActorSelection =
-  | { type: "agent"; id: string }
-  | { type: "squad"; id: string };
+const EMPTY_ACTORS: QuickCreateActorRef[] = [];
 
 // AgentCreatePanel — agent-mode body of the create-issue dialog. Renders
 // only the inner content; the surrounding `<Dialog>` AND `<DialogContent>`
@@ -140,9 +135,13 @@ export function AgentCreatePanel({
   const sourceContextFailureMessage = useSourceContextFailureMessage();
   const showIssueLimitUpgradePrompt = useIssueLimitUpgradePrompt();
   const userId = useAuthStore((s) => s.user?.id);
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
-  const { data: squads = [] } = useQuery(squadListOptions(wsId));
+  const authStatus = useAuthStore((s) => s.status);
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const agentsQuery = useQuery(agentListOptions(wsId));
+  const squadsQuery = useQuery(squadListOptions(wsId));
+  const { data: members = [] } = membersQuery;
+  const { data: agents = [] } = agentsQuery;
+  const { data: squads = [] } = squadsQuery;
   // Pull `isSuccess` so the stale-id sweep below can distinguish "still
   // loading" from "loaded as empty". Reading length alone treats both as
   // empty and incorrectly clears a valid persisted preference on every open.
@@ -181,11 +180,25 @@ export function AgentCreatePanel({
     [squads, visibleAgentIds],
   );
 
-  const lastActorType = useQuickCreateStore((s) => s.lastActorType);
-  const lastActorId = useQuickCreateStore((s) => s.lastActorId);
-  const setLastActor = useQuickCreateStore((s) => s.setLastActor);
+  const preferencesReady = useQuickCreateStore((s) => isQuickCreateStoreReady(s, wsId, userId));
+  const resetGeneration = useQuickCreateStore((s) => s.resetGeneration);
+  const lastActorType = useQuickCreateStore((s) => preferencesReady ? s.lastActorType : null);
+  const lastActorId = useQuickCreateStore((s) => preferencesReady ? s.lastActorId : null);
+  const recordSuccessfulActor = useQuickCreateStore((s) => s.recordSuccessfulActor);
+  const toggleFavoriteActor = useQuickCreateStore((s) => s.toggleFavoriteActor);
+  const favoriteActors = useQuickCreateStore((s) => preferencesReady ? s.favoriteActors : EMPTY_ACTORS);
+  const recentActors = useQuickCreateStore((s) => preferencesReady ? s.recentActors : EMPTY_ACTORS);
+
+  useEffect(() => {
+    // Same-workspace login can leave the route mirror unchanged, so it does
+    // not trigger the normal workspace rehydration callback.
+    if (authStatus === "authenticated" && userId && captureQuickCreateScope(wsId, userId)
+      && !isQuickCreateStoreReady(useQuickCreateStore.getState(), wsId, userId)) {
+      void useQuickCreateStore.persist.rehydrate();
+    }
+  }, [wsId, userId, authStatus, resetGeneration]);
   const visibleFields = useIssueCreateSettingsStore((s) => s.quickCreateFields);
-  const keepOpen = useQuickCreateStore((s) => s.keepOpen);
+  const keepOpen = useQuickCreateStore((s) => preferencesReady && s.keepOpen);
   const setKeepOpen = useQuickCreateStore((s) => s.setKeepOpen);
   const setLastMode = useCreateModeStore((s) => s.setLastMode);
   // The agent draft (prompt + actor) and the shared fields (project, priority,
@@ -206,7 +219,7 @@ export function AgentCreatePanel({
     (
       type: QuickCreateActorType | "agent" | "squad" | null | undefined,
       id: string | null | undefined,
-    ): ActorSelection | null => {
+    ): QuickCreateActorRef | null => {
       if (!type || !id) return null;
       if (type === "squad" && visibleSquads.some((s) => s.id === id)) {
         return { type: "squad", id };
@@ -219,7 +232,7 @@ export function AgentCreatePanel({
     [visibleSquads, visibleAgentIds],
   );
 
-  const seedActor = useCallback((): ActorSelection | null => {
+  const seedActor = useCallback((): QuickCreateActorRef | null => {
     // Caller-provided seed wins (e.g. shell pre-seeds with `agent_id` /
     // `squad_id`), then the persisted agent draft, the last successful pick,
     // and finally the first visible agent.
@@ -229,9 +242,10 @@ export function AgentCreatePanel({
       resolveActor("agent", dataAgent) ||
       resolveActor("squad", dataSquad) ||
       resolveActor(draft.agent.actorType, draft.agent.actorId) ||
-      resolveActor(lastActorType, lastActorId) ||
-      (visibleAgents[0]
-        ? ({ type: "agent", id: visibleAgents[0].id } as const)
+      (preferencesReady
+        ? resolveActor(lastActorType, lastActorId) || (visibleAgents[0]
+          ? ({ type: "agent", id: visibleAgents[0].id } as const)
+          : null)
         : null)
     );
   }, [
@@ -242,10 +256,11 @@ export function AgentCreatePanel({
     draft.agent.actorId,
     lastActorType,
     lastActorId,
+    preferencesReady,
     visibleAgents,
   ]);
 
-  const [actor, setActor] = useState<ActorSelection | null>(() => seedActor());
+  const [actor, setActor] = useState<QuickCreateActorRef | null>(() => seedActor());
 
   // Re-seed once visible lists resolve (queries may be empty on first render).
   useEffect(() => {
@@ -429,6 +444,8 @@ export function AgentCreatePanel({
       const pendingPrompt = editorRef.current?.flushPendingUpdate?.();
       if (pendingPrompt != null) setAgent({ prompt: pendingPrompt });
       submittedDraftRef.current = useIssueDraftStore.getState().draft;
+      const submittedActor = actor;
+      const submittedScope = captureQuickCreateScope(wsId, userId);
       const activeAttachmentIds = pendingAttachments
         .filter((a) => contentReferencesAttachment(md, a))
         .map((a) => a.id);
@@ -462,8 +479,12 @@ export function AgentCreatePanel({
             ...(activeAttachmentIds.length > 0 ? { attachment_ids: activeAttachmentIds } : {}),
           });
         }
-        setLastActor(actor.type, actor.id);
-        setLastMode("agent");
+        // Acceptance can arrive after workspace or account changes. Keep
+        // the successful request, but never write into a replacement scope.
+        if (submittedScope && isQuickCreateScopeCurrent(submittedScope)) {
+          recordSuccessfulActor(submittedActor, submittedScope);
+          setLastMode("agent");
+        }
         toast.success(t(($) => $.create_issue.agent.toast_sent), {
           duration: 4000,
         });
@@ -654,18 +675,36 @@ export function AgentCreatePanel({
             quick-create flow with the squad's Operating Protocol layered
             on top, so a squad pick is "ask this squad to file the issue". */}
         <div className="px-5 pt-1 pb-2 shrink-0">
-          <ActorPicker
+          <QuickCreateActorPicker
             actor={actor}
             visibleAgents={visibleAgents}
             visibleSquads={visibleSquads}
             selectedAgent={selectedAgent}
             selectedSquad={selectedSquad}
+            favoriteActors={favoriteActors}
+            recentActors={recentActors}
+            preferencesReady={preferencesReady}
+            onToggleFavorite={(ref) => {
+              const scope = captureQuickCreateScope(wsId, userId);
+              if (scope) toggleFavoriteActor(ref, scope);
+            }}
+            agentState={{
+              pending: agentsQuery.isPending === true || membersQuery.isPending === true,
+              error: agentsQuery.isError === true || membersQuery.isError === true,
+              hasData: agentsQuery.data !== undefined && membersQuery.data !== undefined,
+              onRetry: () => { void agentsQuery.refetch(); void membersQuery.refetch(); },
+            }}
+            squadState={{
+              pending: squadsQuery.isPending === true,
+              error: squadsQuery.isError === true,
+              hasData: squadsQuery.data !== undefined,
+              onRetry: () => { void squadsQuery.refetch(); },
+            }}
             onPick={(next) => {
               setActor(next);
               setAgent({ actorType: next.type, actorId: next.id });
               setError(null);
             }}
-            t={t}
           />
         </div>
 
@@ -948,127 +987,5 @@ export function AgentCreatePanel({
           </Button>
         </div>
     </>
-  );
-}
-
-// ActorPicker — the "Created by" trigger + searchable popover listing
-// agents and squads. Lives in this file (not under issues/components/pickers)
-// because it composes the generic PropertyPicker with a quick-create-shaped
-// trigger styled to match the modal header row — promoting it would invite
-// reuse pressure on a UI that's deliberately tuned for this one surface.
-function ActorPicker({
-  actor,
-  visibleAgents,
-  visibleSquads,
-  selectedAgent,
-  selectedSquad,
-  onPick,
-  t,
-}: {
-  actor: ActorSelection | null;
-  visibleAgents: Agent[];
-  visibleSquads: Squad[];
-  selectedAgent: Agent | undefined;
-  selectedSquad: Squad | undefined;
-  onPick: (next: ActorSelection) => void;
-  t: ReturnType<typeof useT<"modals">>["t"];
-}) {
-  const [open, setOpen] = useState(false);
-  const [filter, setFilter] = useState("");
-  const query = filter.trim().toLowerCase();
-
-  const filteredAgents = useMemo(
-    () => visibleAgents.filter((a) => a.name.toLowerCase().includes(query) || matchesPinyin(a.name, query)),
-    [visibleAgents, query],
-  );
-  const filteredSquads = useMemo(
-    () => visibleSquads.filter((s) => s.name.toLowerCase().includes(query) || matchesPinyin(s.name, query)),
-    [visibleSquads, query],
-  );
-
-  const displayLabel = selectedSquad?.name ?? selectedAgent?.name;
-  const displayActor: ActorSelection | null = selectedSquad
-    ? { type: "squad", id: selectedSquad.id }
-    : selectedAgent
-      ? { type: "agent", id: selectedAgent.id }
-      : null;
-
-  return (
-    <PropertyPicker
-      open={open}
-      onOpenChange={(v: boolean) => {
-        setOpen(v);
-        if (!v) setFilter("");
-      }}
-      width="w-64"
-      align="start"
-      searchable
-      searchPlaceholder={t(($) => $.create_issue.agent.search_placeholder)}
-      onSearchChange={setFilter}
-      trigger={
-        <span className="flex items-center gap-2 text-caption text-muted-foreground hover:text-foreground transition-colors">
-          <span>{t(($) => $.create_issue.agent.created_by)}</span>
-          {displayActor && displayLabel ? (
-            <span className="flex items-center gap-1.5 text-foreground">
-              <ActorAvatar
-                actorType={displayActor.type}
-                actorId={displayActor.id}
-                size="sm"
-              />
-              {displayLabel}
-            </span>
-          ) : (
-            <span>{t(($) => $.create_issue.agent.pick_an_agent)}</span>
-          )}
-        </span>
-      }
-    >
-      {filteredAgents.length === 0 && filteredSquads.length === 0 ? (
-        query ? (
-          <PickerEmpty />
-        ) : (
-          <div className="px-2 py-1.5 text-caption text-muted-foreground">
-            {t(($) => $.create_issue.agent.no_agents)}
-          </div>
-        )
-      ) : (
-        <>
-          {filteredAgents.length > 0 && (
-            <PickerSection label={t(($) => $.create_issue.agent.agents_group)}>
-              {filteredAgents.map((a) => (
-                <PickerItem
-                  key={a.id}
-                  selected={actor?.type === "agent" && actor.id === a.id}
-                  onClick={() => {
-                    onPick({ type: "agent", id: a.id });
-                    setOpen(false);
-                  }}
-                >
-                  <ActorAvatar actorType="agent" actorId={a.id} size="sm" />
-                  <span className="truncate">{a.name}</span>
-                </PickerItem>
-              ))}
-            </PickerSection>
-          )}
-          {filteredSquads.length > 0 && (
-            <PickerSection label={t(($) => $.create_issue.agent.squads_group)}>
-              {filteredSquads.map((s) => (
-                <PickerItem
-                  key={s.id}
-                  selected={actor?.type === "squad" && actor.id === s.id}
-                  onClick={() => {
-                    onPick({ type: "squad", id: s.id });
-                    setOpen(false);
-                  }}
-                >
-                  <ActorAvatar actorType="squad" actorId={s.id} size="sm" />
-                  <span className="truncate">{s.name}</span>
-                </PickerItem>
-              ))}
-            </PickerSection>
-          )}
-        </>
-      )}
-    </PropertyPicker>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useLayoutEffect } from "react";
 import { Check } from "lucide-react";
 import {
   Popover,
@@ -50,6 +50,8 @@ export function PropertyPicker({
   searchable = false,
   searchPlaceholder,
   onSearchChange,
+  navigationResetKey,
+  searchInputRef,
   header,
   tooltip,
   children,
@@ -65,6 +67,10 @@ export function PropertyPicker({
   searchable?: boolean;
   searchPlaceholder?: string | undefined;
   onSearchChange?: (query: string) => void;
+  /** Invalidate navigation after an external result change. Typed search wins
+   * over a simultaneous reset; append-only display pages may keep this key. */
+  navigationResetKey?: string;
+  searchInputRef?: React.Ref<HTMLInputElement>;
   /** Custom sticky header rendered above the scrollable list. Use for
    *  filter toggles, search inputs, or any UI that must stay visible while
    *  the list scrolls. The built-in `searchable` input renders just above
@@ -87,7 +93,9 @@ export function PropertyPicker({
   const placeholder = searchPlaceholder ?? t(($) => $.filters.placeholder);
   const filterAria = t(($) => $.pickers.filter_options_aria);
   const [query, setQuery] = useState("");
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const highlightedIndex = useRef(-1);
+  const navigation = useRef<{ key: string | undefined; items: HTMLButtonElement[] }>({ key: navigationResetKey, items: [] });
+  const suppressUniqueSelection = useRef(false);
   const [tooltipHover, setTooltipHover] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   // Show the tooltip only while the trigger is hovered AND the popover is
@@ -102,31 +110,39 @@ export function PropertyPicker({
     );
   }, []);
 
-  // Typing re-highlights the first *real* match. The index can't be computed
-  // in the input's onChange handler — the filtered list hasn't rendered yet —
-  // so the keystroke raises a flag and this effect resolves it against the
-  // fresh DOM. Guarding on the flag keeps arrow keys free to walk back onto
-  // the empty row: only a keystroke moves the highlight off it.
   const pendingSearchHighlight = useRef(false);
-  useEffect(() => {
-    if (!pendingSearchHighlight.current) return;
-    pendingSearchHighlight.current = false;
-    const items = getItems();
-    // -1 when the query matches nothing (only the empty row is left), which
-    // leaves Enter inert instead of clearing the field.
-    setHighlightedIndex(items.findIndex((item) => !isEmptyItem(item)));
-  }, [children, getItems]);
-
-  // Apply/remove highlight class via DOM when index changes
-  useEffect(() => {
-    const items = getItems();
+  const paintHighlight = useCallback((items: HTMLButtonElement[], index: number) => {
+    highlightedIndex.current = index;
     for (const item of items) {
       item.classList.remove(HIGHLIGHT_CLASS);
     }
-    if (highlightedIndex >= 0 && highlightedIndex < items.length) {
-      items[highlightedIndex]?.classList.add(HIGHLIGHT_CLASS);
+    items[index]?.classList.add(HIGHLIGHT_CLASS);
+  }, []);
+
+  // Resolve against the committed candidates, not the previous search DOM.
+  // Also called at keydown: a child layout effect can fire Enter before this
+  // shell's layout effect has observed a changed candidate signature.
+  const syncNavigation = useCallback((items: HTMLButtonElement[]) => {
+    const previous = navigation.current;
+    if (pendingSearchHighlight.current) {
+      pendingSearchHighlight.current = false;
+      suppressUniqueSelection.current = false;
+      paintHighlight(items, items.findIndex((item) => !isEmptyItem(item)));
+    } else if (navigationResetKey !== undefined && (
+      previous.key !== navigationResetKey ||
+      previous.items.some((item, index) => item !== items[index])
+    )) {
+      suppressUniqueSelection.current = true;
+      paintHighlight(items, -1);
+    } else {
+      paintHighlight(items, highlightedIndex.current);
     }
-  }, [highlightedIndex, getItems, children]); // re-run when children change (filtered list updates)
+    navigation.current = { key: navigationResetKey, items };
+  }, [navigationResetKey, paintHighlight]);
+
+  useLayoutEffect(() => {
+    syncNavigation(getItems());
+  }, [children, getItems, syncNavigation, open]);
 
   // Reset the search state on the open -> closed transition rather than inside
   // an open-change handler. Every picker closes itself after a selection by
@@ -137,11 +153,14 @@ export function PropertyPicker({
   useEffect(() => {
     if (wasOpen.current && !open) {
       setQuery("");
-      setHighlightedIndex(-1);
+      highlightedIndex.current = -1;
+      pendingSearchHighlight.current = false;
+      suppressUniqueSelection.current = false;
+      navigation.current = { key: navigationResetKey, items: [] };
       onSearchChange?.("");
     }
     wasOpen.current = open;
-  }, [open, onSearchChange]);
+  }, [open, onSearchChange, navigationResetKey]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -149,27 +168,26 @@ export function PropertyPicker({
       // composition; Arrow rotates candidates). Don't hijack them.
       if (isImeComposing(e)) return;
       const items = getItems();
+      syncNavigation(items);
       if (items.length === 0) return;
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setHighlightedIndex((prev) => {
-          const next = prev < items.length - 1 ? prev + 1 : 0;
-          items[next]?.scrollIntoView({ block: "nearest" });
-          return next;
-        });
+        suppressUniqueSelection.current = false;
+        const next = highlightedIndex.current < items.length - 1 ? highlightedIndex.current + 1 : 0;
+        paintHighlight(items, next);
+        items[next]?.scrollIntoView({ block: "nearest" });
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        setHighlightedIndex((prev) => {
-          const next = prev > 0 ? prev - 1 : items.length - 1;
-          items[next]?.scrollIntoView({ block: "nearest" });
-          return next;
-        });
+        suppressUniqueSelection.current = false;
+        const next = highlightedIndex.current > 0 ? highlightedIndex.current - 1 : items.length - 1;
+        paintHighlight(items, next);
+        items[next]?.scrollIntoView({ block: "nearest" });
       } else if (e.key === "Enter") {
         e.preventDefault();
-        if (highlightedIndex >= 0 && highlightedIndex < items.length) {
-          items[highlightedIndex]?.click();
-        } else if (items.length === 1 && !isEmptyItem(items[0])) {
+        if (highlightedIndex.current >= 0 && highlightedIndex.current < items.length) {
+          items[highlightedIndex.current]?.click();
+        } else if (!suppressUniqueSelection.current && items.length === 1 && !isEmptyItem(items[0])) {
           // Auto-select when only one result. The empty row is excluded: a
           // query with no matches leaves it as the sole item, and Enter there
           // would clear the field the user was trying to search in.
@@ -177,7 +195,7 @@ export function PropertyPicker({
         }
       }
     },
-    [getItems, highlightedIndex],
+    [getItems, syncNavigation, paintHighlight],
   );
 
   const popoverTrigger = (
@@ -203,6 +221,7 @@ export function PropertyPicker({
         {searchable && (
           <div className="px-2 py-1.5 border-b">
             <input
+              ref={searchInputRef}
               type="text"
               value={query}
               onChange={(e) => {
