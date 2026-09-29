@@ -307,6 +307,157 @@ html[data-dnd-dragging="true"] * {
   }
 }
 
+/* The onboarding lifecycle morph stays inside a fixed canvas. Its six nodes
+ * retain their identity as the sequential flow opens into collaboration. */
+.adlc-graph {
+  position: relative;
+  height: 260px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  isolation: isolate;
+}
+
+.adlc-node {
+  --node-x: 50%;
+  --node-y: 52.6923%;
+  --node-width: 36%;
+  --node-height: 42px;
+  --linear-y: 52.6923%;
+  --linear-width: 14.5%;
+  position: absolute;
+  left: var(--node-x);
+  top: var(--node-y);
+  width: var(--node-width);
+  height: var(--node-height);
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in oklab, var(--brand) 25%, var(--border));
+  border-radius: 10px;
+  background: var(--background);
+  z-index: 1;
+}
+
+.adlc-node-goal { --node-x: 13%; --node-width: 25%; --node-height: 88px; --linear-x: 8.3333%; }
+.adlc-node-context { --node-y: 10.7692%; --node-width: 68%; --node-height: 38px; --linear-x: 25%; }
+.adlc-node-coding { --node-y: 33.8462%; --linear-x: 41.6667%; }
+.adlc-node-testing { --linear-x: 58.3333%; }
+.adlc-node-review { --node-y: 71.5385%; --linear-x: 75%; }
+.adlc-node-delivery { --node-x: 87%; --node-width: 25%; --node-height: 88px; --linear-x: 91.6667%; }
+
+.adlc-node-goal,
+.adlc-node-delivery {
+  border-color: color-mix(in oklab, var(--brand) 55%, var(--border));
+  background: color-mix(in oklab, var(--brand) 8%, var(--background));
+}
+
+.adlc-node-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px 8px;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.adlc-node-goal .adlc-node-content,
+.adlc-node-delivery .adlc-node-content { flex-direction: column; gap: 4px; }
+.adlc-node-label { text-wrap: balance; }
+.adlc-node-context .adlc-node-detail { border-left: 1px solid var(--border); padding-left: 8px; }
+.adlc-before { display: none; }
+.adlc-connections, .adlc-wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.adlc-wires { fill: none; stroke: color-mix(in oklab, var(--brand) 40%, transparent); stroke-width: 1.25; }
+.adlc-wires path { vector-effect: non-scaling-stroke; }
+.adlc-context-wire { stroke-dasharray: 3 4; }
+.adlc-feedback-wire { stroke: color-mix(in oklab, var(--brand) 25%, transparent); }
+.adlc-feedback-arrow { stroke: var(--brand); }
+.adlc-linear-wire, .adlc-signal { display: none; }
+.adlc-captions { position: relative; margin-top: -38px; text-align: center; }
+.adlc-feedback { display: flex; width: fit-content; max-width: 70%; align-items: center; gap: 6px; margin: 0 auto 12px; padding: 0 8px; background: color-mix(in oklab, var(--brand) 5%, var(--background)); }
+
+.adlc-graph[data-motion="entering"] .adlc-node {
+  animation: adlc-node-morph 2600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.adlc-graph[data-motion="entering"] .adlc-before {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  text-align: center;
+  overflow-wrap: anywhere;
+  animation: adlc-old-label 2600ms both;
+}
+.adlc-graph[data-motion="entering"] .adlc-node-content { animation: adlc-new-label 2600ms both; }
+.adlc-graph[data-motion="entering"] .adlc-linear-wire { display: block; animation: adlc-old-label 2600ms both; }
+.adlc-graph[data-motion="entering"] .adlc-branch-wires,
+.adlc-surface:has(.adlc-graph[data-motion="entering"]) .adlc-captions { animation: adlc-branches-reveal 2600ms both; }
+.adlc-graph[data-motion="entering"] .adlc-signal {
+  display: block;
+  stroke: var(--brand);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.06 0.94;
+  animation: adlc-signal-pass 2600ms ease-out both;
+}
+
+@keyframes adlc-node-morph {
+  0%, 18% {
+    left: var(--linear-x);
+    top: var(--linear-y);
+    width: var(--linear-width);
+    height: 64px;
+    background: var(--background);
+    border-color: var(--border);
+  }
+  72%, 100% {
+    left: var(--node-x);
+    top: var(--node-y);
+    width: var(--node-width);
+    height: var(--node-height);
+  }
+}
+@keyframes adlc-old-label { 0%, 24% { opacity: 1; } 40%, 100% { opacity: 0; } }
+@keyframes adlc-new-label { 0%, 32% { opacity: 0; } 60%, 100% { opacity: 1; } }
+@keyframes adlc-branches-reveal { 0%, 45% { opacity: 0; } 72%, 100% { opacity: 1; } }
+@keyframes adlc-signal-pass {
+  0%, 65% { opacity: 0; stroke-dashoffset: 1; }
+  68% { opacity: 1; stroke-dashoffset: 1; }
+  98% { opacity: 1; }
+  100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@container (max-width: 430px) {
+  .adlc-surface { padding-inline: 10px; }
+  .adlc-graph { height: 320px; }
+  .adlc-node { --node-height: 54px; --linear-width: 29%; }
+  .adlc-node-goal, .adlc-node-delivery { --node-height: 128px; }
+  .adlc-node-context { --node-height: 56px; }
+  .adlc-node-content { flex-direction: column; gap: 3px; padding: 5px 3px; }
+  .adlc-node-context .adlc-node-content { flex-direction: row; flex-wrap: wrap; column-gap: 5px; }
+  .adlc-node-context .adlc-node-detail { width: 100%; border: 0; padding: 0; }
+  .adlc-node-goal, .adlc-node-coding, .adlc-node-context { --linear-y: 36%; }
+  .adlc-node-testing, .adlc-node-review, .adlc-node-delivery { --linear-y: 62%; }
+  .adlc-node-goal, .adlc-node-testing { --linear-x: 16.6667%; }
+  .adlc-node-context, .adlc-node-review { --linear-x: 50%; }
+  .adlc-node-coding, .adlc-node-delivery { --linear-x: 83.3333%; }
+  .adlc-graph[data-motion="entering"] .adlc-linear-wire { display: none; }
+  .adlc-captions { margin-top: -44px; }
+  .adlc-feedback { max-width: 78%; line-height: 1.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adlc-lifecycle .adlc-node,
+  .adlc-lifecycle .adlc-node-content,
+  .adlc-lifecycle .adlc-branch-wires,
+  .adlc-lifecycle .adlc-captions { animation: none !important; }
+  .adlc-lifecycle .adlc-before,
+  .adlc-lifecycle .adlc-linear-wire,
+  .adlc-lifecycle .adlc-signal { display: none !important; }
+}
+
 /* Sonner toast: align icon to first line of text, not vertically centered */
 [data-sonner-toast] {
   align-items: flex-start !important;
