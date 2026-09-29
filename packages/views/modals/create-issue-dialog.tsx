@@ -133,38 +133,10 @@ function CreateIssueDialogBody({
     setMode(next);
   };
 
-  const className =
-    mode === "agent"
-      ? cn(
-          "p-0 gap-0 flex flex-col overflow-hidden",
-          "!top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2",
-          // Smooth size transition when switching modes — the manual mode
-          // uses the same easing.
-          "!transition-all !duration-300 !ease-out",
-          // Phone gutter. The widths below are `!important` so they beat
-          // DialogContent's own sizing — which also made them beat its
-          // `max-w-[calc(100%-2rem)]` safety margin, leaving the card flush
-          // against both screen edges on a 430px viewport (MUL-6236). Restore
-          // the margin here and let the `sm:` widths take over above 640px.
-          "!w-full !max-w-[calc(100vw-1.5rem)]",
-          // Source-context create needs numeric collapsed/expanded endpoints
-          // so its preview transition can interpolate the height. Ordinary
-          // quick create has no expanding preview and keeps its original
-          // content-driven height, capped for mobile browser chrome.
-          isExpanded
-            ? "!h-5/6 sm:!max-w-4xl"
-            : needsAssistSpace && !sourceContextExpanded
-              ? "!h-[600px] !max-h-[85dvh] sm:!max-w-2xl"
-              : sourceContextData
-              ? sourceContextExpanded
-                ? "!h-5/6 sm:!max-w-2xl"
-                : "!h-96 sm:!max-w-xl"
-              : "!max-h-[80dvh] sm:!max-w-xl",
-        )
-      : cn(
-          manualDialogContentClass(isExpanded),
-          sourceContextExpanded && "!h-5/6",
-        );
+  const className = cn(
+    manualDialogContentClass(isExpanded, needsAssistSpace),
+    sourceContextExpanded && "!h-5/6",
+  );
 
   return (
     <Dialog open onOpenChange={(v) => { if (!v) onClose(); }}>
@@ -189,6 +161,7 @@ function CreateIssueDialogBody({
             data={effectiveData}
             isExpanded={isExpanded}
             setIsExpanded={setIsExpanded}
+            onNeedsSpace={() => setNeedsAssistSpace(true)}
           />
         )}
       </DialogContent>

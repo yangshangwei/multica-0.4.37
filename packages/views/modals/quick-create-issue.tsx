@@ -391,6 +391,8 @@ export function AgentCreatePanel({
   const editorRef = useRef<ContentEditorRef>(null);
   const creatorRef = useRef<HTMLDivElement>(null);
   const [recommendationText, setRecommendationText] = useState(initialPrompt);
+  const descriptionScrollRef = useRef<HTMLDivElement>(null);
+  const descriptionContentRef = useRef<HTMLDivElement>(null);
   const [hasContent, setHasContent] = useState(initialPrompt.trim().length > 0);
   const [justSent, setJustSent] = useState(false);
   const [sentCount, setSentCount] = useState(0);
@@ -751,9 +753,10 @@ export function AgentCreatePanel({
             editor unbounded and pushed the modal past the viewport. */}
         <div
           {...dropZoneProps}
-          className="relative px-5 pb-3 flex flex-col flex-1 min-h-[140px] overflow-y-auto"
+          ref={descriptionScrollRef}
+          className="relative px-5 pb-3 flex flex-col flex-1 min-h-0 overflow-y-auto"
         >
-          <div className="flex flex-1 flex-col">
+          <div ref={descriptionContentRef} className="flex min-h-[140px] flex-auto shrink-0 flex-col [&>div]:min-h-0">
             <ContentEditor
               ref={editorRef}
               defaultValue={initialPrompt}
@@ -777,6 +780,18 @@ export function AgentCreatePanel({
             wsId={wsId}
             mode="agent"
             editorRef={editorRef}
+            onNeedsSpace={onNeedsSpace}
+            onRevealEditor={(position) => {
+              requestAnimationFrame(() => {
+                const scroll = descriptionScrollRef.current;
+                const content = descriptionContentRef.current;
+                if (scroll && content) {
+                  scroll.scrollTop = position === "start"
+                    ? 0
+                    : Math.max(0, content.offsetHeight - scroll.clientHeight);
+                }
+              });
+            }}
             value={initialPrompt}
             attachments={pendingAttachments}
             onChange={(prompt) => {

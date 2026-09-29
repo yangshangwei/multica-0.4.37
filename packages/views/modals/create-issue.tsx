@@ -205,6 +205,7 @@ export function ManualCreatePanel({
   data,
   isExpanded,
   setIsExpanded,
+  onNeedsSpace,
 }: {
   onClose: () => void;
   /** Called with the carry payload to seed the agent panel after switch. */
@@ -215,6 +216,7 @@ export function ManualCreatePanel({
    *  re-mount the Portal on mode swap and replay the open animation). */
   isExpanded: boolean;
   setIsExpanded: (v: boolean) => void;
+  onNeedsSpace?: () => void;
 }) {
   const { t } = useT("modals");
   const { t: tIssues } = useT("issues");
@@ -253,6 +255,8 @@ export function ManualCreatePanel({
   const [formResetKey, setFormResetKey] = useState(0);
   const titleEditorRef = useRef<TitleEditorRef>(null);
   const descEditorRef = useRef<ContentEditorRef>(null);
+  const descriptionScrollRef = useRef<HTMLDivElement>(null);
+  const descriptionContentRef = useRef<HTMLDivElement>(null);
   const { isDragOver: descDragOver, dropZoneProps: descDropZoneProps } = useFileDropZone({
     onDrop: (files) => files.forEach((f) => descEditorRef.current?.uploadFile(f)),
   });
@@ -944,8 +948,8 @@ export function ManualCreatePanel({
             </div>
 
             {/* Description — takes remaining space */}
-            <div {...descDropZoneProps} className="relative flex flex-col flex-1 min-h-0 overflow-y-auto px-5">
-              <div className="flex flex-1 flex-col">
+            <div ref={descriptionScrollRef} {...descDropZoneProps} className="relative flex flex-col flex-1 min-h-0 overflow-y-auto px-5">
+              <div ref={descriptionContentRef} className="flex min-h-[140px] flex-auto shrink-0 flex-col [&>div]:min-h-0">
                 <ContentEditor
                   ref={descEditorRef}
                   defaultValue={draft.manual.description}
@@ -963,6 +967,18 @@ export function ManualCreatePanel({
                 wsId={wsId}
                 mode="manual"
                 editorRef={descEditorRef}
+                onNeedsSpace={onNeedsSpace}
+                onRevealEditor={(position) => {
+                  requestAnimationFrame(() => {
+                    const scroll = descriptionScrollRef.current;
+                    const content = descriptionContentRef.current;
+                    if (scroll && content) {
+                      scroll.scrollTop = position === "start"
+                        ? 0
+                        : Math.max(0, content.offsetHeight - scroll.clientHeight);
+                    }
+                  });
+                }}
                 value={draft.manual.description}
                 title={title}
                 attachments={draftAttachments}
@@ -1430,20 +1446,15 @@ export function ManualCreatePanel({
 /** className for DialogContent in manual mode — depends on isExpanded.
  *  Exported so the shell (which now owns the DialogContent) can apply the same
  *  visual treatment without duplicating it. */
-export function manualDialogContentClass(isExpanded: boolean) {
+export function manualDialogContentClass(isExpanded: boolean, needsAssistSpace = false) {
   return cn(
     "p-0 gap-0 flex flex-col overflow-hidden",
-    "!top-1/2 !left-1/2 !-translate-x-1/2",
-    "!transition-all !duration-300 !ease-out",
-    // Phone gutter — see the matching note in create-issue-dialog.tsx: the
-    // `!important` widths below also override DialogContent's
-    // `max-w-[calc(100%-2rem)]`, leaving the card edge to edge on a phone
-    // (MUL-6236). `!h-96` stays a hard height; it already fits the shortest
-    // phone we support.
-    "!w-full !max-w-[calc(100vw-1.5rem)]",
+    "!top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2",
+    "!transition-all !duration-300 !ease-out motion-reduce:!transition-none",
+    "!w-full !max-w-[calc(100vw-1.5rem)] !max-h-[85dvh]",
     isExpanded
-      ? "!h-5/6 !-translate-y-1/2 sm:!max-w-4xl"
-      : "!h-96 !-translate-y-1/2 sm:!max-w-2xl",
+      ? "!h-5/6 sm:!max-w-4xl"
+      : cn(needsAssistSpace ? "!h-[600px]" : "!h-[440px]", "sm:!max-w-2xl"),
   );
 }
 
@@ -1457,17 +1468,19 @@ export function CreateIssueModal(props: {
   data?: Record<string, unknown> | null;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [needsAssistSpace, setNeedsAssistSpace] = useState(false);
   return (
     <DialogRoot open onOpenChange={(v) => { if (!v) props.onClose(); }}>
       <DialogContent
         finalFocus={false}
         showCloseButton={false}
-        className={manualDialogContentClass(isExpanded)}
+        className={manualDialogContentClass(isExpanded, needsAssistSpace)}
       >
         <ManualCreatePanel
           {...props}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
+          onNeedsSpace={() => setNeedsAssistSpace(true)}
         />
       </DialogContent>
     </DialogRoot>

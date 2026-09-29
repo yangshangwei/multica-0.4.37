@@ -57,6 +57,37 @@ func TestOptimizeIssueDescription(t *testing.T) {
 	}
 }
 
+func TestOptimizeIssueDescriptionDraftingResponses(t *testing.T) {
+	for _, tc := range []struct {
+		name      string
+		text      string
+		questions []string
+	}{
+		{"actionable single sentence", "将登录按钮文案改为登录。", []string{}},
+		{"blocking questions", "修复登录失败的问题。", []string{"哪个登录方式失败？", "失败时显示什么错误？"}},
+		// Keep older provider responses usable; the prompt asks for at most two.
+		{"legacy question count", "完善登录流程。", []string{"登录方式？", "目标平台？", "账号绑定？", "失败提示？", "验收方式？"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			output, err := json.Marshal(optimizeIssueDescriptionResponse{Text: tc.text, Questions: tc.questions})
+			if err != nil {
+				t.Fatal(err)
+			}
+			h, _ := descriptionAssistHandler(t, http.StatusOK, string(output))
+			var response optimizeIssueDescriptionResponse
+			testutil.Call(t, h.OptimizeIssueDescription, newRequest(http.MethodPost, "/api/issues/optimize-description", map[string]any{"text": tc.text, "mode": "manual"})).Want(http.StatusOK).JSON(&response)
+			if response.Text != tc.text || response.Questions == nil || len(response.Questions) != len(tc.questions) {
+				t.Fatalf("draft or questions changed: %+v", response)
+			}
+			for i, question := range tc.questions {
+				if response.Questions[i] != question {
+					t.Fatalf("question %d = %q, want %q", i, response.Questions[i], question)
+				}
+			}
+		})
+	}
+}
+
 func TestOptimizeIssueDescriptionRejectsInvalidRequest(t *testing.T) {
 	h, calls := descriptionAssistHandler(t, http.StatusOK, `{"text":"ok","questions":[]}`)
 	for _, body := range []any{

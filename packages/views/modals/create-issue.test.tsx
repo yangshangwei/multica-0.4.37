@@ -729,32 +729,32 @@ describe("CreateIssueModal", () => {
     mockDraftStore.draft.manual.description = "Original description";
     const onClose = vi.fn();
     renderModal(<CreateIssueModal onClose={onClose} />);
-    await userEvent.click(screen.getByRole("button", { name: "AI optimize description" }));
-    await screen.findByText("Clarified request");
+    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await screen.findByRole("button", { name: "Undo" });
     await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
     await waitFor(() => expect(screen.queryByText("Clarified request")).not.toBeInTheDocument());
     expect(screen.getByPlaceholderText("Add description...")).toHaveValue("");
-    expect(screen.getByRole("button", { name: "AI optimize description" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Help me refine" })).toBeDisabled();
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it("keeps AI preview out of submission until explicitly applied", async () => {
+  it("automatically fills the completed AI draft before submission", async () => {
     mockDraftStore.draft.manual.title = "Original title";
     mockDraftStore.draft.manual.description = "Original description";
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    await userEvent.click(screen.getByRole("button", { name: "AI optimize description" }));
-    expect(await screen.findByText("Clarified request")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await screen.findByRole("button", { name: "Undo" });
     expect(mockCreateIssue).not.toHaveBeenCalled();
-    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Original description");
+    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Clarified request");
     await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
-    expect(mockCreateIssue).toHaveBeenCalledWith(expect.objectContaining({ description: "Original description" }));
+    expect(mockCreateIssue).toHaveBeenCalledWith(expect.objectContaining({ description: "Clarified request" }));
   });
 
   it("writes adopted AI text to the manual draft and supports undo", async () => {
     mockDraftStore.draft.manual.description = "Original description";
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    await userEvent.click(screen.getByRole("button", { name: "AI optimize description" }));
-    await userEvent.click(await screen.findByRole("button", { name: "Apply and replace" }));
+    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await screen.findByRole("button", { name: "Undo" });
     expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Clarified request");
     expect(mockDraftStore.draft.manual.description).toBe("Clarified request");
     expect(mockDraftStore.draft.agent.prompt).toBe("");

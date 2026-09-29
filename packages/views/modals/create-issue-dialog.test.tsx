@@ -69,11 +69,17 @@ vi.mock("./quick-create-issue", () => ({
   AgentCreatePanel: ({
     data,
     onSwitchMode,
+    onNeedsSpace,
+    setIsExpanded,
   }: {
     data?: Record<string, unknown> | null;
+    onNeedsSpace?: () => void;
+    setIsExpanded?: (value: boolean) => void;
     onSwitchMode?: (carry?: Record<string, unknown> | null) => void;
   }) => (
     <div>
+      <button onClick={onNeedsSpace}>request assist space</button>
+      <button onClick={() => setIsExpanded?.(true)}>expand dialog</button>
       agent panel · {String(data?.anchor_comment_id ?? "ordinary")} · {data?.source_context_expanded ? "expanded" : "collapsed"}
       <button type="button" onClick={() => onSwitchMode?.({ parent_issue_id: data?.parent_issue_id })}>
         switch manual
@@ -92,11 +98,17 @@ vi.mock("./create-issue", () => ({
   ManualCreatePanel: ({
     data,
     onSwitchMode,
+    onNeedsSpace,
+    setIsExpanded,
   }: {
     data?: Record<string, unknown> | null;
+    onNeedsSpace?: () => void;
+    setIsExpanded?: (value: boolean) => void;
     onSwitchMode?: (carry?: Record<string, unknown> | null) => void;
   }) => (
     <div>
+      <button onClick={onNeedsSpace}>request assist space</button>
+      <button onClick={() => setIsExpanded?.(true)}>expand dialog</button>
       manual panel · {String(data?.anchor_comment_id ?? "ordinary")} · {data?.source_context_expanded ? "expanded" : "collapsed"}
       <button type="button" onClick={() => onSwitchMode?.({ parent_issue_id: data?.parent_issue_id })}>
         switch agent
@@ -109,7 +121,7 @@ vi.mock("./create-issue", () => ({
       </button>
     </div>
   ),
-  manualDialogContentClass: () => "manual-dialog-class",
+  manualDialogContentClass: (expanded: boolean, assist: boolean) => `manual-dialog-class size-${expanded ? "expanded" : assist ? "assist" : "compact"}`,
 }));
 
 // `cn` is deliberately NOT mocked here: the whole point of these assertions is
@@ -125,28 +137,16 @@ describe("CreateIssueDialog sizing", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-  // MUL-6236: every width the shell sets is `!important` so it can beat
-  // DialogContent's own sizing — which also beat DialogContent's
-  // `max-w-[calc(100%-2rem)]` gutter, so the card ran the full width of a
-  // phone screen with no margin on either side.
-  it("caps the agent dialog inside the viewport on phones", () => {
-    render(<CreateIssueDialog onClose={vi.fn()} initialMode="agent" />);
-
-    expect(contentClass()).toContain("!max-w-[calc(100vw-1.5rem)]");
-    expect(contentClass()).toContain("sm:!max-w-xl");
-  });
-
-  it("keeps the ordinary agent dialog content-driven", () => {
-    render(<CreateIssueDialog onClose={vi.fn()} initialMode="agent" />);
-
-    expect(contentClass()).toContain("!max-h-[80dvh]");
-    expect(contentClass()).not.toContain("!h-96");
-  });
-
-  it("hands manual mode its own sizing", () => {
-    render(<CreateIssueDialog onClose={vi.fn()} initialMode="manual" />);
-
-    expect(contentClass()).toBe("manual-dialog-class");
+  // Concrete dimensions are covered by create-issue.test and browser QA.
+  // This suite owns shell-to-panel layout state wiring.
+  it.each(["agent", "manual"] as const)("expands %s once for assistance without undoing user expansion", (mode) => {
+    render(<CreateIssueDialog onClose={vi.fn()} initialMode={mode} />);
+    expect(contentClass()).toContain("size-compact");
+    fireEvent.click(screen.getByRole("button", { name: "request assist space" }));
+    expect(contentClass()).toContain("size-assist");
+    fireEvent.click(screen.getByRole("button", { name: "expand dialog" }));
+    fireEvent.click(screen.getByRole("button", { name: "request assist space" }));
+    expect(contentClass()).toContain("size-expanded");
   });
 
   it("leaves ordinary create outside the isolated source-context path", () => {
@@ -175,13 +175,10 @@ describe("CreateIssueDialog sizing", () => {
 
     expect(mockBeginIsolatedDraft).toHaveBeenCalledTimes(1);
     expect(screen.getByText(/agent panel · comment-source/)).toBeInTheDocument();
-    expect(contentClass()).toContain("!h-96");
-    expect(contentClass()).toContain("sm:!max-w-xl");
+    expect(contentClass()).toContain("size-compact");
     fireEvent.click(screen.getByRole("button", { name: "toggle source context" }));
     expect(screen.getByText(/agent panel · comment-source · expanded/)).toBeInTheDocument();
     expect(contentClass()).toContain("!h-5/6");
-    expect(contentClass()).toContain("sm:!max-w-2xl");
-    expect(contentClass()).not.toContain("!h-96");
     fireEvent.click(screen.getByRole("button", { name: "switch manual" }));
     expect(screen.getByText(/manual panel · comment-source · expanded/)).toBeInTheDocument();
     expect(contentClass()).toContain("manual-dialog-class");

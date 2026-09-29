@@ -657,22 +657,21 @@ describe("AgentCreatePanel", () => {
     mockQuickCreateStore.keepOpen = true;
     const onClose = vi.fn();
     renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
-    await userEvent.click(screen.getByRole("button", { name: "AI optimize instructions" }));
-    await screen.findByText("Clarified request");
+    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await screen.findByRole("button", { name: "Undo" });
     await userEvent.click(screen.getByRole("button", { name: /^Create$/ }));
     await waitFor(() => expect(screen.queryByText("Clarified request")).not.toBeInTheDocument());
     expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("");
-    expect(screen.getByRole("button", { name: "AI optimize instructions" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Help me refine" })).toBeDisabled();
     expect(onClose).not.toHaveBeenCalled();
   });
 
   it("optimizes only the agent draft and creates with the adopted prompt", async () => {
     renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
-    await userEvent.click(screen.getByRole("button", { name: "AI optimize instructions" }));
-    expect(await screen.findByText("Clarified request")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await screen.findByRole("button", { name: "Undo" });
     expect(mockQuickCreateIssue).not.toHaveBeenCalled();
-    expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("Persisted draft prompt");
-    await userEvent.click(screen.getByRole("button", { name: "Apply and replace" }));
+    expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("Clarified request");
     expect(mockIssueDraftStore.draft.agent.prompt).toBe("Clarified request");
     expect(mockIssueDraftStore.draft.manual.description).toBe("");
     await userEvent.click(screen.getByRole("button", { name: /^Create$/ }));
@@ -1202,7 +1201,7 @@ describe("AgentCreatePanel", () => {
     ).closest(".overflow-y-auto");
     const sourceContext = document.querySelector<HTMLElement>('[data-slot="source-context-preview"]');
 
-    expect(prompt).toHaveClass("flex-1", "min-h-[140px]", "overflow-y-auto");
+    expect(prompt).toHaveClass("flex-1", "min-h-0", "overflow-y-auto");
     expect(sourceContext).toHaveClass("shrink-0");
     expect(prompt?.parentElement).toBe(sourceContext?.parentElement);
     expect(prompt?.nextElementSibling).toBe(sourceContext);

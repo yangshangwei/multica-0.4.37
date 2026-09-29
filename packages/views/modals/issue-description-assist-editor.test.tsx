@@ -1,5 +1,5 @@
 import { createRef, useState } from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterAll, afterEach, beforeAll, expect, it, vi } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -57,6 +57,7 @@ it("preserves file cards, mentions and code through AI apply/undo and returns fo
     const [value, setValue] = useState(original);
     return (
       <>
+        <input aria-label="Issue title" />
         <ContentEditor ref={editorRef} defaultValue={original} onUpdate={setValue} debounceMs={500} />
         <IssueDescriptionAssist wsId="workspace-1" mode="manual" editorRef={editorRef} value={value}
           onChange={setValue} uploading={false} isBlocked={() => false} submitting={false} />
@@ -83,11 +84,10 @@ it("preserves file cards, mentions and code through AI apply/undo and returns fo
   expect(editor.querySelector(".mention")).toHaveTextContent("@Alice");
   expect(editor.querySelector("pre")).toHaveTextContent("const result = compute(1, 2);");
 
-  await userEvent.click(screen.getByRole("button", { name: "AI optimize description" }));
-  await screen.findByRole("button", { name: "Apply and replace" });
+  await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+  await screen.findByRole("button", { name: "Undo" });
   expect(optimize).toHaveBeenCalledWith(expect.objectContaining({ text: originalSerialized, mode: "manual" }), { workspaceId: "workspace-1", signal: expect.any(AbortSignal), onText: expect.any(Function) });
-  expect(editorRef.current!.getMarkdown().trim()).toBe(originalSerialized);
-  await userEvent.click(screen.getByRole("button", { name: "Apply and replace" }));
+  expect(editor).toHaveTextContent("Review the report and explain the result.");
   expect(editorRef.current!.getMarkdown()).toContain(protectedContent);
   expect(screen.getByLabelText("Persisted draft")).toHaveTextContent("Review the report and explain the result.");
   expect(editorRef.current!.getMarkdown()).not.toContain("Which milestone?");
@@ -97,4 +97,13 @@ it("preserves file cards, mentions and code through AI apply/undo and returns fo
   expect(editorRef.current!.getMarkdown().trim()).toBe(originalSerialized);
   expect(screen.getByLabelText("Persisted draft").textContent).toBe(originalSerialized);
   await waitFor(() => expect(editor).toHaveFocus());
+
+  let resolve!: (value: { text: string; questions: string[] }) => void;
+  optimize.mockReturnValueOnce(new Promise<{ text: string; questions: string[] }>((done) => { resolve = done; }));
+  await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+  await userEvent.type(screen.getByRole("textbox", { name: "Issue title" }), "My title");
+  await act(async () => { resolve({ text: optimized, questions: [] }); });
+  expect(editor).toHaveTextContent("Review the report and explain the result.");
+  expect(screen.getByRole("textbox", { name: "Issue title" })).toHaveFocus();
+  expect(screen.getByRole("textbox", { name: "Issue title" })).toHaveValue("My title");
 });
