@@ -96,7 +96,6 @@ export function DesktopEndpointSetupPage({
     setError(validation); if (validation) return;
     setSaving(true);
     try {
-      if (embedded) await window.daemonAPI.stop();
       const result = await window.desktopAPI.saveRuntimeConfig({ apiUrl: address });
       if (!result.ok) setStatus({ kind: "failure", message: result.message || t.saveFailed });
     } catch { setStatus({ kind: "failure", message: t.saveFailed }); }

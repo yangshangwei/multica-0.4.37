@@ -334,6 +334,7 @@ import {
   EMPTY_LIST_WEBHOOK_DELIVERIES_RESPONSE,
   EMPTY_WEBHOOK_DELIVERY,
   AppConfigSchema,
+  MemberWithUserSchema,
   type AppConfigResponse,
   LoginResponseSchema,
   GroupedIssuesResponseSchema,
@@ -568,6 +569,7 @@ export class ApiError extends Error {
     statusText: string,
     body?: unknown,
     private readonly isAuthResponseCurrent?: () => boolean,
+    readonly retryAfterSeconds?: number,
   ) {
     super(message);
     this.name = "ApiError";
@@ -782,6 +784,18 @@ export class ApiClient {
    * that replaced it (2026-09-06 audit, finding 3).
    */
   private authEpoch = 0;
+  private endpointEpoch = 0;
+  private endpointFrozen = false;
+  private endpointController = new AbortController();
+
+  invalidateSession(): void {
+    this.endpointFrozen = true;
+    this.endpointEpoch += 1;
+    this.endpointController.abort();
+    this.endpointController = new AbortController();
+    this.credentialEpoch += 1;
+    this.setToken(null);
+  }
   // Unlike authEpoch's 401 deduplication, this tracks credential replacement.
   // Rejecting the same session twice must still allow device-auth recovery.
   private credentialEpoch = 0;
@@ -823,7 +837,7 @@ export class ApiClient {
     if (this.token) headers["Authorization"] = `Bearer ${this.token}`;
     const slug = getCurrentSlug();
     if (slug) headers["X-Workspace-Slug"] = slug;
-    const csrf = this.readCsrfToken();
+    const csrf = this.options.identity?.platform === "desktop" ? null : this.readCsrfToken();
     if (csrf) headers["X-CSRF-Token"] = csrf;
     const id = this.options.identity;
     if (id?.platform) headers["X-Client-Platform"] = id.platform;
@@ -879,6 +893,8 @@ export class ApiClient {
     path: string,
     init?: RequestInit & { extraHeaders?: Record<string, string> },
   ): Promise<Response> {
+    if (this.endpointFrozen) throw new Error("Server session is switching; reload to continue");
+    const endpointEpoch = this.endpointEpoch;
     const rid = createRequestId();
     const start = Date.now();
     const method = init?.method ?? "GET";
@@ -900,12 +916,20 @@ export class ApiClient {
     const res = await fetch(`${this.baseUrl}${path}`, {
       ...init,
       headers,
-      credentials: "include",
+      signal: init?.signal ? AbortSignal.any([init.signal, this.endpointController.signal]) : this.endpointController.signal,
+      credentials: this.options.identity?.platform === "desktop" ? "omit" : "include",
+      redirect: "error",
     });
 
+    if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
     if (!res.ok) {
-      if (res.status === 401) this.handleUnauthorized(sentEpoch);
+      const passwordAttempt = path === "/auth/login" || path === "/api/me/password/change";
+      if (res.status === 401 && !passwordAttempt) this.handleUnauthorized(sentEpoch);
       const { message, body } = await this.parseErrorBody(res, `API error: ${res.status} ${res.statusText}`);
+      if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
+      const invalidPassword = passwordAttempt &&
+        body !== null && typeof body === "object" && "code" in body && body.code === "invalid_credentials";
+      if (res.status === 401 && passwordAttempt && !invalidPassword) this.handleUnauthorized(sentEpoch);
       // Older servers report a missing session user as 404. This exact identity
       // response is terminal; missing routes/resources and outages are not.
       const missingSessionUser = method === "GET" && path === "/api/me" &&
@@ -924,6 +948,7 @@ export class ApiClient {
         status === 401
           ? () => sentCredentialEpoch === this.credentialEpoch
           : undefined,
+        /^\d+$/.test(res.headers.get("Retry-After") ?? "") ? Number(res.headers.get("Retry-After")) : undefined,
       );
     }
 
@@ -932,6 +957,7 @@ export class ApiClient {
   }
 
   private async fetch<T>(path: string, init?: RequestInit): Promise<T> {
+    const endpointEpoch = this.endpointEpoch;
     const res = await this.fetchRaw(path, {
       ...init,
       extraHeaders: { "Content-Type": "application/json" },
@@ -940,7 +966,35 @@ export class ApiClient {
     if (res.status === 204) {
       return undefined as T;
     }
-    return res.json() as Promise<T>;
+    const data = await res.json();
+    if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
+    return data as T;
+  }
+
+  private async passwordSession(path: string, body: Record<string, string>): Promise<LoginResponse> {
+    const epoch = this.authEpoch;
+    const raw = await this.fetch<unknown>(path, {
+      method: "POST", body: JSON.stringify(body), redirect: "error",
+    });
+    if (epoch !== this.authEpoch) throw new Error("Authentication attempt superseded");
+    const response = parseWithFallback<LoginResponse>(raw, LoginResponseSchema, EMPTY_LOGIN_RESPONSE, { endpoint: `POST ${path}`, redact: true });
+    if (!response.token.trim() || !response.user.id.trim()) throw new Error("Authentication returned an unusable session");
+    this.bumpAuthEpoch();
+    this.credentialEpoch += 1;
+    return response;
+  }
+
+  passwordLogin(username: string, password: string) {
+    return this.passwordSession("/auth/login", { username, password });
+  }
+  registerPassword(username: string, password: string, name: string) {
+    return this.passwordSession("/auth/register", { username, password, name });
+  }
+  setupPassword(username: string, password: string, name: string) {
+    return this.passwordSession("/api/me/password/setup", { username, password, name });
+  }
+  changePassword(current_password: string, new_password: string) {
+    return this.passwordSession("/api/me/password/change", { current_password, new_password });
   }
 
   // Auth
@@ -1005,9 +1059,11 @@ export class ApiClient {
 
   async getMe(): Promise<User> {
     const raw = await this.fetch<unknown>("/api/me");
-    return parseWithFallback(raw, UserSchema, EMPTY_USER, {
-      endpoint: "GET /api/me",
+    const user = parseWithFallback(raw, UserSchema, EMPTY_USER, {
+      endpoint: "GET /api/me", redact: true,
     });
+    if (!user.id.trim()) throw new Error("Identity response is unusable");
+    return user;
   }
 
   async markOnboardingComplete(payload?: {
@@ -3111,6 +3167,8 @@ export class ApiClient {
    * browser has to set the multipart boundary itself.
    */
   async publishPluginPackage(workspaceId: string, bundle: File): Promise<PluginPackage> {
+    if (this.endpointFrozen) throw new Error("Server session is switching; reload to continue");
+    const endpointEpoch = this.endpointEpoch;
     const formData = new FormData();
     formData.append("bundle", bundle);
 
@@ -3123,13 +3181,19 @@ export class ApiClient {
       method: "POST",
       headers,
       body: formData,
-      credentials: "include",
+      credentials: this.options.identity?.platform === "desktop" ? "omit" : "include",
+      redirect: "error",
+      signal: this.endpointController.signal,
     });
+    if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
     if (!res.ok) {
       if (res.status === 401) this.handleUnauthorized(sentEpoch);
-      throw new Error(await this.parseErrorMessage(res, `Publishing failed: ${res.status}`));
+      const message = await this.parseErrorMessage(res, `Publishing failed: ${res.status}`);
+      if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
+      throw new Error(message);
     }
     const raw = (await res.json()) as unknown;
+    if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
     return parseWithFallback(raw, PluginPackageSchema, EMPTY_PLUGIN_PACKAGE, {
       endpoint: "POST /api/workspaces/{id}/plugins/packages",
     });
@@ -3325,7 +3389,10 @@ export class ApiClient {
 
   // Members
   async listMembers(workspaceId: string): Promise<MemberWithUser[]> {
-    return this.fetch(`/api/workspaces/${workspaceId}/members`);
+    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/members`);
+    return parseWithFallback<MemberWithUser[]>(raw, MemberWithUserSchema.array(), [], {
+      endpoint: "GET /api/workspaces/{id}/members", redact: true,
+    });
   }
 
   async createMember(workspaceId: string, data: CreateMemberRequest): Promise<Invitation> {
@@ -3615,6 +3682,8 @@ export class ApiClient {
     // failure via `signal.aborted` / `err.name === "AbortError"`.
     signal?: AbortSignal,
   ): Promise<Attachment> {
+    if (this.endpointFrozen) throw new Error("Server session is switching; reload to continue");
+    const endpointEpoch = this.endpointEpoch;
     const formData = new FormData();
     formData.append("file", file);
     if (opts?.issueId) formData.append("issue_id", opts.issueId);
@@ -3634,19 +3703,23 @@ export class ApiClient {
       method: "POST",
       headers,
       body: formData,
-      credentials: "include",
-      signal,
+      credentials: this.options.identity?.platform === "desktop" ? "omit" : "include",
+      redirect: "error",
+      signal: signal ? AbortSignal.any([signal, this.endpointController.signal]) : this.endpointController.signal,
     });
 
+    if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
     if (!res.ok) {
       if (res.status === 401) this.handleUnauthorized(sentEpoch);
       const message = await this.parseErrorMessage(res, `Upload failed: ${res.status}`);
+      if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
       this.logger.error(`← ${res.status} /api/upload-file`, { rid, duration: `${Date.now() - start}ms`, error: message });
       throw new Error(message);
     }
 
     this.logger.info(`← ${res.status} /api/upload-file`, { rid, duration: `${Date.now() - start}ms` });
     const raw = (await res.json()) as unknown;
+    if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
     return parseWithFallback(raw, AttachmentResponseSchema, EMPTY_ATTACHMENT, {
       endpoint: "POST /api/upload-file",
     });

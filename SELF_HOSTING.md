@@ -850,3 +850,90 @@ multica daemon start
 ## Advanced Configuration
 
 For environment variables, manual setup (without Docker), reverse proxy configuration, database setup, and more, see the [Advanced Configuration Guide](SELF_HOSTING_ADVANCED.md).
+
+
+## Username and password accounts (local/self-hosted)
+
+Set `MULTICA_AUTH_MODE=password`, `MULTICA_DEVICE_AUTH_ENABLED=false`,
+`MULTICA_PASSWORD_LIMITER_MODE=single`, `ALLOW_SIGNUP=true`, and
+`DISABLE_WORKSPACE_CREATION=false`. Leave `MULTICA_CLOUD_URL` empty. Restart the
+API after applying the additive database migrations. Password mode disables
+device, email-code and Google login. Users register with username, password and
+name, then name their own workspace through the existing welcome flow. Email
+allowlists do not apply to password registration. `ALLOW_SIGNUP=false` stops new
+registrations but allows existing users to log in and bind eligible old accounts.
+Use HTTPS whenever traffic leaves the local machine.
+
+`single` supports exactly one API process. Its bounded in-memory limiter resets
+on restart. For multiple API processes select `shared` on every replica and use
+the same `REDIS_URL`; Redis failure returns 503 rather than bypassing limits.
+Forwarded client addresses are honored only for networks explicitly configured
+in `MULTICA_TRUSTED_PROXIES`. Do not trust an entire employee network as a proxy.
+The password service limits KDF concurrency to at most four CPU workers and
+returns 503 with Retry-After under saturation. Benchmark representative login
+bursts and ordinary API latency on the deployment CPU before release.
+
+### Migrate an existing device account
+
+Back up the database and record the old user UUID before changing modes. Set
+both `MULTICA_PASSWORD_MIGRATION_CUTOFF` and
+`MULTICA_PASSWORD_MIGRATION_DEADLINE` to fixed UTC RFC3339 timestamps on all API
+replicas. Only unexpired old JWTs issued before the cutoff can bind before the
+deadline. Empty values disable self-service binding. A seven-day window is a
+suggestion, not an automatic default; restarting never extends it.
+
+An eligible old session can only read its profile, bind its account, or log out.
+Binding keeps the original UUID, memberships, tasks and comments. It revokes
+old personal credentials and cancels active executions owned by the user's
+runtimes, including tasks submitted by other members. Execution history and
+workspace plugin installations remain. Users explicitly retry cancelled tasks;
+external effects are not automatically replayed. Drain Cloud Fleet work before
+enabling password mode; Fleet is outside this release's scope.
+
+Verify both unique indexes on `user_password_credential` are valid after
+migrations 463–464; an interrupted concurrent index build needs operator repair
+before registration is enabled. Keep nullable-email and credential migrations
+when rolling application binaries back. Never restore device login as a recovery
+path after password accounts exist.
+
+### Recover access without email
+
+Use the existing server executable on the trusted API host:
+
+```sh
+server password-recover --user USER_UUID
+# For a historical user without a username:
+server password-recover --user USER_UUID --username alice
+```
+
+In the existing self-host image, use `docker compose -f docker-compose.selfhost.yml exec backend /app/server password-recover --user USER_UUID`.
+
+The command uses the normal `DATABASE_URL` and password-mode configuration. It
+reads the temporary password from standard input with terminal echo disabled;
+it never accepts the password as an argument or environment variable. For a
+container without terminal control, pipe a protected secret file into the
+command's stdin and securely remove the file afterwards. Do not type a literal
+password into a shell command or shell history. The command exits before HTTP
+listeners start. Existing usernames cannot be changed through recovery.
+
+Recovery preserves the user UUID and data, revokes existing personal
+credentials, and permits only profile, password change and logout until the
+user replaces the temporary password. Recovery and normal password changes use
+the same transactional revocation path. Mobile password UI and Cloud Fleet are
+not included; verify installed desktop versions against the new server before
+rolling out. Real target-hardware capacity, proxy/multi-replica behavior and
+released-client compatibility remain deployment acceptance checks.
+
+Password login does not issue CloudFront wildcard signed cookies, including for
+temporary-password sessions, and clears legacy wildcard cookies in the browser.
+Private attachments continue through authorized attachment endpoints and
+resource-scoped download URLs. Before migrating a deployment that issued
+wildcard cookies, expire or invalidate its old CloudFront signing grants; a
+copied stateless CDN cookie cannot be revoked by updating an API account version.
+Previously issued resource-scoped download URLs retain their documented expiry.
+
+
+New Desktop browser sign-in callbacks require the matching Web login page to
+return the one-time `desktop_state`. Upgrade Desktop and Web together; older
+Web pages that omit this value cannot complete browser sign-in. Password forms
+and supported direct legacy sign-in remain available according to server mode.

@@ -18,6 +18,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/websocket"
 	"github.com/multica-ai/multica/server/internal/auth"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 // MembershipChecker verifies a user belongs to a workspace.
@@ -221,6 +222,9 @@ func sk(t, id string) scopeKey { return scopeKey{Type: t, ID: id} }
 // Client represents a single WebSocket connection with identity and the set
 // of scopes it is currently subscribed to.
 type Client struct {
+	authorize   func() error
+	ctx         context.Context
+	cancel      context.CancelFunc
 	hub         *Hub
 	conn        *websocket.Conn
 	send        chan []byte
@@ -275,18 +279,65 @@ type SubscriptionCallback func(scopeType, scopeID string)
 
 // Hub manages WebSocket connections organized into scope-based rooms.
 type Hub struct {
-	rooms      map[scopeKey]map[*Client]bool
-	clients    map[*Client]bool // every connected client (used by global Broadcast and snapshots)
-	broadcast  chan []byte
-	register   chan *Client
-	unregister chan *Client
-	mu         sync.RWMutex
+	passwordQueries *db.Queries
+	rooms           map[scopeKey]map[*Client]bool
+	clients         map[*Client]bool // every connected client (used by global Broadcast and snapshots)
+	broadcast       chan []byte
+	register        chan *Client
+	unregister      chan *Client
+	mu              sync.RWMutex
 
 	authorizer ScopeAuthorizer
 
 	// Subscription lifecycle hooks. Both can be nil.
 	onFirstSubscriber SubscriptionCallback
 	onLastSubscriber  SubscriptionCallback
+}
+
+// DisconnectUser closes local connections after a credential revocation commits.
+// Remote replicas still enforce authorization independently before every event.
+func (h *Hub) DisconnectUser(userID string) {
+	h.mu.RLock()
+	connections := make([]*websocket.Conn, 0)
+	for c := range h.clients {
+		if c.userID == userID && c.conn != nil {
+			connections = append(connections, c.conn)
+		}
+	}
+	h.mu.RUnlock()
+	for _, conn := range connections {
+		conn.Close()
+	}
+}
+
+// SetPasswordQueries must be called before accepting connections.
+func (h *Hub) SetPasswordQueries(q *db.Queries) { h.passwordQueries = q }
+
+func (h *Hub) authenticateToken(raw string, pr PATResolver, ctx context.Context) (string, string) {
+	if !auth.PasswordMode() {
+		return authenticateToken(raw, pr, ctx)
+	}
+	identity, err := auth.CheckPasswordToken(ctx, h.passwordQueries, raw, false)
+	if err != nil {
+		if errors.Is(err, auth.ErrPasswordSession) {
+			return "", `{"error":"invalid token"}`
+		}
+		return "", `{"error":"authentication unavailable"}`
+	}
+	return identity.Session.UserID, ""
+}
+
+func (c *Client) authorized() bool {
+	if c.authorize == nil {
+		return !auth.PasswordMode()
+	}
+	if err := c.authorize(); err != nil {
+		if c.conn != nil {
+			c.conn.Close()
+		}
+		return false
+	}
+	return true
 }
 
 // NewHub creates a new Hub instance.
@@ -790,10 +841,15 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 	}
 
 	var userID string
+	var authToken string
 	if cookie, err := r.Cookie(auth.AuthCookieName); err == nil && cookie.Value != "" {
-		uid, errMsg := authenticateToken(cookie.Value, pr, r.Context())
+		authToken = cookie.Value
+		uid, errMsg := hub.authenticateToken(authToken, pr, r.Context())
 		if errMsg != "" {
 			status := http.StatusUnauthorized
+			if errMsg == `{"error":"authentication unavailable"}` {
+				status = http.StatusServiceUnavailable
+			}
 			if errMsg == `{"error":"account disabled"}` {
 				status = http.StatusForbidden
 			}
@@ -827,7 +883,8 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 			writeWSAuthErrorAndClose(conn, []byte(errMsg), "workspace_id", workspaceID)
 			return
 		}
-		uid, errMsg := authenticateToken(tokenStr, pr, r.Context())
+		authToken = tokenStr
+		uid, errMsg := hub.authenticateToken(authToken, pr, r.Context())
 		if errMsg != "" {
 			writeWSAuthErrorAndClose(conn, []byte(errMsg), "workspace_id", workspaceID)
 			return
@@ -877,6 +934,18 @@ func HandleWebSocket(hub *Hub, mc MembershipChecker, pr PATResolver, resolveSlug
 		userID:      userID,
 		workspaceID: workspaceID,
 	}
+	client.ctx, client.cancel = context.WithCancel(context.WithoutCancel(r.Context()))
+	if auth.PasswordMode() {
+		client.authorize = func() error {
+			ctx, cancel := context.WithTimeout(client.ctx, 5*time.Second)
+			defer cancel()
+			identity, err := auth.CheckPasswordToken(ctx, hub.passwordQueries, authToken, false)
+			if err == nil && identity.Session.UserID != userID {
+				return auth.ErrPasswordSession
+			}
+			return err
+		}
+	}
 	hub.register <- client
 
 	go client.writePump()
@@ -897,6 +966,9 @@ type subPayload struct {
 
 func (c *Client) readPump() {
 	defer func() {
+		if c.cancel != nil {
+			c.cancel()
+		}
 		c.hub.unregister <- c
 		c.conn.Close()
 	}()
@@ -930,6 +1002,9 @@ func (c *Client) readPump() {
 }
 
 func (c *Client) handleFrame(raw []byte) {
+	if !c.authorized() {
+		return
+	}
 	var f inboundFrame
 	if err := json.Unmarshal(raw, &f); err != nil {
 		slog.Debug("ws inbound: invalid json", "error", err, "user_id", c.userID)
@@ -1057,11 +1132,17 @@ func (c *Client) writePump() {
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
+			if !c.authorized() {
+				return
+			}
 			if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
 				slog.Warn("websocket write error", "error", err, "user_id", c.userID, "workspace_id", c.workspaceID)
 				return
 			}
 		case <-ticker.C:
+			if !c.authorized() {
+				return
+			}
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return

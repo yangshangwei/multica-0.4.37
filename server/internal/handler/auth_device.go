@@ -13,6 +13,7 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
@@ -195,6 +196,10 @@ type deviceProvisionResult struct {
 // below is the only thing standing between it and an unauthenticated caller,
 // which is the point of the feature and the reason it defaults to off.
 func (h *Handler) DeviceLogin(w http.ResponseWriter, r *http.Request) {
+	if auth.PasswordMode() {
+		passwordError(w, 403, "auth_mode_disabled", "Device login is disabled")
+		return
+	}
 	if !h.cfg.DeviceAuthEnabled {
 		writeError(w, http.StatusForbidden, "device auth is not enabled on this instance")
 		return
@@ -236,7 +241,7 @@ func (h *Handler) DeviceLogin(w http.ResponseWriter, r *http.Request) {
 
 	userID := uuidToString(result.user.ID)
 	if result.createdUser {
-		obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.Signup(userID, result.user.Email, deviceAuthSignupSource))
+		obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.Signup(userID, result.user.Email.String, deviceAuthSignupSource))
 	}
 	if result.createdWorkspace {
 		obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.WorkspaceCreated(userID, result.workspaceID))
@@ -294,13 +299,13 @@ func (h *Handler) provisionDeviceIdentity(ctx context.Context, deviceID, deviceN
 	qtx := h.Queries.WithTx(tx)
 
 	email := deviceUserEmail(deviceID)
-	user, err := qtx.GetUserByEmail(ctx, email)
+	user, err := qtx.GetUserByEmail(ctx, pgtype.Text{String: email, Valid: true})
 	switch {
 	case err == nil:
 	case isNotFound(err):
 		user, err = qtx.CreateUser(ctx, db.CreateUserParams{
 			Name:  deviceUserName(deviceName, deviceID),
-			Email: email,
+			Email: pgtype.Text{String: email, Valid: true},
 		})
 		if err != nil {
 			return out, raceOrErr(err)

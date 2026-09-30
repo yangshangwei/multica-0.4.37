@@ -2280,7 +2280,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 		resp.InitiatorID = uuidToString(task.InitiatorUserID)
 		if u, err := h.Queries.GetUser(r.Context(), task.InitiatorUserID); err == nil {
 			resp.InitiatorName = u.Name
-			resp.InitiatorEmail = u.Email
+			resp.InitiatorEmail = u.Email.String
 		}
 	}
 
@@ -2502,7 +2502,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 						if u, err := h.Queries.GetUser(r.Context(), comment.AuthorID); err == nil {
 							resp.TriggerAuthorName = u.Name
 							resp.InitiatorName = u.Name
-							resp.InitiatorEmail = u.Email
+							resp.InitiatorEmail = u.Email.String
 						}
 					}
 				}

@@ -20,7 +20,9 @@ export function ClientUsageReporter({
   storage: StorageAdapter;
   identity?: ClientIdentity;
 }) {
-  const userID = useAuthStore((state) => state.user?.id ?? null);
+  const userID = useAuthStore((state) =>
+    state.status === "authenticated" ? state.user?.id ?? null : null,
+  );
   const userIDRef = useRef(userID);
   userIDRef.current = userID;
   const inFlight = useRef(false);

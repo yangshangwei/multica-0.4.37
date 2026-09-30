@@ -12,9 +12,9 @@ import (
 )
 
 const createTaskToken = `-- name: CreateTaskToken :one
-INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id)
-VALUES ($1, $2, $3, $4, $5, $6, COALESCE($7::uuid, gen_random_uuid()))
-RETURNING id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at
+INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id, auth_version)
+VALUES ($1, $2, $3, $4, $5, $6, COALESCE($7::uuid, gen_random_uuid()), $8)
+RETURNING id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version
 `
 
 type CreateTaskTokenParams struct {
@@ -25,6 +25,7 @@ type CreateTaskTokenParams struct {
 	UserID      pgtype.UUID        `json:"user_id"`
 	ExpiresAt   pgtype.Timestamptz `json:"expires_at"`
 	ID          pgtype.UUID        `json:"id"`
+	AuthVersion int64              `json:"auth_version"`
 }
 
 func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams) (TaskToken, error) {
@@ -36,6 +37,7 @@ func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams
 		arg.UserID,
 		arg.ExpiresAt,
 		arg.ID,
+		arg.AuthVersion,
 	)
 	var i TaskToken
 	err := row.Scan(
@@ -47,6 +49,7 @@ func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams
 		&i.UserID,
 		&i.ExpiresAt,
 		&i.CreatedAt,
+		&i.AuthVersion,
 	)
 	return i, err
 }
@@ -70,7 +73,7 @@ func (q *Queries) DeleteTaskTokensByTask(ctx context.Context, taskID pgtype.UUID
 }
 
 const getTaskTokenByHash = `-- name: GetTaskTokenByHash :one
-SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at FROM task_token
+SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version FROM task_token
 WHERE token_hash = $1 AND expires_at > now()
 `
 
@@ -86,6 +89,7 @@ func (q *Queries) GetTaskTokenByHash(ctx context.Context, tokenHash string) (Tas
 		&i.UserID,
 		&i.ExpiresAt,
 		&i.CreatedAt,
+		&i.AuthVersion,
 	)
 	return i, err
 }

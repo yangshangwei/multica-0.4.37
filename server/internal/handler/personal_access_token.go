@@ -101,7 +101,26 @@ func (h *Handler) CreatePersonalAccessToken(w http.ResponseWriter, r *http.Reque
 		prefix = prefix[:12]
 	}
 
-	pat, err := h.Queries.CreatePersonalAccessToken(r.Context(), db.CreatePersonalAccessTokenParams{
+	queries := h.Queries
+	var tx pgx.Tx
+	var version int64
+	if auth.PasswordMode() {
+		tx, err = h.TxStarter.Begin(r.Context())
+		if err != nil {
+			passwordDBError(w, err)
+			return
+		}
+		defer tx.Rollback(r.Context())
+		queries = h.Queries.WithTx(tx)
+		session, lockErr := auth.LockPasswordSession(r.Context(), queries)
+		if lockErr != nil {
+			passwordSessionError(w, lockErr)
+			return
+		}
+		version = session.Version
+	}
+	pat, err := queries.CreatePersonalAccessToken(r.Context(), db.CreatePersonalAccessTokenParams{
+		AuthVersion: version,
 		UserID:      parseUUID(userID),
 		Name:        req.Name,
 		TokenHash:   auth.HashToken(rawToken),
@@ -113,6 +132,12 @@ func (h *Handler) CreatePersonalAccessToken(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	if tx != nil {
+		if err = tx.Commit(r.Context()); err != nil {
+			passwordDBError(w, err)
+			return
+		}
+	}
 	writeJSON(w, http.StatusCreated, CreatePATResponse{
 		PersonalAccessTokenResponse: patToResponse(pat),
 		Token:                       rawToken,
@@ -181,8 +206,24 @@ func (h *Handler) RenewCurrentPersonalAccessToken(w http.ResponseWriter, r *http
 		return
 	}
 
+	queries := h.Queries
+	var tx pgx.Tx
+	if auth.PasswordMode() {
+		var err error
+		tx, err = h.TxStarter.Begin(r.Context())
+		if err != nil {
+			passwordDBError(w, err)
+			return
+		}
+		defer tx.Rollback(r.Context())
+		queries = h.Queries.WithTx(tx)
+		if _, err = auth.LockPasswordSession(r.Context(), queries); err != nil {
+			passwordSessionError(w, err)
+			return
+		}
+	}
 	hash := auth.HashToken(rawToken)
-	pat, err := h.Queries.GetPersonalAccessTokenByHash(r.Context(), hash)
+	pat, err := queries.GetPersonalAccessTokenByHash(r.Context(), hash)
 	if err != nil {
 		// The Auth middleware already validated the token, so reaching here
 		// with no row means the PAT was revoked or expired in the gap between
@@ -230,13 +271,19 @@ func (h *Handler) RenewCurrentPersonalAccessToken(w http.ResponseWriter, r *http
 	// first writer succeeds the row sits at now+90d, which is well past
 	// now+7d, so any concurrent renewer hits the WHERE and sees ErrNoRows.
 	renewThreshold := pgtype.Timestamptz{Time: now.Add(PATRenewThreshold), Valid: true}
-	updated, err := h.Queries.ExtendPersonalAccessTokenExpiry(r.Context(), db.ExtendPersonalAccessTokenExpiryParams{
+	updated, err := queries.ExtendPersonalAccessTokenExpiry(r.Context(), db.ExtendPersonalAccessTokenExpiryParams{
 		ID:               pat.ID,
 		NewExpiresAt:     newExpiresAt,
 		RenewThresholdAt: renewThreshold,
 	})
 	switch {
 	case err == nil:
+		if tx != nil {
+			if err = tx.Commit(r.Context()); err != nil {
+				passwordDBError(w, err)
+				return
+			}
+		}
 		writeJSON(w, http.StatusOK, RenewPATResponse{
 			ExpiresAt: timestampToString(updated),
 			Renewed:   true,
@@ -247,7 +294,7 @@ func (h *Handler) RenewCurrentPersonalAccessToken(w http.ResponseWriter, r *http
 		// guarantee is "after a successful call, expires_at is fresh enough
 		// to last until the next poll", and a parallel writer already
 		// satisfied that, so this is success from the caller's POV.
-		current, getErr := h.Queries.GetPersonalAccessTokenByHash(r.Context(), hash)
+		current, getErr := queries.GetPersonalAccessTokenByHash(r.Context(), hash)
 		if getErr != nil {
 			writeError(w, http.StatusUnauthorized, "token is no longer valid")
 			return

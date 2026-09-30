@@ -19,7 +19,7 @@ RETURNING id, name, email, avatar_url, created_at, updated_at, onboarded_at, onb
 
 type CreateUserParams struct {
 	Name      string      `json:"name"`
-	Email     string      `json:"email"`
+	Email     pgtype.Text `json:"email"`
 	AvatarUrl pgtype.Text `json:"avatar_url"`
 }
 
@@ -77,7 +77,7 @@ SELECT id, name, email, avatar_url, created_at, updated_at, onboarded_at, onboar
 WHERE email = $1
 `
 
-func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
+func (q *Queries) GetUserByEmail(ctx context.Context, email pgtype.Text) (User, error) {
 	row := q.db.QueryRow(ctx, getUserByEmail, email)
 	var i User
 	err := row.Scan(
@@ -107,7 +107,7 @@ WHERE id = ANY($1::uuid[])
 type GetUsersByIDsRow struct {
 	ID        pgtype.UUID `json:"id"`
 	Name      string      `json:"name"`
-	Email     string      `json:"email"`
+	Email     pgtype.Text `json:"email"`
 	AvatarUrl pgtype.Text `json:"avatar_url"`
 }
 

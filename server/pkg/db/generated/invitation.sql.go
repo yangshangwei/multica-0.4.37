@@ -226,7 +226,7 @@ type ListPendingInvitationsByWorkspaceRow struct {
 	UpdatedAt     pgtype.Timestamptz `json:"updated_at"`
 	ExpiresAt     pgtype.Timestamptz `json:"expires_at"`
 	InviterName   string             `json:"inviter_name"`
-	InviterEmail  string             `json:"inviter_email"`
+	InviterEmail  pgtype.Text        `json:"inviter_email"`
 }
 
 func (q *Queries) ListPendingInvitationsByWorkspace(ctx context.Context, workspaceID pgtype.UUID) ([]ListPendingInvitationsByWorkspaceRow, error) {
@@ -294,7 +294,7 @@ type ListPendingInvitationsForUserRow struct {
 	ExpiresAt     pgtype.Timestamptz `json:"expires_at"`
 	WorkspaceName string             `json:"workspace_name"`
 	InviterName   string             `json:"inviter_name"`
-	InviterEmail  string             `json:"inviter_email"`
+	InviterEmail  pgtype.Text        `json:"inviter_email"`
 }
 
 func (q *Queries) ListPendingInvitationsForUser(ctx context.Context, arg ListPendingInvitationsForUserParams) ([]ListPendingInvitationsForUserRow, error) {

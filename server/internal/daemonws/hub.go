@@ -9,7 +9,10 @@ import (
 	"sync"
 	"time"
 
+	"errors"
 	"github.com/gorilla/websocket"
+	"github.com/multica-ai/multica/server/internal/auth"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
@@ -86,11 +89,12 @@ func (i ClientIdentity) AllowsWorkspace(workspaceID string) bool {
 }
 
 type client struct {
-	hub      *Hub
-	conn     *websocket.Conn
-	send     chan []byte
-	identity ClientIdentity
-	runtimes map[string]struct{}
+	authorize func() error
+	hub       *Hub
+	conn      *websocket.Conn
+	send      chan []byte
+	identity  ClientIdentity
+	runtimes  map[string]struct{}
 
 	// ctx is cancelled when the connection tears down, so async RPC handlers
 	// stop instead of running against a dead socket. cancel is invoked from
@@ -184,7 +188,8 @@ type MessageKindRecorder interface {
 // Hub keeps daemon WebSocket connections indexed by runtime ID. Messages are
 // best-effort wakeup hints; the daemon still uses HTTP claim for correctness.
 type Hub struct {
-	upgrader websocket.Upgrader
+	passwordQueries *db.Queries
+	upgrader        websocket.Upgrader
 
 	mu          sync.RWMutex
 	clients     map[*client]bool
@@ -200,6 +205,38 @@ type Hub struct {
 
 	kindMu       sync.RWMutex
 	kindRecorder MessageKindRecorder
+}
+
+// DisconnectUser closes local connections after a credential revocation commits.
+// Remote replicas still enforce authorization independently before every event.
+func (h *Hub) DisconnectUser(userID string) {
+	h.mu.RLock()
+	connections := make([]*websocket.Conn, 0)
+	for c := range h.clients {
+		if c.identity.UserID == userID && c.conn != nil {
+			connections = append(connections, c.conn)
+		}
+	}
+	h.mu.RUnlock()
+	for _, conn := range connections {
+		conn.Close()
+	}
+}
+
+// SetPasswordQueries must be called before accepting connections.
+func (h *Hub) SetPasswordQueries(q *db.Queries) { h.passwordQueries = q }
+
+func (c *client) authorized() bool {
+	if c.authorize == nil {
+		return !auth.PasswordMode()
+	}
+	if err := c.authorize(); err != nil {
+		if c.conn != nil {
+			c.conn.Close()
+		}
+		return false
+	}
+	return true
 }
 
 func NewHub() *Hub {
@@ -279,6 +316,27 @@ func (h *Hub) messageKindRecorder() MessageKindRecorder {
 }
 
 func (h *Hub) HandleWebSocket(w http.ResponseWriter, r *http.Request, identity ClientIdentity) {
+	var passwordIdentity auth.PasswordTokenIdentity
+	rawToken := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if auth.PasswordMode() {
+		var err error
+		passwordIdentity, err = auth.CheckPasswordToken(r.Context(), h.passwordQueries, rawToken, true)
+		if err != nil {
+			status := http.StatusServiceUnavailable
+			if errors.Is(err, auth.ErrPasswordSession) {
+				status = http.StatusUnauthorized
+			}
+			http.Error(w, "daemon authentication unavailable or invalid", status)
+			return
+		}
+		if identity.UserID != "" && identity.UserID != passwordIdentity.Session.UserID {
+			http.Error(w, "invalid daemon identity", http.StatusUnauthorized)
+			return
+		}
+		identity.UserID = passwordIdentity.Session.UserID
+		r = r.WithContext(auth.WithPasswordSession(r.Context(), passwordIdentity.Session))
+	}
+
 	if len(identity.RuntimeIDs) == 0 && identity.UserID == "" {
 		http.Error(w, `{"error":"runtime_ids or user identity required"}`, http.StatusBadRequest)
 		return
@@ -304,7 +362,18 @@ func (h *Hub) HandleWebSocket(w http.ResponseWriter, r *http.Request, identity C
 		runtimes: runtimes,
 		rpcSem:   make(chan struct{}, maxInFlightRPCPerClient),
 	}
-	c.ctx, c.cancel = context.WithCancel(context.Background())
+	c.ctx, c.cancel = context.WithCancel(context.WithoutCancel(r.Context()))
+	if auth.PasswordMode() {
+		c.authorize = func() error {
+			ctx, cancel := context.WithTimeout(c.ctx, 5*time.Second)
+			defer cancel()
+			current, err := auth.CheckPasswordToken(ctx, h.passwordQueries, rawToken, true)
+			if err == nil && current.Session != passwordIdentity.Session {
+				return auth.ErrPasswordSession
+			}
+			return err
+		}
+	}
 	h.register(c)
 
 	go c.writePump()
@@ -727,6 +796,9 @@ func (c *client) readPump() {
 }
 
 func (c *client) handleFrame(raw []byte) {
+	if !c.authorized() {
+		return
+	}
 	var msg protocol.Message
 	if err := json.Unmarshal(raw, &msg); err != nil {
 		slog.Debug("daemon websocket invalid frame", "error", err, "daemon_id", c.identity.DaemonID)
@@ -794,6 +866,9 @@ func (c *client) handleRPCFrame(raw json.RawMessage) {
 			var cancel context.CancelFunc
 			hctx, cancel = context.WithTimeout(c.ctx, time.Duration(req.TimeoutMs)*time.Millisecond)
 			defer cancel()
+		}
+		if !c.authorized() {
+			return
 		}
 		status, body, err := handler(hctx, c.identity, req.Method, req.Body)
 		if err != nil {
@@ -864,7 +939,7 @@ func (c *client) handleHeartbeatFrame(raw json.RawMessage) {
 	// that keeps the HTTP heartbeat from putting a per-call timeout on
 	// PopPending. The natural bound is the read pump's lifetime (the conn
 	// closes if the daemon goes away) plus Redis's own server-side limits.
-	ack, err := handler(context.Background(), c.identity, payload.RuntimeID, payload.SupportsBatchImport)
+	ack, err := handler(c.ctx, c.identity, payload.RuntimeID, payload.SupportsBatchImport)
 	if err != nil {
 		slog.Warn("daemon websocket heartbeat handler failed",
 			"error", err,
@@ -906,11 +981,17 @@ func (c *client) writePump() {
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
+			if !c.authorized() {
+				return
+			}
 			if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
 				slog.Debug("daemon websocket write error", "error", err, "daemon_id", c.identity.DaemonID)
 				return
 			}
 		case <-ticker.C:
+			if !c.authorized() {
+				return
+			}
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return

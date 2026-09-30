@@ -52,6 +52,9 @@ export interface Member {
 }
 
 export interface User {
+  username?: string;
+  requires_account_setup?: boolean;
+  requires_password_change?: boolean;
   id: string;
   name: string;
   email: string;
@@ -88,6 +91,7 @@ export interface User {
 }
 
 export interface MemberWithUser {
+  username?: string;
   id: string;
   workspace_id: string;
   user_id: string;

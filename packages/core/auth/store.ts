@@ -19,7 +19,15 @@ export interface AuthStoreOptions {
   cookieAuth?: boolean;
 }
 
+export function userAuthStatus(user: User): AuthStatus {
+  if (user.requires_account_setup === true) return "account_setup_required";
+  if (user.requires_password_change === true) return "password_change_required";
+  return "authenticated";
+}
+
 export type AuthStatus =
+  | "account_setup_required"
+  | "password_change_required"
   | "authenticating"
   | "authenticated"
   | "unauthenticated"
@@ -44,6 +52,10 @@ export interface AuthState {
   loginWithGoogle: (code: string, redirectUri: string) => Promise<User>;
   loginWithToken: (token: string) => Promise<User>;
   loginWithDevice: (deviceId: string, deviceName?: string) => Promise<User>;
+  loginWithPassword: (username: string, password: string) => Promise<User>;
+  registerPassword: (username: string, password: string, name: string) => Promise<User>;
+  setupPassword: (username: string, password: string, name: string) => Promise<User>;
+  changePassword: (current: string, next: string) => Promise<User>;
   logout: () => void;
   sessionExpired: () => void;
   setUser: (user: User) => void;
@@ -54,7 +66,18 @@ export function createAuthStore(options: AuthStoreOptions) {
   const { api, storage, onLogin, onLogout, onSessionExpired, cookieAuth } =
     options;
 
-  return create<AuthState>((set, get) => ({
+  return create<AuthState>((set, get) => {
+    const accept = async (request: Promise<{token: string; user: User}>) => {
+      const { token, user } = await request;
+      if (!token || !user.id) throw new Error("Authentication returned an unusable session");
+      if (!cookieAuth) { storage.setItem("multica_token", token); api.setToken(token); }
+      const status = userAuthStatus(user);
+      if (status === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? {email: user.email} : {}), name: user.name });
+      set({ user, isLoading: false, status, expired: false });
+      return user;
+    };
+    return ({
     user: null,
     isLoading: true,
     status: "authenticating",
@@ -80,9 +103,9 @@ export function createAuthStore(options: AuthStoreOptions) {
         storage.setItem("multica_token", token);
         api.setToken(token);
       }
-      onLogin?.();
-      identifyAnalytics(user.id, { email: user.email, name: user.name });
-      set({ user, isLoading: false, status: "authenticated", expired: false });
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
       return user;
     },
 
@@ -92,9 +115,9 @@ export function createAuthStore(options: AuthStoreOptions) {
         storage.setItem("multica_token", token);
         api.setToken(token);
       }
-      onLogin?.();
-      identifyAnalytics(user.id, { email: user.email, name: user.name });
-      set({ user, isLoading: false, status: "authenticated", expired: false });
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
       return user;
     },
 
@@ -102,9 +125,9 @@ export function createAuthStore(options: AuthStoreOptions) {
       storage.setItem("multica_token", token);
       api.setToken(token);
       const user = await api.getMe();
-      onLogin?.();
-      identifyAnalytics(user.id, { email: user.email, name: user.name });
-      set({ user, isLoading: false, status: "authenticated", expired: false });
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
       return user;
     },
 
@@ -126,11 +149,16 @@ export function createAuthStore(options: AuthStoreOptions) {
         storage.setItem("multica_token", token);
         api.setToken(token);
       }
-      onLogin?.();
-      identifyAnalytics(user.id, { email: user.email, name: user.name });
-      set({ user, isLoading: false, status: "authenticated" });
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
+      set({ user, isLoading: false, status: userAuthStatus(user) });
       return user;
     },
+
+    loginWithPassword: (username, password) => accept(api.passwordLogin(username, password)),
+    registerPassword: (username, password, name) => accept(api.registerPassword(username, password, name)),
+    setupPassword: (username, password, name) => accept(api.setupPassword(username, password, name)),
+    changePassword: (current, next) => accept(api.changePassword(current, next)),
 
     logout: () => {
       if (cookieAuth) {
@@ -202,12 +230,13 @@ export function createAuthStore(options: AuthStoreOptions) {
     },
 
     setUser: (user: User) => {
-      set({ user, isLoading: false, status: "authenticated", expired: false });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
     },
 
     refreshMe: async () => {
       const user = await api.getMe();
-      set({ user, isLoading: false, status: "authenticated", expired: false });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
     },
-  }));
+  });
+  });
 }

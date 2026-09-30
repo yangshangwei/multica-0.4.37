@@ -225,6 +225,7 @@ type DaemonPendingWorkNotifier interface {
 }
 
 type Handler struct {
+	PasswordLimiter        *auth.PasswordLimiter
 	Queries                *db.Queries
 	DB                     dbExecutor
 	TxStarter              txStarter

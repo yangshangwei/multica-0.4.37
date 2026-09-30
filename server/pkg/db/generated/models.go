@@ -625,6 +625,8 @@ type DaemonToken struct {
 	DaemonID    string             `json:"daemon_id"`
 	ExpiresAt   pgtype.Timestamptz `json:"expires_at"`
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UserID      pgtype.UUID        `json:"user_id"`
+	AuthVersion int64              `json:"auth_version"`
 }
 
 type DingtalkBotIdentity struct {
@@ -1062,6 +1064,7 @@ type PersonalAccessToken struct {
 	LastUsedAt  pgtype.Timestamptz `json:"last_used_at"`
 	Revoked     bool               `json:"revoked"`
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	AuthVersion int64              `json:"auth_version"`
 }
 
 type PinnedItem struct {
@@ -1357,6 +1360,7 @@ type TaskToken struct {
 	UserID      pgtype.UUID        `json:"user_id"`
 	ExpiresAt   pgtype.Timestamptz `json:"expires_at"`
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	AuthVersion int64              `json:"auth_version"`
 }
 
 type TaskUsage struct {
@@ -1421,7 +1425,7 @@ type TaskUsageHourlyRollupState struct {
 type User struct {
 	ID                      pgtype.UUID        `json:"id"`
 	Name                    string             `json:"name"`
-	Email                   string             `json:"email"`
+	Email                   pgtype.Text        `json:"email"`
 	AvatarUrl               pgtype.Text        `json:"avatar_url"`
 	CreatedAt               pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt               pgtype.Timestamptz `json:"updated_at"`
@@ -1446,6 +1450,16 @@ type UserComposioConnection struct {
 	Status             string             `json:"status"`
 	ConnectedAt        pgtype.Timestamptz `json:"connected_at"`
 	LastUsedAt         pgtype.Timestamptz `json:"last_used_at"`
+	CreatedAt          pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt          pgtype.Timestamptz `json:"updated_at"`
+}
+
+type UserPasswordCredential struct {
+	UserID             pgtype.UUID        `json:"user_id"`
+	Username           string             `json:"username"`
+	PasswordHash       string             `json:"password_hash"`
+	SessionVersion     int64              `json:"session_version"`
+	MustChangePassword bool               `json:"must_change_password"`
 	CreatedAt          pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt          pgtype.Timestamptz `json:"updated_at"`
 }

@@ -740,6 +740,10 @@ export const EMPTY_ISSUE_PROPERTIES_RESPONSE: IssuePropertiesResponse = {
 };
 
 export interface AppConfigResponse {
+  auth_mode?: string;
+  password_auth_available?: boolean;
+  password_signup_available?: boolean;
+  account_binding_available?: boolean;
   cdn_domain: string;
   // True when the CDN domain serves private content via time-bounded signed
   // URLs (CloudFront signing) — raw storage URLs on that domain are NOT
@@ -964,6 +968,10 @@ const FeatureFlagsSchema = z.preprocess(
 );
 
 export const AppConfigSchema = z.object({
+  auth_mode: z.string().default("legacy"),
+  password_auth_available: BooleanWithDefaultSchema(false),
+  password_signup_available: BooleanWithDefaultSchema(false),
+  account_binding_available: BooleanWithDefaultSchema(false),
   cdn_domain: z.string().default(""),
   cdn_signed: BooleanWithDefaultSchema(false),
   allow_signup: BooleanWithDefaultSchema(true),
@@ -986,6 +994,7 @@ export const AppConfigSchema = z.object({
 }).loose();
 
 export const EMPTY_APP_CONFIG: AppConfigResponse = {
+  auth_mode: "invalid",
   cdn_domain: "",
   cdn_signed: false,
   allow_signup: true,
@@ -2662,6 +2671,9 @@ export const EMPTY_WEBHOOK_DELIVERY: WebhookDelivery = {
 // ---------------------------------------------------------------------------
 
 export const UserSchema = z.object({
+  username: z.string().optional(),
+  requires_account_setup: z.boolean().optional(),
+  requires_password_change: z.boolean().optional(),
   id: z.string(),
   name: z.string().default(""),
   email: z.string().default(""),
@@ -3706,6 +3718,7 @@ export const EMPTY_SHARE_LINK_INFO: ShareLinkInfo = {
 };
 
 export const MemberWithUserSchema = z.object({
+  username: OptionalStringSchema,
   id: z.string(),
   workspace_id: z.string(),
   user_id: z.string(),

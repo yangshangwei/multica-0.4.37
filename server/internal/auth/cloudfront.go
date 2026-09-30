@@ -216,3 +216,17 @@ func cfBase64Encode(data []byte) string {
 	r := strings.NewReplacer("+", "-", "=", "_", "/", "~")
 	return r.Replace(encoded)
 }
+
+// ClearCloudFrontCookies removes legacy wildcard grants during password login.
+// Password sessions use authorized attachment endpoints and scoped URLs instead.
+func ClearCloudFrontCookies(w http.ResponseWriter) {
+	domains := []string{""}
+	if domain := strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")); domain != "" {
+		domains = append(domains, domain)
+	}
+	for _, domain := range domains {
+		for _, name := range []string{"CloudFront-Policy", "CloudFront-Signature", "CloudFront-Key-Pair-Id"} {
+			http.SetCookie(w, &http.Cookie{Name: name, Value: "", Domain: domain, Path: "/", MaxAge: -1, Expires: time.Unix(1, 0), Secure: true, HttpOnly: true, SameSite: http.SameSiteNoneMode})
+		}
+	}
+}

@@ -86,7 +86,7 @@ func (h *Handler) CreateInvitation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check if the user is already a member.
-	existingUser, err := h.Queries.GetUserByEmail(r.Context(), email)
+	existingUser, err := h.Queries.GetUserByEmail(r.Context(), pgtype.Text{String: email, Valid: true})
 	if err == nil {
 		_, memberErr := h.Queries.GetMemberByUserAndWorkspace(r.Context(), db.GetMemberByUserAndWorkspaceParams{
 			UserID:      existingUser.ID,
@@ -278,7 +278,7 @@ func (h *Handler) ListWorkspaceInvitations(w http.ResponseWriter, r *http.Reques
 			UpdatedAt:     timestampToString(row.UpdatedAt),
 			ExpiresAt:     timestampToString(row.ExpiresAt),
 			InviterName:   row.InviterName,
-			InviterEmail:  row.InviterEmail,
+			InviterEmail:  row.InviterEmail.String,
 		}
 	}
 
@@ -378,7 +378,7 @@ func (h *Handler) GetMyInvitation(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to load user")
 		return
 	}
-	if strings.ToLower(user.Email) != inv.InviteeEmail && uuidToString(inv.InviteeUserID) != userID {
+	if (!user.Email.Valid || user.Email.String == "" || strings.ToLower(user.Email.String) != inv.InviteeEmail) && uuidToString(inv.InviteeUserID) != userID {
 		writeError(w, http.StatusForbidden, "invitation does not belong to you")
 		return
 	}
@@ -391,7 +391,7 @@ func (h *Handler) GetMyInvitation(w http.ResponseWriter, r *http.Request) {
 	}
 	if inviter, err := h.Queries.GetUser(r.Context(), inv.InviterID); err == nil {
 		resp.InviterName = inviter.Name
-		resp.InviterEmail = inviter.Email
+		resp.InviterEmail = inviter.Email.String
 	}
 
 	writeJSON(w, http.StatusOK, resp)
@@ -416,7 +416,7 @@ func (h *Handler) ListMyInvitations(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := h.Queries.ListPendingInvitationsForUser(r.Context(), db.ListPendingInvitationsForUserParams{
 		InviteeUserID: user.ID,
-		InviteeEmail:  user.Email,
+		InviteeEmail:  user.Email.String,
 	})
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to list invitations")
@@ -438,7 +438,7 @@ func (h *Handler) ListMyInvitations(w http.ResponseWriter, r *http.Request) {
 			ExpiresAt:     timestampToString(row.ExpiresAt),
 			WorkspaceName: row.WorkspaceName,
 			InviterName:   row.InviterName,
-			InviterEmail:  row.InviterEmail,
+			InviterEmail:  row.InviterEmail.String,
 		}
 	}
 
@@ -473,7 +473,7 @@ func (h *Handler) AcceptInvitation(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to load user")
 		return
 	}
-	if strings.ToLower(user.Email) != inv.InviteeEmail && uuidToString(inv.InviteeUserID) != userID {
+	if (!user.Email.Valid || user.Email.String == "" || strings.ToLower(user.Email.String) != inv.InviteeEmail) && uuidToString(inv.InviteeUserID) != userID {
 		writeError(w, http.StatusForbidden, "invitation does not belong to you")
 		return
 	}
@@ -630,7 +630,7 @@ func (h *Handler) DeclineInvitation(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to load user")
 		return
 	}
-	if strings.ToLower(user.Email) != inv.InviteeEmail && uuidToString(inv.InviteeUserID) != userID {
+	if (!user.Email.Valid || user.Email.String == "" || strings.ToLower(user.Email.String) != inv.InviteeEmail) && uuidToString(inv.InviteeUserID) != userID {
 		writeError(w, http.StatusForbidden, "invitation does not belong to you")
 		return
 	}

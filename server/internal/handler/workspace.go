@@ -13,6 +13,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
@@ -482,6 +483,7 @@ func (h *Handler) ListMembers(w http.ResponseWriter, r *http.Request) {
 }
 
 type MemberWithUserResponse struct {
+	Username    string  `json:"username,omitempty"`
 	ID          string  `json:"id"`
 	WorkspaceID string  `json:"workspace_id"`
 	UserID      string  `json:"user_id"`
@@ -514,7 +516,8 @@ func (h *Handler) ListMembersWithUser(w http.ResponseWriter, r *http.Request) {
 			Role:        m.Role,
 			CreatedAt:   timestampToString(m.CreatedAt),
 			Name:        m.UserName,
-			Email:       m.UserEmail,
+			Email:       m.UserEmail.String,
+			Username:    m.UserUsername.String,
 			AvatarURL:   h.resolveAvatarURLPtr(textToPtr(m.UserAvatarUrl)),
 		}
 	}
@@ -535,7 +538,7 @@ func (h *Handler) memberWithUserResponse(member db.Member, user db.User) MemberW
 		Role:        member.Role,
 		CreatedAt:   timestampToString(member.CreatedAt),
 		Name:        user.Name,
-		Email:       user.Email,
+		Email:       user.Email.String,
 		AvatarURL:   h.resolveAvatarURLPtr(textToPtr(user.AvatarUrl)),
 	}
 }
@@ -626,12 +629,20 @@ func (h *Handler) UpdateMember(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	credential, credentialErr := h.Queries.GetPasswordCredential(r.Context(), updatedMember.UserID)
+	if credentialErr != nil && !errors.Is(credentialErr, pgx.ErrNoRows) {
+		writeError(w, http.StatusInternalServerError, "failed to load member")
+		return
+	}
+
+	response := h.memberWithUserResponse(updatedMember, user)
+	response.Username = credential.Username
 	userID := requestUserID(r)
 	h.publish(protocol.EventMemberUpdated, uuidToString(requester.WorkspaceID), "member", userID, map[string]any{
-		"member": h.memberWithUserResponse(updatedMember, user),
+		"member": response,
 	})
 
-	writeJSON(w, http.StatusOK, h.memberWithUserResponse(updatedMember, user))
+	writeJSON(w, http.StatusOK, response)
 }
 
 func (h *Handler) DeleteMember(w http.ResponseWriter, r *http.Request) {

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
 import { ApiError } from "../api/client";
-import { useAuthStore } from "../auth";
+import { useAuthStore, userAuthStatus } from "../auth";
 import {
   captureSignupSource,
   identify as identifyAnalytics,
@@ -77,6 +77,10 @@ export function AuthInitializer({
         }
         configStore.getState().setAuthConfig({
           allowSignup: cfg.allow_signup,
+          authMode: cfg.auth_mode,
+          passwordAuthAvailable: cfg.password_auth_available,
+          passwordSignupAvailable: cfg.password_signup_available,
+          accountBindingAvailable: cfg.account_binding_available,
           googleClientId: cfg.google_client_id,
           // Old servers omit this field — treat that as "creation allowed"
           // (the managed-cloud default) rather than blocking the UI.
@@ -220,14 +224,14 @@ export function AuthInitializer({
     let retryTimer: ReturnType<typeof setTimeout> | undefined;
 
     const onAuthSuccess = (user: User) => {
-      onLogin?.();
+      if (userAuthStatus(user) === "authenticated") onLogin?.();
       useAuthStore.setState({
         user,
         isLoading: false,
-        status: "authenticated",
+        status: userAuthStatus(user),
         expired: false,
       });
-      identifyAnalytics(user.id, { email: user.email, name: user.name });
+      identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
       if (authRecoveryPendingRef.current) {
         authRecoveryPendingRef.current = false;
         // A network-not-ready boot can fail both auth and config requests;
@@ -298,7 +302,7 @@ export function AuthInitializer({
         settled = true;
         window.removeEventListener("online", retryNow);
         onAuthSuccess(user);
-        warmWorkspaces();
+        if (userAuthStatus(user) === "authenticated") warmWorkspaces();
       } catch (err) {
         if (cancelled) return;
         if (err instanceof ApiError && err.status === 401) {

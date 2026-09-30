@@ -103,6 +103,26 @@ func DaemonAuth(queries *db.Queries, patCache *auth.PATCache, daemonCache *auth.
 				return
 			}
 
+			if auth.PasswordMode() {
+				identity, err := auth.CheckPasswordToken(r.Context(), queries, tokenString, true)
+				if err != nil {
+					status := http.StatusServiceUnavailable
+					if errors.Is(err, auth.ErrPasswordSession) {
+						status = http.StatusUnauthorized
+					}
+					writeError(w, status, "daemon authentication unavailable or invalid")
+					return
+				}
+				ctx := auth.WithPasswordSession(r.Context(), identity.Session)
+				ctx = context.WithValue(ctx, ctxKeyDaemonAuthPath, identity.Session.Kind)
+				if identity.DaemonID != "" {
+					ctx = WithDaemonContext(ctx, identity.WorkspaceID, identity.DaemonID)
+				}
+				r.Header.Set("X-User-ID", identity.Session.UserID)
+				next.ServeHTTP(w, r.WithContext(ctx))
+				return
+			}
+
 			// Daemon token: "mdt_" prefix.
 			if strings.HasPrefix(tokenString, "mdt_") {
 				hash := auth.HashToken(tokenString)

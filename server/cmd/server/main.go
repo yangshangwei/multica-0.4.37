@@ -289,6 +289,17 @@ func newMainHTTPServer(addr string, handler http.Handler) *http.Server {
 
 func main() {
 	logger.Init()
+	if err := auth.ValidatePasswordConfig(); err != nil {
+		slog.Error("invalid authentication configuration", "error", err)
+		os.Exit(1)
+	}
+	if len(os.Args) > 1 && os.Args[1] == "password-recover" {
+		if err := runPasswordRecovery(os.Args[2:]); err != nil {
+			slog.Error("password recovery failed", "error", err)
+			os.Exit(1)
+		}
+		return
+	}
 	// Warn about missing configuration
 	if err := jwtSecretBootError(os.Getenv("JWT_SECRET"), os.Getenv("APP_ENV")); err != nil {
 		slog.Error(

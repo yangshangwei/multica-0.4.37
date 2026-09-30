@@ -14,13 +14,16 @@ afterEach(()=>{vi.unstubAllGlobals();setSchemaLogger(noopLogger);setCurrentWorks
 describe("creator recommendation API",()=>{
   it("pins workspace and cancellation while sending only the current task text",async()=>{
     setCurrentWorkspace("other","ws-other");
-    const fetcher=respond({recommendations:[candidate]}); const signal=new AbortController().signal;
+    const fetcher=respond({recommendations:[candidate]}); const controller=new AbortController(); const signal=controller.signal;
     await expect(new ApiClient("https://api.test").recommendIssueCreators("Find the bug",{workspaceId:"ws-one",signal}))
       .resolves.toEqual({recommendations:[candidate]});
     expect(fetcher).toHaveBeenCalledWith("https://api.test/api/issues/recommend-creators",expect.objectContaining({
-      method:"POST",body:JSON.stringify({text:"Find the bug"}),signal,
+      method:"POST",body:JSON.stringify({text:"Find the bug"}),signal:expect.objectContaining({aborted:false}),
       headers:expect.objectContaining({"X-Workspace-ID":"ws-one","X-Workspace-Slug":""}),
     }));
+    controller.abort("request cancelled");
+    expect(fetcher.mock.calls[0]?.[1]?.signal?.aborted).toBe(true);
+    expect(fetcher.mock.calls[0]?.[1]?.signal?.reason).toBe("request cancelled");
   });
   it("accepts empty results and harmless future fields",async()=>{
     respond({recommendations:[{...candidate,future:true}],future:true});

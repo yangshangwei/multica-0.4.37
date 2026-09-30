@@ -18,6 +18,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/attribution"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/chattitle"
 	"github.com/multica-ai/multica/server/internal/entitlement"
 	"github.com/multica-ai/multica/server/internal/events"
@@ -3705,6 +3706,20 @@ func (s *TaskService) FinalizeTaskClaim(
 	}
 	receipt := task.DeliveredCommentIds
 	err := s.runInTx(ctx, func(qtx *db.Queries) error {
+		if auth.PasswordMode() {
+			session, err := auth.LockPasswordSession(ctx, qtx)
+			if err != nil {
+				return err
+			}
+			if session.UserID != util.UUIDToString(token.UserID) {
+				return auth.ErrPasswordSession
+			}
+			token.AuthVersion = session.Version
+			if len(daemonTokens) == 1 {
+				daemonTokens[0].UserID = token.UserID
+				daemonTokens[0].AuthVersion = session.Version
+			}
+		}
 		if _, err := qtx.CreateTaskToken(ctx, token); err != nil {
 			return fmt.Errorf("create task token: %w", err)
 		}

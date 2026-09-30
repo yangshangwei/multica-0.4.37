@@ -17,7 +17,8 @@ import { AssigneePicker } from "./assignee-picker";
 
 const MEMBERS = [
   { user_id: "user-1", name: "Ada Lovelace", role: "member" },
-  { user_id: "user-2", name: "Grace Hopper", role: "member" },
+  { user_id: "user-2", name: "Grace Hopper", role: "member", username: "grace_main", email: "" },
+  { user_id: "user-3", name: "Grace Hopper", role: "member", username: "grace_other", email: "" },
 ];
 
 vi.mock("@tanstack/react-query", () => ({
@@ -90,4 +91,15 @@ describe("AssigneePicker search keyboard defaults", () => {
 
     expect(onUpdate).not.toHaveBeenCalled();
   });
+});
+
+it("distinguishes same-name members by username and assigns the selected account", async () => {
+  const user = userEvent.setup();
+  const onUpdate = vi.fn();
+  renderPicker(onUpdate);
+  expect(await screen.findByText("grace_main")).toBeTruthy();
+  expect(await screen.findByText("grace_other")).toBeTruthy();
+  await user.type(screen.getByPlaceholderText(SEARCH_PLACEHOLDER), "grace_other");
+  await user.keyboard("{Enter}");
+  expect(onUpdate).toHaveBeenCalledWith({assignee_type: "member", assignee_id: "user-3"});
 });

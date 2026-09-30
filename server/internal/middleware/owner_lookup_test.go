@@ -21,7 +21,7 @@ func seedOwnerLookupUser(t *testing.T, queries *db.Queries) string {
 	stamp := time.Now().UnixNano()
 	user, err := queries.CreateUser(ctx, db.CreateUserParams{
 		Name:  "owner-lookup",
-		Email: pgtypeUniqueEmail(stamp),
+		Email: pgtype.Text{String: pgtypeUniqueEmail(stamp), Valid: true},
 	})
 	if err != nil {
 		t.Fatalf("create user: %v", err)

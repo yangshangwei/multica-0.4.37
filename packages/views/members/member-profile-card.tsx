@@ -91,7 +91,7 @@ export function MemberProfileCard({ userId }: MemberProfileCardProps) {
             <RoleBadge role={member.role} />
           </div>
           <p className="mt-0.5 truncate text-caption text-muted-foreground">
-            {member.email}
+            {member.username || member.email}
           </p>
         </div>
       </div>

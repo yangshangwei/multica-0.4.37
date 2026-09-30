@@ -13,6 +13,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/auth"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -129,6 +130,7 @@ func hashToken(token string) string {
 // handler can finish the job it was called for, not so an out-of-band request
 // can do more than the surface could.
 type CallbackGrant struct {
+	AuthVersion    int64
 	InstallationID pgtype.UUID
 	WorkspaceID    pgtype.UUID
 	HookKey        string
@@ -174,6 +176,15 @@ func NewCallbackTokens() *CallbackTokens {
 
 // Issue mints a token for one hook invocation.
 func (c *CallbackTokens) Issue(ctx context.Context, invocation HookInvocation) (string, error) {
+	var authVersion int64
+	if auth.PasswordMode() && invocation.Actor.Type == "member" {
+		source, ok := auth.PasswordSessionFromContext(ctx)
+		if !ok || source.UserID != uuidString(invocation.Actor.ID) || source.Version <= 0 || source.Setup || source.Change {
+			return "", pluginErrf(PluginErrorForbidden, "callback requires a current account session")
+		}
+		authVersion = source.Version
+	}
+
 	raw := make([]byte, callbackTokenEntropy)
 	if _, err := rand.Read(raw); err != nil {
 		return "", &PluginError{Kind: PluginErrorUnavailable, Message: "generate callback token", Err: err}
@@ -181,6 +192,7 @@ func (c *CallbackTokens) Issue(ctx context.Context, invocation HookInvocation) (
 	token := callbackTokenPrefix + base64.RawURLEncoding.EncodeToString(raw)
 
 	grant := CallbackGrant{
+		AuthVersion:    authVersion,
 		InstallationID: invocation.Installation.ID,
 		WorkspaceID:    invocation.Installation.WorkspaceID,
 		HookKey:        invocation.Hook.Key,
@@ -242,4 +254,40 @@ func (c *CallbackTokens) sweepLocked() {
 			delete(c.issued, key)
 		}
 	}
+}
+
+// issueCallbackToken fences personal grants with the same user row lock used
+// by password rotation. Independent installation actors do not inherit the
+// account that installed them.
+func (s *PluginService) issueCallbackToken(ctx context.Context, invocation HookInvocation) (string, error) {
+	if !auth.PasswordMode() || invocation.Actor.Type != "member" {
+		return s.Callbacks.Issue(ctx, invocation)
+	}
+	if s.TxStarter == nil {
+		return "", &PluginError{Kind: PluginErrorUnavailable, Message: "authentication database unavailable"}
+	}
+	tx, err := s.TxStarter.Begin(ctx)
+	if err != nil {
+		return "", &PluginError{Kind: PluginErrorUnavailable, Message: "begin callback authorization", Err: err}
+	}
+	defer tx.Rollback(ctx)
+	source, err := auth.LockPasswordSession(ctx, db.New(tx))
+	if err != nil {
+		if errors.Is(err, auth.ErrPasswordSession) {
+			return "", pluginErrf(PluginErrorForbidden, "callback account session has expired")
+		}
+		return "", &PluginError{Kind: PluginErrorUnavailable, Message: "verify callback account session", Err: err}
+	}
+	if source.UserID != uuidString(invocation.Actor.ID) {
+		return "", pluginErrf(PluginErrorForbidden, "callback actor does not match account session")
+	}
+	token, err := s.Callbacks.Issue(ctx, invocation)
+	if err != nil {
+		return "", err
+	}
+	if err = tx.Commit(ctx); err != nil {
+		s.Callbacks.Revoke(token)
+		return "", &PluginError{Kind: PluginErrorUnavailable, Message: "commit callback authorization", Err: err}
+	}
+	return token, nil
 }

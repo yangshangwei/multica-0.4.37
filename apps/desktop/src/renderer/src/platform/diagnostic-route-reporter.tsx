@@ -95,6 +95,10 @@ function resolveSurface({
 
 function overlayPath(overlay: WindowOverlay): string {
   switch (overlay.type) {
+    case "account-setup":
+      return "/account/setup";
+    case "password-change":
+      return "/password/change";
     case "new-workspace":
       return "/workspaces/new";
     case "onboarding":

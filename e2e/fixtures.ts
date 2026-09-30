@@ -53,6 +53,41 @@ export class TestApiClient {
   private createdIssueIds: string[] = [];
   private seededIssueIds: string[] = [];
 
+  async loginPassword(username: string, password: string): Promise<{ id: string; email: string; onboarded_at: string | null }> {
+    const response = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!response.ok) throw new Error(`password login failed: ${response.status}`);
+    const data = await response.json();
+    if (typeof data.token !== "string" || !data.token || typeof data.user?.id !== "string") {
+      throw new Error("Password login returned an unusable test session");
+    }
+    this.token = data.token;
+    return data.user;
+  }
+
+  /** Remove only the isolated password account after its feature workspace. */
+  async deletePasswordAccount(username: string): Promise<void> {
+    const client = new pg.Client(DATABASE_URL);
+    await client.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await client.query<{ user_id: string }>(
+        "DELETE FROM user_password_credential WHERE username = $1 RETURNING user_id", [username],
+      );
+      for (const { user_id: id } of result.rows) {
+        await client.query("DELETE FROM personal_access_token WHERE user_id = $1", [id]);
+        await client.query('DELETE FROM "user" WHERE id = $1', [id]);
+      }
+      await client.query("COMMIT");
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally { await client.end(); }
+  }
+
   async login(email: string, name: string) {
     const client = new pg.Client(DATABASE_URL);
     await client.connect();

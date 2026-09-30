@@ -5,13 +5,19 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/multica-ai/multica/server/internal/analytics"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/featureflags"
 )
 
 type AppConfig struct {
-	CdnDomain string `json:"cdn_domain"`
+	AuthMode                string `json:"auth_mode"`
+	PasswordAuthAvailable   bool   `json:"password_auth_available"`
+	PasswordSignupAvailable bool   `json:"password_signup_available"`
+	AccountBindingAvailable bool   `json:"account_binding_available"`
+	CdnDomain               string `json:"cdn_domain"`
 	// CdnSigned tells clients that the CDN domain above serves PRIVATE
 	// content through time-bounded signed URLs (CloudFront signing is
 	// enabled). When true, a raw storage URL on the CDN domain is NOT
@@ -131,7 +137,17 @@ func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 	config.CliInstallCommand = strings.TrimSpace(os.Getenv("MULTICA_CLI_INSTALL_COMMAND"))
 	config.MessagingIntegrationsEnabled = !h.cfg.MessagingIntegrationsDisabled
 	config.VCSIntegrationAvailable = h.cfg.VCSIntegrationEnabled
+	config.AuthMode = "legacy"
 	config.DeviceAuthAvailable = h.cfg.DeviceAuthEnabled
+	if auth.PasswordMode() {
+		config.AuthMode = "password"
+		config.PasswordAuthAvailable = true
+		config.PasswordSignupAvailable = h.cfg.AllowSignup
+		config.DeviceAuthAvailable = false
+		config.GoogleClientID = ""
+		cutoff, deadline, err := auth.PasswordMigrationWindow()
+		config.AccountBindingAvailable = err == nil && !cutoff.IsZero() && time.Now().Before(deadline)
+	}
 	config.FeatureFlags = featureflags.EvaluateFrontendPublicFlags(r.Context(), h.FeatureFlags)
 	// Only surface the build version on self-hosted deployments. The managed
 	// cloud is continuously deployed and its users can't choose the build, so

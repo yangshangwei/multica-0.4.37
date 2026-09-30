@@ -1484,6 +1484,7 @@ func TestShouldInterruptAgent(t *testing.T) {
 		{name: "status failed (offline sweeper)", status: "failed", err: nil, want: true},
 		{name: "status completed (finished elsewhere)", status: "completed", err: nil, want: true},
 		{name: "task deleted (404)", status: "", err: notFound, want: true},
+		{name: "credential revoked (401)", err: &requestError{StatusCode: http.StatusUnauthorized}, want: true},
 		{name: "running normally", status: "running", err: nil, want: false},
 		{name: "waiting_local_directory keeps running", status: "waiting_local_directory", err: nil, want: false},
 		{name: "dispatched keeps running", status: "dispatched", err: nil, want: false},
@@ -1497,6 +1498,23 @@ func TestShouldInterruptAgent(t *testing.T) {
 				t.Fatalf("shouldInterruptAgent(%q, %v) = %v, want %v", tc.status, tc.err, got, tc.want)
 			}
 		})
+	}
+}
+
+func TestWatchTaskCancellation_CredentialRevoked(t *testing.T) {
+	t.Parallel()
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusUnauthorized)
+		_, _ = w.Write([]byte(`{"error":"session revoked"}`))
+	}))
+	t.Cleanup(srv.Close)
+	d := &Daemon{client: NewClient(srv.URL), logger: slog.Default()}
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
+	select {
+	case <-d.watchTaskCancellation(ctx, "revoked-task", 10*time.Millisecond, slog.Default()):
+	case <-time.After(time.Second):
+		t.Fatal("revoked credentials left the local task running")
 	}
 }
 

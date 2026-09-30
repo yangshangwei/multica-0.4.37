@@ -4986,7 +4986,7 @@ func newTaskSlotSemaphore(maxConcurrentTasks int) chan int {
 // trivially testable; the polling goroutine in watchTaskCancellation is just
 // I/O around it.
 //
-// Two conditions trigger cancellation:
+// Three conditions trigger cancellation:
 //
 //  1. status is a terminal state — "completed", "failed", or "cancelled"
 //     (isAgentTaskTerminal). The server has already finalized the task: user
@@ -5000,13 +5000,16 @@ func newTaskSlotSemaphore(maxConcurrentTasks int) chan int {
 //  2. err is a 404 with "task not found" — the task row was deleted while
 //     the agent was running. Without this we'd let the local agent keep
 //     emitting tool calls against a dead task for its full timeout window.
+//  3. err is a 401 — the credential has expired or was revoked. The agent
+//     cannot read the cancelled task state after a password reset, so it
+//     must stop on the authentication rejection itself.
 //
 // All other errors (transient network, 5xx, ...) intentionally do NOT
 // trigger cancellation — the next tick will retry and we don't want a
 // flaky link to kill an in-flight agent.
 func shouldInterruptAgent(status string, err error) bool {
 	if err != nil {
-		return isTaskNotFoundError(err)
+		return isTaskNotFoundError(err) || isUnauthorizedError(err)
 	}
 	return isAgentTaskTerminal(status)
 }
@@ -5035,7 +5038,7 @@ func (d *Daemon) watchTaskCancellation(ctx context.Context, taskID string, pollI
 				return false
 			}
 			if err != nil {
-				taskLog.Info("task gone server-side, interrupting agent", "error", err)
+				taskLog.Info("task access ended server-side, interrupting agent", "error", err)
 			} else {
 				taskLog.Info("task reached terminal state server-side, interrupting agent", "status", status)
 			}
