@@ -9,16 +9,15 @@ vi.mock("@multica/core/api", () => ({
 }));
 
 describe("MikaIntro", () => {
-  it("shows the public seal on the API origin before the agent exists", () => {
+  it("shows the green Fu avatar before the agent exists", () => {
     render(
       <I18nProvider locale="en" resources={{ en: { onboarding: enOnboarding } }}>
         <MikaIntro />
       </I18nProvider>,
     );
 
-    expect(screen.getByRole("img", { name: "小阿孚" })).toHaveAttribute(
-      "src",
-      "https://api.example.test/api/avatars/builtin/afu-seal-v1.png",
-    );
+    const avatar = screen.getByRole("img", { name: "小阿孚" });
+    expect(avatar).toHaveTextContent("孚");
+    expect(avatar.parentElement).toHaveClass("bg-skill-quality/12", "text-skill-quality");
   });
 });

@@ -37,10 +37,14 @@ function ActorAvatar({
 }: ActorAvatarProps) {
   const [imgError, setImgError] = useState(false);
   const px = AVATAR_SIZE_PX[size];
+  const isFuAvatar = isAgent && (
+    avatarUrl === "emoji:🦄" ||
+    /^(?:https?:\/\/[^/]+)?\/api\/avatars\/builtin\/afu-seal-v1\.png$/.test(avatarUrl ?? "")
+  );
   const iconName = resolveAvatarIcon(avatarUrl)
     ?? ((!avatarUrl || imgError) && !isSystem ? (isAgent ? "bot" : isSquad ? "users" : null) : null);
   const Icon = iconName ? AVATAR_ICON_COMPONENTS[iconName] : null;
-  const tone = iconName ? AVATAR_ICON_TONE[iconName] : null;
+  const tone = isFuAvatar ? AVATAR_ICON_TONE.bot : iconName ? AVATAR_ICON_TONE[iconName] : null;
 
   useEffect(() => {
     setImgError(false);
@@ -64,7 +68,9 @@ function ActorAvatar({
       )}
       style={{ width: px, height: px, fontSize: px * 0.45 }}
     >
-      {Icon ? (
+      {isFuAvatar ? (
+        <span role="img" aria-label={name}>孚</span>
+      ) : Icon ? (
         <Icon
           role="img"
           aria-label={name}

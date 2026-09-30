@@ -4,6 +4,16 @@ import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 import { AVATAR_ICON_COMPONENTS, formatAvatarIcon, parseAvatarIcon, resolveAvatarIcon, type AvatarIconName } from "@multica/ui/lib/avatar-icon";
 
 describe("Lucide avatar markers", () => {
+  it.each([
+    "emoji:🦄",
+    "/api/avatars/builtin/afu-seal-v1.png",
+    "https://api.example.test/api/avatars/builtin/afu-seal-v1.png",
+  ])("preserves the built-in Fu identity for %s", (avatarUrl) => {
+    const { container } = render(<ActorAvatar name="Renamed assistant" initials="RA" avatarUrl={avatarUrl} isAgent />);
+    expect(screen.getByRole("img", { name: "Renamed assistant" })).toHaveTextContent("孚");
+    expect(container.firstElementChild).toHaveClass("rounded-full", "bg-skill-quality/12", "text-skill-quality");
+    expect(container.querySelector("svg, img")).toBeNull();
+  });
   it("round trips every selectable icon", () => {
     for (const name of Object.keys(AVATAR_ICON_COMPONENTS) as AvatarIconName[]) {
       expect(parseAvatarIcon(formatAvatarIcon(name))).toBe(name);
