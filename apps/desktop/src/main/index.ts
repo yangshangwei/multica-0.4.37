@@ -75,7 +75,12 @@ import {
   type CloseBehavior,
   type PromptResult,
 } from "./close-behavior";
-import type { Tray } from "electron";
+import {
+  buildTrayIconPath,
+  createTray,
+  resolveTrayLabels,
+  type TrayHandle,
+} from "./tray";
 
 // Guards against registering the will-download handler more than once on the
 // same session. window.webContents.session is shared, and createWindow() can
@@ -211,12 +216,12 @@ let isQuitting = false;
 // must be synchronous (event.preventDefault is sync-only) so it cannot
 // re-read from disk on every close.
 let cachedCloseBehavior: CloseBehavior = DEFAULT_CLOSE_BEHAVIOR;
-// Tray handle lives at module scope so that:
-//  - createTray (child task 09-30-tray-and-linux-fallback) can attach it,
-//  - applyCloseBehavior can lazily look it up at close time,
-//  - second-instance / activate paths can re-show the window.
-// Populated in child task 09-30-tray-and-linux-fallback; stays null until then.
-let trayHandle: Tray | null = null;
+// Tray handle lives at module scope so child 09-30-tray-and-linux-fallback
+// can attach it after the window and prefs are loaded, and so applyClose-
+// Behavior can consult it lazily at close time. Stays null on platforms /
+// sessions where the system tray is unsupported (macOS, GNOME+Wayland
+// without AppIndicator).
+let trayHandle: TrayHandle | null = null;
 let pendingClosePromptResolve:
   | ((result: PromptResult) => void)
   | null = null;
@@ -445,13 +450,9 @@ function createWindow(): BrowserWindow {
       isQuitting = true;
     },
     showTray: () => {
-      // Populated in child task 09-30-tray-and-linux-fallback. Until tray
-      // construction lands, isTraySupported() returns false and this branch
-      // stays unreachable; once tray.ts exists, this will call into the
-      // tray lifecycle helpers there.
-      void trayHandle;
+      trayHandle?.show();
     },
-    isTraySupported: () => trayHandle !== null,
+    isTraySupported: () => trayHandle !== null && trayHandle.isSupported(),
     promptChoice: (w) => requestCloseBehaviorPrompt(w),
     getCachedBehavior: () => cachedCloseBehavior,
     setCachedBehavior: async (value) => {
@@ -1084,6 +1085,37 @@ if (!gotTheLock) {
 
     desktopInitialized = true;
     createWindow();
+
+    // ---- Tray setup (Windows/Linux). Returns null when the environment
+    // can't display a tray icon; child 09-30-tray-and-linux-fallback owns
+    // the heuristic and lifecycle. The tray icon only attaches when
+    // trayHandle.show() runs (currently: the close-behavior module hiding
+    // the window) — we deliberately do NOT show it on launch.
+    trayHandle = createTray({
+      getMainWindow: () => mainWindow,
+      onQuit: () => {
+        isQuitting = true;
+        app.quit();
+      },
+      labels: resolveTrayLabels(),
+      iconPath: buildTrayIconPath({
+        isDev: is.dev,
+        resourcesPath: is.dev ? app.getAppPath() : process.resourcesPath,
+      }),
+    });
+
+    // Remove the tray icon as soon as the window is visible again so we
+    // don't double up with the taskbar / dock icon. applyCloseBehavior's
+    // hide branch calls trayHandle.show() for the converse path.
+    mainWindow?.on("show", () => {
+      trayHandle?.hide();
+    });
+    // Fully teardown on quit so we don't leave a stale icon behind if the
+    // user kills the app with the window hidden.
+    app.on("before-quit", () => {
+      trayHandle?.destroy();
+      trayHandle = null;
+    });
 
     setupAutoUpdater(() => mainWindow, {
       getUpdateUrl: () => runtimeConfigResult.ok
