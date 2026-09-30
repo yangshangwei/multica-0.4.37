@@ -107,6 +107,17 @@ for (const locale of ["en", "zh-Hans"] as const) {
       const coordination = page.getByRole("button", { name: zh ? "规划与协调" : "Planning and coordination", exact: true });
       for (const width of [1280, 375]) {
         await page.setViewportSize({ width, height: 900 });
+        await page.getByRole("button", { name: zh ? "智能体" : "Agents", exact: true }).click();
+        await expect(items(page)).toHaveCount(3);
+        await expect(actorRow(page, "agent", directory.agents[0]!.id)).toHaveCount(0);
+        await expect(page.getByRole("button", { name: zh ? "浏览全部（3）" : "Browse all (3)", exact: true })).toBeVisible();
+        await page.screenshot({ path: evidencePath(info, `category-tabs-${locale}-${width}-agents.png`), animations: "disabled" });
+        const search = page.getByPlaceholder(zh ? "搜索名称或职责..." : SEARCH, { exact: true });
+        await search.fill(directory.agents[0]!.name);
+        await expect(items(page)).toHaveCount(0);
+        await coordination.click();
+        await expect(actorRow(page, "agent", directory.agents[0]!.id)).toBeVisible();
+        await search.clear();
         await mika.click();
         await expect(mika).toHaveAttribute("aria-pressed", "true");
         await expect(items(page)).toHaveCount(1);
