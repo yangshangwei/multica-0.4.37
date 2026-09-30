@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 import type { Agent, RuntimeDevice } from "../types";
 import {
@@ -13,6 +14,7 @@ import {
 
 const draft = (): AgentDraft => ({
   name: "Old name",
+  category: "Engineering",
   description: "Old description",
   instructions: "Old instructions",
   conversationStarters: [],
@@ -312,5 +314,30 @@ describe("agent draft execution overrides", () => {
     // Runes, not UTF-16 units: 255 CJK characters are exactly at the limit.
     expect(isDraftDescriptionWithinLimit("汉".repeat(255))).toBe(true);
     expect(isDraftDescriptionWithinLimit("汉".repeat(256))).toBe(false);
+  });
+});
+
+
+describe("agent custom categories", () => {
+  it("keeps the source category in a duplicate even when its runtime changes", () => {
+    const duplicate = buildDuplicateDraft(sourceAgent({ category: "研发" }), {
+      runtimes: [OTHER_RUNTIME],
+      currentUserId: "user-1",
+      fallbackRuntimeId: "runtime-2",
+      nameSuffix: " copy",
+    });
+    expect(duplicate.category).toBe("研发");
+    expect(buildCreateAgentRequest({ draft: duplicate, runtimeId: "runtime-2" }).category).toBe("研发");
+  });
+
+  it("trims category in the serialized create body and omits an empty choice", () => {
+    const request = buildCreateAgentRequest({
+      draft: { ...draft(), category: "  研发  " }, runtimeId: "runtime-1",
+    });
+    expect(JSON.parse(JSON.stringify(request)).category).toBe("研发");
+    const empty = buildCreateAgentRequest({
+      draft: { ...draft(), category: "  " }, runtimeId: "runtime-1",
+    });
+    expect(JSON.parse(JSON.stringify(empty))).not.toHaveProperty("category");
   });
 });

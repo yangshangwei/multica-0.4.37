@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 import {
   decodeBuilderInput,
@@ -11,6 +12,7 @@ import type { AgentDraft } from "./draft";
 
 const draft = (): AgentDraft => ({
   name: "Old name",
+  category: "Engineering",
   description: "Old description",
   instructions: "Old instructions",
   conversationStarters: [],
@@ -156,6 +158,7 @@ Return findings."}</agent_draft>`;
       draft(),
       {
         name: "Release manager",
+  category: "Engineering",
         model: 123,
         skill_ids: ["skill-2", "unknown-skill"],
         permission_scope: "members",
@@ -292,4 +295,17 @@ Return findings."}</agent_draft>`;
       serviceTier: "",
     });
   });
+});
+
+
+it("includes category in builder context and accepts valid category edits", () => {
+  const encoded = encodeBuilderInput("Categorize this", draft(), [], [], null, null);
+  const payload = JSON.parse(encoded.slice(encoded.indexOf("\n") + 1));
+  expect(payload.current_draft.category).toBe("Engineering");
+  expect(mergeBuilderDraft(draft(), { category: "  研发  " }, new Set(), new Set(), null).category).toBe("研发");
+  expect(mergeBuilderDraft(draft(), { category: "" }, new Set(), new Set(), null).category).toBe("");
+});
+
+it.each([null, 12, "x".repeat(51), "Dev\nOps"])("preserves category for invalid builder input %j", (category) => {
+  expect(mergeBuilderDraft(draft(), { category }, new Set(), new Set(), null).category).toBe("Engineering");
 });

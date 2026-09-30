@@ -1,3 +1,4 @@
+import { getAgentCategory } from "./category";
 import { isRuntimeUsableForUser } from "../runtimes/access";
 import type {
   Agent,
@@ -23,6 +24,7 @@ export type { AgentPermissionScope };
  * validated, seeded and submitted the same way regardless of entry point.
  */
 export interface AgentDraft {
+  category: string;
   name: string;
   description: string;
   instructions: string;
@@ -42,6 +44,7 @@ export interface AgentDraft {
 }
 
 export const EMPTY_AGENT_DRAFT: AgentDraft = {
+  category: "",
   name: "",
   description: "",
   instructions: "",
@@ -187,6 +190,7 @@ export function buildDuplicateDraft(
   return {
     ...EMPTY_AGENT_DRAFT,
     name: `${source.name}${options.nameSuffix}`,
+    category: getAgentCategory(source),
     description: source.description ?? "",
     instructions: source.instructions ?? "",
     conversationStarters: (source.conversation_starters ?? []).map((item) => ({ ...item })),
@@ -218,6 +222,7 @@ export function buildCreateAgentRequest(options: {
   const { draft, runtimeId, template, duplicateSource } = options;
   const request: CreateAgentRequest = {
     name: draft.name.trim(),
+    category: draft.category.trim() || undefined,
     description: draft.description.trim(),
     instructions: draft.instructions.trim() || undefined,
     ...(draft.conversationStarters.length > 0

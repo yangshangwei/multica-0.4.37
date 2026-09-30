@@ -20,6 +20,7 @@ import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import {
   AGENT_SCOPES,
   type AgentColumnKey,
+  type AgentGroupBy,
   type AgentListFilters,
   type AgentsScope,
   type AgentSortDirection,
@@ -90,7 +91,7 @@ export function countActiveFilterDimensions(
   if (filters.owners.length > 0) count++;
   if (filters.models.length > 0) count++;
   if (filters.access.length > 0) count++;
-  if (filters.roles?.length) count++;
+  if (filters.categories?.length) count++;
   if (filters.squads?.length) count++;
   return count;
 }
@@ -132,8 +133,8 @@ export function AgentListToolbar({
   onSortFieldChange: (field: AgentSortField) => void;
   onSortDirectionChange: (direction: AgentSortDirection) => void;
   hiddenColumns: AgentColumnKey[];
-  groupBy: "role" | "none";
-  onGroupByChange: (groupBy: "role" | "none") => void;
+  groupBy: AgentGroupBy;
+  onGroupByChange: (groupBy: AgentGroupBy) => void;
   onToggleColumn: (key: AgentColumnKey) => void;
   /** Rows within the current scope, unfiltered — filter option lists and
    *  counts derive from this set. */
@@ -541,10 +542,18 @@ export function AgentListToolbar({
             </TooltipContent>
           </Tooltip>
           <PopoverContent align="end" className="w-64 p-0">
-            <label className="flex items-center justify-between gap-2 border-b px-3 py-3 text-body">
-              {t(($) => $.discovery.group_by)}
-              <Switch size="sm" checked={groupBy === "role"} onCheckedChange={(checked) => onGroupByChange(checked ? "role" : "none")} />
-            </label>
+            <div className="space-y-2 border-b px-3 py-3">
+              <span className="text-caption font-medium text-muted-foreground">{t(($) => $.discovery.group_by)}</span>
+              <div className="flex gap-1" role="group" aria-label={t(($) => $.discovery.group_by)}>
+                {(["category", "none"] as const).map((option) => (
+                  <Button key={option} size="sm" variant="ghost" aria-pressed={groupBy === option}
+                    className={groupBy === option ? "flex-1 bg-accent font-semibold text-accent-foreground" : "flex-1 text-muted-foreground"}
+                    onClick={() => onGroupByChange(option)}>
+                    {t(($) => $.discovery.grouping[option])}
+                  </Button>
+                ))}
+              </div>
+            </div>
             <div className="border-b px-3 py-2.5">
               <span className="text-caption font-medium text-muted-foreground">
                 {t(($) => $.toolbar.sort_by)}

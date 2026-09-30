@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 import type { AgentDraft } from "./draft";
 import {
@@ -8,6 +9,7 @@ import {
 
 const draft = (): AgentDraft => ({
   name: "Release manager",
+  category: "Engineering",
   description: "Ships carefully",
   instructions: "# Role\nShip.",
   conversationStarters: [
@@ -71,4 +73,18 @@ describe("stored agent draft", () => {
       ),
     ).toBe(false);
   });
+});
+
+
+it("restores an older stored draft without category as uncategorized", () => {
+  const stored = toStoredAgentDraft(draft(), null);
+  delete stored.category;
+  expect(fromStoredAgentDraft(stored, "runtime-1").category).toBe("");
+});
+
+it("detects category-only edits for autosave", () => {
+  expect(storedAgentDraftsEqual(
+    toStoredAgentDraft(draft(), null),
+    toStoredAgentDraft({ ...draft(), category: "Operations" }, null),
+  )).toBe(false);
 });

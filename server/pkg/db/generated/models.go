@@ -56,6 +56,8 @@ type Agent struct {
 	TemplateKey           string      `json:"template_key"`
 	TemplateVersion       int32       `json:"template_version"`
 	AutonomyLevel         string      `json:"autonomy_level"`
+	// User-defined directory category. Empty means uncategorized; independent of role-template provenance and autonomy.
+	Category string `json:"category"`
 }
 
 type AgentApprovalRequest struct {

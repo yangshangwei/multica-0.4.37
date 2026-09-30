@@ -477,6 +477,8 @@ export interface MikaBootstrapResponse extends Agent {
 }
 
 export interface Agent {
+  /** User-defined grouping, independent of role-template provenance. Empty or absent means uncategorized. */
+  category?: string;
   id: string;
   workspace_id: string;
   /**
@@ -660,6 +662,7 @@ export interface AgentSkillSummary {
 }
 
 export interface CreateAgentRequest {
+  category?: string;
   name: string;
   description?: string;
   instructions?: string;
@@ -713,6 +716,8 @@ export type AgentPermissionScope = "private" | "workspace" | "members";
  * over edits the user made after it.
  */
 export interface StoredAgentDraft {
+  /** Older saved drafts omit this field. */
+  category?: string;
   name: string;
   description: string;
   instructions: string;
@@ -756,6 +761,8 @@ export interface AgentBuilderRuntimeSwitch {
 }
 
 export interface UpdateAgentRequest {
+  /** Empty clears the category; omission preserves it. */
+  category?: string;
   name?: string;
   description?: string;
   instructions?: string;

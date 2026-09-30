@@ -9,6 +9,7 @@ export function toStoredAgentDraft(
 ): StoredAgentDraft {
   return {
     name: draft.name,
+    category: draft.category,
     description: draft.description,
     instructions: draft.instructions,
     conversation_starters: draft.conversationStarters,
@@ -35,6 +36,7 @@ export function fromStoredAgentDraft(
   return {
     ...EMPTY_AGENT_DRAFT,
     name: stored.name,
+    category: typeof stored.category === "string" ? stored.category : "",
     description: stored.description,
     instructions: stored.instructions,
     conversationStarters: stored.conversation_starters ?? [],

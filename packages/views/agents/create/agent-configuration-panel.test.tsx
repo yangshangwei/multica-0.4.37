@@ -8,8 +8,18 @@ import zhSkills from "../../locales/zh-Hans/skills.json";
 import { renderWithI18n } from "../../test/i18n";
 import { AgentConfigurationPanel } from "./agent-configuration-panel";
 
+vi.mock("@multica/core/hooks", () => ({
+  useWorkspaceId: () => "workspace-1",
+}));
+
+vi.mock("@multica/core/api", async (importOriginal) => {
+  const original = await importOriginal<typeof import("@multica/core/api")>();
+  return { ...original, api: { ...original.api, listAgents: vi.fn().mockResolvedValue([]) } };
+});
+
 const draft: AgentDraft = {
   name: "Reviewer",
+  category: "",
   description: "",
   instructions: "",
   conversationStarters: [],

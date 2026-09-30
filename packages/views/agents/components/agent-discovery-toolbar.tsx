@@ -1,8 +1,8 @@
 "use client";
 
 import { useId } from "react";
-import { ChevronDown, Users } from "lucide-react";
-import type { AgentRoleKind } from "@multica/core/agents";
+import { ChevronDown, Folder, Users } from "lucide-react";
+import { AGENT_CATEGORY_PRESET_ORDER } from "@multica/core/agents";
 import type { Squad } from "@multica/core/types";
 import type { AgentListFilters } from "@multica/core/agents/stores";
 import { Button } from "@multica/ui/components/ui/button";
@@ -18,27 +18,35 @@ import { PAGE_GUTTER } from "../../layout/page-header";
 import { cn } from "@multica/ui/lib/utils";
 import type { AgentListRow } from "./agents-page";
 
-export const AGENT_ROLE_ORDER: AgentRoleKind[] = [
-  "other", "specialist", "coordinator",
-];
-
-export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onToggleFilter }: {
+export function AgentDiscoveryToolbar({ rows, squads, filters, onToggleFilter }: {
   rows: AgentListRow[];
-  rolesReady: boolean;
   squads: Squad[];
   filters: AgentListFilters;
   onToggleFilter: (key: keyof AgentListFilters, value: string) => void;
 }) {
   const { t } = useT("agents");
   const generalHintId = useId();
-  const roles = filters.roles ?? [];
   const selectedSquads = filters.squads ?? [];
-  const counts = new Map<AgentRoleKind, number>();
+  const selectedCategories = filters.categories ?? [];
+  const categoryCounts = new Map<string, number>();
+  const categoryNames = new Map<string, string>();
+  const categoriesIncomplete = rows.some((row) => row.category === null);
   for (const row of rows) {
-    const kind = row.role?.kind ?? "other";
-    counts.set(kind, (counts.get(kind) ?? 0) + 1);
+    if (!row.category) continue;
+    categoryCounts.set(row.category.key, (categoryCounts.get(row.category.key) ?? 0) + 1);
+    categoryNames.set(row.category.key, row.category.name);
   }
-  const showGeneralHint = rolesReady && (counts.has("other") || roles.includes("other"));
+  for (const preset of AGENT_CATEGORY_PRESET_ORDER) {
+    categoryNames.set(`preset:${preset}`, t(($) => $.discovery.roles[preset]));
+  }
+  const categoryLabel = (key: string) => categoryNames.get(key) ?? key.slice("custom:".length);
+  const knownKeys = new Set([...categoryCounts.keys(), ...selectedCategories]);
+  const categoryOptions = [
+    ...AGENT_CATEGORY_PRESET_ORDER.map((preset) => `preset:${preset}`).filter((key) => knownKeys.has(key)),
+    ...[...knownKeys].filter((key) => key.startsWith("custom:")).sort((a, b) => categoryLabel(a).localeCompare(categoryLabel(b))),
+  ];
+  const categoryCount = (key: string) => `${categoryCounts.get(key) ?? 0}${categoriesIncomplete && key.startsWith("preset:") ? "+" : ""}`;
+  const showGeneralHint = knownKeys.has("preset:other");
   const mika = rows.find(({ agent }) => agent.system_key === "mika" && !agent.archived_at)?.agent;
   const activeSquads = squads.filter((squad) => !squad.archived_at);
   const selectedName = selectedSquads.length === 1
@@ -47,30 +55,54 @@ export function AgentDiscoveryToolbar({ rows, rolesReady, squads, filters, onTog
 
   return (
     <div className={cn("flex shrink-0 flex-wrap items-center gap-2 pb-3", PAGE_GUTTER)}>
-      <div className="flex flex-wrap items-center gap-1" aria-label={t(($) => $.discovery.all_roles)}>
+      <div className="flex flex-wrap items-center gap-1" aria-label={t(($) => $.category.all)}>
         <Button
-          size="sm" variant="ghost" aria-pressed={roles.length === 0}
-          className={roles.length === 0 ? "bg-accent font-semibold text-accent-foreground" : "text-muted-foreground"}
-          onClick={() => roles.forEach((role) => onToggleFilter("roles", role))}
+          size="sm" variant="ghost" aria-pressed={selectedCategories.length === 0}
+          className={selectedCategories.length === 0 ? "bg-accent font-semibold text-accent-foreground" : "text-muted-foreground"}
+          onClick={() => selectedCategories.forEach((key) => onToggleFilter("categories", key))}
         >
-          {t(($) => $.discovery.all_roles)}
+          {t(($) => $.category.all)}
         </Button>
-        {rolesReady && AGENT_ROLE_ORDER.filter((kind) => counts.has(kind) || roles.includes(kind)).map((kind) => (
+        {AGENT_CATEGORY_PRESET_ORDER.filter((kind) => knownKeys.has(`preset:${kind}`)).map((kind) => (
           <Button
-            key={kind} size="sm" variant="ghost" aria-pressed={roles.includes(kind)}
+            key={kind} size="sm" variant="ghost" aria-pressed={selectedCategories.includes(`preset:${kind}`)}
             aria-describedby={kind === "other" && showGeneralHint ? generalHintId : undefined}
-            className={roles.includes(kind) ? "bg-accent font-semibold text-accent-foreground" : "text-muted-foreground"}
-            onClick={() => onToggleFilter("roles", kind)}
+            className={selectedCategories.includes(`preset:${kind}`) ? "bg-accent font-semibold text-accent-foreground" : "text-muted-foreground"}
+            onClick={() => onToggleFilter("categories", `preset:${kind}`)}
           >
             {t(($) => $.discovery.roles[kind])}
-            <span className="text-caption tabular-nums text-muted-foreground">{counts.get(kind) ?? 0}</span>
+            <span className="text-caption tabular-nums text-muted-foreground">{categoryCount(`preset:${kind}`)}</span>
           </Button>
         ))}
       </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={
+          <Button size="sm" variant="outline" aria-label={t(($) => $.category.label)} className={cn("max-w-full gap-1.5 sm:ml-auto", selectedCategories.length > 0 && "border-primary/40 bg-accent text-accent-foreground")}>
+            <Folder className="size-3.5 shrink-0" aria-hidden="true" />
+            <span className="max-w-40 truncate">
+              {selectedCategories.length === 1 ? categoryLabel(selectedCategories[0]!) : t(($) => selectedCategories.length ? $.category.label : $.category.all)}
+            </span>
+            {selectedCategories.length > 1 && <span className="tabular-nums">{selectedCategories.length}</span>}
+            <ChevronDown className="size-3 shrink-0" aria-hidden="true" />
+          </Button>
+        } />
+        <DropdownMenuContent align="end" className="max-h-72 max-w-80 overflow-y-auto">
+          <DropdownMenuItem onClick={() => selectedCategories.forEach((category) => onToggleFilter("categories", category))}>
+            {t(($) => $.category.all)}
+          </DropdownMenuItem>
+          {categoryOptions.map((category) => (
+            <DropdownMenuCheckboxItem key={category} checked={selectedCategories.includes(category)}
+              onCheckedChange={() => onToggleFilter("categories", category)}>
+              <span className="min-w-0 flex-1 truncate" title={categoryLabel(category)}>{categoryLabel(category)}</span>
+              <span className="ml-auto pl-3 text-caption tabular-nums text-muted-foreground">{categoryCount(category)}</span>
+            </DropdownMenuCheckboxItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
       {(activeSquads.length > 0 || selectedSquads.length > 0) && (
         <DropdownMenu>
           <DropdownMenuTrigger render={
-            <Button size="sm" variant="outline" aria-label={t(($) => $.discovery.squads)} className="max-w-full gap-1.5 sm:ml-auto">
+            <Button size="sm" variant="outline" aria-label={t(($) => $.discovery.squads)} className="max-w-full gap-1.5">
               <Users className="size-3.5 shrink-0" aria-hidden="true" />
               <span className="max-w-56 truncate">
                 {selectedName ?? t(($) => selectedSquads.length ? $.discovery.squads : $.discovery.all_squads)}

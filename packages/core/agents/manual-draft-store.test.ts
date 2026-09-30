@@ -85,6 +85,7 @@ describe("manual agent drafts", () => {
   // six of them by hand and silently dropped the rest: picking a model before
   // typing a name, or setting access first, deleted the slot on the next save.
   it.each([
+    ["category", { category: "研发" }],
     ["name", { name: "Release" }],
     ["description", { description: "Ships carefully" }],
     ["instructions", { instructions: "Be careful" }],

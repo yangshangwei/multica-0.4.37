@@ -104,6 +104,7 @@ type CreateAgentFromTemplateRequest struct {
 	// Name overrides the template's default. Useful when a workspace wants two
 	// implementers, or names roles in its own language.
 	Name          string `json:"name"`
+	Category      string `json:"category"`
 	Model         string `json:"model"`
 	ThinkingLevel string `json:"thinking_level"`
 	ServiceTier   string `json:"service_tier"`
@@ -143,6 +144,11 @@ func (h *Handler) CreateAgentFromTemplate(w http.ResponseWriter, r *http.Request
 	}
 	if req.RuntimeID == "" {
 		writeError(w, http.StatusBadRequest, "runtime_id is required")
+		return
+	}
+	category, err := normaliseAgentCategory(req.Category)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -193,6 +199,7 @@ func (h *Handler) CreateAgentFromTemplate(w http.ResponseWriter, r *http.Request
 
 	create := CreateAgentRequest{
 		Name:               name,
+		Category:           category,
 		Description:        template.Description(language),
 		Instructions:       template.Instructions(),
 		AvatarURL:          &avatar,

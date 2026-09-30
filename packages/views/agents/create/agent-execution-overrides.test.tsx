@@ -69,6 +69,7 @@ function listResult(models: RuntimeModel[]): RuntimeModelListRequest {
 
 const baseDraft: AgentDraft = {
   name: "Fast Codex",
+  category: "",
   description: "",
   instructions: "",
   conversationStarters: [],

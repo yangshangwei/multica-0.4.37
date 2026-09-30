@@ -53,6 +53,15 @@ Two distinct text fields, often confused:
   Persona, responsibilities, boundaries, output and escalation rules go here,
   not in `description`.
 
+`category` is an optional user-defined directory label. It is independent of
+role-template provenance and never changes instructions, autonomy or runtime
+behavior. Empty means uncategorized. Create and update trim surrounding
+whitespace, reject more than 50 Unicode code points and reject remaining control
+characters. An omitted update preserves the category; `""` clears it. Manage
+it through the agent creation/settings UI or the ordinary agent API, under the
+same permissions as other profile edits. Builder drafts and duplicates preserve
+the category.
+
 ## CLI / API entry points
 
 Minimum create call (`--name` and `--runtime-id` are both required):
@@ -72,14 +81,14 @@ non-empty value, the rest (`runtime-config`, `custom-args`, `model`,
 strings. `--max-concurrent-tasks` is validated as 1–50 before the request is
 sent.
 
-The HTTP body (`CreateAgentRequest`) accepts: `name`, `description`,
+The HTTP body (`CreateAgentRequest`) accepts: `name`, `description`, `category`,
 `instructions`, `conversation_starters`, `avatar_url`, `runtime_id`, `runtime_config`, `custom_env`,
 `custom_args`, `model`, `thinking_level`, `service_tier`, `visibility`,
 `max_concurrent_tasks`, `mcp_config`, `skill_ids`.
 
-The body accepts more than the CLI exposes. `conversation_starters` has no
-`agent create` / `agent update` flag — the CLI can only carry it across an
-`agent copy`. Setting it for a new agent means either calling `/api/agents`
+The body accepts more than the CLI exposes. `category` and `conversation_starters` have no
+`agent create` / `agent update` flags — the CLI can only carry them across an
+`agent copy`. Setting them for a new agent means either calling `/api/agents`
 directly or telling the human to use the web UI; see below for where they
 will find it.
 
@@ -98,7 +107,7 @@ multica agent copy <source-agent-id> --name "My Agent (copy)"   # same runtime
 multica agent copy <source-agent-id> --runtime-id <target> --model <model>  # cross-runtime fork
 ```
 
-- Copied by default without a dedicated override flag: `conversation_starters`.
+- Copied by default without a dedicated override flag: `category`, `conversation_starters`.
 - Copied by default, each overridable with the matching flag: `name` (suffixed
   `" (copy)"`), `description`, `instructions`, avatar, `custom_args`,
   `max_concurrent_tasks`, invocation permission (`permission_mode` +
@@ -126,7 +135,7 @@ with the full instructions text). There is no CLI command for this yet — it is
 the web creation flow's third starting point.
 
 The request carries only `template_key`, `runtime_id` and the few things a person
-chooses: `name`, `model`, `thinking_level`, `service_tier`, `permission_mode` +
+chooses: `name`, `category`, `model`, `thinking_level`, `service_tier`, `permission_mode` +
 `invocation_targets`, `language`. Instructions, default skills, concurrency cap
 and `autonomy_level` come from the server. `POST /api/agents` accepts NEITHER
 `template_key` NOR `autonomy_level` — a client cannot claim a template's
@@ -225,6 +234,7 @@ unknown fields. Omitting both preserves ordinary update behavior.
 |---|---|---|---|
 | `name` | `agent.name` | required, 400 if empty | listings, runtime payload |
 | `description` | `agent.description` | 400 if > 255 code points | catalog/listing only — NOT the runtime prompt |
+| `category` | `agent.category` | trimmed; at most 50 Unicode code points; no remaining control characters; omission preserves on update, empty clears | directory search/filter/grouping only; independent of role and autonomy |
 | `instructions` | `agent.instructions` | none | daemon → provider at claim time |
 | `conversation_starters` | `agent.conversation_starters` (JSON array) | at most 3 items; each requires a label (≤80 code points) and prompt (≤4000 code points) | human-facing Chat empty state only; selecting one prefills the composer and does not start a run |
 | `avatar_url` | `agent.avatar_url` | allowlisted `icon:<lucide-name>` values and legacy emoji markers are accepted; uploaded URLs retain publication checks; omitted/empty creates a random Lucide icon avatar | catalog/listing UI only — NOT the runtime prompt |

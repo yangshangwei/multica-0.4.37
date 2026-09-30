@@ -93,6 +93,7 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | `agentCopyCmd` (`copy <source-agent-id>`) + flag registrar | 21, 47, 54 | Own file with its own `init()` so `cmd_agent.go` line refs stay stable; `registerAgentCopyFlags` is shared with the tests | `multica agent copy --help` |
 | Reads source via `GET /api/agents/<id>` | 95 | Composes over existing endpoints — no dedicated copy API | read `runAgentCopy` |
 | Conversation starters copied without an override flag | `runAgentCopy` conversation-starter body assembly | Copies `conversation_starters` when the source response contains an array; `registerAgentCopyFlags` intentionally exposes no conversation-starter override | `multica agent copy --help` |
+| Category copied without an override flag | `runAgentCopy` category body assembly | Copies string `category` on either runtime; absent or malformed legacy values are omitted | `go test ./cmd/multica -run TestAgentCopy` |
 | Same-runtime vs cross-runtime rule | 114, 187 | `sameRuntime` copies `model`/`thinking_level`/`service_tier`; a different `--runtime-id` drops them and requires `--model` (empty allowed) | `multica agent copy --help` |
 | Concurrency copy compatibility | `runAgentCopy`, `copiedAgentMaxConcurrentTasks` | Explicit `--max-concurrent-tasks` is validated before any request; valid source values are copied, while historical values outside 1–50 are omitted so create defaults to 6 | read the concurrency body assembly |
 | Skills copied in the create transaction | 239 | Source skill ids sent as `skill_ids`, bound in the same `POST /api/agents` tx (267); `--no-skills` opts out | read `runAgentCopy` |
@@ -106,6 +107,8 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | `AgentResponse` omits plaintext `custom_env` | 33–53 | Exposes only `has_custom_env` (52) and `custom_env_key_count` (53); comment cites MUL-2600 |
 | `CreateAgentRequest` fields | 930–970 | Includes `model`, `thinking_level`, and Codex `service_tier` alongside the profile/runtime/permission inputs |
 | Conversation-starter request and validation | `AgentConversationStarter`, `normaliseAgentConversationStarters`, create/update paths | `conversation_starters` is trimmed and validated as at most three complete label/prompt pairs before JSONB persistence; omission defaults to `[]`, update omission preserves, and `[]` clears |
+| Custom category contract | `agent_validation.go` `normaliseAgentCategory`; `agent.go`; `agent_template.go` | Create/template/update trim surrounding whitespace, reject >50 Unicode code points and remaining controls; empty clears, update omission preserves. Responses expose `category`, independent of template provenance, instructions and autonomy. Existing management permissions apply. Regression: `TestAgentCategory` |
+| Builder category autosave | `agent_builder.go` `SaveAgentBuilderDraft`; `agent_builder_test.go` `TestSaveAgentBuilderDraftRoundTripsThroughTheList` | Opaque JSON preserves the studio's category field through save/list without a separate server draft struct |
 | `name` required | 623–625 | 400 "name is required" |
 | `description` ≤ 255 code points | 627–629 | `utf8.RuneCountInString(req.Description) > maxAgentDescriptionLength` → 400 |
 | `runtime_id` required | 631–633 | `if req.RuntimeID == ""` → 400 "runtime_id is required" |
@@ -197,6 +200,7 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | Contract | Line | Behavior |
 |---|---|---|
 | `CreateAgent` INSERT | generated from `queries/agent.sql` | columns include `runtime_config, runtime_id, instructions, conversation_starters, custom_env, custom_args, mcp_config, model, thinking_level, service_tier` |
+| Category storage | `migrations/461_agent_category.up.sql`; `queries/agent.sql` | Non-null text defaults existing/new agents to empty; database length check is 50 characters. Create writes category and update uses COALESCE to preserve omission. Down migration drops the column. |
 | `CreateAgentParams` | generated from `queries/agent.sql` | typed params include nullable `Model`, `ThinkingLevel`, and `ServiceTier` |
 | `UpdateAgent` SET | generated from `queries/agent.sql` | COALESCE updates include model/thinking/service tier; dedicated clear queries restore each nullable override |
 | `UpdateAgentCustomEnv` (called by the `UpdateAgentEnv` handler) | 2652 | `SET custom_env = $2` — the only write path for env values |

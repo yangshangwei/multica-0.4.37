@@ -1058,7 +1058,6 @@
     "clear_selection": "清除选择"
   },
   "discovery": {
-    "all_roles": "全部角色",
     "roles": {
       "coordinator": "统筹角色",
       "specialist": "专业角色",
@@ -1072,8 +1071,30 @@
     "all_squads": "全部小队",
     "leader": "队长",
     "membership_failed": "无法加载小队成员。",
-    "metadata_failed": "部分角色或小队信息无法加载。",
+    "metadata_failed": "部分分类或小队信息无法加载，数量和结果可能不完整。",
     "retry": "重试",
-    "group_by": "按角色分组"
+    "group_by": "分组方式",
+    "grouping": {
+      "none": "不分组",
+      "category": "分类"
+    }
+  },
+  "category": {
+    "label": "分类",
+    "placeholder": "选择已有分类，或输入新名称",
+    "hint": "输入新名称即可新增，如研发、运营、内容。创建智能体时保存；留空时使用默认分类。",
+    "invalid": "分类最多 {{max}} 个字符，不能包含控制字符。",
+    "default": "使用默认分类",
+    "unavailable": "分类暂不可用",
+    "pending": "正在加载分类...",
+    "results_pending": "正在加载默认分类，数量和结果可能不完整。",
+    "all": "全部分类",
+    "hint_auto": "输入新名称即可新增，如研发、运营、内容。修改后自动保存；留空时使用默认分类。",
+    "show_options": "展开分类列表",
+    "use_new": "使用新分类 \"{{name}}\"",
+    "empty": "还没有自定义分类。可以选择默认分类，也可以输入新名称，如研发、运营、内容。",
+    "loading": "正在加载自定义分类...你可以先选择默认分类，或输入新名称。",
+    "load_failed": "无法加载已有分类，仍可选择默认分类或直接输入新名称。",
+    "no_matches": "没有匹配的分类，输入有效的新名称即可使用。"
   }
 }

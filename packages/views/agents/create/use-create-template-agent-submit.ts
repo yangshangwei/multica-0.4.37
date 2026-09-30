@@ -58,6 +58,7 @@ export function useCreateTemplateAgentSubmit(options: {
         template_key: templateKey,
         runtime_id: runtimeId,
         name: draft.name.trim() || undefined,
+        category: draft.category.trim(),
         model: draft.model.trim() || undefined,
         thinking_level: draft.thinkingLevel.trim() || undefined,
         service_tier: draft.serviceTier.trim() || undefined,

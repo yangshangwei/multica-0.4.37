@@ -5,6 +5,7 @@ import {
   AGENT_CONVERSATION_STARTERS_MAX,
 } from "./constants";
 import type { AgentDraft } from "./draft";
+import { isAgentCategoryValid } from "./category";
 
 /**
  * Wire format between the Agent Creation Studio and the hidden builder agent.
@@ -24,6 +25,7 @@ import type { AgentDraft } from "./draft";
 const BUILDER_INPUT_PREFIX = "MULTICA_AGENT_BUILDER_INPUT\n";
 
 export interface BuilderDraftPayload {
+  category?: unknown;
   name?: unknown;
   description?: unknown;
   instructions?: unknown;
@@ -134,6 +136,7 @@ export function encodeBuilderInput(
         user_request: request,
         current_draft: {
           name: draft.name,
+          category: draft.category,
           description: draft.description,
           instructions: draft.instructions,
           conversation_starters: draft.conversationStarters,
@@ -276,6 +279,10 @@ export function mergeBuilderDraft(
   return {
     ...current,
     name: typeof payload.name === "string" ? payload.name : current.name,
+    category:
+      typeof payload.category === "string" && isAgentCategoryValid(payload.category)
+        ? payload.category.trim()
+        : current.category,
     description:
       typeof payload.description === "string"
         ? payload.description

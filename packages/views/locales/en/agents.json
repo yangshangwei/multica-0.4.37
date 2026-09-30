@@ -1081,7 +1081,6 @@
     "clear_selection": "Clear selection"
   },
   "discovery": {
-    "all_roles": "All roles",
     "roles": {
       "coordinator": "Coordinators",
       "specialist": "Specialists",
@@ -1095,8 +1094,30 @@
     "all_squads": "All squads",
     "leader": "Leader",
     "membership_failed": "Could not load squad members.",
-    "metadata_failed": "Some role or squad information could not be loaded.",
+    "metadata_failed": "Some category or squad information could not be loaded. Counts and results may be incomplete.",
     "retry": "Retry",
-    "group_by": "Group by role"
+    "group_by": "Group by",
+    "grouping": {
+      "none": "None",
+      "category": "Category"
+    }
+  },
+  "category": {
+    "label": "Category",
+    "placeholder": "Choose a category or type a new name",
+    "hint": "Type a new name, such as Research or Operations. Saved when you create the agent; leave blank to use the default category.",
+    "invalid": "Use up to {{max}} characters without control characters.",
+    "default": "Default category",
+    "unavailable": "Category unavailable",
+    "pending": "Loading category...",
+    "results_pending": "Loading default categories. Counts and results may be incomplete.",
+    "all": "All categories",
+    "hint_auto": "Type a new name, such as Research or Operations. Changes save automatically; leave blank to use the default category.",
+    "show_options": "Show categories",
+    "use_new": "Use new category \"{{name}}\"",
+    "empty": "No custom categories yet. Choose a default category, or type a new name such as Research or Operations.",
+    "loading": "Loading custom categories... You can choose a default or type a new name.",
+    "load_failed": "Could not load categories. You can still choose a default or type a category name.",
+    "no_matches": "No matching categories. Enter a valid new name to use it."
   }
 }

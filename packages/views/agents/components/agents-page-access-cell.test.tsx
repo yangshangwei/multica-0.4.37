@@ -38,6 +38,7 @@ function makeRow(
       archived_by: null,
       ...overrides,
     },
+    category: null,
     runtime: null,
     presence: null,
     activity: null,

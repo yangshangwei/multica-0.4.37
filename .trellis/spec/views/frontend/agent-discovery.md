@@ -40,28 +40,35 @@ squad's full agent roster — not the truncated three-person preview.
   normalization + fallback query key.
 - `e2e/agents-discovery.spec.ts`: legacy 503 → retry; no eager per-squad fetch.
 
-## Role provenance — don't infer capability
-Role KIND (coordinator | specialist | other) derives from `agent.template_key`
-matched against `useRoleTemplates()` / `useSquadTemplates().leader` ONLY. Never
-infer role or capability from the editable name, avatar emoji, or autonomy level
-— those are user-owned and prove nothing. Unknown/custom agents stay in
-the general-purpose / All group (internal key `other`) with no invented capability. The row label states template provenance
-("角色模板：X"), not enforced current behavior.
+## Template provenance and directory classification
 
-The group is labeled "General-purpose agents" ("通用智能体") in the directory.
-Its visible helper explains where to start, while custom-agent capabilities remain
-defined by their own descriptions and instructions. Mika-specific coordination
-copy requires an active agent with `system_key === "mika"` in the current scope
-and interpolates its saved name; never identify Mika by its editable name or
-apply its capabilities to every agent in the group.
+`resolveAgentRole` resolves immutable template provenance from `template_key`
+and the built-in catalogs. Never infer capability or authority from the editable
+name, avatar or category. Template provenance remains unchanged and searchable even when someone assigns
+a different directory category. The role-template tag continues to describe
+provenance independently of the directory category.
 
-An unavailable role catalog is unknown, not empty. If either role catalog fails
-before providing data, keep unfiltered saved agents accessible without role
-grouping/counts, and retain All roles so persisted filters can be cleared. Gate
-role-filtered results and suppress definitive search-empty messages until the
-needed metadata is available. Do not expose hidden rows to select-all. Existing
-cached catalogs remain usable during a failed background refresh; retry must
-restore classification without changing saved grouping or filter preferences.
+`resolveAgentDirectoryCategory` is the single directory classification rule:
+1. A nonblank manually saved category takes precedence.
+2. Without one, fall back to the template-derived role kind.
+3. Agents without a recognized template use General-purpose agents.
+
+Preset names in English and Chinese normalize to `preset:other`,
+`preset:specialist`, or `preset:coordinator`. Other names become `custom:<name>`.
+These keys identify view filters/groups; the API still stores the original name.
+The resolved category drives grouping, top chips, dropdown filtering/counts and
+search. No display category changes agent permissions or instructions.
+
+An unavailable template catalog leaves only template-dependent fallback rows
+unknown. Explicit categories and template-free agents remain usable. Unknown
+rows get a pending/unavailable group; preset counts are lower bounds (`n+`)
+until complete, and filtered empty results are not asserted when unknown rows
+could match. Custom-category results do not depend on template catalogs. Retry
+restores fallback classification without changing saved agents or preferences.
+
+Mika-specific helper text still requires an active agent with `system_key ===
+"mika"` and interpolates its saved name; never identify it by editable name or
+attribute its capabilities to every general-purpose agent.
 
 ## Template picker instances — navigate, never mutate
 Match active instances by `template_key` + `!archived_at`; show all renamed
@@ -75,17 +82,58 @@ on gallery scrolling as well as card navigation, including scrolling to zero;
 otherwise sidebar/tab navigation can restore an older card-click position. Do
 not write clamped offsets from loading/error layouts before content restoration.
 
-## Preferences & scope
-Fresh `AGENT_DEFAULT_HIDDEN_COLUMNS` is concise (owner/access/runtime/runs/model/
-created hidden). The merge spreads persisted prefs AFTER defaults so an existing
-`hiddenColumns` (including an intentional `[]`) wins exactly — never overwrite it.
-`setScope` sets only scope; `toggleFilter` never mutates scope — scope (Mine/All)
-and role/squad filters compose. Label the activity column with its window
-("Runs (30 days)", "No activity (30d)").
+## Custom categories
+
+- `Agent.category` is a user-editable single category name, independent of role
+  provenance and autonomy. The backend persists it on the agent row. Empty means
+  automatic fallback classification; missing or malformed legacy response fields
+  normalize safely.
+- Create, template-create and update accept `category`. Writes trim surrounding
+  whitespace, reject interior control characters and cap names at 50 Unicode
+  code points. An omitted update preserves the category; `""` clears it.
+- Suggest category names only from the caller's visible workspace agent list.
+  Categories do not grant access or alter instructions. Do not reuse or rewrite
+  `template_key` to classify a user-authored agent.
+- Use the shared Base UI Combobox with a visible arrow, rather than a native
+  datalist whose popup is browser-dependent. Opening the arrow shows existing
+  names and Default category even with a selected value. Typing filters suggestions
+  and exposes a "Use new category" option for valid unmatched names. Empty and
+  failed suggestions explain free entry. The field's `saveMode` distinguishes
+  creation drafts from automatically saved settings in its helper text.
+- The first three suggestions are the localized names for General-purpose
+  agents, Specialists and Coordinators, followed by deduplicated visible saved
+  category names. Defaults remain available without saved agents or while their
+  query fails. A preset saves its displayed name as an ordinary category string;
+  it sets directory classification without modifying role-template provenance,
+  authority or instructions.
+- Shared `AgentDraft`, stored/manual/builder drafts and duplicates carry category.
+  The settings field saves category independently of name/description using the
+  shared autosave hook, including failure feedback, validation and IME deferral.
+  Clean fields follow Query refreshes; an in-flight local draft survives until
+  its matching save succeeds. Never resend a cached category in a profile edit.
+- `filters.categories` is the only classification filter, using resolved keys;
+  it composes with ownership scope, search, access and squads. `groupBy` supports
+  `none` and `category`, defaulting to category. Groups order the three presets
+  first, then custom names, then unresolved fallback rows.
+
+## Saved display preferences
+
+The agents view store uses persisted version 1. Version-0 `role`/`category`
+grouping migrates to `category`; explicit `none` remains. Named raw category
+filters convert to resolved keys and take precedence over legacy role filters.
+If no category filter was selected, legacy role choices become preset keys.
+A blank-only old category filter clears because blank now means automatic
+fallback. Canonical version-1 keys must not be converted again. Preserve scope,
+sort, hidden columns (including explicit `[]`), squads and all unrelated filters.
+
+Fresh hidden columns remain concise (owner/access/runtime/runs/model/created).
+`setScope` sets only scope; toggling a category never changes Mine/All. Label the
+activity column with its window ("Runs (30 days)", "No activity (30d)").
 
 ## Wrong vs Correct
 - Wrong: `agent_member_ids ?? []` at the boundary — turns "roster unknown" into
   "empty squad" and hides members on older servers. Correct: keep `undefined`
   and fall back to the members endpoint.
-- Wrong: group or label a renamed agent by its current name. Correct: resolve by
-  `template_key` — a renamed "支付实现" is still the implementer role.
+- Wrong: keep an explicitly categorized OpenCode under the template-derived
+  General-purpose group. Correct: use the effective category for all directory
+  navigation, retaining template provenance as separate searchable metadata.

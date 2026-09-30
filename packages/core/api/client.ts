@@ -267,6 +267,9 @@ import { parseWithFallback } from "./schema";
 import { readIssueDescriptionStream, IssueDescriptionStreamError } from "./issue-description-stream";
 import { OptimizeIssueDescriptionResponseSchema, RecommendIssueCreatorsResponseSchema } from "./schemas";
 import {
+  AgentListSchema,
+  AgentSchema,
+  EMPTY_AGENT,
   AgentApprovalListResponseSchema,
   AgentApprovalSchema,
   AgentRoleTemplateListResponseSchema,
@@ -1691,19 +1694,22 @@ export class ApiClient {
     const search = new URLSearchParams();
     if (params?.workspace_id) search.set("workspace_id", params.workspace_id);
     if (params?.include_archived) search.set("include_archived", "true");
-    return this.fetch(`/api/agents?${search}`);
+    const raw = await this.fetch<unknown>(`/api/agents?${search}`);
+    return parseWithFallback(raw, AgentListSchema, [] as Agent[], { endpoint: "GET /api/agents", redact: true });
   }
 
   async getAgent(id: string): Promise<Agent> {
-    return this.fetch(`/api/agents/${id}`);
+    const raw = await this.fetch<unknown>(`/api/agents/${id}`);
+    return parseWithFallback(raw, AgentSchema, EMPTY_AGENT, { endpoint: "GET /api/agents/:id", redact: true });
   }
 
   async createAgent(data: CreateAgentRequest): Promise<Agent> {
     assertAgentConversationStartersWriteSupported(data);
-    return this.fetch("/api/agents", {
+    const raw = await this.fetch<unknown>("/api/agents", {
       method: "POST",
       body: JSON.stringify(data),
     });
+    return parseWithFallback(raw, AgentSchema, EMPTY_AGENT, { endpoint: "POST /api/agents", redact: true });
   }
 
   /**
@@ -1735,10 +1741,11 @@ export class ApiClient {
   async createAgentFromTemplate(
     data: CreateAgentFromTemplateRequest,
   ): Promise<Agent> {
-    return this.fetch("/api/agents/from-template", {
+    const raw = await this.fetch<unknown>("/api/agents/from-template", {
       method: "POST",
       body: JSON.stringify(data),
     });
+    return parseWithFallback(raw, AgentSchema, EMPTY_AGENT, { endpoint: "POST /api/agents/from-template", redact: true });
   }
 
   /** The built-in squad templates, with their rosters. */
@@ -1941,10 +1948,11 @@ export class ApiClient {
 
   async updateAgent(id: string, data: UpdateAgentRequest): Promise<Agent> {
     assertAgentConversationStartersWriteSupported(data);
-    return this.fetch(`/api/agents/${id}`, {
+    const raw = await this.fetch<unknown>(`/api/agents/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
     });
+    return parseWithFallback(raw, AgentSchema, EMPTY_AGENT, { endpoint: "PUT /api/agents/:id", redact: true });
   }
 
   async archiveAgent(id: string): Promise<Agent> {

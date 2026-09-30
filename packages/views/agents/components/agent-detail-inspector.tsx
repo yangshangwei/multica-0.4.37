@@ -9,6 +9,8 @@ import type {
 } from "@multica/core/types";
 import {
   AGENT_DESCRIPTION_MAX_LENGTH,
+  getAgentCategory,
+  isAgentCategoryValid,
   AGENT_MAX_CONCURRENT_TASKS_MAX,
   AGENT_MAX_CONCURRENT_TASKS_MIN,
 } from "@multica/core/agents";
@@ -28,6 +30,7 @@ import {
 } from "../../settings/components/settings-layout";
 import { useAutoSave } from "../../settings/components/use-auto-save";
 import { useT } from "../../i18n";
+import { AgentCategoryInput } from "./agent-category-input";
 import { CharCounter } from "./char-counter";
 import { ModelPicker } from "./inspector/model-picker";
 import {
@@ -57,6 +60,10 @@ function profileDraftsEqual(left: ProfileDraft, right: ProfileDraft) {
   return left.name === right.name && left.description === right.description;
 }
 
+function categoryDraftsEqual(left: { category: string }, right: { category: string }) {
+  return left.category === right.category;
+}
+
 /**
  * Full-width General settings form. Every editable value is presented as an
  * explicit field; compact inspector chips are used only through their
@@ -80,10 +87,17 @@ export function AgentDetailInspector({
 
   const [name, setName] = useState(agent.name);
   const [description, setDescription] = useState(agent.description ?? "");
+  // Clean fields follow cache refreshes; an edit owns its draft until the
+  // request finishes so optimistic/remote updates cannot erase newer typing.
+  const [categoryDraft, setCategoryDraft] = useState<string | null>(null);
+  const category = categoryDraft ?? getAgentCategory(agent);
+  const [categoryComposing, setCategoryComposing] = useState(false);
 
   useEffect(() => {
     setName(agent.name);
     setDescription(agent.description ?? "");
+    setCategoryDraft(null);
+    setCategoryComposing(false);
     // Reset only when moving to another agent. Cache updates from this form
     // must not erase a newer local draft while an autosave is in flight.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,6 +130,21 @@ export function AgentDetailInspector({
       profileDraft.description.length <= AGENT_DESCRIPTION_MAX_LENGTH,
     isEqual: profileDraftsEqual,
   });
+  const categoryValue = useMemo(() => ({ category: category.trim() }), [category]);
+  const savedCategory = getAgentCategory(agent);
+  const savedCategoryValue = useMemo(() => ({ category: savedCategory }), [savedCategory]);
+  const categoryAutoSave = useAutoSave({
+    value: categoryValue,
+    savedValue: savedCategoryValue,
+    onSave: (next) => update(next),
+    onSuccess: (next) => setCategoryDraft((current) => current?.trim() === next.category ? null : current),
+    enabled: canEdit && categoryDraft !== null && !categoryComposing && isAgentCategoryValid(category),
+    isEqual: categoryDraftsEqual,
+  });
+  const saveStatuses = [profileAutoSave.status, categoryAutoSave.status];
+  const profileSaveStatus = saveStatuses.includes("error") ? "error"
+    : saveStatuses.includes("saving") ? "saving"
+    : saveStatuses.includes("saved") ? "saved" : "idle";
 
   const isOnline = runtime?.status === "online";
   const canReadRuntime =
@@ -159,7 +188,7 @@ export function AgentDetailInspector({
         description={t(($) => $.inspector.section_profile_hint)}
         action={
           <SettingsSaveState
-            status={profileAutoSave.status}
+            status={profileSaveStatus}
             savingLabel={ts(($) => $.auto_save.saving)}
             savedLabel={ts(($) => $.auto_save.saved)}
             errorLabel={ts(($) => $.auto_save.failed)}
@@ -207,6 +236,18 @@ export function AgentDetailInspector({
                 </p>
               ) : null}
             </div>
+          </SettingsRow>
+
+          <SettingsRow label={t(($) => $.category.label)} size="text" align="start">
+            <AgentCategoryInput
+              saveMode="auto"
+              workspaceId={agent.workspace_id}
+              value={category}
+              onChange={setCategoryDraft}
+              onBlur={categoryAutoSave.flush}
+              onCompositionChange={setCategoryComposing}
+              disabled={!canEdit}
+            />
           </SettingsRow>
 
           <SettingsRow

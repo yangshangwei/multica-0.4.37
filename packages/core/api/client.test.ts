@@ -2819,3 +2819,26 @@ describe("ApiClient session expiry", () => {
     },
   );
 });
+
+
+describe("agent category response compatibility", () => {
+  it.each([undefined, null, 123, {}, ["Engineering"]])("repairs malformed category %j for list, detail, and mutations", async (category) => {
+    const agent = { id: "agent-1", name: "Reviewer", category, template_key: "reviewer" };
+    vi.stubGlobal("fetch", vi.fn().mockImplementation((url: string) => Promise.resolve(
+      new Response(JSON.stringify(url.includes("/api/agents?") ? [agent] : agent), {
+        status: 200, headers: { "Content-Type": "application/json" },
+      }),
+    )));
+    const client = new ApiClient("https://api.example.test");
+    const results = [
+      ...(await client.listAgents()),
+      await client.getAgent("agent-1"),
+      await client.createAgent({ name: "Reviewer", runtime_id: "runtime-1", category: "Engineering" }),
+      await client.createAgentFromTemplate({ template_key: "reviewer", runtime_id: "runtime-1", category: "Engineering" }),
+      await client.updateAgent("agent-1", { category: "" }),
+    ];
+    for (const result of results) {
+      expect(result).toMatchObject({ id: "agent-1", name: "Reviewer", category: "", template_key: "reviewer" });
+    }
+  });
+});

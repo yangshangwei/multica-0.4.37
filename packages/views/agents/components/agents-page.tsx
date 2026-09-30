@@ -16,12 +16,15 @@ import type {
   MemberWithUser,
 } from "@multica/core/types";
 import {
+  AGENT_CATEGORY_PRESET_ORDER,
   buildAgentRoleMetadata,
+  getAgentCategory,
   buildAgentSquadMemberships,
   resolveAgentRole,
+  resolveAgentDirectoryCategory,
+  type AgentDirectoryCategory,
   type AgentRoleMetadata,
   type AgentSquadMembership,
-  type AgentRoleKind,
   type AgentActivity,
   agentRunCounts30dOptions,
   effectiveAccessScope,
@@ -81,7 +84,7 @@ import {
 import { availabilityConfig } from "../presence";
 import { AgentRowActions } from "./agent-row-actions";
 import { useRoleTemplates, useSquadTemplates } from "../create/use-role-templates";
-import { AgentDiscoveryToolbar, AGENT_ROLE_ORDER } from "./agent-discovery-toolbar";
+import { AgentDiscoveryToolbar } from "./agent-discovery-toolbar";
 import {
   AgentListToolbar,
   countActiveFilterDimensions,
@@ -162,6 +165,7 @@ export interface AgentListRow {
   owner: MemberWithUser | null;
   isOwnedByMe: boolean;
   canManage: boolean;
+  category: AgentDirectoryCategory | null;
   role?: AgentRoleMetadata | null;
   squads?: readonly AgentSquadMembership[];
 }
@@ -180,7 +184,7 @@ function lastActiveDaysAgo(activity: AgentActivity | null): number | null {
 
 function matchesAgentSearch(row: AgentListRow, query: string): boolean {
   if (!query) return true;
-  const terms = [row.agent.name, row.agent.description, row.role?.title,
+  const terms = [row.agent.name, row.agent.description, row.category?.name, getAgentCategory(row.agent), row.role?.title,
     ...(row.squads ?? []).map((squad) => squad.name)];
   return terms.some((term) => !!term && (
     term.toLowerCase().includes(query) || matchesPinyin(term, query)
@@ -200,7 +204,7 @@ export function rowMatchesFilters(
   query: string,
 ): boolean {
   if (!matchesAgentSearch(row, query.trim().toLowerCase())) return false;
-  if (filters.roles?.length && !filters.roles.includes(row.role?.kind ?? "other")) return false;
+  if (filters.categories?.length && (!row.category || !filters.categories.includes(row.category.key))) return false;
   if (filters.squads?.length && !(row.squads ?? []).some((squad) => filters.squads.includes(squad.squadId))) return false;
   if (
     filters.availability.length > 0 &&
@@ -444,6 +448,11 @@ function NameCell({ row }: { row: AgentListRow }) {
           >
             {agent.name}
           </AppLink>
+          {getAgentCategory(agent) && (
+            <span title={getAgentCategory(agent)} className="hidden max-w-40 shrink-0 truncate rounded bg-muted px-1.5 py-0.5 text-micro text-muted-foreground @2xl:inline">
+              {getAgentCategory(agent)}
+            </span>
+          )}
           {row.role && (
             <span title={t(($) => $.discovery.role_hint)} className="hidden max-w-56 truncate rounded bg-muted px-1.5 py-0.5 text-micro text-muted-foreground @2xl:inline">
               {t(($) => $.discovery.role_template, { title: row.role.title })}
@@ -905,11 +914,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     (roleTemplatesQuery.isError && roleTemplatesQuery.data === undefined) ||
     (squadTemplatesQuery.isError && squadTemplatesQuery.data === undefined);
   const rolesReady = !metadataPending && !roleMetadataUnavailable;
-  const resultsUnavailable = membershipFailed || (!!filters.roles?.length && !rolesReady);
-  const searchMetadataIncomplete = !!search.trim() && (
-    !rolesReady || squadQuery.isPending ||
-    (squadQuery.isError && squadQuery.data === undefined)
-  );
+  const resultsUnavailable = membershipFailed;
   const handleSort = useAgentsViewStore((s) => s.toggleSort);
   const handleSortFieldSelect = useAgentsViewStore((s) => s.setSortField);
   const setSortDirection = useAgentsViewStore((s) => s.setSortDirection);
@@ -984,9 +989,15 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     return inScope.map((agent) => {
       const isOwner = !!currentUser?.id && agent.owner_id === currentUser.id;
       const activity = activityMap.get(agent.id) ?? null;
+      const role = resolveAgentRole(agent, roleMetadata);
+      const category = resolveAgentDirectoryCategory(agent, role, rolesReady);
+      const preset = category?.preset;
       return {
         agent,
-        role: resolveAgentRole(agent, roleMetadata),
+        role,
+        category: category && preset
+          ? { ...category, name: t(($) => $.discovery.roles[preset]) }
+          : category,
         squads: membership.byAgent.get(agent.id) ?? [],
         runtime: runtimesById.get(agent.runtime_id) ?? null,
         presence: presenceMap.get(agent.id) ?? null,
@@ -1009,8 +1020,17 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     runCountsById,
     isWorkspaceAdmin,
     roleMetadata,
+    rolesReady,
+    t,
     membership.byAgent,
   ]);
+
+  const categoriesIncomplete = scopeRows.some((row) => row.category === null);
+  const categoryResultsIncomplete = categoriesIncomplete && filters.categories.some((key) => key.startsWith("preset:"));
+  const searchMetadataIncomplete = !!search.trim() && (
+    (!rolesReady && scopeRows.some((row) => !!row.agent.template_key)) || squadQuery.isPending ||
+    (squadQuery.isError && squadQuery.data === undefined)
+  );
 
   // Visible rows: local search + filters, then sort.
   const rows = useMemo<AgentListRow[]>(() => {
@@ -1071,13 +1091,33 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   // double scrollbars) and clipped the last row under the horizontal
   // scrollbar. The sticky header pins inside this scroller; the vertical
   // scrollbar spans the full pane height (Linear's structure).
-  type DirectoryItem = { kind: "agent"; row: AgentListRow } | { kind: "group"; role: AgentRoleKind; count: number };
-  const directoryItems: DirectoryItem[] = groupBy === "role" && rolesReady
-    ? AGENT_ROLE_ORDER.flatMap((role): DirectoryItem[] => {
-        const grouped = rows.filter((row) => (row.role?.kind ?? "other") === role);
-        return grouped.length ? [{ kind: "group", role, count: grouped.length }, ...grouped.map((row): DirectoryItem => ({ kind: "agent", row }))] : [];
-      })
-    : rows.map((row) => ({ kind: "agent", row }));
+  type DirectoryItem = { kind: "agent"; row: AgentListRow } | { kind: "group"; key: string; label: string; count: number };
+  const directoryItems: DirectoryItem[] = [];
+  if (groupBy === "category") {
+    const groups = new Map<string, { label: string; rows: AgentListRow[] }>();
+    for (const row of rows) {
+      const key = row.category?.key ?? "unavailable";
+      const group = groups.get(key) ?? {
+        label: row.category?.name ?? t(($) => metadataPending ? $.category.pending : $.category.unavailable),
+        rows: [],
+      };
+      group.rows.push(row);
+      groups.set(key, group);
+    }
+    const keys = [
+      ...AGENT_CATEGORY_PRESET_ORDER.map((preset) => `preset:${preset}`),
+      ...[...groups.keys()].filter((key) => key.startsWith("custom:")).sort((a, b) => groups.get(a)!.label.localeCompare(groups.get(b)!.label)),
+      "unavailable",
+    ];
+    for (const key of keys) {
+      const group = groups.get(key);
+      if (!group) continue;
+      directoryItems.push({ kind: "group", key, label: group.label, count: group.rows.length });
+      directoryItems.push(...group.rows.map((row): DirectoryItem => ({ kind: "agent", row })));
+    }
+  } else {
+    directoryItems.push(...rows.map((row): DirectoryItem => ({ kind: "agent", row })));
+  }
   const listScrollRef = useRef<HTMLDivElement | null>(null);
   const rowVirtualizer = useVirtualizer({
     count: directoryItems.length,
@@ -1085,7 +1125,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     estimateSize: (index) => directoryItems[index]?.kind === "group" ? 36 : ROW_HEIGHT,
     getItemKey: (index) => {
       const item = directoryItems[index];
-      return item?.kind === "group" ? `group-${item.role}` : item?.row.agent.id ?? index;
+      return item?.kind === "group" ? `group-${item.key}` : item?.row.agent.id ?? index;
     },
     overscan: 10,
   });
@@ -1151,7 +1191,6 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
     (!needsActivity || !activityLoading) &&
     (!needsRunCounts || !runCountsPending) &&
     (!needsPresence || !presenceLoading) &&
-    (!metadataPending || (groupBy !== "role" && !filters.roles?.length)) &&
     !membershipPending;
 
   return (
@@ -1194,7 +1233,10 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
             members={members}
             visibleCount={resultsUnavailable ? 0 : rows.length}
           />
-          <AgentDiscoveryToolbar rows={scopeRows} rolesReady={rolesReady} squads={squadQuery.data ?? []} filters={filters} onToggleFilter={toggleFilter} />
+          <AgentDiscoveryToolbar rows={scopeRows} squads={squadQuery.data ?? []} filters={filters} onToggleFilter={toggleFilter} />
+          {metadataPending && categoryResultsIncomplete && (
+            <p role="status" className="px-5 py-2 text-caption text-muted-foreground">{t(($) => $.category.results_pending)}</p>
+          )}
           {(metadataFailed || membershipFailed) && (
             <div role="alert" className="flex items-center gap-3 px-5 py-2 text-caption text-muted-foreground">
               {t(($) => membershipFailed ? $.discovery.membership_failed : $.discovery.metadata_failed)}
@@ -1228,7 +1270,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
                     virtualPadding.bottom + LIST_GRID_BOTTOM_CLEARANCE,
                 }}
               >
-                {!resultsUnavailable && !searchMetadataIncomplete && rows.length === 0 && (
+                {!resultsUnavailable && !categoryResultsIncomplete && !searchMetadataIncomplete && rows.length === 0 && (
                   <div className="col-span-full py-16 text-center text-body text-muted-foreground">
                     {noMatchText}
                   </div>
@@ -1237,8 +1279,8 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
                   const item = directoryItems[vi.index];
                   if (!item) return null;
                   if (item.kind === "group") return (
-                    <div key={`group-${item.role}`} className="col-span-full flex h-9 items-center gap-2 bg-muted/40 px-5 text-caption font-semibold">
-                      {t(($) => $.discovery.roles[item.role])}
+                    <div key={`group-${item.key}`} className="col-span-full flex h-9 items-center gap-2 bg-muted/40 px-5 text-caption font-semibold">
+                      <span className="truncate" title={item.label}>{item.label}</span>
                       <span className="font-normal tabular-nums text-muted-foreground">{item.count}</span>
                     </div>
                   );

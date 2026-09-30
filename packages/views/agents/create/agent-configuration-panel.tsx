@@ -8,6 +8,7 @@ import {
   type AgentDraft,
   type AgentPermissionScope,
 } from "@multica/core/agents";
+import { useWorkspaceId } from "@multica/core/hooks";
 import { useConfigStore } from "@multica/core/config";
 import type { MemberWithUser, RuntimeDevice } from "@multica/core/types";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
@@ -22,6 +23,7 @@ import {
   SettingsCard,
   SettingsSection,
 } from "../../settings/components/settings-layout";
+import { AgentCategoryInput } from "../components/agent-category-input";
 import { CharCounter } from "../components/char-counter";
 import { ServiceTierSettingField } from "../components/inspector/service-tier-setting-field";
 import { ThinkingSettingField } from "../components/inspector/thinking-prop-row";
@@ -82,6 +84,7 @@ export function AgentConfigurationPanel({
   };
 }) {
   const { t } = useT("agents");
+  const workspaceId = useWorkspaceId();
   const conversationStartersSupported = useConfigStore(
     (state) => state.agentConversationStartersSupported,
   );
@@ -134,6 +137,19 @@ export function AgentConfigurationPanel({
             error={nameError}
             onChange={onNameChange}
           />
+          <DraftFieldRow
+            compact={compact}
+            align="start"
+            label={t(($) => $.category.label)}
+            htmlFor="agent-create-category"
+          >
+            <AgentCategoryInput
+              id="agent-create-category"
+              workspaceId={workspaceId}
+              value={draft.category}
+              onChange={(value) => set("category", value)}
+            />
+          </DraftFieldRow>
           <DraftFieldRow
             compact={compact}
             align="start"

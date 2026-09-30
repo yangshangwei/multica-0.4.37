@@ -198,7 +198,7 @@ test("agent discovery keeps role and squad identification accurate without chang
     await page.getByRole("button", { name: /^通用智能体\s*2$/ }).click();
     await expect(agentRow(page, "自定义文案助手")).toBeVisible();
     await expect(agentRow(page, "新版本智能体")).toBeVisible();
-    await page.getByRole("button", { name: "全部角色", exact: true }).click();
+    await page.getByRole("button", { name: "全部分类", exact: true }).click();
 
     // Fresh defaults are concise. Explicit column and grouping preferences
     // survive a reload without requiring a new directory or changing data.
@@ -207,16 +207,16 @@ test("agent discovery keeps role and squad identification accurate without chang
     await expect(page.getByRole("switch", { name: "运行时", exact: true })).not.toBeChecked();
     await expect(page.getByRole("switch", { name: "近 30 天运行次数", exact: true })).not.toBeChecked();
     await page.getByRole("switch", { name: "owner", exact: true }).click();
-    await page.getByRole("switch", { name: "按角色分组", exact: true }).click();
+    await page.getByRole("group", { name: "分组方式", exact: true }).getByRole("button", { name: "不分组", exact: true }).click();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("table").getByText(/^统筹角色\s*6$/)).toHaveCount(0);
     await page.reload();
     await expect(search).toBeVisible();
     await page.getByRole("button", { name: "显示", exact: true }).click();
     await expect(page.getByRole("switch", { name: "owner", exact: true })).toBeChecked();
-    await expect(page.getByRole("switch", { name: "按角色分组", exact: true })).not.toBeChecked();
+    await expect(page.getByRole("group", { name: "分组方式", exact: true }).getByRole("button", { name: "不分组", exact: true })).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("switch", { name: "owner", exact: true }).click();
-    await page.getByRole("switch", { name: "按角色分组", exact: true }).click();
+    await page.getByRole("group", { name: "分组方式", exact: true }).getByRole("button", { name: "分类", exact: true }).click();
     await page.keyboard.press("Escape");
 
     // Legacy servers lack the complete member IDs. Opening the page and

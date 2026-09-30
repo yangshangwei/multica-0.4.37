@@ -74,7 +74,7 @@ INSERT INTO agent (
     instructions, custom_env, custom_args, mcp_config, model, thinking_level,
     service_tier, conversation_starters,
     composio_toolkit_allowlist, permission_mode,
-    template_key, template_version, autonomy_level
+    template_key, template_version, autonomy_level, category
 ) VALUES (
     $1, $2, $3, $4, $5,
     $6, $7, $8, $9, $10,
@@ -84,7 +84,8 @@ INSERT INTO agent (
     COALESCE(sqlc.narg('permission_mode'), 'private'),
     COALESCE(sqlc.narg('template_key'), ''),
     COALESCE(sqlc.narg('template_version'), 0),
-    COALESCE(sqlc.narg('autonomy_level'), '')
+    COALESCE(sqlc.narg('autonomy_level'), ''),
+    COALESCE(sqlc.narg('category'), '')
 )
 RETURNING *;
 
@@ -146,6 +147,7 @@ RETURNING *;
 UPDATE agent SET
     name = COALESCE(sqlc.narg('name'), name),
     description = COALESCE(sqlc.narg('description'), description),
+    category = COALESCE(sqlc.narg('category'), category),
     avatar_url = COALESCE(sqlc.narg('avatar_url'), avatar_url),
     runtime_config = COALESCE(sqlc.narg('runtime_config'), runtime_config),
     runtime_mode = COALESCE(sqlc.narg('runtime_mode'), runtime_mode),

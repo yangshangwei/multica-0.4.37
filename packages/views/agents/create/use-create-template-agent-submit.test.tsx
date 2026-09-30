@@ -88,6 +88,7 @@ function wrapper(queryClient: QueryClient) {
 }
 
 function setup(overrides?: {
+  category?: string;
   squadId?: string | null;
   permissionScope?: "private" | "workspace" | "members";
   memberIds?: Set<string>;
@@ -104,6 +105,7 @@ function setup(overrides?: {
           name: "  Code Reviewer  ",
           runtimeId: "runtime-1",
           model: " sonnet ",
+          category: overrides?.category ?? "",
           permissionScope: overrides?.permissionScope ?? "private",
           memberIds: overrides?.memberIds ?? new Set(),
         },
@@ -144,6 +146,14 @@ describe("useCreateTemplateAgentSubmit", () => {
     expect(body).not.toHaveProperty("skill_ids");
     expect(body).not.toHaveProperty("autonomy_level");
     expect(body).not.toHaveProperty("max_concurrent_tasks");
+  });
+
+  it("sends a trimmed custom category without changing template provenance", async () => {
+    const { result } = setup({ category: "  研发  " });
+    await act(async () => { await result.current.create(); });
+    expect(mockCreateFromTemplate).toHaveBeenCalledWith(expect.objectContaining({
+      template_key: "code-reviewer", category: "研发",
+    }));
   });
 
   it("maps a workspace access choice onto the invocation target", async () => {

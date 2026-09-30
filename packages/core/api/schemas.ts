@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type {
+  Agent,
   AgentBuilderRuntimeSwitch,
   AgentBuilderSession,
   AgentBuilderSessionSummary,
@@ -2038,6 +2039,95 @@ export const EMPTY_CANCEL_TASK_RESPONSE: CancelTaskResponse = {
   created_at: "",
 };
 
+/** Agent responses are additive; unknown fields and enum values must survive. */
+export const AgentSchema = z.object({
+  id: z.string(),
+  workspace_id: z.string().catch(""),
+  runtime_id: z.string().catch(""),
+  runtime_bound: z.boolean().optional().catch(undefined),
+  runtime_availability: z.string().optional().catch(undefined),
+  name: z.string().catch(""),
+  description: z.string().catch(""),
+  category: z.string().catch(""),
+  instructions: z.string().catch(""),
+  conversation_starters: z.array(z.object({
+    label: z.string().catch(""),
+    prompt: z.string().catch(""),
+  }).loose()).optional().catch([]),
+  system_key: z.string().optional().catch(undefined),
+  system_instructions: z.string().optional().catch(undefined),
+  template_key: z.string().optional().catch(undefined),
+  template_version: z.number().optional().catch(undefined),
+  autonomy_level: z.string().optional().catch(undefined),
+  avatar_url: z.string().nullable().catch(null),
+  runtime_mode: z.string().catch("local"),
+  runtime_config: z.record(z.string(), z.unknown()).catch({}),
+  custom_args: z.array(z.string()).catch([]),
+  has_custom_env: z.boolean().optional().catch(undefined),
+  custom_env_key_count: z.number().optional().catch(undefined),
+  mcp_config: z.unknown().optional(),
+  mcp_config_redacted: z.boolean().optional().catch(undefined),
+  composio_toolkit_allowlist: z.array(z.string()).optional().catch([]),
+  composio_toolkit_allowlist_redacted: z.boolean().optional().catch(undefined),
+  visibility: z.string().catch("private"),
+  permission_mode: z.string().catch("private"),
+  invocation_targets: z.array(z.object({
+    target_type: z.string(),
+    target_id: z.string().nullable().catch(null),
+  }).loose()).catch([]),
+  status: z.string().catch("offline"),
+  max_concurrent_tasks: z.number().catch(1),
+  model: z.string().catch(""),
+  thinking_level: z.string().optional().catch(undefined),
+  service_tier: z.string().optional().catch(undefined),
+  owner_id: z.string().nullable().catch(null),
+  skills: z.array(z.object({
+    id: z.string(),
+    name: z.string().catch(""),
+    description: z.string().catch(""),
+    enabled: z.boolean().optional().catch(undefined),
+  }).loose()).catch([]),
+  disabled_runtime_skills: z.array(z.object({
+    runtime_id: z.string(),
+    provider: z.string(),
+    root: z.string(),
+    key: z.string(),
+    name: z.string().optional().catch(undefined),
+    plugin: z.string().optional().catch(undefined),
+  }).loose()).optional().catch([]),
+  created_at: z.string().catch(""),
+  updated_at: z.string().catch(""),
+  archived_at: z.string().nullable().catch(null),
+  archived_by: z.string().nullable().catch(null),
+}).loose();
+
+export const AgentListSchema = z.array(AgentSchema);
+export const EMPTY_AGENT: Agent = {
+  id: "",
+  workspace_id: "",
+  runtime_id: "",
+  name: "",
+  description: "",
+  category: "",
+  instructions: "",
+  avatar_url: null,
+  runtime_mode: "local",
+  runtime_config: {},
+  custom_args: [],
+  visibility: "private",
+  permission_mode: "private",
+  invocation_targets: [],
+  status: "offline",
+  max_concurrent_tasks: 1,
+  model: "",
+  owner_id: null,
+  skills: [],
+  created_at: "",
+  updated_at: "",
+  archived_at: null,
+  archived_by: null,
+};
+
 export const AgentBuilderSessionSchema = z.object({
   session_id: z.string(),
   builder_agent_id: z.string(),
@@ -2057,6 +2147,7 @@ export const EMPTY_AGENT_BUILDER_SESSION: AgentBuilderSession = {
  * discarding the user's work wholesale.
  */
 export const StoredAgentDraftSchema = z.object({
+  category: z.string().catch(""),
   name: z.string().catch(""),
   description: z.string().catch(""),
   instructions: z.string().catch(""),

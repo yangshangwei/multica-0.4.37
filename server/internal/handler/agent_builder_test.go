@@ -455,6 +455,7 @@ func TestSaveAgentBuilderDraftRoundTripsThroughTheList(t *testing.T) {
 
 	if w := saveBuilderDraft(t, session.SessionID, map[string]any{
 		"name":         "Release manager",
+		"category":     "发布 🚀",
 		"instructions": "Ship carefully",
 	}); w.Code != http.StatusNoContent {
 		t.Fatalf("SaveAgentBuilderDraft: expected 204, got %d: %s", w.Code, w.Body.String())
@@ -470,6 +471,9 @@ func TestSaveAgentBuilderDraftRoundTripsThroughTheList(t *testing.T) {
 		}
 		if stored["name"] != "Release manager" {
 			t.Fatalf("stored draft name = %v", stored["name"])
+		}
+		if stored["category"] != "发布 🚀" {
+			t.Fatalf("stored draft category = %v", stored["category"])
 		}
 		return
 	}

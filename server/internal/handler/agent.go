@@ -68,6 +68,7 @@ type AgentResponse struct {
 	RuntimeAvailability string `json:"runtime_availability,omitempty"`
 	Name                string `json:"name"`
 	Description         string `json:"description"`
+	Category            string `json:"category"`
 	// Instructions is what this agent's owner wrote. For a system agent it
 	// holds only the workspace's own notes — the product half lives in
 	// SystemInstructions and is never stored on the row.
@@ -222,6 +223,7 @@ func (h *Handler) agentToResponse(a db.Agent) AgentResponse {
 		RuntimeBound:             a.RuntimeID.Valid,
 		Name:                     a.Name,
 		Description:              a.Description,
+		Category:                 a.Category,
 		Instructions:             a.Instructions,
 		ConversationStarters:     conversationStarters,
 		SystemKey:                a.SystemKey.String,
@@ -1236,6 +1238,7 @@ func (h *Handler) GetAgent(w http.ResponseWriter, r *http.Request) {
 type CreateAgentRequest struct {
 	Name                 string                     `json:"name"`
 	Description          string                     `json:"description"`
+	Category             string                     `json:"category"`
 	Instructions         string                     `json:"instructions"`
 	ConversationStarters []AgentConversationStarter `json:"conversation_starters"`
 	AvatarURL            *string                    `json:"avatar_url"`
@@ -1381,6 +1384,11 @@ func (h *Handler) createAgentFromRequest(
 		return
 	}
 	conversationStarters, err := normaliseAgentConversationStarters(req.ConversationStarters)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	category, err := normaliseAgentCategory(req.Category)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
@@ -1536,6 +1544,7 @@ func (h *Handler) createAgentFromRequest(
 		WorkspaceID:              wsUUID,
 		Name:                     req.Name,
 		Description:              req.Description,
+		Category:                 category,
 		Instructions:             req.Instructions,
 		AvatarUrl:                avatarURL,
 		RuntimeMode:              runtime.RuntimeMode,
@@ -1623,6 +1632,7 @@ func (h *Handler) createAgentFromRequest(
 type UpdateAgentRequest struct {
 	Name                 *string                     `json:"name"`
 	Description          *string                     `json:"description"`
+	Category             *string                     `json:"category"`
 	Instructions         *string                     `json:"instructions"`
 	ExpectedInstructions *string                     `json:"expected_instructions,omitempty"`
 	ExpectedUpdatedAt    *string                     `json:"expected_updated_at,omitempty"`
@@ -1905,6 +1915,14 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		params.Description = pgtype.Text{String: *req.Description, Valid: true}
+	}
+	if req.Category != nil {
+		category, err := normaliseAgentCategory(*req.Category)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		params.Category = pgtype.Text{String: category, Valid: true}
 	}
 	if req.Instructions != nil {
 		params.Instructions = pgtype.Text{String: *req.Instructions, Valid: true}

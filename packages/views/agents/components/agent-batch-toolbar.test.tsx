@@ -75,6 +75,7 @@ function makeRow(
   const agent = makeAgent(id, ownerId, overrides);
   return {
     agent: agent as AgentListRow["agent"],
+    category: null,
     runtime: null,
     presence: null,
     activity: null,

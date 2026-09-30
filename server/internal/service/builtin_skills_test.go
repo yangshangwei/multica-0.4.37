@@ -372,9 +372,10 @@ func TestCreatingAgentsSkillCoversAgentCreationContracts(t *testing.T) {
 	mustContain := []string{
 		"not a parameter manual",
 		"`description` is a catalog summary",
+		"`category` is an optional user-defined directory label",
 		"`instructions` is the runtime behavior contract",
 		"`conversation_starters`",
-		"`avatar_url` → a random `emoji:<glyph>`",
+		"`avatar_url` → a random `icon:<lucide-name>`",
 		"multica agent create --name <name> --runtime-id <runtime-id>",
 		"`model` is a first-class persisted column",
 		"custom_env",

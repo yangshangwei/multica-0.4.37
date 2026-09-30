@@ -73,7 +73,7 @@ describe("useAgentsViewStore", () => {
     expect(useAgentsViewStore.getState().scope).toBe("mine");
   });
 
-  it("persists role grouping and new filters without changing existing columns", async () => {
+  it("persists category grouping and filters without changing existing columns", async () => {
     localStorage.setItem("multica_agents_view:acme", JSON.stringify({
       state: { hiddenColumns: ["runtime"], filters: { access: ["owner-only"] } }, version: 0,
     }));
@@ -81,18 +81,18 @@ describe("useAgentsViewStore", () => {
     await flush();
     await flush();
     expect(useAgentsViewStore.getState().hiddenColumns).toEqual(["runtime"]);
-    expect(useAgentsViewStore.getState().filters.roles).toEqual([]);
+    expect(useAgentsViewStore.getState().filters).not.toHaveProperty("roles");
     expect(useAgentsViewStore.getState().filters.squads).toEqual([]);
-    expect(useAgentsViewStore.getState().groupBy).toBe("role");
-    useAgentsViewStore.getState().toggleFilter("roles", "specialist");
+    expect(useAgentsViewStore.getState().groupBy).toBe("category");
+    useAgentsViewStore.getState().toggleFilter("categories", "preset:specialist");
     useAgentsViewStore.getState().toggleFilter("squads", "squad-1");
     useAgentsViewStore.getState().setGroupBy("none");
     await flush();
     const saved = JSON.parse(localStorage.getItem("multica_agents_view:acme")!);
-    expect(saved.state).toMatchObject({ groupBy: "none", hiddenColumns: ["runtime"], filters: { roles: ["specialist"], squads: ["squad-1"] } });
+    expect(saved.state).toMatchObject({ groupBy: "none", hiddenColumns: ["runtime"], filters: { categories: ["preset:specialist"], squads: ["squad-1"] } });
   });
 
-  it("uses concise columns and role grouping only for fresh preferences", async () => {
+  it("uses concise columns and category grouping only for fresh preferences", async () => {
     setCurrentWorkspace("fresh", "ws_fresh");
     await flush();
     await flush();
@@ -100,7 +100,7 @@ describe("useAgentsViewStore", () => {
       "owner", "access", "runtime", "runs", "model", "created",
     ]);
     expect(useAgentsViewStore.getState().hiddenColumns).toEqual(AGENT_DEFAULT_HIDDEN_COLUMNS);
-    expect(useAgentsViewStore.getState().groupBy).toBe("role");
+    expect(useAgentsViewStore.getState().groupBy).toBe("category");
   });
 
   it("rehydrates a different saved scope on workspace switch", async () => {
@@ -238,5 +238,84 @@ describe("useAgentsViewStore", () => {
 
       expect(useAgentsViewStore.getState().filters.access).toEqual([]);
     });
+  });
+});
+
+
+describe("category preference migration", () => {
+  it.each(["role", "category", "none"])("migrates %s grouping and legacy roles without losing other preferences", async (groupBy) => {
+    localStorage.setItem("multica_agents_view:acme", JSON.stringify({
+      state: {
+        scope: "archived", groupBy, sortField: "name", sortDirection: "desc", hiddenColumns: [],
+        filters: { roles: ["specialist", "coordinator"], squads: ["squad-1"], access: ["owner-only"], owners: ["user-1"] },
+      }, version: 0,
+    }));
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState()).toMatchObject({
+      scope: "archived", groupBy: groupBy === "none" ? "none" : "category",
+      sortField: "name", sortDirection: "desc", hiddenColumns: [],
+      filters: { categories: ["preset:specialist", "preset:coordinator"], squads: ["squad-1"], access: ["owner-only"], owners: ["user-1"] },
+    });
+    expect(useAgentsViewStore.getState().filters).not.toHaveProperty("roles");
+    const saved = JSON.parse(localStorage.getItem("multica_agents_view:acme")!);
+    expect(saved.version).toBe(1);
+    expect(saved.state.filters).not.toHaveProperty("roles");
+  });
+
+  it("prefers explicit named categories and normalizes localized presets exactly once", async () => {
+    localStorage.setItem("multica_agents_view:acme", JSON.stringify({
+      state: { filters: { roles: ["coordinator"], categories: ["专业角色", "Specialists", "  Research  ", "preset:specialist", "custom:Research", ""] } }, version: 0,
+    }));
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    const expected = ["preset:specialist", "custom:Research", "custom:preset:specialist", "custom:custom:Research"];
+    expect(useAgentsViewStore.getState().filters.categories).toEqual(expected);
+    setCurrentWorkspace("fresh", "ws_fresh");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState().filters.categories).toEqual([]);
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState().filters.categories).toEqual(expected);
+  });
+
+  it("clears a legacy blank-only category selection instead of reviving old role filters", async () => {
+    localStorage.setItem("multica_agents_view:acme", JSON.stringify({
+      state: { filters: { categories: ["", "  "], roles: ["specialist"] } }, version: 0,
+    }));
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState().filters.categories).toEqual([]);
+  });
+
+  it("recovers malformed category preferences from valid legacy role choices", async () => {
+    localStorage.setItem("multica_agents_view:acme", JSON.stringify({
+      state: { filters: { categories: null, roles: ["specialist", "unknown"] }, groupBy: "future-value" }, version: 0,
+    }));
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState().filters.categories).toEqual(["preset:specialist"]);
+    expect(useAgentsViewStore.getState().groupBy).toBe("category");
+  });
+
+  it("persists stable category keys for new selections without migrating them again", async () => {
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    useAgentsViewStore.getState().toggleFilter("categories", "custom:Research");
+    useAgentsViewStore.getState().toggleFilter("categories", "preset:specialist");
+    useAgentsViewStore.getState().setGroupBy("none");
+    setCurrentWorkspace("fresh", "ws_fresh");
+    await flush();
+    setCurrentWorkspace("acme", "ws_a");
+    await flush();
+    await flush();
+    expect(useAgentsViewStore.getState().filters.categories).toEqual(["custom:Research", "preset:specialist"]);
+    expect(useAgentsViewStore.getState().groupBy).toBe("none");
   });
 });

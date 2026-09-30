@@ -69,6 +69,7 @@ export interface StaffedSquad {
 }
 
 export interface CreateAgentFromTemplateRequest {
+  category?: string;
   template_key: string;
   runtime_id: string;
   /** Overrides the template's default name. */

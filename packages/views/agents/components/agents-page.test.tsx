@@ -54,8 +54,8 @@ const mocks = vi.hoisted(() => ({
       owners: [] as string[],
       models: [] as string[],
       access: [] as string[],
-      roles: [] as string[],
       squads: [] as string[],
+      categories: [] as string[],
     },
     setScope: vi.fn(),
     toggleSort: vi.fn(),
@@ -312,8 +312,8 @@ beforeEach(() => {
     owners: [],
     models: [],
     access: [],
-    roles: [],
     squads: [],
+    categories: [],
   };
 });
 
@@ -330,18 +330,23 @@ const RELEASE_SQUAD: Squad = {
 };
 
 describe("AgentsPage discovery", () => {
-  it.each(["specialist", "other"])("does not claim %s filter results while role metadata is missing, then recovers after retry", (role) => {
+  it("keeps explicit categories usable while fallback metadata is unavailable and recovers after retry", () => {
     mocks.templates = undefined;
     mocks.templatesError = true;
-    mocks.agents = [makeAgent({ name: "Payments expert", template_key: "code-reviewer" }), ALPHA];
-    mocks.viewState.filters.roles = [role];
+    mocks.agents = [
+      makeAgent({ name: "Payments expert", template_key: "code-reviewer" }),
+      makeAgent({ ...ALPHA, category: "Specialists" }),
+      BETA,
+    ];
+    mocks.viewState.filters.categories = ["preset:specialist"];
     const view = renderPage();
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Some role or squad information could not be loaded.");
+    expect(screen.getByRole("alert")).toBeInTheDocument();
     expect(screen.queryByText("No matches")).not.toBeInTheDocument();
     expect(screen.queryByText("Payments expert")).not.toBeInTheDocument();
-    expect(screen.queryByText("Alpha Agent")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "All roles" })).toBeInTheDocument();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("1+");
     fireEvent.click(screen.getByRole("button", { name: "Retry" }));
     expect(mocks.refetchTemplates).toHaveBeenCalledOnce();
 
@@ -349,25 +354,26 @@ describe("AgentsPage discovery", () => {
     mocks.templatesError = false;
     view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(screen.getByText(role === "specialist" ? "Payments expert" : "Alpha Agent")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "All roles" }));
-    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("roles", role);
+    expect(screen.getByText("Payments expert")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("2");
+    fireEvent.click(screen.getByRole("button", { name: "All categories" }));
+    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("categories", "preset:specialist");
   });
 
-  it("keeps saved agents usable without inventing role groups when the squad template catalog fails", () => {
+  it("groups only unresolved template fallback as unavailable when the catalog fails", () => {
     mocks.templates = [REVIEW_TEMPLATE];
     mocks.squadTemplates = undefined;
     mocks.squadTemplatesError = true;
     mocks.squads = [RELEASE_SQUAD];
     mocks.agents = [makeAgent({ name: "Delivery lead", template_key: "delivery-lead" }), ALPHA];
-    mocks.viewState.groupBy = "role";
+    mocks.viewState.groupBy = "category";
     renderPage();
 
     expect(screen.getByText("Delivery lead")).toBeInTheDocument();
     expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
-    expect(within(screen.getByRole("table")).queryByText("General-purpose agents")).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /^General-purpose agents/ })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "All roles" })).toBeInTheDocument();
+    expect(within(screen.getByRole("table")).getByText("Category unavailable")).toBeInTheDocument();
+    expect(within(screen.getByRole("table")).getByText("General-purpose agents")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All categories" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "AI squads" })).toBeInTheDocument();
     expect(mocks.viewState.setGroupBy).not.toHaveBeenCalled();
   });
@@ -399,7 +405,7 @@ describe("AgentsPage discovery", () => {
     mocks.templates = [REVIEW_TEMPLATE];
     mocks.agents = [makeAgent({ id: "agent-alpha", name: "Payments expert", template_key: "code-reviewer" })];
     mocks.squads = [RELEASE_SQUAD, { ...RELEASE_SQUAD, id: "review", name: "Merge review" }];
-    mocks.viewState.groupBy = "role";
+    mocks.viewState.groupBy = "category";
     renderPage();
     expect(screen.getAllByRole("link", { name: "Payments expert" })).toHaveLength(1);
     expect(screen.getByRole("link", { name: "Release readiness" })).toHaveAttribute("href", "/test-workspace/squads/release");
@@ -458,13 +464,12 @@ describe("AgentsPage discovery", () => {
     expect(screen.queryByText(/General-purpose help across tasks/)).not.toBeInTheDocument();
   });
 
-  it("hides the general-purpose hint while role metadata is unavailable", () => {
+  it("keeps the general-purpose hint for known template-free agents during metadata errors", () => {
     mocks.templates = undefined;
     mocks.templatesError = true;
     mocks.agents = [ALPHA, makeAgent({ id: "a-mika", name: "Ava", system_key: "mika" })];
     renderPage();
-    expect(screen.queryByText(/Not sure who to ask/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/General-purpose help across tasks/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Not sure who to ask/)).toBeInTheDocument();
   });
 });
 
@@ -546,5 +551,103 @@ describe("AgentsPage listReady gate", () => {
 
     expect(screen.getByText("No agents yet")).toBeInTheDocument();
     expect(screen.queryByTestId("skeleton")).not.toBeInTheDocument();
+  });
+});
+
+
+describe("custom category discovery", () => {
+  it("uses a manual preset for the default group, chip count and filter, then falls back when cleared", () => {
+    mocks.agents = [makeAgent({ ...ALPHA, category: "专业角色" }), BETA];
+    mocks.viewState.groupBy = "category";
+    const view = renderPage();
+    const table = within(screen.getByRole("table"));
+    expect(table.getByText("Specialists")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("1");
+    fireEvent.click(screen.getByRole("button", { name: /^Specialists/ }));
+    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("categories", "preset:specialist");
+    mocks.viewState.filters.categories = ["preset:specialist"];
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    mocks.agents = [ALPHA, BETA];
+    mocks.viewState.filters.categories = [];
+    view.rerender(<NavigationProvider value={makeAdapter()}><AgentsPage /></NavigationProvider>);
+    expect(screen.queryByRole("button", { name: /^Specialists/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^General-purpose agents/ })).toHaveTextContent("2");
+  });
+
+  it("moves a template specialist into a custom group and dropdown while preserving provenance", async () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [makeAgent({ ...ALPHA, template_key: "code-reviewer", category: "Research" }), BETA];
+    mocks.viewState.groupBy = "category";
+    renderPage();
+    expect(within(screen.getByRole("table")).getAllByText("Research")).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: /^Specialists/ })).not.toBeInTheDocument();
+    expect(screen.getByText("Role template: Code reviewer")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Category" }));
+    const option = await screen.findByRole("menuitemcheckbox", { name: /Research/ });
+    expect(option).toHaveTextContent("1");
+    fireEvent.click(option);
+    expect(mocks.viewState.toggleFilter).toHaveBeenCalledWith("categories", "custom:Research");
+  });
+
+  it("searches the localized effective category for manual and fallback classifications", () => {
+    mocks.templates = [REVIEW_TEMPLATE];
+    mocks.agents = [
+      makeAgent({ ...ALPHA, category: "专业角色" }),
+      makeAgent({ ...BETA, template_key: "code-reviewer" }),
+      makeAgent({ id: "custom", name: "Research Agent", template_key: "code-reviewer", category: "Research" }),
+    ];
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Specialists" } });
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.getByText("Beta Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Research Agent")).not.toBeInTheDocument();
+  });
+
+  it("does not claim empty preset results when only unresolved fallback rows remain", () => {
+    mocks.templates = undefined;
+    mocks.templatesError = true;
+    mocks.agents = [makeAgent({ ...BETA, template_key: "code-reviewer" })];
+    mocks.viewState.filters.categories = ["preset:specialist"];
+    renderPage();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.queryByText("No matches")).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("Counts and results may be incomplete.");
+    expect(screen.getByRole("button", { name: /^Specialists/ })).toHaveTextContent("0+");
+  });
+
+  it("keeps exact custom filters available when template fallback metadata is pending", () => {
+    mocks.templates = undefined;
+    mocks.templatesPending = true;
+    mocks.agents = [makeAgent({ ...ALPHA, category: "Research" }), makeAgent({ ...BETA, template_key: "code-reviewer" })];
+    mocks.viewState.groupBy = "category";
+    mocks.viewState.filters.categories = ["custom:Research"];
+    renderPage();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("skeleton")).not.toBeInTheDocument();
+  });
+
+  it("groups custom categories alongside template-free defaults without waiting for role metadata", () => {
+    mocks.agents = [makeAgent({ ...ALPHA, category: "研发" }), BETA];
+    mocks.viewState.groupBy = "category";
+    mocks.templatesPending = true;
+    renderPage();
+    expect(within(screen.getByRole("table")).getByText("General-purpose agents")).toBeInTheDocument();
+    expect(screen.getAllByText("研发")).toHaveLength(2);
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.getByText("Beta Agent")).toBeInTheDocument();
+  });
+
+  it("keeps Mine scope while applying a custom category filter", () => {
+    mocks.agents = [makeAgent({ ...ALPHA, category: "研发" }),
+      makeAgent({ ...BETA, category: "研发", owner_id: "someone-else" })];
+    mocks.viewState.scope = "mine";
+    mocks.viewState.filters.categories = ["custom:研发"];
+    renderPage();
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.queryByText("Beta Agent")).toBeNull();
+    expect(mocks.viewState.setScope).not.toHaveBeenCalled();
   });
 });

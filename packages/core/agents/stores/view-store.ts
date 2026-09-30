@@ -8,7 +8,7 @@ import {
 } from "../../platform/workspace-storage";
 import { defaultStorage } from "../../platform/storage";
 import type { AccessScope } from "../effective-access";
-import type { AgentRoleKind } from "../discovery";
+import { getAgentCategoryKey } from "../category";
 
 // View preferences for the agents list page: scope, sort, column visibility,
 // and filters. Persisted per workspace, per user/device. Row selection is
@@ -27,7 +27,7 @@ export const AGENT_SCOPES: AgentsScope[] = ["mine", "all", "archived"];
 export type AgentSortField = "lastActive" | "name" | "runs" | "created";
 
 export type AgentSortDirection = "asc" | "desc";
-export type AgentGroupBy = "role" | "none";
+export type AgentGroupBy = "category" | "none";
 
 /** Per-field direction applied when the user switches TO that field. */
 export const AGENT_SORT_DEFAULT_DIRECTION: Record<
@@ -52,8 +52,9 @@ export interface AgentListFilters {
   models: string[];
   /** Effective access-scope values (MUL-3963): workspace | specific-people | owner-only. */
   access: AccessScope[];
-  roles: AgentRoleKind[];
   squads: string[];
+  /** Effective category keys: preset:<kind> or custom:<name>. */
+  categories: string[];
 }
 
 export const EMPTY_AGENT_FILTERS: AgentListFilters = {
@@ -62,8 +63,8 @@ export const EMPTY_AGENT_FILTERS: AgentListFilters = {
   owners: [],
   models: [],
   access: [],
-  roles: [],
   squads: [],
+  categories: [],
 };
 
 // User-hideable columns. Name and the structural columns (checkbox, kebab)
@@ -113,7 +114,7 @@ const DEFAULTS = {
   // "mine" is the historical default — most members care about their own
   // agents first; admins flip to "all".
   scope: "mine" as AgentsScope,
-  groupBy: "role" as AgentGroupBy,
+  groupBy: "category" as AgentGroupBy,
   sortField: "lastActive" as AgentSortField,
   sortDirection: AGENT_SORT_DEFAULT_DIRECTION.lastActive,
   hiddenColumns: AGENT_DEFAULT_HIDDEN_COLUMNS,
@@ -165,6 +166,30 @@ export const useAgentsViewStore = create<AgentsViewState>()(
     }),
     {
       name: "multica_agents_view",
+      version: 1,
+      migrate: (persisted) => {
+        const previous = persisted as Partial<Omit<AgentsViewState, "filters" | "groupBy">> & {
+          groupBy?: string;
+          filters?: Partial<AgentListFilters> & { roles?: unknown };
+        };
+        const { roles, ...filters } = previous.filters ?? {};
+        const names = Array.isArray(filters.categories)
+          ? filters.categories.filter((value): value is string => typeof value === "string")
+          : [];
+        // An explicit blank selection is cleared. Only absent category filters
+        // inherit role choices; stored names are converted once at this boundary.
+        const categories = names.length > 0
+          ? names.filter((name) => name.trim()).map(getAgentCategoryKey)
+          : Array.isArray(roles)
+            ? roles.filter((role) => role === "other" || role === "specialist" || role === "coordinator")
+              .map((role) => `preset:${role}`)
+            : [];
+        return {
+          ...previous,
+          groupBy: previous.groupBy === "none" ? "none" : "category",
+          filters: { ...filters, categories: [...new Set(categories)] },
+        };
+      },
       storage: createJSONStorage(() =>
         createWorkspaceAwareStorage(defaultStorage),
       ),
@@ -190,7 +215,16 @@ export const useAgentsViewStore = create<AgentsViewState>()(
           ...current,
           ...DEFAULTS,
           ...p,
-          filters: { ...EMPTY_AGENT_FILTERS, ...(p.filters ?? {}) },
+          groupBy: p.groupBy === "category" || p.groupBy === "none"
+            ? p.groupBy
+            : DEFAULTS.groupBy,
+          filters: {
+            ...EMPTY_AGENT_FILTERS,
+            ...(p.filters ?? {}),
+            categories: Array.isArray(p.filters?.categories)
+              ? p.filters.categories.filter((value): value is string => typeof value === "string")
+              : [],
+          },
         };
       },
     },

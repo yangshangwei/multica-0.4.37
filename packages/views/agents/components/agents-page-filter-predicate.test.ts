@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   effectiveAccessScope,
+  resolveAgentDirectoryCategory,
   type AccessScope,
 } from "@multica/core/agents";
 import {
@@ -13,7 +14,7 @@ function makeRow(
   overrides: Partial<AgentListRow["agent"]> = {},
   rowOverrides: Partial<AgentListRow> = {},
 ): AgentListRow {
-  return {
+  const row: Omit<AgentListRow, "category"> & { category?: AgentListRow["category"] } = {
     agent: {
       id: "agent-1",
       workspace_id: "ws-1",
@@ -49,6 +50,7 @@ function makeRow(
     canManage: false,
     ...rowOverrides,
   };
+  return { ...row, category: resolveAgentDirectoryCategory(row.agent, row.role ?? null), ...rowOverrides };
 }
 
 function withAccess(
@@ -57,6 +59,28 @@ function withAccess(
 ): AgentListFilters {
   return { ...filters, access: [value] };
 }
+
+describe("agent category filters", () => {
+  it("searches custom categories and composes them with owner filters", () => {
+    const row = makeRow({ category: "研发", owner_id: "user-1" });
+    expect(rowMatchesFilters(row, EMPTY_AGENT_FILTERS, "研发")).toBe(true);
+    expect(rowMatchesFilters(row, {
+      ...EMPTY_AGENT_FILTERS, categories: ["custom:研发"], owners: ["user-1"],
+    }, "")).toBe(true);
+    expect(rowMatchesFilters(row, {
+      ...EMPTY_AGENT_FILTERS, categories: ["custom:运营"],
+    }, "")).toBe(false);
+    expect(rowMatchesFilters(row, {
+      ...EMPTY_AGENT_FILTERS, categories: ["custom:研发"], owners: ["someone-else"],
+    }, "")).toBe(false);
+  });
+
+  it("matches missing template-free categories as the general-purpose default", () => {
+    const filters = { ...EMPTY_AGENT_FILTERS, categories: ["preset:other"] };
+    expect(rowMatchesFilters(makeRow(), filters, "")).toBe(true);
+    expect(rowMatchesFilters(makeRow({ category: "研发" }), filters, "")).toBe(false);
+  });
+});
 
 describe("agent discovery filters", () => {
   const specialist = () => makeRow({ name: "Payments expert" }, {
@@ -67,15 +91,15 @@ describe("agent discovery filters", () => {
     ],
   });
 
-  it("combines role and squad with the existing filters", () => {
+  it("combines category and squad with the existing filters", () => {
     expect(rowMatchesFilters(specialist(), {
-      ...EMPTY_AGENT_FILTERS, roles: ["coordinator"], squads: ["release"],
+      ...EMPTY_AGENT_FILTERS, categories: ["preset:coordinator"], squads: ["release"],
     }, "")).toBe(false);
     expect(rowMatchesFilters(specialist(), {
-      ...EMPTY_AGENT_FILTERS, roles: ["specialist"], squads: ["another"],
+      ...EMPTY_AGENT_FILTERS, categories: ["preset:specialist"], squads: ["another"],
     }, "")).toBe(false);
     expect(rowMatchesFilters(specialist(), {
-      ...EMPTY_AGENT_FILTERS, roles: ["specialist"], squads: ["review", "release"],
+      ...EMPTY_AGENT_FILTERS, categories: ["preset:specialist"], squads: ["review", "release"],
     }, "payments")).toBe(true);
   });
 
@@ -87,8 +111,8 @@ describe("agent discovery filters", () => {
 
   it("keeps unknown roles in Other without inferring from their name", () => {
     const unknown = makeRow({ name: "Release coordinator" });
-    expect(rowMatchesFilters(unknown, { ...EMPTY_AGENT_FILTERS, roles: ["other"] }, "")).toBe(true);
-    expect(rowMatchesFilters(unknown, { ...EMPTY_AGENT_FILTERS, roles: ["coordinator"] }, "")).toBe(false);
+    expect(rowMatchesFilters(unknown, { ...EMPTY_AGENT_FILTERS, categories: ["preset:other"] }, "")).toBe(true);
+    expect(rowMatchesFilters(unknown, { ...EMPTY_AGENT_FILTERS, categories: ["preset:coordinator"] }, "")).toBe(false);
   });
 });
 
