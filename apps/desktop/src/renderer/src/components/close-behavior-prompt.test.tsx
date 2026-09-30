@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
-import i18next from "i18next";
-import { I18nextProvider, initReactI18next } from "react-i18next";
+import { I18nProvider } from "@multica/core/i18n/react";
 import { RESOURCES } from "@multica/views/locales";
 
 import { CloseBehaviorPrompt } from "./close-behavior-prompt";
@@ -62,32 +61,15 @@ afterEach(() => {
   mocks.reset();
 });
 
-// Boot a real i18next against the published RESOURCES so t($ => $) selectors
-// resolve. Use the selector-API enabled instance shape that matches
-// packages/views runtime config.
-async function makeI18n() {
-  const i18n = i18next.createInstance();
-  await i18n.use(initReactI18next).init({
-    lng: "en",
-    fallbackLng: "en",
-    resources: { en: RESOURCES.en },
-    ns: ["desktop", "common"],
-    defaultNS: "common",
-    interpolation: { escapeValue: false },
-  });
-  return i18n;
-}
-
 // Mount CloseBehaviorPrompt inside an act() boundary. The prompt itself has no
 // render on mount; it only appears when main sends an IPC prompt event.
 async function mount() {
-  const i18n = await makeI18n();
   let container!: ReturnType<typeof render>;
   await act(async () => {
     container = render(
-      <I18nextProvider i18n={i18n}>
+      <I18nProvider locale="en" resources={RESOURCES}>
         <CloseBehaviorPrompt />
-      </I18nextProvider>,
+      </I18nProvider>,
     );
   });
   return container;
