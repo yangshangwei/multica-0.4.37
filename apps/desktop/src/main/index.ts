@@ -66,6 +66,16 @@ import {
   NotificationGate,
   parseNativeNotificationPayload,
 } from "./notification-gate";
+import {
+  applyCloseBehavior,
+  closePreferencesPath,
+  DEFAULT_CLOSE_BEHAVIOR,
+  loadClosePreferences,
+  saveClosePreferences,
+  type CloseBehavior,
+  type PromptResult,
+} from "./close-behavior";
+import type { Tray } from "electron";
 
 // Guards against registering the will-download handler more than once on the
 // same session. window.webContents.session is shared, and createWindow() can
@@ -79,6 +89,48 @@ function installDownloadSaveDialogHandler(window: BrowserWindow): void {
   session.on("will-download", (_event, item) => {
     item.setSaveDialogOptions({
       defaultPath: join(app.getPath("downloads"), item.getFilename()),
+    });
+  });
+}
+
+/**
+ * Round-trip to the renderer asking the user which close behavior to apply.
+ *
+ * Sends `close-behavior:prompt` to the given window's WebContents; the
+ * renderer-side listener mounts the AlertDialog and calls
+ * `closeBehaviorAPI.respond(...)` once the user picks an option.
+ *
+ * Resolves with the user's choice, or rejects after a fixed timeout —
+ * Electron requires `event.preventDefault()` inside the close handler be
+ * synchronous, so a hung renderer must NOT keep the close loop wedged
+ * forever. The 5s budget is generous for a UI round-trip and short enough
+ * that the user won't mistake the app for being stuck.
+ */
+function requestCloseBehaviorPrompt(window: BrowserWindow): Promise<PromptResult> {
+  if (window.isDestroyed()) {
+    return Promise.reject(new Error("window destroyed"));
+  }
+  if (pendingClosePromptResolve) {
+    // A second close arrived while a prompt is already in flight; treat the
+    // new close as a Cancel so the existing prompt stays in charge.
+    return Promise.resolve({ action: "ask", remember: false });
+  }
+  const PROMPT_TIMEOUT_MS = 5000;
+  return new Promise<PromptResult>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      if (pendingClosePromptResolve) {
+        pendingClosePromptResolve = null;
+        reject(new Error("close-behavior prompt timed out"));
+      }
+    }, PROMPT_TIMEOUT_MS);
+
+    pendingClosePromptResolve = (result) => {
+      clearTimeout(timeout);
+      resolve(result);
+    };
+
+    window.webContents.send("close-behavior:prompt", {
+      requestId: "main", // single-window for now; correlation via singleton state
     });
   });
 }
@@ -144,6 +196,30 @@ const authSessionCoordinator = new AuthSessionCoordinator<BrowserWindow>(
 const notificationGate = new NotificationGate();
 const mainRendererMessages = new MainRendererMessageQueue();
 let desktopInitialized = false;
+
+// Close-behavior state (Windows / Linux only — macOS keeps the OS-native
+// close-hides / activate-reopens convention).
+//
+// `isQuitting` flips to true on any path that means "user really wants the
+// app gone" (Cmd+Q, menu Quit, tray Quit, renderer prompt choosing Quit),
+// and the close interception in close-behavior.applyCloseBehavior reads it
+// to short-circuit. Without it, minimizing then choosing Quit from the tray
+// would re-trigger the close prompt.
+let isQuitting = false;
+// Cached copy of the on-disk preference. Loaded once at whenReady, then kept
+// in sync via the close-behavior:set IPC handler. The close handler itself
+// must be synchronous (event.preventDefault is sync-only) so it cannot
+// re-read from disk on every close.
+let cachedCloseBehavior: CloseBehavior = DEFAULT_CLOSE_BEHAVIOR;
+// Tray handle lives at module scope so that:
+//  - createTray (child task 09-30-tray-and-linux-fallback) can attach it,
+//  - applyCloseBehavior can lazily look it up at close time,
+//  - second-instance / activate paths can re-show the window.
+// Populated in child task 09-30-tray-and-linux-fallback; stays null until then.
+let trayHandle: Tray | null = null;
+let pendingClosePromptResolve:
+  | ((result: PromptResult) => void)
+  | null = null;
 let authSessionGeneration = 0;
 const rendererRouteContexts = new WeakMap<
   Electron.WebContents,
@@ -356,6 +432,35 @@ function createWindow(): BrowserWindow {
       mainWindow = null;
       mainRendererMessages.resetReady();
     }
+  });
+
+  // Install close interception (Windows/Linux). On macOS this is a no-op —
+  // close-behavior.applyCloseBehavior returns immediately when
+  // `process.platform === "darwin"`. Interception consults the cached
+  // preference only; the disk read has already happened during whenReady.
+  applyCloseBehavior({
+    mainWindow: window,
+    getIsQuitting: () => isQuitting,
+    setIsQuitting: () => {
+      isQuitting = true;
+    },
+    showTray: () => {
+      // Populated in child task 09-30-tray-and-linux-fallback. Until tray
+      // construction lands, isTraySupported() returns false and this branch
+      // stays unreachable; once tray.ts exists, this will call into the
+      // tray lifecycle helpers there.
+      void trayHandle;
+    },
+    isTraySupported: () => trayHandle !== null,
+    promptChoice: (w) => requestCloseBehaviorPrompt(w),
+    getCachedBehavior: () => cachedCloseBehavior,
+    setCachedBehavior: async (value) => {
+      cachedCloseBehavior = value;
+      await saveClosePreferences(
+        closePreferencesPath(app.getPath("userData")),
+        value,
+      );
+    },
   });
 
   // Strip Origin header from WebSocket upgrade requests so the server's
@@ -593,6 +698,14 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
 } else {
+  // Any quit path — Cmd+Q, menu Quit, OS shutdown, tray Quit — must mark
+  // isQuitting so the close interception in close-behavior.applyCloseBehavior
+  // knows the user really intends exit (and does not re-prompt). Multiple
+  // listeners are fine; daemon-manager.ts installs its own for cleanup.
+  app.on("before-quit", () => {
+    isQuitting = true;
+  });
+
   // Register before `ready`: macOS can deliver a cold-start URL while runtime
   // config is still loading. handleDeepLink queues the payload until both the
   // main window and its matching React listener exist.
@@ -908,6 +1021,66 @@ if (!gotTheLock) {
         app.setBadgeCount(count);
       }
     });
+
+    // ---- Close-behavior (Windows/Linux): load pref + register IPC --------
+    // The cached preference must be loaded BEFORE createWindow() runs —
+    // applyCloseBehavior reads it synchronously inside the close handler.
+    cachedCloseBehavior = await loadClosePreferences(
+      closePreferencesPath(app.getPath("userData")),
+    );
+
+    ipcMain.handle("close-behavior:get", () => cachedCloseBehavior);
+
+    ipcMain.handle(
+      "close-behavior:set",
+      async (_event, value: unknown) => {
+        if (
+          typeof value !== "string" ||
+          !(["quit", "minimize", "ask"] as const).includes(
+            value as CloseBehavior,
+          )
+        ) {
+          return { ok: false, reason: "invalid_value" } as const;
+        }
+        const behavior = value as CloseBehavior;
+        cachedCloseBehavior = behavior;
+        try {
+          await saveClosePreferences(
+            closePreferencesPath(app.getPath("userData")),
+            behavior,
+          );
+          return { ok: true } as const;
+        } catch (err) {
+          console.warn("[close-behavior] failed to persist", err);
+          return { ok: false, reason: "persist_failed" } as const;
+        }
+      },
+    );
+
+    ipcMain.handle("close-behavior:is-tray-supported", () =>
+      trayHandle !== null,
+    );
+
+    ipcMain.on(
+      "close-behavior:respond",
+      (_event, payload: { requestId?: unknown; action?: unknown; remember?: unknown }) => {
+        if (!pendingClosePromptResolve) return;
+        if (typeof payload !== "object" || payload === null) return;
+        const action = payload.action;
+        const remember = payload.remember === true;
+        if (
+          typeof action !== "string" ||
+          !(["quit", "minimize", "ask"] as const).includes(
+            action as CloseBehavior,
+          )
+        ) {
+          return;
+        }
+        const resolve = pendingClosePromptResolve;
+        pendingClosePromptResolve = null;
+        resolve({ action: action as CloseBehavior, remember });
+      },
+    );
 
     desktopInitialized = true;
     createWindow();
