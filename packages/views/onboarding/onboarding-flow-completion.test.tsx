@@ -79,6 +79,7 @@ describe("new workspace completion", () => {
     const onComplete = vi.fn();
     renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />, { locale });
 
+    await user.click(screen.getByRole("button", { name: /Start exploring|开始探索/ }));
     await user.click(screen.getByRole("button", { name: "Continue questionnaire" }));
     await user.click(screen.getByRole("button", { name: "Create workspace" }));
     expect(screen.queryByRole("button", { name: "Back" })).not.toBeInTheDocument();
@@ -95,6 +96,7 @@ describe("new workspace completion", () => {
     const onComplete = vi.fn();
     renderWithI18n(<OnboardingFlow mode="new_workspace" onComplete={onComplete} />);
 
+    await user.click(screen.getByRole("button", { name: /Start exploring|开始探索/ }));
     await user.click(screen.getByRole("button", { name: "Continue questionnaire" }));
     await user.click(screen.getByRole("button", { name: "Create workspace" }));
     await user.click(screen.getByRole("button", { name: "Skip runtime" }));

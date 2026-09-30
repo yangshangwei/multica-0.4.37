@@ -77,8 +77,13 @@ describe("OnboardingFlow — new-workspace mode", () => {
     mocks.saveQuestionnaire.mockReset().mockResolvedValue(undefined);
   });
 
-  it("starts at About you with the first progress step active", () => {
+  it("starts at Welcome and advances to About you", async () => {
+    const user = userEvent.setup();
     const { container } = renderFlow({ mode: "new_workspace", onCancel: vi.fn() });
+
+    expect(screen.getByRole("button", { name: "Start exploring" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: enOnboarding.welcome.skip_existing })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Start exploring" }));
 
     expect(screen.getByRole("radiogroup", {
       name: "What's your role in the development process?",
@@ -93,6 +98,7 @@ describe("OnboardingFlow — new-workspace mode", () => {
     const user = userEvent.setup();
     mocks.questionnaire = { role: "engineer", use_case: ["ship_code"] };
     renderFlow({ mode: "new_workspace", onCancel: vi.fn() });
+    await user.click(screen.getByRole("button", { name: "Start exploring" }));
 
     expect(screen.getByRole("radio", { name: "Engineer" })).toBeChecked();
     expect(screen.getByRole("checkbox", { name: /code & test with agents/i })).toBeChecked();
@@ -105,6 +111,7 @@ describe("OnboardingFlow — new-workspace mode", () => {
   it("allows explicitly skipping About you before creating a workspace", async () => {
     const user = userEvent.setup();
     renderFlow({ mode: "new_workspace", onCancel: vi.fn() });
+    await user.click(screen.getByRole("button", { name: "Start exploring" }));
 
     await user.click(screen.getByRole("button", { name: /^Skip$/i }));
 
@@ -116,12 +123,18 @@ describe("OnboardingFlow — new-workspace mode", () => {
     }));
   });
 
-  it("cancels from About you", async () => {
+  it("does not offer cancellation without a return destination", () => {
+    renderFlow({ mode: "new_workspace" });
+    expect(screen.getByRole("button", { name: "Start exploring" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Cancel" })).not.toBeInTheDocument();
+  });
+
+  it("cancels from Welcome", async () => {
     const user = userEvent.setup();
     const onCancel = vi.fn();
     renderFlow({ mode: "new_workspace", onCancel });
 
-    await user.click(screen.getAllByRole("button", { name: "Back" })[0]!);
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
 
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
@@ -130,6 +143,7 @@ describe("OnboardingFlow — new-workspace mode", () => {
     const user = userEvent.setup();
     const onCancel = vi.fn();
     renderFlow({ mode: "new_workspace", onCancel });
+    await user.click(screen.getByRole("button", { name: "Start exploring" }));
     await user.click(screen.getByRole("radio", { name: "Engineer" }));
     await user.click(screen.getByRole("button", { name: /^Continue$/i }));
 
@@ -141,11 +155,17 @@ describe("OnboardingFlow — new-workspace mode", () => {
     expect(onCancel).not.toHaveBeenCalled();
   });
 
-  it("still opens on the product intro and returns there in first-run mode", async () => {
+  it.each(["first_run", "new_workspace"])("returns to Welcome from About you in %s mode", async (mode) => {
     const user = userEvent.setup();
     const onCancel = vi.fn();
-    renderFlow({ onCancel });
+    renderFlow({ mode, onCancel });
 
+    const skipExisting = screen.queryByRole("button", { name: enOnboarding.welcome.skip_existing });
+    if (mode === "first_run") {
+      expect(skipExisting).toBeInTheDocument();
+    } else {
+      expect(skipExisting).not.toBeInTheDocument();
+    }
     await user.click(screen.getByRole("button", { name: "Start exploring" }));
     expect(screen.getByRole("radio", { name: "Engineer" })).toBeInTheDocument();
     await user.click(screen.getAllByRole("button", { name: "Back" })[0]!);

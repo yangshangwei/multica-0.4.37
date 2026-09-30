@@ -103,9 +103,8 @@ interface OnboardingFlowProps {
     workspace?: Workspace,
     destination?: OnboardingDestination,
   ) => void;
-  /** "new_workspace" starts at About you with saved answers pre-filled,
-   *  skips the product intro, and always creates a workspace rather than
-   *  offering to continue with an existing one. */
+  /** "new_workspace" starts at Welcome, pre-fills saved questionnaire answers,
+   *  and always creates a workspace rather than continuing with an existing one. */
   mode?: OnboardingMode;
   /** Required in "new_workspace" mode: first-run onboarding has no way out
    *  except signing out, but someone creating a second workspace must be able
@@ -144,15 +143,12 @@ function OnboardingStepFlow({
   // Questionnaire answers are server-persisted and pre-fill the per-
   // question steps on re-entry. That's the only piece of onboarding
   // state persisted across sessions — which step the user is on is
-  // deliberately not saved. First-run starts at Welcome; creating another
-  // workspace starts at About you.
+  // deliberately not saved. Both entry modes start at Welcome.
   const storedQuestionnaire = mergeQuestionnaire(user.onboarding_questionnaire);
   const [answers, setAnswers] = useState<QuestionnaireAnswers>(storedQuestionnaire);
 
   const isNewWorkspace = mode === "new_workspace";
-  const [step, setStep] = useState<OnboardingStep>(
-    isNewWorkspace ? "about_you" : "welcome",
-  );
+  const [step, setStep] = useState<OnboardingStep>("welcome");
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   // Raised by whichever step has a request in flight; locks Back and the
   // rail. Only the workspace step sets it today.
@@ -172,7 +168,7 @@ function OnboardingStepFlow({
   const existingWorkspace = isNewWorkspace
     ? workspace
     : (workspace ?? workspaces[0] ?? null);
-  const canSkipWelcome = workspacesReady && workspaces.length > 0;
+  const canSkipWelcome = !isNewWorkspace && workspacesReady && workspaces.length > 0;
 
   // The `runtimeInstructions` slot is only plumbed by the web shell
   // (desktop bundles a daemon, so a CLI install card would be noise
@@ -299,12 +295,6 @@ function OnboardingStepFlow({
   );
 
   const handleBack = useCallback((from: OnboardingStep) => {
-    // About you is the entry point when creating another workspace, so Back
-    // cancels there. Back from the workspace form returns to the questionnaire.
-    if (isNewWorkspace && from === "about_you") {
-      onCancel?.();
-      return;
-    }
     const idx = ONBOARDING_STEP_ORDER.indexOf(from);
     if (idx <= 0) {
       // About you (the first persisted step) returns to Welcome.
@@ -313,7 +303,7 @@ function OnboardingStepFlow({
     }
     const prev = ONBOARDING_STEP_ORDER[idx - 1]!;
     setStep(prev);
-  }, [isNewWorkspace, onCancel]);
+  }, []);
 
   // Once a workspace exists there is nothing left to cancel, so new-workspace
   // mode drops the back affordance on the runtime step. Walking back through
@@ -352,6 +342,7 @@ function OnboardingStepFlow({
         <StepWelcome
           onNext={handleWelcomeNext}
           onSkip={canSkipWelcome ? handleWelcomeSkip : undefined}
+          onCancel={isNewWorkspace ? onCancel : undefined}
           isWeb={isWeb}
         />
       </>

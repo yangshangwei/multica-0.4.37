@@ -15,9 +15,9 @@ import { useT } from "../../i18n";
 
 /**
  * Step 0 — the one-shot product intro shown on every onboarding
- * entry (which-step-are-you-on is not persisted). Returning users
- * who are already onboarded never reach this screen; they're gated
- * out earlier by `!hasOnboarded`.
+ * entry, including new-workspace creation (the current step is not persisted).
+ * New-workspace creation supplies onCancel instead of the existing-workspace
+ * skip action so users can leave without completing onboarding.
  *
  * Layout: two-column editorial hero on lg+, single column below.
  * Left = wordmark + serif headline + lede + CTA; right = a stack of
@@ -40,10 +40,12 @@ import { useT } from "../../i18n";
 export function StepWelcome({
   onNext,
   onSkip,
+  onCancel,
   isWeb = false,
 }: {
   onNext: () => void | Promise<void>;
   onSkip?: () => void | Promise<void>;
+  onCancel?: () => void;
   isWeb?: boolean;
 }) {
   const { t } = useT("onboarding");
@@ -146,6 +148,16 @@ export function StepWelcome({
                   )}
                   {t(($) => $.welcome.start_exploring)}
                   <ArrowRight className="h-4 w-4" />
+                </Button>
+              )}
+              {onCancel && (
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  onClick={onCancel}
+                  disabled={pending !== null}
+                >
+                  {t(($) => $.common.cancel)}
                 </Button>
               )}
               {onSkip && (
