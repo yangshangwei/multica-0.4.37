@@ -69,4 +69,3 @@ The restarted server's first cold run had a legacy navigation timeout during a 2
 Both final migration request-order attachments contain **zero 403 responses**, confirming the restricted-state telemetry guard. Final standalone TypeScript check passed again.
 
 Own API and copied Web server were stopped; `lsof` confirmed no listeners on 18091/13091. The copied Web directory was removed. Normal teardown plus explicit cleanup of one interrupted-run fixture left **zero migration acceptance accounts** in the isolated database. Logs, sanitized evidence and the temporary API binary remain under `/tmp` for review.
-
