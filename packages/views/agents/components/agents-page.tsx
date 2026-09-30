@@ -31,7 +31,6 @@ import {
   isAgentRuntimeBound,
   useWorkspaceActivityMap,
   useWorkspacePresenceMap,
-  VISIBILITY_TOOLTIP,
   type AgentPresenceDetail,
 } from "@multica/core/agents";
 import {
@@ -67,6 +66,7 @@ import {
   ListGridRow,
   type ListGridSortDirection,
 } from "@multica/ui/components/ui/list-grid";
+import { Popover, PopoverContent, PopoverTrigger } from "@multica/ui/components/ui/popover";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import {
   Tooltip,
@@ -103,7 +103,7 @@ import { matchesPinyin } from "../../editor/extensions/pinyin-match";
 // the documented exception to the single-line management-list rule.
 const GRID_COLS =
   "grid-cols-[0.75rem_minmax(120px,1fr)_var(--agc-status-mobile)_1.75rem_0.75rem] " +
-  "@2xl:grid-cols-[0.75rem_1rem_minmax(200px,1fr)_var(--agc-status-desktop)_var(--agc-owner)_var(--agc-access)_var(--agc-runtime)_var(--agc-lastactive)_var(--agc-runs)_var(--agc-model)_var(--agc-created)_1.75rem_0.75rem]";
+  "@2xl:grid-cols-[0.75rem_1rem_minmax(200px,1fr)_15rem_var(--agc-status-desktop)_var(--agc-owner)_var(--agc-access)_var(--agc-runtime)_var(--agc-lastactive)_var(--agc-runs)_var(--agc-model)_var(--agc-created)_1.75rem_0.75rem]";
 
 // Two-line rows; the virtualizer's fixed-size contract.
 const ROW_HEIGHT = 64;
@@ -124,10 +124,9 @@ const COLUMN_WIDTHS: Record<AgentColumnKey, number> = {
   created: 104,
 };
 
-// Fixed tracks (edges 12+12, checkbox 16, name min 200, kebab 28) plus the
-// 11 gap-x-3 gaps between the wide template's 12 tracks (zero-width tracks
-// still carry gaps).
-const FIXED_TRACKS_WIDTH = 268 + 11 * 12;
+// Fixed tracks: edges 24, checkbox 16, name min 200, squads 240, actions 28.
+// Fourteen desktop tracks retain thirteen gaps, including hidden columns.
+const FIXED_TRACKS_WIDTH = 508 + 13 * 12;
 
 function columnTrackVars(
   isVisible: (key: AgentColumnKey) => boolean,
@@ -423,7 +422,7 @@ function CheckboxCell({
 // documented exception to the single-line rule — agents are few and
 // identity-rich, so this is the "team roster" form (GitHub org members,
 // Slack member list).
-function NameCell({ row }: { row: AgentListRow }) {
+function NameCell({ row, showOwner, showStatusDot }: { row: AgentListRow; showOwner: boolean; showStatusDot: boolean }) {
   const { t } = useT("agents");
   const paths = useWorkspacePaths();
   const { agent, isOwnedByMe } = row;
@@ -436,7 +435,7 @@ function NameCell({ row }: { row: AgentListRow }) {
         actorId={agent.id}
         size="lg"
         className={`shrink-0 ${isArchived ? "opacity-50 grayscale" : ""}`}
-        showStatusDot
+        showStatusDot={showStatusDot}
       />
       <div className="min-w-0 flex-1">
         <div className="flex min-w-0 items-center gap-2">
@@ -453,42 +452,68 @@ function NameCell({ row }: { row: AgentListRow }) {
               {getAgentCategory(agent)}
             </span>
           )}
-          {row.role && (
-            <span title={t(($) => $.discovery.role_hint)} className="hidden max-w-56 truncate rounded bg-muted px-1.5 py-0.5 text-micro text-muted-foreground @2xl:inline">
-              {t(($) => $.discovery.role_template, { title: row.role.title })}
-            </span>
-          )}
           {isPrivate && !isArchived && (
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <Lock className="h-3 w-3 shrink-0 text-faint-foreground" />
+                  <span tabIndex={0} {...rowLinkInteractiveProps} aria-label={t(($) => $.visibility.private.tooltip)} className="shrink-0 rounded-sm text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <Lock className="size-3" aria-hidden="true" />
+                  </span>
                 }
               />
-              <TooltipContent>{VISIBILITY_TOOLTIP.private}</TooltipContent>
+              <TooltipContent>{t(($) => $.visibility.private.tooltip)}</TooltipContent>
             </Tooltip>
           )}
-          {isOwnedByMe && (
+          {isOwnedByMe && showOwner && (
             <span className="shrink-0 rounded bg-muted px-1 text-micro font-medium text-muted-foreground">
-              {t(($) => $.row.you)}
+              {t(($) => $.row.owned_by_you)}
             </span>
           )}
         </div>
         <div className="mt-0.5 flex min-w-0 items-center gap-2 text-caption text-muted-foreground">
           {agent.description && <span className="min-w-0 flex-1 truncate" title={agent.description}>{agent.description}</span>}
-          {(row.squads ?? []).length > 0 && (
-            <span className="hidden min-w-0 max-w-[45%] items-center gap-2 @2xl:flex">
-              {(row.squads ?? []).map((squad) => (
-                <AppLink key={squad.squadId} href={paths.squadDetail(squad.squadId)} newTabTitle={squad.name}
-                  {...rowLinkInteractiveProps} title={squad.name}
-                  className="min-w-0 truncate rounded-sm hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  {squad.name}{squad.isLeader ? ` · ${t(($) => $.discovery.leader)}` : ""}
-                </AppLink>
-              ))}
-            </span>
-          )}
+
         </div>
       </div>
+    </ListGridCell>
+  );
+}
+
+// Membership stays in its own stable column, independent of description length.
+function SquadsCell({ row }: { row: AgentListRow }) {
+  const { t } = useT("agents");
+  const paths = useWorkspacePaths();
+  const squads = row.squads ?? [];
+  const remaining = squads.slice(2);
+  const squadLink = (squad: AgentSquadMembership) => (
+    <AppLink key={squad.squadId} href={paths.squadDetail(squad.squadId)} newTabTitle={squad.name}
+      {...rowLinkInteractiveProps} title={squad.name}
+      className="block min-w-0 truncate rounded-sm text-caption text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      {squad.name}{squad.isLeader ? ` · ${t(($) => $.discovery.leader)}` : ""}
+    </AppLink>
+  );
+  return (
+    <ListGridCell className="hidden gap-2 @2xl:flex">
+      {squads.length === 0 ? <span className="text-caption text-muted-foreground">—</span> : (
+        <>
+          <div className="min-w-0 flex-1 space-y-0.5">{squads.slice(0, 2).map(squadLink)}</div>
+          {remaining.length > 0 && (
+            <Popover>
+              <PopoverTrigger render={
+                <Button variant="ghost" size="sm" {...rowLinkInteractiveProps}
+                  className="shrink-0 px-1.5 text-caption tabular-nums text-muted-foreground"
+                  aria-label={t(($) => $.discovery.more_squads, { count: remaining.length })}>
+                  +{remaining.length}
+                </Button>
+              } />
+              <PopoverContent align="start" className="max-h-64 w-64 max-w-[calc(100vw-2rem)] overflow-y-auto p-3" {...rowLinkInteractiveProps}>
+                <p className="mb-2 text-caption font-medium">{t(($) => $.columns.squads)}</p>
+                <div className="space-y-2">{remaining.map(squadLink)}</div>
+              </PopoverContent>
+            </Popover>
+          )}
+        </>
+      )}
     </ListGridCell>
   );
 }
@@ -695,6 +720,7 @@ function AgentListHeader({
       <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
         {t(($) => $.columns.agent)}
       </ListGridHeaderCell>
+      <ListGridHeaderCell className="hidden @2xl:flex">{t(($) => $.columns.squads)}</ListGridHeaderCell>
       {isColVisible("status") ? (
         <ListGridHeaderCell>{t(($) => $.columns.status)}</ListGridHeaderCell>
       ) : (
@@ -780,6 +806,9 @@ function LoadingSkeleton() {
         <ListGridHeaderCell>
           <Skeleton className="h-3 w-12" />
         </ListGridHeaderCell>
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          <Skeleton className="h-3 w-20" />
+        </ListGridHeaderCell>
         <ListGridHeaderCell>
           <Skeleton className="h-3 w-12" />
         </ListGridHeaderCell>
@@ -811,6 +840,9 @@ function LoadingSkeleton() {
               <Skeleton className="h-3.5 w-32 max-w-full" />
               <Skeleton className="h-3 w-48 max-w-full" />
             </div>
+          </ListGridCell>
+          <ListGridCell className="hidden @2xl:flex">
+            <Skeleton className="h-3 w-24" />
           </ListGridCell>
           <ListGridCell>
             <Skeleton className="h-3 w-16" />
@@ -1297,7 +1329,8 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
                         checked={selectedIds.has(row.agent.id)}
                         onToggle={() => toggleSelected(row.agent.id)}
                       />
-                      <NameCell row={row} />
+                      <NameCell row={row} showOwner={scope !== "mine" && !isColVisible("owner")} showStatusDot={!isColVisible("status")} />
+                      <SquadsCell row={row} />
                       {isColVisible("status") ? (
                         <StatusCell row={row} />
                       ) : (

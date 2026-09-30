@@ -410,7 +410,25 @@ describe("AgentsPage discovery", () => {
     expect(screen.getAllByRole("link", { name: "Payments expert" })).toHaveLength(1);
     expect(screen.getByRole("link", { name: "Release readiness" })).toHaveAttribute("href", "/test-workspace/squads/release");
     expect(screen.getByRole("link", { name: "Merge review" })).toHaveAttribute("href", "/test-workspace/squads/review");
-    expect(screen.getByText("Role template: Code reviewer")).toBeInTheDocument();
+    expect(screen.queryByText("Role template: Code reviewer")).not.toBeInTheDocument();
+  });
+
+  it("keeps extra squad links accessible without opening the agent", async () => {
+    mocks.agents = [makeAgent({ id: "agent-alpha", name: "Payments expert" })];
+    mocks.squads = [RELEASE_SQUAD,
+      { ...RELEASE_SQUAD, id: "review", name: "Merge review" },
+      { ...RELEASE_SQUAD, id: "incident", name: "Incident response" }];
+    const adapter = makeAdapter();
+    renderPage(adapter);
+
+    expect(screen.getByRole("columnheader", { name: "Squads" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Incident response" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show more squads (1)" }));
+    const extraSquad = await screen.findByRole("link", { name: "Incident response" });
+    expect(extraSquad).toHaveAttribute("href", "/test-workspace/squads/incident");
+    expect(adapter.push).not.toHaveBeenCalled();
+    fireEvent.click(extraSquad);
+    expect(adapter.push).toHaveBeenCalledExactlyOnceWith("/test-workspace/squads/incident");
   });
 
   it("waits for a selected legacy squad roster and reports failure instead of no matches", () => {
@@ -459,7 +477,7 @@ describe("AgentsPage discovery", () => {
   it("points to the active Mika by its saved name in the general-purpose hint", () => {
     mocks.agents = [ALPHA, makeAgent({ id: "a-mika", name: "Ava", system_key: "mika" })];
     renderPage();
-    const hint = screen.getByText(/Not sure who to ask\? Start with Ava\./);
+    const hint = screen.getByText((_, element) => element?.tagName === "P" && !!element.textContent?.includes("Not sure who to ask? Start with Ava."));
     expect(screen.getByRole("button", { name: /^General-purpose agents/ })).toHaveAttribute("aria-describedby", hint.id);
     expect(screen.queryByText(/General-purpose help across tasks/)).not.toBeInTheDocument();
   });
@@ -583,7 +601,7 @@ describe("custom category discovery", () => {
     renderPage();
     expect(within(screen.getByRole("table")).getAllByText("Research")).toHaveLength(2);
     expect(screen.queryByRole("button", { name: /^Specialists/ })).not.toBeInTheDocument();
-    expect(screen.getByText("Role template: Code reviewer")).toBeInTheDocument();
+    expect(screen.queryByText("Role template: Code reviewer")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Category" }));
     const option = await screen.findByRole("menuitemcheckbox", { name: /Research/ });
     expect(option).toHaveTextContent("1");

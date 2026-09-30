@@ -45,8 +45,7 @@ squad's full agent roster — not the truncated three-person preview.
 `resolveAgentRole` resolves immutable template provenance from `template_key`
 and the built-in catalogs. Never infer capability or authority from the editable
 name, avatar or category. Template provenance remains unchanged and searchable even when someone assigns
-a different directory category. The role-template tag continues to describe
-provenance independently of the directory category.
+a different directory category; the directory does not repeat it as a row tag.
 
 `resolveAgentDirectoryCategory` is the single directory classification rule:
 1. A nonblank manually saved category takes precedence.

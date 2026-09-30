@@ -166,7 +166,7 @@ test("agent discovery keeps role and squad identification accurate without chang
     await search.fill("支付实现");
     const sharedRow = agentRow(page, shared.name);
     await expect(sharedRow).toBeVisible();
-    await expect(sharedRow.getByText("角色模板：实现工程师", { exact: true })).toBeVisible();
+    await expect(sharedRow.getByText("角色模板：实现工程师", { exact: true })).toHaveCount(0);
     await expect(sharedRow.getByText(shared.description, { exact: true })).toBeVisible();
     await expect(sharedRow.getByRole("link", { name: "支付交付小队", exact: true })).toHaveAttribute("href", `/${workspace.slug}/squads/${SQUAD_IDS[0]}`);
     await expect(sharedRow.getByRole("link", { name: "客户缺陷小队", exact: true })).toHaveAttribute("href", `/${workspace.slug}/squads/${SQUAD_IDS[1]}`);
@@ -234,7 +234,9 @@ test("agent discovery keeps role and squad identification accurate without chang
     await membershipError.getByRole("button", { name: "重试", exact: true }).click();
     await expect(sharedRow).toBeVisible();
     await expect(page.getByRole("table").getByRole("row")).toHaveCount(5);
-    await expect(sharedRow.getByRole("link", { name: "旧服务审查小队", exact: true })).toBeVisible();
+    await sharedRow.getByRole("button", { name: "查看其余 1 个小队", exact: true }).click();
+    await expect(page.locator('[data-slot="popover-content"]').getByRole("link", { name: "旧服务审查小队", exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
     await selectSquad(page, "全部小队");
 
     for (const width of [1440, 768, 390]) {

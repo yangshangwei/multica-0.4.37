@@ -75,7 +75,8 @@
     "model": "模型",
     "created": "创建时间",
     "owner": "owner",
-    "access": "访问权限"
+    "access": "访问权限",
+    "squads": "所属小队"
   },
   "row": {
     "you": "你",
@@ -85,7 +86,8 @@
     "fallback_runtime_cloud": "云端",
     "fallback_runtime_local": "本地",
     "actions_aria": "行操作",
-    "task_count_other": "{{count}} 个 task"
+    "task_count_other": "{{count}} 个 task",
+    "owned_by_you": "你拥有的智能体"
   },
   "activity_tooltip": {
     "created_today": "今天创建",
@@ -1051,7 +1053,9 @@
     "section_columns": "列",
     "section_owner": "owner",
     "section_model": "模型",
-    "display_label": "显示"
+    "display_label": "显示",
+    "more_filters": "更多筛选",
+    "clear_filters_count": "清除筛选（{{count}}）"
   },
   "actions": {
     "selected_other": "已选 {{count}} 项",
@@ -1077,7 +1081,11 @@
     "grouping": {
       "none": "不分组",
       "category": "分类"
-    }
+    },
+    "more_squads": "查看其余 {{count}} 个小队",
+    "clear_category": "移除分类：{{name}}",
+    "clear_squad": "移除小队：{{name}}",
+    "mika_hint_link": "不确定该找谁？先找 <mika>{{name}}</mika>。这位通用助手会帮你明确目标、创建任务，并按需协调专业智能体。"
   },
   "category": {
     "label": "分类",

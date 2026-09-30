@@ -77,7 +77,8 @@
     "model": "Model",
     "created": "Created",
     "owner": "Owner",
-    "access": "Access"
+    "access": "Access",
+    "squads": "Squads"
   },
   "row": {
     "you": "You",
@@ -88,7 +89,8 @@
     "fallback_runtime_local": "Local",
     "actions_aria": "Row actions",
     "task_count_one": "{{count}} task",
-    "task_count_other": "{{count}} tasks"
+    "task_count_other": "{{count}} tasks",
+    "owned_by_you": "Owned by you"
   },
   "activity_tooltip": {
     "created_today": "Created today",
@@ -1073,7 +1075,9 @@
     "section_columns": "Columns",
     "section_owner": "Owner",
     "section_model": "Model",
-    "display_label": "Display"
+    "display_label": "Display",
+    "more_filters": "More filters",
+    "clear_filters_count": "Clear filters ({{count}})"
   },
   "actions": {
     "selected_one": "{{count}} selected",
@@ -1100,7 +1104,11 @@
     "grouping": {
       "none": "None",
       "category": "Category"
-    }
+    },
+    "more_squads": "Show more squads ({{count}})",
+    "clear_category": "Remove category: {{name}}",
+    "clear_squad": "Remove squad: {{name}}",
+    "mika_hint_link": "Not sure who to ask? Start with <mika>{{name}}</mika>. This general-purpose assistant helps clarify your goal, create issues, and coordinate specialists when needed."
   },
   "category": {
     "label": "Category",

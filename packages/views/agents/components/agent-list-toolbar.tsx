@@ -146,6 +146,8 @@ export function AgentListToolbar({
   const { t } = useT("agents");
 
   const activeCount = countActiveFilterDimensions(filters);
+  const moreFilterCount = activeCount - Number(Boolean(filters.categories?.length)) - Number(Boolean(filters.squads?.length));
+  const hasMoreFilters = moreFilterCount > 0;
   const hasActiveFilters = activeCount > 0;
   const hasSearch = search.trim().length > 0;
 
@@ -236,11 +238,12 @@ export function AgentListToolbar({
               key={s}
               variant="outline"
               size="sm"
-              className={
-                scope === s
-                  ? "gap-1.5 bg-accent text-accent-foreground hover:bg-accent/80"
-                  : "gap-1.5 text-muted-foreground"
-              }
+              aria-pressed={scope === s}
+              className={cn(
+                "gap-1.5",
+                s === "archived" && "ml-2",
+                scope === s ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground",
+              )}
               onClick={() => onScopeChange(s)}
             >
               {SCOPE_LABELS[s]}
@@ -297,48 +300,14 @@ export function AgentListToolbar({
           <DropdownMenuTrigger
             render={
               <Button
-                variant={hasActiveFilters ? "default" : "outline"}
-                aria-label={t(($) => $.toolbar.filter_label)}
+                variant="outline"
+                aria-label={t(($) => $.toolbar.more_filters)}
                 size="sm"
-                className={
-                  hasActiveFilters
-                    ? "h-8 w-8 gap-1 bg-brand px-0 text-white hover:bg-brand/90 md:w-auto md:px-2.5"
-                    : "h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5"
-                }
+                className={cn("h-8 gap-1.5 px-2.5", hasMoreFilters ? "border-primary/40 bg-accent text-accent-foreground" : "text-muted-foreground")}
               >
-                <Filter className="size-3.5" />
-                {hasActiveFilters ? (
-                  <>
-                    <span className="hidden md:inline">
-                      {t(($) => $.toolbar.filter_active_count, {
-                        count: activeCount,
-                      })}
-                    </span>
-                    <span className="tabular-nums md:hidden">
-                      {activeCount}
-                    </span>
-                  </>
-                ) : (
-                  <span className="hidden md:inline">
-                    {t(($) => $.toolbar.filter_label)}
-                  </span>
-                )}
-                {hasActiveFilters && (
-                  <span
-                    role="button"
-                    tabIndex={-1}
-                    aria-label={t(($) => $.toolbar.clear_filters)}
-                    className="-mr-1 ml-0.5 hidden rounded-sm p-0.5 hover:bg-white/20 md:inline-flex"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      onClearFilters();
-                    }}
-                    onPointerDown={(e) => e.stopPropagation()}
-                  >
-                    <X className="size-3" />
-                  </span>
-                )}
+                <Filter className="size-3.5" aria-hidden="true" />
+                <span className="hidden md:inline">{t(($) => $.toolbar.more_filters)}</span>
+                {hasMoreFilters && <span className="tabular-nums">{moreFilterCount}</span>}
               </Button>
             }
           />
@@ -516,6 +485,17 @@ export function AgentListToolbar({
             )}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {hasActiveFilters && (
+          <Button variant="ghost" size="sm" onClick={onClearFilters}
+            aria-label={t(($) => $.toolbar.clear_filters_count, { count: activeCount })}
+            title={t(($) => $.toolbar.clear_filters_count, { count: activeCount })}
+            className="gap-1.5 text-muted-foreground">
+            <X className="size-3.5" aria-hidden="true" />
+            <span className="hidden md:inline">{t(($) => $.toolbar.clear_filters)}</span>
+            <span className="tabular-nums">{activeCount}</span>
+          </Button>
+        )}
 
         {/* Display settings */}
         <Popover>

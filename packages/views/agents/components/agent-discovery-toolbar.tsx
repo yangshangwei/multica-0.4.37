@@ -1,7 +1,10 @@
 "use client";
 
 import { useId } from "react";
-import { ChevronDown, Folder, Users } from "lucide-react";
+import { Trans } from "react-i18next";
+import { useWorkspacePaths } from "@multica/core/paths";
+import { AppLink } from "../../navigation";
+import { ChevronDown, Folder, Users, X } from "lucide-react";
 import { AGENT_CATEGORY_PRESET_ORDER } from "@multica/core/agents";
 import type { Squad } from "@multica/core/types";
 import type { AgentListFilters } from "@multica/core/agents/stores";
@@ -26,6 +29,7 @@ export function AgentDiscoveryToolbar({ rows, squads, filters, onToggleFilter }:
 }) {
   const { t } = useT("agents");
   const generalHintId = useId();
+  const paths = useWorkspacePaths();
   const selectedSquads = filters.squads ?? [];
   const selectedCategories = filters.categories ?? [];
   const categoryCounts = new Map<string, number>();
@@ -102,7 +106,7 @@ export function AgentDiscoveryToolbar({ rows, squads, filters, onToggleFilter }:
       {(activeSquads.length > 0 || selectedSquads.length > 0) && (
         <DropdownMenu>
           <DropdownMenuTrigger render={
-            <Button size="sm" variant="outline" aria-label={t(($) => $.discovery.squads)} className="max-w-full gap-1.5">
+            <Button size="sm" variant="outline" aria-label={t(($) => $.discovery.squads)} className={cn("max-w-full gap-1.5", selectedSquads.length > 0 && "border-primary/40 bg-accent text-accent-foreground")}>
               <Users className="size-3.5 shrink-0" aria-hidden="true" />
               <span className="max-w-56 truncate">
                 {selectedName ?? t(($) => selectedSquads.length ? $.discovery.squads : $.discovery.all_squads)}
@@ -126,11 +130,38 @@ export function AgentDiscoveryToolbar({ rows, squads, filters, onToggleFilter }:
           </DropdownMenuContent>
         </DropdownMenu>
       )}
+      {(selectedCategories.length > 0 || selectedSquads.length > 0) && (
+        <div className="flex basis-full flex-wrap gap-1.5">
+          {selectedCategories.map((category) => (
+            <Button key={category} size="sm" variant="secondary" className="max-w-full gap-1.5"
+              aria-label={t(($) => $.discovery.clear_category, { name: categoryLabel(category) })}
+              onClick={() => onToggleFilter("categories", category)}>
+              <Folder className="size-3.5 shrink-0" aria-hidden="true" />
+              <span className="truncate">{categoryLabel(category)}</span>
+              <X className="size-3 shrink-0" aria-hidden="true" />
+            </Button>
+          ))}
+          {selectedSquads.map((id) => {
+            const name = squads.find((squad) => squad.id === id)?.name ?? id;
+            return (
+              <Button key={id} size="sm" variant="secondary" className="max-w-full gap-1.5"
+                aria-label={t(($) => $.discovery.clear_squad, { name })}
+                onClick={() => onToggleFilter("squads", id)}>
+                <Users className="size-3.5 shrink-0" aria-hidden="true" />
+                <span className="truncate">{name}</span>
+                <X className="size-3 shrink-0" aria-hidden="true" />
+              </Button>
+            );
+          })}
+        </div>
+      )}
       {showGeneralHint && (
         <p id={generalHintId} className="basis-full px-2 text-caption leading-relaxed text-muted-foreground">
-          {mika
-            ? t(($) => $.discovery.mika_hint, { name: mika.name })
-            : t(($) => $.discovery.general_hint)}
+          {mika ? (
+            <Trans ns="agents" i18nKey={($) => $.discovery.mika_hint_link} values={{ name: mika.name }}
+              components={{ mika: <AppLink href={paths.agentDetail(mika.id)} newTabTitle={mika.name}
+                className="rounded-sm font-medium text-foreground underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring" /> }} />
+          ) : t(($) => $.discovery.general_hint)}
         </p>
       )}
     </div>
