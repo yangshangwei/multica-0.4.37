@@ -16,6 +16,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 |-------|-------------|--------|
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | Active |
+| [Workspace Naming](./workspace-naming.md) | Series catalog, personal preference and manual URL/prefix ownership | Active |
 | [Automation Template Discovery](./automation-template-discovery.md) | Empty-state routing, template semantics and two-step gallery restoration | Active |
 | [Agent Discovery](./agent-discovery.md) | Squad complete-membership contract, role provenance from template_key, template/member separation, preference & scope composition | Active |
 | [Issue Description Assist](./issue-description-assist.md) | Text-only AI suggestions, editor snapshots, protected Markdown and cancellation | Active |

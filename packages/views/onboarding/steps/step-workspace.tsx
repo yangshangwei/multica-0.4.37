@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useRef, useEffect, useState } from "react";
-import { Dices, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
@@ -18,6 +18,13 @@ import type { Workspace } from "@multica/core/types";
 import { isImeComposing } from "@multica/core/utils";
 import { matchLocale } from "@multica/core/i18n";
 import { useConfigStore } from "@multica/core/config";
+import { useAuthStore } from "@multica/core/auth";
+import {
+  createWorkspaceNameGenerator,
+  DEFAULT_WORKSPACE_NAME_SERIES,
+  type WorkspaceNameSelection,
+} from "@multica/core/workspace/workspace-names";
+import { useWorkspaceNamePreferences } from "@multica/core/workspace/workspace-name-preferences";
 import { workspaceUrlHost } from "@multica/core/workspace/workspace-url";
 import { useLogout } from "../../auth";
 import {
@@ -26,12 +33,12 @@ import {
 } from "../components/step-shell";
 import { RadioMark } from "../components/option-card";
 import { WorkspaceAvatar } from "../../workspace/workspace-avatar";
+import { WorkspaceNamePicker } from "../../workspace/workspace-name-picker";
 import { useT } from "../../i18n";
 import {
   WORKSPACE_SLUG_REGEX,
   isWorkspaceSlugConflict,
   nameToWorkspaceSlug,
-  randomCelestialWorkspaceIdentity,
 } from "../../workspace/slug";
 import { isReservedSlug } from "@multica/core/paths";
 
@@ -100,6 +107,21 @@ export function StepWorkspace({
 }) {
   const { t, i18n } = useT("onboarding");
   const locale = matchLocale([i18n.resolvedLanguage ?? i18n.language]);
+  const userId = useAuthStore((s) => s.user?.id);
+  const savedSeries = useWorkspaceNamePreferences((s) =>
+    userId ? s.seriesByUser[userId] : undefined,
+  );
+  const setSeries = useWorkspaceNamePreferences((s) => s.setSeries);
+  const [anonymousSeries, setAnonymousSeries] = useState<WorkspaceNameSelection>(
+    DEFAULT_WORKSPACE_NAME_SERIES,
+  );
+  const selectedSeries = userId
+    ? savedSeries ?? DEFAULT_WORKSPACE_NAME_SERIES
+    : anonymousSeries;
+  const [generateName] = useState(() => createWorkspaceNameGenerator());
+  useEffect(() => {
+    void useWorkspaceNamePreferences.persist.rehydrate();
+  }, []);
   const workspaceCreationDisabled = useConfigStore((s) => s.workspaceCreationDisabled);
   const urlHost = workspaceUrlHost(useConfigStore((s) => s.daemonAppUrl));
   // Single source of truth for "can the user reach the create path on this
@@ -133,6 +155,9 @@ export function StepWorkspace({
   const [slug, setSlug] = useState("");
   const [slugServerError, setSlugServerError] = useState<string | null>(null);
   const slugTouched = useRef(false);
+  // A generated English URL survives name edits but may follow another Random.
+  // Only an explicit URL edit prevents Random from replacing it.
+  const generatedSlug = useRef(false);
   // Prefix follows the slug the same way the slug follows the name, and stops
   // following the moment the user edits it (MUL-6050). Editable here because
   // settings was the only place to change it, and a user who never noticed the
@@ -171,7 +196,7 @@ export function StepWorkspace({
 
   const handleNameChange = (value: string) => {
     setName(value);
-    if (!slugTouched.current) {
+    if (!slugTouched.current && !generatedSlug.current) {
       // Derive an editable slug while preserving non-Chinese text safeguards.
       applySlug(nameToWorkspaceSlug(value));
     }
@@ -188,10 +213,12 @@ export function StepWorkspace({
   };
 
   const handleRandomName = () => {
-    const identity = randomCelestialWorkspaceIdentity(locale);
-    slugTouched.current = true;
+    const identity = generateName(locale, selectedSeries);
     setName(identity.name);
-    applySlug(identity.slug);
+    if (!slugTouched.current) {
+      generatedSlug.current = true;
+      applySlug(identity.slug);
+    }
   };
 
   const createWorkspace = useCreateWorkspace();
@@ -291,7 +318,7 @@ export function StepWorkspace({
         <FieldLabel htmlFor="ws-name">
           {t(($) => $.step_workspace.name_label)}
         </FieldLabel>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col items-start gap-2 sm:flex-row">
           <Input
             id="ws-name"
             autoFocus
@@ -299,22 +326,21 @@ export function StepWorkspace({
             value={name}
             onChange={(e) => handleNameChange(e.target.value)}
             placeholder={t(($) => $.step_workspace.name_placeholder)}
-            className="min-w-0"
+            className="min-w-0 sm:flex-1 max-sm:min-h-11 pointer-coarse:min-h-11"
             onKeyDown={(e) => {
               if (isImeComposing(e)) return;
               if (e.key === "Enter") handleCreate();
             }}
           />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleRandomName}
+          <WorkspaceNamePicker
+            selection={selectedSeries}
+            onSelectionChange={(series) => {
+              if (userId) setSeries(userId, series);
+              else setAnonymousSeries(series);
+            }}
+            onRandom={handleRandomName}
             disabled={isCreating}
-            className="shrink-0"
-          >
-            <Dices className="h-4 w-4" />
-            {t(($) => $.step_workspace.random_name)}
-          </Button>
+          />
         </div>
       </Field>
       <Field data-invalid={slugError ? true : undefined}>
