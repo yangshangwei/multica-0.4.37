@@ -3,27 +3,26 @@ import { screen } from "@testing-library/react";
 import { renderWithI18n } from "../../test/i18n";
 import { StepWelcome } from "./step-welcome";
 
-// The welcome illustration's mock cards carry issue statuses, and the status
-// label used to come from `STATUS_CONFIG.label` — the server's English seed —
-// while every other string on the screen went through `useT` (MUL-6850). A
-// non-English member met the product on a line that read half in each
-// language. These assert against the REAL locale bundles, so a regression that
-// re-introduces the English seed fails here rather than in a screenshot.
+// Keep the illustration's human approval and review gates localized.
 describe("StepWelcome status labels", () => {
-  it("renders the built-in status labels in English", () => {
+  it("renders the handoff and approval stages in English", () => {
     renderWithI18n(<StepWelcome onNext={vi.fn()} />);
 
-    expect(screen.getByText("In Progress")).toBeInTheDocument();
-    expect(screen.getByText("In Review")).toBeInTheDocument();
-    expect(screen.getAllByText("Done")).toHaveLength(2);
+    for (const label of ["Awaiting requirements confirmation", "Design complete", "Awaiting review", "Review failed · Merge blocked", "Awaiting your release approval"]) {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    }
+    expect(screen.getByText("Requirements Agent")).toBeInTheDocument();
+    expect(screen.getByText("QA Agent")).toBeInTheDocument();
   });
 
-  it("localizes them rather than rendering the English seed", () => {
+  it("localizes the gates and human decisions in Chinese", () => {
     renderWithI18n(<StepWelcome onNext={vi.fn()} />, { locale: "zh-Hans" });
 
-    expect(screen.getByText("进行中")).toBeInTheDocument();
-    expect(screen.getByText("审核中")).toBeInTheDocument();
-    expect(screen.getAllByText("已完成")).toHaveLength(2);
-    expect(screen.queryByText("In Progress")).not.toBeInTheDocument();
+    for (const label of ["等待需求确认", "设计已完成", "等待审核", "审核未通过 · 合并已阻止", "等待你批准发布"]) {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    }
+    expect(screen.getByText("需求智能体")).toBeInTheDocument();
+    expect(screen.getByText("测试智能体")).toBeInTheDocument();
+    expect(screen.queryByText("Awaiting your release approval")).not.toBeInTheDocument();
   });
 });
