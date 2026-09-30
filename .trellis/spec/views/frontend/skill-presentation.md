@@ -27,8 +27,13 @@ How a workspace skill's category, icon and labels are stored, parsed and rendere
 - Colour always comes from the category (`SKILL_CATEGORY_TONE`, backed by `--skill-<category>` tokens in `packages/ui/styles/tokens.css`); the icon override changes shape only.
 - `SkillPresentationIcon` is the per-skill tile. The entity icon `SkillIcon` (route icon) is unchanged and still means "a skill" in headers, empty states and pickers.
 - Facet counts (category / origin / label / agent / creator) come from `useSkillListFacets(allRows)` over the UNFILTERED rows so the sidebar, chips and toolbar can never disagree.
-- The category empty state renders only when `facets.categoryCounts[category] === 0`; a search or another filter that narrows a populated category shows the plain "No matches" state in both card and list views.
-- The card grid virtualizes by row: columns come from a `ResizeObserver` on the scroll container and rows are chunked into lines of `columns` cards at a fixed `SKILL_CARD_HEIGHT`.
+- The category empty state renders only when `facets.categoryCounts[category] === 0` and no search or other filter is active. Search/filter no-results share one page-level state with an explanation and independent clear-search/clear-filters actions, restoring focus to the search input.
+- Sidebar and chips express category filters with `aria-pressed`. All is active only when the category filter is empty; multiple categories remain individually highlighted even though clicking a sidebar/chip category replaces the selection.
+- Card and list titles use `AppLink` plus `rowLinkInteractiveProps` inside pointer-clickable rows. Preserve localized full-title hints and visible keyboard focus.
+- Selection uses directly labelled Checkbox primitives. Stop both click and auxclick on the containing cell/control group, not just the Checkbox root: Base UI emits an additional click from a sibling hidden input that would otherwise activate row navigation. Keep selection borders at non-text contrast and preserve mixed state for select-all.
+- The compact toolbar keeps accessible filter/sort names and a keyboard-reachable clear-filters menu item. Column settings appear only in list mode.
+- Cards identify sources with text rather than an ambiguous standalone pencil. Recognized built-ins may use `getBuiltinRoleSkillSummary` for display-only summaries; custom and stored descriptions remain unchanged. Titles can occupy two lines, and empty label rows are omitted.
+- The card grid virtualizes by row: columns come from a `ResizeObserver` on the scroll container and rows are chunked into lines of `columns` cards. Each line uses `SKILL_CARD_HEIGHT` (144px) unless any card has labels, in which case it uses `SKILL_CARD_WITH_LABELS_HEIGHT` (168px). The row key includes its height and skill IDs so filtering or label changes cannot reuse stale size estimates.
 - Cards reuse the list row's hover contract (`group/row`) so `SkillRowActions`' kebab reveals on card hover without a second variant.
 
 ## Batch label management
@@ -51,6 +56,7 @@ How a workspace skill's category, icon and labels are stored, parsed and rendere
 | Page wiring (filters, view toggle, empty states) | `packages/views/skills/components/skills-page.test.tsx` |
 | Bulk-label tri-state / permission skip / failure aggregation | `packages/views/skills/components/skill-list-actions.test.tsx` |
 | Built-in role-skill presentation defaults | `server/internal/service/builtin_agent_templates_test.go` |
+| Keyboard title navigation, selection isolation, recovery, long labeled cards, compact and dark layouts | `e2e/skill-library-accessibility.spec.ts` |
 | Visual acceptance (wide/narrow/dark, en/zh) | `e2e/skill-category-taxonomy.spec.ts` |
 
 The e2e spec mirrors the category key order and the EN/ZH display names; renaming either must update that file in the same PR or the visual acceptance silently drifts.

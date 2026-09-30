@@ -8,7 +8,7 @@ import { useSkillCategoryLabels } from "../hooks/use-skill-category-labels";
 import type { SkillCategoryNavProps } from "./skill-category-sidebar";
 
 const CHIP_CLASS =
-  "flex h-7 shrink-0 snap-start items-center gap-1.5 rounded-full border px-2.5 text-caption text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-active:border-foreground/40 data-active:font-medium data-active:text-foreground";
+  "flex h-7 shrink-0 snap-start items-center gap-1.5 rounded-full border px-2.5 text-caption text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring pointer-coarse:min-h-11 data-active:border-foreground/40 data-active:font-medium data-active:text-foreground";
 
 /**
  * Narrow-container (< @2xl) counterpart of the sidebar: the same categories
@@ -24,8 +24,7 @@ export function SkillCategoryChips({
 }: Omit<SkillCategoryNavProps, "onToggleOrigin">) {
   const { t } = useT("skills");
   const labels = useSkillCategoryLabels();
-  const first = filters.categories[0];
-  const active = filters.categories.length === 1 && first ? first : null;
+  const allCategories = filters.categories.length === 0;
 
   return (
     <div
@@ -39,8 +38,8 @@ export function SkillCategoryChips({
       <button
         type="button"
         className={CHIP_CLASS}
-        data-active={active === null ? "" : undefined}
-        aria-pressed={active === null}
+        data-active={allCategories ? "" : undefined}
+        aria-pressed={allCategories}
         onClick={() => onSelectCategory(null)}
       >
         {t(($) => $.categories.all)}
@@ -51,8 +50,8 @@ export function SkillCategoryChips({
           key={category}
           type="button"
           className={CHIP_CLASS}
-          data-active={active === category ? "" : undefined}
-          aria-pressed={active === category}
+          data-active={filters.categories.includes(category) ? "" : undefined}
+          aria-pressed={filters.categories.includes(category)}
           onClick={() => onSelectCategory(category)}
         >
           <SkillPresentationIcon

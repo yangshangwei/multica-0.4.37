@@ -111,7 +111,8 @@
       "with_query": "No skills match \"{{query}}\"{{filterSuffix}}.",
       "with_query_filter_suffix": " in this filter",
       "filter_only": "No skills match this filter.",
-      "try_different": " Try a different query."
+      "try_different": " Try a different query.",
+      "clear_search": "Clear search"
     },
     "intro_banner": {
       "title": "Shared with your workspace.",
@@ -144,7 +145,9 @@
     "source_github": "From GitHub",
     "category": "Category",
     "labels": "Labels",
-    "labels_more": "+{{count}}"
+    "labels_more": "+{{count}}",
+    "select_skill": "Select {{name}}",
+    "select_all": "Select all skills"
   },
   "actions": {
     "row_menu": "Actions",
@@ -217,7 +220,8 @@
     "section_columns": "Columns",
     "view_card": "Card view",
     "view_list": "List view",
-    "section_categories": "Category"
+    "section_categories": "Category",
+    "result_count": "{{visible}} of {{total}} skills"
   },
   "detail": {
     "all_skills": "All skills",

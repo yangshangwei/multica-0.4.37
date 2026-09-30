@@ -22,12 +22,7 @@ export interface SkillCategoryNavProps {
 // Active state lives on weight + text colour (not on the background hover
 // touches), so a selected row stays identifiable while hovered.
 const ITEM_CLASS =
-  "group/nav flex h-8 w-full items-center gap-2 rounded-md px-2 text-left text-body text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-active:font-medium data-active:text-foreground data-active:bg-accent/60";
-
-function activeCategory(filters: SkillListFilters): SkillCategory | null {
-  const first = filters.categories[0];
-  return filters.categories.length === 1 && first ? first : null;
-}
+  "group/nav flex h-8 w-full items-center gap-2 rounded-md px-2 text-left text-body text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring pointer-coarse:min-h-11 data-active:font-medium data-active:text-foreground data-active:bg-accent/60";
 
 /**
  * Wide-container (≥ @2xl) category navigation: "All" + every
@@ -45,7 +40,7 @@ export function SkillCategorySidebar({
   const { t } = useT("skills");
   const labels = useSkillCategoryLabels();
   const originLabels = useOriginLabels();
-  const active = activeCategory(filters);
+  const allCategories = filters.categories.length === 0;
   const sources = ORIGIN_TYPES.filter((type) => (facets.originCounts.get(type) ?? 0) > 0);
 
   return (
@@ -61,8 +56,8 @@ export function SkillCategorySidebar({
           <button
             type="button"
             className={ITEM_CLASS}
-            data-active={active === null ? "" : undefined}
-            aria-current={active === null ? "true" : undefined}
+            data-active={allCategories ? "" : undefined}
+            aria-pressed={allCategories}
             onClick={() => onSelectCategory(null)}
           >
             <span className="min-w-0 flex-1 truncate">
@@ -78,8 +73,8 @@ export function SkillCategorySidebar({
             <button
               type="button"
               className={ITEM_CLASS}
-              data-active={active === category ? "" : undefined}
-              aria-current={active === category ? "true" : undefined}
+              data-active={filters.categories.includes(category) ? "" : undefined}
+              aria-pressed={filters.categories.includes(category)}
               onClick={() => onSelectCategory(category)}
             >
               <SkillPresentationIcon

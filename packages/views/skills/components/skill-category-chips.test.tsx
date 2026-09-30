@@ -57,4 +57,20 @@ describe("SkillCategoryChips", () => {
     fireEvent.click(within(group).getByRole("button", { name: /^All/ }));
     expect(onSelectCategory).toHaveBeenCalledWith(null);
   });
+
+  it("represents every toolbar-selected category without marking All active", () => {
+    const { onSelectCategory } = renderChips(["engineering", "writing"]);
+    const group = screen.getByRole("group", { name: "Categories" });
+    const all = within(group).getByRole("button", { name: /^All/ });
+    expect(all).not.toHaveAttribute("data-active");
+    expect(all).toHaveAttribute("aria-pressed", "false");
+    for (const name of [/Development & integration/, /Collaboration & knowledge/]) {
+      const selected = within(group).getByRole("button", { name });
+      expect(selected).toHaveAttribute("data-active");
+      expect(selected).toHaveAttribute("aria-pressed", "true");
+    }
+
+    fireEvent.click(within(group).getByRole("button", { name: /Development & integration/ }));
+    expect(onSelectCategory).toHaveBeenCalledWith("engineering");
+  });
 });

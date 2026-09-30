@@ -61,6 +61,7 @@ import {
 } from "@multica/ui/components/ui/tooltip";
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 import {
+  AppLink,
   rowLinkInteractiveProps,
   useNavigation,
   useRowLink,
@@ -233,52 +234,50 @@ function PageHeaderBar({
 // Cells
 // ---------------------------------------------------------------------------
 
-// Hover-revealed multi-select checkbox. Same pattern as SkillPickerList:
-// the shadcn Checkbox is presentational only (`pointer-events-none`, so the
-// Base UI button can never swallow the click) and the wrapping <button> owns
-// the toggle. It stops click propagation so toggling never triggers the
-// row's whole-row navigation (see `useRowLink`) — no preventDefault needed,
-// the row is a plain <div>, not an <a>.
 function CheckboxCell({
   checked,
+  name,
   onToggle,
 }: {
   checked: boolean;
+  name: string;
   onToggle: () => void;
 }) {
+  const { t } = useT("skills");
   return (
-    <ListGridCell className="justify-center px-0">
-      <button
-        type="button"
-        aria-pressed={checked}
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggle();
-        }}
-        className={`-m-1.5 flex items-center p-1.5 ${
-          checked ? "" : "opacity-0 transition-opacity group-hover/row:opacity-100"
-        }`}
-      >
-        <Checkbox
-          checked={checked}
-          tabIndex={-1}
-          className="pointer-events-none"
-        />
-      </button>
+    <ListGridCell {...rowLinkInteractiveProps} className="justify-center px-0">
+      <Checkbox
+        checked={checked}
+        aria-label={t(($) => $.table.select_skill, { name })}
+        onCheckedChange={onToggle}
+        className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
+      />
     </ListGridCell>
   );
 }
 
 function NameCell({ row }: { row: PresentedSkillRow }) {
   const { t } = useT("skills");
+  const paths = useWorkspacePaths();
   const { skill, canEdit, presentation, meta } = row;
   return (
     <ListGridCell className="gap-2">
       <SkillPresentationIcon meta={meta} size="sm" />
       <div className="min-w-0 flex-1">
-        <div className="truncate text-body font-medium" title={skill.name}>
-          {presentation.name}
-        </div>
+        <Tooltip>
+          <TooltipTrigger render={
+            <AppLink
+              href={paths.skillDetail(skill.id)}
+              newTabTitle={presentation.name}
+              {...rowLinkInteractiveProps}
+              className="block truncate rounded-sm text-body font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+              title={presentation.name}
+            >
+              {presentation.name}
+            </AppLink>
+          } />
+          <TooltipContent>{presentation.name}</TooltipContent>
+        </Tooltip>
         {presentation.isBuiltin && presentation.description && (
           <div
             className="truncate text-caption text-muted-foreground"
@@ -548,30 +547,16 @@ function SkillListHeader({
   const { t } = useT("skills");
   const sorted = (field: SortField) =>
     sortField === field ? sortDirection : false;
-  const anySelected = allSelected || someSelected;
   return (
     <ListGridHeader>
-      {/* Tri-state select-all in the checkbox track. Same presentational
-          Checkbox + interactive wrapper pattern as the row cells; revealed
-          on header hover or whenever a selection exists. */}
       <div className="flex items-center justify-center">
-        <button
-          type="button"
-          aria-pressed={allSelected}
-          onClick={onToggleAll}
-          className={`-m-1.5 flex items-center p-1.5 ${
-            anySelected
-              ? ""
-              : "opacity-0 transition-opacity group-hover/header:opacity-100"
-          }`}
-        >
-          <Checkbox
-            checked={allSelected}
-            indeterminate={someSelected && !allSelected}
-            tabIndex={-1}
-            className="pointer-events-none"
-          />
-        </button>
+        <Checkbox
+          checked={allSelected}
+          indeterminate={someSelected && !allSelected}
+          aria-label={t(($) => $.table.select_all)}
+          onCheckedChange={onToggleAll}
+          className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
+        />
       </div>
       <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
         {t(($) => $.table.name)}
@@ -750,6 +735,7 @@ export default function SkillsPage() {
     new Set(),
   );
   const [search, setSearch] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Persisted view preferences (per workspace, per user/device). Header sort
   // buttons and the toolbar's display panel mutate the SAME store, so both
@@ -951,6 +937,7 @@ export default function SkillsPage() {
     );
   };
 
+  const hasActiveFilters = Object.values(filters).some((values) => values.length > 0);
   const totalCount = skills.length;
   const showEmpty = !isLoading && totalCount === 0;
   // A single selected category that has no skills at all gets its own empty
@@ -960,7 +947,9 @@ export default function SkillsPage() {
   const soleCategory =
     filters.categories.length === 1 ? filters.categories[0] : undefined;
   const categoryEmpty =
-    soleCategory && facets.categoryCounts[soleCategory] === 0 ? soleCategory : null;
+    soleCategory && facets.categoryCounts[soleCategory] === 0 && !search.trim() &&
+    Object.entries(filters).every(([key, values]) => key === "categories" || values.length === 0)
+      ? soleCategory : null;
   const supportingQueryDown =
     !!agentsError || !!membersError || !!runtimesError;
 
@@ -1032,7 +1021,11 @@ export default function SkillsPage() {
         </div>
       ) : (
         <>
+          <span role="status" aria-atomic="true" className="sr-only">
+            {t(($) => $.toolbar.result_count, { visible: rows.length, total: totalCount })}
+          </span>
           <SkillListToolbar
+            searchInputRef={searchInputRef}
             search={search}
             onSearchChange={setSearch}
             filters={filters}
@@ -1075,6 +1068,29 @@ export default function SkillsPage() {
                 onCreate={() => setCreation({ category: categoryEmpty, triggerRef: emptyCreateButtonRef })}
               />
             </div>
+          ) : rows.length === 0 ? (
+            <div className="flex min-w-0 flex-1 items-center justify-center overflow-y-auto px-4">
+              <CollectionPageState
+                icon={SkillIcon}
+                title={t(($) => $.page.no_matches.title)}
+                description={search.trim()
+                  ? t(($) => $.page.no_matches.with_query, {
+                      query: search.trim(),
+                      filterSuffix: hasActiveFilters ? t(($) => $.page.no_matches.with_query_filter_suffix) : "",
+                    })
+                  : t(($) => $.page.no_matches.filter_only)}
+                actions={<>
+                  {search.trim() && <Button variant="outline" size="sm" onClick={() => {
+                    setSearch("");
+                    searchInputRef.current?.focus();
+                  }}>{t(($) => $.page.no_matches.clear_search)}</Button>}
+                  {hasActiveFilters && <Button variant="outline" size="sm" onClick={() => {
+                    clearFilters();
+                    searchInputRef.current?.focus();
+                  }}>{t(($) => $.toolbar.clear_filters)}</Button>}
+                </>}
+              />
+            </div>
           ) : viewMode === "card" ? (
             <SkillCardGrid
               rows={rows}
@@ -1107,11 +1123,6 @@ export default function SkillsPage() {
                   virtualPadding.bottom + LIST_GRID_BOTTOM_CLEARANCE,
               }}
             >
-              {rows.length === 0 && (
-                <div className="col-span-full py-16 text-center text-body text-muted-foreground">
-                  {t(($) => $.page.no_matches.title)}
-                </div>
-              )}
               {virtualItems.map((vi) => {
                 const row = rows[vi.index];
                 if (!row) return null;
@@ -1124,6 +1135,7 @@ export default function SkillsPage() {
                 {...rowLink(paths.skillDetail(row.skill.id), row.presentation.name)}
               >
                 <CheckboxCell
+                  name={row.presentation.name}
                   checked={selectedIds.has(row.skill.id)}
                   onToggle={() => toggleSelected(row.skill.id)}
                 />
@@ -1167,7 +1179,7 @@ export default function SkillsPage() {
                 ) : (
                   <ListGridCell className="hidden px-0 @2xl:flex" />
                 )}
-                <ListGridCell className="justify-end px-0">
+                <ListGridCell {...rowLinkInteractiveProps} className="justify-end px-0">
                   <SkillRowActions row={row} ctx={actionsCtx} />
                 </ListGridCell>
               </ListGridRow>

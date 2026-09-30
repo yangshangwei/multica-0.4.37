@@ -1027,7 +1027,7 @@ export function SkillRowActions({
             <button
               type="button"
               aria-label={t(($) => $.actions.row_menu)}
-              className="flex size-7 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-accent-foreground focus-visible:opacity-100 group-hover/row:opacity-100 data-popup-open:bg-accent data-popup-open:opacity-100 data-popup-open:text-accent-foreground"
+              className="flex size-7 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity pointer-coarse:min-h-11 pointer-coarse:min-w-11 pointer-coarse:opacity-100 hover:bg-accent hover:text-accent-foreground focus-visible:opacity-100 group-hover/row:opacity-100 data-popup-open:bg-accent data-popup-open:opacity-100 data-popup-open:text-accent-foreground"
             >
               <MoreHorizontal className="size-4" />
             </button>

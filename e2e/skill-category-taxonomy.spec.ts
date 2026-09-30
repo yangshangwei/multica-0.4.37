@@ -316,10 +316,10 @@ test("renders eight lifecycle categories and the batch label menu across present
       name: new RegExp(`^${EN_LABELS.design}`),
     });
     await designNav.click();
-    await expect(designNav).toHaveAttribute("aria-current", "true");
+    await expect(designNav).toHaveAttribute("aria-pressed", "true");
     await designNav.hover();
     // Active state must survive hover: it lives on weight + text colour.
-    await expect(designNav).toHaveAttribute("aria-current", "true");
+    await expect(designNav).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("row")).toHaveCount(2); // header + one match
     await expect(page.getByText(`design-primary-${RUN_ID}`)).toBeVisible();
     await expect(page.getByText(`quality-primary-${RUN_ID}`)).toHaveCount(0);
@@ -330,7 +330,7 @@ test("renders eight lifecycle categories and the batch label menu across present
     // -------------------------------------------------------- batch label menu
     async function selectRowByName(name: string) {
       const row = page.getByRole("row").filter({ hasText: name }).first();
-      await row.getByRole("button").first().click();
+      await row.getByRole("checkbox", { name: `Select ${name}`, exact: true }).click();
     }
     await selectRowByName(`design-primary-${RUN_ID}`);
     await selectRowByName(`quality-primary-${RUN_ID}`);

@@ -59,4 +59,20 @@ describe("SkillCategorySidebar", () => {
     fireEvent.click(within(nav).getByRole("button", { name: /Created manually/ }));
     expect(onToggleOrigin).toHaveBeenCalledWith("manual");
   });
+
+  it("represents every toolbar-selected category without marking All active", () => {
+    const { onSelectCategory } = renderSidebar(["engineering", "writing"]);
+    const nav = screen.getByRole("navigation", { name: "Categories" });
+    const all = within(nav).getByRole("button", { name: /^All/ });
+    expect(all).not.toHaveAttribute("data-active");
+    expect(all).toHaveAttribute("aria-pressed", "false");
+    for (const name of [/Development & integration/, /Collaboration & knowledge/]) {
+      const selected = within(nav).getByRole("button", { name });
+      expect(selected).toHaveAttribute("data-active");
+      expect(selected).toHaveAttribute("aria-pressed", "true");
+    }
+
+    fireEvent.click(within(nav).getByRole("button", { name: /Development & integration/ }));
+    expect(onSelectCategory).toHaveBeenCalledWith("engineering");
+  });
 });

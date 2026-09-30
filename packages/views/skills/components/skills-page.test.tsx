@@ -2,6 +2,7 @@
 
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 import { fireEvent, screen, within } from "@testing-library/react";
 import type { Label, SkillSummary } from "@multica/core/types";
 import type { SupportedLocale } from "@multica/core/i18n";
@@ -184,7 +185,7 @@ vi.mock("./skill-list-toolbar", async (importOriginal) => {
 });
 vi.mock("./skill-list-actions", () => ({
   SkillBatchToolbar: () => null,
-  SkillRowActions: () => null,
+  SkillRowActions: () => <button type="button" aria-label="Actions" />,
 }));
 
 import SkillsPage from "./skills-page";
@@ -496,5 +497,53 @@ describe("SkillsPage categories and view mode", () => {
     });
     expect(screen.queryAllByTestId("skill-card")).toHaveLength(0);
     expect(screen.getByText("No matches")).toBeInTheDocument();
+  });
+});
+
+
+describe("SkillsPage accessible navigation and recovery", () => {
+  it("does not navigate when an action control receives a middle click", () => {
+    const adapter = makeAdapter();
+    renderPage(adapter);
+    middleClick(screen.getByRole("button", { name: "Actions" }));
+    expect(adapter.openInNewTab).not.toHaveBeenCalled();
+  });
+
+  it("opens a list title with Enter and selects rows without navigation", async () => {
+    const user = userEvent.setup();
+    const adapter = makeAdapter();
+    mocks.skills = [importedSkill, { ...importedSkill, id: "skill-2", name: "second" }];
+    renderPage(adapter);
+    const title = screen.getByRole("link", { name: "animations" });
+    title.focus();
+    await user.keyboard("{Enter}");
+    expect(adapter.push).toHaveBeenCalledExactlyOnceWith("/acme/skills/skill-1");
+    vi.mocked(adapter.push).mockClear();
+    const checkbox = screen.getByRole("checkbox", { name: "Select animations" });
+    checkbox.focus();
+    await user.keyboard(" ");
+    expect(checkbox).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Select all skills" })).toBePartiallyChecked();
+    expect(adapter.push).not.toHaveBeenCalled();
+  });
+
+  it.each(["card", "list"])("recovers an empty search in %s view without changing filters", (view) => {
+    mocks.viewState.viewMode = view;
+    renderPage(makeAdapter());
+    const search = screen.getByRole("textbox", { name: "Search skills" });
+    fireEvent.change(search, { target: { value: "absent skill" } });
+    expect(screen.getByText(/No skills match "absent skill"/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(search).toHaveValue("");
+    expect(screen.getByRole("link", { name: "animations" })).toBeInTheDocument();
+    expect(mocks.viewState.clearFilters).not.toHaveBeenCalled();
+  });
+
+  it("explains filtered empty results and provides filter recovery", () => {
+    mocks.viewState.filters.labels = ["missing-label"];
+    renderPage(makeAdapter());
+    expect(screen.getByText("No skills match this filter.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(mocks.viewState.clearFilters).toHaveBeenCalledOnce();
   });
 });

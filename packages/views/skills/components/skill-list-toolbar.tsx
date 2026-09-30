@@ -1,5 +1,6 @@
 "use client";
 
+import type { Ref } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -20,8 +21,10 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -110,6 +113,7 @@ export function useOriginLabels(): Record<OriginType, string> {
 
 export function SkillListToolbar({
   search,
+  searchInputRef,
   onSearchChange,
   filters,
   onToggleFilter,
@@ -126,6 +130,7 @@ export function SkillListToolbar({
   visibleCount,
 }: {
   search: string;
+  searchInputRef?: Ref<HTMLInputElement>;
   onSearchChange: (v: string) => void;
   filters: SkillListFilters;
   onToggleFilter: (key: keyof SkillListFilters, value: string) => void;
@@ -177,6 +182,12 @@ export function SkillListToolbar({
     created: t(($) => $.table.created),
   };
   const sortLabel = SORT_LABELS[sortField];
+  const directionLabel = sortDirection === "asc"
+    ? t(($) => $.toolbar.direction_asc)
+    : t(($) => $.toolbar.direction_desc);
+  const filterLabel = hasActiveFilters
+    ? `${t(($) => $.toolbar.filter_label)}: ${t(($) => $.toolbar.filter_active_count, { count: activeCount })}`
+    : t(($) => $.toolbar.filter_label);
 
   const countBadge = (n: number) => (
     <span className="ml-auto pl-3 text-caption text-muted-foreground">{n}</span>
@@ -189,11 +200,12 @@ export function SkillListToolbar({
         <div className="relative min-w-0 w-full max-w-64">
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
+            ref={searchInputRef}
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             aria-label={t(($) => $.market.workspace_search)}
             placeholder={t(($) => $.market.workspace_search)}
-            className="h-8 w-full min-w-0 pl-8 text-body"
+            className="h-8 w-full min-w-0 pl-8 text-body pointer-coarse:min-h-11"
           />
         </div>
         {(hasActiveFilters || search.trim().length > 0) && (
@@ -212,12 +224,13 @@ export function SkillListToolbar({
           <DropdownMenuTrigger
             render={
               <Button
-                variant={hasActiveFilters ? "default" : "outline"}
+                variant={hasActiveFilters ? "brand" : "outline"}
                 size="sm"
+                aria-label={filterLabel}
                 className={
                   hasActiveFilters
-                    ? "h-8 w-8 gap-1 bg-brand px-0 text-white hover:bg-brand/90 md:w-auto md:px-2.5"
-                    : "h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5"
+                    ? "h-8 w-8 gap-1 px-0 pointer-coarse:min-h-11 pointer-coarse:min-w-11 md:w-auto md:px-2.5"
+                    : "h-8 w-8 gap-1 px-0 text-muted-foreground pointer-coarse:min-h-11 pointer-coarse:min-w-11 md:w-auto md:px-2.5"
                 }
               >
                 <Filter className="size-3.5" />
@@ -235,22 +248,6 @@ export function SkillListToolbar({
                 ) : (
                   <span className="hidden md:inline">
                     {t(($) => $.toolbar.filter_label)}
-                  </span>
-                )}
-                {hasActiveFilters && (
-                  <span
-                    role="button"
-                    tabIndex={-1}
-                    aria-label={t(($) => $.toolbar.clear_filters)}
-                    className="-mr-1 ml-0.5 hidden rounded-sm p-0.5 hover:bg-white/20 md:inline-flex"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      onClearFilters();
-                    }}
-                    onPointerDown={(e) => e.stopPropagation()}
-                  >
-                    <X className="size-3" />
                   </span>
                 )}
               </Button>
@@ -452,6 +449,18 @@ export function SkillListToolbar({
                 ))}
               </DropdownMenuSubContent>
             </DropdownMenuSub>
+            {hasActiveFilters && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={onClearFilters}
+                  className="pointer-coarse:min-h-11"
+                >
+                  <X className="size-3.5" />
+                  {t(($) => $.toolbar.clear_filters)}
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -469,7 +478,8 @@ export function SkillListToolbar({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5"
+                      aria-label={`${t(($) => $.toolbar.sort_by)}: ${sortLabel}, ${directionLabel}`}
+                      className="h-8 w-8 gap-1 px-0 text-muted-foreground pointer-coarse:min-h-11 pointer-coarse:min-w-11 md:w-auto md:px-2.5"
                     >
                       {sortDirection === "asc" ? (
                         <ArrowUp className="size-3.5" />
@@ -487,7 +497,7 @@ export function SkillListToolbar({
             </TooltipContent>
           </Tooltip>
           <PopoverContent align="end" className="w-64 p-0">
-            <div className="border-b px-3 py-2.5">
+            <div className="px-3 py-2.5">
               <span className="text-caption font-medium text-muted-foreground">
                 {t(($) => $.toolbar.sort_by)}
               </span>
@@ -498,7 +508,7 @@ export function SkillListToolbar({
                       <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1 justify-between text-caption"
+                        className="flex-1 justify-between text-caption pointer-coarse:min-h-11"
                       >
                         {sortLabel}
                         <ChevronDown className="size-3 text-muted-foreground" />
@@ -523,16 +533,14 @@ export function SkillListToolbar({
                 <Button
                   variant="outline"
                   size="icon-sm"
+                  aria-label={directionLabel}
+                  className="pointer-coarse:min-h-11 pointer-coarse:min-w-11"
                   onClick={() =>
                     onSortDirectionChange(
                       sortDirection === "asc" ? "desc" : "asc",
                     )
                   }
-                  title={
-                    sortDirection === "asc"
-                      ? t(($) => $.toolbar.direction_asc)
-                      : t(($) => $.toolbar.direction_desc)
-                  }
+                  title={directionLabel}
                 >
                   {sortDirection === "asc" ? (
                     <ArrowUp className="size-3.5" />
@@ -543,26 +551,28 @@ export function SkillListToolbar({
               </div>
             </div>
 
-            <div className="px-3 py-2.5">
-              <span className="text-caption font-medium text-muted-foreground">
-                {t(($) => $.toolbar.section_columns)}
-              </span>
-              <div className="mt-2 space-y-2">
-                {COLUMN_KEYS.map((key) => (
-                  <label
-                    key={key}
-                    className="flex cursor-pointer items-center justify-between"
-                  >
-                    <span className="text-body">{COLUMN_LABELS[key]}</span>
-                    <Switch
-                      size="sm"
-                      checked={!hiddenColumns.includes(key)}
-                      onCheckedChange={() => onToggleColumn(key)}
-                    />
-                  </label>
-                ))}
+            {viewMode === "list" && (
+              <div className="border-t px-3 py-2.5">
+                <span className="text-caption font-medium text-muted-foreground">
+                  {t(($) => $.toolbar.section_columns)}
+                </span>
+                <div className="mt-2 space-y-2">
+                  {COLUMN_KEYS.map((key) => (
+                    <label
+                      key={key}
+                      className="flex cursor-pointer items-center justify-between pointer-coarse:min-h-11"
+                    >
+                      <span className="text-body">{COLUMN_LABELS[key]}</span>
+                      <Switch
+                        size="sm"
+                        checked={!hiddenColumns.includes(key)}
+                        onCheckedChange={() => onToggleColumn(key)}
+                      />
+                    </label>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </PopoverContent>
         </Popover>
 
@@ -588,8 +598,8 @@ export function SkillListToolbar({
                     onClick={() => onViewModeChange(mode)}
                     className={
                       viewMode === mode
-                        ? "h-6 w-6 rounded-sm bg-background text-foreground shadow-sm hover:bg-background"
-                        : "h-6 w-6 rounded-sm text-muted-foreground hover:bg-transparent hover:text-foreground"
+                        ? "h-6 w-6 rounded-sm bg-background text-foreground shadow-sm hover:bg-background pointer-coarse:min-h-11 pointer-coarse:min-w-11"
+                        : "h-6 w-6 rounded-sm text-muted-foreground hover:bg-transparent hover:text-foreground pointer-coarse:min-h-11 pointer-coarse:min-w-11"
                     }
                   >
                     <Icon className="size-3.5" />

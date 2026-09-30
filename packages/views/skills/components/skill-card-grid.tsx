@@ -3,9 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useWorkspacePaths } from "@multica/core/paths";
-import { useT } from "../../i18n";
 import { useRowLink } from "../../navigation";
-import { SKILL_CARD_HEIGHT, SkillCard } from "./skill-card";
+import { SKILL_CARD_HEIGHT, SKILL_CARD_WITH_LABELS_HEIGHT, SkillCard } from "./skill-card";
 import type { SkillActionsContext } from "./skill-list-actions";
 import type { PresentedSkillRow } from "./skills-page";
 
@@ -36,7 +35,6 @@ export function SkillCardGrid({
   selectedIds: ReadonlySet<string>;
   onToggleSelected: (id: string) => void;
 }) {
-  const { t } = useT("skills");
   const paths = useWorkspacePaths();
   const rowLink = useRowLink();
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -54,9 +52,15 @@ export function SkillCardGrid({
   }, []);
 
   const lines = useMemo(() => {
-    const out: PresentedSkillRow[][] = [];
+    const out: { rows: PresentedSkillRow[]; height: number; key: string }[] = [];
     for (let i = 0; i < rows.length; i += columns) {
-      out.push(rows.slice(i, i + columns));
+      const line = rows.slice(i, i + columns);
+      const height = line.some((row) => row.labels.length > 0)
+        ? SKILL_CARD_WITH_LABELS_HEIGHT
+        : SKILL_CARD_HEIGHT;
+      // Include height in the key so filtering or label changes cannot reuse
+      // a cached estimate from a line with a different content height.
+      out.push({ rows: line, height, key: `${height}:${line.map((row) => row.skill.id).join(":")}` });
     }
     return out;
   }, [rows, columns]);
@@ -64,17 +68,13 @@ export function SkillCardGrid({
   const virtualizer = useVirtualizer({
     count: lines.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => SKILL_CARD_HEIGHT + GAP,
+    estimateSize: (index) => lines[index]!.height + GAP,
+    getItemKey: (index) => lines[index]!.key,
     overscan: 3,
   });
 
   return (
     <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
-      {rows.length === 0 && (
-        <div className="py-16 text-center text-body text-muted-foreground">
-          {t(($) => $.page.no_matches.title)}
-        </div>
-      )}
       <div
         className="relative w-full"
         style={{
@@ -96,11 +96,13 @@ export function SkillCardGrid({
                 gap: GAP,
               }}
             >
-              {line.map((row) => (
+              {line.rows.map((row) => (
                 <SkillCard
                   key={row.skill.id}
                   row={row}
+                  href={paths.skillDetail(row.skill.id)}
                   ctx={ctx}
+                  height={line.height}
                   selected={selectedIds.has(row.skill.id)}
                   onToggleSelected={() => onToggleSelected(row.skill.id)}
                   linkProps={rowLink(
