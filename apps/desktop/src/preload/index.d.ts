@@ -182,6 +182,7 @@ interface CloseBehaviorAPI {
   get: () => Promise<CloseBehavior>;
   set: (value: CloseBehavior) => Promise<CloseBehaviorSetResult>;
   isTraySupported: () => Promise<boolean>;
+  acknowledge: (requestId: string) => void;
   onPrompt: (
     handler: (req: CloseBehaviorPromptRequest) => void,
   ) => () => void;

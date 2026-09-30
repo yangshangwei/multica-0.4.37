@@ -34,54 +34,9 @@ import { InboxPage } from "@multica/views/inbox";
 import { ChatPage } from "@multica/views/chat";
 import { DocsPage } from "@multica/views/docs";
 import { ChangelogPage } from "@multica/views/changelog";
-import { SettingsPage } from "@multica/views/settings";
-import { useT } from "@multica/views/i18n";
-import { Download, Server } from "lucide-react";
-import { DaemonSettingsTab } from "./components/daemon-settings-tab";
-import { UpdatesSettingsTab } from "./components/updates-settings-tab";
-import { RuntimeConfigSettingsTab } from "./components/runtime-config-settings-tab";
-import { DesktopBehaviorSettingsTab } from "./components/desktop-behavior-settings-tab";
+import { DesktopSettingsRoute } from "./components/desktop-settings-route";
 import { WorkspaceRouteLayout } from "./components/workspace-route-layout";
 import { DesktopRouteErrorPage } from "./components/route-error-page";
-
-/**
- * Wraps `SettingsPage` so the desktop-only extra tabs can pull their labels
- * from i18n. The route element has to be a component (not a literal JSX
- * value) for `useT` to run.
- */
-function DesktopSettingsRoute() {
-  const { t } = useT("settings");
-  return (
-    <SettingsPage
-      extraAccountTabs={[
-        {
-          value: "daemon",
-          label: t(($) => $.desktop.tabs.daemon),
-          icon: Server,
-          content: <DaemonSettingsTab />,
-        },
-        {
-          value: "server",
-          label: t(($) => $.desktop.tabs.server),
-          icon: Server,
-          content: <RuntimeConfigSettingsTab />,
-        },
-        {
-          value: "updates",
-          label: t(($) => $.desktop.tabs.updates),
-          icon: Download,
-          content: <UpdatesSettingsTab />,
-        },
-        {
-          value: "behavior",
-          label: t(($) => $.desktop.tabs.behavior),
-          icon: Server,
-          content: <DesktopBehaviorSettingsTab />,
-        },
-      ]}
-    />
-  );
-}
 
 /**
  * Wraps `DocsPage` so it can read the slug out of the splat param.

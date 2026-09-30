@@ -1,13 +1,15 @@
+// @vitest-environment node
 import { EventEmitter } from "node:events";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   applyCloseBehavior,
   closePreferencesPath,
   DEFAULT_CLOSE_BEHAVIOR,
   loadClosePreferences,
+  loadClosePreferenceStore,
   saveClosePreferences,
   type ApplyCloseBehaviorOptions,
   type CloseBehavior,
@@ -75,6 +77,28 @@ describe("loadClosePreferences", () => {
     await saveClosePreferences(file, "minimize");
     expect(await loadClosePreferences(file)).toBe("minimize");
   });
+
+  it("retains the last committed preference on write failure and recovers", async () => {
+    const file = closePreferencesPath(dir);
+    const store = await loadClosePreferenceStore(file);
+    await mkdir(`${file}.tmp`);
+    await expect(store.set("minimize")).rejects.toThrow();
+    expect(store.get()).toBe("ask");
+    await rm(`${file}.tmp`, { recursive: true });
+    await store.set("quit");
+    expect(store.get()).toBe("quit");
+    expect(await loadClosePreferences(file)).toBe("quit");
+  });
+
+  it("serializes overlapping saves and keeps cache and disk consistent", async () => {
+    const file = closePreferencesPath(dir);
+    const store = await loadClosePreferenceStore(file);
+    const saves = [store.set("minimize"), store.set("quit")];
+    expect(store.get()).toBe("ask");
+    await Promise.all(saves);
+    expect(store.get()).toBe("quit");
+    expect(await loadClosePreferences(file)).toBe("quit");
+  });
 });
 
 // =============================================================================
@@ -86,6 +110,9 @@ type FakeCloseEvent = { preventDefault: () => void };
 class FakeBrowserWindow extends EventEmitter {
   public hid = false;
   public closed = false;
+  isDestroyed() {
+    return this.closed;
+  }
   hide() {
     this.hid = true;
   }
@@ -101,6 +128,7 @@ function makeHarness(overrides?: Partial<ApplyCloseBehaviorOptions>) {
     isQuitting: false,
     traySupported: true,
     trayShown: 0,
+    quitCalls: 0,
   };
   const promptChoice = async (_w: BrowserWindow): Promise<PromptResult> => ({
     action: "ask",
@@ -110,13 +138,15 @@ function makeHarness(overrides?: Partial<ApplyCloseBehaviorOptions>) {
   const options: ApplyCloseBehaviorOptions = {
     mainWindow: win as unknown as BrowserWindow,
     getIsQuitting: () => state.isQuitting,
-    setIsQuitting: () => {
+    quitApp: () => {
+      state.quitCalls += 1;
       state.isQuitting = true;
     },
-    showTray: () => {
+    showTray: async () => {
+      if (!state.traySupported) return false;
       state.trayShown += 1;
+      return true;
     },
-    isTraySupported: () => state.traySupported,
     promptChoice,
     getCachedBehavior: () => state.behavior,
     setCachedBehavior: async (v) => {
@@ -139,6 +169,35 @@ afterEach(() => {
 });
 
 describe("applyCloseBehavior", () => {
+  it("requests application exit when an auxiliary window is still alive", async () => {
+    setPlatform("win32");
+    const quitApp = vi.fn();
+    const { win, state, options } = makeHarness({
+      promptChoice: async () => ({ action: "quit", remember: false }),
+    });
+    state.behavior = "ask";
+    applyCloseBehavior({ ...options, quitApp });
+    win.emit("close", { preventDefault: vi.fn() });
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(quitApp).toHaveBeenCalledOnce();
+    expect(win.closed).toBe(false);
+  });
+
+  it("creates the tray successfully before hiding the window", async () => {
+    setPlatform("win32");
+    let finishShowing!: (shown: boolean) => void;
+    const { win, state, options } = makeHarness({
+      showTray: () => new Promise<boolean>((resolve) => { finishShowing = resolve; }),
+    });
+    state.behavior = "minimize";
+    applyCloseBehavior(options);
+    win.emit("close", { preventDefault: vi.fn() });
+    expect(win.hid).toBe(false);
+    finishShowing(true);
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(win.hid).toBe(true);
+  });
+
   it("does nothing on darwin", () => {
     setPlatform("darwin");
     const { win, options } = makeHarness();
@@ -165,7 +224,7 @@ describe("applyCloseBehavior", () => {
     expect(state.trayShown).toBe(0);
   });
 
-  it("does not intercept when behavior is quit", () => {
+  it("turns the persisted quit preference into application exit", () => {
     setPlatform("linux");
     const { win, state, options } = makeHarness();
     state.behavior = "quit";
@@ -178,11 +237,12 @@ describe("applyCloseBehavior", () => {
       },
     };
     win.emit("close", event);
-    expect(prevented).toBe(false);
+    expect(prevented).toBe(true);
+    expect(state.quitCalls).toBe(1);
     expect(win.hid).toBe(false);
   });
 
-  it("minimize: prevents default and hides window when tray supported", () => {
+  it("minimize: prevents default and hides window when tray supported", async () => {
     setPlatform("win32");
     const { win, state, options } = makeHarness();
     state.behavior = "minimize";
@@ -196,11 +256,12 @@ describe("applyCloseBehavior", () => {
     };
     win.emit("close", event);
     expect(prevented).toBe(true);
+    await new Promise((resolve) => setImmediate(resolve));
     expect(win.hid).toBe(true);
     expect(state.trayShown).toBe(1);
   });
 
-  it("minimize: falls back to close when tray unsupported", () => {
+  it("minimize: falls back to application exit when tray unsupported", async () => {
     setPlatform("linux");
     const { win, state, options } = makeHarness();
     state.behavior = "minimize";
@@ -214,7 +275,9 @@ describe("applyCloseBehavior", () => {
       },
     };
     win.emit("close", event);
-    expect(prevented).toBe(false);
+    expect(prevented).toBe(true);
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(state.quitCalls).toBe(1);
     expect(win.hid).toBe(false);
   });
 
@@ -246,7 +309,7 @@ describe("applyCloseBehavior", () => {
     expect(win.closed).toBe(false);
   });
 
-  it("ask → quit: closes via setIsQuitting, doesn't persist when remember=false", async () => {
+  it("ask → quit: exits the app and doesn't persist when remember=false", async () => {
     setPlatform("win32");
     const { win, state, options } = makeHarness({
       promptChoice: async () => ({ action: "quit", remember: false }),
@@ -261,7 +324,8 @@ describe("applyCloseBehavior", () => {
     await new Promise((r) => setImmediate(r)); // let all awaits run
 
     expect(state.isQuitting).toBe(true);
-    expect(win.closed).toBe(true);
+    expect(state.quitCalls).toBe(1);
+    expect(win.closed).toBe(false);
     expect(state.behavior).toBe("ask"); // unchanged
   });
 
@@ -299,7 +363,8 @@ describe("applyCloseBehavior", () => {
     await new Promise((r) => setImmediate(r));
 
     expect(state.isQuitting).toBe(true);
-    expect(win.closed).toBe(true);
+    expect(state.quitCalls).toBe(1);
+    expect(win.closed).toBe(false);
   });
 
   it("prompt throws → forced quit", async () => {
@@ -318,6 +383,43 @@ describe("applyCloseBehavior", () => {
     await new Promise((r) => setImmediate(r));
 
     expect(state.isQuitting).toBe(true);
-    expect(win.closed).toBe(true);
+    expect(state.quitCalls).toBe(1);
+    expect(win.closed).toBe(false);
+  });
+
+  it("does not hide after an explicit quit overtakes tray creation", async () => {
+    setPlatform("win32");
+    let finishShowing!: (shown: boolean) => void;
+    const { win, state, options } = makeHarness({
+      showTray: () => new Promise<boolean>((resolve) => { finishShowing = resolve; }),
+    });
+    state.behavior = "minimize";
+    applyCloseBehavior(options);
+    win.emit("close", { preventDefault: vi.fn() });
+    state.isQuitting = true;
+    finishShowing(true);
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(win.hid).toBe(false);
+    expect(state.quitCalls).toBe(0);
+  });
+
+  it("ignores duplicate closes while waiting for a choice", async () => {
+    setPlatform("win32");
+    let answer!: (result: PromptResult) => void;
+    const promptChoice = vi.fn(() => new Promise<PromptResult>((resolve) => { answer = resolve; }));
+    const { win, state, options } = makeHarness({ promptChoice });
+    state.behavior = "ask";
+    applyCloseBehavior(options);
+    const preventDefault = vi.fn();
+    win.emit("close", { preventDefault });
+    win.emit("close", { preventDefault });
+    expect(preventDefault).toHaveBeenCalledTimes(2);
+    expect(promptChoice).toHaveBeenCalledOnce();
+    answer({ action: "ask", remember: false });
+    await new Promise((resolve) => setImmediate(resolve));
+    expect(state.quitCalls).toBe(0);
+    win.emit("close", { preventDefault });
+    expect(promptChoice).toHaveBeenCalledTimes(2);
+    answer({ action: "ask", remember: false });
   });
 });

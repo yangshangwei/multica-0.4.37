@@ -15,12 +15,13 @@ The Multica Desktop app offers three close behaviors on Windows and Linux:
 
 | Behavior  | Effect when the main window's close button is pressed |
 |-----------|--------------------------------------------------------|
-| `quit`    | Destroy the window; run `app.on("before-quit")` (daemon cleanup happens); `app.quit()`. Historical default. |
-| `minimize`| `event.preventDefault()`, `window.hide()`, tray icon shows. App continues running. Daemon stays running. |
+| `quit`    | Prevent the window-only close, then request `app.quit()` so every window exits through daemon cleanup. |
+| `minimize`| Prevent close synchronously, await successful tray creation, then hide the window. App and daemon continue running. |
 | `ask`     | Default for new profiles. Render-side AlertDialog asks the user; the response is applied and optionally persisted. |
 
-macOS is **not** affected. `close-behavior.applyCloseBehavior` early-returns on
-darwin so the OS-native close-hides / activate-reopens convention continues.
+`applyCloseBehavior` early-returns on darwin, preserving native window close /
+activate behavior. The behavior settings tab is registered only for Windows
+and Linux; macOS must not offer preferences that have no effect.
 
 ---
 
@@ -40,14 +41,14 @@ behavior module must never touch daemon prefs. The two lifecycles are
 independent: `minimize` does not stop the daemon, and `quit` is what triggers
 any `before-quit` daemon cleanup.
 
-The file is read once at `whenReady` and cached in a module-level variable
-(`cachedCloseBehavior`). Reads after that consult the cache; writes flow
-through the `close-behavior:set` IPC handler, which updates BOTH the cache
-and the disk via `saveClosePreferences` (atomic tmp+rename, same pattern as
-`updater-preferences.ts`).
+`loadClosePreferenceStore` reads the file once before window creation. Both
+settings and remembered prompt choices use its serialized `set` operation.
+The cache changes only after atomic tmp+rename succeeds; a failed save leaves
+the last committed value readable and does not block subsequent saves.
 
-`applyCloseBehavior` MUST be sync. It cannot re-read the disk on every close
-— `event.preventDefault()` inside the close handler is sync-only.
+`event.preventDefault()` MUST run synchronously inside the close listener.
+Prompt, save, and tray checks may complete asynchronously after interception.
+Recheck quitting/window liveness after awaits and deduplicate repeated closes.
 
 ---
 
@@ -68,9 +69,29 @@ is invisible until runtime.
 
 Main-process implementation: the on-disk prefs reader/writer
 (`loadClosePreferences`, `saveClosePreferences`) and the close interception
-(`applyCloseBehavior`). The module owns `isQuitting` semantics — every quit
-path (Cmd+Q, menu Quit, tray Quit, renderer prompt choosing Quit) flips it
-via `setIsQuitting`, and the close listener short-circuits when it's true.
+(`applyCloseBehavior`). Main owns `isQuitting`; every explicit quit and
+`before-quit` sets it. Interception invokes `quitApp`, never just
+`mainWindow.close()`, because independent issue windows may remain alive.
+
+### `apps/desktop/src/main/close-behavior-prompt.ts`
+
+The prompt coordinator assigns unique IDs and validates both the originating
+WebContents and request ID on acknowledgements and responses. Only delivery
+has a five-second timeout. After the renderer acknowledges mounting the
+dialog, the user may take unlimited time to choose.
+
+Cancel and release listeners on app exit, renderer destruction/crash, or
+main-frame non-same-document navigation. Same-document and subframe navigation
+must not cancel a visible prompt. Actual window unresponsiveness fails the
+request; elapsed user decision time does not imply a hung renderer.
+
+### `apps/desktop/src/main/daemon-quit.ts`
+
+Prevent `before-quit` synchronously before reading preferences. Repeated quit
+requests also wait while cleanup is pending. Drain existing daemon lifecycle
+operations before the final optional stop, prevent new daemon launches after
+shutdown starts, then mark cleanup ready before calling `app.quit()` again.
+Cleanup failures are logged and still allow application exit.
 
 ### `apps/desktop/src/main/tray.ts`
 
@@ -79,24 +100,32 @@ The TrayHandle. Electron's `Tray` has no `setVisible`; "show" means
 constructed in `whenReady` AFTER `createWindow()` and stays inert until
 `show()` runs.
 
-`isTrayEnvironmentSupported()` reads `XDG_CURRENT_DESKTOP` +
-`XDG_SESSION_TYPE` to disable the minimize affordance on GNOME 40+ Wayland
-without AppIndicator. This heuristic is NOT authoritative — the Tray
-constructor may still succeed at runtime even when the user can't see the
-icon — so settings also hides the option when `trayHandle.isSupported()`
-returns false (the constructor fails or was never attempted).
+`isSupported(): Promise<boolean>` never constructs a Tray. Linux support is
+queried in `tray-support.ts` through the session D-Bus property
+`org.kde.StatusNotifierWatcher.IsStatusNotifierHostRegistered`. Use bounded
+`gdbus`, or `busctl` when gdbus is absent; missing tools, missing host, malformed
+output and query failures report unsupported. Desktop name and X11/Wayland
+alone do not establish support. Legacy-only trays without a StatusNotifier
+host are conservatively unsupported.
+
+`show(): Promise<boolean>` rechecks support and returns true only after icon
+and menu creation succeed. Hide the window only after true. `hide`/`destroy`
+invalidate pending creations; partial setup failures destroy the candidate.
+Attach the show-event teardown inside `createWindow` so recreated windows
+also remove the tray when restored.
 
 ### `apps/desktop/src/preload/index.ts`
 
 Exposes `window.closeBehaviorAPI` (get / set / isTraySupported / onPrompt /
-respond) on the renderer. Channel names come from the shared contract.
+acknowledge / respond). Channel names come from the shared contract.
 
 ### `apps/desktop/src/renderer/src/components/close-behavior-prompt.tsx`
 
 The AlertDialog rendered on first close under `ask`. Mounted once inside
-`CoreProvider` in `App.tsx`. Dedupes double-respond via `respondedRef`
-because clicking Cancel collapses the dialog → triggers
-`onOpenChange(false)` → would double-fire `respond(...)`.
+`CoreProvider` in `App.tsx`. A pending-request ref deduplicates button,
+dialog-close and component-unmount responses. Unmount cancels any unanswered
+request, including error-boundary recovery. Acknowledge after rendering and
+recheck tray support on every opening; hide Minimize until support is confirmed.
 
 ### `apps/desktop/src/renderer/src/components/desktop-behavior-settings-tab.tsx`
 
@@ -104,8 +133,8 @@ The Settings tab hosting the behavior selector. Uses `<Select>` (the Base
 UI primitive) with an `items` array; when tray is unsupported the minimize
 option is omitted (not just disabled) so it can't be selected.
 
-Registered in `apps/desktop/src/renderer/src/routes.tsx` via
-`DesktopSettingsRoute.extraAccountTabs`.
+Registered by `components/desktop-settings-route.tsx`, imported by `routes.tsx`,
+only when `desktopAPI.appInfo.os` is `windows` or `linux`.
 
 ---
 
@@ -137,17 +166,18 @@ existing settings namespace; do not move them into `desktop.json`.
 | Failure                                  | Behavior |
 |------------------------------------------|----------|
 | `close-preferences.json` missing / corrupt / wrong shape | `loadClosePreferences` returns `"ask"`. The next set overwrites the file. |
-| Renderer hangs during the prompt         | 5s timeout in `requestCloseBehaviorPrompt` → forced quit, single warn. |
-| Tray constructor fails (rare)            | `createTray` returns null; `trayHandle.isSupported()` is `false`; the minimize path falls back to quit with a single warn. |
-| `XDG_CURRENT_DESKTOP=GNOME` + `XDG_SESSION_TYPE=wayland` | `isTrayEnvironmentSupported()` returns false; `createTray` returns null; settings hides minimize; closing with a stale `minimize` pref falls back to real close with a single warn. |
-| Prefs write fails                        | `close-behavior:set` returns `{ ok: false, reason: "persist_failed" }`; settings re-fetches the on-disk value. |
-| `before-quit` fires before the prompt responds | `isQuitting = true` short-circuits the close listener, no double-prompt. |
+| Prompt delivery not acknowledged within 5s / window becomes unresponsive | Request rejects; close interception requests application exit. |
+| User reads an acknowledged prompt for more than 5s | Dialog remains open; no automatic exit. |
+| Renderer reload/crash or prompt component unmount | Cancel pending choice; next close can request a fresh prompt. |
+| Tray host missing or construction fails | `show()` returns false; never hide an inaccessible window; fall back to application exit with a warning. |
+| Prefs write fails | Return `{ ok: false, reason: "persist_failed" }`; settings re-fetches the unchanged committed value. |
+| `before-quit` fires before the prompt responds | Mark quitting, cancel pending prompt, and wait for daemon cleanup; no double-prompt. |
 
 ---
 
 ## Compatibility
 
-- macOS behavior is unchanged byte-for-byte.
+- macOS retains native close/activate behavior; its ineffective settings tab is removed.
 - The daemon prefs (`~/.multica/desktop_prefs.json`) are not touched.
 - No DB migrations, no server changes.
 - Installed clients without this feature still work — the new IPC channels
@@ -160,12 +190,20 @@ existing settings namespace; do not move them into `desktop.json`.
 - Main-process unit tests live beside the implementation:
   - `apps/desktop/src/main/close-behavior.test.ts` (persistence round-trip,
     corrupt-file fallback, all close-interception branches).
-  - `apps/desktop/src/main/tray.test.ts` (environment heuristic matrix,
-    path resolution on dev/prod, windows/linux).
+  - `apps/desktop/src/main/close-behavior-prompt.test.ts` (delivery deadline,
+    unlimited user response time, correlation, crash/reload cleanup).
+  - `apps/desktop/src/main/tray.test.ts` (capability query side effects,
+    construction failure, cancellation, restore/quit menu actions).
+  - `apps/desktop/src/main/tray-support.test.ts` (session D-Bus result matrix,
+    missing tools, bounded failures, desktop/session independence).
+  - `apps/desktop/src/main/daemon-quit.test.ts` (synchronous interception,
+    repeated quit, lifecycle ordering, autoStop and failure handling).
 - Renderer tests:
   - `apps/desktop/src/renderer/src/components/close-behavior-prompt.test.tsx`
     (four respond paths, tray-unsupported hiding the Minimize button,
-    listener unsubscription).
+    acknowledgement, unmount cancellation and listener unsubscription).
+  - `apps/desktop/src/renderer/src/components/desktop-settings-route.test.tsx`
+    (Windows/Linux presence and macOS/unknown absence).
 - i18n parity is enforced by `packages/views/locales/parity.test.ts` — the
   new namespace is subject to it.
 - Real-machine verification (Windows 10/11, Ubuntu 22.04 GNOME + KDE/XFCE)

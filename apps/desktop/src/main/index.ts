@@ -69,15 +69,13 @@ import {
 import {
   applyCloseBehavior,
   closePreferencesPath,
-  DEFAULT_CLOSE_BEHAVIOR,
-  loadClosePreferences,
-  saveClosePreferences,
-  type PromptResult,
+  loadClosePreferenceStore,
+  type ClosePreferenceStore,
 } from "./close-behavior";
+import { CloseBehaviorPromptCoordinator } from "./close-behavior-prompt";
 import {
   CLOSE_BEHAVIOR_CHANNELS,
   isCloseBehavior,
-  type CloseBehavior,
 } from "../shared/close-behavior";
 import {
   buildTrayIconPath,
@@ -98,48 +96,6 @@ function installDownloadSaveDialogHandler(window: BrowserWindow): void {
   session.on("will-download", (_event, item) => {
     item.setSaveDialogOptions({
       defaultPath: join(app.getPath("downloads"), item.getFilename()),
-    });
-  });
-}
-
-/**
- * Round-trip to the renderer asking the user which close behavior to apply.
- *
- * Sends `close-behavior:prompt` to the given window's WebContents; the
- * renderer-side listener mounts the AlertDialog and calls
- * `closeBehaviorAPI.respond(...)` once the user picks an option.
- *
- * Resolves with the user's choice, or rejects after a fixed timeout —
- * Electron requires `event.preventDefault()` inside the close handler be
- * synchronous, so a hung renderer must NOT keep the close loop wedged
- * forever. The 5s budget is generous for a UI round-trip and short enough
- * that the user won't mistake the app for being stuck.
- */
-function requestCloseBehaviorPrompt(window: BrowserWindow): Promise<PromptResult> {
-  if (window.isDestroyed()) {
-    return Promise.reject(new Error("window destroyed"));
-  }
-  if (pendingClosePromptResolve) {
-    // A second close arrived while a prompt is already in flight; treat the
-    // new close as a Cancel so the existing prompt stays in charge.
-    return Promise.resolve({ action: "ask", remember: false });
-  }
-  const PROMPT_TIMEOUT_MS = 5000;
-  return new Promise<PromptResult>((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      if (pendingClosePromptResolve) {
-        pendingClosePromptResolve = null;
-        reject(new Error("close-behavior prompt timed out"));
-      }
-    }, PROMPT_TIMEOUT_MS);
-
-    pendingClosePromptResolve = (result) => {
-      clearTimeout(timeout);
-      resolve(result);
-    };
-
-    window.webContents.send(CLOSE_BEHAVIOR_CHANNELS.prompt, {
-      requestId: "main", // single-window for now; correlation via singleton state
     });
   });
 }
@@ -215,20 +171,15 @@ let desktopInitialized = false;
 // to short-circuit. Without it, minimizing then choosing Quit from the tray
 // would re-trigger the close prompt.
 let isQuitting = false;
-// Cached copy of the on-disk preference. Loaded once at whenReady, then kept
-// in sync via the close-behavior:set IPC handler. The close handler itself
-// must be synchronous (event.preventDefault is sync-only) so it cannot
-// re-read from disk on every close.
-let cachedCloseBehavior: CloseBehavior = DEFAULT_CLOSE_BEHAVIOR;
-// Tray handle lives at module scope so child 09-30-tray-and-linux-fallback
-// can attach it after the window and prefs are loaded, and so applyClose-
-// Behavior can consult it lazily at close time. Stays null on platforms /
-// sessions where the system tray is unsupported (macOS, GNOME+Wayland
-// without AppIndicator).
+// Hydrated before any main window or preference IPC handler is created.
+let closePreferences: ClosePreferenceStore;
 let trayHandle: TrayHandle | null = null;
-let pendingClosePromptResolve:
-  | ((result: PromptResult) => void)
-  | null = null;
+const closePrompt = new CloseBehaviorPromptCoordinator();
+
+function quitApplication(): void {
+  isQuitting = true;
+  app.quit();
+}
 let authSessionGeneration = 0;
 const rendererRouteContexts = new WeakMap<
   Electron.WebContents,
@@ -450,23 +401,14 @@ function createWindow(): BrowserWindow {
   applyCloseBehavior({
     mainWindow: window,
     getIsQuitting: () => isQuitting,
-    setIsQuitting: () => {
-      isQuitting = true;
-    },
-    showTray: () => {
-      trayHandle?.show();
-    },
-    isTraySupported: () => trayHandle !== null && trayHandle.isSupported(),
-    promptChoice: (w) => requestCloseBehaviorPrompt(w),
-    getCachedBehavior: () => cachedCloseBehavior,
-    setCachedBehavior: async (value) => {
-      cachedCloseBehavior = value;
-      await saveClosePreferences(
-        closePreferencesPath(app.getPath("userData")),
-        value,
-      );
-    },
+    quitApp: quitApplication,
+    showTray: () => trayHandle?.show() ?? Promise.resolve(false),
+    promptChoice: (w) => closePrompt.request(w),
+    getCachedBehavior: () => closePreferences.get(),
+    setCachedBehavior: (value) => closePreferences.set(value),
   });
+  // Attach to every main window, including one recreated by a deep link.
+  window.on("show", () => trayHandle?.hide());
 
   // Strip Origin header from WebSocket upgrade requests so the server's
   // origin whitelist doesn't reject connections from localhost dev origins.
@@ -709,6 +651,7 @@ if (!gotTheLock) {
   // listeners are fine; daemon-manager.ts installs its own for cleanup.
   app.on("before-quit", () => {
     isQuitting = true;
+    closePrompt.cancel();
   });
 
   // Register before `ready`: macOS can deliver a cold-start URL while runtime
@@ -1030,11 +973,11 @@ if (!gotTheLock) {
     // ---- Close-behavior (Windows/Linux): load pref + register IPC --------
     // The cached preference must be loaded BEFORE createWindow() runs —
     // applyCloseBehavior reads it synchronously inside the close handler.
-    cachedCloseBehavior = await loadClosePreferences(
+    closePreferences = await loadClosePreferenceStore(
       closePreferencesPath(app.getPath("userData")),
     );
 
-    ipcMain.handle(CLOSE_BEHAVIOR_CHANNELS.get, () => cachedCloseBehavior);
+    ipcMain.handle(CLOSE_BEHAVIOR_CHANNELS.get, () => closePreferences.get());
 
     ipcMain.handle(
       CLOSE_BEHAVIOR_CHANNELS.set,
@@ -1042,12 +985,8 @@ if (!gotTheLock) {
         if (!isCloseBehavior(value)) {
           return { ok: false, reason: "invalid_value" } as const;
         }
-        cachedCloseBehavior = value;
         try {
-          await saveClosePreferences(
-            closePreferencesPath(app.getPath("userData")),
-            value,
-          );
+          await closePreferences.set(value);
           return { ok: true } as const;
         } catch (err) {
           console.warn("[close-behavior] failed to persist", err);
@@ -1058,36 +997,26 @@ if (!gotTheLock) {
 
     ipcMain.handle(
       CLOSE_BEHAVIOR_CHANNELS.isTraySupported,
-      () => trayHandle !== null && trayHandle.isSupported(),
+      () => trayHandle?.isSupported() ?? false,
     );
 
+    ipcMain.on(CLOSE_BEHAVIOR_CHANNELS.acknowledge, (event, requestId: unknown) => {
+      closePrompt.acknowledge(event.sender, requestId);
+    });
     ipcMain.on(
       CLOSE_BEHAVIOR_CHANNELS.respond,
-      (_event, payload: { requestId?: unknown; action?: unknown; remember?: unknown }) => {
-        if (!pendingClosePromptResolve) return;
-        if (typeof payload !== "object" || payload === null) return;
-        if (!isCloseBehavior(payload.action)) return;
-        const remember = payload.remember === true;
-        const resolve = pendingClosePromptResolve;
-        pendingClosePromptResolve = null;
-        resolve({ action: payload.action, remember });
+      (event, payload: unknown) => {
+        closePrompt.respond(event.sender, payload);
       },
     );
 
     desktopInitialized = true;
     createWindow();
 
-    // ---- Tray setup (Windows/Linux). Returns null when the environment
-    // can't display a tray icon; child 09-30-tray-and-linux-fallback owns
-    // the heuristic and lifecycle. The tray icon only attaches when
-    // trayHandle.show() runs (currently: the close-behavior module hiding
-    // the window) — we deliberately do NOT show it on launch.
+    // The handle stays inert until a successful close-to-tray operation.
     trayHandle = createTray({
       getMainWindow: () => mainWindow,
-      onQuit: () => {
-        isQuitting = true;
-        app.quit();
-      },
+      onQuit: quitApplication,
       labels: resolveTrayLabels(),
       iconPath: buildTrayIconPath({
         isDev: is.dev,
@@ -1095,12 +1024,6 @@ if (!gotTheLock) {
       }),
     });
 
-    // Remove the tray icon as soon as the window is visible again so we
-    // don't double up with the taskbar / dock icon. applyCloseBehavior's
-    // hide branch calls trayHandle.show() for the converse path.
-    mainWindow?.on("show", () => {
-      trayHandle?.hide();
-    });
     // Fully teardown on quit so we don't leave a stale icon behind if the
     // user kills the app with the window hidden.
     app.on("before-quit", () => {

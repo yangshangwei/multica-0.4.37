@@ -351,6 +351,8 @@ const closeBehaviorAPI = {
     ipcRenderer.invoke(CLOSE_BEHAVIOR_CHANNELS.set, value),
   isTraySupported: (): Promise<boolean> =>
     ipcRenderer.invoke(CLOSE_BEHAVIOR_CHANNELS.isTraySupported),
+  acknowledge: (requestId: string): void =>
+    ipcRenderer.send(CLOSE_BEHAVIOR_CHANNELS.acknowledge, requestId),
   onPrompt: (
     handler: (req: CloseBehaviorPromptRequest) => void,
   ): (() => void) => {

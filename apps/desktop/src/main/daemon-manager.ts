@@ -52,6 +52,7 @@ import {
   isAuthStatusError,
   type AuthProbeResult,
 } from "./daemon-auth-probe";
+import { createDaemonQuitHandler } from "./daemon-quit";
 
 const POLL_INTERVAL_MS = 5_000;
 const PREFS_PATH = join(homedir(), ".multica", "desktop_prefs.json");
@@ -100,6 +101,7 @@ let activeProfile: ActiveProfile | null = null;
 // Recovery is intentionally process-local: it keeps a daemon alive while the
 // Desktop main process is running, but is not an OS service/watchdog.
 let desiredDaemonRunning = false;
+let daemonQuitting = false;
 // Once a foreign-OS daemon (for example WSL2) is observed on this profile, do
 // not replace it with a native daemon if its forwarded health endpoint drops.
 let externalDaemonObserved = false;
@@ -302,6 +304,7 @@ function invalidateActiveProfile(): void {
 }
 
 function setDesiredDaemonRunning(desired: boolean, explicit = false): void {
+  if (daemonQuitting && desired) return;
   if (desiredDaemonRunning === desired && !explicit) return;
   desiredDaemonRunning = desired;
   recoveryPolicy.reset();
@@ -942,6 +945,7 @@ function scheduleStatusRefresh(): void {
 async function startDaemon(
   recoveryProfile?: ActiveProfile,
 ): Promise<{ success: boolean; error?: string }> {
+  if (daemonQuitting) return { success: false, error: "Desktop is quitting" };
   const bin = await resolveCliBinary();
   if (!bin) return { success: false, error: "multica CLI is not installed" };
 
@@ -961,6 +965,7 @@ async function startDaemon(
     return { success: false, error: "Daemon recovery was superseded" };
   }
   const existing = await fetchHealthAtPort(active.port);
+  if (daemonQuitting) return { success: false, error: "Desktop is quitting" };
   if (daemonStatusAlive(existing?.status)) {
     // A daemon is already up ("running") or booting ("starting") on this port —
     // don't spawn a second one (the CLI rejects that as "already running").
@@ -995,6 +1000,11 @@ async function startDaemon(
   const args = ["daemon", "start", ...profileArgs(active.name)];
 
   return new Promise((resolve) => {
+    // Shutdown may start while CLI/profile/health preflight is awaiting.
+    if (daemonQuitting) {
+      resolve({ success: false, error: "Desktop is quitting" });
+      return;
+    }
     execFile(
       bin,
       args,
@@ -1070,6 +1080,7 @@ async function stopDaemon(): Promise<{ success: boolean; error?: string }> {
 }
 
 async function restartDaemon(): Promise<{ success: boolean; error?: string }> {
+  if (daemonQuitting) return { success: false, error: "Desktop is quitting" };
   // Same central, live-preflighted guard as stopDaemon: we can neither stop nor
   // start a daemon we don't manage, so don't try (user-switch, reauth,
   // first-workspace, and any future restart caller all route through here).
@@ -1181,10 +1192,11 @@ function recoveryDecision(status: DaemonStatus) {
 }
 
 async function pollOnce(): Promise<void> {
-  if (statusPollInProgress) return;
+  if (daemonQuitting || statusPollInProgress) return;
   statusPollInProgress = true;
   try {
     const status = await fetchHealth();
+    if (daemonQuitting) return;
     currentState = status.state;
     observeDaemonBoundary(status);
     const decision = recoveryDecision(status);
@@ -1219,7 +1231,7 @@ async function pollOnce(): Promise<void> {
 }
 
 function startPolling(): void {
-  if (statusPollTimer) return;
+  if (daemonQuitting || statusPollTimer) return;
   void pollOnce();
   statusPollTimer = setInterval(() => void pollOnce(), POLL_INTERVAL_MS);
 }
@@ -1477,26 +1489,21 @@ export function setupDaemonManager(
   sendStatus({ state: "installing_cli" });
   void lifecycleOperations.runBackground(() => bootstrapCli());
 
-  let isQuitting = false;
-  app.on("before-quit", (event) => {
-    if (isQuitting) return;
-    setDesiredDaemonRunning(false);
-    stopPolling();
-    stopLogTail();
-
-    loadPrefs().then(async (prefs) => {
-      if (prefs.autoStop) {
-        isQuitting = true;
-        event.preventDefault();
-        try {
-          // stopDaemon no-ops for an externally-managed daemon (WSL2 etc.), so
-          // this is safe and instant in that case — the guard lives there. #3916
-          await stopDaemon();
-        } catch {
-          // Best-effort stop on quit
-        }
-        app.quit();
-      }
-    });
-  });
+  app.on(
+    "before-quit",
+    createDaemonQuitHandler({
+      stopBackgroundActivity: () => {
+        daemonQuitting = true;
+        setDesiredDaemonRunning(false);
+        stopPolling();
+        stopLogTail();
+      },
+      runExclusive: (operation) => lifecycleOperations.runForeground(operation),
+      loadPrefs,
+      // stopDaemon owns the guard for externally-managed daemons (WSL2 etc.).
+      stopDaemon,
+      quit: () => app.quit(),
+      warn: (message, error) => console.warn(message, error),
+    }),
+  );
 }

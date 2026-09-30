@@ -45,13 +45,13 @@ export function DesktopBehaviorSettingsTab() {
 
   const onChange = async (next: CloseBehavior) => {
     if (next === behavior) return;
-    setBehavior(next); // optimistic; the server is local, failure is impossible in practice
+    setBehavior(next);
     setSaving(true);
     try {
       const result = await window.closeBehaviorAPI.set(next);
       if (!result.ok) {
         toast.error(result.reason ?? "persist_failed");
-        // re-fetch to make sure local state matches disk
+        // Main exposes only the last successfully persisted preference.
         setBehavior(await window.closeBehaviorAPI.get());
       } else {
         toast.success(t(($) => $.close_behavior.saved), {

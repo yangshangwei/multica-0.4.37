@@ -29,41 +29,46 @@ export function CloseBehaviorPrompt() {
   const [openRequestId, setOpenRequestId] = useState<string | null>(null);
   const [remember, setRemember] = useState(false);
   const [traySupported, setTraySupported] = useState<boolean | null>(null);
-  // Tracks the last requestId we've already responded to, so a single
-  // IPC response goes out even when the AlertDialog open-change cycle
-  // (button onClick → setOpenRequestId(null) → onOpenChange(false))
-  // would otherwise call respond() twice.
-  const respondedRef = useRef<string | null>(null);
+  // Cleared synchronously so button, dialog-close, and unmount cannot reply twice.
+  const pendingRequestRef = useRef<string | null>(null);
 
   // Listen once for prompt IPC from main. Clean up on unmount.
   useEffect(() => {
-    const off = window.closeBehaviorAPI.onPrompt(({ requestId }) => {
-      respondedRef.current = null;
+    const api = window.closeBehaviorAPI;
+    const off = api.onPrompt(({ requestId }) => {
+      pendingRequestRef.current = requestId;
       setOpenRequestId(requestId);
       setRemember(false);
+      setTraySupported(null);
     });
-    return off;
+    return () => {
+      off();
+      const requestId = pendingRequestRef.current;
+      pendingRequestRef.current = null;
+      if (requestId !== null) api.respond(requestId, { action: "ask", remember: false });
+    };
   }, []);
 
-  // Cache the tray environment detection the first time the prompt opens.
-  // Main has its own guard, so this is only used to decide whether to
-  // disable the minimize button + explain why.
+  // Acknowledge delivery after rendering; user decision time has no deadline.
+  // Recheck every opening because the Linux tray host can come and go.
   useEffect(() => {
-    if (openRequestId === null || traySupported !== null) return;
+    if (openRequestId === null) return;
+    window.closeBehaviorAPI.acknowledge(openRequestId);
     let cancelled = false;
     void window.closeBehaviorAPI.isTraySupported().then((supported) => {
       if (!cancelled) setTraySupported(supported);
+    }).catch(() => {
+      if (!cancelled) setTraySupported(false);
     });
     return () => {
       cancelled = true;
     };
-  }, [openRequestId, traySupported]);
+  }, [openRequestId]);
 
   const respond = (action: CloseBehavior) => {
-    const requestId = openRequestId;
+    const requestId = pendingRequestRef.current;
     if (requestId === null) return;
-    if (respondedRef.current === requestId) return;
-    respondedRef.current = requestId;
+    pendingRequestRef.current = null;
     window.closeBehaviorAPI.respond(requestId, { action, remember });
     setOpenRequestId(null);
   };
@@ -72,11 +77,8 @@ export function CloseBehaviorPrompt() {
     <AlertDialog
       open={openRequestId !== null}
       onOpenChange={(next) => {
-        // Treat any uncontrolled close (ESC, scrim click) as Cancel so
-        // main doesn't stay wedged waiting for a respond. respond() reads
-        // the latest openRequestId via the functional setState form, so
-        // calling it from a button onClick AND from this onOpenChange in
-        // the same event loop dedupes to a single IPC.
+        // The ref prevents button clicks and dialog close events from
+        // responding twice to the same request.
         if (!next) respond("ask");
       }}
     >
@@ -102,7 +104,7 @@ export function CloseBehaviorPrompt() {
           <AlertDialogCancel onClick={() => respond("ask")}>
             {t(($) => $.close_behavior.prompt.cancel)}
           </AlertDialogCancel>
-          {traySupported !== false && (
+          {traySupported === true && (
             <AlertDialogAction onClick={() => respond("minimize")}>
               {t(($) => $.close_behavior.prompt.minimize)}
             </AlertDialogAction>

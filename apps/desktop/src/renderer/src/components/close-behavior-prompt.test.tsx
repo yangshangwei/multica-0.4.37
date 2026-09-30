@@ -32,6 +32,7 @@ const mocks = vi.hoisted(() => {
       state.traySupported = true;
     },
     closeBehaviorAPI: {
+      acknowledge: vi.fn(),
       get: vi.fn(async () => "ask" as const),
       set: vi.fn(async () => ({ ok: true as const })),
       isTraySupported: vi.fn(async () => state.traySupported),
@@ -51,6 +52,7 @@ const mocks = vi.hoisted(() => {
 });
 
 beforeEach(() => {
+  vi.clearAllMocks();
   mocks.reset();
   window.closeBehaviorAPI = mocks.closeBehaviorAPI;
 });
@@ -87,6 +89,20 @@ describe("CloseBehaviorPrompt", () => {
       mocks.send("req-1");
     });
     expect(await screen.findByText("Close Multica?")).toBeTruthy();
+    expect(mocks.closeBehaviorAPI.acknowledge).toHaveBeenCalledWith("req-1");
+  });
+
+  it("does not offer minimize while tray support is still being checked", async () => {
+    let resolveSupport!: (supported: boolean) => void;
+    mocks.closeBehaviorAPI.isTraySupported.mockImplementationOnce(
+      () => new Promise<boolean>((resolve) => { resolveSupport = resolve; }),
+    );
+    await mount();
+    await act(async () => { mocks.send("pending-support"); });
+    expect(screen.queryByRole("button", { name: "Minimize to tray" })).toBeNull();
+    expect(mocks.closeBehaviorAPI.acknowledge).toHaveBeenCalledWith("pending-support");
+    await act(async () => { resolveSupport(true); });
+    expect(screen.getByRole("button", { name: "Minimize to tray" })).toBeTruthy();
   });
 
   it("Quit click responds with action=quit + remember=false by default", async () => {
@@ -159,5 +175,15 @@ describe("CloseBehaviorPrompt", () => {
       mounted.unmount();
     });
     expect(mocks.state.handler).toBeNull();
+  });
+
+  it("cancels an acknowledged prompt when an error boundary unmounts it", async () => {
+    const mounted = await mount();
+    await act(async () => { mocks.send("unmounted"); });
+    expect(mocks.closeBehaviorAPI.acknowledge).toHaveBeenCalledWith("unmounted");
+    await act(async () => { mounted.unmount(); });
+    expect(mocks.state.responded).toEqual([
+      { requestId: "unmounted", action: "ask", remember: false },
+    ]);
   });
 });

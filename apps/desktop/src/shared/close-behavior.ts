@@ -43,5 +43,6 @@ export const CLOSE_BEHAVIOR_CHANNELS = {
   set: "close-behavior:set",
   isTraySupported: "close-behavior:is-tray-supported",
   prompt: "close-behavior:prompt",
+  acknowledge: "close-behavior:acknowledge",
   respond: "close-behavior:respond",
 } as const;
