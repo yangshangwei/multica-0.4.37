@@ -21,6 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Intranet Updates](./intranet-updates.md) | Release publication, local Nginx storage and installed-client validation | Filled |
+| [Close Behavior](./close-behavior.md) | Windows/Linux close button semantics: minimize-to-tray vs quit vs ask; prefs, tray, prompt, settings | Filled |
 
 ---
 
