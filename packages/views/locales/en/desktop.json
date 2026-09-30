@@ -15,5 +15,55 @@
       "minimize": "Minimize to tray",
       "cancel": "Cancel"
     }
+  },
+  "daemon_actions": {
+    "view_logs": "View logs",
+    "externally_managed": "Managed outside the app",
+    "restart": "Restart",
+    "stop": "Stop",
+    "start": "Start",
+    "retry_setup": "Retry setup",
+    "start_failed": "Failed to start daemon",
+    "stop_failed": "Failed to stop daemon",
+    "restart_failed": "Failed to restart daemon",
+    "restarting": "Restarting daemon",
+    "restarting_description": "Runtimes will be back online in a few seconds.",
+    "stop_dialog": {
+      "title_one": "Stop daemon with {{count}} active task?",
+      "title_other": "Stop daemon with {{count}} active tasks?",
+      "description_one": "{{count}} task is currently running on this device. Stopping now will interrupt it.",
+      "description_other": "{{count}} tasks are currently running on this device. Stopping now will interrupt them.",
+      "failure_warning": "Affected tasks get marked failed once the timeout hits.",
+      "no_restart": "The daemon won't auto-restart.",
+      "cancel": "Cancel",
+      "confirm": "Stop daemon"
+    }
+  },
+  "daemon_logs": {
+    "title": "Local daemon logs",
+    "close": "Close",
+    "search": "Search…",
+    "copy": "Copy",
+    "clear": "Clear",
+    "copied_one": "Copied {{count}} line",
+    "copied_other": "Copied {{count}} lines",
+    "copy_failed": "Failed to copy",
+    "showing": "Showing {{visible}} of {{total}}",
+    "buffer_full": "(buffer full)",
+    "jump_to_latest": "Jump to latest",
+    "runtime_count_one": "{{count}} runtime",
+    "runtime_count_other": "{{count}} runtimes",
+    "expand_group_one": "{{count}} more “{{message}}” — click to expand",
+    "expand_group_other": "{{count}} more “{{message}}” — click to expand",
+    "collapse_group_one": "collapse {{count}} repeated",
+    "collapse_group_other": "collapse {{count}} repeated",
+    "empty": {
+      "no_matches": "No matching log lines",
+      "filter_hint": "Try a different search or level toggle.",
+      "not_running": "Daemon isn't running",
+      "start_hint": "Start the daemon to see logs here.",
+      "waiting": "Waiting for logs…",
+      "realtime_hint": "New entries will appear in real time."
+    }
   }
 }

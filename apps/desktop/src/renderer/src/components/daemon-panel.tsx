@@ -24,10 +24,10 @@ import {
   DialogTitle,
 } from "@multica/ui/components/ui/dialog";
 import { toast } from "sonner";
+import { useT } from "@multica/views/i18n";
 import type { DaemonStatus } from "../../../shared/daemon-types";
 import {
   DAEMON_STATE_COLORS,
-  DAEMON_STATE_LABELS,
   formatUptime,
 } from "../../../shared/daemon-types";
 import { parseLogLine, type LogLevel, type ParsedLogLine } from "./parse-daemon-log";
@@ -63,6 +63,7 @@ export function DaemonPanel({
   status,
   runtimeCount,
 }: DaemonPanelProps) {
+  const { t } = useT("desktop");
   const [logs, setLogs] = useState<ParsedLogLine[]>([]);
   const [search, setSearch] = useState("");
   // Each level chip is an independent toggle. DEBUG is off by default so
@@ -197,12 +198,12 @@ export function DaemonPanel({
     const text = filtered.map((l) => l.raw).join("\n");
     if (await copyText(text)) {
       toast.success(
-        `Copied ${filtered.length} line${filtered.length === 1 ? "" : "s"}`,
+        t(($) => $.daemon_logs.copied, { count: filtered.length }),
       );
     } else {
-      toast.error("Failed to copy");
+      toast.error(t(($) => $.daemon_logs.copy_failed));
     }
-  }, [filtered]);
+  }, [filtered, t]);
 
   const handleClear = useCallback(() => {
     setLogs([]);
@@ -250,14 +251,14 @@ export function DaemonPanel({
           <div className="flex min-w-0 items-center gap-2">
             <Server className="size-4 shrink-0 text-muted-foreground" />
             <DialogTitle className="text-body font-medium">
-              Local daemon logs
+              {t(($) => $.daemon_logs.title)}
             </DialogTitle>
             <ContextBadge status={status} runtimeCount={runtimeCount} />
           </div>
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            aria-label="Close"
+            aria-label={t(($) => $.daemon_logs.close)}
             className="flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <X className="size-4" />
@@ -272,7 +273,8 @@ export function DaemonPanel({
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search…"
+              placeholder={t(($) => $.daemon_logs.search)}
+              aria-label={t(($) => $.daemon_logs.search)}
               className="h-7 w-full rounded-md border bg-background pl-7 pr-2 text-caption placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
             />
           </div>
@@ -303,7 +305,7 @@ export function DaemonPanel({
               disabled={filtered.length === 0}
             >
               <CopyIcon className="size-3.5 mr-1.5" />
-              Copy
+              {t(($) => $.daemon_logs.copy)}
             </Button>
             <Button
               variant="ghost"
@@ -313,7 +315,7 @@ export function DaemonPanel({
               disabled={logs.length === 0}
             >
               <Trash2 className="size-3.5 mr-1.5" />
-              Clear
+              {t(($) => $.daemon_logs.clear)}
             </Button>
           </div>
         </div>
@@ -364,10 +366,13 @@ export function DaemonPanel({
             paused" (it isn't — data keeps flowing into the buffer). */}
         <div className="flex shrink-0 items-center justify-between border-t bg-muted/30 px-4 py-1.5 text-caption text-muted-foreground">
           <span className="tabular-nums">
-            Showing {filtered.length} of {logs.length}
+            {t(($) => $.daemon_logs.showing, {
+              visible: filtered.length,
+              total: logs.length,
+            })}
             {logs.length === MAX_LOG_LINES && (
               <span className="ml-1 text-muted-foreground">
-                (buffer full)
+                {t(($) => $.daemon_logs.buffer_full)}
               </span>
             )}
           </span>
@@ -378,7 +383,7 @@ export function DaemonPanel({
               className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 hover:bg-muted hover:text-foreground"
             >
               <ArrowDown className="size-3" />
-              Jump to latest
+              {t(($) => $.daemon_logs.jump_to_latest)}
             </button>
           )}
         </div>
@@ -396,7 +401,14 @@ function ContextBadge({
   status: DaemonStatus;
   runtimeCount: number;
 }) {
+  const { t } = useT("desktop");
+  const { t: tSettings } = useT("settings");
   const isRunning = status.state === "running";
+  const uptime = formatUptime(status.uptime).replace(
+    /(\d+(?:\.\d+)?)(h|m|s)\b/g,
+    (_, value: string, unit: "h" | "m" | "s") =>
+      tSettings(($) => $.desktop.daemon.uptime_units[unit], { value }),
+  );
   return (
     <span className="inline-flex items-center gap-1.5 rounded-md border bg-background px-1.5 py-0.5 text-caption font-normal">
       <span
@@ -411,16 +423,16 @@ function ContextBadge({
           isRunning ? "text-foreground" : "text-muted-foreground",
         )}
       >
-        {DAEMON_STATE_LABELS[status.state]}
+        {tSettings(($) => $.desktop.daemon.states[status.state])}
       </span>
       {isRunning && status.uptime && (
         <span className="text-muted-foreground">
-          · {formatUptime(status.uptime)}
+          · {uptime}
         </span>
       )}
       {isRunning && runtimeCount > 0 && (
         <span className="text-muted-foreground">
-          · {runtimeCount} runtime{runtimeCount === 1 ? "" : "s"}
+          · {t(($) => $.daemon_logs.runtime_count, { count: runtimeCount })}
         </span>
       )}
     </span>
@@ -558,6 +570,7 @@ function GroupRows({
   onToggleFields: (id: number) => void;
   search: string;
 }) {
+  const { t } = useT("desktop");
   // Folded: show the first occurrence so the user still sees a sample
   // (timestamp, level, message), then a click-to-expand placeholder for
   // the suppressed run. The placeholder uses a dashed border + italics
@@ -578,8 +591,10 @@ function GroupRows({
         >
           <span>···</span>
           <span>
-            {rest.length} more &ldquo;{truncateValue(first.message, 48)}
-            &rdquo; — click to expand
+            {t(($) => $.daemon_logs.expand_group, {
+              count: rest.length,
+              message: truncateValue(first.message, 48),
+            })}
           </span>
         </button>
       </>
@@ -611,7 +626,9 @@ function GroupRows({
         className="my-0.5 ml-2 inline-flex w-fit items-center gap-2 rounded border border-dashed border-muted-foreground/25 px-2 py-0.5 text-micro italic text-muted-foreground hover:text-foreground"
       >
         <span>···</span>
-        <span>collapse {rest.length + 1} repeated</span>
+        <span>
+          {t(($) => $.daemon_logs.collapse_group, { count: rest.length + 1 })}
+        </span>
       </button>
     </>
   );
@@ -626,17 +643,18 @@ function EmptyState({
   hasFilter: boolean;
   isRunning: boolean;
 }) {
+  const { t } = useT("desktop");
   let title: string;
   let subtitle: string;
   if (hasFilter) {
-    title = "No matching log lines";
-    subtitle = "Try a different search or level toggle.";
+    title = t(($) => $.daemon_logs.empty.no_matches);
+    subtitle = t(($) => $.daemon_logs.empty.filter_hint);
   } else if (!isRunning) {
-    title = "Daemon isn't running";
-    subtitle = "Start the daemon to see logs here.";
+    title = t(($) => $.daemon_logs.empty.not_running);
+    subtitle = t(($) => $.daemon_logs.empty.start_hint);
   } else if (!hasLogs) {
-    title = "Waiting for logs…";
-    subtitle = "New entries will appear in real time.";
+    title = t(($) => $.daemon_logs.empty.waiting);
+    subtitle = t(($) => $.daemon_logs.empty.realtime_hint);
   } else {
     title = "";
     subtitle = "";

@@ -15,5 +15,49 @@
       "minimize": "最小化到托盘",
       "cancel": "取消"
     }
+  },
+  "daemon_actions": {
+    "view_logs": "查看日志",
+    "externally_managed": "由应用外部管理",
+    "restart": "重启",
+    "stop": "停止",
+    "start": "启动",
+    "retry_setup": "重试安装",
+    "start_failed": "启动守护进程失败",
+    "stop_failed": "停止守护进程失败",
+    "restart_failed": "重启守护进程失败",
+    "restarting": "正在重启守护进程",
+    "restarting_description": "运行时将在几秒后重新上线。",
+    "stop_dialog": {
+      "title_other": "仍有 {{count}} 个 task 运行，停止守护进程？",
+      "description_other": "此设备上有 {{count}} 个 task 正在运行。现在停止会中断这些 task。",
+      "failure_warning": "受影响的 task 超时后会被标记为失败。",
+      "no_restart": "守护进程不会自动重启。",
+      "cancel": "取消",
+      "confirm": "停止守护进程"
+    }
+  },
+  "daemon_logs": {
+    "title": "本地守护进程日志",
+    "close": "关闭",
+    "search": "搜索…",
+    "copy": "复制",
+    "clear": "清空",
+    "copied_other": "已复制 {{count}} 行日志",
+    "copy_failed": "复制失败",
+    "showing": "显示 {{visible}} 行，共 {{total}} 行",
+    "buffer_full": "（缓冲区已满）",
+    "jump_to_latest": "跳到最新日志",
+    "runtime_count_other": "{{count}} 个运行时",
+    "expand_group_other": "还有 {{count}} 条“{{message}}”，点击展开",
+    "collapse_group_other": "收起 {{count}} 条重复日志",
+    "empty": {
+      "no_matches": "没有匹配的日志",
+      "filter_hint": "试试其他搜索词或调整日志级别筛选。",
+      "not_running": "守护进程未运行",
+      "start_hint": "启动守护进程后即可查看日志。",
+      "waiting": "等待日志…",
+      "realtime_hint": "新日志会实时显示在这里。"
+    }
   }
 }
