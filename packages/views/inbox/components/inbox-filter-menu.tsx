@@ -16,6 +16,7 @@ import {
 import { useActorName } from "@multica/core/workspace/hooks";
 import type { InboxItem } from "@multica/core/types";
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
+import { SquadAvatar } from "../../common/squad-avatar";
 import { Button } from "@multica/ui/components/ui/button";
 import {
   DropdownMenu,
@@ -86,7 +87,7 @@ export function InboxFilterMenu({
   const toggleUnreadOnly = useInboxFilterStore(
     (state) => state.toggleUnreadOnly,
   );
-  const { getActorName, getActorInitials, getActorAvatarUrl } = useActorName();
+  const { getActorName, getActorInitials, getActorAvatarUrl, getSquadTemplateKey } = useActorName();
   const clearFilters = useInboxFilterStore((state) => state.clearFilters);
   const clearPriorityFilters = useInboxFilterStore(
     (state) => state.clearPriorityFilters,
@@ -241,15 +242,18 @@ export function InboxFilterMenu({
                     checked={checked}
                     onCheckedChange={() => toggleActor(wsId, option.key)}
                   >
+                    {option.type === "squad" ? (
+                      <SquadAvatar name={option.name} initials={getActorInitials(option.type, option.id)} avatarUrl={getActorAvatarUrl(option.type, option.id)} templateKey={getSquadTemplateKey(option.id)} size="xs" />
+                    ) : (
                     <ActorAvatar
                       size="xs"
                       name={option.name}
                       initials={getActorInitials(option.type, option.id)}
                       avatarUrl={getActorAvatarUrl(option.type, option.id)}
                       isAgent={option.type === "agent"}
-                      isSquad={option.type === "squad"}
                       isSystem={option.type === "system"}
                     />
+                    )}
                     <span className="flex-1">{option.name}</span>
                     {count > 0 && (
                       <span className="text-caption text-muted-foreground">

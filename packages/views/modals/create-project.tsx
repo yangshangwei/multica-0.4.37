@@ -60,7 +60,8 @@ import {
 import { Popover, PopoverTrigger, PopoverContent } from "@multica/ui/components/ui/popover";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@multica/ui/components/ui/tooltip";
 import { Button } from "@multica/ui/components/ui/button";
-import { EmojiPicker } from "@multica/ui/components/common/emoji-picker";
+import { ProjectIcon } from "../projects/components/project-icon";
+import { ProjectIconPicker } from "../projects/components/project-icon-picker";
 import { ContentEditor, type ContentEditorRef, TitleEditor } from "../editor";
 import { PriorityIcon } from "../issues/components/priority-icon";
 import { ActorAvatar } from "../common/actor-avatar";
@@ -515,14 +516,15 @@ export function CreateProjectModal({ onClose, data }: {
                       className="shrink-0 text-title cursor-pointer rounded-md p-1 hover:bg-accent/60 transition-colors"
                       title={t(($) => $.create_project.icon_tooltip)}
                     >
-                      {icon || "📁"}
+                      <ProjectIcon project={{ icon: icon ?? null }} size="lg" />
                     </button>
                   }
                 />
                 <PopoverContent align="start" className="w-auto p-0">
-                  <EmojiPicker
-                    onSelect={(emoji) => {
-                      updateIcon(emoji);
+                  <ProjectIconPicker
+                    value={icon}
+                    onSelect={(icon) => {
+                      updateIcon(icon);
                       setIconPickerOpen(false);
                     }}
                   />

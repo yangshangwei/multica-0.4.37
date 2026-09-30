@@ -106,8 +106,8 @@ type AgentRoleTemplate struct {
 	// DefaultName seeds the agent's display name. Owners rename freely; nothing
 	// server-side keys off it.
 	DefaultName string
-	// AvatarEmoji is rendered through the same `emoji:` marker every other agent
-	// avatar uses, so no surface needs to special-case a template agent.
+	// AvatarEmoji is retained for catalog compatibility. Creation maps it to
+	// an explicit Lucide icon marker for the stored avatar.
 	AvatarEmoji string
 	// Autonomy is the level a fresh copy starts at. A workspace may raise or
 	// lower it afterwards; the template only chooses the default.

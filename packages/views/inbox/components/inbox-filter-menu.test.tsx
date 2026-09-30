@@ -29,6 +29,7 @@ vi.mock("@multica/core/workspace/hooks", () => ({
       type === "system" ? "Multica" : (ACTOR_NAMES[id] ?? "Unknown"),
     getActorInitials: () => "??",
     getActorAvatarUrl: () => null,
+    getSquadTemplateKey: () => undefined,
   }),
 }));
 

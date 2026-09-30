@@ -55,7 +55,8 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@multica/ui/components/ui/tooltip";
-import { EmojiPicker } from "@multica/ui/components/common/emoji-picker";
+import { ProjectIcon } from "./project-icon";
+import { ProjectIconPicker } from "./project-icon-picker";
 import { BreadcrumbHeader } from "../../layout/breadcrumb-header";
 import {
   AnimatedRightSidebar,
@@ -270,14 +271,15 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                 className="text-display-sm cursor-pointer rounded-lg p-1 -ml-1 hover:bg-accent/60 transition-colors"
                 title={t(($) => $.detail.icon_tooltip)}
               >
-                {project.icon || "📁"}
+                <ProjectIcon project={project} size="lg" />
               </button>
             }
           />
           <PopoverContent align="start" className="w-auto p-0">
-            <EmojiPicker
-              onSelect={(emoji) => {
-                handleUpdateField({ icon: emoji });
+            <ProjectIconPicker
+              value={project.icon}
+              onSelect={(icon) => {
+                handleUpdateField({ icon });
                 setIconPickerOpen(false);
               }}
             />

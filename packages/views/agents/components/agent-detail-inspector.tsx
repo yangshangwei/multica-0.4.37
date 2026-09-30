@@ -180,7 +180,7 @@ export function AgentDetailInspector({
                 size={56}
                 disabled={!canEdit}
                 onUploaded={(url) => update({ avatar_url: url })}
-                onEmojiSelected={(value) => update({ avatar_url: value })}
+                onIconSelected={(value) => update({ avatar_url: value })}
               />
             </div>
           </SettingsRow>

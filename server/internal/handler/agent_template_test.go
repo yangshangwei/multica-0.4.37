@@ -312,6 +312,9 @@ func TestCreateAgentFromTemplate_CopiesTheRoleOntoAnOrdinaryAgent(t *testing.T) 
 		"language":     "en",
 	})).Want(http.StatusCreated).JSON(&created)
 	cleanupTemplateAgent(t, created.ID)
+	if created.AvatarURL == nil || *created.AvatarURL != "icon:microscope" {
+		t.Errorf("avatar = %v, want icon:microscope", created.AvatarURL)
+	}
 
 	template, ok := service.AgentRoleTemplateByKey("code-reviewer")
 	if !ok {

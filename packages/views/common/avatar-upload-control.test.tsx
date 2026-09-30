@@ -75,7 +75,7 @@ describe("AvatarUploadControl", () => {
   // shape: one click, one file dialog, no menu in between.
   it("goes straight to the file dialog when emoji is not offered", () => {
     const { container } = renderWithI18n(
-      <AvatarUploadControl variant="agent" value={null} onUploaded={vi.fn()} />,
+      <AvatarUploadControl variant="user" value={null} onUploaded={vi.fn()} />,
     );
     const openDialog = spyOnFileDialog(container);
 
@@ -85,13 +85,13 @@ describe("AvatarUploadControl", () => {
     expect(screen.queryByText("Upload image")).not.toBeInTheDocument();
   });
 
-  it("offers both an image upload and emoji suggestions", async () => {
+  it("offers both an image upload and Lucide icons", async () => {
     renderWithI18n(
       <AvatarUploadControl
         variant="agent"
         value={null}
         onUploaded={vi.fn()}
-        onEmojiSelected={vi.fn()}
+        onIconSelected={vi.fn()}
       />,
     );
 
@@ -100,27 +100,27 @@ describe("AvatarUploadControl", () => {
     expect(
       await screen.findByRole("button", { name: "Upload image" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "🦊" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Bot" })).toBeInTheDocument();
   });
 
   // The caller persists whatever it gets straight into `avatar_url`, so the
-  // control has to emit the marker the renderers parse, not the bare emoji.
-  it("emits the emoji marker value the server stores", async () => {
-    const onEmojiSelected = vi.fn();
+  // control has to emit the marker the renderers parse, not the bare icon name.
+  it("emits the icon marker value the server stores", async () => {
+    const onIconSelected = vi.fn();
     renderWithI18n(
       <AvatarUploadControl
         variant="agent"
         value={null}
         onUploaded={vi.fn()}
-        onEmojiSelected={onEmojiSelected}
+        onIconSelected={onIconSelected}
       />,
     );
 
     openPicker();
-    fireEvent.click(await screen.findByRole("button", { name: "🦊" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Bot" }));
 
     await waitFor(() =>
-      expect(onEmojiSelected).toHaveBeenCalledWith("emoji:🦊"),
+      expect(onIconSelected).toHaveBeenCalledWith("icon:bot"),
     );
   });
 
@@ -130,7 +130,7 @@ describe("AvatarUploadControl", () => {
         variant="agent"
         value={null}
         onUploaded={vi.fn()}
-        onEmojiSelected={vi.fn()}
+        onIconSelected={vi.fn()}
       />,
     );
     const openDialog = spyOnFileDialog(container);
@@ -141,23 +141,23 @@ describe("AvatarUploadControl", () => {
     expect(openDialog).toHaveBeenCalledTimes(1);
   });
 
-  it("marks the agent's current emoji as the selected suggestion", async () => {
+  it("marks the agent's legacy avatar icon as the selected suggestion", async () => {
     renderWithI18n(
       <AvatarUploadControl
         variant="agent"
         value="emoji:🚀"
         onUploaded={vi.fn()}
-        onEmojiSelected={vi.fn()}
+        onIconSelected={vi.fn()}
       />,
     );
 
     openPicker();
 
-    expect(await screen.findByRole("button", { name: "🚀" })).toHaveAttribute(
+    expect(await screen.findByRole("button", { name: "Rocket" })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
-    expect(screen.getByRole("button", { name: "🦊" })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: "Bot" })).toHaveAttribute(
       "aria-pressed",
       "false",
     );
@@ -169,7 +169,7 @@ describe("AvatarUploadControl", () => {
   // settles.
   it("locks the avatar until a pick has finished saving", async () => {
     let settle = () => {};
-    const onEmojiSelected = vi.fn(
+    const onIconSelected = vi.fn(
       () =>
         new Promise<void>((resolve) => {
           settle = resolve;
@@ -180,12 +180,12 @@ describe("AvatarUploadControl", () => {
         variant="agent"
         value={null}
         onUploaded={vi.fn()}
-        onEmojiSelected={onEmojiSelected}
+        onIconSelected={onIconSelected}
       />,
     );
 
     openPicker();
-    fireEvent.click(await screen.findByRole("button", { name: "🦊" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Bot" }));
 
     const trigger = screen.getByRole("button", { name: "Change avatar" });
     await waitFor(() => expect(trigger).toBeDisabled());
@@ -193,7 +193,7 @@ describe("AvatarUploadControl", () => {
     // A second pick must not even be reachable while the first is in flight.
     fireEvent.click(trigger);
     expect(screen.queryByText("Upload image")).not.toBeInTheDocument();
-    expect(onEmojiSelected).toHaveBeenCalledTimes(1);
+    expect(onIconSelected).toHaveBeenCalledTimes(1);
 
     await act(async () => settle());
     await waitFor(() => expect(trigger).not.toBeDisabled());
@@ -207,12 +207,12 @@ describe("AvatarUploadControl", () => {
         variant="agent"
         value={null}
         onUploaded={vi.fn()}
-        onEmojiSelected={() => Promise.reject(new Error("nope"))}
+        onIconSelected={() => Promise.reject(new Error("nope"))}
       />,
     );
 
     openPicker();
-    fireEvent.click(await screen.findByRole("button", { name: "🦊" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Bot" }));
 
     await waitFor(() =>
       expect(screen.getByRole("button", { name: "Change avatar" })).not
@@ -258,7 +258,7 @@ describe("AvatarUploadControl", () => {
         value={null}
         disabled
         onUploaded={vi.fn()}
-        onEmojiSelected={vi.fn()}
+        onIconSelected={vi.fn()}
       />,
     );
 
@@ -267,4 +267,25 @@ describe("AvatarUploadControl", () => {
     fireEvent.click(trigger);
     expect(screen.queryByText("Upload image")).not.toBeInTheDocument();
   });
+});
+
+it("shows a shared avatar preview while preserving upload behavior", async () => {
+  const { container } = renderWithI18n(
+    <AvatarUploadControl variant="squad" value="emoji:📦" onUploaded={vi.fn()} preview={<span data-testid="squad-preview">Squad icon</span>} />,
+  );
+  expect(screen.getByTestId("squad-preview")).toBeVisible();
+  expect(screen.queryByText("📦")).toBeNull();
+  const openDialog = spyOnFileDialog(container);
+  fireEvent.click(screen.getByRole("button", { name: "Change avatar" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Upload image" }));
+  expect(openDialog).toHaveBeenCalledTimes(1);
+});
+
+it("saves a squad icon through the existing upload callback", async () => {
+  const onUploaded = vi.fn();
+  renderWithI18n(<AvatarUploadControl variant="squad" value={null} onUploaded={onUploaded} onClear={vi.fn()} />);
+  expect(screen.queryByRole("button", { name: "Remove avatar" })).toBeNull();
+  openPicker();
+  fireEvent.click(await screen.findByRole("button", { name: "Rocket" }));
+  await waitFor(() => expect(onUploaded).toHaveBeenCalledWith("icon:rocket"));
 });

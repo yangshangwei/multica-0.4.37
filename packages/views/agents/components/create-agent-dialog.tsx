@@ -325,7 +325,7 @@ export function CreateAgentDialog({
                 name={name}
                 size={64}
                 onUploaded={setAvatarUrl}
-                onEmojiSelected={setAvatarUrl}
+                onIconSelected={setAvatarUrl}
                 onClear={() => setAvatarUrl(null)}
               />
               <div className="flex-1 min-w-0 space-y-3">

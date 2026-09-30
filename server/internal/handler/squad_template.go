@@ -421,7 +421,7 @@ func (h *Handler) materializeSquadTemplateInTx(ctx context.Context, tx pgx.Tx, i
 		return result, errors.New("squad template leader role could not be provisioned")
 	}
 
-	avatar := pgtype.Text{String: agentEmojiAvatarPrefix + in.Template.AvatarEmoji, Valid: true}
+	avatar := pgtype.Text{String: templateIconAvatar(in.Template.AvatarEmoji), Valid: true}
 	squad, err := qtx.CreateSquadFromTemplate(ctx, db.CreateSquadFromTemplateParams{
 		WorkspaceID: in.WorkspaceID,
 		Name:        in.SquadName,
@@ -531,7 +531,7 @@ func (h *Handler) resolveTemplateAgentInTx(
 		Name:               template.Title(in.Language),
 		Description:        template.Description(in.Language),
 		Instructions:       template.Instructions(),
-		AvatarUrl:          pgtype.Text{String: agentEmojiAvatarPrefix + template.AvatarEmoji, Valid: true},
+		AvatarUrl:          pgtype.Text{String: templateIconAvatar(template.AvatarEmoji), Valid: true},
 		RuntimeMode:        in.Runtime.RuntimeMode,
 		RuntimeConfig:      []byte("{}"),
 		RuntimeID:          in.Runtime.ID,

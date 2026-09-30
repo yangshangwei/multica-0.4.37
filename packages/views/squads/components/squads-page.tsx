@@ -84,7 +84,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@multica/ui/components/ui/tooltip";
-import { ActorAvatar as ActorAvatarBase } from "@multica/ui/components/common/actor-avatar";
+import { SquadAvatar } from "../../common/squad-avatar";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { FILTER_ITEM_CLASS, HoverCheck } from "../../common/hover-check";
 import {
@@ -154,41 +154,12 @@ function columnTrackVars(
 // Cells
 // ---------------------------------------------------------------------------
 
-function SquadAvatar({ squad }: { squad: Squad }) {
-  const initials = squad.name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-  if (squad.avatar_url) {
-    return (
-      <ActorAvatarBase
-        name={squad.name}
-        initials={initials}
-        avatarUrl={resolvePublicFileUrl(squad.avatar_url)}
-        size="lg"
-        className="shrink-0"
-      />
-    );
-  }
-  return (
-    <ActorAvatarBase
-      name={squad.name}
-      initials={initials}
-      isSquad
-      size="lg"
-      className="shrink-0"
-    />
-  );
-}
-
 // Two-line identity cell — same form as the agents list.
 function NameCell({ squad }: { squad: Squad }) {
   const paths = useWorkspacePaths();
   return (
     <ListGridCell className="gap-3">
-      <SquadAvatar squad={squad} />
+      <SquadAvatar name={squad.name} initials={squad.name.slice(0, 2)} avatarUrl={squad.avatar_url ? resolvePublicFileUrl(squad.avatar_url) : null} templateKey={squad.template_key} size="lg" />
       <div className="min-w-0 flex-1">
         <AppLink
           href={paths.squadDetail(squad.id)}

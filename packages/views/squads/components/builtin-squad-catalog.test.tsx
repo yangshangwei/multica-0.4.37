@@ -86,7 +86,8 @@ describe("BuiltinSquadCatalog", () => {
     expect(within(template).getByText("Take a feature from requirements through implementation and review.")).toBeVisible();
     expect(within(template).getByText("3 members")).toBeVisible();
     expect(within(template).getByText("Delivery lead · Implementer · QA engineer")).toBeVisible();
-    expect(within(template).getByText("🚀")).toBeVisible();
+    expect(within(template).getByRole("img", { name: "Feature delivery" })).toBeVisible();
+    expect(template.querySelector("svg.lucide-rocket")).not.toBeNull();
     expect(within(template).getByRole("button", { name: "Apply to project" })).toBeVisible();
     expect(catalog.querySelector("[aria-expanded]")).toBeNull();
   });

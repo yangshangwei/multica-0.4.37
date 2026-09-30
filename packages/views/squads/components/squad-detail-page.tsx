@@ -48,7 +48,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@multica/ui/components/ui/alert-dialog";
-import { ActorAvatar as ActorAvatarBase } from "@multica/ui/components/common/actor-avatar";
+import { SquadAvatar } from "../../common/squad-avatar";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { AvatarUploadControl } from "../../common/avatar-upload-control";
 import { ContentEditor } from "../../editor/content-editor";
@@ -328,44 +328,12 @@ function SquadDetailSkeleton() {
   );
 }
 
-// Compact 16px avatar shown next to the name in the page header. Falls back
-// to the Users icon when no custom avatar is set so the squad still has a
-// recognisable glyph in the breadcrumb strip.
 function SquadHeaderAvatar({ squad, initials }: { squad: Squad; initials: string }) {
-  if (!squad.avatar_url) {
-    return <Users className="h-4 w-4 text-muted-foreground" />;
-  }
-  return (
-    <ActorAvatarBase
-      name={squad.name}
-      initials={initials}
-      avatarUrl={resolvePublicFileUrl(squad.avatar_url)}
-      size="sm"
-      className="shrink-0"
-    />
-  );
+  return <SquadAvatar name={squad.name} initials={initials} avatarUrl={resolvePublicFileUrl(squad.avatar_url)} templateKey={squad.template_key} size="sm" />;
 }
 
-// Read-only 64px avatar for viewers who can't manage the squad — same visual
-// as the editable control's resting state but without the click/upload
-// affordance.
 function SquadStaticAvatar({ squad, initials }: { squad: Squad; initials: string }) {
-  return (
-    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full bg-muted">
-      {squad.avatar_url ? (
-        <ActorAvatarBase
-          name={squad.name}
-          initials={initials}
-          avatarUrl={resolvePublicFileUrl(squad.avatar_url)}
-          size="2xl"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-          <Users className="h-7 w-7" />
-        </div>
-      )}
-    </div>
-  );
+  return <SquadAvatar name={squad.name} initials={initials} avatarUrl={resolvePublicFileUrl(squad.avatar_url)} templateKey={squad.template_key} size="2xl" />;
 }
 
 // Inline name editor — reveals a Pencil affordance on hover, opens a small
@@ -751,10 +719,11 @@ function SquadDetailInspector({
         {canManage ? (
           <>
             <AvatarUploadControl
+              preview={<SquadStaticAvatar squad={squad} initials={initials} />}
+              size={56}
               variant="squad"
               value={squad.avatar_url ?? null}
               name={squad.name}
-              size={64}
               onUploaded={onUploadAvatar}
             />
             <div className="flex flex-col gap-1">

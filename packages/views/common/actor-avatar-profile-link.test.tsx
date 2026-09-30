@@ -20,6 +20,7 @@ vi.mock("@multica/core/workspace/hooks", () => ({
     getActorName: () => "Ada Lovelace",
     getActorInitials: () => "AL",
     getActorAvatarUrl: () => null,
+    getSquadTemplateKey: () => "release",
   }),
 }));
 
@@ -183,3 +184,12 @@ describe("ActorAvatar profile link", () => {
     expect(push).not.toHaveBeenCalled();
   });
 });
+
+ it("uses the shared template icon for a squad actor", () => {
+   const { container } = render(
+     <NavigationProvider value={makeAdapter()}>
+       <ActorAvatar actorType="squad" actorId="squad-1" profileLink={false} />
+     </NavigationProvider>,
+   );
+   expect(container.querySelector("svg.lucide-package")).not.toBeNull();
+ });

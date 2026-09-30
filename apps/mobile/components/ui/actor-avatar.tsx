@@ -26,6 +26,8 @@ import { useWorkspaceStore } from "@/data/workspace-store";
 import { useAgentPresence } from "@/lib/use-agent-presence";
 import { PresenceDot } from "@/components/ui/presence-dot";
 import { THEME } from "@/lib/theme";
+import { AvatarIcon } from "./avatar-icon";
+import { resolveAvatarIcon, avatarIconColor } from "@/lib/avatar-icon";
 import { resolveAttachmentUrl } from "@/lib/attachment-url";
 
 // `system` actors are server-side automation (state changes triggered by the
@@ -76,10 +78,8 @@ function BareAvatar({
       ? THEME.dark.mutedForeground
       : THEME.light.mutedForeground;
 
-  // Squad gets a soft-square tile (matches web actor-avatar.tsx:42 which uses
-  // rounded-md) so a group never reads as a single person at a glance.
-  // Everyone else stays round.
-  const radius = type === "squad" ? Math.round(size * 0.22) : size / 2;
+  // Actor avatars are circular on every platform; skills use square tiles.
+  const radius = size / 2;
 
   // URL lookup runs BEFORE the squad/system icon fallbacks so a squad with
   // an avatar_url renders its image instead of the generic group glyph.
@@ -92,26 +92,20 @@ function BareAvatar({
   const rawUrl = resolveAttachmentUrl(
     type && type !== "system" ? getAvatarUrl(type, id) : null,
   );
-  const emoji = rawUrl?.startsWith("emoji:")
-    ? rawUrl.slice("emoji:".length).trim() || null
-    : null;
-  const url =
-    !emoji && rawUrl && /^(https?:|data:|file:|asset:)/.test(rawUrl)
-      ? rawUrl
-      : null;
+  const icon = resolveAvatarIcon(rawUrl);
+  const url = rawUrl && /^(https?:|data:|file:|asset:)/.test(rawUrl) ? rawUrl : null;
+  const iconName = icon ?? (!url ? type === "agent" ? "bot" : type === "squad" ? "users" : null : null);
 
-  if (emoji) {
+  if (iconName) {
+    const color = avatarIconColor(iconName, colorScheme === "dark");
     return (
       <View
-        style={{ width: size, height: size, borderRadius: radius }}
-        className="items-center justify-center bg-muted"
+        accessibilityRole="image"
+        accessibilityLabel={type === "system" ? "" : getName(type, id)}
+        style={{ width: size, height: size, borderRadius: radius, backgroundColor: `${color}1f` }}
+        className="items-center justify-center"
       >
-        <Text
-          accessibilityLabel={type === "system" ? "" : getName(type, id)}
-          style={{ fontSize: Math.round(size * 0.58), lineHeight: size }}
-        >
-          {emoji}
-        </Text>
+        <AvatarIcon name={iconName} size={size * 0.5} color={color} />
       </View>
     );
   }
@@ -137,16 +131,6 @@ function BareAvatar({
     );
   }
 
-  if (type === "squad") {
-    return (
-      <View
-        style={{ width: size, height: size, borderRadius: radius }}
-        className="items-center justify-center bg-muted"
-      >
-        <Ionicons name="people" size={Math.round(size * 0.55)} color={iconColor} />
-      </View>
-    );
-  }
 
   const name = getName(type, id);
   const isAgent = type === "agent";

@@ -1,16 +1,18 @@
 "use client";
 
-import { Suspense, lazy, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Bot, Camera, ImagePlus, Loader2, Users, X } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@multica/core/api";
 import { useFileUpload } from "@multica/core/hooks/use-file-upload";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import {
-  AVATAR_EMOJI_SUGGESTIONS,
-  formatAvatarEmoji,
-  parseAvatarEmoji,
-} from "@multica/ui/lib/avatar-emoji";
+  AVATAR_ICON_COMPONENTS,
+  AVATAR_ICON_TONE,
+  formatAvatarIcon,
+  resolveAvatarIcon,
+  type AvatarIconName,
+} from "@multica/ui/lib/avatar-icon";
 import {
   Popover,
   PopoverContent,
@@ -20,14 +22,6 @@ import { Separator } from "@multica/ui/components/ui/separator";
 import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../i18n";
 import { AvatarCropDialog } from "./avatar-crop-dialog";
-
-// The full emoji-mart picker is ~1MB of emoji data. Only the handful of
-// suggestions render eagerly; the searchable set loads when asked for.
-const EmojiPicker = lazy(() =>
-  import("@multica/ui/components/common/emoji-picker").then((m) => ({
-    default: m.EmojiPicker,
-  })),
-);
 
 export type AvatarUploadVariant = "user" | "agent" | "squad" | "workspace";
 
@@ -48,14 +42,8 @@ interface AvatarUploadControlProps {
    * its busy state until this resolves, then closes.
    */
   onUploaded: (url: string) => void | Promise<unknown>;
-  /**
-   * When provided, the avatar offers emoji as an alternative to an image:
-   * clicking it opens a picker with the suggested set, full emoji search, and
-   * the upload entry. Fires with the value to persist (`emoji:🚀`) — the same
-   * `avatar_url` shape as `onUploaded`, so the caller stores both the same
-   * way. Omit it and the control keeps its click-straight-to-upload behavior.
-   */
-  onEmojiSelected?: (value: string) => void | Promise<unknown>;
+  /** Persists a selected icon marker. Agent/squad pickers default to onUploaded. */
+  onIconSelected?: (value: string) => void | Promise<unknown>;
   /**
    * When provided, shows a small clear affordance. Used by create flows to
    * drop a not-yet-persisted choice; edit flows omit it (removing a saved
@@ -64,6 +52,8 @@ interface AvatarUploadControlProps {
   onClear?: () => void;
   className?: string;
   ariaLabel?: string;
+  /** Optional shared presentation for the resting avatar; persistence is unchanged. */
+  preview?: React.ReactNode;
 }
 
 function initialsOf(name: string): string {
@@ -128,8 +118,8 @@ async function persistedByCaller(
  * avatar with a hover "change" affordance; on pick it opens {@link
  * AvatarCropDialog} for reposition/zoom, then uploads the cropped image
  * through the existing `/api/upload-file` chain and hands the URL back via
- * `onUploaded`. With `onEmojiSelected` the click opens a picker that offers
- * an emoji instead — both paths produce an `avatar_url` value. Business
+ * `onUploaded`. For agents and squads the click opens a picker that offers
+ * Lucide icons instead — both paths produce an `avatar_url` value. Business
  * persistence stays with the caller.
  */
 export function AvatarUploadControl({
@@ -139,10 +129,11 @@ export function AvatarUploadControl({
   size = 64,
   disabled = false,
   onUploaded,
-  onEmojiSelected,
+  onIconSelected,
   onClear,
   className,
   ariaLabel,
+  preview,
 }: AvatarUploadControlProps) {
   const { t } = useT("common");
   const { upload } = useFileUpload(api);
@@ -152,24 +143,26 @@ export function AvatarUploadControl({
   const [busy, setBusy] = useState(false);
   const [previewError, setPreviewError] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [emojiSearchOpen, setEmojiSearchOpen] = useState(false);
 
-  const emoji = parseAvatarEmoji(value);
-  const resolved = value && !emoji ? resolvePublicFileUrl(value) : null;
+  const storedIcon = resolveAvatarIcon(value);
+  const iconName = storedIcon ?? ((!value || previewError)
+    ? variant === "agent" ? "bot" : variant === "squad" ? "users" : null
+    : null);
+  const Icon = iconName ? AVATAR_ICON_COMPONENTS[iconName] : null;
+  const iconTone = iconName ? AVATAR_ICON_TONE[iconName] : null;
+  const resolved = value && !iconName ? resolvePublicFileUrl(value) : null;
   const hasImage = !!resolved && !previewError;
-  const hasAvatar = !!emoji || hasImage;
-  const emojiEnabled = !!onEmojiSelected;
+  const hasAvatar = !!storedIcon || hasImage;
+  const iconEnabled = variant === "agent" || variant === "squad" || !!onIconSelected;
 
   const openFileDialog = () => fileInputRef.current?.click();
 
   const closePicker = () => {
     setPickerOpen(false);
-    setEmojiSearchOpen(false);
   };
 
   const handlePickerOpenChange = (next: boolean) => {
     setPickerOpen(next);
-    if (!next) setEmojiSearchOpen(false);
   };
 
   const handlePick = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,15 +203,15 @@ export function AvatarUploadControl({
   // the one the user chose last — a permanently wrong avatar, since the
   // invalidate that follows only converges on whatever the server kept.
   //
-  // No success toast on purpose: the avatar swaps to the chosen emoji in place,
+  // No success toast on purpose: the avatar swaps to the chosen icon in place,
   // so the change is already visible.
-  const handleEmojiSelected = async (picked: string) => {
+  const handleIconSelected = async (picked: AvatarIconName) => {
     closePicker();
     setPreviewError(false);
     setBusy(true);
     try {
       await persistedByCaller(() =>
-        onEmojiSelected?.(formatAvatarEmoji(picked)),
+        (onIconSelected ?? onUploaded)(formatAvatarIcon(picked)),
       );
     } finally {
       setBusy(false);
@@ -228,10 +221,10 @@ export function AvatarUploadControl({
   const avatarButton = (
     <button
       type="button"
-      // With emoji enabled this button is the popover trigger and Base UI
+      // With icons enabled this button is the popover trigger and Base UI
       // supplies the click handler; without it the click goes straight to the
       // file dialog, which is this control's original single-purpose shape.
-      onClick={emojiEnabled ? undefined : openFileDialog}
+      onClick={iconEnabled ? undefined : openFileDialog}
       disabled={disabled || busy}
       aria-label={ariaLabel ?? t(($) => $.avatar_upload.change)}
       className={cn(
@@ -240,19 +233,14 @@ export function AvatarUploadControl({
         "focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:cursor-not-allowed disabled:opacity-60",
         "rounded-full",
+        iconTone?.bg,
+        iconTone?.text,
         className,
       )}
       style={{ width: size, height: size }}
     >
-      {emoji ? (
-        <span
-          role="img"
-          aria-label={name}
-          className="select-none leading-none"
-          style={{ fontSize: size * 0.58 }}
-        >
-          {emoji}
-        </span>
+      {preview ?? (Icon ? (
+        <Icon aria-hidden="true" style={{ width: size * 0.5, height: size * 0.5 }} />
       ) : hasImage ? (
         <img
           src={resolved ?? undefined}
@@ -262,7 +250,7 @@ export function AvatarUploadControl({
         />
       ) : (
         <AvatarFallback variant={variant} name={name} size={size} />
-      )}
+      ))}
 
       {!disabled && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
@@ -278,73 +266,52 @@ export function AvatarUploadControl({
 
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
-      {emojiEnabled ? (
+      {iconEnabled ? (
         <Popover open={pickerOpen} onOpenChange={handlePickerOpenChange}>
           <PopoverTrigger render={avatarButton} />
           <PopoverContent
             align="start"
-            // The emoji-mart picker sizes itself; only the suggestion grid is
-            // laid out against the popover's own width.
-            className={cn("gap-0 p-0", emojiSearchOpen ? "w-auto" : "w-72")}
+            className="w-80 gap-0 p-0"
           >
-            {emojiSearchOpen ? (
-              <Suspense
-                fallback={
-                  <div className="p-4 text-body text-muted-foreground">
-                    {t(($) => $.avatar_upload.emoji_loading)}
-                  </div>
-                }
+            <div className="p-1">
+              <button
+                type="button"
+                onClick={() => { closePicker(); openFileDialog(); }}
+                className="flex w-full items-center gap-1.5 rounded-md px-1.5 py-1.5 text-body outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground"
               >
-                <EmojiPicker onSelect={handleEmojiSelected} />
-              </Suspense>
-            ) : (
-              <>
-                <div className="p-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      closePicker();
-                      openFileDialog();
-                    }}
-                    className="flex w-full items-center gap-1.5 rounded-md px-1.5 py-1.5 text-body outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground"
-                  >
-                    <ImagePlus className="size-4 shrink-0 text-muted-foreground" />
-                    {t(($) => $.avatar_upload.upload_image)}
-                  </button>
-                </div>
-
-                <Separator />
-
-                <div className="p-1">
-                  <p className="px-1.5 py-1 text-caption font-medium text-muted-foreground">
-                    {t(($) => $.avatar_upload.emoji_label)}
-                  </p>
-                  <div className="grid grid-cols-8 gap-0.5">
-                    {AVATAR_EMOJI_SUGGESTIONS.map((suggestion) => (
-                      <button
-                        key={suggestion}
-                        type="button"
-                        aria-pressed={emoji === suggestion}
-                        onClick={() => handleEmojiSelected(suggestion)}
-                        className={cn(
-                          "flex h-8 w-8 items-center justify-center rounded-md text-title-sm leading-none outline-hidden transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring",
-                          emoji === suggestion && "bg-accent ring-1 ring-ring",
-                        )}
-                      >
-                        {suggestion}
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEmojiSearchOpen(true)}
-                    className="mt-1 w-full rounded-md px-1.5 py-1 text-caption text-muted-foreground outline-hidden transition-colors hover:bg-accent hover:text-foreground focus-visible:bg-accent focus-visible:text-foreground"
-                  >
-                    {t(($) => $.avatar_upload.more_emojis)}
-                  </button>
-                </div>
-              </>
-            )}
+                <ImagePlus className="size-4 shrink-0 text-muted-foreground" />
+                {t(($) => $.avatar_upload.upload_image)}
+              </button>
+            </div>
+            <Separator />
+            <div className="p-2">
+              <p className="mb-2 text-caption font-medium text-muted-foreground">
+                {t(($) => $.avatar_upload.icon_label)}
+              </p>
+              <div role="group" aria-label={t(($) => $.avatar_upload.icon_label)} className="grid max-h-64 grid-cols-8 gap-1 overflow-y-auto">
+                {(Object.keys(AVATAR_ICON_COMPONENTS) as AvatarIconName[]).map((name) => {
+                  const ChoiceIcon = AVATAR_ICON_COMPONENTS[name];
+                  const label = t(($) => $.avatar_upload.icon_names[name]);
+                  return (
+                    <button
+                      key={name}
+                      type="button"
+                      aria-label={label}
+                      title={label}
+                      aria-pressed={iconName === name}
+                      onClick={() => handleIconSelected(name)}
+                      className={cn(
+                        "flex size-8 items-center justify-center rounded-full outline-hidden transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring",
+                        AVATAR_ICON_TONE[name].text,
+                        iconName === name && "bg-accent ring-1 ring-ring",
+                      )}
+                    >
+                      <ChoiceIcon aria-hidden="true" className="size-4" />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </PopoverContent>
         </Popover>
       ) : (

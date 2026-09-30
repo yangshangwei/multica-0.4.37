@@ -150,3 +150,5 @@ is task-local checkout state.
 Project create/update/delete/status and project resource add/update/remove mutate durable workspace state and affect future tasks. Ask before changing `local_directory` unless the user explicitly requested that exact local path.
 
 More source-backed details: `references/projects-and-resources-source-map.md`.
+
+Project `icon` values use `icon:<lucide-name>` from the supported Lucide catalog. New projects default to `icon:package`; legacy emoji values remain accepted. The CLI exposes the same field through `--icon`.

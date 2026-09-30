@@ -1,5 +1,9 @@
 "use client";
 
+import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
+
+import { SquadAvatar } from "../common/squad-avatar";
+
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -172,7 +176,7 @@ export function StaffSquadTemplateModal({ onClose }: { onClose: () => void }) {
                   )}
                 >
                   <span className="flex items-center gap-2">
-                    <span aria-hidden="true">{entry.avatar_emoji}</span>
+                    <SquadAvatar name={entry.title} initials="" templateKey={entry.key} size="lg" />
                     <span
                       className={cn(
                         "text-body",
@@ -293,7 +297,7 @@ function SquadTemplateRoster({ template }: { template: SquadTemplate }) {
       </div>
       <ul className="space-y-1.5">
         <li className="flex flex-wrap items-center gap-2 text-caption">
-          <span aria-hidden="true">{template.leader.avatar_emoji}</span>
+          <ActorAvatar name={template.leader.title} initials="" avatarUrl={`emoji:${template.leader.avatar_emoji}`} isAgent size="md" />
           <span className="font-medium">{template.leader.title}</span>
           <span className="rounded-full border px-1.5 py-0.5 text-micro text-muted-foreground">
             {t(($) => $.squad_templates.leader_label)}
@@ -305,7 +309,7 @@ function SquadTemplateRoster({ template }: { template: SquadTemplate }) {
             key={member.template_key}
             className="flex flex-wrap items-center gap-2 text-caption"
           >
-            <span aria-hidden="true">{member.avatar_emoji}</span>
+            <ActorAvatar name={member.title} initials="" avatarUrl={`emoji:${member.avatar_emoji}`} isAgent size="md" />
             <span className="font-medium">{member.title}</span>
             <AutonomyBadge level={member.autonomy_level} />
             <span className="text-muted-foreground">{member.role}</span>

@@ -1,21 +1,8 @@
-/**
- * Mobile ProjectIcon — RN port of
- * `packages/views/projects/components/project-icon.tsx`. Renders the
- * project's emoji icon with a 📁 fallback.
- *
- * Why a square View wrapper + explicit lineHeight:
- *   Emoji glyphs do not respect the latin-text baseline metrics — on iOS
- *   they render with a visual extent ~10-15% larger than `fontSize`,
- *   centered on the baseline. `<Text>` clips content to `lineHeight`, so a
- *   `lineHeight: font-size` (the previous `leading-none` form) trimmed the
- *   top and bottom of the emoji. Setting `lineHeight = fontSize * 1.2`
- *   gives the glyph enough vertical room; the surrounding View pins a
- *   stable square footprint so flex parents using `items-center` /
- *   `items-start` align siblings against a predictable box instead of the
- *   emoji's drifting baseline.
- */
+/** Mobile counterpart of the shared web ProjectIcon, preserving its square footprint. */
 import { View } from "react-native";
-import { Text } from "@/components/ui/text";
+import { useColorScheme } from "nativewind";
+import { AvatarIcon } from "./avatar-icon";
+import { avatarIconColor, resolveProjectIcon } from "@/lib/avatar-icon";
 
 export type ProjectIconSize = "sm" | "md" | "lg";
 
@@ -32,6 +19,8 @@ interface Props {
 
 export function ProjectIcon({ icon, size = "sm" }: Props) {
   const { box, font } = SIZE[size];
+  const { colorScheme } = useColorScheme();
+  const name = resolveProjectIcon(icon);
   return (
     <View
       style={{
@@ -41,9 +30,7 @@ export function ProjectIcon({ icon, size = "sm" }: Props) {
         justifyContent: "center",
       }}
     >
-      <Text style={{ fontSize: font, lineHeight: Math.round(font * 1.2) }}>
-        {icon || "📁"}
-      </Text>
+      <AvatarIcon name={name} size={font} color={avatarIconColor(name, colorScheme === "dark")} />
     </View>
   );
 }

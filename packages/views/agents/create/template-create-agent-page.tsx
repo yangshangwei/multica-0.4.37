@@ -1,5 +1,7 @@
 "use client";
 
+import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useWorkspaceId } from "@multica/core/hooks";
@@ -184,7 +186,7 @@ function RoleTemplatePicker({
                   <li key={template.key} aria-label={title} className="flex min-w-0 flex-col items-start gap-3 border-t border-border py-5">
                     <div className="flex w-full flex-wrap items-start justify-between gap-2">
                       <h3 className="min-w-0 break-words text-body font-semibold">
-                        {template.avatar_emoji && <span aria-hidden="true" className="mr-2">{template.avatar_emoji}</span>}
+                        <ActorAvatar name={template.title} initials="" avatarUrl={`emoji:${template.avatar_emoji}`} isAgent size="md" className="mr-2" />
                         {title}
                       </h3>
                       <AutonomyBadge level={template.autonomy_level} />
@@ -305,12 +307,7 @@ function TemplateConfigureStep({
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8">
         <div className="mb-5 flex items-start gap-3 rounded-lg border bg-card px-4 py-3">
-          <span
-            className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-title-sm"
-            aria-hidden="true"
-          >
-            {template.avatar_emoji}
-          </span>
+          <ActorAvatar name={template.title} initials="" avatarUrl={`emoji:${template.avatar_emoji}`} isAgent size="xl" />
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-body font-semibold">{template.title}</span>

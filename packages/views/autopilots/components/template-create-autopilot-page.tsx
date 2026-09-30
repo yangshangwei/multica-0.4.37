@@ -1,5 +1,7 @@
 "use client";
 
+import { ActorAvatar as ActorAvatarBase } from "@multica/ui/components/common/actor-avatar";
+
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -414,7 +416,7 @@ function TemplateConfigureStep({
             className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-title-sm"
             aria-hidden="true"
           >
-            {template.avatar_emoji}
+            <ActorAvatarBase name={template.title} initials="" avatarUrl={`emoji:${template.avatar_emoji}`} size="lg" />
           </span>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">

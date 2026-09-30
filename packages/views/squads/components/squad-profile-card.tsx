@@ -9,7 +9,8 @@ import {
   memberListOptions,
 } from "@multica/core/workspace/queries";
 import { useWorkspacePaths } from "@multica/core/paths";
-import { ActorAvatar as ActorAvatarBase } from "@multica/ui/components/common/actor-avatar";
+import { SquadAvatar } from "../../common/squad-avatar";
+import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { AppLink } from "../../navigation";
@@ -65,11 +66,11 @@ export function SquadProfileCard({ squadId }: SquadProfileCardProps) {
   return (
     <div className="group flex flex-col gap-3 text-left">
       <div className="flex items-start gap-3">
-        <ActorAvatarBase
+        <SquadAvatar
           name={squad.name}
           initials={initials}
-          avatarUrl={squad.avatar_url}
-          isSquad
+          avatarUrl={resolvePublicFileUrl(squad.avatar_url)}
+          templateKey={squad.template_key}
           size="xl"
         />
         <div className="min-w-0 flex-1">

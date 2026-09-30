@@ -18,6 +18,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/skill"
 	"github.com/multica-ai/multica/server/internal/storage"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -255,7 +256,16 @@ func (h *Handler) normalizeStoredAvatarURL(raw string) string {
 // accepted without re-validation: clients round-trip whole objects, and a
 // value that is already persisted grants nothing new.
 func (h *Handler) acceptAvatarURL(w http.ResponseWriter, r *http.Request, raw, current string) (string, bool) {
-	value := h.normalizeStoredAvatarURL(strings.TrimSpace(raw))
+	value := strings.TrimSpace(raw)
+	if strings.HasPrefix(value, avatarIconPrefix) {
+		icon := strings.TrimPrefix(value, avatarIconPrefix)
+		if !isAvatarIconName(icon) {
+			writeError(w, http.StatusBadRequest, "avatar_url must reference a supported Lucide icon")
+			return "", false
+		}
+		return value, true
+	}
+	value = h.normalizeStoredAvatarURL(value)
 	if h.Storage == nil || value == strings.TrimSpace(current) {
 		return value, true
 	}
@@ -497,4 +507,8 @@ func setAvatarCacheControl(w http.ResponseWriter, maxAge int) {
 		return
 	}
 	w.Header().Set("Cache-Control", "private, max-age="+strconv.Itoa(maxAge))
+}
+
+func isAvatarIconName(icon string) bool {
+	return skill.IsIconName(icon) || icon == "users" || icon == "siren" || icon == "telescope"
 }

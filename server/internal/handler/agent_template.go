@@ -189,7 +189,7 @@ func (h *Handler) CreateAgentFromTemplate(w http.ResponseWriter, r *http.Request
 		// routing copy stay in step.
 		name = template.Title(language)
 	}
-	avatar := agentEmojiAvatarPrefix + template.AvatarEmoji
+	avatar := templateIconAvatar(template.AvatarEmoji)
 
 	create := CreateAgentRequest{
 		Name:               name,

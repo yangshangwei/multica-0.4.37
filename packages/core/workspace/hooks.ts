@@ -141,11 +141,16 @@ export function useActorName() {
     return null;
   }, [agents, members, squads]);
 
+  const getSquadTemplateKey = useCallback((id: string): string | undefined => {
+    return squads.find((s) => s.id === id)?.template_key;
+  }, [squads]);
+
   return useMemo(
     () => ({
       getMemberName,
       getAgentName,
       getSquadName,
+      getSquadTemplateKey,
       getActorName,
       getActorInitials,
       getActorAvatarUrl,
@@ -157,6 +162,7 @@ export function useActorName() {
       getAgentName,
       getMemberName,
       getSquadName,
+      getSquadTemplateKey,
     ],
   );
 }

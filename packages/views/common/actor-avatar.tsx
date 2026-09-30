@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { SquadAvatar } from "./squad-avatar";
 import { ActorAvatar as ActorAvatarBase } from "@multica/ui/components/common/actor-avatar";
 import { AVATAR_SIZE_PX, type AvatarSize } from "@multica/ui/lib/avatar-size";
 import {
@@ -84,16 +85,17 @@ export function ActorAvatar({
   hoverCardVariant = "profile",
   profileLink,
 }: ActorAvatarProps) {
-  const { getActorName, getActorInitials, getActorAvatarUrl } = useActorName();
+  const { getActorName, getActorInitials, getActorAvatarUrl, getSquadTemplateKey } = useActorName();
   const paths = useWorkspacePaths();
-  const avatar = (
+  const avatar = actorType === "squad" ? (
+    <SquadAvatar name={getActorName(actorType, actorId)} initials={getActorInitials(actorType, actorId)} avatarUrl={getActorAvatarUrl(actorType, actorId)} templateKey={getSquadTemplateKey(actorId)} size={size} className={className} />
+  ) : (
     <ActorAvatarBase
       name={getActorName(actorType, actorId)}
       initials={getActorInitials(actorType, actorId)}
       avatarUrl={getActorAvatarUrl(actorType, actorId)}
       isAgent={actorType === "agent"}
       isSystem={actorType === "system"}
-      isSquad={actorType === "squad"}
       size={size}
       className={className}
     />

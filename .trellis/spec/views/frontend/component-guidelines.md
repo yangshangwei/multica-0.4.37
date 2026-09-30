@@ -114,3 +114,15 @@ the real primitives, as `sidebar-version.test.tsx` and
 <!-- Component-related mistakes your team has made -->
 
 (To be filled by the team)
+
+### Entity icon presentation
+
+Projects also use `ProjectIcon` / `ProjectIconPicker` for display and editing. Their existing `icon` field stores `icon:<name>`; raw legacy emoji is display-only compatibility.
+
+Agent and squad avatars use `ActorAvatar` in UI and the shared Lucide registry in `packages/ui/lib/avatar-icon.ts`. New icon choices persist as `icon:<allowlisted-name>`; uploaded image URLs remain supported. Legacy `emoji:` avatars are read as mapped Lucide icons, never rendered as emoji. Reactions are independent and continue using emoji.
+
+`common/squad-avatar.tsx` only supplies a template default when no avatar is present. Agent/squad containers remain circular; Skill tiles keep rounded squares and category-controlled color. Skill icon components share the UI registry but retain their own backend-validated whitelist.
+
+`AvatarUploadControl` exposes a Lucide picker for agents/squads. It persists via `onIconSelected` when supplied, otherwise `onUploaded`; an empty default preview is not a saved avatar and must not expose Clear. The generic actor directory exposes `getSquadTemplateKey` from the existing query cache.
+
+Mobile uses generated Lucide nodes with its existing SVG renderer. Refresh after registry changes with `node apps/mobile/scripts/sync-avatar-icons.cjs`. Server validation and template defaults must match the shared icon names; backend support must ship before clients that save icon markers.

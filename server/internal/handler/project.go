@@ -299,6 +299,13 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	icon := "icon:package"
+	if req.Icon != nil && strings.TrimSpace(*req.Icon) != "" {
+		icon = strings.TrimSpace(*req.Icon)
+	}
+	if !validateProjectIcon(w, icon) {
+		return
+	}
 	status := req.Status
 	if status == "" {
 		status = "planned"
@@ -419,7 +426,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		WorkspaceID:    wsUUID,
 		Title:          req.Title,
 		Description:    ptrToText(req.Description),
-		Icon:           ptrToText(req.Icon),
+		Icon:           pgtype.Text{String: icon, Valid: true},
 		Status:         status,
 		LeadType:       leadType,
 		LeadID:         leadID,
@@ -587,7 +594,11 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	}
 	if _, ok := rawFields["icon"]; ok {
 		if req.Icon != nil {
-			params.Icon = pgtype.Text{String: *req.Icon, Valid: true}
+			icon := strings.TrimSpace(*req.Icon)
+			if !validateProjectIcon(w, icon) {
+				return
+			}
+			params.Icon = pgtype.Text{String: icon, Valid: true}
 		} else {
 			params.Icon = pgtype.Text{Valid: false}
 		}
@@ -1021,4 +1032,14 @@ func (h *Handler) SearchProjects(w http.ResponseWriter, r *http.Request) {
 		"projects": resp,
 		"total":    total,
 	})
+}
+
+// Legacy glyphs remain readable and writable; explicit icon markers are a
+// closed Lucide vocabulary, never an image URL or arbitrary SVG content.
+func validateProjectIcon(w http.ResponseWriter, value string) bool {
+	if strings.HasPrefix(value, avatarIconPrefix) && !isAvatarIconName(strings.TrimPrefix(value, avatarIconPrefix)) {
+		writeError(w, http.StatusBadRequest, "icon must reference a supported Lucide icon")
+		return false
+	}
+	return true
 }

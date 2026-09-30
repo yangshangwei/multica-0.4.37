@@ -258,11 +258,11 @@ describe("useTabPresentation — pending / fallback", () => {
 });
 
 describe("ResourceLeadingVisual", () => {
-  it("renders a project icon with its emoji", () => {
-    const { getByText } = render(
+  it("renders a legacy project icon as Lucide", () => {
+    const { container } = render(
       <ResourceLeadingVisual visual={{ kind: "project-icon", icon: "🚀" }} />,
     );
-    expect(getByText("🚀")).toBeTruthy();
+    expect(container.querySelector("svg.lucide-rocket")).not.toBeNull();
   });
 
   it("renders a status glyph for an issue", () => {

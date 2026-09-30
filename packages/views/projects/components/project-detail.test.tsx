@@ -126,10 +126,6 @@ vi.mock("@multica/ui/hooks/use-mobile", () => ({
   useIsMobile: () => false,
 }));
 
-vi.mock("@multica/ui/components/common/emoji-picker", () => ({
-  EmojiPicker: () => null,
-}));
-
 vi.mock("@multica/ui/components/ui/resizable", () => ({
   ResizablePanelGroup: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { SquadAvatar } from "../../common/squad-avatar";
+
 import { useId, useState } from "react";
 import { useWorkspacePaths } from "@multica/core/paths";
 import type { Squad, SquadTemplate } from "@multica/core/types";
@@ -60,7 +62,7 @@ export function BuiltinSquadCatalog({ squads }: { squads: readonly Squad[] }) {
                 <li key={template.key} aria-label={title} className="flex min-w-0 flex-col gap-3 border-t border-border/60 py-4">
                   <div className="min-w-0">
                     <h3 className="flex items-start gap-2 text-body font-semibold">
-                      {template.avatar_emoji && <span aria-hidden="true" className="shrink-0">{template.avatar_emoji}</span>}
+                      <SquadAvatar name={template.title} initials="" templateKey={template.key} size="lg" />
                       <span className="min-w-0 break-words">{title}</span>
                     </h3>
                     <p className="mt-1.5 break-words text-body leading-5 text-muted-foreground">{summaries.get(template.key) ?? template.description}</p>

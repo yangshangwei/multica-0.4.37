@@ -110,6 +110,9 @@ func TestCreateSquadFromTemplate_StaffsTheWholeRoster(t *testing.T) {
 	if !ok {
 		t.Fatal("feature-delivery template missing")
 	}
+	if staffed.Squad.AvatarURL == nil || *staffed.Squad.AvatarURL != "icon:rocket" {
+		t.Errorf("squad avatar = %v, want icon:rocket", staffed.Squad.AvatarURL)
+	}
 	wantAgents := len(template.Members) + 1 // five seats plus the lead
 	if len(staffed.CreatedAgents) != wantAgents {
 		t.Errorf("created %d agents, want %d", len(staffed.CreatedAgents), wantAgents)
@@ -151,13 +154,16 @@ func TestCreateSquadFromTemplate_StaffsTheWholeRoster(t *testing.T) {
 
 	// Each created agent carries its role's own instructions and autonomy.
 	for _, agentID := range staffed.CreatedAgents {
-		var templateKey, autonomy, instructions string
-		dbfx.QueryRow(t, `SELECT template_key, autonomy_level, instructions FROM agent WHERE id = $1`, agentID).
-			Scan(&templateKey, &autonomy, &instructions)
+		var templateKey, autonomy, instructions, avatar string
+		dbfx.QueryRow(t, `SELECT template_key, autonomy_level, instructions, avatar_url FROM agent WHERE id = $1`, agentID).
+			Scan(&templateKey, &autonomy, &instructions, &avatar)
 		role, ok := service.AgentRoleTemplateByKey(templateKey)
 		if !ok {
 			t.Errorf("agent %s has template_key %q, which is not a known role", agentID, templateKey)
 			continue
+		}
+		if avatar != templateIconAvatar(role.AvatarEmoji) {
+			t.Errorf("%s avatar = %q, want role icon", templateKey, avatar)
 		}
 		if autonomy != string(role.Autonomy) {
 			t.Errorf("%s autonomy = %q, want the role's %q", templateKey, autonomy, role.Autonomy)

@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -308,8 +309,8 @@ func (h *Handler) CreateSquad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	avatarURL := pgtype.Text{}
-	if req.AvatarURL != nil {
+	avatarURL := pgtype.Text{String: avatarIconPrefix + "users", Valid: true}
+	if req.AvatarURL != nil && strings.TrimSpace(*req.AvatarURL) != "" {
 		accepted, ok := h.acceptAvatarURL(w, r, *req.AvatarURL, "")
 		if !ok {
 			return
