@@ -72,9 +72,13 @@ import {
   DEFAULT_CLOSE_BEHAVIOR,
   loadClosePreferences,
   saveClosePreferences,
-  type CloseBehavior,
   type PromptResult,
 } from "./close-behavior";
+import {
+  CLOSE_BEHAVIOR_CHANNELS,
+  isCloseBehavior,
+  type CloseBehavior,
+} from "../shared/close-behavior";
 import {
   buildTrayIconPath,
   createTray,
@@ -134,7 +138,7 @@ function requestCloseBehaviorPrompt(window: BrowserWindow): Promise<PromptResult
       resolve(result);
     };
 
-    window.webContents.send("close-behavior:prompt", {
+    window.webContents.send(CLOSE_BEHAVIOR_CHANNELS.prompt, {
       requestId: "main", // single-window for now; correlation via singleton state
     });
   });
@@ -1030,25 +1034,19 @@ if (!gotTheLock) {
       closePreferencesPath(app.getPath("userData")),
     );
 
-    ipcMain.handle("close-behavior:get", () => cachedCloseBehavior);
+    ipcMain.handle(CLOSE_BEHAVIOR_CHANNELS.get, () => cachedCloseBehavior);
 
     ipcMain.handle(
-      "close-behavior:set",
+      CLOSE_BEHAVIOR_CHANNELS.set,
       async (_event, value: unknown) => {
-        if (
-          typeof value !== "string" ||
-          !(["quit", "minimize", "ask"] as const).includes(
-            value as CloseBehavior,
-          )
-        ) {
+        if (!isCloseBehavior(value)) {
           return { ok: false, reason: "invalid_value" } as const;
         }
-        const behavior = value as CloseBehavior;
-        cachedCloseBehavior = behavior;
+        cachedCloseBehavior = value;
         try {
           await saveClosePreferences(
             closePreferencesPath(app.getPath("userData")),
-            behavior,
+            value,
           );
           return { ok: true } as const;
         } catch (err) {
@@ -1058,28 +1056,21 @@ if (!gotTheLock) {
       },
     );
 
-    ipcMain.handle("close-behavior:is-tray-supported", () =>
-      trayHandle !== null,
+    ipcMain.handle(
+      CLOSE_BEHAVIOR_CHANNELS.isTraySupported,
+      () => trayHandle !== null && trayHandle.isSupported(),
     );
 
     ipcMain.on(
-      "close-behavior:respond",
+      CLOSE_BEHAVIOR_CHANNELS.respond,
       (_event, payload: { requestId?: unknown; action?: unknown; remember?: unknown }) => {
         if (!pendingClosePromptResolve) return;
         if (typeof payload !== "object" || payload === null) return;
-        const action = payload.action;
+        if (!isCloseBehavior(payload.action)) return;
         const remember = payload.remember === true;
-        if (
-          typeof action !== "string" ||
-          !(["quit", "minimize", "ask"] as const).includes(
-            action as CloseBehavior,
-          )
-        ) {
-          return;
-        }
         const resolve = pendingClosePromptResolve;
         pendingClosePromptResolve = null;
-        resolve({ action: action as CloseBehavior, remember });
+        resolve({ action: payload.action, remember });
       },
     );
 

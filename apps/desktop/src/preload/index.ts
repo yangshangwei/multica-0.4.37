@@ -29,6 +29,13 @@ import {
   MAIN_RENDERER_CHANNEL_STATE_CHANNEL,
   type MainRendererMessageChannel,
 } from "../shared/main-renderer-messages";
+import {
+  CLOSE_BEHAVIOR_CHANNELS,
+  type CloseBehavior,
+  type CloseBehaviorPromptRequest,
+  type CloseBehaviorPromptResult,
+  type CloseBehaviorSetResult,
+} from "../shared/close-behavior";
 
 // Synchronously fetch app metadata from main at preload time so the renderer
 // can pass it into CoreProvider during the initial render — the alternative
@@ -337,11 +344,39 @@ const updaterAPI = {
     ipcRenderer.invoke("updater:check"),
 };
 
+const closeBehaviorAPI = {
+  get: (): Promise<CloseBehavior> =>
+    ipcRenderer.invoke(CLOSE_BEHAVIOR_CHANNELS.get),
+  set: (value: CloseBehavior): Promise<CloseBehaviorSetResult> =>
+    ipcRenderer.invoke(CLOSE_BEHAVIOR_CHANNELS.set, value),
+  isTraySupported: (): Promise<boolean> =>
+    ipcRenderer.invoke(CLOSE_BEHAVIOR_CHANNELS.isTraySupported),
+  onPrompt: (
+    handler: (req: CloseBehaviorPromptRequest) => void,
+  ): (() => void) => {
+    const listener = (
+      _event: Electron.IpcRendererEvent,
+      req: CloseBehaviorPromptRequest,
+    ) => handler(req);
+    ipcRenderer.on(CLOSE_BEHAVIOR_CHANNELS.prompt, listener);
+    return () => {
+      ipcRenderer.removeListener(CLOSE_BEHAVIOR_CHANNELS.prompt, listener);
+    };
+  },
+  respond: (requestId: string, result: CloseBehaviorPromptResult): void =>
+    ipcRenderer.send(CLOSE_BEHAVIOR_CHANNELS.respond, {
+      requestId,
+      action: result.action,
+      remember: result.remember,
+    }),
+};
+
 if (process.contextIsolated) {
   contextBridge.exposeInMainWorld("electron", electronAPI);
   contextBridge.exposeInMainWorld("desktopAPI", desktopAPI);
   contextBridge.exposeInMainWorld("daemonAPI", daemonAPI);
   contextBridge.exposeInMainWorld("updater", updaterAPI);
+  contextBridge.exposeInMainWorld("closeBehaviorAPI", closeBehaviorAPI);
 } else {
   // @ts-expect-error - fallback for non-isolated context
   window.electron = electronAPI;
@@ -351,4 +386,6 @@ if (process.contextIsolated) {
   window.daemonAPI = daemonAPI;
   // @ts-expect-error - fallback for non-isolated context
   window.updater = updaterAPI;
+  // @ts-expect-error - fallback for non-isolated context
+  window.closeBehaviorAPI = closeBehaviorAPI;
 }

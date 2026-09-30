@@ -26,7 +26,9 @@ import enSquads from "./en/squads.json";
 import enBilling from "./en/billing.json";
 import enDocs from "./en/docs.json";
 import enChangelog from "./en/changelog.json";
+import enDesktop from "./en/desktop.json";
 import zhHansChangelog from "./zh-Hans/changelog.json";
+import zhHansDesktop from "./zh-Hans/desktop.json";
 import zhHansCommon from "./zh-Hans/common.json";
 import zhHansAuth from "./zh-Hans/auth.json";
 import zhHansSettings from "./zh-Hans/settings.json";
@@ -86,6 +88,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     billing: enBilling,
     docs: enDocs,
     changelog: enChangelog,
+    desktop: enDesktop,
   },
   "zh-Hans": {
     common: zhHansCommon,
@@ -115,5 +118,6 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     billing: zhHansBilling,
     docs: zhHansDocs,
     changelog: zhHansChangelog,
+    desktop: zhHansDesktop,
   },
 };

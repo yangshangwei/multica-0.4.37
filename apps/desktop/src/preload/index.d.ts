@@ -17,6 +17,12 @@ import type {
   DaemonPrefs,
   LocalRuntimeProbe,
 } from "../shared/daemon-types";
+import type {
+  CloseBehavior,
+  CloseBehaviorPromptRequest,
+  CloseBehaviorPromptResult,
+  CloseBehaviorSetResult,
+} from "../shared/close-behavior";
 
 interface DesktopAPI {
   /** App version + normalized OS, captured synchronously at preload time. */
@@ -172,12 +178,23 @@ interface UpdaterAPI {
   checkForUpdates: () => Promise<ManualUpdateCheckResult>;
 }
 
+interface CloseBehaviorAPI {
+  get: () => Promise<CloseBehavior>;
+  set: (value: CloseBehavior) => Promise<CloseBehaviorSetResult>;
+  isTraySupported: () => Promise<boolean>;
+  onPrompt: (
+    handler: (req: CloseBehaviorPromptRequest) => void,
+  ) => () => void;
+  respond: (requestId: string, result: CloseBehaviorPromptResult) => void;
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI;
     desktopAPI: DesktopAPI;
     daemonAPI: DaemonAPI;
     updater: UpdaterAPI;
+    closeBehaviorAPI: CloseBehaviorAPI;
   }
 }
 

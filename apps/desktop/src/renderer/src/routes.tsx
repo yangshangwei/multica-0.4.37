@@ -40,6 +40,7 @@ import { Download, Server } from "lucide-react";
 import { DaemonSettingsTab } from "./components/daemon-settings-tab";
 import { UpdatesSettingsTab } from "./components/updates-settings-tab";
 import { RuntimeConfigSettingsTab } from "./components/runtime-config-settings-tab";
+import { DesktopBehaviorSettingsTab } from "./components/desktop-behavior-settings-tab";
 import { WorkspaceRouteLayout } from "./components/workspace-route-layout";
 import { DesktopRouteErrorPage } from "./components/route-error-page";
 
@@ -70,6 +71,12 @@ function DesktopSettingsRoute() {
           label: t(($) => $.desktop.tabs.updates),
           icon: Download,
           content: <UpdatesSettingsTab />,
+        },
+        {
+          value: "behavior",
+          label: t(($) => $.desktop.tabs.behavior),
+          icon: Server,
+          content: <DesktopBehaviorSettingsTab />,
         },
       ]}
     />

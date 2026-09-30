@@ -1,9 +1,14 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import type { BrowserWindow } from "electron";
+import {
+  DEFAULT_CLOSE_BEHAVIOR,
+  isCloseBehavior,
+  type CloseBehavior,
+} from "../shared/close-behavior";
 
 /**
- * close-behavior.ts
+ * close-behavior.ts (main process implementation)
  *
  * Owns the user's preference for what should happen when the main window's
  * close button is pressed on Windows / Linux (macOS keeps the OS-native
@@ -12,17 +17,13 @@ import type { BrowserWindow } from "electron";
  * Persistence lives alongside the other Electron-managed prefs under
  * `app.getPath("userData")/close-preferences.json`, deliberately separate
  * from `~/.multica/desktop_prefs.json` (daemon prefs).
+ *
+ * Types and channel constants are re-exported from `shared/close-behavior.ts`
+ * so preload can import the same contract without crossing into main/.
  */
 
-export type CloseBehavior = "quit" | "minimize" | "ask";
-
-export const DEFAULT_CLOSE_BEHAVIOR: CloseBehavior = "ask";
-
-const VALID_BEHAVIORS: ReadonlySet<string> = new Set([
-  "quit",
-  "minimize",
-  "ask",
-]);
+export type { CloseBehavior };
+export { DEFAULT_CLOSE_BEHAVIOR };
 
 export function closePreferencesPath(userDataPath: string): string {
   return join(userDataPath, "close-preferences.json");
@@ -32,8 +33,7 @@ function parseCloseBehavior(value: unknown): CloseBehavior {
   if (
     typeof value === "object" &&
     value !== null &&
-    typeof (value as { closeBehavior?: unknown }).closeBehavior === "string" &&
-    VALID_BEHAVIORS.has((value as { closeBehavior: string }).closeBehavior)
+    isCloseBehavior((value as { closeBehavior?: unknown }).closeBehavior)
   ) {
     return (value as { closeBehavior: CloseBehavior }).closeBehavior;
   }
@@ -68,11 +68,11 @@ export async function saveClosePreferences(
 /**
  * Result returned by the renderer-driven prompt modal. `action === "ask"`
  * means the user chose Cancel and no behavior should change.
+ *
+ * Re-exported from shared so the preload surface uses the same shape.
  */
-export interface PromptResult {
-  action: CloseBehavior;
-  remember: boolean;
-}
+export type { CloseBehaviorPromptResult as PromptResult } from "../shared/close-behavior";
+import type { CloseBehaviorPromptResult as PromptResult } from "../shared/close-behavior";
 
 export interface ApplyCloseBehaviorOptions {
   mainWindow: BrowserWindow;
