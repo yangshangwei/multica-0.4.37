@@ -78,7 +78,7 @@ test("grouped settings remain reachable from the sidebar and floating chat survi
   await floating.uncheck();
   await expect(launcher).toHaveCount(0);
 
-  await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
   await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
@@ -88,7 +88,7 @@ test("grouped settings remain reachable from the sidebar and floating chat survi
 
   await floating.check();
   await expect(launcher).toBeVisible();
-  await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
   await expect(launcher).toBeVisible();
@@ -119,13 +119,13 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await quickPriority.check();
   await priority.uncheck();
 
-  await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
   await openPreferences(page, slug);
   await expect(priority).not.toBeChecked();
   await expect(quickPriority).toBeChecked();
-  await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await page.getByRole("button", { name: "New Issue", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Quick create issue", exact: true }).getByRole("button", { name: "No priority", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Switch to Manual", exact: true }).click();
@@ -155,7 +155,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await openPreferences(page, slug);
   await expect(priority).not.toBeChecked();
   await priority.check();
-  await page.getByRole("link", { name: "Issues", exact: true }).click();
+  await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
   await page.getByRole("button", { name: "New Issue", exact: true }).click();

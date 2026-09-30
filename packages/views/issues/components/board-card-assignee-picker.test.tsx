@@ -63,6 +63,7 @@ vi.mock("@multica/core/workspace/hooks", () => ({
     getActorName: (type: string) => `Assigned ${type}`,
     getActorInitials: () => "AA",
     getActorAvatarUrl: () => null,
+    getSquadTemplateKey: () => null,
   }),
 }));
 

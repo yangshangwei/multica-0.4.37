@@ -174,12 +174,13 @@ test("manual issue status, priority and comment persist through refresh and conf
   } finally { await api.deleteFeatureWorkspace(workspace.id); }
 });
 
-test("an onboarded member creates another workspace through About you before workspace and runtime", async ({ page }, info) => {
+test("an onboarded member creates another workspace through Welcome, About you, workspace and runtime", async ({ page }, info) => {
   const { api, workspace, suffix } = await account("workspace");
   let additional: TestWorkspace | undefined;
   try {
     await authenticate(page, api);
     await page.goto("/workspaces/new", { waitUntil: "domcontentloaded" });
+    await page.getByRole("button", { name: "Continue on web", exact: true }).click();
     await expect(page.locator('[aria-current="step"]').filter({ hasText: "About you" })).toBeVisible();
     await expect(page.getByRole("radio", { name: "Engineer", exact: true })).toBeVisible();
     await expect(page.getByRole("textbox", { name: "Workspace name", exact: true })).toHaveCount(0);

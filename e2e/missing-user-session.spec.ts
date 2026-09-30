@@ -47,7 +47,7 @@ test("an obsolete session returns to sign-in and can open the MCP market after a
     await expect(page).toHaveURL(new RegExp(`/${slug}/`), { timeout: 30_000 });
     await page.goto(`/${slug}/mcp`);
     await expect(page.getByRole("tab", { name: "MCP market", exact: true })).toBeVisible();
-    await expect(page.getByRole("button", { name: "View Playwright", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "View configuration: Playwright", exact: true })).toBeVisible();
     expect(authErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
     expect(identityStatuses.filter((status) => status === 401 || status === 404).length).toBeLessThanOrEqual(2);

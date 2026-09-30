@@ -80,7 +80,7 @@ async function openDiscoveryStaffing(page: Page, fixture: LocalizedFixture, loca
   });
   await page.goto(`/${fixture.slug}/squads`);
   await page.locator("header").getByRole("button", { name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true }).click();
-  await page.getByRole("menuitem", { name: locale === "zh-Hans" ? "从模板创建" : "Create from template", exact: true }).click();
+  await page.getByRole("dialog").getByRole("button", { name: locale === "zh-Hans" ? /^从模板创建/ : /^Create from template/ }).click();
   expect((await catalog).status()).toBe(200);
   const dialog = page.getByRole("dialog");
   const name = locale === "zh-Hans" ? "需求预研小队" : "Discovery Squad";
@@ -283,7 +283,8 @@ test("specialist skills localize, search and open their official copies without 
       for (const purpose of [enSkills.builtin_role_skills[skill.name].description, zhSkills.builtin_role_skills[skill.name].description]) {
         await search.fill(purpose);
         await expect(page.getByText(displayed.name, { exact: true }).first()).toBeVisible();
-        await expect(page.getByText(displayed.description, { exact: true }).first()).toBeVisible();
+        await expect(page.getByText(displayed.summary, { exact: true }).first()).toBeVisible();
+        await expect(page.getByTitle(displayed.description, { exact: true }).first()).toBeVisible();
       }
       await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
       await fromTemplate.click();

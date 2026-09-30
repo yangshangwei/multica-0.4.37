@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { fireEvent, screen } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import type { CommentTriggerPreviewAgent } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { CommentTriggerChips } from "./comment-trigger-chips";
@@ -114,7 +114,7 @@ describe("CommentTriggerChips", () => {
 
     fireEvent.click(screen.getByRole("button"));
 
-    const row = screen.getByRole("button", { name: /Bob/ });
+    const row = within(screen.getByRole("dialog")).getByRole("button", { name: /Bob/ });
     expect(row).toHaveTextContent("Bob");
     fireEvent.click(row);
     expect(onToggle).toHaveBeenCalledWith("agent-2");
