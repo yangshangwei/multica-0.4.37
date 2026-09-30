@@ -76,16 +76,10 @@ export function DesktopBehaviorSettingsTab() {
 
   const items = [
     { value: "quit" as const, label: t(($) => $.close_behavior.quit) },
-    ...(traySupported
-      ? [
-          {
-            value: "minimize" as const,
-            label: t(($) => $.close_behavior.minimize),
-          },
-        ]
-      : []),
+    { value: "minimize" as const, label: t(($) => $.close_behavior.minimize) },
     { value: "ask" as const, label: t(($) => $.close_behavior.ask) },
   ];
+  const availableItems = items.filter((item) => traySupported || item.value !== "minimize");
 
   return (
     <SettingsTab
@@ -103,7 +97,7 @@ export function DesktopBehaviorSettingsTab() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {items.map((item) => (
+            {availableItems.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 {item.label}
               </SelectItem>
