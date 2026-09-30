@@ -42,4 +42,6 @@ full-description tooltip changes were preserved.
 No new dependencies or backend changes. Electron was not separately exercised
 end to end; both clients consume the modified shared view components. Existing
 desktop/tray and other task changes belong to concurrent work and were left
-outside this task. No commits or remote changes were made.
+outside this task. At the original verification handoff, application changes
+were uncommitted. Trellis had committed only this task's archive metadata as
+`cc9792aac`; that verification session made no remote changes.

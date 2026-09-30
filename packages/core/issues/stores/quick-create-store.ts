@@ -41,6 +41,7 @@ interface QuickCreateState extends QuickCreatePreferences {
   setLastActor: (type: QuickCreateActorType | null, id: string | null) => void;
   setKeepOpen: (value: boolean) => void;
   toggleFavoriteActor: (actor: QuickCreateActorRef, scope?: QuickCreateScope | null) => boolean;
+  recordRecentActor: (actor: QuickCreateActorRef, scope: QuickCreateScope | null) => boolean;
   recordSuccessfulActor: (actor: QuickCreateActorRef, scope: QuickCreateScope | null) => boolean;
 }
 
@@ -65,6 +66,10 @@ function actorRef(value: unknown): QuickCreateActorRef | null {
 
 function sameActor(a: QuickCreateActorRef, b: QuickCreateActorRef): boolean {
   return a.type === b.type && a.id === b.id;
+}
+
+function promoteRecentActor(recentActors: QuickCreateActorRef[], actor: QuickCreateActorRef): QuickCreateActorRef[] {
+  return [actor, ...recentActors.filter((entry) => !sameActor(entry, actor))].slice(0, RECENT_ACTOR_LIMIT);
 }
 
 function actorRefs(value: unknown, limit = Infinity): QuickCreateActorRef[] {
@@ -207,13 +212,19 @@ export const useQuickCreateStore = create<QuickCreateState>()(
         }));
         return true;
       },
+      recordRecentActor: (value, scope) => {
+        const actor = actorRef(value);
+        if (!actor || !isQuickCreateScopeCurrent(scope) || !isQuickCreateStoreReady(get())) return false;
+        set(({ recentActors }) => ({ recentActors: promoteRecentActor(recentActors, actor) }));
+        return true;
+      },
       recordSuccessfulActor: (value, scope) => {
         const actor = actorRef(value);
         if (!actor || !isQuickCreateScopeCurrent(scope) || !isQuickCreateStoreReady(get())) return false;
         set(({ recentActors }) => ({
           lastActorType: actor.type,
           lastActorId: actor.id,
-          recentActors: [actor, ...recentActors.filter((entry) => !sameActor(entry, actor))].slice(0, RECENT_ACTOR_LIMIT),
+          recentActors: promoteRecentActor(recentActors, actor),
         }));
         return true;
       },

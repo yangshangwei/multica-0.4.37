@@ -55,7 +55,7 @@ import { ContentEditor, type ContentEditorRef, TitleEditor, type TitleEditorRef,
 import { useIssueCreateUploads } from "./use-issue-create-uploads";
 import { useShortcut } from "@multica/core/shortcuts";
 import { ShortcutKeycaps } from "../common/shortcut-keycaps";
-import { StatusIcon, StatusPicker, PriorityIcon, PriorityPicker, StagePicker, AssigneePicker, StartDatePicker, DueDatePicker, LabelPicker } from "../issues/components";
+import { StatusIcon, StatusPicker, PriorityIcon, PriorityPicker, StagePicker, StartDatePicker, DueDatePicker, LabelPicker } from "../issues/components";
 import { maxSiblingStage } from "../issues/components/pickers/stage-picker";
 import { ProjectPicker } from "../projects/components/project-picker";
 import { useIssueTriggerPreview } from "../issues/hooks/use-issue-trigger-preview";
@@ -65,7 +65,7 @@ import { useWorkspaceId } from "@multica/core/hooks";
 import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
 import { useIssueDraftStore, type IssueCreateDraft } from "@multica/core/issues/stores/draft-store";
 import { useCreateModeStore } from "@multica/core/issues/stores/create-mode-store";
-import { useQuickCreateStore } from "@multica/core/issues/stores/quick-create-store";
+import { captureQuickCreateScope, useQuickCreateStore } from "@multica/core/issues/stores/quick-create-store";
 import {
   useIssueCreateSettingsStore,
   type ManualCreateField,
@@ -100,6 +100,7 @@ import { useT } from "../i18n";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";
 import { IssueDescriptionAssist } from "./issue-description-assist";
+import { ManualCreateAssigneePicker } from "./manual-create-assignee-picker";
 
 // ---------------------------------------------------------------------------
 // ManualCreatePanel — manual-mode body of the create-issue dialog. Renders
@@ -248,6 +249,7 @@ export function ManualCreatePanel({
   const setLastMode = useCreateModeStore((s) => s.setLastMode);
   const keepOpen = useQuickCreateStore((s) => s.keepOpen);
   const setKeepOpen = useQuickCreateStore((s) => s.setKeepOpen);
+  const recordRecentActor = useQuickCreateStore((s) => s.recordRecentActor);
   const manualFields = useIssueCreateSettingsStore((s) => s.manualCreateFields);
 
   const sendShortcut = useShortcut("send");
@@ -485,6 +487,7 @@ export function ManualCreatePanel({
       const pendingDesc = descEditorRef.current?.flushPendingUpdate?.();
       if (pendingDesc != null) setManual({ description: pendingDesc });
       submittedDraftRef.current = useIssueDraftStore.getState().draft;
+      const submittedScope = captureQuickCreateScope(wsId);
       try {
       const description = descEditorRef.current?.getMarkdown()?.trim() || undefined;
       const activeAttachmentIds = draftAttachments
@@ -535,6 +538,12 @@ export function ManualCreatePanel({
           stage: parentIssueId && stage != null ? stage : undefined,
           project_id: projectId,
         });
+      }
+
+      // Only accepted assignments enter shared discovery history. Keep the
+      // quick-create assistant's default and fallback identity unchanged.
+      if (assigneeId && (assigneeType === "agent" || assigneeType === "squad")) {
+        recordRecentActor({ type: assigneeType, id: assigneeId }, submittedScope);
       }
 
       // Custom-property values can only be addressed once the issue has an
@@ -1036,7 +1045,8 @@ export function ManualCreatePanel({
 
               {/* Assignee */}
               {showField.assignee && (
-                <AssigneePicker
+                <ManualCreateAssigneePicker
+                  wsId={wsId}
                   assigneeType={assigneeType ?? null}
                   assigneeId={assigneeId ?? null}
                   onUpdate={(u) => updateAssignee(
@@ -1044,7 +1054,6 @@ export function ManualCreatePanel({
                     u.assignee_id ?? undefined,
                   )}
                   triggerRender={<PillButton />}
-                  align="start"
                   open={fieldPickerOpen === "assignee" ? true : undefined}
                   onOpenChange={(open) => setFieldPickerOpen(open ? "assignee" : null)}
                 />

@@ -154,18 +154,58 @@ describe("quick create preferences", () => {
     expect(useQuickCreateStore.getState().lastActorId).toBeNull();
   });
 
-  it("records only accepted-submit calls, promotes repeats, and retains 20 typed actors", () => {
-    for (let i = 0; i < 21; i += 1) record(agent(String(i)));
-    record(squad("20"));
-    record(agent("10"));
+  it.each(["recordSuccessfulActor", "recordRecentActor"] as const)("%s promotes repeats and retains 20 typed actors", (action) => {
+    const recordActor = (actor: QuickCreateActorRef) => useQuickCreateStore.getState()[action](actor, captureQuickCreateScope());
+    for (let i = 0; i < 21; i += 1) recordActor(agent(String(i)));
+    recordActor(squad("20"));
+    recordActor(agent("10"));
     const state = useQuickCreateStore.getState();
     expect(state.recentActors).toHaveLength(20);
     expect(state.recentActors.slice(0, 3)).toEqual([agent("10"), squad("20"), agent("20")]);
     expect(state.recentActors).not.toContainEqual(agent("0"));
     expect(state.recentActors).not.toContainEqual(agent("1"));
     expect(state.recentActors.filter((ref) => ref.type === "agent" && ref.id === "10")).toHaveLength(1);
-    expect(state).toMatchObject({ lastActorType: "agent", lastActorId: "10" });
+    expect(state).toMatchObject(action === "recordSuccessfulActor"
+      ? { lastActorType: "agent", lastActorId: "10" }
+      : { lastActorType: null, lastActorId: null });
     expect(state.favoriteActors).toEqual([]);
+  });
+
+  it("records a manual assignee without changing quick-create choices", async () => {
+    record(squad("quick-fallback"));
+    const { setDefaultActor, toggleFavoriteActor, setKeepOpen, recordRecentActor } = useQuickCreateStore.getState();
+    setDefaultActor(agent("default"));
+    toggleFavoriteActor(squad("favorite"));
+    setKeepOpen(true);
+
+    expect(recordRecentActor(agent("manual"), captureQuickCreateScope())).toBe(true);
+    const expected = {
+      defaultActor: agent("default"),
+      lastActorType: "squad",
+      lastActorId: "quick-fallback",
+      favoriteActors: [squad("favorite")],
+      keepOpen: true,
+      recentActors: [agent("manual"), squad("quick-fallback")],
+    };
+    expect(useQuickCreateStore.getState()).toMatchObject(expected);
+    await activate("b");
+    await activate("a");
+    expect(useQuickCreateStore.getState()).toMatchObject(expected);
+  });
+
+  it("leaves quick-create fallback and default empty after a first manual assignment", () => {
+    const actor = { ...squad("manual"), name: "not persisted" };
+    expect(useQuickCreateStore.getState().recordRecentActor(actor, captureQuickCreateScope())).toBe(true);
+    expect(useQuickCreateStore.getState()).toMatchObject({ ...DEFAULTS, recentActors: [squad("manual")] });
+  });
+
+  it.each([null, { type: "human", id: "person" }, { type: "agent", id: "" }, { type: "squad", id: " " }])("rejects malformed recent actor %j", (actor) => {
+    record(agent("previous"));
+    const before = useQuickCreateStore.getState();
+    storage.setItem.mockClear();
+    expect(before.recordRecentActor(actor as QuickCreateActorRef, captureQuickCreateScope())).toBe(false);
+    expect(useQuickCreateStore.getState()).toBe(before);
+    expect(storage.setItem).not.toHaveBeenCalled();
   });
 
   it("updates last actor and recents together for subscribers", () => {
@@ -257,6 +297,8 @@ describe("workspace and session scope", () => {
     expect(isQuickCreateScopeCurrent(oldScope)).toBe(false);
     expect(useQuickCreateStore.getState().toggleFavoriteActor(agent("wrong"))).toBe(false);
     expect(useQuickCreateStore.getState().recordSuccessfulActor(agent("wrong"), oldScope)).toBe(false);
+    expect(useQuickCreateStore.getState().recordRecentActor(agent("wrong"), oldScope)).toBe(false);
+    expect(useQuickCreateStore.getState().recordRecentActor(agent("wrong"), captureQuickCreateScope())).toBe(false);
     useQuickCreateStore.getState().setLastActor("agent", "wrong");
     useQuickCreateStore.getState().setKeepOpen(false);
     expect(storage.values.get(key("b"))).toBe(before);
@@ -271,6 +313,30 @@ describe("workspace and session scope", () => {
     auth.status = "recovering";
     expect(captureQuickCreateScope()).toBeNull();
     expect(record(agent("wrong"))).toBe(false);
+    expect(useQuickCreateStore.getState().recordRecentActor(agent("wrong"), captureQuickCreateScope())).toBe(false);
+  });
+
+  it("rejects a recent-only write with no captured scope", () => {
+    const before = useQuickCreateStore.getState();
+    storage.setItem.mockClear();
+    expect(before.recordRecentActor(agent("wrong"), null)).toBe(false);
+    expect(useQuickCreateStore.getState()).toBe(before);
+    expect(storage.setItem).not.toHaveBeenCalled();
+  });
+
+  it("rejects recent-only writes while the current scope is rehydrating", async () => {
+    const scope = captureQuickCreateScope();
+    const pending = deferredRead();
+    storage.getItem.mockReturnValueOnce(pending.promise);
+    const reading = useQuickCreateStore.persist.rehydrate();
+    const before = useQuickCreateStore.getState();
+    storage.setItem.mockClear();
+    expect(isQuickCreateScopeCurrent(scope)).toBe(true);
+    expect(before.recordRecentActor(agent("wrong"), scope)).toBe(false);
+    expect(useQuickCreateStore.getState()).toBe(before);
+    expect(storage.setItem).not.toHaveBeenCalled();
+    pending.resolve(null);
+    await reading;
   });
 
   it("rejects a previous user's delayed success and preferences", () => {
@@ -279,6 +345,7 @@ describe("workspace and session scope", () => {
     auth.user = { id: "user-2" };
     expect(isQuickCreateStoreReady(useQuickCreateStore.getState())).toBe(false);
     expect(useQuickCreateStore.getState().recordSuccessfulActor(squad("late"), scope)).toBe(false);
+    expect(useQuickCreateStore.getState().recordRecentActor(squad("late"), scope)).toBe(false);
   });
 
   it("clears every preference and rejects same-user success after auth cleanup", async () => {
@@ -295,6 +362,7 @@ describe("workspace and session scope", () => {
     await useQuickCreateStore.persist.rehydrate();
     expect(isQuickCreateStoreReady(useQuickCreateStore.getState())).toBe(true);
     expect(useQuickCreateStore.getState().recordSuccessfulActor(agent("late"), scope)).toBe(false);
+    expect(useQuickCreateStore.getState().recordRecentActor(agent("late"), scope)).toBe(false);
     expect(useQuickCreateStore.getState().recentActors).toEqual([]);
   });
 

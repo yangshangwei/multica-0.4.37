@@ -43,6 +43,10 @@ const mockSetActiveMode = vi.hoisted(() => vi.fn());
 const mockClearDraft = vi.hoisted(() => vi.fn());
 const mockSetLastAssignee = vi.hoisted(() => vi.fn());
 const mockSetKeepOpen = vi.hoisted(() => vi.fn());
+const mockRecordRecentActor = vi.hoisted(() => vi.fn());
+const mockCaptureQuickCreateScope = vi.hoisted(() => vi.fn(() => ({
+  workspaceSlug: "test", workspaceId: "ws-test", userId: "user-1", resetGeneration: 0,
+})));
 const mockToastCustom = vi.hoisted(() => vi.fn());
 const mockToastDismiss = vi.hoisted(() => vi.fn());
 const mockToastError = vi.hoisted(() => vi.fn());
@@ -159,6 +163,7 @@ const mockDraftStore = {
 const mockQuickCreateStore = {
   keepOpen: false,
   setKeepOpen: mockSetKeepOpen,
+  recordRecentActor: mockRecordRecentActor,
 };
 
 type ManualCreateField =
@@ -252,8 +257,22 @@ vi.mock("@multica/core/issues/stores/draft-store", () => ({
 }));
 
 vi.mock("@multica/core/issues/stores/quick-create-store", () => ({
-  useQuickCreateStore: (selector?: (state: typeof mockQuickCreateStore) => unknown) =>
-    (selector ? selector(mockQuickCreateStore) : mockQuickCreateStore),
+  captureQuickCreateScope: mockCaptureQuickCreateScope,
+  useQuickCreateStore: Object.assign(
+    (selector?: (state: typeof mockQuickCreateStore) => unknown) =>
+      (selector ? selector(mockQuickCreateStore) : mockQuickCreateStore),
+    { getState: () => mockQuickCreateStore },
+  ),
+}));
+
+vi.mock("./manual-create-assignee-picker", () => ({
+  ManualCreateAssigneePicker: ({ onUpdate, open }: {
+    onUpdate: (value: { assignee_type: string; assignee_id: string }) => void;
+    open?: boolean;
+  }) => <button type="button" data-testid="assignee-picker" data-open={!!open}
+    onClick={() => onUpdate({ assignee_type: "agent", assignee_id: "agent-after-edit" })}>
+    Pick test assignee
+  </button>,
 }));
 
 vi.mock("@multica/core/issues/stores/issue-create-settings-store", () => ({
@@ -456,7 +475,6 @@ vi.mock("../issues/components", () => ({
   StatusPicker: () => <div data-testid="status-picker" />,
   PriorityPicker: () => <div data-testid="priority-picker" />,
   StagePicker: () => <div data-testid="stage-picker" />,
-  AssigneePicker: () => <div data-testid="assignee-picker" />,
   // Surface open/onOpenChange so tests can assert progressive-disclosure
   // behavior (mounted only when the user has opted in or has a value).
   StartDatePicker: ({ open, onOpenChange }: { open?: boolean; onOpenChange?: (v: boolean) => void }) => (
@@ -721,6 +739,40 @@ describe("CreateIssueModal", () => {
     mockSetIssueProperty.mockResolvedValue({
       properties: { "property-tier": "option-enterprise" },
     });
+  });
+
+  it.each([false, true])("records the submitted assignee only after creation is accepted (comment source: %s)", async (fromComment) => {
+    mockDraftStore.draft.manual.title = "Record accepted assignment";
+    mockDraftStore.draft.manual.assigneeType = "squad";
+    mockDraftStore.draft.manual.assigneeId = "submitted-squad";
+    const request = fromComment ? mockCreateCommentSubIssue : mockCreateIssue;
+    let accept!: (issue: unknown) => void;
+    request.mockImplementationOnce(() => new Promise((resolve) => { accept = resolve; }));
+    renderModal(<CreateIssueModal onClose={vi.fn()} data={fromComment ? sourceContextPanelData() : undefined} />);
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    expect(request).toHaveBeenCalledOnce();
+    expect(mockRecordRecentActor).not.toHaveBeenCalled();
+    mockSetManual.mockImplementation((patch: Partial<typeof mockDraftStore.draft.manual>) => {
+      mockDraftStore.draft = { ...mockDraftStore.draft, manual: { ...mockDraftStore.draft.manual, ...patch } };
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Pick test assignee" }));
+    await act(async () => accept({ id: "accepted", identifier: "TES-1", title: "Created", status: "todo", labels: [] }));
+    expect(mockRecordRecentActor).toHaveBeenCalledExactlyOnceWith(
+      { type: "squad", id: "submitted-squad" },
+      { workspaceSlug: "test", workspaceId: "ws-test", userId: "user-1", resetGeneration: 0 },
+    );
+    expect(mockDraftStore.draft.manual.assigneeId).toBe("agent-after-edit");
+  });
+
+  it("does not record recent actors when manual creation fails", async () => {
+    mockDraftStore.draft.manual.title = "Failed assignment";
+    mockDraftStore.draft.manual.assigneeType = "agent";
+    mockDraftStore.draft.manual.assigneeId = "agent-1";
+    mockCreateIssue.mockRejectedValueOnce(new Error("Create failed"));
+    renderModal(<CreateIssueModal onClose={vi.fn()} />);
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    await waitFor(() => expect(mockToastError).toHaveBeenCalled());
+    expect(mockRecordRecentActor).not.toHaveBeenCalled();
   });
 
   it("clears the AI preview when continuous creation starts a new manual draft", async () => {

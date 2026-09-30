@@ -2,7 +2,7 @@
 
 ## 1. Scope / Trigger
 
-The shared Web/Desktop `QuickCreateActorPicker` selects the actor that files an issue. It does not set the issue's eventual assignee. Keep this surface local to quick create; manual assignee, Chat pins, sidebar pins and mobile have different contracts.
+The shared Web/Desktop `QuickCreateActorPicker` supplies discovery for both issue-creation modes. Quick create selects the assistant that files an issue; `ManualCreateAssigneePicker` supplies direct assignment, including members and Unassigned. The shared search, categories, responsibility previews and scoped favorites/recent history do not merge those selection contracts. Ordinary issue/board assignment, Chat pins, sidebar pins and mobile remain separate surfaces.
 
 ## 2. Signatures
 
@@ -10,6 +10,7 @@ The shared Web/Desktop `QuickCreateActorPicker` selects the actor that files an 
 - `captureQuickCreateScope(expectedWorkspaceId?, expectedUserId?)` captures workspace slug/UUID, user and reset generation before asynchronous acceptance.
 - `isQuickCreateScopeCurrent(scope)` and `isQuickCreateStoreReady(state, wsId?, userId?)` validate live identity and hydrated identity.
 - Store `toggleFavoriteActor(ref, scope?)` and `recordSuccessfulActor(ref, capturedScope)` return false for stale/unready writes.
+- Store `recordRecentActor(ref, capturedScope)` records accepted manual agent/squad assignments without changing the default or last quick-create assistant.
 - Views `QuickCreateActorPicker` accepts eligible agents/squads, selected identity, favorites/recents, preference readiness, callbacks and separate agent/squad query states.
 - `PropertyPicker.navigationResetKey?` and `searchInputRef?` are opt-in generic navigation controls, not actor-specific state.
 
@@ -17,11 +18,13 @@ The shared Web/Desktop `QuickCreateActorPicker` selects the actor that files an 
 
 Persist only last-actor tuple, keepOpen and typed favorite/recent references under the existing workspace-aware `multica_quick_create` key. Never persist names, descriptions, query results, search text, filters or hydration metadata. This is local storage through StorageAdapter, not server synchronization; auth cleanup clears every workspace's preferences.
 
-Build rehydrated preferences from fresh defaults and allowlisted fields. A missing old recent array may be seeded from a valid last-actor tuple; an explicit empty array remains empty. Retain 20 unique recent actors, newest first. Record only after `api.quickCreateIssue` or `api.createCommentSubIssue` accepts the request, atomically with lastActor; background completion is a different event.
+Build rehydrated preferences from fresh defaults and allowlisted fields. A missing old recent array may be seeded from a valid last-actor tuple; an explicit empty array remains empty. Retain 20 unique recent actors, newest first. Quick creation records only after `api.quickCreateIssue` or `api.createCommentSubIssue` accepts the request, atomically with lastActor; background completion is a different event. Accepted manual creation records only the submitted agent/squad in the same recent list. Selection, failed creation, member assignment and clearing never record actor usage.
 
 Hydrated scope must match live workspace/user/reset generation. Workspace mirrors change before the rehydration microtask, so `persist.hasHydrated()` alone is insufficient. Guard rendering and writes during that gap; stale asynchronous reads cannot publish ready state. Do not eagerly access the auth proxy at module evaluation: workspace rehydration and the mounted panel own hydration, including auth-status changes without a slug change.
 
 The parent retains eligibility: active, runtime-bound, assignable agents and active squads with eligible leaders. Resolve stored references only against that directory. Do not delete preferences based on empty loading defaults or transient failures. Keep explicit actor → unfinished draft → last accepted actor → first eligible agent precedence; wait for preference hydration before the last two fallbacks.
+
+Manual assignment keeps its existing active directory and renders unavailable agents or squads disabled with the canonical permission/runtime reason. Shared shortcuts never bypass those gates. It adds a Members category, preserves Unassigned as an `emptyValue` row so typed search + Enter selects the first real match, and uses the existing pill/controlled-open contract for toolbar overflow. Returning from Members to shortcuts also restores the All filter. Default-assistant actions remain exclusive to quick creation.
 
 Home shows up to 3 favorites and 5 non-favorite recents. All favorites are excluded from recents, including favorite overflow. Full favorites and the complete directory stay reachable. Search always examines the whole eligible directory, even from favorites; type filter intersects that result. Matching priority is exact name, name substring, existing name-pinyin match, then full saved-description substring. Stable name/type/ID ordering breaks ties. Render in batches of 50 without limiting the search domain.
 

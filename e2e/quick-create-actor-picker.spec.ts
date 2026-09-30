@@ -90,6 +90,83 @@ async function mockDirectory(page: Page, workspaceId: string, userId: string, ag
 }
 
 for (const locale of ["en", "zh-Hans"] as const) {
+  test(`manual assignment reuses discovery and preserves the draft (${locale})`, async ({ page }, info) => {
+    test.setTimeout(90_000);
+    page.setDefaultTimeout(15_000);
+    const { api, workspace, userId } = await setup(page, info);
+    try {
+      const directory = await mockDirectory(page, workspace.id, userId, 4, 1);
+      const zh = locale === "zh-Hans";
+      const agentName = zh ? "测试工程师" : "Test engineer";
+      Object.assign(directory.agents[1]!, { name: "小阿孚", system_key: "mika" });
+      Object.assign(directory.agents[2]!, {
+        name: agentName,
+        description: zh ? "决定用什么证明改动可用，把它自动化，并记录验证结果。 manual-only-duty" : "Define the evidence that proves the change works, automate it, and record the results. manual-only-duty",
+      });
+      Object.assign(directory.agents[3]!, { runtime_id: "", runtime_bound: false });
+      let submissions = 0;
+      await page.route("**/api/issues", (route) => {
+        if (route.request().method() !== "POST") return route.continue();
+        submissions++;
+        return route.fulfill({ status: 409, json: { error: "Read-only assignment fixture" } });
+      });
+      await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
+      await page.addInitScript(() => {
+        localStorage.setItem("multica_create_mode", JSON.stringify({ state: { lastMode: "manual" }, version: 0 }));
+      });
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });
+      await page.getByRole("button", { name: zh ? "新建任务" : "New Issue", exact: true }).first().click();
+      const dialog = page.getByRole("dialog", { name: zh ? "新建任务" : "New Issue", exact: true });
+      const title = dialog.getByRole("textbox", { name: zh ? "任务标题" : "Issue title", exact: true });
+      await title.fill("Preserve my manual draft");
+      const unassigned = zh ? "未分配" : "Unassigned";
+      await dialog.getByRole("button", { name: unassigned, exact: true }).click();
+      const popup = page.locator('[data-slot="popover-content"]');
+      const search = page.getByPlaceholder(zh ? "搜索名称或职责..." : SEARCH, { exact: true });
+      await expect(search).toBeVisible();
+      await expect(popup.getByRole("button", { name: "小阿孚", exact: true })).toBeVisible();
+      await expect(popup.getByRole("button", { name: zh ? "规划与协调" : "Planning and coordination", exact: true })).toBeVisible();
+      await expect(actorRow(page, "agent", directory.agents[3]!.id).locator("button[data-picker-item]")).toBeDisabled();
+      await expect(popup.getByRole("button", { name: zh ? "将当前助手设为默认" : "Set current as default", exact: true })).toHaveCount(0);
+
+      await search.fill("manual-only-duty");
+      await search.press("Enter");
+      await expect(search).toHaveCount(0);
+      const assignee = dialog.getByRole("button", { name: agentName });
+      await assignee.click();
+      await popup.getByRole("button", { name: zh ? `将 ${agentName} 固定为常用` : `Pin ${agentName} to favorites`, exact: true }).click();
+      await expect(popup.getByRole("heading", { name: zh ? "我的常用" : "Favorites", exact: true })).toBeVisible();
+      for (const width of [1280, 375]) {
+        await page.setViewportSize({ width, height: 900 });
+        await expect.poll(async () => {
+          const box = await popup.boundingBox();
+          return box ? box.x + box.width : Infinity;
+        }).toBeLessThanOrEqual(width);
+        const bounds = await popup.boundingBox();
+        expect(bounds).not.toBeNull();
+        expect(bounds!.x).toBeGreaterThanOrEqual(0);
+        expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+        expect(bounds!.y).toBeGreaterThanOrEqual(0);
+        expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(900);
+        await page.screenshot({ path: evidencePath(info, `manual-assignee-${locale}-${width}.png`), animations: "disabled" });
+      }
+      await page.keyboard.press("Escape");
+      await expect(search).toHaveCount(0);
+      await expect(dialog).toBeVisible();
+      await expect(assignee).toBeFocused();
+      await assignee.click();
+      await popup.getByRole("button", { name: zh ? "成员" : "Members", exact: true }).click();
+      await search.fill("Actor picker verifier");
+      await search.press("Enter");
+      await dialog.getByRole("button", { name: "Actor picker verifier" }).click();
+      await popup.getByRole("button", { name: unassigned, exact: true }).click();
+      await expect(dialog.getByRole("button", { name: unassigned, exact: true })).toBeVisible();
+      await expect(title).toHaveText("Preserve my manual draft");
+      expect(submissions).toBe(0);
+    } finally { await api.deleteFeatureWorkspace(workspace.id); }
+  });
+
   test(`category tabs expose Mika and squad leaders at wide and narrow widths (${locale})`, async ({ page }, info) => {
     test.setTimeout(90_000);
     const { api, workspace, userId } = await setup(page, info);

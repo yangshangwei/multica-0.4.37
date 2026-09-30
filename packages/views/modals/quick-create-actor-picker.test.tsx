@@ -41,6 +41,69 @@ async function openPicker(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe("QuickCreateActorPicker", () => {
+  it("reuses discovery for manual assignment while preserving member search and clearing", async () => {
+    const user = userEvent.setup();
+    const onPick = vi.fn();
+    const onPickMember = vi.fn();
+    const onClear = vi.fn();
+    render(<Harness actor={null} onPick={onPick} trigger={<span>Assignee</span>}
+      assignment={{
+        members: [{ user_id: "grace", name: "Grace Hopper" }],
+        selectedMemberId: null,
+        onPickMember,
+        onClear,
+        disabledReasons: new Map(),
+        privateAgentIds: new Set(),
+      }} />);
+
+    await user.click(screen.getByRole("button", { name: "Assignee" }));
+    const input = await screen.findByPlaceholderText("Search names or responsibilities...");
+    expect(screen.getByRole("button", { name: "Members" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Planning and coordination" })).toBeInTheDocument();
+    expect(screen.queryByText(enModals.create_issue.actor_picker.creator_hint)).not.toBeInTheDocument();
+    await user.type(input, "grace");
+    await user.keyboard("{Enter}");
+    expect(onPickMember).toHaveBeenCalledExactlyOnceWith("grace");
+    expect(onPick).not.toHaveBeenCalled();
+    expect(onClear).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Assignee" }));
+    await user.click(screen.getByRole("button", { name: "Unassigned" }));
+    expect(onClear).toHaveBeenCalledOnce();
+  });
+
+  it("keeps unavailable assignees disabled and selects responsibility search matches", async () => {
+    const user = userEvent.setup();
+    const onPick = vi.fn();
+    render(<Harness onPick={onPick} assignment={{
+      members: [], selectedMemberId: null, onPickMember: vi.fn(), onClear: vi.fn(),
+      disabledReasons: new Map([["agent:a", "This agent needs a runtime"]]),
+      privateAgentIds: new Set(["a"]),
+    }} />);
+    const input = await openPicker(user);
+    const unavailable = screen.getByRole("button", { name: /Ada Agent Find bugs/ });
+    expect(unavailable).toBeDisabled();
+    await user.click(unavailable);
+    expect(onPick).not.toHaveBeenCalled();
+    await user.type(input, "documentation");
+    await user.keyboard("{Enter}");
+    expect(onPick).toHaveBeenCalledExactlyOnceWith({ type: "agent", id: "d" });
+  });
+
+  it("returns from member browsing to actor shortcuts", async () => {
+    const user = userEvent.setup();
+    render(<Harness favoriteActors={[a]} assignment={{
+      members: [{ user_id: "grace", name: "Grace Hopper" }],
+      selectedMemberId: null, onPickMember: vi.fn(), onClear: vi.fn(),
+      disabledReasons: new Map(), privateAgentIds: new Set(),
+    }} />);
+    await openPicker(user);
+    await user.click(screen.getByRole("button", { name: "Members" }));
+    await user.click(screen.getByRole("button", { name: "Back to shortcuts" }));
+    expect(screen.getByRole("button", { name: "All" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("heading", { name: "Favorites" })).toBeInTheDocument();
+  });
+
   it("does not describe an unavailable project dataset as an empty project",async()=>{
     const user=userEvent.setup();const projectActors=[{type:"squad" as const,id:"a"}];
     const view=render(<Harness projectActors={projectActors}/>);await openPicker(user);
