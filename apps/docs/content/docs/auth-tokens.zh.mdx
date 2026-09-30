@@ -17,7 +17,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ## 个人访问令牌
 
-个人访问令牌（PAT）以 `mul_` 开头，代表你的账号。它可以访问你有权访问的全部工作区和 API，需要像密码一样保管。
+个人访问令牌（PAT）以 `mul_` 开头，代表你的账号。它可以访问你有权访问的全部工作空间和 API，需要像密码一样保管。
 
 在 **设置 → API Token** 中创建令牌时，需要填写名称，并选择 30 天、90 天、1 年或永不过期，默认选中 90 天。完整令牌只显示一次；关闭窗口后，Multica 只保留：
 
@@ -59,7 +59,7 @@ curl https://api.example.com/api/me \
   -H "Authorization: Bearer $MULTICA_TOKEN"
 ```
 
-调用工作区级 API 时，还需要按接口要求提供工作区：
+调用工作空间级 API 时，还需要按接口要求提供工作空间：
 
 ```bash
 curl https://api.example.com/api/issues \
@@ -77,7 +77,7 @@ curl https://api.example.com/api/issues \
 
 ## 智能体执行的临时令牌
 
-守护进程领取 task 后，服务器会为这次执行创建一个以 `mat_` 开头的临时令牌。它绑定当前用户、工作区、智能体和 task，最长有效 24 小时，并在 task 结束时清理。
+守护进程领取 task 后，服务器会为这次执行创建一个以 `mat_` 开头的临时令牌。它绑定当前用户、工作空间、智能体和 task，最长有效 24 小时，并在 task 结束时清理。
 
 守护进程把这个临时令牌注入 AI 编程工具，而不是把用户 PAT 交给智能体。因此，智能体发出的请求会记录为智能体行为，也不能借此调用只允许用户或 owner 执行的敏感操作。
 
@@ -90,7 +90,7 @@ curl https://api.example.com/api/issues \
 | 前缀 | 用途 | 谁管理 |
 | --- | --- | --- |
 | `mcn_` | Multica Cloud Node 连接 | Multica Cloud Fleet |
-| `mdt_` | 工作区范围的守护进程认证协议 | 服务端内部流程 |
+| `mdt_` | 工作空间范围的守护进程认证协议 | 服务端内部流程 |
 
 普通 Cloud、自托管和 Desktop 安装都不需要手动创建它们。用户侧的 CLI 与守护进程始终使用 `mul_` PAT；不要自行构造其他前缀的令牌。
 

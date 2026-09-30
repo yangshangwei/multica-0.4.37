@@ -199,7 +199,7 @@ func TestComposeMikaInstructions(t *testing.T) {
 	}
 	// Without notes the prompt must not end by announcing a section that has
 	// nothing under it.
-	if strings.Contains(system, "## 工作区补充") {
+	if strings.Contains(system, "## 工作空间补充") {
 		t.Fatalf("the notes rule must not appear when there are no notes:\n%s", system)
 	}
 
@@ -208,9 +208,9 @@ func TestComposeMikaInstructions(t *testing.T) {
 		t.Fatal("the system layer must lead the composed prompt")
 	}
 	for _, want := range []string{
-		"## 工作区补充",
-		"以下工作区补充说明团队的上下文和偏好",
-		"由本工作区管理员添加：",
+		"## 工作空间补充",
+		"以下工作空间补充说明团队的上下文和偏好",
+		"由本工作空间管理员添加：",
 		"主仓库是 acme/platform。",
 	} {
 		if !strings.Contains(composed, want) {

@@ -186,7 +186,7 @@ func TestStartMikaOnboarding_OpeningFollowsTheRequestedLanguage(t *testing.T) {
 	).Scan(&content); err != nil {
 		t.Fatalf("load opening: %v", err)
 	}
-	if !strings.Contains(content, "工作区") {
+	if !strings.Contains(content, "工作空间") {
 		t.Fatalf("zh request produced a non-Chinese opening: %q", content)
 	}
 }

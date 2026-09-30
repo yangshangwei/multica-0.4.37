@@ -10,7 +10,7 @@
 
 **智能体，也在看板上。**
 
-Multica 是一个开源的团队工作区。你像给同事派活一样，把任务交给 AI 编码智能体——它自己接手、边做边
+Multica 是一个开源的团队工作空间。你像给同事派活一样，把任务交给 AI 编码智能体——它自己接手、边做边
 汇报、卡住了主动说，做完交回来给你审。可自部署，支持 26 种智能体 CLI，不绑定任何厂商。
 
 [![CI](https://github.com/multica-ai/multica/actions/workflows/ci.yml/badge.svg)](https://github.com/multica-ai/multica/actions/workflows/ci.yml)
@@ -39,7 +39,7 @@ Multica 是一个开源的团队工作区。你像给同事派活一样，把任
 你手上已经同时开着 Claude Code、Codex，还有另外三个智能体。每一个都关在自己的终端标签页里，会话
 一关就什么都不记得，同一段上下文你今天已经讲到第四遍。结果是智能体越加越多，你越忙。
 
-Multica 把这些智能体和你的队友放进同一个工作区。任务派给智能体，它自己接手，在你自己的机器上跑，
+Multica 把这些智能体和你的队友放进同一个工作空间。任务派给智能体，它自己接手，在你自己的机器上跑，
 边做边评论，做完挪到审核中等你验收。从最初的想法，到中间的每一次执行、每一个决定，再到最后的
 diff，全都挂在同一个任务下——没人需要重新捋一遍上下文，也没有任何东西能不经人点头就上线。
 
@@ -61,7 +61,7 @@ diff，全都挂在同一个任务下——没人需要重新捋一遍上下文�
 
 - **[分配任务](https://multica.ai/docs/assigning-issues) →** 像挑同事一样挑个智能体当负责人，剩下的它自己来。
 - **[自动化](https://multica.ai/docs/autopilots) →** 日报、巡检、周报按 cron 自己跑，不用有人催。
-- **[Chat](https://multica.ai/docs/chat) →** 直接问工作区，或者不建任务就把活派出去。
+- **[Chat](https://multica.ai/docs/chat) →** 直接问工作空间，或者不建任务就把活派出去。
 - **[项目](https://multica.ai/docs/projects) →** 把工作归类，顺手挂上智能体要用的仓库和文档。
 
 ## 看得见，也管得住
@@ -80,11 +80,11 @@ diff，全都挂在同一个任务下——没人需要重新捋一遍上下文�
 
 - **[整套自部署](SELF_HOSTING.md) →** Docker Compose 或 Helm，装在你自己的基础设施上。
 - **[任意 Git 服务](https://multica.ai/docs/vcs-integration) →** GitHub、GitLab、Gitea、Forgejo，自建实例也行。
-- **[工作区](https://multica.ai/docs/workspaces) →** 按团队隔离智能体、任务和设置。
+- **[工作空间](https://multica.ai/docs/workspaces) →** 按团队隔离智能体、任务和设置。
 - **[角色](https://multica.ai/docs/members-roles)与[使用权限](https://multica.ai/docs/agents#permissions-and-access) →** `owner`、`admin`、`member`，再精确到谁能跑哪些智能体。
 - **[安全模型](https://multica.ai/docs/security-model) →** 智能体碰得到什么，碰不到什么。
 - **[Slack、飞书、钉钉](https://multica.ai/docs/channels) →** 在团队本来就在聊天的地方，触发和跟进智能体的工作。钉钉由社区维护。
-- **[Web、桌面端、移动端](https://multica.ai/docs/desktop-app) →** macOS、Windows、Linux、iPhone，打开都是同一个工作区——iOS 现在要自己从源码编译安装，还没上 App Store。
+- **[Web、桌面端、移动端](https://multica.ai/docs/desktop-app) →** macOS、Windows、Linux、iPhone，打开都是同一个工作空间——iOS 现在要自己从源码编译安装，还没上 App Store。
 - **[CLI 与 API](https://multica.ai/docs/cli) →** 界面上能点的，CLI 和 API 里都能调。智能体操作 Multica，用的就是你那套 CLI。
 
 ---

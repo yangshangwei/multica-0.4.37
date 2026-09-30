@@ -41,7 +41,7 @@ Here's how we begin: you name a goal, I turn it into an issue and start it with 
 
 Pick one below, or just tell me what you want to get done right now.`,
 
-	"zh": `你好，欢迎来到 %[1]s。Multica 是一个人和 AI 智能体通过任务一起把事情做完的工作区。
+	"zh": `你好，欢迎来到 %[1]s。Multica 是一个人和 AI 智能体通过任务一起把事情做完的工作空间。
 
 我是 %[2]s，这里的 Chief of Staff。我负责把事情理清楚、找到合适的智能体接手，也是你随时可以开口的第一站。
 

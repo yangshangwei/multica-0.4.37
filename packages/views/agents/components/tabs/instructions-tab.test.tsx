@@ -285,8 +285,8 @@ describe("InstructionsTab canonical instruction content", () => {
     const agent = {
       ...baseAgent,
       name: "Mika",
-      instructions: "# 工作区补充\n\n主要仓库是 github.com/acme/platform。",
-      system_instructions: "# Mika\n\n你是工作区系统助手，遵循任务的语言回复。",
+      instructions: "# 工作空间补充\n\n主要仓库是 github.com/acme/platform。",
+      system_instructions: "# Mika\n\n你是工作空间系统助手，遵循任务的语言回复。",
     };
     const onSave = vi.fn().mockResolvedValue(undefined);
     const user = userEvent.setup();
@@ -298,19 +298,19 @@ describe("InstructionsTab canonical instruction content", () => {
     });
     expect(systemLayer.tagName).toBe("PRE");
     expect(screen.getAllByRole("textbox")).toHaveLength(1);
-    const editor = screen.getByRole("textbox", { name: "工作区补充" });
+    const editor = screen.getByRole("textbox", { name: "工作空间补充" });
     expect(editor).toHaveValue(agent.instructions);
 
-    const edited = "# 工作区补充\n\n团队偏好中文沟通。周五不部署。\n";
+    const edited = "# 工作空间补充\n\n团队偏好中文沟通。周五不部署。\n";
     await user.clear(editor);
     await user.paste(edited);
-    const updatedSystem = "# Mika\n\n你是工作区系统助手，先检查任务上下文再回复。";
+    const updatedSystem = "# Mika\n\n你是工作空间系统助手，先检查任务上下文再回复。";
     rerender(tab({ ...agent, system_instructions: updatedSystem }, onSave, {
       locale: "zh-Hans",
     }));
 
     expect(screen.getByText(updatedSystem, { normalizer: (text) => text }).tagName).toBe("PRE");
-    expect(screen.getByRole("textbox", { name: "工作区补充" })).toHaveValue(edited);
+    expect(screen.getByRole("textbox", { name: "工作空间补充" })).toHaveValue(edited);
     await user.click(screen.getByRole("button", { name: "保存" }));
     expect(onSave).toHaveBeenCalledExactlyOnceWith({ instructions: edited });
   });

@@ -35,7 +35,7 @@ const (
 // and the product does not reclaim it after creation.
 var mikaAgentDescriptions = map[string]string{
 	"en": "Your workspace Chief of Staff. Turns goals into issues, coordinates agents, and helps build reusable workflows.",
-	"zh": "你的工作区 Chief of Staff。把目标转化为任务、协调智能体，并帮你建立可复用的工作流。",
+	"zh": "你的工作空间 Chief of Staff。把目标转化为任务、协调智能体，并帮你建立可复用的工作流。",
 }
 
 type createMikaAgentRequest struct {

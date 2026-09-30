@@ -62,10 +62,10 @@ Mobile 不复用这些 React 页面。它可以导入 `@multica/core` 的类型�
 
 - **TanStack Query** 保存 issue、智能体、成员、收件箱等服务端数据；
 - **Zustand** 保存筛选条件、草稿、弹窗和布局等客户端状态；
-- 当前工作区由路由决定，只在平台层为请求、持久化命名空间和重连做必要镜像；
-- React Context 只传递工作区 ID、导航适配器等平台 plumbing。
+- 当前工作空间由路由决定，只在平台层为请求、持久化命名空间和重连做必要镜像；
+- React Context 只传递工作空间 ID、导航适配器等平台 plumbing。
 
-WebSocket 事件应更新或失效 TanStack Query cache，不能把服务端对象复制进 Zustand。创建、删除或离开工作区这类会导航的 mutation，需要等待服务端确认后再清理本地状态。
+WebSocket 事件应更新或失效 TanStack Query cache，不能把服务端对象复制进 Zustand。创建、删除或离开工作空间这类会导航的 mutation，需要等待服务端确认后再清理本地状态。
 
 API 返回值在 `packages/core/api/` 边界通过 zod schema 解析。已安装的 Desktop 可能连接更新的 backend，因此不能直接把网络 JSON 强制转换成 TypeScript 类型。
 
@@ -86,7 +86,7 @@ API 返回值在 `packages/core/api/` 边界通过 zod schema 解析。已安装
 router → middleware → handler → service → sqlc query → PostgreSQL
 ```
 
-- `internal/middleware/` 处理认证、工作区和请求边界；
+- `internal/middleware/` 处理认证、工作空间和请求边界；
 - `internal/handler/` 解析 HTTP 输入并生成响应；
 - `internal/service/` 负责跨查询的业务流程和事务；
 - `pkg/db/queries/` 保存手写 SQL；
@@ -117,11 +117,11 @@ WebSocket 负责降低延迟，数据库仍然是最终状态。客户端重连�
 
 provider 适配层统一了不同 AI 编程工具的启动、流式事件、取消和用量数据，但本地目录与会话仍由守护进程管理。
 
-## 多工作区边界
+## 多工作空间边界
 
-业务查询必须限定 `workspace_id`，请求进入工作区路由前会检查成员身份。`X-Workspace-ID` 选择当前工作区，但不能替代权限检查。
+业务查询必须限定 `workspace_id`，请求进入工作空间路由前会检查成员身份。`X-Workspace-ID` 选择当前工作空间，但不能替代权限检查。
 
-Issue 的负责人是多态关系，可以指向成员、智能体或小队。新增查询、缓存 key 或实时事件时，都要保留工作区与负责人类型，不能只按资源 ID 假设全局唯一上下文。
+Issue 的负责人是多态关系，可以指向成员、智能体或小队。新增查询、缓存 key 或实时事件时，都要保留工作空间与负责人类型，不能只按资源 ID 假设全局唯一上下文。
 
 ## 接下来
 

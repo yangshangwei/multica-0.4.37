@@ -113,7 +113,7 @@ func TestSanitizeSubjectField(t *testing.T) {
 		{"strips crlf header-style", "Acme\r\nBcc: evil@example.com", "AcmeBcc: evil@example.com"},
 		{"strips tab", "Acme\tTeam", "AcmeTeam"},
 		{"strips unicode control", "Acme\x07Beep", "AcmeBeep"},
-		{"preserves non-ascii", "深度学习工作区", "深度学习工作区"},
+		{"preserves non-ascii", "深度学习工作空间", "深度学习工作空间"},
 		{"preserves emoji", "Team 🚀", "Team 🚀"},
 		{"truncates long ascii", long, strings.Repeat("a", maxSubjectFieldRunes-1) + "…"},
 		{"truncates rune-aware", longRunes, strings.Repeat("深", maxSubjectFieldRunes-1) + "…"},

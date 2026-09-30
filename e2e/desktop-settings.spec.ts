@@ -94,7 +94,7 @@ test("desktop Help selects Updates by keyboard and grouped settings show the sto
     await expect(help).toHaveAttribute("aria-expanded", "false");
 
     const navigation = page.getByRole("tablist");
-    for (const group of ["个人设置", "工作区管理", "任务配置", "连接与扩展"]) {
+    for (const group of ["个人设置", "工作空间管理", "任务配置", "连接与扩展"]) {
       await expect(navigation.getByText(group, { exact: true })).toBeVisible();
     }
     await navigation.getByRole("tab", { name: "守护进程", exact: true }).click();

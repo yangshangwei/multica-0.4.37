@@ -57,12 +57,12 @@
     "schedule_label": "运行周期",
     "prompt_label": "交给智能体做的事",
     "prompt_note": "会复制到自动化，创建后可编辑",
-    "assignee_hint": "模板无法预知这个工作区有哪些智能体，请选择运行它的一方。",
+    "assignee_hint": "模板无法预知这个工作空间有哪些智能体，请选择运行它的一方。",
     "enable": "创建并启用",
     "enabling": "创建中…",
     "enable_hint": "创建后按计划运行。你可以在详情页暂停或立即运行。",
     "assignee_unavailable": "预选的执行者不可用，请选择你有权运行的智能体或AI小队。",
-    "project_unavailable": "预选项目在此工作区中不可用，请选择其他项目或不关联项目。",
+    "project_unavailable": "预选项目在此工作空间中不可用，请选择其他项目或不关联项目。",
     "choices_load_failed": "无法加载项目和执行者选项。"
   },
   "detail": {
@@ -83,7 +83,7 @@
     "run_blocked_attribution": "未触发——无法确定本次运行的负责成员",
     "run_blocked_already_active": "未触发——最近已有一次运行覆盖了本次",
     "run_blocked_quota_exceeded": "未触发——本周期的运行额度已用尽",
-    "run_blocked_issue_limit_reached": "未触发——工作区任务总数已达到上限",
+    "run_blocked_issue_limit_reached": "未触发——工作空间任务总数已达到上限",
     "run_blocked_generic": "未触发——本次运行已被拦截",
     "section_properties": "属性",
     "section_triggers": "触发器",
@@ -124,7 +124,7 @@
     "toast_granted": "已授予访问权限",
     "toast_revoked": "已移除访问权限",
     "toast_failed": "更新访问权限失败",
-    "owner_note": "创建者和工作区管理员始终拥有访问权限。"
+    "owner_note": "创建者和工作空间管理员始终拥有访问权限。"
   },
   "run_status": {
     "issue_created": "已创建任务",

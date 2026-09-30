@@ -49,7 +49,7 @@ class FakeAPI:
     def request(self, method, path, body=None):
         headers = {"X-Multica-Instructions-Precondition": "1"} if self.supported else {}
         if path == f"/api/workspaces/{WORKSPACE}":
-            return {"id": WORKSPACE, "name": "测试工作区"}, headers
+            return {"id": WORKSPACE, "name": "测试工作空间"}, headers
         if path == "/api/agents":
             return copy.deepcopy(self.agents), headers
         if path == "/api/squads":

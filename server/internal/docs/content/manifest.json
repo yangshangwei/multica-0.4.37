@@ -21,7 +21,7 @@
         {
           "slug": "tutorial",
           "title": "完整教程",
-          "description": "从空工作区开始，用一个个人网站项目走完 Multica 的全部核心流程：创建智能体、用 issue 交付、组建小队、沉淀 skill、配置自动化。"
+          "description": "从空工作空间开始，用一个个人网站项目走完 Multica 的全部核心流程：创建智能体、用 issue 交付、组建小队、沉淀 skill、配置自动化。"
         },
         {
           "slug": "self-host-quickstart",
@@ -31,17 +31,17 @@
       ]
     },
     {
-      "label": "工作区",
+      "label": "工作空间",
       "items": [
         {
           "slug": "workspaces",
-          "title": "工作区",
-          "description": "工作区是团队、工作和智能体配置彼此隔离的边界。"
+          "title": "工作空间",
+          "description": "工作空间是团队、工作和智能体配置彼此隔离的边界。"
         },
         {
           "slug": "members-roles",
           "title": "成员与权限",
-          "description": "邀请成员，并用 owner、admin 和 member 三种角色管理工作区权限。"
+          "description": "邀请成员，并用 owner、admin 和 member 三种角色管理工作空间权限。"
         }
       ]
     },
@@ -71,7 +71,7 @@
         {
           "slug": "agents",
           "title": "智能体",
-          "description": "智能体是在工作区中反复使用的一套身份、能力和执行配置。"
+          "description": "智能体是在工作空间中反复使用的一套身份、能力和执行配置。"
         },
         {
           "slug": "agents-create",
@@ -116,7 +116,7 @@
         {
           "slug": "chat",
           "title": "与智能体对话",
-          "description": "和智能体一对一独立聊天，整段对话完全私人。智能体默认没有任何 issue 上下文、也不会自动建 issue——但你明确要求时，它会以你的工作区权限代你操作。"
+          "description": "和智能体一对一独立聊天，整段对话完全私人。智能体默认没有任何 issue 上下文、也不会自动建 issue——但你明确要求时，它会以你的工作空间权限代你操作。"
         },
         {
           "slug": "inbox",
@@ -166,7 +166,7 @@
         {
           "slug": "vcs-integration",
           "title": "自托管 Git 代码托管",
-          "description": "为每个工作区连接自托管的 Forgejo、Gitea 或 GitLab 实例，使引用了 issue 编号的 Pull Request / Merge Request 自动关联到对应 issue，在合并时将其移动到「完成」，并展示 CI 状态。"
+          "description": "为每个工作空间连接自托管的 Forgejo、Gitea 或 GitLab 实例，使引用了 issue 编号的 Pull Request / Merge Request 自动关联到对应 issue，在合并时将其移动到「完成」，并展示 CI 状态。"
         }
       ]
     },
@@ -211,7 +211,7 @@
         {
           "slug": "cli",
           "title": "使用 CLI",
-          "description": "安装并登录 Multica CLI，在终端中管理工作区、issue、智能体和运行时。"
+          "description": "安装并登录 Multica CLI，在终端中管理工作空间、issue、智能体和运行时。"
         },
         {
           "slug": "auth-tokens",

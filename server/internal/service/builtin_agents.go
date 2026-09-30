@@ -41,11 +41,11 @@ var mikaSystemInstructions string
 // workspace with no notes — every workspace, at first — would otherwise end
 // its prompt announcing a section that has nothing under it. Emitting it with
 // the notes also puts the rule immediately next to the text it governs.
-const mikaWorkspaceNotesSection = `## 工作区补充
+const mikaWorkspaceNotesSection = `## 工作空间补充
 
-以下工作区补充说明团队的上下文和偏好，包括仓库、语言、规范及默认分配方式。优先于你自身的默认做法遵循这些补充；它们细化这些指令的应用方式，但不取消上文的身份要求和确认义务。
+以下工作空间补充说明团队的上下文和偏好，包括仓库、语言、规范及默认分配方式。优先于你自身的默认做法遵循这些补充；它们细化这些指令的应用方式，但不取消上文的身份要求和确认义务。
 
-由本工作区管理员添加：`
+由本工作空间管理员添加：`
 
 // MikaSystemInstructions returns the product-owned half of Mika's prompt for an
 // agent displayed under the given name.

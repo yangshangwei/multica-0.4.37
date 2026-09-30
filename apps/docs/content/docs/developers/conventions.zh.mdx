@@ -13,14 +13,14 @@ description: 代码命名规范、i18n 翻译术语表、中文风格指南的�
 
 ### 路由
 
-工作区前置路由（用户进入工作区之前能访问的路由）必须用单个单词，或者 `/{noun}/{verb}` 格式。
+工作空间前置路由（用户进入工作空间之前能访问的路由）必须用单个单词，或者 `/{noun}/{verb}` 格式。
 
 - ✅ `/login`、`/inbox`、`/workspaces/new`
 - ❌ `/new-workspace`、`/create-team`、`/accept-invite`
 
 根目录的连字符词组会跟用户自选 workspace slug 冲突，逼着团队不停审保留字列表。把名词（`workspaces`）保留下来，整个 `/workspaces/*` 子树自动受保护。
 
-### 工作区路由
+### 工作空间路由
 
 永远用 `/{slug}/{section}` —— `/{slug}/issues`、`/{slug}/agents`、`/{slug}/settings`。共享代码不要复制路由逻辑，统一走 `useNavigation().push()`，不要直接用框架的 link API。
 
@@ -91,7 +91,7 @@ Web 和 Desktop 都有的逻辑，**必须**抽到共享包。"小段重复"也�
 
 ### Issue 编号
 
-每个 issue 有人类可读的编号，比如 `MUL-123`：工作区 `issue_prefix`（大写字母和数字，通常 3 个字符，最长 10 个）+ 流水号。工作区管理员可以在**设置 → 通用**中修改前缀；修改会让所有现有 issue 重新编号，外部引用——PR 标题、分支名、文档与聊天里的链接——里的旧前缀会失效。
+每个 issue 有人类可读的编号，比如 `MUL-123`：工作空间 `issue_prefix`（大写字母和数字，通常 3 个字符，最长 10 个）+ 流水号。工作空间管理员可以在**设置 → 通用**中修改前缀；修改会让所有现有 issue 重新编号，外部引用——PR 标题、分支名、文档与聊天里的链接——里的旧前缀会失效。
 
 ### 代码注释
 
@@ -115,7 +115,7 @@ Conventional 格式：`feat(scope)`、`fix(scope)`、`refactor(scope)`、`docs`�
 
 Multica 的产品名词分两类：
 
-- **日常词** —— 用户会直接说出口的词。**完整翻译成中文**，是不是数据库实体都一样：`issue` → 任务、`workspace` → 工作区、`project` → 项目。
+- **日常词** —— 用户会直接说出口的词。**完整翻译成中文**，是不是数据库实体都一样：`issue` → 任务、`workspace` → 工作空间、`project` → 项目。
 - **Multica 专有词** —— 中文里没有对应词的概念（`skill`），或用户可能要照着敲、照着比对的 schema 标识符（`todo`、`in_progress`、`task_id`）。**用小写英文**呈现，读起来像类型名。
 
 其余规则以 `apps/docs/content/docs/*.zh.mdx` 为准 —— docs 是已经实战 20+ 篇的 CN voice 标准。但 docs 正文里的 `issue` 还没换成「任务」，正在单独清理；这个词以下面的表格为准，不要参考那些页面。
@@ -149,7 +149,7 @@ Multica 的产品名词分两类：
 
 | 英 | 中 |
 | --- | --- |
-| Workspace | **工作区** |
+| Workspace | **工作空间** |
 | Agent | **智能体** |
 | Project | **项目** |
 | Autopilot | **自动化** |
@@ -171,6 +171,15 @@ Multica 的产品名词分两类：
 | --- | --- |
 | 品牌 | **Multica**、GitHub、Slack、Google、Anthropic、OpenAI、Claude、Codex、Cursor、Linear、Jira |
 | 缩写 | API、CLI、URL、SDK、OAuth、JWT、SSO、WebSocket、HTTP、JSON、YAML、SQL |
+
+### 工作空间的适用范围与例外
+
+Multica 的 workspace 在当前中文界面和文档中统一称为**工作空间**，包括上手引导、设置、邀请和计数（`{{count}} 个工作空间`）。这条术语规则针对 Multica 的产品实体，不适用于所有英文 `workspace`。
+
+- **第三方名称沿用其官方术语**，例如 **Slack 工作区**。一句话同时出现两个产品时写明归属，例如"将 Slack 工作区连接到 Multica 工作空间"。
+- **编辑器工作区、本地运行时工作目录**仍可称为"工作区"，表示对应工具或文件系统中的范围。Git working copy 称为**工作副本**，Git worktree 称为**工作树**（`worktree`），都不等同于 Multica 工作空间。
+- **API 字段、CLI 命令、代码标识符和路径不变**，例如 `workspace_id`、`multica workspace`、`/workspaces`。
+- **历史更新记录、已归档计划与报告、迁移记录及引用的第三方名称保留原文**；新增的 Multica 产品文案使用当前术语。
 
 ### 完整翻译 —— 通用 UI 词
 
@@ -243,7 +252,7 @@ i18next 用 `_one` / `_other`；中文不区分语法单复数，只填 `_other`
 
 - `{{count}} issues` → `{{count}} 个任务`
 - `{{count}} agents` → `{{count}} 个智能体`
-- `{{count}} workspaces` → `{{count}} 个工作区`
+- `{{count}} workspaces` → `{{count}} 个工作空间`
 - `{{count}} comments` → `{{count}} 条评论`
 - `{{count}} members` → `{{count}} 位成员`
 - `{{count}} skills` → `{{count}} 个 skill`

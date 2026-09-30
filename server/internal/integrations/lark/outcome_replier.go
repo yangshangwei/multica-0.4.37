@@ -412,7 +412,7 @@ func renderNoticeCard(header, body string) (string, error) {
 // comes back; an archived agent needs operator action.
 const (
 	agentOfflineCopy        = "Agent 当前离线，消息已记录。下次 daemon 上线后会自动继续处理。"
-	agentArchivedCopy       = "这个 Agent 已被归档，无法继续处理消息。请联系工作区管理员恢复或重新绑定。"
+	agentArchivedCopy       = "这个 Agent 已被归档，无法继续处理消息。请联系工作空间管理员恢复或重新绑定。"
 	freshPendingCopy        = "✅ 已准备从空上下文运行。你的下一条聊天消息仍会进入当前对话，但不会带上之前的上下文。"
 	chatStartedCopy         = "✅ 已新建 Multica 对话。你的下一条消息会进入该对话。"
 	issueUsageCopy          = "请填写任务标题，格式如下：\n\n`/issue <标题>`\n`[描述]`（可选）"

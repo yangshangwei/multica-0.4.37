@@ -108,7 +108,7 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 | `ALLOW_SIGNUP` | `true` | 未配置任何白名单时是否允许创建新账号 |
 | `ALLOWED_EMAILS` | 空 | 允许注册的完整邮箱，逗号分隔 |
 | `ALLOWED_EMAIL_DOMAINS` | 空 | 允许注册的邮箱域名，逗号分隔 |
-| `DISABLE_WORKSPACE_CREATION` | `false` | 禁止所有用户新建工作区；没有 owner/admin 例外 |
+| `DISABLE_WORKSPACE_CREATION` | `false` | 禁止所有用户新建工作空间；没有 owner/admin 例外 |
 | `MULTICA_DEV_VERIFICATION_CODE` | 空 | 非 production 环境使用的固定 6 位测试验证码 |
 
 白名单的准确判断顺序见[登录与注册](/auth-setup#注册范围控制)。
@@ -147,9 +147,9 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 | `REDIS_DISABLE_CLIENT_NAME` | `false` | 托管 Redis 禁止 `CLIENT SETNAME` 时设为 `true` |
 | `RATE_LIMIT_AUTH` | `5` | 单 IP 每分钟发送验证码的次数 |
 | `RATE_LIMIT_AUTH_VERIFY` | `20` | 单 IP 每分钟验证验证码的次数 |
-| `RATE_LIMIT_INVITATION_ACTOR_10M` | `10` | 每位邀请人在 10 分钟滑动窗口内可创建的工作区邀请数；设为 `0` 可关闭此项限流 |
-| `RATE_LIMIT_INVITATION_WORKSPACE_24H` | `50` | 同一工作区内所有管理员在 24 小时滑动窗口内可创建的邀请总数；设为 `0` 可关闭此项限流 |
-| `RATE_LIMIT_INVITATION_RECIPIENT_24H` | `6` | 同一规范化收件邮箱跨工作区在 24 小时滑动窗口内可收到的邀请数；设为 `0` 可关闭此项限流 |
+| `RATE_LIMIT_INVITATION_ACTOR_10M` | `10` | 每位邀请人在 10 分钟滑动窗口内可创建的工作空间邀请数；设为 `0` 可关闭此项限流 |
+| `RATE_LIMIT_INVITATION_WORKSPACE_24H` | `50` | 同一工作空间内所有管理员在 24 小时滑动窗口内可创建的邀请总数；设为 `0` 可关闭此项限流 |
+| `RATE_LIMIT_INVITATION_RECIPIENT_24H` | `6` | 同一规范化收件邮箱跨工作空间在 24 小时滑动窗口内可收到的邀请数；设为 `0` 可关闭此项限流 |
 | `RATE_LIMIT_TRUSTED_PROXIES` | 空 | 允许提供 `X-Forwarded-For` 的代理 CIDR，逗号分隔 |
 | `MULTICA_TRUSTED_PROXIES` | 空 | 自动化 webhook 与实时连接使用的可信代理 CIDR |
 
@@ -269,7 +269,7 @@ multica config show
 |---|---|---|
 | `server_url` | `ws://localhost:8080/ws` | Multica API / WebSocket 地址 |
 | `app_url` | 空 | 浏览器登录使用的 Web 地址 |
-| `workspace_id` | 空 | 默认工作区 |
+| `workspace_id` | 空 | 默认工作空间 |
 | `device_name` | 主机名 | 运行时列表中的设备名 |
 | `runtime_name` | `Local Agent` | 运行时显示名 |
 | `workspaces_root` | `~` 下按 profile 区分的路径 | 执行任务工作目录的根目录 |

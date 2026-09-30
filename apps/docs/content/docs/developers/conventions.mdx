@@ -117,7 +117,7 @@ Existing content and the language of user conversations remain unchanged.
 
 Multica's product nouns split into two categories:
 
-- **Everyday noun** — the word a user would say out loud for it. **Translate fully**, whether or not it is a database entity: `issue` → 任务, `workspace` → 工作区, `project` → 项目.
+- **Everyday noun** — the word a user would say out loud for it. **Translate fully**, whether or not it is a database entity: `issue` → 任务, `workspace` → 工作空间, `project` → 项目.
 - **Multica-specific term** — a concept no local word carries (`skill`), or a schema-level identifier a user may have to type or match (`todo`, `in_progress`, `task_id`). Render as **lowercase English** so it reads like a type name.
 
 The Chinese pages under `apps/docs/content/docs/*.zh.mdx` are the de facto voice standard for everything else on this page. They still carry the old English `issue` in prose and are being swept separately — follow the table below, not those pages, for this term.
@@ -158,7 +158,7 @@ Other product nouns follow the same "translate what has a settled local word" te
 
 | English | Chinese |
 | --- | --- |
-| Workspace | **工作区** |
+| Workspace | **工作空间** |
 | Agent | **智能体** |
 | Project | **项目** |
 | Autopilot | **自动化** |
@@ -173,6 +173,15 @@ Other product nouns follow the same "translate what has a settled local word" te
 | Label | **标签** |
 | Settings | **设置** |
 | Onboarding | **上手引导** |
+
+### Workspace terminology and exceptions
+
+Use **工作空间** for Multica's workspace in current Chinese UI and documentation, including onboarding, settings, invitations, and counts (`{{count}} 个工作空间`). The glossary entry applies to the Multica product entity, not every occurrence of the English word `workspace`.
+
+- Keep third-party official terminology: a Slack workspace is **Slack 工作区**. When both products appear in a sentence, name each explicitly, for example "将 Slack 工作区连接到 Multica 工作空间".
+- Editor workspaces and local runtime working directories remain **工作区** when referring to those tools or filesystem areas. A Git working copy is **工作副本**; a Git worktree is **工作树** (`worktree`). These are not Multica workspaces.
+- Keep API fields, CLI commands, code identifiers, and paths such as `workspace_id`, `multica workspace`, and `/workspaces` unchanged.
+- Preserve historical changelogs, archived plans/reports, migration records, and quoted third-party labels. Apply the current term when writing new Multica product copy.
 
 ### Translate fully — generic UI words
 
@@ -245,7 +254,7 @@ Common count formats:
 
 - `{{count}} issues` → `{{count}} 个任务`
 - `{{count}} agents` → `{{count}} 个智能体`
-- `{{count}} workspaces` → `{{count}} 个工作区`
+- `{{count}} workspaces` → `{{count}} 个工作空间`
 - `{{count}} comments` → `{{count}} 条评论`
 - `{{count}} members` → `{{count}} 位成员`
 - `{{count}} skills` → `{{count}} 个 skill`
