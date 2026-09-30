@@ -81,8 +81,8 @@ func McpServerTemplates() []McpServerTemplate {
 				"zh": "Chrome DevTools",
 			},
 			Descriptions: map[string]string{
-				"en": "Drive a real Chrome through the DevTools protocol: inspect the DOM, run scripts, and debug page behavior.",
-				"zh": "通过 DevTools 协议操控真实 Chrome：检查 DOM、执行脚本、调试页面行为。",
+				"en": "Inspect pages and debug Chrome: examine the DOM, run scripts, and troubleshoot page behavior through DevTools.",
+				"zh": "检查页面、调试浏览器：通过 DevTools 查看 DOM、执行脚本、排查页面行为。",
 			},
 		},
 		{
@@ -106,8 +106,8 @@ func McpServerTemplates() []McpServerTemplate {
 				"zh": "Playwright",
 			},
 			Descriptions: map[string]string{
-				"en": "Automate a browser with Playwright: navigate pages, fill forms, and capture snapshots for the agent to act on.",
-				"zh": "用 Playwright 自动化浏览器：打开页面、填写表单、抓取快照供智能体处理。",
+				"en": "Automate web interactions: use Playwright to navigate pages, fill forms, and capture snapshots for the agent.",
+				"zh": "自动操作网页：用 Playwright 打开页面、填写表单、抓取快照供智能体处理。",
 			},
 		},
 		{

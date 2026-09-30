@@ -73,7 +73,7 @@ test("creates all three recipes, preserves source after rename, and reuses an in
       ["sequential-thinking", "Sequential Thinking"],
     ]) {
       await marketTab.click();
-      await page.getByRole("button", { name: `View ${title}`, exact: true }).click();
+      await page.getByRole("button", { name: `View configuration: ${title}`, exact: true }).click();
       const dialog = page.getByRole("dialog");
       await dialog.getByRole("textbox", { name: "Configuration name", exact: true }).fill(key!);
       if (key === "chrome-devtools") await capture(page, info, "setup-wide");
@@ -104,7 +104,7 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     await page.reload();
     const renamed = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.id === playwright.id);
     expect(renamed).toMatchObject({ name: "browser-production", template_key: "playwright" });
-    await page.getByRole("tab", { name: "Workspace", exact: true }).click();
+    await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();
     await capture(page, info, "workspace-wide");
     await api.requestJSON(`/api/agents/${agents[0]!.id}/mcp-servers/${playwright.id}/enabled`, { method: "PUT", body: { enabled: false } });
     await page.getByRole("button", { name: "Assign browser-production", exact: true }).click();
@@ -139,14 +139,14 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     await marketTab.click();
     await page.setViewportSize({ width: 390, height: 844 });
     await capture(page, info, "market-narrow");
-    await page.getByRole("button", { name: "View Playwright", exact: true }).click();
+    await page.getByRole("button", { name: "View configuration: Playwright", exact: true }).click();
     await capture(page, info, "setup-narrow");
     await page.keyboard.press("Escape");
     const longServerName = `browser-${"production-".repeat(5)}validation`;
     await api.requestJSON(`${base}/${playwright.id}`, { method: "PUT", body: { name: longServerName } });
     await page.reload();
     await marketTab.click();
-    await page.getByRole("button", { name: "View Playwright", exact: true }).click();
+    await page.getByRole("button", { name: "View configuration: Playwright", exact: true }).click();
     await expectDialogButtonFits(page, `Use ${longServerName}`);
     await capture(page, info, "setup-long-narrow");
     await page.keyboard.press("Escape");
@@ -175,7 +175,7 @@ test("retries a failed assignment without recreating the saved MCP or repeating 
       ? route.fulfill({ status: 503, json: { error: "Temporary assignment failure" } })
       : route.continue());
     await page.goto(`/${slug}/mcp`);
-    await page.getByRole("button", { name: "View Playwright", exact: true }).click();
+    await page.getByRole("button", { name: "View configuration: Playwright", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
     for (const agent of agents) await dialog.getByRole("checkbox", { name: agent.name, exact: true }).check();
@@ -227,7 +227,7 @@ test("a member can discover templates and reuse a workspace instance for their a
       const memberPage = await context.newPage();
       await memberPage.goto(`/${slug}/mcp`);
       await memberPage.getByRole("tab", { name: "MCP market", exact: true }).click();
-      await memberPage.getByRole("button", { name: "View Playwright", exact: true }).click();
+      await memberPage.getByRole("button", { name: "View configuration: Playwright", exact: true }).click();
       await expect(memberPage.getByRole("button", { name: "Save and continue", exact: true })).toHaveCount(0);
       await memberPage.keyboard.press("Escape");
       await memberPage.goto(`/${slug}/agents/${agent.id}`);

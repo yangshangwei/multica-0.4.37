@@ -117,7 +117,7 @@ describe("MCP market", () => {
       "aria-selected",
       "true",
     );
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     expect(
       screen.getByRole("heading", { name: "Set up Playwright" }),
     ).toBeVisible();
@@ -128,7 +128,7 @@ describe("MCP market", () => {
   it("keeps an explicit workspace choice while the library finishes loading", async () => {
     const user = userEvent.setup();
     const view = renderCatalog({ loaded: false });
-    await user.click(screen.getByRole("tab", { name: "Workspace" }));
+    await user.click(screen.getByRole("tab", { name: "Shared configurations" }));
     view.rerender(
       <McpLibraryCatalog
         workspaceId="ws"
@@ -140,7 +140,7 @@ describe("MCP market", () => {
         <p>Workspace inventory</p>
       </McpLibraryCatalog>,
     );
-    expect(screen.getByRole("tab", { name: "Workspace" })).toHaveAttribute(
+    expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveAttribute(
       "aria-selected",
       "true",
     );
@@ -164,7 +164,7 @@ describe("MCP market", () => {
     expect(screen.getByText(/qa-browser/)).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Reasoning" }));
     expect(
-      screen.queryByRole("button", { name: "View Playwright" }),
+      screen.queryByRole("button", { name: "View configuration: Playwright" }),
     ).toBeNull();
     await user.type(
       screen.getByRole("searchbox", { name: "Search MCP templates" }),
@@ -173,8 +173,22 @@ describe("MCP market", () => {
     expect(screen.getByText("No matching templates")).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Clear filters" }));
     expect(
-      screen.getByRole("button", { name: "View Playwright" }),
+      screen.getByRole("button", { name: "View configuration: Playwright" }),
     ).toBeEnabled();
+  });
+  it("announces result counts as filters change without moving search focus", async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    const status = screen.getByRole("status");
+    expect(status).toHaveTextContent("Templates found: 2");
+    await user.click(screen.getByRole("button", { name: "Reasoning" }));
+    expect(status).toHaveTextContent("Templates found: 1");
+    const search = screen.getByRole("searchbox", { name: "Search MCP templates" });
+    await user.type(search, "missing");
+    expect(status).toHaveTextContent("Templates found: 0");
+    expect(search).toHaveFocus();
+    await user.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(status).toHaveTextContent("Templates found: 2");
   });
   it("keeps the saved ID after partial failure and retries only failed assignments", async () => {
     const user = userEvent.setup();
@@ -185,7 +199,7 @@ describe("MCP market", () => {
       })
       .mockResolvedValueOnce({ succeeded: ["b"], failed: [] });
     renderCatalog();
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     expect(mocks.create).toHaveBeenCalledWith({
       name: "playwright",
@@ -197,6 +211,7 @@ describe("MCP market", () => {
         screen.getByRole("heading", { name: "Choose agents" }),
       ).toBeVisible(),
     );
+    expect(screen.getByRole("heading", { name: "Choose agents" })).toHaveFocus();
     const ada = await screen.findByRole("checkbox", { name: "Ada" });
     expect(ada).not.toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Ben" })).not.toBeChecked();
@@ -222,7 +237,7 @@ describe("MCP market", () => {
   it("retains the assignment step when the new saved configuration updates the library", async () => {
     const user = userEvent.setup();
     const view = renderCatalog();
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     await screen.findByRole("heading", { name: "Choose agents" });
     view.rerender(
@@ -255,7 +270,7 @@ describe("MCP market", () => {
     const user = userEvent.setup();
     mocks.create.mockRejectedValueOnce(new Error("Server unavailable"));
     renderCatalog();
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Server unavailable",
@@ -264,6 +279,25 @@ describe("MCP market", () => {
       screen.getByRole("textbox", { name: "Configuration name" }),
     ).toHaveValue("playwright");
     expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("explains the required name format before submission and keeps it with errors", async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    const name = screen.getByRole("textbox", { name: "Configuration name" });
+    expect(name).toBeRequired();
+    expect(name).toHaveAccessibleDescription(
+      "Required. Use English letters, numbers, hyphens, and underscores.",
+    );
+    await user.clear(name);
+    await user.type(name, "浏览器");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(name).toHaveFocus();
+    expect(name).toHaveAttribute("aria-invalid", "true");
+    expect(name).toHaveAccessibleDescription(
+      /Required\. Use English letters, numbers, hyphens, and underscores\..*Use only/,
+    );
+    expect(mocks.create).not.toHaveBeenCalled();
   });
   it("resumes assignment for an existing custom configuration without creating again", async () => {
     const user = userEvent.setup();
@@ -315,7 +349,7 @@ describe("MCP market", () => {
       ],
     });
     await user.click(screen.getByRole("tab", { name: "MCP market" }));
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     expect(
       screen.getByRole("button", { name: "Use qa-browser" }),
@@ -340,7 +374,7 @@ describe("MCP market", () => {
       { id: "a", name: "Ada" },
     ];
     renderCatalog();
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     expect(await screen.findByRole("checkbox", { name: "Ada" })).toBeVisible();
     expect(screen.getAllByRole("checkbox")).toHaveLength(1);
@@ -348,7 +382,7 @@ describe("MCP market", () => {
   it("can save and skip without assigning any agent", async () => {
     const user = userEvent.setup();
     renderCatalog();
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     await user.click(screen.getByRole("button", { name: "Skip for now" }));
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -358,7 +392,7 @@ describe("MCP market", () => {
     const user = userEvent.setup();
     mocks.templates = [{ ...template, version: undefined }];
     renderCatalog();
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     await user.click(
       screen.getByRole("button", { name: "Open custom configuration" }),
     );

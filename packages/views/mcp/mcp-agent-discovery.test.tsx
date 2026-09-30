@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
@@ -99,7 +99,7 @@ describe("agent MCP discovery", () => {
   it("offers existing instances first and lets an agent owner reuse one without creating", async () => {
     const user = userEvent.setup();
     renderDiscovery();
-    expect(screen.getByRole("tab", { name: "Workspace" })).toHaveAttribute(
+    expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveAttribute(
       "aria-selected",
       "true",
     );
@@ -117,7 +117,7 @@ describe("agent MCP discovery", () => {
     expect(mocks.create).not.toHaveBeenCalled();
     expect(mocks.recipe).not.toHaveBeenCalled();
     await user.click(screen.getByRole("tab", { name: "MCP market" }));
-    await user.click(screen.getByRole("button", { name: "View Playwright" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
     expect(
       screen.queryByRole("button", { name: "Save and continue" }),
     ).toBeNull();
@@ -131,6 +131,40 @@ describe("agent MCP discovery", () => {
       }),
     ).toBeDisabled();
     expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("shows and announces a slow assignment until its result is confirmed", async () => {
+    const user = userEvent.setup();
+    let resolveAssignment!: (value: {
+      succeeded: string[];
+      failed: { agentId: string; message: string }[];
+    }) => void;
+    mocks.assign.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveAssignment = resolve;
+      }),
+    );
+    renderDiscovery();
+    const reuse = await screen.findByRole("button", {
+      name: "Use browser: Assign to Ada",
+    });
+    const liveRegions = screen.getAllByRole("status");
+    await user.click(reuse);
+
+    expect(screen.getByRole("button", { name: "Assigning…" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Done" })).toBeDisabled();
+    const status = screen.getByText("Assigning browser to Ada…");
+    expect(status).toHaveAttribute("role", "status");
+    expect(liveRegions).toContain(status);
+    expect(mocks.assign).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      resolveAssignment({ succeeded: ["agent"], failed: [] });
+    });
+    expect(status).toHaveTextContent("browser assigned to Ada.");
+    expect(
+      screen.getByRole("button", { name: "Already assigned" }),
+    ).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
   });
   it("blocks assignment for an explicitly unsupported runtime and names the reason", async () => {
     renderDiscovery(true);
@@ -150,6 +184,7 @@ describe("agent MCP discovery", () => {
       await screen.findByRole("button", { name: "Use browser: Assign to Ada" }),
     );
     expect(await screen.findByRole("alert")).toHaveTextContent("Try later");
+    expect(screen.queryByText("Assigning browser to Ada…")).toBeNull();
     await user.click(
       screen.getByRole("button", { name: "Use browser: Assign to Ada" }),
     );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Check, ExternalLink, Loader2 } from "lucide-react";
 import type {
@@ -117,6 +117,10 @@ export function McpSetupDialog({
   const [busy, setBusy] = useState(false);
   const operation = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (saved) titleRef.current?.focus();
+  }, [saved]);
   const id = useId();
   const agents = useQuery({
     ...agentListOptions(workspaceId),
@@ -229,18 +233,22 @@ export function McpSetupDialog({
       }}
     >
       <DialogContent
-        className="flex max-h-[88vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-xl"
+        className="flex max-h-[88vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-xl pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11"
         showCloseButton={!busy}
       >
         <DialogHeader className="shrink-0 px-5 pb-4 pt-5 pr-12">
-          <DialogTitle>
+          <DialogTitle
+            ref={titleRef}
+            tabIndex={-1}
+            className="[overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
+          >
             {saved
               ? t(($) => $.mcp.market.assign_title)
               : t(($) => $.mcp.market.setup_title, {
                   name: template?.title || template?.key || "",
                 })}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="[overflow-wrap:anywhere]">
             {saved
               ? t(($) => $.mcp.market.saved, { name: saved.name })
               : template?.description}
@@ -276,7 +284,7 @@ export function McpSetupDialog({
                   href={docsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-caption underline underline-offset-4"
+                  className="inline-flex items-center gap-1 text-caption underline underline-offset-4 pointer-coarse:min-h-11"
                 >
                   {t(($) => $.mcp.market.documentation)}
                   <ExternalLink className="size-3" aria-hidden="true" />
@@ -343,10 +351,17 @@ export function McpSetupDialog({
                       setError("");
                     }}
                     aria-invalid={error ? true : undefined}
-                    aria-describedby={error ? `${id}-error` : undefined}
+                    aria-required="true"
+                    aria-describedby={`${id}-name-hint${error ? ` ${id}-error` : ""}`}
                     disabled={busy}
                     autoComplete="off"
                   />
+                  <p
+                    id={`${id}-name-hint`}
+                    className="text-caption text-muted-foreground"
+                  >
+                    {t(($) => $.mcp.market.configuration_name_hint)}
+                  </p>
                   <p className="text-caption leading-5 text-muted-foreground">
                     {recipe
                       ? t(($) => $.mcp.market.save_note)
@@ -408,6 +423,7 @@ export function McpSetupDialog({
                     <div key={agent.id} className="rounded-lg border p-3">
                       <div className="flex min-w-0 items-center gap-3">
                         <Checkbox
+                          className="pointer-coarse:after:-inset-3.5"
                           id={`${id}-${agent.id}`}
                           checked={selected.has(agent.id)}
                           disabled={
@@ -427,7 +443,7 @@ export function McpSetupDialog({
                         />
                         <Label
                           htmlFor={`${id}-${agent.id}`}
-                          className="min-w-0 flex-1 break-words text-body"
+                          className="min-w-0 flex-1 text-body [overflow-wrap:anywhere] pointer-coarse:min-h-11"
                         >
                           {agent.name}
                         </Label>
@@ -463,7 +479,7 @@ export function McpSetupDialog({
           ) : null}
         </div>
         <DialogFooter
-          className="mx-0 mb-0 shrink-0 border-t bg-muted/30 px-5 py-4"
+          className="mx-0 mb-0 shrink-0 border-t bg-muted/30 px-5 py-4 sm:flex-wrap [&_[data-slot=button]]:h-auto [&_[data-slot=button]]:min-h-8 [&_[data-slot=button]]:whitespace-normal [&_[data-slot=button]]:py-1.5"
           data-slot="mcp-setup-footer"
         >
           <Button variant="outline" disabled={busy} onClick={onClose}>

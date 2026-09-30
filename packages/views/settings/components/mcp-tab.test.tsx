@@ -121,7 +121,7 @@ describe("McpTab", () => {
   it("closes workspace-specific configuration drafts when workspace identity changes", async () => {
     const user = userEvent.setup();
     const view = render(<McpTab />, { wrapper: Wrapper });
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     await user.type(screen.getByLabelText("Server name"), "old-workspace-draft");
     data.wsId = "workspace-2";
     view.rerender(<McpTab />);
@@ -132,7 +132,7 @@ describe("McpTab", () => {
     const user = userEvent.setup();
     render(<McpTab />, { wrapper: Wrapper });
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     await user.type(screen.getByLabelText("Server name"), "github");
     // The shared dialog defaults to the STDIO transport.
     await user.type(screen.getByLabelText("Command"), "github-mcp");
@@ -172,7 +172,7 @@ describe("McpTab", () => {
     const user = userEvent.setup();
     render(<McpTab />, { wrapper: Wrapper });
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
 
     expect(screen.getByLabelText("Server name")).not.toHaveAttribute("aria-invalid");
     expect(screen.getByLabelText("Command")).not.toHaveAttribute("aria-invalid");
@@ -184,7 +184,7 @@ describe("McpTab", () => {
     const user = userEvent.setup();
     render(<McpTab />, { wrapper: Wrapper });
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     const nameInput = screen.getByLabelText("Server name");
     await user.click(nameInput);
     await user.tab();
@@ -205,7 +205,7 @@ describe("McpTab", () => {
     const user = userEvent.setup();
     render(<McpTab />, { wrapper: Wrapper });
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     await user.type(screen.getByLabelText("Server name"), "github");
     await user.click(screen.getByRole("button", { name: "Add" }));
 
@@ -219,7 +219,7 @@ describe("McpTab", () => {
     const user = userEvent.setup();
     render(<McpTab />, { wrapper: Wrapper });
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     await user.type(screen.getByLabelText("Server name"), "remote");
     await user.click(screen.getByRole("button", { name: /^Streamable HTTP/ }));
     await user.click(screen.getByRole("button", { name: "Add" }));
@@ -240,7 +240,7 @@ describe("McpTab", () => {
     const user = userEvent.setup();
     render(<McpTab />, { wrapper: Wrapper });
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     const nameInput = screen.getByLabelText("Server name");
     await user.type(nameInput, name);
     await user.type(screen.getByLabelText("Command"), "tool");
@@ -259,7 +259,7 @@ describe("McpTab", () => {
     const user = userEvent.setup();
     render(<McpTab />, { wrapper: Wrapper });
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     await user.type(screen.getByLabelText("Server name"), "github");
     await user.click(screen.getByRole("tab", { name: "JSON" }));
     const jsonInput = screen.getByLabelText("MCP server JSON configuration");
@@ -293,13 +293,13 @@ describe("McpTab", () => {
       expect(submit).toHaveAttribute("form", scrollArea?.id);
     };
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     expectStableDialogLayout();
 
     await user.click(screen.getByRole("button", { name: "Cancel" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
-    await user.click(screen.getByRole("button", { name: /Add server/ }));
+    await user.click(screen.getByRole("button", { name: /Add custom server/ }));
     expectStableDialogLayout();
   });
 
@@ -410,7 +410,7 @@ describe("McpTab", () => {
     expect(nameInput).toBeDisabled();
     expect(screen.getByRole("button", { name: "Save name" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Cancel rename" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /Add server/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Add custom server/ })).toBeDisabled();
 
     finishRename();
     await waitFor(() =>
@@ -528,7 +528,7 @@ describe("McpTab", () => {
 
     // The inventory itself stays visible — it carries no credential material.
     expect(screen.getByText("linear")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /Add server/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Add custom server/ })).toBeNull();
     expect(screen.queryByRole("button", { name: /Rename server/ })).toBeNull();
     expect(
       screen.queryByRole("button", { name: /^Replace configuration / }),
@@ -544,7 +544,7 @@ describe("McpTab", () => {
     data.servers = [];
     render(<McpTab />, { wrapper: Wrapper });
     expect(screen.getByRole("tab", { name: "MCP market" })).toHaveAttribute("aria-selected", "true");
-    await user.click(screen.getByRole("tab", { name: "Workspace" }));
+    await user.click(screen.getByRole("tab", { name: "Shared configurations" }));
     expect(screen.getByText("No shared MCP servers")).toBeInTheDocument();
   });
 

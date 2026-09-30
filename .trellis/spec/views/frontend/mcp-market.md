@@ -54,6 +54,26 @@ three existing keyless templates; it is not an external registry or plugin store
   dialogs scroll their content while keeping their actions reachable.
 - Navigation and transport behavior is shared by Web/Desktop; no platform APIs
   belong in these views. No new global store is needed for an in-progress dialog.
+- Keep a persistent result-count status region outside the template list; filtering
+  must announce the count without moving focus or reading every card again.
+- Template cards use the semantic foreground for their focus outline. The shared
+  light `ring` token does not reach 3:1 against the card background; do not restore
+  it here without verifying contrast. Preserve distinct icons for browser debugging
+  and browser automation, with a visible configuration action on each card.
+- State name-format restrictions before submission and keep the helper associated
+  with its input when validation errors appear. Required input semantics must not
+  bypass the existing localized validation flow.
+- Move focus to the assignment heading when a configuration is saved or an existing
+  instance is selected. The setup submit button disappears at that transition;
+  without an explicit handoff, browser focus falls to `body` outside the dialog.
+- Existing-instance assignment identifies the pending server, shows progress on
+  its button, and announces completion. Disabled controls alone are not progress
+  feedback. Normal failure recovery still uses the shared mutation result.
+- Coarse-pointer controls have at least 44px targets within each MCP surface,
+  including portaled dialogs. Expand checkbox hit areas and labels together;
+  retain compact desktop controls. Dialog headings and agent names wrap long words.
+- Use the catalog container width to choose one or two columns, rather than the
+  viewport width: the same catalog also appears inside agent discovery dialogs.
 
 ## Evidence
 

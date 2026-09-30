@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { Globe, Loader2, Search, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Bug,
+  Globe,
+  Loader2,
+  MousePointer2,
+  Search,
+  Sparkles,
+} from "lucide-react";
 import type {
   McpServerTemplate,
   WorkspaceMcpServer,
@@ -49,7 +57,7 @@ export function McpLibraryCatalog({
     <Tabs
       value={view}
       onValueChange={(value) => setChoice(value as "workspace" | "market")}
-      className="gap-5"
+      className="gap-5 pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11 pointer-coarse:[&_[role=tab]]:min-h-11 pointer-coarse:[&_[data-slot=tabs-list]]:h-auto"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <TabsList aria-label={t(($) => $.mcp.title)} variant="line">
@@ -109,10 +117,10 @@ export function McpTemplateCatalog({
     { value: "reasoning", label: t(($) => $.mcp.market.reasoning) },
   ];
   return (
-    <div className="space-y-4" data-testid="mcp-market">
+    <div className="@container space-y-4" data-testid="mcp-market">
       <div className="relative">
         <Search
-          className="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground"
+          className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
           aria-hidden="true"
         />
         <Input
@@ -133,6 +141,7 @@ export function McpTemplateCatalog({
             key={item.value}
             size="sm"
             variant={category === item.value ? "secondary" : "ghost"}
+            className={category === item.value ? "font-semibold" : "font-normal"}
             aria-pressed={category === item.value}
             onClick={() => setCategory(item.value)}
           >
@@ -140,6 +149,11 @@ export function McpTemplateCatalog({
           </Button>
         ))}
       </div>
+      <p role="status" aria-atomic="true" className="sr-only">
+        {!templates.isPending && !templates.isError
+          ? t(($) => $.mcp.market.results_count, { count: matches.length })
+          : ""}
+      </p>
       {templates.isPending ? (
         <p
           role="status"
@@ -190,43 +204,54 @@ export function McpTemplateCatalog({
           )}
         </div>
       ) : null}
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 @lg:grid-cols-2">
         {matches.map((template) => {
           const related =
             servers?.filter((server) => server.template_key === template.key) ??
             [];
-          const Icon = template.category === "reasoning" ? Sparkles : Globe;
+          const Icon =
+            template.key === "chrome-devtools"
+              ? Bug
+              : template.key === "playwright"
+                ? MousePointer2
+                : template.category === "reasoning"
+                  ? Sparkles
+                  : Globe;
           return (
             <div
               key={template.key}
-              className="overflow-hidden rounded-xl border bg-surface-raised/40"
+              className="min-w-0 overflow-hidden rounded-xl border bg-surface-raised/40"
             >
               <button
                 type="button"
                 aria-label={t(($) => $.mcp.market.view, {
                   name: template.title || template.key,
                 })}
-                className="flex h-full min-h-36 w-full flex-col items-start gap-3 p-4 text-left transition-colors hover:bg-muted/40 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring"
+                className="flex h-full w-full flex-col items-start gap-3 p-4 text-left transition-colors hover:bg-muted/40 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground"
                 onClick={() => setSelected(template)}
               >
-                <Icon
-                  className="size-5 text-muted-foreground"
-                  aria-hidden="true"
-                />
-                <div className="min-w-0">
-                  <h3 className="break-words text-body font-medium">
+                <div className="flex w-full min-w-0 items-center gap-2.5">
+                  <Icon
+                    className="size-5 shrink-0 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  <h3 className="min-w-0 text-title-sm font-medium [overflow-wrap:anywhere]">
                     {template.title || template.key}
                   </h3>
-                  <p className="mt-1 text-caption leading-5 text-muted-foreground">
-                    {template.description}
-                  </p>
                 </div>
+                <p className="text-body text-muted-foreground [overflow-wrap:anywhere]">
+                  {template.description}
+                </p>
                 {related.length > 0 ? (
-                  <p className="mt-auto break-all text-caption text-muted-foreground">
+                  <p className="break-all text-caption text-muted-foreground">
                     {t(($) => $.mcp.market.related)}:{" "}
                     {related.map((server) => server.name).join(", ")}
                   </p>
                 ) : null}
+                <span className="mt-auto inline-flex items-center gap-1.5 text-label font-medium">
+                  {t(($) => $.mcp.market.view_action)}
+                  <ArrowRight className="size-3.5" aria-hidden="true" />
+                </span>
               </button>
             </div>
           );

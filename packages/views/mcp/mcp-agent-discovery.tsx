@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { useCurrentMember } from "@multica/core/permissions";
 import {
   workspaceMcpServersOptions,
@@ -46,36 +47,47 @@ export function McpAgentDiscovery({
   const assignments = useQuery(agentMcpServersOptions(context.agent.id));
   const assign = useAssignWorkspaceMcpServer(workspaceId);
   const create = useCreateWorkspaceMcpServer(workspaceId);
-  const [busy, setBusy] = useState(false);
+  const [assigningServerId, setAssigningServerId] = useState<string | null>(null);
+  const busy = assigningServerId !== null;
+  const [announcement, setAnnouncement] = useState("");
   const pending = useRef(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [succeeded, setSucceeded] = useState<Set<string>>(new Set());
   const [preset, setPreset] = useState<McpCustomPreset | null>(null);
   const servers = library.data ?? [];
-  const assignExisting = async (serverId: string) => {
+  const assignExisting = async (serverId: string, name: string) => {
     if (pending.current || context.unsupported || !assignments.data) return;
     pending.current = true;
-    setBusy(true);
+    setAssigningServerId(serverId);
+    setAnnouncement(
+      t(($) => $.mcp.market.assigning_to, { name, agent: context.agent.name }),
+    );
     try {
       const result = await assign.mutateAsync({
         serverId,
         agentIds: [context.agent.id],
       });
       if (result.succeeded.includes(context.agent.id)) {
+        setAnnouncement(
+          t(($) => $.mcp.market.assigned_to, { name, agent: context.agent.name }),
+        );
         setSucceeded((previous) => new Set([...previous, serverId]));
         setErrors((previous) => {
           const next = { ...previous };
           delete next[serverId];
           return next;
         });
-      } else
+      } else {
+        setAnnouncement("");
         setErrors((previous) => ({
           ...previous,
           [serverId]:
             result.failed[0]?.message ||
             t(($) => $.mcp.market.assignment_failed),
         }));
+      }
     } catch (error) {
+      setAnnouncement("");
       setErrors((previous) => ({
         ...previous,
         [serverId]:
@@ -85,7 +97,7 @@ export function McpAgentDiscovery({
       }));
     } finally {
       pending.current = false;
-      setBusy(false);
+      setAssigningServerId(null);
     }
   };
   return (
@@ -96,16 +108,19 @@ export function McpAgentDiscovery({
       }}
     >
       <DialogContent
-        className="flex max-h-[88vh] flex-col overflow-hidden sm:max-w-2xl"
+        className="flex max-h-[88vh] flex-col overflow-hidden sm:max-w-2xl pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11 pointer-coarse:[&_[role=tab]]:min-h-11 pointer-coarse:[&_[data-slot=tabs-list]]:h-auto pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11"
         showCloseButton={!busy}
       >
-        <DialogHeader className="pr-8">
+        <DialogHeader className="pr-12">
           <DialogTitle>{t(($) => $.mcp.market.agent_title)}</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="[overflow-wrap:anywhere]">
             {t(($) => $.mcp.market.assign_to, { name: context.agent.name })}.{" "}
             {t(($) => $.mcp.market.existing_first)}
           </DialogDescription>
         </DialogHeader>
+        <p role="status" aria-atomic="true" className="sr-only">
+          {announcement}
+        </p>
         <Tabs
           defaultValue="workspace"
           className="min-h-0 gap-4 overflow-y-auto"
@@ -154,6 +169,7 @@ export function McpAgentDiscovery({
                 (item) => item.id === server.id,
               );
               const isAssigned = !!assigned || succeeded.has(server.id);
+              const isAssigning = assigningServerId === server.id;
               return (
                 <div
                   key={server.id}
@@ -173,20 +189,28 @@ export function McpAgentDiscovery({
                         context.unsupported ||
                         !assignments.data
                       }
-                      onClick={() => void assignExisting(server.id)}
+                      onClick={() => void assignExisting(server.id, server.name)}
                       aria-label={
-                        isAssigned
+                        isAssigned || isAssigning
                           ? undefined
                           : `${t(($) => $.mcp.market.reuse, { name: server.name })}: ${t(($) => $.mcp.market.assign_to, { name: context.agent.name })}`
                       }
                     >
-                      {isAssigned
-                        ? assigned?.enabled === false
-                          ? t(($) => $.mcp.market.already_disabled)
-                          : t(($) => $.mcp.market.already_assigned)
-                        : t(($) => $.mcp.market.assign_to, {
-                            name: context.agent.name,
-                          })}
+                      {isAssigning ? (
+                        <Loader2
+                          className="size-3.5 animate-spin motion-reduce:animate-none"
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      {isAssigning
+                        ? t(($) => $.mcp.market.assigning)
+                        : isAssigned
+                          ? assigned?.enabled === false
+                            ? t(($) => $.mcp.market.already_disabled)
+                            : t(($) => $.mcp.market.already_assigned)
+                          : t(($) => $.mcp.market.assign_to, {
+                              name: context.agent.name,
+                            })}
                     </Button>
                   </div>
                   <McpConflictNotice name={server.name} context={context} />
