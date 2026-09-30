@@ -79,12 +79,9 @@ export function AgentProfileCard({ agentId }: AgentProfileCardProps) {
     .slice(0, 2);
 
   return (
-    // `group` enables the hover-only Detail link on the top-right —
-    // it fades in only when the user is hovering the card chrome,
-    // staying out of the way during a quick glance.
-    <div className="group flex flex-col gap-3 text-left">
+    <div className="flex flex-col gap-3 text-left">
       {/* Header — avatar + name + availability on the left, "Detail →" link
-          on the right (hover-only). Card stays minimal: only the 3-state
+          on the right. Card stays minimal: only the 3-state
           availability dot is surfaced here; last-task state lives in the
           agents list and the agent detail page. */}
       <div className="flex items-start gap-3">
@@ -115,7 +112,7 @@ export function AgentProfileCard({ agentId }: AgentProfileCardProps) {
         {!isArchived && (
           <AppLink
             href={p.agentDetail(agent.id)}
-            className="mr-1 mt-0.5 shrink-0 text-caption font-normal text-brand opacity-0 transition-opacity group-hover:opacity-100"
+            className="mr-1 mt-0.5 inline-flex shrink-0 items-center rounded-sm text-caption font-normal text-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11 pointer-coarse:min-w-11"
           >
             {t(($) => $.profile_card.detail_link)}
           </AppLink>

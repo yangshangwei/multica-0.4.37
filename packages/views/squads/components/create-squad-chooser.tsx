@@ -34,7 +34,7 @@ export function CreateSquadChooser() {
 
   return (
     <Dialog onOpenChange={(open) => { if (open) handingOff.current = false; }}>
-      <DialogTrigger render={<Button size="sm" />}>
+      <DialogTrigger render={<Button size="sm" className="pointer-coarse:min-h-11" />}>
         <Plus className="size-3.5" aria-hidden="true" />
         {t(($) => $.page.new_button)}
       </DialogTrigger>
@@ -53,7 +53,7 @@ export function CreateSquadChooser() {
           </div>
           <DialogClose
             aria-label={t(($) => $.create_chooser.close)}
-            className="shrink-0 rounded-sm p-1 text-faint-foreground transition-colors hover:bg-accent/60 hover:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="flex shrink-0 items-center justify-center rounded-sm p-1 text-faint-foreground transition-colors hover:bg-accent/60 hover:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring pointer-coarse:size-11"
           >
             <X className="size-3.5" aria-hidden="true" />
           </DialogClose>

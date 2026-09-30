@@ -33,8 +33,8 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
 
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto(`/${workspace.slug}/squads`);
-    const workspaceTab = page.getByRole("tab", { name: "Workspace squads" });
-    const templateTab = page.getByRole("tab", { name: "Squad templates" });
+    const workspaceTab = page.getByRole("tab", { name: "Workspace" });
+    const templateTab = page.getByRole("tab", { name: "Templates" });
     await expect(workspaceTab).toHaveAttribute("aria-selected", "true");
     await expect(page.getByRole("link", { name: squad.name, exact: true })).toBeVisible();
     await expect(page.getByText(description, { exact: true })).toBeVisible();
@@ -96,10 +96,10 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
       await expect(templateTab).toHaveAttribute("aria-selected", "true");
     }
     await page.getByRole("button", { name: "New Squad", exact: true }).click();
-    await expect(page.getByRole("menuitem", { name: "Create from template", exact: true })).toBeVisible();
-    await expect(page.getByRole("menuitem", { name: "Create custom squad", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Create from template/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Create custom squad/ })).toBeVisible();
     await page.keyboard.press("Escape");
-    for (const [locale, label] of [["zh-Hans", "AI小队模板"], ["en", "Squad templates"]]) {
+    for (const [locale, label] of [["zh-Hans", "模板"], ["en", "Templates"]]) {
       await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
       await page.context().addCookies([{ name: "multica-locale", value: locale, url: new URL(page.url()).origin }]);
       await page.goto(`/${workspace.slug}/squads?view=templates`);

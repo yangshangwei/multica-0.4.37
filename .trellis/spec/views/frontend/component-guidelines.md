@@ -85,6 +85,21 @@ activation and modifier clicks do not invoke the row navigation fallback twice.
 Column defaults apply to fresh preferences. Do not migrate an existing
 `hiddenColumns` array when changing which provenance columns are initially shown.
 
+Squad discovery is an explicit exception to ListGrid's usual two-zone layout:
+members, creator and created-at columns appear at `@2xl`, `@4xl` and `@5xl`
+respectively. Keep each header, row cell and skeleton placeholder at the same
+tier, and explain the width requirement in the display popover. Preferences
+remain saved even when a column is temporarily hidden by the container width.
+Keep the narrow identity/leader layout free of horizontal overflow, including
+44px coarse-pointer action targets. No JavaScript width observer is needed.
+
+In the squad list, actor names and their decorative avatars form one AppLink.
+Disable the nested ActorAvatar profile link and use rowLinkInteractiveProps so
+keyboard and pointer activation reach the actor exactly once. Profile-card
+details must remain visible without mouse hover. Active filters use a semantic
+foreground/background pair and expose selected names plus result counts in a
+localized status region; do not replace saved descriptions with template copy.
+
 <!-- How props should be defined and typed -->
 
 (To be filled by the team)

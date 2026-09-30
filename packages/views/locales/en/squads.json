@@ -17,8 +17,8 @@
     "archive_action": "Archive",
     "list_error": "Could not load squads.",
     "tabs": {
-      "workspace": "Workspace squads",
-      "templates": "Squad templates"
+      "workspace": "Workspace",
+      "templates": "Templates"
     },
     "custom_button": "Create custom squad",
     "sort_name": "Name"
@@ -153,7 +153,12 @@
     "direction_asc": "Ascending",
     "direction_desc": "Descending",
     "section_columns": "Columns",
-    "result_count_title": "Matching squads / all squads",
+    "result_count_one": "{{visible}} of {{count}} squad",
+    "result_count_other": "{{visible}} of {{count}} squads",
+    "filter_summary": "{{label}}: {{names}}",
+    "value_separator": ", ",
+    "more_values": "{{names}}, +{{count}}",
+    "responsive_columns": "Some columns appear only in wider windows.",
     "filter_label": "Filter",
     "filter_active_count_one": "{{count}} filter",
     "filter_active_count_other": "{{count}} filters",

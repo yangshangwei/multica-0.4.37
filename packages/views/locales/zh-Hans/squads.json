@@ -17,8 +17,8 @@
     "archive_action": "归档",
     "list_error": "无法加载AI小队。",
     "tabs": {
-      "workspace": "工作空间AI小队",
-      "templates": "AI小队模板"
+      "workspace": "工作空间",
+      "templates": "模板"
     },
     "custom_button": "自定义创建",
     "sort_name": "名称"
@@ -150,7 +150,11 @@
     "direction_asc": "升序",
     "direction_desc": "降序",
     "section_columns": "列",
-    "result_count_title": "当前结果 / 全部AI小队",
+    "result_count_other": "显示 {{visible}} / {{count}} 个AI小队",
+    "filter_summary": "{{label}}：{{names}}",
+    "value_separator": "、",
+    "more_values": "{{names}}，另 {{count}} 位",
+    "responsive_columns": "部分列仅在较宽窗口中显示。",
     "filter_label": "筛选",
     "filter_active_count_other": "{{count}} 项筛选",
     "clear_filters": "清除筛选"

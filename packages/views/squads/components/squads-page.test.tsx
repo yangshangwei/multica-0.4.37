@@ -9,6 +9,7 @@ import { SquadsPage } from "./squads-page";
 
 const mocks = vi.hoisted(() => ({
   squads: [] as Squad[],
+  agents: [] as { id: string; name: string }[],
   members: [] as MemberWithUser[],
   squadsError: false,
   refetchSquads: vi.fn(),
@@ -27,7 +28,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@tanstack/react-query", () => ({
   useQuery: (options: { queryKey: unknown[] }) => options.queryKey[0] === "squads"
     ? { data: mocks.squads, isLoading: false, error: mocks.squadsError ? new Error("failed") : null, refetch: mocks.refetchSquads }
-    : { data: options.queryKey[0] === "members" ? mocks.members : [], isLoading: false, refetch: vi.fn() },
+    : { data: options.queryKey[0] === "members" ? mocks.members : mocks.agents, isLoading: false, refetch: vi.fn() },
   useQueryClient: () => ({ invalidateQueries: vi.fn() }),
   useMutation: () => ({ isPending: false, mutate: vi.fn() }),
 }));
@@ -63,7 +64,11 @@ vi.mock("../../agents/create/use-role-templates", () => ({
 vi.mock("../../projects/components/use-squad-for-project-dialog", () => ({
   UseSquadForProjectDialog: ({ template }: { template: SquadTemplate }) => <div role="dialog" aria-label={template.title} />,
 }));
-vi.mock("../../common/actor-avatar", () => ({ ActorAvatar: () => null }));
+vi.mock("../../common/actor-avatar", () => ({
+  ActorAvatar: ({ actorId, profileLink }: { actorId: string; profileLink?: boolean }) => (
+    <span role="img" aria-label={actorId} data-profile-link={profileLink !== false} />
+  ),
+}));
 vi.mock("@multica/ui/components/common/actor-avatar", () => ({ ActorAvatar: () => null }));
 
 const TEMPLATE: SquadTemplate = {
@@ -85,7 +90,7 @@ const CURRENT_MEMBER: MemberWithUser = {
 function adapter(): NavigationAdapter {
   return { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/acme/squads", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
 }
-function renderPage(navigation = adapter()) {
+function renderPage(navigation = adapter(), locale: "en" | "zh-Hans" = "en") {
   function Page() {
     const [searchParams, setSearchParams] = useState(navigation.searchParams);
     return (
@@ -101,12 +106,13 @@ function renderPage(navigation = adapter()) {
       </NavigationProvider>
     );
   }
-  return renderWithI18n(<Page />);
+  return renderWithI18n(<Page />, { locale });
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
   mocks.squads = [];
+  mocks.agents = [{ id: SQUAD.leader_id, name: "Taylor" }];
   mocks.members = [CURRENT_MEMBER];
   mocks.squadsError = false;
   mocks.templates = [TEMPLATE];
@@ -121,14 +127,14 @@ describe("SquadsPage discovery and management", () => {
     mocks.squads = [SQUAD];
     const navigation = adapter();
     renderPage(navigation);
-    expect(screen.getByRole("tab", { name: "Workspace squads" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Workspace" })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByRole("link", { name: SQUAD.name })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Apply to project" })).not.toBeInTheDocument();
-    await user.click(screen.getByRole("tab", { name: "Squad templates" }));
+    await user.click(screen.getByRole("tab", { name: "Templates" }));
     expect(navigation.replace).toHaveBeenCalledWith("/acme/squads?view=templates");
     expect(screen.getByRole("button", { name: "Apply to project" })).toBeVisible();
     expect(screen.queryByRole("table")).not.toBeInTheDocument();
-    await user.click(screen.getByRole("tab", { name: "Workspace squads" }));
+    await user.click(screen.getByRole("tab", { name: "Workspace" }));
     expect(navigation.replace).toHaveBeenLastCalledWith("/acme/squads");
     expect(screen.getByRole("link", { name: SQUAD.name })).toBeVisible();
   });
@@ -137,8 +143,8 @@ describe("SquadsPage discovery and management", () => {
     const user = userEvent.setup();
     const navigation = { ...adapter(), searchParams: new URLSearchParams("view=templates&context=project") };
     renderPage(navigation);
-    expect(screen.getByRole("tab", { name: "Squad templates" })).toHaveAttribute("aria-selected", "true");
-    await user.click(screen.getByRole("tab", { name: "Workspace squads" }));
+    expect(screen.getByRole("tab", { name: "Templates" })).toHaveAttribute("aria-selected", "true");
+    await user.click(screen.getByRole("tab", { name: "Workspace" }));
     expect(navigation.replace).toHaveBeenCalledWith("/acme/squads?context=project");
   });
 
@@ -192,6 +198,57 @@ describe("SquadsPage discovery and management", () => {
     expect(navigation.push).not.toHaveBeenCalled();
     expect(open).not.toHaveBeenCalled();
     open.mockRestore();
+  });
+
+  it("makes each actor's avatar and name one native link with a single accessible name", async () => {
+    const user = userEvent.setup();
+    mocks.squads = [SQUAD];
+    const navigation = adapter();
+    renderPage(navigation);
+
+    for (const [name, href] of [["Taylor", "/acme/agents/lead-1"], ["Ada", "/acme/members/user-1"]]) {
+      const link = screen.getByRole("link", { name });
+      expect(link).toHaveAttribute("href", href);
+      const avatar = link.querySelector('[role="img"]');
+      expect(avatar).toHaveAttribute("data-profile-link", "false");
+      expect(avatar?.closest('[aria-hidden="true"]')).not.toBeNull();
+      link.focus();
+      await user.keyboard("{Enter}");
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(href);
+      vi.mocked(navigation.push).mockClear();
+      fireEvent(link, new MouseEvent("auxclick", { button: 1, bubbles: true, cancelable: true }));
+      expect(navigation.push).not.toHaveBeenCalled();
+    }
+  });
+
+  it("names selected filter values and announces the matching result count", () => {
+    mocks.squads = [SQUAD, { ...SQUAD, id: "squad-2", leader_id: "lead-2", name: "Release" }];
+    mocks.viewState.filters = { leaders: [SQUAD.leader_id], creators: [SQUAD.creator_id] };
+    renderPage();
+
+    const summary = screen.getByRole("status");
+    expect(summary).toHaveTextContent("Leader: Taylor");
+    expect(summary).toHaveTextContent("Created by: Ada");
+    expect(summary).toHaveTextContent("1 of 2 squads");
+    expect(screen.getByRole("button", { name: "Filter" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Clear filters" })).toBeInTheDocument();
+  });
+
+  it("keeps selected actor names when the scope has no matches", () => {
+    mocks.squads = [{ ...SQUAD, creator_id: "other-user" }];
+    mocks.viewState.scope = "mine";
+    mocks.viewState.filters = { leaders: [SQUAD.leader_id], creators: [] };
+    renderPage();
+    expect(screen.getByRole("status")).toHaveTextContent("Leader: Taylor");
+    expect(screen.getByRole("status")).toHaveTextContent("0 of 0 squads");
+  });
+
+  it("localizes the visible filter summary and result count", () => {
+    mocks.squads = [SQUAD];
+    mocks.viewState.filters = { leaders: [SQUAD.leader_id], creators: [] };
+    renderPage(adapter(), "zh-Hans");
+    expect(screen.getByRole("status")).toHaveTextContent("队长：Taylor");
+    expect(screen.getByRole("status")).toHaveTextContent("显示 1 / 1 个AI小队");
   });
 
   it("limits regular members' row actions to squads they created", () => {
@@ -278,7 +335,7 @@ describe("SquadsPage discovery and management", () => {
     expect(screen.queryByText("No squads yet. Create one to get started.")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry" }));
     expect(mocks.refetchSquads).toHaveBeenCalledOnce();
-    await user.click(screen.getByRole("tab", { name: "Squad templates" }));
+    await user.click(screen.getByRole("tab", { name: "Templates" }));
     expect(screen.getByRole("button", { name: "Apply to project" })).toBeInTheDocument();
   });
 });
