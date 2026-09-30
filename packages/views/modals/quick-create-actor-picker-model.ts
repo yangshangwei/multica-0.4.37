@@ -34,6 +34,7 @@ export function buildActorCatalog(agents: readonly SavedActor[], squads: readonl
 export function matchesActorFilter(actor: ActorCatalogEntry, filter: ActorTypeFilter) {
   if (filter === "mika") return actor.isMika;
   if (filter === "coordination") return actor.leadsSquads.length > 0;
+  if (filter === "agent") return actor.type === "agent" && actor.leadsSquads.length === 0;
   return filter === "all" || actor.type === filter;
 }
 
