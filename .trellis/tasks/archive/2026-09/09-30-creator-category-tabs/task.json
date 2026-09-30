@@ -1,0 +1,30 @@
+{
+  "id": "creator-category-tabs",
+  "name": "creator-category-tabs",
+  "title": "Promote creation assistant categories to tabs",
+  "description": "",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-09-30",
+  "completedAt": "2026-09-30",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/modals/quick-create-actor-picker.tsx",
+    "packages/views/modals/quick-create-actor-picker-model.ts",
+    "e2e/quick-create-actor-picker.spec.ts"
+  ],
+  "notes": "Implemented category tabs and removed collapsed coordination state. Verified 138 focused Vitest tests, views typecheck, changed-file ESLint, layout static scan, production Web build, and 5 Chromium E2E tests (21.8s). Screenshots: /tmp/creator-category-tabs. Visual verdict 96/100. Electron-specific E2E not run. Verification environment required explicit ENV_FILE=/Users/artisan/.multica/dev/envs/check-20260928023904-13728/check.env when launching API/Web; default make up reads root .env before registry resolution and retains stale origins.",
+  "meta": {}
+}
