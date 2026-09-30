@@ -198,7 +198,7 @@ export function StepWelcome({
 function WelcomeIllustration() {
   const { t } = useT("onboarding");
   return (
-    <div className="flex w-full max-w-[460px] flex-col gap-3">
+    <div className="flex w-full max-w-[460px] flex-col gap-5">
       <MockActivityCard
         actor={{
           kind: "user",
@@ -214,7 +214,7 @@ function WelcomeIllustration() {
         }
       />
       <MockActivityCard
-        className="-translate-x-3 -rotate-[1.2deg]"
+        className="-translate-x-6 -rotate-[0.5deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card2_actor_name),
@@ -232,7 +232,7 @@ function WelcomeIllustration() {
         statusLabel={t(($) => $.welcome.illustration.card2_status)}
       />
       <MockActivityCard
-        className="translate-x-3 rotate-[1.6deg]"
+        className="translate-x-6 rotate-[0.5deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card3_actor_name),
@@ -244,7 +244,7 @@ function WelcomeIllustration() {
         statusLabel={t(($) => $.welcome.illustration.card3_status)}
       />
       <MockActivityCard
-        className="-translate-x-3 -rotate-[0.8deg]"
+        className="-translate-x-6 -rotate-[0.5deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card4_actor_name),
@@ -256,7 +256,7 @@ function WelcomeIllustration() {
         statusLabel={t(($) => $.welcome.illustration.card4_status)}
       />
       <MockActivityCard
-        className="translate-x-3 rotate-[1deg]"
+        className="translate-x-6 rotate-[0.5deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card5_actor_name),
@@ -274,7 +274,7 @@ function WelcomeIllustration() {
         statusLabel={t(($) => $.welcome.illustration.card5_status)}
       />
       <MockActivityCard
-        className="-rotate-[0.6deg]"
+        className="-translate-x-6 -rotate-[0.5deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card6_actor_name),
@@ -331,11 +331,6 @@ function MockActivityCard({
     <div
       className={cn(
         "rounded-lg border bg-card px-4 py-3.5 shadow-sm",
-        // Decorative hover: lift, straighten, deeper shadow. Cards aren't
-        // clickable — this is ambient polish so the illustration feels like
-        // real app UI rather than a flat screenshot.
-        "transition-all duration-200 ease-out will-change-transform",
-        "hover:-translate-y-0.5 hover:rotate-0 hover:shadow-md",
         className,
       )}
     >
