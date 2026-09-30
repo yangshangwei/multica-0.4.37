@@ -57,12 +57,14 @@ vi.mock("@multica/ui/components/ui/sidebar", () => ({
     children,
     isActive,
     render,
+    "aria-current": ariaCurrent,
   }: {
     children: React.ReactNode;
     isActive?: boolean;
+    "aria-current"?: React.AriaAttributes["aria-current"];
     render?: React.ReactElement<{ href?: string }>;
   }) => (
-    <button type="button" data-active={isActive ? "true" : undefined} data-href={render?.props.href}>
+    <button type="button" aria-current={ariaCurrent} data-active={isActive ? "true" : undefined} data-href={render?.props.href}>
       {children}
     </button>
   ),
@@ -458,6 +460,17 @@ describe("nav structure", () => {
     chatStore.current = { activeSessionId: null, isOpen: false };
     summary.current = [];
     workspaces.current = [];
+  });
+
+  it.each([
+    ["/acme/issues", "page"],
+    ["/acme/issues/issue-2", "location"],
+    ["/acme/projects", null],
+  ])("announces the workspace navigation state for %s", (pathname, current) => {
+    navigation.current = { pathname };
+    const { container } = render(<AppSidebar />);
+    const row = container.querySelector('[data-href="/acme/issues"]');
+    expect(row?.getAttribute("aria-current")).toBe(current);
   });
 
   it("renders every section in order", () => {

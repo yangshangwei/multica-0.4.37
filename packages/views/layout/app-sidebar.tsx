@@ -161,6 +161,9 @@ const workNav: NavItem[] = [
 const aiTeamNav: NavItem[] = [
   { key: "agents", labelKey: "agents" },
   { key: "squads", labelKey: "squads" },
+];
+
+const resourceNav: NavItem[] = [
   { key: "skills", labelKey: "skills" },
   { key: "mcp", labelKey: "mcp" },
   { key: "runtimes", labelKey: "runtimes" },
@@ -198,17 +201,20 @@ function NavRow({
   /** Right-aligned adornment, e.g. an unread count. */
   trailing?: React.ReactNode;
 }) {
+  const { pathname } = useNavigation();
   const Icon = routeIconForPath(href);
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         isActive={isActive}
+        aria-current={isActive ? (pathname === href ? "page" : "location") : undefined}
+        title={label}
         render={<AppLink href={href} />}
         className="text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
       >
         <Icon />
-        <span>{label}</span>
-        {trailing}
+        <span className="min-w-0 flex-1 truncate">{label}</span>
+        {trailing && <span className="shrink-0">{trailing}</span>}
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
@@ -262,6 +268,7 @@ function SortablePinItem({
     >
       <SidebarMenuButton
         size="sm"
+        aria-current={isActive ? "page" : undefined}
         isActive={isActive}
         render={<AppLink href={href} newTabTitle={label} draggable={false} />}
         onClick={(event) => {
@@ -787,9 +794,9 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
                   <SquarePen />
                   <DraftDot />
                 </span>
-                <span>{t(($) => $.sidebar.new_issue)}</span>
+                <span className="min-w-0 flex-1 truncate">{t(($) => $.sidebar.new_issue)}</span>
                 {createIssueShortcut ? (
-                  <ShortcutKeycaps shortcut={createIssueShortcut} decorative className="pointer-events-none ml-auto" />
+                  <ShortcutKeycaps shortcut={createIssueShortcut} decorative className="pointer-events-none ms-auto shrink-0" />
                 ) : null}
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -876,7 +883,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
                     <NavRow
                       key={item.key}
                       href={href}
-                      label={t(($) => $.nav[item.labelKey])}
+                      label={item.key === "issues" ? t(($) => $.sidebar.workspace_issues) : t(($) => $.nav[item.labelKey])}
                       // A pinned issue / project sits under this group's path
                       // prefix, so the pin owns the highlight and the parent
                       // row stands down. No other group can collide with a pin.
@@ -893,6 +900,25 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
                 {aiTeamNav.map((item) => {
+                  const href = p[item.key]();
+                  return (
+                    <NavRow
+                      key={item.key}
+                      href={href}
+                      label={t(($) => $.nav[item.labelKey])}
+                      isActive={isNavActive(pathname, href)}
+                    />
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+
+          <SidebarGroup>
+            <SidebarGroupLabel>{t(($) => $.sidebar.resources_group)}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu className="gap-0.5">
+                {resourceNav.map((item) => {
                   const href = p[item.key]();
                   return (
                     <NavRow
