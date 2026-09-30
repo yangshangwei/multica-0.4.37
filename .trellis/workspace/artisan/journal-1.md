@@ -1215,3 +1215,37 @@ Separated workspace management from template discovery; removed duplicate shelf 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 39: Workspace naming series and personal preference
+
+**Date**: 2026-09-30
+**Task**: Workspace naming series and personal preference
+**Branch**: `main`
+
+### Summary
+
+Implemented six bilingual workspace name series, per-account local selection, accessible split menu and manual URL/prefix protection; 119 focused tests and bilingual browser checks passed.
+
+### Main Changes
+
+- Replaced celestial-only naming with a 120-name core catalog and session generator.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ba6ced26a` | (see git log) |
+| `8f8ea3258` | (see git log) |
+
+### Testing
+
+- [OK] Core/views/web/desktop typechecks; lint; 119 focused tests; English/Chinese desktop and 390px browser checks.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining implementation work. Changes are committed locally and not pushed.
