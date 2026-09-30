@@ -99,7 +99,8 @@ Tests: core creator-selection/API/preference suites; views creator-recommendatio
 ## Actor hierarchy
 
 - Resolve current leaders through eligible squads' `leader_id`, never names or template provenance. Keep their saved descriptions and direct-selection identities unchanged.
-- Primary directory and shortcut rows show other agents and squads. Put leaders in the default-collapsed Planning and coordination section; search exposes matching leaders automatically.
-- Favorite navigation/counts include leaders even though their rows remain in the secondary section. Preserve defaults, recent history and stored references.
+- Category controls appear in order: All, 小阿孚, Agents, AI squads, Planning and coordination. Identify 小阿孚 only by agent `system_key === "mika"`; the planning category uses current squad leadership.
+- The dedicated categories open their complete matching directory, preserving typed search. All/Agents and favorite/recent rows include leaders directly, without a collapsed secondary section. Preserve defaults, recent history and stored references.
 - Explain that selecting a leader individually does not select their squad. No claim that a leader cannot implement is supported by this relationship.
+- Row badges: a squad leader carries the Squad leader badge; 小阿孚 is exempt and always carries its own CEO Agent badge (even when it currently leads a squad), so the built-in Chief of Staff is never relabeled as a squad leader or a plain agent. The separate Leads: line still lists its squads. The badge label lives in `mika_badge` and reads "CEO Agent" in both English and Chinese.
 - Keep Creation assistant: assignment defaults to the selected actor, but an explicitly named assignee in the request takes precedence. This change does not lock backend assignment.

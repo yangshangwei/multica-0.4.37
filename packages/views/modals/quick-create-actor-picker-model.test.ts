@@ -10,6 +10,18 @@ const squads = Array.from({ length: 50 }, (_, index) => ({ id: String(index), na
 const agentRef = (id: string) => ({ type: "agent" as const, id });
 
 describe("quick-create actor projection", () => {
+  it("filters Mika by system identity and coordination by current squad leadership", () => {
+    const catalog = buildActorCatalog([
+      { id: "mika", name: "Renamed CEO", system_key: "mika" },
+      { id: "copy", name: "小阿孚" },
+      { id: "lead", name: "Planner" },
+    ], [{ id: "squad", name: "Delivery", leader_id: "lead" }]);
+    expect(searchActors(catalog, "", "mika", "en").map(actorKey)).toEqual(["agent:mika"]);
+    expect(searchActors(catalog, "", "coordination", "en").map(actorKey)).toEqual(["agent:lead"]);
+    expect(searchActors(catalog, "Planner", "mika", "en")).toEqual([]);
+    expect(actorShortcuts(catalog, [agentRef("mika"), agentRef("lead")], [], "mika").favorites.map(actorKey)).toEqual(["agent:mika"]);
+  });
+
   it("uses typed identity and safely projects saved descriptions without inferring capabilities", () => {
     const catalog = buildActorCatalog([
       { id: "same", name: "Doctor", description: null },

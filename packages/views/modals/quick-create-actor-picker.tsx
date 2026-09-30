@@ -1,19 +1,19 @@
 "use client";
 
-import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ChevronDown, ChevronRight, Pin, PinOff } from "lucide-react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, Pin, PinOff } from "lucide-react";
 import type { Agent, Squad } from "@multica/core/types";
 import type { QuickCreateActorRef } from "@multica/core/issues/stores/quick-create-store";
 import { ActorAvatar } from "../common/actor-avatar";
 import { useLocale, useT } from "../i18n";
 import { PickerItem, PropertyPicker } from "../issues/components/pickers/property-picker";
 import {
-  ACTOR_PAGE_SIZE, actorKey, actorPage, actorShortcuts, projectActorSections, buildActorCatalog, searchActors,
+  ACTOR_PAGE_SIZE, actorKey, actorPage, actorShortcuts, projectActorSections, buildActorCatalog, searchActors, matchesActorFilter,
   type ActorCatalogEntry, type ActorPickerView, type ActorTypeFilter,
 } from "./quick-create-actor-picker-model";
 
 type QueryState = { pending: boolean; error: boolean; hasData: boolean; onRetry: () => void };
-type AgentSummary = Pick<Agent, "id" | "name" | "description">;
+type AgentSummary = Pick<Agent, "id" | "name" | "description" | "system_key">;
 type SquadSummary = Pick<Squad, "id" | "name" | "description"> & Partial<Pick<Squad, "leader_id">>;
 export type QuickCreateActorPickerProps = {
   actor: QuickCreateActorRef | null;
@@ -50,8 +50,6 @@ export function QuickCreateActorPicker({
   const [view, setView] = useState<ActorPickerView>("home");
   const [typeFilter, setTypeFilter] = useState<ActorTypeFilter>("all");
   const [limit, setLimit] = useState(ACTOR_PAGE_SIZE);
-  const [coordinationOpen, setCoordinationOpen] = useState(false);
-  const coordinationId = useId();
   const searchRef = useRef<HTMLInputElement>(null);
   const rows = useRef(new Map<string, HTMLDivElement>());
   const pendingFocus = useRef<{ key: string; index: number } | null>(null);
@@ -60,7 +58,6 @@ export function QuickCreateActorPicker({
     agentState.hasData ? visibleAgents : [],
     agentState.hasData && squadState.hasData ? visibleSquads : [],
   ), [visibleAgents, visibleSquads, agentState.hasData, squadState.hasData]);
-  const primaryCatalog = useMemo(() => catalog.filter((item) => item.leadsSquads.length === 0), [catalog]);
   const shortcuts = useMemo(() => actorShortcuts(catalog,
     preferencesReady ? favoriteActors : [], preferencesReady ? recentActors : []),
   [catalog, favoriteActors, recentActors, preferencesReady]);
@@ -69,7 +66,7 @@ export function QuickCreateActorPicker({
   [catalog, favoriteActors, recentActors, preferencesReady, typeFilter]);
   const related = projectState?.hasData === false ? EMPTY_REFS : projectActors;
   const projectItems = useMemo(() => actorShortcuts(catalog, related, [], typeFilter).favorites, [catalog, related, typeFilter]);
-  const home = useMemo(() => projectActorSections(primaryCatalog, related, preferencesReady ? favoriteActors : [], preferencesReady ? recentActors : [], typeFilter), [primaryCatalog, related, favoriteActors, recentActors, preferencesReady, typeFilter]);
+  const home = useMemo(() => projectActorSections(catalog, related, preferencesReady ? favoriteActors : [], preferencesReady ? recentActors : [], typeFilter), [catalog, related, favoriteActors, recentActors, preferencesReady, typeFilter]);
   const defaultItem = defaultActor && catalog.find((item) => actorKey(item) === actorKey(defaultActor));
   const isCurrentDefault = !!defaultActor && !!actor && actorKey(defaultActor) === actorKey(actor);
   const defaultKnown = agentState.hasData && (defaultActor?.type !== "squad" || squadState.hasData);
@@ -79,19 +76,14 @@ export function QuickCreateActorPicker({
   const searching = query.trim().length > 0;
   const effectiveView = searching ? "search" : browsingView;
   const results = useMemo(() => searchActors(catalog, query, typeFilter, locale), [catalog, query, typeFilter, locale]);
-  const allCount = catalog.filter((item) => typeFilter === "all" || item.type === typeFilter).length;
+  const allCount = catalog.filter((item) => matchesActorFilter(item, typeFilter)).length;
   const homeFavorites = home.favorites;
-  const coordinationItems = results.filter((item) => item.leadsSquads.length > 0
-    && (effectiveView !== "favorites" || favoriteKeys.has(actorKey(item)))
-    && effectiveView !== "project");
-  const showCoordination = searching || coordinationOpen;
   const candidates = effectiveView === "home" ? [...home.projects, ...homeFavorites, ...home.recent]
-    : effectiveView === "favorites" ? filteredShortcuts.favorites.filter((item) => item.leadsSquads.length === 0) : effectiveView === "project" ? projectItems : results.filter((item) => item.leadsSquads.length === 0);
+    : effectiveView === "favorites" ? filteredShortcuts.favorites : effectiveView === "project" ? projectItems : results;
   const page = actorPage(candidates, effectiveView === "home" ? 8 : limit);
-  const coordinationPage = actorPage(coordinationItems, limit);
   // The full result order changes on filtering/reordering, but not on a page
   // append. PropertyPicker gives a simultaneous typed query priority.
-  const navigationResetKey = JSON.stringify([effectiveView, typeFilter, candidates.map(actorKey), showCoordination ? coordinationItems.map(actorKey) : []]);
+  const navigationResetKey = JSON.stringify([effectiveView, typeFilter, candidates.map(actorKey)]);
 
   useLayoutEffect(() => {
     const target = pendingFocus.current;
@@ -117,12 +109,13 @@ export function QuickCreateActorPicker({
   const changeOpen = (next: boolean) => {
     setOpen(next);
     if (!next) {
-      setQuery(""); setView("home"); setTypeFilter("all"); setLimit(ACTOR_PAGE_SIZE); setCoordinationOpen(false);
+      setQuery(""); setView("home"); setTypeFilter("all"); setLimit(ACTOR_PAGE_SIZE);
     }
   };
   const selected = actor ? catalog.find((item) => actorKey(item) === actorKey(actor)) : undefined;
   const display = selected ?? (actor?.type === "squad" ? selectedSquad : selectedAgent);
-  const relevantStates = typeFilter === "agent" ? [agentState] : [agentState, squadState];
+  const agentOnly = typeFilter === "agent" || typeFilter === "mika";
+  const relevantStates = agentOnly ? [agentState] : [agentState, squadState];
   const pending = relevantStates.some((state) => state.pending && !state.hasData);
   const complete = relevantStates.every((state) => state.hasData);
 
@@ -139,7 +132,7 @@ export function QuickCreateActorPicker({
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="flex min-w-0 items-baseline gap-2">
             <span className={`truncate ${isSelected ? "font-semibold text-foreground" : ""}`}>{item.name}</span>{" "}
-            <span className="shrink-0 text-caption text-muted-foreground">{item.leadsSquads.length > 0 ? t(($) => $.create_issue.actor_picker.coordinator_badge) : item.type === "agent" ? t(($) => $.create_issue.actor_picker.agent) : t(($) => $.create_issue.actor_picker.squad)}</span>
+            <span className="shrink-0 text-caption text-muted-foreground">{item.isMika ? t(($) => $.create_issue.actor_picker.mika_badge) : item.leadsSquads.length > 0 ? t(($) => $.create_issue.actor_picker.coordinator_badge) : item.type === "agent" ? t(($) => $.create_issue.actor_picker.agent) : t(($) => $.create_issue.actor_picker.squad)}</span>
             {defaultActor && actorKey(defaultActor) === key && <span className="shrink-0 text-caption text-muted-foreground">{t(($) => $.create_issue.actor_picker.default_badge)}</span>}
           </span>{" "}
           <span className="truncate text-caption text-muted-foreground">{item.preview || t(($) => $.create_issue.actor_picker.no_description)}</span>{" "}
@@ -183,14 +176,18 @@ export function QuickCreateActorPicker({
       </span> : <span>{t(($) => $.create_issue.agent.pick_an_agent)}</span>}
     </span>}
     header={<div>
-      <p className="px-4 pt-2 text-caption text-muted-foreground">{selected?.leadsSquads.length
+      <p className="px-4 pt-2 text-caption text-muted-foreground">{typeFilter === "coordination" || selected?.leadsSquads.length
         ? t(($) => $.create_issue.actor_picker.coordinator_hint)
         : t(($) => $.create_issue.actor_picker.creator_hint)}</p>
       <div className="flex flex-wrap items-center gap-1 px-2 py-1.5">
-      {(["all", "agent", "squad"] as const).map((type) => <button key={type} type="button" aria-pressed={typeFilter === type}
+      {(["all", "mika", "agent", "squad", "coordination"] as const).map((type) => <button key={type} type="button" aria-pressed={typeFilter === type}
         className={`${ACTION_CLASS} ${typeFilter === type ? "bg-accent font-semibold text-foreground" : "text-muted-foreground"}`}
-        onClick={() => { setTypeFilter(type); setLimit(ACTOR_PAGE_SIZE); }}>
-        {type === "all" ? t(($) => $.create_issue.actor_picker.all) : type === "agent" ? t(($) => $.create_issue.actor_picker.agents) : t(($) => $.create_issue.actor_picker.squads)}
+        onClick={() => {
+          setTypeFilter(type);
+          setLimit(ACTOR_PAGE_SIZE);
+          if (type === "mika" || type === "coordination" || typeFilter === "mika" || typeFilter === "coordination") changeView("all");
+        }}>
+        {type === "mika" ? t(($) => $.create_issue.actor_picker.mika) : type === "coordination" ? t(($) => $.create_issue.actor_picker.coordination) : type === "all" ? t(($) => $.create_issue.actor_picker.all) : type === "agent" ? t(($) => $.create_issue.actor_picker.agents) : t(($) => $.create_issue.actor_picker.squads)}
       </button>)}
     </div></div>}
     footer={<div className="flex flex-wrap items-center justify-between gap-1">
@@ -216,7 +213,7 @@ export function QuickCreateActorPicker({
     </div>}>
     {pending && <div role="status" className="px-2 py-3 text-caption text-muted-foreground">{t(($) => $.create_issue.actor_picker.loading)}</div>}
     {retryNotice(agentState, "agent")}
-    {typeFilter !== "agent" && retryNotice(squadState, "squad")}
+    {!agentOnly && retryNotice(squadState, "squad")}
     {projectState?.pending && !projectState.hasData && <p role="status" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.create_issue.actor_picker.project_loading)}</p>}
     {projectState?.error && <div role="alert" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.create_issue.actor_picker.project_failed)}
       <button type="button" className={ACTION_CLASS} onClick={() => { searchRef.current?.focus(); projectState.onRetry(); }}>{t(($) => $.create_issue.actor_picker.retry_project)}</button></div>}
@@ -240,36 +237,22 @@ export function QuickCreateActorPicker({
     </> : <>
       {effectiveView === "favorites" && <h3 className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground">{t(($) => $.create_issue.actor_picker.favorites)}</h3>}
       {effectiveView === "project" && <h3 className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground">{t(($) => $.create_issue.actor_picker.project_group)}</h3>}
-      {effectiveView === "all" && page.items.length > 0 && <h3 className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground">
-        {typeFilter === "squad" ? t(($) => $.create_issue.actor_picker.squads) : t(($) => $.create_issue.actor_picker.execution_group)}
+      {effectiveView === "all" && typeFilter !== "mika" && typeFilter !== "coordination" && page.items.length > 0 && <h3 className="px-2 pt-2 pb-1 text-caption font-medium text-muted-foreground">
+        {typeFilter === "squad" ? t(($) => $.create_issue.actor_picker.squads) : typeFilter === "agent" ? t(($) => $.create_issue.actor_picker.agents) : t(($) => $.create_issue.actor_picker.all)}
       </h3>}
       {page.items.map(renderRow)}
     </>}
-    {coordinationItems.length > 0 && <section className="mt-2">
-      <button type="button" className={`${ACTION_CLASS} flex w-full items-center gap-1 text-muted-foreground`}
-        aria-expanded={showCoordination} aria-controls={coordinationId} disabled={searching}
-        onClick={() => { setCoordinationOpen((current) => !current); }}>
-        {showCoordination ? <ChevronDown aria-hidden className="size-3.5" /> : <ChevronRight aria-hidden className="size-3.5" />}
-        {t(($) => $.create_issue.actor_picker.coordination_group, { count: coordinationItems.length })}
-      </button>
-      <div id={coordinationId} hidden={!showCoordination}>
-        {showCoordination && <>
-          <p className="px-2 py-1 text-caption text-muted-foreground">{t(($) => $.create_issue.actor_picker.coordinator_hint)}</p>
-          {coordinationPage.items.map(renderRow)}
-        </>}
-      </div>
-    </section>}
-    {complete && (!(effectiveView === "project" || effectiveView === "home") || projectState?.hasData !== false) && page.items.length === 0 && coordinationItems.length === 0 && <div className="px-2 py-3 text-caption text-muted-foreground">
+    {complete && (!(effectiveView === "project" || effectiveView === "home") || projectState?.hasData !== false) && page.items.length === 0 && <div className="px-2 py-3 text-caption text-muted-foreground">
       {effectiveView === "favorites" ? t(($) => $.create_issue.actor_picker.no_favorites)
         : effectiveView === "project" ? t(($) => $.create_issue.actor_picker.no_project_matches)
         : effectiveView === "home" ? t(($) => $.create_issue.actor_picker.no_shortcuts)
-          : searching ? t(($) => $.create_issue.actor_picker.no_matches) : t(($) => $.create_issue.agent.no_agents)}
+          : searching || typeFilter === "mika" || typeFilter === "coordination" ? t(($) => $.create_issue.actor_picker.no_matches) : t(($) => $.create_issue.agent.no_agents)}
     </div>}
-    {(page.remaining + (showCoordination ? coordinationPage.remaining : 0)) > 0 && <button type="button" className={`${ACTION_CLASS} mt-1 w-full`} onClick={() => {
+    {page.remaining > 0 && <button type="button" className={`${ACTION_CLASS} mt-1 w-full`} onClick={() => {
       searchRef.current?.focus();
       setLimit((current) => current + ACTOR_PAGE_SIZE);
     }}>
-      {t(($) => $.create_issue.actor_picker.show_more, { count: page.remaining + (showCoordination ? coordinationPage.remaining : 0) })}
+      {t(($) => $.create_issue.actor_picker.show_more, { count: page.remaining })}
     </button>}
   </PropertyPicker>;
 }

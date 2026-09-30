@@ -2,15 +2,16 @@ import type { QuickCreateActorRef } from "@multica/core/issues/stores/quick-crea
 import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import { descriptionPreview } from "../issues/components/description-preview";
 
-export type ActorTypeFilter = "all" | QuickCreateActorRef["type"];
+export type ActorTypeFilter = "mika" | "coordination" | "all" | QuickCreateActorRef["type"];
 export type ActorPickerView = "home" | "all" | "favorites" | "project";
 export type ActorCatalogEntry = QuickCreateActorRef & {
   name: string;
   description: string;
   preview: string;
   leadsSquads: string[];
+  isMika: boolean;
 };
-type SavedActor = { id: string; name: unknown; description?: unknown };
+type SavedActor = { id: string; name: unknown; description?: unknown; system_key?: unknown };
 
 export const ACTOR_PAGE_SIZE = 50;
 export const actorKey = (actor: QuickCreateActorRef) => `${actor.type}:${actor.id}`;
@@ -25,9 +26,15 @@ export function buildActorCatalog(agents: readonly SavedActor[], squads: readonl
   }
   const project = (items: readonly SavedActor[], type: QuickCreateActorRef["type"]) => items.map((item) => {
     const description = typeof item.description === "string" ? item.description : "";
-    return { type, id: item.id, name: typeof item.name === "string" ? item.name : "", description, preview: descriptionPreview(description), leadsSquads: type === "agent" ? leaders.get(item.id) ?? [] : [] };
+    return { type, id: item.id, name: typeof item.name === "string" ? item.name : "", description, preview: descriptionPreview(description), leadsSquads: type === "agent" ? leaders.get(item.id) ?? [] : [], isMika: type === "agent" && item.system_key === "mika" };
   });
   return [...project(agents, "agent"), ...project(squads, "squad")];
+}
+
+export function matchesActorFilter(actor: ActorCatalogEntry, filter: ActorTypeFilter) {
+  if (filter === "mika") return actor.isMika;
+  if (filter === "coordination") return actor.leadsSquads.length > 0;
+  return filter === "all" || actor.type === filter;
 }
 
 export function actorShortcuts(catalog: readonly ActorCatalogEntry[], favorites: readonly QuickCreateActorRef[], recent: readonly QuickCreateActorRef[], type: ActorTypeFilter = "all") {
@@ -40,7 +47,7 @@ export function actorShortcuts(catalog: readonly ActorCatalogEntry[], favorites:
     seen.add(key);
     return [actor];
   });
-  const matchesType = (actor: ActorCatalogEntry) => type === "all" || actor.type === type;
+  const matchesType = (actor: ActorCatalogEntry) => matchesActorFilter(actor, type);
   return { favorites: resolve(favorites).filter(matchesType), recent: resolve(recent).filter(matchesType).slice(0, 5) };
 }
 
@@ -55,7 +62,7 @@ export function searchActors(catalog: readonly ActorCatalogEntry[], query: strin
     if (matchesPinyin(actor.name, q)) return 2;
     return actor.description.toLowerCase().includes(q) ? 3 : -1;
   };
-  return catalog.filter((actor) => type === "all" || actor.type === type)
+  return catalog.filter((actor) => matchesActorFilter(actor, type))
     .map((actor) => ({ actor, rank: rank(actor) }))
     .filter((item) => item.rank >= 0)
     .sort((a, b) => a.rank - b.rank || collator.compare(a.actor.name, b.actor.name)

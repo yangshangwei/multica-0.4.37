@@ -89,6 +89,44 @@ async function mockDirectory(page: Page, workspaceId: string, userId: string, ag
   return { agents, squads };
 }
 
+for (const locale of ["en", "zh-Hans"] as const) {
+  test(`category tabs expose Mika and squad leaders at wide and narrow widths (${locale})`, async ({ page }, info) => {
+    test.setTimeout(90_000);
+    const { api, workspace, userId } = await setup(page, info);
+    try {
+      const directory = await mockDirectory(page, workspace.id, userId, 4, 2);
+      Object.assign(directory.agents[1]!, { name: "小阿孚", system_key: "mika" });
+      await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
+      const zh = locale === "zh-Hans";
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });
+      await page.getByRole("button", { name: zh ? "新建任务" : "New Issue", exact: true }).first().click();
+      const trigger = page.getByRole("button", { name: zh ? /^创建助手/ : /^Creation assistant/ });
+      await trigger.click();
+      const mika = page.getByRole("button", { name: "小阿孚", exact: true });
+      const coordination = page.getByRole("button", { name: zh ? "规划与协调" : "Planning and coordination", exact: true });
+      for (const width of [1280, 375]) {
+        await page.setViewportSize({ width, height: 900 });
+        await mika.click();
+        await expect(mika).toHaveAttribute("aria-pressed", "true");
+        await expect(items(page)).toHaveCount(1);
+        await expect(actorRow(page, "agent", directory.agents[1]!.id)).toBeVisible();
+        await page.screenshot({ path: evidencePath(info, `category-tabs-${locale}-${width}-mika.png`), animations: "disabled" });
+        await coordination.click();
+        await expect(items(page)).toHaveCount(1);
+        await expect(actorRow(page, "agent", directory.agents[0]!.id)).toBeVisible();
+        const bounds = await coordination.boundingBox();
+        expect(bounds!.x).toBeGreaterThanOrEqual(0);
+        expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+        await page.screenshot({ path: evidencePath(info, `category-tabs-${locale}-${width}-coordination.png`), animations: "disabled" });
+      }
+      await actorRow(page, "agent", directory.agents[0]!.id).locator("button[data-picker-item]").click();
+      await expect(trigger).toContainText(directory.agents[0]!.name);
+    } finally { await api.deleteFeatureWorkspace(workspace.id); }
+  });
+}
+
 test("real API actors keep favorites and accepted recents local to their workspace", async ({ page }, info) => {
   test.setTimeout(120_000);
   const { api, workspace } = await setup(page, info);
@@ -110,11 +148,12 @@ test("real API actors keep favorites and accepted recents local to their workspa
     await editor.fill("Preserve this draft while pinning roles.");
     const originalActor = await page.getByRole("button", { name: /^Creation assistant/ }).textContent();
     await openPicker(page);
-    await expect(items(page)).toHaveCount(4);
-    const coordination = page.getByRole("button", { name: "Planning and coordination (1)" });
-    await expect(coordination).toHaveAttribute("aria-expanded", "false");
-    await coordination.click();
     await expect(items(page)).toHaveCount(5);
+    const coordination = page.getByRole("button", { name: "Planning and coordination", exact: true });
+    await coordination.click();
+    await expect(coordination).toHaveAttribute("aria-pressed", "true");
+    await expect(items(page)).toHaveCount(1);
+    await page.getByRole("button", { name: "All", exact: true }).click();
     for (const name of [...agents.slice(0, 3).map((agent) => agent.name), squad.name]) {
       await page.getByPlaceholder(SEARCH).fill(name);
       await page.getByRole("button", { name: `Pin ${name} to favorites`, exact: true }).click();
@@ -126,8 +165,6 @@ test("real API actors keep favorites and accepted recents local to their workspa
     await openPicker(page);
     await expect(items(page)).toHaveCount(3);
     await page.getByRole("button", { name: "View all favorites (4)", exact: true }).click();
-    await expect(items(page)).toHaveCount(3);
-    await page.getByRole("button", { name: "Planning and coordination (1)" }).click();
     await expect(items(page)).toHaveCount(4);
     await expect(actorRow(page, "squad", squad.id)).toContainText("Coordinate delivery");
     // Searching from favorites must reach the unpinned actor too.
@@ -182,9 +219,8 @@ test("550 route-mocked actors remain searchable and pageable with browser render
     await expect(items(page)).toHaveCount(50);
     for (let count = 100; count <= 550; count += 50) {
       await page.getByRole("button", { name: /^Show more \(/ }).click();
-      await expect(items(page)).toHaveCount(Math.min(count, 549));
+      await expect(items(page)).toHaveCount(count);
     }
-    await page.getByRole("button", { name: "Planning and coordination (1)" }).click();
     await expect(items(page)).toHaveCount(550);
     await expect(actorRow(page, "squad", actorId("squad", 49))).toBeVisible();
     const search = page.getByPlaceholder(SEARCH);
@@ -192,7 +228,6 @@ test("550 route-mocked actors remain searchable and pageable with browser render
     await expect(items(page)).toHaveCount(1);
     await expect(actorRow(page, "agent", actorId("agent", 499))).toBeVisible();
     await search.fill("");
-    await page.getByRole("button", { name: "Planning and coordination (1)" }).click();
     await expect(items(page)).toHaveCount(50);
     await search.fill("squad-duty-0049");
     await page.getByRole("button", { name: "Agents", exact: true }).click();
