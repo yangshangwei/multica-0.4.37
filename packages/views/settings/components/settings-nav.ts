@@ -2,13 +2,13 @@ import type { ComponentType } from "react";
 import {
   Bell,
   Blocks,
+  Cable,
   CircleDot,
   CreditCard,
   FolderGit2,
   Key,
   Keyboard,
   Plug,
-  Server,
   Settings,
   SlidersHorizontal,
   Tag,
@@ -78,9 +78,9 @@ export interface SettingsNavGroup {
   items: readonly SettingsNavEntry[];
 }
 
-// Four-group settings IA: account-level preferences first, then workspace
-// administration, issue-model configuration, and external connections. Group
-// and item order is part of the design contract — do not reorder casually.
+// Settings IA: account-level preferences first, then workspace administration,
+// issue-model configuration, external connections, and desktop app settings.
+// Group and item order is part of the design contract — do not reorder casually.
 // `value ?? key` keeps every historical `?tab=` URL stable, including the
 // backend-driven GitHub App callback (`/settings?tab=github` is redirected
 // to Integrations in settings-page.tsx).
@@ -100,6 +100,7 @@ export const SETTINGS_NAV_GROUPS: readonly SettingsNavGroupDef[] = [
     items: [
       { key: "general", value: "workspace", icon: Settings },
       { key: "members", icon: Users },
+      { key: "labels", icon: Tag },
       {
         key: "billing",
         icon: CreditCard,
@@ -111,7 +112,6 @@ export const SETTINGS_NAV_GROUPS: readonly SettingsNavGroupDef[] = [
     id: "issue",
     items: [
       { key: "issue_statuses", value: "issue-statuses", icon: CircleDot },
-      { key: "labels", icon: Tag },
       { key: "properties", icon: SlidersHorizontal },
       { key: "quick_actions", value: "quick-actions", icon: Zap },
     ],
@@ -121,23 +121,23 @@ export const SETTINGS_NAV_GROUPS: readonly SettingsNavGroupDef[] = [
     items: [
       { key: "repositories", icon: FolderGit2 },
       { key: "integrations", icon: Plug },
-      { key: "mcp", icon: Server },
+      { key: "mcp", icon: Cable },
       { key: "plugins", icon: Blocks, flag: PLUGINS_V1_FLAG },
     ],
   },
+  { id: "desktop", items: [] },
 ];
 
 /**
  * Resolve the visible nav groups: drop flag-gated items, append
- * platform-injected tabs to the account group, and drop groups left with no
+ * platform-injected tabs to the desktop group, and drop groups left with no
  * items at all (a heading with nothing under it reads as a bug, not an
- * empty state). Injected tabs are appended before the empty-group filter so
- * they keep the account group alive even if every static item were gated.
+ * empty state). The desktop group is only visible on platforms that inject tabs.
  */
 export function visibleSettingsNavGroups(
   defs: readonly SettingsNavGroupDef[],
   flags: Readonly<Record<string, boolean>>,
-  injectedAccountTabs?: readonly InjectedSettingsTab[],
+  injectedDesktopTabs?: readonly InjectedSettingsTab[],
 ): SettingsNavGroup[] {
   return defs
     .map((group) => {
@@ -149,9 +149,9 @@ export function visibleSettingsNavGroups(
           tabKey: item.key,
           icon: item.icon,
         }));
-      if (group.id === "account" && injectedAccountTabs?.length) {
+      if (group.id === "desktop" && injectedDesktopTabs?.length) {
         items.push(
-          ...injectedAccountTabs.map((tab) => ({
+          ...injectedDesktopTabs.map((tab) => ({
             kind: "injected" as const,
             value: tab.value,
             label: tab.label,

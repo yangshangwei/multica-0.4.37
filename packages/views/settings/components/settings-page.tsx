@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import { ChevronDown, X } from "lucide-react";
+import { Button } from "@multica/ui/components/ui/button";
+import {
+  Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger,
+} from "@multica/ui/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@multica/ui/components/ui/tabs";
 import { useIsMobile } from "@multica/ui/hooks/use-mobile";
-import { cn } from "@multica/ui/lib/utils";
 import { useFeatureEnabled } from "@multica/core/config";
 import {
   BILLING_WORKSPACE_SUBSCRIPTIONS_FLAG,
@@ -42,7 +46,7 @@ export interface ExtraSettingsTab {
 
 interface SettingsPageProps {
   /** Additional tabs injected by platform (e.g. desktop daemon settings) */
-  extraAccountTabs?: ExtraSettingsTab[];
+  extraDesktopTabs?: ExtraSettingsTab[];
 }
 
 const DEFAULT_TAB = "profile";
@@ -60,12 +64,21 @@ const LEGACY_WORKSPACE_TAB_REDIRECTS: Record<string, string> = {
 };
 
 const SETTINGS_TAB_TRIGGER_CLASS =
-  "h-8 shrink-0 px-2.5 hover:bg-surface-hover data-active:!bg-surface-selected data-active:!text-surface-selected-foreground data-active:hover:!bg-surface-selected md:!w-full md:px-2 md:after:hidden";
+  "h-auto min-h-11 w-full flex-none justify-start px-2 py-1.5 text-left whitespace-normal [overflow-wrap:anywhere] hover:bg-surface-hover data-active:!bg-surface-selected data-active:!text-surface-selected-foreground data-active:hover:!bg-surface-selected focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2 focus-visible:ring-0 after:hidden md:min-h-8 md:py-1 pointer-coarse:min-h-11";
 
-export function SettingsPage({ extraAccountTabs }: SettingsPageProps = {}) {
+export function SettingsPage({ extraDesktopTabs }: SettingsPageProps = {}) {
   const { t } = useT("settings");
   const navigation = useNavigation();
   const isMobile = useIsMobile();
+  const [directoryOpen, setDirectoryOpen] = React.useState(false);
+  const navigationId = React.useId();
+  const selectedTabRef = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    if (!isMobile && directoryOpen) {
+      setDirectoryOpen(false);
+      selectedTabRef.current?.focus();
+    }
+  }, [isMobile, directoryOpen]);
   const pluginsEnabled = useFeatureEnabled(PLUGINS_V1_FLAG, false);
   const billingEnabled = useFeatureEnabled(
     BILLING_WORKSPACE_SUBSCRIPTIONS_FLAG,
@@ -81,8 +94,8 @@ export function SettingsPage({ extraAccountTabs }: SettingsPageProps = {}) {
   );
 
   const visibleGroups = React.useMemo(
-    () => visibleSettingsNavGroups(SETTINGS_NAV_GROUPS, flagState, extraAccountTabs),
-    [flagState, extraAccountTabs],
+    () => visibleSettingsNavGroups(SETTINGS_NAV_GROUPS, flagState, extraDesktopTabs),
+    [flagState, extraDesktopTabs],
   );
 
   // Whitelist of valid tab values; unknown ?tab=… values silently fall back to
@@ -101,97 +114,141 @@ export function SettingsPage({ extraAccountTabs }: SettingsPageProps = {}) {
     : null;
   const activeTab =
     candidateTab && validTabs.has(candidateTab) ? candidateTab : DEFAULT_TAB;
+  const activeEntry = visibleGroups.flatMap((group) => group.items)
+    .find((item) => item.value === activeTab);
+  const activeLabel = activeEntry?.kind === "injected"
+    ? activeEntry.label
+    : t(($) => $.page.tabs[activeEntry?.tabKey ?? "profile"]);
 
   // replace (not push) so settings tab switches don't pollute browser history.
   // Preserve any other query params the page may carry.
   const handleTabChange = (next: string) => {
+    setDirectoryOpen(false);
     const params = new URLSearchParams(navigation.searchParams);
     params.set(TAB_QUERY_KEY, next);
     navigation.replace(`${navigation.pathname}?${params.toString()}`);
   };
 
+  const navList = (
+    <TabsList
+      aria-labelledby={`${navigationId}-title`}
+      variant="line"
+      className="flex h-auto w-full flex-col items-stretch justify-start gap-4 p-0"
+    >
+      {visibleGroups.map((group) => (
+        <div
+          key={group.id}
+          role="group"
+          aria-labelledby={`${navigationId}-${group.id}`}
+          className="flex min-w-0 flex-col gap-1"
+        >
+          <h2
+            id={`${navigationId}-${group.id}`}
+            className="px-2 pb-1 text-caption font-medium text-muted-foreground"
+          >
+            {t(($) => $.page.groups[group.id])}
+          </h2>
+          {group.items.map((item) => (
+            <TabsTrigger
+              key={item.value}
+              value={item.value}
+              ref={item.value === activeTab ? selectedTabRef : undefined}
+              onClick={() => setDirectoryOpen(false)}
+              className={SETTINGS_TAB_TRIGGER_CLASS}
+            >
+              <item.icon className="size-4" aria-hidden="true" />
+              {item.kind === "static"
+                ? t(($) => $.page.tabs[item.tabKey])
+                : item.label}
+            </TabsTrigger>
+          ))}
+        </div>
+      ))}
+    </TabsList>
+  );
+
   return (
     <Tabs
       value={activeTab}
       onValueChange={handleTabChange}
-      orientation={isMobile ? "horizontal" : "vertical"}
+      orientation="vertical"
       className="flex flex-1 min-h-0 flex-col gap-0 overflow-y-auto md:flex-row md:overflow-hidden"
     >
-      {/* Structural navigation; bounded setting groups remain in the content surface.
-          Stays on the content surface color (no shell tint): the desktop's active
-          tab merges into the card top, and a tinted panel under the first tabs
-          breaks that seam (MUL-4439). Zoning comes from the divider instead. */}
-      <div className="shrink-0 overflow-x-auto border-b border-surface-border p-2 md:w-56 md:overflow-y-auto md:border-b-0 md:border-r md:p-4">
-        {/* This page builds its own chrome instead of a PageHeader, so it has
-            to supply the nav trigger itself — below `xl` the nav is a sheet or
-            auto-collapsed, and settings has no other way back to it. */}
-        {/* The gap below this row belongs to the row, not to the heading: with
-            `items-center`, a bottom margin on the `h1` is part of the box being
-            centred, so it offsets the heading against the trigger beside it. */}
-        <div className="flex items-center md:mb-4">
+      {isMobile ? (
+        <div className="flex shrink-0 items-center gap-2 border-b border-surface-border p-2 [&>[data-slot=sidebar-trigger]]:size-11">
           <CollapsedNavTrigger />
-          <h1 className="sr-only text-body font-semibold md:not-sr-only md:px-2">{t(($) => $.page.title)}</h1>
-        </div>
-        <TabsList
-          variant="line"
-          className="flex w-max min-w-full flex-row items-center gap-1 p-0 md:w-full md:flex-col md:items-stretch"
-        >
-          {visibleGroups.map((group, groupIndex) => (
-            <React.Fragment key={group.id}>
-              {/* Desktop-only heading: in the mobile horizontal strip the four
-                  groups read as one continuous run of triggers. The first
-                  group sits closer to the page title than the rest. */}
-              <span
-                className={cn(
-                  "hidden px-2 pb-1 text-caption font-medium text-muted-foreground md:block",
-                  groupIndex === 0 ? "pt-2" : "pt-4",
-                )}
-              >
-                {t(($) => $.page.groups[group.id])}
+          <h1 className="sr-only">{t(($) => $.page.title)}</h1>
+          <Sheet open={directoryOpen} onOpenChange={setDirectoryOpen}>
+            <SheetTrigger render={
+              <Button
+                variant="outline"
+                aria-label={`${t(($) => $.page.directory)}: ${activeLabel}`}
+                className="h-auto min-h-11 min-w-0 flex-1 justify-between gap-3 px-3 py-2 text-left whitespace-normal focus-visible:ring-2 focus-visible:ring-foreground"
+              />
+            }>
+              <span className="min-w-0 [overflow-wrap:anywhere]">
+                <span className="block text-caption text-muted-foreground">{t(($) => $.page.directory)}</span>
+                <span className="block">{activeLabel}</span>
               </span>
-              {group.items.map((item) => (
-                <TabsTrigger
-                  key={item.value}
-                  value={item.value}
-                  className={SETTINGS_TAB_TRIGGER_CLASS}
-                >
-                  <item.icon className="h-4 w-4" />
-                  {item.kind === "static"
-                    ? t(($) => $.page.tabs[item.tabKey])
-                    : item.label}
-                </TabsTrigger>
-              ))}
-            </React.Fragment>
-          ))}
-        </TabsList>
-      </div>
+              <ChevronDown className="size-4" aria-hidden="true" />
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              showCloseButton={false}
+              initialFocus={selectedTabRef}
+              aria-describedby={undefined}
+              className="gap-0 data-[side=left]:w-full data-[side=left]:max-w-sm"
+            >
+              <SheetHeader className="flex-row items-center justify-between gap-2">
+                <SheetTitle id={`${navigationId}-title`}>{t(($) => $.page.directory)}</SheetTitle>
+                <SheetClose render={
+                  <Button variant="ghost" size="icon" className="size-11 focus-visible:ring-2 focus-visible:ring-foreground" aria-label={t(($) => $.page.close_directory)} />
+                }>
+                  <X className="size-4" aria-hidden="true" />
+                </SheetClose>
+              </SheetHeader>
+              <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">{navList}</div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      ) : (
+        // Keep the desktop navigation on the content surface so it merges
+        // into the active window tab. The divider supplies the zoning.
+        <div className="w-56 shrink-0 overflow-y-auto border-r border-surface-border p-4">
+          <div className="mb-6 flex items-center">
+            <CollapsedNavTrigger />
+            <h1 id={`${navigationId}-title`} className="px-2 text-body font-semibold">{t(($) => $.page.title)}</h1>
+          </div>
+          {navList}
+        </div>
+      )}
 
       {/* Right content */}
       <div className="min-w-0 flex-1 md:overflow-y-auto">
         <div className={`mx-auto w-full p-4 sm:p-6 md:p-8 ${activeTab === "labels" || activeTab === "issue-statuses" || activeTab === "properties" || activeTab === "quick-actions"
               ? "max-w-5xl"
               : "max-w-3xl"}`}>
-          <TabsContent value="profile"><AccountTab /></TabsContent>
-          <TabsContent value="preferences"><PreferencesTab /></TabsContent>
-          <TabsContent value="shortcuts"><KeyboardShortcutsTab /></TabsContent>
-          <TabsContent value="notifications"><NotificationsTab /></TabsContent>
-          <TabsContent value="tokens"><TokensTab /></TabsContent>
-          <TabsContent value="workspace"><WorkspaceTab /></TabsContent>
-          <TabsContent value="members"><MembersTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="profile"><AccountTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="preferences"><PreferencesTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="shortcuts"><KeyboardShortcutsTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="notifications"><NotificationsTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="tokens"><TokensTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="workspace"><WorkspaceTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="members"><MembersTab /></TabsContent>
           {/* Flag-gated tabs render their content unconditionally: validTabs
               already excludes a gated value, so the panel can never activate
               while the flag is off. */}
-          <TabsContent value="billing"><BillingTab /></TabsContent>
-          <TabsContent value="issue-statuses"><IssueStatusesTab /></TabsContent>
-          <TabsContent value="labels"><LabelsTab /></TabsContent>
-          <TabsContent value="properties"><PropertiesTab /></TabsContent>
-          <TabsContent value="quick-actions"><QuickActionsTab /></TabsContent>
-          <TabsContent value="repositories"><RepositoriesTab /></TabsContent>
-          <TabsContent value="integrations"><IntegrationsTab /></TabsContent>
-          <TabsContent value="mcp"><McpTab /></TabsContent>
-          <TabsContent value="plugins"><PluginsTab /></TabsContent>
-          {extraAccountTabs?.map((tab) => (
-            <TabsContent key={tab.value} value={tab.value}>{tab.content}</TabsContent>
+          <TabsContent aria-label={activeLabel} value="billing"><BillingTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="issue-statuses"><IssueStatusesTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="labels"><LabelsTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="properties"><PropertiesTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="quick-actions"><QuickActionsTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="repositories"><RepositoriesTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="integrations"><IntegrationsTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="mcp"><McpTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="plugins"><PluginsTab /></TabsContent>
+          {extraDesktopTabs?.map((tab) => (
+            <TabsContent aria-label={activeLabel} key={tab.value} value={tab.value}>{tab.content}</TabsContent>
           ))}
         </div>
       </div>

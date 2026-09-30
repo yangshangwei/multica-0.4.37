@@ -375,11 +375,14 @@
   },
   "page": {
     "title": "设置",
+    "directory": "设置目录",
+    "close_directory": "关闭设置目录",
     "groups": {
       "account": "个人设置",
       "workspace": "工作区管理",
       "issue": "任务配置",
-      "connections": "连接与扩展"
+      "connections": "连接与扩展",
+      "desktop": "桌面应用"
     },
     "tabs": {
       "profile": "个人资料",
@@ -1193,7 +1196,7 @@
     "tabs": {
       "daemon": "守护进程",
       "updates": "更新",
-      "server": "服务器",
+      "server": "服务器连接",
       "behavior": "行为"
     },
     "daemon": {
@@ -1243,7 +1246,7 @@
       }
     },
     "runtime_config": {
-      "title": "服务器地址",
+      "title": "服务器连接",
       "description": "配置此桌面端使用的私有化 Multica 后端。保存后会重启连接。"
     },
     "updates": {

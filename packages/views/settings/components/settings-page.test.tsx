@@ -1,4 +1,5 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { SidebarProvider, useSidebar } from "@multica/ui/components/ui/sidebar";
@@ -28,6 +29,7 @@ vi.mock("./quick-actions-tab", stub("QuickActionsTab"));
 vi.mock("./keyboard-shortcuts-tab", stub("KeyboardShortcutsTab"));
 vi.mock("./plugins-tab", stub("PluginsTab"));
 vi.mock("./billing-tab", stub("BillingTab"));
+vi.mock("./mcp-tab", stub("McpTab"));
 
 const replace = vi.fn();
 const navigationState = { search: "" };
@@ -40,9 +42,7 @@ vi.mock("../../navigation", () => ({
   }),
 }));
 
-// Compact by default: that is the width where the nav is a sheet and this
-// trigger is the only way to reach it.
-const layout = { compact: true };
+const layout = { compact: false };
 vi.mock("@multica/ui/hooks/use-mobile", () => ({
   useIsMobile: () => layout.compact,
   useIsCompact: () => layout.compact,
@@ -60,7 +60,7 @@ function trigger() {
 }
 
 beforeEach(() => {
-  layout.compact = true;
+  layout.compact = false;
   navigationState.search = "";
   configStore.getState().setFeatureFlags({});
   replace.mockClear();
@@ -68,6 +68,7 @@ beforeEach(() => {
 
 describe("SettingsPage nav trigger", () => {
   it("opens the nav from settings at compact widths", () => {
+    layout.compact = true;
     // Settings builds its own chrome instead of a PageHeader, so without this
     // control a touch user who lands here has no way back to the nav at all —
     // the keyboard shortcut is not an answer on a tablet.
@@ -123,6 +124,30 @@ describe("SettingsPage nav groups", () => {
     expect(screen.getByText("Connections")).toBeInTheDocument();
   });
 
+  it("names the vertical tab list and exposes labelled groups", () => {
+    renderWithI18n(<SettingsPage />);
+
+    const navigation = screen.getByRole("tablist", { name: "Settings" });
+    expect(navigation).toHaveAttribute("aria-orientation", "vertical");
+    const personal = within(navigation).getByRole("group", { name: "Personal" });
+    expect(within(personal).getByRole("tab", { name: "Profile" })).toBeInTheDocument();
+    expect(within(navigation).getByRole("heading", { name: "Personal" })).toBeInTheDocument();
+  });
+
+  it("moves focus with vertical arrows across group boundaries before activation", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<SettingsPage />);
+
+    act(() => screen.getByRole("tab", { name: "API Tokens" }).focus());
+    await user.keyboard("{ArrowDown}");
+    expect(screen.getByRole("tab", { name: "General" })).toHaveFocus();
+    expect(replace).not.toHaveBeenCalled();
+    await user.keyboard("{Enter}");
+    expect(replace).toHaveBeenCalledWith("/acme/settings?tab=workspace");
+    await user.keyboard("{ArrowUp}");
+    expect(screen.getByRole("tab", { name: "API Tokens" })).toHaveFocus();
+  });
+
   it("no longer offers the collapsed Issue/Chat/GitHub/Labs tabs", () => {
     renderWithI18n(<SettingsPage />);
 
@@ -155,6 +180,79 @@ describe("SettingsPage nav groups", () => {
       expect(screen.getByText("AccountTab")).toBeInTheDocument();
     },
   );
+});
+
+describe("SettingsPage compact directory", () => {
+  beforeEach(() => {
+    layout.compact = true;
+    navigationState.search = "tab=preferences&from=shortcut";
+  });
+
+  it("shows the current destination and selects a grouped entry without losing query context", async () => {
+    const user = userEvent.setup();
+    const view = renderWithI18n(<SettingsPage />);
+    const directory = screen.getByRole("button", { name: "Settings directory: Preferences" });
+    expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+    expect(screen.getByRole("tabpanel", { name: "Preferences" })).toBeInTheDocument();
+
+    await user.click(directory);
+    const dialog = screen.getByRole("dialog", { name: "Settings directory" });
+    const navigation = within(dialog).getByRole("tablist", { name: "Settings directory" });
+    expect(navigation).toHaveAttribute("aria-orientation", "vertical");
+    expect(within(navigation).getByRole("tab", { name: "Preferences" })).toHaveFocus();
+    const connections = within(navigation).getByRole("group", { name: "Connections" });
+    await user.click(within(connections).getByRole("tab", { name: "MCP" }));
+    expect(replace).toHaveBeenCalledWith("/acme/settings?tab=mcp&from=shortcut");
+    navigationState.search = "tab=mcp&from=shortcut";
+    view.rerender(<SettingsPage />);
+
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(screen.getByRole("button", { name: "Settings directory: MCP" })).toHaveFocus();
+    expect(screen.getByRole("tabpanel", { name: "MCP" })).toBeInTheDocument();
+  });
+
+  it("dismisses on Escape or the current tab and restores focus to the directory button", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<SettingsPage />);
+    const directory = screen.getByRole("button", { name: "Settings directory: Preferences" });
+
+    await user.click(directory);
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(directory).toHaveFocus();
+    expect(replace).not.toHaveBeenCalled();
+
+    await user.click(directory);
+    await user.click(screen.getByRole("tab", { name: "Preferences" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(directory).toHaveFocus();
+    expect(replace).not.toHaveBeenCalled();
+  });
+
+  it("localizes the directory name and close control", async () => {
+    const user = userEvent.setup();
+    renderWithI18n(<SettingsPage />, { locale: "zh-Hans" });
+    await user.click(screen.getByRole("button", { name: "设置目录: 偏好设置" }));
+    expect(screen.getByRole("dialog", { name: "设置目录" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "关闭设置目录" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  });
+
+  it("closes an open directory when resizing to desktop and does not reopen on return", async () => {
+    const user = userEvent.setup();
+    const view = renderWithI18n(<SettingsPage />);
+    await user.click(screen.getByRole("button", { name: "Settings directory: Preferences" }));
+
+    layout.compact = false;
+    view.rerender(<SettingsPage />);
+    expect(screen.getByRole("tablist", { name: "Settings" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Preferences" })).toHaveFocus();
+
+    layout.compact = true;
+    view.rerender(<SettingsPage />);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Settings directory: Preferences" })).toHaveAttribute("aria-expanded", "false");
+  });
 });
 
 describe("SettingsPage Plugin feature flag", () => {

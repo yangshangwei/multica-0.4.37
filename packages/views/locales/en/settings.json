@@ -375,11 +375,14 @@
   },
   "page": {
     "title": "Settings",
+    "directory": "Settings directory",
+    "close_directory": "Close settings directory",
     "groups": {
       "account": "Personal",
       "workspace": "Workspace",
       "issue": "Issues",
-      "connections": "Connections"
+      "connections": "Connections",
+      "desktop": "Desktop app"
     },
     "tabs": {
       "profile": "Profile",
@@ -1196,7 +1199,7 @@
     "tabs": {
       "daemon": "Daemon",
       "updates": "Updates",
-      "server": "Server",
+      "server": "Server connection",
       "behavior": "Behavior"
     },
     "daemon": {
@@ -1246,7 +1249,7 @@
       }
     },
     "runtime_config": {
-      "title": "Server address",
+      "title": "Server connection",
       "description": "Configure the private Multica backend used by this desktop app. Saving restarts the connection."
     },
     "updates": {

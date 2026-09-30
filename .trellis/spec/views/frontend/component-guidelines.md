@@ -40,6 +40,11 @@ Questions to answer:
 - Group and item order is part of the design contract. The canonical ordering matrix is pinned in `settings-nav.test.ts` (node environment, no DOM); `settings-page.test.tsx` asserts only headings/wiring and points at that file.
 - Every group id needs a key under `page.groups` and every item key under `page.tabs` in **both supported** locale files — `locales/parity.test.ts` fails otherwise.
 - A group whose items are all flag-filtered must not render its heading (handled by `visibleSettingsNavGroups`, covered by test).
+- Labels belong to workspace administration because the page configures both task and skill labels. Platform-injected `extraDesktopTabs` belong to the final `desktop` group, which is absent on web when no entries are injected.
+- Settings use one named vertical tablist with labelled groups. Below 768px, the same directory opens in a Sheet; focus starts on the selected entry and returns to the trigger after selection or dismissal. An open directory closes when the viewport switches to the desktop layout.
+- A compact Sheet unmounts its tab triggers when closed. Give content panels an explicit accessible name so they remain named when Base UI cannot resolve a mounted tab's ID.
+- The shared `Tabs` wrapper must forward `orientation` to the Base UI root. A `data-orientation` attribute alone changes styling but does not configure keyboard navigation or ARIA. Test real arrow-key behavior across settings groups, not only CSS attributes.
+- Compact and coarse-pointer settings controls have a 44px minimum target height. Fine-pointer desktop rows stay dense, and long labels wrap rather than clipping.
 
 **Wrong**:
 

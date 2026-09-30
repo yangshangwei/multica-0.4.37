@@ -32,8 +32,8 @@ describe("visibleSettingsNavGroups", () => {
     ]);
     expect(groups.map((g) => g.items.map((i) => i.value))).toEqual([
       ["profile", "preferences", "notifications", "shortcuts", "tokens"],
-      ["workspace", "members"],
-      ["issue-statuses", "labels", "properties", "quick-actions"],
+      ["workspace", "members", "labels"],
+      ["issue-statuses", "properties", "quick-actions"],
       ["repositories", "integrations", "mcp"],
     ]);
   });
@@ -72,8 +72,8 @@ describe("visibleSettingsNavGroups", () => {
 
     expect(groups.map((g) => g.items.map((i) => i.value))).toEqual([
       ["profile", "preferences", "notifications", "shortcuts", "tokens"],
-      ["workspace", "members", "billing"],
-      ["issue-statuses", "labels", "properties", "quick-actions"],
+      ["workspace", "members", "labels", "billing"],
+      ["issue-statuses", "properties", "quick-actions"],
       ["repositories", "integrations", "mcp", "plugins"],
     ]);
   });
@@ -87,36 +87,32 @@ describe("visibleSettingsNavGroups", () => {
     expect(visibleSettingsNavGroups(defs, { off: true })).toHaveLength(1);
   });
 
-  it("appends injected tabs to the end of the account group", () => {
+  it("places injected tabs in a final desktop group after workspace configuration", () => {
     const groups = visibleSettingsNavGroups(
       SETTINGS_NAV_GROUPS,
       {},
       INJECTED,
     );
 
-    expect(groups[0]?.items.map((i) => i.value)).toEqual([
-      "profile",
-      "preferences",
-      "notifications",
-      "shortcuts",
-      "tokens",
-      "daemon",
-      "updates",
+    expect(groups.map((g) => g.id)).toEqual([
+      "account",
+      "workspace",
+      "issue",
+      "connections",
+      "desktop",
     ]);
-    expect(groups[0]?.items[5]).toMatchObject({ kind: "injected", label: "Daemon" });
-    expect(groups[0]?.items[6]).toMatchObject({ kind: "injected", label: "Updates" });
-    // Other groups are untouched.
-    expect(groups[1]?.items.every((i) => i.kind === "static")).toBe(true);
+    expect(groups.at(-1)?.items).toMatchObject([
+      { kind: "injected", value: "daemon", label: "Daemon" },
+      { kind: "injected", value: "updates", label: "Updates" },
+    ]);
+    expect(groups.slice(0, -1)).toEqual(
+      visibleSettingsNavGroups(SETTINGS_NAV_GROUPS, {}),
+    );
   });
 
-  it("keeps the account group alive via injected tabs when static items are gated", () => {
-    const defs: readonly SettingsNavGroupDef[] = [
-      { id: "account", items: [{ key: "profile", icon: Glyph, flag: "off" }] },
-    ];
+  it("hides the desktop group when a platform supplies no desktop tabs", () => {
+    const groups = visibleSettingsNavGroups(SETTINGS_NAV_GROUPS, {}, []);
 
-    const groups = visibleSettingsNavGroups(defs, {}, INJECTED);
-
-    expect(groups).toHaveLength(1);
-    expect(groups[0]?.items.map((i) => i.value)).toEqual(["daemon", "updates"]);
+    expect(groups.map((g) => g.id)).not.toContain("desktop");
   });
 });

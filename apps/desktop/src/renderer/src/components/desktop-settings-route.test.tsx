@@ -39,6 +39,22 @@ describe("DesktopSettingsRoute", () => {
     );
 
     const props = settingsPage.mock.lastCall?.[0];
-    expect(props?.extraAccountTabs?.map((tab) => tab.value)).toEqual(expectedTabs);
+    expect(props?.extraDesktopTabs?.map((tab) => tab.value)).toEqual(expectedTabs);
+  });
+
+  it.each([
+    ["en", "Server connection"],
+    ["zh-Hans", "服务器连接"],
+  ] as const)("names the server destination clearly in %s", (locale, label) => {
+    vi.stubGlobal("desktopAPI", { appInfo: { os: "macos", version: "0.1.0" } });
+
+    render(
+      <I18nProvider locale={locale} resources={RESOURCES}>
+        <DesktopSettingsRoute />
+      </I18nProvider>,
+    );
+
+    const props = settingsPage.mock.lastCall?.[0];
+    expect(props?.extraDesktopTabs?.find((tab) => tab.value === "server")?.label).toBe(label);
   });
 });

@@ -1,6 +1,6 @@
 import { SettingsPage } from "@multica/views/settings";
 import { useT } from "@multica/views/i18n";
-import { Download, Server } from "lucide-react";
+import { AppWindow, Cpu, Download, Network } from "lucide-react";
 import { DaemonSettingsTab } from "./daemon-settings-tab";
 import { UpdatesSettingsTab } from "./updates-settings-tab";
 import { RuntimeConfigSettingsTab } from "./runtime-config-settings-tab";
@@ -17,17 +17,17 @@ export function DesktopSettingsRoute() {
   const supportsCloseBehavior = os === "windows" || os === "linux";
   return (
     <SettingsPage
-      extraAccountTabs={[
+      extraDesktopTabs={[
         {
           value: "daemon",
           label: t(($) => $.desktop.tabs.daemon),
-          icon: Server,
+          icon: Cpu,
           content: <DaemonSettingsTab />,
         },
         {
           value: "server",
           label: t(($) => $.desktop.tabs.server),
-          icon: Server,
+          icon: Network,
           content: <RuntimeConfigSettingsTab />,
         },
         {
@@ -40,7 +40,7 @@ export function DesktopSettingsRoute() {
           ? [{
               value: "behavior",
               label: t(($) => $.desktop.tabs.behavior),
-              icon: Server,
+              icon: AppWindow,
               content: <DesktopBehaviorSettingsTab />,
             }]
           : []),
