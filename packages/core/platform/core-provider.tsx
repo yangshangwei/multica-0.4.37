@@ -79,7 +79,10 @@ function initCore({
     // `authStore` is assigned a few lines below, synchronously, and this
     // callback can only run from a request — never before boot finishes.
     onUnauthorized: () => {
-      authStore.getState().sessionExpired();
+      const state = authStore.getState();
+      // AuthInitializer owns boot-time rejection and may still recover via
+      // device authentication. Only settled sessions expire through this hook.
+      if (!state.isLoading) state.sessionExpired();
     },
     identity,
   });

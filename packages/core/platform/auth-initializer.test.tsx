@@ -128,6 +128,44 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+describe("remembered Desktop password login", () => {
+  it("restores a saved login on a fresh boot and forgets it after explicit logout", async () => {
+    const storage = makeStorage({});
+    const passwordLogin = vi.fn().mockResolvedValue({ token: "remembered-session", user: fakeUser });
+    const first = renderInitializer({ api: makeApi({ passwordLogin }), storage });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("unauthenticated"));
+    await act(async () => { await useAuthStore.getState().loginWithPassword("11052", "abc123"); });
+    expect(storage.getItem("multica_token")).toBe("remembered-session");
+    expect(Object.values(storage.snapshot())).not.toContain("abc123");
+    first.unmount();
+
+    const getMe = vi.fn().mockResolvedValue(fakeUser);
+    const restoredApi = makeApi({ getMe, passwordLogin });
+    const second = renderInitializer({ api: restoredApi, storage });
+    const signedOut = vi.fn();
+    const unsubscribe = useAuthStore.subscribe((state) => {
+      if (state.status === "unauthenticated") signedOut();
+    });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("authenticated"));
+    expect(restoredApi.setToken).toHaveBeenCalledWith("remembered-session");
+    expect(getMe).toHaveBeenCalledOnce();
+    expect(passwordLogin).toHaveBeenCalledOnce();
+    expect(signedOut).not.toHaveBeenCalled();
+    expect(useAuthStore.getState().user?.id).toBe(fakeUser.id);
+    unsubscribe();
+
+    act(() => useAuthStore.getState().logout());
+    expect(storage.getItem("multica_token")).toBeNull();
+    second.unmount();
+    const loggedOutApi = makeApi({ passwordLogin });
+    const third = renderInitializer({ api: loggedOutApi, storage });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("unauthenticated"));
+    expect(loggedOutApi.getMe).not.toHaveBeenCalled();
+    expect(passwordLogin).toHaveBeenCalledOnce();
+    third.unmount();
+  });
+});
+
 describe("AuthInitializer messaging deployment policy", () => {
   it.each([
     ["network failure", new TypeError("fetch failed")],

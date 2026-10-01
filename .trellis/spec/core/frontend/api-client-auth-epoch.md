@@ -92,6 +92,16 @@ bearer/cookie replacement, delayed body, workspace bootstrap and StrictMode
 device login), `api/missing-user-session.test.ts`, handler `auth_session_test.go`
 and `e2e/missing-user-session.spec.ts`.
 
+## Boot-time unauthorized handoff
+
+While the auth store is loading, `AuthInitializer` owns the terminal outcome of
+identity recovery. `CoreProvider` must defer its global `onUnauthorized` store
+callback until loading settles: an initial 401 may still hand off to device
+authentication. The initializer expires rejected sessions when recovery cannot
+succeed. Keep ApiClient epoch protections and mid-session expiry unchanged.
+`platform/core-provider.test.tsx` exercises this real wiring with delayed device
+responses, StrictMode, terminal rejection and later authenticated-session 401s.
+
 ## Endpoint changes include multipart requests
 
 Switching servers freezes the old client, advances its endpoint generation and

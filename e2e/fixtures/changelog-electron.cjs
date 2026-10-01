@@ -15,7 +15,10 @@ if (!process.env.CHANGELOG_ELECTRON_PROFILE) throw new Error("Missing isolated E
 app.setName("Multica Changelog Acceptance");
 app.setPath("userData", process.env.CHANGELOG_ELECTRON_PROFILE);
 
-globalThis.changelogAcceptance = { daemonStarts: 0, externalLinks: [], installCalls: 0 };
+globalThis.changelogAcceptance = { daemonStarts: 0, externalLinks: [], installCalls: 0, authSessions: [] };
+ipcMain.on("auth:session-state", (_event, userId) => {
+  globalThis.changelogAcceptance.authSessions.push(userId);
+});
 ipcMain.on("app:get-info", (event) => { event.returnValue = { version: "0.4.40-test", os: "macos" }; });
 ipcMain.on("runtime-config:get", (event) => {
   event.returnValue = { ok: true, source: "dev", config: {
