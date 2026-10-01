@@ -86,10 +86,22 @@ describe("BuiltinSquadCatalog", () => {
     expect(within(template).getByText("Take a feature from requirements through implementation and review.")).toBeVisible();
     expect(within(template).getByText("3 members")).toBeVisible();
     expect(within(template).getByText("Delivery lead · Implementer · QA engineer")).toBeVisible();
-    expect(within(template).getByRole("img", { name: "Feature delivery" })).toBeVisible();
     expect(template.querySelector("svg.lucide-rocket")).not.toBeNull();
     expect(within(template).getByRole("button", { name: "Apply to project" })).toBeVisible();
     expect(catalog.querySelector("[aria-expanded]")).toBeNull();
+  });
+
+  it.each([
+    { title: TEMPLATE.title, expectedName: TEMPLATE.title },
+    { title: "", expectedName: TEMPLATE.name },
+  ])("announces the heading as '$expectedName' with a decorative avatar", ({ title, expectedName }) => {
+    mocks.templates = [{ ...TEMPLATE, title }];
+    renderCatalog();
+
+    const heading = screen.getByRole("heading", { level: 3, name: expectedName });
+    expect(heading).toBeVisible();
+    expect(within(heading).queryByRole("img")).not.toBeInTheDocument();
+    expect(heading.querySelector("svg.lucide-rocket")).toBeVisible();
   });
 
   it("links every active instance by template identity, even after it is renamed", () => {

@@ -62,7 +62,9 @@ export function BuiltinSquadCatalog({ squads }: { squads: readonly Squad[] }) {
                 <li key={template.key} aria-label={title} className="flex min-w-0 flex-col gap-3 border-t border-border/60 py-4">
                   <div className="min-w-0">
                     <h3 className="flex items-start gap-2 text-body font-semibold">
-                      <SquadAvatar name={template.title} initials="" templateKey={template.key} size="lg" />
+                      <span aria-hidden="true" className="contents">
+                        <SquadAvatar name={template.title} initials="" templateKey={template.key} size="lg" />
+                      </span>
                       <span className="min-w-0 break-words">{title}</span>
                     </h3>
                     <p className="mt-1.5 break-words text-body leading-5 text-muted-foreground">{summaries.get(template.key) ?? template.description}</p>
