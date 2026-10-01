@@ -3,6 +3,7 @@ import { test, expect, type Page, type Locator, type Response } from "@playwrigh
 import pg from "pg";
 import { TestApiClient } from "./fixtures";
 
+// Canonical coverage for AI refinement, including the former supplemental cases.
 // Run against the real API configured with the isolated deterministic AI provider.
 // No browser routes replace optimization, creation, or persistence endpoints.
 const refined = "Build a team weekly report feature.";
@@ -136,6 +137,37 @@ test.describe("AI refinement through real server and task creation", () => {
       await editor.fill("Retry with complete requirements E2E_ASSIST_ZERO");
       await dialog.getByRole("button", { name: "Try again", exact: true }).click();
       await expect(editor).toHaveText(refined);
+    } finally { await api.deleteFeatureWorkspace(workspace.id); }
+  });
+
+  test("creates the unchanged manual draft after a refinement failure", async ({ page }) => {
+    const { api, workspace, suffix } = await setup(page);
+    try {
+      const { dialog, editor } = await open(page, workspace.slug);
+      const title = `Preserved report ${suffix}`;
+      const failedDraft = "Preserve my original report requirements E2E_ASSIST_FAIL";
+      await dialog.getByRole("textbox", { name: "Issue title", exact: true }).fill(title);
+      await editor.fill(failedDraft);
+      const optimized = page.waitForResponse((res) => responseFor(res, optimizePath));
+      await dialog.getByRole("button", { name: "Help me refine", exact: true }).click();
+      const draftMarkdown: string = (await optimized).request().postDataJSON().text;
+      expect(draftMarkdown.replaceAll("\\_", "_")).toBe(failedDraft);
+      await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");
+      await expect(editor).toHaveText(failedDraft);
+      const submit = dialog.getByRole("button", { name: "Create Issue", exact: true });
+      await expect(submit).toBeEnabled();
+      const created = page.waitForResponse((res) => responseFor(res, "/api/issues"));
+      await submit.click();
+      const response = await created;
+      expect(response.status()).toBe(201);
+      const issue: { id: string } = await response.json();
+      expect(await api.requestJSON(`/api/issues/${issue.id}`)).toMatchObject({
+        title, description: draftMarkdown,
+      });
+      await expect(dialog).toBeHidden();
+      await page.goto(`/${workspace.slug}/issues/${issue.id}`);
+      await expect(page.locator('.ProseMirror.rich-text-editor[contenteditable="true"]')
+        .filter({ hasText: failedDraft })).toBeVisible();
     } finally { await api.deleteFeatureWorkspace(workspace.id); }
   });
 

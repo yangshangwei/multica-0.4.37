@@ -1,8 +1,9 @@
 # AI creation end-to-end fixture
 
-`issue-assist-flow.spec.ts` exercises the real web app, Go API, streaming parser,
-and PostgreSQL. Only the model provider is deterministic. It does not mock browser
-API routes. The suite is skipped unless `E2E_ASSIST_PROVIDER_URL` is set.
+`issue-assist-flow.spec.ts` is the canonical AI refinement suite. It exercises the
+real web app, Go API, streaming parser, and PostgreSQL. Only the model provider is
+deterministic. It does not mock browser API routes. The suite is skipped unless
+`E2E_ASSIST_PROVIDER_URL` is set.
 
 1. Start `node e2e/support/assist-provider.mjs` (loopback port 14592).
 2. Start an **isolated** backend/database with:
@@ -23,6 +24,12 @@ Tests create unique users/workspaces and clean their workspace data through the
 application API. Run only against a disposable database. The agent case seeds a
 runtime without starting a daemon, then checks the real dispatch queue. It does
 not execute an installed agent CLI or validate model reasoning quality.
+
+The old supplemental preview/adoption cases are consolidated into this suite:
+refinement undo and persistence, stale-edit preservation and cancellation, saving
+an unchanged draft after provider failure, and exact refined-prompt dispatch.
+`main-supplemental-qa.spec.ts` retains authentication, manual lifecycle and
+second-workspace onboarding coverage; it no longer needs a separate AI provider.
 
 The provider recognizes `E2E_ASSIST_ZERO`, `E2E_ASSIST_ONE`,
 `E2E_ASSIST_DELAY`, and `E2E_ASSIST_FAIL` in Markdown input. It supports JSON and

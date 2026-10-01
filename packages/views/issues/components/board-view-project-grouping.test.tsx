@@ -280,7 +280,7 @@ describe("Board grouped by project", () => {
     // which renders the same title text next to a no-assignee actor glyph. The
     // icon is what tells the two apart.
     const header = screen.getByText("Acme Corp").parentElement!;
-    expect(header.querySelector("svg.lucide-rocket")).not.toBeNull();
+    expect(header.querySelector("svg.lucide-rocket")).toBeInTheDocument();
   });
 
   it("puts each card in its own project column", () => {

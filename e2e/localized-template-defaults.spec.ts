@@ -80,7 +80,12 @@ async function openDiscoveryStaffing(page: Page, fixture: LocalizedFixture, loca
   });
   await page.goto(`/${fixture.slug}/squads`);
   await page.locator("header").getByRole("button", { name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true }).click();
-  await page.getByRole("dialog").getByRole("button", { name: locale === "zh-Hans" ? /^从模板创建/ : /^Create from template/ }).click();
+  const chooser = page.getByRole("dialog", {
+    name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true,
+  });
+  await chooser.getByRole("button", {
+    name: locale === "zh-Hans" ? /^从模板创建/ : /^Create from template/,
+  }).click();
   expect((await catalog).status()).toBe(200);
   const dialog = page.getByRole("dialog");
   const name = locale === "zh-Hans" ? "需求预研小队" : "Discovery Squad";
@@ -280,11 +285,19 @@ test("specialist skills localize, search and open their official copies without 
         await page.setViewportSize({ width: 1280, height: 720 });
       }
       const search = page.getByRole("textbox", { name: copy.market.workspace_search, exact: true });
+      // Cards show localized summaries; list view retains the full descriptions.
+      await page.getByRole("button", { name: copy.toolbar.view_card, exact: true }).click();
+      const card = page.getByTestId("skill-card").filter({
+        has: page.getByRole("link", { name: displayed.name, exact: true }),
+      });
+      await expect(card.getByText(displayed.summary, { exact: true })).toBeVisible();
+      await expect(card.locator("p[title]")).toHaveAttribute("title", displayed.description);
+      await page.getByRole("button", { name: copy.toolbar.view_list, exact: true }).click();
+      await expect(page.getByRole("button", { name: copy.toolbar.view_list, exact: true })).toHaveAttribute("aria-pressed", "true");
       for (const purpose of [enSkills.builtin_role_skills[skill.name].description, zhSkills.builtin_role_skills[skill.name].description]) {
         await search.fill(purpose);
         await expect(page.getByText(displayed.name, { exact: true }).first()).toBeVisible();
-        await expect(page.getByText(displayed.summary, { exact: true }).first()).toBeVisible();
-        await expect(page.getByTitle(displayed.description, { exact: true }).first()).toBeVisible();
+        await expect(page.getByText(displayed.description, { exact: true }).first()).toBeVisible();
       }
       await expect(entry.getByRole("tab", { name: copy.market.title, exact: true, includeHidden: true })).toContainText(String(catalog.templates.length));
       await fromTemplate.click();

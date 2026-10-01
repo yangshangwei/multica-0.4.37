@@ -3,12 +3,8 @@ import { test, expect, type Page, type Response } from "@playwright/test";
 import pg from "pg";
 import { TestApiClient } from "./fixtures";
 
-// Main 1904f9aa6 previews suggestions and requires explicit adoption. These
-// tests intentionally do not depend on uncommitted automatic-refinement UI.
-const optimizePath = "/api/issues/optimize-description";
-const refined = "Build a team weekly report feature.";
-const question = "Who writes and reads the weekly report?";
-const provider = process.env.E2E_ASSIST_PROVIDER_URL;
+// AI refinement, undo, failure recovery and dispatch coverage live in
+// issue-assist-flow.spec.ts, using the current editable-draft contract.
 type Issue = { id: string; identifier: string; title: string; description: string; status: string; priority: string };
 type TestWorkspace = Awaited<ReturnType<TestApiClient["ensureWorkspace"]>>;
 
@@ -68,14 +64,6 @@ async function openCreate(page: Page, slug: string, mode: "manual" | "agent" = "
   const dialog = page.getByRole("dialog", { name: mode === "manual" ? "New Issue" : "Quick create issue", exact: true });
   await expect(dialog).toBeVisible();
   return { dialog, editor: dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]') };
-}
-
-async function requireProvider(page: Page) {
-  const url = localURL("E2E_ASSIST_PROVIDER_URL");
-  expect(localURL("MULTICA_LLM_BASE_URL").origin).toBe(url.origin);
-  const health = await page.request.get(`${url.origin}/health`);
-  expect(health.ok()).toBe(true);
-  expect(await health.json()).toMatchObject({ fixture: "main-supplemental-qa" });
 }
 
 test("real email code login survives refresh and logout protects the workspace", async ({ page }, info) => {
@@ -174,12 +162,13 @@ test("manual issue status, priority and comment persist through refresh and conf
   } finally { await api.deleteFeatureWorkspace(workspace.id); }
 });
 
-test("an onboarded member creates another workspace through Welcome, About you, workspace and runtime", async ({ page }, info) => {
+test("an onboarded member creates another workspace through Welcome, About you and runtime", async ({ page }, info) => {
   const { api, workspace, suffix } = await account("workspace");
   let additional: TestWorkspace | undefined;
   try {
     await authenticate(page, api);
     await page.goto("/workspaces/new", { waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("button", { name: "Continue on web", exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Continue on web", exact: true }).click();
     await expect(page.locator('[aria-current="step"]').filter({ hasText: "About you" })).toBeVisible();
     await expect(page.getByRole("radio", { name: "Engineer", exact: true })).toBeVisible();
@@ -220,106 +209,4 @@ test("an onboarded member creates another workspace through Welcome, About you, 
     api.setWorkspaceSlug(workspace.slug);
     await api.deleteFeatureWorkspace(workspace.id);
   }
-});
-
-test.describe("AI suggestions through the real local API", () => {
-  test.skip(!provider, "Requires the task-owned supplemental provider and API LLM endpoint");
-  test.beforeEach(async ({ page }) => { await requireProvider(page); });
-
-  test("previews, explicitly applies, undoes and persists only the adopted description", async ({ page }, info) => {
-    const { api, workspace, suffix } = await account("assist");
-    try {
-      await authenticate(page, api);
-      const { dialog, editor } = await openCreate(page, workspace.slug);
-      const source = "I want a team weekly report feature. E2EASSISTONE";
-      await dialog.getByRole("textbox", { name: "Issue title", exact: true }).fill(`Assisted ${suffix}`);
-      await editor.fill(source);
-      const optimized = page.waitForResponse((response) => matches(response, optimizePath));
-      await dialog.getByRole("button", { name: "AI optimize description", exact: true }).click();
-      expect((await optimized).status()).toBe(200);
-      const suggestion = dialog.getByRole("region", { name: "AI suggestion", exact: true });
-      await expect(suggestion.getByText(refined, { exact: true })).toBeVisible();
-      await expect(suggestion.getByText(question, { exact: true })).toBeVisible();
-      await expect(editor).toHaveText(source);
-      await suggestion.getByRole("button", { name: "Apply and replace", exact: true }).click();
-      await expect(editor).toHaveText(refined);
-      await expect(dialog.getByRole("status")).toHaveText("Suggestion applied.");
-      await dialog.getByRole("button", { name: "Undo", exact: true }).click();
-      await expect(editor).toHaveText(source);
-      await dialog.getByRole("button", { name: "AI optimize description", exact: true }).click();
-      await suggestion.getByRole("button", { name: "Apply and replace", exact: true }).click();
-      await expect(editor).toHaveText(refined);
-      await page.screenshot({ path: info.outputPath("adopted-description.png") });
-      const created = page.waitForResponse((response) => matches(response, "/api/issues"));
-      await dialog.getByRole("button", { name: "Create Issue", exact: true }).click();
-      const response = await created;
-      expect(response.status()).toBe(201);
-      const issue: Issue = await response.json();
-      expect(await api.requestJSON<Issue>(`/api/issues/${issue.id}`)).toMatchObject({ title: `Assisted ${suffix}`, description: refined });
-      await page.goto(`/${workspace.slug}/issues/${issue.identifier}`, { waitUntil: "domcontentloaded" });
-      await expect(page.locator('.ProseMirror.rich-text-editor[contenteditable="true"]').filter({ hasText: refined })).toBeVisible();
-    } finally { await api.deleteFeatureWorkspace(workspace.id); }
-  });
-
-  test("rejects stale adoption, cancels generation and still creates the unchanged draft after provider failure", async ({ page }) => {
-    const { api, workspace, suffix } = await account("assistfailure");
-    try {
-      await authenticate(page, api);
-      const { dialog, editor } = await openCreate(page, workspace.slug);
-      await dialog.getByRole("textbox", { name: "Issue title", exact: true }).fill(`Preserved ${suffix}`);
-      await editor.fill("Weekly reporting E2EASSISTDELAY");
-      await dialog.getByRole("button", { name: "AI optimize description", exact: true }).click();
-      await editor.fill("Keep my newer monthly reporting requirements.");
-      await expect(dialog.getByRole("status")).toHaveText("Content changed. Optimize again to use your latest edits.", { timeout: 15_000 });
-      await expect(dialog.getByRole("button", { name: "Apply and replace", exact: true })).toBeDisabled();
-      await expect(editor).toHaveText("Keep my newer monthly reporting requirements.");
-      await dialog.getByRole("button", { name: "Discard", exact: true }).click();
-      await editor.fill("Cancel this E2EASSISTDELAY");
-      await dialog.getByRole("button", { name: "AI optimize description", exact: true }).click();
-      await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
-      await expect(dialog.getByRole("button", { name: "AI optimize description", exact: true })).toBeEnabled();
-      await expect(editor).toHaveText("Cancel this E2EASSISTDELAY");
-      const failedDraft = "Preserve my original description E2EASSISTFAIL";
-      await editor.fill(failedDraft);
-      await dialog.getByRole("button", { name: "AI optimize description", exact: true }).click();
-      await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");
-      await expect(editor).toHaveText(failedDraft);
-      await expect(dialog.getByRole("button", { name: "Create Issue", exact: true })).toBeEnabled();
-      const created = page.waitForResponse((response) => matches(response, "/api/issues"));
-      await dialog.getByRole("button", { name: "Create Issue", exact: true }).click();
-      const response = await created;
-      expect(response.status()).toBe(201);
-      const issue: Issue = await response.json();
-      expect(await api.requestJSON<Issue>(`/api/issues/${issue.id}`)).toMatchObject({ description: failedDraft });
-    } finally { await api.deleteFeatureWorkspace(workspace.id); }
-  });
-
-  test("adopted agent instructions reach the real task queue without a daemon", async ({ page }) => {
-    const { api, workspace, suffix } = await account("assistagent");
-    try {
-      await authenticate(page, api, "agent");
-      const runtime = await api.seedProjectRuntime();
-      const agent = await api.requestJSON<{ id: string; name: string }>("/api/agents", { method: "POST", body: { name: `Reporter ${suffix}`, runtime_id: runtime.id, visibility: "workspace" } });
-      const { dialog, editor } = await openCreate(page, workspace.slug, "agent");
-      await dialog.getByRole("button", { name: /^Creation assistant/ }).click();
-      await page.locator(`[data-actor-key="agent:${agent.id}"] button[data-picker-item]`).click();
-      await editor.fill("Prepare a team weekly report feature. E2EASSISTONE");
-      await dialog.getByRole("button", { name: "AI optimize instructions", exact: true }).click();
-      await dialog.getByRole("button", { name: "Apply and replace", exact: true }).click();
-      await expect(editor).toHaveText(refined);
-      const accepted = page.waitForResponse((response) => matches(response, "/api/issues/quick-create"));
-      await dialog.getByRole("button", { name: "Create", exact: true }).click();
-      const response = await accepted;
-      expect(response.status()).toBe(202);
-      const task: { task_id: string } = await response.json();
-      await expect(dialog).toBeHidden();
-      const database = new pg.Client(process.env.DATABASE_URL);
-      await database.connect();
-      try {
-        const result = await database.query<{ agent_id: string; context: { prompt: string } }>("SELECT agent_id, context FROM agent_task_queue WHERE id = $1", [task.task_id]);
-        expect(result.rows).toHaveLength(1);
-        expect(result.rows[0]).toMatchObject({ agent_id: agent.id, context: { prompt: refined } });
-      } finally { await database.end(); }
-    } finally { await api.deleteFeatureWorkspace(workspace.id); }
-  });
 });
