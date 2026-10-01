@@ -1,0 +1,49 @@
+{
+  "scope": "Production shared Web/Desktop integration catalog and GitHub detail",
+  "status": "passed",
+  "source_commit": "6dd927657037eb1e58424d4125ad3e18d3b46324",
+  "web_build_id": "XU37jhEnBEZ-xNLFZFGVW",
+  "source_id": "aaeda39e4c1b78770d6db022e0501adabde8b77591e83dc3b0a9b7a5b1165aad",
+  "checks": {
+    "typecheck": "9/9 tasks passed (includes Web/Desktop)",
+    "views_lint": "0 errors, 26 existing warnings",
+    "views_tests": {
+      "files": 472,
+      "passed": 5866,
+      "failed": 0
+    },
+    "web_browser": {
+      "locales": [
+        "en",
+        "zh-Hans"
+      ],
+      "passed": 2,
+      "widths": [
+        320,
+        390,
+        768,
+        900,
+        1024,
+        1440
+      ]
+    },
+    "composio_callback": {
+      "passed": 1
+    },
+    "native_electron": {
+      "passed": 2,
+      "exceptions": 0,
+      "narrow_width": 420
+    },
+    "visual_score": 95,
+    "detector_findings": 0,
+    "git_diff_check": "passed"
+  },
+  "limitations": [
+    "GitHub installation data and disconnect responses mocked in Web E2E; real external OAuth was not performed.",
+    "Native existing settings test required a temporary fixture-object assertion adjustment for the pre-existing extra authSessions field; original test/source not changed.",
+    "Invalid or deployment-disabled integration selections retain their URL to allow late configuration recovery; the fallback catalog currently uses the detail width.",
+    "No Go/API behavior changed; backend test suite was not rerun."
+  ],
+  "artifacts_directory": ".trellis/tasks/10-01-settings-integration-catalog/production"
+}

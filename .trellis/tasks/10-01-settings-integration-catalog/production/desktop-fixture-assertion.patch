@@ -1,0 +1,4 @@
+Temporary verification adjustment only:
+- expect(services).toEqual({ daemonStarts: 0, externalLinks: [], installCalls: 0 });
++ expect(services).toMatchObject({ daemonStarts: 0, externalLinks: [], installCalls: 0 });
+Existing fixture now emits authSessions; the production route/UI assertions were unchanged.

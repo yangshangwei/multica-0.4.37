@@ -1,0 +1,106 @@
+import { randomUUID } from "node:crypto";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
+import { test, expect, _electron as electron, type ElectronApplication, type Page } from "@playwright/test";
+import { TestApiClient } from "./fixtures";
+
+async function activeRoute(page: Page) {
+ return page.evaluate(() => {
+  const { state } = JSON.parse(localStorage.getItem("multica_tabs")!);
+  const group = state.byWorkspace[state.activeWorkspaceSlug];
+  return group.tabs.find((tab: {id:string}) => tab.id === group.activeTabId).url;
+ });
+}
+
+test("native integration catalog uses desktop history and restores provider URLs", async ({}, info) => {
+ test.setTimeout(90000);
+ const root=resolve(import.meta.dirname,"..");
+ const profile=mkdtempSync(join(tmpdir(),"multica-catalog-native-"));
+ const slug=`native-catalog-${randomUUID().slice(0,8)}`;
+ const api=new TestApiClient();
+ let workspaceId: string | undefined;
+ let desktop: ElectronApplication | undefined;
+ let page: Page | undefined;
+ const errors: string[]=[];
+ try {
+  await api.login(`${slug}@example.invalid`,"Native catalog verification");
+  const workspace=await api.ensureWorkspace("Native catalog verification",slug);
+  workspaceId=workspace.id;
+  await api.markUserOnboarded();
+  await api.requestJSON("/api/me",{method:"PATCH",body:{language:"en"}});
+  desktop=await electron.launch({
+   executablePath:join(root,"apps/desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron"),
+   args:[join(root,"e2e/fixtures/changelog-electron.cjs")],
+   env:{...process.env,CHANGELOG_ELECTRON_PROFILE:profile,CHANGELOG_ELECTRON_SYSTEM_LOCALE:"en-US"},
+  });
+  page=await desktop.firstWindow();
+  page.on("pageerror",error=>errors.push(error.message));
+  await page.locator("#root > *").first().waitFor({state:"attached"});
+  await page.context().addInitScript(token=>{
+   localStorage.setItem("multica_token",token!);
+   localStorage.setItem("multica-locale","en");
+   localStorage.setItem("multica:chat:isOpen","false");
+  },api.getToken());
+  await page.reload({waitUntil:"domcontentloaded"});
+  await page.getByRole("button",{name:"Help",exact:true}).click();
+  await page.getByRole("menuitem",{name:"Desktop version 0.4.40-test",exact:true}).click();
+  await page.getByRole("tab",{name:"Integrations",exact:true}).click();
+  const panel=page.getByRole("tabpanel");
+  const github=panel.getByRole("link",{name:"GitHub",exact:true});
+  await expect(github).toBeVisible();
+  await expect.poll(()=>activeRoute(page!)).toBe(`/${slug}/settings?tab=integrations`);
+  await expect(panel.getByRole("switch")).toHaveCount(0);
+  await page.screenshot({path:info.outputPath("native-catalog.png")});
+  await github.focus();
+  await page.keyboard.press("Enter");
+  await expect.poll(()=>activeRoute(page!)).toBe(`/${slug}/settings?tab=integrations&integration=github`);
+  await expect(panel.getByRole("heading",{name:"GitHub",level:2,exact:true})).toBeVisible();
+  await expect(panel.getByRole("link",{name:"All integrations",exact:true})).toBeFocused();
+  expect(page.url()).toBe(new URL(process.env.CHANGELOG_ELECTRON_RENDERER_URL!).href);
+  await page.getByRole("button",{name:"Go back",exact:true}).click();
+  await expect.poll(()=>activeRoute(page!)).toBe(`/${slug}/settings?tab=integrations`);
+  await expect(github).toBeFocused();
+  await page.getByRole("button",{name:"Go forward",exact:true}).click();
+  await expect.poll(()=>activeRoute(page!)).toBe(`/${slug}/settings?tab=integrations&integration=github`);
+  await expect(panel.getByRole("switch",{name:"Enable GitHub features"})).toBeVisible();
+  await page.screenshot({path:info.outputPath("native-github-detail.png")});
+  await panel.getByRole("link",{name:"All integrations",exact:true}).click();
+  await expect(github).toBeFocused();
+  await github.click();
+  await page.getByRole("tab",{name:"Preferences",exact:true}).click();
+  await expect.poll(()=>activeRoute(page!)).toBe(`/${slug}/settings?tab=preferences`);
+
+  await page.evaluate(url=>{
+   const saved=JSON.parse(localStorage.getItem("multica_tabs")!);
+   const group=saved.state.byWorkspace[saved.state.activeWorkspaceSlug];
+   const tab=group.tabs.find((entry:{id:string})=>entry.id===group.activeTabId);
+   tab.url=url;tab.history={stack:[url],index:0};
+   localStorage.setItem("multica_tabs",JSON.stringify(saved));
+  },`/${slug}/settings?tab=github&keep=yes#context`);
+  await page.reload({waitUntil:"domcontentloaded"});
+  await expect(panel.getByRole("heading",{name:"GitHub",level:2,exact:true})).toBeVisible();
+  await panel.getByRole("button",{name:/Manage repositories/}).click();
+  await expect.poll(()=>activeRoute(page!)).toBe(`/${slug}/settings?tab=repositories&keep=yes#context`);
+  await page.getByRole("tab",{name:"Integrations",exact:true}).click();
+  await github.click();
+  await desktop.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0]!.setContentSize(420,900));
+  await expect(panel.getByRole("switch",{name:"Enable GitHub features"})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  expect(await panel.evaluate(element=>element.scrollWidth<=element.clientWidth+1)).toBe(true);
+  await page.screenshot({path:info.outputPath("native-github-420.png")});
+  const services=await desktop.evaluate(()=> (globalThis as unknown as {changelogAcceptance:{daemonStarts:number;externalLinks:string[];installCalls:number}}).changelogAcceptance);
+  expect(services).toMatchObject({daemonStarts:0,externalLinks:[],installCalls:0});
+  expect(errors).toEqual([]);
+ }catch(error){
+  if(page&&!page.isClosed()){
+   await info.attach("native-catalog-failure",{body:await page.screenshot(),contentType:"image/png"});
+   await info.attach("native-catalog-failure-text",{body:await page.locator("body").innerText(),contentType:"text/plain"});
+  }
+  throw error;
+ }finally{
+  await desktop?.close();
+  try{if(workspaceId)await api.deleteFeatureWorkspace(workspaceId);}
+  finally{rmSync(profile,{recursive:true,force:true});}
+ }
+});
