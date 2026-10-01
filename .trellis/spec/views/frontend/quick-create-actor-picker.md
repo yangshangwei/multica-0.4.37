@@ -2,7 +2,7 @@
 
 ## 1. Scope / Trigger
 
-The shared Web/Desktop `QuickCreateActorPicker` supplies discovery for both issue-creation modes. Quick create selects the assistant that files an issue; `ManualCreateAssigneePicker` supplies direct assignment, including members and Unassigned. The shared search, categories, responsibility previews and scoped favorites/recent history do not merge those selection contracts. Ordinary issue/board assignment, Chat pins, sidebar pins and mobile remain separate surfaces.
+The shared Web/Desktop `QuickCreateActorPicker` supplies discovery for both issue-creation modes and Chat. Quick create selects the assistant that files an issue; `ManualCreateAssigneePicker` supplies direct assignment, including members and Unassigned. The shared search, categories and responsibility previews do not merge those selection contracts or their preference storage. Ordinary issue/board assignment, sidebar pins and mobile remain separate surfaces.
 
 ## 2. Signatures
 
@@ -50,7 +50,7 @@ Use the saved actor's own description and `descriptionPreview` for inert display
 
 - Good: user pins both an agent and its squad; they remain distinct typed identities.
 - Base: no history means a browsable full directory, not an empty shortcuts screen.
-- Bad: reusing Chat pins would impose agent-only semantics and mutate an unrelated surface.
+- Bad: reusing Chat pins for issue creation would impose agent-only semantics and mutate an unrelated surface.
 - Bad: disabling the focused Browse all button or removing View all favorites, Back, Show more or Retry can blur Chromium to body. Both nested dismissal handlers then observe Escape. Preserve a valid in-popup focus target instead of changing global dialog dismissal.
 
 ## 6. Tests Required
@@ -97,6 +97,29 @@ if (scope && isQuickCreateScopeCurrent(scope)) {
 - Manual selection and task creation remain available without configured AI or on an older server returning404. The interface says Creation assistant to distinguish it from the final issue assignee.
 
 Tests: core creator-selection/API/preference suites; views creator-recommendations and cache suites plus phase1 picker regressions; `e2e/quick-create-actor-picker-phase2.spec.ts` covers realAPI defaults/projects, deterministic-provider recommendations, cancellation/failure, actual Electron and Chinese narrow layouts.
+
+## Chat discovery
+
+- Chat's `AgentPicker` adapts the shared picker for new conversations and the
+  floating input's agent dropdown. Chat accepts only agent IDs; build leadership
+  metadata from active squads, then exclude squad entries and the squad tab.
+- Preserve caller-owned access filtering and disable runtime-unbound agents.
+  Offline agents with a bound runtime remain selectable. New-chat zero/single
+  agent shortcuts retain the same runtime checks.
+- Favorites come from `chatPinnedAgentsOptions` and existing pin/unpin mutations,
+  with the server's five-pin limit applied to all pins, including hidden actors.
+  Recent actors come from active sessions ordered by last-message/update time,
+  independently of session pin order. Shared catalog resolution removes duplicate
+  and inaccessible references. Never write quick-create preferences from Chat.
+- Preference readiness means data is available, not that no mutation is pending.
+  Disable pending pin actions separately so favorites/recents stay visible. A
+  disabled pin cannot receive restored focus; fall back to a row or the search
+  input so keyboard dismissal stays inside the popup.
+- Chat provides its own hint and no default-assistant action. `side`/`align`
+  preserve bottom placement for new-chat and top placement for the input picker.
+- Chat component tests own wiring, runtime shortcuts, pins/cap/rollback and
+  pending focus. `e2e/chat-actor-picker.spec.ts` covers actual browser entry points,
+  keyboard selection, categories and narrow-screen layout without agent execution.
 
 
 ## Actor hierarchy

@@ -1,37 +1,24 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useWorkspaceId } from "@multica/core/hooks";
+import { chatPinnedAgentsOptions, chatSessionsOptions } from "@multica/core/chat/queries";
+import { usePinChatAgent, useUnpinChatAgent } from "@multica/core/chat/mutations";
+import { squadListOptions } from "@multica/core/workspace/queries";
+import { QuickCreateActorPicker } from "../../modals/quick-create-actor-picker";
 import { Plus } from "lucide-react";
 import { Button } from "@multica/ui/components/ui/button";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@multica/ui/components/ui/tooltip";
-import { ActorAvatar } from "../../common/actor-avatar";
-import {
-  PickerEmpty,
-  PickerItem,
-  PickerSection,
-  PropertyPicker,
-} from "../../issues/components/pickers/property-picker";
-import { matchesPinyin } from "../../editor/extensions/pinyin-match";
 import type { Agent } from "@multica/core/types";
 import { isAgentRuntimeBound } from "@multica/core/agents";
 import { toast } from "sonner";
 import { useT } from "../../i18n";
 
-/**
- * Agent picker: a searchable, grouped (My agents / Others) list of agents in a
- * PropertyPicker. The caller supplies the trigger. `currentAgentId` marks one
- * agent with a check — omit it (as "new chat" does) when there is no current
- * selection to highlight.
- */
+/** Chat owns eligibility and server pins; discovery is shared with creation. */
 export function AgentPicker({
-  agents,
-  userId,
-  currentAgentId,
-  onSelect,
-  trigger,
-  triggerRender,
-  side = "bottom",
-  align = "start",
+  agents, currentAgentId, onSelect, trigger, triggerRender,
+  side = "bottom", align = "start",
 }: {
   agents: Agent[];
   userId: string | undefined;
@@ -43,111 +30,52 @@ export function AgentPicker({
   align?: "start" | "center" | "end";
 }) {
   const { t } = useT("chat");
-  const [open, setOpen] = useState(false);
-  const [filter, setFilter] = useState("");
-  const { mine, others } = useMemo(() => {
-    const mine: Agent[] = [];
-    const others: Agent[] = [];
-    for (const a of agents) {
-      if (a.owner_id === userId) mine.push(a);
-      else others.push(a);
-    }
-    return { mine, others };
-  }, [agents, userId]);
+  const wsId = useWorkspaceId();
+  const pinsQuery = useQuery(chatPinnedAgentsOptions(wsId));
+  const sessionsQuery = useQuery(chatSessionsOptions(wsId));
+  const squadsQuery = useQuery(squadListOptions(wsId));
+  const pin = usePinChatAgent();
+  const unpin = useUnpinChatAgent();
+  const pinned = pinsQuery.data ?? [];
+  const favoriteActors = pinned.map((item) => ({ type: "agent" as const, id: item.agent_id }));
+  const recentActors = useMemo(() => (sessionsQuery.data ?? [])
+    .filter((session) => session.status !== "archived")
+    .sort((a, b) => new Date(b.last_message?.created_at ?? b.updated_at).getTime()
+      - new Date(a.last_message?.created_at ?? a.updated_at).getTime())
+    .map((session) => ({ type: "agent" as const, id: session.agent_id })), [sessionsQuery.data]);
+  const disabledReasons = new Map(agents.filter((agent) => !isAgentRuntimeBound(agent))
+    .map((agent) => [`agent:${agent.id}`, t(($) => $.window.agent_needs_runtime_hint)]));
 
-  const query = filter.trim().toLowerCase();
-  const matches = (name: string) =>
-    !query || name.toLowerCase().includes(query) || matchesPinyin(name, query);
-  const filteredMine = mine.filter((agent) => matches(agent.name));
-  const filteredOthers = others.filter((agent) => matches(agent.name));
-
-  const handlePick = (agent: Agent) => {
-    onSelect(agent);
-    setOpen(false);
-  };
-
-  return (
-    <PropertyPicker
-      open={open}
-      onOpenChange={setOpen}
-      width="w-64"
-      align={align}
-      side={side}
-      searchable
-      searchPlaceholder={t(($) => $.window.agent_filter_placeholder)}
-      onSearchChange={setFilter}
-      triggerRender={triggerRender}
-      trigger={trigger}
-    >
-      {filteredMine.length === 0 && filteredOthers.length === 0 ? (
-        <PickerEmpty />
-      ) : (
-        <>
-          {filteredMine.length > 0 && (
-            <PickerSection label={t(($) => $.window.my_agents)}>
-              {filteredMine.map((agent) => (
-                <AgentPickerItem
-                  key={agent.id}
-                  agent={agent}
-                  isCurrent={agent.id === currentAgentId}
-                  onSelect={handlePick}
-                />
-              ))}
-            </PickerSection>
-          )}
-          {filteredOthers.length > 0 && (
-            <PickerSection label={t(($) => $.window.others)}>
-              {filteredOthers.map((agent) => (
-                <AgentPickerItem
-                  key={agent.id}
-                  agent={agent}
-                  isCurrent={agent.id === currentAgentId}
-                  onSelect={handlePick}
-                />
-              ))}
-            </PickerSection>
-          )}
-        </>
-      )}
-    </PropertyPicker>
-  );
-}
-
-function AgentPickerItem({
-  agent,
-  isCurrent,
-  onSelect,
-}: {
-  agent: Agent;
-  isCurrent: boolean;
-  onSelect: (agent: Agent) => void;
-}) {
-  const { t } = useT("chat");
-  const runtimeBound = isAgentRuntimeBound(agent);
-  return (
-    <PickerItem
-      selected={isCurrent}
-      disabled={!runtimeBound}
-      tooltip={
-        runtimeBound ? undefined : t(($) => $.window.agent_needs_runtime_hint)
-      }
-      onClick={() => onSelect(agent)}
-    >
-      <ActorAvatar
-        actorType="agent"
-        actorId={agent.id}
-        size="md"
-        enableHoverCard
-        showStatusDot
-      />
-      <span className="truncate flex-1">{agent.name}</span>
-      {!runtimeBound && (
-        <span className="shrink-0 text-micro text-amber-600 dark:text-amber-400">
-          {t(($) => $.window.agent_needs_runtime)}
-        </span>
-      )}
-    </PickerItem>
-  );
+  return <QuickCreateActorPicker
+    actor={currentAgentId ? { type: "agent", id: currentAgentId } : null}
+    visibleAgents={agents}
+    visibleSquads={(squadsQuery.data ?? []).filter((squad) => !squad.archived_at)}
+    favoriteActors={favoriteActors}
+    recentActors={recentActors}
+    preferencesReady={pinsQuery.data !== undefined}
+    onToggleFavorite={(ref) => {
+      if (ref.type !== "agent" || pin.isPending || unpin.isPending) return;
+      const isPinned = pinned.some((item) => item.agent_id === ref.id);
+      if (!isPinned && (pinned.length >= 5 || disabledReasons.has(`agent:${ref.id}`))) return;
+      const mutation = isPinned ? unpin : pin;
+      mutation.mutate(ref.id, { onError: () => toast.error(t(($) => $.window.pin_failed)) });
+    }}
+    onPick={(ref) => {
+      const agent = ref.type === "agent" ? agents.find((candidate) => candidate.id === ref.id) : undefined;
+      if (agent && isAgentRuntimeBound(agent)) onSelect(agent);
+    }}
+    squadState={{
+      pending: squadsQuery.isPending,
+      error: squadsQuery.isError,
+      hasData: squadsQuery.data !== undefined,
+      onRetry: () => { void squadsQuery.refetch(); },
+    }}
+    chat={{ hint: t(($) => $.window.picker_hint), disabledReasons, canPin: pinned.length < 5, favoritesPending: pin.isPending || unpin.isPending }}
+    side={side}
+    align={align}
+    trigger={trigger}
+    triggerRender={triggerRender}
+  />;
 }
 
 /**

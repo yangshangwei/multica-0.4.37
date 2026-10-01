@@ -37,6 +37,15 @@ export type QuickCreateActorPickerProps = {
   triggerRender?: React.ReactElement;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  side?: "top" | "bottom";
+  align?: "start" | "center" | "end";
+  /** Chat selects individual agents; squads only describe their leadership. */
+  chat?: {
+    hint: string;
+    disabledReasons: ReadonlyMap<string, string>;
+    canPin: boolean;
+    favoritesPending: boolean;
+  };
   /** Direct assignment shares discovery, but owns member/empty values and permissions. */
   assignment?: {
     members: (Pick<MemberWithUser, "user_id" | "name"> & Partial<Pick<MemberWithUser, "username" | "email">>)[];
@@ -57,7 +66,7 @@ export function QuickCreateActorPicker({
   actor, visibleAgents, visibleSquads, selectedAgent, selectedSquad,
   favoriteActors, recentActors, preferencesReady, onToggleFavorite, onPick,
   agentState = READY, squadState = READY, defaultActor = null, onSetDefault, projectActors = EMPTY_REFS, projectState,
-  trigger, triggerRender, open: controlledOpen, onOpenChange, assignment,
+  trigger, triggerRender, open: controlledOpen, onOpenChange, assignment, chat, side = "bottom", align = "start",
 }: QuickCreateActorPickerProps) {
   const { t } = useT("modals");
   const { t: tIssues } = useT("issues");
@@ -73,10 +82,11 @@ export function QuickCreateActorPicker({
   const pendingFocus = useRef<{ key: string; index: number } | null>(null);
   const actorFilter = typeFilter === "member" ? "all" : typeFilter;
 
+  const chatMode = !!chat;
   const catalog = useMemo(() => buildActorCatalog(
     agentState.hasData ? visibleAgents : [],
     agentState.hasData && squadState.hasData ? visibleSquads : [],
-  ), [visibleAgents, visibleSquads, agentState.hasData, squadState.hasData]);
+  ).filter((item) => !chatMode || item.type === "agent"), [visibleAgents, visibleSquads, agentState.hasData, squadState.hasData, chatMode]);
   const shortcuts = useMemo(() => actorShortcuts(catalog,
     preferencesReady ? favoriteActors : [], preferencesReady ? recentActors : []),
   [catalog, favoriteActors, recentActors, preferencesReady]);
@@ -117,13 +127,13 @@ export function QuickCreateActorPicker({
     if (!target) return;
     pendingFocus.current = null;
     const survivingPin = rows.current.get(target.key)?.querySelector<HTMLButtonElement>("button[data-actor-pin]");
-    if (survivingPin) {
+    if (survivingPin && !survivingPin.disabled) {
       survivingPin.focus();
       return;
     }
     const fallback = page.items[Math.min(target.index, page.items.length - 1)];
     const primary = fallback && rows.current.get(actorKey(fallback))?.querySelector<HTMLButtonElement>("button[data-picker-item]");
-    (primary || searchRef.current)?.focus();
+    (primary && !primary.disabled ? primary : searchRef.current)?.focus();
   });
 
   const changeView = (next: ActorPickerView) => {
@@ -154,7 +164,7 @@ export function QuickCreateActorPicker({
     const pinned = favoriteKeys.has(key);
     const isSelected = actor !== null && actorKey(actor) === key;
     const ref = { type: item.type, id: item.id };
-    const disabledReason = assignment?.disabledReasons.get(key);
+    const disabledReason = (chat ?? assignment)?.disabledReasons.get(key);
     return <div key={key} data-actor-key={key} ref={(node) => {
       if (node) rows.current.set(key, node); else rows.current.delete(key);
     }} className="flex min-w-0 items-center gap-0.5 [&>button:first-child]:min-w-0">
@@ -165,7 +175,7 @@ export function QuickCreateActorPicker({
             {item.description}
           </span>
         ) : undefined)}>
-        <ActorAvatar actorType={item.type} actorId={item.id} size="sm" showStatusDot={!!assignment && item.type === "agent"} />
+        <ActorAvatar actorType={item.type} actorId={item.id} size="sm" showStatusDot={(!!assignment || chatMode) && item.type === "agent"} />
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="flex min-w-0 items-baseline gap-2">
             <span className={`truncate ${isSelected ? "font-semibold text-foreground" : ""}`}>{item.name}</span>{" "}
@@ -177,10 +187,11 @@ export function QuickCreateActorPicker({
             {t(($) => $.create_issue.actor_picker.leads_squads, { names: item.leadsSquads.join(", ") })}
           </span>}
           {isSelected && <span className="sr-only">{t(($) => $.create_issue.actor_picker.selected)}</span>}
+          {chatMode && disabledReason && <span className="text-caption text-muted-foreground">{disabledReason}</span>}
         </span>
         {item.type === "agent" && assignment?.privateAgentIds.has(item.id) && <Lock aria-hidden className="size-3 shrink-0 text-muted-foreground" />}
       </PickerItem>
-      <button type="button" data-actor-pin disabled={!preferencesReady || (!!disabledReason && !pinned)} aria-pressed={pinned}
+      <button type="button" data-actor-pin disabled={!preferencesReady || chat?.favoritesPending || (!pinned && (!!disabledReason || chat?.canPin === false))} aria-pressed={pinned}
         aria-label={pinned ? t(($) => $.create_issue.actor_picker.unpin, { name: item.name }) : t(($) => $.create_issue.actor_picker.pin, { name: item.name })}
         className={`${ACTION_CLASS} shrink-0 ${pinned ? "text-foreground" : "text-muted-foreground"}`}
         onClick={() => {
@@ -206,7 +217,7 @@ export function QuickCreateActorPicker({
     </button>
   </div>;
 
-  return <PropertyPicker open={open} onOpenChange={changeOpen} width="w-96 max-w-[calc(100vw-24px)] max-h-(--available-height)" align="start" searchable
+  return <PropertyPicker open={open} onOpenChange={changeOpen} width="w-96 max-w-[calc(100vw-24px)] max-h-(--available-height)" align={align} side={side} searchable
     searchInputRef={searchRef} searchPlaceholder={t(($) => $.create_issue.actor_picker.search_placeholder)}
     onSearchChange={(value) => { setQuery(value); setLimit(ACTOR_PAGE_SIZE); }} navigationResetKey={navigationResetKey}
     triggerRender={triggerRender}
@@ -217,11 +228,11 @@ export function QuickCreateActorPicker({
       </span> : <span>{t(($) => $.create_issue.agent.pick_an_agent)}</span>}
     </span>}
     header={<div>
-      <p className="px-4 pt-2 text-caption text-muted-foreground">{typeFilter === "coordination" || selected?.leadsSquads.length
+      <p className="px-4 pt-2 text-caption text-muted-foreground">{chat ? chat.hint : typeFilter === "coordination" || selected?.leadsSquads.length
         ? t(($) => $.create_issue.actor_picker.coordinator_hint)
         : assignment ? t(($) => $.create_issue.actor_picker.assignee_hint) : t(($) => $.create_issue.actor_picker.creator_hint)}</p>
       <div className="flex flex-wrap items-center gap-1 px-2 py-1.5">
-      {(["all", "mika", "agent", "squad", "coordination"] as const).map((type) => <button key={type} type="button" aria-pressed={typeFilter === type}
+      {(["all", "mika", "agent", "squad", "coordination"] as const).filter((type) => !chatMode || type !== "squad").map((type) => <button key={type} type="button" aria-pressed={typeFilter === type}
         className={`${ACTION_CLASS} ${typeFilter === type ? "bg-accent font-semibold text-foreground" : "text-muted-foreground"}`}
         onClick={() => {
           setTypeFilter(type);
