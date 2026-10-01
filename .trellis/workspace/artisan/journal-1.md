@@ -1249,3 +1249,39 @@ Implemented six bilingual workspace name series, per-account local selection, ac
 ### Next Steps
 
 - No remaining implementation work. Changes are committed locally and not pushed.
+
+
+## Session 40: Complete MCP catalog publishing and final gate review
+
+**Date**: 2026-10-02
+**Task**: Complete MCP catalog publishing and final gate review
+**Branch**: `codex/mcp-catalog-publishing`
+
+### Summary
+
+Recovered the committed five-recipe catalog, fixed unresolved POSIX/Windows input variables in its offline publishing gate, verified the correction and archived the completed task.
+
+### Main Changes
+
+- Unified test-only placeholder detection across commands, arguments and URLs; documented the publishing invariant.
+- Archived 10-01-mcp-catalog-publishing with completed status, source evidence and resolvable context manifests.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c1c5f7f9a` | (see git log) |
+| `a041caebf` | (see git log) |
+
+### Testing
+
+- [OK] Fresh catalog gate, 84 TS tests, 11 detector cases, four corrupted-recipe rejections, cached lint/typecheck and Go vet passed; independent re-review passed.
+- [OK] Prior database and production Web/native Electron evidence retained; no browser or provider rerun after the test-only correction.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining local task work; remote push and production deployment remain outside the approved scope.
