@@ -214,3 +214,36 @@ whole-state rollback at each required write/commit, size boundaries, compatible
 and incompatible queue reuse, concurrent history/metadata, SourceContext lock
 order, external-overlay preparation, and poll recovery without notification.
 `lifecycle_handoff_authorization_test.go` retains the persisted-assignee matrix.
+
+
+## Password-mode sessions and derived credentials
+
+`MULTICA_AUTH_MODE=password` is a local/self-hosted mode; Fleet/device/email
+sign-in is not a fallback. A human principal is insufficient for account
+binding: setup/change requires a validated user JWT/cookie session. Old JWTs
+are confined to an explicit, fixed migration window. Temporary recovery
+passwords only authorize profile/change/logout.
+
+Every personal credential carries the source account version, including PAT,
+task/daemon tokens and member-actor plugin callbacks. Minting uses the same
+user-row lock as password changes and rechecks the source version inside the
+transaction; never upgrade a delayed request by reading the newest version.
+Password-mode checks bypass legacy PAT/daemon authorization caches. DB faults
+return503; an actual invalid/revoked session returns401.
+
+Realtime and daemon WebSockets validate both directions: before incoming RPC,
+heartbeat or subscription side effects, and before outgoing protected events.
+Preserve the authenticated context in daemon connections so downstream claim
+transactions receive the original version. Stateless CDN wildcard cookies are
+not issued in password mode. Password JSON endpoints require application/json
+so cross-site simple forms cannot inject an account session.
+
+Revocation preserves memberships, agents and independent plugin installations.
+Do not call the full member-removal operation: only reuse its scoped query
+primitives. A daemon's task cancellation watcher stops on credential rejection
+(401), while network/503 failures remain retryable. Once credentials exist,
+down migrations must refuse to drop their table or uniqueness constraints.
+
+Regression sources: auth/password*_test.go, handler/auth_password_test.go,
+handler/password_ws_test.go, handler/plugin_password_test.go,
+migrations/password_rollback_test.go and daemon/daemon_test.go.

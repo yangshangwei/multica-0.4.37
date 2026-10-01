@@ -91,3 +91,14 @@ Regression coverage lives in `platform/auth-initializer.test.tsx` (real client,
 bearer/cookie replacement, delayed body, workspace bootstrap and StrictMode
 device login), `api/missing-user-session.test.ts`, handler `auth_session_test.go`
 and `e2e/missing-user-session.spec.ts`.
+
+## Endpoint changes include multipart requests
+
+Switching servers freezes the old client, advances its endpoint generation and
+aborts its pending requests. Both `uploadFile` and `publishPluginPackage` use
+raw multipart fetches, so they must explicitly share that abort controller and
+check the endpoint generation after the response and after body parsing. A
+caller-provided upload cancellation signal is combined with the endpoint
+signal; test cancellation and reason propagation rather than signal identity.
+A frozen client cannot start a new upload. Regression coverage lives in
+`api/endpoint-uploads.test.ts`.

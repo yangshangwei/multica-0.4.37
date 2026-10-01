@@ -49,3 +49,17 @@ Questions to answer:
 <!-- State management mistakes your team has made -->
 
 (To be filled by the team)
+
+## Restricted password sessions
+
+`AccountGate` replaces the route tree while the user must bind an old account
+or change a recovery password. As soon as the auth store publishes a normal
+user, the route tree resumes and its existing login/dashboard guards own
+navigation. Do not navigate again in the gate form's asynchronous completion
+callback: it can run after unmounting and override the resumed route's redirect.
+`e2e/password-migration.spec.ts` covers legacy binding and recovery-password
+change returning to the original workspace, including reload.
+
+Background usage reporting also requires `status === "authenticated"`; a
+non-null user ID can still represent a restricted session. The same UUID moving
+from restricted to authenticated must trigger the normal report.

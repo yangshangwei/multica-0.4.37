@@ -142,6 +142,16 @@ const desktopAPI = {
   /** Validated runtime endpoint config, or a blocking config error. */
   runtimeConfig,
   testRuntimeConfig: (apiUrl: string) => ipcRenderer.invoke("runtime-config:test", apiUrl),
+  onRuntimeConfigReset: (callback: () => Promise<void>): (() => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, id: number) => {
+      void Promise.resolve().then(callback).then(
+        () => ipcRenderer.send("runtime-config:reset-result", { id, ok: true }),
+        () => ipcRenderer.send("runtime-config:reset-result", { id, ok: false }),
+      );
+    };
+    ipcRenderer.on("runtime-config:reset", listener);
+    return () => ipcRenderer.removeListener("runtime-config:reset", listener);
+  },
   saveRuntimeConfig: (input: { apiUrl: string; appUrl?: string; wsUrl?: string }) =>
     ipcRenderer.invoke("runtime-config:save", input),
   /** Stable identity of this installation, used only on deployments that

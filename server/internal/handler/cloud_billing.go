@@ -225,7 +225,7 @@ func (h *Handler) CreateCloudWorkspaceSubscriptionCheckout(w http.ResponseWriter
 		writeError(w, http.StatusInternalServerError, "failed to resolve checkout payer")
 		return
 	}
-	customerEmail := strings.TrimSpace(user.Email)
+	customerEmail := strings.TrimSpace(user.Email.String)
 	if customerEmail == "" {
 		writeError(w, http.StatusInternalServerError, "checkout payer email is unavailable")
 		return

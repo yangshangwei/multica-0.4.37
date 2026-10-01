@@ -1,5 +1,7 @@
 "use client";
 
+import { desktopCallbackUrl, desktopStateFromOAuth } from "@/features/auth/desktop-handoff";
+
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -22,6 +24,7 @@ function CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const qc = useQueryClient();
+  const desktopState = desktopStateFromOAuth(searchParams.get("state") || "");
   const loginWithGoogle = useAuthStore((s) => s.loginWithGoogle);
   const [error, setError] = useState("");
   const [desktopToken, setDesktopToken] = useState<string | null>(null);
@@ -85,7 +88,7 @@ function CallbackContent() {
         .googleLogin(code, redirectUri)
         .then(({ token }) => {
           setDesktopToken(token);
-          window.location.href = `multica://auth/callback?token=${encodeURIComponent(token)}`;
+          window.location.href = desktopCallbackUrl(token, desktopState);
         })
         .catch((err) => {
           setError(err instanceof Error ? err.message : "Login failed");
@@ -141,7 +144,7 @@ function CallbackContent() {
           setError(err instanceof Error ? err.message : "Login failed");
         });
     }
-  }, [searchParams, loginWithGoogle, router, qc]);
+  }, [searchParams, loginWithGoogle, router, qc, desktopState]);
 
   if (desktopToken) {
     return (
@@ -158,7 +161,7 @@ function CallbackContent() {
             <Button
               variant="outline"
               onClick={() => {
-                window.location.href = `multica://auth/callback?token=${encodeURIComponent(desktopToken)}`;
+                window.location.href = desktopCallbackUrl(desktopToken, desktopState);
               }}
             >
               Open Multica Desktop

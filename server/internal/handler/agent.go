@@ -667,7 +667,7 @@ func (h *Handler) hydrateTaskAttributions(ctx context.Context, attrs []*TaskAttr
 		}
 		if u, ok := byID[ref.ID]; ok {
 			ref.Name = u.Name
-			ref.Email = u.Email
+			ref.Email = u.Email.String
 			if u.AvatarUrl.Valid {
 				ref.AvatarURL = h.resolveAvatarURL(u.AvatarUrl.String)
 			}

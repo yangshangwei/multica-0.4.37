@@ -442,6 +442,6 @@ func shareLinkListToResponse(row db.ListShareLinksByWorkspaceRow) ShareLinkRespo
 		IsActive:     row.IsActive,
 		CreatedAt:    timestampToString(row.CreatedAt),
 		CreatorName:  row.CreatorName,
-		CreatorEmail: row.CreatorEmail,
+		CreatorEmail: row.CreatorEmail.String,
 	}
 }

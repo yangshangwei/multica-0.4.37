@@ -5,7 +5,7 @@ import { pathToFileURL } from "url";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import fixPath from "fix-path";
 import { setupAutoUpdater } from "./updater";
-import { setupDaemonManager } from "./daemon-manager";
+import { resetDaemonForServerSwitch, setupDaemonManager } from "./daemon-manager";
 import { setupLocalDirectory } from "./local-directory";
 import { openExternalSafely, downloadURLSafely } from "./external-url";
 import { installContextMenu } from "./context-menu";
@@ -61,6 +61,7 @@ import {
   parseMainRendererChannelState,
   type MainRendererMessageChannel,
 } from "../shared/main-renderer-messages";
+import { BrowserLoginAttempt, ServerSwitchCoordinator, clearServerCookies, probeServer } from "./server-switch";
 import { AuthSessionCoordinator } from "./auth-session-coordinator";
 import {
   NotificationGate,
@@ -151,6 +152,9 @@ function freezeBreadcrumbPath(): string {
 }
 
 let mainWindow: BrowserWindow | null = null;
+const serverSwitch = new ServerSwitchCoordinator();
+const browserLoginAttempt = new BrowserLoginAttempt();
+let replacementRendererExpected = false;
 const issueWindows = new Set<BrowserWindow>();
 const authSessionCoordinator = new AuthSessionCoordinator<BrowserWindow>(
   (window) => {
@@ -236,7 +240,9 @@ function handleDeepLink(url: string): void {
     // multica://auth/callback?token=<jwt>
     if (parsed.hostname === "auth" && parsed.pathname === "/callback") {
       const token = parsed.searchParams.get("token");
-      if (token) dispatchToMainRenderer("auth:token", token);
+      if (token && !serverSwitch.blocked && browserLoginAttempt.consume(parsed.searchParams.get("desktop_state"))) {
+        dispatchToMainRenderer("auth:token", token);
+      }
       return;
     }
 
@@ -517,6 +523,7 @@ function createWindow(): BrowserWindow {
 }
 
 function createIssueWindow(context: IssueWindowContext): void {
+  if (serverSwitch.blocked) return;
   const systemLocale = getSystemLocale();
   lastKnownSystemLocale = systemLocale;
 
@@ -725,8 +732,13 @@ if (!gotTheLock) {
     // is the single audit point for renderer-controlled URLs reaching the
     // OS shell under the app's intentional webSecurity: false configuration
     // (the renderer itself runs sandboxed).
-    ipcMain.handle("shell:openExternal", (_event, url: string) => {
-      return openExternalSafely(url);
+    ipcMain.handle("shell:openExternal", (event, url: string) => {
+      const target = new URL(url);
+      if (target.pathname === "/login" && target.searchParams.get("platform") === "desktop") {
+        if (!mainWindow || event.sender !== mainWindow.webContents || serverSwitch.blocked || !runtimeConfigResult.ok || target.origin !== new URL(runtimeConfigResult.config.appUrl).origin) return;
+        target.searchParams.set("desktop_state", browserLoginAttempt.begin());
+      }
+      return openExternalSafely(target.toString());
     });
 
     // Renderer requests its own window close (e.g. Cmd+W on the last main
@@ -787,6 +799,12 @@ if (!gotTheLock) {
     // boot. If desktop.json exists but is invalid, renderer receives the
     // blocking error and must not silently fall back to the cloud defaults.
     ipcMain.on("runtime-config:get", (event) => {
+      // Preload runs before React effects; release only for the new main
+      // renderer so its initial daemon target setup cannot race load events.
+      if (replacementRendererExpected && mainWindow && event.sender === mainWindow.webContents) {
+        replacementRendererExpected = false;
+        serverSwitch.rendererReady();
+      }
       event.returnValue = runtimeConfigResult;
     });
 
@@ -800,37 +818,17 @@ if (!gotTheLock) {
       } catch {
         return { ok: false, category: "invalid", message: "Enter a valid http or https URL" };
       }
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 5000);
       const started = Date.now();
       try {
-        const response = await fetch(`${apiUrl}/health`, {
-          signal: controller.signal,
-          redirect: "manual",
-          headers: { accept: "application/json, text/plain;q=0.9" },
-        });
-        if (response.status >= 300 && response.status < 400) {
-          return { ok: false, category: "redirect", message: "Health check redirected unexpectedly" };
-        }
-        if (!response.ok) {
-          return { ok: false, category: "http", message: `Server responded with HTTP ${response.status}` };
-        }
+        await probeServer(apiUrl);
         return { ok: true, latencyMs: Date.now() - started };
       } catch (error) {
-        if (controller.signal.aborted) return { ok: false, category: "timeout", message: "Connection timed out" };
-        const code = error && typeof error === "object" && "cause" in error
-          ? String((error as { cause?: { code?: string } }).cause?.code ?? "")
-          : "";
-        if (code.includes("CERT") || code.includes("TLS")) return { ok: false, category: "tls", message: "TLS certificate validation failed" };
-        if (code.includes("ENOTFOUND") || code.includes("EAI_AGAIN")) return { ok: false, category: "dns", message: "Server address could not be resolved" };
-        return { ok: false, category: "network", message: "Could not connect to the server" };
-      } finally {
-        clearTimeout(timer);
+        return { ok: false, category: "network", message: error instanceof Error ? error.message : "Could not connect to server" };
       }
     });
 
     ipcMain.handle("runtime-config:save", async (event, input: unknown) => {
-      if (!BrowserWindow.fromWebContents(event.sender) || !input || typeof input !== "object") {
+      if (!mainWindow || event.sender !== mainWindow.webContents || !input || typeof input !== "object") {
         return { ok: false, message: "Invalid runtime configuration" };
       }
       try {
@@ -841,10 +839,47 @@ if (!gotTheLock) {
         const config = parseRuntimeConfig(
           JSON.stringify(mergeRuntimeConfigInput(current, input as Record<string, unknown>)),
         );
-        const saved = await saveRuntimeConfig(config);
-        runtimeConfigResult = { ok: true, source: "configured", config: saved };
-        BrowserWindow.fromWebContents(event.sender)?.webContents.reload();
-        return { ok: true, config: saved };
+        const window = mainWindow;
+        await serverSwitch.run({
+          probe: () => probeServer(config.apiUrl),
+          freeze: () => {
+            browserLoginAttempt.clear();
+            authSessionGeneration += 1;
+            mainRendererMessages.clear("auth:token");
+            mainRendererMessages.clear("inbox:open");
+            for (const issue of issueWindows) if (!issue.isDestroyed()) issue.destroy();
+            authSessionCoordinator.reportMain(null);
+          },
+          cleanup: async () => {
+            await new Promise<void>((resolve, reject) => {
+              const id = authSessionGeneration;
+              const finish = (error?: Error) => {
+                clearTimeout(timer);
+                ipcMain.removeListener("runtime-config:reset-result", listener);
+                if (error) reject(error); else resolve();
+              };
+              const listener = (ack: Electron.IpcMainEvent, result: unknown) => {
+                if (ack.sender !== window.webContents || !result || typeof result !== "object" || !("id" in result) || result.id !== id) return;
+                finish("ok" in result && result.ok === true ? undefined : new Error("Could not clear the previous session"));
+              };
+              const timer = setTimeout(() => finish(new Error("Session cleanup timed out")), 15000);
+              ipcMain.on("runtime-config:reset-result", listener);
+              window.webContents.send("runtime-config:reset", id);
+            });
+            await resetDaemonForServerSwitch();
+            const urls = runtimeConfigResult.ok ? [runtimeConfigResult.config.apiUrl, runtimeConfigResult.config.appUrl] : [];
+            await clearServerCookies(window.webContents.session.cookies, [...urls, config.apiUrl, config.appUrl]);
+          },
+          save: async () => {
+            const saved = await saveRuntimeConfig(config);
+            runtimeConfigResult = { ok: true, source: "configured", config: saved };
+          },
+          reload: () => {
+            replacementRendererExpected = true;
+            window.webContents.reload();
+          },
+        });
+        return { ok: true, config };
       } catch (error) {
         return { ok: false, message: error instanceof Error ? error.message : "Could not save server configuration" };
       }
@@ -886,7 +921,7 @@ if (!gotTheLock) {
     ipcMain.on(AUTH_SESSION_STATE_CHANNEL, (event, value: unknown) => {
       const sourceWindow = BrowserWindow.fromWebContents(event.sender);
       const userId = parseAuthSessionUserId(value);
-      if (!sourceWindow || userId === undefined) return;
+      if (!sourceWindow || userId === undefined || serverSwitch.blocked) return;
 
       if (sourceWindow === mainWindow) {
         const accountInvalidated = authSessionCoordinator.reportMain(userId);
@@ -1036,7 +1071,7 @@ if (!gotTheLock) {
         ? runtimeConfigResult.config.updateUrl
         : undefined,
     });
-    setupDaemonManager(() => mainWindow);
+    setupDaemonManager(() => mainWindow, () => serverSwitch.blocked);
     setupLocalDirectory(() => mainWindow);
 
     app.on("activate", () => {

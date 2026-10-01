@@ -77,7 +77,7 @@ export function WSProvider({
   const identityOS = identity?.os;
 
   useEffect(() => {
-    if (!user || !wsSlug) return;
+    if (!user || user.requires_account_setup === true || user.requires_password_change === true || !wsSlug) return;
 
     // In token mode we need a token from storage; in cookie mode the HttpOnly
     // cookie is sent automatically with the WS upgrade request.
@@ -99,13 +99,18 @@ export function WSProvider({
     ws.setAuth(token, wsSlug);
     setWsClient(ws);
     ws.connect();
+    const unsubscribe = authStore.subscribe((state) => {
+      if (!state.user || state.status !== "authenticated") ws.disconnect();
+    });
 
     return () => {
+      unsubscribe();
       ws.disconnect();
       setWsClient(null);
     };
   }, [
     user,
+    authStore,
     wsSlug,
     wsUrl,
     storage,

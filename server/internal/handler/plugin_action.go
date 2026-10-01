@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/middleware"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -177,6 +178,20 @@ func (h *Handler) pluginTokenCaller(w http.ResponseWriter, r *http.Request, toke
 		issueScope = grant.IssueID
 		if grant.Actor.Type == "member" {
 			memberUserID = grant.Actor.ID
+			if auth.PasswordMode() {
+				_, err := auth.CheckPasswordVersion(r.Context(), h.Queries, uuidToString(memberUserID), grant.AuthVersion)
+				if err != nil {
+					status, code, message := http.StatusForbidden, "callback_session_expired", "the account session for this callback has expired"
+					if !errors.Is(err, auth.ErrPasswordSession) {
+						status, code, message = http.StatusServiceUnavailable, "auth_unavailable", "authentication database unavailable"
+					}
+					publicapiv1.WriteProblem(w, r, status, code, message)
+					return service.PluginActionCaller{}, pluginActor{}, false
+				}
+				// Nested user-triggered hooks retain this grant's source
+				// version; they cannot upgrade themselves after a reset.
+				*r = *r.WithContext(auth.WithPasswordSession(r.Context(), auth.PasswordSession{UserID: uuidToString(memberUserID), Version: grant.AuthVersion, Kind: "plugin_callback"}))
+			}
 		}
 	default:
 		installation, err := h.PluginService.AuthenticateInstallToken(r.Context(), token)

@@ -1,5 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { clearClientSessionData } from "@multica/core/platform";
+import { WindowOverlay } from "./components/window-overlay";
 import { CoreProvider } from "@multica/core/platform";
 import { pickLocale, type SupportedLocale } from "@multica/core/i18n";
 import { useAuthStore } from "@multica/core/auth";
@@ -98,6 +100,7 @@ function IssueWindowContent() {
     );
   }
 
+  if (user?.requires_account_setup || user?.requires_password_change) return <DesktopLoginPage />;
   return user ? <IssueWindow context={context} /> : <DesktopLoginPage />;
 }
 
@@ -106,6 +109,21 @@ function AppContent() {
   const isLoading = useAuthStore((s) => s.isLoading);
   const authStatus = useAuthStore((s) => s.status);
   const qc = useQueryClient();
+  const restricted = user?.requires_account_setup === true || user?.requires_password_change === true;
+  useEffect(() => window.desktopAPI.onRuntimeConfigReset(async () => {
+    api.invalidateSession();
+    await qc.cancelQueries();
+    useAuthStore.setState({user: null, status: "unauthenticated", isLoading: false, expired: false});
+    tearDownOnSessionExpiry(sessionTeardown);
+    clearClientSessionData(qc);
+    localStorage.removeItem("multica_token");
+    setCurrentWorkspace(null, null);
+  }), [qc]);
+  useEffect(() => {
+    if (!restricted) return;
+    setCurrentWorkspace(null, null);
+    useWindowOverlayStore.getState().open({type: user?.requires_account_setup ? "account-setup" : "password-change"});
+  }, [restricted, user]);
 
   // Deep-link login runs loginWithToken → syncToken → listWorkspaces →
   // setQueryData sequentially. loginWithToken sets user+isLoading=false
@@ -151,6 +169,7 @@ function AppContent() {
         // destination without a second fetch. Workspace side-effects
         // (setCurrentWorkspace, persist namespace) are synced later by
         // WorkspaceRouteLayout when the URL resolves.
+        if (useAuthStore.getState().status !== "authenticated") return;
         const wsList = await api.listWorkspaces();
         qc.setQueryData(workspaceKeys.list(), wsList);
       } catch {
@@ -164,7 +183,7 @@ function AppContent() {
   // Sync token and start the daemon whenever the user logs in. The ordering
   // inside syncDaemonOnLogin is load-bearing — see that module.
   useEffect(() => {
-    if (!user || !runtimeConfig) return;
+    if (!user || restricted || !runtimeConfig) return;
     const token = localStorage.getItem("multica_token");
     if (!token) return;
     const userId = user.id;
@@ -180,7 +199,7 @@ function AppContent() {
         console.error("Failed to sync daemon on login", err);
       }
     })();
-  }, [user, runtimeConfig]);
+  }, [user, restricted, runtimeConfig]);
 
   // When a user who started the session with zero workspaces creates their
   // first one, restart the daemon so it picks up the new workspace
@@ -196,7 +215,7 @@ function AppContent() {
     isFetching: workspaceListRetrying,
     refetch: retryWorkspaceList,
   } = useWorkspaceList({
-    enabled: !!user,
+    enabled: !!user && !restricted,
   });
   const wsCount = workspaces.length;
   const hasOnboarded = useHasOnboarded();
@@ -227,7 +246,7 @@ function AppContent() {
   // /onboarding — we also clear the active workspace so the dashboard
   // doesn't render under the overlay with stale workspace context.
   useEffect(() => {
-    if (!user || !workspaceListReady) return undefined;
+    if (!user || restricted || !workspaceListReady) return undefined;
     const { overlay, open } = useWindowOverlayStore.getState();
     if (overlay) return undefined;
     if (hasOnboarded && wsCount > 0) return undefined;
@@ -268,7 +287,7 @@ function AppContent() {
     }
     open({ type: "new-workspace" });
     return undefined;
-  }, [user, workspaceListReady, wsCount, workspaces, hasOnboarded, qc]);
+  }, [user, restricted, workspaceListReady, wsCount, workspaces, hasOnboarded, qc]);
 
 
   // Validate persisted tab state against the current user's workspace list,
@@ -323,6 +342,8 @@ function AppContent() {
     );
   }
 
+  if (restricted) return <WindowOverlay />;
+
   if (workspaceListUnavailable) {
     return (
       <DesktopAuthRecoveryPage
@@ -362,6 +383,15 @@ export default function App() {
   const { version, os } = window.desktopAPI.appInfo;
   const systemLocale = window.desktopAPI.systemLocale;
   const runtimeConfigResult = window.desktopAPI.runtimeConfig;
+  useEffect(() => {
+    if (runtimeConfigResult.ok) return;
+    return window.desktopAPI.onRuntimeConfigReset(async () => {
+      tearDownOnSessionExpiry(sessionTeardown);
+      clearClientSessionData(new QueryClient());
+      localStorage.removeItem("multica_token");
+      setCurrentWorkspace(null, null);
+    });
+  }, [runtimeConfigResult]);
   // The fallback keeps renderer HMR safe while a main/preload rebuild is
   // restarting Electron; packaged builds always expose windowContext.
   const windowContext =

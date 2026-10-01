@@ -41,16 +41,17 @@ import { useNavigation } from "../navigation";
 export function useDashboardGuard() {
   const { pathname, replace } = useNavigation();
   const user = useAuthStore((s) => s.user);
+  const restricted = user?.requires_account_setup === true || user?.requires_password_change === true;
   const isLoading = useAuthStore((s) => s.isLoading);
   const workspace = useCurrentWorkspace();
   const hasOnboarded = useHasOnboarded();
   const { workspaces, ready: workspaceListReady } = useWorkspaceList({
-    enabled: !!user,
+    enabled: !!user && !restricted,
   });
 
   useEffect(() => {
     if (isLoading) return;
-    if (!user) {
+    if (!user || restricted) {
       replace(paths.login());
       return;
     }
@@ -58,7 +59,7 @@ export function useDashboardGuard() {
     if (!workspace) {
       replace(resolvePostAuthDestination(workspaces, hasOnboarded));
     }
-  }, [user, isLoading, workspaceListReady, workspace, workspaces, hasOnboarded, replace]);
+  }, [user, restricted, isLoading, workspaceListReady, workspace, workspaces, hasOnboarded, replace]);
 
   useEffect(() => {
     useNavigationStore.getState().onPathChange(pathname);
@@ -74,5 +75,5 @@ export function useDashboardGuard() {
       .pruneWorkspaces(workspaces.map((w) => w.id));
   }, [workspaceListReady, workspaces]);
 
-  return { user, isLoading, workspace };
+  return { user: restricted ? null : user, isLoading, workspace };
 }

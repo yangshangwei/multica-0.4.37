@@ -35,7 +35,8 @@ afterEach(() => {
 describe("ApiClient skill templates", () => {
   it("loads the catalog in the captured workspace with its cancellation signal", async () => {
     setCurrentWorkspace("another-tab", "ws-another");
-    const signal = new AbortController().signal;
+    const controller = new AbortController();
+    const signal = controller.signal;
     const template = {
       name: "multica-code-review",
       version: 2,
@@ -51,13 +52,16 @@ describe("ApiClient skill templates", () => {
     expect(fetchMock).toHaveBeenCalledWith(
       `${BASE_URL}/api/skills/templates`,
       expect.objectContaining({
-        signal,
+        signal: expect.objectContaining({ aborted: false }),
         headers: expect.objectContaining({
           "X-Workspace-ID": "ws-original",
           "X-Workspace-Slug": "",
         }),
       }),
     );
+    controller.abort("request cancelled");
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true);
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.reason).toBe("request cancelled");
   });
 
   it("degrades malformed catalog entries to an empty catalog", async () => {
@@ -102,7 +106,8 @@ describe("ApiClient skill templates", () => {
 describe("ApiClient skill creation confirmation", () => {
   it("parses a successful response and sends the explicit workspace and signal", async () => {
     setCurrentWorkspace("another-tab", "ws-another");
-    const signal = new AbortController().signal;
+    const controller = new AbortController();
+    const signal = controller.signal;
     const fetchMock = stubJson({ ...SKILL, future_field: true }, 201);
 
     const result = await new ApiClient(BASE_URL).createSkill(CREATE, {
@@ -126,7 +131,7 @@ describe("ApiClient skill creation confirmation", () => {
       expect.objectContaining({
         method: "POST",
         body: JSON.stringify(CREATE),
-        signal,
+        signal: expect.objectContaining({ aborted: false }),
         headers: expect.objectContaining({
           "X-Workspace-ID": "ws-original",
           "X-Workspace-Slug": "",
@@ -134,6 +139,9 @@ describe("ApiClient skill creation confirmation", () => {
         }),
       }),
     );
+    controller.abort("request cancelled");
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true);
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.reason).toBe("request cancelled");
   });
 
   it.each([
@@ -214,7 +222,8 @@ describe("ApiClient skill creation confirmation", () => {
 describe("ApiClient skill recovery reads", () => {
   it("sends the explicit workspace and signal on both list and detail reads", async () => {
     setCurrentWorkspace("another-tab", "ws-another");
-    const signal = new AbortController().signal;
+    const controller = new AbortController();
+    const signal = controller.signal;
     const fetchMock = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(new Response(JSON.stringify([SKILL])))
       .mockResolvedValueOnce(new Response(JSON.stringify(SKILL)));
@@ -229,7 +238,7 @@ describe("ApiClient skill recovery reads", () => {
     expect(detail).toMatchObject({ ...SKILL, content: "", files: [] });
     for (const [, init] of fetchMock.mock.calls) {
       expect(init).toMatchObject({
-        signal,
+        signal: expect.objectContaining({ aborted: false }),
         headers: {
           "X-Workspace-ID": "ws-original",
           "X-Workspace-Slug": "",
@@ -250,7 +259,11 @@ describe("ApiClient skill recovery reads", () => {
     await expect(client.getSkill(SKILL.id)).resolves.toMatchObject(SKILL);
     for (const [, init] of fetchMock.mock.calls) {
       expect(init?.headers).toMatchObject({ "X-Workspace-Slug": "original-tab" });
-      expect(init?.signal).toBeUndefined();
+      expect(init?.signal?.aborted).toBe(false);
+    }
+    client.invalidateSession();
+    for (const [, init] of fetchMock.mock.calls) {
+      expect(init?.signal?.aborted).toBe(true);
     }
   });
 

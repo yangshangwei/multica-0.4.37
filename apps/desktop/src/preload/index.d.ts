@@ -40,6 +40,7 @@ interface DesktopAPI {
     | { ok: true; latencyMs: number }
     | { ok: false; category: "invalid" | "dns" | "tls" | "timeout" | "http" | "redirect" | "network"; message: string }
   >;
+  onRuntimeConfigReset: (callback: () => Promise<void>) => () => void;
   saveRuntimeConfig: (input: { apiUrl: string; appUrl?: string; wsUrl?: string }) => Promise<
     | { ok: true; config: RuntimeConfig }
     | { ok: false; message: string }

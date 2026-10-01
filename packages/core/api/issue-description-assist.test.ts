@@ -29,9 +29,12 @@ describe("issue description optimization API", () => {
       workspaceId: "ws-1", signal: controller.signal,
     })).resolves.toEqual(result);
     expect(request).toHaveBeenCalledWith("https://api.test/api/issues/optimize-description", expect.objectContaining({
-      method: "POST", body: JSON.stringify(input), signal: controller.signal,
+      method: "POST", body: JSON.stringify(input), signal: expect.objectContaining({ aborted: false }),
       headers: expect.objectContaining({ "X-Workspace-ID": "ws-1", "X-Workspace-Slug": "" }),
     }));
+    controller.abort("request cancelled");
+    expect(request.mock.calls[0]?.[1]?.signal?.aborted).toBe(true);
+    expect(request.mock.calls[0]?.[1]?.signal?.reason).toBe("request cancelled");
   });
 
   it.each([null, {}, { text: "  ", questions: [] }, { text: 42 }, { text: "Keep", questions: "bad" }])(

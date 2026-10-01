@@ -11,6 +11,7 @@ import (
 	"net/url"
 
 	chimw "github.com/go-chi/chi/v5/middleware"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/cloudruntime"
 	"github.com/multica-ai/multica/server/internal/logger"
 )
@@ -45,6 +46,10 @@ func (h *Handler) ListCloudRuntimeNodes(w http.ResponseWriter, r *http.Request) 
 }
 
 func (h *Handler) CreateCloudRuntimeNode(w http.ResponseWriter, r *http.Request) {
+	if auth.PasswordMode() {
+		passwordError(w, 403, "cloud_unavailable", "Cloud Fleet is not available in password mode")
+		return
+	}
 	// Cloud now mints a node-scoped mcn_ PAT itself during /api/v1/nodes
 	// and injects it into the EC2 instance via SSM bootstrap (see
 	// multica-cloud docs/api/node-pat.md). We no longer forward the
@@ -66,6 +71,10 @@ func (h *Handler) DeleteCloudRuntimeNode(w http.ResponseWriter, r *http.Request)
 }
 
 func (h *Handler) StartCloudRuntimeNode(w http.ResponseWriter, r *http.Request) {
+	if auth.PasswordMode() {
+		passwordError(w, 403, "cloud_unavailable", "Cloud Fleet is not available in password mode")
+		return
+	}
 	h.proxyCloudRuntime(w, r, http.MethodPost, "/api/v1/nodes/start", cloudRuntimeProxyOptions{
 		withUserID: true,
 		withBody:   true,
@@ -80,6 +89,10 @@ func (h *Handler) StopCloudRuntimeNode(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) RebootCloudRuntimeNode(w http.ResponseWriter, r *http.Request) {
+	if auth.PasswordMode() {
+		passwordError(w, 403, "cloud_unavailable", "Cloud Fleet is not available in password mode")
+		return
+	}
 	h.proxyCloudRuntime(w, r, http.MethodPost, "/api/v1/nodes/reboot", cloudRuntimeProxyOptions{
 		withUserID: true,
 		withBody:   true,

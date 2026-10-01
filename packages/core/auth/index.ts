@@ -1,4 +1,4 @@
-export { createAuthStore } from "./store";
+export { createAuthStore, userAuthStatus } from "./store";
 export type { AuthStoreOptions, AuthState, AuthStatus } from "./store";
 export { sanitizeNextUrl } from "./utils";
 

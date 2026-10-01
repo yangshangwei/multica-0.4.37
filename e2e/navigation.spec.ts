@@ -21,7 +21,7 @@ test.describe("Navigation", () => {
     await waitForPageText(page, "Agents");
     await expect(page).toHaveTitle("Agents | Multica");
 
-    await page.getByRole("link", { name: "Issues", exact: true }).click();
+    await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
     await expect(page).toHaveURL(/\/issues/, { timeout: ROUTE_CHANGE_TIMEOUT });
     await waitForPageText(page, "Issues");
     await expect(page).toHaveTitle("Issues | Multica");

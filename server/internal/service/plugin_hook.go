@@ -413,7 +413,7 @@ func (s *PluginService) buildHookBody(ctx context.Context, invocation HookInvoca
 		body.Input = encoded
 	}
 	if s.Callbacks != nil {
-		token, err := s.Callbacks.Issue(ctx, invocation)
+		token, err := s.issueCallbackToken(ctx, invocation)
 		if err != nil {
 			return hookRequestBody{}, err
 		}

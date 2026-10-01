@@ -39,7 +39,7 @@ export type QuickCreateActorPickerProps = {
   onOpenChange?: (open: boolean) => void;
   /** Direct assignment shares discovery, but owns member/empty values and permissions. */
   assignment?: {
-    members: Pick<MemberWithUser, "user_id" | "name">[];
+    members: (Pick<MemberWithUser, "user_id" | "name"> & Partial<Pick<MemberWithUser, "username" | "email">>)[];
     selectedMemberId: string | null;
     onPickMember: (id: string) => void;
     onClear: () => void;
@@ -99,7 +99,7 @@ export function QuickCreateActorPicker({
     && effectiveView !== "favorites" && effectiveView !== "project";
   const memberQuery = query.trim().toLowerCase();
   const matchingMembers = showMembers ? assignment.members.filter((member) =>
-    member.name.toLowerCase().includes(memberQuery) || matchesPinyin(member.name, memberQuery)) : [];
+    member.name.toLowerCase().includes(memberQuery) || (member.username || member.email || "").toLowerCase().includes(memberQuery) || matchesPinyin(member.name, memberQuery)) : [];
   const memberItems = matchingMembers.slice(0, limit);
   const allCount = (typeFilter === "member" ? 0 : catalog.filter((item) => matchesActorFilter(item, actorFilter)).length)
     + (assignment && (typeFilter === "all" || typeFilter === "member") ? assignment.members.length : 0);
@@ -274,7 +274,7 @@ export function QuickCreateActorPicker({
       {memberItems.map((member) => <PickerItem key={member.user_id} selected={assignment.selectedMemberId === member.user_id}
         onClick={() => { assignment.onPickMember(member.user_id); changeOpen(false); }}>
         <ActorAvatar actorType="member" actorId={member.user_id} size="sm" />
-        <span className={`truncate ${assignment.selectedMemberId === member.user_id ? "font-semibold text-foreground" : ""}`}>{member.name}</span>
+        <span className="min-w-0 flex-1"><span className={`truncate ${assignment.selectedMemberId === member.user_id ? "font-semibold text-foreground" : ""}`}>{member.name}</span><span className="block truncate text-caption text-muted-foreground">{member.username || member.email}</span></span>
       </PickerItem>)}
     </section>}
     {projectState?.pending && !projectState.hasData && <p role="status" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.create_issue.actor_picker.project_loading)}</p>}

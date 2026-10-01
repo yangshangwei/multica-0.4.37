@@ -1,5 +1,7 @@
 "use client";
 
+import { useAuthStore } from "@multica/core/auth";
+import { PasswordForm } from "@multica/views/auth";
 import { useMemo } from "react";
 import { CoreProvider } from "@multica/core/platform";
 import { createBrowserCookieLocaleAdapter } from "@multica/core/i18n/browser";
@@ -44,6 +46,16 @@ function deriveWsUrl(): string | undefined {
 // to the package.json version so local dev still reports something useful.
 const WEB_VERSION =
   process.env.NEXT_PUBLIC_APP_VERSION || packageJson.version || "dev";
+
+function AccountGate({children}: {children: React.ReactNode}) {
+  const user = useAuthStore((s) => s.user);
+  if (user?.requires_account_setup === true || user?.requires_password_change === true) {
+    // Updating the user resumes the route tree immediately. Its auth guards
+    // own navigation; this form may finish workspace loading after unmounting.
+    return <PasswordForm mode={user.requires_account_setup ? "setup" : "change"} onSuccess={() => undefined} />;
+  }
+  return children;
+}
 
 export function WebProviders({
   children,
@@ -98,7 +110,7 @@ export function WebProviders({
       localeAdapter={localeAdapter}
     >
       <WebNavigationProvider>
-        <WebScrollRestorationProvider>{children}</WebScrollRestorationProvider>
+        <WebScrollRestorationProvider><AccountGate>{children}</AccountGate></WebScrollRestorationProvider>
       </WebNavigationProvider>
     </CoreProvider>
   );

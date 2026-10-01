@@ -183,7 +183,7 @@ function MemberRow({
       <ActorAvatar actorType="member" actorId={member.user_id} size="lg" />
       <div className="min-w-0 flex-1">
         <div className="text-body font-medium truncate">{member.name}</div>
-        <div className="text-caption text-muted-foreground truncate">{member.email}</div>
+        <div className="text-caption text-muted-foreground truncate">{member.username || member.email}</div>
       </div>
       {showMenu && (
         <DropdownMenu>

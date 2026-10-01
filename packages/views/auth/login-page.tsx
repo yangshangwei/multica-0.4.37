@@ -23,6 +23,8 @@ import { useAuthStore } from "@multica/core/auth";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { api } from "@multica/core/api";
 import type { User } from "@multica/core/types";
+import { useConfigStore } from "@multica/core/config";
+import { PasswordForm } from "./password-form";
 import { useT } from "../i18n";
 
 // ---------------------------------------------------------------------------
@@ -109,7 +111,23 @@ export function validateCliCallback(cliCallback: string): boolean {
 // Component
 // ---------------------------------------------------------------------------
 
-export function LoginPage({
+export function LoginPage(props: LoginPageProps) {
+  const invalidConfig = useConfigStore((s) => s.authConfigInvalid);
+  const mode = useConfigStore((s) => s.authMode);
+  const available = useConfigStore((s) => s.passwordAuthAvailable);
+  const signup = useConfigStore((s) => s.passwordSignupAvailable);
+  const binding = useConfigStore((s) => s.accountBindingAvailable);
+  const device = useConfigStore((s) => s.deviceAuthAvailable);
+  const status = useAuthStore((s) => s.status);
+  const { t } = useT("auth");
+  if (invalidConfig) return <p role="alert">{t(($) => $.password.configuration_error)}</p>;
+  if (status === "account_setup_required" || status === "password_change_required") return <PasswordForm {...props} mode={status === "account_setup_required" ? "setup" : "change"} />;
+  if (mode === "password" && available && !device) return <PasswordForm {...props} />;
+  if ((mode && mode !== "legacy") || available || signup || binding) return <p role="alert">{t(($) => $.password.configuration_error)}</p>;
+  return <LegacyLoginPage {...props} />;
+}
+
+function LegacyLoginPage({
   logo,
   title,
   description,

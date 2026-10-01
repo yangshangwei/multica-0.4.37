@@ -1925,7 +1925,10 @@ describe("ApiClient", () => {
       await client.uploadFile(file, { issueId: "issue-1" }, controller.signal);
 
       const [, init] = fetchMock.mock.calls[0]!;
-      expect(init?.signal).toBe(controller.signal);
+      expect(init?.signal?.aborted).toBe(false);
+      controller.abort("upload cancelled");
+      expect(init?.signal?.aborted).toBe(true);
+      expect(init?.signal?.reason).toBe("upload cancelled");
     });
 
     it("rejects with the fetch AbortError when the signal is already aborted", async () => {

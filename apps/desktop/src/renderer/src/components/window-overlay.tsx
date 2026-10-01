@@ -1,3 +1,5 @@
+import { PasswordForm } from "@multica/views/auth";
+import { DragStrip } from "@multica/views/platform";
 import { useQuery } from "@tanstack/react-query";
 import { InvitePage } from "@multica/views/invite";
 import { InvitationsPage } from "@multica/views/invitations";
@@ -29,6 +31,7 @@ import { useLocalRuntimesPending } from "../platform/use-local-runtimes-pending"
 export function WindowOverlay() {
   const overlay = useWindowOverlayStore((s) => s.overlay);
   if (!overlay) return null;
+  if (overlay.type === "account-setup" || overlay.type === "password-change") return <div className="fixed inset-0 z-50 flex flex-col overflow-auto bg-background"><DragStrip /><PasswordForm mode={overlay.type === "account-setup" ? "setup" : "change"} onSuccess={() => useWindowOverlayStore.getState().close()} /></div>;
   return <WindowOverlayInner />;
 }
 

@@ -173,7 +173,7 @@ type ListShareLinksByWorkspaceRow struct {
 	IsActive     bool               `json:"is_active"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
 	CreatorName  string             `json:"creator_name"`
-	CreatorEmail string             `json:"creator_email"`
+	CreatorEmail pgtype.Text        `json:"creator_email"`
 }
 
 func (q *Queries) ListShareLinksByWorkspace(ctx context.Context, workspaceID pgtype.UUID) ([]ListShareLinksByWorkspaceRow, error) {

@@ -50,11 +50,14 @@ var supportedLanguages = map[string]struct{}{
 }
 
 type UserResponse struct {
-	ID        string  `json:"id"`
-	Name      string  `json:"name"`
-	Email     string  `json:"email"`
-	AvatarURL *string `json:"avatar_url"`
-	Language  *string `json:"language"`
+	Username               string  `json:"username,omitempty"`
+	RequiresAccountSetup   bool    `json:"requires_account_setup,omitempty"`
+	RequiresPasswordChange bool    `json:"requires_password_change,omitempty"`
+	ID                     string  `json:"id"`
+	Name                   string  `json:"name"`
+	Email                  string  `json:"email"`
+	AvatarURL              *string `json:"avatar_url"`
+	Language               *string `json:"language"`
 	// Pinned IANA tz; nil = no preference (use browser-detected tz).
 	Timezone                *string         `json:"timezone"`
 	OnboardedAt             *string         `json:"onboarded_at"`
@@ -85,7 +88,7 @@ func (h *Handler) userToResponse(u db.User) UserResponse {
 	return UserResponse{
 		ID:                      uuidToString(u.ID),
 		Name:                    u.Name,
-		Email:                   u.Email,
+		Email:                   u.Email.String,
 		AvatarURL:               h.resolveAvatarURLPtr(textToPtr(u.AvatarUrl)),
 		Language:                textToPtr(u.Language),
 		Timezone:                textToPtr(u.Timezone),
@@ -151,12 +154,12 @@ func isSixDigitCode(code string) bool {
 }
 
 func (h *Handler) issueJWT(user db.User) (string, error) {
-	if auth.IsTemporarilyDisabledUser(uuidToString(user.ID), user.Email) {
+	if auth.IsTemporarilyDisabledUser(uuidToString(user.ID), user.Email.String) {
 		return "", auth.ErrTemporarilyDisabledUser
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":   uuidToString(user.ID),
-		"email": user.Email,
+		"email": user.Email.String,
 		"name":  user.Name,
 		"exp":   time.Now().Add(auth.AuthTokenTTL()).Unix(),
 		"iat":   time.Now().Unix(),
@@ -173,12 +176,12 @@ func (h *Handler) findOrCreateUser(ctx context.Context, email string) (user db.U
 		return db.User{}, false, auth.ErrTemporarilyDisabledUser
 	}
 
-	user, err = h.Queries.GetUserByEmail(ctx, email)
+	user, err = h.Queries.GetUserByEmail(ctx, pgtype.Text{String: email, Valid: true})
 	isNew = isNotFound(err)
 	if err != nil && !isNew {
 		return db.User{}, false, err
 	}
-	if !isNew && auth.IsTemporarilyDisabledUser(uuidToString(user.ID), user.Email) {
+	if !isNew && auth.IsTemporarilyDisabledUser(uuidToString(user.ID), user.Email.String) {
 		return db.User{}, false, auth.ErrTemporarilyDisabledUser
 	}
 
@@ -196,7 +199,7 @@ func (h *Handler) findOrCreateUser(ctx context.Context, email string) (user db.U
 	}
 	created, err := h.Queries.CreateUser(ctx, db.CreateUserParams{
 		Name:  name,
-		Email: email,
+		Email: pgtype.Text{String: email, Valid: true},
 	})
 	if err != nil {
 		return db.User{}, false, err
@@ -277,6 +280,10 @@ func contains(slice []string, s string) bool {
 }
 
 func (h *Handler) SendCode(w http.ResponseWriter, r *http.Request) {
+	if auth.PasswordMode() {
+		passwordError(w, http.StatusForbidden, "auth_mode_disabled", "This login method is disabled")
+		return
+	}
 	var req SendCodeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
@@ -294,7 +301,7 @@ func (h *Handler) SendCode(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check signup restrictions before sending magic link
-	existingUser, err := h.Queries.GetUserByEmail(r.Context(), email)
+	existingUser, err := h.Queries.GetUserByEmail(r.Context(), pgtype.Text{String: email, Valid: true})
 	if err != nil {
 		if !isNotFound(err) {
 			// Real database/query error → return 500
@@ -314,7 +321,7 @@ func (h *Handler) SendCode(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// User already exists → always allowed to login
-		if auth.IsTemporarilyDisabledUser(uuidToString(existingUser.ID), existingUser.Email) {
+		if auth.IsTemporarilyDisabledUser(uuidToString(existingUser.ID), existingUser.Email.String) {
 			writeError(w, http.StatusForbidden, auth.TemporarilyDisabledUserError)
 			return
 		}
@@ -367,6 +374,10 @@ func (h *Handler) SendCode(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) VerifyCode(w http.ResponseWriter, r *http.Request) {
+	if auth.PasswordMode() {
+		passwordError(w, http.StatusForbidden, "auth_mode_disabled", "This login method is disabled")
+		return
+	}
 	var req VerifyCodeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
@@ -418,7 +429,7 @@ func (h *Handler) VerifyCode(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if isNew {
-		obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.Signup(uuidToString(user.ID), user.Email, signupSourceFromRequest(r)))
+		obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.Signup(uuidToString(user.ID), user.Email.String, signupSourceFromRequest(r)))
 	}
 
 	tokenString, err := h.issueJWT(user)
@@ -444,7 +455,7 @@ func (h *Handler) VerifyCode(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	slog.Info("user logged in", append(logger.RequestAttrs(r), "user_id", uuidToString(user.ID), "email", user.Email)...)
+	slog.Info("user logged in", append(logger.RequestAttrs(r), "user_id", uuidToString(user.ID), "email", user.Email.String)...)
 	writeJSON(w, http.StatusOK, LoginResponse{
 		Token: tokenString,
 		User:  h.userToResponse(user),
@@ -467,7 +478,19 @@ func (h *Handler) GetMe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, h.userToResponse(user))
+	response := h.userToResponse(user)
+	if auth.PasswordMode() {
+		session, _ := auth.PasswordSessionFromContext(r.Context())
+		response.RequiresAccountSetup = session.Setup
+		response.RequiresPasswordChange = session.Change
+		if credential, err := h.Queries.GetPasswordCredential(r.Context(), user.ID); err == nil {
+			response.Username = credential.Username
+		} else if !isNotFound(err) {
+			passwordError(w, 503, "auth_unavailable", "Authentication service unavailable")
+			return
+		}
+	}
+	writeJSON(w, http.StatusOK, response)
 }
 
 type UpdateMeRequest struct {
@@ -497,6 +520,10 @@ type googleUserInfo struct {
 }
 
 func (h *Handler) GoogleLogin(w http.ResponseWriter, r *http.Request) {
+	if auth.PasswordMode() {
+		passwordError(w, http.StatusForbidden, "auth_mode_disabled", "This login method is disabled")
+		return
+	}
 	var req GoogleLoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
@@ -602,7 +629,7 @@ func (h *Handler) GoogleLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if isNew {
-		evt := analytics.Signup(uuidToString(user.ID), user.Email, signupSourceFromRequest(r))
+		evt := analytics.Signup(uuidToString(user.ID), user.Email.String, signupSourceFromRequest(r))
 		evt.Properties["auth_method"] = "google"
 		obsmetrics.RecordEvent(h.Analytics, h.Metrics, evt)
 	}
@@ -654,7 +681,7 @@ func (h *Handler) GoogleLogin(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	slog.Info("user logged in via google", append(logger.RequestAttrs(r), "user_id", uuidToString(user.ID), "email", user.Email)...)
+	slog.Info("user logged in via google", append(logger.RequestAttrs(r), "user_id", uuidToString(user.ID), "email", user.Email.String)...)
 	writeJSON(w, http.StatusOK, LoginResponse{
 		Token: tokenString,
 		User:  h.userToResponse(user),
@@ -672,6 +699,10 @@ func (h *Handler) IssueCliToken(w http.ResponseWriter, r *http.Request) {
 	// line of router wiring staying correct.
 	if isMachineCredentialActor(r) {
 		writeError(w, http.StatusForbidden, "only a person can mint credentials")
+		return
+	}
+	if auth.PasswordMode() {
+		h.issuePasswordCLIToken(w, r)
 		return
 	}
 	userID, ok := requireUserID(w, r)

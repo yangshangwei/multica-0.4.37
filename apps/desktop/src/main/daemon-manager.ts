@@ -141,11 +141,11 @@ async function writeProfileUserId(
   await writeFile(profileUserIdPath(profile), userId, "utf-8");
 }
 
-async function removeProfileUserId(profile: string): Promise<void> {
+async function removeProfileUserId(profile: string, strict = false): Promise<void> {
   try {
     await rm(profileUserIdPath(profile));
-  } catch {
-    // Already gone — nothing to do.
+  } catch (error) {
+    if (strict && !(error && typeof error === "object" && "code" in error && error.code === "ENOENT")) throw error;
   }
 }
 
@@ -225,6 +225,8 @@ async function probeTokenValidity(profile: string): Promise<AuthProbeResult> {
     const timeout = setTimeout(() => controller.abort(), 4_000);
     const res = await fetch(`${targetApiBaseUrl.replace(/\/+$/, "")}/api/me`, {
       headers: { Authorization: `Bearer ${token}` },
+      credentials: "omit",
+      redirect: "error",
       signal: controller.signal,
     });
     clearTimeout(timeout);
@@ -236,12 +238,15 @@ async function probeTokenValidity(profile: string): Promise<AuthProbeResult> {
 
 async function readProfileConfig(
   profile: string,
+  strict = false,
 ): Promise<Record<string, unknown>> {
   try {
     const raw = await readFile(profileConfigPath(profile), "utf-8");
     const parsed = JSON.parse(raw);
+    if (strict && (!parsed || typeof parsed !== "object" || Array.isArray(parsed))) throw new Error("Invalid daemon profile configuration");
     return parsed && typeof parsed === "object" ? parsed : {};
-  } catch {
+  } catch (error) {
+    if (strict && !(error && typeof error === "object" && "code" in error && error.code === "ENOENT")) throw error;
     return {};
   }
 }
@@ -304,7 +309,7 @@ function invalidateActiveProfile(): void {
 }
 
 function setDesiredDaemonRunning(desired: boolean, explicit = false): void {
-  if (daemonQuitting && desired) return;
+  if ((daemonQuitting || serverSwitchBlocked()) && desired) return;
   if (desiredDaemonRunning === desired && !explicit) return;
   desiredDaemonRunning = desired;
   recoveryPolicy.reset();
@@ -655,6 +660,9 @@ async function mintPat(jwt: string): Promise<string> {
   const url = `${targetApiBaseUrl.replace(/\/+$/, "")}/api/tokens`;
   const res = await fetch(url, {
     method: "POST",
+    credentials: "omit",
+    redirect: "error",
+    signal: AbortSignal.timeout(15000),
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${jwt}`,
@@ -781,19 +789,19 @@ async function savePrefs(prefs: DaemonPrefs): Promise<void> {
   await writeFile(PREFS_PATH, JSON.stringify(prefs, null, 2), "utf-8");
 }
 
-async function clearToken(): Promise<void> {
+async function clearToken(strict = false): Promise<void> {
   const active = await ensureActiveProfile();
   // Nothing of ours to clear yet, and the default CLI profile is not ours to
   // strip a token from.
   if (!active) return;
-  const config = await readProfileConfig(active.name);
+  const config = await readProfileConfig(active.name, strict);
   if ("token" in config) {
     delete config.token;
     await writeProfileConfig(active.name, config);
   }
   // Always drop the sidecar so a subsequent syncToken from any user is
   // treated as a fresh mint, not a reuse of a stale cached PAT.
-  await removeProfileUserId(active.name);
+  await removeProfileUserId(active.name, strict);
 }
 
 // Result of a user-initiated daemon re-authentication. The distinction matters:
@@ -945,7 +953,7 @@ function scheduleStatusRefresh(): void {
 async function startDaemon(
   recoveryProfile?: ActiveProfile,
 ): Promise<{ success: boolean; error?: string }> {
-  if (daemonQuitting) return { success: false, error: "Desktop is quitting" };
+  if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   const bin = await resolveCliBinary();
   if (!bin) return { success: false, error: "multica CLI is not installed" };
 
@@ -965,7 +973,7 @@ async function startDaemon(
     return { success: false, error: "Daemon recovery was superseded" };
   }
   const existing = await fetchHealthAtPort(active.port);
-  if (daemonQuitting) return { success: false, error: "Desktop is quitting" };
+  if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   if (daemonStatusAlive(existing?.status)) {
     // A daemon is already up ("running") or booting ("starting") on this port —
     // don't spawn a second one (the CLI rejects that as "already running").
@@ -1080,7 +1088,7 @@ async function stopDaemon(): Promise<{ success: boolean; error?: string }> {
 }
 
 async function restartDaemon(): Promise<{ success: boolean; error?: string }> {
-  if (daemonQuitting) return { success: false, error: "Desktop is quitting" };
+  if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   // Same central, live-preflighted guard as stopDaemon: we can neither stop nor
   // start a daemon we don't manage, so don't try (user-switch, reauth,
   // first-workspace, and any future restart caller all route through here).
@@ -1357,12 +1365,34 @@ function stopLogTail(): void {
   }
 }
 
+let serverSwitchBlocked = () => false;
+const pendingCredentialOperations = new Set<Promise<unknown>>();
+
+/** Drain already-authorized writes before clearing the old profile. */
+export async function resetDaemonForServerSwitch(): Promise<void> {
+  setDesiredDaemonRunning(false, true);
+  await Promise.allSettled([...pendingCredentialOperations]);
+  await lifecycleOperations.runForeground(async () => {
+    const active = await ensureActiveProfile();
+    if (!active) return;
+    await clearToken(true);
+    if (await lifecycleBlockedByForeignDaemon()) throw new Error("Stop the externally managed daemon before switching servers");
+    const running = await fetchHealthAtPort(active.port);
+    if (!daemonStatusAlive(running?.status) && await daemonPidIsConfirmedAbsent(active.name)) return;
+    const stopped = await stopDaemon();
+    if (!stopped.success) throw new Error(stopped.error || "Could not stop the previous server daemon");
+  });
+}
+
 export function setupDaemonManager(
   windowGetter: () => BrowserWindow | null,
+  isServerSwitchBlocked: () => boolean = () => false,
 ): void {
+  serverSwitchBlocked = isServerSwitchBlocked;
   getMainWindow = windowGetter;
 
   ipcMain.handle("daemon:set-target-api-url", async (_e, url: string) => {
+    if (serverSwitchBlocked()) throw new Error("Server switch in progress");
     const normalized = url || null;
     if (targetApiBaseUrl !== normalized) {
       console.log(`[daemon] target API URL set to ${normalized ?? "(none)"}`);
@@ -1373,6 +1403,7 @@ export function setupDaemonManager(
     }
   });
   ipcMain.handle("daemon:start", () => {
+    if (serverSwitchBlocked()) throw new Error("Server switch in progress");
     externalDaemonObserved = false;
     setDesiredDaemonRunning(true, true);
     return lifecycleOperations.runForeground(() => startDaemon());
@@ -1382,6 +1413,7 @@ export function setupDaemonManager(
     return lifecycleOperations.runForeground(() => stopDaemon());
   });
   ipcMain.handle("daemon:restart", () => {
+    if (serverSwitchBlocked()) throw new Error("Server switch in progress");
     externalDaemonObserved = false;
     setDesiredDaemonRunning(true, true);
     return lifecycleOperations.runForeground(() => restartDaemon());
@@ -1396,10 +1428,15 @@ export function setupDaemonManager(
   ipcMain.handle(
     "daemon:sync-token",
     async (_event, token: string, userId: string) => {
-      const result = await syncToken(token, userId);
-      if (result.userChanged) {
-        await restartDaemonAfterUserSwitch(result.active);
-      }
+      if (serverSwitchBlocked()) throw new Error("Server switch in progress");
+      const operation = (async () => {
+        const result = await syncToken(token, userId);
+        if (result.userChanged && !serverSwitchBlocked()) {
+          await restartDaemonAfterUserSwitch(result.active);
+        }
+      })();
+      pendingCredentialOperations.add(operation);
+      try { await operation; } finally { pendingCredentialOperations.delete(operation); }
     },
   );
   ipcMain.handle("daemon:clear-token", () => {
@@ -1409,10 +1446,12 @@ export function setupDaemonManager(
   ipcMain.handle(
     "daemon:reauthenticate",
     async (_event, token: string, userId: string): Promise<ReauthResult> => {
+      if (serverSwitchBlocked()) throw new Error("Server switch in progress");
       setDesiredDaemonRunning(true, true);
-      return lifecycleOperations.runForeground(() =>
-        reauthenticate(token, userId),
-      );
+      return lifecycleOperations.runForeground(() => {
+        if (serverSwitchBlocked()) throw new Error("Server switch in progress");
+        return reauthenticate(token, userId);
+      });
     },
   );
   ipcMain.handle("daemon:is-cli-installed", async () => {

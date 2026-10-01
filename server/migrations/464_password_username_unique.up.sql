@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY user_password_credential_username_uidx ON user_password_credential (username);

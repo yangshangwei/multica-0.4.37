@@ -2236,7 +2236,7 @@ func TestVerifyCode(t *testing.T) {
 
 	t.Cleanup(func() {
 		testPool.Exec(ctx, `DELETE FROM verification_code WHERE email = $1`, email)
-		user, err := testHandler.Queries.GetUserByEmail(ctx, email)
+		user, err := testHandler.Queries.GetUserByEmail(ctx, pgtype.Text{String: email, Valid: true})
 		if err == nil {
 			workspaces, listErr := testHandler.Queries.ListWorkspaces(ctx, user.ID)
 			if listErr == nil {
@@ -2487,7 +2487,7 @@ func TestVerifyCodeNewUserHasNoWorkspace(t *testing.T) {
 		t.Fatalf("VerifyCode: expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	user, err := testHandler.Queries.GetUserByEmail(ctx, email)
+	user, err := testHandler.Queries.GetUserByEmail(ctx, pgtype.Text{String: email, Valid: true})
 	if err != nil {
 		t.Fatalf("GetUserByEmail: %v", err)
 	}

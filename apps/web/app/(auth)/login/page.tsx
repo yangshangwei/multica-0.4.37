@@ -1,5 +1,6 @@
 "use client";
 
+import { desktopCallbackUrl } from "@/features/auth/desktop-handoff";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useQueryClient, type QueryClient } from "@tanstack/react-query";
@@ -68,6 +69,7 @@ function LoginPageContent() {
   const cliCallbackRaw = searchParams.get("cli_callback");
   const cliState = searchParams.get("cli_state") || "";
   const platform = searchParams.get("platform");
+  const desktopState = searchParams.get("desktop_state") || "";
   const isDesktopHandoff = platform === "desktop" && !cliCallbackRaw;
   // `next` carries a protected URL the user was originally headed to
   // (e.g. /invite/{id}). With URL-driven workspaces there is no legacy
@@ -94,6 +96,7 @@ function LoginPageContent() {
       settledLoggedOutRef.current = true;
       return;
     }
+    if (user.requires_account_setup === true || user.requires_password_change === true) return;
     if (cliCallbackRaw) return;
     if (isDesktopHandoff) {
       // Desktop opened the browser for login but the web session is already
@@ -103,7 +106,7 @@ function LoginPageContent() {
         .issueCliToken()
         .then(({ token }) => {
           setDesktopToken(token);
-          window.location.href = `multica://auth/callback?token=${encodeURIComponent(token)}`;
+          window.location.href = desktopCallbackUrl(token, desktopState);
         })
         .catch((err) => {
           setDesktopError(
@@ -134,7 +137,7 @@ function LoginPageContent() {
       .catch(() => [] as Workspace[])
       .then((list) => resolveLoggedInDestination(qc, hasOnboarded, list))
       .then((dest) => router.replace(dest));
-  }, [isLoading, user, router, nextUrl, cliCallbackRaw, isDesktopHandoff, hasOnboarded, qc]);
+  }, [isLoading, user, router, nextUrl, cliCallbackRaw, isDesktopHandoff, desktopState, hasOnboarded, qc, t]);
 
   const handleSuccess = async () => {
     // Read the latest user snapshot directly — the closure's `hasOnboarded`
@@ -156,6 +159,7 @@ function LoginPageContent() {
   // HTTP listener (critical for headless / WSL2 environments).
   const googleState = [
     platform === "desktop" ? "platform:desktop" : "",
+    desktopState ? `desktop_state:${encodeURIComponent(desktopState)}` : "",
     nextUrl ? `next:${nextUrl}` : "",
     cliCallbackRaw && validateCliCallback(cliCallbackRaw)
       ? `cli_callback:${encodeURIComponent(cliCallbackRaw)}`
@@ -168,7 +172,7 @@ function LoginPageContent() {
   // While the desktop handoff is in progress (or has produced a token/error),
   // render a dedicated screen instead of flashing the login form or redirecting
   // away to a workspace page.
-  if (isDesktopHandoff && user) {
+  if (isDesktopHandoff && user && !user.requires_account_setup && !user.requires_password_change) {
     if (desktopError) {
       return (
         <div className="flex min-h-screen items-center justify-center">
@@ -201,7 +205,7 @@ function LoginPageContent() {
               <Button
                 variant="outline"
                 onClick={() => {
-                  window.location.href = `multica://auth/callback?token=${encodeURIComponent(desktopToken)}`;
+                  window.location.href = desktopCallbackUrl(desktopToken, desktopState);
                 }}
               >
                 {t(($) => $.web.desktop_handoff.open_button)}

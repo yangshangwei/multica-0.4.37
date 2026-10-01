@@ -32,6 +32,11 @@ interface ConfigState {
   // switch is off and when the server predates it, so a client that guessed
   // "available" would replace a working login page with a doomed request.
   deviceAuthAvailable: boolean;
+  authMode: string;
+  authConfigInvalid: boolean;
+  passwordAuthAvailable: boolean;
+  passwordSignupAvailable: boolean;
+  accountBindingAvailable: boolean;
   featureFlags: Record<string, boolean>;
   // The running API build version, surfaced in the Help popover so
   // self-hosted operators can confirm what's deployed. Empty for dev builds
@@ -56,6 +61,10 @@ interface ConfigState {
     vcsIntegrationAvailable?: boolean;
     messagingIntegrationsEnabled?: boolean;
     deviceAuthAvailable?: boolean;
+    authMode?: string;
+    passwordAuthAvailable?: boolean;
+    passwordSignupAvailable?: boolean;
+    accountBindingAvailable?: boolean;
   }) => void;
   setDaemonConfig: (config: {
     daemonServerUrl?: string;
@@ -80,6 +89,11 @@ export const configStore = createStore<ConfigState>((set) => ({
   vcsIntegrationAvailable: false,
   messagingIntegrationsEnabled: false,
   deviceAuthAvailable: false,
+  authMode: "legacy",
+  authConfigInvalid: false,
+  passwordAuthAvailable: false,
+  passwordSignupAvailable: false,
+  accountBindingAvailable: false,
   featureFlags: {},
   serverVersion: "",
   localWorktreeSupported: false,
@@ -92,6 +106,10 @@ export const configStore = createStore<ConfigState>((set) => ({
     vcsIntegrationAvailable = false,
     messagingIntegrationsEnabled = true,
     deviceAuthAvailable = false,
+    authMode = "legacy",
+    passwordAuthAvailable = false,
+    passwordSignupAvailable = false,
+    accountBindingAvailable = false,
   }) =>
     set({
       allowSignup,
@@ -99,7 +117,9 @@ export const configStore = createStore<ConfigState>((set) => ({
       workspaceCreationDisabled,
       vcsIntegrationAvailable,
       messagingIntegrationsEnabled,
-      deviceAuthAvailable,
+      deviceAuthAvailable: authMode === "legacy" && !passwordAuthAvailable && !passwordSignupAvailable && !accountBindingAvailable && deviceAuthAvailable,
+      authConfigInvalid: (authMode !== "legacy" && authMode !== "password") || (authMode === "password" ? !passwordAuthAvailable || deviceAuthAvailable : passwordAuthAvailable || passwordSignupAvailable || accountBindingAvailable),
+      authMode, passwordAuthAvailable, passwordSignupAvailable, accountBindingAvailable,
     }),
   setDaemonConfig: ({
     daemonServerUrl = "",

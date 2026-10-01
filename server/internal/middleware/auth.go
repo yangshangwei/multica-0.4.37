@@ -59,6 +59,12 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 			// to convince a downstream handler that its request came
 			// from a non-task-token path.
 			r.Header.Del("X-Actor-Source")
+			if auth.PasswordMode() {
+				if s, ok := passwordAuthenticate(w, r, queries); ok {
+					next.ServeHTTP(w, r.WithContext(auth.WithPasswordSession(r.Context(), s)))
+				}
+				return
+			}
 
 			tokenString, fromCookie := extractToken(r)
 			if tokenString == "" {

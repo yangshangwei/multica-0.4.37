@@ -129,7 +129,7 @@ function AssigneePickerImpl({
 
   const query = filter.trim().toLowerCase();
   const filteredMembers = members
-    .filter((m) => m.name.toLowerCase().includes(query) || matchesPinyin(m.name, query))
+    .filter((m) => m.name.toLowerCase().includes(query) || (m.username || m.email || "").toLowerCase().includes(query) || matchesPinyin(m.name, query))
     .sort((a, b) => getFreq("member", b.user_id) - getFreq("member", a.user_id));
   const filteredAgents = agents
     .filter((a) => !a.archived_at && (a.name.toLowerCase().includes(query) || matchesPinyin(a.name, query)))
@@ -206,7 +206,7 @@ function AssigneePickerImpl({
               }}
             >
               <ActorAvatar actorType="member" actorId={m.user_id} size="sm" />
-              <span className="truncate">{m.name}</span>
+              <span className="min-w-0 flex-1"><span className="block truncate">{m.name}</span><span className="block truncate text-caption text-muted-foreground">{m.username || m.email}</span></span>
             </PickerItem>
           ))}
         </PickerSection>
