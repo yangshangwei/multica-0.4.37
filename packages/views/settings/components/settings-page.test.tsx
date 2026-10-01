@@ -32,11 +32,11 @@ vi.mock("./billing-tab", stub("BillingTab"));
 vi.mock("./mcp-tab", stub("McpTab"));
 
 const replace = vi.fn();
-const navigationState = { search: "" };
+const navigationState = { search: "", hash: "" };
 vi.mock("../../navigation", () => ({
   useNavigation: () => ({
     searchParams: new URLSearchParams(navigationState.search),
-    hash: "",
+    hash: navigationState.hash,
     pathname: "/acme/settings",
     replace,
   }),
@@ -62,6 +62,7 @@ function trigger() {
 beforeEach(() => {
   layout.compact = false;
   navigationState.search = "";
+  navigationState.hash = "";
   configStore.getState().setFeatureFlags({});
   replace.mockClear();
 });
@@ -180,6 +181,51 @@ describe("SettingsPage nav groups", () => {
       expect(screen.getByText("AccountTab")).toBeInTheDocument();
     },
   );
+});
+
+describe("SettingsPage integration navigation", () => {
+  // URL parsing and construction are covered canonically in
+  // settings-integration-navigation.test.ts; these tests cover shell wiring.
+  it("widens the catalog and keeps provider detail at the standard width", () => {
+    navigationState.search = "tab=integrations";
+    const view = renderWithI18n(<SettingsPage />);
+    expect(screen.getByRole("tabpanel", { name: "Integrations" }).parentElement).toHaveClass("max-w-5xl");
+
+    navigationState.search = "tab=integrations&integration=github";
+    view.rerender(<SettingsPage />);
+    expect(screen.getByRole("tabpanel", { name: "Integrations" }).parentElement).toHaveClass("max-w-3xl");
+  });
+
+  it("clears provider selection when switching the main tab and preserves URL context", async () => {
+    const user = userEvent.setup();
+    navigationState.search = "tab=integrations&integration=github&from=install";
+    navigationState.hash = "#connections";
+    renderWithI18n(<SettingsPage />);
+
+    await user.click(screen.getByRole("tab", { name: "Repositories" }));
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/acme/settings?tab=repositories&from=install#connections");
+  });
+
+  it("returns to the catalog when selecting the already active Integrations tab", async () => {
+    const user = userEvent.setup();
+    navigationState.search = "tab=integrations&integration=github";
+    renderWithI18n(<SettingsPage />);
+
+    await user.click(screen.getByRole("tab", { name: "Integrations" }));
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/acme/settings?tab=integrations");
+  });
+
+  it("returns from the legacy callback detail to the catalog via its active tab", async () => {
+    const user = userEvent.setup();
+    navigationState.search = "tab=github";
+    renderWithI18n(<SettingsPage />);
+
+    await user.click(screen.getByRole("tab", { name: "Integrations" }));
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/acme/settings?tab=integrations");
+  });
 });
 
 describe("SettingsPage compact directory", () => {
