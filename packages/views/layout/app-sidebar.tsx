@@ -155,12 +155,12 @@ const personalNav: NavItem[] = [
 const workNav: NavItem[] = [
   { key: "issues", labelKey: "issues" },
   { key: "projects", labelKey: "projects" },
-  { key: "autopilots", labelKey: "autopilots" },
 ];
 
 const aiTeamNav: NavItem[] = [
   { key: "agents", labelKey: "agents" },
   { key: "squads", labelKey: "squads" },
+  { key: "autopilots", labelKey: "autopilots" },
 ];
 
 const resourceNav: NavItem[] = [

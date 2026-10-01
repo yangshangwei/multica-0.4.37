@@ -483,10 +483,10 @@ describe("nav structure", () => {
       // Work
       "/acme/issues",
       "/acme/projects",
-      "/acme/autopilots",
       // AI Team
       "/acme/agents",
       "/acme/squads",
+      "/acme/autopilots",
       "/acme/skills",
       "/acme/mcp",
       "/acme/runtimes",
