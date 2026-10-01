@@ -15,6 +15,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/attribution"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/dispatch"
 	"github.com/multica-ai/multica/server/internal/entitlement"
 	"github.com/multica-ai/multica/server/internal/events"
@@ -996,12 +997,17 @@ func (s *AutopilotService) dispatchRunOnly(ctx context.Context, ap db.Autopilot,
 		return &errDispatchSkipped{reason: formatAdmissionReason(ap, "workspace fail-closed: no accountable human for autopilot run"), code: dispatch.ReasonAttributionBlocked}
 	}
 	apSource, _, apEvidenceKind, apEvidenceRef := attributionCreateParams(autopilotAttr)
+	var submittedInstallation pgtype.UUID
+	if actorUserID.Valid {
+		submittedInstallation = auth.SubmissionInstallationFromContext(ctx)
+	}
 	task, err := s.Queries.CreateAutopilotTask(ctx, db.CreateAutopilotTaskParams{
-		ID:             dbid.NewV7(),
-		AgentID:        agent.ID,
-		RuntimeID:      agent.RuntimeID,
-		Priority:       0,
-		AutopilotRunID: run.ID,
+		SubmittedInstallationID: submittedInstallation,
+		ID:                      dbid.NewV7(),
+		AgentID:                 agent.ID,
+		RuntimeID:               agent.RuntimeID,
+		Priority:                0,
+		AutopilotRunID:          run.ID,
 		// Snapshot the autopilot title so task rows self-describe later
 		// without joining back to autopilot. Truncated for the same
 		// transmission-cost reason as comment-driven summaries.

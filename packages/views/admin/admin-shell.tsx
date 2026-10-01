@@ -5,7 +5,7 @@ import { useAdminAccess, type AdminIdentity } from "@multica/core/admin";
 import { Button } from "@multica/ui/components/ui/button";
 import { ShieldCheck, ShieldX, ServerOff, Loader2 } from "lucide-react";
 import { useT } from "../i18n";
-import { AppLink } from "../navigation";
+import { AppLink, useNavigation } from "../navigation";
 import { useLogout } from "../auth/use-logout";
 
 function ScopeDetails({ identity }: { identity: AdminIdentity }) {
@@ -28,6 +28,15 @@ export function AdminShell({ children }: { children?: ReactNode }) {
   const { t } = useT("admin");
   const { status, identity, retry } = useAdminAccess();
   const logout = useLogout();
+  const { pathname } = useNavigation();
+  const showAccess = pathname === "/admin" || pathname === "/admin/";
+  const destinations = [
+    { href: "/admin", label: t(($) => $.shell.access) },
+    { href: "/admin/users", label: t(($) => $.shell.accounts) },
+    { href: "/admin/installations", label: t(($) => $.shell.installations) },
+    { href: "/admin/tasks", label: t(($) => $.shell.executions) },
+    { href: "/admin/administrators", label: t(($) => $.shell.administrators) },
+  ];
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-background text-foreground">
@@ -43,6 +52,19 @@ export function AdminShell({ children }: { children?: ReactNode }) {
           <Button variant="ghost" className="min-h-11" onClick={logout}>{t(($) => $.shell.logout)}</Button>
         </div>
       </header>
+      {status === "ready" && identity && (
+        <nav aria-label={t(($) => $.shell.navigation)} className="flex shrink-0 flex-wrap gap-1 px-5 pt-3 sm:px-8">
+          {destinations.map(({ href, label }) => {
+            const active = href === "/admin" ? showAccess : pathname.startsWith(href) || (href === "/admin/tasks" && pathname.startsWith("/admin/issues"));
+            return (
+              <AppLink key={href} href={href} aria-current={active ? "page" : undefined}
+                className={`inline-flex min-h-11 items-center rounded-md px-3 py-2 text-body hover:bg-accent focus-visible:outline-ring ${active ? "bg-accent font-semibold text-foreground" : "text-muted-foreground"}`}>
+                {label}
+              </AppLink>
+            );
+          })}
+        </nav>
+      )}
       <main className="min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8">
         {status === "loading" || status === "signed_out" ? (
           <p role="status" className="flex items-center gap-2 text-body text-muted-foreground">
@@ -57,15 +79,15 @@ export function AdminShell({ children }: { children?: ReactNode }) {
             <Button variant="outline" onClick={retry}>{t(($) => $.state.retry)}</Button>
           </section>
         ) : (
-          <div className="mx-auto max-w-5xl space-y-8">
-            <section className="space-y-6" aria-labelledby="admin-access-heading">
+          <div className="mx-auto max-w-7xl space-y-8">
+            {showAccess && <section className="space-y-6" aria-labelledby="admin-access-heading">
               <div className="space-y-2">
                 <h1 id="admin-access-heading" className="text-title font-semibold">{t(($) => $.access.title)}</h1>
                 <p className="text-body text-muted-foreground">{t(($) => $.access.description)}</p>
               </div>
               <ScopeDetails identity={identity} />
               <p className="text-caption text-muted-foreground">{t(($) => $.access.scope_notice)}</p>
-            </section>
+            </section>}
             {children}
           </div>
         )}

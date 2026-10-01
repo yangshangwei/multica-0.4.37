@@ -423,6 +423,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	origins := allowedOrigins()
 
 	signupConfig := handler.Config{
+		ManagedInstallationsEnabled:   os.Getenv("MULTICA_MANAGED_INSTALLATIONS_ENABLED") == "true",
+		DeploymentID:                  auth.ManagedDeploymentID(),
 		PlatformAdminEnabled:          os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true",
 		AllowSignup:                   os.Getenv("ALLOW_SIGNUP") != "false",
 		AllowedEmails:                 splitAndTrim(os.Getenv("ALLOWED_EMAILS")),
@@ -1290,6 +1292,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// Wire WS heartbeat after stores are finalized so the WS path uses the
 	// same (possibly Redis-backed) stores as the HTTP path.
 	daemonHub.SetHeartbeatHandler(h.HandleDaemonWSHeartbeat)
+	daemonHub.SetRuntimeAuthorizer(h.AuthorizeDaemonConnection)
 	// WS-first claim (MUL-4257): route daemon:rpc_request frames (e.g.
 	// tasks.claim) through the same handlers as the HTTP endpoints.
 	daemonHub.SetRPCHandler(h.DaemonRPCHandler)
@@ -1474,7 +1477,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 	// Daemon API routes (require daemon token or valid user token)
 	r.Route("/api/daemon", func(r chi.Router) {
+		r.Use(handler.PlatformAdminNoStore)
 		r.Use(middleware.DaemonAuth(queries, patCache, daemonTokenCache, cloudPATVerifier))
+		r.Post("/installations/challenges", h.DaemonInstallationChallenge)
+		r.Post("/installation-bindings", h.BindInstallation)
+		r.Post("/installation-bindings/renew", h.RenewInstallationBinding)
 
 		r.Post("/register", h.DaemonRegister)
 		r.Post("/deregister", h.DaemonDeregister)
@@ -1558,6 +1565,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Group(func(r chi.Router) {
 		r.Use(handler.PlatformAdminNoStore)
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
+		r.Use(middleware.InstallationMetadata(queries))
 		r.Use(middleware.RefreshCloudFrontCookies(cfSigner))
 
 		// Plugin Action API. Called by the HOST PAGE on the signed-in user's
@@ -1581,9 +1589,24 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/changelog", h.GetChangelog)
 
 		r.Get("/api/me", h.GetMe)
+		r.Post("/api/installations/challenges", h.InstallationChallenge)
+		r.Post("/api/installations/enroll", h.EnrollInstallation)
+		r.Get("/api/installations/{id}/binding", h.InstallationBindingHint)
+		r.Post("/api/installations/{id}/heartbeat", h.InstallationHeartbeat)
 		r.Route("/api/admin", func(r chi.Router) {
 			r.Use(h.RequirePlatformRead)
 			r.Get("/me", h.AdminMe)
+			r.Get("/installations", h.AdminInstallations)
+			r.Get("/installations/unassociated", h.AdminUnassociatedRuntimes)
+			r.Get("/installations/{id}", h.AdminInstallation)
+			r.Get("/tasks", h.AdminTasks)
+			r.Get("/tasks/{id}", h.AdminTask)
+			r.Get("/issues", h.AdminIssues)
+			r.Get("/users", h.AdminUsers)
+			r.Get("/users/{id}", h.AdminUser)
+			r.Post("/users/{id}/disable", h.AdminDisableUser)
+			r.Post("/users/{id}/restore", h.AdminRestoreUser)
+			r.Post("/users/{id}/recover-password", h.AdminRecoverPassword)
 			r.Get("/operations", h.AdminOperations)
 			r.Get("/operations/{id}", h.AdminOperation)
 			r.Post("/users/{id}/role", h.AdminChangeRole)

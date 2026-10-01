@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -17,6 +18,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 
@@ -94,6 +96,8 @@ var daemonDiskUsageCmd = &cobra.Command{
 func init() {
 	f := daemonStartCmd.Flags()
 	f.Bool("foreground", false, "Run in the foreground instead of background")
+	f.Bool("managed-handoff-stdin", false, "Read a one-shot authenticated management handoff from stdin")
+	_ = f.MarkHidden("managed-handoff-stdin")
 	f.String("daemon-id", "", "Unique daemon identifier (env: MULTICA_DAEMON_ID)")
 	f.String("device-name", "", "Human-readable device name (env: MULTICA_DAEMON_DEVICE_NAME)")
 	f.String("runtime-name", "", "Runtime display name (env: MULTICA_AGENT_RUNTIME_NAME)")
@@ -116,6 +120,8 @@ func init() {
 	// restart shares all the same flags as start
 	rf := daemonRestartCmd.Flags()
 	rf.Bool("foreground", false, "Run in the foreground instead of background")
+	rf.Bool("managed-handoff-stdin", false, "Read a one-shot authenticated management handoff from stdin")
+	_ = rf.MarkHidden("managed-handoff-stdin")
 	rf.String("daemon-id", "", "Unique daemon identifier (env: MULTICA_DAEMON_ID)")
 	rf.String("device-name", "", "Human-readable device name (env: MULTICA_DAEMON_DEVICE_NAME)")
 	rf.String("runtime-name", "", "Runtime display name (env: MULTICA_AGENT_RUNTIME_NAME)")
@@ -574,7 +580,23 @@ func runDaemonBackground(cmd *cobra.Command) error {
 		return fmt.Errorf("%s is already running (pid %v). Use 'daemon restart' to restart it", label, int(pid))
 	}
 
+	handoffRequested, _ := cmd.Flags().GetBool("managed-handoff-stdin")
+	managedProcess, managedHome, err := managedProcessProfile(profile, handoffRequested)
+	if err != nil {
+		return err
+	}
+	if managedProcess {
+		if err := daemon.CheckManagedProcessAbsent(managedHome, profile, 0); err != nil {
+			return err
+		}
+	}
+
 	if err := requireDaemonAuth(profile); err != nil {
+		return err
+	}
+
+	managedRaw, _, err := readManagedHandoffForCommand(cmd)
+	if err != nil {
 		return err
 	}
 
@@ -619,6 +641,7 @@ func runDaemonBackground(cmd *cobra.Command) error {
 	}
 
 	child := exec.Command(exePath, args...)
+	forwardManagedHandoff(child, managedRaw)
 	child.Stdout = logFile
 	child.Stderr = logFile
 	// On Windows we want to break the child out of the parent shell's Job
@@ -628,22 +651,37 @@ func runDaemonBackground(cmd *cobra.Command) error {
 	// matches the pre-fix behaviour. On Unix the bool is a no-op.
 	child.SysProcAttr = daemonSysProcAttr(true)
 
-	if err := child.Start(); err != nil {
-		if isAccessDeniedSpawnErr(err) {
-			// Retry without breakaway. Reset the cmd state — exec.Cmd is
-			// not safe to Start() twice, so build a fresh one.
-			child = exec.Command(exePath, args...)
-			child.Stdout = logFile
-			child.Stderr = logFile
-			child.SysProcAttr = daemonSysProcAttr(false)
-			if err := child.Start(); err != nil {
-				logFile.Close()
-				return fmt.Errorf("start daemon (no breakaway): %w", err)
+	startChild := func() (int, error) {
+		if err := child.Start(); err != nil {
+			if isAccessDeniedSpawnErr(err) {
+				// Retry without breakaway. Reset the cmd state — exec.Cmd is
+				// not safe to Start() twice, so build a fresh one.
+				child = exec.Command(exePath, args...)
+				forwardManagedHandoff(child, managedRaw)
+				child.Stdout = logFile
+				child.Stderr = logFile
+				child.SysProcAttr = daemonSysProcAttr(false)
+				if err := child.Start(); err != nil {
+					return 0, fmt.Errorf("start daemon (no breakaway): %w", err)
+				}
+			} else {
+				return 0, fmt.Errorf("start daemon: %w", err)
 			}
-		} else {
-			logFile.Close()
-			return fmt.Errorf("start daemon: %w", err)
 		}
+		return child.Process.Pid, nil
+	}
+	if managedProcess {
+		err = daemon.ReserveManagedProcess(managedHome, profile, 0, startChild)
+	} else {
+		_, err = startChild()
+	}
+	if err != nil {
+		if managedProcess && child.Process != nil {
+			_ = child.Process.Kill()
+			_ = child.Wait()
+		}
+		logFile.Close()
+		return err
 	}
 	logFile.Close()
 	pid := child.Process.Pid
@@ -658,10 +696,11 @@ func runDaemonBackground(cmd *cobra.Command) error {
 	waitCh := make(chan error, 1)
 	go func() { waitCh <- child.Wait() }()
 
-	// Write PID file.
-	pidPath := daemonPIDPathForProfile(profile)
-	if err := os.WriteFile(pidPath, []byte(strconv.Itoa(pid)), 0o644); err != nil {
-		fmt.Fprintf(os.Stderr, "Warning: could not write PID file: %v\n", err)
+	// Managed reservations were published atomically under the process lock.
+	if !managedProcess {
+		if err := os.WriteFile(daemonPIDPathForProfile(profile), []byte(strconv.Itoa(pid)), 0o644); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: could not write PID file: %v\n", err)
+		}
 	}
 
 	// Poll the health endpoint until the daemon reports ready ("running") or we
@@ -853,6 +892,9 @@ func readLogTailSince(logPath string, sinceOffset int64, maxLines int) []string 
 // buildDaemonStartArgs constructs args for the background child process.
 func buildDaemonStartArgs(cmd *cobra.Command) []string {
 	args := []string{"daemon", "start", "--foreground"}
+	if enabled, _ := cmd.Flags().GetBool("managed-handoff-stdin"); enabled {
+		args = append(args, "--managed-handoff-stdin")
+	}
 
 	if v := flagString(cmd, "daemon-id"); v != "" {
 		args = append(args, "--daemon-id", v)
@@ -909,9 +951,22 @@ func buildDaemonStartArgs(cmd *cobra.Command) []string {
 }
 
 func runDaemonForeground(cmd *cobra.Command) error {
-	util.EnsureHiddenConsole()
-
 	profile := resolveProfile(cmd)
+	handoffRequested, _ := cmd.Flags().GetBool("managed-handoff-stdin")
+	managedProcess, managedHome, err := managedProcessProfile(profile, handoffRequested)
+	if err != nil {
+		return err
+	}
+	if managedProcess {
+		if err := daemon.CheckManagedProcessAbsent(managedHome, profile, os.Getpid()); err != nil {
+			return err
+		}
+	}
+	_, managedHandoff, err := readManagedHandoffForCommand(cmd)
+	if err != nil {
+		return err
+	}
+	util.EnsureHiddenConsole()
 
 	// Load the profile config once — several daemon knobs fall back to
 	// values persisted here when both the CLI flag and the env var are
@@ -980,6 +1035,41 @@ func runDaemonForeground(cmd *cobra.Command) error {
 		WorkspacesRoot: workspacesRoot,
 		Profile:        profile,
 		HealthPort:     healthPortForProfile(profile),
+	}
+	managementDeploymentID := fileCfg.ManagementDeploymentID
+	if managedHandoff != nil {
+		managementDeploymentID = managedHandoff.DeploymentID
+	}
+	if managementDeploymentID != "" {
+		if profile == "" {
+			return errors.New("managed daemon requires an explicit profile")
+		}
+		home, homeErr := os.UserHomeDir()
+		if homeErr != nil {
+			return homeErr
+		}
+		identity, identityErr := daemon.LoadManagedInstallation(home, managementDeploymentID)
+		if identityErr != nil {
+			return identityErr
+		}
+		if identity.InstallationID() == "" {
+			return errors.New("managed profile installation is not enrolled")
+		}
+		overrides.ManagementDeploymentID = managementDeploymentID
+		managementUserID := ""
+		if managedHandoff != nil {
+			managementUserID = managedHandoff.UserID
+		} else {
+			raw, readErr := os.ReadFile(filepath.Join(daemonDirForProfile(profile), ".desktop-user-id"))
+			if readErr != nil {
+				return errors.New("managed profile has no user identity")
+			}
+			managementUserID = strings.TrimSpace(string(raw))
+		}
+		overrides.DaemonID = identity.ManagedDaemonID(managementUserID)
+		if overrides.DaemonID == "" {
+			return errors.New("managed profile user identity is invalid")
+		}
 	}
 	pollFlag, _ := cmd.Flags().GetDuration("poll-interval")
 	pollOverride, err := resolveDaemonDurationOverride(pollFlag, "MULTICA_DAEMON_POLL_INTERVAL", fileCfg.PollInterval)
@@ -1057,6 +1147,10 @@ func runDaemonForeground(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
+	cfg.ManagedHandoff = managedHandoff
+	if cfg.ManagementDeploymentID != "" {
+		cfg.LegacyDaemonIDs = nil
+	}
 	cfg.CLIVersion = version
 	// Set by the Electron Desktop app when it spawns the CLI so the server
 	// can mark those runtimes as "managed" and hide CLI self-update UI.
@@ -1067,12 +1161,22 @@ func runDaemonForeground(cmd *cobra.Command) error {
 
 	d := daemon.New(cfg, logger)
 
-	// Write PID file so "daemon stop" can find us.
-	if dir := daemonDirForProfile(profile); dir != "" {
-		os.MkdirAll(dir, 0o755)
-		os.WriteFile(daemonPIDPathForProfile(profile), []byte(strconv.Itoa(os.Getpid())), 0o644)
+	if managedProcess {
+		if err := daemon.ReserveManagedProcess(managedHome, profile, os.Getpid(), func() (int, error) { return os.Getpid(), nil }); err != nil {
+			return err
+		}
+		defer func() {
+			if err := daemon.ReleaseManagedProcess(managedHome, profile, os.Getpid()); err != nil {
+				logger.Warn("managed PID cleanup deferred", "error", err)
+			}
+		}()
+	} else {
+		if dir := daemonDirForProfile(profile); dir != "" {
+			os.MkdirAll(dir, 0o755)
+			os.WriteFile(daemonPIDPathForProfile(profile), []byte(strconv.Itoa(os.Getpid())), 0o644)
+		}
+		defer os.Remove(daemonPIDPathForProfile(profile))
 	}
-	defer os.Remove(daemonPIDPathForProfile(profile))
 
 	if err := d.Run(ctx); err != nil && !errors.Is(err, context.Canceled) {
 		return err
@@ -1093,7 +1197,7 @@ func runDaemonForeground(cmd *cobra.Command) error {
 			_ = logRotator.Close()
 		}
 
-		args := buildDaemonStartArgs(cmd)
+		args := withoutManagedHandoffFlag(buildDaemonStartArgs(cmd))
 		child := exec.Command(restartBin, args...)
 
 		// The successor is a fresh foreground daemon that will open daemon.log
@@ -1114,32 +1218,46 @@ func runDaemonForeground(cmd *cobra.Command) error {
 		// runDaemonBackground call site for rationale.
 		child.SysProcAttr = daemonSysProcAttr(true)
 
-		if err := child.Start(); err != nil {
-			// Runtimes were already deregistered by triggerRestart() before handoff.
-			// The supervisor-spawned successor re-registers on startup; do not
-			// duplicate cleanup here.
-			if isAccessDeniedSpawnErr(err) {
-				child = exec.Command(restartBin, args...)
-				child.Stdout = logFile
-				child.Stderr = logFile
-				child.SysProcAttr = daemonSysProcAttr(false)
-				if err := child.Start(); err != nil {
-					logFile.Close()
-					logger.Error("failed to start new daemon (no breakaway)", "error", err)
-					return fmt.Errorf("failed to start new daemon at %s without breakaway: %w", restartBin, err)
+		startSuccessor := func() (int, error) {
+			if err := child.Start(); err != nil {
+				// Runtimes were already deregistered by triggerRestart() before handoff.
+				// The supervisor-spawned successor re-registers on startup; do not
+				// duplicate cleanup here.
+				if isAccessDeniedSpawnErr(err) {
+					child = exec.Command(restartBin, args...)
+					child.Stdout = logFile
+					child.Stderr = logFile
+					child.SysProcAttr = daemonSysProcAttr(false)
+					if err := child.Start(); err != nil {
+						logger.Error("failed to start new daemon (no breakaway)", "error", err)
+						return 0, fmt.Errorf("failed to start new daemon at %s without breakaway: %w", restartBin, err)
+					}
+				} else {
+					logger.Error("failed to start new daemon", "error", err)
+					return 0, fmt.Errorf("failed to start new daemon at %s: %w", restartBin, err)
 				}
-			} else {
-				logFile.Close()
-				logger.Error("failed to start new daemon", "error", err)
-				return fmt.Errorf("failed to start new daemon at %s: %w", restartBin, err)
 			}
+			return child.Process.Pid, nil
+		}
+		if managedProcess {
+			err = daemon.ReserveManagedProcess(managedHome, profile, os.Getpid(), startSuccessor)
+		} else {
+			_, err = startSuccessor()
+		}
+		if err != nil {
+			if managedProcess && child.Process != nil {
+				_ = child.Process.Kill()
+				_ = child.Wait()
+			}
+			logFile.Close()
+			return err
 		}
 		logFile.Close()
 		child.Process.Release()
 
-		// Write new PID file.
-		pidPath := daemonPIDPathForProfile(profile)
-		os.WriteFile(pidPath, []byte(strconv.Itoa(child.Process.Pid)), 0o644)
+		if !managedProcess {
+			os.WriteFile(daemonPIDPathForProfile(profile), []byte(strconv.Itoa(child.Process.Pid)), 0o644)
+		}
 
 		logger.Info("new daemon started", "pid", child.Process.Pid)
 	}
@@ -1228,21 +1346,30 @@ func runDaemonRestart(cmd *cobra.Command, args []string) error {
 		pid, _ := health["pid"].(float64)
 		if pid > 0 {
 			fmt.Fprintf(os.Stderr, "Stopping daemon (pid %d)...\n", int(pid))
-			if err := requestDaemonShutdown(healthPort); err != nil {
+			managed, shutdownErr := requestDaemonShutdownForProfile(healthPort, profile)
+			if shutdownErr != nil {
+				if managed {
+					return shutdownErr
+				}
 				if p, perr := os.FindProcess(int(pid)); perr == nil {
 					_ = p.Kill()
 				}
 			}
 			// Wait until the port is fully released (not merely past "running"),
 			// otherwise the fresh start below races the old daemon's listener.
+			stopped := false
 			for i := 0; i < 10; i++ {
 				time.Sleep(500 * time.Millisecond)
 				sctx, scancel := context.WithTimeout(context.Background(), 1*time.Second)
 				h := checkDaemonHealthOnPort(sctx, healthPort)
 				scancel()
-				if !daemonAlive(h) {
+				if !daemonAlive(h) && (!managed || daemon.ManagementProcessExited(int(pid))) {
+					stopped = true
 					break
 				}
+			}
+			if !stopped {
+				return errors.New("daemon is still draining; restart remains pending until the process exits")
 			}
 		}
 	}
@@ -1297,8 +1424,12 @@ func runDaemonStop(cmd *cobra.Command, _ []string) error {
 	// GenerateConsoleCtrlEvent can't reach it; HTTP works on both
 	// platforms and triggers the same context-cancel path the daemon
 	// already uses for self-restart.
-	if err := requestDaemonShutdown(healthPort); err != nil {
-		fmt.Fprintf(os.Stderr, "Graceful shutdown request failed: %v — falling back to forced kill.\n", err)
+	managed, shutdownErr := requestDaemonShutdownForProfile(healthPort, profile)
+	if shutdownErr != nil {
+		if managed {
+			return shutdownErr
+		}
+		fmt.Fprintf(os.Stderr, "Graceful shutdown request failed: %v — falling back to forced kill.\n", shutdownErr)
 		if kerr := process.Kill(); kerr != nil {
 			return fmt.Errorf("kill daemon (pid %d): %w", int(pid), kerr)
 		}
@@ -1312,32 +1443,86 @@ func runDaemonStop(cmd *cobra.Command, _ []string) error {
 		ctx2, cancel2 := context.WithTimeout(context.Background(), 1*time.Second)
 		h := checkDaemonHealthOnPort(ctx2, healthPort)
 		cancel2()
-		if !daemonAlive(h) {
-			os.Remove(daemonPIDPathForProfile(profile))
+		if !daemonAlive(h) && (!managed || daemon.ManagementProcessExited(int(pid))) {
+			if managed {
+				home, homeErr := os.UserHomeDir()
+				if homeErr != nil {
+					return homeErr
+				}
+				if err := daemon.ReleaseManagedProcess(home, profile, int(pid)); err != nil {
+					return err
+				}
+			} else {
+				os.Remove(daemonPIDPathForProfile(profile))
+			}
 			fmt.Fprintln(os.Stderr, "Daemon stopped.")
 			return nil
 		}
 	}
 
-	fmt.Fprintln(os.Stderr, "Daemon is still stopping. It may be finishing a running task.")
-	return nil
+	return errors.New("daemon is still draining; stop remains pending until the process exits")
 }
 
 // requestDaemonShutdown POSTs to the daemon's /shutdown endpoint to ask it
 // to exit gracefully. Returns an error if the request could not be delivered
 // (network error, non-2xx status, or the endpoint predates this change).
 func requestDaemonShutdown(healthPort int) error {
+	return postDaemonShutdown(healthPort, "", nil)
+}
+
+func postDaemonShutdown(healthPort int, managementToken string, expectedIntentID *string) error {
 	url := fmt.Sprintf("http://127.0.0.1:%d/shutdown", healthPort)
-	req, err := http.NewRequest(http.MethodPost, url, nil)
+	var body []byte
+	intentID := ""
+	if managementToken != "" {
+		intentID = uuid.NewString()
+		body, _ = json.Marshal(struct {
+			IntentID         string  `json:"intent_id"`
+			ExpectedIntentID *string `json:"expected_intent_id"`
+		}{intentID, expectedIntentID})
+	}
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(body))
 	if err != nil {
 		return err
 	}
-	client := &http.Client{Timeout: 2 * time.Second}
+	if managementToken != "" {
+		headers, headerErr := daemon.ManagementRequestHeaders(managementToken, http.MethodPost, "/shutdown", body)
+		if headerErr != nil {
+			return headerErr
+		}
+		req.Header = headers
+	}
+	client := &http.Client{Timeout: 2 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
+	if managementToken != "" {
+		raw, readErr := io.ReadAll(io.LimitReader(resp.Body, 16385))
+		if readErr != nil || len(raw) > 16384 {
+			return errors.New("invalid managed shutdown response")
+		}
+		if verifyErr := daemon.VerifyManagementResponse(managementToken, http.MethodPost, "/shutdown", req.Header, resp.StatusCode, raw, resp.Header); verifyErr != nil {
+			return verifyErr
+		}
+		if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+			var ack struct {
+				Accepted bool   `json:"accepted"`
+				IntentID string `json:"intent_id"`
+			}
+			if json.Unmarshal(raw, &ack) != nil || !ack.Accepted || ack.IntentID != intentID {
+				return errors.New("managed shutdown intent was not accepted")
+			}
+		}
+	}
+
+	if managementToken != "" && resp.StatusCode == http.StatusConflict {
+		return errors.New("managed daemon is busy; it was left running")
+	}
+	if managementToken != "" && (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) {
+		return errors.New("managed control authentication failed; daemon left running")
+	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return fmt.Errorf("unexpected status %d", resp.StatusCode)
 	}

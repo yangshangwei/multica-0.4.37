@@ -1,3 +1,7 @@
+import { installationProofExpiry, type InstallationMetadataProofInput } from "./installation-metadata";
+import { parseAdminInstallationList, parseAdminInstallationDetail, parseAdminUnassociatedRuntimes } from "../admin/installation-schemas";
+import { parseAdminExecutionList, parseAdminExecution, parseAdminIssueList } from "../admin/execution-schemas";
+import { parseAdminUsers, parseAdminUserDetail, parseAdminUserOperation, parseAdminUserOperations, type AdminUserFilters, type AdminAccountAction, type AdminAccountChange, type AdminRoleChange } from "../admin/user-schema";
 import { parseAdminMe } from "../admin/schema";
 import { configStore } from "../config";
 import type {
@@ -800,6 +804,7 @@ export class ApiClient {
   // Unlike authEpoch's 401 deduplication, this tracks credential replacement.
   // Rejecting the same session twice must still allow device-auth recovery.
   private credentialEpoch = 0;
+  private installationMetadata: { proof: string; expiresAt: number; epoch: number } | null = null;
   private logger: Logger;
   private options: ApiClientOptions;
 
@@ -818,6 +823,74 @@ export class ApiClient {
     return parseAdminMe(raw);
   }
 
+  async getAdminTasks(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminExecutionList(await this.fetch<unknown>(`/api/admin/tasks?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminTask(id: string, options?: { signal?: AbortSignal }) {
+    return parseAdminExecution(await this.fetch<unknown>(`/api/admin/tasks/${encodeURIComponent(id)}`, { signal: options?.signal }));
+  }
+
+  async getAdminIssues(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminIssueList(await this.fetch<unknown>(`/api/admin/issues?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminUsers(filters: AdminUserFilters = {}, options?: { signal?: AbortSignal }) {
+    const params = new URLSearchParams();
+    const values = { q: filters.q, status: filters.status, role: filters.role, time_from: filters.timeFrom, time_to: filters.timeTo, cursor: filters.cursor, limit: filters.limit, timezone: filters.timezone };
+    for (const [key, value] of Object.entries(values)) {
+      if (value !== undefined && value !== "") params.set(key, String(value));
+    }
+    return parseAdminUsers(await this.fetch<unknown>(`/api/admin/users?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminUser(id: string, options?: { signal?: AbortSignal }) {
+    return parseAdminUserDetail(await this.fetch<unknown>(`/api/admin/users/${encodeURIComponent(id)}`, { signal: options?.signal }));
+  }
+
+  async changeAdminAccount(id: string, action: AdminAccountAction, body: AdminAccountChange, key: string) {
+    return parseAdminUserOperation(await this.fetch<unknown>(`/api/admin/users/${encodeURIComponent(id)}/${action}`, {
+      method: "POST", headers: { "Idempotency-Key": key },
+      body: JSON.stringify({ expected_auth_version: body.expectedAuthVersion, reason: body.reason, password: body.password, temporary_password: body.temporaryPassword, username: body.username }),
+    }));
+  }
+
+  async changeAdminRole(id: string, body: AdminRoleChange, key: string) {
+    return parseAdminUserOperation(await this.fetch<unknown>(`/api/admin/users/${encodeURIComponent(id)}/role`, {
+      method: "POST", headers: { "Idempotency-Key": key },
+      body: JSON.stringify({ role: body.role, expected_role: body.expectedRole, expected_auth_version: body.expectedAuthVersion, reason: body.reason, password: body.password }),
+    }));
+  }
+
+  async getAdminOperations(key: string, options?: { signal?: AbortSignal }) {
+    const params = new URLSearchParams({ idempotency_key: key });
+    return parseAdminUserOperations(await this.fetch<unknown>(`/api/admin/operations?${params}`, { signal: options?.signal }));
+  }
+
+  setInstallationMetadataProof(value: InstallationMetadataProofInput | null): boolean {
+    if (value === null) { this.installationMetadata = null; return true; }
+    if (this.endpointFrozen || !value.userId || !/^[1-9][0-9]*$/.test(value.authVersion)) return false;
+    try {
+      if (new URL(value.serverUrl).toString().replace(/\/$/, "") !== new URL(this.baseUrl).toString().replace(/\/$/, "")) return false;
+    } catch { return false; }
+    const expiresAt = installationProofExpiry(value.proof);
+    if (expiresAt === null || expiresAt <= Date.now()) return false;
+    this.installationMetadata = { proof: value.proof, expiresAt, epoch: this.credentialEpoch };
+    return true;
+  }
+
+  async getAdminInstallations(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminInstallationList(await this.fetch<unknown>(`/api/admin/installations?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminInstallation(id: string, options?: { signal?: AbortSignal }) {
+    return parseAdminInstallationDetail(await this.fetch<unknown>(`/api/admin/installations/${encodeURIComponent(id)}`, { signal: options?.signal }));
+  }
+
+  async getAdminUnassociatedRuntimes(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminUnassociatedRuntimes(await this.fetch<unknown>(`/api/admin/installations/unassociated?${params}`, { signal: options?.signal }));
+  }
+
   getBaseUrl(): string {
     return this.baseUrl;
   }
@@ -832,6 +905,7 @@ export class ApiClient {
    *  under the previous one stop speaking for the session. */
   private bumpAuthEpoch(): void {
     this.authEpoch += 1;
+    this.installationMetadata = null;
   }
 
   private readCsrfToken(): string | null {
@@ -925,6 +999,13 @@ export class ApiClient {
       for (const name of Object.keys(headers)) {
         if (["x-workspace-id", "x-workspace-slug"].includes(name.toLowerCase())) delete headers[name];
       }
+    }
+
+    const metadata = this.installationMetadata;
+    if (metadata && metadata.epoch === this.credentialEpoch && metadata.expiresAt > Date.now() &&
+      ["POST", "PUT", "PATCH"].includes(method.toUpperCase()) && path.startsWith("/api/") &&
+      !/^\/api\/(?:admin|daemon|installations|tokens|me)(?:[/?]|$)/.test(path)) {
+      headers["X-Installation-Proof"] = metadata.proof;
     }
 
     this.logger.info(`→ ${method} ${path}`, { rid });

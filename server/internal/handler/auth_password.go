@@ -299,7 +299,7 @@ func (h *Handler) PasswordSetup(w http.ResponseWriter, r *http.Request) {
 		passwordSessionError(w, err)
 		return
 	}
-	if user.DisabledAt.Valid {
+	if user.DisabledAt.Valid || user.LegacyPasswordSessionsRevokedAt.Valid {
 		passwordSessionError(w, auth.ErrPasswordSession)
 		return
 	}

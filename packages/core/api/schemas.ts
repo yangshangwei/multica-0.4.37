@@ -740,6 +740,8 @@ export const EMPTY_ISSUE_PROPERTIES_RESPONSE: IssuePropertiesResponse = {
 };
 
 export interface AppConfigResponse {
+  managed_installation_supported?: boolean;
+  deployment_id?: string;
 	platform_admin_available?: boolean;
   auth_mode?: string;
   password_auth_available?: boolean;
@@ -969,6 +971,8 @@ const FeatureFlagsSchema = z.preprocess(
 );
 
 export const AppConfigSchema = z.object({
+  managed_installation_supported: BooleanWithDefaultSchema(false),
+  deployment_id: z.uuid().catch(""),
 	platform_admin_available: BooleanWithDefaultSchema(false),
   auth_mode: z.string().default("legacy"),
   password_auth_available: BooleanWithDefaultSchema(false),

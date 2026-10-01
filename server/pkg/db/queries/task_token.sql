@@ -1,6 +1,6 @@
 -- name: CreateTaskToken :one
-INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id, auth_version)
-VALUES ($1, $2, $3, $4, $5, $6, COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()), sqlc.arg('auth_version'))
+INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id, auth_version, installation_binding_id, installation_binding_epoch)
+VALUES ($1, $2, $3, $4, $5, $6, COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()), sqlc.arg('auth_version'), sqlc.narg('installation_binding_id')::uuid, sqlc.narg('installation_binding_epoch')::bigint)
 RETURNING *;
 
 -- name: GetTaskTokenByHash :one

@@ -45,6 +45,12 @@ func CheckPasswordToken(ctx context.Context, q *db.Queries, raw string, allowDae
 		identity.Session = PasswordSession{UserID: util.UUIDToString(token.UserID), Version: token.AuthVersion, Kind: "daemon_token"}
 		identity.WorkspaceID = util.UUIDToString(token.WorkspaceID)
 		identity.DaemonID = token.DaemonID
+		identity.Session.WorkspaceID = identity.WorkspaceID
+		identity.Session.DaemonID = identity.DaemonID
+		if token.InstallationBindingID.Valid {
+			identity.Session.BindingID = util.UUIDToString(token.InstallationBindingID)
+			identity.Session.BindingEpoch = token.InstallationBindingEpoch.Int64
+		}
 	default:
 		token, err := jwt.Parse(raw, func(t *jwt.Token) (any, error) {
 			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -77,7 +83,7 @@ func CheckPasswordToken(ctx context.Context, q *db.Queries, raw string, allowDae
 	if identity.Session.Kind == "jwt" {
 		return identity, nil
 	}
-	_, err := CheckPasswordVersion(ctx, q, identity.Session.UserID, identity.Session.Version)
+	_, err := CheckPasswordVersion(WithPasswordSession(ctx, identity.Session), q, identity.Session.UserID, identity.Session.Version)
 	return identity, err
 }
 func passwordTokenError(err error) error {

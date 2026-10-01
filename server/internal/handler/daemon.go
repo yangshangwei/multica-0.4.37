@@ -74,6 +74,36 @@ func (h *Handler) requireDaemonWorkspaceAccess(w http.ResponseWriter, r *http.Re
 	return ok
 }
 
+func managedRuntimeError(w http.ResponseWriter, err error) bool {
+	if errors.Is(err, service.ErrRuntimeOwnerConflict) {
+		writeError(w, http.StatusForbidden, "runtime registration cannot change account ownership")
+		return true
+	}
+	if errors.Is(err, auth.ErrPasswordSession) {
+		writeError(w, http.StatusUnauthorized, "daemon session is no longer valid")
+		return true
+	}
+	if errors.Is(err, service.ErrManagedRuntimeSource) {
+		writeError(w, http.StatusForbidden, "runtime requires its current bound daemon credential")
+		return true
+	}
+	return false
+}
+
+func (h *Handler) requireManagedRuntime(w http.ResponseWriter, ctx context.Context, runtime db.AgentRuntime) bool {
+	if _, err := service.ValidateManagedRuntime(ctx, h.Queries, runtime); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "runtime not found")
+			return false
+		}
+		if !managedRuntimeError(w, err) {
+			writeError(w, http.StatusServiceUnavailable, "runtime authorization unavailable")
+		}
+		return false
+	}
+	return true
+}
+
 // requireDaemonRuntimeAccess looks up a runtime and verifies the caller owns its workspace.
 //
 // Only pgx.ErrNoRows is treated as a real "runtime gone" 404 — the daemon uses
@@ -96,6 +126,9 @@ func (h *Handler) requireDaemonRuntimeAccess(w http.ResponseWriter, r *http.Requ
 		return db.AgentRuntime{}, false
 	}
 	if !h.requireDaemonWorkspaceAccess(w, r, uuidToString(rt.WorkspaceID)) {
+		return db.AgentRuntime{}, false
+	}
+	if !h.requireManagedRuntime(w, r.Context(), rt) {
 		return db.AgentRuntime{}, false
 	}
 	return rt, true
@@ -152,6 +185,24 @@ func (h *Handler) requireDaemonTaskAccessWithWorkspace(w http.ResponseWriter, r 
 
 	if !h.requireDaemonWorkspaceAccess(w, r, wsID) {
 		return db.AgentTaskQueue{}, "", false
+	}
+	if err := service.ValidateManagedTaskBinding(r.Context(), task); err != nil {
+		managedRuntimeError(w, err)
+		return db.AgentTaskQueue{}, "", false
+	}
+	runtimeID := task.RuntimeID
+	if !runtimeID.Valid {
+		agent, err := h.Queries.GetAgent(r.Context(), task.AgentID)
+		if err != nil {
+			writeError(w, 503, "task runtime authorization unavailable")
+			return db.AgentTaskQueue{}, "", false
+		}
+		runtimeID = agent.RuntimeID
+	}
+	if runtimeID.Valid {
+		if _, ok := h.requireDaemonRuntimeAccess(w, r, uuidToString(runtimeID)); !ok {
+			return db.AgentTaskQueue{}, "", false
+		}
 	}
 	return task, wsID, true
 }
@@ -333,6 +384,7 @@ var errRuntimeProfileDisabled = errors.New("runtime profile is disabled")
 func (h *Handler) upsertRuntimeWithProfile(
 	ctx context.Context,
 	workspaceID, profileID pgtype.UUID,
+	daemonID string, ownerID pgtype.UUID,
 	build func(db.RuntimeProfile) db.UpsertAgentRuntimeWithProfileParams,
 ) (db.UpsertAgentRuntimeWithProfileRow, db.RuntimeProfile, error) {
 	var row db.UpsertAgentRuntimeWithProfileRow
@@ -344,7 +396,10 @@ func (h *Handler) upsertRuntimeWithProfile(
 	}
 	defer tx.Rollback(ctx)
 	qtx := h.Queries.WithTx(tx)
-
+	ownerID, err = service.LockManagedDaemonRegistration(ctx, qtx, workspaceID, daemonID, ownerID)
+	if err != nil {
+		return row, profile, err
+	}
 	profile, err = qtx.LockRuntimeProfileForRegistration(ctx, db.LockRuntimeProfileForRegistrationParams{
 		ID:          profileID,
 		WorkspaceID: workspaceID,
@@ -356,7 +411,12 @@ func (h *Handler) upsertRuntimeWithProfile(
 		return row, profile, errRuntimeProfileDisabled
 	}
 
-	row, err = qtx.UpsertAgentRuntimeWithProfile(ctx, build(profile))
+	params := build(profile)
+	params.OwnerID, err = service.PreserveDaemonRuntimeOwner(ctx, qtx, workspaceID, daemonID, params.Provider, profileID, ownerID)
+	if err != nil {
+		return row, profile, err
+	}
+	row, err = qtx.UpsertAgentRuntimeWithProfile(ctx, params)
 	if err != nil {
 		return row, profile, fmt.Errorf("upsert profile runtime: %w", err)
 	}
@@ -364,6 +424,32 @@ func (h *Handler) upsertRuntimeWithProfile(
 		return row, profile, fmt.Errorf("commit profile runtime registration: %w", err)
 	}
 	return row, profile, nil
+}
+
+func (h *Handler) upsertManagedRuntime(ctx context.Context, params db.UpsertAgentRuntimeParams) (db.UpsertAgentRuntimeRow, error) {
+	var row db.UpsertAgentRuntimeRow
+	tx, err := h.TxStarter.Begin(ctx)
+	if err != nil {
+		return row, err
+	}
+	defer tx.Rollback(ctx)
+	q := h.Queries.WithTx(tx)
+	params.OwnerID, err = service.LockManagedDaemonRegistration(ctx, q, params.WorkspaceID, params.DaemonID.String, params.OwnerID)
+	if err != nil {
+		return row, err
+	}
+	params.OwnerID, err = service.PreserveDaemonRuntimeOwner(ctx, q, params.WorkspaceID, params.DaemonID.String, params.Provider, pgtype.UUID{}, params.OwnerID)
+	if err != nil {
+		return row, err
+	}
+	row, err = q.UpsertAgentRuntime(ctx, params)
+	if err != nil {
+		return row, err
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return row, err
+	}
+	return row, nil
 }
 
 // sharedDaemonCustomName returns the machine-level name shared by all of a
@@ -422,6 +508,12 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	req.WorkspaceID = uuidToString(wsUUID)
 
+	if _, err := service.ValidateManagedNamespace(r.Context(), h.Queries, wsUUID, req.DaemonID); err != nil {
+		if !managedRuntimeError(w, err) {
+			writeError(w, 503, "daemon namespace authorization unavailable")
+		}
+		return
+	}
 	// Verify workspace access and resolve owner.
 	// Daemon tokens (mdt_) prove workspace access directly; OwnerID will be zero
 	// (the SQL COALESCE preserves any existing owner on upsert).
@@ -441,6 +533,14 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 		ownerID = member.UserID
 	}
 
+	if source, ok := auth.PasswordSessionFromContext(r.Context()); ok {
+		var err error
+		ownerID, err = util.ParseUUID(source.UserID)
+		if err != nil {
+			writeError(w, 401, "invalid daemon principal")
+			return
+		}
+	}
 	ws, err := h.Queries.GetWorkspace(r.Context(), wsUUID)
 	if err != nil {
 		writeError(w, http.StatusNotFound, "workspace not found")
@@ -497,6 +597,7 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 				r.Context(),
 				wsUUID,
 				profileUUID,
+				req.DaemonID, ownerID,
 				func(profile db.RuntimeProfile) db.UpsertAgentRuntimeWithProfileParams {
 					return db.UpsertAgentRuntimeWithProfileParams{
 						WorkspaceID: wsUUID,
@@ -521,6 +622,9 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			if err != nil {
+				if managedRuntimeError(w, err) {
+					return
+				}
 				obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.RuntimeFailed(
 					uuidToString(ownerID),
 					req.WorkspaceID,
@@ -555,7 +659,7 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 				ProfileID:      prow.ProfileID,
 			}
 		} else {
-			row, err := h.Queries.UpsertAgentRuntime(r.Context(), db.UpsertAgentRuntimeParams{
+			row, err := h.upsertManagedRuntime(r.Context(), db.UpsertAgentRuntimeParams{
 				WorkspaceID: wsUUID,
 				DaemonID:    strToText(req.DaemonID),
 				Name:        name,
@@ -567,6 +671,9 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 				OwnerID:     ownerID,
 			})
 			if err != nil {
+				if managedRuntimeError(w, err) {
+					return
+				}
 				obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.RuntimeFailed(
 					uuidToString(ownerID),
 					req.WorkspaceID,
@@ -641,7 +748,8 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 		// ancestor to merge, and mergeLegacyRuntimes scopes by provider alone
 		// (no profile_id), which could otherwise fold a built-in row into a
 		// custom one of the same provider.
-		if !isCustom {
+		source, _ := auth.PasswordSessionFromContext(r.Context())
+		if !isCustom && source.BindingID == "" {
 			h.mergeLegacyRuntimes(r, registered, provider, req.LegacyDaemonIDs)
 		}
 
@@ -665,6 +773,7 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 			r.Context(),
 			wsUUID,
 			profileUUID,
+			req.DaemonID, ownerID,
 			func(profile db.RuntimeProfile) db.UpsertAgentRuntimeWithProfileParams {
 				name := profile.DisplayName
 				if req.DeviceName != "" {
@@ -704,6 +813,9 @@ func (h *Handler) DaemonRegister(w http.ResponseWriter, r *http.Request) {
 			},
 		)
 		if err != nil {
+			if managedRuntimeError(w, err) {
+				return
+			}
 			slog.Warn("failed to record runtime profile registration failure",
 				"workspace_id", req.WorkspaceID, "daemon_id", req.DaemonID,
 				"profile_id", profileID, "error", err)
@@ -836,6 +948,12 @@ func (h *Handler) mergeLegacyRuntime(ctx context.Context, newRuntimeID, oldRunti
 	// locks do not conflict — and DeleteAgentRuntime below then removed that
 	// brand-new task through ON DELETE CASCADE.
 	runtimeIDs := []pgtype.UUID{oldRuntimeID, newRuntimeID}
+	if err := service.LockManagedRuntimes(ctx, qtx, runtimeIDs); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return errRuntimeMergeFenced
+		}
+		return err
+	}
 	if err := qtx.LockWorkspaceForRuntimeMerge(ctx, runtimeIDs); err != nil {
 		return fmt.Errorf("lock workspace: %w", err)
 	}
@@ -847,6 +965,18 @@ func (h *Handler) mergeLegacyRuntime(ctx context.Context, newRuntimeID, oldRunti
 		// One of them went away while we were queueing for the lock; the fence
 		// inside the reassignment would refuse anyway.
 		return errRuntimeMergeFenced
+	}
+
+	oldRuntime, err := qtx.GetAgentRuntime(ctx, oldRuntimeID)
+	if err != nil {
+		return err
+	}
+	newRuntime, err := qtx.GetAgentRuntime(ctx, newRuntimeID)
+	if err != nil {
+		return err
+	}
+	if oldRuntime.OwnerID != newRuntime.OwnerID {
+		return service.ErrRuntimeOwnerConflict
 	}
 
 	reassignment, err := qtx.ReassignTasksToRuntime(ctx, db.ReassignTasksToRuntimeParams{
@@ -965,6 +1095,9 @@ func (h *Handler) DaemonDeregister(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		if !h.requireManagedRuntime(w, r.Context(), rt) {
+			return
+		}
 		if err := h.setRuntimeOffline(r.Context(), rt.ID, req.OfflineReasons[rid]); err != nil {
 			slog.Warn("deregister: failed to set offline", "runtime_id", rid, "error", err)
 			continue
@@ -1122,6 +1255,10 @@ func (h *Handler) DaemonHeartbeat(w http.ResponseWriter, r *http.Request) {
 		outcome = "workspace_denied"
 		return
 	}
+	if !h.requireManagedRuntime(w, r.Context(), rt) {
+		outcome = "managed_source_denied"
+		return
+	}
 	authMs = time.Since(start).Milliseconds()
 
 	ack, m, err := h.processHeartbeat(r.Context(), rt, req.SupportsBatchImport)
@@ -1196,6 +1333,9 @@ func (h *Handler) HandleDaemonWSHeartbeat(ctx context.Context, identity daemonws
 	}
 	if !identity.AllowsWorkspace(uuidToString(rt.WorkspaceID)) {
 		return nil, fmt.Errorf("runtime not in connection workspace")
+	}
+	if _, err := service.ValidateManagedRuntime(ctx, h.Queries, rt); err != nil {
+		return nil, err
 	}
 	ack, _, err := h.processHeartbeat(ctx, rt, supportsBatchImport)
 	return ack, err
@@ -1671,6 +1811,9 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 	runtimeByID := make(map[string]db.AgentRuntime, len(runtimes))
 	authorized := make([]pgtype.UUID, 0, len(runtimes))
 	for _, rt := range runtimes {
+		if !h.requireManagedRuntime(w, r.Context(), rt) {
+			return
+		}
 		if !h.verifyDaemonWorkspaceAccess(r, uuidToString(rt.WorkspaceID)) {
 			continue
 		}
@@ -1691,6 +1834,9 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 
 	claimed, err := h.TaskService.ClaimTasksForRuntimes(r.Context(), authorized, maxTasks)
 	if err != nil {
+		if managedRuntimeError(w, err) {
+			return
+		}
 		writeError(w, http.StatusInternalServerError, "failed to claim tasks: "+err.Error())
 		return
 	}
@@ -3315,6 +3461,9 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 	claimMs = time.Since(claimStart).Milliseconds()
 	if err != nil {
 		outcome = "error_claim"
+		if managedRuntimeError(w, err) {
+			return
+		}
 		writeError(w, http.StatusInternalServerError, "failed to claim task: "+err.Error())
 		return
 	}

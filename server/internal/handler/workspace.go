@@ -1314,6 +1314,14 @@ func (h *Handler) DeleteWorkspace(w http.ResponseWriter, r *http.Request) {
 			run:  func() error { return qtx.DeleteWorkspaceOrganization(ctx, requester.WorkspaceID) },
 		},
 		{
+			name: "revoke managed installation bindings",
+			run:  func() error { return qtx.RevokeWorkspaceInstallationBindings(ctx, requester.WorkspaceID) },
+		},
+		{
+			name: "expire installation challenges",
+			run:  func() error { return qtx.ExpireWorkspaceInstallationChallenges(ctx, requester.WorkspaceID) },
+		},
+		{
 			// At this point workspaceMember has resolved → workspaceID is a
 			// valid UUID, so reuse the resolved value. The existing final
 			// statement also sweeps any expand-phase compatibility leftovers.

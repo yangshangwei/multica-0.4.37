@@ -1,6 +1,6 @@
 -- name: CreateDaemonToken :one
-INSERT INTO daemon_token (token_hash, workspace_id, daemon_id, expires_at, user_id, auth_version)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO daemon_token (token_hash, workspace_id, daemon_id, expires_at, user_id, auth_version, installation_binding_id, installation_binding_epoch)
+VALUES ($1, $2, $3, $4, $5, $6, sqlc.narg(installation_binding_id)::uuid, sqlc.narg(installation_binding_epoch)::bigint)
 RETURNING *;
 
 -- name: GetDaemonTokenByHash :one

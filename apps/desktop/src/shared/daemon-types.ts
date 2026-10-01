@@ -15,6 +15,7 @@ export type DaemonState =
 
 export interface DaemonStatus {
   state: DaemonState;
+  managementPendingReason?: "busy" | "switching" | "unassociated";
   pid?: number;
   uptime?: string;
   daemonId?: string;
@@ -131,3 +132,9 @@ export function daemonStateDescription(state: DaemonState, runtimeCount: number)
       return "Sign-in expired · sign in again to bring this device back online.";
   }
 }
+
+export const MANAGEMENT_PENDING_LABEL_KEYS = {
+  busy: "management_pending_busy",
+  switching: "management_pending_switch",
+  unassociated: "management_unassociated",
+} as const;

@@ -32,6 +32,7 @@ import { DesktopClientUsageReporter } from "./platform/client-usage-reporter";
 import { DiagnosticRouteReporter } from "./platform/diagnostic-route-reporter";
 import { flushFreezeBreadcrumb } from "./freeze-flush";
 import { DesktopAuthSessionBridge } from "./platform/auth-session-bridge";
+import { DesktopInstallationMetadataBridge } from "./platform/installation-metadata-bridge";
 import { CloseBehaviorPrompt } from "./components/close-behavior-prompt";
 import {
   tearDownOnLogout,
@@ -326,7 +327,10 @@ function AppContent() {
       return;
     }
     if (sessionStartedEmptyRef.current && wsCount >= 1) {
-      void window.daemonAPI.restart();
+      void (async () => {
+        const result = await window.daemonAPI.refreshManagedWorkspaces?.();
+        if (!result?.managed) await window.daemonAPI.restart();
+      })();
       sessionStartedEmptyRef.current = false;
     }
   }, [user, workspaceListReady, wsCount]);
@@ -496,6 +500,7 @@ export default function App() {
           localeAdapter={localeAdapter}
         >
           <DesktopAuthSessionBridge />
+          <DesktopInstallationMetadataBridge />
           {windowContext.kind === "main" && <CloseBehaviorPrompt />}
           {windowContext.kind === "main" && <DiagnosticRouteReporter />}
           {windowContext.kind === "main" && (

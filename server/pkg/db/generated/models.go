@@ -245,6 +245,10 @@ type AgentTaskQueue struct {
 	BranchName                pgtype.Text `json:"branch_name"`
 	DurableWorkDir            pgtype.Text `json:"durable_work_dir"`
 	ChannelContextRevision    pgtype.Int8 `json:"channel_context_revision"`
+	SubmittedInstallationID   pgtype.UUID `json:"submitted_installation_id"`
+	ExecutionInstallationID   pgtype.UUID `json:"execution_installation_id"`
+	ExecutionBindingID        pgtype.UUID `json:"execution_binding_id"`
+	ExecutionBindingEpoch     pgtype.Int8 `json:"execution_binding_epoch"`
 }
 
 type AgentToLabel struct {
@@ -668,14 +672,16 @@ type DaemonConnection struct {
 }
 
 type DaemonToken struct {
-	ID          pgtype.UUID        `json:"id"`
-	TokenHash   string             `json:"token_hash"`
-	WorkspaceID pgtype.UUID        `json:"workspace_id"`
-	DaemonID    string             `json:"daemon_id"`
-	ExpiresAt   pgtype.Timestamptz `json:"expires_at"`
-	CreatedAt   pgtype.Timestamptz `json:"created_at"`
-	UserID      pgtype.UUID        `json:"user_id"`
-	AuthVersion int64              `json:"auth_version"`
+	ID                       pgtype.UUID        `json:"id"`
+	TokenHash                string             `json:"token_hash"`
+	WorkspaceID              pgtype.UUID        `json:"workspace_id"`
+	DaemonID                 string             `json:"daemon_id"`
+	ExpiresAt                pgtype.Timestamptz `json:"expires_at"`
+	CreatedAt                pgtype.Timestamptz `json:"created_at"`
+	UserID                   pgtype.UUID        `json:"user_id"`
+	AuthVersion              int64              `json:"auth_version"`
+	InstallationBindingID    pgtype.UUID        `json:"installation_binding_id"`
+	InstallationBindingEpoch pgtype.Int8        `json:"installation_binding_epoch"`
 }
 
 type DingtalkBotIdentity struct {
@@ -826,6 +832,62 @@ type InboxItem struct {
 	ActorType     pgtype.Text        `json:"actor_type"`
 	ActorID       pgtype.UUID        `json:"actor_id"`
 	Details       []byte             `json:"details"`
+}
+
+type InstallationChallenge struct {
+	ID                   pgtype.UUID        `json:"id"`
+	Purpose              string             `json:"purpose"`
+	DeploymentID         pgtype.UUID        `json:"deployment_id"`
+	OrganizationID       pgtype.UUID        `json:"organization_id"`
+	UserID               pgtype.UUID        `json:"user_id"`
+	AuthVersion          int64              `json:"auth_version"`
+	InstallationID       pgtype.UUID        `json:"installation_id"`
+	WorkspaceID          pgtype.UUID        `json:"workspace_id"`
+	DaemonID             pgtype.Text        `json:"daemon_id"`
+	PublicKey            []byte             `json:"public_key"`
+	KeyFingerprint       string             `json:"key_fingerprint"`
+	ExpectedBindingEpoch pgtype.Int8        `json:"expected_binding_epoch"`
+	NonceHash            string             `json:"nonce_hash"`
+	PayloadHash          string             `json:"payload_hash"`
+	BodyHash             string             `json:"body_hash"`
+	ExpiresAt            pgtype.Timestamptz `json:"expires_at"`
+	ConsumedAt           pgtype.Timestamptz `json:"consumed_at"`
+	ResultID             pgtype.UUID        `json:"result_id"`
+	ResultCredential     []byte             `json:"result_credential"`
+	CreatedAt            pgtype.Timestamptz `json:"created_at"`
+}
+
+type InstallationDaemonBinding struct {
+	ID                pgtype.UUID        `json:"id"`
+	InstallationID    pgtype.UUID        `json:"installation_id"`
+	WorkspaceID       pgtype.UUID        `json:"workspace_id"`
+	DaemonID          string             `json:"daemon_id"`
+	PrincipalUserID   pgtype.UUID        `json:"principal_user_id"`
+	AuthVersion       int64              `json:"auth_version"`
+	BindingEpoch      int64              `json:"binding_epoch"`
+	State             string             `json:"state"`
+	CapabilityVersion string             `json:"capability_version"`
+	AuthenticatedAt   pgtype.Timestamptz `json:"authenticated_at"`
+	LastSeenAt        pgtype.Timestamptz `json:"last_seen_at"`
+	RevokedAt         pgtype.Timestamptz `json:"revoked_at"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+}
+
+type InstallationReportCursor struct {
+	InstallationID pgtype.UUID        `json:"installation_id"`
+	UserID         pgtype.UUID        `json:"user_id"`
+	AuthVersion    int64              `json:"auth_version"`
+	BootID         pgtype.UUID        `json:"boot_id"`
+	Sequence       int64              `json:"sequence"`
+	ReportedAt     pgtype.Timestamptz `json:"reported_at"`
+	ReceivedAt     pgtype.Timestamptz `json:"received_at"`
+}
+
+type InstallationUser struct {
+	InstallationID pgtype.UUID        `json:"installation_id"`
+	UserID         pgtype.UUID        `json:"user_id"`
+	FirstSeenAt    pgtype.Timestamptz `json:"first_seen_at"`
+	LastSeenAt     pgtype.Timestamptz `json:"last_seen_at"`
 }
 
 type Issue struct {
@@ -1085,6 +1147,27 @@ type LarkUserBinding struct {
 	LarkOpenID     string             `json:"lark_open_id"`
 	UnionID        pgtype.Text        `json:"union_id"`
 	BoundAt        pgtype.Timestamptz `json:"bound_at"`
+}
+
+type ManagedInstallation struct {
+	ID                pgtype.UUID        `json:"id"`
+	DeploymentID      pgtype.UUID        `json:"deployment_id"`
+	OrganizationID    pgtype.UUID        `json:"organization_id"`
+	PublicKey         []byte             `json:"public_key"`
+	KeyFingerprint    string             `json:"key_fingerprint"`
+	KeyVersion        int64              `json:"key_version"`
+	Lifecycle         string             `json:"lifecycle"`
+	ResponsibleUserID pgtype.UUID        `json:"responsible_user_id"`
+	DisplayName       string             `json:"display_name"`
+	Groups            []string           `json:"groups"`
+	DesktopVersion    pgtype.Text        `json:"desktop_version"`
+	Os                pgtype.Text        `json:"os"`
+	ClientSeenAt      pgtype.Timestamptz `json:"client_seen_at"`
+	Admission         string             `json:"admission"`
+	AdmissionVersion  int64              `json:"admission_version"`
+	ReplacedBy        pgtype.UUID        `json:"replaced_by"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
 }
 
 type Member struct {
@@ -1423,15 +1506,17 @@ type TaskMessage struct {
 }
 
 type TaskToken struct {
-	ID          pgtype.UUID        `json:"id"`
-	TokenHash   string             `json:"token_hash"`
-	TaskID      pgtype.UUID        `json:"task_id"`
-	AgentID     pgtype.UUID        `json:"agent_id"`
-	WorkspaceID pgtype.UUID        `json:"workspace_id"`
-	UserID      pgtype.UUID        `json:"user_id"`
-	ExpiresAt   pgtype.Timestamptz `json:"expires_at"`
-	CreatedAt   pgtype.Timestamptz `json:"created_at"`
-	AuthVersion int64              `json:"auth_version"`
+	ID                       pgtype.UUID        `json:"id"`
+	TokenHash                string             `json:"token_hash"`
+	TaskID                   pgtype.UUID        `json:"task_id"`
+	AgentID                  pgtype.UUID        `json:"agent_id"`
+	WorkspaceID              pgtype.UUID        `json:"workspace_id"`
+	UserID                   pgtype.UUID        `json:"user_id"`
+	ExpiresAt                pgtype.Timestamptz `json:"expires_at"`
+	CreatedAt                pgtype.Timestamptz `json:"created_at"`
+	AuthVersion              int64              `json:"auth_version"`
+	InstallationBindingID    pgtype.UUID        `json:"installation_binding_id"`
+	InstallationBindingEpoch pgtype.Int8        `json:"installation_binding_epoch"`
 }
 
 type TaskUsage struct {
@@ -1508,9 +1593,10 @@ type User struct {
 	Language                pgtype.Text        `json:"language"`
 	ProfileDescription      string             `json:"profile_description"`
 	// User-preferred IANA timezone for report rendering (Viewing tz). NULL means "use the browser-detected tz at render time". Affects dashboards, charts, and any "today" label shown to this user. Does not affect data materialisation — all rollups remain in UTC.
-	Timezone       pgtype.Text        `json:"timezone"`
-	DisabledAt     pgtype.Timestamptz `json:"disabled_at"`
-	DisabledReason pgtype.Text        `json:"disabled_reason"`
+	Timezone                        pgtype.Text        `json:"timezone"`
+	DisabledAt                      pgtype.Timestamptz `json:"disabled_at"`
+	DisabledReason                  pgtype.Text        `json:"disabled_reason"`
+	LegacyPasswordSessionsRevokedAt pgtype.Timestamptz `json:"legacy_password_sessions_revoked_at"`
 }
 
 type UserComposioConnection struct {

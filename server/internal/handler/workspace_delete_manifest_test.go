@@ -19,6 +19,11 @@ const (
 // teardown. Adding a table requires an explicit ownership decision here; the
 // handler deletion graph must then implement that decision before CI passes.
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
+	"managed_installation":               workspaceDeleteKeep,
+	"installation_user":                  workspaceDeleteKeep,
+	"installation_report_cursor":         workspaceDeleteKeep,
+	"installation_daemon_binding":        workspaceDeleteSettle,
+	"installation_challenge":             workspaceDeleteSettle,
 	"admin_audit_event":                  workspaceDeleteKeep,
 	"admin_operation":                    workspaceDeleteKeep,
 	"organization":                       workspaceDeleteKeep,

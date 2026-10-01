@@ -107,7 +107,7 @@ func authorizePlatformAdmin(ctx context.Context, q *db.Queries, write bool) (Pla
 	}
 	actions := []string{"platform.read"}
 	if role == PlatformRoleSuperAdmin {
-		actions = append(actions, "users.role")
+		actions = append(actions, "users.role", "users.disable", "users.restore", "users.recover-password")
 	}
 	return PlatformAdminIdentity{UserID: id, OrganizationID: org.ID, Role: role, AllowedActions: actions, AuthVersion: session.Version}, nil
 }
@@ -428,7 +428,8 @@ func (s *PlatformAdminService) CreateOperationInTx(ctx context.Context, tx pgx.T
 	}
 	// Each new administrative action must register its controlled target and
 	// state contract here alongside the service that implements that action.
-	if p.Kind != "user.role" || p.TargetKind != "user" || p.State != "applied" || p.ResultCode != "role_changed" {
+	expectedCode := map[string]string{"user.role": "role_changed", "user.disable": "account_disabled", "user.restore": "account_restored", "user.password.recover": "password_recovered"}[p.Kind]
+	if expectedCode == "" || p.TargetKind != "user" || p.State != "applied" || p.ResultCode != expectedCode {
 		return empty, false, platformError(http.StatusBadRequest, "invalid_operation", "The operation kind or state is not supported")
 	}
 	p.ActorID, p.ActorKind, p.ActorAuthVersion = actor.UserID, "user", actor.AuthVersion

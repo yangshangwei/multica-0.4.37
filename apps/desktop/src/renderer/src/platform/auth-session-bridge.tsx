@@ -25,6 +25,7 @@ export function DesktopAuthSessionBridge() {
     // Optional chaining keeps renderer HMR safe during the brief interval in
     // which an old preload is still attached to the refreshed React tree.
     window.desktopAPI.reportAuthSession?.(reportValue);
+    if (reportValue === null) void window.daemonAPI?.endInstallationSession?.().catch(() => undefined);
   }, [status, userId]);
 
   return null;

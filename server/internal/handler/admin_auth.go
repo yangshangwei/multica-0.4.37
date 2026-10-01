@@ -23,7 +23,7 @@ func (h *Handler) platformAdminService() *service.PlatformAdminService {
 // and CSRF failures in the private administrative response cache policy.
 func PlatformAdminNoStore(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasPrefix(r.URL.Path, "/api/admin/") {
+		if strings.HasPrefix(r.URL.Path, "/api/admin/") || strings.HasPrefix(r.URL.Path, "/api/installations/") || strings.HasPrefix(r.URL.Path, "/api/daemon/installations/") || strings.HasPrefix(r.URL.Path, "/api/daemon/installation-bindings") {
 			w.Header().Set("Cache-Control", "no-store")
 		}
 		next.ServeHTTP(w, r)

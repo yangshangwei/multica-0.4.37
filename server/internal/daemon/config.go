@@ -95,6 +95,8 @@ var DefaultGCArtifactPatterns = []string{"node_modules", ".next", ".turbo"}
 
 // Config holds all daemon configuration.
 type Config struct {
+	ManagementDeploymentID         string
+	ManagedHandoff                 *ManagedStartupHandoff
 	ServerBaseURL                  string
 	DaemonID                       string
 	LegacyDaemonIDs                []string // historical daemon_ids this machine may have registered under; reported at register time so the server can merge old runtime rows
@@ -157,10 +159,11 @@ type Config struct {
 // Overrides allows CLI flags to override environment variables and defaults.
 // Zero values are ignored and the env/default value is used instead.
 type Overrides struct {
-	ServerURL         string
-	WorkspacesRoot    string
-	PollInterval      time.Duration
-	HeartbeatInterval time.Duration
+	ManagementDeploymentID string
+	ServerURL              string
+	WorkspacesRoot         string
+	PollInterval           time.Duration
+	HeartbeatInterval      time.Duration
 	// AgentTimeout is a pointer so an explicit `--agent-timeout 0` (no cap) is
 	// distinguishable from "flag not passed". nil = use env/default.
 	AgentTimeout                   *time.Duration
@@ -584,6 +587,7 @@ func LoadConfig(overrides Overrides) (Config, error) {
 	}
 
 	return Config{
+		ManagementDeploymentID:          overrides.ManagementDeploymentID,
 		ServerBaseURL:                   serverBaseURL,
 		DaemonID:                        daemonID,
 		LegacyDaemonIDs:                 legacyDaemonIDs,

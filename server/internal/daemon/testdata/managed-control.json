@@ -1,0 +1,12 @@
+{
+  "secret": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8",
+  "method": "POST",
+  "path": "/shutdown",
+  "nonce": "ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8",
+  "timestamp": "1800000000",
+  "request_body": "{\"intent_id\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"expected_intent_id\":null}",
+  "status": 202,
+  "response_body": "{\"accepted\":true,\"intent_id\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"status\":\"draining\"}",
+  "request_mac": "d84de16bf82370176054508861c7b09cdc893764d18dc9281345ecebae9f6d76",
+  "response_mac": "5388069cd82465800f775f09aa445acb97605f958d22be792240c6f1f170e94b"
+}

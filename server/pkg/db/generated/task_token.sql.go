@@ -12,20 +12,22 @@ import (
 )
 
 const createTaskToken = `-- name: CreateTaskToken :one
-INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id, auth_version)
-VALUES ($1, $2, $3, $4, $5, $6, COALESCE($7::uuid, gen_random_uuid()), $8)
-RETURNING id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version
+INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id, auth_version, installation_binding_id, installation_binding_epoch)
+VALUES ($1, $2, $3, $4, $5, $6, COALESCE($7::uuid, gen_random_uuid()), $8, $9::uuid, $10::bigint)
+RETURNING id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch
 `
 
 type CreateTaskTokenParams struct {
-	TokenHash   string             `json:"token_hash"`
-	TaskID      pgtype.UUID        `json:"task_id"`
-	AgentID     pgtype.UUID        `json:"agent_id"`
-	WorkspaceID pgtype.UUID        `json:"workspace_id"`
-	UserID      pgtype.UUID        `json:"user_id"`
-	ExpiresAt   pgtype.Timestamptz `json:"expires_at"`
-	ID          pgtype.UUID        `json:"id"`
-	AuthVersion int64              `json:"auth_version"`
+	TokenHash                string             `json:"token_hash"`
+	TaskID                   pgtype.UUID        `json:"task_id"`
+	AgentID                  pgtype.UUID        `json:"agent_id"`
+	WorkspaceID              pgtype.UUID        `json:"workspace_id"`
+	UserID                   pgtype.UUID        `json:"user_id"`
+	ExpiresAt                pgtype.Timestamptz `json:"expires_at"`
+	ID                       pgtype.UUID        `json:"id"`
+	AuthVersion              int64              `json:"auth_version"`
+	InstallationBindingID    pgtype.UUID        `json:"installation_binding_id"`
+	InstallationBindingEpoch pgtype.Int8        `json:"installation_binding_epoch"`
 }
 
 func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams) (TaskToken, error) {
@@ -38,6 +40,8 @@ func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams
 		arg.ExpiresAt,
 		arg.ID,
 		arg.AuthVersion,
+		arg.InstallationBindingID,
+		arg.InstallationBindingEpoch,
 	)
 	var i TaskToken
 	err := row.Scan(
@@ -50,6 +54,8 @@ func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams
 		&i.ExpiresAt,
 		&i.CreatedAt,
 		&i.AuthVersion,
+		&i.InstallationBindingID,
+		&i.InstallationBindingEpoch,
 	)
 	return i, err
 }
@@ -73,7 +79,7 @@ func (q *Queries) DeleteTaskTokensByTask(ctx context.Context, taskID pgtype.UUID
 }
 
 const getTaskTokenByHash = `-- name: GetTaskTokenByHash :one
-SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version FROM task_token
+SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch FROM task_token
 WHERE token_hash = $1 AND expires_at > now()
 `
 
@@ -90,6 +96,8 @@ func (q *Queries) GetTaskTokenByHash(ctx context.Context, tokenHash string) (Tas
 		&i.ExpiresAt,
 		&i.CreatedAt,
 		&i.AuthVersion,
+		&i.InstallationBindingID,
+		&i.InstallationBindingEpoch,
 	)
 	return i, err
 }

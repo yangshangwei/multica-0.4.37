@@ -1,3 +1,4 @@
+import { MANAGEMENT_PENDING_LABEL_KEYS } from "../../../shared/daemon-types";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   AlertCircle,
@@ -225,7 +226,7 @@ export function DaemonRuntimeActions() {
         {(isTransitioning || isInstalling) && (
           <Button size="sm" variant="outline" disabled>
             <Activity className="size-3.5 mr-1.5 animate-pulse" />
-            {tSettings(($) => $.desktop.daemon.states[status.state])}
+            {status.managementPendingReason ? tSettings(($) => $.desktop.daemon[MANAGEMENT_PENDING_LABEL_KEYS[status.managementPendingReason ?? "switching"]]) : tSettings(($) => $.desktop.daemon.states[status.state])}
           </Button>
         )}
       </div>

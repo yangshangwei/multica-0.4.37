@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/google/uuid"
@@ -313,14 +314,21 @@ func (c *wsRPCClient) deliver(resp protocol.RPCResponsePayload) {
 // are identical to the HTTP endpoint so both transports are interchangeable.
 // Wired into the claim poller as part of the poller cutover.
 func (d *Daemon) ClaimTasksWSFirst(ctx context.Context, daemonID string, runtimeIDs []string, maxTasks int) ([]*Task, error) {
+	if d.client.managed != nil {
+		return d.claimManagedTasksWSFirst(ctx, daemonID, runtimeIDs, maxTasks)
+	}
+	return d.claimTasksUsingTransport(ctx, d.client, d.wsRPC, &d.batchClaimUnsupported, &d.wsClaimHTTPFallbackAfter, daemonID, runtimeIDs, maxTasks)
+}
+
+func (d *Daemon) claimTasksUsingTransport(ctx context.Context, client *Client, rpc *wsRPCClient, batchUnsupported *atomic.Bool, fallbackAfter *atomic.Int64, daemonID string, runtimeIDs []string, maxTasks int) ([]*Task, error) {
 	// Un-upgraded server without the batch route: a prior poll already learned
 	// this (via a 404), so go straight to the legacy per-runtime claim and skip
 	// the WS + batch attempts each cycle.
-	if d.batchClaimUnsupported.Load() {
-		return d.client.claimTasksLegacy(ctx, runtimeIDs, maxTasks)
+	if batchUnsupported.Load() {
+		return client.claimTasksLegacy(ctx, runtimeIDs, maxTasks)
 	}
 	bypassWSOnce := false
-	if retryAfterNanos := d.wsClaimHTTPFallbackAfter.Load(); retryAfterNanos > 0 {
+	if retryAfterNanos := fallbackAfter.Load(); retryAfterNanos > 0 {
 		retryAfter := time.Unix(0, retryAfterNanos)
 		now := time.Now()
 		if now.Before(retryAfter) {
@@ -328,18 +336,18 @@ func (d *Daemon) ClaimTasksWSFirst(ctx context.Context, daemonID string, runtime
 				"retry_after", retryAfter.Sub(now).Round(time.Millisecond))
 			return nil, nil
 		}
-		if d.wsClaimHTTPFallbackAfter.CompareAndSwap(retryAfterNanos, 0) {
+		if fallbackAfter.CompareAndSwap(retryAfterNanos, 0) {
 			bypassWSOnce = true
 			d.logger.Debug("previous ws claim outcome uncertain; using http fallback for this claim cycle")
 		}
 	}
-	if !bypassWSOnce && d.wsRPC.supportsRPCV1() {
+	if !bypassWSOnce && rpc.supportsRPCV1() {
 		var resp struct {
 			Tasks []*Task `json:"tasks"`
 		}
 		// batchClaimRequestTimeout is the server-side execution budget; the
 		// daemon waits that plus the client's grace margin for the response.
-		_, err := d.wsRPC.CallIfRPCV1Supported(ctx, "tasks.claim", batchClaimRequestTimeout, map[string]any{
+		_, err := rpc.CallIfRPCV1Supported(ctx, "tasks.claim", batchClaimRequestTimeout, map[string]any{
 			"daemon_id":   daemonID,
 			"runtime_ids": runtimeIDs,
 			"max_tasks":   maxTasks,
@@ -358,13 +366,13 @@ func (d *Daemon) ClaimTasksWSFirst(ctx context.Context, daemonID string, runtime
 			if delay < 0 {
 				delay = 0
 			}
-			d.wsClaimHTTPFallbackAfter.Store(time.Now().Add(delay).UnixNano())
+			fallbackAfter.Store(time.Now().Add(delay).UnixNano())
 			d.logger.Debug("ws claim outcome uncertain after disconnect; delaying http fallback", "retry_after", delay)
 			return nil, nil
 		}
 		d.logger.Debug("ws claim failed; falling back to http", "error", err)
 	}
-	tasks, err := d.client.ClaimTasks(ctx, daemonID, runtimeIDs, maxTasks)
+	tasks, err := client.ClaimTasks(ctx, daemonID, runtimeIDs, maxTasks)
 	if err == nil {
 		return tasks, nil
 	}
@@ -372,9 +380,9 @@ func (d *Daemon) ClaimTasksWSFirst(ctx context.Context, daemonID string, runtime
 	// back to the legacy per-runtime claim loop, and remember it so we don't
 	// re-probe every cycle.
 	if isBatchClaimUnsupported(err) {
-		d.batchClaimUnsupported.Store(true)
+		batchUnsupported.Store(true)
 		d.logger.Info("batch claim route unsupported by server; using legacy per-runtime claim")
-		return d.client.claimTasksLegacy(ctx, runtimeIDs, maxTasks)
+		return client.claimTasksLegacy(ctx, runtimeIDs, maxTasks)
 	}
 	return nil, err
 }

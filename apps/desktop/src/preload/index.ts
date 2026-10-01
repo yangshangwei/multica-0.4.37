@@ -1,3 +1,4 @@
+import type { InstallationMetadataProof } from "../shared/managed-installation";
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 import type { RuntimeConfigResult } from "../shared/runtime-config";
@@ -276,6 +277,15 @@ type DaemonReauthResult =
   | { ok: false; reason: "transient"; message: string };
 
 const daemonAPI = {
+  endInstallationSession: (): Promise<void> => ipcRenderer.invoke("daemon:end-installation-session"),
+  getInstallationMetadata: (): Promise<InstallationMetadataProof | null> => ipcRenderer.invoke("daemon:get-installation-metadata"),
+  onInstallationMetadata: (callback: (value: InstallationMetadataProof | null) => void) => {
+    const handler = (_: unknown, value: InstallationMetadataProof | null) => callback(value);
+    ipcRenderer.on("daemon:installation-metadata", handler);
+    return () => ipcRenderer.removeListener("daemon:installation-metadata", handler);
+  },
+  refreshManagedWorkspaces: (): Promise<{ managed: boolean; accepted: boolean }> => ipcRenderer.invoke("daemon:refresh-managed-workspaces"),
+
   start: (): Promise<{ success: boolean; error?: string }> =>
     ipcRenderer.invoke("daemon:start"),
   stop: (): Promise<{ success: boolean; error?: string }> =>

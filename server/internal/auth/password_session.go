@@ -14,11 +14,15 @@ import (
 )
 
 type PasswordSession struct {
-	UserID  string
-	Version int64
-	Kind    string
-	Setup   bool
-	Change  bool
+	UserID       string
+	Version      int64
+	Kind         string
+	Setup        bool
+	Change       bool
+	WorkspaceID  string
+	DaemonID     string
+	BindingID    string
+	BindingEpoch int64
 }
 type passwordSessionKey struct{}
 
@@ -73,6 +77,14 @@ func CheckPasswordVersion(ctx context.Context, q *db.Queries, userID string, ver
 	if version <= 0 || c.SessionVersion != version || c.MustChangePassword {
 		return c, ErrPasswordSession
 	}
+	if source, ok := PasswordSessionFromContext(ctx); ok && source.BindingID != "" {
+		if source.UserID != userID || source.Version != version {
+			return c, ErrPasswordSession
+		}
+		if err := CheckManagedBinding(ctx, q, source); err != nil {
+			return c, err
+		}
+	}
 	return c, nil
 }
 
@@ -102,6 +114,15 @@ func CheckPasswordJWT(ctx context.Context, q *db.Queries, claims jwt.MapClaims) 
 		return s, nil
 	}
 	if !errors.Is(err, pgx.ErrNoRows) {
+		return s, err
+	}
+	// Re-read after the missing credential result so a completed legacy
+	// disable/restore cannot be combined with an earlier unrevoked user row.
+	user, err = q.GetUser(ctx, uid)
+	if errors.Is(err, pgx.ErrNoRows) || err == nil && (user.DisabledAt.Valid || user.LegacyPasswordSessionsRevokedAt.Valid) {
+		return s, ErrPasswordSession
+	}
+	if err != nil {
 		return s, err
 	}
 	cutoff, deadline, err := PasswordMigrationWindow()

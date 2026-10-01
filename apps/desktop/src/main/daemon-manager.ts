@@ -53,6 +53,10 @@ import {
   type AuthProbeResult,
 } from "./daemon-auth-probe";
 import { createDaemonQuitHandler } from "./daemon-quit";
+import { readManagementPrivateFile } from "./managed-installation";
+import { prepareManagedInstallationSession, type ManagedInstallationSession } from "./managed-session";
+import { transitionManagedDaemon, type ManagedPendingReason, type ManagedTransitionRecovery } from "./managed-transition";
+import type { InstallationMetadataProof } from "../shared/managed-installation";
 
 const POLL_INTERVAL_MS = 5_000;
 const PREFS_PATH = join(homedir(), ".multica", "desktop_prefs.json");
@@ -122,6 +126,104 @@ let authExpired = false;
 // may try to write concurrently; chaining them avoids interleaved writes
 // corrupting the JSON.
 let configWriteChain: Promise<void> = Promise.resolve();
+let managedSession: ManagedInstallationSession | null = null;
+let managedPreparation: Promise<ManagedInstallationSession | null> | null = null;
+let managedGeneration = 0;
+let managedSetupError: string | null = null;
+let pendingManagedScopeRefresh = false;
+let managedScopeRefreshInProgress = false;
+let managedPendingReason: ManagedPendingReason | null = null;
+let managedRetryAfter = 0;
+const managedTransitionRecoveries = new Map<string, ManagedTransitionRecovery>();
+
+function publishInstallationMetadata(value: InstallationMetadataProof | null): void {
+  for (const window of BrowserWindow.getAllWindows()) {
+    if (!window.isDestroyed()) window.webContents.send("daemon:installation-metadata", value);
+  }
+}
+
+function resetManagedSession(): void {
+  managedGeneration += 1;
+  managedSession?.dispose();
+  managedSession = null;
+  managedPreparation = null;
+  managedSetupError = null;
+  pendingManagedScopeRefresh = false;
+  managedPendingReason = null;
+  managedRetryAfter = 0;
+  publishInstallationMetadata(null);
+}
+
+async function reconcileManagedSession(active: ActiveProfile, session: ManagedInstallationSession): Promise<{ accepted: boolean; reason?: ManagedPendingReason }> {
+  if (managedScopeRefreshInProgress) return { accepted: false, reason: "switching" };
+  managedScopeRefreshInProgress = true;
+  try {
+    const key = `${active.name}:${active.port}`;
+    const recovery = managedTransitionRecoveries.get(key) ?? { stopRequested: false };
+    managedTransitionRecoveries.set(key, recovery);
+    const isStopped = async () => !daemonStatusAlive((await fetchHealthAtPort(active.port))?.status) && await daemonPidIsConfirmedAbsent(active.name, true);
+    const isCurrent = () => session === managedSession && managedTransitionRecoveries.get(key) === recovery && activeProfile?.name === active.name && desiredDaemonRunning && !daemonQuitting && !serverSwitchBlocked();
+    const result = await transitionManagedDaemon({ session, port: active.port, recovery, isStopped,
+      isCurrent,
+      waitForStop: async () => {
+        for (let attempt = 0; attempt < 30; attempt += 1) {
+          if (await isStopped()) return true;
+          await new Promise((resolve) => setTimeout(resolve, 250));
+        }
+        return false;
+      },
+      start: (handoff) => startDaemon(undefined, handoff, isCurrent),
+    });
+    if (session === managedSession) {
+      pendingManagedScopeRefresh = !result.accepted;
+      managedPendingReason = result.accepted ? null : result.reason;
+      managedRetryAfter = Date.now() + 15_000;
+      scheduleStatusRefresh();
+    }
+    return result;
+  } finally { managedScopeRefreshInProgress = false; }
+}
+
+async function refreshManagedScopes(): Promise<{ managed: boolean; accepted: boolean }> {
+  const session = managedSession; const active = activeProfile;
+  if (!session || !active) return { managed: false, accepted: false };
+  pendingManagedScopeRefresh = true;
+  if (managedScopeRefreshInProgress || lifecycleOperations.inProgress || serverSwitchBlocked()) return { managed: true, accepted: false };
+  const result = await lifecycleOperations.runBackground(() => reconcileManagedSession(active, session));
+  return { managed: true, accepted: "accepted" in result && result.accepted === true };
+}
+
+async function configureManagedSession(token: string, userId: string, daemonToken: string, active: ActiveProfile, previousDeploymentId?: string): Promise<void> {
+  resetManagedSession();
+  if (!targetApiBaseUrl) return;
+  const generation = managedGeneration;
+  pendingManagedScopeRefresh = true;
+  managedPendingReason = "switching";
+  const target = targetApiBaseUrl;
+  const pending = prepareManagedInstallationSession({
+    homeDirectory: homedir(), profile: active.name, apiBaseUrl: target, userToken: token, daemonToken, userId,
+    desktopVersion: app.getVersion(), os: normalizeHostOS(process.platform), previousDeploymentId,
+    onMetadataProof: (value) => {
+      if (generation === managedGeneration && activeProfile?.name === active.name && targetApiBaseUrl === target) publishInstallationMetadata(value);
+    },
+    onHeartbeat: () => {
+      if (generation === managedGeneration && pendingManagedScopeRefresh) void refreshManagedScopes();
+    },
+  });
+  managedPreparation = pending;
+  try {
+    const session = await pending;
+    if (generation !== managedGeneration || activeProfile?.name !== active.name || targetApiBaseUrl !== target) { session?.dispose(); return; }
+    managedSession = session;
+    if (!session) { pendingManagedScopeRefresh = false; managedPendingReason = null; }
+    publishInstallationMetadata(session?.metadataProof ?? null);
+    session?.startHeartbeat();
+  } catch (error) {
+    if (generation === managedGeneration) managedSetupError = "Managed installation setup is unavailable; no legacy downgrade was attempted";
+    throw error;
+  } finally { if (managedPreparation === pending) managedPreparation = null; }
+}
+
 
 async function readProfileUserId(profile: string): Promise<string | null> {
   try {
@@ -410,7 +512,8 @@ async function fetchHealth(): Promise<DaemonStatus> {
   }
 
   return {
-    state: "running",
+    state: pendingManagedScopeRefresh && managedPendingReason ? "starting" : "running",
+    managementPendingReason: managedPendingReason ?? undefined,
     pid: data.pid,
     uptime: data.uptime,
     daemonId: data.daemon_id,
@@ -743,6 +846,17 @@ async function syncToken(
   if (targetApiBaseUrl) config.server_url = targetApiBaseUrl;
   await writeProfileConfig(active.name, config);
   await writeProfileUserId(active.name, userId);
+  const previousDeploymentId = typeof config.management_deployment_id === "string" ? config.management_deployment_id : undefined;
+  try {
+    await configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
+  } catch (error) {
+    if (sameUserWithCachedPat && isAuthStatusError(error)) {
+      finalToken = await mintPat(tokenFromRenderer);
+      config.token = finalToken;
+      await writeProfileConfig(active.name, config);
+      await configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
+    } else { throw error; }
+  }
 
   return { active, userChanged };
 }
@@ -753,6 +867,12 @@ async function restartDaemonAfterUserSwitch(
   // If we just rotated credentials onto a running daemon, restart it so the
   // in-memory token in the Go process matches the new config.
   const existing = await fetchHealthAtPort(active.port);
+  if (managedSession) {
+    setDesiredDaemonRunning(true);
+    const session = managedSession;
+    await lifecycleOperations.runForeground(() => reconcileManagedSession(active, session));
+    return;
+  }
   if (daemonStatusAlive(existing?.status)) {
     // Restart whether it's "running" or still "starting" — a booting daemon
     // already loaded the old token at startup, so it must be restarted to
@@ -790,6 +910,7 @@ async function savePrefs(prefs: DaemonPrefs): Promise<void> {
 }
 
 async function clearToken(strict = false): Promise<void> {
+  resetManagedSession();
   const active = await ensureActiveProfile();
   // Nothing of ours to clear yet, and the default CLI profile is not ours to
   // strip a token from.
@@ -952,6 +1073,8 @@ function scheduleStatusRefresh(): void {
 
 async function startDaemon(
   recoveryProfile?: ActiveProfile,
+  preparedHandoff?: string,
+  managedStartupGuard?: () => boolean,
 ): Promise<{ success: boolean; error?: string }> {
   if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   const bin = await resolveCliBinary();
@@ -972,6 +1095,10 @@ async function startDaemon(
   ) {
     return { success: false, error: "Daemon recovery was superseded" };
   }
+  try { if (managedPreparation) await managedPreparation; } catch { return { success: false, error: managedSetupError ?? "Managed installation setup failed" }; }
+  if (managedSetupError) return { success: false, error: managedSetupError };
+  const startupSession = managedSession;
+  const startupGeneration = managedGeneration;
   const existing = await fetchHealthAtPort(active.port);
   if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   if (daemonStatusAlive(existing?.status)) {
@@ -982,6 +1109,11 @@ async function startDaemon(
       existing?.os,
       normalizeHostOS(process.platform),
     );
+    if (managedSession) {
+      const result = await reconcileManagedSession(active, managedSession);
+      scheduleStatusRefresh();
+      return result.accepted ? { success: true } : { success: false, error: `Managed daemon transition pending (${result.reason ?? "switching"})` };
+    }
     scheduleStatusRefresh();
     return { success: true };
   }
@@ -997,6 +1129,20 @@ async function startDaemon(
     return { success: false, error: "Daemon recovery was superseded" };
   }
 
+  try {
+    if (await managedProfileRequiresConfirmedExit(active.name) && !await daemonPidIsConfirmedAbsent(active.name, true)) {
+      managedPendingReason = "switching";
+      pendingManagedScopeRefresh = managedSession !== null;
+      return { success: false, error: "Managed daemon process exit is not confirmed; startup remains pending" };
+    }
+  } catch { return { success: false, error: "Managed daemon process evidence is unavailable; startup remains pending" }; }
+
+  let handoff: string | null = preparedHandoff ?? null;
+  if (managedSession && handoff === null) {
+    try { handoff = await managedSession.createHandoff(); }
+    catch { return { success: false, error: "Managed installation proof could not be prepared" }; }
+  }
+
   if (recoveryProfile) recoveryPolicy.recordRecoveryAttempt(Date.now());
   currentState = "starting";
   // Begin a fresh auth-probe window for this attempt.
@@ -1005,15 +1151,21 @@ async function startDaemon(
   authExpired = false;
   sendStatus({ state: "starting" });
 
-  const args = ["daemon", "start", ...profileArgs(active.name)];
+  const args = ["daemon", "start", ...profileArgs(active.name), ...(handoff ? ["--managed-handoff-stdin"] : [])];
 
   return new Promise((resolve) => {
+    // A delayed proof/start from an earlier login must not start a process
+    // after a newer credential or server selection superseded it.
+    if (startupGeneration !== managedGeneration || startupSession !== managedSession || (managedStartupGuard && !managedStartupGuard()) || activeProfile?.name !== active.name) {
+      resolve({ success: false, error: "Managed startup was superseded" });
+      return;
+    }
     // Shutdown may start while CLI/profile/health preflight is awaiting.
     if (daemonQuitting) {
       resolve({ success: false, error: "Desktop is quitting" });
       return;
     }
-    execFile(
+    const child = execFile(
       bin,
       args,
       { timeout: DAEMON_START_EXEC_TIMEOUT_MS, env: desktopSpawnEnv() },
@@ -1031,6 +1183,10 @@ async function startDaemon(
         resolve({ success: true });
       },
     );
+    if (handoff) {
+      child.stdin?.on("error", () => undefined);
+      child.stdin?.end(handoff);
+    }
   });
 }
 
@@ -1077,10 +1233,11 @@ async function stopDaemon(): Promise<{ success: boolean; error?: string }> {
   return new Promise((resolve) => {
     execFile(bin, args, { timeout: 15_000 }, (err) => {
       if (err) {
+        void pollOnce();
         resolve({ success: false, error: err.message });
-      } else {
-        resolve({ success: true });
+        return;
       }
+      resolve({ success: true });
       currentState = "stopped";
       sendStatus({ state: "stopped" });
     });
@@ -1094,37 +1251,56 @@ async function restartDaemon(): Promise<{ success: boolean; error?: string }> {
   // first-workspace, and any future restart caller all route through here).
   // #3916.
   if (await lifecycleBlockedByForeignDaemon()) return { success: true };
+  try { if (managedPreparation) await managedPreparation; } catch { return { success: false, error: managedSetupError ?? "Managed setup is unavailable" }; }
+  if (managedSetupError) return { success: false, error: managedSetupError };
+  if (managedSession) {
+    const active = await ensureActiveProfile();
+    if (!active) return { success: false, error: "Managed profile is unavailable" };
+    const config = await readProfileConfig(active.name);
+    const existing = await fetchHealthAtPort(active.port);
+    if (daemonStatusAlive(existing?.status) && typeof config.management_deployment_id !== "string") {
+      return { success: false, error: "Existing legacy daemon has no authenticated management control; it remains unassociated" };
+    }
+    try { await managedSession.createHandoff(); } catch { return { success: false, error: "Managed restart proof could not be prepared" }; }
+  }
   const stopResult = await stopDaemon();
   if (!stopResult.success) return stopResult;
   return startDaemon();
 }
 
-async function daemonPidIsConfirmedAbsent(profile: string): Promise<boolean> {
+async function managedProfileRequiresConfirmedExit(profile: string): Promise<boolean> {
+  const config = await readProfileConfig(profile, true);
+  if (managedSession || managedPreparation || "management_deployment_id" in config || [...managedTransitionRecoveries.keys()].some((key) => key.startsWith(`${profile}:`))) return true;
+  return (await readManagementPrivateFile(join(profileDir(profile), "management-control.json"), 4096)) !== null;
+}
+
+async function daemonPidIsConfirmedAbsent(profile: string, managed = false): Promise<boolean> {
   try {
-    const raw = await readFile(profilePidPath(profile), "utf-8");
-    const pid = parseDaemonPid(raw);
-    if (pid === null) {
-      console.warn(
-        `[daemon] recovery deferred: ${profilePidPath(profile)} is invalid`,
-      );
-      return false;
+    let raw: string | null = null;
+    try { raw = await readFile(profilePidPath(profile), "utf-8"); }
+    catch (error) { if (!(error && typeof error === "object" && "code" in error && error.code === "ENOENT")) throw error; }
+    if (raw !== null) {
+      const pid = parseDaemonPid(raw);
+      if (pid === null || daemonProcessExists(pid)) return false;
     }
-    return !daemonProcessExists(pid);
+    if (managed) {
+      const control = await readManagementPrivateFile(join(profileDir(profile), "management-control.json"), 4096);
+      if (control !== null) {
+        const value: unknown = JSON.parse(control.toString("utf8"));
+        if (!value || typeof value !== "object" || !("version" in value) || value.version !== "1" || !("pid" in value) || typeof value.pid !== "number" || !Number.isSafeInteger(value.pid) || value.pid <= 0 || value.pid > 0xffffffff || daemonProcessExists(value.pid)) return false;
+      }
+    }
+    return true;
   } catch (err) {
-    if (
-      err &&
-      typeof err === "object" &&
-      "code" in err &&
-      err.code === "ENOENT"
-    ) {
-      return true;
-    }
-    console.warn("[daemon] recovery deferred: unable to read daemon PID:", err);
+    console.warn("[daemon] recovery deferred: unable to verify daemon PID:", err);
     return false;
   }
 }
 
 async function attemptDaemonRecovery(active: ActiveProfile): Promise<void> {
+  let managed: boolean;
+  try { managed = await managedProfileRequiresConfirmedExit(active.name); }
+  catch { return; }
   const startAllowed = () =>
     recoveryStartAllowed({
       desiredRunning: desiredDaemonRunning,
@@ -1157,8 +1333,8 @@ async function attemptDaemonRecovery(active: ActiveProfile): Promise<void> {
       scheduleStatusRefresh();
       return true;
     },
-    pidConfirmedAbsent: () => daemonPidIsConfirmedAbsent(active.name),
-    recordPidDeferral: () => recoveryPolicy.recordPidDeferral(Date.now()),
+    pidConfirmedAbsent: () => daemonPidIsConfirmedAbsent(active.name, managed),
+    recordPidDeferral: () => { const fallback = recoveryPolicy.recordPidDeferral(Date.now()); return !managed && fallback; },
     recordPidAbsent: () => recoveryPolicy.recordPidAbsent(),
     // Force-kill leaves daemon.pid behind, and Windows can reuse the number
     // for another process. After three spaced deferrals, let the CLI recheck
@@ -1169,7 +1345,9 @@ async function attemptDaemonRecovery(active: ActiveProfile): Promise<void> {
         "[daemon] daemon PID stayed unverifiable; proceeding through CLI safety checks",
       ),
     start: () => {
-      console.warn("[daemon] managed daemon disappeared; attempting recovery");
+      if (managed && managedSession) {
+        return reconcileManagedSession(active, managedSession).then((result) => ({ success: result.accepted }));
+      }
       return startDaemon(active);
     },
     desiredRunning: () => desiredDaemonRunning,
@@ -1223,6 +1401,9 @@ async function pollOnce(): Promise<void> {
             console.warn("[daemon] background recovery failed:", err);
           });
       }
+    }
+    if (pendingManagedScopeRefresh && managedSession && desiredDaemonRunning && Date.now() >= managedRetryAfter) {
+      void refreshManagedScopes();
     }
     // Retry a deferred version-mismatch restart once the daemon drains. Route
     // it through the same singleflight guard as user and recovery operations.
@@ -1375,12 +1556,12 @@ export async function resetDaemonForServerSwitch(): Promise<void> {
   await lifecycleOperations.runForeground(async () => {
     const active = await ensureActiveProfile();
     if (!active) return;
-    await clearToken(true);
     if (await lifecycleBlockedByForeignDaemon()) throw new Error("Stop the externally managed daemon before switching servers");
     const running = await fetchHealthAtPort(active.port);
-    if (!daemonStatusAlive(running?.status) && await daemonPidIsConfirmedAbsent(active.name)) return;
+    if (!daemonStatusAlive(running?.status) && await daemonPidIsConfirmedAbsent(active.name, await managedProfileRequiresConfirmedExit(active.name))) { await clearToken(true); return; }
     const stopped = await stopDaemon();
     if (!stopped.success) throw new Error(stopped.error || "Could not stop the previous server daemon");
+    await clearToken(true);
   });
 }
 
@@ -1397,6 +1578,7 @@ export function setupDaemonManager(
     if (targetApiBaseUrl !== normalized) {
       console.log(`[daemon] target API URL set to ${normalized ?? "(none)"}`);
       setDesiredDaemonRunning(false);
+      resetManagedSession();
       targetApiBaseUrl = normalized;
       invalidateActiveProfile();
       await pollOnce();
@@ -1409,6 +1591,7 @@ export function setupDaemonManager(
     return lifecycleOperations.runForeground(() => startDaemon());
   });
   ipcMain.handle("daemon:stop", () => {
+    pendingManagedScopeRefresh = false; managedPendingReason = null; managedTransitionRecoveries.clear();
     setDesiredDaemonRunning(false, true);
     return lifecycleOperations.runForeground(() => stopDaemon());
   });
@@ -1419,6 +1602,9 @@ export function setupDaemonManager(
     return lifecycleOperations.runForeground(() => restartDaemon());
   });
   ipcMain.handle("daemon:get-status", () => fetchHealth());
+  ipcMain.handle("daemon:get-installation-metadata", () => managedSession?.metadataProof ?? null);
+  ipcMain.handle("daemon:end-installation-session", () => resetManagedSession());
+  ipcMain.handle("daemon:refresh-managed-workspaces", () => { setDesiredDaemonRunning(true); return refreshManagedScopes(); });
   ipcMain.handle("daemon:probe-runtimes", () => probeLocalRuntimes());
   // The host's OS name, available regardless of daemon state. The Runtimes
   // page uses it as a fallback identity for "this machine" when no
@@ -1431,7 +1617,7 @@ export function setupDaemonManager(
       if (serverSwitchBlocked()) throw new Error("Server switch in progress");
       const operation = (async () => {
         const result = await syncToken(token, userId);
-        if (result.userChanged && !serverSwitchBlocked()) {
+        if ((result.userChanged || managedSession !== null) && !serverSwitchBlocked()) {
           await restartDaemonAfterUserSwitch(result.active);
         }
       })();

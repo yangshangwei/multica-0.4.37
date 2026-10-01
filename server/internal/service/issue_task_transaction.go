@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/runtimeapps"
 	"log/slog"
 	"reflect"
@@ -78,7 +79,8 @@ func (s *TaskService) EnqueuePreparedIssueTaskInTx(ctx context.Context, tx pgx.T
 	// preflight snapshot or another connection while owner locks are held.
 	queryService := &TaskService{Queries: q}
 	params := db.CreateAgentTaskParams{
-		ID: dbid.NewV7(), IssueID: issue.ID, AgentID: agent.ID, RuntimeID: agent.RuntimeID,
+		SubmittedInstallationID: auth.SubmissionInstallationFromContext(ctx),
+		ID:                      dbid.NewV7(), IssueID: issue.ID, AgentID: agent.ID, RuntimeID: agent.RuntimeID,
 		Priority: priorityToInt(issue.Priority), HandoffNote: pgtype.Text{String: note, Valid: note != ""},
 		SquadID: squadID, IsLeaderTask: pgtype.Bool{Bool: squadID.Valid, Valid: squadID.Valid},
 		OriginatorUserID: attr.UserID, AccountableUserID: attr.AccountableUserID,

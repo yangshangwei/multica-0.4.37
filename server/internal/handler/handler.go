@@ -68,10 +68,12 @@ type dbExecutor interface {
 
 type Config struct {
 	// PlatformAdminEnabled controls the password-mode administration surface.
-	PlatformAdminEnabled bool
-	AllowSignup          bool
-	AllowedEmails        []string
-	AllowedEmailDomains  []string
+	PlatformAdminEnabled        bool
+	ManagedInstallationsEnabled bool
+	DeploymentID                string
+	AllowSignup                 bool
+	AllowedEmails               []string
+	AllowedEmailDomains         []string
 	// DisableWorkspaceCreation, when true, makes POST /api/workspaces return
 	// 403 for every caller, including platform administrators. Operators
 	// bootstrap the workspace with

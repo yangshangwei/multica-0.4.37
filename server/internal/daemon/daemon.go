@@ -368,6 +368,7 @@ type repoCacheBackend interface {
 // Daemon is the local agent runtime that polls for and executes tasks.
 type Daemon struct {
 	cfg        Config
+	managed    *managedDaemonLifecycle
 	client     *Client
 	repoCache  repoCacheBackend
 	skillCache *SkillBundleCache
@@ -565,9 +566,10 @@ type Daemon struct {
 	// or any task is in handleTask. Together that closes the fetch-then-claim
 	// race where a new task slipping in during the release-metadata fetch
 	// would be cancelled by triggerRestart's root-ctx cancel.
-	claimMu        sync.Mutex
-	pauseClaims    bool // when true, the batch poller skips claiming
-	claimsInFlight int  // pollers that have decided to claim but haven't yet handed the task off to handleTask
+	claimMu            sync.Mutex
+	pauseClaims        bool   // when true, the batch poller skips claiming
+	managedDrainIntent string // guarded by claimMu; remains set until process exit
+	claimsInFlight     int    // pollers that have decided to claim but haven't yet handed the task off to handleTask
 
 	activeEnvRootsMu   sync.Mutex
 	activeEnvRootsCond *sync.Cond      // signalled when an in-flight env-root GC mutation finishes
@@ -1952,6 +1954,7 @@ func (d *Daemon) clearWSHeartbeatAcks() {
 func (d *Daemon) Run(ctx context.Context) error {
 	// Wrap context so handleUpdate can cancel the daemon for restart.
 	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 	d.cancelFunc = cancel
 	d.rootCtx = ctx
 
@@ -1960,6 +1963,7 @@ func (d *Daemon) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	defer healthLn.Close()
 
 	agentNames := make([]string, 0, len(d.agents()))
 	for name := range d.agents() {
@@ -2019,6 +2023,16 @@ func (d *Daemon) Run(ctx context.Context) error {
 	// already run, so a missing token still fails fast before we begin serving.
 	go d.serveHealth(ctx, healthLn, time.Now())
 
+	if d.cfg.ManagementDeploymentID != "" {
+		home, homeErr := os.UserHomeDir()
+		if homeErr != nil {
+			return homeErr
+		}
+		if err := d.initializeManagedTransport(ctx, home); err != nil {
+			return err
+		}
+	}
+
 	// Renew the PAT before the first API call, then do the initial
 	// workspace sync. Both steps live in preflightAuth so the ordering
 	// invariant (renew first) is enforced at one site instead of
@@ -2045,6 +2059,7 @@ func (d *Daemon) Run(ctx context.Context) error {
 	go d.gcLoop(ctx)
 	go d.autoUpdateLoop(ctx)
 	go d.tokenRenewalLoop(ctx)
+	go d.managedCredentialRenewalLoop(ctx)
 
 	// Preflight succeeded and the background loops are up: the daemon has
 	// registered its runtimes and can now claim and run tasks. Flip /health
@@ -4644,6 +4659,9 @@ func (d *Daemon) trySetClaimBarrier() bool {
 func (d *Daemon) releaseClaimBarrier() {
 	d.claimMu.Lock()
 	defer d.claimMu.Unlock()
+	if d.managedDrainIntent != "" {
+		return
+	}
 	d.pauseClaims = false
 }
 

@@ -1,3 +1,4 @@
+import { MANAGEMENT_PENDING_LABEL_KEYS } from "../../../shared/daemon-types";
 import {
   Fragment,
   useCallback,
@@ -423,7 +424,7 @@ function ContextBadge({
           isRunning ? "text-foreground" : "text-muted-foreground",
         )}
       >
-        {tSettings(($) => $.desktop.daemon.states[status.state])}
+        {status.managementPendingReason ? tSettings(($) => $.desktop.daemon[MANAGEMENT_PENDING_LABEL_KEYS[status.managementPendingReason ?? "switching"]]) : tSettings(($) => $.desktop.daemon.states[status.state])}
       </span>
       {isRunning && status.uptime && (
         <span className="text-muted-foreground">

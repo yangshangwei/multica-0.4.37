@@ -31,6 +31,10 @@ const (
 	// everyone else keeps using the HTTP claim endpoint.
 	DaemonCapabilityRPCV1 = "rpc-v1"
 
+	// DaemonCapabilityManagedInstallationV1 is advertised only by a verified,
+	// workspace-bound management client, never the discovery PAT client.
+	DaemonCapabilityManagedInstallationV1 = "managed_installation_v1"
+
 	// AppCapabilityChatDraftRestoreV1 is advertised (X-Client-Capabilities) by
 	// app clients that understand the durable draft-restore recovery path:
 	// chat:cancel_finalized as an invalidation hint plus the draft-restores

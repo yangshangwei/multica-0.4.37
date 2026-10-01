@@ -7,6 +7,7 @@
 | Guide | Description | Status |
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
+| [Managed Installations](./managed-installations.md) | Signed enrollment, scoped runtime authority, recovery and provenance | Active |
 | [Creator Recommendations](./creator-recommendations.md) | Human-only, evidence-grounded LLM advice and invocation boundaries | Active |
 | [Built-in Template Registries](./builtin-templates.md) | Autopilot template content contracts: `{{date}}` issue titles, server-decided fields | Active |
 | [Project execution squads](./project-execution-squad.md) | Project setup, authority, atomic materialization and UI recovery contracts | Active |

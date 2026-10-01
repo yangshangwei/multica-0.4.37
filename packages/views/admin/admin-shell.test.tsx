@@ -14,10 +14,10 @@ const state = vi.hoisted(() => ({
 vi.mock("@multica/core/admin", () => ({ useAdminAccess: () => state }));
 vi.mock("../auth/use-logout", () => ({ useLogout: () => state.logout }));
 
-function mount() {
+function mount(pathname = "/admin") {
   return render(
     <I18nProvider locale="en" resources={{ en: { admin: en } }}>
-      <NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/admin", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path }}>
+      <NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname, searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path }}>
         <AdminShell><p>Authorized detail</p></AdminShell>
       </NavigationProvider>
     </I18nProvider>,
@@ -34,7 +34,7 @@ describe("administration shell", () => {
     expect(screen.getByText("platform_observer")).toBeInTheDocument();
     expect(screen.getByText("organization")).toBeInTheDocument();
     expect(screen.getByText("Authorized detail")).toBeInTheDocument();
-    expect(screen.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["/admin", "/login"]);
+    expect(screen.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["/admin", "/login", "/admin", "/admin/users", "/admin/installations", "/admin/tasks", "/admin/administrators"]);
     fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
     expect(state.logout).toHaveBeenCalledOnce();
   });
@@ -52,4 +52,12 @@ describe("administration shell", () => {
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
     expect(state.retry).toHaveBeenCalledOnce();
   });
+});
+
+
+it("gives child pages the main heading and marks their navigation", () => {
+  mount("/admin/users/account-id");
+  expect(screen.queryByRole("heading", { name: "Administration access" })).not.toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Accounts and organization" })).toHaveAttribute("aria-current", "page");
+  expect(screen.getByText("Authorized detail")).toBeInTheDocument();
 });

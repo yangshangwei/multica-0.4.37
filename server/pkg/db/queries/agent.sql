@@ -358,7 +358,7 @@ INSERT INTO agent_task_queue (
     coalesced_comment_ids, trigger_summary, force_fresh_session, is_leader_task, handoff_note,
     squad_id, context, originator_user_id, accountable_user_id, runtime_mcp_overlay, runtime_connected_apps,
     originator_source, delegated_from_task_id, rule_version_id, rerun_of_task_id, trigger_evidence_kind, trigger_evidence_ref_id,
-    id
+    id, submitted_installation_id
 )
 SELECT
     $1, $2, $3, 'queued', $4, sqlc.narg(trigger_comment_id),
@@ -383,7 +383,8 @@ SELECT
     sqlc.narg(rerun_of_task_id),
     sqlc.narg(trigger_evidence_kind),
     sqlc.narg(trigger_evidence_ref_id),
-    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid())
+    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
+    sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
 RETURNING *;
 
@@ -401,7 +402,7 @@ INSERT INTO agent_task_queue (
     squad_id, context, originator_user_id, accountable_user_id, runtime_mcp_overlay, runtime_connected_apps,
     originator_source, delegated_from_task_id, rule_version_id, rerun_of_task_id,
     trigger_evidence_kind, trigger_evidence_ref_id, fire_at,
-    id
+    id, submitted_installation_id
 )
 SELECT
     $1, $2, $3, 'deferred', $4, sqlc.narg(trigger_comment_id),
@@ -426,7 +427,8 @@ SELECT
     sqlc.narg(trigger_evidence_kind),
     sqlc.narg(trigger_evidence_ref_id),
     @fire_at,
-    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid())
+    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
+    sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
 RETURNING *;
 
@@ -466,7 +468,7 @@ INSERT INTO agent_task_queue (
     agent_id, runtime_id, issue_id, status, priority, context, originator_user_id,
     accountable_user_id, runtime_mcp_overlay, runtime_connected_apps,
     originator_source, trigger_evidence_kind, trigger_evidence_ref_id,
-    id
+    id, submitted_installation_id
 )
 SELECT
     $1, $2, NULL, 'queued', $3, $4,
@@ -477,7 +479,8 @@ SELECT
     sqlc.narg(originator_source),
     sqlc.narg(trigger_evidence_kind),
     sqlc.narg(trigger_evidence_ref_id),
-    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid())
+    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
+    sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, NULL, $2)
 RETURNING *;
 
@@ -498,7 +501,7 @@ INSERT INTO agent_task_queue (
     trigger_summary, is_leader_task, squad_id, escalation_for_task_id, fire_at,
     originator_user_id, accountable_user_id, originator_source,
     delegated_from_task_id, trigger_evidence_kind, trigger_evidence_ref_id,
-    id
+    id, submitted_installation_id
 )
 SELECT
     @agent_id, @runtime_id, @issue_id, 'deferred', @priority,
@@ -514,7 +517,8 @@ SELECT
     sqlc.narg(delegated_from_task_id),
     sqlc.narg(trigger_evidence_kind),
     sqlc.narg(trigger_evidence_ref_id),
-    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid())
+    COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
+    sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
 RETURNING *;
 
@@ -616,7 +620,7 @@ INSERT INTO agent_task_queue (
     originator_source, delegated_from_task_id, rule_version_id,
     trigger_evidence_kind, trigger_evidence_ref_id, retry_of_task_id,
     chat_input_task_id, fire_at,
-    channel_context_revision, id
+    channel_context_revision, id, submitted_installation_id
 )
 SELECT
     p.agent_id, p.runtime_id, p.issue_id, p.chat_session_id, p.autopilot_run_id,
@@ -638,7 +642,8 @@ SELECT
     p.chat_input_task_id, sqlc.narg(fire_at),
     p.channel_context_revision,
     -- Named new_task_id, not id: $1 above is the PARENT task's id.
-    COALESCE(sqlc.narg('new_task_id')::uuid, gen_random_uuid())
+    COALESCE(sqlc.narg('new_task_id')::uuid, gen_random_uuid()),
+    COALESCE(sqlc.narg('submitted_installation_id')::uuid, p.submitted_installation_id)
 FROM agent_task_queue p
 WHERE p.id = $1
   AND lock_task_owner_rows(p.agent_id, p.issue_id, p.runtime_id)
@@ -662,14 +667,15 @@ INSERT INTO agent_task_queue (
     force_fresh_session, is_leader_task, squad_id,
     originator_user_id, accountable_user_id,
     runtime_mcp_overlay, runtime_connected_apps,
-    originator_source, rerun_of_task_id, id
+    originator_source, rerun_of_task_id, id, submitted_installation_id
 )
 SELECT
     p.agent_id, p.runtime_id, 'queued', p.priority, p.context,
     TRUE, p.is_leader_task, p.squad_id,
     sqlc.arg(actor_user_id), sqlc.arg(actor_user_id),
     sqlc.narg(runtime_mcp_overlay), sqlc.narg(runtime_connected_apps),
-    'direct_human', p.id, sqlc.arg(new_task_id)
+    'direct_human', p.id, sqlc.arg(new_task_id),
+    sqlc.narg('submitted_installation_id')::uuid
 FROM agent_task_queue p
 WHERE p.id = sqlc.arg(source_task_id)
   AND p.status = 'failed'

@@ -3,7 +3,7 @@
   "name": "platform-admin-installations",
   "title": "S02 可信终端台账与状态上报",
   "description": "把已验证安装实例、账号、daemon和runtime关联为可查询台账，分别呈现活跃、连接与执行状态。",
-  "status": "planning",
+  "status": "completed",
   "dev_type": "fullstack",
   "scope": "platform-admin",
   "package": null,
@@ -11,10 +11,10 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-01",
-  "completedAt": null,
-  "branch": null,
+  "completedAt": "2026-10-02",
+  "branch": "feat/platform-admin-console",
   "base_branch": "main",
-  "worktree_path": null,
+  "worktree_path": "/Volumes/artisan/code/2026/multica-platform-admin",
   "commit": null,
   "pr_url": null,
   "subtasks": [],
@@ -31,11 +31,14 @@
   "meta": {
     "slice": "S02",
     "depends_on": "S01",
-    "implementation_authorized": false,
+    "implementation_authorized": true,
     "dependency_tasks": [
       ".trellis/tasks/10-01-platform-admin-access"
     ],
     "parent_acceptance": "AC04、AC05、AC12",
-    "planning_only": true
+    "planning_only": false,
+    "upstream_verified_commit": "fa28e28a2",
+    "verification_document": ".trellis/tasks/10-01-platform-admin-installations/verification.md",
+    "integration_acceptance": "S07 installed-app/Windows/capacity/rollout evidence remains pending"
   }
 }

@@ -3,7 +3,7 @@
   "name": "platform-admin-accounts",
   "title": "S05 账号管理、恢复与凭据撤销",
   "description": "具名管理员在密码复核和审计下管理账号，目标凭据全路径撤销且保留业务历史。",
-  "status": "planning",
+  "status": "completed",
   "dev_type": "fullstack",
   "scope": "platform-admin",
   "package": null,
@@ -11,10 +11,10 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-01",
-  "completedAt": null,
-  "branch": null,
+  "completedAt": "2026-10-02",
+  "branch": "feat/platform-admin-console",
   "base_branch": "main",
-  "worktree_path": null,
+  "worktree_path": "/Volumes/artisan/code/2026/multica-platform-admin",
   "commit": null,
   "pr_url": null,
   "subtasks": [],
@@ -31,11 +31,14 @@
   "meta": {
     "slice": "S05",
     "depends_on": "S01",
-    "implementation_authorized": false,
+    "implementation_authorized": true,
     "dependency_tasks": [
       ".trellis/tasks/10-01-platform-admin-access"
     ],
     "parent_acceptance": "AC03、AC11",
-    "planning_only": true
+    "planning_only": false,
+    "upstream_verified_commit": "fa28e28a2",
+    "verification_document": ".trellis/tasks/10-01-platform-admin-accounts/verification.md",
+    "integration_acceptance": "S07 remains pending; this status covers the verified slice"
   }
 }

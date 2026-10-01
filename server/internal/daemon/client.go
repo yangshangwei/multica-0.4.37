@@ -92,9 +92,12 @@ func isRuntimeNotFoundError(err error) bool {
 
 // Client handles HTTP communication with the Multica server daemon API.
 type Client struct {
-	baseURL string
-	token   string
-	client  *http.Client
+	baseURL            string
+	tokenMu            sync.RWMutex
+	managed            *managedClientRegistry
+	managedWorkspaceID string
+	token              string
+	client             *http.Client
 
 	// bundleClient downloads skill bundles. Unlike client it carries no fixed
 	// Timeout: bundles can be large and slow on jittery links, so the caller
@@ -178,7 +181,15 @@ func (c *Client) setIdentityHeaders(req *http.Request) {
 	if c.os != "" {
 		req.Header.Set("X-Client-OS", c.os)
 	}
-	req.Header.Set("X-Client-Capabilities", daemonClientCapabilities())
+	req.Header.Set("X-Client-Capabilities", c.capabilities())
+}
+
+func (c *Client) capabilities() string {
+	capabilities := daemonClientCapabilities()
+	if c.managedWorkspaceID != "" {
+		capabilities += "," + protocol.DaemonCapabilityManagedInstallationV1
+	}
+	return capabilities
 }
 
 // daemonClientCapabilities is the X-Client-Capabilities value the daemon
@@ -201,11 +212,15 @@ func daemonClientCapabilities() string {
 
 // SetToken sets the auth token for authenticated requests.
 func (c *Client) SetToken(token string) {
+	c.tokenMu.Lock()
+	defer c.tokenMu.Unlock()
 	c.token = token
 }
 
 // Token returns the current auth token.
 func (c *Client) Token() string {
+	c.tokenMu.RLock()
+	defer c.tokenMu.RUnlock()
 	return c.token
 }
 
@@ -215,6 +230,14 @@ func (c *Client) ClaimTask(ctx context.Context, runtimeID string) (*Task, error)
 	}
 	if err := c.postJSON(ctx, fmt.Sprintf("/api/daemon/runtimes/%s/tasks/claim", runtimeID), map[string]any{}, &resp); err != nil {
 		return nil, err
+	}
+	if c.managed != nil && resp.Task != nil {
+		c.managed.mu.RLock()
+		workspaceID := c.managed.runtimes[runtimeID]
+		c.managed.mu.RUnlock()
+		if err := c.recordManagedClaims(workspaceID, []*Task{resp.Task}); err != nil {
+			return nil, err
+		}
 	}
 	return resp.Task, nil
 }
@@ -266,6 +289,9 @@ const batchClaimRequestTimeout = 5 * time.Second
 // one slow claim cannot stall the whole batch; the deadline propagates to the
 // server and cancels the in-flight query there too.
 func (c *Client) ClaimTasks(ctx context.Context, daemonID string, runtimeIDs []string, maxTasks int) ([]*Task, error) {
+	if c.managed != nil {
+		return c.claimManagedTasks(ctx, daemonID, runtimeIDs, maxTasks)
+	}
 	reqCtx, cancel := context.WithTimeout(ctx, batchClaimRequestTimeout)
 	defer cancel()
 	var resp struct {
@@ -677,8 +703,8 @@ func (c *Client) ListWorkspaces(ctx context.Context) ([]WorkspaceInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	if c.token != "" {
-		req.Header.Set("Authorization", "Bearer "+c.token)
+	if token := c.Token(); token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
 	}
 	c.setIdentityHeaders(req)
 	if c.workspaceETag != "" {
@@ -906,6 +932,9 @@ type RuntimeOfflineReason struct {
 // id: a daemon shutting down has nothing to explain, while one that condemned a
 // broken CLI does.
 func (c *Client) Deregister(ctx context.Context, runtimeIDs []string, reasons map[string]RuntimeOfflineReason) error {
+	if c.managed != nil {
+		return c.deregisterManagedRuntimes(ctx, runtimeIDs, reasons)
+	}
 	body := map[string]any{"runtime_ids": runtimeIDs}
 	if len(reasons) > 0 {
 		body["offline_reasons"] = reasons
@@ -924,6 +953,10 @@ type RegisterResponse struct {
 func (c *Client) Register(ctx context.Context, req map[string]any) (*RegisterResponse, error) {
 	var resp RegisterResponse
 	if err := c.postJSON(ctx, "/api/daemon/register", req, &resp); err != nil {
+		return nil, err
+	}
+	workspaceID, _ := req["workspace_id"].(string)
+	if err := c.recordManagedRegistration(workspaceID, resp.Runtimes); err != nil {
 		return nil, err
 	}
 	return &resp, nil
@@ -1111,6 +1144,19 @@ func (c *Client) postJSONVia(ctx context.Context, httpClient *http.Client, path 
 // produced a response" apart from "the body arrived too slowly to finish" —
 // see TransferStats.
 func (c *Client) postJSONViaObserved(ctx context.Context, httpClient *http.Client, path string, reqBody any, respBody any, stats *TransferStats) error {
+	if c.managed != nil {
+		scoped, err := c.managedRequestClient(path, reqBody)
+		if err != nil {
+			return err
+		}
+		if scoped != c {
+			transport := scoped.client
+			if httpClient == c.bundleClient {
+				transport = scoped.bundleClient
+			}
+			return scoped.postJSONViaObserved(ctx, transport, path, reqBody, respBody, stats)
+		}
+	}
 	var body io.Reader
 	if reqBody != nil {
 		data, err := json.Marshal(reqBody)
@@ -1125,8 +1171,8 @@ func (c *Client) postJSONViaObserved(ctx context.Context, httpClient *http.Clien
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	if c.token != "" {
-		req.Header.Set("Authorization", "Bearer "+c.token)
+	if token := c.Token(); token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
 	}
 	c.setIdentityHeaders(req)
 
@@ -1149,7 +1195,16 @@ func (c *Client) postJSONViaObserved(ctx context.Context, httpClient *http.Clien
 }
 
 func (c *Client) getJSON(ctx context.Context, path string, respBody any) error {
-	return c.getJSONWithToken(ctx, path, c.token, respBody)
+	if c.managed != nil {
+		scoped, err := c.managedRequestClient(path, nil)
+		if err != nil {
+			return err
+		}
+		if scoped != c {
+			return scoped.getJSON(ctx, path, respBody)
+		}
+	}
+	return c.getJSONWithToken(ctx, path, c.Token(), respBody)
 }
 
 // getJSONWithToken performs one GET with an explicit credential. It is used by

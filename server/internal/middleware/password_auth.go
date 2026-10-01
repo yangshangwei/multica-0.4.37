@@ -53,7 +53,11 @@ func passwordAuthenticate(w http.ResponseWriter, r *http.Request, q *db.Queries)
 			passwordAuthError(w, err)
 			return s, false
 		}
-		s = auth.PasswordSession{UserID: uuidToString(token.UserID), Version: token.AuthVersion, Kind: "task_token"}
+		s, err = auth.PasswordSessionForTask(r.Context(), q, token)
+		if err != nil {
+			passwordAuthError(w, err)
+			return s, false
+		}
 		r.Header.Set("X-Actor-Source", "task_token")
 		r.Header.Set("X-Agent-ID", uuidToString(token.AgentID))
 		r.Header.Set("X-Task-ID", uuidToString(token.TaskID))
@@ -76,7 +80,7 @@ func passwordAuthenticate(w http.ResponseWriter, r *http.Request, q *db.Queries)
 		}
 	}
 	if s.Kind != "jwt" {
-		if _, err := auth.CheckPasswordVersion(r.Context(), q, s.UserID, s.Version); err != nil {
+		if _, err := auth.CheckPasswordVersion(auth.WithPasswordSession(r.Context(), s), q, s.UserID, s.Version); err != nil {
 			passwordAuthError(w, err)
 			return s, false
 		}

@@ -1,3 +1,4 @@
+import { MANAGEMENT_PENDING_LABEL_KEYS } from "../../../shared/daemon-types";
 import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { AlertCircle, Info, LogIn } from "lucide-react";
 import { Button } from "@multica/ui/components/ui/button";
@@ -209,7 +210,7 @@ export function DaemonSettingsTab() {
                     DAEMON_STATE_COLORS[status.state],
                   )}
                 />
-                {t(($) => $.desktop.daemon.states[status.state])}
+                {status.managementPendingReason ? t(($) => $.desktop.daemon[MANAGEMENT_PENDING_LABEL_KEYS[status.managementPendingReason ?? "switching"]]) : t(($) => $.desktop.daemon.states[status.state])}
               </span>
             }
           />

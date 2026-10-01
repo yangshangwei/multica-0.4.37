@@ -289,6 +289,10 @@ func newMainHTTPServer(addr string, handler http.Handler) *http.Server {
 
 func main() {
 	logger.Init()
+	if os.Getenv("MULTICA_MANAGED_INSTALLATIONS_ENABLED") == "true" && (!auth.PasswordMode() || auth.ManagedDeploymentID() == "") {
+		slog.Error("managed installations require password mode and a stable MULTICA_DEPLOYMENT_ID UUID")
+		os.Exit(1)
+	}
 	if err := auth.ValidatePasswordConfig(); err != nil {
 		slog.Error("invalid authentication configuration", "error", err)
 		os.Exit(1)

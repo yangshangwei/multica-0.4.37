@@ -13,12 +13,14 @@ import (
 )
 
 type AppConfig struct {
-	PlatformAdminAvailable  bool   `json:"platform_admin_available"`
-	AuthMode                string `json:"auth_mode"`
-	PasswordAuthAvailable   bool   `json:"password_auth_available"`
-	PasswordSignupAvailable bool   `json:"password_signup_available"`
-	AccountBindingAvailable bool   `json:"account_binding_available"`
-	CdnDomain               string `json:"cdn_domain"`
+	ManagedInstallationSupported bool   `json:"managed_installation_supported"`
+	DeploymentID                 string `json:"deployment_id,omitempty"`
+	PlatformAdminAvailable       bool   `json:"platform_admin_available"`
+	AuthMode                     string `json:"auth_mode"`
+	PasswordAuthAvailable        bool   `json:"password_auth_available"`
+	PasswordSignupAvailable      bool   `json:"password_signup_available"`
+	AccountBindingAvailable      bool   `json:"account_binding_available"`
+	CdnDomain                    string `json:"cdn_domain"`
 	// CdnSigned tells clients that the CDN domain above serves PRIVATE
 	// content through time-bounded signed URLs (CloudFront signing is
 	// enabled). When true, a raw storage URL on the CDN domain is NOT
@@ -122,7 +124,9 @@ type AppConfig struct {
 // to anonymous callers — never user- or tenant-scoped data.
 func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 	config := AppConfig{
-		PlatformAdminAvailable: auth.PasswordMode() && h.cfg.PlatformAdminEnabled,
+		ManagedInstallationSupported: auth.PasswordMode() && h.cfg.ManagedInstallationsEnabled && h.cfg.DeploymentID != "",
+		DeploymentID:                 h.cfg.DeploymentID,
+		PlatformAdminAvailable:       auth.PasswordMode() && h.cfg.PlatformAdminEnabled,
 		// A property of this build, not of the deployment: if this code is
 		// running, the save gate is running with it.
 		LocalWorktreeSupported:             true,

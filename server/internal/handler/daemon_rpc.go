@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"net/http"
 
 	"github.com/multica-ai/multica/server/internal/daemonws"
 	"github.com/multica-ai/multica/server/internal/middleware"
+	"github.com/multica-ai/multica/server/internal/util"
 )
 
 // rpcResponseCapture is a minimal in-memory http.ResponseWriter so a WS RPC can
@@ -43,6 +46,15 @@ func (w *rpcResponseCapture) Write(b []byte) (int, error) {
 // set at connect, so the reused handler's per-runtime daemon/workspace checks
 // see the same scope as the HTTP path.
 func (h *Handler) DaemonRPCHandler(ctx context.Context, identity daemonws.ClientIdentity, method string, body json.RawMessage) (int, json.RawMessage, error) {
+	if err := h.AuthorizeDaemonConnection(ctx, identity); err != nil {
+		status := http.StatusServiceUnavailable
+		if errors.Is(err, daemonws.ErrRuntimeScope) {
+			status = http.StatusForbidden
+		} else if errors.Is(err, auth.ErrPasswordSession) {
+			status = http.StatusUnauthorized
+		}
+		return status, nil, err
+	}
 	switch method {
 	case "tasks.claim":
 		return h.rpcClaimTasks(ctx, identity, body)
@@ -54,6 +66,29 @@ func (h *Handler) DaemonRPCHandler(ctx context.Context, identity daemonws.Client
 func (h *Handler) rpcClaimTasks(ctx context.Context, identity daemonws.ClientIdentity, body json.RawMessage) (int, json.RawMessage, error) {
 	if len(body) == 0 {
 		body = json.RawMessage("{}")
+	}
+	if source, ok := auth.PasswordSessionFromContext(ctx); ok && source.BindingID != "" {
+		var requested struct {
+			RuntimeIDs []string `json:"runtime_ids"`
+		}
+		if err := json.Unmarshal(body, &requested); err != nil {
+			return http.StatusBadRequest, nil, err
+		}
+		allowed := map[string]bool{}
+		for _, id := range identity.RuntimeIDs {
+			if parsed, err := util.ParseUUID(id); err == nil {
+				id = uuidToString(parsed)
+			}
+			allowed[id] = true
+		}
+		for _, id := range requested.RuntimeIDs {
+			if parsed, err := util.ParseUUID(id); err == nil {
+				id = uuidToString(parsed)
+			}
+			if !allowed[id] {
+				return http.StatusForbidden, nil, daemonws.ErrRuntimeScope
+			}
+		}
 	}
 	reqCtx := ctx
 	// A daemon-token connection is workspace-scoped: pin the daemon context so

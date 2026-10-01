@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -44,6 +45,10 @@ type taskWakeup struct {
 }
 
 func (d *Daemon) taskWakeupLoop(ctx context.Context, taskWakeups chan<- taskWakeup) {
+	if d.client.managed != nil {
+		d.managedTaskWakeupLoop(ctx, taskWakeups)
+		return
+	}
 	backoff := time.Second
 	runtimeSetCh, unsub := d.runtimeSet.Subscribe()
 	defer unsub()
@@ -97,27 +102,31 @@ func jitterDuration(d time.Duration) time.Duration {
 }
 
 func (d *Daemon) runTaskWakeupConnection(ctx context.Context, runtimeIDs []string, taskWakeups chan<- taskWakeup, runtimeSetCh <-chan struct{}) (time.Duration, error) {
+	return d.runTaskWakeupConnectionUsingTransport(ctx, d.client, d.wsRPC, &d.batchClaimUnsupported, "", runtimeIDs, taskWakeups, runtimeSetCh)
+}
+
+func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, client *Client, rpc *wsRPCClient, batchUnsupported *atomic.Bool, workspaceID string, runtimeIDs []string, taskWakeups chan<- taskWakeup, runtimeSetCh <-chan struct{}) (time.Duration, error) {
 	wsURL, err := taskWakeupURL(d.cfg.ServerBaseURL, runtimeIDs)
 	if err != nil {
 		return 0, err
 	}
 
 	headers := http.Header{}
-	if token := d.client.Token(); token != "" {
+	if token := client.Token(); token != "" {
 		headers.Set("Authorization", "Bearer "+token)
 	}
-	if d.client.platform != "" {
-		headers.Set("X-Client-Platform", d.client.platform)
+	if client.platform != "" {
+		headers.Set("X-Client-Platform", client.platform)
 	}
-	if d.client.version != "" {
-		headers.Set("X-Client-Version", d.client.version)
+	if client.version != "" {
+		headers.Set("X-Client-Version", client.version)
 	}
-	if d.client.os != "" {
-		headers.Set("X-Client-OS", d.client.os)
+	if client.os != "" {
+		headers.Set("X-Client-OS", client.os)
 	}
 	// Advertise the same capabilities as the HTTP path so a claim built over
 	// this WS connection gets identical capability gating (MUL-4257).
-	headers.Set("X-Client-Capabilities", daemonClientCapabilities())
+	headers.Set("X-Client-Capabilities", client.capabilities())
 
 	// A hand-built websocket.Dialer has Proxy == nil, which gorilla reads as
 	// "dial direct" — unlike websocket.DefaultDialer, it does not fall back to
@@ -140,7 +149,7 @@ func (d *Daemon) runTaskWakeupConnection(ctx context.Context, runtimeIDs []strin
 	defer conn.Close()
 	// HTTP heartbeats resume the moment WS detaches so the freshness window
 	// from a previous connection cannot keep them silenced past disconnect.
-	defer d.clearWSHeartbeatAcks()
+	defer d.clearManagedWSHeartbeatAcks(workspaceID, runtimeIDs)
 
 	d.logger.Info("task wakeup websocket connected", "runtimes", len(runtimeIDs))
 	signalTaskWakeup(taskWakeups, "")
@@ -177,7 +186,7 @@ func (d *Daemon) runTaskWakeupConnection(ctx context.Context, runtimeIDs []strin
 	// close(writes), and the sender holds sendMu across its non-blocking send.
 	var sendMu sync.Mutex
 	sendClosed := false
-	wsRPCGeneration := d.wsRPC.attach(func(frame []byte) (*wsOutbound, error) {
+	wsRPCGeneration := rpc.attach(func(frame []byte) (*wsOutbound, error) {
 		sendMu.Lock()
 		defer sendMu.Unlock()
 		if sendClosed {
@@ -193,7 +202,7 @@ func (d *Daemon) runTaskWakeupConnection(ctx context.Context, runtimeIDs []strin
 	})
 	// A (re)connect may be a freshly-upgraded server: re-probe the batch claim
 	// route rather than staying on the legacy fallback forever (MUL-4257).
-	d.batchClaimUnsupported.Store(false)
+	batchUnsupported.Store(false)
 
 	heartbeatCtx, cancelHeartbeat := context.WithCancel(ctx)
 	hbDone := make(chan struct{})
@@ -204,7 +213,7 @@ func (d *Daemon) runTaskWakeupConnection(ctx context.Context, runtimeIDs []strin
 
 	errCh := make(chan error, 1)
 	go func() {
-		errCh <- d.readTaskWakeupMessagesForConnection(conn, taskWakeups, wsRPCGeneration)
+		errCh <- d.readTaskWakeupMessagesUsingTransport(conn, taskWakeups, rpc, wsRPCGeneration, workspaceID)
 	}()
 
 	// Defer cleanup must shut goroutines down in this order:
@@ -349,7 +358,11 @@ func (d *Daemon) handleWSHeartbeatAck(ctx context.Context, ack *HeartbeatRespons
 }
 
 func (d *Daemon) handleWSHeartbeatAckForConnection(ctx context.Context, ack *HeartbeatResponse, wsRPCGeneration uint64) {
-	if ack == nil || ack.RuntimeID == "" {
+	d.handleWSHeartbeatAckUsingTransport(ctx, ack, d.wsRPC, wsRPCGeneration, "")
+}
+
+func (d *Daemon) handleWSHeartbeatAckUsingTransport(ctx context.Context, ack *HeartbeatResponse, rpc *wsRPCClient, wsRPCGeneration uint64, workspaceID string) {
+	if ack == nil || ack.RuntimeID == "" || !d.managedRuntimeBelongsToWorkspace(workspaceID, ack.RuntimeID) {
 		return
 	}
 	if ack.RuntimeGone {
@@ -358,7 +371,7 @@ func (d *Daemon) handleWSHeartbeatAckForConnection(ctx context.Context, ack *Hea
 	}
 	for _, capability := range ack.ServerCapabilities {
 		if capability == protocol.DaemonCapabilityRPCV1 {
-			d.wsRPC.markRPCV1Supported(wsRPCGeneration)
+			rpc.markRPCV1Supported(wsRPCGeneration)
 			break
 		}
 	}
@@ -371,6 +384,10 @@ func (d *Daemon) readTaskWakeupMessages(conn *websocket.Conn, taskWakeups chan<-
 }
 
 func (d *Daemon) readTaskWakeupMessagesForConnection(conn *websocket.Conn, taskWakeups chan<- taskWakeup, wsRPCGeneration uint64) error {
+	return d.readTaskWakeupMessagesUsingTransport(conn, taskWakeups, d.wsRPC, wsRPCGeneration, "")
+}
+
+func (d *Daemon) readTaskWakeupMessagesUsingTransport(conn *websocket.Conn, taskWakeups chan<- taskWakeup, rpc *wsRPCClient, wsRPCGeneration uint64, workspaceID string) error {
 	d.configureTaskWakeupReadLiveness(conn)
 	for {
 		_, raw, err := conn.ReadMessage()
@@ -394,6 +411,9 @@ func (d *Daemon) readTaskWakeupMessagesForConnection(conn *websocket.Conn, taskW
 					continue
 				}
 			}
+			if !d.managedRuntimeBelongsToWorkspace(workspaceID, payload.RuntimeID) {
+				continue
+			}
 			if payload.RuntimeID != "" {
 				d.logger.Debug("task wakeup received", "runtime_id", payload.RuntimeID, "task_id", payload.TaskID)
 			}
@@ -402,6 +422,9 @@ func (d *Daemon) readTaskWakeupMessagesForConnection(conn *websocket.Conn, taskW
 			var payload protocol.RuntimeProfilesChangedPayload
 			if err := json.Unmarshal(msg.Payload, &payload); err != nil {
 				d.logger.Debug("runtime profile refresh websocket invalid payload", "error", err)
+				continue
+			}
+			if workspaceID != "" && payload.WorkspaceID != workspaceID {
 				continue
 			}
 			if payload.WorkspaceID == "" {
@@ -419,6 +442,9 @@ func (d *Daemon) readTaskWakeupMessagesForConnection(conn *websocket.Conn, taskW
 				d.logger.Debug("pending work websocket invalid payload", "error", err)
 				continue
 			}
+			if !d.managedRuntimeBelongsToWorkspace(workspaceID, payload.RuntimeID) {
+				continue
+			}
 			if payload.RuntimeID == "" {
 				d.logger.Debug("pending work websocket missing runtime_id")
 				continue
@@ -432,14 +458,14 @@ func (d *Daemon) readTaskWakeupMessagesForConnection(conn *websocket.Conn, taskW
 				d.logger.Debug("ws heartbeat ack invalid payload", "error", err)
 				continue
 			}
-			d.handleWSHeartbeatAckForConnection(context.Background(), &ack, wsRPCGeneration)
+			d.handleWSHeartbeatAckUsingTransport(context.Background(), &ack, rpc, wsRPCGeneration, workspaceID)
 		case protocol.EventDaemonRPCResponse:
 			var resp protocol.RPCResponsePayload
 			if err := json.Unmarshal(msg.Payload, &resp); err != nil {
 				d.logger.Debug("ws rpc response invalid payload", "error", err)
 				continue
 			}
-			d.wsRPC.deliver(resp)
+			rpc.deliver(resp)
 		}
 	}
 }

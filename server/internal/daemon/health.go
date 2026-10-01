@@ -366,8 +366,16 @@ func (d *Daemon) shutdownHandler() http.HandlerFunc {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		if d.cfg.ManagementDeploymentID != "" {
+			if !d.managementAuthorized(w, r) {
+				return
+			}
+			d.requestManagedDrain(w, r)
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"status": "shutting down"})
+
 		if d.cancelFunc != nil {
 			// Cancel asynchronously so the response flushes first; otherwise
 			// srv.Close() races with the writer.
@@ -381,6 +389,8 @@ func (d *Daemon) shutdownHandler() http.HandlerFunc {
 func (d *Daemon) serveHealth(ctx context.Context, ln net.Listener, startedAt time.Time) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", d.healthHandler(startedAt))
+	mux.HandleFunc("/management/session", d.managementSessionHandler())
+	mux.HandleFunc("/management/handoff", d.managementHandoffHandler())
 	mux.HandleFunc("/shutdown", d.shutdownHandler())
 	mux.HandleFunc("/repo/checkout", d.repoCheckoutHandler())
 

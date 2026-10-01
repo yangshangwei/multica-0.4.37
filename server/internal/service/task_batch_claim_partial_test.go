@@ -15,25 +15,45 @@ import (
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
-// failNthBeginTxStarter fails the Nth Begin so a specific ClaimTask inside the
-// batch loop errors AFTER earlier ones have committed.
-type failNthBeginTxStarter struct {
+// failNthAgentClaimStarter fails the Nth agent lock, independent of the
+// transaction used to fence stale reclaims. Earlier committed claims must
+// remain returnable even when a later agent's claim fails.
+type failNthAgentClaimStarter struct {
 	inner  TxStarter
 	failOn int
 	mu     sync.Mutex
 	count  int
 }
 
-func (s *failNthBeginTxStarter) Begin(ctx context.Context) (pgx.Tx, error) {
-	s.mu.Lock()
-	s.count++
-	n := s.count
-	s.mu.Unlock()
-	if n == s.failOn {
-		return nil, fmt.Errorf("injected begin failure #%d", n)
+func (s *failNthAgentClaimStarter) Begin(ctx context.Context) (pgx.Tx, error) {
+	tx, err := s.inner.Begin(ctx)
+	if err != nil {
+		return nil, err
 	}
-	return s.inner.Begin(ctx)
+	return &failNthAgentClaimTx{Tx: tx, owner: s}, nil
 }
+
+type failNthAgentClaimTx struct {
+	pgx.Tx
+	owner *failNthAgentClaimStarter
+}
+
+func (tx *failNthAgentClaimTx) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	if strings.Contains(sql, "-- name: GetAgentForClaimUpdate") {
+		tx.owner.mu.Lock()
+		tx.owner.count++
+		n := tx.owner.count
+		tx.owner.mu.Unlock()
+		if n == tx.owner.failOn {
+			return agentClaimFailureRow{fmt.Errorf("injected agent claim failure #%d", n)}
+		}
+	}
+	return tx.Tx.QueryRow(ctx, sql, args...)
+}
+
+type agentClaimFailureRow struct{ err error }
+
+func (row agentClaimFailureRow) Scan(...any) error { return row.err }
 
 // candidateFailDBTX passes every statement through EXCEPT the batch candidate
 // SELECT, which it fails — simulating a candidate query error after step-2
@@ -63,7 +83,7 @@ func (f candidateFailDBTX) QueryRow(ctx context.Context, sql string, args ...int
 func TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure(t *testing.T) {
 	ctx := context.Background()
 	pool := newTaskClaimRacePool(t)
-	tx := &failNthBeginTxStarter{inner: pool, failOn: 2} // 1st agent claims, 2nd errors
+	tx := &failNthAgentClaimStarter{inner: pool, failOn: 2} // 1st agent claims, 2nd errors
 	svc := NewTaskService(db.New(pool), tx, nil, events.New())
 
 	rt1, rt2 := batchClaimFixture(t, ctx, pool)

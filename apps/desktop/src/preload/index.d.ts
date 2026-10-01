@@ -1,3 +1,4 @@
+import type { InstallationMetadataProof } from "../shared/managed-installation";
 import { ElectronAPI } from "@electron-toolkit/preload";
 import type { RuntimeConfig, RuntimeConfigResult } from "../shared/runtime-config";
 import type { DeviceIdentity } from "../shared/device-identity";
@@ -141,6 +142,10 @@ type DaemonReauthResult =
   | { ok: false; reason: "transient"; message: string };
 
 interface DaemonAPI {
+  endInstallationSession: () => Promise<void>;
+  getInstallationMetadata: () => Promise<InstallationMetadataProof | null>;
+  onInstallationMetadata: (callback: (value: InstallationMetadataProof | null) => void) => () => void;
+  refreshManagedWorkspaces: () => Promise<{ managed: boolean; accepted: boolean }>;
   start: () => Promise<{ success: boolean; error?: string }>;
   stop: () => Promise<{ success: boolean; error?: string }>;
   restart: () => Promise<{ success: boolean; error?: string }>;

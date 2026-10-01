@@ -187,9 +187,16 @@ type MessageKindRecorder interface {
 
 // Hub keeps daemon WebSocket connections indexed by runtime ID. Messages are
 // best-effort wakeup hints; the daemon still uses HTTP claim for correctness.
+// RuntimeAuthorizer checks persisted runtime ownership and managed binding scope.
+type RuntimeAuthorizer func(context.Context, ClientIdentity) error
+
+var ErrRuntimeScope = errors.New("daemon runtime scope is no longer authorized")
+
 type Hub struct {
-	passwordQueries *db.Queries
-	upgrader        websocket.Upgrader
+	runtimeAuthMu     sync.RWMutex
+	runtimeAuthorizer RuntimeAuthorizer
+	passwordQueries   *db.Queries
+	upgrader          websocket.Upgrader
 
 	mu          sync.RWMutex
 	clients     map[*client]bool
@@ -221,6 +228,21 @@ func (h *Hub) DisconnectUser(userID string) {
 	for _, conn := range connections {
 		conn.Close()
 	}
+}
+
+func (h *Hub) SetRuntimeAuthorizer(authorizer RuntimeAuthorizer) {
+	h.runtimeAuthMu.Lock()
+	defer h.runtimeAuthMu.Unlock()
+	h.runtimeAuthorizer = authorizer
+}
+func (h *Hub) authorizeRuntimeScope(ctx context.Context, identity ClientIdentity) error {
+	h.runtimeAuthMu.RLock()
+	authorizer := h.runtimeAuthorizer
+	h.runtimeAuthMu.RUnlock()
+	if authorizer == nil {
+		return nil
+	}
+	return authorizer(ctx, identity)
 }
 
 // SetPasswordQueries must be called before accepting connections.
@@ -342,6 +364,16 @@ func (h *Hub) HandleWebSocket(w http.ResponseWriter, r *http.Request, identity C
 		return
 	}
 
+	if err := h.authorizeRuntimeScope(r.Context(), identity); err != nil {
+		status := http.StatusServiceUnavailable
+		if errors.Is(err, ErrRuntimeScope) {
+			status = http.StatusForbidden
+		} else if errors.Is(err, auth.ErrPasswordSession) {
+			status = http.StatusUnauthorized
+		}
+		http.Error(w, "daemon runtime scope unavailable or invalid", status)
+		return
+	}
 	conn, err := h.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		slog.Error("daemon websocket upgrade failed", "error", err)
@@ -363,16 +395,19 @@ func (h *Hub) HandleWebSocket(w http.ResponseWriter, r *http.Request, identity C
 		rpcSem:   make(chan struct{}, maxInFlightRPCPerClient),
 	}
 	c.ctx, c.cancel = context.WithCancel(context.WithoutCancel(r.Context()))
-	if auth.PasswordMode() {
-		c.authorize = func() error {
-			ctx, cancel := context.WithTimeout(c.ctx, 5*time.Second)
-			defer cancel()
+	c.authorize = func() error {
+		ctx, cancel := context.WithTimeout(c.ctx, 5*time.Second)
+		defer cancel()
+		if auth.PasswordMode() {
 			current, err := auth.CheckPasswordToken(ctx, h.passwordQueries, rawToken, true)
-			if err == nil && current.Session != passwordIdentity.Session {
+			if err != nil {
+				return err
+			}
+			if current.Session != passwordIdentity.Session {
 				return auth.ErrPasswordSession
 			}
-			return err
 		}
+		return h.authorizeRuntimeScope(ctx, c.identity)
 	}
 	h.register(c)
 
