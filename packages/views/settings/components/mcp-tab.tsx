@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Loader2, Plus, Server } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -28,7 +28,12 @@ import type { WorkspaceMcpServer } from "@multica/core/types";
 import { McpServerDialog } from "../../agents/components/tabs/mcp-server-dialog";
 import type { ManagedMcpServer } from "../../agents/components/tabs/mcp-config-model";
 import { McpServerRow } from "../../common/mcp-server-row";
+import { McpTemplateIcon } from "../../common/mcp-template-icon";
 import { useT } from "../../i18n";
+import {
+  CollectionPageHeader,
+  CollectionPageHeaderAction,
+} from "../../layout/collection-page";
 import { McpLibraryCatalog } from "../../mcp/mcp-market";
 import { McpSetupDialog } from "../../mcp/mcp-setup-dialog";
 import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
@@ -48,13 +53,44 @@ import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
  *    complete configuration again. Renaming stays separate and never touches
  *    the write-only entry.
  */
-export function McpTab() {
+export function McpTab({ presentation = "settings" }: {
+  presentation?: "page" | "settings";
+}) {
   const workspace = useCurrentWorkspace();
   const wsId = workspace?.id ?? "";
-  return <McpWorkspaceTab key={wsId} wsId={wsId} />;
+  return <McpWorkspaceTab key={wsId} wsId={wsId} presentation={presentation} />;
 }
 
-function McpWorkspaceTab({ wsId }: { wsId: string }) {
+function McpWorkspaceLayout({ presentation, action, children }: {
+  presentation: "page" | "settings";
+  action: ReactNode;
+  children: ReactNode;
+}) {
+  const { t } = useT("settings");
+  if (presentation === "settings") {
+    return (
+      <SettingsTab title={t(($) => $.mcp.title)} description={t(($) => $.mcp.description)}>
+        {children}
+      </SettingsTab>
+    );
+  }
+  return (
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11">
+      <CollectionPageHeader
+        icon={Server}
+        title={t(($) => $.mcp.title)}
+        description={t(($) => $.mcp.description)}
+        actions={action}
+      />
+      {children}
+    </div>
+  );
+}
+
+function McpWorkspaceTab({ wsId, presentation }: {
+  wsId: string;
+  presentation: "page" | "settings";
+}) {
   const { t } = useT("settings");
   const currentMember = useCurrentMember(wsId);
   const canManage =
@@ -202,12 +238,30 @@ function McpWorkspaceTab({ wsId }: { wsId: string }) {
     }
   };
 
+  const openCustomEditor = () => {
+    cancelRename();
+    setEditingServer(null);
+    setPresetDraft(null);
+    setEditorOpen(true);
+  };
+  const customAction = !canManage ? null : presentation === "page" ? (
+    <CollectionPageHeaderAction
+      icon={Plus}
+      label={t(($) => $.mcp.add_server)}
+      disabled={renamePending}
+      onClick={openCustomEditor}
+    />
+  ) : (
+    <Button size="sm" variant="outline" disabled={renamePending} onClick={openCustomEditor}>
+      <Plus aria-hidden className="size-4" />
+      {t(($) => $.mcp.add_server)}
+    </Button>
+  );
+
   return (
-    <SettingsTab
-      title={t(($) => $.mcp.title)}
-      description={t(($) => $.mcp.description)}
-    >
+    <McpWorkspaceLayout presentation={presentation} action={customAction}>
       <McpLibraryCatalog
+        presentation={presentation}
         workspaceId={wsId}
         servers={serversQuery.data}
         loaded={
@@ -222,24 +276,7 @@ function McpWorkspaceTab({ wsId }: { wsId: string }) {
           setPresetDraft(preset);
           setEditorOpen(true);
         }}
-        customAction={
-          canManage ? (
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={renamePending}
-              onClick={() => {
-                cancelRename();
-                setEditingServer(null);
-                setPresetDraft(null);
-                setEditorOpen(true);
-              }}
-            >
-              <Plus className="h-4 w-4" />
-              {t(($) => $.mcp.add_server)}
-            </Button>
-          ) : null
-        }
+        customAction={presentation === "settings" ? customAction : null}
       >
         <SettingsSection
           title={t(($) => $.mcp.servers_title)}
@@ -280,6 +317,7 @@ function McpWorkspaceTab({ wsId }: { wsId: string }) {
                     key={server.id}
                     name={server.name}
                     transport={server.transport}
+                    icon={server.template_key ? <McpTemplateIcon templateKey={server.template_key} /> : undefined}
                     status={
                       server.enabled === false ? (
                         <Badge variant="secondary">
@@ -425,6 +463,6 @@ function McpWorkspaceTab({ wsId }: { wsId: string }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </SettingsTab>
+    </McpWorkspaceLayout>
   );
 }

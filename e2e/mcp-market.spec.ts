@@ -9,13 +9,34 @@ interface ServerSummary {
   enabled?: boolean;
 }
 
+const passwordAccounts: { api: TestApiClient; username: string }[] = [];
+test.afterEach(async () => {
+  for (const { api, username } of passwordAccounts.splice(0)) await api.deletePasswordAccount(username);
+});
+
 async function setup(page: Page) {
   const api = new TestApiClient();
   const slug = `mcp-market-${Date.now().toString(36)}-${process.pid}`;
-  await api.login(`${slug}@multica.ai`, "MCP market tester");
+  if (process.env.E2E_PASSWORD_AUTH === "1") {
+    const apiBase = process.env.NEXT_PUBLIC_API_URL!;
+    expect(["localhost", "127.0.0.1"]).toContain(new URL(apiBase).hostname);
+    const username = `mcp_${Date.now()}_${process.pid}`;
+    const password = "mcp-test-password";
+    const registration = await fetch(`${apiBase}/auth/register`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, name: "MCP market tester" }),
+    });
+    expect(registration.status).toBe(201);
+    passwordAccounts.push({ api, username });
+    await api.loginPassword(username, password);
+    await api.requestJSON("/api/me/onboarding", { method: "PATCH", body: { questionnaire: { source: ["friends_colleagues"] } } });
+    await api.requestJSON("/api/me/onboarding/complete", { method: "POST" });
+  } else {
+    await api.login(`${slug}@multica.ai`, "MCP market tester");
+    await api.markUserOnboarded();
+  }
   const workspace = await api.ensureWorkspace("MCP market workspace", slug);
   expect(workspace.slug).toBe(slug);
-  await api.markUserOnboarded();
   await api.requestJSON("/api/me", { method: "PATCH", body: { language: "en" } });
   const runtime = await api.seedProjectRuntime();
   const agents = [];
@@ -54,6 +75,48 @@ async function expectDialogButtonFits(page: Page, name: string) {
   })).toBe(true);
 }
 
+test("uses the collection canvas and adapts template columns to the available width", async ({ page }, info) => {
+  test.setTimeout(120_000);
+  const { api, workspace, slug } = await setup(page);
+  try {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    for (const route of ["agents", "skills"]) {
+      await page.goto(`/${slug}/${route}`);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await capture(page, info, `reference-${route}`);
+    }
+    await page.goto(`/${slug}/mcp`);
+    await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
+    const header = page.locator("header").filter({ has: page.getByRole("heading", { level: 1, name: "MCP", exact: true }) });
+    await expect(header.getByRole("button", { name: "Add custom server", exact: true })).toBeVisible();
+    const market = page.getByTestId("mcp-market");
+    const cards = market.locator(".grid > div");
+    await expect(cards).toHaveCount(3);
+    for (const [width, columns] of [[1440, 3], [900, 2], [390, 1]]) {
+      await page.setViewportSize({ width: width!, height: 1000 });
+      await expect.poll(async () => cards.evaluateAll((elements) => {
+        const first = elements[0]!.getBoundingClientRect();
+        return elements.filter((element) => Math.abs(element.getBoundingClientRect().top - first.top) < 2).length;
+      })).toBe(columns);
+      await capture(page, info, `collection-dark-${width}`);
+    }
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
+    await page.reload();
+    await expect(market.getByRole("button", { name: /Playwright/ })).toBeVisible();
+    await page.evaluate(() => {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+      document.documentElement.style.colorScheme = "light";
+    });
+    await capture(page, info, "collection-chinese-light-wide");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await capture(page, info, "collection-chinese-light-narrow");
+  } finally {
+    await api.deleteFeatureWorkspace(workspace.id);
+  }
+});
+
 test("creates all three recipes, preserves source after rename, and reuses an instance from an agent", async ({ page }, info) => {
   test.setTimeout(180_000);
   const { api, workspace, agents, slug } = await setup(page);
@@ -67,13 +130,20 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     await capture(page, info, "market-wide");
 
+    const templateIcons = new Map<string, { drawing: string; color: string; background: string }>();
     for (const [key, title] of [
       ["chrome-devtools", "Chrome DevTools"],
       ["playwright", "Playwright"],
       ["sequential-thinking", "Sequential Thinking"],
     ]) {
       await marketTab.click();
-      await page.getByRole("button", { name: `View configuration: ${title}`, exact: true }).click();
+      const preview = page.getByRole("button", { name: `View configuration: ${title}`, exact: true });
+      templateIcons.set(key!, await preview.locator("svg").first().evaluate((icon) => ({
+        drawing: icon.innerHTML,
+        color: getComputedStyle(icon).color,
+        background: getComputedStyle(icon.parentElement!).backgroundColor,
+      })));
+      await preview.click();
       const dialog = page.getByRole("dialog");
       await dialog.getByRole("textbox", { name: "Configuration name", exact: true }).fill(key!);
       if (key === "chrome-devtools") await capture(page, info, "setup-wide");
@@ -105,6 +175,16 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     const renamed = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.id === playwright.id);
     expect(renamed).toMatchObject({ name: "browser-production", template_key: "playwright" });
     await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();
+    for (const saved of servers) {
+      const name = saved.id === playwright.id ? "browser-production" : saved.name;
+      const row = page.getByRole("listitem").filter({ has: page.getByText(name, { exact: true }) });
+      await expect(row.getByText("STDIO", { exact: true })).toBeVisible();
+      expect(await row.locator("svg").first().evaluate((icon) => ({
+        drawing: icon.innerHTML,
+        color: getComputedStyle(icon).color,
+        background: getComputedStyle(icon.parentElement!).backgroundColor,
+      }))).toEqual(templateIcons.get(saved.template_key!));
+    }
     await capture(page, info, "workspace-wide");
     await api.requestJSON(`/api/agents/${agents[0]!.id}/mcp-servers/${playwright.id}/enabled`, { method: "PUT", body: { enabled: false } });
     await page.getByRole("button", { name: "Assign browser-production", exact: true }).click();
@@ -155,6 +235,8 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     await page.reload();
     await page.getByRole("tab", { name: "MCP 市场", exact: true }).click();
     await capture(page, info, "market-chinese-wide");
+    await page.getByRole("tab", { name: "共享配置", exact: true }).click();
+    await capture(page, info, "workspace-chinese-wide");
     expect(errors).toEqual([]);
   } finally {
     await api.deleteFeatureWorkspace(workspace.id);

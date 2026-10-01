@@ -119,6 +119,7 @@ export function McpRemoveButton({
 export function McpServerRow({
   name,
   transport,
+  icon,
   status,
   details,
   canManage,
@@ -131,6 +132,7 @@ export function McpServerRow({
 }: {
   name: string;
   transport: string;
+  icon?: ReactNode;
   status?: ReactNode;
   details?: ReactNode;
   canManage: boolean;
@@ -145,7 +147,7 @@ export function McpServerRow({
 
   return (
     <li className="group flex min-h-16 items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/30">
-      <McpTransportIcon transport={transport} />
+      {icon ?? <McpTransportIcon transport={transport} />}
 
       <div className="min-w-0 flex-1 has-[form]:space-y-2">
         <div className="flex min-w-0 items-center gap-2">

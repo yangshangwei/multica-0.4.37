@@ -18,13 +18,14 @@ const mocks = vi.hoisted(() => ({
   create: vi.fn(),
   assign: vi.fn(),
   custom: vi.fn(),
-  templates: [] as unknown[],
+  templates: [] as unknown[] | undefined,
+  templatesPending: false,
   agents: [] as unknown[],
 }));
 vi.mock("../settings/hooks/use-mcp-server-templates", () => ({
   useMcpServerTemplates: () => ({
     data: mocks.templates,
-    isPending: false,
+    isPending: mocks.templatesPending,
     isError: false,
     refetch: vi.fn(),
   }),
@@ -90,6 +91,7 @@ function renderCatalog(
 describe("MCP market", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mocks.templatesPending = false;
     mocks.agents = [
       { id: "a", name: "Ada" },
       { id: "b", name: "Ben" },
@@ -109,6 +111,23 @@ describe("MCP market", () => {
       transport: "stdio",
     });
     mocks.assign.mockResolvedValue({ succeeded: ["a", "b"], failed: [] });
+  });
+  it("keeps inventory counts separate from filtered template results", async () => {
+    const user = userEvent.setup();
+    mocks.templates!.push({ ...template, key: "unusable", config: {} });
+    renderCatalog();
+    expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveTextContent("Shared configurations0");
+    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market2");
+    await user.click(screen.getByRole("button", { name: "Reasoning" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Templates found: 1");
+    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market2");
+  });
+  it("does not present unknown inventories as zero counts", () => {
+    mocks.templates = undefined;
+    mocks.templatesPending = true;
+    renderCatalog({ servers: undefined, loaded: false });
+    expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveTextContent(/^Shared configurations$/);
+    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent(/^MCP market$/);
   });
   it("defaults a loaded empty workspace to market and lets members browse without creation", async () => {
     const user = userEvent.setup();

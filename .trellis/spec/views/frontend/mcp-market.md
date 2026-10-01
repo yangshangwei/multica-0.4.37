@@ -72,8 +72,29 @@ three existing keyless templates; it is not an external registry or plugin store
 - Coarse-pointer controls have at least 44px targets within each MCP surface,
   including portaled dialogs. Expand checkbox hit areas and labels together;
   retain compact desktop controls. Dialog headings and agent names wrap long words.
-- Use the catalog container width to choose one or two columns, rather than the
-  viewport width: the same catalog also appears inside agent discovery dialogs.
+- The standalone MCP route uses `CollectionPageHeader` and the full dashboard
+  canvas. `McpTab` selects page/settings presentation around the same workspace
+  controller; do not duplicate mutations or nest the settings title inside the
+  standalone page. The page owns scrolling and 16px/24px content gutters; settings
+  and discovery dialogs retain their embedded scrolling owners.
+- Use the named catalog container width to choose one, two (`@2xl`) or three
+  (`@5xl`) columns, rather than viewport width: the same catalog also appears
+  inside agent discovery dialogs. Template cards use skill-card typography and
+  40px rounded-square Lucide tiles from the shared registry. Browser tools share
+  the existing blue palette with distinct Bug/Workflow shapes; reasoning uses
+  Brain with the existing purple palette. This is presentation, not skill-category
+  metadata on MCP records.
+- Market cards and template-sourced shared configurations use the same
+  `common/mcp-template-icon.tsx` presentation, keyed by `template_key`, not the
+  editable instance name. Renaming retains that icon; replacing the full config
+  clears provenance and restores the transport icon. Custom/legacy entries
+  without a template key keep their transport icon, and transport text remains
+  visible for every row. Do not fetch secret configuration to resolve an icon.
+- Keep the query owner above the library tabs so market counts and cards share
+  one query result. Independent discovery mounts its own catalog query wrapper.
+  Tab names stay stable for accessibility; inventory counts exclude unusable
+  templates, remain independent of filters, and are omitted while unknown.
+  Show the filtered result count visibly in the existing live status region.
 
 ## Evidence
 

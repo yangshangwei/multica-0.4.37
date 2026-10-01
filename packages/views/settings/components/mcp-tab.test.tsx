@@ -8,6 +8,7 @@ import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
 import enSettings from "../../locales/en/settings.json";
 import enAgents from "../../locales/en/agents.json";
+import enLayout from "../../locales/en/layout.json";
 
 const mockCreate = vi.hoisted(() => vi.fn());
 const mockUpdate = vi.hoisted(() => vi.fn());
@@ -55,9 +56,10 @@ vi.mock("@multica/core/permissions", () => ({
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import { McpTab } from "./mcp-tab";
+import { McpPage } from "../../mcp/mcp-page";
 
 const TEST_RESOURCES = {
-  en: { common: enCommon, settings: enSettings, agents: enAgents },
+  en: { common: enCommon, settings: enSettings, agents: enAgents, layout: enLayout },
 };
 
 function Wrapper({ children }: { children: ReactNode }) {
@@ -81,6 +83,43 @@ describe("McpTab", () => {
     mockCreate.mockResolvedValue({});
     mockUpdate.mockResolvedValue({});
     mockDelete.mockResolvedValue({});
+  });
+
+  it("gives the standalone page one heading and opens the custom editor from its header", async () => {
+    const user = userEvent.setup();
+    render(<McpPage />, { wrapper: Wrapper });
+
+    expect(screen.getAllByRole("heading", { name: "MCP" })).toHaveLength(1);
+    const header = screen.getByRole("heading", { level: 1, name: "MCP" }).closest("header")!;
+    const add = screen.getByRole("button", { name: enSettings.mcp.add_server });
+    expect(header).toContainElement(add);
+    await user.click(add);
+    expect(screen.getByRole("dialog")).toBeVisible();
+  });
+
+  it.each([
+    ["chrome-devtools", "bug"],
+    ["playwright", "workflow"],
+    ["sequential-thinking", "brain"],
+  ])("keeps the %s template icon after an instance is renamed", (templateKey, icon) => {
+    data.servers = [server({ name: "renamed-tool", transport: "stdio", template_key: templateKey })];
+    const view = render(<McpTab />, { wrapper: Wrapper });
+    const row = screen.getByText("renamed-tool", { exact: true }).closest("li")!;
+    expect(row.querySelector(`svg.lucide-${icon}`)).not.toBeNull();
+    expect(screen.getByText("STDIO", { exact: true })).toBeVisible();
+
+    // Replacing a template's complete configuration clears its provenance.
+    data.servers = [server({ name: "renamed-tool", transport: "stdio", template_key: null })];
+    view.rerender(<McpTab />);
+    expect(row.querySelector(`svg.lucide-${icon}`)).toBeNull();
+    expect(screen.getByRole("img", { name: "STDIO" })).toBeVisible();
+  });
+
+  it("does not infer template identity from a custom configuration name", () => {
+    data.servers = [server({ name: "playwright", transport: "http" })];
+    render(<McpTab />, { wrapper: Wrapper });
+    expect(screen.getByRole("img", { name: "Streamable HTTP" })).toBeVisible();
+    expect(screen.getByText("playwright", { exact: true }).closest("li")!.querySelector("svg.lucide-workflow")).toBeNull();
   });
 
   it("shows each transport as visible text beside its labeled icon", async () => {

@@ -392,7 +392,8 @@ export class TestApiClient {
 
   /** A registered-looking runtime with no process, credentials or model attached. */
   async seedProjectRuntime(): Promise<{ id: string; daemon_id: string }> {
-    if (!this.workspaceId || !this.email) throw new Error("Runtime fixture requires an authenticated workspace");
+    if (!this.workspaceId || !this.token) throw new Error("Runtime fixture requires an authenticated workspace");
+    const owner = await this.requestJSON<{ id: string }>("/api/me");
     const client = new pg.Client(DATABASE_URL);
     await client.connect();
     try {
@@ -402,8 +403,8 @@ export class TestApiClient {
            device_info, metadata, last_seen_at, owner_id, visibility)
          SELECT $1, gen_random_uuid(), 'E2E isolated runtime', 'local', 'codex', 'online',
            'Test fixture; no daemon process', '{"capabilities":["rpc-v1"],"cli_version":"0.4.40"}'::jsonb,
-           now(), id, 'private' FROM "user" WHERE email = $2 RETURNING id, daemon_id`,
-        [this.workspaceId, this.email],
+           now(), id, 'private' FROM "user" WHERE id = $2 RETURNING id, daemon_id`,
+        [this.workspaceId, owner.id],
       );
       if (!result.rows[0]) throw new Error("Runtime fixture owner was not found");
       return result.rows[0];
