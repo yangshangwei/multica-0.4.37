@@ -1,0 +1,43 @@
+{
+  "id": "platform-admin-observability",
+  "name": "platform-admin-observability",
+  "title": "S06 总览、告警与服务健康",
+  "description": "从统一口径总览发现异常，使用去重告警和真实处置结果完成管理闭环。",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-01",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-01-platform-admin-console",
+  "relatedFiles": [
+    ".trellis/tasks/10-01-platform-admin-observability/prd.md",
+    ".trellis/tasks/10-01-platform-admin-observability/design.md",
+    ".trellis/tasks/10-01-platform-admin-observability/implement.md",
+    ".trellis/tasks/10-01-platform-admin-observability/implement.jsonl",
+    ".trellis/tasks/10-01-platform-admin-observability/check.jsonl"
+  ],
+  "notes": "",
+  "meta": {
+    "slice": "S06",
+    "depends_on": "S02,S03,S04",
+    "implementation_authorized": false,
+    "dependency_tasks": [
+      ".trellis/tasks/10-01-platform-admin-installations",
+      ".trellis/tasks/10-01-platform-admin-executions",
+      ".trellis/tasks/10-01-platform-admin-controls"
+    ],
+    "parent_acceptance": "AC09、AC10",
+    "planning_only": true
+  }
+}

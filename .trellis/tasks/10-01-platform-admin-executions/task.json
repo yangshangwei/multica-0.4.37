@@ -1,0 +1,41 @@
+{
+  "id": "platform-admin-executions",
+  "name": "platform-admin-executions",
+  "title": "S03 全局任务与执行查询",
+  "description": "按权限查询全部业务任务和执行元数据，区分来源、尝试及目标且不泄露私有内容。",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-01",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-01-platform-admin-console",
+  "relatedFiles": [
+    ".trellis/tasks/10-01-platform-admin-executions/prd.md",
+    ".trellis/tasks/10-01-platform-admin-executions/design.md",
+    ".trellis/tasks/10-01-platform-admin-executions/implement.md",
+    ".trellis/tasks/10-01-platform-admin-executions/implement.jsonl",
+    ".trellis/tasks/10-01-platform-admin-executions/check.jsonl"
+  ],
+  "notes": "",
+  "meta": {
+    "slice": "S03",
+    "depends_on": "S01",
+    "implementation_authorized": false,
+    "dependency_tasks": [
+      ".trellis/tasks/10-01-platform-admin-access"
+    ],
+    "parent_acceptance": "AC06、AC10",
+    "planning_only": true
+  }
+}

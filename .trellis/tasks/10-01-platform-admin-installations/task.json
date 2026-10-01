@@ -1,0 +1,41 @@
+{
+  "id": "platform-admin-installations",
+  "name": "platform-admin-installations",
+  "title": "S02 可信终端台账与状态上报",
+  "description": "把已验证安装实例、账号、daemon和runtime关联为可查询台账，分别呈现活跃、连接与执行状态。",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-01",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-01-platform-admin-console",
+  "relatedFiles": [
+    ".trellis/tasks/10-01-platform-admin-installations/prd.md",
+    ".trellis/tasks/10-01-platform-admin-installations/design.md",
+    ".trellis/tasks/10-01-platform-admin-installations/implement.md",
+    ".trellis/tasks/10-01-platform-admin-installations/implement.jsonl",
+    ".trellis/tasks/10-01-platform-admin-installations/check.jsonl"
+  ],
+  "notes": "",
+  "meta": {
+    "slice": "S02",
+    "depends_on": "S01",
+    "implementation_authorized": false,
+    "dependency_tasks": [
+      ".trellis/tasks/10-01-platform-admin-access"
+    ],
+    "parent_acceptance": "AC04、AC05、AC12",
+    "planning_only": true
+  }
+}

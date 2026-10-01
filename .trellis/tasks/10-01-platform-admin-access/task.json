@@ -1,0 +1,40 @@
+{
+  "id": "platform-admin-access",
+  "name": "platform-admin-access",
+  "title": "S01 平台身份权限、组织基础与后台入口",
+  "description": "同一账号通过严格平台授权进入后台，普通用户和机器凭据无法获得管理能力。",
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-01",
+  "completedAt": null,
+  "branch": "feat/platform-admin-console",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-platform-admin",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-01-platform-admin-console",
+  "relatedFiles": [
+    ".trellis/tasks/10-01-platform-admin-access/prd.md",
+    ".trellis/tasks/10-01-platform-admin-access/design.md",
+    ".trellis/tasks/10-01-platform-admin-access/implement.md",
+    ".trellis/tasks/10-01-platform-admin-access/implement.jsonl",
+    ".trellis/tasks/10-01-platform-admin-access/check.jsonl"
+  ],
+  "notes": "",
+  "meta": {
+    "slice": "S01",
+    "depends_on": "",
+    "implementation_authorized": true,
+    "dependency_tasks": [],
+    "parent_acceptance": "AC01、AC02、AC11",
+    "planning_only": false,
+    "authorization_source": "User explicitly approved implementation from S01 on 2026-10-01"
+  }
+}

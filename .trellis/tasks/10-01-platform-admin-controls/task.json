@@ -1,0 +1,43 @@
+{
+  "id": "platform-admin-controls",
+  "name": "platform-admin-controls",
+  "title": "S04 执行取消、接单门禁与操作回执",
+  "description": "单次取消及停止/恢复接单具备服务端门禁、原子审计、幂等和真实确认结果。",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-01",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-01-platform-admin-console",
+  "relatedFiles": [
+    ".trellis/tasks/10-01-platform-admin-controls/prd.md",
+    ".trellis/tasks/10-01-platform-admin-controls/design.md",
+    ".trellis/tasks/10-01-platform-admin-controls/implement.md",
+    ".trellis/tasks/10-01-platform-admin-controls/implement.jsonl",
+    ".trellis/tasks/10-01-platform-admin-controls/check.jsonl"
+  ],
+  "notes": "",
+  "meta": {
+    "slice": "S04",
+    "depends_on": "S01,S02,S03",
+    "implementation_authorized": false,
+    "dependency_tasks": [
+      ".trellis/tasks/10-01-platform-admin-access",
+      ".trellis/tasks/10-01-platform-admin-installations",
+      ".trellis/tasks/10-01-platform-admin-executions"
+    ],
+    "parent_acceptance": "AC07、AC08",
+    "planning_only": true
+  }
+}

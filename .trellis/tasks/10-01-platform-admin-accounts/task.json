@@ -1,0 +1,41 @@
+{
+  "id": "platform-admin-accounts",
+  "name": "platform-admin-accounts",
+  "title": "S05 账号管理、恢复与凭据撤销",
+  "description": "具名管理员在密码复核和审计下管理账号，目标凭据全路径撤销且保留业务历史。",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-01",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-01-platform-admin-console",
+  "relatedFiles": [
+    ".trellis/tasks/10-01-platform-admin-accounts/prd.md",
+    ".trellis/tasks/10-01-platform-admin-accounts/design.md",
+    ".trellis/tasks/10-01-platform-admin-accounts/implement.md",
+    ".trellis/tasks/10-01-platform-admin-accounts/implement.jsonl",
+    ".trellis/tasks/10-01-platform-admin-accounts/check.jsonl"
+  ],
+  "notes": "",
+  "meta": {
+    "slice": "S05",
+    "depends_on": "S01",
+    "implementation_authorized": false,
+    "dependency_tasks": [
+      ".trellis/tasks/10-01-platform-admin-access"
+    ],
+    "parent_acceptance": "AC03、AC11",
+    "planning_only": true
+  }
+}

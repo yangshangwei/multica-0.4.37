@@ -1,0 +1,46 @@
+{
+  "id": "platform-admin-acceptance",
+  "name": "platform-admin-acceptance",
+  "title": "S07 集成验收、容量与发布演练",
+  "description": "用可复现证据验证安全、兼容、性能和可恢复发布，汇总差异而非只检查页面存在。",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-01",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-01-platform-admin-console",
+  "relatedFiles": [
+    ".trellis/tasks/10-01-platform-admin-acceptance/prd.md",
+    ".trellis/tasks/10-01-platform-admin-acceptance/design.md",
+    ".trellis/tasks/10-01-platform-admin-acceptance/implement.md",
+    ".trellis/tasks/10-01-platform-admin-acceptance/implement.jsonl",
+    ".trellis/tasks/10-01-platform-admin-acceptance/check.jsonl"
+  ],
+  "notes": "",
+  "meta": {
+    "slice": "S07",
+    "depends_on": "S01,S02,S03,S04,S05,S06",
+    "implementation_authorized": false,
+    "dependency_tasks": [
+      ".trellis/tasks/10-01-platform-admin-access",
+      ".trellis/tasks/10-01-platform-admin-installations",
+      ".trellis/tasks/10-01-platform-admin-executions",
+      ".trellis/tasks/10-01-platform-admin-controls",
+      ".trellis/tasks/10-01-platform-admin-accounts",
+      ".trellis/tasks/10-01-platform-admin-observability"
+    ],
+    "parent_acceptance": "AC01–AC13",
+    "planning_only": true
+  }
+}
