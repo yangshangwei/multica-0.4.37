@@ -5,7 +5,13 @@
 The shared workspace MCP page and Settings MCP tab use `McpLibraryCatalog`.
 The agent MCP tab opens `McpAgentDiscovery`, which shows existing workspace
 instances before the same template catalog. The first catalog contains the
-three existing keyless templates; it is not an external registry or plugin store.
+five reviewed keyless templates; it is not an external registry or plugin store.
+The documentation category contains Microsoft Learn and DeepWiki remote HTTP
+recipes. Show their outbound-network and public-content requirements before save;
+do not describe their presence in the catalog as runtime connectivity. New
+category labels ship in English/Chinese; key-based icons remain consistent for
+market cards and saved instances. Publishing rules and the offline
+`make check-mcp-catalog` gate are documented in `docs/mcp-catalog-publishing.md`.
 
 ## Identity and configuration
 
@@ -104,6 +110,6 @@ three existing keyless templates; it is not an external registry or plugin store
   responses, explicit workspace identity and failed-operation recovery.
 - `server/internal/handler/workspace_mcp_template_test.go`: recipe validation,
   provenance lifecycle, write-only summaries and human permission gates.
-- `e2e/mcp-market.spec.ts`: real API setup for all three recipes, rename, resume,
+- `e2e/mcp-market.spec.ts`: real API setup for all five recipes, rename, resume,
   contextual reuse, partial failure and a member-owned agent; no real provider
   process or MCP tool execution is started by these tests.

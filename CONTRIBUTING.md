@@ -359,6 +359,10 @@ That logic lives in `scripts/ensure-postgres.sh`.
 
 ## Testing
 
+For curated MCP recipes, run `make check-mcp-catalog` before the broader checks.
+See [MCP catalog publishing](docs/mcp-catalog-publishing.md) for official-source
+review, recipe versions, release verification and withdrawal behavior.
+
 Run all local checks:
 
 ```bash

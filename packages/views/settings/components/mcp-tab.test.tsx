@@ -98,21 +98,23 @@ describe("McpTab", () => {
   });
 
   it.each([
-    ["chrome-devtools", "bug"],
-    ["playwright", "workflow"],
-    ["sequential-thinking", "brain"],
-  ])("keeps the %s template icon after an instance is renamed", (templateKey, icon) => {
-    data.servers = [server({ name: "renamed-tool", transport: "stdio", template_key: templateKey })];
+    ["chrome-devtools", "bug", "stdio", "STDIO"],
+    ["playwright", "workflow", "stdio", "STDIO"],
+    ["sequential-thinking", "brain", "stdio", "STDIO"],
+    ["microsoft-learn", "book-open", "http", "Streamable HTTP"],
+    ["deepwiki", "search", "http", "Streamable HTTP"],
+  ])("keeps the %s template icon after an instance is renamed", (templateKey, icon, transport, label) => {
+    data.servers = [server({ name: "renamed-tool", transport, template_key: templateKey })];
     const view = render(<McpTab />, { wrapper: Wrapper });
     const row = screen.getByText("renamed-tool", { exact: true }).closest("li")!;
     expect(row.querySelector(`svg.lucide-${icon}`)).not.toBeNull();
-    expect(screen.getByText("STDIO", { exact: true })).toBeVisible();
+    expect(screen.getByText(label!, { exact: true })).toBeVisible();
 
     // Replacing a template's complete configuration clears its provenance.
-    data.servers = [server({ name: "renamed-tool", transport: "stdio", template_key: null })];
+    data.servers = [server({ name: "renamed-tool", transport, template_key: null })];
     view.rerender(<McpTab />);
     expect(row.querySelector(`svg.lucide-${icon}`)).toBeNull();
-    expect(screen.getByRole("img", { name: "STDIO" })).toBeVisible();
+    expect(screen.getByRole("img", { name: label })).toBeVisible();
   });
 
   it("does not infer template identity from a custom configuration name", () => {

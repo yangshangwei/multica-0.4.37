@@ -160,6 +160,7 @@ function McpTemplateCatalogContent({
     { value: "all", label: t(($) => $.mcp.market.all) },
     { value: "browser", label: t(($) => $.mcp.market.browser) },
     { value: "reasoning", label: t(($) => $.mcp.market.reasoning) },
+    { value: "documentation", label: t(($) => $.mcp.market.documentation_category) },
   ];
   return (
     <div className="@container/mcp-market space-y-4" data-testid="mcp-market">

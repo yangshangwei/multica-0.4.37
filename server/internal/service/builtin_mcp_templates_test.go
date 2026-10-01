@@ -1,12 +1,116 @@
 package service
 
 import (
+	"net/url"
 	"regexp"
 	"strings"
 	"testing"
 )
 
 var mcpTemplateKeyPattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
+
+func TestMcpServerTemplates_PublicDocumentation(t *testing.T) {
+	want := map[string]string{
+		"microsoft-learn": "https://learn.microsoft.com/api/mcp",
+		"deepwiki":        "https://mcp.deepwiki.com/mcp",
+	}
+	for _, template := range McpServerTemplates() {
+		endpoint, ok := want[template.Key]
+		if !ok {
+			continue
+		}
+		if template.Category != "documentation" || template.Version != "1" {
+			t.Errorf("%s: expected documentation recipe 1", template.Key)
+		}
+		if len(template.Config) != 2 || template.Config["type"] != "http" || template.Config["url"] != endpoint {
+			t.Errorf("%s: expected the official keyless HTTP configuration, got %v", template.Key, template.Config)
+		}
+		delete(want, template.Key)
+	}
+	for key := range want {
+		t.Errorf("reviewed public documentation recipe %q is missing", key)
+	}
+}
+
+// This is the offline publishing gate for compiled catalog content. Do not use
+// localization fallback to conceal missing copy, or call live providers here.
+func TestMcpServerTemplates_PublishingContract(t *testing.T) {
+	versionPattern := regexp.MustCompile(`^[1-9][0-9]*$`)
+	placeholderPattern := regexp.MustCompile(`\$\{|\{\{|<[^>]+>`)
+	for _, template := range McpServerTemplates() {
+		t.Run(template.Key, func(t *testing.T) {
+			if !versionPattern.MatchString(template.Version) {
+				t.Errorf("recipe version must be a positive integer, got %q", template.Version)
+			}
+			switch template.Category {
+			case "browser", "reasoning", "documentation":
+			default:
+				t.Errorf("category %q needs a shared UI label before publication", template.Category)
+			}
+			for _, language := range TemplateLanguages {
+				if strings.TrimSpace(template.Titles[language]) == "" || strings.TrimSpace(template.Descriptions[language]) == "" {
+					t.Errorf("missing explicit %s title or description", language)
+				}
+				labels := template.Requirements[language]
+				if len(labels) == 0 {
+					t.Errorf("missing explicit %s runtime requirements", language)
+				}
+				for _, label := range labels {
+					if strings.TrimSpace(label) == "" {
+						t.Errorf("empty %s runtime requirement", language)
+					}
+				}
+			}
+			assertCatalogHTTPSURL(t, template.DocumentationURL)
+			_, hasCommand := template.Config["command"]
+			_, hasURL := template.Config["url"]
+			if hasCommand == hasURL {
+				t.Fatal("recipe must contain exactly one command or URL target")
+			}
+			allowed := map[string]bool{"type": true}
+			if hasURL {
+				allowed["url"] = true
+				endpoint, ok := template.Config["url"].(string)
+				if !ok || template.Config["type"] != "http" {
+					t.Fatal("remote recipe must declare type=http and a string URL")
+				}
+				assertCatalogHTTPSURL(t, endpoint)
+			} else {
+				allowed["command"], allowed["args"] = true, true
+				command, ok := template.Config["command"].(string)
+				if !ok || strings.TrimSpace(command) == "" || placeholderPattern.MatchString(command) {
+					t.Error("stdio recipe must have a concrete command")
+				}
+				if transport, present := template.Config["type"]; present && transport != "stdio" {
+					t.Error("command recipes may only declare stdio transport")
+				}
+				args, ok := template.Config["args"].([]any)
+				if !ok || len(args) == 0 {
+					t.Error("stdio recipe must have explicit arguments")
+				}
+				for _, arg := range args {
+					value, ok := arg.(string)
+					if !ok || strings.TrimSpace(value) == "" || placeholderPattern.MatchString(value) {
+						t.Error("arguments must be non-empty strings without input placeholders")
+					}
+				}
+			}
+			for field := range template.Config {
+				if !allowed[field] {
+					t.Errorf("config field %q requires review of the keyless, no-input publishing contract", field)
+				}
+			}
+		})
+	}
+}
+
+func assertCatalogHTTPSURL(t *testing.T, value string) {
+	t.Helper()
+	u, err := url.Parse(value)
+	if err != nil || u.Scheme != "https" || u.Hostname() == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" || strings.ContainsAny(value, "{}<> ") {
+		t.Errorf("catalog URL must be concrete HTTPS without credentials, query or fragment: %q", value)
+	}
+}
 
 func TestMcpServerTemplates_Roster(t *testing.T) {
 	templates := McpServerTemplates()
