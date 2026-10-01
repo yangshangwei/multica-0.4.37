@@ -108,6 +108,17 @@ localized status region; do not replace saved descriptions with template copy.
 
 ## Styling Patterns
 
+### Welcome page viewport sizing
+
+The welcome intro must size against the viewport independently of its six-stage
+illustration. Keep its height intrinsic with a viewport minimum and desktop
+`self-start`; centering it against the full illustration height pushes the CTA
+below the fold at 1024×768 in English. Keep the outer row non-shrinking inside
+the desktop overlay's flex scroll container so every stage remains reachable.
+Verify both the initial CTA and the final stage using that real container shape,
+including narrow screens and enlarged text. Size hero type against its content
+container, and allow the emphasized phrase to wrap when enlarged beyond it.
+
 <!-- How styles are applied (CSS modules, styled-components, Tailwind, etc.) -->
 
 (To be filled by the team)

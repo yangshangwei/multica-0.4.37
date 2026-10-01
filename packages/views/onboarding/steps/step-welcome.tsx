@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ArrowRight, CircleCheck, Clock3, Download, Loader2, ShieldX } from "lucide-react";
 import { Button, buttonVariants } from "@multica/ui/components/ui/button";
 import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
@@ -19,8 +19,8 @@ import { useT } from "../../i18n";
  * Left = wordmark + serif headline + lede + CTA; right = a stack of
  * mock issue cards that show what human/agent collaboration looks
  * like on the board — the thing the user is about to create. The
- * right column is an illustration, not content: hidden below lg so
- * the headline and CTA stay the focus on narrow viewports.
+ * right column is an illustrative history, hidden below lg. Its
+ * human-approval summary remains visible on narrow viewports.
  *
  * `onSkip`, when provided, renders a secondary ghost CTA that marks
  * onboarding complete server-side and sends the user straight to
@@ -45,6 +45,7 @@ export function StepWelcome({
   isWeb?: boolean;
 }) {
   const { t } = useT("onboarding");
+  const illustrationTitleId = useId();
   // Tracks which button is mid-flight so we can show a per-button
   // spinner and disable both while one is in progress.
   const [pending, setPending] = useState<"next" | "skip" | null>(null);
@@ -70,12 +71,12 @@ export function StepWelcome({
   };
 
   return (
-    <div className="animate-onboarding-enter flex min-h-[max(640px,100%)] flex-col lg:flex-row">
-      {/* Left — prose + CTA */}
-      <div className="flex flex-col lg:flex-1">
+    <div className="animate-onboarding-enter flex min-h-svh shrink-0 flex-col lg:flex-row">
+      {/* Intrinsic height keeps short windows scrollable; the example cannot push the CTA down. */}
+      <div className="flex min-h-svh min-w-0 flex-col lg:sticky lg:top-0 lg:flex-1 lg:self-start">
         <DragStrip />
-        <div className="flex flex-1 flex-col justify-center px-6 pb-12 sm:px-10 md:px-20 lg:px-20 xl:px-24">
-          <div className="flex w-full max-w-[540px] flex-col gap-8">
+        <div className="flex flex-1 flex-col justify-center px-6 pb-12 pt-6 sm:px-10 xl:px-16 2xl:px-20">
+          <div className="@container mx-auto flex w-full max-w-[560px] flex-col gap-7">
             <div className="flex items-center gap-2.5">
               <MulticaIcon className="size-5 text-foreground" noSpin />
               <span className="font-serif text-title-lg font-medium tracking-tight">
@@ -83,11 +84,13 @@ export function StepWelcome({
               </span>
             </div>
 
-            <h1 className="text-balance font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl">
+            <h1 className="text-balance font-serif text-[clamp(1.75rem,10cqi,3.75rem)] font-medium leading-[1.08] tracking-tight">
               {t(($) => $.welcome.headline_line1)}
               <br />
               {t(($) => $.welcome.headline_line2)}{" "}
-              <em className="italic text-brand">{t(($) => $.welcome.headline_emphasis)}</em>
+              <em className="inline-block max-w-full align-bottom italic text-brand">
+                {t(($) => $.welcome.headline_emphasis)}
+              </em>
             </h1>
 
             <div className="flex flex-col gap-4">
@@ -115,13 +118,14 @@ export function StepWelcome({
                     href="/download"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={buttonVariants({ size: "lg" })}
+                    className={buttonVariants({ size: "lg", className: "h-11 px-4" })}
                   >
                     <Download className="h-4 w-4" />
                     {t(($) => $.welcome.download_desktop)}
                   </a>
                   <Button
                     size="lg"
+                    className="h-11 px-4"
                     variant="outline"
                     onClick={handleNext}
                     disabled={pending !== null}
@@ -136,6 +140,7 @@ export function StepWelcome({
               ) : (
                 <Button
                   size="lg"
+                  className="h-11 px-4"
                   onClick={handleNext}
                   disabled={pending !== null}
                 >
@@ -149,6 +154,7 @@ export function StepWelcome({
               {onCancel && (
                 <Button
                   size="lg"
+                  className="h-11 px-4"
                   variant="ghost"
                   onClick={onCancel}
                   disabled={pending !== null}
@@ -159,6 +165,7 @@ export function StepWelcome({
               {onSkip && (
                 <Button
                   size="lg"
+                  className="h-11 px-4"
                   variant="ghost"
                   onClick={handleSkip}
                   disabled={pending !== null}
@@ -170,25 +177,31 @@ export function StepWelcome({
                 </Button>
               )}
             </div>
+            <p className="text-body-lg leading-relaxed text-muted-foreground lg:hidden">
+              {t(($) => $.welcome.illustration_caption)}
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Right — mock issue cards illustration. Hidden on < lg.
-          Flex row on lg+ with `items-stretch` (default) makes both
-          columns take the container's full height, so the muted bg
-          fills the viewport edge-to-edge. `justify-center` inside
-          centers the mock cards vertically, mirroring the left
-          column's copy-center layout. */}
-      <div className="hidden border-l bg-muted/40 lg:flex lg:flex-1 lg:flex-col lg:overflow-hidden">
+      {/* The example may grow beyond the viewport without moving the left CTA. */}
+      <section
+        aria-labelledby={illustrationTitleId}
+        className="hidden min-w-0 border-l bg-muted/40 lg:flex lg:flex-1 lg:flex-col lg:overflow-hidden"
+      >
         <DragStrip />
         <div className="flex flex-1 flex-col items-center justify-center gap-7 px-8 py-8">
-          <p className="max-w-[440px] text-balance text-center font-serif text-body-lg italic leading-snug text-muted-foreground">
-            {t(($) => $.welcome.illustration_caption)}
-          </p>
+          <div className="max-w-[460px] space-y-2 text-center">
+            <h2 id={illustrationTitleId} className="text-balance font-serif text-title italic leading-snug">
+              {t(($) => $.welcome.illustration_title)}
+            </h2>
+            <p className="text-pretty text-body leading-relaxed text-muted-foreground">
+              {t(($) => $.welcome.illustration_context)}
+            </p>
+          </div>
           <WelcomeIllustration />
         </div>
-      </div>
+      </section>
     </div>
   );
 }
@@ -198,7 +211,7 @@ export function StepWelcome({
 function WelcomeIllustration() {
   const { t } = useT("onboarding");
   return (
-    <div className="flex w-full max-w-[460px] flex-col gap-5">
+    <ol role="list" className="flex w-full max-w-[460px] flex-col gap-5">
       <MockActivityCard
         actor={{
           kind: "user",
@@ -291,7 +304,7 @@ function WelcomeIllustration() {
         status="waiting"
         statusLabel={t(($) => $.welcome.illustration.card6_status)}
       />
-    </div>
+    </ol>
   );
 }
 
@@ -328,7 +341,7 @@ function MockActivityCard({
   className?: string;
 }) {
   return (
-    <div
+    <li
       className={cn(
         "rounded-lg border bg-card px-4 py-3.5 shadow-sm",
         className,
@@ -351,7 +364,7 @@ function MockActivityCard({
       </p>
 
       {status && statusLabel && <StatusFooter status={status} label={statusLabel} />}
-    </div>
+    </li>
   );
 }
 
