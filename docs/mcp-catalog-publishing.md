@@ -41,7 +41,9 @@ need package downloads unless the runtime has a prepared cache.
 4. Supply exactly one target. Current stdio recipes contain `command` and a
    non-empty string argument list; optional `type` can only be `stdio`. Remote
    recipes contain only `type: "http"` and a concrete HTTPS `url`, with no URL
-   credentials, query parameters or fragment. No input placeholders are allowed.
+   credentials, query parameters or fragment. No input placeholders are allowed
+   in commands, arguments or URLs, including `$NAME`, `${NAME}`, `%NAME%`,
+   `{{NAME}}` and `<name>`.
 5. If adding a category, update its English/Chinese shared UI label and the
    publishing category assertion together. Add any template-specific icon by
    key in `packages/views/common/mcp-template-icon.tsx`, so renamed saved copies

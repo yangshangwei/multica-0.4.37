@@ -12,6 +12,10 @@ do not describe their presence in the catalog as runtime connectivity. New
 category labels ship in English/Chinese; key-based icons remain consistent for
 market cards and saved instances. Publishing rules and the offline
 `make check-mcp-catalog` gate are documented in `docs/mcp-catalog-publishing.md`.
+The offline gate rejects input placeholders in commands, arguments and URLs,
+including `$NAME` and Windows `%NAME%` as well as braced/angle forms. Keep those
+fields on the same test-only detector; checking only `${NAME}` leaves unusable
+recipes publishable even when they contain no credential keywords.
 
 ## Identity and configuration
 

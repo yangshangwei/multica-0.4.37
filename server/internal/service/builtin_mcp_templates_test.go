@@ -8,6 +8,32 @@ import (
 )
 
 var mcpTemplateKeyPattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
+var mcpTemplatePlaceholderPattern = regexp.MustCompile(`\$(\{|[A-Za-z_][A-Za-z0-9_]*)|\{\{|<[^>]+>|%[A-Za-z_][A-Za-z0-9_]*%`)
+
+func TestMcpServerTemplates_Placeholders(t *testing.T) {
+	for _, tc := range []struct {
+		value string
+		want  bool
+	}{
+		{"$MCP_COMMAND", true},
+		{"--root=$WORKSPACE_ROOT", true},
+		{"%WORKSPACE_ROOT%/project", true},
+		{"${WORKSPACE_ROOT}", true},
+		{"{{WORKSPACE_ROOT}}", true},
+		{"<workspace-root>", true},
+		{"https://example.com/$PROJECT/mcp", true},
+		{"npx", false},
+		{"@playwright/mcp@latest", false},
+		{"https://learn.microsoft.com/api/mcp", false},
+		{"--limit=50%", false},
+	} {
+		t.Run(tc.value, func(t *testing.T) {
+			if got := mcpTemplatePlaceholderPattern.MatchString(tc.value); got != tc.want {
+				t.Errorf("placeholder in %q = %v, want %v", tc.value, got, tc.want)
+			}
+		})
+	}
+}
 
 func TestMcpServerTemplates_PublicDocumentation(t *testing.T) {
 	want := map[string]string{
@@ -36,7 +62,6 @@ func TestMcpServerTemplates_PublicDocumentation(t *testing.T) {
 // localization fallback to conceal missing copy, or call live providers here.
 func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 	versionPattern := regexp.MustCompile(`^[1-9][0-9]*$`)
-	placeholderPattern := regexp.MustCompile(`\$\{|\{\{|<[^>]+>`)
 	for _, template := range McpServerTemplates() {
 		t.Run(template.Key, func(t *testing.T) {
 			if !versionPattern.MatchString(template.Version) {
@@ -78,7 +103,7 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 			} else {
 				allowed["command"], allowed["args"] = true, true
 				command, ok := template.Config["command"].(string)
-				if !ok || strings.TrimSpace(command) == "" || placeholderPattern.MatchString(command) {
+				if !ok || strings.TrimSpace(command) == "" || mcpTemplatePlaceholderPattern.MatchString(command) {
 					t.Error("stdio recipe must have a concrete command")
 				}
 				if transport, present := template.Config["type"]; present && transport != "stdio" {
@@ -90,7 +115,7 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 				}
 				for _, arg := range args {
 					value, ok := arg.(string)
-					if !ok || strings.TrimSpace(value) == "" || placeholderPattern.MatchString(value) {
+					if !ok || strings.TrimSpace(value) == "" || mcpTemplatePlaceholderPattern.MatchString(value) {
 						t.Error("arguments must be non-empty strings without input placeholders")
 					}
 				}
@@ -107,7 +132,7 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 func assertCatalogHTTPSURL(t *testing.T, value string) {
 	t.Helper()
 	u, err := url.Parse(value)
-	if err != nil || u.Scheme != "https" || u.Hostname() == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" || strings.ContainsAny(value, "{}<> ") {
+	if err != nil || u.Scheme != "https" || u.Hostname() == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" || strings.ContainsAny(value, "{}<> ") || mcpTemplatePlaceholderPattern.MatchString(value) {
 		t.Errorf("catalog URL must be concrete HTTPS without credentials, query or fragment: %q", value)
 	}
 }
