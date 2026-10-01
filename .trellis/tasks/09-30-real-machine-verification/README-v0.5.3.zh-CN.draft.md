@@ -1,10 +1,10 @@
 # Multica V0.5.3 内网交付
 
-构建日期：〈TBD〉（北京时间）。源码固定为 `〈TBD〉`，本地标签 `v0.5.3`。本次生成本地安装包，未推送标签、未上传 GitHub Release、未部署业务服务器。
+构建日期：〈TBD〉（北京时间）。源码固定为 `〈TBD〉`，候选桌面版本 `0.5.3`（尚未创建发布标签）。本次生成本地安装包，未推送标签、未上传 GitHub Release、未部署业务服务器。
 
 V0.5.3 在桌面端引入 **Windows / Linux 关闭行为选择**：关闭主窗口时可以让 Multica 完全退出、最小化到系统托盘，或每次都询问，并支持记住选择。macOS 行为保持不变。细节见 `.trellis/spec/desktop/frontend/close-behavior.md`。
 
-> **本次仅升级桌面端**。服务端、Web、CLI 与 V0.5.2 完全一致；不发布 server 升级包；不迁移数据库；不增加必填环境变量。
+> **这是本地验证草稿，尚未通过 Windows/Linux 真机验收。** 本次不生成服务端升级包；桌面包内的 CLI 随当前源码构建，不能声称与 V0.5.2 相同。实际源码、版本及校验值以候选包验证记录为准。
 
 ## 交付文件
 
@@ -12,7 +12,7 @@ V0.5.3 在桌面端引入 **Windows / Linux 关闭行为选择**：关闭主窗�
 | --- | --- |
 | `multica-desktop-0.5.3-windows-x64.exe` | Windows x64 桌面安装器（64 位，不适用于 32 位 Windows） |
 | `multica-desktop-0.5.3-windows-x64.exe.blockmap`、`latest.yml` | 内网下载服务的 x64 更新文件 |
-| `multica-desktop-0.5.3-linux-x64.AppImage`（如需要） | Linux x64 桌面应用（可选；默认走内网 only-Windows 通道） |
+| `multica-desktop-0.5.3-linux-x86_64.AppImage`（如需要） | Linux x64 桌面应用（可选；默认走内网 only-Windows 通道） |
 | `SHA256SUMS-v0.5.3.txt` | 本目录交付文件校验值 |
 | `verification-v0.5.3.json` | 构建和升级验证摘要 |
 | `desktop-download-http-verify-v0.5.3.json` | 隔离下载服务的 HTTP 校验记录 |
@@ -42,7 +42,7 @@ bash /opt/multica-updates/scripts/desktop-updates.sh collect \
 bash /opt/multica-updates/scripts/desktop-updates.sh publish \
     /srv/incoming/desktop-0.5.3-windows-x64-collected
 bash /opt/multica-updates/scripts/desktop-updates.sh verify \
-    /srv/incoming/desktop-0.5.3-windows-x64-collected/latest.yml \
+    latest.yml \
     --expected-version 0.5.3
 ```
 
@@ -53,12 +53,12 @@ bash /opt/multica-updates/scripts/desktop-updates.sh verify \
 ### 桌面端
 
 - **新增** 主窗口关闭按钮的行为选择（Windows / Linux）：
-  - 完全退出（保留 V0.5.2 的默认行为）；
+  - 完全退出（可在设置中选择）；
   - 最小化到系统托盘；
-  - 每次询问（**V0.5.3 起新装用户的默认**）。
+  - 每次询问（没有关闭偏好文件时的默认值，包括从 V0.5.2 升级）。
 - **新增** Settings → Behavior 设置项，可随时切换上述三种方式。
 - **新增** 系统托盘图标（已选最小化时），含"显示 Multica"和"退出"菜单项。
-- **降级规则**：GNOME 40+ + Wayland 环境下因为没有可用的托盘基础设施，最小化选项会被自动禁用；如选择过最小化又切到不支持的环境，关闭窗口将退化为完全退出并打印一行日志。
+- **降级规则**：当前 Linux 会话没有可用的 StatusNotifier 托盘服务时，最小化选项会被隐藏；如选择过最小化又切到不支持的环境，关闭窗口将退化为完全退出并打印一行日志。
 
 ### macOS
 
@@ -66,14 +66,14 @@ V0.5.3 在 macOS 上不改变任何关闭 / Dock 行为。
 
 ### 服务端 / Web / CLI
 
-未变更，沿用 V0.5.2 的部署形态。
+本次不交付服务端或 Web 升级。桌面内置 CLI 使用当前源码构建，开发版本号见验证记录；正式发布时需从批准的标签重建，统一桌面与 CLI 的版本。
 
 ## 4. 验证
 
 发布前必须完成 `.trellis/tasks/09-30-real-machine-verification/TESTING.md` 中列出的全部场景，包括：
 
 - Windows 10 / 11 上首次关闭弹窗（含"记住选择"），以及托盘菜单的"显示/退出"；
-- Ubuntu 22.04 GNOME + Wayland 上的降级路径（最小化选项不可用，关闭照常退出，单行 warn 日志）；
+- Ubuntu 22.04 GNOME + Wayland 且没有托盘服务时的降级路径（最小化选项不可用，关闭照常退出，单行 warn 日志）；
 - Ubuntu 22.04 KDE Plasma / XFCE（X11）上的完整最小化流程；
 - 已选最小化时双击桌面快捷方式能把现有窗口重新唤起（不重复启动）。
 
@@ -83,10 +83,10 @@ V0.5.3 在 macOS 上不改变任何关闭 / Dock 行为。
 
 升级：已部署 V0.5.1/V0.5.2 的内网，把 V0.5.3 安装包发布到原下载服务即可。客户端不需要重新配置 `updateUrl`。
 
-回滚：把 `latest.yml` 切换回 V0.5.2 的归档（脚本默认在 publish 时备份当前 metadata），客户端会继续停留在 V0.5.2。桌面端没有持久化数据迁移风险，回滚不影响 `~/.multica/desktop_prefs.json`；新增的 `close-preferences.json` 在 V0.5.2 上会被静默忽略，回滚后再次升级会沿用之前的选择。
+回滚：把 `latest.yml` 切换回 V0.5.2 的归档（脚本默认在 publish 时备份当前 metadata），可停止继续推送新版。已升级客户端不会自动降级，需手动安装旧版。桌面端没有持久化数据迁移风险，回滚不影响 `~/.multica/desktop_prefs.json`；新增的 `close-preferences.json` 在 V0.5.2 上会被静默忽略，回滚后再次升级会沿用之前的选择。
 
 ## 6. 已知限制
 
-- 系统托盘在 GNOME 40+ + Wayland 上不可用，与所有 Electron 应用一致。
+- Linux 托盘能力取决于当前会话的托盘服务。GNOME 安装可用扩展后可能支持；KDE/XFCE 缺少服务时也会降级。
 - macOS 行为没有改；关闭窗口仍保留在 Dock（这是 macOS 平台惯例）。
 - 双屏 / 高分辨率缩放的 Windows 机器上，托盘图标的具体尺寸由 Windows 决定，应用不参与。

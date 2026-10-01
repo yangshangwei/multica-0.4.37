@@ -1,5 +1,11 @@
 # Design: Desktop Close Behavior
 
+> Original planning sketch. The implemented lifecycle contract is documented in
+> `.trellis/spec/desktop/frontend/close-behavior.md`: synchronous close prevention,
+> a delivery-only prompt deadline, actual session D-Bus tray detection, and
+> construction/destruction instead of the nonexistent `Tray.setVisible` API.
+> Use that spec and the child verification checklist for current acceptance.
+
 ## Architecture
 
 ```

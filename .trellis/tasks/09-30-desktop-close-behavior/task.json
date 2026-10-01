@@ -26,6 +26,14 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "",
-  "meta": {}
+  "notes": "2026-09-30 continuation: user confirmed no Windows/Linux test machines; finish local regression and candidate artifact verification first. Native tray/installer/upgrade acceptance remains pending. See 09-30-real-machine-verification/verification.md.",
+  "meta": {
+    "local_verification": {
+      "status": "passed",
+      "date": "2026-09-30",
+      "report": ".trellis/tasks/09-30-real-machine-verification/verification.md",
+      "native_acceptance": "pending_no_test_machines",
+      "candidate_directory": "dist/release/v0.5.3"
+    }
+  }
 }

@@ -130,8 +130,10 @@ recheck tray support on every opening; hide Minimize until support is confirmed.
 ### `apps/desktop/src/renderer/src/components/desktop-behavior-settings-tab.tsx`
 
 The Settings tab hosting the behavior selector. Uses `<Select>` (the Base
-UI primitive) with an `items` array; when tray is unsupported the minimize
-option is omitted (not just disabled) so it can't be selected.
+UI primitive) with a complete translated `items` label map. When tray is
+unsupported, omit only the rendered minimize option so it cannot be selected.
+Keep its label in `items`: a preference saved in a previous supported session
+still needs to display its translated name without rewriting the preference.
 
 Registered by `components/desktop-settings-route.tsx`, imported by `routes.tsx`,
 only when `desktopAPI.appInfo.os` is `windows` or `linux`.
@@ -202,6 +204,9 @@ existing settings namespace; do not move them into `desktop.json`.
   - `apps/desktop/src/renderer/src/components/close-behavior-prompt.test.tsx`
     (four respond paths, tray-unsupported hiding the Minimize button,
     acknowledgement, unmount cancellation and listener unsubscription).
+  - `apps/desktop/src/renderer/src/components/desktop-behavior-settings-tab.test.tsx`
+    (translated saved minimize label with no tray, filtered choices and no
+    automatic preference rewrite).
   - `apps/desktop/src/renderer/src/components/desktop-settings-route.test.tsx`
     (Windows/Linux presence and macOS/unknown absence).
 - i18n parity is enforced by `packages/views/locales/parity.test.ts` — the
