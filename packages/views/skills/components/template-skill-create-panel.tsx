@@ -204,7 +204,7 @@ export function TemplateSkillCreatePanel({ workspaceId, workspaceSlug, session, 
                 }}
                 className="min-h-0 flex-1 gap-2"
               >
-                <TabsList className="mx-3 min-h-8 w-auto shrink-0 items-stretch self-stretch group-data-horizontal/tabs:h-auto">
+                <TabsList className="mx-3 min-h-8 w-auto shrink-0 items-stretch self-stretch data-[orientation=horizontal]:h-auto">
                   <TabsTrigger value="builtin" className="h-auto min-w-0 flex-1 gap-1.5 whitespace-normal text-center">
                     <span>{t(($) => $.create.template.group_builtin)}</span>
                     <span className="text-caption tabular-nums text-muted-foreground">{builtinGroup.length}</span>

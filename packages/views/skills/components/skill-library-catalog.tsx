@@ -88,7 +88,7 @@ function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children
   return (
     <Tabs value={view} onValueChange={(next) => { if (next === "workspace" || next === "market") setLibraryView(next); }} className="min-h-0 min-w-0 flex-1 gap-0 @container/catalog">
       <div className="mx-4 mb-1 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 @2xl/catalog:mx-6">
-        <TabsList variant="line" aria-label={t(($) => $.market.views_label)} className="max-w-full shrink-0 items-stretch group-data-horizontal/tabs:h-auto">
+        <TabsList variant="line" aria-label={t(($) => $.market.views_label)} className="max-w-full shrink-0 items-stretch data-[orientation=horizontal]:h-auto">
           <TabsTrigger value="workspace" onClick={() => setLibraryView("workspace")} aria-label={t(($) => $.market.workspace)} className="min-h-10 flex-none px-2 @2xl/catalog:px-3">
             {t(($) => $.market.workspace)}
             {workspaceLoaded && <span className="text-caption tabular-nums text-muted-foreground">{skills.length}</span>}
@@ -126,7 +126,7 @@ function SkillLibraryCatalogContent({ workspaceId, skills, skillsError, children
               <Input value={search} onChange={(event) => setSearch(event.target.value)} aria-label={t(($) => $.market.search)} placeholder={t(($) => $.market.search_placeholder)} className="pl-9" />
             </div>
             <Tabs value={source} onValueChange={(next) => { if (next === "all" || next === "deployment" || next === "builtin") selectSource(next); }}>
-              <TabsList aria-label={t(($) => $.market.sources_label)} className="max-w-full flex-wrap justify-start gap-1 bg-transparent p-0 group-data-horizontal/tabs:h-auto">
+              <TabsList aria-label={t(($) => $.market.sources_label)} className="max-w-full flex-wrap justify-start gap-1 bg-transparent p-0 data-[orientation=horizontal]:h-auto">
                 {(["all", "deployment", "builtin"] as const).map((value) => (
                   <TabsTrigger key={value} value={value} aria-label={sourceLabels[value]} className="min-h-9 flex-none whitespace-normal px-3 data-active:border-border data-active:bg-muted data-active:font-semibold dark:data-active:bg-muted">
                     {sourceLabels[value]}

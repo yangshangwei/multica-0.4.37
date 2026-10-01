@@ -499,16 +499,16 @@ export function DashboardPage() {
           here and not inside a tab. */}
       <div className={cn("h-12 shrink-0 overflow-x-auto border-b [-webkit-overflow-scrolling:touch]", PAGE_GUTTER)}>
         <div className="flex h-full w-max min-w-full items-center justify-between gap-2">
-          <TabsList variant="line" className="gap-0 p-0 group-data-horizontal/tabs:h-full">
+          <TabsList variant="line" className="gap-0 p-0 data-[orientation=horizontal]:h-full">
             <TabsTrigger
               value="usage"
-              className="h-full rounded-none px-2.5 text-label group-data-horizontal/tabs:after:bottom-0"
+              className="h-full rounded-none px-2.5 text-label data-[orientation=horizontal]:after:bottom-0"
             >
               {t(($) => $.tab_usage)}
             </TabsTrigger>
             <TabsTrigger
               value="errors"
-              className="h-full rounded-none px-2.5 text-label group-data-horizontal/tabs:after:bottom-0"
+              className="h-full rounded-none px-2.5 text-label data-[orientation=horizontal]:after:bottom-0"
             >
               {t(($) => $.errors.title)}
             </TabsTrigger>
