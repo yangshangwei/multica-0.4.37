@@ -423,6 +423,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	origins := allowedOrigins()
 
 	signupConfig := handler.Config{
+		PlatformAdminEnabled:          os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true",
 		AllowSignup:                   os.Getenv("ALLOW_SIGNUP") != "false",
 		AllowedEmails:                 splitAndTrim(os.Getenv("ALLOWED_EMAILS")),
 		AllowedEmailDomains:           splitAndTrim(os.Getenv("ALLOWED_EMAIL_DOMAINS")),
@@ -1555,6 +1556,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	})
 
 	r.Group(func(r chi.Router) {
+		r.Use(handler.PlatformAdminNoStore)
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
 		r.Use(middleware.RefreshCloudFrontCookies(cfSigner))
 
@@ -1579,6 +1581,13 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/changelog", h.GetChangelog)
 
 		r.Get("/api/me", h.GetMe)
+		r.Route("/api/admin", func(r chi.Router) {
+			r.Use(h.RequirePlatformRead)
+			r.Get("/me", h.AdminMe)
+			r.Get("/operations", h.AdminOperations)
+			r.Get("/operations/{id}", h.AdminOperation)
+			r.Post("/users/{id}/role", h.AdminChangeRole)
+		})
 		r.Post("/api/me/password/setup", h.PasswordSetup)
 		r.Post("/api/me/password/change", h.PasswordChange)
 		r.Patch("/api/me", h.UpdateMe)

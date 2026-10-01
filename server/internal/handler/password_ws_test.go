@@ -66,8 +66,16 @@ func passwordWSClosed(t *testing.T, c *websocket.Conn) {
 
 func TestPasswordRealtimeRevocationBeforeSendAndSubscribe(t *testing.T) {
 	passwordTestSetup(t)
-	for _, incoming := range []bool{false, true} {
-		t.Run(fmt.Sprint(incoming), func(t *testing.T) {
+	for _, tc := range []struct {
+		name               string
+		incoming, disabled bool
+	}{
+		{"revoked outgoing", false, false},
+		{"revoked incoming", true, false},
+		{"disabled outgoing", false, true},
+		{"disabled incoming", true, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
 			user := passwordRegister(t, fmt.Sprintf("ws%d", time.Now().UnixNano()))
 			hub := realtime.NewHub()
 			hub.SetPasswordQueries(testHandler.Queries)
@@ -87,8 +95,12 @@ func TestPasswordRealtimeRevocationBeforeSendAndSubscribe(t *testing.T) {
 			passwordWSWait(t, func() bool { return hub.HasLocalSubscribers(realtime.ScopeWorkspace, "ws-password") })
 			hub.BroadcastToWorkspace("ws-password", []byte(`{"type":"before"}`))
 			passwordWSRead(t, c)
-			dbfx.Exec(t, `UPDATE user_password_credential SET session_version=session_version+1 WHERE user_id=$1`, user.User.ID)
-			if incoming {
+			if tc.disabled {
+				dbfx.Exec(t, `UPDATE "user" SET disabled_at=now(), disabled_reason='test suspension' WHERE id=$1`, user.User.ID)
+			} else {
+				dbfx.Exec(t, `UPDATE user_password_credential SET session_version=session_version+1 WHERE user_id=$1`, user.User.ID)
+			}
+			if tc.incoming {
 				if err = c.WriteJSON(map[string]any{"type": "subscribe", "payload": map[string]string{"scope": "task", "id": "private-task"}}); err != nil {
 					t.Fatal(err)
 				}
@@ -105,8 +117,16 @@ func TestPasswordRealtimeRevocationBeforeSendAndSubscribe(t *testing.T) {
 
 func TestPasswordDaemonRevocationAndContext(t *testing.T) {
 	passwordTestSetup(t)
-	for _, incoming := range []bool{false, true} {
-		t.Run(fmt.Sprint(incoming), func(t *testing.T) {
+	for _, tc := range []struct {
+		name               string
+		incoming, disabled bool
+	}{
+		{"revoked outgoing", false, false},
+		{"revoked incoming", true, false},
+		{"disabled outgoing", false, true},
+		{"disabled incoming", true, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
 			user := passwordRegister(t, fmt.Sprintf("dw%d", time.Now().UnixNano()))
 			hub := daemonws.NewHub()
 			hub.SetPasswordQueries(testHandler.Queries)
@@ -137,8 +157,12 @@ func TestPasswordDaemonRevocationAndContext(t *testing.T) {
 			if calls.Load() != 1 {
 				t.Fatal("RPC lost authenticated context")
 			}
-			dbfx.Exec(t, `UPDATE user_password_credential SET session_version=session_version+1 WHERE user_id=$1`, user.User.ID)
-			if incoming {
+			if tc.disabled {
+				dbfx.Exec(t, `UPDATE "user" SET disabled_at=now(), disabled_reason='test suspension' WHERE id=$1`, user.User.ID)
+			} else {
+				dbfx.Exec(t, `UPDATE user_password_credential SET session_version=session_version+1 WHERE user_id=$1`, user.User.ID)
+			}
+			if tc.incoming {
 				if err = c.WriteJSON(frame); err != nil {
 					t.Fatal(err)
 				}

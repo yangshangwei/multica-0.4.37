@@ -1,6 +1,7 @@
 "use client";
 
 import { desktopCallbackUrl } from "@/features/auth/desktop-handoff";
+import { isAdminDestination, navigateToAdminAfterLogin } from "@/platform/admin-path";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useQueryClient, type QueryClient } from "@tanstack/react-query";
@@ -124,7 +125,7 @@ function LoginPageContent() {
     // this effect only serves visitors who arrived already authenticated.
     if (settledLoggedOutRef.current) return;
     if (nextUrl) {
-      router.replace(nextUrl);
+      if (!navigateToAdminAfterLogin(nextUrl, true)) router.replace(nextUrl);
       return;
     }
     // Fetch instead of reading the cache: on a fresh page load the cache is
@@ -145,7 +146,7 @@ function LoginPageContent() {
     const currentUser = useAuthStore.getState().user;
     const onboarded = currentUser?.onboarded_at != null;
     if (nextUrl) {
-      router.push(nextUrl);
+      if (!navigateToAdminAfterLogin(nextUrl)) router.push(nextUrl);
       return;
     }
     const list = qc.getQueryData<Workspace[]>(workspaceKeys.list()) ?? [];
@@ -222,6 +223,7 @@ function LoginPageContent() {
   return (
     <LoginPage
       onSuccess={handleSuccess}
+      skipWorkspaceBootstrap={isAdminDestination(nextUrl)}
       google={
         googleClientId
           ? {

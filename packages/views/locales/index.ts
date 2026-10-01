@@ -1,3 +1,5 @@
+import enAdmin from "./en/admin.json";
+import zhHansAdmin from "./zh-Hans/admin.json";
 import type { LocaleResources, SupportedLocale } from "@multica/core/i18n";
 import enCommon from "./en/common.json";
 import enAuth from "./en/auth.json";
@@ -63,6 +65,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
   en: {
     common: enCommon,
     auth: enAuth,
+    admin: enAdmin,
     settings: enSettings,
     issues: enIssues,
     agents: enAgents,
@@ -93,6 +96,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
   "zh-Hans": {
     common: zhHansCommon,
     auth: zhHansAuth,
+    admin: zhHansAdmin,
     settings: zhHansSettings,
     issues: zhHansIssues,
     agents: zhHansAgents,

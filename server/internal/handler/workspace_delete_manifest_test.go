@@ -19,6 +19,11 @@ const (
 // teardown. Adding a table requires an explicit ownership decision here; the
 // handler deletion graph must then implement that decision before CI passes.
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
+	"admin_audit_event":                  workspaceDeleteKeep,
+	"admin_operation":                    workspaceDeleteKeep,
+	"organization":                       workspaceDeleteKeep,
+	"organization_workspace":             workspaceDelete,
+	"platform_role_binding":              workspaceDeleteKeep,
 	"activity_log":                       workspaceDelete,
 	"agent":                              workspaceDelete,
 	"agent_approval_request":             workspaceDelete,

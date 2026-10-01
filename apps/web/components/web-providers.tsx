@@ -8,6 +8,7 @@ import { createBrowserCookieLocaleAdapter } from "@multica/core/i18n/browser";
 import type { LocaleResources, SupportedLocale } from "@multica/core/i18n";
 import { useWelcomeStore } from "@multica/core/onboarding";
 import packageJson from "../package.json";
+import { AdminSessionBoundary } from "@/platform/admin-session-boundary";
 import { WebNavigationProvider } from "@/platform/navigation";
 import { WebScrollRestorationProvider } from "@/platform/scroll-restoration";
 import {
@@ -110,6 +111,7 @@ export function WebProviders({
       localeAdapter={localeAdapter}
     >
       <WebNavigationProvider>
+        <AdminSessionBoundary />
         <WebScrollRestorationProvider><AccountGate>{children}</AccountGate></WebScrollRestorationProvider>
       </WebNavigationProvider>
     </CoreProvider>

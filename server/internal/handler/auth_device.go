@@ -345,6 +345,16 @@ func (h *Handler) provisionDeviceIdentity(ctx context.Context, deviceID, deviceN
 	// and concurrency-safe, and a workspace must never be reachable without
 	// its status catalog (MUL-6243) — including one an operator created by
 	// hand under the configured slug before turning this switch on.
+	org, err := qtx.EnsureInternalOrganization(ctx)
+	if err != nil {
+		return out, err
+	}
+	if org.State != "active" {
+		return out, errors.New("workspace organization unavailable")
+	}
+	if _, err := qtx.AssignWorkspaceOrganization(ctx, ws.ID); err != nil {
+		return out, err
+	}
 	if err := issuestatus.Ensure(ctx, qtx, ws.ID); err != nil {
 		return out, err
 	}

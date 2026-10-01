@@ -13,8 +13,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useT } from "../i18n";
 import { passwordErrorDetails } from "./password-error";
 
-export function PasswordForm({ mode = "login", onSuccess, footer, logo, onTokenObtained, cliCallback }: {
+export function PasswordForm({ mode = "login", onSuccess, footer, logo, onTokenObtained, cliCallback, skipWorkspaceBootstrap = false }: {
   cliCallback?: {url: string; state: string};
+  skipWorkspaceBootstrap?: boolean;
   mode?: "login" | "setup" | "change";
   onSuccess: () => void;
   footer?: ReactNode;
@@ -64,8 +65,10 @@ export function PasswordForm({ mode = "login", onSuccess, footer, logo, onTokenO
         window.location.href = url.toString();
         return;
       }
-      const list = await api.listWorkspaces();
-      qc.setQueryData(workspaceKeys.list(), list);
+      if (!skipWorkspaceBootstrap) {
+        const list = await api.listWorkspaces();
+        qc.setQueryData(workspaceKeys.list(), list);
+      }
       onSuccess();
     } catch (err) {
       if (err instanceof ApiError && err.retryAfterSeconds) setRetryAfter(err.retryAfterSeconds);

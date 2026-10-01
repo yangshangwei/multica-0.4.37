@@ -1,0 +1,26 @@
+{
+  "shell": {
+    "title": "平台管理",
+    "navigation": "管理导航",
+    "access": "管理权限",
+    "organization": "组织",
+    "role": "平台角色",
+    "return_to_app": "返回 Multica",
+    "logout": "退出登录"
+  },
+  "access": {
+    "title": "管理权限",
+    "description": "你的平台角色适用于以下组织。",
+    "scope_notice": "工作空间中的私有内容仍受工作空间权限限制。"
+  },
+  "state": {
+    "loading": "正在检查管理权限...",
+    "denied_title": "没有平台管理权限",
+    "denied_description": "你的账号没有有效的平台角色。如需访问，请联系平台管理员。",
+    "unsupported_title": "此服务器暂不支持平台管理",
+    "unsupported_description": "此服务器未提供受支持的平台管理会话。",
+    "unavailable_title": "暂时无法连接平台管理",
+    "unavailable_description": "你仍处于登录状态，请在服务器恢复后重试。",
+    "retry": "重试"
+  }
+}

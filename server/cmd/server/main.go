@@ -300,6 +300,13 @@ func main() {
 		}
 		return
 	}
+	if len(os.Args) > 1 && os.Args[1] == "platform-admin" {
+		if err := runPlatformAdmin(os.Args[2:]); err != nil {
+			slog.Error("platform administrator initialization failed", "error", err)
+			os.Exit(1)
+		}
+		return
+	}
 	// Warn about missing configuration
 	if err := jwtSecretBootError(os.Getenv("JWT_SECRET"), os.Getenv("APP_ENV")); err != nil {
 		slog.Error(
@@ -377,6 +384,15 @@ func main() {
 	stopStartup()
 	slog.Info("connected to database")
 	logPoolConfig(pool)
+	if auth.PasswordMode() && os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true" {
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+		err := preparePlatformOrganization(ctx, pool)
+		cancel()
+		if err != nil {
+			slog.Error("platform administration is not ready", "error", err)
+			os.Exit(1)
+		}
+	}
 
 	bus := events.New()
 	hub := realtime.NewHub()

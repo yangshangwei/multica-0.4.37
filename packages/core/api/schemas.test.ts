@@ -2108,3 +2108,13 @@ describe("SkillListSchema labels", () => {
     expect(skills[2]?.labels).toHaveLength(1);
   });
 });
+
+
+describe("AppConfigSchema platform administration capability", () => {
+  it.each([undefined, null, "true", 1, {}, false])("rejects an absent or malformed grant: %s", (value) => {
+    expect(AppConfigSchema.parse({ platform_admin_available: value }).platform_admin_available).toBe(false);
+  });
+  it("accepts an explicit supported capability", () => {
+    expect(AppConfigSchema.parse({ platform_admin_available: true }).platform_admin_available).toBe(true);
+  });
+});

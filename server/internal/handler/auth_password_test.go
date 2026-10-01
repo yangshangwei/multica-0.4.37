@@ -191,6 +191,108 @@ func TestPasswordPATMintAndRevoke(t *testing.T) {
 	req := testutil.WithHeaders(testutil.JSONRequest("POST", "/api/tokens", map[string]string{"name": "late"}), "X-User-ID", registered.User.ID).WithContext(ctx)
 	testutil.Call(t, testHandler.CreatePersonalAccessToken, req).Want(401)
 }
+
+func TestPasswordCLITokenRequiresJWTAndPreservesPATRenewal(t *testing.T) {
+	passwordTestSetup(t)
+	registered := passwordRegister(t, fmt.Sprintf("boundary%d", time.Now().UnixNano()))
+	dbfx.Cleanup(t, `DELETE FROM personal_access_token WHERE user_id=$1`, registered.User.ID)
+	var created CreatePATResponse
+	passwordCall(t, "POST", "/api/tokens", map[string]string{"name": "CLI login"}, registered.Token, testHandler.CreatePersonalAccessToken).Want(201).JSON(&created)
+	var denied map[string]string
+	passwordCall(t, "POST", "/api/cli-token", nil, created.Token, testHandler.IssueCliToken).Want(403).JSON(&denied)
+	if denied["code"] != "session_required" {
+		t.Fatalf("PAT conversion error = %v; want session_required", denied)
+	}
+	dbfx.Exec(t, `UPDATE personal_access_token SET expires_at=now()+interval '1 day' WHERE user_id=$1`, registered.User.ID)
+	var renewed RenewPATResponse
+	passwordCall(t, "POST", "/api/tokens/current/renew", nil, created.Token, testHandler.RenewCurrentPersonalAccessToken).Want(200).JSON(&renewed)
+	if !renewed.Renewed {
+		t.Fatal("JWT mint restriction prevented the CLI/daemon PAT from renewing")
+	}
+	for _, cookie := range []bool{false, true} {
+		t.Run(fmt.Sprintf("cookie=%t", cookie), func(t *testing.T) {
+			req := testutil.JSONRequest("POST", "/api/cli-token", nil)
+			if cookie {
+				cookies := testutil.Call(t, func(w http.ResponseWriter, _ *http.Request) {
+					if err := auth.SetAuthCookies(w, registered.Token); err != nil {
+						t.Fatal(err)
+					}
+				}, testutil.JSONRequest("POST", "/auth/login", nil)).Result().Cookies()
+				for _, c := range cookies {
+					req.AddCookie(c)
+					if c.Name == auth.CSRFCookieName {
+						req.Header.Set("X-CSRF-Token", c.Value)
+					}
+				}
+			} else {
+				req.Header.Set("Authorization", "Bearer "+registered.Token)
+			}
+			var cli map[string]string
+			testutil.Call(t, middleware.Auth(testHandler.Queries, nil, nil)(http.HandlerFunc(testHandler.IssueCliToken)).ServeHTTP, req).Want(200).JSON(&cli)
+			passwordCall(t, "GET", "/api/me", nil, cli["token"], testHandler.GetMe).Want(200)
+		})
+	}
+}
+
+func TestPasswordDisabledAccountRejectsLoginAndCredentials(t *testing.T) {
+	passwordTestSetup(t)
+	registered := passwordRegister(t, fmt.Sprintf("disabled%d", time.Now().UnixNano()))
+	dbfx.Cleanup(t, `DELETE FROM personal_access_token WHERE user_id=$1`, registered.User.ID)
+	var created CreatePATResponse
+	passwordCall(t, "POST", "/api/tokens", map[string]string{"name": "existing PAT"}, registered.Token, testHandler.CreatePersonalAccessToken).Want(201).JSON(&created)
+	// Keep the version unchanged to prove the persisted disabled state is itself
+	// an authentication boundary, including after restoration of old DB rows.
+	dbfx.Exec(t, `UPDATE "user" SET disabled_at=now(), disabled_reason='test suspension' WHERE id=$1`, registered.User.ID)
+	passwordCall(t, "POST", "/auth/login", map[string]string{"username": registered.User.Username, "password": "correct horse battery staple"}, "", testHandler.PasswordLogin).Want(403)
+	for _, raw := range []string{registered.Token, created.Token} {
+		passwordCall(t, "GET", "/api/me", nil, raw, testHandler.GetMe).Want(401)
+	}
+	if _, err := auth.CheckPasswordVersion(t.Context(), testHandler.Queries, registered.User.ID, 1); !errors.Is(err, auth.ErrPasswordSession) {
+		t.Fatalf("disabled account passed version check: %v", err)
+	}
+	for _, daemon := range []bool{false, true} {
+		if _, err := auth.CheckPasswordToken(t.Context(), testHandler.Queries, created.Token, daemon); !errors.Is(err, auth.ErrPasswordSession) {
+			t.Fatalf("disabled account passed realtime/daemon token check: %v", err)
+		}
+	}
+	ctx := auth.WithPasswordSession(t.Context(), auth.PasswordSession{UserID: registered.User.ID, Version: 1, Kind: "jwt"})
+	for _, change := range []bool{false, true} {
+		req := testutil.JSONRequest("POST", "/api/cli-token", nil)
+		handler := testHandler.IssueCliToken
+		if change {
+			req = testutil.JSONRequest("POST", "/api/me/password/change", map[string]string{"current_password": "correct horse battery staple", "new_password": "should not be committed"})
+			handler = testHandler.PasswordChange
+		}
+		req.Header.Set("X-User-ID", registered.User.ID)
+		testutil.Call(t, handler, req.WithContext(ctx)).Want(401)
+	}
+	credential, err := testHandler.Queries.GetPasswordCredential(t.Context(), parseUUID(registered.User.ID))
+	if err != nil || credential.SessionVersion != 1 {
+		t.Fatalf("disabled password change mutated credential: version=%d err=%v", credential.SessionVersion, err)
+	}
+}
+
+func TestPasswordDisabledLegacyAccountCannotSetUp(t *testing.T) {
+	passwordTestSetup(t)
+	now := time.Now()
+	t.Setenv("MULTICA_PASSWORD_MIGRATION_CUTOFF", now.Add(-time.Minute).UTC().Format(time.RFC3339))
+	t.Setenv("MULTICA_PASSWORD_MIGRATION_DEADLINE", now.Add(time.Hour).UTC().Format(time.RFC3339))
+	id := dbfx.User(t, "Disabled legacy account", fmt.Sprintf("disabled-legacy-%d@example.com", now.UnixNano()), testutil.Cols{"disabled_at": now, "disabled_reason": "test suspension"})
+	dbfx.Cleanup(t, `DELETE FROM user_password_credential WHERE user_id=$1`, id)
+	claims := jwt.MapClaims{"sub": id, "iat": float64(now.Add(-time.Hour).Unix()), "exp": float64(now.Add(time.Hour).Unix())}
+	if _, err := auth.CheckPasswordJWT(t.Context(), testHandler.Queries, claims); !errors.Is(err, auth.ErrPasswordSession) {
+		t.Fatalf("disabled legacy account passed JWT check: %v", err)
+	}
+	// Exercise a request that already passed middleware before suspension.
+	ctx := auth.WithPasswordSession(t.Context(), auth.PasswordSession{UserID: id, Kind: "jwt", Setup: true})
+	req := testutil.JSONRequest("POST", "/api/me/password/setup", map[string]string{"username": fmt.Sprintf("dlegacy%d", now.UnixNano()), "password": "abc123", "name": "Disabled legacy account"})
+	req.Header.Set("X-User-ID", id)
+	testutil.Call(t, testHandler.PasswordSetup, req.WithContext(ctx)).Want(401)
+	if n := dbfx.Count(t, `SELECT count(*) FROM user_password_credential WHERE user_id=$1`, id); n != 0 {
+		t.Fatal("disabled account created password credentials")
+	}
+}
+
 func TestPasswordTemporaryCredentialRestriction(t *testing.T) {
 	passwordTestSetup(t)
 	registered := passwordRegister(t, fmt.Sprintf("temp%d", time.Now().UnixNano()))

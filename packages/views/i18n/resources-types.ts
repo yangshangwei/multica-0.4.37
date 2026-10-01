@@ -4,6 +4,7 @@ import "i18next";
 // typecheck program to see ui's contribution to `I18nResources`.
 import "@multica/ui/i18n-types";
 import type common from "../locales/en/common.json";
+import type admin from "../locales/en/admin.json";
 import type auth from "../locales/en/auth.json";
 import type settings from "../locales/en/settings.json";
 import type issues from "../locales/en/issues.json";
@@ -49,6 +50,7 @@ declare global {
   interface I18nResources {
     common: typeof common;
     auth: typeof auth;
+    admin: typeof admin;
     settings: typeof settings;
     issues: typeof issues;
     agents: typeof agents;

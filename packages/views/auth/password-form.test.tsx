@@ -39,6 +39,23 @@ describe('password form', () => {
     expect(store.getState().user?.onboarded_at).toBeNull();
   });
 
+  it('completes admin login without requesting workspaces', async () => {
+    const api = new ApiClient('http://localhost');
+    vi.spyOn(api, 'passwordLogin').mockResolvedValue({token: 'session', user: {...EMPTY_USER, id: 'admin'}});
+    const list = vi.spyOn(api, 'listWorkspaces').mockRejectedValue(new Error('Workspace service unavailable'));
+    setApiInstance(api);
+    registerAuthStore(createAuthStore({api, storage: {getItem: () => null, setItem: vi.fn(), removeItem: vi.fn()}}));
+    configStore.getState().setAuthConfig({allowSignup: false, passwordSignupAvailable: false});
+    const done = vi.fn();
+    render(<I18nProvider locale="en" resources={{en: {auth: en}}}><QueryClientProvider client={new QueryClient()}><PasswordForm skipWorkspaceBootstrap onSuccess={done}/></QueryClientProvider></I18nProvider>);
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText('Username'), 'admin');
+    await user.type(screen.getByLabelText('Password'), 'secret123');
+    await user.click(screen.getByRole('button', {name: 'Sign in'}));
+    await waitFor(() => expect(done).toHaveBeenCalledOnce());
+    expect(list).not.toHaveBeenCalled();
+  });
+
   it.each([
     ['invalid_username', 'username must contain 3–32 ASCII characters', '用户名需为 3–32 位英文字母、数字或下划线，支持纯数字。'],
     ['invalid_name', 'name must contain 1–80 characters', '姓名需为 1–80 个字符。'],

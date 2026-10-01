@@ -247,3 +247,44 @@ down migrations must refuse to drop their table or uniqueness constraints.
 Regression sources: auth/password*_test.go, handler/auth_password_test.go,
 handler/password_ws_test.go, handler/plugin_password_test.go,
 migrations/password_rollback_test.go and daemon/daemon_test.go.
+
+
+## Platform administration in password mode
+
+`MULTICA_PLATFORM_ADMIN_ENABLED=true` exposes the Web-only `/admin` surface and
+`/api/admin/*` routes outside workspace middleware. It does not grant a role.
+The pre-listener `platform-admin bootstrap --user <UUID> --reason <reason>`
+command initializes an existing completed password account, atomically revokes
+its old credentials, and records a deployment-operator audit.
+
+- Platform authorization permits only complete password JWT/cookie sessions.
+  `GetPlatformAdminAccount` reads password version, account state, and role in
+  one snapshot; separate reads can combine an old version with a newly granted
+  role. PATs cannot mint JWTs through `/api/cli-token` in password mode, while
+  the shared password-session lock remains PAT-capable for PAT renewal.
+- Role and credential recovery transactions take the shared platform advisory
+  lock, then sorted user-row locks. Recheck actor authority and the password
+  verification snapshot under those locks. Compute KDFs before opening locks.
+- Effective-super-admin counting must use the service helper, including the
+  temporary emergency denylist that password login still enforces. A blocked
+  UUID/email must not be the last nominal administrator. Ordinary recovery
+  cannot remove the last usable administrator; deployment break-glass recovery
+  is explicit, audited, and still requires the target to change the password.
+- Role grants/promotions increment the target account version and revoke old
+  credentials. Publish disconnects only after commit and pass the target UUID
+  explicitly; the actor remains the audit author.
+- Operation creation and audit share the mutation transaction. Actor/org/key
+  lookup supports uncertain-response recovery, and only non-secret fields
+  enter the payload digest. The HTTP DTO omits digests and password state.
+- New workspaces acquire their internal organization within the creation
+  transaction. Inactive organizations and absent/failed assignments abort the
+  transaction; an INSERT SELECT with zero rows is not a successful assignment.
+  Workspace deletion removes its mapping but preserves platform roles/audits.
+- Management responses include `no-store` before authentication, including
+  credential and CSRF rejections. A missing/inactive organization is dependency
+  failure (503), not an unsupported endpoint (404).
+
+Regression sources: service/platform_admin_test.go,
+service/platform_password_recovery_test.go, handler/admin_auth_test.go,
+handler/admin_organization_test.go, cmd/server/platform_admin_auth_test.go,
+and migrations/platform_admin_migration_test.go.

@@ -13,6 +13,7 @@ import (
 )
 
 type AppConfig struct {
+	PlatformAdminAvailable  bool   `json:"platform_admin_available"`
 	AuthMode                string `json:"auth_mode"`
 	PasswordAuthAvailable   bool   `json:"password_auth_available"`
 	PasswordSignupAvailable bool   `json:"password_signup_available"`
@@ -121,6 +122,7 @@ type AppConfig struct {
 // to anonymous callers — never user- or tenant-scoped data.
 func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 	config := AppConfig{
+		PlatformAdminAvailable: auth.PasswordMode() && h.cfg.PlatformAdminEnabled,
 		// A property of this build, not of the deployment: if this code is
 		// running, the save gate is running with it.
 		LocalWorktreeSupported:             true,

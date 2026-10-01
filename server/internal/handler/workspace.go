@@ -260,6 +260,10 @@ func (h *Handler) CreateWorkspace(w http.ResponseWriter, r *http.Request) {
 	defer tx.Rollback(r.Context())
 
 	qtx := h.Queries.WithTx(tx)
+	if org, err := qtx.EnsureInternalOrganization(r.Context()); err != nil || org.State != "active" {
+		writeError(w, http.StatusServiceUnavailable, "workspace organization unavailable")
+		return
+	}
 	ws, err := qtx.CreateWorkspace(r.Context(), db.CreateWorkspaceParams{
 		Name:        req.Name,
 		Slug:        req.Slug,
@@ -276,6 +280,10 @@ func (h *Handler) CreateWorkspace(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if _, err := qtx.AssignWorkspaceOrganization(r.Context(), ws.ID); err != nil {
+		writeError(w, http.StatusServiceUnavailable, "failed to assign workspace organization")
+		return
+	}
 	_, err = qtx.CreateMember(r.Context(), db.CreateMemberParams{
 		WorkspaceID: ws.ID,
 		UserID:      parseUUID(userID),
@@ -1300,6 +1308,10 @@ func (h *Handler) DeleteWorkspace(w http.ResponseWriter, r *http.Request) {
 		{
 			name: "delete administration data",
 			run:  func() error { return qtx.DeleteWorkspaceAdministration(ctx, requester.WorkspaceID) },
+		},
+		{
+			name: "delete organization assignment",
+			run:  func() error { return qtx.DeleteWorkspaceOrganization(ctx, requester.WorkspaceID) },
 		},
 		{
 			// At this point workspaceMember has resolved → workspaceID is a

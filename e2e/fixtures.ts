@@ -68,6 +68,21 @@ export class TestApiClient {
     return data.user;
   }
 
+  async registerPassword(username: string, password: string, name: string): Promise<{ id: string; email: string; onboarded_at: string | null }> {
+    const response = await fetch(`${API_BASE}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, name }),
+    });
+    if (!response.ok) throw new Error(`password registration failed: ${response.status}`);
+    const data = await response.json();
+    if (typeof data.token !== "string" || !data.token || typeof data.user?.id !== "string") {
+      throw new Error("Password registration returned an unusable test session");
+    }
+    this.token = data.token;
+    return data.user;
+  }
+
   /** Remove only the isolated password account after its feature workspace. */
   async deletePasswordAccount(username: string): Promise<void> {
     const client = new pg.Client(DATABASE_URL);
@@ -381,9 +396,10 @@ export class TestApiClient {
   }
 
   /** Authenticated setup/verification for isolated feature workspaces. */
-  async requestJSON<T>(path: string, options: { method?: string; body?: unknown } = {}): Promise<T> {
+  async requestJSON<T>(path: string, options: { method?: string; body?: unknown; headers?: Record<string, string> } = {}): Promise<T> {
     const response = await this.authedFetch(path, {
       method: options.method,
+      headers: options.headers,
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
     });
     if (!response.ok) throw new Error(`${options.method ?? "GET"} ${path} failed: ${response.status}`);

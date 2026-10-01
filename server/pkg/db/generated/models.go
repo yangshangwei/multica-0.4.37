@@ -21,6 +21,55 @@ type ActivityLog struct {
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
 }
 
+type AdminAuditEvent struct {
+	ID             pgtype.UUID        `json:"id"`
+	OperationID    pgtype.UUID        `json:"operation_id"`
+	OrganizationID pgtype.UUID        `json:"organization_id"`
+	ActorKind      string             `json:"actor_kind"`
+	ActorUserID    pgtype.UUID        `json:"actor_user_id"`
+	TargetKind     string             `json:"target_kind"`
+	TargetID       pgtype.UUID        `json:"target_id"`
+	Action         string             `json:"action"`
+	Phase          string             `json:"phase"`
+	RequestID      string             `json:"request_id"`
+	Reason         string             `json:"reason"`
+	BeforeState    []byte             `json:"before_state"`
+	AfterState     []byte             `json:"after_state"`
+	ResultCode     string             `json:"result_code"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+}
+
+type AdminOperation struct {
+	ID                   pgtype.UUID        `json:"id"`
+	OrganizationID       pgtype.UUID        `json:"organization_id"`
+	ActorKind            string             `json:"actor_kind"`
+	ActorID              pgtype.UUID        `json:"actor_id"`
+	ActorAuthVersion     int64              `json:"actor_auth_version"`
+	TargetKind           string             `json:"target_kind"`
+	TargetID             pgtype.UUID        `json:"target_id"`
+	Kind                 string             `json:"kind"`
+	IdempotencyKey       pgtype.UUID        `json:"idempotency_key"`
+	PayloadHash          string             `json:"payload_hash"`
+	Reason               string             `json:"reason"`
+	State                string             `json:"state"`
+	ResultCode           string             `json:"result_code"`
+	Version              int64              `json:"version"`
+	Confirmation         string             `json:"confirmation"`
+	ReconciliationState  string             `json:"reconciliation_state"`
+	TargetInstallationID pgtype.UUID        `json:"target_installation_id"`
+	TargetTaskID         pgtype.UUID        `json:"target_task_id"`
+	BindingID            pgtype.UUID        `json:"binding_id"`
+	BindingEpoch         pgtype.Int8        `json:"binding_epoch"`
+	ExecutionFence       pgtype.Int8        `json:"execution_fence"`
+	RootOperationID      pgtype.UUID        `json:"root_operation_id"`
+	AckDeadline          pgtype.Timestamptz `json:"ack_deadline"`
+	AcceptedAt           pgtype.Timestamptz `json:"accepted_at"`
+	AppliedAt            pgtype.Timestamptz `json:"applied_at"`
+	ConfirmedAt          pgtype.Timestamptz `json:"confirmed_at"`
+	CreatedAt            pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt            pgtype.Timestamptz `json:"updated_at"`
+}
+
 type Agent struct {
 	ID                 pgtype.UUID        `json:"id"`
 	WorkspaceID        pgtype.UUID        `json:"workspace_id"`
@@ -1054,6 +1103,21 @@ type NotificationPreference struct {
 	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
 }
 
+type Organization struct {
+	ID        pgtype.UUID        `json:"id"`
+	Name      string             `json:"name"`
+	State     string             `json:"state"`
+	Internal  bool               `json:"internal"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+}
+
+type OrganizationWorkspace struct {
+	OrganizationID pgtype.UUID        `json:"organization_id"`
+	WorkspaceID    pgtype.UUID        `json:"workspace_id"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+}
+
 type PersonalAccessToken struct {
 	ID          pgtype.UUID        `json:"id"`
 	UserID      pgtype.UUID        `json:"user_id"`
@@ -1075,6 +1139,13 @@ type PinnedItem struct {
 	ItemID      pgtype.UUID        `json:"item_id"`
 	Position    float64            `json:"position"`
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type PlatformRoleBinding struct {
+	UserID    pgtype.UUID        `json:"user_id"`
+	Role      string             `json:"role"`
+	GrantedBy pgtype.UUID        `json:"granted_by"`
+	GrantedAt pgtype.Timestamptz `json:"granted_at"`
 }
 
 type PluginHookSchedule struct {
@@ -1437,7 +1508,9 @@ type User struct {
 	Language                pgtype.Text        `json:"language"`
 	ProfileDescription      string             `json:"profile_description"`
 	// User-preferred IANA timezone for report rendering (Viewing tz). NULL means "use the browser-detected tz at render time". Affects dashboards, charts, and any "today" label shown to this user. Does not affect data materialisation — all rollups remain in UTC.
-	Timezone pgtype.Text `json:"timezone"`
+	Timezone       pgtype.Text        `json:"timezone"`
+	DisabledAt     pgtype.Timestamptz `json:"disabled_at"`
+	DisabledReason pgtype.Text        `json:"disabled_reason"`
 }
 
 type UserComposioConnection struct {

@@ -1,0 +1,26 @@
+{
+  "shell": {
+    "title": "Platform administration",
+    "navigation": "Administration navigation",
+    "access": "Administration access",
+    "organization": "Organization",
+    "role": "Platform role",
+    "return_to_app": "Return to Multica",
+    "logout": "Sign out"
+  },
+  "access": {
+    "title": "Administration access",
+    "description": "Your platform role applies to the organization shown below.",
+    "scope_notice": "Private workspace content remains subject to workspace permissions."
+  },
+  "state": {
+    "loading": "Checking administration access...",
+    "denied_title": "Administration access denied",
+    "denied_description": "Your account does not have an active platform role. Contact a platform administrator if you need access.",
+    "unsupported_title": "Administration is unavailable on this server",
+    "unsupported_description": "This server does not provide a supported platform administration session.",
+    "unavailable_title": "Cannot reach platform administration",
+    "unavailable_description": "Your session is still active. Try again when the server is available.",
+    "retry": "Try again"
+  }
+}

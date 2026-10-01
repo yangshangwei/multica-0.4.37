@@ -740,6 +740,7 @@ export const EMPTY_ISSUE_PROPERTIES_RESPONSE: IssuePropertiesResponse = {
 };
 
 export interface AppConfigResponse {
+	platform_admin_available?: boolean;
   auth_mode?: string;
   password_auth_available?: boolean;
   password_signup_available?: boolean;
@@ -968,6 +969,7 @@ const FeatureFlagsSchema = z.preprocess(
 );
 
 export const AppConfigSchema = z.object({
+	platform_admin_available: BooleanWithDefaultSchema(false),
   auth_mode: z.string().default("legacy"),
   password_auth_available: BooleanWithDefaultSchema(false),
   password_signup_available: BooleanWithDefaultSchema(false),

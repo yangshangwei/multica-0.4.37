@@ -56,6 +56,13 @@ func CheckPasswordVersion(ctx context.Context, q *db.Queries, userID string, ver
 	if err != nil {
 		return db.UserPasswordCredential{}, ErrPasswordSession
 	}
+	user, err := q.GetUser(ctx, id)
+	if errors.Is(err, pgx.ErrNoRows) || err == nil && user.DisabledAt.Valid {
+		return db.UserPasswordCredential{}, ErrPasswordSession
+	}
+	if err != nil {
+		return db.UserPasswordCredential{}, err
+	}
 	c, err := q.GetPasswordCredential(ctx, id)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return c, ErrPasswordSession
@@ -79,6 +86,13 @@ func CheckPasswordJWT(ctx context.Context, q *db.Queries, claims jwt.MapClaims) 
 	if q == nil {
 		return s, errors.New("authentication database unavailable")
 	}
+	user, err := q.GetUser(ctx, uid)
+	if errors.Is(err, pgx.ErrNoRows) || err == nil && user.DisabledAt.Valid {
+		return s, ErrPasswordSession
+	}
+	if err != nil {
+		return s, err
+	}
 	c, err := q.GetPasswordCredential(ctx, uid)
 	if err == nil {
 		if s.Version <= 0 || s.Version != c.SessionVersion {
@@ -88,12 +102,6 @@ func CheckPasswordJWT(ctx context.Context, q *db.Queries, claims jwt.MapClaims) 
 		return s, nil
 	}
 	if !errors.Is(err, pgx.ErrNoRows) {
-		return s, err
-	}
-	if _, err = q.GetUser(ctx, uid); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return s, ErrPasswordSession
-		}
 		return s, err
 	}
 	cutoff, deadline, err := PasswordMigrationWindow()

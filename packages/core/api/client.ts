@@ -1,3 +1,4 @@
+import { parseAdminMe } from "../admin/schema";
 import { configStore } from "../config";
 import type {
   Issue,
@@ -808,6 +809,15 @@ export class ApiClient {
     this.logger = options?.logger ?? noopLogger;
   }
 
+  getSessionScope(): string {
+    return `${this.endpointEpoch}:${this.credentialEpoch}`;
+  }
+
+  async getAdminMe(options?: { signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>("/api/admin/me", { signal: options?.signal });
+    return parseAdminMe(raw);
+  }
+
   getBaseUrl(): string {
     return this.baseUrl;
   }
@@ -910,6 +920,12 @@ export class ApiClient {
       ...(init?.extraHeaders ?? {}),
       ...((init?.headers as Record<string, string>) ?? {}),
     };
+
+    if (path.startsWith("/api/admin/")) {
+      for (const name of Object.keys(headers)) {
+        if (["x-workspace-id", "x-workspace-slug"].includes(name.toLowerCase())) delete headers[name];
+      }
+    }
 
     this.logger.info(`→ ${method} ${path}`, { rid });
 

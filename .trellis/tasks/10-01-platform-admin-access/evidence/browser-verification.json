@@ -1,0 +1,29 @@
+{
+  "recorded_at": "2026-10-01T14:51:55.214456+00:00",
+  "command": "pnpm exec playwright test e2e/platform-admin.spec.ts --workers=1 --retries=0",
+  "result": "1 passed",
+  "duration_seconds": 18.3,
+  "test_duration_seconds": 17.4,
+  "web_build_id": "YDSXFawMsM_71ecWB9lRf",
+  "parent_verified_source_fingerprint": "0315c52c7cc5608c1a63ec069c7065f1689c8833ff1592c7934290bcd23a8091",
+  "verified": [
+    "Unauthenticated admin route preserves full path, query and fragment through login.",
+    "Zero-workspace super administrator reaches the shell through password login.",
+    "HttpOnly multica_auth cookie authenticates /api/admin/me; localStorage contains no bearer token.",
+    "Ordinary account sees denied state while /api/me remains authenticated.",
+    "Real platform role grant revokes the old cookie and requires a new password login.",
+    "Observer role removal is detected through real foreground polling; role/organization disappear while ordinary /api/me remains 200.",
+    "Desktop and 390px screenshots plus ARIA snapshots captured.",
+    "No pageerror events.",
+    "Test-created account removed through TestApiClient cleanup; fixture super administrator preserved."
+  ],
+  "artifacts": [
+    "visual-verdict.json",
+    "login-reference.png",
+    "admin-desktop.png",
+    "admin-mobile.png",
+    "ordinary-user-denied.png",
+    "observer-authorized.png",
+    "observer-revoked.png"
+  ]
+}

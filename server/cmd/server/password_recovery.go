@@ -11,12 +11,13 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+	"unicode/utf8"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
-	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 // runPasswordRecovery is dispatched before listeners or background jobs start.
@@ -28,6 +29,8 @@ func runPasswordRecovery(args []string) error {
 	flags := flag.NewFlagSet("password-recover", flag.ContinueOnError)
 	userID := flags.String("user", "", "Existing user UUID")
 	username := flags.String("username", "", "Username for an account without password credentials")
+	reason := flags.String("reason", "", "Required reason for the audited password recovery")
+	breakGlass := flags.Bool("break-glass", false, "Recover the last effective super administrator; temporarily leaves no usable administrator")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -37,6 +40,10 @@ func runPasswordRecovery(args []string) error {
 	id, err := util.ParseUUID(*userID)
 	if err != nil {
 		return errors.New("--user must be an existing user UUID")
+	}
+	*reason = strings.TrimSpace(*reason)
+	if *reason == "" || len(*reason) > 1000 || !utf8.ValidString(*reason) || strings.ContainsRune(*reason, 0) {
+		return errors.New("--reason must contain 1–1000 bytes of valid text")
 	}
 	secret, err := readRecoveryPassword()
 	if err != nil {
@@ -59,39 +66,21 @@ func runPasswordRecovery(args []string) error {
 		return err
 	}
 	defer tx.Rollback(ctx)
-	q := db.New(tx)
-	if _, err = q.LockPasswordUser(ctx, id); err != nil {
-		return fmt.Errorf("lock recovery account: %w", err)
-	}
-	current, err := q.GetPasswordCredential(ctx, id)
-	switch {
-	case errors.Is(err, pgx.ErrNoRows):
-		normalized, err := auth.NormalizeUsername(*username)
-		if err != nil {
-			return errors.New("--username is required for an unconfigured account")
-		}
-		_, err = q.CreatePasswordCredential(ctx, db.CreatePasswordCredentialParams{UserID: id, Username: normalized, PasswordHash: hash, MustChangePassword: true})
-		if err != nil {
-			return err
-		}
-	case err != nil:
-		return err
-	default:
-		if *username != "" && *username != current.Username {
-			return errors.New("recovery cannot change an existing username")
-		}
-		_, err = q.ChangePasswordCredential(ctx, db.ChangePasswordCredentialParams{UserID: id, PasswordHash: hash, MustChangePassword: true, SessionVersion: current.SessionVersion})
-		if err != nil {
-			return err
-		}
-	}
-	if _, err = auth.RevokePasswordCredentials(ctx, tx, id); err != nil {
+	result, err := service.RecoverPasswordForDeploymentInTx(ctx, tx, service.DeploymentPasswordRecoveryParams{
+		TargetUserID: id, Username: *username, PasswordHash: hash,
+		Reason: *reason, RequestID: uuid.NewString(), BreakGlass: *breakGlass,
+	})
+	if err != nil {
 		return err
 	}
 	if err = tx.Commit(ctx); err != nil {
-		return err
+		return fmt.Errorf("commit password recovery operation %s: %w", util.UUIDToString(result.Operation.ID), err)
 	}
 	fmt.Fprintln(os.Stdout, "Password recovered. The user must change the temporary password at next login.")
+	if *breakGlass {
+		fmt.Fprintln(os.Stdout, "No effective super administrator remains until password change completes. Then verify administrator access and configure a second named recovery administrator.")
+	}
+	fmt.Fprintf(os.Stdout, "Audit operation: %s\n", util.UUIDToString(result.Operation.ID))
 	return nil
 }
 

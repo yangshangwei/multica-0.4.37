@@ -238,7 +238,7 @@ func (h *Handler) PasswordLogin(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
-	if auth.IsTemporarilyDisabledUser(uuidToString(user.ID), user.Email.String) {
+	if user.DisabledAt.Valid || auth.IsTemporarilyDisabledUser(uuidToString(user.ID), user.Email.String) {
 		passwordError(w, 403, "account_disabled", auth.TemporarilyDisabledUserError)
 		return
 	}
@@ -294,6 +294,15 @@ func (h *Handler) PasswordSetup(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
+	user, err := q.GetUser(r.Context(), uid)
+	if err != nil {
+		passwordSessionError(w, err)
+		return
+	}
+	if user.DisabledAt.Valid {
+		passwordSessionError(w, auth.ErrPasswordSession)
+		return
+	}
 	if _, err = q.GetPasswordCredential(r.Context(), uid); err == nil {
 		passwordError(w, 409, "already_configured", "Account is already configured")
 		return
@@ -311,7 +320,7 @@ func (h *Handler) PasswordSetup(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
-	user, err := q.UpdateUser(r.Context(), db.UpdateUserParams{ID: uid, Name: req.Name})
+	user, err = q.UpdateUser(r.Context(), db.UpdateUserParams{ID: uid, Name: req.Name})
 	if err != nil {
 		passwordDBError(w, err)
 		return
@@ -325,7 +334,7 @@ func (h *Handler) PasswordSetup(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
-	h.publishPasswordRevocation(r, revocation)
+	h.publishPasswordRevocation(r, session.UserID, revocation)
 	h.passwordSessionResponse(w, r, 200, user, credential)
 }
 
@@ -380,6 +389,15 @@ func (h *Handler) PasswordChange(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
+	user, err := q.GetUser(r.Context(), uid)
+	if err != nil {
+		passwordSessionError(w, err)
+		return
+	}
+	if user.DisabledAt.Valid {
+		passwordSessionError(w, auth.ErrPasswordSession)
+		return
+	}
 	current, err := q.GetPasswordCredential(r.Context(), uid)
 	if err != nil {
 		passwordDBError(w, err)
@@ -399,20 +417,20 @@ func (h *Handler) PasswordChange(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
-	user, err := q.GetUser(r.Context(), uid)
-	if err != nil {
-		passwordDBError(w, err)
-		return
-	}
 	if err = tx.Commit(r.Context()); err != nil {
 		passwordDBError(w, err)
 		return
 	}
-	h.publishPasswordRevocation(r, revocation)
+	h.publishPasswordRevocation(r, session.UserID, revocation)
 	h.passwordSessionResponse(w, r, 200, user, current)
 }
 
 func (h *Handler) issuePasswordCLIToken(w http.ResponseWriter, r *http.Request) {
+	source, ok := auth.PasswordSessionFromContext(r.Context())
+	if !ok || source.Kind != "jwt" {
+		passwordError(w, 403, "session_required", "A user login session is required")
+		return
+	}
 	tx, err := h.TxStarter.Begin(r.Context())
 	if err != nil {
 		passwordDBError(w, err)
@@ -438,13 +456,12 @@ func (h *Handler) issuePasswordCLIToken(w http.ResponseWriter, r *http.Request) 
 	writeJSON(w, 200, map[string]string{"token": signed})
 }
 
-func (h *Handler) publishPasswordRevocation(r *http.Request, result auth.PasswordRevocation) {
-	userID := r.Header.Get("X-User-ID")
+func (h *Handler) publishPasswordRevocation(r *http.Request, targetUserID string, result auth.PasswordRevocation) {
 	if h.Hub != nil {
-		h.Hub.DisconnectUser(userID)
+		h.Hub.DisconnectUser(targetUserID)
 	}
 	if h.DaemonHub != nil {
-		h.DaemonHub.DisconnectUser(userID)
+		h.DaemonHub.DisconnectUser(targetUserID)
 	}
 	if h.TaskService != nil {
 		for _, task := range result.CancelledTasks {

@@ -46,6 +46,8 @@ interface CliCallbackConfig {
 }
 
 interface LoginPageProps {
+  /** Pre-workspace destinations can proceed without a workspace bootstrap. */
+  skipWorkspaceBootstrap?: boolean;
   /** Logo element rendered above the title */
   logo?: ReactNode;
   /** Overrides the sign-in step's title. Desktop passes the backend host so a

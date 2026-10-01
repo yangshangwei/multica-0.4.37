@@ -1,0 +1,75 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { useAdminAccess, type AdminIdentity } from "@multica/core/admin";
+import { Button } from "@multica/ui/components/ui/button";
+import { ShieldCheck, ShieldX, ServerOff, Loader2 } from "lucide-react";
+import { useT } from "../i18n";
+import { AppLink } from "../navigation";
+import { useLogout } from "../auth/use-logout";
+
+function ScopeDetails({ identity }: { identity: AdminIdentity }) {
+  const { t } = useT("admin");
+  return (
+    <dl className="grid min-w-0 gap-5 sm:grid-cols-2">
+      <div className="min-w-0 space-y-1">
+        <dt className="text-caption text-muted-foreground">{t(($) => $.shell.organization)}</dt>
+        <dd className="break-all text-body">{identity.organizationId}</dd>
+      </div>
+      <div className="min-w-0 space-y-1">
+        <dt className="text-caption text-muted-foreground">{t(($) => $.shell.role)}</dt>
+        <dd className="break-all text-body">{identity.role}</dd>
+      </div>
+    </dl>
+  );
+}
+
+export function AdminShell({ children }: { children?: ReactNode }) {
+  const { t } = useT("admin");
+  const { status, identity, retry } = useAdminAccess();
+  const logout = useLogout();
+
+  return (
+    <div className="flex h-full min-h-0 flex-col bg-background text-foreground">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-surface-border px-5 py-4 sm:px-8">
+        <AppLink href="/admin" className="flex min-w-0 items-center gap-2 text-body-lg font-semibold">
+          <ShieldCheck className="size-5 shrink-0" aria-hidden="true" />
+          {t(($) => $.shell.title)}
+        </AppLink>
+        <div className="flex flex-wrap items-center gap-3">
+          <AppLink href="/login" className="inline-flex min-h-11 items-center text-body text-muted-foreground hover:text-foreground focus-visible:outline-ring">
+            {t(($) => $.shell.return_to_app)}
+          </AppLink>
+          <Button variant="ghost" className="min-h-11" onClick={logout}>{t(($) => $.shell.logout)}</Button>
+        </div>
+      </header>
+      <main className="min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8">
+        {status === "loading" || status === "signed_out" ? (
+          <p role="status" className="flex items-center gap-2 text-body text-muted-foreground">
+            <Loader2 className="size-4 animate-spin motion-reduce:animate-none" aria-hidden="true" />
+            {t(($) => $.state.loading)}
+          </p>
+        ) : status !== "ready" || !identity ? (
+          <section role="alert" className="mx-auto flex max-w-xl flex-col items-start gap-4 py-8">
+            {status === "denied" ? <ShieldX className="size-6 text-muted-foreground" aria-hidden="true" /> : <ServerOff className="size-6 text-muted-foreground" aria-hidden="true" />}
+            <h1 className="text-title font-semibold">{status === "denied" ? t(($) => $.state.denied_title) : status === "unsupported" ? t(($) => $.state.unsupported_title) : t(($) => $.state.unavailable_title)}</h1>
+            <p className="text-body text-muted-foreground">{status === "denied" ? t(($) => $.state.denied_description) : status === "unsupported" ? t(($) => $.state.unsupported_description) : t(($) => $.state.unavailable_description)}</p>
+            <Button variant="outline" onClick={retry}>{t(($) => $.state.retry)}</Button>
+          </section>
+        ) : (
+          <div className="mx-auto max-w-5xl space-y-8">
+            <section className="space-y-6" aria-labelledby="admin-access-heading">
+              <div className="space-y-2">
+                <h1 id="admin-access-heading" className="text-title font-semibold">{t(($) => $.access.title)}</h1>
+                <p className="text-body text-muted-foreground">{t(($) => $.access.description)}</p>
+              </div>
+              <ScopeDetails identity={identity} />
+              <p className="text-caption text-muted-foreground">{t(($) => $.access.scope_notice)}</p>
+            </section>
+            {children}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
