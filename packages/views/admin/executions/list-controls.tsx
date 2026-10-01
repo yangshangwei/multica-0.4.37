@@ -31,9 +31,17 @@ export function AdminExecutionFilters({ issues = false }: {
       if (typeof value === "string" && value.trim())
         next.set(key, value.trim());
     }
+    if (!issues) {
+      const basis = params.get("time_basis");
+      if (basis === "created" || basis === "finished") next.set("time_basis", basis);
+      if (params.get("state_scope") === "current" && basis !== "finished" &&
+          ["queued", "deferred", "dispatched", "running", "waiting_local_directory"].includes(next.get("status") ?? "") &&
+          !next.has("time_from") && !next.has("time_to")) next.set("state_scope", "current");
+    }
     nav.push(`${nav.pathname}${next.size ? `?${next}` : ""}`);
   }
   return <form key={params.toString()} onSubmit={submit} className="space-y-4">
+    {!issues && (params.get("time_basis") === "finished" || params.get("state_scope") === "current") && <p className="text-caption text-muted-foreground">{params.get("time_basis") === "finished" ? t($ => $.observability.finished) : t($ => $.observability.live)}</p>}
     <div className="flex flex-wrap items-end gap-3">
       <div className="min-w-48 flex-1 space-y-1.5">
         <Label htmlFor="admin-search">{t($ => $.executions.search)}</Label>
@@ -92,15 +100,17 @@ export function AdminListState({ loading, error, empty, issues = false, retry, c
     </div>;
   return children;
 }
-export function AdminListPagination({ cursor, asOf, refresh }: {
+export function AdminListPagination({ cursor, asOf, refresh, params: suppliedParams }: {
   cursor: string | null;
   asOf: string;
   refresh: () => void;
+  params?: URLSearchParams;
 }) {
   const { t } = useT("admin");
   const nav = useNavigation();
+  const activeParams = suppliedParams ?? nav.searchParams;
   function move(next: string | null) {
-    const params = new URLSearchParams(nav.searchParams);
+    const params = new URLSearchParams(activeParams);
     params.delete("cursor");
     if (next)
       params.set("cursor", next);
@@ -108,16 +118,16 @@ export function AdminListPagination({ cursor, asOf, refresh }: {
   }
   return <div className="space-y-3">
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <p className="text-caption text-muted-foreground">{t($ => $.executions.as_of)} <time dateTime={asOf}>{formatAdminTime(asOf, nav.searchParams.get("timezone") ?? "UTC")}</time>
+      <p className="text-caption text-muted-foreground">{t($ => $.executions.as_of)} <time dateTime={asOf}>{formatAdminTime(asOf, activeParams.get("timezone") ?? "UTC")}</time>
       </p>
       <div className="flex gap-2">
         <Button variant="ghost" onClick={() => {
-          if (nav.searchParams.has("cursor"))
+          if (activeParams.has("cursor"))
             move(null);
           else
             refresh();
         }}>{t($ => $.executions.refresh)}</Button>
-        <Button variant="outline" disabled={!nav.searchParams.has("cursor")} onClick={() => move(null)}>{t($ => $.executions.first)}</Button>
+        <Button variant="outline" disabled={!activeParams.has("cursor")} onClick={() => move(null)}>{t($ => $.executions.first)}</Button>
         <Button variant="outline" disabled={!cursor} onClick={() => move(cursor)}>{t($ => $.executions.next)}</Button>
       </div>
     </div>

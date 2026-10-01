@@ -93,7 +93,8 @@ test.describe("platform administration access", () => {
       await screenshot(page, "login-reference");
       await passwordLogin(page, administratorUsername!, administratorPassword!);
       await expect(page).toHaveURL(`${webBase}${destination}`);
-      await expect(page.getByRole("heading", { name: "Administration access", exact: true })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
+      await page.getByText("Administration access", { exact: true }).click();
       await expect(page.getByText("super_admin", { exact: true })).toBeVisible();
       const cookieProbe = await page.request.get(`${webBase}/api/admin/me`);
       expect(cookieProbe.status()).toBe(200);
@@ -119,6 +120,7 @@ test.describe("platform administration access", () => {
       await ordinaryPage.goto(`${webBase}/admin`);
       await expect.poll(() => new URL(ordinaryPage.url()).pathname).toBe("/login");
       await passwordLogin(ordinaryPage, username, password);
+      await ordinaryPage.getByText("Administration access", { exact: true }).click();
       await expect(ordinaryPage.getByText("platform_observer", { exact: true })).toBeVisible();
       await expect(ordinaryPage.getByText(currentIdentity.organization_id, { exact: true })).toBeVisible();
       await screenshot(ordinaryPage, "observer-authorized");

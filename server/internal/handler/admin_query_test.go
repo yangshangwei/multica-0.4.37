@@ -79,3 +79,32 @@ func TestAdminExecutionHistoricalWindowAndIssueFilterValidation(t *testing.T) {
 		}
 	}
 }
+
+func TestAdminTaskTimeBasisIsExplicitAndCursorBound(t *testing.T) {
+	t.Setenv("JWT_SECRET", "admin-time-basis-test-at-least-32-characters")
+	actor, org := uuid.NewString(), uuid.NewString()
+	now := time.Date(2026, 10, 2, 12, 0, 0, 0, time.UTC)
+	parsed, err := parseAdminQuery(httptest.NewRequest("GET", "/api/admin/tasks?time_basis=finished", nil), "tasks", actor, org, now)
+	if err != nil || parsed.Filters["time_basis"] != "finished" {
+		t.Fatalf("finished window rejected: %v", err)
+	}
+	token, err := parsed.Cursor(now.Add(-time.Hour), uuid.NewString())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := parseAdminQuery(httptest.NewRequest("GET", "/api/admin/tasks?time_basis=created&cursor="+url.QueryEscape(token), nil), "tasks", actor, org, now); err == nil {
+		t.Fatal("cursor crossed time basis")
+	}
+	defaultQuery, err := parseAdminQuery(httptest.NewRequest("GET", "/api/admin/tasks", nil), "tasks", actor, org, now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if defaultQuery.Filters["time_basis"] != "created" {
+		t.Fatal("created is not canonical default")
+	}
+	for _, suffix := range []string{"time_basis=unknown", "timezone=Local"} {
+		if _, err := parseAdminQuery(httptest.NewRequest("GET", "/api/admin/tasks?"+suffix, nil), "tasks", actor, org, now); err == nil {
+			t.Fatalf("accepted invalid query %s", suffix)
+		}
+	}
+}

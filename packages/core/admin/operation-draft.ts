@@ -3,6 +3,7 @@ import { defaultStorage } from "../platform/storage";
 import type { StorageAdapter } from "../types/storage";
 import type { AdminControlInput } from "./operation-queries";
 import { adminVersionSchema } from "./control-schema";
+import { adminAlertChangeSchema } from "./alert-schema";
 
 const storagePrefix = "multica_admin_control_draft:";
 let storage: StorageAdapter = defaultStorage;
@@ -12,6 +13,7 @@ const reason = z.string().trim().min(1).max(1000);
 const inputSchema = z.discriminatedUnion("action", [
   z.object({ ...base, action: z.literal("admission"), body: z.object({ admission: z.enum(["accepting", "stopped"]), expectedAdmissionVersion: adminVersionSchema, reason }) }),
   z.object({ ...base, action: z.literal("cancel"), body: z.object({ expectedExecutionFence: z.object({ runtimeId: z.uuid().nullable(), dispatchedAt: z.iso.datetime({ offset: true }).nullable(), targetVersion: adminVersionSchema }), reason }) }),
+  z.object({ ...base, action: z.literal("alert"), body: adminAlertChangeSchema }),
 ]);
 const draftSchema = z.object({ scope: scopeSchema, input: inputSchema, createdAt: z.number().int().positive() });
 export type AdminControlDraftScope = z.output<typeof scopeSchema>;

@@ -26,9 +26,11 @@ import (
 	"github.com/multica-ai/multica/server/internal/realtime"
 	"github.com/multica-ai/multica/server/internal/scheduler"
 	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/featureflag"
 	"github.com/multica-ai/multica/server/pkg/llm"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -654,7 +656,8 @@ func main() {
 	// that cache's version, so an idle runtime could keep returning an empty
 	// claim until the cache TTL expires.
 	taskSvc, autopilotSvc := backgroundServices(h)
-	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx)
+	var taskObservation, cancellationObservation adminWorkerObservation
+	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx, cancellationObservation.record)
 	registerAutopilotListeners(bus, autopilotSvc)
 
 	// Construct a LivenessStore that mirrors the one wired into the HTTP
@@ -664,6 +667,40 @@ func main() {
 	var liveness handler.LivenessStore = handler.NewNoopLivenessStore()
 	if storeRedis != nil {
 		liveness = handler.NewRedisLivenessStore(storeRedis)
+	}
+	alertSvc := service.NewAdminAlertService(queries, pool, auth.ManagedDeploymentID(), liveness)
+	if auth.PasswordMode() && os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true" {
+		bus.Subscribe(protocol.EventTaskFailed, func(event events.Event) {
+			payload, ok := event.Payload.(map[string]any)
+			if !ok {
+				return
+			}
+			id, ok := payload["task_id"].(string)
+			if !ok {
+				return
+			}
+			if taskID, err := util.ParseUUID(id); err == nil {
+				alertSvc.NotifyTaskFailed(taskID)
+			}
+		})
+		go alertSvc.Run(sweepCtx)
+	}
+	h.AdminHealthSnapshot = func(ctx context.Context) handler.AdminHealthSnapshot {
+		now := time.Now().UTC()
+		source := handler.AdminHealthSource{Name: "liveness", State: "unknown", Code: "database_fallback"}
+		if storeRedis != nil {
+			source.State, source.CheckedAt = "healthy", &now
+			pingCtx, cancel := context.WithTimeout(ctx, time.Second)
+			// Probe the actual heartbeat read, including its Redis permissions.
+			// Absence of this sentinel is normal; only source availability matters.
+			if _, available := liveness.IsAliveBatch(pingCtx, []string{"00000000-0000-0000-0000-000000000000"}); !available {
+				source.State, source.Code = "unavailable", "liveness_unavailable"
+			} else {
+				source.Code = "liveness_readable"
+			}
+			cancel()
+		}
+		return handler.AdminHealthSnapshot{Sources: []handler.AdminHealthSource{source, taskObservation.snapshot("task_coordinator", now, 2*sweepInterval), cancellationObservation.snapshot("cancellation_coordinator", now, time.Minute), adminDetectorSource(ctx, alertSvc)}}
 	}
 
 	// Start background sweeper to mark stale runtimes as offline.
@@ -678,7 +715,7 @@ func main() {
 	// Queued work now expires on the same runtime-liveness signal as in-flight
 	// work, so there is no separate queue TTL to tune: a busy runtime keeps its
 	// backlog, and a departed one retires everything it owned at once.
-	go runRuntimeSweeper(sweepCtx, queries, liveness, taskSvc, bus, runtimeReconnectGrace)
+	go runRuntimeSweeper(sweepCtx, queries, liveness, taskSvc, bus, runtimeReconnectGrace, taskObservation.record)
 	// Seven-day runtime retention does not share the 30-second liveness tick:
 	// its bounded transactions run independently once per hour, so a slow GC
 	// round cannot delay offline detection or task recovery.

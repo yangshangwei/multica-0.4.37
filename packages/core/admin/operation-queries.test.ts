@@ -6,7 +6,7 @@ import { submitAdminControl, findAdminControlOperation, AdminControlUncertainErr
 import { readAdminControlDraft, saveAdminControlDraft, removeAdminControlDraft } from "./operation-draft";
 const state = vi.hoisted(() => ({ userId: "actor", session: "session", api: {
   getBaseUrl: () => "https://test.invalid", getSessionScope: (): string => state.session,
-  changeAdminAdmission: vi.fn(), cancelAdminExecution: vi.fn(), getAdminOperations: vi.fn(), getAdminOperation: vi.fn(),
+  changeAdminAdmission: vi.fn(), cancelAdminExecution: vi.fn(), changeAdminAlert: vi.fn(), getAdminOperations: vi.fn(), getAdminOperation: vi.fn(),
 } }));
 vi.mock("../api", async original => ({ ...await original<typeof import("../api")>(), getApi: () => state.api }));
 vi.mock("../auth", () => ({ useAuthStore: { getState: () => ({ user: { id: state.userId } }) } }));
@@ -16,6 +16,22 @@ const input = { id: "target", key: "original-key", action: "cancel" as const, bo
 let scope: AdminScope;
 beforeEach(() => { vi.resetAllMocks(); state.session = "session"; scope = { apiScope: adminApiScope(), userId: "actor", organizationId: "organization" }; });
 describe("control submission and recovery", () => {
+  it("recovers the same alert disposition after a lost response using its action kind", async () => {
+    const alertInput = { id: input.id, key: input.key, action: "alert" as const, body: { action: "acknowledge" as const, expectedVersion: "1", reason: "Investigating" } };
+    state.api.changeAdminAlert.mockRejectedValueOnce(new TypeError("Lost response"));
+    const operation = { ...receipt, kind: "alert.acknowledge", state: "succeeded" };
+    state.api.getAdminOperations.mockResolvedValueOnce({ items: [operation], scope: "organization" });
+    await expect(submitAdminControl(scope, alertInput)).resolves.toEqual(operation);
+    expect(state.api.changeAdminAlert).toHaveBeenCalledExactlyOnceWith(alertInput.id, alertInput.body, alertInput.key);
+  });
+  it("finds the durable failed receipt even for the first conflicting alert request", async () => {
+    const alertInput = { id: input.id, key: input.key, action: "alert" as const, body: { action: "acknowledge" as const, expectedVersion: "1", reason: "Investigating" } };
+    state.api.changeAdminAlert.mockRejectedValueOnce(new ApiError("Changed", 409, "Conflict", { code: "alert_version_conflict" }));
+    const operation = { ...receipt, kind: "alert.acknowledge", state: "failed", confirmation: "not_required", reconciliationState: "complete" };
+    state.api.getAdminOperations.mockResolvedValueOnce({ items: [operation], scope: "organization" });
+    await expect(submitAdminControl(scope, alertInput)).resolves.toEqual(operation);
+    expect(state.api.getAdminOperations).toHaveBeenCalledWith(alertInput.key);
+  });
   it("does not send a command when its original intent cannot be saved", async () => {
     vi.mocked(saveAdminControlDraft).mockImplementationOnce(() => { throw new Error("Storage unavailable"); });
     await expect(submitAdminControl(scope, input)).rejects.toThrow("Storage unavailable");

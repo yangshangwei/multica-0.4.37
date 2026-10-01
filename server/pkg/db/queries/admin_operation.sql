@@ -64,8 +64,8 @@ RETURNING *;
 
 -- name: RecordAdminCancellationPhase :exec
 INSERT INTO admin_audit_event (operation_id,organization_id,actor_kind,actor_user_id,
- target_kind,target_id,action,phase,request_id,reason,before_state,after_state,result_code)
-VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
+ target_kind,target_id,action,phase,request_id,reason,before_state,after_state,result_code,actor_display_name)
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,(SELECT name FROM "user" WHERE id=$4))
 ON CONFLICT (operation_id,phase) WHERE operation_id IS NOT NULL DO NOTHING;
 
 -- name: LeaseDueAdminCancellations :many

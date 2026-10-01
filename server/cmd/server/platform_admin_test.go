@@ -19,7 +19,7 @@ func TestPlatformAdminBootstrapRejectsAmbiguousOperatorInput(t *testing.T) {
 func TestPlatformControlsRequireUsableIndexesAndStateTrigger(t *testing.T) {
 	f := newManagedRouterFixture(t)
 	schema := strings.Split(f.pool.Config().ConnConfig.RuntimeParams["search_path"], ",")[0]
-	indexes := []string{"managed_installation_id_uidx", "managed_installation_key_uidx", "installation_binding_id_uidx", "installation_binding_active_uidx", "installation_binding_scope_idx", "admin_audit_operation_phase_uidx", "admin_cancel_root_lookup_idx", "admin_operation_followers_idx", "admin_operation_due_idx", "admin_operation_installation_time_idx"}
+	indexes := []string{"managed_installation_id_uidx", "managed_installation_key_uidx", "installation_binding_id_uidx", "installation_binding_active_uidx", "installation_binding_scope_idx", "admin_audit_operation_phase_uidx", "admin_cancel_root_lookup_idx", "admin_operation_followers_idx", "admin_operation_due_idx", "admin_operation_installation_time_idx", "admin_alert_failure_scan_idx", "admin_alert_queue_scan_idx", "admin_alert_inflight_installation_idx", "admin_execution_finished_page_idx"}
 	for _, name := range indexes {
 		var definition string
 		f.fx.QueryRow(t, "SELECT pg_get_indexdef(to_regclass($1))", "public."+name).Scan(&definition)
@@ -27,6 +27,7 @@ func TestPlatformControlsRequireUsableIndexesAndStateTrigger(t *testing.T) {
 		f.fx.Exec(t, strings.Replace(definition, " ON public.", " ON "+pgx.Identifier{schema}.Sanitize()+".", 1))
 	}
 	f.fx.Exec(t, `CREATE TRIGGER agent_task_queue_state_version BEFORE UPDATE OF status,runtime_id,dispatched_at ON agent_task_queue FOR EACH ROW WHEN (ROW(OLD.status,OLD.runtime_id,OLD.dispatched_at) IS DISTINCT FROM ROW(NEW.status,NEW.runtime_id,NEW.dispatched_at)) EXECUTE FUNCTION public.multica_advance_task_state_version()`)
+	f.fx.Exec(t, `CREATE TRIGGER agent_task_queue_clock BEFORE INSERT OR UPDATE OF status ON agent_task_queue FOR EACH ROW EXECUTE FUNCTION public.multica_track_task_queue_time()`)
 	if err := validatePlatformControlSchema(t.Context(), f.pool); err != nil {
 		t.Fatal(err)
 	}

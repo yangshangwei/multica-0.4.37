@@ -432,6 +432,8 @@ func (s *PlatformAdminService) CreateOperationInTx(ctx context.Context, tx pgx.T
 	validAction := expectedCode != "" && p.TargetKind == "user" && p.ResultCode == expectedCode
 	validAction = validAction || p.Kind == "task.cancel" && p.TargetKind == "task" && p.ResultCode == "cancellation_accepted"
 	validAction = validAction || p.Kind == "installation.admission" && p.TargetKind == "installation" && (p.ResultCode == "admission_stopped" || p.ResultCode == "admission_accepting")
+	alertCode := map[string]string{"alert.acknowledge": "alert_acknowledged", "alert.assign": "alert_assigned", "alert.close": "alert_closed"}[p.Kind]
+	validAction = validAction || alertCode != "" && p.TargetKind == "alert" && p.ResultCode == alertCode
 	if !validAction || p.State != "applied" {
 		return empty, false, platformError(http.StatusBadRequest, "invalid_operation", "The operation kind or state is not supported")
 	}

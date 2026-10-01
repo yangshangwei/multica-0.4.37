@@ -5,6 +5,8 @@ import { parseAdminUsers, parseAdminUserDetail, parseAdminUserOperation, parseAd
 import { parseAdminMe } from "../admin/schema";
 import { parseAdminOperation, parseAdminAdmissionResult, parseAdminCancellationResult } from "../admin/operation-schema";
 import type { AdminAdmissionChange, AdminExecutionCancellation } from "../admin/control-schema";
+import { parseAdminOverview, parseAdminHealth, parseAdminSettings, parseAdminWorkspaces, parseAdminAudit } from "../admin/observability-schema";
+import { parseAdminAlert, parseAdminAlerts, parseAdminAlertResult, type AdminAlertChange } from "../admin/alert-schema";
 import { configStore } from "../config";
 import type {
   Issue,
@@ -871,6 +873,44 @@ export class ApiClient {
 
   async getAdminOperation(id: string, options?: { signal?: AbortSignal }) {
     return parseAdminOperation(await this.fetch<unknown>(`/api/admin/operations/${encodeURIComponent(id)}`, { signal: options?.signal }));
+  }
+
+  async getAdminOverview(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminOverview(await this.fetch<unknown>(`/api/admin/overview?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminAlerts(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminAlerts(await this.fetch<unknown>(`/api/admin/alerts?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminAlert(id: string, options?: { signal?: AbortSignal }) {
+    return parseAdminAlert(await this.fetch<unknown>(`/api/admin/alerts/${encodeURIComponent(id)}`, { signal: options?.signal }));
+  }
+
+  async changeAdminAlert(id: string, body: AdminAlertChange, key: string) {
+    return parseAdminAlertResult(await this.fetch<unknown>(`/api/admin/alerts/${encodeURIComponent(id)}/${body.action}`, {
+      method: "POST", headers: { "Idempotency-Key": key },
+      body: JSON.stringify({ expected_version: body.expectedVersion, reason: body.reason,
+        ...(body.action === "assign" ? { assignee_id: body.assigneeId } : {}),
+        ...(body.action === "close" ? { resolution_code: body.resolutionCode, related_task_id: body.relatedTaskId } : {}),
+      }),
+    }));
+  }
+
+  async getAdminWorkspaces(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminWorkspaces(await this.fetch<unknown>(`/api/admin/workspaces?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminAudit(params: URLSearchParams, options?: { signal?: AbortSignal }) {
+    return parseAdminAudit(await this.fetch<unknown>(`/api/admin/audit?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminHealth(options?: { signal?: AbortSignal }) {
+    return parseAdminHealth(await this.fetch<unknown>("/api/admin/health", { signal: options?.signal }));
+  }
+
+  async getAdminSettings(options?: { signal?: AbortSignal }) {
+    return parseAdminSettings(await this.fetch<unknown>("/api/admin/settings", { signal: options?.signal }));
   }
 
   async changeAdminAdmission(id: string, body: AdminAdmissionChange, key: string) {

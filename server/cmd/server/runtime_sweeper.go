@@ -110,6 +110,7 @@ type runtimeGCEventPublisher interface {
 }
 
 type runtimeSweepStageStats struct {
+	failed     bool
 	candidates int
 	changed    int
 }
@@ -153,19 +154,32 @@ func runPeriodicSweep(ctx context.Context, interval time.Duration, sweep func())
 // hot heartbeat path; the DB is allowed to lag up to runtimeHeartbeatDBFlushInterval).
 // When liveness is unavailable or errors, we fall back to trusting the DB
 // stale window — that is the original behavior.
-func runRuntimeSweeper(ctx context.Context, queries *db.Queries, liveness handler.LivenessStore, taskSvc *service.TaskService, bus *events.Bus, reconnectGrace time.Duration) {
+func runRuntimeSweeper(ctx context.Context, queries *db.Queries, liveness handler.LivenessStore, taskSvc *service.TaskService, bus *events.Bus, reconnectGrace time.Duration, observers ...func(error)) {
 	runPeriodicSweep(ctx, sweepInterval, func() {
 		// These stages retain the existing cadence and ordering in PR1 so the
 		// rollout changes no business predicate or recovery semantics. Runtime
 		// GC is the one exception: its seven-day retention work now runs in the
 		// independent hourly loop below and cannot delay this liveness path.
-		sweepStaleRuntimes(ctx, queries, liveness, taskSvc, bus)
-		sweepOfflineRuntimeTasks(ctx, queries, taskSvc, reconnectGrace)
-		sweepExpiredRuntimeReconnectRetries(ctx, queries, taskSvc, reconnectGrace)
-		sweepStaleTasks(ctx, queries, taskSvc, bus, reconnectGrace)
-		sweepExpiredQueuedTasks(ctx, queries, taskSvc, reconnectGrace)
-		sweepPendingDelegatedFailureRecoveries(ctx, taskSvc)
-		sweepDeferredChatFinalizations(ctx, queries, taskSvc)
+		stages := []runtimeSweepStageStats{
+			sweepStaleRuntimes(ctx, queries, liveness, taskSvc, bus),
+			sweepOfflineRuntimeTasks(ctx, queries, taskSvc, reconnectGrace),
+			sweepExpiredRuntimeReconnectRetries(ctx, queries, taskSvc, reconnectGrace),
+			sweepStaleTasks(ctx, queries, taskSvc, bus, reconnectGrace),
+			sweepExpiredQueuedTasks(ctx, queries, taskSvc, reconnectGrace),
+			sweepPendingDelegatedFailureRecoveries(ctx, taskSvc),
+			sweepDeferredChatFinalizations(ctx, queries, taskSvc),
+		}
+		var failure error
+		for _, stage := range stages {
+			if stage.failed {
+				failure = errors.New("runtime sweep query failed")
+			}
+		}
+		for _, observe := range observers {
+			if observe != nil && ctx.Err() == nil {
+				observe(failure)
+			}
+		}
 	})
 }
 
@@ -189,6 +203,7 @@ func sweepPendingDelegatedFailureRecoveries(ctx context.Context, taskSvc *servic
 	stats.candidates = result.Scanned
 	stats.changed = result.Replayed + result.Exhausted
 	if err != nil {
+		stats.failed = true
 		slog.Warn("delegated failure recovery sweeper: replay failed",
 			"replayed", result.Replayed,
 			"exhausted", result.Exhausted,
@@ -216,6 +231,7 @@ func sweepStaleRuntimes(ctx context.Context, queries *db.Queries, liveness handl
 
 	candidates, err := queries.SelectStaleOnlineRuntimes(ctx, staleThresholdSeconds)
 	if err != nil {
+		stats.failed = true
 		slog.Warn("runtime sweeper: failed to list stale online runtimes", "error", err)
 		return
 	}
@@ -234,6 +250,7 @@ func sweepStaleRuntimes(ctx context.Context, queries *db.Queries, liveness handl
 		StaleSeconds: staleThresholdSeconds,
 	})
 	if err != nil {
+		stats.failed = true
 		slog.Warn("runtime sweeper: failed to mark stale runtimes offline", "error", err)
 		return
 	}
@@ -302,6 +319,7 @@ func sweepOfflineRuntimeTasks(ctx context.Context, queries *db.Queries, taskSvc 
 		MaxPerTick:         offlineTaskFailBatchSize,
 	})
 	if err != nil {
+		stats.failed = true
 		slog.Warn("runtime sweeper: failed to clean up long-offline tasks", "error", err)
 		return
 	}
@@ -331,6 +349,7 @@ func sweepExpiredRuntimeReconnectRetries(ctx context.Context, queries *db.Querie
 		MaxPerTick:         reconnectRetryExpireBatchSize,
 	})
 	if err != nil {
+		stats.failed = true
 		slog.Warn("runtime sweeper: failed to expire reconnect retries", "error", err)
 		return
 	}
@@ -594,6 +613,7 @@ func sweepStaleTasks(ctx context.Context, queries *db.Queries, taskSvc *service.
 		RuntimeReconnectGraceSecs: reconnectGrace.Seconds(),
 	})
 	if err != nil {
+		stats.failed = true
 		slog.Warn("task sweeper: failed to clean up stale tasks", "error", err)
 		return
 	}
@@ -627,6 +647,7 @@ func sweepExpiredQueuedTasks(ctx context.Context, queries *db.Queries, taskSvc *
 		MaxPerTick:         queuedExpireBatchSize,
 	})
 	if err != nil {
+		stats.failed = true
 		slog.Warn("task sweeper: failed to expire stale queued tasks", "error", err)
 		return
 	}
@@ -658,6 +679,7 @@ func sweepDeferredChatFinalizations(ctx context.Context, queries *db.Queries, ta
 		MaxPerTick: chatFinalizeBatchSize,
 	})
 	if err != nil {
+		stats.failed = true
 		slog.Warn("chat finalize sweeper: list deferred failed", "error", err)
 		return
 	}

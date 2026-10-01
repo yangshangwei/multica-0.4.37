@@ -30,11 +30,12 @@ describe("administration shell", () => {
   // Parsing and revocation matrices live in core/admin/*.test.ts(x).
   it("renders the current role and organization, with only implemented destinations", () => {
     mount();
-    expect(screen.getByRole("heading", { name: "Administration access" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByText("Administration access").closest("details")).toBeInTheDocument();
     expect(screen.getByText("platform_observer")).toBeInTheDocument();
     expect(screen.getByText("organization")).toBeInTheDocument();
     expect(screen.getByText("Authorized detail")).toBeInTheDocument();
-    expect(screen.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["/admin", "/login", "/admin", "/admin/users", "/admin/installations", "/admin/tasks", "/admin/administrators"]);
+    expect(screen.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["/admin", "/login", "/admin", "/admin/users", "/admin/installations", "/admin/tasks", "/admin/alerts", "/admin/settings"]);
     fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
     expect(state.logout).toHaveBeenCalledOnce();
   });

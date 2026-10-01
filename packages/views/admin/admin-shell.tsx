@@ -31,12 +31,23 @@ export function AdminShell({ children }: { children?: ReactNode }) {
   const { pathname } = useNavigation();
   const showAccess = pathname === "/admin" || pathname === "/admin/";
   const destinations = [
-    { href: "/admin", label: t(($) => $.shell.access) },
+    { href: "/admin", label: t(($) => $.observability.title) },
     { href: "/admin/users", label: t(($) => $.shell.accounts) },
     { href: "/admin/installations", label: t(($) => $.shell.installations) },
     { href: "/admin/tasks", label: t(($) => $.shell.executions) },
-    { href: "/admin/administrators", label: t(($) => $.shell.administrators) },
+    { href: "/admin/alerts", label: t(($) => $.shell.monitoring) },
+    { href: "/admin/settings", label: t(($) => $.shell.system) },
   ];
+  const accountSection = pathname.startsWith("/admin/users") || pathname.startsWith("/admin/workspaces");
+  const monitoringSection = pathname.startsWith("/admin/alerts") || pathname.startsWith("/admin/health");
+  const systemSection = ["/admin/settings", "/admin/administrators", "/admin/audit"].some(path => pathname.startsWith(path));
+  const sectionLinks = accountSection ? [
+    { href: "/admin/users", label: t(($) => $.workspaces.accounts) }, { href: "/admin/workspaces", label: t(($) => $.workspaces.title) },
+  ] : monitoringSection ? [
+    { href: "/admin/alerts", label: t(($) => $.alerts.title) }, { href: "/admin/health", label: t(($) => $.health.title) },
+  ] : systemSection ? [
+    { href: "/admin/administrators", label: t(($) => $.shell.administrators) }, { href: "/admin/audit", label: t(($) => $.audit.title) }, { href: "/admin/settings", label: t(($) => $.settings.title) },
+  ] : [];
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-background text-foreground">
@@ -53,18 +64,21 @@ export function AdminShell({ children }: { children?: ReactNode }) {
         </div>
       </header>
       {status === "ready" && identity && (
-        <nav aria-label={t(($) => $.shell.navigation)} className="flex shrink-0 flex-wrap gap-1 px-5 pt-3 sm:px-8">
+        <nav aria-label={t(($) => $.shell.navigation)} className="flex shrink-0 gap-1 overflow-x-auto whitespace-nowrap px-5 pt-3 sm:px-8">
           {destinations.map(({ href, label }) => {
-            const active = href === "/admin" ? showAccess : pathname.startsWith(href) || (href === "/admin/tasks" && pathname.startsWith("/admin/issues"));
+            const active = href === "/admin" ? showAccess : href === "/admin/users" ? accountSection : href === "/admin/alerts" ? monitoringSection : href === "/admin/settings" ? systemSection : pathname.startsWith(href) || (href === "/admin/tasks" && pathname.startsWith("/admin/issues"));
             return (
               <AppLink key={href} href={href} aria-current={active ? "page" : undefined}
-                className={`inline-flex min-h-11 items-center rounded-md px-3 py-2 text-body hover:bg-accent focus-visible:outline-ring ${active ? "bg-accent font-semibold text-foreground" : "text-muted-foreground"}`}>
+                className={`inline-flex min-h-11 shrink-0 items-center rounded-md px-3 py-2 text-body hover:bg-accent focus-visible:outline-ring ${active ? "bg-accent font-semibold text-foreground" : "text-muted-foreground"}`}>
                 {label}
               </AppLink>
             );
           })}
         </nav>
       )}
+      {status === "ready" && identity && sectionLinks.length > 0 && <nav aria-label={t(($) => $.shell.section_navigation)} className="flex shrink-0 gap-4 overflow-x-auto whitespace-nowrap px-8 pt-2 sm:px-11">
+        {sectionLinks.map(link => <AppLink key={link.href} href={link.href} aria-current={pathname.startsWith(link.href) ? "page" : undefined} className={`inline-flex min-h-11 shrink-0 items-center text-caption hover:underline focus-visible:outline-ring ${pathname.startsWith(link.href) ? "font-semibold text-foreground" : "text-muted-foreground"}`}>{link.label}</AppLink>)}
+      </nav>}
       <main className="min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8">
         {status === "loading" || status === "signed_out" ? (
           <p role="status" className="flex items-center gap-2 text-body text-muted-foreground">
@@ -80,15 +94,12 @@ export function AdminShell({ children }: { children?: ReactNode }) {
           </section>
         ) : (
           <div className="mx-auto max-w-7xl space-y-8">
-            {showAccess && <section className="space-y-6" aria-labelledby="admin-access-heading">
-              <div className="space-y-2">
-                <h1 id="admin-access-heading" className="text-title font-semibold">{t(($) => $.access.title)}</h1>
-                <p className="text-body text-muted-foreground">{t(($) => $.access.description)}</p>
-              </div>
+            {children}
+            {showAccess && <details className="space-y-4 text-body">
+              <summary className="cursor-pointer text-muted-foreground">{t(($) => $.access.title)}</summary>
               <ScopeDetails identity={identity} />
               <p className="text-caption text-muted-foreground">{t(($) => $.access.scope_notice)}</p>
-            </section>}
-            {children}
+            </details>}
           </div>
         )}
       </main>

@@ -68,10 +68,20 @@ func ParseAdminListQuery(r *http.Request, scope AdminListScope, filterNames []st
 		p.Limit = int32(n)
 	}
 	if value := values.Get("timezone"); value != "" {
-		if _, err := time.LoadLocation(value); err != nil {
+		if _, err := time.LoadLocation(value); err != nil || value == "Local" {
 			return p, adminQueryError()
 		}
 		p.Timezone = value
+	}
+	if allowed["time_basis"] {
+		basis := values.Get("time_basis")
+		if basis == "" {
+			basis = "created"
+		}
+		if basis != "created" && basis != "finished" {
+			return p, adminQueryError()
+		}
+		p.Filters["time_basis"] = basis
 	}
 	// Equivalent defaults share a fingerprint; all action-specific filters remain
 	// bound even when the caller adds a new one later.
@@ -146,11 +156,21 @@ func decodeAdminCursor(token string) (adminCursor, error) {
 func parseAdminQuery(r *http.Request, resource, actor, org string, now time.Time) (AdminListQuery, error) {
 	filters := []string{"q", "workspace_id", "issue_id", "status"}
 	if resource == "tasks" {
-		filters = append(filters, "task_id", "runtime_id", "user_id", "installation_id", "source")
+		filters = append(filters, "task_id", "runtime_id", "user_id", "installation_id", "source", "time_basis", "state_scope")
 	}
-	p, err := ParseAdminListQuery(r, AdminListScope{Resource: resource, ActorID: actor, OrganizationID: org, Window: 31 * 24 * time.Hour}, filters, now)
+	window := 31 * 24 * time.Hour
+	if resource == "tasks" && r.URL.Query().Get("state_scope") == "current" {
+		window = 0
+	}
+	p, err := ParseAdminListQuery(r, AdminListScope{Resource: resource, ActorID: actor, OrganizationID: org, Window: window}, filters, now)
 	if err != nil {
 		return p, err
+	}
+	if stateScope := p.Filters["state_scope"]; stateScope != "" {
+		values := r.URL.Query()
+		if stateScope != "current" || p.Filters["time_basis"] != "created" || values.Has("time_from") || values.Has("time_to") || !adminContains([]string{"queued", "preparing", "dispatched", "running", "waiting_local_directory", "deferred"}, p.Filters["status"]) {
+			return p, adminQueryError()
+		}
 	}
 	for _, name := range []string{"workspace_id", "task_id", "issue_id", "runtime_id", "user_id", "installation_id"} {
 		if value := p.Filters[name]; value != "" {

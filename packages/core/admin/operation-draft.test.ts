@@ -63,3 +63,8 @@ it("does not write if the adapter cannot enumerate independently persisted reque
   expect(() => saveAdminControlDraft(scope, input)).toThrow(AdminControlDraftError);
   expect(values.size).toBe(0);
 });
+it("preserves exact nonsecret alert disposition and owner across refresh", () => {
+  const alert = { id, key, action: "alert" as const, body: { action: "close" as const, expectedVersion: "7", resolutionCode: "retry_succeeded" as const, relatedTaskId: id, reason: "Verified retry" } };
+  saveAdminControlDraft(scope, alert);
+  expect(readAdminControlDraft(scope, id)?.input).toEqual(alert);
+});

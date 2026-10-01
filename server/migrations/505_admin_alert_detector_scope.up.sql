@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY admin_alert_detector_scope_uidx ON admin_alert_detector_state (organization_id,rule);

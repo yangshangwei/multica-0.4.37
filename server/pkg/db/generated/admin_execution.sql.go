@@ -112,6 +112,7 @@ WITH candidates AS (
  t.retry_of_task_id, t.rerun_of_task_id, t.accountable_user_id,
  t.submitted_installation_id, t.execution_installation_id,
  t.created_at, t.dispatched_at, t.started_at, t.completed_at, t.failure_reason, t.state_version,
+ CASE WHEN $1::text='finished' THEN t.completed_at ELSE t.created_at END::timestamptz AS sort_time,
  CASE WHEN t.chat_session_id IS NOT NULL THEN 'chat'
       WHEN t.issue_id IS NOT NULL AND (t.autopilot_run_id IS NOT NULL OR i.origin_type = 'autopilot') THEN 'autopilot_issue'
       WHEN t.issue_id IS NOT NULL THEN 'issue'
@@ -122,41 +123,41 @@ WITH candidates AS (
  CASE WHEN m.user_id IS NOT NULL AND i.id IS NOT NULL THEN '/' || w.slug || '/issues/' || i.id::text
       -- Mirror gatePublicChatSessionForUser: creator, current private-agent
       -- access, and a member-visible conversation (never command-only).
-      WHEN m.user_id IS NOT NULL AND chat_agent.id IS NOT NULL AND cs.creator_id = $1::uuid
+      WHEN m.user_id IS NOT NULL AND chat_agent.id IS NOT NULL AND cs.creator_id = $2::uuid
        AND (cs.explicitly_created_at IS NOT NULL OR EXISTS (
          SELECT 1 FROM chat_message public_message WHERE public_message.chat_session_id=cs.id AND public_message.message_kind!='channel_command'))
-       AND (chat_agent.owner_id=$1::uuid OR m.role IN ('owner','admin')
+       AND (chat_agent.owner_id=$2::uuid OR m.role IN ('owner','admin')
          OR (chat_agent.permission_mode='public_to' AND EXISTS (
            SELECT 1 FROM agent_invocation_target target WHERE target.agent_id=chat_agent.id
-            AND (target.target_type='workspace' OR (target.target_type='member' AND target.target_id=$1::uuid)))))
+            AND (target.target_type='workspace' OR (target.target_type='member' AND target.target_id=$2::uuid)))))
        THEN '/' || w.slug || '/chat?session=' || cs.id::text
       ELSE '' END::text AS content_url,
  CASE WHEN rt.workspace_id = a.workspace_id THEN rt.provider ELSE '' END::text AS provider
  FROM agent_task_queue t
  JOIN agent a ON a.id = t.agent_id
- JOIN organization_workspace ow ON ow.workspace_id = a.workspace_id AND ow.organization_id = $2::uuid
+ JOIN organization_workspace ow ON ow.workspace_id = a.workspace_id AND ow.organization_id = $3::uuid
  JOIN workspace w ON w.id = a.workspace_id
  LEFT JOIN issue i ON i.id = t.issue_id AND i.workspace_id = a.workspace_id
  LEFT JOIN chat_session cs ON cs.id = t.chat_session_id AND cs.workspace_id = a.workspace_id
  LEFT JOIN agent chat_agent ON chat_agent.id=cs.agent_id AND chat_agent.workspace_id=a.workspace_id
- LEFT JOIN member m ON m.workspace_id = a.workspace_id AND m.user_id = $1::uuid
+ LEFT JOIN member m ON m.workspace_id = a.workspace_id AND m.user_id = $2::uuid
  LEFT JOIN agent_runtime rt ON rt.id = t.runtime_id
- WHERE t.created_at >= $3::timestamptz
- AND t.created_at < $4::timestamptz AND t.created_at <= $5::timestamptz
- AND ($6::uuid IS NULL OR a.workspace_id = $6)
- AND ($7::uuid IS NULL OR t.id = $7)
- AND ($8::uuid IS NULL OR t.issue_id = $8)
- AND ($9::uuid IS NULL OR t.runtime_id = $9)
- AND ($10::uuid IS NULL OR t.accountable_user_id = $10)
- AND ($11::uuid IS NULL OR t.execution_installation_id = $11)
- AND ($12::text = '' OR t.status = $12)
- AND ($13::text = '' OR t.id::text ILIKE '%' || $13 || '%' OR w.issue_prefix || '-' || i.number::text ILIKE '%' || $13 || '%')
- AND ($14::timestamptz IS NULL OR (t.created_at,t.id) < ($14,$15::uuid))
+ WHERE (($1::text='finished' AND t.completed_at>=$4::timestamptz AND t.completed_at<$5::timestamptz AND t.completed_at<=$6::timestamptz)
+ OR ($1::text<>'finished' AND t.created_at>=$4::timestamptz AND t.created_at<$5::timestamptz AND t.created_at<=$6::timestamptz))
+ AND ($7::uuid IS NULL OR a.workspace_id = $7)
+ AND ($8::uuid IS NULL OR t.id = $8)
+ AND ($9::uuid IS NULL OR t.issue_id = $9)
+ AND ($10::uuid IS NULL OR t.runtime_id = $10)
+ AND ($11::uuid IS NULL OR t.accountable_user_id = $11)
+ AND ($12::uuid IS NULL OR t.execution_installation_id = $12)
+ AND ($13::text = '' OR t.status = $13)
+ AND ($14::text = '' OR t.id::text ILIKE '%' || $14 || '%' OR w.issue_prefix || '-' || i.number::text ILIKE '%' || $14 || '%')
+ AND ($15::timestamptz IS NULL OR ((CASE WHEN $1::text='finished' THEN t.completed_at ELSE t.created_at END),t.id) < ($15,$16::uuid))
 ), page AS (
- SELECT id, agent_id, workspace_id, issue_id, runtime_id, chat_session_id, autopilot_run_id, status, attempt, parent_task_id, retry_of_task_id, rerun_of_task_id, accountable_user_id, submitted_installation_id, execution_installation_id, created_at, dispatched_at, started_at, completed_at, failure_reason, state_version, source, title, content_url, provider FROM candidates WHERE $16::text = '' OR source = $16
- ORDER BY created_at DESC,id DESC LIMIT $17::int
+ SELECT id, agent_id, workspace_id, issue_id, runtime_id, chat_session_id, autopilot_run_id, status, attempt, parent_task_id, retry_of_task_id, rerun_of_task_id, accountable_user_id, submitted_installation_id, execution_installation_id, created_at, dispatched_at, started_at, completed_at, failure_reason, state_version, sort_time, source, title, content_url, provider FROM candidates WHERE $17::text = '' OR source = $17
+ ORDER BY sort_time DESC,id DESC LIMIT $18::int
 )
-SELECT page.id, page.agent_id, page.workspace_id, page.issue_id, page.runtime_id, page.chat_session_id, page.autopilot_run_id, page.status, page.attempt, page.parent_task_id, page.retry_of_task_id, page.rerun_of_task_id, page.accountable_user_id, page.submitted_installation_id, page.execution_installation_id, page.created_at, page.dispatched_at, page.started_at, page.completed_at, page.failure_reason, page.state_version, page.source, page.title, page.content_url, page.provider, usage.input_tokens, usage.output_tokens, usage.cache_read_tokens, usage.cache_write_tokens,
+SELECT page.id, page.agent_id, page.workspace_id, page.issue_id, page.runtime_id, page.chat_session_id, page.autopilot_run_id, page.status, page.attempt, page.parent_task_id, page.retry_of_task_id, page.rerun_of_task_id, page.accountable_user_id, page.submitted_installation_id, page.execution_installation_id, page.created_at, page.dispatched_at, page.started_at, page.completed_at, page.failure_reason, page.state_version, page.sort_time, page.source, page.title, page.content_url, page.provider, usage.input_tokens, usage.output_tokens, usage.cache_read_tokens, usage.cache_write_tokens,
  usage.reported_models, usage.model
 FROM page LEFT JOIN LATERAL (
  SELECT coalesce(sum(input_tokens),0)::bigint AS input_tokens, coalesce(sum(output_tokens),0)::bigint AS output_tokens,
@@ -165,10 +166,11 @@ FROM page LEFT JOIN LATERAL (
  CASE WHEN count(DISTINCT model)=1 THEN min(model) ELSE '' END::text AS model
  FROM task_usage WHERE task_id=page.id
 ) usage ON true
-ORDER BY page.created_at DESC,page.id DESC
+ORDER BY page.sort_time DESC,page.id DESC
 `
 
 type ListAdminTasksParams struct {
+	TimeBasis      string             `json:"time_basis"`
 	ActorID        pgtype.UUID        `json:"actor_id"`
 	OrganizationID pgtype.UUID        `json:"organization_id"`
 	TimeFrom       pgtype.Timestamptz `json:"time_from"`
@@ -210,6 +212,7 @@ type ListAdminTasksRow struct {
 	CompletedAt             pgtype.Timestamptz `json:"completed_at"`
 	FailureReason           pgtype.Text        `json:"failure_reason"`
 	StateVersion            int64              `json:"state_version"`
+	SortTime                pgtype.Timestamptz `json:"sort_time"`
 	Source                  string             `json:"source"`
 	Title                   string             `json:"title"`
 	ContentUrl              string             `json:"content_url"`
@@ -226,6 +229,7 @@ type ListAdminTasksRow struct {
 // path, message, or agent configuration may enter this projection.
 func (q *Queries) ListAdminTasks(ctx context.Context, arg ListAdminTasksParams) ([]ListAdminTasksRow, error) {
 	rows, err := q.db.Query(ctx, listAdminTasks,
+		arg.TimeBasis,
 		arg.ActorID,
 		arg.OrganizationID,
 		arg.TimeFrom,
@@ -273,6 +277,7 @@ func (q *Queries) ListAdminTasks(ctx context.Context, arg ListAdminTasksParams) 
 			&i.CompletedAt,
 			&i.FailureReason,
 			&i.StateVersion,
+			&i.SortTime,
 			&i.Source,
 			&i.Title,
 			&i.ContentUrl,

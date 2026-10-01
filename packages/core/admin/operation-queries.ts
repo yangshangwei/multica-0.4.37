@@ -6,11 +6,13 @@ import { useAuthStore } from "../auth";
 import { adminApiScope, adminKeys, AdminUnsupportedError, type AdminScope } from "./queries";
 import { operationNeedsPolling, type AdminOperation } from "./operation-schema";
 import type { AdminAdmissionChange, AdminExecutionCancellation } from "./control-schema";
+import type { AdminAlertChange } from "./alert-schema";
 import { readAdminControlDraft, saveAdminControlDraft, removeAdminControlDraft, type AdminControlDraftScope, type AdminControlDraft } from "./operation-draft";
 
 export type AdminControlInput = { id: string; key: string } & (
   { action: "admission"; body: AdminAdmissionChange } |
-  { action: "cancel"; body: AdminExecutionCancellation }
+  { action: "cancel"; body: AdminExecutionCancellation } |
+  { action: "alert"; body: AdminAlertChange }
 );
 export class AdminControlUncertainError extends Error {
   constructor(readonly idempotencyKey: string) {
@@ -34,7 +36,7 @@ function clearDeterminedDraft(scope: AdminScope, input: AdminControlInput) {
 }
 function matches(scope: AdminScope, input: AdminControlInput, operation: AdminOperation): boolean {
   return operation.organizationId === scope.organizationId && operation.actorId === scope.userId && operation.targetId === input.id &&
-    operation.kind === (input.action === "cancel" ? "task.cancel" : "installation.admission");
+    operation.kind === (input.action === "cancel" ? "task.cancel" : input.action === "alert" ? `alert.${input.body.action}` : "installation.admission");
 }
 export async function findAdminControlOperation(scope: AdminScope, input: AdminControlInput): Promise<AdminOperation | null> {
   assertScope(scope);
@@ -51,7 +53,7 @@ export async function submitAdminControl(scope: AdminScope, input: AdminControlI
   const existing = readAdminControlDraft(persistentScope, input.id);
   saveAdminControlDraft(persistentScope, input);
   try {
-    const result = input.action === "cancel"
+    const result = input.action === "alert" ? await getApi().changeAdminAlert(input.id, input.body, input.key) : input.action === "cancel"
       ? await getApi().cancelAdminExecution(input.id, input.body, input.key)
       : await getApi().changeAdminAdmission(input.id, input.body, input.key);
     assertScope(scope);
@@ -61,7 +63,7 @@ export async function submitAdminControl(scope: AdminScope, input: AdminControlI
   } catch (error) {
     assertScope(scope);
     if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
-      const hasFailedReceipt = input.action === "cancel" && error.status === 409 && errorCode(error) === "execution_fence_conflict";
+      const hasFailedReceipt = error.status === 409 && (input.action === "cancel" && errorCode(error) === "execution_fence_conflict" || input.action === "alert" && ["alert_version_conflict", "alert_state_conflict", "alert_assignee_unavailable", "alert_resolution_invalid"].includes(errorCode(error) ?? ""));
       if (!existing && !hasFailedReceipt) { clearDeterminedDraft(scope, input); throw error; }
       if ([401, 403].includes(error.status)) throw error;
     }

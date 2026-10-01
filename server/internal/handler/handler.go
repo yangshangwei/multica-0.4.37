@@ -229,6 +229,8 @@ type DaemonPendingWorkNotifier interface {
 }
 
 type Handler struct {
+	AdminHealthSnapshot    func(context.Context) AdminHealthSnapshot
+	AdminReadConfig        AdminReadConfig
 	PasswordLimiter        *auth.PasswordLimiter
 	Queries                *db.Queries
 	DB                     dbExecutor

@@ -116,6 +116,16 @@ func validatePlatformControlSchema(ctx context.Context, pool *pgxpool.Pool) erro
 		{"admin_operation_followers_idx", "admin_operation"},
 		{"admin_operation_due_idx", "admin_operation"},
 		{"admin_operation_installation_time_idx", "admin_operation"},
+		{"admin_alert_id_uidx", "admin_alert"},
+		{"admin_alert_active_fingerprint_uidx", "admin_alert"},
+		{"admin_alert_status_page_idx", "admin_alert"},
+		{"admin_alert_condition_recovery_idx", "admin_alert"},
+		{"admin_alert_latest_episode_idx", "admin_alert"},
+		{"admin_alert_detector_scope_uidx", "admin_alert_detector_state"},
+		{"admin_alert_failure_scan_idx", "agent_task_queue"},
+		{"admin_alert_queue_scan_idx", "agent_task_queue"},
+		{"admin_alert_inflight_installation_idx", "agent_task_queue"},
+		{"admin_execution_finished_page_idx", "agent_task_queue"},
 	} {
 		var valid bool
 		if err := pool.QueryRow(ctx, `SELECT COALESCE((SELECT indisvalid AND indisready AND indrelid=to_regclass($2) FROM pg_index WHERE indexrelid=to_regclass($1)),false)`, required[0], required[1]).Scan(&valid); err != nil {
@@ -131,6 +141,12 @@ func validatePlatformControlSchema(ctx context.Context, pool *pgxpool.Pool) erro
 	}
 	if !trigger {
 		return errors.New("task state-version trigger is missing or disabled; repair migrations before control activation")
+	}
+	if err := pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM pg_trigger WHERE tgrelid=to_regclass('agent_task_queue') AND tgname='agent_task_queue_clock' AND tgenabled IN ('O','A') AND tgfoid=to_regprocedure('multica_track_task_queue_time()'))`).Scan(&trigger); err != nil {
+		return err
+	}
+	if !trigger {
+		return errors.New("task queue observation trigger is missing or disabled; repair migrations before alert activation")
 	}
 	return nil
 }

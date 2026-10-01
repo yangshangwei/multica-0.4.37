@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY admin_alert_inflight_installation_idx ON agent_task_queue (execution_installation_id,id) WHERE status IN ('dispatched','running','waiting_local_directory') AND execution_installation_id IS NOT NULL;

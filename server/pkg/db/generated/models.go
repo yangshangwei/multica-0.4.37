@@ -21,22 +21,68 @@ type ActivityLog struct {
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
 }
 
+type AdminAlert struct {
+	ID              pgtype.UUID        `json:"id"`
+	OrganizationID  pgtype.UUID        `json:"organization_id"`
+	Rule            string             `json:"rule"`
+	SubjectKind     string             `json:"subject_kind"`
+	SubjectID       pgtype.UUID        `json:"subject_id"`
+	Fingerprint     string             `json:"fingerprint"`
+	Severity        string             `json:"severity"`
+	Status          string             `json:"status"`
+	ConditionActive bool               `json:"condition_active"`
+	FirstSeenAt     pgtype.Timestamptz `json:"first_seen_at"`
+	LastSeenAt      pgtype.Timestamptz `json:"last_seen_at"`
+	LastObservedAt  pgtype.Timestamptz `json:"last_observed_at"`
+	OccurrenceCount int64              `json:"occurrence_count"`
+	AssigneeID      pgtype.UUID        `json:"assignee_id"`
+	AcknowledgedAt  pgtype.Timestamptz `json:"acknowledged_at"`
+	ResolvedAt      pgtype.Timestamptz `json:"resolved_at"`
+	ClosedAt        pgtype.Timestamptz `json:"closed_at"`
+	ResolutionCode  pgtype.Text        `json:"resolution_code"`
+	RelatedTaskID   pgtype.UUID        `json:"related_task_id"`
+	Version         int64              `json:"version"`
+	OperationID     pgtype.UUID        `json:"operation_id"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+}
+
+type AdminAlertDetectorState struct {
+	OrganizationID    pgtype.UUID        `json:"organization_id"`
+	Rule              string             `json:"rule"`
+	CursorTime        pgtype.Timestamptz `json:"cursor_time"`
+	CursorID          pgtype.UUID        `json:"cursor_id"`
+	CycleStartedAt    pgtype.Timestamptz `json:"cycle_started_at"`
+	LastStartedAt     pgtype.Timestamptz `json:"last_started_at"`
+	LastSuccessfulAt  pgtype.Timestamptz `json:"last_successful_at"`
+	LastErrorCode     pgtype.Text        `json:"last_error_code"`
+	SourceState       string             `json:"source_state"`
+	ScanComplete      bool               `json:"scan_complete"`
+	Version           int64              `json:"version"`
+	LeaseOwner        pgtype.UUID        `json:"lease_owner"`
+	LeaseUntil        pgtype.Timestamptz `json:"lease_until"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+	CycleUnknownCount int64              `json:"cycle_unknown_count"`
+}
+
 type AdminAuditEvent struct {
-	ID             pgtype.UUID        `json:"id"`
-	OperationID    pgtype.UUID        `json:"operation_id"`
-	OrganizationID pgtype.UUID        `json:"organization_id"`
-	ActorKind      string             `json:"actor_kind"`
-	ActorUserID    pgtype.UUID        `json:"actor_user_id"`
-	TargetKind     string             `json:"target_kind"`
-	TargetID       pgtype.UUID        `json:"target_id"`
-	Action         string             `json:"action"`
-	Phase          string             `json:"phase"`
-	RequestID      string             `json:"request_id"`
-	Reason         string             `json:"reason"`
-	BeforeState    []byte             `json:"before_state"`
-	AfterState     []byte             `json:"after_state"`
-	ResultCode     string             `json:"result_code"`
-	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	ID               pgtype.UUID        `json:"id"`
+	OperationID      pgtype.UUID        `json:"operation_id"`
+	OrganizationID   pgtype.UUID        `json:"organization_id"`
+	ActorKind        string             `json:"actor_kind"`
+	ActorUserID      pgtype.UUID        `json:"actor_user_id"`
+	TargetKind       string             `json:"target_kind"`
+	TargetID         pgtype.UUID        `json:"target_id"`
+	Action           string             `json:"action"`
+	Phase            string             `json:"phase"`
+	RequestID        string             `json:"request_id"`
+	Reason           string             `json:"reason"`
+	BeforeState      []byte             `json:"before_state"`
+	AfterState       []byte             `json:"after_state"`
+	ResultCode       string             `json:"result_code"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	ActorDisplayName pgtype.Text        `json:"actor_display_name"`
 }
 
 type AdminOperation struct {
@@ -241,21 +287,23 @@ type AgentTaskQueue struct {
 	// The row id referenced by trigger_evidence_kind (a comment id, autopilot_run id, rule_version id, source task id, ...). No FK; resolvable per-kind in the app layer (MUL-4302 §2).
 	TriggerEvidenceRefID pgtype.UUID `json:"trigger_evidence_ref_id"`
 	// The one human accountable for this run, for audit / visibility / cost only — NEVER consulted for authorization (that is originator_user_id). Invariant: when originator_user_id IS NOT NULL, this equals it; the two diverge only when originator_user_id IS NULL (autopilot rule_owner / degraded owner_fallback name an accountable human while authorization carries none). No FK, no cascade (MUL-4302 §1/§7). NULL means no accountable human was resolved: a pre-migration row, OR a NEW row whose audit source is not-yet-resolved / unattributed (e.g. run_only autopilot until rule_owner lands) — NOT pre-migration only.
-	AccountableUserID         pgtype.UUID `json:"accountable_user_id"`
-	SessionRolloutMissing     bool        `json:"session_rollout_missing"`
-	RetiredSessionID          pgtype.Text `json:"retired_session_id"`
-	QuickActionsDisabled      bool        `json:"quick_actions_disabled"`
-	RegenerateQuickActionsFor pgtype.UUID `json:"regenerate_quick_actions_for"`
-	BranchName                pgtype.Text `json:"branch_name"`
-	DurableWorkDir            pgtype.Text `json:"durable_work_dir"`
-	ChannelContextRevision    pgtype.Int8 `json:"channel_context_revision"`
-	SubmittedInstallationID   pgtype.UUID `json:"submitted_installation_id"`
-	ExecutionInstallationID   pgtype.UUID `json:"execution_installation_id"`
-	ExecutionBindingID        pgtype.UUID `json:"execution_binding_id"`
-	ExecutionBindingEpoch     pgtype.Int8 `json:"execution_binding_epoch"`
-	StateVersion              int64       `json:"state_version"`
-	ExecutionAdmissionVersion pgtype.Int8 `json:"execution_admission_version"`
-	ClaimGeneration           int64       `json:"claim_generation"`
+	AccountableUserID         pgtype.UUID        `json:"accountable_user_id"`
+	SessionRolloutMissing     bool               `json:"session_rollout_missing"`
+	RetiredSessionID          pgtype.Text        `json:"retired_session_id"`
+	QuickActionsDisabled      bool               `json:"quick_actions_disabled"`
+	RegenerateQuickActionsFor pgtype.UUID        `json:"regenerate_quick_actions_for"`
+	BranchName                pgtype.Text        `json:"branch_name"`
+	DurableWorkDir            pgtype.Text        `json:"durable_work_dir"`
+	ChannelContextRevision    pgtype.Int8        `json:"channel_context_revision"`
+	SubmittedInstallationID   pgtype.UUID        `json:"submitted_installation_id"`
+	ExecutionInstallationID   pgtype.UUID        `json:"execution_installation_id"`
+	ExecutionBindingID        pgtype.UUID        `json:"execution_binding_id"`
+	ExecutionBindingEpoch     pgtype.Int8        `json:"execution_binding_epoch"`
+	StateVersion              int64              `json:"state_version"`
+	ExecutionAdmissionVersion pgtype.Int8        `json:"execution_admission_version"`
+	ClaimGeneration           int64              `json:"claim_generation"`
+	QueuedAt                  pgtype.Timestamptz `json:"queued_at"`
+	QueuedAtSource            pgtype.Text        `json:"queued_at_source"`
 }
 
 type AgentToLabel struct {

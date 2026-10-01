@@ -7,6 +7,7 @@ WITH candidates AS (
  t.retry_of_task_id, t.rerun_of_task_id, t.accountable_user_id,
  t.submitted_installation_id, t.execution_installation_id,
  t.created_at, t.dispatched_at, t.started_at, t.completed_at, t.failure_reason, t.state_version,
+ CASE WHEN sqlc.arg('time_basis')::text='finished' THEN t.completed_at ELSE t.created_at END::timestamptz AS sort_time,
  CASE WHEN t.chat_session_id IS NOT NULL THEN 'chat'
       WHEN t.issue_id IS NOT NULL AND (t.autopilot_run_id IS NOT NULL OR i.origin_type = 'autopilot') THEN 'autopilot_issue'
       WHEN t.issue_id IS NOT NULL THEN 'issue'
@@ -36,8 +37,8 @@ WITH candidates AS (
  LEFT JOIN agent chat_agent ON chat_agent.id=cs.agent_id AND chat_agent.workspace_id=a.workspace_id
  LEFT JOIN member m ON m.workspace_id = a.workspace_id AND m.user_id = sqlc.arg('actor_id')::uuid
  LEFT JOIN agent_runtime rt ON rt.id = t.runtime_id
- WHERE t.created_at >= sqlc.arg('time_from')::timestamptz
- AND t.created_at < sqlc.arg('time_to')::timestamptz AND t.created_at <= sqlc.arg('as_of')::timestamptz
+ WHERE ((sqlc.arg('time_basis')::text='finished' AND t.completed_at>=sqlc.arg('time_from')::timestamptz AND t.completed_at<sqlc.arg('time_to')::timestamptz AND t.completed_at<=sqlc.arg('as_of')::timestamptz)
+ OR (sqlc.arg('time_basis')::text<>'finished' AND t.created_at>=sqlc.arg('time_from')::timestamptz AND t.created_at<sqlc.arg('time_to')::timestamptz AND t.created_at<=sqlc.arg('as_of')::timestamptz))
  AND (sqlc.narg('workspace_id')::uuid IS NULL OR a.workspace_id = sqlc.narg('workspace_id'))
  AND (sqlc.narg('task_id')::uuid IS NULL OR t.id = sqlc.narg('task_id'))
  AND (sqlc.narg('issue_id')::uuid IS NULL OR t.issue_id = sqlc.narg('issue_id'))
@@ -46,10 +47,10 @@ WITH candidates AS (
  AND (sqlc.narg('installation_id')::uuid IS NULL OR t.execution_installation_id = sqlc.narg('installation_id'))
  AND (sqlc.arg('status')::text = '' OR t.status = sqlc.arg('status'))
  AND (sqlc.arg('search')::text = '' OR t.id::text ILIKE '%' || sqlc.arg('search') || '%' OR w.issue_prefix || '-' || i.number::text ILIKE '%' || sqlc.arg('search') || '%')
- AND (sqlc.narg('after_time')::timestamptz IS NULL OR (t.created_at,t.id) < (sqlc.narg('after_time'),sqlc.narg('after_id')::uuid))
+ AND (sqlc.narg('after_time')::timestamptz IS NULL OR ((CASE WHEN sqlc.arg('time_basis')::text='finished' THEN t.completed_at ELSE t.created_at END),t.id) < (sqlc.narg('after_time'),sqlc.narg('after_id')::uuid))
 ), page AS (
  SELECT * FROM candidates WHERE sqlc.arg('source')::text = '' OR source = sqlc.arg('source')
- ORDER BY created_at DESC,id DESC LIMIT sqlc.arg('page_limit')::int
+ ORDER BY sort_time DESC,id DESC LIMIT sqlc.arg('page_limit')::int
 )
 SELECT page.*, usage.input_tokens, usage.output_tokens, usage.cache_read_tokens, usage.cache_write_tokens,
  usage.reported_models, usage.model
@@ -60,7 +61,7 @@ FROM page LEFT JOIN LATERAL (
  CASE WHEN count(DISTINCT model)=1 THEN min(model) ELSE '' END::text AS model
  FROM task_usage WHERE task_id=page.id
 ) usage ON true
-ORDER BY page.created_at DESC,page.id DESC;
+ORDER BY page.sort_time DESC,page.id DESC;
 
 -- name: ListAdminIssues :many
 -- Issue count and execution count are different entities. The correlated

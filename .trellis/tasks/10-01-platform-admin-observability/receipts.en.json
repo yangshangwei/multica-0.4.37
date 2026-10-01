@@ -1,0 +1,14 @@
+{
+  "alerts": {
+    "closeRecoveredNotice": "Close this recovered alert with a reason. The recorded recovery evidence remains available.",
+    "results": {
+      "alert_acknowledged": "The alert was acknowledged. Recovery remains a separate observation.",
+      "alert_assigned": "The alert's responsible administrator was updated.",
+      "alert_closed": "The alert was closed with its recorded conclusion.",
+      "alert_version_conflict": "The alert changed before this request. Refresh it before starting a new operation.",
+      "alert_state_conflict": "The alert's current state does not allow this operation.",
+      "alert_assignee_unavailable": "The selected administrator is no longer eligible. Choose an active administrator.",
+      "alert_resolution_invalid": "The disposition or linked retry could not be verified."
+    }
+  }
+}

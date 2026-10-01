@@ -32,7 +32,7 @@ func adminOptionalText(s string) *string {
 }
 
 func adminTaskParams(identity service.PlatformAdminIdentity, p AdminListQuery) db.ListAdminTasksParams {
-	return db.ListAdminTasksParams{ActorID: identity.UserID, OrganizationID: identity.OrganizationID, TimeFrom: adminTimestamp(p.From), TimeTo: adminTimestamp(p.To), AsOf: adminTimestamp(p.AsOf), WorkspaceID: adminFilterID(p.Filters["workspace_id"]), TaskID: adminFilterID(p.Filters["task_id"]), IssueID: adminFilterID(p.Filters["issue_id"]), RuntimeID: adminFilterID(p.Filters["runtime_id"]), UserID: adminFilterID(p.Filters["user_id"]), InstallationID: adminFilterID(p.Filters["installation_id"]), Status: p.Filters["status"], Source: p.Filters["source"], Search: p.Filters["q"], AfterTime: adminOptionalTimestamp(p.AfterTime), AfterID: adminFilterID(p.AfterID), PageLimit: p.Limit + 1}
+	return db.ListAdminTasksParams{TimeBasis: p.Filters["time_basis"], ActorID: identity.UserID, OrganizationID: identity.OrganizationID, TimeFrom: adminTimestamp(p.From), TimeTo: adminTimestamp(p.To), AsOf: adminTimestamp(p.AsOf), WorkspaceID: adminFilterID(p.Filters["workspace_id"]), TaskID: adminFilterID(p.Filters["task_id"]), IssueID: adminFilterID(p.Filters["issue_id"]), RuntimeID: adminFilterID(p.Filters["runtime_id"]), UserID: adminFilterID(p.Filters["user_id"]), InstallationID: adminFilterID(p.Filters["installation_id"]), Status: p.Filters["status"], Source: p.Filters["source"], Search: p.Filters["q"], AfterTime: adminOptionalTimestamp(p.AfterTime), AfterID: adminFilterID(p.AfterID), PageLimit: p.Limit + 1}
 }
 
 func (h *Handler) AdminTasks(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +56,7 @@ func (h *Handler) AdminTasks(w http.ResponseWriter, r *http.Request) {
 	if len(rows) > int(p.Limit) {
 		rows = rows[:p.Limit]
 		last := rows[len(rows)-1]
-		token, err := p.Cursor(last.CreatedAt.Time, uuidToString(last.ID))
+		token, err := p.Cursor(last.SortTime.Time, uuidToString(last.ID))
 		if err != nil {
 			adminServiceError(w, r, err)
 			return
@@ -67,7 +67,7 @@ func (h *Handler) AdminTasks(w http.ResponseWriter, r *http.Request) {
 	for _, row := range rows {
 		items = append(items, adminExecutionResponse(row, identity.Role == service.PlatformRoleSuperAdmin))
 	}
-	writeJSON(w, 200, map[string]any{"items": items, "next_cursor": cursor, "as_of": p.AsOf.Format(time.RFC3339Nano), "scope": uuidToString(identity.OrganizationID), "time_from": p.From.Format(time.RFC3339Nano), "time_to": p.To.Format(time.RFC3339Nano), "timezone": p.Timezone, "data_quality": map[string]any{"usage": "reported_only", "state": "live"}})
+	writeJSON(w, 200, map[string]any{"items": items, "next_cursor": cursor, "as_of": p.AsOf.Format(time.RFC3339Nano), "scope": uuidToString(identity.OrganizationID), "time_from": p.From.Format(time.RFC3339Nano), "time_to": p.To.Format(time.RFC3339Nano), "timezone": p.Timezone, "time_basis": p.Filters["time_basis"], "state_scope": adminOptionalText(p.Filters["state_scope"]), "data_quality": map[string]any{"usage": "reported_only", "state": "live"}})
 }
 
 func (h *Handler) AdminTask(w http.ResponseWriter, r *http.Request) {

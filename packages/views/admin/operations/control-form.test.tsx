@@ -73,6 +73,24 @@ it("reconciles a restored request before enabling a same-key retry", async () =>
   fireEvent.click(screen.getByRole("button", { name: "Retry original request" }));
   await waitFor(() => expect(state.submit).toHaveBeenCalledWith(restored));
 });
+it("restores a frozen alert acknowledgement through the shared original-key lookup", async () => {
+  const input: AdminControlInput = { id: "target", key: "original-alert-key", action: "alert", body: { action: "acknowledge", expectedVersion: "2", reason: "Investigating" } };
+  state.lookup.mockResolvedValueOnce(null);
+  render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><AdminControlForm scope={{ apiScope: "scope", userId: "actor", organizationId: "organization" }} target={{ id: "target", action: "alert", alertAction: "acknowledge", version: "2" }} restoredInput={input} onClose={state.close} onRefresh={state.refresh} /></I18nProvider>);
+  await screen.findByText(/No receipt is visible yet/);
+  expect(screen.getByRole("heading", { name: "Acknowledge alert" })).toBeInTheDocument();
+  expect(screen.getByLabelText("Reason")).toHaveValue("Investigating");
+  state.submit.mockRejectedValueOnce(new AdminControlUncertainError(input.key));
+  fireEvent.click(screen.getByRole("button", { name: "Retry original request" }));
+  await waitFor(() => expect(state.submit).toHaveBeenCalledWith(input));
+});
+it("shows the alert receipt and returns to that alert without claiming condition recovery", async () => {
+  state.submit.mockResolvedValueOnce({ id: "operation", targetId: "target", kind: "alert.acknowledge", state: "succeeded", confirmation: "not_required", reconciliationState: "complete", resultCode: "alert_acknowledged" });
+  render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><NavigationProvider value={{ pathname: "/admin/alerts/target", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: p => p }}><AdminControlForm scope={{ apiScope: "scope", userId: "actor", organizationId: "organization" }} target={{ id: "target", action: "alert", alertAction: "acknowledge", version: "2" }} onClose={state.close} onRefresh={state.refresh} /></NavigationProvider></I18nProvider>);
+  fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "Investigating" } });
+  fireEvent.click(screen.getByRole("button", { name: "Confirm operation" }));
+  expect(await screen.findByText("The alert was acknowledged. Recovery remains a separate observation.")).toBeInTheDocument();
+});
 it("leaves a conclusively rejected old admission request only after the current target is refreshed", async () => {
   const restored: AdminControlInput = { id: "target", key: "original-key", action: "admission", body: { admission: "stopped", expectedAdmissionVersion: "5", reason: "Original reason" } };
   state.lookup.mockResolvedValueOnce(null);

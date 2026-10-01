@@ -393,11 +393,19 @@ func (s *AdminOperationService) reconcileCancellationRoot(ctx context.Context, i
 	}
 	return tx.Commit(ctx)
 }
-func (s *AdminOperationService) Run(ctx context.Context) {
+func (s *AdminOperationService) Run(ctx context.Context, observers ...func(error)) {
 	ticker := time.NewTicker(adminCancellationScanInterval)
 	defer ticker.Stop()
 	for {
-		if err := s.Reconcile(ctx, 100); err != nil && ctx.Err() == nil {
+		err := s.Reconcile(ctx, 100)
+		if ctx.Err() == nil {
+			for _, observe := range observers {
+				if observe != nil {
+					observe(err)
+				}
+			}
+		}
+		if err != nil && ctx.Err() == nil {
 			slog.Warn("admin cancellation reconciliation failed", "error", err)
 		}
 		select {

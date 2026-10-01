@@ -453,6 +453,17 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		ChangelogFile:                 strings.TrimSpace(os.Getenv("CHANGELOG_FILE")),
 	}
 	h := handler.New(queries, pool, hub, bus, emailSvc, store, cfSigner, analyticsClient, signupConfig, daemonHub)
+	mode, registrationPolicy := "classic", "disabled"
+	if auth.PasswordMode() {
+		mode = "password"
+	}
+	if signupConfig.AllowSignup {
+		registrationPolicy = "self_service"
+	}
+	h.AdminReadConfig = handler.AdminReadConfig{Configured: true, AuthMode: mode, RegistrationEnabled: signupConfig.AllowSignup, RegistrationPolicy: registrationPolicy,
+		ManagedInstallationsEnabled: signupConfig.ManagedInstallationsEnabled, WorkspaceCreationEnabled: !signupConfig.DisableWorkspaceCreation,
+		ConfirmedOperationsDays: configuredAdminRetention("MULTICA_ADMIN_CONFIRMED_OPERATIONS_RETENTION_DAYS"),
+		AlertsDays:              configuredAdminRetention("MULTICA_ADMIN_ALERT_RETENTION_DAYS"), AuditDays: configuredAdminRetention("MULTICA_ADMIN_AUDIT_RETENTION_DAYS")}
 	h.PasswordLimiter = auth.NewPasswordLimiter(rdb)
 	invitationRateLimits := handler.DefaultInvitationRateLimits()
 	invitationRateLimits.Actor.Limit = envNonNegativeInt("RATE_LIMIT_INVITATION_ACTOR_10M", invitationRateLimits.Actor.Limit)
@@ -1596,6 +1607,16 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Route("/api/admin", func(r chi.Router) {
 			r.Use(h.RequirePlatformRead)
 			r.Get("/me", h.AdminMe)
+			r.Get("/overview", h.AdminOverview)
+			r.Get("/health", h.AdminHealth)
+			r.Get("/settings", h.AdminSettings)
+			r.Get("/workspaces", h.AdminWorkspaces)
+			r.Get("/audit", h.AdminAudit)
+			r.Get("/alerts", h.AdminAlerts)
+			r.Get("/alerts/{id}", h.AdminAlert)
+			r.Post("/alerts/{id}/acknowledge", h.AdminAcknowledgeAlert)
+			r.Post("/alerts/{id}/assign", h.AdminAssignAlert)
+			r.Post("/alerts/{id}/close", h.AdminCloseAlert)
 			r.Get("/installations", h.AdminInstallations)
 			r.Get("/installations/unassociated", h.AdminUnassociatedRuntimes)
 			r.Get("/installations/{id}", h.AdminInstallation)
