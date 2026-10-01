@@ -49,7 +49,7 @@ func passwordRegister(t *testing.T, username string) LoginResponse {
 }
 func TestPasswordRegistrationLoginAndRevocation(t *testing.T) {
 	passwordTestSetup(t)
-	username := fmt.Sprintf("pw%d", time.Now().UnixNano())
+	username := fmt.Sprintf("00%d", time.Now().UnixNano())
 	registered := passwordRegister(t, username)
 	if registered.User.Username != username || registered.User.Email != "" || registered.User.RequiresAccountSetup || registered.User.OnboardedAt != nil {
 		t.Fatalf("invalid new user: %+v", registered.User)
@@ -72,6 +72,49 @@ func TestPasswordRegistrationLoginAndRevocation(t *testing.T) {
 	passwordCall(t, "GET", "/api/me", nil, changed.Token, testHandler.GetMe).Want(200)
 	passwordCall(t, "POST", "/auth/device", map[string]string{"device_id": "old-device"}, "", testHandler.DeviceLogin).Want(403)
 }
+
+func TestPasswordAccountValidationErrorCodes(t *testing.T) {
+	for _, tc := range []struct {
+		name, username, displayName, password, code string
+	}{
+		{"username", "a-b", "Test User", "correct horse battery staple", "invalid_username"},
+		{"name", "alice", " ", "correct horse battery staple", "invalid_name"},
+		{"password", "alice", "Test User", "short", "invalid_password"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			req := passwordAccountRequest{Username: tc.username, Name: tc.displayName, Password: tc.password}
+			var result map[string]string
+			testutil.Call(t, func(w http.ResponseWriter, r *http.Request) {
+				if validatePasswordAccount(w, &req) {
+					t.Fatal("invalid account accepted")
+				}
+			}, testutil.JSONRequest("POST", "/auth/register", req)).Want(400).JSON(&result)
+			if result["code"] != tc.code || result["error"] == "" {
+				t.Fatalf("validation response = %v; want code %q and a message", result, tc.code)
+			}
+		})
+	}
+}
+
+func TestPasswordSixCharacterAccountFlow(t *testing.T) {
+	passwordTestSetup(t)
+	username := fmt.Sprintf("00%d", time.Now().UnixNano())
+	dbfx.Cleanup(t, `DELETE FROM user_password_credential WHERE username=$1`, username)
+	passwordCall(t, "POST", "/auth/register", map[string]string{"username": username, "password": "abc12", "name": "Short Password Test"}, "", testHandler.PasswordRegister).Want(400)
+	var registered LoginResponse
+	passwordCall(t, "POST", "/auth/register", map[string]string{"username": username, "password": "abc123", "name": "Short Password Test"}, "", testHandler.PasswordRegister).Want(201).JSON(&registered)
+	dbfx.Cleanup(t, `DELETE FROM "user" WHERE id=$1`, registered.User.ID)
+	var login LoginResponse
+	passwordCall(t, "POST", "/auth/login", map[string]string{"username": username, "password": "abc123"}, "", testHandler.PasswordLogin).Want(200).JSON(&login)
+	if login.User.ID != registered.User.ID {
+		t.Fatal("login changed identity")
+	}
+	passwordCall(t, "POST", "/api/me/password/change", map[string]string{"current_password": "abc123", "new_password": "def45"}, login.Token, testHandler.PasswordChange).Want(400)
+	passwordCall(t, "POST", "/api/me/password/change", map[string]string{"current_password": "abc123", "new_password": "def456"}, login.Token, testHandler.PasswordChange).Want(200)
+	passwordCall(t, "POST", "/auth/login", map[string]string{"username": username, "password": "abc123"}, "", testHandler.PasswordLogin).Want(401)
+	passwordCall(t, "POST", "/auth/login", map[string]string{"username": username, "password": "def456"}, "", testHandler.PasswordLogin).Want(200)
+}
+
 func TestPasswordLegacyBindingPreservesIdentity(t *testing.T) {
 	passwordTestSetup(t)
 	now := time.Now()
@@ -99,7 +142,7 @@ func TestPasswordLegacyBindingPreservesIdentity(t *testing.T) {
 	}
 	passwordCall(t, "GET", "/api/workspaces", nil, token, func(w http.ResponseWriter, r *http.Request) { t.Fatal("restricted session reached business handler") }).Want(403)
 	var bound LoginResponse
-	passwordCall(t, "POST", "/api/me/password/setup", map[string]string{"username": fmt.Sprintf("legacy%d", now.UnixNano()), "password": "correct horse battery staple", "name": "New Name"}, token, testHandler.PasswordSetup).Want(200).JSON(&bound)
+	passwordCall(t, "POST", "/api/me/password/setup", map[string]string{"username": fmt.Sprintf("legacy%d", now.UnixNano()), "password": "abc123", "name": "New Name"}, token, testHandler.PasswordSetup).Want(200).JSON(&bound)
 	if bound.User.ID != id || bound.User.RequiresAccountSetup {
 		t.Fatal("binding changed identity")
 	}

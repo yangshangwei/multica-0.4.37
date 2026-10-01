@@ -109,14 +109,17 @@ type passwordAccountRequest struct {
 func validatePasswordAccount(w http.ResponseWriter, req *passwordAccountRequest) bool {
 	var err error
 	req.Username, err = auth.NormalizeUsername(req.Username)
-	if err == nil {
-		req.Name, err = auth.ValidatePasswordName(req.Name)
-	}
-	if err == nil {
-		err = auth.ValidatePassword(req.Password)
-	}
 	if err != nil {
-		passwordError(w, 400, "invalid_request", err.Error())
+		passwordError(w, 400, "invalid_username", err.Error())
+		return false
+	}
+	req.Name, err = auth.ValidatePasswordName(req.Name)
+	if err != nil {
+		passwordError(w, 400, "invalid_name", err.Error())
+		return false
+	}
+	if err = auth.ValidatePassword(req.Password); err != nil {
+		passwordError(w, 400, "invalid_password", err.Error())
 		return false
 	}
 	return true
@@ -343,7 +346,7 @@ func (h *Handler) PasswordChange(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if auth.ValidatePassword(req.Current) != nil || auth.ValidatePassword(req.New) != nil {
-		passwordError(w, 400, "invalid_request", "Password must contain 12–128 characters")
+		passwordError(w, 400, "invalid_password", "Password must contain 6–128 characters")
 		return
 	}
 	uid := parseUUID(session.UserID)

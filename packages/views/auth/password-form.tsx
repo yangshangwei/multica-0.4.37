@@ -11,6 +11,7 @@ import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@multica/ui/components/ui/card";
 import { useT } from "../i18n";
+import { passwordErrorDetails } from "./password-error";
 
 export function PasswordForm({ mode = "login", onSuccess, footer, logo, onTokenObtained, cliCallback }: {
   cliCallback?: {url: string; state: string};
@@ -68,12 +69,8 @@ export function PasswordForm({ mode = "login", onSuccess, footer, logo, onTokenO
       onSuccess();
     } catch (err) {
       if (err instanceof ApiError && err.retryAfterSeconds) setRetryAfter(err.retryAfterSeconds);
-      const code = err instanceof ApiError && err.body && typeof err.body === "object" && "code" in err.body ? err.body.code : undefined;
-      setError(code === "username_taken" ? t(($) => $.password.username_taken)
-        : code === "invalid_credentials" ? t(($) => $.password.invalid_credentials)
-        : err instanceof ApiError && err.status === 429 ? t(($) => $.password.rate_limited)
-        : register && !(err instanceof ApiError) ? t(($) => $.password.registration_uncertain)
-        : err instanceof Error ? err.message : t(($) => $.errors.server_unreachable));
+      const detail = passwordErrorDetails(err, { username, name, password, registering: register });
+      setError(t(($) => $.password[detail.key], { length: detail.length }));
     } finally { pending.current = false; setLoading(false); }
   }
 

@@ -24,9 +24,9 @@ func NormalizeUsername(raw string) (string, error) {
 	if len(s) < 3 || len(s) > 32 {
 		return "", errors.New("username must contain 3–32 ASCII characters")
 	}
-	for i, c := range []byte(s) {
-		if !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') && !(i > 0 && (c >= '0' && c <= '9' || c == '_')) {
-			return "", errors.New("username must start with a letter and contain only letters, numbers or underscores")
+	for _, c := range []byte(s) {
+		if !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '_') {
+			return "", errors.New("username must contain only letters, numbers or underscores")
 		}
 	}
 	return strings.ToLower(s), nil
@@ -34,8 +34,8 @@ func NormalizeUsername(raw string) (string, error) {
 
 func ValidatePassword(s string) error {
 	n := utf8.RuneCountInString(s)
-	if !utf8.ValidString(s) || n < 12 || n > 128 || len(s) > 512 {
-		return errors.New("password must contain 12–128 characters and at most 512 bytes")
+	if !utf8.ValidString(s) || n < 6 || n > 128 || len(s) > 512 {
+		return errors.New("password must contain 6–128 characters and at most 512 bytes")
 	}
 	return nil
 }
