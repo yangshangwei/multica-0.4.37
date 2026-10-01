@@ -78,6 +78,9 @@ func preparePlatformOrganization(ctx context.Context, pool *pgxpool.Pool) error 
 			return fmt.Errorf("required platform index %s is missing or invalid; repair migrations before activation", name)
 		}
 	}
+	if err := validatePlatformControlSchema(ctx, pool); err != nil {
+		return err
+	}
 	q := db.New(pool)
 	if _, err := q.EnsureInternalOrganization(ctx); err != nil {
 		return err
@@ -97,6 +100,37 @@ func preparePlatformOrganization(ctx context.Context, pool *pgxpool.Pool) error 
 	}
 	if missing != 0 {
 		return fmt.Errorf("%d workspaces remain without organization ownership", missing)
+	}
+	return nil
+}
+
+func validatePlatformControlSchema(ctx context.Context, pool *pgxpool.Pool) error {
+	for _, required := range [][2]string{
+		{"managed_installation_id_uidx", "managed_installation"},
+		{"managed_installation_key_uidx", "managed_installation"},
+		{"installation_binding_id_uidx", "installation_daemon_binding"},
+		{"installation_binding_active_uidx", "installation_daemon_binding"},
+		{"installation_binding_scope_idx", "installation_daemon_binding"},
+		{"admin_audit_operation_phase_uidx", "admin_audit_event"},
+		{"admin_cancel_root_lookup_idx", "admin_operation"},
+		{"admin_operation_followers_idx", "admin_operation"},
+		{"admin_operation_due_idx", "admin_operation"},
+		{"admin_operation_installation_time_idx", "admin_operation"},
+	} {
+		var valid bool
+		if err := pool.QueryRow(ctx, `SELECT COALESCE((SELECT indisvalid AND indisready AND indrelid=to_regclass($2) FROM pg_index WHERE indexrelid=to_regclass($1)),false)`, required[0], required[1]).Scan(&valid); err != nil {
+			return err
+		}
+		if !valid {
+			return fmt.Errorf("required control index %s is missing or invalid; repair migrations before activation", required[0])
+		}
+	}
+	var trigger bool
+	if err := pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM pg_trigger WHERE tgrelid=to_regclass('agent_task_queue') AND tgname='agent_task_queue_state_version' AND tgenabled IN ('O','A') AND tgfoid=to_regprocedure('multica_advance_task_state_version()'))`).Scan(&trigger); err != nil {
+		return err
+	}
+	if !trigger {
+		return errors.New("task state-version trigger is missing or disabled; repair migrations before control activation")
 	}
 	return nil
 }

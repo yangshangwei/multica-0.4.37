@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 import { ApiClient } from "../api/client";
+import { configureAdminControlStorage } from "../admin/operation-draft";
 import { installFreezeWatchdog } from "../diagnostics/freeze-watchdog";
 import { setApiInstance, setSchemaLogger } from "../api";
 import { createAuthStore, registerAuthStore } from "../auth";
@@ -52,6 +53,8 @@ function initCore({
   identity,
 }: InitCoreOptions) {
   if (initialized) return;
+
+  configureAdminControlStorage(storage);
 
   configureShortcutPlatform(
     identity?.os === "macos" ||
@@ -132,7 +135,6 @@ export function CoreProvider({
 }: CoreProviderProps) {
   // Initialize singletons on first render only. Dependencies are read-once:
   // apiBaseUrl, storage, and callbacks are set at app boot and never change at runtime.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useMemo(
     () =>
       initCore({
@@ -144,6 +146,7 @@ export function CoreProvider({
         cookieAuth,
         identity,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

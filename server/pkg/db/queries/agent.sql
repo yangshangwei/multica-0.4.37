@@ -808,8 +808,25 @@ WHERE atq.id = $1 AND a.workspace_id = $2;
 -- "any other quick-create-shaped task" (all four FKs NULL) for the same agent —
 -- otherwise a user mashing the create button could fire concurrent quick-creates
 -- whose completion lookup would race over "most recent issue by this agent".
+WITH managed_admission AS MATERIALIZED (
+    SELECT r.id AS runtime_id,i.id AS installation_id,i.admission_version,b.id AS binding_id,b.binding_epoch
+    FROM agent_runtime r
+    JOIN installation_daemon_binding b ON b.workspace_id=r.workspace_id AND b.daemon_id=r.daemon_id
+      AND b.principal_user_id=r.owner_id AND b.state='active'
+    JOIN managed_installation i ON i.id=b.installation_id AND i.lifecycle='active' AND i.admission='accepting'
+    JOIN "user" u ON u.id=b.principal_user_id AND u.disabled_at IS NULL
+    JOIN user_password_credential c ON c.user_id=u.id AND c.session_version=b.auth_version AND NOT c.must_change_password
+    JOIN member m ON m.workspace_id=b.workspace_id AND m.user_id=b.principal_user_id
+    WHERE r.id = @runtime_id
+    FOR SHARE OF i
+)
 UPDATE agent_task_queue
 SET status = 'dispatched',
+    claim_generation = claim_generation + 1,
+    execution_installation_id = (SELECT installation_id FROM managed_admission),
+    execution_binding_id = (SELECT binding_id FROM managed_admission),
+    execution_binding_epoch = (SELECT binding_epoch FROM managed_admission),
+    execution_admission_version = (SELECT admission_version FROM managed_admission),
     dispatched_at = now(),
     prepare_lease_expires_at = now() + make_interval(secs => @prepare_lease_secs::double precision)
 WHERE id = (
@@ -817,6 +834,16 @@ WHERE id = (
     WHERE atq.agent_id = @agent_id
       AND atq.runtime_id = @runtime_id
       AND atq.status = 'queued'
+      AND (
+          EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
+            AND (atq.execution_binding_id IS NULL OR
+              (atq.execution_binding_id=ma.binding_id AND atq.execution_binding_epoch=ma.binding_epoch)))
+          OR (atq.execution_binding_id IS NULL AND NOT EXISTS (
+              SELECT 1 FROM agent_runtime mr JOIN installation_daemon_binding history
+                ON history.workspace_id=mr.workspace_id AND history.daemon_id=mr.daemon_id
+              WHERE mr.id=atq.runtime_id
+          ))
+      )
       AND EXISTS (
           SELECT 1
           FROM agent a
@@ -880,6 +907,7 @@ WHERE id = @task_id
   AND status = 'dispatched'
   AND started_at IS NULL
   AND dispatched_at = @dispatched_at
+  AND claim_generation = @claim_generation::bigint
   AND trigger_comment_id IS NOT DISTINCT FROM sqlc.narg(expected_trigger_comment_id)::uuid
   AND NOT EXISTS (
       SELECT 1
@@ -908,21 +936,49 @@ WHERE id = @task_id
   AND status = 'dispatched'
   AND started_at IS NULL
   AND dispatched_at = @dispatched_at
+  AND claim_generation = @claim_generation::bigint
 RETURNING *;
 
 -- name: ReclaimStaleDispatchedTaskForRuntime :one
 -- Re-delivers a task whose previous claim likely succeeded server-side but
 -- whose response never reached the daemon. The task is still in `dispatched`
 -- with no `started_at`, so the daemon has not acknowledged it via StartTask.
--- Refresh dispatched_at so the server-side dispatch timeout measures from the
--- recovered delivery attempt.
+-- Managed recovery preserves the original execution fence and its admitted
+-- version. Legacy recovery retains the historical dispatch timestamp refresh.
+WITH managed_admission AS MATERIALIZED (
+    SELECT r.id AS runtime_id,i.id AS installation_id,i.admission_version,i.admission,b.id AS binding_id,b.binding_epoch
+    FROM agent_runtime r
+    JOIN installation_daemon_binding b ON b.workspace_id=r.workspace_id AND b.daemon_id=r.daemon_id
+      AND b.principal_user_id=r.owner_id AND b.state='active'
+    JOIN managed_installation i ON i.id=b.installation_id AND i.lifecycle='active'
+    JOIN "user" u ON u.id=b.principal_user_id AND u.disabled_at IS NULL
+    JOIN user_password_credential c ON c.user_id=u.id AND c.session_version=b.auth_version AND NOT c.must_change_password
+    JOIN member m ON m.workspace_id=b.workspace_id AND m.user_id=b.principal_user_id
+    WHERE r.id=$1
+    FOR SHARE OF i
+)
 UPDATE agent_task_queue
-SET dispatched_at = now(),
+SET dispatched_at = CASE WHEN execution_binding_id IS NULL THEN now() ELSE dispatched_at END,
+    claim_generation = claim_generation + 1,
     prepare_lease_expires_at = now() + make_interval(secs => @prepare_lease_secs::double precision)
 WHERE id = (
     SELECT atq.id FROM agent_task_queue atq
     WHERE atq.runtime_id = $1
       AND atq.status = 'dispatched'
+      AND (
+          EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
+            AND ((atq.execution_binding_id=ma.binding_id AND atq.execution_binding_epoch=ma.binding_epoch
+              AND atq.execution_admission_version IS NOT NULL
+              AND atq.execution_admission_version <= ma.admission_version)
+              OR (ma.admission='accepting' AND atq.execution_admission_version IS NULL
+                AND (atq.execution_binding_id IS NULL OR
+                  (atq.execution_binding_id=ma.binding_id AND atq.execution_binding_epoch=ma.binding_epoch)))))
+          OR (atq.execution_binding_id IS NULL AND NOT EXISTS (
+              SELECT 1 FROM agent_runtime mr JOIN installation_daemon_binding history
+                ON history.workspace_id=mr.workspace_id AND history.daemon_id=mr.daemon_id
+              WHERE mr.id=atq.runtime_id
+          ))
+      )
       AND atq.started_at IS NULL
       AND atq.dispatched_at < now() - make_interval(secs => @claim_recovery_secs::double precision)
       AND (atq.prepare_lease_expires_at IS NULL OR atq.prepare_lease_expires_at < now())
@@ -962,13 +1018,40 @@ RETURNING *;
 -- query (dispatched, never started, past the recovery window, expired/absent
 -- prepare lease) and the same dispatched_at refresh; only the runtime filter
 -- (= ANY) and the LIMIT (max_tasks instead of 1) differ.
+WITH managed_admission AS MATERIALIZED (
+    SELECT r.id AS runtime_id,i.id AS installation_id,i.admission_version,i.admission,b.id AS binding_id,b.binding_epoch
+    FROM agent_runtime r
+    JOIN installation_daemon_binding b ON b.workspace_id=r.workspace_id AND b.daemon_id=r.daemon_id
+      AND b.principal_user_id=r.owner_id AND b.state='active'
+    JOIN managed_installation i ON i.id=b.installation_id AND i.lifecycle='active'
+    JOIN "user" u ON u.id=b.principal_user_id AND u.disabled_at IS NULL
+    JOIN user_password_credential c ON c.user_id=u.id AND c.session_version=b.auth_version AND NOT c.must_change_password
+    JOIN member m ON m.workspace_id=b.workspace_id AND m.user_id=b.principal_user_id
+    WHERE r.id = ANY(@runtime_ids::uuid[])
+    FOR SHARE OF i
+)
 UPDATE agent_task_queue
-SET dispatched_at = now(),
+SET dispatched_at = CASE WHEN execution_binding_id IS NULL THEN now() ELSE dispatched_at END,
+    claim_generation = claim_generation + 1,
     prepare_lease_expires_at = now() + make_interval(secs => @prepare_lease_secs::double precision)
 WHERE id IN (
     SELECT atq.id FROM agent_task_queue atq
     WHERE atq.runtime_id = ANY(@runtime_ids::uuid[])
       AND atq.status = 'dispatched'
+      AND (
+          EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
+            AND ((atq.execution_binding_id=ma.binding_id AND atq.execution_binding_epoch=ma.binding_epoch
+              AND atq.execution_admission_version IS NOT NULL
+              AND atq.execution_admission_version <= ma.admission_version)
+              OR (ma.admission='accepting' AND atq.execution_admission_version IS NULL
+                AND (atq.execution_binding_id IS NULL OR
+                  (atq.execution_binding_id=ma.binding_id AND atq.execution_binding_epoch=ma.binding_epoch)))))
+          OR (atq.execution_binding_id IS NULL AND NOT EXISTS (
+              SELECT 1 FROM agent_runtime mr JOIN installation_daemon_binding history
+                ON history.workspace_id=mr.workspace_id AND history.daemon_id=mr.daemon_id
+              WHERE mr.id=atq.runtime_id
+          ))
+      )
       AND atq.started_at IS NULL
       AND atq.dispatched_at < now() - make_interval(secs => @claim_recovery_secs::double precision)
       AND (atq.prepare_lease_expires_at IS NULL OR atq.prepare_lease_expires_at < now())

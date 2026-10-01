@@ -1,5 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { resetAllRegisteredDrafts } from "../drafts/cleanup-registry";
+import { clearAdminControlDrafts } from "../admin/operation-draft";
 import type { StorageAdapter } from "../types/storage";
 import type { Workspace } from "../types";
 import { workspaceKeys } from "../workspace/queries";
@@ -38,6 +39,7 @@ export function clearClientSessionData(
   // reload the page, so the singletons would otherwise surface the previous
   // user's draft after the next login.
   resetAllRegisteredDrafts();
+  clearAdminControlDrafts(storage);
 
   // Then clear workspace-scoped storage, BEFORE clearing the React Query cache
   // (which holds the workspace list). Otherwise per-workspace drafts/chat/etc

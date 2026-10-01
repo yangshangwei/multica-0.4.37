@@ -1698,13 +1698,13 @@ func (h *Handler) repairStaleCommentPlanIfNeeded(ctx context.Context, task *db.A
 		return true, &claimBuildFailure{outcome: "error_stale_comment_plan", status: http.StatusInternalServerError, message: "failed to repair stale comment task"}
 	}
 	if uuidToString(issue.WorkspaceID) != runtimeWorkspaceID {
-		if _, cancelErr := h.TaskService.CancelTask(ctx, task.ID); cancelErr != nil {
+		if _, cancelErr := h.TaskService.CancelClaimedTask(ctx, *task); cancelErr != nil {
 			slog.Error("task claim: cancel stale cross-workspace task failed",
 				"task_id", uuidToString(task.ID), "error", cancelErr)
 		}
 		return true, &claimBuildFailure{outcome: "error_workspace", status: http.StatusInternalServerError, message: "task workspace isolation check failed"}
 	}
-	cancelled, cancelErr := h.TaskService.CancelTask(ctx, task.ID)
+	cancelled, cancelErr := h.TaskService.CancelClaimedTask(ctx, *task)
 	if cancelErr != nil {
 		return true, &claimBuildFailure{outcome: "error_stale_comment_plan", status: http.StatusInternalServerError, message: "failed to repair stale comment task"}
 	}
@@ -1871,7 +1871,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 		if !rt.OwnerID.Valid {
 			slog.Error("batch claim: runtime owner missing; cancelling task to avoid unscoped agent credentials",
 				"task_id", uuidToString(task.ID), "runtime_id", uuidToString(task.RuntimeID))
-			if _, cerr := h.TaskService.CancelTask(r.Context(), task.ID); cerr != nil {
+			if _, cerr := h.TaskService.CancelClaimedTask(r.Context(), task); cerr != nil {
 				slog.Error("batch claim: cancel after missing runtime owner failed",
 					"task_id", uuidToString(task.ID), "error", cerr)
 			}
@@ -1975,7 +1975,7 @@ func (h *Handler) rejectClaimSourceLoad(ctx context.Context, task *db.AgentTaskQ
 	if errors.Is(err, pgx.ErrNoRows) {
 		slog.Error("task claim: source row is missing; cancelling task",
 			"task_id", uuidToString(task.ID), "source", source, "source_id", sourceID)
-		if _, cerr := h.TaskService.CancelTask(ctx, task.ID); cerr != nil {
+		if _, cerr := h.TaskService.CancelClaimedTask(ctx, *task); cerr != nil {
 			slog.Error("task claim: cancel after missing source row failed",
 				"task_id", uuidToString(task.ID), "error", cerr)
 		}
@@ -2044,7 +2044,7 @@ func (h *Handler) rejectClaimOnWorkspaceMismatch(ctx context.Context, task *db.A
 		"has_autopilot_run", task.AutopilotRunID.Valid,
 		"has_quick_create", hasQuickCreate,
 	)
-	if _, cerr := h.TaskService.CancelTask(ctx, task.ID); cerr != nil {
+	if _, cerr := h.TaskService.CancelClaimedTask(ctx, *task); cerr != nil {
 		slog.Error("task claim: cancel after workspace check failed",
 			"task_id", uuidToString(task.ID), "error", cerr)
 	}
@@ -2092,18 +2092,7 @@ func (h *Handler) failClaimedTaskBeforeLaunch(
 	status int,
 	claimMessage string,
 ) *claimBuildFailure {
-	if _, err := h.TaskService.FailTask(
-		ctx,
-		task.ID,
-		userMessage,
-		"",
-		"",
-		"",
-		failureReason.String(),
-		false,
-		"",
-		"",
-	); err != nil {
+	if _, err := h.TaskService.FailClaimedTask(ctx, *task, userMessage, failureReason.String()); err != nil {
 		slog.Error("task claim: fail rejected task failed; requeueing claim",
 			"task_id", uuidToString(task.ID),
 			"outcome", outcome,
@@ -2157,6 +2146,9 @@ func claimResponseAgentIdentityMatches(resp AgentTaskResponse) bool {
 func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQueue, runtime db.AgentRuntime, runtimeID, runtimeWorkspaceID string) (resp AgentTaskResponse, deliveredCommentIDs []pgtype.UUID, agentSkillCount, builtinSkillCount int, failure *claimBuildFailure) {
 	// Build response with fresh agent data (name + skills + custom_env + custom_args).
 	resp = taskToResponse(*task, runtimeWorkspaceID)
+	if task.ExecutionBindingID.Valid && task.DispatchedAt.Valid {
+		resp.ExecutionFence = &service.AdminCancellationWireFence{RuntimeID: runtimeID, DispatchedAt: task.DispatchedAt.Time.UTC().Format(time.RFC3339Nano)}
+	}
 	var issueNumber int32
 	// Claim-only capability: this server resolves the squad-leader role on the
 	// wire (is_leader_task / squad_id), so the daemon must not re-derive it
@@ -2994,7 +2986,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 				"chat_session_id", uuidToString(cs.ID),
 				"chat_input_task_id", uuidToString(task.ChatInputTaskID),
 			)
-			if _, cerr := h.TaskService.CancelTask(r.Context(), task.ID); cerr != nil {
+			if _, cerr := h.TaskService.CancelClaimedTask(r.Context(), *task); cerr != nil {
 				slog.Error("chat claim: cancel after empty input failed",
 					"task_id", uuidToString(task.ID), "error", cerr)
 			}
@@ -3349,7 +3341,7 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 		// reconcile, the task:cancelled broadcast that clears live cards, and
 		// NotifyTaskFinished waking capacity/serial waiters. A direct query
 		// leaves all of those stale.
-		if _, cerr := h.TaskService.CancelTaskWithReason(r.Context(), task.ID, reason, "local_directory_error"); cerr != nil {
+		if _, cerr := h.TaskService.CancelClaimedTaskWithReason(r.Context(), *task, reason, "local_directory_error"); cerr != nil {
 			// The cancel did not commit, so the row is still claimed. The
 			// daemon is about to be refused, so left alone the task would
 			// strand in dispatched until stale reclaim, with no visible
@@ -3525,7 +3517,7 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 			"runtime_id", runtimeID,
 			"workspace_id", runtimeWorkspaceID,
 		)
-		if _, cerr := h.TaskService.CancelTask(r.Context(), task.ID); cerr != nil {
+		if _, cerr := h.TaskService.CancelClaimedTask(r.Context(), *task); cerr != nil {
 			slog.Error("task claim: cancel after missing runtime owner failed",
 				"task_id", uuidToString(task.ID), "error", cerr)
 		}
@@ -4604,7 +4596,16 @@ func (h *Handler) GetTaskStatus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, map[string]string{"status": task.Status})
+	metadata, err := h.adminOperationService().CancellationMetadata(r.Context(), task)
+	if err != nil {
+		adminServiceError(w, r, err)
+		return
+	}
+	response := map[string]any{"status": task.Status}
+	if metadata != nil {
+		response["cancellation"] = metadata
+	}
+	writeJSON(w, http.StatusOK, response)
 }
 
 // FailTask marks a running task as failed.
@@ -4844,6 +4845,11 @@ func (h *Handler) ReportTaskMessages(w http.ResponseWriter, r *http.Request) {
 // transcript (#5219); idempotent when nothing was deferred.
 // TaskCancelAckRequest is the body of the daemon's cancel acknowledgement.
 type TaskCancelAckRequest struct {
+	OperationID    string                              `json:"operation_id,omitempty"`
+	BindingEpoch   string                              `json:"binding_epoch,omitempty"`
+	ExecutionFence *service.AdminCancellationWireFence `json:"execution_fence,omitempty"`
+	Outcome        string                              `json:"outcome,omitempty"`
+
 	// BranchName: a cancelled worktree task has already committed whatever the
 	// agent produced — the worktree is finalized before the daemon learns of
 	// the cancellation. The rest of the result is discarded on this path, so
@@ -4865,77 +4871,20 @@ func (h *Handler) AckTaskCancelled(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	// Body is optional: older daemons send `{}`, and a decode failure must not
-	// break the cancellation contract this endpoint exists for.
-	var req TaskCancelAckRequest
-	_ = json.NewDecoder(r.Body).Decode(&req)
-	// Same persistence hazard as /fail and /complete: these strings go straight
-	// into TEXT columns, and this endpoint fails LOUD on write errors, so an
-	// unsanitized NUL here turns a cancelled task's only pointer to its work
-	// into an endless 500 retry loop (GH #7098).
-	req.ErrorMessage = util.SanitizeTextForPostgres(req.ErrorMessage)
-	req.FailureReason = util.SanitizeTextForPostgres(req.FailureReason)
-	req.BranchName = util.SanitizeTextForPostgres(req.BranchName)
-	req.DurableWorkDir = util.SanitizeTextForPostgres(req.DurableWorkDir)
-
-	// Terminal deliveries first, failing LOUD on persistence errors: these
-	// fields are the only pointer to a cancelled task's work, and the daemon
-	// retries this ack on transient failures — a warn-and-200 would turn one
-	// DB blip into a permanently undiscoverable branch. Both writes never
-	// overwrite already-recorded values, so replays are idempotent — and both
-	// carry a status='cancelled' CAS, because the daemon acks on EVERY
-	// terminal status it observes: a late ack from a stale run must not stamp
-	// its branch or error onto a completed/failed row whose own callback is
-	// the authoritative channel. A CAS-refused write is a deliberate no-op
-	// (Exec reports no error), so the ack still returns 200 — there is
-	// nothing for the daemon to retry — and the rebroadcast below is guarded
-	// by the same status check inside RebroadcastCancelledTask.
-	delivered := false
-	if durableWorkDir := strings.TrimSpace(req.DurableWorkDir); durableWorkDir != "" {
-		if err := h.Queries.SetAgentTaskDurableWorkDir(r.Context(), db.SetAgentTaskDurableWorkDirParams{
-			ID:             task.ID,
-			DurableWorkDir: pgtype.Text{String: durableWorkDir, Valid: true},
-		}); err != nil {
-			slog.Error("cancel ack: record durable work directory failed",
-				"task_id", taskID, "error", err)
-			writeError(w, http.StatusInternalServerError, "failed to record durable work directory")
-			return
-		}
-		delivered = true
+	req, err := decodeTaskCancellationAck(r)
+	if err != nil {
+		adminServiceError(w, r, err)
+		return
 	}
-	if branch := strings.TrimSpace(req.BranchName); branch != "" {
-		if err := h.Queries.SetAgentTaskBranchName(r.Context(), db.SetAgentTaskBranchNameParams{
-			ID:         task.ID,
-			BranchName: pgtype.Text{String: branch, Valid: true},
-		}); err != nil {
-			slog.Error("cancel ack: record branch name failed",
-				"task_id", taskID, "error", err)
-			writeError(w, http.StatusInternalServerError, "failed to record branch name")
-			return
-		}
-		delivered = true
+	ack, err := taskCancellationAck(req)
+	if err != nil {
+		adminServiceError(w, r, err)
+		return
 	}
-	if msg := strings.TrimSpace(req.ErrorMessage); msg != "" {
-		reason := strings.TrimSpace(req.FailureReason)
-		if err := h.Queries.SetAgentTaskErrorIfEmpty(r.Context(), db.SetAgentTaskErrorIfEmptyParams{
-			ID:            task.ID,
-			Error:         pgtype.Text{String: msg, Valid: true},
-			FailureReason: pgtype.Text{String: reason, Valid: reason != ""},
-		}); err != nil {
-			slog.Error("cancel ack: record preserved-work error failed",
-				"task_id", taskID, "error", err)
-			writeError(w, http.StatusInternalServerError, "failed to record task error")
-			return
-		}
-		delivered = true
+	if err = h.adminOperationService().AcknowledgeCancellation(r.Context(), task.ID, ack); err != nil {
+		adminServiceError(w, r, err)
+		return
 	}
-	if delivered {
-		// The task:cancelled broadcast fired at cancel time, before this ack —
-		// clients may already hold a refetched row without the branch/error
-		// and will not refetch again on their own.
-		h.TaskService.RebroadcastCancelledTask(r.Context(), task.ID)
-	}
-	h.TaskService.FinalizeDeferredCancelledChat(r.Context(), task.ID)
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 }
 

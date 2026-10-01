@@ -654,6 +654,7 @@ func main() {
 	// that cache's version, so an idle runtime could keep returning an empty
 	// claim until the cache TTL expires.
 	taskSvc, autopilotSvc := backgroundServices(h)
+	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx)
 	registerAutopilotListeners(bus, autopilotSvc)
 
 	// Construct a LivenessStore that mirrors the one wired into the HTTP

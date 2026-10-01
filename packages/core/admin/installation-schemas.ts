@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
+import { adminVersionSchema } from "./control-schema";
 export const installationStates = ["active", "inactive", "reachable", "unreachable", "ready", "stopped", "environment_unavailable", "no_permission", "unknown", "unavailable"] as const;
 const instant = z.iso.datetime({ offset: true });
 const optionalInstant = instant.nullish().transform(value => value ?? null);
@@ -15,10 +16,11 @@ function constrainedAxis(allowed: readonly (typeof installationStates[number])[]
 }
 const installation = z.object({
   id: z.uuid(), deployment_id: z.uuid(), organization_id: z.uuid(), lifecycle: z.enum(["active", "retired", "unknown"]).catch("unknown"), responsible_user_id: optionalId,
-  display_name: z.string(), groups: z.array(z.string()), desktop_version: z.string().nullish(), os: z.string().nullish(), admission: z.enum(["accepting", "stopped", "unknown"]).catch("unknown"), admission_version: counter,
+  display_name: z.string(), groups: z.array(z.string()), desktop_version: z.string().nullish(), os: z.string().nullish(), admission: z.enum(["accepting", "stopped", "unknown"]).catch("unknown"), admission_version: adminVersionSchema,
+  allowed_actions: z.array(z.string()).nullish().transform(value => value ?? []),
   created_at: instant, updated_at: instant, runtime_count: counter, binding_count: counter, client_activity: constrainedAxis(["active", "inactive"]), daemon_reachability: constrainedAxis(["reachable", "unreachable"]), execution_readiness: constrainedAxis(["ready", "stopped", "environment_unavailable", "no_permission"]),
 }).transform(value => ({
-  id: value.id, deploymentId: value.deployment_id, organizationId: value.organization_id, lifecycle: value.lifecycle, responsibleUserId: value.responsible_user_id, displayName: value.display_name, groups: value.groups, desktopVersion: value.desktop_version ?? null, os: value.os ?? null, admission: value.admission, admissionVersion: value.admission_version, createdAt: value.created_at, updatedAt: value.updated_at, runtimeCount: value.runtime_count, bindingCount: value.binding_count, clientActivity: value.client_activity, daemonReachability: value.daemon_reachability, executionReadiness: value.execution_readiness
+  id: value.id, deploymentId: value.deployment_id, organizationId: value.organization_id, lifecycle: value.lifecycle, responsibleUserId: value.responsible_user_id, displayName: value.display_name, groups: value.groups, desktopVersion: value.desktop_version ?? null, os: value.os ?? null, admission: value.admission, admissionVersion: value.admission_version, allowedActions: value.allowed_actions, createdAt: value.created_at, updatedAt: value.updated_at, runtimeCount: value.runtime_count, bindingCount: value.binding_count, clientActivity: value.client_activity, daemonReachability: value.daemon_reachability, executionReadiness: value.execution_readiness
 }));
 const runtime = z.object({
   id: z.uuid(), workspace_id: z.uuid(), binding_id: optionalId, principal_user_id: optionalId, provider: z.string(), status: z.string(), last_seen_at: optionalInstant, running_tasks: counter.nullish().transform(value => value ?? null)

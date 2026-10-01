@@ -429,7 +429,10 @@ func (s *PlatformAdminService) CreateOperationInTx(ctx context.Context, tx pgx.T
 	// Each new administrative action must register its controlled target and
 	// state contract here alongside the service that implements that action.
 	expectedCode := map[string]string{"user.role": "role_changed", "user.disable": "account_disabled", "user.restore": "account_restored", "user.password.recover": "password_recovered"}[p.Kind]
-	if expectedCode == "" || p.TargetKind != "user" || p.State != "applied" || p.ResultCode != expectedCode {
+	validAction := expectedCode != "" && p.TargetKind == "user" && p.ResultCode == expectedCode
+	validAction = validAction || p.Kind == "task.cancel" && p.TargetKind == "task" && p.ResultCode == "cancellation_accepted"
+	validAction = validAction || p.Kind == "installation.admission" && p.TargetKind == "installation" && (p.ResultCode == "admission_stopped" || p.ResultCode == "admission_accepting")
+	if !validAction || p.State != "applied" {
 		return empty, false, platformError(http.StatusBadRequest, "invalid_operation", "The operation kind or state is not supported")
 	}
 	p.ActorID, p.ActorKind, p.ActorAuthVersion = actor.UserID, "user", actor.AuthVersion
@@ -450,7 +453,11 @@ func (s *PlatformAdminService) FindOperationByKey(ctx context.Context, organizat
 	if actor.OrganizationID != organization {
 		return db.AdminOperation{}, platformError(http.StatusForbidden, "admin_scope_forbidden", "The organization is outside the administrative scope")
 	}
-	return s.Queries.GetAdminOperationByKey(ctx, db.GetAdminOperationByKeyParams{OrganizationID: organization, ActorID: actor.UserID, IdempotencyKey: key})
+	op, err := s.Queries.GetAdminOperationByKey(ctx, db.GetAdminOperationByKeyParams{OrganizationID: organization, ActorID: actor.UserID, IdempotencyKey: key})
+	if err != nil {
+		return db.AdminOperation{}, err
+	}
+	return effectiveAdminOperation(ctx, s.Queries, op)
 }
 func (s *PlatformAdminService) GetOperation(ctx context.Context, organization, id pgtype.UUID) (db.AdminOperation, error) {
 	actor, err := s.Authorize(ctx, false)
@@ -463,7 +470,11 @@ func (s *PlatformAdminService) GetOperation(ctx context.Context, organization, i
 	if actor.OrganizationID != organization {
 		return db.AdminOperation{}, platformError(http.StatusForbidden, "admin_scope_forbidden", "The organization is outside the administrative scope")
 	}
-	return s.Queries.GetAdminOperationForActor(ctx, db.GetAdminOperationForActorParams{OrganizationID: organization, ActorID: actor.UserID, ID: id})
+	op, err := s.Queries.GetAdminOperationForActor(ctx, db.GetAdminOperationForActorParams{OrganizationID: organization, ActorID: actor.UserID, ID: id})
+	if err != nil {
+		return db.AdminOperation{}, err
+	}
+	return effectiveAdminOperation(ctx, s.Queries, op)
 }
 
 type PlatformAdminBootstrapParams struct {

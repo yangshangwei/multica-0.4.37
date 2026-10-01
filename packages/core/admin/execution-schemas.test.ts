@@ -7,6 +7,12 @@ const task = {
   id, workspace_id: id, agent_id: id, status: "failed", source: "issue", attempt: 2, created_at: date, content_access: false, title: null, content_url: null, usage: null
 };
 describe("platform execution response boundary", () => {
+  it("preserves the exact dispatch fence and disables legacy affordances without one", () => {
+    const precise = "2026-10-01T00:00:00.123456789Z";
+    expect(parseAdminExecution({ ...task, state_version: "7", execution_fence: { runtime_id: id, dispatched_at: precise, target_version: "7" }, allowed_actions: ["cancel"] })).toMatchObject({ stateVersion: "7", executionFence: { runtimeId: id, dispatchedAt: precise, targetVersion: "7" }, allowedActions: ["cancel"] });
+    expect(parseAdminExecution(task)).toMatchObject({ executionFence: null, allowedActions: [] });
+    expect(parseAdminExecution({ ...task, execution_fence: { runtime_id: id, dispatched_at: precise, target_version: "01" } })).toBeNull();
+  });
   it("keeps missing time and usage unknown and strips unapproved raw fields", () => {
     const result = parseAdminExecution({
       ...task, error: "secret", context: { prompt: "secret" }, work_dir: "/private", attempt: 2, retry_of_task_id: id

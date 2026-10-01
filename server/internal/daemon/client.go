@@ -92,12 +92,13 @@ func isRuntimeNotFoundError(err error) bool {
 
 // Client handles HTTP communication with the Multica server daemon API.
 type Client struct {
-	baseURL            string
-	tokenMu            sync.RWMutex
-	managed            *managedClientRegistry
-	managedWorkspaceID string
-	token              string
-	client             *http.Client
+	baseURL                string
+	tokenMu                sync.RWMutex
+	managed                *managedClientRegistry
+	managedWorkspaceID     string
+	cancelAckReceiptsReady bool
+	token                  string
+	client                 *http.Client
 
 	// bundleClient downloads skill bundles. Unlike client it carries no fixed
 	// Timeout: bundles can be large and slow on jittery links, so the caller
@@ -188,6 +189,9 @@ func (c *Client) capabilities() string {
 	capabilities := daemonClientCapabilities()
 	if c.managedWorkspaceID != "" {
 		capabilities += "," + protocol.DaemonCapabilityManagedInstallationV1
+		if c.cancelAckReceiptsReady {
+			capabilities += "," + protocol.DaemonCapabilityAdminCancelAckV1
+		}
 	}
 	return capabilities
 }
@@ -456,17 +460,21 @@ type TaskCancelAck struct {
 	// partial work is committed to a branch in the user's repo. The cancel
 	// path discards the rest of the result, so this ack is the only channel
 	// left to report where that work went.
-	BranchName string
+	BranchName string `json:"branch_name,omitempty"`
 	// DurableWorkDir is the configured local_directory path that became
 	// authoritative after the disposable task worktree was removed.
-	DurableWorkDir string
+	DurableWorkDir string `json:"durable_work_dir,omitempty"`
 	// ErrorMessage / FailureReason: set when the cancelled run additionally
 	// FAILED to persist its work (worktree Finalize abort). There is no branch
 	// then; the error text carrying the preserved-worktree path is the only
 	// pointer to the agent's work, and without this the cancel path would
 	// swallow it entirely.
-	ErrorMessage  string
-	FailureReason string
+	ErrorMessage   string          `json:"error_message,omitempty"`
+	FailureReason  string          `json:"failure_reason,omitempty"`
+	OperationID    string          `json:"operation_id,omitempty"`
+	BindingEpoch   string          `json:"binding_epoch,omitempty"`
+	ExecutionFence *ExecutionFence `json:"execution_fence,omitempty"`
+	Outcome        string          `json:"outcome,omitempty"`
 }
 
 // AckTaskCancelled tells the server this daemon observed the task's
@@ -480,20 +488,7 @@ type TaskCancelAck struct {
 // the cancelled task's work — and a single lost POST would lose it forever.
 // The server never overwrites already-recorded values, so replays are safe.
 func (c *Client) AckTaskCancelled(ctx context.Context, taskID string, ack TaskCancelAck) error {
-	body := map[string]any{}
-	if ack.BranchName != "" {
-		body["branch_name"] = ack.BranchName
-	}
-	if ack.DurableWorkDir != "" {
-		body["durable_work_dir"] = ack.DurableWorkDir
-	}
-	if ack.ErrorMessage != "" {
-		body["error_message"] = ack.ErrorMessage
-	}
-	if ack.FailureReason != "" {
-		body["failure_reason"] = ack.FailureReason
-	}
-	return c.postJSONWithRetry(ctx, fmt.Sprintf("/api/daemon/tasks/%s/cancel-ack", taskID), body, nil, defaultTerminalRetrySchedule)
+	return c.postJSONWithRetry(ctx, fmt.Sprintf("/api/daemon/tasks/%s/cancel-ack", taskID), ack, nil, defaultTerminalRetrySchedule)
 }
 
 func (c *Client) ReportProgress(ctx context.Context, taskID, summary string, step, total int) error {
@@ -608,13 +603,27 @@ func (c *Client) RecoverOrphans(ctx context.Context, runtimeID string) error {
 // detect terminal/interruption signals (cancelled, failed, completed, or a
 // 404 task-not-found) while a task is executing.
 func (c *Client) GetTaskStatus(ctx context.Context, taskID string) (string, error) {
-	var resp struct {
-		Status string `json:"status"`
+	state, err := c.GetTaskState(ctx, taskID)
+	return state.Status, err
+}
+
+// Optional management metadata cannot prevent the legacy cancellation signal.
+func (c *Client) GetTaskState(ctx context.Context, taskID string) (TaskStatus, error) {
+	var response struct {
+		Status       string          `json:"status"`
+		Cancellation json.RawMessage `json:"cancellation"`
 	}
-	if err := c.getJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/status", taskID), &resp); err != nil {
-		return "", err
+	if err := c.getJSON(ctx, fmt.Sprintf("/api/daemon/tasks/%s/status", taskID), &response); err != nil {
+		return TaskStatus{}, err
 	}
-	return resp.Status, nil
+	state := TaskStatus{Status: response.Status}
+	if response.Status == "cancelled" && len(response.Cancellation) > 0 {
+		var metadata TaskCancellationMetadata
+		if json.Unmarshal(response.Cancellation, &metadata) == nil && validCancellationMetadata(metadata) {
+			state.Cancellation = &metadata
+		}
+	}
+	return state, nil
 }
 
 // HeartbeatResponse, PendingUpdate, etc. alias the wire types so HTTP and WS
@@ -1260,7 +1269,7 @@ func (c *Client) postJSONWithToken(ctx context.Context, path, token string, reqB
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode >= 400 {
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		data, _ := io.ReadAll(io.LimitReader(resp.Body, 4096))
 		return &requestError{Method: http.MethodPost, Path: path, StatusCode: resp.StatusCode, Body: strings.TrimSpace(string(data))}
 	}

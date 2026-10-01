@@ -249,6 +249,18 @@ func (c *ReclaimCheckCache) Forget(ctx context.Context, runtimeID, taskID string
 	}
 }
 
+// Invalidate forces the next poll to recheck persisted recovery eligibility.
+func (c *ReclaimCheckCache) Invalidate(ctx context.Context, runtimeID string) {
+	if c == nil || runtimeID == "" {
+		return
+	}
+	bctx, cancel := c.bounded(ctx)
+	defer cancel()
+	if err := c.rdb.Del(bctx, reclaimCheckBackstopKey(runtimeID)).Err(); err != nil {
+		slog.Warn("reclaim_check_cache: invalidate failed; bounded backstop remains", "error", err)
+	}
+}
+
 // MarkChecked records a successful PostgreSQL reclaim pass for every runtime in
 // the machine-level polling set. Hints that actually triggered this pass are
 // atomically moved to retryAfter instead of deleted or made inert: SKIP LOCKED

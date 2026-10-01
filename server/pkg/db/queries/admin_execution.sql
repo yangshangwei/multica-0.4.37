@@ -6,7 +6,7 @@ WITH candidates AS (
  t.chat_session_id, t.autopilot_run_id, t.status, t.attempt, t.parent_task_id,
  t.retry_of_task_id, t.rerun_of_task_id, t.accountable_user_id,
  t.submitted_installation_id, t.execution_installation_id,
- t.created_at, t.dispatched_at, t.started_at, t.completed_at, t.failure_reason,
+ t.created_at, t.dispatched_at, t.started_at, t.completed_at, t.failure_reason, t.state_version,
  CASE WHEN t.chat_session_id IS NOT NULL THEN 'chat'
       WHEN t.issue_id IS NOT NULL AND (t.autopilot_run_id IS NOT NULL OR i.origin_type = 'autopilot') THEN 'autopilot_issue'
       WHEN t.issue_id IS NOT NULL THEN 'issue'

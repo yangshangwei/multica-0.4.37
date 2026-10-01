@@ -376,14 +376,15 @@ type TaskIssueStatusData struct {
 }
 
 type AgentTaskResponse struct {
-	ID                   string                 `json:"id"`
-	AgentID              string                 `json:"agent_id"`
-	RuntimeID            string                 `json:"runtime_id"`
-	IssueID              string                 `json:"issue_id"`
-	WorkspaceID          string                 `json:"workspace_id"`
-	WorkspaceSlug        string                 `json:"workspace_slug,omitempty"`
-	IssueIdentifier      string                 `json:"issue_identifier,omitempty"`
-	RemoteMCPConnections []remotemcp.Connection `json:"remote_mcp_connections,omitempty"`
+	ExecutionFence       *service.AdminCancellationWireFence `json:"execution_fence,omitempty"`
+	ID                   string                              `json:"id"`
+	AgentID              string                              `json:"agent_id"`
+	RuntimeID            string                              `json:"runtime_id"`
+	IssueID              string                              `json:"issue_id"`
+	WorkspaceID          string                              `json:"workspace_id"`
+	WorkspaceSlug        string                              `json:"workspace_slug,omitempty"`
+	IssueIdentifier      string                              `json:"issue_identifier,omitempty"`
+	RemoteMCPConnections []remotemcp.Connection              `json:"remote_mcp_connections,omitempty"`
 	// PluginHookTools are the workspace's agent-trigger plugin hooks, which the
 	// daemon renders as MCP tools for this task. Resolved at claim time so
 	// disabling or uninstalling a plugin takes effect on the next task rather

@@ -4,6 +4,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../../i18n";
 import { AppLink } from "../../navigation";
 import { AdminListState, formatAdminTime } from "./list-controls";
+import { AdminExecutionControls } from "../operations/control-panel";
 export function AdminExecutionDetailPage({ id }: {
   id: string;
 }) {
@@ -24,6 +25,7 @@ export function AdminExecutionDetailPage({ id }: {
         <p className="break-all text-body text-muted-foreground">{task.id}</p>
         <p className="text-body">{t($ => $.executions.statuses[task.status])} · {t($ => $.executions.sources[task.source])} · {t($ => $.executions.attempt)} {task.attempt}</p>
       </header>
+      <AdminExecutionControls key={task.id} execution={task} onRefresh={() => query.refetch({ throwOnError: true })} />
       <div className="grid gap-7 lg:grid-cols-2">
         <dl className="grid gap-4 sm:grid-cols-2">{timeline.map(([label, value]) => <div key={label} className="space-y-1">
           <dt className="text-caption text-muted-foreground">{label}</dt>

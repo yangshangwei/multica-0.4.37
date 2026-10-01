@@ -40,34 +40,38 @@ type AdminAuditEvent struct {
 }
 
 type AdminOperation struct {
-	ID                   pgtype.UUID        `json:"id"`
-	OrganizationID       pgtype.UUID        `json:"organization_id"`
-	ActorKind            string             `json:"actor_kind"`
-	ActorID              pgtype.UUID        `json:"actor_id"`
-	ActorAuthVersion     int64              `json:"actor_auth_version"`
-	TargetKind           string             `json:"target_kind"`
-	TargetID             pgtype.UUID        `json:"target_id"`
-	Kind                 string             `json:"kind"`
-	IdempotencyKey       pgtype.UUID        `json:"idempotency_key"`
-	PayloadHash          string             `json:"payload_hash"`
-	Reason               string             `json:"reason"`
-	State                string             `json:"state"`
-	ResultCode           string             `json:"result_code"`
-	Version              int64              `json:"version"`
-	Confirmation         string             `json:"confirmation"`
-	ReconciliationState  string             `json:"reconciliation_state"`
-	TargetInstallationID pgtype.UUID        `json:"target_installation_id"`
-	TargetTaskID         pgtype.UUID        `json:"target_task_id"`
-	BindingID            pgtype.UUID        `json:"binding_id"`
-	BindingEpoch         pgtype.Int8        `json:"binding_epoch"`
-	ExecutionFence       pgtype.Int8        `json:"execution_fence"`
-	RootOperationID      pgtype.UUID        `json:"root_operation_id"`
-	AckDeadline          pgtype.Timestamptz `json:"ack_deadline"`
-	AcceptedAt           pgtype.Timestamptz `json:"accepted_at"`
-	AppliedAt            pgtype.Timestamptz `json:"applied_at"`
-	ConfirmedAt          pgtype.Timestamptz `json:"confirmed_at"`
-	CreatedAt            pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt            pgtype.Timestamptz `json:"updated_at"`
+	ID                    pgtype.UUID        `json:"id"`
+	OrganizationID        pgtype.UUID        `json:"organization_id"`
+	ActorKind             string             `json:"actor_kind"`
+	ActorID               pgtype.UUID        `json:"actor_id"`
+	ActorAuthVersion      int64              `json:"actor_auth_version"`
+	TargetKind            string             `json:"target_kind"`
+	TargetID              pgtype.UUID        `json:"target_id"`
+	Kind                  string             `json:"kind"`
+	IdempotencyKey        pgtype.UUID        `json:"idempotency_key"`
+	PayloadHash           string             `json:"payload_hash"`
+	Reason                string             `json:"reason"`
+	State                 string             `json:"state"`
+	ResultCode            string             `json:"result_code"`
+	Version               int64              `json:"version"`
+	Confirmation          string             `json:"confirmation"`
+	ReconciliationState   string             `json:"reconciliation_state"`
+	TargetInstallationID  pgtype.UUID        `json:"target_installation_id"`
+	TargetTaskID          pgtype.UUID        `json:"target_task_id"`
+	BindingID             pgtype.UUID        `json:"binding_id"`
+	BindingEpoch          pgtype.Int8        `json:"binding_epoch"`
+	ExecutionFence        pgtype.Int8        `json:"execution_fence"`
+	RootOperationID       pgtype.UUID        `json:"root_operation_id"`
+	AckDeadline           pgtype.Timestamptz `json:"ack_deadline"`
+	AcceptedAt            pgtype.Timestamptz `json:"accepted_at"`
+	AppliedAt             pgtype.Timestamptz `json:"applied_at"`
+	ConfirmedAt           pgtype.Timestamptz `json:"confirmed_at"`
+	CreatedAt             pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt             pgtype.Timestamptz `json:"updated_at"`
+	ExecutionRuntimeID    pgtype.UUID        `json:"execution_runtime_id"`
+	ExecutionDispatchedAt pgtype.Timestamptz `json:"execution_dispatched_at"`
+	NextReconcileAt       pgtype.Timestamptz `json:"next_reconcile_at"`
+	EffectsCompletedAt    pgtype.Timestamptz `json:"effects_completed_at"`
 }
 
 type Agent struct {
@@ -249,6 +253,9 @@ type AgentTaskQueue struct {
 	ExecutionInstallationID   pgtype.UUID `json:"execution_installation_id"`
 	ExecutionBindingID        pgtype.UUID `json:"execution_binding_id"`
 	ExecutionBindingEpoch     pgtype.Int8 `json:"execution_binding_epoch"`
+	StateVersion              int64       `json:"state_version"`
+	ExecutionAdmissionVersion pgtype.Int8 `json:"execution_admission_version"`
+	ClaimGeneration           int64       `json:"claim_generation"`
 }
 
 type AgentToLabel struct {

@@ -521,8 +521,9 @@ type Daemon struct {
 	pendingWorkInflight map[string]struct{}  // runtime_id -> hint-driven heartbeat in flight
 	pendingWorkLastRun  map[string]time.Time // runtime_id -> when the last hint-driven heartbeat started
 
-	cancelFunc context.CancelFunc // set by Run(); called by triggerRestart
-	rootCtx    context.Context    // set by Run(); used by long-running recoveries that must survive per-runtime ctx cancellation
+	cancelReceipts *cancellationOutbox
+	cancelFunc     context.CancelFunc // set by Run(); called by triggerRestart
+	rootCtx        context.Context    // set by Run(); used by long-running recoveries that must survive per-runtime ctx cancellation
 	// restartMu guards restartBinary. Two goroutines can reach triggerRestart —
 	// the server-triggered handleUpdate and the autoUpdateLoop — and
 	// trySelfReload reads RestartBinary() from the latter to avoid racing the
@@ -2031,6 +2032,9 @@ func (d *Daemon) Run(ctx context.Context) error {
 		if err := d.initializeManagedTransport(ctx, home); err != nil {
 			return err
 		}
+		if err := d.initializeCancellationReceipts(); err != nil {
+			return err
+		}
 	}
 
 	// Renew the PAT before the first API call, then do the initial
@@ -2060,6 +2064,7 @@ func (d *Daemon) Run(ctx context.Context) error {
 	go d.autoUpdateLoop(ctx)
 	go d.tokenRenewalLoop(ctx)
 	go d.managedCredentialRenewalLoop(ctx)
+	go d.cancellationReceiptLoop(ctx)
 
 	// Preflight succeeded and the background loops are up: the daemon has
 	// registered its runtimes and can now claim and run tasks. Flip /health
@@ -5051,7 +5056,8 @@ func (d *Daemon) watchTaskCancellation(ctx context.Context, taskID string, pollI
 		ticker := time.NewTicker(pollInterval)
 		defer ticker.Stop()
 		check := func() bool {
-			status, err := d.client.GetTaskStatus(ctx, taskID)
+			state, err := d.client.GetTaskState(ctx, taskID)
+			status := state.Status
 			if !shouldInterruptAgent(status, err) {
 				return false
 			}
@@ -5059,6 +5065,9 @@ func (d *Daemon) watchTaskCancellation(ctx context.Context, taskID string, pollI
 				taskLog.Info("task access ended server-side, interrupting agent", "error", err)
 			} else {
 				taskLog.Info("task reached terminal state server-side, interrupting agent", "status", status)
+			}
+			if err == nil {
+				d.observeTaskCancellation(ctx, state)
 			}
 			close(cancelled)
 			return true
@@ -5087,6 +5096,7 @@ func (d *Daemon) watchTaskCancellation(ctx context.Context, taskID string, pollI
 }
 
 func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
+	ctx = d.withCancellationExecution(ctx, task)
 	d.mu.Lock()
 	rt, tracked := d.runtimeIndex[task.RuntimeID]
 	d.mu.Unlock()
@@ -5148,6 +5158,17 @@ func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
 	// without racing the daemon's os.MkdirAll.
 	localRelease, abort := d.acquireLocalDirectoryLockIfNeeded(ctx, task, taskLog)
 	if abort {
+		// The runner was never entered; a matching observed cancellation can
+		// confirm that this dispatched waiter never launched a provider.
+		markCancellationRunner(ctx)
+		if execution := cancellationExecutionFrom(ctx); execution != nil {
+			execution.mu.Lock()
+			observed := execution.metadata != nil
+			execution.mu.Unlock()
+			if observed {
+				_ = d.acknowledgeCancellation(ctx, task.ID, TaskCancelAck{})
+			}
+		}
 		return
 	}
 	if localRelease != nil {
@@ -5235,7 +5256,7 @@ func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
 			ack.ErrorMessage = preserved.Error()
 			ack.FailureReason = "local_directory_error"
 		}
-		if ackErr := d.client.AckTaskCancelled(ctx, task.ID, ack); ackErr != nil {
+		if ackErr := d.acknowledgeCancellation(ctx, task.ID, ack); ackErr != nil {
 			taskLog.Warn("cancel ack failed; server sweeper will finalize", "error", ackErr)
 		}
 		return
@@ -5272,7 +5293,11 @@ func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
 	// outright, skip reporting — the complete/fail callbacks would fail
 	// anyway. Reuse shouldInterruptAgent so this guard honors the same
 	// signals as the in-flight watcher.
-	if status, err := d.client.GetTaskStatus(ctx, task.ID); shouldInterruptAgent(status, err) {
+	if state, err := d.client.GetTaskState(ctx, task.ID); shouldInterruptAgent(state.Status, err) {
+		status := state.Status
+		if err == nil {
+			d.observeTaskCancellation(ctx, state)
+		}
 		taskLog.Info("task cancelled during execution, discarding result",
 			"status", status, "error", err, "branch_name", result.BranchName)
 		// Same contract as the poll-cancelled path above: the transcript is
@@ -5284,7 +5309,7 @@ func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
 		// completed/failed rows the complete/fail callback is the
 		// authoritative channel and a stale run's late ack must not touch
 		// them.
-		if ackErr := d.client.AckTaskCancelled(ctx, task.ID, TaskCancelAck{BranchName: result.BranchName, DurableWorkDir: result.DurableWorkDir}); ackErr != nil {
+		if ackErr := d.acknowledgeCancellation(ctx, task.ID, TaskCancelAck{BranchName: result.BranchName, DurableWorkDir: result.DurableWorkDir}); ackErr != nil {
 			taskLog.Warn("cancel ack failed; server sweeper will finalize", "error", ackErr)
 		}
 		return
@@ -6790,6 +6815,7 @@ func qualifyTaskModel(
 }
 
 func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot int, taskLog *slog.Logger) (taskResult TaskResult, returnErr error) {
+	markCancellationRunner(ctx)
 	// A claim carries the task-row agent id both at the top level and inside
 	// the expanded agent configuration. The top-level id is authoritative
 	// because it is also bound into the task-scoped token. Never prepare or
@@ -8393,6 +8419,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 	agentCtx, agentCancel := context.WithCancel(ctx)
 	defer agentCancel()
 
+	finishProcess := beginCancellationProcess(ctx)
 	session, err := backend.Execute(agentCtx, prompt, opts)
 	if err != nil {
 		// One provider-agnostic boundary for launches: every backend's
@@ -8689,7 +8716,8 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 	}
 
 	select {
-	case result := <-session.Result:
+	case result, ok := <-session.Result:
+		finishProcess(ok && result.ProcessExited)
 		waitForDrain()
 		if idleWatchdogFired.Load() {
 			// The backend's wait goroutine (e.g. claude.go) translates the
@@ -8704,6 +8732,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 		}
 		return result, toolCount.Load(), nil
 	case <-drainCtx.Done():
+		awaitCancellationProcessResult(ctx, session.Result, 10*time.Second, finishProcess)
 		// The drain loop is exiting on this same Done signal; wait for its
 		// final flush so the timeout/watchdog/cancel terminals below cannot
 		// hand back (and let runTask fail-and-broadcast) a still-flushing

@@ -78,6 +78,7 @@ func (c *Client) installManagedCredential(workspaceID string, credential Managed
 	if current == nil {
 		child := NewClient(c.baseURL)
 		child.managedWorkspaceID = workspaceID
+		child.cancelAckReceiptsReady = c.cancelAckReceiptsReady
 		child.platform = c.platform
 		child.version = c.version
 		child.os = c.os
@@ -288,4 +289,30 @@ func (c *Client) deregisterManagedRuntimes(ctx context.Context, runtimeIDs []str
 		result = errors.Join(result, group.workspace.client.Deregister(ctx, group.runtimeIDs, subset))
 	}
 	return result
+}
+
+// Replay uses the stored scope and a currently verified binding, never the
+// process-local task map or the discovery PAT. An old scope remains quarantined.
+func (d *Daemon) cancellationReceiptTransport(scope cancelReceiptScope) (*Client, string, error) {
+	if d.managed == nil || d.client.managed == nil {
+		return nil, "", errors.New("managed cancellation transport unavailable")
+	}
+	d.managed.mu.Lock()
+	store := *d.managed.store
+	d.managed.mu.Unlock()
+	if scope.ServerURL != store.ServerURL || scope.DeploymentID != store.DeploymentID || scope.InstallationID != store.InstallationID || scope.UserID != store.UserID || scope.AuthVersion != store.AuthVersion || scope.Profile != store.Profile {
+		return nil, "", errors.New("cancellation receipt scope is quarantined")
+	}
+	registry := d.client.managed
+	registry.mu.RLock()
+	defer registry.mu.RUnlock()
+	workspace, err := registry.workspaceLocked(scope.WorkspaceID)
+	if err != nil {
+		return nil, "", err
+	}
+	credential := workspace.credential
+	if credential.BindingID != scope.BindingID || credential.BindingEpoch != scope.BindingEpoch || credential.PrincipalUserID != scope.UserID || credential.AuthVersion != scope.AuthVersion {
+		return nil, "", errors.New("cancellation receipt binding is quarantined")
+	}
+	return workspace.client, credential.DaemonToken, nil
 }

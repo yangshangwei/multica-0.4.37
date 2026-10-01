@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
+import { adminOperationSchema as OperationSchema, adminOperationsSchema as OperationsSchema } from "./operation-schema";
 
 const UserSchema = z.object({
   id: z.uuid(),
@@ -54,28 +55,6 @@ const UserDetailSchema = z.object({
   membershipsTruncated: detail.memberships_truncated,
   scope: detail.scope,
 }));
-
-const OperationSchema = z.object({
-  id: z.uuid(),
-  organization_id: z.uuid(),
-  target_id: z.uuid(),
-  kind: z.string(),
-  state: z.string(),
-  result_code: z.string(),
-  confirmation: z.string(),
-  version: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
-}).transform((operation) => ({
-  id: operation.id,
-  organizationId: operation.organization_id,
-  targetId: operation.target_id,
-  kind: operation.kind,
-  state: operation.state,
-  resultCode: operation.result_code,
-  confirmation: operation.confirmation,
-  version: operation.version,
-}));
-const OperationsSchema = z.object({ items: z.array(OperationSchema).max(1), scope: z.uuid(), as_of: z.string() })
-  .transform((list) => ({ items: list.items, scope: list.scope, asOf: list.as_of }));
 
 export type AdminUser = z.output<typeof UserSchema>;
 export type AdminUserList = z.output<typeof UsersSchema>;

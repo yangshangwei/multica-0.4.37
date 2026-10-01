@@ -35,6 +35,9 @@ const (
 	// workspace-bound management client, never the discovery PAT client.
 	DaemonCapabilityManagedInstallationV1 = "managed_installation_v1"
 
+	// Advertised only after the managed daemon initializes its durable receipt store.
+	DaemonCapabilityAdminCancelAckV1 = "admin_cancel_ack_v1"
+
 	// AppCapabilityChatDraftRestoreV1 is advertised (X-Client-Capabilities) by
 	// app clients that understand the durable draft-restore recovery path:
 	// chat:cancel_finalized as an invalidation hint plus the draft-restores

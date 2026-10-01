@@ -8,6 +8,12 @@ const axis = {
 const installation = {
   id, deployment_id: id, organization_id: id, lifecycle: "active", display_name: "Laptop", groups: [], desktop_version: null, os: null, admission: "accepting", admission_version: 1, created_at: date, updated_at: date, runtime_count: 2, binding_count: 1, client_activity: { ...axis, state: "inactive" }, daemon_reachability: { ...axis, state: "reachable" }, execution_readiness: axis
 };
+it("normalizes admission CAS versions and retains only explicit action metadata", () => {
+  const base = { items: [installation], as_of: date, scope: id, next_cursor: null, data_quality: "complete" };
+  expect(parseAdminInstallationList(base)?.items[0]).toMatchObject({ admissionVersion: "1", allowedActions: [] });
+  expect(parseAdminInstallationList({ ...base, items: [{ ...installation, admission_version: "9223372036854775807", allowed_actions: ["stop_admission"] }] })?.items[0]).toMatchObject({ admissionVersion: "9223372036854775807", allowedActions: ["stop_admission"] });
+  expect(parseAdminInstallationList({ ...base, items: [{ ...installation, admission_version: Number.MAX_SAFE_INTEGER + 1 }] })).toBeNull();
+});
 it("retains independent axes and strips secret/proof fields", () => {
   const parsed = parseAdminInstallationList({
     items: [{

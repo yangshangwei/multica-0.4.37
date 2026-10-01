@@ -137,7 +137,16 @@ func LockManagedRuntime(ctx context.Context, q *db.Queries, runtime db.AgentRunt
 	if current.WorkspaceID != runtime.WorkspaceID || current.DaemonID != runtime.DaemonID {
 		return db.InstallationDaemonBinding{}, ErrManagedRuntimeSource
 	}
-	return ValidateManagedRuntime(ctx, q, current)
+	binding, err := ValidateManagedRuntime(ctx, q, current)
+	if err != nil || !binding.ID.Valid {
+		return binding, err
+	}
+	// Admission changes and binding changes serialize before agent/task locks.
+	// Stopped admission still permits completion and recovery of prior claims.
+	if _, err = q.LockManagedInstallationForAdmissionRead(ctx, binding.InstallationID); err != nil {
+		return binding, err
+	}
+	return binding, nil
 }
 
 func LockManagedRuntimes(ctx context.Context, q *db.Queries, ids []pgtype.UUID) error {

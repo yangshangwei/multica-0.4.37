@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -206,7 +207,7 @@ func (h *Handler) installationEvidence(ctx context.Context, identity service.Pla
 	return grouped, alive, configured, storeOK, truncated, nil
 }
 
-func installationReadResponse(row db.ListAdminInstallationsRow, now time.Time, evidence []adminInstallationRuntimeEvidence, alive map[string]bool, configured, storeOK, truncated bool) map[string]any {
+func installationReadResponse(row db.ListAdminInstallationsRow, now time.Time, evidence []adminInstallationRuntimeEvidence, alive map[string]bool, configured, storeOK, truncated, canWrite bool) map[string]any {
 	client, daemon, ready := installationAxes(now, row.Lifecycle, row.Admission, row.ClientSeenAt, evidence, alive, configured, storeOK)
 	if truncated {
 		daemon = installationAxis("unknown", "none", "unknown", "evidence_truncated", pgtype.Timestamptz{})
@@ -214,7 +215,7 @@ func installationReadResponse(row db.ListAdminInstallationsRow, now time.Time, e
 			ready = installationAxis("unknown", "none", "unknown", "evidence_truncated", pgtype.Timestamptz{})
 		}
 	}
-	return map[string]any{"id": uuidToString(row.ID), "deployment_id": uuidToString(row.DeploymentID), "organization_id": uuidToString(row.OrganizationID), "lifecycle": row.Lifecycle, "responsible_user_id": uuidToPtr(row.ResponsibleUserID), "display_name": row.DisplayName, "groups": row.Groups, "desktop_version": textToPtr(row.DesktopVersion), "os": textToPtr(row.Os), "admission": row.Admission, "admission_version": row.AdmissionVersion, "created_at": timestampToString(row.CreatedAt), "updated_at": timestampToString(row.UpdatedAt), "runtime_count": row.RuntimeCount, "binding_count": row.BindingCount, "client_activity": client, "daemon_reachability": daemon, "execution_readiness": ready, "allowed_actions": []string{}}
+	return map[string]any{"id": uuidToString(row.ID), "deployment_id": uuidToString(row.DeploymentID), "organization_id": uuidToString(row.OrganizationID), "lifecycle": row.Lifecycle, "responsible_user_id": uuidToPtr(row.ResponsibleUserID), "display_name": row.DisplayName, "groups": row.Groups, "desktop_version": textToPtr(row.DesktopVersion), "os": textToPtr(row.Os), "admission": row.Admission, "admission_version": strconv.FormatInt(row.AdmissionVersion, 10), "created_at": timestampToString(row.CreatedAt), "updated_at": timestampToString(row.UpdatedAt), "runtime_count": row.RuntimeCount, "binding_count": row.BindingCount, "client_activity": client, "daemon_reachability": daemon, "execution_readiness": ready, "allowed_actions": installationAdmissionActions(row, canWrite)}
 }
 
 func installationListParams(identity service.PlatformAdminIdentity, deployment pgtype.UUID, p AdminListQuery, now time.Time) db.ListAdminInstallationsParams {
@@ -261,7 +262,7 @@ func (h *Handler) AdminInstallations(w http.ResponseWriter, r *http.Request) {
 	}
 	items := make([]map[string]any, 0, len(rows))
 	for _, row := range rows {
-		items = append(items, installationReadResponse(row, now, evidence[uuidToString(row.ID)], alive, configured, storeOK, truncated))
+		items = append(items, installationReadResponse(row, now, evidence[uuidToString(row.ID)], alive, configured, storeOK, truncated, identity.Role == service.PlatformRoleSuperAdmin))
 	}
 	quality := "complete"
 	if truncated {
@@ -326,7 +327,7 @@ func (h *Handler) AdminInstallation(w http.ResponseWriter, r *http.Request) {
 		}
 		runtimeItems = append(runtimeItems, map[string]any{"id": item.RuntimeID, "binding_id": item.BindingID, "workspace_id": item.WorkspaceID, "principal_user_id": item.PrincipalID, "provider": item.Provider, "status": item.Status, "last_seen_at": timestampToPtr(item.LastSeen), "running_tasks": item.RunningTasks})
 	}
-	writeJSON(w, 200, map[string]any{"installation": installationReadResponse(rows[0], now, evidence[uuidToString(id)], alive, configured, storeOK, truncated), "bindings": bindings, "users": users, "runtimes": runtimeItems, "details_truncated": more, "as_of": now.Format(time.RFC3339Nano), "scope": uuidToString(identity.OrganizationID)})
+	writeJSON(w, 200, map[string]any{"installation": installationReadResponse(rows[0], now, evidence[uuidToString(id)], alive, configured, storeOK, truncated, identity.Role == service.PlatformRoleSuperAdmin), "bindings": bindings, "users": users, "runtimes": runtimeItems, "details_truncated": more, "as_of": now.Format(time.RFC3339Nano), "scope": uuidToString(identity.OrganizationID)})
 }
 
 func (h *Handler) AdminUnassociatedRuntimes(w http.ResponseWriter, r *http.Request) {
@@ -371,4 +372,17 @@ func (h *Handler) AdminUnassociatedRuntimes(w http.ResponseWriter, r *http.Reque
 		items = append(items, map[string]any{"id": uuidToString(row.ID), "workspace_id": uuidToString(row.WorkspaceID), "owner_id": uuidToPtr(row.OwnerID), "provider": row.Provider, "status": row.Status, "last_seen_at": timestampToPtr(row.LastSeenAt), "created_at": timestampToString(row.CreatedAt), "association": "unassociated", "allowed_actions": []string{}})
 	}
 	writeJSON(w, 200, map[string]any{"items": items, "next_cursor": next, "as_of": p.AsOf.Format(time.RFC3339Nano), "scope": uuidToString(identity.OrganizationID), "data_quality": "complete"})
+}
+
+func installationAdmissionActions(row db.ListAdminInstallationsRow, canWrite bool) []string {
+	if !canWrite || row.Lifecycle != "active" {
+		return []string{}
+	}
+	if row.Admission == "accepting" {
+		return []string{"stop_admission"}
+	}
+	if row.Admission == "stopped" {
+		return []string{"resume_admission"}
+	}
+	return []string{}
 }

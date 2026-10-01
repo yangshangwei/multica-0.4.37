@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
+import { adminVersionSchema, executionFenceSchema } from "./control-schema";
 export const executionStatuses = ["queued", "preparing", "dispatched", "running", "waiting_local_directory", "completed", "failed", "cancelled", "deferred", "unknown"] as const;
 export const executionSources = ["issue", "autopilot_issue", "chat", "autopilot", "quick_create", "unknown"] as const;
 const time = z.iso.datetime({ offset: true });
@@ -22,6 +23,9 @@ const taskSchema = z.object({
   created_at: time, dispatched_at: optionalTime, started_at: optionalTime, completed_at: optionalTime,
   provider: z.string().nullable().optional(), model: z.string().nullable().optional(), failure_code: z.string().nullable().optional(),
   usage: usage.nullish().transform((v) => v ?? null), ...content,
+  state_version: adminVersionSchema.nullish().transform(v => v ?? null),
+  execution_fence: executionFenceSchema.nullish().transform(v => v ?? null),
+  allowed_actions: z.array(z.string()).nullish().transform(v => v ?? []),
 }).transform((v) => ({
   id: v.id, workspaceId: v.workspace_id, agentId: v.agent_id, issueId: v.issue_id, runtimeId: v.runtime_id,
   chatSessionId: v.chat_session_id, autopilotRunId: v.autopilot_run_id, parentTaskId: v.parent_task_id,
@@ -30,6 +34,7 @@ const taskSchema = z.object({
   status: v.status, source: v.source, attempt: v.attempt, createdAt: v.created_at, dispatchedAt: v.dispatched_at,
   startedAt: v.started_at, completedAt: v.completed_at, provider: v.provider ?? null, model: v.model ?? null,
   failureCode: v.failure_code ?? null, usage: v.usage,
+  stateVersion: v.state_version, executionFence: v.execution_fence, allowedActions: v.allowed_actions,
   contentAccess: v.content_access === true && v.content_url !== null,
   title: v.content_access === true && v.content_url !== null ? v.title ?? null : null, contentUrl: v.content_access === true ? v.content_url : null,
 }));

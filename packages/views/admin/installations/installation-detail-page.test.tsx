@@ -8,6 +8,7 @@ const axis = {
   state: "unknown", freshness: "unknown", observedAt: null, source: "none", reasonCode: "missing"
 };
 vi.mock("@multica/core/admin", () => ({
+  useAdminAccess: () => ({status: "ready", identity: {role: "platform_observer"}}),
   useAdminInstallation: () => ({
     isPending: false, isError: false, refetch: vi.fn(), data: {
       installation: {

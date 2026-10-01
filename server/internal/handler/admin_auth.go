@@ -97,7 +97,9 @@ func adminOperationResponse(op db.AdminOperation) map[string]any {
 		"state": op.State, "result_code": op.ResultCode, "version": op.Version,
 		"confirmation": op.Confirmation, "accepted_at": timestampToString(op.AcceptedAt),
 		"applied_at": timestampToPtr(op.AppliedAt), "confirmed_at": timestampToPtr(op.ConfirmedAt),
-		"ack_deadline": timestampToPtr(op.AckDeadline),
+		"ack_deadline":      timestampToPtr(op.AckDeadline),
+		"root_operation_id": uuidToPtr(op.RootOperationID), "reconciliation_state": op.ReconciliationState,
+		"updated_at": timestampToString(op.UpdatedAt),
 	}
 }
 

@@ -78,6 +78,36 @@ daemon and readiness axes; source failure is unavailable, not healthy or a mass
 offline event. Missing model usage stays unknown. Private content remains behind
 the original resource authorization.
 
+## Execution controls and delivery generations
+
+Admission is a persisted server policy. The shared installation lock precedes
+agent/task claim locks, and SQL claim/reclaim queries repeat the policy check.
+An already admitted managed execution may recover while stopped only with its
+original binding and admission snapshot. Missing historical admission proof may
+recover while accepting; do not fabricate proof for a stopped installation.
+
+Keep three versions distinct: task state_version fences never-dispatched admin
+requests; runtime + original dispatched_at identifies an in-flight execution;
+claim_generation identifies one delivery attempt. Managed reclaim preserves the
+execution identity but advances delivery generation. Finalization, comment
+receipts, failed-response requeue and claim-only cancel/fail must compare that
+generation inside their write transaction. Preserve the original claim's
+trigger/comment snapshot after locking the current row; substituting the current
+trigger would authorize a payload prepared from stale provenance.
+
+Each actor/idempotency key retains its own operation and audit. A cancellation
+root owns daemon evidence; followers inherit its effective result and recover
+their own phase audits. A SKIP LOCKED batch shorter than its limit is not proof
+all followers are synchronized: check for remaining differences before removing
+the root's retry schedule. Definitive fence conflicts retain failed receipts so
+a client can safely leave an obsolete request after original-key reconciliation.
+
+Only an explicit, strictly decoded stopped receipt with current binding and
+matching execution fence confirms a managed cancellation. Legacy field cleanup,
+not_observed, completion-channel closure and expired acknowledgement windows do
+not prove process exit. Local receipt storage remains scoped to the original
+installation/user/version/binding/task/fence, including after restart.
+
 ## Verification sources
 
 - Protocol and signed payloads: `internal/installation/*_test.go` and shared

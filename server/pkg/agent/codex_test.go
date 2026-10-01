@@ -3009,6 +3009,9 @@ func TestCodexExecuteInitializeRetrySafetyGates(t *testing.T) {
 			`read line`+"\n"+
 			`sleep 3.2`+"\n")
 		result := executeFakeCodex(t, fakePath, ExecOptions{Timeout: 8 * time.Second, HandshakeTimeout: 3 * time.Second})
+		if result.ProcessExited {
+			t.Fatal("unconfirmed cleanup advertised process exit")
+		}
 		if !strings.Contains(result.Error, "retry suppressed: process cleanup/reap not confirmed") {
 			t.Fatalf("expected cleanup reason, got %q", result.Error)
 		}
@@ -3673,6 +3676,9 @@ func TestCodexExecuteSurfacesUnsupportedServerRequestOnInterruptedTurn(t *testin
 		Timeout:                   5 * time.Second,
 		SemanticInactivityTimeout: 5 * time.Second,
 	})
+	if !result.ProcessExited {
+		t.Fatal("reaped fake Codex process omitted exit evidence")
+	}
 	if result.Status != "aborted" {
 		t.Fatalf("expected aborted, got status=%q error=%q", result.Status, result.Error)
 	}
@@ -4092,6 +4098,9 @@ func TestCodexExecuteDoesNotRetryCatalogFailureWhenCleanupUnconfirmed(t *testing
 		Timeout:                   5 * time.Second,
 		SemanticInactivityTimeout: 100 * time.Millisecond,
 	})
+	if result.ProcessExited {
+		t.Fatal("unconfirmed cleanup cannot prove process exit")
+	}
 	if result.Status != "timeout" {
 		t.Fatalf("expected timeout, got status=%q error=%q", result.Status, result.Error)
 	}

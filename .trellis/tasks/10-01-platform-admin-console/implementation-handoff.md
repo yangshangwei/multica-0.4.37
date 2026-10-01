@@ -7,7 +7,7 @@
 - S01 完成并提交 `fa28e28a2`；规划保全提交 `a6316d9fa`。
 - S03、S05 实现、包检查及生产浏览器验收通过，task.json 已 completed；代码仍与本批共享改动一起未提交。各自 verification.md 是证据入口。
 - S02 实现、最终 PID 修复及独立复核、生产移动端几何/截图验收已通过；task.json 已 completed。
-- S04 仅完成源码/SQL/接口准备，见 `../10-01-platform-admin-controls/cancellation-integration.md`。S06/S07 尚未实现。
+- S04实现、独立审查、包/race检查及生产E2E已完成，待本轮提交。完整证据见 controls/verification.md。S06/S07 尚未实现。
 
 ## 所有权与上下文
 
@@ -20,7 +20,7 @@ Root 使用 `TRELLIS_CONTEXT_ID=platform-admin-20261001`，任务 installations�
 
 ## 契约与迁移
 
-最新已分配/应用 **493**，下一编号 **494**。475 旧会话永久撤销；476 执行来源/安装快照；477 安装/challenge/binding/report及MDT；478–492独立并发索引；493 MAT绑定。禁止重用编号或手改generated。
+最新已分配/应用 **499**，下一编号 **500**。494–499为控制/协调、状态版本和独立投递版本。475 旧会话永久撤销；476 执行来源/安装快照；477 安装/challenge/binding/report及MDT；478–492独立并发索引；493 MAT绑定。禁止重用编号或手改generated。
 
 共享文件 `~/.multica/management/{deployment_id}/installation.json` 使用字段 **daemon_namespace_id**，不是旧草稿managed_daemon_id。实际daemon UUID由namespace+user确定性派生，legacy daemon.id不变。最新完整协议见 `.trellis/spec/server/managed-installations.md` 和 `.omx/reports/platform-admin/client-s02-handoff.md` 顶部。
 
@@ -43,3 +43,5 @@ Go测试库 `multica_platform_admin_s01_test`。密钥环境 `/tmp/platform-admi
 3. 完成S02证据及Lore提交，必须带 `Co-authored-by: OmX <omx@oh-my-codex.dev>`；不push/deploy。
 4. 启动S04：root迁移/门禁，service_impl取消协调，frontend_impl daemon回执，s01_review core/views控制UI。task.go方法分段所有权已写入cancellation-integration.md。
 5. S04后推进S06，再做S07全量/容量/原生/回退证据。单切片通过不等于整个目标完成。
+
+最新S04运行快照：source `fd7249e5636f6d1d02585e4a73bd5cb76c5bc594043c1ba655367042f118c7fb`，Web `8dkUrAthY4pcskYIkU7Nu`，API59743/Web59991。S04 E2E1/1，视觉93/pass。S06准备在 `.omx/reports/platform-admin/s06-alert-preparation.md`，S07原生计划在 `s07-native-readiness.md`；Windows无本地环境，异步问题尚待答复。

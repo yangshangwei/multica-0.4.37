@@ -83,7 +83,7 @@ INSERT INTO admin_operation (organization_id, actor_kind, actor_id, actor_auth_v
  target_kind, target_id, kind, idempotency_key, payload_hash, reason,
  state, result_code, applied_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-RETURNING id, organization_id, actor_kind, actor_id, actor_auth_version, target_kind, target_id, kind, idempotency_key, payload_hash, reason, state, result_code, version, confirmation, reconciliation_state, target_installation_id, target_task_id, binding_id, binding_epoch, execution_fence, root_operation_id, ack_deadline, accepted_at, applied_at, confirmed_at, created_at, updated_at
+RETURNING id, organization_id, actor_kind, actor_id, actor_auth_version, target_kind, target_id, kind, idempotency_key, payload_hash, reason, state, result_code, version, confirmation, reconciliation_state, target_installation_id, target_task_id, binding_id, binding_epoch, execution_fence, root_operation_id, ack_deadline, accepted_at, applied_at, confirmed_at, created_at, updated_at, execution_runtime_id, execution_dispatched_at, next_reconcile_at, effects_completed_at
 `
 
 type CreateAdminOperationParams struct {
@@ -148,6 +148,10 @@ func (q *Queries) CreateAdminOperation(ctx context.Context, arg CreateAdminOpera
 		&i.ConfirmedAt,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.ExecutionRuntimeID,
+		&i.ExecutionDispatchedAt,
+		&i.NextReconcileAt,
+		&i.EffectsCompletedAt,
 	)
 	return i, err
 }
@@ -162,7 +166,7 @@ func (q *Queries) DeletePlatformRole(ctx context.Context, userID pgtype.UUID) er
 }
 
 const getAdminOperationByKey = `-- name: GetAdminOperationByKey :one
-SELECT id, organization_id, actor_kind, actor_id, actor_auth_version, target_kind, target_id, kind, idempotency_key, payload_hash, reason, state, result_code, version, confirmation, reconciliation_state, target_installation_id, target_task_id, binding_id, binding_epoch, execution_fence, root_operation_id, ack_deadline, accepted_at, applied_at, confirmed_at, created_at, updated_at FROM admin_operation
+SELECT id, organization_id, actor_kind, actor_id, actor_auth_version, target_kind, target_id, kind, idempotency_key, payload_hash, reason, state, result_code, version, confirmation, reconciliation_state, target_installation_id, target_task_id, binding_id, binding_epoch, execution_fence, root_operation_id, ack_deadline, accepted_at, applied_at, confirmed_at, created_at, updated_at, execution_runtime_id, execution_dispatched_at, next_reconcile_at, effects_completed_at FROM admin_operation
 WHERE organization_id = $1 AND actor_id = $2 AND idempotency_key = $3
 `
 
@@ -204,12 +208,16 @@ func (q *Queries) GetAdminOperationByKey(ctx context.Context, arg GetAdminOperat
 		&i.ConfirmedAt,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.ExecutionRuntimeID,
+		&i.ExecutionDispatchedAt,
+		&i.NextReconcileAt,
+		&i.EffectsCompletedAt,
 	)
 	return i, err
 }
 
 const getAdminOperationForActor = `-- name: GetAdminOperationForActor :one
-SELECT id, organization_id, actor_kind, actor_id, actor_auth_version, target_kind, target_id, kind, idempotency_key, payload_hash, reason, state, result_code, version, confirmation, reconciliation_state, target_installation_id, target_task_id, binding_id, binding_epoch, execution_fence, root_operation_id, ack_deadline, accepted_at, applied_at, confirmed_at, created_at, updated_at FROM admin_operation
+SELECT id, organization_id, actor_kind, actor_id, actor_auth_version, target_kind, target_id, kind, idempotency_key, payload_hash, reason, state, result_code, version, confirmation, reconciliation_state, target_installation_id, target_task_id, binding_id, binding_epoch, execution_fence, root_operation_id, ack_deadline, accepted_at, applied_at, confirmed_at, created_at, updated_at, execution_runtime_id, execution_dispatched_at, next_reconcile_at, effects_completed_at FROM admin_operation
 WHERE organization_id = $1 AND actor_id = $2 AND id = $3
 `
 
@@ -251,6 +259,10 @@ func (q *Queries) GetAdminOperationForActor(ctx context.Context, arg GetAdminOpe
 		&i.ConfirmedAt,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.ExecutionRuntimeID,
+		&i.ExecutionDispatchedAt,
+		&i.NextReconcileAt,
+		&i.EffectsCompletedAt,
 	)
 	return i, err
 }

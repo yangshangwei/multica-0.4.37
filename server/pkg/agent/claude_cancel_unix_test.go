@@ -131,6 +131,9 @@ func runClaudeCancellationTest(t *testing.T, script string) {
 
 	select {
 	case res := <-session.Result:
+		if !res.ProcessExited {
+			t.Error("cancelled process was reaped but result omitted exit evidence")
+		}
 		if res.Status != "aborted" {
 			t.Errorf("status = %q, want aborted", res.Status)
 		}

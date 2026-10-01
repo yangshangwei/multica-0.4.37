@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY admin_cancel_root_lookup_idx ON admin_operation (organization_id,target_task_id,execution_runtime_id,execution_dispatched_at,accepted_at,id) WHERE kind='task.cancel' AND root_operation_id IS NULL;

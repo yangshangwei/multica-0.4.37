@@ -80,7 +80,25 @@ type IssueStatusData struct {
 
 // Task represents a claimed task from the server.
 // Agent data (name, skills) is populated by the claim endpoint.
+type ExecutionFence struct {
+	RuntimeID    string `json:"runtime_id"`
+	DispatchedAt string `json:"dispatched_at"`
+}
+
+type TaskCancellationMetadata struct {
+	OperationID    string         `json:"operation_id"`
+	BindingEpoch   string         `json:"binding_epoch"`
+	ExecutionFence ExecutionFence `json:"execution_fence"`
+	AckDeadline    string         `json:"ack_deadline"`
+}
+
+type TaskStatus struct {
+	Status       string                    `json:"status"`
+	Cancellation *TaskCancellationMetadata `json:"cancellation,omitempty"`
+}
+
 type Task struct {
+	ExecutionFence       *ExecutionFence        `json:"execution_fence,omitempty"`
 	ID                   string                 `json:"id"`
 	AgentID              string                 `json:"agent_id"`
 	RuntimeID            string                 `json:"runtime_id"`

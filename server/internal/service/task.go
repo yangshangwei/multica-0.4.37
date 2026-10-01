@@ -2767,6 +2767,9 @@ var ErrTaskNoLongerQueued = errors.New("task is no longer queued")
 // CancelTaskOptions carries what the caller knows about the client that asked
 // for the cancellation.
 type CancelTaskOptions struct {
+	// expectedClaim is set only by trusted claim-rejection wrappers. It is
+	// checked inside the original mutation transaction, never by follow-up work.
+	expectedClaim *db.AgentTaskQueue
 	// ClientSupportsDraftRestore is true when the caller can recover a prompt
 	// through the durable draft-restore path (#5219). Only such a client may be
 	// handed a deferred outcome; for anyone else the empty-transcript judgment
@@ -2845,107 +2848,15 @@ func (s *TaskService) CancelTaskWithReason(ctx context.Context, taskID pgtype.UU
 // CancelTaskWithResult cancels a single task and returns any chat-specific
 // cleanup result needed by user-facing callers.
 func (s *TaskService) CancelTaskWithResult(ctx context.Context, taskID pgtype.UUID, opts CancelTaskOptions) (*CancelTaskResult, error) {
-	// Both fields are persisted onto the cancelled row's TEXT columns below, and
-	// at least one caller interpolates an externally-supplied path into
-	// ErrorMessage. A NUL in either rolls the cancellation back and leaves the
-	// task running — the same wedge as GH #7098 on the fail/complete paths.
-	opts.ErrorMessage = util.SanitizeTextForPostgres(opts.ErrorMessage)
-	opts.FailureReason = util.SanitizeTextForPostgres(opts.FailureReason)
-
-	if opts.UserInitiated && (opts.ErrorMessage != "" || opts.FailureReason != "") {
-		return nil, errors.New("user-initiated cancellation cannot carry a server failure reason")
-	}
-	var (
-		task                 db.AgentTaskQueue
-		cancelledChatMessage *CancelledChatMessageResult
-		err                  error
-	)
-	if opts.QueuedOnly {
-		if opts.QueueAction != "edit" && opts.QueueAction != "remove" {
-			return nil, errors.New("queue action must be edit or remove")
-		}
-		err = s.runInTx(ctx, func(qtx *db.Queries) error {
-			if _, err := qtx.LockChatSessionForTask(ctx, taskID); err != nil {
-				return fmt.Errorf("lock queued chat session: %w", err)
-			}
-			task, err = qtx.CancelQueuedAgentTask(ctx, db.CancelQueuedAgentTaskParams{
-				ID:            taskID,
-				ChatSessionID: opts.ExpectedChatSession,
-			})
-			if errors.Is(err, pgx.ErrNoRows) {
-				return ErrTaskNoLongerQueued
-			}
-			if err != nil {
-				return fmt.Errorf("cancel queued task: %w", err)
-			}
-			cancelledChatMessage, err = s.settleQueuedChatInput(ctx, qtx, task, opts.QueueAction)
-			return err
-		})
-	} else {
-		// The status flip and the chat resume-pointer advance commit together. Split
-		// across two statements, the `cancelled` status becomes visible to every
-		// other connection while the pointer still names the previous turn's
-		// session, and a queued follow-up can resume that older session.
-		err = s.runInTx(ctx, func(qtx *db.Queries) error {
-			if err := lockChatSessionForTaskWrite(ctx, qtx, taskID); err != nil {
-				return err
-			}
-			var (
-				cancelled db.AgentTaskQueue
-				err       error
-			)
-			if opts.UserInitiated {
-				cancelled, err = qtx.CancelAgentTaskByUser(ctx, taskID)
-			} else if opts.ErrorMessage != "" || opts.FailureReason != "" {
-				cancelled, err = qtx.CancelAgentTaskWithReason(ctx, db.CancelAgentTaskWithReasonParams{
-					ID:            taskID,
-					Error:         pgtype.Text{String: opts.ErrorMessage, Valid: opts.ErrorMessage != ""},
-					FailureReason: pgtype.Text{String: opts.FailureReason, Valid: opts.FailureReason != ""},
-				})
-			} else {
-				cancelled, err = qtx.CancelAgentTask(ctx, taskID)
-			}
-			if err != nil {
-				return err
-			}
-			task = cancelled
-			if !cancelled.ChatSessionID.Valid {
-				return nil
-			}
-			return qtx.AdvanceCancelledChatSessionPointer(ctx, cancelled.ID)
-		})
-	}
-	if errors.Is(err, ErrTaskNoLongerQueued) {
+	var effects *TaskCancellationEffects
+	if err := s.runInTx(ctx, func(qtx *db.Queries) error {
+		var err error
+		effects, err = s.CancelTaskInTx(ctx, qtx, taskID, opts)
+		return err
+	}); err != nil {
 		return nil, err
 	}
-	if errors.Is(err, pgx.ErrNoRows) {
-		existing, err := s.Queries.GetAgentTask(ctx, taskID)
-		if err != nil {
-			return nil, fmt.Errorf("cancel task: %w", err)
-		}
-		return &CancelTaskResult{Task: existing}, nil
-	}
-	if err != nil {
-		return nil, fmt.Errorf("cancel task: %w", err)
-	}
-
-	slog.Info("task cancelled", "task_id", util.UUIDToString(task.ID), "issue_id", util.UUIDToString(task.IssueID))
-	s.captureTaskCancelled(ctx, task)
-	if !opts.QueuedOnly {
-		cancelledChatMessage = s.finalizeCancelledChatMessage(ctx, task, opts)
-	}
-
-	// Reconcile agent status
-	s.ReconcileAgentStatus(ctx, task.AgentID)
-
-	// Broadcast cancellation as a task:failed event so frontends clear the live card
-	s.broadcastTaskEvent(ctx, protocol.EventTaskCancelled, task)
-	s.NotifyTaskFinished(task)
-
-	return &CancelTaskResult{
-		Task:                 task,
-		CancelledChatMessage: cancelledChatMessage,
-	}, nil
+	return s.ApplyCancellationEffects(ctx, effects), nil
 }
 
 // CancelQueuedChatTasks atomically cancels every queued follow-up in a chat
@@ -3143,6 +3054,24 @@ func (s *TaskService) finalizeCancelledChatMessage(ctx context.Context, task db.
 	}
 	var cancelled *CancelledChatMessageResult
 	if err := s.runInTx(ctx, func(qtx *db.Queries) error {
+		var err error
+		cancelled, err = s.finalizeCancelledChatMessageInTx(ctx, qtx, task, opts)
+		return err
+	}); err != nil {
+		slog.Error("failed to finalize cancelled chat message", "task_id", util.UUIDToString(task.ID), "chat_session_id", util.UUIDToString(task.ChatSessionID), "error", err)
+		return nil
+	}
+	return cancelled
+}
+
+// finalizeCancelledChatMessageInTx lets durable cancellation effects commit
+// their completion marker with the chat writes instead of replaying messages.
+func (s *TaskService) finalizeCancelledChatMessageInTx(ctx context.Context, qtx *db.Queries, task db.AgentTaskQueue, opts CancelTaskOptions) (*CancelledChatMessageResult, error) {
+	if !task.ChatSessionID.Valid {
+		return nil, nil
+	}
+	var cancelled *CancelledChatMessageResult
+	err := func() error {
 		// Same protocol as every other terminal path: this transaction marks the
 		// task row and then writes chat_message rows, whose FK takes a KEY SHARE
 		// lock on the session — two rows again, so it takes the session first.
@@ -3229,15 +3158,8 @@ func (s *TaskService) finalizeCancelledChatMessage(ctx context.Context, task db.
 			return fmt.Errorf("create cancelled chat message: %w", err)
 		}
 		return nil
-	}); err != nil {
-		slog.Error("failed to finalize cancelled chat message",
-			"task_id", util.UUIDToString(task.ID),
-			"chat_session_id", util.UUIDToString(task.ChatSessionID),
-			"error", err,
-		)
-		return nil
-	}
-	return cancelled
+	}()
+	return cancelled, err
 }
 
 // FinalizeDeferredCancelledChat settles the empty/non-empty judgment that
@@ -3802,20 +3724,19 @@ func (s *TaskService) FinalizeTaskClaim(
 			if err != nil {
 				return err
 			}
-			binding, err := LockManagedRuntime(ctx, qtx, runtime)
+			_, err = LockManagedRuntime(ctx, qtx, runtime)
 			if err != nil {
 				return err
 			}
-			if binding.ID.Valid {
-				current, err := qtx.GetAgentTask(ctx, task.ID)
-				if err != nil {
-					return err
-				}
-				if current.Status != "dispatched" || current.RuntimeID != task.RuntimeID || !current.DispatchedAt.Time.Equal(task.DispatchedAt.Time) || token.TaskID != current.ID || token.AgentID != current.AgentID || token.WorkspaceID != runtime.WorkspaceID {
-					return ErrManagedRuntimeSource
-				}
-				task = current
+			current, err := qtx.LockTaskForClaimFinalization(ctx, task.ID)
+			if err != nil {
+				return err
 			}
+			if current.Status != "dispatched" || current.RuntimeID != task.RuntimeID || !current.DispatchedAt.Time.Equal(task.DispatchedAt.Time) || current.ClaimGeneration != task.ClaimGeneration || token.TaskID != current.ID || token.AgentID != current.AgentID || token.WorkspaceID != runtime.WorkspaceID {
+				return ErrManagedRuntimeSource
+			}
+			// Preserve the original claim's trigger/comment provenance. The locked
+			// row validates delivery identity; it must not replace payload snapshots.
 		}
 		if err := ValidateManagedTaskBinding(ctx, task); err != nil {
 			return err
@@ -3841,6 +3762,7 @@ func (s *TaskService) FinalizeTaskClaim(
 			TaskID:                   task.ID,
 			RuntimeID:                task.RuntimeID,
 			DispatchedAt:             task.DispatchedAt,
+			ClaimGeneration:          task.ClaimGeneration,
 			ExpectedTriggerCommentID: task.TriggerCommentID,
 		})
 		if err != nil {
@@ -3861,9 +3783,10 @@ func (s *TaskService) FinalizeTaskClaim(
 // reclaim. This is not a fresh enqueue: do not duplicate queued analytics.
 func (s *TaskService) RequeueTaskAfterClaimFailure(ctx context.Context, task db.AgentTaskQueue) (*db.AgentTaskQueue, error) {
 	requeued, err := s.Queries.RequeueAgentTaskAfterClaimFailure(ctx, db.RequeueAgentTaskAfterClaimFailureParams{
-		TaskID:       task.ID,
-		RuntimeID:    task.RuntimeID,
-		DispatchedAt: task.DispatchedAt,
+		TaskID:          task.ID,
+		RuntimeID:       task.RuntimeID,
+		DispatchedAt:    task.DispatchedAt,
+		ClaimGeneration: task.ClaimGeneration,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("requeue task after claim failure: %w", err)
@@ -4795,6 +4718,10 @@ func (s *TaskService) observeChatOutputLocalPath(task db.AgentTaskQueue, body st
 // (via classifyPoisonedError, the timeout / runtime classifier, etc.)
 // will have their value preserved untouched.
 func (s *TaskService) FailTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string) (*db.AgentTaskQueue, error) {
+	return s.failTask(ctx, taskID, errMsg, sessionID, workDir, branchName, failureReason, sessionRolloutMissing, retiredSessionID, durableWorkDir, nil)
+}
+
+func (s *TaskService) failTask(ctx context.Context, taskID pgtype.UUID, errMsg, sessionID, workDir, branchName, failureReason string, sessionRolloutMissing bool, retiredSessionID, durableWorkDir string, expectedClaim *db.AgentTaskQueue) (*db.AgentTaskQueue, error) {
 	// Strip bytes PostgreSQL cannot store before anything else reads errMsg, so
 	// the classifier, the transaction and every downstream consumer see the one
 	// text we will actually persist (GH #7098). Kept at the service boundary
@@ -4868,6 +4795,14 @@ func (s *TaskService) FailTask(ctx context.Context, taskID pgtype.UUID, errMsg, 
 	if err := s.runInTx(ctx, func(qtx *db.Queries) error {
 		if err := lockChatSessionForTaskWrite(ctx, qtx, taskID); err != nil {
 			return err
+		}
+		if expectedClaim != nil {
+			if expectedClaim.ID != taskID {
+				return ErrClaimSuperseded
+			}
+			if err := lockClaimedTask(ctx, qtx, *expectedClaim); err != nil {
+				return err
+			}
 		}
 		t, err := qtx.FailAgentTask(ctx, db.FailAgentTaskParams{
 			ID:             taskID,

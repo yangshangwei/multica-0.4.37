@@ -350,6 +350,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 		}
 
 		resCh <- Result{
+			ProcessExited:  cmd.ProcessState != nil,
 			Status:         finalStatus,
 			Output:         finalOutput,
 			Error:          finalError,

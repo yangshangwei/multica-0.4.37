@@ -6,6 +6,7 @@ import { AppLink } from "../../navigation";
 import { useT } from "../../i18n";
 import { formatAdminTime } from "../executions/list-controls";
 import { InstallationAxis, InstallationReadState } from "./installation-common";
+import { AdminInstallationControls } from "../operations/control-panel";
 export function AdminInstallationDetailPage({ id }: {
   id: string;
 }) {
@@ -27,6 +28,7 @@ export function AdminInstallationDetailPage({ id }: {
         </div>
         <p className="break-all text-caption text-muted-foreground">{item.id}</p>
       </header>
+      <AdminInstallationControls key={item.id} installation={item} onRefresh={() => query.refetch({ throwOnError: true })} />
       <dl className="grid gap-5 md:grid-cols-3">{axes.map(([label, axis]) => <div key={String(label)} className="space-y-2">
         <dt className="text-caption text-muted-foreground">{String(label)}</dt>
         <dd>

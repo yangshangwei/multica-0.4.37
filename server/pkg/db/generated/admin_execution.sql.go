@@ -111,7 +111,7 @@ WITH candidates AS (
  t.chat_session_id, t.autopilot_run_id, t.status, t.attempt, t.parent_task_id,
  t.retry_of_task_id, t.rerun_of_task_id, t.accountable_user_id,
  t.submitted_installation_id, t.execution_installation_id,
- t.created_at, t.dispatched_at, t.started_at, t.completed_at, t.failure_reason,
+ t.created_at, t.dispatched_at, t.started_at, t.completed_at, t.failure_reason, t.state_version,
  CASE WHEN t.chat_session_id IS NOT NULL THEN 'chat'
       WHEN t.issue_id IS NOT NULL AND (t.autopilot_run_id IS NOT NULL OR i.origin_type = 'autopilot') THEN 'autopilot_issue'
       WHEN t.issue_id IS NOT NULL THEN 'issue'
@@ -153,10 +153,10 @@ WITH candidates AS (
  AND ($13::text = '' OR t.id::text ILIKE '%' || $13 || '%' OR w.issue_prefix || '-' || i.number::text ILIKE '%' || $13 || '%')
  AND ($14::timestamptz IS NULL OR (t.created_at,t.id) < ($14,$15::uuid))
 ), page AS (
- SELECT id, agent_id, workspace_id, issue_id, runtime_id, chat_session_id, autopilot_run_id, status, attempt, parent_task_id, retry_of_task_id, rerun_of_task_id, accountable_user_id, submitted_installation_id, execution_installation_id, created_at, dispatched_at, started_at, completed_at, failure_reason, source, title, content_url, provider FROM candidates WHERE $16::text = '' OR source = $16
+ SELECT id, agent_id, workspace_id, issue_id, runtime_id, chat_session_id, autopilot_run_id, status, attempt, parent_task_id, retry_of_task_id, rerun_of_task_id, accountable_user_id, submitted_installation_id, execution_installation_id, created_at, dispatched_at, started_at, completed_at, failure_reason, state_version, source, title, content_url, provider FROM candidates WHERE $16::text = '' OR source = $16
  ORDER BY created_at DESC,id DESC LIMIT $17::int
 )
-SELECT page.id, page.agent_id, page.workspace_id, page.issue_id, page.runtime_id, page.chat_session_id, page.autopilot_run_id, page.status, page.attempt, page.parent_task_id, page.retry_of_task_id, page.rerun_of_task_id, page.accountable_user_id, page.submitted_installation_id, page.execution_installation_id, page.created_at, page.dispatched_at, page.started_at, page.completed_at, page.failure_reason, page.source, page.title, page.content_url, page.provider, usage.input_tokens, usage.output_tokens, usage.cache_read_tokens, usage.cache_write_tokens,
+SELECT page.id, page.agent_id, page.workspace_id, page.issue_id, page.runtime_id, page.chat_session_id, page.autopilot_run_id, page.status, page.attempt, page.parent_task_id, page.retry_of_task_id, page.rerun_of_task_id, page.accountable_user_id, page.submitted_installation_id, page.execution_installation_id, page.created_at, page.dispatched_at, page.started_at, page.completed_at, page.failure_reason, page.state_version, page.source, page.title, page.content_url, page.provider, usage.input_tokens, usage.output_tokens, usage.cache_read_tokens, usage.cache_write_tokens,
  usage.reported_models, usage.model
 FROM page LEFT JOIN LATERAL (
  SELECT coalesce(sum(input_tokens),0)::bigint AS input_tokens, coalesce(sum(output_tokens),0)::bigint AS output_tokens,
@@ -209,6 +209,7 @@ type ListAdminTasksRow struct {
 	StartedAt               pgtype.Timestamptz `json:"started_at"`
 	CompletedAt             pgtype.Timestamptz `json:"completed_at"`
 	FailureReason           pgtype.Text        `json:"failure_reason"`
+	StateVersion            int64              `json:"state_version"`
 	Source                  string             `json:"source"`
 	Title                   string             `json:"title"`
 	ContentUrl              string             `json:"content_url"`
@@ -271,6 +272,7 @@ func (q *Queries) ListAdminTasks(ctx context.Context, arg ListAdminTasksParams) 
 			&i.StartedAt,
 			&i.CompletedAt,
 			&i.FailureReason,
+			&i.StateVersion,
 			&i.Source,
 			&i.Title,
 			&i.ContentUrl,

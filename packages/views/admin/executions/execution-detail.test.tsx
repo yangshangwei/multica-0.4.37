@@ -10,7 +10,7 @@ const state = vi.hoisted(() => ({
   }
 }));
 vi.mock("@multica/core/admin", () => ({
-  useAdminExecution: () => state, executionStatuses: [], executionSources: []
+  useAdminExecution: () => state, useAdminAccess: () => ({status: "ready", identity: {role: "platform_observer"}}), executionStatuses: [], executionSources: []
 }));
 it("shows actual attempt links, missing usage and restricted content", () => {
   render(<I18nProvider locale="en" resources={{ en: { admin: en } }}>

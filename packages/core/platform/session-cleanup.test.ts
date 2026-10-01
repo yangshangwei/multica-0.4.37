@@ -13,6 +13,7 @@ import {
 import type { StorageAdapter, Workspace } from "../types";
 import { workspaceKeys } from "../workspace/queries";
 import { clearClientSessionData } from "./session-cleanup";
+import { configureAdminControlStorage, saveAdminControlDraft, readAdminControlDraft } from "../admin/operation-draft";
 
 function makeStorage(
   initial: Record<string, string> = {},
@@ -37,6 +38,16 @@ beforeEach(() => {
 });
 
 describe("clearClientSessionData", () => {
+  it("clears pending administrative commands even without any loaded workspace", () => {
+    const storage = makeStorage();
+    configureAdminControlStorage(storage);
+    const id = "11111111-1111-4111-8111-111111111111";
+    const scope = { server: "https://server.test", userId: id, organizationId: id };
+    saveAdminControlDraft(scope, { id, key: id, action: "admission", body: { admission: "stopped", expectedAdmissionVersion: "1", reason: "Session cleanup regression" } });
+    const client = new QueryClient();
+    clearClientSessionData(client, storage);
+    expect(readAdminControlDraft(scope, id)).toBeNull();
+  });
   // The scenario this exists for: user A's session dies, the login form the
   // expiry lands on is used by B, and A and B share a workspace — so the
   // stale-tab validator that runs after login finds nothing to prune and

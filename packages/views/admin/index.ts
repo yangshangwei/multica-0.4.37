@@ -8,3 +8,4 @@ export { AdminAdministratorsPage } from "./administrators/administrators-page";
 export { AdminInstallationsPage } from "./installations/installations-page";
 export { AdminInstallationDetailPage } from "./installations/installation-detail-page";
 export { AdminUnassociatedRuntimesPage } from "./installations/unassociated-page";
+export { AdminOperationDetailPage } from "./operations/operation-detail-page";

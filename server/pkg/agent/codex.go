@@ -1451,7 +1451,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				finalError += "; retry suppressed: process-tree cleanup cannot be confirmed on this platform"
 			}
 			b.cfg.Logger.Warn("codex lifecycle", "phase", "initialize_failure", "task_id", b.cfg.TaskID, "runtime_id", b.cfg.RuntimeID, "pid", cmd.Process.Pid, "attempt", attempt, "latency", initializeLatency.Round(time.Millisecond).String(), "semantic_activity", semanticObserved.Load(), "cleanup_confirmed", cleanupConfirmed, "retry_safe", retrySafe)
-			resCh <- Result{Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds(), codexInitializeRetrySafe: retrySafe}
+			resCh <- Result{ProcessExited: cleanupConfirmed, Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds(), codexInitializeRetrySafe: retrySafe}
 			return
 		}
 		b.cfg.Logger.Info("codex lifecycle", "phase", "initialize_response", "task_id", b.cfg.TaskID, "runtime_id", b.cfg.RuntimeID, "pid", cmd.Process.Pid, "attempt", attempt, "latency", time.Since(initializeStarted).Round(time.Millisecond).String())
@@ -1496,7 +1496,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 					"stderr_bare_timeout_count", classification.bareTimeout,
 				)
 			}
-			resCh <- Result{
+			resCh <- Result{ProcessExited: cleanupConfirmed,
 				Status:         finalStatus,
 				Error:          finalError,
 				DurationMs:     time.Since(startTime).Milliseconds(),
@@ -1574,7 +1574,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 				drainAndWait() // flush os/exec stderr goroutine before sampling Tail
 				finalStatus = "failed"
 				finalError = withAgentStderr(fmt.Sprintf("codex turn/start failed: %v", err), "codex", sanitizeCodexDiagnostic(stderrBuf.Tail()))
-				resCh <- Result{Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds()}
+				resCh <- Result{ProcessExited: cleanupConfirmed, Status: finalStatus, Error: finalError, DurationMs: time.Since(startTime).Milliseconds()}
 				return
 			}
 		}
@@ -1812,7 +1812,7 @@ func (b *codexBackend) executeOnce(ctx context.Context, prompt string, opts Exec
 			usageMap = map[string]TokenUsage{model: u}
 		}
 
-		resCh <- Result{
+		resCh <- Result{ProcessExited: cleanupConfirmed,
 			Status:                       finalStatus,
 			Output:                       finalOutput,
 			Error:                        finalError,

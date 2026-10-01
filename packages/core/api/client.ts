@@ -3,6 +3,8 @@ import { parseAdminInstallationList, parseAdminInstallationDetail, parseAdminUna
 import { parseAdminExecutionList, parseAdminExecution, parseAdminIssueList } from "../admin/execution-schemas";
 import { parseAdminUsers, parseAdminUserDetail, parseAdminUserOperation, parseAdminUserOperations, type AdminUserFilters, type AdminAccountAction, type AdminAccountChange, type AdminRoleChange } from "../admin/user-schema";
 import { parseAdminMe } from "../admin/schema";
+import { parseAdminOperation, parseAdminAdmissionResult, parseAdminCancellationResult } from "../admin/operation-schema";
+import type { AdminAdmissionChange, AdminExecutionCancellation } from "../admin/control-schema";
 import { configStore } from "../config";
 import type {
   Issue,
@@ -865,6 +867,24 @@ export class ApiClient {
   async getAdminOperations(key: string, options?: { signal?: AbortSignal }) {
     const params = new URLSearchParams({ idempotency_key: key });
     return parseAdminUserOperations(await this.fetch<unknown>(`/api/admin/operations?${params}`, { signal: options?.signal }));
+  }
+
+  async getAdminOperation(id: string, options?: { signal?: AbortSignal }) {
+    return parseAdminOperation(await this.fetch<unknown>(`/api/admin/operations/${encodeURIComponent(id)}`, { signal: options?.signal }));
+  }
+
+  async changeAdminAdmission(id: string, body: AdminAdmissionChange, key: string) {
+    return parseAdminAdmissionResult(await this.fetch<unknown>(`/api/admin/installations/${encodeURIComponent(id)}/admission`, {
+      method: "POST", headers: { "Idempotency-Key": key },
+      body: JSON.stringify({ admission: body.admission, expected_admission_version: body.expectedAdmissionVersion, reason: body.reason }),
+    }));
+  }
+
+  async cancelAdminExecution(id: string, body: AdminExecutionCancellation, key: string) {
+    return parseAdminCancellationResult(await this.fetch<unknown>(`/api/admin/tasks/${encodeURIComponent(id)}/cancel`, {
+      method: "POST", headers: { "Idempotency-Key": key },
+      body: JSON.stringify({ reason: body.reason, expected_execution_fence: { runtime_id: body.expectedExecutionFence.runtimeId, dispatched_at: body.expectedExecutionFence.dispatchedAt, target_version: body.expectedExecutionFence.targetVersion } }),
+    }));
   }
 
   setInstallationMetadataProof(value: InstallationMetadataProofInput | null): boolean {
