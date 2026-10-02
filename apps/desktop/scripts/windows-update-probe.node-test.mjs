@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createUpdateFeed } from './windows-update-probe.mjs';
@@ -34,4 +34,12 @@ test('isolated candidate feed serves exact bytes, HEAD, ranges, metadata revalid
     await new Promise((done) => server.close(done));
     await rm(directory, { recursive: true });
   }
+});
+
+// A PS7 parent exports PSModulePath; invoking Windows PowerShell 5 inherited a
+// module path that made native CIM/Get-Acl discovery fail in earlier CI runs.
+test('owned-process cleanup keeps the hosted PowerShell 7 module environment', async () => {
+  const source = await readFile(new URL('./windows-update-probe.mjs', import.meta.url), 'utf8');
+  assert.match(source, /await execute\('pwsh\.exe', \['-NoProfile', '-NonInteractive'/);
+  assert.doesNotMatch(source, /execute\('powershell\.exe'/);
 });

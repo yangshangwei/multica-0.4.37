@@ -179,10 +179,6 @@ jobs:
           $goExit = $LASTEXITCODE
           node ../apps/desktop/scripts/verify-go-test-events.mjs $events "$env:RUNNER_TEMP/multica-managed-windows-stress-verification.json" TestManagedIdentityConcurrentPersistence
           if ($goExit -ne 0 -or $LASTEXITCODE -ne 0) { throw 'Native concurrent identity stress failed' }
-      - name: Prepare isolated Windows business backend
-        if: inputs.windows_business_acceptance == true
-        shell: pwsh
-        run: ./apps/desktop/scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE"
       - name: Package Windows x64 candidate
         working-directory: apps/desktop
         run: node scripts/package.mjs --win --x64 --publish never
@@ -222,6 +218,9 @@ jobs:
         working-directory: apps/desktop
         timeout-minutes: 20
         run: |
+          if ([bool]::Parse($env:BUSINESS_ACCEPTANCE)) {
+            ./scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE"
+          }
           $version = $env:MULTICA_DESKTOP_VERSION
           if ([string]::IsNullOrWhiteSpace($version)) { throw 'Candidate version unavailable' }
           $candidate = @(Get-ChildItem -LiteralPath ./dist -Recurse -File -Filter "multica-desktop-$version-windows-x64.exe")

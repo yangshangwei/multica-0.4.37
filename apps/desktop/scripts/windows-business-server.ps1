@@ -12,6 +12,18 @@ if ($Stop) {
     if (-not (Test-Path $private)) { return }
     $record = Get-Content -Raw $private | ConvertFrom-Json
     $process = if ($record.pid) { Get-Process -Id $record.pid -ErrorAction SilentlyContinue } else { $null }
+    Write-Output ("Backend cleanup evidence: recorded_pid={0}; present={1}; alive={2}" -f $record.pid, ($null -ne $process), ($null -ne $process -and -not $process.HasExited))
+    if ($null -eq $process -and $record.pid) {
+        $tail = (Get-Content (Join-Path $state 'backend.stderr.log') -Tail 12 -ErrorAction SilentlyContinue) -join "`n"
+        if ($record.PSObject.Properties.Name -contains 'environment') {
+            foreach ($key in @('JWT_SECRET','DATABASE_URL')) {
+                $value = [string]$record.environment.$key
+                if ($value) { $tail = $tail.Replace($value, '[redacted]') }
+            }
+        }
+        $tail = $tail -replace '(?i)(token|password|secret|authorization)=[^\s]+', '$1=[redacted]'
+        Write-Output "Backend had exited before cleanup; sanitized last log lines: $tail"
+    }
     if ($null -ne $process) {
         if ($process.Path -ne $record.serverExe) { throw 'Backend PID ownership mismatch' }
         Stop-Process -Id $process.Id
@@ -88,6 +100,9 @@ for ($attempt = 0; $attempt -lt 90; $attempt++) {
     Start-Sleep -Seconds 1
 }
 if (-not $ready) { throw "Backend readiness timeout: $(Get-BackendFailure)" }
+$env:MULTICA_BUSINESS_STATE_DIR = $state
+$env:MULTICA_BUSINESS_API = $api
+$env:MULTICA_BUSINESS_SERVER_EXE = $serverExe
 if ($env:GITHUB_ENV) {
     "MULTICA_BUSINESS_STATE_DIR=$state" | Add-Content $env:GITHUB_ENV
     "MULTICA_BUSINESS_API=$api" | Add-Content $env:GITHUB_ENV

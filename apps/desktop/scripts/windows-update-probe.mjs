@@ -45,7 +45,8 @@ export async function createUpdateFeed(directory, requests = []) {
 }
 
 async function stopOwned(executable) {
-  await execute('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', '$p=$env:MULTICA_UPDATE_OWNED_INSTALL; Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -and $_.ExecutablePath.StartsWith($p + "\\", [StringComparison]::OrdinalIgnoreCase) } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }'], { env: { ...process.env, MULTICA_UPDATE_OWNED_INSTALL: resolve(executable, '..') }, timeout: 30_000 });
+  // Match the hosted workflow's PowerShell 7 module environment; PS5 cannot load its CIM modules.
+  await execute('pwsh.exe', ['-NoProfile', '-NonInteractive', '-Command', '$p=$env:MULTICA_UPDATE_OWNED_INSTALL; Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -and $_.ExecutablePath.StartsWith($p + "\\", [StringComparison]::OrdinalIgnoreCase) } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }'], { env: { ...process.env, MULTICA_UPDATE_OWNED_INSTALL: resolve(executable, '..') }, timeout: 30_000 });
 }
 
 async function run(options) {

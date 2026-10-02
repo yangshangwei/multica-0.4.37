@@ -142,7 +142,9 @@ try {
   report.profileBoundary = { home, userData: paths.userData, disposableRunner: true, ownerMarker: homeMarker };
   emit('installed_electron_main_preload_renderer', { version: paths.version });
   if (options.phase === 'baseline') {
-    await page.evaluate(async origin => { const result = await window.desktopAPI.saveRuntimeConfig({ apiUrl: origin, appUrl: origin, wsUrl: origin.replace(/^http/, 'ws') + '/ws' }); if (!result.ok) throw new Error('Runtime configuration save failed'); }, proxy.origin).catch(error => { if (!/Execution context was destroyed/.test(error.message)) throw error; });
+    await page.locator('#runtime-address').waitFor({ state: 'visible', timeout: 45000 });
+    await page.locator('#runtime-address').fill(proxy.origin);
+    await page.getByRole('button', { name: /^(Save and continue|保存并继续)$/ }).click();
     await page.locator('#password-username').waitFor({ state: 'visible', timeout: 45000 });
     await page.locator('#password-username').fill(state.account.username);
     await page.locator('#password-value').fill(state.account.password);
