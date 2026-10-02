@@ -1,0 +1,38 @@
+{
+  "status": "bounded_acceptance_passed",
+  "ci_run": 37016263509,
+  "url": "https://github.com/yangshangwei/multica-0.4.37/actions/runs/37016263509",
+  "source_commit": "6c293e136fd6e63afc56fd725427d3acde44b583",
+  "candidate_version": "0.5.3-rc.17.1",
+  "installer": {
+    "name": "multica-desktop-0.5.3-rc.17.1-windows-x64.exe",
+    "bytes": 177862316,
+    "sha256": "6d172bc4d875421ff3a7df46389ac8c3d9a92a9f4506028213d2f8a38438444f",
+    "signature": "NotSigned"
+  },
+  "artifact_zip_sha256": "9ca8a30269195f41ce56bfccb69db499e7e89bdfa72496d3b96d3dfa5865f534",
+  "local_hashes_verified": true,
+  "business_cases": {
+    "baseline": 6,
+    "candidate": 9
+  },
+  "desktop_tests_local": 951,
+  "desktop_tests_native": 19,
+  "additional_concurrent_case_passes": 3,
+  "native_go_tests": 16,
+  "native_identity_stress_passes": 20,
+  "lifecycle_steps_passed": 5,
+  "other_protocol_preserved": true,
+  "installed_updater": {
+    "manual_check": true,
+    "full_download": true,
+    "installed_version_verified": true,
+    "settings_and_test_storage_retained": true,
+    "scheduled_trigger_tested": false,
+    "differential_download_tested": false
+  },
+  "signing_and_offline_trust": "not_tested_missing_credentials_and_trust_material",
+  "preproduction_deployment": "not_tested_no_target_supplied",
+  "production_changed": false,
+  "prior_unrooted_lock_test_barrier_failure": 37015148138
+}

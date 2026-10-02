@@ -82,3 +82,20 @@ The older local latency checkboxes above describe the preceding runs and are sup
 
 See windows-acceptance.md for provenance and limitations. This closes the bounded
 Windows candidate CI task, not the remaining S07 release gates.
+
+
+## Installed Windows business and update continuation — 2026-10-02
+
+- [x] Real installed UI login/enrollment/workspace binding and actual backend task completion, administrative API cancellation and reconnect.
+- [x] Candidate-to-candidate retained session, configuration, identity, workspace/completed history and same queued task executing exactly once.
+- [x] Fix runtime-created protocol residue on uninstall; native test preserves another handler.
+- [x] Production installed updater manual check, full download, quit/install and retained settings/test browser storage.
+- [x] Isolated Nginx transport/restart rehearsal and native CI run 37016263509.
+- [ ] Trusted signing/offline certificates and an actual approved preproduction environment.
+- [ ] Scheduled update trigger, differential download, and public v0.5.1 password/profile migration (not claimed by the candidate baseline).
+
+This supersedes prior open GUI/backend/fixture-retention items within the stated
+scope. Admin-page UI, real model execution, arbitrary production profiles and
+external reference/production gates are not implied. See windows-business-release.md.
+One prior lock-test barrier failure remains unrooted; current full suite plus
+three mandatory repetitions passed, and child diagnostics now preserve errors.

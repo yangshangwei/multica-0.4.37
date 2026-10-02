@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "scope": "native_windows_x64_nsis_lifecycle",
+  "status": "passed",
+  "source_commit": "6c293e136fd6e63afc56fd725427d3acde44b583",
+  "started_at": "2026-10-02T14:01:37.1654903Z",
+  "finished_at": "2026-10-02T14:02:36.7232302Z",
+  "require_signed": false,
+  "installer": {
+    "path": "D:\\a\\multica-0.4.37\\multica-0.4.37\\apps\\desktop\\dist\\multica-desktop-0.5.3-rc.17.1-windows-x64.exe",
+    "version": "0.5.3-rc.17.1",
+    "sha256": "6d172bc4d875421ff3a7df46389ac8c3d9a92a9f4506028213d2f8a38438444f",
+    "signature": {
+      "status": "NotSigned",
+      "subject": null,
+      "thumbprint": null
+    }
+  },
+  "previous_installer": {
+    "path": "D:\\a\\_temp\\multica-previous-installer\\multica-desktop-0.5.2-rc.11.1-windows-x64.exe",
+    "version": "0.5.2-rc.11.1",
+    "sha256": "f0b5a5eeded51fa7d1336bd2b46975a0c9ddc6d2292cebba457fd0b6e090fd47",
+    "signature": {
+      "status": "NotSigned",
+      "subject": null,
+      "thumbprint": null
+    }
+  },
+  "upgrade": "passed",
+  "gui_tested": true,
+  "managed_backend_tested": true,
+  "update_feed_tested": false,
+  "user_state_retention_tested": true,
+  "offline_certificate_trust_tested": false,
+  "steps": [
+    {
+      "name": "install_previous",
+      "status": "passed",
+      "version": "0.5.2-rc.11.1",
+      "desktop_signature": {
+        "status": "NotSigned",
+        "subject": null,
+        "thumbprint": null
+      },
+      "cli": {
+        "arch": "amd64",
+        "commit": "0fb5f5e6",
+        "date": "2026-10-02T10:40:03Z",
+        "go": "go1.26.8",
+        "os": "windows",
+        "version": "0.5.2-rc.11.1"
+      },
+      "business": "passed"
+    },
+    {
+      "name": "upgrade_candidate",
+      "status": "passed",
+      "version": "0.5.3-rc.17.1",
+      "desktop_signature": {
+        "status": "NotSigned",
+        "subject": null,
+        "thumbprint": null
+      },
+      "cli": {
+        "arch": "amd64",
+        "commit": "6c293e13",
+        "date": "2026-10-02T13:58:47Z",
+        "go": "go1.26.8",
+        "os": "windows",
+        "version": "0.5.3-rc.17.1"
+      },
+      "business": "passed"
+    },
+    {
+      "name": "uninstall",
+      "status": "passed"
+    },
+    {
+      "name": "reinstall_candidate",
+      "status": "passed",
+      "version": "0.5.3-rc.17.1",
+      "desktop_signature": {
+        "status": "NotSigned",
+        "subject": null,
+        "thumbprint": null
+      },
+      "cli": {
+        "arch": "amd64",
+        "commit": "6c293e13",
+        "date": "2026-10-02T13:58:47Z",
+        "go": "go1.26.8",
+        "os": "windows",
+        "version": "0.5.3-rc.17.1"
+      }
+    },
+    {
+      "name": "final_uninstall",
+      "status": "passed",
+      "other_protocol_preserved": true
+    }
+  ],
+  "error": null
+}

@@ -32,9 +32,16 @@
     ".trellis/tasks/10-01-platform-admin-acceptance/release-checklist.md",
     ".trellis/tasks/10-01-platform-admin-acceptance/verification.md",
     ".trellis/tasks/10-01-platform-admin-acceptance/windows-acceptance.md",
-    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-candidate-summary.json"
+    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-candidate-summary.json",
+    ".trellis/tasks/10-01-platform-admin-acceptance/windows-business-release.md",
+    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-business-baseline.json",
+    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-business-verify.json",
+    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-business-lifecycle.json",
+    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-installed-update.json",
+    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/update-feed-rehearsal.json",
+    ".trellis/tasks/10-01-platform-admin-acceptance/evidence/windows-business-summary.json"
   ],
-  "notes": "Local connection and capacity fixes verified: fresh per-frame authority with 46-to-19 queries, correct scoped RPC cleanup, no extra native disconnections or ACK timeouts, paging P95 at most 289.3 ms and reconnect task starts 39.4–39.6 s. External distribution/reference/production acceptance remains open. Windows CI 36996436086 passed unsigned x64 candidate lifecycle and native managed tests; see windows-acceptance.md. S07 remains in progress.",
+  "notes": "Local connection and capacity fixes verified: fresh per-frame authority with 46-to-19 queries, correct scoped RPC cleanup, no extra native disconnections or ACK timeouts, paging P95 at most 289.3 ms and reconnect task starts 39.4–39.6 s. External distribution/reference/production acceptance remains open. Windows CI 36996436086 passed unsigned x64 candidate lifecycle and native managed tests; see windows-acceptance.md. S07 remains in progress. Installed Windows business, candidate retained session/identity/history/queued task, protocol ownership cleanup and full-download installed update passed in run37016263509. See windows-business-release.md for remaining external gates and one preserved unrooted lock-test barrier failure.",
   "meta": {
     "slice": "S07",
     "depends_on": "S01,S02,S03,S04,S05,S06",
@@ -50,9 +57,9 @@
     "parent_acceptance": "AC01–AC13",
     "planning_only": false,
     "upstream_verified_commit": "1c56f6cd6",
-    "current_phase": "windows_candidate_native_passed",
+    "current_phase": "windows_business_and_update_passed_signing_open",
     "open_acceptance": [
-      "Signed Windows distribution, GUI/backend integration, user-state retention, update feed and offline certificate trust",
+      "Trusted Windows signing/offline certificates, actual preproduction target; scheduled/differential updates and public legacy-profile migration not covered",
       "Dedicated reference hardware, storage-cold and extended failure verification",
       "Production maintenance/deployment/recovery verification"
     ],
@@ -60,6 +67,8 @@
     "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md",
     "native_recovery_report": ".trellis/tasks/10-01-platform-admin-acceptance/native-load-recovery.md",
     "connection_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/connection-followup.md",
-    "windows_acceptance_report": ".trellis/tasks/10-01-platform-admin-acceptance/windows-acceptance.md"
+    "windows_acceptance_report": ".trellis/tasks/10-01-platform-admin-acceptance/windows-acceptance.md",
+    "windows_business_report": ".trellis/tasks/10-01-platform-admin-acceptance/windows-business-release.md",
+    "windows_business_ci_run": "https://github.com/yangshangwei/multica-0.4.37/actions/runs/37016263509"
   }
 }

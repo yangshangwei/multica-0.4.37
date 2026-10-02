@@ -88,3 +88,15 @@ Raw per-suite Playwright JSON and `.stderr.log` files are under `.omx/reports/pl
 Five-observer role revocation/restoration and an eight-second owned-database pause/recovery passed. Cold storage, loaded-browser timing, extended failure and native HTTP fallback were not measured. Read-only EXPLAIN found a modest 8.6% gain from a single filter but unchanged large aggregation/sort work; no speculative SQL change or broad WebSocket authorization rewrite was added. Loaded overview performance and reconnect timing/accounting remain explicit follow-up items.
 
 Windows runtime/ACL, signed installation, old-binary upgrade, clean reinstall and real keychain/protocol registration remain unverified. The existing Windows-environment question from the earlier session is not repeated. Production maintenance, deployment and production recovery are not authorized or performed. Keep S07 and the parent open until required external acceptance is supplied or the user explicitly changes that scope.
+
+## Installed Windows business and update acceptance
+
+Run [37016263509](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37016263509)
+passed for source `6c293e136`, unsigned candidate `0.5.3-rc.17.1`. Real installed
+business/managed-task flows, candidate retained-state upgrade, native protocol
+uninstall ownership and installed full-download update passed. See
+[windows-business-release.md](windows-business-release.md) for exact cases,
+artifact provenance, prior failures, cleanup and untested boundaries. Local final
+Desktop suite passed 951 tests; native main/repeated lock checks and Go tests passed.
+Trusted signing/offline certificates and an actual preproduction target remain
+unavailable, so this does not close S07 or authorize a production release.

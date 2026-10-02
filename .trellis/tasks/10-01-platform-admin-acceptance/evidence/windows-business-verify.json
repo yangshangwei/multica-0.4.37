@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "phase": "verify",
+  "startedAt": "2026-10-02T14:02:14.554Z",
+  "sourceCommit": "6c293e136fd6e63afc56fd725427d3acde44b583",
+  "cases": [
+    {
+      "name": "installed_electron_main_preload_renderer",
+      "version": "0.5.3-rc.17.1"
+    },
+    {
+      "name": "upgrade_retains_authenticated_session_without_login"
+    },
+    {
+      "name": "installation_identity_and_workspace_binding",
+      "installation_id": "03818f7c-8aaf-40d2-a776-13e7095d2285",
+      "daemon_namespace_id": "bec928b7-1aa6-483a-8124-318969e95ae4",
+      "public_key_sha256": "f39a7fce4b9614114be4c1d5d53a70c00c38023c1cdf61b82c84857d818fd2fc"
+    },
+    {
+      "name": "administrator_observes_installation"
+    },
+    {
+      "name": "upgrade_retains_configuration_identity_workspace_and_completed_task"
+    },
+    {
+      "name": "upgrade_retains_pending_task_and_executes_same_task_once",
+      "task_id": "01a0fcec-140b-76a5-91f8-938b39db908c"
+    },
+    {
+      "name": "candidate_task_result_returned",
+      "task_id": "01a0fcec-4722-7d1d-a0be-e01cbdb8b9ef"
+    },
+    {
+      "name": "administrator_cancel_confirmed_and_provider_exited",
+      "task_id": "01a0fcec-49c6-7ef5-87ee-3f0ee63cef9f",
+      "operation_id": "0e451dfb-38c0-455c-bd39-71d0f556a203"
+    },
+    {
+      "name": "websocket_reconnect_preserves_process_and_identity"
+    }
+  ],
+  "limitations": [
+    "Deterministic synthetic provider; no real model credentials or calls",
+    "No signed/offline trust claim"
+  ],
+  "backend": {
+    "health": {
+      "status": "ok",
+      "pid": 10032,
+      "commit": "6c293e136fd6e63afc56fd725427d3acde44b583",
+      "started_at": "2026-10-02T14:01:37Z"
+    },
+    "executableSha256": "46352336102083ad3f389c6c5aa4d26fca3ff8bd9f5d95e3433ea603c6ff2891"
+  },
+  "installedVersion": "0.5.3-rc.17.1",
+  "installedExecutableSha256": "35f7e3ff6a8874c32c38c43e28b9b0946336244258ff23fb70fa7f7be06d882f",
+  "profileBoundary": {
+    "home": "C:\\Users\\runneradmin",
+    "userData": "D:\\a\\_temp\\multica-business\\electron-user-data",
+    "disposableRunner": true,
+    "ownerMarker": "C:\\Users\\runneradmin\\.multica\\windows-business-owner.json"
+  },
+  "taskLastStates": {
+    "01a0fcec-0d60-7e6a-8382-89c935b697a5": {
+      "id": "01a0fcec-0d67-70e2-8757-fe6b7a4186e8",
+      "issue_id": "01a0fcec-0d60-7e6a-8382-89c935b697a5",
+      "status": "completed",
+      "error": null,
+      "created_at": "2026-10-02T14:02:03Z",
+      "started_at": "2026-10-02T14:02:03Z",
+      "completed_at": "2026-10-02T14:02:03Z"
+    },
+    "01a0fcec-1408-73aa-b97c-ebeae05d1401": {
+      "id": "01a0fcec-140b-76a5-91f8-938b39db908c",
+      "issue_id": "01a0fcec-1408-73aa-b97c-ebeae05d1401",
+      "status": "completed",
+      "error": null,
+      "created_at": "2026-10-02T14:02:05Z",
+      "started_at": "2026-10-02T14:02:17Z",
+      "completed_at": "2026-10-02T14:02:18Z"
+    },
+    "01a0fcec-471f-74d5-a924-79eab36e8d19": {
+      "id": "01a0fcec-4722-7d1d-a0be-e01cbdb8b9ef",
+      "issue_id": "01a0fcec-471f-74d5-a924-79eab36e8d19",
+      "status": "completed",
+      "error": null,
+      "created_at": "2026-10-02T14:02:18Z",
+      "started_at": "2026-10-02T14:02:18Z",
+      "completed_at": "2026-10-02T14:02:18Z"
+    },
+    "01a0fcec-49c4-75b3-a2c9-f4670ee21b21": {
+      "id": "01a0fcec-49c6-7ef5-87ee-3f0ee63cef9f",
+      "issue_id": "01a0fcec-49c4-75b3-a2c9-f4670ee21b21",
+      "status": "running",
+      "error": null,
+      "created_at": "2026-10-02T14:02:18Z",
+      "started_at": "2026-10-02T14:02:19Z",
+      "completed_at": null
+    }
+  },
+  "status": "passed",
+  "cleanup": "owned application and observed daemons exited",
+  "ownedProfileRemovedAfterVerification": true,
+  "transport": {
+    "http_requests": 196,
+    "receipt_failures": {},
+    "receipt_successes": {
+      "01a0fcec-49c6-7ef5-87ee-3f0ee63cef9f": 1
+    },
+    "receipt_response_drops": {},
+    "websocket_connections": 3,
+    "daemon_websocket_connections": 2,
+    "websocket_disconnects": 1
+  },
+  "finishedAt": "2026-10-02T14:02:26.627Z"
+}

@@ -1,0 +1,93 @@
+{
+  "status": "passed",
+  "scope": "installed_windows_electron_updater",
+  "source_commit": "6c293e136fd6e63afc56fd725427d3acde44b583",
+  "error": null,
+  "cleanup": "passed",
+  "previous_installer": {
+    "path": "D:\\a\\_temp\\multica-previous-installer\\multica-desktop-0.5.2-rc.11.1-windows-x64.exe",
+    "version": "0.5.2-rc.11.1",
+    "sha256": "f0b5a5eeded51fa7d1336bd2b46975a0c9ddc6d2292cebba457fd0b6e090fd47",
+    "signature": {
+      "status": "NotSigned",
+      "subject": null,
+      "thumbprint": null
+    }
+  },
+  "probe": {
+    "status": "passed",
+    "previousVersion": "0.5.2-rc.11.1",
+    "expectedVersion": "0.5.3-rc.17.1",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/desktop/latest.yml",
+        "range": null
+      },
+      {
+        "method": "GET",
+        "path": "/desktop/multica-desktop-0.5.3-rc.17.1-windows-x64.exe.blockmap",
+        "range": null
+      },
+      {
+        "method": "GET",
+        "path": "/desktop/multica-desktop-0.5.2-rc.11.1-windows-x64.exe.blockmap",
+        "range": null
+      },
+      {
+        "method": "GET",
+        "path": "/desktop/multica-desktop-0.5.3-rc.17.1-windows-x64.exe",
+        "range": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/config",
+        "range": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/config",
+        "range": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/config",
+        "range": null
+      }
+    ],
+    "guiLaunched": true,
+    "downloaded": true,
+    "upgraded": true,
+    "settingsRetained": true,
+    "historyMarkerRetained": true,
+    "signedAcceptance": false,
+    "offlineTrustTested": false,
+    "error": null,
+    "processErrors": [
+      "disableWebInstaller is set to false, you should set it to true if you do not plan on using a web installer. This will default to true in a future version.\n",
+      "Cannot download differentially, fallback to full download: Error: Cannot download \"http://127.0.0.1/desktop/multica-desktop-0.5.2-rc.11.1-windows-x64.exe.blockmap\", status 404: Not Found\n    at ClientRequest.<anonymous> (D:\\a\\_temp\\multica-update-state\\installed\\resources\\app.asar\\node_modules\\builder-util-runtime\\out\\httpExecutor.js:245:34)\n    at ClientRequest.emit (node:events:519:28)\n    at SimpleURLLoaderWrapper.<anonymous> (node:electron/js2c/browser_init:2:129889)\n    at SimpleURLLoaderWrapper.emit (node:events:519:28)\n    at SimpleURLLoaderWrapper.callbackTrampoline (node:internal/async_hooks:130:17)\n",
+      "Waiting for the debugger to disconnect...\r\n"
+    ],
+    "initial": {
+      "version": "0.5.2-rc.11.1",
+      "home": "C:\\Users\\runneradmin",
+      "userData": "D:\\a\\_temp\\multica-update-state\\profile"
+    },
+    "check": {
+      "ok": true,
+      "currentVersion": "0.5.2-rc.11.1",
+      "latestVersion": "0.5.3-rc.17.1",
+      "available": true
+    },
+    "download": {
+      "downloaded": {
+        "version": "0.5.3-rc.17.1"
+      },
+      "progress": [
+        100
+      ]
+    },
+    "installedVersion": "0.5.3-rc.17.1",
+    "ownedHomeCleanup": "passed"
+  }
+}

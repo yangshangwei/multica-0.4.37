@@ -124,3 +124,21 @@ Next distribution gates are Windows GUI/backend integration and retained-user-st
 verification, followed by signed/offline-trust and actual update-feed acceptance.
 Reference hardware/cold-storage and authorized production maintenance gates remain
 open. No release tag, public release, main merge or production deployment occurred.
+
+
+## Installed Windows business/update result — 2026-10-02
+
+[Run 37016263509](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37016263509)
+passed at source `6c293e136`, candidate `0.5.3-rc.17.1`. Real installed login,
+enrollment, admin API observation/cancellation, task result and reconnect passed.
+Candidate-to-candidate session/config/identity/history/queued-task retention passed,
+including same queued task executing once. Owned protocol cleanup and another
+handler's preservation passed; installed updater full-download replacement and
+settings/test browser-storage retention passed.
+
+See [business/release report](../10-01-platform-admin-acceptance/windows-business-release.md).
+Remaining work needs signing/trust materials and an approved preproduction target;
+no such repository secrets/environments were configured. Scheduled/differential
+updates and public legacy-profile migration remain unverified. Preserve the
+single unrooted earlier lock-test barrier failure alongside current passing
+19 tests + 3 required repetitions. No production deployment/release occurred.
