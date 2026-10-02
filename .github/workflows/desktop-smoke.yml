@@ -142,13 +142,22 @@ jobs:
         shell: pwsh
         working-directory: server
         run: |
-          $names = @('TestManagedIdentityWindowsProfileACL', 'TestManagedIdentityConcurrentPersistence', 'TestManagedHandoffOriginalBytesAndScope', 'TestManagedTransportUsesScopedCredentialsAndAuthoritativeMaps', 'TestManagedWorkspaceWebSocketsAndRPCRemainIsolated', 'TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport', 'TestManagedHeartbeatHTTPFallbackUsesScopedCredentials', 'TestManagedControlRequestBindsMethodPathBodyTimeAndRejectsReplay', 'TestManagedPIDReservationRejectsLiveAndUnknownPredecessor', 'TestManagedPIDSuccessorSurvivesPredecessorCleanup')
+          $names = @('TestManagedIdentityWindowsProfileACL', 'TestManagedIdentityConcurrentPersistence', 'TestManagedLockWindowsReadsDuringDeleteAccess', 'TestManagedLockWindowsReaderAllowsReplacementAndRelease', 'TestManagedLockWindowsLongPaths', 'TestManagedHandoffOriginalBytesAndScope', 'TestManagedTransportUsesScopedCredentialsAndAuthoritativeMaps', 'TestManagedWorkspaceWebSocketsAndRPCRemainIsolated', 'TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport', 'TestManagedHeartbeatHTTPFallbackUsesScopedCredentials', 'TestManagedControlRequestBindsMethodPathBodyTimeAndRejectsReplay', 'TestManagedPIDReservationRejectsLiveAndUnknownPredecessor', 'TestManagedPIDSuccessorSurvivesPredecessorCleanup')
           $pattern = '^(' + ($names -join '|') + ')$'
           $events = Join-Path $env:RUNNER_TEMP 'multica-managed-windows-tests.jsonl'
           go test -json ./internal/daemon -run $pattern -count=1 -timeout=8m 2> "$env:RUNNER_TEMP/multica-managed-windows-tests.stderr.txt" | Tee-Object -FilePath $events
           $goExit = $LASTEXITCODE
           node ../apps/desktop/scripts/verify-go-test-events.mjs $events "$env:RUNNER_TEMP/multica-managed-windows-verification.json" @names
           if ($goExit -ne 0 -or $LASTEXITCODE -ne 0) { throw 'Native managed tests failed or skipped' }
+      - name: Stress native concurrent identity creation
+        shell: pwsh
+        working-directory: server
+        run: |
+          $events = Join-Path $env:RUNNER_TEMP 'multica-managed-windows-stress.jsonl'
+          go test -json ./internal/daemon -run '^TestManagedIdentityConcurrentPersistence$' -count=20 -timeout=4m 2> "$env:RUNNER_TEMP/multica-managed-windows-stress.stderr.txt" | Tee-Object -FilePath $events
+          $goExit = $LASTEXITCODE
+          node ../apps/desktop/scripts/verify-go-test-events.mjs $events "$env:RUNNER_TEMP/multica-managed-windows-stress-verification.json" TestManagedIdentityConcurrentPersistence
+          if ($goExit -ne 0 -or $LASTEXITCODE -ne 0) { throw 'Native concurrent identity stress failed' }
       - name: Package Windows x64 candidate
         working-directory: apps/desktop
         run: node scripts/package.mjs --win --x64 --publish never
@@ -189,6 +198,9 @@ jobs:
             ${{ runner.temp }}/multica-managed-windows-tests.jsonl
             ${{ runner.temp }}/multica-managed-windows-tests.stderr.txt
             ${{ runner.temp }}/multica-managed-windows-verification.json
+            ${{ runner.temp }}/multica-managed-windows-stress.jsonl
+            ${{ runner.temp }}/multica-managed-windows-stress.stderr.txt
+            ${{ runner.temp }}/multica-managed-windows-stress-verification.json
             ${{ runner.temp }}/multica-windows-lifecycle.json
           if-no-files-found: warn
       - name: Upload accepted Windows candidate

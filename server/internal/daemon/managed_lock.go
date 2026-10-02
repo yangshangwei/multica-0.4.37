@@ -3,6 +3,7 @@ package daemon
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"math"
 	"os"
 	"path/filepath"
@@ -20,6 +21,17 @@ type managementLockTicket struct {
 	HostID     string  `json:"host_id"`
 	BootID     string  `json:"boot_id"`
 	Ticket     *string `json:"ticket"`
+}
+
+// Ticket readers must allow peers to atomically replace and remove their own
+// records while the read retains a snapshot of the opened file.
+func readManagementLockFile(path string) ([]byte, error) {
+	file, err := openManagementLockFile(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	return io.ReadAll(file)
 }
 
 func managementTickets(directory string) ([]managementLockTicket, error) {
@@ -51,7 +63,7 @@ func managementTickets(directory string) ([]managementLockTicket, error) {
 		if err = managedCheckPermissions(info, true); err != nil {
 			return nil, err
 		}
-		raw, err := os.ReadFile(path)
+		raw, err := readManagementLockFile(path)
 		if errors.Is(err, os.ErrNotExist) {
 			continue
 		}

@@ -150,3 +150,10 @@ Native transport tests must forward WebSocket Ping/Pong end to end and propagate
 `AuthorizeDaemonConnection` validates the managed namespace/account/binding freshly for each call, then reads every current runtime and checks owner/workspace/daemon against that binding. Reuse is local to that single invocation; do not add a cross-frame authorization cache. Legacy paths and transaction-time claim locks remain independent. Regression: `managed_connection_scope_test.go` covers mutation between calls and the bounded query count.
 
 A managed wakeup connection attaches and detaches its own `rpc`, never the daemon's unrelated default RPC. Pending sent calls remain uncertain; detachment must not authorize immediate duplicate claims. Regression: `TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport`. Classify connection errors without logging credential-bearing endpoints or peer text, and correlate workspace/phase/time; CLI RPC generation and proxy socket ordinals are different identifiers.
+
+Windows management-ticket readers must include `FILE_SHARE_DELETE` as well as
+read/write sharing, so a peer's atomic replacement or release can proceed while
+the reader retains the old snapshot. Never treat an unreadable live ticket as
+absent. Preserve Go's long-path behavior when using `CreateFile` directly.
+Native regressions: `managed_lock_windows_test.go`; the Windows acceptance job
+also repeats concurrent identity creation twenty times.
