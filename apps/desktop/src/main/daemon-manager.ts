@@ -1,8 +1,10 @@
 import { app, ipcMain, BrowserWindow, shell } from "electron";
 import { execFile } from "child_process";
+import { randomUUID } from "node:crypto";
 import {
   readFile,
   writeFile,
+  rename,
   mkdir,
   rm,
   open,
@@ -202,7 +204,7 @@ async function configureManagedSession(token: string, userId: string, daemonToke
   const target = targetApiBaseUrl;
   const pending = prepareManagedInstallationSession({
     homeDirectory: homedir(), profile: active.name, apiBaseUrl: target, userToken: token, daemonToken, userId,
-    desktopVersion: app.getVersion(), os: normalizeHostOS(process.platform), previousDeploymentId,
+    desktopVersion: app.getVersion(), os: process.platform === "darwin" ? "macos" : normalizeHostOS(process.platform), previousDeploymentId,
     onMetadataProof: (value) => {
       if (generation === managedGeneration && activeProfile?.name === active.name && targetApiBaseUrl === target) publishInstallationMetadata(value);
     },
@@ -359,11 +361,17 @@ async function writeProfileConfig(
 ): Promise<void> {
   const op = async () => {
     await mkdir(profileDir(profile), { recursive: true });
-    await writeFile(
-      profileConfigPath(profile),
-      JSON.stringify(cfg, null, 2),
-      "utf-8",
-    );
+    const path = profileConfigPath(profile);
+    const temporary = `${path}.${randomUUID()}.tmp`;
+    const file = await open(temporary, "wx", 0o600);
+    try {
+      try {
+        await file.writeFile(JSON.stringify(cfg, null, 2), "utf-8");
+        await file.sync();
+      } finally { await file.close(); }
+      // The daemon requires private credentials and may be reading this file.
+      await rename(temporary, path);
+    } finally { await rm(temporary, { force: true }); }
   };
   const next = configWriteChain.catch(() => {}).then(op);
   configWriteChain = next.catch(() => {});
