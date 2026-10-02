@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"golang.org/x/sys/windows"
 )
 
 // Atomic replacement/removal acquires DELETE access. A reader must share that
@@ -177,5 +178,110 @@ func TestManagedLockWindowsPublicationTimeoutPreservesTicket(t *testing.T) {
 	entries, err := os.ReadDir(directory)
 	if err != nil || len(entries) != 1 || entries[0].Name() != "ticket.json" {
 		t.Fatalf("temporary publication leaked: %+v, %v", entries, err)
+	}
+}
+
+func writeManagedLockWindowsTestTicket(t *testing.T, directory string) string {
+	t.Helper()
+	current, err := managementProcessIdentity()
+	if err != nil {
+		t.Fatal(err)
+	}
+	nonce := uuid.NewString()
+	ticket := "1"
+	path := filepath.Join(directory, nonce+".json")
+	if err := writeManagementJSON(path, managementLockTicket{Version: 1, PID: os.Getpid(), OwnerNonce: nonce, HostID: current.hostID, BootID: current.bootID, Ticket: &ticket}); err != nil {
+		t.Fatal(err)
+	}
+	return path
+}
+
+func TestManagedLockWindowsScanWaitsForDeletePendingTicket(t *testing.T) {
+	directory := t.TempDir()
+	path := writeManagedLockWindowsTestTicket(t, directory)
+	entries, err := os.ReadDir(directory)
+	if err != nil {
+		t.Fatal(err)
+	}
+	name, err := windows.UTF16PtrFromString(extendedLengthPrefix + path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	handle, err := windows.CreateFile(name, windows.GENERIC_READ|windows.DELETE,
+		windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE|windows.FILE_SHARE_DELETE,
+		nil, windows.OPEN_EXISTING, windows.FILE_ATTRIBUTE_NORMAL, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	holder := os.NewFile(uintptr(handle), path)
+	defer holder.Close()
+	pending := byte(1)
+	if err := windows.SetFileInformationByHandle(handle, windows.FileDispositionInfo, &pending, 1); err != nil {
+		t.Fatal(err)
+	}
+	// Enumeration may stop reporting delete-pending names. Retain the snapshot
+	// observed before deletion to deterministically reproduce the scan/close race.
+	observedDirectory := func(string) ([]os.DirEntry, error) { return entries, nil }
+	if _, err := managementTicketsOnce(directory, observedDirectory); !errors.Is(err, windows.ERROR_ACCESS_DENIED) && !errors.Is(err, windows.ERROR_DELETE_PENDING) {
+		t.Fatalf("expected inaccessible observed delete-pending ticket, got %v", err)
+	}
+	result := make(chan error, 1)
+	finished := make(chan struct{})
+	go func() {
+		defer close(finished)
+		result <- retryManagementLockIO(func() error {
+			tickets, err := managementTicketsOnce(directory, observedDirectory)
+			if err == nil && len(tickets) != 0 {
+				return errors.New("deleted ticket remained in completed scan")
+			}
+			return err
+		})
+	}()
+	defer func() { holder.Close(); <-finished }()
+	select {
+	case err := <-result:
+		t.Fatalf("scan returned before uncertain owner became readable or absent: %v", err)
+	case <-time.After(50 * time.Millisecond):
+	}
+	if err := holder.Close(); err != nil {
+		t.Fatal(err)
+	}
+	select {
+	case err := <-result:
+		if err != nil {
+			t.Fatalf("scan did not recover after pending delete completed: %v", err)
+		}
+	case <-time.After(2 * time.Second):
+		t.Fatal("scan did not finish after final handle closed")
+	}
+}
+
+func TestManagedLockWindowsPersistentScanDenialFailsClosed(t *testing.T) {
+	parent := t.TempDir()
+	directory := filepath.Join(parent, ".installation-locks")
+	if err := managedEnsureDirectory(directory, true); err != nil {
+		t.Fatal(err)
+	}
+	path := writeManagedLockWindowsTestTicket(t, directory)
+	name, err := windows.UTF16PtrFromString(extendedLengthPrefix + path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	handle, err := windows.CreateFile(name, windows.GENERIC_READ, 0, nil, windows.OPEN_EXISTING, windows.FILE_ATTRIBUTE_NORMAL, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer windows.CloseHandle(handle)
+	entered := false
+	started := time.Now()
+	err = withManagementFileLock(parent, func() error { entered = true; return nil })
+	if entered {
+		t.Fatal("unreadable live owner was ignored and critical section entered")
+	}
+	if !errors.Is(err, windows.ERROR_SHARING_VIOLATION) && !errors.Is(err, windows.ERROR_ACCESS_DENIED) {
+		t.Fatalf("scan did not preserve denial: %v", err)
+	}
+	if elapsed := time.Since(started); elapsed < time.Second || elapsed > 3*time.Second {
+		t.Fatalf("scan retries were missing or unbounded: %v", elapsed)
 	}
 }

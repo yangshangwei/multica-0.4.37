@@ -160,3 +160,5 @@ operation. Persistent failure preserves the old ticket and remains an error. Nev
 absent. Preserve Go's long-path behavior when using `CreateFile` directly.
 Native regressions: `managed_lock_windows_test.go`; the Windows acceptance job
 also repeats concurrent identity creation twenty times.
+
+Windows delete-pending tickets may remain in an observed directory snapshot while Lstat/Open returns access denied. Retry a complete scan within the same bounded I/O window; never treat an unreadable live owner as absent or return a partial scan. Go and Node preserve persistent failures and the original ticket ordering.

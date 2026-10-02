@@ -9,6 +9,8 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"golang.org/x/sys/windows"
 )
 
 func openManagementLockFile(path string) (*os.File, error) {
@@ -56,12 +58,24 @@ func renameManagementLockFile(from, to string) error {
 }
 
 func renameManagementLockFileUntil(from, to string, deadline time.Time) error {
+	// MoveFileEx cannot replace an open destination even if its readers share
+	// DELETE access. Keep the choosing ticket visible until short reads finish;
+	// never unlink the destination or restart the protected identity operation.
+	return retryManagementLockIOUntil(func() error { return os.Rename(from, to) }, deadline)
+}
+
+func retryManagementLockIO(operation func() error) error {
+	return retryManagementLockIOUntil(operation, time.Now().Add(time.Second))
+}
+
+func retryManagementLockIOUntil(operation func() error, deadline time.Time) error {
 	for {
-		err := os.Rename(from, to)
-		// MoveFileEx cannot replace an open destination even if its readers share
-		// DELETE access. Keep the choosing ticket visible until short reads finish;
-		// never unlink the destination or restart the protected identity operation.
-		if err == nil || (!errors.Is(err, syscall.ERROR_ACCESS_DENIED) && !errors.Is(err, syscall.Errno(32))) {
+		err := operation()
+		// A delete-pending name can still appear in a directory snapshot while
+		// Lstat/Open reject it. Retry the whole scan; unreadable owners must never
+		// be omitted from an otherwise successful result.
+		if err == nil || (!errors.Is(err, windows.ERROR_ACCESS_DENIED) &&
+			!errors.Is(err, windows.ERROR_SHARING_VIOLATION) && !errors.Is(err, windows.ERROR_DELETE_PENDING)) {
 			return err
 		}
 		remaining := time.Until(deadline)

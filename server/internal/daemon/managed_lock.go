@@ -35,7 +35,20 @@ func readManagementLockFile(path string) ([]byte, error) {
 }
 
 func managementTickets(directory string) ([]managementLockTicket, error) {
-	entries, err := os.ReadDir(directory)
+	var tickets []managementLockTicket
+	err := retryManagementLockIO(func() error {
+		var err error
+		tickets, err = managementTicketsOnce(directory, os.ReadDir)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return tickets, nil
+}
+
+func managementTicketsOnce(directory string, readDirectory func(string) ([]os.DirEntry, error)) ([]managementLockTicket, error) {
+	entries, err := readDirectory(directory)
 	if err != nil {
 		return nil, err
 	}

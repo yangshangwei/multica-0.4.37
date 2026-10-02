@@ -35,6 +35,21 @@ async function publish(path: string, value: Ticket) {
 }
 
 async function tickets(directory: string): Promise<Ticket[]> {
+  // Delete-pending Windows records can reject even lstat until a reader closes.
+  // Restart the entire scan: a partial snapshot must never skip an unreadable owner.
+  const deadline = performance.now() + 1_000;
+  for (;;) {
+    try { return await scanTickets(directory); }
+    catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      const remaining = deadline - performance.now();
+      if (process.platform !== "win32" || !["EPERM", "EACCES", "EBUSY"].includes(code ?? "") || remaining <= 0) throw error;
+      await new Promise((resolve) => setTimeout(resolve, Math.min(10, remaining)));
+    }
+  }
+}
+
+async function scanTickets(directory: string): Promise<Ticket[]> {
   const result: Ticket[] = [];
   const current = await managementProcessIdentity();
   for (const name of await readdir(directory)) {
