@@ -7,6 +7,10 @@ on:
         description: Run only the Windows x64 candidate lifecycle and managed-runtime acceptance job
         type: boolean
         default: false
+      windows_business_acceptance:
+        description: Include installed business flows, retained-state upgrade and updater acceptance
+        type: boolean
+        default: false
       previous_tag:
         description: Same-repository stable release used for the Windows x64 upgrade test
         type: string
@@ -18,6 +22,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   desktop:
@@ -110,9 +115,10 @@ jobs:
     timeout-minutes: 45
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
-      MULTICA_DESKTOP_VERSION: "0.5.2-rc.${{ github.run_number }}.${{ github.run_attempt }}"
+      MULTICA_DESKTOP_VERSION: "0.5.3-rc.${{ github.run_number }}.${{ github.run_attempt }}"
       PREVIOUS_TAG: ${{ inputs.previous_tag }}
       REQUIRE_SIGNED: ${{ inputs.require_signed }}
+      BUSINESS_ACCEPTANCE: ${{ inputs.windows_business_acceptance }}
     steps:
       - name: Checkout candidate source
         uses: actions/checkout@v4
@@ -137,6 +143,12 @@ jobs:
         shell: pwsh
         run: |
           ./apps/desktop/scripts/accept-windows-installer.test.ps1
+          ./apps/desktop/scripts/windows-update-acceptance.test.ps1
+          $tokens = $null; $parseErrors = $null
+          [void][Management.Automation.Language.Parser]::ParseFile((Join-Path $env:GITHUB_WORKSPACE 'apps/desktop/scripts/windows-business-server.ps1'), [ref]$tokens, [ref]$parseErrors)
+          if ($parseErrors.Count -gt 0) { throw ($parseErrors | Out-String) }
+          node --test apps/desktop/scripts/windows-update-probe.node-test.mjs apps/desktop/scripts/windows-business-provider.node-test.mjs apps/desktop/scripts/windows-business-proxy.node-test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Update probe tests failed' }
           node --test apps/desktop/scripts/verify-go-test-events.node-test.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Go event verifier tests failed' }
       - name: Test Windows desktop ticket publication
@@ -167,16 +179,35 @@ jobs:
           $goExit = $LASTEXITCODE
           node ../apps/desktop/scripts/verify-go-test-events.mjs $events "$env:RUNNER_TEMP/multica-managed-windows-stress-verification.json" TestManagedIdentityConcurrentPersistence
           if ($goExit -ne 0 -or $LASTEXITCODE -ne 0) { throw 'Native concurrent identity stress failed' }
+      - name: Prepare isolated Windows business backend
+        if: inputs.windows_business_acceptance == true
+        shell: pwsh
+        run: ./apps/desktop/scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE"
       - name: Package Windows x64 candidate
         working-directory: apps/desktop
         run: node scripts/package.mjs --win --x64 --publish never
+      - name: Download feature-capable acceptance baseline
+        if: inputs.windows_business_acceptance == true
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $directory = Join-Path $env:RUNNER_TEMP 'multica-previous-installer'
+          gh run download 36996436086 --repo $env:GITHUB_REPOSITORY --name windows-x64-accepted-candidate --dir $directory
+          if ($LASTEXITCODE -ne 0) { throw 'Accepted baseline download failed' }
+          $path = Join-Path $directory 'multica-desktop-0.5.2-rc.11.1-windows-x64.exe'
+          $actual = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne 'f0b5a5eeded51fa7d1336bd2b46975a0c9ddc6d2292cebba457fd0b6e090fd47') { throw 'Accepted baseline checksum mismatch' }
+          'PREVIOUS_VERSION=0.5.2-rc.11.1' >> $env:GITHUB_ENV
       - name: Download and verify previous Windows installer
+        if: inputs.windows_business_acceptance != true
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           if ($env:PREVIOUS_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw 'previous_tag must be a stable version tag' }
           $version = $env:PREVIOUS_TAG.Substring(1)
+          "PREVIOUS_VERSION=$version" >> $env:GITHUB_ENV
           $name = "multica-desktop-$version-windows-x64.exe"
           $directory = Join-Path $env:RUNNER_TEMP 'multica-previous-installer'
           New-Item -ItemType Directory -Path $directory -Force | Out-Null
@@ -195,9 +226,20 @@ jobs:
           if ([string]::IsNullOrWhiteSpace($version)) { throw 'Candidate version unavailable' }
           $candidate = @(Get-ChildItem -LiteralPath ./dist -Recurse -File -Filter "multica-desktop-$version-windows-x64.exe")
           if ($candidate.Count -ne 1) { throw 'Expected exactly one candidate installer' }
-          $previousVersion = $env:PREVIOUS_TAG.Substring(1)
+          $previousVersion = $env:PREVIOUS_VERSION
           $previous = Join-Path $env:RUNNER_TEMP "multica-previous-installer/multica-desktop-$previousVersion-windows-x64.exe"
-          ./scripts/accept-windows-installer.ps1 -InstallerPath $candidate[0].FullName -ExpectedVersion $version -ReportPath "$env:RUNNER_TEMP/multica-windows-lifecycle.json" -PreviousInstallerPath $previous -PreviousVersion $previousVersion -RequireSigned:([bool]::Parse($env:REQUIRE_SIGNED))
+          ./scripts/accept-windows-installer.ps1 -InstallerPath $candidate[0].FullName -ExpectedVersion $version -ReportPath "$env:RUNNER_TEMP/multica-windows-lifecycle.json" -PreviousInstallerPath $previous -PreviousVersion $previousVersion -RequireSigned:([bool]::Parse($env:REQUIRE_SIGNED)) -BusinessAcceptance:([bool]::Parse($env:BUSINESS_ACCEPTANCE))
+      - name: Accept installed Windows automatic update
+        if: inputs.windows_business_acceptance == true
+        shell: pwsh
+        timeout-minutes: 15
+        run: |
+          $previous = Join-Path $env:RUNNER_TEMP 'multica-previous-installer/multica-desktop-0.5.2-rc.11.1-windows-x64.exe'
+          ./apps/desktop/scripts/windows-update-acceptance.ps1 -PreviousInstallerPath $previous -PreviousVersion '0.5.2-rc.11.1' -CandidateDirectory "$env:GITHUB_WORKSPACE/apps/desktop/dist" -ExpectedVersion $env:MULTICA_DESKTOP_VERSION -StateDirectory "$env:RUNNER_TEMP/multica-update-state" -ReportPath "$env:RUNNER_TEMP/multica-windows-update.json"
+      - name: Stop isolated Windows business backend
+        if: always() && inputs.windows_business_acceptance == true
+        shell: pwsh
+        run: ./apps/desktop/scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE" -Stop
       - name: Upload native Windows evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -212,6 +254,10 @@ jobs:
             ${{ runner.temp }}/multica-managed-windows-stress.stderr.txt
             ${{ runner.temp }}/multica-managed-windows-stress-verification.json
             ${{ runner.temp }}/multica-windows-lifecycle.json
+            ${{ runner.temp }}/multica-business-server-error.json
+            ${{ runner.temp }}/multica-business-baseline.json
+            ${{ runner.temp }}/multica-business-verify.json
+            ${{ runner.temp }}/multica-windows-update.json
           if-no-files-found: warn
       - name: Upload accepted Windows candidate
         uses: actions/upload-artifact@v4

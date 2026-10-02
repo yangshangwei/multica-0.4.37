@@ -80,7 +80,7 @@ describe("Windows candidate acceptance workflow", () => {
     expect(defaultWorkflow).toContain("if: inputs.windows_acceptance != true");
   });
   it("uses one explicit candidate version for packaging and lifecycle checks", () => {
-    expect(job).toContain('MULTICA_DESKTOP_VERSION: "0.5.2-rc.${{ github.run_number }}.${{ github.run_attempt }}"');
+    expect(job).toContain('MULTICA_DESKTOP_VERSION: "0.5.3-rc.${{ github.run_number }}.${{ github.run_attempt }}"');
     expect(job).toContain('$version = $env:MULTICA_DESKTOP_VERSION');
     expect(job).not.toContain('const version = deriveVersion()');
   });
@@ -97,5 +97,24 @@ describe("Windows candidate acceptance workflow", () => {
     expect(job).toMatch(/name: Upload native Windows evidence\n\s+if: always\(\)/);
     expect(job).toMatch(/name: Upload accepted Windows candidate\n\s+uses: actions\/upload-artifact@v4/);
     expect(job.indexOf("name: Upload accepted Windows candidate")).toBeGreaterThan(job.indexOf("name: Accept Windows installer lifecycle"));
+  });
+});
+
+
+describe("Windows business and release acceptance", () => {
+  const job = workflow.split("\n  windows-acceptance:")[1];
+  it("prepares and cleans an isolated backend only for explicit business acceptance", () => {
+    expect(workflow).toContain("windows_business_acceptance:");
+    expect(job).toContain("windows-business-server.ps1");
+    expect(job).toMatch(/if: always\(\) && inputs.windows_business_acceptance == true/);
+    expect(job).toContain("-Stop");
+    expect(job).not.toContain("multica-business/**");
+  });
+  it("pins the feature-capable baseline bytes and preserves separate business reports", () => {
+    expect(job).toContain("36996436086");
+    expect(job).toContain("f0b5a5eeded51fa7d1336bd2b46975a0c9ddc6d2292cebba457fd0b6e090fd47");
+    expect(job).toContain("multica-business-baseline.json");
+    expect(job).toContain("multica-business-verify.json");
+    expect(job).toContain("-BusinessAcceptance:");
   });
 });

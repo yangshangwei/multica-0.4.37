@@ -14,7 +14,7 @@ The acceptance job:
    grants. It is not an exhaustive named-user or adversarial ACL audit.
    A separate twenty-run concurrency stress check guards Windows ticket replacement/deletion.
 3. Builds the checked-out source with `package.mjs --win --x64 --publish never`.
-   The job sets `MULTICA_DESKTOP_VERSION=0.5.2-rc.<run_number>.<run_attempt>`
+   The job sets `MULTICA_DESKTOP_VERSION=0.5.3-rc.<run_number>.<run_attempt>`
    for both desktop and bundled CLI, and uses the same value in lifecycle checks.
    This is candidate metadata only; it does not create or publish a release tag.
    The selected previous version must have a lower numeric version.
@@ -46,3 +46,21 @@ Local macOS checks can validate YAML, Node contracts and cross-compile Windows
 Go binaries, but native results must come from the Windows job. Record the
 workflow run ID, head SHA, candidate version and artifact hashes in the S07
 report; never interpret compilation or workflow preparation as Windows passes.
+
+## Opt-in installed business and update acceptance
+
+Set both `windows_acceptance=true` and `windows_business_acceptance=true`.
+This prepares a disposable runner-local PostgreSQL cluster and real Go backend.
+It uses the hash-pinned accepted `0.5.2-rc.11.1` installer as a feature-capable
+baseline: public `v0.5.1` predates password login and managed identity.
+The installed baseline logs in and enrolls; after upgrade, the same session,
+configuration, identity, completed history and queued task are checked. Candidate
+execution, administrative cancellation and transport reconnect use the real
+backend/daemon with a contained synthetic provider, never a personal model account.
+
+The subsequent updater probe invokes the installed client's real updater against
+a loopback feed and checks the installed version plus retained settings/browser
+marker. It does not bypass signature policy or establish signed/offline trust.
+Only sanitized named JSON reports are uploaded. The business state directory
+contains private credentials and must never be uploaded. Backend cleanup is an
+always-run step; final runner disposal handles failed partial preparation.

@@ -7,6 +7,7 @@ param(
     [string]$PreviousInstallerPath,
     [ValidatePattern('^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$')][string]$PreviousVersion,
     [switch]$RequireSigned,
+    [switch]$BusinessAcceptance,
     [ValidateRange(1, 600)][int]$TimeoutSeconds = 300
 )
 
@@ -161,6 +162,15 @@ function Install-AndVerify {
     if ($process.ExitCode -ne 0) { throw "Bundled CLI version exited with code $($process.ExitCode)" }
     $step.cli = [IO.File]::ReadAllText($stdout) | ConvertFrom-Json -AsHashtable
     if ($step.cli['os'] -cne 'windows' -or $step.cli['arch'] -cne 'amd64' -or ($step.cli['version'] -replace '^v', '') -cne $Artifact.version) { throw 'Bundled CLI version/architecture mismatch' }
+    if ($BusinessAcceptance -and $Label -in @('install_previous', 'upgrade_candidate')) {
+        $phase = if ($Label -eq 'install_previous') { 'baseline' } else { 'verify' }
+        if ([string]::IsNullOrWhiteSpace($env:MULTICA_BUSINESS_STATE_DIR)) { throw 'Business state directory missing' }
+        & node (Join-Path $PSScriptRoot 'windows-business.mjs') --phase $phase --installed-directory $installDirectory --state-dir $env:MULTICA_BUSINESS_STATE_DIR --report "$env:RUNNER_TEMP/multica-business-$phase.json"
+        if ($LASTEXITCODE -ne 0) { throw "Installed business phase failed: $phase" }
+        $business = Get-Content -LiteralPath "$env:RUNNER_TEMP/multica-business-$phase.json" -Raw | ConvertFrom-Json
+        if ($business.status -ne 'passed') { throw "Business report did not pass: $phase" }
+        $step.business = $business.status
+    }
     $step.status = 'passed'
 }
 
@@ -191,6 +201,7 @@ $report = [ordered]@{
 try {
     Assert-DisposableRunner
     Assert-NoExistingMultica
+    if ($BusinessAcceptance -and -not $PreviousInstallerPath) { throw 'Business acceptance requires the feature-capable previous installer' }
     if ([bool]$PreviousInstallerPath -ne [bool]$PreviousVersion) { throw 'PreviousInstallerPath and PreviousVersion must be supplied together' }
     $report.installer = Get-InstallerEvidence $InstallerPath $ExpectedVersion
     if ($PreviousInstallerPath) {
@@ -207,6 +218,11 @@ try {
         Install-AndVerify $report.previous_installer 'install_previous'
         Install-AndVerify $report.installer 'upgrade_candidate'
         $report.upgrade = 'passed'
+        if ($BusinessAcceptance) {
+            $report.gui_tested = $true
+            $report.managed_backend_tested = $true
+            $report.user_state_retention_tested = $true
+        }
     } else {
         Install-AndVerify $report.installer 'install_candidate'
     }
