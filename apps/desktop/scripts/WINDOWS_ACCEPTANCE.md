@@ -1,0 +1,43 @@
+# Windows candidate acceptance
+
+Run the existing **Desktop Smoke Build** workflow with `windows_acceptance=true`
+on the exact candidate branch. This selects one GitHub-hosted Windows x64 job;
+the original Linux/multi-architecture smoke matrix remains the default.
+
+The acceptance job:
+
+1. Parses and fixture-tests the PowerShell lifecycle driver.
+2. Executes ten named managed identity/transport tests natively and rejects
+   missing tests, package failures and skipped parent or child cases. The ACL
+   case inspects a real generated identity under a new temporary directory in
+   the runner's user profile, checking broad Everyone/Users/Authenticated Users
+   grants. It is not an exhaustive named-user or adversarial ACL audit.
+3. Builds the checked-out source with `package.mjs --win --x64 --publish never`.
+4. Downloads the selected same-repository stable release (default `v0.5.1`)
+   and validates the previous installer against its published SHA-256.
+5. Installs the previous version, upgrades to the candidate, uninstalls,
+   reinstalls the candidate and uninstalls again. It checks installed PE
+   architecture, desktop/CLI versions and leftover registry/shortcut state.
+6. Uploads reports even on failure, and uploads candidate installer/update
+   artifacts only after successful acceptance.
+
+The lifecycle driver refuses personal machines and persistent self-hosted
+runners, existing Multica installations/processes/profiles and reparse-point
+temporary roots. It installs under a unique RUNNER_TEMP directory using per-user
+NSIS options. A failure leaves diagnostics for disposable-runner teardown.
+
+`require_signed=true` requires valid Authenticode on both installers and the
+installed desktop binaries. No signing secret is automatically loaded by this
+workflow, so unsigned builds report that limitation and cannot pass strict
+signed acceptance. The default records signature status without claiming trust.
+
+Reports do not establish GUI launch, backend-connected workflows, existing user
+state retention, automatic-update-feed behavior, offline certificate trust,
+Windows ARM or ia32 acceptance. Those remain separate release gates. The Go
+transport tests use loopback fixtures and do not run personal agent accounts or
+models. Installer execution runs only the bundled CLI's `version` command.
+
+Local macOS checks can validate YAML, Node contracts and cross-compile Windows
+Go binaries, but native results must come from the Windows job. Record the
+workflow run ID, head SHA, candidate version and artifact hashes in the S07
+report; never interpret compilation or workflow preparation as Windows passes.

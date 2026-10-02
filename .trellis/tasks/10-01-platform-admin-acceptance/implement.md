@@ -58,3 +58,7 @@
 4. 对比旧路径与单次绑定校验路径的查询数和权限变更矩阵；每帧重新鉴权，不缓存跨请求授权。
 5. 使用诊断基线复现服务端关闭原因，然后复测完整千连接负载、原生三 runtime 任务与分页目标。
 6. 根据实际错误和指标决定后续修改；不得用放宽超时或撤销保护来伪造达标。
+
+## Windows candidate continuation
+
+Approved plan: docs/plans/2026-10-02-windows-acceptance-plan.md. Extend the existing manual desktop-smoke workflow with isolated Windows x64 lifecycle and managed-runtime tests; use the verified v0.5.1 installer for upgrade; record real CI results and preserve unsigned/GUI/backend limitations. Publish only a CI branch, without merge/tag/release deployment.

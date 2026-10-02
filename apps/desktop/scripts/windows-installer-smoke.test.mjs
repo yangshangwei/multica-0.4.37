@@ -7,9 +7,10 @@ const repoRoot = [process.cwd(), resolve(process.cwd(), "../..")].find((root) =>
   existsSync(resolve(root, ".github/workflows/desktop-smoke.yml")),
 );
 const workflow = readFileSync(resolve(repoRoot, ".github/workflows/desktop-smoke.yml"), "utf8");
-const steps = [...workflow.matchAll(/^ {6}- name: (.+)$/gm)].map((match, index, matches) => ({
+const defaultWorkflow = workflow.split("\n  windows-acceptance:")[0];
+const steps = [...defaultWorkflow.matchAll(/^ {6}- name: (.+)$/gm)].map((match, index, matches) => ({
   name: match[1],
-  body: workflow.slice(match.index, matches[index + 1]?.index ?? workflow.length),
+  body: defaultWorkflow.slice(match.index, matches[index + 1]?.index ?? defaultWorkflow.length),
 }));
 
 // The PowerShell script itself is the native Windows acceptance test. These
@@ -64,5 +65,32 @@ describe("Windows installer smoke workflow", () => {
     expect(script).toContain("-ne $expectedPeMachine");
     expect(script).toContain("$cliVersion['arch'] -cne $expectedGoArch");
     expect(script).toContain("expected_arch = $ExpectedArch");
+  });
+});
+
+
+describe("Windows candidate acceptance workflow", () => {
+  const job = workflow.split("\n  windows-acceptance:")[1];
+  it("is explicitly selected, Windows native, and never publishes a release", () => {
+    expect(job).toContain("if: inputs.windows_acceptance == true");
+    expect(job).toContain("runs-on: windows-latest");
+    expect(job).toContain("--win --x64 --publish never");
+    expect(job).not.toContain("--publish always");
+    expect(job).not.toContain("continue-on-error: true");
+    expect(defaultWorkflow).toContain("if: inputs.windows_acceptance != true");
+  });
+  it("verifies a pinned previous release and refuses silent native-test skips", () => {
+    expect(job).toContain("Previous installer checksum mismatch");
+    expect(job).toContain("-Algorithm SHA256");
+    expect(job).toContain("verify-go-test-events.mjs");
+    expect(job).toContain("TestManagedIdentityWindowsProfileACL");
+    expect(job).toContain("TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport");
+    expect(job).toContain("-PreviousInstallerPath $previous");
+    expect(job).toContain("-RequireSigned:([bool]::Parse($env:REQUIRE_SIGNED))");
+  });
+  it("uploads failure diagnostics but only accepts candidate artifacts after lifecycle success", () => {
+    expect(job).toMatch(/name: Upload native Windows evidence\n\s+if: always\(\)/);
+    expect(job).toMatch(/name: Upload accepted Windows candidate\n\s+uses: actions\/upload-artifact@v4/);
+    expect(job.indexOf("name: Upload accepted Windows candidate")).toBeGreaterThan(job.indexOf("name: Accept Windows installer lifecycle"));
   });
 });

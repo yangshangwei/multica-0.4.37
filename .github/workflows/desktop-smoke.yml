@@ -2,12 +2,26 @@ name: Desktop Smoke Build
 
 on:
   workflow_dispatch:
+    inputs:
+      windows_acceptance:
+        description: Run only the Windows x64 candidate lifecycle and managed-runtime acceptance job
+        type: boolean
+        default: false
+      previous_tag:
+        description: Same-repository stable release used for the Windows x64 upgrade test
+        type: string
+        default: v0.5.1
+      require_signed:
+        description: Fail lifecycle acceptance unless installer and desktop signatures are valid
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   desktop:
+    if: inputs.windows_acceptance != true
     strategy:
       fail-fast: false
       matrix:
@@ -88,4 +102,101 @@ jobs:
         with:
           name: desktop-${{ matrix.target }}
           path: apps/desktop/dist
+          if-no-files-found: error
+
+  windows-acceptance:
+    if: inputs.windows_acceptance == true
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      PREVIOUS_TAG: ${{ inputs.previous_tag }}
+      REQUIRE_SIGNED: ${{ inputs.require_signed }}
+    steps:
+      - name: Checkout candidate source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.x"
+          check-latest: true
+          cache-dependency-path: server/go.sum
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Validate acceptance scripts
+        shell: pwsh
+        run: |
+          ./apps/desktop/scripts/accept-windows-installer.test.ps1
+          node --test apps/desktop/scripts/verify-go-test-events.node-test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Go event verifier tests failed' }
+      - name: Test native managed identity and transport
+        shell: pwsh
+        working-directory: server
+        run: |
+          $names = @('TestManagedIdentityWindowsProfileACL', 'TestManagedIdentityConcurrentPersistence', 'TestManagedHandoffOriginalBytesAndScope', 'TestManagedTransportUsesScopedCredentialsAndAuthoritativeMaps', 'TestManagedWorkspaceWebSocketsAndRPCRemainIsolated', 'TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport', 'TestManagedHeartbeatHTTPFallbackUsesScopedCredentials', 'TestManagedControlRequestBindsMethodPathBodyTimeAndRejectsReplay', 'TestManagedPIDReservationRejectsLiveAndUnknownPredecessor', 'TestManagedPIDSuccessorSurvivesPredecessorCleanup')
+          $pattern = '^(' + ($names -join '|') + ')$'
+          $events = Join-Path $env:RUNNER_TEMP 'multica-managed-windows-tests.jsonl'
+          go test -json ./internal/daemon -run $pattern -count=1 -timeout=8m 2> "$env:RUNNER_TEMP/multica-managed-windows-tests.stderr.txt" | Tee-Object -FilePath $events
+          $goExit = $LASTEXITCODE
+          node ../apps/desktop/scripts/verify-go-test-events.mjs $events "$env:RUNNER_TEMP/multica-managed-windows-verification.json" @names
+          if ($goExit -ne 0 -or $LASTEXITCODE -ne 0) { throw 'Native managed tests failed or skipped' }
+      - name: Package Windows x64 candidate
+        working-directory: apps/desktop
+        run: node scripts/package.mjs --win --x64 --publish never
+      - name: Download and verify previous Windows installer
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($env:PREVIOUS_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw 'previous_tag must be a stable version tag' }
+          $version = $env:PREVIOUS_TAG.Substring(1)
+          $name = "multica-desktop-$version-windows-x64.exe"
+          $directory = Join-Path $env:RUNNER_TEMP 'multica-previous-installer'
+          New-Item -ItemType Directory -Path $directory -Force | Out-Null
+          gh release download $env:PREVIOUS_TAG --repo $env:GITHUB_REPOSITORY --pattern $name --pattern "$name.sha256" --dir $directory
+          if ($LASTEXITCODE -ne 0) { throw 'Previous installer download failed' }
+          $expected = ((Get-Content -LiteralPath (Join-Path $directory "$name.sha256") -Raw).Trim() -split '\s+')[0]
+          if ($expected -notmatch '^[0-9a-fA-F]{64}$') { throw 'Invalid previous installer checksum' }
+          $actual = (Get-FileHash -LiteralPath (Join-Path $directory $name) -Algorithm SHA256).Hash
+          if ($actual -ine $expected) { throw 'Previous installer checksum mismatch' }
+      - name: Accept Windows installer lifecycle
+        shell: pwsh
+        working-directory: apps/desktop
+        timeout-minutes: 20
+        run: |
+          $version = node --input-type=module -e 'import { deriveVersion } from "./scripts/package.mjs"; const version = deriveVersion(); if (!version) process.exit(1); process.stdout.write(version);'
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($version)) { throw 'Candidate version unavailable' }
+          $candidate = @(Get-ChildItem -LiteralPath ./dist -Recurse -File -Filter "multica-desktop-$version-windows-x64.exe")
+          if ($candidate.Count -ne 1) { throw 'Expected exactly one candidate installer' }
+          $previousVersion = $env:PREVIOUS_TAG.Substring(1)
+          $previous = Join-Path $env:RUNNER_TEMP "multica-previous-installer/multica-desktop-$previousVersion-windows-x64.exe"
+          ./scripts/accept-windows-installer.ps1 -InstallerPath $candidate[0].FullName -ExpectedVersion $version -ReportPath "$env:RUNNER_TEMP/multica-windows-lifecycle.json" -PreviousInstallerPath $previous -PreviousVersion $previousVersion -RequireSigned:([bool]::Parse($env:REQUIRE_SIGNED))
+      - name: Upload native Windows evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64-acceptance-evidence
+          path: |
+            ${{ runner.temp }}/multica-managed-windows-tests.jsonl
+            ${{ runner.temp }}/multica-managed-windows-tests.stderr.txt
+            ${{ runner.temp }}/multica-managed-windows-verification.json
+            ${{ runner.temp }}/multica-windows-lifecycle.json
+          if-no-files-found: warn
+      - name: Upload accepted Windows candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64-accepted-candidate
+          path: |
+            apps/desktop/dist/**/*-windows-x64.exe
+            apps/desktop/dist/**/*.blockmap
+            apps/desktop/dist/**/latest*.yml
           if-no-files-found: error
