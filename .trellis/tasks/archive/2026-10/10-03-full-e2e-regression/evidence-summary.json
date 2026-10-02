@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-03",
+  "source_commit": "b460d0233",
+  "status": "passed_with_documented_limits",
+  "e2e": {
+    "unique_passed": 168,
+    "total": 168,
+    "failed_final": 0,
+    "unverified": 0,
+    "baseline_passed": 135,
+    "baseline_skipped_then_passed_in_specialist_lanes": 33,
+    "automatic_retries": 0
+  },
+  "native": {
+    "result": "passed",
+    "checkpoints": 13,
+    "duration_seconds": 33.695,
+    "observed_daemons_exited": 6
+  },
+  "typescript_unit_tests": 9612,
+  "mobile_unit_tests": 123,
+  "go_race_packages": 67,
+  "lint_warnings": 37,
+  "new_naming_spec_sha256": "521166bc8e334cec2c2adc271dfd03142ee81b087af13d29ee821a7876a288b1",
+  "evidence_root": ".gstack/qa-reports/2026-10-03-full-e2e",
+  "limits": [
+    "No current Windows/Linux installed-artifact run",
+    "No iOS simulator available",
+    "Local deterministic model providers; no real model or third-party OAuth/MCP execution",
+    "No production deployment or capacity benchmark"
+  ],
+  "changes": [
+    "e2e/desktop-settings.spec.ts",
+    "e2e/quick-create-actor-picker.spec.ts",
+    "e2e/password-migration.spec.ts",
+    "e2e/mcp-market.spec.ts",
+    "e2e/workspace-name-series.spec.ts",
+    ".trellis/spec/views/frontend/workspace-naming.md"
+  ],
+  "test_commits": [
+    "8e196658d",
+    "3d503125a",
+    "66d59ca69",
+    "dc063267c"
+  ],
+  "independent_audit": "Raw reports confirm 168 cases; reviewed naming hash matches final rerun; native artifacts match; process/port cleanup confirmed."
+}

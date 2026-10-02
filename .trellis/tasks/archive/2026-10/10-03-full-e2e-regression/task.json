@@ -1,0 +1,32 @@
+{
+  "id": "full-e2e-regression",
+  "name": "full-e2e-regression",
+  "title": "完整端到端回归测试：核心流程与近期功能",
+  "description": "",
+  "status": "completed",
+  "dev_type": "test",
+  "scope": "e2e",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-03",
+  "completedAt": "2026-10-03",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "dc063267c",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "e2e/workspace-name-series.spec.ts",
+    "e2e/password-migration.spec.ts",
+    "e2e/mcp-market.spec.ts",
+    "e2e/desktop-settings.spec.ts",
+    "e2e/quick-create-actor-picker.spec.ts"
+  ],
+  "notes": "168 unique E2E cases passed after reconciling 33 conditionally skipped cases; real native scenario passed 13 checkpoints; full evidence in .gstack/qa-reports/2026-10-03-full-e2e.",
+  "meta": {}
+}
