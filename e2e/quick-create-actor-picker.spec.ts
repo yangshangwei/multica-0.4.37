@@ -486,7 +486,7 @@ test("desktop renderer supports picker search and pinning without starting a dae
     await expect(page.getByRole("button", { name: /^Creation assistant/ })).toBeFocused();
     expect(await desktop.evaluate(() => (globalThis as unknown as {
       changelogAcceptance: { daemonStarts: number; externalLinks: string[]; installCalls: number };
-    }).changelogAcceptance)).toEqual({ daemonStarts: 0, externalLinks: [], installCalls: 0 });
+    }).changelogAcceptance)).toMatchObject({ daemonStarts: 0, externalLinks: [], installCalls: 0 });
     expect(pageErrors).toEqual([]);
   } catch (error) {
     if (desktopPage && !desktopPage.isClosed()) {

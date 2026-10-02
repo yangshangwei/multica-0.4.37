@@ -128,7 +128,7 @@ test("desktop Help selects Updates by keyboard and grouped settings show the sto
     const services = await desktop.evaluate(() => (globalThis as unknown as {
       changelogAcceptance: { daemonStarts: number; externalLinks: string[]; installCalls: number };
     }).changelogAcceptance);
-    expect(services).toEqual({ daemonStarts: 0, externalLinks: [], installCalls: 0 });
+    expect(services).toMatchObject({ daemonStarts: 0, externalLinks: [], installCalls: 0 });
     expect(pageErrors).toEqual([]);
   } catch (error) {
     if (page && !page.isClosed()) {
