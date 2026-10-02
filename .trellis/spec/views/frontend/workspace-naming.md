@@ -41,3 +41,7 @@ real Base UI radio-menu primitives for keyboard navigation and focus restoration
 StepWorkspace tests cover wiring, pending/disabled states and field ownership;
 do not duplicate the entire catalog matrix through DOM rendering. Browser checks
 cover bilingual menus, narrow wrapping and preference restoration after reload.
+`e2e/workspace-name-series.spec.ts` also creates a workspace through the real API
+and verifies its task identifier uses the manually selected prefix. After a
+manual URL edit, assert Random still replaces the name as well as preserving the
+URL and prefix; checking only the preserved fields would let a no-op pass.
