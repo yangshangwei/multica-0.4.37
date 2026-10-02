@@ -15,12 +15,13 @@ afterEach(() => {
   while (fixtures.length) rmSync(fixtures.pop(), { recursive: true, force: true });
 });
 
-function bundle(platform, arch) {
+function bundle(platform, arch, version = "") {
   const root = mkdtempSync(join(tmpdir(), "multica-bundle-cli-test-"));
   fixtures.push(root);
   const script = join(root, "apps/desktop/scripts/bundle-cli.mjs");
   mkdirSync(dirname(script), { recursive: true });
   copyFileSync(scriptPath, script);
+  copyFileSync(join(dirname(scriptPath), "package.mjs"), join(dirname(script), "package.mjs"));
   const loader = join(root, "fake-build-tools.mjs");
   // Exercise the real bundling entry point in an isolated tree. The loader
   // replaces only external build tools; filesystem staging/copying stays real.
@@ -56,7 +57,7 @@ syncBuiltinESMExports();
     "--import", loader, script,
     "--target-platform", platform,
     "--target-arch", arch,
-  ], { cwd: root, encoding: "utf8" });
+  ], { cwd: root, encoding: "utf8", env: { ...process.env, MULTICA_DESKTOP_VERSION: version } });
   return { root, result, cli: join(root, "apps/desktop/resources/bin/multica.exe") };
 }
 
@@ -80,6 +81,23 @@ describe("CLI bundling target architecture", () => {
 
     expect(result.status).not.toBe(0);
     expect(result.stderr).toMatch(/ia32.*win32/i);
+    expect(existsSync(join(root, "server/bin"))).toBe(false);
+    expect(existsSync(cli)).toBe(false);
+  });
+});
+
+describe("CLI explicit candidate version", () => {
+  it("embeds the same normalized override as desktop despite an older Git tag", () => {
+    const { result, cli } = bundle("win32", "x64", "v0.5.2-rc.7");
+    expect(result.status, result.stderr).toBe(0);
+    const { args } = JSON.parse(readFileSync(cli, "utf8"));
+    expect(args[args.indexOf("-ldflags") + 1]).toContain("-X main.version=0.5.2-rc.7 ");
+  });
+
+  it("rejects injected linker flags before building or staging", () => {
+    const { root, result, cli } = bundle("win32", "x64", "0.5.2 -X main.commit=spoof");
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toMatch(/MULTICA_DESKTOP_VERSION/);
     expect(existsSync(join(root, "server/bin"))).toBe(false);
     expect(existsSync(cli)).toBe(false);
   });

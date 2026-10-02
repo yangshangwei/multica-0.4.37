@@ -7,6 +7,7 @@ import { afterEach, describe, it, expect } from "vitest";
 import {
   builderArgsForTarget,
   deriveVersion,
+  desktopVersionOverride,
   DESCRIBE_ARGS,
   envWithLocalBins,
   normalizeGitVersion,
@@ -524,4 +525,25 @@ describe("electron-builder.yml packaging config", () => {
     expect(entries.length).toBeGreaterThan(0);
     expect(entries).toContain("!dist/**");
   });
+});
+
+describe("desktopVersionOverride", () => {
+  it("leaves an unset override on the existing Git version path", () => {
+    expect(desktopVersionOverride({})).toBe(null);
+    expect(desktopVersionOverride({ MULTICA_DESKTOP_VERSION: "" })).toBe(null);
+  });
+
+  it.each(["0.5.2", "v0.5.2", "0.5.2-rc.7", "v0.5.2-rc.7+build.1"])(
+    "normalizes the explicit version %s for both desktop and CLI",
+    (version) => {
+      expect(desktopVersionOverride({ MULTICA_DESKTOP_VERSION: version })).toBe(version.replace(/^v/, ""));
+    },
+  );
+
+  it.each([" ", " 0.5.2", "0.5.2\n", "0.5.2 -X main.commit=spoof", "0.5.2;echo", "0.5.2$(echo)", "0.05.2", "0.5.2-01", "0.5.2-", "0.5"])(
+    "rejects unsafe or malformed explicit version %j",
+    (version) => {
+      expect(() => desktopVersionOverride({ MULTICA_DESKTOP_VERSION: version })).toThrow(/MULTICA_DESKTOP_VERSION/);
+    },
+  );
 });

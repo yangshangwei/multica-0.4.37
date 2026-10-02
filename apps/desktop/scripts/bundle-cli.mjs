@@ -18,6 +18,9 @@ import { constants } from "node:fs";
 import { execFileSync, execSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { desktopVersionOverride } from "./package.mjs";
+
+const explicitVersion = desktopVersionOverride();
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..", "..", "..");
@@ -118,6 +121,7 @@ if (hasGo()) {
   // from HEAD instead, which those gates exempt as a dev build. Keep in sync
   // with the Makefile's VERSION and scripts/dev-env.sh.
   const version =
+    explicitVersion ||
     git("describe", "--tags", "--match", "v[0-9]*", "--dirty") ||
     `v0.0.0-0-g${commit === "unknown" ? "0000000" : commit}`;
   const date = new Date().toISOString().replace(/\.\d+Z$/, "Z");

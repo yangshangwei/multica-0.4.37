@@ -110,6 +110,7 @@ jobs:
     timeout-minutes: 45
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      MULTICA_DESKTOP_VERSION: "0.5.2-rc.${{ github.run_number }}.${{ github.run_attempt }}"
       PREVIOUS_TAG: ${{ inputs.previous_tag }}
       REQUIRE_SIGNED: ${{ inputs.require_signed }}
     steps:
@@ -190,8 +191,8 @@ jobs:
         working-directory: apps/desktop
         timeout-minutes: 20
         run: |
-          $version = node --input-type=module -e 'import { deriveVersion } from "./scripts/package.mjs"; const version = deriveVersion(); if (!version) process.exit(1); process.stdout.write(version);'
-          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($version)) { throw 'Candidate version unavailable' }
+          $version = $env:MULTICA_DESKTOP_VERSION
+          if ([string]::IsNullOrWhiteSpace($version)) { throw 'Candidate version unavailable' }
           $candidate = @(Get-ChildItem -LiteralPath ./dist -Recurse -File -Filter "multica-desktop-$version-windows-x64.exe")
           if ($candidate.Count -ne 1) { throw 'Expected exactly one candidate installer' }
           $previousVersion = $env:PREVIOUS_TAG.Substring(1)
@@ -220,4 +221,5 @@ jobs:
             apps/desktop/dist/**/*-windows-x64.exe
             apps/desktop/dist/**/*.blockmap
             apps/desktop/dist/**/latest*.yml
+            apps/desktop/dist/**/rc*.yml
           if-no-files-found: error

@@ -14,6 +14,10 @@ The acceptance job:
    grants. It is not an exhaustive named-user or adversarial ACL audit.
    A separate twenty-run concurrency stress check guards Windows ticket replacement/deletion.
 3. Builds the checked-out source with `package.mjs --win --x64 --publish never`.
+   The job sets `MULTICA_DESKTOP_VERSION=0.5.2-rc.<run_number>.<run_attempt>`
+   for both desktop and bundled CLI, and uses the same value in lifecycle checks.
+   This is candidate metadata only; it does not create or publish a release tag.
+   The selected previous version must have a lower numeric version.
 4. Downloads the selected same-repository stable release (default `v0.5.1`)
    and validates the previous installer against its published SHA-256.
 5. Installs the previous version, upgrades to the candidate, uninstalls,

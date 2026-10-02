@@ -95,3 +95,12 @@ Shell regressions run with `node --test scripts/desktop-updates.test.mjs` and
 are wired into the frontend CI job. Real HTTP fixture tests belong beside the
 desktop verifier. Actual Docker rehearsals should use independent projects,
 temporary storage and fixed host ports; port 0 can change on container restart.
+
+## Candidate version provenance
+
+Git-derived versions depend on tags present in the checkout; an unpublished local
+release tag is not available to hosted CI. Candidate CI must provide one validated
+`MULTICA_DESKTOP_VERSION` to both the desktop package and bundled CLI and use that
+same value for installed-version checks. Keep the candidate numeric version above
+the selected stable upgrade baseline. Do not publish a release tag merely to make
+an acceptance build newer. Preserve prerelease channel metadata with its artifacts.

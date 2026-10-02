@@ -79,6 +79,11 @@ describe("Windows candidate acceptance workflow", () => {
     expect(job).not.toContain("continue-on-error: true");
     expect(defaultWorkflow).toContain("if: inputs.windows_acceptance != true");
   });
+  it("uses one explicit candidate version for packaging and lifecycle checks", () => {
+    expect(job).toContain('MULTICA_DESKTOP_VERSION: "0.5.2-rc.${{ github.run_number }}.${{ github.run_attempt }}"');
+    expect(job).toContain('$version = $env:MULTICA_DESKTOP_VERSION');
+    expect(job).not.toContain('const version = deriveVersion()');
+  });
   it("verifies a pinned previous release and refuses silent native-test skips", () => {
     expect(job).toContain("Previous installer checksum mismatch");
     expect(job).toContain("-Algorithm SHA256");

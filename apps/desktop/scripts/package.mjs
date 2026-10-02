@@ -91,6 +91,20 @@ function git(args, cwd) {
   }
 }
 
+// Explicit CI candidates must be valid SemVer and safe in Go's linker flags
+// and the Windows electron-builder shell invocation. Never trim whitespace.
+export function desktopVersionOverride(env = process.env) {
+  const raw = env.MULTICA_DESKTOP_VERSION;
+  if (raw === undefined || raw === "") return null;
+  const version = raw.replace(/^v/, "");
+  const semver = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
+  const match = semver.exec(version);
+  if (!match || /\s/.test(version) || match[4]?.split(".").some((part) => /^0[0-9]+$/.test(part))) {
+    throw new Error("MULTICA_DESKTOP_VERSION must be a valid SemVer without whitespace.");
+  }
+  return version;
+}
+
 /**
  * Strip the leading `--` that npm/pnpm insert to separate their own
  * flags from the ones meant for the underlying script.  Without this,
@@ -366,6 +380,7 @@ export function builderArgsForTarget(
 }
 
 function main() {
+  const explicitVersion = desktopVersionOverride();
   const passthrough = stripLeadingSeparator(process.argv.slice(2));
   const parsed = parsePackageArgs(passthrough);
   const buildMatrix = resolveBuildMatrix(parsed);
@@ -416,7 +431,6 @@ function main() {
   }
 
   // Step 2: derive the version that should be written into the app.
-  const explicitVersion = process.env.MULTICA_DESKTOP_VERSION?.trim();
   const version = explicitVersion || deriveVersion();
   if (version) {
     console.log(
