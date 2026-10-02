@@ -1,13 +1,13 @@
 // @vitest-environment node
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { mkdtemp, readFile, readdir, rename, rm } from "node:fs/promises";
+import { lstat, mkdtemp, readFile, readdir, rename, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { withManagementFileLock } from "./managed-lock";
 
 vi.mock("node:fs/promises", async (importOriginal) => {
   const actual = await importOriginal<typeof import("node:fs/promises")>();
-  return { ...actual, rename: vi.fn(actual.rename) };
+  return { ...actual, lstat: vi.fn(actual.lstat), rename: vi.fn(actual.rename) };
 });
 vi.mock("./managed-process", () => ({
   managementProcessIdentity: async () => ({ hostId: "a".repeat(64), bootId: "b".repeat(64) }),
@@ -15,9 +15,13 @@ vi.mock("./managed-process", () => ({
 
 let root: string;
 let originalRename: typeof rename;
+let originalLstat: typeof lstat;
 beforeEach(async () => {
   root = await mkdtemp(join(tmpdir(), "multica-ticket-publish-"));
-  originalRename = (await vi.importActual<typeof import("node:fs/promises")>("node:fs/promises")).rename;
+  const actual = await vi.importActual<typeof import("node:fs/promises")>("node:fs/promises");
+  originalRename = actual.rename;
+  originalLstat = actual.lstat;
+  vi.mocked(lstat).mockReset().mockImplementation(originalLstat);
   vi.mocked(rename).mockReset().mockImplementation(originalRename);
 });
 afterEach(async () => {
@@ -83,6 +87,13 @@ it("bounds persistent Windows sharing failures and preserves the choosing record
 
 it.each(["darwin", "linux"] as const)("does not retry a permission error on %s", async (platform) => {
   vi.spyOn(process, "platform", "get").mockReturnValue(platform);
+  // A Windows host does not report POSIX chmod bits. Model private POSIX
+  // permissions only in these simulated Unix cases, keeping real Stats methods.
+  vi.mocked(lstat).mockImplementation(async (path) => {
+    const info = await originalLstat(path);
+    info.mode &= ~0o077;
+    return info;
+  });
   const { attempts } = failTicketReplacement("EPERM");
   await expect(withManagementFileLock(root, vi.fn())).rejects.toMatchObject({ code: "EPERM" });
   expect(attempts).toHaveLength(1);
