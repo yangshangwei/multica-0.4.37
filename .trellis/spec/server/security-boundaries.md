@@ -288,3 +288,24 @@ Regression sources: service/platform_admin_test.go,
 service/platform_password_recovery_test.go, handler/admin_auth_test.go,
 handler/admin_organization_test.go, cmd/server/platform_admin_auth_test.go,
 and migrations/platform_admin_migration_test.go.
+
+### Rollback guards must fence concurrent writers
+
+An `EXISTS` check alone does not protect retained security data from rollback.
+Under READ COMMITTED it can miss an uncommitted first insert; later DDL waits
+for that writer and can then delete its successful commit. Acquire the checked
+and DDL-target tables in deterministic name order with `ACCESS EXCLUSIVE
+NOWAIT` before checking retained records. Keep the check and protected DDL in
+one `DO` block so the locks cannot end between them. A busy table is a refusal,
+not permission to wait out a writer or remove its data.
+
+The migration runner's advisory lock serializes runners only. A multi-file
+rollback requires maintenance mode with all API/background writers stopped
+throughout the loop; individual file locks do not span the full rollback.
+Disabling the admin UI is insufficient because cancellation reconciliation
+intentionally continues. Preserve the existing data-present refusal and verify
+both populated and empty-maintenance cases in private fixture schemas.
+
+Regression: `migrations/admin_rollback_guard_test.go` exercises the actual down
+SQL with two connections and checks all 43 guarded platform down files in the
+465–511 range. Never run this rehearsal against the application schema.

@@ -1,6 +1,10 @@
-DO $$ BEGIN
+-- Maintenance only: refuse active writers before checking retained evidence.
+DO $$
+BEGIN
+    LOCK TABLE admin_alert, admin_alert_detector_state, agent_task_queue IN ACCESS EXCLUSIVE MODE NOWAIT;
     IF EXISTS (SELECT 1 FROM admin_alert) OR EXISTS (SELECT 1 FROM admin_alert_detector_state) THEN
         RAISE EXCEPTION 'administrative alert data exists; preserve detection and recovery indexes';
     END IF;
-END $$;
-DROP INDEX admin_alert_queue_scan_idx;
+    DROP INDEX admin_alert_queue_scan_idx;
+END;
+$$;
