@@ -248,11 +248,18 @@ func (h *Hub) authorizeRuntimeScope(ctx context.Context, identity ClientIdentity
 // SetPasswordQueries must be called before accepting connections.
 func (h *Hub) SetPasswordQueries(q *db.Queries) { h.passwordQueries = q }
 
-func (c *client) authorized() bool {
+func (c *client) authorized(phase string) bool {
 	if c.authorize == nil {
 		return !auth.PasswordMode()
 	}
+	started := time.Now()
 	if err := c.authorize(); err != nil {
+		class, _ := connectionErrorClass(err)
+		level := slog.LevelWarn
+		if errors.Is(err, context.Canceled) || (c.ctx != nil && c.ctx.Err() != nil) {
+			level = slog.LevelDebug
+		}
+		slog.Log(context.Background(), level, "daemon websocket authorization failed", "daemon_id", c.identity.DaemonID, "workspace_id", c.identity.PrimaryWorkspaceID(), "phase", phase, "error_class", class, "duration", time.Since(started))
 		if c.conn != nil {
 			c.conn.Close()
 		}
@@ -821,9 +828,7 @@ func (c *client) readPump() {
 	for {
 		_, raw, err := c.conn.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseNormalClosure) {
-				slog.Debug("daemon websocket read error", "error", err, "daemon_id", c.identity.DaemonID)
-			}
+			c.logConnectionFailure("read", err)
 			return
 		}
 		c.handleFrame(raw)
@@ -831,7 +836,7 @@ func (c *client) readPump() {
 }
 
 func (c *client) handleFrame(raw []byte) {
-	if !c.authorized() {
+	if !c.authorized("read") {
 		return
 	}
 	var msg protocol.Message
@@ -902,7 +907,7 @@ func (c *client) handleRPCFrame(raw json.RawMessage) {
 			hctx, cancel = context.WithTimeout(c.ctx, time.Duration(req.TimeoutMs)*time.Millisecond)
 			defer cancel()
 		}
-		if !c.authorized() {
+		if !c.authorized("rpc") {
 			return
 		}
 		status, body, err := handler(hctx, c.identity, req.Method, req.Body)
@@ -1016,19 +1021,20 @@ func (c *client) writePump() {
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
-			if !c.authorized() {
+			if !c.authorized("write") {
 				return
 			}
 			if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
-				slog.Debug("daemon websocket write error", "error", err, "daemon_id", c.identity.DaemonID)
+				c.logConnectionFailure("write", err)
 				return
 			}
 		case <-ticker.C:
-			if !c.authorized() {
+			if !c.authorized("ping") {
 				return
 			}
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+				c.logConnectionFailure("ping", err)
 				return
 			}
 		}

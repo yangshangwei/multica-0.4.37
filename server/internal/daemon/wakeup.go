@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"math/rand"
+	"net"
 	"net/http"
 	"net/url"
 	"sort"
@@ -105,7 +107,13 @@ func (d *Daemon) runTaskWakeupConnection(ctx context.Context, runtimeIDs []strin
 	return d.runTaskWakeupConnectionUsingTransport(ctx, d.client, d.wsRPC, &d.batchClaimUnsupported, "", runtimeIDs, taskWakeups, runtimeSetCh)
 }
 
-func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, client *Client, rpc *wsRPCClient, batchUnsupported *atomic.Bool, workspaceID string, runtimeIDs []string, taskWakeups chan<- taskWakeup, runtimeSetCh <-chan struct{}) (time.Duration, error) {
+func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, client *Client, rpc *wsRPCClient, batchUnsupported *atomic.Bool, workspaceID string, runtimeIDs []string, taskWakeups chan<- taskWakeup, runtimeSetCh <-chan struct{}) (connectedFor time.Duration, connectionErr error) {
+	phase := "url"
+	var generation uint64
+	defer func() {
+		class, closeCode := taskWakeupErrorClassification(connectionErr)
+		d.logger.Info("task wakeup websocket ended", "workspace_id", workspaceID, "connection_generation", generation, "phase", phase, "error_class", class, "close_code", closeCode, "connected_for", connectedFor)
+	}()
 	wsURL, err := taskWakeupURL(d.cfg.ServerBaseURL, runtimeIDs)
 	if err != nil {
 		return 0, err
@@ -140,6 +148,7 @@ func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, clie
 		HandshakeTimeout: 10 * time.Second,
 		Proxy:            http.ProxyFromEnvironment,
 	}
+	phase = "dial"
 	conn, _, err := dialer.DialContext(ctx, wsURL, headers)
 	if err != nil {
 		return 0, err
@@ -151,7 +160,6 @@ func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, clie
 	// from a previous connection cannot keep them silenced past disconnect.
 	defer d.clearManagedWSHeartbeatAcks(workspaceID, runtimeIDs)
 
-	d.logger.Info("task wakeup websocket connected", "runtimes", len(runtimeIDs))
 	signalTaskWakeup(taskWakeups, "")
 	// signalTaskWakeup only wakes idle ClaimTask pollers. In-flight tasks and
 	// the workspace sync loop park on coarse tickers (5s and 30s) that do not
@@ -178,7 +186,6 @@ func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, clie
 	}
 	writes := make(chan *wsOutbound, writeBufSize)
 	writerDone := make(chan struct{})
-	go d.runWSWriter(conn, writes, writerDone)
 
 	// Attach the generic WS RPC sender (MUL-4257) to this connection's write
 	// channel. Guarded so a Call racing teardown never sends on the closed
@@ -200,6 +207,10 @@ func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, clie
 			return nil, errWSRPCWriteBufferFull
 		}
 	})
+	d.logger.Info("task wakeup websocket connected", "runtimes", len(runtimeIDs), "workspace_id", workspaceID, "connection_generation", wsRPCGeneration)
+	go d.runWSWriter(conn, writes, writerDone, "workspace_id", workspaceID, "connection_generation", wsRPCGeneration)
+	generation = wsRPCGeneration
+	phase = "read"
 	// A (re)connect may be a freshly-upgraded server: re-probe the batch claim
 	// route rather than staying on the legacy fallback forever (MUL-4257).
 	batchUnsupported.Store(false)
@@ -236,10 +247,10 @@ func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, clie
 		// runWSWriter's next write errors and it DISCARDS the queue instead of
 		// delivering it.
 		conn.Close()
-		// Detach RPC (fails pending → HTTP fallback, now safe since the queued
-		// frame will be dropped), and flip the send-closed flag under sendMu so
-		// any in-flight guarded send finishes before we close writes.
-		d.wsRPC.attach(nil)
+		// Detach this transport: unsent frames may fall back to HTTP, while
+		// sent claims remain uncertain. Flip sendClosed under sendMu so any
+		// in-flight guarded send finishes before we close writes.
+		rpc.attach(nil)
 		sendMu.Lock()
 		sendClosed = true
 		sendMu.Unlock()
@@ -251,8 +262,10 @@ func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, clie
 
 	select {
 	case <-ctx.Done():
+		phase = "context"
 		return uptime(), ctx.Err()
 	case <-runtimeSetCh:
+		phase = "runtime_set"
 		return uptime(), errRuntimeSetChanged
 	case err := <-errCh:
 		return uptime(), err
@@ -262,7 +275,7 @@ func (d *Daemon) runTaskWakeupConnectionUsingTransport(ctx context.Context, clie
 // runWSWriter funnels writes from the heartbeat sender (and any future
 // daemon-initiated message) into a single goroutine. gorilla/websocket
 // requires that all WriteMessage calls happen from the same goroutine.
-func (d *Daemon) runWSWriter(conn *websocket.Conn, writes <-chan *wsOutbound, done chan<- struct{}) {
+func (d *Daemon) runWSWriter(conn *websocket.Conn, writes <-chan *wsOutbound, done chan<- struct{}, attrs ...any) {
 	defer close(done)
 	for item := range writes {
 		// Skip frames whose RPC caller already gave up: delivering them after a
@@ -273,7 +286,8 @@ func (d *Daemon) runWSWriter(conn *websocket.Conn, writes <-chan *wsOutbound, do
 		}
 		conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
 		if err := conn.WriteMessage(websocket.TextMessage, item.data); err != nil {
-			d.logger.Debug("task wakeup websocket write failed", "error", err)
+			class, closeCode := taskWakeupErrorClassification(err)
+			d.logger.Warn("task wakeup websocket write failed", append(attrs, "phase", "write", "error_class", class, "close_code", closeCode)...)
 			conn.Close()
 			// Drain remaining frames so the producers don't block forever
 			// while waiting for runTaskWakeupConnection to close the channel.
@@ -548,5 +562,36 @@ func sleepWithContextOrRuntimeChange(ctx context.Context, d time.Duration, runti
 		return nil
 	case <-timer.C:
 		return nil
+	}
+}
+
+// Return only bounded diagnostics: network errors and peer close text can
+// contain endpoint credentials or other untrusted content.
+func taskWakeupErrorClassification(err error) (string, int) {
+	var closeErr *websocket.CloseError
+	var netErr net.Error
+	switch {
+	case err == nil:
+		return "none", 0
+	case errors.Is(err, context.Canceled):
+		return "canceled", 0
+	case errors.Is(err, errRuntimeSetChanged):
+		return "runtime_set_changed", 0
+	case errors.Is(err, context.DeadlineExceeded):
+		return "deadline", 0
+	case errors.As(err, &closeErr):
+		return "peer_close", closeErr.Code
+	case errors.As(err, &netErr) && netErr.Timeout():
+		return "network_timeout", 0
+	case errors.Is(err, net.ErrClosed):
+		return "network_closed", 0
+	case errors.Is(err, io.EOF):
+		return "eof", 0
+	case errors.Is(err, websocket.ErrReadLimit):
+		return "read_limit", 0
+	case errors.Is(err, websocket.ErrBadHandshake):
+		return "handshake", 0
+	default:
+		return "other", 0
 	}
 }

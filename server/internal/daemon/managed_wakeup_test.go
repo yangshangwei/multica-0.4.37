@@ -1,13 +1,20 @@
 package daemon
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -147,5 +154,109 @@ func TestManagedHeartbeatAckRejectsAnotherWorkspace(t *testing.T) {
 	daemon.handleWSHeartbeatAckUsingTransport(context.Background(), &HeartbeatResponse{RuntimeID: "runtime-a", ServerCapabilities: []string{protocol.DaemonCapabilityRPCV1}}, rpc, generation, "workspace-b")
 	if rpc.supportsRPCV1() || daemon.wsHeartbeatRecentlyAcked("runtime-a") {
 		t.Fatal("foreign workspace acknowledged the connection")
+	}
+}
+
+func TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport(t *testing.T) {
+	received := make(chan struct{})
+	release := make(chan struct{})
+	upgrader := websocket.Upgrader{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+		for {
+			var msg protocol.Message
+			if conn.ReadJSON(&msg) != nil {
+				return
+			}
+			if msg.Type == protocol.EventDaemonRPCRequest {
+				close(received)
+				<-release
+				return
+			}
+		}
+	}))
+	defer server.Close()
+	d := New(Config{ServerBaseURL: server.URL, HeartbeatInterval: time.Hour, WorkspacesRoot: t.TempDir()}, slog.New(slog.NewTextHandler(io.Discard, nil)))
+	originalGeneration := d.wsRPC.attach(func([]byte) (*wsOutbound, error) { return &wsOutbound{}, nil })
+	d.wsRPC.markRPCV1Supported(originalGeneration)
+	scoped := newWSRPCClient(0)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	connectionDone := make(chan struct{})
+	go func() {
+		defer close(connectionDone)
+		d.runTaskWakeupConnectionUsingTransport(ctx, d.client, scoped, &atomic.Bool{}, "workspace", nil, make(chan taskWakeup, 1), nil)
+	}()
+	deadline := time.Now().Add(2 * time.Second)
+	for scoped.currentGeneration() == 0 && time.Now().Before(deadline) {
+		time.Sleep(time.Millisecond)
+	}
+	callDone := make(chan error, 1)
+	go func() { _, err := scoped.Call(ctx, "tasks.claim", time.Minute, nil, nil); callDone <- err }()
+	select {
+	case <-received:
+	case <-time.After(2 * time.Second):
+		close(release)
+		t.Fatal("RPC never reached server")
+	}
+	close(release)
+	select {
+	case <-connectionDone:
+	case <-time.After(2 * time.Second):
+		t.Fatal("connection did not terminate")
+	}
+	select {
+	case err := <-callDone:
+		if !errors.Is(err, errWSRPCUncertain) {
+			t.Errorf("sent claim error = %v, want uncertain", err)
+		}
+	case <-time.After(200 * time.Millisecond):
+		t.Error("pending scoped claim did not fail immediately on detach")
+	}
+	if scoped.supportsRPCV1() {
+		t.Error("disconnected scope retained capability")
+	}
+	scoped.mu.Lock()
+	attached := scoped.sendFrame != nil
+	scoped.mu.Unlock()
+	if attached {
+		t.Error("disconnected scope retained sender")
+	}
+	if d.wsRPC.currentGeneration() != originalGeneration || !d.wsRPC.supportsRPCV1() {
+		t.Error("scoped teardown detached unrelated default transport")
+	}
+}
+
+func TestTaskWakeupDiagnosticsExcludeEndpointAndPeerSecrets(t *testing.T) {
+	const secret = "private-credential-marker"
+	tests := []struct {
+		name  string
+		err   error
+		class string
+		code  int
+	}{
+		{"url", &url.Error{Op: "dial", URL: "wss://user:" + secret + "@host/path?token=" + secret, Err: context.DeadlineExceeded}, "deadline", 0},
+		{"peer", fmt.Errorf("wrapped: %w", &websocket.CloseError{Code: 1008, Text: secret}), "peer_close", 1008},
+		{"network", &net.OpError{Op: "read", Err: context.DeadlineExceeded}, "deadline", 0},
+		{"untrusted", errors.New(secret), "other", 0},
+		{"closed", net.ErrClosed, "network_closed", 0},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			class, code := taskWakeupErrorClassification(tt.err)
+			if class != tt.class || code != tt.code {
+				t.Fatalf("classification=(%s,%d)", class, code)
+			}
+			var out bytes.Buffer
+			logger := slog.New(slog.NewJSONHandler(&out, nil))
+			logger.Info("ended", "error_class", class, "close_code", code)
+			if strings.Contains(out.String(), secret) {
+				t.Fatal("diagnostic leaked secret")
+			}
+		})
 	}
 }

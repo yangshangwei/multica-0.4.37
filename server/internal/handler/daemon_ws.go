@@ -8,6 +8,7 @@ import (
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"net/http"
 	"strings"
 
@@ -105,6 +106,7 @@ func parseRuntimeIDs(r *http.Request) []string {
 // Current database rows, not cached runtime snapshots or claimed headers, own
 // the connection's managed scope.
 func (h *Handler) AuthorizeDaemonConnection(ctx context.Context, identity daemonws.ClientIdentity) error {
+	var managedBinding db.InstallationDaemonBinding
 	source, hasSource := auth.PasswordSessionFromContext(ctx)
 	if hasSource && identity.UserID != "" && identity.UserID != source.UserID {
 		return daemonws.ErrRuntimeScope
@@ -125,7 +127,7 @@ func (h *Handler) AuthorizeDaemonConnection(ctx context.Context, identity daemon
 		if err != nil {
 			return daemonws.ErrRuntimeScope
 		}
-		if _, err = service.ValidateManagedNamespace(ctx, h.Queries, workspace, source.DaemonID); err != nil {
+		if managedBinding, err = service.ValidateManagedNamespace(ctx, h.Queries, workspace, source.DaemonID); err != nil {
 			if errors.Is(err, service.ErrManagedRuntimeSource) {
 				return daemonws.ErrRuntimeScope
 			}
@@ -146,6 +148,15 @@ func (h *Handler) AuthorizeDaemonConnection(ctx context.Context, identity daemon
 		}
 		if !identity.AllowsWorkspace(uuidToString(runtime.WorkspaceID)) {
 			return daemonws.ErrRuntimeScope
+		}
+		if managedBinding.ID.Valid {
+			// The namespace is checked afresh above for this authorization call.
+			// Each runtime is then read from the database and checked against
+			// that binding without repeating the same namespace/account reads.
+			if runtime.OwnerID != managedBinding.PrincipalUserID || runtime.WorkspaceID != managedBinding.WorkspaceID || runtime.DaemonID.String != managedBinding.DaemonID {
+				return daemonws.ErrRuntimeScope
+			}
+			continue
 		}
 		if _, err = service.ValidateManagedRuntime(ctx, h.runtimeLookup(obsmetrics.RuntimeLookupSourceDaemonAPI), runtime); err != nil {
 			if errors.Is(err, service.ErrManagedRuntimeSource) {

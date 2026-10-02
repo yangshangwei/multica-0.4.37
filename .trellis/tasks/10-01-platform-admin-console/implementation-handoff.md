@@ -1,5 +1,13 @@
 # Platform administration implementation handoff
 
+## Latest verified fixes
+
+Read [connection-followup.md](../10-01-platform-admin-acceptance/connection-followup.md) first. Scoped daemon RPC teardown now detaches the correct transport. Managed per-frame authorization still reads fresh authority but reuses one validated binding within the call, reducing three-runtime queries from 46 to 19. Classified baseline logs reproduced server read timeouts under pool contention; the exact old two events remain untraceable without their missing logs.
+
+Final 660-second local rerun: zero extra native closes/ten-second ACK timeouts or observer HTTP errors, all paging P95 ≤289.3 ms, installation P95 62.8 ms, loaded overview P95 887.6 ms. Three baseline plus nine loaded native tasks completed; reconnect starts 39.355–39.548 s. Full daemon/daemonws race, selected 11 handler tests with 14 mutation cases, vet, productionbuild and independent native proof passed. All owned services/processes stopped; data retained. Current phase local_connection_and_capacity_verified. Windows/signed distribution/reference/cold-failure/production gates remain open.
+
+The preceding local latency failures below are retained history and superseded by this rerun; do not redo the measured fixes or treat it as production release approval.
+
 ## Latest native recovery characterization
 
 Read [native-load-recovery.md](../10-01-platform-admin-acceptance/native-load-recovery.md) first. A real macOS CLI with three runtimes completed three baseline tasks and nine tasks during a full 660-second thousand-client load. HTTP heartbeat fallback started 31.7–44.9 seconds after proxy-observed ACKs, with no disconnect during the controlled ACK-loss interval. Reconnect task starts took ~109.9 seconds: the original 90-second cutoff remains failed, consistent with the 90-second stale-dispatch window/95-second hint and polling. A new real managed handler regression verifies duplicate and admission fences without changing production policy.

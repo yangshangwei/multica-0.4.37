@@ -1,5 +1,7 @@
 # Native daemon recovery under fleet load — 2026-10-02
 
+Latest result: [connection and contention fixes](connection-followup.md) close the recorded local paging, ACK-timeout and extra-native-disconnection gaps in a new full rerun. Earlier failures below remain historical evidence. Windows/distribution/reference/production gates remain open.
+
 A source-built macOS daemon with three runtimes completed 12 synthetic tasks: three baseline tasks before the measured workload and nine during the retained thousand-installation load. The result is **recovery evidence, not full S07 acceptance**: reconnect task starts took about 109.9 seconds, exceeding the original 90-second harness cutoff; the same run's worst pagination P95 was 834.2 ms, exceeding 800 ms. Background ten-second ACK timeouts and two non-injected native connection closures remain recorded.
 
 ## Scope and provenance
@@ -13,7 +15,7 @@ A source-built macOS daemon with three runtimes completed 12 synthetic tasks: th
 
 ## Corrected measurement method
 
-Earlier message-terminating proxies did not forward Ping/Pong. Node automatically answered upstream pings while the real daemon's control-frame-based read deadline expired after 60 seconds. They also failed to propagate downstream HTTP cancellation. Those runs are retained, but their results cannot establish pure ACK-expiry recovery; the first single-runtime driver's raw “passed” flag is not accepted for that claim.
+Earlier message-terminating proxies did not forward Ping/Pong. Node automatically answered upstream pings without forwarding them to the daemon. The earlier control-frame-only explanation was incomplete: the daemon also renews its deadline on application messages. See connection-followup.md for the corrected source analysis and classified server-timeout reproduction. They also failed to propagate downstream HTTP cancellation. Those runs are retained, but their results cannot establish pure ACK-expiry recovery; the first single-runtime driver's raw “passed” flag is not accepted for that claim.
 
 The versioned proxy forwards control frames in both directions, disables automatic intermediary Pong responses, and cancels upstream HTTP when the native caller aborts. Two regressions failed against the old proxy and passed after correction. An 80-second native preparation gate required one stable generation and ACKs for all three runtimes after 60 seconds. The fixed proxy uses already-installed ws 8.20.1 because the root's ws 7.5.10 does not support the needed autoPong option; no project dependency was added.
 

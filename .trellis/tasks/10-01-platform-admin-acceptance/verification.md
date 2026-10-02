@@ -1,5 +1,7 @@
 # S07 integration acceptance
 
+Latest result: [connection and contention fixes](connection-followup.md) close the recorded local paging, ACK-timeout and extra-native-disconnection gaps in a new full rerun. Earlier failures below remain historical evidence. Windows/distribution/reference/production gates remain open.
+
 Latest continuation: [native recovery under fleet load](native-load-recovery.md) validates 12 tasks on a real three-runtime daemon, while retaining ~109.9-second reconnect starts, 834.2 ms paging P95 and other open timing/connection limits. It does not mark S07 released.
 
 Latest continuation (2026-10-02): [capacity follow-up](capacity-followup.md) records optimized SQL, explicit PostgreSQL shared memory, a 660-second rerun with zero observer HTTP errors, passing loaded-browser/pagination targets, raw ACK recovery in 15.779 seconds, and remaining ten-second ACK threshold failures. The baseline below is retained as historical evidence.

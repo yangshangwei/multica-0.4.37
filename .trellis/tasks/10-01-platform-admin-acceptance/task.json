@@ -32,7 +32,7 @@
     ".trellis/tasks/10-01-platform-admin-acceptance/release-checklist.md",
     ".trellis/tasks/10-01-platform-admin-acceptance/verification.md"
   ],
-  "notes": "S01–S06 complete. A native daemon with three runtimes completed three baseline tasks and nine tasks during fleet load. Reconnect starts took about 109.9 seconds, exceeding the original 90-second observation. HTTP heartbeat fallback passed, while paging P95 834.2 ms and additional connection/timing limits remain. No production release.",
+  "notes": "Local connection and capacity fixes verified: fresh per-frame authority with 46-to-19 queries, correct scoped RPC cleanup, no extra native disconnections or ACK timeouts, paging P95 at most 289.3 ms and reconnect task starts 39.4–39.6 s. External distribution/reference/production acceptance remains open.",
   "meta": {
     "slice": "S07",
     "depends_on": "S01,S02,S03,S04,S05,S06",
@@ -48,15 +48,15 @@
     "parent_acceptance": "AC01–AC13",
     "planning_only": false,
     "upstream_verified_commit": "1c56f6cd6",
-    "current_phase": "native_recovery_characterized",
+    "current_phase": "local_connection_and_capacity_verified",
     "open_acceptance": [
-      "Uncertain-claim recovery latency, synthetic ACK10s threshold and final pagingP95 834.2ms",
-      "Two additional native connection closures outside fault interval; cause not logged",
       "Windows runtime/ACL and signed/old-binary/reinstall lifecycle",
-      "Reference hardware, storage-cold/extended failure and production release verification"
+      "Dedicated reference hardware, storage-cold and extended failure verification",
+      "Production maintenance/deployment/recovery verification"
     ],
     "local_verification_report": ".trellis/tasks/10-01-platform-admin-acceptance/verification.md",
     "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md",
-    "native_recovery_report": ".trellis/tasks/10-01-platform-admin-acceptance/native-load-recovery.md"
+    "native_recovery_report": ".trellis/tasks/10-01-platform-admin-acceptance/native-load-recovery.md",
+    "connection_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/connection-followup.md"
   }
 }

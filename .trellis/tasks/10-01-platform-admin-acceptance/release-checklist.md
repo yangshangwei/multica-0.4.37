@@ -62,3 +62,11 @@ mark the entire S07 or production release complete.
 - [ ] Resolve or explicitly accept ~109.9-second reconnect task starts (original 90-second observation failed), two unexplained extra native reconnects, and final paging P95 834.2 ms / synthetic ten-second ACK failures.
 
 See native-load-recovery.md; the successful recovery matrix is separate from latency, capacity and distribution release acceptance.
+
+## Connection and contention follow-up
+
+- [x] Reproduce server read timeouts with classified diagnostics; correct earlier control-frame-only interpretation.
+- [x] Fix scoped RPC detachment and reduce same-call managed authorization queries without caching authority between frames.
+- [x] Verify full local rerun: no extra native closes or ten-second ACK timeouts, reconnect starts 39.355–39.548 s, every paging group P95 ≤289.3 ms, loaded Web P95 ≤901.9 ms. See connection-followup.md.
+
+The older local latency checkboxes above describe the preceding runs and are superseded by this evidence. Distribution/Windows and external deployment/reference checks are not closed.

@@ -1,5 +1,7 @@
 # S07 capacity follow-up — 2026-10-02
 
+Latest result: [connection and contention fixes](connection-followup.md) close the recorded local paging, ACK-timeout and extra-native-disconnection gaps in a new full rerun. Earlier failures below remain historical evidence. Windows/distribution/reference/production gates remain open.
+
 Latest continuation: [native recovery under fleet load](native-load-recovery.md) validates 12 tasks on a real three-runtime daemon, while retaining ~109.9-second reconnect starts, 834.2 ms paging P95 and other open timing/connection limits. It does not mark S07 released.
 
 The local paging and loaded-browser targets passed after optimizing overview SQL and explicitly sizing PostgreSQL shared memory. S07 remains open: the ten-second heartbeat threshold still failed 1,000 times, and Windows/distribution/reference-environment/production gates remain unverified.
