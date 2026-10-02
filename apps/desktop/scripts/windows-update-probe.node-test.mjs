@@ -43,3 +43,17 @@ test('owned-process cleanup keeps the hosted PowerShell 7 module environment', a
   assert.match(source, /await execute\('pwsh\.exe', \['-NoProfile', '-NonInteractive'/);
   assert.doesNotMatch(source, /execute\('powershell\.exe'/);
 });
+
+test('owned home refuses existing state and removes only its matching marker', async () => {
+  const { claimHomeDirectory } = await import('./windows-update-probe.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'multica-update-home-'));
+  try {
+    const cleanup = await claimHomeDirectory(root, 'run-one');
+    await assert.rejects(claimHomeDirectory(root, 'run-two'), { code: 'EEXIST' });
+    await writeFile(join(root, '.multica', 'windows-update-owner.json'), 'other-owner');
+    await assert.rejects(cleanup(), /ownership/);
+    await writeFile(join(root, '.multica', 'windows-update-owner.json'), 'run-one');
+    await cleanup();
+    await assert.rejects(readFile(join(root, '.multica', 'windows-update-owner.json')), { code: 'ENOENT' });
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

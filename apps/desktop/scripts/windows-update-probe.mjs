@@ -2,7 +2,7 @@
 import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
-import { mkdir, readFile, writeFile, readdir, stat } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, readdir, stat, lstat, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -44,6 +44,17 @@ export async function createUpdateFeed(directory, requests = []) {
   return { server, url: `http://127.0.0.1:${server.address().port}/desktop` };
 }
 
+export async function claimHomeDirectory(home, owner) {
+  const directory = join(home, '.multica');
+  const marker = join(directory, 'windows-update-owner.json');
+  await mkdir(directory);
+  await writeFile(marker, owner, { flag: 'wx' });
+  return async () => {
+    if ((await lstat(directory)).isSymbolicLink() || await readFile(marker, 'utf8') !== owner) throw new Error('Updater home ownership mismatch');
+    await rm(directory, { recursive: true });
+  };
+}
+
 async function stopOwned(executable) {
   // Match the hosted workflow's PowerShell 7 module environment; PS5 cannot load its CIM modules.
   await execute('pwsh.exe', ['-NoProfile', '-NonInteractive', '-Command', '$p=$env:MULTICA_UPDATE_OWNED_INSTALL; Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -and $_.ExecutablePath.StartsWith($p + "\\", [StringComparison]::OrdinalIgnoreCase) } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }'], { env: { ...process.env, MULTICA_UPDATE_OWNED_INSTALL: resolve(executable, '..') }, timeout: 30_000 });
@@ -55,13 +66,16 @@ async function run(options) {
   const executable = resolve(options.executable);
   if (executable !== join(root, 'installed', 'Multica.exe')) throw new Error('Executable must be the isolated owned installation');
   const result = { status: 'failed', previousVersion: options['previous-version'], expectedVersion: options['expected-version'], requests: [], guiLaunched: false, downloaded: false, upgraded: false, settingsRetained: false, historyMarkerRetained: false, signedAcceptance: false, offlineTrustTested: false, error: null };
-  let electronApp; let feed;
+  let electronApp; let feed; let cleanupHome;
   try {
     const artifacts = join(root, 'feed');
     await collectArtifacts({ source: resolve(options['candidate-directory']), destination: artifacts, allowPrerelease: true });
     feed = await createUpdateFeed(artifacts, result.requests);
-    const profile = join(root, 'profile'); const home = join(root, 'home');
-    const appData = join(home, 'AppData', 'Roaming'); const localAppData = join(home, 'AppData', 'Local');
+    const profile = join(root, 'profile');
+    if (!process.env.USERPROFILE) throw new Error('Runner home missing');
+    const home = resolve(process.env.USERPROFILE);
+    cleanupHome = await claimHomeDirectory(home, root);
+    const appData = join(root, 'AppData', 'Roaming'); const localAppData = join(root, 'AppData', 'Local');
     for (const path of [profile, join(home, '.multica'), appData, localAppData]) await mkdir(path, { recursive: true });
     const config = { schemaVersion: 1, apiUrl: feed.url.replace('/desktop', ''), appUrl: feed.url.replace('/desktop', ''), wsUrl: feed.url.replace('http:', 'ws:').replace('/desktop', '/ws'), updateUrl: feed.url };
     await writeFile(join(home, '.multica', 'desktop.json'), JSON.stringify(config));
@@ -131,6 +145,10 @@ async function run(options) {
   } catch (error) { result.error = error.stack ?? String(error); }
   finally {
     await electronApp?.close().catch(() => {});
+    if (cleanupHome) {
+      try { await stopOwned(executable); await cleanupHome(); result.ownedHomeCleanup = 'passed'; }
+      catch (error) { result.status = 'failed'; result.ownedHomeCleanup = error.message; }
+    }
     if (feed) { feed.server.closeAllConnections(); await new Promise((done) => feed.server.close(done)); }
     await writeFile(options.report, JSON.stringify(result, null, 2));
   }
