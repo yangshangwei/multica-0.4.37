@@ -138,11 +138,19 @@ jobs:
           ./apps/desktop/scripts/accept-windows-installer.test.ps1
           node --test apps/desktop/scripts/verify-go-test-events.node-test.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Go event verifier tests failed' }
+      - name: Test Windows desktop ticket publication
+        shell: pwsh
+        run: |
+          $reportPath = Join-Path $env:RUNNER_TEMP 'multica-desktop-lock-tests.json'
+          pnpm --filter @multica/desktop exec vitest run src/main/managed-lock.test.ts src/main/managed-lock-publish.test.ts --reporter=json --outputFile $reportPath
+          if ($LASTEXITCODE -ne 0) { throw 'Desktop ticket publication tests failed' }
+          $result = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
+          if ($result.numFailedTests -ne 0 -or $result.numPendingTests -ne 0 -or $result.numTotalTests -lt 1) { throw 'Desktop ticket tests failed or skipped' }
       - name: Test native managed identity and transport
         shell: pwsh
         working-directory: server
         run: |
-          $names = @('TestManagedIdentityWindowsProfileACL', 'TestManagedIdentityConcurrentPersistence', 'TestManagedLockWindowsReadsDuringDeleteAccess', 'TestManagedLockWindowsReaderAllowsReplacementAndRelease', 'TestManagedLockWindowsLongPaths', 'TestManagedHandoffOriginalBytesAndScope', 'TestManagedTransportUsesScopedCredentialsAndAuthoritativeMaps', 'TestManagedWorkspaceWebSocketsAndRPCRemainIsolated', 'TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport', 'TestManagedHeartbeatHTTPFallbackUsesScopedCredentials', 'TestManagedControlRequestBindsMethodPathBodyTimeAndRejectsReplay', 'TestManagedPIDReservationRejectsLiveAndUnknownPredecessor', 'TestManagedPIDSuccessorSurvivesPredecessorCleanup')
+          $names = @('TestManagedIdentityWindowsProfileACL', 'TestManagedIdentityConcurrentPersistence', 'TestManagedLockWindowsReadsDuringDeleteAccess', 'TestManagedLockWindowsPublicationWaitsForReaderAndReleases', 'TestManagedLockWindowsPublicationTimeoutPreservesTicket', 'TestManagedLockWindowsLongPaths', 'TestManagedHandoffOriginalBytesAndScope', 'TestManagedTransportUsesScopedCredentialsAndAuthoritativeMaps', 'TestManagedWorkspaceWebSocketsAndRPCRemainIsolated', 'TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport', 'TestManagedHeartbeatHTTPFallbackUsesScopedCredentials', 'TestManagedControlRequestBindsMethodPathBodyTimeAndRejectsReplay', 'TestManagedPIDReservationRejectsLiveAndUnknownPredecessor', 'TestManagedPIDSuccessorSurvivesPredecessorCleanup')
           $pattern = '^(' + ($names -join '|') + ')$'
           $events = Join-Path $env:RUNNER_TEMP 'multica-managed-windows-tests.jsonl'
           go test -json ./internal/daemon -run $pattern -count=1 -timeout=8m 2> "$env:RUNNER_TEMP/multica-managed-windows-tests.stderr.txt" | Tee-Object -FilePath $events
@@ -195,6 +203,7 @@ jobs:
         with:
           name: windows-x64-acceptance-evidence
           path: |
+            ${{ runner.temp }}/multica-desktop-lock-tests.json
             ${{ runner.temp }}/multica-managed-windows-tests.jsonl
             ${{ runner.temp }}/multica-managed-windows-tests.stderr.txt
             ${{ runner.temp }}/multica-managed-windows-verification.json

@@ -23,8 +23,8 @@ type managementLockTicket struct {
 	Ticket     *string `json:"ticket"`
 }
 
-// Ticket readers must allow peers to atomically replace and remove their own
-// records while the read retains a snapshot of the opened file.
+// Ticket readers share deletion access with peer handles. Windows publication
+// can still wait for readers to close before atomically replacing a record.
 func readManagementLockFile(path string) ([]byte, error) {
 	file, err := openManagementLockFile(path)
 	if err != nil {
@@ -106,7 +106,7 @@ func withManagementFileLock(parent string, operation func() error) error {
 	}
 	owner := managementLockTicket{Version: 1, PID: os.Getpid(), OwnerNonce: uuid.NewString(), HostID: current.hostID, BootID: current.bootID}
 	path := filepath.Join(directory, owner.OwnerNonce+".json")
-	if err := writeManagementJSON(path, owner); err != nil {
+	if err := writeManagementJSONWithRename(path, owner, renameManagementLockFile); err != nil {
 		return err
 	}
 	defer os.Remove(path)
@@ -128,7 +128,7 @@ func withManagementFileLock(parent string, operation func() error) error {
 	}
 	ticket := strconv.FormatInt(maximum+1, 10)
 	owner.Ticket = &ticket
-	if err = writeManagementJSON(path, owner); err != nil {
+	if err = writeManagementJSONWithRename(path, owner, renameManagementLockFile); err != nil {
 		return err
 	}
 	deadline := time.Now().Add(5 * time.Second)

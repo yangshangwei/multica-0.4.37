@@ -152,8 +152,11 @@ Native transport tests must forward WebSocket Ping/Pong end to end and propagate
 A managed wakeup connection attaches and detaches its own `rpc`, never the daemon's unrelated default RPC. Pending sent calls remain uncertain; detachment must not authorize immediate duplicate claims. Regression: `TestManagedConnectionDetachFailsPendingRPCAndPreservesOtherTransport`. Classify connection errors without logging credential-bearing endpoints or peer text, and correlate workspace/phase/time; CLI RPC generation and proxy socket ordinals are different identifiers.
 
 Windows management-ticket readers must include `FILE_SHARE_DELETE` as well as
-read/write sharing, so a peer's atomic replacement or release can proceed while
-the reader retains the old snapshot. Never treat an unreadable live ticket as
+read/write sharing, so peer DELETE-access handles do not conflict with reads.
+Windows MoveFileEx can still reject replacement while a destination reader is
+open: Go and Node ticket publishers retry the same temporary-file rename for
+at most one second, without deleting the destination or retrying the protected
+operation. Persistent failure preserves the old ticket and remains an error. Never treat an unreadable live ticket as
 absent. Preserve Go's long-path behavior when using `CreateFile` directly.
 Native regressions: `managed_lock_windows_test.go`; the Windows acceptance job
 also repeats concurrent identity creation twenty times.

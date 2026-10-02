@@ -16,7 +16,21 @@ async function publish(path: string, value: Ticket) {
   const file = await open(temporary, "wx", 0o600);
   try { await file.writeFile(JSON.stringify(value)); await file.sync(); }
   finally { await file.close(); }
-  try { await rename(temporary, path); }
+  try {
+    // Windows readers can briefly prevent MoveFileEx from replacing this ticket.
+    // Retry only the same atomic rename; deleting the choosing record would let
+    // peers enter the critical section before this owner has chosen its ticket.
+    const deadline = performance.now() + 1_000;
+    for (;;) {
+      try { await rename(temporary, path); break; }
+      catch (error) {
+        const code = (error as NodeJS.ErrnoException).code;
+        const remaining = deadline - performance.now();
+        if (process.platform !== "win32" || !["EPERM", "EACCES", "EBUSY"].includes(code ?? "") || remaining <= 0) throw error;
+        await new Promise((resolve) => setTimeout(resolve, Math.min(10, remaining)));
+      }
+    }
+  }
   catch (error) { await unlink(temporary); throw error; }
 }
 

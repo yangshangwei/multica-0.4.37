@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -53,7 +54,7 @@ func TestManagedLockWindowsReadsDuringDeleteAccess(t *testing.T) {
 	}
 }
 
-func TestManagedLockWindowsReaderAllowsReplacementAndRelease(t *testing.T) {
+func TestManagedLockWindowsPublicationWaitsForReaderAndReleases(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "ticket.json")
 	if err := os.WriteFile(path, []byte("previous"), 0600); err != nil {
 		t.Fatal(err)
@@ -63,12 +64,40 @@ func TestManagedLockWindowsReaderAllowsReplacementAndRelease(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer reader.Close()
-	if err := writeManagementJSON(path, "next"); err != nil {
-		t.Fatalf("reader blocked ticket publication: %v", err)
+
+	published := make(chan error, 1)
+	finished := make(chan struct{})
+	go func() {
+		defer close(finished)
+		published <- writeManagementJSONWithRename(path, "next", renameManagementLockFile)
+	}()
+	defer func() {
+		reader.Close()
+		<-finished
+	}()
+	select {
+	case err := <-published:
+		t.Fatalf("publication returned while destination reader remained open: %v", err)
+	case <-time.After(50 * time.Millisecond):
 	}
 	raw, err := io.ReadAll(reader)
 	if err != nil || string(raw) != "previous" {
-		t.Fatalf("reader lost original snapshot: %q, %v", raw, err)
+		t.Fatalf("blocked publication changed old ticket: %q, %v", raw, err)
+	}
+	if err := reader.Close(); err != nil {
+		t.Fatal(err)
+	}
+	select {
+	case err := <-published:
+		if err != nil {
+			t.Fatalf("publication failed after reader closed: %v", err)
+		}
+	case <-time.After(2 * time.Second):
+		t.Fatal("publication did not finish after reader closed")
+	}
+	raw, err = os.ReadFile(path)
+	if err != nil || string(raw) != "\"next\"\n" {
+		t.Fatalf("new ticket not published: %q, %v", raw, err)
 	}
 	next, err := openManagementLockFile(path)
 	if err != nil {
@@ -117,5 +146,36 @@ func TestManagedLockWindowsLongPaths(t *testing.T) {
 	normalized, err := managementLockWindowsPath(unc)
 	if err != nil || normalized != extendedLengthUNCPrefix+unc[2:] {
 		t.Fatalf("UNC normalization: %q, %v", normalized, err)
+	}
+}
+
+func TestManagedLockWindowsPublicationTimeoutPreservesTicket(t *testing.T) {
+	directory := t.TempDir()
+	path := filepath.Join(directory, "ticket.json")
+	if err := os.WriteFile(path, []byte("previous"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	reader, err := openManagementLockFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer reader.Close()
+	started := time.Now()
+	err = writeManagementJSONWithRename(path, "next", func(from, to string) error {
+		return renameManagementLockFileUntil(from, to, time.Now().Add(50*time.Millisecond))
+	})
+	if !errors.Is(err, syscall.ERROR_ACCESS_DENIED) && !errors.Is(err, syscall.Errno(32)) {
+		t.Fatalf("expected preserved rename cause, got %v", err)
+	}
+	if elapsed := time.Since(started); elapsed < 50*time.Millisecond || elapsed > 2*time.Second {
+		t.Fatalf("unbounded or missing publication retry: %v", elapsed)
+	}
+	raw, readErr := os.ReadFile(path)
+	if readErr != nil || string(raw) != "previous" {
+		t.Fatalf("failed publication changed old ticket: %q, %v", raw, readErr)
+	}
+	entries, err := os.ReadDir(directory)
+	if err != nil || len(entries) != 1 || entries[0].Name() != "ticket.json" {
+		t.Fatalf("temporary publication leaked: %+v, %v", entries, err)
 	}
 }

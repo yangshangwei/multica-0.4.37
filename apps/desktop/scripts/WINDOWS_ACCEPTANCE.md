@@ -7,7 +7,7 @@ the original Linux/multi-architecture smoke matrix remains the default.
 The acceptance job:
 
 1. Parses and fixture-tests the PowerShell lifecycle driver.
-2. Executes thirteen named managed identity/transport tests natively and rejects
+2. Executes fourteen named managed identity/transport tests natively and rejects
    missing tests, package failures and skipped parent or child cases. The ACL
    case inspects a real generated identity under a new temporary directory in
    the runner's user profile, checking broad Everyone/Users/Authenticated Users

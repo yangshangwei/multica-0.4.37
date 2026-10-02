@@ -203,6 +203,10 @@ func writeManagedIdentity(path string, record managedIdentityRecord) error {
 }
 
 func writeManagementJSON(path string, value any) error {
+	return writeManagementJSONWithRename(path, value, os.Rename)
+}
+
+func writeManagementJSONWithRename(path string, value any, rename func(string, string) error) error {
 	raw, err := json.Marshal(value)
 	if err != nil {
 		return err
@@ -224,7 +228,7 @@ func writeManagementJSON(path string, value any) error {
 	if err = file.Close(); err != nil {
 		return err
 	}
-	if err = os.Rename(temporary, path); err != nil {
+	if err = rename(temporary, path); err != nil {
 		return err
 	}
 	if runtime.GOOS != "windows" {
