@@ -64,9 +64,10 @@ func (s *IssueService) runtimeLookup(q *db.Queries) RuntimeLookup {
 }
 
 // runtimeLookup returns the task-sourced lookup for analytics context and the
-// usage provider backfill.
-func (s *TaskService) runtimeLookup() RuntimeLookup {
-	return RuntimeLookup{Queries: s.Queries, Metrics: s.Metrics, Source: obsmetrics.RuntimeLookupSourceTask}
+// usage provider backfill. Transaction callers pass their own queries so all
+// authorization and claim reads stay on the transaction connection.
+func (s *TaskService) runtimeLookup(q *db.Queries) RuntimeLookup {
+	return RuntimeLookup{Queries: q, Metrics: s.Metrics, Source: obsmetrics.RuntimeLookupSourceTask}
 }
 
 // runtimeLookup returns the autopilot-sourced lookup. AutopilotService holds no
@@ -78,4 +79,14 @@ func (s *AutopilotService) runtimeLookup() RuntimeLookup {
 		m = s.TaskSvc.Metrics
 	}
 	return RuntimeLookup{Queries: s.Queries, Metrics: m, Source: obsmetrics.RuntimeLookupSourceAutopilot}
+}
+
+// runtimeLookup attributes cancellation reads to task execution, using the
+// same collector as the task service and the caller's transaction connection.
+func (s *AdminOperationService) runtimeLookup(q *db.Queries) RuntimeLookup {
+	var m *obsmetrics.BusinessMetrics
+	if s.Tasks != nil {
+		m = s.Tasks.Metrics
+	}
+	return RuntimeLookup{Queries: q, Metrics: m, Source: obsmetrics.RuntimeLookupSourceTask}
 }

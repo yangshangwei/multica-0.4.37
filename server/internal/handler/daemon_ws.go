@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/auth"
+	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	"net/http"
@@ -136,7 +137,7 @@ func (h *Handler) AuthorizeDaemonConnection(ctx context.Context, identity daemon
 		if err != nil {
 			return daemonws.ErrRuntimeScope
 		}
-		runtime, err := h.Queries.GetAgentRuntime(ctx, runtimeID)
+		runtime, err := h.getAgentRuntime(ctx, obsmetrics.RuntimeLookupSourceDaemonAPI, runtimeID)
 		if errors.Is(err, pgx.ErrNoRows) {
 			return daemonws.ErrRuntimeScope
 		}
@@ -146,7 +147,7 @@ func (h *Handler) AuthorizeDaemonConnection(ctx context.Context, identity daemon
 		if !identity.AllowsWorkspace(uuidToString(runtime.WorkspaceID)) {
 			return daemonws.ErrRuntimeScope
 		}
-		if _, err = service.ValidateManagedRuntime(ctx, h.Queries, runtime); err != nil {
+		if _, err = service.ValidateManagedRuntime(ctx, h.runtimeLookup(obsmetrics.RuntimeLookupSourceDaemonAPI), runtime); err != nil {
 			if errors.Is(err, service.ErrManagedRuntimeSource) {
 				return daemonws.ErrRuntimeScope
 			}

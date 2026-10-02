@@ -994,7 +994,7 @@ func (s *TaskService) taskAnalyticsContext(ctx context.Context, task db.AgentTas
 	}
 
 	if task.RuntimeID.Valid {
-		if rt, err := s.runtimeLookup().Get(ctx, task.RuntimeID); err == nil {
+		if rt, err := s.runtimeLookup(s.Queries).Get(ctx, task.RuntimeID); err == nil {
 			tc.WorkspaceID = util.UUIDToString(rt.WorkspaceID)
 			tc.RuntimeMode = rt.RuntimeMode
 			tc.Provider = rt.Provider
@@ -3381,11 +3381,11 @@ func (s *TaskService) claimTask(ctx context.Context, agentID, runtimeID pgtype.U
 		}
 		var binding db.InstallationDaemonBinding
 		if previewRuntimeID.Valid {
-			runtime, err := qtx.GetAgentRuntime(ctx, previewRuntimeID)
+			runtime, err := s.runtimeLookup(qtx).Get(ctx, previewRuntimeID)
 			if err != nil {
 				return err
 			}
-			binding, err = LockManagedRuntime(ctx, qtx, runtime)
+			binding, err = LockManagedRuntime(ctx, s.runtimeLookup(qtx), runtime)
 			if err != nil {
 				return err
 			}
@@ -3545,11 +3545,11 @@ func (s *TaskService) ClaimTaskForRuntime(ctx context.Context, runtimeID pgtype.
 		)
 	}()
 
-	runtime, err := s.Queries.GetAgentRuntime(ctx, runtimeID)
+	runtime, err := s.runtimeLookup(s.Queries).Get(ctx, runtimeID)
 	if err != nil {
 		return nil, err
 	}
-	if _, err = ValidateManagedRuntime(ctx, s.Queries, runtime); err != nil {
+	if _, err = ValidateManagedRuntime(ctx, s.runtimeLookup(s.Queries), runtime); err != nil {
 		return nil, err
 	}
 	runtimeKey := util.UUIDToString(runtimeID)
@@ -3566,7 +3566,7 @@ func (s *TaskService) ClaimTaskForRuntime(ctx context.Context, runtimeID pgtype.
 		reclaimCheckAfter := time.Now().Add(claimResponseRecoveryWindow + ReclaimCheckHintSafetyMargin)
 		var stale db.AgentTaskQueue
 		err := s.runInTx(ctx, func(qtx *db.Queries) error {
-			if _, err := LockManagedRuntime(ctx, qtx, runtime); err != nil {
+			if _, err := LockManagedRuntime(ctx, s.runtimeLookup(qtx), runtime); err != nil {
 				return err
 			}
 			var err error
@@ -3720,11 +3720,11 @@ func (s *TaskService) FinalizeTaskClaim(
 			}
 		}
 		if task.RuntimeID.Valid {
-			runtime, err := qtx.GetAgentRuntime(ctx, task.RuntimeID)
+			runtime, err := s.runtimeLookup(qtx).Get(ctx, task.RuntimeID)
 			if err != nil {
 				return err
 			}
-			_, err = LockManagedRuntime(ctx, qtx, runtime)
+			_, err = LockManagedRuntime(ctx, s.runtimeLookup(qtx), runtime)
 			if err != nil {
 				return err
 			}
@@ -3845,11 +3845,11 @@ func (s *TaskService) ClaimTasksForRuntimes(ctx context.Context, runtimeIDs []pg
 	}
 
 	for _, id := range uniqueIDs {
-		runtime, err := s.Queries.GetAgentRuntime(ctx, id)
+		runtime, err := s.runtimeLookup(s.Queries).Get(ctx, id)
 		if err != nil {
 			return nil, err
 		}
-		if _, err = ValidateManagedRuntime(ctx, s.Queries, runtime); err != nil {
+		if _, err = ValidateManagedRuntime(ctx, s.runtimeLookup(s.Queries), runtime); err != nil {
 			return nil, err
 		}
 	}
@@ -3904,7 +3904,7 @@ func (s *TaskService) ClaimTasksForRuntimes(ctx context.Context, runtimeIDs []pg
 	if len(dueKeys) > 0 {
 		reclaimCheckAfter = time.Now().Add(claimResponseRecoveryWindow + ReclaimCheckHintSafetyMargin)
 		err = s.runInTx(ctx, func(qtx *db.Queries) error {
-			if err := LockManagedRuntimes(ctx, qtx, uniqueIDs); err != nil {
+			if err := LockManagedRuntimes(ctx, s.runtimeLookup(qtx), uniqueIDs); err != nil {
 				return err
 			}
 			var err error

@@ -65,6 +65,30 @@ func TestRuntimeLookupNilMetricsIsSafe(t *testing.T) {
 	}
 }
 
+func TestRuntimeLookupKeepsTransactionConnectionAndCollector(t *testing.T) {
+	t.Parallel()
+
+	for _, source := range []string{"task claim", "admin cancellation"} {
+		t.Run(source, func(t *testing.T) {
+			m := obsmetrics.NewBusinessMetrics()
+			poolQueries := db.New(scanErrDBTX{err: errors.New("read escaped transaction")})
+			txQueries := db.New(scanErrDBTX{err: pgx.ErrNoRows})
+			tasks := &TaskService{Queries: poolQueries, Metrics: m}
+			lookup := tasks.runtimeLookup(txQueries)
+			if source == "admin cancellation" {
+				operations := NewAdminOperationService(poolQueries, nil, tasks)
+				lookup = operations.runtimeLookup(txQueries)
+			}
+			if _, err := lookup.Get(t.Context(), pgtype.UUID{}); !errors.Is(err, pgx.ErrNoRows) {
+				t.Fatalf("runtime lookup did not use transaction connection: %v", err)
+			}
+			if got := lookupCount(t, m, obsmetrics.RuntimeLookupSourceTask, obsmetrics.RuntimeLookupResultNotFound); got != 1 {
+				t.Fatalf("transaction runtime reads = %v, want 1", got)
+			}
+		})
+	}
+}
+
 // ---- helpers --------------------------------------------------------------
 
 func lookupCount(t *testing.T, m *obsmetrics.BusinessMetrics, source, result string) float64 {

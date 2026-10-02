@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/events"
+	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"testing"
 	"time"
@@ -52,28 +53,33 @@ func TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner(t *testing.T) {
 		t.Fatal(err)
 	}
 	ctx := auth.WithPasswordSession(t.Context(), source)
-	if _, err := ValidateManagedRuntime(ctx, f.svc.Queries, runtime); err != nil {
+	m := obsmetrics.NewBusinessMetrics()
+	lookup := RuntimeLookup{Queries: f.svc.Queries, Metrics: m, Source: obsmetrics.RuntimeLookupSourceDaemonAPI}
+	if _, err := ValidateManagedRuntime(ctx, lookup, runtime); err != nil {
 		t.Fatal(err)
+	}
+	if got := lookupCount(t, m, obsmetrics.RuntimeLookupSourceDaemonAPI, obsmetrics.RuntimeLookupResultOK); got != 1 {
+		t.Fatalf("managed authorization runtime reads = %v, want 1", got)
 	}
 	pat := source
 	pat.Kind = "pat"
 	pat.BindingID = ""
 	pat.BindingEpoch = 0
-	if _, err := ValidateManagedRuntime(auth.WithPasswordSession(t.Context(), pat), f.svc.Queries, runtime); !errors.Is(err, ErrManagedRuntimeSource) {
+	if _, err := ValidateManagedRuntime(auth.WithPasswordSession(t.Context(), pat), RuntimeLookup{Queries: f.svc.Queries}, runtime); !errors.Is(err, ErrManagedRuntimeSource) {
 		t.Fatalf("PAT result=%v", err)
 	}
 	wrong := runtime
 	wrong.OwnerID = pgtype.UUID{Bytes: uuid.New(), Valid: true}
-	if _, err := ValidateManagedRuntime(ctx, f.svc.Queries, wrong); !errors.Is(err, ErrManagedRuntimeSource) {
+	if _, err := ValidateManagedRuntime(ctx, RuntimeLookup{Queries: f.svc.Queries}, wrong); !errors.Is(err, ErrManagedRuntimeSource) {
 		t.Fatalf("foreign owner result=%v", err)
 	}
 	wrong = runtime
 	wrong.WorkspaceID = pgtype.UUID{Bytes: uuid.New(), Valid: true}
-	if _, err := ValidateManagedRuntime(ctx, f.svc.Queries, wrong); !errors.Is(err, ErrManagedRuntimeSource) {
+	if _, err := ValidateManagedRuntime(ctx, RuntimeLookup{Queries: f.svc.Queries}, wrong); !errors.Is(err, ErrManagedRuntimeSource) {
 		t.Fatalf("foreign workspace result=%v", err)
 	}
 	f.fx.Exec(t, "UPDATE installation_daemon_binding SET state='revoked' WHERE id=$1", source.BindingID)
-	if _, err := ValidateManagedRuntime(ctx, f.svc.Queries, runtime); err == nil {
+	if _, err := ValidateManagedRuntime(ctx, RuntimeLookup{Queries: f.svc.Queries}, runtime); err == nil {
 		t.Fatal("revoked binding remained authorized")
 	}
 }
@@ -89,7 +95,7 @@ func TestManagedRuntimeAllowsUnboundLegacyNamespace(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if binding, err := ValidateManagedRuntime(context.Background(), f.svc.Queries, runtime); err != nil || binding.ID.Valid {
+	if binding, err := ValidateManagedRuntime(context.Background(), RuntimeLookup{Queries: f.svc.Queries}, runtime); err != nil || binding.ID.Valid {
 		t.Fatalf("legacy namespace changed: %+v %v", binding, err)
 	}
 }
@@ -113,7 +119,7 @@ func TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy(t *testing.T) {
 		"legacy context":            t.Context(),
 	} {
 		t.Run(name, func(t *testing.T) {
-			if _, err := ValidateManagedRuntime(ctx, f.svc.Queries, runtime); !errors.Is(err, ErrManagedRuntimeSource) {
+			if _, err := ValidateManagedRuntime(ctx, RuntimeLookup{Queries: f.svc.Queries}, runtime); !errors.Is(err, ErrManagedRuntimeSource) {
 				t.Fatalf("revoked managed namespace downgraded to legacy authorization: %v", err)
 			}
 		})
@@ -182,15 +188,20 @@ func TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory(t *testin
 		t.Fatalf("claim lost binding snapshot: %+v", claimed)
 	}
 	// A pre-upgrade dispatched execution has no known installation identity.
+	// Its admission version is also unknown; clearing only identity would
+	// manufacture a partial snapshot that admission correctly rejects.
 	// Reclaiming delivery must not fabricate an association for that history.
-	fx.Exec(t, "UPDATE agent_task_queue SET execution_binding_id=NULL,execution_binding_epoch=NULL,execution_installation_id=NULL,dispatched_at=now()-interval '5 minutes',prepare_lease_expires_at=now()-interval '1 minute' WHERE id=$1", taskID)
+	fx.Exec(t, "UPDATE agent_task_queue SET execution_binding_id=NULL,execution_binding_epoch=NULL,execution_installation_id=NULL,execution_admission_version=NULL,dispatched_at=now()-interval '5 minutes',prepare_lease_expires_at=now()-interval '1 minute' WHERE id=$1", taskID)
 	svc.ReclaimCheck = nil
 	reclaimed, err := svc.ClaimTaskForRuntime(ctx, runtimeID)
 	if err != nil || reclaimed == nil {
 		t.Fatalf("historical reclaim=%+v, %v", reclaimed, err)
 	}
-	if reclaimed.ExecutionBindingID.Valid || reclaimed.ExecutionInstallationID.Valid {
+	if reclaimed.ExecutionBindingID.Valid || reclaimed.ExecutionBindingEpoch.Valid || reclaimed.ExecutionInstallationID.Valid || reclaimed.ExecutionAdmissionVersion.Valid {
 		t.Fatal("historical task was retroactively associated")
+	}
+	if reclaimed.ClaimGeneration != claimed.ClaimGeneration+1 {
+		t.Fatal("historical reclaim did not advance its delivery generation")
 	}
 	tokenHash := auth.HashToken(uuid.NewString())
 	derivedHash := auth.HashToken(uuid.NewString())

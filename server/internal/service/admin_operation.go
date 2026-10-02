@@ -155,7 +155,7 @@ func (s *AdminOperationService) CancelTask(ctx context.Context, p AdminCancelTas
 		if (task.Status == "queued" || task.Status == "deferred") && !task.DispatchedAt.Valid {
 			metadata.State, metadata.ResultCode, metadata.Confirmation = "succeeded", "cancelled_before_dispatch", "not_required"
 		} else {
-			canConfirm, err := cancellationConfirmationSupported(ctx, q, task)
+			canConfirm, err := s.cancellationConfirmationSupported(ctx, q, task)
 			if err != nil {
 				return result, err
 			}
@@ -208,11 +208,11 @@ func (s *AdminOperationService) CancelTask(ctx context.Context, p AdminCancelTas
 	return result, nil
 }
 
-func cancellationConfirmationSupported(ctx context.Context, q *db.Queries, task db.AgentTaskQueue) (bool, error) {
+func (s *AdminOperationService) cancellationConfirmationSupported(ctx context.Context, q *db.Queries, task db.AgentTaskQueue) (bool, error) {
 	if !task.ExecutionBindingID.Valid || !task.ExecutionBindingEpoch.Valid || !task.RuntimeID.Valid || !task.DispatchedAt.Valid {
 		return false, nil
 	}
-	runtime, err := q.GetAgentRuntime(ctx, task.RuntimeID)
+	runtime, err := s.runtimeLookup(q).Get(ctx, task.RuntimeID)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return false, nil
 	}
@@ -472,11 +472,11 @@ func (s *AdminOperationService) AcknowledgeCancellation(ctx context.Context, tas
 		return err
 	}
 	if preview.RuntimeID.Valid {
-		runtime, err := q.GetAgentRuntime(ctx, preview.RuntimeID)
+		runtime, err := s.runtimeLookup(q).Get(ctx, preview.RuntimeID)
 		if err != nil {
 			return err
 		}
-		if _, err = LockManagedRuntime(ctx, q, runtime); err != nil {
+		if _, err = LockManagedRuntime(ctx, s.runtimeLookup(q), runtime); err != nil {
 			return err
 		}
 	}

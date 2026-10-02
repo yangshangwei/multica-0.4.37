@@ -60,13 +60,14 @@ func ValidateManagedNamespace(ctx context.Context, q *db.Queries, workspace pgty
 	return binding, nil
 }
 
-func ValidateManagedRuntime(ctx context.Context, q *db.Queries, runtime db.AgentRuntime) (db.InstallationDaemonBinding, error) {
+func ValidateManagedRuntime(ctx context.Context, lookup RuntimeLookup, runtime db.AgentRuntime) (db.InstallationDaemonBinding, error) {
+	q := lookup.Queries
 	binding, err := ValidateManagedNamespace(ctx, q, runtime.WorkspaceID, runtime.DaemonID.String)
 	if err != nil {
 		return binding, err
 	}
 	if binding.ID.Valid {
-		current, err := q.GetAgentRuntime(ctx, runtime.ID)
+		current, err := lookup.Get(ctx, runtime.ID)
 		if err != nil {
 			return binding, err
 		}
@@ -119,7 +120,8 @@ func LockManagedDaemonRegistration(ctx context.Context, q *db.Queries, workspace
 
 // LockManagedRuntime fences a claim against binding, account and runtime-owner
 // changes. Call before taking an agent/task lock, using transaction queries.
-func LockManagedRuntime(ctx context.Context, q *db.Queries, runtime db.AgentRuntime) (db.InstallationDaemonBinding, error) {
+func LockManagedRuntime(ctx context.Context, lookup RuntimeLookup, runtime db.AgentRuntime) (db.InstallationDaemonBinding, error) {
+	q := lookup.Queries
 	if _, ok := auth.PasswordSessionFromContext(ctx); ok {
 		if _, err := auth.LockPasswordSession(ctx, q); err != nil {
 			return db.InstallationDaemonBinding{}, err
@@ -130,14 +132,14 @@ func LockManagedRuntime(ctx context.Context, q *db.Queries, runtime db.AgentRunt
 			return db.InstallationDaemonBinding{}, err
 		}
 	}
-	current, err := q.GetAgentRuntime(ctx, runtime.ID)
+	current, err := lookup.Get(ctx, runtime.ID)
 	if err != nil {
 		return db.InstallationDaemonBinding{}, err
 	}
 	if current.WorkspaceID != runtime.WorkspaceID || current.DaemonID != runtime.DaemonID {
 		return db.InstallationDaemonBinding{}, ErrManagedRuntimeSource
 	}
-	binding, err := ValidateManagedRuntime(ctx, q, current)
+	binding, err := ValidateManagedRuntime(ctx, lookup, current)
 	if err != nil || !binding.ID.Valid {
 		return binding, err
 	}
@@ -149,10 +151,10 @@ func LockManagedRuntime(ctx context.Context, q *db.Queries, runtime db.AgentRunt
 	return binding, nil
 }
 
-func LockManagedRuntimes(ctx context.Context, q *db.Queries, ids []pgtype.UUID) error {
+func LockManagedRuntimes(ctx context.Context, lookup RuntimeLookup, ids []pgtype.UUID) error {
 	runtimes := make([]db.AgentRuntime, 0, len(ids))
 	for _, id := range ids {
-		runtime, err := q.GetAgentRuntime(ctx, id)
+		runtime, err := lookup.Get(ctx, id)
 		if err != nil {
 			return err
 		}
@@ -162,7 +164,7 @@ func LockManagedRuntimes(ctx context.Context, q *db.Queries, ids []pgtype.UUID) 
 		return installationNamespace(runtimes[i].WorkspaceID, runtimes[i].DaemonID.String) < installationNamespace(runtimes[j].WorkspaceID, runtimes[j].DaemonID.String)
 	})
 	for _, runtime := range runtimes {
-		if _, err := LockManagedRuntime(ctx, q, runtime); err != nil {
+		if _, err := LockManagedRuntime(ctx, lookup, runtime); err != nil {
 			return err
 		}
 	}

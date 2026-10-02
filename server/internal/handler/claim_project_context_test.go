@@ -503,25 +503,45 @@ func TestRejectClaimSourceLoad_MissingRow_CancelsTask(t *testing.T) {
 		testWorkspaceID,
 	).Scan(&agentID, &runtimeID)
 
-	taskID := dbfx.Task(t, agentID, testutil.Cols{"runtime_id": runtimeID, "issue_id": nil})
-	dbfx.Exec(t, `UPDATE agent_task_queue SET status = 'dispatched' WHERE id = $1`, taskID)
-	task := db.AgentTaskQueue{ID: parseUUID(taskID), AgentID: parseUUID(agentID), Status: "dispatched"}
+	for _, tc := range []struct {
+		name       string
+		superseded bool
+		wantStatus string
+	}{
+		{"current delivery", false, "cancelled"},
+		{"reclaimed delivery", true, "dispatched"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			taskID := dbfx.Task(t, agentID, testutil.Cols{"runtime_id": runtimeID, "issue_id": nil})
+			dbfx.Exec(t, `UPDATE agent_task_queue SET status = 'dispatched', dispatched_at = now(), claim_generation = 1 WHERE id = $1`, taskID)
+			task, err := testHandler.Queries.GetAgentTask(t.Context(), parseUUID(taskID))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if tc.superseded {
+				// Managed reclaim keeps the execution timestamp but replaces its
+				// delivery generation. A stale missing-source result cannot cancel it.
+				dbfx.Exec(t, `UPDATE agent_task_queue SET claim_generation = claim_generation + 1 WHERE id = $1`, taskID)
+			}
 
-	failure := testHandler.rejectClaimSourceLoad(
-		context.Background(), &task, pgx.ErrNoRows, "issue", uuidToString(task.IssueID))
-	if failure == nil {
-		t.Fatal("expected a failure for a missing source row")
-	}
-	if failure.outcome != "error_source_missing" {
-		t.Errorf("outcome = %q, want error_source_missing", failure.outcome)
-	}
-	if failure.message != "task is missing its issue" {
-		t.Errorf("message = %q, want it to name the missing source", failure.message)
+			failure := testHandler.rejectClaimSourceLoad(
+				t.Context(), &task, pgx.ErrNoRows, "issue", uuidToString(task.IssueID))
+			if failure == nil {
+				t.Fatal("expected a failure for a missing source row")
+			}
+			if failure.outcome != "error_source_missing" {
+				t.Errorf("outcome = %q, want error_source_missing", failure.outcome)
+			}
+			if failure.message != "task is missing its issue" {
+				t.Errorf("message = %q, want it to name the missing source", failure.message)
+			}
+
+			var status string
+			dbfx.QueryRow(t, `SELECT status FROM agent_task_queue WHERE id = $1`, taskID).Scan(&status)
+			if status != tc.wantStatus {
+				t.Errorf("task status = %q, want %s after missing-source rejection", status, tc.wantStatus)
+			}
+		})
 	}
 
-	var status string
-	dbfx.QueryRow(t, `SELECT status FROM agent_task_queue WHERE id = $1`, taskID).Scan(&status)
-	if status != "cancelled" {
-		t.Errorf("task status = %q, want cancelled for an unrecoverable source reference", status)
-	}
 }

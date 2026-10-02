@@ -90,8 +90,8 @@ func managedRuntimeError(w http.ResponseWriter, err error) bool {
 	return false
 }
 
-func (h *Handler) requireManagedRuntime(w http.ResponseWriter, ctx context.Context, runtime db.AgentRuntime) bool {
-	if _, err := service.ValidateManagedRuntime(ctx, h.Queries, runtime); err != nil {
+func (h *Handler) requireManagedRuntime(w http.ResponseWriter, ctx context.Context, runtime db.AgentRuntime, source string) bool {
+	if _, err := service.ValidateManagedRuntime(ctx, h.runtimeLookup(source), runtime); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "runtime not found")
 			return false
@@ -128,7 +128,7 @@ func (h *Handler) requireDaemonRuntimeAccess(w http.ResponseWriter, r *http.Requ
 	if !h.requireDaemonWorkspaceAccess(w, r, uuidToString(rt.WorkspaceID)) {
 		return db.AgentRuntime{}, false
 	}
-	if !h.requireManagedRuntime(w, r.Context(), rt) {
+	if !h.requireManagedRuntime(w, r.Context(), rt, obsmetrics.RuntimeLookupSourceDaemonAPI) {
 		return db.AgentRuntime{}, false
 	}
 	return rt, true
@@ -948,7 +948,8 @@ func (h *Handler) mergeLegacyRuntime(ctx context.Context, newRuntimeID, oldRunti
 	// locks do not conflict — and DeleteAgentRuntime below then removed that
 	// brand-new task through ON DELETE CASCADE.
 	runtimeIDs := []pgtype.UUID{oldRuntimeID, newRuntimeID}
-	if err := service.LockManagedRuntimes(ctx, qtx, runtimeIDs); err != nil {
+	lookup := service.RuntimeLookup{Queries: qtx, Metrics: h.Metrics, Source: obsmetrics.RuntimeLookupSourceDaemonAPI}
+	if err := service.LockManagedRuntimes(ctx, lookup, runtimeIDs); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return errRuntimeMergeFenced
 		}
@@ -967,11 +968,11 @@ func (h *Handler) mergeLegacyRuntime(ctx context.Context, newRuntimeID, oldRunti
 		return errRuntimeMergeFenced
 	}
 
-	oldRuntime, err := qtx.GetAgentRuntime(ctx, oldRuntimeID)
+	oldRuntime, err := lookup.Get(ctx, oldRuntimeID)
 	if err != nil {
 		return err
 	}
-	newRuntime, err := qtx.GetAgentRuntime(ctx, newRuntimeID)
+	newRuntime, err := lookup.Get(ctx, newRuntimeID)
 	if err != nil {
 		return err
 	}
@@ -1095,7 +1096,7 @@ func (h *Handler) DaemonDeregister(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		if !h.requireManagedRuntime(w, r.Context(), rt) {
+		if !h.requireManagedRuntime(w, r.Context(), rt, obsmetrics.RuntimeLookupSourceDaemonAPI) {
 			return
 		}
 		if err := h.setRuntimeOffline(r.Context(), rt.ID, req.OfflineReasons[rid]); err != nil {
@@ -1255,7 +1256,7 @@ func (h *Handler) DaemonHeartbeat(w http.ResponseWriter, r *http.Request) {
 		outcome = "workspace_denied"
 		return
 	}
-	if !h.requireManagedRuntime(w, r.Context(), rt) {
+	if !h.requireManagedRuntime(w, r.Context(), rt, obsmetrics.RuntimeLookupSourceHeartbeatHTTP) {
 		outcome = "managed_source_denied"
 		return
 	}
@@ -1334,7 +1335,7 @@ func (h *Handler) HandleDaemonWSHeartbeat(ctx context.Context, identity daemonws
 	if !identity.AllowsWorkspace(uuidToString(rt.WorkspaceID)) {
 		return nil, fmt.Errorf("runtime not in connection workspace")
 	}
-	if _, err := service.ValidateManagedRuntime(ctx, h.Queries, rt); err != nil {
+	if _, err := service.ValidateManagedRuntime(ctx, h.runtimeLookup(obsmetrics.RuntimeLookupSourceHeartbeatWS), rt); err != nil {
 		return nil, err
 	}
 	ack, _, err := h.processHeartbeat(ctx, rt, supportsBatchImport)
@@ -1811,7 +1812,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 	runtimeByID := make(map[string]db.AgentRuntime, len(runtimes))
 	authorized := make([]pgtype.UUID, 0, len(runtimes))
 	for _, rt := range runtimes {
-		if !h.requireManagedRuntime(w, r.Context(), rt) {
+		if !h.requireManagedRuntime(w, r.Context(), rt, obsmetrics.RuntimeLookupSourceDaemonAPI) {
 			return
 		}
 		if !h.verifyDaemonWorkspaceAccess(r, uuidToString(rt.WorkspaceID)) {
