@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "run_id": 36996436086,
+  "url": "https://github.com/yangshangwei/multica-0.4.37/actions/runs/36996436086",
+  "source_commit": "0fb5f5e6b3848568ae21e2108264917ad6206f6c",
+  "candidate_version": "0.5.2-rc.11.1",
+  "installer": {
+    "name": "multica-desktop-0.5.2-rc.11.1-windows-x64.exe",
+    "bytes": 177841317,
+    "sha256": "f0b5a5eeded51fa7d1336bd2b46975a0c9ddc6d2292cebba457fd0b6e090fd47",
+    "signature": "NotSigned"
+  },
+  "artifact_zip_sha256": "f5fd6e61c2c8728f609f25e2ca3c0237e08cf31bf20b19dfcd77ea528dad83aa",
+  "artifact_id": 11222590689,
+  "previous_version": "0.5.1",
+  "previous_sha256": "9462dc22e6813fe7ecd8c41dbdaf2fb51ba5ff1d0556ac22f7839fa6006b9bd8",
+  "desktop_native_tests": 19,
+  "native_go_named_tests": 16,
+  "concurrent_identity_passes": 20,
+  "failed_or_skipped_test_events": 0,
+  "lifecycle_steps": [
+    {
+      "name": "install_previous",
+      "status": "passed"
+    },
+    {
+      "name": "upgrade_candidate",
+      "status": "passed"
+    },
+    {
+      "name": "uninstall",
+      "status": "passed"
+    },
+    {
+      "name": "reinstall_candidate",
+      "status": "passed"
+    },
+    {
+      "name": "final_uninstall",
+      "status": "passed"
+    }
+  ],
+  "gui_tested": false,
+  "managed_backend_tested": false,
+  "update_feed_tested": false,
+  "user_state_retention_tested": false,
+  "offline_certificate_trust_tested": false,
+  "signed_acceptance": false
+}

@@ -109,3 +109,18 @@ production-Web run. Do not weaken login/reauth limits; use distinct test actors.
 Last migration is 511. New indexes require standalone CONCURRENTLY migrations;
 no foreign keys/cascades. SQL sources precede sqlc generation. Preserve the
 separate execution timestamp, state_version and claim_generation fences.
+
+
+## Windows candidate handoff — 2026-10-02
+
+The bounded Windows x64 CI acceptance is complete. Run
+[36996436086](https://github.com/yangshangwei/multica-0.4.37/actions/runs/36996436086)
+passed at source `0fb5f5e6b` with unsigned candidate `0.5.2-rc.11.1`:
+19 Desktop tests, 16 native Go tests, 20 stress passes and all five installer
+lifecycle stages. See [Windows acceptance](../10-01-platform-admin-acceptance/windows-acceptance.md).
+Later documentation commits do not change the tested source SHA.
+
+Next distribution gates are Windows GUI/backend integration and retained-user-state
+verification, followed by signed/offline-trust and actual update-feed acceptance.
+Reference hardware/cold-storage and authorized production maintenance gates remain
+open. No release tag, public release, main merge or production deployment occurred.

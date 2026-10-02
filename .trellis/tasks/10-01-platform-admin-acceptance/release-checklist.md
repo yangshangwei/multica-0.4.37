@@ -47,8 +47,10 @@ included in the S07 verification report before a release claim.
   256 MiB PostgreSQL shared memory. See capacity-followup.md for changed environment.
 - [ ] Address or explicitly accept the 1,000 ten-second ACK timeouts and native
   fleet fallback/margin limits; raw ACK receipt reached all runtimes in 15.779 s.
-- [ ] Verify native Windows runtime/ACL, signed installation, old-version upgrade
-  and clean reinstall. Source-built macOS evidence is not a substitute.
+- [x] Verify selected native Windows managed-runtime/ACL tests and unsigned x64
+  old-version installer upgrade, uninstall and reinstall; see windows-acceptance.md.
+- [ ] Verify signed Windows installation, GUI/backend-connected workflows, existing
+  user-state retention and automatic-update-feed behavior.
 - [ ] Record reference-environment/cold-storage and longer failure recovery.
 
 The measured local paging target passed; this checklist intentionally does not
@@ -70,3 +72,13 @@ See native-load-recovery.md; the successful recovery matrix is separate from lat
 - [x] Verify full local rerun: no extra native closes or ten-second ACK timeouts, reconnect starts 39.355–39.548 s, every paging group P95 ≤289.3 ms, loaded Web P95 ≤901.9 ms. See connection-followup.md.
 
 The older local latency checkboxes above describe the preceding runs and are superseded by this evidence. Distribution/Windows and external deployment/reference checks are not closed.
+
+## Windows candidate continuation — 2026-10-02
+
+- [x] CI run 36996436086 accepted unsigned candidate 0.5.2-rc.11.1 from 0fb5f5e6b.
+- [x] Native Desktop lock tests (19), named Go tests (16), concurrent identity stress (20 passes).
+- [x] Previous 0.5.1 install → candidate upgrade → uninstall → reinstall → final uninstall.
+- [ ] Signed distribution, offline trust, GUI/backend integration and retained real-user state.
+
+See windows-acceptance.md for provenance and limitations. This closes the bounded
+Windows candidate CI task, not the remaining S07 release gates.
