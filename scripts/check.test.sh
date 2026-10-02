@@ -8,6 +8,9 @@ cat > "$test_dir/source.env" <<'ENV'
 DATABASE_URL=postgres://test:test@localhost:5432/original
 CORS_ALLOWED_ORIGINS=http://localhost:13000
 ALLOWED_ORIGINS=http://localhost:13001
+MULTICA_AUTH_MODE=password
+MULTICA_MANAGED_INSTALLATIONS_ENABLED=true
+MULTICA_PLATFORM_ADMIN_ENABLED=true
 ENV
 
 cat > "$test_dir/fixture.sh" <<'FIXTURE'
@@ -89,12 +92,18 @@ allocate_offset() { printf 907; }
 load_env_file "$fixture_dir/source.env"
 prepare_check_environment "$fixture_dir/source.env"
 [ "$MULTICA_DEVICE_AUTH_ENABLED" = false ]
+[ "$MULTICA_AUTH_MODE" = legacy ]
+[ "$MULTICA_MANAGED_INSTALLATIONS_ENABLED" = false ]
+[ "$MULTICA_PLATFORM_ADMIN_ENABLED" = false ]
 [ "$DATABASE_URL" != "$CHECK_GO_DATABASE_URL" ]
 [ "$WEB_MODE" = production ]
 [ "$CORS_ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT" ]
 [ "$ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT" ]
 grep -Fxq 'CORS_ALLOWED_ORIGINS=http://localhost:13000' "$fixture_dir/source.env"
 grep -Fxq 'ALLOWED_ORIGINS=http://localhost:13001' "$fixture_dir/source.env"
+grep -Fxq 'MULTICA_AUTH_MODE=password' "$fixture_dir/source.env"
+grep -Fxq 'MULTICA_MANAGED_INSTALLATIONS_ENABLED=true' "$fixture_dir/source.env"
+grep -Fxq 'MULTICA_PLATFORM_ADMIN_ENABLED=true' "$fixture_dir/source.env"
 ! grep -q 'MULTICA_DEVICE_AUTH_ENABLED' "$fixture_dir/source.env" || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
 grep -Fq 'WEB_MODE=production' "$STATE_DIR/manifest.env"
 FIXTURE

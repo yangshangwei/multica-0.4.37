@@ -23,13 +23,22 @@ Never point the suite at `pnpm dev:web` or `next dev --webpack` (the `apps/web`
 measures webpack, not the product.
 
 `make check` uses the registry allocator to create a separate `check-*` environment.
-It copies the selected env file, sets classic auth only in that task copy
-(`MULTICA_DEVICE_AUTH_ENABLED=false`), and runs static checks, bounded TypeScript
+It copies the selected env file, sets legacy auth only in that task copy
+(`MULTICA_AUTH_MODE=legacy`, `MULTICA_DEVICE_AUTH_ENABLED=false`), and runs static checks, bounded TypeScript
 tests, isolated Go race tests, API startup, Web build/start, then Playwright in
 sequence. The Go database is never served by the API and is dropped without
 forcing connections closed. API data and the environment record are retained
 for inspection until TTL collection. Only processes started by this run are
 stopped; an early failure or cleanup failure produces a nonzero exit.
+
+"Classic" describes the suite, not a valid `MULTICA_AUTH_MODE` value. The server
+accepts `legacy` and `password`. The task copy must override an inherited password
+deployment and disable its managed-installation/platform-admin flags without
+changing the source env; managed installation startup requires password mode.
+`scripts/check.test.sh` covers all three overrides and source preservation.
+Password administration requires its own production-Web run and synthetic actors.
+Give independent specs distinct administrator accounts so login/reauth limits
+remain active without one shared fixture exhausting the account budget.
 
 `psql` must be available on PATH. Database creation uses the PostgreSQL endpoint
 in `DATABASE_URL`; a Docker container with the same database name is not proof
