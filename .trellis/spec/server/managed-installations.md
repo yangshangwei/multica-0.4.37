@@ -19,6 +19,18 @@ workspace, daemon, public-key fingerprint, expected epoch, nonce, expiry and bod
 hash. Node and Go share wire fixtures. Do not reconstruct a semantically equivalent
 JSON object and sign it. Canonical OS names are `macos`, `windows`, `linux`, `unknown`.
 
+Desktop Main must map Node's `darwin` value to `macos` at this protocol boundary.
+Do not change the runtime-discovery normalizer, which has a different contract.
+The daemon profile `config.json` also contains credentials: Main writes it through
+a unique `wx`/`0600` temporary file, syncs and closes it, then atomically renames it.
+The managed Go reader rejects group/other POSIX permissions. Passing a mode only
+to an ordinary overwrite leaves existing `0644` files unchanged, and truncating
+the live path can break an open daemon reader. Windows ACL behavior requires
+native verification; POSIX mode assertions are not evidence of Windows ACLs.
+
+Regression: `apps/desktop/src/main/daemon-manager-managed-recovery.test.ts` covers
+the platform mapping, new/existing profile modes and an already-open reader.
+
 Challenges are persistent and single-consumption; only hashes of nonce/payload/body
 are stored. The credential retry result is encrypted. A consumed successful bind
 or renew may recover its original still-valid credential after challenge expiry;
@@ -40,6 +52,11 @@ traffic uses its workspace-scoped MDT; the global PAT is discovery only. Check
 current binding, source account version, owner, deployment and membership at
 HTTP/WS boundaries and again inside write transactions. WebSockets validate
 incoming and outgoing messages; preserving the authenticated context matters.
+
+Pass the caller's `RuntimeLookup` into managed validation and locking helpers.
+For transaction paths, it must contain the transaction's queries, the existing
+metrics collector and a source label. Using pool queries here can escape the
+authorization transaction; direct `GetAgentRuntime` calls lose read accounting.
 
 A namespace with revoked managed history stays managed. Looking only for an
 active binding and treating no row as legacy permits a downgrade to PAT after

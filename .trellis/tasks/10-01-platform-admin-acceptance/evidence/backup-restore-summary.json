@@ -1,0 +1,119 @@
+{
+  "started_at": "2026-10-01T23:08:45.643Z",
+  "finished_at": "2026-10-01T23:10:09.686Z",
+  "snapshot_commit": "1c56f6cd6c16f11327aee2f3f000e6b19e401d0b",
+  "scope": "Local task-owned PostgreSQL database; synthetic identities only; no production restore or destructive downgrade",
+  "pg_dump_version": "pg_dump (PostgreSQL) 18.6",
+  "archive": {
+    "bytes": 73544554,
+    "sha256": "1daf8e3553aae422d4f102df18a48bacbbb2f65e6af8d3ee14da07e3e35b68e7"
+  },
+  "phases": [
+    {
+      "name": "create-isolated-rehearsal-clone",
+      "duration_ms": 7018.183833
+    },
+    {
+      "name": "fingerprint-source-data-and-schema",
+      "duration_ms": 25499.488375
+    },
+    {
+      "name": "pg-dump-custom-format",
+      "duration_ms": 5051.240375000001
+    },
+    {
+      "name": "create-empty-restore-target",
+      "duration_ms": 71.12199999999575
+    },
+    {
+      "name": "pg-restore-exit-on-error",
+      "duration_ms": 20579.030333000002
+    },
+    {
+      "name": "fingerprint-restored-data-and-schema",
+      "duration_ms": 25646.096792000004
+    }
+  ],
+  "identical_fingerprints": true,
+  "tables": {
+    "user": {
+      "rows": "1011"
+    },
+    "user_password_credential": {
+      "rows": "1011"
+    },
+    "platform_role_binding": {
+      "rows": "11"
+    },
+    "organization": {
+      "rows": "1"
+    },
+    "organization_workspace": {
+      "rows": "100"
+    },
+    "managed_installation": {
+      "rows": "1000"
+    },
+    "installation_user": {
+      "rows": "1000"
+    },
+    "installation_daemon_binding": {
+      "rows": "1000"
+    },
+    "installation_report_cursor": {
+      "rows": "0"
+    },
+    "daemon_token": {
+      "rows": "1000"
+    },
+    "personal_access_token": {
+      "rows": "0"
+    },
+    "task_token": {
+      "rows": "0"
+    },
+    "admin_operation": {
+      "rows": "1"
+    },
+    "admin_audit_event": {
+      "rows": "1"
+    },
+    "admin_alert": {
+      "rows": "34535"
+    },
+    "admin_alert_detector_state": {
+      "rows": "3"
+    },
+    "agent_runtime": {
+      "rows": "3000"
+    },
+    "agent_task_queue": {
+      "rows": "1000300"
+    },
+    "task_usage": {
+      "rows": "750000"
+    },
+    "schema_migrations": {
+      "rows": "535"
+    }
+  },
+  "indexes": {
+    "count": 427,
+    "invalid": 0
+  },
+  "triggers": {
+    "count": 10,
+    "disabled": 0
+  },
+  "invariants": {
+    "super_admins": 1,
+    "advanced_credentials": 1,
+    "revoked_bindings": 1,
+    "stopped_admission": 1,
+    "pending_operations": 1,
+    "linked_audit_events": 1,
+    "retained_execution_fences": 1,
+    "valid_bound_tokens": 999
+  },
+  "ok": true
+}

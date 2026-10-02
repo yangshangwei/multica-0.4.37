@@ -1,12 +1,12 @@
 # 平台管理后台规划任务
 
-父任务：`10-01-platform-admin-console`。实施已获用户授权，当前从 S01 推进；父任务保留聚合追踪状态，后续子任务按依赖激活。
+父任务：`10-01-platform-admin-console`。实施已获用户授权，S01–S06 已完成实现，S07 集成验收正在推进；父任务保留聚合追踪状态。
 
-当前实施工作区：`/Volumes/artisan/code/2026/multica-platform-admin`，分支 `feat/platform-admin-console`。真实进度见 [S01 验证记录](../10-01-platform-admin-access/verification.md)。下文原规划快照保留为历史依据。
+当前实施工作区：`/Volumes/artisan/code/2026/multica-platform-admin`，分支 `feat/platform-admin-console`。真实进度见 [S07 验证记录](../10-01-platform-admin-acceptance/verification.md)。下文原规划快照保留为历史依据。
 
 用户已确认：内部企业先落地、后续多客户；管理员复用普通用户的账号和认证，独立平台权限；首期100–1000台桌面终端。
 
-新会话先读 [handoff.md](handoff.md)，其中包含Git快照、未提交文件保全、关键设计边界及S01接续步骤。
+新会话先读 [implementation-handoff.md](implementation-handoff.md)，其中记录当前实现与验收状态。[handoff.md](handoff.md) 保留首次规划交付的历史快照。
 
 ## 建议阅读顺序
 

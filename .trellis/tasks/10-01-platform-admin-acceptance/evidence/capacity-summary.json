@@ -1,0 +1,1094 @@
+{
+  "complete": {
+    "samples": "/Volumes/artisan/code/2026/multica-platform-admin/.omx/reports/platform-admin/s07-capacity/runs/s07-20261001212929-d12b32/samples-1790901051342.jsonl",
+    "start": "2026-10-02T00:31:26.981Z",
+    "end": "2026-10-02T00:42:27.830Z",
+    "duration_seconds": 660.8499036669999,
+    "incomplete_requests": 0,
+    "interrupted": false,
+    "observers": 10,
+    "installations": 1000,
+    "runtimes": 3000,
+    "recovered": 1000,
+    "steady_runtime_seconds": 15,
+    "installation_heartbeat_seconds": [
+      48,
+      72
+    ],
+    "retry": "full jitter exponential, cap60s",
+    "source_snapshot_sha256": "5935c327fc3c84b096ffe565f93ffc111228849ed585fb37c4e25c73efbc4252",
+    "sample_clock": "elapsed resets to zero at steady phase; timestamps remain absolute"
+  },
+  "groups": {
+    "first_use/password_login": {
+      "samples": 10,
+      "p50_ms": 64.21629099999996,
+      "p95_ms": 82.82595800000001,
+      "p99_ms": 82.82595800000001,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/tasks_default": {
+      "samples": 1,
+      "p50_ms": 25.501541999999972,
+      "p95_ms": 25.501541999999972,
+      "p99_ms": 25.501541999999972,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/tasks_failed": {
+      "samples": 1,
+      "p50_ms": 31.815999999999917,
+      "p95_ms": 31.815999999999917,
+      "p99_ms": 31.815999999999917,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/tasks_workspace": {
+      "samples": 1,
+      "p50_ms": 26.73070800000005,
+      "p95_ms": 26.73070800000005,
+      "p99_ms": 26.73070800000005,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/tasks_finished": {
+      "samples": 1,
+      "p50_ms": 14.394624999999905,
+      "p95_ms": 14.394624999999905,
+      "p99_ms": 14.394624999999905,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/tasks_source": {
+      "samples": 1,
+      "p50_ms": 20.64562499999988,
+      "p95_ms": 20.64562499999988,
+      "p99_ms": 20.64562499999988,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/installations": {
+      "samples": 1,
+      "p50_ms": 26.459375000000136,
+      "p95_ms": 26.459375000000136,
+      "p99_ms": 26.459375000000136,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/tasks_empty": {
+      "samples": 1,
+      "p50_ms": 9.260291999999936,
+      "p95_ms": 9.260291999999936,
+      "p99_ms": 9.260291999999936,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/tasks_current": {
+      "samples": 1,
+      "p50_ms": 13.65608300000008,
+      "p95_ms": 13.65608300000008,
+      "p99_ms": 13.65608300000008,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "first_use/overview": {
+      "samples": 1,
+      "p50_ms": 1759.8890829999998,
+      "p95_ms": 1759.8890829999998,
+      "p99_ms": 1759.8890829999998,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "ramp/installation_heartbeat": {
+      "samples": 550,
+      "p50_ms": 39.27954099999988,
+      "p95_ms": 186.71520900000178,
+      "p99_ms": 200.0759999999973,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "ramp/daemon_upgrade": {
+      "samples": 1000,
+      "p50_ms": 476.02750000000015,
+      "p95_ms": 1967.0197079999998,
+      "p99_ms": 2043.4323339999974,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "ramp/runtime_heartbeat": {
+      "samples": 7600,
+      "p50_ms": 658.0579579999976,
+      "p95_ms": 3891.8624170000003,
+      "p99_ms": 5105.224749999998,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/installation_heartbeat": {
+      "samples": 5023,
+      "p50_ms": 18.37408300000243,
+      "p95_ms": 200.8395410000012,
+      "p99_ms": 475.25791699999536,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/runtime_heartbeat": {
+      "samples": 60340,
+      "p50_ms": 88.93083299999125,
+      "p95_ms": 2407.304250000001,
+      "p99_ms": 4153.394957999997,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/installation_detail": {
+      "samples": 299,
+      "p50_ms": 15.039167000039015,
+      "p95_ms": 266.89579100000265,
+      "p99_ms": 600.1333750000049,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/task_detail": {
+      "samples": 300,
+      "p50_ms": 12.092499999998836,
+      "p95_ms": 166.23633400000108,
+      "p99_ms": 292.32624999999825,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_failed": {
+      "samples": 26,
+      "p50_ms": 18.103041999973357,
+      "p95_ms": 212.69679200000246,
+      "p99_ms": 764.0121250000011,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_failed_page2": {
+      "samples": 8,
+      "p50_ms": 19.28012499999022,
+      "p95_ms": 513.672249999996,
+      "p99_ms": 513.672249999996,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_default": {
+      "samples": 25,
+      "p50_ms": 18.27591600001324,
+      "p95_ms": 132.03562500000407,
+      "p99_ms": 418.5439170000027,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_default_page2": {
+      "samples": 8,
+      "p50_ms": 21.066250000003492,
+      "p95_ms": 767.7695420000018,
+      "p99_ms": 767.7695420000018,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_workspace": {
+      "samples": 26,
+      "p50_ms": 13.948916999972425,
+      "p95_ms": 107.68616700000712,
+      "p99_ms": 165.65320900001097,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_workspace_page2": {
+      "samples": 5,
+      "p50_ms": 14.121541999993497,
+      "p95_ms": 38.164834000002884,
+      "p99_ms": 38.164834000002884,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_finished": {
+      "samples": 26,
+      "p50_ms": 17.86845899996115,
+      "p95_ms": 112.53299999999581,
+      "p99_ms": 161.7846669999999,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_finished_page2": {
+      "samples": 5,
+      "p50_ms": 20.339167000027373,
+      "p95_ms": 28.126541999998153,
+      "p99_ms": 28.126541999998153,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/overview": {
+      "samples": 181,
+      "p50_ms": 1815.6426249999931,
+      "p95_ms": 2890.6844999999885,
+      "p99_ms": 3480.114916999999,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/installations": {
+      "samples": 24,
+      "p50_ms": 44.85599999999977,
+      "p95_ms": 186.0032499999943,
+      "p99_ms": 203.10124999999243,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_source": {
+      "samples": 25,
+      "p50_ms": 32.95866600002046,
+      "p95_ms": 167.34816700000374,
+      "p99_ms": 300.5249590000021,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_source_page2": {
+      "samples": 7,
+      "p50_ms": 41.05479099997319,
+      "p95_ms": 161.67120799999975,
+      "p99_ms": 161.67120799999975,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/installations_page2": {
+      "samples": 7,
+      "p50_ms": 43.96520800003782,
+      "p95_ms": 540.505250000002,
+      "p99_ms": 540.505250000002,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_current": {
+      "samples": 24,
+      "p50_ms": 22.73874999996042,
+      "p95_ms": 157.75299999999697,
+      "p99_ms": 277.66179199999897,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_empty": {
+      "samples": 24,
+      "p50_ms": 11.841250000004948,
+      "p95_ms": 217.55508299999929,
+      "p99_ms": 224.30841699999291,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "steady/tasks_current_page2": {
+      "samples": 5,
+      "p50_ms": 21.369166999997105,
+      "p95_ms": 292.96687500000553,
+      "p99_ms": 292.96687500000553,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/runtime_heartbeat": {
+      "samples": 24736,
+      "p50_ms": 96.63754200004041,
+      "p95_ms": 9008.068207999982,
+      "p99_ms": 10000.54254200001,
+      "errors": 1007,
+      "error_rate": 0.04070989650711514,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/installations": {
+      "samples": 10,
+      "p50_ms": 62.45037499995669,
+      "p95_ms": 333.55166699999245,
+      "p99_ms": 333.55166699999245,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/installations_page2": {
+      "samples": 3,
+      "p50_ms": 80.00237499998184,
+      "p95_ms": 599.3162500000326,
+      "p99_ms": 599.3162500000326,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/installation_heartbeat": {
+      "samples": 2007,
+      "p50_ms": 19.06050000002142,
+      "p95_ms": 475.0789169999771,
+      "p99_ms": 528.9808330000378,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_source": {
+      "samples": 10,
+      "p50_ms": 37.81254200002877,
+      "p95_ms": 297.3157079999801,
+      "p99_ms": 297.3157079999801,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/installation_detail": {
+      "samples": 117,
+      "p50_ms": 16.300625000032596,
+      "p95_ms": 679.1904170000344,
+      "p99_ms": 726.7030000000377,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_source_page2": {
+      "samples": 3,
+      "p50_ms": 281.7206249999581,
+      "p95_ms": 295.2077500000014,
+      "p99_ms": 295.2077500000014,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_empty": {
+      "samples": 10,
+      "p50_ms": 15.225250000017695,
+      "p95_ms": 358.56925000000047,
+      "p99_ms": 358.56925000000047,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/task_detail": {
+      "samples": 118,
+      "p50_ms": 12.557207999983802,
+      "p95_ms": 404.5681249999907,
+      "p99_ms": 501.84304200002225,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_current": {
+      "samples": 10,
+      "p50_ms": 16.99679100001231,
+      "p95_ms": 265.8380420000176,
+      "p99_ms": 265.8380420000176,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_current_page2": {
+      "samples": 2,
+      "p50_ms": 53.99687500001164,
+      "p95_ms": 270.48200000001816,
+      "p99_ms": 270.48200000001816,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/overview": {
+      "samples": 70,
+      "p50_ms": 1889.8789589999942,
+      "p95_ms": 2815.767790999962,
+      "p99_ms": 3051.1249170000083,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_default": {
+      "samples": 10,
+      "p50_ms": 15.948374999978114,
+      "p95_ms": 302.1472500000382,
+      "p99_ms": 302.1472500000382,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_failed": {
+      "samples": 10,
+      "p50_ms": 19.528292000002693,
+      "p95_ms": 245.6992920000339,
+      "p99_ms": 245.6992920000339,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_default_page2": {
+      "samples": 3,
+      "p50_ms": 103.72837500000605,
+      "p95_ms": 254.50683299999218,
+      "p99_ms": 254.50683299999218,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_failed_page2": {
+      "samples": 3,
+      "p50_ms": 128.2593329999945,
+      "p95_ms": 256.87008299998706,
+      "p99_ms": 256.87008299998706,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_workspace": {
+      "samples": 10,
+      "p50_ms": 15.964457999973092,
+      "p95_ms": 244.7369170000311,
+      "p99_ms": 244.7369170000311,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_finished": {
+      "samples": 10,
+      "p50_ms": 22.585499999986496,
+      "p95_ms": 282.3254580000066,
+      "p99_ms": 282.3254580000066,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_workspace_page2": {
+      "samples": 2,
+      "p50_ms": 104.11037499998929,
+      "p95_ms": 279.203582999995,
+      "p99_ms": 279.203582999995,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/daemon_upgrade": {
+      "samples": 1000,
+      "p50_ms": 3056.401375000016,
+      "p95_ms": 3085.6173749999725,
+      "p99_ms": 3089.926374999981,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "reconnect/tasks_finished_page2": {
+      "samples": 2,
+      "p50_ms": 67.97520799998892,
+      "p95_ms": 268.3439580000122,
+      "p99_ms": 268.3439580000122,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/runtime_heartbeat": {
+      "samples": 47851,
+      "p50_ms": 81.48599999991711,
+      "p95_ms": 1780.8574999999255,
+      "p99_ms": 2765.9133750000037,
+      "errors": 25,
+      "error_rate": 0.0005224551211050971,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/overview": {
+      "samples": 143,
+      "p50_ms": 1842.9551669999491,
+      "p95_ms": 2511.0434589999495,
+      "p99_ms": 2989.0654170000344,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/installation_detail": {
+      "samples": 238,
+      "p50_ms": 13.447833999991417,
+      "p95_ms": 200.1817920000176,
+      "p99_ms": 427.1186250000028,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/installation_heartbeat": {
+      "samples": 3971,
+      "p50_ms": 16.528124999953434,
+      "p95_ms": 136.2732079999987,
+      "p99_ms": 309.03899999998976,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/installations": {
+      "samples": 20,
+      "p50_ms": 41.35304199997336,
+      "p95_ms": 191.94987499999115,
+      "p99_ms": 363.72641700005624,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/task_detail": {
+      "samples": 237,
+      "p50_ms": 10.753917000023648,
+      "p95_ms": 119.98091699997894,
+      "p99_ms": 307.36233400006313,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/installations_page2": {
+      "samples": 6,
+      "p50_ms": 40.722208000021055,
+      "p95_ms": 52.92137500003446,
+      "p99_ms": 52.92137500003446,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_source": {
+      "samples": 20,
+      "p50_ms": 32.756832999992184,
+      "p95_ms": 187.7539580000448,
+      "p99_ms": 311.49991599994246,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_source_page2": {
+      "samples": 6,
+      "p50_ms": 29.648916999984067,
+      "p95_ms": 42.08950000000186,
+      "p99_ms": 42.08950000000186,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_empty": {
+      "samples": 20,
+      "p50_ms": 10.846334000001661,
+      "p95_ms": 125.73666699999012,
+      "p99_ms": 151.26262499997392,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_current": {
+      "samples": 20,
+      "p50_ms": 17.84229200007394,
+      "p95_ms": 132.54354099999182,
+      "p99_ms": 311.51758400001563,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_current_page2": {
+      "samples": 4,
+      "p50_ms": 15.227291999966837,
+      "p95_ms": 25.999666999967303,
+      "p99_ms": 25.999666999967303,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_default": {
+      "samples": 20,
+      "p50_ms": 17.51070899993647,
+      "p95_ms": 89.68400000000838,
+      "p99_ms": 327.08600000001024,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_default_page2": {
+      "samples": 6,
+      "p50_ms": 18.958125000004657,
+      "p95_ms": 22.077791000017896,
+      "p99_ms": 22.077791000017896,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_failed": {
+      "samples": 20,
+      "p50_ms": 17.952916999929585,
+      "p95_ms": 31.240375000052154,
+      "p99_ms": 312.4695420000353,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_failed_page2": {
+      "samples": 6,
+      "p50_ms": 18.51687499997206,
+      "p95_ms": 23.831165999989025,
+      "p99_ms": 23.831165999989025,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_workspace": {
+      "samples": 20,
+      "p50_ms": 14.527208999963477,
+      "p95_ms": 125.92350000003353,
+      "p99_ms": 287.03483299992513,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_workspace_page2": {
+      "samples": 4,
+      "p50_ms": 15.051582999993116,
+      "p95_ms": 17.71645800000988,
+      "p99_ms": 17.71645800000988,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_finished": {
+      "samples": 20,
+      "p50_ms": 19.635125000029802,
+      "p95_ms": 154.37766699999338,
+      "p99_ms": 311.8106670000125,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "post_reconnect/tasks_finished_page2": {
+      "samples": 4,
+      "p50_ms": 20.59183299995493,
+      "p95_ms": 23.631999999983236,
+      "p99_ms": 23.631999999983236,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    }
+  },
+  "observer_qps": 3.3926009333728167,
+  "observer_requests": {
+    "samples": 2242,
+    "p50_ms": 18.062292000046,
+    "p95_ms": 2075.9585420000367,
+    "p99_ms": 2713.6969999999274,
+    "errors": 0,
+    "error_rate": 0,
+    "http_429": 0,
+    "http_503": 0
+  },
+  "reconnect": {
+    "recovered": 1000,
+    "target": 1000,
+    "summary": {
+      "samples": 1000,
+      "p50_ms": 3124.6197500000126,
+      "p95_ms": 3164.0673330000136,
+      "p99_ms": 3168.7904160000035,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "curve": [
+      {
+        "seconds": 1,
+        "count": 0
+      },
+      {
+        "seconds": 2,
+        "count": 0
+      },
+      {
+        "seconds": 5,
+        "count": 1000
+      },
+      {
+        "seconds": 10,
+        "count": 1000
+      },
+      {
+        "seconds": 20,
+        "count": 1000
+      },
+      {
+        "seconds": 30,
+        "count": 1000
+      },
+      {
+        "seconds": 60,
+        "count": 1000
+      },
+      {
+        "seconds": 120,
+        "count": 1000
+      }
+    ],
+    "runtime_ack_curve": [
+      {
+        "seconds": 1,
+        "count": 0
+      },
+      {
+        "seconds": 2,
+        "count": 0
+      },
+      {
+        "seconds": 5,
+        "count": 0
+      },
+      {
+        "seconds": 10,
+        "count": 1000
+      },
+      {
+        "seconds": 15,
+        "count": 2000
+      },
+      {
+        "seconds": 20,
+        "count": 2252
+      },
+      {
+        "seconds": 30,
+        "count": 3000
+      },
+      {
+        "seconds": 60,
+        "count": 3000
+      },
+      {
+        "seconds": 120,
+        "count": 3000
+      }
+    ],
+    "runtime_ack_recovered": 3000,
+    "runtime_ack_all_observed_ms": 28234
+  },
+  "database": {
+    "peak_connections": 30,
+    "peak_active": 12,
+    "peak_lock_waits": 0
+  },
+  "browser": {
+    "browser-samples-1790901858130.json/first_use/login_to_overview": {
+      "samples": 1,
+      "p50_ms": 896.9380419999998,
+      "p95_ms": 896.9380419999998,
+      "p99_ms": 896.9380419999998,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "browser-samples-1790901858130.json/first_use/overview": {
+      "samples": 1,
+      "p50_ms": 638.8090830000001,
+      "p95_ms": 638.8090830000001,
+      "p99_ms": 638.8090830000001,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "browser-samples-1790901858130.json/first_use/tasks": {
+      "samples": 1,
+      "p50_ms": 108.12820800000009,
+      "p95_ms": 108.12820800000009,
+      "p99_ms": 108.12820800000009,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "browser-samples-1790901858130.json/first_use/installations": {
+      "samples": 1,
+      "p50_ms": 150.7876250000004,
+      "p95_ms": 150.7876250000004,
+      "p99_ms": 150.7876250000004,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "browser-samples-1790901858130.json/warm/overview": {
+      "samples": 9,
+      "p50_ms": 580.5161250000001,
+      "p95_ms": 628.2622080000001,
+      "p99_ms": 628.2622080000001,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "browser-samples-1790901858130.json/warm/tasks": {
+      "samples": 9,
+      "p50_ms": 101.97766700000011,
+      "p95_ms": 109.31066699999974,
+      "p99_ms": 109.31066699999974,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "browser-samples-1790901858130.json/warm/installations": {
+      "samples": 9,
+      "p50_ms": 123.2295839999997,
+      "p95_ms": 148.2440829999996,
+      "p99_ms": 148.2440829999996,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    }
+  },
+  "heartbeat_failures": {
+    "scheduled_reconnect": 7,
+    "ack_timeout": 1000,
+    "measurement_end": 25
+  },
+  "pagination": {
+    "installations": {
+      "samples": 54,
+      "p50_ms": 45.765417000016896,
+      "p95_ms": 287.0676669999957,
+      "p99_ms": 363.72641700005624,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_current": {
+      "samples": 54,
+      "p50_ms": 20.147709000040777,
+      "p95_ms": 265.8380420000176,
+      "p99_ms": 311.51758400001563,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_current_page2": {
+      "samples": 11,
+      "p50_ms": 21.369166999997105,
+      "p95_ms": 292.96687500000553,
+      "p99_ms": 292.96687500000553,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_default": {
+      "samples": 55,
+      "p50_ms": 18.245874999964144,
+      "p95_ms": 302.1472500000382,
+      "p99_ms": 418.5439170000027,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_default_page2": {
+      "samples": 17,
+      "p50_ms": 21.855500000005122,
+      "p95_ms": 767.7695420000018,
+      "p99_ms": 767.7695420000018,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_empty": {
+      "samples": 54,
+      "p50_ms": 11.715291000087745,
+      "p95_ms": 224.30841699999291,
+      "p99_ms": 358.56925000000047,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_failed": {
+      "samples": 56,
+      "p50_ms": 18.896999999997206,
+      "p95_ms": 245.6992920000339,
+      "p99_ms": 764.0121250000011,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_failed_page2": {
+      "samples": 17,
+      "p50_ms": 20.737250000005588,
+      "p95_ms": 513.672249999996,
+      "p99_ms": 513.672249999996,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_finished": {
+      "samples": 56,
+      "p50_ms": 19.4912089999998,
+      "p95_ms": 206.51216599997133,
+      "p99_ms": 311.8106670000125,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_finished_page2": {
+      "samples": 11,
+      "p50_ms": 22.008124999934807,
+      "p95_ms": 268.3439580000122,
+      "p99_ms": 268.3439580000122,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_source": {
+      "samples": 55,
+      "p50_ms": 34.477792000048794,
+      "p95_ms": 297.3157079999801,
+      "p99_ms": 311.49991599994246,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_source_page2": {
+      "samples": 16,
+      "p50_ms": 37.85679200000595,
+      "p95_ms": 295.2077500000014,
+      "p99_ms": 295.2077500000014,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_workspace": {
+      "samples": 56,
+      "p50_ms": 14.527208999963477,
+      "p95_ms": 201.211500000034,
+      "p99_ms": 287.03483299992513,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_workspace_page2": {
+      "samples": 11,
+      "p50_ms": 15.051582999993116,
+      "p95_ms": 279.203582999995,
+      "p99_ms": 279.203582999995,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    }
+  },
+  "acceptance": {
+    "complete_window": true,
+    "pagination_p95_limit_ms": 800,
+    "pagination_p95_met": true,
+    "pagination_errors": 0,
+    "all_connections_recovered": true
+  }
+}

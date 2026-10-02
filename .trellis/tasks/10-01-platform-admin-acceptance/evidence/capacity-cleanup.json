@@ -1,0 +1,47 @@
+{
+  "checked_at": "2026-10-02T01:15:28.099Z",
+  "status": "stopped",
+  "stopped_at": "2026-10-02T01:14:01.847Z",
+  "containers": [
+    {
+      "name": "s07-20261001212929-d12b32-pg",
+      "running": false,
+      "paused": false,
+      "ownership_label_verified": true
+    },
+    {
+      "name": "s07-20261001212929-d12b32-redis",
+      "running": false,
+      "paused": false,
+      "ownership_label_verified": true
+    },
+    {
+      "name": "s07-20261001212929-d12b32-pg-native",
+      "running": false,
+      "paused": false,
+      "ownership_label_verified": true
+    }
+  ],
+  "listeners": [
+    {
+      "url": "http://localhost:18454",
+      "reachable": false
+    },
+    {
+      "url": "http://localhost:13374",
+      "reachable": false
+    }
+  ],
+  "volumes": [
+    {
+      "name": "s07-20261001212929-d12b32-pg-data",
+      "preserved": true
+    },
+    {
+      "name": "s07-20261001212929-d12b32-pg-native-data",
+      "preserved": true
+    }
+  ],
+  "source_preserved": true,
+  "private_fixture_and_archive_preserved": true
+}

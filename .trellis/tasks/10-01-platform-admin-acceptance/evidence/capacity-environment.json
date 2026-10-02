@@ -1,0 +1,22 @@
+{
+  "commit": "1c56f6cd6c16f11327aee2f3f000e6b19e401d0b",
+  "node": "v22.23.2",
+  "host": "Apple M4\n10\n17179869184",
+  "disk": "Filesystem      Size    Used   Avail Capacity iused ifree %iused  Mounted on\n/dev/disk7s1   1.9Ti   394Gi   1.5Ti    21%    3.4M   16G    0%   /Volumes/artisan",
+  "topology": "Native API/Web/load generator on M4; PostgreSQL/Redis in Docker VM",
+  "pg_image": "arm64 sha256:215ae4d47393a980e9ef7ff7760f7dad53ec3e84bceb9fbd45cef34e50b5ba0f",
+  "limits": {
+    "api_gomaxprocs": 4,
+    "pg_cpus": 4,
+    "pg_memory": "4GiB",
+    "pg_shared_buffers": "512MiB",
+    "redis_memory": "128MiB",
+    "api_pool_max": 25,
+    "api_pool_min": 5
+  },
+  "api": "http://localhost:18454",
+  "web": "http://localhost:13374",
+  "pg_port": 50871,
+  "redis_port": 50872,
+  "build_id": "v75vEfqm4izuVIeERIr2-"
+}

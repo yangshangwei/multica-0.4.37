@@ -901,12 +901,12 @@ path after password accounts exist.
 Use the existing server executable on the trusted API host:
 
 ```sh
-server password-recover --user USER_UUID
+server password-recover --user USER_UUID --reason "Approved account recovery"
 # For a historical user without a username:
-server password-recover --user USER_UUID --username alice
+server password-recover --user USER_UUID --username alice --reason "Recover historical account"
 ```
 
-In the existing self-host image, use `docker compose -f docker-compose.selfhost.yml exec backend /app/server password-recover --user USER_UUID`.
+In the existing self-host image, use `docker compose -f docker-compose.selfhost.yml exec backend /app/server password-recover --user USER_UUID --reason "Approved account recovery"`.
 
 The command uses the normal `DATABASE_URL` and password-mode configuration. It
 reads the temporary password from standard input with terminal echo disabled;
@@ -937,3 +937,20 @@ New Desktop browser sign-in callbacks require the matching Web login page to
 return the one-time `desktop_state`. Upgrade Desktop and Web together; older
 Web pages that omit this value cannot complete browser sign-in. Password forms
 and supported direct legacy sign-in remain available according to server mode.
+
+
+## Platform administration (password deployments)
+
+The Web console at `/admin` requires an explicit platform role and a complete human password session. Workspace ownership does not grant platform access. Enable `MULTICA_PLATFORM_ADMIN_ENABLED=true` after applying and validating the release migrations, then initialize an existing completed password account on the trusted API host:
+
+```sh
+server platform-admin bootstrap --user USER_UUID --reason "Initialize deployment administration"
+```
+
+Previous credentials are revoked; sign in again with the password. Keep a second named super administrator. For managed Desktop installations, also enable `MULTICA_MANAGED_INSTALLATIONS_ENABLED=true` and preserve a stable `MULTICA_DEPLOYMENT_ID` across upgrades. Compatible clients prove their installation identity; old clients remain explicitly unassociated.
+
+Observers can read metadata but cannot perform management actions. Platform roles do not bypass private content permissions. Admission stops affect new claims; cancellation receipts separately report server state and confirmed process exit. Recover a lost response using its original request, and retain unconfirmed operations.
+
+See the [platform administration guide](apps/docs/content/docs/platform-administration.mdx) for roles, alerts, health, retention declarations, and recovery. Password recovery requires an audited `--reason`; recovering the last effective super administrator additionally requires `--break-glass` and temporarily leaves no effective administrator until mandatory password change completes.
+
+Turning the console off does not undo revocations, admission restrictions, or pending coordination. Prefer a forward fix, preserve existing audit and binding history, and stop all writers before a maintenance rollback. Used management data blocks destructive down migrations. Retention configuration does not enable automatic deletion.

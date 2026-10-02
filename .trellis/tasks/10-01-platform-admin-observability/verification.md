@@ -41,3 +41,11 @@ Desktop overview/audit and mobile alert screenshots were inspected. The final vi
 ## S07 handoff
 
 Native installed-app/Windows, full classic regression, capacity and rollout remain S07. A Windows environment question is pending. S07 review has identified a concurrent first-insert versus rollback emptiness-check race in new down migrations; this is a release blocker to correct with protective locks and concurrent regression evidence before rollout acceptance. No production deployment or rollback has occurred.
+
+
+## S07 correction follow-up — 2026-10-02
+
+The rollback race identified above is corrected and independently reviewed.
+The actual down-SQL concurrent-write regression and full repository race suite
+passed. Current local browser/native/capacity evidence and open release gates
+are in [S07 verification](../10-01-platform-admin-acceptance/verification.md).

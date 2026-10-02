@@ -1,0 +1,52 @@
+# Platform administration release checklist
+
+This section records rollback readiness only. It does not mark the full S07
+acceptance, native clients, capacity, or production deployment complete.
+
+## Rollback safety — S07-R01
+
+- [x] Reproduce the concurrent first-write race with actual down SQL in private
+  schemas: audit, legacy revocation marker, enrollment challenge, queue clock.
+- [x] Lock all checked and DDL-target tables before retained-data checks, using
+  deterministic order and fail-fast `ACCESS EXCLUSIVE NOWAIT`.
+- [x] Keep each check and protected DDL in one `DO` block; retain the existing
+  populated-data refusal and prove empty-maintenance rollback still works.
+- [x] Cover every guarded down file from 465–511 (43 files); no up migration or
+  migration number changed.
+- [x] Document that disabling feature flags is not maintenance mode and the
+  migration advisory lock does not stop application writers.
+- [x] Complete independent review of the corrective diff: no P1/P2 findings in
+  rollback locks, transaction-scoped runtime lookups, retained alerts or the
+  native private-profile write correction.
+- [x] Complete final shared verification: fullcheck passed, plus six password-mode
+  browser specs, native macOS and final shell regression. See verification.md.
+- [ ] In the actual approved deployment maintenance window, record a backup,
+  binary/schema compatibility, writer shutdown and connection drain, and
+  schema/index/trigger checks before restoring service. This has not run here.
+- [x] Run a local synthetic database dump/restore and verify credential versions,
+  roles, installation epochs, admission policy, pending operations and audit.
+  All 20 table fingerprints matched; see [backup-restore.md](backup-restore.md).
+- [ ] Validate the actual production backup plan, including deployment secrets,
+  storage and recovery objectives; the local database drill does not cover them.
+
+Treat `55P03` as a live-connection refusal and `P0001` as retained evidence.
+Neither permits forced data removal. Keep maintenance active after a partial
+multi-file failure and inspect actual schema plus migration bookkeeping before
+choosing a compatible recovery or forward fix.
+
+Implementation evidence and the original two-connection schedule are retained
+under `.omx/reports/platform-admin/s07-review/`; final check results must be
+included in the S07 verification report before a release claim.
+
+## Remaining acceptance before release
+
+- [x] Record 1,000-installation, one-million-history and ten-observer measurements.
+- [x] Record controlled role revocation and owned-database recovery evidence.
+- [ ] Address or explicitly accept loaded overview P95 2.808 s and reconnect ACK
+  threshold/margin limits; measure browser rendering during the fleet workload.
+- [ ] Verify native Windows runtime/ACL, signed installation, old-version upgrade
+  and clean reinstall. Source-built macOS evidence is not a substitute.
+- [ ] Record reference-environment/cold-storage and longer failure recovery.
+
+The measured local paging target passed; this checklist intentionally does not
+mark the entire S07 or production release complete.

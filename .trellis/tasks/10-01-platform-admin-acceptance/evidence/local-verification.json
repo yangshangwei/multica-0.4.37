@@ -1,0 +1,127 @@
+{
+  "baseline": "1c56f6cd6 plus reviewed S07 working tree",
+  "fullcheck": {
+    "exit_code": 0,
+    "ts_files": 815,
+    "ts_tests": 9528,
+    "browser_passed": 131,
+    "browser_skipped": 33,
+    "go_race": true,
+    "go_vet": true
+  },
+  "password_browser": [
+    {
+      "suite": "access",
+      "exit_code": 0,
+      "duration_ms": 19386,
+      "stats": {
+        "startTime": "2026-10-02T00:21:49.380Z",
+        "duration": 18510.885000000002,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "suite": "installations",
+      "exit_code": 0,
+      "duration_ms": 3419,
+      "stats": {
+        "startTime": "2026-10-02T00:22:08.630Z",
+        "duration": 2678.465,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "suite": "executions",
+      "exit_code": 0,
+      "duration_ms": 4074,
+      "stats": {
+        "startTime": "2026-10-02T00:22:12.053Z",
+        "duration": 3330.911,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "suite": "controls",
+      "exit_code": 0,
+      "duration_ms": 4034,
+      "stats": {
+        "startTime": "2026-10-02T00:22:16.182Z",
+        "duration": 3237.27,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "suite": "accounts",
+      "exit_code": 0,
+      "duration_ms": 5480,
+      "stats": {
+        "startTime": "2026-10-02T00:22:20.163Z",
+        "duration": 4739.88,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "suite": "observability",
+      "exit_code": 0,
+      "duration_ms": 5699,
+      "stats": {
+        "startTime": "2026-10-02T00:22:25.670Z",
+        "duration": 4931.443,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "harness_followup": {
+    "change": "Explicit legacy mode and disabled password-only features in disposable check env",
+    "red_exit": 1,
+    "green_exit": 0,
+    "shell_syntax_exit": 0,
+    "independent_review": "P2 resolved; no remaining findings"
+  },
+  "knip": {
+    "exit_code": 1,
+    "preexisting_unused_files": 9,
+    "preexisting_unused_dependencies": 1,
+    "preexisting_unused_dev_dependencies": 1
+  },
+  "evidence": {
+    "fullcheck_log": {
+      "path": ".omx/reports/platform-admin/s07-resume/make-check-legacy.log",
+      "sha256": "2ea36ff4c2dc53fb7b156a9c679cf74ac86402380d4e2d676ba8d005dd91a05c"
+    },
+    "classic_provenance": {
+      "path": "/Users/artisan/.multica/dev/envs/check-20261001235137-90166/verification.running.json",
+      "sha256": "d20a27def7f456545c4243cad6cbd660f3496afbfa6f6dcf4e13b0a9bc761627"
+    },
+    "password_api": {
+      "path": ".omx/reports/platform-admin/s07-resume/runtime/envs/platform-admin-resume/api.running.json",
+      "sha256": "bb90cd1f5fb7f8a88532b92b2e8d2e1cd5de2b2b5d33fd48945f6bb9dfc81823"
+    },
+    "password_web": {
+      "path": ".omx/reports/platform-admin/s07-resume/runtime/envs/platform-admin-resume/web.running.json",
+      "sha256": "2a9f545ca7801343963ab62248c50bfc0791830224de901caa1e79b5d388ddb7"
+    },
+    "password_summary": {
+      "path": ".omx/reports/platform-admin/s07-resume/password-summary.json",
+      "sha256": "573ec3832e7b6aa406ed409e818870e13d09dcf12f0cacefcb06b98ef3c76415"
+    }
+  }
+}

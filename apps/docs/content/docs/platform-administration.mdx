@@ -1,0 +1,88 @@
+---
+title: Platform administration
+description: Operate a self-hosted password deployment with explicit platform roles, installation controls, alerts, and audit records.
+---
+
+Platform administration is a Web console at `/admin` for a self-hosted deployment using username and password accounts. A workspace owner or admin does not automatically receive platform access. A platform administrator can enter without joining a workspace.
+
+## Enable the console
+
+Apply the database migrations from the same server release before enabling administration. Preserve the database, `JWT_SECRET`, and a stable deployment UUID across upgrades. The server checks required indexes and triggers and refuses activation if they are missing or invalid. A migration ledger entry alone does not prove a concurrent index build finished.
+
+```dotenv
+MULTICA_AUTH_MODE=password
+MULTICA_DEVICE_AUTH_ENABLED=false
+MULTICA_PLATFORM_ADMIN_ENABLED=true
+MULTICA_DEPLOYMENT_ID=<stable deployment UUID>
+MULTICA_PASSWORD_LIMITER_MODE=single
+MULTICA_MANAGED_INSTALLATIONS_ENABLED=true
+```
+
+Keep `MULTICA_CLOUD_URL` empty. `single` supports one API process. Multiple API replicas must use `MULTICA_PASSWORD_LIMITER_MODE=shared` and the same `REDIS_URL`; a Redis outage rejects password attempts. Configuration changes require an API restart. Managed installation reporting requires compatible Desktop and daemon versions.
+
+Create a named password account and finish any required password change. On the trusted API host, use the server executable with the deployment's normal database and password-mode configuration:
+
+```sh
+server platform-admin bootstrap --user USER_UUID --reason "Initialize deployment administration"
+```
+
+Select the existing account by UUID. Bootstrap does not promote the first registrant or select an account by display name. It records an operation and audit event, advances the account's authorization version, and revokes previous credentials. Sign in again with the password, then open `/admin`. Keep a second named super administrator for recovery.
+
+## Roles and private content
+
+| Role | Access |
+| --- | --- |
+| `platform_observer` | Read platform metadata, alerts, health, and audit projections |
+| `super_admin` | Observer access plus permitted account, role, installation, execution, and alert actions |
+
+Administration requires a complete human password session. Personal access tokens, task/daemon credentials, legacy sessions, and temporary-password sessions cannot administer the platform. Role changes and account restrictions are checked by the server on subsequent requests and within write transactions.
+
+Platform metadata access does not grant access to private task titles, prompts, comments, logs, or artifacts. Opening original content still requires its normal workspace and content permissions.
+
+## Read installation and execution state
+
+One installation may have several runtimes and workspace bindings. The client, daemon, and execution engine have separate observations: an open Desktop window does not prove its daemon or engine is healthy. Unknown or stale evidence remains visible. Older clients and historical tasks can remain unassociated with an installation; their IDs are not retroactively treated as trusted installation proof.
+
+A business issue can have several execution attempts. Use the execution list and attempt details to inspect the recorded source, destination, state, and available usage. Outcome metrics use the selected finish-time window. Current queued and running counts cover active work regardless of age. Drilldown links retain the relevant window and timezone. Missing usage is unknown; token counts are not a bill.
+
+## Apply controls and recover uncertain results
+
+Stopping admission prevents new work from being claimed on an installation. Work already running continues. Resume admission explicitly when the installation is ready.
+
+Cancellation has two distinct results: the server's task transition and confirmation that the execution process stopped. An offline client, expired deadline, missing observation, or old protocol is not proof of process exit. Read the operation receipt; an unconfirmed result may require investigation.
+
+Every management write includes a reason and a request identity. If a response is lost, keep the receipt open or reload to recover that same request. Do not submit a new action merely because the first response was uncertain. The console retains pending requests and queries their recorded outcomes.
+
+Account disable, role changes, and password recovery can revoke existing credentials and affect execution owned by the target account. Review the impact shown by the confirmation form. Restoring an account does not restore its old credentials. The server protects the last effective super administrator from ordinary removal or disablement.
+
+## Handle alerts
+
+The initial rules cover prolonged queueing, a failed execution attempt, and proven installation loss with in-flight work. Acknowledge an alert to record handling; assignment is limited to eligible active super administrators. Recovery is a separate source observation.
+
+A failed execution is a recorded historical failure. Closing it requires a disposition; a successful-retry disposition must link to a verified successful descendant attempt. Closing a failure does not erase its deduplication history. Other alerts close after observed recovery. Source outages pause opening and recovery rather than declaring all installations offline or recovered.
+
+## Health, audit, and retention
+
+Health combines actual database, heartbeat, worker, coordinator, and detector observations. A worker that has never run is unknown. Audit records expose controlled metadata and recorded actor names when available, with missing historical values shown as unknown.
+
+Optional retention settings are declarations shown in the console:
+
+```dotenv
+MULTICA_ADMIN_CONFIRMED_OPERATIONS_RETENTION_DAYS=90
+MULTICA_ADMIN_ALERT_RETENTION_DAYS=90
+MULTICA_ADMIN_AUDIT_RETENTION_DAYS=365
+```
+
+These values do not enable automatic deletion. Unconfirmed operations and existing business history remain retained.
+
+## Recovery and rollback
+
+Prefer another active super administrator for daily recovery. Deployment maintenance can reset an existing account with an audited reason:
+
+```sh
+server password-recover --user USER_UUID --reason "Approved account recovery"
+```
+
+The command reads the temporary password from protected standard input, never an argument or environment variable. Add `--username NAME` only for a historical account without password credentials. Recovering the last effective super administrator also requires `--break-glass`; no effective administrator remains until that user completes the mandatory password change.
+
+Turning off the console does not undo account revocations, stopped admission, or pending cancellation coordination. Preserve the security-capable backend and existing data when rolling back the UI. Used credentials, audit, installation bindings, and control history block destructive down migrations. Stop all writers before a maintenance rollback and prefer a forward fix. Restoring an old database can revive previously revoked credentials and requires a separate recovery plan.

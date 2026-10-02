@@ -1,0 +1,372 @@
+{
+  "started_at": "2026-10-02T00:52:54.130Z",
+  "source_snapshot_sha256": "5935c327fc3c84b096ffe565f93ffc111228849ed585fb37c4e25c73efbc4252",
+  "baseline_end": "2026-10-02T00:42:27.830Z",
+  "scope": "Separate post-baseline probes; five synthetic observers and run-owned PostgreSQL only",
+  "role": {
+    "revoke": [
+      {
+        "status": 200,
+        "latency_ms": 93.68849999999998,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 78.13662499999998,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 80.06675000000007,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 77.743833,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 82.51295800000003,
+        "ok": true
+      }
+    ],
+    "old_token_after_revoke": [
+      {
+        "status": 403,
+        "latency_ms": 6.983875000000012,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.01041600000002,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 8.918708000000038,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 7.157167000000015,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 8.305375000000026,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 8.267083000000014,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.046917000000008,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.793791999999996,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 10.101083999999958,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 10.239916999999991,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.609332999999992,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.319999999999993,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 8.605542000000014,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 10.106124999999963,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.87341699999996,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.673000000000002,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.831999999999994,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.526583000000016,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.277291999999989,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.291459000000032,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 8.158165999999994,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 8.750333000000012,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 8.97995800000001,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.156292000000008,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 9.365624999999966,
+        "ok": false,
+        "code": "admin_forbidden"
+      }
+    ],
+    "fresh_login_without_role": [
+      {
+        "status": 403,
+        "latency_ms": 4.574958000000038,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 4.3136670000000095,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 4.519625000000019,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 4.324916999999914,
+        "ok": false,
+        "code": "admin_forbidden"
+      },
+      {
+        "status": 403,
+        "latency_ms": 4.415457999999944,
+        "ok": false,
+        "code": "admin_forbidden"
+      }
+    ],
+    "restore": [
+      {
+        "status": 200,
+        "latency_ms": 84.10800000000006,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 75.13925000000006,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 77.97695799999997,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 81.15983299999994,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 81.39024999999992,
+        "ok": true
+      }
+    ],
+    "restored_fresh_login": [
+      {
+        "status": 200,
+        "latency_ms": 5.319916999999805,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 5.874083000000155,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 5.635624999999891,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 5.737458000000061,
+        "ok": true
+      },
+      {
+        "status": 200,
+        "latency_ms": 5.857625000000098,
+        "ok": true
+      }
+    ],
+    "old_token_after_restore": [
+      {
+        "status": 401,
+        "latency_ms": 3.54362500000002,
+        "ok": false,
+        "code": "session_revoked"
+      },
+      {
+        "status": 401,
+        "latency_ms": 3.6965829999999187,
+        "ok": false,
+        "code": "session_revoked"
+      },
+      {
+        "status": 401,
+        "latency_ms": 3.351124999999911,
+        "ok": false,
+        "code": "session_revoked"
+      },
+      {
+        "status": 401,
+        "latency_ms": 3.5891670000000886,
+        "ok": false,
+        "code": "session_revoked"
+      },
+      {
+        "status": 401,
+        "latency_ms": 3.50970899999993,
+        "ok": false,
+        "code": "session_revoked"
+      }
+    ],
+    "audit": {
+      "operations": 10,
+      "audit_events": 10
+    },
+    "denial_latency": {
+      "samples": 25,
+      "p50_ms": 9.277291999999989,
+      "p95_ms": 10.106124999999963,
+      "p99_ms": 10.239916999999991,
+      "errors": 25,
+      "error_rate": 1,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "ok": true
+  },
+  "database": {
+    "before": {
+      "status": 200,
+      "latency_ms": 4.770999999999958,
+      "ok": true
+    },
+    "during_pause": [
+      {
+        "status": 0,
+        "latency_ms": 8001.168416,
+        "ok": false,
+        "error": "TimeoutError"
+      },
+      {
+        "status": 0,
+        "latency_ms": 8001.92025,
+        "ok": false,
+        "error": "TimeoutError"
+      },
+      {
+        "status": 0,
+        "latency_ms": 8002.465334,
+        "ok": false,
+        "error": "TimeoutError"
+      },
+      {
+        "status": 0,
+        "latency_ms": 8002.940167,
+        "ok": false,
+        "error": "TimeoutError"
+      },
+      {
+        "status": 0,
+        "latency_ms": 8003.645624999999,
+        "ok": false,
+        "error": "TimeoutError"
+      }
+    ],
+    "pause_ms": 8056.779542,
+    "recovery": [
+      {
+        "status": 200,
+        "latency_ms": 5.956083000000945,
+        "ok": true
+      }
+    ],
+    "recovery_ms": 5.9742089999999735,
+    "ok": true
+  },
+  "ok": true,
+  "synthetic_roles_requiring_restore": [],
+  "finished_at": "2026-10-02T00:53:03.932Z"
+}

@@ -1,8 +1,8 @@
 {
   "id": "platform-admin-console",
   "name": "platform-admin-console",
-  "title": "平台管理后台：需求、架构、详细设计与实施分解",
-  "description": "统一账号认证与独立平台权限；企业内部先落地，预留多客户组织；完成需求、架构、详细设计、验收与实施任务分解，本轮仅规划。",
+  "title": "平台管理后台：实现与集成验收",
+  "description": "统一账号认证与独立平台权限；内部企业首期平台后台，按S01–S07推进实现、安全、原生及容量验收。",
   "status": "in_progress",
   "dev_type": "fullstack",
   "scope": "platform-admin",
@@ -35,8 +35,10 @@
     ".trellis/tasks/10-01-platform-admin-console/check.jsonl",
     ".trellis/tasks/10-01-platform-admin-console/design.md",
     ".trellis/tasks/10-01-platform-admin-console/detailed-design.md",
+    ".trellis/tasks/10-01-platform-admin-console/handoff.md",
     ".trellis/tasks/10-01-platform-admin-console/implement.jsonl",
     ".trellis/tasks/10-01-platform-admin-console/implement.md",
+    ".trellis/tasks/10-01-platform-admin-console/implementation-handoff.md",
     ".trellis/tasks/10-01-platform-admin-console/migration-rollout.md",
     ".trellis/tasks/10-01-platform-admin-console/prd.md",
     ".trellis/tasks/10-01-platform-admin-console/research/auth-current-state.md",
@@ -47,14 +49,13 @@
     ".trellis/tasks/10-01-platform-admin-console/security-design.md",
     ".trellis/tasks/10-01-platform-admin-console/terminal-execution-design.md",
     ".trellis/tasks/10-01-platform-admin-console/test-spec.md",
-    ".trellis/tasks/10-01-platform-admin-console/verification.md",
-    ".trellis/tasks/10-01-platform-admin-console/handoff.md"
+    ".trellis/tasks/10-01-platform-admin-console/verification.md"
   ],
-  "notes": "Planning documents and seven implementation slices delivered. Source-backed design and bounded independent review completed; application implementation and runtime verification not started.",
+  "notes": "S01–S06 implementation complete. S07 local fullcheck, six password browser specs, native macOS and backup/restore passed; capacity measured with passing pagination and explicit loaded-overview/reconnect limits. Windows/distribution/production acceptance remains open.",
   "meta": {
     "planning_only": false,
     "implementation_authorized": true,
-    "current_phase": "planning_delivered",
+    "current_phase": "local_acceptance_reviewed",
     "scale_terminals_min": 100,
     "scale_terminals_max": 1000,
     "planning_deliverables": [
@@ -72,10 +73,21 @@
     "decision_source": "user-confirmed identity sharing, internal-first/multi-customer later, 100-1000 terminals",
     "document_validation": "passed",
     "document_review": "bounded independent review complete; all four findings resolved",
-    "handoff_file": ".trellis/tasks/10-01-platform-admin-console/handoff.md",
+    "handoff_file": ".trellis/tasks/10-01-platform-admin-console/implementation-handoff.md",
     "authorization_source": "User explicitly approved implementation from S01 on 2026-10-01",
     "completed_slices": [
-      "S01"
-    ]
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06"
+    ],
+    "open_acceptance": [
+      "Windows runtime/ACL and signed/old-binary installation lifecycle",
+      "Loaded overview latency and reconnect ACK accounting/margin",
+      "Reference-environment/cold-storage/extended-failure and production release verification"
+    ],
+    "local_verification_report": ".trellis/tasks/10-01-platform-admin-acceptance/verification.md"
   }
 }
