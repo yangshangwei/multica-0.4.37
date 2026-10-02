@@ -4,6 +4,7 @@ import { TestApiClient } from "./fixtures";
 interface ServerSummary {
   id: string;
   name: string;
+  transport: string;
   template_key?: string | null;
   template_version?: string | null;
   enabled?: boolean;
@@ -91,7 +92,7 @@ test("uses the collection canvas and adapts template columns to the available wi
     await expect(header.getByRole("button", { name: "Add custom server", exact: true })).toBeVisible();
     const market = page.getByTestId("mcp-market");
     const cards = market.locator(".grid > div");
-    await expect(cards).toHaveCount(3);
+    await expect(cards).toHaveCount(5);
     for (const [width, columns] of [[1440, 3], [900, 2], [390, 1]]) {
       await page.setViewportSize({ width: width!, height: 1000 });
       await expect.poll(async () => cards.evaluateAll((elements) => {
@@ -117,7 +118,7 @@ test("uses the collection canvas and adapts template columns to the available wi
   }
 });
 
-test("creates all three recipes, preserves source after rename, and reuses an instance from an agent", async ({ page }, info) => {
+test("creates and explicitly assigns all five recipes, preserves source after rename, and reuses an instance from an agent", async ({ page }, info) => {
   test.setTimeout(180_000);
   const { api, workspace, agents, slug } = await setup(page);
   const errors: string[] = [];
@@ -129,13 +130,24 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     const marketTab = page.getByRole("tab", { name: "MCP market", exact: true });
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     await capture(page, info, "market-wide");
+    const market = page.getByTestId("mcp-market");
+    await market.getByRole("button", { name: "Documentation & knowledge", exact: true }).click();
+    await expect(market.getByRole("status")).toHaveText("Templates found: 2");
+    await capture(page, info, "documentation-filter-wide");
+    await market.getByRole("searchbox").fill("deepwiki");
+    await expect(market.getByRole("status")).toHaveText("Templates found: 1");
+    await expect(market.getByRole("button", { name: "View configuration: DeepWiki", exact: true })).toBeVisible();
+    await market.getByRole("searchbox").clear();
+    await market.getByRole("button", { name: "All templates", exact: true }).click();
 
     const templateIcons = new Map<string, { drawing: string; color: string; background: string }>();
-    for (const [key, title] of [
-      ["chrome-devtools", "Chrome DevTools"],
-      ["playwright", "Playwright"],
-      ["sequential-thinking", "Sequential Thinking"],
-    ]) {
+    for (const [key, title, transport] of [
+      ["chrome-devtools", "Chrome DevTools", "stdio"],
+      ["playwright", "Playwright", "stdio"],
+      ["sequential-thinking", "Sequential Thinking", "stdio"],
+      ["microsoft-learn", "Microsoft Learn", "http"],
+      ["deepwiki", "DeepWiki", "http"],
+    ] as const) {
       await marketTab.click();
       const preview = page.getByRole("button", { name: `View configuration: ${title}`, exact: true });
       templateIcons.set(key!, await preview.locator("svg").first().evaluate((icon) => ({
@@ -147,6 +159,11 @@ test("creates all three recipes, preserves source after rename, and reuses an in
       const dialog = page.getByRole("dialog");
       await dialog.getByRole("textbox", { name: "Configuration name", exact: true }).fill(key!);
       if (key === "chrome-devtools") await capture(page, info, "setup-wide");
+      if (transport === "http") {
+        await expect(dialog.getByRole("listitem").filter({ hasText: "Streamable HTTP" })).toBeVisible();
+        await expect(dialog.getByRole("listitem").filter({ hasText: key === "microsoft-learn" ? /training|profile/i : /indexed.*public|public.*indexed/i })).toBeVisible();
+        await capture(page, info, `${key}-setup-wide`);
+      }
       await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
       await expect(dialog.getByRole("button", { name: "Skip for now", exact: true })).toBeVisible();
       if (key === "chrome-devtools") {
@@ -154,8 +171,11 @@ test("creates all three recipes, preserves source after rename, and reuses an in
         await capture(page, info, "assignment-wide");
       }
       const saved = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.name === key);
-      expect(saved).toMatchObject({ template_key: key, template_version: "1" });
+      expect(saved).toMatchObject({ template_key: key, template_version: "1", transport });
       expect(saved).not.toHaveProperty("config");
+      expect(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`)).not.toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: saved!.id })]),
+      );
       if (key === "sequential-thinking") {
         await dialog.getByRole("button", { name: "Skip for now", exact: true }).click();
       } else {
@@ -168,17 +188,19 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     }
 
     const servers = await api.requestJSON<ServerSummary[]>(base);
-    expect(servers).toHaveLength(3);
+    expect(servers).toHaveLength(5);
     const playwright = servers.find((server) => server.template_key === "playwright")!;
+    const deepwiki = servers.find((server) => server.template_key === "deepwiki")!;
     await api.requestJSON(`${base}/${playwright.id}`, { method: "PUT", body: { name: "browser-production" } });
+    await api.requestJSON(`${base}/${deepwiki.id}`, { method: "PUT", body: { name: "public-repository-docs" } });
     await page.reload();
     const renamed = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.id === playwright.id);
     expect(renamed).toMatchObject({ name: "browser-production", template_key: "playwright" });
     await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();
     for (const saved of servers) {
-      const name = saved.id === playwright.id ? "browser-production" : saved.name;
+      const name = saved.id === playwright.id ? "browser-production" : saved.id === deepwiki.id ? "public-repository-docs" : saved.name;
       const row = page.getByRole("listitem").filter({ has: page.getByText(name, { exact: true }) });
-      await expect(row.getByText("STDIO", { exact: true })).toBeVisible();
+      await expect(row.getByText(saved.transport === "http" ? "Streamable HTTP" : "STDIO", { exact: true })).toBeVisible();
       expect(await row.locator("svg").first().evaluate((icon) => ({
         drawing: icon.innerHTML,
         color: getComputedStyle(icon).color,
@@ -203,7 +225,7 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     await page.getByRole("button", { name: `Use sequential-thinking: Assign to ${agents[1]!.name}`, exact: true }).click();
     const dialog = page.getByRole("dialog").last();
     await dialog.getByRole("button", { name: "Done", exact: true }).click();
-    expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(3);
+    expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(5);
     expect(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[1]!.id}/mcp-servers`)).toEqual(expect.arrayContaining([expect.objectContaining({ name: "sequential-thinking", enabled: true })]));
 
     const longAgentName = "Release reviewer for international customer onboarding and browser validation";
@@ -235,6 +257,9 @@ test("creates all three recipes, preserves source after rename, and reuses an in
     await page.reload();
     await page.getByRole("tab", { name: "MCP 市场", exact: true }).click();
     await capture(page, info, "market-chinese-wide");
+    await market.getByRole("button", { name: "文档与知识", exact: true }).click();
+    await expect(market.getByRole("status")).toHaveText("找到 2 个模板");
+    await capture(page, info, "documentation-filter-chinese-wide");
     await page.getByRole("tab", { name: "共享配置", exact: true }).click();
     await capture(page, info, "workspace-chinese-wide");
     expect(errors).toEqual([]);

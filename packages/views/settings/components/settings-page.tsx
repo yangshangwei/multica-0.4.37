@@ -34,6 +34,10 @@ import {
   SETTINGS_NAV_GROUPS,
   visibleSettingsNavGroups,
 } from "./settings-nav";
+import {
+  buildSettingsHref,
+  getRequestedIntegration,
+} from "./settings-integration-navigation";
 import { CollapsedNavTrigger } from "../../layout/page-header";
 import { useT } from "../../i18n";
 
@@ -114,6 +118,7 @@ export function SettingsPage({ extraDesktopTabs }: SettingsPageProps = {}) {
     : null;
   const activeTab =
     candidateTab && validTabs.has(candidateTab) ? candidateTab : DEFAULT_TAB;
+  const requestedIntegration = getRequestedIntegration(navigation.searchParams);
   const activeEntry = visibleGroups.flatMap((group) => group.items)
     .find((item) => item.value === activeTab);
   const activeLabel = activeEntry?.kind === "injected"
@@ -121,12 +126,10 @@ export function SettingsPage({ extraDesktopTabs }: SettingsPageProps = {}) {
     : t(($) => $.page.tabs[activeEntry?.tabKey ?? "profile"]);
 
   // replace (not push) so settings tab switches don't pollute browser history.
-  // Preserve any other query params the page may carry.
+  // Clear provider selection while preserving unrelated URL context.
   const handleTabChange = (next: string) => {
     setDirectoryOpen(false);
-    const params = new URLSearchParams(navigation.searchParams);
-    params.set(TAB_QUERY_KEY, next);
-    navigation.replace(`${navigation.pathname}?${params.toString()}`);
+    navigation.replace(buildSettingsHref(navigation, next));
   };
 
   const navList = (
@@ -153,7 +156,14 @@ export function SettingsPage({ extraDesktopTabs }: SettingsPageProps = {}) {
               key={item.value}
               value={item.value}
               ref={item.value === activeTab ? selectedTabRef : undefined}
-              onClick={() => setDirectoryOpen(false)}
+              onClick={() => {
+                setDirectoryOpen(false);
+                // Base UI skips onValueChange for the active tab. Selecting it
+                // still returns a provider detail to the integration catalog.
+                if (item.value === activeTab && (requestedIntegration !== null || navigation.searchParams.has("integration"))) {
+                  handleTabChange(item.value);
+                }
+              }}
               className={SETTINGS_TAB_TRIGGER_CLASS}
             >
               <item.icon className="size-4" aria-hidden="true" />
@@ -225,7 +235,7 @@ export function SettingsPage({ extraDesktopTabs }: SettingsPageProps = {}) {
 
       {/* Right content */}
       <div className="min-w-0 flex-1 md:overflow-y-auto">
-        <div className={`mx-auto w-full p-4 sm:p-6 md:p-8 ${activeTab === "labels" || activeTab === "issue-statuses" || activeTab === "properties" || activeTab === "quick-actions"
+        <div className={`mx-auto w-full p-4 sm:p-6 md:p-8 ${activeTab === "labels" || activeTab === "issue-statuses" || activeTab === "properties" || activeTab === "quick-actions" || (activeTab === "integrations" && requestedIntegration === null)
               ? "max-w-5xl"
               : "max-w-3xl"}`}>
           <TabsContent aria-label={activeLabel} value="profile"><AccountTab /></TabsContent>

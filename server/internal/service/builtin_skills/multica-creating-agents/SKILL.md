@@ -431,6 +431,11 @@ version identifies the recipe, not a pinned upstream executable release.
 Creation assigns no agents. A human agent owner or workspace owner/admin must
 explicitly assign the entry; agent actors cannot make either write.
 
+Microsoft Learn and DeepWiki are keyless HTTP recipes requiring Streamable HTTP and outbound access.
+DeepWiki covers indexed public GitHub repositories, not private ones; fetch current recipe versions from the catalog.
+Removing recipes blocks new template creation but retains saved configurations and explicit assignments.
+Saving or assigning a recipe does not verify connectivity.
+
 ## Skill binding
 
 Creating an agent does NOT bind any workspace skill — binding is a separate

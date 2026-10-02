@@ -55,6 +55,28 @@ const template: McpServerTemplate = {
   category: "browser",
   requirements: ["Node.js and npx"],
 };
+const documentationTemplates: McpServerTemplate[] = [
+  {
+    key: "microsoft-learn",
+    title: "Microsoft Learn",
+    description: "Search official Microsoft documentation and code examples.",
+    config: { type: "http", url: "https://learn.microsoft.com/api/mcp" },
+    version: "1",
+    category: "documentation",
+    documentationUrl: "https://learn.microsoft.com/en-us/training/support/mcp",
+    requirements: ["Streamable HTTP support and network access", "Public documentation only; no training or user profile information"],
+  },
+  {
+    key: "deepwiki",
+    title: "DeepWiki",
+    description: "Explore documentation and ask questions about public GitHub repositories.",
+    config: { type: "http", url: "https://mcp.deepwiki.com/mcp" },
+    version: "1",
+    category: "documentation",
+    documentationUrl: "https://docs.devin.ai/work-with-devin/deepwiki-mcp",
+    requirements: ["Streamable HTTP support and network access", "Indexed public repositories only; private repositories are not supported"],
+  },
+];
 function Wrapper({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider
@@ -128,6 +150,42 @@ describe("MCP market", () => {
     renderCatalog({ servers: undefined, loaded: false });
     expect(screen.getByRole("tab", { name: "Shared configurations" })).toHaveTextContent(/^Shared configurations$/);
     expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent(/^MCP market$/);
+  });
+  it.each(documentationTemplates)("discovers $title by documentation category and search, then explicitly assigns its saved HTTP recipe", async (recipe) => {
+    const user = userEvent.setup();
+    mocks.templates!.push(...documentationTemplates);
+    mocks.create.mockResolvedValue({
+      id: "saved-http",
+      name: recipe.key,
+      transport: "http",
+      template_key: recipe.key,
+      template_version: recipe.version,
+    });
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "Documentation & knowledge" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Templates found: 2");
+    expect(screen.queryByRole("button", { name: "View configuration: Playwright" })).toBeNull();
+    await user.type(screen.getByRole("searchbox", { name: "Search MCP templates" }), recipe.key);
+    expect(screen.getByRole("status")).toHaveTextContent("Templates found: 1");
+    expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market4");
+    await user.click(screen.getByRole("button", { name: `View configuration: ${recipe.title}` }));
+    for (const requirement of recipe.requirements ?? []) {
+      expect(screen.getByText(requirement, { exact: true })).toBeVisible();
+    }
+    expect(screen.getByRole("link", { name: "Documentation" })).toHaveAttribute("href", recipe.documentationUrl);
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith({
+      name: recipe.key,
+      templateKey: recipe.key,
+      templateVersion: "1",
+    });
+    const ada = await screen.findByRole("checkbox", { name: "Ada" });
+    expect(ada).not.toBeChecked();
+    expect(mocks.assign).not.toHaveBeenCalled();
+    await user.click(ada);
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved-http", agentIds: ["a"] });
+    expect(mocks.create).toHaveBeenCalledTimes(1);
   });
   it("defaults a loaded empty workspace to market and lets members browse without creation", async () => {
     const user = userEvent.setup();

@@ -65,6 +65,42 @@ const LEGACY_WORKSPACE_TAB_REDIRECTS: Record<string, string> = {
 
 **Tests required when touching the IA**: update the order matrix in `settings-nav.test.ts`; if a `?tab=` value changed, grep the repo (incl. `server/`, `e2e/`) for the old value and check `githubSettingsURL`-style backend builders.
 
+### Integration catalog and provider detail navigation
+
+`IntegrationsTab` owns the catalog and mounts a provider form only when that
+provider is selected and deployment-enabled. `settings-integration-navigation.ts`
+owns URL parsing and construction: cards push `?tab=integrations&integration=…`,
+main-tab switches replace and clear `integration`, and unrelated query values and
+fragments survive. Selecting the already-active Integrations tab must also return
+to the catalog; Base UI does not emit `onValueChange` for this case.
+
+The backend's `?tab=github` callback resolves to GitHub **detail**, not just the
+umbrella tab. The existing Lark callback resolves similarly when enabled.
+Composio retains its separately gated surface and existing one-shot `connected`
+and `error=composio_connect_failed` callback handling.
+
+Deployment configuration loads independently of authentication. The initial
+`false` messaging/VCS flags do not prove that a provider is unavailable. Show the
+catalog and an explanatory status for an unavailable selection, but retain the
+requested URL so a later configuration response can reveal its detail. Never
+mount hidden providers or allow planned cards to open a form.
+
+GitHub connection status comes from the workspace-scoped installation query,
+gated by known membership. Keep loading/error states separate from disconnection,
+and keep connection state independent of the workspace feature master switch.
+Live cards expose their status through `aria-describedby`; returning to the
+catalog restores the prior card's focus. Shared GitHub sections use h3 below the
+detail's h2. Its repository shortcut uses the same URL helper to clear provider
+selection without dropping other URL context.
+
+Tests: URL matrices live in `settings-integration-navigation.test.ts`, shell
+wiring in `settings-page.test.tsx`, catalog behavior and slow configuration in
+`integrations-tab.test.tsx`, and GitHub behavior in `github-tab.test.tsx`.
+`e2e/settings-integration-catalog.spec.ts` verifies production Web navigation,
+both locales, responsive layout, persisted feature preferences and mocked
+installation changes. Base UI assigns switch IDs to hidden checkboxes: use
+`getByRole("switch", { name })` for browser interaction, not an ID locator.
+
 ---
 
 ## Props Conventions

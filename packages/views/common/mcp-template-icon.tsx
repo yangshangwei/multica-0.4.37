@@ -7,22 +7,29 @@ export function McpTemplateIcon({ templateKey, category }: {
   category?: string;
 }) {
   const reasoning = templateKey === "sequential-thinking" || category === "reasoning";
+  const documentation = templateKey === "microsoft-learn" || templateKey === "deepwiki" || category === "documentation";
   const Icon = templateKey === "chrome-devtools"
     ? AVATAR_ICON_COMPONENTS.bug
     : templateKey === "playwright"
       ? AVATAR_ICON_COMPONENTS.workflow
-      : reasoning
-        ? AVATAR_ICON_COMPONENTS.brain
-        : AVATAR_ICON_COMPONENTS.globe;
+      : templateKey === "microsoft-learn"
+        ? AVATAR_ICON_COMPONENTS["book-open"]
+        : templateKey === "deepwiki"
+          ? AVATAR_ICON_COMPONENTS.search
+          : reasoning
+            ? AVATAR_ICON_COMPONENTS.brain
+            : AVATAR_ICON_COMPONENTS.globe;
 
   return (
     <span
       aria-hidden="true"
       className={cn(
         "inline-flex size-10 shrink-0 items-center justify-center rounded-lg",
-        reasoning
-          ? "bg-skill-research/12 text-skill-research"
-          : "bg-skill-engineering/12 text-skill-engineering",
+        documentation
+          ? "bg-skill-writing/12 text-skill-writing"
+          : reasoning
+            ? "bg-skill-research/12 text-skill-research"
+            : "bg-skill-engineering/12 text-skill-engineering",
       )}
     >
       <Icon className="size-5" />

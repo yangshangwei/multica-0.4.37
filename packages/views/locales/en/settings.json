@@ -328,6 +328,7 @@
       "all": "All templates",
       "browser": "Browser",
       "reasoning": "Reasoning",
+      "documentation_category": "Documentation & knowledge",
       "view": "View configuration: {{name}}",
       "view_action": "View configuration",
       "no_results": "No matching templates",
@@ -770,6 +771,78 @@
     "cancel": "Cancel",
     "confirm": "Delete workspace",
     "deleting": "Deleting..."
+  },
+  "integrations": {
+    "description": "Connect the tools your team uses to bring issues, code, and conversations together.",
+    "back": "All integrations",
+    "unavailable": "This integration is unavailable in this deployment. Choose an integration from the catalog.",
+    "planned": "Planned",
+    "loading": "Loading...",
+    "connected": "Connected",
+    "not_connected": "Not connected",
+    "not_configured": "Not configured",
+    "status_unavailable": "Status unavailable",
+    "features_off": "Features off",
+    "groups": {
+      "code": {
+        "title": "Code hosting",
+        "description": "Connect code platforms and link pull requests to issues."
+      },
+      "tasks": {
+        "title": "Task management",
+        "description": "Next integration priority. Scope and timing are still to be planned."
+      },
+      "chat": {
+        "title": "Communication & collaboration",
+        "description": "Connect the communication tools your team uses."
+      }
+    },
+    "providers": {
+      "github": {
+        "name": "GitHub",
+        "description": "Link pull requests and automatically update issue status."
+      },
+      "vcs": {
+        "name": "Self-hosted Git",
+        "description": "Connect GitLab, Gitea, or Forgejo instances."
+      },
+      "ones": {
+        "name": "ONES",
+        "description": "Requirements, bugs, and issue synchronization."
+      },
+      "plane": {
+        "name": "Plane",
+        "description": "Issue and project progress synchronization."
+      },
+      "kaneo": {
+        "name": "Kaneo",
+        "description": "Issue and board synchronization."
+      },
+      "fuxin": {
+        "name": "Fuxin",
+        "description": "Team communication and collaboration."
+      },
+      "lark": {
+        "name": "Lark",
+        "description": "Talk to agents and create issues through Lark bots."
+      },
+      "slack": {
+        "name": "Slack",
+        "description": "Talk to agents and create issues from Slack."
+      },
+      "dingtalk": {
+        "name": "DingTalk",
+        "description": "Talk to agents and create issues through DingTalk robots."
+      },
+      "wecom": {
+        "name": "WeCom",
+        "description": "Talk to agents through WeCom smart bots."
+      },
+      "telegram": {
+        "name": "Telegram",
+        "description": "Talk to agents and follow their replies in Telegram."
+      }
+    }
   },
   "github": {
     "section_title": "GitHub",

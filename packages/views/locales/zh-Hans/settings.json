@@ -328,6 +328,7 @@
       "all": "全部模板",
       "browser": "浏览器",
       "reasoning": "推理",
+      "documentation_category": "文档与知识",
       "view": "查看配置：{{name}}",
       "view_action": "查看配置",
       "no_results": "没有匹配的模板",
@@ -768,6 +769,78 @@
     "cancel": "取消",
     "confirm": "删除工作空间",
     "deleting": "删除中..."
+  },
+  "integrations": {
+    "description": "连接团队使用的工具，让任务、代码与沟通协同工作。",
+    "back": "全部集成",
+    "unavailable": "当前部署不支持此集成，请从目录中选择可用集成。",
+    "planned": "待规划",
+    "loading": "加载中...",
+    "connected": "已连接",
+    "not_connected": "未连接",
+    "not_configured": "未配置",
+    "status_unavailable": "状态暂不可用",
+    "features_off": "功能已关闭",
+    "groups": {
+      "code": {
+        "title": "代码托管",
+        "description": "连接代码平台，将 Pull Request 与任务关联。"
+      },
+      "tasks": {
+        "title": "任务管理",
+        "description": "后续优先接入方向，具体支持范围与时间待确定。"
+      },
+      "chat": {
+        "title": "沟通与协作",
+        "description": "连接团队使用的沟通工具。"
+      }
+    },
+    "providers": {
+      "github": {
+        "name": "GitHub",
+        "description": "关联 Pull Request，自动更新任务状态。"
+      },
+      "vcs": {
+        "name": "自托管 Git",
+        "description": "连接 GitLab、Gitea 或 Forgejo 实例。"
+      },
+      "ones": {
+        "name": "ONES",
+        "description": "需求、缺陷与任务的同步。"
+      },
+      "plane": {
+        "name": "Plane",
+        "description": "任务与项目进度的同步。"
+      },
+      "kaneo": {
+        "name": "Kaneo",
+        "description": "任务与看板的同步。"
+      },
+      "fuxin": {
+        "name": "孚信",
+        "description": "团队沟通与协作。"
+      },
+      "lark": {
+        "name": "飞书",
+        "description": "通过飞书机器人与智能体对话、创建任务。"
+      },
+      "slack": {
+        "name": "Slack",
+        "description": "在 Slack 中与智能体对话、创建任务。"
+      },
+      "dingtalk": {
+        "name": "钉钉",
+        "description": "通过钉钉机器人与智能体对话、创建任务。"
+      },
+      "wecom": {
+        "name": "企业微信",
+        "description": "通过企业微信智能机器人与智能体对话。"
+      },
+      "telegram": {
+        "name": "Telegram",
+        "description": "在 Telegram 中与智能体对话、跟进回复。"
+      }
+    }
   },
   "github": {
     "section_title": "GitHub",

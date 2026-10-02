@@ -133,5 +133,49 @@ func McpServerTemplates() []McpServerTemplate {
 				"zh": "把问题拆成可修正的思考链，适合规划和多步推理。",
 			},
 		},
+		{
+			Key:              "microsoft-learn",
+			Version:          "1",
+			Category:         "documentation",
+			DocumentationURL: "https://learn.microsoft.com/en-us/training/support/mcp",
+			Requirements: map[string][]string{
+				"en": {"An agent runtime with Streamable HTTP support and network access to learn.microsoft.com", "Public Microsoft documentation only; training and personal profile information are not included"},
+				"zh": {"智能体运行时需支持 Streamable HTTP，并能访问 learn.microsoft.com", "仅提供 Microsoft 公开文档，不包含培训内容或个人资料"},
+			},
+			Config: map[string]any{
+				"type": "http",
+				"url":  "https://learn.microsoft.com/api/mcp",
+			},
+			Titles: map[string]string{
+				"en": "Microsoft Learn",
+				"zh": "Microsoft Learn",
+			},
+			Descriptions: map[string]string{
+				"en": "Find official Microsoft documentation and code examples for Azure, .NET, Microsoft 365, and other products. No API key required.",
+				"zh": "查找 Azure、.NET、Microsoft 365 等产品的 Microsoft 官方文档和代码示例，无需 API 密钥。",
+			},
+		},
+		{
+			Key:              "deepwiki",
+			Version:          "1",
+			Category:         "documentation",
+			DocumentationURL: "https://docs.devin.ai/work-with-devin/deepwiki-mcp",
+			Requirements: map[string][]string{
+				"en": {"An agent runtime with Streamable HTTP support and network access to mcp.deepwiki.com", "Public GitHub repositories indexed by DeepWiki only; private repositories are not supported"},
+				"zh": {"智能体运行时需支持 Streamable HTTP，并能访问 mcp.deepwiki.com", "仅支持 DeepWiki 已索引的公共 GitHub 仓库，不支持私有仓库"},
+			},
+			Config: map[string]any{
+				"type": "http",
+				"url":  "https://mcp.deepwiki.com/mcp",
+			},
+			Titles: map[string]string{
+				"en": "DeepWiki",
+				"zh": "DeepWiki",
+			},
+			Descriptions: map[string]string{
+				"en": "Explore documentation and ask questions about public GitHub repositories indexed by DeepWiki. No API key required.",
+				"zh": "阅读 DeepWiki 已索引的公共 GitHub 仓库文档，了解项目结构并提问，无需 API 密钥。",
+			},
+		},
 	}
 }

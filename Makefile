@@ -376,6 +376,10 @@ build: ## Build the server, CLI, and migrate binaries into server/bin
 	cd server && go build -ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE)" -o bin/multica$(EXE) ./cmd/multica
 	cd server && go build -o bin/migrate$(EXE) ./cmd/migrate
 
+.PHONY: check-mcp-catalog
+check-mcp-catalog: ## Validate curated MCP recipes offline (no database or provider calls)
+	bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test ./internal/service -run '^TestMcpServerTemplates_' -count=1
+
 test: ## Run Go tests after ensuring the target DB exists and migrations are applied
 	$(REQUIRE_ENV)
 	@bash scripts/ensure-postgres.sh "$(ENV_FILE)"

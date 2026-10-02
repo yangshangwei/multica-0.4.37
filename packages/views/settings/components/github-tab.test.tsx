@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
@@ -13,6 +13,11 @@ const mockInvalidate = vi.hoisted(() => vi.fn());
 const mockNavPush = vi.hoisted(() => vi.fn());
 const mockSetQueryData = vi.hoisted(() => vi.fn());
 const mockToastSuccess = vi.hoisted(() => vi.fn());
+const mockToastError = vi.hoisted(() => vi.fn());
+const navigationRef = vi.hoisted(() => ({
+  search: "tab=integrations&integration=github",
+  hash: "",
+}));
 
 const workspaceRef = vi.hoisted(() => ({
   current: {
@@ -104,14 +109,14 @@ vi.mock("../../navigation/context", () => ({
     replace: vi.fn(),
     back: vi.fn(),
     pathname: "/acme/settings",
-    searchParams: new URLSearchParams("tab=integrations"),
-    hash: "",
+    searchParams: new URLSearchParams(navigationRef.search),
+    hash: navigationRef.hash,
     getShareableUrl: (p: string) => `https://app.example${p}`,
   }),
 }));
 
 vi.mock("sonner", () => ({
-  toast: { success: mockToastSuccess, error: vi.fn() },
+  toast: { success: mockToastSuccess, error: mockToastError },
 }));
 
 import { GitHubTab } from "./github-tab";
@@ -129,7 +134,9 @@ function I18nWrapper({ children }: { children: ReactNode }) {
 }
 
 function resetFixtures() {
-  vi.clearAllMocks();
+  vi.resetAllMocks();
+  navigationRef.search = "tab=integrations&integration=github";
+  navigationRef.hash = "";
   workspaceRef.current = {
     id: "workspace-1",
     name: "Acme",
@@ -143,6 +150,14 @@ function resetFixtures() {
 
 describe("GitHubTab", () => {
   beforeEach(resetFixtures);
+  afterEach(() => vi.restoreAllMocks());
+
+  it("uses h3 section headings beneath the integration detail h2", () => {
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    expect(screen.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent))
+      .toEqual(["Connection", "Features", "Repositories"]);
+  });
 
   it("folds the non-dev hint into the master switch description (no separate callout)", () => {
     render(<GitHubTab />, { wrapper: I18nWrapper });
@@ -175,12 +190,22 @@ describe("GitHubTab", () => {
     }
   });
 
-  it("flipping the master switch off persists github_enabled=false and merges existing settings", async () => {
+  // The full flag-derivation matrix belongs to packages/core/github/settings.test.ts.
+  it("retains feature preferences and the connection across a master off/on cycle", async () => {
     const user = userEvent.setup();
-    workspaceRef.current.settings = { co_authored_by_enabled: true };
-    mockUpdateWorkspace.mockResolvedValue({
-      ...workspaceRef.current,
-      settings: { co_authored_by_enabled: true, github_enabled: false },
+    const preferences = {
+      github_pr_sidebar_enabled: true,
+      co_authored_by_enabled: false,
+      github_auto_link_prs_enabled: true,
+      unrelated_setting: "preserve me",
+    };
+    workspaceRef.current.settings = preferences;
+    installationsRef.current.installations = [{ id: "inst-42", account_login: "acme" }];
+    mockUpdateWorkspace.mockImplementation(async (_id, patch) => ({
+      ...workspaceRef.current, ...patch,
+    }));
+    mockSetQueryData.mockImplementation((_key, update) => {
+      [workspaceRef.current] = update([workspaceRef.current]);
     });
 
     render(<GitHubTab />, { wrapper: I18nWrapper });
@@ -189,12 +214,69 @@ describe("GitHubTab", () => {
 
     await waitFor(() => {
       expect(mockUpdateWorkspace).toHaveBeenCalledWith("workspace-1", {
-        settings: { co_authored_by_enabled: true, github_enabled: false },
+        settings: { ...preferences, github_enabled: false },
       });
       expect(mockToastSuccess).toHaveBeenCalledWith("Changes saved", {
         id: "settings-auto-save",
       });
     });
+
+    for (const feature of screen.getAllByRole("switch").slice(1)) {
+      expect(feature).toHaveAttribute("aria-disabled", "true");
+      expect(feature).toHaveAttribute("aria-checked", "false");
+    }
+    expect(screen.getByText(/Connected to acme/i)).toBeVisible();
+    expect(screen.getByRole("button", { name: /^Disconnect$/ })).toBeEnabled();
+    expect(mockDeleteInstallation).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("switch", { name: /enable github features/i }));
+    await waitFor(() => expect(mockUpdateWorkspace).toHaveBeenLastCalledWith("workspace-1", {
+      settings: { ...preferences, github_enabled: true },
+    }));
+    expect(screen.getByRole("switch", { name: "Pull Request sidebar" })).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByRole("switch", { name: "Co-authored-by trailer" })).toHaveAttribute("aria-checked", "false");
+    expect(screen.getByRole("switch", { name: "Auto-link issues and PRs" })).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("keeps the saved state and reports an error when a preference update fails", async () => {
+    const user = userEvent.setup();
+    mockUpdateWorkspace.mockRejectedValue(new Error("Workspace update failed"));
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getByRole("switch", { name: /enable github features/i }));
+
+    await waitFor(() => expect(mockToastError).toHaveBeenCalledWith("Workspace update failed"));
+    expect(mockSetQueryData).not.toHaveBeenCalled();
+    expect(screen.getByRole("switch", { name: /enable github features/i })).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByRole("switch", { name: /enable github features/i })).not.toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("opens the configured GitHub installation URL from Connect", async () => {
+    const user = userEvent.setup();
+    const open = vi.spyOn(window, "open").mockReturnValue(null);
+    mockGetConnectURL.mockResolvedValue({ configured: true, url: "https://github.com/apps/multica/installations/new" });
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getByRole("button", { name: /^Connect GitHub$/ }));
+
+    expect(mockGetConnectURL).toHaveBeenCalledWith("workspace-1");
+    await waitFor(() => expect(open).toHaveBeenCalledWith(
+      "https://github.com/apps/multica/installations/new", "_blank", "noopener",
+    ));
+    expect(screen.getByRole("button", { name: /^Connect GitHub$/ })).toBeEnabled();
+  });
+
+  it("reports a failed Connect request and allows retrying", async () => {
+    const user = userEvent.setup();
+    const open = vi.spyOn(window, "open").mockReturnValue(null);
+    mockGetConnectURL.mockRejectedValue(new Error("Connection unavailable"));
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getByRole("button", { name: /^Connect GitHub$/ }));
+
+    await waitFor(() => expect(mockToastError).toHaveBeenCalledWith("Connection unavailable"));
+    expect(open).not.toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: /^Connect GitHub$/ })).toBeEnabled();
   });
 
   it("clicking Disconnect opens the confirmation and only fires on confirm", async () => {
@@ -212,14 +294,42 @@ describe("GitHubTab", () => {
     expect(screen.getByText(/Multica will stop receiving webhooks/i)).toBeTruthy();
     expect(mockDeleteInstallation).not.toHaveBeenCalled();
 
-    const dialogConfirm = screen
-      .getAllByRole("button", { name: /^Disconnect$/ })
-      .find((b) => b.getAttribute("data-slot")?.includes("alert-dialog"));
-    await user.click(dialogConfirm ?? screen.getAllByRole("button", { name: /^Disconnect$/ })[1]!);
+    await user.click(within(screen.getByRole("alertdialog")).getByRole("button", { name: /^Disconnect$/ }));
 
     await waitFor(() => {
       expect(mockDeleteInstallation).toHaveBeenCalledWith("workspace-1", "inst-42");
+      expect(mockInvalidate).toHaveBeenCalledWith({ queryKey: ["github", "workspace-1"] });
+      expect(mockToastSuccess).toHaveBeenCalledWith("GitHub App disconnected");
     });
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
+  });
+
+  it("canceling Disconnect keeps the installation connected", async () => {
+    const user = userEvent.setup();
+    installationsRef.current.installations = [{ id: "inst-42", account_login: "acme" }];
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getByRole("button", { name: /^Disconnect$/ }));
+    await user.click(within(screen.getByRole("alertdialog")).getByRole("button", { name: "Cancel" }));
+
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
+    expect(mockDeleteInstallation).not.toHaveBeenCalled();
+    expect(screen.getByText(/Connected to acme/i)).toBeVisible();
+  });
+
+  it("keeps the confirmation open for retry when Disconnect fails", async () => {
+    const user = userEvent.setup();
+    installationsRef.current.installations = [{ id: "inst-42", account_login: "acme" }];
+    mockDeleteInstallation.mockRejectedValue(new Error("Disconnect failed"));
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getByRole("button", { name: /^Disconnect$/ }));
+    await user.click(within(screen.getByRole("alertdialog")).getByRole("button", { name: /^Disconnect$/ }));
+
+    await waitFor(() => expect(mockToastError).toHaveBeenCalledWith("Disconnect failed"));
+    expect(within(screen.getByRole("alertdialog")).getByRole("button", { name: /^Disconnect$/ })).toBeEnabled();
+    expect(mockInvalidate).not.toHaveBeenCalled();
+    expect(mockToastSuccess).not.toHaveBeenCalled();
   });
 
   it("Disconnect button is still visible when the master switch is off", () => {
@@ -233,7 +343,8 @@ describe("GitHubTab", () => {
     expect(screen.getByRole("button", { name: /^Disconnect$/ })).toBeTruthy();
   });
 
-  it("non-admin sees the existing connection but no Connect/Disconnect controls", () => {
+  it("non-managers see the existing connection with all settings read-only", async () => {
+    const user = userEvent.setup();
     membersRef.current = [{ user_id: "user-1", role: "member" }];
     installationsRef.current = {
       configured: true,
@@ -246,6 +357,13 @@ describe("GitHubTab", () => {
     expect(screen.getByText(/Read-only view\./i)).toBeTruthy();
     expect(screen.queryByRole("button", { name: /^Connect GitHub$/ })).toBeNull();
     expect(screen.queryByRole("button", { name: /^Disconnect$/ })).toBeNull();
+    for (const setting of screen.getAllByRole("switch")) {
+      expect(setting).toHaveAttribute("aria-disabled", "true");
+      await user.click(setting);
+    }
+    expect(mockUpdateWorkspace).not.toHaveBeenCalled();
+    expect(mockGetConnectURL).not.toHaveBeenCalled();
+    expect(mockDeleteInstallation).not.toHaveBeenCalled();
   });
 
   it("non-admin with no connection sees the contact-admin hint", () => {
@@ -283,5 +401,16 @@ describe("GitHubTab", () => {
     render(<GitHubTab />, { wrapper: I18nWrapper });
     await user.click(screen.getByRole("button", { name: /Manage repositories/ }));
     expect(mockNavPush).toHaveBeenCalledWith("/acme/settings?tab=repositories");
+  });
+
+  it("repositories shortcut clears the selected integration and preserves unrelated URL context", async () => {
+    const user = userEvent.setup();
+    navigationRef.search = "tab=integrations&integration=github&context=workspace";
+    navigationRef.hash = "#settings";
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getByRole("button", { name: /Manage repositories/ }));
+
+    expect(mockNavPush).toHaveBeenCalledWith("/acme/settings?tab=repositories&context=workspace#settings");
   });
 });

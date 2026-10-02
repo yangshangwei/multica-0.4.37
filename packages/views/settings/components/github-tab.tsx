@@ -31,6 +31,7 @@ import type { Workspace } from "@multica/core/types";
 import { AppLink, useNavigation } from "../../navigation";
 import { useT } from "../../i18n";
 import { GitHubMark } from "./github-mark";
+import { buildSettingsHref } from "./settings-integration-navigation";
 
 type SettingsKey =
   | "github_enabled"
@@ -125,21 +126,21 @@ export function GitHubTab() {
 
   if (!workspace) return null;
 
-  const repositoriesHref = `${navigation.pathname}?tab=repositories`;
+  const repositoriesHref = buildSettingsHref(navigation, "repositories");
 
   // Section body for the GitHub block on the Integrations page. The section
   // heading and description come from the host (integrations-tab.tsx); the
-  // h4 sub-headings stay one level below the host's h3.
+  // h3 sub-headings stay one level below the host's h2.
   return (
-    <div className="space-y-6">
+    <div className="min-w-0 space-y-6 [overflow-wrap:anywhere] max-md:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-h-11 max-md:[&_[data-slot=switch]]:after:-inset-y-3.5 pointer-coarse:[&_[data-slot=switch]]:after:-inset-y-3.5">
       <Card>
         <CardContent>
           <div className="flex items-start justify-between gap-4">
-            <div className="flex items-start gap-3">
-              <div className="rounded-md border bg-muted/50 p-2 text-muted-foreground">
+            <div className="flex min-w-0 flex-1 items-start gap-3">
+              <div className="hidden shrink-0 rounded-md border bg-muted/50 p-2 text-muted-foreground sm:block">
                 <GitHubMark className="h-4 w-4" />
               </div>
-              <div className="space-y-1">
+              <div className="min-w-0 space-y-1">
                 <Label htmlFor="github-master" className="text-body font-medium">
                   {t(($) => $.github.section_master)}
                 </Label>
@@ -161,13 +162,13 @@ export function GitHubTab() {
       </Card>
 
       <section className="space-y-3">
-        <h4 className="text-body font-semibold">{t(($) => $.github.section_connection)}</h4>
+        <h3 className="text-body font-semibold">{t(($) => $.github.section_connection)}</h3>
         <Card>
           <CardContent className="space-y-4">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="flex min-w-0 flex-1 basis-48 items-start gap-3">
                 <GitHubMark className="h-6 w-6 mt-0.5 shrink-0" />
-                <div className="space-y-1">
+                <div className="min-w-0 space-y-1">
                   <p className="text-body font-medium">{t(($) => $.github.connection_title)}</p>
                   {connected ? (
                     <>
@@ -252,7 +253,7 @@ export function GitHubTab() {
       </section>
 
       <section className="space-y-3">
-        <h4 className="text-body font-semibold">{t(($) => $.github.section_features)}</h4>
+        <h3 className="text-body font-semibold">{t(($) => $.github.section_features)}</h3>
         <Card className="gap-0 py-0">
           <CardContent className="divide-y divide-surface-border px-0">
             <FeatureRow
@@ -276,7 +277,7 @@ export function GitHubTab() {
               description={
                 <p className="text-body text-muted-foreground">
                   {t(($) => $.github.feature_co_author_description_prefix)}{" "}
-                  <code className="rounded bg-muted px-1 py-0.5 text-caption">
+                  <code className="rounded bg-muted px-1 py-0.5 text-caption whitespace-normal">
                     {"Co-authored-by: multica-agent <github@multica.ai>"}
                   </code>{" "}
                   {t(($) => $.github.feature_co_author_description_suffix)}
@@ -305,7 +306,7 @@ export function GitHubTab() {
       </section>
 
       <section className="space-y-3">
-        <h4 className="text-body font-semibold">{t(($) => $.github.section_repositories)}</h4>
+        <h3 className="text-body font-semibold">{t(($) => $.github.section_repositories)}</h3>
         <Card>
           <CardContent>
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -342,10 +343,10 @@ export function GitHubTab() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={disconnecting}>
+            <AlertDialogCancel className="max-md:min-h-11 pointer-coarse:min-h-11" disabled={disconnecting}>
               {t(($) => $.github.disconnect_confirm_cancel)}
             </AlertDialogCancel>
-            <AlertDialogAction onClick={handleDisconnect} disabled={disconnecting}>
+            <AlertDialogAction className="max-md:min-h-11 pointer-coarse:min-h-11" onClick={handleDisconnect} disabled={disconnecting}>
               {disconnecting
                 ? t(($) => $.github.disconnecting)
                 : t(($) => $.github.disconnect_confirm_action)}
@@ -376,9 +377,9 @@ function FeatureRow({
 }) {
   return (
     <div className="flex items-start justify-between gap-4 px-4 py-3.5">
-      <div className="flex items-start gap-3">
-        <div className="rounded-md border bg-muted/50 p-2 text-muted-foreground">{icon}</div>
-        <div className="space-y-1">
+      <div className="flex min-w-0 flex-1 items-start gap-3">
+        <div className="hidden shrink-0 rounded-md border bg-muted/50 p-2 text-muted-foreground sm:block">{icon}</div>
+        <div className="min-w-0 space-y-1">
           <Label htmlFor={id} className="text-body font-medium">
             {label}
           </Label>
