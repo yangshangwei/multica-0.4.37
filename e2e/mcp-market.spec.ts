@@ -307,14 +307,26 @@ test("a member can discover templates and reuse a workspace instance for their a
   const member = new TestApiClient();
   const memberEmail = `member-${slug}@multica.ai`;
   try {
-    await member.login(memberEmail, "MCP member tester");
-    const invitation = await owner.requestJSON<{ id: string }>(`/api/workspaces/${workspace.id}/members`, {
-      method: "POST", body: { email: memberEmail, role: "member" },
-    });
-    await member.requestJSON(`/api/invitations/${invitation.id}/accept`, { method: "POST" });
+    if (process.env.E2E_PASSWORD_AUTH === "1") {
+      const username = `mcp_member_${Date.now()}_${process.pid}`;
+      await member.registerPassword(username, "mcp-member-test-password", "MCP member tester");
+      passwordAccounts.push({ api: member, username });
+      await member.requestJSON("/api/me/onboarding", { method: "PATCH", body: { questionnaire: { source: ["friends_colleagues"] } } });
+      await member.requestJSON("/api/me/onboarding/complete", { method: "POST" });
+      const invitation = await owner.requestJSON<{ code: string }>(`/api/workspaces/${workspace.id}/share-links`, {
+        method: "POST", body: { role: "member", max_uses: 1 },
+      });
+      await member.requestJSON("/api/share-links/join", { method: "POST", body: { code: invitation.code } });
+    } else {
+      await member.login(memberEmail, "MCP member tester");
+      const invitation = await owner.requestJSON<{ id: string }>(`/api/workspaces/${workspace.id}/members`, {
+        method: "POST", body: { email: memberEmail, role: "member" },
+      });
+      await member.requestJSON(`/api/invitations/${invitation.id}/accept`, { method: "POST" });
+      await member.markUserOnboarded();
+    }
     member.setWorkspaceId(workspace.id);
     member.setWorkspaceSlug(slug);
-    await member.markUserOnboarded();
     await member.requestJSON("/api/me", { method: "PATCH", body: { language: "en" } });
     const runtime = await member.seedProjectRuntime();
     const agent = await member.requestJSON<{ id: string; name: string }>("/api/agents", {
