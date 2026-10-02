@@ -175,7 +175,7 @@ function Install-AndVerify {
 }
 
 function Uninstall-AndVerify {
-    param([string]$Label)
+    param([string]$Label, [string]$ExpectedOtherProtocol)
     $step = [ordered]@{ name = $Label; status = 'failed' }
     $report.steps.Add($step)
     $uninstaller = Join-Path $installDirectory 'Uninstall Multica.exe'
@@ -185,7 +185,21 @@ function Uninstall-AndVerify {
     foreach ($path in @('Multica.exe', 'resources\app.asar', 'resources\app.asar.unpacked\resources\bin\multica.exe')) {
         if (Test-Path -LiteralPath (Join-Path $installDirectory $path)) { throw "Uninstall left application payload: $path" }
     }
-    if (@(Get-MulticaRegistration).Count -gt 0) { throw 'Uninstall left Multica registry/protocol state' }
+    if ($ExpectedOtherProtocol) {
+        $key = 'HKCU:\Software\Classes\multica'
+        $actual = (Get-Item -LiteralPath "$key\shell\open\command").GetValue('')
+        if ($actual -cne $ExpectedOtherProtocol) { throw 'Uninstall changed a protocol owned by another installation' }
+        $step.other_protocol_preserved = $true
+        # Remove only the exact fixture created immediately before this uninstall.
+        Remove-Item -LiteralPath $key -Recurse
+    }
+    $remaining = @(Get-MulticaRegistration)
+    if ($remaining.Count -gt 0) {
+        $step.remaining_registration = $remaining
+        $protocol = Get-Item 'HKCU:\Software\Classes\multica\shell\open\command' -ErrorAction SilentlyContinue
+        if ($protocol) { $step.remaining_protocol_command = $protocol.GetValue('') }
+        throw 'Uninstall left Multica registry/protocol state'
+    }
     Assert-NoExistingMultica
     $step.status = 'passed'
 }
@@ -228,7 +242,14 @@ try {
     }
     Uninstall-AndVerify 'uninstall'
     Install-AndVerify $report.installer 'reinstall_candidate'
-    Uninstall-AndVerify 'final_uninstall'
+    if ($BusinessAcceptance) {
+        $key = 'HKCU:\Software\Classes\multica'
+        if (Test-Path -LiteralPath $key) { throw 'Protocol fixture refuses existing registration' }
+        $otherCommand = '"' + (Join-Path $testRoot 'other-handler.exe') + '" "%1"'
+        New-Item -Path "$key\shell\open\command" -Force | Out-Null
+        Set-Item -LiteralPath "$key\shell\open\command" -Value $otherCommand
+        Uninstall-AndVerify 'final_uninstall' -ExpectedOtherProtocol $otherCommand
+    } else { Uninstall-AndVerify 'final_uninstall' }
     $report.status = 'passed'
 } catch {
     $report.error = $_.Exception.Message

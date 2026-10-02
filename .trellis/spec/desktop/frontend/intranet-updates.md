@@ -104,3 +104,13 @@ release tag is not available to hosted CI. Candidate CI must provide one validat
 same value for installed-version checks. Keep the candidate numeric version above
 the selected stable upgrade baseline. Do not publish a release tag merely to make
 an acceptance build newer. Preserve prerelease channel metadata with its artifacts.
+
+## Windows protocol ownership on uninstall
+
+Electron registers `multica://` when a packaged app launches. The NSIS target does
+not consume the top-level `protocols` configuration (unlike macOS/Linux/Appx), so
+installer-only smoke cannot reveal the stale protocol left after actual GUI use.
+`build/installer.nsh` removes the current user's protocol only when its command
+exactly matches the uninstalling executable, and preserves it during upgrade.
+Never delete a handler reassigned to another installation. Native business
+acceptance checks real GUI registration cleanup plus a foreign-handler fixture.
