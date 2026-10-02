@@ -71,7 +71,7 @@ test.describe("intranet password migration", () => {
           await page.locator("#password-name").fill("Migrated acceptance");
         } else {
           expect(process.env.E2E_PASSWORD_SERVER_BINARY).toBeTruthy();
-          const recovery = spawnSync(process.env.E2E_PASSWORD_SERVER_BINARY!, ["password-recover", "--user", userID], {
+          const recovery = spawnSync(process.env.E2E_PASSWORD_SERVER_BINARY!, ["password-recover", "--user", userID, "--reason", "Isolated browser password recovery acceptance"], {
             input: `${temporaryPassword}\n`, encoding: "utf8", timeout: 30_000,
             env: { ...process.env, MULTICA_AUTH_MODE: "password", MULTICA_PASSWORD_LIMITER_MODE: "single" },
           });
