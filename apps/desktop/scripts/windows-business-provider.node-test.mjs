@@ -13,7 +13,12 @@ test('contained provider requires ownership and emits one successful task result
   const binary = join(root, process.platform === 'win32' ? 'fixture.exe' : 'fixture');
   try {
     await execute('go', ['build', '-o', binary, join(import.meta.dirname, 'windows-business-provider.go')]);
-    const env = { ...process.env, MULTICA_BUSINESS_STATE_DIR: root, MULTICA_TASK_ID: randomUUID() };
+    // Production intentionally removes inherited MULTICA_* before task launch.
+    const inherited = { ...process.env, WINDOWS_BUSINESS_STATE_DIR: root, MULTICA_BUSINESS_STATE_DIR: 'must-be-filtered', MULTICA_FIXTURE_UNTRUSTED: 'must-be-filtered' };
+    const env = Object.fromEntries(Object.entries(inherited).filter(([key]) => !key.toUpperCase().startsWith('MULTICA_')));
+    env.MULTICA_TASK_ID = randomUUID();
+    assert.equal(env.MULTICA_BUSINESS_STATE_DIR, undefined);
+    assert.equal(env.MULTICA_FIXTURE_UNTRUSTED, undefined);
     await assert.rejects(execute(binary, ['--version'], { env }), error => error.code === 78);
     await writeFile(join(root, 'server-private.json'), '{}');
     assert.match((await execute(binary, ['--version'], { env })).stdout, /Claude Code/);

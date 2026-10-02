@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	root := os.Getenv("MULTICA_BUSINESS_STATE_DIR")
+	root := os.Getenv("WINDOWS_BUSINESS_STATE_DIR")
 	if root == "" {
 		os.Exit(78)
 	}

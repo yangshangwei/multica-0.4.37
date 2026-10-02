@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { randomUUID, randomBytes, createHash } from 'node:crypto';
-import { readFile, writeFile, mkdir, readdir, lstat, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, lstat, rm, open } from 'node:fs/promises';
 import { join, resolve, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { execFile } from 'node:child_process';
@@ -31,17 +31,19 @@ const digest = value => createHash('sha256').update(value).digest('hex');
 const stateFile = join(root, 'business-private.json');
 let state = options.phase === 'verify' ? JSON.parse(await readFile(stateFile, 'utf8')) : { runId: randomUUID() };
 const secrets = new Set();
+for (const key of ['JWT_SECRET', 'DATABASE_URL']) if (setup.environment[key]) secrets.add(setup.environment[key]);
 const redact = value => {
   let text = String(value);
   for (const secret of secrets) if (secret) text = text.split(secret).join('[redacted]');
-  return text.replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, '[redacted]').replace(/\b(?:mdt|mul|mip|mat)_[A-Za-z0-9._-]+\b/g, '[redacted]');
+  return text.replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, '[redacted]').replace(/\b(?:mdt|mul|mip|mat)_[A-Za-z0-9._-]+\b/g, '[redacted]')
+    .replace(/((?:authorization|password|private_key_seed|api_key|token|secret)["']?\s*[:=]\s*)(?:"[^"\n]*"|'[^'\n]*'|[^\s,}]+)/gi, '$1[redacted]');
 };
 const report = { version: 1, phase: options.phase, startedAt: new Date().toISOString(), sourceCommit: process.env.GITHUB_SHA, cases: [], limitations: ['Deterministic synthetic provider; no real model credentials or calls', 'No signed/offline trust claim'] };
 const emit = (name, details = {}) => { report.cases.push({ name, ...details }); process.stdout.write(name + '\n'); };
 const delay = ms => new Promise(done => setTimeout(done, ms));
 async function waitFor(label, fn, timeout = 90000) {
   const end = Date.now() + timeout; let error;
-  while (Date.now() < end) { try { const result = await fn(); if (result) return result; } catch (caught) { error = caught; } await delay(300); }
+  while (Date.now() < end) { try { const result = await fn(); if (result) return result; } catch (caught) { if (caught.code === 'TERMINAL_FIXTURE_TASK') throw caught; error = caught; } await delay(300); }
   throw new Error(`${label} timed out${error ? ': ' + redact(error.message) : ''}`);
 }
 async function json(path) { return JSON.parse(await readFile(path, 'utf8')); }
@@ -61,7 +63,7 @@ async function logInAccount(account) {
   const response = await api('/auth/login', 'POST', { username: account.username, password: account.password });
   account.token = response.token; secrets.add(account.token); return account;
 }
-const env = { ...process.env, MULTICA_BUSINESS_STATE_DIR: root, MULTICA_WORKSPACES_ROOT: join(root, 'workspaces') };
+const env = { ...process.env, WINDOWS_BUSINESS_STATE_DIR: root, MULTICA_WORKSPACES_ROOT: join(root, 'workspaces') };
 // Discover every supported provider override from current production descriptors.
 const probe = await readFile(join(setup.repo, 'server/internal/daemon/agents_probe.go'), 'utf8');
 const descriptors = await readFile(join(setup.repo, 'server/pkg/agent/builtin_runtimes.go'), 'utf8');
@@ -101,11 +103,49 @@ async function identity(session) {
 }
 async function taskFor(issue) {
   const response = await api('/api/agents/' + state.agent.id + '/tasks', 'GET', undefined, state.account, state.workspace);
-  return (Array.isArray(response) ? response : response.tasks).find(task => task.issue_id === issue.id);
+  const task = (Array.isArray(response) ? response : response.tasks).find(task => task.issue_id === issue.id);
+  report.taskLastStates ??= {};
+  report.taskLastStates[issue.id] = task ? selectedFields(task, ['id', 'issue_id', 'status', 'error', 'last_error', 'error_message', 'failure_reason', 'created_at', 'started_at', 'completed_at']) : { issue_id: issue.id, status: 'not_found' };
+  return task;
+}
+function selectedFields(value, fields) {
+  return Object.fromEntries(fields.filter(key => value[key] !== undefined).map(key => [key, typeof value[key] === 'string' || typeof value[key] === 'object' && value[key] !== null ? redact(typeof value[key] === 'string' ? value[key] : JSON.stringify(value[key])).slice(0, 2000) : value[key]]));
+}
+async function logTail(path) {
+  const handle = await open(path, 'r');
+  try {
+    const size = (await handle.stat()).size;
+    const buffer = Buffer.alloc(Math.min(size, 16384));
+    await handle.read(buffer, 0, buffer.length, Math.max(0, size - buffer.length));
+    return redact(buffer.toString('utf8')).split('\n').slice(-50).join('\n');
+  } finally { await handle.close(); }
+}
+async function failureDiagnostics() {
+  const diagnostics = {};
+  if (home) for (const name of ['daemon.log', 'daemon.err.log']) {
+    try { diagnostics[name] = await logTail(join(home, '.multica/profiles', profile, name)); }
+    catch (error) { diagnostics[name] = redact(error.message); }
+  }
+  try { diagnostics.providerStarts = await logTail(join(root, 'provider-starts.jsonl')); }
+  catch (error) { diagnostics.providerStarts = error.code === 'ENOENT' ? 'No fixture task started' : redact(error.message); }
+  if (state.account && state.workspace) {
+    try {
+      const response = await api('/api/runtimes/', 'GET', undefined, state.account, state.workspace);
+      diagnostics.runtimes = (Array.isArray(response) ? response : response.runtimes).map(runtime => selectedFields(runtime, ['id', 'daemon_id', 'provider', 'status', 'connection_status', 'last_seen_at', 'is_online', 'error']));
+    } catch (error) { diagnostics.runtimeError = redact(error.message); }
+  }
+  return diagnostics;
 }
 async function newTask(title) {
   const issue = await api('/api/issues', 'POST', { title, status: 'todo', assignee_type: 'agent', assignee_id: state.agent.id }, state.account, state.workspace);
-  const task = await waitFor('task running', async () => { const task = await taskFor(issue); return task?.status === 'running' ? task : null; });
+  const task = await waitFor('task running', async () => {
+    const task = await taskFor(issue);
+    if (task && ['failed', 'cancelled', 'completed'].includes(task.status)) {
+      const error = new Error('Task became terminal before fixture release: ' + JSON.stringify(report.taskLastStates[issue.id]));
+      error.code = 'TERMINAL_FIXTURE_TASK'; throw error;
+    }
+    return task?.status === 'running' ? task : null;
+  });
   await waitFor('fixture provider started', () => json(join(root, 'provider-' + task.id + '.json')));
   return { issue, task };
 }
@@ -175,6 +215,7 @@ try {
       const response = await api('/api/runtimes/', 'GET', undefined, state.account, state.workspace);
       return (Array.isArray(response) ? response : response.runtimes).find(runtime => runtime.provider === 'claude' && runtime.daemon_id === session.value.managed_daemon_id);
     });
+    report.selectedRuntime = selectedFields(runtime, ['id', 'daemon_id', 'provider', 'status', 'connection_status', 'last_seen_at', 'is_online']);
     state.agent = await api('/api/agents', 'POST', { name: 'Windows deterministic provider', runtime_id: runtime.id, permission_mode: 'private', instructions: 'Synthetic fixture only.', mcp_config: {} }, state.account, state.workspace);
     const work = await newTask('Retain completed task through upgrade');
     await writeFile(join(root, 'release-' + work.task.id), 'release');
@@ -215,6 +256,7 @@ try {
   report.status = 'passed';
 } catch (error) {
   report.status = 'failed'; report.error = redact(error.stack || error);
+  report.diagnostics = await failureDiagnostics();
 } finally {
   // Release only providers created by this private fixture; never ambient agent processes.
   for (const name of await readdir(root)) if (/^provider-[a-f0-9-]+\.json$/.test(name)) await writeFile(join(root, name.replace('provider-', 'release-').replace('.json', '')), 'release');
