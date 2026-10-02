@@ -32,7 +32,7 @@
     ".trellis/tasks/10-01-platform-admin-acceptance/release-checklist.md",
     ".trellis/tasks/10-01-platform-admin-acceptance/verification.md"
   ],
-  "notes": "S01–S06 complete. Local S07 verification and capacity follow-up complete: optimized overview, explicit PostgreSQL shared memory, zero observer HTTP errors, loaded browser/pagination targets passed. Ten-second ACK threshold and Windows/distribution/reference/production acceptance remain open.",
+  "notes": "S01–S06 complete. A native daemon with three runtimes completed three baseline tasks and nine tasks during fleet load. Reconnect starts took about 109.9 seconds, exceeding the original 90-second observation. HTTP heartbeat fallback passed, while paging P95 834.2 ms and additional connection/timing limits remain. No production release.",
   "meta": {
     "slice": "S07",
     "depends_on": "S01,S02,S03,S04,S05,S06",
@@ -48,13 +48,15 @@
     "parent_acceptance": "AC01–AC13",
     "planning_only": false,
     "upstream_verified_commit": "1c56f6cd6",
-    "current_phase": "capacity_followup_reviewed",
+    "current_phase": "native_recovery_characterized",
     "open_acceptance": [
-      "Ten-second heartbeat ACK threshold, operational margin and native fallback during fleet load",
+      "Uncertain-claim recovery latency, synthetic ACK10s threshold and final pagingP95 834.2ms",
+      "Two additional native connection closures outside fault interval; cause not logged",
       "Windows runtime/ACL and signed/old-binary/reinstall lifecycle",
       "Reference hardware, storage-cold/extended failure and production release verification"
     ],
     "local_verification_report": ".trellis/tasks/10-01-platform-admin-acceptance/verification.md",
-    "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md"
+    "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md",
+    "native_recovery_report": ".trellis/tasks/10-01-platform-admin-acceptance/native-load-recovery.md"
   }
 }

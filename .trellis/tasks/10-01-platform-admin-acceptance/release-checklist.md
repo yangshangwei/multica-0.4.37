@@ -53,3 +53,12 @@ included in the S07 verification report before a release claim.
 
 The measured local paging target passed; this checklist intentionally does not
 mark the entire S07 or production release complete.
+
+## Native fleet continuation — 2026-10-02
+
+- [x] Validate three real runtimes on one daemon under the thousand-client background workload; all 12 synthetic tasks and per-runtime HTTP heartbeat fallback independently verified.
+- [x] Fix measurement proxy control-frame/cancellation defects and preserve invalidated prior runs.
+- [x] Add real managed lost-response recovery/admission regression; do not weaken the duplicate-execution window.
+- [ ] Resolve or explicitly accept ~109.9-second reconnect task starts (original 90-second observation failed), two unexplained extra native reconnects, and final paging P95 834.2 ms / synthetic ten-second ACK failures.
+
+See native-load-recovery.md; the successful recovery matrix is separate from latency, capacity and distribution release acceptance.

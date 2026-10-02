@@ -1,5 +1,7 @@
 # S07 capacity follow-up — 2026-10-02
 
+Latest continuation: [native recovery under fleet load](native-load-recovery.md) validates 12 tasks on a real three-runtime daemon, while retaining ~109.9-second reconnect starts, 834.2 ms paging P95 and other open timing/connection limits. It does not mark S07 released.
+
 The local paging and loaded-browser targets passed after optimizing overview SQL and explicitly sizing PostgreSQL shared memory. S07 remains open: the ten-second heartbeat threshold still failed 1,000 times, and Windows/distribution/reference-environment/production gates remain unverified.
 
 ## Changes and controlled comparisons

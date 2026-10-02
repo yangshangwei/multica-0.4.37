@@ -136,3 +136,11 @@ installation/user/version/binding/task/fence, including after restart.
 - Client private persistence, cross-process locks, HMAC and session transitions:
   Desktop `managed-*.test.ts` and Go daemon/CLI managed tests. These tests do not
   replace installed-app or native Windows acceptance.
+
+## Lost claim responses and recovery evidence
+
+A committed dispatch whose response is lost must not be delivered again immediately. Recovery requires the dispatch to be older than the 90-second response-recovery window and its prepare lease to be absent/expired; the Redis hint adds a five-second margin before normal polling. A 90-second client observation timeout therefore cannot prove permanent loss. Reclaim advances `claim_generation` while preserving the original execution binding/epoch/admission, and must not reclaim a started task. Regression: `TestManagedBatchClaimLostResponseRecovery` exercises real managed HTTP claims and database eligibility with fixture timestamps; it does not measure Redis or wall-clock scheduling.
+
+Do not casually turn cancellation cleanup into an unconditional detached requeue. Requeueing previously admitted dispatched work makes it queued again, where a concurrent installation stop can block fresh admission. Generation fencing alone does not settle this lifecycle difference.
+
+Native transport tests must forward WebSocket Ping/Pong end to end and propagate downstream HTTP cancellation. The daemon's read deadline depends on control frames; a proxy that forwards only messages can create artificial 60-second disconnects while automatically answering upstream pings. Record proxy-observed ACK arrival separately from daemon processing or request-correlated RTT, and verify task/provider execution evidence independently of the driver's pass flag.

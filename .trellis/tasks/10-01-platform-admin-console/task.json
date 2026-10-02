@@ -51,11 +51,11 @@
     ".trellis/tasks/10-01-platform-admin-console/test-spec.md",
     ".trellis/tasks/10-01-platform-admin-console/verification.md"
   ],
-  "notes": "S01–S06 complete. Local S07 verification and capacity follow-up complete: optimized overview, explicit PostgreSQL shared memory, zero observer HTTP errors, loaded browser/pagination targets passed. Ten-second ACK threshold and Windows/distribution/reference/production acceptance remain open.",
+  "notes": "S01–S06 complete. A native daemon with three runtimes completed three baseline tasks and nine tasks during fleet load. Reconnect starts took about 109.9 seconds, exceeding the original 90-second observation. HTTP heartbeat fallback passed, while paging P95 834.2 ms and additional connection/timing limits remain. No production release.",
   "meta": {
     "planning_only": false,
     "implementation_authorized": true,
-    "current_phase": "capacity_followup_reviewed",
+    "current_phase": "native_recovery_characterized",
     "scale_terminals_min": 100,
     "scale_terminals_max": 1000,
     "planning_deliverables": [
@@ -84,11 +84,13 @@
       "S06"
     ],
     "open_acceptance": [
-      "Ten-second heartbeat ACK threshold, operational margin and native fallback during fleet load",
+      "Uncertain-claim recovery latency, synthetic ACK10s threshold and final pagingP95 834.2ms",
+      "Two additional native connection closures outside fault interval; cause not logged",
       "Windows runtime/ACL and signed/old-binary/reinstall lifecycle",
       "Reference hardware, storage-cold/extended failure and production release verification"
     ],
     "local_verification_report": ".trellis/tasks/10-01-platform-admin-acceptance/verification.md",
-    "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md"
+    "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md",
+    "native_recovery_report": ".trellis/tasks/10-01-platform-admin-acceptance/native-load-recovery.md"
   }
 }

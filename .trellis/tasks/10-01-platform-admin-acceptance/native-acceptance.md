@@ -1,5 +1,7 @@
 # macOS native acceptance
 
+Latest continuation: [native recovery under fleet load](native-load-recovery.md) validates 12 tasks on a real three-runtime daemon, while retaining ~109.9-second reconnect starts, 834.2 ms paging P95 and other open timing/connection limits. It does not mark S07 released.
+
 **Passed on 2026-10-02.** The real source-built Electron Main, preload, file renderer and bundled Go CLI completed the isolated native run in 33.929 seconds. This proves current macOS source integration; it does not prove a signed/installed distribution or Windows behavior.
 
 ## Provenance

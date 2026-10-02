@@ -1,5 +1,13 @@
 # Platform administration implementation handoff
 
+## Latest native recovery characterization
+
+Read [native-load-recovery.md](../10-01-platform-admin-acceptance/native-load-recovery.md) first. A real macOS CLI with three runtimes completed three baseline tasks and nine tasks during a full 660-second thousand-client load. HTTP heartbeat fallback started 31.7–44.9 seconds after proxy-observed ACKs, with no disconnect during the controlled ACK-loss interval. Reconnect task starts took ~109.9 seconds: the original 90-second cutoff remains failed, consistent with the 90-second stale-dispatch window/95-second hint and polling. A new real managed handler regression verifies duplicate and admission fences without changing production policy.
+
+Do not reuse the early message-proxy native “pass”: missing Ping/Pong and HTTP cancellation invalidated it. Use versioned proxy-fixed and run-three-diagnostic; the independent checker is under native-verification. Final diagnostics retain all failed attempts and source hashes. Final paging P95 834.2 ms exceeds 800 ms; two extra native closes outside the fault interval remain unexplained and recovered automatically. Windows/distribution/reference/production gates remain open. All owned native/provider processes and capacity services are stopped, data retained. Task phase: native_recovery_characterized.
+
+Earlier handoffs below describe previous evidence and must not override these latest limits.
+
 ## Latest continuation — 2026-10-02
 
 Read [capacity follow-up](../10-01-platform-admin-acceptance/capacity-followup.md) first. Overview aggregation now avoids the per-task usage intermediate; same-snapshot median improved 40.5%. Bundled Compose gives PostgreSQL 256 MiB `/dev/shm` after seven allocation failures with its 64 MiB default. The final 660-second run had 2,250 observer requests with zero errors, pagination P95 ≤482 ms and loaded browser overview P95 1.901 s. The 31-day API overview P95 is 2.060 s. Eleven focused Go tests passed with race detection and eleven harness tests passed.
