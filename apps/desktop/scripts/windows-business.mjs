@@ -110,6 +110,9 @@ async function newTask(title) {
   return { issue, task };
 }
 try {
+  const health = await api('/health');
+  assert.equal(health.pid, setup.pid); assert.equal(health.commit, process.env.GITHUB_SHA);
+  report.backend = { health, executableSha256: digest(await readFile(setup.serverExe)) };
   if (options.phase === 'baseline') {
     await assert.rejects(lstat(ownedHome), { code: 'ENOENT' });
     await mkdir(ownedHome);

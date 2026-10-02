@@ -57,9 +57,10 @@ if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL startup failed' }
 & (Join-Path $pgBin 'createdb.exe') -h 127.0.0.1 -p $pgPort -U postgres multica_acceptance
 if ($LASTEXITCODE -ne 0) { throw 'Database creation failed' }
 $serverExe = Join-Path $state 'business-server.exe'
+if ($env:GITHUB_SHA -notmatch '^[a-f0-9]{40}$') { throw 'Exact source commit required' }
 Push-Location (Join-Path $RepoRoot 'server')
 try {
-    go build -o $serverExe ./cmd/server
+    go build -ldflags "-X main.commit=$env:GITHUB_SHA" -o $serverExe ./cmd/server
     if ($LASTEXITCODE -ne 0) { throw 'Backend build failed' }
     go run ./cmd/migrate up
     if ($LASTEXITCODE -ne 0) { throw 'Migrations failed' }
@@ -78,7 +79,11 @@ function Get-BackendFailure {
     return $text -replace '(?i)(token|password|secret|authorization)=[^\s]+', '$1=[redacted]'
 }
 for ($attempt = 0; $attempt -lt 90; $attempt++) {
-    try { $health = Invoke-RestMethod "$api/health"; if ($health.status -eq 'ok') { $ready = $true; break } } catch { }
+    try {
+        $health = Invoke-RestMethod "$api/health"
+        $readiness = Invoke-RestMethod "$api/readyz"
+        if ($health.status -eq 'ok' -and $health.pid -eq $process.Id -and $health.commit -eq $env:GITHUB_SHA -and $readiness.status -eq 'ok') { $ready = $true; break }
+    } catch { }
     if ($process.HasExited) { throw "Backend exited before readiness: $(Get-BackendFailure)" }
     Start-Sleep -Seconds 1
 }
