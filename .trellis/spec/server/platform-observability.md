@@ -14,3 +14,9 @@ These rules describe the implemented S06 read models, detector, audit and UI bou
 - Retention settings declare configuration only. Automatic deletion remains disabled until independently approved and implemented.
 
 Regressions live beside the handlers/service and core schemas. Browser acceptance covers navigation, audit decoding, lost-response recovery and mobile geometry. Run handler test processes serially because their TestMain owns fixed shared fixtures.
+
+## Overview aggregation and capacity evidence
+
+Usage may contain multiple provider/model reports per task. Count reported and unpriced tasks distinctly, sum every report's tokens once, and keep missing usage distinct from a report with zero tokens. A missing left-join row must not count as an unpriced task. Queue/run percentiles consume tasks, never the multiplied report join. Regression: `TestAdminOverviewUsageCountsTasksNotReports`.
+
+The finished CTE is intentionally `NOT MATERIALIZED` so its outcome and usage consumers can plan independently; current-state scans exclude terminal rows before joins. Compare full same-snapshot results and loaded plans before changing these choices. Concurrent PostgreSQL parallel hashes can exhaust Docker's default 64 MiB `/dev/shm` even when total RAM is available. Bundled Compose uses 256 MiB; capacity evidence must record this separate limit and retain allocation failures rather than presenting them as successful latency samples.

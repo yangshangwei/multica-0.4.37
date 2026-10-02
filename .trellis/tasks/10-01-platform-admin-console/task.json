@@ -51,11 +51,11 @@
     ".trellis/tasks/10-01-platform-admin-console/test-spec.md",
     ".trellis/tasks/10-01-platform-admin-console/verification.md"
   ],
-  "notes": "S01–S06 implementation complete. S07 local fullcheck, six password browser specs, native macOS and backup/restore passed; capacity measured with passing pagination and explicit loaded-overview/reconnect limits. Windows/distribution/production acceptance remains open.",
+  "notes": "S01–S06 complete. Local S07 verification and capacity follow-up complete: optimized overview, explicit PostgreSQL shared memory, zero observer HTTP errors, loaded browser/pagination targets passed. Ten-second ACK threshold and Windows/distribution/reference/production acceptance remain open.",
   "meta": {
     "planning_only": false,
     "implementation_authorized": true,
-    "current_phase": "local_acceptance_reviewed",
+    "current_phase": "capacity_followup_reviewed",
     "scale_terminals_min": 100,
     "scale_terminals_max": 1000,
     "planning_deliverables": [
@@ -84,10 +84,11 @@
       "S06"
     ],
     "open_acceptance": [
-      "Windows runtime/ACL and signed/old-binary installation lifecycle",
-      "Loaded overview latency and reconnect ACK accounting/margin",
-      "Reference-environment/cold-storage/extended-failure and production release verification"
+      "Ten-second heartbeat ACK threshold, operational margin and native fallback during fleet load",
+      "Windows runtime/ACL and signed/old-binary/reinstall lifecycle",
+      "Reference hardware, storage-cold/extended failure and production release verification"
     ],
-    "local_verification_report": ".trellis/tasks/10-01-platform-admin-acceptance/verification.md"
+    "local_verification_report": ".trellis/tasks/10-01-platform-admin-acceptance/verification.md",
+    "capacity_followup_report": ".trellis/tasks/10-01-platform-admin-acceptance/capacity-followup.md"
   }
 }

@@ -1,5 +1,7 @@
 # S07 local capacity verification
 
+Latest continuation (2026-10-02): [capacity follow-up](capacity-followup.md) records optimized SQL, explicit PostgreSQL shared memory, a 660-second rerun with zero observer HTTP errors, passing loaded-browser/pagination targets, raw ACK recovery in 15.779 seconds, and remaining ten-second ACK threshold failures. The baseline below is retained as historical evidence.
+
 The 660.85-second local baseline completed with 1,000 installations, 3,000 runtimes, one million historical executions and ten observers. Every measured pagination group met P95 ≤800 ms, and the separate browser phase met ≤2 seconds. Concentrated reconnect exceeded the harness’s ten-second heartbeat-ACK threshold 1,000 times; this limitation remains visible and is not an unconditional fleet-capacity pass.
 
 ## Source, fixture and environment

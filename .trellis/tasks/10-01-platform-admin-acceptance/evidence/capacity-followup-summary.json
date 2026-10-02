@@ -1,0 +1,453 @@
+{
+  "window": {
+    "samples": "/Volumes/artisan/code/2026/multica-platform-admin/.omx/reports/platform-admin/s07-capacity/runs/s07-20261001212929-d12b32/samples-1790910934582.jsonl",
+    "start": "2026-10-02T03:16:09.204Z",
+    "end": "2026-10-02T03:27:09.450Z",
+    "duration_seconds": 660.2440097499999,
+    "incomplete_requests": 0,
+    "interrupted": false,
+    "observers": 10,
+    "installations": 1000,
+    "runtimes": 3000,
+    "recovered": 1000,
+    "steady_runtime_seconds": 15,
+    "installation_heartbeat_seconds": [
+      48,
+      72
+    ],
+    "retry": "full jitter exponential, cap60s",
+    "source_snapshot_sha256": "000b1d04ee18066df79154d6032adc1fd3010b4b93472c920b69fffd3a3f0b9b",
+    "sample_clock": "elapsed resets to zero at steady phase; timestamps remain absolute"
+  },
+  "overview": {
+    "samples": 405,
+    "p50_ms": 1411.0876250000438,
+    "p95_ms": 2059.8246250000084,
+    "p99_ms": 2208.246874999997,
+    "errors": 0
+  },
+  "observer_requests": {
+    "samples": 2250,
+    "p50_ms": 21.6555829999852,
+    "p95_ms": 1583.4922919999808,
+    "p99_ms": 2028.316790999961,
+    "errors": 0,
+    "error_rate": 0,
+    "http_429": 0,
+    "http_503": 0
+  },
+  "pagination": {
+    "installations": {
+      "samples": 54,
+      "p50_ms": 45.73237500002142,
+      "p95_ms": 360.3484579999931,
+      "p99_ms": 619.9697909999522,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_current": {
+      "samples": 54,
+      "p50_ms": 19.252082999999402,
+      "p95_ms": 264.4234169999836,
+      "p99_ms": 294.91066699999647,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_current_page2": {
+      "samples": 11,
+      "p50_ms": 34.84366700000828,
+      "p95_ms": 251.96675000002142,
+      "p99_ms": 251.96675000002142,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_default": {
+      "samples": 55,
+      "p50_ms": 19.542707999935374,
+      "p95_ms": 273.3747919999878,
+      "p99_ms": 286.7745420000283,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_default_page2": {
+      "samples": 17,
+      "p50_ms": 17.759625000006054,
+      "p95_ms": 307.3556249999674,
+      "p99_ms": 307.3556249999674,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_empty": {
+      "samples": 54,
+      "p50_ms": 11.500791000085883,
+      "p95_ms": 361.6586670000106,
+      "p99_ms": 464.1367500000051,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_failed": {
+      "samples": 56,
+      "p50_ms": 19.80945799998881,
+      "p95_ms": 271.4284590000025,
+      "p99_ms": 353.20641600003,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_failed_page2": {
+      "samples": 17,
+      "p50_ms": 19.973082999989856,
+      "p95_ms": 302.42179199999373,
+      "p99_ms": 302.42179199999373,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_finished": {
+      "samples": 56,
+      "p50_ms": 20.083458000037353,
+      "p95_ms": 216.96383300001617,
+      "p99_ms": 465.1238749999902,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_finished_page2": {
+      "samples": 11,
+      "p50_ms": 29.72483399999328,
+      "p95_ms": 349.9485420000274,
+      "p99_ms": 349.9485420000274,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_source": {
+      "samples": 55,
+      "p50_ms": 38.97479199996451,
+      "p95_ms": 197.88291700000264,
+      "p99_ms": 292.8928329999908,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_source_page2": {
+      "samples": 16,
+      "p50_ms": 49.025416999997105,
+      "p95_ms": 481.9624999999942,
+      "p99_ms": 481.9624999999942,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_workspace": {
+      "samples": 56,
+      "p50_ms": 15.961917000007816,
+      "p95_ms": 260.73841699998593,
+      "p99_ms": 315.93150000000605,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "tasks_workspace_page2": {
+      "samples": 11,
+      "p50_ms": 22.063790999993216,
+      "p95_ms": 297.0246660000412,
+      "p99_ms": 297.0246660000412,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    }
+  },
+  "loaded_browser": {
+    "installations": {
+      "samples": 10,
+      "p50_ms": 215.7552499999997,
+      "p95_ms": 644.4154589999998,
+      "p99_ms": 644.4154589999998,
+      "errors": 0
+    },
+    "login_to_overview": {
+      "samples": 1,
+      "p50_ms": 397.5604579999999,
+      "p95_ms": 397.5604579999999,
+      "p99_ms": 397.5604579999999,
+      "errors": 0
+    },
+    "overview": {
+      "samples": 10,
+      "p50_ms": 371.88920899999994,
+      "p95_ms": 1901.3054169999996,
+      "p99_ms": 1901.3054169999996,
+      "errors": 0
+    },
+    "tasks": {
+      "samples": 10,
+      "p50_ms": 139.77841700000045,
+      "p95_ms": 808.7388330000013,
+      "p99_ms": 808.7388330000013,
+      "errors": 0
+    }
+  },
+  "reconnect": {
+    "recovered": 1000,
+    "target": 1000,
+    "summary": {
+      "samples": 1000,
+      "p50_ms": 3616.424624999985,
+      "p95_ms": 3646.1497910000035,
+      "p99_ms": 3650.254499999981,
+      "errors": 0,
+      "error_rate": 0,
+      "http_429": 0,
+      "http_503": 0
+    },
+    "curve": [
+      {
+        "seconds": 1,
+        "count": 0
+      },
+      {
+        "seconds": 2,
+        "count": 0
+      },
+      {
+        "seconds": 5,
+        "count": 1000
+      },
+      {
+        "seconds": 10,
+        "count": 1000
+      },
+      {
+        "seconds": 20,
+        "count": 1000
+      },
+      {
+        "seconds": 30,
+        "count": 1000
+      },
+      {
+        "seconds": 60,
+        "count": 1000
+      },
+      {
+        "seconds": 120,
+        "count": 1000
+      }
+    ],
+    "raw_ack_instrumented": true,
+    "raw_ack_curve": [
+      {
+        "seconds": 1,
+        "count": 0
+      },
+      {
+        "seconds": 2,
+        "count": 0
+      },
+      {
+        "seconds": 5,
+        "count": 0
+      },
+      {
+        "seconds": 10,
+        "count": 1000
+      },
+      {
+        "seconds": 15,
+        "count": 2000
+      },
+      {
+        "seconds": 20,
+        "count": 3000
+      },
+      {
+        "seconds": 30,
+        "count": 3000
+      },
+      {
+        "seconds": 60,
+        "count": 3000
+      },
+      {
+        "seconds": 120,
+        "count": 3000
+      }
+    ],
+    "raw_ack_recovered": 3000,
+    "raw_ack_all_observed_ms": 15779,
+    "timer_ack_curve": [
+      {
+        "seconds": 1,
+        "count": 0
+      },
+      {
+        "seconds": 2,
+        "count": 0
+      },
+      {
+        "seconds": 5,
+        "count": 0
+      },
+      {
+        "seconds": 10,
+        "count": 1000
+      },
+      {
+        "seconds": 15,
+        "count": 2000
+      },
+      {
+        "seconds": 20,
+        "count": 2000
+      },
+      {
+        "seconds": 30,
+        "count": 2000
+      },
+      {
+        "seconds": 60,
+        "count": 2000
+      },
+      {
+        "seconds": 120,
+        "count": 2000
+      }
+    ],
+    "timer_ack_recovered": 2000,
+    "timer_ack_all_observed_ms": null,
+    "runtime_ack_curve": [
+      {
+        "seconds": 1,
+        "count": 0
+      },
+      {
+        "seconds": 2,
+        "count": 0
+      },
+      {
+        "seconds": 5,
+        "count": 0
+      },
+      {
+        "seconds": 10,
+        "count": 1000
+      },
+      {
+        "seconds": 15,
+        "count": 2000
+      },
+      {
+        "seconds": 20,
+        "count": 2000
+      },
+      {
+        "seconds": 30,
+        "count": 2000
+      },
+      {
+        "seconds": 60,
+        "count": 2000
+      },
+      {
+        "seconds": 120,
+        "count": 2000
+      }
+    ],
+    "runtime_ack_recovered": 2000,
+    "runtime_ack_all_observed_ms": null
+  },
+  "heartbeat_failures": {
+    "scheduled_reconnect": 28,
+    "ack_timeout": 1000,
+    "ack_correlation_ambiguous": 22965,
+    "measurement_end": 17
+  },
+  "acceptance": {
+    "complete_window": true,
+    "pagination_p95_limit_ms": 800,
+    "pagination_p95_met": true,
+    "pagination_errors": 0,
+    "all_connections_recovered": true
+  },
+  "environment_change": {
+    "at": "2026-10-02T03:12:10.348Z",
+    "old_container": "s07-20261001212929-d12b32-pg-native",
+    "new_container": "s07-20261001212929-d12b32-pg-shm256",
+    "old_shm_bytes": 67108864,
+    "new_shm_bytes": 268435456,
+    "cpu_quota": 4,
+    "total_memory_bytes": 4294967296,
+    "volume_preserved": "s07-20261001212929-d12b32-pg-native-data",
+    "reason": "Seven SQL parallel shared-memory allocation failures correspond to overview503; preserve failed load and rerun with explicit shared memory."
+  },
+  "prior_failed_run": {
+    "directory": "/Volumes/artisan/code/2026/multica-platform-admin/.omx/reports/platform-admin/s07-capacity/runs/s07-20261001212929-d12b32/followup-default-shm",
+    "observer_requests": {
+      "samples": 2248,
+      "p50_ms": 26.34604100001161,
+      "p95_ms": 1651.6779999999853,
+      "p99_ms": 2225.543707999983,
+      "errors": 7,
+      "error_rate": 0.003113879003558719,
+      "http_429": 0,
+      "http_503": 7
+    }
+  },
+  "hashes": {
+    ".omx/reports/platform-admin/s07-capacity/runs/s07-20261001212929-d12b32/samples-1790910934582.jsonl": "2cb8a5fa821f378b8f3b0b95d0a5e11b4b7e81b0b0a299e216a2356ee30d5477",
+    ".omx/reports/platform-admin/s07-capacity/runs/s07-20261001212929-d12b32/source-snapshot-followup.json": "3bd9bb55a7c3c3f3829b69e3bdefa9afbfce2840b074d561a80ffa0bc4e557a2",
+    ".omx/reports/platform-admin/s07-capacity/runs/s07-20261001212929-d12b32/overview-followup-explain.json": "3c430775098be74b5e3532f111bdfb8e4e734f24219e039fa0ea8d572fb9cc51",
+    ".omx/reports/platform-admin/s07-capacity/runs/s07-20261001212929-d12b32/overview-followup-errors.json": "ac34ca9643edac7c6d99c0a882f5c8876566eccc76e776622e2cd81122eff067",
+    ".omx/reports/platform-admin/s07-capacity/overview-race.log": "34802e6d1cdd0328c0f65d90af080841e6408cd6c0abe69223ce59a14fb168b2",
+    ".omx/reports/platform-admin/s07-capacity/seed.mjs": "ec6f9e8685b9227b4f6d25a5c5a1703e7a53f08109ee9a14f74138a61df7248c",
+    ".omx/reports/platform-admin/s07-capacity/heartbeat-tracker.test.mjs": "4dbe49134465ef77d54b2b181759ef0ebb92ba1ef896ba0e7aedfa9e60c9ce11",
+    ".omx/reports/platform-admin/s07-capacity/overview-plan.mjs": "c8de1d2b4e099718815f9ad5284795ae7bf9df6ba3b0852eab53a48ba5e4b3d7",
+    ".omx/reports/platform-admin/s07-capacity/report-measurements.test.mjs": "ba7b1280161fb8fdcd2e5c62c17e2e0dcfca2702bf790cfca8f64012da3a644d",
+    ".omx/reports/platform-admin/s07-capacity/setup.mjs": "3b2067521bfd609d401be60e5290ac32716069b1d75b33fd696f08540fe0cd6e",
+    ".omx/reports/platform-admin/s07-capacity/recovery-probes.mjs": "25e7681d8fbab36855f28f77917a18322553ace16f8fa952abc6b4e25166cf4b",
+    ".omx/reports/platform-admin/s07-capacity/common.mjs": "4e7f7a8b7ea44b2d8876e6328fb3966124620e9bfc64def278bae9bae34de198",
+    ".omx/reports/platform-admin/s07-capacity/browser.mjs": "796f248b0b8fba49458409e4e68bfb1f476d16bfb39d24e9830327d69a26aa51",
+    ".omx/reports/platform-admin/s07-capacity/finish-setup.mjs": "7f290ed11be94c108c1ce57109ec5e5f3de78033a8e9d0a8356f29e09957ffda",
+    ".omx/reports/platform-admin/s07-capacity/report.mjs": "ed0be0f86b851d3b2f4821cfb49e1f5a255d05939dd3b0b32c701d2b95d8b990",
+    ".omx/reports/platform-admin/s07-capacity/preflight.mjs": "19d5b06fa26ba6a57ddcdcb01d4b7d8e813d61e4326e37099b74a67ecf8725bd",
+    ".omx/reports/platform-admin/s07-capacity/prepare-native.mjs": "d4215ebc871366fd79769fffc626f5c8e657509d7861fb70c2a65a4bd01f8a46",
+    ".omx/reports/platform-admin/s07-capacity/load.mjs": "bfa70db87cf60de0dd5925ecd47585c566cbc42c93e493bfddd5a12ed98ee3d1",
+    ".omx/reports/platform-admin/s07-capacity/backup-restore.mjs": "078a8d62819dba9644fc2bf26db48cdccb78e888b1bd5a54497e64a78f116579",
+    ".omx/reports/platform-admin/s07-capacity/report-measurements.mjs": "bbb3102887904e4737be7e1e2f5ec8c5d56d82fa096901fcc4231958f53011a3",
+    ".omx/reports/platform-admin/s07-capacity/cleanup.mjs": "d8eee35a1f618248eb55dad6d7cabcb6c4daad3ae2fb29a87551255be0a3a20a",
+    ".omx/reports/platform-admin/s07-capacity/heartbeat-tracker.mjs": "fea6410cf7f224c78278e526c8bcdf7d224968d461603c1a856aad9dafb870dd",
+    ".omx/reports/platform-admin/s07-capacity/overview-followup-plan.mjs": "f13a09e175a38462e18f2a502dd3630639683a5753682d6894b92864340ba75e",
+    ".omx/reports/platform-admin/s07-capacity/native-heartbeat-fallback-race.log": "1486c192a50c64456f1bf1a79ca093baae6a09673db814797b88d1e36ae5919c",
+    ".omx/reports/platform-admin/s07-capacity/native-heartbeat-fallback-vet.log": "21d407091e10ce1c067973e208ce43d45f4f982087558d56dfa74d9f4ae5ee8c"
+  },
+  "verification": {
+    "overview_race_tests": 5,
+    "native_heartbeat_race_tests": 6,
+    "harness_tests": 11,
+    "handler_vet": "passed",
+    "daemon_vet": "passed",
+    "compose_postgres_shm_bytes": 268435456,
+    "full_suite": "prior S07 fullcheck retained; not rerun for bounded followup"
+  }
+}

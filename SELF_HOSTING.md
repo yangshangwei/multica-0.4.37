@@ -941,6 +941,8 @@ and supported direct legacy sign-in remain available according to server mode.
 
 ## Platform administration (password deployments)
 
+The bundled PostgreSQL Compose services allocate 256 MiB to `/dev/shm` for concurrent parallel queries. A million-execution administration workload exhausted Docker's default 64 MiB and returned overview 503 errors with `could not resize shared memory segment ... No space left on device`. Custom container deployments should configure equivalent shared-memory capacity and measure their own workload. This is a shared-memory limit, not additional reserved memory or a total database RAM sizing recommendation. Existing containers need recreation during a planned maintenance window for a changed `shm_size` to apply; preserve the database volume.
+
 The Web console at `/admin` requires an explicit platform role and a complete human password session. Workspace ownership does not grant platform access. Enable `MULTICA_PLATFORM_ADMIN_ENABLED=true` after applying and validating the release migrations, then initialize an existing completed password account on the trusted API host:
 
 ```sh

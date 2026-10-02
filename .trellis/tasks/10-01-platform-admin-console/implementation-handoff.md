@@ -1,5 +1,13 @@
 # Platform administration implementation handoff
 
+## Latest continuation — 2026-10-02
+
+Read [capacity follow-up](../10-01-platform-admin-acceptance/capacity-followup.md) first. Overview aggregation now avoids the per-task usage intermediate; same-snapshot median improved 40.5%. Bundled Compose gives PostgreSQL 256 MiB `/dev/shm` after seven allocation failures with its 64 MiB default. The final 660-second run had 2,250 observer requests with zero errors, pagination P95 ≤482 ms and loaded browser overview P95 1.901 s. The 31-day API overview P95 is 2.060 s. Eleven focused Go tests passed with race detection and eleven harness tests passed.
+
+Every ACK is now recorded before timer correlation; all 3,000 runtime identities received successful ACKs within 15.779 s, while 1,000 ten-second timer failures remain open. Native HTTP fallback policy has real loopback HTTP coverage; fleet/native executable fallback timing remains unmeasured. Parent/S07 remain in_progress, phase capacity_followup_reviewed. Windows/distribution/reference/production gates remain open. All owned capacity services are stopped and data retained; current PostgreSQL container is suffixed pg-shm256. Refresh container ports and the owned dev registry DATABASE_URL on any future restart.
+
+The earlier handoff below describes the baseline before this continuation. Its loaded-browser gap is now measured; other external gates still apply.
+
 Updated 2026-10-02 after local S07 verification. Resume the existing work in
 `/Volumes/artisan/code/2026/multica-platform-admin`, branch
 `feat/platform-admin-console`. The original `multica-0.4.37` checkout contains

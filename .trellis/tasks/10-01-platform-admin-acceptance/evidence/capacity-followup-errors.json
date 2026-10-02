@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-02T03:11:24.940Z",
+  "lines": [
+    "2026-10-02 03:00:16.101 UTC [177] ERROR:  could not resize shared memory segment \"/PostgreSQL.296311004\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:00:16.101 UTC [273] ERROR:  could not resize shared memory segment \"/PostgreSQL.2061687124\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:00:16.101 UTC [272] ERROR:  could not resize shared memory segment \"/PostgreSQL.1315305598\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:00:32.569 UTC [310] ERROR:  could not resize shared memory segment \"/PostgreSQL.253604644\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:00:32.569 UTC [309] ERROR:  could not resize shared memory segment \"/PostgreSQL.2887824198\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:00:32.571 UTC [187] ERROR:  could not resize shared memory segment \"/PostgreSQL.1726895350\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:00:49.752 UTC [176] ERROR:  could not resize shared memory segment \"/PostgreSQL.3165868794\" to 4206592 bytes: No space left on device",
+    "2026-10-02 03:00:49.754 UTC [401] FATAL:  terminating background worker \"parallel worker\" due to administrator command",
+    "2026-10-02 03:01:06.455 UTC [151] ERROR:  could not resize shared memory segment \"/PostgreSQL.2094795128\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:01:06.455 UTC [444] FATAL:  terminating background worker \"parallel worker\" due to administrator command",
+    "2026-10-02 03:01:06.455 UTC [443] FATAL:  terminating background worker \"parallel worker\" due to administrator command",
+    "2026-10-02 03:01:22.952 UTC [481] ERROR:  could not resize shared memory segment \"/PostgreSQL.4075192348\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:01:22.952 UTC [181] ERROR:  could not resize shared memory segment \"/PostgreSQL.1510368956\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:01:22.953 UTC [482] ERROR:  could not resize shared memory segment \"/PostgreSQL.1162884480\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:02:12.361 UTC [185] ERROR:  could not resize shared memory segment \"/PostgreSQL.1445793876\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:02:12.361 UTC [589] FATAL:  terminating background worker \"parallel worker\" due to administrator command",
+    "2026-10-02 03:02:12.361 UTC [590] ERROR:  could not resize shared memory segment \"/PostgreSQL.1268797026\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:05:10.692 UTC [888] ERROR:  could not resize shared memory segment \"/PostgreSQL.1836184192\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:05:10.693 UTC [847] ERROR:  could not resize shared memory segment \"/PostgreSQL.2725697082\" to 4194304 bytes: No space left on device",
+    "2026-10-02 03:05:10.694 UTC [887] ERROR:  could not resize shared memory segment \"/PostgreSQL.1449348288\" to 4194304 bytes: No space left on device"
+  ],
+  "container": {
+    "name": "s07-20261001212929-d12b32-pg-native",
+    "shm_size_bytes": 67108864,
+    "memory_bytes": 4294967296,
+    "nano_cpus": 4000000000
+  },
+  "overview_http_errors": [
+    "11:00:16.148 ERR http request method=GET path=/api/admin/overview status=503 duration=1.227293s request_id=yangshangweideMac-mini.local/SDn53B7QCw-002028 user_id=00000001-0000-4000-8000-000000001010",
+    "11:00:32.574 ERR http request method=GET path=/api/admin/overview status=503 duration=1.422772s request_id=yangshangweideMac-mini.local/SDn53B7QCw-002348 user_id=00000001-0000-4000-8000-000000001010",
+    "11:00:49.760 ERR http request method=GET path=/api/admin/overview status=503 duration=1.079902s request_id=yangshangweideMac-mini.local/SDn53B7QCw-002719 user_id=00000001-0000-4000-8000-000000001009",
+    "11:01:06.470 ERR http request method=GET path=/api/admin/overview status=503 duration=1.230571s request_id=yangshangweideMac-mini.local/SDn53B7QCw-003052 user_id=00000001-0000-4000-8000-000000001007",
+    "11:01:22.964 ERR http request method=GET path=/api/admin/overview status=503 duration=1.231289s request_id=yangshangweideMac-mini.local/SDn53B7QCw-003389 user_id=00000001-0000-4000-8000-000000001005",
+    "11:02:12.377 ERR http request method=GET path=/api/admin/overview status=503 duration=938.394ms request_id=yangshangweideMac-mini.local/SDn53B7QCw-004394 user_id=00000001-0000-4000-8000-000000001008",
+    "11:05:10.698 ERR http request method=GET path=/api/admin/overview status=503 duration=1.071296s request_id=yangshangweideMac-mini.local/SDn53B7QCw-008964 user_id=00000001-0000-4000-8000-000000001006"
+  ],
+  "explanation": "Seven overview HTTP 503 responses correlate within milliseconds with PostgreSQL parallel-worker dynamic shared-memory allocation failures. Container /dev/shm was 64 MiB despite a 4 GiB memory quota. The optimized inlined usage join can use parallel hash join (shared hash state); concurrent workers can exhaust /dev/shm. These are resource errors, not the handler 5-second context deadline. adminServiceError maps otherwise unclassified query errors to admin_unavailable HTTP 503 without SQL logging.",
+  "limit": "Read-only plan comparison had one query at a time and did not exercise concurrent shared-memory demand. Increasing shm-size changes environment; successful retry must not erase this failure or claim unchanged topology."
+}

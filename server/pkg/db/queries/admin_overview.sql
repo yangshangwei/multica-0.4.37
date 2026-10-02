@@ -1,7 +1,8 @@
 -- name: GetAdminOverviewExecutions :one
 -- Finished-window metrics never use created_at. Missing/negative clocks are
 -- excluded from percentile samples; observations are lower bounds, not exact.
-WITH finished AS (
+-- Let each consumer project only its needed columns and plan its joins directly.
+WITH finished AS NOT MATERIALIZED (
  SELECT t.id,t.status,t.queued_at,t.queued_at_source,t.dispatched_at,t.started_at,t.completed_at
  FROM agent_task_queue t JOIN agent a ON a.id=t.agent_id
  JOIN organization_workspace ow ON ow.workspace_id=a.workspace_id
@@ -9,12 +10,6 @@ WITH finished AS (
  AND t.completed_at>=sqlc.arg('time_from')::timestamptz AND t.completed_at<sqlc.arg('time_to')::timestamptz
  AND t.completed_at<=sqlc.arg('as_of')::timestamptz
  AND (sqlc.narg('workspace_id')::uuid IS NULL OR a.workspace_id=sqlc.narg('workspace_id'))
-), usage_by_task AS (
- SELECT f.id,count(u.task_id)::bigint AS reports,
- coalesce(sum(u.input_tokens),0)::bigint AS input_tokens,coalesce(sum(u.output_tokens),0)::bigint AS output_tokens,
- coalesce(sum(u.cache_read_tokens),0)::bigint AS cache_read_tokens,coalesce(sum(u.cache_write_tokens),0)::bigint AS cache_write_tokens,
- count(u.task_id) FILTER (WHERE u.cost_usd_ticks IS NULL)::bigint AS unpriced_reports
- FROM finished f LEFT JOIN task_usage u ON u.task_id=f.id GROUP BY f.id
 ), outcome AS (
  SELECT count(*) FILTER(WHERE status='completed')::bigint AS completed,
  count(*) FILTER(WHERE status='failed')::bigint AS failed,
@@ -29,17 +24,22 @@ WITH finished AS (
  coalesce(percentile_cont(0.95) WITHIN GROUP(ORDER BY extract(epoch FROM completed_at-started_at)) FILTER(WHERE started_at IS NOT NULL AND completed_at>=started_at),-1)::double precision AS run_p95,
  count(*)::bigint AS finished_count FROM finished
 ), usage AS (
- SELECT count(*) FILTER(WHERE reports>0)::bigint AS reported_tasks,count(*) FILTER(WHERE reports=0)::bigint AS missing_tasks,
- count(*) FILTER(WHERE unpriced_reports>0)::bigint AS unpriced_tasks,
- coalesce(sum(input_tokens),0)::bigint AS input_tokens,coalesce(sum(output_tokens),0)::bigint AS output_tokens,
- coalesce(sum(cache_read_tokens),0)::bigint AS cache_read_tokens,coalesce(sum(cache_write_tokens),0)::bigint AS cache_write_tokens FROM usage_by_task
+ -- Count tasks independently from reports: a task may report several models,
+ -- and any unpriced report makes that task's cost unknown.
+ SELECT count(DISTINCT u.task_id)::bigint AS reported_tasks,
+ count(*) FILTER(WHERE u.task_id IS NULL)::bigint AS missing_tasks,
+ count(DISTINCT u.task_id) FILTER(WHERE u.cost_usd_ticks IS NULL)::bigint AS unpriced_tasks,
+ coalesce(sum(u.input_tokens),0)::bigint AS input_tokens,coalesce(sum(u.output_tokens),0)::bigint AS output_tokens,
+ coalesce(sum(u.cache_read_tokens),0)::bigint AS cache_read_tokens,coalesce(sum(u.cache_write_tokens),0)::bigint AS cache_write_tokens
+ FROM finished f LEFT JOIN task_usage u ON u.task_id=f.id
 ), current_states AS (
  SELECT count(*) FILTER(WHERE t.status NOT IN ('completed','failed','cancelled'))::bigint AS unfinished,
  count(*) FILTER(WHERE t.status='queued')::bigint AS queued,count(*) FILTER(WHERE t.status='dispatched')::bigint AS dispatched,
  count(*) FILTER(WHERE t.status='running')::bigint AS running,count(*) FILTER(WHERE t.status='waiting_local_directory')::bigint AS waiting_local_directory,
  count(*) FILTER(WHERE t.status='deferred')::bigint AS deferred
  FROM agent_task_queue t JOIN agent a ON a.id=t.agent_id JOIN organization_workspace ow ON ow.workspace_id=a.workspace_id
- WHERE ow.organization_id=sqlc.arg('organization_id')::uuid AND t.created_at<=sqlc.arg('as_of')::timestamptz
+ WHERE t.status NOT IN ('completed','failed','cancelled')
+ AND ow.organization_id=sqlc.arg('organization_id')::uuid AND t.created_at<=sqlc.arg('as_of')::timestamptz
  AND (sqlc.narg('workspace_id')::uuid IS NULL OR a.workspace_id=sqlc.narg('workspace_id'))
 )
 SELECT outcome.*,usage.*,current_states.* FROM outcome CROSS JOIN usage CROSS JOIN current_states;

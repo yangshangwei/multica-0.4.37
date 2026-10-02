@@ -42,8 +42,11 @@ included in the S07 verification report before a release claim.
 
 - [x] Record 1,000-installation, one-million-history and ten-observer measurements.
 - [x] Record controlled role revocation and owned-database recovery evidence.
-- [ ] Address or explicitly accept loaded overview P95 2.808 s and reconnect ACK
-  threshold/margin limits; measure browser rendering during the fleet workload.
+- [x] Optimize overview and measure loaded browser rendering: overview API P95
+  2.060 s, browser overview P95 1.901 s, zero observer HTTP errors with explicit
+  256 MiB PostgreSQL shared memory. See capacity-followup.md for changed environment.
+- [ ] Address or explicitly accept the 1,000 ten-second ACK timeouts and native
+  fleet fallback/margin limits; raw ACK receipt reached all runtimes in 15.779 s.
 - [ ] Verify native Windows runtime/ACL, signed installation, old-version upgrade
   and clean reinstall. Source-built macOS evidence is not a substitute.
 - [ ] Record reference-environment/cold-storage and longer failure recovery.

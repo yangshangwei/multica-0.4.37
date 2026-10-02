@@ -35,6 +35,8 @@ name: multica
 services:
   postgres:
     image: pgvector/pgvector:pg17
+    # Concurrent PostgreSQL parallel queries need more than Docker's 64 MiB default.
+    shm_size: 256mb
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-multica}
       POSTGRES_USER: ${POSTGRES_USER:-multica}

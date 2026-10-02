@@ -1,5 +1,7 @@
 # S07 integration acceptance
 
+Latest continuation (2026-10-02): [capacity follow-up](capacity-followup.md) records optimized SQL, explicit PostgreSQL shared memory, a 660-second rerun with zero observer HTTP errors, passing loaded-browser/pagination targets, raw ACK recovery in 15.779 seconds, and remaining ten-second ACK threshold failures. The baseline below is retained as historical evidence.
+
 Updated 2026-10-02. S01–S06 baseline: `1c56f6cd6`, plus the reviewed S07 corrections described below. Local security, browser, native macOS and restore verification has passed. Capacity sampling and separate recovery probes are complete, with the limits below. Windows/distribution and production release gates remain open; the whole parent task is not marked complete or released.
 
 ## Corrective changes and review
