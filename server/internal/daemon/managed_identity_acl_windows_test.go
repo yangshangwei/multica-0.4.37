@@ -46,7 +46,9 @@ foreach($rule in $acl.Access){$sid=$rule.IdentityReference.Translate([System.Sec
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, shell, "-NoProfile", "-NonInteractive", "-Command", script)
-	cmd.Env = append(os.Environ(), "MULTICA_ACL_TEST_FILE="+path)
+	// A pwsh parent exports its module search path. Windows PowerShell 5.1
+	// must load its own built-in modules instead of PowerShell 7 assemblies.
+	cmd.Env = append(os.Environ(), "PSModulePath="+filepath.Join(filepath.Dir(shell), "Modules"), "MULTICA_ACL_TEST_FILE="+path)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("inspect fixture ACL: %v: %s", err, output)
