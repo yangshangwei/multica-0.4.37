@@ -28,10 +28,15 @@ afterEach(async () => {
   await rm(root, { recursive: true, force: true });
 });
 
-async function waitFile(path: string) {
-  const deadline = Date.now() + 15_000;
-  while (Date.now() < deadline) { try { await access(path); return; } catch { await new Promise((resolve) => setTimeout(resolve, 10)); } }
-  throw new Error("Fake lock process did not reach its barrier");
+async function waitFile(path: string, completed?: Promise<void>) {
+  const poll = async () => {
+    const deadline = Date.now() + 15_000;
+    while (Date.now() < deadline) { try { await access(path); return; } catch { await new Promise((resolve) => setTimeout(resolve, 10)); } }
+    throw new Error("Fake lock process did not reach its barrier");
+  };
+  if (!completed) return poll();
+  // Surface the child's actual stderr instead of masking early exit as a timeout.
+  return Promise.race([poll(), completed.then(() => { throw new Error("Fake contender exited before its barrier"); })]);
 }
 
 function contender(directory: string, name: string, hold: boolean) {
@@ -72,7 +77,7 @@ await withManagementFileLock(${JSON.stringify(directory)}, async () => {
 it("serializes two processes that publish choosing records concurrently", async () => {
   const directory = join(root, "identity"); await mkdir(directory, { mode: 0o700 });
   const first = contender(directory, "first", false); const second = contender(directory, "second", false);
-  await Promise.all([waitFile(first.choosing), waitFile(second.choosing)]);
+  await Promise.all([waitFile(first.choosing, first.completed), waitFile(second.choosing, second.completed)]);
   const records = await Promise.all((await readdir(join(directory, ".installation-locks"))).filter((name) => name.endsWith(".json")).map(async (name) => JSON.parse(await readFile(join(directory, ".installation-locks", name), "utf8"))));
   expect(records).toHaveLength(2); expect(records.every((record) => record.ticket === null)).toBe(true);
   await writeFile(join(root, "release-choosing"), "release");
@@ -85,7 +90,7 @@ it("does not steal a live owner and preserves the key after killing its holder",
   const original = await loadManagedInstallation(root, deployment);
   const directory = join(root, ".multica/management", deployment);
   const holder = contender(directory, "holder", true);
-  await waitFile(holder.choosing); await writeFile(join(root, "release-choosing"), "release"); await waitFile(holder.critical);
+  await waitFile(holder.choosing, holder.completed); await writeFile(join(root, "release-choosing"), "release"); await waitFile(holder.critical, holder.completed);
   await expect(withManagementFileLock(directory, async () => undefined, 100)).rejects.toThrow("live lock owner");
   holder.child.kill("SIGKILL"); await holder.completed.catch(() => undefined);
   expect((await loadManagedInstallation(root, deployment)).publicInfo.publicKey).toBe(original.publicInfo.publicKey);

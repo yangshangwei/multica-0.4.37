@@ -159,6 +159,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Desktop ticket publication tests failed' }
           $result = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
           if ($result.numFailedTests -ne 0 -or $result.numPendingTests -ne 0 -or $result.numTotalTests -lt 1) { throw 'Desktop ticket tests failed or skipped' }
+      - name: Repeat native Desktop concurrent publication
+        shell: pwsh
+        run: |
+          for ($attempt = 1; $attempt -le 3; $attempt++) {
+            $reportPath = Join-Path $env:RUNNER_TEMP "multica-desktop-lock-repeat-$attempt.json"
+            pnpm --filter @multica/desktop exec vitest run src/main/managed-lock.test.ts -t 'serializes two processes' --reporter=json --outputFile $reportPath
+            if ($LASTEXITCODE -ne 0) { throw "Concurrent publication repetition $attempt failed" }
+          }
       - name: Test native managed identity and transport
         shell: pwsh
         working-directory: server
@@ -246,6 +254,7 @@ jobs:
           name: windows-x64-acceptance-evidence
           path: |
             ${{ runner.temp }}/multica-desktop-lock-tests.json
+            ${{ runner.temp }}/multica-desktop-lock-repeat-*.json
             ${{ runner.temp }}/multica-managed-windows-tests.jsonl
             ${{ runner.temp }}/multica-managed-windows-tests.stderr.txt
             ${{ runner.temp }}/multica-managed-windows-verification.json
