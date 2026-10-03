@@ -1,0 +1,252 @@
+{
+  "scope": "Standalone Chinese design preview; no production application changes",
+  "verifiedAt": "2026-10-01T13:41:16.474434+00:00",
+  "status": "passed",
+  "artifactSha256": "406f22506b4ea85cebffddc0b82f3d39f02643ac05af967ebf7f0f82c88acac3",
+  "tool": "gstack browse / Chromium",
+  "command": "python3 .trellis/tasks/10-01-settings-integration-catalog/verify-preview.py",
+  "checksPassed": 53,
+  "checksTotal": 53,
+  "checks": [
+    {
+      "check": "catalog-renders",
+      "passed": true
+    },
+    {
+      "check": "catalog-order-and-planned-fuxin",
+      "passed": true
+    },
+    {
+      "check": "future-items-are-inert",
+      "passed": true
+    },
+    {
+      "check": "github-brand-mark-embedded",
+      "passed": true
+    },
+    {
+      "check": "no-detail-mounted-in-catalog",
+      "passed": true
+    },
+    {
+      "check": "keyboard-reaches-navigation",
+      "passed": true
+    },
+    {
+      "check": "keyboard-reaches-github-card",
+      "passed": true
+    },
+    {
+      "check": "keyboard-focus-visible",
+      "passed": true
+    },
+    {
+      "check": "keyboard-opens-github-detail",
+      "passed": true
+    },
+    {
+      "check": "back-restores-card-focus",
+      "passed": true
+    },
+    {
+      "check": "browser-back-shows-catalog",
+      "passed": true
+    },
+    {
+      "check": "browser-forward-shows-detail",
+      "passed": true
+    },
+    {
+      "check": "no-runtime-errors-before-refresh",
+      "passed": true
+    },
+    {
+      "check": "refresh-preserves-detail-route",
+      "passed": true
+    },
+    {
+      "check": "master-off-disables-and-clears-visible-child-switches",
+      "passed": true
+    },
+    {
+      "check": "master-off-preserves-connection",
+      "passed": true
+    },
+    {
+      "check": "master-restores-individual-preferences",
+      "passed": true
+    },
+    {
+      "check": "disconnect-dialog-has-name-and-safe-focus",
+      "passed": true
+    },
+    {
+      "check": "cancel-preserves-connection-and-focus",
+      "passed": true
+    },
+    {
+      "check": "escape-cancels-disconnect",
+      "passed": true
+    },
+    {
+      "check": "confirm-disconnect-updates-demo-and-focus",
+      "passed": true
+    },
+    {
+      "check": "catalog-reflects-disconnection",
+      "passed": true
+    },
+    {
+      "check": "connect-is-an-explicit-preview",
+      "passed": true
+    },
+    {
+      "check": "repository-link-is-an-explicit-preview",
+      "passed": true
+    },
+    {
+      "check": "vcs-detail-and-preview-boundary",
+      "passed": true
+    },
+    {
+      "check": "removed-provider-recovers-to-catalog",
+      "passed": true
+    },
+    {
+      "check": "planned-fuxin-hash-does-not-open-detail",
+      "passed": true
+    },
+    {
+      "check": "catalog-320-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "catalog-320-column-count",
+      "passed": true
+    },
+    {
+      "check": "github-320-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "github-320-control-targets",
+      "passed": true
+    },
+    {
+      "check": "catalog-390-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "catalog-390-column-count",
+      "passed": true
+    },
+    {
+      "check": "github-390-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "github-390-control-targets",
+      "passed": true
+    },
+    {
+      "check": "catalog-768-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "catalog-768-column-count",
+      "passed": true
+    },
+    {
+      "check": "github-768-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "github-768-control-targets",
+      "passed": true
+    },
+    {
+      "check": "catalog-900-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "catalog-900-column-count",
+      "passed": true
+    },
+    {
+      "check": "github-900-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "github-900-control-targets",
+      "passed": true
+    },
+    {
+      "check": "catalog-1024-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "catalog-1024-column-count",
+      "passed": true
+    },
+    {
+      "check": "github-1024-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "github-1024-control-targets",
+      "passed": true
+    },
+    {
+      "check": "catalog-1440-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "catalog-1440-column-count",
+      "passed": true
+    },
+    {
+      "check": "github-1440-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "check": "github-1440-control-targets",
+      "passed": true
+    },
+    {
+      "check": "no-runtime-errors-during-interactions",
+      "passed": true
+    },
+    {
+      "check": "no-api-or-external-resource-requests",
+      "passed": true
+    }
+  ],
+  "missingChecks": [],
+  "browser": {
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+    "resources": []
+  },
+  "screenshots": [
+    "catalog.png",
+    "github-detail.png",
+    "mobile-catalog.png",
+    "mobile-github-detail.png",
+    "github-disabled.png",
+    "github-disconnect-confirmation.png"
+  ],
+  "notVerified": [
+    "Production Web/Electron integration",
+    "Real OAuth, API writes and permissions",
+    "Deployment visibility filtering and API loading/error states",
+    "English localization and screen-reader software",
+    "Pixel comparison with the original user screenshot (unavailable in resumed session)",
+    "Direct file:// opening (browse permits only HTTP/HTTPS); the self-contained page was tested through a local HTTP server with zero resource requests"
+  ],
+  "staticChecks": {
+    "inlineJavaScriptSyntax": "passed",
+    "pythonSyntax": "passed",
+    "impeccableDetector": {
+      "findings": []
+    }
+  }
+}
