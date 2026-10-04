@@ -1285,3 +1285,39 @@ Recovered the committed five-recipe catalog, fixed unresolved POSIX/Windows inpu
 ### Next Steps
 
 - No remaining local task work; remote push and production deployment remain outside the approved scope.
+
+
+## Session 41: 完成分拣台 T1 人工审核闭环
+
+**Date**: 2026-10-05
+**Task**: 完成分拣台 T1 人工审核闭环
+**Branch**: `codex/triage-t1`
+
+### Summary
+
+独立分支交付分拣台 T1：设计与5个子任务、人工审核、CSV、双端页面、通知与全入口准入保护；37项验收、8项FR补充及独立视觉审查通过。
+
+### Main Changes
+
+- 复用现有任务/评论/附件和共享视图，新增独立准入与幂等记录，无新依赖。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b0cda446a` | (see git log) |
+| `36bc06c23` | (see git log) |
+| `62cb06a0c` | (see git log) |
+
+### Testing
+
+- [OK] make test（race）、go vet、全量类型检查/lint、TypeScript回归及6个Web+1个原生Electron场景通过。
+- [OK] 视觉94/100；本地10000正式+2000待分拣队列P95约97ms。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 按需审查或合并该分支；T2/T3和生产部署未纳入本任务。

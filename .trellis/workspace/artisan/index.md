@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 40
-- **Last Active**: 2026-10-02
+- **Total Sessions**: 41
+- **Last Active**: 2026-10-05
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1287 | Active |
+| `journal-1.md` | ~1323 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 41 | 2026-10-05 | 完成分拣台 T1 人工审核闭环 | `b0cda446a`, `36bc06c23`, `62cb06a0c` | `codex/triage-t1` |
 | 40 | 2026-10-02 | Complete MCP catalog publishing and final gate review | `c1c5f7f9a`, `a041caebf` | `codex/mcp-catalog-publishing` |
 | 39 | 2026-09-30 | Workspace naming series and personal preference | `ba6ced26a`, `8f8ea3258` | `main` |
 | 38 | 2026-09-30 | 快速创建助手第二期：默认、项目与手动推荐 | `2fe13d1c2d9a4faa9b19fef765dc360404fa5b6a` | `codex/quick-create-actor-picker-phase2` |
