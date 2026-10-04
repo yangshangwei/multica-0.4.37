@@ -13,8 +13,9 @@ import {
 } from "@multica/core/issues/stores/sub-issue-display-store";
 import enCommon from "../../locales/en/common.json";
 import enIssues from "../../locales/en/issues.json";
+import enTriage from "../../locales/en/triage.json";
 
-const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues } };
+const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues, triage: enTriage } };
 
 const mockViewport = vi.hoisted(() => ({ isMobile: false }));
 
@@ -712,6 +713,16 @@ describe("IssueDetail (shared)", () => {
     // Reset project mock — individual tests override per case. Default fixture
     // has project_id: null so getProject is not invoked.
     mockApiObj.getProject.mockReset();
+  });
+
+  it("explains nonformal admission on a direct task link and removes execution controls", async () => {
+    mockApiObj.getIssue.mockResolvedValue({ ...mockIssue, admission_status: "pending" });
+    renderIssueDetail();
+    expect(await screen.findByText(enTriage.admission_hint)).toBeVisible();
+    expect(screen.getByRole("link", { name: enTriage.review_link })).toHaveAttribute("href", "/test/triage?issue=issue-1");
+    expect(screen.queryByText(enIssues.detail.add_sub_issues)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /run again/i })).not.toBeInTheDocument();
+    expect(await screen.findByText("Started working on this")).toBeVisible();
   });
 
   it("opens source-context creation from both a root comment and a reply", async () => {

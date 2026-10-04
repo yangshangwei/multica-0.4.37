@@ -17,6 +17,7 @@ import { useStickyComposer } from "../hooks/use-sticky-composer";
 
 interface CommentInputProps {
   issueId: string;
+  executionAllowed?: boolean;
   /** Resolves true on success, false on failure. The composer keeps the text
    *  (editor locked + button spinning) until this settles, then clears only on
    *  success — a failed send must not silently discard the user's draft. */
@@ -25,7 +26,7 @@ interface CommentInputProps {
   onAccepted?: (commentId: string) => void;
 }
 
-function CommentInput({ issueId, onSubmit, onAccepted }: CommentInputProps) {
+function CommentInput({ issueId, onSubmit, onAccepted, executionAllowed = true }: CommentInputProps) {
   const { t } = useT("issues");
   const { t: tEditor } = useT("editor");
   const sendShortcut = useShortcut("send");
@@ -47,7 +48,7 @@ function CommentInput({ issueId, onSubmit, onAccepted }: CommentInputProps) {
   const [content, setContent] = useState(initialDraft ?? "");
   const [isEmpty, setIsEmpty] = useState(() => !initialDraft?.trim());
   const [suppressedAgentIds, setSuppressedAgentIds] = useState<Set<string>>(() => new Set());
-  const triggerPreview = useCommentTriggerPreview({ issueId, content });
+  const triggerPreview = useCommentTriggerPreview({ issueId, content: executionAllowed ? content : "" });
   // Uploads for this composer session (MUL-5181). Owned by the module-level
   // coordinator and persisted in the draft store, so closing/scrolling the
   // composer away no longer drops an in-flight upload — its result lands in the
@@ -234,11 +235,11 @@ function CommentInput({ issueId, onSubmit, onAccepted }: CommentInputProps) {
           onUploadFile={handleUpload}
           onUploadingChange={uploadGate.onUploadingChange}
           debounceMs={100}
-          currentIssueId={issueId}
+          currentIssueId={executionAllowed ? issueId : undefined}
           attachments={pendingAttachments}
-          enableSlashCommands
+          enableSlashCommands={executionAllowed}
           slashCommandMode="command"
-          quickActionMenu={quickActionMenu}
+          quickActionMenu={executionAllowed ? quickActionMenu : undefined}
         />
       </div>
       )}
@@ -269,13 +270,13 @@ function CommentInput({ issueId, onSubmit, onAccepted }: CommentInputProps) {
         </div>
       )}
       <div className="absolute bottom-1 left-2 right-28 min-w-0">
-        <CommentTriggerChips
+        {executionAllowed && <CommentTriggerChips
           agents={triggerPreview.agents}
           blocked={triggerPreview.blocked}
           draftContent={content}
           suppressedAgentIds={suppressedAgentIds}
           onToggle={toggleSuppressedAgent}
-        />
+        />}
       </div>
       <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
         <FileUploadButton

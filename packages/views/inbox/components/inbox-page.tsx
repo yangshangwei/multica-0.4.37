@@ -92,6 +92,7 @@ import { ARCHIVED_VIEW_PARAM, type InboxView } from "./inbox-view";
 import { useTypeLabels } from "./inbox-detail-label";
 import {
   getInboxDisplayTitle,
+  getInboxDestination,
   isQuickCreateOutcome,
   resolveDetailItem,
 } from "./inbox-display";
@@ -101,7 +102,7 @@ import { useIssueLimitUpgradePrompt } from "../../modals/use-issue-limit-upgrade
 export function InboxPage() {
   const { t } = useT("inbox");
   const showIssueLimitUpgradePrompt = useIssueLimitUpgradePrompt();
-  const { searchParams, replace } = useNavigation();
+  const { searchParams, replace, push } = useNavigation();
   const urlIssue = searchParams.get("issue") ?? "";
   const urlView: InboxView =
     searchParams.get("view") === ARCHIVED_VIEW_PARAM ? "archived" : "inbox";
@@ -728,6 +729,17 @@ export function InboxPage() {
         </div>
       )}
       <div className="mt-4 flex gap-2">
+        {detailItem.type === "triage" && (
+          <Button
+            data-testid="open-triage-notification"
+            onClick={() => {
+              const destination = getInboxDestination(detailItem, wsPaths);
+              if (destination) push(destination);
+            }}
+          >
+            {t(($) => $.detail.open_triage)}
+          </Button>
+        )}
         {detailItem.type === "quick_create_failed" &&
           detailItem.details?.source_context_id &&
           detailItem.details?.task_id && (

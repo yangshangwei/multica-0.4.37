@@ -1,3 +1,4 @@
+import type { AdmissionStatus } from "./triage";
 import type { Label } from "./label";
 import type { IssuePropertyValues } from "./property";
 
@@ -158,6 +159,8 @@ export interface IssueSourceContext {
 }
 
 export interface Issue {
+  /** Absent only for servers predating triage; unknown values must fail closed. */
+  admission_status?: AdmissionStatus;
   id: string;
   workspace_id: string;
   number: number;

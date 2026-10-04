@@ -1126,7 +1126,18 @@ const IssueTriggerPreviewItemSchema = z.object({
   handoff_supported: z.boolean().default(false),
 }).loose();
 
+const IssueTriggerBlockedItemSchema = z.object({
+  issue_id: z.string().min(1),
+  reason_code: z.string().min(1),
+}).loose();
+
 export const IssueTriggerPreviewSchema = z.object({
+  blocked: z.array(z.unknown()).catch([]).optional().transform(items =>
+    items?.flatMap(item => {
+      const parsed = IssueTriggerBlockedItemSchema.safeParse(item);
+      return parsed.success ? [parsed.data] : [];
+    }),
+  ),
   triggers: z.array(IssueTriggerPreviewItemSchema).default([]),
   total_count: z.number().default(0),
 }).loose();
@@ -1245,6 +1256,7 @@ export const CommentSubIssueTaskResponseSchema = z.object({
 }).loose();
 
 export const IssueSchema = z.object({
+  admission_status: z.string().default("not_required"),
   id: z.string(),
   workspace_id: z.string(),
   number: z.number(),

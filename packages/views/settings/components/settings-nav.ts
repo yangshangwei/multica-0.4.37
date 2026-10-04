@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import {
   Bell,
+  Inbox,
   Blocks,
   Cable,
   CircleDot,
@@ -101,6 +102,7 @@ export const SETTINGS_NAV_GROUPS: readonly SettingsNavGroupDef[] = [
       { key: "general", value: "workspace", icon: Settings },
       { key: "members", icon: Users },
       { key: "labels", icon: Tag },
+      { key: "triage", icon: Inbox },
       {
         key: "billing",
         icon: CreditCard,

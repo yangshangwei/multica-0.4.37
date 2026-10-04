@@ -476,6 +476,28 @@ const PREVIEW_FALLBACK = { triggers: [], total_count: 0 };
 const PREVIEW_ENDPOINT = { endpoint: "POST /api/issues/preview-trigger" };
 
 describe("IssueTriggerPreviewSchema", () => {
+  it("retains triage and future blocked reasons while dropping malformed entries", () => {
+    const parsed = IssueTriggerPreviewSchema.parse({
+      triggers: [], total_count: 0,
+      blocked: [
+        { issue_id: "i1", reason_code: "triage_review_required" },
+        { issue_id: "i2", reason_code: "future_reason" },
+        { issue_id: "", reason_code: "triage_review_required" },
+        { issue_id: "i3", reason_code: 12 },
+        { reason_code: "missing_identity" },
+      ],
+    });
+    expect(parsed.blocked).toEqual([
+      { issue_id: "i1", reason_code: "triage_review_required" },
+      { issue_id: "i2", reason_code: "future_reason" },
+    ]);
+    expect(parsed.triggers).toEqual([]);
+  });
+  it("handles a malformed blocked collection without inventing runnable triggers", () => {
+    const parsed = IssueTriggerPreviewSchema.parse({ triggers: [], total_count: 0, blocked: "invalid" });
+    expect(parsed.blocked).toEqual([]);
+    expect(parsed.triggers).toEqual([]);
+  });
   it("parses a well-formed response", () => {
     const parsed = IssueTriggerPreviewSchema.parse({
       triggers: [

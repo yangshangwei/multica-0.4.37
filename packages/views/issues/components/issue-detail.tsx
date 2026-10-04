@@ -1,5 +1,7 @@
 "use client";
 
+import { isFormalAdmission } from "@multica/core/triage";
+
 import {
   issueBehavesAs,
   issueBehavesAsAny,
@@ -1351,8 +1353,10 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
       return cached?.description != null ? cached : undefined;
     },
   });
+  const executionAllowed = issue != null && isFormalAdmission(issue.admission_status);
+  const { t: triageT } = useT("triage");
   const openCommentSubIssue = useCallback((commentId: string) => {
-    if (!issue) return;
+    if (!issue || !isFormalAdmission(issue.admission_status)) return;
     openModal("quick-create-issue", {
       anchor_comment_id: commentId,
       parent_issue_id: issue.id,
@@ -2321,14 +2325,15 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
         {propertiesOpen && <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 pl-2">
           {/* Core props — always rendered. */}
           <PropRow label={t(($) => $.detail.prop_status)}>
-            <StatusPicker status={issue.status} onUpdate={handleUpdateField} align="start" />
+            {executionAllowed ? <StatusPicker status={issue.status} onUpdate={handleUpdateField} align="start" /> : <span className="text-caption text-muted-foreground">{issue.admission_status === "rejected" ? triageT(($) => $.rejected) : issue.admission_status === "duplicate" ? triageT(($) => $.duplicate) : triageT(($) => $.pending)}</span>}
           </PropRow>
           <PropRow label={t(($) => $.detail.prop_assignee)}>
-            <AssigneePicker assigneeType={issue.assignee_type} assigneeId={issue.assignee_id} onUpdate={handleUpdateField} align="start" />
+            {executionAllowed ? <AssigneePicker assigneeType={issue.assignee_type} assigneeId={issue.assignee_id} onUpdate={handleUpdateField} align="start" /> : <span className="text-caption text-muted-foreground">{triageT(($) => $.unassigned)}</span>}
           </PropRow>
           <PropRow label={t(($) => $.detail.prop_project)}>
             <ProjectPicker
               projectId={issue.project_id}
+              disabled={!executionAllowed}
               onUpdate={handleUpdateField}
             />
           </PropRow>
@@ -2505,8 +2510,8 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
           member. It is NOT filtered by invoke permission: a member can see and
           click an action they cannot run, and the refusal is explained at run
           time rather than by a silently shorter list. */}
-      <QuickActionsSection issueId={issue.id} />
-      <PluginPanelSection issueId={issue.id} />
+      {executionAllowed && <QuickActionsSection issueId={issue.id} />}
+      {executionAllowed && <PluginPanelSection issueId={issue.id} />}
 
       {/* Parent issue — standalone section, only when the issue has a
           parent. Setting a parent is reachable via the issue actions menu;
@@ -2571,7 +2576,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
           own token spend, with the issue total on the section header.
           Self-contained; owns its own collapse state and WS subscriptions.
           Hides itself when there are no runs to show. */}
-      <ExecutionLogSection issueId={id} identifier={issue.identifier} />
+      {executionAllowed && <ExecutionLogSection issueId={id} identifier={issue.identifier} />}
 
       {/* Details — creator and timestamps. Sits below the execution log
           because it is the least-read block in the sidebar: the values
@@ -2670,7 +2675,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             onEdit={editComment}
             onDelete={deleteComment}
             onToggleReaction={handleToggleReaction}
-            onCreateSubIssue={openCommentSubIssue}
+            onCreateSubIssue={executionAllowed ? openCommentSubIssue : undefined}
             onResolveToggle={handleResolveToggle}
             onCollapseResolved={isResolved ? () => toggleResolvedExpand(item.id, false) : undefined}
             expandedResolvedIds={expandedResolved}
@@ -2785,7 +2790,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                 onOpenChange={handleThreadNavOpenChange}
               />
             )}
-            {onDone && !issueBehavesAsAny(issue, ["done", "cancelled"]) && (
+            {executionAllowed && onDone && !issueBehavesAsAny(issue, ["done", "cancelled"]) && (
               <Tooltip>
                 <TooltipTrigger
                   render={
@@ -2802,7 +2807,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                 <TooltipContent side="bottom">{t(($) => $.detail.mark_done_tooltip)}</TooltipContent>
               </Tooltip>
             )}
-            {onDone && issueBehavesAs(issue, "done") && (
+            {executionAllowed && onDone && issueBehavesAs(issue, "done") && (
               <Tooltip>
                 <TooltipTrigger
                   render={
@@ -2834,7 +2839,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
               />
               <TooltipContent side="bottom">{actions.isPinned ? t(($) => $.detail.unpin_tooltip) : t(($) => $.detail.pin_tooltip)}</TooltipContent>
             </Tooltip>
-            <IssueActionsDropdown
+            {executionAllowed ? <IssueActionsDropdown
               issue={issue}
               align="end"
               // When a parent passes `onDelete`, we detect deletion via effect
@@ -2846,7 +2851,13 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                   <MoreHorizontal />
                 </Button>
               }
-            />
+            /> : <DropdownMenu>
+              <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t(($) => $.actions.copy_link)}><MoreHorizontal /></Button>} />
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={actions.copyLink}>{t(($) => $.actions.copy_link)}</DropdownMenuItem>
+                <DropdownMenuItem variant="destructive" onClick={() => actions.openDeleteConfirm({ onDeletedFallbackPath: onDelete ? undefined : paths.issues() })}>{t(($) => $.actions.delete_issue)}</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>}
             <Tooltip>
               <TooltipTrigger
                 render={
@@ -2865,6 +2876,18 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             </>
           }
         />
+
+        {!executionAllowed && (
+          <div role="status" className="shrink-0 border-b border-surface-border bg-muted/40 px-4 py-3 text-body">
+            <p>{triageT(($) => $.admission_hint)}</p>
+            <AppLink
+              className="inline-flex min-h-11 items-center underline md:min-h-8"
+              href={`${paths.triage()}?issue=${encodeURIComponent(issue.id)}${issue.admission_status === "pending" ? "" : "&view=history"}`}
+            >
+              {triageT(($) => $.review_link)}
+            </AppLink>
+          </div>
+        )}
 
         {/* scrollbar-gutter both-edges: with classic (space-taking) scrollbars —
             macOS with a mouse or "always show", Windows, Linux — the global
@@ -3086,7 +3109,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
               // without the flush, a paste followed by a quick close loses
               // the image markdown and its attachment_ids bind (MUL-3254).
               flushPendingOnUnmount
-              currentIssueId={id}
+              currentIssueId={executionAllowed ? id : undefined}
               attachments={descEditorAttachments}
             />
 
@@ -3165,7 +3188,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
           </div>
 
           {/* Sub-issues — Linear-style */}
-          {childIssues.length === 0 && (
+          {executionAllowed && childIssues.length === 0 && (
             <div className="mt-6">
               <button
                 type="button"
@@ -3177,7 +3200,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
               </button>
             </div>
           )}
-          {childIssues.length > 0 && (() => {
+          {executionAllowed && childIssues.length > 0 && (() => {
             const doneCount = childIssues.filter((c) => issueBehavesAs(c, "done")).length;
             return (
               // Provider hosts the shared right-click actions menu the rows
@@ -3512,6 +3535,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             <CommentInput
               key={id}
               issueId={id}
+              executionAllowed={executionAllowed}
               onSubmit={submitComment}
               onAccepted={scrollToTimelineBottom}
             />

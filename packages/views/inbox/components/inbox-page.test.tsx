@@ -39,6 +39,7 @@ vi.mock("@multica/core/paths", () => ({
   useWorkspacePaths: () => ({
     inbox: () => "/acme/inbox",
     issueDetail: (id: string) => `/acme/issues/${id}`,
+    triage: () => "/acme/triage",
   }),
 }));
 
@@ -109,10 +110,11 @@ vi.mock("../../issues/components", () => ({
 }));
 
 const replace = vi.fn();
+const push = vi.fn();
 let searchParams = new URLSearchParams();
 
 vi.mock("../../navigation", () => ({
-  useNavigation: () => ({ searchParams, replace }),
+  useNavigation: () => ({ searchParams, replace, push }),
   // Real hook: reports the detail-pane swap to the shell's progress bar.
   // Nothing here renders that bar, and the page reads nothing back from it.
   useReportNavigating: () => {},
@@ -458,6 +460,17 @@ describe("InboxPage", () => {
     fireEvent.click(back!);
 
     expect(screen.getByTestId("row")).toBeInTheDocument();
+  });
+
+  it("opens the triage batch result from a summary notification", () => {
+    reset();
+    push.mockClear();
+    listData.active = [item({ id: "triage-summary", type: "triage", issue_id: null, details: { batch_id: "batch-1" } })];
+    render(<InboxPage />);
+    fireEvent.click(screen.getByTestId("row"));
+    fireEvent.click(screen.getByTestId("open-triage-notification"));
+    expect(push).toHaveBeenCalledWith("/acme/triage?view=history&batch=batch-1");
+    expect(archiveMutate).not.toHaveBeenCalled();
   });
 
   it("retries a failed quick-create with its original source context", async () => {

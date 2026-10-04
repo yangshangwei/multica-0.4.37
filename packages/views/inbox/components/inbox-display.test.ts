@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { InboxItem } from "@multica/core/types";
 import {
   getInboxDisplayTitle,
+  getInboxDestination,
   getQuickCreateOutcomeDetail,
   isQuickCreateOutcome,
   resolveDetailItem,
@@ -32,6 +33,17 @@ function item(overrides: Partial<InboxItem>): InboxItem {
 }
 
 describe("inbox display helpers", () => {
+  it("links triage task and batch notifications to review without changing notification state", () => {
+    const links = { issueDetail: (id: string) => `/acme/issues/${id}`, triage: () => "/acme/triage" };
+    const batch = item({ type: "triage", issue_id: null, details: { batch_id: "batch/1" } });
+    expect(getInboxDestination(batch, links)).toBe("/acme/triage?view=history&batch=batch%2F1");
+    expect(batch.read).toBe(false);
+    expect(batch.archived).toBe(false);
+    expect(getInboxDestination(item({ type: "triage" }), links)).toBe("/acme/triage?issue=issue-1");
+    expect(getInboxDestination(item({ type: "triage", issue_id: null }), links)).toBe("/acme/triage?view=history");
+    expect(getInboxDestination(item({}), links)).toBe("/acme/issues/issue-1");
+    expect(getInboxDestination(item({ issue_id: null }), links)).toBeNull();
+  });
   it("removes legacy quick-create created prefixes from list titles", () => {
     expect(
       stripQuickCreatePrefix(

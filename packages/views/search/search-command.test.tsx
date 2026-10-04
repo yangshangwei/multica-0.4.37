@@ -16,6 +16,8 @@ import enLayout from "../locales/en/layout.json";
 import enProjects from "../locales/en/projects.json";
 import zhHansProjects from "../locales/zh-Hans/projects.json";
 
+const triageSettingsState = vi.hoisted(() => ({ current: { supported: true, enabled: false } as { supported: boolean; enabled: boolean } | undefined }));
+
 const TEST_RESOURCES = {
   en: {
     common: enCommon,
@@ -200,33 +202,14 @@ vi.mock("@multica/core", () => ({
   useWorkspaceId: () => "ws-test",
 }));
 
-vi.mock("@multica/core/paths", async (importOriginal) => ({
-  // Spread the real module so pure helpers (resolveRouteIconName, used to
-  // derive each nav page's icon from its href) stay intact.
-  ...(await importOriginal<typeof import("@multica/core/paths")>()),
-  useWorkspacePaths: () => ({
-    inbox: () => "/ws-test/inbox",
-    chat: () => "/ws-test/chat",
-    myIssues: () => "/ws-test/my-issues",
-    issues: () => "/ws-test/issues",
-    projects: () => "/ws-test/projects",
-    autopilots: () => "/ws-test/autopilots",
-    agents: () => "/ws-test/agents",
-    squads: () => "/ws-test/squads",
-    usage: () => "/ws-test/usage",
-    runtimes: () => "/ws-test/runtimes",
-    skills: () => "/ws-test/skills",
-    mcp: () => "/ws-test/mcp",
-    docs: () => "/ws-test/docs",
-    changelog: () => "/ws-test/changelog",
-    settings: () => "/ws-test/settings",
-    issueDetail: (id: string) => `/ws-test/issues/${id}`,
-    memberDetail: (id: string) => `/ws-test/members/${id}`,
-    agentDetail: (id: string) => `/ws-test/agents/${id}`,
-    squadDetail: (id: string) => `/ws-test/squads/${id}`,
-    projectDetail: (id: string) => `/ws-test/projects/${id}`,
-  }),
-}));
+vi.mock("@multica/core/paths", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/paths")>();
+  return {
+    ...actual,
+    // Keep every registered navigation page on the real path contract.
+    useWorkspacePaths: () => actual.paths.workspace("ws-test"),
+  };
+});
 
 vi.mock("@multica/core/issues/queries", () => ({
   issueDetailOptions: (_wsId: string, id: string) => ({
@@ -258,9 +241,13 @@ function resolveIssue(key: readonly unknown[]) {
   return undefined;
 }
 
-vi.mock("@tanstack/react-query", () => ({
+vi.mock("@tanstack/react-query", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@tanstack/react-query")>()),
   useQuery: (opts: { queryKey: readonly unknown[]; enabled?: boolean }) => {
     const key = opts.queryKey;
+    if (key[0] === "triage" && key[1] === "ws-test" && key[2] === "settings") {
+      return { data: triageSettingsState.current };
+    }
     if (key[0] === "workspaces" && key[2] === "members") {
       return { data: mockMembers.current };
     }
@@ -318,6 +305,7 @@ describe("SearchCommand", () => {
     mockSetTheme.mockReset();
     mockTheme.current = "system";
     mockPathname.current = "/ws-test/issues";
+    triageSettingsState.current = { supported: true, enabled: false };
     mockGetShareableUrl.mockReset().mockImplementation((p: string) => `https://app.multica/${p}`);
     mockMembers.current = [];
     mockOpenModal.mockReset();
@@ -385,7 +373,8 @@ describe("SearchCommand", () => {
     expect(screen.queryByText("Inbox")).not.toBeInTheDocument();
   });
 
-  it("offers every workspace nav page, not a hand-maintained subset", async () => {
+  it("offers every enabled workspace nav page from the shared registry", async () => {
+    triageSettingsState.current = { supported: true, enabled: true };
     const user = userEvent.setup();
     renderSearch();
     const input = screen.getByPlaceholderText("Type a command or search...");
@@ -404,6 +393,27 @@ describe("SearchCommand", () => {
         ),
       ).toBeInTheDocument();
     }
+  });
+
+  it.each([
+    { supported: true, enabled: false },
+    { supported: false, enabled: true },
+    undefined,
+  ])("hides triage navigation until support and enablement are both confirmed: %j", async (settings) => {
+    triageSettingsState.current = settings;
+    const user = userEvent.setup();
+    renderSearch();
+    await user.type(screen.getByPlaceholderText("Type a command or search..."), "Triage");
+    expect(screen.queryByRole("option", { name: "Triage" })).not.toBeInTheDocument();
+  });
+
+  it("navigates to triage when the workspace has enabled the supported feature", async () => {
+    triageSettingsState.current = { supported: true, enabled: true };
+    const user = userEvent.setup();
+    renderSearch();
+    await user.type(screen.getByPlaceholderText("Type a command or search..."), "Triage");
+    await user.click(await screen.findByRole("option", { name: "Triage" }));
+    expect(mockPush).toHaveBeenCalledWith("/ws-test/triage");
   });
 
   it("does not surface a page on an incidental substring of a hidden keyword", async () => {
