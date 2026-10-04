@@ -1072,7 +1072,12 @@ async function probeLocalRuntimes(): Promise<LocalRuntimeProbe> {
 // applied by fix-path in main/index.ts — as a top-level const it would
 // snapshot process.env at import time, before that block runs.
 function desktopSpawnEnv(): NodeJS.ProcessEnv {
-  return { ...process.env, MULTICA_LAUNCHED_BY: "desktop" };
+  const env: NodeJS.ProcessEnv = { ...process.env, MULTICA_LAUNCHED_BY: "desktop" };
+  // Desktop pins the selected server in its own profile. A shell or Makefile
+  // override would win over that profile, potentially targeting another server
+  // or failing startup before the daemon can discover any local agent CLIs.
+  delete env.MULTICA_SERVER_URL;
+  return env;
 }
 
 function scheduleStatusRefresh(): void {
@@ -1239,7 +1244,7 @@ async function stopDaemon(): Promise<{ success: boolean; error?: string }> {
   const args = ["daemon", "stop", ...profileArgs(active.name)];
 
   return new Promise((resolve) => {
-    execFile(bin, args, { timeout: 15_000 }, (err) => {
+    execFile(bin, args, { timeout: 15_000, env: desktopSpawnEnv() }, (err) => {
       if (err) {
         void pollOnce();
         resolve({ success: false, error: err.message });

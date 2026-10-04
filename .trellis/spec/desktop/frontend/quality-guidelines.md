@@ -81,6 +81,23 @@ concurrency-safe, so calling it for a pre-existing workspace is a cheap self-hea
 
 ## Isolated Electron browser acceptance
 
+### Desktop daemon subprocesses use the selected server profile
+
+Start, stop, and local runtime probes must use `desktopSpawnEnv()` from
+`apps/desktop/src/main/daemon-manager.ts`. The Desktop-owned profile determines
+the server; do not inherit `MULTICA_SERVER_URL`, which the CLI resolves ahead of
+that profile. A Makefile `include` followed by `export` can retain literal quotes
+around an environment value, failing URL parsing before CLI discovery. Even a
+valid inherited URL can silently select the wrong server. Preserve the corrected
+PATH and provider-specific executable overrides.
+
+The regression matrix lives in `daemon-manager-managed-recovery.test.ts`.
+When reproducing startup issues, inspect current process/log timestamps and the
+profile health endpoint. Restart with the original `DESKTOP_RENDERER_PORT` and
+`DESKTOP_APP_SUFFIX`; both affect the renderer session and its stored login.
+
+### Served renderer configuration
+
 Electron fixtures using a served renderer must explicitly configure both the
 local API URL and its isolated `DATABASE_URL`. Check that the API origin used
 by `TestApiClient` matches the native runtime-config fixture before creating

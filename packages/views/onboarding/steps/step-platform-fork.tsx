@@ -28,7 +28,7 @@ import { useT } from "../../i18n";
 /**
  * Step 3 on **web**. The user is in a browser and hasn't downloaded
  * the desktop app yet, so we can't scan their machine for runtimes.
- * This screen is a fan-out: three clearly clickable cards, each with
+ * This screen offers two connection options, each with
  * an explicit right-side button that says what clicking does:
  *
  *   1. **Download desktop** — primary card, black bg, "Download" pill.
@@ -39,8 +39,6 @@ import { useT } from "../../i18n";
  *      probe. When a runtime appears and the user selects it, the
  *      dialog's "Connect & continue" button fires `onNext(runtime)`
  *      and advances the flow.
- *   3. **Cloud computer** — alt card, "Coming soon" badge. Not yet
- *      available; rendered as a static, non-actionable preview.
  *
  * Footer is simplified — no Continue button, since the CLI dialog
  * owns that advancement itself. Only Skip remains.
@@ -123,13 +121,6 @@ export function StepPlatformFork({
             actionLabel={t(($) => $.step_platform.cli_action)}
             onAction={handleOpenCli}
           />
-
-          <ForkAlt
-            title={t(($) => $.step_platform.cloud_title)}
-            subtitle={t(($) => $.step_platform.cloud_subtitle)}
-            actionLabel={t(($) => $.step_platform.cloud_action)}
-            disabled
-          />
         </div>
 
       </div>
@@ -207,30 +198,22 @@ function ForkPrimary({ onClick }: { onClick: () => void }) {
 }
 
 /**
- * Alt card with a right-side action. When `disabled`, the action
- * renders as a static badge (used for "Coming soon" paths that aren't
- * yet wired up); otherwise it's an outline button that fires
- * `onAction` and typically opens a dialog.
+ * Alt card with a right-side action that opens the CLI instructions.
  */
 function ForkAlt({
   title,
   subtitle,
   actionLabel,
   onAction,
-  disabled = false,
 }: {
   title: string;
   subtitle: ReactNode;
   actionLabel: ReactNode;
-  onAction?: () => void;
-  disabled?: boolean;
+  onAction: () => void;
 }) {
   return (
     <div
-      className={cn(
-        "flex items-center justify-between gap-4 rounded-lg border bg-card px-5 py-4",
-        disabled && "opacity-70",
-      )}
+      className="flex items-center justify-between gap-4 rounded-lg border bg-card px-5 py-4"
     >
       <div className="min-w-0">
         <div className="text-body font-medium text-foreground">{title}</div>
@@ -238,20 +221,14 @@ function ForkAlt({
           {subtitle}
         </div>
       </div>
-      {disabled ? (
-        <span className="shrink-0 rounded-full border bg-muted px-3 py-1 text-caption font-medium text-muted-foreground">
-          {actionLabel}
-        </span>
-      ) : (
-        <Button
-          variant="outline"
-          size="sm"
-          className="shrink-0"
-          onClick={onAction}
-        >
-          {actionLabel}
-        </Button>
-      )}
+      <Button
+        variant="outline"
+        size="sm"
+        className="shrink-0"
+        onClick={onAction}
+      >
+        {actionLabel}
+      </Button>
     </div>
   );
 }
