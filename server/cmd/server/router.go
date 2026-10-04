@@ -1992,6 +1992,25 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Group(func(r chi.Router) {
 			r.Use(middleware.RequireWorkspaceMember(queries))
 
+			// Triage owns admission; review handlers also verify the resolved actor.
+			r.Route("/api/triage", func(r chi.Router) {
+				r.Get("/settings", h.GetTriageSettings)
+				r.Put("/settings", h.UpdateTriageSettings)
+				r.Get("/items", h.ListTriageItems)
+				r.Post("/items", h.CreateTriageItem)
+				r.Get("/items/{id}", h.GetTriageItem)
+				r.Get("/items/{id}/history", h.GetTriageItemHistory)
+				r.Post("/items/{id}/actions", h.ActOnTriageItem)
+				r.Get("/history", h.GetTriageHistory)
+				r.Post("/actions/{actionId}/retry-execution", h.RetryTriageExecution)
+				r.Post("/batch/preview", h.PreviewTriageBatch)
+				r.Post("/batch", h.CommitTriageBatch)
+				r.Post("/imports/preview", h.PreviewTriageImport)
+				r.Get("/imports/{id}", h.GetTriageImport)
+				r.Post("/imports/{id}/commit", h.CommitTriageImport)
+				r.Get("/imports/{id}/failures", h.DownloadTriageImportFailures)
+			})
+
 			// Assignee frequency
 			r.Get("/api/assignee-frequency", h.GetAssigneeFrequency)
 

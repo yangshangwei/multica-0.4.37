@@ -73,7 +73,7 @@ func (q *Queries) LockLifecycleAgent(ctx context.Context, arg LockLifecycleAgent
 }
 
 const lockLifecycleIssue = `-- name: LockLifecycleIssue :one
-SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at FROM issue WHERE id = $1 AND workspace_id = $2
+SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status FROM issue WHERE id = $1 AND workspace_id = $2
 FOR NO KEY UPDATE NOWAIT
 `
 
@@ -116,6 +116,7 @@ func (q *Queries) LockLifecycleIssue(ctx context.Context, arg LockLifecycleIssue
 		&i.Properties,
 		&i.Revision,
 		&i.LastActivityAt,
+		&i.AdmissionStatus,
 	)
 	return i, err
 }
@@ -365,7 +366,7 @@ const setLifecycleMetadata = `-- name: SetLifecycleMetadata :one
 UPDATE issue SET metadata = $1::jsonb,
   revision = revision + 1, updated_at = now(), last_activity_at = now()
 WHERE id = $2 AND workspace_id = $3
-RETURNING id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at
+RETURNING id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status
 `
 
 type SetLifecycleMetadataParams struct {
@@ -406,6 +407,7 @@ func (q *Queries) SetLifecycleMetadata(ctx context.Context, arg SetLifecycleMeta
 		&i.Properties,
 		&i.Revision,
 		&i.LastActivityAt,
+		&i.AdmissionStatus,
 	)
 	return i, err
 }

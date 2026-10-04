@@ -19,6 +19,13 @@ const (
 // teardown. Adding a table requires an explicit ownership decision here; the
 // handler deletion graph must then implement that decision before CI passes.
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
+	"workspace_triage_settings":   workspaceDelete,
+	"issue_triage":                workspaceDelete,
+	"triage_intake_request":       workspaceDelete,
+	"triage_action":               workspaceDelete,
+	"triage_import_batch":         workspaceDelete,
+	"triage_import_row":           workspaceDelete,
+	"triage_notification":         workspaceDelete,
 	"managed_installation":        workspaceDeleteKeep,
 	"installation_user":           workspaceDeleteKeep,
 	"installation_report_cursor":  workspaceDeleteKeep,

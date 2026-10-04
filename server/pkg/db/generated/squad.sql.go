@@ -455,6 +455,7 @@ LEFT JOIN agent_task_queue atq
        ON sm.member_type = 'agent'
       AND atq.agent_id = sm.member_id
       AND atq.status IN ('dispatched', 'running', 'waiting_local_directory')
+      AND NOT EXISTS (SELECT 1 FROM issue input WHERE input.id=atq.issue_id AND input.admission_status NOT IN ('not_required','accepted'))
 LEFT JOIN issue i
        ON i.id = atq.issue_id
 WHERE sm.squad_id = $1

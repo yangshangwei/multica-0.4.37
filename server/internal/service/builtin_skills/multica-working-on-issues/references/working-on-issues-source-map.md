@@ -1,10 +1,33 @@
 # working-on-issues source map
 
 Evidence layer for `SKILL.md`. Every contract the skill states is traced to a
-current `file:line` here. Lines were re-derived against `feat/builtin-skills`
-after the latest `main` merge; the prior skill cited pre-merge lines that have
-since moved (see the "drifted" column). Re-confirm with the verification command
-at the bottom before relying on an exact line.
+source file and symbol here. Historical PR/status rows retain their original
+`feat/builtin-skills` line citations and drift notes; re-confirm an exact line
+before using it. Triage references use symbols so integration edits do not turn
+line movement into a misleading contract.
+
+## Triage admission and human decisions
+
+| Behavior | Source |
+|---|---|
+| Only `not_required` and `accepted` are formal; unknown values fail closed; execution checks read persisted state | `server/internal/admission/admission.go` (`Formal`, `Check`); `server/internal/service/issue_admission.go` (`checkIssueExecution`) |
+| Explicit intake defaults to pending/backlog; candidates remain separate from formal project/assignee; agent intake retains Contributor authority | `server/internal/handler/triage.go` (`CreateTriageItem`, `createTriageItemInTx`) |
+| Human review verifies credential class and resolved actor; settings require owner/admin; workspace membership rechecked under write fences | `server/internal/handler/triage.go` (`triageHumanActor`, `beginTriageWrite`, `UpdateTriageSettings`) |
+| Candidate visibility does not grant invocation; acceptance validates current project/assignee authority | `server/internal/handler/triage_actions.go` (`triageValidateCandidates`, `triageValidateReferences`, `applyTriageAcceptance`) |
+| Generic protected writes return `triage_review_required` with issue identity/path; status, assignment, project, parent, stage and position do not grant admission | `server/internal/handler/issue_admission.go` (`writeIssueAdmissionError`, `issueAdmissionMutation`); `server/internal/handler/issue.go` (`UpdateIssue`, `BatchUpdateIssues`) |
+| Plain acceptance commits fields/audit without enqueue; explicit acceptance/execution has its own action and original-human retry | `server/internal/handler/triage_actions.go` (`actOnTriageItem`, `retryTriageExecution`) |
+| Saved execution context binds assignee, squad leader, runtime and project/resource/content inputs; current permission/context is checked before preparation and again before task insertion | `server/internal/handler/triage_actions.go` (`triageExecutionSnapshot`, `retryTriageExecution`) |
+| Task identity and action result commit together; a known task is returned on retry and uncertain commit is reconciled | `server/internal/handler/triage_actions.go` (`retryTriageExecution`); `server/internal/service/issue_task_transaction.go` (`EnqueuePreparedIssueTaskInTx`) |
+| Pending-era comments retain no-dispatch eligibility across later admission, including trigger/coalesced recovery | `server/migrations/535_triage_execution_fence.up.sql`; `server/pkg/db/queries/comment.sql`; `server/internal/service/issue_admission.go` (`checkIssueExecution`); `server/internal/handler/comment.go` (`suppress_execution` event field) |
+| Lifecycle, direct enqueue/retry, claim and start cannot bypass persisted admission | `server/internal/handler/lifecycle_handoff_transaction.go`; `server/internal/handler/daemon.go`; `server/internal/service/task.go`; `server/internal/service/issue_task_transaction.go`; `server/internal/handler/triage_boundary_test.go`; `server/internal/service/triage_admission_test.go` |
+| Notifications deliver independently of review; closing the feature requires no pending rows and preserves history | `server/internal/handler/triage_notifications.go` (`queueTriageNotification`, `deliverTriageNotificationsOnce`); `server/internal/handler/triage.go` (`UpdateTriageSettings`); `server/internal/handler/triage_queries.go` (`GetTriageHistory`) |
+| Deleted manual/action results keep consumed request identities; successful CSV row replay returns the original identity | `server/internal/handler/triage.go` (`CreateTriageItem`); `server/internal/handler/triage_actions.go` (`actOnTriageItem`); `server/internal/handler/triage_import.go` (`commitTriageImportRow`); `server/pkg/db/queries/triage.sql` |
+| Triage APIs are workspace-scoped; no triage CLI subcommands are registered | `server/cmd/server/router.go` (`/api/triage` route group); `server/cmd/multica/` (command registration) |
+
+These admission checks qualify the normal status and sub-issue side effects
+below. In particular, a triage batch's `accept` action cannot use a `todo`
+assignee as an implicit execution trigger. The operator contract and rollback
+rules are in `docs/triage.zh-CN.md` and `.trellis/spec/server/triage.md`.
 
 ## `multica issue pull-requests` — read PR links from Multica
 
@@ -133,6 +156,9 @@ and is hidden from the PR list.
 
 ## Status side effects (enqueue contracts)
 
+These contracts apply to formal issues. Triage intake and ordinary acceptance
+use their separate, non-dispatching paths above.
+
 | Behavior | File:line | Drifted from |
 |---|---|---|
 | Create-time: agent-assigned, non-backlog issue enqueues immediately | `server/internal/handler/issue.go:2263-2264` | new citation |
@@ -172,8 +198,9 @@ away, so no task is left orphaned.
 
 The self-assignment guard is intentionally pair-scoped. It does not treat
 "this agent is busy on some other issue" as a reason to suppress a fresh
-cross-issue handoff, because serial sub-issue promotion and triage batches rely
-on those assignments creating their normal queued runs.
+cross-issue handoff, because serial sub-issue promotion and handoff batches rely
+on those assignments creating their normal queued runs. Triage acceptance is
+not such a handoff and does not enqueue.
 
 ## Sub-issue stages (barrier wake)
 

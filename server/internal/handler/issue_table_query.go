@@ -406,7 +406,7 @@ func (h *Handler) compileIssueTableQuery(w http.ResponseWriter, r *http.Request,
 		return issueTableSQL{}, false
 	}
 
-	where := []string{"i.workspace_id = $1"}
+	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
 	args := []any{workspaceUUID}
 	addArg := func(value any) string {
 		args = append(args, value)

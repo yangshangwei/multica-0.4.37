@@ -16,6 +16,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/admission"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
@@ -1894,6 +1895,7 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 		"issue_assignee_id":   uuidToPtr(issue.AssigneeID),
 		"issue_status":        issue.Status,
 		"issue_revision":      created.IssueRevision,
+		"suppress_execution":  !created.DispatchEligible,
 	})
 
 	// A reply in a resolved thread re-opens it. Done after CreateComment commits
@@ -2092,6 +2094,15 @@ func (h *Handler) enqueueCommentAgentTriggers(ctx context.Context, issue db.Issu
 // genuine non-convergence it returns a truthful internal_error, never a fabricated
 // deferred that would silently drop the comment.
 func (h *Handler) resolveCommentTriggerEnqueue(ctx context.Context, issue db.Issue, trigger commentAgentTrigger, triggerCommentID pgtype.UUID, getEscalationDelay func() time.Duration) (DispatchStatus, DispatchReasonCode) {
+	if err := admission.Check(ctx, h.Queries, issue.ID); err != nil {
+		return DispatchBlocked, ReasonTriageReviewRequired
+	}
+	if triggerCommentID.Valid {
+		c, err := h.Queries.GetComment(ctx, triggerCommentID)
+		if err != nil || !c.DispatchEligible {
+			return DispatchBlocked, ReasonTriageReviewRequired
+		}
+	}
 	pending := trigger.AlreadyPending
 	lostRace := false
 	// Resolve the reviewed HEAD lazily and at most once — the common
@@ -2257,6 +2268,10 @@ func commentBlockedTargetOutcomes(targets []commentMentionTarget) []CommentTrigg
 // infrastructure error that stays an unclassified internal error rather than
 // leaking the raw message.
 func commentEnqueueFailureReason(err error) DispatchReasonCode {
+	var blocked *admission.Blocked
+	if errors.As(err, &blocked) {
+		return ReasonTriageReviewRequired
+	}
 	if errors.Is(err, service.ErrAttributionFailClosed) {
 		return ReasonAttributionBlocked
 	}
@@ -2620,6 +2635,20 @@ func (h *Handler) enqueueSingleCommentTrigger(ctx context.Context, issue db.Issu
 // — the implicit routing fallbacks (assignee, thread parent, conversation) were
 // never named by the user, so a no-route there is not a silent no-op.
 func (h *Handler) computeCommentAgentTriggers(ctx context.Context, issue db.Issue, content string, parentComment *db.Comment, actorType, actorID string, opts commentTriggerComputeOptions) ([]commentAgentTrigger, []commentMentionTarget) {
+	blocked := admission.Check(ctx, h.Queries, issue.ID) != nil
+	if opts.ExcludeTriggerCommentID.Valid {
+		c, err := h.Queries.GetComment(ctx, opts.ExcludeTriggerCommentID)
+		blocked = blocked || err != nil || !c.DispatchEligible
+	}
+	if blocked {
+		var targets []commentMentionTarget
+		for _, mention := range util.ParseMentions(content) {
+			if mention.Type == "agent" || mention.Type == "squad" {
+				targets = append(targets, commentMentionTarget{TargetType: mention.Type, TargetID: mention.ID, Status: DispatchBlocked, ReasonCode: ReasonTriageReviewRequired})
+			}
+		}
+		return nil, targets
+	}
 	if isNoteComment(content) {
 		return nil, nil
 	}

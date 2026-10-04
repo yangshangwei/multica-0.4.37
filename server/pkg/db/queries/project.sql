@@ -64,13 +64,13 @@ DELETE FROM project WHERE id = $1 AND workspace_id = $2;
 
 -- name: CountIssuesByProject :one
 SELECT count(*) FROM issue
-WHERE project_id = $1;
+WHERE project_id = $1 AND admission_status IN ('not_required', 'accepted');
 
 -- name: GetProjectIssueStats :many
 SELECT project_id,
        count(*)::bigint AS total_count,
        count(*) FILTER (WHERE status = ANY(sqlc.arg('terminal_status_keys')::text[]))::bigint AS done_count
 FROM issue
-WHERE workspace_id = sqlc.arg('workspace_id')::uuid
+WHERE admission_status IN ('not_required', 'accepted') AND workspace_id = sqlc.arg('workspace_id')::uuid
   AND project_id = ANY(sqlc.arg('project_ids')::uuid[])
 GROUP BY project_id;

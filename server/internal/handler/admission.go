@@ -62,6 +62,7 @@ const (
 	ReasonAlreadyActive         = dispatch.ReasonAlreadyActive
 	ReasonSelfTriggerSuppressed = dispatch.ReasonSelfTriggerSuppressed
 	ReasonInternalError         = dispatch.ReasonInternalError
+	ReasonTriageReviewRequired  = dispatch.ReasonTriageReviewRequired
 )
 
 // DispatchTarget is the caller-visible reference to an execution target. Name

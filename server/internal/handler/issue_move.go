@@ -175,7 +175,7 @@ func (h *Handler) issueMoveAnchorPosition(
 	err := h.DB.QueryRow(r.Context(), `
 		SELECT position
 		FROM issue
-		WHERE workspace_id = $1 AND id = $2
+		WHERE workspace_id = $1 AND id = $2 AND admission_status IN ('not_required', 'accepted')
 	`, workspaceID, *id).Scan(&position)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {

@@ -28,16 +28,7 @@ type IssueContentPatch struct {
 // remain separate operations because each has additional policy and side
 // effects.
 func (s *IssueService) UpdateContent(ctx context.Context, issue db.Issue, patch IssueContentPatch) (db.Issue, error) {
-	params := db.UpdateIssueParams{
-		ID:            issue.ID,
-		AssigneeType:  issue.AssigneeType,
-		AssigneeID:    issue.AssigneeID,
-		StartDate:     issue.StartDate,
-		DueDate:       issue.DueDate,
-		ParentIssueID: issue.ParentIssueID,
-		ProjectID:     issue.ProjectID,
-		Stage:         issue.Stage,
-	}
+	params := db.UpdateIssueContentOnlyParams{ID: issue.ID}
 	if patch.ExpectedRevision != nil {
 		params.ExpectedRevision = pgtype.Int8{Int64: *patch.ExpectedRevision, Valid: true}
 	}
@@ -48,7 +39,7 @@ func (s *IssueService) UpdateContent(ctx context.Context, issue db.Issue, patch 
 		params.Description = pgtype.Text{String: util.SanitizeTextForPostgres(*patch.Description), Valid: true}
 	}
 
-	updated, err := s.Queries.UpdateIssue(ctx, params)
+	updated, err := s.Queries.UpdateIssueContentOnly(ctx, params)
 	if patch.ExpectedRevision != nil && errors.Is(err, pgx.ErrNoRows) {
 		return db.Issue{}, ErrIssueRevisionConflict
 	}

@@ -1,6 +1,6 @@
 ---
 name: multica-working-on-issues
-description: "Use when acting on a Multica issue beyond what the brief covers: PR linking vs close intent, reading a linked PR's real state, metadata keys, comment revision checks, status-change side effects, sub-issue todo vs backlog."
+description: "Use when acting on a Multica issue beyond what the brief covers: triage admission and human review, PR linking vs close intent, reading a linked PR's real state, metadata keys, comment revision checks, status-change side effects, sub-issue todo vs backlog."
 user-invocable: false
 allowed-tools: Bash(multica *), Bash(git *), Bash(gh *)
 ---
@@ -8,13 +8,50 @@ allowed-tools: Bash(multica *), Bash(git *), Bash(gh *)
 # Working on Multica issues
 
 Product contracts the runtime brief does not fully encode: PR linking vs close
-intent, reading linked-PR state, metadata keys, status side effects, and
-sub-issue enqueue behavior.
+intent, reading linked-PR state, metadata keys, triage admission, status side
+effects, and sub-issue enqueue behavior.
 
 For building mention links, load `multica-mentioning` instead — not this skill.
 
 Every contract below is traced to source in
 `references/working-on-issues-source-map.md`.
+
+## Triage admission precedes formal issue work
+
+An issue's `admission_status` is separate from its workflow `status`. Only
+`not_required` and `accepted` permit formal work. `pending`, `rejected` and
+`duplicate` do not; treat unknown admission values as blocked too. Ordinary
+issue creation keeps its existing behavior. Explicit manual/CSV triage intake
+creates a pending issue, with project/assignee stored only as candidates.
+
+Agents with existing Contributor creation authority may explicitly submit to
+`POST /api/triage/items` in an enabled workspace. This does not grant review
+authority: accepting, rejecting, marking duplicate, snoozing, reopening, batch
+review and CSV import require a human workspace member. Settings require a
+human owner/admin. Agent autonomy, task-token owner identity and a human PAT
+carrying an agent actor cannot substitute for that human decision.
+
+There is no `multica triage` CLI command. Do not use `issue status`, assignment,
+metadata, `--no-start`, lifecycle handoff or execution retries to make pending
+work formal. Protected writes return HTTP 409 with `triage_review_required`,
+an explanation and issue reference. Report that the issue requires human review
+in the workspace's triage view. Safe content/comment access remains subject to
+the caller's existing permissions, and a mention made while pending is not
+dispatchable later merely because the issue was accepted.
+
+Plain **accept** never starts an agent, even when it saves an agent/squad assignee
+and a `todo` status. **Accept and execute** is a distinct human action, checked
+against the real assignee and invocation permissions. If admission commits but
+execution fails, the issue remains accepted. Only the original human authorizer
+may retry that execution action with current permission and unchanged execution
+context; the retry returns the same stored task when one already exists. A
+changed assignee, squad leader, runtime, project resources or execution content
+requires a fresh explicit run decision, not a retry under the old authorization.
+
+Reading or archiving a triage notification does not review the issue. Closing
+triage does not erase review history or request identities. Deleted intake/action
+results cannot be recreated by replaying their request IDs; a consumed CSV row
+likewise retains its original result identity.
 
 ## PR linking and close intent are two distinct contracts
 
@@ -144,7 +181,8 @@ conflict returns an error without retrying: read the newest body, merge your
 change into it, then use its revision. Merely resending with the newer number
 would overwrite another editor's work.
 
-Changing the body is a new action: the server cancels in-flight runs triggered
+For dispatch-eligible comments on formal issues, changing the body is a new
+action: the server cancels in-flight runs triggered
 by the old comment and re-evaluates triggers under the editor's current
 invocation permissions. Read `trigger_outcomes` in the JSON response; a saved
 comment does not guarantee that every mentioned agent started. Existing
@@ -207,7 +245,8 @@ multica issue property unset <issue-id> --name Environment
 ## Status changes have server side effects
 
 A status change is not cosmetic — the server enqueues or skips agent work based
-on it. These are the contracts, not advice:
+on it. The contracts below apply to formal issues after the triage admission
+boundary above; a pending issue cannot be admitted by changing its status.
 
 A workspace may define custom statuses beyond the seven built-ins; when any
 exist, the runtime brief's Available Commands section lists this workspace's
@@ -270,11 +309,12 @@ claim and any `## Active sibling runs` block (its `run-messages` commands show
 work in flight). The server also suppresses a trusted self-assignment when the
 exact target `(issue, agent)` pair already has a non-terminal task, but it
 deliberately keeps same-agent handoffs to a fresh issue starting runs: cross-issue
-serial chains and triage batches rely on that.
+serial chains and cross-issue handoff batches rely on that. A triage batch's
+ordinary acceptance remains non-executing.
 
 ## Sub-issues: `todo` starts work now, `backlog` parks it
 
-On an agent-assigned issue, create status decides whether the assignee fires
+On a formal agent-assigned issue, create status decides whether the assignee fires
 immediately. A non-backlog status (e.g. `todo`) enqueues the agent at create
 time; `backlog` sets the assignee without triggering.
 
@@ -359,7 +399,8 @@ multica issue create --title "Step 3" --parent <issue-id> --assignee <agent> --s
 ## References
 
 `references/working-on-issues-source-map.md` — accurate `file:line` for every
-contract above: the `pull-requests` CLI and route, the PR response field list,
+contract above: triage admission/review and execution retry boundaries, the
+`pull-requests` CLI and route, the PR response field list,
 `derivePRState`, the two-path link (`extractIdentifiers`) vs close-intent
 (`extractClosingIdentifiers`) proof, the backlog enqueue lines, child-done
 notify, the stage column / `stageBarrierClosed` barrier and the `--stage` /
