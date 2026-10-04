@@ -68,12 +68,15 @@ Files: `server/internal/handler/triage_import*.go`, CSV parser/resolver helper t
 
 ## Integration, evidence and finish (leader + independent verifier)
 
-- [ ] Reconcile every TRI-AC T1 row and relevant WM-AC against actual source/tests; missing proof means remaining work.
-- [ ] Run targeted then full `pnpm lint`, `pnpm typecheck`, `pnpm test`, `make test`, `go vet`, boundary/static checks; distinguish baseline failures from regressions.
-- [ ] Run fresh migration and private-schema down refusal/empty rollback. Confirm no foreign keys, cascades or nonconcurrent new indexes.
-- [ ] Exercise production Web and shared Desktop route: enable/create/review/history/snooze/reopen/CSV/batch/conflict; old-client/direct route blocked; formal controls still work. Fake runtimes only.
-- [ ] Persist browser screenshots and visual verdict, responsive/keyboard proof, performance samples.
-- [ ] Update built-in skill/API behavior docs and scoped Trellis specs, user guide and acceptance ledger.
-- [ ] Independent full-scope review, fix findings, rerun affected checks, commit task-owned files under Lore protocol. Leave branch reviewable; no merge or deployment.
+- [x] Reconcile every TRI-AC T1 row and relevant WM-AC against actual source/tests; missing proof means remaining work.
+- [x] Run targeted then full `pnpm lint`, `pnpm typecheck`, `pnpm test`, `make test`, `go vet`, boundary/static checks; distinguish baseline failures from regressions.
+- [x] Run fresh migration and private-schema down refusal/empty rollback. Confirm no foreign keys, cascades or nonconcurrent new indexes.
+- [x] Exercise production Web and shared Desktop route: enable/create/review/history/snooze/reopen/CSV/batch/conflict; old-client/direct route blocked; formal controls still work. Fake runtimes only.
+- [x] Persist browser screenshots and visual verdict, responsive/keyboard proof, performance samples.
+- [x] Update built-in skill/API behavior docs and scoped Trellis specs, user guide and acceptance ledger.
+- [x] Independent full-scope review, fix findings, rerun affected checks, commit task-owned files under Lore protocol. Leave branch reviewable; no merge or deployment.
 
 Rollback checkpoints: task planning commit; schema+backend commit; guard/query commit; core/UI commit; integration/docs commit. Feature remains default off. Never roll back populated audit/import/admission tables destructively; disable only after pending queue is resolved, preserve history and deploy forward correction.
+
+
+Completed 2026-10-05. See verification.md for actual commands, named proof and limitations. Git commits and final task metadata follow the verified source delivery; no merge or deployment.

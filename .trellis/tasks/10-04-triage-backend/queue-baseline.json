@@ -1,0 +1,52 @@
+{
+  "formal_issues": 10000,
+  "measured_at": "2026-10-04T17:09:39Z",
+  "p95_ms": {
+    "action": 18.558,
+    "filter": 95.966,
+    "list": 97.333
+  },
+  "page_size": 50,
+  "pending_issues": 2000,
+  "samples_ms": {
+    "action": [
+      18.558,
+      11.27,
+      10.16,
+      9.577,
+      8.734,
+      8.746,
+      8.425,
+      8.108,
+      9.496,
+      8.263
+    ],
+    "filter": [
+      93.567,
+      95.966,
+      93.21,
+      93.5,
+      90.303,
+      94.889,
+      95.178,
+      93.171,
+      92.365,
+      91.062
+    ],
+    "list": [
+      97.333,
+      93.74,
+      92.75,
+      96.079,
+      94.887,
+      94.042,
+      92.632,
+      90.708,
+      94.472,
+      92.732
+    ]
+  },
+  "samples_per_operation": 10,
+  "scope": "local Go handler plus isolated PostgreSQL; excludes browser and HTTP network",
+  "units": "milliseconds"
+}
