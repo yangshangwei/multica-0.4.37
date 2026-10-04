@@ -1,0 +1,34 @@
+{
+  "id": "triage-t1",
+  "name": "triage-t1",
+  "title": "分拣台 T1 人工审核闭环",
+  "description": "补齐技术设计、开发拆分并实现 triage-prd.md 全部 T1 需求，覆盖 Web、桌面端、CSV 导入及服务端准入执行边界",
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "triage",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-04",
+  "completedAt": null,
+  "branch": "codex/triage-t1",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-triage-t1",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "10-04-triage-backend",
+    "10-04-triage-boundaries",
+    "10-04-triage-client",
+    "10-04-triage-ui",
+    "10-04-triage-import"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    "docs/plans/2026-10-04-work-management-prds/triage-prd.md"
+  ],
+  "notes": "Planning authorized with implementation. Isolated from unrelated dirty main checkout. Full T1 scope is mandatory.",
+  "meta": {}
+}
