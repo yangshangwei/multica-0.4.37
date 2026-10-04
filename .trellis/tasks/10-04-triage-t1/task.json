@@ -3,7 +3,7 @@
   "name": "triage-t1",
   "title": "分拣台 T1 人工审核闭环",
   "description": "补齐技术设计、开发拆分并实现 triage-prd.md 全部 T1 需求，覆盖 Web、桌面端、CSV 导入及服务端准入执行边界",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "fullstack",
   "scope": "triage",
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-04",
-  "completedAt": null,
+  "completedAt": "2026-10-05",
   "branch": "codex/triage-t1",
   "base_branch": "main",
   "worktree_path": "/Volumes/artisan/code/2026/multica-triage-t1",
-  "commit": null,
+  "commit": "62cb06a0c202d99d775fd2e7fac45e1bebda7497",
   "pr_url": null,
   "subtasks": [],
   "children": [
@@ -29,6 +29,6 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/triage-prd.md"
   ],
-  "notes": "Planning authorized with implementation. Isolated from unrelated dirty main checkout. Full T1 scope is mandatory.",
+  "notes": "Completed T1 on codex/triage-t1 with all 37 acceptance scenarios and 8 FR obligations verified. Parent verification.md records exact checks and limits. Kept at stable task path for document links; no main merge or production deployment.",
   "meta": {}
 }
