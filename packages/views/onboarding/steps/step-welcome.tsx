@@ -1,7 +1,11 @@
 "use client";
 
 import { useId, useState } from "react";
-import { ArrowRight, CircleCheck, Clock3, Download, Loader2, ShieldX } from "lucide-react";
+import { ArrowRight, Download, Loader2 } from "lucide-react";
+import { statusCategoryOfKey } from "@multica/core/issues";
+import { STATUS_CONFIG } from "@multica/core/issues/config";
+import type { IssueStatus } from "@multica/core/types";
+import { StatusIcon } from "../../issues/components/status-icon";
 import { Button, buttonVariants } from "@multica/ui/components/ui/button";
 import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
 import { cn } from "@multica/ui/lib/utils";
@@ -19,8 +23,8 @@ import { useT } from "../../i18n";
  * Left = wordmark + serif headline + lede + CTA; right = a stack of
  * mock issue cards that show what human/agent collaboration looks
  * like on the board — the thing the user is about to create. The
- * right column is an illustrative history, hidden below lg. Its
- * human-approval summary remains visible on narrow viewports.
+ * right column is an illustrative activity feed, hidden below lg. Its
+ * collaboration summary remains visible on narrow viewports.
  *
  * `onSkip`, when provided, renders a secondary ghost CTA that marks
  * onboarding complete server-side and sends the user straight to
@@ -190,15 +194,13 @@ export function StepWelcome({
         className="hidden min-w-0 border-l bg-muted/40 lg:flex lg:flex-1 lg:flex-col lg:overflow-hidden"
       >
         <DragStrip />
-        <div className="flex flex-1 flex-col items-center justify-center gap-7 px-8 py-8">
-          <div className="max-w-[460px] space-y-2 text-center">
-            <h2 id={illustrationTitleId} className="text-balance font-serif text-title italic leading-snug">
-              {t(($) => $.welcome.illustration_title)}
-            </h2>
-            <p className="text-pretty text-body leading-relaxed text-muted-foreground">
-              {t(($) => $.welcome.illustration_context)}
-            </p>
-          </div>
+        <div className="flex flex-1 flex-col items-center justify-center gap-7 px-10 py-8">
+          <h2
+            id={illustrationTitleId}
+            className="max-w-[440px] text-balance text-center font-serif text-body-lg font-normal italic leading-snug text-muted-foreground"
+          >
+            {t(($) => $.welcome.illustration_caption)}
+          </h2>
           <WelcomeIllustration />
         </div>
       </section>
@@ -207,11 +209,20 @@ export function StepWelcome({
 }
 
 
-/** Six snapshots of a shared task, including review gates and human decisions. */
+/**
+ * Software development across a shared multi-agent workspace. Five activity cards
+ * woven through 3 shared issues (MCA-42 appears 3×) so the reader can
+ * *see* agents referencing each other's work — the product's
+ * "one workspace, shared context" thesis rendered concretely.
+ *
+ * Cards use slight rotations + indents to feel like a hand-stacked
+ * pile rather than a neat feed, which matches the editorial-hero
+ * aesthetic of the left column.
+ */
 function WelcomeIllustration() {
   const { t } = useT("onboarding");
   return (
-    <ol role="list" className="flex w-full max-w-[460px] flex-col gap-5">
+    <ul role="list" className="flex w-full max-w-[460px] flex-col gap-3">
       <MockActivityCard
         actor={{
           kind: "user",
@@ -222,89 +233,65 @@ function WelcomeIllustration() {
         content={
           <>
             <Mention>{t(($) => $.welcome.illustration.card1_mention_assignee)}</Mention>
-            {t(($) => $.welcome.illustration.card1_body)}
+            {t(($) => $.welcome.illustration.card1_body_prefix)}
+            <Mention>{t(($) => $.welcome.illustration.card1_mention_source)}</Mention>
+            {t(($) => $.welcome.illustration.card1_body_suffix)}
           </>
         }
       />
       <MockActivityCard
-        className="-translate-x-6 -rotate-[0.5deg]"
+        className="-translate-x-5 -rotate-[1.2deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card2_actor_name),
-          provider: "kimi",
+          provider: "codex",
         }}
         issueId="MCA-42"
-        content={
-          <>
-            {t(($) => $.welcome.illustration.card2_body_prefix)}
-            <Mention>{t(($) => $.welcome.illustration.card2_mention)}</Mention>
-            {t(($) => $.welcome.illustration.card2_body_suffix)}
-          </>
-        }
-        status="waiting"
-        statusLabel={t(($) => $.welcome.illustration.card2_status)}
+        content={t(($) => $.welcome.illustration.card2_body)}
+        status="in_progress"
       />
       <MockActivityCard
-        className="translate-x-6 rotate-[0.5deg]"
+        className="translate-x-8 rotate-[1.6deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card3_actor_name),
           provider: "hermes",
         }}
-        issueId="MCA-42"
+        issueId="MCA-38"
         content={t(($) => $.welcome.illustration.card3_body)}
         status="done"
-        statusLabel={t(($) => $.welcome.illustration.card3_status)}
+        timestamp={t(($) => $.welcome.illustration.card3_timestamp)}
       />
       <MockActivityCard
-        className="-translate-x-6 -rotate-[0.5deg]"
+        className="-translate-x-6 -rotate-[0.8deg]"
         actor={{
           kind: "agent",
           name: t(($) => $.welcome.illustration.card4_actor_name),
-          provider: "codex",
-        }}
-        issueId="MCA-42"
-        content={t(($) => $.welcome.illustration.card4_body)}
-        status="waiting"
-        statusLabel={t(($) => $.welcome.illustration.card4_status)}
-      />
-      <MockActivityCard
-        className="translate-x-6 rotate-[0.5deg]"
-        actor={{
-          kind: "agent",
-          name: t(($) => $.welcome.illustration.card5_actor_name),
           provider: "openclaw",
         }}
         issueId="MCA-42"
+        content={t(($) => $.welcome.illustration.card4_body)}
+        status="in_review"
+      />
+      <MockActivityCard
+        className="translate-x-6 rotate-[1deg]"
+        actor={{
+          kind: "agent",
+          name: t(($) => $.welcome.illustration.card5_actor_name),
+          provider: "claude",
+        }}
+        issueId="MCA-35"
         content={
           <>
             {t(($) => $.welcome.illustration.card5_body_prefix)}
-            <Mention>{t(($) => $.welcome.illustration.card5_mention)}</Mention>
+            <Mention>{t(($) => $.welcome.illustration.card5_mention_you)}</Mention>
             {t(($) => $.welcome.illustration.card5_body_suffix)}
           </>
         }
-        status="blocked"
-        statusLabel={t(($) => $.welcome.illustration.card5_status)}
+        status="done"
+        timestamp={t(($) => $.welcome.illustration.card5_timestamp)}
       />
-      <MockActivityCard
-        className="-translate-x-6 -rotate-[0.5deg]"
-        actor={{
-          kind: "agent",
-          name: t(($) => $.welcome.illustration.card6_actor_name),
-          provider: "claude",
-        }}
-        issueId="MCA-42"
-        content={
-          <>
-            {t(($) => $.welcome.illustration.card6_body_prefix)}
-            <Mention>{t(($) => $.welcome.illustration.card6_mention)}</Mention>
-            {t(($) => $.welcome.illustration.card6_body_suffix)}
-          </>
-        }
-        status="waiting"
-        statusLabel={t(($) => $.welcome.illustration.card6_status)}
-      />
-    </ol>
+    </ul>
   );
 }
 
@@ -330,14 +317,14 @@ function MockActivityCard({
   issueId,
   content,
   status,
-  statusLabel,
+  timestamp,
   className,
 }: {
   actor: ActivityActor;
   issueId: string;
   content: React.ReactNode;
-  status?: "waiting" | "done" | "blocked";
-  statusLabel?: string;
+  status?: Extract<IssueStatus, "in_progress" | "done" | "in_review">;
+  timestamp?: string;
   className?: string;
 }) {
   return (
@@ -363,7 +350,7 @@ function MockActivityCard({
         {content}
       </p>
 
-      {status && statusLabel && <StatusFooter status={status} label={statusLabel} />}
+      {status && <StatusFooter status={status} timestamp={timestamp} />}
     </li>
   );
 }
@@ -389,24 +376,40 @@ function MockAvatar({ actor }: { actor: ActivityActor }) {
   );
 }
 
-// Illustration stages describe approvals, rather than live issue statuses.
 function StatusFooter({
   status,
-  label,
+  timestamp,
 }: {
-  status: "waiting" | "done" | "blocked";
-  label: string;
+  status: IssueStatus;
+  timestamp?: string;
 }) {
-  const Icon = status === "blocked" ? ShieldX : status === "done" ? CircleCheck : Clock3;
+  // The illustration's statuses are hard-coded BUILT-IN keys, so the label
+  // resolves from i18n exactly the way `useStatusLabel` does for real issues
+  // (MUL-6243) — `STATUS_CONFIG` still owns the icon color, but its `.label`
+  // is the server's English seed and must never reach the screen.
+  const { t } = useT("issues");
+  const category = statusCategoryOfKey(status);
+  const cfg = STATUS_CONFIG[category];
   return (
-    <div
-      className={cn(
-        "mt-3 flex items-center gap-1.5 text-caption font-medium",
-        status === "blocked" ? "text-destructive" : status === "done" ? "text-brand" : "text-muted-foreground",
+    <div className="mt-3 flex items-center gap-2 text-caption">
+      <span
+        className={cn("flex items-center gap-1.5 font-medium", cfg.iconColor)}
+      >
+        <StatusIcon
+          status={status}
+          className={cn(
+            "h-3.5 w-3.5",
+            status === "in_progress" && "animate-pulse",
+          )}
+        />
+        {t(($) => $.status[category])}
+      </span>
+      {timestamp && (
+        <>
+          <span className="text-muted-foreground">·</span>
+          <span className="text-muted-foreground">{timestamp}</span>
+        </>
       )}
-    >
-      <Icon aria-hidden className="h-3.5 w-3.5 shrink-0" />
-      <span>{label}</span>
     </div>
   );
 }
