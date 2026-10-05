@@ -88,3 +88,44 @@ SELECT * FROM project WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT;
 -- name: CreateProjectStateChange :exec
 INSERT INTO project_state_change (workspace_id, project_id, actor_type, actor_id, from_status, to_status, reason, project_revision)
 VALUES ($1,$2,$3,$4,$5,$6,$7,$8);
+
+-- name: GetProjectDeleteImpact :one
+SELECT p.revision AS project_revision,
+ (SELECT count(*) FROM issue WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS issue_count,
+ (SELECT count(*) FROM issue WHERE workspace_id=p.workspace_id AND project_id=p.id AND admission_status IN ('not_required','accepted'))::bigint AS formal_issue_count,
+ (SELECT count(*) FROM project_resource WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS resource_count,
+ (SELECT count(*) FROM project_update WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS update_count,
+ (SELECT count(*) FROM autopilot WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS autopilot_count
+FROM project p WHERE p.id=$1 AND p.workspace_id=$2;
+
+-- name: LockProjectAutopilotsForDelete :many
+SELECT id FROM autopilot WHERE project_id=$1 AND workspace_id=$2 ORDER BY id FOR UPDATE;
+
+-- name: DisableProjectAutopilotTriggers :exec
+UPDATE autopilot_trigger SET enabled=false, updated_at=now()
+WHERE autopilot_id IN (SELECT id FROM autopilot WHERE project_id=$1 AND workspace_id=$2);
+
+-- name: DetachProjectAutopilots :exec
+UPDATE autopilot SET project_id=NULL,
+ status=CASE WHEN status='archived' THEN 'archived' ELSE 'paused' END,
+ pause_reason=CASE WHEN status='archived' THEN pause_reason ELSE 'project_deleted' END,
+ updated_at=now()
+WHERE project_id=$1 AND workspace_id=$2;
+
+-- name: DetachProjectIssues :exec
+UPDATE issue SET project_id=NULL, revision=revision+1, updated_at=now()
+WHERE project_id=$1 AND workspace_id=$2;
+
+-- name: DeleteProjectResources :exec
+DELETE FROM project_resource WHERE project_id=$1 AND workspace_id=$2;
+
+-- name: DeleteProjectProgressInbox :exec
+DELETE FROM inbox_item i WHERE i.workspace_id=$2
+AND i.id IN (SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2);
+
+-- name: DeleteProjectProgress :exec
+WITH notifications AS (DELETE FROM project_update_notification WHERE project_update_notification.project_id=$1 AND project_update_notification.workspace_id=$2),
+ requests AS (DELETE FROM project_update_request WHERE project_update_request.project_id=$1 AND project_update_request.workspace_id=$2),
+ revisions AS (DELETE FROM project_update_revision WHERE project_update_revision.project_id=$1 AND project_update_revision.workspace_id=$2),
+ states AS (DELETE FROM project_state_change WHERE project_state_change.project_id=$1 AND project_state_change.workspace_id=$2)
+DELETE FROM project_update WHERE project_update.project_id=$1 AND project_update.workspace_id=$2;

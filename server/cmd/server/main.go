@@ -650,6 +650,7 @@ func main() {
 	// Start background workers.
 	sweepCtx, sweepCancel := context.WithCancel(context.Background())
 	go h.RunTriageNotifications(sweepCtx)
+	go h.RunProjectUpdateNotifications(sweepCtx)
 	autopilotCtx, autopilotCancel := context.WithCancel(context.Background())
 	// Reuse the router's services here. In particular, the router wires the
 	// EmptyClaim cache into TaskService; constructing a second TaskService for

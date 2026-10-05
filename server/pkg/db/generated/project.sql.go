@@ -129,6 +129,139 @@ func (q *Queries) DeleteProject(ctx context.Context, arg DeleteProjectParams) er
 	return err
 }
 
+const deleteProjectProgress = `-- name: DeleteProjectProgress :exec
+WITH notifications AS (DELETE FROM project_update_notification WHERE project_update_notification.project_id=$1 AND project_update_notification.workspace_id=$2),
+ requests AS (DELETE FROM project_update_request WHERE project_update_request.project_id=$1 AND project_update_request.workspace_id=$2),
+ revisions AS (DELETE FROM project_update_revision WHERE project_update_revision.project_id=$1 AND project_update_revision.workspace_id=$2),
+ states AS (DELETE FROM project_state_change WHERE project_state_change.project_id=$1 AND project_state_change.workspace_id=$2)
+DELETE FROM project_update WHERE project_update.project_id=$1 AND project_update.workspace_id=$2
+`
+
+type DeleteProjectProgressParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) DeleteProjectProgress(ctx context.Context, arg DeleteProjectProgressParams) error {
+	_, err := q.db.Exec(ctx, deleteProjectProgress, arg.ProjectID, arg.WorkspaceID)
+	return err
+}
+
+const deleteProjectProgressInbox = `-- name: DeleteProjectProgressInbox :exec
+DELETE FROM inbox_item i WHERE i.workspace_id=$2
+AND i.id IN (SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2)
+`
+
+type DeleteProjectProgressInboxParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) DeleteProjectProgressInbox(ctx context.Context, arg DeleteProjectProgressInboxParams) error {
+	_, err := q.db.Exec(ctx, deleteProjectProgressInbox, arg.ProjectID, arg.WorkspaceID)
+	return err
+}
+
+const deleteProjectResources = `-- name: DeleteProjectResources :exec
+DELETE FROM project_resource WHERE project_id=$1 AND workspace_id=$2
+`
+
+type DeleteProjectResourcesParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) DeleteProjectResources(ctx context.Context, arg DeleteProjectResourcesParams) error {
+	_, err := q.db.Exec(ctx, deleteProjectResources, arg.ProjectID, arg.WorkspaceID)
+	return err
+}
+
+const detachProjectAutopilots = `-- name: DetachProjectAutopilots :exec
+UPDATE autopilot SET project_id=NULL,
+ status=CASE WHEN status='archived' THEN 'archived' ELSE 'paused' END,
+ pause_reason=CASE WHEN status='archived' THEN pause_reason ELSE 'project_deleted' END,
+ updated_at=now()
+WHERE project_id=$1 AND workspace_id=$2
+`
+
+type DetachProjectAutopilotsParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) DetachProjectAutopilots(ctx context.Context, arg DetachProjectAutopilotsParams) error {
+	_, err := q.db.Exec(ctx, detachProjectAutopilots, arg.ProjectID, arg.WorkspaceID)
+	return err
+}
+
+const detachProjectIssues = `-- name: DetachProjectIssues :exec
+UPDATE issue SET project_id=NULL, revision=revision+1, updated_at=now()
+WHERE project_id=$1 AND workspace_id=$2
+`
+
+type DetachProjectIssuesParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) DetachProjectIssues(ctx context.Context, arg DetachProjectIssuesParams) error {
+	_, err := q.db.Exec(ctx, detachProjectIssues, arg.ProjectID, arg.WorkspaceID)
+	return err
+}
+
+const disableProjectAutopilotTriggers = `-- name: DisableProjectAutopilotTriggers :exec
+UPDATE autopilot_trigger SET enabled=false, updated_at=now()
+WHERE autopilot_id IN (SELECT id FROM autopilot WHERE project_id=$1 AND workspace_id=$2)
+`
+
+type DisableProjectAutopilotTriggersParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) DisableProjectAutopilotTriggers(ctx context.Context, arg DisableProjectAutopilotTriggersParams) error {
+	_, err := q.db.Exec(ctx, disableProjectAutopilotTriggers, arg.ProjectID, arg.WorkspaceID)
+	return err
+}
+
+const getProjectDeleteImpact = `-- name: GetProjectDeleteImpact :one
+SELECT p.revision AS project_revision,
+ (SELECT count(*) FROM issue WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS issue_count,
+ (SELECT count(*) FROM issue WHERE workspace_id=p.workspace_id AND project_id=p.id AND admission_status IN ('not_required','accepted'))::bigint AS formal_issue_count,
+ (SELECT count(*) FROM project_resource WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS resource_count,
+ (SELECT count(*) FROM project_update WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS update_count,
+ (SELECT count(*) FROM autopilot WHERE workspace_id=p.workspace_id AND project_id=p.id)::bigint AS autopilot_count
+FROM project p WHERE p.id=$1 AND p.workspace_id=$2
+`
+
+type GetProjectDeleteImpactParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+type GetProjectDeleteImpactRow struct {
+	ProjectRevision  int64 `json:"project_revision"`
+	IssueCount       int64 `json:"issue_count"`
+	FormalIssueCount int64 `json:"formal_issue_count"`
+	ResourceCount    int64 `json:"resource_count"`
+	UpdateCount      int64 `json:"update_count"`
+	AutopilotCount   int64 `json:"autopilot_count"`
+}
+
+func (q *Queries) GetProjectDeleteImpact(ctx context.Context, arg GetProjectDeleteImpactParams) (GetProjectDeleteImpactRow, error) {
+	row := q.db.QueryRow(ctx, getProjectDeleteImpact, arg.ID, arg.WorkspaceID)
+	var i GetProjectDeleteImpactRow
+	err := row.Scan(
+		&i.ProjectRevision,
+		&i.IssueCount,
+		&i.FormalIssueCount,
+		&i.ResourceCount,
+		&i.UpdateCount,
+		&i.AutopilotCount,
+	)
+	return i, err
+}
+
 const getProjectInWorkspace = `-- name: GetProjectInWorkspace :one
 SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project
 WHERE id = $1 AND workspace_id = $2
@@ -253,6 +386,35 @@ func (q *Queries) ListProjects(ctx context.Context, arg ListProjectsParams) ([]P
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const lockProjectAutopilotsForDelete = `-- name: LockProjectAutopilotsForDelete :many
+SELECT id FROM autopilot WHERE project_id=$1 AND workspace_id=$2 ORDER BY id FOR UPDATE
+`
+
+type LockProjectAutopilotsForDeleteParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) LockProjectAutopilotsForDelete(ctx context.Context, arg LockProjectAutopilotsForDeleteParams) ([]pgtype.UUID, error) {
+	rows, err := q.db.Query(ctx, lockProjectAutopilotsForDelete, arg.ProjectID, arg.WorkspaceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []pgtype.UUID{}
+	for rows.Next() {
+		var id pgtype.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		items = append(items, id)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

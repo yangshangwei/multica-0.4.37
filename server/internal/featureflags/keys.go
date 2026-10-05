@@ -7,6 +7,8 @@ import (
 )
 
 const (
+	// ProjectsP1 gates new progress writes and discovery, never description CAS or retained history reads.
+	ProjectsP1 = "projects_p1"
 	// BillingWorkspaceSubscriptions gates the workspace-scoped entitlement,
 	// Stripe Checkout, seat reconcile, and Billing Portal proxy surface. It is
 	// deliberately off by default so the main repository can ship before the

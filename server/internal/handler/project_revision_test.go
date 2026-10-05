@@ -6,7 +6,10 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"net/http"
+	"strings"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/multica-ai/multica/server/internal/testutil"
 )
@@ -111,5 +114,98 @@ func TestProjectTransactionRetriesWholeRepeatableReadUnit(t *testing.T) {
 	dbfx.QueryRow(t, "SELECT planning_timezone FROM workspace WHERE id=$1", testWorkspaceID).Scan(&zone)
 	if zone != "Asia/Shanghai" {
 		t.Fatalf("committed final callback: %s", zone)
+	}
+}
+
+func TestProjectUpdateConstraintErrorPreserved(t *testing.T) {
+	id := dbfx.Project(t, "P1 validation")
+	testutil.Call(t, testHandler.UpdateProject, withURLParam(newRequest("PUT", "/api/projects/"+id, map[string]any{"lead_type": "unsupported"}), "id", id)).Want(400)
+}
+
+func TestProjectConcurrentDescriptionWritesOneWinner(t *testing.T) {
+	id := dbfx.Project(t, "P1 concurrent", testutil.Cols{"description": "original"})
+	outcomes := make(chan int, 2)
+	start := make(chan struct{})
+	for _, body := range []string{"version A", "version B"} {
+		go func(text string) {
+			<-start
+			response := testutil.Call(t, testHandler.UpdateProject, withURLParam(newRequest("PUT", "/api/projects/"+id, map[string]any{"description": text, "expected_description_revision": 1}), "id", id)).WantOneOf(200, 409)
+			outcomes <- response.Code
+		}(body)
+	}
+	close(start)
+	first, second := <-outcomes, <-outcomes
+	if first+second != 609 {
+		t.Fatalf("two edits must have one winner: %d %d", first, second)
+	}
+	var description string
+	var revision int64
+	dbfx.QueryRow(t, "SELECT description,description_revision FROM project WHERE id=$1", id).Scan(&description, &revision)
+	if revision != 2 || (description != "version A" && description != "version B") {
+		t.Fatalf("committed result %q @ %d", description, revision)
+	}
+}
+
+type projectMemberFenceStarter struct {
+	txStarter
+	entered chan struct{}
+	resume  chan struct{}
+	once    *sync.Once
+}
+type projectMemberFenceTx struct {
+	pgx.Tx
+	gate projectMemberFenceStarter
+}
+
+func (s projectMemberFenceStarter) Begin(ctx context.Context) (pgx.Tx, error) {
+	tx, err := s.txStarter.Begin(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return projectMemberFenceTx{Tx: tx, gate: s}, nil
+}
+func (tx projectMemberFenceTx) Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error) {
+	if strings.Contains(sql, "-- name: LockSubscriberWrites ") {
+		tx.gate.once.Do(func() {
+			close(tx.gate.entered)
+			select {
+			case <-tx.gate.resume:
+			case <-ctx.Done():
+			}
+		})
+	}
+	return tx.Tx.Exec(ctx, sql, args...)
+}
+
+func TestProjectWriteRechecksMemberAfterRepeatableReadFenceWait(t *testing.T) {
+	id := dbfx.Project(t, "P1 membership", testutil.Cols{"description": "original"})
+	user := dbfx.User(t, "P1 removed member", "p1-fence-member@example.test")
+	member := dbfx.Member(t, testWorkspaceID, user, "member")
+	entered, resume := make(chan struct{}), make(chan struct{})
+	h := *testHandler
+	h.TxStarter = projectMemberFenceStarter{txStarter: h.TxStarter, entered: entered, resume: resume, once: &sync.Once{}}
+	req := withURLParam(newRequest("PUT", "/api/projects/"+id, map[string]any{"description": "revoked", "expected_description_revision": 1}), "id", id)
+	req.Header.Set("X-User-ID", user)
+	ctx, cancel := context.WithTimeout(req.Context(), 5*time.Second)
+	defer cancel()
+	req = req.WithContext(ctx)
+	done := make(chan int, 1)
+	go func() { done <- testutil.Call(t, h.UpdateProject, req).Code }()
+	select {
+	case <-entered:
+	case <-ctx.Done():
+		t.Fatal("writer never reached the revocation fence")
+	}
+	// The workspace locking read has already established the RR snapshot. A
+	// current membership locking read must reject this committed revocation.
+	dbfx.Exec(t, "DELETE FROM member WHERE id=$1", member)
+	close(resume)
+	if code := <-done; code != 403 {
+		t.Fatalf("revoked actor received HTTP %d", code)
+	}
+	var description string
+	dbfx.QueryRow(t, "SELECT description FROM project WHERE id=$1", id).Scan(&description)
+	if description != "original" {
+		t.Fatalf("revoked write committed %q", description)
 	}
 }

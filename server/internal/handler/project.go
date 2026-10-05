@@ -10,12 +10,14 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
 	"github.com/multica-ai/multica/server/internal/logger"
+	"github.com/multica-ai/multica/server/internal/projecthealth"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -37,12 +39,16 @@ type ProjectResponse struct {
 	LeadID                *string `json:"lead_id"`
 	// StartDate / DueDate are calendar days ("YYYY-MM-DD"), no time-of-day or
 	// timezone — same contract as issue.start_date / issue.due_date.
-	StartDate  *string `json:"start_date"`
-	DueDate    *string `json:"due_date"`
-	CreatedAt  string  `json:"created_at"`
-	UpdatedAt  string  `json:"updated_at"`
-	IssueCount int64   `json:"issue_count"`
-	DoneCount  int64   `json:"done_count"`
+	StartDate           *string `json:"start_date"`
+	DueDate             *string `json:"due_date"`
+	CreatedAt           string  `json:"created_at"`
+	UpdatedAt           string  `json:"updated_at"`
+	IssueCount          int64   `json:"issue_count"`
+	DoneCount           int64   `json:"done_count"`
+	CompletedIssueCount *int64  `json:"completed_issue_count,omitempty"`
+	CancelledIssueCount *int64  `json:"cancelled_issue_count,omitempty"`
+	OpenIssueCount      *int64  `json:"open_issue_count,omitempty"`
+	StatisticsComplete  bool    `json:"statistics_complete"`
 	// ResourceCount is a breadcrumb pointing at the sub-collection at
 	// /api/projects/{id}/resources. Resources themselves stay out of this
 	// payload to keep parent metadata and child collections separate; clients
@@ -50,6 +56,14 @@ type ProjectResponse struct {
 	ResourceCount   int64                   `json:"resource_count"`
 	ExecutionSquad  ProjectExecutionSquad   `json:"execution_squad"`
 	ExecutionSquads []ProjectExecutionSquad `json:"execution_squads"`
+}
+
+func projectTimestampToPtr(value pgtype.Timestamptz) *string {
+	if !value.Valid {
+		return nil
+	}
+	out := value.Time.UTC().Format(time.RFC3339Nano)
+	return &out
 }
 
 func projectToResponse(p db.Project) ProjectResponse {
@@ -65,7 +79,7 @@ func projectToResponse(p db.Project) ProjectResponse {
 	return ProjectResponse{
 		Revision:              p.Revision,
 		DescriptionRevision:   p.DescriptionRevision,
-		InProgressSince:       timestampToPtr(p.InProgressSince),
+		InProgressSince:       projectTimestampToPtr(p.InProgressSince),
 		InProgressSinceSource: textToPtr(p.InProgressSinceSource),
 		ID:                    uuidToString(p.ID),
 		WorkspaceID:           uuidToString(p.WorkspaceID),
@@ -83,6 +97,45 @@ func projectToResponse(p db.Project) ProjectResponse {
 		ExecutionSquad:        defaultSquad,
 		ExecutionSquads:       squads,
 	}
+}
+
+// collectProjectResponseCounts keeps each legacy response's new split counts in
+// one snapshot, batching project IDs so list/search never acquire an N+1 path.
+func (h *Handler) collectProjectResponseCounts(r *http.Request, workspaceID pgtype.UUID, projectIDs []pgtype.UUID) (map[string]projecthealth.Counts, map[string]bool) {
+	var counts map[string]projecthealth.Counts
+	var complete map[string]bool
+	if len(projectIDs) == 0 {
+		return counts, complete
+	}
+	actor, err := util.ParseUUID(requestUserID(r))
+	if err != nil {
+		return nil, nil
+	}
+	err = h.runProjectTransaction(r.Context(), workspaceID, actor, func(_ pgx.Tx, q *db.Queries) error {
+		var e error
+		counts, complete, e = projecthealth.CollectProjectCounts(r.Context(), q, workspaceID, projectIDs)
+		return e
+	})
+	if err != nil {
+		return nil, nil
+	}
+	return counts, complete
+}
+func applyProjectResponseCounts(resp *ProjectResponse, counts projecthealth.Counts, complete bool) {
+	resp.StatisticsComplete = complete
+	resp.CompletedIssueCount = counts.Completed
+	resp.CancelledIssueCount = counts.Cancelled
+	resp.OpenIssueCount = counts.Open
+	if counts.Total != nil {
+		resp.IssueCount = *counts.Total
+	}
+	if counts.Completed != nil && counts.Cancelled != nil {
+		resp.DoneCount = *counts.Completed + *counts.Cancelled
+	}
+}
+func (h *Handler) populateProjectResponseCounts(r *http.Request, resp *ProjectResponse) {
+	counts, complete := h.collectProjectResponseCounts(r, parseUUID(resp.WorkspaceID), []pgtype.UUID{parseUUID(resp.ID)})
+	applyProjectResponseCounts(resp, counts[resp.ID], complete[resp.ID])
 }
 
 func (h *Handler) loadProjectIssueStats(ctx context.Context, workspaceID, projectID pgtype.UUID) (int64, int64) {
@@ -224,6 +277,11 @@ func (h *Handler) ListProjects(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	projectIDs := make([]pgtype.UUID, len(projects))
+	for i, p := range projects {
+		projectIDs[i] = p.ID
+	}
+	p1Counts, p1Complete := h.collectProjectResponseCounts(r, wsUUID, projectIDs)
 	resp := make([]ProjectResponse, len(projects))
 	for i, p := range projects {
 		resp[i] = projectToResponse(p)
@@ -232,6 +290,7 @@ func (h *Handler) ListProjects(w http.ResponseWriter, r *http.Request) {
 			resp[i].DoneCount = s.DoneCount
 		}
 		resp[i].ResourceCount = resourceCountMap[resp[i].ID]
+		applyProjectResponseCounts(&resp[i], p1Counts[resp[i].ID], p1Complete[resp[i].ID])
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"projects": resp, "total": len(resp)})
 }
@@ -256,6 +315,7 @@ func (h *Handler) GetProject(w http.ResponseWriter, r *http.Request) {
 	}
 	resp := projectToResponse(project)
 	resp.IssueCount, resp.DoneCount = h.loadProjectIssueStats(r.Context(), wsUUID, project.ID)
+	h.populateProjectResponseCounts(r, &resp)
 	resp.ResourceCount = h.loadProjectResourceCount(r.Context(), project.ID)
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -369,6 +429,11 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		dueDate = d
 	}
 
+	if startDate.Valid && dueDate.Valid && startDate.Time.After(dueDate.Time) {
+		writeProjectAPIError(w, &projectAPIError{Status: 422, Code: "validation_failed", Message: "start_date must not be after due_date", FieldErrors: []map[string]string{{"field": "due_date", "message": "must be on or after start_date"}}})
+		return
+	}
+
 	// Pre-validate every resource payload before opening a transaction so an
 	// invalid ref produces a clean 400 with no DB work. For local_directory we
 	// also enforce one row per daemon_id within the batch — the daemon-side
@@ -456,6 +521,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		}
 		project = h.prepareCreatedProjectSquads(r.Context(), project, squadInputs)
 		resp := projectToResponse(project)
+		h.populateProjectResponseCounts(r, &resp)
 		h.publish(protocol.EventProjectCreated, workspaceID, "member", userID, map[string]any{"project": resp})
 		writeJSON(w, http.StatusCreated, resp)
 		return
@@ -517,6 +583,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 		resourceResp[i] = projectResourceToResponse(row)
 	}
 	resp := projectToResponse(project)
+	h.populateProjectResponseCounts(r, &resp)
 	resp.ResourceCount = int64(len(resourceResp))
 	h.publish(protocol.EventProjectCreated, workspaceID, "member", userID, map[string]any{"project": resp})
 	for _, rr := range resourceResp {
@@ -563,7 +630,14 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var rawFields map[string]json.RawMessage
-	json.Unmarshal(bodyBytes, &rawFields)
+	if err := json.Unmarshal(bodyBytes, &rawFields); err != nil || rawFields == nil {
+		writeProjectAPIError(w, projectErr(400, "invalid_request", "request body must be an object"))
+		return
+	}
+	if (req.ExpectedRevision != nil && *req.ExpectedRevision < 1) || (req.ExpectedDescriptionRevision != nil && *req.ExpectedDescriptionRevision < 1) {
+		writeProjectAPIError(w, projectErr(400, "invalid_request", "expected revisions must be positive"))
+		return
+	}
 
 	actorType, actorID := h.resolveActor(r, userID, workspaceID)
 	var project db.Project
@@ -703,86 +777,156 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
+		if isCheckViolation(err) {
+			h.writeProjectWriteError(w, r, err, "update")
+			return
+		}
 		writeProjectAPIError(w, err)
 		return
 	}
 	resp := projectToResponse(project)
 	resp.IssueCount, resp.DoneCount = h.loadProjectIssueStats(r.Context(), wsUUID, project.ID)
+	h.populateProjectResponseCounts(r, &resp)
 	resp.ResourceCount = h.loadProjectResourceCount(r.Context(), project.ID)
 	h.publish(protocol.EventProjectUpdated, workspaceID, actorType, actorID, map[string]any{"project": resp})
 	writeJSON(w, http.StatusOK, resp)
 }
 
-func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	workspaceID := h.resolveWorkspaceID(r)
-	idUUID, ok := parseUUIDOrBadRequest(w, id, "project id")
+type ProjectDeleteImpact struct {
+	WorkspaceID         string `json:"workspace_id"`
+	ProjectID           string `json:"project_id"`
+	ProjectRevision     int64  `json:"project_revision"`
+	IssueCount          int64  `json:"issue_count"`
+	FormalIssueCount    int64  `json:"formal_issue_count"`
+	ResourceCount       int64  `json:"resource_count"`
+	UpdateCount         int64  `json:"update_count"`
+	AutopilotCount      int64  `json:"autopilot_count"`
+	PreservesIssues     bool   `json:"preserves_issues"`
+	PreservesExecutions bool   `json:"preserves_executions"`
+}
+
+func (h *Handler) GetProjectDeleteImpact(w http.ResponseWriter, r *http.Request) {
+	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "project id")
 	if !ok {
 		return
 	}
-	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace id")
+	ws, ok := parseUUIDOrBadRequest(w, h.resolveWorkspaceID(r), "workspace id")
 	if !ok {
 		return
 	}
-	project, err := h.Queries.GetProjectInWorkspace(r.Context(), db.GetProjectInWorkspaceParams{
-		ID: idUUID, WorkspaceID: wsUUID,
+	actor, err := h.projectHumanActor(r, uuidToString(ws))
+	if err != nil {
+		writeProjectAPIError(w, err)
+		return
+	}
+	var out ProjectDeleteImpact
+	err = h.runProjectTransaction(r.Context(), ws, actor, func(_ pgx.Tx, q *db.Queries) error {
+		if err := requireProjectAdministrator(r.Context(), q, ws, actor); err != nil {
+			return err
+		}
+		if _, err := q.LockProjectForAssociation(r.Context(), db.LockProjectForAssociationParams{ID: id, WorkspaceID: ws}); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return projectErr(404, "project_not_found", "project not found")
+			}
+			return err
+		}
+		impact, err := q.GetProjectDeleteImpact(r.Context(), db.GetProjectDeleteImpactParams{ID: id, WorkspaceID: ws})
+		if err != nil {
+			return err
+		}
+		out = ProjectDeleteImpact{WorkspaceID: uuidToString(ws), ProjectID: uuidToString(id), ProjectRevision: impact.ProjectRevision, IssueCount: impact.IssueCount, FormalIssueCount: impact.FormalIssueCount, ResourceCount: impact.ResourceCount, UpdateCount: impact.UpdateCount, AutopilotCount: impact.AutopilotCount, PreservesIssues: true, PreservesExecutions: true}
+		return nil
 	})
 	if err != nil {
-		writeError(w, http.StatusNotFound, "project not found")
+		writeProjectAPIError(w, err)
 		return
 	}
-	requester, ok := h.requireWorkspaceRole(w, r, uuidToString(project.WorkspaceID), "project not found", "owner", "admin")
+	writeJSON(w, 200, out)
+}
+
+func requireProjectAdministrator(ctx context.Context, q *db.Queries, ws, actor pgtype.UUID) error {
+	member, err := q.GetMemberByUserAndWorkspace(ctx, db.GetMemberByUserAndWorkspaceParams{WorkspaceID: ws, UserID: actor})
+	if err != nil {
+		return err
+	}
+	if member.Role != "owner" && member.Role != "admin" {
+		return projectErr(403, "forbidden", "only owners and administrators may delete projects")
+	}
+	return nil
+}
+
+func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
+	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "project id")
 	if !ok {
 		return
 	}
-	userID := uuidToString(requester.UserID)
-	tx, err := h.TxStarter.Begin(r.Context())
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to start transaction")
+	ws, ok := parseUUIDOrBadRequest(w, h.resolveWorkspaceID(r), "workspace id")
+	if !ok {
 		return
 	}
-	defer tx.Rollback(r.Context())
-	qtx := h.Queries.WithTx(tx)
-
-	if _, err := qtx.LockProjectForDelete(r.Context(), db.LockProjectForDeleteParams{
-		ID:          project.ID,
-		WorkspaceID: project.WorkspaceID,
-	}); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			writeError(w, http.StatusNotFound, "project not found")
+	actor, err := h.projectHumanActor(r, uuidToString(ws))
+	if err != nil {
+		writeProjectAPIError(w, err)
+		return
+	}
+	var input struct {
+		ExpectedRevision *int64 `json:"expected_revision"`
+	}
+	if r.Body != nil {
+		if err := json.NewDecoder(r.Body).Decode(&input); err != nil && !errors.Is(err, io.EOF) {
+			writeProjectAPIError(w, projectErr(400, "invalid_request", "invalid request body"))
 			return
 		}
-		writeError(w, http.StatusInternalServerError, "failed to lock project")
+	}
+	err = h.runProjectDeleteTransaction(r.Context(), ws, actor, func(_ pgx.Tx, q *db.Queries) error {
+		if err := requireProjectAdministrator(r.Context(), q, ws, actor); err != nil {
+			return err
+		}
+		project, err := q.LockProjectForExecutionSquad(r.Context(), db.LockProjectForExecutionSquadParams{ID: id, WorkspaceID: ws})
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return projectErr(404, "project_not_found", "project not found")
+			}
+			return err
+		}
+		if input.ExpectedRevision != nil && *input.ExpectedRevision != project.Revision {
+			return &projectAPIError{Status: 409, Code: "project_revision_conflict", Message: "project changed since deletion preview", Current: projectToResponse(project)}
+		}
+		// Lock automation parents before triggers, matching every binding writer.
+		if _, err = q.LockProjectAutopilotsForDelete(r.Context(), db.LockProjectAutopilotsForDeleteParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DisableProjectAutopilotTriggers(r.Context(), db.DisableProjectAutopilotTriggersParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DetachProjectAutopilots(r.Context(), db.DetachProjectAutopilotsParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DetachProjectIssues(r.Context(), db.DetachProjectIssuesParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.ClearChatSessionProjectByProject(r.Context(), db.ClearChatSessionProjectByProjectParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DeleteIssueViewsByProjectScope(r.Context(), db.DeleteIssueViewsByProjectScopeParams{ScopeID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DeleteProjectResources(r.Context(), db.DeleteProjectResourcesParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DeleteProjectProgressInbox(r.Context(), db.DeleteProjectProgressInboxParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DeleteProjectProgress(r.Context(), db.DeleteProjectProgressParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		return q.DeleteProject(r.Context(), db.DeleteProjectParams{ID: id, WorkspaceID: ws})
+	})
+	if err != nil {
+		writeProjectAPIError(w, err)
 		return
 	}
-	if err := qtx.ClearChatSessionProjectByProject(r.Context(), db.ClearChatSessionProjectByProjectParams{
-		ProjectID:   project.ID,
-		WorkspaceID: project.WorkspaceID,
-	}); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to clear project chat context")
-		return
-	}
-	// Project-scoped saved views live on the project page; once the project
-	// is gone they are unreachable, so they go in the same transaction.
-	if err := qtx.DeleteIssueViewsByProjectScope(r.Context(), db.DeleteIssueViewsByProjectScopeParams{
-		WorkspaceID: project.WorkspaceID,
-		ScopeID:     project.ID,
-	}); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to delete project views")
-		return
-	}
-	if err := qtx.DeleteProject(r.Context(), db.DeleteProjectParams{
-		ID:          project.ID,
-		WorkspaceID: project.WorkspaceID,
-	}); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to delete project")
-		return
-	}
-	if err := tx.Commit(r.Context()); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to commit project delete")
-		return
-	}
-	h.publish(protocol.EventProjectDeleted, workspaceID, "member", userID, map[string]any{"project_id": uuidToString(project.ID)})
+	h.publish(protocol.EventProjectDeleted, uuidToString(ws), "member", uuidToString(actor), map[string]any{"project_id": uuidToString(id)})
 	w.WriteHeader(http.StatusNoContent)
 }
 
@@ -1057,6 +1201,11 @@ func (h *Handler) SearchProjects(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	projectIDs := make([]pgtype.UUID, len(results))
+	for i, row := range results {
+		projectIDs[i] = row.project.ID
+	}
+	p1Counts, p1Complete := h.collectProjectResponseCounts(r, wsUUID, projectIDs)
 	resp := make([]SearchProjectResponse, len(results))
 	for i, row := range results {
 		pr := projectToResponse(row.project)
@@ -1065,6 +1214,7 @@ func (h *Handler) SearchProjects(w http.ResponseWriter, r *http.Request) {
 			pr.DoneCount = s.DoneCount
 		}
 		pr.ResourceCount = resourceCountMap[pr.ID]
+		applyProjectResponseCounts(&pr, p1Counts[pr.ID], p1Complete[pr.ID])
 		spr := SearchProjectResponse{
 			ProjectResponse: pr,
 			MatchSource:     row.matchSource,

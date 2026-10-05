@@ -27,10 +27,12 @@ WHERE id = $1 AND workspace_id = $2;
 -- name: CreateProjectResource :one
 -- Serialize the whole resource set with an execution fingerprint's FOR SHARE
 -- project lock. Consume the materialized owner before inserting the child.
-WITH project_fence AS MATERIALIZED (
-    SELECT p.id, p.workspace_id FROM project p
+WITH workspace_fence AS MATERIALIZED (
+ SELECT w.id FROM workspace w WHERE w.id=sqlc.arg(workspace_id) FOR KEY SHARE OF w
+), project_fence AS MATERIALIZED (
+    SELECT p.id, p.workspace_id FROM project p JOIN workspace_fence w ON w.id=p.workspace_id
     WHERE p.id = sqlc.arg(project_id) AND p.workspace_id = sqlc.arg(workspace_id)
-    FOR NO KEY UPDATE
+    FOR NO KEY UPDATE OF p
 )
 INSERT INTO project_resource (
     project_id, workspace_id, resource_type, resource_ref, label, position, created_by
@@ -40,8 +42,10 @@ FROM project_fence
 RETURNING *;
 
 -- name: UpdateProjectResource :one
-WITH project_fence AS MATERIALIZED (
-    SELECT p.id FROM project p
+WITH workspace_fence AS MATERIALIZED (
+ SELECT w.id FROM workspace w JOIN project_resource r ON r.workspace_id=w.id WHERE r.id=$1 FOR KEY SHARE OF w
+), project_fence AS MATERIALIZED (
+    SELECT p.id FROM project p JOIN workspace_fence w ON w.id=p.workspace_id
     JOIN project_resource r ON r.project_id = p.id AND r.workspace_id = p.workspace_id
     WHERE r.id = $1
     FOR NO KEY UPDATE OF p
@@ -54,8 +58,10 @@ WHERE project_resource.id = $1 AND project_resource.project_id IN (SELECT projec
 RETURNING *;
 
 -- name: DeleteProjectResource :exec
-WITH project_fence AS MATERIALIZED (
-    SELECT p.id FROM project p
+WITH workspace_fence AS MATERIALIZED (
+ SELECT w.id FROM workspace w JOIN project_resource r ON r.workspace_id=w.id WHERE r.id=$1 FOR KEY SHARE OF w
+), project_fence AS MATERIALIZED (
+    SELECT p.id FROM project p JOIN workspace_fence w ON w.id=p.workspace_id
     JOIN project_resource r ON r.project_id = p.id AND r.workspace_id = p.workspace_id
     WHERE r.id = $1
     FOR NO KEY UPDATE OF p

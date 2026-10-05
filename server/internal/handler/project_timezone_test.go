@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"github.com/multica-ai/multica/server/internal/featureflags"
 	"github.com/multica-ai/multica/server/internal/testutil"
+	"github.com/multica-ai/multica/server/pkg/featureflag"
 	"testing"
 )
 
@@ -63,4 +65,20 @@ func TestProjectCapabilitiesRequiresCurrentMembership(t *testing.T) {
 	req = withURLParam(newRequest("GET", "/api/workspaces/"+testWorkspaceID+"/project-capabilities", nil), "id", testWorkspaceID)
 	req.Header.Set("X-User-ID", outsider)
 	testutil.Call(t, testHandler.GetProjectCapabilities, req).Want(403)
+}
+
+func TestProjectCapabilitiesReadOnlyRollbackKeepsCASAndTimezone(t *testing.T) {
+	h := *testHandler
+	provider := featureflag.NewStaticProvider()
+	provider.Set(featureflags.ProjectsP1, featureflag.Rule{Default: false})
+	h.FeatureFlags = featureflag.NewService(provider)
+	var out map[string]any
+	req := withURLParam(newRequest("GET", "/api/workspaces/"+testWorkspaceID+"/project-capabilities", nil), "id", testWorkspaceID)
+	testutil.Call(t, h.GetProjectCapabilities, req).Want(200).JSON(&out)
+	if out["overview"] != false || out["updates"] != false || out["description_cas"] != true || out["planning_timezone"] != true {
+		t.Fatalf("rollback capabilities: %v", out)
+	}
+	id := dbfx.Project(t, "rollback description", testutil.Cols{"description": "original"})
+	testutil.Call(t, h.UpdateProject, withURLParam(newRequest("PUT", "/api/projects/"+id, map[string]any{"description": "unversioned"}), "id", id)).Want(428)
+	testutil.Call(t, h.GetProject, withURLParam(newRequest("GET", "/api/projects/"+id, nil), "id", id)).Want(200)
 }

@@ -72,8 +72,20 @@ func retryableProjectTransaction(err error) bool {
 // The callback may run again only after the entire prior transaction rolls back;
 // it must not publish events or perform external effects before this returns.
 func (h *Handler) runProjectTransaction(ctx context.Context, workspaceID, actorID pgtype.UUID, fn func(pgx.Tx, *db.Queries) error) error {
+	return h.runProjectTransactionAtIsolation(ctx, workspaceID, actorID, pgx.RepeatableRead, fn)
+}
+
+// Deletion waits for association writers before sweeping their children. A
+// snapshot taken before that wait can miss a child whose creator held only a
+// shared project lock (and therefore never changed the project tuple version).
+// READ COMMITTED sees every such committed child after the exclusive lock is
+// acquired; the lock prevents any later association from entering the sweep.
+func (h *Handler) runProjectDeleteTransaction(ctx context.Context, workspaceID, actorID pgtype.UUID, fn func(pgx.Tx, *db.Queries) error) error {
+	return h.runProjectTransactionAtIsolation(ctx, workspaceID, actorID, pgx.ReadCommitted, fn)
+}
+func (h *Handler) runProjectTransactionAtIsolation(ctx context.Context, workspaceID, actorID pgtype.UUID, isolation pgx.TxIsoLevel, fn func(pgx.Tx, *db.Queries) error) error {
 	for attempt := 0; attempt < 3; attempt++ {
-		err := h.projectTransactionOnce(ctx, workspaceID, actorID, fn)
+		err := h.projectTransactionOnce(ctx, workspaceID, actorID, isolation, fn)
 		if !retryableProjectTransaction(err) {
 			return err
 		}
@@ -94,13 +106,17 @@ func (h *Handler) runProjectTransaction(ctx context.Context, workspaceID, actorI
 	}
 	return projectErr(503, "project_write_retry_exhausted", "project operation conflicted; retry the same request")
 }
-func (h *Handler) projectTransactionOnce(ctx context.Context, workspaceID, actorID pgtype.UUID, fn func(pgx.Tx, *db.Queries) error) error {
+func (h *Handler) projectTransactionOnce(ctx context.Context, workspaceID, actorID pgtype.UUID, isolation pgx.TxIsoLevel, fn func(pgx.Tx, *db.Queries) error) error {
 	tx, err := h.TxStarter.Begin(ctx)
 	if err != nil {
 		return err
 	}
 	defer tx.Rollback(ctx)
-	if _, err = tx.Exec(ctx, "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ WRITE"); err != nil {
+	isolationSQL := "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ WRITE"
+	if isolation == pgx.ReadCommitted {
+		isolationSQL = "SET TRANSACTION ISOLATION LEVEL READ COMMITTED, READ WRITE"
+	}
+	if _, err = tx.Exec(ctx, isolationSQL); err != nil {
 		return err
 	}
 	q := h.Queries.WithTx(tx)

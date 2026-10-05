@@ -51,8 +51,11 @@ const (
 	EventInboxBatchArchived = "inbox:batch-archived"
 
 	// Workspace events
-	EventWorkspaceUpdated = "workspace:updated"
-	EventWorkspaceDeleted = "workspace:deleted"
+	EventWorkspaceUpdated               = "workspace:updated"
+	EventProjectUpdatePublished         = "project:update_published"
+	EventProjectUpdateCorrected         = "project:update_corrected"
+	EventProjectPlanningTimezoneChanged = "project:planning_timezone_changed"
+	EventWorkspaceDeleted               = "workspace:deleted"
 
 	// Member events
 	EventMemberAdded   = "member:added"

@@ -23,10 +23,12 @@ func (q *Queries) CountProjectResources(ctx context.Context, projectID pgtype.UU
 }
 
 const createProjectResource = `-- name: CreateProjectResource :one
-WITH project_fence AS MATERIALIZED (
-    SELECT p.id, p.workspace_id FROM project p
-    WHERE p.id = $6 AND p.workspace_id = $7
-    FOR NO KEY UPDATE
+WITH workspace_fence AS MATERIALIZED (
+ SELECT w.id FROM workspace w WHERE w.id=$6 FOR KEY SHARE OF w
+), project_fence AS MATERIALIZED (
+    SELECT p.id, p.workspace_id FROM project p JOIN workspace_fence w ON w.id=p.workspace_id
+    WHERE p.id = $7 AND p.workspace_id = $6
+    FOR NO KEY UPDATE OF p
 )
 INSERT INTO project_resource (
     project_id, workspace_id, resource_type, resource_ref, label, position, created_by
@@ -42,8 +44,8 @@ type CreateProjectResourceParams struct {
 	Label        pgtype.Text `json:"label"`
 	Position     int32       `json:"position"`
 	CreatedBy    pgtype.UUID `json:"created_by"`
-	ProjectID    pgtype.UUID `json:"project_id"`
 	WorkspaceID  pgtype.UUID `json:"workspace_id"`
+	ProjectID    pgtype.UUID `json:"project_id"`
 }
 
 // Serialize the whole resource set with an execution fingerprint's FOR SHARE
@@ -55,8 +57,8 @@ func (q *Queries) CreateProjectResource(ctx context.Context, arg CreateProjectRe
 		arg.Label,
 		arg.Position,
 		arg.CreatedBy,
-		arg.ProjectID,
 		arg.WorkspaceID,
+		arg.ProjectID,
 	)
 	var i ProjectResource
 	err := row.Scan(
@@ -74,8 +76,10 @@ func (q *Queries) CreateProjectResource(ctx context.Context, arg CreateProjectRe
 }
 
 const deleteProjectResource = `-- name: DeleteProjectResource :exec
-WITH project_fence AS MATERIALIZED (
-    SELECT p.id FROM project p
+WITH workspace_fence AS MATERIALIZED (
+ SELECT w.id FROM workspace w JOIN project_resource r ON r.workspace_id=w.id WHERE r.id=$1 FOR KEY SHARE OF w
+), project_fence AS MATERIALIZED (
+    SELECT p.id FROM project p JOIN workspace_fence w ON w.id=p.workspace_id
     JOIN project_resource r ON r.project_id = p.id AND r.workspace_id = p.workspace_id
     WHERE r.id = $1
     FOR NO KEY UPDATE OF p
@@ -287,8 +291,10 @@ func (q *Queries) ListProjectResourcesInWorkspace(ctx context.Context, arg ListP
 }
 
 const updateProjectResource = `-- name: UpdateProjectResource :one
-WITH project_fence AS MATERIALIZED (
-    SELECT p.id FROM project p
+WITH workspace_fence AS MATERIALIZED (
+ SELECT w.id FROM workspace w JOIN project_resource r ON r.workspace_id=w.id WHERE r.id=$1 FOR KEY SHARE OF w
+), project_fence AS MATERIALIZED (
+    SELECT p.id FROM project p JOIN workspace_fence w ON w.id=p.workspace_id
     JOIN project_resource r ON r.project_id = p.id AND r.workspace_id = p.workspace_id
     WHERE r.id = $1
     FOR NO KEY UPDATE OF p

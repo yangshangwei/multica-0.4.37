@@ -326,6 +326,7 @@ func (h *Handler) configureProjectSquadsResponse(w http.ResponseWriter, r *http.
 	}
 	resp := projectToResponse(project)
 	resp.IssueCount, resp.DoneCount = h.loadProjectIssueStats(r.Context(), workspaceID, projectID)
+	h.populateProjectResponseCounts(r, &resp)
 	resp.ResourceCount = h.loadProjectResourceCount(r.Context(), projectID)
 	h.publish(protocol.EventProjectUpdated, uuidToString(workspaceID), inputs[0].ActorType, inputs[0].ActorID, map[string]any{"project": resp})
 	writeJSON(w, http.StatusOK, resp)
@@ -338,6 +339,9 @@ func (h *Handler) configureProjectSquads(ctx context.Context, projectID, workspa
 	}
 	defer tx.Rollback(ctx)
 	qtx := h.Queries.WithTx(tx)
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, workspaceID); err != nil {
+		return db.Project{}, nil, err
+	}
 	project, err := qtx.LockProjectForExecutionSquad(ctx, db.LockProjectForExecutionSquadParams{ID: projectID, WorkspaceID: workspaceID})
 	if err != nil {
 		return db.Project{}, nil, err

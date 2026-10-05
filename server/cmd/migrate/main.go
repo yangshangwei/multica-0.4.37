@@ -120,6 +120,19 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"537_project_state_change_id":                               "project_state_change_id",
+	"538_project_state_change_revision":                         "project_state_change_revision",
+	"539_project_update_id":                                     "project_update_id",
+	"540_project_update_timeline":                               "project_update_timeline",
+	"541_project_update_revision_id":                            "project_update_revision_id",
+	"542_project_update_revision_version":                       "project_update_revision_version",
+	"543_project_update_request_identity":                       "project_update_request_identity",
+	"544_project_update_notification_id":                        "project_update_notification_id",
+	"545_project_update_notification_recipient":                 "project_update_notification_recipient",
+	"546_project_update_notification_pending":                   "project_update_notification_pending",
+	"547_project_update_request_project":                        "project_update_request_project",
+	"548_project_update_revision_project":                       "project_update_revision_project",
+	"549_project_update_notification_project":                   "project_update_notification_project",
 	"514_triage_settings_workspace":                             "triage_settings_workspace",
 	"515_issue_triage_issue":                                    "issue_triage_issue",
 	"516_triage_intake_identity":                                "triage_intake_identity",

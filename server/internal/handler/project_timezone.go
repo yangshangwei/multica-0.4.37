@@ -9,6 +9,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/featureflags"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -52,7 +53,7 @@ func (h *Handler) GetProjectCapabilities(w http.ResponseWriter, r *http.Request)
 		writeProjectAPIError(w, err)
 		return
 	}
-	writeJSON(w, 200, map[string]any{"workspace_id": uuidToString(ws), "schema_version": 1, "overview": false, "updates": false, "description_cas": true, "planning_timezone": true})
+	writeJSON(w, 200, map[string]any{"workspace_id": uuidToString(ws), "schema_version": 1, "overview": h.FeatureFlags.IsEnabled(r.Context(), featureflags.ProjectsP1, true), "updates": h.FeatureFlags.IsEnabled(r.Context(), featureflags.ProjectsP1, true), "description_cas": true, "planning_timezone": true})
 }
 func (h *Handler) GetProjectPlanningTimezone(w http.ResponseWriter, r *http.Request) {
 	ws, actor, err := h.projectWorkspaceScope(r)
@@ -125,6 +126,6 @@ func (h *Handler) UpdateProjectPlanningTimezone(w http.ResponseWriter, r *http.R
 		writeProjectAPIError(w, err)
 		return
 	}
-	h.publish(protocol.EventWorkspaceUpdated, uuidToString(ws), "member", uuidToString(actor), map[string]any{"workspace_id": uuidToString(ws), "planning_timezone": out.PlanningTimezone})
+	h.publish(protocol.EventProjectPlanningTimezoneChanged, uuidToString(ws), "member", uuidToString(actor), map[string]any{"workspace_id": uuidToString(ws), "planning_timezone": out.PlanningTimezone})
 	writeJSON(w, 200, out)
 }
