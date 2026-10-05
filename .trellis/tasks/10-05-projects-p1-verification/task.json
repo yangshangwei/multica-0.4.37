@@ -61,11 +61,11 @@
     },
     "implementation_authorized": true,
     "dependency_semantics": "depends_on表示整任务完成前置；执行按preparation/start/integration gates核对，用户已授权实施P1。",
-    "verification_commit": "21f263796",
+    "verification_commit": "a21f9201f",
     "delivery": {
       "branch": "codex/projects-p1",
       "product_commit": "31534d844",
-      "tests_commit": "21f263796",
+      "tests_commit": "a21f9201f",
       "pushed": false,
       "merged_to_main": false,
       "production_deployed": false,
@@ -86,7 +86,8 @@
       "skipped": 0,
       "duration_ms": 137887.057,
       "matrix": ".trellis/tasks/10-05-projects-p1-verification/e2e-case-matrix.md",
-      "verification": ".trellis/tasks/10-05-projects-p1-verification/e2e-expansion-verification.md"
+      "verification": ".trellis/tasks/10-05-projects-p1-verification/e2e-expansion-verification.md",
+      "commit": "a21f9201f"
     }
   }
 }

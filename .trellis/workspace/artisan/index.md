@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 44
+- **Total Sessions**: 45
 - **Last Active**: 2026-10-06
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1428 | Active |
+| `journal-1.md` | ~1457 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 45 | 2026-10-06 | P1 用例细化：61 条独立端到端验证 | `a21f9201f` | `codex/projects-p1` |
 | 44 | 2026-10-06 | P1 项目增强实施与最终验收完成 | `31534d844`, `21f263796`, `7855d3fa0` | `codex/projects-p1` |
 | 43 | 2026-10-05 | 完成分拣台 T1 人工审核闭环 | `b0cda446a`, `36bc06c23`, `62cb06a0c` | `codex/triage-t1` |
 | 42 | 2026-10-05 | 后台管理功能提交与 Trellis 归档 | `ae5f246ed`, `18aeab212` | `main` |

@@ -1426,3 +1426,32 @@ Implemented server-directory MCP deployment catalog, source-aware persistence an
 ### Next Steps
 
 - I1真实迭代归属/历史另行实施；合并与生产部署属于后续交付动作。
+
+
+## Session 45: P1 用例细化：61 条独立端到端验证
+
+**Date**: 2026-10-06
+**Task**: P1 用例细化：61 条独立端到端验证
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+按用户要求将8个复合E2E拆成61条独立用例，25条拆分/保留原覆盖，36条新增/强化边界。中文矩阵逐条列出前置、操作、预期和AC/FR。产品源码与依赖不变。
+
+### Main Changes
+
+- 保留完整30样本收敛测量为单一测试；恢复中文Electron历史覆盖，成员用独立context；关闭测试服务与当前任务指针。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a21f9201f` | (see git log) |
+
+### Testing
+
+- [OK] 严格TypeScript通过；首轮57/61发现4处测试定位/响应假设，修正与审查7/7通过；最终61/61、137.9秒、0重试/跳过；278链接和测试/证据hash校验通过。
+
+### Status
+
+[OK] **Completed**
