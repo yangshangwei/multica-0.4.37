@@ -1,9 +1,13 @@
 package main
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"slices"
+	"strings"
 	"testing"
 
+	"github.com/go-chi/cors"
 	"github.com/multica-ai/multica/server/internal/handler"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -46,5 +50,40 @@ func TestCORSExposedHeaders_IncludeTruncationSignals(t *testing.T) {
 		if !slices.Contains(corsExposedHeaders, want) {
 			t.Errorf("%s missing from CORS exposed headers: %v", want, corsExposedHeaders)
 		}
+	}
+}
+
+// Password forms use Retry-After to disable resubmission. A wire header alone
+// is insufficient: cross-origin browser fetch hides it unless CORS exposes it.
+func TestCORSExposesPasswordRetryAfter(t *testing.T) {
+	const origin = "https://app.example.test"
+	for _, status := range []int{http.StatusTooManyRequests, http.StatusServiceUnavailable} {
+		t.Run(http.StatusText(status), func(t *testing.T) {
+			h := cors.Handler(cors.Options{
+				AllowedOrigins:   []string{origin},
+				ExposedHeaders:   corsExposedHeaders,
+				AllowCredentials: true,
+			})(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Retry-After", "3")
+				w.WriteHeader(status)
+			}))
+			req := httptest.NewRequest(http.MethodPost, "https://api.example.test/auth/login", nil)
+			req.Header.Set("Origin", origin)
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			if rec.Code != status || rec.Header().Get("Retry-After") != "3" {
+				t.Fatalf("cooldown response changed: status=%d retry-after=%q", rec.Code, rec.Header().Get("Retry-After"))
+			}
+			if got := rec.Header().Get("Access-Control-Allow-Origin"); got != origin {
+				t.Fatalf("allowed origin=%q, want %q", got, origin)
+			}
+			exposed := strings.Join(rec.Header().Values("Access-Control-Expose-Headers"), ",")
+			for _, header := range strings.Split(exposed, ",") {
+				if strings.EqualFold(strings.TrimSpace(header), "Retry-After") {
+					return
+				}
+			}
+			t.Fatalf("browser cannot read Retry-After; exposed response headers: %q", exposed)
+		})
 	}
 }

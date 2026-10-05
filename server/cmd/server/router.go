@@ -95,6 +95,7 @@ var corsAllowedHeaders = []string{
 var corsExposedHeaders = []string{
 	"ETag",
 	"X-Request-ID",
+	"Retry-After",
 	handler.HeaderCommentsTruncated,
 	handler.HeaderTimelineTruncated,
 }
