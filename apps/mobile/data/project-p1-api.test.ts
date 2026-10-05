@@ -38,6 +38,39 @@ beforeEach(() => {
 afterEach(() => { vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("mobile project response contract", () => {
+  it("clears workspace caches for the middleware access-denied 404 shape", async () => {
+    const qc = new QueryClient();
+    const key = ["projects", oldProject.workspace_id, "detail", projectId];
+    qc.setQueryData(key, modernProject);
+    const stop = observeProjectAccess(qc);
+    try {
+      respond({ error: "workspace not found", code: "workspace_access_denied" }, 404);
+      await expect(api.getProject(projectId)).rejects.toMatchObject({ status: 404, body: { error: "workspace not found", code: "workspace_access_denied" } });
+      expect(qc.getQueryData(key)).toBeUndefined();
+      expect(isProjectAccessDenied(oldProject.workspace_id)).toBe(true);
+    } finally { stop(); }
+  });
+  it("does not downgrade a workspace access-denied 404 to unsupported capabilities", async () => {
+    respond({ error: "workspace not found", code: "workspace_access_denied" }, 404);
+    await expect(api.getProjectCapabilities()).rejects.toMatchObject({ status: 404, body: { code: "workspace_access_denied" } });
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+  it("rejects a late successful HTTP read after an access-denied 404", async () => {
+    let resolve!: (value: Response) => void;
+    fetchMock.mockReturnValueOnce(new Promise((next) => { resolve = next; }));
+    const pending = api.getProject(projectId);
+    respond({ error: "workspace not found", code: "workspace_access_denied" }, 404);
+    await expect(api.listProjects()).rejects.toMatchObject({ status: 404 });
+    resolve(new Response(JSON.stringify(modernProject)));
+    await expect(pending).rejects.toMatchObject({ status: 403 });
+  });
+  it.each(["project_not_found", "project_update_not_found", undefined])("does not revoke the workspace for ordinary resource 404 %s", async (code) => {
+    const epoch = projectAccessEpoch(oldProject.workspace_id);
+    respond(code ? { code } : {}, 404);
+    await expect(api.getProject(projectId)).rejects.toMatchObject({ status: 404 });
+    expect(isProjectAccessDenied(oldProject.workspace_id)).toBe(false);
+    expect(projectAccessEpoch(oldProject.workspace_id)).toBe(epoch);
+  });
   it.each(["project_permission_denied", "project_evidence_forbidden", "project_updates_disabled"])("preserves readable workspace after operation-level 403 %s", async (code) => {
     const qc = new QueryClient();
     const key = ["projects", oldProject.workspace_id, "detail", projectId];

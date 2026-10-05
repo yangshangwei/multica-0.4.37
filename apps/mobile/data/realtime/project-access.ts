@@ -49,12 +49,16 @@ export function observeProjectAccess(qc: QueryClient) {
 export function isProjectAccessError(error: unknown): boolean {
   if (typeof error !== "object" || error === null || !("status" in error)) return false;
   if (error.status === 401) return true;
-  if (error.status !== 403) return false;
   // ApiError preserves the server code in body. Losing permission for an
   // operation or one evidence source does not revoke workspace membership.
   // Mirrors core/projects/access without importing the Web hook/store layer.
   const body = "body" in error ? error.body : undefined;
   const code = typeof body === "object" && body !== null && "code" in body ? body.code : undefined;
+  // Workspace middleware intentionally uses 404 for missing and inaccessible
+  // workspaces alike. Only its explicit code proves scope access was lost;
+  // project/source 404 responses retain their normal resource semantics.
+  if (error.status === 404) return code === "workspace_access_denied";
+  if (error.status !== 403) return false;
   return code !== "project_permission_denied" && code !== "project_evidence_forbidden" && code !== "project_updates_disabled";
 }
 

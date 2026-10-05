@@ -1028,7 +1028,7 @@ class ApiClient {
     try {
       raw = await this.fetchProject<unknown>(`/api/workspaces/${workspaceId}/project-capabilities`, workspaceId, { signal: opts?.signal });
     } catch (error) {
-      if (!(error instanceof ApiError) || error.status !== 404) throw error;
+      if (!(error instanceof ApiError) || error.status !== 404 || isProjectAccessError(error)) throw error;
       const rawWorkspace = await this.fetchProject<unknown>(`/api/workspaces/${workspaceId}`, workspaceId, { signal: opts?.signal });
       const workspace = parseWithFallback<Workspace | null>(rawWorkspace, WorkspaceSchema, null, { endpoint: "GET workspace for project capabilities" });
       if (!workspace || workspace.id !== workspaceId) throw new Error("Invalid workspace identity");

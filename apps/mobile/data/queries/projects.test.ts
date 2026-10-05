@@ -6,6 +6,26 @@ import { allowProjectAccess, projectAccessEpoch } from "../realtime/project-acce
 vi.mock("@/data/api", () => ({ api: { listProjects: vi.fn(), getProject: vi.fn() } }));
 afterEach(() => vi.clearAllMocks());
 describe("mobile project queries", () => {
+  it("clears cached workspace data and blocks a late read after middleware 404 revocation", async () => {
+    const wsId = "middleware-revoked";
+    allowProjectAccess(wsId);
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    qc.setQueryData(projectKeys.resources(wsId, "project"), [{ label: "secret" }]);
+    qc.setQueryData(projectKeys.detail("other", "other-project"), { title: "visible" });
+    let resolve!: (project: Awaited<ReturnType<typeof api.getProject>>) => void;
+    vi.mocked(api.getProject).mockReturnValueOnce(new Promise((next) => { resolve = next; }));
+    const pending = qc.fetchQuery(projectDetailOptions(wsId, "project"));
+    const rejected = expect(pending).rejects.toThrow();
+    vi.mocked(api.listProjects).mockRejectedValueOnce(Object.assign(new Error("workspace not found"), {
+      status: 404, body: { error: "workspace not found", code: "workspace_access_denied" },
+    }));
+    await expect(qc.fetchQuery(projectListOptions(wsId))).rejects.toThrow();
+    expect(qc.getQueryData(projectKeys.resources(wsId, "project"))).toBeUndefined();
+    resolve({ id: "project", workspace_id: wsId, description: "secret" } as never);
+    await rejected;
+    expect(qc.getQueryData(projectKeys.detail(wsId, "project"))).toBeUndefined();
+    expect(qc.getQueryData(projectKeys.detail("other", "other-project"))).toEqual({ title: "visible" });
+  });
   it.each(["project_permission_denied", "project_evidence_forbidden", "project_updates_disabled"])("preserves readable caches for operation/source 403 %s", async (code) => {
     const wsId = `operation-${code}`;
     allowProjectAccess(wsId);

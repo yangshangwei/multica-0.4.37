@@ -138,3 +138,33 @@ exit 0 with 0 errors and the same 7 baseline warnings; **27 files / 178 tests
 passed** and iOS wrapper shell assertions passed. `git diff --check --
 apps/mobile` passed. Logs: `/tmp/p1-mobile-403-{red,green,typecheck,lint,test}.log`.
 Only mobile data guards, their tests, and this evidence report changed.
+
+## Follow-up: workspace middleware's concealed 404 access refusal
+
+Workspace middleware intentionally uses HTTP 404 with `error: "workspace not
+found"` for missing and inaccessible workspaces alike. The parent backend
+patch adds the stable `code: "workspace_access_denied"` without changing that
+concealment contract. Mobile now classifies **only that explicit 404 code** as
+workspace access loss. `project_not_found`, `project_update_not_found` and
+uncategorized resource 404 responses retain their existing resource-level
+behavior. The prior three operation-level 403 exceptions remain unchanged.
+
+The API parser preserves the original status and body. Its access-loss guard
+clears protected queries and advances the workspace epoch, so a delayed
+successful project response cannot restore data. Query-level coverage verifies
+the same behavior when WS revocation delivery is absent, including preservation
+of another workspace's cache. Capability discovery immediately propagates this
+scope-level 404; it cannot interpret the refusal as an old backend without P1
+support or issue an additional workspace probe.
+
+Tests use the middleware response shape `{error: "workspace not found", code:
+"workspace_access_denied"}` at the real mobile API boundary. Before the fix,
+the focused API/Query suite had **4 failures / 36 passes** (uncleared caches,
+accepted late response and mistaken capability fallback); after the fix all
+**40 focused tests passed**. The backend middleware change itself is owned by
+the parent and is not asserted to have been executed by this mobile suite.
+
+Full independent mobile checks on 2026-10-05 at 20:22 Asia/Shanghai: typecheck
+exit 0; lint exit 0 with the same 7 baseline warnings; **27 files / 185 tests
+passed**, plus iOS wrapper shell assertions. `git diff --check -- apps/mobile`
+passed. Logs: `/tmp/p1-mobile-404-{red,green,typecheck,lint,test}.log`.
