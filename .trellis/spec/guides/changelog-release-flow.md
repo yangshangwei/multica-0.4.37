@@ -114,6 +114,17 @@ stable-release badge.
   version and backup, and reports that container/database rollback was not
   performed; never describe this as an atomic deployment transaction.
 
+## Authentication instructions in upgrade deliveries
+
+For every offline server package or desktop installer handoff, review the
+authentication section of `docs/offline-upgrade.zh-CN.md` and retain it in the
+delivered upgrade instructions. The upgrade wrapper copies that source into
+both `README.md` and `操作文档.md`; verify the packaged bytes match the source.
+Desktop-only deliveries must include the instructions separately. Record
+whether the existing authentication mode is preserved or an explicit legacy
+account migration is planned. Device and password modes are mutually exclusive;
+never describe a password deployment's return to device login as routine rollback.
+
 ## Canonical evidence
 
 - `server/internal/changelog/feed_test.go`: schema, stale fallback, isolation,

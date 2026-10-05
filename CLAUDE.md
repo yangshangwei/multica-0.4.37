@@ -252,6 +252,7 @@ Do not claim verification passed unless you ran it. If you skip checks because t
 - Commits should be atomic and use conventional prefixes: `feat(scope)`, `fix(scope)`, `refactor(scope)`, `docs`, `test(scope)`, `chore(scope)`.
 - A production deployment requires a CLI release tag on `main`: create `v0.x.x`, push it, and let `release.yml` publish binaries and the Homebrew tap.
 - Bump patch by default unless the user specifies a version.
+- Before packaging an offline server upgrade or handing off desktop installers, review the authentication configuration and migration section in `docs/offline-upgrade.zh-CN.md` and the checklist in `docs/desktop-intranet-update-runbook.zh-CN.md`. Keep device/password mode selection, account migration, and verification instructions in the delivered upgrade guide. `scripts/build-offline-upgrade.sh` copies the server guide into both `README.md` and `操作文档.md`; verify those packaged copies. Upgrades preserve the deployment's authentication mode unless a separate migration is planned.
 
 ## Domain Reminders
 

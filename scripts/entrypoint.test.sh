@@ -30,12 +30,14 @@ SCRIPT
 
 cat >"$TEST_DIR/server" <<'SCRIPT'
 #!/bin/sh
+printf 'server\n' >>"$STARTUP_ORDER_FILE"
 printf 'started\n' >"$SERVER_STARTED_FILE"
 printf '%s\n' "$MULTICA_INTERNAL_DATABASE_STARTUP_STARTED_AT_UNIX" >"$SERVER_STARTED_AT_FILE"
 SCRIPT
 
 chmod +x "$TEST_DIR/entrypoint.sh" "$TEST_DIR/migrate" "$TEST_DIR/server"
 
+export STARTUP_ORDER_FILE="$TEST_DIR/startup.order"
 export MIGRATE_PID_FILE="$TEST_DIR/migrate.pid"
 export MIGRATE_SIGNAL_FILE="$TEST_DIR/migrate.signal"
 export MIGRATE_STARTED_AT_FILE="$TEST_DIR/migrate.started-at"
@@ -79,8 +81,22 @@ if [ -e "$SERVER_STARTED_FILE" ]; then
   exit 1
 fi
 
+# A failed migration must preserve its exit status and never launch the API.
 cat >"$TEST_DIR/migrate" <<'SCRIPT'
 #!/bin/sh
+exit 42
+SCRIPT
+chmod +x "$TEST_DIR/migrate"
+status=0
+(cd "$TEST_DIR" && ./entrypoint.sh) || status=$?
+if [ "$status" -ne 42 ] || [ -e "$SERVER_STARTED_FILE" ]; then
+  echo "entrypoint must stop before server startup when migrations fail"
+  exit 1
+fi
+
+cat >"$TEST_DIR/migrate" <<'SCRIPT'
+#!/bin/sh
+printf 'migrate\n' >>"$STARTUP_ORDER_FILE"
 printf '%s\n' "$MULTICA_INTERNAL_DATABASE_STARTUP_STARTED_AT_UNIX" >"$MIGRATE_STARTED_AT_FILE"
 exit 0
 SCRIPT
@@ -106,4 +122,12 @@ case "$started_at" in
     ;;
 esac
 
-echo "entrypoint startup and signal forwarding ok"
+# Restarts must run the migrator again, before the server, even after success.
+(cd "$TEST_DIR" && ./entrypoint.sh)
+expected_order="$(printf 'migrate\nserver\nmigrate\nserver')"
+if [ "$(cat "$STARTUP_ORDER_FILE")" != "$expected_order" ]; then
+  echo "entrypoint did not run migrations before the server on every start"
+  exit 1
+fi
+
+echo "entrypoint migration ordering, failure blocking, restart and signal forwarding ok"
