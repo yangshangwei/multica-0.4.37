@@ -1,6 +1,8 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Project } from "@multica/core/types";
 import projectInboxFixture from "./project-update-inbox.fixture.json";
+import { QueryClient } from "@tanstack/react-query";
+import { allowProjectAccess, isProjectAccessDenied, observeProjectAccess, onProjectAccessDenied, projectAccessEpoch } from "./realtime/project-access";
 
 const workspace = vi.hoisted(() => ({ currentWorkspaceId: "11111111-1111-4111-8111-111111111111", currentWorkspaceSlug: "first" }));
 vi.mock("./workspace-store", () => ({
@@ -26,6 +28,7 @@ beforeAll(async () => {
 beforeEach(() => {
   workspace.currentWorkspaceId = oldProject.workspace_id;
   workspace.currentWorkspaceSlug = "first";
+  allowProjectAccess(oldProject.workspace_id);
   fetchMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);
   vi.spyOn(console, "log").mockImplementation(() => {});
@@ -35,6 +38,44 @@ beforeEach(() => {
 afterEach(() => { vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("mobile project response contract", () => {
+  it.each(["project_permission_denied", "project_evidence_forbidden", "project_updates_disabled"])("preserves readable workspace after operation-level 403 %s", async (code) => {
+    const qc = new QueryClient();
+    const key = ["projects", oldProject.workspace_id, "detail", projectId];
+    qc.setQueryData(key, modernProject);
+    const stop = observeProjectAccess(qc);
+    const navigate = vi.fn();
+    const stopNavigate = onProjectAccessDenied(navigate);
+    const epoch = projectAccessEpoch(oldProject.workspace_id);
+    try {
+      respond({ code, message: "Operation denied" }, 403);
+      await expect(api.deleteProject(projectId)).rejects.toMatchObject({ status: 403, body: { code } });
+      expect(qc.getQueryData(key)).toEqual(modernProject);
+      expect(projectAccessEpoch(oldProject.workspace_id)).toBe(epoch);
+      expect(isProjectAccessDenied(oldProject.workspace_id)).toBe(false);
+      expect(navigate).not.toHaveBeenCalled();
+    } finally { stop(); stopNavigate(); }
+  });
+  it.each(["forbidden", undefined])("still revokes protected data for a scope 403 (%s)", async (code) => {
+    const qc = new QueryClient();
+    const key = ["projects", oldProject.workspace_id, "detail", projectId];
+    qc.setQueryData(key, modernProject);
+    const stop = observeProjectAccess(qc);
+    try {
+      respond(code ? { code } : {}, 403);
+      await expect(api.getProject(projectId)).rejects.toMatchObject({ status: 403 });
+      expect(qc.getQueryData(key)).toBeUndefined();
+      expect(isProjectAccessDenied(oldProject.workspace_id)).toBe(true);
+    } finally { stop(); }
+  });
+  it("does not cancel a readable in-flight project after an operation denial", async () => {
+    let resolve!: (value: Response) => void;
+    fetchMock.mockReturnValueOnce(new Promise((next) => { resolve = next; }));
+    const read = api.getProject(projectId);
+    respond({ code: "project_permission_denied" }, 403);
+    await expect(api.deleteProject(projectId)).rejects.toMatchObject({ status: 403 });
+    resolve(new Response(JSON.stringify(modernProject)));
+    await expect(read).resolves.toMatchObject({ id: projectId, description: "Goal" });
+  });
   it("keeps existing and P1 notifications through the real mobile inbox API parser", async () => {
     const broken = projectInboxFixture.map((item) => item.type === "project_update"
       ? { ...item, details: { ...item.details, revision: 1 } } : item);

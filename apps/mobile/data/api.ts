@@ -122,7 +122,7 @@ import {
 import type { ZodType } from "zod";
 import { getCurrentSlug, useWorkspaceStore } from "./workspace-store";
 import { ProjectCapabilitiesSchema } from "@multica/core/api/project-p1-schemas";
-import { allowProjectAccess, markProjectAccessDenied, projectAccessEpoch } from "./realtime/project-access";
+import { allowProjectAccess, isProjectAccessError, markProjectAccessDenied, projectAccessEpoch } from "./realtime/project-access";
 import { parseWithFallback } from "@/lib/parse-response";
 import { createRequestId } from "@/lib/request-id";
 import { buildCommentUpdateBody } from "./revision";
@@ -920,7 +920,7 @@ class ApiClient {
       }
       return value;
     } catch (error) {
-      if (error instanceof ApiError && (error.status === 401 || error.status === 403)) markProjectAccessDenied(workspaceId, error.status);
+      if (error instanceof ApiError && isProjectAccessError(error)) markProjectAccessDenied(workspaceId, error.status === 401 ? 401 : 403);
       if (error instanceof ApiError && error.status === 428) {
         throw new ApiError("Description editing requires a version-aware client. Use Web or Desktop; your text has not been saved.", 428, error.body);
       }

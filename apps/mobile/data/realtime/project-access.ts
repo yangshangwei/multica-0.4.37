@@ -47,8 +47,15 @@ export function observeProjectAccess(qc: QueryClient) {
 }
 
 export function isProjectAccessError(error: unknown): boolean {
-  return typeof error === "object" && error !== null && "status" in error &&
-    (error.status === 401 || error.status === 403);
+  if (typeof error !== "object" || error === null || !("status" in error)) return false;
+  if (error.status === 401) return true;
+  if (error.status !== 403) return false;
+  // ApiError preserves the server code in body. Losing permission for an
+  // operation or one evidence source does not revoke workspace membership.
+  // Mirrors core/projects/access without importing the Web hook/store layer.
+  const body = "body" in error ? error.body : undefined;
+  const code = typeof body === "object" && body !== null && "code" in body ? body.code : undefined;
+  return code !== "project_permission_denied" && code !== "project_evidence_forbidden" && code !== "project_updates_disabled";
 }
 
 export async function protectProjectQuery<T>(qc: QueryClient, workspaceId: string | null, read: () => Promise<T>): Promise<T> {

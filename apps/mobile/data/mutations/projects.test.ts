@@ -29,6 +29,15 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 describe("mobile project mutation compatibility", () => {
+  it.each(["project_permission_denied", "project_evidence_forbidden", "project_updates_disabled"])("keeps readable data and caller input after an operation 403 %s", async (code) => {
+    useUpdateProject(project.id);
+    const options = state.options as Options;
+    const input = { description: "my unsaved text", expected_description_revision: 1 };
+    const context = await options.onMutate!(input, mutationContext);
+    await options.onError?.(Object.assign(new Error("denied"), { status: 403, body: { code } }), input, context, mutationContext);
+    expect(state.qc?.getQueryData(projectKeys.detail(project.workspace_id, project.id))).toEqual(project);
+    expect(input).toEqual({ description: "my unsaved text", expected_description_revision: 1 });
+  });
   it("retains old cache until versioned description/status writes succeed", async () => {
     useUpdateProject(project.id);
     const options = state.options as Options;

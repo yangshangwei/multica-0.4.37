@@ -1,11 +1,20 @@
 import { QueryClient } from "@tanstack/react-query";
 import { describe, expect, it, vi } from "vitest";
-import { markProjectAccessDenied, observeProjectAccess, onProjectAccessDenied, protectProjectQuery, revokeProjectAccess } from "./project-access";
+import { isProjectAccessError, markProjectAccessDenied, observeProjectAccess, onProjectAccessDenied, protectProjectQuery, revokeProjectAccess } from "./project-access";
 import { patchProjectDetail } from "./project-ws-updaters";
 import { projectKeys } from "../queries/projects";
 vi.mock("@/data/api", () => ({ api: {} }));
 
 describe("mobile project access boundary", () => {
+  it("always treats 401 as auth loss and fails closed for unknown/malformed 403 codes", () => {
+    for (const code of ["project_permission_denied", "project_evidence_forbidden", "project_updates_disabled"]) {
+      expect(isProjectAccessError({ status: 401, body: { code } })).toBe(true);
+    }
+    for (const body of [{ code: "forbidden" }, { code: "future_scope_denial" }, { code: 42 }, {}, null]) {
+      expect(isProjectAccessError({ status: 403, body })).toBe(true);
+    }
+    expect(isProjectAccessError({ status: 409, body: { code: "forbidden" } })).toBe(false);
+  });
   it("uses one navigation responder for concurrent 403 failures", () => {
     const navigate = vi.fn();
     const stop = onProjectAccessDenied(navigate);

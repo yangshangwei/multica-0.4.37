@@ -102,3 +102,39 @@ wrapper shell assertions. `git diff --check -- apps/mobile` passed. Logs:
 The core owner was informed of the missing shared `project_update` inbox type
 and the existing mobile access-epoch behavior. This follow-up does not change
 core/backend code or roll back the mobile late-response guard.
+
+## Follow-up: distinguish operation denial from workspace access loss
+
+The backend now freezes three operation/source-level 403 codes:
+`project_permission_denied`, `project_evidence_forbidden`, and
+`project_updates_disabled`. They do not mean that a current member has lost
+permission to read the workspace. For example, an administrator downgraded to
+member may no longer delete a project while retaining ordinary read access.
+
+The mobile `ApiError` already retains the complete decoded error payload in
+`body`; no new error wrapper or lossy code mapping is needed. Both the project
+HTTP boundary and Query/mutation guard now use the same mobile-owned
+`isProjectAccessError` classification on `body.code`. The three known
+operation/source refusals propagate as errors, preserve readable caches and
+local input, leave the access epoch unchanged, and do not navigate away. They
+do not report successful writes. Mobile has no P1 evidence editor/cache to
+retain or clear separately.
+
+**401 still always revokes authentication**, irrespective of code. A scope
+403 with `forbidden`, no code, malformed code or an unknown code still clears
+protected workspace data and blocks late responses. Existing access-loss
+tests remain in place; this is not a broad relaxation of 403 handling.
+
+TDD evidence: the new API/Query/mutation tests first produced **9 failures and
+30 passes**, showing the three operation codes wrongly cleared readable data
+and replaced original Query errors with cancellation. After the shared mobile
+classification was corrected, those **39 focused tests passed**. Further
+coverage verifies that an operation refusal does not invalidate a concurrent
+authorized project read, that 401 takes precedence over operation codes, and
+that unknown/malformed scope errors fail closed.
+
+Full mobile checks at 2026-10-05 19:27 Asia/Shanghai: typecheck exit 0; lint
+exit 0 with 0 errors and the same 7 baseline warnings; **27 files / 178 tests
+passed** and iOS wrapper shell assertions passed. `git diff --check --
+apps/mobile` passed. Logs: `/tmp/p1-mobile-403-{red,green,typecheck,lint,test}.log`.
+Only mobile data guards, their tests, and this evidence report changed.
