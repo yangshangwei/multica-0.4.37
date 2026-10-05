@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -179,6 +181,8 @@ func init() {
 	// project update
 	projectUpdateCmd.Flags().String("title", "", "New title")
 	projectUpdateCmd.Flags().String("description", "", "New description")
+	projectUpdateCmd.Flags().Int64("expected-description-revision", 0, "Description revision you read (1–9007199254740991; requires --description)")
+	projectUpdateCmd.Flags().Int64("expected-revision", 0, "Project revision you read (1–9007199254740991; requires an update field)")
 	projectUpdateCmd.Flags().String("status", "", "New status")
 	projectUpdateCmd.Flags().String("icon", "", "New icon (icon:<lucide-name>; legacy emoji accepted)")
 	projectUpdateCmd.Flags().String("lead", "", "New lead name (member or agent)")
@@ -387,6 +391,22 @@ func runProjectCreate(cmd *cobra.Command, _ []string) error {
 }
 
 func runProjectUpdate(cmd *cobra.Command, args []string) error {
+	const maxSafeRevision int64 = 1<<53 - 1
+	revisions := map[string]int64{}
+	for _, name := range []string{"expected-description-revision", "expected-revision"} {
+		if !cmd.Flags().Changed(name) {
+			continue
+		}
+		value, err := cmd.Flags().GetInt64(name)
+		if err != nil || value < 1 || value > maxSafeRevision {
+			return fmt.Errorf("--%s must be a positive integer between 1 and %d", name, maxSafeRevision)
+		}
+		revisions[strings.ReplaceAll(name, "-", "_")] = value
+	}
+	if cmd.Flags().Changed("expected-description-revision") && !cmd.Flags().Changed("description") {
+		return fmt.Errorf("--expected-description-revision requires --description")
+	}
+
 	client, err := newAPIClient(cmd)
 	if err != nil {
 		return err
@@ -444,9 +464,20 @@ func runProjectUpdate(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("no fields to update; use flags like --title, --status, --description, --icon, --lead, --start-date, --due-date")
 	}
 
+	// Versions are preconditions, not update fields. Never refresh them from
+	// the server: only the caller knows which content they actually reviewed.
+	for name, value := range revisions {
+		body[name] = value
+	}
+
 	var result map[string]any
 	if err := client.PutJSON(ctx, "/api/projects/"+projectRef.ID, body, &result); err != nil {
-		return fmt.Errorf("update project: %w", err)
+		wrapped := fmt.Errorf("update project: %w", err)
+		var apiErr *cli.HTTPError
+		if errors.As(err, &apiErr) && apiErr.StatusCode == http.StatusPreconditionRequired {
+			return cli.WithUserMessage(fmt.Sprintf("Project description edit rejected (HTTP 428): read and review `multica project get %s --output json`, then pass its description_revision with --expected-description-revision.", projectRef.ID), wrapped)
+		}
+		return wrapped
 	}
 
 	output, _ := cmd.Flags().GetString("output")

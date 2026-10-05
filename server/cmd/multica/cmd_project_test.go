@@ -1,9 +1,15 @@
 package main
 
 import (
+	"encoding/json"
+	"errors"
+	"net/http"
+	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
 
+	"github.com/multica-ai/multica/server/internal/cli"
 	"github.com/spf13/cobra"
 )
 
@@ -384,4 +390,198 @@ func TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode(t *testing.T) {
 			t.Errorf("expected execution_mode cleared, got %v", ref["execution_mode"])
 		}
 	})
+}
+
+func newProjectUpdateRevisionTestCmd() *cobra.Command {
+	cmd := &cobra.Command{Use: "update", RunE: runProjectUpdate, Args: exactArgs(1), SilenceUsage: true, SilenceErrors: true}
+	addCommonProfileFlags(cmd)
+	for _, name := range []string{"title", "description", "status", "icon", "lead", "start-date", "due-date"} {
+		cmd.Flags().String(name, "", "")
+	}
+	cmd.Flags().Int64("expected-description-revision", 0, "")
+	cmd.Flags().Int64("expected-revision", 0, "")
+	cmd.Flags().String("output", "json", "")
+	return cmd
+}
+
+func TestProjectUpdateRevisionFlagsRegistered(t *testing.T) {
+	for _, name := range []string{"expected-description-revision", "expected-revision"} {
+		flag := projectUpdateCmd.Flags().Lookup(name)
+		if flag == nil || flag.Value.Type() != "int64" {
+			t.Errorf("project update must expose int64 --%s", name)
+		}
+	}
+}
+
+func TestRunProjectUpdateExplicitRevisions(t *testing.T) {
+	const projectID = "11111111-1111-4111-8111-111111111111"
+	for _, tc := range []struct {
+		name  string
+		flags []string
+		want  map[string]string
+	}{
+		{"description with both versions", []string{"--description", "Reviewed text", "--expected-description-revision", "4", "--expected-revision", "9"}, map[string]string{"description": `"Reviewed text"`, "expected_description_revision": "4", "expected_revision": "9"}},
+		{"clear description", []string{"--description=", "--expected-description-revision", "2"}, map[string]string{"description": `""`, "expected_description_revision": "2"}},
+		{"legacy description", []string{"--description", "Old client edit"}, map[string]string{"description": `"Old client edit"`}},
+		{"other fields unchanged", []string{"--title", "Renamed", "--status", "paused", "--start-date", "2026-10-05", "--due-date=", "--expected-revision", "7"}, map[string]string{"title": `"Renamed"`, "status": `"paused"`, "start_date": `"2026-10-05"`, "due_date": `""`, "expected_revision": "7"}},
+		{"safe maximum", []string{"--description", "Boundary", "--expected-description-revision", "9007199254740991", "--expected-revision", "9007199254740991"}, map[string]string{"description": `"Boundary"`, "expected_description_revision": "9007199254740991", "expected_revision": "9007199254740991"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Chdir(t.TempDir())
+			var requests []string
+			var body map[string]json.RawMessage
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				requests = append(requests, r.Method+" "+r.URL.Path)
+				if r.Method != http.MethodPut || r.URL.Path != "/api/projects/"+projectID {
+					w.WriteHeader(500)
+					return
+				}
+				if e := json.NewDecoder(r.Body).Decode(&body); e != nil {
+					t.Errorf("decode update: %v", e)
+				}
+				w.Header().Set("Content-Type", "application/json")
+				_, _ = w.Write([]byte(`{"id":"` + projectID + `"}`))
+			}))
+			defer server.Close()
+			setCLITestServerEnv(t, server.URL)
+			cmd := newProjectUpdateRevisionTestCmd()
+			cmd.SetArgs(append([]string{projectID}, tc.flags...))
+			if _, err := captureStdout(t, cmd.Execute); err != nil {
+				t.Fatal(err)
+			}
+			if len(requests) != 1 || requests[0] != "PUT /api/projects/"+projectID {
+				t.Fatalf("must send one update with no version GET: %v", requests)
+			}
+			if len(body) != len(tc.want) {
+				t.Fatalf("body has unexpected keys: %s", body)
+			}
+			for key, want := range tc.want {
+				if string(body[key]) != want {
+					t.Errorf("body[%s]=%s, want %s", key, body[key], want)
+				}
+			}
+		})
+	}
+}
+
+func TestRunProjectUpdateRejectsInvalidRevisionFlags(t *testing.T) {
+	t.Chdir(t.TempDir())
+	var requests int
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { requests++; w.WriteHeader(500) }))
+	defer server.Close()
+	setCLITestServerEnv(t, server.URL)
+	for _, name := range []string{"expected-description-revision", "expected-revision"} {
+		for _, value := range []string{"0", "-1", "9007199254740992", "9223372036854775807", "9223372036854775808", "1.5", "abc", ""} {
+			t.Run(name+"/"+value, func(t *testing.T) {
+				cmd := newProjectUpdateRevisionTestCmd()
+				cmd.SetArgs([]string{"11111111-1111-4111-8111-111111111111", "--description", "edit", "--" + name + "=" + value})
+				err := cmd.Execute()
+				if err == nil || !strings.Contains(err.Error(), name) {
+					t.Fatalf("invalid --%s=%q should report usage: %v", name, value, err)
+				}
+			})
+		}
+	}
+	for _, tc := range []struct {
+		args    []string
+		message string
+	}{
+		{[]string{"--expected-description-revision=1"}, "--description"},
+		{[]string{"--title=rename", "--expected-description-revision=1"}, "--description"},
+		{[]string{"--expected-revision=1"}, "no fields to update"},
+	} {
+		cmd := newProjectUpdateRevisionTestCmd()
+		cmd.SetArgs(append([]string{"11111111-1111-4111-8111-111111111111"}, tc.args...))
+		err := cmd.Execute()
+		if err == nil || !strings.Contains(err.Error(), tc.message) {
+			t.Errorf("flags %v: %v", tc.args, err)
+		}
+	}
+	if requests != 0 {
+		t.Fatalf("local revision usage errors made %d requests", requests)
+	}
+}
+
+func TestRunProjectUpdateConflictDoesNotRefreshOrRetry(t *testing.T) {
+	const projectID = "11111111-1111-4111-8111-111111111111"
+	for _, status := range []int{http.StatusBadRequest, http.StatusConflict, http.StatusPreconditionRequired} {
+		t.Run(strconv.Itoa(status), func(t *testing.T) {
+			t.Chdir(t.TempDir())
+			requests := 0
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				requests++
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(status)
+				_, _ = w.Write([]byte(`{"error":"read the project description revision before editing","code":"description_revision_required","current":{"description_revision":42}}`))
+			}))
+			defer server.Close()
+			setCLITestServerEnv(t, server.URL)
+			cmd := newProjectUpdateRevisionTestCmd()
+			args := []string{projectID, "--description", "Attempt"}
+			if status != http.StatusPreconditionRequired {
+				args = append(args, "--expected-description-revision=2")
+			}
+			cmd.SetArgs(args)
+			out, err := captureStdout(t, cmd.Execute)
+			var apiErr *cli.HTTPError
+			if !errors.As(err, &apiErr) || apiErr.StatusCode != status {
+				t.Fatalf("must preserve HTTP %d: %v", status, err)
+			}
+			if requests != 1 || out != "" {
+				t.Fatalf("rejected update refreshed, retried or printed success: %d requests, %q", requests, out)
+			}
+			if status == http.StatusPreconditionRequired && !strings.Contains(cli.FormatError(err, false), "--expected-description-revision") {
+				t.Fatalf("428 must explain the missing revision in normal CLI output: %s", cli.FormatError(err, false))
+			}
+
+		})
+	}
+}
+
+func TestRunProjectUpdatePrefixResolutionDoesNotSupplyVersions(t *testing.T) {
+	const projectID = "11111111-1111-4111-8111-111111111111"
+	for _, explicit := range []bool{false, true} {
+		t.Run(strconv.FormatBool(explicit), func(t *testing.T) {
+			t.Chdir(t.TempDir())
+			var requests []string
+			var body map[string]json.RawMessage
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				requests = append(requests, r.Method+" "+r.URL.Path)
+				w.Header().Set("Content-Type", "application/json")
+				if r.Method == http.MethodGet && r.URL.Path == "/api/projects" {
+					_, _ = w.Write([]byte(`{"projects":[{"id":"` + projectID + `","title":"Project","description_revision":42,"revision":99}]}`))
+					return
+				}
+				if r.Method == http.MethodPut && r.URL.Path == "/api/projects/"+projectID {
+					_ = json.NewDecoder(r.Body).Decode(&body)
+					_, _ = w.Write([]byte(`{"id":"` + projectID + `"}`))
+					return
+				}
+				w.WriteHeader(500)
+			}))
+			defer server.Close()
+			setCLITestServerEnv(t, server.URL)
+			cmd := newProjectUpdateRevisionTestCmd()
+			args := []string{"11111111", "--description", "Reviewed separately"}
+			if explicit {
+				args = append(args, "--expected-description-revision=3", "--expected-revision=7")
+			}
+			cmd.SetArgs(args)
+			if _, err := captureStdout(t, cmd.Execute); err != nil {
+				t.Fatal(err)
+			}
+			if len(requests) != 2 || requests[0] != "GET /api/projects" || requests[1] != "PUT /api/projects/"+projectID {
+				t.Fatalf("unexpected lookup/retry: %v", requests)
+			}
+			if explicit {
+				if string(body["expected_description_revision"]) != "3" || string(body["expected_revision"]) != "7" {
+					t.Fatalf("replaced caller versions with lookup result: %s", body)
+				}
+			} else if _, ok := body["expected_description_revision"]; ok {
+				t.Fatalf("invented description token from lookup: %s", body)
+			} else if _, ok := body["expected_revision"]; ok {
+				t.Fatalf("invented project token from lookup: %s", body)
+			}
+		})
+	}
 }
