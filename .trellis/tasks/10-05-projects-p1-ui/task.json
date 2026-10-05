@@ -1,0 +1,60 @@
+{
+  "id": "projects-p1-ui",
+  "name": "projects-p1-ui",
+  "title": "项目 P1：共享概览与编辑体验",
+  "description": "规划 core/views 及 Web/Desktop 接线、模板、风险下钻、进展编辑和旧端兼容",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "projects",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-05",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-05-projects-p1",
+  "relatedFiles": [
+    "docs/plans/2026-10-04-work-management-prds/projects-prd.md"
+  ],
+  "notes": "2026-10-05 技术方案与拆分经 Architect→Critic 顺序复审通过。任务保持 planning；本轮仅完成规划，产品未实施、产品测试未执行。启动/完成遵循父 implement.md 的阶段门槛。",
+  "meta": {
+    "planning_status": "reviewed",
+    "depends_on": [],
+    "requirement_ids": [
+      "PRJ-001",
+      "PRJ-002",
+      "PRJ-003",
+      "PRJ-004",
+      "PRJ-006",
+      "PRJ-007",
+      "PRJ-008",
+      "PRJ-009",
+      "PRJ-010",
+      "PRJ-013",
+      "PRJ-014"
+    ],
+    "preparation_gates": [
+      "API合同已评审，可先准备mock契约"
+    ],
+    "start_gates": [
+      "FG；可在API开发期间进行UI实现"
+    ],
+    "integration_gates": [
+      "HG + PG + UG；真实接口及全部平台验证通过"
+    ],
+    "gate_evidence": "父implement.md §1；里程碑必须在verification.md记录commit/命令/结果",
+    "shared_contract": ".trellis/tasks/10-05-projects-p1/api-contract.md",
+    "implementation_status": "not_started",
+    "plan_reviews": {
+      "architect": ".trellis/tasks/10-05-projects-p1/research/architect-review-2.md",
+      "critic": ".trellis/tasks/10-05-projects-p1/research/critic-review-2.md"
+    }
+  }
+}

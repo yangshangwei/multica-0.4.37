@@ -1,0 +1,51 @@
+{
+  "id": "projects-p1",
+  "name": "projects-p1",
+  "title": "项目增强 P1：目标、健康与进展管理",
+  "description": "基于现有项目与 T1 正式任务准入契约，完成 P1 技术设计、开发拆分及验收计划；本阶段不实施产品代码。",
+  "status": "planning",
+  "dev_type": "fullstack",
+  "scope": "projects",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-05",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "10-05-projects-p1-foundation",
+    "10-05-projects-p1-health",
+    "10-05-projects-p1-progress",
+    "10-05-projects-p1-ui",
+    "10-05-projects-p1-verification"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    "docs/plans/2026-10-04-work-management-prds/projects-prd.md",
+    "docs/plans/2026-10-04-work-management-prds/README.md"
+  ],
+  "notes": "2026-10-05 技术方案与拆分经 Architect→Critic 顺序复审通过。任务保持 planning；本轮仅完成规划，产品未实施、产品测试未执行。启动/完成遵循父 implement.md 的阶段门槛。",
+  "meta": {
+    "planning_status": "reviewed",
+    "planned_branch": "codex/projects-p1",
+    "source_commit": "4920b0d1ba02ffc5b69ce401346bd6e4a808178b",
+    "gate_definitions": {
+      "FG": "foundation基础schema/迁移、锁/事务/DTO及局部测试就绪；不代表foundation整任务结束",
+      "HG": "health真实API、事务采集函数及canonical测试就绪",
+      "PG": "progress真实API和outbox就绪",
+      "UG": "Web/Desktop及承诺的mobile兼容真实集成完成"
+    },
+    "dependency_semantics": "depends_on仅表示整个任务完成的启动前置；preparation/start/integration_gates分别核对，禁止忽略里程碑。当前无产品实施授权。",
+    "implementation_status": "not_started",
+    "plan_reviews": {
+      "architect": ".trellis/tasks/10-05-projects-p1/research/architect-review-2.md",
+      "critic": ".trellis/tasks/10-05-projects-p1/research/critic-review-2.md"
+    }
+  }
+}
