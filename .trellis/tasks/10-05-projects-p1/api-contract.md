@@ -15,6 +15,7 @@ JSON 使用 snake_case。UUID为标准小写带连字符文本；timestamp为UTC
 | `GET P/health/issues` | 200 `RiskPage`；signal/limit/cursor/version见§2 |
 | `GET P/updates` | 200 `{workspace_id,project_id,items:ProjectUpdate[],next_cursor:string|null}` |
 | `GET P/updates/{update_id}/revisions` | 200 `{workspace_id,project_id,update_id,items:UpdateRevision[],next_cursor:string|null}` |
+| `GET P/updates/{update_id}/revisions/{revision}/executions/{task_id}` | 200 `{workspace_id,project_id,update_id,revision,task:AgentTask,messages:TaskMessagePayload[]}`；实际执行与消息供既有执行记录对话框读取 |
 | `POST P/updates/preview` | 200 `UpdatePreview`，无发布/通知写入 |
 | `POST P/updates` | 首次201、重放200 `UpdateWriteResult` |
 | `PUT P/updates/{update_id}` | 更正首次/重放均200 `UpdateWriteResult` |
@@ -96,6 +97,8 @@ EvidenceView = {input:EvidenceInput,observed_version:EvidenceVersion,collected_a
 | url | 保留规范HTTP/HTTPS URL，无内容版本；不加入fetch时间 | 仅安全协议/URL检查，不抓取或宣称验证；外部内容变化无法自动识别，UI显示未验证 |
 
 证据收集、正式提交及每次读取历史独立授权。提交使用成员fence与locking membership read；来源实体/agent/会话/适用allowlist行在同一RR事务中`FOR SHARE NOWAIT`锁定再判定，变更/删除导致40001或55P03整笔重试，避免RR旧授权冒充当前授权；锁按kind/id排序。无法找到适用授权行时拒绝，不通过缺行推断已授权。读取历史不返回无权来源label/href/current_version，只有原身份/采集时刻与inaccessible；所属workspace撤权则整条记录拒绝，不能用历史快照绕过。
+
+2026-10-05 集成审查补充：内部 issue/execution 证据的 `href=null`，客户端依据 `input.kind/id` 与记录的工作空间身份导航；issue 使用既有工作空间路径，execution 使用上表只读执行证据端点并复用现有执行记录对话框。只有外部 URL 证据提供 HTTP(S) href。执行端点要求指定修订确实引用该执行，在同一 RR 事务重新校验项目、当前成员、private-agent/allowlist 或 chat creator 权限后返回真实任务及消息；未引用／父身份不匹配返回404，当前无权返回403。客户端严格核对 workspace/project/update/revision/task 身份及消息结构。此补充不新增任务页面，不复用仅验证工作空间的旧消息读取接口扩大证据权限。
 
 ## 5. Preview、提交与canonical hash
 

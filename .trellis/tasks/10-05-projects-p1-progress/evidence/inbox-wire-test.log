@@ -1,0 +1,7 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/10/05 17:34:15 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestProjectUpdateInboxDetailsRemainStringValues
+    project_update_notifications_test.go:63: PROJECT_UPDATE_INBOX_FIXTURE [{"id":"01a10b69-f3d8-7d36-af7c-3a56ae0182b6","workspace_id":"bbac4c22-ba8d-4929-b1c5-0a9eb636f758","recipient_type":"member","recipient_id":"a4ac9931-3d40-4fba-bf11-5b3846b26e36","type":"project_update","severity":"info","issue_id":null,"title":"Project update — Progress contract","body":"","read":false,"archived":false,"created_at":"2026-10-05T17:34:15+08:00","issue_status":null,"issue_priority":null,"actor_type":"member","actor_id":"e50820e4-6219-4c7b-823d-524540c917af","details":{"revision":"1","update_id":"01a10b69-f3d6-7d3e-b726-2279c57eabe6","project_id":"cf6666e8-1009-4596-bb4f-5a6322c9050b"}},{"id":"a4271cdb-e46e-41be-969c-62864c7e33a4","workspace_id":"bbac4c22-ba8d-4929-b1c5-0a9eb636f758","recipient_type":"member","recipient_id":"a4ac9931-3d40-4fba-bf11-5b3846b26e36","type":"status_changed","severity":"info","issue_id":null,"title":"Existing notification","body":null,"read":false,"archived":false,"created_at":"2026-10-05T17:34:15+08:00","issue_status":null,"issue_priority":null,"actor_type":null,"actor_id":null,"details":{"status":"done"}}]
+--- PASS: TestProjectUpdateInboxDetailsRemainStringValues (0.04s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	0.954s

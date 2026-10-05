@@ -348,8 +348,6 @@ func projectUpdateEvidence(ctx context.Context, q *db.Queries, ws, actor pgtype.
 		}
 		v.ObservedVersion = ProjectEvidenceVersion{Kind: "issue", ID: *input.ID, Revision: issue.Revision}
 		v.Label = &issue.Title
-		href := "/issues/" + *input.ID
-		v.Href = &href
 	case "execution":
 		task, e := q.LockProjectUpdateEvidenceExecution(ctx, db.LockProjectUpdateEvidenceExecutionParams{ID: parseUUID(*input.ID), WorkspaceID: ws})
 		if e != nil {
@@ -399,9 +397,7 @@ func projectUpdateEvidence(ctx context.Context, q *db.Queries, ws, actor pgtype.
 		}
 		v.ObservedVersion = ProjectEvidenceVersion{Kind: "execution", ID: *input.ID, StateVersion: task.StateVersion, ResultDigest: digest}
 		label := "Execution " + *input.ID
-		href := "/tasks/" + *input.ID
 		v.Label = &label
-		v.Href = &href
 	default:
 		return v, projectUpdateValidation("evidence", "invalid evidence kind")
 	}
@@ -947,4 +943,98 @@ func (h *Handler) ListProjectUpdateRevisions(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	writeJSON(w, 200, map[string]any{"workspace_id": uuidToString(ws), "project_id": uuidToString(pid), "update_id": uuidToString(id), "items": items, "next_cursor": next})
+}
+
+// ProjectUpdateExecutionEvidence supplies a real execution to the existing
+// transcript dialog. Internal evidence navigation is a typed identity, not a
+// fabricated task page or an unscoped browser URL.
+type ProjectUpdateExecutionEvidence struct {
+	WorkspaceID string                        `json:"workspace_id"`
+	ProjectID   string                        `json:"project_id"`
+	UpdateID    string                        `json:"update_id"`
+	Revision    int64                         `json:"revision"`
+	Task        AgentTaskResponse             `json:"task"`
+	Messages    []protocol.TaskMessagePayload `json:"messages"`
+}
+
+func (h *Handler) GetProjectUpdateExecutionEvidence(w http.ResponseWriter, r *http.Request) {
+	ws, pid, actor, err := h.projectUpdateScope(r, false)
+	if err != nil {
+		writeProjectAPIError(w, err)
+		return
+	}
+	updateID, err := util.ParseUUID(chi.URLParam(r, "updateId"))
+	if err != nil {
+		writeProjectAPIError(w, projectErr(400, "invalid_request", "invalid update id"))
+		return
+	}
+	taskID, err := util.ParseUUID(chi.URLParam(r, "taskId"))
+	if err != nil {
+		writeProjectAPIError(w, projectErr(400, "invalid_request", "invalid execution id"))
+		return
+	}
+	revision, err := strconv.ParseInt(chi.URLParam(r, "revision"), 10, 64)
+	if err != nil || revision < 1 || revision > 9007199254740991 {
+		writeProjectAPIError(w, projectErr(400, "invalid_request", "invalid update revision"))
+		return
+	}
+	out := ProjectUpdateExecutionEvidence{WorkspaceID: uuidToString(ws), ProjectID: uuidToString(pid), UpdateID: uuidToString(updateID), Revision: revision, Messages: []protocol.TaskMessagePayload{}}
+	err = h.runProjectTransaction(r.Context(), ws, actor, func(_ pgx.Tx, q *db.Queries) error {
+		if _, e := projectUpdateProject(r.Context(), q, ws, pid, false); e != nil {
+			return e
+		}
+		if _, e := q.GetProjectUpdate(r.Context(), db.GetProjectUpdateParams{ID: updateID, WorkspaceID: ws, ProjectID: pid}); e != nil {
+			if errors.Is(e, pgx.ErrNoRows) {
+				return projectErr(404, "project_update_not_found", "project update not found")
+			}
+			return e
+		}
+		row, e := q.GetProjectUpdateRevision(r.Context(), db.GetProjectUpdateRevisionParams{WorkspaceID: ws, ProjectID: pid, UpdateID: updateID, Revision: revision})
+		if e != nil {
+			if errors.Is(e, pgx.ErrNoRows) {
+				return projectErr(404, "project_update_not_found", "project update revision not found")
+			}
+			return e
+		}
+		var evidence []ProjectEvidenceView
+		if e = json.Unmarshal(row.Evidence, &evidence); e != nil {
+			return e
+		}
+		var source *ProjectEvidenceInput
+		for _, view := range evidence {
+			if view.Input.Kind == "execution" && view.Input.ID != nil && *view.Input.ID == uuidToString(taskID) {
+				input := view.Input
+				source = &input
+				break
+			}
+		}
+		if source == nil {
+			return projectErr(404, "project_update_not_found", "execution is not referenced by this project update revision")
+		}
+		if _, e = projectUpdateEvidence(r.Context(), q, ws, actor, *source, time.Now().UTC()); e != nil {
+			if errors.Is(e, pgx.ErrNoRows) {
+				return projectErr(404, "project_update_not_found", "execution evidence is no longer available")
+			}
+			return e
+		}
+		task, e := q.GetAgentTaskInWorkspace(r.Context(), db.GetAgentTaskInWorkspaceParams{ID: taskID, WorkspaceID: ws})
+		if e != nil {
+			return e
+		}
+		messages, e := q.ListTaskMessages(r.Context(), taskID)
+		if e != nil {
+			return e
+		}
+		out.Task = taskToResponse(task, uuidToString(ws))
+		out.Messages = make([]protocol.TaskMessagePayload, len(messages))
+		for i, message := range messages {
+			out.Messages[i] = taskMessageToPayload(message, uuidToString(taskID), uuidToString(task.IssueID))
+		}
+		return nil
+	})
+	if err != nil {
+		writeProjectAPIError(w, err)
+		return
+	}
+	writeJSON(w, 200, out)
 }

@@ -2,6 +2,9 @@ package handler
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/multica-ai/multica/server/internal/testutil"
+	"net/http"
 	"testing"
 	"time"
 )
@@ -45,5 +48,37 @@ func TestProjectUpdateMentionsNeverExecuteAndNotifyOnce(t *testing.T) {
 	}
 	if n := dbfx.Count(t, "SELECT count(*) FROM inbox_item WHERE workspace_id=$1 AND recipient_id=$2 AND type='project_update'", testWorkspaceID, recipient); n != 1 {
 		t.Fatalf("inbox=%d update=%v", n, first)
+	}
+}
+
+func TestProjectUpdateInboxDetailsRemainStringValues(t *testing.T) {
+	_, recipient, row := progressNotification(t)
+	old := dbfx.Insert(t, "inbox_item", testutil.Cols{"workspace_id": testWorkspaceID, "recipient_type": "member", "recipient_id": recipient, "type": "status_changed", "severity": "info", "title": "Existing notification", "details": `{"status":"done"}`})
+	if err := testHandler.deliverProjectUpdateNotification(context.Background(), row); err != nil {
+		t.Fatal(err)
+	}
+	req := inboxRequest(http.MethodGet, "/api/inbox", testWorkspaceID)
+	req.Header.Set("X-User-ID", recipient)
+	response := testutil.Call(t, inboxWorkspaceHandler(testHandler.ListInbox), req).Want(200)
+	t.Logf("PROJECT_UPDATE_INBOX_FIXTURE %s", response.Text())
+	var items []struct {
+		ID      string            `json:"id"`
+		Details map[string]string `json:"details"`
+	}
+	if err := json.Unmarshal(response.Body.Bytes(), &items); err != nil {
+		t.Fatalf("existing inbox string-details contract rejected actual response: %v", err)
+	}
+	if len(items) != 2 {
+		t.Fatalf("mixed inbox lost items: %s", response.Text())
+	}
+	seen := map[string]bool{}
+	for _, item := range items {
+		seen[item.ID] = true
+		if item.ID == uuidToString(row.ID) && item.Details["revision"] != "1" {
+			t.Fatalf("project revision must be wire string: %v", item.Details)
+		}
+	}
+	if !seen[old] || !seen[uuidToString(row.ID)] {
+		t.Fatalf("mixed inbox identities=%v", seen)
 	}
 }

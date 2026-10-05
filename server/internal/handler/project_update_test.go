@@ -602,3 +602,86 @@ func TestProjectUpdateHumanMembersKeepActualAuthorship(t *testing.T) {
 		})
 	}
 }
+
+func TestProjectUpdateInternalEvidenceUsesTypedTargets(t *testing.T) {
+	p := progressProject(t)
+	issue := dbfx.Issue(t, "Typed issue", testutil.Cols{"project_id": p})
+	runtime := dbfx.Runtime(t, "Typed execution")
+	agent := dbfx.Agent(t, "Evidence agent", runtime)
+	task := dbfx.Task(t, agent, testutil.Cols{"status": "completed", "runtime_id": runtime})
+	url := "https://example.invalid/evidence"
+	d := progressDraft("Typed references")
+	d["evidence"] = []any{map[string]any{"kind": "issue", "id": issue, "url": nil}, map[string]any{"kind": "execution", "id": task, "url": nil}, map[string]any{"kind": "url", "id": nil, "url": url}}
+	out := progressCall(t, "create", p, "", progressInput(progressPreview(t, p, d)), 201)
+	evidence := out["result"].(map[string]any)["evidence"].([]any)
+	for _, raw := range evidence {
+		view := raw.(map[string]any)
+		input := view["input"].(map[string]any)
+		if input["kind"] == "url" {
+			if view["href"] != url {
+				t.Fatalf("external URL lost: %v", view)
+			}
+		} else if view["href"] != nil {
+			t.Fatalf("internal reference must use typed workspace navigation, not fabricated href: %v", view)
+		}
+	}
+}
+
+func projectExecutionEvidenceHandler() http.HandlerFunc {
+	return testHandler.GetProjectUpdateExecutionEvidence
+}
+func TestProjectUpdateExecutionEvidenceOpensRealAuthorizedTranscript(t *testing.T) {
+	p := progressProject(t)
+	runtime := dbfx.Runtime(t, "Transcript runtime")
+	agent := dbfx.Agent(t, "Transcript agent", runtime, testutil.Cols{"permission_mode": "private"})
+	task := dbfx.Task(t, agent, testutil.Cols{"status": "completed", "runtime_id": runtime, "result": `{"output":"real result"}`})
+	dbfx.Insert(t, "task_message", testutil.Cols{"task_id": task, "seq": 1, "type": "text", "content": "real transcript"})
+	d := progressDraft("Review execution")
+	d["evidence"] = []any{map[string]any{"kind": "execution", "id": task, "url": nil}}
+	published := progressCall(t, "create", p, "", progressInput(progressPreview(t, p, d)), 201)
+	update := published["update_id"].(string)
+	request := func(taskID, user string) *http.Request {
+		req := testutil.WithURLParams(newRequest("GET", "/api/projects/"+p+"/updates/"+update+"/revisions/1/executions/"+taskID, nil), "id", p, "updateId", update, "revision", "1", "taskId", taskID)
+		req.Header.Set("X-User-ID", user)
+		return req
+	}
+	out := testutil.Call(t, projectExecutionEvidenceHandler(), request(task, testUserID)).Want(200).Map()
+	if out["workspace_id"] != testWorkspaceID || out["project_id"] != p || out["update_id"] != update || out["revision"] != float64(1) {
+		t.Fatalf("evidence identity: %v", out)
+	}
+	actualTask := out["task"].(map[string]any)
+	messages := out["messages"].([]any)
+	if actualTask["id"] != task || actualTask["status"] != "completed" || len(messages) != 1 || messages[0].(map[string]any)["content"] != "real transcript" {
+		t.Fatalf("not the real execution: %v", out)
+	}
+	otherTask := dbfx.Task(t, agent, testutil.Cols{"status": "completed", "runtime_id": runtime})
+	testutil.Call(t, projectExecutionEvidenceHandler(), request(otherTask, testUserID)).Want(404)
+	reader := dbfx.User(t, "Unprivileged evidence reader", "progress-transcript-"+uuid.NewString()+"@example.invalid")
+	dbfx.Member(t, testWorkspaceID, reader, "member")
+	testutil.Call(t, projectExecutionEvidenceHandler(), request(task, reader)).Want(403)
+	otherProject := progressProject(t)
+	foreignProjectRequest := request(task, testUserID)
+	chi.RouteContext(foreignProjectRequest.Context()).URLParams.Values[0] = otherProject
+	testutil.Call(t, projectExecutionEvidenceHandler(), foreignProjectRequest).Want(404)
+	otherWorkspace := dbfx.Workspace(t, "Other transcript workspace", "progress-transcript-"+uuid.NewString())
+	dbfx.Member(t, otherWorkspace, testUserID, "member")
+	foreignWorkspaceRequest := request(task, testUserID)
+	foreignWorkspaceRequest.Header.Set("X-Workspace-ID", otherWorkspace)
+	testutil.Call(t, projectExecutionEvidenceHandler(), foreignWorkspaceRequest).Want(404)
+	chat := dbfx.ChatSession(t, agent, testutil.Cols{"creator_id": reader})
+	chatTask := dbfx.Task(t, agent, testutil.Cols{"status": "completed", "runtime_id": runtime, "chat_session_id": chat})
+	chatDraft := progressDraft("Private chat evidence")
+	chatDraft["evidence"] = []any{map[string]any{"kind": "execution", "id": chatTask, "url": nil}}
+	previewReq := withURLParam(newRequest("POST", "/api/projects/"+p+"/updates/preview", chatDraft), "id", p)
+	previewReq.Header.Set("X-User-ID", reader)
+	chatPreview := testutil.Call(t, testHandler.PreviewProjectUpdate, previewReq).Want(200).Map()
+	createReq := withURLParam(newRequest("POST", "/api/projects/"+p+"/updates", progressInput(chatPreview)), "id", p)
+	createReq.Header.Set("X-User-ID", reader)
+	chatUpdate := testutil.Call(t, testHandler.CreateProjectUpdate, createReq).Want(201).Map()["update_id"].(string)
+	chatReq := testutil.WithURLParams(newRequest("GET", "/api/projects/"+p+"/updates/"+chatUpdate+"/revisions/1/executions/"+chatTask, nil), "id", p, "updateId", chatUpdate, "revision", "1", "taskId", chatTask)
+	testutil.Call(t, projectExecutionEvidenceHandler(), chatReq).Want(403)
+	chatReq.Header.Set("X-User-ID", reader)
+	testutil.Call(t, projectExecutionEvidenceHandler(), chatReq).Want(200)
+	dbfx.Exec(t, "DELETE FROM member WHERE workspace_id=$1 AND user_id=$2", testWorkspaceID, reader)
+	testutil.Call(t, projectExecutionEvidenceHandler(), chatReq).Want(403)
+}

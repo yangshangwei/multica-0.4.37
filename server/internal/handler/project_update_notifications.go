@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log/slog"
 	"math/rand/v2"
+	"strconv"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -145,7 +146,7 @@ func (h *Handler) deliverProjectUpdateNotification(ctx context.Context, candidat
 		if !valid {
 			return q.CompleteProjectUpdateNotification(ctx, db.CompleteProjectUpdateNotificationParams{ID: row.ID, WorkspaceID: row.WorkspaceID, Status: "cancelled", LastErrorCode: pgtype.Text{String: cancelReason, Valid: true}})
 		}
-		details, e := json.Marshal(map[string]any{"project_id": uuidToString(row.ProjectID), "update_id": uuidToString(row.UpdateID), "revision": row.SourceRevision})
+		details, e := json.Marshal(map[string]string{"project_id": uuidToString(row.ProjectID), "update_id": uuidToString(row.UpdateID), "revision": strconv.FormatInt(row.SourceRevision, 10)})
 		if e != nil {
 			return e
 		}

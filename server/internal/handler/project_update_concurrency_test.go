@@ -559,3 +559,47 @@ func TestProjectUpdateEvidenceGrantRevocationRestartsRRAuthorization(t *testing.
 		t.Fatal("grant retry stalled")
 	}
 }
+
+func TestProjectUpdateRealLeaveWorkspaceRevokesAccessAndStopsDelivery(t *testing.T) {
+	for _, delivered := range []bool{false, true} {
+		t.Run(map[bool]string{false: "pending", true: "already-delivered"}[delivered], func(t *testing.T) {
+			p, recipient, row := progressNotification(t)
+			previewReq := withURLParam(newRequest("POST", "/api/projects/"+p+"/updates/preview", progressDraft("Leaver authored progress")), "id", p)
+			previewReq.Header.Set("X-User-ID", recipient)
+			preview := testutil.Call(t, testHandler.PreviewProjectUpdate, previewReq).Want(200).Map()
+			input := progressInput(preview)
+			createReq := withURLParam(newRequest("POST", "/api/projects/"+p+"/updates", input), "id", p)
+			createReq.Header.Set("X-User-ID", recipient)
+			testutil.Call(t, testHandler.CreateProjectUpdate, createReq).Want(201)
+			if delivered {
+				if e := testHandler.deliverProjectUpdateNotification(context.Background(), row); e != nil {
+					t.Fatal(e)
+				}
+			}
+			before := dbfx.Count(t, "SELECT count(*) FROM inbox_item WHERE id=$1", row.ID)
+			leave := withURLParam(newRequest("POST", "/api/workspaces/"+testWorkspaceID+"/leave", nil), "id", testWorkspaceID)
+			leave.Header.Set("X-User-ID", recipient)
+			testutil.Call(t, testHandler.LeaveWorkspace, leave).Want(204)
+			list := withURLParam(newRequest("GET", "/api/projects/"+p+"/updates", nil), "id", p)
+			list.Header.Set("X-User-ID", recipient)
+			testutil.Call(t, testHandler.ListProjectUpdates, list).Want(403)
+			replay := withURLParam(newRequest("POST", "/api/projects/"+p+"/updates", input), "id", p)
+			replay.Header.Set("X-User-ID", recipient)
+			testutil.Call(t, testHandler.CreateProjectUpdate, replay).Want(403)
+			inbox := inboxRequest(http.MethodGet, "/api/inbox", testWorkspaceID)
+			inbox.Header.Set("X-User-ID", recipient)
+			testutil.Call(t, inboxWorkspaceHandler(testHandler.ListInbox), inbox).Want(404)
+			if e := testHandler.deliverProjectUpdateNotification(context.Background(), row); e != nil {
+				t.Fatal(e)
+			}
+			if after := dbfx.Count(t, "SELECT count(*) FROM inbox_item WHERE id=$1", row.ID); after != before {
+				t.Fatalf("real leave changed delivery count %d -> %d", before, after)
+			}
+			var status string
+			dbfx.QueryRow(t, "SELECT status FROM project_update_notification WHERE id=$1", row.ID).Scan(&status)
+			if !delivered && status != "cancelled" {
+				t.Fatalf("revoked pending notification status=%s", status)
+			}
+		})
+	}
+}
