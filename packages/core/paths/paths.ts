@@ -39,7 +39,13 @@ function workspaceScoped(slug: string) {
     issues: () => `${ws}/issues`,
     issueDetail: (id: string) => `${ws}/issues/${encode(id)}`,
     projects: () => `${ws}/projects`,
-    projectDetail: (id: string) => `${ws}/projects/${encode(id)}`,
+    projectDetail: (id: string, section?: "overview" | "issues", risk?: string, version?: string) => {
+      const params = new URLSearchParams();
+      if (section) params.set("section", section);
+      if (risk) params.set("risk", risk);
+      if (version) params.set("version", version);
+      return `${ws}/projects/${encode(id)}${params.size ? `?${params}` : ""}`;
+    },
     autopilots: () => `${ws}/autopilots`,
     // The built-in automation templates, and the entry point behind the list's
     // "New autopilot" action — which is what keeps the templates reachable in a

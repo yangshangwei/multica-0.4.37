@@ -12,7 +12,9 @@ import {
   getIssueSurfaceViewStore,
   pruneIssueSurfaceViewStates,
 } from "../issues/stores/surface-view-store";
-import { useDeleteProject } from "./mutations";
+import { useDeleteProject, useUpdateProject } from "./mutations";
+import { projectKeys } from "./queries";
+import { p1Project } from "./test-fixtures/p1";
 
 vi.mock("../hooks", () => ({
   useWorkspaceId: () => "ws-1",
@@ -42,6 +44,26 @@ describe("useDeleteProject", () => {
     vi.restoreAllMocks();
   });
 
+  it("preserves detail, list, and view state until the server confirms deletion", async () => {
+    let rejectDelete!: (error: Error) => void;
+    deleteProject.mockImplementation(() => new Promise<void>((_resolve, reject) => { rejectDelete = reject; }));
+    const project = { ...p1Project, id: "p1", workspace_id: "ws-1" };
+    qc.setQueryData(projectKeys.list("ws-1"), { projects: [project], total: 1 });
+    qc.setQueryData(projectKeys.detail("ws-1", "p1"), project);
+    const store = getIssueSurfaceViewStore("project:p1");
+    store.getState().setViewMode("list");
+    const { result } = renderHook(() => useDeleteProject(), { wrapper: createWrapper(qc) });
+    let pending!: Promise<unknown>;
+    await act(async () => { pending = result.current.mutateAsync("p1").catch((error) => error); });
+    const detailWhilePending = qc.getQueryData(projectKeys.detail("ws-1", "p1"));
+    const listWhilePending = qc.getQueryData(projectKeys.list("ws-1"));
+    await act(async () => { rejectDelete(new Error("forbidden")); await pending; });
+    expect(detailWhilePending).toEqual(project);
+    expect(listWhilePending).toEqual({ projects: [project], total: 1 });
+    expect(qc.getQueryData(projectKeys.detail("ws-1", "p1"))).toEqual(project);
+    expect(store.getState().viewMode).toBe("list");
+  });
+
   it("clears the deleted project's issue surface view state", async () => {
     const store = getIssueSurfaceViewStore("project:p1");
     store.getState().setViewMode("list");
@@ -55,7 +77,29 @@ describe("useDeleteProject", () => {
       await result.current.mutateAsync("p1");
     });
 
-    expect(deleteProject).toHaveBeenCalledWith("p1");
+    expect(deleteProject).toHaveBeenCalledWith("p1", { workspaceId: "ws-1" });
     expect(store.getState().viewMode).toBe("board");
+  });
+});
+
+// Description drafts stay outside authoritative caches until the CAS write succeeds.
+describe("P1 versioned project updates", () => {
+  it("does not optimistically expose a description that the server may reject", async () => {
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const project = { ...p1Project, id: "p1", workspace_id: "ws-1" };
+    let rejectWrite!: (error: Error) => void;
+    const updateProject = vi.fn(() => new Promise<never>((_resolve, reject) => { rejectWrite = reject; }));
+    setApiInstance({ updateProject } as unknown as ApiClient);
+    qc.setQueryData(projectKeys.detail("ws-1", "p1"), project);
+    qc.setQueryData(projectKeys.list("ws-1"), { projects: [project], total: 1 });
+    const { result, unmount } = renderHook(() => useUpdateProject(), { wrapper: createWrapper(qc) });
+    let pending!: Promise<unknown>;
+    await act(async () => { pending = result.current.mutateAsync({ id: "p1", description: "Local draft" }).catch((error) => error); });
+    const detailWhilePending = qc.getQueryData(projectKeys.detail("ws-1", "p1"));
+    await act(async () => { rejectWrite(new Error("project_description_conflict")); await pending; });
+    expect(detailWhilePending).toEqual(project);
+    expect(qc.getQueryData(projectKeys.detail("ws-1", "p1"))).toEqual(project);
+    unmount();
+    qc.clear();
   });
 });

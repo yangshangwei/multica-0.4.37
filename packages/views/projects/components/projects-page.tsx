@@ -190,12 +190,13 @@ function columnTrackVars(
 }
 
 function ProgressRing({ project }: { project: Project }) {
+  const { t } = useT("projects");
   if (project.issue_count === 0) {
     return <span className="text-caption text-faint-foreground">—</span>;
   }
   const pct = Math.round((project.done_count / project.issue_count) * 100);
   return (
-    <span className="flex items-center gap-1.5">
+    <span className="flex items-center gap-1.5" title={`${t(($) => $.management.closure)} · ${t(($) => $.management.completed)}: ${project.completed_issue_count ?? t(($) => $.management.na)} · ${t(($) => $.management.cancelled)}: ${project.cancelled_issue_count ?? t(($) => $.management.na)}`}>
       <span className="relative h-3.5 w-3.5">
         <svg className="h-3.5 w-3.5 -rotate-90" viewBox="0 0 16 16">
           <circle className="text-muted" strokeWidth="2" stroke="currentColor" fill="none" r="6" cx="8" cy="8" />
@@ -384,8 +385,8 @@ function ProjectTableRow({
   const formatRelativeDate = useFormatRelativeDate();
   const updateProject = useUpdateProject();
   const handleUpdate = useCallback(
-    (data: UpdateProjectRequest) => updateProject.mutate({ id: project.id, ...data }),
-    [project.id, updateProject],
+    (data: UpdateProjectRequest) => updateProject.mutate({ id: project.id, ...data, ...(project.revision ? { expected_revision: project.revision } : {}) }),
+    [project.id, project.revision, updateProject],
   );
 
   return (
@@ -590,8 +591,8 @@ function ProjectCard({
   const formatRelativeDate = useFormatRelativeDate();
   const updateProject = useUpdateProject();
   const handleUpdate = useCallback(
-    (data: UpdateProjectRequest) => updateProject.mutate({ id: project.id, ...data }),
-    [project.id, updateProject],
+    (data: UpdateProjectRequest) => updateProject.mutate({ id: project.id, ...data, ...(project.revision ? { expected_revision: project.revision } : {}) }),
+    [project.id, project.revision, updateProject],
   );
   const progressPercent =
     project.issue_count > 0

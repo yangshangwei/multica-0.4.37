@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { ProjectCompletionDialog } from "./project-completion-dialog";
 import { Check } from "lucide-react";
 import {
   PROJECT_STATUS_CONFIG,
@@ -20,9 +22,12 @@ import { useProjectStatusLabels, useProjectPriorityLabels } from "./labels";
 
 export function ProjectStatusBadge({ project, handleUpdate, triggerClassName, align = "end" }: { project: Project; handleUpdate: (data: UpdateProjectRequest) => void; triggerClassName?: string; align?: "start" | "end" | "center" }) {
   const statusLabels = useProjectStatusLabels();
-  const statusCfg = PROJECT_STATUS_CONFIG[project.status];
+  const statusCfg = PROJECT_STATUS_CONFIG[project.status] ?? PROJECT_STATUS_CONFIG.planned;
+  const [completing, setCompleting] = useState(false);
 
   return (
+    <>
+    {completing && <ProjectCompletionDialog project={project} onClose={() => setCompleting(false)} />}
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
@@ -37,7 +42,7 @@ export function ProjectStatusBadge({ project, handleUpdate, triggerClassName, al
       />
       <DropdownMenuContent align={align} className="w-44">
         {PROJECT_STATUS_ORDER.map((s) => (
-          <DropdownMenuItem key={s} onClick={() => handleUpdate({ status: s as ProjectStatus })}>
+          <DropdownMenuItem key={s} onClick={() => { if (s === "completed" && project.status !== "completed" && project.revision) setCompleting(true); else handleUpdate({ status: s as ProjectStatus }); }}>
             <span className={cn("size-2 rounded-full", PROJECT_STATUS_CONFIG[s].dotColor)} />
             <span>{statusLabels[s]}</span>
             {s === project.status && <Check className="ml-auto h-3.5 w-3.5" />}
@@ -45,6 +50,7 @@ export function ProjectStatusBadge({ project, handleUpdate, triggerClassName, al
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+    </>
   );
 }
 

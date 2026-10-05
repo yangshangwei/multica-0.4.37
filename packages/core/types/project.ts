@@ -38,6 +38,14 @@ export interface Project {
   issue_count: number;
   done_count: number;
   resource_count: number;
+  revision?: number;
+  description_revision?: number;
+  completed_issue_count?: number;
+  cancelled_issue_count?: number;
+  open_issue_count?: number;
+  statistics_complete?: boolean;
+  in_progress_since?: string | null;
+  in_progress_since_source?: "transition" | "migration" | null;
   execution_squad?: ProjectExecutionSquad | null;
   // Ordered candidates; the first is the default for future project issues.
   execution_squads?: ProjectExecutionSquad[];
@@ -61,6 +69,9 @@ export interface CreateProjectRequest {
 }
 
 export interface UpdateProjectRequest {
+  expected_revision?: number;
+  expected_description_revision?: number;
+  status_reason?: string | null;
   title?: string;
   description?: string | null;
   icon?: string | null;

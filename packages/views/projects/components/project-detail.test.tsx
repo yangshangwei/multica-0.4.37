@@ -32,7 +32,9 @@ vi.mock("@multica/ui/lib/clipboard", () => ({
   copyText: mocks.copyText,
 }));
 
-vi.mock("@tanstack/react-query", () => ({
+vi.mock("@tanstack/react-query", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@tanstack/react-query")>(),
+  useQueryClient: () => ({ removeQueries: vi.fn(), cancelQueries: vi.fn(), invalidateQueries: vi.fn() }),
   useQuery: (options: { queryKey?: readonly unknown[] }) => {
     switch (options.queryKey?.[0]) {
       case "project-detail":
@@ -54,7 +56,8 @@ vi.mock("@tanstack/react-query", () => ({
   },
 }));
 
-vi.mock("@multica/core/projects/queries", () => ({
+vi.mock("@multica/core/projects/queries", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/projects/queries")>(),
   projectDetailOptions: () => ({ queryKey: ["project-detail"] }),
 }));
 
@@ -505,3 +508,5 @@ describe("ProjectDetail project deletion", () => {
     ).not.toBeInTheDocument();
   });
 });
+
+vi.mock("./project-description", () => ({ ProjectDescription: () => <div /> }));

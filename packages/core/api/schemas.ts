@@ -1385,13 +1385,27 @@ const ProjectObjectSchema = z.object({
   due_date: z.string().nullable().default(null),
   created_at: z.string(),
   updated_at: z.string(),
-  issue_count: z.number().default(0),
-  done_count: z.number().default(0),
-  resource_count: z.number().default(0),
+  issue_count: z.number().int().nonnegative().safe().default(0),
+  done_count: z.number().int().nonnegative().safe().default(0),
+  resource_count: z.number().int().nonnegative().safe().default(0),
+  revision: z.number().int().positive().safe().optional(),
+  description_revision: z.number().int().positive().safe().optional(),
+  completed_issue_count: z.number().int().nonnegative().safe().optional(),
+  cancelled_issue_count: z.number().int().nonnegative().safe().optional(),
+  open_issue_count: z.number().int().nonnegative().safe().optional(),
+  statistics_complete: z.boolean().optional(),
+  in_progress_since: z.string().nullable().optional(),
+  in_progress_since_source: z.enum(["transition", "migration"]).nullable().optional(),
   execution_squad: ProjectExecutionSquadSchema.nullable().default(null).catch(invalidProjectSquad),
   execution_squads: z.array(ProjectExecutionSquadSchema.catch(invalidProjectSquad))
     .nullish().catch([invalidProjectSquad]),
-}).loose();
+}).loose().superRefine((project, ctx) => {
+  if (project.statistics_complete === true && (
+    project.completed_issue_count === undefined || project.cancelled_issue_count === undefined || project.open_issue_count === undefined ||
+    project.completed_issue_count + project.cancelled_issue_count + project.open_issue_count !== project.issue_count ||
+    project.completed_issue_count + project.cancelled_issue_count !== project.done_count
+  )) ctx.addIssue({ code: "custom", message: "Complete project counts must agree" });
+});
 
 function normalizeProjectSquads<T extends z.infer<typeof ProjectObjectSchema>>(project: T) {
   const execution_squads = project.execution_squads ??

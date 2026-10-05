@@ -1,5 +1,8 @@
 "use client";
 
+import { projectManagementEvent } from "../projects/realtime";
+import { clearProtectedProjectContent } from "../projects/access";
+
 import { useEffect, useRef } from "react";
 import { useQueryClient, type InfiniteData, type QueryClient } from "@tanstack/react-query";
 import type { WSClient } from "../api/ws-client";
@@ -987,6 +990,10 @@ export function useRealtimeSync(
     ]);
 
     const unsubAny = ws.onAny((msg) => {
+      if (projectManagementEvent(msg.type)) {
+        const wsId = getCurrentWsId();
+        if (wsId) debouncedRefresh("project-management", () => { void qc.invalidateQueries({ queryKey: projectKeys.all(wsId) }); });
+      }
       if (specificEvents.has(msg.type)) return;
       const prefix = msg.type.split(":")[0] ?? "";
       const refresh = refreshMap[prefix];
@@ -1277,6 +1284,7 @@ export function useRealtimeSync(
       // CancelledError + reload combo this guard exists to prevent. This
       // handler only serves deletes initiated elsewhere (other user/device).
       if (isWorkspaceDeletePending(workspace_id)) return;
+      clearProtectedProjectContent(qc, workspace_id);
       // Event payload has UUID; look up slug from cached workspace list
       // since clearWorkspaceStorage keys are namespaced by slug.
       const wsList = qc.getQueryData<{ id: string; slug: string }[]>(workspaceKeys.list()) ?? [];
@@ -1295,6 +1303,7 @@ export function useRealtimeSync(
       if (user_id === myUserId) {
         const slug = getCurrentSlug();
         const wsId = getCurrentWsId();
+        if (wsId) clearProtectedProjectContent(qc, wsId);
         if (slug && wsId) {
           clearWorkspaceStorage(defaultStorage, slug);
           logger.warn("removed from workspace, switching");

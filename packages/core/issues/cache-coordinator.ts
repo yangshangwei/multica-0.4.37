@@ -611,9 +611,9 @@ export function invalidateIssueDerivatives(
   qc.invalidateQueries({ queryKey: issueKeys.assigneeGroupsAll(wsId) });
   qc.invalidateQueries({ queryKey: issueKeys.myAssigneeGroupsAll(wsId) });
   qc.invalidateQueries({ queryKey: issueKeys.projectGanttAll(wsId) });
-  if (opts.statusOrProjectChanged) {
-    qc.invalidateQueries({ queryKey: projectKeys.all(wsId) });
-  }
+  // Assignment, due date and other formal membership inputs also affect health.
+  void opts;
+  qc.invalidateQueries({ queryKey: projectKeys.all(wsId) });
 }
 
 /** True when any object part of a query key encodes the requested ordering.

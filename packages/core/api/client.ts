@@ -1,3 +1,8 @@
+import { z } from "zod";
+import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
+import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
+  ProjectRiskPageSchema, ProjectUpdatesPageSchema, ProjectUpdateRevisionsPageSchema, ProjectUpdatePreviewSchema,
+  ProjectUpdateWriteResultSchema, ProjectDeleteImpactSchema } from "./project-p1-schemas";
 import { parseAdminResourceList, parseAdminResourcePreview, parseAdminResourceResult, type AdminResourceKind, type AdminResourceUpload, type AdminResourcePublish, type AdminResourceWithdraw } from "../admin/resource-schema";
 import type {
   TriageSettings, UpdateTriageSettingsInput, TriageListParams, TriageListResponse, TriageItem,
@@ -4464,6 +4469,71 @@ export class ApiClient {
     return res.blob();
   }
 
+  // Project management responses retain strict identity and completeness.
+  private async projectP1<T>(wsId: string, projectId: string, suffix: string, schema: z.ZodType<T>,
+    options?: { signal?: AbortSignal; method?: string; body?: unknown }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}${suffix}`, {
+      ...workspaceRequestInit({ workspaceId: wsId, signal: options?.signal }),
+      ...(options?.method ? { method: options.method } : {}),
+      ...(options?.body !== undefined ? { body: JSON.stringify(options.body) } : {}),
+    });
+    return parseProjectP1(raw, schema, wsId, projectId);
+  }
+
+  async getProjectCapabilities(wsId: string, options?: { signal?: AbortSignal }) {
+    try {
+      const raw = await this.fetch<unknown>(`/api/workspaces/${encodeURIComponent(wsId)}/project-capabilities`,
+        workspaceRequestInit({ workspaceId: wsId, signal: options?.signal }));
+      return parseProjectP1(raw, ProjectCapabilitiesSchema, wsId);
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.status !== 404) throw error;
+      // A missing workspace must never look like an older server capability.
+      const workspace = await this.fetch<unknown>(`/api/workspaces/${encodeURIComponent(wsId)}`,
+        workspaceRequestInit({ workspaceId: wsId, signal: options?.signal }));
+      const parsed = parseWithFallback<Workspace | null>(workspace, z.object({ id: z.string().uuid() }).loose(), null, { endpoint: "project-capabilities workspace" });
+      if (!parsed || parsed.id !== wsId) throw new Error("Workspace access could not be confirmed");
+      return null;
+    }
+  }
+  async getProjectPlanningTimezone(wsId: string, options?: { signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/workspaces/${encodeURIComponent(wsId)}/planning-timezone`, workspaceRequestInit({ workspaceId: wsId, signal: options?.signal }));
+    return parseProjectP1(raw, ProjectPlanningTimezoneSchema, wsId);
+  }
+  async updateProjectPlanningTimezone(wsId: string, planningTimezone: string | null) {
+    const raw = await this.fetch<unknown>(`/api/workspaces/${encodeURIComponent(wsId)}/planning-timezone`, {
+      ...workspaceRequestInit({ workspaceId: wsId }), method: "PUT", body: JSON.stringify({ planning_timezone: planningTimezone }),
+    });
+    return parseProjectP1(raw, ProjectPlanningTimezoneSchema, wsId);
+  }
+  getProjectOverview(wsId: string, id: string, options?: { signal?: AbortSignal }) {
+    return this.projectP1(wsId, id, "/overview", ProjectOverviewSchema, options);
+  }
+  getProjectRiskIssues(wsId: string, id: string, params: { signal: ProjectRiskSignal; cursor?: string; version?: string; limit?: number }, options?: { signal?: AbortSignal }) {
+    const search = new URLSearchParams({ signal: params.signal });
+    if (params.cursor) search.set("cursor", params.cursor);
+    if (params.version) search.set("version", params.version);
+    if (params.limit) search.set("limit", String(params.limit));
+    return this.projectP1(wsId, id, `/health/issues?${search}`, ProjectRiskPageSchema, options);
+  }
+  listProjectUpdates(wsId: string, id: string, cursor?: string, options?: { signal?: AbortSignal }) {
+    return this.projectP1(wsId, id, `/updates${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ""}`, ProjectUpdatesPageSchema, options);
+  }
+  listProjectUpdateRevisions(wsId: string, id: string, updateId: string, cursor?: string, options?: { signal?: AbortSignal }) {
+    return this.projectP1(wsId, id, `/updates/${encodeURIComponent(updateId)}/revisions${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ""}`, ProjectUpdateRevisionsPageSchema, options);
+  }
+  previewProjectUpdate(wsId: string, id: string, draft: ProjectUpdateDraft) {
+    return this.projectP1(wsId, id, "/updates/preview", ProjectUpdatePreviewSchema, { method: "POST", body: draft });
+  }
+  createProjectUpdate(wsId: string, id: string, input: ProjectUpdateWriteInput) {
+    return this.projectP1(wsId, id, "/updates", ProjectUpdateWriteResultSchema, { method: "POST", body: input });
+  }
+  correctProjectUpdate(wsId: string, id: string, updateId: string, input: ProjectUpdateWriteInput) {
+    return this.projectP1(wsId, id, `/updates/${encodeURIComponent(updateId)}`, ProjectUpdateWriteResultSchema, { method: "PUT", body: input });
+  }
+  getProjectDeleteImpact(wsId: string, id: string, options?: { signal?: AbortSignal }) {
+    return this.projectP1(wsId, id, "/delete-impact", ProjectDeleteImpactSchema, options);
+  }
+
   // Projects
   private parseProjectResponse(raw: unknown, endpoint: string, workspaceId?: string, id?: string): Project {
     const project = parseWithFallback<Project | null>(raw, ProjectSchema, null, { endpoint });
@@ -4531,8 +4601,8 @@ export class ApiClient {
     return this.parseProjectResponse(raw, "PUT /api/projects/:id/execution-squads", options?.workspaceId, id);
   }
 
-  async deleteProject(id: string): Promise<void> {
-    await this.fetch(`/api/projects/${id}`, { method: "DELETE" });
+  async deleteProject(id: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<void> {
+    await this.fetch(`/api/projects/${encodeURIComponent(id)}`, { ...workspaceRequestInit(options), method: "DELETE" });
   }
 
   // Project resources

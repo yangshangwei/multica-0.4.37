@@ -367,3 +367,5 @@ export type {
 export type { OptimizeIssueDescriptionRequest, OptimizeIssueDescriptionResponse } from "./issue";
 
 export type { IssueCreatorRecommendation, RecommendIssueCreatorsResponse } from "./issue";
+
+export type * from "./project-p1";

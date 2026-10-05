@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { cn } from "@multica/ui/lib/utils";
 import { copyText } from "@multica/ui/lib/clipboard";
 import { toast } from "sonner";
-import type { ProjectStatus, ProjectPriority } from "@multica/core/types";
+import type { ProjectStatus, ProjectPriority, ProjectRiskSignal } from "@multica/core/types";
 import { useAuthStore } from "@multica/core/auth";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { useUpdateProject, useDeleteProject } from "@multica/core/projects/mutations";
@@ -21,10 +21,16 @@ import { useRecentContextStore } from "@multica/core/chat";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useActorName } from "@multica/core/workspace/hooks";
 import { PROJECT_STATUS_ORDER, PROJECT_STATUS_CONFIG, PROJECT_PRIORITY_ORDER } from "@multica/core/projects/config";
+import { projectCapabilitiesOptions, projectOverviewOptions, projectDeleteImpactOptions, useProjectAccessStore } from "@multica/core/projects";
+import { ProjectDescription } from "./project-description";
+import { ProjectOverviewPanel, ProjectAcceptance } from "./project-overview";
+import { ProjectRiskIssues } from "./project-risk-issues";
+import { useProjectAccessGuard } from "./use-project-access-guard";
+import { Textarea } from "@multica/ui/components/ui/textarea";
 import { getProjectIssueMetrics } from "./project-issue-metrics";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { currentPath, useNavigation } from "../../navigation";
-import { TitleEditor, ContentEditor, type ContentEditorRef } from "../../editor";
+import { TitleEditor } from "../../editor";
 import { PriorityIcon } from "../../issues/components/priority-icon";
 import { ProjectResourcesSection } from "./project-resources-section";
 import { ProjectSquadSection } from "./project-squad-section";
@@ -112,7 +118,20 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const wsPaths = useWorkspacePaths();
   const router = useNavigation();
   const userId = useAuthStore((s) => s.user?.id);
-  const { data: project, isLoading } = useQuery(projectDetailOptions(wsId, projectId));
+  const { data: project, isLoading, error: projectError } = useQuery(projectDetailOptions(wsId, projectId));
+  const capabilities = useQuery(projectCapabilitiesOptions(wsId));
+  const [accessLost, setAccessLost] = useState(false);
+  const revoked = useProjectAccessStore((state) => state.denied[JSON.stringify([wsId, "*"])] || state.denied[JSON.stringify([wsId, projectId])]);
+  const hideProtected = useCallback(() => setAccessLost(true), []);
+  useProjectAccessGuard(projectError ?? capabilities.error, wsId, projectId, hideProtected);
+  const [completing, setCompleting] = useState(false);
+  const [completionReason, setCompletionReason] = useState("");
+  const completionOverview = useQuery({ ...projectOverviewOptions(wsId, projectId), enabled: completing && capabilities.data?.overview === true });
+  const section = router.searchParams?.get("section") === "issues" || capabilities.data?.overview !== true ? "issues" : "overview";
+  const riskParam = router.searchParams?.get("risk");
+  const riskSignal = ["blocked", "overdue", "unassigned", "in_review"].includes(riskParam ?? "") ? riskParam as ProjectRiskSignal : undefined;
+  const goOverview = () => router.push(wsPaths.projectDetail(projectId, "overview"));
+
   const recordRecentContext = useRecentContextStore((s) => s.recordVisit);
   useEffect(() => {
     if (project) {
@@ -160,9 +179,9 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   }, [members, userId]);
   const createPin = useCreatePin();
   const deletePinMut = useDeletePin();
-  const descEditorRef = useRef<ContentEditorRef>(null);
   const isMobile = useIsMobile();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const deleteImpact = useQuery({ ...projectDeleteImpactOptions(wsId, projectId), enabled: deleteDialogOpen && capabilities.data?.description_cas === true });
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
   const [propertiesOpen, setPropertiesOpen] = useState(true);
   const [progressOpen, setProgressOpen] = useState(true);
@@ -226,9 +245,10 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const handleUpdateField = useCallback(
     (data: Parameters<typeof updateProject.mutate>[0] extends { id: string } & infer R ? R : never) => {
       if (!project) return;
-      updateProject.mutate({ id: project.id, ...data });
+      if (data.status === "completed" && project.status !== "completed" && capabilities.data?.overview === true) { setCompleting(true); return; }
+      updateProject.mutate({ id: project.id, ...data, ...(project.revision ? { expected_revision: project.revision } : {}) });
     },
-    [project, updateProject],
+    [project, updateProject, capabilities.data?.overview],
   );
 
   const handleDelete = useCallback(() => {
@@ -240,6 +260,8 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
       },
     });
   }, [project, deleteProject, router, wsPaths, t]);
+
+  if (accessLost || revoked) return <div role="alert" className="p-6 text-muted-foreground">{t(($) => $.management.permission_lost)}</div>;
 
   if (isLoading) {
     return (
@@ -257,7 +279,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   }
 
   const issueMetrics = getProjectIssueMetrics(project);
-  const statusCfg = PROJECT_STATUS_CONFIG[project.status];
+  const statusCfg = PROJECT_STATUS_CONFIG[project.status] ?? PROJECT_STATUS_CONFIG.planned;
 
   const sidebarContent = (
     <div className="space-y-5">
@@ -435,7 +457,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
 
       {/* Progress */}
       {issueMetrics.totalCount > 0 && (() => {
-        const pct = Math.round((issueMetrics.completedCount / issueMetrics.totalCount) * 100);
+        const pct = Math.round((issueMetrics.closedCount / issueMetrics.totalCount) * 100);
         return (
           <div>
             <button
@@ -454,7 +476,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                 />
               </div>
               <span className="text-caption text-muted-foreground tabular-nums shrink-0">
-                {issueMetrics.completedCount}/{issueMetrics.totalCount}
+                {issueMetrics.closedCount}/{issueMetrics.totalCount}
               </span>
             </div>}
           </div>
@@ -472,14 +494,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${descriptionOpen ? "rotate-90" : ""}`} />
         </button>
         {descriptionOpen && <div className="pl-2">
-          <ContentEditor
-            ref={descEditorRef}
-            key={projectId}
-            value={project.description || ""}
-            placeholder={t(($) => $.detail.description_placeholder)}
-            onUpdate={(md) => handleUpdateField({ description: md || null })}
-            debounceMs={1500}
-          />
+          <ProjectDescription key={project.id} project={project} supported={capabilities.data?.description_cas === true} />
           <p className="mt-1 px-2 text-caption text-muted-foreground">
             {t(($) => $.detail.description_hint)}
           </p>
@@ -568,12 +583,16 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           />
 
           <ProjectSquadSection key={project.id} project={project} />
-          <ProjectIssueSurface
-            key={project.id}
-            project={project}
-            scope={issueScope}
-            fallbackCreateDefaults={projectCreateDefaults}
-          />
+          <div className="flex items-center gap-2 border-b px-4 py-2">
+            {capabilities.data?.overview === true && <Button size="sm" variant={section === "overview" ? "secondary" : "ghost"} onClick={goOverview}>{t(($) => $.management.overview)}</Button>}
+            <Button size="sm" variant={section === "issues" ? "secondary" : "ghost"} onClick={() => router.push(wsPaths.projectDetail(projectId, "issues"))}>{t(($) => $.management.issues)}</Button>
+          </div>
+          {capabilities.error && <div role="alert" className="px-4 py-2 text-caption text-destructive">{t(($) => $.management.load_error)} <Button size="sm" variant="ghost" onClick={() => void capabilities.refetch()}>{t(($) => $.management.retry)}</Button></div>}
+          {capabilities.data === null && <p className="px-4 py-2 text-caption text-muted-foreground">{t(($) => $.management.unsupported)}</p>}
+          {section === "overview" ? riskSignal ? <ProjectRiskIssues key={riskSignal} project={project} signal={riskSignal} version={router.searchParams?.get("version") ?? undefined} onBack={goOverview} onProtectedError={hideProtected} />
+            : <ProjectOverviewPanel project={project} canEditTimezone={isWorkspaceAdmin} updatesSupported={capabilities.data?.updates === true} onProtectedError={hideProtected}
+                onRisk={(signal, version) => router.push(wsPaths.projectDetail(projectId, "overview", signal, version))} />
+            : <ProjectIssueSurface key={project.id} project={project} scope={issueScope} fallbackCreateDefaults={projectCreateDefaults} />}
           </div>
         </ResizablePanel>
         {!isMobile && <ResizableHandle />}
@@ -604,6 +623,15 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         )}
       </ResizablePanelGroup>
 
+      <AlertDialog open={completing} onOpenChange={setCompleting}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{t(($) => $.management.complete_title)}</AlertDialogTitle>
+        <AlertDialogDescription>{t(($) => $.management.complete_hint, { open: completionOverview.data?.statistics.counts.open ?? project.open_issue_count ?? t(($) => $.management.na), cancelled: completionOverview.data?.statistics.counts.cancelled ?? project.cancelled_issue_count ?? t(($) => $.management.na) })}</AlertDialogDescription></AlertDialogHeader>
+        {completionOverview.data && <ProjectAcceptance overview={completionOverview.data} />}
+        <label className="space-y-1 text-caption">{t(($) => $.management.complete_reason)}<Textarea value={completionReason} onChange={(event) => setCompletionReason(event.target.value)} /></label>
+        {updateProject.error && <p role="alert" className="text-caption text-destructive">{updateProject.error.message}</p>}
+        <AlertDialogFooter><AlertDialogCancel>{t(($) => $.management.cancel)}</AlertDialogCancel><Button variant="outline" onClick={() => { setCompleting(false); router.push(wsPaths.projectDetail(projectId, "issues")); }}>{t(($) => $.management.view_issues)}</Button>
+          <Button disabled={updateProject.isPending} onClick={() => updateProject.mutate({ id: project.id, status: "completed", expected_revision: project.revision, status_reason: completionReason || null }, { onSuccess: () => setCompleting(false) })}>{t(($) => $.management.continue_complete)}</Button></AlertDialogFooter>
+      </AlertDialogContent></AlertDialog>
+
       {/* Delete confirmation */}
       {isWorkspaceAdmin && (
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -612,6 +640,8 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
               <AlertDialogTitle>{t(($) => $.delete_dialog.title)}</AlertDialogTitle>
               <AlertDialogDescription>
                 {t(($) => $.delete_dialog.description)}
+                {deleteImpact.data && <span className="mt-2 block">{t(($) => $.management.delete_impact, { issues: deleteImpact.data.issue_count, updates: deleteImpact.data.update_count, resources: deleteImpact.data.resource_count, automations: deleteImpact.data.autopilot_count })}</span>}
+                {deleteImpact.error && <span className="mt-2 block text-destructive">{deleteImpact.error.message}</span>}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

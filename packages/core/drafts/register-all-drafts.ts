@@ -20,3 +20,7 @@ import "../issues/stores/comment-draft-store";
 import "../projects/draft-store";
 import "../feedback/draft-store";
 import "../agents/manual-draft-store";
+
+import "../projects/progress-draft-store";
+
+import "../projects/description-draft-store";

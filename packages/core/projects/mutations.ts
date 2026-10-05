@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api";
+import { clearProjectDescriptionDrafts } from "./description-draft-store";
+import { clearProjectProgressDrafts } from "./progress-draft-store";
 import { projectKeys } from "./queries";
 import { useWorkspaceId } from "../hooks";
 import { useRecentContextStore } from "../chat/recent-context-store";
@@ -89,6 +91,7 @@ export function useUpdateProject() {
     mutationFn: ({ id, ...data }: { id: string } & UpdateProjectRequest) =>
       api.updateProject(id, data, { workspaceId: wsId }),
     onMutate: ({ id, ...data }) => {
+      if ("description" in data || "status" in data || "expected_revision" in data) return undefined;
       qc.cancelQueries({ queryKey: projectKeys.list(wsId) });
       const prevList = qc.getQueryData<ListProjectsResponse>(projectKeys.list(wsId));
       const prevDetail = qc.getQueryData<Project>(projectKeys.detail(wsId, id));
@@ -104,6 +107,9 @@ export function useUpdateProject() {
       if (ctx?.prevList) qc.setQueryData(projectKeys.list(wsId), ctx.prevList);
       if (ctx?.prevDetail) qc.setQueryData(projectKeys.detail(wsId, ctx.id), ctx.prevDetail);
     },
+    onSuccess: (project) => {
+      qc.setQueryData(projectKeys.detail(wsId, project.id), project);
+    },
     onSettled: (_data, _err, vars) => {
       qc.invalidateQueries({ queryKey: projectKeys.detail(wsId, vars.id) });
       qc.invalidateQueries({ queryKey: projectKeys.list(wsId) });
@@ -115,20 +121,18 @@ export function useDeleteProject() {
   const qc = useQueryClient();
   const wsId = useWorkspaceId();
   return useMutation({
-    mutationFn: (id: string) => api.deleteProject(id),
-    onMutate: async (id) => {
-      await qc.cancelQueries({ queryKey: projectKeys.list(wsId) });
-      const prevList = qc.getQueryData<ListProjectsResponse>(projectKeys.list(wsId));
-      qc.setQueryData<ListProjectsResponse>(projectKeys.list(wsId), (old) =>
-        old ? { ...old, projects: old.projects.filter((p) => p.id !== id), total: old.total - 1 } : old,
-      );
+    mutationKey: [...projectKeys.all(wsId), "delete"],
+    mutationFn: (id: string) => api.deleteProject(id, { workspaceId: wsId }),
+    onSuccess: async (_data, id) => {
+      await qc.cancelQueries({ queryKey: projectKeys.all(wsId) });
+      qc.setQueryData<ListProjectsResponse>(projectKeys.list(wsId), (old) => old ? {
+        ...old, projects: old.projects.filter((p) => p.id !== id),
+        total: Math.max(0, old.total - (old.projects.some((p) => p.id === id) ? 1 : 0)),
+      } : old);
       qc.removeQueries({ queryKey: projectKeys.detail(wsId, id) });
-      return { prevList };
-    },
-    onError: (_err, _id, ctx) => {
-      if (ctx?.prevList) qc.setQueryData(projectKeys.list(wsId), ctx.prevList);
-    },
-    onSuccess: (_data, id) => {
+      clearProjectProgressDrafts(wsId, id);
+      clearProjectDescriptionDrafts(wsId, id);
+      qc.invalidateQueries({ queryKey: ["issues", wsId] });
       useRecentContextStore.getState().forgetContext(wsId, { type: "project", id });
       clearIssueSurfaceViewState(issueScopeKey({ type: "project", projectId: id }));
     },
