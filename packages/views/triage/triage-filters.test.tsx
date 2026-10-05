@@ -40,10 +40,10 @@ it("offers human and agent creators with distinct labels and preserves the selec
   );
   await user.click(screen.getByRole("combobox", { name: "Submitted by" }));
   expect(
-    screen.getByRole("option", { name: "Human intake (Member)" }),
+    await screen.findByRole("option", { name: "Human intake (Member)" }),
   ).toBeVisible();
   await user.click(
-    screen.getByRole("option", { name: "Robot intake (Agent)" }),
+    await screen.findByRole("option", { name: "Robot intake (Agent)" }),
   );
   expect(onChange).toHaveBeenCalledWith("creator_id", "agent-1");
 });
