@@ -51,6 +51,7 @@ function fixture(t) {
   }
   writeFileSync(join(cwd, "server/internal/changelog/content/changelog.json"), JSON.stringify(seed(), null, 2) + "\n");
   writeFileSync(join(cwd, "docs/offline-upgrade.zh-CN.md"), "Fixture upgrade guide\n");
+  cpSync(resolve(scripts, "../docs/mcp-catalog-publishing.md"), join(cwd, "docs/mcp-catalog-publishing.md"));
   writeFileSync(join(cwd, ".env"), "VERSION=v0.0.1\nJWT_SECRET=private-build-host-secret\n");
   // Stub only Docker's external build/pull/save boundary. Return deliberately
   // unordered image names, as Compose does, and record no runtime secrets.
@@ -154,6 +155,9 @@ test("offline bundle saves its versioned build images and records the same ident
   assert.match(readFileSync(join(output, "README.md"), "utf8"), /MULTICA_IMAGE_TAG=v0\.4\.45/);
   assert.equal(readFileSync(join(output, ".env.example"), "utf8"), readFileSync(join(f.cwd, ".env.example"), "utf8"));
   assert.equal(existsSync(join(output, ".env")), false);
+  assert.deepEqual(readdirSync(join(output, "mcp-templates")), ["README.txt"]);
+  assert.match(readFileSync(join(output, "mcp-templates/README.txt"), "utf8"), /docs\/mcp-catalog-publishing\.md/);
+  assert.equal(readFileSync(join(output, "docs/mcp-catalog-publishing.md"), "utf8"), readFileSync(join(f.cwd, "docs/mcp-catalog-publishing.md"), "utf8"));
   assert.equal((built.stdout + built.stderr + manifest).includes(f.env.JWT_SECRET), false);
   assert.deepEqual(readdirSync(join(f.cwd, ".changelog-build")), []);
 });

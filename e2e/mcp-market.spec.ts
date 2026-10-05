@@ -1,5 +1,6 @@
 import { test, expect, type Page, type TestInfo } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import { verifyDeploymentMcpCatalog } from "./fixtures/mcp-deployment";
 
 interface ServerSummary {
   id: string;
@@ -10,9 +11,39 @@ interface ServerSummary {
   enabled?: boolean;
 }
 
+const recipes = [
+  { key: "chrome-devtools", title: "Chrome DevTools" },
+  { key: "playwright", title: "Playwright" },
+  { key: "sequential-thinking", title: "Sequential Thinking" },
+  { key: "serena", title: "Serena" },
+  { key: "codebase-memory", title: "Codebase Memory MCP" },
+  { key: "repomix", title: "Repomix" },
+  { key: "markitdown", title: "MarkItDown MCP" },
+  { key: "dbhub", title: "DBHub" },
+  { key: "postgres-mcp", title: "Postgres MCP Pro" },
+] as const;
+
+const recipeInputs: Record<string, { key: string; label: string; value: string; secret: boolean }> = {
+  serena: { key: "project_path", label: "Project directory", value: "/tmp/mcp-e2e-project", secret: false },
+  dbhub: { key: "database_url", label: "Database connection URL", value: "postgresql://mcp_test:dbhub-test-secret@127.0.0.1:65432/example", secret: true },
+  "postgres-mcp": { key: "database_url", label: "Database connection URL", value: "postgresql://mcp_test:postgres-test-secret@127.0.0.1:65432/example", secret: true },
+};
+
 const passwordAccounts: { api: TestApiClient; username: string }[] = [];
 test.afterEach(async () => {
   for (const { api, username } of passwordAccounts.splice(0)) await api.deletePasswordAccount(username);
+});
+
+test("deployment MCP files appear live and saved snapshots survive updates and withdrawal", async ({ page }, info) => {
+  test.skip(!process.env.E2E_MCP_TEMPLATE_DIR, "Requires a task-owned directory mounted by the local API");
+  test.setTimeout(120_000);
+  const { api, workspace, agents, slug } = await setup(page);
+  try {
+    await page.goto(`/${slug}/mcp`);
+    await verifyDeploymentMcpCatalog({ page, api, workspaceId: workspace.id, agent: agents[0]!, capture: (name) => capture(page, info, name) });
+  } finally {
+    await api.deleteFeatureWorkspace(workspace.id);
+  }
 });
 
 async function setup(page: Page) {
@@ -92,7 +123,7 @@ test("uses the collection canvas and adapts template columns to the available wi
     await expect(header.getByRole("button", { name: "Add custom server", exact: true })).toBeVisible();
     const market = page.getByTestId("mcp-market");
     const cards = market.locator(".grid > div");
-    await expect(cards).toHaveCount(5);
+    await expect(cards).toHaveCount(recipes.length);
     for (const [width, columns] of [[1440, 3], [900, 2], [390, 1]]) {
       await page.setViewportSize({ width: width!, height: 1000 });
       await expect.poll(async () => cards.evaluateAll((elements) => {
@@ -118,8 +149,8 @@ test("uses the collection canvas and adapts template columns to the available wi
   }
 });
 
-test("creates and explicitly assigns all five recipes, preserves source after rename, and reuses an instance from an agent", async ({ page }, info) => {
-  test.setTimeout(180_000);
+test("creates and explicitly assigns all nine recipes, preserves source after rename, and reuses an instance from an agent", async ({ page }, info) => {
+  test.setTimeout(240_000);
   const { api, workspace, agents, slug } = await setup(page);
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -131,23 +162,22 @@ test("creates and explicitly assigns all five recipes, preserves source after re
     await expect(marketTab).toHaveAttribute("aria-selected", "true");
     await capture(page, info, "market-wide");
     const market = page.getByTestId("mcp-market");
-    await market.getByRole("button", { name: "Documentation & knowledge", exact: true }).click();
+    await market.getByRole("button", { name: "Browser", exact: true }).click();
     await expect(market.getByRole("status")).toHaveText("Templates found: 2");
-    await capture(page, info, "documentation-filter-wide");
-    await market.getByRole("searchbox").fill("deepwiki");
+    await expect(market.getByRole("button", { name: "Documentation & knowledge", exact: true })).toBeVisible();
+    await capture(page, info, "browser-filter-wide");
+    await market.getByRole("searchbox").fill("playwright");
     await expect(market.getByRole("status")).toHaveText("Templates found: 1");
-    await expect(market.getByRole("button", { name: "View configuration: DeepWiki", exact: true })).toBeVisible();
+    await expect(market.getByRole("button", { name: "View configuration: Playwright", exact: true })).toBeVisible();
     await market.getByRole("searchbox").clear();
+    for (const [category, count] of [["Coding", 3], ["Databases", 2], ["Documentation & knowledge", 1]] as const) {
+      await market.getByRole("button", { name: category, exact: true }).click();
+      await expect(market.getByRole("status")).toHaveText(`Templates found: ${count}`);
+    }
     await market.getByRole("button", { name: "All templates", exact: true }).click();
 
     const templateIcons = new Map<string, { drawing: string; color: string; background: string }>();
-    for (const [key, title, transport] of [
-      ["chrome-devtools", "Chrome DevTools", "stdio"],
-      ["playwright", "Playwright", "stdio"],
-      ["sequential-thinking", "Sequential Thinking", "stdio"],
-      ["microsoft-learn", "Microsoft Learn", "http"],
-      ["deepwiki", "DeepWiki", "http"],
-    ] as const) {
+    for (const { key, title } of recipes) {
       await marketTab.click();
       const preview = page.getByRole("button", { name: `View configuration: ${title}`, exact: true });
       templateIcons.set(key!, await preview.locator("svg").first().evaluate((icon) => ({
@@ -158,21 +188,44 @@ test("creates and explicitly assigns all five recipes, preserves source after re
       await preview.click();
       const dialog = page.getByRole("dialog");
       await dialog.getByRole("textbox", { name: "Configuration name", exact: true }).fill(key!);
-      if (key === "chrome-devtools") await capture(page, info, "setup-wide");
-      if (transport === "http") {
-        await expect(dialog.getByRole("listitem").filter({ hasText: "Streamable HTTP" })).toBeVisible();
-        await expect(dialog.getByRole("listitem").filter({ hasText: key === "microsoft-learn" ? /training|profile/i : /indexed.*public|public.*indexed/i })).toBeVisible();
-        await capture(page, info, `${key}-setup-wide`);
+      const input = recipeInputs[key];
+      if (input) {
+        const before = await api.requestJSON<ServerSummary[]>(base);
+        await expect(api.requestJSON(base, {
+          method: "POST", body: { name: `${key}-missing-input`, template_key: key, template_version: key === "postgres-mcp" ? "2" : "1" },
+        })).rejects.toThrow("failed: 400");
+        const field = dialog.getByLabel(input.label, { exact: false });
+        await expect(field).toHaveAttribute("aria-required", "true");
+        await expect(field).toHaveAttribute("type", input.secret ? "password" : "text");
+        await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
+        await expect(field).toHaveAttribute("aria-invalid", "true");
+        await expect(field).toBeFocused();
+        expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(before.length);
+        await field.fill(input.value);
+        if (key === "dbhub") await capture(page, info, "database-input-masked-wide");
       }
+      if (key === "chrome-devtools") await capture(page, info, "setup-wide");
+      const createResponse = page.waitForResponse((response) => new URL(response.url()).pathname === base && response.request().method() === "POST");
       await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
+      const response = await createResponse;
+      expect(response.status()).toBe(201);
+      expect(response.request().postDataJSON()).toEqual({
+        name: key, template_source: "builtin", template_key: key, template_version: key === "postgres-mcp" ? "2" : "1",
+        ...(input ? { template_inputs: { [input.key]: input.value } } : {}),
+      });
+      const responseBody = await response.json();
+      expect(responseBody).not.toHaveProperty("config");
+      expect(responseBody).not.toHaveProperty("template_inputs");
+      if (input) expect(JSON.stringify(responseBody)).not.toContain(input.value);
       await expect(dialog.getByRole("button", { name: "Skip for now", exact: true })).toBeVisible();
       if (key === "chrome-devtools") {
         await expect(dialog.getByRole("checkbox", { name: agents[0]!.name, exact: true })).toBeVisible();
         await capture(page, info, "assignment-wide");
       }
       const saved = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.name === key);
-      expect(saved).toMatchObject({ template_key: key, template_version: "1", transport });
+      expect(saved).toMatchObject({ template_key: key, template_version: key === "postgres-mcp" ? "2" : "1", transport: "stdio" });
       expect(saved).not.toHaveProperty("config");
+      if (input) expect(JSON.stringify(await api.requestJSON<ServerSummary[]>(base))).not.toContain(input.value);
       expect(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`)).not.toEqual(
         expect.arrayContaining([expect.objectContaining({ id: saved!.id })]),
       );
@@ -182,23 +235,22 @@ test("creates and explicitly assigns all five recipes, preserves source after re
         await dialog.getByRole("checkbox", { name: agents[0]!.name, exact: true }).check();
         await dialog.getByRole("button", { name: "Assign selected", exact: true }).click();
         await expect.poll(async () => (await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`)).some((server) => server.id === saved!.id)).toBe(true);
+        if (input) expect(JSON.stringify(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`))).not.toContain(input.value);
         await dialog.getByRole("button", { name: "Done", exact: true }).click();
       }
       await expect(dialog).not.toBeVisible();
     }
 
     const servers = await api.requestJSON<ServerSummary[]>(base);
-    expect(servers).toHaveLength(5);
+    expect(servers).toHaveLength(recipes.length);
     const playwright = servers.find((server) => server.template_key === "playwright")!;
-    const deepwiki = servers.find((server) => server.template_key === "deepwiki")!;
     await api.requestJSON(`${base}/${playwright.id}`, { method: "PUT", body: { name: "browser-production" } });
-    await api.requestJSON(`${base}/${deepwiki.id}`, { method: "PUT", body: { name: "public-repository-docs" } });
     await page.reload();
     const renamed = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.id === playwright.id);
     expect(renamed).toMatchObject({ name: "browser-production", template_key: "playwright" });
     await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();
     for (const saved of servers) {
-      const name = saved.id === playwright.id ? "browser-production" : saved.id === deepwiki.id ? "public-repository-docs" : saved.name;
+      const name = saved.id === playwright.id ? "browser-production" : saved.name;
       const row = page.getByRole("listitem").filter({ has: page.getByText(name, { exact: true }) });
       await expect(row.getByText(saved.transport === "http" ? "Streamable HTTP" : "STDIO", { exact: true })).toBeVisible();
       expect(await row.locator("svg").first().evaluate((icon) => ({
@@ -225,7 +277,7 @@ test("creates and explicitly assigns all five recipes, preserves source after re
     await page.getByRole("button", { name: `Use sequential-thinking: Assign to ${agents[1]!.name}`, exact: true }).click();
     const dialog = page.getByRole("dialog").last();
     await dialog.getByRole("button", { name: "Done", exact: true }).click();
-    expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(5);
+    expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(recipes.length);
     expect(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[1]!.id}/mcp-servers`)).toEqual(expect.arrayContaining([expect.objectContaining({ name: "sequential-thinking", enabled: true })]));
 
     const longAgentName = "Release reviewer for international customer onboarding and browser validation";
@@ -257,9 +309,21 @@ test("creates and explicitly assigns all five recipes, preserves source after re
     await page.reload();
     await page.getByRole("tab", { name: "MCP 市场", exact: true }).click();
     await capture(page, info, "market-chinese-wide");
-    await market.getByRole("button", { name: "文档与知识", exact: true }).click();
+    await market.getByRole("button", { name: "数据库", exact: true }).click();
     await expect(market.getByRole("status")).toHaveText("找到 2 个模板");
-    await capture(page, info, "documentation-filter-chinese-wide");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await market.getByRole("button", { name: "查看配置：DBHub", exact: true }).click();
+    const databaseDialog = page.getByRole("dialog");
+    const databaseInput = databaseDialog.getByLabel("数据库连接地址", { exact: false });
+    await expect(databaseInput).toHaveAttribute("type", "password");
+    await expect(databaseInput).toHaveValue("");
+    await databaseInput.fill(recipeInputs.dbhub!.value);
+    await capture(page, info, "database-input-chinese-masked-narrow");
+    await page.keyboard.press("Escape");
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await market.getByRole("button", { name: "浏览器", exact: true }).click();
+    await expect(market.getByRole("status")).toHaveText("找到 2 个模板");
+    await capture(page, info, "browser-filter-chinese-wide");
     await page.getByRole("tab", { name: "共享配置", exact: true }).click();
     await capture(page, info, "workspace-chinese-wide");
     expect(errors).toEqual([]);
@@ -276,7 +340,7 @@ test("retries a failed assignment without recreating the saved MCP or repeating 
     if (request.method() === "POST" && /\/mcp-servers$/.test(new URL(request.url()).pathname)) requests.push(new URL(request.url()).pathname);
   });
   const failedPath = `/api/agents/${agents[1]!.id}/mcp-servers`;
-  const failure = `**${failedPath}`;
+  const failure = (url: URL) => url.pathname === failedPath;
   try {
     await page.route(failure, (route) => route.request().method() === "POST"
       ? route.fulfill({ status: 503, json: { error: "Temporary assignment failure" } })

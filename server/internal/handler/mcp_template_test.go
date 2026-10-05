@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -33,6 +34,46 @@ func listMcpServerTemplatesForTest(t *testing.T, language string) (int, []McpSer
 		}
 	}
 	return w.Code, body.Templates, raw
+}
+
+func TestListMcpServerTemplates_InputMetadataIsPublicOnly(t *testing.T) {
+	for _, language := range []string{"en", "zh"} {
+		_, _, raw := listMcpServerTemplatesForTest(t, language)
+		var body struct {
+			Templates []map[string]json.RawMessage `json:"templates"`
+		}
+		if err := json.Unmarshal([]byte(raw), &body); err != nil {
+			t.Fatal(err)
+		}
+		found := map[string]bool{}
+		for _, template := range body.Templates {
+			var key string
+			if err := json.Unmarshal(template["key"], &key); err != nil {
+				t.Fatal(err)
+			}
+			var inputs []map[string]any
+			if err := json.Unmarshal(template["inputs"], &inputs); err != nil {
+				t.Fatalf("%s lacks an inputs collection", key)
+			}
+			if key != "serena" && key != "dbhub" && key != "postgres-mcp" {
+				continue
+			}
+			found[key] = true
+			if len(inputs) != 1 {
+				t.Fatalf("%s should expose one required input", key)
+			}
+			input := inputs[0]
+			if len(input) != 5 || input["required"] != true || input["secret"] != (key != "serena") || input["label"] == "" || input["description"] == "" {
+				t.Fatalf("%s has invalid public input metadata", key)
+			}
+			if strings.Contains(string(template["config"]), "DATABASE_URI") {
+				t.Fatal("input destination leaked into public recipe")
+			}
+		}
+		if len(found) != 3 {
+			t.Fatal("missing templates with required inputs")
+		}
+	}
 }
 
 func TestListMcpServerTemplates_ReturnsCatalog(t *testing.T) {

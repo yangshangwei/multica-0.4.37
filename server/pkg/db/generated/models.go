@@ -1808,6 +1808,7 @@ type WorkspaceMcpServer struct {
 	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
 	TemplateKey     pgtype.Text        `json:"template_key"`
 	TemplateVersion pgtype.Text        `json:"template_version"`
+	TemplateSource  pgtype.Text        `json:"template_source"`
 }
 
 type WorkspaceShareLink struct {

@@ -28,14 +28,16 @@ const data = vi.hoisted(() => ({
   wsId: "workspace-1",
   servers: [] as Array<Record<string, unknown>>,
   isLoading: false,
+  refetch: vi.fn(),
   role: "owner" as "owner" | "admin" | "member",
 }));
 
 vi.mock("@tanstack/react-query", () => ({
-  useQuery: () => ({ data: data.servers, isLoading: data.isLoading }),
+  useQuery: () => ({ data: data.servers, isLoading: data.isLoading, refetch: data.refetch }),
 }));
 
 vi.mock("@multica/core/workspace/queries", () => ({
+  mcpServerTemplateListOptions: () => ({ queryKey: ["mcp-server-templates"] }),
   workspaceMcpServersOptions: () => ({ queryKey: ["workspaces", "workspace-1", "mcp-servers"] }),
 }));
 
@@ -103,6 +105,12 @@ describe("McpTab", () => {
     ["sequential-thinking", "brain", "stdio", "STDIO"],
     ["microsoft-learn", "book-open", "http", "Streamable HTTP"],
     ["deepwiki", "search", "http", "Streamable HTTP"],
+    ["serena", "code", "stdio", "STDIO"],
+    ["codebase-memory", "workflow", "stdio", "STDIO"],
+    ["repomix", "package", "stdio", "STDIO"],
+    ["markitdown", "file-text", "stdio", "STDIO"],
+    ["dbhub", "database", "stdio", "STDIO"],
+    ["postgres-mcp", "database", "stdio", "STDIO"],
   ])("keeps the %s template icon after an instance is renamed", (templateKey, icon, transport, label) => {
     data.servers = [server({ name: "renamed-tool", transport, template_key: templateKey })];
     const view = render(<McpTab />, { wrapper: Wrapper });
@@ -115,6 +123,15 @@ describe("McpTab", () => {
     view.rerender(<McpTab />);
     expect(row.querySelector(`svg.lucide-${icon}`)).toBeNull();
     expect(screen.getByRole("img", { name: label })).toBeVisible();
+  });
+
+  it("preserves deployment provenance without borrowing a same-key builtin icon", () => {
+    data.servers = [server({ name: "team-browser", template_key: "playwright", template_source: "deployment" })];
+    render(<McpTab />, { wrapper: Wrapper });
+    const row = screen.getByText("team-browser", { exact: true }).closest("li")!;
+    expect(row).toHaveTextContent("Deployment provided");
+    expect(row.querySelector("svg.lucide-workflow")).toBeNull();
+    expect(row.querySelector("svg.lucide-globe")).not.toBeNull();
   });
 
   it("does not infer template identity from a custom configuration name", () => {

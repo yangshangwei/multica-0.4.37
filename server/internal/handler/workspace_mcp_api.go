@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -23,6 +24,7 @@ import (
 // `Enabled` is only meaningful on the agent-scoped list, where it reflects the
 // binding's toggle; it is omitted on the workspace library listing.
 type WorkspaceMcpServerResponse struct {
+	TemplateSource  *string `json:"template_source"`
 	TemplateKey     *string `json:"template_key"`
 	TemplateVersion *string `json:"template_version"`
 	ID              string  `json:"id"`
@@ -73,17 +75,29 @@ func mcpTransportOf(entry json.RawMessage) string {
 	return "unknown"
 }
 
-func workspaceMcpServerToResponse(server db.WorkspaceMcpServer) WorkspaceMcpServerResponse {
-	return WorkspaceMcpServerResponse{
+// mcpSummaryForRequest prevents installed clients from associating a deployment
+// copy with a same-key builtin. Management identity is retained for every client.
+func mcpSummaryForRequest(r *http.Request, response WorkspaceMcpServerResponse) WorkspaceMcpServerResponse {
+	if r.URL.Query().Get("mcp_source_version") != "1" && response.TemplateSource != nil && *response.TemplateSource == "deployment" {
+		response.TemplateSource = nil
+		response.TemplateKey = nil
+		response.TemplateVersion = nil
+	}
+	return response
+}
+
+func workspaceMcpServerToResponse(r *http.Request, server db.WorkspaceMcpServer) WorkspaceMcpServerResponse {
+	return mcpSummaryForRequest(r, WorkspaceMcpServerResponse{
 		ID:              uuidToString(server.ID),
 		WorkspaceID:     uuidToString(server.WorkspaceID),
 		Name:            server.Name,
+		TemplateSource:  textToPtr(server.TemplateSource),
 		TemplateKey:     textToPtr(server.TemplateKey),
 		TemplateVersion: textToPtr(server.TemplateVersion),
 		Transport:       mcpTransportOf(server.Config),
 		CreatedAt:       timestampToString(server.CreatedAt),
 		UpdatedAt:       timestampToString(server.UpdatedAt),
-	}
+	})
 }
 
 // ListWorkspaceMcpServers returns the workspace's MCP library. Member-visible:
@@ -105,7 +119,7 @@ func (h *Handler) ListWorkspaceMcpServers(w http.ResponseWriter, r *http.Request
 	}
 	resp := make([]WorkspaceMcpServerResponse, 0, len(servers))
 	for _, server := range servers {
-		resp = append(resp, workspaceMcpServerToResponse(server))
+		resp = append(resp, workspaceMcpServerToResponse(r, server))
 	}
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -133,10 +147,77 @@ func (h *Handler) requireWorkspaceMcpWriter(w http.ResponseWriter, r *http.Reque
 // WorkspaceMcpServerRequest carries one server entry. `config` is the object
 // that sits under a name in `mcpServers`; it is write-only and never returned.
 type WorkspaceMcpServerRequest struct {
+	TemplateSource  *string         `json:"template_source"`
 	TemplateKey     *string         `json:"template_key"`
 	TemplateVersion *string         `json:"template_version"`
 	Name            string          `json:"name"`
 	Config          json.RawMessage `json:"config"`
+	TemplateInputs  json.RawMessage `json:"template_inputs"`
+}
+
+// prepareWorkspaceMcpTemplate accepts values only for a trusted recipe. Raw JSON
+// distinguishes an omitted input map from an explicit null or invalid shape.
+func prepareWorkspaceMcpTemplate(catalog service.McpCatalog, req *WorkspaceMcpServerRequest) error {
+	if req.TemplateSource == nil && req.TemplateKey == nil && req.TemplateVersion == nil {
+		if len(req.TemplateInputs) > 0 {
+			return errors.New("template_inputs requires template_key and template_version")
+		}
+		return nil
+	}
+	if req.TemplateKey == nil || req.TemplateVersion == nil || len(req.Config) > 0 {
+		return errors.New("template_key and template_version are required without config")
+	}
+	if strings.TrimSpace(*req.TemplateKey) == "" || strings.TrimSpace(*req.TemplateVersion) == "" {
+		return errors.New("template_key and template_version must not be empty")
+	}
+	source := "builtin"
+	if req.TemplateSource != nil {
+		source = *req.TemplateSource
+	}
+	if source != "builtin" && source != "deployment" {
+		return errors.New("invalid template_source")
+	}
+	var inputs map[string]string
+	if len(req.TemplateInputs) > 0 {
+		if len(req.TemplateInputs) > 65536 {
+			return errors.New("template_inputs is too large")
+		}
+		// Pointers distinguish null values from legitimate empty strings.
+		var values map[string]*string
+		if err := json.Unmarshal(req.TemplateInputs, &values); err != nil || values == nil {
+			return errors.New("template_inputs must be an object of string values")
+		}
+		inputs = make(map[string]string, len(values))
+		for key, value := range values {
+			if value == nil {
+				return errors.New("template_inputs must be an object of string values")
+			}
+			inputs[key] = *value
+		}
+	}
+	config, err := catalog.Resolve(source, *req.TemplateKey, *req.TemplateVersion, inputs)
+	if err != nil {
+		return err
+	}
+	req.Config, err = json.Marshal(config)
+	if err != nil {
+		return errors.New("failed to prepare the MCP template")
+	}
+	req.TemplateSource = &source
+	return nil
+}
+
+func writeMcpTemplateError(w http.ResponseWriter, err error) {
+	switch {
+	case errors.Is(err, service.ErrMcpCatalogUnavailable):
+		writeErrorCode(w, http.StatusServiceUnavailable, "mcp_catalog_unavailable", "MCP catalog is temporarily unavailable")
+	case errors.Is(err, service.ErrMcpTemplateChanged):
+		writeErrorCode(w, http.StatusConflict, "mcp_template_changed", "MCP template changed; reload it before saving")
+	case errors.Is(err, service.ErrMcpTemplateUnavailable):
+		writeErrorCode(w, http.StatusConflict, "mcp_template_unavailable", "MCP template is no longer available")
+	default:
+		writeError(w, http.StatusBadRequest, err.Error())
+	}
 }
 
 // CreateWorkspaceMcpServer adds a server to the workspace library. It is bound
@@ -162,30 +243,9 @@ func (h *Handler) CreateWorkspaceMcpServer(w http.ResponseWriter, r *http.Reques
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	// Template identities are never accepted alongside client-controlled config.
-	if req.TemplateKey != nil || req.TemplateVersion != nil {
-		if req.TemplateKey == nil || req.TemplateVersion == nil || len(req.Config) > 0 {
-			writeError(w, http.StatusBadRequest, "template_key and template_version are required without config")
-			return
-		}
-		var matched bool
-		for _, template := range service.McpServerTemplates() {
-			if template.Key != *req.TemplateKey || template.Version != *req.TemplateVersion {
-				continue
-			}
-			config, err := json.Marshal(template.Config)
-			if err != nil {
-				writeError(w, http.StatusInternalServerError, "failed to prepare the MCP template")
-				return
-			}
-			req.Config = config
-			matched = true
-			break
-		}
-		if !matched {
-			writeError(w, http.StatusBadRequest, "unknown MCP template or outdated recipe version")
-			return
-		}
+	if err := prepareWorkspaceMcpTemplate(h.McpCatalog, &req); err != nil {
+		writeMcpTemplateError(w, err)
+		return
 	}
 	if err := validateWorkspaceMcpServerEntry(req.Config); err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
@@ -210,6 +270,7 @@ func (h *Handler) CreateWorkspaceMcpServer(w http.ResponseWriter, r *http.Reques
 
 	server, err := qtx.CreateWorkspaceMcpServer(r.Context(), db.CreateWorkspaceMcpServerParams{
 		WorkspaceID:     idUUID,
+		TemplateSource:  ptrToText(req.TemplateSource),
 		TemplateKey:     ptrToText(req.TemplateKey),
 		TemplateVersion: ptrToText(req.TemplateVersion),
 		Name:            name,
@@ -233,7 +294,7 @@ func (h *Handler) CreateWorkspaceMcpServer(w http.ResponseWriter, r *http.Reques
 	// copy of the workspace's credentials.
 	slog.Info("workspace mcp server created", append(logger.RequestAttrs(r),
 		"workspace_id", workspaceID, "server_id", uuidToString(server.ID), "name", server.Name)...)
-	writeJSON(w, http.StatusCreated, workspaceMcpServerToResponse(server))
+	writeJSON(w, http.StatusCreated, workspaceMcpServerToResponse(r, server))
 }
 
 // UpdateWorkspaceMcpServer replaces one library entry. Renaming is safe here:
@@ -258,6 +319,14 @@ func (h *Handler) UpdateWorkspaceMcpServer(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	params := db.UpdateWorkspaceMcpServerParams{ID: serverUUID, WorkspaceID: idUUID}
+	if len(req.TemplateInputs) > 0 {
+		writeError(w, http.StatusBadRequest, "template_inputs is only supported when creating from a template")
+		return
+	}
+	if req.TemplateSource != nil || req.TemplateKey != nil || req.TemplateVersion != nil {
+		writeError(w, http.StatusBadRequest, "template identity is only supported when creating from a template")
+		return
+	}
 	if name := strings.TrimSpace(req.Name); name != "" {
 		if err := validateWorkspaceMcpServerName(name); err != nil {
 			writeError(w, http.StatusBadRequest, err.Error())
@@ -284,7 +353,7 @@ func (h *Handler) UpdateWorkspaceMcpServer(w http.ResponseWriter, r *http.Reques
 	}
 	slog.Info("workspace mcp server updated", append(logger.RequestAttrs(r),
 		"workspace_id", workspaceID, "server_id", uuidToString(server.ID), "name", server.Name)...)
-	writeJSON(w, http.StatusOK, workspaceMcpServerToResponse(server))
+	writeJSON(w, http.StatusOK, workspaceMcpServerToResponse(r, server))
 }
 
 // DeleteWorkspaceMcpServer removes a library entry and every binding to it, in
@@ -367,17 +436,18 @@ func (h *Handler) ListAgentMcpServers(w http.ResponseWriter, r *http.Request) {
 	resp := make([]WorkspaceMcpServerResponse, 0, len(rows))
 	for _, row := range rows {
 		enabled := row.Enabled
-		resp = append(resp, WorkspaceMcpServerResponse{
+		resp = append(resp, mcpSummaryForRequest(r, WorkspaceMcpServerResponse{
 			ID:              uuidToString(row.ID),
 			WorkspaceID:     uuidToString(row.WorkspaceID),
 			Name:            row.Name,
+			TemplateSource:  textToPtr(row.TemplateSource),
 			TemplateKey:     textToPtr(row.TemplateKey),
 			TemplateVersion: textToPtr(row.TemplateVersion),
 			Transport:       mcpTransportOf(row.Config),
 			Enabled:         &enabled,
 			CreatedAt:       timestampToString(row.CreatedAt),
 			UpdatedAt:       timestampToString(row.UpdatedAt),
-		})
+		}))
 	}
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -552,17 +622,18 @@ func (h *Handler) writeAgentMcpServers(w http.ResponseWriter, r *http.Request, a
 	resp := make([]WorkspaceMcpServerResponse, 0, len(rows))
 	for _, row := range rows {
 		enabled := row.Enabled
-		resp = append(resp, WorkspaceMcpServerResponse{
+		resp = append(resp, mcpSummaryForRequest(r, WorkspaceMcpServerResponse{
 			ID:              uuidToString(row.ID),
 			WorkspaceID:     uuidToString(row.WorkspaceID),
 			Name:            row.Name,
+			TemplateSource:  textToPtr(row.TemplateSource),
 			TemplateKey:     textToPtr(row.TemplateKey),
 			TemplateVersion: textToPtr(row.TemplateVersion),
 			Transport:       mcpTransportOf(row.Config),
 			Enabled:         &enabled,
 			CreatedAt:       timestampToString(row.CreatedAt),
 			UpdatedAt:       timestampToString(row.UpdatedAt),
-		})
+		}))
 	}
 	writeJSON(w, http.StatusOK, resp)
 }

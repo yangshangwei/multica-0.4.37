@@ -3569,14 +3569,13 @@ export const SkillTemplateListResponseSchema = z.object({
 
 export const EMPTY_SKILL_TEMPLATE_LIST: SkillTemplate[] = [];
 
-// Built-in MCP catalog entries. `key` is the identity and is kept strict — a
-// blank key would produce a template that cannot save (the add form rejects the
-// empty name). Everything else defaults so a newer backend that adds a field,
-// or an older one that omits one, still renders. `config` is served in full
-// (these templates are credential-free) and stays a permissive record; the
-// client derives transport from it, so no transport field is expected.
+// Source and key identify a recipe. Unknown sources remain distinct so they
+// cannot acquire builtin behavior. Deployment entries never expose config;
+// older builtin catalogs can still derive transport from public configuration.
 export const McpServerTemplateSchema = z.object({
   key: z.string().refine((value) => value.trim().length > 0),
+  source: z.string().default("builtin"),
+  transport: z.string().optional().catch(undefined),
   title: z.string().default(""),
   description: z.string().default(""),
   config: z.record(z.string(), z.unknown()).default({}),
@@ -3584,8 +3583,22 @@ export const McpServerTemplateSchema = z.object({
   category: z.string().optional().catch(undefined),
   requirements: z.array(z.string()).optional().catch(undefined),
   documentation_url: z.string().optional().catch(undefined),
-}).loose().transform(({ documentation_url, ...template }) => ({
+  // Input metadata controls required fields and secret masking. Malformed
+  // definitions must fail closed rather than silently removing those controls.
+  inputs: z.array(z.object({
+    key: z.string().regex(/^[A-Za-z][A-Za-z0-9_]*$/),
+    label: z.string().trim().min(1),
+    description: z.string().default(""),
+    required: z.boolean(),
+    secret: z.boolean(),
+  })).refine((inputs) => new Set(inputs.map((input) => input.key)).size === inputs.length)
+    .nullish().transform((inputs) => inputs ?? []),
+}).refine((template) => template.source !== "deployment" || (
+  !!template.version && (template.transport === "stdio" || template.transport === "http")
+), { message: "Deployment MCP recipes require a version and supported transport" })
+  .transform(({ documentation_url, ...template }) => ({
   ...template,
+  config: template.source === "deployment" ? {} : template.config,
   documentationUrl: documentation_url,
 }));
 
@@ -3656,6 +3669,7 @@ export const EMPTY_SKILL_IMPORT_RESULT: SkillImportResult = {
  * newer backend still parses — the UI has a default branch for it.
  */
 export const WorkspaceMcpServerSchema = z.object({
+  template_source: z.string().trim().min(1).nullish().catch(null),
   template_key: z.string().trim().min(1).nullish().catch(null),
   template_version: z.string().trim().min(1).nullish().catch(null),
   id: z.string().default(""),
@@ -3665,7 +3679,14 @@ export const WorkspaceMcpServerSchema = z.object({
   enabled: z.boolean().optional(),
   created_at: z.string().default(""),
   updated_at: z.string().default(""),
-});
+}).transform((server) => ({
+  ...server,
+  // Only an absent field is the old builtin contract. Explicit null or an
+  // invalid/unknown value must not associate a deployment copy with a builtin.
+  template_source: server.template_source === undefined
+    ? (server.template_key ? "builtin" : null)
+    : server.template_source,
+}));
 
 export const WorkspaceMcpServerListSchema = z.array(WorkspaceMcpServerSchema);
 

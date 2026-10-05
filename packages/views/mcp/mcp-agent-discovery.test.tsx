@@ -41,6 +41,7 @@ vi.mock("@multica/core/workspace/mutations", () => ({
   useAssignWorkspaceMcpServer: () => ({ mutateAsync: mocks.assign }),
   useCreateWorkspaceMcpServer: () => ({ mutateAsync: mocks.create }),
   useCreateWorkspaceMcpServerFromTemplate: () => ({
+    reset: vi.fn(),
     mutateAsync: mocks.recipe,
   }),
 }));

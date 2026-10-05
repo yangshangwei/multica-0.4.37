@@ -70,6 +70,9 @@ services:
       # listing — no restart, no rebuild, no migration. An empty or missing
       # directory just leaves the built-in role skills as the only templates.
       - ${SKILL_TEMPLATE_DIRECTORY:-./skill-templates}:/app/data/skill-templates:ro
+      # Deployment MCP recipes are read on each catalog request. This directory
+      # belongs to the API host; commands run later on the agent runtime machine.
+      - ${MCP_TEMPLATE_DIRECTORY:-./mcp-templates}:/app/data/mcp-templates:ro
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER:-multica}:${POSTGRES_PASSWORD:-multica}@postgres:5432/${POSTGRES_DB:-multica}?sslmode=disable
       PORT: "8080"
@@ -162,6 +165,9 @@ services:
       # points at the mounted path, where an empty directory is a valid
       # "nothing mounted" state.
       MULTICA_SKILL_TEMPLATE_DIR: ${MULTICA_SKILL_TEMPLATE_DIR:-/app/data/skill-templates}
+      MULTICA_MCP_TEMPLATE_DIR: ${MULTICA_MCP_TEMPLATE_DIR:-/app/data/mcp-templates}
+      # Allow plain HTTP only for deployment recipes that explicitly need it.
+      MULTICA_MCP_TEMPLATE_ALLOW_HTTP: ${MULTICA_MCP_TEMPLATE_ALLOW_HTTP:-false}
       # Optional API URL shown in self-host daemon setup commands. Set this
       # when the daemon reaches the API through a different URL than the one
       # used for public webhook URLs; otherwise MULTICA_PUBLIC_URL is used.

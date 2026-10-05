@@ -317,7 +317,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
                     key={server.id}
                     name={server.name}
                     transport={server.transport}
-                    icon={server.template_key ? <McpTemplateIcon templateKey={server.template_key} /> : undefined}
+                    icon={server.template_key ? <McpTemplateIcon templateKey={server.template_key} source={server.template_source} /> : undefined}
                     status={
                       server.enabled === false ? (
                         <Badge variant="secondary">
@@ -332,6 +332,12 @@ function McpWorkspaceTab({ wsId, presentation }: {
                             variant="outline"
                             className="max-w-full whitespace-normal break-all"
                           >
+                            {server.template_source === "deployment"
+                              ? t(($) => $.mcp.market.source_deployment)
+                              : server.template_source !== undefined && server.template_source !== "builtin"
+                                ? t(($) => $.mcp.market.source_unknown)
+                                : t(($) => $.mcp.market.source_builtin)}
+                            {" · "}
                             {t(($) => $.mcp.market.source, {
                               name: server.template_key,
                             })}

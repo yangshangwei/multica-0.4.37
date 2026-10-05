@@ -1,24 +1,31 @@
 import { AVATAR_ICON_COMPONENTS } from "@multica/ui/lib/avatar-icon";
 import { cn } from "@multica/ui/lib/utils";
 
+const templateIcons: Record<string, keyof typeof AVATAR_ICON_COMPONENTS> = {
+  "chrome-devtools": "bug",
+  playwright: "workflow",
+  "sequential-thinking": "brain",
+  "microsoft-learn": "book-open",
+  deepwiki: "search",
+  serena: "code",
+  "codebase-memory": "workflow",
+  repomix: "package",
+  markitdown: "file-text",
+  dbhub: "database",
+  "postgres-mcp": "database",
+};
+
 /** Template identity survives instance renames; never infer it from a name. */
-export function McpTemplateIcon({ templateKey, category }: {
+export function McpTemplateIcon({ templateKey, source = "builtin", category }: {
   templateKey: string;
+  source?: string | null;
   category?: string;
 }) {
-  const reasoning = templateKey === "sequential-thinking" || category === "reasoning";
-  const documentation = templateKey === "microsoft-learn" || templateKey === "deepwiki" || category === "documentation";
-  const Icon = templateKey === "chrome-devtools"
-    ? AVATAR_ICON_COMPONENTS.bug
-    : templateKey === "playwright"
-      ? AVATAR_ICON_COMPONENTS.workflow
-      : templateKey === "microsoft-learn"
-        ? AVATAR_ICON_COMPONENTS["book-open"]
-        : templateKey === "deepwiki"
-          ? AVATAR_ICON_COMPONENTS.search
-          : reasoning
-            ? AVATAR_ICON_COMPONENTS.brain
-            : AVATAR_ICON_COMPONENTS.globe;
+  const builtinKey = source === "builtin" ? templateKey : "";
+  const reasoning = builtinKey === "sequential-thinking" || category === "reasoning";
+  const documentation = builtinKey === "microsoft-learn" || builtinKey === "deepwiki" || builtinKey === "markitdown" || category === "documentation";
+  const fallback = reasoning ? "brain" : category === "database" ? "database" : category === "coding" ? "code" : "globe";
+  const Icon = AVATAR_ICON_COMPONENTS[templateIcons[builtinKey] ?? fallback];
 
   return (
     <span

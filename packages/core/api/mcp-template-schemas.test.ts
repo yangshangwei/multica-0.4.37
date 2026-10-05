@@ -83,3 +83,47 @@ it("maps market metadata and tolerates malformed optional metadata", () => {
   expect(malformed.templates[0]?.requirements).toBeUndefined();
   expect(malformed.templates[0]?.documentationUrl).toBeUndefined();
 });
+
+it("parses required secret inputs without inventing values for older catalogs", () => {
+  const input = { key: "database_url", label: "Database connection URL", description: "Connect to your database.", required: true, secret: true };
+  expect(parse({ templates: [{ ...MCP_TEMPLATE, inputs: [input] }] }).templates[0]?.inputs).toEqual([input]);
+  expect(parse({ templates: [MCP_TEMPLATE] }).templates[0]?.inputs).toEqual([]);
+  expect(parse({ templates: [{ ...MCP_TEMPLATE, inputs: null }] }).templates[0]?.inputs).toEqual([]);
+});
+
+it("rejects malformed input definitions instead of dropping required fields", () => {
+  const input = { key: "database_url", label: "Database connection URL", description: "", required: true, secret: true };
+  for (const inputs of ["bad", [{}], [{ ...input, required: "true" }], [{ ...input, secret: "true" }], [{ ...input, key: "" }], [input, input]]) {
+    expect(parse({ templates: [{ ...MCP_TEMPLATE, inputs }] }).templates).toEqual([]);
+  }
+});
+
+it("normalizes legacy sources while preserving explicit unknown sources", () => {
+  expect(parse({ templates: [MCP_TEMPLATE] }).templates[0]?.source).toBe("builtin");
+  expect(parse({ templates: [{ ...MCP_TEMPLATE, source: "future" }] }).templates[0]?.source).toBe("future");
+  expect(parse({ templates: [{ ...MCP_TEMPLATE, source: null }] }).templates).toEqual([]);
+});
+
+it("accepts deployment metadata without public configuration and strips private fields", () => {
+  const deployment = {
+    key: "company-search", source: "deployment", version: "sha256:opaque", transport: "http",
+    config: { url: "https://private.test", headers: { Authorization: "hidden" } },
+    target: { kind: "header", name: "Authorization" },
+    inputs: [{ key: "token", label: "Token", required: true, secret: true,
+      target: { kind: "header", name: "Authorization" } }],
+  };
+  const parsed = parse({ templates: [deployment] }).templates[0];
+  expect(parsed).toMatchObject({ source: "deployment", version: "sha256:opaque", transport: "http", config: {} });
+  expect(parsed).not.toHaveProperty("target");
+  expect(parsed?.inputs?.[0]).not.toHaveProperty("target");
+  expect(JSON.stringify(parsed)).not.toContain("hidden");
+  expect(parse({ templates: [{ key: deployment.key, source: "deployment", version: deployment.version, transport: "stdio" }] }).templates).toHaveLength(1);
+});
+
+it.each([
+  { version: undefined }, { version: "" }, { version: 2 },
+  { transport: undefined }, { transport: "sse" }, { transport: false },
+])("rejects an unusable deployment identity %j", (patch) => {
+  const deployment = { key: "company-search", source: "deployment", version: "sha256:opaque", transport: "http" };
+  expect(parse({ templates: [{ ...deployment, ...patch }] }).templates).toEqual([]);
+});

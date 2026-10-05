@@ -312,6 +312,73 @@ The scanner is defensive — a bad entry is skipped with a log warning, never br
 
 Offline bundles carry this compose file and a pre-created `skill-templates/` directory, so an air-gapped install gets the mount and env wiring by default — just drop template folders in before or after starting the stack.
 
+## Ship your own MCP templates
+
+The MCP market's **Deployment** source reads recipes from a directory on the API
+server. The first rollout requires the backend/database and Web/Desktop update;
+later file changes appear without rebuilding or restarting. Saving a template
+creates a workspace configuration; assigning it to an agent remains separate.
+
+Compose already includes the read-only mount and backend settings:
+
+```yaml
+# backend.volumes
+- ${MCP_TEMPLATE_DIRECTORY:-./mcp-templates}:/app/data/mcp-templates:ro
+# backend.environment
+MULTICA_MCP_TEMPLATE_DIR: ${MULTICA_MCP_TEMPLATE_DIR:-/app/data/mcp-templates}
+MULTICA_MCP_TEMPLATE_ALLOW_HTTP: ${MULTICA_MCP_TEMPLATE_ALLOW_HTTP:-false}
+```
+
+Create one folder per template next to the compose file:
+
+```text
+mcp-templates/
+  company-search/
+    mcp.json
+```
+
+For example, a credential-free internal Streamable HTTP service:
+
+```json
+{
+  "schema_version": 1,
+  "titles": { "en": "Company Search", "zh": "公司知识检索" },
+  "category": "documentation",
+  "config": { "type": "http", "url": "https://search.example.internal/mcp" }
+}
+```
+
+The folder name is the key (`A–Z`, `a–z`, digits, `_` or `-`). Use
+`MCP_TEMPLATE_DIRECTORY=/srv/multica/mcp-templates` in `.env` for another host
+directory and keep `MULTICA_MCP_TEMPLATE_DIR` at its container default. Apply
+mount/environment changes with `docker compose -f docker-compose.selfhost.yml up -d backend`.
+Publish file updates with a temporary file and atomic rename inside the mounted
+directory. A single-file mount can keep the old file after replacement.
+
+Use `inputs` for tokens/passwords; static `env` and `headers` are forbidden.
+Fixed input mappings support stdio environment variables/non-secret arguments
+and HTTP headers. Never put credentials in display text, args or URLs.
+Deployment catalog responses omit raw config and input destinations. See
+`docs/mcp-catalog-publishing.md` in the repository or offline bundle for the
+complete `mcp.json` schema, authenticated example, validation limits and errors.
+Plain HTTP requires `MULTICA_MCP_TEMPLATE_ALLOW_HTTP=true` (default false).
+
+The API scans on each catalog request. The visible market refreshes every 30
+seconds; selecting **Deployment** refetches immediately. Invalid files are
+skipped with a backend log warning. Directory-level read/limit failures retain
+the client's last list and draft with a retry error; an empty/missing directory
+successfully lists built-ins. Content hashes reject forms opened before a
+template changed or was removed. Saved configurations and assignments remain
+unchanged. Built-in and deployment templates can share a key without overriding
+one another. Old clients hide new deployment recipes and show saved deployment
+instances as ordinary configurations until upgraded.
+
+The directory belongs to the **API server**. MCP commands, paths, dependencies
+and network access belong to the **agent runtime machine**. This feature does
+not install or distribute software. Multiple API replicas must read identical
+synchronized files. Offline bundles include an empty `mcp-templates/` directory
+and the publishing guide, ready for deployment-owned recipes.
+
 ## Common admin commands
 
 Run all of these from the `multica` repository directory:

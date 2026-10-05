@@ -483,7 +483,6 @@ import {
   EMPTY_SKILL,
   EMPTY_SKILL_LIST,
   EMPTY_SKILL_TEMPLATE_LIST,
-  EMPTY_MCP_SERVER_TEMPLATE_LIST,
   SkillImportResultSchema,
   EMPTY_SKILL_IMPORT_RESULT,
   IssueViewSchema,
@@ -3162,17 +3161,15 @@ export class ApiClient {
    * is nothing here to redact.
    */
   async listWorkspaceMcpServers(workspaceId: string): Promise<WorkspaceMcpServer[]> {
-    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/mcp-servers`);
+    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/mcp-servers?mcp_source_version=1`);
     return parseWithFallback(raw, WorkspaceMcpServerListSchema, [] as WorkspaceMcpServer[], {
       endpoint: "GET /api/workspaces/{id}/mcp-servers",
     });
   }
 
   /**
-   * The built-in MCP catalog, in the reader's language. Config is served in
-   * full because these templates are credential-free public content the
-   * workspace has not yet adopted; selecting one pre-fills the add form and
-   * still saves an ordinary write-only workspace server.
+   * Public MCP recipes in the reader's language. Deployment entries carry only
+   * display metadata and input definitions; creation resolves config server-side.
    */
   async listMcpServerTemplates(
     workspaceId: string,
@@ -3184,12 +3181,14 @@ export class ApiClient {
       `/api/workspaces/${workspaceId}/mcp-servers/templates${query}`,
       workspaceRequestInit({ workspaceId, signal }),
     );
-    return parseWithFallback(
+    const catalog = parseWithFallback<{ templates: McpServerTemplate[] } | null>(
       raw,
       McpServerTemplateListResponseSchema,
-      { templates: EMPTY_MCP_SERVER_TEMPLATE_LIST },
-      { endpoint: "GET /api/workspaces/{id}/mcp-servers/templates" },
-    ).templates as McpServerTemplate[];
+      null,
+      { endpoint: "GET /api/workspaces/{id}/mcp-servers/templates", redact: true },
+    );
+    if (!catalog) throw new Error("MCP catalog response could not be read. Try refreshing the catalog.");
+    return catalog.templates;
   }
 
   /**
@@ -3201,7 +3200,7 @@ export class ApiClient {
     name: string,
     config: Record<string, unknown>,
   ): Promise<WorkspaceMcpServer> {
-    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/mcp-servers`, {
+    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/mcp-servers?mcp_source_version=1`, {
       method: "POST",
       body: JSON.stringify({ name, config }),
     });
@@ -3216,18 +3215,21 @@ export class ApiClient {
     name: string,
     templateKey: string,
     templateVersion: string,
+    templateInputs?: Record<string, string>,
+    templateSource = "builtin",
   ): Promise<WorkspaceMcpServer> {
-    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/mcp-servers`,
+    const raw = await this.fetch<unknown>(`/api/workspaces/${workspaceId}/mcp-servers?mcp_source_version=1`,
       {
         ...workspaceRequestInit({ workspaceId }),
         method: "POST",
-        body: JSON.stringify({ name, template_key: templateKey, template_version: templateVersion }),
+        body: JSON.stringify({ name, template_source: templateSource, template_key: templateKey, template_version: templateVersion, template_inputs: templateInputs }),
       },
     );
     const server = parseWithFallback(raw, WorkspaceMcpServerSchema, EMPTY_WORKSPACE_MCP_SERVER, {
       endpoint: "POST /api/workspaces/{id}/mcp-servers",
     });
     if (!server.id.trim() || server.workspace_id !== workspaceId ||
+        server.template_source !== templateSource ||
         server.template_key !== templateKey || server.template_version !== templateVersion) {
       throw new Error("MCP server creation could not be confirmed. Refresh the workspace library before retrying.");
     }
@@ -3244,7 +3246,7 @@ export class ApiClient {
     update: { name?: string; config?: Record<string, unknown> },
   ): Promise<WorkspaceMcpServer> {
     const raw = await this.fetch<unknown>(
-      `/api/workspaces/${workspaceId}/mcp-servers/${encodeURIComponent(serverId)}`,
+      `/api/workspaces/${workspaceId}/mcp-servers/${encodeURIComponent(serverId)}?mcp_source_version=1`,
       { method: "PUT", body: JSON.stringify(update) },
     );
     return parseWithFallback(raw, WorkspaceMcpServerSchema, EMPTY_WORKSPACE_MCP_SERVER, {
@@ -3262,7 +3264,7 @@ export class ApiClient {
 
   /** The workspace MCP servers assigned to this agent, with their toggles. */
   async listAgentMcpServers(agentId: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<WorkspaceMcpServer[]> {
-    const raw = await this.fetch<unknown>(`/api/agents/${agentId}/mcp-servers`, workspaceRequestInit(options));
+    const raw = await this.fetch<unknown>(`/api/agents/${agentId}/mcp-servers?mcp_source_version=1`, workspaceRequestInit(options));
     return parseWithFallback(raw, WorkspaceMcpServerListSchema, [] as WorkspaceMcpServer[], {
       endpoint: "GET /api/agents/{id}/mcp-servers",
     });
@@ -3273,7 +3275,7 @@ export class ApiClient {
    * resulting assignment list, so the client never has to guess the state.
    */
   async addAgentMcpServer(agentId: string, serverId: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<WorkspaceMcpServer[]> {
-    const raw = await this.fetch<unknown>(`/api/agents/${agentId}/mcp-servers`, {
+    const raw = await this.fetch<unknown>(`/api/agents/${agentId}/mcp-servers?mcp_source_version=1`, {
       ...workspaceRequestInit(options),
       method: "POST",
       body: JSON.stringify({ server_id: serverId }),
@@ -3289,7 +3291,7 @@ export class ApiClient {
     enabled: boolean,
   ): Promise<WorkspaceMcpServer[]> {
     const raw = await this.fetch<unknown>(
-      `/api/agents/${agentId}/mcp-servers/${encodeURIComponent(serverId)}/enabled`,
+      `/api/agents/${agentId}/mcp-servers/${encodeURIComponent(serverId)}/enabled?mcp_source_version=1`,
       { method: "PUT", body: JSON.stringify({ enabled }) },
     );
     return parseWithFallback(raw, WorkspaceMcpServerListSchema, [] as WorkspaceMcpServer[], {
@@ -3299,7 +3301,7 @@ export class ApiClient {
 
   async removeAgentMcpServer(agentId: string, serverId: string): Promise<WorkspaceMcpServer[]> {
     const raw = await this.fetch<unknown>(
-      `/api/agents/${agentId}/mcp-servers/${encodeURIComponent(serverId)}`,
+      `/api/agents/${agentId}/mcp-servers/${encodeURIComponent(serverId)}?mcp_source_version=1`,
       { method: "DELETE" },
     );
     return parseWithFallback(raw, WorkspaceMcpServerListSchema, [] as WorkspaceMcpServer[], {

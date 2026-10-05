@@ -27,6 +27,7 @@ import {
   TabsTrigger,
 } from "@multica/ui/components/ui/tabs";
 import { McpServerDialog } from "../agents/components/tabs/mcp-server-dialog";
+import { mcpTransportLabel } from "../common/mcp-transport";
 import { useT } from "../i18n";
 import { McpTemplateCatalog, type McpCustomPreset } from "./mcp-market";
 import { McpConflictNotice, type McpAgentContext } from "./mcp-setup-dialog";
@@ -139,7 +140,7 @@ export function McpAgentDiscovery({
                 role="status"
                 className="py-6 text-caption text-muted-foreground"
               >
-                {t(($) => $.mcp.builtin_loading)}
+                {t(($) => $.mcp.market.catalog_loading)}
               </p>
             ) : null}
             {library.isError || assignments.isError ? (
@@ -213,6 +214,16 @@ export function McpAgentDiscovery({
                             })}
                     </Button>
                   </div>
+                  <p className="text-caption text-muted-foreground">
+                    {mcpTransportLabel(server.transport)}
+                    {server.template_key ? (
+                      <> · {server.template_source === "deployment"
+                        ? t(($) => $.mcp.market.source_deployment)
+                        : server.template_source !== undefined && server.template_source !== "builtin"
+                          ? t(($) => $.mcp.market.source_unknown)
+                          : t(($) => $.mcp.market.source_builtin)}</>
+                    ) : null}
+                  </p>
                   <McpConflictNotice name={server.name} context={context} />
                   {errors[server.id] ? (
                     <p role="alert" className="text-caption text-destructive">

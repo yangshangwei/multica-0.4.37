@@ -8,6 +8,8 @@ import type {
   McpServerTemplate,
   WorkspaceMcpServer,
 } from "@multica/core/types";
+import { errorCode } from "@multica/core/api";
+import { isUsableMcpTemplate, matchesMcpTemplate } from "./mcp-catalog";
 import { agentListOptions } from "@multica/core/workspace/queries";
 import {
   useAssignWorkspaceMcpServer,
@@ -27,6 +29,11 @@ import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { useT } from "../i18n";
 import type { McpCustomPreset } from "./mcp-market";
+
+function templateInputValue(values: Record<string, string>, key: string): string {
+  const value = Object.prototype.hasOwnProperty.call(values, key) ? values[key] : undefined;
+  return typeof value === "string" ? value : "";
+}
 
 export type McpAgentContext = {
   agent: Pick<Agent, "id" | "name">;
@@ -69,6 +76,10 @@ export function McpSetupDialog({
   template,
   initialServer,
   available,
+  latestTemplate,
+  catalogUnavailable,
+  onRefresh,
+  onReload,
   servers,
   canManage,
   agentContext,
@@ -84,6 +95,10 @@ export function McpSetupDialog({
   | {
       template: McpServerTemplate;
       available: boolean;
+      latestTemplate?: McpServerTemplate;
+      catalogUnavailable?: boolean;
+      onRefresh?: () => Promise<unknown>;
+      onReload?: () => Promise<boolean>;
       onCustom: (preset: McpCustomPreset) => void;
       initialServer?: never;
     }
@@ -91,6 +106,10 @@ export function McpSetupDialog({
       initialServer: WorkspaceMcpServer;
       template?: never;
       available?: never;
+      latestTemplate?: never;
+      catalogUnavailable?: never;
+      onRefresh?: never;
+      onReload?: never;
       onCustom?: never;
     }
 )) {
@@ -114,6 +133,11 @@ export function McpSetupDialog({
     { agentId: string; message: string }[]
   >([]);
   const [error, setError] = useState("");
+  const [templateFailure, setTemplateFailure] = useState<"changed" | "unavailable" | null>(null);
+  const [catalogFailure, setCatalogFailure] = useState(false);
+  const [templateInputs, setTemplateInputs] = useState<Record<string, string>>({});
+  const [inputErrorKey, setInputErrorKey] = useState<string | null>(null);
+  const templateInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [busy, setBusy] = useState(false);
   const operation = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -122,6 +146,7 @@ export function McpSetupDialog({
     if (saved) titleRef.current?.focus();
   }, [saved]);
   const id = useId();
+  const inputs = template?.inputs ?? [];
   const agents = useQuery({
     ...agentListOptions(workspaceId),
     enabled: !!saved && !agentContext,
@@ -140,10 +165,30 @@ export function McpSetupDialog({
       );
   const related =
     servers?.filter(
-      (server) => template && server.template_key === template.key,
+      (server) => template && matchesMcpTemplate(server, template),
     ) ?? [];
-  const recipe =
-    typeof template?.version === "string" && template.version.length > 0;
+  const actionable = !!template && isUsableMcpTemplate(template);
+  const recipe = actionable && typeof template?.version === "string" && template.version.length > 0;
+  const failure = templateFailure ?? (!available ? (latestTemplate ? "changed" : "unavailable") : null);
+  const catalogError = catalogUnavailable || catalogFailure;
+  const reload = async () => {
+    if (operation.current || !onReload) return;
+    operation.current = true;
+    setBusy(true);
+    try {
+      if (await onReload()) {
+        setTemplateInputs({});
+        setTemplateFailure(null);
+        setCatalogFailure(false);
+        setError("");
+        setInputErrorKey(null);
+        inputRef.current?.focus();
+      }
+    } finally {
+      operation.current = false;
+      setBusy(false);
+    }
+  };
   const docsUrl = template?.documentationUrl?.startsWith("https://")
     ? template.documentationUrl
     : null;
@@ -155,7 +200,7 @@ export function McpSetupDialog({
   );
 
   const save = async () => {
-    if (operation.current || !canManage || !available || !servers || !template)
+    if (operation.current || !canManage || !available || failure || !actionable || !servers || !template)
       return;
     const value = name.trim();
     const message = !value
@@ -166,6 +211,7 @@ export function McpSetupDialog({
           ? t(($) => $.mcp.rename_duplicate)
           : "";
     if (message) {
+      setInputErrorKey(null);
       setError(message);
       inputRef.current?.focus();
       return;
@@ -174,24 +220,47 @@ export function McpSetupDialog({
       onCustom?.({ name: value, config: template.config });
       return;
     }
+    const missing = inputs.find((input) => input.required && !templateInputValue(templateInputs, input.key).trim());
+    if (missing) {
+      setInputErrorKey(missing.key);
+      setError(t(($) => $.mcp.market.input_required, { name: missing.label }));
+      templateInputRefs.current[missing.key]?.focus();
+      return;
+    }
     operation.current = true;
     setBusy(true);
     setError("");
+    setInputErrorKey(null);
     try {
       const result = await create.mutateAsync({
         name: value,
+        templateSource: template.source ?? "builtin",
         templateKey: template.key,
         templateVersion: template.version!,
+        ...(inputs.length > 0 ? { templateInputs } : {}),
       });
       if (!result.id) throw new Error(t(($) => $.mcp.market.save_failed));
       setSaved(result);
+      setTemplateInputs({});
     } catch (cause) {
-      setError(
-        cause instanceof Error && cause.message
-          ? cause.message
-          : t(($) => $.mcp.market.save_failed),
-      );
+      switch (errorCode(cause)) {
+        case "mcp_template_changed":
+          setTemplateFailure("changed");
+          void onRefresh?.();
+          break;
+        case "mcp_template_unavailable":
+          setTemplateFailure("unavailable");
+          void onRefresh?.();
+          break;
+        case "mcp_catalog_unavailable":
+          setCatalogFailure(true);
+          break;
+        default:
+          setError(cause instanceof Error && cause.message ? cause.message : t(($) => $.mcp.market.save_failed));
+      }
     } finally {
+      // The dialog retains failed drafts, but the mutation cache must not.
+      create.reset();
       operation.current = false;
       setBusy(false);
     }
@@ -260,7 +329,9 @@ export function McpSetupDialog({
         >
           {!saved ? (
             <>
-              {template?.version ? (
+              {template?.source === "deployment" ? (
+                <p className="text-caption text-muted-foreground">{t(($) => $.mcp.market.source_deployment)}</p>
+              ) : template?.version ? (
                 <p className="text-caption text-muted-foreground">
                   {t(($) => $.mcp.market.version, {
                     version: template.version,
@@ -310,7 +381,10 @@ export function McpSetupDialog({
                           className="h-auto min-h-8 max-w-full whitespace-normal break-all py-1 text-left"
                           disabled={busy}
                           onClick={() => {
-                            if (!operation.current) setSaved(server);
+                            if (!operation.current) {
+                              setTemplateInputs({});
+                              setSaved(server);
+                            }
                           }}
                         >
                           {t(($) => $.mcp.market.reuse, { name: server.name })}
@@ -320,10 +394,29 @@ export function McpSetupDialog({
                   ))}
                 </section>
               ) : null}
-              {!available ? (
-                <p role="alert" className="text-caption">
-                  {t(($) => $.mcp.builtin_empty)}
-                </p>
+              {failure ? (
+                <div role="alert" className="space-y-2 text-caption">
+                  <p>{failure === "changed" ? t(($) => $.mcp.market.template_changed) : t(($) => $.mcp.market.template_unavailable)}</p>
+                  {onReload && latestTemplate ? (
+                    <Button size="sm" variant="outline" disabled={busy} onClick={() => void reload()}>
+                      {t(($) => $.mcp.market.reload_template)}
+                    </Button>
+                  ) : onRefresh ? (
+                    <Button size="sm" variant="outline" disabled={busy} onClick={() => void onRefresh()}>
+                      {t(($) => $.mcp.market.refresh_catalog)}
+                    </Button>
+                  ) : null}
+                </div>
+              ) : null}
+              {catalogError ? (
+                <div role="alert" className="space-y-2 text-caption">
+                  <p>{t(($) => $.mcp.market.catalog_unavailable)}</p>
+                  {onRefresh ? (
+                    <Button size="sm" variant="outline" disabled={busy} onClick={async () => { await onRefresh(); setCatalogFailure(false); }}>
+                      {t(($) => $.mcp.market.refresh_catalog)}
+                    </Button>
+                  ) : null}
+                </div>
               ) : null}
               {!servers ? (
                 <p role="alert" className="text-caption">
@@ -350,7 +443,7 @@ export function McpSetupDialog({
                       setName(event.target.value);
                       setError("");
                     }}
-                    aria-invalid={error ? true : undefined}
+                    aria-invalid={error && !inputErrorKey ? true : undefined}
                     aria-required="true"
                     aria-describedby={`${id}-name-hint${error ? ` ${id}-error` : ""}`}
                     disabled={busy}
@@ -367,6 +460,44 @@ export function McpSetupDialog({
                       ? t(($) => $.mcp.market.save_note)
                       : t(($) => $.mcp.market.legacy_note)}
                   </p>
+                  {inputs.map((input) => (
+                    <div key={input.key} className="space-y-2 pt-3">
+                      <Label htmlFor={`${id}-input-${input.key}`}>
+                        {input.label}
+                        {input.required ? (
+                          <span className="text-caption font-normal text-muted-foreground">
+                            {t(($) => $.mcp.market.required_field)}
+                          </span>
+                        ) : null}
+                      </Label>
+                      <Input
+                        ref={(element) => { templateInputRefs.current[input.key] = element; }}
+                        id={`${id}-input-${input.key}`}
+                        type={input.secret ? "password" : "text"}
+                        value={templateInputValue(templateInputs, input.key)}
+                        onChange={(event) => {
+                          setTemplateInputs((previous) => ({ ...previous, [input.key]: event.target.value }));
+                          setInputErrorKey(null);
+                          setError("");
+                        }}
+                        aria-required={input.required}
+                        aria-invalid={inputErrorKey === input.key ? true : undefined}
+                        aria-describedby={`${id}-input-${input.key}-hint${input.secret ? ` ${id}-input-${input.key}-secret` : ""}${inputErrorKey === input.key ? ` ${id}-error` : ""}`}
+                        disabled={busy}
+                        autoComplete="off"
+                        spellCheck={false}
+                        maxLength={8192}
+                      />
+                      <p id={`${id}-input-${input.key}-hint`} className="text-caption text-muted-foreground">
+                        {input.description}
+                      </p>
+                      {input.secret ? (
+                        <p id={`${id}-input-${input.key}-secret`} className="text-caption text-muted-foreground">
+                          {t(($) => $.mcp.market.secret_input_note)}
+                        </p>
+                      ) : null}
+                    </div>
+                  ))}
                 </form>
               ) : (
                 <p className="text-caption text-muted-foreground">
@@ -493,7 +624,7 @@ export function McpSetupDialog({
             <Button
               type="submit"
               form={`${id}-form`}
-              disabled={busy || !available || !servers}
+              disabled={busy || !available || !!failure || !actionable || !servers}
             >
               {busy ? (
                 <Loader2
@@ -501,7 +632,7 @@ export function McpSetupDialog({
                   aria-hidden="true"
                 />
               ) : null}
-              {recipe
+              {recipe || template.source !== undefined && template.source !== "builtin"
                 ? t(($) => $.mcp.market.save_continue)
                 : t(($) => $.mcp.market.custom)}
             </Button>

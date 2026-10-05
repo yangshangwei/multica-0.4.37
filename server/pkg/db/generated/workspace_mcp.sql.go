@@ -28,9 +28,9 @@ func (q *Queries) AddAgentMcpServer(ctx context.Context, arg AddAgentMcpServerPa
 }
 
 const createWorkspaceMcpServer = `-- name: CreateWorkspaceMcpServer :one
-INSERT INTO workspace_mcp_server (workspace_id, name, config, created_by, template_key, template_version)
-VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version
+INSERT INTO workspace_mcp_server (workspace_id, name, config, created_by, template_key, template_version, template_source)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
+RETURNING id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version, template_source
 `
 
 type CreateWorkspaceMcpServerParams struct {
@@ -40,6 +40,7 @@ type CreateWorkspaceMcpServerParams struct {
 	CreatedBy       pgtype.UUID `json:"created_by"`
 	TemplateKey     pgtype.Text `json:"template_key"`
 	TemplateVersion pgtype.Text `json:"template_version"`
+	TemplateSource  pgtype.Text `json:"template_source"`
 }
 
 func (q *Queries) CreateWorkspaceMcpServer(ctx context.Context, arg CreateWorkspaceMcpServerParams) (WorkspaceMcpServer, error) {
@@ -50,6 +51,7 @@ func (q *Queries) CreateWorkspaceMcpServer(ctx context.Context, arg CreateWorksp
 		arg.CreatedBy,
 		arg.TemplateKey,
 		arg.TemplateVersion,
+		arg.TemplateSource,
 	)
 	var i WorkspaceMcpServer
 	err := row.Scan(
@@ -62,6 +64,7 @@ func (q *Queries) CreateWorkspaceMcpServer(ctx context.Context, arg CreateWorksp
 		&i.UpdatedAt,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.TemplateSource,
 	)
 	return i, err
 }
@@ -96,7 +99,7 @@ func (q *Queries) DeleteWorkspaceMcpServer(ctx context.Context, arg DeleteWorksp
 }
 
 const getWorkspaceMcpServer = `-- name: GetWorkspaceMcpServer :one
-SELECT id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version FROM workspace_mcp_server
+SELECT id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version, template_source FROM workspace_mcp_server
 WHERE id = $1 AND workspace_id = $2
 `
 
@@ -118,12 +121,13 @@ func (q *Queries) GetWorkspaceMcpServer(ctx context.Context, arg GetWorkspaceMcp
 		&i.UpdatedAt,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.TemplateSource,
 	)
 	return i, err
 }
 
 const listAgentMcpServers = `-- name: ListAgentMcpServers :many
-SELECT s.id, s.workspace_id, s.name, s.config, s.created_at, s.updated_at, s.template_key, s.template_version, ams.enabled
+SELECT s.id, s.workspace_id, s.name, s.config, s.created_at, s.updated_at, s.template_key, s.template_version, s.template_source, ams.enabled
 FROM workspace_mcp_server s
 JOIN agent_mcp_server ams ON ams.server_id = s.id
 WHERE ams.agent_id = $1
@@ -139,6 +143,7 @@ type ListAgentMcpServersRow struct {
 	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
 	TemplateKey     pgtype.Text        `json:"template_key"`
 	TemplateVersion pgtype.Text        `json:"template_version"`
+	TemplateSource  pgtype.Text        `json:"template_source"`
 	Enabled         bool               `json:"enabled"`
 }
 
@@ -162,6 +167,7 @@ func (q *Queries) ListAgentMcpServers(ctx context.Context, agentID pgtype.UUID) 
 			&i.UpdatedAt,
 			&i.TemplateKey,
 			&i.TemplateVersion,
+			&i.TemplateSource,
 			&i.Enabled,
 		); err != nil {
 			return nil, err
@@ -211,7 +217,7 @@ func (q *Queries) ListEnabledAgentMcpServers(ctx context.Context, agentID pgtype
 }
 
 const listWorkspaceMcpServers = `-- name: ListWorkspaceMcpServers :many
-SELECT id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version FROM workspace_mcp_server
+SELECT id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version, template_source FROM workspace_mcp_server
 WHERE workspace_id = $1
 ORDER BY name ASC
 `
@@ -238,6 +244,7 @@ func (q *Queries) ListWorkspaceMcpServers(ctx context.Context, workspaceID pgtyp
 			&i.UpdatedAt,
 			&i.TemplateKey,
 			&i.TemplateVersion,
+			&i.TemplateSource,
 		); err != nil {
 			return nil, err
 		}
@@ -334,11 +341,12 @@ const updateWorkspaceMcpServer = `-- name: UpdateWorkspaceMcpServer :one
 UPDATE workspace_mcp_server SET
     name = COALESCE($3, name),
     config = COALESCE($4, config),
+    template_source = CASE WHEN $4::jsonb IS NOT NULL THEN NULL ELSE template_source END,
     template_key = CASE WHEN $4::jsonb IS NOT NULL THEN NULL ELSE template_key END,
     template_version = CASE WHEN $4::jsonb IS NOT NULL THEN NULL ELSE template_version END,
     updated_at = now()
 WHERE id = $1 AND workspace_id = $2
-RETURNING id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version
+RETURNING id, workspace_id, name, config, created_by, created_at, updated_at, template_key, template_version, template_source
 `
 
 type UpdateWorkspaceMcpServerParams struct {
@@ -369,6 +377,7 @@ func (q *Queries) UpdateWorkspaceMcpServer(ctx context.Context, arg UpdateWorksp
 		&i.UpdatedAt,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.TemplateSource,
 	)
 	return i, err
 }

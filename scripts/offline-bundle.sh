@@ -210,6 +210,29 @@ in the "start from a template" picker. A new folder appears on the next listing
 with no restart. See SELF_HOSTING.md "Deploying Skill Templates" for the rules.
 SKILLDOC
 
+# Ship an empty deployment catalog, never the build host's local MCP recipes.
+mkdir -p "$OUT_DIR/mcp-templates" "$OUT_DIR/docs"
+cp docs/mcp-catalog-publishing.md "$OUT_DIR/docs/"
+cat >"$OUT_DIR/mcp-templates/README.txt" <<'MCPDOC'
+Drop one folder per deployment MCP template here, each holding an mcp.json:
+
+  mcp-templates/
+    company-search/
+      mcp.json
+
+See ../docs/mcp-catalog-publishing.md for the schema_version: 1 mcp.json format,
+input mappings, limits, and publishing rules. Do not put credentials here.
+The folder name is the template key; deployment and built-in keys are separate.
+This directory is mounted read-only into the API container. MCP commands run
+on the agent machine, not in this directory; packages and executables are not
+distributed by publishing a template.
+
+After the initial backend/database and Web/Desktop upgrade, file changes show
+in the MCP market's Deployment source on refresh, with no restart or rebuild.
+Use a temporary file and atomic rename to replace mcp.json. Saved workspace
+configurations and assignments are retained when a template changes or is removed.
+MCPDOC
+
 archive_bytes="$(wc -c <"$IMAGES_ARCHIVE" | tr -d ' ')"
 if command -v shasum >/dev/null 2>&1; then
   archive_sha="$(shasum -a 256 "$IMAGES_ARCHIVE" | awk '{print $1}')"
@@ -301,6 +324,20 @@ using Node in the already-loaded frontend image, and saves only
 or network pull is required. The containing directory is mounted read-only in
 the backend, which sees atomic replacements without a restart. Keep
 \`changelog/changelog.json\` as the next generator's \`--history\` input.
+
+## Deployment MCP templates
+
+The bundle includes an empty \`mcp-templates/\` directory and the file format in
+\`docs/mcp-catalog-publishing.md\`. Compose mounts it read-only at
+\`/app/data/mcp-templates\`. Set \`MCP_TEMPLATE_DIRECTORY\` in \`.env\` only to use
+another host directory; leave \`MULTICA_MCP_TEMPLATE_DIR\` at the container path.
+Plain HTTP recipes require \`MULTICA_MCP_TEMPLATE_ALLOW_HTTP=true\`; the default
+is false. Apply mount/environment changes by recreating the backend container.
+
+The first rollout needs the backend/database and Web/Desktop update. Afterward,
+add or replace \`<key>/mcp.json\` to publish without rebuilding or restarting.
+The visible market refreshes every 30 seconds; selecting Deployment refetches
+immediately. Templates do not install runtime software or assign agents.
 
 ## Client machines
 

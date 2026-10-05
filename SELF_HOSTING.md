@@ -797,6 +797,59 @@ Offline bundles carry this compose file, so an air-gapped deployment gets the
 mount and env wiring by default; drop template folders into the deployment's
 `skill-templates/` directory before or after starting the stack.
 
+## Deploying MCP Templates
+
+The MCP market's **Deployment** source lists recipes from a directory on the
+API server. The first rollout needs the backend/database and Web/Desktop update.
+After that, file additions, changes and removals require no rebuild or restart.
+Templates are shared across this deployment's workspaces; saving one creates a
+workspace configuration, and assigning it to an agent is a separate action.
+
+Compose provides these defaults:
+
+```yaml
+# backend.volumes
+- ${MCP_TEMPLATE_DIRECTORY:-./mcp-templates}:/app/data/mcp-templates:ro
+# backend.environment
+MULTICA_MCP_TEMPLATE_DIR: ${MULTICA_MCP_TEMPLATE_DIR:-/app/data/mcp-templates}
+MULTICA_MCP_TEMPLATE_ALLOW_HTTP: ${MULTICA_MCP_TEMPLATE_ALLOW_HTTP:-false}
+```
+
+Create `mcp-templates/<key>/mcp.json` next to the compose file. To use another
+host directory, set `MCP_TEMPLATE_DIRECTORY=/srv/multica/mcp-templates` in `.env`;
+leave the container path at its default. Mount/environment changes require
+recreating the backend container with `docker compose -f docker-compose.selfhost.yml up -d backend`.
+Mount the directory rather than a single file, then publish updates by writing
+a temporary file and atomically renaming it to `mcp.json`.
+
+Use the [manifest example and publishing contract](docs/mcp-catalog-publishing.md#publish-deployment-recipes)
+for `schema_version: 1`. Each manifest declares localized display text, stdio or
+Streamable HTTP configuration, and optional fixed input mappings. HTTPS is the
+default for remote services; enable `MULTICA_MCP_TEMPLATE_ALLOW_HTTP=true` only
+when a deployment recipe needs plain HTTP. Put tokens/passwords in user inputs,
+never in these files; static `env` and `headers` are rejected. Public deployment
+catalog responses expose neither raw configuration nor input destinations.
+
+The API scans on every catalog request. Web/Desktop refresh the visible market
+every 30 seconds and refetch when **Deployment** is selected. A blank or missing
+directory leaves the built-ins available. One invalid file is skipped; directory
+permission/IO or total-limit failures return a catalog error while the client
+retains its last list and draft. Check backend logs for the key/error category.
+
+The folder key is scoped by source: `deployment/playwright` and
+`builtin/playwright` are distinct. Content hashes detect changes between opening
+and saving a form; a stale or removed template requires review or selection again.
+Updating/removing a file never rewrites saved configurations or their assignments.
+Older clients hide deployment recipes and manage existing deployment instances
+as ordinary configurations until upgraded.
+
+This directory is on the **API host**, not the agent machine. Commands, paths,
+executables, package caches and network access must be prepared on the **agent
+runtime**. Publishing does not distribute or execute software. Multiple API
+replicas must read the same synchronized directory contents. Offline bundles
+include an empty `mcp-templates/` directory and a local copy of the publishing
+guide; they never copy the build machine's deployment recipes.
+
 ## Manual Docker Compose Setup
 
 If you prefer running Docker Compose steps manually instead of `make selfhost`:

@@ -32,6 +32,7 @@ export interface Workspace {
  */
 export interface WorkspaceMcpServer {
   /** Trusted recipe identity; cleared whenever configuration is replaced. */
+  template_source?: string | null;
   template_key?: string | null;
   template_version?: string | null;
   id: string;

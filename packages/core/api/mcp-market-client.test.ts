@@ -30,10 +30,10 @@ it("creates a trusted recipe with the captured workspace and no config", async (
     ),
   ).resolves.toMatchObject(server);
   expect(fetchMock).toHaveBeenCalledWith(
-    "https://example.test/api/workspaces/ws-1/mcp-servers",
+    "https://example.test/api/workspaces/ws-1/mcp-servers?mcp_source_version=1",
     expect.objectContaining({
       method: "POST",
-      body: JSON.stringify({ name: "browser", template_key: "playwright", template_version: "1" }),
+      body: JSON.stringify({ name: "browser", template_source: "builtin", template_key: "playwright", template_version: "1" }),
       headers: expect.objectContaining({ "X-Workspace-ID": "ws-1", "X-Workspace-Slug": "" }),
     }),
   );
@@ -60,6 +60,22 @@ it("parses safe source identity while stripping raw configuration", () => {
   expect(WorkspaceMcpServerSchema.parse({
     ...server, template_key: 5, template_version: { bad: true },
   })).toMatchObject({ template_key: null, template_version: null });
+});
+
+it("sends template inputs separately from the trusted configuration and strips echoed secrets", async () => {
+  const templateInputs = { database_url: "postgresql://user:secret@localhost/app" };
+  const response = { ...server, template_key: "postgres-mcp", template_inputs: templateInputs, config: { env: { DATABASE_URI: templateInputs.database_url } } };
+  const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify(response), { status: 201 }));
+  vi.stubGlobal("fetch", fetchMock);
+  const saved = await new ApiClient("https://example.test").createWorkspaceMcpServerFromTemplate(
+    "ws-1", "browser", "postgres-mcp", "1", templateInputs,
+  );
+  expect(JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))).toEqual({
+    name: "browser", template_source: "builtin", template_key: "postgres-mcp", template_version: "1", template_inputs: templateInputs,
+  });
+  expect(saved).not.toHaveProperty("template_inputs");
+  expect(saved).not.toHaveProperty("config");
+  expect(JSON.stringify(saved)).not.toContain("secret");
 });
 
 it("keeps assignment reads and writes in the captured workspace", async () => {

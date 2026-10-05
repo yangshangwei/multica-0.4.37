@@ -4,13 +4,19 @@
 
 The shared workspace MCP page and Settings MCP tab use `McpLibraryCatalog`.
 The agent MCP tab opens `McpAgentDiscovery`, which shows existing workspace
-instances before the same template catalog. The first catalog contains the
-five reviewed keyless templates; it is not an external registry or plugin store.
-The documentation category contains Microsoft Learn and DeepWiki remote HTTP
-recipes. Show their outbound-network and public-content requirements before save;
-do not describe their presence in the catalog as runtime connectivity. New
-category labels ship in English/Chinese; key-based icons remain consistent for
-market cards and saved instances. Publishing rules and the offline
+instances before the same template catalog. The built-in catalog contains nine
+reviewed local recipes, including project/database inputs. Deployment recipes
+come from the API server's `MULTICA_MCP_TEMPLATE_DIR`, not an Electron scan or an
+external registry/plugin store. Source filters are All / Deployment / Built-in;
+source counts ignore search/category filters and categories follow the selected
+source. Keep search when changing source; reset a category that becomes unavailable.
+Microsoft Learn and DeepWiki were withdrawn for intranet deployments; saved
+built-in instances keep their key-based icons. Category filters appear only for
+categories the loaded catalog uses, including coding, database and documentation.
+Show each recipe's requirements before
+save; do not describe a recipe's presence in the catalog as runtime
+connectivity. New category labels ship in English/Chinese; source-aware icons
+remain consistent for market cards and saved instances. Publishing rules and the offline
 `make check-mcp-catalog` gate are documented in `docs/mcp-catalog-publishing.md`.
 The offline gate rejects input placeholders in commands, arguments and URLs,
 including `$NAME` and Windows `%NAME%` as well as braced/angle forms. Keep those
@@ -19,18 +25,58 @@ recipes publishable even when they contain no credential keywords.
 
 ## Identity and configuration
 
-- A template key identifies a recipe, never a user-editable instance name.
-  Multiple instances may share `template_key` and retain distinct names/IDs.
-- Trusted creation sends only name, template key and recipe version. The server
+- `(source, key)` identifies a recipe, never a user-editable instance name.
+  Multiple instances may share that identity and retain distinct names/IDs.
+  Built-in and deployment entries may share a key; React keys, related-instance
+  matching, availability and icon selection must include source.
+- Trusted creation sends name, `template_source`, template key, recipe version and optional
+  `template_inputs` values declared by the catalog's public `inputs` metadata. The server
   resolves configuration, rejects mixed custom configuration and recipe identity,
   and persists provenance. Recipe revision is not an upstream package version or
   a claim that a connection has been verified.
+- Input destinations belong only to the server. Never substitute values into
+  client-controlled config to retain trusted provenance. Missing/invalid inputs
+  fail closed on the server, including requests from older clients.
+- Input definitions control required-field validation and password masking;
+  malformed definitions must fail schema parsing rather than silently vanish.
+  Omitted/null definitions from older catalogs normalize to an empty list.
+- Input values stay in dialog state, are retained on failure and cleared after
+  save/reuse. Reset settled creation mutations and use `gcTime: 0` so secrets
+  do not remain in inactive mutation variables. Never persist a database draft.
 - Rename preserves source identity. Any full custom configuration replacement
-  clears both source fields. Existing rows are not matched or backfilled by name.
+  clears source/key/version. Existing rows are not matched or backfilled by name.
 - Summaries remain write-only: no command, args, URL, env, headers or config
   enters the workspace/assignment query caches. Safe source metadata is allowed.
-- Old catalogs without recipe version use the existing custom editor and do not
-  acquire trusted source identity. Keep advanced custom transport handling intact.
+- Deployment responses expose transport and input metadata but never raw config
+  or targets. Do not offer a custom-editor bypass for a deployment entry.
+- Older catalogs missing source normalize to builtin; missing transport falls
+  back to builtin config. Explicit unknown sources, malformed inputs and missing
+  deployment versions are unusable. Old built-in catalogs without recipe version
+  retain the existing custom editor. Keep advanced custom transport handling intact.
+- Send `mcp_source_version=1` through core on every MCP summary request/response
+  boundary. Older clients without it receive deployment provenance as null,
+  avoiding a false match to a same-key built-in while retaining ordinary management.
+
+## Deployment freshness
+
+- Core owns query options scoped by API base URL, workspace and language. Read
+  the base URL through the platform API, never `process.env` in core.
+- Poll every 30 seconds only while the market/discovery catalog is visible.
+  Refetch on entry, window focus, reconnect and explicit Deployment selection;
+  desktop kept-alive hidden tabs must not poll.
+- Deployment versions are opaque content hashes, not display version labels.
+  Built-in numeric recipe revisions retain their existing meaning.
+- `409 mcp_template_changed` requires refresh and explicit review of the new
+  template; accepting reload clears old input values. A removed/invalid entry
+  returns `409 mcp_template_unavailable` and cannot be saved from its old draft.
+- `503 mcp_catalog_unavailable` is not withdrawal. Preserve cached data and draft
+  on directory-level failure; first-load failure is an error, not an empty source.
+  Input errors also preserve the draft for correction. A successful save pins its
+  instance and assignment step through later catalog changes.
+- Updating/removing files never rewrites saved configurations or assignments.
+  Saved provenance comes from its stored summary, not a lookup in today's catalog.
+  Empty-source copy asks the member to contact their deployment administrator;
+  keep environment variables and mount instructions in deployment documentation.
 
 ## Flow and permissions
 
@@ -95,10 +141,11 @@ recipes publishable even when they contain no credential keywords.
   Brain with the existing purple palette. This is presentation, not skill-category
   metadata on MCP records.
 - Market cards and template-sourced shared configurations use the same
-  `common/mcp-template-icon.tsx` presentation, keyed by `template_key`, not the
+  `common/mcp-template-icon.tsx` presentation, keyed by source + `template_key`, not the
   editable instance name. Renaming retains that icon; replacing the full config
   clears provenance and restores the transport icon. Custom/legacy entries
-  without a template key keep their transport icon, and transport text remains
+  without a template key keep their transport icon; deployment entries use a
+  generic MCP/category icon, never builtin-specific icons by key. Transport text remains
   visible for every row. Do not fetch secret configuration to resolve an icon.
 - Keep the query owner above the library tabs so market counts and cards share
   one query result. Independent discovery mounts its own catalog query wrapper.
@@ -114,6 +161,6 @@ recipes publishable even when they contain no credential keywords.
   responses, explicit workspace identity and failed-operation recovery.
 - `server/internal/handler/workspace_mcp_template_test.go`: recipe validation,
   provenance lifecycle, write-only summaries and human permission gates.
-- `e2e/mcp-market.spec.ts`: real API setup for all five recipes, rename, resume,
+- `e2e/mcp-market.spec.ts`: real API setup for all nine recipes, required/secret inputs, rename, resume,
   contextual reuse, partial failure and a member-owned agent; no real provider
   process or MCP tool execution is started by these tests.

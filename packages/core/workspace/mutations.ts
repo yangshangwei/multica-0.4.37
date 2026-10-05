@@ -106,11 +106,15 @@ export function useCreateWorkspaceMcpServer(wsId: string) {
 export function useCreateWorkspaceMcpServerFromTemplate(wsId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ name, templateKey, templateVersion }: {
+    // Inputs can carry database credentials; discard the inactive mutation.
+    gcTime: 0,
+    mutationFn: ({ name, templateKey, templateVersion, templateInputs, templateSource }: {
       name: string;
       templateKey: string;
       templateVersion: string;
-    }) => api.createWorkspaceMcpServerFromTemplate(wsId, name, templateKey, templateVersion),
+      templateInputs?: Record<string, string>;
+      templateSource?: string;
+    }) => api.createWorkspaceMcpServerFromTemplate(wsId, name, templateKey, templateVersion, templateInputs, templateSource),
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: workspaceKeys.mcpServers(wsId) }),
   });

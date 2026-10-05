@@ -16,6 +16,8 @@ import {
   TabsTrigger,
 } from "@multica/ui/components/ui/tabs";
 import { useT } from "../i18n";
+import { mcpTransportLabel } from "../common/mcp-transport";
+import { filterMcpTemplates, isUsableMcpTemplate, matchesMcpTemplate, mcpTemplateIdentity, mcpTemplateTransport, type McpCatalogSource } from "./mcp-catalog";
 import { McpTemplateIcon } from "../common/mcp-template-icon";
 import { useMcpServerTemplates } from "../settings/hooks/use-mcp-server-templates";
 import { McpSetupDialog, type McpAgentContext } from "./mcp-setup-dialog";
@@ -23,9 +25,7 @@ import { McpSetupDialog, type McpAgentContext } from "./mcp-setup-dialog";
 export type McpCustomPreset = { name: string; config: Record<string, unknown> };
 
 function usableTemplates(templates: McpServerTemplate[] | undefined) {
-  return (templates ?? []).filter(
-    (template) => template.key && Object.keys(template.config ?? {}).length > 0,
-  );
+  return (templates ?? []).filter(isUsableMcpTemplate);
 }
 
 export function McpLibraryCatalog({
@@ -48,7 +48,6 @@ export function McpLibraryCatalog({
   presentation?: "page" | "settings";
 }) {
   const { t } = useT("settings");
-  const templates = useMcpServerTemplates(workspaceId);
   const [choice, setChoice] = useState<"workspace" | "market" | null>(null);
   useEffect(() => {
     if (choice === null && loaded && servers)
@@ -56,6 +55,11 @@ export function McpLibraryCatalog({
   }, [choice, loaded, servers]);
   const view =
     choice ?? (loaded && servers?.length === 0 ? "market" : "workspace");
+  const templates = useMcpServerTemplates(workspaceId, { poll: view === "market" });
+  const { refetch } = templates;
+  useEffect(() => {
+    if (view === "market") void refetch();
+  }, [view, refetch]);
   const panelClass =
     presentation === "page"
       ? "min-h-0 min-w-0 overflow-y-auto px-4 pb-12 pt-4 @2xl/mcp-library:px-6"
@@ -130,7 +134,7 @@ type McpTemplateCatalogProps = {
 };
 
 export function McpTemplateCatalog(props: McpTemplateCatalogProps) {
-  const templates = useMcpServerTemplates(props.workspaceId);
+  const templates = useMcpServerTemplates(props.workspaceId, { poll: true });
   return <McpTemplateCatalogContent {...props} templates={templates} />;
 }
 
@@ -147,21 +151,33 @@ function McpTemplateCatalogContent({
   const { t } = useT("settings");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const [source, setSource] = useState<McpCatalogSource>("all");
   const [selected, setSelected] = useState<McpServerTemplate | null>(null);
   const usable = usableTemplates(templates.data);
-  const matches = usable.filter(
-    (template) =>
-      (category === "all" || template.category === category) &&
-      `${template.key} ${template.title} ${template.description}`
-        .toLocaleLowerCase()
-        .includes(search.trim().toLocaleLowerCase()),
-  );
+  const sourced = filterMcpTemplates(usable, source, "all", "");
+  const activeCategory = category === "all" || sourced.some((template) => template.category === category)
+    ? category : "all";
+  const matches = filterMcpTemplates(usable, source, activeCategory, search);
+  const sources: { value: McpCatalogSource; label: string }[] = [
+    { value: "all", label: t(($) => $.mcp.market.source_all) },
+    { value: "deployment", label: t(($) => $.mcp.market.source_deployment) },
+    { value: "builtin", label: t(($) => $.mcp.market.source_builtin) },
+  ];
+  const latest = selected ? usable.find((template) => mcpTemplateIdentity(template) === mcpTemplateIdentity(selected)) : undefined;
+  // Offer only categories the loaded catalog uses: a deployment can withdraw
+  // every recipe in one, and its filter would only lead to an empty result.
   const categories = [
     { value: "all", label: t(($) => $.mcp.market.all) },
     { value: "browser", label: t(($) => $.mcp.market.browser) },
     { value: "reasoning", label: t(($) => $.mcp.market.reasoning) },
+    { value: "coding", label: t(($) => $.mcp.market.coding) },
+    { value: "database", label: t(($) => $.mcp.market.database) },
     { value: "documentation", label: t(($) => $.mcp.market.documentation_category) },
-  ];
+  ].filter(
+    (item) =>
+      item.value === "all" ||
+      sourced.some((template) => template.category === item.value),
+  );
   return (
     <div className="@container/mcp-market space-y-4" data-testid="mcp-market">
       <div className="relative max-w-xl">
@@ -178,6 +194,30 @@ function McpTemplateCatalogContent({
           placeholder={t(($) => $.mcp.market.search)}
         />
       </div>
+      <div role="group" className="flex flex-wrap gap-2" aria-label={t(($) => $.mcp.market.source_filter)}>
+        {sources.map((item) => (
+          <Button
+            key={item.value}
+            size="sm"
+            variant={source === item.value ? "secondary" : "ghost"}
+            className={source === item.value ? "font-semibold" : "font-normal"}
+            aria-label={item.label}
+            aria-pressed={source === item.value}
+            onClick={() => {
+              setSource(item.value);
+              if (!filterMcpTemplates(usable, item.value, "all", "").some((template) => template.category === category)) setCategory("all");
+              if (item.value === "deployment") void templates.refetch();
+            }}
+          >
+            {item.label}
+            {templates.data !== undefined ? (
+              <span className="text-caption tabular-nums text-muted-foreground">
+                {filterMcpTemplates(usable, item.value, "all", "").length}
+              </span>
+            ) : null}
+          </Button>
+        ))}
+      </div>
       <div
         role="group"
         className="flex flex-wrap gap-2"
@@ -187,9 +227,9 @@ function McpTemplateCatalogContent({
           <Button
             key={item.value}
             size="sm"
-            variant={category === item.value ? "secondary" : "ghost"}
-            className={category === item.value ? "font-semibold" : "font-normal"}
-            aria-pressed={category === item.value}
+            variant={activeCategory === item.value ? "secondary" : "ghost"}
+            className={activeCategory === item.value ? "font-semibold" : "font-normal"}
+            aria-pressed={activeCategory === item.value}
             onClick={() => setCategory(item.value)}
           >
             {item.label}
@@ -210,7 +250,7 @@ function McpTemplateCatalogContent({
             className="size-4 animate-spin motion-reduce:animate-none"
             aria-hidden="true"
           />
-          {t(($) => $.mcp.builtin_loading)}
+          {t(($) => $.mcp.market.catalog_loading)}
         </p>
       ) : null}
       {templates.isError ? (
@@ -218,7 +258,7 @@ function McpTemplateCatalogContent({
           role="alert"
           className="flex flex-wrap items-center gap-3 rounded-lg border p-4"
         >
-          <p className="text-caption">{t(($) => $.mcp.builtin_error)}</p>
+          <p className="text-caption">{templates.data === undefined ? t(($) => $.mcp.market.catalog_error) : t(($) => $.mcp.market.catalog_refresh_error)}</p>
           <Button
             variant="outline"
             size="sm"
@@ -231,9 +271,11 @@ function McpTemplateCatalogContent({
       {!templates.isPending && matches.length === 0 && !templates.isError ? (
         <div className="py-10 text-center">
           <p className="text-body font-medium">
-            {t(($) => $.mcp.market.no_results)}
+            {source === "deployment" && sourced.length === 0
+              ? t(($) => $.mcp.market.deployment_empty)
+              : t(($) => $.mcp.market.no_results)}
           </p>
-          {search || category !== "all" ? (
+          {search || activeCategory !== "all" ? (
             <Button
               variant="ghost"
               className="mt-2"
@@ -244,24 +286,24 @@ function McpTemplateCatalogContent({
             >
               {t(($) => $.mcp.market.clear_filters)}
             </Button>
-          ) : (
+          ) : source !== "deployment" ? (
             <p className="mt-2 text-caption text-muted-foreground">
-              {t(($) => $.mcp.builtin_empty)}
+              {t(($) => $.mcp.market.catalog_empty)}
             </p>
-          )}
+          ) : null}
         </div>
       ) : null}
       <div className="grid grid-cols-1 gap-3 @2xl/mcp-market:grid-cols-2 @5xl/mcp-market:grid-cols-3">
         {matches.map((template) => {
           const related =
-            servers?.filter((server) => server.template_key === template.key) ??
+            servers?.filter((server) => matchesMcpTemplate(server, template)) ??
             [];
           const categoryLabel = categories.find(
             (item) => item.value === template.category,
           )?.label;
           return (
             <div
-              key={template.key}
+              key={mcpTemplateIdentity(template)}
               className="min-w-0 overflow-hidden rounded-lg border bg-card"
             >
               <button
@@ -273,13 +315,17 @@ function McpTemplateCatalogContent({
                 onClick={() => setSelected(template)}
               >
                 <div className="flex w-full min-w-0 items-center gap-3">
-                  <McpTemplateIcon templateKey={template.key} category={template.category} />
+                  <McpTemplateIcon templateKey={template.key} source={template.source} category={template.category} />
                   <h3 className="min-w-0 text-title-sm font-medium [overflow-wrap:anywhere]">
                     {template.title || template.key}
                   </h3>
                 </div>
                 <p className="line-clamp-2 min-h-[2lh] text-body text-muted-foreground [overflow-wrap:anywhere]" title={template.description}>
                   {template.description}
+                </p>
+                <p className="text-caption text-muted-foreground">
+                  {template.source === "deployment" ? t(($) => $.mcp.market.source_deployment) : t(($) => $.mcp.market.source_builtin)}
+                  {" · "}{mcpTransportLabel(mcpTemplateTransport(template))}
                 </p>
                 {categoryLabel ? (
                   <p className="text-caption text-muted-foreground">{categoryLabel}</p>
@@ -303,11 +349,18 @@ function McpTemplateCatalogContent({
         <McpSetupDialog
           workspaceId={workspaceId}
           template={selected}
-          available={usable.some(
-            (template) =>
-              template.key === selected.key &&
-              template.version === selected.version,
-          )}
+          available={latest !== undefined && latest.version === selected.version}
+          latestTemplate={latest}
+          catalogUnavailable={templates.isError}
+          onRefresh={() => templates.refetch()}
+          onReload={async () => {
+            const result = await templates.refetch();
+            if (result.isError) return false;
+            const next = usableTemplates(result.data).find((template) => mcpTemplateIdentity(template) === mcpTemplateIdentity(selected));
+            if (!next) return false;
+            setSelected(next);
+            return true;
+          }}
           servers={servers}
           canManage={canManage}
           agentContext={agentContext}

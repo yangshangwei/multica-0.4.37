@@ -310,6 +310,47 @@ SKILL_TEMPLATE_DIRECTORY=/srv/multica/skill-templates
 
 离线包携带了这份 compose 文件和一个预建的 `skill-templates/` 目录，所以隔离网络的部署默认就有挂载与环境变量接线——启动前后往目录里丢模板文件夹即可。
 
+## 提供自己的 MCP 模板
+
+MCP 市场的**部署提供**来源会读取 API 服务器上的模板目录。首次上线需要升级后端、执行数据库迁移，并更新 Web/桌面客户端；此后新增、修改、撤下文件都无需重新构建或重启。保存模板会创建工作空间配置，分配给智能体仍需单独操作。
+
+Compose 已包含只读挂载和后端设置：
+
+```yaml
+# backend.volumes
+- ${MCP_TEMPLATE_DIRECTORY:-./mcp-templates}:/app/data/mcp-templates:ro
+# backend.environment
+MULTICA_MCP_TEMPLATE_DIR: ${MULTICA_MCP_TEMPLATE_DIR:-/app/data/mcp-templates}
+MULTICA_MCP_TEMPLATE_ALLOW_HTTP: ${MULTICA_MCP_TEMPLATE_ALLOW_HTTP:-false}
+```
+
+在 compose 文件同级目录中，一个模板建一个文件夹：
+
+```text
+mcp-templates/
+  company-search/
+    mcp.json
+```
+
+例如，不需要凭据的内网 Streamable HTTP 服务：
+
+```json
+{
+  "schema_version": 1,
+  "titles": { "en": "Company Search", "zh": "公司知识检索" },
+  "category": "documentation",
+  "config": { "type": "http", "url": "https://search.example.internal/mcp" }
+}
+```
+
+文件夹名就是模板 key，只能包含英文字母、数字、`_` 或 `-`。如果要换宿主机目录，在 `.env` 中设置 `MCP_TEMPLATE_DIRECTORY=/srv/multica/mcp-templates`，容器内的 `MULTICA_MCP_TEMPLATE_DIR` 保持默认。修改挂载或环境变量后，运行 `docker compose -f docker-compose.selfhost.yml up -d backend` 应用配置。后续更新模板时，先在目录中写临时文件，再原子重命名为 `mcp.json`。挂载整个目录，单文件挂载可能在替换后仍读取旧文件。
+
+令牌、密码通过 `inputs` 收集；文件不能包含静态 `env` 或 `headers`。输入可映射到固定的 stdio 环境变量、非秘密命令行参数或 HTTP 请求头。不要把凭据写进展示文案、参数或 URL。部署模板的目录响应不返回原始配置或输入映射目标。完整 `mcp.json` 格式、带认证的示例、校验限额和错误说明见仓库或离线包中的 `docs/mcp-catalog-publishing.md`。明文 HTTP 需要显式设置 `MULTICA_MCP_TEMPLATE_ALLOW_HTTP=true`，默认关闭。
+
+API 每次收到目录请求都会扫描文件。市场可见时每 30 秒刷新，点击**部署提供**立即刷新。单个坏文件会被跳过，后端日志记录对应 key 和错误类别；目录读取失败或总量超限时，客户端保留上次列表和草稿并提示重试。空目录或目录不存在时正常显示内置模板。内容哈希会识别表单打开后发生的修改或撤下，阻止保存旧草稿；已有配置和智能体分配保持不变。内置与部署模板可以使用相同 key，互不覆盖。旧客户端会隐藏部署模板，已保存的部署实例仍可作为普通配置管理，升级后显示完整来源。
+
+这个目录属于 **API 服务器**；MCP 命令、路径、依赖和网络访问条件属于**智能体运行机器**。投放模板不会安装或分发程序。多个 API 副本必须读取同步且一致的目录内容。离线包自带空的 `mcp-templates/` 目录和投放说明，可直接添加本部署的模板。
+
 ## 常用管理命令
 
 以下命令都在 `multica` 仓库目录中运行：

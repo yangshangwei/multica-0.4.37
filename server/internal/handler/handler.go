@@ -241,6 +241,7 @@ type Handler struct {
 	DaemonWorkspaceRefresh WorkspaceSetRefreshNotifier
 	Bus                    *events.Bus
 	TaskService            *service.TaskService
+	McpCatalog             service.McpCatalog
 	PluginService          *service.PluginService
 	IssueService           *service.IssueService
 	AutopilotService       *service.AutopilotService
@@ -542,6 +543,10 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 	// MULTICA_PLUGIN_DIR. Empty when unset, which keeps the template catalog at
 	// exactly the embedded role skills.
 	taskSvc.SkillTemplateDir = strings.TrimSpace(os.Getenv("MULTICA_SKILL_TEMPLATE_DIR"))
+	mcpCatalog := service.McpCatalog{
+		Directory: strings.TrimSpace(os.Getenv("MULTICA_MCP_TEMPLATE_DIR")),
+		AllowHTTP: strings.EqualFold(strings.TrimSpace(os.Getenv("MULTICA_MCP_TEMPLATE_ALLOW_HTTP")), "true"),
+	}
 	h := &Handler{
 		Queries:                      queries,
 		DB:                           executor,
@@ -552,6 +557,7 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 		DaemonWorkspaceRefresh:       daemonWorkspaceRefresh,
 		Bus:                          bus,
 		TaskService:                  taskSvc,
+		McpCatalog:                   mcpCatalog,
 		PluginService:                service.NewPluginService(queries, txStarter),
 		IssueService:                 service.NewIssueService(queries, txStarter, bus, analyticsClient, taskSvc),
 		AutopilotService:             service.NewAutopilotService(queries, txStarter, bus, taskSvc),

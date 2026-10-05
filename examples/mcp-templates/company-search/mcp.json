@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "titles": { "zh": "公司知识检索", "en": "Company Search" },
+  "descriptions": { "zh": "检索内部知识库。", "en": "Search the internal knowledge base." },
+  "category": "documentation",
+  "documentation_url": "https://docs.example.internal/mcp",
+  "requirements": {
+    "zh": ["智能体所在机器能访问公司内网"],
+    "en": ["The agent machine must have access to the internal network"]
+  },
+  "config": {
+    "type": "http",
+    "url": "https://search.example.internal/mcp"
+  },
+  "inputs": [
+    {
+      "key": "access_token",
+      "labels": { "zh": "访问令牌", "en": "Access token" },
+      "required": true,
+      "secret": true,
+      "target": { "kind": "header", "name": "Authorization", "prefix": "Bearer " }
+    }
+  ]
+}

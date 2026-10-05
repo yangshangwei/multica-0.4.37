@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "titles": { "zh": "内部代码工具", "en": "Internal Code Tools" },
+  "descriptions": { "zh": "在智能体机器上运行已安装的代码工具。", "en": "Run an installed code tool on the agent machine." },
+  "category": "coding",
+  "requirements": {
+    "zh": ["智能体机器已安装 company-code-mcp", "项目目录在智能体机器上可访问"],
+    "en": ["company-code-mcp is installed on the agent machine", "The project directory is accessible on the agent machine"]
+  },
+  "config": { "type": "stdio", "command": "company-code-mcp", "args": ["serve"] },
+  "inputs": [
+    {
+      "key": "project_path",
+      "labels": { "zh": "项目路径", "en": "Project path" },
+      "required": true,
+      "validator": "absolute_path",
+      "target": { "kind": "arg", "flag": "--project" }
+    }
+  ]
+}

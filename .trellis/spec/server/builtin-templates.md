@@ -295,6 +295,65 @@ embed-only test (nil `TaskService`). Frontend: `skill-template-schemas.test.ts`
   follow) and skip; then `entry.IsDir()`. Symlink refusal is uniform across the
   top-level entry and supporting files.
 
+## MCP deployment catalog
+
+`McpCatalog` is the shared boundary for listing and trusted creation. It merges
+the nine built-in recipes with `<key>/mcp.json` from `MULTICA_MCP_TEMPLATE_DIR`;
+zero/unset directory configuration retains the built-ins. Inject configuration
+in the handler rather than reading environment variables inside pure parsers.
+The directory belongs to the API server, while stdio commands and remote
+connections belong to the agent runtime. Listing never executes or probes them.
+
+- Manifest schema 1 declares localized metadata, stdio/HTTP config and restricted
+  inputs. Static env/headers and arbitrary command/URL interpolation are forbidden.
+  Inputs map to fixed env/arg/header targets; credentials never go into argv.
+  HTTP requires `MULTICA_MCP_TEMPLATE_ALLOW_HTTP=true`; HTTPS is the default.
+  Public deployment responses contain no config, targets, filesystem paths or
+  input values. Built-ins retain their existing public config for compatibility.
+- Identity is `(source, key)` (`builtin` or `deployment`); same-key sources coexist.
+  Persist nullable `template_source` alongside key/version, backfill existing
+  template rows as builtin, and leave custom rows null. Rename retains identity;
+  full config replacement clears all three fields. No extra index or foreign key.
+- Deployment versions hash the validated normalized content with a stable
+  versioned hash domain. Include config, input mappings/constraints and all
+  localized metadata; ignore whitespace/object order but preserve array order.
+  Versions must survive process restarts, locale changes and replica changes.
+  Built-in numeric revisions keep their semantics.
+- Creation selects source/key/version and resolves inputs from the same snapshot
+  that passed the version check. Missing source means builtin only; unknown source,
+  incomplete identity and simultaneous custom config are rejected. Changing or
+  deleting files never mutates saved instances or bindings.
+- Share the `mcp_source_version=1` serializer boundary across workspace list,
+  create/update and agent-assignment summaries. Without it, deployment source/key/
+  version are null while ordinary management fields remain. Built-ins are unchanged.
+  This prevents an old client from associating deployment/playwright with builtin/playwright.
+- Scan on every request with bounded enumeration/read budgets: 64 KiB per file,
+  256 first-level entries, 4 MiB total reads including invalid files. Reject unknown
+  fields/schema, duplicate JSON keys, trailing JSON, excessive depth, symlinks,
+  escapes and special files; constrain file opens to the root during races.
+- Empty/unset/missing directories successfully return built-ins. Skip individual
+  invalid manifests with key/error-category logs. Directory IO/permission and
+  aggregate limits return `503 mcp_catalog_unavailable`, not a partial success.
+  Do not include manifests or input values in logs/errors. Saved management and
+  builtin creation remain usable while the deployment directory is unavailable.
+- Return `409 mcp_template_changed` for a stale version and
+  `409 mcp_template_unavailable` for a removed/invalid selected entry. Ordinary
+  input/source validation remains 400. Clients use codes, not English text.
+
+Compose mounts `${MCP_TEMPLATE_DIRECTORY:-./mcp-templates}` read-only at
+`/app/data/mcp-templates`. Offline bundles provide an empty directory and the
+manifest guide, not build-host recipes. First rollout needs a backend/database
+and client update; later atomic file replacements require no restart. Multiple
+API replicas must mount synchronized contents. Format, publication and rollback
+semantics live in `docs/mcp-catalog-publishing.md`.
+
+Required coverage: stable hashes and source collisions; live file add/update/remove;
+invalid-entry isolation versus directory failure; strict parsing and read/path
+limits; restricted input resolution; stale/unavailable errors; write-only summaries;
+legacy source negotiation; rename/replacement and retained assignments. Handler
+tests need an isolated migrated database and must actually execute, not pass via
+the no-database `TestMain` exit.
+
 ## Onboarding skills require task provenance
 
 `BuiltinSkills()` returns general platform skills. Use `TaskBuiltinSkills` for

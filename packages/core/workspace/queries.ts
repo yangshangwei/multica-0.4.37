@@ -24,6 +24,8 @@ export const workspaceKeys = {
   skillTemplates: (wsId: string) => ["workspaces", wsId, "skill-templates"] as const,
   assigneeFrequency: (wsId: string) => ["workspaces", wsId, "assignee-frequency"] as const,
   mcpServers: (wsId: string) => ["workspaces", wsId, "mcp-servers"] as const,
+  mcpServerTemplates: (wsId: string, language: string, apiBaseUrl: string) =>
+    ["workspaces", wsId, "mcp-server-templates", apiBaseUrl, language] as const,
 };
 
 export function workspaceListOptions() {
@@ -145,6 +147,29 @@ export function skillTemplateListOptions(wsId: string, { poll = false }: { poll?
     queryFn: ({ signal }) => api.listSkillTemplates(wsId, signal),
     enabled: !!wsId,
     // Mounted template files change without WebSocket events.
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchInterval: poll ? 30_000 : false,
+    refetchIntervalInBackground: false,
+  });
+}
+
+/** Mounted MCP recipes change without WebSocket events. */
+export function mcpServerTemplateListOptions(
+  wsId: string,
+  language: string,
+  { poll = false }: { poll?: boolean } = {},
+) {
+  // The proxy binds this method to the current API instance. Keep it with the
+  // key so an observer surviving a server switch cannot cache the new catalog
+  // under the previous deployment's URL.
+  const listTemplates = api.listMcpServerTemplates;
+  return queryOptions({
+    queryKey: workspaceKeys.mcpServerTemplates(wsId, language, api.getBaseUrl()),
+    queryFn: ({ signal }) => listTemplates(wsId, language, signal),
+    enabled: !!wsId,
     staleTime: 0,
     refetchOnMount: true,
     refetchOnWindowFocus: true,

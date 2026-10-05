@@ -1,44 +1,57 @@
 package handler
 
-import (
-	"net/http"
+import "net/http"
 
-	"github.com/multica-ai/multica/server/internal/service"
-)
-
-// McpServerTemplateResponse is one entry in the built-in MCP catalog.
-//
-// Unlike WorkspaceMcpServerResponse (which is intentionally write-only and
-// never carries url / command / args / headers / env), Config is served in
-// full: these templates are public, credential-free content the workspace has
-// not yet adopted, so there is nothing to protect. The keyless invariant is
-// enforced by builtin_mcp_templates_test.go.
-//
-// No transport is sent: the client derives it from Config via mcpTransport, so
-// echoing a server-computed value would just be a second source of truth.
+// McpServerTemplateResponse exposes catalog metadata. Builtin config remains
+// public for installed clients; deployment config and all input targets stay
+// server-side and are resolved only when a human admin adopts the template.
 type McpServerTemplateResponse struct {
-	Version          string         `json:"version"`
-	Category         string         `json:"category"`
-	Requirements     []string       `json:"requirements"`
-	DocumentationURL string         `json:"documentation_url"`
-	Key              string         `json:"key"`
-	Title            string         `json:"title"`
-	Description      string         `json:"description"`
-	Config           map[string]any `json:"config"`
+	Source           string                     `json:"source"`
+	Transport        string                     `json:"transport"`
+	Version          string                     `json:"version"`
+	Category         string                     `json:"category"`
+	Requirements     []string                   `json:"requirements"`
+	DocumentationURL string                     `json:"documentation_url"`
+	Key              string                     `json:"key"`
+	Title            string                     `json:"title"`
+	Description      string                     `json:"description"`
+	Config           map[string]any             `json:"config,omitempty"`
+	Inputs           []McpTemplateInputResponse `json:"inputs"`
 }
 
-// ListMcpServerTemplates returns the built-in MCP catalog in the requested
-// language. Read-only and workspace-independent: templates ship with the
-// binary, so this answers the same for every workspace. It lives behind the
-// workspace-scoped API group so the client needs no special call shape, and it
+// McpTemplateInputResponse exposes display metadata, never config destinations or saved values.
+type McpTemplateInputResponse struct {
+	Key         string `json:"key"`
+	Label       string `json:"label"`
+	Description string `json:"description"`
+	Required    bool   `json:"required"`
+	Secret      bool   `json:"secret"`
+}
+
+// ListMcpServerTemplates returns the deployment-wide catalog in the requested
+// language. It lives behind the workspace-scoped API group so the client needs
+// no special call shape, and it
 // is member-visible for the same reason as the workspace MCP library — an agent
 // owner needs to see what they can add.
 func (h *Handler) ListMcpServerTemplates(w http.ResponseWriter, r *http.Request) {
 	language := templateLanguageFromRequest(r.URL.Query().Get("language"))
-	templates := service.McpServerTemplates()
+	templates, err := h.McpCatalog.List()
+	if err != nil {
+		writeMcpTemplateError(w, err)
+		return
+	}
 	out := make([]McpServerTemplateResponse, 0, len(templates))
 	for _, template := range templates {
-		out = append(out, McpServerTemplateResponse{
+		inputs := make([]McpTemplateInputResponse, 0, len(template.Inputs))
+		for _, input := range template.Inputs {
+			inputs = append(inputs, McpTemplateInputResponse{
+				Key: input.Key, Label: input.Label(language), Description: input.Description(language),
+				Required: input.Required, Secret: input.Secret,
+			})
+		}
+		response := McpServerTemplateResponse{
+			Source:           template.Source,
+			Transport:        template.Transport,
 			Key:              template.Key,
 			Version:          template.Version,
 			Category:         template.Category,
@@ -46,8 +59,12 @@ func (h *Handler) ListMcpServerTemplates(w http.ResponseWriter, r *http.Request)
 			DocumentationURL: template.DocumentationURL,
 			Title:            template.Title(language),
 			Description:      template.Description(language),
-			Config:           template.Config,
-		})
+			Inputs:           inputs,
+		}
+		if template.Source == "builtin" {
+			response.Config = template.Config
+		}
+		out = append(out, response)
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"templates": out})
 }

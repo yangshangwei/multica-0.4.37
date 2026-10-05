@@ -35,26 +35,12 @@ func TestMcpServerTemplates_Placeholders(t *testing.T) {
 	}
 }
 
-func TestMcpServerTemplates_PublicDocumentation(t *testing.T) {
-	want := map[string]string{
-		"microsoft-learn": "https://learn.microsoft.com/api/mcp",
-		"deepwiki":        "https://mcp.deepwiki.com/mcp",
-	}
+func TestMcpServerTemplates_ExcludesExternalDocumentation(t *testing.T) {
 	for _, template := range McpServerTemplates() {
-		endpoint, ok := want[template.Key]
-		if !ok {
-			continue
+		switch template.Key {
+		case "microsoft-learn", "deepwiki":
+			t.Errorf("external documentation recipe %q must not be built in", template.Key)
 		}
-		if template.Category != "documentation" || template.Version != "1" {
-			t.Errorf("%s: expected documentation recipe 1", template.Key)
-		}
-		if len(template.Config) != 2 || template.Config["type"] != "http" || template.Config["url"] != endpoint {
-			t.Errorf("%s: expected the official keyless HTTP configuration, got %v", template.Key, template.Config)
-		}
-		delete(want, template.Key)
-	}
-	for key := range want {
-		t.Errorf("reviewed public documentation recipe %q is missing", key)
 	}
 }
 
@@ -68,7 +54,7 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 				t.Errorf("recipe version must be a positive integer, got %q", template.Version)
 			}
 			switch template.Category {
-			case "browser", "reasoning", "documentation":
+			case "browser", "reasoning", "documentation", "coding", "database":
 			default:
 				t.Errorf("category %q needs a shared UI label before publication", template.Category)
 			}
@@ -110,7 +96,7 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 					t.Error("command recipes may only declare stdio transport")
 				}
 				args, ok := template.Config["args"].([]any)
-				if !ok || len(args) == 0 {
+				if !ok {
 					t.Error("stdio recipe must have explicit arguments")
 				}
 				for _, arg := range args {
@@ -122,7 +108,15 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 			}
 			for field := range template.Config {
 				if !allowed[field] {
-					t.Errorf("config field %q requires review of the keyless, no-input publishing contract", field)
+					t.Errorf("public config field %q is not allowed; credentials must use write-only inputs", field)
+				}
+			}
+			for _, input := range template.Inputs {
+				if (input.argument == "") == (input.environment == "") {
+					t.Error("input must declare exactly one server-owned destination")
+				}
+				if input.Secret && input.environment == "" {
+					t.Error("secret inputs must be passed through environment variables")
 				}
 			}
 		})
@@ -178,12 +172,9 @@ func TestMcpServerTemplates_Roster(t *testing.T) {
 	}
 }
 
-// TestMcpServerTemplates_NoSecrets enforces the product decision that the first
-// batch ships only keyless templates. It is deliberately strict: adding a
-// template that needs an API key, bearer token, or other credential must FAIL
-// here first, forcing a maintainer to design the secret-placeholder / required-
-// field flow (currently out of scope) instead of quietly shipping a template
-// that cannot work without a value the catalog never collects.
+// TestMcpServerTemplates_NoSecrets keeps public recipes credential-free.
+// Required credentials are collected separately through declared write-only
+// inputs, never embedded as values or unresolved placeholders in Config.
 func TestMcpServerTemplates_NoSecrets(t *testing.T) {
 	secretHint := regexp.MustCompile(`(?i)token|secret|api[_-]?key|password|bearer|authorization`)
 

@@ -2442,7 +2442,7 @@ describe("ApiClient workspace MCP servers", () => {
       .listWorkspaceMcpServers("ws-1");
 
     expect(JSON.stringify(result)).not.toContain("sk-live");
-    expect(result[0]).toEqual(server);
+    expect(result[0]).toEqual({ ...server, template_source: null });
   });
 
   it("keeps an unknown transport rather than dropping the server", async () => {

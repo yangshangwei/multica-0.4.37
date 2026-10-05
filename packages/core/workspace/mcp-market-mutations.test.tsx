@@ -4,11 +4,11 @@ import { act, renderHook, cleanup } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { api } from "../api";
-import { useAssignWorkspaceMcpServer } from "./mutations";
+import { useAssignWorkspaceMcpServer, useCreateWorkspaceMcpServerFromTemplate } from "./mutations";
 import type { WorkspaceMcpServer } from "../types";
 
 vi.mock("../api", () => ({
-  api: { listAgentMcpServers: vi.fn(), addAgentMcpServer: vi.fn() },
+  api: { listAgentMcpServers: vi.fn(), addAgentMcpServer: vi.fn(), createWorkspaceMcpServerFromTemplate: vi.fn() },
 }));
 
 const server: WorkspaceMcpServer = {
@@ -74,5 +74,21 @@ it("cannot mark an assignment successful from an empty or foreign response", asy
   expect(outcome).toMatchObject({
     succeeded: [], failed: [{ agentId: "empty" }, { agentId: "foreign" }],
   });
+  qc.clear();
+});
+
+it("forwards template source and releases sensitive input variables after reset", async () => {
+  vi.mocked(api.createWorkspaceMcpServerFromTemplate).mockResolvedValue(server);
+  const qc = new QueryClient({ defaultOptions: { mutations: { retry: false } } });
+  const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
+  const { result } = renderHook(() => useCreateWorkspaceMcpServerFromTemplate("ws-1"), { wrapper });
+  const templateInputs = { token: "sensitive" };
+  await act(async () => {
+    await result.current.mutateAsync({ name: "search", templateKey: "search", templateVersion: "sha256:opaque", templateSource: "deployment", templateInputs });
+  });
+  expect(api.createWorkspaceMcpServerFromTemplate).toHaveBeenCalledWith("ws-1", "search", "search", "sha256:opaque", templateInputs, "deployment");
+  expect(qc.getMutationCache().getAll()[0]?.options.gcTime).toBe(0);
+  act(() => result.current.reset());
+  await vi.waitFor(() => expect(qc.getMutationCache().getAll()).toHaveLength(0));
   qc.clear();
 });
