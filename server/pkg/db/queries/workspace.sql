@@ -1,7 +1,7 @@
 -- name: ListWorkspaces :many
 SELECT w.id, w.name, w.slug, w.description, w.settings,
        w.created_at, w.updated_at, w.context, w.repos,
-       w.issue_prefix, w.issue_counter, w.avatar_url, w.attribution_fail_closed
+       w.issue_prefix, w.issue_counter, w.avatar_url, w.attribution_fail_closed, w.planning_timezone
 FROM member m
 JOIN workspace w ON w.id = m.workspace_id
 WHERE m.user_id = $1
@@ -96,7 +96,12 @@ SELECT id FROM workspace WHERE id = $1 FOR KEY SHARE;
 -- tables the DELETE below sweeps — they are not cleaned up implicitly. Remove
 -- their workspace-owned rows here so they commit or roll back atomically with
 -- the workspace row.
-WITH ws_installations AS (
+WITH cleared_project_state_change AS (DELETE FROM project_state_change WHERE workspace_id = $1),
+cleared_project_update AS (DELETE FROM project_update WHERE workspace_id = $1),
+cleared_project_update_revision AS (DELETE FROM project_update_revision WHERE workspace_id = $1),
+cleared_project_update_request AS (DELETE FROM project_update_request WHERE workspace_id = $1),
+cleared_project_update_notification AS (DELETE FROM project_update_notification WHERE workspace_id = $1),
+ws_installations AS (
     SELECT id FROM channel_installation WHERE workspace_id = $1
 ),
 ws_sessions AS (
@@ -237,3 +242,6 @@ cleared_client_usage_workspace AS (
     UPDATE client_usage_daily SET workspace_id = NULL WHERE workspace_id = $1
 )
 DELETE FROM workspace WHERE workspace.id = $1;
+
+-- name: UpdateWorkspacePlanningTimezone :one
+UPDATE workspace SET planning_timezone = $2, updated_at = now() WHERE id = $1 RETURNING *;

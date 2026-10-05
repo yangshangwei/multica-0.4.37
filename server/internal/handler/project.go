@@ -22,15 +22,19 @@ import (
 )
 
 type ProjectResponse struct {
-	ID          string  `json:"id"`
-	WorkspaceID string  `json:"workspace_id"`
-	Title       string  `json:"title"`
-	Description *string `json:"description"`
-	Icon        *string `json:"icon"`
-	Status      string  `json:"status"`
-	Priority    string  `json:"priority"`
-	LeadType    *string `json:"lead_type"`
-	LeadID      *string `json:"lead_id"`
+	Revision              int64   `json:"revision"`
+	DescriptionRevision   int64   `json:"description_revision"`
+	InProgressSince       *string `json:"in_progress_since"`
+	InProgressSinceSource *string `json:"in_progress_since_source"`
+	ID                    string  `json:"id"`
+	WorkspaceID           string  `json:"workspace_id"`
+	Title                 string  `json:"title"`
+	Description           *string `json:"description"`
+	Icon                  *string `json:"icon"`
+	Status                string  `json:"status"`
+	Priority              string  `json:"priority"`
+	LeadType              *string `json:"lead_type"`
+	LeadID                *string `json:"lead_id"`
 	// StartDate / DueDate are calendar days ("YYYY-MM-DD"), no time-of-day or
 	// timezone — same contract as issue.start_date / issue.due_date.
 	StartDate  *string `json:"start_date"`
@@ -59,21 +63,25 @@ func projectToResponse(p db.Project) ProjectResponse {
 		defaultSquad = squads[0]
 	}
 	return ProjectResponse{
-		ID:              uuidToString(p.ID),
-		WorkspaceID:     uuidToString(p.WorkspaceID),
-		Title:           p.Title,
-		Description:     textToPtr(p.Description),
-		Icon:            textToPtr(p.Icon),
-		Status:          p.Status,
-		Priority:        p.Priority,
-		LeadType:        textToPtr(p.LeadType),
-		LeadID:          uuidToPtr(p.LeadID),
-		StartDate:       dateToPtr(p.StartDate),
-		DueDate:         dateToPtr(p.DueDate),
-		CreatedAt:       timestampToString(p.CreatedAt),
-		UpdatedAt:       timestampToString(p.UpdatedAt),
-		ExecutionSquad:  defaultSquad,
-		ExecutionSquads: squads,
+		Revision:              p.Revision,
+		DescriptionRevision:   p.DescriptionRevision,
+		InProgressSince:       timestampToPtr(p.InProgressSince),
+		InProgressSinceSource: textToPtr(p.InProgressSinceSource),
+		ID:                    uuidToString(p.ID),
+		WorkspaceID:           uuidToString(p.WorkspaceID),
+		Title:                 p.Title,
+		Description:           textToPtr(p.Description),
+		Icon:                  textToPtr(p.Icon),
+		Status:                p.Status,
+		Priority:              p.Priority,
+		LeadType:              textToPtr(p.LeadType),
+		LeadID:                uuidToPtr(p.LeadID),
+		StartDate:             dateToPtr(p.StartDate),
+		DueDate:               dateToPtr(p.DueDate),
+		CreatedAt:             timestampToString(p.CreatedAt),
+		UpdatedAt:             timestampToString(p.UpdatedAt),
+		ExecutionSquad:        defaultSquad,
+		ExecutionSquads:       squads,
 	}
 }
 
@@ -151,15 +159,18 @@ type CreateProjectResourceRequestPayload struct {
 }
 
 type UpdateProjectRequest struct {
-	Title       *string `json:"title"`
-	Description *string `json:"description"`
-	Icon        *string `json:"icon"`
-	Status      *string `json:"status"`
-	Priority    *string `json:"priority"`
-	LeadType    *string `json:"lead_type"`
-	LeadID      *string `json:"lead_id"`
-	StartDate   *string `json:"start_date"`
-	DueDate     *string `json:"due_date"`
+	ExpectedRevision            *int64  `json:"expected_revision"`
+	ExpectedDescriptionRevision *int64  `json:"expected_description_revision"`
+	StatusReason                *string `json:"status_reason"`
+	Title                       *string `json:"title"`
+	Description                 *string `json:"description"`
+	Icon                        *string `json:"icon"`
+	Status                      *string `json:"status"`
+	Priority                    *string `json:"priority"`
+	LeadType                    *string `json:"lead_type"`
+	LeadID                      *string `json:"lead_id"`
+	StartDate                   *string `json:"start_date"`
+	DueDate                     *string `json:"due_date"`
 }
 
 func (h *Handler) ListProjects(w http.ResponseWriter, r *http.Request) {
@@ -537,13 +548,6 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	prevProject, err := h.Queries.GetProjectInWorkspace(r.Context(), db.GetProjectInWorkspaceParams{
-		ID: idUUID, WorkspaceID: wsUUID,
-	})
-	if err != nil {
-		writeError(w, http.StatusNotFound, "project not found")
-		return
-	}
 	userID, ok := requireUserID(w, r)
 	if !ok {
 		return
@@ -561,101 +565,151 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	var rawFields map[string]json.RawMessage
 	json.Unmarshal(bodyBytes, &rawFields)
 
-	params := db.UpdateProjectParams{
-		ID:          prevProject.ID,
-		Description: prevProject.Description,
-		Icon:        prevProject.Icon,
-		LeadType:    prevProject.LeadType,
-		LeadID:      prevProject.LeadID,
-		StartDate:   prevProject.StartDate,
-		DueDate:     prevProject.DueDate,
-	}
-	if req.Title != nil {
-		params.Title = pgtype.Text{String: *req.Title, Valid: true}
-	}
-	if req.Status != nil {
-		if !validateProjectEnum(w, "status", *req.Status, validProjectStatuses) {
-			return
-		}
-		params.Status = pgtype.Text{String: *req.Status, Valid: true}
-	}
-	if req.Priority != nil {
-		if !validateProjectEnum(w, "priority", *req.Priority, validProjectPriorities) {
-			return
-		}
-		params.Priority = pgtype.Text{String: *req.Priority, Valid: true}
-	}
-	if _, ok := rawFields["description"]; ok {
-		if req.Description != nil {
-			params.Description = pgtype.Text{String: *req.Description, Valid: true}
-		} else {
-			params.Description = pgtype.Text{Valid: false}
-		}
-	}
-	if _, ok := rawFields["icon"]; ok {
-		if req.Icon != nil {
-			icon := strings.TrimSpace(*req.Icon)
-			if !validateProjectIcon(w, icon) {
-				return
+	actorType, actorID := h.resolveActor(r, userID, workspaceID)
+	var project db.Project
+	err = h.runProjectTransaction(r.Context(), wsUUID, parseUUID(userID), func(tx pgx.Tx, qtx *db.Queries) error {
+		prevProject, lockErr := qtx.LockProjectForExecutionSquad(r.Context(), db.LockProjectForExecutionSquadParams{ID: idUUID, WorkspaceID: wsUUID})
+		if lockErr != nil {
+			if errors.Is(lockErr, pgx.ErrNoRows) {
+				return projectErr(404, "project_not_found", "project not found")
 			}
-			params.Icon = pgtype.Text{String: icon, Valid: true}
-		} else {
-			params.Icon = pgtype.Text{Valid: false}
+			return lockErr
 		}
-	}
-	if _, ok := rawFields["lead_type"]; ok {
-		if req.LeadType != nil {
-			params.LeadType = pgtype.Text{String: *req.LeadType, Valid: true}
-		} else {
-			params.LeadType = pgtype.Text{Valid: false}
+		if req.ExpectedRevision != nil && *req.ExpectedRevision != prevProject.Revision {
+			return &projectAPIError{Status: 409, Code: "project_revision_conflict", Message: "project changed", Current: projectToResponse(prevProject)}
 		}
-	}
-	if _, ok := rawFields["lead_id"]; ok {
-		if req.LeadID != nil {
-			leadUUID, ok := parseUUIDOrBadRequest(w, *req.LeadID, "lead_id")
-			if !ok {
-				return
+		params := db.UpdateProjectParams{
+			WorkspaceID: wsUUID,
+			ID:          prevProject.ID,
+			Description: prevProject.Description,
+			Icon:        prevProject.Icon,
+			LeadType:    prevProject.LeadType,
+			LeadID:      prevProject.LeadID,
+			StartDate:   prevProject.StartDate,
+			DueDate:     prevProject.DueDate,
+		}
+		if req.Title != nil {
+			params.Title = pgtype.Text{String: *req.Title, Valid: true}
+		}
+		if req.Status != nil {
+			if !validateProjectEnum(w, "status", *req.Status, validProjectStatuses) {
+				return errProjectResponseWritten
 			}
-			params.LeadID = leadUUID
-		} else {
-			params.LeadID = pgtype.UUID{Valid: false}
+			params.Status = pgtype.Text{String: *req.Status, Valid: true}
 		}
-	}
-	// Dates follow the issue contract: a present key with an empty/null value
-	// clears the date; an absent key leaves the prior value untouched.
-	if _, ok := rawFields["start_date"]; ok {
-		if req.StartDate != nil && *req.StartDate != "" {
-			d, err := util.ParseCalendarDate(*req.StartDate)
-			if err != nil {
-				writeError(w, http.StatusBadRequest, "invalid start_date format, expected YYYY-MM-DD")
-				return
+		if req.Priority != nil {
+			if !validateProjectEnum(w, "priority", *req.Priority, validProjectPriorities) {
+				return errProjectResponseWritten
 			}
-			params.StartDate = d
-		} else {
-			params.StartDate = pgtype.Date{Valid: false} // explicit null = clear date
+			params.Priority = pgtype.Text{String: *req.Priority, Valid: true}
 		}
-	}
-	if _, ok := rawFields["due_date"]; ok {
-		if req.DueDate != nil && *req.DueDate != "" {
-			d, err := util.ParseCalendarDate(*req.DueDate)
-			if err != nil {
-				writeError(w, http.StatusBadRequest, "invalid due_date format, expected YYYY-MM-DD")
-				return
+		if _, ok := rawFields["description"]; ok {
+			if req.Description != nil {
+				params.Description = pgtype.Text{String: *req.Description, Valid: true}
+			} else {
+				params.Description = pgtype.Text{Valid: false}
 			}
-			params.DueDate = d
-		} else {
-			params.DueDate = pgtype.Date{Valid: false} // explicit null = clear date
 		}
+		if _, ok := rawFields["icon"]; ok {
+			if req.Icon != nil {
+				icon := strings.TrimSpace(*req.Icon)
+				if !validateProjectIcon(w, icon) {
+					return errProjectResponseWritten
+				}
+				params.Icon = pgtype.Text{String: icon, Valid: true}
+			} else {
+				params.Icon = pgtype.Text{Valid: false}
+			}
+		}
+		if _, ok := rawFields["lead_type"]; ok {
+			if req.LeadType != nil {
+				params.LeadType = pgtype.Text{String: *req.LeadType, Valid: true}
+			} else {
+				params.LeadType = pgtype.Text{Valid: false}
+			}
+		}
+		if _, ok := rawFields["lead_id"]; ok {
+			if req.LeadID != nil {
+				leadUUID, ok := parseUUIDOrBadRequest(w, *req.LeadID, "lead_id")
+				if !ok {
+					return errProjectResponseWritten
+				}
+				params.LeadID = leadUUID
+			} else {
+				params.LeadID = pgtype.UUID{Valid: false}
+			}
+		}
+		// Dates follow the issue contract: a present key with an empty/null value
+		// clears the date; an absent key leaves the prior value untouched.
+		if _, ok := rawFields["start_date"]; ok {
+			if req.StartDate != nil && *req.StartDate != "" {
+				d, err := util.ParseCalendarDate(*req.StartDate)
+				if err != nil {
+					writeError(w, http.StatusBadRequest, "invalid start_date format, expected YYYY-MM-DD")
+					return errProjectResponseWritten
+				}
+				params.StartDate = d
+			} else {
+				params.StartDate = pgtype.Date{Valid: false} // explicit null = clear date
+			}
+		}
+		if _, ok := rawFields["due_date"]; ok {
+			if req.DueDate != nil && *req.DueDate != "" {
+				d, err := util.ParseCalendarDate(*req.DueDate)
+				if err != nil {
+					writeError(w, http.StatusBadRequest, "invalid due_date format, expected YYYY-MM-DD")
+					return errProjectResponseWritten
+				}
+				params.DueDate = d
+			} else {
+				params.DueDate = pgtype.Date{Valid: false} // explicit null = clear date
+			}
+		}
+		if _, present := rawFields["description"]; present && params.Description != prevProject.Description {
+			if req.ExpectedDescriptionRevision == nil {
+				return projectErr(428, "project_description_revision_required", "this client must supply the description revision")
+			}
+			if *req.ExpectedDescriptionRevision != prevProject.DescriptionRevision {
+				return &projectAPIError{Status: 409, Code: "project_description_conflict", Message: "project description changed", Current: projectToResponse(prevProject)}
+			}
+		}
+		_, startPresent := rawFields["start_date"]
+		_, duePresent := rawFields["due_date"]
+		if (startPresent || duePresent) && params.StartDate.Valid && params.DueDate.Valid && params.StartDate.Time.After(params.DueDate.Time) {
+			return &projectAPIError{Status: 422, Code: "validation_failed", Message: "start_date must not be after due_date", FieldErrors: []map[string]string{{"field": "due_date", "message": "must be on or after start_date"}}}
+		}
+		changed := params.Description != prevProject.Description || params.Icon != prevProject.Icon || params.LeadType != prevProject.LeadType || params.LeadID != prevProject.LeadID || params.StartDate != prevProject.StartDate || params.DueDate != prevProject.DueDate || (params.Title.Valid && params.Title.String != prevProject.Title) || (params.Status.Valid && params.Status.String != prevProject.Status) || (params.Priority.Valid && params.Priority.String != prevProject.Priority)
+		if !changed {
+			project = prevProject
+			return nil
+		}
+		var updateErr error
+		project, updateErr = qtx.UpdateProject(r.Context(), params)
+		if updateErr != nil {
+			return updateErr
+		}
+		if project.Status != prevProject.Status {
+			reason := pgtype.Text{}
+			if req.StatusReason != nil && strings.TrimSpace(*req.StatusReason) != "" {
+				reason = pgtype.Text{String: strings.TrimSpace(*req.StatusReason), Valid: true}
+			}
+			if err := qtx.CreateProjectStateChange(r.Context(), db.CreateProjectStateChangeParams{WorkspaceID: wsUUID, ProjectID: project.ID, ActorType: actorType, ActorID: parseUUID(actorID), FromStatus: prevProject.Status, ToStatus: project.Status, Reason: reason, ProjectRevision: project.Revision}); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	if errors.Is(err, errProjectResponseWritten) {
+		return
 	}
-	project, err := h.Queries.UpdateProject(r.Context(), params)
 	if err != nil {
-		h.writeProjectWriteError(w, r, err, "update")
+		writeProjectAPIError(w, err)
 		return
 	}
 	resp := projectToResponse(project)
 	resp.IssueCount, resp.DoneCount = h.loadProjectIssueStats(r.Context(), wsUUID, project.ID)
 	resp.ResourceCount = h.loadProjectResourceCount(r.Context(), project.ID)
-	h.publish(protocol.EventProjectUpdated, workspaceID, "member", userID, map[string]any{"project": resp})
+	h.publish(protocol.EventProjectUpdated, workspaceID, actorType, actorID, map[string]any{"project": resp})
 	writeJSON(w, http.StatusOK, resp)
 }
 
@@ -862,7 +916,7 @@ func buildProjectSearchQuery(phrase string, terms []string, includeClosed bool) 
 	query := fmt.Sprintf(`SELECT p.id, p.workspace_id, p.title, p.description, p.icon,
 		p.status, p.priority, p.lead_type, p.lead_id,
 		p.start_date, p.due_date,
-		p.created_at, p.updated_at, p.execution_squad,
+		p.created_at, p.updated_at, p.execution_squad, p.revision, p.description_revision, p.in_progress_since, p.in_progress_since_source,
 		COUNT(*) OVER() AS total_count,
 		%s AS match_source
 	FROM project p
@@ -945,6 +999,7 @@ func (h *Handler) SearchProjects(w http.ResponseWriter, r *http.Request) {
 				&row.project.CreatedAt,
 				&row.project.UpdatedAt,
 				&row.project.ExecutionSquad,
+				&row.project.Revision, &row.project.DescriptionRevision, &row.project.InProgressSince, &row.project.InProgressSinceSource,
 				&row.totalCount,
 				&row.matchSource,
 			); err != nil {

@@ -26,10 +26,10 @@ func (q *Queries) CountIssuesByProject(ctx context.Context, projectID pgtype.UUI
 const createProject = `-- name: CreateProject :one
 INSERT INTO project (
     workspace_id, title, description, icon, status,
-    lead_type, lead_id, priority, start_date, due_date, execution_squad
+    lead_type, lead_id, priority, start_date, due_date, execution_squad, in_progress_since, in_progress_since_source
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE($11::jsonb, '{}'::jsonb)
-) RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE($11::jsonb, '{}'::jsonb), CASE WHEN $5::text = 'in_progress' THEN now() END, CASE WHEN $5::text = 'in_progress' THEN 'transition' END
+) RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source
 `
 
 type CreateProjectParams struct {
@@ -76,8 +76,42 @@ func (q *Queries) CreateProject(ctx context.Context, arg CreateProjectParams) (P
 		&i.StartDate,
 		&i.DueDate,
 		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
 	)
 	return i, err
+}
+
+const createProjectStateChange = `-- name: CreateProjectStateChange :exec
+INSERT INTO project_state_change (workspace_id, project_id, actor_type, actor_id, from_status, to_status, reason, project_revision)
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+`
+
+type CreateProjectStateChangeParams struct {
+	WorkspaceID     pgtype.UUID `json:"workspace_id"`
+	ProjectID       pgtype.UUID `json:"project_id"`
+	ActorType       string      `json:"actor_type"`
+	ActorID         pgtype.UUID `json:"actor_id"`
+	FromStatus      string      `json:"from_status"`
+	ToStatus        string      `json:"to_status"`
+	Reason          pgtype.Text `json:"reason"`
+	ProjectRevision int64       `json:"project_revision"`
+}
+
+func (q *Queries) CreateProjectStateChange(ctx context.Context, arg CreateProjectStateChangeParams) error {
+	_, err := q.db.Exec(ctx, createProjectStateChange,
+		arg.WorkspaceID,
+		arg.ProjectID,
+		arg.ActorType,
+		arg.ActorID,
+		arg.FromStatus,
+		arg.ToStatus,
+		arg.Reason,
+		arg.ProjectRevision,
+	)
+	return err
 }
 
 const deleteProject = `-- name: DeleteProject :exec
@@ -96,7 +130,7 @@ func (q *Queries) DeleteProject(ctx context.Context, arg DeleteProjectParams) er
 }
 
 const getProjectInWorkspace = `-- name: GetProjectInWorkspace :one
-SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad FROM project
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project
 WHERE id = $1 AND workspace_id = $2
 `
 
@@ -123,6 +157,10 @@ func (q *Queries) GetProjectInWorkspace(ctx context.Context, arg GetProjectInWor
 		&i.StartDate,
 		&i.DueDate,
 		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
 	)
 	return i, err
 }
@@ -170,7 +208,7 @@ func (q *Queries) GetProjectIssueStats(ctx context.Context, arg GetProjectIssueS
 }
 
 const listProjects = `-- name: ListProjects :many
-SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad FROM project
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project
 WHERE workspace_id = $1
   AND ($2::text IS NULL OR status = $2)
   AND ($3::text IS NULL OR priority = $3)
@@ -207,6 +245,10 @@ func (q *Queries) ListProjects(ctx context.Context, arg ListProjectsParams) ([]P
 			&i.StartDate,
 			&i.DueDate,
 			&i.ExecutionSquad,
+			&i.Revision,
+			&i.DescriptionRevision,
+			&i.InProgressSince,
+			&i.InProgressSinceSource,
 		); err != nil {
 			return nil, err
 		}
@@ -216,6 +258,76 @@ func (q *Queries) ListProjects(ctx context.Context, arg ListProjectsParams) ([]P
 		return nil, err
 	}
 	return items, nil
+}
+
+const lockProjectForAssociation = `-- name: LockProjectForAssociation :one
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project WHERE id = $1 AND workspace_id = $2 FOR SHARE
+`
+
+type LockProjectForAssociationParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) LockProjectForAssociation(ctx context.Context, arg LockProjectForAssociationParams) (Project, error) {
+	row := q.db.QueryRow(ctx, lockProjectForAssociation, arg.ID, arg.WorkspaceID)
+	var i Project
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Title,
+		&i.Description,
+		&i.Icon,
+		&i.Status,
+		&i.LeadType,
+		&i.LeadID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Priority,
+		&i.StartDate,
+		&i.DueDate,
+		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
+	)
+	return i, err
+}
+
+const lockProjectForAssociationNowait = `-- name: LockProjectForAssociationNowait :one
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
+`
+
+type LockProjectForAssociationNowaitParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) LockProjectForAssociationNowait(ctx context.Context, arg LockProjectForAssociationNowaitParams) (Project, error) {
+	row := q.db.QueryRow(ctx, lockProjectForAssociationNowait, arg.ID, arg.WorkspaceID)
+	var i Project
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Title,
+		&i.Description,
+		&i.Icon,
+		&i.Status,
+		&i.LeadType,
+		&i.LeadID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Priority,
+		&i.StartDate,
+		&i.DueDate,
+		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
+	)
+	return i, err
 }
 
 const lockProjectForChatSessionCreate = `-- name: LockProjectForChatSessionCreate :one
@@ -259,7 +371,7 @@ func (q *Queries) LockProjectForDelete(ctx context.Context, arg LockProjectForDe
 }
 
 const lockProjectForExecutionSquad = `-- name: LockProjectForExecutionSquad :one
-SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad FROM project
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project
 WHERE id = $1 AND workspace_id = $2
 FOR UPDATE
 `
@@ -289,6 +401,10 @@ func (q *Queries) LockProjectForExecutionSquad(ctx context.Context, arg LockProj
 		&i.StartDate,
 		&i.DueDate,
 		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
 	)
 	return i, err
 }
@@ -304,9 +420,13 @@ UPDATE project SET
     lead_id = $8,
     start_date = $9,
     due_date = $10,
+    description_revision = description_revision + CASE WHEN description IS DISTINCT FROM $3::text THEN 1 ELSE 0 END,
+    revision = revision + 1,
+    in_progress_since = CASE WHEN COALESCE($5, status) <> 'in_progress' THEN NULL WHEN status <> 'in_progress' THEN now() ELSE in_progress_since END,
+    in_progress_since_source = CASE WHEN COALESCE($5, status) <> 'in_progress' THEN NULL WHEN status <> 'in_progress' THEN 'transition' ELSE in_progress_since_source END,
     updated_at = now()
-WHERE id = $1
-RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad
+WHERE id = $1 AND workspace_id = $11
+RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source
 `
 
 type UpdateProjectParams struct {
@@ -320,6 +440,7 @@ type UpdateProjectParams struct {
 	LeadID      pgtype.UUID `json:"lead_id"`
 	StartDate   pgtype.Date `json:"start_date"`
 	DueDate     pgtype.Date `json:"due_date"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
 }
 
 func (q *Queries) UpdateProject(ctx context.Context, arg UpdateProjectParams) (Project, error) {
@@ -334,6 +455,7 @@ func (q *Queries) UpdateProject(ctx context.Context, arg UpdateProjectParams) (P
 		arg.LeadID,
 		arg.StartDate,
 		arg.DueDate,
+		arg.WorkspaceID,
 	)
 	var i Project
 	err := row.Scan(
@@ -351,14 +473,18 @@ func (q *Queries) UpdateProject(ctx context.Context, arg UpdateProjectParams) (P
 		&i.StartDate,
 		&i.DueDate,
 		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
 	)
 	return i, err
 }
 
 const updateProjectExecutionSquad = `-- name: UpdateProjectExecutionSquad :one
-UPDATE project SET execution_squad = $3, updated_at = now()
+UPDATE project SET revision = revision + CASE WHEN execution_squad IS DISTINCT FROM $3::jsonb THEN 1 ELSE 0 END, execution_squad = $3, updated_at = now()
 WHERE id = $1 AND workspace_id = $2
-RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad
+RETURNING id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source
 `
 
 type UpdateProjectExecutionSquadParams struct {
@@ -385,6 +511,10 @@ func (q *Queries) UpdateProjectExecutionSquad(ctx context.Context, arg UpdatePro
 		&i.StartDate,
 		&i.DueDate,
 		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
 	)
 	return i, err
 }

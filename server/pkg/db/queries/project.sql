@@ -17,7 +17,7 @@ WHERE id = $1 AND workspace_id = $2
 FOR UPDATE;
 
 -- name: UpdateProjectExecutionSquad :one
-UPDATE project SET execution_squad = $3, updated_at = now()
+UPDATE project SET revision = revision + CASE WHEN execution_squad IS DISTINCT FROM $3::jsonb THEN 1 ELSE 0 END, execution_squad = $3, updated_at = now()
 WHERE id = $1 AND workspace_id = $2
 RETURNING *;
 
@@ -38,9 +38,9 @@ FOR UPDATE;
 -- name: CreateProject :one
 INSERT INTO project (
     workspace_id, title, description, icon, status,
-    lead_type, lead_id, priority, start_date, due_date, execution_squad
+    lead_type, lead_id, priority, start_date, due_date, execution_squad, in_progress_since, in_progress_since_source
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE(sqlc.narg('execution_squad')::jsonb, '{}'::jsonb)
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, COALESCE(sqlc.narg('execution_squad')::jsonb, '{}'::jsonb), CASE WHEN $5::text = 'in_progress' THEN now() END, CASE WHEN $5::text = 'in_progress' THEN 'transition' END
 ) RETURNING *;
 
 -- name: UpdateProject :one
@@ -54,8 +54,12 @@ UPDATE project SET
     lead_id = sqlc.narg('lead_id'),
     start_date = sqlc.narg('start_date'),
     due_date = sqlc.narg('due_date'),
+    description_revision = description_revision + CASE WHEN description IS DISTINCT FROM sqlc.narg('description')::text THEN 1 ELSE 0 END,
+    revision = revision + 1,
+    in_progress_since = CASE WHEN COALESCE(sqlc.narg('status'), status) <> 'in_progress' THEN NULL WHEN status <> 'in_progress' THEN now() ELSE in_progress_since END,
+    in_progress_since_source = CASE WHEN COALESCE(sqlc.narg('status'), status) <> 'in_progress' THEN NULL WHEN status <> 'in_progress' THEN 'transition' ELSE in_progress_since_source END,
     updated_at = now()
-WHERE id = $1
+WHERE id = $1 AND workspace_id = sqlc.arg('workspace_id')
 RETURNING *;
 
 -- name: DeleteProject :exec
@@ -74,3 +78,13 @@ FROM issue
 WHERE admission_status IN ('not_required', 'accepted') AND workspace_id = sqlc.arg('workspace_id')::uuid
   AND project_id = ANY(sqlc.arg('project_ids')::uuid[])
 GROUP BY project_id;
+
+-- name: LockProjectForAssociation :one
+SELECT * FROM project WHERE id = $1 AND workspace_id = $2 FOR SHARE;
+
+-- name: LockProjectForAssociationNowait :one
+SELECT * FROM project WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT;
+
+-- name: CreateProjectStateChange :exec
+INSERT INTO project_state_change (workspace_id, project_id, actor_type, actor_id, from_status, to_status, reason, project_revision)
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8);

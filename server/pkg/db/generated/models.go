@@ -1411,20 +1411,24 @@ type PluginStorage struct {
 }
 
 type Project struct {
-	ID             pgtype.UUID        `json:"id"`
-	WorkspaceID    pgtype.UUID        `json:"workspace_id"`
-	Title          string             `json:"title"`
-	Description    pgtype.Text        `json:"description"`
-	Icon           pgtype.Text        `json:"icon"`
-	Status         string             `json:"status"`
-	LeadType       pgtype.Text        `json:"lead_type"`
-	LeadID         pgtype.UUID        `json:"lead_id"`
-	CreatedAt      pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
-	Priority       string             `json:"priority"`
-	StartDate      pgtype.Date        `json:"start_date"`
-	DueDate        pgtype.Date        `json:"due_date"`
-	ExecutionSquad []byte             `json:"execution_squad"`
+	ID                    pgtype.UUID        `json:"id"`
+	WorkspaceID           pgtype.UUID        `json:"workspace_id"`
+	Title                 string             `json:"title"`
+	Description           pgtype.Text        `json:"description"`
+	Icon                  pgtype.Text        `json:"icon"`
+	Status                string             `json:"status"`
+	LeadType              pgtype.Text        `json:"lead_type"`
+	LeadID                pgtype.UUID        `json:"lead_id"`
+	CreatedAt             pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt             pgtype.Timestamptz `json:"updated_at"`
+	Priority              string             `json:"priority"`
+	StartDate             pgtype.Date        `json:"start_date"`
+	DueDate               pgtype.Date        `json:"due_date"`
+	ExecutionSquad        []byte             `json:"execution_squad"`
+	Revision              int64              `json:"revision"`
+	DescriptionRevision   int64              `json:"description_revision"`
+	InProgressSince       pgtype.Timestamptz `json:"in_progress_since"`
+	InProgressSinceSource pgtype.Text        `json:"in_progress_since_source"`
 }
 
 type ProjectResource struct {
@@ -1437,6 +1441,71 @@ type ProjectResource struct {
 	Position     int32              `json:"position"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
 	CreatedBy    pgtype.UUID        `json:"created_by"`
+}
+
+type ProjectStateChange struct {
+	ID              pgtype.UUID        `json:"id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	ProjectID       pgtype.UUID        `json:"project_id"`
+	ActorType       string             `json:"actor_type"`
+	ActorID         pgtype.UUID        `json:"actor_id"`
+	FromStatus      string             `json:"from_status"`
+	ToStatus        string             `json:"to_status"`
+	Reason          pgtype.Text        `json:"reason"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	ProjectRevision int64              `json:"project_revision"`
+}
+
+type ProjectUpdate struct {
+	ID              pgtype.UUID        `json:"id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	ProjectID       pgtype.UUID        `json:"project_id"`
+	AuthorUserID    pgtype.UUID        `json:"author_user_id"`
+	PublishedAt     pgtype.Timestamptz `json:"published_at"`
+	CurrentRevision int64              `json:"current_revision"`
+}
+
+type ProjectUpdateNotification struct {
+	ID              pgtype.UUID        `json:"id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	ProjectID       pgtype.UUID        `json:"project_id"`
+	UpdateID        pgtype.UUID        `json:"update_id"`
+	RecipientUserID pgtype.UUID        `json:"recipient_user_id"`
+	SourceRevision  int64              `json:"source_revision"`
+	Status          string             `json:"status"`
+	DeliveredAt     pgtype.Timestamptz `json:"delivered_at"`
+	Attempts        int32              `json:"attempts"`
+	NextAttemptAt   pgtype.Timestamptz `json:"next_attempt_at"`
+	LastErrorCode   pgtype.Text        `json:"last_error_code"`
+}
+
+type ProjectUpdateRequest struct {
+	WorkspaceID    pgtype.UUID        `json:"workspace_id"`
+	ProjectID      pgtype.UUID        `json:"project_id"`
+	ActorUserID    pgtype.UUID        `json:"actor_user_id"`
+	RequestID      pgtype.UUID        `json:"request_id"`
+	Operation      string             `json:"operation"`
+	PayloadHash    string             `json:"payload_hash"`
+	UpdateID       pgtype.UUID        `json:"update_id"`
+	ResultRevision int64              `json:"result_revision"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+}
+
+type ProjectUpdateRevision struct {
+	ID                 pgtype.UUID        `json:"id"`
+	WorkspaceID        pgtype.UUID        `json:"workspace_id"`
+	ProjectID          pgtype.UUID        `json:"project_id"`
+	UpdateID           pgtype.UUID        `json:"update_id"`
+	Revision           int64              `json:"revision"`
+	EditorUserID       pgtype.UUID        `json:"editor_user_id"`
+	CreatedAt          pgtype.Timestamptz `json:"created_at"`
+	Kind               string             `json:"kind"`
+	Body               string             `json:"body"`
+	HealthJudgment     pgtype.Text        `json:"health_judgment"`
+	CorrectionReason   pgtype.Text        `json:"correction_reason"`
+	Evidence           []byte             `json:"evidence"`
+	StatisticsSnapshot []byte             `json:"statistics_snapshot"`
+	Acceptance         []byte             `json:"acceptance"`
 }
 
 type QuickAction struct {
@@ -1882,7 +1951,8 @@ type Workspace struct {
 	IssueCounter int32              `json:"issue_counter"`
 	AvatarUrl    pgtype.Text        `json:"avatar_url"`
 	// When TRUE, an agent run that resolves to no precise accountable human (would be owner_fallback) is refused at enqueue instead of degrading to the agent owner (MUL-4302 §3.5). Default FALSE = owner_fallback. Never affects authorization (originator_user_id).
-	AttributionFailClosed bool `json:"attribution_fail_closed"`
+	AttributionFailClosed bool        `json:"attribution_fail_closed"`
+	PlanningTimezone      pgtype.Text `json:"planning_timezone"`
 }
 
 type WorkspaceInvitation struct {
