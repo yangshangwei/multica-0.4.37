@@ -401,7 +401,7 @@ func claimAndDecodeAgent(t *testing.T, runtimeID string) *TaskAgentData {
 			Agent *TaskAgentData `json:"agent"`
 		} `json:"task"`
 	}
-	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
 		t.Fatalf("decode: %v", err)
 	}
 	if resp.Task == nil || resp.Task.Agent == nil {
@@ -447,19 +447,13 @@ func TestClaimTask_LeaderGetsBriefing(t *testing.T) {
 	if testHandler == nil {
 		t.Skip("database not available")
 	}
-	ctx := context.Background()
-
-	var leaderID, runtimeID string
-	if err := testPool.QueryRow(ctx,
-		`SELECT id, runtime_id FROM agent WHERE workspace_id = $1 ORDER BY created_at ASC LIMIT 1`,
-		testWorkspaceID,
-	).Scan(&leaderID, &runtimeID); err != nil {
-		t.Fatalf("get leader agent: %v", err)
-	}
+	// Claim readiness belongs to this test, not the suite's aging heartbeat.
+	runtimeID := dbfx.Runtime(t, "Briefing leader runtime")
+	leaderID := dbfx.Agent(t, "Briefing leader", runtimeID)
 
 	squad := seedSquadForBriefing(t, leaderID, "Briefing Claim Squad", "Be terse.")
 
-	helper := createHandlerTestAgent(t, "Briefing Helper", []byte("[]"))
+	helper := dbfx.Agent(t, "Briefing Helper", dbfx.Runtime(t, "Briefing helper runtime"))
 	addAgentMember(t, squad.ID, helper, "implementer")
 
 	queueSquadIssueTaskFor(t, util.UUIDToString(squad.ID), leaderID, runtimeID, 95001)
@@ -485,28 +479,15 @@ func TestClaimTask_NonLeaderGetsNoBriefing(t *testing.T) {
 	if testHandler == nil {
 		t.Skip("database not available")
 	}
-	ctx := context.Background()
-
-	var leaderID string
-	if err := testPool.QueryRow(ctx,
-		`SELECT id FROM agent WHERE workspace_id = $1 ORDER BY created_at ASC LIMIT 1`,
-		testWorkspaceID,
-	).Scan(&leaderID); err != nil {
-		t.Fatalf("get leader agent: %v", err)
-	}
+	leaderID := dbfx.Agent(t, "Non-Leader Squad leader", dbfx.Runtime(t, "Non-Leader Squad leader runtime"))
 
 	squad := seedSquadForBriefing(t, leaderID, "Non-Leader Squad", "Squad guidance.")
 
 	// Create a second agent (NOT the leader) with its own runtime so the
 	// claim path picks its task without ambiguity.
-	helperID := createHandlerTestAgent(t, "Non Leader Helper", []byte("[]"))
+	helperRuntime := dbfx.Runtime(t, "Non Leader Helper runtime")
+	helperID := dbfx.Agent(t, "Non Leader Helper", helperRuntime)
 	addAgentMember(t, squad.ID, helperID, "")
-	var helperRuntime string
-	if err := testPool.QueryRow(ctx,
-		`SELECT runtime_id FROM agent WHERE id = $1`, helperID,
-	).Scan(&helperRuntime); err != nil {
-		t.Fatalf("get helper runtime: %v", err)
-	}
 
 	queueSquadIssueTaskFor(t, util.UUIDToString(squad.ID), helperID, helperRuntime, 95002)
 
@@ -520,6 +501,15 @@ func TestClaimTask_NonLeaderGetsNoBriefing(t *testing.T) {
 			t.Errorf("non-leader claim should NOT contain %q\n--- instructions ---\n%s", mustNot, agent.Instructions)
 		}
 	}
+}
+
+func TestClaimTask_BriefingFixturesDoNotUseExpiredSuiteRuntime(t *testing.T) {
+	var previous pgtype.Timestamptz
+	dbfx.QueryRow(t, "SELECT last_seen_at FROM agent_runtime WHERE id=$1", testRuntimeID).Scan(&previous)
+	dbfx.Exec(t, "UPDATE agent_runtime SET last_seen_at=now()-interval '10 minutes' WHERE id=$1", testRuntimeID)
+	dbfx.Cleanup(t, "UPDATE agent_runtime SET last_seen_at=$2 WHERE id=$1", testRuntimeID, previous)
+	t.Run("leader", TestClaimTask_LeaderGetsBriefing)
+	t.Run("non-leader", TestClaimTask_NonLeaderGetsNoBriefing)
 }
 
 // Avoid "imported and not used: pgtype" if helpers above are the only users.
