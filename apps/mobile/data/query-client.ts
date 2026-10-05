@@ -17,6 +17,7 @@
 import { focusManager, onlineManager, QueryClient } from "@tanstack/react-query";
 import { AppState, type AppStateStatus } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
+import { observeProjectAccess } from "./realtime/project-access";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,8 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+observeProjectAccess(queryClient);
 
 // ── focusManager ← AppState ──────────────────────────────────────────
 // Foregrounding the app counts as "focus" → triggers refetchOnWindowFocus

@@ -36,10 +36,12 @@ import {
 } from "react";
 import { AppState, type AppStateStatus } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
+import { useRouter } from "expo-router";
 import { useAuthStore } from "@/data/auth-store";
 import { useWorkspaceStore } from "@/data/workspace-store";
 import { getToken } from "@/data/secure-storage";
 import { WSClient } from "./ws-client";
+import { onProjectAccessDenied } from "./project-access";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -64,7 +66,20 @@ export function useWSClient(): WSClient | null {
 export function RealtimeProvider({ children }: { children: React.ReactNode }) {
   const userId = useAuthStore((s) => s.user?.id ?? null);
   const wsSlug = useWorkspaceStore((s) => s.currentWorkspaceSlug);
+  const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
   const [client, setClient] = useState<WSClient | null>(null);
+  const [revokedWorkspace, setRevokedWorkspace] = useState<string | null>(null);
+  const router = useRouter();
+
+  useEffect(() => onProjectAccessDenied((workspaceId, status) => {
+    if (workspaceId !== wsId) return;
+    // Unmount all workspace editors before navigation, including locally
+    // adopted description text. A navigation failure must not expose it.
+    setRevokedWorkspace(workspaceId);
+    client?.disconnect();
+    if (status === 403) router.replace("/select-workspace");
+    // 401 is handled by the existing root sign-out responder.
+  }), [client, router, wsId]);
 
   // Track NetInfo's last known state so we only force-reconnect on the
   // offline → online EDGE, not on every change event (NetInfo fires for
@@ -140,7 +155,7 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <RealtimeContext.Provider value={client}>
-      {children}
+      {revokedWorkspace === wsId && wsId !== null ? null : children}
     </RealtimeContext.Provider>
   );
 }

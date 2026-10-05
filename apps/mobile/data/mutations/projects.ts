@@ -25,21 +25,24 @@ import type {
 import { api } from "@/data/api";
 import { projectKeys } from "@/data/queries/projects";
 import { useWorkspaceStore } from "@/data/workspace-store";
+import { patchProjectDetail, patchProjectsList } from "../realtime/project-ws-updaters";
+import { isProjectAccessDenied, isProjectAccessError, revokeProjectAccess } from "../realtime/project-access";
 
 export function useCreateProject() {
   const qc = useQueryClient();
   const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
 
   return useMutation({
-    mutationFn: (body: CreateProjectRequest) => api.createProject(body),
+    mutationFn: (body: CreateProjectRequest) => api.createProject(body, { workspaceId: wsId }),
     onSuccess: (project) => {
+      if (isProjectAccessDenied(project.workspace_id)) return;
       // Seed the detail cache so the post-create navigation lands on a
       // populated page (no spinner flash). The list cache gets a prepend
       // — list ordering is server-driven, so a brief out-of-order render
       // is acceptable and corrected by the WS `project:created` event
       // (or the next refetch).
-      qc.setQueryData<Project>(projectKeys.detail(wsId, project.id), project);
-      qc.setQueryData<Project[]>(projectKeys.list(wsId), (old) =>
+      qc.setQueryData<Project>(projectKeys.detail(project.workspace_id, project.id), project);
+      qc.setQueryData<Project[]>(projectKeys.list(project.workspace_id), (old) =>
         old ? [project, ...old.filter((p) => p.id !== project.id)] : [project],
       );
     },
@@ -53,7 +56,7 @@ export function useUpdateProject(projectId: string) {
   return useMutation({
     mutationKey: ["updateProject", projectId] as const,
     mutationFn: (patch: UpdateProjectRequest) =>
-      api.updateProject(projectId, patch),
+      api.updateProject(projectId, patch, { workspaceId: wsId }),
     onMutate: async (patch) => {
       const detailKey = projectKeys.detail(wsId, projectId);
       const listKey = projectKeys.list(wsId);
@@ -67,6 +70,12 @@ export function useUpdateProject(projectId: string) {
       const prevDetail = qc.getQueryData<Project>(detailKey);
       const prevList = qc.getQueryData<Project[]>(listKey);
 
+      // Description CAS and completion are server-first. In particular, do
+      // not stamp a newest-cache revision onto an older editor's draft.
+      const optimistic = patch.description === undefined && patch.status === undefined &&
+        patch.expected_revision === undefined && patch.expected_description_revision === undefined && patch.status_reason === undefined;
+      if (!optimistic) return { prevDetail, prevList, detailKey, listKey, wsId, optimistic };
+
       if (prevDetail) {
         qc.setQueryData<Project>(detailKey, { ...prevDetail, ...patch });
       }
@@ -76,10 +85,15 @@ export function useUpdateProject(projectId: string) {
           : old,
       );
 
-      return { prevDetail, prevList, detailKey, listKey };
+      return { prevDetail, prevList, detailKey, listKey, wsId, optimistic };
     },
     onError: (_err, _vars, ctx) => {
       if (!ctx) return;
+      if (ctx.wsId && (isProjectAccessError(_err) || isProjectAccessDenied(ctx.wsId))) {
+        revokeProjectAccess(qc, ctx.wsId);
+        return;
+      }
+      if (!ctx.optimistic) return;
       if (ctx.prevDetail !== undefined) {
         qc.setQueryData(ctx.detailKey, ctx.prevDetail);
       }
@@ -88,14 +102,8 @@ export function useUpdateProject(projectId: string) {
       }
     },
     onSuccess: (server) => {
-      // Server response is authoritative — replace the optimistic merge
-      // so any server-side normalisation (e.g. trimmed title) wins.
-      qc.setQueryData<Project>(projectKeys.detail(wsId, projectId), server);
-      qc.setQueryData<Project[]>(projectKeys.list(wsId), (old) =>
-        old
-          ? old.map((p) => (p.id === projectId ? server : p))
-          : old,
-      );
+      patchProjectDetail(qc, server.workspace_id, server);
+      patchProjectsList(qc, server.workspace_id, server);
     },
   });
 }
@@ -106,24 +114,16 @@ export function useDeleteProject(projectId: string) {
 
   return useMutation({
     mutationKey: ["deleteProject", projectId] as const,
-    mutationFn: () => api.deleteProject(projectId),
-    onMutate: async () => {
-      const listKey = projectKeys.list(wsId);
-      await qc.cancelQueries({ queryKey: listKey });
-      const prevList = qc.getQueryData<Project[]>(listKey);
-      qc.setQueryData<Project[]>(listKey, (old) =>
+    mutationFn: async () => {
+      if (!wsId) throw new Error("A workspace is required");
+      await api.deleteProject(projectId, { workspaceId: wsId });
+      return wsId;
+    },
+    onSuccess: (workspaceId) => {
+      qc.setQueryData<Project[]>(projectKeys.list(workspaceId), (old) =>
         old ? old.filter((p) => p.id !== projectId) : old,
       );
-      return { prevList, listKey };
-    },
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.prevList !== undefined) {
-        qc.setQueryData(ctx.listKey, ctx.prevList);
-      }
-    },
-    onSettled: () => {
-      qc.removeQueries({ queryKey: projectKeys.detail(wsId, projectId) });
-      qc.removeQueries({ queryKey: projectKeys.resources(wsId, projectId) });
+      qc.removeQueries({ queryKey: projectKeys.detail(workspaceId, projectId) });
     },
   });
 }
@@ -135,10 +135,11 @@ export function useCreateProjectResource(projectId: string) {
   return useMutation({
     mutationKey: ["createProjectResource", projectId] as const,
     mutationFn: (body: CreateProjectResourceRequest) =>
-      api.createProjectResource(projectId, body),
+      api.createProjectResource(projectId, body, { workspaceId: wsId }),
     onSuccess: (resource) => {
+      if (isProjectAccessDenied(resource.workspace_id)) return;
       qc.setQueryData<ProjectResource[]>(
-        projectKeys.resources(wsId, projectId),
+        projectKeys.resources(resource.workspace_id, projectId),
         (old) =>
           old
             ? [...old.filter((r) => r.id !== resource.id), resource]
@@ -151,10 +152,10 @@ export function useCreateProjectResource(projectId: string) {
         resource_count: p.resource_count + 1,
       });
       qc.setQueryData<Project>(
-        projectKeys.detail(wsId, projectId),
+        projectKeys.detail(resource.workspace_id, projectId),
         (old) => (old ? bumpCount(old) : old),
       );
-      qc.setQueryData<Project[]>(projectKeys.list(wsId), (old) =>
+      qc.setQueryData<Project[]>(projectKeys.list(resource.workspace_id), (old) =>
         old
           ? old.map((p) => (p.id === projectId ? bumpCount(p) : p))
           : old,
@@ -169,32 +170,26 @@ export function useDeleteProjectResource(projectId: string) {
 
   return useMutation({
     mutationKey: ["deleteProjectResource", projectId] as const,
-    mutationFn: (resourceId: string) =>
-      api.deleteProjectResource(projectId, resourceId).then(() => resourceId),
-    onMutate: async (resourceId) => {
-      const key = projectKeys.resources(wsId, projectId);
-      await qc.cancelQueries({ queryKey: key });
-      const prev = qc.getQueryData<ProjectResource[]>(key);
+    mutationFn: async (resourceId: string) => {
+      if (!wsId) throw new Error("A workspace is required");
+      await api.deleteProjectResource(projectId, resourceId, { workspaceId: wsId });
+      return { resourceId, workspaceId: wsId };
+    },
+    onSuccess: ({ resourceId, workspaceId }) => {
+      if (isProjectAccessDenied(workspaceId)) return;
+      const key = projectKeys.resources(workspaceId, projectId);
       qc.setQueryData<ProjectResource[]>(key, (old) =>
         old ? old.filter((r) => r.id !== resourceId) : old,
       );
-      return { prev, key };
-    },
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.prev !== undefined) {
-        qc.setQueryData(ctx.key, ctx.prev);
-      }
-    },
-    onSuccess: () => {
       const dropCount = (p: Project): Project => ({
         ...p,
         resource_count: Math.max(0, p.resource_count - 1),
       });
       qc.setQueryData<Project>(
-        projectKeys.detail(wsId, projectId),
+        projectKeys.detail(workspaceId, projectId),
         (old) => (old ? dropCount(old) : old),
       );
-      qc.setQueryData<Project[]>(projectKeys.list(wsId), (old) =>
+      qc.setQueryData<Project[]>(projectKeys.list(workspaceId), (old) =>
         old
           ? old.map((p) => (p.id === projectId ? dropCount(p) : p))
           : old,

@@ -32,7 +32,9 @@ import {
   clearProjectDetail,
   patchProjectDetail,
   removeFromProjectsList,
+  isFormalProjectIssue,
 } from "./project-ws-updaters";
+import { isProjectAccessDenied } from "./project-access";
 
 export function useProjectRealtime(
   projectId: string | undefined,
@@ -75,6 +77,7 @@ export function useProjectRealtime(
         // cache directly so the list stays fresh without a refetch.
         ws.on("issue:updated", (payload) => {
           const issue = payload.issue;
+          if (isProjectAccessDenied(wsId) || issue.workspace_id !== wsId) return;
           // Status / project_id changes both matter:
           //  - if it was in this project and still is: replace in place
           //  - if it just moved INTO this project: append (server is authority on order)
@@ -82,7 +85,7 @@ export function useProjectRealtime(
           const wasInList = (
             qc.getQueryData<Issue[]>(issueListKey) ?? []
           ).some((i) => i.id === issue.id);
-          const nowInProject = issue.project_id === projectId;
+          const nowInProject = isFormalProjectIssue(issue, projectId);
           if (!wasInList && !nowInProject) return;
           qc.setQueryData<Issue[]>(issueListKey, (old) => {
             if (!old) return old;
@@ -95,7 +98,7 @@ export function useProjectRealtime(
           });
         }),
         ws.on("issue:created", (payload) => {
-          if (payload.issue.project_id !== projectId) return;
+          if (isProjectAccessDenied(wsId) || payload.issue.workspace_id !== wsId || !isFormalProjectIssue(payload.issue, projectId)) return;
           // Server is the authority on list position — invalidate so we
           // refetch with the correct ordering rather than guessing.
           qc.invalidateQueries({ queryKey: issueListKey });

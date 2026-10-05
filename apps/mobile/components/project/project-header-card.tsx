@@ -13,6 +13,7 @@
  */
 import { Pressable, View } from "react-native";
 import type { Project } from "@multica/core/types";
+import { getProjectIssueMetrics } from "@multica/core/projects/metrics";
 import { Text } from "@/components/ui/text";
 import { ProjectIcon } from "@/components/ui/project-icon";
 
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export function ProjectHeaderCard({ project, onEdit }: Props) {
+  const metrics = getProjectIssueMetrics(project);
   return (
     <Pressable
       onPress={onEdit}
@@ -54,6 +56,14 @@ export function ProjectHeaderCard({ project, onEdit }: Props) {
             total={project.issue_count}
           />
         ) : null}
+        <Text className="text-xs text-muted-foreground">
+          {metrics.complete
+            ? `${metrics.completedCount} completed · ${metrics.cancelledCount} cancelled · ${metrics.openCount} open`
+            : "Completed / cancelled breakdown unavailable"}
+        </Text>
+        <Text className="text-xs text-muted-foreground">
+          Use Web or Desktop for project health, progress updates and acceptance records.
+        </Text>
       </View>
     </Pressable>
   );
@@ -65,7 +75,7 @@ function ProgressSection({ done, total }: { done: number; total: number }) {
     <View className="w-full pt-2 gap-1.5">
       <View className="flex-row items-center justify-between">
         <Text className="text-xs uppercase tracking-wider text-muted-foreground">
-          Progress
+          Scope closed
         </Text>
         <Text className="text-xs text-muted-foreground">
           {done} / {total} · {pct}%

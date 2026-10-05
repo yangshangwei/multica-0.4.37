@@ -59,7 +59,7 @@ export function ProjectRow({ project, onPress }: Props) {
         </View>
         <View className="items-end gap-1">
           {showCount ? (
-            <Text className="text-xs text-muted-foreground tabular-nums">
+            <Text className="text-xs text-muted-foreground tabular-nums" accessibilityLabel={`${project.done_count} of ${totalIssues} tasks closed, including cancelled tasks`}>
               {project.done_count}/{totalIssues}
             </Text>
           ) : (

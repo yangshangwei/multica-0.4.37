@@ -17,6 +17,7 @@ import { queryOptions } from "@tanstack/react-query";
 import type { Project } from "@multica/core/types";
 import { api } from "@/data/api";
 import { issueKeys } from "@/data/queries/issue-keys";
+import { protectProjectQuery } from "../realtime/project-access";
 
 export const projectKeys = {
   all: (wsId: string | null) => ["projects", wsId] as const,
@@ -30,27 +31,27 @@ export const projectKeys = {
 export const projectListOptions = (wsId: string | null) =>
   queryOptions({
     queryKey: projectKeys.list(wsId),
-    queryFn: async ({ signal }) => {
-      const res = await api.listProjects({ signal });
+    queryFn: ({ signal, client }) => protectProjectQuery(client, wsId, async () => {
+      const res = await api.listProjects({ signal, workspaceId: wsId });
       return res.projects;
-    },
+    }),
     enabled: !!wsId,
   });
 
 export const projectDetailOptions = (wsId: string | null, id: string) =>
   queryOptions({
     queryKey: projectKeys.detail(wsId, id),
-    queryFn: ({ signal }) => api.getProject(id, { signal }),
+    queryFn: ({ signal, client }) => protectProjectQuery(client, wsId, () => api.getProject(id, { signal, workspaceId: wsId })),
     enabled: !!wsId && !!id,
   });
 
 export const projectResourcesOptions = (wsId: string | null, id: string) =>
   queryOptions({
     queryKey: projectKeys.resources(wsId, id),
-    queryFn: async ({ signal }) => {
-      const res = await api.listProjectResources(id, { signal });
+    queryFn: ({ signal, client }) => protectProjectQuery(client, wsId, async () => {
+      const res = await api.listProjectResources(id, { signal, workspaceId: wsId });
       return res.resources;
-    },
+    }),
     enabled: !!wsId && !!id,
   });
 
@@ -67,13 +68,14 @@ export const projectIssuesOptions = (wsId: string | null, projectId: string) =>
       "byProject",
       projectId,
     ] as const,
-    queryFn: async ({ signal }) => {
+    queryFn: ({ signal, client }) => protectProjectQuery(client, wsId, async () => {
       const res = await api.listIssues(
         { project_id: projectId },
-        { signal },
+        { signal, workspaceId: wsId },
       );
+      if (res.issues.some((issue) => issue.workspace_id !== wsId || issue.project_id !== projectId)) throw new Error("Invalid project issue identity");
       return res.issues;
-    },
+    }),
     enabled: !!wsId && !!projectId,
   });
 

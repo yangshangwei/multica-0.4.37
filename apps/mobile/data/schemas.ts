@@ -38,7 +38,8 @@ import type {
   User,
   Workspace,
 } from "@multica/core/types";
-import { IssueSchema } from "@multica/core/api/schemas";
+import { IssueSchema, ProjectSchema } from "@multica/core/api/schemas";
+export { ProjectSchema };
 
 /** Upload response. Only fields mobile actually consumes — `url` to put
  *  into the markdown link, `filename` for the `[📎 name](url)` form, `id`
@@ -153,30 +154,9 @@ export const EMPTY_ISSUE_LABELS_RESPONSE: IssueLabelsResponse = {
   labels: [],
 };
 
-export const ProjectSchema = z.object({
-  id: z.string(),
-  workspace_id: z.string(),
-  title: z.string(),
-  description: z.string().nullable(),
-  icon: z.string().nullable(),
-  status: z.string(),
-  priority: z.string(),
-  lead_type: z.string().nullable(),
-  lead_id: z.string().nullable(),
-  // .default(null) so a project from an older backend that omits these keys
-  // parses to null instead of degrading the batch to the empty fallback.
-  start_date: z.string().nullable().default(null),
-  due_date: z.string().nullable().default(null),
-  created_at: z.string(),
-  updated_at: z.string(),
-  issue_count: z.number().default(0),
-  done_count: z.number().default(0),
-  resource_count: z.number().default(0),
-}).loose();
-
 export const ListProjectsResponseSchema = z.object({
-  projects: z.array(ProjectSchema).default([]),
-  total: z.number().default(0),
+  projects: z.array(ProjectSchema),
+  total: z.number().int().nonnegative().safe(),
 }).loose();
 
 export const EMPTY_LIST_PROJECTS_RESPONSE: ListProjectsResponse = {
@@ -383,14 +363,14 @@ export const EMPTY_SEARCH_ISSUES_RESPONSE: SearchIssuesResponse = {
   total: 0,
 };
 
-const SearchProjectResultSchema = ProjectSchema.safeExtend({
+const SearchProjectResultSchema = ProjectSchema.and(z.object({
   match_source: z.enum(["title", "description"]).catch("title"),
   matched_snippet: z.string().optional(),
-});
+}).loose());
 
 export const SearchProjectsResponseSchema = z.object({
-  projects: z.array(SearchProjectResultSchema).default([]),
-  total: z.number().default(0),
+  projects: z.array(SearchProjectResultSchema),
+  total: z.number().int().nonnegative().safe(),
 }).loose();
 
 export const EMPTY_SEARCH_PROJECTS_RESPONSE: SearchProjectsResponse = {

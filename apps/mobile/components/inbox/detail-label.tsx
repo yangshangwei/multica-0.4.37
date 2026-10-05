@@ -54,6 +54,7 @@ const TYPE_LABEL: Record<InboxItemType, string> = {
   quick_create_done: "Quick-create done",
   quick_create_failed: "Quick-create failed",
   quick_create_unconfirmed: "Quick-create needs a check",
+  triage: "Triage",
 };
 
 // due_date is a calendar day — format timezone-safely (no offset day shift).

@@ -39,6 +39,7 @@ import type {
   PinnedItem,
   PinnedItemType,
   Project,
+  ProjectCapabilities,
   ProjectResource,
   Reaction,
   ReorderPinsRequest,
@@ -66,6 +67,7 @@ import {
   ListIssuesResponseSchema,
   ListIssueStatusesResponseSchema,
   TimelineEntriesSchema,
+  ProjectResourceSchema,
 } from "@multica/core/api/schemas";
 import {
   ActiveTasksResponseSchema,
@@ -89,15 +91,11 @@ import {
   EMPTY_INBOX_LIST,
   EMPTY_ISSUE_FALLBACK,
   EMPTY_LIST_LABELS_RESPONSE,
-  EMPTY_LIST_PROJECT_RESOURCES_RESPONSE,
-  EMPTY_LIST_PROJECTS_RESPONSE,
   EMPTY_MEMBER_LIST,
   EMPTY_NOTIFICATION_PREFERENCES,
   EMPTY_PIN_LIST,
-  EMPTY_PROJECT,
   EMPTY_RUNTIME_LIST,
   EMPTY_SEARCH_ISSUES_RESPONSE,
-  EMPTY_SEARCH_PROJECTS_RESPONSE,
   EMPTY_SQUAD_LIST,
   EMPTY_USER,
   EMPTY_WORKSPACE_LIST,
@@ -119,9 +117,12 @@ import {
   EMPTY_TASK_MESSAGE_LIST,
   UserSchema,
   WorkspaceListSchema,
+  WorkspaceSchema,
 } from "./schemas";
 import type { ZodType } from "zod";
-import { getCurrentSlug } from "./workspace-store";
+import { getCurrentSlug, useWorkspaceStore } from "./workspace-store";
+import { ProjectCapabilitiesSchema } from "@multica/core/api/project-p1-schemas";
+import { allowProjectAccess, markProjectAccessDenied, projectAccessEpoch } from "./realtime/project-access";
 import { parseWithFallback } from "@/lib/parse-response";
 import { createRequestId } from "@/lib/request-id";
 import { buildCommentUpdateBody } from "./revision";
@@ -181,6 +182,11 @@ export interface ApiClientOptions {
   onUnauthorized?: () => void;
 }
 
+interface ProjectRequestOptions {
+  workspaceId?: string | null;
+  signal?: AbortSignal;
+}
+
 class ApiClient {
   private token: string | null = null;
   private options: ApiClientOptions = {};
@@ -215,7 +221,7 @@ class ApiClient {
     // Backend middleware (server/internal/middleware/workspace.go) resolves
     // slug → ws UUID and gates membership. Mirrors packages/core/api/client.ts.
     const slug = getCurrentSlug();
-    if (slug && !headers["X-Workspace-Slug"]) {
+    if (slug && !headers["X-Workspace-Slug"] && !headers["X-Workspace-ID"]) {
       headers["X-Workspace-Slug"] = slug;
     }
 
@@ -554,7 +560,7 @@ class ApiClient {
   // --- Issues ---
   async listIssues(
     params: ListIssuesParams = {},
-    opts?: { signal?: AbortSignal },
+    opts?: { signal?: AbortSignal; workspaceId?: string | null },
   ): Promise<ListIssuesResponse> {
     const search = new URLSearchParams();
     for (const [k, v] of Object.entries(params)) {
@@ -572,7 +578,7 @@ class ApiClient {
     const qs = search.toString();
     const raw = await this.fetch<unknown>(
       `/api/issues${qs ? `?${qs}` : ""}`,
-      { signal: opts?.signal },
+      { signal: opts?.signal, headers: opts?.workspaceId ? { "X-Workspace-ID": opts.workspaceId, "X-Workspace-Slug": "" } : undefined },
     );
     return parseWithFallback(raw, ListIssuesResponseSchema, EMPTY_LIST_ISSUES_RESPONSE, {
       endpoint: "GET /api/issues",
@@ -897,119 +903,192 @@ class ApiClient {
   }
 
   // --- Projects ---
+  private projectWorkspace(opts?: ProjectRequestOptions): string {
+    const workspaceId = opts?.workspaceId ?? useWorkspaceStore.getState().currentWorkspaceId;
+    if (!workspaceId) throw new Error("A workspace is required for project requests");
+    return workspaceId;
+  }
+
+  private async fetchProject<T>(path: string, workspaceId: string, init: RequestInit & { signal?: AbortSignal } = {}): Promise<T> {
+    const epoch = projectAccessEpoch(workspaceId);
+    try {
+      const value = await this.fetch<T>(path, { ...init,
+        headers: { "X-Workspace-ID": workspaceId, "X-Workspace-Slug": "" },
+      });
+      if (epoch !== projectAccessEpoch(workspaceId)) {
+        throw new ApiError("Project access changed. Reopen the workspace to continue.", 403);
+      }
+      return value;
+    } catch (error) {
+      if (error instanceof ApiError && (error.status === 401 || error.status === 403)) markProjectAccessDenied(workspaceId, error.status);
+      if (error instanceof ApiError && error.status === 428) {
+        throw new ApiError("Description editing requires a version-aware client. Use Web or Desktop; your text has not been saved.", 428, error.body);
+      }
+      throw error;
+    }
+  }
+
+  private parseProject(raw: unknown, workspaceId: string, projectId?: string): Project {
+    const project = parseWithFallback<Project | null>(raw, ProjectSchema, null, { endpoint: "project" });
+    if (!project || !project.id || project.workspace_id !== workspaceId || (projectId && project.id !== projectId)) {
+      throw new Error("Invalid project response or project/workspace identity");
+    }
+    return project;
+  }
+
   async listProjects(opts?: {
     signal?: AbortSignal;
+    workspaceId?: string | null;
   }): Promise<ListProjectsResponse> {
-    const raw = await this.fetch<unknown>("/api/projects", {
+    const workspaceId = this.projectWorkspace(opts);
+    const raw = await this.fetchProject<unknown>("/api/projects", workspaceId, {
       signal: opts?.signal,
     });
-    return parseWithFallback(
-      raw,
-      ListProjectsResponseSchema,
-      EMPTY_LIST_PROJECTS_RESPONSE,
-      { endpoint: "GET /api/projects" },
-    );
+    const result = parseWithFallback<ListProjectsResponse | null>(raw, ListProjectsResponseSchema, null, { endpoint: "GET /api/projects" });
+    if (!result) throw new Error("Invalid project list response");
+    result.projects = result.projects.map((project) => this.parseProject(project, workspaceId));
+    allowProjectAccess(workspaceId);
+    return result;
   }
 
   /** Workspace-wide project search. See `searchIssues` for the signal
    *  contract. */
   async searchProjects(
     params: { q: string; limit?: number; include_closed?: boolean; offset?: number },
-    opts?: { signal?: AbortSignal },
+    opts?: ProjectRequestOptions,
   ): Promise<SearchProjectsResponse> {
     const search = new URLSearchParams();
     for (const [k, v] of Object.entries(params)) {
       if (v == null) continue;
       search.set(k, String(v));
     }
-    const raw = await this.fetch<unknown>(
+    const workspaceId = this.projectWorkspace(opts);
+    const raw = await this.fetchProject<unknown>(
       `/api/projects/search?${search.toString()}`,
+      workspaceId,
       { signal: opts?.signal },
     );
-    return parseWithFallback(
+    const result = parseWithFallback<SearchProjectsResponse | null>(
       raw,
       SearchProjectsResponseSchema,
-      EMPTY_SEARCH_PROJECTS_RESPONSE,
+      null,
       { endpoint: "GET /api/projects/search" },
     );
+    if (!result) throw new Error("Invalid project search response");
+    for (const project of result.projects) this.parseProject(project, workspaceId);
+    allowProjectAccess(workspaceId);
+    return result;
   }
 
   async getProject(
     id: string,
-    opts?: { signal?: AbortSignal },
+    opts?: ProjectRequestOptions,
   ): Promise<Project> {
-    const raw = await this.fetch<unknown>(`/api/projects/${id}`, {
+    const workspaceId = this.projectWorkspace(opts);
+    const raw = await this.fetchProject<unknown>(`/api/projects/${id}`, workspaceId, {
       signal: opts?.signal,
     });
-    // Drift-safe parse — UI checks `data.id === ""` to render the
-    // "project not found / shape drifted" error state instead of a
-    // half-populated detail page.
-    return parseWithFallback(raw, ProjectSchema, EMPTY_PROJECT, {
-      endpoint: "GET /api/projects/:id",
-    });
+    const project = this.parseProject(raw, workspaceId, id);
+    allowProjectAccess(workspaceId);
+    return project;
   }
 
-  // Write endpoints — no parseWithFallback (mirrors updateIssue:430). A
-  // malformed write response surfaces as an error so the optimistic
-  // patch rolls back; pretending the write succeeded with empty data
-  // would silently desync caches.
-  async createProject(body: CreateProjectRequest): Promise<Project> {
-    return this.fetch<Project>("/api/projects", {
+  // Writes consume only a parsed authoritative response. Invalid responses
+  // reject, so mutation handlers cannot publish a false success.
+  async createProject(body: CreateProjectRequest, opts?: ProjectRequestOptions): Promise<Project> {
+    const workspaceId = this.projectWorkspace(opts);
+    const raw = await this.fetchProject<unknown>("/api/projects", workspaceId, {
       method: "POST",
       body: JSON.stringify(body),
     });
+    return this.parseProject(raw, workspaceId);
   }
 
   async updateProject(
     id: string,
     body: UpdateProjectRequest,
+    opts?: ProjectRequestOptions,
   ): Promise<Project> {
-    return this.fetch<Project>(`/api/projects/${id}`, {
+    const workspaceId = this.projectWorkspace(opts);
+    const raw = await this.fetchProject<unknown>(`/api/projects/${id}`, workspaceId, {
       method: "PUT",
       body: JSON.stringify(body),
     });
+    return this.parseProject(raw, workspaceId, id);
   }
 
-  async deleteProject(id: string): Promise<void> {
-    await this.fetch<void>(`/api/projects/${id}`, { method: "DELETE" });
+  async deleteProject(id: string, opts?: ProjectRequestOptions): Promise<void> {
+    await this.fetchProject<void>(`/api/projects/${id}`, this.projectWorkspace(opts), { method: "DELETE" });
+  }
+
+  async getProjectCapabilities(opts?: ProjectRequestOptions): Promise<{ supported: false } | { supported: true; capabilities: ProjectCapabilities }> {
+    const workspaceId = this.projectWorkspace(opts);
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(workspaceId)) throw new Error("A valid workspace UUID is required");
+    let raw: unknown;
+    try {
+      raw = await this.fetchProject<unknown>(`/api/workspaces/${workspaceId}/project-capabilities`, workspaceId, { signal: opts?.signal });
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.status !== 404) throw error;
+      const rawWorkspace = await this.fetchProject<unknown>(`/api/workspaces/${workspaceId}`, workspaceId, { signal: opts?.signal });
+      const workspace = parseWithFallback<Workspace | null>(rawWorkspace, WorkspaceSchema, null, { endpoint: "GET workspace for project capabilities" });
+      if (!workspace || workspace.id !== workspaceId) throw new Error("Invalid workspace identity");
+      return { supported: false };
+    }
+    const capabilities = parseWithFallback<ProjectCapabilities | null>(raw, ProjectCapabilitiesSchema, null, { endpoint: "project-capabilities" });
+    if (!capabilities || capabilities.workspace_id !== workspaceId) throw new Error("Invalid project capability response");
+    return { supported: true, capabilities };
   }
 
   // --- Project resources ---
   async listProjectResources(
     projectId: string,
-    opts?: { signal?: AbortSignal },
+    opts?: ProjectRequestOptions,
   ): Promise<ListProjectResourcesResponse> {
-    const raw = await this.fetch<unknown>(
+    const workspaceId = this.projectWorkspace(opts);
+    const raw = await this.fetchProject<unknown>(
       `/api/projects/${projectId}/resources`,
+      workspaceId,
       { signal: opts?.signal },
     );
-    return parseWithFallback(
+    const result = parseWithFallback<ListProjectResourcesResponse | null>(
       raw,
       ListProjectResourcesResponseSchema,
-      EMPTY_LIST_PROJECT_RESOURCES_RESPONSE,
+      null,
       { endpoint: "GET /api/projects/:id/resources" },
     );
+    if (!result || result.resources.some((resource) => resource.project_id !== projectId || resource.workspace_id !== workspaceId)) {
+      throw new Error("Invalid project resource identity");
+    }
+    return result;
   }
 
   async createProjectResource(
     projectId: string,
     body: CreateProjectResourceRequest,
+    opts?: ProjectRequestOptions,
   ): Promise<ProjectResource> {
-    return this.fetch<ProjectResource>(
+    const workspaceId = this.projectWorkspace(opts);
+    const raw = await this.fetchProject<unknown>(
       `/api/projects/${projectId}/resources`,
+      workspaceId,
       {
         method: "POST",
         body: JSON.stringify(body),
       },
     );
+    const resource = parseWithFallback<ProjectResource | null>(raw, ProjectResourceSchema, null, { endpoint: "POST project resource" });
+    if (!resource || resource.project_id !== projectId || resource.workspace_id !== workspaceId) throw new Error("Invalid project resource identity");
+    return resource;
   }
 
   async deleteProjectResource(
     projectId: string,
     resourceId: string,
+    opts?: ProjectRequestOptions,
   ): Promise<void> {
-    await this.fetch<void>(
+    await this.fetchProject<void>(
       `/api/projects/${projectId}/resources/${resourceId}`,
+      this.projectWorkspace(opts),
       { method: "DELETE" },
     );
   }

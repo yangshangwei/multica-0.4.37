@@ -18,6 +18,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { projectKeys } from "@/data/queries/projects";
 import { useWSSubscriptions } from "@/lib/use-ws-subscriptions";
+import { useAuthStore } from "@/data/auth-store";
+import { revokeProjectAccess } from "./project-access";
 import {
   clearProjectDetail,
   patchProjectDetail,
@@ -28,13 +30,17 @@ import {
 
 export function useProjectsRealtime() {
   const qc = useQueryClient();
+  const userId = useAuthStore((state) => state.user?.id);
 
   useWSSubscriptions(
     (ws, wsId) => {
-      const invalidateList = () =>
-        qc.invalidateQueries({ queryKey: projectKeys.list(wsId) });
-
       return [
+        ws.on("workspace:deleted", (payload) => {
+          if (payload.workspace_id === wsId) revokeProjectAccess(qc, wsId);
+        }),
+        ws.on("member:removed", (payload) => {
+          if (payload.workspace_id === wsId && payload.user_id === userId) revokeProjectAccess(qc, wsId);
+        }),
         ws.on("project:created", (payload) => {
           upsertIntoProjectsList(qc, wsId, payload.project);
         }),
@@ -46,9 +52,18 @@ export function useProjectsRealtime() {
           removeFromProjectsList(qc, wsId, payload.project_id);
           clearProjectDetail(qc, wsId, payload.project_id);
         }),
-        ws.onReconnect(invalidateList),
+        ws.onAny((message) => {
+          // P1 ID/version-only events cannot be merged as Project objects.
+          // Formal task admission and category changes affect the same totals.
+          if (["project:update_published", "project:update_corrected", "project:planning_timezone_changed",
+            "issue:created", "issue:updated", "issue:deleted", "triage:updated", "issue_status:changed",
+          ].includes(message.type)) {
+            void qc.invalidateQueries({ queryKey: projectKeys.all(wsId) });
+          }
+        }),
+        ws.onReconnect(() => qc.invalidateQueries({ queryKey: projectKeys.all(wsId) })),
       ];
     },
-    [qc],
+    [qc, userId],
   );
 }
