@@ -1,0 +1,46 @@
+{
+  "id": "iterations-i1-closure",
+  "name": "iterations-i1-closure",
+  "title": "迭代 I1：原子结束、交接与通知",
+  "description": "本轮仅工程规划，未实施产品代码",
+  "status": "planning",
+  "dev_type": "backend",
+  "scope": "iterations",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-05",
+  "completedAt": null,
+  "branch": "codex/projects-p1",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-05-iterations-i1",
+  "relatedFiles": [
+    "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
+  ],
+  "notes": "2026-10-05 Architect→Critic顺序评审通过；仅完成工程规划，保持planning，产品未实施；阶段门槛见父implement.md。 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete.",
+  "meta": {
+    "planning_status": "reviewed",
+    "implementation_status": "not_started",
+    "depends_on": [
+      "10-05-iterations-i1-lifecycle",
+      "10-05-iterations-i1-history"
+    ],
+    "start_gates": [
+      "LG",
+      "HG"
+    ],
+    "completion_gate": "CG",
+    "shared_contract": ".trellis/tasks/10-05-iterations-i1/api-contract.md",
+    "plan_reviews": {
+      "architect": ".trellis/tasks/10-05-iterations-i1/research/architect-review.md",
+      "critic": ".trellis/tasks/10-05-iterations-i1/research/critic-review.md"
+    },
+    "integration_base": "be26f34e5dc66de3e7ff546dd18d1b4f0f3b0ba2"
+  }
+}

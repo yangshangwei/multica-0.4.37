@@ -12,7 +12,7 @@ import (
 )
 
 const getProjectHealthIssueRows = `-- name: GetProjectHealthIssueRows :many
-SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status FROM issue
+SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue
 WHERE workspace_id = $1::uuid
   AND project_id = $2::uuid
   AND admission_status IN ('not_required', 'accepted')
@@ -65,6 +65,8 @@ func (q *Queries) GetProjectHealthIssueRows(ctx context.Context, arg GetProjectH
 			&i.Revision,
 			&i.LastActivityAt,
 			&i.AdmissionStatus,
+			&i.CurrentIterationID,
+			&i.IterationRolloverCount,
 		); err != nil {
 			return nil, err
 		}

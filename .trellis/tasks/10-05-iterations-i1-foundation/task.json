@@ -1,0 +1,51 @@
+{
+  "id": "iterations-i1-foundation",
+  "name": "iterations-i1-foundation",
+  "title": "迭代 I1：基础契约与写入收口",
+  "description": "I1 schema, transaction and durable operation foundation",
+  "status": "in_progress",
+  "dev_type": "backend",
+  "scope": "iterations",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-05",
+  "completedAt": null,
+  "branch": "codex/projects-p1",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-05-iterations-i1",
+  "relatedFiles": [
+    "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
+  ],
+  "notes": "2026-10-06 implementation authorized; FG in progress, not yet verified 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete.",
+  "meta": {
+    "planning_status": "reviewed",
+    "implementation_status": "in_progress",
+    "depends_on": [],
+    "start_gates": [
+      "已评审计划与实施指令"
+    ],
+    "completion_gate": "FCG: LG+HG+CG+UG 后全部共享接线整合及回归通过",
+    "shared_contract": ".trellis/tasks/10-05-iterations-i1/api-contract.md",
+    "milestone": "FG",
+    "plan_reviews": {
+      "architect": ".trellis/tasks/10-05-iterations-i1/research/architect-review.md",
+      "critic": ".trellis/tasks/10-05-iterations-i1/research/critic-review.md"
+    },
+    "integration_base": "be26f34e5dc66de3e7ff546dd18d1b4f0f3b0ba2",
+    "previous_execution_blocker": {
+      "kind": "sandbox_network_denied",
+      "message": "PostgreSQL and Redis localhost TCP denied with Operation not permitted; real database FG verification cannot run; .git is read-only",
+      "gate": "FG",
+      "dependent_execution_started": false,
+      "resolved_at": "2026-10-06",
+      "resolution": "Local PostgreSQL access and Git writes available during branch transfer; FG remains incomplete."
+    }
+  }
+}

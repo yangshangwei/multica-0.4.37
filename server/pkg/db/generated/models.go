@@ -947,35 +947,37 @@ type InstallationUser struct {
 }
 
 type Issue struct {
-	ID                 pgtype.UUID        `json:"id"`
-	WorkspaceID        pgtype.UUID        `json:"workspace_id"`
-	Title              string             `json:"title"`
-	Description        pgtype.Text        `json:"description"`
-	Status             string             `json:"status"`
-	Priority           string             `json:"priority"`
-	AssigneeType       pgtype.Text        `json:"assignee_type"`
-	AssigneeID         pgtype.UUID        `json:"assignee_id"`
-	CreatorType        string             `json:"creator_type"`
-	CreatorID          pgtype.UUID        `json:"creator_id"`
-	ParentIssueID      pgtype.UUID        `json:"parent_issue_id"`
-	AcceptanceCriteria []byte             `json:"acceptance_criteria"`
-	ContextRefs        []byte             `json:"context_refs"`
-	Position           float64            `json:"position"`
-	DueDate            pgtype.Date        `json:"due_date"`
-	CreatedAt          pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt          pgtype.Timestamptz `json:"updated_at"`
-	Number             int32              `json:"number"`
-	ProjectID          pgtype.UUID        `json:"project_id"`
-	OriginType         pgtype.Text        `json:"origin_type"`
-	OriginID           pgtype.UUID        `json:"origin_id"`
-	FirstExecutedAt    pgtype.Timestamptz `json:"first_executed_at"`
-	StartDate          pgtype.Date        `json:"start_date"`
-	Metadata           []byte             `json:"metadata"`
-	Stage              pgtype.Int4        `json:"stage"`
-	Properties         []byte             `json:"properties"`
-	Revision           int64              `json:"revision"`
-	LastActivityAt     pgtype.Timestamptz `json:"last_activity_at"`
-	AdmissionStatus    string             `json:"admission_status"`
+	ID                     pgtype.UUID        `json:"id"`
+	WorkspaceID            pgtype.UUID        `json:"workspace_id"`
+	Title                  string             `json:"title"`
+	Description            pgtype.Text        `json:"description"`
+	Status                 string             `json:"status"`
+	Priority               string             `json:"priority"`
+	AssigneeType           pgtype.Text        `json:"assignee_type"`
+	AssigneeID             pgtype.UUID        `json:"assignee_id"`
+	CreatorType            string             `json:"creator_type"`
+	CreatorID              pgtype.UUID        `json:"creator_id"`
+	ParentIssueID          pgtype.UUID        `json:"parent_issue_id"`
+	AcceptanceCriteria     []byte             `json:"acceptance_criteria"`
+	ContextRefs            []byte             `json:"context_refs"`
+	Position               float64            `json:"position"`
+	DueDate                pgtype.Date        `json:"due_date"`
+	CreatedAt              pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt              pgtype.Timestamptz `json:"updated_at"`
+	Number                 int32              `json:"number"`
+	ProjectID              pgtype.UUID        `json:"project_id"`
+	OriginType             pgtype.Text        `json:"origin_type"`
+	OriginID               pgtype.UUID        `json:"origin_id"`
+	FirstExecutedAt        pgtype.Timestamptz `json:"first_executed_at"`
+	StartDate              pgtype.Date        `json:"start_date"`
+	Metadata               []byte             `json:"metadata"`
+	Stage                  pgtype.Int4        `json:"stage"`
+	Properties             []byte             `json:"properties"`
+	Revision               int64              `json:"revision"`
+	LastActivityAt         pgtype.Timestamptz `json:"last_activity_at"`
+	AdmissionStatus        string             `json:"admission_status"`
+	CurrentIterationID     pgtype.UUID        `json:"current_iteration_id"`
+	IterationRolloverCount int32              `json:"iteration_rollover_count"`
 }
 
 type IssueDependency struct {
@@ -1145,6 +1147,90 @@ type IssueViewPreference struct {
 	ScopeID     pgtype.UUID        `json:"scope_id"`
 	Prefs       []byte             `json:"prefs"`
 	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+}
+
+type Iteration struct {
+	ID                pgtype.UUID        `json:"id"`
+	WorkspaceID       pgtype.UUID        `json:"workspace_id"`
+	Name              string             `json:"name"`
+	Description       pgtype.Text        `json:"description"`
+	CoordinatorUserID pgtype.UUID        `json:"coordinator_user_id"`
+	Timezone          string             `json:"timezone"`
+	StartDate         pgtype.Date        `json:"start_date"`
+	EndDate           pgtype.Date        `json:"end_date"`
+	Status            string             `json:"status"`
+	Mode              string             `json:"mode"`
+	Revision          int64              `json:"revision"`
+	ScopeRevision     int64              `json:"scope_revision"`
+	CreatedBy         pgtype.UUID        `json:"created_by"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	StartedBy         pgtype.UUID        `json:"started_by"`
+	StartedAt         pgtype.Timestamptz `json:"started_at"`
+	LogicalEndedAt    pgtype.Timestamptz `json:"logical_ended_at"`
+	ProcessedAt       pgtype.Timestamptz `json:"processed_at"`
+	EndReason         pgtype.Text        `json:"end_reason"`
+}
+
+type IterationEvent struct {
+	ID          pgtype.UUID        `json:"id"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	IterationID pgtype.UUID        `json:"iteration_id"`
+	Sequence    int64              `json:"sequence"`
+	OperationID pgtype.UUID        `json:"operation_id"`
+	IssueID     pgtype.UUID        `json:"issue_id"`
+	Kind        string             `json:"kind"`
+	Actor       []byte             `json:"actor"`
+	OccurredAt  pgtype.Timestamptz `json:"occurred_at"`
+	SampledAt   pgtype.Timestamptz `json:"sampled_at"`
+	BeforeFacts []byte             `json:"before_facts"`
+	AfterFacts  []byte             `json:"after_facts"`
+	Reason      pgtype.Text        `json:"reason"`
+}
+
+type IterationNotification struct {
+	ID              pgtype.UUID        `json:"id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	IterationID     pgtype.UUID        `json:"iteration_id"`
+	OperationID     pgtype.UUID        `json:"operation_id"`
+	RecipientUserID pgtype.UUID        `json:"recipient_user_id"`
+	Kind            string             `json:"kind"`
+	LocalDate       pgtype.Date        `json:"local_date"`
+	Status          string             `json:"status"`
+	Attempts        int32              `json:"attempts"`
+	NextAttemptAt   pgtype.Timestamptz `json:"next_attempt_at"`
+	LastErrorCode   pgtype.Text        `json:"last_error_code"`
+}
+
+type IterationOperation struct {
+	ID          pgtype.UUID        `json:"id"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ActorUserID pgtype.UUID        `json:"actor_user_id"`
+	RequestID   pgtype.UUID        `json:"request_id"`
+	Operation   string             `json:"operation"`
+	PayloadHash string             `json:"payload_hash"`
+	Result      []byte             `json:"result"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type IterationParticipation struct {
+	WorkspaceID                    pgtype.UUID        `json:"workspace_id"`
+	IterationID                    pgtype.UUID        `json:"iteration_id"`
+	IssueID                        pgtype.UUID        `json:"issue_id"`
+	FirstJoinedAt                  pgtype.Timestamptz `json:"first_joined_at"`
+	CurrentJoinedAt                pgtype.Timestamptz `json:"current_joined_at"`
+	HasStartedCurrentParticipation bool               `json:"has_started_current_participation"`
+	LastLeftAt                     pgtype.Timestamptz `json:"last_left_at"`
+	InOriginal                     bool               `json:"in_original"`
+	OriginalFacts                  []byte             `json:"original_facts"`
+}
+
+type IterationSnapshot struct {
+	IterationID   pgtype.UUID        `json:"iteration_id"`
+	WorkspaceID   pgtype.UUID        `json:"workspace_id"`
+	SchemaVersion int32              `json:"schema_version"`
+	OperationID   pgtype.UUID        `json:"operation_id"`
+	Body          []byte             `json:"body"`
+	CreatedAt     pgtype.Timestamptz `json:"created_at"`
 }
 
 type LarkBindingToken struct {
@@ -1966,6 +2052,12 @@ type WorkspaceInvitation struct {
 	CreatedAt     pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt     pgtype.Timestamptz `json:"updated_at"`
 	ExpiresAt     pgtype.Timestamptz `json:"expires_at"`
+}
+
+type WorkspaceIterationSetting struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	Enabled     bool        `json:"enabled"`
+	Revision    int64       `json:"revision"`
 }
 
 type WorkspaceMcpServer struct {

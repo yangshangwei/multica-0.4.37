@@ -10,7 +10,9 @@
 
 实现跟进（2026-10-05）：**T1 人工分拣闭环已完成验收，并于北京时间 11:14 合入并推送远端 `main`**（`85b0d2e7e`），包括 CSV、Web／桌面端和服务端执行门槛。后续本地回归中，分拣相关 17 条用例均有通过证据；扩展测试及附带修复随后已提交本地主干（`bb581ef03`、`228abcc1e`）；T1 合并提交的远端 CI 未通过，生产发布未确认。技术设计见[实施计划](../2026-10-04-triage-t1-implementation.md)，回归、CI 与部署证据见[验收记录](../../../.trellis/tasks/10-04-triage-t1/verification.md)。
 
-P1 跟进（2026-10-06）：**项目增强已在 `codex/projects-p1` 完成实施与本轮验收**，最终产品提交 `31534d844`。静态、TypeScript、Go race/vet、迁移、性能与移动兼容已有通过证据；首次完整check的浏览器失败经修复，26项定向回归及双端重建后最终8/8 E2E通过。首次失败保留，不表述为完整check一次全绿；P1尚未推送、合并或部署。见[实施方案](../2026-10-05-projects-p1-implementation.md)和[P1验收记录](../../../.trellis/tasks/10-05-projects-p1/verification.md)。I1 迭代及 T2／T3 自动化仍未实现。
+P1 跟进（2026-10-06）：**项目增强已在 `codex/projects-p1` 完成实施与本轮验收**，最终产品提交 `31534d844`。静态、TypeScript、Go race/vet、迁移、性能与移动兼容已有通过证据；首次完整check的浏览器失败经修复，26项定向回归及双端重建后最终8/8 E2E通过。首次失败保留，不表述为完整check一次全绿；P1尚未推送、合并或部署。见[实施方案](../2026-10-05-projects-p1-implementation.md)和[P1验收记录](../../../.trellis/tasks/10-05-projects-p1/verification.md)。
+
+I1 跟进（2026-10-06）：已将原 `main` 工作区中的基础层实现整合到 `codex/projects-p1`，与 P1 共用规划时区。I1 尚未通过 FG，完整生命周期和客户端未完成。见[分支整合记录](../../../.trellis/tasks/10-05-iterations-i1/branch-integration.md)。T2／T3 自动化仍未实现。
 
 ## 1. 文档导航
 

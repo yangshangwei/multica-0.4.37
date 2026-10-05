@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY iteration_settings_workspace ON workspace_iteration_settings (workspace_id);

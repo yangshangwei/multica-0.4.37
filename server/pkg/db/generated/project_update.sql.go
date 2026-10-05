@@ -680,7 +680,7 @@ func (q *Queries) LockProjectUpdateEvidenceExecution(ctx context.Context, arg Lo
 }
 
 const lockProjectUpdateEvidenceIssue = `-- name: LockProjectUpdateEvidenceIssue :one
-SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status FROM issue WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT
+SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT
 `
 
 type LockProjectUpdateEvidenceIssueParams struct {
@@ -722,6 +722,8 @@ func (q *Queries) LockProjectUpdateEvidenceIssue(ctx context.Context, arg LockPr
 		&i.Revision,
 		&i.LastActivityAt,
 		&i.AdmissionStatus,
+		&i.CurrentIterationID,
+		&i.IterationRolloverCount,
 	)
 	return i, err
 }
