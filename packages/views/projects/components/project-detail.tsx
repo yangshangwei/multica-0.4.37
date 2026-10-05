@@ -595,7 +595,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           </div>
           {capabilities.error && <div role="alert" className="px-4 py-2 text-caption text-destructive">{t(($) => $.management.load_error)} <Button size="sm" variant="ghost" onClick={() => void capabilities.refetch()}>{t(($) => $.management.retry)}</Button></div>}
           {capabilities.data === null && <p className="px-4 py-2 text-caption text-muted-foreground">{t(($) => $.management.unsupported)}</p>}
-          {section === "overview" ? riskSignal ? <ProjectRiskIssues key={riskSignal} project={project} signal={riskSignal} version={router.searchParams?.get("version") ?? undefined} onBack={goOverview} onProtectedError={hideProtected} />
+          {section === "overview" ? riskSignal ? <ProjectRiskIssues key={`${project.id}:${riskSignal}`} project={project} signal={riskSignal} version={router.searchParams?.get("version") ?? undefined} onBack={goOverview} onProtectedError={hideProtected} />
             : <ProjectOverviewPanel targetUpdateId={router.searchParams?.get("update") ?? undefined} project={project} canEditTimezone={isWorkspaceAdmin} updatesSupported={capabilities.data?.updates === true} onProtectedError={hideProtected}
                 onRisk={(signal, version) => router.push(wsPaths.projectDetail(projectId, "overview", signal, version))} />
             : <ProjectIssueSurface key={project.id} project={project} scope={issueScope} fallbackCreateDefaults={projectCreateDefaults} />}
