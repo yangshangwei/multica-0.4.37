@@ -1,0 +1,999 @@
+{
+  "stats": {
+    "startTime": "2026-10-05T18:04:44.006Z",
+    "duration": 137887.057,
+    "expected": 61,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "command_log": ".omx/p1-expanded-final.log",
+  "raw_json_sha256": "1471d2fb9d92003d5758f3b1b12dd20cddfc7a6b25a90203be8d43dabcc26549",
+  "groups": {
+    "D": 6,
+    "G": 5,
+    "H": 11,
+    "L": 15,
+    "P": 15,
+    "R": 8,
+    "C": 1
+  },
+  "cases": [
+    {
+      "id": "P1-D01",
+      "group": "D",
+      "title": "P1-D01 native navigation opens the exact project risk list from the keyboard",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 6,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2552,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-D02",
+      "group": "D",
+      "title": "P1-D02 a native fast preview survives the editor flush and publishes once",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 20,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2496,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-D03",
+      "group": "D",
+      "title": "P1-D03 cancelling and reloading restores the last native draft without publishing",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 42,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2092,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-D04",
+      "group": "D",
+      "title": "P1-D04 native revision history renders the original and corrected progress",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 57,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1884,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-D05",
+      "group": "D",
+      "title": "P1-D05 a Chinese native window keeps progress actions readable at 680px",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 74,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2268,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-D06",
+      "group": "D",
+      "title": "P1-D06 native project tabs do not share progress drafts",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 94,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2161,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-G01",
+      "group": "G",
+      "title": "P1-G01 template preview and cancellation never write the description",
+      "file": "projects-p1-goals.spec.ts",
+      "line": 8,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2537,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-G02",
+      "group": "G",
+      "title": "P1-G02 selected missing sections append without replacing the original goal",
+      "file": "projects-p1-goals.spec.ts",
+      "line": 31,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 4499,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-G03",
+      "group": "G",
+      "title": "P1-G03 selecting only existing headings disables duplicate template insertion",
+      "file": "projects-p1-goals.spec.ts",
+      "line": 57,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1348,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-G04",
+      "group": "G",
+      "title": "P1-G04 a real concurrent description conflict preserves local text for reviewed saving",
+      "file": "projects-p1-goals.spec.ts",
+      "line": 73,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 4573,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-G05",
+      "group": "G",
+      "title": "P1-G05 explicit server adoption survives failed refetch and uses that revision for the next edit",
+      "file": "projects-p1-goals.spec.ts",
+      "line": 108,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 6397,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H01",
+      "group": "H",
+      "title": "P1-H01 six done plus two cancelled plus two open display distinct totals and legacy closure",
+      "file": "projects-p1-health.spec.ts",
+      "line": 8,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1462,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H02",
+      "group": "H",
+      "title": "P1-H02 a candidate-only project has no percentage while its own overdue date remains visible",
+      "file": "projects-p1-health.spec.ts",
+      "line": 28,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1369,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H03",
+      "group": "H",
+      "title": "P1-H03 all completed issues close scope without accepting the goal or completing the project",
+      "file": "projects-p1-health.spec.ts",
+      "line": 52,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1342,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H04",
+      "group": "H",
+      "title": "P1-H04 all cancelled issues close scope without claiming delivered work or acceptance",
+      "file": "projects-p1-health.spec.ts",
+      "line": 52,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1388,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H05",
+      "group": "H",
+      "title": "P1-H05 board independently retains formal issues and excludes candidate-only project links",
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2575,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H06",
+      "group": "H",
+      "title": "P1-H06 list independently retains formal issues and excludes candidate-only project links",
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2528,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H07",
+      "group": "H",
+      "title": "P1-H07 table independently retains formal issues and excludes candidate-only project links",
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2531,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H08",
+      "group": "H",
+      "title": "P1-H08 swimlane independently retains formal issues and excludes candidate-only project links",
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2148,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H09",
+      "group": "H",
+      "title": "P1-H09 gantt independently retains formal issues and excludes candidate-only project links",
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2621,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H10",
+      "group": "H",
+      "title": "P1-H10 ordinary triage acceptance adds one formal issue without starting the default squad",
+      "file": "projects-p1-health.spec.ts",
+      "line": 96,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3795,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-H11",
+      "group": "H",
+      "title": "P1-H11 finishing the open remainder closes a mixed done and cancelled scope without human acceptance",
+      "file": "projects-p1-health.spec.ts",
+      "line": 123,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1497,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L01",
+      "group": "L",
+      "title": "P1-L01 cancelling the completion warning leaves project and work unchanged",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 37,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1930,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L02",
+      "group": "L",
+      "title": "P1-L02 completion records the user's reason without completing issues or execution",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 52,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2029,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L03",
+      "group": "L",
+      "title": "P1-L03 status controls pause cancel and reopen only the project",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 69,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3039,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L04",
+      "group": "L",
+      "title": "P1-L04 a member cannot delete a project but retains ordinary read access",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 86,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1297,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L05",
+      "group": "L",
+      "title": "P1-L05 cancelling project deletion sends no delete request",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 107,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1923,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L06",
+      "group": "L",
+      "title": "P1-L06 owner deletion through the dialog preserves issues and running execution",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 121,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1747,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L07",
+      "group": "L",
+      "title": "P1-L07 a failed deletion keeps the project readable and can be retried",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 135,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1683,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L08",
+      "group": "L",
+      "title": "P1-L08 an initially unavailable overview recovers through Retry",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 150,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2455,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L09",
+      "group": "L",
+      "title": "P1-L09 refresh failure marks old statistics stale and disables risk navigation",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 160,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3300,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L10",
+      "group": "L",
+      "title": "P1-L10 unsupported capabilities retain the description and hide unsafe editing",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 174,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1321,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L11",
+      "group": "L",
+      "title": "P1-L11 an owner changes the shared planning timezone and can reset it to UTC",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 188,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2620,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L12",
+      "group": "L",
+      "title": "P1-L12 invalid timezone input remains editable and leaves server planning unchanged",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 202,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1462,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L13",
+      "group": "L",
+      "title": "P1-L13 loss of timezone write permission preserves readable project and local progress",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 215,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1351,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L14",
+      "group": "L",
+      "title": "P1-L14 real workspace revocation clears visible drafts even without WebSocket delivery",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 233,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1892,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L15",
+      "group": "L",
+      "title": "P1-L15 Chinese compact editing supports keyboard preview and an unobstructed save button",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 257,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1317,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P01",
+      "group": "P",
+      "title": "P1-P01 mention preview identifies its recipient without publishing or executing",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 14,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1676,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P02",
+      "group": "P",
+      "title": "P1-P02 a fast trailing-space mention preview stays publishable past the editor debounce",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 36,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2116,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P03",
+      "group": "P",
+      "title": "P1-P03 ordinary publication preserves its server statistics snapshot after issue changes",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 62,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2655,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P04",
+      "group": "P",
+      "title": "P1-P04 cancelling immediately retains the last characters when reopening and reloading",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 86,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2309,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P05",
+      "group": "P",
+      "title": "P1-P05 leaving the overview retains pending progress text without a publication",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 104,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1536,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P06",
+      "group": "P",
+      "title": "P1-P06 retrying a committed lost response reuses one intent, record and member notification",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 117,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3869,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P07",
+      "group": "P",
+      "title": "P1-P07 correction requires a reason and retains immutable original text and authorship",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 158,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1736,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P08",
+      "group": "P",
+      "title": "P1-P08 stale correction compares the latest revision before an explicit retry",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 185,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1769,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P09",
+      "group": "P",
+      "title": "P1-P09 missing acceptance basis preserves input and can be corrected before publishing",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 206,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1609,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P10",
+      "group": "P",
+      "title": "P1-P10 changed goals require explicit description adoption before acceptance publication",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 223,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1792,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P11",
+      "group": "P",
+      "title": "P1-P11 previous acceptance stays on its original goals and a new failed result can stand alone",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 241,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1635,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P12",
+      "group": "P",
+      "title": "P1-P12 execution evidence opens its real authorized revision-scoped transcript",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 259,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1743,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P13",
+      "group": "P",
+      "title": "P1-P13 a real notification opens an older update without exposing its private execution",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 280,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 7179,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P14",
+      "group": "P",
+      "title": "P1-P14 source-level403 preserves the member's draft and permits publication after evidence removal",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 308,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1889,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-P15",
+      "group": "P",
+      "title": "P1-P15 correcting repeated mentions neither duplicates notifications nor starts an agent",
+      "file": "projects-p1-progress.spec.ts",
+      "line": 337,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2275,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R01",
+      "group": "R",
+      "title": "P1-R01 blocked drilldown shows exactly its formal risk IDs despite personal filters",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1404,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R02",
+      "group": "R",
+      "title": "P1-R02 overdue drilldown shows exactly its formal risk IDs despite personal filters",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1377,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R03",
+      "group": "R",
+      "title": "P1-R03 unassigned drilldown shows exactly its formal risk IDs despite personal filters",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1463,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R04",
+      "group": "R",
+      "title": "P1-R04 in_review drilldown shows exactly its formal risk IDs despite personal filters",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1363,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R05",
+      "group": "R",
+      "title": "P1-R05 changed cursors advance by ID and keep the disclosure across a later unchanged page",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 54,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1534,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R06",
+      "group": "R",
+      "title": "P1-R06 a successful fresh restart includes reentered low IDs and clears the changed notice",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 87,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1507,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R07",
+      "group": "R",
+      "title": "P1-R07 failed fresh restart preserves the current rows and sticky notice until recovery succeeds",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 112,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1545,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-R08",
+      "group": "R",
+      "title": "P1-R08 an emptied suffix with a positive total does not claim that the project has no risks",
+      "file": "projects-p1-risk.spec.ts",
+      "line": 146,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1590,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-C01",
+      "group": "C",
+      "title": "P1-C01 convergence performance: two real pages observe 30 due-date, assignee and admission changes within five seconds",
+      "file": "projects-p1.spec.ts",
+      "line": 8,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3336,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

@@ -23,7 +23,7 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/projects-prd.md"
   ],
-  "notes": "2026-10-06 本轮 P1 实施与验收完成。最终产品提交 31534d844；定向 26 项与重新构建的 Web/Electron 8 项均通过。完整检查首次 E2E 失败及修复证据保留于父 verification.md。独立分支未推送、未合并主干、未部署；I1 真实迭代分支仍待 I1。保留任务目录以稳定证据链接。",
+  "notes": "2026-10-06 本轮 P1 实施与验收完成。最终产品提交 31534d844；定向 26 项与重新构建的 Web/Electron 8 项均通过。完整检查首次 E2E 失败及修复证据保留于父 verification.md。独立分支未推送、未合并主干、未部署；I1 真实迭代分支仍待 I1。保留任务目录以稳定证据链接。 2026-10-06 按用户要求细化为61条独立E2E，全部通过；25条拆分/保留，36条新增/强化，产品代码不变。",
   "meta": {
     "planning_status": "reviewed",
     "depends_on": [],
@@ -73,6 +73,20 @@
       "deferred_integration": [
         "I1 real iteration ownership/history branches of PRJ-AC-22 and PRJ-AC-23"
       ]
+    },
+    "e2e_expansion": {
+      "requested_at": "2026-10-06",
+      "status": "completed",
+      "baseline_commit": "421ca49eb",
+      "previous_cases": 8,
+      "plan": ".trellis/tasks/10-05-projects-p1-verification/e2e-expansion-plan.md",
+      "cases": 61,
+      "passed": 61,
+      "retries": 0,
+      "skipped": 0,
+      "duration_ms": 137887.057,
+      "matrix": ".trellis/tasks/10-05-projects-p1-verification/e2e-case-matrix.md",
+      "verification": ".trellis/tasks/10-05-projects-p1-verification/e2e-expansion-verification.md"
     }
   }
 }

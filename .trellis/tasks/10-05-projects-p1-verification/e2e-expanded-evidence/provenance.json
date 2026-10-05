@@ -1,0 +1,136 @@
+{
+  "recorded_at": "2026-10-05T18:09:59.140097+00:00",
+  "base_commit": "421ca49eb",
+  "product_commit": "31534d844",
+  "api_web": {
+    "name": "check-20261005144412-26132",
+    "dir": "/Volumes/artisan/code/2026/multica-projects-p1",
+    "owner": "agent",
+    "created_at": "2026-10-05T14:44:12Z",
+    "ttl_hours": 24,
+    "expires_at": "2026-10-06T14:44:12Z",
+    "backend_port": 19072,
+    "frontend_port": 13992,
+    "desktop_renderer_port": 6166,
+    "database": "multica_check_20261005144412_26132_api",
+    "profile": "dev-check-20261005144412-26132",
+    "env_file": "/Users/artisan/.multica/dev/envs/check-20261005144412-26132/check.env",
+    "logs": "/Users/artisan/.multica/dev/envs/check-20261005144412-26132/logs",
+    "components": {
+      "api": {
+        "state": "running",
+        "address": "http://localhost:19072",
+        "detail": "pid 44055 commit 421ca49eb started 2026-10-05T17:47:19Z"
+      },
+      "web": {
+        "state": "running",
+        "address": "http://localhost:13992",
+        "detail": "pid 44646 mode production commit 421ca49eb build NeXhpciU_TdN4TwOKBeA7"
+      },
+      "daemon": {
+        "state": "stopped",
+        "address": "dev-check-20261005144412-26132",
+        "detail": "not built"
+      },
+      "desktop": {
+        "state": "stopped",
+        "address": "http://localhost:6166",
+        "detail": ""
+      }
+    }
+  },
+  "source_scope": "Only E2E tests, their fixtures and documentation changed from the baseline; production code unchanged. Tests were refined after the build, with exact final test hashes below.",
+  "test_files": [
+    {
+      "file": "e2e/fixtures/project-p1-desktop.ts",
+      "sha256": "63df8cca42bc351d1c593f61b3a54f85191b11e9aeaaf3267f23e7450d04fbde"
+    },
+    {
+      "file": "e2e/fixtures/project-p1-health.ts",
+      "sha256": "befab42d0361d5213b62950c0c03da1d6e13c1b3eda3fa2f9ea89fe60044a697"
+    },
+    {
+      "file": "e2e/fixtures/project-p1-progress.ts",
+      "sha256": "ae32ec6e99c9f529372796f0a351c27eaa2616ec1e2b81a710934454729c3574"
+    },
+    {
+      "file": "e2e/fixtures/project-p1.ts",
+      "sha256": "1f634b69c11e65248bc0e7da8a5cf856e11027aa48c03841dad8a872af313ba4"
+    },
+    {
+      "file": "e2e/projects-p1-desktop.spec.ts",
+      "sha256": "bb8140bc156cd577b2698ed263483304777734ff5c63642925b9960113392190"
+    },
+    {
+      "file": "e2e/projects-p1-goals.spec.ts",
+      "sha256": "8b9fbcfdd5d3f9dfd22c7e7d9be18f6535ec9f51e0ed58f435938971d3f4b6f9"
+    },
+    {
+      "file": "e2e/projects-p1-health.spec.ts",
+      "sha256": "98c8295d7e590702b58c10b82659e00da5fb7a57d1857174671fc1daf27016c3"
+    },
+    {
+      "file": "e2e/projects-p1-lifecycle.spec.ts",
+      "sha256": "a9e4641358fa2ea7378bf5ad14ea7aed9a6e8832f37b1634da0f2fc1438035e3"
+    },
+    {
+      "file": "e2e/projects-p1-progress.spec.ts",
+      "sha256": "3d7cabeb42791ed00d7f9cfc159776f8ca5b83d0061a8749d47e6bffcaa13e95"
+    },
+    {
+      "file": "e2e/projects-p1-risk.spec.ts",
+      "sha256": "015e8a846ed9ee065a9749d3010dbe5606a3f58455328b3a5a6b232e47d915e6"
+    },
+    {
+      "file": "e2e/projects-p1.spec.ts",
+      "sha256": "27fe93e027a07051073f8670df1ef563e26e117e2f6710c892f740614f25553e"
+    }
+  ],
+  "api": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=421ca49eb' ./cmd/server (cwd: /Volumes/artisan/code/2026/multica-projects-p1/server)",
+    "source_id": "9e27822b83d36834655eeb6e52dbef5256385e9f3776a758ccf34b9068f8b5a5",
+    "configuration_id": "c7962dc68b9839592ff23e899b5b2ff7cbb81d0076911611d430879c9eda400b",
+    "commit": "421ca49eb",
+    "launcher_pid": 43981,
+    "started_at": "2026-10-05T17:47:13Z",
+    "listener_pid": 44055
+  },
+  "web": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "NeXhpciU_TdN4TwOKBeA7",
+    "command": "pnpm --filter @multica/web exec next start --port 13992",
+    "source_id": "9e27822b83d36834655eeb6e52dbef5256385e9f3776a758ccf34b9068f8b5a5",
+    "configuration_id": "2e0d8c52d01b0e8395814beb0d48a35a6f3d2f273a1c71dd160383ac984a637a",
+    "commit": "421ca49eb",
+    "launcher_pid": 44619,
+    "started_at": "2026-10-05T17:48:11Z",
+    "listener_pid": 44646
+  },
+  "desktop_build": {
+    "command": "pnpm --filter @multica/desktop exec electron-vite build",
+    "exit_code": 0,
+    "log": ".omx/p1-expanded-desktop-build.log",
+    "artifacts": [
+      {
+        "file": "apps/desktop/out/main/index.js",
+        "sha256": "9e94a8ad1d1a3ef229479166ce948ba3afc3a7af4896f3f0f03b18c32ff5befc"
+      },
+      {
+        "file": "apps/desktop/out/preload/index.js",
+        "sha256": "09b9473aa3881fe9c8f6d0b8f7de167a1c3b028dbac1db13b00986f54339bc7a"
+      },
+      {
+        "file": "apps/desktop/out/renderer/index.html",
+        "sha256": "448338cb0ec5be43eeef1e0752039c053b671d662ef12f10a5390c8c77854613"
+      },
+      {
+        "file": "apps/desktop/out/renderer/assets/index-DNeAcGUl.js",
+        "sha256": "efb420aa19e9a46963b7b5c47805a2949584645e3f4ef75912e385800b5b93bf"
+      }
+    ]
+  }
+}

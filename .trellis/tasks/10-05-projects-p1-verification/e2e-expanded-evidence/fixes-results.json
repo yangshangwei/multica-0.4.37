@@ -1,0 +1,130 @@
+{
+  "stats": {
+    "startTime": "2026-10-05T18:00:28.734Z",
+    "duration": 14605.461,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "command_log": ".omx/p1-expanded-fixes.log",
+  "raw_json_sha256": "0eacc44a0239259f9126404b363cacce32b26b9a03048867f54c9426976fb06e",
+  "groups": {
+    "D": 3,
+    "L": 4
+  },
+  "cases": [
+    {
+      "id": "P1-D04",
+      "group": "D",
+      "title": "P1-D04 native revision history renders the original and corrected progress",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 57,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2556,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-D05",
+      "group": "D",
+      "title": "P1-D05 a Chinese native window keeps progress actions readable at 680px",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 74,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2379,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-D06",
+      "group": "D",
+      "title": "P1-D06 native project tabs do not share progress drafts",
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 94,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2172,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L04",
+      "group": "L",
+      "title": "P1-L04 a member cannot delete a project but retains ordinary read access",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 86,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1458,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L07",
+      "group": "L",
+      "title": "P1-L07 a failed deletion keeps the project readable and can be retried",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 135,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1668,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L10",
+      "group": "L",
+      "title": "P1-L10 unsupported capabilities retain the description and hide unsafe editing",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 174,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1300,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "id": "P1-L14",
+      "group": "L",
+      "title": "P1-L14 real workspace revocation clears visible drafts even without WebSocket delivery",
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 233,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1926,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

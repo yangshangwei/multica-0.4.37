@@ -1,0 +1,1203 @@
+{
+  "measured": "HTTP submission start to both real pages showing changed DOM counts and the same new overview version",
+  "budget_p95_ms": 5000,
+  "summary": {
+    "all": {
+      "count": 30,
+      "p50_ms": 45,
+      "p95_ms": 85,
+      "max_ms": 86
+    },
+    "due_date": {
+      "count": 10,
+      "p50_ms": 45,
+      "p95_ms": 85,
+      "max_ms": 85
+    },
+    "assignee": {
+      "count": 10,
+      "p50_ms": 44,
+      "p95_ms": 46,
+      "max_ms": 46
+    },
+    "admission": {
+      "count": 10,
+      "p50_ms": 64,
+      "p95_ms": 86,
+      "max_ms": 86
+    }
+  },
+  "samples": [
+    {
+      "kind": "due_date",
+      "index": 0,
+      "started_at": "2026-10-05T18:06:59.921Z",
+      "ended_at": "2026-10-05T18:07:00.006Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        69,
+        85
+      ],
+      "slowest_ms": 85
+    },
+    {
+      "kind": "due_date",
+      "index": 1,
+      "started_at": "2026-10-05T18:07:00.015Z",
+      "ended_at": "2026-10-05T18:07:00.060Z",
+      "before_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        45,
+        45
+      ],
+      "slowest_ms": 45
+    },
+    {
+      "kind": "due_date",
+      "index": 2,
+      "started_at": "2026-10-05T18:07:00.069Z",
+      "ended_at": "2026-10-05T18:07:00.117Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        45,
+        48
+      ],
+      "slowest_ms": 48
+    },
+    {
+      "kind": "due_date",
+      "index": 3,
+      "started_at": "2026-10-05T18:07:00.128Z",
+      "ended_at": "2026-10-05T18:07:00.171Z",
+      "before_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        25,
+        43
+      ],
+      "slowest_ms": 43
+    },
+    {
+      "kind": "due_date",
+      "index": 4,
+      "started_at": "2026-10-05T18:07:00.178Z",
+      "ended_at": "2026-10-05T18:07:00.223Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        25,
+        45
+      ],
+      "slowest_ms": 45
+    },
+    {
+      "kind": "due_date",
+      "index": 5,
+      "started_at": "2026-10-05T18:07:00.231Z",
+      "ended_at": "2026-10-05T18:07:00.276Z",
+      "before_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        28,
+        45
+      ],
+      "slowest_ms": 45
+    },
+    {
+      "kind": "due_date",
+      "index": 6,
+      "started_at": "2026-10-05T18:07:00.285Z",
+      "ended_at": "2026-10-05T18:07:00.328Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        43,
+        25
+      ],
+      "slowest_ms": 43
+    },
+    {
+      "kind": "due_date",
+      "index": 7,
+      "started_at": "2026-10-05T18:07:00.334Z",
+      "ended_at": "2026-10-05T18:07:00.378Z",
+      "before_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        26
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "due_date",
+      "index": 8,
+      "started_at": "2026-10-05T18:07:00.385Z",
+      "ended_at": "2026-10-05T18:07:00.429Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        43,
+        44
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "due_date",
+      "index": 9,
+      "started_at": "2026-10-05T18:07:00.438Z",
+      "ended_at": "2026-10-05T18:07:00.484Z",
+      "before_version": "5adb0184f1495b6d290fe10167170a414fc77848fb047862ed6a0c0936172c1d",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 1,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        46
+      ],
+      "slowest_ms": 46
+    },
+    {
+      "kind": "assignee",
+      "index": 0,
+      "started_at": "2026-10-05T18:07:00.490Z",
+      "ended_at": "2026-10-05T18:07:00.534Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        28
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "assignee",
+      "index": 1,
+      "started_at": "2026-10-05T18:07:00.543Z",
+      "ended_at": "2026-10-05T18:07:00.587Z",
+      "before_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        43
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "assignee",
+      "index": 2,
+      "started_at": "2026-10-05T18:07:00.593Z",
+      "ended_at": "2026-10-05T18:07:00.637Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        44
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "assignee",
+      "index": 3,
+      "started_at": "2026-10-05T18:07:00.644Z",
+      "ended_at": "2026-10-05T18:07:00.688Z",
+      "before_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        25,
+        44
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "assignee",
+      "index": 4,
+      "started_at": "2026-10-05T18:07:00.696Z",
+      "ended_at": "2026-10-05T18:07:00.742Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        46
+      ],
+      "slowest_ms": 46
+    },
+    {
+      "kind": "assignee",
+      "index": 5,
+      "started_at": "2026-10-05T18:07:00.750Z",
+      "ended_at": "2026-10-05T18:07:00.793Z",
+      "before_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        43,
+        27
+      ],
+      "slowest_ms": 43
+    },
+    {
+      "kind": "assignee",
+      "index": 6,
+      "started_at": "2026-10-05T18:07:00.802Z",
+      "ended_at": "2026-10-05T18:07:00.846Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        28,
+        44
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "assignee",
+      "index": 7,
+      "started_at": "2026-10-05T18:07:00.854Z",
+      "ended_at": "2026-10-05T18:07:00.898Z",
+      "before_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        44
+      ],
+      "slowest_ms": 44
+    },
+    {
+      "kind": "assignee",
+      "index": 8,
+      "started_at": "2026-10-05T18:07:00.905Z",
+      "ended_at": "2026-10-05T18:07:00.948Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        27,
+        43
+      ],
+      "slowest_ms": 43
+    },
+    {
+      "kind": "assignee",
+      "index": 9,
+      "started_at": "2026-10-05T18:07:00.959Z",
+      "ended_at": "2026-10-05T18:07:01.005Z",
+      "before_version": "b65020f9648b39738a1bf2f37d69bd5fb38fe37dc630c1678e49a6650aae52b2",
+      "after_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        46,
+        44
+      ],
+      "slowest_ms": 46
+    },
+    {
+      "kind": "admission",
+      "index": 0,
+      "started_at": "2026-10-05T18:07:01.014Z",
+      "ended_at": "2026-10-05T18:07:01.100Z",
+      "before_version": "4fd76bc9db19a06e981af0a6ebc40c6ddd64ea7c2c7f2f855503dc840b0767ab",
+      "after_version": "0b2bbdc7ea84471b63f0f7292250a4889c92eb57699c24c5cd07b7f308e33abb",
+      "before_counts": {
+        "total": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 1,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 2,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 2,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        86,
+        48
+      ],
+      "slowest_ms": 86
+    },
+    {
+      "kind": "admission",
+      "index": 1,
+      "started_at": "2026-10-05T18:07:01.113Z",
+      "ended_at": "2026-10-05T18:07:01.177Z",
+      "before_version": "0b2bbdc7ea84471b63f0f7292250a4889c92eb57699c24c5cd07b7f308e33abb",
+      "after_version": "221f23dab091722f788e83834a9e7eba613e165c5bb7dcb44582d9eea2f938b8",
+      "before_counts": {
+        "total": 2,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 2,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 1,
+        "in_review": 0,
+        "risk_union": 1,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 3,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 3,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 2,
+        "in_review": 0,
+        "risk_union": 2,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        64,
+        45
+      ],
+      "slowest_ms": 64
+    },
+    {
+      "kind": "admission",
+      "index": 2,
+      "started_at": "2026-10-05T18:07:01.185Z",
+      "ended_at": "2026-10-05T18:07:01.251Z",
+      "before_version": "221f23dab091722f788e83834a9e7eba613e165c5bb7dcb44582d9eea2f938b8",
+      "after_version": "3ed945ef12157b234ac537b44b3d792ab95ca7942ac1622151a22e553284da78",
+      "before_counts": {
+        "total": 3,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 3,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 2,
+        "in_review": 0,
+        "risk_union": 2,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 4,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 4,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 3,
+        "in_review": 0,
+        "risk_union": 3,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        43,
+        66
+      ],
+      "slowest_ms": 66
+    },
+    {
+      "kind": "admission",
+      "index": 3,
+      "started_at": "2026-10-05T18:07:01.258Z",
+      "ended_at": "2026-10-05T18:07:01.304Z",
+      "before_version": "3ed945ef12157b234ac537b44b3d792ab95ca7942ac1622151a22e553284da78",
+      "after_version": "b90f12549b8810810c914fc342d6ef1382ced5d90b9d2324b8c5cc6c75662b0a",
+      "before_counts": {
+        "total": 4,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 4,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 3,
+        "in_review": 0,
+        "risk_union": 3,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 5,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 5,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 4,
+        "in_review": 0,
+        "risk_union": 4,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        45,
+        46
+      ],
+      "slowest_ms": 46
+    },
+    {
+      "kind": "admission",
+      "index": 4,
+      "started_at": "2026-10-05T18:07:01.312Z",
+      "ended_at": "2026-10-05T18:07:01.376Z",
+      "before_version": "b90f12549b8810810c914fc342d6ef1382ced5d90b9d2324b8c5cc6c75662b0a",
+      "after_version": "3a6bfb66d7750640dd607ef42e5b7dfc5135dd6f40fb8c819303c395ccf8d395",
+      "before_counts": {
+        "total": 5,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 5,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 4,
+        "in_review": 0,
+        "risk_union": 4,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 6,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 6,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 5,
+        "in_review": 0,
+        "risk_union": 5,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        44,
+        64
+      ],
+      "slowest_ms": 64
+    },
+    {
+      "kind": "admission",
+      "index": 5,
+      "started_at": "2026-10-05T18:07:01.386Z",
+      "ended_at": "2026-10-05T18:07:01.450Z",
+      "before_version": "3a6bfb66d7750640dd607ef42e5b7dfc5135dd6f40fb8c819303c395ccf8d395",
+      "after_version": "fec9a872a56e950eb3874412cd68c2c68fbb9117245c0aadaee7931e5c00836b",
+      "before_counts": {
+        "total": 6,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 6,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 5,
+        "in_review": 0,
+        "risk_union": 5,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 7,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 7,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 6,
+        "in_review": 0,
+        "risk_union": 6,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        64,
+        44
+      ],
+      "slowest_ms": 64
+    },
+    {
+      "kind": "admission",
+      "index": 6,
+      "started_at": "2026-10-05T18:07:01.459Z",
+      "ended_at": "2026-10-05T18:07:01.523Z",
+      "before_version": "fec9a872a56e950eb3874412cd68c2c68fbb9117245c0aadaee7931e5c00836b",
+      "after_version": "f14c6932ad63f8b86ab28149ebf74c01899125c99cabcd4886fd00f42139cb6d",
+      "before_counts": {
+        "total": 7,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 7,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 6,
+        "in_review": 0,
+        "risk_union": 6,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 8,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 8,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 7,
+        "in_review": 0,
+        "risk_union": 7,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        64,
+        43
+      ],
+      "slowest_ms": 64
+    },
+    {
+      "kind": "admission",
+      "index": 7,
+      "started_at": "2026-10-05T18:07:01.533Z",
+      "ended_at": "2026-10-05T18:07:01.596Z",
+      "before_version": "f14c6932ad63f8b86ab28149ebf74c01899125c99cabcd4886fd00f42139cb6d",
+      "after_version": "2fc301763a1ab230c57e8d339719d12ae98b0effdc1ff3d63200334abb29da4a",
+      "before_counts": {
+        "total": 8,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 8,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 7,
+        "in_review": 0,
+        "risk_union": 7,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 9,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 9,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 8,
+        "in_review": 0,
+        "risk_union": 8,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        63,
+        43
+      ],
+      "slowest_ms": 63
+    },
+    {
+      "kind": "admission",
+      "index": 8,
+      "started_at": "2026-10-05T18:07:01.604Z",
+      "ended_at": "2026-10-05T18:07:01.669Z",
+      "before_version": "2fc301763a1ab230c57e8d339719d12ae98b0effdc1ff3d63200334abb29da4a",
+      "after_version": "1233c7e7d074a5307c352e57d9245307ff3991ee03d6b5fee5d0f2ba4c25baa8",
+      "before_counts": {
+        "total": 9,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 9,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 8,
+        "in_review": 0,
+        "risk_union": 8,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 10,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 10,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 9,
+        "in_review": 0,
+        "risk_union": 9,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        43,
+        65
+      ],
+      "slowest_ms": 65
+    },
+    {
+      "kind": "admission",
+      "index": 9,
+      "started_at": "2026-10-05T18:07:01.677Z",
+      "ended_at": "2026-10-05T18:07:01.722Z",
+      "before_version": "1233c7e7d074a5307c352e57d9245307ff3991ee03d6b5fee5d0f2ba4c25baa8",
+      "after_version": "7d8565bae4cefabc433f6eb93d553b847e5ebaec02d09aacec1cc2b6bb514a70",
+      "before_counts": {
+        "total": 10,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 10,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 9,
+        "in_review": 0,
+        "risk_union": 9,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "after_counts": {
+        "total": 11,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 11,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 10,
+        "in_review": 0,
+        "risk_union": 10,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "client_ms": [
+        45,
+        45
+      ],
+      "slowest_ms": 45
+    }
+  ],
+  "page_errors": []
+}

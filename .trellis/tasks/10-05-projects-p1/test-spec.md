@@ -2,6 +2,9 @@
 
 状态：已实施的测试规格与验收映射；本轮 P1 实施验收完成（2026-10-06）。各域测试、迁移、性能与移动兼容已有实测，最终产品 `31534d844` 重建后的 Web/Desktop 8/8 通过（49.7秒，零重试/跳过）；首次完整检查失败与后续定向验证分开记录。最终结果见 [验收记录](verification.md) 与 [逐项审计](../10-05-projects-p1-verification/acceptance-audit.md)，本表描述必要断言，不自动代表该行全部通过。证据绑定实际commit/环境/命令，T1通过不能代替P1。源需求为`projects-prd.md:131`、`:418`，补充`:360`、`:393`、`:477`；设计见 [design.md](design.md)，响应/证据/hash/排序唯一合同见 [api-contract.md](api-contract.md)。
 
+
+端到端用例已按 2026-10-06 补充要求细化为七份 spec、61 条独立测试；当前逐条 AC/FR、操作和预期映射见[用例矩阵](../10-05-projects-p1-verification/e2e-case-matrix.md)，实际 61/61 通过记录见[补充验收](../10-05-projects-p1-verification/e2e-expansion-verification.md)。
+
 ## 1. 测试层、实际文件与fixture
 
 下表简码在映射表引用时，同时表示具体测试层和实际新增/扩展文件。纯规则只保留一个canonical矩阵，组件测接线/恢复，E2E测真实串联，避免重复DOM矩阵。纯解析/规则采用node；mutation、access/session lifecycle和组件测试按实际文件声明采用jsdom，不将C/R整组称为node。
@@ -15,7 +18,7 @@
 | V | Shared views：`packages/views/projects/components/project-management.test.tsx`、`project-review-regressions.test.tsx`、`project-overview-lifecycle.test.tsx`、`project-risk-pagination.test.tsx`；扩展 `project-detail.test.tsx` | 原ContentEditor/mention格式、模板/冲突/焦点、旧过滤偏好、资源/小队数据 | ui |
 | R | Vitest：扩展 `packages/core/realtime/use-realtime-sync.test.ts`、`issues/cache-coordinator.test.ts`，`projects/realtime.test.ts`、`projects/access-lifecycle.test.ts`及shared views `project-overview-lifecycle.test.tsx` | Query+内存/持久草稿，WS事件、规划日界、重连、撤权导航失败 | ui |
 | MO | Mobile Vitest node：新增 `apps/mobile/data/project-p1-api.test.ts`、`data/queries/projects.test.ts`、`data/realtime/project-ws-updaters.test.ts`、`data/realtime/project-access.test.ts` | 独立ApiClient/纯parser调用、mobile扁平Project[]/detail QueryClient、mock WS/Storage/401回调；不加载RN模块/不用Web hooks | ui；verification独立执行 |
-| E | Playwright：新增 `e2e/projects-p1.spec.ts`、`e2e/projects-p1-desktop.spec.ts` | `TestApiClient`建完整数据，Web生产式服务/Desktop，后台mock执行计数 | verification |
+| E | Playwright：新增 `e2e/projects-p1{,-goals,-health,-risk,-progress,-lifecycle,-desktop}.spec.ts` | `TestApiClient`建完整数据，Web生产式服务/Desktop，后台mock执行计数 | verification |
 | M | DB migration/integration：`server/internal/migrations/project_p1_rollback_test.go`，辅以 `handler/project_delete_concurrency_test.go`、`project_association_concurrency_test.go`；[迁移报告](../10-05-projects-p1-verification/migration-verification.md) | 空库/既有填充库/部分失败库、catalog/ledger对照、约束扫描、up/down/恢复 | verification |
 | O | [C性能报告](../10-05-projects-p1-verification/performance-c-report.md)、[原A失败报告](../10-05-projects-p1-verification/performance-report.md)及 `performance/` 实际脚本/样本 | 固定机器/版本/并发/冷暖缓存，EXPLAIN ANALYZE、P50/P95、query数、outbox积压 | verification |
 

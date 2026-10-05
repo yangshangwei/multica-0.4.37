@@ -2,6 +2,9 @@
 
 状态：P1 范围实施与验收完成（2026-10-06，Asia/Shanghai）。用户于 2026-10-05 授权实施已评审方案。本文件记录实际实现证据，[planning-verification.md](planning-verification.md) 仅保留此前规划评审。合并与部署状态独立记录于末节。
 
+
+2026-10-06 追加测试细化已完成：从 8 个复合流程扩为 **61 条独立测试，61/61 通过、137.9s、零重试/跳过**；本轮未改产品代码。[逐条用例](../10-05-projects-p1-verification/e2e-case-matrix.md)与[运行证据](../10-05-projects-p1-verification/e2e-expansion-verification.md)单列，原八项/全仓结果保留为历史。
+
 ## 工作树与基线
 
 - 分支：codex/projects-p1；工作树：/Volumes/artisan/code/2026/multica-projects-p1；起点：0af59c5d5。原 main 工作树中的其他会话改动未复制或修改。

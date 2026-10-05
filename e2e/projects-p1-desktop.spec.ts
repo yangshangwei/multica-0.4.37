@@ -1,81 +1,112 @@
-import { createServer } from "node:http";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { extname, join, resolve } from "node:path";
-import { _electron as electron, expect, test, type ElectronApplication } from "@playwright/test";
-import { p1Session, p1Project, p1Authenticate, p1Capture, p1NoOverflow, p1Overview } from "./fixtures/project-p1";
+import { expect } from "@playwright/test";
+import { test, openNativeProject } from "./fixtures/project-p1-desktop";
+import { progressDraft, seedProgress } from "./fixtures/project-p1-progress";
+import { p1Project, p1Capture, p1NoOverflow, p1Overview } from "./fixtures/project-p1";
 
-test("P1 real Electron preload and shared router publish, drill down, and retain Chinese compact history without a daemon", async ({}, info) => {
-  test.setTimeout(180_000);
-  const root = resolve(import.meta.dirname, ".."); const renderer = join(root, "apps/desktop/out/renderer");
-  const apiBase = process.env.NEXT_PUBLIC_API_URL!;
-  expect(["localhost", "127.0.0.1"]).toContain(new URL(apiBase).hostname);
-  const profile = await mkdtemp(join(tmpdir(), "multica-project-p1-desktop-"));
-  const { api, workspace } = await p1Session();
-  let desktop: ElectronApplication | undefined;
-  const errors: string[] = [];
-  const server = createServer(async (req, res) => {
-    try {
-      const pathname = new URL(req.url ?? "/", "http://localhost").pathname;
-      if (pathname.startsWith("/api/") || pathname.startsWith("/auth/") || pathname === "/health") {
-        const chunks: Buffer[] = []; for await (const chunk of req) chunks.push(chunk);
-        const headers = new Headers();
-        for (const key of ["content-type", "authorization", "x-workspace-id", "x-workspace-slug", "accept-language"]) { const value = req.headers[key]; if (typeof value === "string") headers.set(key, value); }
-        const response = await fetch(`${apiBase}${req.url}`, { method: req.method, headers, body: chunks.length ? Buffer.concat(chunks) : undefined });
-        res.writeHead(response.status, { "Content-Type": response.headers.get("content-type") ?? "application/json" }); res.end(Buffer.from(await response.arrayBuffer())); return;
-      }
-      const file = resolve(renderer, `.${pathname === "/" ? "/index.html" : pathname}`);
-      if (!file.startsWith(`${renderer}/`)) { res.writeHead(404); res.end(); return; }
-      const data = await readFile(file);
-      const mime: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".woff2": "font/woff2", ".svg": "image/svg+xml" };
-      res.writeHead(200, { "Content-Type": mime[extname(file)] ?? "application/octet-stream" }); res.end(data);
-    } catch { res.writeHead(502); res.end(); }
-  });
-  try {
-    const project = await p1Project(api, { title: "Native P1 customer delivery" });
-    const issue = await api.createIssue("Native overdue delivery task", { project_id: project.id, status: "todo", due_date: "2020-01-01" });
-    await new Promise<void>((done) => server.listen(0, "127.0.0.1", done));
-    const address = server.address(); if (!address || typeof address === "string") throw new Error("Missing native fixture address");
-    const origin = `http://127.0.0.1:${address.port}`;
-    desktop = await electron.launch({ executablePath: join(root, "apps/desktop/node_modules/electron/dist", process.platform === "darwin" ? "Electron.app/Contents/MacOS/Electron" : process.platform === "win32" ? "electron.exe" : "electron"), args: [join(root, "e2e/fixtures/changelog-electron.cjs")], env: { ...process.env, CHANGELOG_ELECTRON_PROFILE: profile, CHANGELOG_E2E_API_URL: origin, CHANGELOG_ELECTRON_RENDERER_URL: origin, CHANGELOG_ELECTRON_SYSTEM_LOCALE: "en-US" } });
-    const page = await desktop.firstWindow(); page.on("pageerror", (error) => errors.push(error.message));
-    await page.locator("#root > *").first().waitFor({ state: "attached" });
-    await p1Authenticate(page, api); await page.reload();
-    await page.getByRole("link", { name: "Projects", exact: true }).click();
-    await page.getByText("Native P1 customer delivery", { exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
-    await page.getByRole("button", { name: "Overdue 1", exact: true }).focus(); await page.keyboard.press("Enter");
-    await expect(page.getByRole("link", { name: /Native overdue delivery task/ })).toBeVisible();
-    await page.getByRole("button", { name: "Overview", exact: true }).last().click();
-    await page.getByRole("button", { name: "Write progress", exact: true }).click();
-    const composer = page.locator('[aria-label="Write progress"]');
-    await composer.locator('[contenteditable="true"]').fill("Native desktop verified this customer milestone");
-    const typedAt = Date.now();
-    await composer.getByRole("button", { name: "Preview publication", exact: true }).click();
-    expect(Date.now() - typedAt, "Exercise preview before the 300ms editor flush").toBeLessThan(300);
-    await expect(composer.getByText("No members will be notified", { exact: true })).toBeVisible();
-    // This named timing regression deliberately observes beyond the editor
-    // flush deadline: a late flush must not replace an already reviewed preview.
-    await page.waitForTimeout(350);
-    await expect(composer.getByRole("button", { name: "Publish", exact: true })).toBeVisible();
-    await expect(composer.getByRole("button", { name: "Preview publication", exact: true })).toHaveCount(0);
-    await composer.getByRole("button", { name: "Publish", exact: true }).click();
-    await expect(composer).toHaveCount(0);
-    await expect(page.getByText("Native desktop verified this customer milestone", { exact: true })).toBeVisible();
-    await page.getByRole("button", { name: "Revision history", exact: true }).click();
-    await p1Capture(page, info, "electron-p1-progress-history");
-    expect((await p1Overview(api, project.id)).statistics.counts.total).toBe(1);
-    expect(await api.countIssueDispatches(issue.id)).toBe(0);
-    await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
-    await page.context().addInitScript(() => localStorage.setItem("multica-locale", "zh-Hans"));
-    await page.reload();
-    await desktop.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.setContentSize(680, 900));
-    await expect(page.getByRole("button", { name: "记录进展", exact: true })).toBeVisible();
-    await p1NoOverflow(page); await p1Capture(page, info, "electron-p1-chinese-compact");
-    expect(await desktop.evaluate(() => (globalThis as unknown as { changelogAcceptance: { daemonStarts: number } }).changelogAcceptance.daemonStarts)).toBe(0);
-    expect(errors).toEqual([]);
-  } finally {
-    await desktop?.close(); await new Promise<void>((done) => server.close(() => done()));
-    await api.deleteFeatureWorkspace(workspace.id); await rm(profile, { recursive: true, force: true });
-  }
+test("P1-D01 native navigation opens the exact project risk list from the keyboard", async ({ native }) => {
+  const { page, api } = native;
+  const project = await p1Project(api, { title: "Native risk navigation" });
+  const issue = await api.createIssue("Native overdue delivery task", { project_id: project.id, status: "todo", due_date: "2020-01-01" });
+  await openNativeProject(page, project.title);
+  await page.getByRole("button", { name: "Overdue 1", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("link", { name: /Native overdue delivery task/ })).toBeVisible();
+  await page.getByRole("button", { name: "Overview", exact: true }).last().click();
+  await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
+  expect((await p1Overview(api, project.id)).statistics.counts.total).toBe(1);
+  expect(await api.countIssueDispatches(issue.id)).toBe(0);
+});
+
+test("P1-D02 a native fast preview survives the editor flush and publishes once", async ({ native }, info) => {
+  const { page, api } = native;
+  const project = await p1Project(api, { title: "Native fast preview" });
+  await openNativeProject(page, project.title);
+  await page.getByRole("button", { name: "Write progress", exact: true }).click();
+  const composer = page.locator('[aria-label="Write progress"]');
+  await composer.locator('[contenteditable="true"]').fill("Native customer milestone with trailing space ");
+  const typedAt = Date.now();
+  await composer.getByRole("button", { name: "Preview publication", exact: true }).click();
+  expect(Date.now() - typedAt, "Exercise preview before the 300ms editor flush").toBeLessThan(300);
+  await expect(composer.getByText("No members will be notified", { exact: true })).toBeVisible();
+  // This timing regression must remain publishable beyond the known flush deadline.
+  await page.waitForTimeout(350);
+  await expect(composer.getByRole("button", { name: "Publish", exact: true })).toBeVisible();
+  await expect(composer.getByRole("button", { name: "Preview publication", exact: true })).toHaveCount(0);
+  await composer.getByRole("button", { name: "Publish", exact: true }).click();
+  await expect(composer).toHaveCount(0);
+  await expect(page.getByText("Native customer milestone with trailing space", { exact: true })).toBeVisible();
+  expect((await api.requestJSON<{ items: unknown[] }>(`/api/projects/${project.id}/updates`)).items).toHaveLength(1);
+  await p1Capture(page, info, "native-fast-preview-published");
+});
+
+test("P1-D03 cancelling and reloading restores the last native draft without publishing", async ({ native }) => {
+  const { page, api } = native;
+  const project = await p1Project(api, { title: "Native durable draft" });
+  await openNativeProject(page, project.title);
+  await page.getByRole("button", { name: "Write progress", exact: true }).click();
+  const composer = page.locator('[aria-label="Write progress"]');
+  await composer.locator('[contenteditable="true"]').fill("Last native keystrokes are still here");
+  await composer.getByRole("button", { name: "Cancel", exact: true }).click();
+  await expect(composer).toHaveCount(0);
+  await page.reload();
+  await page.getByRole("button", { name: "Write progress", exact: true }).click();
+  await expect(composer.locator('[contenteditable="true"]')).toContainText("Last native keystrokes are still here");
+  expect((await api.requestJSON<{ items: unknown[] }>(`/api/projects/${project.id}/updates`)).items).toHaveLength(0);
+});
+
+test("P1-D04 native revision history renders the original and corrected progress", async ({ native }, info) => {
+  const { page, api } = native;
+  const project = await p1Project(api, { title: "Native immutable history" });
+  const created = await seedProgress(api, project, progressDraft("Original native milestone"));
+  await seedProgress(api, project, progressDraft("Corrected native milestone", {
+    operation: "correct", update_id: created.update_id, expected_revision: 1,
+    correction_reason: "Correct the native delivery date",
+  }));
+  await openNativeProject(page, project.title);
+  await expect(page.getByText("Corrected native milestone", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Revision history", exact: true }).click();
+  const history = page.getByRole("heading", { name: "Revision history", exact: true }).locator("..");
+  await expect(history.getByText("Original native milestone", { exact: true })).toBeVisible();
+  await expect(history.getByText("Correct the native delivery date", { exact: false })).toBeVisible();
+  await p1Capture(page, info, "native-revision-history");
+});
+
+test("P1-D05 a Chinese native window keeps progress actions readable at 680px", async ({ native }, info) => {
+  const { page, api, desktop } = native;
+  const project = await p1Project(api, { title: "Native Chinese compact project" });
+  await seedProgress(api, project, progressDraft("桌面端保留的客户交付进展"));
+  await openNativeProject(page, project.title);
+  await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
+  await page.context().addInitScript(() => localStorage.setItem("multica-locale", "zh-Hans"));
+  await page.reload();
+  await desktop.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.setContentSize(680, 900));
+  await expect(page.getByRole("button", { name: "记录进展", exact: true })).toBeVisible();
+  await p1NoOverflow(page);
+  await expect(page.getByText("桌面端保留的客户交付进展", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "修订历史", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "修订历史", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "记录进展", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("button", { name: "预览发布", exact: true })).toBeVisible();
+  await p1Capture(page, info, "native-chinese-680");
+});
+
+test("P1-D06 native project tabs do not share progress drafts", async ({ native }) => {
+  const { page, api } = native;
+  const first = await p1Project(api, { title: "Native first draft scope" });
+  const second = await p1Project(api, { title: "Native second draft scope" });
+  await openNativeProject(page, first.title);
+  await page.getByRole("button", { name: "Write progress", exact: true }).click();
+  const composer = page.locator('[aria-label="Write progress"]');
+  await composer.locator('[contenteditable="true"]').fill("Text belongs only to the first project");
+  await composer.getByRole("button", { name: "Cancel", exact: true }).click();
+  await openNativeProject(page, second.title);
+  await page.getByRole("button", { name: "Write progress", exact: true }).click();
+  await expect(composer.locator('[contenteditable="true"]')).not.toContainText("Text belongs only to the first project");
+  await composer.getByRole("button", { name: "Cancel", exact: true }).click();
+  await openNativeProject(page, first.title);
+  await page.getByRole("button", { name: "Write progress", exact: true }).click();
+  await expect(composer.locator('[contenteditable="true"]')).toContainText("Text belongs only to the first project");
+  expect((await api.requestJSON<{ items: unknown[] }>(`/api/projects/${first.id}/updates`)).items).toHaveLength(0);
+  expect((await api.requestJSON<{ items: unknown[] }>(`/api/projects/${second.id}/updates`)).items).toHaveLength(0);
 });
