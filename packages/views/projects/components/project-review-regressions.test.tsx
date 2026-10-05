@@ -22,8 +22,8 @@ vi.mock("../../editor", () => ({ ContentEditor: forwardRef(function Editor({ val
   const [text, setText] = useState(value ?? defaultValue ?? ""); const current = useRef(text); const emitted = useRef(text); const base = useRef(value ?? ""); const pending = useRef(false); const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined); const callback = useRef(onUpdate); callback.current = onUpdate;
   useImperativeHandle(ref, () => ({ getMarkdown: () => current.current, focus: () => {}, adoptContent: (next: string) => { current.current = next; emitted.current = next; base.current = next; setText(next); } }));
   useEffect(() => { if (value !== undefined && current.current === emitted.current) { current.current = value; emitted.current = value; base.current = value; setText(value); } }, [value]);
-  useEffect(() => () => { clearTimeout(timer.current); if (flushPendingOnUnmount && pending.current) { emitted.current = current.current; callback.current(current.current, base.current); } }, [flushPendingOnUnmount]);
-  return <textarea aria-label="Editor" value={text} onChange={(event) => { current.current = event.target.value; setText(current.current); pending.current = true; clearTimeout(timer.current); timer.current = setTimeout(() => { pending.current = false; emitted.current = current.current; editorEmitted(current.current); callback.current(current.current, base.current); }, debounceMs); }} />;
+  useEffect(() => () => { clearTimeout(timer.current); if (flushPendingOnUnmount && pending.current) { emitted.current = current.current; callback.current(current.current.trim(), base.current); } }, [flushPendingOnUnmount]);
+  return <textarea aria-label="Editor" value={text} onChange={(event) => { current.current = event.target.value; setText(current.current); pending.current = true; clearTimeout(timer.current); timer.current = setTimeout(() => { pending.current = false; emitted.current = current.current; editorEmitted(current.current); callback.current(current.current.trim(), base.current); }, debounceMs); }} />;
 }) }));
 let qc: QueryClient;
 const project: Project = { ...p1Project, status: "in_progress", priority: "medium", lead_type: "member" };
@@ -172,4 +172,32 @@ it.each(["progress", "description"])("RR01 session teardown cannot re-persist pe
   expect(useProjectProgressDraftStore.getState().draft.entries).toEqual({});
   expect(useProjectDescriptionDraftStore.getState().draft.entries).toEqual({});
   expect(useProjectAccessStore.getState().deleted).toEqual({});
+});
+
+it("RR02 mention markdown with trailing space keeps a successful normalized preview", async () => {
+  const raw = `Delivery verified [@P1 reviewer](mention://member/${p1Member.id}) [@P1 reference agent](mention://agent/77777777-7777-4777-8777-777777777777) `;
+  const previewProjectUpdate = vi.fn(async (_ws, _id, draft) => ({ ...p1Preview, draft: { ...draft, body: draft.body.trim() }, recipients: [{ ...p1Member, name: "P1 reviewer" }] }));
+  install({ previewProjectUpdate }); render(<ProjectProgress project={project} onProtectedError={vi.fn()} />);
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  fireEvent.change(screen.getByLabelText("Editor"), { target: { value: raw } });
+  fireEvent.click(screen.getByRole("button", { name: "Preview publication" }));
+  await screen.findByRole("button", { name: "Publish" });
+  await waitFor(() => expect(screen.queryByLabelText("Editor")).not.toBeInTheDocument());
+  expect(screen.getByText("P1 reviewer", { exact: true })).toBeInTheDocument();
+  expect(screen.getByText(raw.trim(), { exact: true })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Publish" })).toBeEnabled();
+  expect(previewProjectUpdate.mock.calls[0]?.[2].body).toBe(raw.trim());
+});
+it("a genuine edit during preview invalidates the earlier confirmation", async () => {
+  let finish!: (value: unknown) => void;
+  install({ previewProjectUpdate: vi.fn(() => new Promise((resolve) => { finish = resolve; })) });
+  render(<ProjectProgress project={project} onProtectedError={vi.fn()} />);
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  fireEvent.change(screen.getByLabelText("Editor"), { target: { value: "Earlier body" } });
+  fireEvent.click(screen.getByRole("button", { name: "Preview publication" }));
+  fireEvent.change(screen.getByLabelText("Editor"), { target: { value: "Changed while previewing" } });
+  await waitFor(() => expect(editorEmitted).toHaveBeenCalledWith("Changed while previewing"));
+  await act(async () => finish({ ...p1Preview, draft: { ...p1Preview.draft, body: "Earlier body" } }));
+  expect(screen.getByLabelText("Editor")).toHaveValue("Changed while previewing");
+  expect(screen.queryByRole("button", { name: "Publish" })).not.toBeInTheDocument();
 });

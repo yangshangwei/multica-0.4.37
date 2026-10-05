@@ -113,7 +113,7 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
     writeProjectProgressDraft(key, next); preview.reset(); setReviewing(false);
   };
   useEffect(() => registerProjectLocalTextFlush(project.workspace_id, project.id, () => {
-    if (editor.current && (entry || editor.current.getMarkdown() !== initial.body) && canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: editor.current.getMarkdown() });
+    if (editor.current && (entry || editor.current.getMarkdown().trim() !== initial.body) && canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: editor.current.getMarkdown().trim() });
   }), [project.workspace_id, project.id, key, draft, entry, initial.body, generation]);
   const busy = preview.isPending || publish.isPending;
   const error = publish.error ?? preview.error;
@@ -129,7 +129,8 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
     }
   };
   const previewPublish = () => {
-    const next = { ...draft, body: editor.current?.getMarkdown() ?? draft.body };
+    // The imperative reader is raw; match ContentEditor autosave/unmount trim.
+    const next = { ...draft, body: (editor.current?.getMarkdown() ?? draft.body).trim() };
     writeProjectProgressDraft(key, next);
     preview.mutate(next, { onSuccess: () => setReviewing(true), onError: handleConflict });
   };
@@ -188,7 +189,7 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
         originalDescription.current = descriptionConflict.description ?? ""; setDescriptionConflict(null); publish.reset();
       }}>{t(($) => $.management.adopt_description)}</Button>} />}
     <div className="flex flex-wrap gap-2">
-      <Button variant="outline" disabled={busy} onClick={() => { if (canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: editor.current?.getMarkdown() ?? draft.body }); onClose(); }}>{t(($) => $.management.cancel)}</Button>
+      <Button variant="outline" disabled={busy} onClick={() => { if (canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: (editor.current?.getMarkdown() ?? draft.body).trim() }); onClose(); }}>{t(($) => $.management.cancel)}</Button>
       {reviewing ? <><Button variant="outline" disabled={busy} onClick={() => { setReviewing(false); preview.reset(); publish.reset(); }}>{t(($) => $.management.back_edit)}</Button>
         <Button disabled={busy || stale || !!conflict || !!descriptionConflict} onClick={confirm}>{t(($) => $.management.publish)}</Button></> : <Button disabled={busy} onClick={previewPublish}>{t(($) => $.management.preview)}</Button>}
     </div>
