@@ -23,6 +23,7 @@ function offlineFixture(t, directory) {
   for (const name of ["docker-compose.selfhost.yml", "docker-compose.selfhost.build.yml", ".env.example"]) cpSync(resolve(scripts, "..", name), join(cwd, name));
   writeFileSync(join(cwd, "server/internal/changelog/content/changelog.json"), JSON.stringify(seed(), null, 2) + "\n");
   writeFileSync(join(cwd, "docs/offline-upgrade.zh-CN.md"), "Offline fixture upgrade guide\n");
+  cpSync(resolve(scripts, "../docs/mcp-catalog-publishing.md"), join(cwd, "docs/mcp-catalog-publishing.md"));
   const fake = join(cwd, "bin/docker");
   writeFileSync(fake, `#!${process.execPath}
 import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
@@ -104,7 +105,7 @@ test("offline bundle carries exact feed and every publisher helper, then install
   const output = join(fixture.cwd, "bundle");
   const built = bash(fixture.cwd, fixture.env, "scripts/offline-bundle.sh", "--output", output, "--platform", "linux/amd64");
   assert.equal(built.status, 0, built.stderr);
-  for (const path of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/publish-changelog.mjs", "scripts/install-changelog.mjs", "install-changelog.sh"]) assert.ok(existsSync(join(output, path)), `bundle missing ${path}`);
+  for (const path of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/publish-changelog.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(existsSync(join(output, path)), `bundle missing ${path}`);
   assert.equal(readFileSync(fixture.env.DOCKER_LOG + ".embedded", "utf8"), readFileSync(join(output, "changelog/changelog.json"), "utf8"));
   assert.deepEqual(readdirSync(join(fixture.cwd, ".changelog-build")), [], "own Docker context staging is cleaned");
   const deployment = join(fixture.cwd, "deployment");
@@ -131,7 +132,7 @@ test("upgrade archive includes publication tools and upgrade performs the handof
   assert.equal(built.status, 0, built.stderr);
   const archive = readdirSync(join(fixture.cwd, "upgrade")).find((name) => name.endsWith(".tar.gz"));
   const listing = spawnSync("tar", ["-tzf", join(fixture.cwd, "upgrade", archive)], { encoding: "utf8" });
-  for (const file of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/install-changelog.mjs", "install-changelog.sh"]) assert.ok(listing.stdout.includes(file), `archive omitted ${file}`);
+  for (const file of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(listing.stdout.includes(file), `archive omitted ${file}`);
   const packageDir = join(fixture.cwd, "upgrade", archive.slice(0, -7));
   const deployment = join(fixture.cwd, "deployment");
   mkdirSync(deployment);
@@ -256,7 +257,7 @@ writeFileSync(directory + '/builder-debug.yml', 'debug');
   assert.equal(built.status, 0, built.stderr);
   const archive = readdirSync(join(fixture.cwd, "combined")).find((name) => name.endsWith(".tar.gz"));
   const listing = spawnSync("tar", ["-tzf", join(fixture.cwd, "combined", archive)], { encoding: "utf8" });
-  for (const file of ["server/changelog/changelog.json", "server/install-changelog.sh", "server/scripts/install-changelog.mjs", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe.blockmap", "desktop/latest-ia32.yml"]) assert.ok(listing.stdout.includes(file), `combined archive omitted ${file}`);
+  for (const file of ["server/changelog/changelog.json", "server/install-changelog.sh", "server/scripts/install-changelog.mjs", "server/docs/mcp-catalog-publishing.md", "server/mcp-templates/README.txt", "server/skill-templates/README.txt", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe.blockmap", "desktop/latest-ia32.yml"]) assert.ok(listing.stdout.includes(file), `combined archive omitted ${file}`);
   assert.equal(listing.stdout.includes("builder-debug.yml"), false);
   const packageDir = join(fixture.cwd, "combined", archive.slice(0, -7));
   assert.equal(readFileSync(join(packageDir, "server/changelog/changelog.json"), "utf8"), readFileSync(input, "utf8"));

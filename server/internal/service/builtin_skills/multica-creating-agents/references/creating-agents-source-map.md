@@ -206,3 +206,10 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | `CreateAgentParams` | generated from `queries/agent.sql` | typed params include nullable `Model`, `ThinkingLevel`, and `ServiceTier` |
 | `UpdateAgent` SET | generated from `queries/agent.sql` | COALESCE updates include model/thinking/service tier; dedicated clear queries restore each nullable override |
 | `UpdateAgentCustomEnv` (called by the `UpdateAgentEnv` handler) | 2652 | `SET custom_env = $2` — the only write path for env values |
+
+## Workspace MCP reference layout
+
+`workspace-mcp.md` retains the workspace library, recipe input, assignment,
+deployment refresh and version-conflict contracts linked from `SKILL.md`.
+Both files are embedded by `loadBuiltinSkill`; the entrypoint stays within
+the 500-line L2 budget enforced by `TestBuiltinSkillsConformToTemplate`.
