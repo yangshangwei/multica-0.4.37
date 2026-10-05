@@ -1319,3 +1319,39 @@ Implemented server-directory MCP deployment catalog, source-aware persistence an
 ### Next Steps
 
 - Publish with migration512 and the first compatible backend/client release; follow docs/mcp-catalog-publishing.md
+
+
+## Session 42: 后台管理功能提交与 Trellis 归档
+
+**Date**: 2026-10-05
+**Task**: 后台管理功能提交与 Trellis 归档
+**Branch**: `main`
+
+### Summary
+
+提交后台 UI 审计整改、密码重置和资源发布；归档一个父任务与三个子任务，保留无关改动。
+
+### Main Changes
+
+- 后台功能提交 ae5f246ed；Trellis 验收归档 18aeab212。
+- Electron 验收复用仓库 fixture，移除临时文件依赖并等待资源页签导航完成。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ae5f246ed` | (see git log) |
+| `18aeab212` | (see git log) |
+
+### Testing
+
+- [OK] 暂存快照：views 193、core 154、Go 资源/目录测试、Go build、views typecheck 通过。
+- [OK] 更新后的真实 Web 与独立 Electron 发布/复制/更新/撤下端到端通过（45.2s）。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 尚未推送或部署；按后续指令处理远程发布。
