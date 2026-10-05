@@ -55,3 +55,15 @@ RED 证据：先加入纯逻辑和真实 DB 测试时分别因所需 Input/Compu
 | old/new 分项来源一致、空项目、单个未知不污染其他项目 | batch-vs-overview、legacy additive fields 实际查询断言 |
 
 仍由父任务／其他 lane 验证：真实 HTTP router 和 capability 的跨端端到端集成、附统计 preview/create/correct 的完整发布事务、全套后端回归、500 项目／10,000 任务性能与活跃分页压力。此处未宣称这些项目已经通过。采集当前复用 workspace 级 reference/catalog 查询；查询数固定但大 workspace 的输入量需按既定性能计划实测，未提前添加索引或依赖。
+
+## ADR-05：活跃变更期间继续分页
+
+2026-10-05，在独立架构第二轮与顺序 Critic 批准后实施 C。原 A 的完整性能失败数据保留在 verification 子任务的 `performance/results/`，未改写为通过。
+
+产品改动仅取消 `sort.Search(last_id)` 前的 `!refreshed` 条件：每次仍完整读取当前 RR 正式集合、概览、总数和当前行；cursor 始终严格向大于 last_id 的位置继续。`refreshed` 只表示快照变化；next_cursor 带当前新版本。原 workspace/project/signal/version/UUID 校验未改变。空 suffix 即使 total>0 也返回空 items 与 null next_cursor；不跳回首屏。
+
+实际 RED：新增 live-cursor 回归在 A 上全部因“重新返回低 ID／非空首屏”失败，日志 `.omx/projects-p1-performance/adr05-red.log`。GREEN：修改后用同一 health 私库运行原 race 命令，8 个纯逻辑、13 个 health 顶层和3个 T1/custom 兼容顶层测试通过，handler 3.369s；`go vet ./internal/projecthealth ./internal/handler` exit0。
+
+新增证明：低 ID 重新入险、新高 ID 加入、原后续成员变 pending、next_cursor 新版本连续读取、显式旧 snapshot_version 与新 cursor 冲突400；anchor 被删除／移项目／变 pending、rejected、duplicate 的五个真实 DB 子场景；empty suffix/positive total；显式从头刷新重新包含低 ID；稳定版本完整遍历与独立 SQL 所有 ID/顺序一致。原日期/引用/准入/权限/不完整统计回归仍通过。
+
+新的 C 静态与三档各10分钟性能复测、UI粘性提示和30事件跨客户端收敛尚待对应 lane 的实际结果，不以本节单测通过替代。

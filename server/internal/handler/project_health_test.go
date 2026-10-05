@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 	"time"
 
@@ -64,7 +65,7 @@ func TestProjectHealthFormalGoldenScope(t *testing.T) {
 	}
 }
 
-func TestProjectHealthRiskOverlapPaginationAndRefresh(t *testing.T) {
+func TestProjectHealthRiskOverlapPaginationAndLiveContinuation(t *testing.T) {
 	id := healthProject(t)
 	yesterday := time.Now().UTC().AddDate(0, 0, -1).Format(time.DateOnly)
 	parent := dbfx.Issue(t, "risk parent", testutil.Cols{"project_id": id, "status": "blocked", "due_date": yesterday})
@@ -89,7 +90,7 @@ func TestProjectHealthRiskOverlapPaginationAndRefresh(t *testing.T) {
 	}
 	dbfx.Exec(t, "UPDATE issue SET status='done' WHERE id=$1", child)
 	refreshed := page("signal=overdue&limit=1&cursor="+*first.NextCursor, 200)
-	if !refreshed.Refreshed || refreshed.Total != 1 || len(refreshed.Items) != 1 || refreshed.Items[0].ID != parent {
+	if !refreshed.Refreshed || refreshed.Total != 1 || len(refreshed.Items) != 0 || refreshed.NextCursor != nil {
 		t.Fatalf("mixed old/new pagination: %+v", refreshed)
 	}
 	for _, signal := range []string{"blocked", "unassigned"} {
@@ -100,6 +101,108 @@ func TestProjectHealthRiskOverlapPaginationAndRefresh(t *testing.T) {
 	}
 	testutil.Call(t, testHandler.GetProjectHealthIssues, withURLParam(newRequest("GET", "/api/projects/"+id+"/health/issues?signal=all", nil), "id", id)).Want(http.StatusBadRequest)
 	testutil.Call(t, testHandler.GetProjectHealthIssues, withURLParam(newRequest("GET", "/api/projects/"+id+"/health/issues?signal=overdue&cursor="+*first.NextCursor+"x", nil), "id", id)).Want(http.StatusBadRequest)
+}
+
+func healthRiskPage(t *testing.T, project, query string) ProjectRiskPage {
+	t.Helper()
+	var out ProjectRiskPage
+	testutil.Call(t, testHandler.GetProjectHealthIssues, withURLParam(newRequest("GET", "/api/projects/"+project+"/health/issues?"+query, nil), "id", project)).Want(200).JSON(&out)
+	return out
+}
+
+func healthOrderedIssue(t *testing.T, project string, n int, status string) string {
+	t.Helper()
+	return dbfx.Issue(t, fmt.Sprintf("ordered risk %d", n), testutil.Cols{"id": fmt.Sprintf("00000000-0000-7000-8000-%012d", n), "project_id": project, "status": status})
+}
+
+func TestProjectHealthLiveCursorReentryAndCurrentSuffix(t *testing.T) {
+	project := healthProject(t)
+	low := healthOrderedIssue(t, project, 10, "todo")
+	anchor := healthOrderedIssue(t, project, 20, "blocked")
+	removed := healthOrderedIssue(t, project, 30, "blocked")
+	high := healthOrderedIssue(t, project, 40, "blocked")
+	first := healthRiskPage(t, project, "signal=blocked&limit=1")
+	if first.Items[0].ID != anchor || first.NextCursor == nil {
+		t.Fatalf("initial anchor: %+v", first)
+	}
+	dbfx.Exec(t, "UPDATE issue SET status='blocked' WHERE id=$1", low)
+	dbfx.Exec(t, "UPDATE issue SET admission_status='pending' WHERE id=$1", removed)
+	inserted := healthOrderedIssue(t, project, 50, "blocked")
+	next := healthRiskPage(t, project, "signal=blocked&limit=1&cursor="+*first.NextCursor+"&snapshot_version="+first.SnapshotVersion)
+	if !next.Refreshed || next.Total != 4 || len(next.Items) != 1 || next.Items[0].ID != high || next.NextCursor == nil || next.SnapshotVersion != next.Overview.Statistics.SnapshotVersion {
+		t.Fatalf("changed snapshot did not continue after anchor: %+v", next)
+	}
+	last := healthRiskPage(t, project, "signal=blocked&limit=1&cursor="+*next.NextCursor+"&snapshot_version="+next.SnapshotVersion)
+	if last.Refreshed || last.Total != 4 || len(last.Items) != 1 || last.Items[0].ID != inserted || last.NextCursor != nil {
+		t.Fatalf("returned-version continuation: %+v", last)
+	}
+	testutil.Call(t, testHandler.GetProjectHealthIssues, withURLParam(newRequest("GET", "/api/projects/"+project+"/health/issues?signal=blocked&cursor="+*next.NextCursor+"&snapshot_version="+first.SnapshotVersion, nil), "id", project)).Want(400)
+	restart := healthRiskPage(t, project, "signal=blocked&limit=1&snapshot_version="+first.SnapshotVersion)
+	if !restart.Refreshed || restart.Items[0].ID != low {
+		t.Fatalf("explicit first-page refresh missed reentered low ID: %+v", restart)
+	}
+	var expected []string
+	dbfx.QueryRow(t, "SELECT array_agg(id::text ORDER BY id) FROM issue WHERE workspace_id=$1 AND project_id=$2 AND admission_status IN ('not_required','accepted') AND status='blocked'", testWorkspaceID, project).Scan(&expected)
+	seen := []string{restart.Items[0].ID}
+	page := restart
+	for page.NextCursor != nil {
+		page = healthRiskPage(t, project, "signal=blocked&limit=1&cursor="+*page.NextCursor+"&snapshot_version="+page.SnapshotVersion)
+		if page.Refreshed || page.Total != int64(len(expected)) {
+			t.Fatalf("stable traversal lost snapshot: %+v", page)
+		}
+		for _, row := range page.Items {
+			seen = append(seen, row.ID)
+		}
+	}
+	if !reflect.DeepEqual(seen, expected) {
+		t.Fatalf("full current formal scope: got %v want %v", seen, expected)
+	}
+}
+
+func TestProjectHealthLiveCursorSurvivesMissingOrNonformalAnchor(t *testing.T) {
+	for _, change := range []string{"delete", "move", "pending", "rejected", "duplicate"} {
+		t.Run(change, func(t *testing.T) {
+			project := healthProject(t)
+			other := healthProject(t)
+			healthOrderedIssue(t, project, 10, "blocked")
+			anchor := healthOrderedIssue(t, project, 20, "blocked")
+			high := healthOrderedIssue(t, project, 30, "blocked")
+			first := healthRiskPage(t, project, "signal=blocked&limit=2")
+			if first.NextCursor == nil || first.Items[1].ID != anchor {
+				t.Fatalf("initial cursor: %+v", first)
+			}
+			switch change {
+			case "delete":
+				dbfx.Exec(t, "DELETE FROM issue WHERE id=$1", anchor)
+			case "move":
+				dbfx.Exec(t, "UPDATE issue SET project_id=$2 WHERE id=$1", anchor, other)
+			default:
+				dbfx.Exec(t, "UPDATE issue SET admission_status=$2 WHERE id=$1", anchor, change)
+			}
+			next := healthRiskPage(t, project, "signal=blocked&limit=2&cursor="+*first.NextCursor)
+			if !next.Refreshed || next.Total != 2 || len(next.Items) != 1 || next.Items[0].ID != high || next.NextCursor != nil {
+				t.Fatalf("%s anchor changed current suffix: %+v", change, next)
+			}
+		})
+	}
+}
+
+func TestProjectHealthLiveCursorEmptySuffixRetainsFullRiskTotal(t *testing.T) {
+	project := healthProject(t)
+	low := healthOrderedIssue(t, project, 10, "todo")
+	healthOrderedIssue(t, project, 20, "blocked")
+	tail := healthOrderedIssue(t, project, 30, "blocked")
+	first := healthRiskPage(t, project, "signal=blocked&limit=1")
+	dbfx.Exec(t, "UPDATE issue SET status='done' WHERE id=$1", tail)
+	dbfx.Exec(t, "UPDATE issue SET status='blocked' WHERE id=$1", low)
+	next := healthRiskPage(t, project, "signal=blocked&limit=1&cursor="+*first.NextCursor)
+	if !next.Refreshed || len(next.Items) != 0 || next.NextCursor != nil || next.Total != 2 || *next.Overview.Statistics.Counts.Blocked != 2 {
+		t.Fatalf("empty suffix became empty project or reset: %+v", next)
+	}
+	restarted := healthRiskPage(t, project, "signal=blocked&limit=1")
+	if restarted.Items[0].ID != low || restarted.Total != 2 {
+		t.Fatalf("from-start did not include risk before anchor: %+v", restarted)
+	}
 }
 
 func TestProjectHealthArchivedCustomStatusAndUnknown(t *testing.T) {

@@ -212,7 +212,9 @@ func (h *Handler) GetProjectHealthIssues(w http.ResponseWriter, r *http.Request)
 		current := collection.Statistics.SnapshotVersion
 		refreshed := version != "" && version != current
 		start := 0
-		if !refreshed && cursor.LastID != "" {
+		// A changed snapshot does not discard the ordering boundary. Recompute
+		// the live suffix so concurrent edits cannot starve every later page.
+		if cursor.LastID != "" {
 			start = sort.Search(len(ids), func(i int) bool { return ids[i] > cursor.LastID })
 		}
 		end := min(start+limit, len(ids))
