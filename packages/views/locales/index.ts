@@ -13,6 +13,8 @@ import enLabels from "./en/labels.json";
 import enMembers from "./en/members.json";
 import enMyIssues from "./en/my-issues.json";
 import enSearch from "./en/search.json";
+import enTriage from "./en/triage.json";
+import zhHansTriage from "./zh-Hans/triage.json";
 import enInbox from "./en/inbox.json";
 import enWorkspace from "./en/workspace.json";
 import enProjects from "./en/projects.json";
@@ -77,6 +79,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     "my-issues": enMyIssues,
     search: enSearch,
     inbox: enInbox,
+    triage: enTriage,
     workspace: enWorkspace,
     projects: enProjects,
     autopilots: enAutopilots,
@@ -108,6 +111,7 @@ export const RESOURCES: Record<SupportedLocale, LocaleResources> = {
     "my-issues": zhHansMyIssues,
     search: zhHansSearch,
     inbox: zhHansInbox,
+    triage: zhHansTriage,
     workspace: zhHansWorkspace,
     projects: zhHansProjects,
     autopilots: zhHansAutopilots,

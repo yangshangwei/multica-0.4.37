@@ -38,6 +38,7 @@ import {
 } from "@multica/core/issues/stores";
 import { issueDetailOptions, issueTimelineOptions } from "@multica/core/issues/queries";
 import { useWorkspaceId } from "@multica/core";
+import { triageSettingsOptions } from "@multica/core/triage";
 import { useWorkspacePaths, WORKSPACE_PAGES } from "@multica/core/paths";
 import type { WorkspacePageKey, WorkspacePaths } from "@multica/core/paths";
 import { useModalStore } from "@multica/core/modals";
@@ -79,7 +80,8 @@ import { useSearchStore } from "./search-store";
 // hand-written list, which silently went stale every time a page was added:
 // Chat, Autopilot, Squads and Analytics shipped in the sidebar but were
 // unreachable from the palette (MUL-6272). Deriving the list means a new
-// workspace page is in the palette the moment it is in the registry.
+// workspace page is available to the palette from the registry; workspace
+// capabilities still gate whether it is offered.
 //
 // Page keys double as WorkspacePaths method names, so `p[key]()` resolves the
 // destination against the current workspace slug at render time. Every
@@ -89,6 +91,7 @@ import { useSearchStore } from "./search-store";
 // total Record so adding a workspace page is a compile error until its
 // keywords are filled in.
 const PAGE_KEYWORDS: Record<WorkspacePageKey, string[]> = {
+  triage: ["triage", "review", "分拣台", "审核"],
   inbox: ["inbox", "notifications", "收件箱", "通知"],
   chat: ["chat", "messages", "conversation", "聊天", "消息", "对话"],
   myIssues: ["my", "issues", "assigned", "mine", "我的", "任务"],
@@ -312,18 +315,21 @@ const GROUP_CLASS =
 
 export function SearchCommand() {
   const { t } = useT("search");
+  const wsId = useWorkspaceId();
+  const { data: triageSettings } = useQuery(triageSettingsOptions(wsId));
+  const triageEnabled = triageSettings?.supported === true && triageSettings.enabled === true;
   // Page names come from the sidebar's own namespace rather than a private
   // copy under `search.pages`: one translated string per page, so the palette
   // can never disagree with the sidebar about what a page is called.
   const { t: tNav } = useT("layout");
   const navPages = useMemo<NavPage[]>(
     () =>
-      NAV_PAGE_KEYS.map((key) => ({
+      NAV_PAGE_KEYS.filter((key) => key !== "triage" || triageEnabled).map((key) => ({
         key,
         label: tNav(($) => $.nav[WORKSPACE_PAGES[key].navKey]),
         keywords: PAGE_KEYWORDS[key],
       })),
-    [tNav],
+    [tNav, triageEnabled],
   );
   const { pathname, getShareableUrl } = useNavigation();
   const intentNavigate = useIntentNavigate();
@@ -346,7 +352,6 @@ export function SearchCommand() {
     pendingIntentRef.current = "push";
     return intent;
   }, []);
-  const wsId = useWorkspaceId();
   const recentItems = useRecentIssuesStore(selectRecentIssues(wsId));
   const p: WorkspacePaths = useWorkspacePaths();
   const { theme, setTheme } = useTheme();

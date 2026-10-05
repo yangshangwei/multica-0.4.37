@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/admission"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -141,6 +142,7 @@ type IssueTriggerPreviewItem struct {
 type IssueTriggerPreviewResponse struct {
 	Triggers   []IssueTriggerPreviewItem `json:"triggers"`
 	TotalCount int                       `json:"total_count"`
+	Blocked    []map[string]string       `json:"blocked,omitempty"`
 }
 
 // PreviewIssueTrigger dry-runs WillEnqueueRun for a prospective issue write and
@@ -190,6 +192,10 @@ func (h *Handler) PreviewIssueTrigger(w http.ResponseWriter, r *http.Request) {
 	resp := IssueTriggerPreviewResponse{Triggers: make([]IssueTriggerPreviewItem, 0)}
 
 	appendTrigger := func(issue db.Issue, in service.IssueTriggerInput) {
+		if !in.IsCreate && !admission.Formal(issue.AdmissionStatus) {
+			resp.Blocked = append(resp.Blocked, map[string]string{"issue_id": uuidToString(issue.ID), "reason_code": "triage_review_required"})
+			return
+		}
 		probe := h.issueTriggerPreviewProbe(r, actorType, actorID, workspaceID, issue)
 		if trigger, ok := h.IssueService.WillEnqueueRun(r.Context(), in, probe); ok {
 			resp.Triggers = append(resp.Triggers, IssueTriggerPreviewItem{

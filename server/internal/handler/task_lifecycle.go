@@ -216,6 +216,9 @@ func (h *Handler) RerunIssue(w http.ResponseWriter, r *http.Request) {
 	}
 
 	task, err := h.TaskService.RerunIssue(r.Context(), issue.ID, sourceTaskID, pgtype.UUID{}, actorUserID, canInvoke)
+	if writeIssueAdmissionError(w, err) {
+		return
+	}
 	if errors.Is(err, service.ErrRerunInvokeNotAllowed) {
 		h.writeDispatchBlocked(w, http.StatusForbidden, ReasonInvocationNotAllowed)
 		return
@@ -256,6 +259,9 @@ func (h *Handler) RetrySourceContextQuickCreate(w http.ResponseWriter, r *http.R
 	}
 	task, err := h.TaskService.RetrySourceContextQuickCreate(r.Context(), workspaceID, requesterID, taskID, canInvoke)
 	if writeIssueLimitReached(w, err) {
+		return
+	}
+	if writeIssueAdmissionError(w, err) {
 		return
 	}
 	if errors.Is(err, service.ErrRerunInvokeNotAllowed) {

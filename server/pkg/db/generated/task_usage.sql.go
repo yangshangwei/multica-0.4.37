@@ -111,6 +111,7 @@ FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 LEFT JOIN issue i ON i.id = atq.issue_id
 WHERE a.workspace_id = $1
+  AND (i.id IS NULL OR i.admission_status IN ('not_required','accepted'))
   AND atq.status IN ('completed', 'failed', 'cancelled')
   AND atq.started_at IS NOT NULL
   AND atq.completed_at IS NOT NULL
@@ -187,6 +188,7 @@ FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 LEFT JOIN issue i ON i.id = atq.issue_id
 WHERE a.workspace_id = $1
+  AND (i.id IS NULL OR i.admission_status IN ('not_required','accepted'))
   AND atq.status IN ('completed', 'failed')
   AND atq.completed_at IS NOT NULL
   AND atq.completed_at >= $2::timestamptz
@@ -247,6 +249,7 @@ FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 LEFT JOIN issue i ON i.id = atq.issue_id
 WHERE a.workspace_id = $1
+  AND (i.id IS NULL OR i.admission_status IN ('not_required','accepted'))
   AND atq.status IN ('completed', 'failed')
   AND atq.completed_at IS NOT NULL
   AND atq.completed_at >= $3::timestamptz
@@ -328,6 +331,7 @@ FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 LEFT JOIN issue i ON i.id = atq.issue_id
 WHERE a.workspace_id = $1
+  AND (i.id IS NULL OR i.admission_status IN ('not_required','accepted'))
   AND atq.status IN ('completed', 'failed', 'cancelled')
   AND atq.started_at IS NOT NULL
   AND atq.completed_at IS NOT NULL

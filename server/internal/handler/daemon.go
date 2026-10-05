@@ -3774,6 +3774,9 @@ func (h *Handler) StartTask(w http.ResponseWriter, r *http.Request) {
 
 	task, err := h.TaskService.StartTask(r.Context(), parseUUID(taskID))
 	if err != nil {
+		if writeIssueAdmissionError(w, err) {
+			return
+		}
 		slog.Warn("start task failed", "task_id", taskID, "error", err)
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
@@ -3815,6 +3818,9 @@ func (h *Handler) MarkTaskWaitingLocalDirectory(w http.ResponseWriter, r *http.R
 
 	task, err := h.TaskService.MarkTaskWaitingLocalDirectory(r.Context(), parseUUID(taskID), req.Reason)
 	if err != nil {
+		if writeIssueAdmissionError(w, err) {
+			return
+		}
 		slog.Warn("mark task waiting_local_directory failed", "task_id", taskID, "error", err)
 		writeError(w, http.StatusBadRequest, err.Error())
 		return

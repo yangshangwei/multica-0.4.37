@@ -122,6 +122,8 @@ export interface IssueTriggerPreviewItem {
 }
 
 export interface IssueTriggerPreview {
+  /** Additive admission refusals; unknown reason codes remain displayable. */
+  blocked?: { issue_id: string; reason_code: string }[];
   triggers: IssueTriggerPreviewItem[];
   total_count: number;
 }

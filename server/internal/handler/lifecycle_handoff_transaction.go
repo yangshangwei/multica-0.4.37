@@ -14,6 +14,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/admission"
 	"github.com/multica-ai/multica/server/internal/attribution"
 	"github.com/multica-ai/multica/server/internal/issueguard"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
@@ -72,6 +73,9 @@ func (h *Handler) lifecycleOrigin(r *http.Request, actorType, actorID string, wo
 }
 
 func (h *Handler) prepareLifecycleHandoff(r *http.Request, source db.Issue, req lifecycleHandoffRequest, actorType, actorID string, needsFollowUp bool) (lifecyclePreparation, error) {
+	if err := admission.Check(r.Context(), h.Queries, source.ID); err != nil {
+		return lifecyclePreparation{}, lifecycleAssigneeError{http.StatusConflict, err.Error()}
+	}
 	var prepared lifecyclePreparation
 	origin, err := h.lifecycleOrigin(r, actorType, actorID, source.WorkspaceID)
 	if err != nil {
@@ -139,6 +143,11 @@ func (h *Handler) prepareLifecycleHandoff(r *http.Request, source db.Issue, req 
 }
 
 func (h *Handler) lifecycleDispatchTarget(ctx context.Context, target db.Issue, lock bool) (pgtype.UUID, pgtype.UUID, error) {
+	if target.ID.Valid {
+		if err := admission.Check(ctx, h.Queries, target.ID); err != nil {
+			return pgtype.UUID{}, pgtype.UUID{}, lifecycleAssigneeError{http.StatusConflict, err.Error()}
+		}
+	}
 	if !target.AssigneeType.Valid || !target.AssigneeID.Valid {
 		return pgtype.UUID{}, pgtype.UUID{}, nil
 	}
@@ -287,6 +296,9 @@ func (h *Handler) writeLifecycleHandoffInTx(r *http.Request, source db.Issue, re
 					return out, errLifecycleSnapshotChanged
 				}
 			}
+			if !admission.Formal(locked.AdmissionStatus) {
+				return out, lifecycleAssigneeError{http.StatusConflict, (&admission.Blocked{IssueID: locked.ID}).Error()}
+			}
 			source = locked
 		} else {
 			if !sameLifecycleParent(locked, source.ID) {
@@ -294,6 +306,9 @@ func (h *Handler) writeLifecycleHandoffInTx(r *http.Request, source db.Issue, re
 			}
 			if locked.AssigneeID != target.AssigneeID || locked.AssigneeType != target.AssigneeType {
 				return out, errLifecycleSnapshotChanged
+			}
+			if !admission.Formal(locked.AdmissionStatus) {
+				return out, lifecycleAssigneeError{http.StatusConflict, (&admission.Blocked{IssueID: locked.ID}).Error()}
 			}
 			target = locked
 		}

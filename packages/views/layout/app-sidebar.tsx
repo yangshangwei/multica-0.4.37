@@ -1,5 +1,7 @@
 "use client";
 
+import { triageSettingsOptions, triageCountsOptions } from "@multica/core/triage";
+
 import { issueStatusCategory } from "@multica/core/issues";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@multica/ui/lib/utils";
@@ -110,6 +112,7 @@ const EMPTY_INBOX_SUMMARY: Awaited<ReturnType<typeof api.getInboxUnreadSummary>>
 // against the current workspace slug at render time (see AppSidebar body).
 // Only parameterless paths are valid nav destinations.
 type NavKey =
+  | "triage"
   | "inbox"
   | "chat"
   | "myIssues"
@@ -127,6 +130,7 @@ type NavKey =
 // Static schema (key only) — labels resolved at render via useT("layout"),
 // icons derived from the destination path via routeIconForPath.
 type NavLabelKey =
+  | "triage"
   | "inbox"
   | "chat"
   | "my_issues"
@@ -153,6 +157,7 @@ const personalNav: NavItem[] = [
 ];
 
 const workNav: NavItem[] = [
+  { key: "triage", labelKey: "triage" },
   { key: "issues", labelKey: "issues" },
   { key: "projects", labelKey: "projects" },
 ];
@@ -500,6 +505,8 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
   }, [pathname, setOpenMobile]);
 
   const wsId = workspace?.id;
+  const { data: triageSettings } = useQuery({ ...triageSettingsOptions(wsId ?? ""), enabled: !!wsId });
+  const { data: triageCounts } = useQuery({ ...triageCountsOptions(wsId ?? ""), enabled: !!wsId && triageSettings?.enabled === true });
   const { data: inboxItems = EMPTY_INBOX } = useQuery({
     queryKey: wsId ? inboxKeys.list(wsId) : ["inbox", "disabled"],
     queryFn: () => api.listInbox(),
@@ -877,12 +884,13 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
             <SidebarGroupLabel>{t(($) => $.sidebar.work_group)}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
-                {workNav.map((item) => {
+                {workNav.filter((item) => item.key !== "triage" || triageSettings?.enabled === true).map((item) => {
                   const href = p[item.key]();
                   return (
                     <NavRow
                       key={item.key}
                       href={href}
+                      trailing={item.key === "triage" ? (triageCounts?.ready ?? 0) : undefined}
                       label={item.key === "issues" ? t(($) => $.sidebar.workspace_issues) : t(($) => $.nav[item.labelKey])}
                       // A pinned issue / project sits under this group's path
                       // prefix, so the pin owns the highlight and the parent

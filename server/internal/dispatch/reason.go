@@ -67,5 +67,6 @@ const (
 	// run, but Cloud's effective workspace issue-count limit blocked the issue.
 	ReasonIssueLimitReached ReasonCode = "issue_limit_reached"
 	// ReasonInternalError: an unexpected server error prevented a clean decision.
-	ReasonInternalError ReasonCode = "internal_error"
+	ReasonInternalError        ReasonCode = "internal_error"
+	ReasonTriageReviewRequired ReasonCode = "triage_review_required"
 )

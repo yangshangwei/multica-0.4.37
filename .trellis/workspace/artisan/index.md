@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 42
+- **Total Sessions**: 43
 - **Last Active**: 2026-10-05
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1357 | Active |
+| `journal-1.md` | ~1393 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 43 | 2026-10-05 | 完成分拣台 T1 人工审核闭环 | `b0cda446a`, `36bc06c23`, `62cb06a0c` | `codex/triage-t1` |
 | 42 | 2026-10-05 | 后台管理功能提交与 Trellis 归档 | `ae5f246ed`, `18aeab212` | `main` |
 | 41 | 2026-10-04 | MCP 市场部署提供目录完成 | `e7016ad48`, `a7281ab91` | `codex/mcp-deployment-catalog` |
 | 40 | 2026-10-02 | Complete MCP catalog publishing and final gate review | `c1c5f7f9a`, `a041caebf` | `codex/mcp-catalog-publishing` |

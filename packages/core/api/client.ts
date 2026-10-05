@@ -1,4 +1,17 @@
 import { parseAdminResourceList, parseAdminResourcePreview, parseAdminResourceResult, type AdminResourceKind, type AdminResourceUpload, type AdminResourcePublish, type AdminResourceWithdraw } from "../admin/resource-schema";
+import type {
+  TriageSettings, UpdateTriageSettingsInput, TriageListParams, TriageListResponse, TriageItem,
+  CreateTriageItemInput, TriageItemHistory, TriageHistoryParams, TriageHistoryResponse,
+  TriageActionInput, TriageActionResult, TriageBatchPreviewInput, TriageBatchPreview,
+  TriageBatchInput, TriageBatchResult, TriageImportPreviewInput, TriageImportPreview,
+  TriageImportCommitInput, TriageImportResult,
+} from "../types/triage";
+import {
+  parseTriageResponse, TriageSettingsSchema, TriageItemSchema, TriageListResponseSchema,
+  TriageItemHistorySchema, TriageHistoryResponseSchema, TriageActionResultSchema,
+  TriageBatchPreviewSchema, TriageBatchResultSchema, TriageImportPreviewSchema,
+  TriageImportResultSchema,
+} from "./triage-schemas";
 import { installationProofExpiry, type InstallationMetadataProofInput } from "./installation-metadata";
 import { parseAdminInstallationList, parseAdminInstallationDetail, parseAdminUnassociatedRuntimes } from "../admin/installation-schemas";
 import { parseAdminExecutionList, parseAdminExecution, parseAdminIssueList } from "../admin/execution-schemas";
@@ -625,6 +638,24 @@ function sameResourceIdentity(actual: string, expected: string): boolean {
     .toLowerCase();
   const canonical = normalize(actual);
   return /^[0-9a-f]{32}$/.test(canonical) && canonical === normalize(expected);
+}
+
+function matchesTriageItem(item: TriageItem, workspaceId: string, reference?: string): boolean {
+  return sameResourceIdentity(item.issue.workspace_id, workspaceId) && (
+    reference === undefined || sameResourceIdentity(item.issue.id, reference) ||
+    (/^[a-z0-9]{1,10}-[0-9]+$/i.test(reference) && item.issue.identifier.toLowerCase() === reference.toLowerCase())
+  );
+}
+
+/** A response may be partial, but may not widen or duplicate the user's selection. */
+function matchesTriageSelection(actual: readonly string[], selected: readonly string[]): boolean {
+  const seen = new Set<string>();
+  return actual.every(id => {
+    const requested = selected.find(candidate => sameResourceIdentity(id, candidate));
+    if (requested === undefined || seen.has(requested)) return false;
+    seen.add(requested);
+    return true;
+  });
 }
 
 function assertAgentConversationStartersWriteSupported(data: {
@@ -1482,6 +1513,156 @@ export class ApiClient {
     return parseWithFallback(raw, SearchProjectsResponseSchema, EMPTY_SEARCH_PROJECTS_RESPONSE, {
       endpoint: "GET /api/projects/search",
     });
+  }
+
+  // Triage commands require an explicit workspace, including retries after navigation.
+  async getTriageSettings(wsId: string, options?: { signal?: AbortSignal }): Promise<TriageSettings> {
+    try {
+      const raw = await this.fetch<unknown>("/api/triage/settings", workspaceRequestInit({ workspaceId: wsId, ...options }));
+      return parseTriageResponse(raw, TriageSettingsSchema, "GET /api/triage/settings");
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 404) return {
+        supported: false, enabled: false, acceptance_status: "todo", require_priority: false,
+        responsibility_mode: "none", responsibility_member_id: null, revision: 0,
+      };
+      throw error;
+    }
+  }
+
+  async updateTriageSettings(wsId: string, input: UpdateTriageSettingsInput, options?: { signal?: AbortSignal }): Promise<TriageSettings> {
+    const raw = await this.fetch<unknown>(`/api/triage/settings`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "PUT", body: JSON.stringify(input),
+    });
+    return parseTriageResponse(raw, TriageSettingsSchema, "PUT /api/triage/settings");
+  }
+
+  async listTriageItems(wsId: string, params: TriageListParams = {}, options?: { signal?: AbortSignal }): Promise<TriageListResponse> {
+    const search = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) search.set(key, String(value));
+    }
+    const raw = await this.fetch<unknown>(`/api/triage/items?${search}`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+    });
+    return parseTriageResponse<TriageListResponse>(raw, TriageListResponseSchema, "GET /api/triage/items", result => result.items.every(item => matchesTriageItem(item, wsId)));
+  }
+
+  async getTriageItem(wsId: string, id: string, options?: { signal?: AbortSignal }): Promise<TriageItem> {
+    const raw = await this.fetch<unknown>(`/api/triage/items/${encodeURIComponent(id)}`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+    });
+    return parseTriageResponse<TriageItem>(raw, TriageItemSchema, "GET /api/triage/items/:id", item => matchesTriageItem(item, wsId, id));
+  }
+
+  async createTriageItem(wsId: string, input: CreateTriageItemInput, options?: { signal?: AbortSignal }): Promise<TriageItem> {
+    const raw = await this.fetch<unknown>(`/api/triage/items`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "POST", body: JSON.stringify(input),
+    });
+    return parseTriageResponse<TriageItem>(raw, TriageItemSchema, "POST /api/triage/items", item => matchesTriageItem(item, wsId));
+  }
+
+  async getTriageItemHistory(wsId: string, id: string, options?: { signal?: AbortSignal }): Promise<TriageItemHistory> {
+    const raw = await this.fetch<unknown>(`/api/triage/items/${encodeURIComponent(id)}/history`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+    });
+    const result = parseTriageResponse<TriageItemHistory>(raw, TriageItemHistorySchema, "GET /api/triage/items/:id/history");
+    // History entries carry UUIDs, so resolve a human identifier only if needed.
+    let expectedId = id;
+    if (result.events.some(event => !sameResourceIdentity(event.issue_id, id)) && /^[a-z0-9]{1,10}-[0-9]+$/i.test(id)) {
+      expectedId = (await this.getTriageItem(wsId, id, options)).issue.id;
+    }
+    if (!result.events.every(event => sameResourceIdentity(event.issue_id, expectedId))) {
+      throw new Error("GET /api/triage/items/:id/history returned a malformed triage response");
+    }
+    return result;
+  }
+
+  async listTriageHistory(wsId: string, params: TriageHistoryParams = {}, options?: { signal?: AbortSignal }): Promise<TriageHistoryResponse> {
+    const search = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) search.set(key, String(value));
+    }
+    const raw = await this.fetch<unknown>(`/api/triage/history?${search}`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+    });
+    return parseTriageResponse(raw, TriageHistoryResponseSchema, "GET /api/triage/history");
+  }
+
+  async performTriageAction(wsId: string, id: string, input: TriageActionInput, options?: { signal?: AbortSignal }): Promise<TriageActionResult> {
+    const raw = await this.fetch<unknown>(`/api/triage/items/${encodeURIComponent(id)}/actions`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "POST", body: JSON.stringify(input),
+    });
+    return parseTriageResponse<TriageActionResult>(raw, TriageActionResultSchema, "POST /api/triage/items/:id/actions", result => matchesTriageItem(result.item, wsId, id) && result.action.action === input.action);
+  }
+
+  async retryTriageExecution(wsId: string, actionId: string, options?: { signal?: AbortSignal }): Promise<TriageActionResult> {
+    const raw = await this.fetch<unknown>(`/api/triage/actions/${encodeURIComponent(actionId)}/retry-execution`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "POST", body: JSON.stringify({}),
+    });
+    return parseTriageResponse<TriageActionResult>(raw, TriageActionResultSchema, "POST /api/triage/actions/:actionId/retry-execution", result => matchesTriageItem(result.item, wsId) && sameResourceIdentity(result.action.id, actionId));
+  }
+
+  async previewTriageBatch(wsId: string, input: TriageBatchPreviewInput, options?: { signal?: AbortSignal }): Promise<TriageBatchPreview> {
+    const raw = await this.fetch<unknown>(`/api/triage/batch/preview`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "POST", body: JSON.stringify(input),
+    });
+    return parseTriageResponse<TriageBatchPreview>(raw, TriageBatchPreviewSchema, "POST /api/triage/batch/preview", result =>
+      matchesTriageSelection(result.items.map(row => row.issue_id), input.items.map(row => row.issue_id)) &&
+      result.items.every(row => input.items.some(selected => sameResourceIdentity(selected.issue_id, row.issue_id) && selected.expected_revision === row.expected_revision)),
+    );
+  }
+
+  async commitTriageBatch(wsId: string, input: TriageBatchInput, options?: { signal?: AbortSignal }): Promise<TriageBatchResult> {
+    const raw = await this.fetch<unknown>(`/api/triage/batch`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "POST", body: JSON.stringify(input),
+    });
+    return parseTriageResponse<TriageBatchResult>(raw, TriageBatchResultSchema, "POST /api/triage/batch", result =>
+      matchesTriageSelection(result.results.map(row => row.issue_id), input.items.map(row => row.issue_id)) &&
+      result.results.every(row => !row.result || (matchesTriageItem(row.result.item, wsId, row.issue_id) &&
+        input.items.some(selected => sameResourceIdentity(selected.issue_id, row.issue_id) && selected.action === row.result?.action.action))),
+    );
+  }
+
+  async previewTriageImport(wsId: string, input: TriageImportPreviewInput, options?: { signal?: AbortSignal }): Promise<TriageImportPreview> {
+    const raw = await this.fetch<unknown>(`/api/triage/imports/preview`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "POST", body: JSON.stringify(input),
+    });
+    return parseTriageResponse(raw, TriageImportPreviewSchema, "POST /api/triage/imports/preview");
+  }
+
+  async getTriageImport(wsId: string, id: string, options?: { signal?: AbortSignal }): Promise<TriageImportPreview> {
+    const raw = await this.fetch<unknown>(`/api/triage/imports/${encodeURIComponent(id)}`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+    });
+    return parseTriageResponse<TriageImportPreview>(raw, TriageImportPreviewSchema, "GET /api/triage/imports/:id", result => sameResourceIdentity(result.batch_id, id));
+  }
+
+  async commitTriageImport(wsId: string, id: string, input: TriageImportCommitInput, options?: { signal?: AbortSignal }): Promise<TriageImportResult> {
+    const raw = await this.fetch<unknown>(`/api/triage/imports/${encodeURIComponent(id)}/commit`, {
+      ...workspaceRequestInit({ workspaceId: wsId, ...options }),
+      method: "POST", body: JSON.stringify(input),
+    });
+    return parseTriageResponse<TriageImportResult>(raw, TriageImportResultSchema, "POST /api/triage/imports/:id/commit", result =>
+      sameResourceIdentity(result.batch_id, id) && matchesTriageSelection(result.results.map(row => String(row.row_number)), input.rows.map(row => String(row.row_number))),
+    );
+  }
+
+  async downloadTriageFailures(wsId: string, id: string, options?: { signal?: AbortSignal }): Promise<Blob> {
+    const epoch = this.endpointEpoch;
+    const response = await this.fetchRaw(`/api/triage/imports/${encodeURIComponent(id)}/failures`, workspaceRequestInit({ workspaceId: wsId, ...options }));
+    if (!response.headers.get("Content-Type")?.toLowerCase().startsWith("text/csv")) {
+      throw new Error("Triage failure download returned malformed CSV content");
+    }
+    const blob = await response.blob();
+    if (epoch !== this.endpointEpoch) throw new Error("Server session changed");
+    return blob;
   }
 
   /**

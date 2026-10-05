@@ -323,7 +323,7 @@ JOIN issue i ON i.id = atq.issue_id
 JOIN workspace w ON w.id = i.workspace_id
 WHERE atq.agent_id = @agent_id
   AND atq.id <> @task_id
-  AND i.workspace_id = @workspace_id
+  AND i.workspace_id = @workspace_id AND i.admission_status IN ('not_required','accepted')
   AND atq.status IN ('dispatched', 'running', 'waiting_local_directory')
 ORDER BY
     CASE atq.status
@@ -386,6 +386,7 @@ SELECT
     COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
     sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
+  AND lock_issue_execution($3, sqlc.narg(trigger_comment_id), sqlc.narg(coalesced_comment_ids)::uuid[])
 RETURNING *;
 
 -- name: CreateDeferredChannelIssueTask :one
@@ -430,6 +431,7 @@ SELECT
     COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
     sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
+  AND lock_issue_execution($3, sqlc.narg(trigger_comment_id), sqlc.narg(coalesced_comment_ids)::uuid[])
 RETURNING *;
 
 -- name: PromoteDeferredChannelIssueTask :one
@@ -437,7 +439,8 @@ RETURNING *;
 -- by the fire_at sweeper no longer matches and is treated as settled.
 UPDATE agent_task_queue
 SET status = 'queued', fire_at = NULL
-WHERE id = $1 AND issue_id IS NOT NULL AND status = 'deferred'
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = $1 AND issue_id IS NOT NULL AND status = 'deferred'
 RETURNING *;
 
 -- name: SetDeferredChannelIssueTaskRuntimeOverlay :execrows
@@ -482,6 +485,7 @@ SELECT
     COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
     sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, NULL, $2)
+  AND lock_issue_execution(NULL, NULL, '{}', $4::jsonb)
 RETURNING *;
 
 -- name: CreateDeferredAgentTask :one
@@ -520,6 +524,7 @@ SELECT
     COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()),
     sqlc.narg('submitted_installation_id')::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
+  AND lock_issue_execution(@issue_id, sqlc.narg(trigger_comment_id))
 RETURNING *;
 
 -- name: LinkTaskToIssue :exec
@@ -535,7 +540,8 @@ RETURNING *;
 UPDATE agent_task_queue
 SET issue_id = $2
 WHERE id = $1 AND issue_id IS NULL
-  AND lock_task_owner_rows(NULL, $2, NULL);
+  AND lock_task_owner_rows(NULL, $2, NULL)
+  AND lock_issue_execution($2);
 
 -- name: CreateRetryTask :one
 -- Fenced against workspace teardown: lock_task_owner_rows (migration 284)
@@ -646,6 +652,7 @@ SELECT
     COALESCE(sqlc.narg('submitted_installation_id')::uuid, p.submitted_installation_id)
 FROM agent_task_queue p
 WHERE p.id = $1
+  AND lock_issue_execution(p.issue_id, p.trigger_comment_id, p.coalesced_comment_ids, p.context)
   AND lock_task_owner_rows(p.agent_id, p.issue_id, p.runtime_id)
 ON CONFLICT (issue_id, agent_id) WHERE status IN ('queued', 'dispatched')
        OR (status = 'deferred' AND context->>'channel_issue_media_pending' = 'true')
@@ -683,6 +690,7 @@ WHERE p.id = sqlc.arg(source_task_id)
   AND p.chat_session_id IS NULL
   AND p.autopilot_run_id IS NULL
   AND lock_task_owner_rows(p.agent_id, p.issue_id, p.runtime_id)
+  AND lock_issue_execution(p.issue_id, p.trigger_comment_id, p.coalesced_comment_ids, p.context)
 RETURNING *;
 
 -- name: DeleteUnstartedQuickCreateRetryTask :execrows
@@ -831,7 +839,8 @@ SET status = 'dispatched',
     prepare_lease_expires_at = now() + make_interval(secs => @prepare_lease_secs::double precision)
 WHERE id = (
     SELECT atq.id FROM agent_task_queue atq
-    WHERE atq.agent_id = @agent_id
+    WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.agent_id = @agent_id
       AND atq.runtime_id = @runtime_id
       AND atq.status = 'queued'
       AND (
@@ -902,7 +911,8 @@ RETURNING *;
 -- guard prevents acknowledging an id outside the task's enqueue-time plan.
 UPDATE agent_task_queue
 SET delivered_comment_ids = @delivered_comment_ids::uuid[]
-WHERE id = @task_id
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = @task_id
   AND runtime_id = @runtime_id
   AND status = 'dispatched'
   AND started_at IS NULL
@@ -963,7 +973,8 @@ SET dispatched_at = CASE WHEN execution_binding_id IS NULL THEN now() ELSE dispa
     prepare_lease_expires_at = now() + make_interval(secs => @prepare_lease_secs::double precision)
 WHERE id = (
     SELECT atq.id FROM agent_task_queue atq
-    WHERE atq.runtime_id = $1
+    WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = $1
       AND atq.status = 'dispatched'
       AND (
           EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
@@ -1036,7 +1047,8 @@ SET dispatched_at = CASE WHEN execution_binding_id IS NULL THEN now() ELSE dispa
     prepare_lease_expires_at = now() + make_interval(secs => @prepare_lease_secs::double precision)
 WHERE id IN (
     SELECT atq.id FROM agent_task_queue atq
-    WHERE atq.runtime_id = ANY(@runtime_ids::uuid[])
+    WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = ANY(@runtime_ids::uuid[])
       AND atq.status = 'dispatched'
       AND (
           EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
@@ -1108,7 +1120,8 @@ SET status = 'running',
     started_at = now(),
     wait_reason = NULL,
     prepare_lease_expires_at = NULL
-WHERE id = $1 AND status IN ('dispatched', 'waiting_local_directory')
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = $1 AND status IN ('dispatched', 'waiting_local_directory')
 RETURNING *;
 
 -- name: MarkAgentTaskWaitingLocalDirectory :one
@@ -1125,7 +1138,8 @@ UPDATE agent_task_queue
 SET status = 'waiting_local_directory',
     wait_reason = $2,
     prepare_lease_expires_at = now() + make_interval(secs => @prepare_lease_secs::double precision)
-WHERE id = $1 AND status = 'dispatched'
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = $1 AND status = 'dispatched'
 RETURNING *;
 
 -- name: CompleteAgentTask :one
@@ -2000,6 +2014,7 @@ SET coalesced_comment_ids = (
 WHERE id = (
     SELECT t.id FROM agent_task_queue t
     WHERE t.issue_id = @issue_id
+      AND lock_issue_execution(t.issue_id, @new_trigger_comment_id::uuid)
       AND t.agent_id = @agent_id
       AND (
           t.status = 'queued'
@@ -2052,6 +2067,7 @@ SET coalesced_comment_ids = (
 WHERE id = (
     SELECT t.id FROM agent_task_queue t
     WHERE t.issue_id = @issue_id
+      AND lock_issue_execution(t.issue_id, @comment_id::uuid)
       AND t.agent_id = @agent_id
       AND t.status IN ('dispatched', 'running', 'waiting_local_directory')
       AND (
@@ -2081,6 +2097,7 @@ SET coalesced_comment_ids = (
 WHERE id = (
     SELECT t.id FROM agent_task_queue t
     WHERE t.issue_id = @issue_id
+      AND lock_issue_execution(t.issue_id, @comment_id::uuid)
       AND t.agent_id = @agent_id
       AND (
           t.status = 'queued'
@@ -2257,7 +2274,8 @@ ORDER BY priority DESC, created_at ASC;
 -- runtime is busy on a long-running task. Backed by the partial index
 -- idx_agent_task_queue_claim_candidates so the warm path is cheap.
 SELECT atq.* FROM agent_task_queue atq
-WHERE atq.runtime_id = $1
+WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = $1
   AND atq.status = 'queued'
   AND EXISTS (
       -- Keep this authorization fence in sync with ClaimAgentTask.
@@ -2346,7 +2364,8 @@ WITH due AS (
                ORDER BY t.priority DESC, t.created_at ASC, t.id
            ) AS rn
     FROM agent_task_queue t
-    WHERE t.runtime_id = @runtime_id
+    WHERE lock_issue_execution(t.issue_id, t.trigger_comment_id, t.coalesced_comment_ids, t.context)
+      AND t.runtime_id = @runtime_id
       AND t.status = 'deferred'
       AND t.fire_at <= now()
       AND EXISTS (
@@ -2384,7 +2403,8 @@ RETURNING *;
 -- runtimes' rows into one priority/FIFO order is not). The per-machine
 -- candidate set is small, so this is cheap in practice.
 SELECT atq.* FROM agent_task_queue atq
-WHERE atq.runtime_id = ANY(@runtime_ids::uuid[])
+WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = ANY(@runtime_ids::uuid[])
   AND atq.status = 'queued'
   AND EXISTS (
       -- Keep this authorization fence in sync with ClaimAgentTask.
@@ -2419,7 +2439,8 @@ WITH due AS (
                ORDER BY t.priority DESC, t.created_at ASC, t.id
            ) AS rn
     FROM agent_task_queue t
-    WHERE t.runtime_id = ANY(@runtime_ids::uuid[])
+    WHERE lock_issue_execution(t.issue_id, t.trigger_comment_id, t.coalesced_comment_ids, t.context)
+      AND t.runtime_id = ANY(@runtime_ids::uuid[])
       AND t.status = 'deferred'
       AND t.fire_at <= now()
       AND EXISTS (
@@ -2486,6 +2507,7 @@ SELECT
 FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND atq.created_at > now() - INTERVAL '30 days'
 GROUP BY atq.agent_id;
 
@@ -2511,6 +2533,7 @@ SELECT
 FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND atq.completed_at IS NOT NULL
   AND atq.completed_at > now() - INTERVAL '30 days'
 GROUP BY atq.agent_id, bucket
@@ -2545,6 +2568,7 @@ ORDER BY atq.agent_id, bucket;
 SELECT atq.* FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND atq.status IN ('queued', 'dispatched', 'running', 'waiting_local_directory')
 
 UNION ALL
@@ -2554,6 +2578,7 @@ JOIN LATERAL (
   SELECT atq.*
   FROM agent_task_queue atq
   WHERE atq.agent_id = a.id
+    AND NOT EXISTS (SELECT 1 FROM issue input WHERE input.id=atq.issue_id AND input.admission_status NOT IN ('not_required','accepted'))
     AND atq.status IN ('completed', 'failed')
   ORDER BY atq.completed_at DESC NULLS LAST, atq.created_at DESC, atq.id DESC
   LIMIT 1
@@ -2586,6 +2611,7 @@ SELECT
 FROM agent a
 JOIN agent_task_queue atq ON atq.agent_id = a.id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND a.kind = 'user'
   AND a.archived_at IS NULL
   AND atq.status = 'running'
@@ -2748,3 +2774,6 @@ INSERT INTO agent (
     @owner_id, '', '{}'::jsonb, '[]'::jsonb, 'user', @system_key
 )
 RETURNING *;
+
+-- name: LockIssueExecution :one
+SELECT lock_issue_execution(sqlc.narg(issue_id)::uuid, sqlc.narg(trigger_comment_id)::uuid, sqlc.narg(comment_ids)::uuid[], sqlc.narg(context)::jsonb)::boolean AS allowed;

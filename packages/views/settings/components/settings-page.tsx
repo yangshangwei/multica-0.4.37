@@ -1,5 +1,7 @@
 "use client";
 
+import { TriageSettingsTab } from "../../triage/triage-settings-tab";
+
 import React from "react";
 import { ChevronDown, X } from "lucide-react";
 import { Button } from "@multica/ui/components/ui/button";
@@ -244,6 +246,7 @@ export function SettingsPage({ extraDesktopTabs }: SettingsPageProps = {}) {
           <TabsContent aria-label={activeLabel} value="notifications"><NotificationsTab /></TabsContent>
           <TabsContent aria-label={activeLabel} value="tokens"><TokensTab /></TabsContent>
           <TabsContent aria-label={activeLabel} value="workspace"><WorkspaceTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="triage"><TriageSettingsTab /></TabsContent>
           <TabsContent aria-label={activeLabel} value="members"><MembersTab /></TabsContent>
           {/* Flag-gated tabs render their content unconditionally: validTabs
               already excludes a gated value, so the panel can never activate

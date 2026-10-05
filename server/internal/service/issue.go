@@ -10,6 +10,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/admission"
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/dispatch"
 	"github.com/multica-ai/multica/server/internal/entitlement"
@@ -354,6 +355,9 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 		})
 		if err != nil || !parent.ID.Valid {
 			return IssueCreateResult{}, ErrParentIssueNotFound
+		}
+		if !admission.Formal(parent.AdmissionStatus) {
+			return IssueCreateResult{}, &admission.Blocked{IssueID: parent.ID}
 		}
 		// Back-fill project from parent when the caller did not pin
 		// one explicitly. Matches the long-standing HTTP behavior: a

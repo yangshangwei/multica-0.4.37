@@ -23,32 +23,40 @@ func (q *Queries) CountProjectResources(ctx context.Context, projectID pgtype.UU
 }
 
 const createProjectResource = `-- name: CreateProjectResource :one
+WITH project_fence AS MATERIALIZED (
+    SELECT p.id, p.workspace_id FROM project p
+    WHERE p.id = $6 AND p.workspace_id = $7
+    FOR NO KEY UPDATE
+)
 INSERT INTO project_resource (
     project_id, workspace_id, resource_type, resource_ref, label, position, created_by
-) VALUES (
-    $1, $2, $3, $4, $5, $6, $7
-) RETURNING id, project_id, workspace_id, resource_type, resource_ref, label, position, created_at, created_by
+)
+SELECT project_fence.id, project_fence.workspace_id, $1, $2, $3, $4, $5
+FROM project_fence
+RETURNING id, project_id, workspace_id, resource_type, resource_ref, label, position, created_at, created_by
 `
 
 type CreateProjectResourceParams struct {
-	ProjectID    pgtype.UUID `json:"project_id"`
-	WorkspaceID  pgtype.UUID `json:"workspace_id"`
 	ResourceType string      `json:"resource_type"`
 	ResourceRef  []byte      `json:"resource_ref"`
 	Label        pgtype.Text `json:"label"`
 	Position     int32       `json:"position"`
 	CreatedBy    pgtype.UUID `json:"created_by"`
+	ProjectID    pgtype.UUID `json:"project_id"`
+	WorkspaceID  pgtype.UUID `json:"workspace_id"`
 }
 
+// Serialize the whole resource set with an execution fingerprint's FOR SHARE
+// project lock. Consume the materialized owner before inserting the child.
 func (q *Queries) CreateProjectResource(ctx context.Context, arg CreateProjectResourceParams) (ProjectResource, error) {
 	row := q.db.QueryRow(ctx, createProjectResource,
-		arg.ProjectID,
-		arg.WorkspaceID,
 		arg.ResourceType,
 		arg.ResourceRef,
 		arg.Label,
 		arg.Position,
 		arg.CreatedBy,
+		arg.ProjectID,
+		arg.WorkspaceID,
 	)
 	var i ProjectResource
 	err := row.Scan(
@@ -66,7 +74,14 @@ func (q *Queries) CreateProjectResource(ctx context.Context, arg CreateProjectRe
 }
 
 const deleteProjectResource = `-- name: DeleteProjectResource :exec
-DELETE FROM project_resource WHERE id = $1
+WITH project_fence AS MATERIALIZED (
+    SELECT p.id FROM project p
+    JOIN project_resource r ON r.project_id = p.id AND r.workspace_id = p.workspace_id
+    WHERE r.id = $1
+    FOR NO KEY UPDATE OF p
+)
+DELETE FROM project_resource
+WHERE project_resource.id = $1 AND project_resource.project_id IN (SELECT project_fence.id FROM project_fence)
 `
 
 func (q *Queries) DeleteProjectResource(ctx context.Context, id pgtype.UUID) error {
@@ -272,11 +287,17 @@ func (q *Queries) ListProjectResourcesInWorkspace(ctx context.Context, arg ListP
 }
 
 const updateProjectResource = `-- name: UpdateProjectResource :one
+WITH project_fence AS MATERIALIZED (
+    SELECT p.id FROM project p
+    JOIN project_resource r ON r.project_id = p.id AND r.workspace_id = p.workspace_id
+    WHERE r.id = $1
+    FOR NO KEY UPDATE OF p
+)
 UPDATE project_resource
 SET resource_ref = $2,
     label        = $3,
     position     = $4
-WHERE id = $1
+WHERE project_resource.id = $1 AND project_resource.project_id IN (SELECT project_fence.id FROM project_fence)
 RETURNING id, project_id, workspace_id, resource_type, resource_ref, label, position, created_at, created_by
 `
 

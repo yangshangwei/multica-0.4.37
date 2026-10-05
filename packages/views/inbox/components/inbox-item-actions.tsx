@@ -7,6 +7,7 @@ import type { RowActionItem } from "../../common/row-actions-menu";
 import { useIntentNavigate } from "../../navigation";
 import { useT } from "../../i18n";
 import type { InboxView } from "./inbox-view";
+import { getInboxDestination } from "./inbox-display";
 
 /** Row-level actions the menus invoke, all keyed by inbox item id. */
 export interface InboxRowActions {
@@ -41,10 +42,7 @@ export function useInboxItemActions(
   const intentNavigate = useIntentNavigate();
   if (!actions) return [];
 
-  const issueHref =
-    slug && item.issue_id
-      ? paths.workspace(slug).issueDetail(item.issue_id)
-      : null;
+  const issueHref = slug ? getInboxDestination(item, paths.workspace(slug)) : null;
   const isArchivedView = view === "archived";
 
   const groups: RowActionItem[][] = [];

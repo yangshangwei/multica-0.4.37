@@ -16,6 +16,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/admission"
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/attribution"
 	"github.com/multica-ai/multica/server/internal/auth"
@@ -1225,6 +1226,9 @@ func (s *TaskService) enqueueIssueTask(ctx context.Context, issue db.Issue, trig
 }
 
 func (s *TaskService) enqueueIssueTaskWithCommentPlan(ctx context.Context, issue db.Issue, triggerCommentID pgtype.UUID, coalescedCommentIDs []pgtype.UUID, forceFreshSession bool, handoffNote string, actorUserID pgtype.UUID, rerunOfTaskID pgtype.UUID, fireAt pgtype.Timestamptz) (db.AgentTaskQueue, error) {
+	if err := s.checkIssueExecution(ctx, s.Queries, issue.ID, triggerCommentID, coalescedCommentIDs); err != nil {
+		return db.AgentTaskQueue{}, err
+	}
 	if !issue.AssigneeID.Valid {
 		slog.Error("task enqueue failed", "issue_id", util.UUIDToString(issue.ID), "error", "issue has no assignee")
 		return db.AgentTaskQueue{}, fmt.Errorf("issue has no assignee")
@@ -1386,6 +1390,9 @@ func (s *TaskService) enqueueMentionTask(ctx context.Context, issue db.Issue, ag
 }
 
 func (s *TaskService) enqueueMentionTaskWithCommentPlan(ctx context.Context, issue db.Issue, agentID pgtype.UUID, triggerCommentID pgtype.UUID, coalescedCommentIDs []pgtype.UUID, isLeader bool, squadID pgtype.UUID, forceFreshSession bool, handoffNote string, actorUserID pgtype.UUID, rerunOfTaskID pgtype.UUID) (db.AgentTaskQueue, error) {
+	if err := s.checkIssueExecution(ctx, s.Queries, issue.ID, triggerCommentID, coalescedCommentIDs); err != nil {
+		return db.AgentTaskQueue{}, err
+	}
 	agent, err := s.Queries.GetAgent(ctx, agentID)
 	if err != nil {
 		slog.Error("mention task enqueue failed: agent not found", "issue_id", util.UUIDToString(issue.ID), "agent_id", util.UUIDToString(agentID), "error", err)
@@ -1468,6 +1475,9 @@ func (s *TaskService) enqueueMentionTaskWithCommentPlan(ctx context.Context, iss
 // EnqueueDeferredAssigneeFallback creates an inert task that becomes claimable
 // only after PromoteDueDeferredTasksForRuntime flips it from deferred to queued.
 func (s *TaskService) EnqueueDeferredAssigneeFallback(ctx context.Context, issue db.Issue, agentID, squadID pgtype.UUID, escalationForTaskID pgtype.UUID, triggerCommentID pgtype.UUID, fireAt time.Time) (db.AgentTaskQueue, error) {
+	if err := s.checkIssueExecution(ctx, s.Queries, issue.ID, triggerCommentID, nil); err != nil {
+		return db.AgentTaskQueue{}, err
+	}
 	agent, err := s.Queries.GetAgent(ctx, agentID)
 	if err != nil {
 		slog.Error("deferred fallback enqueue failed: agent not found", "issue_id", util.UUIDToString(issue.ID), "agent_id", util.UUIDToString(agentID), "error", err)
@@ -1606,6 +1616,14 @@ func (s *TaskService) EnqueueQuickCreateTaskWithSourceContext(ctx context.Contex
 }
 
 func (s *TaskService) enqueueQuickCreateTask(ctx context.Context, workspaceID, requesterID pgtype.UUID, agentID, squadID pgtype.UUID, prompt, priority, dueDate string, projectID, parentIssueID pgtype.UUID, attachmentIDs []pgtype.UUID, capture *SourceContextCapture) (db.AgentTaskQueue, error) {
+	if err := admission.Check(ctx, s.Queries, parentIssueID); err != nil {
+		return db.AgentTaskQueue{}, err
+	}
+	if capture != nil {
+		if err := admission.Check(ctx, s.Queries, capture.SourceIssueID); err != nil {
+			return db.AgentTaskQueue{}, err
+		}
+	}
 	if err := CheckIssueCreateCapacity(ctx, s.Queries, s.Entitlements, workspaceID); err != nil {
 		return db.AgentTaskQueue{}, fmt.Errorf("preflight quick-create issue capacity: %w", err)
 	}
@@ -1782,6 +1800,13 @@ func (s *TaskService) RetrySourceContextQuickCreate(ctx context.Context, workspa
 	}
 	if err := CheckIssueCreateCapacity(ctx, s.Queries, s.Entitlements, workspaceID); err != nil {
 		return nil, fmt.Errorf("preflight quick-create issue capacity: %w", err)
+	}
+	source, err := s.Queries.GetIssueSourceContextByID(ctx, db.GetIssueSourceContextByIDParams{WorkspaceID: workspaceID, ID: contextID})
+	if err != nil {
+		return nil, ErrSourceContextRetryUnavailable
+	}
+	if err := admission.Check(ctx, s.Queries, source.SourceIssueID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return nil, err
 	}
 	overlay := s.buildRuntimeMCPOverlay(ctx, requesterID, agent)
 
@@ -3739,6 +3764,13 @@ func (s *TaskService) FinalizeTaskClaim(
 			// Preserve the original claim's trigger/comment provenance. The locked
 			// row validates delivery identity; it must not replace payload snapshots.
 		}
+		allowed, err := qtx.LockIssueExecution(ctx, db.LockIssueExecutionParams{IssueID: task.IssueID, TriggerCommentID: task.TriggerCommentID, CommentIds: task.CoalescedCommentIds, Context: task.Context})
+		if err != nil {
+			return err
+		}
+		if !allowed {
+			return &admission.Blocked{IssueID: task.IssueID}
+		}
 		if err := ValidateManagedTaskBinding(ctx, task); err != nil {
 			return err
 		}
@@ -4120,6 +4152,13 @@ func (s *TaskService) maybeLogClaimSlow(agentID pgtype.UUID, outcome string, sta
 // StartTask transitions a dispatched task to running.
 // Issue status is NOT changed here — the agent manages it via the CLI.
 func (s *TaskService) StartTask(ctx context.Context, taskID pgtype.UUID) (*db.AgentTaskQueue, error) {
+	current, err := s.Queries.GetAgentTask(ctx, taskID)
+	if err != nil {
+		return nil, err
+	}
+	if err := s.checkIssueExecution(ctx, s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
+		return nil, err
+	}
 	task, err := s.Queries.StartAgentTask(ctx, taskID)
 	if err != nil {
 		return nil, fmt.Errorf("start task: %w", err)
@@ -4211,6 +4250,13 @@ func (s *TaskService) ExtendTaskPrepareLease(ctx context.Context, taskID, runtim
 // next to the status. Returns the updated row so the daemon can confirm the
 // transition and so the broadcast carries the up-to-date snapshot.
 func (s *TaskService) MarkTaskWaitingLocalDirectory(ctx context.Context, taskID pgtype.UUID, reason string) (*db.AgentTaskQueue, error) {
+	current, err := s.Queries.GetAgentTask(ctx, taskID)
+	if err != nil {
+		return nil, err
+	}
+	if err := s.checkIssueExecution(ctx, s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
+		return nil, err
+	}
 	reason = sanitizeWaitReason(reason)
 	task, err := s.Queries.MarkAgentTaskWaitingLocalDirectory(ctx, db.MarkAgentTaskWaitingLocalDirectoryParams{
 		ID:               taskID,
@@ -5526,6 +5572,9 @@ var ErrRerunInvokeNotAllowed = errors.New("rerun: operator not allowed to invoke
 // rerun as a back door — and a blocked rerun mutates nothing. Pass nil only
 // from trusted internal callers (tests, backfill) that have already gated.
 func (s *TaskService) RerunIssue(ctx context.Context, issueID pgtype.UUID, sourceTaskID pgtype.UUID, triggerCommentID pgtype.UUID, actorUserID pgtype.UUID, canInvoke func(agent db.Agent) bool) (*db.AgentTaskQueue, error) {
+	if err := admission.Check(ctx, s.Queries, issueID); err != nil {
+		return nil, err
+	}
 	issue, err := s.Queries.GetIssue(ctx, issueID)
 	if err != nil {
 		return nil, fmt.Errorf("load issue: %w", err)
@@ -6021,9 +6070,10 @@ func (s *TaskService) ensureDelegatedFailureRecoveryComment(ctx context.Context,
 			ActorType:   "system",
 			ActorID:     "",
 			Payload: map[string]any{
-				"comment":      commentEventFields(target.comment),
-				"issue_title":  target.issue.Title,
-				"issue_status": target.issue.Status,
+				"comment":            commentEventFields(target.comment),
+				"issue_title":        target.issue.Title,
+				"issue_status":       target.issue.Status,
+				"suppress_execution": !target.comment.DispatchEligible,
 			},
 		})
 	}
@@ -6162,9 +6212,10 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 			ActorType:   "system",
 			ActorID:     "",
 			Payload: map[string]any{
-				"comment":      commentEventFields(exhaustedComment),
-				"issue_title":  target.issue.Title,
-				"issue_status": target.issue.Status,
+				"comment":            commentEventFields(exhaustedComment),
+				"issue_title":        target.issue.Title,
+				"issue_status":       target.issue.Status,
+				"suppress_execution": !target.comment.DispatchEligible,
 			},
 		})
 	}
@@ -6206,6 +6257,9 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 // reconciliation schedule the follow-up. The three-pass loop closes state
 // changes around those writes.
 func (s *TaskService) dispatchDelegatedFailureRecovery(ctx context.Context, target *delegatedFailureRecoveryTarget, excludeTaskID pgtype.UUID) (delegatedFailureRecoveryDispatchOutcome, error) {
+	if err := s.checkIssueExecution(ctx, s.Queries, target.issue.ID, target.comment.ID, nil); err != nil {
+		return delegatedFailureRecoveryCovered, err
+	}
 	const maxAttempts = 3
 	for attempt := 0; attempt < maxAttempts; attempt++ {
 		covered, err := s.Queries.HasTaskCoveringDelegatedFailureComment(ctx, db.HasTaskCoveringDelegatedFailureCommentParams{
@@ -7185,10 +7239,11 @@ func (s *TaskService) createAgentComment(ctx context.Context, issueID, agentID p
 		ActorType:   "agent",
 		ActorID:     util.UUIDToString(agentID),
 		Payload: map[string]any{
-			"comment":        commentFields,
-			"issue_title":    issue.Title,
-			"issue_status":   issue.Status,
-			"issue_revision": created.IssueRevision,
+			"comment":            commentFields,
+			"issue_title":        issue.Title,
+			"issue_status":       issue.Status,
+			"issue_revision":     created.IssueRevision,
+			"suppress_execution": !created.DispatchEligible,
 		},
 	})
 	s.AutoUnresolveThreadOnReply(ctx, rootComment, util.UUIDToString(issue.WorkspaceID), "agent", util.UUIDToString(agentID))
@@ -7276,13 +7331,14 @@ func IssueToMapResolved(ctx context.Context, q issuestatus.Querier, issue db.Iss
 
 func IssueToMap(issue db.Issue, issuePrefix string) map[string]any {
 	return map[string]any{
-		"id":           util.UUIDToString(issue.ID),
-		"workspace_id": util.UUIDToString(issue.WorkspaceID),
-		"number":       issue.Number,
-		"identifier":   IssueIdentifier(issuePrefix, issue.Number),
-		"title":        issue.Title,
-		"description":  util.TextToPtr(issue.Description),
-		"status":       issue.Status,
+		"id":               util.UUIDToString(issue.ID),
+		"workspace_id":     util.UUIDToString(issue.WorkspaceID),
+		"number":           issue.Number,
+		"identifier":       IssueIdentifier(issuePrefix, issue.Number),
+		"title":            issue.Title,
+		"description":      util.TextToPtr(issue.Description),
+		"status":           issue.Status,
+		"admission_status": issue.AdmissionStatus,
 		// Mirrors handler.IssueResponse.StatusCategory: a built-in status IS
 		// its own category, so this resolves with no catalog lookup. Empty for
 		// a custom status, which consumers resolve via the catalog. (MUL-6243)

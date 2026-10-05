@@ -669,23 +669,24 @@ type ClientUsageDaily struct {
 }
 
 type Comment struct {
-	ID             pgtype.UUID        `json:"id"`
-	IssueID        pgtype.UUID        `json:"issue_id"`
-	AuthorType     string             `json:"author_type"`
-	AuthorID       pgtype.UUID        `json:"author_id"`
-	Content        string             `json:"content"`
-	Type           string             `json:"type"`
-	CreatedAt      pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
-	ParentID       pgtype.UUID        `json:"parent_id"`
-	WorkspaceID    pgtype.UUID        `json:"workspace_id"`
-	ResolvedAt     pgtype.Timestamptz `json:"resolved_at"`
-	ResolvedByType pgtype.Text        `json:"resolved_by_type"`
-	ResolvedByID   pgtype.UUID        `json:"resolved_by_id"`
-	SourceTaskID   pgtype.UUID        `json:"source_task_id"`
-	QuickActionID  pgtype.UUID        `json:"quick_action_id"`
-	ViaPluginID    pgtype.UUID        `json:"via_plugin_id"`
-	Revision       int64              `json:"revision"`
+	ID               pgtype.UUID        `json:"id"`
+	IssueID          pgtype.UUID        `json:"issue_id"`
+	AuthorType       string             `json:"author_type"`
+	AuthorID         pgtype.UUID        `json:"author_id"`
+	Content          string             `json:"content"`
+	Type             string             `json:"type"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt        pgtype.Timestamptz `json:"updated_at"`
+	ParentID         pgtype.UUID        `json:"parent_id"`
+	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
+	ResolvedAt       pgtype.Timestamptz `json:"resolved_at"`
+	ResolvedByType   pgtype.Text        `json:"resolved_by_type"`
+	ResolvedByID     pgtype.UUID        `json:"resolved_by_id"`
+	SourceTaskID     pgtype.UUID        `json:"source_task_id"`
+	QuickActionID    pgtype.UUID        `json:"quick_action_id"`
+	ViaPluginID      pgtype.UUID        `json:"via_plugin_id"`
+	Revision         int64              `json:"revision"`
+	DispatchEligible bool               `json:"dispatch_eligible"`
 }
 
 type CommentReaction struct {
@@ -974,6 +975,7 @@ type Issue struct {
 	Properties         []byte             `json:"properties"`
 	Revision           int64              `json:"revision"`
 	LastActivityAt     pgtype.Timestamptz `json:"last_activity_at"`
+	AdmissionStatus    string             `json:"admission_status"`
 }
 
 type IssueDependency struct {
@@ -1086,6 +1088,27 @@ type IssueSubscriber struct {
 type IssueToLabel struct {
 	IssueID pgtype.UUID `json:"issue_id"`
 	LabelID pgtype.UUID `json:"label_id"`
+}
+
+type IssueTriage struct {
+	IssueID               pgtype.UUID        `json:"issue_id"`
+	WorkspaceID           pgtype.UUID        `json:"workspace_id"`
+	Round                 int32              `json:"round"`
+	FirstEnteredAt        pgtype.Timestamptz `json:"first_entered_at"`
+	EnteredAt             pgtype.Timestamptz `json:"entered_at"`
+	ReviewerID            pgtype.UUID        `json:"reviewer_id"`
+	SnoozedUntil          pgtype.Timestamptz `json:"snoozed_until"`
+	CandidateProjectID    pgtype.UUID        `json:"candidate_project_id"`
+	CandidateAssigneeType pgtype.Text        `json:"candidate_assignee_type"`
+	CandidateAssigneeID   pgtype.UUID        `json:"candidate_assignee_id"`
+	Source                string             `json:"source"`
+	SourceUrl             pgtype.Text        `json:"source_url"`
+	ExternalID            pgtype.Text        `json:"external_id"`
+	BatchID               pgtype.UUID        `json:"batch_id"`
+	Filename              pgtype.Text        `json:"filename"`
+	RowNumber             pgtype.Int4        `json:"row_number"`
+	DuplicateIssueID      pgtype.UUID        `json:"duplicate_issue_id"`
+	DuplicateIdentifier   pgtype.Text        `json:"duplicate_identifier"`
 }
 
 type IssueVcsPullRequest struct {
@@ -1633,6 +1656,83 @@ type TaskUsageHourlyRollupState struct {
 	LastError         pgtype.Text        `json:"last_error"`
 }
 
+type TriageAction struct {
+	ID               pgtype.UUID        `json:"id"`
+	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
+	IssueID          pgtype.UUID        `json:"issue_id"`
+	ActorID          pgtype.UUID        `json:"actor_id"`
+	RequestID        pgtype.UUID        `json:"request_id"`
+	PayloadHash      string             `json:"payload_hash"`
+	Action           string             `json:"action"`
+	Round            int32              `json:"round"`
+	Reason           pgtype.Text        `json:"reason"`
+	BeforeSnapshot   []byte             `json:"before_snapshot"`
+	AfterSnapshot    []byte             `json:"after_snapshot"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	ExecutionStatus  string             `json:"execution_status"`
+	TaskID           pgtype.UUID        `json:"task_id"`
+	ExecutionError   pgtype.Text        `json:"execution_error"`
+	ExecutionContext []byte             `json:"execution_context"`
+}
+
+type TriageImportBatch struct {
+	ID           pgtype.UUID        `json:"id"`
+	WorkspaceID  pgtype.UUID        `json:"workspace_id"`
+	ActorID      pgtype.UUID        `json:"actor_id"`
+	RequestID    pgtype.UUID        `json:"request_id"`
+	PayloadHash  string             `json:"payload_hash"`
+	Filename     string             `json:"filename"`
+	Headers      []byte             `json:"headers"`
+	Mapping      []byte             `json:"mapping"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	CommittedAt  pgtype.Timestamptz `json:"committed_at"`
+	CreatedCount int32              `json:"created_count"`
+	SkippedCount int32              `json:"skipped_count"`
+	FailedCount  int32              `json:"failed_count"`
+}
+
+type TriageImportRow struct {
+	BatchID          pgtype.UUID        `json:"batch_id"`
+	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
+	RowNumber        int32              `json:"row_number"`
+	Values           []byte             `json:"values"`
+	Normalized       []byte             `json:"normalized"`
+	Warnings         []byte             `json:"warnings"`
+	Errors           []byte             `json:"errors"`
+	Duplicate        bool               `json:"duplicate"`
+	DuplicateIssueID pgtype.UUID        `json:"duplicate_issue_id"`
+	SimilarIssueIds  []byte             `json:"similar_issue_ids"`
+	ExternalID       pgtype.Text        `json:"external_id"`
+	Status           string             `json:"status"`
+	IssueID          pgtype.UUID        `json:"issue_id"`
+	Error            pgtype.Text        `json:"error"`
+	ImportDuplicate  bool               `json:"import_duplicate"`
+	AttemptedAt      pgtype.Timestamptz `json:"attempted_at"`
+}
+
+type TriageIntakeRequest struct {
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ActorID     pgtype.UUID        `json:"actor_id"`
+	RequestID   pgtype.UUID        `json:"request_id"`
+	PayloadHash string             `json:"payload_hash"`
+	IssueID     pgtype.UUID        `json:"issue_id"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type TriageNotification struct {
+	ID          pgtype.UUID        `json:"id"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	RecipientID pgtype.UUID        `json:"recipient_id"`
+	EventKey    string             `json:"event_key"`
+	IssueID     pgtype.UUID        `json:"issue_id"`
+	BatchID     pgtype.UUID        `json:"batch_id"`
+	Title       string             `json:"title"`
+	Details     []byte             `json:"details"`
+	DueAt       pgtype.Timestamptz `json:"due_at"`
+	DeliveredAt pgtype.Timestamptz `json:"delivered_at"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
 type User struct {
 	ID                      pgtype.UUID        `json:"id"`
 	Name                    string             `json:"name"`
@@ -1822,4 +1922,16 @@ type WorkspaceShareLink struct {
 	UseCount    int32              `json:"use_count"`
 	IsActive    bool               `json:"is_active"`
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type WorkspaceTriageSetting struct {
+	WorkspaceID            pgtype.UUID        `json:"workspace_id"`
+	Enabled                bool               `json:"enabled"`
+	AcceptanceStatus       string             `json:"acceptance_status"`
+	RequirePriority        bool               `json:"require_priority"`
+	ResponsibilityMode     string             `json:"responsibility_mode"`
+	ResponsibilityMemberID pgtype.UUID        `json:"responsibility_member_id"`
+	Revision               int64              `json:"revision"`
+	UpdatedAt              pgtype.Timestamptz `json:"updated_at"`
+	UpdatedBy              pgtype.UUID        `json:"updated_by"`
 }

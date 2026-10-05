@@ -13,7 +13,7 @@ import (
 
 const countIssuesByProject = `-- name: CountIssuesByProject :one
 SELECT count(*) FROM issue
-WHERE project_id = $1
+WHERE project_id = $1 AND admission_status IN ('not_required', 'accepted')
 `
 
 func (q *Queries) CountIssuesByProject(ctx context.Context, projectID pgtype.UUID) (int64, error) {
@@ -132,7 +132,7 @@ SELECT project_id,
        count(*)::bigint AS total_count,
        count(*) FILTER (WHERE status = ANY($1::text[]))::bigint AS done_count
 FROM issue
-WHERE workspace_id = $2::uuid
+WHERE admission_status IN ('not_required', 'accepted') AND workspace_id = $2::uuid
   AND project_id = ANY($3::uuid[])
 GROUP BY project_id
 `

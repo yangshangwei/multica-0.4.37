@@ -46,6 +46,7 @@ export type RouteIconName =
 /** i18n label key (under the `layout.nav` namespace) for a page. */
 export type NavLabelKey =
   | "changelog"
+  | "triage"
   | "inbox"
   | "chat"
   | "my_issues"
@@ -64,6 +65,7 @@ export type NavLabelKey =
 /** Stable identifier for each workspace navigation page. */
 export type WorkspacePageKey =
   | "changelog"
+  | "triage"
   | "inbox"
   | "chat"
   | "myIssues"
@@ -93,6 +95,7 @@ export interface WorkspacePage {
  * destinations in paths.ts and the sidebar nav groups.
  */
 export const WORKSPACE_PAGES: Record<WorkspacePageKey, WorkspacePage> = {
+  triage: { segment: "triage", icon: "Inbox", navKey: "triage" },
   inbox: { segment: "inbox", icon: "Inbox", navKey: "inbox" },
   chat: { segment: "chat", icon: "MessageSquare", navKey: "chat" },
   myIssues: { segment: "my-issues", icon: "CircleUser", navKey: "my_issues" },

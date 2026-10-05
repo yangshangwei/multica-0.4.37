@@ -32,7 +32,7 @@ describe("visibleSettingsNavGroups", () => {
     ]);
     expect(groups.map((g) => g.items.map((i) => i.value))).toEqual([
       ["profile", "preferences", "notifications", "shortcuts", "tokens"],
-      ["workspace", "members", "labels"],
+      ["workspace", "members", "labels", "triage"],
       ["issue-statuses", "properties", "quick-actions"],
       ["repositories", "integrations", "mcp"],
     ]);
@@ -72,7 +72,7 @@ describe("visibleSettingsNavGroups", () => {
 
     expect(groups.map((g) => g.items.map((i) => i.value))).toEqual([
       ["profile", "preferences", "notifications", "shortcuts", "tokens"],
-      ["workspace", "members", "labels", "billing"],
+      ["workspace", "members", "labels", "triage", "billing"],
       ["issue-statuses", "properties", "quick-actions"],
       ["repositories", "integrations", "mcp", "plugins"],
     ]);

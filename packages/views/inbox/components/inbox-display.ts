@@ -1,5 +1,22 @@
 import type { InboxItem } from "@multica/core/types";
 
+/** Notification navigation is independent from read/archive or review state. */
+export function getInboxDestination(
+  item: InboxItem,
+  links: { issueDetail: (id: string) => string; triage: () => string },
+): string | null {
+  if (item.type === "triage") {
+    const query = new URLSearchParams();
+    if (item.issue_id) query.set("issue", item.issue_id);
+    else {
+      query.set("view", "history");
+      if (item.details?.batch_id) query.set("batch", item.details.batch_id);
+    }
+    return `${links.triage()}?${query}`;
+  }
+  return item.issue_id ? links.issueDetail(item.issue_id) : null;
+}
+
 function singleLine(value: string | null | undefined): string {
   return (value ?? "").replace(/\s+/g, " ").trim();
 }

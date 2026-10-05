@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/multica-ai/multica/server/internal/admission"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/runtimeapps"
 	"log/slog"
@@ -48,6 +49,9 @@ func (s *TaskService) PrepareIssueTaskEnqueue(ctx context.Context, agentID pgtyp
 // FinalizeIssueTaskEnqueue. Reused rows must never be finalized a second time.
 func (s *TaskService) EnqueuePreparedIssueTaskInTx(ctx context.Context, tx pgx.Tx, issue db.Issue, agentID, squadID pgtype.UUID, note string, attr attribution.Result, prepared PreparedIssueTaskEnqueue) (task db.AgentTaskQueue, reused bool, err error) {
 	q := s.Queries.WithTx(tx)
+	if err := admission.Check(ctx, q, issue.ID); err != nil {
+		return task, false, err
+	}
 	agent, err := q.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentID, WorkspaceID: issue.WorkspaceID})
 	if err != nil {
 		return task, false, err

@@ -11,6 +11,8 @@ import { defaultStorage } from "../platform/storage";
 import { getCurrentWsId, getCurrentSlug } from "../platform/workspace-storage";
 import { issueKeys } from "../issues/queries";
 import { projectKeys } from "../projects/queries";
+import { triageKeys } from "../triage/queries";
+import { onTriageUpdated, invalidateTriageIssue } from "../triage/cache";
 import { pinKeys } from "../pins/queries";
 import { autopilotKeys } from "../autopilots/queries";
 import { runtimeKeys } from "../runtimes/queries";
@@ -642,6 +644,7 @@ export async function handleInboxNew(
 function invalidateWorkspaceScopedQueries(qc: QueryClient): void {
   const wsId = getCurrentWsId();
   if (wsId) {
+    qc.invalidateQueries({ queryKey: triageKeys.all(wsId) });
     qc.invalidateQueries({ queryKey: issueKeys.all(wsId) });
     qc.invalidateQueries({ queryKey: inboxKeys.all(wsId) });
     qc.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) });
@@ -958,6 +961,7 @@ export function useRealtimeSync(
 
     // Event types handled by specific handlers below -- skip generic refresh
     const specificEvents = new Set([
+      "triage:updated",
       "workspace:updated",
       "issue:updated", "issue:created", "issue:deleted", "issue_attachments:changed", "issue_labels:changed", "issue_metadata:changed", "issue_properties:changed", "property:created", "property:updated", "inbox:new",
       "comment:created", "comment:updated", "comment:deleted",
@@ -994,12 +998,15 @@ export function useRealtimeSync(
     // Filtering by actor_id would block other tabs of the same user.
     // Instead, both mutations and WS handlers use dedup checks to be idempotent.
 
+    const unsubTriageUpdated = ws.on("triage:updated", (payload) => onTriageUpdated(qc, payload));
+
     const unsubIssueUpdated = ws.on("issue:updated", (p) => {
       const payload = p as IssueUpdatedPayload;
       const { issue } = payload;
       if (!issue?.id) return;
       const wsId = getCurrentWsId();
       if (wsId) {
+        invalidateTriageIssue(qc, wsId, issue.id, { admissionStatus: issue.admission_status });
         onIssueUpdated(qc, wsId, issue, {
           assigneeChanged: payload.assignee_changed,
           statusChanged: payload.status_changed,
@@ -1023,6 +1030,7 @@ export function useRealtimeSync(
       if (!issue_id) return;
       const wsId = getCurrentWsId();
       if (wsId) {
+        invalidateTriageIssue(qc, wsId, issue_id, { deleted: true });
         onIssueDeleted(qc, wsId, issue_id);
         onInboxIssueDeleted(qc, wsId, issue_id);
       }
@@ -1032,7 +1040,10 @@ export function useRealtimeSync(
       const { issue_id, labels, issue_revision } = p as IssueLabelsChangedPayload;
       if (!issue_id) return;
       const wsId = getCurrentWsId();
-      if (wsId) onIssueLabelsChanged(qc, wsId, issue_id, labels ?? [], issue_revision);
+      if (wsId) {
+        invalidateTriageIssue(qc, wsId, issue_id);
+        onIssueLabelsChanged(qc, wsId, issue_id, labels ?? [], issue_revision);
+      }
     });
 
     const unsubIssueAttachmentsChanged = ws.on("issue_attachments:changed", (p) => {
@@ -1040,14 +1051,20 @@ export function useRealtimeSync(
       if (!issue_id) return;
       qc.invalidateQueries({ queryKey: issueKeys.attachments(issue_id) });
       const wsId = getCurrentWsId();
-      if (wsId) onIssueAuxiliaryRevision(qc, wsId, issue_id, issue_revision);
+      if (wsId) {
+        invalidateTriageIssue(qc, wsId, issue_id);
+        onIssueAuxiliaryRevision(qc, wsId, issue_id, issue_revision);
+      }
     });
 
     const unsubIssueMetadataChanged = ws.on("issue_metadata:changed", (p) => {
       const { issue_id, metadata, issue_revision } = p as IssueMetadataChangedPayload;
       if (!issue_id) return;
       const wsId = getCurrentWsId();
-      if (wsId) onIssueMetadataChanged(qc, wsId, issue_id, metadata ?? {}, issue_revision);
+      if (wsId) {
+        invalidateTriageIssue(qc, wsId, issue_id);
+        onIssueMetadataChanged(qc, wsId, issue_id, metadata ?? {}, issue_revision);
+      }
     });
 
     const unsubIssuePropertiesChanged = ws.on("issue_properties:changed", (p) => {
@@ -1055,6 +1072,7 @@ export function useRealtimeSync(
       if (!issue_id) return;
       const wsId = getCurrentWsId();
       if (wsId) {
+        invalidateTriageIssue(qc, wsId, issue_id);
         onIssuePropertiesChanged(qc, wsId, issue_id, properties ?? {}, issue_revision);
         // The catalog embeds per-definition usage counts; every value
         // set/unset shifts them. The list is tiny, so a refetch beats
@@ -1117,6 +1135,7 @@ export function useRealtimeSync(
       // updated_at, so the other comment events below deliberately do not.
       const wsId = getCurrentWsId();
       if (wsId) {
+        invalidateTriageIssue(qc, wsId, comment.issue_id);
         invalidateUpdatedAtSortedIssueLists(qc, wsId);
         invalidateLastActivitySortedIssueLists(qc, wsId);
         // A comment carries only the aggregate owner revision, not a full
@@ -1136,6 +1155,7 @@ export function useRealtimeSync(
       invalidateTimeline(comment.issue_id);
       const wsId = getCurrentWsId();
       if (wsId) {
+        invalidateTriageIssue(qc, wsId, comment.issue_id);
         invalidateLastActivitySortedIssueLists(qc, wsId);
         if (issue_revision) {
           onIssueAuxiliaryRevision(qc, wsId, comment.issue_id, issue_revision);
@@ -1151,6 +1171,7 @@ export function useRealtimeSync(
       invalidateTimeline(issue_id);
       const wsId = getCurrentWsId();
       if (wsId) {
+        invalidateTriageIssue(qc, wsId, issue_id);
         invalidateLastActivitySortedIssueLists(qc, wsId);
         if (issue_revision) {
           onIssueAuxiliaryRevision(qc, wsId, issue_id, issue_revision);
@@ -1192,7 +1213,10 @@ export function useRealtimeSync(
       if (issue_id) {
         qc.invalidateQueries({ queryKey: issueKeys.reactions(issue_id) });
         const wsId = getCurrentWsId();
-        if (wsId) onIssueAuxiliaryRevision(qc, wsId, issue_id, issue_revision);
+        if (wsId) {
+          invalidateTriageIssue(qc, wsId, issue_id);
+          onIssueAuxiliaryRevision(qc, wsId, issue_id, issue_revision);
+        }
       }
     });
 
@@ -1201,7 +1225,10 @@ export function useRealtimeSync(
       if (issue_id) {
         qc.invalidateQueries({ queryKey: issueKeys.reactions(issue_id) });
         const wsId = getCurrentWsId();
-        if (wsId) onIssueAuxiliaryRevision(qc, wsId, issue_id, issue_revision);
+        if (wsId) {
+          invalidateTriageIssue(qc, wsId, issue_id);
+          onIssueAuxiliaryRevision(qc, wsId, issue_id, issue_revision);
+        }
       }
     });
 
@@ -1694,6 +1721,7 @@ export function useRealtimeSync(
 
     return () => {
       unsubAny();
+      unsubTriageUpdated();
       unsubIssueUpdated();
       unsubIssueCreated();
       unsubIssueDeleted();

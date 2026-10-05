@@ -534,7 +534,13 @@ DELETE FROM lark_installation WHERE lark_installation.workspace_id = $1;
 DELETE FROM comment WHERE comment.workspace_id = $1;
 
 -- name: DeleteWorkspaceIssueRoots :exec
-WITH
+WITH triage_settings AS (DELETE FROM workspace_triage_settings WHERE workspace_id=$1),
+triage_items AS (DELETE FROM issue_triage WHERE workspace_id=$1),
+triage_intake AS (DELETE FROM triage_intake_request WHERE workspace_id=$1),
+triage_actions AS (DELETE FROM triage_action WHERE workspace_id=$1),
+triage_rows AS (DELETE FROM triage_import_row WHERE workspace_id=$1),
+triage_batches AS (DELETE FROM triage_import_batch WHERE workspace_id=$1),
+triage_notices AS (DELETE FROM triage_notification WHERE workspace_id=$1),
 deleted_issues AS (
     DELETE FROM issue WHERE issue.workspace_id = $1
 ),

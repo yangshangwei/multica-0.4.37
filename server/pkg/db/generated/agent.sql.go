@@ -1737,7 +1737,8 @@ SET status = 'dispatched',
     prepare_lease_expires_at = now() + make_interval(secs => $1::double precision)
 WHERE id = (
     SELECT atq.id FROM agent_task_queue atq
-    WHERE atq.agent_id = $2
+    WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.agent_id = $2
       AND atq.runtime_id = $3
       AND atq.status = 'queued'
       AND (
@@ -2550,6 +2551,7 @@ SELECT
     COALESCE($23::uuid, gen_random_uuid()),
     $24::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
+  AND lock_issue_execution($3, $5, $6::uuid[])
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 
@@ -2719,6 +2721,7 @@ SELECT
     COALESCE($20::uuid, gen_random_uuid()),
     $21::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
+  AND lock_issue_execution($6, $8)
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 
@@ -2885,6 +2888,7 @@ SELECT
     COALESCE($24::uuid, gen_random_uuid()),
     $25::uuid
 WHERE lock_task_owner_rows($1, $3, $2)
+  AND lock_issue_execution($3, $5, $6::uuid[])
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 
@@ -3042,6 +3046,7 @@ WHERE p.id = $6
   AND p.chat_session_id IS NULL
   AND p.autopilot_run_id IS NULL
   AND lock_task_owner_rows(p.agent_id, p.issue_id, p.runtime_id)
+  AND lock_issue_execution(p.issue_id, p.trigger_comment_id, p.coalesced_comment_ids, p.context)
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 
@@ -3160,6 +3165,7 @@ SELECT
     COALESCE($12::uuid, gen_random_uuid()),
     $13::uuid
 WHERE lock_task_owner_rows($1, NULL, $2)
+  AND lock_issue_execution(NULL, NULL, '{}', $4::jsonb)
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 
@@ -3310,6 +3316,7 @@ SELECT
     COALESCE($7::uuid, p.submitted_installation_id)
 FROM agent_task_queue p
 WHERE p.id = $1
+  AND lock_issue_execution(p.issue_id, p.trigger_comment_id, p.coalesced_comment_ids, p.context)
   AND lock_task_owner_rows(p.agent_id, p.issue_id, p.runtime_id)
 ON CONFLICT (issue_id, agent_id) WHERE status IN ('queued', 'dispatched')
        OR (status = 'deferred' AND context->>'channel_issue_media_pending' = 'true')
@@ -5203,6 +5210,7 @@ SELECT
 FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND atq.completed_at IS NOT NULL
   AND atq.completed_at > now() - INTERVAL '30 days'
 GROUP BY atq.agent_id, bucket
@@ -5262,6 +5270,7 @@ SELECT
 FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND atq.created_at > now() - INTERVAL '30 days'
 GROUP BY atq.agent_id
 `
@@ -5495,6 +5504,7 @@ UPDATE agent_task_queue
 SET issue_id = $2
 WHERE id = $1 AND issue_id IS NULL
   AND lock_task_owner_rows(NULL, $2, NULL)
+  AND lock_issue_execution($2)
 `
 
 type LinkTaskToIssueParams struct {
@@ -5665,7 +5675,7 @@ JOIN issue i ON i.id = atq.issue_id
 JOIN workspace w ON w.id = i.workspace_id
 WHERE atq.agent_id = $1
   AND atq.id <> $2
-  AND i.workspace_id = $3
+  AND i.workspace_id = $3 AND i.admission_status IN ('not_required','accepted')
   AND atq.status IN ('dispatched', 'running', 'waiting_local_directory')
 ORDER BY
     CASE atq.status
@@ -6204,7 +6214,7 @@ func (q *Queries) ListChatFinalizeDeferredExpired(ctx context.Context, arg ListC
 }
 
 const listPendingDelegatedFailureRecoveries = `-- name: ListPendingDelegatedFailureRecoveries :many
-SELECT recovery.id, recovery.issue_id, recovery.author_type, recovery.author_id, recovery.content, recovery.type, recovery.created_at, recovery.updated_at, recovery.parent_id, recovery.workspace_id, recovery.resolved_at, recovery.resolved_by_type, recovery.resolved_by_id, recovery.source_task_id, recovery.quick_action_id, recovery.via_plugin_id, recovery.revision
+SELECT recovery.id, recovery.issue_id, recovery.author_type, recovery.author_id, recovery.content, recovery.type, recovery.created_at, recovery.updated_at, recovery.parent_id, recovery.workspace_id, recovery.resolved_at, recovery.resolved_by_type, recovery.resolved_by_id, recovery.source_task_id, recovery.quick_action_id, recovery.via_plugin_id, recovery.revision, recovery.dispatch_eligible
 FROM comment recovery
 JOIN agent_task_queue failed ON failed.id = recovery.source_task_id
 JOIN agent_task_queue source ON source.id = failed.delegated_from_task_id
@@ -6293,6 +6303,7 @@ func (q *Queries) ListPendingDelegatedFailureRecoveries(ctx context.Context, max
 			&i.QuickActionID,
 			&i.ViaPluginID,
 			&i.Revision,
+			&i.DispatchEligible,
 		); err != nil {
 			return nil, err
 		}
@@ -6396,7 +6407,8 @@ func (q *Queries) ListPendingTasksByRuntime(ctx context.Context, runtimeID pgtyp
 
 const listQueuedClaimCandidatesByRuntime = `-- name: ListQueuedClaimCandidatesByRuntime :many
 SELECT atq.id, atq.agent_id, atq.issue_id, atq.status, atq.priority, atq.dispatched_at, atq.started_at, atq.completed_at, atq.result, atq.error, atq.created_at, atq.context, atq.runtime_id, atq.session_id, atq.work_dir, atq.trigger_comment_id, atq.chat_session_id, atq.autopilot_run_id, atq.attempt, atq.max_attempts, atq.parent_task_id, atq.failure_reason, atq.trigger_summary, atq.force_fresh_session, atq.is_leader_task, atq.wait_reason, atq.initiator_user_id, atq.handoff_note, atq.prepare_lease_expires_at, atq.squad_id, atq.runtime_mcp_overlay, atq.escalation_for_task_id, atq.fire_at, atq.originator_user_id, atq.runtime_connected_apps, atq.coalesced_comment_ids, atq.delivered_comment_ids, atq.chat_input_task_id, atq.chat_finalize_deferred_at, atq.originator_source, atq.delegated_from_task_id, atq.retry_of_task_id, atq.rerun_of_task_id, atq.rule_version_id, atq.trigger_evidence_kind, atq.trigger_evidence_ref_id, atq.accountable_user_id, atq.session_rollout_missing, atq.retired_session_id, atq.quick_actions_disabled, atq.regenerate_quick_actions_for, atq.branch_name, atq.durable_work_dir, atq.channel_context_revision, atq.submitted_installation_id, atq.execution_installation_id, atq.execution_binding_id, atq.execution_binding_epoch, atq.state_version, atq.execution_admission_version, atq.claim_generation, atq.queued_at, atq.queued_at_source FROM agent_task_queue atq
-WHERE atq.runtime_id = $1
+WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = $1
   AND atq.status = 'queued'
   AND EXISTS (
       -- Keep this authorization fence in sync with ClaimAgentTask.
@@ -6514,7 +6526,8 @@ func (q *Queries) ListQueuedClaimCandidatesByRuntime(ctx context.Context, runtim
 
 const listQueuedClaimCandidatesByRuntimes = `-- name: ListQueuedClaimCandidatesByRuntimes :many
 SELECT atq.id, atq.agent_id, atq.issue_id, atq.status, atq.priority, atq.dispatched_at, atq.started_at, atq.completed_at, atq.result, atq.error, atq.created_at, atq.context, atq.runtime_id, atq.session_id, atq.work_dir, atq.trigger_comment_id, atq.chat_session_id, atq.autopilot_run_id, atq.attempt, atq.max_attempts, atq.parent_task_id, atq.failure_reason, atq.trigger_summary, atq.force_fresh_session, atq.is_leader_task, atq.wait_reason, atq.initiator_user_id, atq.handoff_note, atq.prepare_lease_expires_at, atq.squad_id, atq.runtime_mcp_overlay, atq.escalation_for_task_id, atq.fire_at, atq.originator_user_id, atq.runtime_connected_apps, atq.coalesced_comment_ids, atq.delivered_comment_ids, atq.chat_input_task_id, atq.chat_finalize_deferred_at, atq.originator_source, atq.delegated_from_task_id, atq.retry_of_task_id, atq.rerun_of_task_id, atq.rule_version_id, atq.trigger_evidence_kind, atq.trigger_evidence_ref_id, atq.accountable_user_id, atq.session_rollout_missing, atq.retired_session_id, atq.quick_actions_disabled, atq.regenerate_quick_actions_for, atq.branch_name, atq.durable_work_dir, atq.channel_context_revision, atq.submitted_installation_id, atq.execution_installation_id, atq.execution_binding_id, atq.execution_binding_epoch, atq.state_version, atq.execution_admission_version, atq.claim_generation, atq.queued_at, atq.queued_at_source FROM agent_task_queue atq
-WHERE atq.runtime_id = ANY($1::uuid[])
+WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = ANY($1::uuid[])
   AND atq.status = 'queued'
   AND EXISTS (
       -- Keep this authorization fence in sync with ClaimAgentTask.
@@ -6792,6 +6805,7 @@ const listWorkspaceAgentTaskSnapshot = `-- name: ListWorkspaceAgentTaskSnapshot 
 SELECT atq.id, atq.agent_id, atq.issue_id, atq.status, atq.priority, atq.dispatched_at, atq.started_at, atq.completed_at, atq.result, atq.error, atq.created_at, atq.context, atq.runtime_id, atq.session_id, atq.work_dir, atq.trigger_comment_id, atq.chat_session_id, atq.autopilot_run_id, atq.attempt, atq.max_attempts, atq.parent_task_id, atq.failure_reason, atq.trigger_summary, atq.force_fresh_session, atq.is_leader_task, atq.wait_reason, atq.initiator_user_id, atq.handoff_note, atq.prepare_lease_expires_at, atq.squad_id, atq.runtime_mcp_overlay, atq.escalation_for_task_id, atq.fire_at, atq.originator_user_id, atq.runtime_connected_apps, atq.coalesced_comment_ids, atq.delivered_comment_ids, atq.chat_input_task_id, atq.chat_finalize_deferred_at, atq.originator_source, atq.delegated_from_task_id, atq.retry_of_task_id, atq.rerun_of_task_id, atq.rule_version_id, atq.trigger_evidence_kind, atq.trigger_evidence_ref_id, atq.accountable_user_id, atq.session_rollout_missing, atq.retired_session_id, atq.quick_actions_disabled, atq.regenerate_quick_actions_for, atq.branch_name, atq.durable_work_dir, atq.channel_context_revision, atq.submitted_installation_id, atq.execution_installation_id, atq.execution_binding_id, atq.execution_binding_epoch, atq.state_version, atq.execution_admission_version, atq.claim_generation, atq.queued_at, atq.queued_at_source FROM agent_task_queue atq
 JOIN agent a ON a.id = atq.agent_id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND atq.status IN ('queued', 'dispatched', 'running', 'waiting_local_directory')
 
 UNION ALL
@@ -6801,6 +6815,7 @@ JOIN LATERAL (
   SELECT atq.id, atq.agent_id, atq.issue_id, atq.status, atq.priority, atq.dispatched_at, atq.started_at, atq.completed_at, atq.result, atq.error, atq.created_at, atq.context, atq.runtime_id, atq.session_id, atq.work_dir, atq.trigger_comment_id, atq.chat_session_id, atq.autopilot_run_id, atq.attempt, atq.max_attempts, atq.parent_task_id, atq.failure_reason, atq.trigger_summary, atq.force_fresh_session, atq.is_leader_task, atq.wait_reason, atq.initiator_user_id, atq.handoff_note, atq.prepare_lease_expires_at, atq.squad_id, atq.runtime_mcp_overlay, atq.escalation_for_task_id, atq.fire_at, atq.originator_user_id, atq.runtime_connected_apps, atq.coalesced_comment_ids, atq.delivered_comment_ids, atq.chat_input_task_id, atq.chat_finalize_deferred_at, atq.originator_source, atq.delegated_from_task_id, atq.retry_of_task_id, atq.rerun_of_task_id, atq.rule_version_id, atq.trigger_evidence_kind, atq.trigger_evidence_ref_id, atq.accountable_user_id, atq.session_rollout_missing, atq.retired_session_id, atq.quick_actions_disabled, atq.regenerate_quick_actions_for, atq.branch_name, atq.durable_work_dir, atq.channel_context_revision, atq.submitted_installation_id, atq.execution_installation_id, atq.execution_binding_id, atq.execution_binding_epoch, atq.state_version, atq.execution_admission_version, atq.claim_generation, atq.queued_at, atq.queued_at_source
   FROM agent_task_queue atq
   WHERE atq.agent_id = a.id
+    AND NOT EXISTS (SELECT 1 FROM issue input WHERE input.id=atq.issue_id AND input.admission_status NOT IN ('not_required','accepted'))
     AND atq.status IN ('completed', 'failed')
   ORDER BY atq.completed_at DESC NULLS LAST, atq.created_at DESC, atq.id DESC
   LIMIT 1
@@ -6931,6 +6946,7 @@ SELECT
 FROM agent a
 JOIN agent_task_queue atq ON atq.agent_id = a.id
 WHERE a.workspace_id = $1
+  AND NOT EXISTS (SELECT 1 FROM issue triage_issue WHERE triage_issue.id=atq.issue_id AND triage_issue.admission_status NOT IN ('not_required','accepted'))
   AND a.kind = 'user'
   AND a.archived_at IS NULL
   AND atq.status = 'running'
@@ -7154,12 +7170,36 @@ func (q *Queries) LockAgentForAutopilotAssignment(ctx context.Context, arg LockA
 	return i, err
 }
 
+const lockIssueExecution = `-- name: LockIssueExecution :one
+SELECT lock_issue_execution($1::uuid, $2::uuid, $3::uuid[], $4::jsonb)::boolean AS allowed
+`
+
+type LockIssueExecutionParams struct {
+	IssueID          pgtype.UUID   `json:"issue_id"`
+	TriggerCommentID pgtype.UUID   `json:"trigger_comment_id"`
+	CommentIds       []pgtype.UUID `json:"comment_ids"`
+	Context          []byte        `json:"context"`
+}
+
+func (q *Queries) LockIssueExecution(ctx context.Context, arg LockIssueExecutionParams) (bool, error) {
+	row := q.db.QueryRow(ctx, lockIssueExecution,
+		arg.IssueID,
+		arg.TriggerCommentID,
+		arg.CommentIds,
+		arg.Context,
+	)
+	var allowed bool
+	err := row.Scan(&allowed)
+	return allowed, err
+}
+
 const markAgentTaskWaitingLocalDirectory = `-- name: MarkAgentTaskWaitingLocalDirectory :one
 UPDATE agent_task_queue
 SET status = 'waiting_local_directory',
     wait_reason = $2,
     prepare_lease_expires_at = now() + make_interval(secs => $3::double precision)
-WHERE id = $1 AND status = 'dispatched'
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = $1 AND status = 'dispatched'
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 
@@ -7357,6 +7397,7 @@ SET coalesced_comment_ids = (
 WHERE id = (
     SELECT t.id FROM agent_task_queue t
     WHERE t.issue_id = $12
+      AND lock_issue_execution(t.issue_id, $1::uuid)
       AND t.agent_id = $13
       AND (
           t.status = 'queued'
@@ -7475,6 +7516,7 @@ SET coalesced_comment_ids = (
 WHERE id = (
     SELECT t.id FROM agent_task_queue t
     WHERE t.issue_id = $3
+      AND lock_issue_execution(t.issue_id, $1::uuid)
       AND t.agent_id = $4
       AND (
           t.status = 'queued'
@@ -7580,7 +7622,8 @@ func (q *Queries) MergeDelegatedFailureCommentIntoPendingTask(ctx context.Contex
 const promoteDeferredChannelIssueTask = `-- name: PromoteDeferredChannelIssueTask :one
 UPDATE agent_task_queue
 SET status = 'queued', fire_at = NULL
-WHERE id = $1 AND issue_id IS NOT NULL AND status = 'deferred'
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = $1 AND issue_id IS NOT NULL AND status = 'deferred'
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 
@@ -7666,7 +7709,8 @@ WITH due AS (
                ORDER BY t.priority DESC, t.created_at ASC, t.id
            ) AS rn
     FROM agent_task_queue t
-    WHERE t.runtime_id = $1
+    WHERE lock_issue_execution(t.issue_id, t.trigger_comment_id, t.coalesced_comment_ids, t.context)
+      AND t.runtime_id = $1
       AND t.status = 'deferred'
       AND t.fire_at <= now()
       AND EXISTS (
@@ -7806,7 +7850,8 @@ WITH due AS (
                ORDER BY t.priority DESC, t.created_at ASC, t.id
            ) AS rn
     FROM agent_task_queue t
-    WHERE t.runtime_id = ANY($1::uuid[])
+    WHERE lock_issue_execution(t.issue_id, t.trigger_comment_id, t.coalesced_comment_ids, t.context)
+      AND t.runtime_id = ANY($1::uuid[])
       AND t.status = 'deferred'
       AND t.fire_at <= now()
       AND EXISTS (
@@ -8023,7 +8068,8 @@ SET dispatched_at = CASE WHEN execution_binding_id IS NULL THEN now() ELSE dispa
     prepare_lease_expires_at = now() + make_interval(secs => $2::double precision)
 WHERE id = (
     SELECT atq.id FROM agent_task_queue atq
-    WHERE atq.runtime_id = $1
+    WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = $1
       AND atq.status = 'dispatched'
       AND (
           EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
@@ -8178,7 +8224,8 @@ SET dispatched_at = CASE WHEN execution_binding_id IS NULL THEN now() ELSE dispa
     prepare_lease_expires_at = now() + make_interval(secs => $1::double precision)
 WHERE id IN (
     SELECT atq.id FROM agent_task_queue atq
-    WHERE atq.runtime_id = ANY($2::uuid[])
+    WHERE lock_issue_execution(atq.issue_id, atq.trigger_comment_id, atq.coalesced_comment_ids, atq.context)
+      AND atq.runtime_id = ANY($2::uuid[])
       AND atq.status = 'dispatched'
       AND (
           EXISTS (SELECT 1 FROM managed_admission ma WHERE ma.runtime_id=atq.runtime_id
@@ -8504,6 +8551,7 @@ SET coalesced_comment_ids = (
 WHERE id = (
     SELECT t.id FROM agent_task_queue t
     WHERE t.issue_id = $2
+      AND lock_issue_execution(t.issue_id, $1::uuid)
       AND t.agent_id = $3
       AND t.status IN ('dispatched', 'running', 'waiting_local_directory')
       AND (
@@ -8824,7 +8872,8 @@ func (q *Queries) SetDeferredChannelIssueTaskRuntimeOverlay(ctx context.Context,
 const setTaskDeliveredCommentIDs = `-- name: SetTaskDeliveredCommentIDs :one
 UPDATE agent_task_queue
 SET delivered_comment_ids = $1::uuid[]
-WHERE id = $2
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = $2
   AND runtime_id = $3
   AND status = 'dispatched'
   AND started_at IS NULL
@@ -8877,7 +8926,8 @@ SET status = 'running',
     started_at = now(),
     wait_reason = NULL,
     prepare_lease_expires_at = NULL
-WHERE id = $1 AND status IN ('dispatched', 'waiting_local_directory')
+WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
+  AND id = $1 AND status IN ('dispatched', 'waiting_local_directory')
 RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source
 `
 

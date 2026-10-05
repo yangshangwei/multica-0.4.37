@@ -12,6 +12,8 @@ import { chatKeys } from "../chat/queries";
 import { runtimeKeys } from "../runtimes/queries";
 import { workspaceWorkingAgentsKeys } from "../agents/queries";
 import { workspaceKeys } from "../workspace/queries";
+import { triageKeys } from "../triage/queries";
+import { projectKeys } from "../projects/queries";
 import { issueStatusKeys } from "../issue-statuses/queries";
 import {
   markWorkspaceDeletePending,
@@ -71,6 +73,51 @@ describe("useRealtimeSync — ws instance change", () => {
     invalidateSpy = vi.spyOn(qc, "invalidateQueries");
   });
 
+  it("invalidates triage after reconnect and dispatches committed triage events", () => {
+    const ws = createMockWs();
+    renderHook(() => useRealtimeSync(ws, stores), { wrapper: createWrapper(qc) });
+    const handler = vi.mocked(ws.on).mock.calls.find(([event]) => event === "triage:updated")?.[1];
+    expect(handler).toBeDefined();
+    handler!({ workspace_id: "ws-2", issue_id: "i1" });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: triageKeys.all("ws-2") });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: issueKeys.all("ws-2") });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: projectKeys.all("ws-2") });
+    invalidateSpy.mockClear();
+    vi.mocked(ws.onReconnect).mock.calls[0]?.[0]();
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: triageKeys.all("ws-1") });
+  });
+
+  it.each([
+    ["issue:updated", { issue: { id: "i1", workspace_id: "ws-1", admission_status: "pending", revision: 2, title: "Edited" } }],
+    ["issue:deleted", { issue_id: "i1" }],
+    ["issue_labels:changed", { issue_id: "i1", labels: [], issue_revision: 2 }],
+    ["issue_attachments:changed", { issue_id: "i1", issue_revision: 2 }],
+    ["issue_metadata:changed", { issue_id: "i1", metadata: {}, issue_revision: 2 }],
+    ["issue_properties:changed", { issue_id: "i1", properties: {}, issue_revision: 2 }],
+    ["comment:created", { comment: { id: "c1", issue_id: "i1" }, issue_revision: 2 }],
+    ["comment:updated", { comment: { id: "c1", issue_id: "i1" }, issue_revision: 2 }],
+    ["comment:deleted", { comment_id: "c1", issue_id: "i1", issue_revision: 2 }],
+    ["issue_reaction:added", { issue_id: "i1", issue_revision: 2 }],
+    ["issue_reaction:removed", { issue_id: "i1", issue_revision: 2 }],
+  ] as const)("refreshes only affected triage detail/lists after %s", (event, payload) => {
+    const ws = createMockWs();
+    const detail = triageKeys.detail("ws-1", "i1");
+    const list = triageKeys.list("ws-1", { q: "Edited" });
+    const otherDetail = triageKeys.detail("ws-1", "i2");
+    const otherWorkspace = triageKeys.list("ws-2", {});
+    const history = triageKeys.history("ws-1", {});
+    qc.setQueryData(detail, { issue: { id: "i1", workspace_id: "ws-1", admission_status: "pending", revision: 1 } });
+    for (const key of [list, otherDetail, otherWorkspace, history]) qc.setQueryData(key, {});
+    renderHook(() => useRealtimeSync(ws, stores), { wrapper: createWrapper(qc) });
+    const handler = vi.mocked(ws.on).mock.calls.find(([type]) => type === event)?.[1];
+    handler!(payload);
+    expect(qc.getQueryState(detail)?.isInvalidated).toBe(true);
+    expect(qc.getQueryState(list)?.isInvalidated).toBe(true);
+    expect(qc.getQueryState(otherDetail)?.isInvalidated).toBe(false);
+    expect(qc.getQueryState(otherWorkspace)?.isInvalidated).toBe(false);
+    expect(qc.getQueryState(history)?.isInvalidated).toBe(false);
+  });
+
   it("skips invalidation on first non-null ws instance", () => {
     const ws = createMockWs();
     renderHook(() => useRealtimeSync(ws, stores), {
@@ -120,8 +167,8 @@ describe("useRealtimeSync — ws instance change", () => {
     // (16 workspace-scoped [incl. property definitions] + 6 per-issue
     // prefixes + the workspace working-agents projection + 5 per-chat
     // prefixes + 1 workspaceKeys.list() + 1 cross-workspace inbox unread
-    // summary = 31 calls)
-    expect(invalidateSpy).toHaveBeenCalledTimes(31);
+    // summary + triage = 32 calls)
+    expect(invalidateSpy).toHaveBeenCalledTimes(32);
   });
 
   it("does not re-invalidate when rerendered with the same ws instance", () => {
