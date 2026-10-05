@@ -537,3 +537,7 @@ SELECT EXISTS (
 -- Final fail-closed assertion after UnbindTasksFromRuntime. A non-zero result
 -- aborts the transaction instead of relying on the legacy ON DELETE CASCADE.
 SELECT count(*) FROM agent_task_queue WHERE runtime_id = $1;
+-- name: LockRuntimeForAutopilotDispatch :one
+SELECT * FROM agent_runtime
+WHERE id = sqlc.arg('id') AND workspace_id = sqlc.arg('workspace_id')
+FOR SHARE NOWAIT;

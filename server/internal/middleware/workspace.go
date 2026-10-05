@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -127,14 +128,20 @@ func resolveWorkspaceUUID(queries *db.Queries) workspaceResolver {
 		if slug := r.URL.Query().Get("workspace_slug"); slug != "" {
 			ws, err := queries.GetWorkspaceBySlug(r.Context(), slug)
 			if err != nil {
-				return "", errWorkspaceNotFound
+				if errors.Is(err, pgx.ErrNoRows) {
+					return "", errWorkspaceNotFound
+				}
+				return "", err
 			}
 			return util.UUIDToString(ws.ID), nil
 		}
 		if slug := r.Header.Get("X-Workspace-Slug"); slug != "" {
 			ws, err := queries.GetWorkspaceBySlug(r.Context(), slug)
 			if err != nil {
-				return "", errWorkspaceNotFound
+				if errors.Is(err, pgx.ErrNoRows) {
+					return "", errWorkspaceNotFound
+				}
+				return "", err
 			}
 			return util.UUIDToString(ws.ID), nil
 		}
@@ -153,6 +160,15 @@ func writeError(w http.ResponseWriter, status int, msg string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	w.Write([]byte(`{"error":"` + msg + `"}`))
+}
+
+// Missing and inaccessible workspaces share a response to avoid disclosing
+// their existence. Clients can still distinguish access loss from a missing
+// project or a transient database outage.
+func writeWorkspaceAccessDenied(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusNotFound)
+	_, _ = w.Write([]byte(`{"error":"workspace not found","code":"workspace_access_denied"}`))
 }
 
 // RequireWorkspaceMember resolves the workspace from slug (preferred) or UUID
@@ -197,7 +213,11 @@ func buildMiddleware(queries *db.Queries, resolve workspaceResolver, roles []str
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			workspaceID, resolveErr := resolve(r)
 			if resolveErr != nil {
-				writeError(w, http.StatusNotFound, "workspace not found")
+				if errors.Is(resolveErr, errWorkspaceNotFound) {
+					writeWorkspaceAccessDenied(w)
+				} else {
+					writeError(w, http.StatusServiceUnavailable, "workspace access is temporarily unavailable")
+				}
 				return
 			}
 			if workspaceID == "" {
@@ -240,7 +260,11 @@ func buildMiddleware(queries *db.Queries, resolve workspaceResolver, roles []str
 				WorkspaceID: wsUUID,
 			})
 			if err != nil {
-				writeError(w, http.StatusNotFound, "workspace not found")
+				if errors.Is(err, pgx.ErrNoRows) {
+					writeWorkspaceAccessDenied(w)
+				} else {
+					writeError(w, http.StatusServiceUnavailable, "workspace access is temporarily unavailable")
+				}
 				return
 			}
 

@@ -7170,6 +7170,58 @@ func (q *Queries) LockAgentForAutopilotAssignment(ctx context.Context, arg LockA
 	return i, err
 }
 
+const lockAgentForAutopilotDispatch = `-- name: LockAgentForAutopilotDispatch :one
+SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category FROM agent
+WHERE id = $1 AND workspace_id = $2
+FOR SHARE NOWAIT
+`
+
+type LockAgentForAutopilotDispatchParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) LockAgentForAutopilotDispatch(ctx context.Context, arg LockAgentForAutopilotDispatchParams) (Agent, error) {
+	row := q.db.QueryRow(ctx, lockAgentForAutopilotDispatch, arg.ID, arg.WorkspaceID)
+	var i Agent
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Name,
+		&i.AvatarUrl,
+		&i.RuntimeMode,
+		&i.RuntimeConfig,
+		&i.Visibility,
+		&i.Status,
+		&i.MaxConcurrentTasks,
+		&i.OwnerID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Description,
+		&i.RuntimeID,
+		&i.Instructions,
+		&i.ArchivedAt,
+		&i.ArchivedBy,
+		&i.CustomEnv,
+		&i.CustomArgs,
+		&i.McpConfig,
+		&i.Model,
+		&i.ThinkingLevel,
+		&i.ComposioToolkitAllowlist,
+		&i.PermissionMode,
+		&i.Kind,
+		&i.SystemKey,
+		&i.DisabledRuntimeSkills,
+		&i.ServiceTier,
+		&i.ConversationStarters,
+		&i.TemplateKey,
+		&i.TemplateVersion,
+		&i.AutonomyLevel,
+		&i.Category,
+	)
+	return i, err
+}
+
 const lockIssueExecution = `-- name: LockIssueExecution :one
 SELECT lock_issue_execution($1::uuid, $2::uuid, $3::uuid[], $4::jsonb)::boolean AS allowed
 `

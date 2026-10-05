@@ -850,7 +850,7 @@ func requireProjectAdministrator(ctx context.Context, q *db.Queries, ws, actor p
 		return err
 	}
 	if member.Role != "owner" && member.Role != "admin" {
-		return projectErr(403, "forbidden", "only owners and administrators may delete projects")
+		return projectErr(403, "project_permission_denied", "only owners and administrators may delete projects")
 	}
 	return nil
 }
@@ -909,6 +909,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 			return err
 		}
 		if err = q.DeleteIssueViewsByProjectScope(r.Context(), db.DeleteIssueViewsByProjectScopeParams{ScopeID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		if err = q.DeleteProjectIssueViewPreferences(r.Context(), db.DeleteProjectIssueViewPreferencesParams{ScopeID: id, WorkspaceID: ws}); err != nil {
 			return err
 		}
 		if err = q.DeleteProjectResources(r.Context(), db.DeleteProjectResourcesParams{ProjectID: id, WorkspaceID: ws}); err != nil {

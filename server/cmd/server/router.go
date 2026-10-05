@@ -1700,6 +1700,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Get("/members", h.ListMembersWithUser)
 					r.Get("/project-capabilities", h.GetProjectCapabilities)
 					r.Get("/planning-timezone", h.GetProjectPlanningTimezone)
+					// The handler rechecks the administrator role inside its
+					// transaction and returns an operation-scoped denial code.
+					r.Put("/planning-timezone", h.UpdateProjectPlanningTimezone)
 					r.Post("/leave", h.LeaveWorkspace)
 					r.Get("/invitations", h.ListWorkspaceInvitations)
 					// Listing GitHub installations is member-visible so the
@@ -1740,7 +1743,6 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.RequireWorkspaceRoleFromURL(queries, "id", "owner", "admin"))
 					r.Put("/", h.UpdateWorkspace)
-					r.Put("/planning-timezone", h.UpdateProjectPlanningTimezone)
 					r.Patch("/", h.UpdateWorkspace)
 					r.Post("/members", h.CreateInvitation)
 					r.Route("/members/{memberId}", func(r chi.Router) {
@@ -2143,6 +2145,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Get("/health/issues", h.GetProjectHealthIssues)
 					r.Get("/updates", h.ListProjectUpdates)
 					r.Get("/updates/{updateId}/revisions", h.ListProjectUpdateRevisions)
+					r.Get("/updates/{updateId}/revisions/{revision}/executions/{taskId}", h.GetProjectUpdateExecutionEvidence)
 					r.Post("/updates/preview", h.PreviewProjectUpdate)
 					r.Post("/updates", h.CreateProjectUpdate)
 					r.Put("/updates/{updateId}", h.CorrectProjectUpdate)

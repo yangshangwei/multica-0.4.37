@@ -129,6 +129,23 @@ func (q *Queries) DeleteProject(ctx context.Context, arg DeleteProjectParams) er
 	return err
 }
 
+const deleteProjectIssueViewPreferences = `-- name: DeleteProjectIssueViewPreferences :exec
+DELETE FROM issue_view_preference
+WHERE workspace_id = $1
+  AND scope_type = 'project'
+  AND scope_id = $2
+`
+
+type DeleteProjectIssueViewPreferencesParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	ScopeID     pgtype.UUID `json:"scope_id"`
+}
+
+func (q *Queries) DeleteProjectIssueViewPreferences(ctx context.Context, arg DeleteProjectIssueViewPreferencesParams) error {
+	_, err := q.db.Exec(ctx, deleteProjectIssueViewPreferences, arg.WorkspaceID, arg.ScopeID)
+	return err
+}
+
 const deleteProjectProgress = `-- name: DeleteProjectProgress :exec
 WITH notifications AS (DELETE FROM project_update_notification WHERE project_update_notification.project_id=$1 AND project_update_notification.workspace_id=$2),
  requests AS (DELETE FROM project_update_request WHERE project_update_request.project_id=$1 AND project_update_request.workspace_id=$2),

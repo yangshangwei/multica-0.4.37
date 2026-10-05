@@ -129,3 +129,8 @@ WITH notifications AS (DELETE FROM project_update_notification WHERE project_upd
  revisions AS (DELETE FROM project_update_revision WHERE project_update_revision.project_id=$1 AND project_update_revision.workspace_id=$2),
  states AS (DELETE FROM project_state_change WHERE project_state_change.project_id=$1 AND project_state_change.workspace_id=$2)
 DELETE FROM project_update WHERE project_update.project_id=$1 AND project_update.workspace_id=$2;
+-- name: DeleteProjectIssueViewPreferences :exec
+DELETE FROM issue_view_preference
+WHERE workspace_id = sqlc.arg('workspace_id')
+  AND scope_type = 'project'
+  AND scope_id = sqlc.arg('scope_id');

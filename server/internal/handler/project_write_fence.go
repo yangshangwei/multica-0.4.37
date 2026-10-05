@@ -53,7 +53,7 @@ func (h *Handler) projectHumanActor(r *http.Request, workspaceID string) (pgtype
 	}
 	actor, _ := h.resolveActor(r, user, workspaceID)
 	if isMachineCredentialActor(r) || actor != "member" {
-		return pgtype.UUID{}, projectErr(403, "forbidden", "this operation requires a human member")
+		return pgtype.UUID{}, projectErr(403, "project_permission_denied", "this operation requires a human member")
 	}
 	id, err := util.ParseUUID(user)
 	if err != nil {

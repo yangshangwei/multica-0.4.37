@@ -22,7 +22,7 @@ JSON 使用 snake_case。UUID为标准小写带连字符文本；timestamp为UTC
 | `GET P/delete-impact` | 200 `{workspace_id,project_id,project_revision,issue_count,formal_issue_count,resource_count,update_count,autopilot_count,preserves_issues:true,preserves_executions:true}`，仅管理员 |
 | 既有 `DELETE P` | 204，无payload；项目缺失404，不复活已删除记录 |
 
-能力路径在现有URL成员授权组（`server/cmd/server/router.go:1692`）添加；禁止使用旧`/api/projects/capabilities`，旧router将其当id并返回400（`:2136`、`handler/project.go:231`）。仅对已成功读取的同一工作空间，以合法UUID调用专用capability端点得到404才判unsupported；若工作空间详情随后也404/403，走删除/撤权。400是请求错误，401认证失效，403撤权，网络/畸形响应为探测失败；不能统一降级为空功能。
+能力路径在现有URL成员授权组（`server/cmd/server/router.go:1692`）添加；禁止使用旧`/api/projects/capabilities`，旧router将其当id并返回400（`:2136`、`handler/project.go:231`）。仅对已成功读取的同一工作空间，以合法UUID调用专用capability端点得到404才判unsupported；若工作空间详情随后也404/403，走删除/撤权。400是请求错误，401认证失效；workspace不可见或成员失权在真实通用中间件保留404及workspace not found，并附workspace_access_denied。该code直接走scope失权，不能降级为unsupported。无此code的专用能力404须先确认workspace仍可读；操作/来源级403按下表保留本地输入，网络/数据库不可用/畸形响应为探测失败，不冒充失权或空功能。
 
 ## 2. 非递归统计、概览与风险页
 
@@ -51,7 +51,7 @@ statistics只含计算事实，**不含进展对象、验收摘要、description
 
 `latest_acceptance`从kind=acceptance稳定记录按`published_at DESC,id DESC`选最新，返回其current_revision；更正时间不改变顺序。`current_description_acceptance`仅在该集合中过滤description_revision=当前版本后按同序选最新，不能偏爱passed跳过较新的failed。两者可能不同：界面分别标“最近验收（旧版，请复核）”与“当前描述验收”，不能让较新的旧版更正覆盖较早当前版结论。无当前版则当前结果为null；图标等变更不影响版本匹配。
 
-snapshot_version为design §5全部聚合输入的canonical digest，排除calculated_at、可见标签与排版。RiskPage只接受四signal；按`issue.id ASC`稳定keyset，默认50/最大100；cursor封装版本、signal、last_id并绑定ws/project（可解码校验，不是授权凭证）。版本改变时新第一页、refreshed=true、overview与items同一事务版本；不混接旧页。统计不完整时拒绝声称精确下钻，503并返回当前可授权overview用于错误提示。
+snapshot_version为design §5全部聚合输入的canonical digest，排除calculated_at、可见标签与排版。RiskPage只接受四signal；按`issue.id ASC`稳定keyset，默认50/最大100；cursor封装版本、signal、last_id并绑定ws/project（可解码校验，不是授权凭证）。按[ADR-05](research/pagination-adr.md)，版本变化仍refreshed=true，但有效cursor继续当前集合中严格大于last_id的位置；无cursor才返回第一页。overview、total、items始终属于本请求同一事务。next_cursor带当前version，客户端随后发送该版本；不混接旧页。UI的遍历变更提示保持到成功的显式从头刷新，失败不清；total>0的空后缀不称为项目无风险。新/重新入险的低ID需从头刷新才能包含，不宣称跨页是同一冻结快照。统计不完整时拒绝声称精确下钻，503并返回当前可授权overview用于错误提示。
 
 ## 3. 进展、历史与署名
 
@@ -130,7 +130,7 @@ correct draft的kind与验收描述版本从原记录固定，不允许改kind/�
 
 ## 6. 错误合同与响应校验
 
-新增错误沿用现有`{error:string}`基础，加`code:string,field_errors?:{field,message}[],current?:object,retryable?:boolean`；current只含当前授权范围内数据。错误不能被parseWithFallback当成功。成功身份/必填revision/完整snapshot枚举不合法均是协议错误，保留输入并显示重试；旧Project可选新字段不影响旧CRUD。
+P1 handler新增错误沿用现有`{error:string}`基础，加`code:string,field_errors?:{field,message}[],current?:object,retryable?:boolean`；通用认证中间件401可能只有error，仍按HTTP认证失败处理。current只含当前授权范围内数据。错误不能被parseWithFallback当成功。成功身份/必填revision/完整snapshot枚举不合法均是协议错误，保留输入并显示重试；旧Project可选新字段不影响旧CRUD。
 
 | HTTP | 固定code与payload | 客户端行为 |
 | --- | --- | --- |
@@ -140,11 +140,14 @@ correct draft的kind与验收描述版本从原记录固定，不允许改kind/�
 | 403 | `project_evidence_forbidden`（private-agent／chat来源失权，附evidence字段提示） | 保留本人草稿；清除该证据查询，移除失效引用后重新预览；历史仅脱敏该来源 |
 | 403 | `project_updates_disabled`（P1新发布／更正已关闭） | 保留草稿并显示只读限制；当前授权的历史及完全相同已成功请求仍可读取／重放 |
 | 403 | `project_permission_denied`（操作角色／机器actor限制） | 显示操作权限不足；不据此撤销整个工作空间访问 |
-| 404 | `project_not_found`/`project_update_not_found` | 停止提交；仅专用能力路径按§1判unsupported |
+| 404 | `workspace_access_denied`，保留既有 `error:"workspace not found"`（不存在与无权同形状） | 真正scope失权：清保护Query/草稿/候选并挡住迟到响应；不当unsupported或project删除 |
+| 404 | `project_not_found`/`project_update_not_found` | 停止相应提交；已删除项目只保留本人未提交文本供复制，不能恢复对象；仅无scope拒绝code的专用能力路径按§1判unsupported |
 | 409 | `project_description_conflict`/`project_revision_conflict`/`project_update_revision_conflict` + current | 保留输入、显示最新版本、显式合并 |
 | 409 | `project_update_preview_stale` + `{current:{changed_fields,preview}}`；`idempotency_conflict`无保护正文 | 复核后新意图；不得自动覆盖 |
 | 422 | `validation_failed` + field_errors | 依据/字数/证据/IANA/日期顺序逐项显示 |
 | 428 | `project_description_revision_required` | 明确客户端版本限制、保留输入 |
 | 503 | `project_health_unavailable`或`project_write_retry_exhausted`，retryable=true，Retry-After:1 | 不展示最新成功；写沿用原request_id重试 |
 
-测试必须包括真实旧router请求合法ws子资源404及旧错误路径`/api/projects/capabilities`400；新端成员200/非成员403；400/401/403/404/network/malformed矩阵；所有DTO缺identity/错误workspace、未知kind、不安全整数、负counts、递归/畸形snapshot不得假成功。列表历史署名/多验收排序/旧更正及三种证据版本变化使用同一合同fixture。
+测试必须包括真实旧router请求合法ws子资源404及旧错误路径`/api/projects/capabilities`400；新端成员200/非成员404且workspace_access_denied，操作权限不足403且project_permission_denied；400/401/403/404/network/malformed矩阵；所有DTO缺identity/错误workspace、未知kind、不安全整数、负counts、递归/畸形snapshot不得假成功。列表历史署名/多验收排序/旧更正及三种证据版本变化使用同一合同fixture。
+
+真实路由验证：planning-timezone PUT经过成员级路由，handler在锁内重新检查owner/admin并返回操作级403；成员离开后project/overview读取在通用中间件返回稳定scope404。数据库读取故障保留503且不发失权code，避免服务故障擦除用户状态。对应project_permission_route_test.go与workspace_access_error_test.go。

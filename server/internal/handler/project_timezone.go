@@ -110,7 +110,7 @@ func (h *Handler) UpdateProjectPlanningTimezone(w http.ResponseWriter, r *http.R
 			return e
 		}
 		if member.Role != "owner" && member.Role != "admin" {
-			return projectErr(403, "forbidden", "only owners and administrators may set the planning timezone")
+			return projectErr(403, "project_permission_denied", "only owners and administrators may set the planning timezone")
 		}
 		row, e := q.UpdateWorkspacePlanningTimezone(r.Context(), db.UpdateWorkspacePlanningTimezoneParams{ID: ws, PlanningTimezone: ptrToText(zone)})
 		if e != nil {

@@ -2777,3 +2777,7 @@ RETURNING *;
 
 -- name: LockIssueExecution :one
 SELECT lock_issue_execution(sqlc.narg(issue_id)::uuid, sqlc.narg(trigger_comment_id)::uuid, sqlc.narg(comment_ids)::uuid[], sqlc.narg(context)::jsonb)::boolean AS allowed;
+-- name: LockAgentForAutopilotDispatch :one
+SELECT * FROM agent
+WHERE id = sqlc.arg('id') AND workspace_id = sqlc.arg('workspace_id')
+FOR SHARE NOWAIT;
