@@ -1,23 +1,23 @@
 # P1 验收与测试设计
 
-状态：测试计划，产品测试尚未执行。证据绑定实际commit/环境/命令，T1通过不能代替P1。源需求为`projects-prd.md:131`、`:418`，补充`:360`、`:393`、`:477`；设计见 [design.md](design.md)，响应/证据/hash/排序唯一合同见 [api-contract.md](api-contract.md)。
+状态：已实施的测试规格与验收映射；本轮 P1 实施验收完成（2026-10-06）。各域测试、迁移、性能与移动兼容已有实测，最终产品 `31534d844` 重建后的 Web/Desktop 8/8 通过（49.7秒，零重试/跳过）；首次完整检查失败与后续定向验证分开记录。最终结果见 [验收记录](verification.md) 与 [逐项审计](../10-05-projects-p1-verification/acceptance-audit.md)，本表描述必要断言，不自动代表该行全部通过。证据绑定实际commit/环境/命令，T1通过不能代替P1。源需求为`projects-prd.md:131`、`:418`，补充`:360`、`:393`、`:477`；设计见 [design.md](design.md)，响应/证据/hash/排序唯一合同见 [api-contract.md](api-contract.md)。
 
-## 1. 测试层、拟新增文件与fixture
+## 1. 测试层、实际文件与fixture
 
-下表简码在映射表引用时，同时表示具体测试层和拟新增/扩展文件。纯规则只保留一个canonical矩阵，组件测接线/恢复，E2E测真实串联，避免重复DOM矩阵。
+下表简码在映射表引用时，同时表示具体测试层和实际新增/扩展文件。纯规则只保留一个canonical矩阵，组件测接线/恢复，E2E测真实串联，避免重复DOM矩阵。纯解析/规则采用node；mutation、access/session lifecycle和组件测试按实际文件声明采用jsdom，不将C/R整组称为node。
 
 | 简码 | 测试层与文件 | fixture/方法 | 负责子任务 |
 | --- | --- | --- | --- |
 | F | Go DB integration：新增 `server/internal/handler/project_revision_test.go`、`project_timezone_test.go`、`project_delete_concurrency_test.go` | `testutil`/`dbfx`建成员/项目/任务；`testutil.Call`；两连接锁屏障/故障注入 | foundation |
 | H | Go unit：新增 `server/internal/projecthealth/health_test.go`；DB integration：`handler/project_health_test.go` | 固定时钟/日期/完整目录；真实DB全量集合、快照分页与JOIN去重 | health |
-| P | Go DB integration：新增 `handler/project_update_test.go`、`project_update_notifications_test.go` | 人类/PAT/task/cloud/legacy-agent actor，稳定request UUID、丢响应/重启投递/撤权屏障 | progress |
-| C | Vitest node：新增 `packages/core/api/project-p1.test.ts`、`projects/health.test.ts`、`projects/progress-draft-store.test.ts`；扩展 `projects/mutations.test.tsx` | 新旧/畸形响应、跨空间identity、QueryClient/StorageAdapter、AbortSignal/晚响应 | ui |
-| V | Shared views：新增 `projects/components/project-overview.test.tsx`、`project-update-composer.test.tsx`、`project-description.test.tsx`；扩展 `project-detail.test.tsx` | 原ContentEditor/mention格式、模板/冲突/焦点、旧过滤偏好、资源/小队数据 | ui |
-| R | Vitest：扩展 `packages/core/realtime/use-realtime-sync.test.ts`、`issues/cache-coordinator.test.ts`，新增 `projects/health-realtime.test.ts` | Query+内存/持久草稿，WS事件、规划日界、重连、撤权导航失败 | ui |
+| P | Go DB integration：`server/internal/handler/project_update_test.go`、`project_update_concurrency_test.go`、`project_update_notifications_test.go` | 人类/PAT/task/cloud/legacy-agent actor，稳定request UUID、丢响应/重启投递/撤权屏障 | progress |
+| C | Vitest：`packages/core/api/project-p1-{schema,client}.test.ts`、`projects/{goal-template,description-save,progress-draft-store,access-lifecycle}.test.ts`；扩展 `projects/mutations.test.tsx` | 新旧/畸形响应、跨空间identity、QueryClient/StorageAdapter、AbortSignal/晚响应 | ui |
+| V | Shared views：`packages/views/projects/components/project-management.test.tsx`、`project-review-regressions.test.tsx`、`project-overview-lifecycle.test.tsx`、`project-risk-pagination.test.tsx`；扩展 `project-detail.test.tsx` | 原ContentEditor/mention格式、模板/冲突/焦点、旧过滤偏好、资源/小队数据 | ui |
+| R | Vitest：扩展 `packages/core/realtime/use-realtime-sync.test.ts`、`issues/cache-coordinator.test.ts`，`projects/realtime.test.ts`、`projects/access-lifecycle.test.ts`及shared views `project-overview-lifecycle.test.tsx` | Query+内存/持久草稿，WS事件、规划日界、重连、撤权导航失败 | ui |
 | MO | Mobile Vitest node：新增 `apps/mobile/data/project-p1-api.test.ts`、`data/queries/projects.test.ts`、`data/realtime/project-ws-updaters.test.ts`、`data/realtime/project-access.test.ts` | 独立ApiClient/纯parser调用、mobile扁平Project[]/detail QueryClient、mock WS/Storage/401回调；不加载RN模块/不用Web hooks | ui；verification独立执行 |
 | E | Playwright：新增 `e2e/projects-p1.spec.ts`、`e2e/projects-p1-desktop.spec.ts` | `TestApiClient`建完整数据，Web生产式服务/Desktop，后台mock执行计数 | verification |
-| M | DB migration/integration：新增 `server/internal/handler/project_p1_integration_test.go` 与本任务 `verification.md` 迁移报告 | 空库/既有填充库/部分失败库、catalog/ledger对照、约束扫描、up/down/恢复 | verification |
-| O | 性能/观察报告：本任务 `verification.md` | 固定机器/版本/并发/冷暖缓存，EXPLAIN ANALYZE、P50/P95、query数、outbox积压 | verification |
+| M | DB migration/integration：`server/internal/migrations/project_p1_rollback_test.go`，辅以 `handler/project_delete_concurrency_test.go`、`project_association_concurrency_test.go`；[迁移报告](../10-05-projects-p1-verification/migration-verification.md) | 空库/既有填充库/部分失败库、catalog/ledger对照、约束扫描、up/down/恢复 | verification |
+| O | [C性能报告](../10-05-projects-p1-verification/performance-c-report.md)、[原A失败报告](../10-05-projects-p1-verification/performance-report.md)及 `performance/` 实际脚本/样本 | 固定机器/版本/并发/冷暖缓存，EXPLAIN ANALYZE、P50/P95、query数、outbox积压 | verification |
 
 统一fixture：两个互不授权工作空间；owner/admin/member/离开成员；有效/归档/跨空间/离线agent；有效/归档/leader失效squad；五项目状态；内置和自定义（含archived/未知）任务状态。正式N=10样例为6done+2cancelled+2todo；另加pending/rejected/duplicate和候选项目记录、父子任务、无/失效负责人、昨天/今天/明天/空截止日。集成测试不得被mock数据库替代。
 
@@ -42,7 +42,7 @@
 
 ## 3. PRJ-AC-01—27 逐条验收
 
-| 原验收 | fixture、动作与必要断言 | 测试层/拟文件简码 | 负责子任务 |
+| 原验收 | fixture、动作与必要断言 | 测试层/实际文件简码 | 负责子任务 |
 | --- | --- | --- | --- |
 | PRJ-AC-01 | 同一旧项目保留ID、五状态、属性/资源/小队；逐个打开board/list/table/swimlane/gantt，原链接/自动化入口可用 | F、V、E | ui/verification |
 | PRJ-AC-02 | 空正文插模板保存，DB只有description更新；overview/editor/项目执行上下文同值同description_revision，不新增goal镜像 | F、V；扩展 `server/internal/handler/chat_project_context_test.go` | foundation/ui |
@@ -85,14 +85,14 @@
 | P1-FR-05 快照；PRD:215/253 | 双连接屏障在读取两阶段间改变任务/目录/有效指派：RR统计必须单一快照或40001整笔重试；同事务实际snapshot写入，preview统计version变化409，calculated_at独变不冲突；unknown要求快照503，历史不被改写 | H、P；health/progress |
 | P1-FR-06 证据复核；PRD:372/404 | issue.revision、execution.state_version/结果digest分别变化均409；chat非creator/私有agent不满足读策略拒绝；旧snapshot等待fence时成员/来源已变触发重试，不读RR旧授权；外链无验证版本；canonical固定向量排除采集时间、纳入接收者/统计版本 | P、C、V；progress/ui |
 | P1-FR-07 发布竞争；PRD:398 | 并发同UUID同hash仅一份；同UUID不同hash409；correct两版本一成一409；超时查回原结果；幂等查回仍授权，撤权不得读原内容 | P；progress |
-| P1-FR-08 删除/撤权编辑；PRD:399/400 | 删除事件停提交并允许复制本人未提交文本；403/撤权先移除保护Query/编辑器/候选/草稿，不依赖导航成功；晚网络响应不得重填 | C、R、V、E；ui/verification |
+| P1-FR-08 删除/撤权编辑；PRD:399/400 | 删除事件停提交并允许复制本人未提交文本；scope 403、404 workspace_access_denied/撤权先移除保护Query/编辑器/候选/草稿，不依赖导航成功；三类操作/来源/能力403保留仍授权的数据与本人输入；晚网络响应不得重填 | C、R、V、E；ui/verification |
 | P1-FR-09 不完整/失效；PRD:401/402 | 聚合或目录失败、lead离开、资源不可访问：明确时刻/原因/重试，旧值仅标过期；无假0/绿色/静默改配；历史作者保留署名而不泄权限 | H、P、V；health/progress/ui |
 | P1-FR-10 删除全部writer；PRD:406 | 显式/继承/自动化创建、单条/批量换项目、T1接受/手动CSV候选、资源、聊天、小队、进展、通知逐入口以barrier测试先关联/先删除；无活跃孤儿/锁环；候选ID与分拣审计保留但显式失效，接受拒绝失效候选；迟到幂等重放404不复活进展/通知 | F、M；foundation/verification |
 | P1-FR-11 故障删除；PRD:407/408 | 每阶段错误整体回滚；非archived自动化status=paused/pause_reason=project_deleted，archived保留、trigger.enabled=false；所有project_id解除；运行/历史/共享资源保留；投递/删除两锁顺序屏障无死锁 | F、P、M；foundation/progress/verification |
 | P1-FR-12 通知恢复；PRD:269 | 两worker同候选无锁扫描后按正序锁只投一次；投递/撤权/删除barrier无环；崩溃重启既有inbox不重复；5秒轮询/backoff/12次deadletter/ctx取消可用fake clock测；修订仅补新提及、已读不改业务 | P、E；progress/verification |
-| P1-FR-13 混合版本；PRD:479/481 | 真实旧router合法ws子资源project-capabilities404；旧错误路径projects/capabilities确实400，不能mock替代；新路由member200/非成员403；400/401/403/404/network/schema各分支；mobile旧字段不猜F/C，原属性写不丢P1字段，description428 | C、MO、F、E；ui/foundation/verification |
+| P1-FR-13 混合版本；PRD:479/481 | 真实旧router合法ws子资源project-capabilities404；旧错误路径projects/capabilities确实400，不能mock替代；新路由member200/非成员404且workspace_access_denied；400/401/403/404/network/schema各分支；mobile旧字段不猜F/C，原属性写不丢P1字段，description428 | C、MO、F、E；ui/foundation/verification |
 | P1-FR-14 上线回退；PRD:483 | 关闭新UI能力仍保留全部进展/验收/快照，兼容后端可只读；禁止任意旧二进制绕过CAS/丢历史入口；回退不改任务/状态 | M、C；verification/ui |
-| P1-FR-15 WS/日界；README:124 | due/assignee/delete/admission/目录/member/agent/squad/runtime/timezone/跨日/重连重算；mobile自己的flat list/detail在完整事件patch、ID事件invalidate，新字段不被旧partial覆盖；403先清保护缓存、晚响应不得回填 | R、MO、E；ui/verification |
+| P1-FR-15 WS/日界；README:124 | due/assignee/delete/admission/目录/member/agent/squad/runtime/timezone/跨日/重连重算；mobile自己的flat list/detail在完整事件patch、ID事件invalidate，新字段不被旧partial覆盖；scope 403或404 workspace_access_denied先清保护缓存、晚响应不得回填 | R、MO、E；ui/verification |
 | P1-FR-16 权限身份；PRD:346 | owner/admin/member可发布，task_token/cloud_pat/legacy-agent及agent lead不可最终发布；当前成员读写/下载限制；管理员设置时区仅人类 | F、P；foundation/progress |
 | P1-FR-17 安全呈现；PRD:379 | 富文本/链接转义、外链schema、mention伪造recipient、跨空间证据ID；只使用既有安全渲染策略，不引入新依赖或外部fetch | P、V；progress/ui |
 | P1-FR-18 无执行副作用；PRD:389 | 模板进入原描述上下文但进展不无限追加；状态/健康红/成员与agent提及/项目小队变更不触发执行或重配已有任务，T1执行门槛保留 | F、P、E；foundation/progress/verification |
@@ -103,13 +103,13 @@
 
 P1可验证部分：删除只清issue.project_id、不删除issue/task/comment，项目状态修改只写project/audit，发布快照不受实时任务变动影响。P1 design/SQL不得加入任何对未来迭代归属或历史的写操作。
 
-I1实施时由I1负责人补真实fixture：当前迭代+结束快照中的项目任务→项目暂停/取消/重开/删除→当前归属与结束快照逐字段不变；项目改名/任务移动后历史仍原值。P1 verification报告把这两行标为“现有部分通过／迭代集成待I1”，不能将AC-01—27笼统宣称全部通过。P1规划就绪不要求实现I1。
+I1实施时由I1负责人补真实fixture：当前迭代+结束快照中的项目任务→项目暂停/取消/重开/删除→当前归属与结束快照逐字段不变；项目改名/任务移动后历史仍原值。P1 verification报告把这两行标为“现有部分通过／迭代集成待I1”，不能将AC-01—27笼统宣称全部通过。P1本轮验收完成不表示I1真实迭代集成已经通过。
 
 ## 6. 迁移、性能与可观测性
 
 - M：空库up、旧正式/非正式项目填充库up、索引构建失败/重试、ledger已记但对象缺失恢复；catalog确认无新增FK/cascade、每索引concurrently单语句。空新增表且writers停止的down成功；保留进展/revision/request/outbox/state audit/规划配置或版本变更时guard明确拒绝；并发写入与锁内检查两顺序不丢数据；索引部分down失败按up恢复，不能承诺恢复历史FK。
 - M：回填逐字段比较标题/描述/日期/状态/lead/资源，旧done_count金样不变；进行中历史时间明确migration来源，nullable时区effective UTC；工作空间删除清所有新表与outbox。
-- O：500项目/10,000正式任务按design采样P95/资源基线，候选2秒/5秒非已有结果；追加0/1/10次每秒任务/目录/指派变化各10分钟、每秒翻页操作，统计refreshed比例/达到第二页成功率与P95耗时/连续重置次数；先基线记录并评审可用预算再最终判定。若频繁重置不可用，按ADR复审B短期快照，不提前实现双来源。
+- O：500项目/10,000正式任务按design采样P95/资源基线，HTTP 2秒固定预算已通过，跨页面5秒收敛以独立浏览器证据为准；追加0/1/10次每秒任务/目录/指派变化各10分钟、每秒翻页操作，统计refreshed比例/达到第二页成功率与P95耗时/连续重置次数；先基线记录并评审可用预算再最终判定。原A已验证不可用；按ADR-05改C后完整复测通过，三档各至少600秒、1709/1709非空续页严格前进、静态最大P95约558ms；保留原失败样本。非空后缀100%真实ID前进，terminal空后缀单列；sticky变更提示、低ID重入、成功/失败从头刷新均需验证，不把refreshed=true误计为重置。
 - O：统计完整率/unknown原因、overview耗时、snapshot刷新、CAS/preview冲突、幂等重放、outbox待投递/失败重试、删除失败与孤儿扫描形成现有日志/指标；不记录正文、证据内容、token。日志只用授权范围内ID/原因/计数。
 - E：键盘完成模板选择、风险下钻、发布/冲突恢复；错误有文字、焦点可找、不只靠颜色；目标信息找寻和风险定位按PRD:465/466先记录基线，不虚构90%/30秒达标。
 

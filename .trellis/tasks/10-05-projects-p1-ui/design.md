@@ -1,5 +1,7 @@
 # 共享概览与编辑体验：设计边界
 
+当前状态：该范围已落地，本轮P1实施验收完成（2026-10-06）。实际证据：[实现记录](implementation-evidence.md)、[RR修复与日界/验收证明](review-fixes-2.md)、[移动兼容](mobile-verification.md)。
+
 本子任务采用[父技术设计](../10-05-projects-p1/design.md)及[唯一API合同](../10-05-projects-p1/api-contract.md)的统一数据/API/权限/兼容/迁移契约；不得独立更改字段或创建并列实现。
 
 共享 core 数据契约/Query/草稿和 views 概览、目标模板、健康下钻、进展/验收编辑、历史、完成提示；Web/Desktop平台接线和旧端/移动读取兼容。

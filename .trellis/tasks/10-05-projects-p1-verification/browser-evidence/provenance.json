@@ -1,0 +1,59 @@
+{
+  "api": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=31534d844' ./cmd/server (cwd: /Volumes/artisan/code/2026/multica-projects-p1/server)",
+    "source_id": "9e4e4820100b7160af35c64a8e93ab7ea81fbabf78252ddb93958c6d68ecc4d9",
+    "configuration_id": "c7962dc68b9839592ff23e899b5b2ff7cbb81d0076911611d430879c9eda400b",
+    "commit": "31534d844",
+    "launcher_pid": 91627,
+    "started_at": "2026-10-05T16:07:38Z",
+    "listener_pid": 91721
+  },
+  "web": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "7nHz90Ry9eikLfmkC-5ER",
+    "command": "pnpm --filter @multica/web exec next start --port 13992",
+    "source_id": "9e4e4820100b7160af35c64a8e93ab7ea81fbabf78252ddb93958c6d68ecc4d9",
+    "configuration_id": "2e0d8c52d01b0e8395814beb0d48a35a6f3d2f273a1c71dd160383ac984a637a",
+    "commit": "31534d844",
+    "launcher_pid": 92939,
+    "started_at": "2026-10-05T16:09:27Z",
+    "listener_pid": 92966
+  },
+  "desktop": {
+    "head_at_recording": "31534d8449caffc2cf4cda2a34c6a495ec58faf6",
+    "product_candidate": "31534d844",
+    "command": "pnpm --filter @multica/desktop exec electron-vite build",
+    "build_exit_code": 0,
+    "build_log": ".omx/p1-desktop-31534d-build.log",
+    "recorded_at": "2026-10-05T16:09:28.842587+00:00",
+    "artifacts": [
+      {
+        "path": "apps/desktop/out/main/index.js",
+        "bytes": 203774,
+        "sha256": "9e94a8ad1d1a3ef229479166ce948ba3afc3a7af4896f3f0f03b18c32ff5befc"
+      },
+      {
+        "path": "apps/desktop/out/preload/index.js",
+        "bytes": 15518,
+        "sha256": "09b9473aa3881fe9c8f6d0b8f7de167a1c3b028dbac1db13b00986f54339bc7a"
+      },
+      {
+        "path": "apps/desktop/out/renderer/index.html",
+        "bytes": 1256,
+        "sha256": "448338cb0ec5be43eeef1e0752039c053b671d662ef12f10a5390c8c77854613"
+      },
+      {
+        "path": "apps/desktop/out/renderer/assets/index-DNeAcGUl.js",
+        "bytes": 14869046,
+        "sha256": "efb420aa19e9a46963b7b5c47805a2949584645e3f4ef75912e385800b5b93bf"
+      }
+    ]
+  },
+  "base_url": "http://localhost:13992",
+  "api_url": "http://localhost:19072",
+  "run_started_at": "2026-10-05T16:10:03.335Z"
+}

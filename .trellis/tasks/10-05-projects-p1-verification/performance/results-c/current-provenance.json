@@ -1,0 +1,17 @@
+{
+  "commit": "1bc58911981ec554673a6254c2af861d918215c9",
+  "server_source_sha256": "60cda53dc59f80f3233112c652004f81a6d4c2ae93256e25b999c04484825e71",
+  "source_files": 2201,
+  "created_at": "2026-10-05T11:46:47.973314+00:00",
+  "health_files": {
+    "server/internal/handler/project_health.go": "45ebccb155535766ccf7b20d543aa9ac7a3ccf22fe6c9fedb4adde9d6eea965c",
+    "server/internal/projecthealth/collect.go": "52535e9b339d42cec52fc4b2cdcbf8e0713ac703e082e975ba1684945c7db0e5",
+    "server/internal/projecthealth/counts.go": "b81766a294a3c610823638094ff21995a9bc47c6ebbfad5daf252d52f5ceb2cd",
+    "server/internal/projecthealth/snapshot.go": "be83f10e7b3852b23c746f365b1edd9cd2e0079d8f15d84f073136f06c26a68c",
+    "server/internal/projecthealth/unavailable.go": "93a3956b8fc7577cf061293577360276ce9d31872b2efdb98e53450f769d25b0"
+  },
+  "binary_sha256": "7c03575c8d335c86124f29d34a4c0978aeb6eeb76ff085ec66f922660f41d875",
+  "source_stable_during_build": true,
+  "benchmark_harness_sha256": "d825059f1a30dc19dad7966ee8e947957b882c3765f76cdc83cf013de204804a",
+  "pagination_metrics": "ADR-05: all nonempty continuations strictly after requested last_id; terminal suffixes separate; refreshed is not restart"
+}

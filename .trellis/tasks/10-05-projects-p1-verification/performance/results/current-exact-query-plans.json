@@ -1,0 +1,393 @@
+{
+  "measured_at": "2026-10-05T10:25:01.393Z",
+  "label": "current",
+  "queries": {
+    "project_health_inputs": {
+      "sql": "SELECT id,status,due_date,assignee_type,assignee_id FROM issue WHERE workspace_id=$1::uuid AND project_id=$2::uuid AND admission_status IN ('not_required','accepted') ORDER BY id ASC",
+      "explain": [
+        {
+          "Plan": {
+            "Node Type": "Sort",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 1771.18,
+            "Total Cost": 1796.43,
+            "Plan Rows": 10098,
+            "Plan Width": 49,
+            "Actual Startup Time": 8.852,
+            "Actual Total Time": 9.421,
+            "Actual Rows": 10000,
+            "Actual Loops": 1,
+            "Sort Key": [
+              "id"
+            ],
+            "Sort Method": "quicksort",
+            "Sort Space Used": 970,
+            "Sort Space Type": "Memory",
+            "Shared Hit Blocks": 835,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Seq Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Relation Name": "issue",
+                "Alias": "issue",
+                "Startup Cost": 0,
+                "Total Cost": 1099.58,
+                "Plan Rows": 10098,
+                "Plan Width": 49,
+                "Actual Startup Time": 0.01,
+                "Actual Total Time": 7.068,
+                "Actual Rows": 10000,
+                "Actual Loops": 1,
+                "Filter": "((admission_status = ANY ('{not_required,accepted}'::text[])) AND (workspace_id = 'a78db5d8-947c-4d9a-b9e5-67a202a59e70'::uuid) AND (project_id = '5c411e40-8720-44a2-92c4-eee020920810'::uuid))",
+                "Rows Removed by Filter": 5290,
+                "Shared Hit Blocks": 832,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          },
+          "Planning": {
+            "Shared Hit Blocks": 571,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 1.259,
+          "Triggers": [],
+          "Execution Time": 9.792
+        }
+      ]
+    },
+    "legacy_project_stats": {
+      "sql": "SELECT project_id,count(*)::bigint AS total_count,count(*) FILTER(WHERE status=ANY($3::text[]))::bigint AS done_count FROM issue WHERE admission_status IN ('not_required','accepted') AND workspace_id=$1::uuid AND project_id=ANY($2::uuid[]) GROUP BY project_id",
+      "explain": [
+        {
+          "Plan": {
+            "Node Type": "Aggregate",
+            "Strategy": "Hashed",
+            "Partial Mode": "Simple",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 1181.44,
+            "Total Cost": 1186.44,
+            "Plan Rows": 500,
+            "Plan Width": 32,
+            "Actual Startup Time": 4.583,
+            "Actual Total Time": 4.586,
+            "Actual Rows": 1,
+            "Actual Loops": 1,
+            "Group Key": [
+              "project_id"
+            ],
+            "Planned Partitions": 0,
+            "HashAgg Batches": 1,
+            "Peak Memory Usage": 49,
+            "Disk Usage": 0,
+            "Shared Hit Blocks": 832,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Seq Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Relation Name": "issue",
+                "Alias": "issue",
+                "Startup Cost": 0,
+                "Total Cost": 1080.46,
+                "Plan Rows": 10098,
+                "Plan Width": 22,
+                "Actual Startup Time": 0.004,
+                "Actual Total Time": 3.205,
+                "Actual Rows": 10000,
+                "Actual Loops": 1,
+                "Filter": "((project_id = ANY ('{5c411e40-8720-44a2-92c4-eee020920810}'::uuid[])) AND (admission_status = ANY ('{not_required,accepted}'::text[])) AND (workspace_id = 'a78db5d8-947c-4d9a-b9e5-67a202a59e70'::uuid))",
+                "Rows Removed by Filter": 5290,
+                "Shared Hit Blocks": 832,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          },
+          "Planning": {
+            "Shared Hit Blocks": 5,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 0.098,
+          "Triggers": [],
+          "Execution Time": 4.597
+        }
+      ]
+    },
+    "legacy_500_project_stats": {
+      "sql": "SELECT project_id,count(*)::bigint AS total_count,count(*) FILTER(WHERE status=ANY($3::text[]))::bigint AS done_count FROM issue WHERE admission_status IN ('not_required','accepted') AND workspace_id=$1::uuid AND project_id=ANY($2::uuid[]) GROUP BY project_id",
+      "explain": [
+        {
+          "Plan": {
+            "Node Type": "Aggregate",
+            "Strategy": "Hashed",
+            "Partial Mode": "Simple",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 1288.95,
+            "Total Cost": 1293.95,
+            "Plan Rows": 500,
+            "Plan Width": 32,
+            "Actual Startup Time": 5.564,
+            "Actual Total Time": 5.605,
+            "Actual Rows": 500,
+            "Actual Loops": 1,
+            "Group Key": [
+              "project_id"
+            ],
+            "Planned Partitions": 0,
+            "HashAgg Batches": 1,
+            "Peak Memory Usage": 105,
+            "Disk Usage": 0,
+            "Shared Hit Blocks": 832,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Seq Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Relation Name": "issue",
+                "Alias": "issue",
+                "Startup Cost": 1.25,
+                "Total Cost": 1139.05,
+                "Plan Rows": 14990,
+                "Plan Width": 22,
+                "Actual Startup Time": 0.009,
+                "Actual Total Time": 3.582,
+                "Actual Rows": 14990,
+                "Actual Loops": 1,
+                "Filter": "((admission_status = ANY ('{not_required,accepted}'::text[])) AND (workspace_id = 'a78db5d8-947c-4d9a-b9e5-67a202a59e70'::uuid) AND (project_id = ANY ('{5c411e40-8720-44a2-92c4-eee020920810,9666f5be-5c94-48a1-9c1d-649d01bcb288,c1615b67-7021-4ddf-b3b0-074da99ec66d,304900f5-430f-4091-94ee-bd0995501ccb,66d425ce-a37f-4971-9038-82e76843b313,05355c56-1f21-4ff9-b39f-28f19b682019,986b7313-35f4-4aad-ad61-a6bf11e91a43,3af6bfe1-e642-40bd-a841-8e8ae728d9d0,ef5f37c2-cc90-449c-9a75-9fe44025375c,38449784-31d4-4418-9d2a-77bac9df9916,3132e15b-1807-4023-b41b-1d8dcc7eb51f,aa23fe48-6d4f-4f69-ba35-69e173939b66,97b0d4e0-2c80-43be-94ea-23f3e37366e8,0355f613-2f64-43b1-9998-5f0fe3c164f9,de952650-bb2d-4b34-8bdc-37c969b21b33,db0bbf6c-8f68-4a18-89ad-65572ae795ea,2e70c2b7-4379-423b-b8ff-357527b97bca,36183963-953d-46be-9dcf-708441d9555f,eeb3305b-6fa1-4fbd-8e49-ade865c708ff,7b64f316-5e4e-400e-b858-fd466e10ed3c,7952b9df-131c-4bd3-8682-e76411f261b3,adaefe63-a65e-4311-87ab-2876fdd8596b,ad372c87-59d9-4d91-87bf-3ef4d5242695,7ca12875-875a-48e8-a5be-21c1e633dd6b,d8797875-21ac-4ded-9085-0f616dac82c6,e2c3f6b8-b555-40b5-9fa6-525f57824e39,8bb23a1e-d3e9-4797-905f-5d5500fbb980,f4672b23-f43c-4555-b1ef-3cc52814a6e8,a693f28c-2fe5-4148-9492-00d070746a51,6290abee-c980-4630-a16a-edb534d158ee,e9c7dc79-20f0-41b9-b0de-90088bf4ab26,47a39cb6-1b47-4977-8fc7-03a5a364d9f7,b91692f7-98d0-425f-a3ec-c7ede7c839e6,1d31692e-3a60-4c91-9a33-dc327e255248,7275e0e4-1428-47c0-8d0a-97699a1408ce,66a01ecb-89f1-4f7c-93e7-04218e54c8d4,d75041bb-53fe-462b-9428-def8c218c471,a4631eff-4939-43f1-a01c-59393d5d6f75,45435181-1c7f-4749-a93a-bf7466297995,036c8b8b-8825-4406-a9e6-bdd6a50d640b,3b30bea2-1934-41e7-aebc-b53fdbc2d5ad,96ca4a97-3312-4165-851b-3d35ee9e143e,cae8eecf-4f64-480c-94c5-b5bf8f895a24,9dd4f7e0-3cdc-4ffb-bbe8-fe85b7ad03e7,9e583cb0-5665-489f-bd34-c9b794179144,b920e3a7-52ab-4bbe-8004-46c4b12c14c0,0a5836f1-4706-4d69-b1a3-cac7cc92396a,73ee5dc4-1f0d-42b2-8ece-cd487812a676,badeba2a-53d3-4588-890b-ced7380636d6,776c2381-ebc3-4983-b4e1-5b6877556984,87302040-c3ea-4368-9775-2617f45dd0e2,63a465cb-9197-40cd-a873-c07818f574da,80a455aa-7dec-48dd-922a-38059b266071,c7f35bd8-db0e-4332-bfc1-66c7d8358280,d0dd8a14-fc9f-4832-8c7d-20956eae4982,fc045b65-6b17-464e-bfd1-518614c33e5a,b8aa217c-98f9-47d5-9d18-6314e1dd0752,920cba85-abcc-408f-bdb8-a6525da1fdbc,6281c53f-f2df-4dc3-9071-8a6cc4933469,737267cd-b698-43e6-b37b-9f2fa2910fac,90742b54-2865-4ba7-8fb4-31c63cf0b0c0,d03c9238-39e6-4acc-bdba-b0308c30c43a,0e6783be-509b-4074-8879-93004e6cd6a3,7a5da6f9-afa5-4db5-9bb4-1df76a8efd0a,99e43b6e-63e4-4043-a791-29da1b0abd66,415eecf1-9f03-428e-8e20-d678bf6a66a8,84e5fc76-f99a-4090-afd6-ef1267e13393,46a6d123-39d6-478e-959b-41f18bdffe3f,c685c01e-f549-47f6-9519-6b12027b33f4,ef466644-d27f-42a5-9c70-533cb200b7c4,f730b0f1-fc47-49fa-97ff-8249def1a2db,73fe1139-472c-4ca1-83c0-e39b4aa0f078,9b8ac4d0-b03f-4c6a-8b05-ec4aed51feeb,0bd78010-6d85-4f7f-8c17-675d9cadac04,14d7b584-35d8-4d64-b69d-17b56a66238b,f39aeca2-4fd5-4389-8305-ec4a54df8511,4f958cb9-ca7c-49ef-a4f5-dcb8c6f8cbe4,c75178fa-5d4f-48c1-896b-bd375d924016,7affce83-dc03-49bf-8143-a97610fefaff,8aa4cc8e-1633-46a0-a993-11abc8933fb7,2dbb6ecd-eeb6-41e8-8b60-ab839bc77ba9,0f256ec0-f4c9-4ad2-b118-8c26c897a55a,aded00d1-9af0-4c03-b5d0-20fbcb1871fb,e03db3ac-d2a4-4490-b5a6-15457bd63fef,ef459991-9b92-4892-8230-9685a8e15f68,f5e241da-71a8-44ba-924b-cda1642f7717,82408331-450e-4b30-a146-87a24fd9c29e,90db6aba-0cb6-461e-a799-a4c536f74e4b,fcdd79d3-2a12-4e02-8014-6db317ce4d16,d9b9de06-fe3f-4eb3-bbf5-3a1635659f99,ed70ed19-2b91-4e24-811e-ae778a0077c2,f16b283b-f7ae-447c-8f4e-cc2b2ae8b2d5,b1930c93-0a6a-4b27-b7c0-08f5534448a0,99bf7196-5dd5-4e2a-a184-ccfb035cc847,ee03dc34-4276-4e7e-8a7e-f62c8cd9d302,076b581d-9992-4105-acf2-b818abbe1e8e,db779cf5-7fe1-4ff1-bc8b-acf3f1956819,939bc881-547e-4d60-b66c-ff86ae2d3a99,c0d6bb0b-c9f1-4e96-9278-6beb46a24eb7,f9ef8460-5d9e-4523-a3a2-284146f45ea8,b7f4bbe8-4532-4a17-9c4e-f01282026fb9,fcb713bf-27c1-4aa4-9e51-67e2286c1ff7,ab173ae5-3626-4f25-ac16-eb6e499732d1,8edfb5f3-8b01-44ec-842e-fe829e74df6f,1ddcaef9-e9f0-430d-917a-cfeffcfda85e,6f25fe5c-5715-4278-9d79-a303b0e86a8e,1c8f5ef3-b2cb-4c22-b65a-635e495ff016,51afc256-4bfb-46d5-87ce-055c8f574137,09e12066-b8cb-4289-95a1-0854f5829cbc,b7294c2b-c2bf-4ac0-b00a-b5f518e8b8c4,5646b4a1-02f7-45f5-8b4d-36668d016d6a,a62fa220-dc9d-4161-81cd-2651cf021af7,08bba6df-ba51-4142-9909-a8e9d84e8684,013199ec-8e67-4bd4-bd2f-2cdf9d689f10,1c83725c-0fd8-4075-b9aa-1de8e4ef35cb,1bbf5e25-dc6c-4ef3-ac0c-fb267477c895,a007e651-8925-454c-864b-4bcacb9dc3de,801220e0-1f25-4790-aa63-f1b02989b888,df2850da-d7d6-4331-8b64-8bb49ca30649,3f89a7fb-e425-4ab4-ad5e-e2342f5903d2,23cfd264-4145-4cfb-b2f7-9b0115adb872,c0282963-6652-43b4-b4ef-f355695ad619,5649efe9-2967-4ab0-9956-d83fa32749e3,66a1b7fd-5853-47f4-8ff5-2975073342b4,ea1e8545-74dc-4abd-8adc-04df95e7c2e7,549ff9a2-1451-40c9-9777-aa65e57c02ee,ecf73ae6-4e2b-4699-b3b2-904d87749283,b6823c0d-9287-4b62-a3db-19f6f9636aa7,209a31bf-2d28-4ba0-a170-36e2a7f02e27,2dc6760c-5f19-4b43-86b4-08e97cd4b8cc,936251b4-cb3a-4249-890a-cc543edc4029,007cb994-2076-4720-b514-bd1292f97d26,1af26978-d760-4a39-a877-4009aada3676,8aaaebd8-16a9-446e-a11f-725b57fcf656,96b0bbeb-47b3-4b73-8b60-98db7d1bddde,5608ec79-097f-443c-86a1-c575f20a1344,f450358e-3e6e-499c-aa55-8f19bd15986a,16f59a39-64b9-4052-b4f5-63f756c4ae9a,600b87b3-36a1-4144-92ff-999e161ac120,222d9fd5-ed20-4e9a-a835-2440c3fe1286,de109160-4547-4ed9-9e6d-19ba47ea28c2,3960d7ac-642f-48f5-99b4-9dcf6bc6eabe,6cc546ca-93ad-49bb-97b7-a9523751ff47,a72da3ee-c5a7-42df-8a1f-2d9e740d60f4,6b7bf479-d1ab-4907-b063-33ea1248e10d,f8d06a9b-7af1-4624-855e-ee1156aea9d7,0e1628f9-2bdf-41ad-a7a7-0718f6289a11,cf7b12a9-be75-4efc-94ad-aa771a04214d,8510f751-a283-4afc-bc63-056ff9ff0da9,72a48442-fad2-4620-8b7d-789ff0d5dd6d,8fc73545-0fb1-4726-8da3-3be2b2a81695,d32bf6be-a3ff-41d3-ab22-0623068dc913,4c27cb7c-c5dd-4191-8c9c-0457549cd5b0,ae795967-e754-405f-935a-a7419b641fe0,c9e2e0e7-76d9-421e-8589-38aa521b5bcd,33861e1f-6ba1-4a50-881b-e93013944085,7923e5cb-fdf3-4b7f-bf0f-fa60cdb21932,168883e9-d98e-4935-a2c6-4f6c3363bcbb,4e5fc3d2-644d-47b9-b16d-51ef5b5bc78b,1846bbf6-c492-42f4-97ca-a93ab8b02f18,9319e10d-3489-4bec-8fad-a3f4c2311990,be61711a-aa05-4d26-8aa3-c8cbd84f7a43,052cba31-915e-4714-9993-f78224546e36,ef27db68-a966-4508-a798-97694707d43d,7878ccfd-11e9-486f-93ec-0494d961fce6,49fb7232-a0d7-471f-8e76-1fa78f494c93,9ac8aa56-8416-43b6-b6a6-c4a537b30f61,ee80cd72-2c15-4cad-805b-b9ba63328510,c91abced-1aeb-4532-ad60-c431264f2b43,9fd50cab-c3c8-4b27-a0b7-5bd1893aa878,ec365606-0516-4856-ad8b-e1abbeef152d,619addcc-5aab-45f0-9370-f3a2f5823535,e42a4aa8-de3b-4fbd-a707-0ec1bc270bad,185c76b3-335a-4526-a9eb-8ae359730347,62c05a4e-1ba1-410d-afb4-04dc3004b196,d5660096-8b51-4b1d-ae23-9e48e2e90ec9,505762ea-f6da-4cce-9e98-a3528555c266,f43ce985-1514-464e-829a-5f6c392ad202,c8996c31-5a73-4844-9f5f-e5057854738e,6ffe50b5-8b3e-431d-b85b-1c621be8a1a2,1b9e9ed5-0ab8-45c6-a5c4-329d59f92a3b,8d0be7de-11b9-4625-97aa-83765492ec73,3618cb56-0a9d-47f1-be8c-a1e05c89a342,49f12a8c-0200-454c-83b6-12cef777d82b,17bd062b-d502-42cf-a98b-7c3798a7825f,19fd3c7c-a15e-4313-a3ac-3ac30c3e83e1,fc212421-9bbe-4f0e-817f-33515d486137,cbf1436b-c366-4562-b4c2-13e2b8dce8a9,44d0cac4-c351-45fe-9360-69e11edf7b50,e4d09e40-6973-4892-95e6-4f33fc174028,baef9963-27ff-4e93-9af2-7ac52a07c49a,d568dc7f-5a7b-47bb-a93a-77aadaec15a0,e47f9d90-60ff-4e99-8741-4c1905f36f36,5589a475-bcae-43a4-9290-e97772eddda6,6707b6c0-3f04-4499-93f8-6e132e7a0879,405f52bc-d02c-4fcc-8cf9-b4487577e6c1,ff3bd8f4-cdbe-48d3-9f30-015f7b95acc6,465a036e-3e27-4e92-81b7-9973deb19ce7,949d7afd-82bd-4278-b081-ccd50f627ce3,ee3a708c-8706-466a-aec3-16861a488cf9,df6a83bb-8d1b-4a34-9e12-3b23045e5c9b,db110ccb-2609-45ef-9806-cc5ab8e9592b,454ac41a-1831-4ed6-ac75-87e8cb00886d,60500e02-1d22-4c8d-b0d1-fe759726ee14,6a90d11e-81d0-4c06-bc29-ee6cbb0f0526,a502d459-9aab-4d54-b85d-a837a9a666b3,679d70c4-efae-4708-9731-c188f2519b3e,417cb47b-dda8-4099-9db1-94cf56f388d3,4d9439eb-3a05-422b-9cb7-2c0c9edd5c12,16e5b9be-b00a-431f-97b2-0ed54084125b,a3467584-6df0-40d3-8d1a-3a478bd201d0,09aaa9e9-e848-45a4-bee1-7b55966c20b1,3b8280ec-e0c4-4a65-a89c-7911b7276571,3abe7a90-2d57-4913-b190-92a3e149f2bc,63622cf6-823b-4a0e-b6d3-1dbbdd3decee,0495cccb-388b-4826-9f5c-dfb983c0ba12,326ba14e-234a-4d21-a90d-c93bafdd0192,35a79196-e523-4541-8032-75b4baeb6cb8,db08e5bc-93cb-4bcf-b91d-44e2378f6ec8,1297cd59-6580-4857-96be-277887d8e840,af140ea6-d777-4091-baf9-908e9a86ddf4,afab433b-b3ac-4d9b-86e2-f520ab1818f4,49257bc8-417a-41f1-9944-6e06724442e2,7463f6e9-3c15-4e31-8e2c-c8af0a90d29a,d952cac6-4969-4f82-bc6c-7b72bdd131dd,71ecb488-81f3-4988-af84-6251f745bbe7,208ed677-945c-46ff-86d0-109db493a2b7,f7e2c95d-f435-4904-a071-77f79bb9f4e6,b0502c4f-4b8a-4307-b62a-bcce2cae8b7e,34c827fa-cc2b-44a9-a223-aae03d207cf8,f05b9c60-1177-4d03-aa4b-2f005114d157,d69b07e6-a57b-41f4-9739-2e360b2ab788,090a4305-41ea-4fd0-ab7b-50425ff6b9f7,84a7cabe-280d-4045-abfa-7a43dcb35f2f,ecd82afa-4cc9-4de1-9b95-f6308c30e67d,f0f48058-1def-4add-8012-d366b16071ce,f02287e3-2b46-4573-b967-e8541a731f79,90cfe3cb-51ce-42c9-88f9-666709aa55fc,ff0ce578-841f-4b07-b6cf-0ad040f82b0c,a1324061-869b-4bc1-a49e-96df055cc2c4,614fc59a-4414-4b1a-9ad7-6b5c1a617356,661bc0a3-f288-4ccb-9bcf-feea8202df5b,77f8d38d-7e7b-47f5-bcd4-114de7222e31,059146ea-9a10-44f1-87f0-4da2b5be7170,1a340cc3-a704-4698-bf60-cde70e725f07,06c47628-a6a0-44e5-a62f-218fe559d4d5,f16e99cb-a882-45bc-a3b4-0297f718b4f1,415e093f-231b-47b4-b19b-898b883f9dbe,9d009632-c65c-4532-a7a4-eac17881555f,af1d79a4-4b64-488e-b710-a67ee23c611c,120001de-6d91-4518-b1b5-deb480ab6d97,cbdfb013-59eb-479d-a433-f59bb21668b9,fd8c729e-b448-4926-97a4-f37a6280ce36,5eddf347-5372-4e0b-bf6a-de8e79f47657,32d4028d-5de7-4505-ac6c-43b5d0ce3fbd,17c6cdcd-83ed-4ff2-928c-042f1fed4f0d,b5f53733-7a81-443e-a087-fbf44b7f87c0,adc542f9-1098-418b-8a81-9efde7bb9496,d4b1e656-06f0-47b0-bfc0-33a30f2640d7,0f512ac2-aee3-403f-8553-9242442f22b7,58355f44-8808-4c66-8754-d4e6739fc896,9492013f-09de-4ad8-af15-2a5eca500246,47f2dd30-639e-420f-a09f-309a25ea9e65,e6841c09-df33-45a2-a2f0-051b9deda992,9930ea85-96ea-4207-9b5c-0b0d97e36f1e,cbaf8fcd-0165-4bee-973e-4f2ccdd0ab3e,c06b295d-27d3-4d69-915a-e65632515d45,299f2df3-8463-4494-8c74-0c854174aeba,d0c76606-9a8c-4d41-8ad1-ae727be5aff2,b5bbd2ca-78fc-4f1a-92c0-54d21d0aa264,72024000-fa86-4c07-be63-d36468a99e0d,c8c7272e-eec6-46a4-92c5-f22f18586c55,402ca4e9-d0b6-4b9d-9a76-4de0716c25df,a05b4b19-bf2c-43d3-a098-31e80ddff58c,0bc804df-1b45-4e53-a858-a3c92d1fea8e,0410870f-4489-4067-ab5f-f61adec4d859,b7341d85-af43-4675-81fe-aa1a3ed88b8c,1c635e07-8267-4b6c-acc3-d4d6629a80e7,52b63e27-b344-43cd-8f5b-5fd59db60925,2d2d734e-f887-4558-9a82-ef75a9d4efed,682fec83-1543-4e83-98e5-f83c13b5bae9,db1f5504-d063-4c73-baeb-64dd75f90d5b,611f4c35-7d4d-4d43-8869-df20d0dc475d,c375f73b-4546-49d9-958e-60da6e119797,6b2b2ac2-2d3e-4356-a9ed-98efb7a0a7ef,d12fae79-b008-4b0a-bb02-b8d061f010cf,365c3f83-4293-4209-994f-fcd7696a5bad,dfd40b0e-3cf5-4280-a29f-5ad8545df632,bdfb3e9e-328d-43d1-8ba1-7c3f511441c1,c4e4b5f7-151d-4614-9cbc-3a28c1b9592d,b7b4c693-b052-456b-97e7-c9ca565180f0,07e30c2f-fc93-43f8-a6ce-91d6591d5b7a,390de407-e5ff-4c5d-a39f-5ca426d26315,8396ab88-b07a-4c27-b039-32b2a07be039,d9b16598-a8e5-4eba-9e46-1eee1664ff3e,da3aecc6-5598-4cb3-9a1c-7001286d16ef,716dd540-5799-4248-8f3b-f311e9c10279,a812da6f-ab03-42a0-a086-450e414bae9e,d97ae30b-c063-42e7-962b-f2d4d18713a5,41dd3496-7f79-4afb-aff3-13de8066e5f1,78311b26-d6cf-4ce9-bd13-5c93b6d7a784,de3c911b-0fdc-4c68-a038-98c012175ad9,c3d1bd5b-b952-4ce6-93ed-a99c6bb6f423,041de168-f735-4090-9da9-92a9fa56a87a,349b37a1-5020-48d2-91af-87b36c1f595a,f5c0c2a6-066e-49e8-994f-ff44d7ea46d5,d7288f9c-bd22-4ae6-ad04-9a52db7a19f6,e46cfa7a-26f2-4a49-a7c4-88a5b75febda,498c2be0-2734-4365-b9c5-b0f794a3bf7f,7a2614d2-a9bf-4ad7-83e8-65b632c99c93,14dc1568-4851-4239-8774-d9ef701c224d,1e00f26f-54ec-4e3c-830b-9cc287436276,c218a81b-95f8-41e0-9aba-ecf69ea79ccf,448e8a4a-caa7-4136-9575-26896324ddb4,643ebe16-d4d5-4051-a8ca-3261d84f84d4,d5fe3dbe-3a95-4962-96d6-62cd1ffd6781,3264352f-a043-417c-af99-8c2d85f5be64,a0470169-a32b-451a-8a2c-789d0e33491b,5086013a-1470-4731-827d-8fe340116aa5,6e06a4d6-f7a7-4e2a-9179-f55a68d7e6ae,6a52163d-392c-418f-b10f-aefc636ea2c1,241f24f1-6b1c-4b4d-8e60-42cd399aa867,c1cc2d66-1b8b-4174-907d-f6ce2e5ff3d1,0c53ece9-9361-49b9-a766-03a9db179130,610950c3-8f1e-49b3-979f-765ca481f91d,10f09f95-b12f-41c7-806e-3e5008f7fa8a,54121a14-e653-4ee6-b3c1-58b7ca202b2a,ba11fa1b-30d7-4940-8d7e-0c104c2a28f7,54dfcdec-5db6-43be-8ab1-bcd3e169a32d,0462ed3e-62f1-451f-b2d3-83fb76543b95,384e3c9b-7638-406b-adf6-9d747f4f1f24,ae3b3fb5-5289-4f66-80a3-c1862ab75ac1,7fd11a80-a002-442b-a945-2a3f50cdffa4,8e983f66-1d3e-49bb-aea7-0421ed67242b,7231ff63-00d7-4320-a9ee-3dd17d77a89a,0c583b50-20c7-4142-a2ed-5cd7017f3068,e85fd97c-332b-4d24-9273-5fdc3c8d5782,f9d9c75e-13d0-40cd-83a8-918ba1081cff,18711fd6-144b-472c-bcef-1ed8f84d4e3d,224dd0f2-252f-43bd-9d54-811d3d910591,4b3560ae-ebb3-41ea-a593-fe2afebd5e3f,c2b21107-65b6-4b9c-afbf-d3e3f3b88e03,11a73d07-f9c6-4934-8f4a-ef8a0452fe87,4962b0c6-c152-47a7-b31f-c0537ae5dc13,da848457-bc5f-4704-95d4-6f2b6dd4c4d8,66633b18-8057-41e1-aa2e-3a22e000032d,5ab34935-6af6-4926-be98-61b6e42797eb,7f7f570f-41bf-4c70-a28b-fc167ef947bb,ce89a893-6731-4f32-81f2-39d988fd4b7c,650cc43e-d012-4e7b-9810-e8b0682a2e43,33f17905-6078-4af6-8ff8-4ae8e30b356f,fc2813dd-e632-4d4c-8d1d-f71de81885b5,8e954541-09fd-462e-a9d7-21639fcb62c0,2a91f855-0921-453c-9652-8665a49d161b,74fe9f99-f1c2-4858-bb95-52df29bb1d45,2cba9aad-2628-42dc-8e03-f75a21ed1fff,41b8be81-25ab-4c72-88a1-98a3996391de,9378cda5-2b1f-4cf5-9514-32d2a87746a4,4ec13edf-b3a1-478d-ad28-8abc31cba8a3,137e2459-1c91-4096-90a9-4959d837dd4e,631654ab-0424-47ad-ae65-2446315fd29a,c087b262-6ea4-44f8-ba35-471977b118be,f53d1d07-0569-4047-89ff-9fa87853c466,43b674f1-5cb4-40d5-a619-247444e3b900,7a12a9b9-7641-4181-90f4-5aff622156be,fec0030b-d979-4291-8e75-ab0e2661cc9c,18f5ba92-0c82-4917-b1b5-11a59c46c048,527e16ad-fd76-466a-9083-e5ff12714f57,44752776-aefb-448b-8e8e-3dec901cc6ba,f07cb5d4-fad7-4306-a338-f5d4a29c36f9,85cbfd25-d592-45ff-adf7-c7ff1072076c,4396a8a5-98f0-474d-ac42-48631897c289,7c916056-b34c-4cb2-9d26-b8f096e6df00,75f93d21-ef71-4c85-bf15-54b3b80a7aa5,0a860e38-78b1-4eb2-ad24-9a12cc708fa2,bd66f05b-60f2-4870-a8fc-958a6afffa24,265fa9fe-d81a-499b-8eba-b5d04ff5d901,76aec49b-c29d-4475-974d-568fc09317fb,5e6d019c-3755-49b8-b60e-90a81bf44064,c8bedfca-0ad6-4162-a88a-3996a1cb3d11,df7be7e6-0d53-4bb7-8668-9a79837c3c69,3715943c-a9cb-4b1a-85bd-a77101ad5b5b,75e6d72e-11ce-48a9-919d-65b0e4e7b899,d40c6c72-c2b5-4c09-80a6-fcb35531fe37,4b64a38d-8f8d-4c21-bd28-dd719595b71a,b9efd874-c05c-4ef5-973a-11a93bf3c3a4,a7ede7bc-93a3-4e21-9142-e30e445fdd1f,a224f98d-7e1f-4186-8e18-6b18eb1518dd,cd0d5212-be65-4446-bd02-647e97a5496d,4090b405-9232-42a8-8174-223d9977f0ec,a33e5025-1eb4-4cd3-8636-4089deeafb7d,90f4323c-e914-4ab5-8812-b0cf1f17b0b6,245862a0-1ca9-4150-b6c4-9dd36c8b27e3,35603582-ef06-43bb-b472-970ecf5ab7c7,8e617a2d-50a5-40b8-9ada-e1868b350457,36a67c37-9ff2-449d-b252-8f181f7fd1ad,3cd3ee91-dbf5-4b4f-913d-98e14d5bf707,89dfc106-2059-4274-9641-c78048beab5e,7d8075e6-79da-42dd-94d1-40390a3b53b3,5099c244-59fc-4f1a-a558-012dc32314e7,a269f391-adc8-47c7-844a-9e778843a6ba,2737cdaf-c261-4e12-aed4-d4701e131898,2282fd03-83b7-461f-9ba6-8099ce701854,dec87c8b-d347-4b00-9fe7-71a4cdde9d9d,5f4f5702-5cf0-4a1e-a415-bffdb67daf7d,03a266cb-97ee-4500-a532-6e9a226da396,c127bcd7-7542-44fe-9758-d047bf492707,fe6cf332-9ed5-4cc1-bbcf-495095c9d107,de44e7b5-a511-43cd-9ec7-9827103d6899,0207318c-bc31-4ebb-a9a8-4c4891f19d62,0b73000d-09a2-4be7-9f6a-33d4bb708bfe,49f26b25-dc33-465a-8c3f-f78392900e5e,49d69a44-763b-4744-ad0d-067cf50329aa,0b954e3a-120d-4ae7-b979-815916e1d327,930516dc-b4e5-4e99-8822-404462b07ea2,774d53de-b29e-42df-be98-fe3a77959182,53b11e9c-62cf-407d-bf6a-623b599f2063,c042c570-def7-4020-9a85-ed751721fed6,80bd8527-32cf-4390-b836-6fa971d47037,0b38b576-8362-491b-a4ea-9383bfa33046,f649dd23-71fd-47a6-ad59-2cd68afd33c9,b958b119-afe3-43fa-b23f-b2846ac0ef42,192091b3-efe1-42b6-a982-26829cd4c0f9,89851ed6-1cdd-444a-96be-68d400cdd728,286618de-7070-43ab-bac9-b4cdfcaa8197,c75bb0a1-3250-4404-af6b-8c888fa527f5,1bb25f57-65b1-4d65-86f2-b5f00f3131a3,e9689c55-bea2-4f3c-ba5f-28770a8739dd,96cf7c8c-3dad-4e40-b33c-89df0c6bb9e1,11982b2e-5df5-40f6-abc6-f2b88dbec9f8,3df1743a-8641-416f-8d50-3d30a95dab57,a1c27f27-673a-4c6a-a9fa-5c5d303cf46e,3a5d62d2-b94e-4a5c-8f1d-10f4201a62e3,8439ae40-1d31-465f-ae20-9ad92fa53382,cdc3205a-4899-47b0-b48f-a5c5d20ec008,9124757b-77b9-427a-aa1f-0a9cf0e83bdf,f841409d-c5be-4715-800c-c94977446ac6,4ba78820-a606-47f4-8d8a-bc5b38a1a532,9fd7003b-3375-4dc1-96bf-1b8819d17f50,cd8cdf45-5f4d-4b5d-bcc6-3c5ceac2ea7d,8fe580a4-dd5b-4217-8b61-32aa37bc149f,cc42edb0-74e0-4bb8-977f-a807e076480d,706386e1-73ea-421d-ab58-de705b606798,f8410ebc-51dc-440d-b6bd-58dad26af404,b424220d-b450-4b8b-a2be-40170fc9fa17,30b7019a-5d06-4242-b76d-9a60d909935b,2d5f38e3-fbca-439a-8a36-a5942f13dbdc,e08d0a97-0360-4b60-9651-427a57bf0fb6,3b905c2b-245a-407f-9bfe-dd3dbbcf3e85,879e5a83-12e4-4937-89a9-cfb2c2afcca7,ba7db321-d5bb-48ac-b6ae-4201caacfc72,165558db-cb9d-4fa4-854c-bc665433462f,295780dc-d55e-46d7-8a6c-dcca03938791,859ed8de-5efe-4a4f-afd0-c0f43bd3bd02,6a74425f-f894-4ffa-a1dc-e26bfe63b5de,3fd3d98f-0152-4a27-ac56-e169e4f06f97,ec66f35b-bc6b-4403-9b94-dc980b408b2a,8c613d1a-8dc2-4411-ba9e-a5d4399cbdff,444401a4-eb57-4a87-8977-b17653fc8bf4,32da984d-7cce-4f6b-b4bd-d7ff5c5cbdb2,a8bd5734-089c-44ae-b2c9-c1a3d4b72ce2,0d825fd3-e4bf-46a8-bf27-a5dc213bafb3,48105b92-4806-4cd4-a477-d59bd273a98e,b283e6c8-bd80-454b-9fff-12b2cf5d7812,719c6b3b-fa0f-4b40-b276-905adbef63ee,bff20559-1ac6-41f1-9086-464cd674621d,150e21d7-cf3f-4613-a610-ecb7e37fd341,3d14fd79-6e53-4256-9c45-78dfbf102a08,2be8f647-a60f-463d-b115-95c0e516a0ba,d85613c8-b96d-4a45-b519-fe01094cdff0,765eca74-5be5-4353-94f3-cc23829a8fab,f25f0377-9767-4d29-beb4-63be8e0b6065,4b98c960-07a9-41b5-91bd-279aa10b5a32,5821113a-7bdd-4795-8203-7386fb8a1ef5,fca4605a-72df-4d2b-8699-6fd98750d6c6,7348a7d4-2023-4ad5-90e9-a85f36cc5ea5,ea8cd628-ffbf-4763-a72b-d6456fd9a3bc,9a30bf94-e4bf-45a8-ad05-5523b6875fb7,3c5f1647-cb05-4104-af0b-aef73b3a65cd,eb517a4a-b15e-4b1e-b415-3bcb9cece20c,d119cfff-3948-4b78-a3e8-5c9d52d4d8ee,2461756a-4d48-44a8-8bba-48fbef22e192,5d6dadc2-eb3a-4cb4-8e32-de8f2c4192e8,1a039b84-b5c4-4a99-b6c8-1c0dc30e43c9,010f3faa-5590-44cb-a226-99ac7b7b5d2f,7c2f9e03-e6cc-41e2-af2d-4c010b948a8f,1370cdb8-ebe2-4d19-9049-07e60c301106,38740317-7c2f-4a14-a094-1546c7deeaaa,078b36fc-a9e8-4916-b4b7-8f9e1331c2fb,a7eec1d7-1bea-440f-82e3-e35a41522179,77324f2f-eaa2-4121-9ac8-103ec65547de,f975f8fd-b009-4053-8aa2-7c747d02b38f,a13a11e9-c218-409e-84ea-40cffcbe4392,0fa60be6-0b11-4d87-bb7a-b4766d5c0462,a47c42b5-88fe-4bec-8c37-6ee9c89fc656,4bab9147-62eb-44bc-b234-66c041aaca0f,9fafa795-bc15-4575-a27a-f872d54d89de,26d5d9ce-aa2f-41cb-979f-c03abaf95e86,7768d07e-0cb9-423e-82a3-89b6c897f606,1e470cb9-dc71-4e4a-a893-a365a17ae614}'::uuid[])))",
+                "Rows Removed by Filter": 300,
+                "Shared Hit Blocks": 832,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          },
+          "Planning": {
+            "Shared Hit Blocks": 5,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 0.327,
+          "Triggers": [],
+          "Execution Time": 5.625
+        }
+      ]
+    },
+    "new_500_project_status_counts": {
+      "sql": "SELECT project_id,status,count(*)::bigint AS issue_count FROM issue WHERE workspace_id=$1::uuid AND project_id=ANY($2::uuid[]) AND admission_status IN ('not_required','accepted') GROUP BY project_id,status",
+      "explain": [
+        {
+          "Plan": {
+            "Node Type": "Aggregate",
+            "Strategy": "Hashed",
+            "Partial Mode": "Simple",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 1251.47,
+            "Total Cost": 1266.76,
+            "Plan Rows": 1529,
+            "Plan Width": 30,
+            "Actual Startup Time": 5.128,
+            "Actual Total Time": 5.307,
+            "Actual Rows": 2500,
+            "Actual Loops": 1,
+            "Group Key": [
+              "project_id",
+              "status"
+            ],
+            "Planned Partitions": 0,
+            "HashAgg Batches": 1,
+            "Peak Memory Usage": 369,
+            "Disk Usage": 0,
+            "Shared Hit Blocks": 832,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0,
+            "Plans": [
+              {
+                "Node Type": "Seq Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Relation Name": "issue",
+                "Alias": "issue",
+                "Startup Cost": 1.25,
+                "Total Cost": 1139.05,
+                "Plan Rows": 14990,
+                "Plan Width": 22,
+                "Actual Startup Time": 0.019,
+                "Actual Total Time": 3.295,
+                "Actual Rows": 14990,
+                "Actual Loops": 1,
+                "Filter": "((admission_status = ANY ('{not_required,accepted}'::text[])) AND (workspace_id = 'a78db5d8-947c-4d9a-b9e5-67a202a59e70'::uuid) AND (project_id = ANY ('{5c411e40-8720-44a2-92c4-eee020920810,9666f5be-5c94-48a1-9c1d-649d01bcb288,c1615b67-7021-4ddf-b3b0-074da99ec66d,304900f5-430f-4091-94ee-bd0995501ccb,66d425ce-a37f-4971-9038-82e76843b313,05355c56-1f21-4ff9-b39f-28f19b682019,986b7313-35f4-4aad-ad61-a6bf11e91a43,3af6bfe1-e642-40bd-a841-8e8ae728d9d0,ef5f37c2-cc90-449c-9a75-9fe44025375c,38449784-31d4-4418-9d2a-77bac9df9916,3132e15b-1807-4023-b41b-1d8dcc7eb51f,aa23fe48-6d4f-4f69-ba35-69e173939b66,97b0d4e0-2c80-43be-94ea-23f3e37366e8,0355f613-2f64-43b1-9998-5f0fe3c164f9,de952650-bb2d-4b34-8bdc-37c969b21b33,db0bbf6c-8f68-4a18-89ad-65572ae795ea,2e70c2b7-4379-423b-b8ff-357527b97bca,36183963-953d-46be-9dcf-708441d9555f,eeb3305b-6fa1-4fbd-8e49-ade865c708ff,7b64f316-5e4e-400e-b858-fd466e10ed3c,7952b9df-131c-4bd3-8682-e76411f261b3,adaefe63-a65e-4311-87ab-2876fdd8596b,ad372c87-59d9-4d91-87bf-3ef4d5242695,7ca12875-875a-48e8-a5be-21c1e633dd6b,d8797875-21ac-4ded-9085-0f616dac82c6,e2c3f6b8-b555-40b5-9fa6-525f57824e39,8bb23a1e-d3e9-4797-905f-5d5500fbb980,f4672b23-f43c-4555-b1ef-3cc52814a6e8,a693f28c-2fe5-4148-9492-00d070746a51,6290abee-c980-4630-a16a-edb534d158ee,e9c7dc79-20f0-41b9-b0de-90088bf4ab26,47a39cb6-1b47-4977-8fc7-03a5a364d9f7,b91692f7-98d0-425f-a3ec-c7ede7c839e6,1d31692e-3a60-4c91-9a33-dc327e255248,7275e0e4-1428-47c0-8d0a-97699a1408ce,66a01ecb-89f1-4f7c-93e7-04218e54c8d4,d75041bb-53fe-462b-9428-def8c218c471,a4631eff-4939-43f1-a01c-59393d5d6f75,45435181-1c7f-4749-a93a-bf7466297995,036c8b8b-8825-4406-a9e6-bdd6a50d640b,3b30bea2-1934-41e7-aebc-b53fdbc2d5ad,96ca4a97-3312-4165-851b-3d35ee9e143e,cae8eecf-4f64-480c-94c5-b5bf8f895a24,9dd4f7e0-3cdc-4ffb-bbe8-fe85b7ad03e7,9e583cb0-5665-489f-bd34-c9b794179144,b920e3a7-52ab-4bbe-8004-46c4b12c14c0,0a5836f1-4706-4d69-b1a3-cac7cc92396a,73ee5dc4-1f0d-42b2-8ece-cd487812a676,badeba2a-53d3-4588-890b-ced7380636d6,776c2381-ebc3-4983-b4e1-5b6877556984,87302040-c3ea-4368-9775-2617f45dd0e2,63a465cb-9197-40cd-a873-c07818f574da,80a455aa-7dec-48dd-922a-38059b266071,c7f35bd8-db0e-4332-bfc1-66c7d8358280,d0dd8a14-fc9f-4832-8c7d-20956eae4982,fc045b65-6b17-464e-bfd1-518614c33e5a,b8aa217c-98f9-47d5-9d18-6314e1dd0752,920cba85-abcc-408f-bdb8-a6525da1fdbc,6281c53f-f2df-4dc3-9071-8a6cc4933469,737267cd-b698-43e6-b37b-9f2fa2910fac,90742b54-2865-4ba7-8fb4-31c63cf0b0c0,d03c9238-39e6-4acc-bdba-b0308c30c43a,0e6783be-509b-4074-8879-93004e6cd6a3,7a5da6f9-afa5-4db5-9bb4-1df76a8efd0a,99e43b6e-63e4-4043-a791-29da1b0abd66,415eecf1-9f03-428e-8e20-d678bf6a66a8,84e5fc76-f99a-4090-afd6-ef1267e13393,46a6d123-39d6-478e-959b-41f18bdffe3f,c685c01e-f549-47f6-9519-6b12027b33f4,ef466644-d27f-42a5-9c70-533cb200b7c4,f730b0f1-fc47-49fa-97ff-8249def1a2db,73fe1139-472c-4ca1-83c0-e39b4aa0f078,9b8ac4d0-b03f-4c6a-8b05-ec4aed51feeb,0bd78010-6d85-4f7f-8c17-675d9cadac04,14d7b584-35d8-4d64-b69d-17b56a66238b,f39aeca2-4fd5-4389-8305-ec4a54df8511,4f958cb9-ca7c-49ef-a4f5-dcb8c6f8cbe4,c75178fa-5d4f-48c1-896b-bd375d924016,7affce83-dc03-49bf-8143-a97610fefaff,8aa4cc8e-1633-46a0-a993-11abc8933fb7,2dbb6ecd-eeb6-41e8-8b60-ab839bc77ba9,0f256ec0-f4c9-4ad2-b118-8c26c897a55a,aded00d1-9af0-4c03-b5d0-20fbcb1871fb,e03db3ac-d2a4-4490-b5a6-15457bd63fef,ef459991-9b92-4892-8230-9685a8e15f68,f5e241da-71a8-44ba-924b-cda1642f7717,82408331-450e-4b30-a146-87a24fd9c29e,90db6aba-0cb6-461e-a799-a4c536f74e4b,fcdd79d3-2a12-4e02-8014-6db317ce4d16,d9b9de06-fe3f-4eb3-bbf5-3a1635659f99,ed70ed19-2b91-4e24-811e-ae778a0077c2,f16b283b-f7ae-447c-8f4e-cc2b2ae8b2d5,b1930c93-0a6a-4b27-b7c0-08f5534448a0,99bf7196-5dd5-4e2a-a184-ccfb035cc847,ee03dc34-4276-4e7e-8a7e-f62c8cd9d302,076b581d-9992-4105-acf2-b818abbe1e8e,db779cf5-7fe1-4ff1-bc8b-acf3f1956819,939bc881-547e-4d60-b66c-ff86ae2d3a99,c0d6bb0b-c9f1-4e96-9278-6beb46a24eb7,f9ef8460-5d9e-4523-a3a2-284146f45ea8,b7f4bbe8-4532-4a17-9c4e-f01282026fb9,fcb713bf-27c1-4aa4-9e51-67e2286c1ff7,ab173ae5-3626-4f25-ac16-eb6e499732d1,8edfb5f3-8b01-44ec-842e-fe829e74df6f,1ddcaef9-e9f0-430d-917a-cfeffcfda85e,6f25fe5c-5715-4278-9d79-a303b0e86a8e,1c8f5ef3-b2cb-4c22-b65a-635e495ff016,51afc256-4bfb-46d5-87ce-055c8f574137,09e12066-b8cb-4289-95a1-0854f5829cbc,b7294c2b-c2bf-4ac0-b00a-b5f518e8b8c4,5646b4a1-02f7-45f5-8b4d-36668d016d6a,a62fa220-dc9d-4161-81cd-2651cf021af7,08bba6df-ba51-4142-9909-a8e9d84e8684,013199ec-8e67-4bd4-bd2f-2cdf9d689f10,1c83725c-0fd8-4075-b9aa-1de8e4ef35cb,1bbf5e25-dc6c-4ef3-ac0c-fb267477c895,a007e651-8925-454c-864b-4bcacb9dc3de,801220e0-1f25-4790-aa63-f1b02989b888,df2850da-d7d6-4331-8b64-8bb49ca30649,3f89a7fb-e425-4ab4-ad5e-e2342f5903d2,23cfd264-4145-4cfb-b2f7-9b0115adb872,c0282963-6652-43b4-b4ef-f355695ad619,5649efe9-2967-4ab0-9956-d83fa32749e3,66a1b7fd-5853-47f4-8ff5-2975073342b4,ea1e8545-74dc-4abd-8adc-04df95e7c2e7,549ff9a2-1451-40c9-9777-aa65e57c02ee,ecf73ae6-4e2b-4699-b3b2-904d87749283,b6823c0d-9287-4b62-a3db-19f6f9636aa7,209a31bf-2d28-4ba0-a170-36e2a7f02e27,2dc6760c-5f19-4b43-86b4-08e97cd4b8cc,936251b4-cb3a-4249-890a-cc543edc4029,007cb994-2076-4720-b514-bd1292f97d26,1af26978-d760-4a39-a877-4009aada3676,8aaaebd8-16a9-446e-a11f-725b57fcf656,96b0bbeb-47b3-4b73-8b60-98db7d1bddde,5608ec79-097f-443c-86a1-c575f20a1344,f450358e-3e6e-499c-aa55-8f19bd15986a,16f59a39-64b9-4052-b4f5-63f756c4ae9a,600b87b3-36a1-4144-92ff-999e161ac120,222d9fd5-ed20-4e9a-a835-2440c3fe1286,de109160-4547-4ed9-9e6d-19ba47ea28c2,3960d7ac-642f-48f5-99b4-9dcf6bc6eabe,6cc546ca-93ad-49bb-97b7-a9523751ff47,a72da3ee-c5a7-42df-8a1f-2d9e740d60f4,6b7bf479-d1ab-4907-b063-33ea1248e10d,f8d06a9b-7af1-4624-855e-ee1156aea9d7,0e1628f9-2bdf-41ad-a7a7-0718f6289a11,cf7b12a9-be75-4efc-94ad-aa771a04214d,8510f751-a283-4afc-bc63-056ff9ff0da9,72a48442-fad2-4620-8b7d-789ff0d5dd6d,8fc73545-0fb1-4726-8da3-3be2b2a81695,d32bf6be-a3ff-41d3-ab22-0623068dc913,4c27cb7c-c5dd-4191-8c9c-0457549cd5b0,ae795967-e754-405f-935a-a7419b641fe0,c9e2e0e7-76d9-421e-8589-38aa521b5bcd,33861e1f-6ba1-4a50-881b-e93013944085,7923e5cb-fdf3-4b7f-bf0f-fa60cdb21932,168883e9-d98e-4935-a2c6-4f6c3363bcbb,4e5fc3d2-644d-47b9-b16d-51ef5b5bc78b,1846bbf6-c492-42f4-97ca-a93ab8b02f18,9319e10d-3489-4bec-8fad-a3f4c2311990,be61711a-aa05-4d26-8aa3-c8cbd84f7a43,052cba31-915e-4714-9993-f78224546e36,ef27db68-a966-4508-a798-97694707d43d,7878ccfd-11e9-486f-93ec-0494d961fce6,49fb7232-a0d7-471f-8e76-1fa78f494c93,9ac8aa56-8416-43b6-b6a6-c4a537b30f61,ee80cd72-2c15-4cad-805b-b9ba63328510,c91abced-1aeb-4532-ad60-c431264f2b43,9fd50cab-c3c8-4b27-a0b7-5bd1893aa878,ec365606-0516-4856-ad8b-e1abbeef152d,619addcc-5aab-45f0-9370-f3a2f5823535,e42a4aa8-de3b-4fbd-a707-0ec1bc270bad,185c76b3-335a-4526-a9eb-8ae359730347,62c05a4e-1ba1-410d-afb4-04dc3004b196,d5660096-8b51-4b1d-ae23-9e48e2e90ec9,505762ea-f6da-4cce-9e98-a3528555c266,f43ce985-1514-464e-829a-5f6c392ad202,c8996c31-5a73-4844-9f5f-e5057854738e,6ffe50b5-8b3e-431d-b85b-1c621be8a1a2,1b9e9ed5-0ab8-45c6-a5c4-329d59f92a3b,8d0be7de-11b9-4625-97aa-83765492ec73,3618cb56-0a9d-47f1-be8c-a1e05c89a342,49f12a8c-0200-454c-83b6-12cef777d82b,17bd062b-d502-42cf-a98b-7c3798a7825f,19fd3c7c-a15e-4313-a3ac-3ac30c3e83e1,fc212421-9bbe-4f0e-817f-33515d486137,cbf1436b-c366-4562-b4c2-13e2b8dce8a9,44d0cac4-c351-45fe-9360-69e11edf7b50,e4d09e40-6973-4892-95e6-4f33fc174028,baef9963-27ff-4e93-9af2-7ac52a07c49a,d568dc7f-5a7b-47bb-a93a-77aadaec15a0,e47f9d90-60ff-4e99-8741-4c1905f36f36,5589a475-bcae-43a4-9290-e97772eddda6,6707b6c0-3f04-4499-93f8-6e132e7a0879,405f52bc-d02c-4fcc-8cf9-b4487577e6c1,ff3bd8f4-cdbe-48d3-9f30-015f7b95acc6,465a036e-3e27-4e92-81b7-9973deb19ce7,949d7afd-82bd-4278-b081-ccd50f627ce3,ee3a708c-8706-466a-aec3-16861a488cf9,df6a83bb-8d1b-4a34-9e12-3b23045e5c9b,db110ccb-2609-45ef-9806-cc5ab8e9592b,454ac41a-1831-4ed6-ac75-87e8cb00886d,60500e02-1d22-4c8d-b0d1-fe759726ee14,6a90d11e-81d0-4c06-bc29-ee6cbb0f0526,a502d459-9aab-4d54-b85d-a837a9a666b3,679d70c4-efae-4708-9731-c188f2519b3e,417cb47b-dda8-4099-9db1-94cf56f388d3,4d9439eb-3a05-422b-9cb7-2c0c9edd5c12,16e5b9be-b00a-431f-97b2-0ed54084125b,a3467584-6df0-40d3-8d1a-3a478bd201d0,09aaa9e9-e848-45a4-bee1-7b55966c20b1,3b8280ec-e0c4-4a65-a89c-7911b7276571,3abe7a90-2d57-4913-b190-92a3e149f2bc,63622cf6-823b-4a0e-b6d3-1dbbdd3decee,0495cccb-388b-4826-9f5c-dfb983c0ba12,326ba14e-234a-4d21-a90d-c93bafdd0192,35a79196-e523-4541-8032-75b4baeb6cb8,db08e5bc-93cb-4bcf-b91d-44e2378f6ec8,1297cd59-6580-4857-96be-277887d8e840,af140ea6-d777-4091-baf9-908e9a86ddf4,afab433b-b3ac-4d9b-86e2-f520ab1818f4,49257bc8-417a-41f1-9944-6e06724442e2,7463f6e9-3c15-4e31-8e2c-c8af0a90d29a,d952cac6-4969-4f82-bc6c-7b72bdd131dd,71ecb488-81f3-4988-af84-6251f745bbe7,208ed677-945c-46ff-86d0-109db493a2b7,f7e2c95d-f435-4904-a071-77f79bb9f4e6,b0502c4f-4b8a-4307-b62a-bcce2cae8b7e,34c827fa-cc2b-44a9-a223-aae03d207cf8,f05b9c60-1177-4d03-aa4b-2f005114d157,d69b07e6-a57b-41f4-9739-2e360b2ab788,090a4305-41ea-4fd0-ab7b-50425ff6b9f7,84a7cabe-280d-4045-abfa-7a43dcb35f2f,ecd82afa-4cc9-4de1-9b95-f6308c30e67d,f0f48058-1def-4add-8012-d366b16071ce,f02287e3-2b46-4573-b967-e8541a731f79,90cfe3cb-51ce-42c9-88f9-666709aa55fc,ff0ce578-841f-4b07-b6cf-0ad040f82b0c,a1324061-869b-4bc1-a49e-96df055cc2c4,614fc59a-4414-4b1a-9ad7-6b5c1a617356,661bc0a3-f288-4ccb-9bcf-feea8202df5b,77f8d38d-7e7b-47f5-bcd4-114de7222e31,059146ea-9a10-44f1-87f0-4da2b5be7170,1a340cc3-a704-4698-bf60-cde70e725f07,06c47628-a6a0-44e5-a62f-218fe559d4d5,f16e99cb-a882-45bc-a3b4-0297f718b4f1,415e093f-231b-47b4-b19b-898b883f9dbe,9d009632-c65c-4532-a7a4-eac17881555f,af1d79a4-4b64-488e-b710-a67ee23c611c,120001de-6d91-4518-b1b5-deb480ab6d97,cbdfb013-59eb-479d-a433-f59bb21668b9,fd8c729e-b448-4926-97a4-f37a6280ce36,5eddf347-5372-4e0b-bf6a-de8e79f47657,32d4028d-5de7-4505-ac6c-43b5d0ce3fbd,17c6cdcd-83ed-4ff2-928c-042f1fed4f0d,b5f53733-7a81-443e-a087-fbf44b7f87c0,adc542f9-1098-418b-8a81-9efde7bb9496,d4b1e656-06f0-47b0-bfc0-33a30f2640d7,0f512ac2-aee3-403f-8553-9242442f22b7,58355f44-8808-4c66-8754-d4e6739fc896,9492013f-09de-4ad8-af15-2a5eca500246,47f2dd30-639e-420f-a09f-309a25ea9e65,e6841c09-df33-45a2-a2f0-051b9deda992,9930ea85-96ea-4207-9b5c-0b0d97e36f1e,cbaf8fcd-0165-4bee-973e-4f2ccdd0ab3e,c06b295d-27d3-4d69-915a-e65632515d45,299f2df3-8463-4494-8c74-0c854174aeba,d0c76606-9a8c-4d41-8ad1-ae727be5aff2,b5bbd2ca-78fc-4f1a-92c0-54d21d0aa264,72024000-fa86-4c07-be63-d36468a99e0d,c8c7272e-eec6-46a4-92c5-f22f18586c55,402ca4e9-d0b6-4b9d-9a76-4de0716c25df,a05b4b19-bf2c-43d3-a098-31e80ddff58c,0bc804df-1b45-4e53-a858-a3c92d1fea8e,0410870f-4489-4067-ab5f-f61adec4d859,b7341d85-af43-4675-81fe-aa1a3ed88b8c,1c635e07-8267-4b6c-acc3-d4d6629a80e7,52b63e27-b344-43cd-8f5b-5fd59db60925,2d2d734e-f887-4558-9a82-ef75a9d4efed,682fec83-1543-4e83-98e5-f83c13b5bae9,db1f5504-d063-4c73-baeb-64dd75f90d5b,611f4c35-7d4d-4d43-8869-df20d0dc475d,c375f73b-4546-49d9-958e-60da6e119797,6b2b2ac2-2d3e-4356-a9ed-98efb7a0a7ef,d12fae79-b008-4b0a-bb02-b8d061f010cf,365c3f83-4293-4209-994f-fcd7696a5bad,dfd40b0e-3cf5-4280-a29f-5ad8545df632,bdfb3e9e-328d-43d1-8ba1-7c3f511441c1,c4e4b5f7-151d-4614-9cbc-3a28c1b9592d,b7b4c693-b052-456b-97e7-c9ca565180f0,07e30c2f-fc93-43f8-a6ce-91d6591d5b7a,390de407-e5ff-4c5d-a39f-5ca426d26315,8396ab88-b07a-4c27-b039-32b2a07be039,d9b16598-a8e5-4eba-9e46-1eee1664ff3e,da3aecc6-5598-4cb3-9a1c-7001286d16ef,716dd540-5799-4248-8f3b-f311e9c10279,a812da6f-ab03-42a0-a086-450e414bae9e,d97ae30b-c063-42e7-962b-f2d4d18713a5,41dd3496-7f79-4afb-aff3-13de8066e5f1,78311b26-d6cf-4ce9-bd13-5c93b6d7a784,de3c911b-0fdc-4c68-a038-98c012175ad9,c3d1bd5b-b952-4ce6-93ed-a99c6bb6f423,041de168-f735-4090-9da9-92a9fa56a87a,349b37a1-5020-48d2-91af-87b36c1f595a,f5c0c2a6-066e-49e8-994f-ff44d7ea46d5,d7288f9c-bd22-4ae6-ad04-9a52db7a19f6,e46cfa7a-26f2-4a49-a7c4-88a5b75febda,498c2be0-2734-4365-b9c5-b0f794a3bf7f,7a2614d2-a9bf-4ad7-83e8-65b632c99c93,14dc1568-4851-4239-8774-d9ef701c224d,1e00f26f-54ec-4e3c-830b-9cc287436276,c218a81b-95f8-41e0-9aba-ecf69ea79ccf,448e8a4a-caa7-4136-9575-26896324ddb4,643ebe16-d4d5-4051-a8ca-3261d84f84d4,d5fe3dbe-3a95-4962-96d6-62cd1ffd6781,3264352f-a043-417c-af99-8c2d85f5be64,a0470169-a32b-451a-8a2c-789d0e33491b,5086013a-1470-4731-827d-8fe340116aa5,6e06a4d6-f7a7-4e2a-9179-f55a68d7e6ae,6a52163d-392c-418f-b10f-aefc636ea2c1,241f24f1-6b1c-4b4d-8e60-42cd399aa867,c1cc2d66-1b8b-4174-907d-f6ce2e5ff3d1,0c53ece9-9361-49b9-a766-03a9db179130,610950c3-8f1e-49b3-979f-765ca481f91d,10f09f95-b12f-41c7-806e-3e5008f7fa8a,54121a14-e653-4ee6-b3c1-58b7ca202b2a,ba11fa1b-30d7-4940-8d7e-0c104c2a28f7,54dfcdec-5db6-43be-8ab1-bcd3e169a32d,0462ed3e-62f1-451f-b2d3-83fb76543b95,384e3c9b-7638-406b-adf6-9d747f4f1f24,ae3b3fb5-5289-4f66-80a3-c1862ab75ac1,7fd11a80-a002-442b-a945-2a3f50cdffa4,8e983f66-1d3e-49bb-aea7-0421ed67242b,7231ff63-00d7-4320-a9ee-3dd17d77a89a,0c583b50-20c7-4142-a2ed-5cd7017f3068,e85fd97c-332b-4d24-9273-5fdc3c8d5782,f9d9c75e-13d0-40cd-83a8-918ba1081cff,18711fd6-144b-472c-bcef-1ed8f84d4e3d,224dd0f2-252f-43bd-9d54-811d3d910591,4b3560ae-ebb3-41ea-a593-fe2afebd5e3f,c2b21107-65b6-4b9c-afbf-d3e3f3b88e03,11a73d07-f9c6-4934-8f4a-ef8a0452fe87,4962b0c6-c152-47a7-b31f-c0537ae5dc13,da848457-bc5f-4704-95d4-6f2b6dd4c4d8,66633b18-8057-41e1-aa2e-3a22e000032d,5ab34935-6af6-4926-be98-61b6e42797eb,7f7f570f-41bf-4c70-a28b-fc167ef947bb,ce89a893-6731-4f32-81f2-39d988fd4b7c,650cc43e-d012-4e7b-9810-e8b0682a2e43,33f17905-6078-4af6-8ff8-4ae8e30b356f,fc2813dd-e632-4d4c-8d1d-f71de81885b5,8e954541-09fd-462e-a9d7-21639fcb62c0,2a91f855-0921-453c-9652-8665a49d161b,74fe9f99-f1c2-4858-bb95-52df29bb1d45,2cba9aad-2628-42dc-8e03-f75a21ed1fff,41b8be81-25ab-4c72-88a1-98a3996391de,9378cda5-2b1f-4cf5-9514-32d2a87746a4,4ec13edf-b3a1-478d-ad28-8abc31cba8a3,137e2459-1c91-4096-90a9-4959d837dd4e,631654ab-0424-47ad-ae65-2446315fd29a,c087b262-6ea4-44f8-ba35-471977b118be,f53d1d07-0569-4047-89ff-9fa87853c466,43b674f1-5cb4-40d5-a619-247444e3b900,7a12a9b9-7641-4181-90f4-5aff622156be,fec0030b-d979-4291-8e75-ab0e2661cc9c,18f5ba92-0c82-4917-b1b5-11a59c46c048,527e16ad-fd76-466a-9083-e5ff12714f57,44752776-aefb-448b-8e8e-3dec901cc6ba,f07cb5d4-fad7-4306-a338-f5d4a29c36f9,85cbfd25-d592-45ff-adf7-c7ff1072076c,4396a8a5-98f0-474d-ac42-48631897c289,7c916056-b34c-4cb2-9d26-b8f096e6df00,75f93d21-ef71-4c85-bf15-54b3b80a7aa5,0a860e38-78b1-4eb2-ad24-9a12cc708fa2,bd66f05b-60f2-4870-a8fc-958a6afffa24,265fa9fe-d81a-499b-8eba-b5d04ff5d901,76aec49b-c29d-4475-974d-568fc09317fb,5e6d019c-3755-49b8-b60e-90a81bf44064,c8bedfca-0ad6-4162-a88a-3996a1cb3d11,df7be7e6-0d53-4bb7-8668-9a79837c3c69,3715943c-a9cb-4b1a-85bd-a77101ad5b5b,75e6d72e-11ce-48a9-919d-65b0e4e7b899,d40c6c72-c2b5-4c09-80a6-fcb35531fe37,4b64a38d-8f8d-4c21-bd28-dd719595b71a,b9efd874-c05c-4ef5-973a-11a93bf3c3a4,a7ede7bc-93a3-4e21-9142-e30e445fdd1f,a224f98d-7e1f-4186-8e18-6b18eb1518dd,cd0d5212-be65-4446-bd02-647e97a5496d,4090b405-9232-42a8-8174-223d9977f0ec,a33e5025-1eb4-4cd3-8636-4089deeafb7d,90f4323c-e914-4ab5-8812-b0cf1f17b0b6,245862a0-1ca9-4150-b6c4-9dd36c8b27e3,35603582-ef06-43bb-b472-970ecf5ab7c7,8e617a2d-50a5-40b8-9ada-e1868b350457,36a67c37-9ff2-449d-b252-8f181f7fd1ad,3cd3ee91-dbf5-4b4f-913d-98e14d5bf707,89dfc106-2059-4274-9641-c78048beab5e,7d8075e6-79da-42dd-94d1-40390a3b53b3,5099c244-59fc-4f1a-a558-012dc32314e7,a269f391-adc8-47c7-844a-9e778843a6ba,2737cdaf-c261-4e12-aed4-d4701e131898,2282fd03-83b7-461f-9ba6-8099ce701854,dec87c8b-d347-4b00-9fe7-71a4cdde9d9d,5f4f5702-5cf0-4a1e-a415-bffdb67daf7d,03a266cb-97ee-4500-a532-6e9a226da396,c127bcd7-7542-44fe-9758-d047bf492707,fe6cf332-9ed5-4cc1-bbcf-495095c9d107,de44e7b5-a511-43cd-9ec7-9827103d6899,0207318c-bc31-4ebb-a9a8-4c4891f19d62,0b73000d-09a2-4be7-9f6a-33d4bb708bfe,49f26b25-dc33-465a-8c3f-f78392900e5e,49d69a44-763b-4744-ad0d-067cf50329aa,0b954e3a-120d-4ae7-b979-815916e1d327,930516dc-b4e5-4e99-8822-404462b07ea2,774d53de-b29e-42df-be98-fe3a77959182,53b11e9c-62cf-407d-bf6a-623b599f2063,c042c570-def7-4020-9a85-ed751721fed6,80bd8527-32cf-4390-b836-6fa971d47037,0b38b576-8362-491b-a4ea-9383bfa33046,f649dd23-71fd-47a6-ad59-2cd68afd33c9,b958b119-afe3-43fa-b23f-b2846ac0ef42,192091b3-efe1-42b6-a982-26829cd4c0f9,89851ed6-1cdd-444a-96be-68d400cdd728,286618de-7070-43ab-bac9-b4cdfcaa8197,c75bb0a1-3250-4404-af6b-8c888fa527f5,1bb25f57-65b1-4d65-86f2-b5f00f3131a3,e9689c55-bea2-4f3c-ba5f-28770a8739dd,96cf7c8c-3dad-4e40-b33c-89df0c6bb9e1,11982b2e-5df5-40f6-abc6-f2b88dbec9f8,3df1743a-8641-416f-8d50-3d30a95dab57,a1c27f27-673a-4c6a-a9fa-5c5d303cf46e,3a5d62d2-b94e-4a5c-8f1d-10f4201a62e3,8439ae40-1d31-465f-ae20-9ad92fa53382,cdc3205a-4899-47b0-b48f-a5c5d20ec008,9124757b-77b9-427a-aa1f-0a9cf0e83bdf,f841409d-c5be-4715-800c-c94977446ac6,4ba78820-a606-47f4-8d8a-bc5b38a1a532,9fd7003b-3375-4dc1-96bf-1b8819d17f50,cd8cdf45-5f4d-4b5d-bcc6-3c5ceac2ea7d,8fe580a4-dd5b-4217-8b61-32aa37bc149f,cc42edb0-74e0-4bb8-977f-a807e076480d,706386e1-73ea-421d-ab58-de705b606798,f8410ebc-51dc-440d-b6bd-58dad26af404,b424220d-b450-4b8b-a2be-40170fc9fa17,30b7019a-5d06-4242-b76d-9a60d909935b,2d5f38e3-fbca-439a-8a36-a5942f13dbdc,e08d0a97-0360-4b60-9651-427a57bf0fb6,3b905c2b-245a-407f-9bfe-dd3dbbcf3e85,879e5a83-12e4-4937-89a9-cfb2c2afcca7,ba7db321-d5bb-48ac-b6ae-4201caacfc72,165558db-cb9d-4fa4-854c-bc665433462f,295780dc-d55e-46d7-8a6c-dcca03938791,859ed8de-5efe-4a4f-afd0-c0f43bd3bd02,6a74425f-f894-4ffa-a1dc-e26bfe63b5de,3fd3d98f-0152-4a27-ac56-e169e4f06f97,ec66f35b-bc6b-4403-9b94-dc980b408b2a,8c613d1a-8dc2-4411-ba9e-a5d4399cbdff,444401a4-eb57-4a87-8977-b17653fc8bf4,32da984d-7cce-4f6b-b4bd-d7ff5c5cbdb2,a8bd5734-089c-44ae-b2c9-c1a3d4b72ce2,0d825fd3-e4bf-46a8-bf27-a5dc213bafb3,48105b92-4806-4cd4-a477-d59bd273a98e,b283e6c8-bd80-454b-9fff-12b2cf5d7812,719c6b3b-fa0f-4b40-b276-905adbef63ee,bff20559-1ac6-41f1-9086-464cd674621d,150e21d7-cf3f-4613-a610-ecb7e37fd341,3d14fd79-6e53-4256-9c45-78dfbf102a08,2be8f647-a60f-463d-b115-95c0e516a0ba,d85613c8-b96d-4a45-b519-fe01094cdff0,765eca74-5be5-4353-94f3-cc23829a8fab,f25f0377-9767-4d29-beb4-63be8e0b6065,4b98c960-07a9-41b5-91bd-279aa10b5a32,5821113a-7bdd-4795-8203-7386fb8a1ef5,fca4605a-72df-4d2b-8699-6fd98750d6c6,7348a7d4-2023-4ad5-90e9-a85f36cc5ea5,ea8cd628-ffbf-4763-a72b-d6456fd9a3bc,9a30bf94-e4bf-45a8-ad05-5523b6875fb7,3c5f1647-cb05-4104-af0b-aef73b3a65cd,eb517a4a-b15e-4b1e-b415-3bcb9cece20c,d119cfff-3948-4b78-a3e8-5c9d52d4d8ee,2461756a-4d48-44a8-8bba-48fbef22e192,5d6dadc2-eb3a-4cb4-8e32-de8f2c4192e8,1a039b84-b5c4-4a99-b6c8-1c0dc30e43c9,010f3faa-5590-44cb-a226-99ac7b7b5d2f,7c2f9e03-e6cc-41e2-af2d-4c010b948a8f,1370cdb8-ebe2-4d19-9049-07e60c301106,38740317-7c2f-4a14-a094-1546c7deeaaa,078b36fc-a9e8-4916-b4b7-8f9e1331c2fb,a7eec1d7-1bea-440f-82e3-e35a41522179,77324f2f-eaa2-4121-9ac8-103ec65547de,f975f8fd-b009-4053-8aa2-7c747d02b38f,a13a11e9-c218-409e-84ea-40cffcbe4392,0fa60be6-0b11-4d87-bb7a-b4766d5c0462,a47c42b5-88fe-4bec-8c37-6ee9c89fc656,4bab9147-62eb-44bc-b234-66c041aaca0f,9fafa795-bc15-4575-a27a-f872d54d89de,26d5d9ce-aa2f-41cb-979f-c03abaf95e86,7768d07e-0cb9-423e-82a3-89b6c897f606,1e470cb9-dc71-4e4a-a893-a365a17ae614}'::uuid[])))",
+                "Rows Removed by Filter": 300,
+                "Shared Hit Blocks": 832,
+                "Shared Read Blocks": 0,
+                "Shared Dirtied Blocks": 0,
+                "Shared Written Blocks": 0,
+                "Local Hit Blocks": 0,
+                "Local Read Blocks": 0,
+                "Local Dirtied Blocks": 0,
+                "Local Written Blocks": 0,
+                "Temp Read Blocks": 0,
+                "Temp Written Blocks": 0
+              }
+            ]
+          },
+          "Planning": {
+            "Shared Hit Blocks": 15,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 0.489,
+          "Triggers": [],
+          "Execution Time": 5.381
+        }
+      ]
+    },
+    "risk_page": {
+      "sql": "SELECT * FROM issue WHERE workspace_id=$1::uuid AND project_id=$2::uuid AND admission_status IN ('not_required','accepted') AND id=ANY($3::uuid[]) ORDER BY id ASC",
+      "explain": [
+        {
+          "Plan": {
+            "Node Type": "Index Scan",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Scan Direction": "Forward",
+            "Index Name": "idx_issue_workspace_id_keyset",
+            "Relation Name": "issue",
+            "Alias": "issue",
+            "Startup Cost": 0.29,
+            "Total Cost": 280.63,
+            "Plan Rows": 33,
+            "Plan Width": 320,
+            "Actual Startup Time": 0.028,
+            "Actual Total Time": 0.36,
+            "Actual Rows": 50,
+            "Actual Loops": 1,
+            "Index Cond": "((workspace_id = 'a78db5d8-947c-4d9a-b9e5-67a202a59e70'::uuid) AND (id = ANY ('{89096a93-08e9-486a-b727-834bd32ceac7,8bab3089-6908-4afb-a549-1a292b76acd7,7784cab3-2eb8-4c4a-9dd9-14c3181a9d91,bc256283-ce7c-409a-9104-c213ea2b5fe5,2d729bbb-c306-42f6-aad0-e32f55d30064,b1199512-48c0-4a39-af32-886681743924,c8f088c8-f98f-4927-b09d-f1edf483e605,82fb6f78-a191-4a02-92c0-b2f7524ed835,da3782fd-addd-4763-aafe-9baa145ead22,fb570c46-1221-46e1-be86-7eb8d4db8d4b,3c1f82bc-70cf-4daa-a3d2-909f4dd79ce9,281128a8-0c7c-432d-aed9-e94422f72975,015cfeaf-e839-4803-9da0-e6427e7b3c4f,d4f87006-f918-4f04-86d0-0cca1156f71c,b7bfdf7e-3198-458f-8a5d-2339755112c4,a4294cc7-4d08-4dde-a408-377d5baf8ec9,3aa883b1-4a52-4751-967a-b16772f7899b,f3c56b97-da67-4549-bf21-013b81cbaab5,87fe87ce-be7c-44ff-8357-2f24ee6029f4,e390da13-e6c8-4aa6-b508-c4c706aa47a5,54146366-2be5-4cd2-b329-e949e508c23e,3d1982d1-f53a-49b5-9312-694f3e03b8a2,2d01de81-03cd-4230-83a1-a855d3a057bf,44e9f08c-d126-40d7-93eb-6f17636e2ce8,d120cbb3-4428-408e-a914-fbc010e63a65,d1bdd61a-7862-4b39-8968-ecdfe8198097,a83323dc-c1c1-4ae9-b887-1db76e8c8ea8,c2c27d90-c0ac-4993-a4f6-18b5dc88be2d,5c612e2c-b2bc-497f-88a9-ce9cc7852306,cf42a04a-9ea0-41a7-8ead-2d67175111f7,4d30146f-a4d1-4c61-8767-8c4208f3f62e,cd44119f-a781-4bec-8d43-2bcbad11216d,bdb1234c-eabd-4499-8908-7ced0afd4a0d,a99b8eaa-7ad9-44d5-9270-e901d71d0170,2928fecc-76d4-456f-aaed-0469a8b85b03,157b80cd-dd05-48fc-b133-603c2b8cc8a4,567d4b10-ada8-4f1c-a6ff-dc7fadda3de9,1efadfa3-5800-4a1c-9b05-6ce8a4201817,0cf2c4b3-32e0-4796-a6f4-a1c3d58f1170,ecb24e0b-9031-4ea5-a863-79a567cd78b0,1de20253-31b2-4c62-a889-dc584e4a54c1,4a4fcb28-488a-410a-8cfc-e8f01d129e82,b8e11b73-7aba-421c-9066-50801b02f219,41638405-8653-4707-b01c-3e9f51751134,3077b7c9-5f7f-465b-a756-a68e3c350e1b,0b3a6f65-4752-45b3-b2c9-49fe724f474c,79a4d5bf-a332-4f09-8719-de48ce4cb892,142cd91e-f751-4f3d-936a-2035af4d6d63,9293b7e7-9395-45e8-b145-04919dfcce6f,c9de66aa-7de6-49e2-8d9e-8825a9d7a0e2}'::uuid[])))",
+            "Rows Removed by Index Recheck": 0,
+            "Filter": "((admission_status = ANY ('{not_required,accepted}'::text[])) AND (project_id = '5c411e40-8720-44a2-92c4-eee020920810'::uuid))",
+            "Rows Removed by Filter": 0,
+            "Shared Hit Blocks": 115,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning": {
+            "Shared Hit Blocks": 68,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          },
+          "Planning Time": 0.102,
+          "Triggers": [],
+          "Execution Time": 0.373
+        }
+      ]
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # P1 技术设计
 
-状态：2026-10-05 经 Architect → Critic 两轮评审后通过的实施方案；所有新增字段、API 和文件均为拟实现契约，不是已上线事实。来源为 [后端研究](research/backend-map.md)、[前端研究](research/frontend-map.md) 与原 PRD。具体DTO/证据版本/hash/响应以 [api-contract.md](api-contract.md) 为唯一合同。迁移编号由 foundation 开发时在最新主干分配。
+状态：2026-10-06 已完成本轮 P1 实施验收的技术合同；不是已上线事实。规划经 Architect → Critic 两轮评审，实施后的独立前后端复审已通过。来源为 [后端研究](research/backend-map.md)、[前端研究](research/frontend-map.md) 与原 PRD。具体DTO/证据版本/hash/响应以 [api-contract.md](api-contract.md) 为唯一合同。实际迁移为 536—549；执行结果与未验范围见 [验收记录](verification.md)。
 
 ## 1. RALPLAN-DR
 
@@ -16,11 +16,11 @@
 
 选择 A。B 是未来实测读负载要求出现后可评审的替代方案；不在 P1 同时维护两种统计来源。
 
-## 2. 现状、边界与新增模块
+## 2. 实施前现状、边界与落地模块
 
 - 原入口在 `server/cmd/server/router.go:2132`，描述字段和完整响应在 `server/internal/handler/project.go:24`，现有更新缺 CAS 且 nullable 参数可能回写旧值（`:529`、`server/pkg/db/queries/project.sql:46`）。沿用 Project，不建立专项表。
 - 当前 `done_count` 包含 done/cancelled；正式统计 SQL 已有 T1 白名单（`server/pkg/db/queries/project.sql:69`）。现有统计吞错路径（`project.go:80`）只作为旧兼容路径，不用于新健康。
-- 工作空间尚无规划时区，项目尚无描述 revision、状态历史和进展实体；不从 `updated_at` 虚构进入进行中的历史时间（[研究 §2—5](research/backend-map.md)）。
+- 实施前工作空间没有规划时区，项目没有描述 revision、状态历史和进展实体；不从 `updated_at` 虚构进入进行中的历史时间（[研究 §2—5](research/backend-map.md)）。
 - 新增 `server/internal/projecthealth/` 纯计算与统一聚合入口；handler 分 `project_health.go`、`project_update.go`、`project_timezone.go`。共享表/锁/生成 SQL 由 foundation 统一整合，业务 handler 各子任务持有。
 - 服务端状态归 Query；Web/Desktop 共用 views，移动端独立读兼容。遵守 `CLAUDE.md:31`、`:49`、`:72`、`:132`；无新依赖。
 
@@ -58,7 +58,7 @@
 - 状态变化沿用五状态任意合法修改，completed 不加业务硬阻止；所有入口记录 actor、时间及 reason 或未填写。状态无实际变化不重复审计；不创建进展、验收或执行。
 - 新编辑请求涉及日期时校验最终 start<=due；不涉及日期时允许旧异常值继续读取并提示修正。日期不相互推算、不移动任务日期。
 
-`GET/PUT /api/workspaces/{id}/planning-timezone` 返回 `{planning_timezone:null|string,effective_timezone,configured}`；沿用 `router.go:1692` 的 URL 工作空间成员／管理员路由授权，URL 与调用上下文工作空间一致。写为 owner/admin 人类 actor，接受有效 IANA 名称及 null 清回 UTC，使用 `time.LoadLocation`，拒绝 Local/任意 UTC 偏移字符串。设置页明示基准，不静默取当前浏览器时区。
+`GET/PUT /api/workspaces/{id}/planning-timezone` 返回 `{workspace_id,planning_timezone:null|string,effective_timezone,configured}`；GET/PUT 均通过 URL 工作空间成员路由，URL 与调用上下文工作空间一致；PUT handler 在事务锁内重新检查 owner/admin 人类 actor，操作权限不足返回 `403 project_permission_denied`。接受有效 IANA 名称及 null 清回 UTC，使用 `time.LoadLocation`，拒绝 Local/任意 UTC 偏移字符串。设置页明示基准，不静默取当前浏览器时区。
 
 能力检测采用 `GET /api/workspaces/{validWorkspaceId}/project-capabilities`，放在URL工作空间成员授权组。旧`/api/projects/capabilities`会命中项目id解析而返回400，禁止使用。仅专用子资源404且当前工作空间仍可读时判unsupported；400/401/403/network/畸形响应分开处理（api-contract §1/6）。能力缓存按服务器连接身份+workspace隔离、重连失效；不支持时保留原页面，明确限制新编辑。
 
@@ -82,13 +82,13 @@ overview返回含statistics与两个验收摘要的ProjectOverview；分页/更�
 
 `snapshot_version` 为服务端规范序列化后 SHA-256 指纹，纳入 project_revision、D/时区、状态目录、按 ID 排序的正式成员及影响健康的字段/有效指派/运行环境状态、最近发布时间；不是权限凭证。计算时间本身不进入指纹，避免无变化也刷新。health 优先 incomplete→unavailable；空任务仍单独显示项目逾期；其余按原 PRD 风险→需关注→暂无上述风险；结束状态独立展示未结束任务事实。
 
-`GET /api/projects/{id}/health/issues?signal=blocked|overdue|unassigned|in_review&snapshot_version=...&cursor=...&limit=...` 重新使用同一服务/同一个请求内快照，返回 `{items,total,snapshot_version,refreshed,overview,next_cursor}`；limit 默认50，最大100。cursor 绑定 signal、版本与稳定排序位置。版本相同则总数与原卡片完全一致；不同则 `refreshed=true`，返回新 overview/计数与第一页，UI 明示“任务已变化，已刷新”。翻页时版本变更同样重置，不拼接两个版本页。
+`GET /api/projects/{id}/health/issues?signal=blocked|overdue|unassigned|in_review&snapshot_version=...&cursor=...&limit=...` 重新使用同一服务/同一个请求内快照，返回 `{items,total,snapshot_version,refreshed,overview,next_cursor}`；limit 默认50，最大100。cursor 绑定 signal、版本与稳定排序位置。版本相同则总数与原卡片一致；不同则 `refreshed=true` 并返回当前 overview/计数。按已评审的 [ADR-05](research/pagination-adr.md)，无cursor返回新第一页，有cursor时保留last_id，在当前正式风险集合中继续其后位置，不强制回首页。页面只替换、不累计旧页；变更提示在遍历中持续，明确锚点前新增或重新入险的任务需从头刷新。只有成功的显式从头刷新才清提示；失败保留。空后缀而total>0只说明当前位置之后无结果，不宣称项目无风险。
 
 下钻为临时项目风险上下文，显示信号和基准日，可清除回原视图。它不能继承当前 activeView、actorKind、showSubIssues、隐藏状态、个人负责人过滤；复用任务列表／表格渲染，不复用被过滤的统计集合。P1 风险结果初始只提供准确列表／表格，原任务入口继续保留五种视图；不把无日期风险任务静默丢给甘特投影。服务端仅接受规定的 signal，客户端不能用任意 SQL/条件扩权。改变列表／表格样式不改变 health scope，返回概览恢复总体统计。
 
 ## 6. 手动发布、证据复核、修订与通知
 
-新增 `GET /api/projects/{id}/updates`（cursor 默认20、最大100）、`GET /updates/{updateId}/revisions`、`POST /updates/preview`、`POST /updates`、`PUT /updates/{updateId}`。所有身份均在项目工作空间内解析，列表不跨空间；发布/修订同时检查真实 member actor、机器凭据类别、有效成员及撤权 fence，不能只相信 owning user UUID（`actor_guards.go:96`、`triage.go:175`）。
+新增 `GET /api/projects/{id}/updates`（cursor 默认20、最大100），以及该项目下的 `GET /updates/{updateId}/revisions`、`POST /updates/preview`、`POST /updates`、`PUT /updates/{updateId}`。指定修订的执行证据通过 `GET /api/projects/{id}/updates/{updateId}/revisions/{revision}/executions/{taskId}` 读取真实任务和消息；要求该修订确实引用执行，并重新校验当前成员及来源访问权，复用既有执行记录对话框。所有身份均在项目工作空间内解析，列表不跨空间；发布/修订同时检查真实 member actor、机器凭据类别、有效成员及撤权 fence，不能只相信 owning user UUID（`actor_guards.go:96`、`triage.go:175`）。
 
 preview/WriteInput/Create/Correct返回采用api-contract §3—6，固定canonical hash算法与身份/nullability/排序。include_statistics时hash纳入统计version但不纳入采集时间，实际发布重算版本不同须409重新预览；成功保存写事务实际采集snapshot。正文trim后Unicode code point 1—10,000，理由1—1,000、证据最多50；验收scope必填，passed/partial需证据或可复核说明；既有description不收紧限制。
 
@@ -100,7 +100,7 @@ preview/WriteInput/Create/Correct返回采用api-contract §3—6，固定canoni
 
 outbox算法冻结：无锁SELECT最多100条due候选ID→逐条READ COMMITTED事务→workspace shared→recipient撤权fence/active member锁→project shared→outbox `FOR UPDATE SKIP LOCKED`→锁内重查pending/到期/成员/项目/修订→INSERT inbox ON CONFLICT DO NOTHING与status=delivered同事务commit。始终先project后outbox；第二worker锁不到outbox直接跳过。项目删除若先完成，查不到project则结束不重建；成员无效时在正序锁内标cancelled并仅存原因码。投递/删除/撤权不得在已持outbox时倒序阻塞。
 
-拟新增`RunProjectUpdateNotifications(ctx)`在`server/cmd/server/main.go:652`邻近T1 worker注册，共用sweepCtx/退出cancel；启动立即扫描，之后每5秒，单记录事务最长5秒，逐条提交。临时错误整笔rollback，另起同锁序事务记录attempts与下次时间：min(5s×2^(attempt-1),15m)+0—1s jitter；12次失败进入dead_letter，停自动投递、日志/指标告警，保留记录可由运维既有DB操作复位pending（无新增UI/外部通知）。40001/40P01/55P03也按此队列退避，不在持锁时sleep；进程崩溃未commit不算已投递，恢复按同ID重试。
+已新增`RunProjectUpdateNotifications(ctx)`在`server/cmd/server/main.go:652`邻近T1 worker注册，共用sweepCtx/退出cancel；启动立即扫描，之后每5秒，单记录事务最长5秒，逐条提交。临时错误整笔rollback，另起同锁序事务记录attempts与下次时间：min(5s×2^(attempt-1),15m)+0—1s jitter；12次失败进入dead_letter，停自动投递、日志/指标告警，保留记录可由运维既有DB操作复位pending（无新增UI/外部通知）。40001/40P01/55P03也按此队列退避，不在持锁时sleep；进程崩溃未commit不算已投递，恢复按同ID重试。
 
 站内进展事件只发 workspace/project/update ID 与 revision 用于 Query invalidation，不能广播正文/证据。不产生 Task/Issue/Comment 执行事件，不发邮件或外部回执。通知已读/归档不改变任何业务状态。
 
@@ -111,7 +111,8 @@ outbox算法冻结：无锁SELECT最多100条due候选ID→逐条READ COMMITTED�
 | HTTP | code/情况 | 恢复 |
 | --- | --- | --- |
 | 400 | 无效 UUID、signal、cursor 或日期格式 | 指定字段错误，保留输入 |
-| 401/403 | 未登录／无权或机器身份尝试人工发布 | 清保护 Query/证据及候选缓存；不重试写 |
+| 401 / scope 403 / scope 404 | 认证失效、工作空间访问撤销；scope 404 必须携 `workspace_access_denied` | 清保护 Query/证据/草稿及候选缓存，拒绝迟到响应；不重试写 |
+| 403 | `project_permission_denied`、`project_evidence_forbidden`、`project_updates_disabled` | 操作、来源或能力受限；保留仍授权的工作空间内容与本人输入，来源失权单独清证据查询，不当整空间撤权 |
 | 404 | 当前授权范围内项目/进展不存在 | 停止提交；已删除项目只允许复制本人未提交正文 |
 | 409 | project_description_conflict、project_revision_conflict、project_update_revision_conflict、project_update_preview_stale、idempotency_conflict | 显示最新可见状态/差异，保留输入；不能自动覆盖 |
 | 422 | 文本/验收/证据/IANA/最终日期顺序无效 | 逐字段提示；外链“未验证”不等于错误 |
@@ -120,15 +121,15 @@ outbox算法冻结：无锁SELECT最多100条due候选ID→逐条READ COMMITTED�
 
 草稿 key 包含服务器连接身份/workspace/project/kind，只有本人输入可持久化，不能把服务器证据正文持久化。撤权时清理该空间的 Query、编辑器中服务器内容和候选项，并移除该空间持久草稿；删除项目可留下单次“复制我的未提交文本”界面，但不自动恢复对象。发布成功才清草稿。服务端响应均 schema 解析，缺失或未知枚举显示降级，不能通过 fallback 假装新写成功。
 
-客户端实现落点：`packages/core/projects/{queries,mutations}.ts` 新增 overview/updates/revisions/risk keys，均带 wsId/projectId；所有 fetch 带 captured workspace、AbortSignal，按 `api/client.ts:4468` 同时检查 project/workspace 身份。发布、删除、验收、描述 CAS 使用 server-first；修正 `mutations.ts:114` 的现有乐观删除，不让新增预览字段直接混入 Project cache。普通可预测图标等属性仍可局部乐观更新。
+客户端实现落点：`packages/core/projects/{p1-queries,p1-mutations}.ts` 提供 P1 查询与写入，既有 `queries.ts` / `mutations.ts` 保留原项目接口；overview/updates/revisions/risk keys，均带 wsId/projectId；所有 fetch 带 captured workspace、AbortSignal，按 `api/client.ts:4468` 同时检查 project/workspace 身份。发布、删除、验收、描述 CAS 使用 server-first；修正 `mutations.ts:114` 的现有乐观删除，不让新增预览字段直接混入 Project cache。普通可预测图标等属性仍可局部乐观更新。
 
-模板复用 `ContentEditor` 的 `onUpdate(markdown,baseMarkdown)`、`insertMarkdownAtEnd`、`flushPendingUpdate`（`content-editor.tsx:122`、`:295`、`:334`）；空描述插入、非空预览勾选缺失章节，插入未就绪不能丢内容。旧自由正文不解析成强制结构；描述自动保存序列化并保存 adopted revision，复用 `RevisionConflictCompare` 展示冲突。进展另设按项目/创建或更正身份的 draft store，登记 `drafts/register-all-drafts.ts:17`，迟到成功不能清新输入。
+模板复用 `ContentEditor` 的 `onUpdate(markdown,baseMarkdown)`、`insertMarkdownAtEnd`、`flushPendingUpdate`（`content-editor.tsx:122`、`:295`、`:334`）；空描述插入、非空预览勾选缺失章节，插入未就绪不能丢内容。旧自由正文不解析成强制结构；描述自动保存序列化并保存 adopted revision，复用 `RevisionConflictCompare` 展示冲突。显式采用服务端版本时清除放弃的本地草稿，并保持已授权正文与 revision，直到 canonical props 追上；旧受控值不能盖回服务端选定版本。进展另设按项目/创建或更正身份的 draft store，登记 `drafts/register-all-drafts.ts:17`，迟到成功不能清新输入；进展的预览、取消与仅复制删除文本的命令式读取统一 trim，与 ContentEditor 回调/卸载 flush 的既有归一化一致；包括提及末尾空格在内的等价正文只是确认，不取消成功预览，真实正文变化仍使预览失效。该真实浏览器问题由 `31534d844` 修复，见[回归证据](../10-05-projects-p1-ui/preview-whitespace-verification.md)。
 
-WS 在 `realtime/use-realtime-sync.ts:795` 的 project 前缀下失效新查询；新增 `project:update_published|update_corrected|planning_timezone_changed` 只传身份/版本。任务状态、项目移动、删除、截止日期、指派、T1接受，成员离开、agent/squad归档、runtime在线状态、自定义状态目录更新与时区修改均影响健康。扩展 `issues/cache-coordinator.ts:606` 目前只处理 status/project 的依赖。概览跨本地规划日边界设置下一次刷新，后台挂起/重连/窗口焦点恢复立即重算；不采用查看者时区。
+WS 在 `realtime/use-realtime-sync.ts:795` 的 project 前缀下失效新查询；新增 `project:update_published|update_corrected|planning_timezone_changed` 只传身份/版本。任务状态、项目移动、删除、截止日期、指派、T1接受，成员离开、agent/squad归档、runtime在线状态、自定义状态目录更新与时区修改均影响健康。扩展 `issues/cache-coordinator.ts:606` 目前只处理 status/project 的依赖。概览每60秒检查工作空间规划日期，发现与统计基准日不同才失效并重新查询；窗口焦点恢复立即执行该检查，重连失效相关查询。它不是午夜精确定时器，也不采用查看者时区。
 
-撤权事件或任意保护请求403先取消并 remove workspace/project queries、关闭编辑器/证据预览并清理内存/持久草稿，之后由现有单 responder 处理导航；不等待 workspace 列表成功才遮蔽内容（`use-realtime-sync.ts:1253`）。项目删除确认成功才清缓存/导航；事件与本端行为用 self-event guard 避免双跳转。
+撤权事件、401、scope 403 或明确 `404 workspace_access_denied` 先取消并 remove workspace/project queries、关闭编辑器/证据预览并清理内存/持久草稿，之后由现有单 responder 处理导航；不等待 workspace 列表成功才遮蔽内容（`use-realtime-sync.ts:1253`）。操作/来源/能力限制的三类403保留仍授权的空间数据与本人输入，普通项目/进展404也不当整空间撤权。会话清理递增单调 generation，旧请求、mutation及编辑器清理不能回灌新会话；退出登录或切换服务器时清除仅供复制的删除项目文本。项目删除确认成功才清缓存/导航；事件与本端行为用 self-event guard 避免双跳转。
 
-项目详情增加概览／任务切换及共享路径参数，通过 `paths.ts:41` 和 NavigationAdapter，Web `projects/[id]/page.tsx:6`、Desktop `project-detail-page.tsx:8` 保持刷新/返回/新页可恢复。`IssueSurface` 的 activeView 覆盖（`issue-surface.tsx:95`）要增加明确临时来源模式，不能仅传 surfaceKey。移动端只解析可选字段并维持旧 done_count，自己的 hooks/cache 适配能力限制及旧属性更新；不导入 Web hooks/store，也不提供伪成功的新进展编辑。
+项目详情增加概览／任务切换及共享路径参数，通过 `paths.ts:41` 和 NavigationAdapter，Web `projects/[id]/page.tsx:6`、Desktop `project-detail-page.tsx:8` 保持刷新/返回/新页可恢复。风险下钻由独立 `ProjectRiskIssues` 呈现，未挂接普通 `IssueSurface` 的视图控制器，因此不会继承 activeView 或个人过滤；原任务入口继续提供五种视图。移动端只解析可选字段并维持旧 done_count，自己的 hooks/cache 适配能力限制及旧属性更新；不导入 Web hooks/store，也不提供伪成功的新进展编辑。
 
 ## 8. 删除、关联写与锁顺序
 
@@ -152,7 +153,7 @@ T1候选字段实际位于 `issue_triage.candidate_project_id`（`triage.go:608`
 
 foundation 提供可回退的新 UI 能力配置，关闭写入口时不能把普通旧客户端描述无 CAS 再放开，否则会破坏并发保证。后端回退目标必须是含安全 CAS 和新表只读支持的兼容版本；不能回退任意旧二进制然后声称历史仍可见。
 
-性能由verification固定500项目/每项目最多10,000任务分布、PG/Go/机器与并发，采EXPLAIN/CPU/内存/query数；预热20次，overview/四signal并发1/10各200请求、冷5次；跨端30次due/assignee/admission变更。活跃分页另以0/1/10次每秒底层变更各10分钟、每秒翻页，记录刷新比、到第二页成功率/P95、连续重置次数。先基线后评审锁预算再最终测量；候选2秒/5秒不是已达标。重置不可接受则评审B，不提前做双来源。相同版本统计/下钻一致性始终100%，不能第一页代全量。
+性能由verification固定500项目/每项目最多10,000任务分布、PG/Go/机器与并发，采EXPLAIN/CPU/内存/query数；预热20次，overview/四signal并发1/10各200请求、冷5次；跨端30次due/assignee/admission变更。活跃分页另以0/1/10次每秒底层变更各10分钟、每秒翻页，记录刷新比、到第二页成功率/P95、连续重置次数。先基线后评审锁预算再最终测量；HTTP 2秒门槛已由C复测通过；跨页面5秒收敛证据单列于浏览器报告。原A已实测在1/s下第二页42.8%、10/s下0/599，按ADR-05评审改为C并保留A证据；B仍是冻结初始工作清单的有效替代，C不宣称跨页穷尽变化中的最终集合。复测使用实际ID前进而非refreshed=false作为前进判断，非空后缀必须100%前进，终止空后缀单列。相同版本统计/下钻一致性始终100%，不能第一页代全量。C三档各至少600秒实测1709/1709非空续页严格前进、第二页成功率均100%、静态最大P95约558ms，74页当前集合与独立SQL完全一致；见[性能报告](../10-05-projects-p1-verification/performance-c-report.md)。
 
 ADR-01：选实时服务端聚合 A；驱动为正确集合/成本/解释性；拒绝前端聚合，暂缓持久健康快照。代价为重算与刷新提示；跟进是实测后选择索引，不预加缓存。
 
@@ -167,3 +168,5 @@ ADR-04：应用层清理 + 所有关联 writer 共享锁；拒绝依赖旧 FK �
 1. **上线后“完成数”突然下降或健康漏项**：旧 done_count 被改义、分页或 activeView 污染。预防：老响应金样、N/F/C/U矩阵、10000条含隐藏父子/非正式任务、隔离下钻上下文；指标记录 complete=false/unknown原因，禁止正文入日志。
 2. **验收依据错绑或已撤权证据仍可见**：无版本写或缓存/preview复用。预防：描述锁/CAS、提交再授权、证据版本复核、撤权清缓存/草稿、机器身份矩阵；监控409/428与拒绝原因（只含ID/计数）。
 3. **删除后孤儿任务/自动化继续创建或通知重复**：某个 writer 未持共享锁、投递崩溃。预防：逐入口锁清单、双顺序竞争/故障注入、事务outbox/稳定inbox身份；观察 orphan扫描、outbox积压、重试次数与删除失败。任何新增关联 writer 必须加入此协议与测试。
+
+实施更正：删除采用 READ COMMITTED，在持有项目排他锁后枚举当前关联；发布/统计继续 RR。真实chat-create/delete屏障证明旧RR删除可能漏掉等锁期间提交的子记录，现有10阶段回滚与17入口双序测试锁定此差异。

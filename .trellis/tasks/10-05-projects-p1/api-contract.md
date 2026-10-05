@@ -1,6 +1,6 @@
 # P1 API 与跨子任务数据合同
 
-状态：拟实现 v1。health/progress/ui/foundation 共同依赖本文件；[design.md](design.md)定义业务、锁与存储，[test-spec.md](test-spec.md)定义证明。本文是线协议唯一来源；没有新增产品范围。
+状态：已实现 v1，本轮 P1 实施验收完成（2026-10-06）；部署状态独立记录。health/progress/ui/foundation 共同依赖本文件；[design.md](design.md)定义业务、锁与存储，[test-spec.md](test-spec.md)定义证明。本文是线协议唯一来源；没有新增产品范围。
 
 ## 1. 通用表示与端点
 

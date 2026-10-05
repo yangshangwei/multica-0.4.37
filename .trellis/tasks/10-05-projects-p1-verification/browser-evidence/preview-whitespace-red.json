@@ -1,0 +1,99 @@
+{
+  "status": 200,
+  "request": {
+    "operation": "create",
+    "update_id": null,
+    "expected_revision": null,
+    "kind": "progress",
+    "body": "Delivery verified [@P1 reviewer](mention://member/8e1ac310-d91e-4aa6-9d25-938b7eca3bf2)  [@P1 reference agent](mention://agent/b8fd7701-ebfd-4798-8338-173e6e44efde) ",
+    "health_judgment": null,
+    "evidence": [
+      {
+        "kind": "execution",
+        "id": "bf373e22-a166-423e-bb4b-93bdf1b3ee9d",
+        "url": null
+      }
+    ],
+    "acceptance": null,
+    "expected_description_revision": null,
+    "include_statistics": true,
+    "correction_reason": null
+  },
+  "response": {
+    "workspace_id": "40d2be21-8a21-4b5e-9fb7-3be3ec36b5ad",
+    "project_id": "eb1a7aed-f4c7-4bae-8fcd-012e4084e25c",
+    "draft": {
+      "operation": "create",
+      "update_id": null,
+      "expected_revision": null,
+      "kind": "progress",
+      "body": "Delivery verified [@P1 reviewer](mention://member/8e1ac310-d91e-4aa6-9d25-938b7eca3bf2)  [@P1 reference agent](mention://agent/b8fd7701-ebfd-4798-8338-173e6e44efde)",
+      "health_judgment": null,
+      "evidence": [
+        {
+          "kind": "execution",
+          "id": "bf373e22-a166-423e-bb4b-93bdf1b3ee9d",
+          "url": null
+        }
+      ],
+      "acceptance": null,
+      "expected_description_revision": null,
+      "include_statistics": true,
+      "correction_reason": null
+    },
+    "evidence_versions": [
+      {
+        "kind": "execution",
+        "id": "bf373e22-a166-423e-bb4b-93bdf1b3ee9d",
+        "state_version": 1,
+        "result_digest": "aa0c27bb6a99bba7cb4550ca1b26450e23a52aab1597a12e5def6482900708d4"
+      }
+    ],
+    "description_revision": null,
+    "recipients": [
+      {
+        "id": "8e1ac310-d91e-4aa6-9d25-938b7eca3bf2",
+        "name": "P1 reviewer",
+        "avatar_url": null,
+        "availability": "active"
+      }
+    ],
+    "statistics_snapshot": {
+      "workspace_id": "40d2be21-8a21-4b5e-9fb7-3be3ec36b5ad",
+      "project_id": "eb1a7aed-f4c7-4bae-8fcd-012e4084e25c",
+      "project_revision": 1,
+      "snapshot_version": "db2e161454c1613544dcbaa61c186ca1436a817b02a9547219062ad58afd963a",
+      "calculated_at": "2026-10-05T15:51:23.444156Z",
+      "reference_date": "2026-10-05",
+      "timezone": "UTC",
+      "timezone_configured": false,
+      "complete": true,
+      "incomplete_reasons": [],
+      "counts": {
+        "total": 0,
+        "completed": 0,
+        "cancelled": 0,
+        "open": 0,
+        "blocked": 0,
+        "overdue": 0,
+        "unassigned": 0,
+        "in_review": 0,
+        "risk_union": 0,
+        "unknown_status": 0,
+        "execution_environment_unavailable": 0
+      },
+      "closure_ratio": null,
+      "project_overdue": false,
+      "lead_valid": false,
+      "latest_update_at": null,
+      "progress_age_days": null,
+      "health": "empty",
+      "reasons": [
+        "invalid_project_lead"
+      ]
+    },
+    "preview_hash": "68e6e984be2ee877313688554231d66ffd76234f940c309486ed728e3f5ad082",
+    "previewed_at": "2026-10-05T15:51:23.444156Z"
+  },
+  "composer_text": "Progress updates\nProgress\nRisk update\nAcceptance\nUpdate\n\nDelivery verified @P1 reviewer  @P1 reference agent \n\nManual judgment\nNone\nOn track\nNeeds attention\nRisk\n\nEvidence\n\nURL\nIssue UUID\nExecution UUID\nAdd evidence\nbf373e22-a166-423e-bb4b-93bdf1b3ee9d\nRemove\nAttach current system statistics\nCancel\nPreview publication"
+}

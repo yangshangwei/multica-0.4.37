@@ -1,0 +1,49 @@
+test("P1 risk drilldown ignores personal filters, includes children and restarts changed-version pagination", async ({ page }, info) => {
+  test.setTimeout(120_000);
+  const { api, workspace, owner } = await p1Session(page);
+  try {
+    const project = await p1Project(api);
+    const issues = await api.seedTableIssues(Array.from({ length: 55 }, (_, i) => ({ title: `Overdue delivery ${String(i + 1).padStart(2, "0")}`, status: "todo" as const })));
+    await p1DB("UPDATE issue SET project_id=$1,due_date='2020-01-01' WHERE workspace_id=$2 AND id=ANY($3::uuid[])", [project.id, workspace.id, issues.map((issue) => issue.id)]);
+    await p1DB("UPDATE issue SET parent_issue_id=$1 WHERE id=$2", [issues[0]!.id, issues[1]!.id]);
+    const preference = { viewMode: "list", showSubIssues: false, assigneeFilters: [{ type: "member", id: owner.id }], statusFilters: ["done"] };
+    await page.addInitScript(({ slug, id, preference }) => localStorage.setItem(`multica_issue_surface_views:${slug}`, JSON.stringify({ state: { surfaces: { [`project:${id}`]: { state: preference, updatedAt: new Date().toISOString() } } }, version: 0 })), { slug: workspace.slug, id: project.id, preference });
+    await page.goto(`/${workspace.slug}/projects/${project.id}?section=overview`);
+    await page.getByRole("button", { name: "Overdue 55", exact: true }).focus(); await page.keyboard.press("Enter");
+    await expect(page.getByText("All matching formal issues, including sub-issues. Personal and saved-view filters do not apply.", { exact: true })).toBeVisible();
+    const risk = page.locator("section").filter({ has: page.getByRole("heading", { name: "Overdue · 55", exact: true }) });
+    await expect(risk.getByRole("link")).toHaveCount(50);
+    const reference = (await p1Overview(api, project.id)).statistics;
+    await expect(risk).toContainText(reference.reference_date);
+    await expect(risk).toContainText(reference.timezone);
+    await page.getByRole("button", { name: "Next page", exact: true }).click();
+    await expect(risk.getByRole("link")).toHaveCount(5);
+    const first = await api.requestJSON<{ items: P1Issue[]; next_cursor: string }>(`/api/projects/${project.id}/health/issues?signal=overdue`);
+    const second = await api.requestJSON<{ items: P1Issue[] }>(`/api/projects/${project.id}/health/issues?signal=overdue&cursor=${encodeURIComponent(first.next_cursor)}`);
+    expect([...first.items, ...second.items].map((issue) => issue.id)).toContain(issues[1]!.id);
+    await page.getByRole("button", { name: "First page", exact: true }).click();
+    await expect(risk.getByRole("link")).toHaveCount(50);
+    await page.reload();
+    await expect(risk.getByRole("link")).toHaveCount(50);
+    // Change the authoritative input after the browser captured its cursor;
+    // suppressing a websocket race here makes the snapshot handoff deterministic.
+    let changed = false;
+    await page.route(`**/api/projects/${project.id}/health/issues?*`, async (route) => {
+      if (!changed && new URL(route.request().url()).searchParams.has("cursor")) {
+        changed = true;
+        await p1DB("UPDATE issue SET status='done',revision=revision+1 WHERE id=$1", [issues[0]!.id]);
+      }
+      await route.continue();
+    });
+    await page.getByRole("button", { name: "Next page", exact: true }).click();
+    await expect.poll(() => changed).toBe(true);
+    await expect(page.getByText("The project changed. Counts and results have been refreshed together.", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Overdue · 54", exact: true })).toBeVisible();
+    await expect(page.locator("section").filter({ has: page.getByRole("heading", { name: "Overdue · 54", exact: true }) }).getByRole("link")).toHaveCount(50);
+    await p1Capture(page, info, "risk-refreshed-first-page");
+    await page.getByRole("button", { name: "Overview", exact: true }).last().click();
+    const stored = await page.evaluate((slug) => JSON.parse(localStorage.getItem(`multica_issue_surface_views:${slug}`)!), workspace.slug);
+    expect(stored.state.surfaces[`project:${project.id}`].state).toMatchObject(preference);
+  } catch (error) { await p1Failure(page, info); throw error; }
+  finally { await api.deleteFeatureWorkspace(workspace.id); }
+});

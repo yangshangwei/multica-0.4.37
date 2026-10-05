@@ -1,0 +1,23 @@
+{
+  "source_report": ".omx/p1-preview-wire.json",
+  "stats": {
+    "startTime": "2026-10-05T15:51:09.687Z",
+    "duration": 19443.693,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "P1 publication retries a committed lost response once, preserves corrections, and versions acceptance",
+      "file": "projects-p1.spec.ts",
+      "status": "unexpected",
+      "duration_ms": 11877,
+      "retry": 0,
+      "errors": [
+        "Error: expect(locator).toBeVisible() failed\n\nLocator: locator('[aria-label=\"Write progress\"]').getByText('P1 reviewer', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for locator('[aria-label=\"Write progress\"]').getByText('P1 reviewer', { exact: true })\n\n\n  347 |     expect(previewResponse.status()).toBe(200);\n  348 |     expect(previewBody.recipients.map((member: { id: string }) => member.id)).toEqual([reviewer.user.id]);\n> 349 |     await expect(composer.getByText(\"P1 reviewer\", { exact: true })).toBeVisible();\n      |                                                                      ^\n  350 |     expect((await api.requestJSON<{ items: unknown[] }>(`/api/projects/${project.id}/updates`)).items).toHaveLength(0);\n  351 |     const requests: unknown[] = [];\n  352 |     let dropped = false;\n    at /Volumes/artisan/code/2026/multica-projects-p1/e2e/projects-p1.spec.ts:349:70"
+      ]
+    }
+  ]
+}

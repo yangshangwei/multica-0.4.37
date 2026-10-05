@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-05T10:20:01.622Z",
+  "label": "baseline",
+  "mode": "resource",
+  "api_base": "http://localhost:19072",
+  "budget": {
+    "locked_at": "2026-10-05T10:11:25.503633+00:00",
+    "source": "P1 design section 9, test-spec section 6 and parent execution instruction",
+    "http_p95_ms": 2000,
+    "cross_client_convergence_p95_ms": 5000,
+    "http_errors": 0,
+    "same_version_count_page_agreement": 1,
+    "idle_second_page_success_min": 0.95,
+    "active_second_page_unusable_below": 0.5,
+    "warmup_per_endpoint": 20,
+    "requests_per_endpoint_and_concurrency": 200,
+    "concurrency": [
+      1,
+      10
+    ],
+    "cold_process_samples": 5,
+    "active_change_rates_per_second": [
+      0,
+      1,
+      10
+    ],
+    "active_duration_seconds_each": 600,
+    "pagination_operations_per_second": 1,
+    "notes": "Budgets frozen before response measurement. Active pagination below 50% second-page reachability is an explicit usability concern requiring ADR review; no retrospective relaxation. Cold means a new backend process with warmed PostgreSQL/OS caches, reported separately from machine cold boot."
+  },
+  "host": "Darwin yangshangweideMac-mini.local 25.2.0 Darwin Kernel Version 25.2.0: Tue Nov 18 21:08:48 PST 2025; root:xnu-12377.61.12~1/RELEASE_ARM64_T8132 arm64",
+  "memory_bytes": 17179869184,
+  "cpu": "Apple M4",
+  "go": "go version go1.27.0 darwin/arm64",
+  "postgres": {
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "database": "p1_perf_baseline_d0e726b494"
+  }
+}

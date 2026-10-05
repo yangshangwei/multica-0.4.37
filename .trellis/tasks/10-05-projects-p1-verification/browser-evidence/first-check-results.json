@@ -1,0 +1,79 @@
+{
+  "source_report": ".omx/p1-complete-check-e2e.json",
+  "stats": {
+    "startTime": "2026-10-05T15:04:58.379Z",
+    "duration": 59046.243,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "P1 real Electron preload and shared router publish, drill down, and retain Chinese compact history without a daemon",
+      "file": "projects-p1-desktop.spec.ts",
+      "status": "expected",
+      "duration_ms": 4798,
+      "retry": 0,
+      "errors": []
+    },
+    {
+      "title": "P1 goal template preserves content and a real member conflict keeps both descriptions reviewable",
+      "file": "projects-p1.spec.ts",
+      "status": "expected",
+      "duration_ms": 9122,
+      "retry": 0,
+      "errors": []
+    },
+    {
+      "title": "P1 convergence performance: two real pages observe 30 due-date, assignee and admission changes within five seconds",
+      "file": "projects-p1.spec.ts",
+      "status": "expected",
+      "duration_ms": 4009,
+      "retry": 0,
+      "errors": []
+    },
+    {
+      "title": "P1 formal totals split six completed and two cancelled; candidate acceptance adds one without execution",
+      "file": "projects-p1.spec.ts",
+      "status": "expected",
+      "duration_ms": 11574,
+      "retry": 0,
+      "errors": []
+    },
+    {
+      "title": "P1 risk drilldown uses ADR-05 live cursors, sticky disclosure and fresh restart while preserving personal filters",
+      "file": "projects-p1.spec.ts",
+      "status": "expected",
+      "duration_ms": 1906,
+      "retry": 0,
+      "errors": []
+    },
+    {
+      "title": "P1 publication retries a committed lost response once, preserves corrections, and versions acceptance",
+      "file": "projects-p1.spec.ts",
+      "status": "unexpected",
+      "duration_ms": 16716,
+      "retry": 0,
+      "errors": [
+        "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator('[aria-label=\"Write progress\"]').getByRole('button', { name: 'Add evidence', exact: true })\n    - locator resolved to <button disabled tabindex=\"0\" type=\"button\" data-disabled=\"\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid\u2026>Add evidence</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    29 \u00d7 waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n\n\n  330 |     await composer.getByRole(\"combobox\", { name: \"Evidence\", exact: true }).selectOption(\"execution\");\n  331 |     await composer.getByRole(\"textbox\", { name: \"One HTTP/HTTPS URL, issue UUID, or execution UUID per line.\", exact: true }).fill(execution);\n> 332 |     await composer.getByRole(\"button\", { name: \"Add evidence\", exact: true }).click();\n      |                                                                               ^\n  333 |     await composer.getByRole(\"checkbox\", { name: \"Attach current system statistics\", exact: true }).check();\n  334 |     await composer.getByRole(\"button\", { name: \"Preview publication\", exact: true }).click();\n  335 |     await expect(composer.getByText(\"P1 reviewer\", { exact: true })).toBeVisible();\n    at /Volumes/artisan/code/2026/multica-projects-p1/e2e/projects-p1.spec.ts:332:79"
+      ]
+    },
+    {
+      "title": "P1 completion warning allows closure without changing issues; member deletion is refused and owner deletion preserves work",
+      "file": "projects-p1.spec.ts",
+      "status": "expected",
+      "duration_ms": 3452,
+      "retry": 0,
+      "errors": []
+    },
+    {
+      "title": "P1 capability and overview failures recover; Chinese compact overview supports keyboard without overflow",
+      "file": "projects-p1.spec.ts",
+      "status": "expected",
+      "duration_ms": 5125,
+      "retry": 0,
+      "errors": []
+    }
+  ]
+}

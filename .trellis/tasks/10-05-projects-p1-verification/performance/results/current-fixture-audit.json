@@ -1,0 +1,26 @@
+{
+  "projects": {
+    "count": 500
+  },
+  "scope": [
+    {
+      "admission_status": "duplicate",
+      "count": 100
+    },
+    {
+      "admission_status": "not_required",
+      "count": 10000
+    },
+    {
+      "admission_status": "pending",
+      "count": 100
+    },
+    {
+      "admission_status": "rejected",
+      "count": 100
+    }
+  ],
+  "workers": {
+    "count": 0
+  }
+}

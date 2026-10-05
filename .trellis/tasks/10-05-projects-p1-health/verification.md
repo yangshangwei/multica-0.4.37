@@ -67,3 +67,9 @@ RED 证据：先加入纯逻辑和真实 DB 测试时分别因所需 Input/Compu
 新增证明：低 ID 重新入险、新高 ID 加入、原后续成员变 pending、next_cursor 新版本连续读取、显式旧 snapshot_version 与新 cursor 冲突400；anchor 被删除／移项目／变 pending、rejected、duplicate 的五个真实 DB 子场景；empty suffix/positive total；显式从头刷新重新包含低 ID；稳定版本完整遍历与独立 SQL 所有 ID/顺序一致。原日期/引用/准入/权限/不完整统计回归仍通过。
 
 新的 C 静态与三档各10分钟性能复测、UI粘性提示和30事件跨客户端收敛尚待对应 lane 的实际结果，不以本节单测通过替代。
+
+### ADR-05 后端性能复测完成
+
+2026-10-05 12:21 UTC，C 后端与 API 性能复测完成：7接口在并发1/10各200请求、5次冷进程请求，以及0/1/10次每秒变更各至少600秒。三档第二页分别30/30、31/31、31/31成功；非空续页570/570、570/570、569/569严格向前；HTTP、写入、一致性错误和实际回退全部0。静态最大P95约558ms，固定2秒门槛通过。独立预算脚本 exit0/PASS。
+
+证据：[C完整报告](../10-05-projects-p1-verification/performance-c-report.md)、[原始样本和汇总](../10-05-projects-p1-verification/performance/results-c/summary.json)、[预算判定](../10-05-projects-p1-verification/performance/results-c/budget-assessment.json)。测量绑定 `1bc589119` 二进制和源文件hash，构建期间源文件稳定；完成后相关health源码仍匹配、19075/19076自有进程已停止、fixture执行任务仍为0。旧 A 失败证据保留，未改写。最终UI行为和双端收敛由browser lane单独确认。

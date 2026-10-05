@@ -1,0 +1,43 @@
+{
+  "candidate_commit": "61ba556e48743098e58bed12022249c48e3d8ecb",
+  "product_commit": "97e3f9124",
+  "environment": "check-20261005144412-26132",
+  "command": "ENV_FILE=.omx/projects-p1-browser.env PLAYWRIGHT_JSON_OUTPUT_NAME=.omx/p1-complete-check-e2e.json bash scripts/check.sh e2e/projects-p1.spec.ts e2e/projects-p1-desktop.spec.ts --output=.omx/p1-complete-check-results --reporter=list,json",
+  "exit_code": 1,
+  "log": ".omx/p1-complete-check.log",
+  "log_sha256": "359846cc0de56df75b70589c3ae6a0a8ee1e0fed5d58ab62ee09213ad3353630",
+  "static_tasks": {
+    "passed": 15,
+    "total": 15,
+    "lint_errors": 0,
+    "existing_warnings": 30
+  },
+  "typescript": {
+    "files": 856,
+    "tests": 10052,
+    "core": 2635,
+    "docs": 62,
+    "views": 6116,
+    "desktop": 957,
+    "web": 282
+  },
+  "script_regressions": "passed",
+  "go": {
+    "race_packages_passed": 69,
+    "vet": "passed",
+    "real_redis_tests": "skipped when connection is unconfigured",
+    "real_agent_cli": "not executed; fake fixtures and CLI guard"
+  },
+  "api_and_production_web_build": "passed",
+  "playwright": {
+    "startTime": "2026-10-05T15:04:58.379Z",
+    "duration": 59046.243,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "playwright_json_sha256": "00b5b9cc4cf5be1cc25fd546127f1f71299a9eff94e731ffa18df59997cf9c37",
+  "failure": "Publication flow: Add evidence disabled after entering execution ID; root cause and final rerun tracked in browser-verification.md",
+  "followup": "Final browser report must record repair and rerun; this failed full run is preserved, not relabeled as passed."
+}

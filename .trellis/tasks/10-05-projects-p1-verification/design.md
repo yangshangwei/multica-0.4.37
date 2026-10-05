@@ -1,5 +1,7 @@
 # 集成验收与交付：设计边界
 
+当前状态：该范围已落地，本轮P1实施验收完成（2026-10-06）。实际证据：[验收审计](acceptance-audit.md)、[迁移](migration-verification.md)、[C性能](performance-c-report.md)及[浏览器记录](browser-verification.md)。
+
 本子任务采用[父技术设计](../10-05-projects-p1/design.md)及[唯一API合同](../10-05-projects-p1/api-contract.md)的统一数据/API/权限/兼容/迁移契约；不得独立更改字段或创建并列实现。
 
 整合全部 P1 与共同契约验收、迁移/回滚演练、真实 Web/Electron、旧客户端/移动兼容、静态检查、性能基线及使用交付文档。

@@ -1,0 +1,34 @@
+import fs from "node:fs";
+import path from "node:path";
+const source=".omx/projects-p1-performance-c";
+const target=".trellis/tasks/10-05-projects-p1-verification/performance/results-c";
+const read=(name)=>fs.existsSync(path.join(source,name))?JSON.parse(fs.readFileSync(path.join(source,name),"utf8")):null;
+const original=JSON.parse(fs.readFileSync(".trellis/tasks/10-05-projects-p1-verification/performance/results/summary.json","utf8"));
+const budget=JSON.parse(fs.readFileSync(".trellis/tasks/10-05-projects-p1-verification/performance/budget.json","utf8"));
+const round=(n)=>n===null||n===undefined?"—":Number(n).toFixed(1);
+const reachability=(rate)=>{
+  const file=path.join(source,`current-full-active-${rate}-samples.jsonl`);if(!fs.existsSync(file))return null;
+  const rows=fs.readFileSync(file,"utf8").trim().split("\n").filter(Boolean).map(JSON.parse);const waits=[];let pending=null;
+  for(const row of rows){if(row.terminal_suffix){pending=null;continue;}if(row.second_page_attempt){if(pending===null)pending=row.since_start_ms-row.ms;if(row.second_page_success){waits.push(row.since_start_ms-pending);pending=null;}}else pending=null;}
+  waits.sort((a,b)=>a-b);return{completed_episodes:waits.length,p50_ms:waits.length?waits[Math.ceil(waits.length*.5)-1]:null,p95_ms:waits.length?waits[Math.ceil(waits.length*.95)-1]:null,max_ms:waits.at(-1)??null,right_censored_wait_ms:pending===null?null:rows.at(-1).since_start_ms-pending};
+};
+const active=[0,1,10].map(rate=>{const data=read(`current-full-active-${rate}-summary.json`);return data?{...data,reachability:reachability(rate)}:null;});
+const current=read("current-full-static-summary.json");
+const complete=!!read("current-full-complete.json");
+const resourceFile=path.join(source,"current-full-resource-samples.jsonl");
+const resourceRows=fs.existsSync(resourceFile)?fs.readFileSync(resourceFile,"utf8").trim().split("\n").filter(Boolean).map(JSON.parse).filter(row=>row.rss_kib):[];
+const resources={baseline:original.resources.baseline,current:{samples:resourceRows.length,max_cpu_percent:Math.max(...resourceRows.map(row=>row.cpu_percent)),max_rss_mib:Math.max(...resourceRows.map(row=>row.rss_kib))/1024,first:resourceRows[0]?.at,last:resourceRows.at(-1)?.at}};
+const summary={generated_at:new Date().toISOString(),complete,budget,baseline:original.baseline,current,active,resources,provenance:read("current-provenance.json"),full_scope_audit:read("current-full-scope-audit.json"),old_a_active:original.active,query_observations:read("current-queries-query-observation.json"),cold_process_samples:read("current-full-cold-process-samples.json")};
+fs.mkdirSync(target,{recursive:true});
+for(const name of fs.readdirSync(source).filter(name=>/-(samples\.json|samples\.jsonl|summary\.json|metadata\.json|query-observation\.json|exact-query-plans\.json|cold-process-samples\.json|full-scope-audit\.json|provenance\.json)$/.test(name)))fs.copyFileSync(path.join(source,name),path.join(target,name));
+fs.writeFileSync(path.join(target,"summary.json"),JSON.stringify(summary,null,2));
+const passing=complete&&Object.values(current??{}).every(row=>row.budget_pass)&&active.every((row,i)=>row&&row.errors===0&&row.write_errors===0&&row.strictly_advancing_continuations===row.nonempty_continuations&&row.second_page_success_ratio>=(i===0?.95:.5));
+const lines=["# ADR-05 C：持续分页性能复测", "", `状态：${complete?(passing?"本次API与活跃分页预算通过":"本次预算未通过，见原始数据"):"正在完整采样，尚未判定通过"}。${summary.generated_at}。`, "", "## 来源与固定方法", "", `后端提交 \`${summary.provenance?.commit}\`，binary SHA256 \`${summary.provenance?.binary_sha256}\`；源文件构建前后hash一致，完整provenance及各次health PID/commit保存在results-c。独立19075端口、全新私库，未覆盖原A实验或19071。`, "", "沿用测量前固定预算：HTTP P95≤2秒、错误0、当前页/总数同版本一致100%；空闲第二页成功≥95%、活跃≥50%。非空suffix每一次必须严格前进，100%正确性单独判断，不能被可用性成功率平均掉。terminal空后缀单列。", "", "每库500项目：目标10,000正式+300非正式，其余499项目各10正式。每接口20次预热，并发1/10各200请求；另5次新API进程首个概览请求。CPU/内存/PG/Go环境与旧报告相同；共享机器仍有其它团队构建/测试，保留全部离群值。", "", "C每页保持当前RR正式集合、授权、全量统计与准确后缀；只保留last_id向前边界。refreshed=true允许继续，不代表回首页；不宣称跨版本旧页的拼接等于一个当前完整集合。", "", "## 静态 HTTP", "", "| 接口 | 并发 | 原A P95ms | C P50ms | C P95ms | 错误 | 2秒预算 |", "| --- | ---: | ---: | ---: | ---: | ---: | --- |"];
+for(const [key,row]of Object.entries(current??{}))lines.push(`| ${key.replace(/_c\d+$/,'')} | ${row.concurrency} | ${round(original.current?.[key]?.p95_ms)} | ${round(row.p50_ms)} | ${round(row.p95_ms)} | ${row.errors} | ${row.budget_pass?"通过":"失败"} |`);
+lines.push("", "## 各10分钟的活跃分页", "", "| 变更/s | 时长s | 页请求 | HTTP P95ms | A第二页成功率 | C第二页成功/尝试 | C成功率 | 非空严格前进 | terminal | 实际回退 |", "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+for(let i=0;i<3;i++){const row=active[i];lines.push(row?`| ${[0,1,10][i]} | ${round(row.elapsed_seconds)} | ${row.samples} | ${round(row.p95_ms)} | ${round(original.active[i].second_page_success_ratio*100)}% | ${row.second_page_successes}/${row.second_page_attempts} | ${round(row.second_page_success_ratio*100)}% | ${row.strictly_advancing_continuations}/${row.nonempty_continuations} | ${row.terminal_suffixes} | ${row.max_consecutive_resets} |`:`| ${[0,1,10][i]} | 待完成 | — | — | — | — | — | — | — | — |`);}
+lines.push("", "第二页到达等待包含重置/重试，不将成功HTTP耗时冒充全部等待：", "", "| 变更/s | A等待P95ms | C等待P95ms | C最大等待ms | C未完成等待ms |", "| ---: | ---: | ---: | ---: | ---: |");
+for(let i=0;i<3;i++)if(active[i])lines.push(`| ${[0,1,10][i]} | ${round(original.active[i].reachability?.p95_ms)} | ${round(active[i].reachability.p95_ms)} | ${round(active[i].reachability.max_ms)} | ${round(active[i].reachability.right_censored_wait_ms)} |`);
+lines.push("", "## 正确性、SQL与资源", "", "独立SQL与真实API完整遍历四种风险，比较全部ID/排序/总数/版本，执行在无写入窗口；结果见current-full-scope-audit.json。动态窗口每个非空页校验所有ID严格大于请求anchor、页内排序且准入正式；总数与同响应overview一致。低ID再入险、anchor删除/移动/非正式、空suffix/positive total和版本绑定已由真实DB回归覆盖。", "", `进程监测${resources.current.samples}条，CPU峰值${round(resources.current.max_cpu_percent)}%、RSS峰值${round(resources.current.max_rss_mib)}MiB。冷进程5条原始样本、精确EXPLAIN与独立SQL日志计数保留在results-c；SQL观测单独在19076实例启用连接级日志，不改变正式延迟测量。`, "", "## 复现与证据", "", "```sh", "set -a", "source .omx/projects-p1-performance-c/current.env", "set +a", "PERF_LABEL=current PERF_MODE=full pnpm exec playwright test --config=.trellis/tasks/10-05-projects-p1-verification/performance/playwright.config.ts", "node .trellis/tasks/10-05-projects-p1-verification/performance/report-c.mjs", "PERF_RESULTS_DIR=.trellis/tasks/10-05-projects-p1-verification/performance/results-c node .trellis/tasks/10-05-projects-p1-verification/performance/assess.mjs", "```", "", "[C汇总与安全原始样本](performance/results-c/summary.json)。[原A失败报告](performance-report.md)和原始样本仍保留。token session、私库URL和二进制位于ignored目录，不进入报告。此报告只验证后端/API分页性能；最终Web/Desktop粘性提示及30事件双端≤5秒收敛由browser lane独立证明。");
+fs.writeFileSync(".trellis/tasks/10-05-projects-p1-verification/performance-c-report.md",lines.join("\n")+"\n");
+console.log(JSON.stringify({complete,passing,active_completed:active.filter(Boolean).length}));

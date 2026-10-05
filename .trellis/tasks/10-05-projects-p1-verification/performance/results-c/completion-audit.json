@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-05T12:23:57.031Z",
+  "execution_tasks": 0,
+  "port_listeners": {
+    "19075": false,
+    "19076": false
+  },
+  "health_source_matches_measured_binary": {
+    "server/internal/handler/project_health.go": true,
+    "server/internal/projecthealth/collect.go": true,
+    "server/internal/projecthealth/counts.go": true,
+    "server/internal/projecthealth/snapshot.go": true,
+    "server/internal/projecthealth/unavailable.go": true
+  }
+}

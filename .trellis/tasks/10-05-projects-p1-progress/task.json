@@ -2,8 +2,8 @@
   "id": "projects-p1-progress",
   "name": "projects-p1-progress",
   "title": "项目 P1：手动进展与目标验收",
-  "description": "规划进展发布、更正历史、验收证据与幂等站内通知",
-  "status": "planning",
+  "description": "实现并验证进展发布、更正历史、验收证据与幂等站内通知",
+  "status": "completed",
   "dev_type": "backend",
   "scope": "projects",
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-05",
-  "completedAt": null,
-  "branch": null,
+  "completedAt": "2026-10-06",
+  "branch": "codex/projects-p1",
   "base_branch": "main",
-  "worktree_path": null,
-  "commit": null,
+  "worktree_path": "/Volumes/artisan/code/2026/multica-projects-p1",
+  "commit": "31534d844",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -23,7 +23,7 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/projects-prd.md"
   ],
-  "notes": "2026-10-05 技术方案与拆分经 Architect→Critic 顺序复审通过。任务保持 planning；本轮仅完成规划，产品未实施、产品测试未执行。启动/完成遵循父 implement.md 的阶段门槛。",
+  "notes": "2026-10-06 本轮 P1 实施与验收完成。最终产品提交 31534d844；定向 26 项与重新构建的 Web/Electron 8 项均通过。完整检查首次 E2E 失败及修复证据保留于父 verification.md。独立分支未推送、未合并主干、未部署；I1 真实迭代分支仍待 I1。保留任务目录以稳定证据链接。",
   "meta": {
     "planning_status": "reviewed",
     "depends_on": [],
@@ -43,12 +43,28 @@
     "integration_gates": [
       "HG + PG；附统计发布及共享worker/router整合通过"
     ],
-    "gate_evidence": "父implement.md §1；里程碑必须在verification.md记录commit/命令/结果",
+    "gate_evidence": ".trellis/tasks/10-05-projects-p1/verification.md：FG/HG/PG/UG 与最终补验均已记录实际提交、命令和结果",
     "shared_contract": ".trellis/tasks/10-05-projects-p1/api-contract.md",
-    "implementation_status": "not_started",
+    "implementation_status": "completed",
     "plan_reviews": {
       "architect": ".trellis/tasks/10-05-projects-p1/research/architect-review-2.md",
       "critic": ".trellis/tasks/10-05-projects-p1/research/critic-review-2.md"
+    },
+    "implementation_authorized": true,
+    "dependency_semantics": "depends_on表示整任务完成前置；执行按preparation/start/integration gates核对，用户已授权实施P1。",
+    "FG_evidence": "c4250df70; foundation/verification.md; parent rerun passed",
+    "verification_commit": "21f263796",
+    "delivery": {
+      "branch": "codex/projects-p1",
+      "product_commit": "31534d844",
+      "tests_commit": "21f263796",
+      "pushed": false,
+      "merged_to_main": false,
+      "production_deployed": false,
+      "verification": ".trellis/tasks/10-05-projects-p1/verification.md",
+      "deferred_integration": [
+        "I1 real iteration ownership/history branches of PRJ-AC-22 and PRJ-AC-23"
+      ]
     }
   }
 }

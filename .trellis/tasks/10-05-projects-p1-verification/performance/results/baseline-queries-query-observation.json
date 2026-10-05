@@ -1,0 +1,72 @@
+[
+  {
+    "endpoint": "legacy_detail",
+    "requests": 5,
+    "started": "2026-10-05T10:15:50.166Z",
+    "ended": "2026-10-05T10:15:50.358Z",
+    "pids": [
+      58656,
+      58654,
+      58657,
+      58659,
+      58661,
+      58663,
+      58660,
+      58662,
+      58658
+    ],
+    "statement_count": 25,
+    "statements_per_request": 5,
+    "histogram": {
+      "GetMemberByUserAndWorkspace": 5,
+      "GetProjectInWorkspace": 5,
+      "ListIssueStatusKeysByCategories": 5,
+      "GetProjectIssueStats": 5,
+      "GetProjectResourceCounts": 5
+    },
+    "command": [
+      "logs",
+      "--timestamps",
+      "--since",
+      "2026-10-05T10:15:50.166Z",
+      "--until",
+      "2026-10-05T10:15:50.358Z",
+      "multica-postgres-1"
+    ]
+  },
+  {
+    "endpoint": "legacy_list_500",
+    "requests": 5,
+    "started": "2026-10-05T10:15:51.085Z",
+    "ended": "2026-10-05T10:15:51.293Z",
+    "pids": [
+      58656,
+      58654,
+      58657,
+      58659,
+      58661,
+      58663,
+      58660,
+      58662,
+      58658
+    ],
+    "statement_count": 25,
+    "statements_per_request": 5,
+    "histogram": {
+      "GetMemberByUserAndWorkspace": 5,
+      "ListProjects": 5,
+      "ListIssueStatusKeysByCategories": 5,
+      "GetProjectIssueStats": 5,
+      "GetProjectResourceCounts": 5
+    },
+    "command": [
+      "logs",
+      "--timestamps",
+      "--since",
+      "2026-10-05T10:15:51.085Z",
+      "--until",
+      "2026-10-05T10:15:51.293Z",
+      "multica-postgres-1"
+    ]
+  }
+]

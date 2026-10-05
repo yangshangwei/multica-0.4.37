@@ -1,6 +1,6 @@
 # 项目 P1：集成验收与交付
 
-状态：规划，尚未实施。所属[父任务](../10-05-projects-p1/prd.md)。
+状态：本轮 P1 实施验收完成（2026-10-06）。各域、迁移、性能、移动兼容与最终 Web/Desktop 8/8 验证已完成；首次完整check失败及修复后验证分开保留。所属[父任务](../10-05-projects-p1/prd.md)。
 
 ## 目标与边界
 
@@ -12,7 +12,7 @@
 
 逐条填写父 test-spec 的实际结果与证据；不以模型输出或窄测代替整个需求；I1未实现时清楚标记未来迭代接线，当前只验证任务和执行身份保留；远端CI与发布状态独立记录。
 
-对应产品验收：PRJ-AC-01, PRJ-AC-02, PRJ-AC-03, PRJ-AC-04, PRJ-AC-05, PRJ-AC-06, PRJ-AC-07, PRJ-AC-08, PRJ-AC-09, PRJ-AC-10, PRJ-AC-11, PRJ-AC-12, PRJ-AC-13, PRJ-AC-14, PRJ-AC-15, PRJ-AC-16, PRJ-AC-17, PRJ-AC-18, PRJ-AC-19, PRJ-AC-20, PRJ-AC-21, PRJ-AC-22, PRJ-AC-23, PRJ-AC-24, PRJ-AC-25, PRJ-AC-26, PRJ-AC-27。完整场景、额外边界和证据要求见[父测试规格](../10-05-projects-p1/test-spec.md)，本文件不表示这些测试已经通过。
+对应产品验收：PRJ-AC-01, PRJ-AC-02, PRJ-AC-03, PRJ-AC-04, PRJ-AC-05, PRJ-AC-06, PRJ-AC-07, PRJ-AC-08, PRJ-AC-09, PRJ-AC-10, PRJ-AC-11, PRJ-AC-12, PRJ-AC-13, PRJ-AC-14, PRJ-AC-15, PRJ-AC-16, PRJ-AC-17, PRJ-AC-18, PRJ-AC-19, PRJ-AC-20, PRJ-AC-21, PRJ-AC-22, PRJ-AC-23, PRJ-AC-24, PRJ-AC-25, PRJ-AC-26, PRJ-AC-27。完整场景、额外边界和证据要求见[父测试规格](../10-05-projects-p1/test-spec.md)，各项已执行结果见[父验收记录](../10-05-projects-p1/verification.md)，最终 Web/Desktop 8/8 已通过；I1真实迭代分支不计为本次通过。
 
 ## 依赖与启动门槛
 
@@ -20,4 +20,4 @@
 - 产品实现启动：FG用于迁移与真实服务集成，各API就绪后递增验证。
 - 完成与集成：FG + HG + PG + UG；前四个子任务完成，最终证据齐全。
 
-`depends_on=[]` 仅表示没有“整个任务必须先完成”的启动前置，不表示可以忽略里程碑。FG/HG/PG/UG 的定义与证据见[父实施计划](../10-05-projects-p1/implement.md)。不支持里程碑的调度器须由父任务核对证据后再启动。本轮只交付计划，上述开发活动均未执行。
+`depends_on=[]` 仅表示没有“整个任务必须先完成”的启动前置，不表示可以忽略里程碑。FG/HG/PG/UG 的定义与证据见[父实施计划](../10-05-projects-p1/implement.md)。不支持里程碑的调度器须由父任务核对证据后再启动。上述活动已完成本轮P1实施与验收；规划历史、各域结果及首次完整check失败/后续修复验证分别保留于父子验收记录。P1未推送、合并或生产部署。

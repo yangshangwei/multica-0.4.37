@@ -1,6 +1,6 @@
 # 项目增强 P1 技术设计与开发拆分
 
-日期：2026-10-05。范围：完成实施方案与任务拆分；Architect → Critic 顺序复审已通过，产品代码尚未实施。交付证据见[规划核验](../../.trellis/tasks/10-05-projects-p1/planning-verification.md)。
+规划日期：2026-10-05；验收更新：2026-10-06。状态：P1 已在 `codex/projects-p1` 完成实施与本轮验收，最终产品提交 `31534d844`。规划历史见[规划核验](../../.trellis/tasks/10-05-projects-p1/planning-verification.md)，实际测试与范围限制见[验收记录](../../.trellis/tasks/10-05-projects-p1/verification.md)。P1 尚未推送、合并或部署。
 
 沿用现有项目，交付目标模板、完成／取消统计、健康概览、手动进展及目标验收留痕。P2/P3、I1 实现和生产部署不属于本轮范围。
 
@@ -24,4 +24,4 @@
 4. [共享概览与编辑体验](../../.trellis/tasks/10-05-projects-p1-ui/prd.md)：core/views、Web/Desktop 接线及移动读取兼容。
 5. [集成验收与交付](../../.trellis/tasks/10-05-projects-p1-verification/prd.md)：跨端、迁移、并发、性能和文档验证。
 
-基础契约先行；健康与进展按冻结接口并行；界面接入后完成集成验收。启动条件、集成条件与共享文件整合责任以实施计划为准。所有任务保持 `planning`，规划就绪不代表产品已经完成。
+基础契约先行；健康与进展按冻结接口并行；界面接入后完成集成验收。启动条件、集成条件与共享文件整合责任以实施计划为准。五个任务已完成本轮实施验收。首次完整检查的静态15任务、TypeScript 10,052项、Go 69个race包与vet、生产Web构建通过，E2E为7/8，整条check失败。修复提及尾空格导致的预览失效后，26项定向测试及typecheck/lint通过；Web/Desktop重新构建，最终8/8 E2E通过（49.7秒、零重试/跳过）。首次失败保留，未将后续定向通过写成整条check一次全绿。移动端独立185项测试及typecheck/lint通过，未做iOS视觉或IPA验收。ADR-05 C三档各至少600秒压力复测通过；I1真实迭代保护分支仍由I1补验。
