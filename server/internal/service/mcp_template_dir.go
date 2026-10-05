@@ -71,40 +71,48 @@ type mcpManifestTarget struct {
 	Prefix string `json:"prefix,omitempty"`
 }
 
-func (c McpCatalog) readDeploymentTemplates() ([]McpServerTemplate, error) {
+// mcpDeploymentSnapshot carries the exact scan's reservation and resource usage,
+// including invalid entries, so merges cannot combine unrelated directory states.
+type mcpDeploymentSnapshot struct {
+	Templates []McpServerTemplate
+	Names     []string
+	Bytes     int64
+}
+
+func (c McpCatalog) readDeploymentTemplates() (mcpDeploymentSnapshot, error) {
 	if c.Directory == "" {
-		return nil, nil
+		return mcpDeploymentSnapshot{}, nil
 	}
 	// Remove a trailing separator before Lstat: on Unix it otherwise follows
 	// a final symlink instead of returning information about the link itself.
 	directoryPath := filepath.Clean(c.Directory)
 	info, err := os.Lstat(directoryPath)
 	if errors.Is(err, os.ErrNotExist) {
-		return nil, nil
+		return mcpDeploymentSnapshot{}, nil
 	}
 	if err != nil || !info.IsDir() {
-		return nil, unavailableMcpCatalog("root")
+		return mcpDeploymentSnapshot{}, unavailableMcpCatalog("root")
 	}
 	root, err := openMcpTemplateDirectory(nil, directoryPath)
 	if err != nil {
-		return nil, unavailableMcpCatalog("root")
+		return mcpDeploymentSnapshot{}, unavailableMcpCatalog("root")
 	}
 	defer root.Close()
 	directory, err := root.Open(".")
 	if err != nil {
-		return nil, unavailableMcpCatalog("root")
+		return mcpDeploymentSnapshot{}, unavailableMcpCatalog("root")
 	}
 	defer directory.Close()
 	opened, err := directory.Stat()
 	if err != nil || !os.SameFile(info, opened) {
-		return nil, unavailableMcpCatalog("root_changed")
+		return mcpDeploymentSnapshot{}, unavailableMcpCatalog("root_changed")
 	}
 	entries, err := directory.ReadDir(mcpCatalogMaxEntries + 1)
 	if err != nil && !errors.Is(err, io.EOF) {
-		return nil, unavailableMcpCatalog("directory_read")
+		return mcpDeploymentSnapshot{}, unavailableMcpCatalog("directory_read")
 	}
 	if len(entries) > mcpCatalogMaxEntries {
-		return nil, unavailableMcpCatalog("entry_limit")
+		return mcpDeploymentSnapshot{}, unavailableMcpCatalog("entry_limit")
 	}
 	sort.Slice(entries, func(i, j int) bool { return entries[i].Name() < entries[j].Name() })
 	var result []McpServerTemplate
@@ -121,7 +129,7 @@ func (c McpCatalog) readDeploymentTemplates() ([]McpServerTemplate, error) {
 		}
 		data, readErr := readMcpManifestFile(root, key, &remaining)
 		if errors.Is(readErr, ErrMcpCatalogUnavailable) {
-			return nil, readErr
+			return mcpDeploymentSnapshot{}, readErr
 		}
 		if readErr != nil {
 			slog.Warn("MCP deployment template skipped", "key", key, "category", "file")
@@ -134,7 +142,11 @@ func (c McpCatalog) readDeploymentTemplates() ([]McpServerTemplate, error) {
 		}
 		result = append(result, template)
 	}
-	return result, nil
+	names := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		names = append(names, entry.Name())
+	}
+	return mcpDeploymentSnapshot{Templates: result, Names: names, Bytes: int64(mcpCatalogMaxBytes - remaining)}, nil
 }
 
 func unavailableMcpCatalog(category string) error {

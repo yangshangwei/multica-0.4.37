@@ -38,7 +38,7 @@ func TestSkillTemplates_EmbedOnlyWhenDirUnset(t *testing.T) {
 	embed := RoleSkillTemplates()
 
 	for _, svc := range []*TaskService{nil, {}, {SkillTemplateDir: ""}} {
-		got := svc.SkillTemplates()
+		got := mustSkillTemplates(t, svc)
 		if len(got) != len(embed) {
 			t.Fatalf("SkillTemplates() = %d entries, want %d embedded", len(got), len(embed))
 		}
@@ -54,7 +54,7 @@ func TestSkillTemplates_EmbedOnlyWhenDirUnset(t *testing.T) {
 // directory: it must not error, just fall back to the embedded catalog.
 func TestSkillTemplates_MissingDirIsEmbedOnly(t *testing.T) {
 	svc := &TaskService{SkillTemplateDir: filepath.Join(t.TempDir(), "does-not-exist")}
-	if len(svc.SkillTemplates()) != len(RoleSkillTemplates()) {
+	if len(mustSkillTemplates(t, svc)) != len(RoleSkillTemplates()) {
 		t.Fatal("a missing mounted directory must yield the embedded catalog only")
 	}
 }
@@ -69,7 +69,7 @@ func TestSkillTemplates_MountedEntryWithFiles(t *testing.T) {
 	writeTemplateFile(t, dir, "my-debug-helper/references/nested/bar.txt", "nested body")
 
 	svc := &TaskService{SkillTemplateDir: dir}
-	got := svc.SkillTemplates()
+	got := mustSkillTemplates(t, svc)
 
 	if len(got) != len(RoleSkillTemplates())+1 {
 		t.Fatalf("expected embed catalog + 1 mounted entry, got %d", len(got))
@@ -117,7 +117,7 @@ func TestSkillTemplates_MalformedEntriesSkipped(t *testing.T) {
 	writeTemplateFile(t, dir, "loose-file.md", "not a template")
 
 	svc := &TaskService{SkillTemplateDir: dir}
-	got := svc.SkillTemplates()
+	got := mustSkillTemplates(t, svc)
 
 	if _, ok := templateByName(got, "good-one"); !ok {
 		t.Fatal("the well-formed entry must still be listed")
@@ -153,7 +153,7 @@ func TestSkillTemplates_PathEscapeSkipped(t *testing.T) {
 	}
 
 	svc := &TaskService{SkillTemplateDir: dir}
-	got := svc.SkillTemplates()
+	got := mustSkillTemplates(t, svc)
 
 	tpl, ok := templateByName(got, "escaper")
 	if !ok {
@@ -184,7 +184,7 @@ func TestSkillTemplates_TopLevelSymlinkSkipped(t *testing.T) {
 	}
 
 	svc := &TaskService{SkillTemplateDir: dir}
-	got := svc.SkillTemplates()
+	got := mustSkillTemplates(t, svc)
 
 	if tpl, ok := templateByName(got, "sneaky"); ok {
 		t.Fatalf("symlinked top-level entry was listed and leaked content: %q", tpl.Content)
@@ -204,7 +204,7 @@ func TestSkillTemplates_EmbedWinsOnNameClash(t *testing.T) {
 	writeTemplateFile(t, dir, clash+"/SKILL.md", skillMD(clash, "IMPOSTOR description", "impostor body"))
 
 	svc := &TaskService{SkillTemplateDir: dir}
-	got := svc.SkillTemplates()
+	got := mustSkillTemplates(t, svc)
 
 	tpl, found := templateByName(got, clash)
 	if !found {
@@ -236,7 +236,16 @@ func TestSkillTemplates_OversizedSkillMdSkipped(t *testing.T) {
 	writeTemplateFile(t, dir, "too-big/SKILL.md", huge)
 
 	svc := &TaskService{SkillTemplateDir: dir}
-	if _, ok := templateByName(svc.SkillTemplates(), "too-big"); ok {
+	if _, ok := templateByName(mustSkillTemplates(t, svc), "too-big"); ok {
 		t.Fatal("an oversized SKILL.md must be skipped")
 	}
+}
+
+func mustSkillTemplates(t *testing.T, svc *TaskService) []RoleSkillTemplate {
+	t.Helper()
+	templates, err := svc.SkillTemplates()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return templates
 }

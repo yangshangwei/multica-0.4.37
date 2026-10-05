@@ -3,7 +3,7 @@ import { useAdminIssues } from "@multica/core/admin";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@multica/ui/components/ui/table";
 import { useT } from "../../i18n";
 import { AppLink, useNavigation } from "../../navigation";
-import { AdminExecutionFilters, AdminExecutionTabs, AdminListPagination, AdminListState, formatAdminTime } from "../executions/list-controls";
+import { AdminExecutionFilters, AdminExecutionTabs, AdminListPagination, AdminListState, adminTouchLinkClass, formatAdminTime } from "../executions/list-controls";
 function executionLink(issueId: string, workspaceId: string, from: string | null | undefined, to: string | null | undefined, timezone: string | null) {
   const params = new URLSearchParams({ issue_id: issueId, workspace_id: workspaceId });
   if (from)
@@ -27,33 +27,35 @@ export function AdminIssueListPage() {
     <AdminExecutionTabs />
     <AdminExecutionFilters issues />
     <AdminListState loading={query.isPending} error={query.isError} empty={!data?.items.length} issues retry={() => void query.refetch()}>
-      <div className="overflow-x-auto">
-        <Table>
+        <Table className="table-fixed md:table-auto">
           <TableHeader>
             <TableRow>
-              <TableHead>{t($ => $.executions.title_column)}</TableHead>
-              <TableHead>{t($ => $.executions.status)}</TableHead>
-              <TableHead>{t($ => $.executions.count)}</TableHead>
-              <TableHead>{t($ => $.executions.created)}</TableHead>
+              <TableHead className="w-1/2 md:w-auto">{t($ => $.executions.title_column)}</TableHead>
+              <TableHead className="whitespace-normal">{t($ => $.executions.status)}</TableHead>
+              <TableHead className="whitespace-normal">{t($ => $.executions.count)}</TableHead>
+              <TableHead className="hidden md:table-cell">{t($ => $.executions.created)}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>{data?.items.map(item => <TableRow key={item.id}>
-            <TableCell>
-              <div className="space-y-1">
-                <span className="text-caption text-muted-foreground">{item.identifier}</span>
-                <p className="max-w-md truncate text-body">{item.contentAccess && item.contentUrl ? <AppLink href={item.contentUrl} className="underline decoration-foreground/30 underline-offset-4">{item.title}</AppLink> : t($ => $.executions.restricted)}</p>
+            <TableCell className="align-top whitespace-normal">
+              <div className="space-y-2">
+                <p className="break-words text-body font-medium">{item.contentAccess && item.contentUrl ? <AppLink href={item.contentUrl} className={`inline-block underline decoration-foreground/30 underline-offset-4 ${adminTouchLinkClass}`}>{item.title ?? item.identifier}</AppLink> : t($ => $.executions.restricted)}</p>
+                <p className="break-all text-caption text-muted-foreground">{item.identifier}</p>
+                <details className="md:hidden">
+                  <summary className="cursor-pointer text-caption text-muted-foreground">{t($ => $.executions.issue_details)}</summary>
+                  <dl className="mt-2 text-caption"><dt className="text-muted-foreground">{t($ => $.executions.created)}</dt><dd><time dateTime={item.createdAt}>{formatAdminTime(item.createdAt, nav.searchParams.get("timezone") ?? "UTC")}</time></dd></dl>
+                </details>
               </div>
             </TableCell>
-            <TableCell>{item.status}</TableCell>
-            <TableCell>
-              <AppLink className="underline underline-offset-4" href={executionLink(item.id, item.workspaceId, data.timeFrom, data.timeTo, nav.searchParams.get("timezone"))}>{item.executionCount}</AppLink>
+            <TableCell className="break-words align-top whitespace-normal">{item.status}</TableCell>
+            <TableCell className="align-top">
+              <AppLink className={`inline-block underline underline-offset-4 ${adminTouchLinkClass}`} href={executionLink(item.id, item.workspaceId, data.timeFrom, data.timeTo, nav.searchParams.get("timezone"))}>{item.executionCount}</AppLink>
             </TableCell>
-            <TableCell>
+            <TableCell className="hidden md:table-cell">
               <time dateTime={item.createdAt}>{formatAdminTime(item.createdAt, nav.searchParams.get("timezone") ?? "UTC")}</time>
             </TableCell>
           </TableRow>)}</TableBody>
         </Table>
-      </div>
     </AdminListState>
     {data && !query.isError && <AdminListPagination cursor={data.nextCursor} asOf={data.asOf} refresh={() => void query.refetch()} />}</section>;
 }

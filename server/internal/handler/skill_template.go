@@ -29,7 +29,11 @@ type SkillTemplateFileResponse struct {
 // version 0 and the same response shape, so the existing zod schema and the
 // "start from a template" panel need no change.
 func (h *Handler) ListSkillTemplates(w http.ResponseWriter, r *http.Request) {
-	templates := h.TaskService.SkillTemplates()
+	templates, err := h.TaskService.SkillTemplates()
+	if err != nil {
+		writeErrorCode(w, http.StatusServiceUnavailable, "resource_store_unavailable", "The skill catalog is temporarily unavailable")
+		return
+	}
 	out := make([]SkillTemplateResponse, 0, len(templates))
 	for _, template := range templates {
 		files := make([]SkillTemplateFileResponse, 0, len(template.Files))

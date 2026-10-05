@@ -12,12 +12,31 @@ vi.mock("@multica/core/admin", async original => ({ ...await original<typeof imp
   useAdminControlLookup: () => ({ mutateAsync: state.lookup, isPending: false, reset: state.reset }),
   useAdminOperation: (_scope: unknown, _id: string, initialData: unknown) => ({ data: initialData, isError: false, isFetching: false, refetch: vi.fn() }),
 }));
-function mount(restoredInput?: AdminControlInput, target: AdminControlTarget = { id: "target", action: "cancel", fence: { runtimeId: null, dispatchedAt: null, targetVersion: "5" } }) {
-  return render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><NavigationProvider value={{ pathname: "/admin/tasks/target", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: p => p }}>
+function mount(restoredInput?: AdminControlInput, target: AdminControlTarget = { id: "target", action: "cancel", fence: { runtimeId: null, dispatchedAt: null, targetVersion: "5" } }, searchParams = new URLSearchParams()) {
+  return render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><NavigationProvider value={{ pathname: "/admin/tasks/target", searchParams, hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: p => p }}>
     <AdminControlForm scope={{ apiScope: "scope", userId: "actor", organizationId: "organization" }} target={target} restoredInput={restoredInput} onClose={state.close} onRefresh={state.refresh} />
   </NavigationProvider></I18nProvider>);
 }
 beforeEach(() => vi.resetAllMocks());
+it.each<AdminControlTarget>([
+  { id: "target", action: "cancel", fence: { runtimeId: null, dispatchedAt: null, targetVersion: "5" } },
+  { id: "target", action: "admission", admission: "stopped", version: "5" },
+  { id: "target", action: "alert", alertAction: "acknowledge", version: "5" },
+])("identifies and focuses a whitespace-only reason for $action without sending a request", target => {
+  mount(undefined, target);
+  const reason = screen.getByLabelText("Reason");
+  fireEvent.change(reason, { target: { value: "   " } });
+  screen.getByRole("button", { name: "Confirm operation" }).focus();
+  fireEvent.click(screen.getByRole("button", { name: "Confirm operation" }));
+  expect(state.submit).not.toHaveBeenCalled();
+  expect(reason).toHaveAttribute("aria-invalid", "true");
+  expect(reason).toHaveAccessibleDescription("Enter a reason. Spaces alone are not enough.");
+  expect(reason).toHaveFocus();
+  expect(screen.getByRole("alert")).toHaveTextContent("Enter a reason");
+  fireEvent.change(reason, { target: { value: "Operator request" } });
+  expect(reason).not.toHaveAttribute("aria-invalid", "true");
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+});
 // Protocol/state matrices are canonical in core/admin/operation-*.test.ts.
 it("retains the original key and frozen request after a lost response and empty lookup", async () => {
   state.submit.mockRejectedValueOnce(new AdminControlUncertainError("ignored"));
@@ -46,7 +65,19 @@ it("shows server application independently of an unconfirmed process stop", asyn
   expect(await screen.findByText("Applied on server")).toBeInTheDocument();
   expect(screen.getByText("Process stop unconfirmed")).toBeInTheDocument();
   expect(screen.queryByText("Operation completed")).not.toBeInTheDocument();
-  expect(screen.getByRole("link", { name: "Open receipt" })).toHaveAttribute("href", "/admin/operations/operation");
+  expect(screen.getByRole("link", { name: "Open receipt" }).getAttribute("href")).toMatch(/^\/admin\/operations\/operation\?/);
+});
+it("retains the investigation timezone through confirmation and receipt navigation", async () => {
+  state.submit.mockResolvedValueOnce({ id: "operation", targetId: "target", kind: "task.cancel", state: "applied", confirmation: "unconfirmed", reconciliationState: "unconfirmed", resultCode: "awaiting_daemon_confirmation", acceptedAt: null, updatedAt: null });
+  const returnTo = "/admin/tasks?status=running&timezone=Asia%2FShanghai";
+  mount(undefined, { id: "target", action: "cancel", fence: { runtimeId: "runtime", dispatchedAt: "2026-10-02T01:02:00Z", targetVersion: "5" } }, new URLSearchParams({ timezone: "Asia/Shanghai", return_to: returnTo }));
+  expect(screen.getByText(/9:02/)).toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "Operator request" } });
+  fireEvent.click(screen.getByRole("button", { name: "Confirm operation" }));
+  const link = await screen.findByRole("link", { name: "Open receipt" });
+  const receipt = new URL(link.getAttribute("href")!, "https://example.test");
+  expect(receipt.searchParams.get("timezone")).toBe("Asia/Shanghai");
+  expect(receipt.searchParams.get("return_to")).toBe(returnTo);
 });
 it("requires target refresh after a stale-version conflict", async () => {
   state.submit.mockRejectedValueOnce(new ApiError("Stale", 409, "Conflict"));
@@ -76,7 +107,7 @@ it("reconciles a restored request before enabling a same-key retry", async () =>
 it("restores a frozen alert acknowledgement through the shared original-key lookup", async () => {
   const input: AdminControlInput = { id: "target", key: "original-alert-key", action: "alert", body: { action: "acknowledge", expectedVersion: "2", reason: "Investigating" } };
   state.lookup.mockResolvedValueOnce(null);
-  render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><AdminControlForm scope={{ apiScope: "scope", userId: "actor", organizationId: "organization" }} target={{ id: "target", action: "alert", alertAction: "acknowledge", version: "2" }} restoredInput={input} onClose={state.close} onRefresh={state.refresh} /></I18nProvider>);
+  mount(input, { id: "target", action: "alert", alertAction: "acknowledge", version: "2" });
   await screen.findByText(/No receipt is visible yet/);
   expect(screen.getByRole("heading", { name: "Acknowledge alert" })).toBeInTheDocument();
   expect(screen.getByLabelText("Reason")).toHaveValue("Investigating");

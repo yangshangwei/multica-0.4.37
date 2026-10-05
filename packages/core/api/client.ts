@@ -1,3 +1,4 @@
+import { parseAdminResourceList, parseAdminResourcePreview, parseAdminResourceResult, type AdminResourceKind, type AdminResourceUpload, type AdminResourcePublish, type AdminResourceWithdraw } from "../admin/resource-schema";
 import { installationProofExpiry, type InstallationMetadataProofInput } from "./installation-metadata";
 import { parseAdminInstallationList, parseAdminInstallationDetail, parseAdminUnassociatedRuntimes } from "../admin/installation-schemas";
 import { parseAdminExecutionList, parseAdminExecution, parseAdminIssueList } from "../admin/execution-schemas";
@@ -826,6 +827,45 @@ export class ApiClient {
     return parseAdminMe(raw);
   }
 
+  async getAdminResources(kind: AdminResourceKind, options?: { signal?: AbortSignal }) {
+    return parseAdminResourceList(await this.fetch<unknown>(`/api/admin/resources?${new URLSearchParams({ kind })}`, { signal: options?.signal }));
+  }
+
+  private async adminResourceMultipart(path: string, body: FormData, operationId?: string, signal?: AbortSignal): Promise<unknown> {
+    const endpointEpoch = this.endpointEpoch;
+    const authEpoch = this.authEpoch;
+    const response = await this.fetchRaw(path, { method: "POST", body, signal, headers: operationId ? { "Idempotency-Key": operationId } : undefined });
+    const raw: unknown = await response.json();
+    if (endpointEpoch !== this.endpointEpoch || authEpoch !== this.authEpoch) throw new Error("Admin session changed");
+    return raw;
+  }
+
+  async previewAdminResource(kind: AdminResourceKind, input: AdminResourceUpload, options?: { signal?: AbortSignal }) {
+    const body = new FormData();
+    body.append("file", input.file, input.filename);
+    body.append("key", input.key);
+    return parseAdminResourcePreview(await this.adminResourceMultipart(`/api/admin/resources/${encodeURIComponent(kind)}/preview`, body, undefined, options?.signal));
+  }
+
+  async publishAdminResource(kind: AdminResourceKind, input: AdminResourcePublish, operationId: string) {
+    const body = new FormData();
+    body.append("file", input.file, input.filename);
+    body.append("preview_digest", input.previewDigest);
+    body.append("expected_version", input.expectedVersion ?? "");
+    body.append("reason", input.reason);
+    return parseAdminResourceResult(await this.adminResourceMultipart(`/api/admin/resources/${encodeURIComponent(kind)}/${encodeURIComponent(input.key)}/publish`, body, operationId));
+  }
+
+  async withdrawAdminResource(kind: AdminResourceKind, key: string, input: AdminResourceWithdraw, operationId: string) {
+    return parseAdminResourceResult(await this.fetch<unknown>(`/api/admin/resources/${encodeURIComponent(kind)}/${encodeURIComponent(key)}/withdraw`, {
+      method: "POST", headers: { "Idempotency-Key": operationId }, body: JSON.stringify({ expected_version: input.expectedVersion, reason: input.reason }),
+    }));
+  }
+
+  async getAdminResourceOperation(operationId: string, options?: { signal?: AbortSignal }) {
+    return parseAdminResourceResult(await this.fetch<unknown>(`/api/admin/resources/operations/${encodeURIComponent(operationId)}`, { signal: options?.signal }));
+  }
+
   async getAdminTasks(params: URLSearchParams, options?: { signal?: AbortSignal }) {
     return parseAdminExecutionList(await this.fetch<unknown>(`/api/admin/tasks?${params}`, { signal: options?.signal }));
   }
@@ -1095,7 +1135,7 @@ export class ApiClient {
       // Session rejection has a recovery path; console.error would open the
       // development error overlay while the application returns to sign-in.
       const logLevel = status === 401 || status === 404 ? "warn" : "error";
-      this.logger[logLevel](`← ${status} ${path}`, { rid, duration: `${Date.now() - start}ms`, error: message });
+      this.logger[logLevel](`← ${status} ${path}`, { rid, duration: `${Date.now() - start}ms`, error: path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
       throw new ApiError(
         message,
         status,

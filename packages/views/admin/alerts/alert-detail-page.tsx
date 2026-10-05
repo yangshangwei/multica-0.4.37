@@ -1,5 +1,5 @@
 "use client";
-import { adminAlertActions, canControlAlert, useAdminAlert, useAdminObservationScope, type AdminAlert } from "@multica/core/admin";
+import { adminAlertActions, adminDetailHref, adminReturnHref, canControlAlert, useAdminAlert, useAdminObservationScope, type AdminAlert } from "@multica/core/admin";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../../i18n";
 import { AppLink, useNavigation } from "../../navigation";
@@ -20,8 +20,10 @@ export function AdminAlertDetailPage({ id }: { id: string }) {
   const alert = query.data;
   const resolution = alert?.resolutionCode;
   const timezone = nav.searchParams.get("timezone") ?? "UTC";
+  const subjectList = alert?.subjectKind === "installation" ? "/admin/installations" : "/admin/tasks";
+  const subjectParams = new URLSearchParams({ timezone });
   const instant = (value: string | null) => value ? <time dateTime={value}>{formatAdminTime(value, timezone)}</time> : t($ => $.observability.unknown);
-  return <section className="space-y-6"><AppLink href="/admin/alerts" className="inline-flex min-h-11 items-center text-body underline underline-offset-4">{t($ => $.alerts.back)}</AppLink><ObservationHeader title={t($ => $.alerts.detail)} description={t($ => $.alerts.description)} />
+  return <section className="space-y-6"><AppLink href={adminReturnHref(nav.searchParams, "/admin/alerts")} className="inline-flex min-h-11 items-center text-body underline underline-offset-4">{t($ => $.alerts.back)}</AppLink><ObservationHeader title={t($ => $.alerts.detail)} description={t($ => $.alerts.description)} />
     <ObservationState pending={query.isPending} error={query.isError} retry={() => void query.refetch()}>{alert && <>
       <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="text-body-lg font-semibold">{t($ => $.alerts.rules[alert.rule])}</h2><p className="break-all text-caption text-muted-foreground">{alert.id}</p></div><Button variant="outline" onClick={() => void query.refetch()}>{t($ => $.observability.refresh)}</Button></div>
       <AlertControls alert={alert} refresh={() => query.refetch({ throwOnError: true })} />
@@ -31,6 +33,6 @@ export function AdminAlertDetailPage({ id }: { id: string }) {
         [t($ => $.alerts.firstSeen), instant(alert.firstSeenAt)], [t($ => $.alerts.lastSeen), instant(alert.lastSeenAt)], [t($ => $.alerts.acknowledgedAt), instant(alert.acknowledgedAt)], [t($ => $.alerts.resolvedAt), instant(alert.resolvedAt)], [t($ => $.alerts.closedAt), instant(alert.closedAt)], [t($ => $.alerts.resolution), resolution ? t($ => $.alerts.resolutions[resolution]) : t($ => $.observability.unknown)],
       ].map(([label, value]) => <div key={String(label)} className="min-w-0 space-y-1"><dt className="text-caption text-muted-foreground">{label}</dt><dd className="break-all text-body">{value}</dd></div>)}</dl>
       {alert.rule === "execution_failed" && <p className="max-w-prose text-caption text-muted-foreground">{t($ => $.alerts.failureRecordHint)}</p>}
-      <div className="space-y-2"><p className="text-caption text-muted-foreground">{t($ => $.alerts.subject)}</p>{alert.subjectKind === "unknown" ? <p className="break-all text-body">{alert.subjectId}</p> : <AppLink href={`/admin/${alert.subjectKind === "installation" ? "installations" : "tasks"}/${alert.subjectId}`} className="inline-flex min-h-11 items-center break-all text-body underline underline-offset-4">{alert.subjectId}</AppLink>}{alert.relatedTaskId && <p><AppLink href={`/admin/tasks/${alert.relatedTaskId}`} className="inline-flex min-h-11 items-center break-all text-body underline underline-offset-4">{t($ => $.alerts.relatedTask)}: {alert.relatedTaskId}</AppLink></p>}</div>
+      <div className="space-y-2"><p className="text-caption text-muted-foreground">{t($ => $.alerts.subject)}</p>{alert.subjectKind === "unknown" ? <p className="break-all text-body">{alert.subjectId}</p> : <AppLink href={adminDetailHref(`${subjectList}/${alert.subjectId}`, subjectList, subjectParams)} className="inline-flex min-h-11 items-center break-all text-body underline underline-offset-4">{alert.subjectId}</AppLink>}{alert.relatedTaskId && <p><AppLink href={adminDetailHref(`/admin/tasks/${alert.relatedTaskId}`, "/admin/tasks", subjectParams)} className="inline-flex min-h-11 items-center break-all text-body underline underline-offset-4">{t($ => $.alerts.relatedTask)}: {alert.relatedTaskId}</AppLink></p>}</div>
     </>}</ObservationState></section>;
 }

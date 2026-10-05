@@ -163,6 +163,34 @@ container, and allow the emphasized phrase to wrap when enlarged beyond it.
 
 ## Accessibility
 
+### Platform administration navigation
+
+`admin/admin-shell.tsx` owns the six platform navigation destinations and their
+active child groups. Reuse that directory in the desktop sidebar and compact
+Sheet. Mark only the current destination with `aria-current="page"`; a group
+link can remain visually selected without claiming to be the current page.
+Protected destinations and content require the ready administration state.
+Close an open compact Sheet when access is lost so its modal backdrop cannot
+obscure the denial or unavailable message. Preserve current-link initial focus,
+Escape/trigger focus return and dismissal when switching to the desktop layout.
+Canonical interaction coverage lives in `admin/admin-shell.test.tsx`.
+
+Administration filter forms share validation through `useAdminFilterFeedback`.
+Pass the current effective query so navigating between saved views clears draft
+errors. Reset buttons must trigger a native form reset and clear feedback before
+removing URL filters; navigation alone does not clear a draft when the URL is
+already unchanged. `admin/filter-feedback.test.tsx` covers reset, presets and
+back-navigation behavior. Pure validation in `packages/core/admin/view-params.ts`
+matches server UTF-8 byte limits and normalizes accepted time-zone aliases to
+canonical IANA names. Date-only account ranges use UTC and include the selected
+last day, capped at now for today.
+
+Use the shared `adminTouchLinkClass` with a block-level display for content links,
+including links inside closed disclosures or optional execution lineage. The
+shell's touch selectors cover form controls and summaries, not arbitrary links.
+Keep secondary IDs available in details while prioritizing names and statuses
+on narrow lists. Validate list return destinations before retaining their query.
+
 <!-- A11y requirements and patterns -->
 
 Interactive content supplied through a platform slot still inherits its React
@@ -193,3 +221,67 @@ Agent and squad avatars use `ActorAvatar` in UI and the shared Lucide registry i
 `AvatarUploadControl` exposes a Lucide picker for agents/squads. It persists via `onIconSelected` when supplied, otherwise `onUploaded`; an empty default preview is not a saved avatar and must not expose Clear. The generic actor directory exposes `getSquadTemplateKey` from the existing query cache.
 
 Mobile uses generated Lucide nodes with its existing SVG renderer. Refresh after registry changes with `node apps/mobile/scripts/sync-avatar-icons.cjs`. Server validation and template defaults must match the shared icon names; backend support must ship before clients that save icon markers.
+
+### Administration-only visual surfaces
+
+The Electron renderer does not mount `@multica/views/admin`, but its Tailwind
+source scan includes the entire views package. Administration presentation must
+therefore stay in the locally imported `admin/admin-visual.module.css`; never
+move its custom properties to global tokens or shared primitives. Its sibling
+`.css.d.ts` declares only that module, not a wildcard asset type.
+
+Apply the local theme to both AdminShell and the mobile Sheet portal. A portal
+does not inherit custom properties from the shell's DOM subtree. Use rectangular
+OKLab mixing for tinted neutral surfaces: cylindrical OKLCH interpolation can
+rotate neutral-to-accent blends toward an unintended hue.
+
+The overview's highlighted metrics retain accessible value descriptions,
+current-state drilldown parameters, and the distinction between unknown data
+and zero. Other administration pages receive a single content surface, without
+changing their forms or tables. After a visual change, verify administration
+routes in both locales/themes and check a separate desktop build for absence of
+administration-specific CSS, in addition to the desktop regression suite.
+
+Administration list refinements keep display and query semantics separate.
+`AdminFilterSummary` accepts an explicit field allowlist and reads the submitted
+URL, not draft form values or generated default observation windows. Never show
+cursor tokens as active filters. Date-only account summaries display the same
+inclusive UTC end date as the input while requests retain the exclusive bound.
+Account reset keeps its current directory (including `/admin/administrators`);
+refresh on later pages returns to the first page without discarding filters.
+
+Audit code dictionaries must use own-property lookup and preserve unknown codes.
+Known labels are presentation only: keep raw action/result/phase, full IDs and
+snapshots in the event disclosure. `applied` does not prove remote execution
+confirmation. Long unknown codes require `overflow-wrap:anywhere` inside flex
+headings; `break-words` alone retains their oversized min-content width.
+
+Installation state and freshness are independent. Use semantic status colors
+only for fresh, known observations; stale/unavailable/unknown readings stay
+neutral. Short identifiers are visual only: keep full accessible names and a
+selectable/copyable identifier in the disclosure. Clipboard failure must retain
+manual copy access. Execution technical disclosures preserve permission checks,
+query context and all raw identifiers; controls retain their original lifecycle.
+
+
+### Resource publication and password reset confirmations
+
+Resource uploads use the admin-scoped API/query layer and multipart requests;
+never set Content-Type manually on FormData. Endpoint and actor changes fence
+responses and clear editor drafts. Retain files for recoverable validation errors;
+a lost publication response must check the original operation receipt rather than
+silently submit again. Receipt lookup remains usable when catalog refresh fails.
+
+A withdrawal pins the revision the administrator selected. Polling must not
+replace that revision in an open confirmation. Show drift and require explicit
+cancel/reselection; publish instead pins its validated preview revision. Tests in
+`resources/resources-withdrawal.test.tsx` cover both polling and pre-poll409 races.
+Resource tabs retain44px targets on narrow/coarse-pointer layouts through scoped
+admin CSS, without modifying shared Tabs primitives.
+
+Password reset confirmation is UI-only; the existing recover-password action and
+original operation key remain authoritative. Distinguish the target temporary
+password from the administrator password. After errors clear secrets, and for an
+uncertain retry require the same temporary password with unchanged reason/username.
+Do not weaken forced change, session/token revocation, target-role/self guards or
+concurrent account-version checks when changing this form.

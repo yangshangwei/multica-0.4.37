@@ -426,6 +426,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		ManagedInstallationsEnabled:   os.Getenv("MULTICA_MANAGED_INSTALLATIONS_ENABLED") == "true",
 		DeploymentID:                  auth.ManagedDeploymentID(),
 		PlatformAdminEnabled:          os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true",
+		ResourcePublishDir:            strings.TrimSpace(os.Getenv("MULTICA_RESOURCE_PUBLISH_DIR")),
 		AllowSignup:                   os.Getenv("ALLOW_SIGNUP") != "false",
 		AllowedEmails:                 splitAndTrim(os.Getenv("ALLOWED_EMAILS")),
 		AllowedEmailDomains:           splitAndTrim(os.Getenv("ALLOWED_EMAIL_DOMAINS")),
@@ -1610,6 +1611,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Get("/overview", h.AdminOverview)
 			r.Get("/health", h.AdminHealth)
 			r.Get("/settings", h.AdminSettings)
+			r.Get("/resources", h.AdminResources)
+			r.Get("/resources/operations/{id}", h.AdminResourceOperation)
+			r.Post("/resources/{kind}/preview", h.AdminResourcePreview)
+			r.Post("/resources/{kind}/{key}/publish", h.AdminResourcePublish)
+			r.Post("/resources/{kind}/{key}/withdraw", h.AdminResourceWithdraw)
 			r.Get("/workspaces", h.AdminWorkspaces)
 			r.Get("/audit", h.AdminAudit)
 			r.Get("/alerts", h.AdminAlerts)

@@ -10,8 +10,13 @@ vi.mock("@multica/core/admin", async original => ({ ...await original<typeof imp
   useAdminControlDraft: () => ({ loading: false, error: false, draft: null, reload: vi.fn() }),
   useAdminAlert: () => ({ isPending: false, isError: false, refetch: vi.fn(), data: { id: "alert", organizationId: "org", rule: state.rule, status: state.status, severity: "warning", subjectKind: "task", subjectId: "task", firstSeenAt: "2026-10-01T00:00:00Z", lastSeenAt: "2026-10-02T00:00:00Z", occurrenceCount: 1, version: "1", allowedActions: ["acknowledge", "assign", "close"], assigneeId: null, acknowledgedAt: null, resolvedAt: null, closedAt: null, conditionActive: true, resolutionCode: null, relatedTaskId: null } }),
 }));
-function mount() { return render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><NavigationProvider value={{ pathname: "/admin/alerts/alert", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: p => p }}><AdminAlertDetailPage id="alert" /></NavigationProvider></I18nProvider>); }
+function mount(search = "") { return render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><NavigationProvider value={{ pathname: "/admin/alerts/alert", searchParams: new URLSearchParams(search), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: p => p }}><AdminAlertDetailPage id="alert" /></NavigationProvider></I18nProvider>); }
 beforeEach(() => { state.role = "platform_observer"; state.status = "open"; state.rule = "queue_timeout"; });
+it("keeps the filtered alert list and display zone during investigation", () => {
+  mount(new URLSearchParams({ timezone: "Asia/Shanghai", return_to: "/admin/alerts?status=open&rule=queue_timeout" }).toString());
+  expect(screen.getByRole("link", { name: "Back to alerts" })).toHaveAttribute("href", "/admin/alerts?status=open&rule=queue_timeout");
+  expect(screen.getByRole("link", { name: "task" })).toHaveAttribute("href", expect.stringContaining("timezone=Asia%2FShanghai"));
+});
 it("shows condition and acknowledgement separately without observer write controls", () => {
   mount();
   expect(screen.getByText("Still active")).toBeInTheDocument();

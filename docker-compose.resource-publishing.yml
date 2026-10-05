@@ -1,0 +1,11 @@
+# Optional Web administration publishing. Combine with docker-compose.selfhost.yml.
+# Manual skill/MCP mounts stay read-only; only this dedicated volume is writable.
+services:
+  backend:
+    environment:
+      MULTICA_RESOURCE_PUBLISH_DIR: /app/data/resources
+    volumes:
+      - managed_resources:/app/data/resources
+
+volumes:
+  managed_resources:

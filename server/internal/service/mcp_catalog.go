@@ -16,10 +16,11 @@ var (
 type McpCatalog struct {
 	Directory string
 	AllowHTTP bool
+	Publisher *ResourcePublisher
 }
 
 func (c McpCatalog) List() ([]McpServerTemplate, error) {
-	deployed, err := c.readDeploymentTemplates()
+	deployed, err := c.deploymentTemplates()
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +48,7 @@ func (c McpCatalog) Resolve(source, key, version string, inputs map[string]strin
 		if !mcpTemplateName.MatchString(key) || len(key) > 128 || strings.TrimSpace(version) == "" {
 			return nil, errors.New("invalid MCP template identity")
 		}
-		deployed, err := c.readDeploymentTemplates()
+		deployed, err := c.deploymentTemplates()
 		if err != nil {
 			return nil, err
 		}

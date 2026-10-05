@@ -250,7 +250,7 @@ from a read-only mounted directory. Handler source switched from
 `service.RoleSkillTemplates()` to `TaskService.SkillTemplates()`.
 
 **2. Signatures**
-- `func (s *TaskService) SkillTemplates() []RoleSkillTemplate` — nil-safe;
+- `func (s *TaskService) SkillTemplates() ([]RoleSkillTemplate, error)` — nil-safe;
   `RoleSkillTemplates()` (embed, stable order) first, then mounted entries.
 - `scanSkillTemplateDir(dir string, embedNames map[string]struct{}) []RoleSkillTemplate`.
 
@@ -461,3 +461,10 @@ evidence that an LLM independently gathered or summarized the data.
 > **Warning**: `POST /api/autopilots/from-template` must not accept `title` / `description` / `cron_expression` / `execution_mode` / `issue_title_template` from the client.
 >
 > Provenance honesty: a client that could supply its own prompt while claiming `template_key` would stamp a template's identity on an autopilot that runs something else entirely. The handler takes all content fields from the registry entry; the request carries only `template_key`, `assignee_id`, and optional `assignee_type` / `project_id` / `timezone` / `language` / `subscribers`. The e2e spec (`e2e/autopilot-template.spec.ts`) asserts the create body carries none of the template-decided fields.
+
+
+## Administration-managed resource publication
+
+Managed publication is opt-in and preserves the existing deployment consumer protocols.
+See [Resource publishing](./resource-publishing.md) for upload limits, locking,
+CAS/replay, audit recovery, catalog snapshot and compatibility contracts.

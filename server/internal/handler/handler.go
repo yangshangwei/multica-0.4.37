@@ -69,6 +69,7 @@ type dbExecutor interface {
 type Config struct {
 	// PlatformAdminEnabled controls the password-mode administration surface.
 	PlatformAdminEnabled        bool
+	ResourcePublishDir          string
 	ManagedInstallationsEnabled bool
 	DeploymentID                string
 	AllowSignup                 bool
@@ -242,6 +243,7 @@ type Handler struct {
 	Bus                    *events.Bus
 	TaskService            *service.TaskService
 	McpCatalog             service.McpCatalog
+	ResourcePublisher      *service.ResourcePublisher
 	PluginService          *service.PluginService
 	IssueService           *service.IssueService
 	AutopilotService       *service.AutopilotService
@@ -547,6 +549,27 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 		Directory: strings.TrimSpace(os.Getenv("MULTICA_MCP_TEMPLATE_DIR")),
 		AllowHTTP: strings.EqualFold(strings.TrimSpace(os.Getenv("MULTICA_MCP_TEMPLATE_ALLOW_HTTP")), "true"),
 	}
+	resourcePublisher := &service.ResourcePublisher{
+		Root: strings.TrimSpace(cfg.ResourcePublishDir), SkillDirectory: taskSvc.SkillTemplateDir,
+		McpDirectory: mcpCatalog.Directory, AllowHTTP: mcpCatalog.AllowHTTP,
+		OrganizationID: func(ctx context.Context) (string, error) {
+			ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+			defer cancel()
+			if queries == nil {
+				return "", errors.New("resource organization is unavailable")
+			}
+			organization, err := queries.GetInternalOrganization(ctx)
+			if err != nil {
+				return "", err
+			}
+			if organization.State != "active" {
+				return "", errors.New("resource organization is inactive")
+			}
+			return uuidToString(organization.ID), nil
+		},
+	}
+	taskSvc.ResourcePublisher = resourcePublisher
+	mcpCatalog.Publisher = resourcePublisher
 	h := &Handler{
 		Queries:                      queries,
 		DB:                           executor,
@@ -558,6 +581,7 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 		Bus:                          bus,
 		TaskService:                  taskSvc,
 		McpCatalog:                   mcpCatalog,
+		ResourcePublisher:            resourcePublisher,
 		PluginService:                service.NewPluginService(queries, txStarter),
 		IssueService:                 service.NewIssueService(queries, txStarter, bus, analyticsClient, taskSvc),
 		AutopilotService:             service.NewAutopilotService(queries, txStarter, bus, taskSvc),

@@ -5,23 +5,50 @@ import { Badge } from "@multica/ui/components/ui/badge";
 import { Button } from "@multica/ui/components/ui/button";
 import { AppLink, useNavigation } from "../../navigation";
 import { useT } from "../../i18n";
-import { formatAdminTime } from "../executions/list-controls";
+import { adminTabClass, formatAdminTime } from "../executions/list-controls";
+import styles from "../admin-visual.module.css";
 export function InstallationAxis({ axis }: {
   axis: AdminInstallationAxis;
 }) {
   const { t } = useT("admin");
+  const nav = useNavigation();
+  let tone = styles.statusNeutral;
+  if (axis.freshness === "fresh") {
+    switch (axis.state) {
+      case "active":
+      case "reachable":
+      case "ready": tone = styles.statusSuccess; break;
+      case "unreachable":
+      case "environment_unavailable":
+      case "no_permission": tone = styles.statusDanger; break;
+      case "inactive":
+      case "stopped": tone = styles.statusWarning; break;
+      default: break;
+    }
+  }
   return <div className="space-y-1">
-    <Badge variant="outline">{t($ => $.installations.states[axis.state])}</Badge>
-    <p className="text-caption text-muted-foreground">{t($ => $.installations.freshness[axis.freshness])}{axis.observedAt && <> · <time dateTime={axis.observedAt}>{formatAdminTime(axis.observedAt)}</time>
+    <span className="sr-only">{t($ => $.installations.reportedState)}</span>
+    <Badge variant="outline" className={`${styles.statusBadge} ${tone} h-auto min-h-5 max-w-full whitespace-normal`}>{t($ => $.installations.states[axis.state])}</Badge>
+    <p className="text-caption text-muted-foreground">{t($ => $.installations.freshness[axis.freshness])}{axis.observedAt && <> · <time dateTime={axis.observedAt}>{formatAdminTime(axis.observedAt, nav.searchParams.get("timezone") ?? "UTC")}</time>
     </>}</p>
   </div>;
+}
+export function InstallationRuntimeStatus({ status }: { status: string }) {
+  const { t } = useT("admin");
+  switch (status) {
+    case "online": return t($ => $.installations.runtimeStates.online);
+    case "offline": return t($ => $.installations.runtimeStates.offline);
+    default: return status || t($ => $.installations.unknown);
+  }
 }
 export function InstallationTabs() {
   const { t } = useT("admin");
   const nav = useNavigation();
+  const zone = nav.searchParams.get("timezone");
+  const suffix = zone ? `?${new URLSearchParams({ timezone: zone })}` : "";
   return <nav aria-label={t($ => $.installations.title)} className="flex flex-wrap gap-5 border-b border-surface-border pb-3">
-    <AppLink href="/admin/installations" aria-current={nav.pathname === "/admin/installations" ? "page" : undefined} className="text-body aria-[current=page]:font-semibold">{t($ => $.installations.title)}</AppLink>
-    <AppLink href="/admin/installations/unassociated" aria-current={nav.pathname.endsWith("/unassociated") ? "page" : undefined} className="text-body aria-[current=page]:font-semibold">{t($ => $.installations.legacy)}</AppLink>
+    <AppLink href={`/admin/installations${suffix}`} aria-current={nav.pathname === "/admin/installations" ? "page" : undefined} className={adminTabClass}>{t($ => $.installations.title)}</AppLink>
+    <AppLink href={`/admin/installations/unassociated${suffix}`} aria-current={nav.pathname.endsWith("/unassociated") ? "page" : undefined} className={adminTabClass}>{t($ => $.installations.legacy)}</AppLink>
   </nav>;
 }
 export function InstallationReadState({ pending, error, empty, legacy = false, retry, children }: {
@@ -59,7 +86,7 @@ export function InstallationPagination({ cursor, asOf, refresh }: {
     nav.push(`${nav.pathname}${p.size ? `?${p}` : ""}`);
   }
   return <div className="flex flex-wrap items-center justify-between gap-3">
-    <p className="text-caption text-muted-foreground">{t($ => $.installations.updated)} <time dateTime={asOf}>{formatAdminTime(asOf)}</time>
+    <p className="text-caption text-muted-foreground">{t($ => $.installations.updated)} <time dateTime={asOf}>{formatAdminTime(asOf, nav.searchParams.get("timezone") ?? "UTC")}</time>
     </p>
     <div className="flex flex-wrap gap-2">
       <Button variant="ghost" onClick={() => nav.searchParams.has("cursor") ? move(null) : refresh()}>{t($ => $.installations.refresh)}</Button>

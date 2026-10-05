@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { ApiError } from "@multica/core/api";
 import {
   AdminControlUncertainError, AdminControlDraftError, useAdminControlMutation, useAdminControlLookup,
@@ -8,6 +8,7 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { useT } from "../../i18n";
+import { useNavigation } from "../../navigation";
 import { formatAdminTime } from "../executions/list-controls";
 import { AdminOperationReceipt } from "./operation-receipt";
 import { AdminAlertFields } from "../alerts/alert-fields";
@@ -21,6 +22,7 @@ export function AdminControlForm({ scope, target, restoredInput, onClose, onRefr
   scope: AdminScope; target: AdminControlTarget; restoredInput?: AdminControlInput; onClose(): void; onRefresh(): Promise<unknown> | void;
 }) {
   const { t } = useT("admin");
+  const nav = useNavigation();
   const [key] = useState(() => restoredInput?.key ?? crypto.randomUUID());
   const snapshot = useRef<AdminControlInput | null>(restoredInput ?? null);
   const restoreAttempted = useRef(false);
@@ -31,6 +33,9 @@ export function AdminControlForm({ scope, target, restoredInput, onClose, onRefr
   const [uncertain, setUncertain] = useState(!!restoredInput);
   const [conflict, setConflict] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [reasonInvalid, setReasonInvalid] = useState(false);
+  const reasonRef = useRef<HTMLTextAreaElement>(null);
+  const reasonErrorId = useId();
   const [receipt, setReceipt] = useState<AdminOperation | null>(null);
   const working = restoring || refreshing || mutation.isPending || lookup.isPending;
   const action = target.action === "cancel" ? "cancel" : target.action === "admission" && target.admission === "stopped" ? "stop" : "resume";
@@ -63,7 +68,12 @@ export function AdminControlForm({ scope, target, restoredInput, onClose, onRefr
     if (working || conflict) return;
     const values = new FormData(event.currentTarget);
     const reason = String(values.get("reason") ?? "").trim();
-    if (!reason) return;
+    if (!reason) {
+      setReasonInvalid(true);
+      reasonRef.current?.focus();
+      return;
+    }
+    setReasonInvalid(false);
     let alertInput: AdminControlInput | null = null;
     if (!snapshot.current && target.action === "alert") {
       const parsed = adminAlertChangeSchema.safeParse({ action: target.alertAction, expectedVersion: target.version, reason,
@@ -102,11 +112,16 @@ export function AdminControlForm({ scope, target, restoredInput, onClose, onRefr
     <dl className="grid gap-3 text-caption sm:grid-cols-2">
       <div className="min-w-0"><dt className="text-muted-foreground">{t($ => $.operations.target)}</dt><dd className="break-all">{target.id}</dd></div>
       <div><dt className="text-muted-foreground">{t($ => $.operations.version)}</dt><dd>{target.action === "cancel" ? target.fence.targetVersion : target.version}</dd></div>
-      {target.action === "cancel" && <><div className="min-w-0"><dt className="text-muted-foreground">{t($ => $.operations.runtime)}</dt><dd className="break-all">{target.fence.runtimeId ?? t($ => $.operations.notDispatched)}</dd></div><div><dt className="text-muted-foreground">{t($ => $.operations.dispatch)}</dt><dd>{target.fence.dispatchedAt ? formatAdminTime(target.fence.dispatchedAt) : t($ => $.operations.notDispatched)}</dd></div></>}
+      {target.action === "cancel" && <><div className="min-w-0"><dt className="text-muted-foreground">{t($ => $.operations.runtime)}</dt><dd className="break-all">{target.fence.runtimeId ?? t($ => $.operations.notDispatched)}</dd></div><div><dt className="text-muted-foreground">{t($ => $.operations.dispatch)}</dt><dd>{target.fence.dispatchedAt ? formatAdminTime(target.fence.dispatchedAt, nav.searchParams.get("timezone") ?? "UTC") : t($ => $.operations.notDispatched)}</dd></div></>}
     </dl>
     <form className="grid max-w-xl gap-4" onSubmit={submit}>
       {target.action === "alert" && <AdminAlertFields scope={scope} action={target.alertAction} requiresResolution={target.requiresResolution === true} locked={working || !!snapshot.current} restored={snapshot.current?.action === "alert" ? snapshot.current.body : undefined} />}
-      <label className="space-y-1 text-caption">{t($ => $.operations.reason)}<Textarea autoFocus name="reason" required maxLength={1000} defaultValue={restoredInput?.body.reason ?? ""} readOnly={working || !!snapshot.current} /></label>
+      <div className="space-y-2">
+        <label className="space-y-1 text-caption">{t($ => $.operations.reason)}<Textarea ref={reasonRef} autoFocus name="reason" required maxLength={1000} defaultValue={restoredInput?.body.reason ?? ""} readOnly={working || !!snapshot.current} aria-invalid={reasonInvalid || undefined} aria-describedby={reasonInvalid ? reasonErrorId : undefined} onChange={event => {
+          if (event.target.value.trim()) setReasonInvalid(false);
+        }} /></label>
+        {reasonInvalid && <p id={reasonErrorId} role="alert" className="text-caption text-destructive">{t($ => $.operations.reasonRequired)}</p>}
+      </div>
       {feedback && <p role="alert" className="text-body">{feedback}</p>}
       {uncertain && <p className="break-all text-caption">{t($ => $.operations.key)}: {key}</p>}
       <div className="flex flex-wrap gap-3">

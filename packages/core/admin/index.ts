@@ -27,3 +27,6 @@ export * from "./operation-draft";
 export * from "./observability-schema";
 export * from "./observability-queries";
 export * from "./alert-schema";
+export * from "./view-params";
+export * from "./resource-schema";
+export * from "./resource-queries";

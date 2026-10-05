@@ -54,7 +54,7 @@ app.whenReady().then(async () => {
   const window = new BrowserWindow({
     width: 1380, height: 1000, show: true, title: "Multica changelog acceptance",
     webPreferences: {
-      preload: path.resolve(__dirname, "../../apps/desktop/out/preload/index.js"),
+      preload: process.env.CHANGELOG_ELECTRON_PRELOAD || path.resolve(__dirname, "../../apps/desktop/out/preload/index.js"),
       contextIsolation: true, sandbox: true,
       additionalArguments: [`--multica-locale=${process.env.CHANGELOG_ELECTRON_SYSTEM_LOCALE || "zh-CN"}`],
     },

@@ -4,7 +4,8 @@ import { I18nProvider } from "@multica/core/i18n/react";
 import { NavigationProvider } from "../../navigation";
 import en from "../../locales/en/admin.json";
 import { AdminIssueListPage } from "./issue-list";
-vi.mock("@multica/core/admin", () => ({
+vi.mock("@multica/core/admin", async original => ({
+  ...await original<typeof import("@multica/core/admin")>(),
   executionStatuses: [], executionSources: [], useAdminIssues: () => ({
     isPending: false, isError: false, refetch: vi.fn(), data: {
       items: [{

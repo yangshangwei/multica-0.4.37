@@ -7,7 +7,8 @@ import { AdminInstallationDetailPage } from "./installation-detail-page";
 const axis = {
   state: "unknown", freshness: "unknown", observedAt: null, source: "none", reasonCode: "missing"
 };
-vi.mock("@multica/core/admin", () => ({
+vi.mock("@multica/core/admin", async original => ({
+  ...await original<typeof import("@multica/core/admin")>(),
   useAdminAccess: () => ({status: "ready", identity: {role: "platform_observer"}}),
   useAdminInstallation: () => ({
     isPending: false, isError: false, refetch: vi.fn(), data: {
@@ -29,4 +30,11 @@ it("presents unknown evidence and a scoped execution link without machine contro
   expect(screen.getByText("No verified daemon binding yet.")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "View executions" })).toHaveAttribute("href", "/admin/tasks?installation_id=install");
   expect(screen.queryByRole("button", { name: /stop|upgrade|shell/i })).not.toBeInTheDocument();
+  expect(screen.getByText("Active")).toBeInTheDocument();
+});
+it("returns to the filtered installation list", () => {
+  const params = new URLSearchParams({ timezone: "Asia/Shanghai", return_to: "/admin/installations?lifecycle=active&cursor=page2" });
+  render(<I18nProvider locale="en" resources={{ en: { admin: en } }}><NavigationProvider value={{ pathname: "/admin/installations/install", searchParams: params, hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: p => p }}><AdminInstallationDetailPage id="install" /></NavigationProvider></I18nProvider>);
+  expect(screen.getByRole("link", { name: "Back to installations" })).toHaveAttribute("href", "/admin/installations?lifecycle=active&cursor=page2");
+  expect(new URL(screen.getByRole("link", { name: "View executions" }).getAttribute("href")!, "https://test.invalid").searchParams.get("timezone")).toBe("Asia/Shanghai");
 });

@@ -59,7 +59,8 @@ type TaskService struct {
 	// offer in "new skill → start from a template" alongside the embedded role
 	// skills. Empty disables the mounted channel, so SkillTemplates() returns
 	// exactly the embedded catalog. Mirrors PluginService.LocalDir.
-	SkillTemplateDir string
+	SkillTemplateDir  string
+	ResourcePublisher *ResourcePublisher
 	// EmptyClaim caches "this runtime has no queued task" so the daemon
 	// poll path can skip a Postgres scan on the steady-state empty case.
 	// Optional — a nil cache disables the fast path and every claim

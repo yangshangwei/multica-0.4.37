@@ -1,13 +1,15 @@
-import { expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { beforeEach, expect, it, vi } from "vitest";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { NavigationProvider } from "../../navigation";
 import en from "../../locales/en/admin.json";
 import { AdminOverviewPage } from "./overview-page";
-const state = vi.hoisted(() => ({ error: false }));
-vi.mock("@multica/core/admin", async original => ({ ...await original<typeof import("@multica/core/admin")>(), useAdminOverview: () => ({ isPending: false, isError: state.error, refetch: vi.fn(), data: {
+const state = vi.hoisted(() => ({ error: false, fetching: false, ready: null as number | null, refetch: vi.fn() }));
+beforeEach(() => { state.error = false; state.fetching = false; state.ready = null; state.refetch.mockClear(); });
+vi.mock("@multica/core/admin", async original => ({ ...await original<typeof import("@multica/core/admin")>(), useAdminOverview: () => ({ isPending: false, isError: state.error, isFetching: state.fetching, refetch: state.refetch, data: {
   asOf: "2026-10-02T00:00:00Z", dataQuality: "partial", ruleVersion: "1", window: { timeFrom: "2026-10-01T00:00:00Z", timeTo: "2026-10-02T00:00:00Z", timezone: "Asia/Shanghai" },
-  installations: { total: 2, retired: 0, clientActive: null, daemonReachable: null, ready: null, unassociated: 1 },
+  installations: { total: 2, retired: 0, clientActive: null, daemonReachable: null, ready: state.ready, unassociated: 1 },
   executions: { completed: 0, failed: 0, cancelled: 1, unfinished: 2, queued: 1, running: 1, successRate: null, queueSeconds: { p50: null, p95: null, samples: 0, lowerBoundSamples: 1, unknownSamples: 1 }, runSeconds: { p50: null, p95: null, samples: 0 } },
   usage: { totalTokens: null, inputTokens: null, outputTokens: null, cacheReadTokens: null, cacheWriteTokens: null, missingTasks: 1, unpricedTasks: 1, quality: "unknown" }, alerts: { open: 1, acknowledged: 0, resolved: 2, closed: 3 },
 } }) }));
@@ -23,6 +25,13 @@ it("shows no-sample outcomes and unknown usage with a finished-window drilldown"
   expect(liveParams.get("state_scope")).toBe("current");
   expect(liveParams.get("timezone")).toBe("Asia/Shanghai");
   expect(liveParams.has("time_from")).toBe(false);
+});
+it("shows current attention items before capacity and historical filters", () => {
+  state.error = false; const { container } = mount();
+  const attention = screen.getByRole("heading", { name: "Needs attention now" });
+  const current = screen.getByRole("heading", { name: "Current snapshot" });
+  expect(attention.compareDocumentPosition(current) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(current.compareDocumentPosition(container.querySelector("form")!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
 it("does not present stale cached numbers as a successful source read", () => {
   state.error = true; mount();
@@ -45,4 +54,26 @@ it("pins inactive alert history to first-seen window while active alerts retain 
     expect(new URL(href, "https://test.invalid").searchParams.get("timezone")).toBe("Asia/Shanghai");
   }
   expect(screen.getByRole("heading", { name: "Alert history first observed in this window" })).toBeInTheDocument();
+});
+
+it("keeps highlighted metrics accessible and distinguishes unknown readiness from zero", () => {
+  const view = mount();
+  expect(screen.getByRole("link", { name: "Running" })).toHaveAccessibleDescription("1");
+  const ready = screen.getByText("Ready to execute").closest("div")!;
+  expect(within(ready).getByRole("definition")).toHaveTextContent("Unknown");
+  view.unmount();
+  state.ready = 0;
+  mount();
+  const zero = screen.getByText("Ready to execute").closest("div")!;
+  expect(within(zero).getByRole("definition")).toHaveTextContent(/^0$/);
+});
+it("refreshes the overview without changing its historical filters", async () => {
+  mount();
+  await userEvent.click(screen.getByRole("button", { name: "Refresh" }));
+  expect(state.refetch).toHaveBeenCalledOnce();
+});
+it("prevents overlapping manual refreshes while the overview is fetching", () => {
+  state.fetching = true;
+  mount();
+  expect(screen.getByRole("button", { name: "Refresh" })).toBeDisabled();
 });

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -50,19 +51,34 @@ var skillTemplateNamePattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
 // found in the mounted directory. When SkillTemplateDir is empty the result is
 // byte-for-byte the embedded catalog, so an unconfigured deployment behaves
 // exactly as before.
-func (s *TaskService) SkillTemplates() []RoleSkillTemplate {
+func (s *TaskService) SkillTemplates() ([]RoleSkillTemplate, error) {
 	embed := RoleSkillTemplates()
-	if s == nil || s.SkillTemplateDir == "" {
-		return embed
+	if s == nil {
+		return embed, nil
 	}
 	embedNames := make(map[string]struct{}, len(embed))
 	for _, template := range embed {
 		embedNames[template.Name] = struct{}{}
 	}
-	mounted := scanSkillTemplateDir(s.SkillTemplateDir, embedNames)
-	// Embedded catalog stays first; mounted entries follow in their own stable
-	// order. A caller relying on the leading run of platform templates keeps it.
-	return append(embed, mounted...)
+	var reservedNames []string
+	if s.ResourcePublisher != nil && s.ResourcePublisher.Root != "" {
+		var err error
+		reservedNames, err = resourceManualNames(s.SkillTemplateDir, 4096)
+		if err != nil {
+			return nil, err
+		}
+	}
+	result := append(embed, scanSkillTemplateDir(s.SkillTemplateDir, embedNames)...)
+	if s.ResourcePublisher != nil && s.ResourcePublisher.Root != "" {
+		publisher := *s.ResourcePublisher
+		publisher.SkillDirectory = s.SkillTemplateDir
+		managed, err := publisher.skillTemplates(context.Background(), result, reservedNames)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, managed...)
+	}
+	return result, nil
 }
 
 // scanSkillTemplateDir reads mounted skill templates from dir, in stable name

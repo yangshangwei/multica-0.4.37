@@ -96,12 +96,13 @@ test.describe("platform account administration", () => {
       expect((await page.request.get(`${api}/api/me`, { headers: { Authorization: `Bearer ${candidate.getToken()}` } })).status()).toBe(401);
       await page.getByRole("button", { name: "Close confirmation", exact: true }).click();
 
-      await page.getByRole("button", { name: "Recover password", exact: true }).click();
-      await page.getByLabel("Reason", { exact: true }).fill("Synthetic password recovery acceptance");
-      await page.getByLabel("Temporary password", { exact: true }).fill(temporaryPassword);
-      await page.getByLabel("Your current password", { exact: true }).fill(adminPassword!);
-      await page.getByRole("button", { name: "Confirm change", exact: true }).click();
-      await expect(page.getByText("The change was applied.", { exact: true })).toBeVisible();
+      await page.getByRole("button", { name: "Reset password", exact: true }).click();
+      await page.getByLabel("Reason", { exact: true }).fill("Synthetic password reset acceptance");
+      await page.getByLabel("Target account's temporary password", { exact: true }).fill(temporaryPassword);
+      await page.getByLabel("Confirm temporary password", { exact: true }).fill(temporaryPassword);
+      await page.getByLabel("Your current administrator password", { exact: true }).fill(adminPassword!);
+      await page.locator('button[type="submit"]').filter({ hasText: "Reset password" }).click();
+      await expect(page.getByText("The password was reset.", { exact: true })).toBeVisible();
       await candidate.loginPassword(username, temporaryPassword);
       expect((await page.request.get(`${api}/api/workspaces`, { headers: { Authorization: `Bearer ${candidate.getToken()}` } })).status()).toBe(403);
       await candidate.requestJSON("/api/me/password/change", { method: "POST", body: { current_password: temporaryPassword, new_password: personalPassword } });
@@ -124,7 +125,8 @@ test.describe("platform account administration", () => {
       const observer = await observerContext.newPage();
       await observer.goto(`${web}/admin/users/${user.id}`);
       await login(observer, username, personalPassword);
-      await expect(observer.getByText("No account changes are available with your current permissions.")).toBeVisible();
+      await expect(observer.getByText("Only a super administrator can reset another account's password. Your access is read-only.")).toBeVisible();
+      await expect(observer.getByRole("button", { name: "Reset password", exact: true })).toBeDisabled();
       await expect(observer.getByRole("button", { name: "Disable account", exact: true })).toHaveCount(0);
       await capture(observer, "observer-account-readonly");
       expect(errors).toEqual([]);

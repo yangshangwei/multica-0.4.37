@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"net/http"
 	"regexp"
@@ -16,6 +17,7 @@ import (
 
 var adminCodePattern = regexp.MustCompile(`^[a-z][a-z0-9_.:-]{0,127}$`)
 var adminDecimalPattern = regexp.MustCompile(`^[0-9]{1,19}$`)
+var adminResourceKeyPattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$`)
 
 // Only safe historical decision fields survive projection; never emit raw
 // config, task diagnostics, credentials or arbitrary nested snapshots.
@@ -83,6 +85,64 @@ func adminAuditSnapshot(raw []byte) map[string]any {
 	}
 	return result
 }
+
+// Resource versions are UUID revisions, unlike numeric administrative versions.
+// Their separate projection cannot broaden historical snapshots for other targets.
+func adminAuditTargetSnapshot(raw []byte, targetKind string) map[string]any {
+	if targetKind != "resource" {
+		return adminAuditSnapshot(raw)
+	}
+	result := map[string]any{}
+	var value map[string]any
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.UseNumber()
+	if decoder.Decode(&value) != nil {
+		return result
+	}
+	for key, item := range value {
+		switch key {
+		case "kind":
+			if item == "skill" || item == "mcp" {
+				result[key] = item
+			}
+		case "key":
+			if text, ok := item.(string); ok && adminResourceKeyPattern.MatchString(text) {
+				result[key] = text
+			}
+		case "state":
+			if item == "published" || item == "withdrawn" {
+				result[key] = item
+			}
+		case "version", "expected_version", "operation_id":
+			if text, ok := item.(string); ok {
+				if text == "" && key == "expected_version" {
+					result[key] = text
+					continue
+				}
+				if id, err := uuid.Parse(text); err == nil && id != uuid.Nil && id.String() == text {
+					result[key] = text
+				}
+			}
+		case "content_digest":
+			if text, ok := item.(string); ok && len(text) == 71 && strings.HasPrefix(text, "sha256:") {
+				if _, err := hex.DecodeString(text[7:]); err == nil {
+					result[key] = text
+				}
+			}
+		case "file_count", "byte_count":
+			if number, ok := item.(json.Number); ok {
+				maximum := int64(9 << 20)
+				if key == "file_count" {
+					maximum = 257
+				}
+				if count, err := number.Int64(); err == nil && count >= 0 && count <= maximum {
+					result[key] = count
+				}
+			}
+		}
+	}
+	return result
+}
 func (h *Handler) AdminAudit(w http.ResponseWriter, r *http.Request) {
 	identity, ok := h.requirePlatformAccess(w, r, false)
 	if !ok {
@@ -137,7 +197,7 @@ func (h *Handler) AdminAudit(w http.ResponseWriter, r *http.Request) {
 			actorQuality = "unknown"
 			quality = "partial"
 		}
-		items = append(items, map[string]any{"id": uuidToString(row.ID), "operation_id": uuidToPtr(row.OperationID), "actor_kind": row.ActorKind, "actor_user_id": uuidToPtr(row.ActorUserID), "actor_display_name": actorName, "actor_snapshot_quality": actorQuality, "target_kind": row.TargetKind, "target_id": uuidToString(row.TargetID), "action": row.Action, "phase": row.Phase, "result_code": row.ResultCode, "request_id": row.RequestID, "reason": row.Reason, "before_state": adminAuditSnapshot(row.BeforeState), "after_state": adminAuditSnapshot(row.AfterState), "created_at": timestampToString(row.CreatedAt)})
+		items = append(items, map[string]any{"id": uuidToString(row.ID), "operation_id": uuidToPtr(row.OperationID), "actor_kind": row.ActorKind, "actor_user_id": uuidToPtr(row.ActorUserID), "actor_display_name": actorName, "actor_snapshot_quality": actorQuality, "target_kind": row.TargetKind, "target_id": uuidToString(row.TargetID), "action": row.Action, "phase": row.Phase, "result_code": row.ResultCode, "request_id": row.RequestID, "reason": row.Reason, "before_state": adminAuditTargetSnapshot(row.BeforeState, row.TargetKind), "after_state": adminAuditTargetSnapshot(row.AfterState, row.TargetKind), "created_at": timestampToString(row.CreatedAt)})
 	}
 	writeJSON(w, 200, map[string]any{"items": items, "next_cursor": cursor, "scope": uuidToString(identity.OrganizationID), "as_of": p.AsOf.Format(time.RFC3339Nano), "window": adminWindow(p), "data_quality": quality})
 }

@@ -1,0 +1,379 @@
+/* Administration owns these surfaces. Never move these variables to :root:
+   the desktop renderer shares the underlying design tokens. */
+.theme {
+  --admin-accent: color-mix(in oklab, var(--brand) 45%, var(--success));
+  --admin-accent-ink: color-mix(in oklab, var(--admin-accent) 55%, var(--foreground));
+  --admin-canvas: color-mix(in oklab, var(--page-canvas) 96%, var(--admin-accent));
+  --sidebar: var(--surface);
+  --sidebar-accent: color-mix(in oklab, var(--surface) 89%, var(--admin-accent));
+  --sidebar-accent-foreground: var(--admin-accent-ink);
+}
+
+.shell,
+.pageCanvas {
+  background: var(--admin-canvas);
+}
+
+.sidebar,
+.topbar {
+  background: var(--surface);
+}
+
+.pageContent {
+  width: 100%;
+  max-width: 100rem;
+  margin-inline: auto;
+}
+
+.pagePanel,
+.panel,
+.metric,
+.access {
+  border: 1px solid var(--surface-border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.pagePanel,
+.panel {
+  min-width: 0;
+  padding: 1.5rem;
+}
+
+.access {
+  padding: 1rem 1.5rem;
+}
+
+.overview {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.pageHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sectionHeading {
+  margin-bottom: 1rem;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.metric {
+  position: relative;
+  min-width: 0;
+  padding: 1.25rem;
+  --metric-ink: var(--admin-accent-ink);
+}
+
+.metric:has(a:hover) {
+  background: color-mix(in oklab, var(--surface) 97%, var(--admin-accent));
+}
+
+.metric:focus-within {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+.metricLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.metricLink {
+  display: inline-flex;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  align-items: center;
+  outline: none;
+}
+
+.metricLink::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+}
+
+.metricIcon {
+  flex-shrink: 0;
+  color: var(--metric-ink);
+}
+
+.metricValue {
+  margin-top: 0.5rem;
+  color: var(--metric-ink);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.neutral {
+  --metric-ink: var(--foreground);
+}
+
+.danger {
+  --metric-ink: var(--destructive);
+}
+
+.warning {
+  --metric-ink: color-mix(in oklab, var(--warning) 55%, var(--foreground));
+}
+
+.success {
+  --metric-ink: color-mix(in oklab, var(--success) 70%, var(--foreground));
+}
+
+.attentionDetails {
+  margin-top: 1rem;
+}
+
+.twoColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.5rem;
+}
+
+/* MetricRows is also used on other admin pages. Only overview panels adapt
+   its columns, with container sizing so pairs stay readable at 200% zoom. */
+.panel {
+  container-type: inline-size;
+}
+
+.panel > dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@container (max-width: 26rem) {
+  .panel > dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 75rem) {
+  .metricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .twoColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 40rem) {
+  .pagePanel,
+  .panel {
+    padding: 1rem;
+  }
+
+  .metricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .metric {
+    padding: 0.75rem 1rem;
+  }
+
+  .metricValue {
+    margin-top: 0;
+  }
+
+  .metricIcon {
+    display: none;
+  }
+
+  .access {
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 22rem) {
+  .metricGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Status meaning belongs to each admin domain; this module only supplies
+   accessible visual treatments. Unknown/stale values use the neutral tone. */
+.statusBadge {
+  --admin-status-ink: var(--foreground);
+  --admin-status-bg: var(--surface-hover);
+  display: inline-flex;
+  height: auto;
+  min-height: 1.5rem;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  background: var(--admin-status-bg);
+  color: var(--admin-status-ink);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  line-height: var(--text-caption--line-height);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.statusNeutral {
+  --admin-status-ink: var(--muted-foreground);
+  --admin-status-bg: var(--surface-hover);
+}
+
+.statusSuccess {
+  --admin-status-ink: color-mix(in oklab, var(--success) 65%, var(--foreground));
+  --admin-status-bg: color-mix(in oklab, var(--surface) 94%, var(--success));
+}
+
+.statusWarning {
+  --admin-status-ink: color-mix(in oklab, var(--warning) 55%, var(--foreground));
+  --admin-status-bg: color-mix(in oklab, var(--surface) 92%, var(--warning));
+}
+
+.statusDanger {
+  --admin-status-ink: color-mix(in oklab, var(--destructive) 85%, var(--foreground));
+  --admin-status-bg: color-mix(in oklab, var(--surface) 95%, var(--destructive));
+}
+
+.statusInfo {
+  --admin-status-ink: color-mix(in oklab, var(--info) 65%, var(--foreground));
+  --admin-status-bg: color-mix(in oklab, var(--surface) 94%, var(--info));
+}
+
+.detailSection {
+  min-width: 0;
+  border-top: 1px solid var(--surface-border);
+  padding-top: 1.25rem;
+}
+
+.metadataGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.codeValue {
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  overflow-wrap: anywhere;
+}
+
+.compactRow {
+  padding-block: 0.75rem;
+}
+
+.filterSummary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+}
+
+.filterSummary dl {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.filterSummary dl > div {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  background: var(--surface-hover);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 40rem) {
+  .metadataGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.resourceLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 1.5rem;
+}
+
+.resourceList {
+  display: grid;
+  min-width: 0;
+  gap: 0.75rem;
+}
+
+.resourceCard {
+  min-width: 0;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.resourcePreview {
+  max-height: 24rem;
+  overflow: auto;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--surface-hover);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.resourceInventory {
+  max-height: 12rem;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+
+.resourceTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 64rem) {
+  .resourceLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.resourceCard > * + * {
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 48rem), (pointer: coarse) {
+  .resourceTabs {
+    height: auto;
+  }
+
+  .resourceTabs [role="tab"] {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
