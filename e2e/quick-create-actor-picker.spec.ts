@@ -274,6 +274,7 @@ test("real API actors keep favorites and accepted recents local to their workspa
     await page.screenshot({ path: evidencePath(info, "browser-actor-picker-1280.png"), animations: "disabled" });
 
     other = await api.requestJSON("/api/workspaces", { method: "POST", body: { name: "Empty preferences workspace", slug: `${workspace.slug}-empty` } });
+    if (!other?.id || !other.slug) throw new Error("Actor picker fixture did not create its second workspace");
     await openCreate(page, other.slug);
     await openPicker(page);
     await expect(page.getByText("Favorites", { exact: true })).toHaveCount(0);

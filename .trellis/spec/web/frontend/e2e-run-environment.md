@@ -130,3 +130,26 @@ authentication, fixture setup or publication; a setup failure must leave the
 original feed and remove temporary repositories. Do not run two publication
 tests against the same feed concurrently. The raw source seed and published
 release history are never writable test targets.
+
+## Branch and fault-injection runs
+
+Before switching an existing test environment between device and legacy login,
+remove duplicate assignments for the overridden keys from its task-only env
+file. Shell sourcing uses the last assignment. Verify the effective `/api/config`
+and provider `/health` after restart; a matching first line in the file is not
+evidence of the running configuration.
+
+For a one-request browser fault, fulfill or continue the active route before
+unregistering its handler. Unregistering first can consume the active request
+and cause `Route is already handled`, preventing the intended failure from
+reaching the application. Verify the failed response, retained state, and the
+subsequent real write independently.
+
+CORS-dependent regressions must assert that the response origin differs from
+the page origin. Copy the deployment's actual CORS headers when injecting a
+status, rather than inventing exposure headers. `password-branches.spec.ts`
+checks that cross-origin `Retry-After` reaches the password form's cooldown.
+
+Report exact test identities and actual executions separately from code branch
+coverage. Inventory entries, conditional skips, route mocks, and HTTP-only
+integration tests must not be presented as full browser or native coverage.

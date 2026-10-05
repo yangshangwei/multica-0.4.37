@@ -121,11 +121,15 @@ const test = base.extend<{ cli: CliFixture }>({
             timeout: 15_000,
             maxBuffer: 1024 * 1024,
           }, (error, stdout, stderr) => {
-            if (error && typeof error.code !== "number") {
-              reject(new Error(`Task-owned CLI could not finish: ${error.code ?? error.signal ?? "process failure"}`));
-              return;
+            let code = 0;
+            if (error) {
+              if (typeof error.code !== "number") {
+                reject(new Error(`Task-owned CLI could not finish: ${error.code ?? error.signal ?? "process failure"}`));
+                return;
+              }
+              code = error.code;
             }
-            resolveResult({ code: error?.code ?? 0, stdout: stdout.trim(), stderr: stderr.trim() });
+            resolveResult({ code, stdout: stdout.trim(), stderr: stderr.trim() });
           });
         });
       };

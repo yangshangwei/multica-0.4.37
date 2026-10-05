@@ -54,6 +54,7 @@ test("onboarding — structural blocks match the column width on every step", as
   const api = new TestApiClient();
   await api.login(`widths-${Date.now()}@localhost`, "Width Guard");
   const token = api.getToken();
+  if (!token) throw new Error("Onboarding width fixture is missing its token");
 
   await page.addInitScript((t) => localStorage.setItem("multica_token", t), token);
   await page.goto("/onboarding", { waitUntil: "domcontentloaded" });
@@ -89,10 +90,12 @@ test("onboarding — the shell survives step changes instead of re-mounting", as
 }) => {
   const api = new TestApiClient();
   await api.login(`shell-${Date.now()}@localhost`, "Shell Guard");
+  const token = api.getToken();
+  if (!token) throw new Error("Onboarding shell fixture is missing its token");
 
   await page.addInitScript(
     (t) => localStorage.setItem("multica_token", t),
-    api.getToken(),
+    token,
   );
   await page.goto("/onboarding", { waitUntil: "domcontentloaded" });
   await waitForPageText(page, "Continue on web");

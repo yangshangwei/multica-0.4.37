@@ -173,7 +173,7 @@ test.describe("iframe scroll bridge (real Chromium, sandboxed srcdoc)", () => {
     const targetTop = 540;
     await page.setContent(pageWithIframe("<p>loaded</p>"));
     const counts = await page.evaluate(
-      ([token, target]) =>
+      ({ token, target }) =>
         new Promise<{
           ready: number;
           requestSync: number;
@@ -240,7 +240,7 @@ test.describe("iframe scroll bridge (real Chromium, sandboxed srcdoc)", () => {
             }, 400);
           }, 600);
         }),
-      [TOKEN, targetTop],
+      { token: TOKEN, target: targetTop },
     );
 
     // No messages were added in the 400ms observation window → no loop.

@@ -56,9 +56,15 @@ for (const retired of ["ja", "ko"]) {
       const errors: string[] = [];
       page.on("pageerror", (error) => errors.push(error.message));
       await page.locator("#root > *").first().waitFor({ state: "attached" });
-      expect(await page.evaluate(() => (window as Window & {
-        desktopAPI: { systemLocale: string };
-      }).desktopAPI.systemLocale)).toBe(retired);
+      expect(await page.evaluate(() => {
+        if (!("desktopAPI" in window)) throw new Error("Desktop preload API is missing");
+        const desktopAPI = window.desktopAPI;
+        if (typeof desktopAPI !== "object" || desktopAPI === null
+          || !("systemLocale" in desktopAPI) || typeof desktopAPI.systemLocale !== "string") {
+          throw new Error("Desktop preload did not expose a system locale");
+        }
+        return desktopAPI.systemLocale;
+      })).toBe(retired);
       await page.context().addInitScript(({ token, locale }) => {
         localStorage.setItem("multica_token", token);
         if (!localStorage.getItem("multica-locale")) localStorage.setItem("multica-locale", locale);
