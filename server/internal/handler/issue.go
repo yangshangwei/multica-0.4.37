@@ -3078,6 +3078,10 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "parent issue not found in this workspace")
 		return
 	}
+	if service.IsProjectAssociationBusy(err) {
+		writeError(w, http.StatusConflict, "project changed concurrently; retry the operation")
+		return
+	}
 	if errors.Is(err, service.ErrProjectNotFound) {
 		writeError(w, http.StatusBadRequest, "project not found in this workspace")
 		return
@@ -3237,7 +3241,30 @@ func refreshUntouchedNullableIssueParams(params *db.UpdateIssueParams, current d
 
 var errIssueFieldConflict = errors.New("issue text field conflict")
 
+func writeIssueProjectAssociationError(w http.ResponseWriter, err error) bool {
+	if errors.Is(err, service.ErrProjectNotFound) {
+		writeError(w, http.StatusBadRequest, "project not found in this workspace")
+		return true
+	}
+	if service.IsProjectAssociationBusy(err) {
+		writeError(w, http.StatusConflict, "project changed concurrently; retry the operation")
+		return true
+	}
+	return false
+}
+
 func (h *Handler) updateIssueAtomically(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, bool, error) {
+	var issue, current db.Issue
+	var attachmentsChanged bool
+	var err error
+	err = service.RetryProjectAssociationTransaction(ctx, func() error {
+		issue, current, attachmentsChanged, err = h.updateIssueAtomicallyOnce(ctx, workspaceID, params, rawFields, titleBase, descriptionBase, attachmentIDs, statusKey)
+		return err
+	})
+	return issue, current, attachmentsChanged, err
+}
+
+func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, bool, error) {
 	if h.TxStarter == nil {
 		return db.Issue{}, db.Issue{}, false, errors.New("atomic issue update requires transaction starter")
 	}
@@ -3248,6 +3275,10 @@ func (h *Handler) updateIssueAtomically(ctx context.Context, workspaceID pgtype.
 	defer tx.Rollback(ctx)
 
 	qtx := h.Queries.WithTx(tx)
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, workspaceID); err != nil {
+		return db.Issue{}, db.Issue{}, false, err
+	}
+
 	// This path opens its own transaction, so it carries the archive-race guard
 	// itself rather than going through runWithIssueStatusGuard. The catalog lock
 	// must precede both attachment and issue row locks everywhere. (MUL-6243)
@@ -3302,6 +3333,16 @@ func (h *Handler) updateIssueAtomically(ctx context.Context, workspaceID pgtype.
 		}
 	}
 	refreshUntouchedNullableIssueParams(&params, current, rawFields)
+	// Deletion locks the project before clearing issue references. Never wait
+	// for that project while retaining this issue lock; retry the whole write.
+	if params.ProjectID.Valid {
+		if _, err := qtx.LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: params.ProjectID, WorkspaceID: workspaceID}); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return db.Issue{}, current, false, service.ErrProjectNotFound
+			}
+			return db.Issue{}, current, false, err
+		}
+	}
 	if params.ParentIssueID.Valid && params.ParentIssueID != current.ParentIssueID {
 		if err := admission.Check(ctx, qtx, params.ParentIssueID); err != nil {
 			return db.Issue{}, current, false, err
@@ -3588,7 +3629,7 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		if writeIssueAdmissionError(w, err) {
+		if writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
 			return
 		}
 		if writeIssueStatusRaceError(w, err) {
@@ -4359,7 +4400,7 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err != nil {
-			if writeIssueAdmissionError(w, err) {
+			if writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
 				return
 			}
 			// The archive race is a property of the batch's shared target

@@ -230,6 +230,11 @@ func (h *Handler) CreateAutopilotFromTemplate(w http.ResponseWriter, r *http.Req
 	if !h.lockAndValidateAutopilotSubscribers(w, r, qtx, subscribers, wsUUID) {
 		return
 	}
+	if err := lockAutopilotProjectAssociation(r.Context(), qtx, projectID, wsUUID); err != nil {
+		writeError(w, http.StatusConflict, "project changed concurrently; reload the automation")
+		return
+	}
+
 	// Save-time readiness validation belongs in the same transaction as the
 	// insert: the assignment lock serializes this path with runtime teardown, so
 	// an active autopilot cannot slip in after teardown's pause sweep.

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/admission"
 	"github.com/multica-ai/multica/server/internal/analytics"
@@ -220,7 +221,40 @@ type IssueCreateResult struct {
 // MCP/API-key callers — shares the same workspace boundary semantics.
 // Caller-owned validation is limited to transport-shaped checks: title
 // required, RFC3339 date format, assignee pair sanity.
-func (s *IssueService) Create(ctx context.Context, p IssueCreateParams, opts IssueCreateOpts) (IssueCreateResult, error) {
+func (s *IssueService) Create(ctx context.Context, p IssueCreateParams, opts IssueCreateOpts) (result IssueCreateResult, err error) {
+	err = RetryProjectAssociationTransaction(ctx, func() error {
+		result, err = s.createOnce(ctx, p, opts)
+		return err
+	})
+	return result, err
+}
+
+// RetryProjectAssociationTransaction retries only a PostgreSQL NOWAIT refusal.
+// Each attempt must own and roll back its entire transaction before returning;
+// retaining an issue lock while retrying would deadlock project deletion.
+func RetryProjectAssociationTransaction(ctx context.Context, attempt func() error) error {
+	for n := 0; ; n++ {
+		err := attempt()
+		if !IsProjectAssociationBusy(err) || n == 3 {
+			return err
+		}
+		timer := time.NewTimer(time.Duration(n+1) * 10 * time.Millisecond)
+		select {
+		case <-ctx.Done():
+			timer.Stop()
+			return ctx.Err()
+		case <-timer.C:
+		}
+	}
+}
+
+// IsProjectAssociationBusy identifies a safe, fully rolled-back lock refusal.
+func IsProjectAssociationBusy(err error) bool {
+	var pgerr *pgconn.PgError
+	return errors.As(err, &pgerr) && pgerr.Code == "55P03"
+}
+
+func (s *IssueService) createOnce(ctx context.Context, p IssueCreateParams, opts IssueCreateOpts) (IssueCreateResult, error) {
 	p = sanitizeIssueCreateParams(p)
 	issueCountPolicy := ResolveIssueCountPolicy(ctx, s.Entitlements, p.WorkspaceID)
 	tx, err := s.TxStarter.Begin(ctx)
@@ -292,9 +326,15 @@ func (s *IssueService) Create(ctx context.Context, p IssueCreateParams, opts Iss
 // CreateInTx creates an issue using the caller's transaction. It never commits,
 // enqueues ordinary assignments or publishes events. The caller must resolve the
 // entitlement policy before opening the transaction and finalize after commit.
+// Callers holding issue locks must roll back and retry the whole transaction on
+// a NOWAIT project refusal; a savepoint retry would retain the conflicting locks.
 func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateParams, issueCountPolicy IssueCountPolicy) (IssueCreateResult, error) {
 	p = sanitizeIssueCreateParams(p)
 	qtx := s.Queries.WithTx(tx)
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, p.WorkspaceID); err != nil {
+		return IssueCreateResult{}, fmt.Errorf("lock issue workspace: %w", err)
+	}
+
 	if p.SourceContext != nil {
 		if _, err := qtx.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{
 			ID: p.SourceContext.SourceIssueID, WorkspaceID: p.WorkspaceID,
@@ -367,11 +407,14 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 		}
 	}
 	if projectID.Valid {
-		if _, err := qtx.GetProjectInWorkspace(ctx, db.GetProjectInWorkspaceParams{
+		if _, err := qtx.LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{
 			ID:          projectID,
 			WorkspaceID: p.WorkspaceID,
 		}); err != nil {
-			return IssueCreateResult{}, ErrProjectNotFound
+			if errors.Is(err, pgx.ErrNoRows) {
+				return IssueCreateResult{}, ErrProjectNotFound
+			}
+			return IssueCreateResult{}, fmt.Errorf("lock project association: %w", err)
 		}
 	}
 

@@ -779,6 +779,11 @@ func (h *Handler) CreateAutopilot(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := lockAutopilotProjectAssociation(r.Context(), qtx, projectID, wsUUID); err != nil {
+		writeError(w, http.StatusConflict, "project changed concurrently; reload the automation")
+		return
+	}
+
 	// Keep save-time readiness validation in the same transaction as the
 	// insert. The assignment lock serializes this path with Runtime teardown,
 	// so an active Autopilot cannot slip in after teardown's pause sweep.
@@ -865,15 +870,27 @@ type createAutopilotInTxInput struct {
 // caller can keep writing the distinct message that step has always returned.
 var errAutopilotSubscriberInsert = errors.New("failed to add autopilot subscriber")
 
+func lockAutopilotProjectAssociation(ctx context.Context, qtx *db.Queries, projectID, workspaceID pgtype.UUID) error {
+	if !projectID.Valid {
+		return nil
+	}
+	_, err := qtx.LockProjectForAssociation(ctx, db.LockProjectForAssociationParams{ID: projectID, WorkspaceID: workspaceID})
+	return err
+}
+
 // createAutopilotInTx runs the write body shared by every autopilot create
 // path: insert the row, append rule-version v1, attach subscribers. The caller
 // owns the transaction, so it must already hold the subscriber locks and have
-// validated the assignee — this function assumes both and only writes.
+// validated the assignee. The project lock is retained through the final write.
 //
 // Creating an autopilot IS a substantive publish: rule-version v1 names the
 // creating member as publisher so every autopilot has an accountable human at
 // dispatch time (MUL-4302 §3.4).
 func (h *Handler) createAutopilotInTx(ctx context.Context, qtx *db.Queries, in createAutopilotInTxInput) (db.Autopilot, error) {
+	if err := lockAutopilotProjectAssociation(ctx, qtx, in.ProjectID, in.WorkspaceID); err != nil {
+		return db.Autopilot{}, err
+	}
+
 	autopilot, err := qtx.CreateAutopilot(ctx, db.CreateAutopilotParams{
 		WorkspaceID:        in.WorkspaceID,
 		Title:              in.Title,
@@ -952,6 +969,11 @@ func (h *Handler) lockAndValidateAutopilotSubscribers(
 	subscribers []autopilotSubscriberCandidate,
 	workspaceID pgtype.UUID,
 ) bool {
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(r.Context(), workspaceID); err != nil {
+		writeError(w, http.StatusNotFound, "workspace unavailable")
+		return false
+	}
+
 	ordered := append([]autopilotSubscriberCandidate(nil), subscribers...)
 	sort.Slice(ordered, func(i, j int) bool {
 		return uuidToString(ordered[i].UserID) < uuidToString(ordered[j].UserID)
@@ -1124,6 +1146,16 @@ func (h *Handler) UpdateAutopilot(w http.ResponseWriter, r *http.Request) {
 	// the same global order used by CreateAutopilot and member revocation.
 	if !h.lockAndValidateAutopilotSubscribers(w, r, qtx, subscribers, prev.WorkspaceID) {
 		return
+	}
+
+	// Project deletion clears and pauses automation while holding the project
+	// exclusively. Take the destination fence before the automation row, then
+	// retain the existing UpdatedAt conflict check for stale edits.
+	if params.ProjectID.Valid {
+		if _, err := qtx.LockProjectForAssociation(r.Context(), db.LockProjectForAssociationParams{ID: params.ProjectID, WorkspaceID: prev.WorkspaceID}); err != nil {
+			writeError(w, http.StatusConflict, "project changed concurrently; reload the automation")
+			return
+		}
 	}
 
 	// Retargeting must validate the polymorphic reference; resuming must also
@@ -1607,6 +1639,10 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 		}
 		trigger, err := h.createWebhookTriggerWithMintedToken(r, ap, ptrToText(req.Label), provider, eventFiltersBytes, publisherID, principalID)
 		if err != nil {
+			if errors.Is(err, errAutopilotProjectChanged) {
+				writeError(w, http.StatusConflict, err.Error())
+				return
+			}
 			writeError(w, http.StatusInternalServerError, "failed to create trigger")
 			return
 		}
@@ -1637,6 +1673,10 @@ func (h *Handler) CreateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 		PrincipalID:    principalID,
 	})
 	if err != nil {
+		if errors.Is(err, errAutopilotProjectChanged) {
+			writeError(w, http.StatusConflict, err.Error())
+			return
+		}
 		writeError(w, http.StatusInternalServerError, "failed to create trigger")
 		return
 	}
@@ -1672,6 +1712,34 @@ type createScheduleTriggerInTxInput struct {
 	PrincipalID pgtype.UUID
 }
 
+var errAutopilotProjectChanged = errors.New("automation project changed; reload before editing triggers")
+
+// lockAutopilotForTriggerWrite holds the project before its automation row.
+// It rejects a stale project binding so a late trigger save cannot re-enable
+// automation after project deletion has detached and paused it.
+func lockAutopilotForTriggerWrite(ctx context.Context, qtx *db.Queries, before db.Autopilot, enablesTrigger bool) (db.Autopilot, error) {
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, before.WorkspaceID); err != nil {
+		return db.Autopilot{}, err
+	}
+
+	if before.ProjectID.Valid {
+		if _, err := qtx.LockProjectForAssociation(ctx, db.LockProjectForAssociationParams{ID: before.ProjectID, WorkspaceID: before.WorkspaceID}); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return db.Autopilot{}, errAutopilotProjectChanged
+			}
+			return db.Autopilot{}, err
+		}
+	}
+	current, err := qtx.LockAutopilotForUpdate(ctx, db.LockAutopilotForUpdateParams{ID: before.ID, WorkspaceID: before.WorkspaceID})
+	if err != nil {
+		return db.Autopilot{}, err
+	}
+	if current.ProjectID != before.ProjectID || (enablesTrigger && current.PauseReason.Valid && current.PauseReason.String == "project_deleted") {
+		return db.Autopilot{}, errAutopilotProjectChanged
+	}
+	return current, nil
+}
+
 // createScheduleTriggerInTx runs the write body shared by every schedule
 // trigger create path: insert the trigger and republish the autopilot's rule
 // version atomically. A new trigger changes what / when the rule fires — a
@@ -1684,6 +1752,10 @@ func (h *Handler) createScheduleTriggerInTx(
 	ap db.Autopilot,
 	in createScheduleTriggerInTxInput,
 ) (db.AutopilotTrigger, error) {
+	ap, err := lockAutopilotForTriggerWrite(ctx, qtx, ap, true)
+	if err != nil {
+		return db.AutopilotTrigger{}, err
+	}
 	trigger, err := qtx.CreateAutopilotTrigger(ctx, db.CreateAutopilotTriggerParams{
 		AutopilotID:    ap.ID,
 		Kind:           "schedule",
@@ -1749,6 +1821,12 @@ func (h *Handler) createWebhookTriggerWithMintedToken(
 			return db.AutopilotTrigger{}, err
 		}
 		qtx := h.Queries.WithTx(tx)
+		current, err := lockAutopilotForTriggerWrite(ctx, qtx, ap, true)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			return db.AutopilotTrigger{}, err
+		}
+		ap = current
 		trigger, err := qtx.CreateAutopilotTrigger(ctx, db.CreateAutopilotTriggerParams{
 			AutopilotID:  ap.ID,
 			Kind:         "webhook",
@@ -2018,6 +2096,12 @@ func (h *Handler) UpdateAutopilotTrigger(w http.ResponseWriter, r *http.Request)
 	defer tx.Rollback(r.Context())
 	qtx := h.Queries.WithTx(tx)
 
+	current, err := lockAutopilotForTriggerWrite(r.Context(), qtx, ap, params.Enabled.Valid && params.Enabled.Bool)
+	if err != nil {
+		writeError(w, http.StatusConflict, "automation project changed; reload before editing triggers")
+		return
+	}
+	ap = current
 	trigger, err := qtx.UpdateAutopilotTrigger(r.Context(), params)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to update trigger")

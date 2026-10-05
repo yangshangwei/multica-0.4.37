@@ -633,6 +633,36 @@ func dispatchFailReasonCode(err error) dispatch.ReasonCode {
 	return dispatch.ReasonInternalError
 }
 
+// lockAutopilotProjectForDispatch serializes the final work insertion with
+// project deletion. A cached scheduler/worker snapshot cannot bypass the pause
+// recorded by deletion. Ordinary paused automations retain manual-run behavior.
+func lockAutopilotProjectForDispatch(ctx context.Context, qtx *db.Queries, ap db.Autopilot) error {
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, ap.WorkspaceID); err != nil {
+		return fmt.Errorf("lock autopilot workspace: %w", err)
+	}
+
+	snapshot, err := qtx.GetAutopilotInWorkspace(ctx, db.GetAutopilotInWorkspaceParams{ID: ap.ID, WorkspaceID: ap.WorkspaceID})
+	if err != nil {
+		return fmt.Errorf("refresh autopilot: %w", err)
+	}
+	if snapshot.ProjectID.Valid {
+		if _, err := qtx.LockProjectForAssociation(ctx, db.LockProjectForAssociationParams{ID: snapshot.ProjectID, WorkspaceID: snapshot.WorkspaceID}); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return &errDispatchSkipped{reason: "autopilot project was deleted", code: dispatch.ReasonTargetUnavailable}
+			}
+			return fmt.Errorf("lock autopilot project: %w", err)
+		}
+	}
+	current, err := qtx.LockAutopilotForUpdate(ctx, db.LockAutopilotForUpdateParams{ID: ap.ID, WorkspaceID: ap.WorkspaceID})
+	if err != nil {
+		return fmt.Errorf("lock autopilot dispatch: %w", err)
+	}
+	if current.ProjectID != snapshot.ProjectID || (current.PauseReason.Valid && current.PauseReason.String == "project_deleted") {
+		return &errDispatchSkipped{reason: "autopilot project changed or was deleted", code: dispatch.ReasonTargetUnavailable}
+	}
+	return nil
+}
+
 // dispatchCreateIssue creates an issue and enqueues a task for the agent.
 //
 // When the autopilot is assigned to a squad (Path A from MUL-2429), the
@@ -661,6 +691,10 @@ func (s *AutopilotService) dispatchCreateIssue(ctx context.Context, ap db.Autopi
 
 	title := s.interpolateTemplate(ap, *run, triggerTimezone)
 	description := s.buildIssueDescription(ap, *run, triggerTimezone)
+
+	if err := lockAutopilotProjectForDispatch(ctx, qtx, ap); err != nil {
+		return err
+	}
 
 	// Refresh the autopilot row at dispatch time so we use the current project
 	// binding instead of any stale snapshot the caller may have cached.
@@ -1001,7 +1035,16 @@ func (s *AutopilotService) dispatchRunOnly(ctx context.Context, ap db.Autopilot,
 	if actorUserID.Valid {
 		submittedInstallation = auth.SubmissionInstallationFromContext(ctx)
 	}
-	task, err := s.Queries.CreateAutopilotTask(ctx, db.CreateAutopilotTaskParams{
+	tx, err := s.TxStarter.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("begin autopilot task: %w", err)
+	}
+	defer tx.Rollback(ctx)
+	qtx := s.Queries.WithTx(tx)
+	if err := lockAutopilotProjectForDispatch(ctx, qtx, ap); err != nil {
+		return err
+	}
+	task, err := qtx.CreateAutopilotTask(ctx, db.CreateAutopilotTaskParams{
 		SubmittedInstallationID: submittedInstallation,
 		ID:                      dbid.NewV7(),
 		AgentID:                 agent.ID,
@@ -1027,15 +1070,17 @@ func (s *AutopilotService) dispatchRunOnly(ctx context.Context, ap db.Autopilot,
 	}
 
 	// Update run with task reference.
-	updatedRun, err := s.Queries.UpdateAutopilotRunRunning(ctx, db.UpdateAutopilotRunRunningParams{
+	updatedRun, err := qtx.UpdateAutopilotRunRunning(ctx, db.UpdateAutopilotRunRunningParams{
 		ID:     run.ID,
 		TaskID: task.ID,
 	})
 	if err != nil {
-		slog.Warn("failed to update run with task_id", "run_id", util.UUIDToString(run.ID), "error", err)
-	} else {
-		*run = updatedRun
+		return fmt.Errorf("link autopilot task to run: %w", err)
 	}
+	if err := tx.Commit(ctx); err != nil {
+		return fmt.Errorf("commit autopilot task: %w", err)
+	}
+	*run = updatedRun
 
 	// Drop the empty-claim cache and wake the daemon. dispatchRunOnly
 	// inserts the task row directly via Queries.CreateAutopilotTask

@@ -42,8 +42,7 @@ type triageExecutionContext struct {
 
 func (h *Handler) triageValidateReferences(ctx context.Context, tx pgx.Tx, r *http.Request, ws, project pgtype.UUID, kind pgtype.Text, assignee pgtype.UUID) error {
 	if project.Valid {
-		var id pgtype.UUID
-		if err := tx.QueryRow(ctx, `SELECT id FROM project WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT`, project, ws).Scan(&id); err != nil {
+		if _, err := h.Queries.WithTx(tx).LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: project, WorkspaceID: ws}); err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
 				return triageErr(400, "project unavailable")
 			}
@@ -273,6 +272,16 @@ func (h *Handler) triageExecutionSnapshot(ctx context.Context, tx pgx.Tx, r *htt
 	return out, nil
 }
 func (h *Handler) actOnTriageItem(r *http.Request, idValue string, in TriageActionInput, preview bool) (TriageActionResult, error) {
+	var result TriageActionResult
+	var err error
+	err = service.RetryProjectAssociationTransaction(r.Context(), func() error {
+		result, err = h.actOnTriageItemOnce(r, idValue, in, preview)
+		return err
+	})
+	return result, err
+}
+
+func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in TriageActionInput, preview bool) (TriageActionResult, error) {
 	var out TriageActionResult
 	request, err := triageUUID(in.RequestID, "request_id")
 	if err != nil && !preview {
@@ -656,8 +665,7 @@ func (h *Handler) triageValidateCandidates(ctx context.Context, tx pgx.Tx, r *ht
 	}
 	q := h.Queries.WithTx(tx)
 	if project.Valid {
-		var id pgtype.UUID
-		if err := tx.QueryRow(ctx, `SELECT id FROM project WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT`, project, ws).Scan(&id); err != nil {
+		if _, err := h.Queries.WithTx(tx).LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: project, WorkspaceID: ws}); err != nil {
 			return triageReferenceError(err, "candidate project unavailable")
 		}
 	}

@@ -113,7 +113,7 @@ func (h *Handler) CreateChatSession(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if projectID.Valid {
-		if _, err := qtx.LockProjectForChatSessionCreate(r.Context(), db.LockProjectForChatSessionCreateParams{
+		if _, err := qtx.LockProjectForAssociation(r.Context(), db.LockProjectForAssociationParams{
 			ID:          projectID,
 			WorkspaceID: workspaceUUID,
 		}); err != nil {
@@ -422,9 +422,13 @@ func (h *Handler) UpdateChatSession(w http.ResponseWriter, r *http.Request) {
 		}
 		defer tx.Rollback(r.Context())
 		qtx := h.Queries.WithTx(tx)
+		if _, lockErr := qtx.LockWorkspaceForChatSessionCreate(r.Context(), session.WorkspaceID); lockErr != nil {
+			writeError(w, http.StatusNotFound, "workspace unavailable")
+			return
+		}
 
 		if projectID.Valid {
-			if _, lockErr := qtx.LockProjectForChatSessionCreate(r.Context(), db.LockProjectForChatSessionCreateParams{
+			if _, lockErr := qtx.LockProjectForAssociation(r.Context(), db.LockProjectForAssociationParams{
 				ID:          projectID,
 				WorkspaceID: session.WorkspaceID,
 			}); lockErr != nil {
