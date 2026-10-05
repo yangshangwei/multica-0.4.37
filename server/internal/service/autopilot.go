@@ -980,6 +980,14 @@ func (e *errDispatchSkipped) Error() string { return e.reason }
 // admission and dispatch, or the runtime went offline in the gap, we still
 // fail closed instead of enqueueing a doomed task.
 func (s *AutopilotService) dispatchRunOnly(ctx context.Context, ap db.Autopilot, run *db.AutopilotRun, actorUserID pgtype.UUID) error {
+	err := RetryProjectAssociationTransaction(ctx, func() error { return s.dispatchRunOnlyOnce(ctx, ap, run, actorUserID) })
+	if IsProjectAssociationBusy(err) {
+		return &errDispatchSkipped{reason: "autopilot owners changed during dispatch; retry when available", code: dispatch.ReasonTargetUnavailable}
+	}
+	return err
+}
+
+func (s *AutopilotService) dispatchRunOnlyOnce(ctx context.Context, ap db.Autopilot, run *db.AutopilotRun, actorUserID pgtype.UUID) error {
 	agent, _, err := s.resolveAutopilotLeader(ctx, ap)
 	if err != nil {
 		// Same admission-vs-failure classification as shouldSkipDispatch:
@@ -1044,6 +1052,73 @@ func (s *AutopilotService) dispatchRunOnly(ctx context.Context, ap db.Autopilot,
 	if err := lockAutopilotProjectForDispatch(ctx, qtx, ap); err != nil {
 		return err
 	}
+	// Runtime teardown holds runtime/agent before pausing autopilots. Because
+	// this transaction already owns the autopilot fence, owner locks MUST NOT
+	// wait: roll back the whole attempt, then retry all preparation/validation.
+	if _, err = qtx.LockRuntimeForAutopilotDispatch(ctx, db.LockRuntimeForAutopilotDispatchParams{ID: agent.RuntimeID, WorkspaceID: ap.WorkspaceID}); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &errDispatchSkipped{reason: "autopilot runtime was removed", code: dispatch.ReasonTargetUnavailable}
+		}
+		return err
+	}
+	lockedAgent, err := qtx.LockAgentForAutopilotDispatch(ctx, db.LockAgentForAutopilotDispatchParams{ID: agent.ID, WorkspaceID: ap.WorkspaceID})
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &errDispatchSkipped{reason: "autopilot agent was removed", code: dispatch.ReasonTargetUnavailable}
+		}
+		return err
+	}
+	if lockedAgent.RuntimeID != agent.RuntimeID {
+		return &errDispatchSkipped{reason: "autopilot runtime binding changed", code: dispatch.ReasonTargetUnavailable}
+	}
+	current, err := qtx.GetAutopilotInWorkspace(ctx, db.GetAutopilotInWorkspaceParams{ID: ap.ID, WorkspaceID: ap.WorkspaceID})
+	if err != nil {
+		return err
+	}
+	if current.AssigneeType != ap.AssigneeType || current.AssigneeID != ap.AssigneeID {
+		return &errDispatchSkipped{reason: "autopilot assignee changed", code: dispatch.ReasonTargetUnavailable}
+	}
+	if ap.AssigneeType == "squad" {
+		squad, lockErr := qtx.LockLifecycleSquad(ctx, db.LockLifecycleSquadParams{ID: ap.AssigneeID, WorkspaceID: ap.WorkspaceID})
+		if lockErr != nil {
+			return lockErr
+		}
+		if squad.ArchivedAt.Valid || squad.LeaderID != lockedAgent.ID {
+			return &errDispatchSkipped{reason: "autopilot squad leader changed", code: dispatch.ReasonTargetUnavailable}
+		}
+	}
+	scoped := *s
+	scoped.Queries = qtx
+	verdict, err = AgentReadiness(ctx, scoped.runtimeLookup(), lockedAgent)
+	if err != nil {
+		return fmt.Errorf("recheck agent readiness: %w", err)
+	}
+	if !verdict.Ready() {
+		return &errDispatchSkipped{reason: formatAdmissionReason(ap, verdict.Detail), code: verdict.Reason}
+	}
+	// Stabilize the effective human and any allow-list grants until insertion.
+	// These reverse-order locks also fail NOWAIT, so revocation never waits in
+	// a cycle with the automation/owner locks held by this transaction.
+	principal := actorUserID
+	if !principal.Valid {
+		principal = ResolveAutopilotTriggerPrincipal(ctx, qtx, run.TriggerID, current.ID, current.WorkspaceID)
+	}
+	members, err := qtx.LockProjectUpdateRecipients(ctx, db.LockProjectUpdateRecipientsParams{WorkspaceID: current.WorkspaceID, UserIds: []pgtype.UUID{principal}})
+	if err != nil {
+		return err
+	}
+	if !principal.Valid || len(members) != 1 {
+		return &errDispatchSkipped{reason: "autopilot principal is no longer a workspace member", code: dispatch.ReasonInvocationNotAllowed}
+	}
+	if lockedAgent.OwnerID != principal && lockedAgent.PermissionMode == "public_to" {
+		if _, err = qtx.LockProjectUpdateEvidenceTargets(ctx, lockedAgent.ID); err != nil {
+			return err
+		}
+	}
+	if !scoped.autopilotAdmitInvoke(ctx, current, lockedAgent, actorUserID, run.TriggerID) {
+		return &errDispatchSkipped{reason: "not allowed to invoke autopilot agent", code: dispatch.ReasonInvocationNotAllowed}
+	}
+	agent = lockedAgent
 	task, err := qtx.CreateAutopilotTask(ctx, db.CreateAutopilotTaskParams{
 		SubmittedInstallationID: submittedInstallation,
 		ID:                      dbid.NewV7(),

@@ -85,7 +85,7 @@ func (tx projectDeleteFailTx) Exec(ctx context.Context, sql string, args ...any)
 }
 
 func TestProjectDeleteFailureRollsBackEveryCleanupStage(t *testing.T) {
-	for _, step := range []string{"DisableProjectAutopilotTriggers", "DetachProjectAutopilots", "DetachProjectIssues", "ClearChatSessionProjectByProject", "DeleteIssueViewsByProjectScope", "DeleteProjectResources", "DeleteProjectProgressInbox", "DeleteProjectProgress", "DeleteProject"} {
+	for _, step := range []string{"DisableProjectAutopilotTriggers", "DetachProjectAutopilots", "DetachProjectIssues", "ClearChatSessionProjectByProject", "DeleteIssueViewsByProjectScope", "DeleteProjectIssueViewPreferences", "DeleteProjectResources", "DeleteProjectProgressInbox", "DeleteProjectProgress", "DeleteProject"} {
 		t.Run(step, func(t *testing.T) {
 			project := dbfx.Project(t, "P1 rollback")
 			issue := dbfx.Issue(t, "P1 retained", testutil.Cols{"project_id": project})
@@ -93,6 +93,7 @@ func TestProjectDeleteFailureRollsBackEveryCleanupStage(t *testing.T) {
 			ap := dbfx.Insert(t, "autopilot", testutil.Cols{"workspace_id": testWorkspaceID, "project_id": project, "title": "rollback", "assignee_id": agent, "created_by_type": "member", "created_by_id": testUserID})
 			trigger := dbfx.Insert(t, "autopilot_trigger", testutil.Cols{"autopilot_id": ap, "kind": "api", "enabled": true})
 			update := dbfx.Insert(t, "project_update", testutil.Cols{"workspace_id": testWorkspaceID, "project_id": project, "author_user_id": testUserID})
+			dbfx.InsertNoID(t, "issue_view_preference", testutil.Cols{"workspace_id": testWorkspaceID, "user_id": testUserID, "scope_type": "project", "scope_id": project, "prefs": "{}"}, "workspace_id=$1 AND user_id=$2 AND scope_type='project' AND scope_id=$3", testWorkspaceID, testUserID, project)
 			h := *testHandler
 			h.TxStarter = projectDeleteFailStarter{txStarter: h.TxStarter, step: step}
 			testutil.Call(t, h.DeleteProject, withURLParam(newRequest("DELETE", "/api/projects/"+project, nil), "id", project)).Want(503)
@@ -110,6 +111,9 @@ func TestProjectDeleteFailureRollsBackEveryCleanupStage(t *testing.T) {
 			}
 			if n := dbfx.Count(t, "SELECT count(*) FROM project_update WHERE id=$1", update); n != 1 {
 				t.Fatal("progress escaped rollback")
+			}
+			if n := dbfx.Count(t, "SELECT count(*) FROM issue_view_preference WHERE workspace_id=$1 AND user_id=$2 AND scope_type='project' AND scope_id=$3", testWorkspaceID, testUserID, project); n != 1 {
+				t.Fatal("project preferences escaped rollback")
 			}
 		})
 	}

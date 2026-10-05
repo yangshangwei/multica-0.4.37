@@ -61,3 +61,36 @@ TDD 证据：
 最后一轮触发器兼容测试先证明标签编辑被过度拒绝（409），随后将 `project_deleted` 拒绝限定为创建/启用触发器；禁用与标签编辑可以继续，启用仍为 409，持久 enabled 始终 false。
 
 本 lane 未新增依赖、迁移、索引或独立锁系统；未修改任务 admission、已有执行状态或删除共享资源。未执行前端 lint/typecheck、全量 Go suite、浏览器验收和生产部署，这些属于父任务整合验证。
+
+## 独立审查整改 BR-01 / BR-02（2026-10-05 18:05 Asia/Shanghai）
+
+依照 `superpowers:receiving-code-review` 先核查审查调用链，再用真实数据库复现后修改。来源为 `10-05-projects-p1-verification/backend-review.md`。本轮只使用已迁移的 association 私有测试库，所有测试继续经过 agent CLI guard。
+
+### BR-01：run_only 与真实 Runtime teardown 的反向锁
+
+- **真实 RED**：`TestProjectAutopilotRunOnlyRacesRealRuntimeTeardown` 让 dispatch 取得 autopilot UPDATE 锁后暂停；另一连接取得实际 runtime/agent 锁并调用真实 `TeardownRuntime`。`pg_blocking_pids` 确认 teardown 等待 autopilot，再同时释放 dispatch。PostgreSQL 实际以 **40P01** 中止 teardown，旧 dispatch 插入了一个 task，runtime 未被删除。证据 `/tmp/p1-br01-red.log`；这不是静态推测或 mock teardown。
+- **修复**：`service/autopilot.go` 保留 workspace → project → autopilot 的删除 fence；在 task INSERT 之前按 runtime → agent（必要时 squad）取得 SHARE NOWAIT。反向锁失败退出并回滚整个 `dispatchRunOnlyOnce`，最外层重做完整准备，最多四次；耗尽返回 skipped，不在已持锁事务里重试。task INSERT 所需 owner KEY SHARE 已被本事务的更强锁覆盖，因此不会再等待 teardown。
+- **锁内复核**：重新检查当前绑定、assignee/leader、归档/运行时 readiness、真实 principal 的成员资格与调用权限；成员及 allowlist 复用现成 NOWAIT 查询保持到 commit。普通 paused 自动化的手工运行保持；project_deleted 仍拒绝新增执行。
+- **额外 RED**：前置检查后移除 member，旧 owner 快捷授权仍插入 task；`/tmp/p1-br01-member-red.log`。锁内成员检查后该测试 GREEN。运行时离线、绑定变化、owner 权限变化同样测试，均不插入 task。
+- **双顺序证明**：dispatch 先提交时真实 teardown 等待 owner fence，随后取消并保留既有 task 历史、清掉 runtime 关联；teardown 先提交时迟到 dispatch 跳过，不生成 task。额外重放原锁环，分别覆盖有项目和无项目自动化。commit 前锁探针同时证明 member/调用 grant 不可被并发写改。
+- 本轮新增 runtime/agent NOWAIT SQL 与生成文件由父代理整合，本 lane 不提交这些共享文件。
+
+### BR-02：项目 scope view / preference 的最终写入与清理
+
+- **真实 RED**：在 `GetProjectInWorkspace` 的真实成功读取之后暂停请求，让真实 DeleteProject 完成，再恢复写入；旧 CreateIssueView 返回 201 并留下一个 view，旧 PutIssueViewPreference 返回 200 并留下一个 preference。证据 `/tmp/p1-br02-red.log`。
+- **修复**：`issue_view.go` 的共享 `writeIssueViewScope` 仅对 project scope 启动最终事务，依次持 workspace KEY SHARE、project SHARE，再 INSERT/UPSERT 并提交。`issue_view_preference.go` 使用相同函数。workspace/my scope 保持原单语句语义。删除先提交时返回 404，不重建数据。
+- **正常删除 RED**：用 Go 的只读 overlay 替换为审查冻结 HEAD `bb1c20dcb16751a64931f2321a05b8773cec3aaa` 的原 `project.go`，实际正常 DELETE 后仍留下一个 preference（`/tmp/p1-br02-cleanup-red.log`）。没有修改当前产品文件。该测试还使用真实 `pinned_item` 校验 view pins。
+- 父代理新增 `DeleteProjectIssueViewPreferences` 查询并接入删除事务；当前源码下正常删除测试 GREEN。新增两 writer 纳入真实 DeleteProject 的双顺序矩阵，现为 **17 个入口 × 2 顺序**。
+- `project_delete_concurrency_test.go` 新增第 10 个 `DeleteProjectIssueViewPreferences` 故障注入阶段；全部 10 个阶段都断言 preference 与原 issue/autopilot/trigger/progress 一起完整回滚。
+
+### 本轮最终验证
+
+| 检查 | 结果 |
+| --- | --- |
+| `go test -race ./internal/service -run 'TestProjectAutopilot\|TestProjectDeletionStopsStaleAutopilotDispatch\|Test.*Autopilot\|TestTriageProjectResourceWritesSerializeWithExecutionSnapshot' -count=1` | 48 个顶层 / 93 条含子测试 PASS，0 FAIL，无 race，3.492s；`/tmp/p1-br01-race.jsonl` |
+| 随后新增无项目锁环覆盖：`go test -race ./internal/service -run '^TestProjectAutopilotRunOnlyRacesRealRuntimeTeardown$' -count=1` | 有项目 / 无项目两个子场景 PASS，无 race，2.027s；`/tmp/p1-br01-both-bindings-race.log` |
+| `go test -race ./internal/handler -run 'TestProjectAssociation\|TestProjectScopeView\|TestProjectDeletionRemovesExistingViewPreferences\|TestProjectDeleteFailureRollsBackEveryCleanupStage\|Test.*IssueView' -count=1` | 16 个顶层 / 66 条含子测试 PASS，0 FAIL，无 race，3.782s；`/tmp/p1-br02-race.jsonl` |
+| 相同 handler 范围不带 race | 16 个顶层 / 66 条含子测试 PASS，2.186s；`/tmp/p1-br02-final.jsonl` |
+| `go vet ./internal/handler ./internal/service`，本 lane `git diff --check` / gofmt | exit 0 / 通过 |
+
+上述重复范围不累加计数。全仓库、前端和部署仍由父任务整合验证；本轮不将它们标为通过。

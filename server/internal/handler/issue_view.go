@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -120,6 +121,31 @@ type CreateIssueViewRequest struct {
 	Display           json.RawMessage `json:"display"`
 }
 
+// writeIssueViewScope protects project-only rows from being inserted after
+// project deletion has swept its children. Other scopes retain their existing
+// single-statement write semantics.
+func (h *Handler) writeIssueViewScope(ctx context.Context, workspaceID pgtype.UUID, scopeType string, scopeID pgtype.UUID, write func(*db.Queries) error) error {
+	if scopeType != "project" {
+		return write(h.Queries)
+	}
+	tx, err := h.TxStarter.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+	q := h.Queries.WithTx(tx)
+	if _, err = q.LockWorkspaceForChatSessionCreate(ctx, workspaceID); err != nil {
+		return err
+	}
+	if _, err = q.LockProjectForAssociation(ctx, db.LockProjectForAssociationParams{ID: scopeID, WorkspaceID: workspaceID}); err != nil {
+		return err
+	}
+	if err = write(q); err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
+}
+
 func (h *Handler) CreateIssueView(w http.ResponseWriter, r *http.Request) {
 	userID, ok := requireUserID(w, r)
 	if !ok {
@@ -208,18 +234,26 @@ func (h *Handler) CreateIssueView(w http.ResponseWriter, r *http.Request) {
 		req.Visibility = "private"
 	}
 
-	view, err := h.Queries.CreateIssueView(r.Context(), db.CreateIssueViewParams{
-		WorkspaceID:       wsUUID,
-		OwnerID:           parseUUID(userID),
-		Name:              req.Name,
-		ScopeType:         req.ScopeType,
-		ScopeID:           scopeID,
-		ScopeVariant:      scopeVariant,
-		Visibility:        req.Visibility,
-		DefinitionVersion: req.DefinitionVersion,
-		Query:             req.Query,
-		Display:           req.Display,
+	var view db.IssueView
+	err = h.writeIssueViewScope(r.Context(), wsUUID, req.ScopeType, scopeID, func(q *db.Queries) error {
+		view, err = q.CreateIssueView(r.Context(), db.CreateIssueViewParams{
+			WorkspaceID:       wsUUID,
+			OwnerID:           parseUUID(userID),
+			Name:              req.Name,
+			ScopeType:         req.ScopeType,
+			ScopeID:           scopeID,
+			ScopeVariant:      scopeVariant,
+			Visibility:        req.Visibility,
+			DefinitionVersion: req.DefinitionVersion,
+			Query:             req.Query,
+			Display:           req.Display,
+		})
+		return err
 	})
+	if errors.Is(err, pgx.ErrNoRows) {
+		writeError(w, http.StatusNotFound, "project not found")
+		return
+	}
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to create view")
 		return

@@ -135,13 +135,23 @@ func (h *Handler) PutIssueViewPreference(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	pref, err := h.Queries.UpsertIssueViewPreference(r.Context(), db.UpsertIssueViewPreferenceParams{
-		WorkspaceID: wsUUID,
-		UserID:      parseUUID(userID),
-		ScopeType:   req.ScopeType,
-		ScopeID:     scopeID,
-		Prefs:       req.Prefs,
+	var pref db.IssueViewPreference
+	var err error
+	err = h.writeIssueViewScope(r.Context(), wsUUID, req.ScopeType, scopeID, func(q *db.Queries) error {
+		pref, err = q.UpsertIssueViewPreference(r.Context(), db.UpsertIssueViewPreferenceParams{
+			WorkspaceID: wsUUID,
+			UserID:      parseUUID(userID),
+			ScopeType:   req.ScopeType,
+			ScopeID:     scopeID,
+			Prefs:       req.Prefs,
+		})
+		return err
 	})
+	if errors.Is(err, pgx.ErrNoRows) {
+		writeError(w, http.StatusNotFound, "project not found")
+		return
+	}
+
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to save preference")
 		return

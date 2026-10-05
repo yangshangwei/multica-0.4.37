@@ -3,16 +3,18 @@ package handler
 import (
 	"context"
 	"errors"
-	"github.com/go-chi/chi/v5"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 // A barrier at the real transaction boundary proves that a writer retains the
@@ -63,6 +65,10 @@ func projectAssociationWriterForTest(t *testing.T, h *Handler, operation string)
 	var call http.HandlerFunc
 	status := http.StatusOK
 	switch operation {
+	case "issue_view_create":
+		request, call, status = newRequest("POST", "/api/issue-views", map[string]any{"name": "Project race view", "scope_type": "project", "scope_id": projectID, "query": map[string]any{}}), h.CreateIssueView, http.StatusCreated
+	case "issue_view_preference":
+		request, call = newRequest("PUT", "/api/issue-view-preferences", map[string]any{"scope_type": "project", "scope_id": projectID, "prefs": map[string]any{}}), h.PutIssueViewPreference
 	case "issue_create", "issue_parent_create":
 		body := map[string]any{"title": "Association create", "status": "backlog", "project_id": projectID}
 		if operation == "issue_parent_create" {
@@ -127,7 +133,7 @@ func projectAssociationWriterForTest(t *testing.T, h *Handler, operation string)
 }
 
 func TestProjectAssociationWritersHoldProjectUntilCommit(t *testing.T) {
-	for _, operation := range []string{"issue_create", "issue_parent_create", "issue_update", "issue_batch_update", "triage_candidate", "triage_accept", "chat_create", "chat_update", "autopilot_create", "autopilot_update", "trigger_create", "trigger_update", "webhook_create", "autopilot_template_create", "project_squad_configure"} {
+	for _, operation := range []string{"issue_create", "issue_parent_create", "issue_update", "issue_batch_update", "triage_candidate", "triage_accept", "chat_create", "chat_update", "autopilot_create", "autopilot_update", "trigger_create", "trigger_update", "webhook_create", "autopilot_template_create", "project_squad_configure", "issue_view_create", "issue_view_preference"} {
 		t.Run(operation, func(t *testing.T) {
 			h := *testHandler
 			ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
@@ -220,6 +226,11 @@ func TestProjectAssociationWritersHoldProjectUntilCommit(t *testing.T) {
 			}
 			if n := dbfx.Count(t, `SELECT count(*) FROM autopilot WHERE workspace_id=$1 AND project_id=$2`, testWorkspaceID, projectID); n != 0 {
 				t.Fatalf("deletion left %d automation references", n)
+			}
+			for _, table := range []string{"issue_view", "issue_view_preference"} {
+				if n := dbfx.Count(t, "SELECT count(*) FROM "+table+" WHERE workspace_id=$1 AND scope_type='project' AND scope_id=$2", testWorkspaceID, projectID); n != 0 {
+					t.Errorf("%s retains %d project scope rows", table, n)
+				}
 			}
 			if n := dbfx.Count(t, `SELECT count(*) FROM chat_session WHERE workspace_id=$1 AND project_id=$2`, testWorkspaceID, projectID); n != 0 {
 				t.Fatalf("deletion left %d chat references", n)
@@ -343,7 +354,7 @@ func (s projectAssociationBeforeBeginStarter) Begin(ctx context.Context) (pgx.Tx
 	return s.base.Begin(ctx)
 }
 func TestProjectAssociationDeletionWinsBeforeFinalWrite(t *testing.T) {
-	for _, operation := range []string{"issue_create", "issue_parent_create", "issue_update", "issue_batch_update", "triage_candidate", "triage_accept", "chat_create", "chat_update", "autopilot_create", "autopilot_update", "trigger_create", "trigger_update", "webhook_create", "autopilot_template_create", "project_squad_configure"} {
+	for _, operation := range []string{"issue_create", "issue_parent_create", "issue_update", "issue_batch_update", "triage_candidate", "triage_accept", "chat_create", "chat_update", "autopilot_create", "autopilot_update", "trigger_create", "trigger_update", "webhook_create", "autopilot_template_create", "project_squad_configure", "issue_view_create", "issue_view_preference"} {
 		t.Run(operation, func(t *testing.T) {
 			h := *testHandler
 			barrier := projectAssociationBeforeBeginStarter{base: h.TxStarter, reached: make(chan struct{}, 1), release: make(chan struct{}), once: &sync.Once{}}
@@ -394,6 +405,11 @@ func TestProjectAssociationDeletionWinsBeforeFinalWrite(t *testing.T) {
 			if n := dbfx.Count(t, `SELECT count(*) FROM autopilot WHERE workspace_id=$1 AND project_id=$2`, testWorkspaceID, projectID); n != 0 {
 				t.Fatalf("left %d dangling automation references", n)
 			}
+			for _, table := range []string{"issue_view", "issue_view_preference"} {
+				if n := dbfx.Count(t, "SELECT count(*) FROM "+table+" WHERE workspace_id=$1 AND scope_type='project' AND scope_id=$2", testWorkspaceID, projectID); n != 0 {
+					t.Errorf("%s retains %d project scope rows", table, n)
+				}
+			}
 			if n := dbfx.Count(t, `SELECT count(*) FROM chat_session WHERE workspace_id=$1 AND project_id=$2`, testWorkspaceID, projectID); n != 0 {
 				t.Fatalf("left %d dangling chat references", n)
 			}
@@ -422,5 +438,127 @@ func TestProjectDeletedAutomationTriggerEditsRemainInert(t *testing.T) {
 	}
 	if n := dbfx.Count(t, `SELECT count(*) FROM autopilot_trigger WHERE id=$1 AND enabled`, triggerID); n != 0 {
 		t.Fatal("deleted project's trigger became enabled")
+	}
+}
+
+type projectViewPreflightGate struct {
+	db.DBTX
+	reached chan struct{}
+	release chan struct{}
+	once    *sync.Once
+}
+
+func (g projectViewPreflightGate) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	row := g.DBTX.QueryRow(ctx, sql, args...)
+	if strings.Contains(sql, "-- name: GetProjectInWorkspace ") {
+		return projectViewPreflightRow{Row: row, ctx: ctx, reached: g.reached, release: g.release, once: g.once}
+	}
+	return row
+}
+
+type projectViewPreflightRow struct {
+	pgx.Row
+	ctx     context.Context
+	reached chan struct{}
+	release chan struct{}
+	once    *sync.Once
+}
+
+func (r projectViewPreflightRow) Scan(dest ...any) error {
+	if err := r.Row.Scan(dest...); err != nil {
+		return err
+	}
+	r.once.Do(func() {
+		select {
+		case r.reached <- struct{}{}:
+		case <-r.ctx.Done():
+			return
+		}
+		select {
+		case <-r.release:
+		case <-r.ctx.Done():
+		}
+	})
+	return nil
+}
+func TestProjectScopeViewDeletionWinsAfterPreflight(t *testing.T) {
+	for _, kind := range []string{"view", "preference"} {
+		t.Run(kind, func(t *testing.T) {
+			projectID := dbfx.Project(t, "View preflight race")
+			reached, release := make(chan struct{}, 1), make(chan struct{})
+			defer func() {
+				select {
+				case <-release:
+				default:
+					close(release)
+				}
+			}()
+			h := *testHandler
+			h.Queries = db.New(projectViewPreflightGate{DBTX: testPool, reached: reached, release: release, once: &sync.Once{}})
+			var req *http.Request
+			var call http.HandlerFunc
+			if kind == "view" {
+				req, call = newRequest("POST", "/api/issue-views", map[string]any{"name": "Race view", "scope_type": "project", "scope_id": projectID, "query": map[string]any{}}), h.CreateIssueView
+			} else {
+				req, call = newRequest("PUT", "/api/issue-view-preferences", map[string]any{"scope_type": "project", "scope_id": projectID, "prefs": map[string]any{}}), h.PutIssueViewPreference
+			}
+			ctx, cancel := context.WithTimeout(req.Context(), 5*time.Second)
+			defer cancel()
+			req = req.WithContext(ctx)
+			response := httptest.NewRecorder()
+			done := make(chan struct{})
+			go func() { defer close(done); call(response, req) }()
+			select {
+			case <-reached:
+			case <-done:
+				t.Fatalf("writer never passed preflight: %d %s", response.Code, response.Body.String())
+			case <-ctx.Done():
+				t.Fatal("preflight timed out")
+			}
+			deletion := httptest.NewRecorder()
+			testHandler.DeleteProject(deletion, withURLParam(newRequest("DELETE", "/api/projects/"+projectID, nil), "id", projectID))
+			if deletion.Code != 204 {
+				t.Fatalf("delete failed: %d %s", deletion.Code, deletion.Body.String())
+			}
+			close(release)
+			select {
+			case <-done:
+			case <-ctx.Done():
+				t.Fatal("writer timed out")
+			}
+			if response.Code != http.StatusNotFound {
+				t.Errorf("late project scope save must return404: %d %s", response.Code, response.Body.String())
+			}
+			for _, table := range []string{"issue_view", "issue_view_preference"} {
+				if n := dbfx.Count(t, "SELECT count(*) FROM "+table+" WHERE workspace_id=$1 AND scope_type='project' AND scope_id=$2", testWorkspaceID, projectID); n != 0 {
+					t.Errorf("%s retains %d project rows", table, n)
+				}
+			}
+		})
+	}
+}
+
+func TestProjectDeletionRemovesExistingViewPreferences(t *testing.T) {
+	projectID := dbfx.Project(t, "Existing project preference")
+	pref := httptest.NewRecorder()
+	testHandler.PutIssueViewPreference(pref, newRequest("PUT", "/api/issue-view-preferences", map[string]any{"scope_type": "project", "scope_id": projectID, "prefs": map[string]any{"hidden": []string{"builtin:all"}}}))
+	if pref.Code != 200 {
+		t.Fatalf("create preference: %d %s", pref.Code, pref.Body.String())
+	}
+	viewID := dbfx.Insert(t, "issue_view", testutil.Cols{"workspace_id": testWorkspaceID, "owner_id": testUserID, "name": "Pinned project view", "scope_type": "project", "scope_id": projectID, "query": "{}", "display": "{}"})
+	dbfx.Insert(t, "pinned_item", testutil.Cols{"workspace_id": testWorkspaceID, "item_type": "view", "item_id": viewID, "user_id": testUserID, "position": 0})
+	response := httptest.NewRecorder()
+	testHandler.DeleteProject(response, withURLParam(newRequest("DELETE", "/api/projects/"+projectID, nil), "id", projectID))
+	if response.Code != 204 {
+		t.Fatalf("delete: %d %s", response.Code, response.Body.String())
+	}
+	if n := dbfx.Count(t, `SELECT count(*) FROM issue_view_preference WHERE workspace_id=$1 AND scope_type='project' AND scope_id=$2`, testWorkspaceID, projectID); n != 0 {
+		t.Errorf("retained %d project preferences", n)
+	}
+	if n := dbfx.Count(t, `SELECT count(*) FROM pinned_item WHERE item_type='view' AND item_id=$1`, viewID); n != 0 {
+		t.Errorf("retained %d project view pins", n)
+	}
+	if n := dbfx.Count(t, `SELECT count(*) FROM issue_view WHERE id=$1`, viewID); n != 0 {
+		t.Errorf("retained %d project views", n)
 	}
 }
