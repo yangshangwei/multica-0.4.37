@@ -56,3 +56,49 @@ Final checks at approximately 2026-10-05 16:27 Asia/Shanghai:
 - The new backend contract and shared schema/metrics are owned and verified by their respective P1 lanes. This mobile commit depends on those changes being included together; it is not a standalone backport to pre-P1 shared packages.
 - All 7 lint warnings are pre-existing and out of this slice's scope. The root pipeline excludes mobile, so these explicit commands remain necessary after integration changes to shared types/schemas.
 - Spec-sync review: mobile-owned data/cache rules and pure import boundaries already exist in `apps/mobile/CLAUDE.md`; no new architectural exception was needed. The 428 editing restriction and access-epoch rationale are documented here and inline at the implementation boundary.
+
+## FR-01 follow-up: mixed inbox notification compatibility
+
+Independent review found that `deliverProjectUpdateNotification` serialized
+`details.revision` as a JSON number, while the existing mobile and shared inbox
+contract requires `Record<string, string>`. The server's actual
+`CreateProjectUpdateInbox` statement uses `type = project_update` and leaves
+`issue_id` null. One numeric revision therefore invalidated the entire inbox
+array, including unrelated existing notifications. Backend correction belongs
+to the progress lane; **the mobile schema was not loosened**.
+
+`data/inbox-schema.test.ts` now includes the P1 wire shape mixed with an existing
+`status_changed` notification. The original numeric revision is rejected at
+`[0, details, revision]`; the corrected string revision retains both records,
+both unread counts and the existing deduplication behavior. The fixture is an
+exact copy of the progress lane's **real worker delivery → authorized ListInbox
+HTTP response** at `../10-05-projects-p1-progress/evidence/inbox-wire.json`,
+captured by `TestProjectUpdateInboxDetailsRemainStringValues` (passing Go run
+recorded in its adjacent `inbox-wire-test.log`). Mobile owns the copied
+`data/project-update-inbox.fixture.json` so routine mobile tests do not depend
+on task-directory lifetime. The mobile suite itself does not execute Go.
+
+`data/project-p1-api.test.ts` also feeds this captured mixed response through
+the actual mobile `api.listInbox()` parser: changing just the revision back to
+a number reproduces the empty-array failure, while the corrected captured
+response retains both original IDs and revision string `"1"`.
+
+The same inspection found that mobile's inbox only navigated when `issue_id`
+was set. A P1 notification was merely marked read. The existing project detail
+route is now used for a valid same-workspace `project_update` notification;
+other notification types, foreign workspaces and malformed project IDs cannot
+use that branch. The detail label is `Project update`; the project header keeps
+the explicit Web/Desktop restriction for full health/progress/acceptance UI.
+Mobile does not claim to open or edit the exact update revision.
+
+New target tests first failed before `getInboxProjectTarget` was implemented,
+then the focused inbox/target suite passed all 9 tests. Full independent mobile
+checks on 2026-10-05 at 17:39 Asia/Shanghai: typecheck exit 0, lint exit 0 with
+the same 7 pre-existing warnings, **27 files / 165 tests passed**, plus iOS
+wrapper shell assertions. `git diff --check -- apps/mobile` passed. Logs:
+`/tmp/p1-mobile-notification-{red,green}.log` and
+`/tmp/p1-mobile-fr01-{typecheck,lint,test}.log`.
+
+The core owner was informed of the missing shared `project_update` inbox type
+and the existing mobile access-epoch behavior. This follow-up does not change
+core/backend code or roll back the mobile late-response guard.

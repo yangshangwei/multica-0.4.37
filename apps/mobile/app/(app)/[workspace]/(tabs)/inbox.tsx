@@ -28,7 +28,7 @@ import {
 import { useWorkspaceStore } from "@/data/workspace-store";
 import { useColorScheme } from "@/lib/use-color-scheme";
 import { THEME } from "@/lib/theme";
-import { deduplicateInboxItems } from "@/lib/inbox-display";
+import { deduplicateInboxItems, getInboxProjectTarget } from "@/lib/inbox-display";
 
 export default function Inbox() {
   const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
@@ -57,6 +57,11 @@ export default function Inbox() {
       // row is already styled "read" by the time iOS captures the source
       // snapshot for the native stack push transition.
       markRead.mutate(item.id);
+    }
+    const projectId = getInboxProjectTarget(item, wsId);
+    if (projectId && wsSlug) {
+      router.push({ pathname: "/[workspace]/project/[id]", params: { workspace: wsSlug, id: projectId } });
+      return;
     }
     if (item.issue_id && wsSlug) {
       router.push({

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { InboxItem } from "@multica/core/types";
-import { deduplicateInboxItems } from "./inbox-display";
+import { deduplicateInboxItems, getInboxProjectTarget } from "./inbox-display";
 
 function item(overrides: Partial<InboxItem>): InboxItem {
   return {
@@ -50,5 +50,20 @@ describe("deduplicateInboxItems", () => {
         comment_id: "comment-1",
       },
     });
+  });
+});
+
+describe("project update notification target", () => {
+  const projectId = "77777777-7777-4777-8777-777777777777";
+  const notification = { type: "project_update", workspace_id: "workspace-1", details: { project_id: projectId, revision: "2" } };
+  it("opens an authorized project notification without an issue id", () => {
+    expect(getInboxProjectTarget(notification, "workspace-1")).toBe(projectId);
+  });
+  it("ignores foreign workspace, other notification types and malformed project ids", () => {
+    expect(getInboxProjectTarget(notification, "workspace-2")).toBeNull();
+    expect(getInboxProjectTarget(notification, null)).toBeNull();
+    expect(getInboxProjectTarget({ ...notification, type: "new_comment" }, "workspace-1")).toBeNull();
+    expect(getInboxProjectTarget({ ...notification, details: { project_id: "../../settings" } }, "workspace-1")).toBeNull();
+    expect(getInboxProjectTarget({ ...notification, details: null }, "workspace-1")).toBeNull();
   });
 });

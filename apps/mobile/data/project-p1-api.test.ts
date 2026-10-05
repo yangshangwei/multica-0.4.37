@@ -1,5 +1,6 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Project } from "@multica/core/types";
+import projectInboxFixture from "./project-update-inbox.fixture.json";
 
 const workspace = vi.hoisted(() => ({ currentWorkspaceId: "11111111-1111-4111-8111-111111111111", currentWorkspaceSlug: "first" }));
 vi.mock("./workspace-store", () => ({
@@ -34,6 +35,16 @@ beforeEach(() => {
 afterEach(() => { vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("mobile project response contract", () => {
+  it("keeps existing and P1 notifications through the real mobile inbox API parser", async () => {
+    const broken = projectInboxFixture.map((item) => item.type === "project_update"
+      ? { ...item, details: { ...item.details, revision: 1 } } : item);
+    respond(broken);
+    await expect(api.listInbox()).resolves.toEqual([]);
+    respond(projectInboxFixture);
+    const result = await api.listInbox();
+    expect(result.map((item) => item.id)).toEqual(projectInboxFixture.map((item) => item.id));
+    expect(result[0]?.details?.revision).toBe("1");
+  });
   it("keeps legacy closure and distinguishes missing split counts from zero", async () => {
     respond(oldProject);
     expect(await api.getProject(projectId)).toMatchObject({ done_count: 3 });

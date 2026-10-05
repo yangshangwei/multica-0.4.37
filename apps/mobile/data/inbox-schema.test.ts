@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { InboxListSchema } from "./schemas";
+import { deduplicateInboxItems } from "../lib/inbox-display";
+import projectInboxFixture from "./project-update-inbox.fixture.json";
 
 /**
  * Tests for mobile's CLIENT-SIDE parsing of GET /api/inbox.
@@ -9,9 +11,9 @@ import { InboxListSchema } from "./schemas";
  * this client REACTS to a given payload. They cannot fail when the Go server
  * starts sending something new — nothing here executes server code.
  *
- * The matching server-side guarantee is structural rather than a test: every
- * `details` map in server/cmd/server/notification_listeners.go is typed
- * `map[string]string`, so a non-string value is a compile error there.
+ * The legacy notification listeners use `map[string]string`. P1's separate
+ * outbox publisher must keep the same wire contract; the P1 regression below
+ * mirrors CreateProjectUpdateInbox plus deliverProjectUpdateNotification.
  *
  * Why both halves exist: during MUL-5483 a new inbox type was added and the
  * mobile label map was updated so `tsc` passed — but a NUMBER went into
@@ -22,6 +24,26 @@ import { InboxListSchema } from "./schemas";
  * document; the compile-time type is what prevents it.
  */
 describe("inbox list schema", () => {
+  // Captured from real worker delivery → authorized ListInbox HTTP response.
+  // Source: .trellis/tasks/10-05-projects-p1-progress/evidence/inbox-wire.json
+  const projectNotification = projectInboxFixture[0]!;
+  const existingIssueNotification = projectInboxFixture[1]!;
+
+  it("reproduces a numeric P1 revision rejecting the entire mixed inbox", () => {
+    const broken = { ...projectNotification, details: { ...projectNotification.details, revision: 2 } };
+    const parsed = InboxListSchema.safeParse([broken, existingIssueNotification]);
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) expect(parsed.error.issues[0]?.path).toEqual([0, "details", "revision"]);
+  });
+
+  it("preserves P1 and existing notifications when revision follows the string wire contract", () => {
+    const parsed = InboxListSchema.parse(projectInboxFixture);
+    expect(parsed).toHaveLength(2);
+    expect(parsed[0]).toMatchObject({ type: "project_update", issue_id: null, details: { revision: "1", project_id: projectNotification.details.project_id } });
+    const visible = deduplicateInboxItems(parsed);
+    expect(visible.map((item) => item.id)).toEqual([projectNotification.id, existingIssueNotification.id]);
+    expect(visible.filter((item) => !item.read)).toHaveLength(2);
+  });
   it("parses a row shaped like the documented server payload", () => {
     const serverRow = {
       id: "inbox-1",

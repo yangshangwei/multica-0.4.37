@@ -8,6 +8,17 @@
  */
 import type { InboxItem } from "@multica/core/types";
 
+/** Project updates have no issue_id. Open the existing project detail;
+ * mobile keeps health/progress/acceptance editing on Web and Desktop. */
+export function getInboxProjectTarget(
+  item: Pick<InboxItem, "workspace_id" | "details"> & { type: string },
+  workspaceId: string | null,
+): string | null {
+  if (!workspaceId || item.workspace_id !== workspaceId || item.type !== "project_update") return null;
+  const projectId = item.details?.project_id;
+  return projectId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(projectId) ? projectId : null;
+}
+
 function singleLine(value: string | null | undefined): string {
   return (value ?? "").replace(/\s+/g, " ").trim();
 }
