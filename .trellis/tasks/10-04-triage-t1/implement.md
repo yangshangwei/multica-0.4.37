@@ -74,9 +74,9 @@ Files: `server/internal/handler/triage_import*.go`, CSV parser/resolver helper t
 - [x] Exercise production Web and shared Desktop route: enable/create/review/history/snooze/reopen/CSV/batch/conflict; old-client/direct route blocked; formal controls still work. Fake runtimes only.
 - [x] Persist browser screenshots and visual verdict, responsive/keyboard proof, performance samples.
 - [x] Update built-in skill/API behavior docs and scoped Trellis specs, user guide and acceptance ledger.
-- [x] Independent full-scope review, fix findings, rerun affected checks, commit task-owned files under Lore protocol. Leave branch reviewable; no merge or deployment.
+- [x] Independent full-scope review, fix findings, rerun affected checks, commit task-owned files under Lore protocol. Original implementation handoff delivered the reviewed branch; later integration is recorded below.
 
 Rollback checkpoints: task planning commit; schema+backend commit; guard/query commit; core/UI commit; integration/docs commit. Feature remains default off. Never roll back populated audit/import/admission tables destructively; disable only after pending queue is resolved, preserve history and deploy forward correction.
 
 
-Completed 2026-10-05. See verification.md for actual commands, named proof and limitations. Git commits and final task metadata follow the verified source delivery; no merge or deployment.
+Completed 2026-10-05. Subsequent integration merged and pushed T1 to `main` as `85b0d2e7e` at 11:14 Asia/Shanghai. The final local main-worktree regression has passing evidence for all 17 triage cases; expanded tests and accompanying fixes remain uncommitted. Remote CI and Mobile Verify failed, and production release is unconfirmed. See [verification.md](verification.md) for the dated integration, regression and deployment evidence.

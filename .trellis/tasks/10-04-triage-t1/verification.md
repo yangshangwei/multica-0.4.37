@@ -1,6 +1,40 @@
 # T1 acceptance ledger
 
-Status: T1 verified on 2026-10-05. Independent functional audit substantiates all 37 AC cases and 8 FR obligations; final visual verdict is pass, 94/100. This is a branch delivery, not a main merge or production release.
+Status as of 2026-10-05: T1 implementation is complete and merged/pushed to `main` as `85b0d2e7e`. Independent branch acceptance substantiates all 37 AC cases and 8 FR obligations, with a 94/100 visual pass. Subsequent local main-worktree regression has passing evidence for all 17 triage cases. Remote CI is failing and production release is unconfirmed; implementation completion does not mean release readiness.
+
+## Main integration and final regression follow-up (2026-10-05)
+
+- [Merge `85b0d2e7e`](https://github.com/yangshangwei/multica-0.4.37/commit/85b0d2e7e0346f77cb127716842bd36de8dd3fc8) landed at 11:14:33 Asia/Shanghai. Local ancestry and `gh api repos/yangshangwei/multica-0.4.37/commits/main` both confirm T1 is on main; the remote API returned that exact full SHA.
+- The merge record reports lint, typecheck, 9,951 TypeScript tests, 6 local production-mode Web triage scenarios, migrations through 535, Go race checks and `go vet`. It also records a pre-existing full-Go failure: the built-in agent-creation skill was 534 lines against a 500-line budget. This was not a fully green main CI result.
+- The later regression session `01a10a62-eb9e-7bd3-a835-0ea8df902a6b` completed. Its [coverage report](../../../docs/qa/e2e-branch-coverage-2026-10-05.md) records the final results below. These runs used main commit `85b0d2e7e` plus uncommitted test expansion and fixes, including the CORS `Retry-After` exposure fix; they do not prove the clean remote commit passes every check.
+
+| Check | Final recorded evidence |
+| --- | --- |
+| E2E inventory | 234 unique cases across 74 spec files; all have a one-attempt pass, with no final failure, skipped-only case or missing evidence. Results aggregate multiple environment-specific runs, not one all-green full-suite command. |
+| Triage regression | 17/17: 6 existing Web cases and 1 native Electron case in `baseline-current.json`; 10 new cases in `branches-final.json` (7 browser and 3 HTTP integration cases). |
+| New triage branches | Disabled intake, pending snooze blocking disable, required priority, reviewer rules, stale revision recovery, invalid snooze time, reopen rules, intake replay, decision replay and execution/assignment fences. |
+| TypeScript unit tests | 9,956 passing tests across 5 package tasks; the docs task used valid cache. The historical mobile suite is not included. |
+| Static checks | Typecheck, lint and strict E2E TypeScript checks recorded exit 0; typecheck/lint reused valid Turbo cache, with 29 existing lint warnings. |
+| Go affected package | `go test -race -p 2 -parallel 2 ./cmd/server` and `go vet ./cmd/server` recorded exit 0 against an isolated migrated database. The later session did not rerun the whole Go repository or `make check`. |
+| Final rerun correction | The last combined non-password run passed 41/42; one chat test used an unstable generated title. After switching its navigation to a stable conversation ID, the full chat file passed 6/6. Earlier failures remain in the evidence history. |
+
+Closeout independently reconciled all 234 unique identities against their referenced raw Playwright JSON reports, including one-attempt passed results and no report-level errors. All eight recorded source hashes match the current test/backend files. This closeout audited existing execution evidence and did not rerun application tests.
+
+Local evidence lives in `.gstack/qa-reports/2026-10-05-branch-expansion/` (Git-ignored): `evidence-summary.json` generated at 2026-10-05 05:27:00 UTC, `checks-final.json`, `provenance-final.json` and the referenced raw reports. SHA-256: `evidence-summary.json` = `80ddc814d424d5ee4eeacdab81375d7d149bb53afccf0f47e6bca77e606f2c15`; `checks-final.json` = `829c36cbf4a31c1c03ad5bb481088965dca36f27b40460b4c2ac7ecc4c42d727`. The coverage report, added tests and accompanying fixes were still uncommitted at closeout; this ledger preserves the result even before that separate work is committed.
+
+## Remote CI and deployment status (checked 2026-10-05)
+
+| Surface | Observed status | Meaning |
+| --- | --- | --- |
+| [CI run 37260088874](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37260088874) | Failed on `85b0d2e7e`: `backend-tests` / `Test`, and `frontend-build` / `Verify in-app docs bundle is up to date`; aggregate frontend/backend jobs also failed. | Main CI is not green. Job failures need resolution and a fresh successful run; local regression does not override them. |
+| [Mobile Verify run 37260088889](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37260088889) | Failed on `85b0d2e7e` at `Type check, lint, and test`. | Mobile verification is still open; full mobile triage editing remains outside T1. |
+| Release / deployment | Latest published release is [v0.5.5](https://github.com/yangshangwei/multica-0.4.37/releases/tag/v0.5.5), published 2026-10-03 23:55:19 Asia/Shanghai. The [latest release workflow](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37134019640) is for that version; GitHub deployments returned `[]`. | No T1 production release is evidenced. This does not rule out an unrecorded manual deployment; no production URL/version proof was available. |
+| Default local environment | `bash scripts/dev-env.sh status --json` reported API/Web mismatch. API `127.0.0.1:18573/health` returned old commit `e3415e798`; Web 13493 responded but its current build identity was not verified. | The default local environment does not establish that current main is running. |
+| Regression environments | APIs 18577/18578 and Web 13497/13498 are stopped, consistent with the regression cleanup record. T1 branch API 18557 still returned `1c391b625`. | These are local test/branch environments, not production deployment evidence. |
+
+Release follow-up remains: land the separately owned regression fixes/tests, resolve and rerun failed remote checks, then verify the version and health of the intended deployment. This closeout performed no push, release, service restart or deployment.
+
+## Original branch acceptance ledger
 
 | Requirement | Scenario | Expected | Evidence | Status |
 | --- | --- | --- | --- | --- |
@@ -57,14 +91,14 @@ Additional mandatory checks: package lint/typecheck, Go vet and tests, safe migr
 | TRI-FR-03/09/26 | Consumed keys survive issue deletion; terminal task and deleted imported row cannot be recreated by retries | Verified; see final audit and named proof map below |
 | TRI-FR-19 | Delayed pending-era mention never executes after acceptance; legacy agent identity cannot review | Verified; see final audit and named proof map below |
 
-## Final verification evidence
+## Original branch verification evidence
 
 - `make test`: exit 0, complete Go tests with race detection and the ambient-agent CLI guard, including all migration, handler, service and agent packages.
 - `go vet ./...`: exit 0; scoped handler/cmd checks also passed after subsequent boundary changes.
 - `pnpm typecheck`: all 9 tasks successful after final UI fixes.
 - `pnpm lint`: all 6 tasks successful, zero errors; 27 pre-existing warnings outside changed feature code. Scoped new feature lint has zero warnings.
 - Bounded full TypeScript suites: core 2,506, views 5,946, desktop 957, web 282 and docs 62 passing tests. The final local UI/route/error-state fixes additionally passed 97 targeted tests; earlier broad suite failures were fixed, not waived.
-- Real production Web: 6/6 scenarios passed (14.8s), including settings/intake, rapid search clear and empty focus, snooze/reject/reopen, CSV, actual comment-notification delivery and inbox independence, legacy PUT rejection, explicit resource/executor confirmation with one durable queue row, and Chinese compact validation.
+- Local production-mode Web: 6/6 scenarios passed (14.8s), including settings/intake, rapid search clear and empty focus, snooze/reject/reopen, CSV, actual comment-notification delivery and inbox independence, legacy PUT rejection, explicit resource/executor confirmation with one durable queue row, and Chinese compact validation.
 - Native Electron: 1/1 scenario passed (3.8s), using the real built preload/renderer/router and backend in an isolated profile. Unrelated daemon/updater actions are isolated by the existing native fixture; no real agent CLI runs.
 - Independent visual review: 94/100 pass across 9 final screenshots; misleading validation recovery and CSV status labels resolved. Remaining P3 notes are optional polish, not material acceptance failures.
 - Migration verification includes clean schema application, every retained-data down-step refusal, concurrent first-writer refusal, empty maintenance rollback, and registration of all concurrent-index interruption cleanup hooks.
@@ -92,9 +126,10 @@ Local PostgreSQL + handler baseline, not a production-network SLA: 10,000 formal
 
 ## Delivery boundaries
 
-T1 is delivered on `codex/triage-t1`; no merge, push, release or production deployment is included. T2/T3 rules/AI/automatic admission and full mobile editing remain outside this task. Live authenticated agent execution was deliberately not run; fake runtime fixtures prove request authority, context, queued-task identity and replay safety. The local browser/native flows and server enforcement are verified.
+T1 was implemented and accepted on `codex/triage-t1`, then merged and pushed to `main` in the subsequent integration recorded above. Production release is unconfirmed and remote CI remains failing at closeout. T2/T3 rules/AI/automatic admission and full mobile editing remain outside this task. Live authenticated agent execution was deliberately not run; fake runtime fixtures prove request authority, context, queued-task identity and replay safety. Local production-mode builds are not evidence of production deployment.
 
 ## Code delivery commits
 
 - `b0cda446a`: transactional backend, execution/query boundaries, migrations and server regression tests.
 - `36bc06c23`: shared typed client, Web/Desktop UI, notifications and browser/native acceptance scenarios.
+- `85b0d2e7e`: main integration merge, retaining the existing administration and MCP work plus the concurrent authentication-upgrade documentation commit.
