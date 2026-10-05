@@ -1,0 +1,37 @@
+{
+  "id": "admin-resource-publishing",
+  "name": "admin-resource-publishing",
+  "title": "后台密码重置与资源发布",
+  "description": "Platform admin password reset and safe resource publication",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-04",
+  "completedAt": "2026-10-05",
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "ae5f246edba684bfce539a0aa7b854fc89828f23",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "10-04-admin-password-reset",
+    "10-04-admin-catalog-service",
+    "10-04-admin-catalog-ui"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "Implementation and local acceptance completed. Committed to local main; no push or production deployment.",
+  "meta": {
+    "implementation_status": "verified",
+    "verification_file": "verification.md",
+    "commit_status": "committed",
+    "verified_at": "2026-10-04T16:24:26.494914+00:00",
+    "code_commit": "ae5f246edba684bfce539a0aa7b854fc89828f23",
+    "committed_at": "2026-10-05T02:19:12.782127+00:00"
+  }
+}

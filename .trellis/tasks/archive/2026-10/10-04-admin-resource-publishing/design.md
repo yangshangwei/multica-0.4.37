@@ -1,0 +1,44 @@
+# Technical design and integration contract
+
+## Boundaries
+New management UI stays under views/admin and Web /admin/resources. New admin API reuses requirePlatformAccess(read/write). A dedicated service owns managed filesystem revisions/index and strict upload validation; existing consumer contracts and source=deployment remain unchanged.
+
+## Persistent store
+Explicit opt-in MULTICA_RESOURCE_PUBLISH_DIR. Existing manual skill/MCP dirs remain readonly. Store immutable revisions under this root and atomically replace a small index mapping kind/key to active or withdrawn revision and metadata. Temporary/revision metadata is outside consumer bundles. Use cross-process OS file locking (existing x/sys Unix/Windows APIs or an equivalent reviewed mechanism); readers use a single index snapshot and immutable data. No new dependencies. Managed/manual identity collisions are rejected (manual entries cannot be edited via UI); skill builtin collisions rejected; MCP builtin names retain separate builtin/deployment identities.
+
+Index metadata: kind,key,name,description,version (sha256 content digest),state,published_at,published_by,reason,operation_id. Never store passwords or package content in audit. Revision files are immutable and hash-verified/read within root; no symlink traversal. Failed validation/writes do not advance index. Withdraw preserves revision/copies and persists a tombstone. API success cannot claim transactionality across filesystem and PostgreSQL: persist an audit request before commit and applied outcome after. If outcome recording fails after publication, return explicit uncertain result and recover by operation ID/list refresh; durable index records actor/reason/op. Duplicate operation IDs must not overwrite unrelated requests.
+
+## HTTP contract (snake_case)
+GET /api/admin/resources?kind=skill|mcp
+ -> {enabled:boolean,can_publish:boolean,items:Resource[],limits:{max_upload_bytes:number}}
+Resource={kind:'skill'|'mcp',key:string,name:string,description:string,source:'managed'|'deployment'|'builtin',state:'published'|'withdrawn',version:string,file_count:number,byte_count:number,updated_at:string|null,updated_by:string|null}
+POST /api/admin/resources/{kind}/preview multipart(file,key)
+ -> {resource:Resource,files:[{path:string,size:number}],preview:string,preview_digest:string,expected_version:string|null}
+POST /api/admin/resources/{kind}/{key}/publish multipart(file,preview_digest,expected_version [empty=create],reason), Idempotency-Key UUID
+ -> {resource:Resource,replayed:boolean}
+POST /api/admin/resources/{kind}/{key}/withdraw JSON{expected_version:string,reason:string}, Idempotency-Key UUID
+ -> {resource:Resource,replayed:boolean}
+
+Revalidate same upload on publish, require preview_digest match. No server-side draft lifecycle needed: browser retains its File and resubmits. Skill ZIP may have SKILL.md at root or under one wrapper; reject other top-level content, duplicates, symlinks, path traversal, invalid UTF-8/NUL and oversized entries. Strictly cap compressed (16MiB), primary/per-file (1MiB), total text (9MiB incl primary), file count257. MCP64KiB manifest, validated by existing parser; preview contains uploaded text only for authorized publisher. GET previews/list must not expose server absolute paths or secret values.
+
+Errors:400 resource_invalid (field-safe reason),403 admin_forbidden,404 resource_not_found,409 resource_changed/resource_conflict/resource_preview_changed/resource_idempotency_conflict,503 resource_publishing_disabled/resource_store_unavailable/resource_outcome_unknown. UI preserves upload/preview on recoverable error; prevents blind retries on unknown outcomes and offers refresh. Role and store capability checked by server, not only UI.
+
+## Consumer integration
+TaskService gets optional managed store and merges validated managed skill templates as deployment entries after readonly manual content. McpCatalog gets optional managed store; both List and Resolve read same managed immutable snapshot. Keep no-feature configurations byte-compatible. Errors in configured managed store must be explicit where supported rather than silently showing an empty managed catalog. No mutation to workspace instances, bindings or Electron native code.
+
+## UI
+Admin Resources route and nav entry under System; two URL-addressed tabs kind=skill|mcp. List source/state/version date with managed-only update/withdraw. File+key input; preview shows manifest/SKILL.md and full file inventory, result/limits; reason required for publication/withdraw. Confirmation surfaces exact target/version and effects. Readonly/disabled capability state explanatory. No invented publish history UI. Reuse scoped admin CSS/tokens. Password reset remains existing user action form.
+
+## Rollout
+Default publishing disabled when root unset; optional Compose override mounts only a dedicated managed named volume and sets env. Keep manual mounts readonly. Multi-instance servers must share managed storage and its lock semantics; document network FS constraints. First supported deployment/client versions required, subsequent files use existing30s catalog refresh. No production deploy automatically.
+
+## Independent design review resolutions (authoritative refinements)
+
+- Resource.version is an **opaque mutation revision** changed for every publish/withdraw, even equal-content republish. Add content_digest:string|null separately. expected_version compares mutation revision. Consumer MCP content-hash version remains unchanged. Preview digest authenticates canonical uploaded content.
+- A bounded operation receipt map is persisted in the atomically replaced index independently of the latest resource record. Each receipt contains the actor, internal organization, operation key, request digest (action/key/expected revision/content digest/reason), original response and timestamp. Matching replays return original response even after later changes; mismatched keys409. Never evict receipts silently; reject writes with explicit resource_store_full if index limit reached. GET /api/admin/resources/operations/{id} returns an actor-scoped receipt or404, for unknown outcome recovery. Resource mutation replies also expose operation_id.
+- Every mutation snapshot atomically includes its receipt and updated/tombstoned resource row; this is the filesystem commit point. Immutable revision data is synced first, index temp file synced then renamed, root directory synced. Failure after rename is resource_outcome_unknown; receipt lookup resolves it. Failed precommit writes never change current index; retain harmless orphan revisions rather than deleting reader-held snapshots.
+- Strict limits: upload16MiB; primary/per-file1MiB; supporting files<=8MiB; total<=9MiB;257 files;512 ZIP entries incl directories; managed entries<=256; total active bytes<=64MiB; index<=16MiB; MCP effective deployed contents<=256entries/4MiB including manual entries. Return all upload limits to UI. Bound multipart parts/fields and validation concurrency. Reject case/prefix aliases, unsafe portable paths, symlinks/special files and invalid UTF-8/NUL without partial acceptance.
+- Keep one stable OS-lock inode and bounded context-aware lock wait. Store methods expose a commit-guard callback executed **inside the FS lock**: handler begins DB transaction, takes LockPlatformAdminMutation(actor), reauthorizes with transaction queries, writes audit-request durably outside that transaction, then invokes filesystem apply while actor locks remain held. On successful apply, writes applied audit in actor transaction and commits. If audit finalize fails after FS commit, return unknown with operation ID; receipt lookup remains authoritative. Lock order: FS lock -> platform advisory lock -> sorted actor user lock. No other code takes FS lock while holding DB user locks. Replays also reauthorize. Stable deterministic resource target UUID; no fake AdminOperation row/receipt links are required for resource audit events.
+- Scope is this deployment's singleton internal organization. Bind index and receipts to that organization; readers and writers validate it, including consumer adapters. No client-supplied organization field. Do not share one managed root across independently configured deployments.
+- Reserve all manual directory names (including invalid contents) and check collisions on every consumer merge/Resolve as well as write. Return explicit conflicts/unavailable rather than choosing a winner. Skill managed failures must propagate through an error-returning catalog service/API path as503; unset feature preserves existing manual behavior.
+- Store availability is distinct from enabled/can_publish. A configured corrupt/unreadable store returns a typed error, never a disabled/empty successful response. Capability false must not bypass authorization.
