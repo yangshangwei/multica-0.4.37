@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api";
 import { clearProjectDescriptionDrafts } from "./description-draft-store";
 import { clearProjectProgressDrafts } from "./progress-draft-store";
+import { canAccessProject, protectProjectRequest, beginProjectDelete } from "./access";
 import { projectKeys } from "./queries";
 import { useWorkspaceId } from "../hooks";
 import { useRecentContextStore } from "../chat/recent-context-store";
@@ -17,20 +18,21 @@ export function useConfigureProjectSquad(wsId: string) {
     // callbacks of an in-flight mutation with another workspace's closures.
     mutationKey: [...projectKeys.all(wsId), "configure-squad"],
     mutationFn: ({ id, ...data }: { id: string } & ConfigureProjectSquadRequest) =>
-      api.configureProjectSquad(id, data, { workspaceId: wsId }),
+      protectProjectRequest(qc, wsId, id, () => api.configureProjectSquad(id, data, { workspaceId: wsId })),
     onSuccess: (project) => {
+      if (!canAccessProject(wsId, project.id)) return;
       qc.setQueryData(projectKeys.detail(wsId, project.id), project);
       qc.setQueryData<ListProjectsResponse>(projectKeys.list(wsId), (old) =>
         old ? { ...old, projects: old.projects.map((item) => item.id === project.id ? project : item) } : old,
       );
     },
-    onSettled: (_data, _err, { id }) => Promise.all([
+    onSettled: (_data, _err, { id }) => canAccessProject(wsId, id) ? Promise.all([
       qc.invalidateQueries({ queryKey: projectKeys.detail(wsId, id) }),
       qc.invalidateQueries({ queryKey: projectKeys.list(wsId) }),
       qc.invalidateQueries({ queryKey: workspaceKeys.squads(wsId) }),
       qc.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) }),
       qc.invalidateQueries({ queryKey: workspaceKeys.skills(wsId) }),
-    ]),
+    ]) : undefined,
   });
 }
 
@@ -41,20 +43,21 @@ export function useConfigureProjectSquads(wsId: string) {
     // callbacks of an in-flight mutation with another workspace's closures.
     mutationKey: [...projectKeys.all(wsId), "configure-squads"],
     mutationFn: ({ id, squads }: { id: string; squads: ConfigureProjectSquadRequest[] }) =>
-      api.configureProjectSquads(id, squads, { workspaceId: wsId }),
+      protectProjectRequest(qc, wsId, id, () => api.configureProjectSquads(id, squads, { workspaceId: wsId })),
     onSuccess: (project) => {
+      if (!canAccessProject(wsId, project.id)) return;
       qc.setQueryData(projectKeys.detail(wsId, project.id), project);
       qc.setQueryData<ListProjectsResponse>(projectKeys.list(wsId), (old) =>
         old ? { ...old, projects: old.projects.map((item) => item.id === project.id ? project : item) } : old,
       );
     },
-    onSettled: (_data, _err, { id }) => Promise.all([
+    onSettled: (_data, _err, { id }) => canAccessProject(wsId, id) ? Promise.all([
       qc.invalidateQueries({ queryKey: projectKeys.detail(wsId, id) }),
       qc.invalidateQueries({ queryKey: projectKeys.list(wsId) }),
       qc.invalidateQueries({ queryKey: workspaceKeys.squads(wsId) }),
       qc.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) }),
       qc.invalidateQueries({ queryKey: workspaceKeys.skills(wsId) }),
-    ]),
+    ]) : undefined,
   });
 }
 
@@ -63,8 +66,9 @@ export function useCreateProject() {
   const wsId = useWorkspaceId();
   return useMutation({
     mutationKey: [...projectKeys.all(wsId), "create"],
-    mutationFn: (data: CreateProjectRequest) => api.createProject(data, { workspaceId: wsId }),
+    mutationFn: (data: CreateProjectRequest) => protectProjectRequest(qc, wsId, undefined, () => api.createProject(data, { workspaceId: wsId })),
     onSuccess: (newProject) => {
+      if (!canAccessProject(wsId, newProject.id)) return;
       qc.setQueryData(projectKeys.detail(wsId, newProject.id), newProject);
       qc.setQueryData<ListProjectsResponse>(projectKeys.list(wsId), (old) =>
         old && !old.projects.some((p) => p.id === newProject.id)
@@ -73,6 +77,7 @@ export function useCreateProject() {
       );
     },
     onSettled: (_data, _err, variables) => {
+      if (!canAccessProject(wsId)) return;
       qc.invalidateQueries({ queryKey: projectKeys.list(wsId) });
       if (variables.execution_squad || variables.execution_squads?.length) {
         qc.invalidateQueries({ queryKey: workspaceKeys.squads(wsId) });
@@ -89,8 +94,9 @@ export function useUpdateProject() {
   return useMutation({
     mutationKey: [...projectKeys.all(wsId), "update"],
     mutationFn: ({ id, ...data }: { id: string } & UpdateProjectRequest) =>
-      api.updateProject(id, data, { workspaceId: wsId }),
+      protectProjectRequest(qc, wsId, id, () => api.updateProject(id, data, { workspaceId: wsId })),
     onMutate: ({ id, ...data }) => {
+      if (!canAccessProject(wsId, id)) return undefined;
       if ("description" in data || "status" in data || "expected_revision" in data) return undefined;
       qc.cancelQueries({ queryKey: projectKeys.list(wsId) });
       const prevList = qc.getQueryData<ListProjectsResponse>(projectKeys.list(wsId));
@@ -103,14 +109,17 @@ export function useUpdateProject() {
       );
       return { prevList, prevDetail, id };
     },
-    onError: (_err, _vars, ctx) => {
+    onError: (_error, vars, ctx) => {
+      if (!canAccessProject(wsId, vars.id)) return;
       if (ctx?.prevList) qc.setQueryData(projectKeys.list(wsId), ctx.prevList);
       if (ctx?.prevDetail) qc.setQueryData(projectKeys.detail(wsId, ctx.id), ctx.prevDetail);
     },
     onSuccess: (project) => {
+      if (!canAccessProject(wsId, project.id)) return;
       qc.setQueryData(projectKeys.detail(wsId, project.id), project);
     },
     onSettled: (_data, _err, vars) => {
+      if (!canAccessProject(wsId, vars.id)) return;
       qc.invalidateQueries({ queryKey: projectKeys.detail(wsId, vars.id) });
       qc.invalidateQueries({ queryKey: projectKeys.list(wsId) });
     },
@@ -122,8 +131,13 @@ export function useDeleteProject() {
   const wsId = useWorkspaceId();
   return useMutation({
     mutationKey: [...projectKeys.all(wsId), "delete"],
-    mutationFn: (id: string) => api.deleteProject(id, { workspaceId: wsId }),
+    mutationFn: async (id: string) => {
+      const finish = beginProjectDelete(wsId, id);
+      try { return await protectProjectRequest(qc, wsId, id, () => api.deleteProject(id, { workspaceId: wsId })); }
+      finally { finish(); }
+    },
     onSuccess: async (_data, id) => {
+      if (!canAccessProject(wsId, id)) return;
       await qc.cancelQueries({ queryKey: projectKeys.all(wsId) });
       qc.setQueryData<ListProjectsResponse>(projectKeys.list(wsId), (old) => old ? {
         ...old, projects: old.projects.filter((p) => p.id !== id),
@@ -137,6 +151,7 @@ export function useDeleteProject() {
       clearIssueSurfaceViewState(issueScopeKey({ type: "project", projectId: id }));
     },
     onSettled: () => {
+      if (!canAccessProject(wsId)) return;
       qc.invalidateQueries({ queryKey: projectKeys.list(wsId) });
     },
   });

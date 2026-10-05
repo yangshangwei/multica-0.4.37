@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProjectSchema } from "@multica/core/api/schemas";
 import { api, ApiError } from "@multica/core/api";
-import { ProjectDescriptionSave, projectGoalTemplateAppend, type ProjectGoalSection, projectProgressDraftKey, useProjectDescriptionDraftStore, writeProjectDescriptionDraft, acknowledgeProjectDescriptionDraft, useProjectAccessStore } from "@multica/core/projects";
+import { ProjectDescriptionSave, projectGoalTemplateAppend, type ProjectGoalSection, projectProgressDraftKey, useProjectDescriptionDraftStore, writeProjectDescriptionDraft, acknowledgeProjectDescriptionDraft, clearProjectDescriptionDraft, canAccessProject, registerProjectLocalTextFlush, useProjectAccessStore } from "@multica/core/projects";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { useUpdateProject } from "@multica/core/projects/mutations";
 import type { Project } from "@multica/core/types";
@@ -14,6 +14,7 @@ import { RevisionConflictCompare } from "../../issues/components/revision-confli
 import { useT } from "../../i18n";
 
 export function ProjectDescription({ project, supported }: { project: Project; supported: boolean }) {
+  const unavailable = useProjectAccessStore((state) => !!state.denied[JSON.stringify([project.workspace_id, "*"])] || !!state.denied[JSON.stringify([project.workspace_id, project.id])] || !!state.deleted[JSON.stringify([project.workspace_id, project.id])]);
   const { t } = useT("projects"); const qc = useQueryClient(); const update = useUpdateProject();
   const draftKey = projectProgressDraftKey(api.getBaseUrl?.() ?? "", project.workspace_id, project.id, "description");
   const draft = useProjectDescriptionDraftStore((state) => state.draft.entries[draftKey]);
@@ -51,18 +52,21 @@ export function ProjectDescription({ project, supported }: { project: Project; s
     ["references", t(($) => $.management.references)],
   ].map(([id, title]) => ({ id: id!, title: title!, body: "" }));
   const pendingText = () => editor.current?.getMarkdown() ?? local.current;
+  useEffect(() => registerProjectLocalTextFlush(project.workspace_id, project.id, () => {
+    if (editor.current && editor.current.getMarkdown() !== save.current?.body && canAccessProject(project.workspace_id, project.id)) writeProjectDescriptionDraft(draftKey, { body: editor.current.getMarkdown(), baseBody: save.current?.body ?? "", revision: save.current?.revision ?? 0 });
+  }), [project.workspace_id, project.id, draftKey]);
   const acceptServer = () => {
     if (!conflict) return; save.current?.adopt(conflict.description, conflict.revision);
-    local.current = conflict.description; editor.current?.adoptContent(conflict.description); acknowledgeProjectDescriptionDraft(draftKey, pendingText(), conflict.revision); editor.current?.focus(); setConflict(undefined); setError(undefined);
+    local.current = conflict.description; editor.current?.adoptContent(conflict.description); clearProjectDescriptionDraft(draftKey); editor.current?.focus(); setConflict(undefined); setError(undefined);
   };
+  if (unavailable) return null;
   return <div className="space-y-3">
     {supported ? <ContentEditor ref={editor} value={draft?.body ?? project.description ?? ""} debounceMs={0} flushPendingOnUnmount
       onUpdate={(markdown, baseline) => {
         // A clean editor may adopt a newer query version. A dirty editor's
         // baseline stays tied to the previous revision until acknowledgement.
         if (save.current && baseline === project.description && baseline !== save.current.body && !error) save.current.adopt(baseline, project.description_revision ?? 0);
-        const denied = useProjectAccessStore.getState().denied;
-        if (denied[JSON.stringify([project.workspace_id, "*"])] || denied[JSON.stringify([project.workspace_id, project.id])]) return;
+        if (!canAccessProject(project.workspace_id, project.id)) return;
         local.current = markdown;
         writeProjectDescriptionDraft(draftKey, { body: markdown, baseBody: save.current?.body ?? project.description ?? "", revision: save.current?.revision ?? project.description_revision ?? 0 });
         save.current?.enqueue(markdown, 1000);

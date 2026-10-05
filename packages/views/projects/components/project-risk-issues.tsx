@@ -23,6 +23,7 @@ export function ProjectRiskIssues({ project, signal, version, onBack, onProtecte
     <div className="flex flex-wrap items-center gap-2"><Button variant="outline" size="sm" onClick={onBack}>{t(($) => $.management.overview)}</Button><h2 className="flex-1 text-heading font-medium">{labels[signal]}{query.data && ` · ${query.data.total}`}</h2>
       <Button size="sm" variant={mode === "list" ? "secondary" : "ghost"} onClick={() => setMode("list")}>{t(($) => $.management.list)}</Button><Button size="sm" variant={mode === "table" ? "secondary" : "ghost"} onClick={() => setMode("table")}>{t(($) => $.management.table)}</Button>
     </div><p className="text-caption text-muted-foreground">{t(($) => $.management.risk_scope)}</p>
+    {query.data && <p className="text-caption text-muted-foreground">{t(($) => $.management.calculated, { time: new Date(query.data.overview.statistics.calculated_at).toLocaleString(), timezone: query.data.overview.statistics.timezone, date: query.data.overview.statistics.reference_date })}</p>}
     {query.data?.refreshed && <p role="status" className="text-caption text-warning">{t(($) => $.management.refreshed)}</p>}
     {query.error && <div role="alert"><p>{t(($) => $.management.load_error)}</p><Button onClick={() => void query.refetch()}>{t(($) => $.management.retry)}</Button></div>}
     {query.isPending && <p role="status">{t(($) => $.management.loading)}</p>}

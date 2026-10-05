@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { IssueSchema } from "./schemas";
+import { IssueSchema, AgentTaskSchema } from "./schemas";
 import { parseWithFallback } from "./schema";
 
 const uuid = z.string().uuid();
@@ -152,3 +152,13 @@ export function parseProjectP1<T>(raw: unknown, schema: z.ZodType<T>, workspaceI
   inspect(parsed);
   return parsed;
 }
+
+export const ProjectExecutionEvidenceSchema = z.object({
+  ...identity, update_id: uuid, revision,
+  task: AgentTaskSchema.extend({ id: uuid, kind: z.enum(["comment", "autopilot", "chat", "quick_create", "direct"]).optional(), status: z.enum(["queued", "dispatched", "waiting_local_directory", "running", "completed", "failed", "cancelled"]) }),
+  messages: z.array(z.object({ task_id: uuid, issue_id: z.string(), chat_session_id: z.string().optional(), seq: count,
+    type: z.enum(["text", "thinking", "tool_use", "tool_result", "error"]), tool: z.string().optional(), content: z.string().optional(),
+    input: z.record(z.string(), z.unknown()).optional(), output: z.string().optional(), created_at: z.string().optional() }).loose()),
+}).strict().superRefine((value, ctx) => {
+  if (value.messages.some((message) => message.task_id !== value.task.id)) ctx.addIssue({ code: "custom", message: "Execution message identity mismatch" });
+});

@@ -103,3 +103,27 @@ describe("P1 versioned project updates", () => {
     qc.clear();
   });
 });
+
+describe("P1 revoked access barrier", () => {
+  beforeEach(async () => { const { useProjectAccessStore } = await import("./access"); useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} }); });
+  it.each(["success", "failure"])("does not restore protected caches after a late update %s", async (outcome) => {
+    const qc = new QueryClient();
+    const project = { ...p1Project, id: "revoked-project", workspace_id: "revoked-workspace", description: "private server text" };
+    // The mocked hook is workspace ws-1; the API request captures that scope.
+    project.workspace_id = "ws-1";
+    qc.setQueryData(projectKeys.detail("ws-1", project.id), project);
+    qc.setQueryData(projectKeys.list("ws-1"), { projects: [project], total: 1 });
+    let resolve!: (value: unknown) => void; let reject!: (error: Error) => void;
+    setApiInstance({ updateProject: vi.fn(() => new Promise((yes, no) => { resolve = yes; reject = no; })) } as unknown as ApiClient);
+    const { result, unmount } = renderHook(() => useUpdateProject(), { wrapper: createWrapper(qc) });
+    let pending!: Promise<unknown>;
+    await act(async () => { pending = result.current.mutateAsync({ id: project.id, title: "private attempted title" }).catch((error) => error); });
+    const { clearProtectedProjectContent, useProjectAccessStore } = await import("./access");
+    act(() => clearProtectedProjectContent(qc, "ws-1"));
+    await act(async () => { if (outcome === "success") resolve(project); else reject(new Error("failure")); await pending; });
+    expect(qc.getQueryData(projectKeys.detail("ws-1", project.id))).toBeUndefined();
+    expect(qc.getQueryData(projectKeys.list("ws-1"))).toBeUndefined();
+    expect(JSON.stringify(qc.getMutationCache().getAll().map((mutation) => mutation.state))).not.toContain("private");
+    unmount(); qc.clear(); useProjectAccessStore.setState({ denied: {} });
+  });
+});

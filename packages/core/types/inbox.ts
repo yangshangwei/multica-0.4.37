@@ -4,6 +4,7 @@ export type InboxSeverity = "action_required" | "attention" | "info";
 
 export type InboxItemType =
   | "triage"
+  | "project_update"
   | "issue_assigned"
   | "issue_subscribed"
   | "unassigned"

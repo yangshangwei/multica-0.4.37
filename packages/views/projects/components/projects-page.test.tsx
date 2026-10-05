@@ -54,6 +54,7 @@ vi.mock("@tanstack/react-query", () => ({
 
 vi.mock("@multica/core/projects", () => ({
   projectListOptions: () => ({ queryKey: ["projects"] }),
+  useProjectAccessStore: Object.assign((selector: (state: unknown) => unknown) => selector({ denied: {} }), { getState: () => ({ denied: {} }) }),
   useUpdateProject: () => ({ mutate: mocks.updateProject }),
   useDeleteProject: () => ({ mutate: mocks.deleteProject }),
   useProjectViewStore: (selector: (state: unknown) => unknown) =>
@@ -351,3 +352,5 @@ describe("ProjectsPage compact row navigation", () => {
     open.mockRestore();
   });
 });
+
+vi.mock("./project-property-recovery", () => ({ useProjectPropertyEditor: (project: Project) => ({ send: (data: object) => mocks.updateProject({ id: project.id, ...data }), recovery: null }) }));

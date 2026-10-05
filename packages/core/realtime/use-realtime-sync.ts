@@ -1,7 +1,7 @@
 "use client";
 
 import { projectManagementEvent } from "../projects/realtime";
-import { clearProtectedProjectContent } from "../projects/access";
+import { clearProtectedProjectContent, markProjectDeleted, isProjectDeletePending } from "../projects/access";
 
 import { useEffect, useRef } from "react";
 import { useQueryClient, type InfiniteData, type QueryClient } from "@tanstack/react-query";
@@ -990,6 +990,11 @@ export function useRealtimeSync(
     ]);
 
     const unsubAny = ws.onAny((msg) => {
+      if (msg.type === "project:deleted" && msg.payload && typeof msg.payload === "object") {
+        const payload = msg.payload as { project_id?: string; workspace_id?: string };
+        const wsId = payload.workspace_id ?? getCurrentWsId();
+        if (wsId && payload.project_id && !isProjectDeletePending(wsId, payload.project_id)) markProjectDeleted(qc, wsId, payload.project_id);
+      }
       if (projectManagementEvent(msg.type)) {
         const wsId = getCurrentWsId();
         if (wsId) debouncedRefresh("project-management", () => { void qc.invalidateQueries({ queryKey: projectKeys.all(wsId) }); });

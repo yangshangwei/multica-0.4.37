@@ -33,6 +33,13 @@ function item(overrides: Partial<InboxItem>): InboxItem {
 }
 
 describe("inbox display helpers", () => {
+  it("routes a project mention to its project and the referenced update", () => {
+    const links = { issueDetail: (id: string) => `/source/issues/${id}`, triage: () => "/source/triage", projectUpdate: (id: string, update: string) => `/source/projects/${id}?section=overview&update=${update}` };
+    const notification = item({ type: "project_update", issue_id: null, details: { project_id: "p1", update_id: "u1", revision: "2" } });
+    expect(getInboxDestination(notification, links)).toBe("/source/projects/p1?section=overview&update=u1");
+    expect(notification.read).toBe(false);
+  });
+
   it("links triage task and batch notifications to review without changing notification state", () => {
     const links = { issueDetail: (id: string) => `/acme/issues/${id}`, triage: () => "/acme/triage" };
     const batch = item({ type: "triage", issue_id: null, details: { batch_id: "batch/1" } });

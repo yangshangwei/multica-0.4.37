@@ -46,6 +46,7 @@ function workspaceScoped(slug: string) {
       if (version) params.set("version", version);
       return `${ws}/projects/${encode(id)}${params.size ? `?${params}` : ""}`;
     },
+    projectUpdate: (id: string, updateId: string) => `${ws}/projects/${encode(id)}?section=overview&update=${encode(updateId)}`,
     autopilots: () => `${ws}/autopilots`,
     // The built-in automation templates, and the entry point behind the list's
     // "New autopilot" action — which is what keeps the templates reachable in a

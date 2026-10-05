@@ -10,6 +10,7 @@ import type { Project, ProjectUpdateDraft } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { ProjectDescription } from "./project-description";
 import { ProjectProgress } from "./project-progress";
+import { ProjectOverviewPanel } from "./project-overview";
 import { ProjectRiskIssues } from "./project-risk-issues";
 import { p1Project, p1Preview, p1WriteResult, p1Overview } from "@multica/core/projects/test-fixtures/p1";
 
@@ -121,5 +122,19 @@ describe("exact project risk scope", () => {
     await userEvent.setup().click(screen.getByRole("button", { name: "Next page" }));
     await waitFor(() => expect(getProjectRiskIssues).toHaveBeenLastCalledWith(project.workspace_id, project.id,
       { signal: "blocked", cursor: "next-new-version", version: "new" }, { signal: expect.any(AbortSignal) }));
+  });
+});
+
+
+describe("overview refresh failure", () => {
+  it("marks retained statistics stale and stops asserting current healthy results", async () => {
+    const getProjectOverview = vi.fn().mockResolvedValueOnce({ ...p1Overview, statistics: { ...p1Overview.statistics, health: "clear", reasons: [] } }).mockRejectedValue(new Error("Network unavailable"));
+    setApiInstance({ getProjectOverview } as unknown as ApiClient);
+    render(<ProjectOverviewPanel project={project} canEditTimezone={false} updatesSupported={false} onRisk={vi.fn()} onProtectedError={vi.fn()} />);
+    await screen.findByText("No current risk signals");
+    await userEvent.setup().click(screen.getByRole("button", { name: "Refresh" }));
+    await screen.findByText("Refresh failed. These are the last available statistics.", {}, { timeout: 3000 });
+    expect(screen.queryByText("No current risk signals")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Blocked/ })).toBeDisabled();
   });
 });

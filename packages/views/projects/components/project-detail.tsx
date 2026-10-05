@@ -22,6 +22,7 @@ import { useWorkspacePaths } from "@multica/core/paths";
 import { useActorName } from "@multica/core/workspace/hooks";
 import { PROJECT_STATUS_ORDER, PROJECT_STATUS_CONFIG, PROJECT_PRIORITY_ORDER } from "@multica/core/projects/config";
 import { projectCapabilitiesOptions, projectOverviewOptions, projectDeleteImpactOptions, useProjectAccessStore } from "@multica/core/projects";
+import { useProjectPropertyEditor } from "./project-property-recovery";
 import { ProjectDescription } from "./project-description";
 import { ProjectOverviewPanel, ProjectAcceptance } from "./project-overview";
 import { ProjectRiskIssues } from "./project-risk-issues";
@@ -121,6 +122,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const { data: project, isLoading, error: projectError } = useQuery(projectDetailOptions(wsId, projectId));
   const capabilities = useQuery(projectCapabilitiesOptions(wsId));
   const [accessLost, setAccessLost] = useState(false);
+  const deletedTexts = useProjectAccessStore((state) => state.deleted[JSON.stringify([wsId, projectId])]);
   const revoked = useProjectAccessStore((state) => state.denied[JSON.stringify([wsId, "*"])] || state.denied[JSON.stringify([wsId, projectId])]);
   const hideProtected = useCallback(() => setAccessLost(true), []);
   useProjectAccessGuard(projectError ?? capabilities.error, wsId, projectId, hideProtected);
@@ -166,6 +168,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   }, [project?.execution_squad, wsId, userId, members, agents, squads, membersPending, agentsPending, squadsPending, membersError, agentsError, squadsError]);
   const { getActorName } = useActorName();
   const updateProject = useUpdateProject();
+  const propertyEditor = useProjectPropertyEditor(project);
   const deleteProject = useDeleteProject();
   const { data: pinnedItems = [] } = useQuery({
     ...pinListOptions(wsId, userId ?? ""),
@@ -246,9 +249,9 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
     (data: Parameters<typeof updateProject.mutate>[0] extends { id: string } & infer R ? R : never) => {
       if (!project) return;
       if (data.status === "completed" && project.status !== "completed" && capabilities.data?.overview === true) { setCompleting(true); return; }
-      updateProject.mutate({ id: project.id, ...data, ...(project.revision ? { expected_revision: project.revision } : {}) });
+      propertyEditor.send(data);
     },
-    [project, updateProject, capabilities.data?.overview],
+    [project, propertyEditor, capabilities.data?.overview],
   );
 
   const handleDelete = useCallback(() => {
@@ -262,6 +265,9 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   }, [project, deleteProject, router, wsPaths, t]);
 
   if (accessLost || revoked) return <div role="alert" className="p-6 text-muted-foreground">{t(($) => $.management.permission_lost)}</div>;
+  if (deletedTexts) return <div className="mx-auto max-w-3xl space-y-4 p-6"><h1 className="text-heading font-medium">{t(($) => $.management.project_deleted)}</h1><p className="text-caption text-muted-foreground">{t(($) => $.management.deleted_copy_hint)}</p>
+    {deletedTexts.map((text, index) => <div key={index} className="space-y-2"><Textarea readOnly aria-label={t(($) => $.management.unsent_text)} value={text} /><Button variant="outline" onClick={() => void copyText(text)}>{t(($) => $.management.copy_text)}</Button></div>)}
+  </div>;
 
   if (isLoading) {
     return (
@@ -590,7 +596,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           {capabilities.error && <div role="alert" className="px-4 py-2 text-caption text-destructive">{t(($) => $.management.load_error)} <Button size="sm" variant="ghost" onClick={() => void capabilities.refetch()}>{t(($) => $.management.retry)}</Button></div>}
           {capabilities.data === null && <p className="px-4 py-2 text-caption text-muted-foreground">{t(($) => $.management.unsupported)}</p>}
           {section === "overview" ? riskSignal ? <ProjectRiskIssues key={riskSignal} project={project} signal={riskSignal} version={router.searchParams?.get("version") ?? undefined} onBack={goOverview} onProtectedError={hideProtected} />
-            : <ProjectOverviewPanel project={project} canEditTimezone={isWorkspaceAdmin} updatesSupported={capabilities.data?.updates === true} onProtectedError={hideProtected}
+            : <ProjectOverviewPanel targetUpdateId={router.searchParams?.get("update") ?? undefined} project={project} canEditTimezone={isWorkspaceAdmin} updatesSupported={capabilities.data?.updates === true} onProtectedError={hideProtected}
                 onRisk={(signal, version) => router.push(wsPaths.projectDetail(projectId, "overview", signal, version))} />
             : <ProjectIssueSurface key={project.id} project={project} scope={issueScope} fallbackCreateDefaults={projectCreateDefaults} />}
           </div>
@@ -632,6 +638,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           <Button disabled={updateProject.isPending} onClick={() => updateProject.mutate({ id: project.id, status: "completed", expected_revision: project.revision, status_reason: completionReason || null }, { onSuccess: () => setCompleting(false) })}>{t(($) => $.management.continue_complete)}</Button></AlertDialogFooter>
       </AlertDialogContent></AlertDialog>
 
+      {propertyEditor.recovery}
       {/* Delete confirmation */}
       {isWorkspaceAdmin && (
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

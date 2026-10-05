@@ -1,12 +1,30 @@
 // @vitest-environment node
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiClient } from "./client";
-import { p1Overview, p1Preview, p1WriteResult, P1_PROJECT_ID, P1_WORKSPACE_ID } from "../projects/test-fixtures/p1";
+import { p1Overview, p1Preview, p1WriteResult, P1_PROJECT_ID, P1_WORKSPACE_ID, P1_UPDATE_ID } from "../projects/test-fixtures/p1";
 const base = "https://api.example.test";
 afterEach(() => vi.unstubAllGlobals());
 function response(body: unknown, status = 200) { return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }); }
 function respond(body: unknown) { const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response(body)); vi.stubGlobal("fetch", fetcher); return fetcher; }
 describe("P1 protected API boundaries", () => {
+  it("sends the clicked overview version using the risk wire parameter", async () => {
+    const fetcher = respond({ workspace_id: P1_WORKSPACE_ID, project_id: P1_PROJECT_ID, signal: "blocked", items: [], total: 0, snapshot_version: "B", refreshed: true, overview: p1Overview, next_cursor: null });
+    await new ApiClient(base).getProjectRiskIssues(P1_WORKSPACE_ID, P1_PROJECT_ID, { signal: "blocked", version: "A" });
+    const url = new URL(String(fetcher.mock.calls[0]?.[0]));
+    expect(url.searchParams.get("snapshot_version")).toBe("A");
+    expect(url.searchParams.has("version")).toBe(false);
+  });
+  it("opens execution evidence only through the revision-scoped authorized reader", async () => {
+    const taskId = "66666666-6666-4666-8666-666666666666";
+    const payload = { workspace_id: P1_WORKSPACE_ID, project_id: P1_PROJECT_ID, update_id: P1_UPDATE_ID, revision: 2,
+      task: { id: taskId, status: "completed" }, messages: [{ task_id: taskId, issue_id: "", seq: 1, type: "text", content: "Authorized result" }] };
+    const fetcher = respond(payload);
+    const result = await new ApiClient(base).getProjectExecutionEvidence(P1_WORKSPACE_ID, P1_PROJECT_ID, P1_UPDATE_ID, 2, taskId);
+    expect(result.messages[0]?.content).toBe("Authorized result");
+    expect(String(fetcher.mock.calls[0]?.[0])).toContain(`/updates/${P1_UPDATE_ID}/revisions/2/executions/${taskId}`);
+    respond({ ...payload, task: { id: P1_UPDATE_ID, status: "completed" } });
+    await expect(new ApiClient(base).getProjectExecutionEvidence(P1_WORKSPACE_ID, P1_PROJECT_ID, P1_UPDATE_ID, 2, taskId)).rejects.toThrow();
+  });
   it("captures workspace and forwards cancellation for overview", async () => {
     const fetcher = respond(p1Overview); const controller = new AbortController(); const signal = controller.signal;
     expect(await new ApiClient(base).getProjectOverview(P1_WORKSPACE_ID, P1_PROJECT_ID, { signal })).toEqual(p1Overview);

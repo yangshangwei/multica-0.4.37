@@ -42,6 +42,6 @@ export * from "./progress-draft-store";
 export { ProjectDescriptionSave } from "./description-save";
 export { projectGoalTemplateAppend, type ProjectGoalSection } from "./goal-template";
 
-export { clearProtectedProjectContent, isProjectAccessLost, useProjectAccessStore } from "./access";
+export { clearProtectedProjectContent, isProjectAccessLost, useProjectAccessStore, canAccessProject, markProjectDeleted, handleProjectAccessError, protectProjectRequest, registerProjectLocalTextFlush } from "./access";
 
 export * from "./description-draft-store";

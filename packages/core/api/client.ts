@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
 import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
   ProjectRiskPageSchema, ProjectUpdatesPageSchema, ProjectUpdateRevisionsPageSchema, ProjectUpdatePreviewSchema,
-  ProjectUpdateWriteResultSchema, ProjectDeleteImpactSchema } from "./project-p1-schemas";
+  ProjectUpdateWriteResultSchema, ProjectDeleteImpactSchema, ProjectExecutionEvidenceSchema } from "./project-p1-schemas";
 import { parseAdminResourceList, parseAdminResourcePreview, parseAdminResourceResult, type AdminResourceKind, type AdminResourceUpload, type AdminResourcePublish, type AdminResourceWithdraw } from "../admin/resource-schema";
 import type {
   TriageSettings, UpdateTriageSettingsInput, TriageListParams, TriageListResponse, TriageItem,
@@ -4511,7 +4511,7 @@ export class ApiClient {
   getProjectRiskIssues(wsId: string, id: string, params: { signal: ProjectRiskSignal; cursor?: string; version?: string; limit?: number }, options?: { signal?: AbortSignal }) {
     const search = new URLSearchParams({ signal: params.signal });
     if (params.cursor) search.set("cursor", params.cursor);
-    if (params.version) search.set("version", params.version);
+    if (params.version) search.set("snapshot_version", params.version);
     if (params.limit) search.set("limit", String(params.limit));
     return this.projectP1(wsId, id, `/health/issues?${search}`, ProjectRiskPageSchema, options);
   }
@@ -4529,6 +4529,11 @@ export class ApiClient {
   }
   correctProjectUpdate(wsId: string, id: string, updateId: string, input: ProjectUpdateWriteInput) {
     return this.projectP1(wsId, id, `/updates/${encodeURIComponent(updateId)}`, ProjectUpdateWriteResultSchema, { method: "PUT", body: input });
+  }
+  async getProjectExecutionEvidence(wsId: string, id: string, updateId: string, revision: number, taskId: string, options?: { signal?: AbortSignal }) {
+    const result = await this.projectP1(wsId, id, `/updates/${encodeURIComponent(updateId)}/revisions/${revision}/executions/${encodeURIComponent(taskId)}`, ProjectExecutionEvidenceSchema, options);
+    if (result.update_id !== updateId || result.revision !== revision || result.task.id !== taskId) throw new Error("Execution evidence identity mismatch");
+    return result;
   }
   getProjectDeleteImpact(wsId: string, id: string, options?: { signal?: AbortSignal }) {
     return this.projectP1(wsId, id, "/delete-impact", ProjectDeleteImpactSchema, options);

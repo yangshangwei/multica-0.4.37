@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, type MouseEvent } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -22,7 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   projectListOptions,
-  useUpdateProject,
+  useProjectAccessStore,
   useDeleteProject,
   useProjectViewStore,
   type ProjectColumnKey,
@@ -96,13 +96,13 @@ import type {
   Project,
   ProjectPriority,
   ProjectStatus,
-  UpdateProjectRequest,
 } from "@multica/core/types";
 import {
   CollectionPageHeader,
   CollectionPageHeaderAction,
   CollectionPageState,
 } from "../../layout/collection-page";
+import { useProjectPropertyEditor } from "./project-property-recovery";
 import { ProjectIcon } from "./project-icon";
 import { useT } from "../../i18n";
 import { matchesPinyin } from "../../editor/extensions/pinyin-match";
@@ -383,17 +383,15 @@ function ProjectTableRow({
   rowLink: ReturnType<typeof useRowLink>;
 }) {
   const formatRelativeDate = useFormatRelativeDate();
-  const updateProject = useUpdateProject();
-  const handleUpdate = useCallback(
-    (data: UpdateProjectRequest) => updateProject.mutate({ id: project.id, ...data, ...(project.revision ? { expected_revision: project.revision } : {}) }),
-    [project.id, project.revision, updateProject],
-  );
+  const propertyEditor = useProjectPropertyEditor(project);
+  const handleUpdate = propertyEditor.send;
 
   return (
     <ListGridRow
       className={`h-11 cursor-pointer ${selected ? "bg-accent/30" : ""}`}
       {...rowLink(rowHref, project.title)}
     >
+      {propertyEditor.recovery}
       <CheckboxCell checked={selected} onToggle={onToggleSelect} />
       <ListGridCell className="gap-2">
         <ProjectIcon project={project} size="sm" />
@@ -589,11 +587,8 @@ function ProjectCard({
   const { t } = useT("projects");
   const wsPaths = useWorkspacePaths();
   const formatRelativeDate = useFormatRelativeDate();
-  const updateProject = useUpdateProject();
-  const handleUpdate = useCallback(
-    (data: UpdateProjectRequest) => updateProject.mutate({ id: project.id, ...data, ...(project.revision ? { expected_revision: project.revision } : {}) }),
-    [project.id, project.revision, updateProject],
-  );
+  const propertyEditor = useProjectPropertyEditor(project);
+  const handleUpdate = propertyEditor.send;
   const progressPercent =
     project.issue_count > 0
       ? Math.round((project.done_count / project.issue_count) * 100)
@@ -601,6 +596,7 @@ function ProjectCard({
 
   return (
     <div className="group/card group/row flex flex-col rounded-md border bg-card transition-colors hover:border-primary/50">
+      {propertyEditor.recovery}
       <div className="p-3 pb-2">
         <div className="flex items-center gap-2">
           <AppLink
@@ -798,6 +794,7 @@ function ProjectBatchToolbar({
 export function ProjectsPage() {
   const { t } = useT("projects");
   const wsId = useWorkspaceId();
+  const scopeDenied = useProjectAccessStore((state) => !!state.denied[JSON.stringify([wsId, "*"])]);
   const wsPaths = useWorkspacePaths();
   const rowLink = useRowLink();
   const currentUser = useAuthStore((s) => s.user);
@@ -931,6 +928,8 @@ export function ProjectsPage() {
           : k === "issues"
             ? t(($) => $.table.issues)
             : t(($) => $.table.created);
+
+  if (scopeDenied) return <p role="alert" className="p-6">{t(($) => $.management.permission_lost)}</p>;
 
   const showEmpty = !isLoading && projects.length === 0;
   const countBadge = (n: number) => (

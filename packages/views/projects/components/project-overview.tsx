@@ -30,8 +30,8 @@ export function ProjectAcceptance({ overview }: { overview: Overview }) {
     </div>)}
   </div>;
 }
-export function ProjectOverviewPanel({ project, canEditTimezone, updatesSupported, onRisk, onProtectedError }: {
-  project: Project; canEditTimezone: boolean; updatesSupported: boolean;
+export function ProjectOverviewPanel({ project, canEditTimezone, updatesSupported, onRisk, onProtectedError, targetUpdateId }: {
+  project: Project; canEditTimezone: boolean; updatesSupported: boolean; targetUpdateId?: string;
   onRisk: (signal: ProjectRiskSignal, version: string) => void; onProtectedError: () => void;
 }) {
   const { t } = useT("projects"); const qc = useQueryClient(); const query = useQuery(projectOverviewOptions(project.workspace_id, project.id));
@@ -66,14 +66,15 @@ export function ProjectOverviewPanel({ project, canEditTimezone, updatesSupporte
     unknown_status: t(($) => $.management.reasons.unknown_status),
   };
   const riskLabels: Record<ProjectRiskSignal, string> = { blocked: t(($) => $.management.blocked), overdue: t(($) => $.management.overdue), unassigned: t(($) => $.management.unassigned), in_review: t(($) => $.management.in_review) };
-  return <div className="flex-1 min-h-0 overflow-y-auto"><div className="mx-auto max-w-5xl space-y-8 p-6 md:p-8">
+  return <div className="flex-1 min-h-0 overflow-y-auto"><div className="mx-auto max-w-5xl space-y-8 px-6 pt-6 pb-28 md:px-8 md:pt-8">
+    {query.error && <div role="alert" className="space-y-2 text-caption text-warning"><p>{t(($) => $.management.refresh_failed)}</p><Button size="sm" variant="outline" onClick={() => void query.refetch()}>{t(($) => $.management.retry)}</Button></div>}
     <section className="space-y-4"><div className="flex items-center justify-between gap-4"><h2 className="text-heading font-medium">{t(($) => $.management.overview)}</h2><Button size="sm" variant="outline" onClick={() => void query.refetch()} disabled={query.isFetching}>{t(($) => $.management.refresh)}</Button></div>
       <ProjectStatistics overview={overview} />
       <p className="text-caption text-muted-foreground">{t(($) => $.management.calculated, { time: new Date(statistics.calculated_at).toLocaleString(), timezone: statistics.timezone, date: statistics.reference_date })}</p>
     </section>
     <section className="space-y-4"><h2 className="text-heading font-medium">{t(($) => $.management.health)}</h2>
-      <p className={statistics.health === "risk" ? "text-destructive" : statistics.health === "attention" ? "text-warning" : "text-muted-foreground"}>{healthLabels[statistics.health]}</p>
-      <div className="flex flex-wrap gap-2">{(Object.keys(riskLabels) as ProjectRiskSignal[]).map((signal) => <Button key={signal} variant="outline" disabled={!statistics.complete} onClick={() => onRisk(signal, statistics.snapshot_version)}>{riskLabels[signal]} <span className="tabular-nums">{statistics.counts[signal] ?? t(($) => $.management.na)}</span></Button>)}</div>
+      <p className={statistics.health === "risk" ? "text-destructive" : statistics.health === "attention" ? "text-warning" : "text-muted-foreground"}>{query.error ? t(($) => $.management.unavailable) : healthLabels[statistics.health]}</p>
+      <div className="flex flex-wrap gap-2">{(Object.keys(riskLabels) as ProjectRiskSignal[]).map((signal) => <Button key={signal} variant="outline" disabled={!!query.error || !statistics.complete} onClick={() => onRisk(signal, statistics.snapshot_version)}>{riskLabels[signal]} <span className="tabular-nums">{statistics.counts[signal] ?? t(($) => $.management.na)}</span></Button>)}</div>
       {statistics.reasons.length > 0 && <ul className="list-disc space-y-1 pl-5 text-caption text-muted-foreground">{statistics.reasons.map((reason) => <li key={reason}>{reasons[reason] ?? t(($) => $.management.attention)}</li>)}</ul>}
       {!statistics.complete && <p role="status" className="text-caption text-warning">{statistics.incomplete_reasons.map((reason) => reasons[reason] ?? t(($) => $.management.unavailable)).join(" · ")}</p>}
       {statistics.project_overdue && <p className="text-caption text-warning">{t(($) => $.management.project_overdue)}</p>}
@@ -83,7 +84,7 @@ export function ProjectOverviewPanel({ project, canEditTimezone, updatesSupporte
       {project.in_progress_since_source === "migration" && <p className="text-caption text-muted-foreground">{t(($) => $.management.migration_since)}</p>}
     </section>
     <section className="space-y-3"><h2 className="text-heading font-medium">{t(($) => $.management.acceptance)}</h2><ProjectAcceptance overview={overview} /></section>
-    {updatesSupported && <ProjectProgress project={project} onProtectedError={onProtectedError} />}
+    {updatesSupported && <ProjectProgress project={project} onProtectedError={onProtectedError} targetUpdateId={targetUpdateId} />}
     <section className="space-y-3"><h2 className="text-heading font-medium">{t(($) => $.management.timezone)}</h2>
       <p className="text-caption text-muted-foreground">{statistics.timezone_configured ? statistics.timezone : t(($) => $.management.utc_default)}</p>
       {canEditTimezone && <form className="max-w-lg space-y-2" onSubmit={(event) => { event.preventDefault(); changeTimezone.mutate(timezone.trim() || null); }}>

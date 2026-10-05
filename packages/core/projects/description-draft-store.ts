@@ -23,3 +23,8 @@ export function clearProjectDescriptionDrafts(wsId: string, projectId?: string) 
   }));
   store.setDraft({ entries });
 }
+
+export function clearProjectDescriptionDraft(key: string) {
+  const store = useProjectDescriptionDraftStore.getState(); const entries = { ...store.draft.entries };
+  delete entries[key]; store.setDraft({ entries });
+}
