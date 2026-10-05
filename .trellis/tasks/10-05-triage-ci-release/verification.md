@@ -28,10 +28,16 @@
 
 首次非限流TS运行4个views测试超时；仓库规定的2worker完整复验全通过。完整check的Go编译曾捕获修复前心跳fixture，handler因此失败；其余包结果保留，随后最终源码独立完整handler、agent包、vet与API/Web/E2E均通过。本记录是可追溯的分阶段累计验证，不称首次单条make check全绿。
 
-日志：`/tmp/triage-release-check.log`、`/tmp/triage-backend-handler-final.jsonl`、`/tmp/triage-release-agent-tests.log`、`/tmp/triage-release-vet.log`、`/tmp/triage-release-browser.log`、`/tmp/triage-release-scripts-reverify.log`、`/tmp/triage-release-vuln.log`。受控环境`check-20261005155531-55778`，API/Web18572/13492；运行身份记录在`~/.multica/dev/envs/check-20261005155531-55778/verification.running.json`。API与Web已停止；两套Go测试数据库已清理。
+日志：`/tmp/triage-release-check.log`、`/tmp/triage-backend-handler-final.jsonl`、`/tmp/triage-release-agent-tests.log`、`/tmp/triage-release-vet.log`、`/tmp/triage-release-browser.log`、`/tmp/triage-release-scripts-reverify.log`、`/tmp/triage-release-vuln.log`。受控环境`check-20261005155531-55778`，API/Web18572/13492；运行身份与构建日志已保存在`.omx/reports/triage-ci-release/`。API/Web已停止，临时API数据库、Go数据库、profile和环境注册槽位已全部清理。
 
 原始管理/注册E2E草稿来自前次234项回归，本次核对源码与严格类型，但未重新执行全部管理浏览器场景。真实模型调用、目标内网部署和桌面签名安装不在这些本地结果内。
 
 ## 发布跟踪
 
 目标仓库：yangshangwei/multica-0.4.37。计划版本v0.5.6；按现有tag驱动工作流发布。该fork的工作流发布后端/Web镜像与累计changelog，upstream-only CLI/Homebrew/Desktop工作不会因此被宣称交付。业务生产环境部署与版本核验另需实际目标环境证据。
+
+## PR 第一轮远端结果
+
+[PR #2](https://github.com/yangshangwei/multica-0.4.37/pull/2) 的初始提交 fcc116c1b：Mobile Verify、backend-tests、Windows执行环境、SQL生成、漏洞扫描、前端构建、基础前端测试和视图第二组均通过。CI 37340463506 仅视图第一组的既有快速创建分页测试超时5000ms，因此整体不通过，未合并或发布。
+
+该用例初始筛选逐字触发50行列表的五次渲染，并重复全树可访问名称扫描。最小测试修改使用真实粘贴设置初始查询、按现有aria-label定位pin，仍保留55项fixture、50→55→55→50、pin焦点与末尾单字符键入复位。未改变生产代码、timeout或retry。完整suite22/22和独立关键case5/5通过，ESLint通过；待远端再次核验。

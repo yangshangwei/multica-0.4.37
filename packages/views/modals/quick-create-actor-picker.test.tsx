@@ -264,12 +264,14 @@ describe("QuickCreateActorPicker", () => {
     render(<Harness actor={null} visibleAgents={directory} visibleSquads={[]} />);
     const input = await openPicker(user);
     expect(document.querySelectorAll("button[data-picker-item]")).toHaveLength(50);
-    await user.type(input, "Agent");
+    // Paging needs a search change, not five full 50-row keyboard rerenders;
+    // typed search and IME behavior have dedicated tests above.
+    await user.paste("Agent");
     await user.click(screen.getByRole("button", {name:"Show more (5 remaining)"}));
     expect(document.querySelectorAll("button[data-picker-item]")).toHaveLength(55);
-    await user.click(screen.getByRole("button", {name:"Pin Agent 54 to favorites"}));
+    await user.click(screen.getByLabelText("Pin Agent 54 to favorites"));
     expect(document.querySelectorAll("button[data-picker-item]")).toHaveLength(55);
-    expect(screen.getByRole("button", {name:"Unpin Agent 54 from favorites"})).toHaveFocus();
+    expect(screen.getByLabelText("Unpin Agent 54 from favorites")).toHaveFocus();
     await user.type(input, " ");
     expect(document.querySelectorAll("button[data-picker-item]")).toHaveLength(50);
   });
