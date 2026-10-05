@@ -246,6 +246,40 @@ describe("MCP market", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Templates found: 1");
     expect(screen.getByRole("tab", { name: "MCP market" })).toHaveTextContent("MCP market2");
   });
+  it("discovers intranet collaboration and operations recipes with multiple secret inputs", async () => {
+    const user = userEvent.setup();
+    mocks.templates = [{
+      ...template, key: "gitlab", title: "GitLab MCP", category: "collaboration",
+      config: { command: "zereight-mcp-gitlab", args: [] },
+      requirements: ["Install the local executable before using the intranet catalog."],
+      inputs: [
+        { key: "gitlab_api_url", label: "GitLab API URL", description: "Use the intranet API ending in /api/v4.", required: true, secret: false },
+        { key: "gitlab_token", label: "Access token", description: "Use a read-only token.", required: true, secret: true },
+      ],
+    }, { ...template, key: "grafana", title: "Grafana MCP", category: "operations" }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "Operations & monitoring" }));
+    expect(screen.getByRole("button", { name: "View configuration: Grafana MCP" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "View configuration: GitLab MCP" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Collaboration" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: GitLab MCP" }));
+    expect(screen.getByText("Install the local executable before using the intranet catalog.")).toBeVisible();
+    await user.type(screen.getByLabelText("GitLab API URL", { exact: false }), "https://gitlab.internal/api/v4");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    const token = screen.getByLabelText("Access token", { exact: false });
+    expect(token).toHaveFocus();
+    expect(token).toHaveAttribute("type", "password");
+    expect(mocks.create).not.toHaveBeenCalled();
+    await user.type(token, "fixture-readonly-token");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({
+      templateKey: "gitlab", templateInputs: {
+        gitlab_api_url: "https://gitlab.internal/api/v4", gitlab_token: "fixture-readonly-token",
+      },
+    }));
+    await screen.findByRole("heading", { name: "Choose agents" });
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
   it("treats a required constructor input as an empty draft until the user enters its value", async () => {
     const user = userEvent.setup();
     mocks.templates = [{

@@ -177,6 +177,10 @@ func TestMcpServerTemplates_InputMetadata(t *testing.T) {
 	for _, template := range McpServerTemplates() {
 		key, needsInput := want[template.Key]
 		if !needsInput {
+			if _, intranet := intranetInputExamples[template.Key]; intranet {
+				// Multi-field recipes have their own metadata contract below.
+				continue
+			}
 			if len(template.Inputs) != 0 {
 				t.Errorf("unexpected inputs on %s", template.Key)
 			}

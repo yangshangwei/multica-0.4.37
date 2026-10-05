@@ -116,6 +116,9 @@ func resolveMcpTemplateInputs(template McpServerTemplate, inputs map[string]stri
 			headers[input.header] = input.prefix + value
 		}
 	}
+	if template.Source != "deployment" {
+		return resolveIntranetMcpInputs(template, inputs, config)
+	}
 	return config, nil
 }
 

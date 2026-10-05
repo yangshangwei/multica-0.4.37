@@ -111,6 +111,13 @@ describe("McpTab", () => {
     ["markitdown", "file-text", "stdio", "STDIO"],
     ["dbhub", "database", "stdio", "STDIO"],
     ["postgres-mcp", "database", "stdio", "STDIO"],
+    ["gitlab", "git-pull-request", "stdio", "STDIO"],
+    ["atlassian", "book-open", "stdio", "STDIO"],
+    ["grafana", "chart-line", "stdio", "STDIO"],
+    ["kubernetes", "server", "stdio", "STDIO"],
+    ["mongodb", "database", "stdio", "STDIO"],
+    ["redis", "database", "stdio", "STDIO"],
+    ["clickhouse", "database", "stdio", "STDIO"],
   ])("keeps the %s template icon after an instance is renamed", (templateKey, icon, transport, label) => {
     data.servers = [server({ name: "renamed-tool", transport, template_key: templateKey })];
     const view = render(<McpTab />, { wrapper: Wrapper });

@@ -172,6 +172,19 @@ Never silently relabel deployment instances as builtin to make a downgrade work.
 | `markitdown` | stdio | [MarkItDown MCP](https://github.com/microsoft/markitdown/tree/main/packages/markitdown-mcp) | uv/Python and access to local documents |
 | `dbhub` | stdio | [DBHub](https://github.com/bytebase/dbhub) | Node.js 22.5+ and npx; database URL supplied as `env.DSN` |
 | `postgres-mcp` | stdio | [Postgres MCP Pro](https://github.com/crystaldba/postgres-mcp) | uv/Python 3.12+; database URL supplied as `env.DATABASE_URI`; restricted/read-only access |
+| `gitlab` | stdio | [GitLab MCP](https://github.com/zereight/gitlab-mcp/tree/v2.1.69) | Preinstalled `zereight-mcp-gitlab`; intranet API URL and PAT; read-only, version checks disabled |
+| `atlassian` | stdio | [Atlassian MCP](https://github.com/sooperset/mcp-atlassian/tree/v0.23.1) | Preinstalled `mcp-atlassian`; at least one complete Jira/Confluence URL/PAT pair |
+| `grafana` | stdio | [Grafana MCP](https://github.com/grafana/mcp-grafana/tree/v2.0.0) | Preinstalled `mcp-grafana`; intranet URL/service-account token; writes/docs/usage reporting disabled |
+| `kubernetes` | stdio | [Kubernetes MCP](https://github.com/containers/kubernetes-mcp-server/tree/v0.0.67) | Preinstalled v0.0.67 binary and kubeconfig/auth plugins; read-only tools |
+| `mongodb` | stdio | [MongoDB MCP](https://github.com/mongodb-js/mongodb-mcp-server/tree/v3.0.5) | Preinstalled `mongodb-mcp-server`; private connection URI; Atlas/assistant/telemetry disabled |
+| `redis` | stdio | [Redis MCP](https://github.com/redis/mcp-redis/tree/0.5.1) | Preinstalled `redis-mcp-server`; credential-free address plus separate ACL credentials; online docs endpoint empty |
+| `clickhouse` | stdio | [ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse/tree/v0.7.0) | Preinstalled `mcp-clickhouse`; HTTP origin, user/password and optional CA file; read-only |
+
+The seven intranet recipes use local executable names with no package bootstrap.
+Follow [the intranet preparation guide](mcp-intranet-setup.md) to provision complete
+dependencies and trusted CA certificates before moving agent machines offline.
+Their integration tests validate configuration and assignment, not authentication
+against an operator's real internal services.
 
 Microsoft Learn and DeepWiki are excluded from the default catalog for intranet
 use. Existing saved configurations and assignments are retained. The local

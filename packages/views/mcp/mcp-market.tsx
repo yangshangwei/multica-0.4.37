@@ -172,6 +172,8 @@ function McpTemplateCatalogContent({
     { value: "reasoning", label: t(($) => $.mcp.market.reasoning) },
     { value: "coding", label: t(($) => $.mcp.market.coding) },
     { value: "database", label: t(($) => $.mcp.market.database) },
+    { value: "collaboration", label: t(($) => $.mcp.market.collaboration) },
+    { value: "operations", label: t(($) => $.mcp.market.operations) },
     { value: "documentation", label: t(($) => $.mcp.market.documentation_category) },
   ].filter(
     (item) =>

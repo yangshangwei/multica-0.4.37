@@ -438,7 +438,13 @@ Creation assigns no agents. A human agent owner or workspace owner/admin must
 explicitly assign the entry; agent actors cannot make either write.
 
 The default catalog includes Chrome DevTools, Playwright, Sequential Thinking,
-Serena, Codebase Memory MCP, Repomix, MarkItDown, DBHub, and Postgres MCP Pro.
+Serena, Codebase Memory MCP, Repomix, MarkItDown, DBHub, Postgres MCP Pro,
+GitLab MCP, Atlassian MCP, Grafana MCP, Kubernetes MCP, MongoDB MCP, Redis MCP,
+and ClickHouse MCP. The seven intranet recipes launch preinstalled executables,
+without downloading packages. Read their declared inputs before saving; Atlassian
+needs at least one complete Jira/Confluence URL/PAT pair, Redis credentials are
+separate from its address, and ClickHouse expects an HTTP(S) endpoint. Redis
+permissions rely on the configured ACL account; it has no MCP read-only switch.
 These are local launch recipes: their runtime dependencies must be available on
 the agent's machine. Postgres uses restricted/read-only access by default.
 Microsoft Learn and DeepWiki are excluded for intranet use; fetch current recipe versions from the catalog.

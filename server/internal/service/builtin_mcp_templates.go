@@ -64,7 +64,7 @@ func (t McpServerTemplate) RequirementLabels(language string) []string {
 // A fresh map per entry per call keeps the exported config immutable: a handler
 // that marshals these must never be able to mutate the shared roster.
 func McpServerTemplates() []McpServerTemplate {
-	return []McpServerTemplate{
+	return append([]McpServerTemplate{
 		{
 			Key:              "chrome-devtools",
 			Version:          "1",
@@ -212,5 +212,5 @@ func McpServerTemplates() []McpServerTemplate {
 			Titles:       map[string]string{"en": "Postgres MCP Pro", "zh": "Postgres MCP Pro"},
 			Descriptions: map[string]string{"en": "Check PostgreSQL health and investigate slow queries, execution plans, and index recommendations in read-only mode.", "zh": "以只读模式检查 PostgreSQL 健康状况，分析慢查询、执行计划和索引优化建议。"},
 		},
-	}
+	}, builtinIntranetMcpTemplates()...)
 }

@@ -21,12 +21,46 @@ const recipes = [
   { key: "markitdown", title: "MarkItDown MCP" },
   { key: "dbhub", title: "DBHub" },
   { key: "postgres-mcp", title: "Postgres MCP Pro" },
+  { key: "gitlab", title: "GitLab MCP" },
+  { key: "atlassian", title: "Atlassian MCP" },
+  { key: "grafana", title: "Grafana MCP" },
+  { key: "kubernetes", title: "Kubernetes MCP" },
+  { key: "mongodb", title: "MongoDB MCP" },
+  { key: "redis", title: "Redis MCP" },
+  { key: "clickhouse", title: "ClickHouse MCP" },
 ] as const;
 
-const recipeInputs: Record<string, { key: string; label: string; value: string; secret: boolean }> = {
-  serena: { key: "project_path", label: "Project directory", value: "/tmp/mcp-e2e-project", secret: false },
-  dbhub: { key: "database_url", label: "Database connection URL", value: "postgresql://mcp_test:dbhub-test-secret@127.0.0.1:65432/example", secret: true },
-  "postgres-mcp": { key: "database_url", label: "Database connection URL", value: "postgresql://mcp_test:postgres-test-secret@127.0.0.1:65432/example", secret: true },
+const recipeInputs: Record<string, { key: string; label: string; value: string; secret: boolean; required: boolean }[]> = {
+  serena: [{ key: "project_path", label: "Project directory", value: "/tmp/mcp-e2e-project", secret: false, required: true }],
+  dbhub: [{ key: "database_url", label: "Database connection URL", value: "postgresql://mcp_test:dbhub-test-secret@127.0.0.1:65432/example", secret: true, required: true }],
+  "postgres-mcp": [{ key: "database_url", label: "Database connection URL", value: "postgresql://mcp_test:postgres-test-secret@127.0.0.1:65432/example", secret: true, required: true }],
+  gitlab: [
+    { key: "gitlab_api_url", label: "GitLab API URL", value: "https://gitlab.internal.test/api/v4", secret: false, required: true },
+    { key: "gitlab_token", label: "GitLab personal access token", value: "fake-token-gitlab", secret: true, required: true },
+  ],
+  atlassian: [
+    { key: "jira_url", label: "Jira URL", value: "https://jira.internal.test", secret: false, required: false },
+    { key: "jira_token", label: "Jira personal access token", value: "fake-token-jira", secret: true, required: false },
+    { key: "confluence_url", label: "Confluence URL", value: "", secret: false, required: false },
+    { key: "confluence_token", label: "Confluence personal access token", value: "", secret: true, required: false },
+  ],
+  grafana: [
+    { key: "grafana_url", label: "Grafana URL", value: "https://grafana.internal.test", secret: false, required: true },
+    { key: "grafana_token", label: "Grafana service-account token", value: "fake-token-grafana", secret: true, required: true },
+  ],
+  kubernetes: [{ key: "kubeconfig_path", label: "Kubeconfig path", value: "/tmp/mcp-e2e-kubeconfig", secret: false, required: true }],
+  mongodb: [{ key: "mongodb_uri", label: "MongoDB connection URI", value: "mongodb://mcp_test:fake-token-mongodb@mongodb.internal.test:27017/example", secret: true, required: true }],
+  redis: [
+    { key: "redis_url", label: "Redis URL", value: "redis://redis.internal.test:6379/0", secret: false, required: true },
+    { key: "redis_username", label: "Redis ACL username", value: "e2e_reader", secret: true, required: false },
+    { key: "redis_password", label: "Redis password", value: "fake-token-redis", secret: true, required: false },
+  ],
+  clickhouse: [
+    { key: "clickhouse_url", label: "ClickHouse HTTP URL", value: "http://clickhouse.internal.test:8123", secret: false, required: true },
+    { key: "clickhouse_username", label: "ClickHouse username", value: "e2e_reader", secret: false, required: true },
+    { key: "clickhouse_password", label: "ClickHouse password", value: "fake-token-clickhouse", secret: true, required: false },
+    { key: "clickhouse_ca_path", label: "ClickHouse CA certificate path", value: "", secret: false, required: false },
+  ],
 };
 
 const passwordAccounts: { api: TestApiClient; username: string }[] = [];
@@ -149,8 +183,8 @@ test("uses the collection canvas and adapts template columns to the available wi
   }
 });
 
-test("creates and explicitly assigns all nine recipes, preserves source after rename, and reuses an instance from an agent", async ({ page }, info) => {
-  test.setTimeout(240_000);
+test("creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent", async ({ page }, info) => {
+  test.setTimeout(360_000);
   const { api, workspace, agents, slug } = await setup(page);
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -170,7 +204,7 @@ test("creates and explicitly assigns all nine recipes, preserves source after re
     await expect(market.getByRole("status")).toHaveText("Templates found: 1");
     await expect(market.getByRole("button", { name: "View configuration: Playwright", exact: true })).toBeVisible();
     await market.getByRole("searchbox").clear();
-    for (const [category, count] of [["Coding", 3], ["Databases", 2], ["Documentation & knowledge", 1]] as const) {
+    for (const [category, count] of [["Coding", 3], ["Databases", 5], ["Documentation & knowledge", 1], ["Collaboration", 2], ["Operations & monitoring", 2]] as const) {
       await market.getByRole("button", { name: category, exact: true }).click();
       await expect(market.getByRole("status")).toHaveText(`Templates found: ${count}`);
     }
@@ -188,21 +222,48 @@ test("creates and explicitly assigns all nine recipes, preserves source after re
       await preview.click();
       const dialog = page.getByRole("dialog");
       await dialog.getByRole("textbox", { name: "Configuration name", exact: true }).fill(key!);
-      const input = recipeInputs[key];
-      if (input) {
+      const inputs = recipeInputs[key] ?? [];
+      if (inputs.length > 0) {
         const before = await api.requestJSON<ServerSummary[]>(base);
         await expect(api.requestJSON(base, {
-          method: "POST", body: { name: `${key}-missing-input`, template_key: key, template_version: key === "postgres-mcp" ? "2" : "1" },
+          method: "POST", body: { name: `${key}-missing-input`, template_source: "builtin", template_key: key, template_version: key === "postgres-mcp" ? "2" : "1" },
         })).rejects.toThrow("failed: 400");
-        const field = dialog.getByLabel(input.label, { exact: false });
-        await expect(field).toHaveAttribute("aria-required", "true");
-        await expect(field).toHaveAttribute("type", input.secret ? "password" : "text");
-        await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
-        await expect(field).toHaveAttribute("aria-invalid", "true");
-        await expect(field).toBeFocused();
-        expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(before.length);
-        await field.fill(input.value);
+        if (key === "atlassian") {
+          await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
+          await expect(dialog.getByRole("alert")).toContainText(/Jira|Confluence/i);
+          expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(before.length);
+          await expect(api.requestJSON(base, {
+            method: "POST", body: {
+              name: "atlassian-incomplete-jira", template_source: "builtin", template_key: key, template_version: "1",
+              template_inputs: { jira_url: inputs[0]!.value },
+            },
+          })).rejects.toThrow("failed: 400");
+        }
+        for (const input of inputs) {
+          const field = dialog.getByLabel(input.label, { exact: false });
+          await expect(field).toHaveAttribute("aria-required", String(input.required));
+          await expect(field).toHaveAttribute("type", input.secret ? "password" : "text");
+          if (input.required || (key === "atlassian" && input.key === "jira_token")) {
+            await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
+            if (input.required) {
+              await expect(field).toHaveAttribute("aria-invalid", "true");
+              await expect(field).toBeFocused();
+            } else {
+              await expect(dialog.getByRole("alert")).toContainText(/Jira|jira_token/i);
+            }
+            expect(await api.requestJSON<ServerSummary[]>(base)).toHaveLength(before.length);
+          }
+          if (input.value) await field.fill(input.value);
+        }
         if (key === "dbhub") await capture(page, info, "database-input-masked-wide");
+        if (key === "atlassian" || key === "clickhouse") await capture(page, info, `${key}-inputs-masked-wide`);
+        if (key === "clickhouse") {
+          await page.setViewportSize({ width: 390, height: 844 });
+          await dialog.getByLabel("ClickHouse HTTP URL", { exact: false }).scrollIntoViewIfNeeded();
+          await capture(page, info, "clickhouse-inputs-masked-narrow");
+          await expectDialogButtonFits(page, "Save and continue");
+          await page.setViewportSize({ width: 1440, height: 1000 });
+        }
       }
       if (key === "chrome-devtools") await capture(page, info, "setup-wide");
       const createResponse = page.waitForResponse((response) => new URL(response.url()).pathname === base && response.request().method() === "POST");
@@ -211,12 +272,12 @@ test("creates and explicitly assigns all nine recipes, preserves source after re
       expect(response.status()).toBe(201);
       expect(response.request().postDataJSON()).toEqual({
         name: key, template_source: "builtin", template_key: key, template_version: key === "postgres-mcp" ? "2" : "1",
-        ...(input ? { template_inputs: { [input.key]: input.value } } : {}),
+        ...(inputs.length > 0 ? { template_inputs: Object.fromEntries(inputs.filter((input) => input.value).map((input) => [input.key, input.value])) } : {}),
       });
       const responseBody = await response.json();
       expect(responseBody).not.toHaveProperty("config");
       expect(responseBody).not.toHaveProperty("template_inputs");
-      if (input) expect(JSON.stringify(responseBody)).not.toContain(input.value);
+      for (const input of inputs.filter((input) => input.value)) expect(JSON.stringify(responseBody)).not.toContain(input.value);
       await expect(dialog.getByRole("button", { name: "Skip for now", exact: true })).toBeVisible();
       if (key === "chrome-devtools") {
         await expect(dialog.getByRole("checkbox", { name: agents[0]!.name, exact: true })).toBeVisible();
@@ -225,7 +286,8 @@ test("creates and explicitly assigns all nine recipes, preserves source after re
       const saved = (await api.requestJSON<ServerSummary[]>(base)).find((server) => server.name === key);
       expect(saved).toMatchObject({ template_key: key, template_version: key === "postgres-mcp" ? "2" : "1", transport: "stdio" });
       expect(saved).not.toHaveProperty("config");
-      if (input) expect(JSON.stringify(await api.requestJSON<ServerSummary[]>(base))).not.toContain(input.value);
+      const summaries = JSON.stringify(await api.requestJSON<ServerSummary[]>(base));
+      for (const input of inputs.filter((input) => input.value)) expect(summaries).not.toContain(input.value);
       expect(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`)).not.toEqual(
         expect.arrayContaining([expect.objectContaining({ id: saved!.id })]),
       );
@@ -235,7 +297,8 @@ test("creates and explicitly assigns all nine recipes, preserves source after re
         await dialog.getByRole("checkbox", { name: agents[0]!.name, exact: true }).check();
         await dialog.getByRole("button", { name: "Assign selected", exact: true }).click();
         await expect.poll(async () => (await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`)).some((server) => server.id === saved!.id)).toBe(true);
-        if (input) expect(JSON.stringify(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`))).not.toContain(input.value);
+        const assignments = JSON.stringify(await api.requestJSON<ServerSummary[]>(`/api/agents/${agents[0]!.id}/mcp-servers`));
+        for (const input of inputs.filter((input) => input.value)) expect(assignments).not.toContain(input.value);
         await dialog.getByRole("button", { name: "Done", exact: true }).click();
       }
       await expect(dialog).not.toBeVisible();
@@ -310,14 +373,14 @@ test("creates and explicitly assigns all nine recipes, preserves source after re
     await page.getByRole("tab", { name: "MCP 市场", exact: true }).click();
     await capture(page, info, "market-chinese-wide");
     await market.getByRole("button", { name: "数据库", exact: true }).click();
-    await expect(market.getByRole("status")).toHaveText("找到 2 个模板");
+    await expect(market.getByRole("status")).toHaveText("找到 5 个模板");
     await page.setViewportSize({ width: 390, height: 844 });
     await market.getByRole("button", { name: "查看配置：DBHub", exact: true }).click();
     const databaseDialog = page.getByRole("dialog");
     const databaseInput = databaseDialog.getByLabel("数据库连接地址", { exact: false });
     await expect(databaseInput).toHaveAttribute("type", "password");
     await expect(databaseInput).toHaveValue("");
-    await databaseInput.fill(recipeInputs.dbhub!.value);
+    await databaseInput.fill(recipeInputs.dbhub![0]!.value);
     await capture(page, info, "database-input-chinese-masked-narrow");
     await page.keyboard.press("Escape");
     await page.setViewportSize({ width: 1440, height: 1000 });

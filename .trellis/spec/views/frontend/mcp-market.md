@@ -4,7 +4,7 @@
 
 The shared workspace MCP page and Settings MCP tab use `McpLibraryCatalog`.
 The agent MCP tab opens `McpAgentDiscovery`, which shows existing workspace
-instances before the same template catalog. The built-in catalog contains nine
+instances before the same template catalog. The built-in catalog contains sixteen
 reviewed local recipes, including project/database inputs. Deployment recipes
 come from the API server's `MULTICA_MCP_TEMPLATE_DIR`, not an Electron scan or an
 external registry/plugin store. Source filters are All / Deployment / Built-in;
@@ -161,6 +161,6 @@ recipes publishable even when they contain no credential keywords.
   responses, explicit workspace identity and failed-operation recovery.
 - `server/internal/handler/workspace_mcp_template_test.go`: recipe validation,
   provenance lifecycle, write-only summaries and human permission gates.
-- `e2e/mcp-market.spec.ts`: real API setup for all nine recipes, required/secret inputs, rename, resume,
+- `e2e/mcp-market.spec.ts`: real API setup for all sixteen recipes, required/secret inputs, rename, resume,
   contextual reuse, partial failure and a member-owned agent; no real provider
   process or MCP tool execution is started by these tests.

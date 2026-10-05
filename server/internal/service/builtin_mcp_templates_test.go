@@ -2,6 +2,7 @@ package service
 
 import (
 	"net/url"
+	"reflect"
 	"regexp"
 	"strings"
 	"testing"
@@ -54,7 +55,7 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 				t.Errorf("recipe version must be a positive integer, got %q", template.Version)
 			}
 			switch template.Category {
-			case "browser", "reasoning", "documentation", "coding", "database":
+			case "browser", "reasoning", "documentation", "coding", "database", "collaboration", "operations":
 			default:
 				t.Errorf("category %q needs a shared UI label before publication", template.Category)
 			}
@@ -79,6 +80,13 @@ func TestMcpServerTemplates_PublishingContract(t *testing.T) {
 				t.Fatal("recipe must contain exactly one command or URL target")
 			}
 			allowed := map[string]bool{"type": true}
+			if env, present := template.Config["env"]; present {
+				allowed["env"] = true
+				expected, reviewed := intranetStaticEnv[template.Key]
+				if !reviewed || !reflect.DeepEqual(env, expected) {
+					t.Error("public environment must match reviewed static controls and explicit credential-clearing values")
+				}
+			}
 			if hasURL {
 				allowed["url"] = true
 				endpoint, ok := template.Config["url"].(string)
@@ -180,8 +188,10 @@ func TestMcpServerTemplates_NoSecrets(t *testing.T) {
 
 	var walk func(key string, value any)
 	walk = func(key string, value any) {
-		if secretHint.MatchString(key) {
-			t.Errorf("template config key %q looks like a credential; keyless-only templates are the current contract", key)
+		// Empty values explicitly clear inherited credentials. The publishing
+		// contract separately restricts these keys to the reviewed static map.
+		if secretHint.MatchString(key) && value != "" {
+			t.Errorf("template config key %q may only contain an empty credential-clearing value", key)
 		}
 		switch v := value.(type) {
 		case map[string]any:

@@ -69,6 +69,13 @@ func TestMcpMarketDevelopmentRecipeLifecycle(t *testing.T) {
 		{"codebase-memory", "1", nil}, {"repomix", "1", nil}, {"markitdown", "1", nil},
 		{"dbhub", "1", map[string]string{"database_url": "postgres://user:private-password@localhost/db"}},
 		{"postgres-mcp", "2", map[string]string{"database_url": "postgresql://user:private-password@localhost/db"}},
+		{"gitlab", "1", map[string]string{"gitlab_api_url": "https://gitlab.internal/api/v4", "gitlab_token": "private-gitlab"}},
+		{"atlassian", "1", map[string]string{"jira_url": "https://jira.internal", "jira_token": "private-jira"}},
+		{"grafana", "1", map[string]string{"grafana_url": "https://grafana.internal", "grafana_token": "private-grafana"}},
+		{"kubernetes", "1", map[string]string{"kubeconfig_path": "/etc/private-kubeconfig"}},
+		{"mongodb", "1", map[string]string{"mongodb_uri": "mongodb://reader:private-mongo@mongodb.internal/app"}},
+		{"redis", "1", map[string]string{"redis_url": "rediss://redis.internal:6379/0", "redis_password": ""}},
+		{"clickhouse", "1", map[string]string{"clickhouse_url": "http://clickhouse.internal:8123", "clickhouse_username": "default", "clickhouse_password": ""}},
 	} {
 		t.Run(tc.key, func(t *testing.T) {
 			fields := map[string]any{"name": "market-local-" + tc.key, "template_key": tc.key, "template_version": tc.version}
@@ -150,7 +157,7 @@ func assertSafeMcpInputSummary(t *testing.T, summary map[string]any) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Contains(string(raw), "private-password") || strings.Contains(string(raw), "private-project") {
+	if strings.Contains(string(raw), "private-") {
 		t.Fatal("summary disclosed a saved input")
 	}
 }
@@ -166,6 +173,9 @@ func TestMcpMarketRejectsInvalidInputRequests(t *testing.T) {
 		{"template_key": "postgres-mcp", "template_version": "2", "template_inputs": map[string]string{"database_url": "private-not-a-url"}},
 		{"template_key": "postgres-mcp", "template_version": "2", "template_inputs": map[string]string{"database_url": "postgres://user:private@localhost/db", "command": "private-override"}},
 		{"config": map[string]string{"command": "custom"}, "template_inputs": map[string]string{"database_url": "private"}},
+		{"template_key": "atlassian", "template_version": "1", "template_inputs": map[string]string{"jira_url": "https://private-jira.internal"}},
+		{"template_key": "redis", "template_version": "1", "template_inputs": map[string]string{"redis_url": "redis://private-user:private-password@redis.internal/0"}},
+		{"template_key": "clickhouse", "template_version": "1", "template_inputs": map[string]string{"clickhouse_url": "http://clickhouse.internal:8123/private-path", "clickhouse_username": "default"}},
 	} {
 		fields["name"] = "market-invalid-inputs"
 		req := withURLParam(newRequest(http.MethodPost, "/mcp-servers", fields), "id", testWorkspaceID)

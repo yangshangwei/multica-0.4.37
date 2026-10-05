@@ -16,11 +16,48 @@ const recipes = [
   ["markitdown", "MarkItDown MCP"],
   ["dbhub", "DBHub"],
   ["postgres-mcp", "Postgres MCP Pro"],
+  ["gitlab", "GitLab MCP"],
+  ["atlassian", "Atlassian MCP"],
+  ["grafana", "Grafana MCP"],
+  ["kubernetes", "Kubernetes MCP"],
+  ["mongodb", "MongoDB MCP"],
+  ["redis", "Redis MCP"],
+  ["clickhouse", "ClickHouse MCP"],
 ] as const;
+
+const recipeInputs: Record<string, { label: string; value: string; secret: boolean }[]> = {
+  serena: [{ label: "Project directory", value: "/tmp/mcp-desktop-e2e-project", secret: false }],
+  dbhub: [{ label: "Database connection URL", value: "postgresql://mcp_test:desktop-test-secret@127.0.0.1:65432/example", secret: true }],
+  "postgres-mcp": [{ label: "Database connection URL", value: "postgresql://mcp_test:desktop-test-secret@127.0.0.1:65432/example", secret: true }],
+  gitlab: [
+    { label: "GitLab API URL", value: "https://gitlab.internal.test/api/v4", secret: false },
+    { label: "GitLab personal access token", value: "fake-token-gitlab", secret: true },
+  ],
+  atlassian: [
+    { label: "Jira URL", value: "https://jira.internal.test", secret: false },
+    { label: "Jira personal access token", value: "fake-token-jira", secret: true },
+  ],
+  grafana: [
+    { label: "Grafana URL", value: "https://grafana.internal.test", secret: false },
+    { label: "Grafana service-account token", value: "fake-token-grafana", secret: true },
+  ],
+  kubernetes: [{ label: "Kubeconfig path", value: "/tmp/mcp-desktop-e2e-kubeconfig", secret: false }],
+  mongodb: [{ label: "MongoDB connection URI", value: "mongodb://mcp_test:fake-token-mongodb@mongodb.internal.test:27017/example", secret: true }],
+  redis: [
+    { label: "Redis URL", value: "redis://redis.internal.test:6379/0", secret: false },
+    { label: "Redis ACL username", value: "e2e_reader", secret: true },
+    { label: "Redis password", value: "fake-token-redis", secret: true },
+  ],
+  clickhouse: [
+    { label: "ClickHouse HTTP URL", value: "http://clickhouse.internal.test:8123", secret: false },
+    { label: "ClickHouse username", value: "e2e_reader", secret: false },
+    { label: "ClickHouse password", value: "fake-token-clickhouse", secret: true },
+  ],
+};
 
 test("native desktop MCP preserves collection, settings and agent discovery flows", async ({}, info) => {
   test.skip(process.env.E2E_PASSWORD_AUTH !== "1", "Requires a local password-mode API and freshly built desktop renderer/preload");
-  test.setTimeout(240_000);
+  test.setTimeout(360_000);
   const apiBase = process.env.NEXT_PUBLIC_API_URL!;
   expect(["localhost", "127.0.0.1"]).toContain(new URL(apiBase).hostname);
   const root = resolve(import.meta.dirname, "..");
@@ -154,14 +191,13 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
       const dialog = page.getByRole("dialog").last();
       const name = key === "playwright" ? "native-browser" : `native-${key}`;
       await dialog.getByRole("textbox", { name: "Configuration name", exact: true }).fill(name);
-      if (key === "serena") {
-        await dialog.getByLabel("Project directory", { exact: false }).fill("/tmp/mcp-desktop-e2e-project");
-      } else if (key === "dbhub" || key === "postgres-mcp") {
-        const input = dialog.getByLabel("Database connection URL", { exact: false });
-        await expect(input).toHaveAttribute("type", "password");
-        await input.fill("postgresql://mcp_test:desktop-test-secret@127.0.0.1:65432/example");
-        if (key === "dbhub") await capture("native-database-input-masked");
+      const inputs = recipeInputs[key] ?? [];
+      for (const input of inputs) {
+        const field = dialog.getByLabel(input.label, { exact: false });
+        await expect(field).toHaveAttribute("type", input.secret ? "password" : "text");
+        await field.fill(input.value);
       }
+      if (key === "dbhub" || key === "atlassian" || key === "clickhouse") await capture(`native-${key}-inputs-masked`);
       await dialog.getByRole("button", { name: "Save and continue", exact: true }).click();
       const agentCheckbox = dialog.getByRole("checkbox", { name: agent.name, exact: true });
       await expect(agentCheckbox).toBeVisible();
@@ -169,6 +205,8 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
       const saved = (await api.requestJSON<{ id: string; name: string }[]>(`/api/workspaces/${workspace.id}/mcp-servers`)).find((server) => server.name === name);
       expect(saved).toMatchObject({ template_key: key, template_version: key === "postgres-mcp" ? "2" : "1", transport: "stdio" });
       expect(saved).not.toHaveProperty("config");
+      expect(saved).not.toHaveProperty("template_inputs");
+      for (const input of inputs) expect(JSON.stringify(saved)).not.toContain(input.value);
       expect(await api.requestJSON(`/api/agents/${agent.id}/mcp-servers`)).not.toEqual(
         expect.arrayContaining([expect.objectContaining({ id: saved!.id })]),
       );
@@ -176,9 +214,11 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
       await dialog.getByRole("button", { name: "Assign selected", exact: true }).click();
       await dialog.getByRole("button", { name: "Done", exact: true }).click();
       await expect(preview).toBeFocused();
-      expect(await api.requestJSON(`/api/agents/${agent.id}/mcp-servers`)).toEqual(
+      const assignments = await api.requestJSON(`/api/agents/${agent.id}/mcp-servers`);
+      expect(assignments).toEqual(
         expect.arrayContaining([expect.objectContaining({ id: saved!.id, name, transport: "stdio", enabled: true })]),
       );
+      for (const input of inputs) expect(JSON.stringify(assignments)).not.toContain(input.value);
     }
     expect(await api.requestJSON(`/api/workspaces/${workspace.id}/mcp-servers`)).toHaveLength(recipes.length);
     await page.getByRole("tab", { name: "Shared configurations", exact: true }).click();

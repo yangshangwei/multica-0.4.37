@@ -13,6 +13,13 @@ const templateIcons: Record<string, keyof typeof AVATAR_ICON_COMPONENTS> = {
   markitdown: "file-text",
   dbhub: "database",
   "postgres-mcp": "database",
+  gitlab: "git-pull-request",
+  atlassian: "book-open",
+  grafana: "chart-line",
+  kubernetes: "server",
+  mongodb: "database",
+  redis: "database",
+  clickhouse: "database",
 };
 
 /** Template identity survives instance renames; never infer it from a name. */
