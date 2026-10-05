@@ -1285,3 +1285,37 @@ Recovered the committed five-recipe catalog, fixed unresolved POSIX/Windows inpu
 ### Next Steps
 
 - No remaining local task work; remote push and production deployment remain outside the approved scope.
+
+
+## Session 41: MCP 市场部署提供目录完成
+
+**Date**: 2026-10-04
+**Task**: MCP 市场部署提供目录完成
+**Branch**: `codex/mcp-deployment-catalog`
+
+### Summary
+
+Implemented server-directory MCP deployment catalog, source-aware persistence and old-client masking, typed inputs, hot refresh and Web/Desktop discovery. Integrated only task delta into current checkout and preserved existing WIP. On 2026-10-05 the user authorized commit: the verified MCP snapshot and prerequisites landed on main; later intranet/admin publishing work remains uncommitted. No push was performed.
+
+### Main Changes
+
+- Directory manifests, source identity, stable content versions, bounded filesystem reads and stale-form recovery
+- Compose/offline delivery, bilingual docs, examples and recorded independent reviews
+
+### Git Commits
+
+- `e7016ad48`: deployment catalog implementation and required parameterized recipes
+- `a7281ab91`: archived task decisions and verification evidence
+
+### Testing
+
+- [OK] Merged core321 + views87 passed; MCP handlers64 passed/1 builtinHTTP skip; service/vet passed; full typecheck9 and lint6 passed
+- [OK] Web+Electron6 passed; visual94/pass; Windows/Linux compile passed; Knip findings identical to baseline
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Publish with migration512 and the first compatible backend/client release; follow docs/mcp-catalog-publishing.md
