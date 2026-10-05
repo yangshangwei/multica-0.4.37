@@ -68,7 +68,10 @@ test.describe("platform execution metadata", () => {
       await page.locator("#password-username").fill(username!);
       await page.locator("#password-value").fill(password!);
       await page.locator('button[type="submit"]').click();
-      await expect(page.getByRole("link", { name: failed, exact: true })).toBeVisible();
+      const executionRow = (id: string) => page.getByRole("row").filter({ has: page.getByText(id, { exact: true }) });
+      const failedLink = executionRow(failed).getByRole("link", { name: "Restricted task", exact: true });
+      await expect(failedLink).toBeVisible();
+      expect(new URL((await failedLink.getAttribute("href"))!, web).pathname).toBe(`/admin/tasks/${failed}`);
       await expect(page.getByText(privateTitle)).toHaveCount(0);
       await expect(page.getByText("Restricted task", { exact: true })).toBeVisible();
       await mkdir(reports, { recursive: true });
@@ -80,10 +83,13 @@ test.describe("platform execution metadata", () => {
       await page.screenshot({ path: resolve(reports, "executions-mobile-table.png"), fullPage: true });
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.getByRole("button", { name: "Next page", exact: true }).click();
-      await expect(page.getByRole("link", { name: retried, exact: true })).toBeVisible();
-      await page.getByRole("link", { name: retried, exact: true }).click();
+      const retriedLink = executionRow(retried).getByRole("link", { name: "Restricted task", exact: true });
+      await expect(retriedLink).toBeVisible();
+      expect(new URL((await retriedLink.getAttribute("href"))!, web).pathname).toBe(`/admin/tasks/${retried}`);
+      await retriedLink.click();
       await expect(page.getByRole("heading", { name: "Execution details" })).toBeVisible();
       await expect(page.getByRole("link", { name: failed, exact: true })).toHaveCount(2);
+      await page.locator("summary").filter({ hasText: "Technical details" }).click();
       await expect(page.getByText("fixture-model", { exact: true })).toBeVisible();
       await expect(page.getByRole("link", { name: "Open original content" })).toHaveCount(0);
       await page.goto(`${web}/admin/tasks/${failed}`);
@@ -92,8 +98,10 @@ test.describe("platform execution metadata", () => {
       await page.goto(`${web}/admin/tasks?workspace_id=${workspace.id}`);
       await page.getByLabel("Source", { exact: true }).selectOption("quick_create");
       await page.getByRole("button", { name: "Apply filters", exact: true }).click();
-      await expect(page.getByRole("link", { name: quick, exact: true })).toBeVisible();
-      await expect(page.getByRole("link", { name: failed, exact: true })).toHaveCount(0);
+      const quickLink = executionRow(quick).getByRole("link", { name: "Restricted task", exact: true });
+      await expect(quickLink).toBeVisible();
+      expect(new URL((await quickLink.getAttribute("href"))!, web).pathname).toBe(`/admin/tasks/${quick}`);
+      await expect(executionRow(failed)).toHaveCount(0);
 
       // Grant only the original workspace membership, never a global content
       // bypass. Removing it during teardown restores the admin's prior state.
