@@ -10,7 +10,9 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/multica-ai/multica/server/internal/attribution"
+	"github.com/multica-ai/multica/server/internal/dispatch"
 	"github.com/multica-ai/multica/server/internal/events"
+	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -795,11 +797,12 @@ func seedRunOnlyAutopilot(t *testing.T, pool *pgxpool.Pool, workspaceID, agentID
 	return autopilotID, runID
 }
 
-// TestDispatchRunOnlyScheduleStampsRuleOwnerRow is the run_only row assertion Elon
-// asked for: the direct CreateAutopilotTask path (no member actor → schedule-like)
-// must persist rule_owner on the queue row — originator NULL, accountable = the
-// active rule version publisher, rule_version_id set.
-func TestDispatchRunOnlyScheduleStampsRuleOwnerRow(t *testing.T) {
+// TestDispatchRunOnlyScheduleKeepsRuleOwnerAuditOnly preserves the legacy
+// rule_owner facts without treating them as authority to run. This fixture has
+// no trigger creator or manual actor. The old test bypassed admission and
+// incorrectly expected a task row; authorized schedules are covered below by
+// TestDispatchRunOnlyScheduleStaysWithTriggerCreator.
+func TestDispatchRunOnlyScheduleKeepsRuleOwnerAuditOnly(t *testing.T) {
 	pool := newResolveOriginatorPool(t)
 	ctx := context.Background()
 	q := db.New(pool)
@@ -822,30 +825,32 @@ func TestDispatchRunOnlyScheduleStampsRuleOwnerRow(t *testing.T) {
 	if err != nil {
 		t.Fatalf("get run: %v", err)
 	}
-	// No member actor → schedule/webhook-style rule_owner attribution.
-	if err := svc.dispatchRunOnly(ctx, ap, &run, pgtype.UUID{}); err != nil {
-		t.Fatalf("dispatchRunOnly: %v", err)
+	// Keep the original attribution assertions at the resolver boundary. A
+	// publisher identifies audit responsibility, not an invocation principal.
+	audit := triggerOwnerAttribution(ctx, q, run.TriggerID, ap.WorkspaceID, ap.ID, attribution.EvidenceAutopilotRun, run.ID)
+	if audit.Source != attribution.SourceRuleOwner {
+		t.Errorf("originator_source = %q, want rule_owner", audit.Source)
 	}
-
-	var source pgtype.Text
-	var originator, accountable, ruleVersion pgtype.UUID
-	if err := pool.QueryRow(ctx, `
-		SELECT originator_source, originator_user_id, accountable_user_id, rule_version_id
-		FROM agent_task_queue WHERE autopilot_run_id = $1`, run.ID).Scan(&source, &originator, &accountable, &ruleVersion); err != nil {
-		t.Fatalf("read stored attribution: %v", err)
+	if audit.UserID.Valid {
+		t.Errorf("rule_owner must not set originator, got %s", util.UUIDToString(audit.UserID))
 	}
-	if source.String != string(attribution.SourceRuleOwner) {
-		t.Errorf("originator_source = %q, want rule_owner", source.String)
+	if !audit.AccountableUserID.Valid || audit.AccountableUserID.Bytes != util.MustParseUUID(publisherID).Bytes {
+		t.Errorf("accountable_user_id = %s, want publisher %s", util.UUIDToString(audit.AccountableUserID), publisherID)
 	}
-	// rule_owner stays AUDIT-ONLY — see the create_issue case above (MUL-6951).
-	if originator.Valid {
-		t.Errorf("rule_owner must not set originator, got %s", util.UUIDToString(originator))
+	if !audit.RuleVersionID.Valid || audit.RuleVersionID.Bytes != util.MustParseUUID(ruleVersionID).Bytes {
+		t.Errorf("rule_version_id = %s, want %s", util.UUIDToString(audit.RuleVersionID), ruleVersionID)
 	}
-	if !accountable.Valid || accountable.Bytes != util.MustParseUUID(publisherID).Bytes {
-		t.Errorf("accountable_user_id = %s, want publisher %s", util.UUIDToString(accountable), publisherID)
+	err = svc.dispatchRunOnly(ctx, ap, &run, pgtype.UUID{})
+	var skipped *errDispatchSkipped
+	if !errors.As(err, &skipped) || skipped.code != dispatch.ReasonInvocationNotAllowed {
+		t.Fatalf("audit-only schedule must refuse execution: %v", err)
 	}
-	if !ruleVersion.Valid || ruleVersion.Bytes != util.MustParseUUID(ruleVersionID).Bytes {
-		t.Errorf("rule_version_id = %s, want %s", util.UUIDToString(ruleVersion), ruleVersionID)
+	var count int
+	if err = pool.QueryRow(ctx, `SELECT count(*) FROM agent_task_queue WHERE autopilot_run_id=$1`, run.ID).Scan(&count); err != nil {
+		t.Fatalf("count tasks: %v", err)
+	}
+	if count != 0 {
+		t.Errorf("audit-only rule_owner created %d tasks", count)
 	}
 }
 
@@ -877,6 +882,12 @@ func TestDispatchRunOnlyManualStampsDirectHuman(t *testing.T) {
 		workspaceID, actorID); err != nil {
 		t.Fatalf("seed actor member: %v", err)
 	}
+
+	// Workspace visibility is not invocation permission. This distinct manual
+	// actor needs an explicit grant before the attribution path can run.
+	fixture := testutil.New(pool, workspaceID, actorID)
+	fixture.Exec(t, `UPDATE agent SET permission_mode='public_to' WHERE id=$1`, agentID)
+	fixture.InsertNoID(t, "agent_invocation_target", testutil.Cols{"agent_id": agentID, "target_type": "member", "target_id": actorID}, "agent_id=$1 AND target_type='member' AND target_id=$2", agentID, actorID)
 
 	svc := &AutopilotService{Queries: q, TxStarter: pool, Bus: events.New(), TaskSvc: &TaskService{Queries: q, TxStarter: pool, Bus: events.New()}}
 	ap, err := q.GetAutopilot(ctx, util.MustParseUUID(autopilotID))

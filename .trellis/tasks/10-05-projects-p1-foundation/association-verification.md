@@ -94,3 +94,13 @@ TDD 证据：
 | `go vet ./internal/handler ./internal/service`，本 lane `git diff --check` / gofmt | exit 0 / 通过 |
 
 上述重复范围不累加计数。全仓库、前端和部署仍由父任务整合验证；本轮不将它们标为通过。
+
+## 全量 service race 的 attribution fixture 收口（2026-10-05 20:56）
+
+父任务全 Go race 日志暴露两条旧 `attribution_stamp_test.go` 失败。在 association 私有库独立 `-race` 重现，日志 `/tmp/p1-attribution-red.log`；本次**未修改生产权限逻辑**。
+
+- `TestDispatchRunOnlyManualStampsDirectHuman` 的触发者有 member 行，但 agent 只有旧 `visibility='workspace'`，实际 `permission_mode` 仍为 private，也没有授予该成员调用权。仅为此 fixture 加 `public_to` 和真实 member invocation grant，保留原先所有数据库队列行的 direct_human、originator、accountable、rule-version 断言。没有改共享 seed helper，以免影响负向权限测试。
+- 旧 `TestDispatchRunOnlyScheduleStampsRuleOwnerRow` 没有 trigger_id，也没有 manual actor。`ResolveAutopilotTriggerPrincipal` 明确不能从 audit-only rule publisher 推断执行身份；补一个合法 trigger 会把 attribution 正确变成 trigger_owner，因此不能同时声称合法执行且要求 rule_owner。经父任务确认，将测试改名为 `TestDispatchRunOnlyScheduleKeepsRuleOwnerAuditOnly`：保留 rule_owner、NULL originator、publisher、ruleVersion 四项解析事实；执行必须返回 invocation_not_allowed 的 skipped 错误且 task 行为零。合法 schedule 的真实持久化归属继续由未经改动的 `TestDispatchRunOnlyScheduleStaysWithTriggerCreator` 覆盖。
+- 定向测试同时保留真实合法 schedule、manual、触发器 principal 分离及 `TestProjectAutopilotRunOnlyRevalidatesLockedOwners` 的失权 fail-closed 验证：6 个顶层 / 10 条记录通过（2.772s），`/tmp/p1-attribution-targeted.jsonl`。
+- **整个 service 包**：`bash scripts/go-test-with-agent-cli-guard.sh go -C server test -race ./internal/service -count=1 -timeout=600s -json`，未使用测试 skip 过滤；584 个顶层 / 1182 条 PASS 记录、0 FAIL，173.872s，`/tmp/p1-service-attribution-final.jsonl`。18 条既有 Redis 用例因未设置 `REDIS_TEST_URL` 自行跳过，不能把这 18 条称作通过。
+- `go vet ./internal/service`、gofmt、此范围 `git diff --check` 通过。仅修改归属测试及本证据文件，handler 的其它失败由父任务独立诊断。
