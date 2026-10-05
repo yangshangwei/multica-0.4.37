@@ -5,31 +5,35 @@ import { projectKeys } from "./queries";
 import { clearProjectDescriptionDrafts, useProjectDescriptionDraftStore } from "./description-draft-store";
 import { clearProjectProgressDrafts, useProjectProgressDraftStore } from "./progress-draft-store";
 
+let sessionGeneration = 0;
+export const projectSessionGeneration = () => sessionGeneration;
+
 const accessKey = (wsId: string, projectId?: string) => JSON.stringify([wsId, projectId ?? "*"]);
 const pendingDeletions = new Set<string>();
 export const isProjectDeletePending = (wsId: string, projectId: string) => pendingDeletions.has(accessKey(wsId, projectId));
 export function beginProjectDelete(wsId: string, projectId: string) {
-  const key = accessKey(wsId, projectId); pendingDeletions.add(key); return () => { pendingDeletions.delete(key); };
+  const key = accessKey(wsId, projectId); const generation = sessionGeneration;
+  pendingDeletions.add(key); return () => { if (generation === sessionGeneration) pendingDeletions.delete(key); };
 }
 const localTextFlushers = new Map<string, Set<() => void>>();
 export function registerProjectLocalTextFlush(wsId: string, projectId: string, flush: () => void) {
   const key = accessKey(wsId, projectId); const listeners = localTextFlushers.get(key) ?? new Set<() => void>();
   listeners.add(flush); localTextFlushers.set(key, listeners);
-  return () => { listeners.delete(flush); if (listeners.size === 0) localTextFlushers.delete(key); };
+  return () => { listeners.delete(flush); if (listeners.size === 0 && localTextFlushers.get(key) === listeners) localTextFlushers.delete(key); };
 }
 export const useProjectAccessStore = create<{
   denied: Record<string, true>; epochs: Record<string, number>; deleted: Record<string, string[]>;
 }>(() => ({ denied: {}, epochs: {}, deleted: {} }));
 export const projectAccessEpoch = (wsId: string, projectId?: string) => {
   const state = useProjectAccessStore.getState();
-  return `${state.epochs[accessKey(wsId)] ?? 0}:${state.epochs[accessKey(wsId, projectId)] ?? 0}`;
+  return `${sessionGeneration}:${state.epochs[accessKey(wsId)] ?? 0}:${state.epochs[accessKey(wsId, projectId)] ?? 0}`;
 };
-export function canAccessProject(wsId: string, projectId?: string) {
+export function canAccessProject(wsId: string, projectId?: string, generation = sessionGeneration) {
   const state = useProjectAccessStore.getState();
-  return !state.denied[accessKey(wsId)] && !state.denied[accessKey(wsId, projectId)] && !state.deleted[accessKey(wsId, projectId)];
+  return generation === sessionGeneration && !state.denied[accessKey(wsId)] && !state.denied[accessKey(wsId, projectId)] && !state.deleted[accessKey(wsId, projectId)];
 }
 export function isProjectAccessLost(error: unknown): boolean {
-  return error instanceof ApiError && (error.status === 401 || (error.status === 403 && !["project_evidence_forbidden", "project_permission_denied", "project_updates_disabled"].includes(errorCode(error) ?? "")));
+  return error instanceof ApiError && (error.status === 401 || (error.status === 404 && errorCode(error) === "workspace_access_denied") || (error.status === 403 && !["project_evidence_forbidden", "project_permission_denied", "project_updates_disabled"].includes(errorCode(error) ?? "")));
 }
 export function isProjectDeleted(error: unknown): boolean {
   return error instanceof ApiError && error.status === 404 && errorCode(error) === "project_not_found";
@@ -44,6 +48,17 @@ function clearProjectCaches(qc: QueryClient, wsId: string, projectId?: string) {
   for (const mutation of qc.getMutationCache().getAll()) {
     const mutationKey = mutation.options.mutationKey;
     if (mutationKey?.[0] !== "projects" || mutationKey[1] !== wsId) continue;
+    mutation.state = { ...mutation.state, data: undefined, variables: undefined, context: undefined, error: null, failureReason: null };
+    qc.getMutationCache().remove(mutation);
+  }
+}
+/** Runs before draft teardown on logout, expiry and Desktop server reset. */
+export function resetProjectAccessSession(qc: QueryClient) {
+  sessionGeneration += 1;
+  pendingDeletions.clear(); localTextFlushers.clear();
+  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
+  for (const mutation of qc.getMutationCache().getAll()) {
+    if (mutation.options.mutationKey?.[0] !== "projects") continue;
     mutation.state = { ...mutation.state, data: undefined, variables: undefined, context: undefined, error: null, failureReason: null };
     qc.getMutationCache().remove(mutation);
   }
@@ -86,16 +101,19 @@ function projectAccessChangedError(wsId: string, projectId?: string) {
 }
 export async function protectProjectRequest<T>(qc: QueryClient, wsId: string, projectId: string | undefined, request: () => Promise<T>): Promise<T> {
   const epoch = projectAccessEpoch(wsId, projectId);
+  const generation = sessionGeneration;
   if (!canAccessProject(wsId, projectId)) throw projectAccessChangedError(wsId, projectId);
   try {
     const result = await request();
+    if (generation !== sessionGeneration) throw new ApiError("Project session changed", 409, "Conflict", { code: "project_session_changed" });
     if (epoch !== projectAccessEpoch(wsId, projectId) || !canAccessProject(wsId, projectId)) throw projectAccessChangedError(wsId, projectId);
     return result;
   } catch (error) {
+    if (generation !== sessionGeneration) throw new ApiError("Project session changed", 409, "Conflict", { code: "project_session_changed" });
     // A deleted project's local text remains copyable; do not reinterpret our
     // stale-result rejection as a newly discovered workspace revocation.
     if (epoch === projectAccessEpoch(wsId, projectId)) handleProjectAccessError(qc, wsId, projectId, error);
-    if (error instanceof ApiError && isProjectAccessLost(error)) throw new ApiError("Project access changed", error.status, error.statusText);
+    if (error instanceof ApiError && isProjectAccessLost(error)) throw new ApiError("Project access changed", error.status, error.statusText, error.status === 404 ? { code: "workspace_access_denied" } : undefined);
     throw error;
   }
 }

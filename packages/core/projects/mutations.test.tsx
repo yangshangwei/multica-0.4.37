@@ -127,3 +127,22 @@ describe("P1 revoked access barrier", () => {
     unmount(); qc.clear(); useProjectAccessStore.setState({ denied: {} });
   });
 });
+
+it("RR01 an old-session optimistic mutation cannot roll back the new account's project", async () => {
+  const { clearClientSessionData } = await import("../platform/session-cleanup");
+  const { useProjectAccessStore } = await import("./access");
+  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
+  const qc = new QueryClient(); const oldProject = { ...p1Project, id: "p1", workspace_id: "ws-1", description: "old account text" };
+  qc.setQueryData(projectKeys.detail("ws-1", "p1"), oldProject);
+  let finish!: (value: unknown) => void;
+  setApiInstance({ updateProject: vi.fn(() => new Promise((resolve) => { finish = resolve; })) } as unknown as ApiClient);
+  const { result, unmount } = renderHook(() => useUpdateProject(), { wrapper: createWrapper(qc) });
+  let pending!: Promise<unknown>;
+  await act(async () => { pending = result.current.mutateAsync({ id: "p1", title: "old account edit" }).catch((error) => error); });
+  act(() => clearClientSessionData(qc));
+  const newProject = { ...oldProject, description: "new account authorized text" };
+  qc.setQueryData(projectKeys.detail("ws-1", "p1"), newProject);
+  await act(async () => { finish(oldProject); await pending; });
+  expect(qc.getQueryData(projectKeys.detail("ws-1", "p1"))).toEqual(newProject);
+  unmount(); qc.clear();
+});

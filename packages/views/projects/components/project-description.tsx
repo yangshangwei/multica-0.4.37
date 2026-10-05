@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProjectSchema } from "@multica/core/api/schemas";
 import { api, ApiError } from "@multica/core/api";
-import { ProjectDescriptionSave, projectGoalTemplateAppend, type ProjectGoalSection, projectProgressDraftKey, useProjectDescriptionDraftStore, writeProjectDescriptionDraft, acknowledgeProjectDescriptionDraft, clearProjectDescriptionDraft, canAccessProject, registerProjectLocalTextFlush, useProjectAccessStore } from "@multica/core/projects";
-import { projectDetailOptions } from "@multica/core/projects/queries";
+import { ProjectDescriptionSave, projectGoalTemplateAppend, type ProjectGoalSection, projectProgressDraftKey, useProjectDescriptionDraftStore, writeProjectDescriptionDraft, acknowledgeProjectDescriptionDraft, clearProjectDescriptionDraft, canAccessProject, registerProjectLocalTextFlush, projectSessionGeneration, useProjectAccessStore } from "@multica/core/projects";
+import { projectDetailOptions, projectKeys } from "@multica/core/projects/queries";
 import { useUpdateProject } from "@multica/core/projects/mutations";
 import type { Project } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
@@ -14,13 +14,17 @@ import { RevisionConflictCompare } from "../../issues/components/revision-confli
 import { useT } from "../../i18n";
 
 export function ProjectDescription({ project, supported }: { project: Project; supported: boolean }) {
-  const unavailable = useProjectAccessStore((state) => !!state.denied[JSON.stringify([project.workspace_id, "*"])] || !!state.denied[JSON.stringify([project.workspace_id, project.id])] || !!state.deleted[JSON.stringify([project.workspace_id, project.id])]);
+  const generation = useRef(projectSessionGeneration()).current;
+  const unavailable = useProjectAccessStore((state) => generation !== projectSessionGeneration() || !!state.denied[JSON.stringify([project.workspace_id, "*"])] || !!state.denied[JSON.stringify([project.workspace_id, project.id])] || !!state.deleted[JSON.stringify([project.workspace_id, project.id])]);
   const { t } = useT("projects"); const qc = useQueryClient(); const update = useUpdateProject();
   const draftKey = projectProgressDraftKey(api.getBaseUrl?.() ?? "", project.workspace_id, project.id, "description");
   const draft = useProjectDescriptionDraftStore((state) => state.draft.entries[draftKey]);
   const initialDraft = useRef(draft);
   const editor = useRef<ContentEditorRef>(null); const local = useRef(draft?.body ?? project.description ?? "");
   const [error, setError] = useState<unknown>(); const [conflict, setConflict] = useState<{ description: string; revision: number }>();
+  const [adoptedServer, setAdoptedServer] = useState<{ description: string; revision: number } | null>(null);
+  const controlledDescription = adoptedServer && (project.description_revision ?? 0) < adoptedServer.revision ? adoptedServer.description : project.description ?? "";
+  const controlledRevision = adoptedServer && (project.description_revision ?? 0) < adoptedServer.revision ? adoptedServer.revision : project.description_revision ?? 0;
   const [template, setTemplate] = useState(false); const [selected, setSelected] = useState<string[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const save = useRef<ProjectDescriptionSave | null>(null);
@@ -53,20 +57,23 @@ export function ProjectDescription({ project, supported }: { project: Project; s
   ].map(([id, title]) => ({ id: id!, title: title!, body: "" }));
   const pendingText = () => editor.current?.getMarkdown() ?? local.current;
   useEffect(() => registerProjectLocalTextFlush(project.workspace_id, project.id, () => {
-    if (editor.current && editor.current.getMarkdown() !== save.current?.body && canAccessProject(project.workspace_id, project.id)) writeProjectDescriptionDraft(draftKey, { body: editor.current.getMarkdown(), baseBody: save.current?.body ?? "", revision: save.current?.revision ?? 0 });
-  }), [project.workspace_id, project.id, draftKey]);
+    if (editor.current && editor.current.getMarkdown() !== save.current?.body && canAccessProject(project.workspace_id, project.id, generation)) writeProjectDescriptionDraft(draftKey, { body: editor.current.getMarkdown(), baseBody: save.current?.body ?? "", revision: save.current?.revision ?? 0 });
+  }), [project.workspace_id, project.id, draftKey, generation]);
   const acceptServer = () => {
-    if (!conflict) return; save.current?.adopt(conflict.description, conflict.revision);
+    if (!conflict || !canAccessProject(project.workspace_id, project.id, generation)) return;
+    setAdoptedServer(conflict); save.current?.adopt(conflict.description, conflict.revision);
+    void qc.cancelQueries({ queryKey: projectKeys.detail(project.workspace_id, project.id), exact: true });
+    qc.setQueryData<Project>(projectKeys.detail(project.workspace_id, project.id), (current) => current ? { ...current, description: conflict.description, description_revision: conflict.revision } : current);
     local.current = conflict.description; editor.current?.adoptContent(conflict.description); clearProjectDescriptionDraft(draftKey); editor.current?.focus(); setConflict(undefined); setError(undefined);
   };
   if (unavailable) return null;
   return <div className="space-y-3">
-    {supported ? <ContentEditor ref={editor} value={draft?.body ?? project.description ?? ""} debounceMs={0} flushPendingOnUnmount
+    {supported ? <ContentEditor ref={editor} value={draft?.body ?? controlledDescription} debounceMs={0} flushPendingOnUnmount
       onUpdate={(markdown, baseline) => {
         // A clean editor may adopt a newer query version. A dirty editor's
         // baseline stays tied to the previous revision until acknowledgement.
-        if (save.current && baseline === project.description && baseline !== save.current.body && !error) save.current.adopt(baseline, project.description_revision ?? 0);
-        if (!canAccessProject(project.workspace_id, project.id)) return;
+        if (save.current && baseline === controlledDescription && baseline !== save.current.body && !error) save.current.adopt(baseline, controlledRevision);
+        if (!canAccessProject(project.workspace_id, project.id, generation)) return;
         local.current = markdown;
         writeProjectDescriptionDraft(draftKey, { body: markdown, baseBody: save.current?.body ?? project.description ?? "", revision: save.current?.revision ?? project.description_revision ?? 0 });
         save.current?.enqueue(markdown, 1000);

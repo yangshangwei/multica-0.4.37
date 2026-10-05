@@ -5,7 +5,7 @@ import { api, ApiError, errorCode } from "@multica/core/api";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { projectUpdatesOptions, projectUpdateRevisionsOptions, projectExecutionEvidenceOptions, usePreviewProjectUpdate, usePublishProjectUpdate,
   projectProgressDraftKey, useProjectProgressDraftStore, writeProjectProgressDraft, emptyProjectUpdateDraft,
-  prepareProjectUpdateIntent, clearProjectProgressDraft, canAccessProject, registerProjectLocalTextFlush } from "@multica/core/projects";
+  prepareProjectUpdateIntent, clearProjectProgressDraft, canAccessProject, registerProjectLocalTextFlush, projectSessionGeneration } from "@multica/core/projects";
 import type { Project, ProjectUpdate, ProjectUpdateDraft, ProjectUpdateRevision, ProjectHistoricalMember, ProjectEvidenceInput, ProjectEvidenceView } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
@@ -92,6 +92,7 @@ function correctionDraft(update: ProjectUpdate): ProjectUpdateDraft {
 function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: {
   project: Project; initial: ProjectUpdateDraft; onClose: () => void; onProtectedError: () => void;
 }) {
+  const generation = useRef(projectSessionGeneration()).current;
   const { t } = useT("projects"); const qc = useQueryClient(); const key = projectProgressDraftKey(api.getBaseUrl?.() ?? "", project.workspace_id, project.id, initial.update_id ?? undefined);
   const entry = useProjectProgressDraftStore((state) => state.draft.entries[key]); const draft = entry?.draft ?? initial;
   const preview = usePreviewProjectUpdate(project.workspace_id, project.id); const publish = usePublishProjectUpdate(project.workspace_id, project.id);
@@ -102,10 +103,18 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
   const errorFocus = useRef<HTMLDivElement>(null);
   const [reviewing, setReviewing] = useState(false);
   useProjectAccessGuard(publish.error ?? preview.error, project.workspace_id, project.id, onProtectedError);
-  const patch = (change: Partial<ProjectUpdateDraft>) => { if (!canAccessProject(project.workspace_id, project.id)) return; writeProjectProgressDraft(key, { ...draft, ...change }); preview.reset(); setReviewing(false); };
+  const patch = (change: Partial<ProjectUpdateDraft>) => {
+    if (!canAccessProject(project.workspace_id, project.id, generation)) return;
+    const current = useProjectProgressDraftStore.getState().draft.entries[key]?.draft ?? draft;
+    const next = { ...current, ...change };
+    // An unmount flush can acknowledge the exact body already sent to preview.
+    // Only a genuine edit invalidates that preview and its explicit consent.
+    if (JSON.stringify(next) === JSON.stringify(current)) return;
+    writeProjectProgressDraft(key, next); preview.reset(); setReviewing(false);
+  };
   useEffect(() => registerProjectLocalTextFlush(project.workspace_id, project.id, () => {
-    if (editor.current && (entry || editor.current.getMarkdown() !== initial.body) && canAccessProject(project.workspace_id, project.id)) writeProjectProgressDraft(key, { ...draft, body: editor.current.getMarkdown() });
-  }), [project.workspace_id, project.id, key, draft, entry, initial.body]);
+    if (editor.current && (entry || editor.current.getMarkdown() !== initial.body) && canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: editor.current.getMarkdown() });
+  }), [project.workspace_id, project.id, key, draft, entry, initial.body, generation]);
   const busy = preview.isPending || publish.isPending;
   const error = publish.error ?? preview.error;
   useEffect(() => { if (error) errorFocus.current?.focus(); }, [error]);
@@ -179,7 +188,7 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
         originalDescription.current = descriptionConflict.description ?? ""; setDescriptionConflict(null); publish.reset();
       }}>{t(($) => $.management.adopt_description)}</Button>} />}
     <div className="flex flex-wrap gap-2">
-      <Button variant="outline" disabled={busy} onClick={() => { if (canAccessProject(project.workspace_id, project.id)) writeProjectProgressDraft(key, { ...draft, body: editor.current?.getMarkdown() ?? draft.body }); onClose(); }}>{t(($) => $.management.cancel)}</Button>
+      <Button variant="outline" disabled={busy} onClick={() => { if (canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: editor.current?.getMarkdown() ?? draft.body }); onClose(); }}>{t(($) => $.management.cancel)}</Button>
       {reviewing ? <><Button variant="outline" disabled={busy} onClick={() => { setReviewing(false); preview.reset(); publish.reset(); }}>{t(($) => $.management.back_edit)}</Button>
         <Button disabled={busy || stale || !!conflict || !!descriptionConflict} onClick={confirm}>{t(($) => $.management.publish)}</Button></> : <Button disabled={busy} onClick={previewPublish}>{t(($) => $.management.preview)}</Button>}
     </div>

@@ -1,4 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
+import { resetProjectAccessSession } from "../projects/access";
 import { resetAllRegisteredDrafts } from "../drafts/cleanup-registry";
 import { clearAdminControlDrafts } from "../admin/operation-draft";
 import type { StorageAdapter } from "../types/storage";
@@ -38,6 +39,7 @@ export function clearClientSessionData(
   // wiped regardless of the workspace list below: ending a session does not
   // reload the page, so the singletons would otherwise surface the previous
   // user's draft after the next login.
+  resetProjectAccessSession(queryClient);
   resetAllRegisteredDrafts();
   clearAdminControlDrafts(storage);
 
