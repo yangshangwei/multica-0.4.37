@@ -258,7 +258,10 @@ func TestProjectUpdateExecutionEvidenceRechecksResultAndPrivacy(t *testing.T) {
 	dbfx.Member(t, testWorkspaceID, reader, "member")
 	req := withURLParam(newRequest("POST", "/api/projects/"+p+"/updates/preview", d), "id", p)
 	req.Header.Set("X-User-ID", reader)
-	testutil.Call(t, progressEndpoint("preview"), req).Want(403)
+	denied := testutil.Call(t, progressEndpoint("preview"), req).Want(403).Map()
+	if denied["code"] != "project_evidence_forbidden" {
+		t.Fatalf("source permission must not revoke workspace: %v", denied)
+	}
 	req = withURLParam(newRequest("GET", "/api/projects/"+p+"/updates", nil), "id", p)
 	req.Header.Set("X-User-ID", reader)
 	var list map[string]any
@@ -273,7 +276,9 @@ func TestProjectUpdateExecutionEvidenceRechecksResultAndPrivacy(t *testing.T) {
 	chat := dbfx.ChatSession(t, agent, testutil.Cols{"creator_id": reader})
 	chatTask := dbfx.Task(t, agent, testutil.Cols{"chat_session_id": chat, "runtime_id": runtime})
 	d["evidence"] = []any{map[string]any{"kind": "execution", "id": chatTask, "url": nil}}
-	progressCall(t, "preview", p, "", d, 403)
+	if denied := progressCall(t, "preview", p, "", d, 403); denied["code"] != "project_evidence_forbidden" {
+		t.Fatalf("chat source permission code=%v", denied)
+	}
 }
 
 func TestProjectUpdateFlagOffRetainsHistoryAndExactReplay(t *testing.T) {
@@ -281,7 +286,9 @@ func TestProjectUpdateFlagOffRetainsHistoryAndExactReplay(t *testing.T) {
 	input := progressInput(progressPreview(t, p, progressDraft("Before rollback")))
 	first := progressCall(t, "create", p, "", input, 201)
 	withFeatureFlag(t, testHandler, featureflags.ProjectsP1, false)
-	progressCall(t, "create", p, "", progressInput(progressPreview(t, p, progressDraft("Read-only blocked"))), 403)
+	if denied := progressCall(t, "create", p, "", progressInput(progressPreview(t, p, progressDraft("Read-only blocked"))), 403); denied["code"] != "project_updates_disabled" {
+		t.Fatalf("disabled feature must not revoke workspace: %v", denied)
+	}
 	replayed := progressCall(t, "create", p, "", input, 200)
 	if replayed["update_id"] != first["update_id"] || replayed["replayed"] != true {
 		t.Fatalf("read-only replay: %v", replayed)
@@ -292,7 +299,9 @@ func TestProjectUpdateFlagOffRetainsHistoryAndExactReplay(t *testing.T) {
 	d["update_id"] = first["update_id"]
 	d["expected_revision"] = 1
 	d["correction_reason"] = "blocked"
-	progressCall(t, "correct", p, first["update_id"].(string), progressInput(progressPreview(t, p, d)), 403)
+	if denied := progressCall(t, "correct", p, first["update_id"].(string), progressInput(progressPreview(t, p, d)), 403); denied["code"] != "project_updates_disabled" {
+		t.Fatalf("disabled correction code=%v", denied)
+	}
 	if n := dbfx.Count(t, "SELECT count(*) FROM project_update_revision WHERE project_id=$1", p); n != 1 {
 		t.Fatalf("read-only wrote %d revisions", n)
 	}
@@ -684,4 +693,53 @@ func TestProjectUpdateExecutionEvidenceOpensRealAuthorizedTranscript(t *testing.
 	testutil.Call(t, projectExecutionEvidenceHandler(), chatReq).Want(200)
 	dbfx.Exec(t, "DELETE FROM member WHERE workspace_id=$1 AND user_id=$2", testWorkspaceID, reader)
 	testutil.Call(t, projectExecutionEvidenceHandler(), chatReq).Want(403)
+}
+
+func TestProjectUpdateSourcePermissionRecoveryPreservesWorkspaceAccess(t *testing.T) {
+	p := progressProject(t)
+	reader := dbfx.User(t, "Source reader", "progress-source-code-"+uuid.NewString()+"@example.invalid")
+	dbfx.Member(t, testWorkspaceID, reader, "member")
+	runtime := dbfx.Runtime(t, "Source permission runtime")
+	agent := dbfx.Agent(t, "Source permission agent", runtime, testutil.Cols{"permission_mode": "public_to"})
+	task := dbfx.Task(t, agent, testutil.Cols{"status": "completed", "runtime_id": runtime})
+	dbfx.InsertNoID(t, "agent_invocation_target", testutil.Cols{"agent_id": agent, "target_type": "member", "target_id": reader}, "agent_id=$1 AND target_id=$2", agent, reader)
+	call := func(method string, handler http.HandlerFunc, body any, status int) map[string]any {
+		t.Helper()
+		req := withURLParam(newRequest(method, "/api/projects/"+p+"/updates", body), "id", p)
+		req.Header.Set("X-User-ID", reader)
+		return testutil.Call(t, handler, req).Want(status).Map()
+	}
+	d := progressDraft("Published protected source reference")
+	d["evidence"] = []any{map[string]any{"kind": "execution", "id": task, "url": nil}}
+	published := call("POST", testHandler.CreateProjectUpdate, progressInput(call("POST", testHandler.PreviewProjectUpdate, d, 200)), 201)
+	d["body"] = "My new draft remains recoverable"
+	pending := progressInput(call("POST", testHandler.PreviewProjectUpdate, d, 200))
+	dbfx.Exec(t, "DELETE FROM agent_invocation_target WHERE agent_id=$1 AND target_id=$2", agent, reader)
+	for _, denied := range []map[string]any{call("POST", testHandler.PreviewProjectUpdate, d, 403), call("POST", testHandler.CreateProjectUpdate, pending, 403)} {
+		if denied["code"] != "project_evidence_forbidden" {
+			t.Fatalf("source revocation classification=%v", denied)
+		}
+	}
+	history := call("GET", testHandler.ListProjectUpdates, nil, 200)
+	current := history["items"].([]any)[0].(map[string]any)["current"].(map[string]any)
+	evidence := current["evidence"].([]any)[0].(map[string]any)
+	if current["body"] != "Published protected source reference" || evidence["availability"] != "inaccessible" || evidence["label"] != nil || evidence["href"] != nil || evidence["current_version"] != nil {
+		t.Fatalf("source-only history redaction=%v", current)
+	}
+	evidenceReq := testutil.WithURLParams(newRequest("GET", "/api/projects/"+p+"/updates/evidence", nil), "id", p, "updateId", published["update_id"].(string), "revision", "1", "taskId", task)
+	evidenceReq.Header.Set("X-User-ID", reader)
+	if denied := testutil.Call(t, testHandler.GetProjectUpdateExecutionEvidence, evidenceReq).Want(403).Map(); denied["code"] != "project_evidence_forbidden" {
+		t.Fatalf("evidence reader classification=%v", denied)
+	}
+	d["evidence"] = []any{}
+	recovered := call("POST", testHandler.PreviewProjectUpdate, d, 200)
+	if recovered["draft"].(map[string]any)["body"] != "My new draft remains recoverable" {
+		t.Fatal("source removal lost the pending body")
+	}
+	leave := withURLParam(newRequest("POST", "/api/workspaces/"+testWorkspaceID+"/leave", nil), "id", testWorkspaceID)
+	leave.Header.Set("X-User-ID", reader)
+	testutil.Call(t, testHandler.LeaveWorkspace, leave).Want(204)
+	if denied := call("POST", testHandler.PreviewProjectUpdate, d, 403); denied["code"] != "forbidden" {
+		t.Fatalf("real workspace revocation must retain forbidden: %v", denied)
+	}
 }

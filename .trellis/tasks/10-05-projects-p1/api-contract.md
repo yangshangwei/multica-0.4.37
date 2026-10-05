@@ -136,7 +136,10 @@ correct draft的kind与验收描述版本从原记录固定，不允许改kind/�
 | --- | --- | --- |
 | 400 | `invalid_request`，可选field_errors（UUID/signal/cursor/日期语法） | 不当unsupported、不自动改值 |
 | 401 | `unauthenticated` | 清认证/保护缓存并登录 |
-| 403 | `forbidden`（包括机器actor人工发布） | 清保护内容/候选/草稿，停止重试 |
+| 403 | `forbidden`（工作空间／成员访问已撤销） | 清保护内容/候选/草稿，停止重试 |
+| 403 | `project_evidence_forbidden`（private-agent／chat来源失权，附evidence字段提示） | 保留本人草稿；清除该证据查询，移除失效引用后重新预览；历史仅脱敏该来源 |
+| 403 | `project_updates_disabled`（P1新发布／更正已关闭） | 保留草稿并显示只读限制；当前授权的历史及完全相同已成功请求仍可读取／重放 |
+| 403 | `project_permission_denied`（操作角色／机器actor限制） | 显示操作权限不足；不据此撤销整个工作空间访问 |
 | 404 | `project_not_found`/`project_update_not_found` | 停止提交；仅专用能力路径按§1判unsupported |
 | 409 | `project_description_conflict`/`project_revision_conflict`/`project_update_revision_conflict` + current | 保留输入、显示最新版本、显式合并 |
 | 409 | `project_update_preview_stale` + `{current:{changed_fields,preview}}`；`idempotency_conflict`无保护正文 | 复核后新意图；不得自动覆盖 |

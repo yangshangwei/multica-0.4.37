@@ -139,6 +139,9 @@ type ProjectUpdateWriteResult struct {
 func projectUpdateValidation(field, message string) error {
 	return &projectAPIError{Status: 422, Code: "validation_failed", Message: message, FieldErrors: []map[string]string{{"field": field, "message": message}}}
 }
+func projectEvidenceForbidden() error {
+	return &projectAPIError{Status: 403, Code: "project_evidence_forbidden", Message: "execution evidence is not accessible", FieldErrors: []map[string]string{{"field": "evidence", "message": "remove the inaccessible evidence reference and preview again"}}}
+}
 func normalizeProjectText(s string) string {
 	return strings.TrimSpace(strings.ReplaceAll(s, "\r\n", "\n"))
 }
@@ -359,7 +362,7 @@ func projectUpdateEvidence(ctx context.Context, q *db.Queries, ws, actor pgtype.
 				return v, e
 			}
 			if chat.CreatorID != actor {
-				return v, projectErr(403, "forbidden", "execution evidence is not accessible")
+				return v, projectEvidenceForbidden()
 			}
 		} else {
 			agent, e := q.LockProjectUpdateEvidenceAgent(ctx, db.LockProjectUpdateEvidenceAgentParams{ID: task.AgentID, WorkspaceID: ws})
@@ -375,7 +378,7 @@ func projectUpdateEvidence(ctx context.Context, q *db.Queries, ws, actor pgtype.
 				return v, e
 			}
 			if !memberAllowedToViewAgent(agent, targets, uuidToString(actor), member.Role) {
-				return v, projectErr(403, "forbidden", "execution evidence is not accessible")
+				return v, projectEvidenceForbidden()
 			}
 		}
 		var result any
@@ -626,7 +629,7 @@ func (h *Handler) writeProjectUpdate(w http.ResponseWriter, r *http.Request, ope
 			return e
 		}
 		if !h.FeatureFlags.IsEnabled(r.Context(), featureflags.ProjectsP1, true) {
-			return projectErr(403, "forbidden", "project updates are currently read-only")
+			return projectErr(403, "project_updates_disabled", "project updates are currently read-only")
 		}
 		prepared, e := h.prepareProjectUpdate(r.Context(), q, p, actor, in.Draft)
 		if e != nil {
@@ -752,7 +755,7 @@ func projectUpdateRevisionView(ctx context.Context, q *db.Queries, row db.Projec
 			var api *projectAPIError
 			if errors.Is(e, pgx.ErrNoRows) {
 				old.Availability = "deleted"
-			} else if errors.As(e, &api) && api.Status == 403 {
+			} else if errors.As(e, &api) && api.Status == 403 && api.Code == "project_evidence_forbidden" {
 				old.Availability = "inaccessible"
 			} else {
 				return out, e
