@@ -389,6 +389,9 @@ func TestBuildSquadLeaderBriefing_MentionsRoundTrip(t *testing.T) {
 // returns the agent block of the response. Fails the test on non-200.
 func claimAndDecodeAgent(t *testing.T, runtimeID string) *TaskAgentData {
 	t.Helper()
+	// The shared runtime may be older than the claim freshness window in a full suite.
+	// Simulate the daemon heartbeat that precedes a live runtime's claim.
+	dbfx.Exec(t, `UPDATE agent_runtime SET status='online', last_seen_at=now() WHERE id=$1`, runtimeID)
 	w := httptest.NewRecorder()
 	req := newDaemonTokenRequest("POST", "/api/daemon/runtimes/"+runtimeID+"/claim", nil, testWorkspaceID, "test-claim-squad-briefing")
 	req = withURLParam(req, "runtimeId", runtimeID)

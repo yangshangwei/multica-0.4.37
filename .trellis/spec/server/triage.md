@@ -179,3 +179,20 @@ cases only in private fixture schemas.
   `packages/views/triage/` and `e2e/triage.spec.ts`: API parsing, cache isolation,
   client actions and platform flows. Completion evidence belongs in the task's
   `verification.md`, not a passing-test claim in this specification.
+
+## CI precision and error-classification regressions
+
+- A snooze notification compares its serialized deadline with the persisted
+  `issue_triage.snoozed_until`. Production must serialize the value read back
+  from PostgreSQL. Fixtures that write both a pgx timestamp and JSON text must
+  truncate the shared instant to microseconds first: pgx truncates nanoseconds
+  while PostgreSQL text casts round them. macOS clock precision can hide the
+  Linux failure; retain exact delivery and recipient assertions.
+- Admission checks can fail because work is blocked, the issue was deleted, or
+  the database failed. Map only `admission.Blocked` to the review-required
+  conflict; preserve wrapped errors for the caller's existing missing-resource
+  and server-error handling. Lifecycle source and target preflights both obey
+  this rule.
+- Claim-based handler fixtures must provide a current runtime heartbeat at
+  claim time. A TestMain heartbeat can expire during a full race suite; do not
+  weaken the production freshness window to keep such fixtures alive.

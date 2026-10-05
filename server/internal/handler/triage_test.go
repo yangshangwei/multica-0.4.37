@@ -285,7 +285,9 @@ func TestTriageDueQueueAndNotificationIdempotency(t *testing.T) {
 	dbfx.Exec(t, `UPDATE workspace_triage_settings SET responsibility_mode='assign',responsibility_member_id=$2 WHERE workspace_id=$1`, testWorkspaceID, testUserID)
 	item := triageCreateForTest(t)
 	result := triageActionForTest(t, item, "snooze", map[string]any{"snoozed_until": time.Now().Add(time.Hour).Format(time.RFC3339)}, 200)
-	past := time.Now().Add(-time.Minute)
+	// Match persisted timestamp precision before serializing the notification deadline.
+	// pgx truncates sub-microseconds; PostgreSQL text casts round them.
+	past := time.Now().Add(-time.Minute).Truncate(time.Microsecond)
 	dbfx.Exec(t, `UPDATE issue_triage SET snoozed_until=$2 WHERE issue_id=$1`, item.Issue.ID, past)
 	dbfx.Exec(t, `UPDATE triage_notification SET due_at=$2,details=jsonb_set(details,'{snoozed_until}',to_jsonb($3::text)) WHERE event_key=$1`, "snooze:"+result.Action.ID, past, past.Format(time.RFC3339Nano))
 	var queue struct {
@@ -599,7 +601,9 @@ func TestTriageSnoozeReassignmentDeliversToCurrentReviewer(t *testing.T) {
 	item := triageCreateForTest(t)
 	snoozed := triageActionForTest(t, item, "snooze", map[string]any{"snoozed_until": time.Now().Add(time.Hour).Format(time.RFC3339Nano)}, 200)
 	triageActionForTest(t, snoozed.Item, "assign_reviewer", map[string]any{"reviewer_id": newUser}, 200)
-	past := time.Now().Add(-time.Minute)
+	// Match persisted timestamp precision before serializing the notification deadline.
+	// pgx truncates sub-microseconds; PostgreSQL text casts round them.
+	past := time.Now().Add(-time.Minute).Truncate(time.Microsecond)
 	dbfx.Exec(t, `UPDATE issue_triage SET snoozed_until=$2 WHERE issue_id=$1`, item.Issue.ID, past)
 	dbfx.Exec(t, `UPDATE triage_notification SET due_at=$2,details=jsonb_set(details,'{snoozed_until}',to_jsonb($3::text)) WHERE event_key=$1`, "snooze:"+snoozed.Action.ID, past, past.Format(time.RFC3339Nano))
 	testHandler.deliverTriageNotifications(context.Background(), parseUUID(testWorkspaceID))

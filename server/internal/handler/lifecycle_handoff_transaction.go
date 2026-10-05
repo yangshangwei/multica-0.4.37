@@ -74,7 +74,11 @@ func (h *Handler) lifecycleOrigin(r *http.Request, actorType, actorID string, wo
 
 func (h *Handler) prepareLifecycleHandoff(r *http.Request, source db.Issue, req lifecycleHandoffRequest, actorType, actorID string, needsFollowUp bool) (lifecyclePreparation, error) {
 	if err := admission.Check(r.Context(), h.Queries, source.ID); err != nil {
-		return lifecyclePreparation{}, lifecycleAssigneeError{http.StatusConflict, err.Error()}
+		var blocked *admission.Blocked
+		if errors.As(err, &blocked) {
+			return lifecyclePreparation{}, lifecycleAssigneeError{http.StatusConflict, err.Error()}
+		}
+		return lifecyclePreparation{}, err
 	}
 	var prepared lifecyclePreparation
 	origin, err := h.lifecycleOrigin(r, actorType, actorID, source.WorkspaceID)
@@ -145,7 +149,11 @@ func (h *Handler) prepareLifecycleHandoff(r *http.Request, source db.Issue, req 
 func (h *Handler) lifecycleDispatchTarget(ctx context.Context, target db.Issue, lock bool) (pgtype.UUID, pgtype.UUID, error) {
 	if target.ID.Valid {
 		if err := admission.Check(ctx, h.Queries, target.ID); err != nil {
-			return pgtype.UUID{}, pgtype.UUID{}, lifecycleAssigneeError{http.StatusConflict, err.Error()}
+			var blocked *admission.Blocked
+			if errors.As(err, &blocked) {
+				return pgtype.UUID{}, pgtype.UUID{}, lifecycleAssigneeError{http.StatusConflict, err.Error()}
+			}
+			return pgtype.UUID{}, pgtype.UUID{}, err
 		}
 	}
 	if !target.AssigneeType.Valid || !target.AssigneeID.Valid {
