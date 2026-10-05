@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-05T13:37:38.445Z",
+  "binary_sha256": "503316d0ff94ca471389c3888df867b12d36e98c36250cf8141814face86387d",
+  "health": {
+    "status": "ok",
+    "pid": 60479,
+    "commit": "0af59c5d5-performance-baseline",
+    "started_at": "2026-10-05T13:37:38Z"
+  },
+  "fixture_workspace_id": "c07e5806-c089-4761-b03a-9599141353de",
+  "fixture_project_id": "a48e4bdf-950c-4e66-8c9f-1da51821686e",
+  "authenticated_actor": "retained fixture member JWT; credentials omitted",
+  "checks": [
+    {
+      "name": "workspace_read",
+      "route": "/api/workspaces/c07e5806-c089-4761-b03a-9599141353de",
+      "status": 200,
+      "expected_status": 200,
+      "body": {
+        "id": "c07e5806-c089-4761-b03a-9599141353de",
+        "slug": "p1-performance-baseline-b0017dc5"
+      }
+    },
+    {
+      "name": "project_read",
+      "route": "/api/projects/a48e4bdf-950c-4e66-8c9f-1da51821686e",
+      "status": 200,
+      "expected_status": 200,
+      "body": {
+        "id": "a48e4bdf-950c-4e66-8c9f-1da51821686e",
+        "workspace_id": "c07e5806-c089-4761-b03a-9599141353de"
+      }
+    },
+    {
+      "name": "workspace_capabilities",
+      "route": "/api/workspaces/c07e5806-c089-4761-b03a-9599141353de/project-capabilities",
+      "status": 404,
+      "expected_status": 404,
+      "body": "404 page not found"
+    },
+    {
+      "name": "old_ambiguous_path",
+      "route": "/api/projects/capabilities",
+      "status": 400,
+      "expected_status": 400,
+      "body": {
+        "error": "invalid project id"
+      }
+    }
+  ],
+  "listener_stopped": true
+}

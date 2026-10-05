@@ -418,3 +418,41 @@ func TestProjectHealthBatchCountsMatchIndividualSnapshots(t *testing.T) {
 		t.Fatalf("cross-project completeness: %+v", complete)
 	}
 }
+
+func TestProjectHealthClosedScopeDoesNotImplyAcceptanceOrChangeProjectState(t *testing.T) {
+	for _, tc := range []struct {
+		name                 string
+		statuses             []string
+		completed, cancelled int64
+	}{
+		{"all_done", []string{"done", "done"}, 2, 0},
+		{"all_cancelled", []string{"cancelled", "cancelled"}, 0, 2},
+		{"mixed_done_cancelled", []string{"done", "cancelled"}, 1, 1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			project := healthProject(t)
+			for _, status := range tc.statuses {
+				dbfx.Issue(t, "Closed scope "+status, testutil.Cols{"project_id": project, "status": status})
+			}
+			result := overview(t, project)
+			healthCount(t, "total", result.Statistics.Counts.Total, 2)
+			healthCount(t, "completed", result.Statistics.Counts.Completed, tc.completed)
+			healthCount(t, "cancelled", result.Statistics.Counts.Cancelled, tc.cancelled)
+			healthCount(t, "open", result.Statistics.Counts.Open, 0)
+			if !result.Statistics.Complete || result.Statistics.ClosureRatio == nil || *result.Statistics.ClosureRatio != 1 {
+				t.Fatalf("closed formal scope: %+v", result.Statistics)
+			}
+			if result.LatestAcceptance != nil || result.CurrentDescriptionAcceptance != nil {
+				t.Fatalf("closure inferred project acceptance: %+v", result)
+			}
+			var status string
+			dbfx.QueryRow(t, "SELECT status FROM project WHERE workspace_id=$1 AND id=$2", testWorkspaceID, project).Scan(&status)
+			if status != "planned" {
+				t.Fatalf("closure changed project status to %q", status)
+			}
+			if n := dbfx.Count(t, "SELECT count(*) FROM project_update WHERE workspace_id=$1 AND project_id=$2", testWorkspaceID, project); n != 0 {
+				t.Fatalf("closure created %d progress/acceptance records", n)
+			}
+		})
+	}
+}
