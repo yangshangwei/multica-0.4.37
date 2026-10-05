@@ -29,6 +29,6 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/triage-prd.md"
   ],
-  "notes": "Completed T1 with all 37 acceptance scenarios and 8 FR obligations verified. Merged and pushed to main as 85b0d2e7e on 2026-10-05 at 11:14 Asia/Shanghai. Final local main-worktree regression has passing evidence for all 17 triage cases; expanded tests and accompanying fixes remain uncommitted. Remote CI and Mobile Verify failed; production release is unconfirmed. Parent verification.md records dated evidence and limits. Original delivery commit and stable task paths are retained for traceability.",
+  "notes": "T1 implementation completed and merged as 85b0d2e7e on 2026-10-05. CI closeout merged via PR #2 as 5f4fe5f3b on 2026-10-06; same-commit main CI and Mobile Verify passed. v0.5.6 backend/Web amd64+arm64 images and changelog assets published and independently verified. Fresh local triage E2E 17/17 passed. Target intranet rollout and new Desktop installer publication were not performed. See verification.md and 10-05-triage-ci-release.",
   "meta": {}
 }

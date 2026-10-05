@@ -2,14 +2,14 @@
   "id": "triage-ci-release",
   "name": "triage-ci-release",
   "title": "分拣台 T1 CI 修复与发布收尾",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "fullstack",
   "scope": "triage",
   "priority": "P1",
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-05",
-  "completedAt": null,
+  "completedAt": "2026-10-05T17:22:13.204921+00:00",
   "branch": "codex/triage-ci-release",
   "base_branch": "main",
   "children": [],
@@ -17,5 +17,7 @@
   "relatedFiles": [
     ".trellis/tasks/10-04-triage-t1/verification.md"
   ],
-  "notes": "User authorized CI fixes, main integration and release. I1 engineering planning runs separately; no I1 implementation."
+  "notes": "Completed CI fixes, reviewed PR/main integration, same-commit main CI/Mobile Verify and v0.5.6 release. All four OCI configs and published changelog assets verified. Target intranet rollout and upstream-only binary packages were not performed. I1 planning delivered separately.",
+  "commit": "5f4fe5f3b5a6415e41f99dfbd186f64d82bcd515",
+  "pr_url": "https://github.com/yangshangwei/multica-0.4.37/pull/2"
 }

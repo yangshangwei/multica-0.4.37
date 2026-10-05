@@ -1,0 +1,47 @@
+{
+  "version": "v0.5.6",
+  "commit": "5f4fe5f3b5a6415e41f99dfbd186f64d82bcd515",
+  "assets_sha256": {
+    "changelog.md": "ed47fdcd4f6fb0da72d513bd34cf458bf862efa4f527d773a9031eb7a6f47c63",
+    "changelog-metadata.json": "cf530d18ddab4a35011edea9d4daaccf35806966454de16121c73908256f7190",
+    "changelog.json": "56ea8c4704190ec33e3191699a498464f6bfa1d19a02c21a382036e80efff628"
+  },
+  "image_indexes": {
+    "backend": "sha256:4781ffd431194ce664ac4a93aeee74b7508608cf46c52aaf8b31f32049acad0a",
+    "web": "sha256:199e21c6df0e4f82503b1789d1ed01178cffbd31b50225343d9234cb96566e9b"
+  },
+  "images": [
+    {
+      "product": "backend",
+      "platform": "linux/amd64",
+      "image": "ghcr.io/yangshangwei/multica-backend:v0.5.6@sha256:092c3acb1f92c50a61654f43cf8aca5120b1ef9d6cbd79f4b7d019600410fe86",
+      "revision": "5f4fe5f3b5a6415e41f99dfbd186f64d82bcd515",
+      "version": "v0.5.6"
+    },
+    {
+      "product": "backend",
+      "platform": "linux/arm64",
+      "image": "ghcr.io/yangshangwei/multica-backend:v0.5.6@sha256:fa040be77f1a1fa9e4d56b26b18189846e0716d0392312128bfa15974bc865f1",
+      "revision": "5f4fe5f3b5a6415e41f99dfbd186f64d82bcd515",
+      "version": "v0.5.6"
+    },
+    {
+      "product": "web",
+      "platform": "linux/amd64",
+      "image": "ghcr.io/yangshangwei/multica-web:v0.5.6@sha256:2484cd4fb9988b20ae7b159139af81108211a5b88740e5ba416c85d066496a7e",
+      "revision": "5f4fe5f3b5a6415e41f99dfbd186f64d82bcd515",
+      "version": "v0.5.6"
+    },
+    {
+      "product": "web",
+      "platform": "linux/arm64",
+      "image": "ghcr.io/yangshangwei/multica-web:v0.5.6@sha256:811f9cb737e5b345b7187d975594cf4dd9dd272e2aaf54fd88abb8fa07c4ccce",
+      "revision": "5f4fe5f3b5a6415e41f99dfbd186f64d82bcd515",
+      "version": "v0.5.6"
+    }
+  ],
+  "published_at": "2026-10-05T17:17:28Z",
+  "release_run": 37345226629,
+  "main_ci_run": 37345046371,
+  "main_mobile_run": 37345046424
+}

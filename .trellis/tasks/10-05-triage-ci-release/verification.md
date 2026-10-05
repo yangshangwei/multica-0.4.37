@@ -1,6 +1,6 @@
 # 分拣台 CI 与发布验证
 
-更新：2026-10-06。修复已完成本地验证和独立审查；远端 CI、合并与发布待本次流程完成后更新。I1 工程方案另行交付，未实现产品功能。
+更新：2026-10-06。修复已完成本地验证、独立审查、远端 CI、main 集成与 v0.5.6 正式产物发布。I1 工程方案另行交付，未实现产品功能。
 
 ## 已修复根因
 
@@ -34,10 +34,26 @@
 
 ## 发布跟踪
 
-目标仓库：yangshangwei/multica-0.4.37。计划版本v0.5.6；按现有tag驱动工作流发布。该fork的工作流发布后端/Web镜像与累计changelog，upstream-only CLI/Homebrew/Desktop工作不会因此被宣称交付。业务生产环境部署与版本核验另需实际目标环境证据。
+目标仓库：yangshangwei/multica-0.4.37。版本v0.5.6；已按现有tag驱动工作流发布。该fork的工作流发布后端/Web镜像与累计changelog，upstream-only CLI/Homebrew/Desktop工作不会因此被宣称交付。业务生产环境部署与版本核验另需实际目标环境证据。
 
 ## PR 第一轮远端结果
 
 [PR #2](https://github.com/yangshangwei/multica-0.4.37/pull/2) 的初始提交 fcc116c1b：Mobile Verify、backend-tests、Windows执行环境、SQL生成、漏洞扫描、前端构建、基础前端测试和视图第二组均通过。CI 37340463506 仅视图第一组的既有快速创建分页测试超时5000ms，因此整体不通过，未合并或发布。
 
-该用例初始筛选逐字触发50行列表的五次渲染，并重复全树可访问名称扫描。最小测试修改使用真实粘贴设置初始查询、按现有aria-label定位pin，仍保留55项fixture、50→55→55→50、pin焦点与末尾单字符键入复位。未改变生产代码、timeout或retry。完整suite22/22和独立关键case5/5通过，ESLint通过；待远端再次核验。
+该用例初始筛选逐字触发50行列表的五次渲染，并重复全树可访问名称扫描。最小测试修改使用真实粘贴设置初始查询、按现有aria-label定位pin，仍保留55项fixture、50→55→55→50、pin焦点与末尾单字符键入复位。未改变生产代码、timeout或retry。完整suite22/22和独立关键case5/5通过，ESLint通过；当时待远端再次核验，最终成功记录见下一节。
+
+## 最终远端与发布结果（2026-10-06）
+
+- [PR #2](https://github.com/yangshangwei/multica-0.4.37/pull/2) 已快进合入main，保留已验证提交`5f4fe5f3b5a6415e41f99dfbd186f64d82bcd515`；无重新生成的合并代码。
+- PR第二轮[CI 37342726076](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37342726076)和[Mobile Verify 37342726008](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37342726008)全部通过。
+- 同提交main上的[CI 37345046371](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37345046371)和[Mobile Verify 37345046424](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37345046424)也全部通过。
+- [Release 37345226629](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37345226629)成功；[v0.5.6](https://github.com/yangshangwei/multica-0.4.37/releases/tag/v0.5.6)于北京时间2026-10-06 01:17:28正式发布，非draft、非prerelease。
+- 从GHCR直接读取后端/Web清单及四个平台镜像配置，均为linux/amd64或linux/arm64，version=v0.5.6、revision=同一提交。
+- 下载正式Release的3份资产，与构建阶段artifact逐字比较一致，并核验feed/Markdown摘要和metadata仓库、版本、提交。机器可读证据见[release-evidence.json](release-evidence.json)。
+
+| 镜像 | OCI index digest |
+| --- | --- |
+| `ghcr.io/yangshangwei/multica-backend:v0.5.6` | `sha256:4781ffd431194ce664ac4a93aeee74b7508608cf46c52aaf8b31f32049acad0a` |
+| `ghcr.io/yangshangwei/multica-web:v0.5.6` | `sha256:199e21c6df0e4f82503b1789d1ed01178cffbd31b50225343d9234cb96566e9b` |
+
+本任务完成的是CI与正式产物发布。未提供目标内网环境地址/部署会话，本次没有执行该环境升级或宣称生产服务已运行v0.5.6；fork工作流明确跳过上游专属CLI/Homebrew/Desktop/Helm任务，未新增桌面签名安装包。T1原生桌面源码流程有本地通过证据。I1工程方案已入main并保持planning，产品未实现。
