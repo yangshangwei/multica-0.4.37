@@ -108,6 +108,65 @@ For `github_repo`, non-JSON `--ref` sets `resource_ref.ref`, the default checkou
 
 `--start-date` / `--due-date` are optional calendar days (`YYYY-MM-DD`, like issue dates). On `project update`, pass an empty string (`--start-date ""`) to clear a date; an unset flag leaves it untouched.
 
+## Project goals, health and manual updates (P1)
+
+The project description remains the only editable goal/scope document. A goal
+template appends selected sections after preview; it does not create separate
+goal fields or replace existing text. Description updates now require the
+revision the editor actually reviewed:
+
+```bash
+multica project get <project-id> --output json
+multica project update <project-id> --description "<reviewed-text>" --expected-description-revision <description_revision> --output json
+multica project update <project-id> --status paused --expected-revision <revision> --output json
+```
+
+Both revision flags accept positive JavaScript-safe integers. Do not read a new
+revision solely to force an old draft through: compare and reconcile changes
+first. An empty description plus its expected revision clears the description.
+A version flag alone is not a property edit. Old unversioned description writes
+receive HTTP 428 with an actionable CLI message; conflicts return 409 and are
+not automatically retried. Other existing property commands remain available.
+
+Project statistics count actual project associations with admission status
+`not_required` or `accepted`, regardless of whether triage is enabled. Pending,
+rejected, duplicate and candidate-project links do not count. The existing
+`done_count` still means done plus cancelled; `completed_issue_count` and
+`cancelled_issue_count` separate delivery from cancellation. Unknown categories
+or failed reads cannot be treated as zero or a healthy project. Empty formal
+scope has no percentage. Parents and children are separate issues.
+
+`GET /api/workspaces/{workspace-id}/project-capabilities` identifies P1 support;
+`/api/projects/capabilities` is not a valid compatibility probe on old servers.
+Project overview and risk pages use a server-calculated snapshot, the explicit
+workspace planning timezone (UTC when unconfigured), and the full formal set.
+An offline valid agent remains assigned; execution availability is separate.
+Project status, scope closure, manual health judgment and goal acceptance do
+not automatically change one another or start/stop execution.
+
+Manual project progress, risk notes and acceptance records are published by
+human members through the app. There are no P1 progress CLI subcommands. Agent
+actors must not impersonate a human publisher. Published acceptance retains its
+reviewed description version; a later goal edit requires a new acceptance.
+Corrections require a reason and retain previous revisions. Publish retries
+reuse the original request identity; they are not a reason to create another
+record. Member mentions only notify current authorized workspace members;
+agent mentions remain references and never run an agent.
+
+Evidence is re-authorized when read. Internal execution references use a
+project-update-scoped read endpoint and the existing transcript viewer, not an
+invented `/tasks/<id>` page or a broader unrelated task endpoint. A source-only
+permission failure is distinct from workspace revocation.
+
+Deleting a project preserves issues and running executions, removes project
+resources/updates/view preferences, and pauses related automations with
+`pause_reason=project_deleted` while disabling their triggers. It never deletes
+shared agents, squads or physical working directories. UI rollout can be
+withdrawn with `FF_PROJECTS_P1=false`; new progress writes stop, existing records
+and safe replay remain readable, and description CAS stays enforced. This is
+not permission to run destructive database down migrations against retained
+P1 history.
+
 ## Referring to a project in a comment
 
 A project has no `MUL-123`-style identifier, so writing its title as prose

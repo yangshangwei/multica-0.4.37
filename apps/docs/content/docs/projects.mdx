@@ -19,7 +19,8 @@ Work that a single issue can describe does not need a project. Projects fit a gr
 | **Lead** | A member or an agent — who coordinates the project. |
 | **Execution squad** | The default squad for new work in this project; separate from its lead. |
 | **Start and target dates** | The project's planned time range. |
-| **Issues and progress** | The work in the project and how much of it is finished. |
+| **Issues and scope closure** | Completed, cancelled, and open work, with a separate scope-closure percentage. |
+| **Health and updates** | Explainable risks, manual progress, and explicit goal acceptance. |
 | **Resources** | Linked GitHub repositories or local directories on specific computers. |
 
 ![Project detail: issues grouped by status, progress, and the project description](/images/docs/project-detail.webp)
@@ -28,17 +29,43 @@ Work that a single issue can describe does not need a project. Projects fit a gr
 
 A project can contain any number of issues; an issue belongs to at most one project. Create issues directly inside the project, or pick or change the project from the issue's properties.
 
-Project progress is computed automatically from linked issues:
+Project progress uses actual linked formal issues. Pending, rejected, duplicate, and candidate project associations are excluded even when triage is disabled:
 
 ```text
-progress = issues in done or cancelled ÷ all issues in the project
+scope closure = (completed + cancelled issues) ÷ all formal project issues
 ```
 
-`cancelled` means that work has been closed out of the project's scope, so it counts toward progress. Project status and issue status are independent: finishing every issue does not automatically set the project to `completed`, and changing the project's status does not bulk-change its issues.
+Cancelled work counts toward scope closure, not delivered work. Six done, two cancelled, and two todo issues give 80% closure and six completed issues. An empty formal set shows no applicable percentage, never 100%. Parents and children count separately; personal filters do not change project totals. Project status and issue status are independent: finishing every issue does not automatically set the project to `completed`, and changing the project's status does not bulk-change its issues.
 
 ## Project description and execution context
 
 When an agent runs an issue inside a project, the project's name and description are added to that run's context. The description is the place for information every related task needs: the goal, technical boundaries, delivery conventions. Requirements that apply to only one issue belong in that issue.
+
+## Goal templates and concurrent editing
+
+Use **Goal template** to preview and append selected sections to the existing description. It remains the single editable source of goals, scope, and acceptance criteria, and the same content continues into agent context.
+
+Concurrent description edits return a version conflict. Compare the local draft with the server text before choosing or merging; unrelated icon changes do not invalidate goal acceptance.
+
+## Health overview
+
+**Overview** separates completion, cancellation, open work and scope closure. Blocked, overdue, unassigned and in-review cards open the precise project risk set without inheriting personal saved-view filters. A task may appear in several risk cards but counts once in their union.
+
+Only unfinished issues due before the planning date are overdue. Workspace owners and admins set the shared planning timezone; unconfigured workspaces explicitly use UTC. Pausing a project does not freeze dates, and timezone changes do not rewrite published snapshots.
+
+An offline but valid agent is still assigned; environment availability is a separate signal. Unknown states or missing data cannot produce a healthy conclusion. Failed refreshes mark retained values stale. An in-progress project without a new update for seven calendar days needs attention; correcting an old update does not reset that clock.
+
+When work changes during browsing, the next page continues after the previous position using current results and counts. A persistent notice explains that new or re-entered matches before that position require **Refresh from start**. Pages do not form a frozen worklist; the notice clears only after a successful fresh restart.
+
+## Manual progress and goal acceptance
+
+Choose **Record progress** or **Record acceptance**, then preview evidence, the optional server-generated statistics snapshot, and mention recipients before publishing. Progress, risk and acceptance records retain their author, publication time and revision history.
+
+Passed or partially passed acceptance needs evidence or a reproducible explanation and refers to the description version reviewed. After goals change, earlier acceptance remains readable but requires review. Scope closure, goal acceptance and completed project status never automatically substitute for one another.
+
+Corrections require a reason and preserve old versions. There is no silent replacement or individual hard-delete action. Failed publishing retains input; retries of one intent do not duplicate records or notifications. Explicit member mentions send in-app notifications only. Agent mentions are references and do not start execution, email or external messages.
+
+Completing a project warns about open work, cancellations and acceptance, while allowing an explicit decision to continue. Pausing, cancelling, completing or reopening a project does not change its issue states or stop running executions.
 
 ## Add resources
 
@@ -62,7 +89,7 @@ A pinned project appears in your sidebar. Pinning is a personal preference and d
 Any workspace member can create and edit projects; only `owner` and `admin` can delete them.
 
 <Callout type="warning">
-Deleting a project does not delete its issues: they detach and stay in the workspace. The project's description, status, and resources are permanently deleted.
+Deleting a project does not delete its issues: they detach and stay in the workspace. The project's description, status, resources, updates and acceptance history are permanently deleted. Related automations and triggers are paused or disabled. Existing issues, comments and execution history remain; running executions are not stopped.
 </Callout>
 
 ## Start with an execution squad
