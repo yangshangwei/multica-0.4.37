@@ -351,14 +351,17 @@ func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in Triage
 		ID    string
 		Input TriageActionInput
 	}{uuidToString(id), in})
-	if err = q.LockIssueStatusCatalogShared(ctx, ws); err != nil {
-		return out, err
-	}
-	if _, err = q.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{ID: id, WorkspaceID: ws}); err != nil {
+	lockedIssue, err := q.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{ID: id, WorkspaceID: ws})
+	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return out, triageErr(404, "triage item unavailable")
 		}
 		return out, err
+	}
+	// Reviewable intake is never formally assigned to an iteration. Refuse a
+	// damaged association rather than changing its facts without a join decision.
+	if lockedIssue.CurrentIterationID.Valid {
+		return out, triageErr(409, "triage item has an invalid iteration association")
 	}
 	before, err := h.triageItem(ctx, q, ws, id)
 	if err != nil {

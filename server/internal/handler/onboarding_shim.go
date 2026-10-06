@@ -21,16 +21,19 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"strings"
 	"unicode/utf8"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/issueguard"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/middleware"
@@ -174,6 +177,14 @@ func (h *Handler) BootstrapOnboardingRuntime(w http.ResponseWriter, r *http.Requ
 	}
 	defer tx.Rollback(r.Context())
 	qtx := h.Queries.WithTx(tx)
+	if err := lockOnboardingIssueCreate(r.Context(), tx, wsUUID, parseUUID(userID)); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusForbidden, "not a member of this workspace")
+		} else {
+			writeError(w, http.StatusInternalServerError, "failed to start onboarding")
+		}
+		return
+	}
 
 	member, err := qtx.GetMemberByUserAndWorkspace(r.Context(), db.GetMemberByUserAndWorkspaceParams{
 		UserID:      parseUUID(userID),
@@ -387,6 +398,14 @@ func (h *Handler) BootstrapOnboardingNoRuntime(w http.ResponseWriter, r *http.Re
 	}
 	defer tx.Rollback(r.Context())
 	qtx := h.Queries.WithTx(tx)
+	if err := lockOnboardingIssueCreate(r.Context(), tx, wsUUID, parseUUID(userID)); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusForbidden, "not a member of this workspace")
+		} else {
+			writeError(w, http.StatusInternalServerError, "failed to start onboarding")
+		}
+		return
+	}
 
 	userBefore, err := qtx.GetUser(r.Context(), parseUUID(userID))
 	if err != nil {
@@ -492,6 +511,24 @@ func (h *Handler) BootstrapOnboardingNoRuntime(w http.ResponseWriter, r *http.Re
 		WorkspaceID: req.WorkspaceID,
 		IssueID:     uuidToString(issue.ID),
 	})
+}
+
+// Both legacy creation owners must fence before agent insertion or issue reuse.
+func lockOnboardingIssueCreate(ctx context.Context, tx pgx.Tx, workspaceID, userID pgtype.UUID) error {
+	q := db.New(tx)
+	if _, err := q.LockWorkspaceForChatSessionCreate(ctx, workspaceID); err != nil {
+		return err
+	}
+	if err := q.LockSubscriberWrites(ctx, db.LockSubscriberWritesParams{WorkspaceID: workspaceID, UserID: userID}); err != nil {
+		return err
+	}
+	if _, err := q.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: workspaceID, UserID: userID}); err != nil {
+		return err
+	}
+	if err := q.LockIssueStatusCatalogShared(ctx, workspaceID); err != nil {
+		return err
+	}
+	return iteration.LockWorkspace(ctx, tx, workspaceID)
 }
 
 // noRuntimeIssueDescription picks the EN or ZH copy based on the user's

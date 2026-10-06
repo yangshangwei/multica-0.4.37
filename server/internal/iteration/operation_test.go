@@ -3,6 +3,7 @@ package iteration
 import (
 	"encoding/json"
 	"errors"
+	"strings"
 	"testing"
 	"time"
 
@@ -75,6 +76,89 @@ func TestOperationReplayPreservesDeletedIdentityAndRejectsDifferentIntent(t *tes
 	if _, err = decodeOperationResult(row, key, "same", true); err == nil {
 		t.Fatal("malformed durable result must never become an empty success")
 	}
+}
+
+func TestOperationReplayRejectsMalformedReferencesAndUnsafeCounters(t *testing.T) {
+	key := operationTestKey()
+	operationID := uuid.New()
+	iterationID := "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+	snapshotID := "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
+	row := db.IterationOperation{ID: pgtype.UUID{Bytes: operationID, Valid: true}, WorkspaceID: pgtype.UUID{Bytes: uuid.MustParse(key.WorkspaceID), Valid: true}, ActorUserID: pgtype.UUID{Bytes: uuid.MustParse(key.ActorUserID), Valid: true}, RequestID: pgtype.UUID{Bytes: uuid.MustParse(key.RequestID), Valid: true}, Operation: key.Operation, PayloadHash: "same"}
+	base := func() WriteResult {
+		return WriteResult{WorkspaceID: key.WorkspaceID, RequestID: key.RequestID, OperationID: operationID.String(), Operation: key.Operation, IterationIDs: []string{iterationID}, Result: WriteSummary{SnapshotID: &snapshotID, Deleted: true, SettingsRevision: 1}, CommittedAt: time.Now().UTC()}
+	}
+	decode := func(t *testing.T, result WriteResult) error {
+		t.Helper()
+		raw, err := json.Marshal(result)
+		if err != nil {
+			t.Fatal(err)
+		}
+		stored := row
+		stored.Result = raw
+		_, err = decodeOperationResult(stored, key, "same", true)
+		return err
+	}
+	for _, field := range []string{"iteration", "snapshot"} {
+		for name, malformed := range map[string]string{"invalid": "bad", "zero": uuid.Nil.String(), "compact": strings.ReplaceAll(iterationID, "-", ""), "uppercase": strings.ToUpper(iterationID), "urn": "urn:uuid:" + iterationID} {
+			t.Run(field+"/"+name, func(t *testing.T) {
+				result := base()
+				if field == "iteration" {
+					result.IterationIDs[0] = malformed
+				} else {
+					result.Result.SnapshotID = &malformed
+				}
+				if err := decode(t, result); err == nil {
+					t.Fatal("malformed persisted reference was returned as a successful operation")
+				}
+			})
+		}
+	}
+	t.Run("duplicate_iteration", func(t *testing.T) {
+		result := base()
+		result.IterationIDs = append(result.IterationIDs, iterationID)
+		if err := decode(t, result); err == nil {
+			t.Fatal("affected iteration identity was duplicated")
+		}
+	})
+	for _, field := range []string{"settings_revision", "issue_count"} {
+		for name, invalid := range map[string]int64{"negative": -1, "unsafe": 9007199254740992} {
+			t.Run(field+"/"+name, func(t *testing.T) {
+				result := base()
+				if field == "settings_revision" {
+					result.Result.SettingsRevision = invalid
+				} else {
+					result.Result.IssueCount = int(invalid)
+				}
+				if err := decode(t, result); err == nil {
+					t.Fatal("invalid persisted counter was returned as a successful operation")
+				}
+			})
+		}
+	}
+	t.Run("zero_revision", func(t *testing.T) {
+		result := base()
+		result.Result.SettingsRevision = 0
+		if err := decode(t, result); err == nil {
+			t.Fatal("zero settings revision was accepted")
+		}
+	})
+	t.Run("valid_deleted_references_need_no_live_entities", func(t *testing.T) {
+		result := base()
+		result.Result.SettingsRevision = 9007199254740991
+		maxCount := int64(9007199254740991)
+		result.Result.IssueCount = int(maxCount)
+		if err := decode(t, result); err != nil {
+			t.Fatalf("valid retained references or safe limit rejected: %v", err)
+		}
+	})
+	t.Run("empty_iterations_and_null_snapshot", func(t *testing.T) {
+		result := base()
+		result.IterationIDs = []string{}
+		result.Result.SnapshotID = nil
+		if err := decode(t, result); err != nil {
+			t.Fatalf("valid empty result rejected: %v", err)
+		}
+	})
 }
 
 func TestStatisticsWireShapeIsFlatAndRatiosNullable(t *testing.T) {

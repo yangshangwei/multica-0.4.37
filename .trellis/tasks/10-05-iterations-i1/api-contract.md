@@ -1,6 +1,6 @@
 # I1 API / 数据合同 v1
 
-I1 路径待实现；planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
+`GET W/iteration-operations/{request_id}` 已实现当前授权下的持久结果查询；其余 I1 产品路径仍待基础门槛通过。planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
 
 ## 端点
 
@@ -76,6 +76,6 @@ T1 `TriageActionInput.fields.current_iteration_id` 仅 accept/accept_and_execute
 
 能力专用路径在已确认可访问工作空间用合法 UUID 探测；旧服务器404才为不支持，401/403为认证/撤权，400为请求错误，网络/畸形为失败，不统一当 disabled。新写 DTO 用 parseWithFallback + zod 严格身份/关键字段验证；无法确定写成功必须 protocol error，不能 fallback 成空成功。所有枚举有 default，unknown 状态只读提示。
 
-错误统一 `{error,code,field_errors?,current?,retryable?}`：400 invalid_request；401 unauthenticated；403 forbidden；404 iteration_not_found/operation_not_found；409 iteration_preview_stale/iteration_active_conflict/iteration_revision_conflict/iteration_history_move_unsupported/idempotency_conflict；422 iteration_validation_failed/iteration_disabled；428 iteration_confirmation_required；413 iteration_operation_too_large；503 iteration_retry_exhausted，Retry-After:1。T1 原有409 triage_review_required保持原合同，新增迭代入口准入拒绝也用409同码，不能以新422更改旧入口。current 绝不带无权任务标题/计数。
+错误统一 `{error,code,field_errors?,current?,retryable?}`：400 invalid_request；401 unauthenticated；403 forbidden；404 iteration_not_found/operation_not_found；409 iteration_preview_stale/iteration_active_conflict/iteration_revision_conflict/iteration_history_move_unsupported/idempotency_conflict；422 iteration_validation_failed/iteration_disabled；428 iteration_confirmation_required；413 iteration_operation_too_large；503 iteration_retry_exhausted（写冲突预算耗尽）或 iteration_unavailable（结果读取/存储不可用），Retry-After:1。T1 原有409 triage_review_required保持原合同，新增迭代入口准入拒绝也用409同码，不能以新422更改旧入口。current 绝不带无权任务标题/计数。
 
 operation_id 由服务端为首次成功写生成，保存在 iteration_operation.id；同请求重放返回原值。event/snapshot/notification 使用该稳定ID，不能仅以不同actor可重复的request_id关联。T1接受中的迭代事件沿用其既有稳定 action identity，并在事件actor/type中可辨来源，不伪造另一份执行或迭代操作。

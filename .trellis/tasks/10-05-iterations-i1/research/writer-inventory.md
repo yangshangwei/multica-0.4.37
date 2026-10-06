@@ -10,6 +10,15 @@ S2 update: **W02 and W15 are integrated and verified**; see [S2 evidence](../../
 
 **W03/W04 are integrated and verified** in [system writer evidence](../../10-05-iterations-i1-foundation/s2-system-writers-verification.md): GitHub/Forgejo/GitLab completion and failed-task reset share a fresh RC owner with workspace/catalog/I1/iteration/issue locks, post-lock policies, and atomic facts. Both real enqueue/reset orders and postcommit publication are tested. CreateAgentTask may wait in lock_task_owner_rows before its NOWAIT execution guard; do not assume immediate refusal for every enqueue. **W06–W14 and W16 remain open. FG is not passed.**
 
+Continuation: W06–W14 and W16 now have implementation/evidence in the foundation
+`s2-creation-writers-verification.md`, `s2-delete-writers-verification.md`,
+`s2-batch-writers-verification.md`, and `s2-execution-start-verification.md`.
+The original inspected table below is historical; it is not a current TODO list.
+The previously identified W07 cached-assignee race has an actual dispatch/archive
+regression. Current member/principal checks were added to creation owners.
+Full FG authorization, operation orchestration, capability/settings and populated
+workspace performance remain pending; do not infer FG from writer coverage alone.
+
 ## Required linearization boundary
 
 Design §3/§10 requires every issue facts writer to acquire the workspace iteration transaction fence **before any issue/attachment lock**, capture before/after, and record the event plus scope_revision in that business transaction. A WS listener cannot supply this invariant. Unknown status categories must not silently inherit todo in I1 snapshot/start/end calculations. Ordinary unassociated issue writes also acquire the fence, otherwise simultaneous join can miss the transition.

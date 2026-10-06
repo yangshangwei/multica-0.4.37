@@ -67,6 +67,28 @@ func (q *Queries) AppendIterationIssueEvent(ctx context.Context, arg AppendItera
 	return err
 }
 
+const deleteIterationNotificationsForMember = `-- name: DeleteIterationNotificationsForMember :exec
+WITH removed_inbox AS (
+ DELETE FROM inbox_item i USING iteration_notification n
+ WHERE n.workspace_id=$1 AND n.recipient_user_id=$2
+ AND i.id=n.id AND i.workspace_id=n.workspace_id
+ AND i.recipient_type='member' AND i.recipient_id=n.recipient_user_id
+)
+DELETE FROM iteration_notification n
+WHERE n.workspace_id=$1 AND n.recipient_user_id=$2
+`
+
+type DeleteIterationNotificationsForMemberParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	UserID      pgtype.UUID `json:"user_id"`
+}
+
+// Recipient subscriber fence is held until membership removal commits.
+func (q *Queries) DeleteIterationNotificationsForMember(ctx context.Context, arg DeleteIterationNotificationsForMemberParams) error {
+	_, err := q.db.Exec(ctx, deleteIterationNotificationsForMember, arg.WorkspaceID, arg.UserID)
+	return err
+}
+
 const ensureIterationSettings = `-- name: EnsureIterationSettings :exec
 INSERT INTO workspace_iteration_settings (workspace_id) VALUES ($1)
 ON CONFLICT (workspace_id) DO NOTHING
@@ -241,6 +263,69 @@ func (q *Queries) IssueHasIterationHistory(ctx context.Context, arg IssueHasIter
 	return exists, err
 }
 
+const leaveDeletedIssueIterationParticipation = `-- name: LeaveDeletedIssueIterationParticipation :execrows
+UPDATE iteration_participation p SET current_joined_at=NULL,
+ has_started_current_participation=false,
+ last_left_at=GREATEST($1::timestamptz,
+  (SELECT e.occurred_at FROM iteration_event e
+   WHERE e.workspace_id=$2 AND e.iteration_id=$3
+   ORDER BY e.sequence DESC LIMIT 1))
+WHERE p.workspace_id=$2 AND p.iteration_id=$3
+ AND p.issue_id=$4 AND p.current_joined_at IS NOT NULL
+`
+
+type LeaveDeletedIssueIterationParticipationParams struct {
+	BusinessAt  pgtype.Timestamptz `json:"business_at"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	IterationID pgtype.UUID        `json:"iteration_id"`
+	IssueID     pgtype.UUID        `json:"issue_id"`
+}
+
+// The delete event was appended in this transaction; retain its clamped time.
+func (q *Queries) LeaveDeletedIssueIterationParticipation(ctx context.Context, arg LeaveDeletedIssueIterationParticipationParams) (int64, error) {
+	result, err := q.db.Exec(ctx, leaveDeletedIssueIterationParticipation,
+		arg.BusinessAt,
+		arg.WorkspaceID,
+		arg.IterationID,
+		arg.IssueID,
+	)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected(), nil
+}
+
+const listIssueDeleteIterationIDs = `-- name: ListIssueDeleteIterationIDs :many
+SELECT DISTINCT current_iteration_id FROM issue
+WHERE workspace_id=$1 AND id=ANY($2::uuid[])
+ AND current_iteration_id IS NOT NULL ORDER BY current_iteration_id
+`
+
+type ListIssueDeleteIterationIDsParams struct {
+	WorkspaceID pgtype.UUID   `json:"workspace_id"`
+	IssueIds    []pgtype.UUID `json:"issue_ids"`
+}
+
+func (q *Queries) ListIssueDeleteIterationIDs(ctx context.Context, arg ListIssueDeleteIterationIDsParams) ([]pgtype.UUID, error) {
+	rows, err := q.db.Query(ctx, listIssueDeleteIterationIDs, arg.WorkspaceID, arg.IssueIds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []pgtype.UUID{}
+	for rows.Next() {
+		var current_iteration_id pgtype.UUID
+		if err := rows.Scan(&current_iteration_id); err != nil {
+			return nil, err
+		}
+		items = append(items, current_iteration_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listIterationCurrentIssues = `-- name: ListIterationCurrentIssues :many
 SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE workspace_id = $1 AND current_iteration_id = $2 ORDER BY id
 `
@@ -381,6 +466,70 @@ func (q *Queries) ListIterationParticipations(ctx context.Context, arg ListItera
 			&i.LastLeftAt,
 			&i.InOriginal,
 			&i.OriginalFacts,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const lockIssueDeleteRows = `-- name: LockIssueDeleteRows :many
+SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE workspace_id=$1
+ AND (id=ANY($2::uuid[]) OR parent_issue_id=ANY($2::uuid[]))
+ORDER BY id FOR UPDATE
+`
+
+type LockIssueDeleteRowsParams struct {
+	WorkspaceID pgtype.UUID   `json:"workspace_id"`
+	IssueIds    []pgtype.UUID `json:"issue_ids"`
+}
+
+// Lock the full deletion and direct-child detach set in one stable order.
+func (q *Queries) LockIssueDeleteRows(ctx context.Context, arg LockIssueDeleteRowsParams) ([]Issue, error) {
+	rows, err := q.db.Query(ctx, lockIssueDeleteRows, arg.WorkspaceID, arg.IssueIds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Issue{}
+	for rows.Next() {
+		var i Issue
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorkspaceID,
+			&i.Title,
+			&i.Description,
+			&i.Status,
+			&i.Priority,
+			&i.AssigneeType,
+			&i.AssigneeID,
+			&i.CreatorType,
+			&i.CreatorID,
+			&i.ParentIssueID,
+			&i.AcceptanceCriteria,
+			&i.ContextRefs,
+			&i.Position,
+			&i.DueDate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Number,
+			&i.ProjectID,
+			&i.OriginType,
+			&i.OriginID,
+			&i.FirstExecutedAt,
+			&i.StartDate,
+			&i.Metadata,
+			&i.Stage,
+			&i.Properties,
+			&i.Revision,
+			&i.LastActivityAt,
+			&i.AdmissionStatus,
+			&i.CurrentIterationID,
+			&i.IterationRolloverCount,
 		); err != nil {
 			return nil, err
 		}

@@ -260,3 +260,12 @@ grep -n 'qualifyingIdents\|reference_only\|ReferenceOnly' internal/handler/githu
 grep -n 'prevIssue.Status == "backlog"\|func (h \*Handler) shouldEnqueueAgentTask' internal/handler/issue.go
 grep -n 'func notifyParentOfChildDone'       internal/handler/issue_child_done.go
 ```
+
+## Iteration compatibility and operation recovery
+
+| Contract | Source |
+|---|---|
+| Omitted iteration fields preserve membership; explicit generic writes return 428, including null | `server/internal/handler/iteration_confirmation.go`, `issue.go` (`CreateIssue`, `UpdateIssue`, `BatchUpdateIssues`), `plugin_action.go` (`PatchPluginIssue`), `iteration_confirmation_test.go` |
+| An authorized actor reads their stored operation without a client hash, even after the entity was deleted | `server/internal/handler/iteration_operations.go`, `server/internal/iteration/operation.go` (`ReadOperation`), `server/cmd/server/router.go` |
+| Membership is held current through read; revoked notifications are removed atomically | `iteration_operations_test.go`, `iteration_revoke_test.go`, `workspace_revoke.go`, `server/pkg/db/queries/iteration.sql` (`DeleteIterationNotificationsForMember`) |
+| Full route authentication and URL workspace isolation | `server/cmd/server/iteration_operations_route_test.go` |

@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -2774,6 +2773,10 @@ func readRuntimeCLIVersion(metadata []byte) string {
 }
 
 type CreateIssueRequest struct {
+	// Explicit iteration writes require the confirmed operation protocol.
+	CurrentIterationID     json.RawMessage `json:"current_iteration_id,omitempty"`
+	IterationRolloverCount json.RawMessage `json:"iteration_rollover_count,omitempty"`
+
 	Title         string   `json:"title"`
 	Description   *string  `json:"description"`
 	Status        string   `json:"status"`
@@ -2809,6 +2812,10 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 	var req CreateIssueRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+
+	if rejectUnconfirmedIterationWrite(w, req.CurrentIterationID, req.IterationRolloverCount) {
 		return
 	}
 
@@ -3043,6 +3050,7 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		LabelIDs:       labelIDs,
 		AllowDuplicate: req.AllowDuplicate,
 	}, service.IssueCreateOpts{
+		ActorUserID:      parseUUID(creatorID),
 		ActorID:          actualCreatorID,
 		AnalyticsAgentID: analyticsAgentID,
 		Platform:         func() string { p, _, _ := middleware.ClientMetadataFromContext(r.Context()); return p }(),
@@ -3104,6 +3112,10 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
+		if errors.Is(err, service.ErrIssueCreationForbidden) {
+			writeError(w, http.StatusForbidden, "workspace membership required")
+			return
+		}
 		slog.Warn("create issue failed", append(logger.RequestAttrs(r), "error", err, "workspace_id", workspaceID)...)
 		writeError(w, http.StatusInternalServerError, "failed to create issue: "+err.Error())
 		return
@@ -3124,6 +3136,10 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 }
 
 type UpdateIssueRequest struct {
+	// Explicit iteration writes require the confirmed operation protocol.
+	CurrentIterationID     json.RawMessage `json:"current_iteration_id,omitempty"`
+	IterationRolloverCount json.RawMessage `json:"iteration_rollover_count,omitempty"`
+
 	ExpectedRevision *int64  `json:"expected_revision,omitempty"`
 	Title            *string `json:"title"`
 	// TitleBase is the title adopted by the editor before producing Title. It
@@ -3576,6 +3592,10 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Track which fields were explicitly present in JSON (even if null)
+	if rejectUnconfirmedIterationWrite(w, req.CurrentIterationID, req.IterationRolloverCount) {
+		return
+	}
+
 	var rawFields map[string]json.RawMessage
 	json.Unmarshal(bodyBytes, &rawFields)
 	if writeIssueAdmissionError(w, issueAdmissionMutation(prevIssue, rawFields)) {
@@ -4143,15 +4163,17 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	// Fail any linked autopilot runs before delete (ON DELETE SET NULL clears issue_id).
 	_ = h.AutopilotService.FailAutopilotRunsByIssue(r.Context(), issue.ID)
 
-	deleteResult, err := h.deleteIssueAndCollectAttachmentURLs(r.Context(), issue, nil)
+	deleteResult, err := h.deleteIssueAndCollectAttachmentURLs(r, issue, nil)
 	if err != nil {
+		if writeIssueUpdateAccessError(w, err) {
+			return
+		}
 		writeError(w, http.StatusInternalServerError, "failed to delete issue")
 		return
 	}
 
 	h.deleteS3Objects(r.Context(), deleteResult.AttachmentURLs)
-	userID := requestUserID(r)
-	actorType, actorID := h.resolveActor(r, userID, uuidToString(issue.WorkspaceID))
+	actorType, actorID := deleteResult.ActorType, deleteResult.ActorID
 	// Always emit the resolved UUID — frontend caches key by UUID, so an
 	// identifier-style payload ("MUL-123") would leave stale entries on
 	// other clients after an identifier-path delete.
@@ -4170,30 +4192,85 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 type issueDeleteResult struct {
 	AttachmentURLs   []string
 	DetachedChildren []db.Issue
+	ActorType        string
+	ActorID          string
 }
 
-func (h *Handler) deleteIssueAndCollectAttachmentURLs(ctx context.Context, issue db.Issue, excludedIssueIDs []pgtype.UUID) (issueDeleteResult, error) {
-	return h.deleteIssuesAndCollectAttachmentURLs(ctx, []db.Issue{issue}, excludedIssueIDs)
+func (h *Handler) deleteIssueAndCollectAttachmentURLs(r *http.Request, issue db.Issue, excludedIssueIDs []pgtype.UUID) (issueDeleteResult, error) {
+	return h.deleteIssuesAndCollectAttachmentURLs(r, []db.Issue{issue}, excludedIssueIDs)
 }
 
-func (h *Handler) deleteIssuesAndCollectAttachmentURLs(ctx context.Context, issues []db.Issue, excludedIssueIDs []pgtype.UUID) (issueDeleteResult, error) {
-	sort.Slice(issues, func(i, j int) bool {
-		return uuidToString(issues[i].ID) < uuidToString(issues[j].ID)
-	})
+func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues []db.Issue, excludedIssueIDs []pgtype.UUID) (issueDeleteResult, error) {
+	ctx := r.Context()
+	workspaceID, err := util.ParseUUID(h.resolveWorkspaceID(r))
+	if len(issues) > 0 {
+		workspaceID, err = issues[0].WorkspaceID, nil
+	}
+	if err != nil {
+		return issueDeleteResult{}, err
+	}
+	userID, err := util.ParseUUID(requestUserID(r))
+	if err != nil {
+		return issueDeleteResult{}, &issueUpdateAccessError{401, "user not authenticated"}
+	}
+	actorType, actorID := h.resolveActor(r, requestUserID(r), uuidToString(workspaceID))
+	actor, err := json.Marshal(map[string]string{"type": actorType, "id": actorID, "user_id": requestUserID(r)})
+	if err != nil {
+		return issueDeleteResult{}, err
+	}
+	operationID := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	issueIDs := make([]pgtype.UUID, 0, len(issues))
+	selected := make(map[pgtype.UUID]bool, len(issues))
+	for _, issue := range issues {
+		if issue.WorkspaceID != workspaceID {
+			return issueDeleteResult{}, errors.New("issue deletion spans workspaces")
+		}
+		issueIDs = append(issueIDs, issue.ID)
+		selected[issue.ID] = true
+	}
 	tx, err := h.TxStarter.Begin(ctx)
 	if err != nil {
 		return issueDeleteResult{}, fmt.Errorf("begin issue delete: %w", err)
 	}
 	defer tx.Rollback(ctx)
 	qtx := h.Queries.WithTx(tx)
-
-	result := issueDeleteResult{}
-	for _, issue := range issues {
-		if _, err := qtx.LockIssueForDelete(ctx, db.LockIssueForDeleteParams{
-			ID: issue.ID, WorkspaceID: issue.WorkspaceID,
-		}); err != nil {
-			return issueDeleteResult{}, fmt.Errorf("lock issue for delete: %w", err)
+	if err = lockIssueWriteFences(ctx, tx, workspaceID, userID); err != nil {
+		return issueDeleteResult{}, err
+	}
+	iterationIDs, err := qtx.ListIssueDeleteIterationIDs(ctx, db.ListIssueDeleteIterationIDsParams{WorkspaceID: workspaceID, IssueIds: issueIDs})
+	if err != nil {
+		return issueDeleteResult{}, err
+	}
+	lockedIterations, err := qtx.LockIterations(ctx, db.LockIterationsParams{WorkspaceID: workspaceID, Column2: iterationIDs})
+	if err != nil {
+		return issueDeleteResult{}, err
+	}
+	// Child detachment changes parent/stage only, but it writes issue rows too.
+	// Lock the entire selected and direct-child set in global ID order before
+	// preparing any facts or beginning attachment cleanup.
+	lockedIssues, err := qtx.LockIssueDeleteRows(ctx, db.LockIssueDeleteRowsParams{WorkspaceID: workspaceID, IssueIds: issueIDs})
+	if err != nil {
+		return issueDeleteResult{}, err
+	}
+	issues = make([]db.Issue, 0, len(selected))
+	for _, issue := range lockedIssues {
+		if selected[issue.ID] {
+			issues = append(issues, issue)
 		}
+	}
+	if len(issues) != len(selected) {
+		return issueDeleteResult{}, fmt.Errorf("lock selected issues for delete: %w", pgx.ErrNoRows)
+	}
+	if err = h.authorizeIssueDeletion(r, tx, workspaceID, actorType, actorID); err != nil {
+		return issueDeleteResult{}, err
+	}
+	records, err := iteration.PrepareIssueRecords(ctx, tx, issues, lockedIterations)
+	if err != nil {
+		return issueDeleteResult{}, err
+	}
+
+	result := issueDeleteResult{ActorType: actorType, ActorID: actorID}
+	for i, issue := range issues {
 		detached, err := qtx.DetachDirectChildIssues(ctx, db.DetachDirectChildIssuesParams{
 			WorkspaceID: issue.WorkspaceID, ParentIssueID: issue.ID, ExcludedIssueIds: excludedIssueIDs,
 		})
@@ -4243,6 +4320,9 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(ctx context.Context, issu
 		} else if !errors.Is(contextErr, pgx.ErrNoRows) {
 			return issueDeleteResult{}, fmt.Errorf("load issue source context for delete: %w", contextErr)
 		}
+		if err = iteration.RecordIssueDeletion(ctx, tx, records[i], actor, operationID); err != nil {
+			return issueDeleteResult{}, err
+		}
 		if err := qtx.DeleteIssue(ctx, db.DeleteIssueParams{ID: issue.ID, WorkspaceID: issue.WorkspaceID}); err != nil {
 			return issueDeleteResult{}, fmt.Errorf("delete issue: %w", err)
 		}
@@ -4251,6 +4331,54 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(ctx context.Context, issu
 		return issueDeleteResult{}, fmt.Errorf("commit issue delete: %w", err)
 	}
 	return result, nil
+}
+
+// The member fence is already held. Agent/task reference locks use NOWAIT to
+// retain execution writers' issue/task ordering while keeping authority current.
+func (h *Handler) authorizeIssueDeletion(r *http.Request, tx pgx.Tx, workspaceID pgtype.UUID, actorType, actorID string) error {
+	ctx := r.Context()
+	scoped := *h
+	scoped.Queries, scoped.DB = h.Queries.WithTx(tx), tx
+	if actorType == "agent" {
+		agentID, err := util.ParseUUID(actorID)
+		if err != nil {
+			return &issueUpdateAccessError{403, "actor unavailable"}
+		}
+		agent, err := scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentID, WorkspaceID: workspaceID})
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &issueUpdateAccessError{403, "actor unavailable"}
+		}
+		if err != nil {
+			return err
+		}
+		if agent.ArchivedAt.Valid {
+			return &issueUpdateAccessError{403, "actor unavailable"}
+		}
+		if !service.AutonomyAtLeast(agent.AutonomyLevel, service.AutonomyContributor) {
+			return &issueUpdateAccessError{403, autonomyDenialMessage(agent.AutonomyLevel, service.AutonomyContributor, "delete issues")}
+		}
+		if taskID := r.Header.Get("X-Task-ID"); taskID != "" {
+			taskUUID, err := util.ParseUUID(taskID)
+			if err != nil {
+				return &issueUpdateAccessError{403, "actor task unavailable"}
+			}
+			task, err := scoped.Queries.LockLifecycleOriginTask(ctx, db.LockLifecycleOriginTaskParams{ID: taskUUID, WorkspaceID: workspaceID})
+			if errors.Is(err, pgx.ErrNoRows) {
+				return &issueUpdateAccessError{403, "actor task unavailable"}
+			}
+			if err != nil {
+				return err
+			}
+			if task.AgentID != agentID {
+				return &issueUpdateAccessError{403, "actor task unavailable"}
+			}
+		}
+	}
+	currentType, currentActor := scoped.resolveActor(r, requestUserID(r), uuidToString(workspaceID))
+	if currentType != actorType || currentActor != actorID {
+		return &issueUpdateAccessError{403, "actor authorization changed"}
+	}
+	return nil
 }
 
 func (h *Handler) publishDetachedChildren(ctx context.Context, children []db.Issue, actorType, actorID string) {
@@ -4292,6 +4420,10 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	var req BatchUpdateIssuesRequest
 	if err := json.Unmarshal(bodyBytes, &req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+
+	if rejectUnconfirmedIterationWrite(w, req.Updates.CurrentIterationID, req.Updates.IterationRolloverCount) {
 		return
 	}
 
@@ -4677,7 +4809,7 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID, ok := requireUserID(w, r)
+	_, ok := requireUserID(w, r)
 	if !ok {
 		return
 	}
@@ -4716,14 +4848,17 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 		h.TaskService.CancelTasksForIssue(r.Context(), issue.ID)
 		_ = h.AutopilotService.FailAutopilotRunsByIssue(r.Context(), issue.ID)
 	}
-	deleteResult, err := h.deleteIssuesAndCollectAttachmentURLs(r.Context(), issues, excludedIDs)
+	deleteResult, err := h.deleteIssuesAndCollectAttachmentURLs(r, issues, excludedIDs)
 	if err != nil {
 		slog.Warn("batch delete issues failed", "error", err)
+		if writeIssueUpdateAccessError(w, err) {
+			return
+		}
 		writeError(w, http.StatusInternalServerError, "failed to delete issues")
 		return
 	}
 	h.deleteS3Objects(r.Context(), deleteResult.AttachmentURLs)
-	actorType, actorID := h.resolveActor(r, userID, workspaceID)
+	actorType, actorID := deleteResult.ActorType, deleteResult.ActorID
 	for _, issue := range issues {
 		h.publish(protocol.EventIssueDeleted, workspaceID, actorType, actorID, map[string]any{"issue_id": uuidToString(issue.ID)})
 	}

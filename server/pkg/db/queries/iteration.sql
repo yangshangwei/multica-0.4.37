@@ -88,3 +88,36 @@ LEFT JOIN LATERAL (SELECT sequence, occurred_at FROM iteration_event
 
 -- name: AdvanceIterationScopeRevision :exec
 UPDATE iteration SET scope_revision=scope_revision+1 WHERE workspace_id=$1 AND id=$2;
+
+-- name: ListIssueDeleteIterationIDs :many
+SELECT DISTINCT current_iteration_id FROM issue
+WHERE workspace_id=sqlc.arg('workspace_id') AND id=ANY(sqlc.arg('issue_ids')::uuid[])
+ AND current_iteration_id IS NOT NULL ORDER BY current_iteration_id;
+
+-- name: LockIssueDeleteRows :many
+-- Lock the full deletion and direct-child detach set in one stable order.
+SELECT * FROM issue WHERE workspace_id=sqlc.arg('workspace_id')
+ AND (id=ANY(sqlc.arg('issue_ids')::uuid[]) OR parent_issue_id=ANY(sqlc.arg('issue_ids')::uuid[]))
+ORDER BY id FOR UPDATE;
+
+-- name: LeaveDeletedIssueIterationParticipation :execrows
+-- The delete event was appended in this transaction; retain its clamped time.
+UPDATE iteration_participation p SET current_joined_at=NULL,
+ has_started_current_participation=false,
+ last_left_at=GREATEST(sqlc.arg('business_at')::timestamptz,
+  (SELECT e.occurred_at FROM iteration_event e
+   WHERE e.workspace_id=sqlc.arg('workspace_id') AND e.iteration_id=sqlc.arg('iteration_id')
+   ORDER BY e.sequence DESC LIMIT 1))
+WHERE p.workspace_id=sqlc.arg('workspace_id') AND p.iteration_id=sqlc.arg('iteration_id')
+ AND p.issue_id=sqlc.arg('issue_id') AND p.current_joined_at IS NOT NULL;
+
+-- name: DeleteIterationNotificationsForMember :exec
+-- Recipient subscriber fence is held until membership removal commits.
+WITH removed_inbox AS (
+ DELETE FROM inbox_item i USING iteration_notification n
+ WHERE n.workspace_id=sqlc.arg('workspace_id') AND n.recipient_user_id=sqlc.arg('user_id')
+ AND i.id=n.id AND i.workspace_id=n.workspace_id
+ AND i.recipient_type='member' AND i.recipient_id=n.recipient_user_id
+)
+DELETE FROM iteration_notification n
+WHERE n.workspace_id=sqlc.arg('workspace_id') AND n.recipient_user_id=sqlc.arg('user_id');

@@ -855,6 +855,9 @@ func (h *Handler) writeSourceContextError(w http.ResponseWriter, err error, limi
 	code := "source_context_capture_failed"
 	message := "failed to capture source context"
 	switch {
+	case errors.Is(err, service.ErrIssueCreationForbidden):
+		status, code = http.StatusForbidden, "workspace_membership_required"
+		message = err.Error()
 	case errors.Is(err, service.ErrSourceContextChanged):
 		status, code = http.StatusConflict, "source_context_changed"
 		message = err.Error()

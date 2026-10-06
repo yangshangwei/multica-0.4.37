@@ -1699,6 +1699,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Get("/", h.GetWorkspace)
 					r.Get("/members", h.ListMembersWithUser)
 					r.Get("/project-capabilities", h.GetProjectCapabilities)
+					r.Get("/iteration-operations/{requestID}", h.GetIterationOperation)
 					r.Get("/planning-timezone", h.GetProjectPlanningTimezone)
 					// The handler rechecks the administrator role inside its
 					// transaction and returns an operation-scoped denial code.

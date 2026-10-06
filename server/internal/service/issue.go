@@ -19,6 +19,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/issueguard"
 	"github.com/multica-ai/multica/server/internal/issueposition"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -97,6 +98,9 @@ type IssueCreateParams struct {
 // IssueCreateOpts groups optional knobs for IssueService.Create. Most
 // callers leave it zero-valued.
 type IssueCreateOpts struct {
+	// ActorUserID is the current member authorizing this transport request.
+	// Agent creators must supply it; member creators use their own CreatorID.
+	ActorUserID pgtype.UUID
 	// BroadcastPayload, if non-nil, is invoked after the issue row is
 	// created and attachments are linked. Its return value is sent as
 	// the EventIssueCreated payload via the event bus. The HTTP handler
@@ -176,6 +180,8 @@ var ErrIssueLabelNotFound = errors.New("issue label not found in this workspace"
 var ErrIssueStatusUnavailable = errors.New("issue status is no longer available")
 
 var ErrSourceContextAlreadyAttached = errors.New("source context is already attached")
+
+var ErrIssueCreationForbidden = errors.New("workspace membership required to create issues")
 
 // IssueCreateResult is the typed return from IssueService.Create.
 //
@@ -263,6 +269,25 @@ func (s *IssueService) createOnce(ctx context.Context, p IssueCreateParams, opts
 	}
 	defer tx.Rollback(ctx)
 	qtx := s.Queries.WithTx(tx)
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, p.WorkspaceID); err != nil {
+		return IssueCreateResult{}, fmt.Errorf("lock issue workspace: %w", err)
+	}
+	actorUserID := opts.ActorUserID
+	if p.CreatorType == "member" {
+		actorUserID = p.CreatorID
+	}
+	if !actorUserID.Valid {
+		return IssueCreateResult{}, ErrIssueCreationForbidden
+	}
+	if err := qtx.LockSubscriberWrites(ctx, db.LockSubscriberWritesParams{WorkspaceID: p.WorkspaceID, UserID: actorUserID}); err != nil {
+		return IssueCreateResult{}, err
+	}
+	if _, err := qtx.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: p.WorkspaceID, UserID: actorUserID}); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return IssueCreateResult{}, ErrIssueCreationForbidden
+		}
+		return IssueCreateResult{}, err
+	}
 
 	result, err := s.CreateInTx(ctx, tx, p, issueCountPolicy)
 	if err != nil {
@@ -328,11 +353,19 @@ func (s *IssueService) createOnce(ctx context.Context, p IssueCreateParams, opts
 // entitlement policy before opening the transaction and finalize after commit.
 // Callers holding issue locks must roll back and retry the whole transaction on
 // a NOWAIT project refusal; a savepoint retry would retain the conflicting locks.
+// Borrowed owners must take the catalog/I1 fences before locking source issues,
+// attachments or dispatch references. Reacquiring those fences here is reentrant.
 func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateParams, issueCountPolicy IssueCountPolicy) (IssueCreateResult, error) {
 	p = sanitizeIssueCreateParams(p)
 	qtx := s.Queries.WithTx(tx)
 	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, p.WorkspaceID); err != nil {
 		return IssueCreateResult{}, fmt.Errorf("lock issue workspace: %w", err)
+	}
+	if err := qtx.LockIssueStatusCatalogShared(ctx, p.WorkspaceID); err != nil {
+		return IssueCreateResult{}, err
+	}
+	if err := iteration.LockWorkspace(ctx, tx, p.WorkspaceID); err != nil {
+		return IssueCreateResult{}, err
 	}
 
 	if p.SourceContext != nil {
@@ -363,17 +396,13 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 		}
 	}
 
-	// A create landing on a CUSTOM status takes the shared catalog lock AND
-	// re-resolves the status inside this transaction. The caller validated the
+	// A create landing on a custom status re-resolves it under the catalog
+	// lock acquired before any source-context rows. The caller validated the
 	// status before the transaction opened, which is early enough to return a
 	// clean 400 but too early to be safe: an archive can commit in between.
 	// Re-checking under the lock is what makes the status provably active at
-	// the moment the row is written. Built-in statuses skip both — they can
-	// never be archived, so the common path is unchanged. (MUL-6243)
+	// the moment the row is written. Built-in statuses cannot be archived.
 	if !issuestatus.IsBuiltIn(p.Status) {
-		if err := qtx.LockIssueStatusCatalogShared(ctx, p.WorkspaceID); err != nil {
-			return IssueCreateResult{}, err
-		}
 		if _, err := issuestatus.Resolve(ctx, qtx, p.WorkspaceID, p.Status); err != nil {
 			if errors.Is(err, issuestatus.ErrUnknownStatus) {
 				return IssueCreateResult{}, ErrIssueStatusUnavailable

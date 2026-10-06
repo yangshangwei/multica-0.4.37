@@ -53,6 +53,23 @@ triage does not erase review history or request identities. Deleted intake/actio
 results cannot be recreated by replaying their request IDs; a consumed CSV row
 likewise retains its original result identity.
 
+## Iteration fields require a confirmed operation
+
+Ordinary issue create, update and batch-update, including the public Plugin
+PATCH, preserve existing iteration membership when iteration fields are omitted.
+Explicit `current_iteration_id` (including null) or `iteration_rollover_count`
+currently returns HTTP 428 `iteration_confirmation_required`. Do not retry by
+hiding these fields in metadata or changing the rollover count yourself. I1 is
+still under implementation; these safeguards do not mean its lifecycle UI or
+management capability is available.
+
+For an already submitted iteration operation whose response was lost,
+`GET /api/workspaces/{workspace_id}/iteration-operations/{request_id}` reads only
+the current authorized actor's persisted result. It needs no payload hash and
+can return a deleted object's result. A 404 does not prove the original request
+failed: retain the original request ID and intent when reconciling. Removed
+members cannot read the protected result.
+
 ## PR linking and close intent are two distinct contracts
 
 The GitHub webhook runs two separate scans over an incoming PR. They are not the

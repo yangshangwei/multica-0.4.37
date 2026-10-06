@@ -4,6 +4,8 @@
 
 > 后续实施增量：S0/S1 已完成并验证，提交 `837e1abaf`；W15 工作空间清理为 `7d53c9ed0`，W02 公开内容写入为 `c6980d5e5`，W05 测试旁路移除与 W17 分析标记豁免为 `e3cee069c`。W03/W04 系统状态写入也已完成真实数据库红绿、竞争及回滚验证。不要重做这些切片。下一步继续 S2 的 W06–W14、W16 和其余基础能力证据。最新结果及继续实施位置见 [S2 记录](../10-05-iterations-i1-foundation/s2-verification.md)及[系统 writer 记录](../10-05-iterations-i1-foundation/s2-system-writers-verification.md)。FG 仍未通过；以下保留原始实施次序和合同，不把旧“下一步 S0/S1”当作当前未完成项。
 
+> 本轮继续实施：W13/W14 已提交 `ef0b989e9`，W16 已提交 `39c3200ae`。W06–W12 的创建、T1 和删除路径、操作结果查询、撤权通知清理及显式字段兼容保护已接入；详见 foundation 的 `s2-creation-writers-verification.md`、`s2-delete-writers-verification.md`、`s2-boundaries-verification.md`。普通创建与 Autopilot 增加事务内当前成员/授权主体检查，使用实际生产入口验证。**FG 尚未通过；下一步是其余基础门槛，不重做已有 writer 切片。**
+
 ## 1. 接手位置与当前结论
 
 - 开发分支：`codex/projects-p1`。
@@ -11,7 +13,7 @@
 - 活动任务：`.trellis/tasks/10-05-iterations-i1`；父任务和 foundation 为 `in_progress`，其他子任务按现有状态推进。
 - I1 原始工作区成果已经提交并整合到 P1；`main` 保持 `eb71e299e`，无需再次搬运或回滚。
 - `/Volumes/artisan/code/2026/multica-projects-p1` 是保留的 detached checkout，不要在那里继续提交 I1。
-- **I1 仍未通过 FG，尚不能作为完整产品启用。下一块交付是 recorder + W01 真实写入链，不是重新做迁移或直接做页面。**
+- **I1 仍未通过 FG，尚不能作为完整产品启用。下一块交付是持久写操作编排、能力/设置接口、授权审计与完整性能证据。**
 
 事实依据：[分支整合记录](branch-integration.md)、`task.json`、`server/internal/iteration/transaction.go:23`、`server/pkg/db/queries/iteration.sql:1`。
 
@@ -160,6 +162,16 @@ FG 后可并行：lifecycle 一人、history 一人；共同 SQL 需求交负责
 
 App 会话可使用原生 subagents；不以 OMX CLI/team 为前置条件，不硬编码本地不支持的模型。每块可回滚交付按 Lore 格式独立提交，记录 Tested/Not-tested；合并前另一个只读 reviewer 检查锁序、授权和历史保留。
 
-## 10. 可直接复制给下一位开发者
+## 10. 当前继续位置
 
-> 在 `/Volumes/artisan/code/2026/multica-0.4.37` 的 `codex/projects-p1` 继续 I1，已知集成基线为 `c96b63c09`。先读 `CLAUDE.md`、`.trellis/workflow.md`、I1 的 `handoff.md`、`design.md`、`api-contract.md`、`test-spec.md` 和 `branch-integration.md`，核对当前分支及新改动。不要重新搬运 I1，也不要改动 main。先完成 S0，再执行 S1：最小事务内 recorder + W01 `updateIssueAtomicallyOnce` 的真实写入链，测试先行，保留 P1 的事务隔离、关联重试、NOWAIT、CAS 和附件原子性。P1 拥有共享时区；I1 迁移已有 550–566。不要提前实现页面或 closure，不启用生产能力。S1 验证通过后提交并记录剩余 W02–W17，继续 S2；只有 FG 全部证据满足才启动 LG/HG。任何未知提交结果沿用原 request_id；I1 管理动作不得启动、停止或重启执行。本次移交只规划，尚未实施 S0/S1 产品代码。
+在 `codex/projects-p1` 继续 foundation。先核对当前提交和以上五份 S2 证据，保留已有 W01–W17 接入/豁免结果；不要按照历史基线重做 S0/S1，也不要提前启动 LG/HG/UI。
+
+剩余 FG 工作：
+
+1. 持久写操作业务编排：每次重试重新授权、同请求同意图回放、不同意图冲突、唯一请求竞争、未知提交结果按旧 request_id 对账；现有 GET 查询不等于完整写操作已实现。
+2. 完成 capability/settings 与启用的基础合同，默认保持关闭；共享 planning_timezone 继续复用 P1。
+3. 审计所有生产路径的锁序和当前授权边界，尤其普通 agent 创建的 autonomy/task 身份、引入通知 worker 后的撤权防重生。已验证的成员/主体锁不代替未覆盖的权限矩阵。
+4. 普通 UpdateIssue 小型回归基准已过既定门槛；补真实填充工作区、数据库锁等待和查询成本证据，冻结并核验相应容量阈值。
+5. FG 全部证据满足后再进入 lifecycle/history；foundation 最终归档仍等 FCG。现有迁移和历史记录保留，任何新 SQL 统一生成并检查 sqlc 漂移。
+
+当前完整 Go 全仓、Web/Electron E2E、远端 CI 和发布均未完成，不以定向测试或 TypeScript 单测替代。

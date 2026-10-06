@@ -96,6 +96,23 @@ func decodeOperationResult(row db.IterationOperation, key OperationKey, hash str
 	if result.WorkspaceID != uuid.UUID(row.WorkspaceID.Bytes).String() || result.RequestID != uuid.UUID(row.RequestID.Bytes).String() || result.OperationID != uuid.UUID(row.ID.Bytes).String() || result.Operation != row.Operation || result.CommittedAt.IsZero() || result.IterationIDs == nil || result.Result.SettingsRevision < 1 || result.Result.IssueCount < 0 {
 		return WriteResult{}, fmt.Errorf("stored iteration operation result is incomplete")
 	}
+	if result.Result.SettingsRevision > 9007199254740991 || int64(result.Result.IssueCount) > 9007199254740991 {
+		return WriteResult{}, fmt.Errorf("stored iteration operation counters exceed safe integer range")
+	}
+	validReference := func(value string) bool {
+		id, err := uuid.Parse(value)
+		return err == nil && id != uuid.Nil && id.String() == value
+	}
+	seen := make(map[string]bool, len(result.IterationIDs))
+	for _, id := range result.IterationIDs {
+		if !validReference(id) || seen[id] {
+			return WriteResult{}, fmt.Errorf("stored iteration operation has invalid or duplicate iteration identities")
+		}
+		seen[id] = true
+	}
+	if result.Result.SnapshotID != nil && !validReference(*result.Result.SnapshotID) {
+		return WriteResult{}, fmt.Errorf("stored iteration operation has an invalid snapshot identity")
+	}
 	result.Replayed = replayed
 	return result, nil
 }
@@ -126,4 +143,24 @@ func SaveOperation(ctx context.Context, tx pgx.Tx, key OperationKey, payloadHash
 		CreatedAt: pgtype.Timestamptz{Time: result.CommittedAt, Valid: true},
 	})
 	return err
+}
+
+// ReadOperation loads the actor's durable result after current authorization.
+// GET callers do not possess the original payload hash or operation name. Those
+// stored fields validate the result's integrity; they never grant authorization.
+func ReadOperation(ctx context.Context, tx pgx.Tx, workspaceID, actorID, requestID pgtype.UUID) (WriteResult, error) {
+	for _, id := range []pgtype.UUID{workspaceID, actorID, requestID} {
+		if !id.Valid || id.Bytes == [16]byte{} {
+			return WriteResult{}, &OperationError{Status: 400, Code: "invalid_request", Message: "Operation lookup requires nonzero UUIDs"}
+		}
+	}
+	row, err := db.New(tx).GetIterationOperation(ctx, db.GetIterationOperationParams{WorkspaceID: workspaceID, ActorUserID: actorID, RequestID: requestID})
+	if errors.Is(err, pgx.ErrNoRows) {
+		return WriteResult{}, &OperationError{Status: 404, Code: "operation_not_found", Message: "Operation not found"}
+	}
+	if err != nil {
+		return WriteResult{}, err
+	}
+	key := OperationKey{WorkspaceID: uuid.UUID(workspaceID.Bytes).String(), ActorUserID: uuid.UUID(actorID.Bytes).String(), RequestID: uuid.UUID(requestID.Bytes).String(), Operation: row.Operation}
+	return decodeOperationResult(row, key, row.PayloadHash, true)
 }

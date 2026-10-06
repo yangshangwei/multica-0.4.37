@@ -1,5 +1,7 @@
 package publicapiv1
 
+import "encoding/json"
+
 // Context is Plugin-specific bootstrap data. It lives in the versioned
 // contract package so service-layer fields cannot leak into the wire format.
 type Context struct {
@@ -60,9 +62,12 @@ type Issue struct {
 }
 
 type PatchIssueRequest struct {
-	ExpectedRevision *int64  `json:"expected_revision,omitempty"`
-	Title            *string `json:"title,omitempty"`
-	Description      *string `json:"description,omitempty"`
+	// Presence is retained so unsupported iteration intent cannot be ignored.
+	CurrentIterationID     json.RawMessage `json:"current_iteration_id,omitempty"`
+	IterationRolloverCount json.RawMessage `json:"iteration_rollover_count,omitempty"`
+	ExpectedRevision       *int64          `json:"expected_revision,omitempty"`
+	Title                  *string         `json:"title,omitempty"`
+	Description            *string         `json:"description,omitempty"`
 }
 
 type Comment struct {

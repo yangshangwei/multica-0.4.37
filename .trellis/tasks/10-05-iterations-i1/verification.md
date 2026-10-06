@@ -1,5 +1,7 @@
 # I1 实施进度与阻断记录
 
+> 2026-10-06 本轮更新：下方离线记录是历史材料，旧网络/Git 限制已解除。当前实际实施与检查见 foundation 的 `s2-batch-writers-verification.md`、`s2-execution-start-verification.md`、`s2-creation-writers-verification.md`、`s2-delete-writers-verification.md`、`s2-boundaries-verification.md`。W13/W14 与 W16 分别已提交 `ef0b989e9`、`39c3200ae`。其余 S2 接入及边界正在整合，FG 仍未通过；继续位置以父任务 handoff §10 为准。
+
 最新实施见 [foundation S0/S1 验证记录](../10-05-iterations-i1-foundation/s0-s1-verification.md)。当前推进真实 W01 事务内 recorder；以下离线记录保留为历史证据，不能替代本轮验收。
 
 W01 已在 `837e1abaf` 验证提交；继续实施的 W02/W15 和剩余 FG 证据见 [S2 验证记录](../10-05-iterations-i1-foundation/s2-verification.md)。

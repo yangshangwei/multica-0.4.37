@@ -379,6 +379,11 @@ func (h *Handler) PatchPluginIssue(w http.ResponseWriter, r *http.Request) {
 		publicapiv1.WriteProblem(w, r, http.StatusBadRequest, "invalid_request", "invalid request body")
 		return
 	}
+	if len(req.CurrentIterationID) > 0 || len(req.IterationRolloverCount) > 0 {
+		publicapiv1.WriteProblem(w, r, http.StatusPreconditionRequired, "iteration_confirmation_required", "Iteration changes require a confirmed operation")
+		return
+	}
+
 	if req.Title == nil && req.Description == nil {
 		publicapiv1.WriteProblem(w, r, http.StatusBadRequest, "invalid_request", "title or description is required")
 		return

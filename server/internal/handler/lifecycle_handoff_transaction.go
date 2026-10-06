@@ -18,6 +18,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/attribution"
 	"github.com/multica-ai/multica/server/internal/issueguard"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -245,6 +246,25 @@ func (h *Handler) writeLifecycleHandoffInTx(r *http.Request, source db.Issue, re
 	q := h.Queries.WithTx(tx)
 	bound := &Handler{Queries: q}
 	if _, err = q.LockLifecycleWorkspace(ctx, source.WorkspaceID); err != nil {
+		return out, err
+	}
+	actorUserID, err := util.ParseUUID(requestUserID(r))
+	if err != nil {
+		return out, lifecycleAssigneeError{http.StatusForbidden, "workspace membership required"}
+	}
+	if err = q.LockSubscriberWrites(ctx, db.LockSubscriberWritesParams{WorkspaceID: source.WorkspaceID, UserID: actorUserID}); err != nil {
+		return out, err
+	}
+	if _, err = q.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: source.WorkspaceID, UserID: actorUserID}); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return out, lifecycleAssigneeError{http.StatusForbidden, "workspace membership required"}
+		}
+		return out, err
+	}
+	if err = q.LockIssueStatusCatalogShared(ctx, source.WorkspaceID); err != nil {
+		return out, err
+	}
+	if err = iteration.LockWorkspace(ctx, tx, source.WorkspaceID); err != nil {
 		return out, err
 	}
 	target := prepared.target

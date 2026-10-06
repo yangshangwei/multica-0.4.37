@@ -107,3 +107,39 @@ status are in `.trellis/tasks/10-05-iterations-i1-foundation/s0-s1-verification.
 Additional real-path coverage: `plugin_iteration_test.go`,
 `workspace_iteration_delete_test.go`, service `issue_public_test.go` and the
 foundation `s2-verification.md` ledger.
+
+## Additional S2 owners and protected recovery
+
+Squad archive and project deletion prepare all participation records before one
+batch clock sample and record changed assignee/project facts in the cleanup
+transaction. Project deletion refuses malformed cross-workspace legacy FK
+references (issue, autopilot and project_resource) before invoking any cleanup.
+
+Ordinary issue deletion locks the selected/direct-child set globally, writes a
+single delete/leave event per current participation and retains original facts.
+Participant leave time follows the event's clamped time. Pre-existing task
+cancellation before issue deletion is a separate effect, not rolled back by a
+failed deletion recorder.
+
+Actual StartTask now commits its running transition together with first-start
+participation evidence. It takes the I1 fence before issue and task locks,
+checks changed task ownership under a NOWAIT lock, and uses database wall time
+for task.started_at after the wait. Task enqueue/claim/completion remain distinct.
+
+CreateInTx callers must arrange catalog/I1 fences before source, attachment or
+owner locks. Ordinary create also locks its current member before those fences;
+agent creator transports explicitly carry ActorUserID, never infer an agent's
+owner as the current human. T1 preserves its existing settings-before-member
+order; a damaged pending item's iteration association fails closed.
+
+GET iteration-operations holds current workspace/member authorization through
+its RC read and looks up only the actor's own request. No client hash or live
+entity is required to recover a stored result. Stored references and numeric
+counters are validated before returning them to clients. Member revocation
+removes protected I1 notifications atomically under the recipient fence.
+
+Generic HTTP/Plugin writes with explicit iteration fields currently return428,
+including null; omission preserves current membership. This restriction must
+be replaced only by the confirmed lifecycle writer, never silent field dropping.
+Full capability and lifecycle gates remain pending; the latest foundation
+verification ledgers, not the existence of these helpers, establish readiness.

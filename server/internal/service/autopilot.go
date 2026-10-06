@@ -22,6 +22,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/issueguard"
 	"github.com/multica-ai/multica/server/internal/issueposition"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -675,10 +676,6 @@ func lockAutopilotProjectForDispatch(ctx context.Context, qtx *db.Queries, ap db
 // (the resolved leader for a squad autopilot, otherwise the assignee agent
 // itself), so activity / mentions render with the right author identity.
 func (s *AutopilotService) dispatchCreateIssue(ctx context.Context, ap db.Autopilot, run *db.AutopilotRun, triggerTimezone string, actorUserID pgtype.UUID) error {
-	leader, _, err := s.resolveAutopilotLeader(ctx, ap)
-	if err != nil {
-		return fmt.Errorf("resolve leader: %w", err)
-	}
 	issueCountPolicy := ResolveIssueCountPolicy(ctx, s.Entitlements, ap.WorkspaceID)
 
 	tx, err := s.TxStarter.Begin(ctx)
@@ -688,6 +685,31 @@ func (s *AutopilotService) dispatchCreateIssue(ctx context.Context, ap db.Autopi
 	defer tx.Rollback(ctx)
 
 	qtx := s.Queries.WithTx(tx)
+	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, ap.WorkspaceID); err != nil {
+		return fmt.Errorf("lock autopilot workspace: %w", err)
+	}
+	principal := actorUserID
+	if !principal.Valid {
+		principal = ResolveAutopilotTriggerPrincipal(ctx, qtx, run.TriggerID, ap.ID, ap.WorkspaceID)
+	}
+	if !principal.Valid {
+		return &errDispatchSkipped{reason: "autopilot principal is no longer a workspace member", code: dispatch.ReasonInvocationNotAllowed}
+	}
+	if err := qtx.LockSubscriberWrites(ctx, db.LockSubscriberWritesParams{WorkspaceID: ap.WorkspaceID, UserID: principal}); err != nil {
+		return err
+	}
+	if _, err := qtx.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: ap.WorkspaceID, UserID: principal}); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &errDispatchSkipped{reason: "autopilot principal is no longer a workspace member", code: dispatch.ReasonInvocationNotAllowed}
+		}
+		return err
+	}
+	if err := qtx.LockIssueStatusCatalogShared(ctx, ap.WorkspaceID); err != nil {
+		return err
+	}
+	if err := iteration.LockWorkspace(ctx, tx, ap.WorkspaceID); err != nil {
+		return err
+	}
 
 	title := s.interpolateTemplate(ap, *run, triggerTimezone)
 	description := s.buildIssueDescription(ap, *run, triggerTimezone)
@@ -696,14 +718,47 @@ func (s *AutopilotService) dispatchCreateIssue(ctx context.Context, ap db.Autopi
 		return err
 	}
 
-	// Refresh the autopilot row at dispatch time so we use the current project
-	// binding instead of any stale snapshot the caller may have cached.
+	// Squad deletion may have transferred the assignment while this owner
+	// waited on its fence. Use the current assignment for creation and enqueue.
 	currentAutopilot, err := qtx.GetAutopilotInWorkspace(ctx, db.GetAutopilotInWorkspaceParams{
 		ID:          ap.ID,
 		WorkspaceID: ap.WorkspaceID,
 	})
 	if err != nil {
 		return fmt.Errorf("refresh autopilot: %w", err)
+	}
+	ap = currentAutopilot
+	leaderID := ap.AssigneeID
+	switch ap.AssigneeType {
+	case "", "agent":
+	case "squad":
+		squad, err := qtx.LockLifecycleSquad(ctx, db.LockLifecycleSquadParams{ID: ap.AssigneeID, WorkspaceID: ap.WorkspaceID})
+		if err != nil {
+			return fmt.Errorf("lock dispatch squad: %w", err)
+		}
+		if squad.ArchivedAt.Valid {
+			return errSquadArchived
+		}
+		leaderID = squad.LeaderID
+	default:
+		return fmt.Errorf("unknown assignee_type %q", ap.AssigneeType)
+	}
+	leader, err := qtx.LockAgentForAutopilotDispatch(ctx, db.LockAgentForAutopilotDispatchParams{ID: leaderID, WorkspaceID: ap.WorkspaceID})
+	if err != nil {
+		return fmt.Errorf("lock dispatch leader: %w", err)
+	}
+	if leader.ArchivedAt.Valid {
+		return fmt.Errorf("dispatch leader is archived")
+	}
+	if leader.OwnerID != principal && leader.PermissionMode == "public_to" {
+		if _, err := qtx.LockProjectUpdateEvidenceTargets(ctx, leader.ID); err != nil {
+			return err
+		}
+	}
+	scoped := *s
+	scoped.Queries = qtx
+	if !scoped.canMemberInvokeAgent(ctx, leader, principal, ap.WorkspaceID) {
+		return &errDispatchSkipped{reason: "not allowed to invoke autopilot agent", code: dispatch.ReasonInvocationNotAllowed}
 	}
 	projectID := currentAutopilot.ProjectID
 

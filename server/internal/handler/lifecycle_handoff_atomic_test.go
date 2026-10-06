@@ -444,6 +444,8 @@ func TestLifecycleAtomicSourceContextCreateLockOrder(t *testing.T) {
 	dbfx.Cleanup(t, `DELETE FROM issue_source_context WHERE source_issue_id=$1`, source)
 	locked, release := make(chan struct{}), make(chan struct{})
 	var once sync.Once
+	var releaseOnce sync.Once
+	defer releaseOnce.Do(func() { close(release) })
 	ordinary := *testHandler.IssueService
 	ordinary.TxStarter = lifecycleHookStarter{base: ordinary.TxStarter, after: func(sql string, err error) {
 		if strings.Contains(sql, "-- name: LockIssueForDescriptionUpdate ") && err == nil {
@@ -462,19 +464,19 @@ func TestLifecycleAtomicSourceContextCreateLockOrder(t *testing.T) {
 		t.Fatal("ordinary create did not acquire source lock")
 	}
 	h, _, _ := lifecycleIsolatedHandler()
-	var releaseOnce sync.Once
-	h.TxStarter = lifecycleHookStarter{base: h.TxStarter, after: func(sql string, lockErr error) {
-		if strings.Contains(sql, "-- name: LockLifecycleIssue ") && lockErr != nil {
-			releaseOnce.Do(func() { close(release) })
-		}
-	}}
-	req := withURLParam(newRequest(http.MethodPost, "/api/issues/"+source+"/lifecycle-handoffs", map[string]any{"kind": "rca", "route": "maintenance", "cause_state": "unknown", "follow_up_title": "shared diagnostic"}), "id", source)
-	response := testutil.Call(t, h.CreateLifecycleHandoff, req)
+	reached := make(chan uint32, 1)
+	h.TxStarter = squadIterationObservedStarter{inner: h.TxStarter, statement: "LockSubscriberWrites", reached: reached}
+	req := withURLParam(newRequest(http.MethodPost, "/api/issues/"+source+"/lifecycle-handoffs", map[string]any{"kind": "rca", "route": "maintenance", "cause_state": "unknown", "follow_up_title": "shared diagnostic"}).WithContext(ctx), "id", source)
+	response := make(chan *testutil.Response, 1)
+	go func() { response <- testutil.Call(t, h.CreateLifecycleHandoff, req) }()
+	// The current actor fence now serializes both owners before I1/source.
+	// Observe PostgreSQL's actual wait before allowing the first create to commit.
+	squadIterationWaitBlocked(t, ctx, reached, response)
 	releaseOnce.Do(func() { close(release) })
 	if err := <-ordinaryDone; err != nil {
 		t.Fatalf("SourceContext create failed: %v", err)
 	}
-	response.Want(http.StatusCreated)
+	(<-response).Want(http.StatusCreated)
 	if count := dbfx.Count(t, `SELECT count(*) FROM issue WHERE parent_issue_id=$1`, source); count != 1 {
 		t.Fatalf("duplicate children=%d", count)
 	}
@@ -712,13 +714,15 @@ func TestLifecycleAtomicWorkspaceDeleteFence(t *testing.T) {
 	if _, err = q.LockWorkspaceForDelete(ctx, parseUUID(testWorkspaceID)); err != nil {
 		t.Fatal(err)
 	}
-	started := make(chan struct{})
+	reached := make(chan uint32, 1)
+	h := *testHandler
+	h.TxStarter = squadIterationObservedStarter{inner: h.TxStarter, statement: "LockLifecycleWorkspace", reached: reached}
 	done := make(chan *testutil.Response, 1)
+	req := withURLParam(newRequest(http.MethodPost, "/api/issues/"+source+"/lifecycle-handoffs", map[string]any{"kind": "rollout", "rollout": map[string]any{}}).WithContext(ctx), "id", source)
 	go func() {
-		close(started)
-		done <- lifecycleAtomicCall(t, source, map[string]any{"kind": "rollout", "rollout": map[string]any{}})
+		done <- testutil.Call(t, h.CreateLifecycleHandoff, req)
 	}()
-	<-started
+	squadIterationWaitBlocked(t, ctx, reached, done)
 	// Teardown's next lock must be obtainable while the handoff is waiting
 	// for the workspace fence; otherwise the two operations invert ownership.
 	if _, err = deleting.Exec(ctx, `SELECT id FROM issue WHERE id=$1 FOR UPDATE NOWAIT`, source); err != nil {

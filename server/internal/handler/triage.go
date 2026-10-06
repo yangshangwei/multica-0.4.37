@@ -20,6 +20,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -243,6 +244,12 @@ func (h *Handler) beginTriageWrite(ctx context.Context, r *http.Request, humanOn
 		if errors.Is(err, pgx.ErrNoRows) {
 			err = triageErr(403, "workspace membership required")
 		}
+		return fail(err)
+	}
+	if err = q.LockIssueStatusCatalogShared(ctx, ws); err != nil {
+		return fail(err)
+	}
+	if err = iteration.LockWorkspace(ctx, tx, ws); err != nil {
 		return fail(err)
 	}
 	settings, err := q.GetTriageSettings(ctx, ws)
