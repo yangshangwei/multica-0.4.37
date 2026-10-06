@@ -5,4 +5,5 @@
 - 先写对应失败测试，再按父 implement.md 所有权执行；不得跨写其他任务。
 - 运行父 test-spec 对应 canonical 检查及受影响回归。
 - 在本目录 verification.md 记录 commit/命令/结果/限制，满足内部 FG 可供其他任务使用，最终须 FCG（LG+HG+CG+UG后共享接线整合及回归）才交父归档。
-- 当前只规划，保持 planning；产品实施未开始。
+- 当前为 in_progress：迁移/纯 helper 已整合，FG 未通过。下一步按父 handoff 的 S0/S1 完成最小 recorder + W01，再扩展 S2。
+- foundation 在 FG 前拥有事件持久化、sequence/scope_revision 和全部 writer 接线；不能等待 FG 后的 history 才提供 recorder。

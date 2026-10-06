@@ -1,24 +1,24 @@
 # I1 实施次序与门槛
 
-2026-10-06 用户明确授权实施。沿用已评审方案，父任务进入 in_progress，按 FG→LG/HG→CG→UG→VG 门槛推进。当前沙箱限制 .git 写入与网络；不绕过限制，验证与提交状态分别记录。
+2026-10-06：现有 I1 成果已在 `c96b63c09` 整合到 `codex/projects-p1`，Git 与本机 PostgreSQL 已可用；FG 仍未通过。本轮只更新后续计划。当前开发顺序、P1 增量合同和可复制交接指令以 [handoff.md](handoff.md) 为准，按 S0→S1→S2/FG→LG/HG→CG→UG→FCG/VG 推进。
 
 ## 交付阶段
 
 | 子任务 | 写入所有权（实施时） | 启动前置 | 完成证据 |
 | --- | --- | --- | --- |
-| foundation | schema/migrations/sqlc、共享时区、server iteration 事务框架与持久 operation/hash/result 基础、writer inventory 与接线整合、共享 router/main | 已评审工程方案及实施指令 | FG：schema/锁序/状态 writer 覆盖、单 active、未知字段保留、迁移测试；所有后续 shared SQL 最终整合后才归档 |
+| foundation | schema/migrations/sqlc、共享时区、server iteration 事务框架与持久 operation/hash/result 基础、最小事实 recorder/事件持久化、writer inventory 与接线整合、共享 router/main | 已评审工程方案及实施指令 | FG：schema/锁序/全部相关 writer 事实采集、持久操作/授权、显式清理、单 active、旧字段保留、性能基线与迁移测试；所有后续 shared SQL 最终整合后才归档 |
 | lifecycle | iteration handler/service 创建/开始/编辑/归属/取消空计划、T1接受集成 | FG | LG：完整真实API与create/edit/start/move重放、批量原子/权限矩阵通过 |
-| history | iteration 纯统计、事件采集、图表、原始承诺/快照 DTO | FG；可与 lifecycle 的独立文件并行 | HG：全部 writer events 与算例、时区、删除历史保护通过；接线由 foundation 统一 |
+| history | 持久事实到统计投影、图表、原始承诺规则/冻结 payload DTO | FG；可与 lifecycle 的独立文件并行 | HG：真实事实投影与算例、时区、冻结 payload 测试通过；最小 recorder/writer 接线归 FG，真实关闭后不漂移归 CG/VG |
 | closure | end/handoff/disable 的操作编排、outbox、逾期提醒 | LG+HG | CG：真实数据库竞态/故障注入/去重/整体禁用通过 |
-| clients | core API/query + views + Web/Desktop wiring；移动兼容必要改动 | FG 后可准备 DTO fixtures，真实集成需 LG+HG+CG | UG：两端完整闭环、旧服务/客户端/移动兼容和无障碍完成 |
+| clients | core API/query + views + Web/Desktop wiring；移动兼容必要改动 | FG 后实现 DTO fixtures/core，随 LG/HG API 分段联调；完整联调需 CG | UG：两端完整闭环、旧服务/客户端/移动兼容和无障碍完成 |
 | verification | e2e、性能/迁移演练与验证记录 | 可提前写矩阵；最终执行需 FG+LG+HG+CG+UG | VG：29项 I1 验收与跨模块场景逐项证据、正式 CI 和关闭开关发布准备 |
 
 树结构不是依赖调度器；task.json meta gates 与本表相互核对。FG 只是 foundation 内部里程碑（含持久幂等底座），不能伪装任务整体完成来解锁其余任务。foundation 最终完成门槛 FCG=LG+HG+CG+UG 后全部 shared SQL/router/sqlc 接线整合与回归通过；FCG不是其余任务的启动前置。基础阶段不得启用功能。
 
 ## 顺序检查单
 
-1. 刷新 base commit、扫描全部 issue/status writer、确认 P1 时区迁移所有者；在 research/writer-inventory.md 登记 path/symbol/事务/锁序/测试。冻结合同 fixture、PRD 默认建议，测普通任务写吞吐基线。
-2. 先为单 active、计划终态、正式准入、旧字段保留及 schema guard 写失败测试。逐个迁移文件创建索引，无 FK；生成 sqlc。接入 workspace fence，证明既有 T1/P1 锁序无环；尚未启用时普通任务回归。
+1. 完成 handoff S0：以 c96b63c09 刷新全部 writer 和 P1 事务增量；P1 时区与 550–566 迁移已有基线，后续新增 schema 才继续分配编号。在 research/writer-inventory.md 登记 path/symbol/事务/锁序/测试。冻结合同 fixture、PRD 默认建议，测普通任务写吞吐基线。
+2. 完成 S1 的最小 recorder + W01 垂直切片，再在 S2 扩展 W02–W17、操作对账/授权和清理，补真实失败回归。保留已有单 active/迁移证据，SQL 改动后再生成 sqlc。只有 handoff §6 全部 FG 检查通过才放行 LG/HG。
 3. 完成 lifecycle 与 history 的独立实现；同一 SQL/router/generated 文件统一交 foundation 整合。记录 source/target fence、scope_revision、原始事实与所有状态写入。LG/HG 不能只靠 mocked 测试。
 4. 完成 closure：预览全量、持久幂等、单事务 end/handoff/disable、outbox 重试与撤权。故障注入每一个中间写点；证明回滚无部分计数/通知。
 5. 完成双端共享页、任务创建/详情/批量和项目过滤、设置、图表表格、失败保留输入。能力探测和 Mobile 兼容可用真实旧服务器 fixture 验证。禁止无确认端直接写 closure。
@@ -29,6 +29,6 @@
 
 每个 gate 在该子任务 verification.md 写真实证据，不默认创建 PASS 文件。当前分支已包含 P1 实现，联合删除场景必须按真实 P1 路径补跑，未验证的场景继续标 pending。P1 已拥有共享时区迁移和配置 API，I1 直接复用。
 
-建议后续一名 executor 拥有 foundation/共享改动，lifecycle 和 history 两个有边界的 executor 在 FG 后并行，closure 接续，clients 可用 fixture 提前准备，verifier 独立验收。只有运行环境支持 OMX 且用户明确要求团队模式才启动 OMX；普通 App 使用原生代理或单人顺序，禁止把运行时口令当实现前提。
+建议后续一名 executor 先完成 S1，再拥有 foundation/共享改动，lifecycle 和 history 两个有边界的 executor 在 FG 后并行，closure 接续，clients 可用 fixture 提前准备，verifier 独立验收。只有运行环境支持 OMX 且用户明确要求团队模式才启动 OMX；普通 App 使用原生代理或单人顺序，禁止把运行时口令当实现前提。
 
 任何失败保持功能关闭并前向修复；数据产生后不能退回不懂迭代事件的旧 server。禁止为赶发布删历史、拆分结束事务或忽略未覆盖 writer。

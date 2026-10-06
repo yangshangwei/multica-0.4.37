@@ -1,6 +1,6 @@
 # Web/Desktop 完整闭环与兼容实施清单
 
-- 启动门槛：FG准备；LG+HG+CG真实集成。前置整个任务：无；按里程碑核对。
+- 启动门槛：FG 后实施；随 LG/HG 稳定 API 分段联调；完整闭环联调与 UG 验收须 CG。前置整个任务：无；按里程碑核对。
 - 读取父 design/api-contract/test-spec 与本任务 manifests。
 - 先写对应失败测试，再按父 implement.md 所有权执行；不得跨写其他任务。
 - 运行父 test-spec 对应 canonical 检查及受影响回归。

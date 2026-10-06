@@ -27,11 +27,11 @@
 4. 整体 disable 包括超出第一页的每个未来计划；超部署上限413无任何变化；batch move同样不截断。
 5. 同 request不同payload409；事务提交响应丢失→GET/同ID重试返回原结果；GET404不换新ID；create/edit/delete/enable也重放；原实体删除后授权本人可回放，撤权不能回放保护内容。
 6. 关闭、移动、状态更新、daemon完成、任务删除、状态目录重分类、项目删除、成员撤权和开始竞态，每对两连接 barrier 验证线性化；所有 writer inventory 条目至少一个真实路径断言。运行中 issue-task 计数和进程身份不变。
-7. 两连接在获取 workspace fence 前后反转到达，证明没有 issue→iteration fence 反序；55P03/40P01重试不重复日志，超限503。测同空间普通任务写吞吐和锁等待，不能只测迭代空载。
+7. 两连接在获取 workspace fence 前后反转到达，证明没有 issue→iteration fence 反序；55P03/40P01重试不重复日志，新 I1 自有操作超限503；借用既有 writer 的错误合同单独保持和验证。测同空间普通任务写吞吐和锁等待，不能只测迭代空载。
 8. Outbox 持久后进程崩溃、投递后标记前故障、再次发送、接收者在投递前撤权均最多一份可见摘要；逾期跨本地日期最多每日一次；started_by撤权无个人提醒；不发送外部消息。
 9. America/New_York 春秋 DST、Pacific/Apia 跳日、午夜 gap/fold 时区真实 tz fixture；边界为日历下一天首有效时刻，非24h；保存 Local/偏移/不存在IANA拒绝；旧计划时区不可改。
 10. T1 accept+iteration+project 单事务（目标冲突时仍 pending）；accept_and_execute仍一次执行；CSV迭代未采用；新任务、CLI、旧桌面/mobile显式迭代写缺确认428。WM-AC-02/04/05/06/07/08/10/11/12 对应纳入。
-11. 当前 project 删除保留 iteration 指针/历史；P1 到位后对其专属cleanup另做联合fixture。跨空间移动带参与历史409；工作空间删除按现有权限清除本空间全部迭代记录，无 orphan/no FK。
+11. 当前 project 删除保留 iteration 指针/历史；当前 P1 已到位，必须对其显式 DetachProjectIssues/cleanup 路径做联合 fixture。跨空间移动带参与历史409；工作空间删除按现有权限清除本空间全部迭代记录，无 orphan/no FK。
 12. 空/用过/部分迁移/invalid concurrent index/recovery/down guard/并发writer隔离库演练；P1共享时区已用时I1不能drop；任何归属、审计、操作存在拒绝down。
 13. 核心DTO malformed/缺身份/错workspace/未知enum/负数/非安全整数/错误日期；capability 404与401/403/network区别，不能 fallback写成功。旧服务不支持新字段明确限制。
 14. start today/handoff 在本地午夜前预览、午夜后提交必须409并返回新日期；两个事务开始顺序与取得fence顺序相反且跨午夜，事件采用锁后采样，sequence和日末图表一致；注入时钟回拨不倒排事件。

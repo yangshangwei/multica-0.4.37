@@ -1,5 +1,7 @@
 # I1 writer inventory — read-only implementation map
 
+> Historical pre-P1 integration inventory. W01/W06/W14 and project reference transactions have changed in `c96b63c09`. Use [the current handoff](../handoff.md#3-p1-落地后必须遵守的增量合同) before editing; S0 must refresh every W entry and classify its current owner. This file is not a current coverage/pass ledger.
+
 Date: 2026-10-06. Scope: repository as read before I1 implementation. This is code evidence, not executed I1 regression evidence. Paths/lines below are baseline locations and may shift during implementation. Captured for the implementation task; writer integration has not yet been implemented or verified.
 
 ## Required linearization boundary

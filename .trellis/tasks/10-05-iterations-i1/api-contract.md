@@ -1,6 +1,6 @@
 # I1 API / 数据合同 v1
 
-拟实现；所有路径新设，复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
+I1 路径待实现；planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
 
 ## 端点
 

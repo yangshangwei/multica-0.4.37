@@ -1,10 +1,10 @@
 # I1 技术设计
 
-状态：拟实现 v1；本次文档不是产品上线证明。
+状态：v1 设计，基础代码已整合到 `codex/projects-p1` 的 `c96b63c09`；FG 尚未通过。当前实施接手说明见 [handoff.md](handoff.md)，本文件不是产品上线证明。
 
 ## 1. 证据与选择
 
-现有入口：`server/internal/handler/issue.go:3240` 独立事务更新，`:3915` 删除，`:4073` 批量更新；`triage_actions.go:105` 接受、`:345` 目录锁；`project.go:662` 项目删除；`server/pkg/db/queries/issue.sql` SQL 写入；`packages/core/issues/cache-coordinator.ts` 与 `realtime/use-realtime-sync.ts` 缓存协调；`apps/desktop/src/renderer/src/routes.tsx` 桌面路由。实施前刷新行号，不能只改单一 HTTP 入口。
+现有入口（c96b63c09）：`server/internal/handler/issue.go:3256` 更新事务；`triage_actions.go:101` 接受；`project.go:881` RC 项目删除和 `:905` 显式清项目引用；`server/pkg/db/queries/issue.sql` SQL 写入；`packages/core/issues/cache-coordinator.ts` 与 `realtime/use-realtime-sync.ts` 缓存协调；`apps/desktop/src/renderer/src/routes.tsx` 桌面路由。原 writer inventory 保留为历史基线，必须结合 handoff §3 刷新。
 
 原则：服务器约束全部入口；管理动作不影响执行；历史事实可重现；所有结束副作用原子且幂等；共享时区只有一个来源。
 
@@ -29,19 +29,19 @@
 
 索引逐个独立单语句迁移 `CREATE [UNIQUE] INDEX CONCURRENTLY`；新表不写内联 PK/UNIQUE 导致普通索引。ID 唯一索引完成后如需 PK 用后续 ADD CONSTRAINT ... USING INDEX。清单：settings(workspace_id) 唯一；iteration(id) 唯一及 (workspace_id) WHERE status='active' 唯一、(workspace_id,status,start_date,id)；issue(workspace_id,current_iteration_id) partial 非 NULL；participation(workspace_id,iteration_id,issue_id) 唯一及 (workspace_id,issue_id,iteration_id)；event(id) 唯一、(iteration_id,sequence) 唯一；snapshot(iteration_id) 唯一；operation(id) 唯一、(workspace_id,actor_user_id,request_id) 唯一；notification(id) 唯一、(workspace_id,operation_id,recipient_user_id,kind) 唯一及 pending(next_attempt_at)。每日提醒另唯一 (iteration_id,recipient_user_id,local_date,kind)，需相应 iteration_id 列。所有唯一冲突转换为业务冲突或重放，不吞错。
 
-迁移编号在实施时分配，不能与 P1 并行抢号。先落地一方拥有 planning_timezone 迁移、handler、测试，另一方复用，不各自 IF NOT EXISTS 掩盖不同合同。文件部分执行/无效索引由 catalog + pg_index.indisvalid 检查并前向修复；schema_migrations 不能单独证明结构。
+P1 已使用迁移 536–549，I1 已使用 550–566；后续变更从实际最大编号继续分配。P1 拥有 planning_timezone 迁移、handler、测试，I1 直接复用，不各自 IF NOT EXISTS 掩盖不同合同。文件部分执行/无效索引由 catalog + pg_index.indisvalid 检查并前向修复；schema_migrations 不能单独证明结构。
 
 ## 3. 写入收口与一致性
 
-新增 `server/internal/iteration/` 保存纯统计/时间/规范化；事务业务放 `server/internal/service/iteration.go`（新），handler 接收鉴权/DTO。handler/service/daemon/父子自动状态更新必须在原业务事务内调用同一 `RecordIssueChange(tx,before,after,actor,operation)`，不得从 WS 事后补日志。按真实状态类别（含自定义状态目录）记录，未知类别阻止开始/结束并给出可修复错误，不能当 todo 伪造快照。
+`server/internal/iteration/` 已保存纯统计/时间/规范化与基础事务 helper；最小事实 recorder 和事件持久化由 foundation 在 FG 前完成，history 在 FG 后消费持久事实形成投影。事务业务放 `server/internal/service/iteration.go`（新），handler 接收鉴权/DTO。handler/service/daemon/父子自动状态更新必须在原业务事务内调用同一 `RecordIssueChange(tx,before,after,actor,operation)`，不得从 WS 事后补日志。按真实状态类别（含自定义状态目录）记录，未知类别阻止开始/结束并给出可修复错误，不能当 todo 伪造快照。
 
 为避免遗漏，foundation 提交 writer inventory：从 SQL 的 UPDATE issue、DeleteIssue、状态目录归档/分类变更、服务端任务完成回写、批量、移动工作空间及创建各调用点反向追踪到入口，每项标出事务/锁/测试。凡影响快照标题、项目、负责人、状态、归属或删除的入口都要同事务递增 scope_revision 并写事实；comments/附件无统计变更不制造范围变化。跨空间移动含任意参与历史的任务在 I1 明确 409 iteration_history_move_unsupported，避免旧历史泄露和身份错配；没有参与历史仍按现有移动流程。
 
 锁顺序必须与 T1/P1 兼容：workspace FOR KEY SHARE → T1 settings（仅 T1 流程）→ actor member fence/active member → status catalog shared → workspace iteration advisory transaction fence → iteration settings → iterations ID 排序 → attachments/issue ID 排序 → participation/event。跨资源 project/member/agent 引用沿用现有 FOR SHARE NOWAIT，冲突回滚而不等待形成反向锁环。对无迭代关联的普通任务写也需先取得 iteration fence 再锁 issue，以防同时 join 导致漏事件；该轻量 workspace 级互斥会串行相关写，必须测吞吐，后续优化必须保留同样的线性化证明。不在新服务中获取已经被调用者以反序持有的锁，先改调用者入口。
 
-预览 REPEATABLE READ 同一事务授权并读取；第一条 SQL 设置隔离，成员使用 locking read，不能以快照前授权代替当前权限。提交 READ COMMITTED，取得以上 fence 后重新加载全量受影响实体并重算 preview hash。所有相关 writer 遵守 fence，保证集合、引用与状态不会在提交中漂移；目录锁阻止类别变更。成员撤权复用 LockSubscriberWrites/LockActiveMember；共享 workspace 锁阻止空间删除，引用 NOWAIT 防并发删除。只有全部校验通过才写基线/快照/去向/操作结果/outbox，一次 commit。全部相关 fence/实体锁取得后、首次业务写前，以 clock_timestamp()（测试注入时钟）采样一次 business_at，供本次 occurred_at/started_at/logical_ended_at 使用；禁止用 PG now()/transaction_timestamp() 的事务开始时间。sequence 是权威业务顺序；时钟回拨时事件时刻不小于该迭代前一事件，记录原始 sampled_at 供诊断。processed_at 是最终写结果前的锁内时间，不冒称数据库不可知的真实 commit timestamp。
+新 I1 自有操作的预览使用 REPEATABLE READ 同一事务授权并读取；第一条 SQL 设置隔离，成员使用 locking read，不能以快照前授权代替当前权限。新 I1 自有操作的提交使用 READ COMMITTED，取得以上 fence 后重新加载全量受影响实体并重算 preview hash。所有相关 writer 遵守 fence，保证集合、引用与状态不会在提交中漂移；目录锁阻止类别变更。成员撤权复用 LockSubscriberWrites/LockActiveMember；共享 workspace 锁阻止空间删除，引用 NOWAIT 防并发删除。只有全部校验通过才写基线/快照/去向/操作结果/outbox，一次 commit。全部相关 fence/实体锁取得后、首次业务写前，以 clock_timestamp()（测试注入时钟）采样一次 business_at，供本次 occurred_at/started_at/logical_ended_at 使用；禁止用 PG now()/transaction_timestamp() 的事务开始时间。sequence 是权威业务顺序；时钟回拨时事件时刻不小于该迭代前一事件，记录原始 sampled_at 供诊断。processed_at 是最终写结果前的锁内时间，不冒称数据库不可知的真实 commit timestamp。
 
-SQLSTATE 40001/40P01/55P03 整事务最多三次（25ms、75ms 加 0—25ms jitter，受 context 限制）；业务 409 不自动换预览。unique request 竞争回滚后在新事务重新授权并查询结果，hash 相同才重放。commit 前不广播、不发通知、不调执行。
+新 I1 自有操作对 SQLSTATE 40001/40P01/55P03 整事务最多三次（25ms、75ms 加 0—25ms jitter，受 context 限制）；业务 409 不自动换预览。 借用既有 writer 的事务时，保留其所有者、隔离级别和既有重试/错误合同（例如 P1 关联写针对 55P03 最多四次事务尝试，含初次与三次重试）；需要扩展分类或预算时单独证明回归，不再嵌套 I1 重试器。unique request 竞争回滚后在新事务重新授权并查询结果，hash 相同才重放。commit 前不广播、不发通知、不调执行。
 
 ## 4. 生命周期与原子流程
 
@@ -91,4 +91,6 @@ Statistics 同时给 initial_effective、net_effective_change=effective−initia
 
 [writer inventory](research/writer-inventory.md) 已映射 W01–W17。既有 workspace 锁为 FOR KEY SHARE，必须保留与 issue_counter 非键更新的兼容性，不能误写 FOR SHARE。T1 实际顺序为 workspace KEY SHARE→settings→member，后续I1接线沿用该前置顺序，不反向插入锁。source-context/lifecycle 现有先issue后catalog路径需在实施writer收口时调整；本次基础离线准备没有修改这些writer。
 
-当前sandbox拒绝127.0.0.1 PostgreSQL/Redis TCP（PermissionError/Operation not permitted），因此真实DB与两连接门槛未执行；FG未通过，依赖FG的业务阶段尚未放行。这是执行环境限制，不是降低验收要求。
+历史离线会话曾无法连接本机数据库和写 Git；该环境限制不再作为当前阻断。c96b63c09 整合已验证真实数据库迁移和部分两连接场景，见 branch-integration.md；FG 仍缺生产 writer 接线、持久操作业务编排和完整联合验收，依赖 FG 的业务阶段尚未放行。
+
+P1 已有一般写 RR、删除 RC 的隔离合同，以及关联写重试和引用 NOWAIT。接入 I1 时保留这些理由，由最外层事务统一重试预算；不能套用 I1 helper 抹平隔离级别或形成嵌套重试。
