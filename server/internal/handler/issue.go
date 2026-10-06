@@ -2836,6 +2836,10 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Keep transport identity fixed throughout preflight and every retry.
+	creatorType, actualCreatorID := h.resolveActor(r, creatorID, workspaceID)
+	actorTaskID := r.Header.Get("X-Task-ID")
+
 	// Autonomy: creating work is not analysis. An Observer that finds something
 	// worth filing reports it in a comment and names who should file it.
 	if !h.requireAgentAutonomy(w, r, workspaceID, service.AutonomyContributor, "create issues") {
@@ -2947,9 +2951,6 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		dueDate = d
 	}
 
-	// Determine creator identity: agent (via X-Agent-ID header) or member.
-	creatorType, actualCreatorID := h.resolveActor(r, creatorID, workspaceID)
-
 	// Optional origin stamping (quick-create / autopilot). Only the
 	// allowed origin types are accepted; anything else is rejected so a
 	// rogue caller can't mint arbitrary origin labels. Both fields must
@@ -2974,27 +2975,6 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		}
 		originType = pgtype.Text{String: *req.OriginType, Valid: true}
 		originID = oid
-	} else if creatorType == "agent" {
-		// MUL-4305: an agent creating an issue via the ordinary create path
-		// carries no explicit origin, which historically left the new issue
-		// unattributed. Any run later derived from it (agent assignment,
-		// squad-leader trigger) then lost the top-of-chain human originator,
-		// so A2A @-mentions from those runs failed the canInvokeAgent gate
-		// against private agents. Stamp the acting task as the issue's origin
-		// so resolveOriginatorForIssueTask can inherit its originator — the
-		// same trick CreateComment uses with comment.source_task_id (MUL-4015).
-		//
-		// The task id is taken from the SERVER-trusted X-Task-ID: resolveActor
-		// only returns creatorType=="agent" when either X-Actor-Source=task_token
-		// (the auth middleware bound X-Agent-ID/X-Task-ID from the mat_ token and
-		// stripped any client value) or the X-Agent-ID/X-Task-ID pair was
-		// validated against the DB. A member-forged X-Task-ID never reaches here
-		// because it would have resolved to creatorType=="member". We still
-		// re-check the task belongs to the acting agent before trusting it.
-		if task, ok := h.trustedIssueCreationTask(r, creatorType, actualCreatorID, wsUUID); ok {
-			originType = pgtype.Text{String: "agent_create", Valid: true}
-			originID = task.ID
-		}
 	}
 
 	// Prefix is workspace-level; pre-compute once so both the broadcast
@@ -3050,7 +3030,10 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		LabelIDs:       labelIDs,
 		AllowDuplicate: req.AllowDuplicate,
 	}, service.IssueCreateOpts{
-		ActorUserID:      parseUUID(creatorID),
+		ActorUserID: parseUUID(creatorID),
+		PrepareInTx: func(_ context.Context, tx pgx.Tx, params *service.IssueCreateParams) error {
+			return h.prepareIssueCreationInTx(r, tx, params, creatorType, actualCreatorID, actorTaskID)
+		},
 		ActorID:          actualCreatorID,
 		AnalyticsAgentID: analyticsAgentID,
 		Platform:         func() string { p, _, _ := middleware.ClientMetadataFromContext(r.Context()); return p }(),
@@ -3073,6 +3056,9 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 
+	if writeIssueUpdateAccessError(w, err) {
+		return
+	}
 	if errors.Is(err, service.ErrActiveDuplicate) {
 		dup := *res.DuplicateIssue
 		existing := issueToResponse(dup, h.getIssuePrefix(r.Context(), dup.WorkspaceID))
@@ -3133,6 +3119,102 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 	labelResponses := labelsToResponse(res.Labels)
 	resp.Labels = &labelResponses
 	writeJSON(w, http.StatusCreated, resp)
+}
+
+// The service already holds workspace/member/catalog/I1 fences. Reference locks
+// use NOWAIT to preserve the owning writer's retry budget and avoid inverse waits.
+func (h *Handler) prepareIssueCreationInTx(r *http.Request, tx pgx.Tx, params *service.IssueCreateParams, actorType, actorID, taskID string) error {
+	ctx := r.Context()
+	scoped := *h
+	scoped.Queries, scoped.DB = h.Queries.WithTx(tx), tx
+	if actorType == "agent" {
+		agentID, err := util.ParseUUID(actorID)
+		if err != nil {
+			return &issueUpdateAccessError{403, "actor unavailable"}
+		}
+		agent, err := scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentID, WorkspaceID: params.WorkspaceID})
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &issueUpdateAccessError{403, "actor unavailable"}
+		}
+		if err != nil {
+			return err
+		}
+		if agent.ArchivedAt.Valid {
+			return &issueUpdateAccessError{403, "actor unavailable"}
+		}
+		if !service.AutonomyAtLeast(agent.AutonomyLevel, service.AutonomyContributor) {
+			return &issueUpdateAccessError{403, autonomyDenialMessage(agent.AutonomyLevel, service.AutonomyContributor, "create issues")}
+		}
+		taskUUID, err := util.ParseUUID(taskID)
+		if err != nil {
+			return &issueUpdateAccessError{403, "actor task unavailable"}
+		}
+		task, err := scoped.Queries.LockLifecycleOriginTask(ctx, db.LockLifecycleOriginTaskParams{ID: taskUUID, WorkspaceID: params.WorkspaceID})
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &issueUpdateAccessError{403, "actor task unavailable"}
+		}
+		if err != nil {
+			return err
+		}
+		if task.AgentID != agentID {
+			return &issueUpdateAccessError{403, "actor task unavailable"}
+		}
+		// A terminal task retains ordinary actor identity but lends no human
+		// invocation rights. Derive default provenance here, after the wait,
+		// so a terminal transition cannot persist a stale live origin stamp.
+		if !params.OriginType.Valid && !isTerminalTaskStatus(task.Status) {
+			params.OriginType = pgtype.Text{String: "agent_create", Valid: true}
+			params.OriginID = task.ID
+		}
+	}
+	currentType, currentActor := scoped.resolveActor(r, requestUserID(r), uuidToString(params.WorkspaceID))
+	if currentType != actorType || currentActor != actorID {
+		return &issueUpdateAccessError{403, "actor authorization changed"}
+	}
+	if params.AssigneeID.Valid {
+		var agent db.Agent
+		var err error
+		switch params.AssigneeType.String {
+		case "member":
+			var members []pgtype.UUID
+			members, err = scoped.Queries.LockProjectUpdateRecipients(ctx, db.LockProjectUpdateRecipientsParams{WorkspaceID: params.WorkspaceID, UserIds: []pgtype.UUID{params.AssigneeID}})
+			if err == nil && len(members) != 1 {
+				return &issueUpdateAccessError{400, "assignee unavailable"}
+			}
+		case "agent":
+			agent, err = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: params.AssigneeID, WorkspaceID: params.WorkspaceID})
+		case "squad":
+			var squad db.Squad
+			squad, err = scoped.Queries.LockLifecycleSquad(ctx, db.LockLifecycleSquadParams{ID: params.AssigneeID, WorkspaceID: params.WorkspaceID})
+			if err == nil {
+				agent, err = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: squad.LeaderID, WorkspaceID: params.WorkspaceID})
+			}
+		}
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &issueUpdateAccessError{400, "assignee unavailable"}
+		}
+		if err != nil {
+			return err
+		}
+		// Member revocation removes grant rows without updating the agent.
+		// Holding only the target agent would not protect the allow-list read.
+		if agent.ID.Valid && agent.PermissionMode == "public_to" {
+			targets, err := scoped.Queries.LockProjectUpdateEvidenceTargets(ctx, agent.ID)
+			if err != nil {
+				return err
+			}
+			// A concurrent grant insertion is not protected by those row locks.
+			// Authorize from the locked rows, never from a later allow-list read.
+			effectiveUser := scoped.invokeOriginatorFromRequest(r, actorType, actorID)
+			if !loadedInvocationDecision(agent, targets, effectiveUser, actorType == "member", actorType == "agent") {
+				return &issueUpdateAccessError{403, "you do not have permission to assign work to this " + params.AssigneeType.String}
+			}
+		}
+	}
+	if status, message := scoped.validateAssigneePair(ctx, r, uuidToString(params.WorkspaceID), params.AssigneeType, params.AssigneeID); status != 0 {
+		return &issueUpdateAccessError{status, message}
+	}
+	return nil
 }
 
 type UpdateIssueRequest struct {
@@ -3349,6 +3431,7 @@ func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID
 		if touchedType || touchedID {
 			if params.AssigneeID.Valid {
 				var e error
+				var agent db.Agent
 				switch params.AssigneeType.String {
 				case "member":
 					var members []pgtype.UUID
@@ -3357,12 +3440,12 @@ func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID
 						return &issueUpdateAccessError{400, "assignee unavailable"}
 					}
 				case "agent":
-					_, e = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: params.AssigneeID, WorkspaceID: workspaceID})
+					agent, e = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: params.AssigneeID, WorkspaceID: workspaceID})
 				case "squad":
 					var squad db.Squad
 					squad, e = scoped.Queries.LockLifecycleSquad(ctx, db.LockLifecycleSquadParams{ID: params.AssigneeID, WorkspaceID: workspaceID})
 					if e == nil {
-						_, e = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: squad.LeaderID, WorkspaceID: workspaceID})
+						agent, e = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: squad.LeaderID, WorkspaceID: workspaceID})
 					}
 				}
 				if errors.Is(e, pgx.ErrNoRows) {
@@ -3370,6 +3453,16 @@ func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID
 				}
 				if e != nil {
 					return e
+				}
+				if agent.ID.Valid && agent.PermissionMode == "public_to" {
+					targets, e := scoped.Queries.LockProjectUpdateEvidenceTargets(ctx, agent.ID)
+					if e != nil {
+						return e
+					}
+					effectiveUser := scoped.invokeOriginatorFromRequest(r, actorType, actorID)
+					if !loadedInvocationDecision(agent, targets, effectiveUser, actorType == "member", actorType == "agent") {
+						return &issueUpdateAccessError{403, "you do not have permission to assign work to this " + params.AssigneeType.String}
+					}
 				}
 			}
 			if status, message := scoped.validateAssigneePair(ctx, r, uuidToString(workspaceID), params.AssigneeType, params.AssigneeID); status != 0 {
@@ -3434,6 +3527,43 @@ func lockIssueWriteFences(ctx context.Context, tx pgx.Tx, workspaceID, userID pg
 	return results.Close()
 }
 
+// These remain separate statements after the fence and status validation.
+// Pipelining saves one round trip without reversing iteration-before-issue
+// locking or sharing a pre-wait SQL snapshot. Keep the authoritative-query
+// equivalence test in sync when either locking query changes.
+var issueReadLockSQL = []string{
+	"-- name: LockIssueIteration :one\nSELECT i.* FROM iteration i JOIN issue x ON x.workspace_id = i.workspace_id AND x.current_iteration_id = i.id WHERE x.workspace_id = $1 AND x.id = $2 FOR UPDATE OF i;",
+	"-- name: LockIssueForDescriptionUpdate :one\nSELECT * FROM issue WHERE id = $1 AND workspace_id = $2 FOR UPDATE;",
+}
+
+func lockIssueReadRows(ctx context.Context, tx pgx.Tx, workspaceID, issueID pgtype.UUID) (db.Iteration, db.Issue, error) {
+	batch := &pgx.Batch{}
+	batch.Queue(issueReadLockSQL[0], workspaceID, issueID)
+	batch.Queue(issueReadLockSQL[1], issueID, workspaceID)
+	results := tx.SendBatch(ctx, batch)
+	defer results.Close()
+	rows, err := results.Query()
+	if err != nil {
+		return db.Iteration{}, db.Issue{}, err
+	}
+	lockedIteration, err := pgx.CollectExactlyOneRow(rows, pgx.RowToStructByName[db.Iteration])
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return db.Iteration{}, db.Issue{}, err
+	}
+	rows, err = results.Query()
+	if err != nil {
+		return db.Iteration{}, db.Issue{}, fmt.Errorf("lock issue for update: %w", err)
+	}
+	current, err := pgx.CollectExactlyOneRow(rows, pgx.RowToStructByName[db.Issue])
+	if err != nil {
+		return db.Iteration{}, db.Issue{}, fmt.Errorf("lock issue for update: %w", err)
+	}
+	if err := results.Close(); err != nil {
+		return db.Iteration{}, db.Issue{}, err
+	}
+	return lockedIteration, current, nil
+}
+
 func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string, userID pgtype.UUID, actor json.RawMessage, operationID pgtype.UUID, authorize func(pgx.Tx, db.UpdateIssueParams) error) (db.Issue, db.Issue, bool, error) {
 	if h.TxStarter == nil {
 		return db.Issue{}, db.Issue{}, false, errors.New("atomic issue update requires transaction starter")
@@ -3455,25 +3585,31 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	if err := assertIssueStatusStillActive(ctx, qtx, workspaceID, statusKey); err != nil {
 		return db.Issue{}, db.Issue{}, false, err
 	}
-	lockedIteration, err := iteration.LockIssueIteration(ctx, tx, workspaceID, params.ID)
-	if err != nil {
-		return db.Issue{}, db.Issue{}, false, err
-	}
-
-	if len(attachmentIDs) > 0 {
+	var lockedIteration db.Iteration
+	var current db.Issue
+	if len(attachmentIDs) == 0 {
+		lockedIteration, current, err = lockIssueReadRows(ctx, tx, workspaceID, params.ID)
+		if err != nil {
+			return db.Issue{}, db.Issue{}, false, err
+		}
+	} else {
+		lockedIteration, err = iteration.LockIssueIteration(ctx, tx, workspaceID, params.ID)
+		if err != nil {
+			return db.Issue{}, db.Issue{}, false, err
+		}
 		if _, err := qtx.LockAttachmentsForIssueLink(ctx, db.LockAttachmentsForIssueLinkParams{
 			WorkspaceID:   workspaceID,
 			AttachmentIds: attachmentIDs,
 		}); err != nil {
 			return db.Issue{}, db.Issue{}, false, fmt.Errorf("lock issue attachments: %w", err)
 		}
-	}
-	current, err := qtx.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{
-		ID:          params.ID,
-		WorkspaceID: workspaceID,
-	})
-	if err != nil {
-		return db.Issue{}, db.Issue{}, false, fmt.Errorf("lock issue for update: %w", err)
+		current, err = qtx.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{
+			ID:          params.ID,
+			WorkspaceID: workspaceID,
+		})
+		if err != nil {
+			return db.Issue{}, db.Issue{}, false, fmt.Errorf("lock issue for update: %w", err)
+		}
 	}
 
 	if err := issueAdmissionMutation(current, rawFields); err != nil {

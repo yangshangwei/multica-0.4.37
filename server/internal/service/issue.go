@@ -101,6 +101,11 @@ type IssueCreateOpts struct {
 	// ActorUserID is the current member authorizing this transport request.
 	// Agent creators must supply it; member creators use their own CreatorID.
 	ActorUserID pgtype.UUID
+	// PrepareInTx revalidates transport authority and derives provenance from
+	// locked references after member/catalog/I1 fences and before business writes.
+	// Each existing retry receives a fresh params copy and must reauthorize the
+	// same captured actor. The callback borrows this transaction; it never commits.
+	PrepareInTx func(context.Context, pgx.Tx, *IssueCreateParams) error
 	// BroadcastPayload, if non-nil, is invoked after the issue row is
 	// created and attachments are linked. Its return value is sent as
 	// the EventIssueCreated payload via the event bus. The HTTP handler
@@ -287,6 +292,17 @@ func (s *IssueService) createOnce(ctx context.Context, p IssueCreateParams, opts
 			return IssueCreateResult{}, ErrIssueCreationForbidden
 		}
 		return IssueCreateResult{}, err
+	}
+	if opts.PrepareInTx != nil {
+		if err := qtx.LockIssueStatusCatalogShared(ctx, p.WorkspaceID); err != nil {
+			return IssueCreateResult{}, err
+		}
+		if err := iteration.LockWorkspace(ctx, tx, p.WorkspaceID); err != nil {
+			return IssueCreateResult{}, err
+		}
+		if err := opts.PrepareInTx(ctx, tx, &p); err != nil {
+			return IssueCreateResult{}, err
+		}
 	}
 
 	result, err := s.CreateInTx(ctx, tx, p, issueCountPolicy)

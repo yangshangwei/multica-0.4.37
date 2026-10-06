@@ -288,9 +288,19 @@ func (h *Handler) writeLifecycleHandoffInTx(r *http.Request, source db.Issue, re
 	if agentID != prepared.agentID || squadID != prepared.squadID {
 		return out, errLifecycleSnapshotChanged
 	}
+	var assignedAgent db.Agent
+	var invocationTargets []db.AgentInvocationTarget
 	if agentID.Valid {
-		if _, err = q.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentID, WorkspaceID: source.WorkspaceID}); err != nil {
+		assignedAgent, err = q.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentID, WorkspaceID: source.WorkspaceID})
+		if err != nil {
 			return out, err
+		}
+		// Member revocation deletes grants independently of the agent row.
+		// Keep any grant used by the later invoke check stable until commit.
+		if assignedAgent.PermissionMode == "public_to" {
+			if invocationTargets, err = q.LockProjectUpdateEvidenceTargets(ctx, assignedAgent.ID); err != nil {
+				return out, err
+			}
 		}
 	}
 	ids := []pgtype.UUID{source.ID}
@@ -361,6 +371,14 @@ func (h *Handler) writeLifecycleHandoffInTx(r *http.Request, source db.Issue, re
 		return out, err
 	}
 	if needsFollowUp {
+		if assignedAgent.ID.Valid && assignedAgent.PermissionMode == "public_to" {
+			// The origin task is now locked. Use only the grant rows locked above;
+			// an insertion since then must not lend unprotected invocation rights.
+			effectiveUser := bound.invokeOriginatorFromRequest(r, actorType, actorID)
+			if !loadedInvocationDecision(assignedAgent, invocationTargets, effectiveUser, actorType == "member", actorType == "agent") {
+				return out, lifecycleAssigneeError{http.StatusForbidden, "you do not have permission to assign work to this " + target.AssigneeType.String}
+			}
+		}
 		if err = bound.authorizeLifecycleFollowUp(r, target); err != nil {
 			return out, err
 		}

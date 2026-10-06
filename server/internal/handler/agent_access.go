@@ -427,7 +427,8 @@ func (h *Handler) canEnqueueSquadLeader(ctx context.Context, leaderID pgtype.UUI
 	return h.canInvokeAgent(ctx, agent, actorType, actorID, originatorUserID, workspaceID)
 }
 
-// trustedIssueCreationTask is shared by ordinary and lifecycle creates. A header
+// trustedIssueCreationTask resolves preflight provenance for lifecycle creates.
+// Ordinary issue creation derives this provenance under its transaction locks. A header
 // is evidence only when it belongs to the resolved agent in this workspace.
 func (h *Handler) trustedIssueCreationTask(r *http.Request, actorType, actorID string, workspaceID pgtype.UUID) (db.AgentTaskQueue, bool) {
 	if actorType != "agent" {
