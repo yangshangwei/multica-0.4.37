@@ -26,6 +26,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
 	"github.com/multica-ai/multica/server/internal/middleware"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -1894,15 +1895,28 @@ func (h *Handler) lookupIssueByIdentifier(ctx context.Context, workspaceID pgtyp
 }
 
 func (h *Handler) advanceIssueToDone(ctx context.Context, issue db.Issue, workspaceID string) {
-	updated, err := h.Queries.UpdateIssueStatus(ctx, db.UpdateIssueStatusParams{
-		ID:          issue.ID,
-		Status:      "done",
-		WorkspaceID: issue.WorkspaceID,
+	before, updated, changed, err := service.WriteIssueStatus(ctx, h.TxStarter, h.Queries, issue, "done", "pull_request_close_aggregate", func(ctx context.Context, q *db.Queries, current db.Issue) (bool, error) {
+		category, err := service.IssueStatusCategory(ctx, q, current)
+		if err != nil {
+			return false, err
+		}
+		if category == "done" || category == "cancelled" {
+			return false, nil
+		}
+		counts, err := q.GetIssueCombinedPullRequestCloseAggregate(ctx, current.ID)
+		if err != nil {
+			return false, err
+		}
+		return counts.OpenCount == 0 && counts.MergedWithCloseIntentCount > 0, nil
 	})
 	if err != nil {
 		slog.Warn("github: advance issue to done failed", "err", err)
 		return
 	}
+	if !changed {
+		return
+	}
+	issue = before
 
 	// Fire the platform parent-notification path on the same transition the
 	// HTTP UpdateIssue / BatchUpdateIssues paths use. A merged PR is one of

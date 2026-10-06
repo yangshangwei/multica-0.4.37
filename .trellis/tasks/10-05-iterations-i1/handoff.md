@@ -2,6 +2,8 @@
 
 日期：2026-10-06。代码基线：`c96b63c096e445b93f16fda9a82217579e8ac598`。本轮只更新计划和交接，不实施产品代码。独立审查已通过，见[审查记录](research/handoff-review.md)。
 
+> 后续实施增量：S0/S1 已完成并验证，提交 `837e1abaf`；W15 工作空间清理为 `7d53c9ed0`，W02 公开内容写入为 `c6980d5e5`，W05 测试旁路移除与 W17 分析标记豁免为 `e3cee069c`。W03/W04 系统状态写入也已完成真实数据库红绿、竞争及回滚验证。不要重做这些切片。下一步继续 S2 的 W06–W14、W16 和其余基础能力证据。最新结果及继续实施位置见 [S2 记录](../10-05-iterations-i1-foundation/s2-verification.md)及[系统 writer 记录](../10-05-iterations-i1-foundation/s2-system-writers-verification.md)。FG 仍未通过；以下保留原始实施次序和合同，不把旧“下一步 S0/S1”当作当前未完成项。
+
 ## 1. 接手位置与当前结论
 
 - 开发分支：`codex/projects-p1`。

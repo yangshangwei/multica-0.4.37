@@ -83,7 +83,7 @@ agent CLI guard. No original development database was migrated or cleaned.
 
 ## Shared verification
 
-Go build and vet (`go -C server {build,vet} -p 2 ./...`) both exited 0;
+`go -C server build -p 2 ./...` and `go -C server vet -p 2 ./...` both exited 0;
 `/tmp/multica-i1-s2-build.log`, `/tmp/multica-i1-s2-vet.log`. Final sqlc regeneration
 matched all 81 generated file SHA256 values;
 `/tmp/multica-i1-s2-sqlc-final.log` and `/tmp/multica-i1-s2-sqlc-before.json`.
@@ -145,7 +145,8 @@ non-fact-writer exemption, not full completion HTTP or W16 start coverage.
 Independent review accepts that scope. Changed packages pass `go vet -p 2`;
 `/tmp/multica-i1-s2-w05-w17-vet.log`. gofmt and diff checks pass.
 
-W03/W04, W06–W14 and W16 still require actual production-path integration.
+W03/W04 are now verified separately in [system writer evidence](s2-system-writers-verification.md).
+W06–W14 and W16 still require actual production-path integration.
 W05's test-only writer is removed and W17 has its narrow exemption evidence.
 These completed slices do not prove FG. Durable operation query/
 replay authorization, settings/capability, explicit-field compatibility, member

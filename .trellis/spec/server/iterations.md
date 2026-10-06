@@ -1,7 +1,8 @@
 # Iteration facts in existing issue transactions
 
-I1 is under implementation. W01 ordinary updates and W02 public content updates
-record facts; W15 workspace deletion explicitly purges history. Do not enable
+I1 is under implementation. W01 ordinary updates, W02 public content updates
+and W03/W04 system status updates record facts; W15 workspace deletion explicitly
+purges history. Do not enable
 capabilities or infer full writer coverage from the schema. Gate evidence lives
 in the I1 foundation task.
 
@@ -76,6 +77,28 @@ the shared writer. Final-failure fixtures explicitly exhaust their retry budget.
 `MarkIssueFirstExecuted` remains a lifetime analytics marker, not a participation
 start: it must not create iteration events or set current participation started.
 Only the actual successful StartAgentTask path can supply execution-start facts.
+
+## System status writers
+
+`service.WriteIssueStatus` owns a fresh, explicitly READ COMMITTED transaction
+for the formerly autocommit webhook completion and failed-task reset paths. Its
+first SQL selects isolation. Do not change W01/P1 isolation or nest this owner
+inside an existing transaction. Current production callers use pool-backed
+starters. No new retry loop or autocommit fallback is provided.
+
+After workspace/catalog/I1/iteration locks, take the issue FOR UPDATE before
+the read-only policy callback. NO KEY UPDATE would not exclude execution's KEY
+SHARE locks. Read the active-task predicate in a separate statement after this
+lock: an enqueue can leave the issue tuple unchanged, so an old RR snapshot
+could miss its committed task. `lock_issue_execution` refuses contention, but
+`CreateAgentTask` may first wait inside `lock_task_owner_rows`; do not assume all
+enqueue contention immediately returns ErrNoRows or 55P03.
+
+GitHub, Forgejo and GitLab completion recheck terminal state and the combined
+close aggregate. Failed-task reset preserves preceding retry/delegated recovery,
+then requires current effective in_progress and no active task. Callers publish
+only after a committed change, using the locked before state. A system actor
+has null id/user_id and a nonempty source, never a fabricated human identity.
 
 Regression sources: `internal/handler/issue_iteration_test.go`,
 `issue_revision_test.go`, `project_association_concurrency_test.go` and
