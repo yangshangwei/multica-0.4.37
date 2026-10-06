@@ -12,13 +12,11 @@ import (
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/handler"
-	"github.com/multica-ai/multica/server/internal/issuestatus"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
-	"github.com/multica-ai/multica/server/pkg/redact"
 )
 
 const (
@@ -694,89 +692,4 @@ func sweepDeferredChatFinalizations(ctx context.Context, queries *db.Queries, ta
 	}
 	slog.Info("chat finalize sweeper: settled deferred cancellations", "count", len(rows))
 	return
-}
-
-// broadcastFailedTasks is preserved as a thin shim for the integration tests
-// in this package. New call sites should use TaskService.HandleFailedTasks
-// directly so the side effects (event broadcast, agent reconcile, issue
-// rollback, auto-retry) are guaranteed in one place.
-func broadcastFailedTasks(ctx context.Context, queries *db.Queries, taskSvc *service.TaskService, bus *events.Bus, tasks []db.AgentTaskQueue) {
-	if taskSvc != nil {
-		taskSvc.HandleFailedTasks(ctx, tasks)
-		return
-	}
-	// Fallback path used by tests that don't construct a TaskService:
-	// publish task:failed events with workspace IDs and reset stuck issues.
-	processedIssues := make(map[string]bool)
-	affectedAgents := make(map[string]pgtype.UUID)
-	for _, t := range tasks {
-		failureReason := "agent_error"
-		if t.FailureReason.Valid && t.FailureReason.String != "" {
-			failureReason = t.FailureReason.String
-		}
-		workspaceID := ""
-		if t.IssueID.Valid {
-			if issue, err := queries.GetIssue(ctx, t.IssueID); err == nil {
-				workspaceID = util.UUIDToString(issue.WorkspaceID)
-				issueKey := util.UUIDToString(t.IssueID)
-				// Only issues whose status means "an agent is actively working"
-				// get reset. in_review and blocked are deliberately excluded —
-				// they mean a human or an external dependency owns the issue
-				// now, and resetting those to todo would re-trigger an agent on
-				// work someone else is holding. A custom status resolves to the
-				// canonical status it inherits, so a custom review gate is
-				// excluded for the same reason In Review is. (MUL-6243)
-				effectiveStatus := issuestatus.Effective(ctx, queries, issue.WorkspaceID, issue.Status)
-				if effectiveStatus == "in_progress" && !processedIssues[issueKey] {
-					processedIssues[issueKey] = true
-					if hasActive, herr := queries.HasActiveTaskForIssue(ctx, t.IssueID); herr == nil && !hasActive {
-						queries.UpdateIssueStatus(ctx, db.UpdateIssueStatusParams{ID: t.IssueID, Status: "todo", WorkspaceID: issue.WorkspaceID})
-					}
-				}
-			}
-		}
-		payload := map[string]any{
-			"task_id":        util.UUIDToString(t.ID),
-			"agent_id":       util.UUIDToString(t.AgentID),
-			"issue_id":       util.UUIDToString(t.IssueID),
-			"status":         "failed",
-			"failure_reason": failureReason,
-			"retry_pending":  false,
-		}
-		if t.Error.Valid && t.Error.String != "" {
-			payload["error"] = redact.Text(t.Error.String)
-		}
-		e := events.Event{
-			Type:        protocol.EventTaskFailed,
-			WorkspaceID: workspaceID,
-			ActorType:   "system",
-			TaskID:      util.UUIDToString(t.ID),
-			Payload:     payload,
-		}
-		if t.ChatSessionID.Valid {
-			e.ChatSessionID = util.UUIDToString(t.ChatSessionID)
-			payload["chat_session_id"] = e.ChatSessionID
-		}
-		bus.Publish(e)
-		affectedAgents[util.UUIDToString(t.AgentID)] = t.AgentID
-	}
-	for _, agentID := range affectedAgents {
-		reconcileAgentStatus(ctx, queries, bus, agentID)
-	}
-}
-
-// reconcileAgentStatus refreshes agent status from the current working task
-// set. A no-op returns no row, so the fallback emits no redundant status event.
-// Used only by the test-fallback path of broadcastFailedTasks above.
-func reconcileAgentStatus(ctx context.Context, queries *db.Queries, bus *events.Bus, agentID pgtype.UUID) {
-	agent, err := queries.RefreshAgentStatusFromTasks(ctx, agentID)
-	if err != nil {
-		return
-	}
-	bus.Publish(events.Event{
-		Type:        protocol.EventAgentStatus,
-		WorkspaceID: util.UUIDToString(agent.WorkspaceID),
-		ActorType:   "system",
-		Payload:     map[string]any{"agent_id": util.UUIDToString(agent.ID), "status": agent.Status},
-	})
 }

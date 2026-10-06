@@ -309,6 +309,10 @@ func TestSweepStaleTasksBroadcastsWithWorkspaceID(t *testing.T) {
 
 	issueID, agentID, taskID := setupSweeperTestFixture(t, "running")
 	t.Cleanup(func() { cleanupSweeperFixture(t, issueID, agentID) })
+	// Exercise final settlement, after the retry budget is exhausted.
+	if _, err := testPool.Exec(context.Background(), `UPDATE agent_task_queue SET max_attempts=attempt WHERE id=$1`, taskID); err != nil {
+		t.Fatal(err)
+	}
 	// The running-task sweep now requires the task's runtime to be NOT
 	// heartbeating (MUL-4107). Age the runtime out so this test still
 	// exercises the sweeper wall clock rather than being silently skipped.
@@ -352,8 +356,8 @@ func TestSweepStaleTasksBroadcastsWithWorkspaceID(t *testing.T) {
 		t.Fatalf("expected task %s to be in failed tasks list", taskID)
 	}
 
-	// Call broadcastFailedTasks — this is what we're testing
-	broadcastFailedTasks(context.Background(), queries, nil, bus, failedTasks)
+	// Exercise the same failure settlement used by the production sweeper.
+	service.NewTaskService(queries, testPool, nil, bus).HandleFailedTasks(context.Background(), failedTasks)
 
 	// Verify the event was published with WorkspaceID (the core of the bug fix)
 	mu.Lock()
@@ -403,8 +407,12 @@ func TestSweepStaleTasksReconcileAgentStatus(t *testing.T) {
 		t.Skip("no database connection")
 	}
 
-	issueID, agentID, _ := setupSweeperTestFixture(t, "running")
+	issueID, agentID, taskID := setupSweeperTestFixture(t, "running")
 	t.Cleanup(func() { cleanupSweeperFixture(t, issueID, agentID) })
+	// Exercise final settlement, after the retry budget is exhausted.
+	if _, err := testPool.Exec(context.Background(), `UPDATE agent_task_queue SET max_attempts=attempt WHERE id=$1`, taskID); err != nil {
+		t.Fatal(err)
+	}
 	// Runtime must be stale for the running-task wall clock to fire (MUL-4107).
 	ageOutAgentRuntime(t, agentID, defaultRuntimeReconnectGrace+time.Hour)
 
@@ -434,7 +442,7 @@ func TestSweepStaleTasksReconcileAgentStatus(t *testing.T) {
 		t.Fatal("expected at least 1 stale task")
 	}
 
-	broadcastFailedTasks(context.Background(), queries, nil, bus, failedTasks)
+	service.NewTaskService(queries, testPool, nil, bus).HandleFailedTasks(context.Background(), failedTasks)
 
 	// Verify agent status is now "idle" in DB
 	var agentStatus string
@@ -470,6 +478,10 @@ func TestSweepDispatchedStaleTask(t *testing.T) {
 
 	issueID, agentID, taskID := setupSweeperTestFixture(t, "dispatched")
 	t.Cleanup(func() { cleanupSweeperFixture(t, issueID, agentID) })
+	// Exercise final settlement, after the retry budget is exhausted.
+	if _, err := testPool.Exec(context.Background(), `UPDATE agent_task_queue SET max_attempts=attempt WHERE id=$1`, taskID); err != nil {
+		t.Fatal(err)
+	}
 
 	queries := db.New(testPool)
 	bus := events.New()
@@ -499,7 +511,7 @@ func TestSweepDispatchedStaleTask(t *testing.T) {
 		t.Fatal("expected at least 1 stale dispatched task")
 	}
 
-	broadcastFailedTasks(context.Background(), queries, nil, bus, failedTasks)
+	service.NewTaskService(queries, testPool, nil, bus).HandleFailedTasks(context.Background(), failedTasks)
 
 	// Verify DB: task should be failed
 	var status string
@@ -906,10 +918,11 @@ func TestSweepResetsInProgressIssueToTodo(t *testing.T) {
 	})
 
 	// Create a stale running task for the issue (3 hours old — beyond any timeout).
+	// Exhaust retry eligibility so the actual issue-reset predicate is exercised.
 	var taskID string
 	err = testPool.QueryRow(ctx, `
-		INSERT INTO agent_task_queue (agent_id, runtime_id, issue_id, status, priority, dispatched_at, started_at)
-		VALUES ($1, $2, $3, 'running', 0, now() - interval '3 hours', now() - interval '3 hours')
+		INSERT INTO agent_task_queue (agent_id, runtime_id, issue_id, status, priority, dispatched_at, started_at, max_attempts)
+		VALUES ($1, $2, $3, 'running', 0, now() - interval '3 hours', now() - interval '3 hours', 1)
 		RETURNING id
 	`, agentID, runtimeID, issueID).Scan(&taskID)
 	if err != nil {
@@ -946,7 +959,7 @@ func TestSweepResetsInProgressIssueToTodo(t *testing.T) {
 	}
 
 	// This is what we're testing: issue must be reset from in_progress → todo.
-	broadcastFailedTasks(ctx, queries, nil, bus, failedTasks)
+	service.NewTaskService(queries, testPool, nil, bus).HandleFailedTasks(ctx, failedTasks)
 
 	var issueStatus string
 	err = testPool.QueryRow(ctx, `SELECT status FROM issue WHERE id = $1`, issueID).Scan(&issueStatus)
@@ -996,10 +1009,11 @@ func TestSweepDoesNotResetIssueAlreadyInReview(t *testing.T) {
 		testPool.Exec(ctx, `DELETE FROM issue WHERE id = $1`, issueID)
 	})
 
+	// Exhaust retry eligibility so the actual issue-reset predicate is exercised.
 	var taskID string
 	err = testPool.QueryRow(ctx, `
-		INSERT INTO agent_task_queue (agent_id, runtime_id, issue_id, status, priority, dispatched_at, started_at)
-		VALUES ($1, $2, $3, 'running', 0, now() - interval '3 hours', now() - interval '3 hours')
+		INSERT INTO agent_task_queue (agent_id, runtime_id, issue_id, status, priority, dispatched_at, started_at, max_attempts)
+		VALUES ($1, $2, $3, 'running', 0, now() - interval '3 hours', now() - interval '3 hours', 1)
 		RETURNING id
 	`, agentID, runtimeID, issueID).Scan(&taskID)
 	if err != nil {
@@ -1022,7 +1036,7 @@ func TestSweepDoesNotResetIssueAlreadyInReview(t *testing.T) {
 		t.Fatalf("FailStaleTasks failed: %v", err)
 	}
 
-	broadcastFailedTasks(ctx, queries, nil, bus, failedTasks)
+	service.NewTaskService(queries, testPool, nil, bus).HandleFailedTasks(ctx, failedTasks)
 
 	// Issue should remain in_review — the sweeper must not clobber agent progress.
 	var issueStatus string

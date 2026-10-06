@@ -70,6 +70,13 @@ leaf data and before issue roots, under the workspace FOR UPDATE lock. That lock
 must wait for current fact writers; subsequent delete statements see their
 committed facts. Ordinary issue/project deletion retains iteration history.
 
+The runtime sweeper must use `TaskService.HandleFailedTasks`; its former
+test-only fallback was removed because it bypassed real retry eligibility and
+the shared writer. Final-failure fixtures explicitly exhaust their retry budget.
+`MarkIssueFirstExecuted` remains a lifetime analytics marker, not a participation
+start: it must not create iteration events or set current participation started.
+Only the actual successful StartAgentTask path can supply execution-start facts.
+
 Regression sources: `internal/handler/issue_iteration_test.go`,
 `issue_revision_test.go`, `project_association_concurrency_test.go` and
 `iteration_write_benchmark_test.go`. Performance thresholds and actual gate

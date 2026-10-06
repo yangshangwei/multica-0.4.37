@@ -105,8 +105,49 @@ tasks remain the latest TS evidence rather than claimed new S2 test runs.
 
 ## Remaining FG work
 
-W03–W14, W16 and W17 still require actual production-path integration or evidenced
-exemption. W02/W15 completion alone does not prove FG. Durable operation query/
+### W05 bounded cleanup plan (before edits)
+
+Scope: only `server/cmd/server/runtime_sweeper.go` and its existing tests. Remove
+the duplicate `broadcastFailedTasks` fallback and its private
+`reconcileAgentStatus` helper: repository search found only five test callers,
+while production already calls `TaskService.HandleFailedTasks` directly.
+First run those five existing DB regressions unchanged to lock payload workspace
+identity, agent reconciliation, stale dispatched behavior and in-progress/review
+reset semantics. Then make the five tests construct the real TaskService with a
+transaction starter; delete the fallback and now-unused imports. Rerun the same
+regressions and relevant service tests. Add no replacement abstraction or new
+dependency. W04's recorder integration remains a separate implementation concern;
+this cleanup removes the test-only bypass rather than claiming W04 completed.
+
+The five unchanged baseline tests passed under `-race` in
+`/tmp/multica-i1-s2-w05-before.log`. After switching to the real service, the
+default retry budget caused retry-pending behavior (no deliverable final error
+and no issue reset); the old fallback had hidden that prerequisite. These
+failures are retained at `/tmp/multica-i1-s2-w05-after.log` and
+`/tmp/multica-i1-s2-w05-production.log`. Fixtures now explicitly exhaust retry
+eligibility, preserving every original final-settlement assertion without
+altering production retry policy. All five pass in
+`/tmp/multica-i1-s2-w05-final.log`. Command: guarded
+`go -C server test -race -p 2 -parallel 2 ./cmd/server -run 'TestSweep(StaleTasksBroadcastsWithWorkspaceID|StaleTasksReconcileAgentStatus|DispatchedStaleTask|ResetsInProgressIssueToTodo|DoesNotResetIssueAlreadyInReview)$' -count=1 -v`.
+The two unused fallback functions are deleted; no replacement abstraction,
+dependency or production caller was added. Independent review found no blocker.
+
+### W17 analytics exemption
+
+`TestFirstCompletionAnalyticsDoesNotCreateIterationFacts` invokes the real
+`emitIssueExecutedOnFirstCompletion` helper twice over persisted fixtures. A task
+that ran before the current participation sets the lifetime first_executed_at
+once while leaving events/started/scope/revision/original/pointer/rollover/status
+unchanged. The existing activity regression also passes. Guarded handler race
+command with `-run 'Test(FirstCompletionAnalyticsDoesNotCreateIterationFacts|MarkIssueFirstExecutedDoesNotChangeActivity)$' -count=1 -v`:
+two passes, no skips, `/tmp/multica-i1-s2-w17.log`. This is a narrow W17
+non-fact-writer exemption, not full completion HTTP or W16 start coverage.
+Independent review accepts that scope. Changed packages pass `go vet -p 2`;
+`/tmp/multica-i1-s2-w05-w17-vet.log`. gofmt and diff checks pass.
+
+W03/W04, W06–W14 and W16 still require actual production-path integration.
+W05's test-only writer is removed and W17 has its narrow exemption evidence.
+These completed slices do not prove FG. Durable operation query/
 replay authorization, settings/capability, explicit-field compatibility, member
 revocation cleanup and non-recreation, remaining two-connection races, populated
 workspace throughput and server-side lock-wait measurements remain outstanding.
