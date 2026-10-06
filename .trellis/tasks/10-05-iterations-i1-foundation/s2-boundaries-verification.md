@@ -103,3 +103,8 @@ FG remains incomplete: durable write-operation business orchestration,
 capability/settings, remaining authorization audit, populated-workspace capacity
 and server lock-wait evidence are not supplied by these passes. The feature
 remains disabled and lifecycle/history/closure/client gates remain closed.
+
+A subsequent investigation resolved the retained source-context cleanup failure
+as a statistics-dependent multirow claim in the existing SQL. See
+[s2-source-cleanup-verification.md](s2-source-cleanup-verification.md) for the
+reproduction, MATERIALIZED fix and final48-entry repeated regression.

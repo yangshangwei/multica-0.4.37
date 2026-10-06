@@ -74,7 +74,7 @@ retaining its original 404/400 and no-orphan assertions.
 ## Verification results
 
 The commands below define the focused checks used for this slice; the final
-results and the one superseded local failure are recorded immediately below.
+results and the one subsequently diagnosed query failure are recorded immediately below.
 The final service, root integrated handler, build, vet and diff checks all
 completed with exit 0. Agent CLI guard was enabled for every substantive test
 run; no real agent CLI ran.
@@ -109,10 +109,11 @@ go -C server build ./internal/service ./internal/handler
 - Existing rollback/replay/concurrency coverage includes T1 audit failure,
   every required lifecycle write failure, source-context capture, concurrent
   review/import dedup, P1 project dispatch/deletion and create issue limits.
-- A preceding local handler run observed a source-context cleanup count of 1
-  where the existing test expects at least 3. No production change followed;
-  the root's final isolated integrated run passed that exact full test. This
-  observation is retained rather than silently reporting every local run green.
+- A preceding local handler run observed source-context cleanup count1 instead
+  of3. Subsequent investigation proved a statistics-dependent query rescan that
+  leased3 rows while QueryRow returned1. Root fixed it with a MATERIALIZED
+  candidate and a deterministic real-database regression; see
+  `s2-source-cleanup-verification.md`. A later pass alone was not the resolution.
 - Local raw logs: `/tmp/i1-creation-red.log`,
   `/tmp/i1-creation-authorization-red.log`,
   `/tmp/i1-creation-reference-red.log`,
