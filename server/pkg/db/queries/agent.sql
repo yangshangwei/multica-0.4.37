@@ -1117,7 +1117,7 @@ RETURNING *;
 -- "previously waited".
 UPDATE agent_task_queue
 SET status = 'running',
-    started_at = now(),
+    started_at = clock_timestamp(),
     wait_reason = NULL,
     prepare_lease_expires_at = NULL
 WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)
@@ -2781,3 +2781,8 @@ SELECT lock_issue_execution(sqlc.narg(issue_id)::uuid, sqlc.narg(trigger_comment
 SELECT * FROM agent
 WHERE id = sqlc.arg('id') AND workspace_id = sqlc.arg('workspace_id')
 FOR SHARE NOWAIT;
+
+-- name: LockAgentTaskForStart :one
+-- Internal runtime caller resolves and locks the owning workspace/issue first.
+-- NOWAIT avoids reversing another task-owner/issue writer's lock order.
+SELECT * FROM agent_task_queue WHERE id=$1 FOR UPDATE NOWAIT;

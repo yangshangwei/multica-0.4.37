@@ -152,30 +152,8 @@ func RecordIssueChange(ctx context.Context, tx pgx.Tx, record *IssueRecord, afte
 	if facts == record.facts {
 		return nil
 	}
-	var identity struct {
-		Type   string      `json:"type"`
-		ID     pgtype.UUID `json:"id"`
-		UserID pgtype.UUID `json:"user_id"`
-		Source string      `json:"source"`
-	}
-	if !operationID.Valid || operationID.Bytes == [16]byte{} || json.Unmarshal(actor, &identity) != nil {
-		return errors.New("iteration event requires operation and actor identity")
-	}
-	switch identity.Type {
-	case "member", "agent":
-		if !identity.ID.Valid || identity.ID.Bytes == [16]byte{} || !identity.UserID.Valid || identity.UserID.Bytes == [16]byte{} {
-			return errors.New("member and agent iteration actors require a user identity")
-		}
-	case "plugin":
-		if !identity.ID.Valid || identity.ID.Bytes == [16]byte{} || identity.UserID.Valid {
-			return errors.New("plugin iteration actors must not impersonate a member")
-		}
-	case "system":
-		if identity.ID.Valid || identity.UserID.Valid || strings.TrimSpace(identity.Source) == "" {
-			return errors.New("system iteration actors require an explicit source and no member identity")
-		}
-	default:
-		return errors.New("unsupported iteration actor")
+	if err := validateIssueRecordIdentity(actor, operationID); err != nil {
+		return err
 	}
 
 	if facts.HasStarted && !record.facts.HasStarted {
@@ -208,4 +186,35 @@ func RecordIssueChange(ctx context.Context, tx pgx.Tx, record *IssueRecord, afte
 		return fmt.Errorf("append iteration issue event: %w", err)
 	}
 	return q.AdvanceIterationScopeRevision(ctx, db.AdvanceIterationScopeRevisionParams{WorkspaceID: after.WorkspaceID, ID: after.CurrentIterationID})
+}
+
+// validateIssueRecordIdentity is shared by factual edit, deletion and start writers.
+func validateIssueRecordIdentity(actor json.RawMessage, operationID pgtype.UUID) error {
+	var identity struct {
+		Type   string      `json:"type"`
+		ID     pgtype.UUID `json:"id"`
+		UserID pgtype.UUID `json:"user_id"`
+		Source string      `json:"source"`
+	}
+	if !operationID.Valid || operationID.Bytes == [16]byte{} || json.Unmarshal(actor, &identity) != nil {
+		return errors.New("iteration event requires operation and actor identity")
+	}
+	switch identity.Type {
+	case "member", "agent":
+		if !identity.ID.Valid || identity.ID.Bytes == [16]byte{} || !identity.UserID.Valid || identity.UserID.Bytes == [16]byte{} {
+			return errors.New("member and agent iteration actors require a user identity")
+		}
+	case "plugin":
+		if !identity.ID.Valid || identity.ID.Bytes == [16]byte{} || identity.UserID.Valid {
+			return errors.New("plugin iteration actors must not impersonate a member")
+		}
+	case "system":
+		if identity.ID.Valid || identity.UserID.Valid || strings.TrimSpace(identity.Source) == "" {
+			return errors.New("system iteration actors require an explicit source and no member identity")
+		}
+	default:
+		return errors.New("unsupported iteration actor")
+	}
+
+	return nil
 }

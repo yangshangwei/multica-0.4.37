@@ -7222,6 +7222,83 @@ func (q *Queries) LockAgentForAutopilotDispatch(ctx context.Context, arg LockAge
 	return i, err
 }
 
+const lockAgentTaskForStart = `-- name: LockAgentTaskForStart :one
+SELECT id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source FROM agent_task_queue WHERE id=$1 FOR UPDATE NOWAIT
+`
+
+// Internal runtime caller resolves and locks the owning workspace/issue first.
+// NOWAIT avoids reversing another task-owner/issue writer's lock order.
+func (q *Queries) LockAgentTaskForStart(ctx context.Context, id pgtype.UUID) (AgentTaskQueue, error) {
+	row := q.db.QueryRow(ctx, lockAgentTaskForStart, id)
+	var i AgentTaskQueue
+	err := row.Scan(
+		&i.ID,
+		&i.AgentID,
+		&i.IssueID,
+		&i.Status,
+		&i.Priority,
+		&i.DispatchedAt,
+		&i.StartedAt,
+		&i.CompletedAt,
+		&i.Result,
+		&i.Error,
+		&i.CreatedAt,
+		&i.Context,
+		&i.RuntimeID,
+		&i.SessionID,
+		&i.WorkDir,
+		&i.TriggerCommentID,
+		&i.ChatSessionID,
+		&i.AutopilotRunID,
+		&i.Attempt,
+		&i.MaxAttempts,
+		&i.ParentTaskID,
+		&i.FailureReason,
+		&i.TriggerSummary,
+		&i.ForceFreshSession,
+		&i.IsLeaderTask,
+		&i.WaitReason,
+		&i.InitiatorUserID,
+		&i.HandoffNote,
+		&i.PrepareLeaseExpiresAt,
+		&i.SquadID,
+		&i.RuntimeMcpOverlay,
+		&i.EscalationForTaskID,
+		&i.FireAt,
+		&i.OriginatorUserID,
+		&i.RuntimeConnectedApps,
+		&i.CoalescedCommentIds,
+		&i.DeliveredCommentIds,
+		&i.ChatInputTaskID,
+		&i.ChatFinalizeDeferredAt,
+		&i.OriginatorSource,
+		&i.DelegatedFromTaskID,
+		&i.RetryOfTaskID,
+		&i.RerunOfTaskID,
+		&i.RuleVersionID,
+		&i.TriggerEvidenceKind,
+		&i.TriggerEvidenceRefID,
+		&i.AccountableUserID,
+		&i.SessionRolloutMissing,
+		&i.RetiredSessionID,
+		&i.QuickActionsDisabled,
+		&i.RegenerateQuickActionsFor,
+		&i.BranchName,
+		&i.DurableWorkDir,
+		&i.ChannelContextRevision,
+		&i.SubmittedInstallationID,
+		&i.ExecutionInstallationID,
+		&i.ExecutionBindingID,
+		&i.ExecutionBindingEpoch,
+		&i.StateVersion,
+		&i.ExecutionAdmissionVersion,
+		&i.ClaimGeneration,
+		&i.QueuedAt,
+		&i.QueuedAtSource,
+	)
+	return i, err
+}
+
 const lockIssueExecution = `-- name: LockIssueExecution :one
 SELECT lock_issue_execution($1::uuid, $2::uuid, $3::uuid[], $4::jsonb)::boolean AS allowed
 `
@@ -8975,7 +9052,7 @@ func (q *Queries) SetTaskDeliveredCommentIDs(ctx context.Context, arg SetTaskDel
 const startAgentTask = `-- name: StartAgentTask :one
 UPDATE agent_task_queue
 SET status = 'running',
-    started_at = now(),
+    started_at = clock_timestamp(),
     wait_reason = NULL,
     prepare_lease_expires_at = NULL
 WHERE lock_issue_execution(issue_id, trigger_comment_id, coalesced_comment_ids, context)

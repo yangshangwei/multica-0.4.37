@@ -4159,7 +4159,7 @@ func (s *TaskService) StartTask(ctx context.Context, taskID pgtype.UUID) (*db.Ag
 	if err := s.checkIssueExecution(ctx, s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
 		return nil, err
 	}
-	task, err := s.Queries.StartAgentTask(ctx, taskID)
+	task, err := s.startTaskAtomically(ctx, current)
 	if err != nil {
 		return nil, fmt.Errorf("start task: %w", err)
 	}
