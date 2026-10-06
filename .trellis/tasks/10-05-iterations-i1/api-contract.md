@@ -1,6 +1,6 @@
 # I1 API / 数据合同 v1
 
-`GET W/iteration-operations/{request_id}`、capability/settings 读取及默认关闭发布开关后的 settings enable 已实现。其余生命周期/历史/结束产品路径由后续阶段实现。planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
+`GET W/iteration-operations/{request_id}`、capability/settings 读取及默认关闭发布开关后的 settings enable 已实现。生命周期 LG 与历史 HG 的 API 已进入本轮整合；结束/交接/禁用仍归 CG。planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
 
 ## 端点
 
@@ -53,7 +53,7 @@ Draft={operation:start|move|end|cancel|disable|delete|handoff,iteration_id:null|
  terminal_choices:[{issue_id,retain:boolean}]}|null}
 Preview={workspace_id,actor_user_id,draft,preview_hash,previewed_at,
  start_preview:{reference_date,effective_start_date,effective_end_date,timezone}|null,
- iterations:Iteration[],issues:[{issue_id,revision,source_id,status_category,project,assignee,
+ iterations:Iteration[],issues:[{issue_id,identifier,revision,source_id,status_category,project,assignee,
  title,running_execution_count,rollover_count}],statistics,recipients:[UUID],
  invalid_items:[{issue_id:null|UUID,code}],total_affected,complete:boolean}
 WriteResult={workspace_id,request_id,operation_id,operation,replayed:boolean,iteration_ids:[UUID],
@@ -72,7 +72,9 @@ Preview 来自同一事务全量集合，客户端页大小不能决定 total_af
 
 ## 兼容、T1 与错误
 
-Issue 新响应字段 `current_iteration_id?:UUID|null, iteration_rollover_count?:integer`；旧对象省略表示不支持/未知，不能显示计数0伪装已知。通用更新不带字段保留；带迭代字段必须走同一服务/CAS，不接受不带 expected_revision 的迭代写（428 iteration_confirmation_required）；通用批量含迭代走完整 preview 操作协议，否则428。新任务创建带迭代时原创建事务校验并加入；要求分拣入口拒绝正式归属但可展示候选意向，CSV 报告未采用。
+Issue 新响应字段 `current_iteration_id?:UUID|null, iteration_rollover_count?:integer`；旧对象省略表示不支持/未知，不能显示计数0伪装已知。通用更新不带字段保留；带迭代字段必须走同一服务/CAS，不接受不带 expected_revision 的迭代写（428 iteration_confirmation_required）；通用批量含迭代走完整 preview 操作协议，否则428。新任务创建的非空 current_iteration_id 需同时提供 expected_iteration_revision（目标版本），在原创建事务校验并加入；保留原有重复任务 409 行为，不另建 iteration_operation。单任务 PUT 的迭代分支仅接受 current_iteration_id、expected_revision、iteration_reason、allow_completed；与其他字段混合明确返回 400，移出/换期须填 iteration_reason。iteration_rollover_count 始终由服务器维护。要求分拣入口拒绝正式归属但可展示候选意向，CSV 报告未采用。
+
+普通创建的 `allow_completed` 为可选布尔字段，仅非空 `current_iteration_id` 时适用；创建 done 任务并加入 active 必须显式为 true，默认 false。planned 不接纳新终态任务，cancelled 任务不能以此绕过限制。该字段不改变普通创建原有的负责人执行入队行为，也不额外记录 execution_started。
 
 T1 `TriageActionInput.fields.current_iteration_id` 仅 accept/accept_and_execute 支持，accept 的 request_id 仍为唯一操作身份，先按目标正式 status 校验、同事务接受+安排；执行显式意图沿用 T1 outbox，不生成第二个执行。T1 能力响应增加可选 iteration_assignment，服务端全部接好后才 true；不支持时 UI 不提交新字段，手工调用未知字段明确拒绝。
 
@@ -81,3 +83,12 @@ T1 `TriageActionInput.fields.current_iteration_id` 仅 accept/accept_and_execute
 错误统一 `{error,code,field_errors?,current?,retryable?}`：400 invalid_request；401 unauthenticated；403 forbidden；404 iteration_not_found/operation_not_found；409 iteration_preview_stale/iteration_active_conflict/iteration_revision_conflict/iteration_history_move_unsupported/idempotency_conflict；422 iteration_validation_failed/iteration_disabled；428 iteration_confirmation_required；413 iteration_operation_too_large；503 iteration_retry_exhausted（写冲突预算耗尽）或 iteration_unavailable（结果读取/存储不可用），Retry-After:1。T1 原有409 triage_review_required保持原合同，新增迭代入口准入拒绝也用409同码，不能以新422更改旧入口。current 绝不带无权任务标题/计数。
 
 operation_id 由服务端为首次成功写生成，保存在 iteration_operation.id；同请求重放返回原值。event/snapshot/notification 使用该稳定ID，不能仅以不同actor可重复的request_id关联。T1接受中的迭代事件沿用其既有稳定 action identity，并在事件actor/type中可辨来源，不伪造另一份执行或迭代操作。
+
+## LG/HG 当前接口边界
+
+- 周期维护操作目前要求当前人类工作空间成员；设置启用仍限 owner/admin，不从任务指派推导新的机器维护权限。普通任务的确认归属写入沿用现有 Contributor/任务授权。
+- 所有新生命周期请求在类型解码前拒绝重复对象字段（含 JSON 解码会视为同一字段的大小写别名），保留原始数字验证，拒绝尾随 JSON 与过深嵌套。
+- 周期列表使用 `(start_date,id)` keyset，游标绑定工作空间、过滤条件和集合版本；集合/范围变化返回 cursor_stale。单期事项/事件页绑定对应 revision/scope_revision。
+- 已关闭详情和事项集合只读冻结 snapshot；事件接口还可读取追加的元数据更正审计，但不重算或覆写 snapshot.events/statistics。
+- 原始承诺保存完整 HistoricalIssue 与本次参与的 started 事实。空旧前缀使用现有冻结回退规则；预览 identifier 纳入确认哈希，前缀或旧空间名称变化须重新预览。
+- snapshot.destinations 必须完整覆盖冻结 scope，终态/移出显式 null 且计数不变，合法结转为 +1；不得省略字段、重复任务或结转回本期。真实目标状态/权限与原子结束由 CG 验证。

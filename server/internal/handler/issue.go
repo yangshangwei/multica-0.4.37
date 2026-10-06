@@ -104,6 +104,9 @@ type IssueResponse struct {
 	// SourceContext is detail-only. List, board, search, and children responses
 	// deliberately omit the potentially large immutable snapshot.
 	SourceContext *sourceContextDetailResponse `json:"source_context,omitempty"`
+
+	CurrentIterationID     *string `json:"current_iteration_id"`
+	IterationRolloverCount int32   `json:"iteration_rollover_count"`
 }
 
 // validIssuePriorities mirrors the CHECK constraint on the issue table. Write
@@ -330,6 +333,9 @@ func issueToResponse(i db.Issue, issuePrefix string) IssueResponse {
 		LastActivityAt:  timestampToNanoPtr(i.LastActivityAt),
 		Metadata:        parseIssueMetadata(i.Metadata),
 		Properties:      parseIssueProperties(i.Properties),
+
+		CurrentIterationID:     uuidToPtr(i.CurrentIterationID),
+		IterationRolloverCount: i.IterationRolloverCount,
 	}
 }
 
@@ -368,6 +374,9 @@ func issueListRowToResponse(i db.ListIssuesRow, issuePrefix string) IssueRespons
 		LastActivityAt:  timestampToNanoPtr(i.LastActivityAt),
 		Metadata:        parseIssueMetadata(i.Metadata),
 		Properties:      parseIssueProperties(i.Properties),
+
+		CurrentIterationID:     uuidToPtr(i.CurrentIterationID),
+		IterationRolloverCount: i.IterationRolloverCount,
 	}
 }
 
@@ -438,6 +447,9 @@ func openIssueRowToResponse(i db.ListOpenIssuesRow, issuePrefix string) IssueRes
 		LastActivityAt:  timestampToNanoPtr(i.LastActivityAt),
 		Metadata:        parseIssueMetadata(i.Metadata),
 		Properties:      parseIssueProperties(i.Properties),
+
+		CurrentIterationID:     uuidToPtr(i.CurrentIterationID),
+		IterationRolloverCount: i.IterationRolloverCount,
 	}
 }
 
@@ -866,7 +878,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
 		i.parent_issue_id, i.acceptance_criteria, i.context_refs, i.position,
 		i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id,
-		i.revision, i.admission_status,
+		i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count,
 		COUNT(*) OVER() AS total_count,
 		%s AS match_source,
 		%s AS matched_comment_content
@@ -966,6 +978,7 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 				&sr.issue.Number,
 				&sr.issue.ProjectID,
 				&sr.issue.Revision, &sr.issue.AdmissionStatus,
+				&sr.issue.CurrentIterationID, &sr.issue.IterationRolloverCount,
 				&sr.totalCount,
 				&sr.matchSource,
 				&sr.matchedCommentContent,
@@ -1508,7 +1521,7 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	query := fmt.Sprintf(`SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
        i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
        i.parent_issue_id, i.position, i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id, i.metadata, i.stage, i.properties,
-	   i.revision, i.admission_status
+	   i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count
 FROM issue i
 WHERE %s
 ORDER BY %s
@@ -1549,6 +1562,7 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 			&row.Stage,
 			&row.Properties,
 			&row.Revision, &row.AdmissionStatus,
+			&row.CurrentIterationID, &row.IterationRolloverCount,
 		); err != nil {
 			slog.Warn("ListIssues scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "failed to list issues")
@@ -2100,6 +2114,7 @@ WITH ranked AS (
 		i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
 		i.parent_issue_id, i.position, i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at,
 		i.number, i.project_id, i.metadata, i.stage, i.properties, i.revision, i.admission_status,
+		i.current_iteration_id, i.iteration_rollover_count,
 		COUNT(*) OVER (PARTITION BY i.assignee_type, i.assignee_id) AS group_total,
 		ROW_NUMBER() OVER (
 			PARTITION BY i.assignee_type, i.assignee_id
@@ -2112,7 +2127,8 @@ SELECT
 	id, workspace_id, title, description, status, priority,
 	assignee_type, assignee_id, creator_type, creator_id,
 	parent_issue_id, position, start_date, due_date, created_at, updated_at, last_activity_at,
-	number, project_id, metadata, stage, properties, revision, admission_status, group_total
+	number, project_id, metadata, stage, properties, revision, admission_status,
+	current_iteration_id, iteration_rollover_count, group_total
 FROM ranked
 WHERE rn > %s AND rn <= %s + %s
 ORDER BY
@@ -2161,6 +2177,7 @@ ORDER BY
 			&row.Stage,
 			&row.Properties,
 			&row.Revision, &row.AdmissionStatus,
+			&row.CurrentIterationID, &row.IterationRolloverCount,
 			&row.GroupTotal,
 		); err != nil {
 			slog.Warn("ListGroupedIssues scan failed", "error", err)
@@ -2774,8 +2791,10 @@ func readRuntimeCLIVersion(metadata []byte) string {
 
 type CreateIssueRequest struct {
 	// Explicit iteration writes require the confirmed operation protocol.
-	CurrentIterationID     json.RawMessage `json:"current_iteration_id,omitempty"`
-	IterationRolloverCount json.RawMessage `json:"iteration_rollover_count,omitempty"`
+	CurrentIterationID        json.RawMessage `json:"current_iteration_id,omitempty"`
+	IterationRolloverCount    json.RawMessage `json:"iteration_rollover_count,omitempty"`
+	ExpectedIterationRevision json.RawMessage `json:"expected_iteration_revision,omitempty"`
+	AllowCompleted            json.RawMessage `json:"allow_completed,omitempty"`
 
 	Title         string   `json:"title"`
 	Description   *string  `json:"description"`
@@ -2815,7 +2834,9 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if rejectUnconfirmedIterationWrite(w, req.CurrentIterationID, req.IterationRolloverCount) {
+	assignment, assignmentErr := h.parseIssueIterationCreate(r, req)
+	if assignmentErr != nil {
+		writeIterationAPIError(w, assignmentErr)
 		return
 	}
 
@@ -3009,6 +3030,7 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		return out
 	}
 
+	assignmentHooks := h.issueIterationCreateHooks(r, assignment, creatorType, actualCreatorID, creatorID)
 	res, err := h.IssueService.Create(r.Context(), service.IssueCreateParams{
 		WorkspaceID:    wsUUID,
 		Title:          req.Title,
@@ -3032,8 +3054,14 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 	}, service.IssueCreateOpts{
 		ActorUserID: parseUUID(creatorID),
 		PrepareInTx: func(_ context.Context, tx pgx.Tx, params *service.IssueCreateParams) error {
+			if assignmentHooks.before != nil {
+				if err := assignmentHooks.before(r.Context(), tx, params); err != nil {
+					return err
+				}
+			}
 			return h.prepareIssueCreationInTx(r, tx, params, creatorType, actualCreatorID, actorTaskID)
 		},
+		AfterCreateInTx:  assignmentHooks.after,
 		ActorID:          actualCreatorID,
 		AnalyticsAgentID: analyticsAgentID,
 		Platform:         func() string { p, _, _ := middleware.ClientMetadataFromContext(r.Context()); return p }(),
@@ -3056,6 +3084,9 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 
+	if writeIssueIterationOperationError(w, err) {
+		return
+	}
 	if writeIssueUpdateAccessError(w, err) {
 		return
 	}
@@ -3418,8 +3449,12 @@ func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID
 			if agent.ArchivedAt.Valid {
 				return &issueUpdateAccessError{403, "actor unavailable"}
 			}
-			if (params.Status.Valid || requestTouchesIssueDirection(rawFields)) && !service.AutonomyAtLeast(agent.AutonomyLevel, service.AutonomyContributor) {
-				return &issueUpdateAccessError{403, autonomyDenialMessage(agent.AutonomyLevel, service.AutonomyContributor, "change an issue's status or assignee")}
+			if (params.Status.Valid || requestTouchesIssueDirection(rawFields) || len(rawFields["current_iteration_id"]) > 0) && !service.AutonomyAtLeast(agent.AutonomyLevel, service.AutonomyContributor) {
+				action := "change an issue's status or assignee"
+				if len(rawFields["current_iteration_id"]) > 0 {
+					action = "change an issue's iteration"
+				}
+				return &issueUpdateAccessError{403, autonomyDenialMessage(agent.AutonomyLevel, service.AutonomyContributor, action)}
 			}
 		}
 		currentType, currentActor := scoped.resolveActor(r, requestUserID(r), uuidToString(workspaceID))
@@ -3578,6 +3613,16 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	if err := lockIssueWriteFences(ctx, tx, workspaceID, userID); err != nil {
 		return db.Issue{}, db.Issue{}, false, err
 	}
+	if len(rawFields["current_iteration_id"]) > 0 {
+		issue, current, err := h.updateIssueIterationInTx(ctx, tx, workspaceID, params, rawFields, actor, operationID, authorize)
+		if err != nil {
+			return db.Issue{}, current, false, err
+		}
+		if err = tx.Commit(ctx); err != nil {
+			return db.Issue{}, current, false, err
+		}
+		return issue, current, false, nil
+	}
 
 	// This path opens its own transaction, so it carries the archive-race guard
 	// itself rather than going through runWithIssueStatusGuard. The catalog lock
@@ -3728,7 +3773,8 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Track which fields were explicitly present in JSON (even if null)
-	if rejectUnconfirmedIterationWrite(w, req.CurrentIterationID, req.IterationRolloverCount) {
+	if len(req.CurrentIterationID) > 0 || len(req.IterationRolloverCount) > 0 {
+		h.updateIssueIterationAssignment(w, r, prevIssue, bodyBytes, req)
 		return
 	}
 

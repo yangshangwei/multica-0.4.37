@@ -63,6 +63,14 @@ one transaction. Plain accept never enqueues, inherits a project squad, or emits
 an ordinary execution-triggering event. Use `triage:updated` after commit for
 cache refresh. Batch items commit separately and preserve per-item outcomes.
 
+I1 adds optional `fields.current_iteration_id` only to accept/accept-and-execute
+when `iteration_assignment` is advertised. Target locks precede pending issue
+locks; final field validation and membership preparation precede the single
+business-time sample and any label/admission mutation. The action ID is stable
+across retries. Current agent/squad invocation checks must use the locked grant
+rows, not a later permission read. See [iteration contracts](iterations.md) and
+`triage_iteration_assignment_test.go` / `triage_iteration_authorization_test.go`.
+
 `accept_and_execute` is a separate human intention. Store the accepted issue
 and pending execution action before preparing external resources. Retain the
 authorizing human, assignee/leader, runtime and project/resource/content context.

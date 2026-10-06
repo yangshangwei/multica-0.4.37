@@ -1223,10 +1223,7 @@ func splitIdentifier(id string) *identifierParts {
 // issue in those legacy workspaces. New workspaces always persist a prefix at
 // creation, so they never reach this branch.
 func issuePrefixForWorkspace(ws db.Workspace) string {
-	if ws.IssuePrefix != "" {
-		return ws.IssuePrefix
-	}
-	return legacyIssuePrefixFromName(ws.Name)
+	return util.ResolveIssuePrefix(ws.IssuePrefix, ws.Name)
 }
 
 // getIssuePrefix fetches the effective issue_prefix for a workspace, and

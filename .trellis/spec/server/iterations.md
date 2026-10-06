@@ -138,11 +138,11 @@ entity is required to recover a stored result. Stored references and numeric
 counters are validated before returning them to clients. Member revocation
 removes protected I1 notifications atomically under the recipient fence.
 
-Generic HTTP/Plugin writes with explicit iteration fields currently return428,
-including null; omission preserves current membership. This restriction must
-be replaced only by the confirmed lifecycle writer, never silent field dropping.
-Full capability and lifecycle gates remain pending; the latest foundation
-verification ledgers, not the existence of these helpers, establish readiness.
+Explicit generic batch/Plugin iteration writes and release-disabled HTTP
+assignment return428, including null; omission preserves current membership.
+Confirmed ordinary HTTP create/update now use the LG borrowed membership
+writer described below. The release gate remains off; gate ledgers, not the
+existence of these helpers, establish readiness.
 
 ## FG operation boundary and read pipeline
 
@@ -166,3 +166,100 @@ transaction and revalidates authority inside it. The callback receives a fresh
 params copy per retry and derives live provenance only from locked references.
 Create, update and lifecycle invocation checks use the actual returned locked
 grant set, not a later allow-list read that could observe an unheld new grant.
+
+## LG/HG lifecycle and history contract
+
+### Scope and trigger
+
+These rules apply when changing period management, ordinary issue assignment,
+T1 acceptance or historical reads. CG owns actual close/handoff/disable and
+outbox delivery. Keep `iterations_i1` default off and `atomic_handoff=false`.
+
+### Signatures
+
+- `IterationService.Create`, `Edit`, `Preview`, `Apply` own period operations.
+  Writes reuse `iteration.RunOperation`; preview uses bounded fresh RR attempts.
+- `PrepareMembershipChange(ctx, tx, before, source, target, allowCompleted)`
+  prepares a borrowed write; `CommitMembershipChange(ctx, tx, change, actor,
+  operationID, businessAt)` records it in the same caller transaction.
+- `CaptureHistoricalIssues`, `LoadHistory`, `BuildSnapshot`, `DecodeSnapshot`
+  share the canonical statistics/chart implementation. Capture locks display
+  references for writers; reads use one authorized RR view.
+- Workspace routes: `GET/POST iterations`, `GET/PUT iterations/{id}`,
+  `GET iterations/{id}/issues`, `GET iterations/{id}/events`,
+  `POST iteration-previews`, `POST iteration-operations`.
+
+### Request, transaction and response contracts
+
+Period maintenance requires a current human workspace member; settings enable
+requires owner/admin. A machine's issue assignment rights do not confer period
+maintenance rights. All operation attempts reauthorize under existing fences.
+Preview includes the whole affected set and hashes the captured identifier and
+live assignee/squad/leader availability. Start emits its marker before baseline
+events, fixing original commitment by sequence even at equal timestamps.
+
+Confirmed `POST /issues` requires `expected_iteration_revision` with a nonnull
+`current_iteration_id`. A done issue joining active additionally requires
+`allow_completed=true`. It preserves ordinary duplicate409 and enqueue behavior.
+Membership-only `PUT /issues/{id}` requires `expected_revision`; actual leave or
+switch needs `iteration_reason`. It accepts only those fields and optional
+`allow_completed`; it cannot mix ordinary status/title/assignee edits.
+Rollover is server-owned. Response builders AND handwritten SELECT/Scan paths
+must expose real nullable `current_iteration_id` and integer rollover.
+
+T1 accepts optional `fields.current_iteration_id` only for accept and
+accept-and-execute. Lock settings/target before pending issue rows. Validate
+and lock all final references/grants/labels, project the accepted issue with
+its next revision, prepare membership, then sample once before label/admission
+mutations. Reuse one action identity across the existing four-attempt owner.
+Plain acceptance does not enqueue; execution retains its own idempotent action.
+Capability reads inside settings writes must use the transaction-bound queries;
+borrowing a second pool connection can deadlock a single-connection pool.
+
+Closed statistics/scope come exclusively from a validated stored snapshot.
+`Snapshot.Events` is frozen; `/events` may include later metadata audit.
+Destinations must cover all scope items, contain explicit nullable target and
+integer counters, and exclude terminal/self rollover. Baseline issue identity
+must match its event. Historical names use the stored legacy prefix resolver;
+live availability is separate. Never repair bad snapshots from live joins.
+
+### Validation and error matrix
+
+| Condition | Result |
+| --- | --- |
+| Release-off explicit assignment or client rollover | 428 |
+| Missing create target revision or update issue revision | 428 |
+| Mixed membership/ordinary edits, malformed acknowledgment | 400 |
+| Duplicate raw management keys, Unicode-fold aliases, unknown fields | 400 |
+| Stale preview/revision, changed request payload, stale cursor | 409 |
+| Affected set exceeds 2,000, or management body exceeds 4 MiB | 413; no partial mutation |
+| Membership or current invocation grant revoked | 403; no business mutation |
+| NOWAIT lock conflict / RR serialization conflict | Preserve PG error for the owning bounded retry |
+
+### Good, base and bad cases
+
+- Good: preview all 1,000 tasks, confirm its hash, move/start atomically and
+  capture every original. Same request returns its stored result without events.
+- Base: ordinary issue edit omits iteration fields and preserves membership.
+- Bad: treat archived agent display data as current authority, silently truncate
+  a preview, or use a later unlocked grant to authorize acceptance.
+
+### Required regression evidence
+
+Use real isolated PostgreSQL with the agent CLI guard. Lifecycle tests cover
+single active, complete sets, stale/unauthorized rollback, terminal choices,
+reentry, midnight/backclock, replay and unchanged running execution. HTTP/T1
+tests cover current grants, one enqueue, duplicate/Unicode envelopes, JWT scope
+and release-off routes. History A–J asserts O8/current9/effective8/completed5/
+original_completed4 and 62.5%/50%, including deleted originals and frozen reads.
+See lifecycle/history task `verification.md` for commands and gate limits.
+
+### Wrong versus correct
+
+Wrong: decode a management request directly into a Go struct before checking
+duplicates; `start_date` and `ſtart_date` can overwrite the same field.
+Correct: `ValidateObjectJSON(raw)` before typed `DisallowUnknownFields` decoding.
+
+Wrong: validate the T1 iteration after acceptance SQL and sample again.
+Correct: prepare from the final accepted projection and sample before the first
+business mutation; use that one sample and transaction for admission and join.

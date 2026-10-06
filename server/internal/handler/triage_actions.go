@@ -16,6 +16,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/attribution"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/dbid"
@@ -41,8 +42,11 @@ type triageExecutionContext struct {
 }
 
 func (h *Handler) triageValidateReferences(ctx context.Context, tx pgx.Tx, r *http.Request, ws, project pgtype.UUID, kind pgtype.Text, assignee pgtype.UUID) error {
+	scoped := *h
+	scoped.Queries, scoped.DB = h.Queries.WithTx(tx), tx
+	q := scoped.Queries
 	if project.Valid {
-		if _, err := h.Queries.WithTx(tx).LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: project, WorkspaceID: ws}); err != nil {
+		if _, err := q.LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: project, WorkspaceID: ws}); err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
 				return triageErr(400, "project unavailable")
 			}
@@ -50,23 +54,50 @@ func (h *Handler) triageValidateReferences(ctx context.Context, tx pgx.Tx, r *ht
 		}
 	}
 	if assignee.Valid {
-		var id pgtype.UUID
+		var agent db.Agent
 		var err error
 		switch kind.String {
 		case "agent":
-			err = tx.QueryRow(ctx, `SELECT id FROM agent WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT`, assignee, ws).Scan(&id)
+			agent, err = q.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: assignee, WorkspaceID: ws})
 		case "squad":
-			err = tx.QueryRow(ctx, `SELECT id FROM squad WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT`, assignee, ws).Scan(&id)
+			var squad db.Squad
+			squad, err = q.LockLifecycleSquad(ctx, db.LockLifecycleSquadParams{ID: assignee, WorkspaceID: ws})
+			if err == nil {
+				if squad.ArchivedAt.Valid {
+					return triageErr(400, "cannot assign to an archived squad")
+				}
+				agent, err = q.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: squad.LeaderID, WorkspaceID: ws})
+			}
 		case "member":
-			err = triageValidateMember(ctx, h.Queries.WithTx(tx), ws, assignee)
+			err = triageValidateMember(ctx, q, ws, assignee)
+		}
+		if errors.Is(err, pgx.ErrNoRows) {
+			return triageErr(400, "assignee unavailable")
 		}
 		if err != nil {
-			return triageReferenceError(err, "assignee unavailable")
+			// The outer T1 owner retains its existing NOWAIT retry budget.
+			return err
+		}
+		if agent.ArchivedAt.Valid {
+			if kind.String == "squad" {
+				return triageErr(400, "squad leader is archived; cannot assign to this squad")
+			}
+			return triageErr(400, "cannot assign to archived agent")
+		}
+		if agent.ID.Valid && agent.PermissionMode == "public_to" {
+			targets, err := q.LockProjectUpdateEvidenceTargets(ctx, agent.ID)
+			if err != nil {
+				return err
+			}
+			actorType, actorID := scoped.resolveActor(r, requestUserID(r), uuidToString(ws))
+			effectiveUser := scoped.invokeOriginatorFromRequest(r, actorType, actorID)
+			// A prestarted target replacement may insert grants even while the
+			// agent is locked. Only the captured locked rows may lend authority.
+			if !loadedInvocationDecision(agent, targets, effectiveUser, actorType == "member", actorType == "agent") {
+				return triageErr(403, "you do not have permission to assign work to this "+kind.String)
+			}
 		}
 	}
-	scoped := *h
-	scoped.Queries = h.Queries.WithTx(tx)
-	scoped.DB = tx
 	status, msg := scoped.validateAssigneePair(ctx, r, uuidToString(ws), kind, assignee)
 	if status != 0 {
 		return triageErr(status, msg)
@@ -97,7 +128,7 @@ func triageValidateAction(in TriageActionInput) error {
 	}
 	return nil
 }
-func (h *Handler) applyTriageAcceptance(ctx context.Context, tx pgx.Tx, r *http.Request, ws pgtype.UUID, s db.WorkspaceTriageSetting, item TriageItem, in TriageActionInput) (triageExecutionContext, error) {
+func (h *Handler) applyTriageAcceptance(ctx context.Context, tx pgx.Tx, r *http.Request, ws pgtype.UUID, s db.WorkspaceTriageSetting, item TriageItem, in TriageActionInput, targetIteration db.Iteration, actionID pgtype.UUID) (triageExecutionContext, error) {
 	var execution triageExecutionContext
 	q := h.Queries.WithTx(tx)
 	issue, err := q.GetIssueInWorkspace(ctx, db.GetIssueInWorkspaceParams{ID: parseUUID(item.Issue.ID), WorkspaceID: ws})
@@ -142,6 +173,9 @@ func (h *Handler) applyTriageAcceptance(ctx context.Context, tx pgx.Tx, r *http.
 		case "label_ids":
 			e = json.Unmarshal(raw, &labels)
 			labelsSet = true
+		case "current_iteration_id":
+			// Validated and locked by the owning action before its issue lock.
+
 		default:
 			return execution, triageErr(400, "unsupported acceptance field: "+name)
 		}
@@ -189,8 +223,9 @@ func (h *Handler) applyTriageAcceptance(ctx context.Context, tx pgx.Tx, r *http.
 	if startDate.Valid && dueDate.Valid && startDate.Time.After(dueDate.Time) {
 		return execution, triageErr(400, "start_date must not be after due_date")
 	}
+
+	labelIDs := make([]pgtype.UUID, 0, len(labels))
 	if labelsSet {
-		labelIDs := make([]pgtype.UUID, 0, len(labels))
 		for _, v := range labels {
 			id, e := triageUUID(v, "label_ids")
 			if e != nil {
@@ -202,6 +237,26 @@ func (h *Handler) applyTriageAcceptance(ctx context.Context, tx pgx.Tx, r *http.
 			}
 			labelIDs = append(labelIDs, id)
 		}
+	}
+	var membership *iteration.MembershipChange
+	var membershipTime time.Time
+	if targetIteration.ID.Valid {
+		accepted := issue
+		accepted.AdmissionStatus, accepted.Status, accepted.Priority = "accepted", status, priority
+		accepted.ProjectID, accepted.AssigneeType, accepted.AssigneeID = projectID, assigneeType, assigneeID
+		accepted.Title, accepted.Description = title, triageText(desc)
+		accepted.StartDate, accepted.DueDate = startDate, dueDate
+		accepted.Revision++
+		membership, err = iteration.PrepareMembershipChange(ctx, tx, accepted, db.Iteration{}, targetIteration, false)
+		if err != nil {
+			return execution, triageIterationError(err)
+		}
+		membershipTime, err = iteration.SampleBusinessTime(ctx, tx, nil)
+		if err != nil {
+			return execution, err
+		}
+	}
+	if labelsSet {
 		if _, err = tx.Exec(ctx, `DELETE FROM issue_to_label WHERE issue_id=$1`, issue.ID); err != nil {
 			return execution, err
 		}
@@ -218,6 +273,12 @@ func (h *Handler) applyTriageAcceptance(ctx context.Context, tx pgx.Tx, r *http.
 	if _, err = tx.Exec(ctx, `UPDATE issue_triage SET snoozed_until=NULL WHERE issue_id=$1`, issue.ID); err != nil {
 		return execution, err
 	}
+	if membership != nil {
+		if err = h.recordTriageIterationMembership(ctx, tx, r, membership, actionID, membershipTime); err != nil {
+			return execution, err
+		}
+	}
+
 	if in.Action == "accept_and_execute" {
 		issue, err = q.GetIssueInWorkspace(ctx, db.GetIssueInWorkspaceParams{ID: issue.ID, WorkspaceID: ws})
 		if err != nil {
@@ -274,14 +335,15 @@ func (h *Handler) triageExecutionSnapshot(ctx context.Context, tx pgx.Tx, r *htt
 func (h *Handler) actOnTriageItem(r *http.Request, idValue string, in TriageActionInput, preview bool) (TriageActionResult, error) {
 	var result TriageActionResult
 	var err error
+	actionID := dbid.NewV7()
 	err = service.RetryProjectAssociationTransaction(r.Context(), func() error {
-		result, err = h.actOnTriageItemOnce(r, idValue, in, preview)
+		result, err = h.actOnTriageItemOnce(r, idValue, in, preview, actionID)
 		return err
 	})
 	return result, err
 }
 
-func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in TriageActionInput, preview bool) (TriageActionResult, error) {
+func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in TriageActionInput, preview bool, actionID pgtype.UUID) (TriageActionResult, error) {
 	var out TriageActionResult
 	request, err := triageUUID(in.RequestID, "request_id")
 	if err != nil && !preview {
@@ -351,6 +413,11 @@ func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in Triage
 		ID    string
 		Input TriageActionInput
 	}{uuidToString(id), in})
+	targetIteration, err := h.lockTriageIterationTarget(ctx, tx, ws, in)
+	if err != nil {
+		return out, err
+	}
+
 	lockedIssue, err := q.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{ID: id, WorkspaceID: ws})
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -383,7 +450,8 @@ func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in Triage
 	execution := triageExecutionContext{}
 	switch in.Action {
 	case "accept", "accept_and_execute":
-		execution, err = h.applyTriageAcceptance(ctx, tx, r, ws, s, before, in)
+		execution, err = h.applyTriageAcceptance(ctx, tx, r, ws, s, before, in, targetIteration, actionID)
+
 	case "reject", "duplicate":
 		target := pgtype.UUID{}
 		identifier := pgtype.Text{}
@@ -459,7 +527,6 @@ func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in Triage
 	if preview {
 		return out, nil
 	}
-	actionID := dbid.NewV7()
 	beforeJSON, _ := json.Marshal(before)
 	afterJSON, _ := json.Marshal(out.Item)
 	executionJSON, _ := json.Marshal(execution)
@@ -482,6 +549,10 @@ func (h *Handler) actOnTriageItemOnce(r *http.Request, idValue string, in Triage
 	if err = tx.Commit(ctx); err != nil {
 		return out, err
 	}
+	if targetIteration.ID.Valid {
+		h.publish("iteration:updated", uuidToString(ws), "member", uuidToString(actor), map[string]any{"iteration_ids": []string{uuidToString(targetIteration.ID)}, "operation_id": uuidToString(actionID)})
+	}
+
 	h.broadcastTriage(ws, out.Item.Issue.ID, "", false)
 	h.deliverTriageNotifications(ctx, ws)
 	if in.Action == "accept_and_execute" {

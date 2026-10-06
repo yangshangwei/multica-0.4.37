@@ -106,6 +106,9 @@ type IssueCreateOpts struct {
 	// Each existing retry receives a fresh params copy and must reauthorize the
 	// same captured actor. The callback borrows this transaction; it never commits.
 	PrepareInTx func(context.Context, pgx.Tx, *IssueCreateParams) error
+	// AfterCreateInTx finishes caller-owned associations before the new issue is
+	// committed or published. It borrows this transaction and never starts work.
+	AfterCreateInTx func(context.Context, pgx.Tx, *IssueCreateResult) error
 	// BroadcastPayload, if non-nil, is invoked after the issue row is
 	// created and attachments are linked. Its return value is sent as
 	// the EventIssueCreated payload via the event bus. The HTTP handler
@@ -308,6 +311,11 @@ func (s *IssueService) createOnce(ctx context.Context, p IssueCreateParams, opts
 	result, err := s.CreateInTx(ctx, tx, p, issueCountPolicy)
 	if err != nil {
 		return result, err
+	}
+	if opts.AfterCreateInTx != nil {
+		if err := opts.AfterCreateInTx(ctx, tx, &result); err != nil {
+			return IssueCreateResult{}, err
+		}
 	}
 	issue, labels := result.Issue, result.Labels
 	var assignedTask db.AgentTaskQueue

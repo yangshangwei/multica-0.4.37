@@ -55,13 +55,34 @@ likewise retains its original result identity.
 
 ## Iteration fields require a confirmed operation
 
-Ordinary issue create, update and batch-update, including the public Plugin
-PATCH, preserve existing iteration membership when iteration fields are omitted.
-Explicit `current_iteration_id` (including null) or `iteration_rollover_count`
-currently returns HTTP 428 `iteration_confirmation_required`. Do not retry by
-hiding these fields in metadata or changing the rollover count yourself. I1 is
-still under implementation; these safeguards do not mean its lifecycle UI or
-management capability is available.
+Ordinary issue update and batch-update, including the public Plugin PATCH,
+preserve existing iteration membership when iteration fields are omitted. New
+issues without these fields are unassociated. While the release gate is closed,
+explicit `current_iteration_id` (including null) returns HTTP 428
+`iteration_confirmation_required`. Client-written `iteration_rollover_count`
+and explicit generic batch/Plugin iteration writes always return 428. Do not
+hide these fields in metadata or change the rollover count yourself.
+
+When the release gate and workspace settings both allow assignment, HTTP
+`POST /api/issues` accepts a nonnull `current_iteration_id` only with the target's
+`expected_iteration_revision`; explicit null creates an unassociated issue.
+Creating a done issue into an active period also requires `allow_completed=true`.
+This boolean is accepted only with a nonnull target; planned periods and
+cancelled issues remain ineligible. It adds no execution beyond the ordinary
+issue-creation assignment behavior.
+The issue and participation commit together. Ordinary creation retains its
+existing active-duplicate 409 behavior; it does not accept a new iteration
+operation `request_id`. Normal assigned-agent creation still enqueues once.
+
+Individual `PUT /api/issues/{id}` accepts a membership-only body containing
+`current_iteration_id`, the issue's `expected_revision`, optional
+`iteration_reason`, and optional boolean `allow_completed`. An actual leave or
+switch requires a nonempty reason. A done issue needs `allow_completed=true`
+to join an active period; planned periods reject new terminal members. Combining
+this body with title, status, assignee or other ordinary edits returns 400; use
+separate confirmed writes. Membership changes do not start or stop execution.
+Observer agents cannot arrange iterations. I1 remains under implementation;
+these server contracts do not imply that its lifecycle UI is released.
 
 Iteration discovery and settings are workspace-scoped. The server rollout gate
 is off by default, and `atomic_handoff=false` means end-and-start is unavailable.
@@ -69,6 +90,25 @@ Enabling settings requires a human owner/admin, a request ID, the current settin
 revision and explicit confirmation of the shared planning timezone. It does not
 create or start a period. Never treat settings enable as permission to perform
 unavailable lifecycle operations.
+
+When available, current human workspace members can create/edit periods and
+confirm start, move, planned cancellation and unused-plan deletion through the
+workspace iteration APIs. Preview the complete operation, then submit its
+unchanged draft and `preview_hash` with one stable `request_id`. A changed
+preview/revision needs a new confirmation. Machine issue-assignment authority
+does not grant period maintenance authority. End, active cancellation, handoff
+and workspace disable remain unavailable in this stage.
+
+Triage's optional `iteration_assignment` capability permits human acceptance
+with `fields.current_iteration_id`. Acceptance, final project/assignee fields
+and membership commit together; a target conflict leaves the item pending.
+Plain accept still does not execute; accept-and-execute keeps its single-run
+retry contract. No CSV iteration assignment is supported.
+
+Use the workspace period list/detail/issues/events APIs for history. Cursors
+belong to one workspace/filter/version; restart paging after `cursor_stale`.
+Closed scope and statistics are frozen, while the events endpoint can include
+later metadata corrections. Do not recompute historical metrics from live tasks.
 
 For an already submitted iteration operation whose response was lost,
 `GET /api/workspaces/{workspace_id}/iteration-operations/{request_id}` reads only

@@ -20,11 +20,11 @@ import (
 	"github.com/multica-ai/multica/server/internal/issuestatus"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
+	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
-var nonAlpha = regexp.MustCompile(`[^a-zA-Z]`)
 var nonAlphanumeric = regexp.MustCompile(`[^a-zA-Z0-9]`)
 var workspaceSlugPattern = regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
 var issuePrefixPattern = regexp.MustCompile(`^[A-Z0-9]{1,10}$`)
@@ -59,22 +59,14 @@ func defaultIssuePrefixFromSlug(slug string) string {
 // letters of the workspace name, uppercased, "WS" when the name has none.
 //
 // FROZEN — do not "fix" this to match defaultIssuePrefixFromSlug. Its only
-// caller is getIssuePrefix's fallback for workspaces whose stored prefix is
-// empty (rows predating the column). Issue identifiers are computed at read
+// purpose is the fallback for workspaces whose stored prefix is empty (rows
+// predating the column). Issue identifiers are computed at read
 // time from the current prefix, so changing what this returns would silently
 // rewrite the identifier of every historical issue in those workspaces.
 // Deliberate product decision: no backfill, existing workspaces stay as they
 // are; only newly created ones follow the slug-derived rule.
 func legacyIssuePrefixFromName(name string) string {
-	letters := nonAlpha.ReplaceAllString(name, "")
-	if len(letters) == 0 {
-		return "WS"
-	}
-	letters = strings.ToUpper(letters)
-	if len(letters) > 3 {
-		letters = letters[:3]
-	}
-	return letters
+	return util.ResolveIssuePrefix("", name)
 }
 
 // normalizeIssuePrefix trims and uppercases a client-supplied issue prefix.

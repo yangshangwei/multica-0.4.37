@@ -2,9 +2,6 @@ package handler
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
-	"io"
 	"net/http"
 
 	"github.com/jackc/pgx/v5"
@@ -70,17 +67,10 @@ func (h *Handler) EnableIterationSettings(w http.ResponseWriter, r *http.Request
 	}
 
 	var input service.EnableIterationInput
-	decoder := json.NewDecoder(r.Body)
-	decoder.DisallowUnknownFields()
-	if err = decoder.Decode(&input); err != nil {
-		writeIterationAPIError(w, iterationAPIError(400, "invalid_request", "Invalid enable request"))
+	if !decodeIterationBody(w, r, &input) {
 		return
 	}
-	var extra any
-	if err = decoder.Decode(&extra); !errors.Is(err, io.EOF) {
-		writeIterationAPIError(w, iterationAPIError(400, "invalid_request", "Only one request object is allowed"))
-		return
-	}
+
 	authorize := func(ctx context.Context, tx pgx.Tx) error {
 		scoped := *h
 		scoped.Queries, scoped.DB = h.Queries.WithTx(tx), tx

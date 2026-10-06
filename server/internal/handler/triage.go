@@ -27,6 +27,7 @@ import (
 )
 
 type TriageSettings struct {
+	IterationAssignment    bool    `json:"iteration_assignment,omitempty"`
 	Supported              bool    `json:"supported"`
 	Enabled                bool    `json:"enabled"`
 	AcceptanceStatus       string  `json:"acceptance_status"`
@@ -165,7 +166,7 @@ func triageDate(value *string, field string) (pgtype.Date, error) {
 	return pgtype.Date{Time: t, Valid: true}, nil
 }
 func triageSettingsResponse(s db.WorkspaceTriageSetting) TriageSettings {
-	return TriageSettings{true, s.Enabled, s.AcceptanceStatus, s.RequirePriority, s.ResponsibilityMode, uuidToPtr(s.ResponsibilityMemberID), s.Revision}
+	return TriageSettings{Supported: true, Enabled: s.Enabled, AcceptanceStatus: s.AcceptanceStatus, RequirePriority: s.RequirePriority, ResponsibilityMode: s.ResponsibilityMode, ResponsibilityMemberID: uuidToPtr(s.ResponsibilityMemberID), Revision: s.Revision}
 }
 func triageActionResponse(a db.TriageAction) TriageAction {
 	return TriageAction{uuidToString(a.ID), uuidToString(a.IssueID), uuidToString(a.ActorID), a.Action, a.Round, textToPtr(a.Reason), a.BeforeSnapshot, a.AfterSnapshot, timestampToString(a.CreatedAt), a.ExecutionStatus, uuidToPtr(a.TaskID), textToPtr(a.ExecutionError)}
@@ -264,16 +265,24 @@ func (h *Handler) GetTriageSettings(w http.ResponseWriter, r *http.Request) {
 		writeTriageError(w, err)
 		return
 	}
+	assignment, err := h.triageIterationAssignmentSupported(r.Context(), h.Queries, ws)
+	if err != nil {
+		writeTriageError(w, err)
+		return
+	}
+
 	s, err := h.Queries.GetTriageSettings(r.Context(), ws)
 	if errors.Is(err, pgx.ErrNoRows) {
-		writeJSON(w, 200, TriageSettings{Supported: true, AcceptanceStatus: "todo", ResponsibilityMode: "none", Revision: 1})
+		writeJSON(w, 200, TriageSettings{IterationAssignment: assignment, Supported: true, AcceptanceStatus: "todo", ResponsibilityMode: "none", Revision: 1})
 		return
 	}
 	if err != nil {
 		writeTriageError(w, err)
 		return
 	}
-	writeJSON(w, 200, triageSettingsResponse(s))
+	out := triageSettingsResponse(s)
+	out.IterationAssignment = assignment
+	writeJSON(w, 200, out)
 }
 func (h *Handler) UpdateTriageSettings(w http.ResponseWriter, r *http.Request) {
 	var in struct {
@@ -350,6 +359,12 @@ func (h *Handler) UpdateTriageSettings(w http.ResponseWriter, r *http.Request) {
 		writeTriageError(w, err)
 		return
 	}
+	assignment, err := h.triageIterationAssignmentSupported(ctx, q, ws)
+	if err != nil {
+		writeTriageError(w, err)
+		return
+	}
+
 	s, err = q.GetTriageSettings(ctx, ws)
 	if err == nil {
 		err = tx.Commit(ctx)
@@ -359,7 +374,9 @@ func (h *Handler) UpdateTriageSettings(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.broadcastTriage(ws, "", "", true)
-	writeJSON(w, 200, triageSettingsResponse(s))
+	out := triageSettingsResponse(s)
+	out.IterationAssignment = assignment
+	writeJSON(w, 200, out)
 }
 func triageValidateMember(ctx context.Context, q *db.Queries, ws, id pgtype.UUID) error {
 	_, err := q.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: ws, UserID: id})

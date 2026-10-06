@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-// RawMessage distinguishes an omitted field from explicit null. Until the
-// confirmed lifecycle writer is available, no generic endpoint may silently
-// accept an iteration assignment, clear, or client-authored rollover counter.
+// RawMessage distinguishes an omitted field from explicit null. This guard
+// covers release-disabled assignment, server-owned rollover fields and generic
+// batch/plugin writes; confirmed individual HTTP writes use their own boundary.
 func rejectUnconfirmedIterationWrite(w http.ResponseWriter, fields ...json.RawMessage) bool {
 	for _, field := range fields {
 		if len(field) > 0 {

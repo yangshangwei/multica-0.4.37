@@ -7346,6 +7346,9 @@ func IssueToMap(issue db.Issue, issuePrefix string) map[string]any {
 		"revision":         issue.Revision,
 		"metadata":         util.IssueMetadataForResponse(issue.Metadata),
 		"properties":       util.JSONObjectOrEmpty(issue.Properties),
+
+		"current_iteration_id":     util.UUIDToPtr(issue.CurrentIterationID),
+		"iteration_rollover_count": issue.IterationRolloverCount,
 	}
 }
 
