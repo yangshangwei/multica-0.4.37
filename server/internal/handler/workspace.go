@@ -1260,6 +1260,12 @@ func (h *Handler) DeleteWorkspace(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 		{
+			// I1 retains history across issue/project deletion, but full workspace
+			// teardown removes it atomically with its protected inbox leaf data.
+			name: "delete iteration history",
+			run:  func() error { return qtx.DeleteWorkspaceIterationData(ctx, requester.WorkspaceID) },
+		},
+		{
 			name: "delete issue roots",
 			run:  func() error { return qtx.DeleteWorkspaceIssueRoots(ctx, requester.WorkspaceID) },
 		},

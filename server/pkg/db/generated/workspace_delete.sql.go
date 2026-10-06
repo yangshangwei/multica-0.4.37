@@ -258,6 +258,31 @@ func (q *Queries) DeleteWorkspaceIssueRoots(ctx context.Context, workspaceID pgt
 	return err
 }
 
+const deleteWorkspaceIterationData = `-- name: DeleteWorkspaceIterationData :exec
+WITH deleted_notifications AS (
+    DELETE FROM iteration_notification WHERE iteration_notification.workspace_id = $1
+), deleted_operations AS (
+    DELETE FROM iteration_operation WHERE iteration_operation.workspace_id = $1
+), deleted_snapshots AS (
+    DELETE FROM iteration_snapshot WHERE iteration_snapshot.workspace_id = $1
+), deleted_events AS (
+    DELETE FROM iteration_event WHERE iteration_event.workspace_id = $1
+), deleted_participations AS (
+    DELETE FROM iteration_participation WHERE iteration_participation.workspace_id = $1
+), deleted_iterations AS (
+    DELETE FROM iteration WHERE iteration.workspace_id = $1
+)
+DELETE FROM workspace_iteration_settings WHERE workspace_iteration_settings.workspace_id = $1
+`
+
+// Full workspace deletion intentionally purges retained iteration history.
+// Caller holds the workspace FOR UPDATE lock and owns the teardown transaction;
+// ordinary issue/project deletion must never call this history sweep.
+func (q *Queries) DeleteWorkspaceIterationData(ctx context.Context, workspaceID pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, deleteWorkspaceIterationData, workspaceID)
+	return err
+}
+
 const deleteWorkspaceLeafData = `-- name: DeleteWorkspaceLeafData :exec
 WITH
 ws_agents AS MATERIALIZED (

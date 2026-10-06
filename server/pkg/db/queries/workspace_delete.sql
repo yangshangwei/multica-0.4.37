@@ -533,6 +533,25 @@ DELETE FROM lark_installation WHERE lark_installation.workspace_id = $1;
 -- name: DeleteWorkspaceComments :exec
 DELETE FROM comment WHERE comment.workspace_id = $1;
 
+-- name: DeleteWorkspaceIterationData :exec
+-- Full workspace deletion intentionally purges retained iteration history.
+-- Caller holds the workspace FOR UPDATE lock and owns the teardown transaction;
+-- ordinary issue/project deletion must never call this history sweep.
+WITH deleted_notifications AS (
+    DELETE FROM iteration_notification WHERE iteration_notification.workspace_id = $1
+), deleted_operations AS (
+    DELETE FROM iteration_operation WHERE iteration_operation.workspace_id = $1
+), deleted_snapshots AS (
+    DELETE FROM iteration_snapshot WHERE iteration_snapshot.workspace_id = $1
+), deleted_events AS (
+    DELETE FROM iteration_event WHERE iteration_event.workspace_id = $1
+), deleted_participations AS (
+    DELETE FROM iteration_participation WHERE iteration_participation.workspace_id = $1
+), deleted_iterations AS (
+    DELETE FROM iteration WHERE iteration.workspace_id = $1
+)
+DELETE FROM workspace_iteration_settings WHERE workspace_iteration_settings.workspace_id = $1;
+
 -- name: DeleteWorkspaceIssueRoots :exec
 WITH triage_settings AS (DELETE FROM workspace_triage_settings WHERE workspace_id=$1),
 triage_items AS (DELETE FROM issue_triage WHERE workspace_id=$1),
