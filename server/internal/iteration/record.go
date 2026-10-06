@@ -63,7 +63,54 @@ func issueFacts(ctx context.Context, q *db.Queries, issue db.Issue, started bool
 	return IssueFacts{IssueID: issue.ID, Title: issue.Title, ProjectID: issue.ProjectID, AssigneeType: issue.AssigneeType, AssigneeID: issue.AssigneeID, StatusKey: issue.Status, StatusCategory: category, RolloverCount: issue.IterationRolloverCount, HasStarted: started}, nil
 }
 
+// PrepareIssueRecord retains the single-writer query and clock behavior.
 func PrepareIssueRecord(ctx context.Context, tx pgx.Tx, before db.Issue, locked db.Iteration) (*IssueRecord, error) {
+	record, err := prepareIssueRecordFacts(ctx, tx, before, locked)
+	if err != nil || record == nil {
+		return record, err
+	}
+	record.businessAt, err = SampleBusinessTime(ctx, tx, nil)
+	if err != nil {
+		return nil, err
+	}
+	return record, nil
+}
+
+// PrepareIssueRecords returns records aligned with issues (nil for unassociated
+// issues). The caller already owns all iteration/issue and reference locks.
+// Participation locks and validation finish for the whole set before one wall
+// clock sample is shared across the operation; no sample is needed without facts.
+func PrepareIssueRecords(ctx context.Context, tx pgx.Tx, issues []db.Issue, lockedIterations []db.Iteration) ([]*IssueRecord, error) {
+	iterations := make(map[pgtype.UUID]db.Iteration, len(lockedIterations))
+	for _, row := range lockedIterations {
+		iterations[row.ID] = row
+	}
+	records := make([]*IssueRecord, len(issues))
+	hasFacts := false
+	for i, issue := range issues {
+		record, err := prepareIssueRecordFacts(ctx, tx, issue, iterations[issue.CurrentIterationID])
+		if err != nil {
+			return nil, err
+		}
+		records[i] = record
+		hasFacts = hasFacts || record != nil
+	}
+	if !hasFacts {
+		return records, nil
+	}
+	sampled, err := SampleBusinessTime(ctx, tx, nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, record := range records {
+		if record != nil {
+			record.businessAt = sampled
+		}
+	}
+	return records, nil
+}
+
+func prepareIssueRecordFacts(ctx context.Context, tx pgx.Tx, before db.Issue, locked db.Iteration) (*IssueRecord, error) {
 	if !before.CurrentIterationID.Valid {
 		return nil, nil
 	}
@@ -82,11 +129,7 @@ func PrepareIssueRecord(ctx context.Context, tx pgx.Tx, before db.Issue, locked 
 	if err != nil {
 		return nil, err
 	}
-	businessAt, err := SampleBusinessTime(ctx, tx, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &IssueRecord{before: before, facts: facts, businessAt: businessAt, planned: locked.Status == "planned"}, nil
+	return &IssueRecord{before: before, facts: facts, planned: locked.Status == "planned"}, nil
 }
 
 // RecordIssueChange persists the after facts, started evidence, event sequence

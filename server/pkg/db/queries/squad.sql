@@ -96,7 +96,7 @@ RETURNING *;
 
 -- name: ArchiveSquad :one
 UPDATE squad SET archived_at = now(), archived_by = $2, updated_at = now()
-WHERE id = $1
+WHERE id = $1 AND workspace_id = $3 AND archived_at IS NULL
 RETURNING *;
 
 -- name: AddSquadMember :one
@@ -136,10 +136,32 @@ JOIN squad_member sm ON sm.squad_id = s.id
 WHERE s.workspace_id = $1 AND sm.member_type = $2 AND sm.member_id = $3
 ORDER BY s.created_at ASC;
 
--- name: TransferSquadAssignees :exec
--- Transfer all issues assigned to a squad to the squad's leader agent.
-UPDATE issue SET assignee_type = 'agent', assignee_id = $2, revision = revision + 1, updated_at = now()
-WHERE assignee_type = 'squad' AND assignee_id = $1;
+-- name: ListSquadAssignedIterationIDs :many
+-- The caller owns the workspace iteration fence and the squad row lock.
+SELECT DISTINCT current_iteration_id FROM issue
+WHERE workspace_id = $1 AND assignee_type = 'squad' AND assignee_id = $2
+  AND current_iteration_id IS NOT NULL
+ORDER BY current_iteration_id;
+
+-- name: LockSquadAssignedIssues :many
+-- Lock all assignments, including unassociated and nonformal issues, only
+-- after the relevant iteration rows. The recorder excludes non-factual edits.
+SELECT * FROM issue
+WHERE workspace_id = $1 AND assignee_type = 'squad' AND assignee_id = $2
+ORDER BY id FOR UPDATE;
+
+-- name: LockSquadAutopilotsForTransfer :many
+-- Keep Squad -> Agent -> Autopilot -> Issue order while archiving the squad.
+SELECT id FROM autopilot
+WHERE workspace_id = $1 AND assignee_type = 'squad' AND assignee_id = $2
+ORDER BY id FOR UPDATE;
+
+-- name: TransferSquadAssignees :many
+-- Caller holds the workspace fence and every affected issue row through the
+-- transfer, fact recording and archive commit.
+UPDATE issue SET assignee_type = 'agent', assignee_id = sqlc.arg('leader_id'), revision = revision + 1, updated_at = now()
+WHERE workspace_id = sqlc.arg('workspace_id') AND assignee_type = 'squad' AND assignee_id = sqlc.arg('squad_id')
+RETURNING *;
 
 -- name: TransferSquadAutopilotsToLeader :exec
 -- Mirrors TransferSquadAssignees for autopilot rows: when a squad is archived,
@@ -150,9 +172,9 @@ WHERE assignee_type = 'squad' AND assignee_id = $1;
 -- it had a moment before the archive (Path A from MUL-2429).
 UPDATE autopilot
 SET assignee_type = 'agent',
-    assignee_id = $2,
+    assignee_id = sqlc.arg('leader_id'),
     updated_at = now()
-WHERE assignee_type = 'squad' AND assignee_id = $1;
+WHERE workspace_id = sqlc.arg('workspace_id') AND assignee_type = 'squad' AND assignee_id = sqlc.arg('squad_id');
 
 -- name: ListSquadMemberStatusRows :many
 -- Per-row join used to build the squad-members status view. One row per

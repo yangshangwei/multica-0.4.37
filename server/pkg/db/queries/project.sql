@@ -134,3 +134,27 @@ DELETE FROM issue_view_preference
 WHERE workspace_id = sqlc.arg('workspace_id')
   AND scope_type = 'project'
   AND scope_id = sqlc.arg('scope_id');
+
+-- name: ListProjectIssuesForDelete :many
+-- Caller owns the exclusive project lock and iteration workspace fence.
+SELECT * FROM issue WHERE project_id=$1 AND workspace_id=$2 ORDER BY id;
+
+-- name: LockProjectIssuesForDelete :many
+SELECT * FROM issue WHERE project_id=$1 AND workspace_id=$2 ORDER BY id FOR UPDATE;
+
+-- name: LockProjectAutopilotTriggersForDelete :many
+SELECT t.id FROM autopilot_trigger t
+JOIN autopilot a ON a.id=t.autopilot_id
+WHERE a.project_id=$1 AND a.workspace_id=$2 ORDER BY t.id FOR UPDATE OF t;
+
+-- name: ProjectHasForeignReferences :one
+-- Existing project FK children use SET NULL (issue/autopilot) or CASCADE
+-- (project_resource). Reject malformed cross-tenant references before deletion
+-- can invoke those legacy effects outside the tenant-scoped cleanup statements.
+SELECT EXISTS(
+ SELECT 1 FROM issue i WHERE i.project_id=sqlc.arg('project_id') AND i.workspace_id<>sqlc.arg('workspace_id')
+ UNION ALL
+ SELECT 1 FROM autopilot a WHERE a.project_id=sqlc.arg('project_id') AND a.workspace_id<>sqlc.arg('workspace_id')
+ UNION ALL
+ SELECT 1 FROM project_resource r WHERE r.project_id=sqlc.arg('project_id') AND r.workspace_id<>sqlc.arg('workspace_id')
+);

@@ -13,9 +13,11 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/logger"
 	"github.com/multica-ai/multica/server/internal/projecthealth"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -878,10 +880,23 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	err = h.runProjectDeleteTransaction(r.Context(), ws, actor, func(_ pgx.Tx, q *db.Queries) error {
+	operationID := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	actorFacts, err := json.Marshal(map[string]any{"type": "member", "id": actor, "user_id": actor})
+	if err != nil {
+		writeProjectAPIError(w, err)
+		return
+	}
+	err = h.runProjectDeleteTransaction(r.Context(), ws, actor, func(tx pgx.Tx, q *db.Queries) error {
 		if err := requireProjectAdministrator(r.Context(), q, ws, actor); err != nil {
 			return err
 		}
+		if err := q.LockIssueStatusCatalogShared(r.Context(), ws); err != nil {
+			return err
+		}
+		if err := iteration.LockWorkspace(r.Context(), tx, ws); err != nil {
+			return err
+		}
+
 		project, err := q.LockProjectForExecutionSquad(r.Context(), db.LockProjectForExecutionSquadParams{ID: id, WorkspaceID: ws})
 		if err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
@@ -892,10 +907,47 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		if input.ExpectedRevision != nil && *input.ExpectedRevision != project.Revision {
 			return &projectAPIError{Status: 409, Code: "project_revision_conflict", Message: "project changed since deletion preview", Current: projectToResponse(project)}
 		}
+		foreignReferences, err := q.ProjectHasForeignReferences(r.Context(), db.ProjectHasForeignReferencesParams{ProjectID: id, WorkspaceID: ws})
+		if err != nil {
+			return err
+		}
+		if foreignReferences {
+			return projectErr(409, "project_association_integrity_conflict", "project associations are inconsistent; deletion is blocked")
+		}
+
 		// Lock automation parents before triggers, matching every binding writer.
 		if _, err = q.LockProjectAutopilotsForDelete(r.Context(), db.LockProjectAutopilotsForDeleteParams{ProjectID: id, WorkspaceID: ws}); err != nil {
 			return err
 		}
+		if _, err = q.LockProjectAutopilotTriggersForDelete(r.Context(), db.LockProjectAutopilotTriggersForDeleteParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
+		}
+		// Association writers take a shared project lock. Once this exclusive lock
+		// is held, the complete set (including nonformal issues) cannot grow.
+		associated, err := q.ListProjectIssuesForDelete(r.Context(), db.ListProjectIssuesForDeleteParams{ProjectID: id, WorkspaceID: ws})
+		if err != nil {
+			return err
+		}
+		iterationIDs := make([]pgtype.UUID, 0, len(associated))
+		for _, issue := range associated {
+			if issue.CurrentIterationID.Valid {
+				iterationIDs = append(iterationIDs, issue.CurrentIterationID)
+			}
+		}
+		lockedIterations, err := q.LockIterations(r.Context(), db.LockIterationsParams{WorkspaceID: ws, Column2: iterationIDs})
+		if err != nil {
+			return err
+		}
+		issues, err := q.LockProjectIssuesForDelete(r.Context(), db.LockProjectIssuesForDeleteParams{ProjectID: id, WorkspaceID: ws})
+		if err != nil {
+			return err
+		}
+
+		records, err := iteration.PrepareIssueRecords(r.Context(), tx, issues, lockedIterations)
+		if err != nil {
+			return err
+		}
+
 		if err = q.DisableProjectAutopilotTriggers(r.Context(), db.DisableProjectAutopilotTriggersParams{ProjectID: id, WorkspaceID: ws}); err != nil {
 			return err
 		}
@@ -905,6 +957,19 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		if err = q.DetachProjectIssues(r.Context(), db.DetachProjectIssuesParams{ProjectID: id, WorkspaceID: ws}); err != nil {
 			return err
 		}
+		for i, before := range issues {
+			if records[i] == nil {
+				continue
+			}
+			after, err := q.GetIssueInWorkspace(r.Context(), db.GetIssueInWorkspaceParams{ID: before.ID, WorkspaceID: ws})
+			if err != nil {
+				return err
+			}
+			if err = iteration.RecordIssueChange(r.Context(), tx, records[i], after, actorFacts, operationID); err != nil {
+				return err
+			}
+		}
+
 		if err = q.ClearChatSessionProjectByProject(r.Context(), db.ClearChatSessionProjectByProjectParams{ProjectID: id, WorkspaceID: ws}); err != nil {
 			return err
 		}

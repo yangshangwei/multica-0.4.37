@@ -11,9 +11,11 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
@@ -559,39 +561,213 @@ func (h *Handler) DeleteSquad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Transfer issues assigned to this squad to the leader agent.
-	if err := h.Queries.TransferSquadAssignees(r.Context(), db.TransferSquadAssigneesParams{
-		AssigneeID:   squad.ID,
-		AssigneeID_2: squad.LeaderID,
-	}); err != nil {
-		slog.Warn("transfer squad assignees failed", "squad_id", uuidToString(squad.ID), "error", err)
-	}
-
-	// Mirror the issue-assignee transfer for autopilots that target this
-	// squad. Without this, autopilot.assignee_id would still point at the
-	// archived squad row and every subsequent dispatch would skip with
-	// "assignee squad is archived" — visible to ops but useless to the
-	// owner. Rewriting to the leader keeps the autopilot semantics
-	// unchanged (Path A from MUL-2429 is leader-only execution anyway).
-	if err := h.Queries.TransferSquadAutopilotsToLeader(r.Context(), db.TransferSquadAutopilotsToLeaderParams{
-		AssigneeID:   squad.ID,
-		AssigneeID_2: squad.LeaderID,
-	}); err != nil {
-		slog.Warn("transfer squad autopilots failed", "squad_id", uuidToString(squad.ID), "error", err)
-	}
-
 	userID := requestUserID(r)
-	userUUID, _ := parseUUIDOrBadRequest(w, userID, "user_id")
-
-	if _, err := h.Queries.ArchiveSquad(r.Context(), db.ArchiveSquadParams{
-		ID:         squad.ID,
-		ArchivedBy: userUUID,
-	}); err != nil {
+	userUUID, ok := parseUUIDOrBadRequest(w, userID, "user_id")
+	if !ok {
+		return
+	}
+	actorType, actorID := h.resolveActor(r, userID, workspaceID)
+	actor, err := json.Marshal(map[string]string{"type": actorType, "id": actorID, "user_id": userID})
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	operationID := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	ctx := r.Context()
+	tx, err := h.TxStarter.Begin(ctx)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	defer tx.Rollback(ctx)
+	// A fresh statement snapshot after the association locks must see every
+	// issue and Autopilot that committed before this archive won the race.
+	if _, err = tx.Exec(ctx, "SET TRANSACTION ISOLATION LEVEL READ COMMITTED, READ WRITE"); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	q := h.Queries.WithTx(tx)
+	if _, err = q.LockWorkspaceForChatSessionCreate(ctx, squad.WorkspaceID); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "workspace not found")
+		} else {
+			writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		}
+		return
+	}
+	if err = q.LockSubscriberWrites(ctx, db.LockSubscriberWritesParams{WorkspaceID: squad.WorkspaceID, UserID: userUUID}); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	memberID, err := q.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: squad.WorkspaceID, UserID: userUUID})
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusForbidden, "workspace membership required")
+		} else {
+			writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		}
+		return
+	}
+	member, err = q.GetMember(ctx, memberID)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	if err = q.LockIssueStatusCatalogShared(ctx, squad.WorkspaceID); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	if err = iteration.LockWorkspace(ctx, tx, squad.WorkspaceID); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	// Assignment and leader rotation lock Squad before Agent. Holding the
+	// exclusive squad lock also prevents an Autopilot binding from entering
+	// the transfer set after it has been read.
+	squad, err = q.LockSquadForUpdate(ctx, db.LockSquadForUpdateParams{ID: squad.ID, WorkspaceID: squad.WorkspaceID})
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "squad not found")
+		} else {
+			writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		}
+		return
+	}
+	if !canManageSquad(member, squad) {
+		writeError(w, http.StatusForbidden, "insufficient permissions")
+		return
+	}
+	if squad.ArchivedAt.Valid {
+		writeError(w, http.StatusBadRequest, "squad is already archived")
+		return
+	}
+	leader, err := q.LockAgentForAutopilotAssignment(ctx, db.LockAgentForAutopilotAssignmentParams{ID: squad.LeaderID, WorkspaceID: squad.WorkspaceID})
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusBadRequest, "leader must be a valid agent in this workspace")
+		} else {
+			writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		}
+		return
+	}
+	if leader.ArchivedAt.Valid {
+		writeError(w, http.StatusBadRequest, "leader must be an active agent in this workspace")
+		return
+	}
+	if actorType == "agent" {
+		agentUUID, parseErr := util.ParseUUID(actorID)
+		if parseErr != nil {
+			writeError(w, http.StatusForbidden, "actor unavailable")
+			return
+		}
+		actingAgent, lockErr := q.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentUUID, WorkspaceID: squad.WorkspaceID})
+		if lockErr != nil {
+			if errors.Is(lockErr, pgx.ErrNoRows) {
+				writeError(w, http.StatusForbidden, "actor unavailable")
+			} else {
+				writeError(w, http.StatusInternalServerError, "failed to archive squad")
+			}
+			return
+		}
+		if actingAgent.ArchivedAt.Valid {
+			writeError(w, http.StatusForbidden, "actor unavailable")
+			return
+		}
+		if !service.AutonomyAtLeast(actingAgent.AutonomyLevel, service.AutonomyCoordinator) {
+			writeError(w, http.StatusForbidden, autonomyDenialMessage(actingAgent.AutonomyLevel, service.AutonomyCoordinator, "archive a squad"))
+			return
+		}
+		if taskID := r.Header.Get("X-Task-ID"); taskID != "" {
+			taskUUID, parseErr := util.ParseUUID(taskID)
+			if parseErr != nil {
+				writeError(w, http.StatusForbidden, "actor task unavailable")
+				return
+			}
+			task, lockErr := q.LockLifecycleOriginTask(ctx, db.LockLifecycleOriginTaskParams{ID: taskUUID, WorkspaceID: squad.WorkspaceID})
+			if lockErr != nil {
+				if errors.Is(lockErr, pgx.ErrNoRows) {
+					writeError(w, http.StatusForbidden, "actor task unavailable")
+				} else {
+					writeError(w, http.StatusInternalServerError, "failed to archive squad")
+				}
+				return
+			}
+			if task.AgentID != agentUUID {
+				writeError(w, http.StatusForbidden, "actor task unavailable")
+				return
+			}
+		}
+	}
+	scoped := *h
+	scoped.Queries, scoped.DB = q, tx
+	currentType, currentActor := scoped.resolveActor(r, userID, workspaceID)
+	if currentType != actorType || currentActor != actorID {
+		writeError(w, http.StatusForbidden, "actor authorization changed")
+		return
+	}
+	if _, err = q.LockSquadAutopilotsForTransfer(ctx, db.LockSquadAutopilotsForTransferParams{WorkspaceID: squad.WorkspaceID, AssigneeID: squad.ID}); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	iterationIDs, err := q.ListSquadAssignedIterationIDs(ctx, db.ListSquadAssignedIterationIDsParams{WorkspaceID: squad.WorkspaceID, AssigneeID: squad.ID})
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	lockedIterations, err := q.LockIterations(ctx, db.LockIterationsParams{WorkspaceID: squad.WorkspaceID, Column2: iterationIDs})
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	issues, err := q.LockSquadAssignedIssues(ctx, db.LockSquadAssignedIssuesParams{WorkspaceID: squad.WorkspaceID, AssigneeID: squad.ID})
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	records, err := iteration.PrepareIssueRecords(ctx, tx, issues, lockedIterations)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	updated, err := q.TransferSquadAssignees(ctx, db.TransferSquadAssigneesParams{WorkspaceID: squad.WorkspaceID, SquadID: squad.ID, LeaderID: squad.LeaderID})
+	if err != nil || len(updated) != len(issues) {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	afterByID := make(map[pgtype.UUID]db.Issue, len(updated))
+	for _, issue := range updated {
+		afterByID[issue.ID] = issue
+	}
+	for i, issue := range issues {
+		after, found := afterByID[issue.ID]
+		if !found {
+			writeError(w, http.StatusInternalServerError, "failed to archive squad")
+			return
+		}
+		if err = iteration.RecordIssueChange(ctx, tx, records[i], after, actor, operationID); err != nil {
+			writeError(w, http.StatusInternalServerError, "failed to archive squad")
+			return
+		}
+	}
+	if err = q.TransferSquadAutopilotsToLeader(ctx, db.TransferSquadAutopilotsToLeaderParams{WorkspaceID: squad.WorkspaceID, SquadID: squad.ID, LeaderID: squad.LeaderID}); err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to archive squad")
 		return
 	}
 
-	h.publish(protocol.EventSquadDeleted, workspaceID, "member", userID, map[string]any{
+	if _, err := q.ArchiveSquad(ctx, db.ArchiveSquadParams{
+		ID:          squad.ID,
+		WorkspaceID: squad.WorkspaceID,
+		ArchivedBy:  userUUID,
+	}); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+	if err = tx.Commit(ctx); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to archive squad")
+		return
+	}
+
+	h.publish(protocol.EventSquadDeleted, workspaceID, actorType, actorID, map[string]any{
 		"squad_id":  uuidToString(squad.ID),
 		"leader_id": uuidToString(squad.LeaderID),
 	})

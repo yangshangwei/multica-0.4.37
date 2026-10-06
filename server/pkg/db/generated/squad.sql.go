@@ -45,17 +45,18 @@ func (q *Queries) AddSquadMember(ctx context.Context, arg AddSquadMemberParams) 
 
 const archiveSquad = `-- name: ArchiveSquad :one
 UPDATE squad SET archived_at = now(), archived_by = $2, updated_at = now()
-WHERE id = $1
+WHERE id = $1 AND workspace_id = $3 AND archived_at IS NULL
 RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version
 `
 
 type ArchiveSquadParams struct {
-	ID         pgtype.UUID `json:"id"`
-	ArchivedBy pgtype.UUID `json:"archived_by"`
+	ID          pgtype.UUID `json:"id"`
+	ArchivedBy  pgtype.UUID `json:"archived_by"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
 }
 
 func (q *Queries) ArchiveSquad(ctx context.Context, arg ArchiveSquadParams) (Squad, error) {
-	row := q.db.QueryRow(ctx, archiveSquad, arg.ID, arg.ArchivedBy)
+	row := q.db.QueryRow(ctx, archiveSquad, arg.ID, arg.ArchivedBy, arg.WorkspaceID)
 	var i Squad
 	err := row.Scan(
 		&i.ID,
@@ -328,6 +329,39 @@ func (q *Queries) ListAllSquads(ctx context.Context, workspaceID pgtype.UUID) ([
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listSquadAssignedIterationIDs = `-- name: ListSquadAssignedIterationIDs :many
+SELECT DISTINCT current_iteration_id FROM issue
+WHERE workspace_id = $1 AND assignee_type = 'squad' AND assignee_id = $2
+  AND current_iteration_id IS NOT NULL
+ORDER BY current_iteration_id
+`
+
+type ListSquadAssignedIterationIDsParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	AssigneeID  pgtype.UUID `json:"assignee_id"`
+}
+
+// The caller owns the workspace iteration fence and the squad row lock.
+func (q *Queries) ListSquadAssignedIterationIDs(ctx context.Context, arg ListSquadAssignedIterationIDsParams) ([]pgtype.UUID, error) {
+	rows, err := q.db.Query(ctx, listSquadAssignedIterationIDs, arg.WorkspaceID, arg.AssigneeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []pgtype.UUID{}
+	for rows.Next() {
+		var current_iteration_id pgtype.UUID
+		if err := rows.Scan(&current_iteration_id); err != nil {
+			return nil, err
+		}
+		items = append(items, current_iteration_id)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -686,6 +720,103 @@ func (q *Queries) ListSquadsByTemplateForProject(ctx context.Context, arg ListSq
 	return items, nil
 }
 
+const lockSquadAssignedIssues = `-- name: LockSquadAssignedIssues :many
+SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue
+WHERE workspace_id = $1 AND assignee_type = 'squad' AND assignee_id = $2
+ORDER BY id FOR UPDATE
+`
+
+type LockSquadAssignedIssuesParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	AssigneeID  pgtype.UUID `json:"assignee_id"`
+}
+
+// Lock all assignments, including unassociated and nonformal issues, only
+// after the relevant iteration rows. The recorder excludes non-factual edits.
+func (q *Queries) LockSquadAssignedIssues(ctx context.Context, arg LockSquadAssignedIssuesParams) ([]Issue, error) {
+	rows, err := q.db.Query(ctx, lockSquadAssignedIssues, arg.WorkspaceID, arg.AssigneeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Issue{}
+	for rows.Next() {
+		var i Issue
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorkspaceID,
+			&i.Title,
+			&i.Description,
+			&i.Status,
+			&i.Priority,
+			&i.AssigneeType,
+			&i.AssigneeID,
+			&i.CreatorType,
+			&i.CreatorID,
+			&i.ParentIssueID,
+			&i.AcceptanceCriteria,
+			&i.ContextRefs,
+			&i.Position,
+			&i.DueDate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Number,
+			&i.ProjectID,
+			&i.OriginType,
+			&i.OriginID,
+			&i.FirstExecutedAt,
+			&i.StartDate,
+			&i.Metadata,
+			&i.Stage,
+			&i.Properties,
+			&i.Revision,
+			&i.LastActivityAt,
+			&i.AdmissionStatus,
+			&i.CurrentIterationID,
+			&i.IterationRolloverCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const lockSquadAutopilotsForTransfer = `-- name: LockSquadAutopilotsForTransfer :many
+SELECT id FROM autopilot
+WHERE workspace_id = $1 AND assignee_type = 'squad' AND assignee_id = $2
+ORDER BY id FOR UPDATE
+`
+
+type LockSquadAutopilotsForTransferParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	AssigneeID  pgtype.UUID `json:"assignee_id"`
+}
+
+// Keep Squad -> Agent -> Autopilot -> Issue order while archiving the squad.
+func (q *Queries) LockSquadAutopilotsForTransfer(ctx context.Context, arg LockSquadAutopilotsForTransferParams) ([]pgtype.UUID, error) {
+	rows, err := q.db.Query(ctx, lockSquadAutopilotsForTransfer, arg.WorkspaceID, arg.AssigneeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []pgtype.UUID{}
+	for rows.Next() {
+		var id pgtype.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		items = append(items, id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const lockSquadForAutopilotAssignment = `-- name: LockSquadForAutopilotAssignment :one
 SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad
 WHERE id = $1 AND workspace_id = $2
@@ -778,33 +909,84 @@ func (q *Queries) RemoveSquadMember(ctx context.Context, arg RemoveSquadMemberPa
 	return result.RowsAffected(), nil
 }
 
-const transferSquadAssignees = `-- name: TransferSquadAssignees :exec
-UPDATE issue SET assignee_type = 'agent', assignee_id = $2, revision = revision + 1, updated_at = now()
-WHERE assignee_type = 'squad' AND assignee_id = $1
+const transferSquadAssignees = `-- name: TransferSquadAssignees :many
+UPDATE issue SET assignee_type = 'agent', assignee_id = $1, revision = revision + 1, updated_at = now()
+WHERE workspace_id = $2 AND assignee_type = 'squad' AND assignee_id = $3
+RETURNING id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count
 `
 
 type TransferSquadAssigneesParams struct {
-	AssigneeID   pgtype.UUID `json:"assignee_id"`
-	AssigneeID_2 pgtype.UUID `json:"assignee_id_2"`
+	LeaderID    pgtype.UUID `json:"leader_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	SquadID     pgtype.UUID `json:"squad_id"`
 }
 
-// Transfer all issues assigned to a squad to the squad's leader agent.
-func (q *Queries) TransferSquadAssignees(ctx context.Context, arg TransferSquadAssigneesParams) error {
-	_, err := q.db.Exec(ctx, transferSquadAssignees, arg.AssigneeID, arg.AssigneeID_2)
-	return err
+// Caller holds the workspace fence and every affected issue row through the
+// transfer, fact recording and archive commit.
+func (q *Queries) TransferSquadAssignees(ctx context.Context, arg TransferSquadAssigneesParams) ([]Issue, error) {
+	rows, err := q.db.Query(ctx, transferSquadAssignees, arg.LeaderID, arg.WorkspaceID, arg.SquadID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Issue{}
+	for rows.Next() {
+		var i Issue
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorkspaceID,
+			&i.Title,
+			&i.Description,
+			&i.Status,
+			&i.Priority,
+			&i.AssigneeType,
+			&i.AssigneeID,
+			&i.CreatorType,
+			&i.CreatorID,
+			&i.ParentIssueID,
+			&i.AcceptanceCriteria,
+			&i.ContextRefs,
+			&i.Position,
+			&i.DueDate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Number,
+			&i.ProjectID,
+			&i.OriginType,
+			&i.OriginID,
+			&i.FirstExecutedAt,
+			&i.StartDate,
+			&i.Metadata,
+			&i.Stage,
+			&i.Properties,
+			&i.Revision,
+			&i.LastActivityAt,
+			&i.AdmissionStatus,
+			&i.CurrentIterationID,
+			&i.IterationRolloverCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const transferSquadAutopilotsToLeader = `-- name: TransferSquadAutopilotsToLeader :exec
 UPDATE autopilot
 SET assignee_type = 'agent',
-    assignee_id = $2,
+    assignee_id = $1,
     updated_at = now()
-WHERE assignee_type = 'squad' AND assignee_id = $1
+WHERE workspace_id = $2 AND assignee_type = 'squad' AND assignee_id = $3
 `
 
 type TransferSquadAutopilotsToLeaderParams struct {
-	AssigneeID   pgtype.UUID `json:"assignee_id"`
-	AssigneeID_2 pgtype.UUID `json:"assignee_id_2"`
+	LeaderID    pgtype.UUID `json:"leader_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	SquadID     pgtype.UUID `json:"squad_id"`
 }
 
 // Mirrors TransferSquadAssignees for autopilot rows: when a squad is archived,
@@ -814,7 +996,7 @@ type TransferSquadAutopilotsToLeaderParams struct {
 // the autopilot keeps firing under the same leader-only execution semantics
 // it had a moment before the archive (Path A from MUL-2429).
 func (q *Queries) TransferSquadAutopilotsToLeader(ctx context.Context, arg TransferSquadAutopilotsToLeaderParams) error {
-	_, err := q.db.Exec(ctx, transferSquadAutopilotsToLeader, arg.AssigneeID, arg.AssigneeID_2)
+	_, err := q.db.Exec(ctx, transferSquadAutopilotsToLeader, arg.LeaderID, arg.WorkspaceID, arg.SquadID)
 	return err
 }
 

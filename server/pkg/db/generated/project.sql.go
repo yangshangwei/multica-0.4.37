@@ -357,6 +357,68 @@ func (q *Queries) GetProjectIssueStats(ctx context.Context, arg GetProjectIssueS
 	return items, nil
 }
 
+const listProjectIssuesForDelete = `-- name: ListProjectIssuesForDelete :many
+SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE project_id=$1 AND workspace_id=$2 ORDER BY id
+`
+
+type ListProjectIssuesForDeleteParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Caller owns the exclusive project lock and iteration workspace fence.
+func (q *Queries) ListProjectIssuesForDelete(ctx context.Context, arg ListProjectIssuesForDeleteParams) ([]Issue, error) {
+	rows, err := q.db.Query(ctx, listProjectIssuesForDelete, arg.ProjectID, arg.WorkspaceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Issue{}
+	for rows.Next() {
+		var i Issue
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorkspaceID,
+			&i.Title,
+			&i.Description,
+			&i.Status,
+			&i.Priority,
+			&i.AssigneeType,
+			&i.AssigneeID,
+			&i.CreatorType,
+			&i.CreatorID,
+			&i.ParentIssueID,
+			&i.AcceptanceCriteria,
+			&i.ContextRefs,
+			&i.Position,
+			&i.DueDate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Number,
+			&i.ProjectID,
+			&i.OriginType,
+			&i.OriginID,
+			&i.FirstExecutedAt,
+			&i.StartDate,
+			&i.Metadata,
+			&i.Stage,
+			&i.Properties,
+			&i.Revision,
+			&i.LastActivityAt,
+			&i.AdmissionStatus,
+			&i.CurrentIterationID,
+			&i.IterationRolloverCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listProjects = `-- name: ListProjects :many
 SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project
 WHERE workspace_id = $1
@@ -403,6 +465,37 @@ func (q *Queries) ListProjects(ctx context.Context, arg ListProjectsParams) ([]P
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const lockProjectAutopilotTriggersForDelete = `-- name: LockProjectAutopilotTriggersForDelete :many
+SELECT t.id FROM autopilot_trigger t
+JOIN autopilot a ON a.id=t.autopilot_id
+WHERE a.project_id=$1 AND a.workspace_id=$2 ORDER BY t.id FOR UPDATE OF t
+`
+
+type LockProjectAutopilotTriggersForDeleteParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) LockProjectAutopilotTriggersForDelete(ctx context.Context, arg LockProjectAutopilotTriggersForDeleteParams) ([]pgtype.UUID, error) {
+	rows, err := q.db.Query(ctx, lockProjectAutopilotTriggersForDelete, arg.ProjectID, arg.WorkspaceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []pgtype.UUID{}
+	for rows.Next() {
+		var id pgtype.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		items = append(items, id)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -586,6 +679,92 @@ func (q *Queries) LockProjectForExecutionSquad(ctx context.Context, arg LockProj
 		&i.InProgressSinceSource,
 	)
 	return i, err
+}
+
+const lockProjectIssuesForDelete = `-- name: LockProjectIssuesForDelete :many
+SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE project_id=$1 AND workspace_id=$2 ORDER BY id FOR UPDATE
+`
+
+type LockProjectIssuesForDeleteParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) LockProjectIssuesForDelete(ctx context.Context, arg LockProjectIssuesForDeleteParams) ([]Issue, error) {
+	rows, err := q.db.Query(ctx, lockProjectIssuesForDelete, arg.ProjectID, arg.WorkspaceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Issue{}
+	for rows.Next() {
+		var i Issue
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorkspaceID,
+			&i.Title,
+			&i.Description,
+			&i.Status,
+			&i.Priority,
+			&i.AssigneeType,
+			&i.AssigneeID,
+			&i.CreatorType,
+			&i.CreatorID,
+			&i.ParentIssueID,
+			&i.AcceptanceCriteria,
+			&i.ContextRefs,
+			&i.Position,
+			&i.DueDate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Number,
+			&i.ProjectID,
+			&i.OriginType,
+			&i.OriginID,
+			&i.FirstExecutedAt,
+			&i.StartDate,
+			&i.Metadata,
+			&i.Stage,
+			&i.Properties,
+			&i.Revision,
+			&i.LastActivityAt,
+			&i.AdmissionStatus,
+			&i.CurrentIterationID,
+			&i.IterationRolloverCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const projectHasForeignReferences = `-- name: ProjectHasForeignReferences :one
+SELECT EXISTS(
+ SELECT 1 FROM issue i WHERE i.project_id=$1 AND i.workspace_id<>$2
+ UNION ALL
+ SELECT 1 FROM autopilot a WHERE a.project_id=$1 AND a.workspace_id<>$2
+ UNION ALL
+ SELECT 1 FROM project_resource r WHERE r.project_id=$1 AND r.workspace_id<>$2
+)
+`
+
+type ProjectHasForeignReferencesParams struct {
+	ProjectID   pgtype.UUID `json:"project_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Existing project FK children use SET NULL (issue/autopilot) or CASCADE
+// (project_resource). Reject malformed cross-tenant references before deletion
+// can invoke those legacy effects outside the tenant-scoped cleanup statements.
+func (q *Queries) ProjectHasForeignReferences(ctx context.Context, arg ProjectHasForeignReferencesParams) (bool, error) {
+	row := q.db.QueryRow(ctx, projectHasForeignReferences, arg.ProjectID, arg.WorkspaceID)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
 }
 
 const updateProject = `-- name: UpdateProject :one
