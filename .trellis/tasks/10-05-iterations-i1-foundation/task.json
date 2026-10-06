@@ -23,7 +23,7 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
   ],
-  "notes": "2026-10-06 implementation authorized; FG in progress, not yet verified 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06 continuation: batch writers and execution-start committed; creation/delete writers, operation lookup, recipient cleanup and explicit-field refusal integrated. FG remains pending; use latest_writer_evidence rather than original S0/S1 handoff.",
+  "notes": "2026-10-06 implementation authorized; FG in progress, not yet verified 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06 continuation: batch writers and execution-start committed; creation/delete writers, operation lookup, recipient cleanup and explicit-field refusal integrated. FG remains pending; use latest_writer_evidence rather than original S0/S1 handoff. 2026-10-06: FG passed with durable settings operations, current authorization and fixed-threshold capacity evidence. Rollout remains disabled; next LG/HG, foundation retained until FCG.",
   "meta": {
     "planning_status": "reviewed",
     "implementation_status": "in_progress",
@@ -47,13 +47,24 @@
       "resolved_at": "2026-10-06",
       "resolution": "Local PostgreSQL access and Git writes available during branch transfer; FG remains incomplete."
     },
-    "next_slice": "S2 remaining FG: durable write-operation orchestration, capability/settings, authorization audit and populated-workspace performance",
+    "next_slice": "LG/HG: parallel lifecycle and history; foundation retained for FCG",
     "latest_writer_evidence": [
       ".trellis/tasks/10-05-iterations-i1-foundation/s2-batch-writers-verification.md",
       ".trellis/tasks/10-05-iterations-i1-foundation/s2-execution-start-verification.md",
       ".trellis/tasks/10-05-iterations-i1-foundation/s2-creation-writers-verification.md",
       ".trellis/tasks/10-05-iterations-i1-foundation/s2-delete-writers-verification.md",
       ".trellis/tasks/10-05-iterations-i1-foundation/s2-boundaries-verification.md"
-    ]
+    ],
+    "milestones": {
+      "FG": {
+        "status": "passed",
+        "verified_at": "2026-10-06T17:33:13+08:00",
+        "evidence": ".trellis/tasks/10-05-iterations-i1-foundation/fg-verification.md",
+        "implementation_commits": [
+          "bc5a2929b",
+          "aca0762a2"
+        ]
+      }
+    }
   }
 }

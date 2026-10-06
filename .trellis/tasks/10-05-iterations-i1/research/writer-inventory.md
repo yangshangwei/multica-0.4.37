@@ -19,6 +19,12 @@ regression. Current member/principal checks were added to creation owners.
 Full FG authorization, operation orchestration, capability/settings and populated
 workspace performance remain pending; do not infer FG from writer coverage alone.
 
+FG acceptance update: **passed**, with current writer-by-writer evidence in
+`../../10-05-iterations-i1-foundation/fg-verification.md`. Current agent/task and
+locked-grant checks, durable enable/replay, truthful closed rollout discovery,
+and frozen populated-writer performance gates are verified. This supersedes
+all earlier open-item summaries; the historical inspection table is retained.
+
 ## Required linearization boundary
 
 Design §3/§10 requires every issue facts writer to acquire the workspace iteration transaction fence **before any issue/attachment lock**, capture before/after, and record the event plus scope_revision in that business transaction. A WS listener cannot supply this invariant. Unknown status categories must not silently inherit todo in I1 snapshot/start/end calculations. Ordinary unassociated issue writes also acquire the fence, otherwise simultaneous join can miss the transition.

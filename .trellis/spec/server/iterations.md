@@ -143,3 +143,26 @@ including null; omission preserves current membership. This restriction must
 be replaced only by the confirmed lifecycle writer, never silent field dropping.
 Full capability and lifecycle gates remain pending; the latest foundation
 verification ledgers, not the existence of these helpers, establish readiness.
+
+## FG operation boundary and read pipeline
+
+FG acceptance is recorded in the foundation task's `fg-verification.md`.
+`iteration.RunOperation` reauthorizes each bounded RC attempt, serializes under
+member/catalog/I1 fences, loads durable requests before mutable-state checks,
+and persists the mutation and validated result in one commit. Only the exact
+request uniqueness conflict is recoverable; unknown commit responses retain
+the old request ID for explicit reconciliation. Settings enable is the current
+production integration. The release flag stays off and atomic_handoff remains
+false until its later implementation/acceptance.
+
+For W01 with no attachments, current-iteration and issue locking reads share a
+second pgx batch only after the existing fence batch and status validation.
+They remain separate ordered statements with fresh snapshots. Strict sqlc-model
+row mapping and authoritative-query equivalence tests prevent drift. The
+attachment path keeps iteration -> attachment -> issue order.
+
+Ordinary HTTP creation fixes its actor/task identity before entering the owner
+transaction and revalidates authority inside it. The callback receives a fresh
+params copy per retry and derives live provenance only from locked references.
+Create, update and lifecycle invocation checks use the actual returned locked
+grant set, not a later allow-list read that could observe an unheld new grant.

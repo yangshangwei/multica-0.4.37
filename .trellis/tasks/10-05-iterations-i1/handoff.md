@@ -6,6 +6,8 @@
 
 > 本轮继续实施：W13/W14 已提交 `ef0b989e9`，W16 已提交 `39c3200ae`。W06–W12 的创建、T1 和删除路径、操作结果查询、撤权通知清理及显式字段兼容保护已接入；详见 foundation 的 `s2-creation-writers-verification.md`、`s2-delete-writers-verification.md`、`s2-boundaries-verification.md`。普通创建与 Autopilot 增加事务内当前成员/授权主体检查，使用实际生产入口验证。**FG 尚未通过；下一步是其余基础门槛，不重做已有 writer 切片。**
 
+> **当前里程碑：FG 已通过。** 本轮提交 `bc5a2929b`、`aca0762a2` 完成当前权限复核、持久操作/设置、读请求合并及容量验收。完整证据见 [FG 验收记录](../10-05-iterations-i1-foundation/fg-verification.md)。发布开关保持关闭；下一步并行推进 lifecycle（LG）与 history（HG），foundation 保留至最终 FCG。上方 S0–S2 “下一步”说明属于历史记录。
+
 ## 1. 接手位置与当前结论
 
 - 开发分支：`codex/projects-p1`。
@@ -13,7 +15,7 @@
 - 活动任务：`.trellis/tasks/10-05-iterations-i1`；父任务和 foundation 为 `in_progress`，其他子任务按现有状态推进。
 - I1 原始工作区成果已经提交并整合到 P1；`main` 保持 `eb71e299e`，无需再次搬运或回滚。
 - `/Volumes/artisan/code/2026/multica-projects-p1` 是保留的 detached checkout，不要在那里继续提交 I1。
-- **I1 仍未通过 FG，尚不能作为完整产品启用。下一块交付是持久写操作编排、能力/设置接口、授权审计与完整性能证据。**
+- **FG 已通过；下一块交付是生命周期 LG 与历史统计 HG。I1 发布开关保持关闭，foundation 等待 FCG。**
 
 事实依据：[分支整合记录](branch-integration.md)、`task.json`、`server/internal/iteration/transaction.go:23`、`server/pkg/db/queries/iteration.sql:1`。
 
@@ -90,15 +92,17 @@
 
 ## 6. FG 完成检查单
 
-- [ ] W01–W17 每项有“接入”或有依据的“豁免”；每条真实生产路径至少有一个持久事实/明确无事件断言，不能仅测 recorder mock。
-- [ ] 创建、HTTP/批量/move、Plugin、GitHub、失败重置、T1、源上下文/lifecycle、squad 转移、项目/任务删除、真实执行开始覆盖；当前不存在的状态重分类/跨空间移动不发明新产品功能。
-- [ ] 两连接 barrier 证明 fence 先于 issue/attachment；55P03/40P01/40001 重试不重复事实；外层预算受限，新 I1 自有操作超限 503，借用既有 writer 保留其错误合同；不嵌套开启新事务。
-- [ ] same request/same payload 重放；不同 payload 409；未知 commit 用旧 ID 对账；删除后本人可查结果；撤权后不能读或重放保护内容。
-- [ ] `GET iteration-operations/{request_id}` 有独立的当前授权读取路径：不能要求 GET 客户端提供原 payload hash，也不能把 `LoadOperation` 当鉴权入口（`operation.go:62`、`api-contract.md:23`）。
-- [ ] workspace 删除同事务清理所有 I1 表；普通 issue/project 删除保留历史；成员撤权清理保护通知、后续 worker 不能重建。
-- [ ] 旧 HTTP/Plugin/CLI/Mobile 写缺字段保留归属；未确认的显式迭代写按合同 428；pending/rejected/duplicate/未知准入不能进入迭代。
-- [ ] 功能关闭下普通 issue/T1/P1 回归通过；更新 SQL 后 sqlc 稳定、迁移/索引/共享时区联合检查通过。
-- [ ] 普通写基线与接线后吞吐、P95、锁等待和查询成本已记录；测试前冻结工程接受阈值，超线修复或记录阻断，不以“默认关闭”豁免回归。
+本轮验收通过；每项证据及 LG/HG/CG/VG 责任边界见 [FG 验收记录](../10-05-iterations-i1-foundation/fg-verification.md)。
+
+- [x] W01–W17 每项有“接入”或有依据的“豁免”；每条真实生产路径至少有一个持久事实/明确无事件断言，不能仅测 recorder mock。
+- [x] 创建、HTTP/批量/move、Plugin、GitHub、失败重置、T1、源上下文/lifecycle、squad 转移、项目/任务删除、真实执行开始覆盖；当前不存在的状态重分类/跨空间移动不发明新产品功能。
+- [x] 两连接 barrier 证明 fence 先于 issue/attachment；55P03/40P01/40001 重试不重复事实；外层预算受限，新 I1 自有操作超限 503，借用既有 writer 保留其错误合同；不嵌套开启新事务。
+- [x] same request/same payload 重放；不同 payload 409；未知 commit 用旧 ID 对账；删除后本人可查结果；撤权后不能读或重放保护内容。
+- [x] `GET iteration-operations/{request_id}` 有独立的当前授权读取路径：不能要求 GET 客户端提供原 payload hash，也不能把 `LoadOperation` 当鉴权入口（`operation.go:62`、`api-contract.md:23`）。
+- [x] workspace 删除同事务清理所有 I1 表；普通 issue/project 删除保留历史；成员撤权清理保护通知并保留 recipient fence 合同；后续投递器在 CG 验证撤权后不重建。
+- [x] 旧 HTTP/Plugin/CLI/Mobile 写缺字段保留归属；未确认的显式迭代写按合同 428；pending/rejected/duplicate/未知准入不能进入迭代。
+- [x] 功能关闭下普通 issue/T1/P1 回归通过；更新 SQL 后 sqlc 稳定、迁移/索引/共享时区联合检查通过。
+- [x] 普通写基线与接线后吞吐、P95、锁等待和查询成本已记录；测试前冻结工程接受阈值，超线修复或记录阻断，不以“默认关闭”豁免回归。
 
 ## 7. 客户端实施定位与约束
 
@@ -164,14 +168,11 @@ App 会话可使用原生 subagents；不以 OMX CLI/team 为前置条件，不�
 
 ## 10. 当前继续位置
 
-在 `codex/projects-p1` 继续 foundation。先核对当前提交和以上五份 S2 证据，保留已有 W01–W17 接入/豁免结果；不要按照历史基线重做 S0/S1，也不要提前启动 LG/HG/UI。
+在 `codex/projects-p1` 从已通过 FG 的基础继续，先读取 [FG 验收记录](../10-05-iterations-i1-foundation/fg-verification.md) 与相应子任务 design/implement/test-spec。不要重做 S0–S2，不要提前打开 `iterations_i1` 发布开关。
 
-剩余 FG 工作：
+1. **lifecycle / LG**：实现创建、编辑、列表/详情、完整预览、开始、加入/移出、取消空计划，以及 T1 接受与安排的联合事务。复用 `iteration.RunOperation`，每种真实业务操作分别验证重放、当前权限、原子性和单 active。
+2. **history / HG**：并行把持久事实接入统计、日末图表、原始承诺规则及冻结 DTO；开始时冻结完整标识和展示摘要，删除后不能依赖实时 JOIN 补历史。复用已有纯统计/时区算法。
+3. **共享整合**：foundation 继续拥有 SQL/sqlc、router 与共享合同，统一整合两条支线；客户端可按稳定 API 准备 schema/query，完整双端联调仍需 CG。
+4. **后续**：LG+HG 后实现 closure/CG，再完成双端 UG、最终 FCG/VG。实际 outbox worker 撤权防重生、未知响应端到端恢复、迁移发布演练和完整生命周期容量均在相应后续门槛验收。
 
-1. 持久写操作业务编排：每次重试重新授权、同请求同意图回放、不同意图冲突、唯一请求竞争、未知提交结果按旧 request_id 对账；现有 GET 查询不等于完整写操作已实现。
-2. 完成 capability/settings 与启用的基础合同，默认保持关闭；共享 planning_timezone 继续复用 P1。
-3. 审计所有生产路径的锁序和当前授权边界，尤其普通 agent 创建的 autonomy/task 身份、引入通知 worker 后的撤权防重生。已验证的成员/主体锁不代替未覆盖的权限矩阵。
-4. 普通 UpdateIssue 小型回归基准已过既定门槛；补真实填充工作区、数据库锁等待和查询成本证据，冻结并核验相应容量阈值。
-5. FG 全部证据满足后再进入 lifecycle/history；foundation 最终归档仍等 FCG。现有迁移和历史记录保留，任何新 SQL 统一生成并检查 sqlc 漂移。
-
-当前完整 Go 全仓、Web/Electron E2E、远端 CI 和发布均未完成，不以定向测试或 TypeScript 单测替代。
+本机填充写入基准已达原门槛，但四并发 P95 余量仅 0.037ms；保留原始失败/成功记录，不将它视为生产 SLA。完整 Go 全仓、Web/Electron E2E、远端 CI 和发布尚未完成。

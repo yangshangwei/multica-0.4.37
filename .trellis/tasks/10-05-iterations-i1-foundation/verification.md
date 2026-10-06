@@ -1,5 +1,7 @@
 # I1 foundation 离线实施证据
 
+> 最新状态：FG 已通过，当前证据以 [FG 验收记录](fg-verification.md) 为准。发布保持关闭；历史记录中的未通过/网络限制不是当前阻断。下一步 LG/HG；完整 I1 仍待后续门槛。
+
 > 2026-10-06 本轮更新：下方离线记录是历史材料，旧网络/Git 限制已解除。当前实际实施与检查见 foundation 的 `s2-batch-writers-verification.md`、`s2-execution-start-verification.md`、`s2-creation-writers-verification.md`、`s2-delete-writers-verification.md`、`s2-boundaries-verification.md`。W13/W14 与 W16 分别已提交 `ef0b989e9`、`39c3200ae`。其余 S2 接入及边界正在整合，FG 仍未通过；继续位置以父任务 handoff §10 为准。
 
 最新实施见 [S0/S1 验证记录](s0-s1-verification.md)：当前本地隔离数据库可用，旧 sandbox 限制不再是阻断；FG 仍未通过。
