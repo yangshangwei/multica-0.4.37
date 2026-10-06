@@ -89,6 +89,25 @@ func (q *Queries) DeleteIterationNotificationsForMember(ctx context.Context, arg
 	return err
 }
 
+const enableIterationSettings = `-- name: EnableIterationSettings :one
+UPDATE workspace_iteration_settings SET enabled=true, revision=revision+1
+WHERE workspace_id=$1 AND revision=$2
+ AND revision<9007199254740991
+RETURNING workspace_id, enabled, revision
+`
+
+type EnableIterationSettingsParams struct {
+	WorkspaceID      pgtype.UUID `json:"workspace_id"`
+	ExpectedRevision int64       `json:"expected_revision"`
+}
+
+func (q *Queries) EnableIterationSettings(ctx context.Context, arg EnableIterationSettingsParams) (WorkspaceIterationSetting, error) {
+	row := q.db.QueryRow(ctx, enableIterationSettings, arg.WorkspaceID, arg.ExpectedRevision)
+	var i WorkspaceIterationSetting
+	err := row.Scan(&i.WorkspaceID, &i.Enabled, &i.Revision)
+	return i, err
+}
+
 const ensureIterationSettings = `-- name: EnsureIterationSettings :exec
 INSERT INTO workspace_iteration_settings (workspace_id) VALUES ($1)
 ON CONFLICT (workspace_id) DO NOTHING
@@ -670,6 +689,17 @@ func (q *Queries) LockIterationCurrentIssues(ctx context.Context, arg LockIterat
 		return nil, err
 	}
 	return items, nil
+}
+
+const lockIterationPlanningTimezone = `-- name: LockIterationPlanningTimezone :one
+SELECT planning_timezone FROM workspace WHERE id=$1 FOR SHARE NOWAIT
+`
+
+func (q *Queries) LockIterationPlanningTimezone(ctx context.Context, id pgtype.UUID) (pgtype.Text, error) {
+	row := q.db.QueryRow(ctx, lockIterationPlanningTimezone, id)
+	var planning_timezone pgtype.Text
+	err := row.Scan(&planning_timezone)
+	return planning_timezone, err
 }
 
 const lockIterationSettings = `-- name: LockIterationSettings :one

@@ -121,3 +121,12 @@ WITH removed_inbox AS (
 )
 DELETE FROM iteration_notification n
 WHERE n.workspace_id=sqlc.arg('workspace_id') AND n.recipient_user_id=sqlc.arg('user_id');
+
+-- name: LockIterationPlanningTimezone :one
+SELECT planning_timezone FROM workspace WHERE id=$1 FOR SHARE NOWAIT;
+
+-- name: EnableIterationSettings :one
+UPDATE workspace_iteration_settings SET enabled=true, revision=revision+1
+WHERE workspace_id=sqlc.arg('workspace_id') AND revision=sqlc.arg('expected_revision')
+ AND revision<9007199254740991
+RETURNING *;

@@ -63,6 +63,10 @@ func runTransactionAttempt(ctx context.Context, tx pgx.Tx, write func(context.Co
 }
 
 func retryableTransactionError(err error) bool {
+	var collision *operationRequestCollision
+	if errors.As(err, &collision) {
+		return true
+	}
 	var pgErr *pgconn.PgError
 	if !errors.As(err, &pgErr) {
 		return false

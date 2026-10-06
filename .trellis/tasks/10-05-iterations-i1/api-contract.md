@@ -1,6 +1,6 @@
 # I1 API / 数据合同 v1
 
-`GET W/iteration-operations/{request_id}` 已实现当前授权下的持久结果查询；其余 I1 产品路径仍待基础门槛通过。planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
+`GET W/iteration-operations/{request_id}`、capability/settings 读取及默认关闭发布开关后的 settings enable 已实现。其余生命周期/历史/结束产品路径由后续阶段实现。planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
 
 ## 端点
 
@@ -8,7 +8,7 @@
 
 | 请求 | 输入/输出 |
 | --- | --- |
-| GET W/iteration-capabilities | `{workspace_id,schema_version:1,supported:true,enabled,manual:true,atomic_handoff:true}` |
+| GET W/iteration-capabilities | `{workspace_id,schema_version:1,supported:boolean,enabled:boolean,manual:true,atomic_handoff:boolean}` |
 | GET W/iteration-settings | `{workspace_id,enabled,revision,planning_timezone,effective_timezone,timezone_configured}` |
 | POST W/iteration-settings/enable | WriteEnvelope + `{expected_revision,confirmed_timezone}`；不建周期；初次尚无 settings 以 revision=1 默认行锁后创建 |
 | GET/PUT W/planning-timezone | 完全复用 P1 合同，不增加第二条设置字段写路径 |
@@ -23,6 +23,8 @@
 | GET W/iteration-operations/{request_id} | 当前 actor 自己的已提交 WriteResult；未见返回 404 operation_not_found（不代表其他并发请求一定失败） |
 
 WriteEnvelope 为 `{request_id:UUID}`，普通 create/edit/enable 也有持久 hash，重放规则同下；初次 create 201，其他成功200，重放200。删除走 operation 而非物理 DELETE，结果保留身份和 deleted=true。
+
+当前 `iterations_i1` 服务端发布开关默认关闭，且未发布到通用前端 flags。`supported` 表示发布开关状态，capability 的 `enabled` 为发布开关与持久 settings.enabled 的合取；settings 读取保留真实持久值。`atomic_handoff` 在 CG 实现并验收前固定 false。发布开关必须等完整 I1 交付后才能启用。已经提交的同意图请求在开关关闭后仍可由当前有权主体回放，不重新改变设置。
 
 ## DTO
 

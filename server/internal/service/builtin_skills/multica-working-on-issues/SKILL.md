@@ -63,6 +63,13 @@ hiding these fields in metadata or changing the rollover count yourself. I1 is
 still under implementation; these safeguards do not mean its lifecycle UI or
 management capability is available.
 
+Iteration discovery and settings are workspace-scoped. The server rollout gate
+is off by default, and `atomic_handoff=false` means end-and-start is unavailable.
+Enabling settings requires a human owner/admin, a request ID, the current settings
+revision and explicit confirmation of the shared planning timezone. It does not
+create or start a period. Never treat settings enable as permission to perform
+unavailable lifecycle operations.
+
 For an already submitted iteration operation whose response was lost,
 `GET /api/workspaces/{workspace_id}/iteration-operations/{request_id}` reads only
 the current authorized actor's persisted result. It needs no payload hash and

@@ -269,3 +269,6 @@ grep -n 'func notifyParentOfChildDone'       internal/handler/issue_child_done.g
 | An authorized actor reads their stored operation without a client hash, even after the entity was deleted | `server/internal/handler/iteration_operations.go`, `server/internal/iteration/operation.go` (`ReadOperation`), `server/cmd/server/router.go` |
 | Membership is held current through read; revoked notifications are removed atomically | `iteration_operations_test.go`, `iteration_revoke_test.go`, `workspace_revoke.go`, `server/pkg/db/queries/iteration.sql` (`DeleteIterationNotificationsForMember`) |
 | Full route authentication and URL workspace isolation | `server/cmd/server/iteration_operations_route_test.go` |
+| Settings/capability discovery and human/admin enable, with rollout closed by default | `server/internal/handler/iteration_settings.go`, `server/internal/service/iteration.go`, `server/internal/featureflags/keys.go` |
+| Stable request identity, current authorization on retries, atomic result and mutation | `server/internal/iteration/operation_execute.go`, `server/internal/handler/iteration_settings_test.go` |
+| Agent create provenance and assigned-agent rights are checked from locked references | `server/internal/handler/issue.go` (`prepareIssueCreationInTx`), `issue_create_authorization_test.go` |
