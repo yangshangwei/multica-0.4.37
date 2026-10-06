@@ -127,6 +127,11 @@ RETURNING *;
 -- name: GetPluginInstallation :one
 SELECT * FROM plugin_installation WHERE id = $1;
 
+-- name: LockPluginInstallationForWrite :one
+-- Reauthorize scoped writes while preventing uninstall, disable or grant edits.
+-- NOWAIT avoids waiting for installation cleanup while holding issue fences.
+SELECT * FROM plugin_installation WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT;
+
 -- name: GetWorkspacePluginInstallation :one
 SELECT * FROM plugin_installation
 WHERE workspace_id = $1 AND id = $2;

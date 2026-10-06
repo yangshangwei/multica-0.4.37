@@ -1,8 +1,9 @@
 # Iteration facts in existing issue transactions
 
-I1 is under implementation. Only the W01 ordinary update family currently
-records facts; do not enable capabilities or infer full writer coverage from
-the schema. Gate evidence lives in the I1 foundation task.
+I1 is under implementation. W01 ordinary updates and W02 public content updates
+record facts; W15 workspace deletion explicitly purges history. Do not enable
+capabilities or infer full writer coverage from the schema. Gate evidence lives
+in the I1 foundation task.
 
 ## Transaction ownership and locks
 
@@ -49,7 +50,30 @@ it and actor identity for every rolled-back attempt. Reauthorize each attempt.
 Issue mutation, attachment binding, participation, event and scope revision
 must share one commit. No post-commit listener may repair missing facts.
 
+## Public content and workspace deletion
+
+`IssueService.UpdateContent` requires a transaction starter and authorization
+callback; it never falls back to autocommit. The callback validates the existing
+transport principal under applicable member/installation locks before the I1
+fence, then rechecks time-sensitive grants after the issue lock. Keep actor
+identity stable. A plugin actor is the installation with null user_id, never a
+fabricated member; a member action includes via_plugin_id. The in-memory callback
+token check is point-in-time and does not acquire a hold-through-commit grant.
+
+Preserve the public conditional-write contract at both workspace and issue
+locking reads: missing rows with ExpectedRevision yield ErrIssueRevisionConflict,
+as the former conditional update did. Keep membership-revocation errors distinct.
+
+Only complete workspace deletion calls `DeleteWorkspaceIterationData`. It purges
+all seven I1 tables in the existing teardown transaction, after protected inbox
+leaf data and before issue roots, under the workspace FOR UPDATE lock. That lock
+must wait for current fact writers; subsequent delete statements see their
+committed facts. Ordinary issue/project deletion retains iteration history.
+
 Regression sources: `internal/handler/issue_iteration_test.go`,
 `issue_revision_test.go`, `project_association_concurrency_test.go` and
 `iteration_write_benchmark_test.go`. Performance thresholds and actual gate
 status are in `.trellis/tasks/10-05-iterations-i1-foundation/s0-s1-verification.md`.
+Additional real-path coverage: `plugin_iteration_test.go`,
+`workspace_iteration_delete_test.go`, service `issue_public_test.go` and the
+foundation `s2-verification.md` ledger.

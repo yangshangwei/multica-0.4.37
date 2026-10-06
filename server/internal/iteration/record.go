@@ -113,9 +113,22 @@ func RecordIssueChange(ctx context.Context, tx pgx.Tx, record *IssueRecord, afte
 		ID     pgtype.UUID `json:"id"`
 		UserID pgtype.UUID `json:"user_id"`
 	}
-	if !operationID.Valid || operationID.Bytes == [16]byte{} || json.Unmarshal(actor, &identity) != nil || (identity.Type != "member" && identity.Type != "agent") || !identity.ID.Valid || identity.ID.Bytes == [16]byte{} || !identity.UserID.Valid || identity.UserID.Bytes == [16]byte{} {
+	if !operationID.Valid || operationID.Bytes == [16]byte{} || json.Unmarshal(actor, &identity) != nil || !identity.ID.Valid || identity.ID.Bytes == [16]byte{} {
 		return errors.New("iteration event requires operation and actor identity")
 	}
+	switch identity.Type {
+	case "member", "agent":
+		if !identity.UserID.Valid || identity.UserID.Bytes == [16]byte{} {
+			return errors.New("member and agent iteration actors require a user identity")
+		}
+	case "plugin":
+		if identity.UserID.Valid {
+			return errors.New("plugin iteration actors must not impersonate a member")
+		}
+	default:
+		return errors.New("unsupported iteration actor")
+	}
+
 	if facts.HasStarted && !record.facts.HasStarted {
 		if err = q.MarkIterationParticipationStarted(ctx, db.MarkIterationParticipationStartedParams{WorkspaceID: after.WorkspaceID, IterationID: after.CurrentIterationID, IssueID: after.ID}); err != nil {
 			return err

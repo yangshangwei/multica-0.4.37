@@ -2,6 +2,8 @@
 
 最新实施见 [foundation S0/S1 验证记录](../10-05-iterations-i1-foundation/s0-s1-verification.md)。当前推进真实 W01 事务内 recorder；以下离线记录保留为历史证据，不能替代本轮验收。
 
+W01 已在 `837e1abaf` 验证提交；继续实施的 W02/W15 和剩余 FG 证据见 [S2 验证记录](../10-05-iterations-i1-foundation/s2-verification.md)。
+
 > 历史记录：以下为转移前的离线实施证据，保留原迁移编号和当时环境限制。当前分支、550–566 迁移及联合验证见[分支整合记录](branch-integration.md)。
 
 日期：2026-10-06。用户已授权实施，父任务与foundation为in_progress。**I1未完成，FG未通过**；本记录只证明基础层离线准备。未提交、推送、迁移数据库、发布或启用迭代。

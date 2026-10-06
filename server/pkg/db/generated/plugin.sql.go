@@ -1215,6 +1215,40 @@ func (q *Queries) ListWorkspacePluginPackages(ctx context.Context, workspaceID p
 	return items, nil
 }
 
+const lockPluginInstallationForWrite = `-- name: LockPluginInstallationForWrite :one
+SELECT id, workspace_id, plugin_key, version, manifest, granted_scopes, config, enabled, installed_by, created_at, updated_at, token_hash, token_rotated_at, mcp_approvals, package_version_id FROM plugin_installation WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
+`
+
+type LockPluginInstallationForWriteParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Reauthorize scoped writes while preventing uninstall, disable or grant edits.
+// NOWAIT avoids waiting for installation cleanup while holding issue fences.
+func (q *Queries) LockPluginInstallationForWrite(ctx context.Context, arg LockPluginInstallationForWriteParams) (PluginInstallation, error) {
+	row := q.db.QueryRow(ctx, lockPluginInstallationForWrite, arg.ID, arg.WorkspaceID)
+	var i PluginInstallation
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.PluginKey,
+		&i.Version,
+		&i.Manifest,
+		&i.GrantedScopes,
+		&i.Config,
+		&i.Enabled,
+		&i.InstalledBy,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.TokenHash,
+		&i.TokenRotatedAt,
+		&i.McpApprovals,
+		&i.PackageVersionID,
+	)
+	return i, err
+}
+
 const lockPluginPackageKey = `-- name: LockPluginPackageKey :exec
 SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))
 `

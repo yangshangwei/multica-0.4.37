@@ -1,6 +1,8 @@
 package service
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"testing"
@@ -241,7 +243,17 @@ func TestTriageStaleContentEditPreservesAcceptedAssignment(t *testing.T) {
 	}
 	fx.Exec(t, "UPDATE issue SET admission_status='accepted',assignee_type='agent',assignee_id=$2,status='todo' WHERE id=$1", id, agent)
 	title := "Edited content"
-	updated, err := (&IssueService{Queries: s.Queries}).UpdateContent(t.Context(), stale, IssueContentPatch{Title: &title})
+	updated, err := (&IssueService{Queries: s.Queries, TxStarter: fx.Pool}).UpdateContent(t.Context(), stale, IssueContentPatch{Title: &title}, func(ctx context.Context, tx pgx.Tx) (json.RawMessage, error) {
+		q := db.New(tx)
+		ws, user := util.MustParseUUID(fx.WorkspaceID), util.MustParseUUID(fx.UserID)
+		if err := q.LockSubscriberWrites(ctx, db.LockSubscriberWritesParams{WorkspaceID: ws, UserID: user}); err != nil {
+			return nil, err
+		}
+		if _, err := q.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: ws, UserID: user}); err != nil {
+			return nil, err
+		}
+		return json.Marshal(map[string]string{"type": "member", "id": fx.UserID, "user_id": fx.UserID})
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

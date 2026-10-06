@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/middleware"
@@ -363,7 +365,7 @@ func (h *Handler) GetPluginIssue(w http.ResponseWriter, r *http.Request) {
 // drifting copy of them. Widening this set later is additive; getting the side
 // effects wrong now is not.
 func (h *Handler) PatchPluginIssue(w http.ResponseWriter, r *http.Request) {
-	caller, _, ok := h.pluginCaller(w, r, plugincontract.ScopeIssuesWrite)
+	caller, actor, ok := h.pluginCaller(w, r, plugincontract.ScopeIssuesWrite)
 	if !ok {
 		return
 	}
@@ -411,17 +413,112 @@ func (h *Handler) PatchPluginIssue(w http.ResponseWriter, r *http.Request) {
 		Title:            title,
 		Description:      description,
 		ExpectedRevision: expectedRevision,
-	})
+	}, h.pluginIssueContentAuthorization(r, caller, actor, issue.ID))
 	if err != nil {
 		if errors.Is(err, service.ErrIssueRevisionConflict) {
 			writePublicIssueRevisionConflict(w, r)
 			return
 		}
-		publicapiv1.WriteProblem(w, r, http.StatusInternalServerError, "internal_error", "failed to update the issue")
+		var problem *pluginIssuePatchProblem
+		if errors.As(err, &problem) {
+			publicapiv1.WriteProblem(w, r, problem.status, problem.code, problem.message)
+			return
+		}
+
+		writePluginActionError(w, r, err, "failed to update the issue")
 		return
 	}
 	setPublicIssueETag(w, updated.Revision)
 	writeJSON(w, http.StatusOK, h.pluginIssuePayload(r, caller, updated))
+}
+
+type pluginIssuePatchProblem struct {
+	status        int
+	code, message string
+}
+
+func (e *pluginIssuePatchProblem) Error() string { return e.message }
+
+// Reuse the same installation/member identities under database locks. Neither
+// install tokens nor event callbacks acquire a fabricated human principal.
+func (h *Handler) pluginIssueContentAuthorization(r *http.Request, caller service.PluginActionCaller, actor pluginActor, issueID pgtype.UUID) service.IssueContentAuthorization {
+	return func(ctx context.Context, tx pgx.Tx) (json.RawMessage, error) {
+		q := h.Queries.WithTx(tx)
+		if actor.isMember() {
+			if auth.PasswordMode() {
+				source, err := auth.LockPasswordSession(ctx, q)
+				if err != nil && !errors.Is(err, auth.ErrPasswordSession) {
+					return nil, &pluginIssuePatchProblem{503, "auth_unavailable", "authentication database unavailable"}
+				}
+				if err != nil || source.UserID != uuidToString(caller.UserID) {
+					return nil, &pluginIssuePatchProblem{403, "callback_session_expired", "the account session for this call has expired"}
+				}
+			}
+			if err := q.LockSubscriberWrites(ctx, db.LockSubscriberWritesParams{WorkspaceID: caller.WorkspaceID, UserID: caller.UserID}); err != nil {
+				return nil, err
+			}
+			if _, err := q.LockActiveMember(ctx, db.LockActiveMemberParams{WorkspaceID: caller.WorkspaceID, UserID: caller.UserID}); err != nil {
+				if errors.Is(err, pgx.ErrNoRows) {
+					if strings.HasPrefix(middleware.BearerToken(r), "mpc_") {
+						return nil, &pluginIssuePatchProblem{403, "actor_membership_revoked", "the user this callback acts for is no longer a member"}
+					}
+					return nil, &pluginIssuePatchProblem{404, "not_found", "workspace not found"}
+				}
+				return nil, err
+			}
+		}
+		installation, err := q.LockPluginInstallationForWrite(ctx, db.LockPluginInstallationForWriteParams{ID: caller.Installation.ID, WorkspaceID: caller.WorkspaceID})
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, &service.PluginError{Kind: service.PluginErrorNotFound, Message: "plugin installation not found"}
+		}
+		if err != nil {
+			return nil, err
+		}
+		scoped := *h.PluginService
+		scoped.Queries = q
+		current, err := scoped.AuthorizePluginAction(ctx, uuidToString(installation.ID), caller.UserID, plugincontract.ScopeIssuesWrite)
+		if err != nil {
+			return nil, err
+		}
+		if current.WorkspaceID != caller.WorkspaceID {
+			return nil, &service.PluginError{Kind: service.PluginErrorNotFound, Message: "plugin installation not found"}
+		}
+		token := middleware.BearerToken(r)
+		if strings.HasPrefix(token, "mpc_") {
+			if scoped.Callbacks == nil {
+				return nil, &service.PluginError{Kind: service.PluginErrorForbidden, Message: "callback tokens are not enabled"}
+			}
+			grant, err := scoped.Callbacks.Resolve(token)
+			if err != nil {
+				return nil, err
+			}
+			expectedActorID := installation.ID
+			if actor.isMember() {
+				expectedActorID = caller.UserID
+			}
+			if grant.InstallationID != installation.ID || grant.WorkspaceID != caller.WorkspaceID || grant.Actor.Type != actor.Type || grant.Actor.ID != expectedActorID || grant.IssueID != caller.IssueScope {
+				return nil, &service.PluginError{Kind: service.PluginErrorForbidden, Message: "callback authorization changed"}
+			}
+			if grant.IssueID.Valid && grant.IssueID != issueID {
+				return nil, &service.PluginError{Kind: service.PluginErrorNotFound, Message: "issue not found"}
+			}
+		} else if middleware.IsPluginBearerToken(token) {
+			authenticated, err := scoped.AuthenticateInstallToken(ctx, token)
+			if err != nil {
+				return nil, err
+			}
+			if authenticated.ID != installation.ID {
+				return nil, &service.PluginError{Kind: service.PluginErrorForbidden, Message: "plugin token authorization changed"}
+			}
+		}
+		identity := map[string]any{"type": actor.Type, "id": installation.ID, "user_id": nil}
+		if actor.isMember() {
+			identity["id"] = caller.UserID
+			identity["user_id"] = caller.UserID
+			identity["via_plugin_id"] = installation.ID
+		}
+		return json.Marshal(identity)
+	}
 }
 
 func setPublicIssueETag(w http.ResponseWriter, revision int64) {
