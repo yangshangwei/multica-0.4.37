@@ -1,6 +1,6 @@
 # I1 实施次序与门槛
 
-2026-10-06：现有 I1 成果已在 `c96b63c09` 整合到 `codex/projects-p1`，Git 与本机 PostgreSQL 已可用；FG 仍未通过。本轮只更新后续计划。当前开发顺序、P1 增量合同和可复制交接指令以 [handoff.md](handoff.md) 为准，按 S0→S1→S2/FG→LG/HG→CG→UG→FCG/VG 推进。
+2026-10-06：FG 已通过；LG/HG 并行实现和集成验收已完成，提交 `1247d2728`、`4c9be7652`。当前证据见 [LG/HG 验收记录](lg-hg-verification.md)，下一业务阶段为 CG。保持发布开关关闭，foundation 保留至 FCG。下方顺序检查单保留为阶段合同。
 
 ## 交付阶段
 

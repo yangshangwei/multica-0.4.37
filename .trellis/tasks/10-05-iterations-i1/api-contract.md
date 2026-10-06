@@ -1,6 +1,6 @@
 # I1 API / 数据合同 v1
 
-`GET W/iteration-operations/{request_id}`、capability/settings 读取及默认关闭发布开关后的 settings enable 已实现。生命周期 LG 与历史 HG 的 API 已进入本轮整合；结束/交接/禁用仍归 CG。planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
+`GET W/iteration-operations/{request_id}`、capability/settings 读取及默认关闭发布开关后的 settings enable 已实现。生命周期 LG 与历史 HG 的 API 已完成本轮集成验收；结束/交接/禁用仍归 CG。planning-timezone 已由 P1 实现，直接复用。其余路径复用已有鉴权路由组。JSON snake_case，UUID 标准文本、time UTC RFC3339Nano、date YYYY-MM-DD；所有 revision 正安全整数，计数非负，nullable 明示 null。
 
 ## 端点
 

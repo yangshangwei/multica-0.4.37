@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-06",
+  "branch": "codex/projects-p1",
+  "baseline_commit": "da6c0fc65306279a1a62b243a590ea87aa956710",
+  "release": {
+    "iterations_i1_default": false,
+    "atomic_handoff": false,
+    "configuration_changed": false
+  },
+  "go": [
+    {
+      "log": "/tmp/i1-lg-hg-final-handler.jsonl",
+      "sha256": "08b66ae46ccad3261b9ea82d95b20b72699e0465ebc2b78564ecfcd4d51a372a",
+      "counts_including_subtests": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 638,
+          "skip": 2
+        }
+      },
+      "package_outcomes": {
+        "github.com/multica-ai/multica/server/internal/handler": "pass"
+      },
+      "skips": [
+        "TestTriageQueueScaleBaseline",
+        "TestTriageWireFixtures"
+      ]
+    },
+    {
+      "log": "/tmp/i1-lg-hg-final-domain.jsonl",
+      "sha256": "527c8fbc6b760358c0b2d0fb3436b97f59b99bc20917deba73fb7e5846e663a7",
+      "counts_including_subtests": {
+        "github.com/multica-ai/multica/server/internal/iteration": {
+          "pass": 120
+        },
+        "github.com/multica-ai/multica/server/internal/util": {
+          "pass": 115
+        },
+        "github.com/multica-ai/multica/server/pkg/publicapi/v1": {
+          "pass": 5
+        }
+      },
+      "package_outcomes": {
+        "github.com/multica-ai/multica/server/internal/iteration": "pass",
+        "github.com/multica-ai/multica/server/internal/util": "pass",
+        "github.com/multica-ai/multica/server/pkg/publicapi/v1": "pass"
+      },
+      "skips": []
+    },
+    {
+      "log": "/tmp/i1-lg-hg-integration-accepted.jsonl",
+      "sha256": "7b4fb43a2a7c57de71cec004220627181e389201d3a454d213595249bea3895f",
+      "counts_including_subtests": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 179,
+          "skip": 2
+        },
+        "github.com/multica-ai/multica/server/internal/service": {
+          "pass": 154
+        },
+        "github.com/multica-ai/multica/server/cmd/server": {
+          "pass": 5
+        }
+      },
+      "package_outcomes": {
+        "github.com/multica-ai/multica/server/internal/handler": "pass",
+        "github.com/multica-ai/multica/server/internal/service": "pass",
+        "github.com/multica-ai/multica/server/cmd/server": "pass"
+      },
+      "skips": [
+        "TestTriageQueueScaleBaseline",
+        "TestTriageWireFixtures"
+      ]
+    },
+    {
+      "log": "/tmp/i1-lg-hg-builtin-accepted.jsonl",
+      "sha256": "c42c088558adbb5b98ed70bc4fd0dbaad6feac284db55e2cf055f690cd0cde4c",
+      "counts_including_subtests": {
+        "github.com/multica-ai/multica/server/internal/service": {
+          "pass": 1
+        }
+      },
+      "package_outcomes": {
+        "github.com/multica-ai/multica/server/internal/service": "pass"
+      },
+      "skips": []
+    },
+    {
+      "log": "/tmp/i1-lg-hg-pool-fix-accepted.jsonl",
+      "sha256": "d555a9f135f0befdd6e4bd191780e900eb8a24bc3fe58f041f9edbef4dfe98a6",
+      "counts_including_subtests": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 113,
+          "skip": 2
+        },
+        "github.com/multica-ai/multica/server/cmd/server": {
+          "pass": 1
+        }
+      },
+      "package_outcomes": {
+        "github.com/multica-ai/multica/server/internal/handler": "pass",
+        "github.com/multica-ai/multica/server/cmd/server": "pass"
+      },
+      "skips": [
+        "TestTriageQueueScaleBaseline",
+        "TestTriageWireFixtures"
+      ]
+    }
+  ],
+  "typescript": {
+    "tests": 10054,
+    "test_tasks": 5,
+    "static_tasks": 15,
+    "test_log": "/tmp/i1-lg-hg-ts-test.log",
+    "static_log": "/tmp/i1-lg-hg-ts-static.log",
+    "cache_used": false,
+    "mobile_included": false
+  },
+  "build_vet": {
+    "build_exit": 0,
+    "vet_exit": 0,
+    "build_log": "/tmp/i1-lg-hg-build-after-review.log",
+    "vet_log": "/tmp/i1-lg-hg-vet-after-review.log"
+  },
+  "sqlc": {
+    "count": 84,
+    "all_hashes_unchanged": true,
+    "generation_log": "/tmp/i1-lg-hg-final-sqlc.log"
+  },
+  "limits": [
+    "Overlapping Go selections must not be summed as unique tests.",
+    "Temporary raw logs are local artifacts; this committed summary is durable.",
+    "Full repository Go tests, Web/Electron E2E, CG closure/outbox, P95 capacity, remote CI and deployment are not claimed."
+  ],
+  "implementation_commits": [
+    "1247d2728e690c89707b248096f952d372e7c38e",
+    "4c9be765213f20953b46cb84db5caa19fc2f945d"
+  ],
+  "gates": {
+    "LG": "passed",
+    "HG": "passed"
+  },
+  "verified_at": "2026-10-06T21:56:58+08:00",
+  "final_review": {
+    "result": "passed_after_fix",
+    "finding": "Capability pool query inside settings transaction",
+    "red_log": "/tmp/i1-triage-capability-red.log",
+    "green_log": "/tmp/i1-triage-capability-green.log",
+    "fix": "Pass caller queries into capability helper; settings update uses its existing transaction."
+  }
+}

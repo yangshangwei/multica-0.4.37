@@ -1,12 +1,10 @@
 # I1 后续开发计划与 Handoff
 
-日期：2026-10-06。代码基线：`c96b63c096e445b93f16fda9a82217579e8ac598`。本轮只更新计划和交接，不实施产品代码。独立审查已通过，见[审查记录](research/handoff-review.md)。
+日期：2026-10-06。原规划基线为 `c96b63c09`；本轮从 `da6c0fc65` 实施 LG/HG。当前以 [LG/HG 集成验收记录](lg-hg-verification.md) 和 `task.json` 为准。原规划的[独立审查](research/handoff-review.md)继续有效。
 
-> 后续实施增量：S0/S1 已完成并验证，提交 `837e1abaf`；W15 工作空间清理为 `7d53c9ed0`，W02 公开内容写入为 `c6980d5e5`，W05 测试旁路移除与 W17 分析标记豁免为 `e3cee069c`。W03/W04 系统状态写入也已完成真实数据库红绿、竞争及回滚验证。不要重做这些切片。下一步继续 S2 的 W06–W14、W16 和其余基础能力证据。最新结果及继续实施位置见 [S2 记录](../10-05-iterations-i1-foundation/s2-verification.md)及[系统 writer 记录](../10-05-iterations-i1-foundation/s2-system-writers-verification.md)。FG 仍未通过；以下保留原始实施次序和合同，不把旧“下一步 S0/S1”当作当前未完成项。
+> **当前进度：FG、LG、HG 已通过，代码提交 `1247d2728`、`4c9be7652`。** 发布开关保持关闭；下一业务门槛为 CG，foundation 保留至最终 FCG。
 
-> 本轮继续实施：W13/W14 已提交 `ef0b989e9`，W16 已提交 `39c3200ae`。W06–W12 的创建、T1 和删除路径、操作结果查询、撤权通知清理及显式字段兼容保护已接入；详见 foundation 的 `s2-creation-writers-verification.md`、`s2-delete-writers-verification.md`、`s2-boundaries-verification.md`。普通创建与 Autopilot 增加事务内当前成员/授权主体检查，使用实际生产入口验证。**FG 尚未通过；下一步是其余基础门槛，不重做已有 writer 切片。**
-
-> **当前里程碑：FG 已通过。** 本轮提交 `bc5a2929b`、`aca0762a2` 完成当前权限复核、持久操作/设置、读请求合并及容量验收。完整证据见 [FG 验收记录](../10-05-iterations-i1-foundation/fg-verification.md)。发布开关保持关闭；下一步并行推进 lifecycle（LG）与 history（HG），foundation 保留至最终 FCG。上方 S0–S2 “下一步”说明属于历史记录。
+已完成的 S0–S2 不重做；历史 writer 和性能证据见 [S2 记录](../10-05-iterations-i1-foundation/s2-verification.md)、[FG 验收记录](../10-05-iterations-i1-foundation/fg-verification.md)。下方 S1/FG 原始检查内容保留为实现约束。
 
 ## 1. 接手位置与当前结论
 
@@ -15,7 +13,7 @@
 - 活动任务：`.trellis/tasks/10-05-iterations-i1`；父任务和 foundation 为 `in_progress`，其他子任务按现有状态推进。
 - I1 原始工作区成果已经提交并整合到 P1；`main` 保持 `eb71e299e`，无需再次搬运或回滚。
 - `/Volumes/artisan/code/2026/multica-projects-p1` 是保留的 detached checkout，不要在那里继续提交 I1。
-- **FG 已通过；下一块交付是生命周期 LG 与历史统计 HG。I1 发布开关保持关闭，foundation 等待 FCG。**
+- **LG/HG 已验收，下一阶段为 CG；I1 发布开关保持关闭，foundation 等待 FCG。**
 
 事实依据：[分支整合记录](branch-integration.md)、`task.json`、`server/internal/iteration/transaction.go:23`、`server/pkg/db/queries/iteration.sql:1`。
 
@@ -24,11 +22,11 @@
 | 领域 | 当前可复用成果 | 后续缺口 |
 | --- | --- | --- |
 | Schema | P1 536–549；I1 550–566；单 active、参与、事件、快照、operation、outbox 表和独立并发索引 | 后续有 schema 变化从实际最大编号继续分配，不重写已整合历史；不新增 FK |
-| 共享时区 | P1 已拥有 `workspace.planning_timezone`、配置 API 和更新 query | I1 创建确认并冻结时区；设置修改只影响以后新建周期；不复制配置 API |
-| 纯领域逻辑 | `stats.go:184` / `:203`、`calendar.go:36` / `:75`、`canonical.go:20` / `:160` 已实现统计、图表、日历和严格规范化 | 把真实 DB 事实映射到这些函数；保留已有 canonical 测试，避免再写一套公式 |
-| 事务与操作 | `transaction.go:23` / `:82` / `:93`；`operation.go:65` / `:106` 提供重试、fence、锁后时间、Load/SaveOperation | 尚无生产调用；缺每次尝试重新授权、操作查询服务、唯一竞争与未知提交结果的业务编排 |
-| SQL | `queries/iteration.sql:1` 有读取、settings 锁、operation 持久化和指针 CAS | 缺创建/编辑、参与变更、事件追加及 sequence/scope_revision、快照和 outbox 写入 |
-| 生命周期、结束闭环 | 已有 API/行为合同 | handler/service、start/move/end/handoff/disable 尚未实现 |
+| 共享时区 | P1 配置复用；I1 创建确认并冻结时区，已覆盖日历/午夜规则 | 客户端按周期时区展示，UG 验收 |
+| 历史与统计 | `history*.go` 投影持久事实，复用统计/图表/日历；真实 A–J 和冻结 payload 已验证 | 实际 end/handoff 持久化后不漂移归 CG/VG |
+| 事务与操作 | settings/create/edit/start/move/cancel/delete 已接入 `RunOperation`；重授权、重放、操作查询已有真实测试 | CG 复用同一持久协议，不另建事务/重试所有者 |
+| SQL | iteration/lifecycle/history/list queries 已整合，84 个 sqlc 产物稳定 | CG 快照和 outbox 写入仍需整合 |
+| 生命周期 | 创建/编辑/列表/详情、完整预览、开始/移动、计划取消/删除、普通创建与 T1 归属已实现 | end/active cancel/handoff/disable 和通知属于 CG |
 | 客户端 | P1 提供可参考的 schema/query/draft/access/realtime 模式 | I1 core/views/Web/Desktop 产品实现不存在；Mobile 完整编辑和新 CLI 命令不在首期承诺内 |
 
 上述 Go 文件位于 `server/internal/iteration/`。迁移与时区依据：`server/migrations/550_iteration_tables.up.sql:1`、`server/internal/handler/project_timezone.go:77`、`server/pkg/db/queries/workspace.sql:246`。客户端参考：`packages/core/api/client.ts:4483`、`packages/core/projects/progress-draft-store.ts:10`。
@@ -51,7 +49,7 @@
 | 执行开始是单独事实 | `server/internal/service/task.go:4154` / `:4162`：实际 StartAgentTask 成功才记 started；enqueue/claim/完成、无 issue 的 task 不得冒充开始；管理动作不得重启或停止执行 |
 | 批量与清理需要专门覆盖 | `server/internal/handler/squad.go:563`、`server/pkg/db/queries/squad.sql:139`、`server/internal/handler/workspace.go:1264`、`server/internal/handler/workspace_revoke.go:60` / `:219`：租户范围、全事务、锁序、显式 I1 清理及撤权后防重生 |
 
-原始源码行号以 `c96b63c09` 为基准，代码演进后以符号定位。以上是待实现位置，不表示已接线。
+原始源码行号以 `c96b63c09` 为基准，代码演进后以符号定位。这些是原始定位；当前 writer 接线以 FG/LG/HG 验收记录为准。
 
 ## 4. 开发次序与阶段门槛
 
@@ -59,7 +57,7 @@
 
 | 切片 | 所有者 / 依赖 | 要交付什么 | 可检查的退出条件 |
 | --- | --- | --- | --- |
-| S0：刷新实施基线 | foundation；现在开始 | 确认分支与隔离环境；把 W01–W17 标成真实路径/明确豁免；记录 P1 锁序和普通写性能基线 | 每项包含 symbol、事务所有者、锁顺序、事实字段、回归测试、当前状态；没有未解释入口；不把旧 sandbox 当当前阻断 |
+| S0：刷新实施基线 | foundation；已完成 | 确认分支与隔离环境；把 W01–W17 标成真实路径/明确豁免；记录 P1 锁序和普通写性能基线 | 每项包含 symbol、事务所有者、锁顺序、事实字段、回归测试、当前状态；没有未解释入口；不把旧 sandbox 当当前阻断 |
 | S1：一个真实 writer 闭环 | foundation；S0 | 最小 recorder + W01 UpdateIssue 接线；详见下一节 | 真实 DB 证明 issue/facts/event/scope_revision 同成败，no-op 不造事件；旧请求字段保留、P1 CAS/NOWAIT/附件回归通过；此时仍不能宣告 FG |
 | S2：完成写入底座 | foundation；S1 | 扩展 W02–W17；操作重放/查询、读取授权、settings/capability、空间删除/撤权；补齐所有相关锁协议 | 满足下方 FG 检查单；保留关闭状态，记录普通写吞吐及锁等待；不重新创建时区能力 |
 | S3-L：手动生命周期 | lifecycle；FG | enable/create/edit/list/detail、完整 preview、start/move、planned cancel/delete、T1 accept 联合事务 | LG：真 API 的授权、单 active、日期/终态选择、单归属、批量整体成功、同 request 重放全部通过；T1 目标冲突保持 pending、显式执行只一次 |
@@ -76,7 +74,7 @@
 - **FCG** 是 foundation 的最终整合完成点，不是 LG/HG 的启动前置；FG 通过不能归档 foundation。
 - 现在可以并行写验收矩阵、交互方案和 DTO 示例文档；客户端 fixture/代码实施仍按原计划在 FG 后启动。mock 结果不能通过 UG。
 
-## 5. 下一位开发者的第一块交付：S1
+## 5. 历史 S1 交付说明（已完成）
 
 目标：让一次真实 `UpdateIssue` 在原有事务内产生正确的 I1 事实，失败时 issue 和 I1 事实一起回滚。
 
@@ -168,11 +166,11 @@ App 会话可使用原生 subagents；不以 OMX CLI/team 为前置条件，不�
 
 ## 10. 当前继续位置
 
-在 `codex/projects-p1` 从已通过 FG 的基础继续，先读取 [FG 验收记录](../10-05-iterations-i1-foundation/fg-verification.md) 与相应子任务 design/implement/test-spec。不要重做 S0–S2，不要提前打开 `iterations_i1` 发布开关。
+LG/HG 已通过；在 `codex/projects-p1` 推进 **closure / CG**。先读取 [LG/HG 集成验收](lg-hg-verification.md)、[closure 实施计划](../10-05-iterations-i1-closure/implement.md)和父 API/test-spec；不要重做 S0–S3，也不要打开 `iterations_i1`。
 
-1. **lifecycle / LG**：实现创建、编辑、列表/详情、完整预览、开始、加入/移出、取消空计划，以及 T1 接受与安排的联合事务。复用 `iteration.RunOperation`，每种真实业务操作分别验证重放、当前权限、原子性和单 active。
-2. **history / HG**：并行把持久事实接入统计、日末图表、原始承诺规则及冻结 DTO；开始时冻结完整标识和展示摘要，删除后不能依赖实时 JOIN 补历史。复用已有纯统计/时区算法。
-3. **共享整合**：foundation 继续拥有 SQL/sqlc、router 与共享合同，统一整合两条支线；客户端可按稳定 API 准备 schema/query，完整双端联调仍需 CG。
-4. **后续**：LG+HG 后实现 closure/CG，再完成双端 UG、最终 FCG/VG。实际 outbox worker 撤权防重生、未知响应端到端恢复、迁移发布演练和完整生命周期容量均在相应后续门槛验收。
+1. 复用 `RunOperation` 和完整预览，实施 end、active cancel、handoff、整空间 disable；全部去向、快照、参与释放和计数必须同一事务。
+2. 用真实两连接和中间写点故障注入证明整体回滚；确认后的目标/权限/成员变化拒绝整批，丢失响应重试不能再次结转。
+3. 接入持久 outbox、逾期提醒和当前接收人授权，验证撤权防重生、崩溃恢复和可见通知去重。
+4. 共享 SQL/sqlc/router 由一名整合负责人维护；UG 完成双端与兼容，随后 FCG/VG 执行完整验收和远端 CI。
 
-本机填充写入基准已达原门槛，但四并发 P95 余量仅 0.037ms；保留原始失败/成功记录，不将它视为生产 SLA。完整 Go 全仓、Web/Electron E2E、远端 CI 和发布尚未完成。
+LG 的 1,000 项容量证据是单次本地完整性/计时检查，不是 P95 或关闭容量验收。既有 FG 四并发 P95 余量仅 0.037ms，保留原始记录。完整 Go 全仓、Web/Electron E2E、远端 CI 和发布尚未完成。

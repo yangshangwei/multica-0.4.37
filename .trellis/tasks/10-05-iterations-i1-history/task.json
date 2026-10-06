@@ -2,8 +2,8 @@
   "id": "iterations-i1-history",
   "name": "iterations-i1-history",
   "title": "迭代 I1：承诺、范围事件与历史统计",
-  "description": "本轮仅工程规划，未实施产品代码",
-  "status": "planning",
+  "description": "持久历史投影、统计和冻结快照读取已通过 HG 验收",
+  "status": "completed",
   "dev_type": "backend",
   "scope": "iterations",
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-05",
-  "completedAt": null,
+  "completedAt": "2026-10-06",
   "branch": "codex/projects-p1",
   "base_branch": "main",
   "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
-  "commit": null,
+  "commit": "4c9be765213f20953b46cb84db5caa19fc2f945d",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -23,10 +23,10 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
   ],
-  "notes": "2026-10-06 independent pure stats/calendar/canonical preparation implemented; HG is not satisfied; DB history/event integration not started 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete.",
+  "notes": "2026-10-06 independent pure stats/calendar/canonical preparation implemented; HG is not satisfied; DB history/event integration not started 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06 user explicitly authorized parallel LG/HG implementation; release flag remains off. 2026-10-06: HG passed with integrated real PostgreSQL/race/API evidence; release remains off. Current evidence paths retained for CG/FCG/VG.",
   "meta": {
     "planning_status": "reviewed",
-    "implementation_status": "not_started",
+    "implementation_status": "completed",
     "depends_on": [],
     "start_gates": [
       "FG"
@@ -37,11 +37,21 @@
       "architect": ".trellis/tasks/10-05-iterations-i1/research/architect-review.md",
       "critic": ".trellis/tasks/10-05-iterations-i1/research/critic-review.md"
     },
-    "preparation_status": "pure_calculations_implemented_awaiting_FG",
+    "preparation_status": "persisted_history_and_read_apis_integrated",
     "integration_base": "be26f34e5dc66de3e7ff546dd18d1b4f0f3b0ba2",
     "foundation_gate": {
       "status": "passed",
       "evidence": ".trellis/tasks/10-05-iterations-i1-foundation/fg-verification.md"
+    },
+    "acceptance": {
+      "gate": "HG",
+      "status": "passed",
+      "verified_at": "2026-10-06T21:56:58+08:00",
+      "evidence": ".trellis/tasks/10-05-iterations-i1/lg-hg-verification.md",
+      "implementation_commits": [
+        "1247d2728e690c89707b248096f952d372e7c38e",
+        "4c9be765213f20953b46cb84db5caa19fc2f945d"
+      ]
     }
   }
 }
