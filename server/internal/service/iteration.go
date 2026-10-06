@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -15,6 +16,11 @@ import (
 type IterationService struct {
 	TxStarter TxStarter
 	Available func(context.Context) bool
+	// AuthorizeIssues checks current task-level rights after the complete row set
+	// is locked. New management transports must provide it for nonempty sets.
+	AuthorizeIssues func(context.Context, pgx.Tx, []db.Issue) error
+	// Now supplies the lock-time database clock; nil uses SampleBusinessTime.
+	Now func(context.Context, pgx.Tx) (time.Time, error)
 }
 type EnableIterationInput struct {
 	RequestID         string `json:"request_id"`
