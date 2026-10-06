@@ -8,6 +8,7 @@
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
 | [Triage Admission](./triage.md) | Human review, inert intake, execution fences, CSV replay and retained audit data | Active |
+| [Iteration facts](./iterations.md) | Borrowed recorder, W01 lock batching, retry identity and current I1 limits | Active |
 | [Platform Observability](./platform-observability.md) | Metric windows, queue clocks, leased alerts, health evidence and audit projections | Active |
 | [Managed Installations](./managed-installations.md) | Signed enrollment, scoped runtime authority, recovery and provenance | Active |
 | [Creator Recommendations](./creator-recommendations.md) | Human-only, evidence-grounded LLM advice and invocation boundaries | Active |

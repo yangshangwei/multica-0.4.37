@@ -17,6 +17,7 @@ import (
 	"unicode"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/admission"
@@ -24,6 +25,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/dispatch"
 	"github.com/multica-ai/multica/server/internal/issueguard"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/middleware"
@@ -3241,6 +3243,21 @@ func refreshUntouchedNullableIssueParams(params *db.UpdateIssueParams, current d
 
 var errIssueFieldConflict = errors.New("issue text field conflict")
 
+type issueUpdateAccessError struct {
+	status  int
+	message string
+}
+
+func (e *issueUpdateAccessError) Error() string { return e.message }
+func writeIssueUpdateAccessError(w http.ResponseWriter, err error) bool {
+	var access *issueUpdateAccessError
+	if !errors.As(err, &access) {
+		return false
+	}
+	writeError(w, access.status, access.message)
+	return true
+}
+
 func writeIssueProjectAssociationError(w http.ResponseWriter, err error) bool {
 	if errors.Is(err, service.ErrProjectNotFound) {
 		writeError(w, http.StatusBadRequest, "project not found in this workspace")
@@ -3253,18 +3270,155 @@ func writeIssueProjectAssociationError(w http.ResponseWriter, err error) bool {
 	return false
 }
 
-func (h *Handler) updateIssueAtomically(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, bool, error) {
+func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, bool, error) {
+	ctx := r.Context()
+	actorType, actorID := h.resolveActor(r, requestUserID(r), uuidToString(workspaceID))
+	actor, err := json.Marshal(map[string]string{"type": actorType, "id": actorID, "user_id": requestUserID(r)})
+	if err != nil {
+		return db.Issue{}, db.Issue{}, false, err
+	}
+	userID, err := util.ParseUUID(requestUserID(r))
+	if err != nil {
+		return db.Issue{}, db.Issue{}, false, err
+	}
+	operationID := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	authorize := func(tx pgx.Tx, params db.UpdateIssueParams) error {
+		scoped := *h
+		scoped.Queries = h.Queries.WithTx(tx)
+		scoped.DB = tx
+		if actorType == "agent" {
+			agentUUID, e := util.ParseUUID(actorID)
+			if e != nil {
+				return &issueUpdateAccessError{403, "actor unavailable"}
+			}
+			agent, e := scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: agentUUID, WorkspaceID: workspaceID})
+			if errors.Is(e, pgx.ErrNoRows) {
+				return &issueUpdateAccessError{403, "actor unavailable"}
+			}
+			if e != nil {
+				return e
+			}
+			// Task identity/originator authorization must remain current until commit.
+			// NOWAIT preserves the issue/task ordering of execution writers.
+			if taskID := r.Header.Get("X-Task-ID"); taskID != "" {
+				taskUUID, e := util.ParseUUID(taskID)
+				if e != nil {
+					return &issueUpdateAccessError{403, "actor task unavailable"}
+				}
+				task, e := scoped.Queries.LockLifecycleOriginTask(ctx, db.LockLifecycleOriginTaskParams{ID: taskUUID, WorkspaceID: workspaceID})
+				if errors.Is(e, pgx.ErrNoRows) {
+					return &issueUpdateAccessError{403, "actor task unavailable"}
+				}
+				if e != nil {
+					return e
+				}
+				if task.AgentID != agentUUID {
+					return &issueUpdateAccessError{403, "actor task unavailable"}
+				}
+			}
+
+			if agent.ArchivedAt.Valid {
+				return &issueUpdateAccessError{403, "actor unavailable"}
+			}
+			if (params.Status.Valid || requestTouchesIssueDirection(rawFields)) && !service.AutonomyAtLeast(agent.AutonomyLevel, service.AutonomyContributor) {
+				return &issueUpdateAccessError{403, autonomyDenialMessage(agent.AutonomyLevel, service.AutonomyContributor, "change an issue's status or assignee")}
+			}
+		}
+		currentType, currentActor := scoped.resolveActor(r, requestUserID(r), uuidToString(workspaceID))
+		if currentType != actorType || currentActor != actorID {
+			return &issueUpdateAccessError{403, "actor authorization changed"}
+		}
+		_, touchedType := rawFields["assignee_type"]
+		_, touchedID := rawFields["assignee_id"]
+		if touchedType || touchedID {
+			if params.AssigneeID.Valid {
+				var e error
+				switch params.AssigneeType.String {
+				case "member":
+					var members []pgtype.UUID
+					members, e = scoped.Queries.LockProjectUpdateRecipients(ctx, db.LockProjectUpdateRecipientsParams{WorkspaceID: workspaceID, UserIds: []pgtype.UUID{params.AssigneeID}})
+					if e == nil && len(members) != 1 {
+						return &issueUpdateAccessError{400, "assignee unavailable"}
+					}
+				case "agent":
+					_, e = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: params.AssigneeID, WorkspaceID: workspaceID})
+				case "squad":
+					var squad db.Squad
+					squad, e = scoped.Queries.LockLifecycleSquad(ctx, db.LockLifecycleSquadParams{ID: params.AssigneeID, WorkspaceID: workspaceID})
+					if e == nil {
+						_, e = scoped.Queries.LockLifecycleAgent(ctx, db.LockLifecycleAgentParams{ID: squad.LeaderID, WorkspaceID: workspaceID})
+					}
+				}
+				if errors.Is(e, pgx.ErrNoRows) {
+					return &issueUpdateAccessError{400, "assignee unavailable"}
+				}
+				if e != nil {
+					return e
+				}
+			}
+			if status, message := scoped.validateAssigneePair(ctx, r, uuidToString(workspaceID), params.AssigneeType, params.AssigneeID); status != 0 {
+				return &issueUpdateAccessError{status, message}
+			}
+		}
+
+		return nil
+	}
+
 	var issue, current db.Issue
 	var attachmentsChanged bool
-	var err error
 	err = service.RetryProjectAssociationTransaction(ctx, func() error {
-		issue, current, attachmentsChanged, err = h.updateIssueAtomicallyOnce(ctx, workspaceID, params, rawFields, titleBase, descriptionBase, attachmentIDs, statusKey)
+		issue, current, attachmentsChanged, err = h.updateIssueAtomicallyOnce(ctx, workspaceID, params, rawFields, titleBase, descriptionBase, attachmentIDs, statusKey, userID, actor, operationID, authorize)
 		return err
 	})
 	return issue, current, attachmentsChanged, err
 }
 
-func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, bool, error) {
+// The five statements are pipelined, not merged: PostgreSQL executes them in
+// order with separate READ COMMITTED statement snapshots. Their SQL mirrors
+// workspace.sql, subscriber.sql and issue_status.sql; the equivalence test must
+// change with those authoritative lock definitions. Consume/close the batch
+// before the current-iteration lookup or any business write. The lookup needs
+// a fresh snapshot after a possibly waiting iteration fence.
+var issueWriteFenceSQL = []string{
+	"-- name: LockWorkspaceForChatSessionCreate :one\nSELECT id FROM workspace WHERE id = $1 FOR KEY SHARE;",
+	"-- name: LockSubscriberWrites :exec\nSELECT pg_advisory_xact_lock(hashtext(($1::uuid)::text),hashtext(($2::uuid)::text));",
+	"-- name: LockActiveMember :one\nSELECT id FROM member WHERE user_id = $1 AND workspace_id = $2 FOR SHARE;",
+	"-- name: LockIssueStatusCatalogShared :exec\nSELECT pg_advisory_xact_lock_shared(hashtextextended($1::uuid::text || ':issue_status', 0));",
+	iteration.WorkspaceFenceSQL,
+}
+
+func lockIssueWriteFences(ctx context.Context, tx pgx.Tx, workspaceID, userID pgtype.UUID) error {
+	batch := &pgx.Batch{}
+	batch.Queue(issueWriteFenceSQL[0], workspaceID)
+	batch.Queue(issueWriteFenceSQL[1], workspaceID, userID)
+	batch.Queue(issueWriteFenceSQL[2], userID, workspaceID)
+	batch.Queue(issueWriteFenceSQL[3], workspaceID)
+	batch.Queue(issueWriteFenceSQL[4], workspaceID)
+	results := tx.SendBatch(ctx, batch)
+	defer results.Close()
+	var id pgtype.UUID
+	if err := results.QueryRow().Scan(&id); err != nil {
+		return err
+	}
+	if _, err := results.Exec(); err != nil {
+		return err
+	}
+	if err := results.QueryRow().Scan(&id); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &issueUpdateAccessError{403, "workspace membership required"}
+		}
+		return err
+	}
+	if _, err := results.Exec(); err != nil {
+		return err
+	}
+	if _, err := results.Exec(); err != nil {
+		return err
+	}
+	return results.Close()
+}
+
+func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string, userID pgtype.UUID, actor json.RawMessage, operationID pgtype.UUID, authorize func(pgx.Tx, db.UpdateIssueParams) error) (db.Issue, db.Issue, bool, error) {
 	if h.TxStarter == nil {
 		return db.Issue{}, db.Issue{}, false, errors.New("atomic issue update requires transaction starter")
 	}
@@ -3275,7 +3429,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	defer tx.Rollback(ctx)
 
 	qtx := h.Queries.WithTx(tx)
-	if _, err := qtx.LockWorkspaceForChatSessionCreate(ctx, workspaceID); err != nil {
+	if err := lockIssueWriteFences(ctx, tx, workspaceID, userID); err != nil {
 		return db.Issue{}, db.Issue{}, false, err
 	}
 
@@ -3285,6 +3439,11 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	if err := assertIssueStatusStillActive(ctx, qtx, workspaceID, statusKey); err != nil {
 		return db.Issue{}, db.Issue{}, false, err
 	}
+	lockedIteration, err := iteration.LockIssueIteration(ctx, tx, workspaceID, params.ID)
+	if err != nil {
+		return db.Issue{}, db.Issue{}, false, err
+	}
+
 	if len(attachmentIDs) > 0 {
 		if _, err := qtx.LockAttachmentsForIssueLink(ctx, db.LockAttachmentsForIssueLinkParams{
 			WorkspaceID:   workspaceID,
@@ -3349,6 +3508,14 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 		}
 	}
 
+	if err := authorize(tx, params); err != nil {
+		return db.Issue{}, current, false, err
+	}
+	record, err := iteration.PrepareIssueRecord(ctx, tx, current, lockedIteration)
+	if err != nil {
+		return db.Issue{}, current, false, err
+	}
+
 	issue, err := qtx.UpdateIssue(ctx, params)
 	if err != nil {
 		return db.Issue{}, current, false, fmt.Errorf("update locked issue: %w", err)
@@ -3376,6 +3543,10 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 			}
 		}
 	}
+	if err := iteration.RecordIssueChange(ctx, tx, record, issue, actor, operationID); err != nil {
+		return db.Issue{}, current, false, err
+	}
+
 	if err := tx.Commit(ctx); err != nil {
 		return db.Issue{}, current, false, fmt.Errorf("commit atomic issue update: %w", err)
 	}
@@ -3623,13 +3794,13 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	var issue db.Issue
 	attachmentsChanged := false
 	var lockedPrev db.Issue
-	issue, lockedPrev, attachmentsChanged, err = h.updateIssueAtomically(r.Context(), prevIssue.WorkspaceID, params, rawFields, req.TitleBase, req.DescriptionBase, attachmentIDs, statusKeyForGuard)
+	issue, lockedPrev, attachmentsChanged, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawFields, req.TitleBase, req.DescriptionBase, attachmentIDs, statusKeyForGuard)
 	if lockedPrev.ID.Valid {
 		prevIssue = lockedPrev
 	}
 
 	if err != nil {
-		if writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
+		if writeIssueUpdateAccessError(w, err) || writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
 			return
 		}
 		if writeIssueStatusRaceError(w, err) {
@@ -4394,13 +4565,13 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		// Re-read every untouched nullable field while holding the issue lock.
 		// A content-only batch may have loaded its snapshot before acceptance.
 		var issue, lockedPrev db.Issue
-		issue, lockedPrev, _, err = h.updateIssueAtomically(r.Context(), prevIssue.WorkspaceID, params, rawUpdates, nil, nil, nil, batchStatusKey)
+		issue, lockedPrev, _, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawUpdates, nil, nil, nil, batchStatusKey)
 		if err == nil {
 			prevIssue = lockedPrev
 		}
 
 		if err != nil {
-			if writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
+			if writeIssueUpdateAccessError(w, err) || writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
 				return
 			}
 			// The archive race is a property of the batch's shared target

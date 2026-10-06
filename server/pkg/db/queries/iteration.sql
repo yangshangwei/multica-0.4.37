@@ -54,3 +54,37 @@ WHERE workspace_id = sqlc.arg('workspace_id') AND id = sqlc.arg('issue_id')
     AND revision = sqlc.arg('expected_revision')
     AND admission_status IN ('not_required', 'accepted')
 RETURNING *;
+
+-- name: LockIssueIteration :one
+-- The caller holds the workspace iteration fence; membership cannot change
+-- between this read and the later issue row lock.
+SELECT i.* FROM iteration i
+JOIN issue x ON x.workspace_id = i.workspace_id AND x.current_iteration_id = i.id
+WHERE x.workspace_id = $1 AND x.id = $2
+FOR UPDATE OF i;
+
+-- name: LockIssueIterationParticipation :one
+SELECT * FROM iteration_participation
+WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3
+FOR UPDATE;
+
+-- name: MarkIterationParticipationStarted :exec
+UPDATE iteration_participation SET has_started_current_participation=true
+WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3 AND current_joined_at IS NOT NULL;
+
+-- name: AppendIterationIssueEvent :exec
+INSERT INTO iteration_event (
+ workspace_id, iteration_id, sequence, operation_id, issue_id, kind, actor,
+ occurred_at, sampled_at, before_facts, after_facts
+)
+SELECT sqlc.arg('workspace_id'), sqlc.arg('iteration_id'), COALESCE(previous.sequence,0)+1,
+ sqlc.arg('operation_id'), sqlc.arg('issue_id'), sqlc.arg('kind'), sqlc.arg('actor'),
+ GREATEST(sqlc.arg('sampled_at')::timestamptz, previous.occurred_at), sqlc.arg('sampled_at'),
+ sqlc.arg('before_facts'), sqlc.arg('after_facts')
+FROM (SELECT 1) AS seed
+LEFT JOIN LATERAL (SELECT sequence, occurred_at FROM iteration_event
+ WHERE workspace_id=sqlc.arg('workspace_id') AND iteration_id=sqlc.arg('iteration_id')
+ ORDER BY sequence DESC LIMIT 1) AS previous ON true;
+
+-- name: AdvanceIterationScopeRevision :exec
+UPDATE iteration SET scope_revision=scope_revision+1 WHERE workspace_id=$1 AND id=$2;

@@ -11,6 +11,62 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const advanceIterationScopeRevision = `-- name: AdvanceIterationScopeRevision :exec
+UPDATE iteration SET scope_revision=scope_revision+1 WHERE workspace_id=$1 AND id=$2
+`
+
+type AdvanceIterationScopeRevisionParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	ID          pgtype.UUID `json:"id"`
+}
+
+func (q *Queries) AdvanceIterationScopeRevision(ctx context.Context, arg AdvanceIterationScopeRevisionParams) error {
+	_, err := q.db.Exec(ctx, advanceIterationScopeRevision, arg.WorkspaceID, arg.ID)
+	return err
+}
+
+const appendIterationIssueEvent = `-- name: AppendIterationIssueEvent :exec
+INSERT INTO iteration_event (
+ workspace_id, iteration_id, sequence, operation_id, issue_id, kind, actor,
+ occurred_at, sampled_at, before_facts, after_facts
+)
+SELECT $1, $2, COALESCE(previous.sequence,0)+1,
+ $3, $4, $5, $6,
+ GREATEST($7::timestamptz, previous.occurred_at), $7,
+ $8, $9
+FROM (SELECT 1) AS seed
+LEFT JOIN LATERAL (SELECT sequence, occurred_at FROM iteration_event
+ WHERE workspace_id=$1 AND iteration_id=$2
+ ORDER BY sequence DESC LIMIT 1) AS previous ON true
+`
+
+type AppendIterationIssueEventParams struct {
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	IterationID pgtype.UUID        `json:"iteration_id"`
+	OperationID pgtype.UUID        `json:"operation_id"`
+	IssueID     pgtype.UUID        `json:"issue_id"`
+	Kind        string             `json:"kind"`
+	Actor       []byte             `json:"actor"`
+	SampledAt   pgtype.Timestamptz `json:"sampled_at"`
+	BeforeFacts []byte             `json:"before_facts"`
+	AfterFacts  []byte             `json:"after_facts"`
+}
+
+func (q *Queries) AppendIterationIssueEvent(ctx context.Context, arg AppendIterationIssueEventParams) error {
+	_, err := q.db.Exec(ctx, appendIterationIssueEvent,
+		arg.WorkspaceID,
+		arg.IterationID,
+		arg.OperationID,
+		arg.IssueID,
+		arg.Kind,
+		arg.Actor,
+		arg.SampledAt,
+		arg.BeforeFacts,
+		arg.AfterFacts,
+	)
+	return err
+}
+
 const ensureIterationSettings = `-- name: EnsureIterationSettings :exec
 INSERT INTO workspace_iteration_settings (workspace_id) VALUES ($1)
 ON CONFLICT (workspace_id) DO NOTHING
@@ -336,6 +392,76 @@ func (q *Queries) ListIterationParticipations(ctx context.Context, arg ListItera
 	return items, nil
 }
 
+const lockIssueIteration = `-- name: LockIssueIteration :one
+SELECT i.id, i.workspace_id, i.name, i.description, i.coordinator_user_id, i.timezone, i.start_date, i.end_date, i.status, i.mode, i.revision, i.scope_revision, i.created_by, i.created_at, i.started_by, i.started_at, i.logical_ended_at, i.processed_at, i.end_reason FROM iteration i
+JOIN issue x ON x.workspace_id = i.workspace_id AND x.current_iteration_id = i.id
+WHERE x.workspace_id = $1 AND x.id = $2
+FOR UPDATE OF i
+`
+
+type LockIssueIterationParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	ID          pgtype.UUID `json:"id"`
+}
+
+// The caller holds the workspace iteration fence; membership cannot change
+// between this read and the later issue row lock.
+func (q *Queries) LockIssueIteration(ctx context.Context, arg LockIssueIterationParams) (Iteration, error) {
+	row := q.db.QueryRow(ctx, lockIssueIteration, arg.WorkspaceID, arg.ID)
+	var i Iteration
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Name,
+		&i.Description,
+		&i.CoordinatorUserID,
+		&i.Timezone,
+		&i.StartDate,
+		&i.EndDate,
+		&i.Status,
+		&i.Mode,
+		&i.Revision,
+		&i.ScopeRevision,
+		&i.CreatedBy,
+		&i.CreatedAt,
+		&i.StartedBy,
+		&i.StartedAt,
+		&i.LogicalEndedAt,
+		&i.ProcessedAt,
+		&i.EndReason,
+	)
+	return i, err
+}
+
+const lockIssueIterationParticipation = `-- name: LockIssueIterationParticipation :one
+SELECT workspace_id, iteration_id, issue_id, first_joined_at, current_joined_at, has_started_current_participation, last_left_at, in_original, original_facts FROM iteration_participation
+WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3
+FOR UPDATE
+`
+
+type LockIssueIterationParticipationParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	IterationID pgtype.UUID `json:"iteration_id"`
+	IssueID     pgtype.UUID `json:"issue_id"`
+}
+
+func (q *Queries) LockIssueIterationParticipation(ctx context.Context, arg LockIssueIterationParticipationParams) (IterationParticipation, error) {
+	row := q.db.QueryRow(ctx, lockIssueIterationParticipation, arg.WorkspaceID, arg.IterationID, arg.IssueID)
+	var i IterationParticipation
+	err := row.Scan(
+		&i.WorkspaceID,
+		&i.IterationID,
+		&i.IssueID,
+		&i.FirstJoinedAt,
+		&i.CurrentJoinedAt,
+		&i.HasStartedCurrentParticipation,
+		&i.LastLeftAt,
+		&i.InOriginal,
+		&i.OriginalFacts,
+	)
+	return i, err
+}
+
 const lockIterationCurrentIssues = `-- name: LockIterationCurrentIssues :many
 SELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE workspace_id = $1 AND current_iteration_id = $2 ORDER BY id FOR UPDATE
 `
@@ -456,6 +582,22 @@ func (q *Queries) LockIterations(ctx context.Context, arg LockIterationsParams) 
 		return nil, err
 	}
 	return items, nil
+}
+
+const markIterationParticipationStarted = `-- name: MarkIterationParticipationStarted :exec
+UPDATE iteration_participation SET has_started_current_participation=true
+WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3 AND current_joined_at IS NOT NULL
+`
+
+type MarkIterationParticipationStartedParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	IterationID pgtype.UUID `json:"iteration_id"`
+	IssueID     pgtype.UUID `json:"issue_id"`
+}
+
+func (q *Queries) MarkIterationParticipationStarted(ctx context.Context, arg MarkIterationParticipationStartedParams) error {
+	_, err := q.db.Exec(ctx, markIterationParticipationStarted, arg.WorkspaceID, arg.IterationID, arg.IssueID)
+	return err
 }
 
 const setIssueCurrentIteration = `-- name: SetIssueCurrentIteration :one

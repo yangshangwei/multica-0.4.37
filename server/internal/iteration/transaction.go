@@ -75,6 +75,9 @@ func retryableTransactionError(err error) bool {
 	}
 }
 
+// WorkspaceFenceSQL is shared with writers that pipeline their ordered locks.
+const WorkspaceFenceSQL = `SELECT pg_advisory_xact_lock(hashtextextended('iteration:' || $1::uuid::text, 0))`
+
 // LockWorkspace is the iteration-specific fence, not an authorization helper.
 // Before calling, take workspace KEY SHARE, the flow's existing T1/member
 // fences, and the status catalogue fence. Call it before any iteration setting,
@@ -83,7 +86,7 @@ func LockWorkspace(ctx context.Context, tx pgx.Tx, workspaceID pgtype.UUID) erro
 	if !workspaceID.Valid {
 		return fmt.Errorf("iteration fence requires a workspace UUID")
 	}
-	_, err := tx.Exec(ctx, `SELECT pg_advisory_xact_lock(hashtextextended('iteration:' || $1::uuid::text, 0))`, workspaceID)
+	_, err := tx.Exec(ctx, WorkspaceFenceSQL, workspaceID)
 	return err
 }
 
