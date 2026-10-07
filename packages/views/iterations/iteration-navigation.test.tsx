@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -141,6 +141,37 @@ function mount() {
   };
 }
 describe("iteration pagination and access", () => {
+  it.each([
+    ["detail", new Error("Offline")],
+    ["workspace", new Error("Offline")],
+    ["detail", new ApiError("Timed out", 408, "Request Timeout")],
+    ["workspace", new ApiError("Timed out", 408, "Request Timeout")],
+    ["detail", new ApiError("Rate limited", 429, "Too Many Requests")],
+    ["workspace", new ApiError("Rate limited", 429, "Too Many Requests")],
+  ])("retains an open dirty editor through a transient %s refresh failure (%s)", async (scope, error) => {
+    route.pathname += `/${source.id}`;
+    const { client } = mount();
+    fireEvent.click(await screen.findByText("Edit iteration", { selector: "summary" }));
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Unsent correction" } });
+    vi.mocked(api.getIteration).mockRejectedValue(error);
+    if (scope === "workspace") {
+      vi.mocked(api.getIterationSettings).mockRejectedValue(error);
+      vi.mocked(api.getIterationCapabilities).mockRejectedValue(error);
+    }
+    await act(async () => { await client.invalidateQueries({ queryKey: scope === "workspace" ? ["iterations", ws] : ["iterations", ws, "detail", source.id] }); });
+    expect(screen.getByLabelText("Name")).toHaveValue("Unsent correction");
+    expect(screen.getByRole("heading", { name: source.name })).toBeInTheDocument();
+    expect(screen.getAllByRole("alert").length).toBeGreaterThan(0);
+  });
+  it("hides the editor and stale detail after definitive resource deletion", async () => {
+    route.pathname += `/${source.id}`;
+    const { client } = mount();
+    fireEvent.click(await screen.findByText("Edit iteration", { selector: "summary" }));
+    vi.mocked(api.getIteration).mockRejectedValue(new ApiError("Deleted", 404, "Not Found", { code: "iteration_not_found" }));
+    await act(async () => { await client.invalidateQueries({ queryKey: ["iterations", ws, "detail", source.id] }); });
+    expect(screen.queryByLabelText("Name")).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: source.name })).not.toBeInTheDocument();
+  });
   it("keeps unknown planning modes readable without fresh manual actions", async () => {
     route.pathname += `/${source.id}`;
     vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: { ...source, mode: "future-mode" }, statistics, snapshot: null });

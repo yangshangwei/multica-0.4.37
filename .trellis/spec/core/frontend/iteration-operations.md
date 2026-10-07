@@ -65,3 +65,35 @@ or active status. Unknown modes remain visible through read-only catalogue/detai
 surfaces but must not become editable through issue create or batch selectors.
 Optional legacy rollover counts and historical metadata remain unknown; never
 render missing values as known zero or an empty label collection.
+
+## Edit baseline and refresh recovery
+
+`IterationForm` owns editable values and their baseline revision together.
+`api.updateIteration` receives changed mutable `fields` and that baseline's
+`expected_revision`. A clean form may adopt a newer resource atomically; a dirty
+form must not borrow a live prop's newer revision for older field values.
+
+| Situation | Required behavior |
+|---|---|
+| Remote revision changes during editing | Keep local values and old baseline; omit untouched fields |
+| `iteration_revision_conflict` | Retain input, fetch current resource, offer explicit comparison/resolution |
+| User applies local changes onto reviewed server version | Preserve untouched server fields; require a new explicit save |
+| Known successful write and successful resource refresh | Advance values and baseline together |
+| Write committed but resource refresh failed | Lock further writes; retry the read, not the committed command |
+| Unknown write result | Recover original payload/request ID through `useIterationCommand` |
+| Auth/session change or access denial | Do not adopt delayed results or display revoked data |
+
+Operation receipts have no entity revision; never invent one. Transient
+background capability/settings/detail query failures with cached data, including
+HTTP 408 and 429, must not unmount the draft. Display a retry affordance while
+retaining it. Access rejection or definitive deletion (including 401/403/404)
+still removes the protected surface. Do not classify every 4xx as permanent.
+
+Good: baseline revision N + changed local description rejects against server N+1.
+Base: clean refresh updates fields and revision together. Bad: mount-only fields
+plus `iteration.revision` from live props silently overwrites another user's edits.
+
+Canonical tests: views `iteration-form.test.tsx` covers baseline/conflict, status,
+post-commit refresh and exact retry; `iteration-navigation.test.tsx` covers parent
+query errors retaining the editor. Core command/access suites remain the owners
+of request persistence and authorization epochs.

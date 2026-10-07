@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { ApiError } from "@multica/core/api";
 import { toast } from "sonner";
 import { copyText } from "@multica/ui/lib/clipboard";
 import { memberListOptions } from "@multica/core/workspace/queries";
@@ -53,7 +54,7 @@ function IterationPageContent({ wsId }: { wsId: string }) {
         {t(($) => $.iterations.loading)}
       </p>
     );
-  if (capability.error)
+  if (capability.error && (!capability.data || isDefinitiveReadError(capability.error)))
     return (
       <div className="p-6">
         <IterationError error={capability.error} />
@@ -74,11 +75,14 @@ function IterationPageContent({ wsId }: { wsId: string }) {
       </section>
     );
   return (
-    <IterationWorkspace
-      key={wsId}
-      wsId={wsId}
-      atomicHandoff={capability.data.atomic_handoff === true}
-    />
+    <>
+      {capability.error && <IterationRefreshError error={capability.error} onRetry={() => void capability.refetch()} />}
+      <IterationWorkspace
+        key={wsId}
+        wsId={wsId}
+        atomicHandoff={capability.data.atomic_handoff === true}
+      />
+    </>
   );
 }
 function IterationWorkspace({
@@ -105,21 +109,25 @@ function IterationWorkspace({
   const enable = useIterationCommand(wsId, "enable");
   if (settings.isPending)
     return <p role="status">{t(($) => $.iterations.loading)}</p>;
-  if (settings.error || !settings.data)
+  if (!settings.data || isDefinitiveReadError(settings.error))
     return <IterationError error={settings.error} />;
   if (id)
     return (
-      <IterationDetail
-        key={`${wsId}:${id}`}
-        wsId={wsId}
-        id={id}
-        settingsRevision={settings.data.revision}
-        enabled={settings.data.enabled}
-        atomicHandoff={atomicHandoff}
-      />
+      <>
+        {settings.error && <IterationRefreshError error={settings.error} onRetry={() => void settings.refetch()} />}
+        <IterationDetail
+          key={`${wsId}:${id}`}
+          wsId={wsId}
+          id={id}
+          settingsRevision={settings.data.revision}
+          enabled={settings.data.enabled}
+          atomicHandoff={atomicHandoff}
+        />
+      </>
     );
   return (
     <main className="h-full overflow-auto p-6 space-y-6">
+      {settings.error && <IterationRefreshError error={settings.error} onRetry={() => void settings.refetch()} />}
       <header className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-title font-semibold">
           {t(($) => $.iterations.title)}
@@ -338,7 +346,7 @@ function IterationDetail({
   const detail = useQuery(iterationDetailOptions(wsId, id));
   if (detail.isPending)
     return <p role="status">{t(($) => $.iterations.loading)}</p>;
-  if (detail.error || !detail.data)
+  if (!detail.data || isDefinitiveReadError(detail.error))
     return <IterationError error={detail.error} />;
   const { iteration, statistics, snapshot } = detail.data;
   const known = iteration.mode === "manual" && ["planned", "active", "completed", "cancelled"].includes(
@@ -347,6 +355,7 @@ function IterationDetail({
   return (
     <main className="h-full overflow-auto p-6 space-y-6">
       <AppLink href={paths.iterations()}>{t(($) => $.iterations.back)}</AppLink>
+      {detail.error && <IterationRefreshError error={detail.error} onRetry={() => void detail.refetch()} />}
       <header>
         <h1 className="text-title font-semibold break-words">
           {iteration.name}
@@ -415,6 +424,20 @@ function IterationDetail({
       <IterationIssueList key={`${wsId}:${id}`} wsId={wsId} id={id} historical={snapshot !== null} />
     </main>
   );
+}
+
+function isDefinitiveReadError(error: unknown): boolean {
+  // Timeout and rate-limit responses retain cached input just like network/5xx
+  // failures. Authentication, authorization and deletion still hide it.
+  return error instanceof ApiError && error.status < 500 && ![408, 429].includes(error.status);
+}
+
+function IterationRefreshError({ error, onRetry }: { error: unknown; onRetry: () => void }) {
+  const { t } = useT("projects");
+  return <div className="space-y-2">
+    <IterationError error={error} />
+    <Button onClick={onRetry}>{t(($) => $.iterations.retryRefresh)}</Button>
+  </div>;
 }
 
 function IterationEvents({ wsId, id, timezone }: { wsId: string; id: string; timezone: string }) {
