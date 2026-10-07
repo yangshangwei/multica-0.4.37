@@ -1,6 +1,6 @@
 # 迭代 I1 工程方案入口
 
-> 当前实施分支为 `codex/projects-p1`。I1 迁移已顺延为 550–566，并复用 P1 的共享时区；FG 仍未完成。进度与验证见[分支整合记录](../../.trellis/tasks/10-05-iterations-i1/branch-integration.md)。
+> 当前实施分支为 `codex/projects-p1`。I1 迁移已顺延为 550–566，并复用 P1 的共享时区。2026-10-07：FG/LG/HG/CG/UG/FCG 均已通过本地验收，仅 VG 的远端正式 CI 待办，发布开关关闭、未推送或合并。最终状态见[最终本地验收](../../.trellis/tasks/10-05-iterations-i1-verification/verification.md)，基础层整合过程见[分支整合记录](../../.trellis/tasks/10-05-iterations-i1/branch-integration.md)。
 
 2026-10-05，仅规划，产品实施未开始。
 

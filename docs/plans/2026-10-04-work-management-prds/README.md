@@ -12,7 +12,7 @@
 
 P1 跟进（2026-10-06）：**项目增强已在 `codex/projects-p1` 完成实施与本轮验收**，最终产品提交 `31534d844`。静态、TypeScript、Go race/vet、迁移、性能与移动兼容已有通过证据；首次完整check的浏览器失败经修复，26项定向回归及双端重建后最终8/8 E2E通过。首次失败保留，不表述为完整check一次全绿；P1尚未推送、合并或部署。见[实施方案](../2026-10-05-projects-p1-implementation.md)和[P1验收记录](../../../.trellis/tasks/10-05-projects-p1/verification.md)。
 
-I1 跟进（2026-10-06）：已将原 `main` 工作区中的基础层实现整合到 `codex/projects-p1`，与 P1 共用规划时区。I1 尚未通过 FG，完整生命周期和客户端未完成。见[分支整合记录](../../../.trellis/tasks/10-05-iterations-i1/branch-integration.md)。T2／T3 自动化仍未实现。
+I1 跟进（2026-10-07）：**迭代已在 `codex/projects-p1` 完成实施与本地验收**，与 P1 共用规划时区。FG/LG/HG/CG/UG/FCG 均已通过，29 项本地验收与原 PRD 界面要求已逐项核对；foundation、lifecycle、history、closure、clients 五个子任务已关单。VG 的远端正式 CI 尚未运行，因此父任务与 verification 子任务仍为进行中；发布开关保持关闭。验收源码以五个本地提交（`823a61774`…`e516b15c2`）落在该分支，未推送、合并或部署。见[最终本地验收](../../../.trellis/tasks/10-05-iterations-i1-verification/verification.md)；2026-10-06 的基础层整合过程见[分支整合记录](../../../.trellis/tasks/10-05-iterations-i1/branch-integration.md)。T2／T3 自动化仍未实现。
 
 ## 1. 文档导航
 
