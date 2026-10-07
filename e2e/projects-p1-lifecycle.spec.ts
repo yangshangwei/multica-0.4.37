@@ -254,6 +254,65 @@ test("P1-L14 real workspace revocation clears visible drafts even without WebSoc
   finally { await context.close(); }
 });
 
+// P1-L14 owns what the denial clears; the cleanup's idempotence is unit-tested in
+// packages/core/projects/access-lifecycle.test.ts and use-project-access-guard.test.tsx.
+// This test owns the browser traffic that follows: a revocation the page learns
+// about only from HTTP once refetched members, agents, squads and pins at ~1,250
+// requests/s until the tab stalled, while P1-L14 could still pass with tracing off.
+const revocations = {
+  "the member leaves": async (session: Session, member: Awaited<ReturnType<typeof p1Member>>) =>
+    p1Raw(member.api, session.workspace.id, `/api/workspaces/${session.workspace.id}/leave`, "POST"),
+  "an owner removes the member": async (session: Session, member: Awaited<ReturnType<typeof p1Member>>) => {
+    const [row] = await p1DB<{ id: string }>("SELECT id FROM member WHERE workspace_id=$1 AND user_id=$2", [session.workspace.id, member.user.id]);
+    return p1Raw(session.api, session.workspace.id, `/api/workspaces/${session.workspace.id}/members/${row!.id}`, "DELETE");
+  },
+};
+for (const [revocation, revoke] of Object.entries(revocations)) {
+  test(`P1-L16 when ${revocation} without WebSocket delivery, requests stay bounded for 20 seconds`, async ({ browser, p1 }, info) => {
+    const member = await p1Member(p1.workspace);
+    const project = await p1Project(p1.api, { description: "Protected project goal" });
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const requests: { at: number; path: string }[] = [];
+    try {
+      await page.routeWebSocket(/\/ws(?:\?|$)/, (socket) => socket.close());
+      await p1Authenticate(page, member.api);
+      await openProject(page, p1, project);
+      context.on("request", (request) => {
+        const { pathname } = new URL(request.url());
+        if (pathname.startsWith("/api/")) requests.push({ at: Date.now(), path: pathname.replace(/[0-9a-f]{8}-[0-9a-f-]{27}/g, ":id") });
+      });
+      expect((await revoke(p1, member)).status).toBe(204);
+      const revokedAt = Date.now();
+      const denial = page.waitForResponse((r) => r.url().endsWith(`/api/projects/${project.id}/overview`) && r.status() === 404);
+      await page.getByRole("button", { name: "Refresh", exact: true }).click();
+      expect(await (await denial).json()).toMatchObject({ code: "workspace_access_denied" });
+      await expect(page.getByText("Protected project goal", { exact: true })).toHaveCount(0);
+      await page.waitForTimeout(20_000 - (Date.now() - revokedAt));
+
+      // Assert the counts before touching the page again: a looping renderer
+      // answers evaluate only after ~20s, which would eat the test budget.
+      const observed = requests.filter((entry) => entry.at >= revokedAt && entry.at < revokedAt + 20_000);
+      const perFiveSeconds = [0, 1, 2, 3].map((slot) => observed.filter((entry) => Math.floor((entry.at - revokedAt) / 5_000) === slot).length);
+      const byPath: Record<string, number> = {};
+      for (const { path } of observed) byPath[path] = (byPath[path] ?? 0) + 1;
+      await info.attach("revocation-requests", { body: JSON.stringify({ revocation, total: observed.length, perFiveSeconds, byPath }, null, 2), contentType: "application/json" });
+      expect(Object.entries(byPath).filter(([, count]) => count > 5), "endpoints refetched in a loop").toEqual([]);
+      expect(observed.length, `requests in the 20s after revocation: ${JSON.stringify(perFiveSeconds)}`).toBeLessThanOrEqual(40);
+      expect(perFiveSeconds.slice(1).reduce((sum, count) => sum + count, 0), "traffic stops once the denial is handled").toBeLessThanOrEqual(5);
+
+      const started = Date.now();
+      await page.evaluate(() => document.title);
+      expect(Date.now() - started, "the renderer stays responsive").toBeLessThan(1_000);
+    } catch (error) {
+      // A looping page cannot be captured in time; bound the capture so the
+      // count failure, not a test timeout, stays the reported cause.
+      await Promise.race([p1Failure(page, info).catch(() => undefined), new Promise((resolve) => setTimeout(resolve, 5_000))]);
+      throw error;
+    } finally { await context.close(); }
+  });
+}
+
 test("P1-L15 Chinese compact editing supports keyboard preview and an unobstructed save button", async ({ page, p1 }, info) => {
   const project = await p1Project(p1.api);
   await p1.api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });

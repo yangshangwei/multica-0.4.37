@@ -2,6 +2,8 @@
 
 日期：2026-10-06。状态：**61/61 实跑通过，零重试、零跳过**。本文件记录当前 7 份 spec 的 61 条独立 Playwright 测试及其必要断言，本轮以独立61条实跑结果为准，不用此前8条记录代验。完整命令、首轮失败和修正见 [本轮验证记录](e2e-expansion-verification.md)。
 
+2026-10-07 补充：生命周期组新增参数化 P1-L16 两条（成员离开、owner移除），用请求计数验证 `42a98ff05` 修复的撤权请求循环；P1-L14 在关闭 trace 时仍会通过，单看通过/失败无法证明修复。上表61条的实跑结论不变；7份spec现共63条测试，即原61条加此两条。修复前构建两条均因端点循环失败（20秒约25,000次请求），合并后构建均为9次请求且首个5秒后为0，验证见该测试提交说明。
+
 枚举依据：`.omx/p1-expanded-list.log`，`Total: 61 tests in 7 files`。对照基线为 `421ca49eb` 的 `e2e/projects-p1.spec.ts`（7 条，含一个收敛测试）及 `e2e/projects-p1-desktop.spec.ts`（1 条）。需求解释沿用 [父测试规格](../10-05-projects-p1/test-spec.md) 和 [API 合同](../10-05-projects-p1/api-contract.md)。下表 `AC-xx` 指 `PRJ-AC-xx`，`FR-xx` 指父测试规格的 `P1-FR-xx`；映射表示该用例验证相应需求的一个明确片段，不代表单条测试覆盖完整 AC 或 FR。
 
 ## 数量与来源
@@ -118,7 +120,9 @@ R05—R08 各自建立 156 个稳定 ID 任务，最低 ID 初始 done，其余 
 | [P1-L12](../../../e2e/projects-p1-lifecycle.spec.ts#L202) | 新增/强化 | 无效时区保留输入，修正后可保存 | UI输入不存在的IANA时区并Save；随后改Europe/London再Save | 错误可见、无效输入不丢、API仍UTC；修正后API变London | FR-03 |
 | [P1-L13](../../../e2e/projects-p1-lifecycle.spec.ts#L215) | 新增/强化 | 时区写权限丢失不擦除仍授权的进展稿 | owner UI打开进展并输入；SQL将其降为member；使用尚显示的时区表单Save，最后恢复fixture角色 | 真实PUT403 `project_permission_denied`；进展正文和概览保留，不作整个空间撤权 | FR-08、FR-16 |
 | [P1-L14](../../../e2e/projects-p1-lifecycle.spec.ts#L233) | 新增/强化 | 无WS通知时真实空间失权仍清保护内容 | 独立成员上下文屏蔽WS；UI打开保护描述并写稿，确认稿已持久化；成员API真实leave返回204；UI点Refresh | 概览GET404携`workspace_access_denied`；进展编辑器、保护描述和未发送文本从页面消失，持久存储中的该稿也被清除 | AC-26、FR-08、FR-15 |
-| [P1-L15](../../../e2e/projects-p1-lifecycle.spec.ts#L257) | 拆分原覆盖 | 中文390px键盘预览与底部保存按钮可达 | API/locale设置中文；390×844打开项目，用Enter进入进展并预览；滚动到底部保存按钮 | 发布按钮可滚入视口、文档无横向溢出；保存按钮25/50/75%九点hit-test均命中自身/子元素，没有被聊天浮钮遮挡 | AC-18（预览片段）；PRJ-014 |
+| [P1-L16 成员离开](../../../e2e/projects-p1-lifecycle.spec.ts#L271) | 新增/强化 | 无WS通知时成员自行离开后请求有界 | 独立成员上下文屏蔽WS并打开项目；成员API真实leave返回204后开始计数，UI点Refresh；观察20秒内所有`/api/`请求 | 概览GET404携`workspace_access_denied`，保护描述消失；任一端点>5次、20秒合计>40或首个5秒之后>5即失败，之后renderer响应<1秒；按5秒分桶及端点计数作为报告附件 | AC-26、FR-08 |
+| [P1-L16 owner移除](../../../e2e/projects-p1-lifecycle.spec.ts#L271) | 新增/强化 | 无WS通知时owner移除成员后请求有界 | 同上，撤权改为owner真实DELETE成员行返回204 | 同上 | AC-26、FR-08 |
+| [P1-L15](../../../e2e/projects-p1-lifecycle.spec.ts#L316) | 拆分原覆盖 | 中文390px键盘预览与底部保存按钮可达 | API/locale设置中文；390×844打开项目，用Enter进入进展并预览；滚动到底部保存按钮 | 发布按钮可滚入视口、文档无横向溢出；保存按钮25/50/75%九点hit-test均命中自身/子元素，没有被聊天浮钮遮挡 | AC-18（预览片段）；PRJ-014 |
 
 ## D：真实 Electron（6 条）
 
