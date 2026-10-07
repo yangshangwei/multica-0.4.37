@@ -12,6 +12,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/multica-ai/multica/server/internal/testutil"
 	publicapiv1 "github.com/multica-ai/multica/server/pkg/publicapi/v1"
 )
 
@@ -414,4 +415,26 @@ func createIssueInForeignWorkspace(t *testing.T) string {
 		testPool.Exec(context.Background(), `DELETE FROM "user" WHERE id = $1`, ownerID)
 	})
 	return issueID
+}
+
+func TestPluginSessionRejectsMachineBeforeInstallationLookup(t *testing.T) {
+	for _, source := range []string{"task_token", "cloud_pat"} {
+		t.Run(source, func(t *testing.T) {
+			// Deliberately no service/queries: rejection must precede any lookup.
+			h := &Handler{}
+			req := pluginActionRequest(http.MethodGet, "/context", testWorkspaceID, nil, nil)
+			req.Header.Set("X-Actor-Source", source)
+			defer func() {
+				if recovered := recover(); recovered != nil {
+					t.Errorf("machine principal reached installation lookup: %v", recovered)
+				}
+			}()
+			testutil.Call(t, func(w http.ResponseWriter, r *http.Request) {
+				_, _, ok := h.pluginSessionCaller(w, r, "")
+				if ok {
+					t.Error("machine principal accepted as a member")
+				}
+			}, req).Want(http.StatusForbidden)
+		})
+	}
 }

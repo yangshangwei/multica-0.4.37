@@ -309,3 +309,37 @@ both populated and empty-maintenance cases in private fixture schemas.
 Regression: `migrations/admin_rollback_guard_test.go` exercises the actual down
 SQL with two connections and checks all 43 guarded platform down files in the
 465–511 range. Never run this rehearsal against the application schema.
+
+## Scenario: Browser plugin bridge preserves human authority
+
+### Scope and signatures
+
+The `/api/plugin-bridge/v1` group in `cmd/server/router.go` runs `Auth` then
+`RequireHumanActor`. `pluginSessionCaller` in `handler/plugin_action.go` repeats
+`isMachineCredentialActor` before installation/member queries or hook dispatch.
+
+### Contract and error matrix
+
+| Principal | Session bridge |
+|---|---|
+| `task_token`, `cloud_pat` | 403 before resource reads/writes or hooks |
+| Human JWT/cookie, supported human PAT | Existing installation scopes and membership checks |
+| Password-mode unsupported cloud PAT | Authentication rejects before bridge authorization |
+
+The owner's user ID on a machine credential is attribution, not human authority,
+even if that owner belongs to the installation's workspace. Dedicated `/v1`
+plugin bearer/callback endpoints and daemon plugin hooks keep their own contracts.
+The removed `/api/v1/plugin` alias must not be revived.
+
+### Good/base/bad cases and tests
+
+Good: both router gate and handler backstop reject machine principals. Base:
+legitimate human bridge and installation-token operations keep working. Bad:
+reconstructing a member caller solely from the machine token's `X-User-ID`.
+
+`TestPluginBridgePrincipalBoundary` uses real authentication and valid requests,
+including cross-workspace ownership, and verifies no writes or hooks. Handler
+backstop tests must reject before touching services, independent of router wiring.
+
+Wrong: `Auth -> user ID -> member caller`. Correct:
+`Auth -> RequireHumanActor -> installation scopes -> membership -> action`.
