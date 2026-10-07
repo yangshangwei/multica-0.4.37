@@ -55,8 +55,8 @@ const TYPE_LABEL: Record<InboxItemType | "project_update", string> = {
   quick_create_done: "Quick-create done",
   quick_create_failed: "Quick-create failed",
   quick_create_unconfirmed: "Quick-create needs a check",
-  project_update: "Project update",
-  iteration: "Iteration update",
+  project_update: "Project progress mention",
+  iteration: "Iteration",
 };
 
 // due_date is a calendar day — format timezone-safely (no offset day shift).
