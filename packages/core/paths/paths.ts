@@ -38,6 +38,8 @@ function workspaceScoped(slug: string) {
     usage: () => `${ws}/usage`,
     issues: () => `${ws}/issues`,
     issueDetail: (id: string) => `${ws}/issues/${encode(id)}`,
+    iterations: () => `${ws}/iterations`,
+    iterationDetail: (id: string) => `${ws}/iterations/${encode(id)}`,
     projects: () => `${ws}/projects`,
     projectDetail: (id: string, section?: "overview" | "issues", risk?: string, version?: string) => {
       const params = new URLSearchParams();

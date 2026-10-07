@@ -1,5 +1,6 @@
 "use client";
 
+import { iterationCapabilitiesOptions } from "@multica/core/iterations";
 import { triageSettingsOptions, triageCountsOptions } from "@multica/core/triage";
 
 import { issueStatusCategory } from "@multica/core/issues";
@@ -112,6 +113,7 @@ const EMPTY_INBOX_SUMMARY: Awaited<ReturnType<typeof api.getInboxUnreadSummary>>
 // against the current workspace slug at render time (see AppSidebar body).
 // Only parameterless paths are valid nav destinations.
 type NavKey =
+  | "iterations"
   | "triage"
   | "inbox"
   | "chat"
@@ -130,6 +132,7 @@ type NavKey =
 // Static schema (key only) — labels resolved at render via useT("layout"),
 // icons derived from the destination path via routeIconForPath.
 type NavLabelKey =
+  | "iterations"
   | "triage"
   | "inbox"
   | "chat"
@@ -157,6 +160,7 @@ const personalNav: NavItem[] = [
 ];
 
 const workNav: NavItem[] = [
+  { key: "iterations", labelKey: "iterations" },
   { key: "triage", labelKey: "triage" },
   { key: "issues", labelKey: "issues" },
   { key: "projects", labelKey: "projects" },
@@ -505,6 +509,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
   }, [pathname, setOpenMobile]);
 
   const wsId = workspace?.id;
+  const { data: iterationCapability } = useQuery({ ...iterationCapabilitiesOptions(wsId ?? ""), enabled: !!wsId });
   const { data: triageSettings } = useQuery({ ...triageSettingsOptions(wsId ?? ""), enabled: !!wsId });
   const { data: triageCounts } = useQuery({ ...triageCountsOptions(wsId ?? ""), enabled: !!wsId && triageSettings?.enabled === true });
   const { data: inboxItems = EMPTY_INBOX } = useQuery({
@@ -884,7 +889,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
             <SidebarGroupLabel>{t(($) => $.sidebar.work_group)}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
-                {workNav.filter((item) => item.key !== "triage" || triageSettings?.enabled === true).map((item) => {
+                {workNav.filter((item) => (item.key !== "triage" || triageSettings?.enabled === true) && (item.key !== "iterations" || iterationCapability?.supported === true)).map((item) => {
                   const href = p[item.key]();
                   return (
                     <NavRow

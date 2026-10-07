@@ -1,5 +1,6 @@
 "use client";
 
+import { iterationManagementEvent } from "../iterations/realtime";
 import { projectManagementEvent } from "../projects/realtime";
 import { clearProtectedProjectContent, markProjectDeleted, isProjectDeletePending } from "../projects/access";
 
@@ -647,6 +648,7 @@ export async function handleInboxNew(
 function invalidateWorkspaceScopedQueries(qc: QueryClient): void {
   const wsId = getCurrentWsId();
   if (wsId) {
+    qc.invalidateQueries({ queryKey: ["iterations", wsId] });
     qc.invalidateQueries({ queryKey: triageKeys.all(wsId) });
     qc.invalidateQueries({ queryKey: issueKeys.all(wsId) });
     qc.invalidateQueries({ queryKey: inboxKeys.all(wsId) });
@@ -964,6 +966,7 @@ export function useRealtimeSync(
 
     // Event types handled by specific handlers below -- skip generic refresh
     const specificEvents = new Set([
+      "iteration:updated",
       "triage:updated",
       "workspace:updated",
       "issue:updated", "issue:created", "issue:deleted", "issue_attachments:changed", "issue_labels:changed", "issue_metadata:changed", "issue_properties:changed", "property:created", "property:updated", "inbox:new",
@@ -999,6 +1002,10 @@ export function useRealtimeSync(
         const wsId = getCurrentWsId();
         if (wsId) debouncedRefresh("project-management", () => { void qc.invalidateQueries({ queryKey: projectKeys.all(wsId) }); });
       }
+      if (iterationManagementEvent(msg.type)) {
+        const wsId = getCurrentWsId();
+        if (wsId) debouncedRefresh(`iterations:${wsId}`, () => { void qc.invalidateQueries({ queryKey: ["iterations", wsId] }); });
+      }
       if (specificEvents.has(msg.type)) return;
       const prefix = msg.type.split(":")[0] ?? "";
       const refresh = refreshMap[prefix];
@@ -1010,6 +1017,7 @@ export function useRealtimeSync(
     // Filtering by actor_id would block other tabs of the same user.
     // Instead, both mutations and WS handlers use dedup checks to be idempotent.
 
+    const unsubIterationUpdated = ws.on("iteration:updated", () => { const wsId = getCurrentWsId(); if (wsId) { qc.invalidateQueries({ queryKey: ["iterations", wsId] }); qc.invalidateQueries({ queryKey: ["issues", wsId] }); } });
     const unsubTriageUpdated = ws.on("triage:updated", (payload) => onTriageUpdated(qc, payload));
 
     const unsubIssueUpdated = ws.on("issue:updated", (p) => {
@@ -1735,6 +1743,7 @@ export function useRealtimeSync(
 
     return () => {
       unsubAny();
+      unsubIterationUpdated();
       unsubTriageUpdated();
       unsubIssueUpdated();
       unsubIssueCreated();

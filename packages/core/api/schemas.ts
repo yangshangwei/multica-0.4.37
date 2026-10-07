@@ -1303,6 +1303,8 @@ export const IssueSchema = z.object({
   labels: z.array(z.unknown()).optional(),
   created_at: z.string(),
   updated_at: z.string(),
+  current_iteration_id: z.string().uuid().nullable().optional().catch(undefined),
+  iteration_rollover_count: z.number().int().nonnegative().safe().optional().catch(undefined),
   revision: z.number().int().positive().optional(),
   // Optional for compatibility with older self-hosted backends; a current
   // backend emits null until its historical backfill reaches the issue.

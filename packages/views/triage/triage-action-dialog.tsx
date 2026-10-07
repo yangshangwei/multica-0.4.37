@@ -1,4 +1,5 @@
 "use client";
+import { IterationCandidate } from "../iterations/iteration-assignment";
 import { useRef, useState } from "react";
 import { ApiError, errorCode } from "@multica/core/api";
 import { useQuery } from "@tanstack/react-query";
@@ -255,6 +256,7 @@ export function TriageActionDialog({
               fields={fields}
               onChange={setFields}
             />
+            {settings.iteration_assignment === true && <IterationCandidate wsId={wsId} value={fields.current_iteration_id} onChange={id => setFields({ ...fields, current_iteration_id: id })} />}
             {action === "accept_and_execute" && (
               <>
                 <p className="text-caption text-muted-foreground">

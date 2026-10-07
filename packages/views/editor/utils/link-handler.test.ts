@@ -106,6 +106,11 @@ describe("openLink", () => {
     expect(navigatedPaths()).toEqual(["/acme/issues/MUL-1"]);
   });
 
+  it.each(["/iterations", "/iterations/period-id"])("prefixes iteration route %s", (path) => {
+    openLink(path, "acme", APP_ORIGIN);
+    expect(navigatedPaths()).toEqual([`/acme${path}`]);
+  });
+
   it("leaves a path that already carries a slug alone", () => {
     openLink("/other/issues/MUL-1", "acme", APP_ORIGIN);
     expect(navigatedPaths()).toEqual(["/other/issues/MUL-1"]);

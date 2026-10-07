@@ -237,3 +237,11 @@ describe("iconForAttachment", () => {
     expect(iconForAttachment("data.unknownext")).toBe("File");
   });
 });
+
+describe("iteration tab identity", () => {
+  it("resolves collection, pending detail, and cached detail without Unknown page", () => {
+    expect(present("/acme/iterations")).toEqual({ visual: { kind: "icon", icon: "CalendarRange" }, title: { kind: "nav", navKey: "iterations" } });
+    expect(present("/acme/iterations/i1")).toEqual({ visual: { kind: "icon", icon: "CalendarRange" }, title: { kind: "tab", tabKey: "iteration" } });
+    expect(present("/acme/iterations/i1", { iteration: { name: "Delivery cycle" } })).toEqual({ visual: { kind: "icon", icon: "CalendarRange" }, title: { kind: "text", text: "Delivery cycle" } });
+  });
+});

@@ -1,3 +1,4 @@
+import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
 import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
@@ -688,6 +689,12 @@ export function errorCode(err: unknown): string | undefined {
     if (typeof code === "string" && code.length > 0) return code;
   }
   return undefined;
+}
+
+/** Workspace middleware intentionally conceals revoked membership as a qualified 404. */
+export function isIterationAccessDenied(error: unknown): boolean {
+  return error instanceof ApiError && ([401, 403].includes(error.status) ||
+    (error.status === 404 && errorCode(error) === "workspace_access_denied"));
 }
 
 // dispatchReasonCode extracts the stable, machine-readable admission reason
@@ -4468,6 +4475,45 @@ export class ApiClient {
     const res = await this.fetchRaw(`/api/attachments/${id}/download`);
     return res.blob();
   }
+
+  private async iterationRequest<T extends { workspace_id: string }>(wsId: string, path: string, schema: z.ZodType<T>, options?: { signal?: AbortSignal; method?: string; body?: unknown }) {
+    const raw = await this.fetch<unknown>(`/api/workspaces/${encodeURIComponent(wsId)}/${path}`, {
+      ...workspaceRequestInit({ workspaceId: wsId, signal: options?.signal }),
+      ...(options?.method ? { method: options.method } : {}),
+      ...(options?.body !== undefined ? { body: JSON.stringify(options.body) } : {}),
+    });
+    const parsed = parseIteration(raw, schema, wsId);
+    const body = options?.body;
+    if (body && typeof body === "object" && "request_id" in body && "request_id" in parsed && parsed.request_id !== body.request_id) throw new Error("Invalid iteration receipt identity");
+    if (path.startsWith("iteration-operations/") && "request_id" in parsed && parsed.request_id !== decodeURIComponent(path.slice("iteration-operations/".length))) throw new Error("Invalid iteration receipt identity");
+    if (path.startsWith("iterations/")) {
+      const expectedId = decodeURIComponent(path.split(/[/?]/)[1] ?? "");
+      const identity = z.object({ iteration_id: z.string().optional(), iteration: z.object({ id: z.string() }).optional() }).parse(parsed);
+      if ((identity.iteration_id && identity.iteration_id !== expectedId) || (identity.iteration && identity.iteration.id !== expectedId)) throw new Error("Invalid iteration resource identity");
+    }
+    return parsed;
+  }
+  async getIterationCapabilities(wsId: string, options?: { signal?: AbortSignal }) {
+    try { return await this.iterationRequest(wsId, "iteration-capabilities", IterationCapabilitiesSchema, options); }
+    catch (error) {
+      if (isIterationAccessDenied(error) || !(error instanceof ApiError) || error.status !== 404) throw error;
+      const raw = await this.fetch<unknown>(`/api/workspaces/${encodeURIComponent(wsId)}`, workspaceRequestInit({ workspaceId: wsId, signal: options?.signal }));
+      const workspace = parseWithFallback<{ id: string } | null>(raw, z.object({ id: z.string().uuid() }), null, { endpoint: "iteration-capabilities workspace" });
+      if (!workspace || workspace.id !== wsId) throw new Error("Workspace access could not be confirmed");
+      return null;
+    }
+  }
+  getIterationSettings(wsId: string, options?: { signal?: AbortSignal }) { return this.iterationRequest(wsId, "iteration-settings", IterationSettingsSchema, options); }
+  enableIterations(wsId: string, body: { request_id: string; expected_revision: number; confirmed_timezone: string }) { return this.iterationRequest(wsId, "iteration-settings/enable", IterationWriteResultSchema, { method: "POST", body }); }
+  listIterations(wsId: string, params: Record<string, string> = {}, options?: { signal?: AbortSignal }) { return this.iterationRequest(wsId, `iterations?${new URLSearchParams(params)}`, IterationListSchema, options); }
+  getIteration(wsId: string, id: string, options?: { signal?: AbortSignal }) { return this.iterationRequest(wsId, `iterations/${encodeURIComponent(id)}`, IterationDetailSchema, options); }
+  getIterationIssues(wsId: string, id: string, params: Record<string, string> = {}, options?: { signal?: AbortSignal }) { return this.iterationRequest(wsId, `iterations/${encodeURIComponent(id)}/issues?${new URLSearchParams(params)}`, IterationIssuesSchema, options); }
+  getIterationEvents(wsId: string, id: string, params: Record<string, string> = {}, options?: { signal?: AbortSignal }) { return this.iterationRequest(wsId, `iterations/${encodeURIComponent(id)}/events?${new URLSearchParams(params)}`, IterationEventsSchema, options); }
+  createIteration(wsId: string, body: IterationCreateInput) { return this.iterationRequest(wsId, "iterations", IterationWriteResultSchema, { method: "POST", body }); }
+  updateIteration(wsId: string, id: string, body: { request_id: string; expected_revision: number; fields: Partial<Omit<IterationCreateInput, "request_id" | "confirmed_timezone">>; reason: string }) { return this.iterationRequest(wsId, `iterations/${encodeURIComponent(id)}`, IterationWriteResultSchema, { method: "PUT", body }); }
+  previewIteration(wsId: string, body: IterationDraft) { return this.iterationRequest(wsId, "iteration-previews", IterationPreviewSchema, { method: "POST", body }); }
+  applyIterationOperation(wsId: string, body: IterationWriteInput) { return this.iterationRequest(wsId, "iteration-operations", IterationWriteResultSchema, { method: "POST", body }); }
+  getIterationOperation(wsId: string, requestId: string) { return this.iterationRequest(wsId, `iteration-operations/${encodeURIComponent(requestId)}`, IterationWriteResultSchema); }
 
   // Project management responses retain strict identity and completeness.
   private async projectP1<T>(wsId: string, projectId: string, suffix: string, schema: z.ZodType<T>,

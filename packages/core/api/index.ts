@@ -5,6 +5,7 @@ export {
   clientErrorMessage,
   dispatchReasonCode,
   errorCode,
+  isIterationAccessDenied,
   PreviewTooLargeError,
   PreviewUnsupportedError,
 } from "./client";

@@ -3,8 +3,9 @@ import type { InboxItem } from "@multica/core/types";
 /** Notification navigation is independent from read/archive or review state. */
 export function getInboxDestination(
   item: InboxItem,
-  links: { issueDetail: (id: string) => string; triage: () => string; projectUpdate?: (id: string, updateId: string) => string },
+  links: { issueDetail: (id: string) => string; triage: () => string; iterations?: () => string; iterationDetail?: (id: string) => string; projectUpdate?: (id: string, updateId: string) => string },
 ): string | null {
+  if (item.type === "iteration") return item.details?.iteration_id && links.iterationDetail ? links.iterationDetail(item.details.iteration_id) : item.details?.kind === "disable" ? links.iterations?.() ?? null : null;
   if (item.type === "project_update") return item.details?.project_id && item.details.update_id && links.projectUpdate ? links.projectUpdate(item.details.project_id, item.details.update_id) : null;
   if (item.type === "triage") {
     const query = new URLSearchParams();

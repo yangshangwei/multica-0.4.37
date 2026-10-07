@@ -165,3 +165,11 @@ describe("resolveDetailItem", () => {
     expect(resolveDetailItem(list, "issue-gone", "issue-also-gone")).toBeNull();
   });
 });
+
+describe("iteration notification navigation", () => {
+  it("opens a workspace iteration without needing a live issue", () => {
+    const links = { issueDetail: (id: string) => `/issues/${id}`, triage: () => "/triage", iterationDetail: (id: string) => `/iterations/${id}` };
+    expect(getInboxDestination(item({ type: "iteration", issue_id: null, details: { iteration_id: "iteration-1", kind: "ended" } }), links)).toBe("/iterations/iteration-1");
+    expect(getInboxDestination(item({ type: "iteration", issue_id: null, details: {} }), links)).toBeNull();
+  });
+});

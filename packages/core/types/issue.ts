@@ -211,6 +211,8 @@ export interface Issue {
   updated_at: string;
   /** Monotonic server revision; absent when connected to an older backend. */
   revision?: number;
+  current_iteration_id?: string | null;
+  iteration_rollover_count?: number;
   /**
    * Null until the server's historical activity backfill reaches this row.
    * This RFC3339 timestamp may include sub-second precision while legacy

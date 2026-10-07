@@ -1,3 +1,6 @@
+vi.mock("../../iterations/iteration-assignment", () => ({
+  IterationBatchAssignment: ({ issueIds }: { issueIds: string[] }) => <button aria-label="Iteration batch selection" data-issue-ids={issueIds.join(",")}>Iterations</button>,
+}));
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";

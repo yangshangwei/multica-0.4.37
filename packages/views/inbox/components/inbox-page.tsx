@@ -729,7 +729,7 @@ export function InboxPage() {
         </div>
       )}
       <div className="mt-4 flex gap-2">
-        {(detailItem.type === "triage" || detailItem.type === "project_update") && (
+        {(detailItem.type === "iteration" || detailItem.type === "triage" || detailItem.type === "project_update") && (
           <Button
             data-testid="open-triage-notification"
             onClick={() => {
@@ -737,7 +737,7 @@ export function InboxPage() {
               if (destination) push(destination);
             }}
           >
-            {detailItem.type === "project_update" ? t(($) => $.detail.open_project_update) : t(($) => $.detail.open_triage)}
+            {detailItem.type === "iteration" ? t(($) => $.detail.open_iteration) : detailItem.type === "project_update" ? t(($) => $.detail.open_project_update) : t(($) => $.detail.open_triage)}
           </Button>
         )}
         {detailItem.type === "quick_create_failed" &&

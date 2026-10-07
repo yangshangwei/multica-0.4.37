@@ -28,7 +28,7 @@ import {
 import { useWorkspaceStore } from "@/data/workspace-store";
 import { useColorScheme } from "@/lib/use-color-scheme";
 import { THEME } from "@/lib/theme";
-import { deduplicateInboxItems, getInboxProjectTarget } from "@/lib/inbox-display";
+import { deduplicateInboxItems, getInboxIterationTarget, getInboxProjectTarget } from "@/lib/inbox-display";
 
 export default function Inbox() {
   const wsId = useWorkspaceStore((s) => s.currentWorkspaceId);
@@ -57,6 +57,17 @@ export default function Inbox() {
       // row is already styled "read" by the time iOS captures the source
       // snapshot for the native stack push transition.
       markRead.mutate(item.id);
+    }
+    if (item.type === "iteration") {
+      // Web/Desktop routes these through getInboxDestination. I1 mobile
+      // keeps the notification readable without offering closure actions.
+      if (getInboxIterationTarget(item, wsId)) {
+        Alert.alert(
+          "Open iterations on Web or Desktop",
+          "Use a supported version of Multica on Web or Desktop to view and manage iterations. Iteration actions are not available in the mobile app yet.",
+        );
+      }
+      return;
     }
     const projectId = getInboxProjectTarget(item, wsId);
     if (projectId && wsSlug) {

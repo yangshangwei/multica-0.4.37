@@ -19,6 +19,31 @@ export function getInboxProjectTarget(
   return projectId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(projectId) ? projectId : null;
 }
 
+/** Mirrors Web/Desktop's iteration notice destinations; mobile explains
+ * that the supported clients are required instead of opening an editor. */
+export function getInboxIterationTarget(
+  item: Pick<InboxItem, "workspace_id" | "details"> & { type: string },
+  workspaceId: string | null,
+): { kind: "list" } | { kind: "detail"; iterationId: string } | null {
+  if (!workspaceId || item.workspace_id !== workspaceId || item.type !== "iteration") return null;
+  switch (item.details?.kind) {
+    case "disable":
+      return { kind: "list" };
+    case "start":
+    case "end":
+    case "cancel":
+    case "dates_changed":
+    case "overdue": {
+      const iterationId = item.details.iteration_id;
+      return iterationId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(iterationId)
+        ? { kind: "detail", iterationId }
+        : null;
+    }
+    default:
+      return null;
+  }
+}
+
 function singleLine(value: string | null | undefined): string {
   return (value ?? "").replace(/\s+/g, " ").trim();
 }

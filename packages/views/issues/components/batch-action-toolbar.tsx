@@ -1,5 +1,6 @@
 "use client";
 
+import { IterationBatchAssignment } from "../../iterations/iteration-assignment";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { X, Trash2 } from "lucide-react";
@@ -255,6 +256,8 @@ export function BatchActionToolbar({
           trigger={t(($) => $.batch.assignee)}
           align="center"
         />
+
+        {selectedIssues[0]?.workspace_id && selectedIssues.every((issue) => issue.workspace_id === selectedIssues[0]?.workspace_id) && <IterationBatchAssignment key={JSON.stringify(ids)} wsId={selectedIssues[0].workspace_id} issueIds={ids} />}
 
         {/* Delete */}
         <Button

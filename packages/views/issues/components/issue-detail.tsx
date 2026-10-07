@@ -1,4 +1,6 @@
 "use client";
+import { IterationParticipation } from "../../iterations/iteration-participation";
+import { IterationAssignment } from "../../iterations/iteration-assignment";
 
 import { isFormalAdmission } from "@multica/core/triage";
 
@@ -2337,6 +2339,8 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
               onUpdate={handleUpdateField}
             />
           </PropRow>
+
+          {executionAllowed && <div className="col-span-2"><IterationAssignment wsId={wsId} issueId={issue.id} currentIterationId={issue.current_iteration_id} rolloverCount={issue.iteration_rollover_count} /><IterationParticipation key={`${wsId}:${issue.id}`} wsId={wsId} issueId={issue.id} /></div>}
 
           {/* Optional props — rendered only when set on the issue OR added
               via "+ Add property" in this session. Row order follows the

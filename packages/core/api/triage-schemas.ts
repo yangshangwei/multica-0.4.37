@@ -7,6 +7,7 @@ const count = z.number().int().nonnegative();
 const instant = z.string().datetime({ offset: true });
 const snapshot = z.record(z.string(), z.unknown());
 export const TriageSettingsSchema = z.object({
+  iteration_assignment: z.boolean().optional(),
   supported: z.literal(true), enabled: z.boolean(), acceptance_status: identity,
   require_priority: z.boolean(), responsibility_mode: z.string(), responsibility_member_id: identity.nullable(), revision: count,
 }).loose();

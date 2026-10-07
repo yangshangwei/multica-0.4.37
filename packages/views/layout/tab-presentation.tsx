@@ -13,6 +13,7 @@ import {
   type TabLabelKey,
 } from "@multica/core/paths";
 import { issueDetailOptions } from "@multica/core/issues/queries";
+import { iterationDetailOptions } from "@multica/core/iterations";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { autopilotDetailOptions } from "@multica/core/autopilots/queries";
 import {
@@ -115,6 +116,11 @@ function useTabEntityData(subject: TabSubject, wsId: string): TabEntityData {
       enabled: false,
     }).data ?? rawIssue;
 
+  const iteration = useQuery({
+    ...iterationDetailOptions(wsId, subject.kind === "iteration" ? subject.id : NONE),
+    enabled: false,
+  }).data;
+
   const project = useQuery({
     ...projectDetailOptions(wsId, subject.kind === "project" ? subject.id : NONE),
     enabled: false,
@@ -147,6 +153,9 @@ function useTabEntityData(subject: TabSubject, wsId: string): TabEntityData {
           status: issue.status,
         };
       }
+      break;
+    case "iteration":
+      if (iteration) data.iteration = { name: iteration.iteration.name };
       break;
     case "project":
       if (project) data.project = { icon: project.icon, title: project.title };

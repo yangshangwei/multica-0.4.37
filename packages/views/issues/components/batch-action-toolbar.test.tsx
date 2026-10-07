@@ -1,3 +1,6 @@
+vi.mock("../../iterations/iteration-assignment", () => ({
+  IterationBatchAssignment: ({ issueIds }: { issueIds: string[] }) => <button aria-label="Iteration batch selection" data-issue-ids={issueIds.join(",")}>Iterations</button>,
+}));
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import type { Issue } from "@multica/core/types";
@@ -85,6 +88,11 @@ beforeEach(() => {
 });
 
 describe("BatchActionToolbar picker wiring", () => {
+  it("passes only resolved selected tasks to the iteration entry", () => {
+    selection.selectedIds = new Set(["a", "stale"]);
+    render(<BatchActionToolbar issues={[makeIssue({ id: "a" }), makeIssue({ id: "b" })]} />);
+    expect(screen.getByRole("button", { name: "Iteration batch selection" })).toHaveAttribute("data-issue-ids", "a");
+  });
   it("reflects the shared status / priority / assignee of the selected issues", () => {
     const issues = [
       makeIssue({ id: "a", status: "in_progress", priority: "high", assignee_type: "member", assignee_id: "u-1" }),

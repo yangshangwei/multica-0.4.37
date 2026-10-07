@@ -1,6 +1,7 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 import type { InboxItem } from "@multica/core/types";
-import { deduplicateInboxItems, getInboxProjectTarget } from "./inbox-display";
+import { deduplicateInboxItems, getInboxIterationTarget, getInboxProjectTarget } from "./inbox-display";
 
 function item(overrides: Partial<InboxItem>): InboxItem {
   return {
@@ -65,5 +66,56 @@ describe("project update notification target", () => {
     expect(getInboxProjectTarget({ ...notification, type: "new_comment" }, "workspace-1")).toBeNull();
     expect(getInboxProjectTarget({ ...notification, details: { project_id: "../../settings" } }, "workspace-1")).toBeNull();
     expect(getInboxProjectTarget({ ...notification, details: null }, "workspace-1")).toBeNull();
+  });
+});
+
+describe("iteration notification target", () => {
+  const iterationId = "88888888-8888-4888-8888-888888888888";
+  const notification = item({
+    type: "iteration",
+    issue_id: null,
+    details: { iteration_id: iterationId, kind: "end" },
+  });
+
+  it.each(["start", "end", "cancel", "dates_changed", "overdue"])(
+    "recognizes a current-workspace %s notice without an issue id",
+    (kind) => {
+      expect(getInboxIterationTarget({
+        ...notification,
+        details: { iteration_id: iterationId, kind },
+      }, "workspace-1")).toEqual({ kind: "detail", iterationId });
+    },
+  );
+
+  it("recognizes workspace disable notices without an iteration id", () => {
+    expect(getInboxIterationTarget({
+      ...notification,
+      details: { kind: "disable" },
+    }, "workspace-1")).toEqual({ kind: "list" });
+  });
+
+  it("ignores unavailable workspaces, invalid targets and unknown notice kinds", () => {
+    expect(getInboxIterationTarget(notification, null)).toBeNull();
+    expect(getInboxIterationTarget(notification, "workspace-2")).toBeNull();
+    expect(getInboxIterationTarget({ ...notification, type: "new_comment" }, "workspace-1")).toBeNull();
+    const invalidDetails: InboxItem["details"][] = [
+      null,
+      { kind: "end" },
+      { kind: "end", iteration_id: "../../settings" },
+      { iteration_id: iterationId },
+      { kind: "future_event", iteration_id: iterationId },
+    ];
+    for (const details of invalidDetails) {
+      expect(getInboxIterationTarget({ ...notification, details }, "workspace-1")).toBeNull();
+    }
+  });
+
+  it("leaves the read state and retained notification payload untouched", () => {
+    const details = Object.freeze({ ...notification.details, future_field: "retained" });
+    const retained = Object.freeze({ ...notification, details });
+    expect(getInboxIterationTarget(retained, "workspace-1")).toEqual({ kind: "detail", iterationId });
+    expect(retained.read).toBe(false);
+    expect(retained.details).toBe(details);
+    expect(retained.details.future_field).toBe("retained");
   });
 });

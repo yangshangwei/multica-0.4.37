@@ -1,4 +1,5 @@
 "use client";
+import { IterationCandidate } from "../iterations/iteration-assignment";
 
 import { issueStatusCategory } from "@multica/core/issues";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
@@ -285,6 +286,8 @@ export function ManualCreatePanel({
   const [labelIds, setLabelIds] = useState<string[]>(draft.manual.labelIds);
   const [propertyValues, setPropertyValues] = useState(draft.manual.propertyValues ?? {});
   const [customPropertyPickerId, setCustomPropertyPickerId] = useState<string | null>(null);
+  const [allowCompletedIteration, setAllowCompletedIteration] = useState(false);
+  const [iterationSelection, setIterationSelection] = useState<{ id: string | null; revision?: number }>({ id: null });
   const [projectId, setProjectId] = useState<string | undefined>(() => {
     if (data && "project_id" in data) {
       return (data.project_id as string | null) ?? undefined;
@@ -513,6 +516,7 @@ export function ManualCreatePanel({
               label_ids: labelIds.length > 0 ? labelIds : undefined,
               stage: parentIssueId && stage != null ? stage : undefined,
               project_id: projectId,
+          ...(iterationSelection.id ? { current_iteration_id: iterationSelection.id, expected_iteration_revision: iterationSelection.revision, allow_completed: allowCompletedIteration } : {}),
             },
           },
         });
@@ -537,6 +541,7 @@ export function ManualCreatePanel({
           // Stage is only meaningful for a sub-issue (relative to its siblings).
           stage: parentIssueId && stage != null ? stage : undefined,
           project_id: projectId,
+          ...(iterationSelection.id ? { current_iteration_id: iterationSelection.id, expected_iteration_revision: iterationSelection.revision, allow_completed: allowCompletedIteration } : {}),
         });
       }
 
@@ -1074,6 +1079,8 @@ export function ManualCreatePanel({
                 />
               )}
 
+              <IterationCandidate wsId={wsId} value={iterationSelection.id} onChange={(id, revision) => setIterationSelection({ id, revision })} />
+              {iterationSelection.id && draftStatusCategory(status) === "done" && <label className="flex items-center gap-2"><input type="checkbox" checked={allowCompletedIteration} onChange={event => setAllowCompletedIteration(event.target.checked)} />{tProjects($ => $.iterations.allowCompleted)}</label>}
               {/* Project */}
               {showField.project && (
                 <ProjectPicker

@@ -1,4 +1,5 @@
-import { createServer } from "node:http";
+import { createServer, request as httpRequest } from "node:http";
+import type { Duplex } from "node:stream";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
@@ -17,6 +18,7 @@ export const test = base.extend<{ native: NativeSession }>({
     let desktop: ElectronApplication | undefined;
     let page: Page | undefined;
     const errors: string[] = [];
+    const upgradedSockets = new Set<Duplex>();
     const server = createServer(async (req, res) => {
       try {
         const pathname = new URL(req.url ?? "/", "http://localhost").pathname;
@@ -37,6 +39,34 @@ export const test = base.extend<{ native: NativeSession }>({
         const mime: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".woff2": "font/woff2", ".svg": "image/svg+xml" };
         res.writeHead(200, { "Content-Type": mime[extname(file)] ?? "application/octet-stream" }); res.end(data);
       } catch { res.writeHead(502); res.end(); }
+    });
+    // Preserve the browser-facing Host/Origin as a real reverse proxy does.
+    // Otherwise native flows silently lose all realtime coverage at this fixture.
+    server.on("upgrade", (req, socket, head) => {
+      const incoming = new URL(req.url ?? "/", "http://localhost");
+      if (incoming.pathname !== "/ws") { socket.destroy(); return; }
+      const target = new URL(apiBase);
+      target.pathname = "/ws";
+      target.search = incoming.search;
+      upgradedSockets.add(socket);
+      const upstream = httpRequest(target, { headers: req.headers });
+      socket.on("error", () => upstream.destroy());
+      socket.on("close", () => { upgradedSockets.delete(socket); upstream.destroy(); });
+      upstream.on("error", () => socket.destroy());
+      upstream.on("response", response => { response.resume(); socket.destroy(); });
+      upstream.on("upgrade", (response, peer, peerHead) => {
+        upgradedSockets.add(peer);
+        peer.on("error", () => socket.destroy());
+        peer.on("close", () => { upgradedSockets.delete(peer); socket.destroy(); });
+        socket.on("close", () => peer.destroy());
+        const headers = [];
+        for (let i = 0; i < response.rawHeaders.length; i += 2) headers.push(`${response.rawHeaders[i]}: ${response.rawHeaders[i + 1]}`);
+        socket.write(`HTTP/1.1 ${response.statusCode} ${response.statusMessage}\r\n${headers.join("\r\n")}\r\n\r\n`);
+        if (peerHead.length) socket.write(peerHead);
+        if (head.length) peer.write(head);
+        socket.pipe(peer); peer.pipe(socket);
+      });
+      upstream.end();
     });
     try {
       await new Promise<void>((done) => server.listen(0, "127.0.0.1", done));
@@ -59,6 +89,7 @@ export const test = base.extend<{ native: NativeSession }>({
       try { if (page && info.status !== info.expectedStatus) await p1Failure(page, info); }
       finally {
         await desktop?.close();
+        for (const socket of upgradedSockets) socket.destroy();
         await new Promise<void>((done) => server.close(() => done()));
         try { await session.api.deleteFeatureWorkspace(session.workspace.id); }
         finally { await rm(profile, { recursive: true, force: true }); }

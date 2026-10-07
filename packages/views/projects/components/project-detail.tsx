@@ -1,4 +1,5 @@
 "use client";
+import { ProjectIterations } from "../../iterations/project-iterations";
 
 import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import { useDefaultLayout, usePanelRef } from "react-resizable-panels";
@@ -588,6 +589,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
             }
           />
 
+          <ProjectIterations wsId={wsId} projectId={projectId} />
           <ProjectSquadSection key={project.id} project={project} />
           <div className="flex items-center gap-2 border-b px-4 py-2">
             {capabilities.data?.overview === true && <Button size="sm" variant={section === "overview" ? "secondary" : "ghost"} onClick={goOverview}>{t(($) => $.management.overview)}</Button>}

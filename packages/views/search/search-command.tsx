@@ -38,6 +38,7 @@ import {
 } from "@multica/core/issues/stores";
 import { issueDetailOptions, issueTimelineOptions } from "@multica/core/issues/queries";
 import { useWorkspaceId } from "@multica/core";
+import { iterationCapabilitiesOptions } from "@multica/core/iterations";
 import { triageSettingsOptions } from "@multica/core/triage";
 import { useWorkspacePaths, WORKSPACE_PAGES } from "@multica/core/paths";
 import type { WorkspacePageKey, WorkspacePaths } from "@multica/core/paths";
@@ -91,6 +92,7 @@ import { useSearchStore } from "./search-store";
 // total Record so adding a workspace page is a compile error until its
 // keywords are filled in.
 const PAGE_KEYWORDS: Record<WorkspacePageKey, string[]> = {
+  iterations: ["iterations", "sprints", "cycles", "迭代", "周期"],
   triage: ["triage", "review", "分拣台", "审核"],
   inbox: ["inbox", "notifications", "收件箱", "通知"],
   chat: ["chat", "messages", "conversation", "聊天", "消息", "对话"],
@@ -317,6 +319,8 @@ export function SearchCommand() {
   const { t } = useT("search");
   const wsId = useWorkspaceId();
   const { data: triageSettings } = useQuery(triageSettingsOptions(wsId));
+  const { data: iterationCapability } = useQuery(iterationCapabilitiesOptions(wsId));
+  const iterationSupported = iterationCapability?.supported === true && iterationCapability.manual === true;
   const triageEnabled = triageSettings?.supported === true && triageSettings.enabled === true;
   // Page names come from the sidebar's own namespace rather than a private
   // copy under `search.pages`: one translated string per page, so the palette
@@ -324,12 +328,12 @@ export function SearchCommand() {
   const { t: tNav } = useT("layout");
   const navPages = useMemo<NavPage[]>(
     () =>
-      NAV_PAGE_KEYS.filter((key) => key !== "triage" || triageEnabled).map((key) => ({
+      NAV_PAGE_KEYS.filter((key) => (key !== "triage" || triageEnabled) && (key !== "iterations" || iterationSupported)).map((key) => ({
         key,
         label: tNav(($) => $.nav[WORKSPACE_PAGES[key].navKey]),
         keywords: PAGE_KEYWORDS[key],
       })),
-    [tNav, triageEnabled],
+    [tNav, triageEnabled, iterationSupported],
   );
   const { pathname, getShareableUrl } = useNavigation();
   const intentNavigate = useIntentNavigate();

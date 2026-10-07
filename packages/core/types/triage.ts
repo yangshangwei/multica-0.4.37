@@ -6,6 +6,7 @@ export type TriageBatchActionName = "accept" | "reject" | "snooze" | "assign_rev
 export type TriageResponsibilityMode = "none" | "notify" | "assign";
 
 export interface TriageSettings {
+  iteration_assignment?: boolean;
   supported: boolean;
   enabled: boolean;
   acceptance_status: string;
@@ -24,6 +25,7 @@ export interface UpdateTriageSettingsInput {
   expected_revision: number;
 }
 export interface TriageFields {
+  current_iteration_id?: string | null;
   title?: string;
   description?: string;
   status?: string;

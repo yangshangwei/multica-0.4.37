@@ -1,3 +1,4 @@
+import { IterationsPage } from "@multica/views/iterations";
 import { useEffect } from "react";
 import { createMemoryRouter, Outlet, useMatches, useParams } from "react-router-dom";
 import type { RouteObject } from "react-router-dom";
@@ -233,6 +234,8 @@ export const appRoutes: RouteObject[] = [
             element: <SquadDetailPageView />,
             handle: { title: "Squad" },
           },
+          { path: "iterations", element: <IterationsPage />, handle: { title: "Iterations" } },
+          { path: "iterations/:id", element: <IterationsPage />, handle: { title: "Iteration" } },
           { path: "triage", element: <TriagePage />, handle: { title: "Triage" } },
           { path: "inbox", element: <InboxPage />, handle: { title: "Inbox" } },
           { path: "chat", element: <ChatPage />, handle: { title: "Chat" } },

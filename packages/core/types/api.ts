@@ -4,6 +4,9 @@ import type { Project } from "./project";
 
 // Issue API
 export interface CreateIssueRequest {
+  current_iteration_id?: string | null;
+  expected_iteration_revision?: number;
+  allow_completed?: boolean;
   title: string;
   description?: string;
   status?: IssueStatus;
@@ -47,6 +50,9 @@ export type CreateCommentSubIssueRequest =
   | CreateCommentSubIssueAgentRequest;
 
 export interface UpdateIssueRequest {
+  current_iteration_id?: string | null;
+  iteration_reason?: string;
+  allow_completed?: boolean;
   /** Legacy aggregate compare-and-swap token. New text editors use field
    * baselines so unrelated issue activity does not reject their edits. */
   expected_revision?: number;

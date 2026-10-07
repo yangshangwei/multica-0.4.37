@@ -33,3 +33,11 @@ export function useStatusLabel(wsId: string) {
     [t, entryOf],
   );
 }
+
+/** Historical categories use fixed localized semantics, never today's custom catalog. */
+export function useStatusCategoryLabel(unknownLabel: string) {
+  const { t } = useT("issues");
+  return useCallback((category: string): string => isIssueStatusCategory(category)
+    ? t($ => $.status[category as IssueStatusCategory])
+    : unknownLabel, [t, unknownLabel]);
+}

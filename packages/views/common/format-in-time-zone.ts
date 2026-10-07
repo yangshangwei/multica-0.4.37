@@ -14,6 +14,7 @@ export function formatInTimeZone(
   iso: string,
   timeZone: string | undefined,
   locale: string,
+  overrides: Intl.DateTimeFormatOptions = {},
 ): string {
   const at = new Date(iso);
   if (Number.isNaN(at.getTime())) return iso;
@@ -22,6 +23,7 @@ export function formatInTimeZone(
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    ...overrides,
   };
   try {
     return new Intl.DateTimeFormat(locale, { ...options, timeZone }).format(at);

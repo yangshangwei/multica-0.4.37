@@ -4,7 +4,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach, type MockInstance } from "vitest";
 import type { WSClient } from "../api/ws-client";
 import { defaultStorage } from "../platform/storage";
 import { issueKeys } from "../issues/queries";
@@ -65,12 +65,26 @@ function createWrapper(qc: QueryClient) {
 describe("useRealtimeSync — ws instance change", () => {
   let qc: QueryClient;
   let stores: RealtimeSyncStores;
-  let invalidateSpy: ReturnType<typeof vi.spyOn>;
+  let invalidateSpy: MockInstance<QueryClient["invalidateQueries"]>;
 
   beforeEach(() => {
     qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     stores = createStores();
     invalidateSpy = vi.spyOn(qc, "invalidateQueries");
+  });
+
+  it("debounces ordinary issue updates into iteration projection invalidation", () => {
+    vi.useFakeTimers();
+    try {
+      const ws = createMockWs(); renderHook(() => useRealtimeSync(ws, stores), { wrapper: createWrapper(qc) });
+      const onAny = vi.mocked(ws.onAny).mock.calls[0]![0];
+      invalidateSpy.mockClear();
+      onAny({ type: "issue:updated", payload: { issue: { id: "i1", workspace_id: "ws-1", status: "done" } } });
+      onAny({ type: "issue:updated", payload: { issue: { id: "i2", workspace_id: "ws-1", status: "todo" } } });
+      expect(invalidateSpy).not.toHaveBeenCalledWith({ queryKey: ["iterations", "ws-1"] });
+      vi.advanceTimersByTime(100);
+      expect(invalidateSpy.mock.calls.filter(([filter]) => JSON.stringify(filter?.queryKey) === JSON.stringify(["iterations", "ws-1"]))).toHaveLength(1);
+    } finally { vi.useRealTimers(); }
   });
 
   it("invalidates triage after reconnect and dispatches committed triage events", () => {
@@ -167,8 +181,9 @@ describe("useRealtimeSync — ws instance change", () => {
     // (16 workspace-scoped [incl. property definitions] + 6 per-issue
     // prefixes + the workspace working-agents projection + 5 per-chat
     // prefixes + 1 workspaceKeys.list() + 1 cross-workspace inbox unread
-    // summary + triage = 32 calls)
-    expect(invalidateSpy).toHaveBeenCalledTimes(32);
+    // summary + triage + iterations = 33 calls)
+    expect(invalidateSpy).toHaveBeenCalledTimes(33);
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ["iterations", "ws-1"] });
   });
 
   it("does not re-invalidate when rerendered with the same ws instance", () => {
@@ -198,7 +213,7 @@ describe("useRealtimeSync — ws instance change", () => {
     const ws2 = createMockWs();
     rerender({ ws: ws2 });
 
-    const calls = invalidateSpy.mock.calls.map((call: [{ queryKey?: unknown }, ...unknown[]]) => call[0].queryKey);
+    const calls = invalidateSpy.mock.calls.map((call) => call[0]?.queryKey);
     expect(calls).toContainEqual(["chat", "ws-1"]);
     expect(calls).toContainEqual(["labels", "ws-1"]);
     expect(calls).toContainEqual(["workspaces", "ws-1", "invitations"]);
@@ -248,7 +263,7 @@ describe("useRealtimeSync — ws instance change", () => {
     const ws2 = createMockWs();
     rerender({ ws: ws2 });
 
-    const calls = invalidateSpy.mock.calls.map((call: [{ queryKey?: unknown }, ...unknown[]]) => call[0].queryKey);
+    const calls = invalidateSpy.mock.calls.map((call) => call[0]?.queryKey);
     expect(calls).toContainEqual(["issues", "timeline"]);
     expect(calls).toContainEqual(["issues", "reactions"]);
     expect(calls).toContainEqual(["issues", "subscribers"]);
@@ -272,7 +287,7 @@ describe("useRealtimeSync — ws instance change", () => {
     const ws2 = createMockWs();
     rerender({ ws: ws2 });
 
-    const calls = invalidateSpy.mock.calls.map((call: [{ queryKey?: unknown }, ...unknown[]]) => call[0].queryKey);
+    const calls = invalidateSpy.mock.calls.map((call) => call[0]?.queryKey);
     expect(calls).toContainEqual(["chat", "messages"]);
     expect(calls).toContainEqual(["chat", "messages-page"]);
     expect(calls).toContainEqual(["chat", "pending-task"]);
@@ -290,7 +305,7 @@ describe("useRealtimeSync — ws instance change", () => {
     invalidateSpy.mockClear();
     reconnect!();
 
-    const calls = invalidateSpy.mock.calls.map((call: [{ queryKey?: unknown }, ...unknown[]]) => call[0].queryKey);
+    const calls = invalidateSpy.mock.calls.map((call) => call[0]?.queryKey);
     expect(calls).toContainEqual(chatKeys.messagesAll());
     expect(calls).toContainEqual(chatKeys.messagesPageAll());
     expect(calls).toContainEqual(chatKeys.pendingTaskAll());

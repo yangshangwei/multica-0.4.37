@@ -1,10 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { ReactNode } from "react";
-import { render, renderHook } from "@testing-library/react";
+import { act, render, renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
 import type { SupportedLocale } from "@multica/core/i18n";
 import { issueDetailOptions } from "@multica/core/issues/queries";
+import { iterationDetailOptions } from "@multica/core/iterations";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { chatSessionsOptions } from "@multica/core/chat/queries";
 import {
@@ -13,6 +14,7 @@ import {
 } from "@multica/core/inbox/queries";
 import { agentListOptions, skillDetailOptions } from "@multica/core/workspace/queries";
 import { runtimeListOptions } from "@multica/core/runtimes/queries";
+import { source as iterationFixture, statistics as iterationStatistics } from "../iterations/test-fixtures";
 import enLayout from "../locales/en/layout.json";
 import enChat from "../locales/en/chat.json";
 import enSkills from "../locales/en/skills.json";
@@ -106,6 +108,19 @@ describe("useTabPresentation — live from cache", () => {
       visual: { kind: "icon", icon: "ListTodo" },
       title: "Issues",
     });
+  });
+
+  it("iteration tabs observe names from cache without fetching or retaining revoked titles", async () => {
+    const qc = makeClient();
+    const key = iterationDetailOptions("ws1", "i1").queryKey;
+    const wrapper = ({ children }: { children: ReactNode }) => <I18nProvider locale="en" resources={TEST_RESOURCES}><QueryClientProvider client={qc}>{children}</QueryClientProvider></I18nProvider>;
+    const view = renderHook(() => useTabPresentation("/acme/iterations/i1", "Old persisted name"), { wrapper });
+    expect(view.result.current).toEqual({ visual: { kind: "icon", icon: "CalendarRange" }, title: "Iteration" });
+    act(() => { qc.setQueryData(key, { workspace_id: "ws1", iteration: { ...iterationFixture, workspace_id: "ws1", name: "Delivery cycle" }, statistics: iterationStatistics, snapshot: null }); });
+    await waitFor(() => expect(view.result.current.title).toBe("Delivery cycle"));
+    act(() => { qc.getQueryCache().find({ queryKey: key })?.setState({ data: undefined }); });
+    await waitFor(() => expect(view.result.current.title).toBe("Iteration"));
+    expect(qc.getQueryCache().getAll().every(query => query.state.fetchStatus === "idle")).toBe(true);
   });
 
   it("issue: live status glyph + identifier:title", () => {

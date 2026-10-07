@@ -20,6 +20,7 @@
 
 /** Every icon name a nav page or a tab type-icon can resolve to. */
 export type RouteIconName =
+  | "CalendarRange"
   | "Inbox"
   | "MessageSquare"
   | "CircleUser"
@@ -46,6 +47,7 @@ export type RouteIconName =
 /** i18n label key (under the `layout.nav` namespace) for a page. */
 export type NavLabelKey =
   | "changelog"
+  | "iterations"
   | "triage"
   | "inbox"
   | "chat"
@@ -65,6 +67,7 @@ export type NavLabelKey =
 /** Stable identifier for each workspace navigation page. */
 export type WorkspacePageKey =
   | "changelog"
+  | "iterations"
   | "triage"
   | "inbox"
   | "chat"
@@ -95,6 +98,7 @@ export interface WorkspacePage {
  * destinations in paths.ts and the sidebar nav groups.
  */
 export const WORKSPACE_PAGES: Record<WorkspacePageKey, WorkspacePage> = {
+  iterations: { segment: "iterations", icon: "CalendarRange", navKey: "iterations" },
   triage: { segment: "triage", icon: "Inbox", navKey: "triage" },
   inbox: { segment: "inbox", icon: "Inbox", navKey: "inbox" },
   chat: { segment: "chat", icon: "MessageSquare", navKey: "chat" },

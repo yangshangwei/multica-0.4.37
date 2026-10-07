@@ -41,6 +41,7 @@ export type TabVisual =
 /** Localization keys under the `layout.tab` namespace for tab type labels. */
 export type TabLabelKey =
   | "issue"
+  | "iteration"
   | "project"
   | "autopilot"
   | "agent"
@@ -79,6 +80,7 @@ export type InboxSelectionData =
  */
 export interface TabEntityData {
   issue?: { identifier: string; title: string; status: IssueStatus };
+  iteration?: { name: string };
   project?: { icon: string | null; title: string };
   autopilot?: { title: string };
   /** Resolved display name for an actor subject. */
@@ -166,6 +168,8 @@ export function resolveTabPresentation(
           ? { kind: "text", text: `${data.issue.identifier}: ${data.issue.title}` }
           : { kind: "tab", tabKey: "issue" },
       };
+    case "iteration":
+      return { visual: { kind: "icon", icon: "CalendarRange" }, title: textOr(data.iteration?.name, "iteration") };
     case "project":
       return {
         visual: { kind: "project-icon", icon: data.project?.icon ?? null },

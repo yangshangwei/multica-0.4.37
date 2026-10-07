@@ -245,6 +245,7 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@tanstack/react-query")>()),
   useQuery: (opts: { queryKey: readonly unknown[]; enabled?: boolean }) => {
     const key = opts.queryKey;
+    if (key[0] === "iterations" && key[2] === "capabilities") return { data: { supported: true, manual: true } };
     if (key[0] === "triage" && key[1] === "ws-test" && key[2] === "settings") {
       return { data: triageSettingsState.current };
     }
