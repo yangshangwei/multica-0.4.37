@@ -65,6 +65,12 @@ export function resetProjectAccessSession(qc: QueryClient) {
 }
 export function clearProtectedProjectContent(qc: QueryClient, wsId: string, projectId?: string) {
   const key = accessKey(wsId, projectId);
+  // Denial lasts for the session, so the first cleanup already erased this
+  // scope and every later protected read fails locally. Repeating it would
+  // remove still-mounted workspace queries on each render, and their observers
+  // would refetch them again: one revocation became an unbounded request loop.
+  const { denied } = useProjectAccessStore.getState();
+  if (denied[accessKey(wsId)] || denied[key]) return;
   useProjectAccessStore.setState((state) => ({
     denied: { ...state.denied, [key]: true }, epochs: { ...state.epochs, [key]: (state.epochs[key] ?? 0) + 1 },
     deleted: Object.fromEntries(Object.entries(state.deleted).filter(([entry]) => {

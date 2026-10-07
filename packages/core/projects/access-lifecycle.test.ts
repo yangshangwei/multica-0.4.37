@@ -5,7 +5,8 @@ import { ApiClient, ApiError } from "../api";
 import { clearClientSessionData } from "../platform/session-cleanup";
 import type { StorageAdapter } from "../types/storage";
 import { projectKeys } from "./queries";
-import { useProjectAccessStore, protectProjectRequest, isProjectAccessLost, beginProjectDelete, isProjectDeletePending, registerProjectLocalTextFlush, markProjectDeleted } from "./access";
+import { workspaceKeys } from "../workspace/queries";
+import { useProjectAccessStore, protectProjectRequest, isProjectAccessLost, beginProjectDelete, isProjectDeletePending, registerProjectLocalTextFlush, markProjectDeleted, clearProtectedProjectContent } from "./access";
 const storage: StorageAdapter = { getItem: () => null, setItem: () => {}, removeItem: () => {}, keys: () => [] };
 afterEach(() => vi.unstubAllGlobals());
 beforeEach(() => useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} }));
@@ -24,6 +25,23 @@ it.each([
   const error = new ApiError("request failed", Number(status), "Error", { code });
   await expect(protectProjectRequest(qc, "w", "p", async () => { throw error; })).rejects.toBe(error);
   expect(qc.getQueryData(projectKeys.detail("w", "p"))).toEqual(data); expect(useProjectAccessStore.getState().denied).toEqual({}); qc.clear();
+});
+// Canonical rule for P1-L14; the mounted-page wiring lives in
+// packages/views/projects/components/use-project-access-guard.test.tsx.
+it("a repeated revocation does not erase the already-denied workspace again", async () => {
+  const qc = new QueryClient();
+  const denial = new ApiError("workspace not found or access denied", 404, "Not Found", { code: "workspace_access_denied" });
+  await expect(protectProjectRequest(qc, "w", "p", async () => { throw denial; })).rejects.toMatchObject({ status: 404 });
+  const { epochs } = useProjectAccessStore.getState();
+  // Non-project workspace reads refill after the first cleanup and stay mounted.
+  qc.setQueryData(workspaceKeys.members("w"), [{ id: "m" }]);
+  let networkCalls = 0;
+  const local = await protectProjectRequest(qc, "w", "p", async () => { networkCalls++; return "unreachable"; }).catch((error: unknown) => error);
+  expect(networkCalls).toBe(0); expect(isProjectAccessLost(local)).toBe(true);
+  clearProtectedProjectContent(qc, "w");
+  clearProtectedProjectContent(qc, "w", "p");
+  expect(qc.getQueryData(workspaceKeys.members("w"))).toEqual([{ id: "m" }]);
+  expect(useProjectAccessStore.getState().epochs).toEqual(epochs); qc.clear();
 });
 it("actual session cleanup removes denied and copy-only state before a new account reads", async () => {
   const qc = new QueryClient();
