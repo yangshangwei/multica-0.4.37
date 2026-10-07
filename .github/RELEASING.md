@@ -129,6 +129,35 @@ The build uses `--publish never`; upload verified files explicitly to this fork,
 never through the upstream electron-builder publish configuration. A subsequent
 `package.mjs` invocation clears `dist`, so preserve outputs before starting one.
 
+For native Windows x64 installed lifecycle, business flows, retained-state upgrade
+and automatic-update acceptance, dispatch the acceptance job with the version
+that will be delivered:
+
+```bash
+gh workflow run desktop-smoke.yml --ref codex/projects-p1 \
+  --repo yangshangwei/multica-0.4.37 \
+  -f windows_acceptance=true -f windows_business_acceptance=true \
+  -f candidate_version=0.6.0
+```
+
+`candidate_version` is optional and only affects the Windows acceptance job.
+An empty value keeps the existing unique `0.5.3-rc.<run_number>.<run_attempt>`
+default. Explicit values use the packaging script's SemVer validator before
+building; an optional leading `v` is removed. The normalized
+`MULTICA_DESKTOP_VERSION` is shared by the installer, bundled CLI, installed
+lifecycle checks and updater acceptance. Keep the candidate newer than its
+upgrade baseline. The workflow still uses `--publish never`; download
+`windows-x64-accepted-candidate` and `windows-x64-acceptance-evidence`, inspect the
+reports, and publish those exact verified bytes rather than rebuilding them.
+
+Business acceptance retains the checksum-pinned, feature-capable
+`0.5.2-rc.11.1` baseline from run `36996436086`. The `previous_tag` input applies
+only when business acceptance is disabled. Replacing this baseline requires
+proving that the replacement creates the password, managed-identity and retained
+business state used by these tests; a newer version number alone is insufficient.
+`require_signed=true` additionally requires valid Windows signatures; the default
+unsigned build does not prove signing or SmartScreen trust.
+
 ## Writing public notes
 
 The generator includes merged non-merge commits, meaningful Conventional

@@ -9,6 +9,7 @@ BACKEND_IMAGE=""
 WEB_IMAGE=""
 IMAGE_TAG=""
 ASSUME_YES=0
+COMPOSE_FILES=()
 
 usage() {
   cat <<'USAGE'
@@ -22,13 +23,16 @@ Options:
   --backend-image NAME  Override backend image repository (default: package image)
   --web-image NAME      Override web image repository (default: package image)
   --image-tag TAG       Override image tag (default: package image tag)
+  --compose-file FILE   Additional overlay, relative to DIR or absolute; repeat in order
   --yes                 Skip the confirmation prompt
   -h, --help            Show this help
 
 The script never removes Docker volumes. It saves MULTICA_BACKEND_IMAGE,
 MULTICA_WEB_IMAGE, MULTICA_IMAGE_TAG, CHANGELOG_FILE and CHANGELOG_DIRECTORY
 in deployment .env while preserving other settings.
-It uses the compose file shipped in this package with the deployment's .env.
+It backs up and replaces the deployment's main compose file with this package's.
+Pass every existing overlay explicitly on every upgrade. The complete command
+is recorded in DIR/compose-command.txt for later maintenance.
 USAGE
 }
 
@@ -64,6 +68,11 @@ while [ $# -gt 0 ]; do
       IMAGE_TAG="$2"
       shift 2
       ;;
+    --compose-file)
+      [ $# -ge 2 ] || die "--compose-file needs a path"
+      COMPOSE_FILES+=("$2")
+      shift 2
+      ;;
     --yes)
       ASSUME_YES=1
       shift
@@ -85,6 +94,19 @@ DEPLOYMENT_DIR="$(cd "$DEPLOYMENT_DIR" 2>/dev/null && pwd)" || die "deployment d
 [ -f "$PACKAGE_DIR/docker-compose.selfhost.yml" ] || die "missing package compose file"
 [ -f "$PACKAGE_DIR/MANIFEST.txt" ] || die "missing package manifest"
 [ -f "$PACKAGE_DIR/install-changelog.sh" ] || die "missing package changelog installer"
+# Resolve overlays before Docker calls or backup creation. Never evaluate paths
+# or source .env; spaces and shell metacharacters must remain literal argv.
+overlay_args=()
+publisher_args=()
+for file in "${COMPOSE_FILES[@]+"${COMPOSE_FILES[@]}"}"; do
+  case "$file" in *$'\n'*|*$'\r'*) die "compose overlay path must be single-line" ;; esac
+  case "$file" in /*) ;; *) file="$DEPLOYMENT_DIR/$file" ;; esac
+  [ -f "$file" ] && [ -r "$file" ] || die "compose overlay is missing or unreadable: $file"
+  file="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+  [ "$file" != "$DEPLOYMENT_DIR/docker-compose.selfhost.yml" ] && [ "$file" != "$PACKAGE_DIR/docker-compose.selfhost.yml" ] || die "--compose-file accepts overlays, not the main compose file"
+  overlay_args+=(-f "$file")
+  publisher_args+=(--compose-file "$file")
+done
 command -v docker >/dev/null 2>&1 || die "docker is required"
 docker compose version >/dev/null 2>&1 || die "Docker Compose plugin is required"
 
@@ -108,7 +130,7 @@ IMAGE_TAG="${IMAGE_TAG:-${default_backend_image##*:}}"
 if [ -z "$BACKUP_DIR" ]; then
   BACKUP_DIR="$DEPLOYMENT_DIR/backups/$(date +%Y%m%d-%H%M%S)"
 fi
-mkdir -p "$BACKUP_DIR"
+[ ! -e "$BACKUP_DIR/database.sql" ] || die "backup already exists; choose a new --backup-dir"
 
 echo "Package:   $(sed -n 's/^version:[[:space:]]*//p' "$PACKAGE_DIR/MANIFEST.txt" | head -1)"
 echo "Platform:  $manifest_platform"
@@ -128,6 +150,9 @@ if [ "$ASSUME_YES" -ne 1 ]; then
   esac
 fi
 
+compose=(docker compose --project-directory "$DEPLOYMENT_DIR" --env-file "$DEPLOYMENT_DIR/.env" -f "$PACKAGE_DIR/docker-compose.selfhost.yml" "${overlay_args[@]+"${overlay_args[@]}"}")
+target_compose_json="$(MULTICA_BACKEND_IMAGE="$BACKEND_IMAGE" MULTICA_WEB_IMAGE="$WEB_IMAGE" MULTICA_IMAGE_TAG="$IMAGE_TAG" "${compose[@]}" config --format json)"
+
 echo "==> Checking image archive checksum"
 expected_sha="$(sed -n 's/^  sha256:[[:space:]]*//p' "$PACKAGE_DIR/MANIFEST.txt" | head -1)"
 if command -v sha256sum >/dev/null 2>&1; then
@@ -143,18 +168,65 @@ fi
 echo "==> Loading images"
 docker load -i "$PACKAGE_DIR/multica-images.tar.gz"
 
-compose=(docker compose --project-directory "$DEPLOYMENT_DIR" --env-file "$DEPLOYMENT_DIR/.env" -f "$PACKAGE_DIR/docker-compose.selfhost.yml")
+# A literal overlay image defeats environment interpolation. Validate the exact
+# service/image mapping before any backup or deployment write. Service-filtered
+# `config --images` includes dependencies and cannot prove this mapping.
+printf '%s' "$target_compose_json" | docker run --rm -i --pull never --network none \
+  --entrypoint node --user "$(id -u):$(id -g)" "$WEB_IMAGE:$IMAGE_TAG" -e '
+let input = "";
+process.stdin.setEncoding("utf8");
+process.stdin.on("data", (chunk) => {
+  input += chunk;
+  if (input.length > 2 * 1024 * 1024) process.exit(1);
+});
+process.stdin.on("end", () => {
+  try {
+    const services = JSON.parse(input).services;
+    for (const [name, expected] of [["backend", process.argv[1]], ["frontend", process.argv[2]]]) {
+      if (services?.[name]?.image !== expected) throw new Error(name + " image does not match selected upgrade; remove or adjust the overlay image setting");
+    }
+  } catch (error) {
+    console.error("ERROR: " + (error instanceof SyntaxError ? "invalid Compose JSON" : error.message));
+    process.exitCode = 1;
+  }
+});
+' "$BACKEND_IMAGE:$IMAGE_TAG" "$WEB_IMAGE:$IMAGE_TAG"
 
+mkdir -p "$BACKUP_DIR"
 echo "==> Backing up PostgreSQL to $BACKUP_DIR/database.sql"
 "${compose[@]}" exec -T postgres \
   sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB"' \
   >"$BACKUP_DIR/database.sql"
 
-cp "$DEPLOYMENT_DIR/.env" "$BACKUP_DIR/.env"
+cp -p "$DEPLOYMENT_DIR/.env" "$BACKUP_DIR/.env"
+for file in docker-compose.selfhost.yml compose-command.txt; do
+  if [ -f "$DEPLOYMENT_DIR/$file" ]; then
+    cp -p "$DEPLOYMENT_DIR/$file" "$BACKUP_DIR/$file"
+  fi
+done
+for ((i = 0; i < ${#overlay_args[@]}; i += 2)); do
+  cp -p "${overlay_args[i + 1]}" "$BACKUP_DIR/compose-overlay-$((i / 2 + 1)).yml"
+done
+
+# Stage deployment files before publication; rename only after the feed/env
+# writer succeeds. These files and the database are not one transaction.
+staged_compose="$(mktemp "$DEPLOYMENT_DIR/.compose-upgrade.XXXXXX")"
+staged_command=""
+trap 'rm -f "$staged_compose" "$staged_command"' EXIT
+cp "$PACKAGE_DIR/docker-compose.selfhost.yml" "$staged_compose"
+chmod 0644 "$staged_compose"
+runtime_compose=(docker compose --project-directory "$DEPLOYMENT_DIR" --env-file "$DEPLOYMENT_DIR/.env" -f "$DEPLOYMENT_DIR/docker-compose.selfhost.yml" "${overlay_args[@]+"${overlay_args[@]}"}")
+staged_command="$(mktemp "$DEPLOYMENT_DIR/.compose-command.XXXXXX")"
+printf '%q ' "${runtime_compose[@]}" >"$staged_command"
+printf '\n' >>"$staged_command"
 
 echo "==> Installing the cumulative changelog and saving selected runtime images"
 bash "$PACKAGE_DIR/install-changelog.sh" --deployment-dir "$DEPLOYMENT_DIR" \
-  --web-image "$WEB_IMAGE:$IMAGE_TAG" --backend-image "$BACKEND_IMAGE" --image-tag "$IMAGE_TAG"
+  --web-image "$WEB_IMAGE:$IMAGE_TAG" --backend-image "$BACKEND_IMAGE" --image-tag "$IMAGE_TAG" "${publisher_args[@]+"${publisher_args[@]}"}"
+
+mv -f "$staged_compose" "$DEPLOYMENT_DIR/docker-compose.selfhost.yml"
+mv -f "$staged_command" "$DEPLOYMENT_DIR/compose-command.txt"
+compose=("${runtime_compose[@]}")
 
 echo "==> Starting the upgraded services"
 if ! MULTICA_BACKEND_IMAGE="$BACKEND_IMAGE" \
@@ -187,3 +259,4 @@ echo ""
 echo "✓ Upgrade completed"
 echo "  health:  http://127.0.0.1:$backend_port/healthz"
 echo "  backup:  $BACKUP_DIR"
+echo "  compose: $DEPLOYMENT_DIR/compose-command.txt (append a Compose command; preserve every -f overlay)"

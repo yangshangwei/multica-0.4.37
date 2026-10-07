@@ -11,6 +11,10 @@ on:
         description: Include installed business flows, retained-state upgrade and updater acceptance
         type: boolean
         default: false
+      candidate_version:
+        description: Windows acceptance version (optional SemVer; empty keeps the unique RC default)
+        type: string
+        default: ""
       previous_tag:
         description: Same-repository stable release used for the Windows x64 upgrade test
         type: string
@@ -115,7 +119,7 @@ jobs:
     timeout-minutes: 45
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
-      MULTICA_DESKTOP_VERSION: "0.5.3-rc.${{ github.run_number }}.${{ github.run_attempt }}"
+      MULTICA_DESKTOP_VERSION: ${{ inputs.candidate_version || format('0.5.3-rc.{0}.{1}', github.run_number, github.run_attempt) }}
       PREVIOUS_TAG: ${{ inputs.previous_tag }}
       REQUIRE_SIGNED: ${{ inputs.require_signed }}
       BUSINESS_ACCEPTANCE: ${{ inputs.windows_business_acceptance }}
@@ -139,9 +143,18 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Validate candidate version
+        working-directory: apps/desktop
+        shell: pwsh
+        run: |
+          $version = node --input-type=module -e 'import { desktopVersionOverride } from "./scripts/package.mjs"; const version = desktopVersionOverride(); if (!version) process.exit(1); process.stdout.write(version);'
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($version)) { throw 'Invalid candidate version' }
+          "MULTICA_DESKTOP_VERSION=$version" >> $env:GITHUB_ENV
       - name: Validate acceptance scripts
         shell: pwsh
         run: |
+          node --test scripts/windows-candidate-version.test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate version tests failed' }
           ./apps/desktop/scripts/accept-windows-installer.test.ps1
           ./apps/desktop/scripts/windows-update-acceptance.test.ps1
           $tokens = $null; $parseErrors = $null

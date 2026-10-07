@@ -8,6 +8,7 @@ WEB_IMAGE=""
 BACKEND_IMAGE=""
 IMAGE_TAG=""
 CONFIGURE_IMAGES=0
+COMPOSE_FILES=()
 die() { echo "ERROR: $*" >&2; exit 1; }
 
 # Docker parses each --mount argument as CSV after shell argv parsing. Quote
@@ -24,8 +25,9 @@ while [ $# -gt 0 ]; do
     --web-image) [ $# -ge 2 ] || die "--web-image needs a value"; WEB_IMAGE="$2"; shift 2 ;;
     --backend-image) [ $# -ge 2 ] || die "--backend-image needs a value"; BACKEND_IMAGE="$2"; CONFIGURE_IMAGES=1; shift 2 ;;
     --image-tag) [ $# -ge 2 ] || die "--image-tag needs a value"; IMAGE_TAG="$2"; CONFIGURE_IMAGES=1; shift 2 ;;
+    --compose-file) [ $# -ge 2 ] || die "--compose-file needs a path"; COMPOSE_FILES+=("$2"); shift 2 ;;
     -h|--help)
-      echo "Usage: install-changelog.sh --deployment-dir DIR [--web-image loaded-image:tag] [--backend-image repository --image-tag tag]"
+      echo "Usage: install-changelog.sh --deployment-dir DIR [--web-image loaded-image:tag] [--backend-image repository --image-tag tag] [--compose-file overlay.yml ...]"
       echo "Validate/install the feed and persist its directory in the deployment .env. Docker and Compose are required; host Node is not."
       echo "Providing backend-image and image-tag also saves the selected backend/frontend images for subsequent Compose runs."
       exit 0 ;;
@@ -54,7 +56,13 @@ fi
 
 # Compose resolves dotenv escaping and precedence; never execute an operator's
 # .env as shell code. Keep its project directory independent of package location.
-compose_json="$(docker compose --project-directory "$DEPLOYMENT_DIR" --env-file "$DEPLOYMENT_DIR/.env" -f "$PACKAGE_DIR/docker-compose.selfhost.yml" config --format json)"
+compose=(docker compose --project-directory "$DEPLOYMENT_DIR" --env-file "$DEPLOYMENT_DIR/.env" -f "$PACKAGE_DIR/docker-compose.selfhost.yml")
+for file in "${COMPOSE_FILES[@]+"${COMPOSE_FILES[@]}"}"; do
+  case "$file" in /*) ;; *) file="$DEPLOYMENT_DIR/$file" ;; esac
+  [ -f "$file" ] && [ -r "$file" ] || die "compose overlay is missing or unreadable: $file"
+  compose+=(-f "$file")
+done
+compose_json="$("${compose[@]}" config --format json)"
 # Validate structured values before any mkdir or bind mount. Line-oriented
 # `config --environment` output loses embedded/trailing newlines in paths.
 # This first container reads only stdin and needs neither host Node nor mounts.

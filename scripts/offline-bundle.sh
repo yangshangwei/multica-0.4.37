@@ -189,6 +189,7 @@ docker save --platform "$PLATFORM" "$BACKEND_IMAGE" "$WEB_IMAGE" "$DB_IMAGE" | g
 
 echo "==> Staging compose file and env template..."
 cp "$COMPOSE_FILE" "$OUT_DIR/"
+cp docker-compose.resource-publishing.yml "$OUT_DIR/"
 cp .env.example "$OUT_DIR/"
 
 # Stage an empty skill-templates directory so the compose read-only mount lands
@@ -212,7 +213,12 @@ SKILLDOC
 
 # Ship an empty deployment catalog, never the build host's local MCP recipes.
 mkdir -p "$OUT_DIR/mcp-templates" "$OUT_DIR/docs"
-cp docs/mcp-catalog-publishing.md "$OUT_DIR/docs/"
+for guide in mcp-catalog-publishing.md mcp-intranet-setup.md admin-resource-publishing.zh-CN.md; do
+  cp "docs/$guide" "$OUT_DIR/docs/"
+  # README.md and the upgrade guide live at the archive root. Keep their
+  # sibling-document links valid as well as the catalog README's docs/ links.
+  cp "docs/$guide" "$OUT_DIR/"
+done
 cat >"$OUT_DIR/mcp-templates/README.txt" <<'MCPDOC'
 Drop one folder per deployment MCP template here, each holding an mcp.json:
 

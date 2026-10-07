@@ -8,6 +8,20 @@ import { scratch, scripts, seed } from "./changelog-test-helpers.mjs";
 
 const composeAvailable = spawnSync("docker", ["compose", "version"], { encoding: "utf8" }).status === 0;
 
+test("self-host configuration preserves rollout defaults and forwards explicit administration settings", { skip: !composeAvailable }, () => {
+  const defaults = { FF_PROJECTS_P1: "true", FF_ITERATIONS_I1: "false", MULTICA_PLATFORM_ADMIN_ENABLED: "false", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "false", MULTICA_DEPLOYMENT_ID: "" };
+  for (const settings of [defaults, { ...defaults, FF_PROJECTS_P1: "false", FF_ITERATIONS_I1: "true", MULTICA_PLATFORM_ADMIN_ENABLED: "true", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "true", MULTICA_DEPLOYMENT_ID: "00000000-0000-4000-8000-000000000001" }]) {
+    const env = { ...process.env, JWT_SECRET: "fixture-secret" };
+    for (const name of Object.keys(defaults)) delete env[name];
+    if (settings !== defaults) Object.assign(env, settings);
+    const result = spawnSync("docker", ["compose", "--env-file", "/dev/null", "-f", resolve(scripts, "../docker-compose.selfhost.yml"), "config", "--format", "json"], { env, encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    const actual = JSON.parse(result.stdout).services.backend.environment;
+    for (const [name, expected] of Object.entries(settings)) assert.equal(actual[name], expected, name);
+    assert.equal(actual.MULTICA_AUTH_MODE, env.MULTICA_AUTH_MODE || "legacy");
+  }
+});
+
 test("self-host builds stamp both images with the selected version and default to dev", { skip: !composeAvailable }, async (t) => {
   for (const version of [undefined, "v0.4.45"]) {
     await t.test(version ?? "default dev", () => {
@@ -46,12 +60,14 @@ function fixture(t) {
   for (const name of ["offline-bundle.sh", "build-offline-upgrade.sh", "offline-upgrade.sh", "changelog-lib.mjs", "publish-changelog.mjs", "install-changelog.sh", "install-changelog.mjs"]) {
     cpSync(join(scripts, name), join(cwd, "scripts", name));
   }
-  for (const name of ["docker-compose.selfhost.yml", "docker-compose.selfhost.build.yml", ".env.example"]) {
+  for (const name of ["docker-compose.selfhost.yml", "docker-compose.selfhost.build.yml", "docker-compose.resource-publishing.yml", ".env.example"]) {
     cpSync(resolve(scripts, "..", name), join(cwd, name));
   }
   writeFileSync(join(cwd, "server/internal/changelog/content/changelog.json"), JSON.stringify(seed(), null, 2) + "\n");
   writeFileSync(join(cwd, "docs/offline-upgrade.zh-CN.md"), "Fixture upgrade guide\n");
   cpSync(resolve(scripts, "../docs/mcp-catalog-publishing.md"), join(cwd, "docs/mcp-catalog-publishing.md"));
+  cpSync(resolve(scripts, "../docs/admin-resource-publishing.zh-CN.md"), join(cwd, "docs/admin-resource-publishing.zh-CN.md"));
+  cpSync(resolve(scripts, "../docs/mcp-intranet-setup.md"), join(cwd, "docs/mcp-intranet-setup.md"));
   writeFileSync(join(cwd, ".env"), "VERSION=v0.0.1\nJWT_SECRET=private-build-host-secret\n");
   // Stub only Docker's external build/pull/save boundary. Return deliberately
   // unordered image names, as Compose does, and record no runtime secrets.

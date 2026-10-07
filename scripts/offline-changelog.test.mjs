@@ -20,10 +20,12 @@ function offlineFixture(t, directory) {
     const source = join(scripts, name);
     if (existsSync(source)) cpSync(source, join(cwd, "scripts", name));
   }
-  for (const name of ["docker-compose.selfhost.yml", "docker-compose.selfhost.build.yml", ".env.example"]) cpSync(resolve(scripts, "..", name), join(cwd, name));
+  for (const name of ["docker-compose.selfhost.yml", "docker-compose.selfhost.build.yml", "docker-compose.resource-publishing.yml", ".env.example"]) cpSync(resolve(scripts, "..", name), join(cwd, name));
   writeFileSync(join(cwd, "server/internal/changelog/content/changelog.json"), JSON.stringify(seed(), null, 2) + "\n");
-  writeFileSync(join(cwd, "docs/offline-upgrade.zh-CN.md"), "Offline fixture upgrade guide\n");
+  cpSync(resolve(scripts, "../docs/offline-upgrade.zh-CN.md"), join(cwd, "docs/offline-upgrade.zh-CN.md"));
   cpSync(resolve(scripts, "../docs/mcp-catalog-publishing.md"), join(cwd, "docs/mcp-catalog-publishing.md"));
+  cpSync(resolve(scripts, "../docs/admin-resource-publishing.zh-CN.md"), join(cwd, "docs/admin-resource-publishing.zh-CN.md"));
+  cpSync(resolve(scripts, "../docs/mcp-intranet-setup.md"), join(cwd, "docs/mcp-intranet-setup.md"));
   const fake = join(cwd, "bin/docker");
   writeFileSync(fake, `#!${process.execPath}
 import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
@@ -36,7 +38,7 @@ else if (args[0] === 'run') {
   if (!args.includes('--pull') || args[args.indexOf('--pull') + 1] !== 'never') process.exit(40);
   if (!args.includes('--entrypoint') || args[args.indexOf('--entrypoint') + 1] !== 'node') process.exit(41);
   if (!args.includes('--user')) process.exit(42);
-  if (process.env.FAIL_CONTAINER === '1') process.exit(43);
+  if (process.env.FAIL_CONTAINER === '1' && args.includes('--mount')) process.exit(43);
   const mounts = args.flatMap((arg, index) => {
     if (arg !== '--mount') return [];
     const spec = args[index + 1];
@@ -58,6 +60,9 @@ else if (args[0] === 'run') {
 } else if (args[0] === 'compose' && args.includes('config') && args.includes('--images')) {
   const version = process.env.VERSION || 'dev';
   process.stdout.write(['multica-backend:' + version, 'multica-web:' + version, 'pgvector/pgvector:pg17'].join('\\n') + '\\n');
+} else if (args[0] === 'compose' && args.includes('config') && process.env.REAL_COMPOSE_BINARY) {
+  const child = spawnSync(process.env.REAL_COMPOSE_BINARY, args, { stdio: 'inherit', env: process.env });
+  process.exit(child.status ?? 1);
 } else if (args[0] === 'compose' && args.includes('config')) {
   const env = readFileSync(args[args.indexOf('--env-file') + 1], 'utf8');
   const values = {};
@@ -69,7 +74,7 @@ else if (args[0] === 'run') {
     values[key] = value;
   }
   const source = resolve(args[args.indexOf('--project-directory') + 1], values.CHANGELOG_DIRECTORY || './changelog').replace(/\\$/g, () => '$$');
-  process.stdout.write(JSON.stringify({ services: { backend: { environment: { CHANGELOG_FILE: values.CHANGELOG_FILE }, volumes: [{ type: 'bind', source, target: '/app/data/changelog' }] } } }));
+  process.stdout.write(JSON.stringify({ services: { backend: { image: (process.env.MULTICA_BACKEND_IMAGE || 'multica-backend') + ':' + (process.env.MULTICA_IMAGE_TAG || 'dev'), environment: { CHANGELOG_FILE: values.CHANGELOG_FILE }, volumes: [{ type: 'bind', source, target: '/app/data/changelog' }] }, frontend: { image: (process.env.MULTICA_WEB_IMAGE || 'multica-web') + ':' + (process.env.MULTICA_IMAGE_TAG || 'dev') } } }));
 } else if (args[0] === 'compose' && args.includes('port')) process.stdout.write('127.0.0.1:8080\\n');
 else if (args[0] === 'compose' && args.includes('exec')) process.stdout.write('fixture database dump\\n');
 else if (args[0] === 'compose' && args.includes('up') && process.env.FAIL_UP === '1') process.exit(46);
@@ -105,7 +110,7 @@ test("offline bundle carries exact feed and every publisher helper, then install
   const output = join(fixture.cwd, "bundle");
   const built = bash(fixture.cwd, fixture.env, "scripts/offline-bundle.sh", "--output", output, "--platform", "linux/amd64");
   assert.equal(built.status, 0, built.stderr);
-  for (const path of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/publish-changelog.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(existsSync(join(output, path)), `bundle missing ${path}`);
+  for (const path of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/publish-changelog.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docker-compose.resource-publishing.yml", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(existsSync(join(output, path)), `bundle missing ${path}`);
   assert.equal(readFileSync(fixture.env.DOCKER_LOG + ".embedded", "utf8"), readFileSync(join(output, "changelog/changelog.json"), "utf8"));
   assert.deepEqual(readdirSync(join(fixture.cwd, ".changelog-build")), [], "own Docker context staging is cleaned");
   const deployment = join(fixture.cwd, "deployment");
@@ -132,8 +137,17 @@ test("upgrade archive includes publication tools and upgrade performs the handof
   assert.equal(built.status, 0, built.stderr);
   const archive = readdirSync(join(fixture.cwd, "upgrade")).find((name) => name.endsWith(".tar.gz"));
   const listing = spawnSync("tar", ["-tzf", join(fixture.cwd, "upgrade", archive)], { encoding: "utf8" });
-  for (const file of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(listing.stdout.includes(file), `archive omitted ${file}`);
+  for (const file of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docker-compose.resource-publishing.yml", "admin-resource-publishing.zh-CN.md", "mcp-catalog-publishing.md", "mcp-intranet-setup.md", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(listing.stdout.includes(file), `archive omitted ${file}`);
   const packageDir = join(fixture.cwd, "upgrade", archive.slice(0, -7));
+  for (const file of ["README.md", "操作文档.md", "admin-resource-publishing.zh-CN.md", "mcp-catalog-publishing.md", "mcp-intranet-setup.md", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md"]) {
+    const content = readFileSync(join(packageDir, file), "utf8");
+    if (file === "README.md" || file === "操作文档.md") assert.equal(content, readFileSync(join(fixture.cwd, "docs/offline-upgrade.zh-CN.md"), "utf8"));
+    for (const match of content.matchAll(/\]\(([^)]+)\)/g)) {
+      const target = match[1].split("#")[0];
+      if (!target || /^[a-z]+:/i.test(target)) continue;
+      assert.ok(existsSync(resolve(packageDir, dirname(file), target)), `${file} has a broken packaged link: ${target}`);
+    }
+  }
   const deployment = join(fixture.cwd, "deployment");
   mkdirSync(deployment);
   const originalEnv = "JWT_SECRET=preserve-secret\nOTHER_KEY=preserve-value\nCHANGELOG_DIRECTORY=custom-feed\n";
@@ -178,21 +192,108 @@ test("upgraded deployments retain exact image selection in later Compose invocat
   }
 });
 
+test("upgrade retains the new main Compose and the ordered overlay command without changing operator files", { skip: !composeAvailable }, (t) => {
+  const f = upgradeFixture(t);
+  const main = join(f.deployment, "docker-compose.selfhost.yml");
+  const previous = readFileSync(main, "utf8") + "\n# previous deployment configuration\n";
+  writeFileSync(main, previous);
+  const overlays = [join(f.deployment, "resource publishing.yml"), join(f.deployment, "operator's $settings.yml")];
+  cpSync(resolve(scripts, "../docker-compose.resource-publishing.yml"), overlays[0]);
+  const override = "services:\n  backend:\n    environment:\n      FF_ITERATIONS_I1: 'true'\n    volumes:\n      - ./overlay-feed:/app/data/changelog:ro\n";
+  writeFileSync(overlays[1], override);
+  f.withoutNode.REAL_COMPOSE_BINARY = spawnSync("which", ["docker"], { encoding: "utf8" }).stdout.trim();
+  const result = bash(f.packageDir, f.withoutNode, "offline-upgrade.sh", "--deployment-dir", f.deployment, "--backup-dir", f.backup, "--yes", "--compose-file", "resource publishing.yml", "--compose-file", overlays[1]);
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(readFileSync(main, "utf8"), readFileSync(join(f.packageDir, "docker-compose.selfhost.yml"), "utf8"));
+  assert.equal(readFileSync(join(f.backup, "docker-compose.selfhost.yml"), "utf8"), previous);
+  assert.equal(readFileSync(overlays[1], "utf8"), override);
+  assert.equal(readFileSync(join(f.backup, "compose-overlay-2.yml"), "utf8"), override);
+  assert.ok(existsSync(join(f.deployment, "overlay-feed/changelog.json")), "publisher uses the overlay's actual mount");
+  assert.equal(existsSync(join(f.deployment, "custom-feed/changelog.json")), false);
+  const calls = readFileSync(f.env.DOCKER_LOG, "utf8").trim().split("\n").map(JSON.parse);
+  for (const args of calls.filter((args) => args[0] === "compose" && (args.includes("exec") || args.includes("up") || (args.includes("config") && !args.includes("--images"))))) {
+    const files = args.flatMap((value, index) => value === "-f" ? [args[index + 1]] : []);
+    assert.deepEqual(files.slice(1), overlays, JSON.stringify(args));
+  }
+  const command = readFileSync(join(f.deployment, "compose-command.txt"), "utf8");
+  // Execute the saved, quoted command through real Compose parsing; no daemon
+  // access. Spaces, dollar signs and apostrophes in paths must remain literal.
+  const parsed = spawnSync("/bin/bash", ["-c", command.trim() + " config --format json"], { env: { ...process.env, JWT_SECRET: "fixture-secret" }, encoding: "utf8" });
+  assert.equal(parsed.status, 0, parsed.stderr);
+  const backend = JSON.parse(parsed.stdout).services.backend;
+  assert.equal(backend.environment.FF_ITERATIONS_I1, "true");
+  assert.equal(backend.environment.MULTICA_RESOURCE_PUBLISH_DIR, "/app/data/resources");
+  assert.ok(backend.volumes.some((volume) => volume.target === "/app/data/resources"));
+});
+
+test("missing overlays fail before image loading, backups or deployment mutation", (t) => {
+  const f = upgradeFixture(t);
+  const main = readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8");
+  const before = readFileSync(f.env.DOCKER_LOG, "utf8");
+  const result = bash(f.packageDir, f.withoutNode, "offline-upgrade.sh", "--deployment-dir", f.deployment, "--backup-dir", f.backup, "--compose-file", "missing.yml", "--yes");
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /compose overlay.*(missing|readable)/i);
+  assert.equal(readFileSync(f.env.DOCKER_LOG, "utf8"), before);
+  assert.equal(readFileSync(join(f.deployment, ".env"), "utf8"), f.originalEnv);
+  assert.equal(readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8"), main);
+  assert.equal(existsSync(f.backup), false);
+});
+
+test("upgrade rejects a pinned old image but accepts image interpolation from the selected release", { skip: !composeAvailable }, async (t) => {
+  for (const pinnedService of ["backend", "frontend", undefined]) {
+    await t.test(pinnedService ?? "target image interpolation", (t) => {
+      const f = upgradeFixture(t);
+      f.withoutNode.REAL_COMPOSE_BINARY = spawnSync("which", ["docker"], { encoding: "utf8" }).stdout.trim();
+      f.withoutNode.CHANGELOG_DIRECTORY = join(f.deployment, "custom-feed");
+      const overlay = join(f.deployment, "images.yml");
+      const backendImage = pinnedService === "backend" ? "multica-backend:v0.5.5" : "${MULTICA_BACKEND_IMAGE}:${MULTICA_IMAGE_TAG}";
+      const frontendImage = pinnedService === "frontend" ? "multica-web:v0.5.5" : "${MULTICA_WEB_IMAGE}:${MULTICA_IMAGE_TAG}";
+      writeFileSync(overlay, `services:\n  backend:\n    image: ${backendImage}\n  frontend:\n    image: ${frontendImage}\n`);
+      const originalCompose = readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8");
+      const logOffset = readFileSync(f.env.DOCKER_LOG, "utf8").length;
+      const result = bash(f.packageDir, f.withoutNode, "offline-upgrade.sh", "--deployment-dir", f.deployment, "--backup-dir", f.backup, "--compose-file", overlay, "--image-tag", "v0.6.0", "--yes");
+      const calls = readFileSync(f.env.DOCKER_LOG, "utf8").slice(logOffset).trim().split("\n").map(JSON.parse);
+      if (pinnedService) {
+        assert.notEqual(result.status, 0, "an old literal image must never count as a successful upgrade");
+        assert.match(result.stderr, new RegExp(`${pinnedService} image.*selected upgrade`));
+        assert.equal(readFileSync(join(f.deployment, ".env"), "utf8"), f.originalEnv);
+        assert.equal(readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8"), originalCompose);
+        assert.equal(existsSync(join(f.deployment, "compose-command.txt")), false);
+        assert.equal(existsSync(join(f.deployment, "custom-feed")), false);
+        assert.equal(existsSync(f.backup), false);
+        assert.equal(calls.some((args) => args[0] === "compose" && (args.includes("up") || args.includes("exec"))), false);
+        assert.equal(calls.some((args) => args.includes("--mount")), false, "validation must not mount writable deployment paths");
+      } else {
+        assert.equal(result.status, 0, result.stderr);
+        assert.match(readFileSync(join(f.deployment, ".env"), "utf8"), /^MULTICA_IMAGE_TAG=['"]?v0\.6\.0['"]?$/m);
+        assert.ok(calls.some((args) => args[0] === "compose" && args.includes("up")));
+      }
+    });
+  }
+});
+
 test("upgrade failures retain backups and never claim container or database rollback", async (t) => {
   for (const failure of ["FAIL_CONTAINER", "FAIL_UP", "FAIL_HEALTH"]) {
     await t.test(failure, (t) => {
       const f = upgradeFixture(t);
+      const oldCompose = readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8") + "\n# previous deployment\n";
+      writeFileSync(join(f.deployment, "docker-compose.selfhost.yml"), oldCompose);
       writeFileSync(join(f.cwd, "bin/curl"), "#!/bin/sh\n[ \"${FAIL_HEALTH:-0}\" != 1 ]\n", { mode: 0o755 });
       writeFileSync(join(f.cwd, "bin/sleep"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
       const result = bash(f.packageDir, { ...f.withoutNode, [failure]: "1" }, "offline-upgrade.sh", "--deployment-dir", f.deployment, "--backup-dir", f.backup, "--yes");
       assert.notEqual(result.status, 0);
       assert.equal(readFileSync(join(f.backup, ".env"), "utf8"), f.originalEnv);
+      assert.equal(readFileSync(join(f.backup, "docker-compose.selfhost.yml"), "utf8"), oldCompose);
       const current = readFileSync(join(f.deployment, ".env"), "utf8");
       const calls = readFileSync(f.env.DOCKER_LOG, "utf8").trim().split("\n").map(JSON.parse);
       if (failure === "FAIL_CONTAINER") {
         assert.equal(current, f.originalEnv);
+        assert.equal(readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8"), oldCompose);
+        assert.equal(existsSync(join(f.deployment, "compose-command.txt")), false);
         assert.equal(calls.some((args) => args[0] === "compose" && args.includes("up")), false);
       } else {
+        assert.equal(readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8"), readFileSync(join(f.packageDir, "docker-compose.selfhost.yml"), "utf8"));
+        assert.ok(existsSync(join(f.deployment, "compose-command.txt")));
         assert.match(current, /^MULTICA_IMAGE_TAG=["']?v0\.4\.45["']?$/m);
         assert.match(result.stderr, /upgrade is incomplete/);
         assert.match(result.stderr, /not rolled back/);

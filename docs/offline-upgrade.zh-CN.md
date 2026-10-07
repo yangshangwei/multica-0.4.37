@@ -2,7 +2,7 @@
 
 本文档适用于已经拿到 Multica 服务端离线升级包、且服务器不能访问公网的场景。
 
-如果本次只发布桌面安装包，使用[桌面端内网部署与升级操作手册](desktop-intranet-update-runbook.zh-CN.md)中的 `publish` 和 `verify`，无需执行这里的后端和数据库升级。一次交付同时包含服务端与桌面端时，分别按两份手册完成验收；先根据该版本兼容性要求安排升级顺序，再开放桌面更新通道。下载服务健康不代表业务服务或客户端安装已经升级成功。
+如果本次只发布桌面安装包，使用桌面下载服务单独交付的《桌面端内网部署与升级操作手册》（`desktop-intranet-update-runbook.zh-CN.md`）中的 `publish` 和 `verify`，无需执行这里的后端和数据库升级。一次交付同时包含服务端与桌面端时，分别按两份手册完成验收；先根据该版本兼容性要求安排升级顺序，再开放桌面更新通道。下载服务健康不代表业务服务或客户端安装已经升级成功。
 
 升级包已经基于指定源码构建完成。内网服务器不需要源码、Node.js、pnpm 或 Go 工具链，只需要 Docker 和 Docker Compose。
 
@@ -15,6 +15,28 @@
 升级包也包含累计变更说明和发布工具。桌面端与 Web 的“帮助 → 变更说明”从本部署读取这些记录，不需要访问官网。发布器会复用已导入的前端镜像运行，使用 `--pull never`，目标机无需另装 Node。
 
 升级默认保留现有认证方式。需要在桌面端设备自动注册与用户名密码注册之间选择时，先阅读[第七节：认证方式配置与迁移](#authentication-mode)，再安排切换；仅安装新版桌面端不会改变服务端认证模式。
+
+## v0.6.0 升级范围
+
+本次交付为 Linux x86-64（`linux/amd64`）服务端升级包和 Windows x64 桌面安装器。fork 最近的完整二进制交付是 v0.5.5；v0.5.6 的 GitHub Release 只有变更说明，不能据此认定内网已经运行 v0.5.6。以现有容器镜像、`/health` 的版本和迁移记录确定起点。
+
+| 当前服务端 | 本次补齐的数据库迁移 | 需要核对的配置 |
+| --- | --- | --- |
+| v0.5.5 | 512—566：MCP 模板来源、分拣、项目 P1、迭代 I1 | MCP 目录、可选资源发布，以及下表的配置传入 |
+| v0.5.6 | 536—566：项目 P1、迭代 I1 | 项目/迭代开关，以及平台管理配置传入 |
+
+保持已有认证方式，不需要为了升级切换成密码登录。合并现有 `.env` 中的同名项，**不要用 `.env.example` 覆盖它，也不要复制示例密码或重新生成密钥**。本次主 Compose 补齐了以下变量的传入；原文件里已有值现在会真正进入后端，升级前应确认它们仍符合部署意图。
+
+| 配置 | 未设置时 | 操作要求 |
+| --- | --- | --- |
+| `FF_PROJECTS_P1` | `true` | 项目概览/进展默认可用；设 `false` 停止新进展写入并撤下入口，保留历史和描述版本校验 |
+| `FF_ITERATIONS_I1` | `false` | 迭代不自动启用，按第八节完成部署和工作空间两级启用 |
+| `MULTICA_PLATFORM_ADMIN_ENABLED` | `false` | 仅密码模式下按需启用；还需初始化超级管理员，工作空间管理员不自动拥有平台权限 |
+| `MULTICA_MANAGED_INSTALLATIONS_ENABLED` | `false` | 仅按需启用；要求密码模式和有效、固定的 `MULTICA_DEPLOYMENT_ID` UUID |
+| `MULTICA_DEPLOYMENT_ID` | 空 | 已有值必须保留，不能每次升级生成新的 UUID |
+| `MULTICA_ADMIN_*_RETENTION_DAYS` | 空 | 三项已声明的管理保留期现在可传入；只展示策略，不启用自动清理 |
+
+`JWT_SECRET`、数据库账号密码、各集成加密密钥、公开 URL、端口及客户端身份文件均须保留。Web 和 Windows Desktop 应配套更新：新版 Desktop 的浏览器登录需要新版 Web 返回一次性 `desktop_state`。先完成服务端/Web 升级与登录验收，再发布桌面更新。
 
 ## 一、把升级包传入服务器
 
@@ -31,6 +53,7 @@ uname -m
 假设当前部署目录是 `/opt/multica`：
 
 ```bash
+sha256sum -c multica-server-upgrade-v0.6.0-linux-amd64.tar.gz.sha256
 mkdir -p /opt/multica-upgrade
 tar -xzf multica-server-upgrade-*.tar.gz -C /opt/multica-upgrade --strip-components=1
 
@@ -40,17 +63,34 @@ cd /opt/multica-upgrade
   --yes
 ```
 
+脚本会用包内版本替换 `/opt/multica/docker-compose.selfhost.yml`，并备份原文件。**如果以前直接修改过主 Compose，先把自定义端口、挂载、环境变量等整理到持久化的覆盖文件中，再执行升级。** 不能依赖旧主文件里的定制内容自动合并。
+
+已有覆盖文件时，每次升级都按原顺序重复传入 `--compose-file`。相对路径以部署目录为基准；文件应保存在 `/opt/multica` 等持久目录，不要指向之后会删除的升级包目录。例如已经启用资源发布并另有本机配置：
+
+```bash
+./offline-upgrade.sh --deployment-dir /opt/multica \
+  --compose-file docker-compose.resource-publishing.yml \
+  --compose-file docker-compose.local.yml \
+  --yes
+```
+
+只传实际使用的文件，不要为普通升级启用资源发布。脚本在备份、变更说明解析和服务启动中沿用相同顺序；缺失文件会使升级停止。未列出的覆盖文件不会自动读取。
+
+覆盖文件不能把后端或前端 `image` 固定为旧版本。脚本会用本次选定镜像和全部覆盖文件解析 Compose，并在导入镜像后、写入备份或部署配置前校验两个服务的实际镜像。不匹配时停止，提示移除或调整覆盖文件中的 `image`；此时仅镜像已导入，原配置和运行服务未改变。可移除该覆盖项，或分别使用 `${MULTICA_BACKEND_IMAGE}:${MULTICA_IMAGE_TAG}`、`${MULTICA_WEB_IMAGE}:${MULTICA_IMAGE_TAG}` 跟随本次目标版本，再重新升级。
+
 脚本会依次：
 
 1. 检查升级包架构和镜像归档校验和；
-2. 导入后端、前端和 PostgreSQL 镜像；
+2. 导入后端、前端和 PostgreSQL 镜像，校验合并覆盖文件后的实际服务镜像与本次选定版本一致；
 3. 将当前 PostgreSQL 导出到 `/opt/multica/backups/<时间>/database.sql`；
-4. 备份当前 `.env`；
+4. 备份当前 `.env`、旧主 Compose、已有命令记录和本次传入的覆盖文件；
 5. 校验变更说明，在日志目录中原子替换 `changelog.json`，并保存日志路径和选定的镜像配置；
-6. 使用升级包中的 Compose 文件启动后端和前端；
+6. 保存新版主 Compose 和完整命令记录，再启动后端和前端；
 7. 等待 `/healthz` 返回成功。
 
 脚本更新 `/opt/multica/.env` 中的 `MULTICA_BACKEND_IMAGE`、`MULTICA_WEB_IMAGE`、`MULTICA_IMAGE_TAG`、`CHANGELOG_FILE` 和 `CHANGELOG_DIRECTORY`，保留其余设置、文件权限和 Docker 数据卷。镜像选择会持久保存，之后在部署目录直接执行 `docker compose -f docker-compose.selfhost.yml up -d --pull never` 仍会使用本次升级的版本，无需重新传入镜像环境变量。
+
+有覆盖文件时，后续 `config`、`logs`、`up` 和下文的重建命令都必须追加原顺序的每个 `-f`。`/opt/multica/compose-command.txt` 保存本次完整、供 Bash 使用的命令前缀，可核对后复制并追加子命令；它不自动执行，也不会让下一次升级自动选择覆盖文件。下文无覆盖文件的示例不应直接用于有覆盖文件的部署。
 
 默认日志目录为 `/opt/multica/changelog`；已配置目录会继续使用。Compose 挂载整个目录，容器内的日志路径为 `/app/data/changelog/changelog.json`。已有非空且不兼容的 `CHANGELOG_FILE` 会使升级停止，需先核对配置。
 
@@ -92,11 +132,13 @@ curl -fsS http://127.0.0.1:8080/healthz
 bash /opt/multica-upgrade/install-changelog.sh --deployment-dir /opt/multica
 ```
 
+如果使用了覆盖文件，此命令也要逐项追加 `--compose-file`，尤其是覆盖了变更说明挂载目录的部署。
+
 记录必须先通过现有内网交付方式到达服务器。不要直接编辑正在使用的 JSON，不要将单个文件以 bind mount 或 Kubernetes `subPath` 挂载。文件无效或不可读时，页面会保留最近可用内容并提示尚未同步；重新发布有效文件即可恢复。
 
 ## 四、失败处理
 
-配置写入阶段失败时，脚本不会开始重建服务；如果 `.env` 写入失败，发布器会尝试恢复此前的变更说明，并报告恢复失败的情况。原 `.env` 和数据库导出保留在备份目录。
+配置写入阶段失败时，脚本不会开始重建服务；如果 `.env` 写入失败，发布器会尝试恢复此前的变更说明，并报告恢复失败的情况。只有发布器成功后才替换主 Compose；文件替换失败时仍可能已有部分配置更新，应核对实际文件。原 `.env`、主 Compose 和数据库导出保留在备份目录。覆盖文件依传入顺序保存为 `compose-overlay-1.yml`、`compose-overlay-2.yml` 等，恢复时核对原路径和顺序。
 
 开始重建容器后，如果启动或健康检查失败，脚本会以非零状态退出，保留已保存的新版本镜像选择和变更说明。容器、数据库迁移与配置写入不是一个原子事务，脚本不会自动回退容器或数据库。此时可能已有部分服务更新，恢复前应检查实际运行状态与迁移结果。
 
@@ -115,18 +157,21 @@ docker compose -f docker-compose.selfhost.yml up -d --pull never backend fronten
 
 如果新版本已经执行了数据库结构迁移，单纯回退镜像可能不够，需要使用备份的 `database.sql` 恢复数据库。恢复前应先停止后端并确认备份文件和目标数据库，避免覆盖错误的数据库。
 
+v0.6.0 的 P1/I1 down migration 会拒绝删除已使用的数据：P1 的历史、进展、请求、通知、非默认版本或规划时区，以及 I1 的启用记录、任务归属或任何迭代历史，都可能阻止降级。关闭功能开关不会清空这些数据。生产环境优先向前修复；必须回退时先停止所有写入方，制定数据库及文件备份的一致恢复方案。不要手工删表、删迁移记录或删数据卷来绕过保护。并发索引迁移不能包在总事务中，失败后由同版本迁移工具重试，不要仅凭迁移记录或 `IF NOT EXISTS` 判断索引有效。
+
 ## 五、重要注意事项
 
 - 现有 `JWT_SECRET` 必须保持不变，否则已有登录会话会失效。
 - `POSTGRES_PASSWORD` 必须保持与现有 `.env` 一致。
 - 不要执行 `docker compose down -v`。
 - 附件不在 PostgreSQL dump 中；重要附件还需要单独备份 `backend_uploads` 数据卷。
+- 手工投放的 Skill/MCP 目录、使用中的覆盖文件也需备份；启用资源发布时同时备份整个 `managed_resources` 卷，不能只备份其中的索引或部分修订。
 - 后端和前端应尽量从同一源码提交构建，避免 API 与页面版本不匹配。
 - 内网完全无外网时，Agent 仍需要能够访问内网 LLM 网关，否则任务不会真正执行。
 
 ## 六、选择 Windows 桌面端架构
 
-桌面端的首次部署和每次发包操作，参见[桌面端内网部署与升级操作手册](desktop-intranet-update-runbook.zh-CN.md)。其中包含固定 `updates.env`、离线镜像导出脚本、产物收集发布、自动 HTTP 校验和客户端配置；设计依据见[桌面端内网升级方案](desktop-intranet-update-plan.zh-CN.md)。
+桌面端的首次部署和每次发包操作，按桌面下载服务单独交付的《桌面端内网部署与升级操作手册》执行。其中包含固定 `updates.env`、离线镜像导出脚本、产物收集发布、自动 HTTP 校验和客户端配置。服务端升级包本身不包含桌面下载服务。
 
 桌面端安装器单独提供，不在服务端升级归档中。按客户端架构选择文件：
 
@@ -211,7 +256,7 @@ MULTICA_PASSWORD_MIGRATION_DEADLINE=<完成绑定的截止时间，UTC RFC3339>
 ```bash
 docker compose --project-directory /opt/multica \
   --env-file /opt/multica/.env \
-  -f /opt/multica-upgrade/docker-compose.selfhost.yml \
+  -f /opt/multica/docker-compose.selfhost.yml \
   up -d --pull never --no-deps --force-recreate backend
 
 curl -fsS http://127.0.0.1:8080/healthz
@@ -238,3 +283,32 @@ curl -fsS http://127.0.0.1:8080/api/config
 - [ ] 使用 `scripts/build-offline-upgrade.sh` 或 `make offline-upgrade-bundle` 打包。脚本会把本文件复制为包内的 `README.md` 和 `操作文档.md`；解包确认两份均包含本节，而不是旧版说明。
 - [ ] 仅发布桌面安装包时，随交付说明附上本节或对应服务端升级手册，并明确桌面升级不会自行切换认证模式。
 - [ ] 记录切换前后 `/api/config`、实际登录验收和需要迁移的账号处理结果。迁移窗口使用本次部署确定的时间，不沿用过期示例。
+
+## 八、v0.6.0 可选功能配置
+
+### 8.1 项目与迭代
+
+P1 的项目概览和进展默认可用。I1 有两个独立条件，升级不会自动启用其中任意一个：
+
+1. 完成目标环境的升级验收后，维护人员在现有 `/opt/multica/.env` 中将 `FF_ITERATIONS_I1=false` 改为 `FF_ITERATIONS_I1=true`。不打算使用迭代时保持 `false`。
+2. 用本次保存的主 Compose 和全部覆盖文件重建后端：
+
+```bash
+docker compose --project-directory /opt/multica --env-file /opt/multica/.env \
+  -f /opt/multica/docker-compose.selfhost.yml \
+  up -d --pull never --no-deps --force-recreate backend
+curl -fsS http://127.0.0.1:8080/healthz
+```
+
+3. 由该工作空间的 owner/admin 在 Web 或桌面端进入迭代入口，明确启用工作空间迭代，再创建并检查一个测试迭代。部署开关打开不等于所有工作空间自动启用。普通成员和智能体不能代为启用。
+4. 用已登录账号检查该工作空间的 `GET /api/workspaces/{id}/iteration-capabilities`：部署开放后 `supported=true`，工作空间完成启用后 `enabled=true`。健康检查不能替代这个验收，也不能替代任务加入、开始和完成迭代的实际操作。
+
+应急将 `FF_ITERATIONS_I1` 改回 `false` 并重建后端会关闭部署能力，不执行数据库回退。`FF_PROJECTS_P1=false` 则只停止新项目进展入口/写入，已有进展历史和描述并发版本校验仍保留；旧 CLI 的无版本描述写入可能返回 428，须升级 CLI 并使用实际读到的版本号。
+
+### 8.2 MCP 模板与资源发布
+
+从 v0.5.5 升级后，主 Compose 默认把宿主 `${MCP_TEMPLATE_DIRECTORY:-./mcp-templates}` 只读挂到 `/app/data/mcp-templates`。不使用部署模板时可以保持空目录。自定义宿主目录用 `MCP_TEMPLATE_DIRECTORY`；容器内的 `MULTICA_MCP_TEMPLATE_DIR` 保持默认路径。`MULTICA_MCP_TEMPLATE_ALLOW_HTTP=false` 默认拒绝明文 HTTP，仅在部署确实需要时改成 `true` 并重建后端。模板本身不要保存真实凭据。详见同包的 [MCP 目录发布规范](mcp-catalog-publishing.md) 和 [内网 MCP 准备说明](mcp-intranet-setup.md)。
+
+后台资源发布保持关闭，包内 `docker-compose.resource-publishing.yml` 仅供选择启用。已有密码模式且已初始化超级管理员、确实要启用时，将此文件保存到部署目录（已有文件先备份并核对，勿覆盖定制），然后在所有 Compose 命令中追加 `-f /opt/multica/docker-compose.resource-publishing.yml`，在以后升级时追加对应 `--compose-file`。它设置 `MULTICA_RESOURCE_PUBLISH_DIR=/app/data/resources` 并挂载专用 `managed_resources` 卷；只在 `.env` 设置目录不会创建挂载。详见同包的 [后台资源发布说明](admin-resource-publishing.zh-CN.md)。
+
+保留现有认证时，不要为了启用资源发布直接切换旧设备账号；需要切换的部署必须先完成第七节账号迁移。平台管理只开启开关还不够，需要用同一部署的数据库和配置初始化已有的完整密码账号，例如在后端容器中运行 `/app/server platform-admin bootstrap --user USER_UUID --reason "Initialize deployment administration"`，然后重新登录。部署管理开关和资源发布卷都不会在普通升级中自动打开。
