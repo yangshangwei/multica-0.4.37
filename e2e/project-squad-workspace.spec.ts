@@ -59,7 +59,7 @@ test("keeps project work visible with 1, 8 and 20 squads and persists explicit d
     const candidate = await api.createIssue("Review customer rollout checklist", { status: "backlog" }) as Issue;
     const otherProject = await api.requestJSON<Project>("/api/projects", { method: "POST", body: { title: "Other launch" } });
     const otherIssue = await api.createIssue("Review customer rollout elsewhere", { status: "backlog", project_id: otherProject.id }) as Issue;
-    const path = `/${slug}/projects/${project.id}`;
+    const path = `/${slug}/projects/${project.id}?section=issues`;
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(path);
     const summary = page.getByRole("region", { name: "Execution squads", exact: true });
@@ -165,7 +165,7 @@ test("keeps project work visible with 1, 8 and 20 squads and persists explicit d
           version: 0,
         }));
       }, { workspaceSlug: slug, projectId: otherProject.id, viewMode: mode });
-      await page.goto(`/${slug}/projects/${otherProject.id}`);
+      await page.goto(`/${slug}/projects/${otherProject.id}?section=issues`);
       await expect(page.getByRole("heading", { name: "Create your first issue", exact: true })).toBeVisible();
       await expect(page.locator("main").getByRole("button", { name: "New Issue", exact: true })).toHaveCount(1);
       await expectNoOverflow(page);

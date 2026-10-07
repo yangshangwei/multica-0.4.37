@@ -175,6 +175,7 @@ test.describe("workspace built-in defaults", () => {
 
       // The ordinary project empty-state action inherits the same default
       // squad; users do not have to discover the dedicated shortcut first.
+      await page.getByRole("button", { name: "Issues", exact: true }).click();
       await page.locator("main").getByRole("button", { name: "New Issue", exact: true }).click();
       const issueDialog = page.getByRole("dialog");
       await issueDialog.getByRole("textbox", { name: "Issue title", exact: true }).fill("Verify the starter workflow");
