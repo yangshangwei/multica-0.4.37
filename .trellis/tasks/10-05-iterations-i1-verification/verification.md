@@ -58,17 +58,19 @@
 
 | 提交 | 意图 | 文件 | 复用的验证 |
 | --- | --- | --- | --- |
-| `823a61774` test(handler) | 位置/快速创建测试自建runtime与授权agent，不再借用共享agent | 2 | [FCG修复](fcg-backend-fixture-regressions.md)窄race与handler全量race；完整基线handler PASS 202.745s |
-| `7cf0a1e6b` test(projects) | 风险分页fixture按游标ID顺序分配父子ID | 1 | `pagination-regression.log`（race `-count=20`）；完整基线 |
+| `823a61774` test(handler) | 位置/快速创建测试自建runtime与授权agent，不再借用共享agent | 2 | [FCG修复](fcg-backend-fixture-regressions.md)记录的窄race 2.431s与handler全量race 199.120s（其 `/tmp` 原始日志已过期）；完整基线handler PASS 202.745s |
+| `7cf0a1e6b` test(projects) | 风险分页fixture按游标ID顺序分配父子ID | 1 | `pagination-regression.log` 仅保留单次PASS 2.926s；race `-count=20` exit 0 只见于原开发会话 `01a1119c` 的命令记录；完整基线 |
 | `2055730f3` feat(iterations) | 关闭事务、outbox与撤权、历史priority/labels与标签写fence、迁移恢复测试；含DBTX `SendBatch` 的12个测试fake | 62 | 完整基线Go race/build/vet；最终history 15/21与迁移恢复2/4 race |
 | `59b20ed57` test(e2e) | P1两个spec显式进入Issues分区，断言不变 | 2 | 完整基线E2E 249通过／49跳过 |
-| `e516b15c2` feat(iterations) | 共享core/views、Web/Desktop接线、Mobile通知兼容、I1 E2E与Electron WS代理 | 106 | 完整基线TS/静态/E2E；[UI审查](ui-final-audit.md)views100；Mobile196；最终生产Web/Electron 4通过 |
+| `e516b15c2` feat(iterations) | 共享core/views、Web/Desktop接线、Mobile通知兼容、I1 E2E与Electron WS代理 | 106 | 完整基线TS/静态/E2E；[UI审查](ui-final-audit.md)views100；Mobile196（[移动兼容](mobile-final-compatibility.md)记录；保留的原始 `mobile-final.log` 是新增8项前的188）；最终生产Web/Electron 4通过 |
 
 源码对应：`e516b15c2` 的树与 `.omx/logs/i1-verification/final-check-inputs.json` 6,696个文件中6,694个逐字节一致。另两项均非代码漂移：`apps/web/next-env.d.ts` 是排除提交的生产构建路由路径切换；`scripts/uninstall-desktop-windows.bat` 仅因 `eol=crlf` 检出转换与清单不同，其blob自基线未变。
 
-本会话新增检查：两个仅含fixture的中间状态用 `go -overlay` 还原其余服务端改动后 `go vet` 通过（隐藏 `iteration_closure.go` 的负控制按预期失败）；已提交服务端树 `go vet ./...` 与56个Go文件 `gofmt -l` 通过；每批 `git diff --cached --check` 通过；13个复用日志SHA-256与记录一致。未重跑TS/Go/E2E套件，因为提交内容与已验收源码一致。唯一的文档改动是删除 `handoff-2026-10-06-cg.md` 末尾多余空行。
+本会话新增检查：两个仅含fixture的中间状态用 `go -overlay` 还原其余服务端改动后 `go vet` 退出码0（vet成功时日志为空；隐藏 `iteration_closure.go` 的负控制按预期失败）；已提交服务端树 `go vet ./...` 与56个Go文件 `gofmt -l` 通过；每批 `git diff --cached --check` 通过；13个复用日志SHA-256与记录一致。未重跑TS/Go/E2E套件，因为提交内容与已验收源码一致。除本节、任务记录和续接横幅外，对既有证据文件的唯一内容改动是删除 `handoff-2026-10-06-cg.md` 末尾多余空行，因此 `commit-handoff-snapshot.json` 中该文件的SHA `94ed90ac…` 是删除前的值。
 
-保留未暂存：`.agents/skills/`（46）、`.codex/`（8）、`.trellis/.template-hashes.json`、`apps/web/next-env.d.ts`、`browser-evidence/history-metadata-final.png`（无引用或清单身份）。记录这些提交的文档提交在 `e516b15c2` 之后，不自我记录SHA。未推送、未建PR、未合并、未部署；父任务与verification仍in_progress，VG仍 `local_passed_remote_ci_pending`。
+保留未暂存：`.agents/skills/`（46）、`.codex/`（8）、`.trellis/.template-hashes.json`、`apps/web/next-env.d.ts`、`browser-evidence/history-metadata-final.png`（无引用或清单身份）。文档提交为 `d51810dcc`（原开发会话提交）。未推送、未建PR、未合并、未部署；父任务与verification仍in_progress，VG仍 `local_passed_remote_ci_pending`。
+
+已提交说明的更正（不改写提交）：`2055730f3` 正文称SendBatch适配文件没有其他改动，但 `server/internal/service/iteration_lifecycle_test.go` 另加故障注入 `lifecycleFailBatch`，并把清理表扩到 `iteration_snapshot`/`iteration_notification`。`7cf0a1e6b` 的 `-count=20` 和 `e516b15c2` 的 Mobile 196 出处以上表为准。
 
 ## 文档与任务状态提交收尾
 
