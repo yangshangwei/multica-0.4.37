@@ -80,7 +80,16 @@ describe("Windows candidate acceptance workflow", () => {
     expect(defaultWorkflow).toContain("if: inputs.windows_acceptance != true");
   });
   it("uses one explicit candidate version for packaging and lifecycle checks", () => {
-    expect(job).toContain('MULTICA_DESKTOP_VERSION: "0.5.3-rc.${{ github.run_number }}.${{ github.run_attempt }}"');
+    // An operator-supplied candidate wins; otherwise each run gets a unique RC.
+    expect(workflow).toMatch(/^ {6}candidate_version:\n {8}description: .+\n {8}type: string\n {8}default: ""$/m);
+    expect(job).toContain("MULTICA_DESKTOP_VERSION: ${{ inputs.candidate_version || format('0.5.3-rc.{0}.{1}', github.run_number, github.run_attempt) }}");
+    // The value is SemVer-validated and normalized before anything is packaged.
+    const validate = job.indexOf("name: Validate candidate version");
+    expect(validate).toBeGreaterThan(-1);
+    expect(validate).toBeLessThan(job.indexOf("name: Package Windows x64 candidate"));
+    expect(job).toContain("desktopVersionOverride()");
+    expect(job).toContain('"MULTICA_DESKTOP_VERSION=$version" >> $env:GITHUB_ENV');
+    expect(job).toContain("node --test scripts/windows-candidate-version.test.mjs");
     expect(job).toContain('$version = $env:MULTICA_DESKTOP_VERSION');
     expect(job).not.toContain('const version = deriveVersion()');
   });
