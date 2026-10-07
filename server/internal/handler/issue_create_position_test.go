@@ -118,10 +118,10 @@ func TestAutopilotCreateIssuePositionBelowCurrentMinimum(t *testing.T) {
 	seedTitle := fmt.Sprintf("position-autopilot seed %d", time.Now().UnixNano())
 	autopilotIssueTitle := fmt.Sprintf("position-autopilot issue %d", time.Now().UnixNano())
 
-	var agentID string
-	if err := testPool.QueryRow(ctx, `SELECT id FROM agent WHERE workspace_id = $1 LIMIT 1`, testWorkspaceID).Scan(&agentID); err != nil {
-		t.Fatalf("load test agent: %v", err)
-	}
+	// Positioning is independent of other tests' private agents and grants.
+	// The caller owns this runtime and agent, satisfying real invocation checks.
+	runtimeID := dbfx.Runtime(t, "Position autopilot runtime")
+	agentID := dbfx.Agent(t, "Position autopilot agent", runtimeID)
 
 	w := httptest.NewRecorder()
 	req := newRequest("POST", "/api/issues?workspace_id="+testWorkspaceID, map[string]any{
