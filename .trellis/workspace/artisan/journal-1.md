@@ -1455,3 +1455,39 @@ Implemented server-directory MCP deployment catalog, source-aware persistence an
 ### Status
 
 [OK] **Completed**
+
+
+## Session 46: Close six security and consistency audit findings
+
+**Date**: 2026-10-07
+**Task**: Close six security and consistency audit findings
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Implemented R1–R6, independently reviewed and archived with executable regression evidence.
+
+### Main Changes
+
+- Native Desktop file boundary; human-only plugin bridge; fresh locked resource transactions; revision-bound iteration drafts and project-scoped overview lifetime.
+- Independent review repaired draft retention for HTTP 408/429; reused existing guards, transactions and command recovery without dependencies or migrations.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d5e193977cdcb1057db3e7a3045059392693d906` | (see git log) |
+| `5dd1abe527cb6370b3a54adc54beffce8617b97b` | (see git log) |
+| `2dff34698cfd10eb099630dc597475ab83001c86` | (see git log) |
+| `f883bb187336bc56c210423845ff5308e6967e57` | (see git log) |
+| `b9d7066dab7639d2a46a12174acce228023c243b` | (see git log) |
+
+### Testing
+
+- [OK] Root TS checkpoint: 876 files / 10245 tests; post-review affected suites: 51 tests; static tasks: 15 passed, existing warnings only.
+- [OK] Electron 39.8.7 native: 16/16 twice; relevant Go race suites and repository vet pass; 2 optional Redis checks skipped.
+- [OK] Disposable database removed after zero connections; native temporary profiles cleaned. Windows/Linux and packaging remain outside verification.
+
+### Status
+
+[OK] **Completed**
