@@ -1,0 +1,115 @@
+{
+  "baseline_commit": "bcdddf40894bb64ddd8b1afcbbabf258d8795b6c",
+  "scope": "R1–R6 remediation, separate from original report-only verification.json",
+  "typescript": {
+    "command": "pnpm exec turbo run test --filter='!@multica/mobile' --concurrency=2 -- --maxWorkers=2",
+    "result": "passed",
+    "files": 876,
+    "tests": 10245,
+    "packages": [
+      {
+        "package": "@multica/docs",
+        "files_passed": 9,
+        "tests_passed": 62
+      },
+      {
+        "package": "@multica/core",
+        "files_passed": 229,
+        "tests_passed": 2746
+      },
+      {
+        "package": "@multica/desktop",
+        "files_passed": 85,
+        "tests_passed": 962
+      },
+      {
+        "package": "@multica/web",
+        "files_passed": 36,
+        "tests_passed": 282
+      },
+      {
+        "package": "@multica/views",
+        "files_passed": 517,
+        "tests_passed": 6193
+      }
+    ],
+    "task_cache_hits": 1,
+    "note": "Broad run preceded independent-review 408/429 fix; final affected suites rerun separately."
+  },
+  "static": {
+    "command": "pnpm exec turbo run typecheck lint --filter='!@multica/mobile' --concurrency=2",
+    "result": "passed",
+    "tasks": 15,
+    "cache_hits": 10,
+    "lint_errors": 0,
+    "existing_lint_warnings": 30
+  },
+  "electron": {
+    "command": "node apps/desktop/scripts/verify-renderer-file-access.mjs",
+    "result": "passed",
+    "checks": 16,
+    "version": "39.8.7",
+    "platform": "macOS",
+    "independently_repeated": true
+  },
+  "go": {
+    "race": true,
+    "focused": {
+      "pass_events": 117,
+      "skip_events": 0,
+      "fail_events": 0
+    },
+    "handler_neighbors": {
+      "pass_events": 147,
+      "skip_events": 0,
+      "fail_events": 0
+    },
+    "router": {
+      "pass_events": 116,
+      "skip_events": 0,
+      "fail_events": 0
+    },
+    "service": {
+      "pass_events": 18,
+      "skip_events": 0,
+      "fail_events": 0
+    },
+    "middleware": {
+      "pass_events": 25,
+      "skip_events": 2,
+      "fail_events": 0
+    },
+    "vet": "passed",
+    "redis_skips": [
+      "TestAuth_PATCacheHit",
+      "TestPluginRateLimitIsPerCredentialAndUsesStableProblem"
+    ],
+    "note": "Counts include subtests and overlap across runs; not unique test totals."
+  },
+  "independent_review": {
+    "fix": "Retain draft on background HTTP 408/429",
+    "post_fix_related_tests": 51,
+    "views_typecheck": "passed",
+    "changed_file_lint": "passed with existing warnings",
+    "report": "research/final-review.md",
+    "unresolved_functional_findings": 0
+  },
+  "cleanup": {
+    "database": "audit_backend_a096cd642bf243da",
+    "result": "Dropped without FORCE after zero active connections; absence verified",
+    "electron_profiles": "Unique native harness directories removed by finally cleanup"
+  },
+  "limits": [
+    "No Windows/Linux or installer/ASAR native verification",
+    "webSecurity remains disabled; general origin isolation is outside this repair",
+    "Two unrelated optional Redis checks skipped; no shared Redis used",
+    "No deployment, release or remote push"
+  ],
+  "work_commits": [
+    "d5e193977cdcb1057db3e7a3045059392693d906",
+    "5dd1abe527cb6370b3a54adc54beffce8617b97b",
+    "2dff34698cfd10eb099630dc597475ab83001c86",
+    "f883bb187336bc56c210423845ff5308e6967e57",
+    "b9d7066dab7639d2a46a12174acce228023c243b"
+  ]
+}

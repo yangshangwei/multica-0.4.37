@@ -1,0 +1,1432 @@
+{
+  "electron": "39.8.7",
+  "chrome": "142.0.7444.265",
+  "results": [
+    {
+      "mode": "baseline",
+      "trusted": true,
+      "trustedChecks": [
+        "FAKE_ONLY_LOCAL_FILE_MARKER",
+        "TRUSTED_DYNAMIC_MODULE",
+        "IMAGE_LOADED",
+        {
+          "read": true,
+          "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+        }
+      ],
+      "cases": {
+        "direct": [
+          {
+            "probe": true,
+            "label": "direct",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "xhr": [
+          {
+            "probe": true,
+            "label": "xhr",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "file_script": [
+          {
+            "probe": true,
+            "label": "file-script",
+            "executed": true
+          }
+        ],
+        "nested_srcdoc": [
+          {
+            "probe": true,
+            "label": "nested-srcdoc",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "nested_data": [
+          {
+            "probe": true,
+            "label": "nested-data",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "nested_blob": [
+          {
+            "probe": true,
+            "label": "nested-blob",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "worker_blob": [
+          {
+            "probe": true,
+            "label": "worker-blob",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "worker_data": [
+          {
+            "probe": true,
+            "label": "worker-data",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "worker_file": [
+          {
+            "probe": true,
+            "label": "worker-file"
+          }
+        ],
+        "worker_http": [
+          {
+            "probe": true,
+            "label": "worker-http"
+          }
+        ],
+        "import_scripts": [
+          {
+            "probe": true,
+            "label": "import-scripts",
+            "importError": "NetworkError"
+          }
+        ],
+        "remove_meta": [
+          {
+            "probe": true,
+            "label": "remove-meta",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "document_open": [
+          {
+            "probe": true,
+            "label": "document-open",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "navigate_file": [
+          {
+            "probe": true,
+            "label": "file-navigation",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "navigate_data": [
+          {
+            "probe": true,
+            "label": "navigate-data",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "navigate_blob": [
+          {
+            "probe": true,
+            "label": "navigate-blob",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "navigate_http": [
+          {
+            "probe": true,
+            "label": "http-document",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "nested_http": [
+          {
+            "probe": true,
+            "label": "http-document",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "file_image": [
+          {
+            "probe": true,
+            "label": "file-image",
+            "pixels": [
+              255,
+              255,
+              255,
+              255
+            ]
+          }
+        ],
+        "file_style": [
+          {
+            "probe": true,
+            "label": "file-style",
+            "value": "LOADED"
+          }
+        ],
+        "file_css_import": [
+          {
+            "probe": true,
+            "label": "file-css-import",
+            "value": "LOADED"
+          }
+        ],
+        "file_object": [
+          {
+            "probe": true,
+            "label": "file-navigation",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "file_embed": [
+          {
+            "probe": true,
+            "label": "file-navigation",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "shared_worker": [
+          {
+            "probe": true,
+            "label": "shared-worker",
+            "error": "SecurityError"
+          }
+        ],
+        "delegated_parent": [
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "fetch",
+            "error": "SecurityError"
+          },
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "Function",
+            "error": "SecurityError"
+          },
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "document",
+            "error": "SecurityError"
+          }
+        ],
+        "frame_spoof": [
+          {
+            "probe": true,
+            "label": "frame-spoof",
+            "read": true,
+            "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+          }
+        ],
+        "parent_access": [
+          {
+            "probe": true,
+            "label": "parent-access",
+            "allowed": false
+          }
+        ],
+        "positive": [
+          {
+            "probe": true,
+            "label": "http-script",
+            "executed": true
+          },
+          {
+            "probe": true,
+            "label": "click",
+            "interactive": true
+          },
+          {
+            "probe": true,
+            "label": "http-fetch",
+            "value": "FAKE_HTTP_CONTROL"
+          }
+        ]
+      },
+      "requests": [
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+          "resourceType": "mainFrame",
+          "webContentsId": 1,
+          "frame": {
+            "url": "",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-asset.js",
+          "resourceType": "script",
+          "webContentsId": 1,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-module.mjs",
+          "resourceType": "script",
+          "webContentsId": 1,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-image.png",
+          "resourceType": "image",
+          "webContentsId": 1,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "direct",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "xhr",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_script",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-script.js",
+          "resourceType": "script",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "nested_srcdoc",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "nested_data",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "data:text/html;base64,PHNjcmlwdD5mZXRjaCgiZmlsZTovLy9Wb2x1bWVzL2FydGlzYW4vY29kZS8yMDI2L211bHRpY2EtMC40LjM3Ly50cmVsbGlzL3Rhc2tzLzEwLTA3LWF1ZGl0LXNlY3VyaXR5LWNvbnNpc3RlbmN5LWZpeGVzL3Jlc2VhcmNoL2Rlc2t0b3AtcHJvYmVzL2Zha2Utc2VjcmV0LnR4dCIpLnRoZW4ocj0+ci50ZXh0KCkpLnRoZW4odmFsdWU9PnRvcC5wb3N0TWVzc2FnZSh7cHJvYmU6dHJ1ZSxsYWJlbDoibmVzdGVkLWRhdGEiLHJlYWQ6dHJ1ZSx2YWx1ZX0sJyonKSkuY2F0Y2goZT0+dG9wLnBvc3RNZXNzYWdlKHtwcm9iZTp0cnVlLGxhYmVsOiJuZXN0ZWQtZGF0YSIscmVhZDpmYWxzZSxlcnJvcjplLm5hbWV9LCcqJykpPC9zY3JpcHQ+",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "nested_blob",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "blob:null/afc05b42-12d8-442f-9d49-797600fc857e",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "worker_blob",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "worker_data",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "worker_file",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-worker.js",
+          "resourceType": "script",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "import_scripts",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-worker.js",
+          "resourceType": "script",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "remove_meta",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "document_open",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "navigate_file",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+          "resourceType": "subFrame",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "navigate_file",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "navigate_data",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "data:text/html;base64,PHNjcmlwdD5mZXRjaCgiZmlsZTovLy9Wb2x1bWVzL2FydGlzYW4vY29kZS8yMDI2L211bHRpY2EtMC40LjM3Ly50cmVsbGlzL3Rhc2tzLzEwLTA3LWF1ZGl0LXNlY3VyaXR5LWNvbnNpc3RlbmN5LWZpeGVzL3Jlc2VhcmNoL2Rlc2t0b3AtcHJvYmVzL2Zha2Utc2VjcmV0LnR4dCIpLnRoZW4ocj0+ci50ZXh0KCkpLnRoZW4odmFsdWU9PnRvcC5wb3N0TWVzc2FnZSh7cHJvYmU6dHJ1ZSxsYWJlbDoibmF2aWdhdGUtZGF0YSIscmVhZDp0cnVlLHZhbHVlfSwnKicpKS5jYXRjaChlPT50b3AucG9zdE1lc3NhZ2Uoe3Byb2JlOnRydWUsbGFiZWw6Im5hdmlnYXRlLWRhdGEiLHJlYWQ6ZmFsc2UsZXJyb3I6ZS5uYW1lfSwnKicpKTwvc2NyaXB0Pg==",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "navigate_blob",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "blob:null/c1d59d96-6bb8-412f-b11a-4400cce4509b",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "navigate_http",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "http://127.0.0.1:65420/evil.html",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "nested_http",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "http://127.0.0.1:65420/evil.html",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_image",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-image.png",
+          "resourceType": "image",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_style",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-style.css",
+          "resourceType": "stylesheet",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_css_import",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-style.css",
+          "resourceType": "stylesheet",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_object",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+          "resourceType": "object",
+          "webContentsId": 1,
+          "frame": {
+            "url": "",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_object",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_embed",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+          "resourceType": "object",
+          "webContentsId": 1,
+          "frame": {
+            "url": "",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "file_embed",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "frame_spoof",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 1,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": false
+        }
+      ],
+      "consoleMessages": []
+    },
+    {
+      "mode": "wrapper-csp",
+      "trusted": true,
+      "trustedChecks": [
+        "FAKE_ONLY_LOCAL_FILE_MARKER",
+        "TRUSTED_DYNAMIC_MODULE",
+        "IMAGE_LOADED",
+        {
+          "read": true,
+          "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+        }
+      ],
+      "cases": {
+        "direct": [
+          {
+            "probe": true,
+            "label": "direct",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "xhr": [
+          {
+            "probe": true,
+            "label": "xhr",
+            "read": false
+          }
+        ],
+        "file_script": [],
+        "nested_srcdoc": [
+          {
+            "probe": true,
+            "label": "nested-srcdoc",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "nested_data": [],
+        "nested_blob": [],
+        "worker_blob": [
+          {
+            "probe": true,
+            "label": "worker-blob"
+          }
+        ],
+        "worker_data": [
+          {
+            "probe": true,
+            "label": "worker-data"
+          }
+        ],
+        "worker_file": [
+          {
+            "probe": true,
+            "label": "worker-file"
+          }
+        ],
+        "worker_http": [
+          {
+            "probe": true,
+            "label": "worker-http"
+          }
+        ],
+        "import_scripts": [
+          {
+            "probe": true,
+            "label": "import-scripts"
+          }
+        ],
+        "remove_meta": [
+          {
+            "probe": true,
+            "label": "remove-meta",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "document_open": [
+          {
+            "probe": true,
+            "label": "document-open",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "navigate_file": [],
+        "navigate_data": [],
+        "navigate_blob": [],
+        "navigate_http": [],
+        "nested_http": [],
+        "file_image": [
+          {
+            "probe": true,
+            "label": "file-image",
+            "blocked": true
+          }
+        ],
+        "file_style": [
+          {
+            "probe": true,
+            "label": "file-style",
+            "value": ""
+          }
+        ],
+        "file_css_import": [
+          {
+            "probe": true,
+            "label": "file-css-import",
+            "value": ""
+          }
+        ],
+        "file_object": [],
+        "file_embed": [],
+        "shared_worker": [
+          {
+            "probe": true,
+            "label": "shared-worker",
+            "error": "SecurityError"
+          }
+        ],
+        "delegated_parent": [
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "fetch",
+            "error": "SecurityError"
+          },
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "Function",
+            "error": "SecurityError"
+          },
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "document",
+            "error": "SecurityError"
+          }
+        ],
+        "frame_spoof": [
+          {
+            "probe": true,
+            "label": "frame-spoof",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "parent_access": [
+          {
+            "probe": true,
+            "label": "parent-access",
+            "allowed": false
+          }
+        ],
+        "positive": [
+          {
+            "probe": true,
+            "label": "http-script",
+            "executed": true
+          },
+          {
+            "probe": true,
+            "label": "click",
+            "interactive": true
+          },
+          {
+            "probe": true,
+            "label": "http-fetch",
+            "value": "FAKE_HTTP_CONTROL"
+          }
+        ]
+      },
+      "requests": [
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+          "resourceType": "mainFrame",
+          "webContentsId": 2,
+          "frame": {
+            "url": "",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-asset.js",
+          "resourceType": "script",
+          "webContentsId": 2,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 2,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-module.mjs",
+          "resourceType": "script",
+          "webContentsId": 2,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-image.png",
+          "resourceType": "image",
+          "webContentsId": 2,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        }
+      ],
+      "consoleMessages": []
+    },
+    {
+      "mode": "native-frame-deny",
+      "trusted": true,
+      "trustedChecks": [
+        "FAKE_ONLY_LOCAL_FILE_MARKER",
+        "TRUSTED_DYNAMIC_MODULE",
+        "IMAGE_LOADED",
+        {
+          "read": true,
+          "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+        }
+      ],
+      "cases": {
+        "direct": [
+          {
+            "probe": true,
+            "label": "direct",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "xhr": [
+          {
+            "probe": true,
+            "label": "xhr",
+            "read": false
+          }
+        ],
+        "file_script": [],
+        "nested_srcdoc": [
+          {
+            "probe": true,
+            "label": "nested-srcdoc",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "nested_data": [
+          {
+            "probe": true,
+            "label": "nested-data",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "nested_blob": [
+          {
+            "probe": true,
+            "label": "nested-blob",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "worker_blob": [
+          {
+            "probe": true,
+            "label": "worker-blob",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "worker_data": [
+          {
+            "probe": true,
+            "label": "worker-data",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "worker_file": [
+          {
+            "probe": true,
+            "label": "worker-file"
+          }
+        ],
+        "worker_http": [
+          {
+            "probe": true,
+            "label": "worker-http"
+          }
+        ],
+        "import_scripts": [
+          {
+            "probe": true,
+            "label": "import-scripts",
+            "importError": "NetworkError"
+          }
+        ],
+        "remove_meta": [
+          {
+            "probe": true,
+            "label": "remove-meta",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "document_open": [
+          {
+            "probe": true,
+            "label": "document-open",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "navigate_file": [],
+        "navigate_data": [
+          {
+            "probe": true,
+            "label": "navigate-data",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "navigate_blob": [
+          {
+            "probe": true,
+            "label": "navigate-blob",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "navigate_http": [
+          {
+            "probe": true,
+            "label": "http-document",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "nested_http": [
+          {
+            "probe": true,
+            "label": "http-document",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "file_image": [
+          {
+            "probe": true,
+            "label": "file-image",
+            "blocked": true
+          }
+        ],
+        "file_style": [
+          {
+            "probe": true,
+            "label": "file-style",
+            "value": ""
+          }
+        ],
+        "file_css_import": [
+          {
+            "probe": true,
+            "label": "file-css-import",
+            "value": ""
+          }
+        ],
+        "file_object": [],
+        "file_embed": [],
+        "shared_worker": [
+          {
+            "probe": true,
+            "label": "shared-worker",
+            "error": "SecurityError"
+          }
+        ],
+        "delegated_parent": [
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "fetch",
+            "error": "SecurityError"
+          },
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "Function",
+            "error": "SecurityError"
+          },
+          {
+            "probe": true,
+            "label": "delegated-parent",
+            "access": "document",
+            "error": "SecurityError"
+          }
+        ],
+        "frame_spoof": [
+          {
+            "probe": true,
+            "label": "frame-spoof",
+            "read": false,
+            "error": "TypeError"
+          }
+        ],
+        "parent_access": [
+          {
+            "probe": true,
+            "label": "parent-access",
+            "allowed": false
+          }
+        ],
+        "positive": [
+          {
+            "probe": true,
+            "label": "http-script",
+            "executed": true
+          },
+          {
+            "probe": true,
+            "label": "click",
+            "interactive": true
+          },
+          {
+            "probe": true,
+            "label": "http-fetch",
+            "value": "FAKE_HTTP_CONTROL"
+          }
+        ]
+      },
+      "requests": [
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+          "resourceType": "mainFrame",
+          "webContentsId": 3,
+          "frame": {
+            "url": "",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-asset.js",
+          "resourceType": "script",
+          "webContentsId": 3,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-module.mjs",
+          "resourceType": "script",
+          "webContentsId": 3,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "parent-load",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-image.png",
+          "resourceType": "image",
+          "webContentsId": 3,
+          "frame": {
+            "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+            "top": true,
+            "detached": false
+          },
+          "cancel": false
+        },
+        {
+          "case": "direct",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "xhr",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "file_script",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-script.js",
+          "resourceType": "script",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "nested_srcdoc",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "nested_data",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "data:text/html;base64,PHNjcmlwdD5mZXRjaCgiZmlsZTovLy9Wb2x1bWVzL2FydGlzYW4vY29kZS8yMDI2L211bHRpY2EtMC40LjM3Ly50cmVsbGlzL3Rhc2tzLzEwLTA3LWF1ZGl0LXNlY3VyaXR5LWNvbnNpc3RlbmN5LWZpeGVzL3Jlc2VhcmNoL2Rlc2t0b3AtcHJvYmVzL2Zha2Utc2VjcmV0LnR4dCIpLnRoZW4ocj0+ci50ZXh0KCkpLnRoZW4odmFsdWU9PnRvcC5wb3N0TWVzc2FnZSh7cHJvYmU6dHJ1ZSxsYWJlbDoibmVzdGVkLWRhdGEiLHJlYWQ6dHJ1ZSx2YWx1ZX0sJyonKSkuY2F0Y2goZT0+dG9wLnBvc3RNZXNzYWdlKHtwcm9iZTp0cnVlLGxhYmVsOiJuZXN0ZWQtZGF0YSIscmVhZDpmYWxzZSxlcnJvcjplLm5hbWV9LCcqJykpPC9zY3JpcHQ+",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "nested_blob",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "blob:null/bea1c0b2-3202-445b-9f7d-0c908b452a7f",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "worker_blob",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "worker_data",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "worker_file",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-worker.js",
+          "resourceType": "script",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "import_scripts",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-worker.js",
+          "resourceType": "script",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "remove_meta",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "document_open",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "navigate_file",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+          "resourceType": "subFrame",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "navigate_data",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "data:text/html;base64,PHNjcmlwdD5mZXRjaCgiZmlsZTovLy9Wb2x1bWVzL2FydGlzYW4vY29kZS8yMDI2L211bHRpY2EtMC40LjM3Ly50cmVsbGlzL3Rhc2tzLzEwLTA3LWF1ZGl0LXNlY3VyaXR5LWNvbnNpc3RlbmN5LWZpeGVzL3Jlc2VhcmNoL2Rlc2t0b3AtcHJvYmVzL2Zha2Utc2VjcmV0LnR4dCIpLnRoZW4ocj0+ci50ZXh0KCkpLnRoZW4odmFsdWU9PnRvcC5wb3N0TWVzc2FnZSh7cHJvYmU6dHJ1ZSxsYWJlbDoibmF2aWdhdGUtZGF0YSIscmVhZDp0cnVlLHZhbHVlfSwnKicpKS5jYXRjaChlPT50b3AucG9zdE1lc3NhZ2Uoe3Byb2JlOnRydWUsbGFiZWw6Im5hdmlnYXRlLWRhdGEiLHJlYWQ6ZmFsc2UsZXJyb3I6ZS5uYW1lfSwnKicpKTwvc2NyaXB0Pg==",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "navigate_blob",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "blob:null/97302d54-e9f9-4cab-97f2-2a21c50eff07",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "navigate_http",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "http://127.0.0.1:65420/evil.html",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "nested_http",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "http://127.0.0.1:65420/evil.html",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "file_image",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-image.png",
+          "resourceType": "image",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "file_style",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-style.css",
+          "resourceType": "stylesheet",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "file_css_import",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-style.css",
+          "resourceType": "stylesheet",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "file_object",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+          "resourceType": "object",
+          "webContentsId": 3,
+          "frame": {
+            "url": "",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "file_embed",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-page.html",
+          "resourceType": "object",
+          "webContentsId": 3,
+          "frame": {
+            "url": "",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        },
+        {
+          "case": "frame_spoof",
+          "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+          "resourceType": "xhr",
+          "webContentsId": 3,
+          "frame": {
+            "url": "about:srcdoc",
+            "top": false,
+            "detached": false
+          },
+          "cancel": true
+        }
+      ],
+      "consoleMessages": []
+    }
+  ]
+}

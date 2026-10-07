@@ -1,0 +1,287 @@
+{
+  "electron": "39.8.7",
+  "chrome": "142.0.7444.265",
+  "sharedSession": true,
+  "installs": 1,
+  "probes": [
+    {
+      "read": false,
+      "error": "TypeError"
+    },
+    {
+      "read": false,
+      "error": "TypeError"
+    }
+  ],
+  "assets": [
+    {
+      "module": "TRUSTED_DYNAMIC_MODULE",
+      "script": true
+    },
+    {
+      "module": "TRUSTED_DYNAMIC_MODULE",
+      "script": true
+    }
+  ],
+  "recreatedProbe": {
+    "read": false,
+    "error": "TypeError"
+  },
+  "survivorProbe": {
+    "read": false,
+    "error": "TypeError"
+  },
+  "noFrame": {
+    "read": true,
+    "value": "FAKE_ONLY_LOCAL_FILE_MARKER"
+  },
+  "detached": {
+    "removed": true
+  },
+  "localIframePDF": "load",
+  "pdfState": {
+    "body": "",
+    "html": "<pdf-viewer id=\"viewer\" style=\"--vertical-scrollbar-width: 0px; --horizontal-scrollbar-width: 0px;\"></pdf-viewer>",
+    "keys": [
+      "_$Ep",
+      "isUpdatePending",
+      "hasUpdated",
+      "_$Em",
+      "enableUpdating",
+      "_$ES",
+      "_$AL",
+      "renderOptions",
+      "_$Do",
+      "$",
+      "willUpdatePending_",
+      "browserApi",
+      "currentController",
+      "documentDimensions",
+      "isUserInitiatedEvent",
+      "lastViewportPosition",
+      "originalUrl",
+      "paramsParser",
+      "pdfOopifEnabled",
+      "tracker",
+      "delayedScriptingMessages_",
+      "initialLoadComplete_",
+      "loaded_",
+      "loadState_",
+      "overrideSendScriptingMessageForTest_",
+      "parentOrigin_",
+      "parentWindow_",
+      "plugin_",
+      "viewport_",
+      "zoomManager_",
+      "beepCount",
+      "caretBrowsingEnabled_",
+      "hasSavedEdits_",
+      "hasUnsavedEdits_",
+      "navigator_",
+      "pdfGetSaveDataInBlocks_",
+      "pdfSearchifySaveEnabled_",
+      "pdfUseShowSaveFilePicker_",
+      "pluginController_",
+      "restoreAnnotationMode_",
+      "showBeforeUnloadDialog_",
+      "toolbarEnabled_",
+      "hasSearchifyText_",
+      "renderRoot"
+    ],
+    "loadProgress": 100,
+    "pageCount": 1,
+    "plugin": true,
+    "shadow": "<!----><!--_html_template_start_--><!-- #html_wrapper_imports_start\n\nimport {AnnotationMode} from './constants.js';\n\n#html_wrapper_imports_end -->\n\n<viewer-toolbar id=\"toolbar\" annotation-mode=\"off\">\n</viewer-toolbar>\n\n<div id=\"container\">\n  <div id=\"sidenav-container\">\n    <viewer-pdf-sidenav id=\"sidenav\">\n    </viewer-pdf-sidenav>\n  </div>\n  <div id=\"main\">\n    <div id=\"scroller\">\n      <div id=\"sizer\" style=\"display: none;\">\n      </div>\n      \n        <!--?lit$432486720$-->\n      \n      <div id=\"content\">\n      <embed id=\"plugin\" type=\"application/x-google-chrome-pdf\" original-url=\"http://127.0.0.1:49432/document.pdf\" src=\"chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/3a744af4-66da-41a5-b077-3ba055018656\" background-color=\"4280821800\" javascript=\"block\" top-level-url=\"file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html\" pdf-viewer-update-enabled=\"\"></div>\n    </div>\n    <div id=\"content-focus-rectangle\" hidden=\"\">\n    </div>\n    \n      <!--?lit$432486720$-->\n    \n  </div>\n  \n    <!--?lit$432486720$-->\n  \n  <cr-toast id=\"searchifyProgress\">\n    <div class=\"spinner\"></div>\n    <span>正在从 PDF 文件中提取文本…</span>\n  </cr-toast>\n</div>\n\n<!--?lit$432486720$-->\n\n<!--?lit$432486720$-->\n\n<!--?lit$432486720$-->\n\n\n<!--_html_template_end_-->"
+  },
+  "pdfFrames": [
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html"
+    },
+    {
+      "url": "http://127.0.0.1:49432/document.pdf"
+    },
+    {
+      "url": "chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/index.html"
+    },
+    {
+      "url": "http://127.0.0.1:49432/document.pdf"
+    }
+  ],
+  "image": {
+    "complete": true,
+    "width": 1
+  },
+  "redirect": {
+    "read": false,
+    "error": "TypeError"
+  },
+  "missingFrame": false,
+  "missingWindow": false,
+  "throwingFrame": false,
+  "headers": [
+    {
+      "path": "/document.pdf",
+      "header": "preserved"
+    },
+    {
+      "path": "/image.png",
+      "header": "preserved"
+    },
+    {
+      "path": "/redirect",
+      "header": "preserved"
+    }
+  ],
+  "events": [
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+      "type": "mainFrame",
+      "id": 1,
+      "frame": {
+        "url": "",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-asset.js",
+      "type": "script",
+      "id": 1,
+      "frame": {
+        "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+      "type": "mainFrame",
+      "id": 2,
+      "frame": {
+        "url": "",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-asset.js",
+      "type": "script",
+      "id": 2,
+      "frame": {
+        "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+      "type": "xhr",
+      "id": 1,
+      "frame": {
+        "url": "about:srcdoc",
+        "detached": false,
+        "main": false
+      },
+      "allow": false
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+      "type": "xhr",
+      "id": 2,
+      "frame": {
+        "url": "about:srcdoc",
+        "detached": false,
+        "main": false
+      },
+      "allow": false
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-module.mjs",
+      "type": "script",
+      "id": 2,
+      "frame": {
+        "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-module.mjs",
+      "type": "script",
+      "id": 1,
+      "frame": {
+        "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+      "type": "mainFrame",
+      "id": 3,
+      "frame": {
+        "url": "",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/trusted-asset.js",
+      "type": "script",
+      "id": 3,
+      "frame": {
+        "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/parent.html",
+        "detached": false,
+        "main": true
+      },
+      "allow": true
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+      "type": "xhr",
+      "id": 3,
+      "frame": {
+        "url": "about:srcdoc",
+        "detached": false,
+        "main": false
+      },
+      "allow": false
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt",
+      "type": "xhr",
+      "id": 2,
+      "frame": {
+        "url": "about:srcdoc",
+        "detached": false,
+        "main": false
+      },
+      "allow": false
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt?dispose-probe",
+      "type": "xhr",
+      "forcedDisposal": true,
+      "frame": null,
+      "allow": false
+    },
+    {
+      "url": "file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-document.pdf",
+      "type": "subFrame",
+      "id": 2,
+      "frame": {
+        "url": "",
+        "detached": false,
+        "main": false
+      },
+      "allow": false
+    }
+  ]
+}

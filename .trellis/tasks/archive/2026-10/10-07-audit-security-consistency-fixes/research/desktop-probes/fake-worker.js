@@ -1,0 +1,1 @@
+fetch("file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-07-audit-security-consistency-fixes/research/desktop-probes/fake-secret.txt").then(r=>r.text()).then(value=>postMessage({read:true,value})).catch(e=>postMessage({read:false,error:e.name}))

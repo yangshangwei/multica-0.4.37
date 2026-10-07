@@ -1,0 +1,1 @@
+top.postMessage({probe:true,label:'file-script',executed:true},'*')
