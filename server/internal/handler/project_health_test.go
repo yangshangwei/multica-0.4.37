@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -68,8 +69,13 @@ func TestProjectHealthFormalGoldenScope(t *testing.T) {
 func TestProjectHealthRiskOverlapPaginationAndLiveContinuation(t *testing.T) {
 	id := healthProject(t)
 	yesterday := time.Now().UTC().AddDate(0, 0, -1).Format(time.DateOnly)
-	parent := dbfx.Issue(t, "risk parent", testutil.Cols{"project_id": id, "status": "blocked", "due_date": yesterday})
-	child := dbfx.Issue(t, "risk child", testutil.Cols{"project_id": id, "parent_issue_id": parent, "status": "todo", "due_date": yesterday})
+	parentID, childID := uuid.NewString(), uuid.NewString()
+	if parentID > childID {
+		parentID, childID = childID, parentID
+	}
+	// The cursor is ordered by ID, not by fixture insertion time.
+	parent := dbfx.Issue(t, "risk parent", testutil.Cols{"id": parentID, "project_id": id, "status": "blocked", "due_date": yesterday})
+	child := dbfx.Issue(t, "risk child", testutil.Cols{"id": childID, "project_id": id, "parent_issue_id": parent, "status": "todo", "due_date": yesterday})
 	dbfx.Issue(t, "due today", testutil.Cols{"project_id": id, "due_date": time.Now().UTC().Format(time.DateOnly), "assignee_type": "member", "assignee_id": testUserID})
 	initial := overview(t, id)
 	healthCount(t, "overdue", initial.Statistics.Counts.Overdue, 2)
