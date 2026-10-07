@@ -80,4 +80,12 @@
 
 追加 E2E 会话 `01a11513-83b5-7de3-8adb-d81e252aec33` 正在独立复核，并报告 P1-L14 撤权请求循环问题；本次文档提交不替该会话签收、不改写之前测试运行的事实，也不代表所有后续测试已通过。最新修复和测试结果由该会话记录。
 
+### P1-L14 撤权请求循环修复（`42a98ff05`，2026-10-07）
+
+缺陷由上述 E2E 会话在 `e516b15c2` 生产 Web 上复现（3/3 超时；单次 trace 中 members/agents/squads/pins 各约5,460次404），诊断见该会话工作树 `/Volumes/artisan/code/2026/multica-e2e-20261007/.trellis/tasks/archive/2026-10/10-07-head-e516b15c2-e2e/research/p1-l14-diagnosis.md`（不在本仓库）。根因是 P1 既有代码：`clearProtectedProjectContent` 不幂等，拒绝后的每个本地错误都会再次移除整个工作区查询，仍挂载的观察者随即重建并重新请求。projects 访问代码自 `115b4cd28` 未变，不属 I1 回归。修复：同一已拒绝范围只清理一次，`resetProjectAccessSession` 仍清除拒绝状态。
+
+验证：新增的 core（`access-lifecycle.test.ts`）与 views（`use-project-access-guard.test.tsx`）回归在去掉提前返回后失败（members 缓存被删；179次 members 请求），恢复后通过；core 2741、views 6177 项 vitest，core/views typecheck 与 eslint 通过。临时隔离 API（`218109daa+l14fix`，独立数据库，legacy，`FF_ITERATIONS_I1=true`）加生产 Web（`next build --webpack` + `next start`）：P1-L14 3.7s 通过，trace 共117条记录，四个工作区端点各一次404后停止；7个 projects-p1 spec 与 `workspace-access-branches` 共71项通过。环境已停止、数据库已删除，原始 trace/日志在 `/tmp/l14-e2e`，会过期。未运行：完整 E2E、Desktop Electron、经实时 WebSocket 送达的撤权、远端 CI。
+
+`foundation/task.json` 的 `commit` 由 `e516b15c2` 改为 `2055730f3`：foundation 的共享SQL/router/sqlc整合位于 `2055730f3`，`e516b15c2` 不含 `server/` 文件。
+
 本次核验包括文档 JSON 可解析、引用证据哈希、12张最终截图哈希、阶段状态一致性、文档提交白名单及 staged diff 检查。复用已保存的产品验证，不为纯文档提交重复运行产品测试。不推送、合并、部署或启用开关。
