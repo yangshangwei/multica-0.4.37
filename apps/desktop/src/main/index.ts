@@ -13,6 +13,7 @@ import { handleAppShortcut } from "./keyboard-shortcuts";
 import { installNavigationGestures } from "./navigation-gestures";
 import { installNavigationGuard } from "./navigation-guard";
 import { createRendererWebPreferences } from "./renderer-web-preferences";
+import { installRendererFileAccess } from "./renderer-file-access";
 import { getAppVersion } from "./app-version";
 import { loadRuntimeConfig, saveRuntimeConfig } from "./runtime-config-loader";
 import {
@@ -285,6 +286,7 @@ function loadRenderer(window: BrowserWindow): void {
   // this one site covers both — see navigation-guard.ts for what is and is not
   // in scope (it is origin hardening; in-app routing never reaches it).
   installNavigationGuard(window, rendererURL);
+  installRendererFileAccess(window);
 
   if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
     void window.loadURL(process.env["ELECTRON_RENDERER_URL"]);

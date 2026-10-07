@@ -31,26 +31,21 @@ export function createRendererWebPreferences(
     // Still intentionally off. Restoring webSecurity requires migrating the
     // renderer off the opaque file:// origin onto a privileged custom protocol
     // (so CORS preflight requests carry a real Origin the server can allow),
-    // which needs server-side coordination first. The rest of the secure
-    // baseline (contextIsolation on, nodeIntegration off, sandbox on) is
-    // enforced regardless of this flag.
+    // which needs server-side coordination first. Neither sandboxed preload
+    // nor an opaque iframe origin blocks local-file reads with this flag off.
+    // loadRenderer must install renderer-file-access.ts and navigation-guard.ts
+    // before loading either window. That native boundary denies file requests
+    // from untrusted subframes while retaining trusted renderer assets.
     webSecurity: false,
     // Required for the Chromium PDF viewer (PDFium) to activate inside
     // iframes — used by the attachment preview modal for application/pdf
     // files. Default is false in Electron; without it <iframe src=*.pdf>
     // renders blank.
     //
-    // Security trade-off, accepted intentionally:
-    //   1. These windows still run with `webSecurity: false` (see above), so
-    //      `plugins: true` does not meaningfully widen the renderer's attack
-    //      surface beyond what is already accepted. The process sandbox is
-    //      now on, which is the containment boundary that matters here.
-    //   2. The only PDFs that reach an iframe here are signed CloudFront URLs
-    //      we ourselves issued (see useDownloadAttachment); user-supplied URLs
-    //      are routed through `setWindowOpenHandler` → `openExternalSafely` and
-    //      cannot land in this renderer.
-    //   3. Chromium's PDFium plugin is itself sandboxed inside its own process
-    //      and only handles the `application/pdf` MIME.
+    // PDFium runs in its own sandboxed process. Attachment previews use
+    // signed HTTP(S) URLs or downloaded blobs. The native file-request policy
+    // also covers subframe PDF requests; plugins do not bypass that boundary.
+    // General network/origin isolation is still limited by webSecurity above.
     //
     // When webSecurity comes back on, revisit this by hosting the PDF viewer
     // in a dedicated WebContentsView with `plugins: true` scoped to that view,

@@ -22,6 +22,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Intranet Updates](./intranet-updates.md) | Release publication, local Nginx storage and installed-client validation | Filled |
 | [Close Behavior](./close-behavior.md) | Windows/Linux close button semantics: minimize-to-tray vs quit vs ask; prefs, tray, prompt, settings | Filled |
+| [Renderer File Access](./renderer-file-access.md) | Native local-file denial for untrusted HTML and real Electron verification | Active |
 | [Managed Installations](../../server/managed-installations.md) | Shared identity, scoped credentials and Main/daemon protocol boundaries | Active |
 
 ---
