@@ -99,7 +99,10 @@ test.describe("platform execution controls", () => {
       expect(receipts.items[0]).toMatchObject({ state: "succeeded", confirmation: "not_required", result_code: "cancelled_before_dispatch" });
       expect(JSON.stringify(receipts)).not.toContain("PRIVATE CONTROL");
       await page.getByRole("link", { name: "Open receipt", exact: true }).click();
-      await expect(page).toHaveURL(`${web}/admin/operations/${receipts.items[0]!.id}`);
+      await expect(page).toHaveURL((url) => url.origin === new URL(web!).origin
+        && url.pathname === `/admin/operations/${receipts.items[0]!.id}`
+        && url.searchParams.get("timezone") === "UTC"
+        && url.searchParams.get("return_to") === "/admin/tasks");
       await expect(page.getByText("No process confirmation required", { exact: true })).toBeVisible();
       await page.screenshot({ path: resolve(reportDir, "cancellation-receipt-desktop.png"), fullPage: true });
       await page.setViewportSize({ width: 390, height: 844 });

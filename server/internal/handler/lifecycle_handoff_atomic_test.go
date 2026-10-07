@@ -701,6 +701,24 @@ func TestLifecycleAtomicNullHumanDelegationRemainsNull(t *testing.T) {
 	}
 }
 
+func TestLifecycleAtomicAdmissionRecheckAfterDeletion(t *testing.T) {
+	id := lifecycleAtomicSource(t, "deleted before admission recheck")
+	source, err := testHandler.Queries.GetIssue(context.Background(), parseUUID(id))
+	if err != nil {
+		t.Fatal(err)
+	}
+	dbfx.Exec(t, `DELETE FROM issue WHERE id=$1`, id)
+	req := newRequest(http.MethodPost, "/api/issues/"+id+"/lifecycle-handoffs", nil)
+	_, err = testHandler.prepareLifecycleHandoff(req, source, lifecycleHandoffRequest{}, "member", testUserID, false)
+	if !errors.Is(err, pgx.ErrNoRows) {
+		t.Fatalf("source admission recheck must preserve deletion: %v", err)
+	}
+	_, _, err = testHandler.lifecycleDispatchTarget(req.Context(), source, false)
+	if !errors.Is(err, pgx.ErrNoRows) {
+		t.Fatalf("target admission recheck must preserve deletion: %v", err)
+	}
+}
+
 func TestLifecycleAtomicWorkspaceDeleteFence(t *testing.T) {
 	source := lifecycleAtomicSource(t, "atomic delete fence")
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)

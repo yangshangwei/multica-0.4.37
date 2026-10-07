@@ -1,6 +1,12 @@
 # T1 acceptance ledger
 
-Status as of 2026-10-05: T1 implementation is complete and merged/pushed to `main` as `85b0d2e7e`. Independent branch acceptance substantiates all 37 AC cases and 8 FR obligations, with a 94/100 visual pass. Subsequent local main-worktree regression has passing evidence for all 17 triage cases. Remote CI is failing and production release is unconfirmed; implementation completion does not mean release readiness.
+Status as of 2026-10-06: T1 is implemented, integrated on main, and published in v0.5.6 as backend/Web amd64+arm64 images and changelog assets. Main CI and Mobile Verify passed on release commit `5f4fe5f3b`. Fresh local triage Web/HTTP/native Electron acceptance passed 17/17. This certifies released artifacts, not rollout to an unspecified production installation or a new Desktop installer.
+
+## Release closeout (2026-10-06)
+
+The CI fixes and prior regression changes landed through [PR #2](https://github.com/yangshangwei/multica-0.4.37/pull/2). [Main CI](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37345046371), [Mobile Verify](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37345046424), and [Release](https://github.com/yangshangwei/multica-0.4.37/actions/runs/37345226629) all succeeded. [v0.5.6](https://github.com/yangshangwei/multica-0.4.37/releases/tag/v0.5.6) was published at 2026-10-06 01:17:28 Asia/Shanghai. Four registry image configs carry the exact release revision; downloaded Release assets match the build artifact byte-for-byte.
+
+Root causes, corrected test runs, artifact digests and deployment boundaries are in the [release closeout verification](../10-05-triage-ci-release/verification.md) and [machine-readable evidence](../10-05-triage-ci-release/release-evidence.json). Historical failures below are retained as dated evidence, not the current release state.
 
 ## Main integration and final regression follow-up (2026-10-05)
 
@@ -32,7 +38,7 @@ Local evidence lives in `.gstack/qa-reports/2026-10-05-branch-expansion/` (Git-i
 | Default local environment | `bash scripts/dev-env.sh status --json` reported API/Web mismatch. API `127.0.0.1:18573/health` returned old commit `e3415e798`; Web 13493 responded but its current build identity was not verified. | The default local environment does not establish that current main is running. |
 | Regression environments | APIs 18577/18578 and Web 13497/13498 are stopped, consistent with the regression cleanup record. T1 branch API 18557 still returned `1c391b625`. | These are local test/branch environments, not production deployment evidence. |
 
-Release follow-up remains: land the separately owned regression fixes/tests, resolve and rerun failed remote checks, then verify the version and health of the intended deployment. This closeout performed no push, release, service restart or deployment.
+At the 2026-10-05 closeout, regression integration, failed CI and publication were still open. The 2026-10-06 closeout above resolves integration, CI and artifact publication. Target deployment rollout remains separate; the original closeout performed no push, release, service restart or deployment.
 
 ## Original branch acceptance ledger
 
@@ -126,7 +132,7 @@ Local PostgreSQL + handler baseline, not a production-network SLA: 10,000 formal
 
 ## Delivery boundaries
 
-T1 was implemented and accepted on `codex/triage-t1`, then merged and pushed to `main` in the subsequent integration recorded above. Production release is unconfirmed and remote CI remains failing at closeout. T2/T3 rules/AI/automatic admission and full mobile editing remain outside this task. Live authenticated agent execution was deliberately not run; fake runtime fixtures prove request authority, context, queued-task identity and replay safety. Local production-mode builds are not evidence of production deployment.
+T1 was implemented and accepted on `codex/triage-t1`, then merged and pushed to `main` in the subsequent integration recorded above. The 2026-10-06 closeout published v0.5.6 artifacts with green main CI; target production rollout and new Desktop installers remain outside this evidence. T2/T3 rules/AI/automatic admission and full mobile editing remain outside this task. Live authenticated agent execution was deliberately not run; fake runtime fixtures prove request authority, context, queued-task identity and replay safety. Local production-mode builds are not evidence of production deployment.
 
 ## Code delivery commits
 

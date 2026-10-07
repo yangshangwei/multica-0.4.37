@@ -35,6 +35,7 @@ const PRIORITY_LABEL: Record<IssuePriority, string> = {
 
 // Mirrors useTypeLabels in packages/views/inbox/components/inbox-detail-label.tsx
 const TYPE_LABEL: Record<InboxItemType | "project_update", string> = {
+  triage: "Triage update",
   issue_assigned: "Assigned",
   issue_subscribed: "Subscribed",
   unassigned: "Unassigned",
@@ -54,7 +55,6 @@ const TYPE_LABEL: Record<InboxItemType | "project_update", string> = {
   quick_create_done: "Quick-create done",
   quick_create_failed: "Quick-create failed",
   quick_create_unconfirmed: "Quick-create needs a check",
-  triage: "Triage",
   project_update: "Project update",
   iteration: "Iteration update",
 };

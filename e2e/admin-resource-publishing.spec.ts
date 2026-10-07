@@ -332,6 +332,17 @@ test.describe("administrator resource publishing", () => {
       expect((await request(consumer, "/api/admin/resources?kind=skill")).status).toBe(403);
       const forbiddenBody = new FormData(); forbiddenBody.set("key", `forbidden-${id}`); forbiddenBody.set("file", new Blob([content]), "SKILL.md");
       expect((await request(consumer, "/api/admin/resources/skill/preview", { method: "POST", body: forbiddenBody })).status).toBe(403);
+      // Resource audit revisions are UUIDs, unlike numeric execution versions.
+      // A published resource must not make the shared audit feed unreadable.
+      await page.goto(`${webURL}/admin/audit`);
+      await expect(page.getByRole("heading", { name: "Audit trail", exact: true })).toBeVisible();
+      await expect(page.locator("summary").filter({ hasText: "Event details" }).first()).toBeVisible();
+      for (const summary of await page.locator("summary").filter({ hasText: "Event details" }).all()) {
+        await summary.click();
+      }
+      await expect(page.getByText(skillRevision, { exact: false }).first()).toBeVisible();
+      await expect(page.getByText(mcpRevision, { exact: false }).first()).toBeVisible();
+      await capture(page, "resource-audit-after-publishing");
       expect(errors).toEqual([]);
       await writeFile(join(report, "functional-result.json"), JSON.stringify({ status: "passed", skillKey, mcpKey, native: process.env.E2E_RESOURCE_NATIVE === "1", lostResponseWrites: writes, receiptOperation: operation, revisionConflict: 409, copiesPreserved: true, forbidden: 403, daemonExecution: false }, null, 2));
     } catch (error) {

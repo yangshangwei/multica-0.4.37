@@ -394,7 +394,12 @@ Provider support is not uniform: Qwen Code accepts a managed `mcp_config` throug
 
 #### Workspace MCP servers
 
-Read [Workspace MCP servers](references/workspace-mcp.md) for deployment catalog sources, secrets, managed bindings, retries, and runtime support. The supporting reference retains the complete workspace MCP contract.
+Workspace MCP configurations reach an agent only after explicit assignment;
+saving a recipe does not verify connectivity. The agent's own `mcp_config`
+wins on name collisions. Before creating, updating or assigning a workspace
+MCP server, read [references/workspace-mcp.md](references/workspace-mcp.md)
+for library commands, write-only secrets, built-in and deployment recipes,
+input validation, version conflicts and runtime prerequisites.
 
 ## Skill binding
 

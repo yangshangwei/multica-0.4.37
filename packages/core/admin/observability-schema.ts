@@ -75,7 +75,7 @@ const snapshotId = z.uuid().nullable().optional();
 const auditSnapshot = z.object({
   role: z.enum(["super_admin", "platform_observer"]).nullable().optional(),
   disabled: z.boolean().optional(), access_revoked: z.boolean().optional(), requires_password_change: z.boolean().optional(), condition_active: z.boolean().optional(),
-  auth_version: snapshotVersion, version: snapshotVersion, admission_version: snapshotVersion, binding_epoch: snapshotVersion,
+  auth_version: snapshotVersion, version: snapshotVersion.or(z.uuid()), admission_version: snapshotVersion, binding_epoch: snapshotVersion,
   state: snapshotCode, status: snapshotCode, admission: snapshotCode, result_code: snapshotCode, confirmation: snapshotCode, reconciliation_state: snapshotCode, rule: snapshotCode, severity: snapshotCode, resolution_code: snapshotCode.nullable(),
   assignee_id: snapshotId, assigned_to: snapshotId, responsible_user_id: snapshotId, related_task_id: snapshotId,
 }).nullish().transform(value => value ?? {});

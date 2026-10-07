@@ -132,7 +132,19 @@ test.describe("platform observability", () => {
         await expect(page.getByText("Data could not be loaded", { exact: true })).toHaveCount(0);
       }
       await page.goto(`${web}/admin/audit?target_id=${failureId}`);
+      await expect(page.locator("summary").filter({ hasText: "Event details" }).first()).toBeVisible();
+      for (const summary of await page.locator("summary").filter({ hasText: "Event details" }).all()) {
+        await summary.click();
+      }
       await expect(page.getByRole("link", { name: "Open own operation receipt", exact: true }).first()).toBeVisible();
+      const receipt = page.getByRole("link", { name: "Open own operation receipt", exact: true })
+        .and(page.locator(`a[href^="/admin/operations/${operation.items[0]!.id}?"]`)).first();
+      await expect(receipt).toBeVisible();
+      const receiptURL = new URL((await receipt.getAttribute("href"))!, web);
+      expect(receiptURL.pathname).toBe(`/admin/operations/${operation.items[0]!.id}`);
+      const returnTo = new URL(receiptURL.searchParams.get("return_to")!, web);
+      expect(returnTo.pathname).toBe("/admin/audit");
+      expect(returnTo.searchParams.get("target_id")).toBe(failureId);
       const audit = await administrator.requestJSON(`/api/admin/audit?target_id=${failureId}`);
       expect(JSON.stringify(audit)).not.toContain("PRIVATE OBSERVATION");
       await page.screenshot({ path: resolve(reportDir, "audit-desktop.png"), fullPage: true });
