@@ -1,6 +1,6 @@
 # I1 技术设计
 
-状态：v1 设计，基础代码已整合到 `codex/projects-p1` 的 `c96b63c09`；FG 尚未通过。当前实施接手说明见 [handoff.md](handoff.md)，本文件不是产品上线证明。
+状态：v1设计合同已实施，本地最终验收见 [handoff.md](handoff.md)及verification子任务。FG/LG/HG/CG/UG/FCG已通过；VG正式远端CI未运行，发布保持关闭。本文件后部2026-10-06实施前核对为历史基线，不是当前进度。
 
 ## 1. 证据与选择
 

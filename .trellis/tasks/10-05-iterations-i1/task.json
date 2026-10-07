@@ -2,7 +2,7 @@
   "id": "iterations-i1",
   "name": "iterations-i1",
   "title": "迭代 I1：手动周期闭环工程方案",
-  "description": "实施已评审I1手动周期闭环，完成基础/业务/历史/结转/双端/验收门槛",
+  "description": "I1本地闭环已验收并完成本地提交：FG/LG/HG/CG/UG/FCG通过，VG本地29项完成，正式远端CI未运行；开关关闭，未推送",
   "status": "in_progress",
   "dev_type": "fullstack",
   "scope": "iterations",
@@ -15,7 +15,7 @@
   "branch": "codex/projects-p1",
   "base_branch": "main",
   "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
-  "commit": null,
+  "commit": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
   "pr_url": null,
   "subtasks": [],
   "children": [
@@ -30,10 +30,10 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
   ],
-  "notes": "2026-10-06 user authorized implementation; starting FG. Planning reviews remain valid, implementation evidence pending. 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06: next-development handoff prepared; no product implementation in this planning turn. 2026-10-06 continuation: batch writers and execution-start committed; creation/delete writers, operation lookup, recipient cleanup and explicit-field refusal integrated. FG remains pending; use latest_writer_evidence rather than original S0/S1 handoff. 2026-10-06: FG passed with durable settings operations, current authorization and fixed-threshold capacity evidence. Rollout remains disabled; next LG/HG, foundation retained until FCG. 2026-10-06: LG/HG passed, including final single-connection T1 capability fix. Next CG; release remains disabled and foundation remains open through FCG.",
+  "notes": "2026-10-06 user authorized implementation; starting FG. Planning reviews remain valid, implementation evidence pending. 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06: next-development handoff prepared; no product implementation in this planning turn. 2026-10-06 continuation: batch writers and execution-start committed; creation/delete writers, operation lookup, recipient cleanup and explicit-field refusal integrated. FG remains pending; use latest_writer_evidence rather than original S0/S1 handoff. 2026-10-06: FG passed with durable settings operations, current authorization and fixed-threshold capacity evidence. Rollout remains disabled; next LG/HG, foundation retained until FCG. 2026-10-06: LG/HG passed, including final single-connection T1 capability fix. Next CG; release remains disabled and foundation remains open through FCG. 2026-10-07 final acceptance supersedes earlier CG/client next-step notes: UG/FCG passed and local VG complete; remote formal CI remains explicitly unrun, so parent stays in_progress. No commit/push/merge/deploy.",
   "meta": {
     "planning_status": "reviewed",
-    "implementation_status": "in_progress",
+    "implementation_status": "implemented",
     "source_commit": "0af59c5d5846471c9d56567866fdda94f94487eb",
     "plan_reviews": {
       "architect": ".trellis/tasks/10-05-iterations-i1/research/architect-review.md",
@@ -49,8 +49,8 @@
       "resolution": "Local PostgreSQL access and Git writes available during branch transfer; FG remains incomplete."
     },
     "handoff": ".trellis/tasks/10-05-iterations-i1/handoff.md",
-    "handoff_baseline": "4c9be765213f20953b46cb84db5caa19fc2f945d",
-    "next_slice": "CG: atomic end, active cancel, handoff, workspace disable and outbox; release remains off",
+    "handoff_baseline": "115b4cd28277941a8d9ad8fda5acecf99b999152",
+    "next_slice": "Local I1 commits are complete (see meta.local_commits). Next: formal remote CI on the committed source, only after separate push/CI authorization. Keep excluded tool/generated files unstaged; rollout stays off.",
     "handoff_review": ".trellis/tasks/10-05-iterations-i1/research/handoff-review.md",
     "latest_writer_evidence": [
       ".trellis/tasks/10-05-iterations-i1-foundation/s2-batch-writers-verification.md",
@@ -86,7 +86,120 @@
           "1247d2728e690c89707b248096f952d372e7c38e",
           "4c9be765213f20953b46cb84db5caa19fc2f945d"
         ]
+      },
+      "CG": {
+        "status": "passed",
+        "verified_at": "2026-10-07",
+        "evidence": ".trellis/tasks/10-05-iterations-i1/cg-verification.md",
+        "revalidated_by": ".trellis/tasks/10-05-iterations-i1-verification/verification.md"
+      },
+      "UG": {
+        "status": "passed",
+        "verified_at": "2026-10-07T11:41:37.408987+08:00",
+        "evidence": ".trellis/tasks/10-05-iterations-i1-verification/ui-final-audit.md",
+        "integration_evidence": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+        "source_state": "uncommitted working tree based on 115b4cd28",
+        "visual_score": 94,
+        "committed_as": [
+          "823a61774",
+          "7cf0a1e6b",
+          "2055730f3",
+          "59b20ed57",
+          "e516b15c2"
+        ],
+        "committed_at_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39"
+      },
+      "FCG": {
+        "status": "passed",
+        "verified_at": "2026-10-07T11:41:37.408987+08:00",
+        "evidence": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+        "migration_evidence": ".trellis/tasks/10-05-iterations-i1-verification/migration-recovery-evidence.json",
+        "generated_files_unchanged": 87,
+        "source_state": "uncommitted working tree based on 115b4cd28",
+        "committed_as": [
+          "823a61774",
+          "7cf0a1e6b",
+          "2055730f3",
+          "59b20ed57",
+          "e516b15c2"
+        ],
+        "committed_at_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39"
+      },
+      "VG": {
+        "status": "local_passed_remote_ci_pending",
+        "verified_at": "2026-10-07T11:41:37.408987+08:00",
+        "evidence": ".trellis/tasks/10-05-iterations-i1-verification/acceptance-matrix.md",
+        "summary": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+        "source_provenance": ".trellis/tasks/10-05-iterations-i1-verification/source-provenance.json",
+        "local_requirements_verified": 29,
+        "remote_ci": "not_run_per_local_only_scope",
+        "rollout_enabled": false,
+        "remaining": [
+          "Formal remote CI on the reviewed final source; no push/merge/deploy authorized in this turn."
+        ]
       }
+    },
+    "final_local_verification": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+    "source_provenance": ".trellis/tasks/10-05-iterations-i1-verification/source-provenance.json",
+    "rollout_default": false,
+    "local_commit_handoff": ".trellis/tasks/10-05-iterations-i1-verification/commit-handoff.md",
+    "local_commits": {
+      "recorded_at": "2026-10-07",
+      "base_head": "115b4cd28277941a8d9ad8fda5acecf99b999152",
+      "product_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
+      "commits": [
+        {
+          "sha": "823a61774036320d7768e923abac9180171467ff",
+          "subject": "test(handler): keep creation assertions independent of shared agent grants",
+          "group": "fixtures",
+          "files": 2
+        },
+        {
+          "sha": "7cf0a1e6b009fc6d11ed99be4c9f2ed05aa0785e",
+          "subject": "test(projects): make health continuation fixtures follow cursor order",
+          "group": "pagination",
+          "files": 1
+        },
+        {
+          "sha": "2055730f39bdad533b6cbb8faeb7f2c7a577057d",
+          "subject": "feat(iterations): preserve one confirmed result when manual periods close",
+          "group": "backend",
+          "files": 62
+        },
+        {
+          "sha": "59b20ed57eebb88f04ff58c9966a82904b70353f",
+          "subject": "test(e2e): keep project issue regressions on their intended section",
+          "group": "p1_e2e",
+          "files": 2
+        },
+        {
+          "sha": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
+          "subject": "feat(iterations): let teams run manual periods end to end in Web and Desktop",
+          "group": "clients",
+          "files": 106
+        }
+      ],
+      "docs_commit": "Documentation commit following product_head; resolve through Git history of this file",
+      "committed_paths": 241,
+      "source_mapping": "Tree of product_head matches 6694 of 6696 final-check-inputs.json files; apps/web/next-env.d.ts is the excluded generated production-build route import, scripts/uninstall-desktop-windows.bat differs only by eol=crlf checkout conversion and its blob is unchanged from base_head",
+      "verification": "Reused the accepted baseline and final affected-path evidence; this session added go vet for both fixture-only intermediate states, go vet ./... and gofmt on the committed server tree, git diff --cached --check per commit",
+      "excluded_unstaged": [
+        ".agents/skills/ (46 untracked Trellis tool files)",
+        ".codex/ (8 untracked agent config files)",
+        ".trellis/.template-hashes.json (tool template sync)",
+        "apps/web/next-env.d.ts (generated production-build route path)",
+        ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/history-metadata-final.png (no citation or manifest identity)"
+      ],
+      "remote_ci": "not_run",
+      "push_merge_deploy": "not_run",
+      "evidence": ".trellis/tasks/10-05-iterations-i1-verification/verification.md#本地提交与已验证源码的对应关系"
+    },
+    "documentation_record": {
+      "scope": "68 I1 acceptance documents, task records, screenshots and E2E environment specification",
+      "product_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
+      "commit_identity": "Git history of this task.json; no self-referential SHA",
+      "remote_ci": "pending; unchanged",
+      "followup_e2e_thread": "01a11513-83b5-7de3-8adb-d81e252aec33"
     }
   }
 }

@@ -1,0 +1,163 @@
+{
+  "checked_at": "2026-10-06T22:20:45.427304+08:00",
+  "scope": "Handoff verification only; no product code changes or product test reruns",
+  "workspace": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "branch": "codex/projects-p1",
+  "head": "115b4cd28277941a8d9ad8fda5acecf99b999152",
+  "implementation_commits": [
+    "1247d2728e690c89707b248096f952d372e7c38e",
+    "4c9be765213f20953b46cb84db5caa19fc2f945d"
+  ],
+  "git_before": {
+    "tracked_changes": [],
+    "untracked": [
+      ".trellis/tasks/10-05-iterations-i1/handoff-2026-10-06-lg-hg-evidence.json",
+      ".trellis/tasks/10-05-iterations-i1/handoff-2026-10-06-lg-hg.md"
+    ]
+  },
+  "original_thread": {
+    "id": "01a10f96-64ce-7463-b2da-646c7cbe5003",
+    "status": "idle",
+    "latest_turn": "completed",
+    "error": null
+  },
+  "gates": {
+    "FG": "passed",
+    "LG": "passed",
+    "HG": "passed",
+    "CG": "not_started",
+    "UG": "not_started",
+    "FCG": "pending",
+    "VG": "not_started"
+  },
+  "release": {
+    "iterations_i1_default": false,
+    "atomic_handoff": false
+  },
+  "source_summary": ".trellis/tasks/10-05-iterations-i1/lg-hg-verification.json",
+  "raw_log_audit": [
+    {
+      "log": "/tmp/i1-lg-hg-final-handler.jsonl",
+      "exists": true,
+      "sha256": "08b66ae46ccad3261b9ea82d95b20b72699e0465ebc2b78564ecfcd4d51a372a",
+      "hash_matches": true,
+      "counts": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 638,
+          "skip": 2
+        }
+      },
+      "outcomes": {
+        "github.com/multica-ai/multica/server/internal/handler": "pass"
+      },
+      "counts_match": true,
+      "outcomes_match": true
+    },
+    {
+      "log": "/tmp/i1-lg-hg-final-domain.jsonl",
+      "exists": true,
+      "sha256": "527c8fbc6b760358c0b2d0fb3436b97f59b99bc20917deba73fb7e5846e663a7",
+      "hash_matches": true,
+      "counts": {
+        "github.com/multica-ai/multica/server/internal/iteration": {
+          "pass": 120
+        },
+        "github.com/multica-ai/multica/server/internal/util": {
+          "pass": 115
+        },
+        "github.com/multica-ai/multica/server/pkg/publicapi/v1": {
+          "pass": 5
+        }
+      },
+      "outcomes": {
+        "github.com/multica-ai/multica/server/internal/iteration": "pass",
+        "github.com/multica-ai/multica/server/internal/util": "pass",
+        "github.com/multica-ai/multica/server/pkg/publicapi/v1": "pass"
+      },
+      "counts_match": true,
+      "outcomes_match": true
+    },
+    {
+      "log": "/tmp/i1-lg-hg-integration-accepted.jsonl",
+      "exists": true,
+      "sha256": "7b4fb43a2a7c57de71cec004220627181e389201d3a454d213595249bea3895f",
+      "hash_matches": true,
+      "counts": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 179,
+          "skip": 2
+        },
+        "github.com/multica-ai/multica/server/internal/service": {
+          "pass": 154
+        },
+        "github.com/multica-ai/multica/server/cmd/server": {
+          "pass": 5
+        }
+      },
+      "outcomes": {
+        "github.com/multica-ai/multica/server/internal/handler": "pass",
+        "github.com/multica-ai/multica/server/internal/service": "pass",
+        "github.com/multica-ai/multica/server/cmd/server": "pass"
+      },
+      "counts_match": true,
+      "outcomes_match": true
+    },
+    {
+      "log": "/tmp/i1-lg-hg-builtin-accepted.jsonl",
+      "exists": true,
+      "sha256": "c42c088558adbb5b98ed70bc4fd0dbaad6feac284db55e2cf055f690cd0cde4c",
+      "hash_matches": true,
+      "counts": {
+        "github.com/multica-ai/multica/server/internal/service": {
+          "pass": 1
+        }
+      },
+      "outcomes": {
+        "github.com/multica-ai/multica/server/internal/service": "pass"
+      },
+      "counts_match": true,
+      "outcomes_match": true
+    },
+    {
+      "log": "/tmp/i1-lg-hg-pool-fix-accepted.jsonl",
+      "exists": true,
+      "sha256": "d555a9f135f0befdd6e4bd191780e900eb8a24bc3fe58f041f9edbef4dfe98a6",
+      "hash_matches": true,
+      "counts": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 113,
+          "skip": 2
+        },
+        "github.com/multica-ai/multica/server/cmd/server": {
+          "pass": 1
+        }
+      },
+      "outcomes": {
+        "github.com/multica-ai/multica/server/internal/handler": "pass",
+        "github.com/multica-ai/multica/server/cmd/server": "pass"
+      },
+      "counts_match": true,
+      "outcomes_match": true
+    }
+  ],
+  "remote_checks": [
+    {
+      "command": "gh run list --repo yangshangwei/multica-0.4.37 --commit 115b4cd28277941a8d9ad8fda5acecf99b999152 --limit 20 --json databaseId,workflowName,status,conclusion,headSha,url",
+      "exit_code": 0,
+      "result": []
+    },
+    {
+      "command": "git ls-remote --heads origin refs/heads/codex/projects-p1",
+      "exit_code": 0,
+      "stdout": ""
+    }
+  ],
+  "limitations": [
+    "A prior test log is historical evidence, not a new test run.",
+    "Go selections overlap; counts must not be added as unique tests.",
+    "Empty build/vet logs do not independently prove exit status; historical exit 0 comes from committed verification record.",
+    "No full I1 acceptance, P95, Web/Electron E2E or remote CI pass is claimed.",
+    "Remote lookup covers current HEAD and exact branch name only.",
+    "Original thread status and git state must be rechecked when resuming."
+  ]
+}

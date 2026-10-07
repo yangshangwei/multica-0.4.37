@@ -1,0 +1,332 @@
+{
+  "recorded_at": "2026-10-07T03:27:04.957846+00:00",
+  "base_head": "115b4cd28277941a8d9ad8fda5acecf99b999152",
+  "branch": "codex/projects-p1",
+  "database": "multica_i1_recovery_20261007_1125",
+  "postgres": "17.11 (Debian 17.11-1.pgdg12+2)",
+  "scope": "Owned local PostgreSQL database and private schema maintenance rehearsal; no online deployment, production data or release flag changes.",
+  "source_sha256": {
+    "server/cmd/migrate/migrate_iteration_recovery_test.go": "00638120db2d63ecbf707e33d31e40b26fd3613f36154a9a4e1a2c8e622250fe",
+    "server/cmd/migrate/main.go": "79cfe4162a3d6d36a26338b992ecef7e84e873e25edbb6a9ee8461a999132757",
+    "server/internal/handler/iteration_history_test.go": "21f31454770d2f622f82be6af79bce733007769ff8d5602c1b4640942ea3fabe",
+    "server/internal/iteration/membership.go": "163f21e0cb3f07dc26bf8d41abd3eb5073a73428094903a787c191025dd2df52",
+    "server/migrations/550_iteration_tables.down.sql": "65673b349ce6184020ebad5f9573ac8b667f45a5f2723fa15249dfc79026d6f6",
+    "server/migrations/550_iteration_tables.up.sql": "5ca66efc1d126e844e85b3b7c4348f6b6129bf8f7ae76fa1075a891239273aad",
+    "server/migrations/551_iteration_settings_workspace.down.sql": "88d5829b75dadfce77f41a82d625124836fcca4ddad0baa8e227090a26f3986b",
+    "server/migrations/551_iteration_settings_workspace.up.sql": "ca9fbb93250efe44830b8e9502319187fe81ff7d144fd25298b764353732d5b0",
+    "server/migrations/552_iteration_id.down.sql": "24678c29a7bcc8acb6911cf72738679d4a5c2f351fe12150b4423c5f25e21b2a",
+    "server/migrations/552_iteration_id.up.sql": "13f2404899c913a9f09b025e5564faeaab481540c7cb89dc53a1871e968a90a7",
+    "server/migrations/553_iteration_single_active.down.sql": "6398949d19cac52b3a08c42e36574424c619dfc3d7f30a0473d564903c075707",
+    "server/migrations/553_iteration_single_active.up.sql": "a349f6d6deb622adf9d7764001e9e9aa44a5286e194a275eb52f25ae109f52fc",
+    "server/migrations/554_iteration_workspace_status_date.down.sql": "e80d7b412057fbef5830a071051a2b4ac221b40c1ca74cecf462737930287976",
+    "server/migrations/554_iteration_workspace_status_date.up.sql": "3e2990d0da92baf517372a83568f6bbfba1538b52cc57799b7127f364ac10d4a",
+    "server/migrations/555_iteration_issue_current.down.sql": "499d7898cdb560259c0feb9552df6c38109edd77d98a2573e2640aaf9ddc0f0f",
+    "server/migrations/555_iteration_issue_current.up.sql": "a544500bb43d3b50a1880650026c65efcf639d14b4a46aea89d6d6f7eb1f20e1",
+    "server/migrations/556_iteration_participation_identity.down.sql": "f9dce50fc3e9efa581843ba5be3bebc1fb4b4a51e246fc97f7f4824e019ce3b2",
+    "server/migrations/556_iteration_participation_identity.up.sql": "007fc935858c3d4b7bd6b416b3975c2a197817bc45e8257c90d4f442b95a9531",
+    "server/migrations/557_iteration_participation_issue.down.sql": "3e35044319b4cbc403f429a1e158c80a86ed098f73559e610895114e9608d50b",
+    "server/migrations/557_iteration_participation_issue.up.sql": "e4d423d7a61d3498883a435718c08640ee6f7b46a08dd87cb823ebd76b639e79",
+    "server/migrations/558_iteration_event_id.down.sql": "6fda384b1b1365559c39b9c341697f8a020033981dcaa2be9797faf7315d8e71",
+    "server/migrations/558_iteration_event_id.up.sql": "09555cdae5a682abc36101fc8b31bf71c8a525867fb5aad44a15f6490ae10439",
+    "server/migrations/559_iteration_event_sequence.down.sql": "b096bc148b653bd5029701bd53b4dc9b2d1b6187d9313f83421353c667cf222e",
+    "server/migrations/559_iteration_event_sequence.up.sql": "d2270db7f6736610b00f92edcbfa27634bab935e2b3d08605f595ec8bdf9ea56",
+    "server/migrations/560_iteration_snapshot_identity.down.sql": "a0d7efc49c6b349b73fe69fc8fc60c4e7d9db80372bcf331b7de07a7ca2747ba",
+    "server/migrations/560_iteration_snapshot_identity.up.sql": "5bff1c1be2ea14e9995ed318b5582d48e6c8767fa8a3b1745136eb31679c279a",
+    "server/migrations/561_iteration_operation_id.down.sql": "b51a44ac5c4af4822f63402fb3cb3ff4cc86644af0cfca9901112ec6361628a5",
+    "server/migrations/561_iteration_operation_id.up.sql": "bbcabf282249a3454de60f7826bcee27ce4127acacdb320c254202ad94c66f40",
+    "server/migrations/562_iteration_operation_request.down.sql": "2ead685779203a8cbbd33667be5fc23c962648df1d25d2602008db503c91bf02",
+    "server/migrations/562_iteration_operation_request.up.sql": "27751f49518cf13e49c25393465cd44d3caa257fa74c4a0a73f02eede7746e7c",
+    "server/migrations/563_iteration_notification_id.down.sql": "442a860136cf30c674d12cb3e35da79a977568934d5f2ef40cdb5e06aebc980c",
+    "server/migrations/563_iteration_notification_id.up.sql": "f5871b770b10d39e7202b75c06b09deb061791cda87157f9c328a2ea8ea35ee1",
+    "server/migrations/564_iteration_notification_operation.down.sql": "ea455af9be92afe85cb38e2f149c562bc813e7d1b05af66d80dc094e94c7757f",
+    "server/migrations/564_iteration_notification_operation.up.sql": "2a7199ccf9b502b40f3b3c93c76ca8862f3b500e896f861fe8c1341853a14bd0",
+    "server/migrations/565_iteration_notification_due.down.sql": "2c5fb12244024ea00df22f5cd4a6726712174f79b9a201fa87e62319bd71e563",
+    "server/migrations/565_iteration_notification_due.up.sql": "70bc8efe68805ff3da8cd21c3c59e9179cb5016229ad9f2f5b72381c08aad2cc",
+    "server/migrations/566_iteration_notification_day.down.sql": "c454dd78078bee7ba59e997050f3e7729befab6fd6f93ed8eec2616b76c56022",
+    "server/migrations/566_iteration_notification_day.up.sql": "6ce9c99889df3e9aa98eef22573256bd51bc51f3ca4b699ef441c694c4681865"
+  },
+  "runs": [
+    {
+      "command": "DATABASE_URL=<owned local DB> bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -race -p 1 ./cmd/migrate -run ^TestIterationMigrations -count=1 -json",
+      "log": ".omx/logs/i1-verification/migration-recovery-final.jsonl",
+      "sha256": "22779ffd8dfccd49dd82e27656c0e601b76dea703720e67cb6f9c641d62ab21e",
+      "test_pass_events": 6,
+      "top_level_passes": 2,
+      "skips": 0,
+      "failures": 0,
+      "results": [
+        {
+          "Time": "2026-10-07T11:18:37.081451+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "Test": "TestIterationMigrationsRecoverPartialInvalidIndex",
+          "Elapsed": 0.16
+        },
+        {
+          "Time": "2026-10-07T11:18:37.181824+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "Test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_1_files",
+          "Elapsed": 0.1
+        },
+        {
+          "Time": "2026-10-07T11:18:37.276389+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "Test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_3_files",
+          "Elapsed": 0.09
+        },
+        {
+          "Time": "2026-10-07T11:18:37.372808+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "Test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_4_files",
+          "Elapsed": 0.1
+        },
+        {
+          "Time": "2026-10-07T11:18:37.48716+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "Test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone/after_11_files",
+          "Elapsed": 0.11
+        },
+        {
+          "Time": "2026-10-07T11:18:37.487168+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "Test": "TestIterationMigrationsPartialEmptyRollbackPreservesSharedTimezone",
+          "Elapsed": 0.41
+        },
+        {
+          "Time": "2026-10-07T11:18:38.497566+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "Elapsed": 2.223
+        }
+      ]
+    },
+    {
+      "command": "DATABASE_URL=<owned local DB> bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -race -p 1 -parallel 2 ./internal/handler -run ^(TestIterationHistory|TestIterationDeletionEventKeepsMembershipTransition) -count=1 -json",
+      "log": ".omx/logs/i1-verification/acceptance-history-final.jsonl",
+      "sha256": "85ea97d8ed58e520ea20e6f9c4ee9a09bcafd905e16c5f579b3106e6de1133df",
+      "test_pass_events": 21,
+      "top_level_passes": 15,
+      "skips": 0,
+      "failures": 0,
+      "results": [
+        {
+          "Time": "2026-10-07T11:22:46.492129+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryPriorityLabelsAndCursor",
+          "Elapsed": 0.07
+        },
+        {
+          "Time": "2026-10-07T11:22:46.61832+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryFrozenPriorityAndLabelNames",
+          "Elapsed": 0.13
+        },
+        {
+          "Time": "2026-10-07T11:22:46.672736+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationDeletionEventKeepsMembershipTransition",
+          "Elapsed": 0.05
+        },
+        {
+          "Time": "2026-10-07T11:22:46.725615+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryPersistedCanonicalFacts",
+          "Elapsed": 0.05
+        },
+        {
+          "Time": "2026-10-07T11:22:46.800542+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistorySnapshotUsesFrozenDisplayAndNeverLiveFallback",
+          "Elapsed": 0.07
+        },
+        {
+          "Time": "2026-10-07T11:22:46.891784+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryPaginationBindsScopeAndCurrentAuthorization",
+          "Elapsed": 0.09
+        },
+        {
+          "Time": "2026-10-07T11:22:46.939496+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryStartedReentryAndUnknownStatus",
+          "Elapsed": 0.05
+        },
+        {
+          "Time": "2026-10-07T11:22:46.967317+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryClockRollbackUsesLogicalCutoff",
+          "Elapsed": 0.03
+        },
+        {
+          "Time": "2026-10-07T11:22:46.970314+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryCancelledPlanHasNoSnapshot",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-10-07T11:22:47.025325+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryReadKeepsCoherentSnapshot",
+          "Elapsed": 0.05
+        },
+        {
+          "Time": "2026-10-07T11:22:47.066264+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryReadRetriesRevocationSnapshot",
+          "Elapsed": 0.04
+        },
+        {
+          "Time": "2026-10-07T11:22:47.069218+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryCaptureLocksDisplayReferences/workspace",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-10-07T11:22:47.070987+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryCaptureLocksDisplayReferences/project",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-10-07T11:22:47.073069+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryCaptureLocksDisplayReferences/user",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-10-07T11:22:47.074471+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryCaptureLocksDisplayReferences",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-10-07T11:22:47.247241+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryCanonicalThroughLifecycleAndIssueWriters",
+          "Elapsed": 0.17
+        },
+        {
+          "Time": "2026-10-07T11:22:47.256876+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryCaptureResolvesArchivedStatusAndTenantReferences",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-10-07T11:22:47.261422+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryLegacyIdentifierCapture/MYT-7",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-10-07T11:22:47.26457+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryLegacyIdentifierCapture/WS-7",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-10-07T11:22:47.267603+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryLegacyIdentifierCapture/CUSTOM-7",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-10-07T11:22:47.267628+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Test": "TestIterationHistoryLegacyIdentifierCapture",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-10-07T11:22:48.285053+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/handler",
+          "Elapsed": 3.053
+        }
+      ]
+    }
+  ],
+  "other_logs": [
+    {
+      "path": ".omx/logs/i1-verification/backend-audit-static-final.log",
+      "sha256": "cf58099b82a01bb6684488d5f22b7c3250e48b5699a5f7a90cd266e03d6e7cb9"
+    },
+    {
+      "path": ".omx/logs/i1-verification/migration-recovery-handler-setup.log",
+      "sha256": "f7cfa0df6a6c5156d9bd9459d7f5425901e19b4325e040c1330471b8127fb3e3"
+    },
+    {
+      "path": ".omx/logs/i1-verification/acceptance-history-fixture-failure.jsonl",
+      "sha256": "d7fd12abae68756f87829ee6c60713d42ba04ecbdda9f89b637d437ac9f8f469"
+    },
+    {
+      "path": ".omx/logs/i1-verification/full-check-accepted.log",
+      "sha256": "cdf0b49f1ca463072baa14d4bb3981778d6a7fa394ce628f6aceab1a057e9a9f"
+    }
+  ],
+  "cleanup": {
+    "database": "multica_i1_recovery_20261007_1125",
+    "ownership_marker": "i1_backend_acceptance_7a640428be924dcd837bc6c3ce8d4d6c",
+    "ownership_verified_before_drop": true,
+    "sessions_before_drop": 0,
+    "drop_verified": true,
+    "removed_at": "2026-10-07T03:26:38.324509+00:00",
+    "source_env": "/Users/artisan/.multica/dev/envs/check-20261007023827-87965/check.env"
+  },
+  "checks": {
+    "real_553_invalid_leftover": true,
+    "without_hook_negative_control": "42P07",
+    "initial_failed_build": "23505",
+    "partial_ledger_rows": 3,
+    "recovered_ledger_rows": 17,
+    "recovered_I1_indexes_valid_ready_live": 16,
+    "repeat_preserves_index_oid_definition_validity_and_ledger_timestamps": true,
+    "used_down_refusal": "P0001, no catalog/ledger mutation",
+    "empty_partial_prefix_lengths": [
+      1,
+      3,
+      4,
+      11
+    ],
+    "empty_down_preserves_shared_timezone_and_ordinary_issue": true,
+    "full_up_after_each_partial_down": true,
+    "active_issue_deletion_regression_retained": true,
+    "real_leave_then_external_done_preserves_OD4_D5_and_event_count": true,
+    "real_parent_child_each_once_in_original_and_scope": true,
+    "gofmt": true,
+    "go_vet_migrate_handler": true,
+    "git_diff_check": true
+  },
+  "initial_fixture_failure": "History fixture used parent_id; PostgreSQL42703 exposed that the actual column is parent_issue_id. Corrected test fixture only, retained failing raw log; no production code changed.",
+  "limitations": [
+    "No online deployment or mixed-version server rollout performed.",
+    "No destructive downgrade of a used application database performed.",
+    "Old installed clients are covered by existing wire fixtures and live handler guards, not historical client binaries.",
+    "Prior full-check remains the baseline; the two changed Go tests have focused fresh race/vet coverage.",
+    "Original PRD visual/accessibility proofs and final gate status are parent-owned."
+  ]
+}

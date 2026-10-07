@@ -1,3 +1,5 @@
+> **2026-10-07 当前结论：FG/LG/HG/CG/UG/FCG已通过；VG本地项完成，正式远端CI未运行。** 以[最终验收](../10-05-iterations-i1-verification/verification.md)、[矩阵](../10-05-iterations-i1-verification/acceptance-matrix.md)和[handoff](handoff.md)为准。以下全部为历史阶段记录，不再代表当前阻断或下一步。
+
 # I1 实施进度与阻断记录
 
 > 最新状态：FG 已通过，当前证据以 [FG 验收记录](../10-05-iterations-i1-foundation/fg-verification.md) 为准。发布保持关闭；历史记录中的未通过/网络限制不是当前阻断。下一步 LG/HG；完整 I1 仍待后续门槛。

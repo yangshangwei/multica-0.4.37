@@ -1,0 +1,36 @@
+{
+  "gate": "CG",
+  "status": "passed",
+  "at": "2026-10-07",
+  "base_head": "115b4cd28277941a8d9ad8fda5acecf99b999152",
+  "working_tree": "uncommitted I1 implementation; final FCG/VG checks pending",
+  "rollout_default": false,
+  "logs": [
+    {
+      "path": "/tmp/i1-final-focused.jsonl",
+      "sha256": "995d2e33968e6f25d52297c2605cd2a99ea42464b52ab88f5750d127fd0b857a",
+      "test_events": {
+        "pass": 422,
+        "skip": 4
+      },
+      "packages": {
+        "github.com/multica-ai/multica/server/internal/iteration": "pass",
+        "github.com/multica-ai/multica/server/internal/service": "pass",
+        "github.com/multica-ai/multica/server/internal/handler": "pass",
+        "github.com/multica-ai/multica/server/cmd/server": "pass"
+      }
+    },
+    {
+      "path": "/tmp/i1-handoff-capability-red.log",
+      "sha256": "7cdc0aca61ee39f85ccd4fedf012a798e81aab3e31de39859853a1edf9c2ef9b",
+      "test_events": {},
+      "packages": {}
+    },
+    {
+      "path": "/tmp/i1-handoff-capability-green.log",
+      "sha256": "6f9f215c8db3d8af5bb9924d1e55c2c3ded9d0105bdcd1d32c4c824d1129b9be",
+      "test_events": {},
+      "packages": {}
+    }
+  ]
+}

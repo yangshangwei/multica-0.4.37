@@ -1,0 +1,117 @@
+{
+  "status": "passed",
+  "date": "2026-10-07",
+  "baseline_contract": "../10-05-iterations-i1-foundation/s3-capacity-verification.md",
+  "samples_per_scenario": 3,
+  "writes_per_sample": 300,
+  "log": "/tmp/i1-ordinary-write-final.log",
+  "sha256": "97428cbd3285383fbcfac7fcc8b352c2524f3e50cc1027c6faa728f58ad62b14",
+  "summary": {
+    "writers_1/unassociated": {
+      "count": 3,
+      "median_writes_per_second": 539.6,
+      "median_p95_ms": 2.883,
+      "maximum_p95_ms": 3.204
+    },
+    "writers_1/active_planned": {
+      "count": 3,
+      "median_writes_per_second": 353.5,
+      "median_p95_ms": 4.213,
+      "maximum_p95_ms": 4.215
+    },
+    "writers_4/unassociated": {
+      "count": 3,
+      "median_writes_per_second": 707.6,
+      "median_p95_ms": 8.466,
+      "maximum_p95_ms": 9.917
+    },
+    "writers_4/active_planned": {
+      "count": 3,
+      "median_writes_per_second": 426.3,
+      "median_p95_ms": 12.1,
+      "maximum_p95_ms": 19.55
+    }
+  },
+  "raw": {
+    "writers_1/unassociated": [
+      {
+        "ns_per_write": 1853164.0,
+        "p95_ms": 2.883,
+        "tx_queries_per_write": 8.0,
+        "writes_per_second": 539.6
+      },
+      {
+        "ns_per_write": 1680422.0,
+        "p95_ms": 2.768,
+        "tx_queries_per_write": 8.0,
+        "writes_per_second": 595.1
+      },
+      {
+        "ns_per_write": 1963824.0,
+        "p95_ms": 3.204,
+        "tx_queries_per_write": 8.0,
+        "writes_per_second": 509.2
+      }
+    ],
+    "writers_1/active_planned": [
+      {
+        "ns_per_write": 2759193.0,
+        "p95_ms": 4.062,
+        "tx_queries_per_write": 12.0,
+        "writes_per_second": 362.4
+      },
+      {
+        "ns_per_write": 2828990.0,
+        "p95_ms": 4.215,
+        "tx_queries_per_write": 12.0,
+        "writes_per_second": 353.5
+      },
+      {
+        "ns_per_write": 2849055.0,
+        "p95_ms": 4.213,
+        "tx_queries_per_write": 12.0,
+        "writes_per_second": 351.0
+      }
+    ],
+    "writers_4/unassociated": [
+      {
+        "ns_per_write": 1548605.0,
+        "p95_ms": 9.917,
+        "tx_queries_per_write": 8.0,
+        "writes_per_second": 645.7
+      },
+      {
+        "ns_per_write": 1413188.0,
+        "p95_ms": 7.998,
+        "tx_queries_per_write": 8.0,
+        "writes_per_second": 707.6
+      },
+      {
+        "ns_per_write": 1377792.0,
+        "p95_ms": 8.466,
+        "tx_queries_per_write": 8.0,
+        "writes_per_second": 725.8
+      }
+    ],
+    "writers_4/active_planned": [
+      {
+        "ns_per_write": 2345908.0,
+        "p95_ms": 12.1,
+        "tx_queries_per_write": 12.0,
+        "writes_per_second": 426.3
+      },
+      {
+        "ns_per_write": 2419729.0,
+        "p95_ms": 19.55,
+        "tx_queries_per_write": 12.0,
+        "writes_per_second": 413.3
+      },
+      {
+        "ns_per_write": 2204644.0,
+        "p95_ms": 12.08,
+        "tx_queries_per_write": 12.0,
+        "writes_per_second": 453.6
+      }
+    ]
+  }
+}

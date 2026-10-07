@@ -1,4 +1,43 @@
+> **本地提交已完成（2026-10-07）：** 已验收源码以五个本地提交 `823a61774`…`e516b15c2` 落在 `codex/projects-p1`，见[提交与源码对应](../10-05-iterations-i1-verification/verification.md#本地提交与已验证源码的对应关系)。下一步只剩单独授权后的推送与正式远端CI；不推送／合并／部署，发布开关仍关闭。下方“HEAD仍为115b4cd28／大量未提交”是提交前的历史状态。
+>
+> 此前的接续入口：用户已指定新会话完成“核对提交范围、完成本地提交”，见[本地提交handoff](../10-05-iterations-i1-verification/commit-handoff.md)。下文“本轮不提交”指此前验收会话。
+
+# I1 最终验收 Handoff（2026-10-07）
+
+**接续位置：本地验收已收尾，UG/FCG 已关单；VG 的正式远端 CI 尚未执行。不要重新开始 CG 或客户端开发。** 下方历史接手记录中的“下一步 CG／客户端不存在”已被本节替代。
+
+- 目录 `/Volumes/artisan/code/2026/multica-0.4.37`；分支 `codex/projects-p1`；HEAD 仍为 `115b4cd28277941a8d9ad8fda5acecf99b999152`。
+- 原开发会话 `01a1119c-6652-7230-87ec-e5e6945ee021` 在11:12中断；接手先核对进程与两次源码SHA，未发现继续写入。已有171项dirty入口和全部CG／客户端成果均保留。仍有大量未提交内容，不能把HEAD单独当作最终代码身份。
+- FG/LG/HG/CG/UG/FCG 通过；foundation、clients子任务已完成。父任务与verification仍为 `in_progress`，原因只有原计划正式远端CI门槛未执行，不是本地实现或验收仍缺失。
+- [最终验收](../10-05-iterations-i1-verification/verification.md)、[29项矩阵](../10-05-iterations-i1-verification/acceptance-matrix.md)、[原PRD界面审查](../10-05-iterations-i1-verification/ui-final-audit.md)、[源码指纹与运行证据](../10-05-iterations-i1-verification/source-provenance.json)是当前事实来源。
+
+## 已完成与证据
+
+完整基线 `full-check-accepted.log`：10,215 TS tests、15/15静态任务、全Go race/vet、生产构建、249 E2E通过／49跳过。接手验证基线快照的五项差异均在10:38重跑前完成，其他6,232项一致。
+
+最终只补缺失证据／界面遗漏：真实迁移INVALID恢复及部分回退、真实F移出后外部完成、真实父子计数；手动模式说明、终态可读选择、冻结任务事件身份、保存时区预览；移动端迭代通知的Web/Desktop提示。无新依赖或生命周期协议变化。
+
+增量验证：views100 tests、移动196 tests+iOS脚本及各自typecheck/lint；迁移race2顶层/4子项、History15顶层/21pass事件；最终生产Web与原生Electron四项I1 E2E全部通过，0skip/0retry，24.2s；视觉94/pass，12张截图带SHA。6,696个运行／测试文件与最终冻结输入一致，87个sqlc生成文件无漂移。不要把重叠测试数相加，也不要称最终小修后重跑了249项全套。
+
+性能原阈值复算仍通过：1,000项detail/preview/closure warm P95为57.992/324.154/1,099.838ms；1,530项disable preview/apply为459.041/957.511ms；普通四写者关联任务426.3/s、P95 12.10ms。仅代表记录的本机warm负载。
+
+## 后续边界
+
+1. 本轮不提交、不推送、不合并、不部署；`iterations_i1`默认false。完整VG所要求的正式远端CI仍待未来单独授权的提交／发布阶段，不能填写假的CI链接或标无条件passed。
+2. 以后要提交时先重新核对并发会话与当前dirty文件；接手前已有的`.agents/`、`.codex/`、Trellis模板等变动不能顺手混入I1提交。保留Lore提交协议。不要自动归档现有任务树。
+3. 旧客户端兼容由wire/schema／真实旧请求／mobile序列化证明，未运行历史发行二进制；mobile完整编辑和真机视觉仍未交付，点击通知已有明确支持版本提示。完整辅助技术、其他OS／浏览器不冒称覆盖。
+4. [49项跳过说明](../10-05-iterations-i1-verification/skipped-tests.md)全部为独立fixture，I1没有跳过；这些场景仍未运行。部分旧`/tmp`原日志已过期，保留的完整race和内嵌性能样本证据边界见source-provenance。
+5. 新迁移测试库已确认所有权后删除；本轮启动的API/Web已停止；原I1 agent测试环境`check-20261006151843-35615`数据库和profile保留。恢复该环境时用其自身ENV_FILE，核对实际API端口与生产rewrites；不要混用另一个check环境的构建配置。
+
+---
+
+# 历史接手记录（截至2026-10-06；仅保留设计／过程依据）
+
+以下状态和下一步描述是当时记录，不是当前任务指令；当前结论以上文及task.json为准。
+
 # I1 后续开发计划与 Handoff
+
+> **2026-10-06 22:20 接续入口：** [CG 最新交接与新会话引导语](handoff-2026-10-06-cg.md)。已核对 FG/LG/HG 通过；下一步 CG，UG 产品实现仍待开发，之后完成 FCG/VG。本文下方原始设计和历史检查单继续保留。
 
 日期：2026-10-06。原规划基线为 `c96b63c09`；本轮从 `da6c0fc65` 实施 LG/HG。当前以 [LG/HG 集成验收记录](lg-hg-verification.md) 和 `task.json` 为准。原规划的[独立审查](research/handoff-review.md)继续有效。
 

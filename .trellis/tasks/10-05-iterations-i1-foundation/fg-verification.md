@@ -1,3 +1,5 @@
+> 2026-10-07: FCG also passed; foundation is now completed. Final shared integration, current source identity and real recovery evidence are in [final verification](../10-05-iterations-i1-verification/verification.md). Statements below retaining foundation until FCG describe the earlier FG checkpoint. Rollout remains off; VG remote CI remains pending.
+
 # FG foundation acceptance
 
 Status: **passed** on 2026-10-06. Verified implementation commits:

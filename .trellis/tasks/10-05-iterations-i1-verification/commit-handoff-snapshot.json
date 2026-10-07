@@ -1,0 +1,2415 @@
+{
+  "captured_at": "2026-10-07T12:00:17.714853+08:00",
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "branch": "codex/projects-p1",
+  "head": "115b4cd28277941a8d9ad8fda5acecf99b999152",
+  "purpose": "Resume commit-scope audit and authorized local commits; this provisional classification is not a staging whitelist.",
+  "staged_paths": [],
+  "self_excluded": ".trellis/tasks/10-05-iterations-i1-verification/commit-handoff-snapshot.json",
+  "entries_exclude_this_snapshot_to_avoid_self_hash": true,
+  "entry_count": 297,
+  "group_counts": {
+    "tooling": 55,
+    "D_evidence_specs_handoff": 72,
+    "B_shared_clients_platforms_mobile": 98,
+    "generated_route_types": 1,
+    "C_e2e_and_fixture_integration": 7,
+    "A_backend_and_required_tests": 64
+  },
+  "verified_runtime_manifest": ".omx/logs/i1-verification/final-check-inputs.json",
+  "verified_runtime_manifest_sha256": "ffb25a8414df101dab35c95102c37a62604e73feee620761311f0d8d9f123f10",
+  "verified_runtime_inputs": 6696,
+  "verified_runtime_drift": [],
+  "entries": [
+    {
+      "status": " M",
+      "path": ".trellis/.template-hashes.json",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "02869ac8685884b3066e85a7642e4f90fe4a6d5d1a4655402a6946f7ae013c91"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/spec/core/frontend/index.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "efc10aad49f7178484f0eb23f9d13943ce09baec6c4973a50bc1817646b33b48"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/spec/server/iterations.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "9689c29ab78e1197e709f3ae5307adff8d882bc228dc608a3c2987a101b72287"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/spec/views/frontend/index.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "77de84658c27a80f3a31c6a2eada77fa48a20d526157be3f1c5130251767f125"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "29549b981a56ebe8c0d18c92f05c0dcdfbcffc417389fa7e10c7cffee8030b76"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-clients/implement.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ec89a142238ed79e64b2a194818bc79330e90913c5b1c6b9de7b142fb52689e1"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-clients/task.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "615cb348aaa28a66e42e8c6357960ae2b366c3ad8660b3046b0cbbb9aa9cabf3"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-closure/task.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b5e99db15ca1755e3b08533716d54da412ddcee39071d06058ec7629aaea3384"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-foundation/fg-verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "800a9fa3d796c50e97c530e6c82bec462f17cb24ac635c3f6046909e9ddffd22"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-foundation/task.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ff53d7dac8ed2af56f1c421ca5946e752cedc7caa324685a57687cf96cd37fa0"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/implement.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "cbf8dc6672267aa8026284f423523b97600603554137e2edad21448c4ed4d32f"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/prd.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "0035c44760b0ee9a28047c0e46df8a25b909e203b5b93f61d1172d7b67ca3be3"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/task.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c61acc82ebcf7790c71bbe78d84b1630b6c31f4df05052cd416f0e9aecc3b7c0"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1/api-contract.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a7c28d4a7fbae7021222fc46979905472f56ff150ef4f5e89acfbb81cdf7a08a"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1/design.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "1961b1003165dc3c7b6faf9ecacd135b33515ebfc7cc3dd957ba53560f143b8c"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1/handoff.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "cdc5b957eb01c3fac8560b55adc063018319220b0c1859d14bc9a93a953efa8a"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1/implement.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e7cd159ad44e7a10479b8c1cf7bb449480f7aec7dd27e27fd85284dce31312f4"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1/task.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "0afbcb7843f378f5cfa69301223011cc193e184f9c2767f750bcfe1ae74a34a4"
+    },
+    {
+      "status": " M",
+      "path": ".trellis/tasks/10-05-iterations-i1/verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a96e390cff04dfc62fe0aa5b78bf388fb1452685c43a2604c7551a71bad9f1f2"
+    },
+    {
+      "status": " M",
+      "path": "apps/desktop/src/renderer/src/routes.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "eae10652718d0b179bff6b52c190fd295af06ae63f3ecf74235e637cf09f6f71"
+    },
+    {
+      "status": " M",
+      "path": "apps/mobile/app/(app)/[workspace]/(tabs)/inbox.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a971b47c0a12e206e0eb41de4cf93c2b21c56a549473022896dfe53bd73d88ae"
+    },
+    {
+      "status": " M",
+      "path": "apps/mobile/components/inbox/detail-label.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "765a6004a10553a69cbc803ec4798e5c662b7431fbd772aca2a7f984b28ee0c7"
+    },
+    {
+      "status": " M",
+      "path": "apps/mobile/lib/inbox-display.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "78b0acd37e5952d40a94082e5736c5eb3e1d328aa93b38968b89c8d2ab6c43e3"
+    },
+    {
+      "status": " M",
+      "path": "apps/mobile/lib/inbox-display.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "14624942906683e48b882b4901e926273d95feccfa82502ce89d176113f20f9d"
+    },
+    {
+      "status": " M",
+      "path": "apps/web/next-env.d.ts",
+      "candidate_group": "generated_route_types",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+    },
+    {
+      "status": " M",
+      "path": "e2e/fixtures/project-p1-desktop.ts",
+      "candidate_group": "C_e2e_and_fixture_integration",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "842d27ac9d2df03a618dc244d4407b73c6b57c13ba9cf63bb13bad2b1e8a29e5"
+    },
+    {
+      "status": " M",
+      "path": "e2e/project-squad-workspace.spec.ts",
+      "candidate_group": "C_e2e_and_fixture_integration",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "33e59573b33529562c3b8b4daf3d8a615b59280a5d9ca4567eec8ee07a04dd73"
+    },
+    {
+      "status": " M",
+      "path": "e2e/workspace-defaults.spec.ts",
+      "candidate_group": "C_e2e_and_fixture_integration",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "87f9519a746d105f4312fd7a20d1eff0bbd2b0e5ad6a90de75a9016a289461f2"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/api/client.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "f8847453fe87a6fded17ea1281c5ab071da2cbd7da89db2da6afd9cc5119ab92"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/api/index.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b5bcf4cb1f4298c48254dc1bd9ee1e0cc73992c6c17d077bbb65e516b1d7daf8"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/api/schemas.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "9ca7cf23982bd0237e1c6a022ec563546f8cf966e5f8489c8e1875e4af2b10f4"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/api/triage-schemas.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "7b621453f2e3dea06a08c7ab0a34717eeed06e0b191cddc9fce7bfdafb211850"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/diagnostics/diagnostic-context.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "52ba66e3ddcf8fd55e8d6852691e5667a2382aca7c40ff5beacf0c6aaae9e03b"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/package.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b7b8f46f31f45e227d657c5c8a007b180abfba18432eaf92b618871c8e577595"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/paths/consistency.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "00b4dc69b6c64d2be48f15481d33882b5fed796103ad8dec52b0baa05de77549"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/paths/paths.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "98f9a2cc6663228cfa29a952e3aa2c1741b1cbd145b114dab7f7a23f6d28d103"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/paths/route-icons.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "87a5700742511a1fe7d8f3273d2913e73af4c60edfb9d820b307a7ec2cebacdf"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/paths/tab-presentation.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "bd6211887218054a2bc84a06309b30b3250da4af7a255b670357ec5f061f9093"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/paths/tab-presentation.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d02736feccacca7003598c46ab5b8886aafdac8b247b47959e0962b3cdc88eef"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/paths/tab-subject.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b821066b577c77c61e5e02c3cef777d6d17bd8a5e5b955fe96174f46726dd0bf"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/realtime/use-realtime-sync-ws-instance.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "535592d61ba264bc5b4c03e61c1ef2f9c759015b247fc6639d1f22c6a15b1cc4"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/realtime/use-realtime-sync.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4cb887c77d6425c6272ce06c9768c9d3c7f72d53a1fddcca070759cdf85b7c44"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/types/api.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2b37bcafe56665bb81da71b4bc70cafe83504ef93eb16b02dbec2aaa2c775e2c"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/types/events.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "bfa58866f5efaedeb51bd39a1910482afe4dfa206aa8dd178eb793f3afea7933"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/types/inbox.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "21568cf676df7b554cf988492cc243accc7386f3566efa068343d57d73c1c390"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/types/issue.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "264bb0c405782ef35c06deeccd1072819a21f56203fbc937b9af9e745d2c77d2"
+    },
+    {
+      "status": " M",
+      "path": "packages/core/types/triage.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "5ab0084dc8b78172751024ca50235f3ca0d2b8a681f2582ef41604ebee400711"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/common/format-in-time-zone.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "37a8ace1f8a9f9c7fd458c89744bd2b391cffff7f8d9722db5db2fc1d0f66f83"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/editor/utils/link-handler.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c14d46e0303be31d668a1c9567d9a4e2d0479b977bc6d5c30f3dd9f8786a64e4"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/editor/utils/link-handler.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "380901e387e495748bab593207cc952cc18a68096492b84fd43a611ee3d80725"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/inbox/components/inbox-detail-label.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2e65159b9b5099eec7496ff2f4fe94d51664ee85c5b4ec40449850327e2b98dd"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/inbox/components/inbox-display.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a623b27f038ca5f5bb8dd2c580919a96378fe6c63cfabc47eea32a20484da228"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/inbox/components/inbox-display.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "991a10eb5135018d9b53e9f8dda3a44763883bf323432aa6c20426bea78f4cd2"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/inbox/components/inbox-page.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "bf20ce40e35dbe2b79f2136563f1e7f5b79920efa4b720d877dd9251d207efc4"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e17318aff962bfe4295daceb330d9d56715496d7682d07a653bd0191bbe96353"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/issues/components/batch-action-toolbar.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4969f35f50c6a857abd26c0b2f32adf1f0e53c8503f65b321db09254c393e146"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/issues/components/batch-action-toolbar.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c75aaf3e60a4a1e75247de8fab8777728c410b0c9fd87d2318221f5cfaa59389"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/issues/components/issue-detail.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a8e210b519ca77eb20523f21253a9a30f397893a15434c97d258196309b8ae49"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/issues/components/issue-detail.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "cacf5feae93d323b03bf2bf6973a8c8e716fc393b6a5fbc3cae2a89e0549685d"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/issues/utils/status-label.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4c42014d7ca0ed3cf0478f8f29eec9a1c5e801e64b75b793c952a1d830a4c55b"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/layout/app-sidebar.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "49859dd6f247a38be86543cb3409c66c03dff5b4590ddfb9194b969fdf1449cf"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/layout/route-icon-components.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "eb971128b6fafa1cdeda981c6390f3d9c89a63bb53595beca2e2ac305f544bec"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/layout/tab-presentation.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8a82c1cb7fe8e872b6cf02d5901de201723a50cde0cef1f648f9482120235cef"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/layout/tab-presentation.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b8e49b07a1d4a0fa1119e522908d660590090ddc64c807444b0eb4c25cd07b48"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/locales/en/inbox.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "90673dbf2656355f9a535608dd75ab7902f7b4b8338b3d3c4af27cfce0821111"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/locales/en/layout.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d79ffeafe8e28d78c95405edd691c1dfa0b4404c2fc98bf9c424526245f7c245"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/locales/en/projects.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e665d46e8d13e2266f759121ac355cec5185c47bf446a8f7346e718887d982cb"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/locales/zh-Hans/inbox.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "36fae1dba9096f5a5912a8c4dd764238c9752960c330562200bdaf15b9b1e425"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/locales/zh-Hans/layout.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "36d03103210c745ebbffeb0e33a1d2bde2b5ac88b97f3bcee077f8c0cf77dd04"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/locales/zh-Hans/projects.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "095ebc40a20cd781e0a0bb3e75b5e834dffa4c7cd708aa38e89ee65adf297cf0"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/modals/create-issue.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3ba5e4dbfdd878c0aec13bbb8e334f7ad0c8970940ebb928c49ddc3480390f87"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/package.json",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "0228591041b2350d9f023568a206e522f184bba17bc12b46543808e38712e196"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/projects/components/project-detail.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2be0aa2fa519b51767304fb03174a4566280b9910f5cd41d95381b0e618118a1"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/search/search-command.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c60bf9671716dc26d692810c376494f84c7c5fd0332938f2ee2dcf57f1170cd6"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/search/search-command.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a7942b786263deb4b095bad113b0fd0baa328f321c8862f6fe4123089c6c4add"
+    },
+    {
+      "status": " M",
+      "path": "packages/views/triage/triage-action-dialog.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8736c41d5bf812640a8c687eaaf102efeb3ef02c9946de2e05fff4859edd12f9"
+    },
+    {
+      "status": " M",
+      "path": "server/cmd/server/main.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "56d8024ee8e8079060cdb684029b420dd574a797fe50e47110df45bbbe48aa83"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/daemon_chat_resume_fallback_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "baaa2a6a8f85d958133f3cc3951d4304989c62f378f1a26b74c475864c8ab465",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/daemon_comment_delivery_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b01b7e3ebd15a581931b327cbf48e0039d76e73f33d93d36a730fab51679b3e8",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/daemon_skill_load_failure_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "62d11bd7e161f7903c0f082a9f7b10c9fd04bebf8854faed4b3556b93647a6e0",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/daemon_skill_resolve_scope_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d0264c576c58bed6cb427e8716eb7d630ffa2cf4a91f07d1f190b4bff505f3e8",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/issue_create_position_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "837994cf66600068a21722cd0b4c853f9027a8eb505bb768a124327fb530ccf2"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/iteration_history.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "84c26f877d483ae49d9eacd65a6355c8941a7e616b3bfa34d1b2c5b690a0a906"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/iteration_history_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "21f31454770d2f622f82be6af79bce733007769ff8d5602c1b4640942ea3fabe"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/iteration_list.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "f37b22fb47d6c1217c8d85802472790794364a8b927fea0bb33d4639c6c8f5f0"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/iteration_revoke_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "7ab456e0420b818bda5769066905e2bc72be0459828db8975febb652ca635b4a"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/iteration_settings.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "daba3a3dbc02d0dd0af0c3b7514f17ac52d8d2f08e6018a615d926bd990bc58a"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/iteration_settings_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e053fd5216721ab39ffa1058828b9afcc6eca33529e54ff126ded6ec2491bad0"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/label.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "138df38739003528469a989a706a8997136bc644b46bc3aabc3eb00a07be26ea"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/label_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "03ea55bf3695c10b70fc5cb2f7f7cbfd921b29b28f8b75c30694d5ec60a2a00c"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/project_health_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "47f3cac20423f30248787876d9ebae68adfaafc147c8a19dc3efa2fa571a4bc5"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/quick_create_parent_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "541d74de482b76606306d58037ce0e6bf5081a2637f14e3648e88ef9616d77f5"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/handler/workspace_delete_manifest_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "dbe0e03d002697bce2db8f9171bd2270b97b0547c18132c18ea605bcd08f5027"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/issueguard/duplicate_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "5ae5ebcb5cf617a30fde95f4ac856b8e13958c6232a6e80425c95c952baeef91",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/iteration/history.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4ab5fdcff067550b6df5b85dd16ad7c879788f68979611ff78eb7170acc5af36"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/iteration/history_capture.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "66a18fa7efe3227fc89aa3d7996c935a0cd40a421ec3150490520b6c2561b233"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/iteration/membership.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "163f21e0cb3f07dc26bf8d41abd3eb5073a73428094903a787c191025dd2df52"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/iteration/record_delete.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "be600ef43ec2e53a994af5821bdd773f23ed4977613a7929762653061452b96a"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/iteration/types.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "151be5667f1c22e4436bb2f53fc72f50d7b5df1c8e6de1441f513b2eb383905d"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/middleware/workspace_access_error_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e90d21eecfdac4f9589f396e6fbb3ad485ce2e289b515dbc431c4dca3a0d525b",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/agent_runtime_lookup_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4cdfd2f079b85688f330023267b347d96d5bd4b0384e1a38087e5ed8c606976b",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "7b9507de04462c1c91cfb01f728e102dfe9f9aacc31d462e1986b923c9b8ffa7"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "f903b1b35c550f19cb6a987060821fce125e8471e3f6a01a7ce000a67d2bb4d5"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/iteration_lifecycle_apply.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4617b15692793de8947b42db5c030f7dec50097b78e4293d3dfc65406906995e"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/iteration_lifecycle_metadata.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a238060e357e03acffd7689ce0b85dd5291b8509448a4af0176ebbfe246e8884"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/iteration_lifecycle_preview.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "896db4df930d8807620f83f69fa969838d5e99eaa94e10da1a218354cd5f3afc"
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/iteration_lifecycle_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2c354779607e9575df40a35f9386cd18e369837128eda8424f0fcb3cd49ba0a0",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/task_agent_skills_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ae8cbd8ff49a0a639f0f17123f07d976cd5897c41fbe9f71f92b0280254f963c",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/task_batch_claim_partial_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "0c8f0f56fe85efb73866ac59efc54604a17b590ab7f1d2482658c08fd34f980e",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/task_complete_race_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3dfbfeb384c7f29c1bee820af42bdc272ccbe1fc5c40497633f71849596fc14d",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/internal/service/task_issue_broadcast_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "535311b5fe26f6d836981a5148d1d8d86fee7f9ea63e9bd91914719241c3963f",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/generated/db.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b795d118ae65ff39cfa847999234c683cebb6d8e7664ab35a122e44d8b33dd76"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/generated/iteration.sql.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "96e70b4b35279ce7ed72002c69fba3c451b25fca16939f821b05f4e2526d456d"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/generated/iteration_history.sql.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "bb655224c3e06e55f0b5d44e3a097522064711a232d0d7f026509b41a0c53179"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/generated/iteration_lifecycle.sql.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "9969eb1ea1c413b16c9bf45bbe4fb1aa42148e22c72800278931b5ee0601ca0a"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/generated/iteration_list.sql.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "eb0a7c89f73048c7883ba72d9bc40543ee572ec31e9a54a8f42c2bedf0ba8545"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/queries/iteration.sql",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "7cbf676e3d1d0773c48f82faf8c1342a4c58df2051dab720aed23c9478b9b0f1"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/queries/iteration_history.sql",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "70eadf50e95d4f90ed669d884b25370a726f62e7d1b314a59fcf1fc148e4dc96"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/queries/iteration_lifecycle.sql",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "52fe77e98d2ac1fc2143edfd2cacaea20087dbb8e234442c6bc095b731de6553"
+    },
+    {
+      "status": " M",
+      "path": "server/pkg/db/queries/iteration_list.sql",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "83eb73b0e952f9923d4d60fb18a35ffedf83c1cf11f68e0686138a097b715eec"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-before-dev/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "00c9d1c83bc318e91b27a019bc954c2957cfad907ff20d854b596f16cad2c0f3"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-brainstorm/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "17d9bf209730c14f584eb97f38198d0683ad3f8da982d9a6e6d4e84c853f9a94"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-break-loop/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "f5a93699832f29dee443b53c135a7459519b371f689af191d15c29e8ee5c7bde"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-channel/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "ff84801c511a736da018b4b1149348ebc9a16b7fc18d905ec10cfa7acbf269a3"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-channel/references/command-reference.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "c4df3d940d89814310bfdaded20e84dd1d6b96786f6772688de7a123338d3c8e"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-channel/references/forum.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "407db39e8ebde47cea8637e3069bdb3d76ba42b43ed1d08ba97a56f26dbcfcb4"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-channel/references/progress-debugging.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "93b021fd8d5d3d4ee54952c40424ab91ca57c2ab8032bfbfc3b5c5e22f1464cd"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-channel/references/workers.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "d4481b2858bca82050cb8d131916da8a2ccc3857f199cdb9ced8bb41d592e2a7"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-channel/references/workflows.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "0782d602efde6e94a7d7d7950fd605eedc9a1f5a523908284e76b628fd618fd4"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-check/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "dfb0600e95c19c7a83200465b6a92a5514ec9778ba4083efa881bed541cc74a8"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-continue/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "2b948434883636a1f1e2a4ad5b8a3d7dc2edc93ed05da6bca82882e8c024e22b"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-finish-work/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "161060fbcd44f787440d3a5c297a9f5223ea7774bb3021a50e376875a9ac5b2d"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "ee7bcfd0023def62688339c4b63c50f2fbeea12a34eb89e8bb63a992b58cb168"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/add-project-local-conventions.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "86009ccb5d0373f399582da0bc570c4e5c6053c3c764857424ff93384f0e04e5"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/change-agents.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "4216ac3cc570038fd8ce3319a85932bb537fea9e0a7f4d11fa315cfa645c9c85"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/change-context-loading.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "350d319dc1ab99609ddbf52cf8c06c71bd97ba1a29ce2eac8b97d0bb192938bf"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/change-hooks.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "4c18b134f05d5ba1609c517ec94c97c9442b5f0670aa2211c487c31ed2a4f358"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/change-skills-or-commands.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "5b942e9f512e049a75e8dd9e8cc4d49786f6da61b22afc82bb447acf808f9fe2"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/change-spec-structure.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "31eccaad7097d96e66a45c1b4caea1ba4f2e54b7814184c3ebf82c87dafc4841"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/change-task-lifecycle.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "60ff9efb93604b87a461a4af30322d76750402a51e40f31531a7ff88d309996d"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/change-workflow.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "43fa780a2ca580de121b10893d49b99f978873deebbf45008c466e5ac6651519"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/customize-local/overview.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "ce8f09e9f93ce9a48500763fb3a4db2b3908a5fbf4f985ab71dacebb404cf8f4"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/bundled-skills.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "aa6a0bf83060205ee4ea621c467fb900a7db06b4476a4ad472cc4e248c887389"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/context-injection.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "b1ebaac467bf0195e2a21f2f8492a8b7c91ff3e0f9312f853468cda0255df1c7"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/generated-files.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "7eb2d452eddb4f4226f7578c2ec6d5ee0434ed172ba4c36107cc8bdff7554dc6"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/multi-agent-channel.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "56e5070474aeca872e2d70c46feea5aaafecd3d3ec052c3f7b1877358dca62e9"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/overview.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "50638fd9eaaba2e0edf2f2a84d920578d5b2fb7934031b174e417d3dc510b2a6"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/spec-system.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "b8d8a6a0888b44a232c8f50161b9e20e903cf621ad7be4021715ab6fab226f47"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/task-system.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "b154568e74f1c738a51633df9f2503f416b3afa5f309325224422162e0b707e4"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/workflow.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "cfcdc6e4468a5d9c816e929fcca01640cd41cfdaaa4824118b40a8e460c927b6"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/local-architecture/workspace-memory.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "e6427b46aba744563c2444b30df4043cd856561b7709ec2dece26095416421fd"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/platform-files/agents.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "b806b1f0de6dfc74720014aee15ede767a58925b2b3b964f2e557ed39a65bbc0"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/platform-files/hooks-and-settings.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "91e9855e418673bcd7770411e24e28390738b123532eef000beba0a29cf154e1"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/platform-files/overview.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "1aec9087ccedd56a213af877b5db474131aa4b4789b6ac0e8da73b058aa43bd4"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/platform-files/platform-map.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "3c0d4546461c06d1aaf006276e34e250e0ca7bbb5b853fb45c58114cebca4042"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-meta/references/platform-files/skills-and-commands.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "e39831d860bd27a04e7757f7bd941ab83b3c5b11ad4460cec03975b655f26cc3"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-session-insight/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "c9e58477f71987750f025ee967ca6663ccbbede8a352506bc2f4232a356deb12"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-session-insight/references/cli-quick-reference.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "3f2dd664868f4b7f90b4800868bb34eaf8ed81246d1adaf5f4da34d1387765e3"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-session-insight/references/triggering-patterns.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "121ecd23be83d1567e8ce15c366a81073d7a2b1d3ad616fce235c07ca1f1cc20"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-spec-bootstrap/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "97bfa68c06cebb558eb4464bc1b81f7d2d56040d75baa8de1ee5ad90cca0196a"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-spec-bootstrap/references/mcp-setup.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "df542fc8f279edd38046d26a7c8151804b708f57b24d4aa2733cea587a88c65e"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-spec-bootstrap/references/repository-analysis.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "0dae98d774f6e34559b9f3442888ac43e3a8af110c37cbefc49ce256986858b6"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-spec-bootstrap/references/spec-task-planning.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "ef493d028c3b0807a8a534bb71fb92a68129f273db763ad27ceb464a522e799d"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-spec-bootstrap/references/spec-writing.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "e9800fe9ed4a4cd87062ea1829cf2caa8d170ec15e141678a6a30e74c497f47d"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-start/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "79a5ba7a2aff3c72e06d7f4cd6942dc4f4f4092dd40f9c8e94f1838024a81e4d"
+    },
+    {
+      "status": "??",
+      "path": ".agents/skills/trellis-update-spec/SKILL.md",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "003ce08a3404aeb50998029392c4d4e57b626edf526d3ebd585032bb92dcbb96"
+    },
+    {
+      "status": "??",
+      "path": ".codex/agents/trellis-check.toml",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "206fd96a8aa17e95ed344cc435661d597093ece571671f298ca64490422fffe0"
+    },
+    {
+      "status": "??",
+      "path": ".codex/agents/trellis-implement.toml",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "388fb8f39797e0ee6cf4db447c859c79b4ac15f531f7e1e3c68c1d1d71a1c188"
+    },
+    {
+      "status": "??",
+      "path": ".codex/agents/trellis-research.toml",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "4435ce73197ba1d29d40359a3279b6423f7e4f559a449f934c016808090066c4"
+    },
+    {
+      "status": "??",
+      "path": ".codex/config.toml",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "9f2d20e28f0bc9c886312eca3ad3bba41533ef4615aaaafe25e98152302267bb"
+    },
+    {
+      "status": "??",
+      "path": ".codex/hooks.json",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "85a58ba7cdf1e19e7f75ddcc64e5680180c487ca266a74bd5005f31abeee2e02"
+    },
+    {
+      "status": "??",
+      "path": ".codex/hooks/inject-subagent-context.py",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "022d41a9b6f5dba45bc284a466206fbefedf93f2504a6fe30141ec91c3fbc1ae"
+    },
+    {
+      "status": "??",
+      "path": ".codex/hooks/inject-workflow-state.py",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "71ef1aa1ed1051a697cae3c9ebffa518958a3bbd4d147434f382348829915f8c"
+    },
+    {
+      "status": "??",
+      "path": ".codex/hooks/session-start.py",
+      "candidate_group": "tooling",
+      "disposition": "preserve_unstaged_by_default",
+      "kind": "file",
+      "sha256": "efdd015c7c4687227ce34a84ac6249d5554c704f737e00d4844c9284ddcf696f"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/spec/core/frontend/iteration-operations.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8ac1f6833d7a98561adfc47f6dd9556c2d8e00be777fb18d368b8dea2a8f8066"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-clients/verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "f43d049154b77c8453840f1b76c1135c6bd871351ac67c76c62d4adcc634d367"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-closure/cg-integration-evidence.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ec087dec50e1b8edfc1f129284783751c5e462f459d6c500d4cf23bf34c4f9ec"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-closure/closure-writers-verification.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "6d339b8c393b311783aa831f74b5f18d2ea50ba5f0dbb2c1ff19142831d0637e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-closure/closure-writers-verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a9311bd05d23415ee825cf44de71f553b12d2cb50a70f0f49c611a45b11cede4"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-closure/notifications-verification.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "7272a4080daa321e076e84d652d456ca7c9712f172f1347f6d20c206982b0a96"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-closure/notifications-verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ec106117dae3e9d43b27e78acb38f62fa1a6a1c4dc6156bdf064dccfdfef9502"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-closure/verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "80eb4282df6e825bc76cebc3ab2cf7e1e507b99676d4604608f2b8a93515588c"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/acceptance-matrix.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "823cc6e7758b0f22554337d564ab44ca1f53d8c75d7bdf485f8852c4a48c136e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/backend-final-audit.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ae05ea2a0602c5e97f39d3a6b133abc3fa464e8300ccee731b79c2156cdcb84d"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/accepted-screenshot-manifest.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "66278b69f49c24b613091c1a3fa511e62bbabb732847e5b779d19accee1667bb"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/desktop-680-table-accepted.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "0c681c85deb9b06629cf0c83a1325d1c608339aec61ea2637b3a7b9d14f54905"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/desktop-history-accepted.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "cab1893137b3afce19aabc2dad5801ef35b7683f7d434f28c4e781b529db931e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/desktop-history-before.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a34bb270cf11fd30837081525499b35b0189c55ef5f061cc1d2a6dd2322bb62e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-desktop-end-confirmation-preview.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "fd88f0c96c1767318f6c7a72d76d299cda40fca0e4deec9d8f3310e4f7e620e7"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-desktop-frozen-history.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8eefc827fa555b64315a6da2aad1ff2c3f95e2cdac433695bd0d6c01b66aae66"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-desktop-frozen-task-events.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b72b65a593094e9e060d45585b3971b85d4f4b9c7d91eda09f24085f8781a3b0"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-desktop-native-680-table.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3258e3acd759e49e132dba7bb08c670885ecdacc36805f16dc5be8f6c6fc278e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-metadata-frozen-metadata-and-deleted-task.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "faa665ddf3701c6260b4881844a72d4a86acc888b416360db82f7b8db850467f"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-screenshot-manifest.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "fe58c28974335619f8cc3fd94615a915b3ab64b4b2c340d0b2c58103058f4f3d"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-web-handoff-end-confirmation-preview.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "602dc89bebf59fec2bd3479eab790db23e03b2cb9f3587e79c69feaad040d224"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-web-handoff-frozen-history.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "24cf7c0e4623cbe2643d631575bbecc4aa7f142582b1414241111e7e3586f7aa"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-web-handoff-frozen-task-events.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e31b0899398e1fc3985e8fde6c2763e7e5f551cde6e202df48fdc740a9d3a280"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-web-manual-end-confirmation-preview.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b7aadad6d4f5017bf12a2c159d463ca269fbfad68212db0ccb2d8b180d9d69ba"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-web-manual-frozen-history.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "24cf7c0e4623cbe2643d631575bbecc4aa7f142582b1414241111e7e3586f7aa"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-web-manual-frozen-task-events.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ce8e35b1db37913fe6f69477d7c94f2b229ef42b26cb17a7d363c97be53c130e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/final-web-manual-web-chinese-390.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ef928dc3466006e2770803f7c5263c7df0bfac0d06a6f2c56e7f74be1ac86c61"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/history-metadata-accepted.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8d9bb49a2f9f4b785896be037ab6251a173a453f14498e46af6e543365bb7e31"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/history-metadata-final.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "80e59c46c4ec752ebb19fb99fe1658c9d2a0804e418ecabe31a7bbff7ca1a8ac"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/visual-verdict-accepted-history.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "1b0e6eef2029a7a6a388f4591db88c517e3f34b10ad54afb2f35796e1334d0c1"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/visual-verdict-final.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e5e5743d0600931cb7b19415e4cb86f270caa993575f5eb68854e2002267ee26"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/web-chinese-390-accepted.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "9248f7988a5aa49a26e8b0eeea32afaa377f5cad2c4bd3a41b7f6bc17214f694"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/web-history-accepted.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c607a1f8bfc3d640f2608a6ff7cd29059e279d27271cfc31b48939574658b11e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/web-history-before.png",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "99a8a55918fa6949e4738163199c45f5f80ac524bda7dbf6fcb9bb2990d608dd"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/commit-handoff.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "154f98bc769054a984ff77a86d20787e0a46f8fab6b11c35784555d6e903d4d7"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/fcg-backend-fixture-regressions.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "21c60cb77e166da309d5885ce14bc44f855b8f5a4da4c1870d129e1e44048a73"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/final-bookkeeping-evidence.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3f4293417188b82b913341e2de9b2bcc90d76eaf509421f7f540e5d6ed3bcac5"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/history-fields-verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8f12ac48d2f6eaeca8d2c7e0b6316920122926191433504638489be14619ce7c"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/migration-recovery-evidence.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "9d1b4ca6d2d0c4023f3c830835c0b2a98f10f42b4441fae7238e82d33906ad8b"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/migration-recovery-evidence.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b0bdbd8a088b41a67fd8cf115b4a5055f67f696d0c06ae96f1ea4712fa39403e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/mobile-final-compatibility.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "197f10cd715f80ede0392f05ad322a000e56d0b25c8e29fba77b841b67c7f1c3"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/ordinary-write-evidence.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d25f5e2b8680e4637e2e84a94cd546cef74af7d62d065198380e5c3800fbf2eb"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/performance-evidence.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c6b903fd001633160501e9a68b7643c1ac67f0ed433ec6b2e4fb3fdcb8d99d1b"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/performance-protocol.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "cec6175aa48163f4b1af6972a5f2f05fb646a5eaaca31642ec9d20a547e15f4e"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/skipped-tests.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b2c2e16e3a33d6ddbeac5d0ddaf92aab47493c69b33e338a6405ab42e60d1d33"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/skipped-tests.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b0c115714955f9ece3fb073815eacf7b66f59f1d2cb363e2ff25dfc73cfd2406"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/source-provenance.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ace4a3762199d06117fd19e4d43064640f1c05f8961115b191e251b5bec6b0aa"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/ui-final-audit.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4a8e30a9d5d5a89497790f61bd80ed1f7c09877683fe131042a0276c86da47f1"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "572be66c30ab28bb98c3932b69a8b6a3c94ed1f9e9e4ec05afa5ab3df7b752d7"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1/cg-verification.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3e57cc56cd716be8ca936e3015302d11d00314a80b21c5b2347e29b4939bea6b"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1/handoff-2026-10-06-cg-evidence.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "a68c9d6cff46627396336b11ba7c2f1494e915ade0ba3011bd624acd46ba9f11"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1/handoff-2026-10-06-cg.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "94ed90acd7e8025d54aaaafd1035f9eed617721672d67f3dd898f642d346eec6"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1/handoff-2026-10-06-lg-hg-evidence.json",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8336a463f8147034234e5e7c7b0519b93c2f5cd722d671288ebfca36fbe445fc"
+    },
+    {
+      "status": "??",
+      "path": ".trellis/tasks/10-05-iterations-i1/handoff-2026-10-06-lg-hg.md",
+      "candidate_group": "D_evidence_specs_handoff",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "31df281579a918a337769375030e9ba805d36b93f39cdc0612266d5e2f84579b"
+    },
+    {
+      "status": "??",
+      "path": "apps/mobile/data/iteration-compatibility.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "39030cbf7a756175151bb4e26722b7b2c61f7d3e6aa3d40ebb30a418a167f796"
+    },
+    {
+      "status": "??",
+      "path": "apps/web/app/[workspaceSlug]/(dashboard)/iterations/[id]/page.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "aa6182a9b7a238d8e4c482e5b8c4192649bb0b24363a67febdb3184e20c787b3"
+    },
+    {
+      "status": "??",
+      "path": "apps/web/app/[workspaceSlug]/(dashboard)/iterations/page.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "aa6182a9b7a238d8e4c482e5b8c4192649bb0b24363a67febdb3184e20c787b3"
+    },
+    {
+      "status": "??",
+      "path": "e2e/fixtures/iterations-i1.ts",
+      "candidate_group": "C_e2e_and_fixture_integration",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c8d600d48fe9db7777a1bec987fc3068ed05ece99bb592334dab3a87d946cb67"
+    },
+    {
+      "status": "??",
+      "path": "e2e/iterations-i1-desktop.spec.ts",
+      "candidate_group": "C_e2e_and_fixture_integration",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "57c5ad710a4d8d11fab20c32318c7410e4cd36b85f258fdcb4f4de8c1c1f1d12"
+    },
+    {
+      "status": "??",
+      "path": "e2e/iterations-i1-history.spec.ts",
+      "candidate_group": "C_e2e_and_fixture_integration",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "613d8ae717cc0b1d892318be3fcb46bfcc7ca4991b8d723aba00b1c3b482956d"
+    },
+    {
+      "status": "??",
+      "path": "e2e/iterations-i1.spec.ts",
+      "candidate_group": "C_e2e_and_fixture_integration",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "1ba9800b5480fd094e6bc300d2adf2c2ef895edc555ba45297e4a9a7b1015f84"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/api/iteration-client.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8f58b9e54f6233d41bab7f9c961d421fe7c788c93f45a974635eb36dca3b2512"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/api/iteration-schemas.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "0bd7ddd74a7cdaefad7f4b7479bee8d7d0b6199200fb5bc48c909cce2335905d"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/api/iteration-schemas.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e190ec90e9fe29aabfbb2fd9a030c315fb556dbeb84ec90c1a7165ca58db8c89"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/access.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e2db7c827f4d4f64ffa1404f55bea7b3cde149048361aad0e8bf67a7e5727dbf"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/access.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "893af00cf4382ff2fabf7e0de0ebda2076d34961a393bf03114187d727a3043f"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/calendar.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b3f6808b996fbe69abd60f17b6cb7b0165d03abcc4c00ca442daa34389febb66"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/calendar.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "41e9e0bdf69abedcd95b797bcd5b339797ee730722a6ad38115f5a1e15a66841"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/choices.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "70992b59859431070a13bbe0cc53cbe51b22e3faa5596544b772d72472d7c355"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/command.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d994bacbdeda2c33481aa72fb7a73cf009122fd213b20f673a7b28e2cd112817"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/command.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "41c468129cecc01e492889cfc1039bdb7a6d08cd1cf1996011d881addf720cc0"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/grouped-issues.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2984eb7bbd563109505e47ac364adf25b1909ae20cee0a4a37255cd0c265bdeb"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/index.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "dfe216fe1257795138744ef8131fc3c1eb967567a7c5ce3657e0d91193b18992"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/pending-signal.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d344efc12d2e66c5cbd3b328926c033504c0c6dd8e6a8d4a6a58d021f7c9fdaa"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/prepare.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c9c1716e56c708c6af6cbd2d7b6d2fb4513920eedb1ae7acfa6fc95790b00f38"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/prepare.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "6d92c68ecce5a8f6020147ea762118b577ebb59b0e5a8b250bedf8427d877c84"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/realtime.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "71159de91b879705758d44091de242d884d3b0b90c350d4286066b67195aad5a"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/realtime.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "341a403174c14f1ff3b34267a0674e0e7f5f209982b35968c9ae1ea291004304"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/validation.test.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "258ae8c6be273e61e4581350ee44e11e0375bcf0d0834b6dc254b70354dc23af"
+    },
+    {
+      "status": "??",
+      "path": "packages/core/iterations/validation.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8956b29546dd4684838278be58d217e1b43ce40ed99eff0bf63083ef733e3e1d"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/index.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "94f47e5c4d756652b3640ad860594827d4d9139b8063c3076a5575e967186ba3"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-assignment.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "f1c03448679b0f1a5c672c5a17ecbddbef6b04f9c6090257bd909e0a15bd93e8"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-assignment.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "9d192ecd91f9e3bccc2db375e9251a9e95104c67cadbf92bfb40b06c1dfa139e"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-catalogue.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "c8e160acf57ef7090056620c3c6a65fdc9e9177b8990b95d4112a327aa19da1f"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-current-comparison.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "1d8f148923c9671b2b4d16d536c697c5fbacfcda9ee30001d8f2a5b3c7b1bc05"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-details.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3494720304f009f7350151a98dd6ca98b8c17fa5febf20a9340c5c4927df1f4a"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-error.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "4607577386faac18145a9c59adc99b28102a56b620675d4d0df7bdb866fb39e1"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-events-view.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "1cebdf57a107a61015851a76b240ee334d2ae0cb492b4034cbb0e219f8cb2190"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-form.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "f731b4ae3f873769b09d054838726b2abfc0f0872cd8bd09bfcfc3f64d50e76e"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-form.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "8ba47e8d57bb897d8e9b00f9490af4c3adaf648835061729bda3026ecc7c8bb0"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-history.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ad1b068599aa432d94df9ccb470275a6e4a6df2060e3eb920d38896b05be6c77"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-history.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "45ba082be5e419106c76fd788574d7b503442452fc464af85df53fda2756c5ef"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-issue-list.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2cc439fe86378c48846c4ab7f16ad820a22124d018c9a39333fea2ea12c038f6"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-navigation.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "48243d1bdb51bf744f1eb90b5c4e668ca6f362b11eb549806e04cf2cae271286"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-operation.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3a7238a94134efb8ff564b9d590a6e867422df6b41fe3d05753547a9395ad9be"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-operation.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "636c34cda82bf7d5089fb44c1a5c4edff9ebffc4b8c50e23a48a506bde4d990b"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-page.test.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "80d5cb83e65681824e143d1188e432a726fc4a1a8dc0aa268a54b550fcda0109"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-page.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "11f24d8a099762b58a066074d8e6d26df998d86281715e4e518f8e0f46cf0612"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-participation.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "b703c1127dcd19a45cd166b8ada6509cabba693fe32b627ed83005920669acb7"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/iteration-recovery.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "ce07a6c70cf70b518f02670b76df399abfca8f22a2df11868f2e3eef830ecc38"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/labels.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "0c5d28c2974d7ad2a0ac94eaf9ad58f0f966415f670eb8312cb0eebed19aff1a"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/project-iterations.tsx",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "5b7a21536fca232f6934968abf4f14022de83d317fe9e8c21ab0197fba6af2b2"
+    },
+    {
+      "status": "??",
+      "path": "packages/views/iterations/test-fixtures.ts",
+      "candidate_group": "B_shared_clients_platforms_mobile",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "17cdf0de3452a90730445a0378816544cd9d5a7635d342233a38f707691009d5"
+    },
+    {
+      "status": "??",
+      "path": "server/cmd/migrate/migrate_iteration_recovery_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "00638120db2d63ecbf707e33d31e40b26fd3613f36154a9a4e1a2c8e622250fe"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/handler/iteration_closure_writers_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2f7292cdb06f6e6db6197e5216648d0a04357744f4ace79dca10c3738f9f5224",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": "??",
+      "path": "server/internal/handler/iteration_history_fields_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d2f4dbf85574955b24a3a650f3ca3fd04a6b55b89cb2b0316867e409b032eacb"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/handler/iteration_i1_p95_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/handler/iteration_notifications.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "d5aaabfabc08685fac34c5c2a116bf055794c3477851ed8945c95d8daca74f2c"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/handler/iteration_notifications_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "899c29abef27a5ee2e12a14fd1de60c331c4039bcdc6b0ece3392121021bf55d"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/iteration/history_fields_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "678e4eaffe059d2c0de6120274c7e08391a8bda7beaae41546e1715f295bc919"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/iteration/membership_batch.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "249502d7d24102be4c31acced82427e038fef224758243268d4a8759f3dd1e8b"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/iteration/membership_batch_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "9a4abc122a8b9f6ebb23c09893cbe41a9dce848fd1ce8ecad0f5035ac9da5bb6"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/service/iteration_closure.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "7f4989c6e3d6a684fc28bd4c5996a318296683d7e0ec5df5ee36b8045a0134b3"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/service/iteration_closure_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "bd52ed0e85d5af42c5bbd7f1d8dbd50de4ab90135b4148797a2f5d77b71e5e2d",
+      "review_note": "May include required DBTX/SendBatch fake adaptation; inspect the actual diff before exclusion."
+    },
+    {
+      "status": "??",
+      "path": "server/internal/service/iteration_history_fields_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "2472bc3a2346564d450ec973c3e2a501dfe531a16ba1f7dfa0c86aaf58032df9"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/service/iteration_membership_event_facts_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "392a56310e886de94040caa1394f5cfcac4be02c8dbe4c400c5cbc0724635706"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/service/iteration_notifications.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "635e17dbca6be1c227df15359dd9a830555ee9289960352a6535674a83fcdc6d"
+    },
+    {
+      "status": "??",
+      "path": "server/internal/service/iteration_notifications_test.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "e80f2c5561b023df3e4dc2ed893e479613976553e84123b29c054bbbab223516"
+    },
+    {
+      "status": "??",
+      "path": "server/pkg/db/generated/batch.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "3a5c4b2d45f2acdb57811c5e72abc06145e1a9fc0c7040d129788281f65ef7c1"
+    },
+    {
+      "status": "??",
+      "path": "server/pkg/db/generated/iteration_membership_batch.sql.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "843fbae9337bd7dbc3939e63aef9c9a028ffef42637c4cfa1e780618615803c1"
+    },
+    {
+      "status": "??",
+      "path": "server/pkg/db/generated/iteration_notifications.sql.go",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "1472219fecdb1f7eb3eb4f711565f02215b0a650c39e082f08595b19f6723b81"
+    },
+    {
+      "status": "??",
+      "path": "server/pkg/db/queries/iteration_membership_batch.sql",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "032d0b48df0cbbe027a8f9b1fdf94da44bc4380245761a18fe56d64a21ef3c1b"
+    },
+    {
+      "status": "??",
+      "path": "server/pkg/db/queries/iteration_notifications.sql",
+      "candidate_group": "A_backend_and_required_tests",
+      "disposition": "candidate_requires_diff_review",
+      "kind": "file",
+      "sha256": "89eaebcfbc189868e25a952c0d32c34af64a9558947fc1f316288221ff5c03a4"
+    }
+  ]
+}

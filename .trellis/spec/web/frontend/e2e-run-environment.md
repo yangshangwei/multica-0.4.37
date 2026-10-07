@@ -116,6 +116,16 @@ checked; do not exclude the entire generated file or disable the build-time
 source comparison. The launcher regressions exercise both an allowed generated
 rewrite and a rejected concurrent application edit.
 
+When several retained `check-*` records point to one checkout, `dev-env.sh up`
+currently reuses the checkout's registered environment even if a different
+`--name` was requested. Enter `dev-env.sh exec` and pass `ENV_FILE` from that
+same effective environment. Before interpreting browser failures, compare the
+reported API port with `apps/web/.next/routes-manifest.json` rewrite destinations.
+A build that inherited another environment's `REMOTE_API_URL` can pass readiness
+but proxy every application request to a stopped API. Preserve that failed run
+as environment evidence, stop only the owned services, and rebuild with matching
+configuration; do not weaken product assertions to accommodate it.
+
 ## Shared test services
 
 Redis enables the real per-IP auth budget (five send-code requests per minute by

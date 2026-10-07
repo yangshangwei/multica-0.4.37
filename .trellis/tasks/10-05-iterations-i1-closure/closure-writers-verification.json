@@ -1,0 +1,48 @@
+{
+  "log": "/tmp/i1-cg-closure-writers-final.jsonl",
+  "sha256": "35a6454e115be13a45baa97fb62020d0a04eee3feb33ed8adac09099f36d793e",
+  "database": "multica_i1_notify_20261006_2310",
+  "command": "DATABASE_URL='<exclusive notification database>' bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -json -race ./internal/handler -run '^TestIterationClosure(Real|Catalog|HTTPRecovers|PlannedStart)' -count=1",
+  "leaf_count": 28,
+  "pass_events_including_parent_tests": 32,
+  "leaf_tests": [
+    "TestIterationClosureRealPostClosureWritersPreserveSnapshot",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/issue/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/issue/writer_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/project/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/project/writer_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/status/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/status/writer_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/move/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/end/move/writer_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/issue/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/issue/writer_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/project/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/project/writer_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/status/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/status/writer_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/move/closure_first",
+    "TestIterationClosureRealIssueAndProjectWriterRaces/disable/move/writer_first",
+    "TestIterationClosureRealMemberRevocationRaces/end/closure_first",
+    "TestIterationClosureRealMemberRevocationRaces/end/revoke_first",
+    "TestIterationClosureRealMemberRevocationRaces/disable/closure_first",
+    "TestIterationClosureRealMemberRevocationRaces/disable/revoke_first",
+    "TestIterationClosureCatalogReclassificationFence/end/closure_first",
+    "TestIterationClosureCatalogReclassificationFence/end/catalog_first",
+    "TestIterationClosureCatalogReclassificationFence/disable/closure_first",
+    "TestIterationClosureCatalogReclassificationFence/disable/catalog_first",
+    "TestIterationClosureHTTPRecoversLostCommitResponse",
+    "TestIterationClosurePlannedStartVersusDisable/disable_first",
+    "TestIterationClosurePlannedStartVersusDisable/start_first"
+  ],
+  "packages": [
+    {
+      "Time": "2026-10-07T00:35:17.752191+08:00",
+      "Action": "pass",
+      "Package": "github.com/multica-ai/multica/server/internal/handler",
+      "Elapsed": 6.456
+    }
+  ],
+  "failures": [],
+  "coverage_limit": "Focused CG real writer and recovery tests; no claim of full CG/VG acceptance. Catalog category maintenance uses fenced SQL because no production reclassification API exists."
+}

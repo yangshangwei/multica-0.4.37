@@ -1,6 +1,6 @@
 # I1 实施次序与门槛
 
-2026-10-06：FG 已通过；LG/HG 并行实现和集成验收已完成，提交 `1247d2728`、`4c9be7652`。当前证据见 [LG/HG 验收记录](lg-hg-verification.md)，下一业务阶段为 CG。保持发布开关关闭，foundation 保留至 FCG。下方顺序检查单保留为阶段合同。
+2026-10-07 最终接续：FG/LG/HG/CG/UG/FCG 均已通过，本地29项和原PRD界面要求已验收；详见 [最终验收](../10-05-iterations-i1-verification/verification.md)。VG 的正式远端CI仍未执行，父任务与verification保持in_progress；foundation与clients已关单。发布开关关闭；已完成本地提交（`823a61774`…`e516b15c2`，见[对应关系](../10-05-iterations-i1-verification/verification.md#本地提交与已验证源码的对应关系)），未推送／合并／部署。下方次序保留为阶段合同，不能重启已完成开发。
 
 ## 交付阶段
 

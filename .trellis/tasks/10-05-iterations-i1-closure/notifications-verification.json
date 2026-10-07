@@ -1,0 +1,38 @@
+{
+  "log": "/tmp/i1-cg-notifications-final.jsonl",
+  "sha256": "0b2f153ea7ecf9c809f1cef6c441569217f286f9a88d594120b2665d369c22d7",
+  "command": "DATABASE_URL='<exclusive notification test database>' bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -json -race -p 1 ./internal/service ./internal/handler -run '^TestIteration(Notification|Overdue|InboxEvent|MemberRevocation)' -count=1",
+  "database": "multica_i1_notify_20261006_2310",
+  "passed_tests": [
+    "TestIterationNotificationDeliveryAndRevocation",
+    "TestIterationOverdueLocalDayAndFallback",
+    "TestIterationNotificationDeliveryCrashRetry",
+    "TestIterationOverdueSuppressedAfterDateExtension",
+    "TestIterationNotificationRevocationFence",
+    "TestIterationOverdueRevokedCoordinatorDoesNotFallback",
+    "TestIterationOverdueRejoinRetainsSuppression",
+    "TestIterationOverdueDSTAndDisabled",
+    "TestIterationNotificationRetryDeadLetter",
+    "TestIterationOverdueScanBoundedAndDrains",
+    "TestIterationNotificationWorkerReleaseOff",
+    "TestIterationNotificationDisableWorkspaceSummary",
+    "TestIterationInboxEventPreservesRecipientRouting",
+    "TestIterationMemberRevocationClearsOnlyProtectedRecipientData",
+    "TestIterationMemberRevocationRollsBackNotificationCleanup"
+  ],
+  "packages": [
+    {
+      "Time": "2026-10-06T23:45:14.417419+08:00",
+      "Action": "pass",
+      "Package": "github.com/multica-ai/multica/server/internal/service",
+      "Elapsed": 5.75
+    },
+    {
+      "Time": "2026-10-06T23:50:36.327998+08:00",
+      "Action": "pass",
+      "Package": "github.com/multica-ai/multica/server/internal/handler",
+      "Elapsed": 63.293
+    }
+  ],
+  "failures": []
+}

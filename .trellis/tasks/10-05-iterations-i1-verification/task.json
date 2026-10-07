@@ -2,8 +2,8 @@
   "id": "iterations-i1-verification",
   "name": "iterations-i1-verification",
   "title": "迭代 I1：集成验收与发布准备",
-  "description": "本轮仅工程规划，未实施产品代码",
-  "status": "planning",
+  "description": "29项及原始PRD本地验收完成，UG/FCG通过；VG仅保留正式远端CI待办，禁止据本地结果宣告发布完成",
+  "status": "in_progress",
   "dev_type": "fullstack",
   "scope": "iterations",
   "package": null,
@@ -23,10 +23,10 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
   ],
-  "notes": "2026-10-05 Architect→Critic顺序评审通过；仅完成工程规划，保持planning，产品未实施；阶段门槛见父implement.md。 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete.",
+  "notes": "2026-10-05 Architect→Critic顺序评审通过；仅完成工程规划，保持planning，产品未实施；阶段门槛见父implement.md。 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-07: local acceptance and targeted final fixes verified; original formal-CI gate remains open under explicit no-push instruction. Do not reset to planning or rerun completed development.",
   "meta": {
     "planning_status": "reviewed",
-    "implementation_status": "not_started",
+    "implementation_status": "verified_locally",
     "depends_on": [],
     "start_gates": [
       "FG+LG+HG+CG+UG最终验收"
@@ -37,6 +37,86 @@
       "architect": ".trellis/tasks/10-05-iterations-i1/research/architect-review.md",
       "critic": ".trellis/tasks/10-05-iterations-i1/research/critic-review.md"
     },
-    "integration_base": "be26f34e5dc66de3e7ff546dd18d1b4f0f3b0ba2"
+    "integration_base": "be26f34e5dc66de3e7ff546dd18d1b4f0f3b0ba2",
+    "current_run_log": ".omx/logs/i1-verification/final-e2e-corrected.log",
+    "full_check_log": ".omx/logs/i1-verification/full-check-accepted.log",
+    "completion_gate_status": "local_passed_remote_ci_pending",
+    "completion_gate_evidence": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+    "milestones": {
+      "VG": {
+        "status": "local_passed_remote_ci_pending",
+        "verified_at": "2026-10-07T11:41:37.408987+08:00",
+        "evidence": ".trellis/tasks/10-05-iterations-i1-verification/acceptance-matrix.md",
+        "summary": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+        "source_provenance": ".trellis/tasks/10-05-iterations-i1-verification/source-provenance.json",
+        "local_requirements_verified": 29,
+        "remote_ci": "not_run_per_local_only_scope",
+        "rollout_enabled": false,
+        "remaining": [
+          "Formal remote CI on the reviewed final source; no push/merge/deploy authorized in this turn."
+        ]
+      }
+    },
+    "local_acceptance_completed_at": "2026-10-07T11:41:37.408987+08:00",
+    "next_slice": "Local I1 commits are complete (see meta.local_commits). Next: formal remote CI on the committed source, only after separate push/CI authorization. Keep excluded tool/generated files unstaged; rollout stays off.",
+    "local_commit_handoff": ".trellis/tasks/10-05-iterations-i1-verification/commit-handoff.md",
+    "local_commits": {
+      "recorded_at": "2026-10-07",
+      "base_head": "115b4cd28277941a8d9ad8fda5acecf99b999152",
+      "product_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
+      "commits": [
+        {
+          "sha": "823a61774036320d7768e923abac9180171467ff",
+          "subject": "test(handler): keep creation assertions independent of shared agent grants",
+          "group": "fixtures",
+          "files": 2
+        },
+        {
+          "sha": "7cf0a1e6b009fc6d11ed99be4c9f2ed05aa0785e",
+          "subject": "test(projects): make health continuation fixtures follow cursor order",
+          "group": "pagination",
+          "files": 1
+        },
+        {
+          "sha": "2055730f39bdad533b6cbb8faeb7f2c7a577057d",
+          "subject": "feat(iterations): preserve one confirmed result when manual periods close",
+          "group": "backend",
+          "files": 62
+        },
+        {
+          "sha": "59b20ed57eebb88f04ff58c9966a82904b70353f",
+          "subject": "test(e2e): keep project issue regressions on their intended section",
+          "group": "p1_e2e",
+          "files": 2
+        },
+        {
+          "sha": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
+          "subject": "feat(iterations): let teams run manual periods end to end in Web and Desktop",
+          "group": "clients",
+          "files": 106
+        }
+      ],
+      "docs_commit": "Documentation commit following product_head; resolve through Git history of this file",
+      "committed_paths": 241,
+      "source_mapping": "Tree of product_head matches 6694 of 6696 final-check-inputs.json files; apps/web/next-env.d.ts is the excluded generated production-build route import, scripts/uninstall-desktop-windows.bat differs only by eol=crlf checkout conversion and its blob is unchanged from base_head",
+      "verification": "Reused the accepted baseline and final affected-path evidence; this session added go vet for both fixture-only intermediate states, go vet ./... and gofmt on the committed server tree, git diff --cached --check per commit",
+      "excluded_unstaged": [
+        ".agents/skills/ (46 untracked Trellis tool files)",
+        ".codex/ (8 untracked agent config files)",
+        ".trellis/.template-hashes.json (tool template sync)",
+        "apps/web/next-env.d.ts (generated production-build route path)",
+        ".trellis/tasks/10-05-iterations-i1-verification/browser-evidence/history-metadata-final.png (no citation or manifest identity)"
+      ],
+      "remote_ci": "not_run",
+      "push_merge_deploy": "not_run",
+      "evidence": ".trellis/tasks/10-05-iterations-i1-verification/verification.md#本地提交与已验证源码的对应关系"
+    },
+    "documentation_record": {
+      "scope": "68 I1 acceptance documents, task records, screenshots and E2E environment specification",
+      "product_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
+      "commit_identity": "Git history of this task.json; no self-referential SHA",
+      "remote_ci": "pending; unchanged",
+      "followup_e2e_thread": "01a11513-83b5-7de3-8adb-d81e252aec33"
+    }
   }
 }

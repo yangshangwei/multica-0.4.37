@@ -2,8 +2,8 @@
   "id": "iterations-i1-clients",
   "name": "iterations-i1-clients",
   "title": "迭代 I1：Web/Desktop 完整闭环与兼容",
-  "description": "本轮仅工程规划，未实施产品代码",
-  "status": "planning",
+  "description": "UG 已通过：共享Web/Desktop闭环、最终视觉94/pass、移动兼容与受支持客户端提示；已本地提交（见父任务 meta.local_commits），发布默认关闭",
+  "status": "completed",
   "dev_type": "fullstack",
   "scope": "iterations",
   "package": null,
@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-05",
-  "completedAt": null,
+  "completedAt": "2026-10-07",
   "branch": "codex/projects-p1",
   "base_branch": "main",
   "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
-  "commit": null,
+  "commit": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -23,10 +23,10 @@
   "relatedFiles": [
     "docs/plans/2026-10-04-work-management-prds/iterations-prd.md"
   ],
-  "notes": "2026-10-05 Architect→Critic顺序评审通过；仅完成工程规划，保持planning，产品未实施；阶段门槛见父implement.md。 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06 handoff: partial real-API integration may proceed after FG as APIs stabilize; full UG still requires CG.",
+  "notes": "2026-10-05 Architect→Critic顺序评审通过；仅完成工程规划，保持planning，产品未实施；阶段门槛见父implement.md。 2026-10-06: existing I1 work transferred to codex/projects-p1; see parent branch-integration.md. FG remains incomplete. 2026-10-06 handoff: partial real-API integration may proceed after FG as APIs stabilize; full UG still requires CG. 2026-10-06 UG implementation resumed on existing reviewed plan; shared clients implemented, narrow test evidence in verification.md, integrated UG not yet accepted. 2026-10-07 final audit: UG passed; see verification/verification.md and source-provenance.json. No commit/push/deployment.",
   "meta": {
     "planning_status": "reviewed",
-    "implementation_status": "not_started",
+    "implementation_status": "verified",
     "depends_on": [],
     "start_gates": [
       "FG后实现；稳定API可分段联调"
@@ -44,6 +44,33 @@
     "foundation_gate": {
       "status": "passed",
       "evidence": ".trellis/tasks/10-05-iterations-i1-foundation/fg-verification.md"
+    },
+    "milestones": {
+      "UG": {
+        "status": "passed",
+        "verified_at": "2026-10-07T11:41:37.408987+08:00",
+        "evidence": ".trellis/tasks/10-05-iterations-i1-verification/ui-final-audit.md",
+        "integration_evidence": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+        "source_state": "uncommitted working tree based on 115b4cd28",
+        "visual_score": 94,
+        "committed_as": [
+          "823a61774",
+          "7cf0a1e6b",
+          "2055730f3",
+          "59b20ed57",
+          "e516b15c2"
+        ],
+        "committed_at_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39"
+      }
+    },
+    "completion_gate_evidence": ".trellis/tasks/10-05-iterations-i1-verification/verification.md",
+    "next_slice": "No local implementation remaining; retain default-off rollout and await VG remote CI.",
+    "documentation_record": {
+      "scope": "68 I1 acceptance documents, task records, screenshots and E2E environment specification",
+      "product_head": "e516b15c29328c893d8f384b6e7bd8d7a9dc9c39",
+      "commit_identity": "Git history of this task.json; no self-referential SHA",
+      "remote_ci": "pending; unchanged",
+      "followup_e2e_thread": "01a11513-83b5-7de3-8adb-d81e252aec33"
     }
   }
 }
