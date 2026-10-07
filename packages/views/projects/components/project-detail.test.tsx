@@ -1,14 +1,22 @@
-import React from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { act, screen } from "@testing-library/react";
+import { act, fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { Agent, Issue, Project, Squad } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { ProjectDetail } from "./project-detail";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { setApiInstance } from "@multica/core/api";
+import type { ApiClient } from "@multica/core/api/client";
+import { projectKeys } from "@multica/core/projects/queries";
+import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, useProjectAccessStore, useProjectProgressDraftStore, writeProjectProgressDraft } from "@multica/core/projects";
+import { p1Overview, p1Preview, p1Project } from "@multica/core/projects/test-fixtures/p1";
 
 const mocks = vi.hoisted(() => ({
   role: "admin",
+  realQueries: false,
+  editorEmitted: vi.fn(),
   copyText: vi.fn(),
   deleteProject: vi.fn(),
   getShareableUrl: vi.fn((path: string) => `https://app.example${path}`),
@@ -32,10 +40,13 @@ vi.mock("@multica/ui/lib/clipboard", () => ({
   copyText: mocks.copyText,
 }));
 
-vi.mock("@tanstack/react-query", async (importOriginal) => ({
-  ...await importOriginal<typeof import("@tanstack/react-query")>(),
-  useQueryClient: () => ({ removeQueries: vi.fn(), cancelQueries: vi.fn(), invalidateQueries: vi.fn() }),
+vi.mock("@tanstack/react-query", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@tanstack/react-query")>();
+  return {
+  ...actual,
+  useQueryClient: () => mocks.realQueries ? actual.useQueryClient() : ({ removeQueries: vi.fn(), cancelQueries: vi.fn(), invalidateQueries: vi.fn() }),
   useQuery: (options: { queryKey?: readonly unknown[] }) => {
+    if (mocks.realQueries) return actual.useQuery(options as Parameters<typeof actual.useQuery>[0]);
     switch (options.queryKey?.[0]) {
       case "project-detail":
         return { data: mocks.project, isLoading: false };
@@ -54,12 +65,12 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
         return { data: undefined, isLoading: false };
     }
   },
-}));
+}; });
 
-vi.mock("@multica/core/projects/queries", async (importOriginal) => ({
-  ...await importOriginal<typeof import("@multica/core/projects/queries")>(),
-  projectDetailOptions: () => ({ queryKey: ["project-detail"] }),
-}));
+vi.mock("@multica/core/projects/queries", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/projects/queries")>();
+  return { ...actual, projectDetailOptions: (ws: string, id: string) => mocks.realQueries ? actual.projectDetailOptions(ws, id) : { queryKey: ["project-detail"] } };
+});
 
 vi.mock("@multica/core/projects/mutations", () => ({
   useUpdateProject: () => ({ mutate: vi.fn() }),
@@ -71,15 +82,15 @@ vi.mock("@multica/core/issues/mutations", () => ({
 }));
 
 vi.mock("@multica/core/pins", () => ({
-  pinListOptions: () => ({ queryKey: ["pins"] }),
+  pinListOptions: () => ({ queryKey: ["pins"], queryFn: async () => [] }),
   useCreatePin: () => ({ mutate: vi.fn() }),
   useDeletePin: () => ({ mutate: vi.fn() }),
 }));
 
 vi.mock("@multica/core/workspace/queries", () => ({
-  memberListOptions: () => ({ queryKey: ["members"] }),
-  agentListOptions: () => ({ queryKey: ["agents"] }),
-  squadListOptions: () => ({ queryKey: ["squads"] }),
+  memberListOptions: () => ({ queryKey: ["members"], queryFn: async () => [] }),
+  agentListOptions: () => ({ queryKey: ["agents"], queryFn: async () => [] }),
+  squadListOptions: () => ({ queryKey: ["squads"], queryFn: async () => [] }),
 }));
 
 vi.mock("@multica/core/hooks", () => ({
@@ -100,6 +111,7 @@ vi.mock("@multica/core/chat", () => ({
 vi.mock("@multica/core/paths", () => ({
   useWorkspacePaths: () => ({
     projects: () => "/test-workspace/projects",
+    projectDetail: (id: string) => `/test-workspace/projects/${id}`,
   }),
 }));
 
@@ -225,7 +237,19 @@ vi.mock("../../editor", () => ({
   TitleEditor: ({ defaultValue }: { defaultValue: string }) => (
     <div>{defaultValue}</div>
   ),
-  ContentEditor: () => null,
+  // Match the mount-only value and delayed/unmount emission contract. The
+  // editor's own suite covers Tiptap; this suite owns the ancestor lifetime.
+  ContentEditor: forwardRef(function Editor({ defaultValue, onUpdate, debounceMs = 300, flushPendingOnUnmount }: { defaultValue: string; onUpdate: (value: string) => void; debounceMs?: number; flushPendingOnUnmount?: boolean }, ref) {
+    const [text, setText] = useState(defaultValue);
+    const current = useRef(text); const callback = useRef(onUpdate); callback.current = onUpdate;
+    const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+    useImperativeHandle(ref, () => ({ getMarkdown: () => current.current }));
+    useEffect(() => () => { if (timer.current) { clearTimeout(timer.current); if (flushPendingOnUnmount) callback.current(current.current); } }, [flushPendingOnUnmount]);
+    return <textarea aria-label="Progress editor" value={text} onChange={(event) => {
+      current.current = event.target.value; setText(current.current); clearTimeout(timer.current);
+      timer.current = setTimeout(() => { timer.current = undefined; mocks.editorEmitted(current.current); callback.current(current.current); }, debounceMs);
+    }} />;
+  }),
 }));
 
 vi.mock("../../common/actor-avatar", () => ({
@@ -358,6 +382,8 @@ function renderProjectDetail() {
 
 beforeEach(() => {
   mocks.role = "admin";
+  mocks.realQueries = false;
+  mocks.editorEmitted.mockClear();
   mocks.project = PROJECT;
   mocks.agents = [PROJECT_LEADER];
   mocks.squads = [PROJECT_SQUAD];
@@ -510,3 +536,48 @@ describe("ProjectDetail project deletion", () => {
 });
 
 vi.mock("./project-description", () => ({ ProjectDescription: () => <div /> }));
+
+
+it("isolates cached same-tab overview navigation and flushes outgoing text under its own project", async () => {
+  mocks.realQueries = true;
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+  const first: Project = { ...p1Project, workspace_id: "workspace-1", status: "in_progress", priority: "medium", lead_type: "member" };
+  const second: Project = { ...first, id: "22222222-2222-4222-8222-222222222223", title: "Second project" };
+  const server = "https://overview.test";
+  const previewProjectUpdate = vi.fn(async (ws, id, draft) => ({ ...p1Preview, workspace_id: ws, project_id: id, draft }));
+  setApiInstance({ getBaseUrl: () => server, previewProjectUpdate } as unknown as ApiClient);
+  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
+  useProjectProgressDraftStore.getState().clearDraft();
+  for (const project of [first, second]) {
+    client.setQueryData(projectKeys.detail(project.workspace_id, project.id), project);
+    client.setQueryData(projectP1Keys.overview(project.workspace_id, project.id), { ...p1Overview, project_id: project.id, workspace_id: project.workspace_id });
+    client.setQueryData([...projectP1Keys.updates(project.workspace_id, project.id), null], { items: [], next_cursor: null });
+  }
+  client.setQueryData(projectP1Keys.capabilities(first.workspace_id, server), { overview: true, updates: true });
+  client.setQueryData(["members"], []); client.setQueryData(["agents"], []); client.setQueryData(["squads"], []); client.setQueryData(["pins"], []);
+  const firstKey = projectProgressDraftKey(server, first.workspace_id, first.id);
+  const secondKey = projectProgressDraftKey(server, second.workspace_id, second.id);
+  writeProjectProgressDraft(secondKey, { ...emptyProjectUpdateDraft(), body: "Second project's own draft" });
+  const ui = (project: Project) => <QueryClientProvider client={client}><NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: `/test-workspace/projects/${project.id}`, searchParams: new URLSearchParams("section=overview"), hash: "", getShareableUrl: (path) => path }}><ProjectDetail projectId={project.id} /></NavigationProvider></QueryClientProvider>;
+  const view = renderWithI18n(ui(first));
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  fireEvent.change(screen.getByLabelText("Progress editor"), { target: { value: "First project's last keystroke" } });
+  expect(mocks.editorEmitted).not.toHaveBeenCalled();
+  expect(useProjectProgressDraftStore.getState().draft.entries[firstKey]).toBeUndefined();
+  view.rerender(ui(second));
+  expect(screen.queryByLabelText("Progress editor")).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Publish" })).not.toBeInTheDocument();
+  expect(useProjectProgressDraftStore.getState().draft.entries[firstKey]?.draft.body).toBe("First project's last keystroke");
+  expect(useProjectProgressDraftStore.getState().draft.entries[secondKey]?.draft.body).toBe("Second project's own draft");
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  expect(screen.getByLabelText("Progress editor")).toHaveValue("Second project's own draft");
+  fireEvent.click(screen.getByRole("button", { name: "Preview publication" }));
+  await screen.findByRole("button", { name: "Publish" });
+  expect(previewProjectUpdate).toHaveBeenCalledWith(second.workspace_id, second.id, expect.objectContaining({ body: "Second project's own draft" }));
+  view.rerender(ui(first));
+  expect(screen.queryByRole("button", { name: "Publish" })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Write progress" }));
+  expect(screen.getByLabelText("Progress editor")).toHaveValue("First project's last keystroke");
+  expect(mocks.editorEmitted).not.toHaveBeenCalled();
+  view.unmount(); client.clear();
+});

@@ -285,3 +285,20 @@ password from the administrator password. After errors clear secrets, and for an
 uncertain retry require the same temporary password with unchanged reason/username.
 Do not weaken forced change, session/token revocation, target-role/self guards or
 concurrent account-version checks when changing this form.
+
+### Project overview identity owns editor lifetime
+
+`ProjectDetail` keys `ProjectOverviewPanel` by workspace/project identity. Cached
+same-tab A-to-B navigation preserves the tab container, so project identity must
+remount the overview's composer, preview, correction target, cursor and timezone
+input together. Never key by revision or reset a global draft store.
+
+`ContentEditor` reads defaultValue at mount and flushes pending changes through
+its outgoing callback on unmount. Keep that callback bound to A while mounting
+B's editor with B's existing draft key. Otherwise A's text can be published under
+B even though storage keys themselves are correctly scoped.
+
+The canonical `project-detail.test.tsx` regression seeds both project queries,
+navigates before the editor debounce expires, verifies B's preview/body, and
+returns to A to prove its draft survived. A loading fallback that happens to
+unmount the tree must not be the mechanism that makes the regression pass.
