@@ -35,6 +35,24 @@ failure does not replace the main Compose or recreate services. Container,
 database, feed and configuration changes are not an atomic transaction: a later
 failure retains evidence and requires inspected recovery, not automatic downgrade.
 
+### Cross-platform artifact checks
+
+On macOS, invoke packaging with `COPYFILE_DISABLE=1` (for example,
+`COPYFILE_DISABLE=1 VERSION=v0.6.0 bash scripts/build-offline-upgrade.sh`).
+Otherwise BSD tar may add AppleDouble `._*` metadata, including a sibling of the
+package root. Reject unexpected archive roots, traversal, links/devices and
+private deployment files. Re-archiving unchanged files to remove host metadata
+requires a new outer SHA-256; retain the superseded hash only in build evidence.
+
+Docker's containerd image store may expose a multi-platform index as `.Id`.
+`docker image inspect pgvector/pgvector:pg17` can select the ARM build host's
+variant even when the running database container is amd64. Use
+`docker image inspect --platform linux/amd64 <image>` for target image checks;
+validate the saved image config's `os`, `architecture`, `rootfs.diff_ids` and
+runtime config. For running containers, inspect `ImageManifestDescriptor` and
+confirm `docker exec <container> uname -m`; do not equate an OCI index digest
+with a config digest or treat host-default inspection as runtime proof.
+
 ## Good / base / bad cases
 
 - Base: plain deployment installs the new main Compose and retains its secrets.
@@ -52,6 +70,10 @@ packaged guide bytes. Opt-in Docker smoke uses
 `MULTICA_RUN_DOCKER_CHANGELOG_SMOKE=1 MULTICA_CHANGELOG_SMOKE_IMAGE=<loaded-web>`.
 Release acceptance additionally upgrades a disposable older deployment and proves
 retained data, credentials, mounts, migration health and image architecture.
+Check the final distributed archive against the actual rehearsal directory,
+including inner image and outer archive checksums and both source-guide copies.
+For a multi-platform local database tag, assert the saved and running target
+variants rather than weakening architecture checks after a host-default mismatch.
 
 ## Wrong versus correct
 

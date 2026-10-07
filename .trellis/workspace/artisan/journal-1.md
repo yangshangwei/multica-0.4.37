@@ -1491,3 +1491,36 @@ Implemented R1–R6, independently reviewed and archived with executable regress
 ### Status
 
 [OK] **Completed**
+
+
+## Session 47: Recover and verify v0.6.0 local Linux and Windows packages
+
+**Date**: 2026-10-08
+**Task**: Recover and verify v0.6.0 local Linux and Windows packages
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Reused the existing release task and frozen accepted source; produced local Linux amd64 upgrade and recovered Windows x64 installer with Chinese guides and checksums. GitHub publication remains pending.
+
+### Main Changes
+
+- Prepared clean .artifacts/v0.6.0/delivery directory; kept private rehearsal credentials and backups out of delivery.
+- Recorded macOS AppleDouble packaging and Docker multi-platform inspection contracts.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Windows immutable accepted bytes and native evidence independently verified; Linux 8 archive checks and 16 v0.5.5 upgrade checks passed.
+- [OK] Independent live source, health, platform, retained account/data/upload and backup checks passed; existing full-suite evidence reused.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- If formal release is requested, follow canonical tag/CI changelog preparation and reverify a Linux bundle built with those exact bytes; keep Windows accepted bytes unchanged.

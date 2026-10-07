@@ -1,4 +1,4 @@
-# v0.6.0 verification ledger (in progress)
+# v0.6.0 verification ledger (local packages complete; release pending)
 
 Repository: yangshangwei/multica-0.4.37. Branch: codex/projects-p1.
 Local evidence root: `.artifacts/v0.6.0/` (ignored; private fixture credentials
@@ -13,29 +13,84 @@ must never be uploaded). Prior complete binary release: v0.5.5.
 - TypeScript: core 2746, views 6197, docs 62, web 282, desktop 962;
   total **10249 tests passed**.
 - Go race suites and `go vet -p 2 ./...`: passed; agent CLI guard active.
-- Production Playwright: **247 passed, 54 skipped, zero failed** (301 total).
-  The skips are not accepted as passes: planned supplemental lanes cover
-  25 legacy/provider/Desktop/I1, 28 password/admin, one device-auth case.
+- Production Playwright baseline: **247 passed, 54 skipped, zero failed**.
+  All 54 skipped identities were subsequently executed successfully: 25
+  legacy/provider/Desktop/I1, 28 password/admin, one device-auth case.
+  **301 unique E2E cases passed; zero unverified skips.**
+  `e2e-coverage.json` records each supplemental identity and report hashes.
+  Eighteen initial runner failures (browser cache and CLI path prerequisites)
+  were corrected and rerun; no application assertions were weakened.
 - `go -C server tool govulncheck ./...`: no vulnerabilities found.
 - Production Desktop build: passed.
 - Release/changelog/Windows-candidate tests with Docker smoke enabled:
-  **73 passed, zero skipped** before the final overlay image-identity guard.
+  **77 passed, zero skipped**, including the final overlay image-identity guard.
 - Selfhost config and shell syntax checks: passed.
+- Source and release fixes pushed to `codex/projects-p1`: `5ecade152`, then
+  `082723894` (Windows CRLF test normalization). Application and E2E source
+  bytes are unchanged from the baseline; this is checked by the coverage audit.
+- Windows native run `37651811895` was observed **success** before access was
+  restricted. It covers managed protocol, installer lifecycle, retained business
+  state and installed automatic update for candidate version `0.6.0`.
+  The previous run `37650452921` failed in the new test's CRLF handling before
+  packaging; both LF and CRLF now pass. Artifact recovery is completed below.
 
 Baseline log: `make-check.log`. Provenance retained at
 `~/.multica/dev/envs/check-20261007152623-4598/`.
 API/Web stopped and isolated Go database dropped by the completed check.
 
-## In progress / still required
+## Local package delivery — 2026-10-08
 
-- Final upgrade image-identity guard and fresh targeted regression results.
-- All 54 supplemental E2E identities, with fresh source and process provenance.
-- Windows hosted native installation/business/upgrade/update acceptance of
-  the exact 0.6.0 artifact; checksum-preserved publication.
-- Linux amd64 build, archive checks and actual disposable upgrade rehearsal.
-  Old v0.5.5 images are running in Docker amd64 emulation on this ARM Mac;
-  health and password config passed, a synthetic user/workspace/task and an
-  upload sentinel are retained, migration baseline is 511.
-- Fork v0.6.0 tag/release, immutable changelog, checksum/download verification.
+The user resumed package preparation and selected reuse of this task. Network,
+Docker and local Git/task writes are available again. Both artifacts use frozen
+source `082723894306372ec1dd46ea6c08934468681e7d`; later HEAD commits only change
+tests. No application source was modified during this continuation.
 
-No completion claim is made by this intermediate ledger.
+Clean handoff directory: `.artifacts/v0.6.0/delivery/`. It contains the two main
+artifacts, original Windows update metadata/blockmap, Chinese guides, SHA-256
+sidecars, `SHA256SUMS-v0.6.0.txt` and `verification-v0.6.0.json`. Do not distribute
+the parent artifact directory: the rehearsal contains private credentials and
+database backups.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `multica-server-upgrade-v0.6.0-linux-amd64.tar.gz` | 295434534 | `3291c1f9256d6e22cfb89da493c0d3fb9e630f6d5afac720be7b08a41a08f887` |
+| `multica-desktop-0.6.0-windows-x64.exe` | 178291663 | `b175cb717a13350b53043896ea02534057753a6e2bf6ae64de609af65cc1fc64` |
+
+- Windows run `37651811895` reconfirmed successful. Both original GitHub artifact
+  archive digests, every extracted member, accepted installer SHA-256, update
+  metadata size/SHA-512 and source identity match. Native lifecycle, business and
+  automatic-update evidence was reused, not rerun. Actual native upgrade baseline
+  is `0.5.2-rc.11.1`, and automatic update used full-download fallback. Installer
+  and Desktop remain unsigned; differential updates and offline certificate trust
+  are not claimed. Report: `windows-package-verification.json`.
+- Linux production build completed with TypeScript checks. All 8 archive checks
+  passed: final archive/internal image checksums, file bytes, three amd64 image
+  configs/layers, frozen source, both authentication-guide copies, retained feed
+  history and fixture-secret scan. macOS AppleDouble metadata was removed by
+  re-archiving unchanged files with `COPYFILE_DISABLE=1`; the initial hash in
+  `linux/build.log` is superseded by the final sidecar and report.
+- Actual disposable v0.5.5 → v0.6.0 upgrade exited 0. All 16 runtime checks passed:
+  old/new sessions, user/workspace/project/issue data, upload sentinel, volume
+  identity, 18 preserved environment settings, overlay, backups, migration 566,
+  health, CLI, exact installed feed and three running amd64 images. Backup remains
+  at `linux-rehearsal/backups/local-v060-n0r36w6a/`. Report:
+  `linux-package-verification.json`.
+- Independent review repeated archive/installer verification and live health,
+  source, platform, old-session/data, upload and backup checks. No local-delivery
+  blockers remain; review: `package-review.json`.
+- Original six Chinese document files and their ZIP were reused and their saved
+  digests verified. Existing authentication modes remain unchanged.
+
+Linux acceptance ran in amd64 Docker emulation on an ARM Mac, not native Linux
+hardware. Backup creation was verified; database restore/production rollback was
+not performed. Prior full lint/typecheck/test/E2E evidence remains reused because
+application and packaging source were unchanged.
+
+## Still required for GitHub publication
+
+The requested local packages are complete. The broader release task remains open:
+no v0.6.0 tag or GitHub Release was created. This local bundle deliberately uses
+an `Unreleased` entry at the frozen commit while preserving published history.
+Formal publication must follow the canonical tag/CI changelog procedure and use
+its exact changelog bytes in a freshly verified Linux bundle. Keep the accepted
+Windows installer bytes unchanged.

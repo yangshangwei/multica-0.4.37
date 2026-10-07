@@ -9,3 +9,21 @@
 7. Publish v0.6.0 and assets to the fork, verify downloadable bytes and version/commit identity, record final coverage and limitations. Archive task after all deliverables pass.
 
 No initial blocker. Existing initial dirty paths are excluded from release commits; release builds may use an isolated clean checkout to preserve them.
+
+## 2026-10-08 local package continuation
+
+The user resumed work and explicitly chose to reuse this task. This continuation
+delivers the Linux upgrade archive and Windows installer locally. Network and
+Docker access have recovered. Reuse the accepted Windows run and its exact source
+commit `082723894306372ec1dd46ea6c08934468681e7d` for both platforms; subsequent
+commits only change tests.
+
+No v0.6.0 GitHub release exists. Generate the local cumulative feed from the frozen
+commit with `status=unreleased`, retaining verified published history. Do not mark
+local preparation as remote publication. A later GitHub release must still follow
+the canonical tag/CI changelog preparation and exact-byte rebuild procedure above.
+
+Verify the Linux archive and rehearse v0.5.5 → v0.6.0 in the retained disposable
+amd64 Docker environment. Recheck downloaded Windows artifact hashes against
+native acceptance evidence and update metadata. Deliver a checksum manifest and
+a concise local handoff record with the actual verification limits.
