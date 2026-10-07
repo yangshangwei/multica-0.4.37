@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-const workflow = readFileSync(new URL("../.github/workflows/desktop-smoke.yml", import.meta.url), "utf8");
+const workflow = readFileSync(new URL("../.github/workflows/desktop-smoke.yml", import.meta.url), "utf8").replace(/\r\n/g, "\n");
 const desktopRoot = fileURLToPath(new URL("../apps/desktop/", import.meta.url));
 const acceptance = workflow.split("\n  windows-acceptance:\n")[1];
 
