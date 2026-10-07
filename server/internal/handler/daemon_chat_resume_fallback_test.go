@@ -195,3 +195,7 @@ func TestClaimTaskChatInputLoadFailureSkipsResumeQueries(t *testing.T) {
 		}
 	}
 }
+
+func (*failChatInputQueryDB) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

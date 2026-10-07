@@ -32,7 +32,7 @@ func lifecycleFixture(t *testing.T) (*testutil.Fixture, *IterationService) {
 	fx.WorkspaceID = fx.Workspace(t, "Lifecycle", suffix)
 	fx.Member(t, fx.WorkspaceID, fx.UserID, "owner")
 	fx.InsertNoID(t, "workspace_iteration_settings", testutil.Cols{"workspace_id": fx.WorkspaceID, "enabled": true}, "workspace_id=$1", fx.WorkspaceID)
-	for _, table := range []string{"iteration", "iteration_participation", "iteration_event", "iteration_operation"} {
+	for _, table := range []string{"iteration_snapshot", "iteration_notification", "iteration", "iteration_participation", "iteration_event", "iteration_operation"} {
 		fx.Cleanup(t, "DELETE FROM "+table+" WHERE workspace_id=$1", fx.WorkspaceID)
 	}
 	return fx, &IterationService{TxStarter: pool, Available: func(context.Context) bool { return true }, AuthorizeIssues: func(context.Context, pgx.Tx, []db.Issue) error { return nil }}
@@ -716,4 +716,31 @@ func TestIterationLifecycleManagementPreservesRunningExecutionAndProject(t *test
 	if status != "blocked" || projectAfter != project || fx.Count(t, "SELECT count(*) FROM agent_task_queue WHERE issue_id=$1", issueID) != 1 {
 		t.Fatal("iteration management changed issue semantics or started another task")
 	}
+}
+
+// Faults follow the generated bulk transport as well as the borrowed single
+// writer, so changing transport cannot silently disable rollback coverage.
+func (tx *lifecycleFailTx) SendBatch(ctx context.Context, batch *pgx.Batch) pgx.BatchResults {
+	failAt := -1
+	for i, q := range batch.QueuedQueries {
+		if strings.Contains(q.SQL, "-- name: AppendIterationLifecycleEvent") && tx.owner.events.Add(1) == 2 {
+			failAt = i
+		}
+	}
+	return &lifecycleFailBatch{BatchResults: tx.Tx.SendBatch(ctx, batch), failAt: failAt}
+}
+
+type lifecycleFailBatch struct {
+	pgx.BatchResults
+	failAt, index int
+}
+
+func (b *lifecycleFailBatch) Exec() (pgconn.CommandTag, error) {
+	tag, e := b.BatchResults.Exec()
+	i := b.index
+	b.index++
+	if i == b.failAt {
+		return tag, errors.New("injected second event failure")
+	}
+	return tag, e
 }

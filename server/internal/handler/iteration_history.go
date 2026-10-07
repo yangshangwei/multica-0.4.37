@@ -184,7 +184,7 @@ func validateHistoryIssueFilters(query url.Values) error {
 			return iterationAPIError(400, "invalid_request", "Repeated iteration filter")
 		}
 		switch key {
-		case "scope", "project_id", "assignee_type", "assignee_id", "status_category", "status", "search", "limit", "cursor":
+		case "scope", "priority", "label_id", "project_id", "assignee_type", "assignee_id", "status_category", "status", "search", "limit", "cursor":
 		default:
 			return iterationAPIError(400, "invalid_request", "Unknown iteration issue filter")
 		}
@@ -194,6 +194,17 @@ func validateHistoryIssueFilters(query url.Values) error {
 	}
 	if category := query.Get("status_category"); category != "" && !issuestatus.IsCategory(category) {
 		return iterationAPIError(400, "invalid_request", "Unknown status category")
+	}
+	switch query.Get("priority") {
+	case "", "urgent", "high", "medium", "low", "none":
+	default:
+		return iterationAPIError(400, "invalid_request", "Unknown priority")
+	}
+	if raw, ok := query["label_id"]; ok {
+		id, e := util.ParseUUID(raw[0])
+		if e != nil || id.Bytes == [16]byte{} {
+			return iterationAPIError(400, "invalid_request", "Invalid label filter")
+		}
 	}
 	for _, field := range []string{"project_id", "assignee_id"} {
 		if value := query.Get(field); value != "" && value != "null" {
@@ -209,6 +220,21 @@ func validateHistoryIssueFilters(query url.Values) error {
 	return nil
 }
 func matchesHistoricalIssue(item iteration.HistoricalIssue, query url.Values) bool {
+	if priority := query.Get("priority"); priority != "" && (item.Priority == nil || *item.Priority != priority) {
+		return false
+	}
+	if label := query.Get("label_id"); label != "" {
+		found := false
+		for _, value := range item.Labels {
+			if strings.EqualFold(value.ID, label) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
 	for key, field := range map[string]*string{"project_id": item.ProjectID, "assignee_type": item.AssigneeType, "assignee_id": item.AssigneeID} {
 		filter := query.Get(key)
 		if filter == "" {
@@ -251,7 +277,11 @@ func (h *Handler) ListIterationIssues(w http.ResponseWriter, r *http.Request) {
 		writeIterationAPIError(w, err)
 		return
 	}
-	cursor, err := decodeHistoryCursor(query.Get("cursor"), history, historyFilterKey(query, "issues"))
+	// Labels and priority need not emit scope events. Bind issue cursors to the
+	// coherent display projection as well as the persisted iteration revisions.
+	projection, _ := json.Marshal(struct{ Original, Scope []iteration.HistoricalIssue }{history.Original, history.Scope})
+	digest := sha256.Sum256(projection)
+	cursor, err := decodeHistoryCursor(query.Get("cursor"), history, historyFilterKey(query, "issues")+hex.EncodeToString(digest[:]))
 	if err != nil {
 		writeIterationAPIError(w, err)
 		return

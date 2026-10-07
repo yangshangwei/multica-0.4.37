@@ -160,3 +160,7 @@ func TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim
 		t.Fatalf("returned task = %s, want the reclaimed stale task %s", util.UUIDToString(claimed[0].ID), staleTaskID)
 	}
 }
+
+func (candidateFailDBTX) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

@@ -16,6 +16,7 @@ import (
 // transaction. It never starts a transaction, retries, or invokes execution.
 type MembershipChange struct {
 	Reason      *string
+	Rollover    bool
 	before      db.Issue
 	source      db.Iteration
 	target      db.Iteration
@@ -89,6 +90,13 @@ func CommitMembershipChange(ctx context.Context, tx pgx.Tx, change *MembershipCh
 	if err := validateIssueRecordIdentity(actor, operationID); err != nil {
 		return db.Issue{}, err
 	}
+	rollover := before.IterationRolloverCount
+	if change.Rollover {
+		if rollover == 2147483647 {
+			return db.Issue{}, errors.New("rollover count exhausted")
+		}
+		rollover++
+	}
 	q := db.New(tx)
 	sample := pgtype.Timestamptz{Time: businessAt, Valid: true}
 	appendEvent := func(iid pgtype.UUID, kind string, old, new []byte) error {
@@ -99,7 +107,7 @@ func CommitMembershipChange(ctx context.Context, tx pgx.Tx, change *MembershipCh
 		return q.AppendIterationLifecycleEvent(ctx, db.AppendIterationLifecycleEventParams{WorkspaceID: before.WorkspaceID, IterationID: iid, IssueID: before.ID, OperationID: operationID, Kind: kind, Actor: actor, SampledAt: sample, BeforeFacts: old, AfterFacts: new, Reason: reason})
 	}
 	if change.source.ID.Valid {
-		facts, err := json.Marshal(change.sourceFacts)
+		facts, err := marshalMembershipFacts(change.sourceFacts, change.source.ID, change.target.ID)
 		if err != nil {
 			return db.Issue{}, err
 		}
@@ -122,7 +130,9 @@ func CommitMembershipChange(ctx context.Context, tx pgx.Tx, change *MembershipCh
 		}
 	}
 	if change.target.ID.Valid {
-		facts, err := json.Marshal(change.facts)
+		targetFacts := change.facts
+		targetFacts.RolloverCount = rollover
+		facts, err := marshalMembershipFacts(targetFacts, change.source.ID, change.target.ID)
 		if err != nil {
 			return db.Issue{}, err
 		}
@@ -142,9 +152,21 @@ func CommitMembershipChange(ctx context.Context, tx pgx.Tx, change *MembershipCh
 			return db.Issue{}, err
 		}
 	}
-	after, err := q.SetIssueCurrentIteration(ctx, db.SetIssueCurrentIterationParams{WorkspaceID: before.WorkspaceID, IssueID: before.ID, ExpectedRevision: before.Revision, CurrentIterationID: change.target.ID, RolloverCount: before.IterationRolloverCount, BusinessAt: sample})
+
+	after, err := q.SetIssueCurrentIteration(ctx, db.SetIssueCurrentIterationParams{WorkspaceID: before.WorkspaceID, IssueID: before.ID, ExpectedRevision: before.Revision, CurrentIterationID: change.target.ID, RolloverCount: rollover, BusinessAt: sample})
 	if errors.Is(err, pgx.ErrNoRows) {
 		return db.Issue{}, &OperationError{Status: 409, Code: "iteration_preview_stale", Message: "Issue changed"}
 	}
 	return after, err
+}
+
+// marshalMembershipFacts adds immutable transition identity without changing
+// IssueFacts or the reducer's null-before/null-after membership semantics.
+// Explicit null means unassigned; missing keys on older events remain unknown.
+func marshalMembershipFacts(facts IssueFacts, source, target pgtype.UUID) ([]byte, error) {
+	return json.Marshal(struct {
+		IssueFacts
+		SourceIterationID *string `json:"source_iteration_id"`
+		TargetIterationID *string `json:"target_iteration_id"`
+	}{facts, historyNullableUUID(source), historyNullableUUID(target)})
 }

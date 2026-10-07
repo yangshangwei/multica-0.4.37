@@ -19,18 +19,27 @@ const (
 // teardown. Adding a table requires an explicit ownership decision here; the
 // handler deletion graph must then implement that decision before CI passes.
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
-	"workspace_triage_settings":   workspaceDelete,
-	"issue_triage":                workspaceDelete,
-	"triage_intake_request":       workspaceDelete,
-	"triage_action":               workspaceDelete,
-	"triage_import_batch":         workspaceDelete,
-	"triage_import_row":           workspaceDelete,
-	"triage_notification":         workspaceDelete,
-	"managed_installation":        workspaceDeleteKeep,
-	"installation_user":           workspaceDeleteKeep,
-	"installation_report_cursor":  workspaceDeleteKeep,
-	"installation_daemon_binding": workspaceDeleteSettle,
-	"installation_challenge":      workspaceDeleteSettle,
+	// Workspace teardown purges I1 history/outbox through
+	// DeleteWorkspaceIterationData in the existing owner transaction.
+	"workspace_iteration_settings": workspaceDelete,
+	"iteration":                    workspaceDelete,
+	"iteration_participation":      workspaceDelete,
+	"iteration_event":              workspaceDelete,
+	"iteration_snapshot":           workspaceDelete,
+	"iteration_operation":          workspaceDelete,
+	"iteration_notification":       workspaceDelete,
+	"workspace_triage_settings":    workspaceDelete,
+	"issue_triage":                 workspaceDelete,
+	"triage_intake_request":        workspaceDelete,
+	"triage_action":                workspaceDelete,
+	"triage_import_batch":          workspaceDelete,
+	"triage_import_row":            workspaceDelete,
+	"triage_notification":          workspaceDelete,
+	"managed_installation":         workspaceDeleteKeep,
+	"installation_user":            workspaceDeleteKeep,
+	"installation_report_cursor":   workspaceDeleteKeep,
+	"installation_daemon_binding":  workspaceDeleteSettle,
+	"installation_challenge":       workspaceDeleteSettle,
 	// Alerts and detector cursors belong to the organization, including after
 	// a workspace is removed; recovery observes task deletion independently.
 	"admin_alert":                        workspaceDeleteKeep,

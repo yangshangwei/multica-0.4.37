@@ -33,8 +33,12 @@ func TestIterationMemberRevocationClearsOnlyProtectedRecipientData(t *testing.T)
 		t.Fatal(err)
 	}
 	for _, table := range []string{"iteration_notification", "inbox_item"} {
-		if n := dbfx.Count(t, "SELECT count(*) FROM "+table+" WHERE id=$1", target); n != 0 {
-			t.Fatalf("revoked member retained protected %s", table)
+		if table == "inbox_item" {
+			if n := dbfx.Count(t, "SELECT count(*) FROM inbox_item WHERE id=$1", target); n != 0 {
+				t.Fatal("revoked member retained protected inbox")
+			}
+		} else if n := dbfx.Count(t, "SELECT count(*) FROM iteration_notification WHERE id=$1 AND status='suppressed'", target); n != 1 {
+			t.Fatal("revocation lost suppression ledger")
 		}
 		if n := dbfx.Count(t, "SELECT count(*) FROM "+table+" WHERE id=ANY($1::uuid[])", []string{retained, elsewhere}); n != 2 {
 			t.Fatalf("revocation removed another recipient or workspace from %s", table)

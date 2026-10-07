@@ -325,6 +325,13 @@ func historyEventIssueFacts(event Event) (IssueFacts, error) {
 }
 
 func validateHistoricalIssue(item HistoricalIssue) error {
+	seenLabels := map[string]bool{}
+	for _, label := range item.Labels {
+		if !validHistoryID(label.ID) || label.Name == "" || seenLabels[label.ID] {
+			return errors.New("invalid historical label")
+		}
+		seenLabels[label.ID] = true
+	}
 	if !validHistoryID(item.IssueID) || item.Identifier == "" || item.Title == "" || item.StatusKey == "" || item.RolloverCount < 0 || item.RolloverCount > 2147483647 || !validScopeIssue(ScopeIssue{IssueID: item.IssueID, StatusCategory: item.StatusCategory}) {
 		return errors.New("invalid historical issue")
 	}

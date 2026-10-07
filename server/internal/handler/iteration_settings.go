@@ -49,8 +49,8 @@ func (h *Handler) GetIterationCapabilities(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	available := featureflags.IterationsI1Enabled(r.Context(), h.FeatureFlags)
-	// Atomic handoff must not be advertised before its implementation and CG.
-	writeJSON(w, 200, map[string]any{"workspace_id": uuidToString(ws), "schema_version": iteration.SchemaVersion, "supported": available, "enabled": available && settings.Enabled, "manual": true, "atomic_handoff": false})
+	// CG verifies the atomic workflow; discovery still follows the closed rollout gate.
+	writeJSON(w, 200, map[string]any{"workspace_id": uuidToString(ws), "schema_version": iteration.SchemaVersion, "supported": available, "enabled": available && settings.Enabled, "manual": true, "atomic_handoff": available})
 }
 
 func (h *Handler) EnableIterationSettings(w http.ResponseWriter, r *http.Request) {

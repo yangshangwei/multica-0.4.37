@@ -57,6 +57,27 @@ func CaptureIssueReferences(ctx context.Context, tx pgx.Tx, ws pgtype.UUID, issu
 			return nil, err
 		}
 	}
+	labels := make(map[pgtype.UUID][]HistoricalLabel, len(issues))
+	for _, id := range ids {
+		labels[id] = []HistoricalLabel{}
+	}
+	if lockRefs {
+		rows, e := q.LockIterationHistoryLabels(ctx, db.LockIterationHistoryLabelsParams{WorkspaceID: ws, IssueIds: ids})
+		if e != nil {
+			return nil, e
+		}
+		for _, row := range rows {
+			labels[row.IssueID] = append(labels[row.IssueID], HistoricalLabel{ID: historyUUID(row.ID), Name: row.Name})
+		}
+	} else {
+		rows, e := q.ListIterationHistoryLabels(ctx, db.ListIterationHistoryLabelsParams{WorkspaceID: ws, IssueIds: ids})
+		if e != nil {
+			return nil, e
+		}
+		for _, row := range rows {
+			labels[row.IssueID] = append(labels[row.IssueID], HistoricalLabel{ID: historyUUID(row.ID), Name: row.Name})
+		}
+	}
 	references, err := q.ListIterationHistoryIssueReferences(ctx, db.ListIterationHistoryIssueReferencesParams{WorkspaceID: ws, IssueIds: ids})
 	if err != nil {
 		return nil, err
@@ -90,7 +111,8 @@ func CaptureIssueReferences(ctx context.Context, tx pgx.Tx, ws pgtype.UUID, issu
 			assigneeName = ref.SquadName
 			assigneeAvailable = ref.SquadName.Valid && !ref.SquadArchivedAt.Valid && ref.SquadLeaderID.Valid && !ref.SquadLeaderArchivedAt.Valid
 		}
-		item := HistoricalIssue{IssueID: historyUUID(issue.ID), Identifier: util.ResolveIssuePrefix(ref.IssuePrefix, ref.WorkspaceName) + "-" + strconv.Itoa(int(issue.Number)), Title: issue.Title, ProjectID: historyNullableUUID(issue.ProjectID), ProjectName: historyText(ref.ProjectName), AssigneeType: historyText(issue.AssigneeType), AssigneeID: historyNullableUUID(issue.AssigneeID), AssigneeName: historyText(assigneeName), StatusKey: issue.Status, StatusCategory: category, WasCompletedAtStart: category == "done", RolloverCount: int(issue.IterationRolloverCount)}
+		priority := issue.Priority
+		item := HistoricalIssue{Priority: &priority, Labels: labels[issue.ID], IssueID: historyUUID(issue.ID), Identifier: util.ResolveIssuePrefix(ref.IssuePrefix, ref.WorkspaceName) + "-" + strconv.Itoa(int(issue.Number)), Title: issue.Title, ProjectID: historyNullableUUID(issue.ProjectID), ProjectName: historyText(ref.ProjectName), AssigneeType: historyText(issue.AssigneeType), AssigneeID: historyNullableUUID(issue.AssigneeID), AssigneeName: historyText(assigneeName), StatusKey: issue.Status, StatusCategory: category, WasCompletedAtStart: category == "done", RolloverCount: int(issue.IterationRolloverCount)}
 		if err = validateHistoricalIssue(item); err != nil {
 			return nil, err
 		}

@@ -135,6 +135,86 @@ func (q *Queries) ListIterationHistoryIssueReferences(ctx context.Context, arg L
 	return items, nil
 }
 
+const listIterationHistoryLabels = `-- name: ListIterationHistoryLabels :many
+SELECT x.issue_id, l.id, l.name
+FROM issue_to_label x JOIN issue i ON i.id=x.issue_id
+JOIN issue_label l ON l.id=x.label_id AND l.workspace_id=i.workspace_id AND l.resource_type='issue'
+WHERE i.workspace_id=$1 AND i.id=ANY($2::uuid[])
+ORDER BY x.issue_id,l.id
+`
+
+type ListIterationHistoryLabelsParams struct {
+	WorkspaceID pgtype.UUID   `json:"workspace_id"`
+	IssueIds    []pgtype.UUID `json:"issue_ids"`
+}
+
+type ListIterationHistoryLabelsRow struct {
+	IssueID pgtype.UUID `json:"issue_id"`
+	ID      pgtype.UUID `json:"id"`
+	Name    string      `json:"name"`
+}
+
+func (q *Queries) ListIterationHistoryLabels(ctx context.Context, arg ListIterationHistoryLabelsParams) ([]ListIterationHistoryLabelsRow, error) {
+	rows, err := q.db.Query(ctx, listIterationHistoryLabels, arg.WorkspaceID, arg.IssueIds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListIterationHistoryLabelsRow{}
+	for rows.Next() {
+		var i ListIterationHistoryLabelsRow
+		if err := rows.Scan(&i.IssueID, &i.ID, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const lockIterationHistoryLabels = `-- name: LockIterationHistoryLabels :many
+SELECT x.issue_id, l.id, l.name
+FROM issue_to_label x JOIN issue i ON i.id=x.issue_id
+JOIN issue_label l ON l.id=x.label_id AND l.workspace_id=i.workspace_id AND l.resource_type='issue'
+WHERE i.workspace_id=$1 AND i.id=ANY($2::uuid[])
+ORDER BY x.issue_id,l.id FOR SHARE OF x,l NOWAIT
+`
+
+type LockIterationHistoryLabelsParams struct {
+	WorkspaceID pgtype.UUID   `json:"workspace_id"`
+	IssueIds    []pgtype.UUID `json:"issue_ids"`
+}
+
+type LockIterationHistoryLabelsRow struct {
+	IssueID pgtype.UUID `json:"issue_id"`
+	ID      pgtype.UUID `json:"id"`
+	Name    string      `json:"name"`
+}
+
+// The owner holds issue locks. NOWAIT avoids reversing label deletion's
+// junction/reference order; newly attached labels cannot commit past issue locks.
+func (q *Queries) LockIterationHistoryLabels(ctx context.Context, arg LockIterationHistoryLabelsParams) ([]LockIterationHistoryLabelsRow, error) {
+	rows, err := q.db.Query(ctx, lockIterationHistoryLabels, arg.WorkspaceID, arg.IssueIds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []LockIterationHistoryLabelsRow{}
+	for rows.Next() {
+		var i LockIterationHistoryLabelsRow
+		if err := rows.Scan(&i.IssueID, &i.ID, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const lockIterationHistoryMembers = `-- name: LockIterationHistoryMembers :many
 SELECT m.user_id, u.name
 FROM member m JOIN "user" u ON u.id = m.user_id

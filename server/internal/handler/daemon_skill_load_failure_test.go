@@ -170,3 +170,7 @@ func TestResolveTaskSkillBundles_SkillReadFailureReturns500(t *testing.T) {
 	req = withURLParams(req, "runtimeId", runtimeID, "taskId", taskID)
 	testutil.Call(t, failing.ResolveTaskSkillBundles, req).Want(http.StatusInternalServerError)
 }
+
+func (skillFileBatchFailDBTX) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

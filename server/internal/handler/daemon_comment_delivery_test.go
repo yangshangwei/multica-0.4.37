@@ -1045,3 +1045,11 @@ func TestFinalizeTaskClaim_TriggerDeletedAfterClaimRejectsStaleProvenance(t *tes
 		t.Fatalf("stale trigger race advanced receipt: %v", got)
 	}
 }
+
+func (*failDeleteCommentDB) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}
+
+func (*zeroDeleteCommentDB) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

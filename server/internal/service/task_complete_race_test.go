@@ -487,3 +487,7 @@ func TestContextOverflowFromLegacyDaemonRetiresSession(t *testing.T) {
 		t.Errorf("an overflow reported by a current daemon must retire the session; got reason %q", current)
 	}
 }
+
+func (*mockDBTX) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

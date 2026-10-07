@@ -133,3 +133,7 @@ func (d scanErrDBTX) QueryRow(context.Context, string, ...interface{}) pgx.Row {
 type errRow struct{ err error }
 
 func (r errRow) Scan(...any) error { return r.err }
+
+func (scanErrDBTX) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

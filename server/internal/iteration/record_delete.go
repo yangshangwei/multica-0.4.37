@@ -21,7 +21,7 @@ func RecordIssueDeletion(ctx context.Context, tx pgx.Tx, record *IssueRecord, ac
 	if err := validateIssueRecordIdentity(actor, operationID); err != nil {
 		return err
 	}
-	before, err := json.Marshal(record.facts)
+	before, err := marshalMembershipFacts(record.facts, record.before.CurrentIterationID, pgtype.UUID{})
 	if err != nil {
 		return err
 	}

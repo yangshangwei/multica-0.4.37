@@ -136,6 +136,56 @@ func (q *Queries) CaptureIterationOriginal(ctx context.Context, arg CaptureItera
 	return result.RowsAffected(), nil
 }
 
+const closeActiveIteration = `-- name: CloseActiveIteration :one
+UPDATE iteration SET status=$1,logical_ended_at=$2,
+ processed_at=$3,end_reason=$4,revision=revision+1,scope_revision=scope_revision+1
+WHERE workspace_id=$5 AND id=$6 AND status='active'
+ AND revision<9007199254740991 AND scope_revision<9007199254740991 RETURNING id, workspace_id, name, description, coordinator_user_id, timezone, start_date, end_date, status, mode, revision, scope_revision, created_by, created_at, started_by, started_at, logical_ended_at, processed_at, end_reason
+`
+
+type CloseActiveIterationParams struct {
+	Status      string             `json:"status"`
+	BusinessAt  pgtype.Timestamptz `json:"business_at"`
+	ProcessedAt pgtype.Timestamptz `json:"processed_at"`
+	Reason      pgtype.Text        `json:"reason"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ID          pgtype.UUID        `json:"id"`
+}
+
+func (q *Queries) CloseActiveIteration(ctx context.Context, arg CloseActiveIterationParams) (Iteration, error) {
+	row := q.db.QueryRow(ctx, closeActiveIteration,
+		arg.Status,
+		arg.BusinessAt,
+		arg.ProcessedAt,
+		arg.Reason,
+		arg.WorkspaceID,
+		arg.ID,
+	)
+	var i Iteration
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Name,
+		&i.Description,
+		&i.CoordinatorUserID,
+		&i.Timezone,
+		&i.StartDate,
+		&i.EndDate,
+		&i.Status,
+		&i.Mode,
+		&i.Revision,
+		&i.ScopeRevision,
+		&i.CreatedBy,
+		&i.CreatedAt,
+		&i.StartedBy,
+		&i.StartedAt,
+		&i.LogicalEndedAt,
+		&i.ProcessedAt,
+		&i.EndReason,
+	)
+	return i, err
+}
+
 const createIteration = `-- name: CreateIteration :one
 INSERT INTO iteration (id,workspace_id,name,description,coordinator_user_id,timezone,
  start_date,end_date,created_by,created_at)
@@ -230,6 +280,18 @@ func (q *Queries) DeleteUnusedPlannedIteration(ctx context.Context, arg DeleteUn
 	return result.RowsAffected(), nil
 }
 
+const disableIterationSettings = `-- name: DisableIterationSettings :one
+UPDATE workspace_iteration_settings SET enabled=false,revision=revision+1
+WHERE workspace_id=$1 AND enabled AND revision<9007199254740991 RETURNING workspace_id, enabled, revision
+`
+
+func (q *Queries) DisableIterationSettings(ctx context.Context, workspaceID pgtype.UUID) (WorkspaceIterationSetting, error) {
+	row := q.db.QueryRow(ctx, disableIterationSettings, workspaceID)
+	var i WorkspaceIterationSetting
+	err := row.Scan(&i.WorkspaceID, &i.Enabled, &i.Revision)
+	return i, err
+}
+
 const editIteration = `-- name: EditIteration :one
 UPDATE iteration SET name=$1,description=$2,
  coordinator_user_id=$3,start_date=$4,
@@ -286,6 +348,22 @@ func (q *Queries) EditIteration(ctx context.Context, arg EditIterationParams) (I
 	return i, err
 }
 
+const finalizeIterationProcessedAt = `-- name: FinalizeIterationProcessedAt :exec
+UPDATE iteration SET processed_at=$1
+WHERE workspace_id=$2 AND id=$3 AND status IN ('completed','cancelled')
+`
+
+type FinalizeIterationProcessedAtParams struct {
+	ProcessedAt pgtype.Timestamptz `json:"processed_at"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ID          pgtype.UUID        `json:"id"`
+}
+
+func (q *Queries) FinalizeIterationProcessedAt(ctx context.Context, arg FinalizeIterationProcessedAtParams) error {
+	_, err := q.db.Exec(ctx, finalizeIterationProcessedAt, arg.ProcessedAt, arg.WorkspaceID, arg.ID)
+	return err
+}
+
 const getIterationActive = `-- name: GetIterationActive :one
 SELECT id, workspace_id, name, description, coordinator_user_id, timezone, start_date, end_date, status, mode, revision, scope_revision, created_by, created_at, started_by, started_at, logical_ended_at, processed_at, end_reason FROM iteration WHERE workspace_id=$1 AND status='active'
 `
@@ -334,6 +412,30 @@ func (q *Queries) HasIterationActiveJoin(ctx context.Context, arg HasIterationAc
 	var exists bool
 	err := row.Scan(&exists)
 	return exists, err
+}
+
+const insertIterationSnapshot = `-- name: InsertIterationSnapshot :exec
+INSERT INTO iteration_snapshot (workspace_id,iteration_id,operation_id,schema_version,body,created_at)
+VALUES ($1,$2,$3,1,$4,$5)
+`
+
+type InsertIterationSnapshotParams struct {
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	IterationID pgtype.UUID        `json:"iteration_id"`
+	OperationID pgtype.UUID        `json:"operation_id"`
+	Body        []byte             `json:"body"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+func (q *Queries) InsertIterationSnapshot(ctx context.Context, arg InsertIterationSnapshotParams) error {
+	_, err := q.db.Exec(ctx, insertIterationSnapshot,
+		arg.WorkspaceID,
+		arg.IterationID,
+		arg.OperationID,
+		arg.Body,
+		arg.CreatedAt,
+	)
+	return err
 }
 
 const joinIterationParticipation = `-- name: JoinIterationParticipation :exec
@@ -424,6 +526,50 @@ func (q *Queries) ListIterationOperationIssues(ctx context.Context, arg ListIter
 			&i.AdmissionStatus,
 			&i.CurrentIterationID,
 			&i.IterationRolloverCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listOpenIterations = `-- name: ListOpenIterations :many
+SELECT id, workspace_id, name, description, coordinator_user_id, timezone, start_date, end_date, status, mode, revision, scope_revision, created_by, created_at, started_by, started_at, logical_ended_at, processed_at, end_reason FROM iteration WHERE workspace_id=$1 AND status IN ('active','planned') ORDER BY id
+`
+
+func (q *Queries) ListOpenIterations(ctx context.Context, workspaceID pgtype.UUID) ([]Iteration, error) {
+	rows, err := q.db.Query(ctx, listOpenIterations, workspaceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Iteration{}
+	for rows.Next() {
+		var i Iteration
+		if err := rows.Scan(
+			&i.ID,
+			&i.WorkspaceID,
+			&i.Name,
+			&i.Description,
+			&i.CoordinatorUserID,
+			&i.Timezone,
+			&i.StartDate,
+			&i.EndDate,
+			&i.Status,
+			&i.Mode,
+			&i.Revision,
+			&i.ScopeRevision,
+			&i.CreatedBy,
+			&i.CreatedAt,
+			&i.StartedBy,
+			&i.StartedAt,
+			&i.LogicalEndedAt,
+			&i.ProcessedAt,
+			&i.EndReason,
 		); err != nil {
 			return nil, err
 		}

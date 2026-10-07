@@ -374,3 +374,7 @@ func TestResolveTaskSkillBundles_ScopedReadFailureReturns500(t *testing.T) {
 	resolveBundles(t, newSpyHandler(t, spy), runtimeID, taskID, workspaceRef(skillIDs[0])).
 		Want(http.StatusInternalServerError)
 }
+
+func (*skillQuerySpy) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

@@ -25,6 +25,7 @@ type lifecyclePrepared struct {
 	historical []iteration.HistoricalIssue
 	changes    []*iteration.MembershipChange
 	sampled    time.Time
+	snapshots  []iteration.Snapshot
 }
 
 func normalizeLifecycleDraft(draft iteration.Draft) (iteration.Draft, error) {
@@ -36,15 +37,13 @@ func normalizeLifecycleDraft(draft iteration.Draft) (iteration.Draft, error) {
 	if err != nil {
 		return draft, iterationFailure(400, "invalid_request", err.Error())
 	}
-	if err = json.Unmarshal(raw, &draft); err != nil {
+	var normalized iteration.Draft
+	if err = json.Unmarshal(raw, &normalized); err != nil {
 		return draft, err
 	}
+	draft = normalized
 	switch draft.Operation {
-	case "start", "move", "delete":
-	case "cancel":
-		if len(draft.Moves) > 0 {
-			return draft, iterationFailure(400, "invalid_request", "Planned cancellation releases its entire scope")
-		}
+	case "start", "move", "delete", "end", "handoff", "disable", "cancel":
 	default:
 		return draft, iterationFailure(422, "iteration_validation_failed", "This lifecycle operation is not available")
 	}
@@ -118,7 +117,7 @@ func (s *IterationService) previewIterationOnce(ctx context.Context, ws, actor p
 	if err = authorize(ctx, tx); err != nil {
 		return iteration.Preview{}, err
 	}
-	prepared, err := s.prepareLifecycle(ctx, tx, ws, actor, draft, false)
+	prepared, err := s.prepareLifecycle(ctx, tx, ws, actor, draft, false, "")
 	if err != nil {
 		return iteration.Preview{}, err
 	}
@@ -127,7 +126,13 @@ func (s *IterationService) previewIterationOnce(ctx context.Context, ws, actor p
 	}
 	return prepared.preview, nil
 }
-func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, actor pgtype.UUID, draft iteration.Draft, lock bool) (lifecyclePrepared, error) {
+func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, actor pgtype.UUID, draft iteration.Draft, lock bool, expectedHash string) (lifecyclePrepared, error) {
+	if draft.Operation == "disable" {
+		if e := requireIterationAdministrator(ctx, tx, ws, actor); e != nil {
+			return lifecyclePrepared{}, e
+		}
+	}
+
 	p := lifecyclePrepared{rows: map[pgtype.UUID]db.Iteration{}}
 	q := db.New(tx)
 	settings, err := s.lifecycleSettings(ctx, tx, ws, lock)
@@ -151,6 +156,23 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 		}
 	}
 	addIteration(draft.IterationID)
+	if draft.Start != nil {
+		addIteration(&draft.Start.TargetID)
+		if draft.Operation == "handoff" {
+			id, _ := iterationUUID(&draft.Start.TargetID)
+			fullIDs = append(fullIDs, id)
+		}
+	}
+	if draft.Operation == "disable" {
+		all, e := q.ListOpenIterations(ctx, ws)
+		if e != nil {
+			return p, e
+		}
+		for _, row := range all {
+			iterationSet[row.ID] = true
+			fullIDs = append(fullIDs, row.ID)
+		}
+	}
 	if draft.IterationID != nil {
 		id, _ := iterationUUID(draft.IterationID)
 		fullIDs = append(fullIDs, id)
@@ -280,7 +302,7 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 		if row.Revision != *draft.ExpectedIterationRevision || row.ScopeRevision != *draft.ExpectedScopeRevision {
 			invalid(nil, "iteration_revision_conflict")
 		}
-		if row.Status != "planned" {
+		if (draft.Operation == "start" || draft.Operation == "delete") && row.Status != "planned" {
 			invalid(nil, "iteration_history_move_unsupported")
 		}
 	}
@@ -375,19 +397,12 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 			id := id
 			invalid(&id, "iteration_terminal_choice_invalid")
 		}
-	case "cancel":
+	case "end", "handoff", "disable", "cancel":
+		if e := s.prepareClosure(ctx, tx, ws, draft, &p, &out, facts, lock); e != nil {
+			return p, e
+		}
 		if draft.Reason == nil || *draft.Reason == "" {
 			invalid(nil, "iteration_reason_required")
-		}
-		if lock {
-			for _, issue := range p.issues {
-				change, e := iteration.PrepareMembershipChange(ctx, tx, issue, p.rows[issue.CurrentIterationID], db.Iteration{}, false)
-				if e != nil {
-					return p, e
-				}
-				change.Reason = draft.Reason
-				p.changes = append(p.changes, change)
-			}
 		}
 	case "delete":
 		id, _ := iterationUUID(draft.IterationID)
@@ -412,8 +427,8 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 		return p, err
 	}
 	out.PreviewedAt = p.sampled
-	if draft.Operation == "start" {
-		id, _ := iterationUUID(draft.IterationID)
+	if draft.Operation == "start" || draft.Operation == "handoff" {
+		id, _ := iterationUUID(&draft.Start.TargetID)
 		row := p.rows[id]
 		dates, e := iteration.StartDates(row.StartDate.Time.Format(time.DateOnly), row.EndDate.Time.Format(time.DateOnly), row.Timezone, draft.Start.Mode, p.sampled)
 		if e != nil {
@@ -422,19 +437,14 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 			out.StartPreview = &dates
 		}
 	}
-	for _, row := range rows {
-		history, e := iteration.LoadHistory(ctx, tx, ws, row.ID, p.sampled)
-		if e != nil {
-			return p, e
-		}
-		out.Statistics[util.UUIDToString(row.ID)] = history.Statistics
-	}
+
 	out.TotalAffected = len(p.issues)
 	comparisonIssues := append([]iteration.PreviewIssue{}, out.Issues...)
 	for i := range comparisonIssues {
 		comparisonIssues[i].RunningExecutionCount = 0
 	}
 	out.PreviewHash, err = iteration.CanonicalHash(struct {
+		Historical       []iteration.HistoricalIssue `json:"historical"`
 		Version          int                         `json:"contract_version"`
 		Workspace        string                      `json:"workspace_id"`
 		Actor            string                      `json:"actor_user_id"`
@@ -445,9 +455,19 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 		Recipients       []string                    `json:"recipients"`
 		Start            *iteration.StartDatePreview `json:"start_preview"`
 		Invalid          []iteration.InvalidItem     `json:"invalid_items"`
-	}{iteration.SchemaVersion, out.WorkspaceID, out.ActorUserID, draft, settings.Revision, out.Iterations, comparisonIssues, out.Recipients, out.StartPreview, out.InvalidItems})
+	}{p.historical, iteration.SchemaVersion, out.WorkspaceID, out.ActorUserID, draft, settings.Revision, out.Iterations, comparisonIssues, out.Recipients, out.StartPreview, out.InvalidItems})
 	if err != nil {
 		return p, err
+	}
+	if expectedHash != "" && out.PreviewHash != expectedHash {
+		return p, iterationFailure(409, "iteration_preview_stale", "Preview facts changed; refresh the complete preview")
+	}
+	for _, row := range rows {
+		history, e := iteration.LoadHistory(ctx, tx, ws, row.ID, p.sampled)
+		if e != nil {
+			return p, e
+		}
+		out.Statistics[util.UUIDToString(row.ID)] = history.Statistics
 	}
 	p.preview = out
 	return p, nil

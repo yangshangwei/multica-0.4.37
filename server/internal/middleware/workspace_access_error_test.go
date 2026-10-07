@@ -66,3 +66,7 @@ func TestWorkspaceUnavailableDoesNotRevokeMembership(t *testing.T) {
 		}
 	}
 }
+
+func (workspaceErrorDB) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

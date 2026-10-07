@@ -27,16 +27,18 @@ func (q *Queries) GetWorkspaceIterationListVersion(ctx context.Context, workspac
 
 const listWorkspaceIterations = `-- name: ListWorkspaceIterations :many
 SELECT id, workspace_id, name, description, coordinator_user_id, timezone, start_date, end_date, status, mode, revision, scope_revision, created_by, created_at, started_by, started_at, logical_ended_at, processed_at, end_reason FROM iteration i WHERE i.workspace_id=$1
- AND ($2::text='' OR i.status=$2)
- AND ($3::text='' OR strpos(lower(i.name),lower($3))>0)
- AND ($4::date IS NULL OR i.end_date>=$4)
- AND ($5::date IS NULL OR i.start_date<=$5)
- AND (NOT $6::boolean OR (i.start_date,i.id)>($7::date,$8::uuid))
-ORDER BY i.start_date,i.id LIMIT $9
+ AND ($2::uuid IS NULL OR EXISTS (SELECT 1 FROM iteration_participation ip WHERE ip.workspace_id=i.workspace_id AND ip.iteration_id=i.id AND ip.issue_id=$2))
+ AND ($3::text='' OR i.status=$3)
+ AND ($4::text='' OR strpos(lower(i.name),lower($4))>0)
+ AND ($5::date IS NULL OR i.end_date>=$5)
+ AND ($6::date IS NULL OR i.start_date<=$6)
+ AND (NOT $7::boolean OR (i.start_date,i.id)>($8::date,$9::uuid))
+ORDER BY i.start_date,i.id LIMIT $10
 `
 
 type ListWorkspaceIterationsParams struct {
 	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	IssueID     pgtype.UUID `json:"issue_id"`
 	Status      string      `json:"status"`
 	Search      string      `json:"search"`
 	FromDate    pgtype.Date `json:"from_date"`
@@ -50,6 +52,7 @@ type ListWorkspaceIterationsParams struct {
 func (q *Queries) ListWorkspaceIterations(ctx context.Context, arg ListWorkspaceIterationsParams) ([]Iteration, error) {
 	rows, err := q.db.Query(ctx, listWorkspaceIterations,
 		arg.WorkspaceID,
+		arg.IssueID,
 		arg.Status,
 		arg.Search,
 		arg.FromDate,

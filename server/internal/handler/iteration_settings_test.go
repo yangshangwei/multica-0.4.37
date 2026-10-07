@@ -54,6 +54,20 @@ func TestIterationSettingsDefaultAndReleaseGate(t *testing.T) {
 		t.Fatal("closed release gate persisted operation")
 	}
 }
+
+func TestIterationCapabilitiesVerifiedHandoffRemainsRolloutGated(t *testing.T) {
+	h := iterationSettingsHandler(t)
+	var capabilities map[string]any
+	testutil.Call(t, h.GetIterationCapabilities, iterationSettingsRequest("GET", "iteration-capabilities", nil)).Want(200).JSON(&capabilities)
+	if capabilities["atomic_handoff"] != true || capabilities["supported"] != true || capabilities["enabled"] != false {
+		t.Fatalf("verified handoff capability with disabled workspace: %v", capabilities)
+	}
+	h.FeatureFlags = featureflag.NewService(featureflag.NewStaticProvider())
+	testutil.Call(t, h.GetIterationCapabilities, iterationSettingsRequest("GET", "iteration-capabilities", nil)).Want(200).JSON(&capabilities)
+	if capabilities["atomic_handoff"] != false || capabilities["supported"] != false {
+		t.Fatalf("closed rollout advertised handoff: %v", capabilities)
+	}
+}
 func TestEnableIterationSettingsDurableReplay(t *testing.T) {
 	h := iterationSettingsHandler(t)
 	id := uuid.NewString()

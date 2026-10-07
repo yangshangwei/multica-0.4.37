@@ -14,6 +14,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/logger"
+	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -287,7 +288,15 @@ func (h *Handler) UpdateLabel(w http.ResponseWriter, r *http.Request) {
 	// already enforces (id, workspace_id), so a missing row means either the
 	// label doesn't exist or it's not in this workspace. Dropping the prior
 	// GetLabel precheck removes a TOCTOU window and saves a round-trip.
-	label, err := h.Queries.UpdateLabel(r.Context(), params)
+	tx, err := h.beginIssueLabelWrite(r, wsUUID, pgtype.UUID{}, idUUID)
+	if err != nil {
+		if !writeIssueUpdateAccessError(w, err) {
+			writeError(w, http.StatusInternalServerError, "failed to start label transaction")
+		}
+		return
+	}
+	defer tx.Rollback(r.Context())
+	label, err := h.Queries.WithTx(tx).UpdateLabel(r.Context(), params)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "label not found")
@@ -299,6 +308,10 @@ func (h *Handler) UpdateLabel(w http.ResponseWriter, r *http.Request) {
 		}
 		slog.Warn("UpdateLabel failed", append(logger.RequestAttrs(r), "error", err)...)
 		writeError(w, http.StatusInternalServerError, "failed to update label")
+		return
+	}
+	if err := tx.Commit(r.Context()); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to commit label update")
 		return
 	}
 	resp := labelToResponse(label)
@@ -321,9 +334,11 @@ func (h *Handler) DeleteLabel(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	tx, err := h.TxStarter.Begin(r.Context())
+	tx, err := h.beginIssueLabelWrite(r, wsUUID, pgtype.UUID{}, idUUID)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to start transaction")
+		if !writeIssueUpdateAccessError(w, err) {
+			writeError(w, http.StatusInternalServerError, "failed to start transaction")
+		}
 		return
 	}
 	defer tx.Rollback(r.Context())
@@ -458,7 +473,15 @@ func (h *Handler) AttachLabel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	attached, err := h.Queries.AttachLabelToIssue(r.Context(), db.AttachLabelToIssueParams{
+	tx, err := h.beginIssueLabelWrite(r, issue.WorkspaceID, issue.ID, labelID)
+	if err != nil {
+		if !writeIssueUpdateAccessError(w, err) {
+			writeError(w, http.StatusInternalServerError, "failed to start label transaction")
+		}
+		return
+	}
+	defer tx.Rollback(r.Context())
+	attached, err := h.Queries.WithTx(tx).AttachLabelToIssue(r.Context(), db.AttachLabelToIssueParams{
 		IssueID:     issue.ID,
 		LabelID:     labelID,
 		WorkspaceID: issue.WorkspaceID,
@@ -469,6 +492,10 @@ func (h *Handler) AttachLabel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := tx.Commit(r.Context()); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to commit label attachment")
+		return
+	}
 	// Read the updated label list; on read failure, the attach is already
 	// committed — return success without a labels body (clients refetch via
 	// query invalidation) and skip the broadcast so we don't overwrite every
@@ -531,7 +558,15 @@ func (h *Handler) DetachLabel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	detached, err := h.Queries.DetachLabelFromIssue(r.Context(), db.DetachLabelFromIssueParams{
+	tx, err := h.beginIssueLabelWrite(r, issue.WorkspaceID, issue.ID, labelUUID)
+	if err != nil {
+		if !writeIssueUpdateAccessError(w, err) {
+			writeError(w, http.StatusInternalServerError, "failed to start label transaction")
+		}
+		return
+	}
+	defer tx.Rollback(r.Context())
+	detached, err := h.Queries.WithTx(tx).DetachLabelFromIssue(r.Context(), db.DetachLabelFromIssueParams{
 		IssueID:     issue.ID,
 		LabelID:     labelUUID,
 		WorkspaceID: issue.WorkspaceID,
@@ -542,6 +577,10 @@ func (h *Handler) DetachLabel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := tx.Commit(r.Context()); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to commit label detachment")
+		return
+	}
 	labels, ok2 := h.listLabelsForIssueSafe(r, issue.ID, issue.WorkspaceID)
 	if !ok2 {
 		writeJSON(w, http.StatusOK, map[string]any{})
@@ -690,4 +729,87 @@ func (h *Handler) DetachLabelFromSkill(w http.ResponseWriter, r *http.Request) {
 	}
 	h.publish(protocol.EventLabelUpdated, uuidToString(skill.WorkspaceID), "member", requestUserID(r), map[string]any{"label_id": uuidToString(labelID), "resource_type": "skill"})
 	h.ListLabelsForSkill(w, r)
+}
+
+// beginIssueLabelWrite serializes label display with I1 capture and holds the
+// current member/actor authorization until commit. It follows the same ordered
+// fences as ordinary issue writes, before any issue, junction or actor row lock.
+func (h *Handler) beginIssueLabelWrite(r *http.Request, ws, issueID, labelID pgtype.UUID) (pgx.Tx, error) {
+	userID, err := util.ParseUUID(requestUserID(r))
+	if err != nil {
+		return nil, &issueUpdateAccessError{403, "workspace membership required"}
+	}
+	actorType, actorID := h.resolveActor(r, requestUserID(r), uuidToString(ws))
+	tx, err := h.TxStarter.Begin(r.Context())
+	if err != nil {
+		return nil, err
+	}
+	fail := func(err error) (pgx.Tx, error) { _ = tx.Rollback(r.Context()); return nil, err }
+	if err = lockIssueWriteFences(r.Context(), tx, ws, userID); err != nil {
+		// A missing workspace is the fence batch's only raw ErrNoRows.
+		// Missing membership already carries its explicit forbidden error.
+		if errors.Is(err, pgx.ErrNoRows) {
+			err = &issueUpdateAccessError{404, "label not found"}
+		}
+		return fail(err)
+	}
+	scoped := *h
+	scoped.Queries, scoped.DB = h.Queries.WithTx(tx), tx
+	if issueID.Valid {
+		if _, _, err = lockIssueReadRows(r.Context(), tx, ws, issueID); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				err = &issueUpdateAccessError{404, "issue not found"}
+			}
+			return fail(err)
+		}
+	}
+	label, err := scoped.Queries.GetLabel(r.Context(), db.GetLabelParams{ID: labelID, WorkspaceID: ws})
+	if errors.Is(err, pgx.ErrNoRows) {
+		return fail(&issueUpdateAccessError{404, "label not found"})
+	}
+	if err != nil {
+		return fail(err)
+	}
+	if issueID.Valid && label.ResourceType != "issue" {
+		return fail(&issueUpdateAccessError{404, "issue label not found"})
+	}
+	if actorType == "agent" {
+		agentID, e := util.ParseUUID(actorID)
+		if e != nil {
+			return fail(&issueUpdateAccessError{403, "actor unavailable"})
+		}
+		agent, e := scoped.Queries.LockLifecycleAgent(r.Context(), db.LockLifecycleAgentParams{ID: agentID, WorkspaceID: ws})
+		if errors.Is(e, pgx.ErrNoRows) {
+			return fail(&issueUpdateAccessError{403, "actor unavailable"})
+		}
+		if e != nil {
+			return fail(e)
+		}
+		if agent.ArchivedAt.Valid {
+			return fail(&issueUpdateAccessError{403, "actor unavailable"})
+		}
+		raw := r.Header.Get("X-Task-ID")
+		if raw == "" {
+			return fail(&issueUpdateAccessError{403, "actor task unavailable"})
+		}
+		taskID, e := util.ParseUUID(raw)
+		if e != nil {
+			return fail(&issueUpdateAccessError{403, "actor task unavailable"})
+		}
+		task, e := scoped.Queries.LockLifecycleOriginTask(r.Context(), db.LockLifecycleOriginTaskParams{ID: taskID, WorkspaceID: ws})
+		if errors.Is(e, pgx.ErrNoRows) {
+			return fail(&issueUpdateAccessError{403, "actor task unavailable"})
+		}
+		if e != nil {
+			return fail(e)
+		}
+		if task.AgentID != agentID {
+			return fail(&issueUpdateAccessError{403, "actor task unavailable"})
+		}
+	}
+	currentType, currentID := scoped.resolveActor(r, requestUserID(r), uuidToString(ws))
+	if currentType != actorType || currentID != actorID {
+		return fail(&issueUpdateAccessError{403, "actor authorization changed"})
+	}
+	return tx, nil
 }

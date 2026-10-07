@@ -85,19 +85,26 @@ type WriteSummary struct {
 	IssueCount       int     `json:"issue_count"`
 }
 
+type HistoricalLabel struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type HistoricalIssue struct {
-	IssueID             string  `json:"issue_id"`
-	Identifier          string  `json:"identifier"`
-	Title               string  `json:"title"`
-	ProjectID           *string `json:"project_id"`
-	ProjectName         *string `json:"project_name"`
-	AssigneeType        *string `json:"assignee_type"`
-	AssigneeID          *string `json:"assignee_id"`
-	AssigneeName        *string `json:"assignee_name"`
-	StatusKey           string  `json:"status_key"`
-	StatusCategory      string  `json:"status_category"`
-	WasCompletedAtStart bool    `json:"was_completed_at_start"`
-	RolloverCount       int     `json:"rollover_count"`
+	Priority            *string           `json:"priority"`
+	Labels              []HistoricalLabel `json:"labels"`
+	IssueID             string            `json:"issue_id"`
+	Identifier          string            `json:"identifier"`
+	Title               string            `json:"title"`
+	ProjectID           *string           `json:"project_id"`
+	ProjectName         *string           `json:"project_name"`
+	AssigneeType        *string           `json:"assignee_type"`
+	AssigneeID          *string           `json:"assignee_id"`
+	AssigneeName        *string           `json:"assignee_name"`
+	StatusKey           string            `json:"status_key"`
+	StatusCategory      string            `json:"status_category"`
+	WasCompletedAtStart bool              `json:"was_completed_at_start"`
+	RolloverCount       int               `json:"rollover_count"`
 }
 
 type Event struct {

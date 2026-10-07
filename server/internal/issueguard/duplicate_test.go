@@ -63,3 +63,7 @@ func testUUID(lastByte byte) pgtype.UUID {
 	value[len(value)-1] = lastByte
 	return pgtype.UUID{Bytes: value, Valid: true}
 }
+
+func (catalogFailureDB) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

@@ -92,12 +92,24 @@ create or start a period. Never treat settings enable as permission to perform
 unavailable lifecycle operations.
 
 When available, current human workspace members can create/edit periods and
-confirm start, move, planned cancellation and unused-plan deletion through the
+confirm start, move, end, cancellation and unused-plan deletion through the
 workspace iteration APIs. Preview the complete operation, then submit its
 unchanged draft and `preview_hash` with one stable `request_id`. A changed
 preview/revision needs a new confirmation. Machine issue-assignment authority
-does not grant period maintenance authority. End, active cancellation, handoff
-and workspace disable remain unavailable in this stage.
+does not grant period maintenance authority. When `atomic_handoff=true`, the
+same preview protocol can end the current period and start one explicitly chosen
+planned period atomically. End/cancel/handoff moves must cover every remaining
+nonterminal task; completed and cancelled tasks are released without rollover.
+Only human owners/admins may disable the entire workspace, in one confirmed
+operation covering all active/planned periods. Never split a too-large operation
+into partially completed chunks or turn a management action into execution.
+
+An unknown network result retains the original request ID and exact payload.
+Read its operation result or retry that same request; a lookup404 does not
+authorize generating a new identity. Successful replay never adds another
+snapshot, rollover or notification. Closed snapshots remain immutable after
+task changes or deletion. Overdue periods only send authorized in-app reminders;
+they never automatically end or start another period.
 
 Triage's optional `iteration_assignment` capability permits human acceptance
 with `fields.current_iteration_id`. Acceptance, final project/assignee fields

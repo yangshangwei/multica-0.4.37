@@ -522,7 +522,12 @@ func TestIterationHistoryCanonicalThroughLifecycleAndIssueWriters(t *testing.T) 
 		t.Helper()
 		moves := []iteration.Move{}
 		for _, label := range labels {
-			issueID := dbfx.Issue(t, label)
+			fields := testutil.Cols{}
+			if label == "B" {
+				// AC-13: a real parent and child remain two independent IDs.
+				fields["parent_issue_id"] = issues["A"]
+			}
+			issueID := dbfx.Issue(t, label, fields)
 			issues[label] = issueID
 			moves = append(moves, iteration.Move{IssueID: issueID, ExpectedIssueRevision: 1, TargetID: &id})
 		}
@@ -539,12 +544,43 @@ func TestIterationHistoryCanonicalThroughLifecycleAndIssueWriters(t *testing.T) 
 		testutil.Call(t, testHandler.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issues[label], map[string]any{"status": "done"}), "id", issues[label])).Want(200)
 	}
 	testutil.Call(t, testHandler.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issues["E"], map[string]any{"status": "cancelled"}), "id", issues["E"])).Want(200)
-	testutil.Call(t, testHandler.DeleteIssue, withURLParam(newRequest("DELETE", "/api/issues/"+issues["F"], nil), "id", issues["F"])).Want(204)
+	removed, err := db.New(testPool).GetIssue(ctx, parseUUID(issues["F"]))
+	if err != nil {
+		t.Fatal(err)
+	}
+	reason := "Work moved outside this commitment"
+	apply(iteration.Draft{Operation: "move", ExpectedSettingsRevision: 1, Reason: &reason, Moves: []iteration.Move{{IssueID: issues["F"], ExpectedIssueRevision: removed.Revision, ExpectedSourceID: &id, TargetID: nil}}})
 	history := loadHistoryFixture(t, &historyFixture{id: id}, time.Now().UTC())
 	stats := history.Statistics
 	if stats.Original != 8 || stats.Current != 9 || stats.Effective != 8 || stats.Completed != 5 || stats.OriginalCompleted != 4 || stats.AddedUnique != 2 || stats.RemovedEvents != 1 || stats.EffectiveRatio == nil || *stats.EffectiveRatio != .625 || stats.OriginalRatio == nil || *stats.OriginalRatio != .5 {
 		t.Fatalf("production lifecycle/writer projection: %+v", stats)
 	}
+	for _, members := range [][]iteration.HistoricalIssue{history.Original, history.Scope} {
+		for _, label := range []string{"A", "B"} {
+			count := 0
+			for _, member := range members {
+				if member.IssueID == issues[label] {
+					count++
+				}
+			}
+			if count != 1 {
+				t.Fatalf("parent/child %s counted %d times", label, count)
+			}
+		}
+	}
+	// AC-12: completing F through the real ordinary writer after it left must
+	// not manufacture a source-period event or increase original completion.
+	eventsBefore := dbfx.Count(t, "SELECT count(*) FROM iteration_event WHERE iteration_id=$1", id)
+	testutil.Call(t, testHandler.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issues["F"], map[string]any{"status": "done"}), "id", issues["F"])).Want(200)
+	history = loadHistoryFixture(t, &historyFixture{id: id}, time.Now().UTC())
+	if history.Statistics.OriginalCompleted != 4 || history.Statistics.Completed != 5 || dbfx.Count(t, "SELECT count(*) FROM iteration_event WHERE iteration_id=$1", id) != eventsBefore {
+		t.Fatal("external completion rewrote the source commitment")
+	}
+	if dbfx.Count(t, "SELECT count(*) FROM issue WHERE id=$1 AND status='done' AND current_iteration_id IS NULL", issues["F"]) != 1 {
+		t.Fatal("external completion fixture did not complete the unassigned issue")
+	}
+	testutil.Call(t, testHandler.DeleteIssue, withURLParam(newRequest("DELETE", "/api/issues/"+issues["F"], nil), "id", issues["F"])).Want(204)
+	history = loadHistoryFixture(t, &historyFixture{id: id}, time.Now().UTC())
 	foundDeleted := false
 	for _, original := range history.Original {
 		if original.IssueID == issues["F"] {

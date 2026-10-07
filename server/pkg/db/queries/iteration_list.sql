@@ -6,6 +6,7 @@ SELECT md5(COALESCE(string_agg(id::text || ':' || revision::text || ':' || scope
 
 -- name: ListWorkspaceIterations :many
 SELECT * FROM iteration i WHERE i.workspace_id=sqlc.arg('workspace_id')
+ AND (sqlc.narg('issue_id')::uuid IS NULL OR EXISTS (SELECT 1 FROM iteration_participation ip WHERE ip.workspace_id=i.workspace_id AND ip.iteration_id=i.id AND ip.issue_id=sqlc.narg('issue_id')))
  AND (sqlc.arg('status')::text='' OR i.status=sqlc.arg('status'))
  AND (sqlc.arg('search')::text='' OR strpos(lower(i.name),lower(sqlc.arg('search')))>0)
  AND (sqlc.narg('from_date')::date IS NULL OR i.end_date>=sqlc.narg('from_date'))

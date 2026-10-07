@@ -83,7 +83,8 @@ func iterationDates(start, end string) (pgtype.Date, pgtype.Date, error) {
 }
 func (s *IterationService) lifecycleTime(ctx context.Context, tx pgx.Tx) (time.Time, error) {
 	if s.Now != nil {
-		return s.Now(ctx, tx)
+		sample, err := s.Now(ctx, tx)
+		return sample.UTC().Truncate(time.Microsecond), err
 	}
 	return iteration.SampleBusinessTime(ctx, tx, nil)
 }
@@ -279,6 +280,32 @@ func (s *IterationService) Edit(ctx context.Context, ws, actor, iid pgtype.UUID,
 				return iteration.WriteResult{}, err
 			}
 		}
+		dateRecipients := []string{}
+		if dateChanged {
+			candidates := map[pgtype.UUID]bool{}
+			if after.CoordinatorUserID.Valid {
+				candidates[after.CoordinatorUserID] = true
+			}
+			issues, e := q.ListIterationOperationIssues(ctx, db.ListIterationOperationIssuesParams{WorkspaceID: ws, IterationIds: []pgtype.UUID{iid}, IssueIds: []pgtype.UUID{}})
+			if e != nil {
+				return iteration.WriteResult{}, e
+			}
+			for _, issue := range issues {
+				if issue.AssigneeType.Valid && issue.AssigneeType.String == "member" && issue.AssigneeID.Valid {
+					candidates[issue.AssigneeID] = true
+				}
+			}
+			for recipient := range candidates {
+				_, e := q.LockIterationReferenceMember(ctx, db.LockIterationReferenceMemberParams{WorkspaceID: ws, UserID: recipient})
+				if errors.Is(e, pgx.ErrNoRows) {
+					continue
+				}
+				if e != nil {
+					return iteration.WriteResult{}, e
+				}
+				dateRecipients = append(dateRecipients, util.UUIDToString(recipient))
+			}
+		}
 		sampled, err := s.lifecycleTime(ctx, tx)
 		if err != nil {
 			return iteration.WriteResult{}, err
@@ -296,6 +323,12 @@ func (s *IterationService) Edit(ctx context.Context, ws, actor, iid pgtype.UUID,
 				return iteration.WriteResult{}, err
 			}
 		}
+		if dateChanged {
+			if e := EnqueueIterationNotifications(ctx, q, ws, iid, operationID, "dates_changed", dateRecipients); e != nil {
+				return iteration.WriteResult{}, e
+			}
+		}
+
 		return iteration.WriteResult{IterationIDs: []string{util.UUIDToString(iid)}, Result: iteration.WriteSummary{SettingsRevision: settings.Revision}, CommittedAt: sampled}, nil
 	})
 }

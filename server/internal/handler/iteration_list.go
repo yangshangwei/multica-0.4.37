@@ -30,6 +30,18 @@ func (h *Handler) ListIterations(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	query := r.URL.Query()
+	var issueID pgtype.UUID
+	if raw, present := query["issue_id"]; present {
+		if len(raw) != 1 || raw[0] == "" {
+			writeIterationAPIError(w, iterationAPIError(400, "invalid_request", "Invalid issue filter"))
+			return
+		}
+		issueID, err = util.ParseUUID(raw[0])
+		if err != nil || issueID.Bytes == [16]byte{} {
+			writeIterationAPIError(w, iterationAPIError(400, "invalid_request", "Invalid issue filter"))
+			return
+		}
+	}
 	limit, err := historyPageLimit(query)
 	if err != nil {
 		writeIterationAPIError(w, err)
@@ -89,7 +101,7 @@ func (h *Handler) ListIterations(w http.ResponseWriter, r *http.Request) {
 		if query.Get("cursor") != "" && (cursor.WorkspaceID != uuidToString(ws) || cursor.Filter != filter || cursor.Version != version) {
 			return iterationAPIError(409, "cursor_stale", "Iteration list changed; start from the first page")
 		}
-		rows, e := q.ListWorkspaceIterations(r.Context(), db.ListWorkspaceIterationsParams{WorkspaceID: ws, Status: status, Search: strings.TrimSpace(query.Get("search")), FromDate: dates[0], ToDate: dates[1], HasAfter: afterID.Valid, AfterDate: afterDate, AfterID: afterID, PageLimit: int32(limit + 1)})
+		rows, e := q.ListWorkspaceIterations(r.Context(), db.ListWorkspaceIterationsParams{WorkspaceID: ws, IssueID: issueID, Status: status, Search: strings.TrimSpace(query.Get("search")), FromDate: dates[0], ToDate: dates[1], HasAfter: afterID.Valid, AfterDate: afterDate, AfterID: afterID, PageLimit: int32(limit + 1)})
 		if e != nil {
 			return e
 		}

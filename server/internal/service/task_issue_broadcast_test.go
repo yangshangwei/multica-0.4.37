@@ -117,3 +117,7 @@ func TestBroadcastIssueUpdated_NoStatusChange(t *testing.T) {
 		t.Errorf("expected status_changed=false, got %v", payload["status_changed"])
 	}
 }
+
+func (noRowsDBTX) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}

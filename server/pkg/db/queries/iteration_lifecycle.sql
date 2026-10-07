@@ -114,3 +114,24 @@ FROM (SELECT 1) seed LEFT JOIN LATERAL (
  WHERE workspace_id=sqlc.arg('workspace_id') AND iteration_id=sqlc.arg('iteration_id')
  ORDER BY sequence DESC LIMIT 1
 ) previous ON true;
+
+-- name: ListOpenIterations :many
+SELECT * FROM iteration WHERE workspace_id=$1 AND status IN ('active','planned') ORDER BY id;
+
+-- name: CloseActiveIteration :one
+UPDATE iteration SET status=sqlc.arg('status'),logical_ended_at=sqlc.arg('business_at'),
+ processed_at=sqlc.arg('processed_at'),end_reason=sqlc.arg('reason'),revision=revision+1,scope_revision=scope_revision+1
+WHERE workspace_id=sqlc.arg('workspace_id') AND id=sqlc.arg('id') AND status='active'
+ AND revision<9007199254740991 AND scope_revision<9007199254740991 RETURNING *;
+
+-- name: InsertIterationSnapshot :exec
+INSERT INTO iteration_snapshot (workspace_id,iteration_id,operation_id,schema_version,body,created_at)
+VALUES ($1,$2,$3,1,$4,$5);
+
+-- name: DisableIterationSettings :one
+UPDATE workspace_iteration_settings SET enabled=false,revision=revision+1
+WHERE workspace_id=$1 AND enabled AND revision<9007199254740991 RETURNING *;
+
+-- name: FinalizeIterationProcessedAt :exec
+UPDATE iteration SET processed_at=sqlc.arg('processed_at')
+WHERE workspace_id=sqlc.arg('workspace_id') AND id=sqlc.arg('id') AND status IN ('completed','cancelled');

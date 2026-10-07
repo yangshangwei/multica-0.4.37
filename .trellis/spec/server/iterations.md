@@ -223,6 +223,37 @@ integer counters, and exclude terminal/self rollover. Baseline issue identity
 must match its event. Historical names use the stored legacy prefix resolver;
 live availability is separate. Never repair bad snapshots from live joins.
 
+### CG closure, bulk writes and notifications
+
+CG evidence is in the I1 parent `cg-verification.md`. End, active cancel,
+handoff and whole-workspace disable use the same persistent operation owner.
+Rollout still defaults off; `atomic_handoff` is advertised only when supported.
+
+Capture frozen history before releasing membership, but stage its payload in
+memory until all writes finish. Insert the immutable snapshot exactly once
+with final processed time. Preserve the original sampled clock on events;
+their occurred time is clamped independently. Normalize injected clocks to PG
+microsecond precision so JSON timestamps agree with persisted timestamptz.
+
+Compare the confirmed hash before projecting history: a changed catalog fact
+must return stale409 rather than mask the conflict with a projection failure.
+Canonical decoding must allocate a fresh draft, never unmarshal into caller-
+owned pointers/slices that may alias source or target IDs.
+
+Bulk membership uses ordered pgx batches with affected-row checks. Keep source
+leaves before target joins and return every SQL error to the transaction owner.
+Transport failure injection must cover SendBatch as well as Exec/Query paths.
+The borrowed single-issue writer retains the original caller transaction.
+
+Notifications use the outbox ID as inbox ID; insertion, delivered marking and
+current-recipient authorization share one transaction. Revoke removes inbox
+content but keeps suppressed outbox tombstones so rejoin cannot reconstruct
+old messages or duplicate the same local-day reminder. Whole disable emits
+one workspace summary rather than a random first-plan title. Date-edit
+recipients are locked and resolved before sampling and writing. Publish
+realtime only after committed inbox insertion; reminders never advance periods
+or invoke agents.
+
 ### Validation and error matrix
 
 | Condition | Result |
@@ -263,3 +294,24 @@ Correct: `ValidateObjectJSON(raw)` before typed `DisallowUnknownFields` decoding
 Wrong: validate the T1 iteration after acceptance SQL and sample again.
 Correct: prepare from the final accepted projection and sample before the first
 business mutation; use that one sample and transaction for admission and join.
+
+### I1 final acceptance regression boundaries
+
+For partial-up/invalid-index recovery, use the real 550–566 files and registered
+`hooksForDirection` through `runMigrations`, not only the cleanup-name map or a
+recovery test for another feature. `cmd/migrate/migrate_iteration_recovery_test.go`
+forces 553 to fail with two active rows, verifies the INVALID index and three-row
+ledger, resolves only its isolated fixture conflict, and proves hook-assisted
+recovery to 16 valid/ready/live indexes and 17 ledger rows. A hook-free negative
+control must fail; replay must preserve index identities and applied timestamps.
+Partial empty down preserves shared `planning_timezone` and ordinary issues;
+used I1 down must fail before changing any ledger or index. Run only against an
+explicit isolated `DATABASE_URL` via `scripts/go-test-with-agent-cli-guard.sh`.
+This is a recovery rehearsal, not authorization to rewrite production history.
+
+`TestIterationHistoryCanonicalThroughLifecycleAndIssueWriters` owns the real
+A–J proof, including `parent_issue_id` for the A/B relationship and F leaving
+before an ordinary HTTP completion outside the period. Verify A and B each
+appear once, D/OD remain 5/4 after F completes, and no source-period event is
+added. A comment omitting F from synthetic input is not evidence that a real
+external writer leaves the source commitment unchanged.

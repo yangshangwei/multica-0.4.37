@@ -119,7 +119,7 @@ WITH removed_inbox AS (
  AND i.id=n.id AND i.workspace_id=n.workspace_id
  AND i.recipient_type='member' AND i.recipient_id=n.recipient_user_id
 )
-DELETE FROM iteration_notification n
+UPDATE iteration_notification n SET status='suppressed'
 WHERE n.workspace_id=sqlc.arg('workspace_id') AND n.recipient_user_id=sqlc.arg('user_id');
 
 -- name: LockIterationPlanningTimezone :one

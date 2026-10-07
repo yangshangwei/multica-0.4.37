@@ -39,3 +39,19 @@ SELECT m.user_id, u.name
 FROM member m JOIN "user" u ON u.id = m.user_id
 WHERE m.workspace_id = sqlc.arg('workspace_id') AND m.user_id = ANY(sqlc.arg('user_ids')::uuid[])
 ORDER BY m.user_id FOR SHARE OF m, u NOWAIT;
+
+-- name: ListIterationHistoryLabels :many
+SELECT x.issue_id, l.id, l.name
+FROM issue_to_label x JOIN issue i ON i.id=x.issue_id
+JOIN issue_label l ON l.id=x.label_id AND l.workspace_id=i.workspace_id AND l.resource_type='issue'
+WHERE i.workspace_id=sqlc.arg('workspace_id') AND i.id=ANY(sqlc.arg('issue_ids')::uuid[])
+ORDER BY x.issue_id,l.id;
+
+-- name: LockIterationHistoryLabels :many
+-- The owner holds issue locks. NOWAIT avoids reversing label deletion's
+-- junction/reference order; newly attached labels cannot commit past issue locks.
+SELECT x.issue_id, l.id, l.name
+FROM issue_to_label x JOIN issue i ON i.id=x.issue_id
+JOIN issue_label l ON l.id=x.label_id AND l.workspace_id=i.workspace_id AND l.resource_type='issue'
+WHERE i.workspace_id=sqlc.arg('workspace_id') AND i.id=ANY(sqlc.arg('issue_ids')::uuid[])
+ORDER BY x.issue_id,l.id FOR SHARE OF x,l NOWAIT;

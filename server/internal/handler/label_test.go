@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/multica-ai/multica/server/internal/testutil"
 )
 
 // TestLabelCRUD exercises label create/list/get/update/delete.
@@ -313,14 +314,12 @@ func TestUpdateLabelCrossWorkspace(t *testing.T) {
 		testHandler.DeleteLabel(w, req)
 	})
 
-	// PUT with a foreign workspace ID → 404
-	w = httptest.NewRecorder()
-	req = newRequest("PUT", "/api/labels/"+labelID, map[string]any{"name": "hacked"})
-	req.Header.Set("X-Workspace-ID", "00000000-0000-0000-0000-000000000000")
-	req = withURLParam(req, "id", labelID)
-	testHandler.UpdateLabel(w, req)
-	if w.Code != http.StatusNotFound {
-		t.Fatalf("UpdateLabel cross-workspace: expected 404, got %d: %s", w.Code, w.Body.String())
+	// Both zero and nonzero missing workspace IDs preserve the scoped 404.
+	for _, workspaceID := range []string{uuid.Nil.String(), uuid.NewString()} {
+		req = newRequest("PUT", "/api/labels/"+labelID, map[string]any{"name": "hacked"})
+		req.Header.Set("X-Workspace-ID", workspaceID)
+		req = withURLParam(req, "id", labelID)
+		testutil.Call(t, testHandler.UpdateLabel, req).Want(http.StatusNotFound)
 	}
 
 	// Sanity: the label wasn't renamed.

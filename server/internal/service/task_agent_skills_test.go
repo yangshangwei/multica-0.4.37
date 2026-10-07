@@ -240,3 +240,7 @@ func TestLoadAgentSkillBundles_FailsClosedOnReadFailure(t *testing.T) {
 		t.Fatalf("returned %d bundles / %d refs alongside an error, want none", len(bundles), len(refs))
 	}
 }
+
+func (*skillReadDBTX) SendBatch(context.Context, *pgx.Batch) pgx.BatchResults {
+	panic("unexpected batch")
+}
