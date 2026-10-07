@@ -512,44 +512,69 @@ func (h *Handler) CreateProjectResource(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	if conflict, err := h.findLocalDirectoryConflict(r.Context(), project.ID, req.ResourceType, normalizedRef, pgtype.UUID{}); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to check existing resources")
-		return
-	} else if conflict {
-		writeError(w, http.StatusConflict, "this daemon already has a local_directory attached to the project; remove it before adding another")
+	creator, ok := parseUUIDOrBadRequest(w, userID, "user id")
+	if !ok {
 		return
 	}
-
-	if !h.requireWorktreeCapableDaemon(w, r, project.WorkspaceID, req.ResourceType, normalizedRef) {
-		return
-	}
-
 	var label pgtype.Text
 	if req.Label != nil && strings.TrimSpace(*req.Label) != "" {
 		label = pgtype.Text{String: strings.TrimSpace(*req.Label), Valid: true}
 	}
-	var position int32
-	if req.Position != nil {
-		position = *req.Position
-	} else {
-		// Append after existing resources.
-		count, _ := h.Queries.CountProjectResources(r.Context(), project.ID)
-		position = int32(count)
-	}
 
-	creator, _ := h.parseUserUUIDOrZero(userID)
-	resource, err := h.Queries.CreateProjectResource(r.Context(), db.CreateProjectResourceParams{
-		ProjectID:    project.ID,
-		WorkspaceID:  project.WorkspaceID,
-		ResourceType: req.ResourceType,
-		ResourceRef:  normalizedRef,
-		Label:        label,
-		Position:     position,
-		CreatedBy:    creator,
+	var resource db.ProjectResource
+	// A waited-for parent lock does not refresh an RR snapshot: child writes
+	// leave the parent tuple unchanged. RC plus a separate read after FOR
+	// UPDATE makes the daemon check and append position see the last commit.
+	err = h.runProjectTransactionAtIsolation(r.Context(), project.WorkspaceID, creator, pgx.ReadCommitted, func(_ pgx.Tx, qtx *db.Queries) error {
+		if _, err := qtx.LockProjectForExecutionSquad(r.Context(), db.LockProjectForExecutionSquadParams{ID: project.ID, WorkspaceID: project.WorkspaceID}); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return projectErr(http.StatusNotFound, "project_not_found", "project not found")
+			}
+			return err
+		}
+		if conflict, err := findLocalDirectoryConflict(r.Context(), qtx, project.ID, req.ResourceType, normalizedRef, pgtype.UUID{}); err != nil {
+			return err
+		} else if conflict {
+			return projectErr(http.StatusConflict, "resource_conflict", "this daemon already has a local_directory attached to the project; remove it before adding another")
+		}
+		txHandler := *h
+		txHandler.Queries = qtx
+		if !txHandler.requireWorktreeCapableDaemon(w, r, project.WorkspaceID, req.ResourceType, normalizedRef) {
+			return errProjectResponseWritten
+		}
+		var position int32
+		if req.Position != nil {
+			position = *req.Position
+		} else {
+			count, err := qtx.CountProjectResources(r.Context(), project.ID)
+			if err != nil {
+				return err
+			}
+			position = int32(count)
+		}
+		var err error
+		resource, err = qtx.CreateProjectResource(r.Context(), db.CreateProjectResourceParams{
+			ProjectID:    project.ID,
+			WorkspaceID:  project.WorkspaceID,
+			ResourceType: req.ResourceType,
+			ResourceRef:  normalizedRef,
+			Label:        label,
+			Position:     position,
+			CreatedBy:    creator,
+		})
+		return err
 	})
 	if err != nil {
+		if errors.Is(err, errProjectResponseWritten) {
+			return
+		}
 		if isUniqueViolation(err) {
 			writeError(w, http.StatusConflict, "this resource is already attached to the project")
+			return
+		}
+		var apiErr *projectAPIError
+		if errors.As(err, &apiErr) {
+			writeProjectAPIError(w, err)
 			return
 		}
 		writeError(w, http.StatusInternalServerError, "failed to create project resource")
@@ -587,18 +612,6 @@ func (h *Handler) UpdateProjectResource(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	existing, err := h.Queries.GetProjectResourceInWorkspace(r.Context(), db.GetProjectResourceInWorkspaceParams{
-		ID: resourceUUID, WorkspaceID: project.WorkspaceID,
-	})
-	if err != nil {
-		writeError(w, http.StatusNotFound, "project resource not found")
-		return
-	}
-	if uuidToString(existing.ProjectID) != uuidToString(project.ID) {
-		writeError(w, http.StatusNotFound, "project resource not found")
-		return
-	}
-
 	// Decode into a raw map first so we can tell "field omitted" from
 	// "field present with zero value" — the label clear case in particular
 	// relies on this distinction.
@@ -608,134 +621,169 @@ func (h *Handler) UpdateProjectResource(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	nextRef := json.RawMessage(existing.ResourceRef)
-	rawRef, refProvided := raw["resource_ref"]
-	if refProvided {
-		normalized, err := validateAndNormalizeResourceRef(existing.ResourceType, rawRef)
-		if err != nil {
-			writeError(w, http.StatusBadRequest, err.Error())
-			return
-		}
-		nextRef = normalized
-	}
-
-	if conflict, err := h.findLocalDirectoryConflict(r.Context(), project.ID, existing.ResourceType, nextRef, existing.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to check existing resources")
-		return
-	} else if conflict {
-		writeError(w, http.StatusConflict, "another local_directory on this daemon is already attached to the project")
-		return
-	}
-
-	// A ≤ v0.4.28 client renames by resending the ref, so "the ref was sent"
-	// does not mean "the execution mode was touched". Anything else about the
-	// ref changing does mean it might have been.
-	refRenameOnly := refProvided &&
-		existing.ResourceType == "local_directory" &&
-		localDirectoryRefDiffersOnlyByLabel(nextRef, existing.ResourceRef)
-
-	// Gate only when the caller is actually changing what would run: a label or
-	// position update — including an old client's rename, which carries the ref
-	// along — must not start failing because the daemon's registration drifted
-	// after the mode was legitimately saved. The row already says worktree; the
-	// claim gate is what stops it from running somewhere that cannot.
-	if refProvided && !refRenameOnly {
-		if !h.requireWorktreeCapableDaemon(w, r, project.WorkspaceID, existing.ResourceType, nextRef) {
-			return
-		}
-	}
-
-	nextLabel := existing.Label
-	// Tracks an explicit clear, as opposed to a column that was never set.
-	// Only the former may remove the ref's legacy label copy below: rows
-	// created by older clients keep their only name inside the ref, and an
-	// unrelated update must not strip it just because the column is NULL.
-	labelCleared := false
-	if rawLabel, ok := raw["label"]; ok {
-		var labelStr *string
-		if err := json.Unmarshal(rawLabel, &labelStr); err != nil {
+	var requestedLabel *string
+	rawLabel, labelProvided := raw["label"]
+	if labelProvided {
+		if err := json.Unmarshal(rawLabel, &requestedLabel); err != nil {
 			writeError(w, http.StatusBadRequest, "label must be a string or null")
 			return
 		}
-		if labelStr == nil || strings.TrimSpace(*labelStr) == "" {
-			nextLabel = pgtype.Text{}
-			labelCleared = true
-		} else {
-			nextLabel = pgtype.Text{String: strings.TrimSpace(*labelStr), Valid: true}
-		}
-	} else if refRenameOnly {
-		// No label field, and the ref differs ONLY by its embedded label: that
-		// is how desktop builds up to v0.4.28 rename — they rewrite ref.label
-		// and never send the column. Follow the rename into the column, or the
-		// newer clients (which read the column first) keep showing the old
-		// name this rename just replaced.
-		//
-		// A ref that also changes something else is not a rename however
-		// different its label looks: the mode dialog snapshots the ref when it
-		// opens, so a rename on another device in the meantime would otherwise
-		// be undone by whoever saves an execution mode next.
-		if refLabel := localDirectoryRefLabel(nextRef); refLabel != localDirectoryRefLabel(existing.ResourceRef) {
-			if refLabel == "" {
-				nextLabel = pgtype.Text{}
-				labelCleared = true
-			} else {
-				nextLabel = pgtype.Text{String: refLabel, Valid: true}
-			}
-		}
 	}
-
-	nextPosition := existing.Position
-	if rawPos, ok := raw["position"]; ok {
-		var pos *int32
-		if err := json.Unmarshal(rawPos, &pos); err != nil {
+	var requestedPosition *int32
+	if rawPosition, provided := raw["position"]; provided {
+		if err := json.Unmarshal(rawPosition, &requestedPosition); err != nil {
 			writeError(w, http.StatusBadRequest, "position must be an integer")
 			return
 		}
-		if pos != nil {
-			nextPosition = *pos
-		}
 	}
 
-	// Mirror the final label into the ref's legacy copy so both client
-	// generations read the same name, including removing it on an explicit
-	// clear — otherwise the display falls back to the name the user just
-	// deleted. Rows the two-copy era left disagreeing converge on their first
-	// write here. A NULL column that was never set stays out of the ref: for
-	// rows created by older clients the ref copy IS the name.
-	if existing.ResourceType == "local_directory" {
-		// The name this request is entitled to write. Only a rename or an
-		// explicit label field may change it; anything else keeps whatever the
-		// row is called today, wherever that name currently lives — so a stale
-		// ref snapshot cannot carry an old name back in behind an unrelated
-		// edit.
-		name := nextLabel
-		if !nextLabel.Valid && !labelCleared {
-			if stored := localDirectoryRefLabel(existing.ResourceRef); stored != "" {
-				name = pgtype.Text{String: stored, Valid: true}
+	actorID, ok := parseUUIDOrBadRequest(w, userID, "user id")
+	if !ok {
+		return
+	}
+	var updated db.ProjectResource
+	err := h.runProjectTransactionAtIsolation(r.Context(), project.WorkspaceID, actorID, pgx.ReadCommitted, func(_ pgx.Tx, qtx *db.Queries) error {
+		if _, err := qtx.LockProjectForExecutionSquad(r.Context(), db.LockProjectForExecutionSquadParams{ID: project.ID, WorkspaceID: project.WorkspaceID}); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return projectErr(http.StatusNotFound, "project_not_found", "project not found")
 			}
+			return err
 		}
-		// Rows that have never had a name at all are left alone, and so is the
-		// ref on updates that do not touch it: an unrelated position change
-		// must not rewrite a ref, and for old rows the ref copy IS the name.
-		if refProvided || nextLabel.Valid || labelCleared {
-			synced, err := withLocalDirectoryRefLabel(nextRef, name)
+		// Rebuild every omitted field from the row read after the parent lock.
+		// Both this read and the merge repeat after a rolled-back retry.
+		existing, err := qtx.GetProjectResourceInWorkspace(r.Context(), db.GetProjectResourceInWorkspaceParams{ID: resourceUUID, WorkspaceID: project.WorkspaceID})
+		if errors.Is(err, pgx.ErrNoRows) || (err == nil && existing.ProjectID != project.ID) {
+			return projectErr(http.StatusNotFound, "resource_not_found", "project resource not found")
+		}
+		if err != nil {
+			return err
+		}
+		txHandler := *h
+		txHandler.Queries = qtx
+		nextRef := json.RawMessage(existing.ResourceRef)
+		rawRef, refProvided := raw["resource_ref"]
+		if refProvided {
+			normalized, err := validateAndNormalizeResourceRef(existing.ResourceType, rawRef)
 			if err != nil {
-				writeError(w, http.StatusInternalServerError, "failed to update project resource")
-				return
+				writeError(w, http.StatusBadRequest, err.Error())
+				return errProjectResponseWritten
 			}
-			nextRef = synced
+			nextRef = normalized
 		}
-	}
 
-	updated, err := h.Queries.UpdateProjectResource(r.Context(), db.UpdateProjectResourceParams{
-		ID:          existing.ID,
-		ResourceRef: nextRef,
-		Label:       nextLabel,
-		Position:    nextPosition,
+		if conflict, err := findLocalDirectoryConflict(r.Context(), qtx, project.ID, existing.ResourceType, nextRef, existing.ID); err != nil {
+			return err
+		} else if conflict {
+			return projectErr(http.StatusConflict, "resource_conflict", "another local_directory on this daemon is already attached to the project")
+		}
+
+		// A ≤ v0.4.28 client renames by resending the ref, so "the ref was sent"
+		// does not mean "the execution mode was touched". Anything else about the
+		// ref changing does mean it might have been.
+		refRenameOnly := refProvided &&
+			existing.ResourceType == "local_directory" &&
+			localDirectoryRefDiffersOnlyByLabel(nextRef, existing.ResourceRef)
+
+		// Gate only when the caller is actually changing what would run: a label or
+		// position update — including an old client's rename, which carries the ref
+		// along — must not start failing because the daemon's registration drifted
+		// after the mode was legitimately saved. The row already says worktree; the
+		// claim gate is what stops it from running somewhere that cannot.
+		if refProvided && !refRenameOnly {
+			if !txHandler.requireWorktreeCapableDaemon(w, r, project.WorkspaceID, existing.ResourceType, nextRef) {
+				return errProjectResponseWritten
+			}
+		}
+
+		nextLabel := existing.Label
+		// Tracks an explicit clear, as opposed to a column that was never set.
+		// Only the former may remove the ref's legacy label copy below: rows
+		// created by older clients keep their only name inside the ref, and an
+		// unrelated update must not strip it just because the column is NULL.
+		labelCleared := false
+		if labelProvided {
+			if requestedLabel == nil || strings.TrimSpace(*requestedLabel) == "" {
+				nextLabel = pgtype.Text{}
+				labelCleared = true
+			} else {
+				nextLabel = pgtype.Text{String: strings.TrimSpace(*requestedLabel), Valid: true}
+			}
+		} else if refRenameOnly {
+			// No label field, and the ref differs ONLY by its embedded label: that
+			// is how desktop builds up to v0.4.28 rename — they rewrite ref.label
+			// and never send the column. Follow the rename into the column, or the
+			// newer clients (which read the column first) keep showing the old
+			// name this rename just replaced.
+			//
+			// A ref that also changes something else is not a rename however
+			// different its label looks: the mode dialog snapshots the ref when it
+			// opens, so a rename on another device in the meantime would otherwise
+			// be undone by whoever saves an execution mode next.
+			if refLabel := localDirectoryRefLabel(nextRef); refLabel != localDirectoryRefLabel(existing.ResourceRef) {
+				if refLabel == "" {
+					nextLabel = pgtype.Text{}
+					labelCleared = true
+				} else {
+					nextLabel = pgtype.Text{String: refLabel, Valid: true}
+				}
+			}
+		}
+
+		nextPosition := existing.Position
+		if requestedPosition != nil {
+			nextPosition = *requestedPosition
+		}
+
+		// Mirror the final label into the ref's legacy copy so both client
+		// generations read the same name, including removing it on an explicit
+		// clear — otherwise the display falls back to the name the user just
+		// deleted. Rows the two-copy era left disagreeing converge on their first
+		// write here. A NULL column that was never set stays out of the ref: for
+		// rows created by older clients the ref copy IS the name.
+		if existing.ResourceType == "local_directory" {
+			// The name this request is entitled to write. Only a rename or an
+			// explicit label field may change it; anything else keeps whatever the
+			// row is called today, wherever that name currently lives — so a stale
+			// ref snapshot cannot carry an old name back in behind an unrelated
+			// edit.
+			name := nextLabel
+			if !nextLabel.Valid && !labelCleared {
+				if stored := localDirectoryRefLabel(existing.ResourceRef); stored != "" {
+					name = pgtype.Text{String: stored, Valid: true}
+				}
+			}
+			// Rows that have never had a name at all are left alone, and so is the
+			// ref on updates that do not touch it: an unrelated position change
+			// must not rewrite a ref, and for old rows the ref copy IS the name.
+			if refProvided || nextLabel.Valid || labelCleared {
+				synced, err := withLocalDirectoryRefLabel(nextRef, name)
+				if err != nil {
+					writeError(w, http.StatusInternalServerError, "failed to update project resource")
+					return errProjectResponseWritten
+				}
+				nextRef = synced
+			}
+		}
+
+		updated, err = qtx.UpdateProjectResource(r.Context(), db.UpdateProjectResourceParams{
+			ID:          existing.ID,
+			ResourceRef: nextRef,
+			Label:       nextLabel,
+			Position:    nextPosition,
+		})
+		return err
 	})
 	if err != nil {
+		if errors.Is(err, errProjectResponseWritten) {
+			return
+		}
 		if isUniqueViolation(err) {
 			writeError(w, http.StatusConflict, "this resource is already attached to the project")
+			return
+		}
+		var apiErr *projectAPIError
+		if errors.As(err, &apiErr) {
+			writeProjectAPIError(w, err)
 			return
 		}
 		writeError(w, http.StatusInternalServerError, "failed to update project resource")
@@ -766,7 +814,7 @@ func (h *Handler) UpdateProjectResource(w http.ResponseWriter, r *http.Request) 
 // through. We do the daemon-scoped check here in application code instead.
 //
 // `excludeID` lets the update path ignore the row being edited.
-func (h *Handler) findLocalDirectoryConflict(ctx context.Context, projectID pgtype.UUID, resourceType string, normalizedRef json.RawMessage, excludeID pgtype.UUID) (bool, error) {
+func findLocalDirectoryConflict(ctx context.Context, q *db.Queries, projectID pgtype.UUID, resourceType string, normalizedRef json.RawMessage, excludeID pgtype.UUID) (bool, error) {
 	if resourceType != "local_directory" {
 		return false, nil
 	}
@@ -774,7 +822,7 @@ func (h *Handler) findLocalDirectoryConflict(ctx context.Context, projectID pgty
 	if err := json.Unmarshal(normalizedRef, &incoming); err != nil {
 		return false, err
 	}
-	rows, err := h.Queries.ListProjectResources(ctx, projectID)
+	rows, err := q.ListProjectResources(ctx, projectID)
 	if err != nil {
 		return false, err
 	}

@@ -55,3 +55,49 @@ Catalog templates remain separate from workspace instances and instance counts. 
 - packages/views/projects/components/project-squad-*.test.tsx and modals/create-project*.test.tsx: flow, stale recovery and future task defaults.
 - e2e/workspace-defaults.spec.ts: real configuration, fake-runtime enqueue and explicit automation enable; never run an installed agent CLI.
 - e2e/project-squad-workspace.spec.ts: compact 1/8/20-candidate presentation, keyboard sheet management, ordered defaults, explicit creation, association recovery, table/Gantt emptiness and narrow layouts with real writes and a fake runtime.
+
+## Concurrent project-resource mutations
+
+### Scope and signatures
+
+`CreateProjectResource` and `UpdateProjectResource` use
+`runProjectTransactionAtIsolation(..., pgx.ReadCommitted, callback)`, then
+`LockProjectForExecutionSquad` (exclusive project `FOR UPDATE`). The shared
+workspace/member/subscriber fences precede this project lock.
+`findLocalDirectoryConflict(ctx, qtx, ...)` must use transaction-bound queries.
+
+### Contract
+
+Read the resource set/row in a separate query **after** obtaining the project
+lock. Merge partial request fields and validate daemon uniqueness against that
+fresh state on every retry. Only one local directory per project/daemon may
+commit. Omitted label/ref/position fields retain the latest stored value; preserve
+explicit label clears, embedded legacy labels, unknown JSON keys and old-client
+rename-only worktree exemptions. Publish exactly once after successful commit.
+
+READ COMMITTED is deliberate: a waited-for lock under REPEATABLE READ can retain
+a snapshot predating the previous child insert, because resource mutations do
+not update the parent tuple. The write CTE's late lock alone is insufficient.
+
+### Validation and examples
+
+| Condition | Result |
+|---|---|
+| Concurrent different paths on the same daemon | One success, one 409 |
+| Concurrent resources on different daemons | Both succeed with current append positions |
+| Execution-ref edit plus label/position-only edit | Both changes survive |
+| Row/project deleted before the locked read | 404 |
+| Write/commit failure | No success event |
+
+Good: lock, fresh read, merge, validate, write, commit, publish. Base: sequential
+legacy rename behavior stays unchanged. Bad: validate before locking or merge
+from the handler's pre-transaction snapshot. Existing duplicate rows are not
+automatically repaired; future direct writers must join the same invariant.
+
+### Tests required
+
+`project_resource_concurrency_test.go` uses distinct active users, dedicated
+connections and an observed direct/transitive PostgreSQL lock dependency before
+releasing the fixture lock. Same-user-only races can be serialized by the earlier
+subscriber fence and hide the bug. Sleeps alone are not a concurrency barrier.
+Retain existing rename, worktree capability and execution-snapshot tests.
