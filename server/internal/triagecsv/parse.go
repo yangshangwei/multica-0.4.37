@@ -157,6 +157,17 @@ var fieldAliases = map[string][]string{
 	"external_id": {"external_id", "external id", "外部编号"},
 }
 
+// Spreadsheet authors type the priority labels the UI shows them, so accept
+// the zh-Hans labels (packages/views/locales/zh-Hans) and any letter case at
+// this boundary. Values are stored canonical; the issue API stays strict.
+var priorityAliases = map[string]string{
+	"urgent": "urgent", "紧急": "urgent",
+	"high": "high", "高": "high",
+	"medium": "medium", "中": "medium",
+	"low": "low", "低": "low",
+	"none": "none", "无优先级": "none", "未指定优先级": "none",
+}
+
 func resolveMapping(headers []string, overrides map[string]string) (map[string]string, error) {
 	knownHeaders := map[string]bool{}
 	for _, h := range headers {
@@ -221,12 +232,12 @@ func validateRow(row *Row) {
 	if len(row.Values["description"]) > MaxDescriptionBytes {
 		row.Errors = append(row.Errors, "Description exceeds 1 MiB")
 	}
-	switch row.Values["priority"] {
-	case "":
+	if value := row.Values["priority"]; value == "" {
 		row.Values["priority"] = "none"
-	case "urgent", "high", "medium", "low", "none":
-	default:
-		row.Errors = append(row.Errors, "Priority must be urgent, high, medium, low or none")
+	} else if canonical, ok := priorityAliases[strings.ToLower(value)]; ok {
+		row.Values["priority"] = canonical
+	} else {
+		row.Errors = append(row.Errors, "Priority must be urgent, high, medium, low or none (紧急, 高, 中, 低, 无优先级)")
 	}
 	for _, field := range []string{"start_date", "due_date"} {
 		if value := row.Values[field]; value != "" {

@@ -125,6 +125,11 @@ ID ≤1,000 UTF-8 bytes, valid date-only values and date order. Preserve origina
 cells for failure export, including invalid NUL cells through byte-safe storage.
 
 Mapping is source header → canonical field; duplicate target mappings fail.
+Priority cells accept the canonical values in any letter case plus the zh-Hans
+UI labels (紧急/高/中/低/无优先级/未指定优先级); they are stored canonical and the
+original cell is kept for failure export. Only CSV intake normalizes — the issue
+and triage intake APIs stay strict. The downloadable template keeps canonical
+values so it also imports on servers that predate the aliases.
 Ignored state/iteration/attachment values warn rather than becoming workflow
 state. Resolve project/labels by scoped unique name, members by email and visible
 agents by name; missing, ambiguous or inaccessible references clear the candidate

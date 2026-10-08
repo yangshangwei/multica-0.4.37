@@ -124,6 +124,25 @@ func TestTriageImportAccessAndEncodingLimits(t *testing.T) {
 	}
 }
 
+// The label matrix lives in triagecsv/parse_test.go; this proves the
+// normalized value is what intake stores on the created issue.
+func TestTriageImportStoresCanonicalPriorityFromChineseLabel(t *testing.T) {
+	triageImportSetup(t)
+	p := triageImportPreviewForTest(t, "标题,优先级\n中文优先级,紧急\n")
+	if len(p.Rows[0].Errors) != 0 || p.Rows[0].Values["priority"] != "urgent" {
+		t.Fatalf("preview did not normalize priority: %+v", p.Rows[0])
+	}
+	result := triageImportCommitForTest(t, p.BatchID, map[string]any{"row_number": 1})
+	if result.Created != 1 {
+		t.Fatalf("import failed: %+v", result)
+	}
+	var item TriageItem
+	testutil.Call(t, testHandler.GetTriageItem, withURLParam(newRequest("GET", "/api/triage/items", nil), "id", *result.Results[0].IssueID)).Want(200).JSON(&item)
+	if item.Issue.Priority != "urgent" {
+		t.Fatalf("issue priority = %q, want urgent", item.Issue.Priority)
+	}
+}
+
 func TestTriageImportResolvesScopedNamesAndRetainsCandidatesOnly(t *testing.T) {
 	triageImportSetup(t)
 	project := dbfx.Project(t, "CSV target")

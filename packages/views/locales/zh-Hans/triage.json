@@ -139,7 +139,7 @@
     "title": "按模板准备文件",
     "download": "下载 CSV 模板",
     "summary": "第一行是列名，之后每行是一条任务，只有标题必填。列名可用中文或英文，上传后也能重新映射。",
-    "formats": "优先级填 urgent、high、medium、low 或 none，日期格式为 YYYY-MM-DD。",
+    "formats": "优先级填紧急、高、中、低、无优先级（或 urgent、high、medium、low、none），日期格式为 YYYY-MM-DD。",
     "encoding": "用 Excel 编辑后请另存为 \"CSV UTF-8\"。导入前请替换示例行。",
     "fields_toggle": "查看全部列说明",
     "column": "列名",
@@ -147,7 +147,7 @@
     "fields": {
       "title": "必填，最多 500 个字符",
       "description": "可选，支持换行",
-      "priority": "urgent、high、medium、low 或 none，留空视为 none",
+      "priority": "紧急、高、中、低、无优先级，或对应的 urgent、high、medium、low、none；留空视为无优先级",
       "labels": "已有标签名称，多个用 ; 分隔",
       "project": "已有项目名称",
       "assignee": "成员邮箱或智能体名称",

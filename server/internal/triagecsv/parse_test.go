@@ -124,6 +124,38 @@ func TestParseRowsKeepValidationErrorsAndWarnings(t *testing.T) {
 	}
 }
 
+func TestParseNormalizesPriorityLabelsAndKeepsOriginalCells(t *testing.T) {
+	cases := []struct{ input, want string }{
+		{"紧急", "urgent"}, {"高", "high"}, {"中", "medium"}, {"低", "low"},
+		{"无优先级", "none"}, {"未指定优先级", "none"}, {" 高 ", "high"},
+		{"High", "high"}, {"URGENT", "urgent"}, {"", "none"},
+	}
+	var file strings.Builder
+	file.WriteString("标题,优先级\n")
+	for _, c := range cases {
+		file.WriteString("Task,\"" + c.input + "\"\n")
+	}
+	file.WriteString("Task,最高\nTask,中等\n")
+	p, err := Parse([]byte(file.String()), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i, c := range cases {
+		row := p.Rows[i]
+		if len(row.Errors) != 0 || row.Values["priority"] != c.want {
+			t.Fatalf("priority %q = %q, errors %v; want %q", c.input, row.Values["priority"], row.Errors, c.want)
+		}
+		if row.Cells[1] != c.input {
+			t.Fatalf("original cell %q replaced by %q; failure export needs the source text", c.input, row.Cells[1])
+		}
+	}
+	for _, row := range p.Rows[len(cases):] {
+		if len(row.Errors) != 1 || !strings.Contains(row.Errors[0], "紧急") {
+			t.Fatalf("unknown label %q must fail with the accepted values: %v", row.Cells[1], row.Errors)
+		}
+	}
+}
+
 func TestParseMappingCanOverrideAndIgnore(t *testing.T) {
 	p, err := Parse([]byte("Summary,Details,DoNotUse\nTask,Context,ignored"), map[string]string{"Summary": "title", "Details": "description", "DoNotUse": "ignore"})
 	if err != nil {
