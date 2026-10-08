@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 47
+- **Total Sessions**: 48
 - **Last Active**: 2026-10-08
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1526 | Active |
+| `journal-1.md` | ~1564 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 48 | 2026-10-08 | Publish verified v0.6.1 security release | `501f4b55f`, `2d95b3ff2`, `6ad25facc` | `codex/projects-p1` |
 | 47 | 2026-10-08 | Recover and verify v0.6.0 local Linux and Windows packages | - | `codex/projects-p1` |
 | 46 | 2026-10-07 | Close six security and consistency audit findings | `d5e193977cdcb1057db3e7a3045059392693d906`, `5dd1abe527cb6370b3a54adc54beffce8617b97b`, `2dff34698cfd10eb099630dc597475ab83001c86`, `f883bb187336bc56c210423845ff5308e6967e57`, `b9d7066dab7639d2a46a12174acce228023c243b` | `codex/projects-p1` |
 | 45 | 2026-10-06 | P1 用例细化：61 条独立端到端验证 | `a21f9201f` | `codex/projects-p1` |

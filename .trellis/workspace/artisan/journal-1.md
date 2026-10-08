@@ -1524,3 +1524,41 @@ Reused the existing release task and frozen accepted source; produced local Linu
 ### Next Steps
 
 - If formal release is requested, follow canonical tag/CI changelog preparation and reverify a Linux bundle built with those exact bytes; keep Windows accepted bytes unchanged.
+
+
+## Session 48: Publish verified v0.6.1 security release
+
+**Date**: 2026-10-08
+**Task**: Publish verified v0.6.1 security release
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Published v0.6.1 with rebuilt Linux and Windows packages after fixing the live x/text vulnerability gate. Preserved v0.6.0 tag, verified all 22 public asset downloads, and archived the release task.
+
+### Main Changes
+
+- Upgraded x/text to v0.41.0 and corrected the Windows candidate contract; fixed source501 is on main and integrated into the active development branch.
+- Published Linux amd64 upgrade, newly accepted Windows x64 installer, original update metadata, Chinese guides, checksums and additive E2E provenance clarification.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `501f4b55f` | (see git log) |
+| `2d95b3ff2` | (see git log) |
+| `6ad25facc` | (see git log) |
+
+### Testing
+
+- [OK] Main CI37704376562, Release CI37709633747 and Windows native acceptance37709646248 all passed.
+- [OK] Linux9 archive checks and16 upgrade checks passed; actual binary build info confirms x/text0.41 on both platforms.
+- [OK] All22 GitHub assets downloaded and matched local plus GitHub SHA256; independent final review passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No release work remains. For deployment, use v0.6.1 assets and the included Chinese instructions; old local v0.6.0 binaries lack the security fix.
