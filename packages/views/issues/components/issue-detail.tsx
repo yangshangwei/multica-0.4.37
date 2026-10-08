@@ -2340,7 +2340,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             />
           </PropRow>
 
-          {executionAllowed && <div className="col-span-2"><IterationAssignment wsId={wsId} issueId={issue.id} currentIterationId={issue.current_iteration_id} rolloverCount={issue.iteration_rollover_count} /><IterationParticipation key={`${wsId}:${issue.id}`} wsId={wsId} issueId={issue.id} /></div>}
+          {executionAllowed && <div className="col-span-2 grid min-w-0 grid-cols-subgrid gap-y-0.5"><IterationAssignment wsId={wsId} issueId={issue.id} currentIterationId={issue.current_iteration_id} rolloverCount={issue.iteration_rollover_count} /><IterationParticipation key={`${wsId}:${issue.id}`} wsId={wsId} issueId={issue.id} /></div>}
 
           {/* Optional props — rendered only when set on the issue OR added
               via "+ Add property" in this session. Row order follows the

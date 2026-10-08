@@ -146,7 +146,8 @@ describe("iteration assignment scope and preview", () => {
     render(<QueryClientProvider client={new QueryClient()}><IterationAssignment wsId={ws} issueId={alpha.id} currentIterationId={targetA.id} rolloverCount={3} /></QueryClientProvider>);
     const user = userEvent.setup();
     await user.click(await screen.findByText("Assign to iteration"));
-    expect(await screen.findByText(/Current iteration:/)).toHaveTextContent(targetA.name);
+    const currentRow = (await screen.findByText("Current iteration")).parentElement!;
+    expect(within(currentRow).getByText(targetA.name)).toHaveAttribute("title", targetA.name);
     expect(screen.getByLabelText("Iterations")).toHaveValue(targetA.id);
     expect(screen.getByText(/Rolled over at least three times/)).toBeInTheDocument();
   });

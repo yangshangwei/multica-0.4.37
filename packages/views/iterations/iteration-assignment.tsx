@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { CalendarRange } from "lucide-react";
+import { CalendarRange, ChevronRight } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, isIterationAccessDenied } from "@multica/core/api";
 import {
@@ -16,6 +16,7 @@ import { issueBehavesAs } from "@multica/core/issues";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@multica/ui/components/ui/dialog";
+import { PropRow } from "../common/prop-row";
 import { IssuePickerModal } from "../modals/issue-picker-modal";
 import {
   PropertyPicker,
@@ -89,6 +90,9 @@ function Assignment({
   );
   const pending = apply.pending;
   const selectedTarget = target ?? currentIterationId ?? "";
+  const currentIterationName = targets.data?.find((item) => item.id === currentIterationId)?.name
+    ?? currentIterationId
+    ?? t(($) => $.iterations.unassignedState);
   const prepare = useMutation({
     mutationKey: ["iterations", wsId, "assignment-preview"],
     mutationFn: () =>
@@ -149,21 +153,39 @@ function Assignment({
 
   return (
     <>
-      {issueId && currentIterationId !== undefined && <p>{t(($) => $.iterations.currentGroup)}: {targets.data?.find((item) => item.id === currentIterationId)?.name ?? currentIterationId ?? t(($) => $.iterations.unassigned)} · {t(($) => $.iterations.rollover)}: {rolloverCount ?? t(($) => $.iterations.unknownHistory)}</p>}
-    <details>
-      <summary className="cursor-pointer font-medium">
-        {t(($) => $.iterations.assign)}
+      {issueId && currentIterationId !== undefined && (
+        <PropRow label={t(($) => $.iterations.currentGroup)} interactive={false}>
+          <div className="min-w-0 py-1.5">
+            <div className="flex min-w-0 items-center gap-1.5">
+              <CalendarRange className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
+              <span
+                className={`truncate ${currentIterationId ? "" : "text-muted-foreground"}`}
+                title={currentIterationName}
+              >
+                {currentIterationName}
+              </span>
+            </div>
+            <p className="mt-0.5 whitespace-normal pl-5 text-caption text-muted-foreground">
+              {t(($) => $.iterations.rollover)}: {rolloverCount ?? t(($) => $.iterations.unknownHistory)}
+            </p>
+          </div>
+        </PropRow>
+      )}
+    <details className="group/assignment col-span-2 min-w-0">
+      <summary className="-mx-2 flex min-h-8 cursor-pointer list-none items-center gap-1 rounded-md px-2 text-caption text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring group-open/assignment:text-foreground pointer-coarse:min-h-11 [&::-webkit-details-marker]:hidden">
+        <span className="min-w-0">{t(($) => $.iterations.assign)}</span>
+        <ChevronRight className="size-3 shrink-0 stroke-[2.5] transition-transform group-open/assignment:rotate-90 motion-reduce:transition-none" aria-hidden />
       </summary>
-      <div className="mt-3 space-y-3">
-        {(rolloverCount ?? 0) >= 3 && <p>{t(($) => $.iterations.rolloverReview)}</p>}
-        {issueIds && <p>{t(($) => $.iterations.affected)}: {issueIds.length}</p>}
+      <div className="min-w-0 space-y-3 text-caption pb-3 pt-2">
+        {(rolloverCount ?? 0) >= 3 && <p className="text-muted-foreground">{t(($) => $.iterations.rolloverReview)}</p>}
+        {issueIds && <p className="text-muted-foreground">{t(($) => $.iterations.affected)}: <span className="font-medium tabular-nums text-foreground">{issueIds.length}</span></p>}
         <fieldset
           disabled={pending !== null || prepare.isPending || apply.isPending}
-          className="space-y-3"
+          className="min-w-0 space-y-3"
         >
           {!issueId && !issueIds && (
             <>
-              <Button variant="outline" onClick={() => setPickerOpen(true)}>
+              <Button variant="outline" size="sm" className="pointer-coarse:min-h-11" onClick={() => setPickerOpen(true)}>
                 {t(($) => $.iterations.selectTasks)}
               </Button>
               <IssuePickerModal
@@ -191,9 +213,10 @@ function Assignment({
             </>
           )}
           {!issueId && !issueIds && (
-            <label className="block">
+            <label className="grid min-w-0 gap-1.5 text-caption text-muted-foreground">
               {t(($) => $.iterations.issueId)}
               <Input
+                className="text-caption text-foreground md:text-caption pointer-coarse:min-h-11"
                 value={ids}
                 onChange={(e) => {
                   setIds(e.target.value);
@@ -212,9 +235,10 @@ function Assignment({
               items={targets.data ?? []}
             />
           )}
-          <label className="block">
+          <label className="grid min-w-0 gap-1.5 text-caption text-muted-foreground">
             {t(($) => $.iterations.reason)}
             <Input
+              className="text-caption text-foreground md:text-caption pointer-coarse:min-h-11"
               value={reason}
               onChange={(e) => {
                 setReason(e.target.value);
@@ -222,9 +246,10 @@ function Assignment({
               }}
             />
           </label>
-          <label className="flex gap-2">
+          <label className="flex min-h-8 cursor-pointer items-start gap-2 py-1.5 text-caption text-muted-foreground pointer-coarse:min-h-11">
             <input
               type="checkbox"
+              className="mt-0.5 size-3.5 shrink-0 accent-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               checked={allowCompleted}
               onChange={(e) => {
                 setAllowCompleted(e.target.checked);
@@ -234,6 +259,8 @@ function Assignment({
             {t(($) => $.iterations.allowCompleted)}
           </label>
           <Button
+            size="sm"
+            className="pointer-coarse:min-h-11"
             disabled={prepare.isPending || !settings.data || !ids.trim()}
             onClick={() => prepare.mutate()}
           >
@@ -241,23 +268,27 @@ function Assignment({
           </Button>
         </fieldset>
         {(prepare.error || apply.error) && (
-          <IterationError error={prepare.error ?? apply.error} />
+          <div className="text-destructive">
+            <IterationError error={prepare.error ?? apply.error} />
+          </div>
         )}
         {preview && (
-          <div>
-            <p>
-              {t(($) => $.iterations.affected)}: {preview.total_affected}
+          <div className="min-w-0 space-y-3">
+            <p className="text-muted-foreground">
+              {t(($) => $.iterations.affected)}: <span className="font-medium tabular-nums text-foreground">{preview.total_affected}</span>
             </p>
-            <ul>
+            <ul className="max-h-48 space-y-2 overflow-y-auto">
               {preview.issues.map((issue) => (
-                <li key={issue.issue_id} className="break-words">
-                  {issue.identifier} · {issue.title}
-                  <p>{t(($) => $.iterations.source)}: {targets.data?.find((item) => item.id === issue.source_id)?.name ?? issue.source_id ?? t(($) => $.iterations.unassigned)}</p>
+                <li key={issue.issue_id} className="min-w-0 break-words">
+                  <span className="text-muted-foreground">{issue.identifier}</span> · {issue.title}
+                  <p className="mt-0.5 text-muted-foreground">{t(($) => $.iterations.source)}: {targets.data?.find((item) => item.id === issue.source_id)?.name ?? issue.source_id ?? t(($) => $.iterations.unassignedState)}</p>
                 </li>
               ))}
             </ul>
-            {preview.invalid_items.map((item, index) => <p role="alert" key={`${item.issue_id}:${index}`}>{labels.validation(item.code)}</p>)}
+            {preview.invalid_items.map((item, index) => <p role="alert" className="text-destructive" key={`${item.issue_id}:${index}`}>{labels.validation(item.code)}</p>)}
             <Button
+              size="sm"
+              className="pointer-coarse:min-h-11"
               disabled={
                 apply.isPending ||
                 prepare.isPending ||
@@ -270,11 +301,11 @@ function Assignment({
             </Button>
           </div>
         )}
-        {apply.isPending && <p role="status">{t(($) => $.iterations.processing)}</p>}
-        {prepare.isPending && <p role="status">{t(($) => $.iterations.preparing)}</p>}
-        {pending && !apply.isPending && <p role="status">{t(($) => $.iterations.unknownResult)}</p>}
+        {apply.isPending && <p role="status" className="text-muted-foreground">{t(($) => $.iterations.processing)}</p>}
+        {prepare.isPending && <p role="status" className="text-muted-foreground">{t(($) => $.iterations.preparing)}</p>}
+        {pending && !apply.isPending && <p role="status" className="text-muted-foreground">{t(($) => $.iterations.unknownResult)}</p>}
         {pending && (
-          <Button disabled={apply.isPending} onClick={() => void submit()}>
+          <Button variant="outline" size="sm" className="pointer-coarse:min-h-11" disabled={apply.isPending} onClick={() => void submit()}>
             {t(($) => $.iterations.retry)}
           </Button>
         )}
@@ -294,10 +325,10 @@ export function IterationSelect({
 }) {
   const { t } = useT("projects");
   return (
-    <label className="block">
+    <label className="grid min-w-0 gap-1.5 text-caption text-muted-foreground">
       {t(($) => $.iterations.title)}
       <select
-        className="block w-full rounded-md border bg-background p-2"
+        className="block h-8 w-full min-w-0 truncate rounded-lg border border-input bg-background px-2.5 text-caption text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:min-h-11"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
