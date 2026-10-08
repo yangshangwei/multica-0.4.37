@@ -3,9 +3,71 @@ package triagecsv
 import (
 	"bytes"
 	"encoding/csv"
+	"encoding/json"
+	"os"
+	"sort"
 	"strings"
 	"testing"
 )
+
+// The import dialog offers this file as the downloadable template. Parsing it
+// here keeps its headers on the server's aliases and its examples valid.
+func TestClientImportTemplateMapsEveryColumn(t *testing.T) {
+	raw, err := os.ReadFile("../../../packages/views/triage/triage-csv-template.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var template struct {
+		Fields  []string `json:"fields"`
+		Locales map[string]struct {
+			Headers []string   `json:"headers"`
+			Rows    [][]string `json:"rows"`
+		} `json:"locales"`
+	}
+	if err = json.Unmarshal(raw, &template); err != nil {
+		t.Fatal(err)
+	}
+	supported := make([]string, 0, len(fieldAliases))
+	for field := range fieldAliases {
+		supported = append(supported, field)
+	}
+	fields := append([]string(nil), template.Fields...)
+	sort.Strings(supported)
+	sort.Strings(fields)
+	if strings.Join(fields, ",") != strings.Join(supported, ",") {
+		t.Fatalf("template fields %v must cover mappable fields %v", template.Fields, supported)
+	}
+	if len(template.Locales) != 2 {
+		t.Fatalf("template locales = %d, want en and zh-Hans", len(template.Locales))
+	}
+	for locale, variant := range template.Locales {
+		var file bytes.Buffer
+		w := csv.NewWriter(&file)
+		if err = w.Write(variant.Headers); err == nil {
+			err = w.WriteAll(variant.Rows)
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		p, err := Parse(append([]byte("\xef\xbb\xbf"), file.Bytes()...), nil)
+		if err != nil {
+			t.Fatalf("%s: %v", locale, err)
+		}
+		for i, header := range variant.Headers {
+			if p.Mapping[header] != template.Fields[i] {
+				t.Fatalf("%s: header %q maps to %q, want %q", locale, header, p.Mapping[header], template.Fields[i])
+			}
+		}
+		if len(p.Rows) != len(variant.Rows) {
+			t.Fatalf("%s: rows = %d, want %d", locale, len(p.Rows), len(variant.Rows))
+		}
+		for _, row := range p.Rows {
+			if len(row.Errors) != 0 || len(row.Warnings) != 0 || row.Duplicate {
+				t.Fatalf("%s: example row %d must parse cleanly: %#v", locale, row.Number, row)
+			}
+		}
+	}
+}
 
 func TestParseQuotedBOMAndIgnoredExecutionFields(t *testing.T) {
 	p, err := Parse([]byte("\xef\xbb\xbf标题,描述,优先级,状态,迭代,外部编号\r\n\"修复,登录\",\"first line\n@agent second line\",high,in_progress,sprint1,EXT-1\r\n"), nil)

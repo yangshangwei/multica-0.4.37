@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
 }));
 vi.mock("../i18n", () => ({
   useT: () => ({ t: (selector: (value: typeof en) => string) => selector(en) }),
+  useLocale: () => "en",
 }));
 vi.mock("@multica/core/paths", () => ({
   useWorkspacePaths: () => ({
@@ -124,6 +125,63 @@ it("keeps duplicate/error rows out of initial commit, then accepts an explicit p
     id: "batch",
     input: { rows: [{ row_number: 2, import_duplicate: true }] },
   });
+});
+// Template content and server compatibility are pinned in triage-ui.test.ts
+// and server/internal/triagecsv; this covers the dialog wiring only.
+it("offers the format guide and template before the first upload, then compacts it", async () => {
+  const blobs: Blob[] = [];
+  // jsdom leaves these undefined; restore whatever was there before.
+  const original: Partial<Record<"create" | "revoke", unknown>> = {
+    create: URL.createObjectURL,
+    revoke: URL.revokeObjectURL,
+  };
+  Object.defineProperty(URL, "createObjectURL", {
+    configurable: true,
+    value: (blob: Blob) => (blobs.push(blob), "blob:template"),
+  });
+  Object.defineProperty(URL, "revokeObjectURL", {
+    configurable: true,
+    value: vi.fn(),
+  });
+  const click = vi
+    .spyOn(HTMLAnchorElement.prototype, "click")
+    .mockImplementation(() => {});
+  try {
+    render(<TriageImportDialog wsId="ws" onClose={vi.fn()} />);
+    expect(
+      screen.getByRole("region", { name: en.csv_template.title }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(en.csv_template.formats)).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole("button", { name: en.csv_template.download }),
+    );
+    expect(click).toHaveBeenCalledOnce();
+    expect((click.mock.contexts[0] as HTMLAnchorElement).download).toBe(
+      "triage-import-template.csv",
+    );
+    const text = new TextDecoder().decode(await blobs[0]!.arrayBuffer());
+    expect(text.split("\r\n")[0]).toBe(
+      "title,description,priority,labels,project,assignee,start_date,due_date,source_url,external_id",
+    );
+
+    fireEvent.change(screen.getByLabelText(en.choose_file), {
+      target: { files: [file(new TextEncoder().encode("title\nTask 1"))] },
+    });
+    await screen.findByText("Date is invalid");
+    expect(screen.queryByText(en.csv_template.formats)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: en.csv_template.download }),
+    ).toBeEnabled();
+  } finally {
+    click.mockRestore();
+    for (const [key, value] of [
+      ["createObjectURL", original.create],
+      ["revokeObjectURL", original.revoke],
+    ] as const) {
+      if (value) Object.defineProperty(URL, key, { configurable: true, value });
+      else delete (URL as Partial<typeof URL>)[key];
+    }
+  }
 });
 it("rejects invalid UTF-8 before uploading a preview", async () => {
   render(<TriageImportDialog wsId="ws" onClose={vi.fn()} />);

@@ -23,24 +23,91 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { Input } from "@multica/ui/components/ui/input";
+import { Download } from "lucide-react";
 import { AppLink } from "../navigation";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { TriageSelect } from "./triage-fields";
-import { decodeTriageCsv, TRIAGE_CONTROL } from "./triage-ui";
+import {
+  decodeTriageCsv,
+  saveTriageCsv,
+  TRIAGE_CONTROL,
+  TRIAGE_CSV_FIELDS,
+  triageCsvTemplate,
+} from "./triage-ui";
 
-const MAPPING_FIELDS = [
-  "ignore",
-  "title",
-  "description",
-  "priority",
-  "labels",
-  "project",
-  "assignee",
-  "start_date",
-  "due_date",
-  "source_url",
-  "external_id",
-] as const;
+const MAPPING_FIELDS = ["ignore", ...TRIAGE_CSV_FIELDS] as const;
+
+// Format guidance sits above the file picker so people learn the columns
+// before their first upload; it shrinks to the template actions once a
+// preview takes over the dialog.
+function TriageCsvGuide({ compact }: { compact: boolean }) {
+  const { t } = useT("triage");
+  const template = triageCsvTemplate(useLocale());
+  return (
+    <section
+      aria-labelledby="triage-csv-guide"
+      className="space-y-2 rounded-lg border border-surface-border bg-muted/40 p-4"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 id="triage-csv-guide" className="text-label font-medium">
+          {t(($) => $.csv_template.title)}
+        </h3>
+        <Button
+          variant="outline"
+          className={TRIAGE_CONTROL}
+          onClick={() => saveTriageCsv(template.csv, template.filename)}
+        >
+          <Download className="size-4" />
+          {t(($) => $.csv_template.download)}
+        </Button>
+      </div>
+      {!compact && (
+        <ul className="list-disc space-y-1 pl-5 text-caption text-muted-foreground">
+          <li>{t(($) => $.csv_template.summary)}</li>
+          <li>{t(($) => $.csv_template.formats)}</li>
+          <li>{t(($) => $.csv_template.encoding)}</li>
+        </ul>
+      )}
+      <details>
+        <summary className="cursor-pointer text-caption font-medium">
+          {t(($) => $.csv_template.fields_toggle)}
+        </summary>
+        <div className="mt-2 overflow-x-auto rounded-md border border-surface-border bg-background">
+          <table className="w-full text-left text-caption">
+            <thead className="bg-muted">
+              <tr>
+                <th scope="col" className="p-2">
+                  {t(($) => $.csv_template.column)}
+                </th>
+                <th scope="col" className="p-2">
+                  {t(($) => $.csv_template.rule)}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {TRIAGE_CSV_FIELDS.map((field, index) => (
+                <tr key={field} className="border-t border-surface-border">
+                  <th
+                    scope="row"
+                    className="whitespace-nowrap p-2 font-mono font-normal"
+                  >
+                    {template.headers[index]}
+                  </th>
+                  <td className="p-2 text-muted-foreground">
+                    {t(($) => $.csv_template.fields[field])}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-2 text-caption text-muted-foreground">
+          {t(($) => $.csv_template.matching)}
+        </p>
+      </details>
+    </section>
+  );
+}
 
 export function TriageImportDialog({
   wsId,
@@ -184,14 +251,10 @@ export function TriageImportDialog({
     if (!preview) return;
     try {
       const csv = await download.mutateAsync(preview.batch_id);
-      const url = URL.createObjectURL(
-        new Blob([csv], { type: "text/csv;charset=utf-8" }),
+      saveTriageCsv(
+        csv,
+        `${preview.filename.replace(/\.csv$/i, "")}-failures.csv`,
       );
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${preview.filename.replace(/\.csv$/i, "")}-failures.csv`;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (e) {
       setError(e instanceof Error ? e.message : t(($) => $.failed));
     }
@@ -209,6 +272,7 @@ export function TriageImportDialog({
           <DialogDescription>{t(($) => $.csv_hint)}</DialogDescription>
         </DialogHeader>
         <div className="min-h-0 space-y-5 overflow-y-auto">
+          {!batchId && <TriageCsvGuide compact={!!preview} />}
           {!batchId && (
             <div className="space-y-2">
               <label

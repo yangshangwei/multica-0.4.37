@@ -1,10 +1,14 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
+import csvTemplate from "./triage-csv-template.json";
 import {
   decodeTriageCsv,
   duplicateReference,
+  formatTriageCsv,
   snoozePresets,
   nextTriageSelection,
+  TRIAGE_CSV_FIELDS,
+  triageCsvTemplate,
 } from "./triage-ui";
 
 describe("triage input boundaries", () => {
@@ -19,6 +23,31 @@ describe("triage input boundaries", () => {
   it("keeps quoted CSV content intact for server parsing", () => {
     const csv = 'title,description\n"A,B","line 1\nline 2"';
     expect(decodeTriageCsv(new TextEncoder().encode(csv).buffer)).toBe(csv);
+  });
+  it("quotes only the cells a spreadsheet would otherwise split", () => {
+    expect(
+      formatTriageCsv([
+        ["plain", "a,b", 'say "hi"', "line 1\nline 2", " padded"],
+      ]),
+    ).toBe('plain,"a,b","say ""hi""","line 1\nline 2"," padded"\r\n');
+  });
+  it("covers every mapping field with a BOM-prefixed template per locale", () => {
+    expect(csvTemplate.fields).toEqual(TRIAGE_CSV_FIELDS);
+    for (const [locale, header] of [
+      ["en", "title"],
+      ["zh-Hans", "标题"],
+    ] as const) {
+      const template = triageCsvTemplate(locale);
+      expect(template.headers).toHaveLength(TRIAGE_CSV_FIELDS.length);
+      expect(template.headers[0]).toBe(header);
+      expect(template.csv.startsWith(`\uFEFF${header},`)).toBe(true);
+      // The import decoder must accept the downloaded bytes unchanged.
+      const bytes = new TextEncoder().encode(template.csv).buffer;
+      expect(decodeTriageCsv(bytes)).toBe(template.csv.slice(1));
+    }
+    expect(triageCsvTemplate("fr").filename).toBe(
+      csvTemplate.locales.en.filename,
+    );
   });
   it("extracts a pasted scoped task link and rejects a different workspace", () => {
     expect(

@@ -130,6 +130,11 @@ state. Resolve project/labels by scoped unique name, members by email and visibl
 agents by name; missing, ambiguous or inaccessible references clear the candidate
 with warnings, never auto-create resources. Preview persists plans only.
 
+The import dialog's downloadable template is generated client-side from
+`packages/views/triage/triage-csv-template.json` (BOM + CRLF, one header set per
+UI locale). `TestClientImportTemplateMapsEveryColumn` parses that file, so adding
+a mappable field or renaming an alias must update the template in the same change.
+
 Batch detail/commit/failure download are scoped to the original human importer
 and current workspace membership. Changed mapping creates a new preview request.
 Selected valid warning rows are explicitly acknowledged. Invalid rows cannot

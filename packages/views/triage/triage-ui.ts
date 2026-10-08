@@ -1,5 +1,60 @@
+import csvTemplate from "./triage-csv-template.json";
+
 export function decodeTriageCsv(buffer: ArrayBuffer): string {
   return new TextDecoder("utf-8", { fatal: true }).decode(buffer);
+}
+
+// Canonical mapping targets accepted by server/internal/triagecsv. The
+// downloadable template covers every one; its Go test pins the alias table.
+export const TRIAGE_CSV_FIELDS = [
+  "title",
+  "description",
+  "priority",
+  "labels",
+  "project",
+  "assignee",
+  "start_date",
+  "due_date",
+  "source_url",
+  "external_id",
+] as const;
+export type TriageCsvField = (typeof TRIAGE_CSV_FIELDS)[number];
+
+// RFC 4180 with CRLF rows, which Excel and WPS open without merging lines.
+export function formatTriageCsv(rows: readonly (readonly string[])[]): string {
+  return rows
+    .map((cells) =>
+      cells
+        .map((cell) =>
+          /[",\r\n]|^\s|\s$/.test(cell) ? `"${cell.replace(/"/g, '""')}"` : cell,
+        )
+        .join(","),
+    )
+    .join("\r\n")
+    .concat("\r\n");
+}
+
+export function triageCsvTemplate(locale: string) {
+  const variant = locale.startsWith("zh")
+    ? csvTemplate.locales["zh-Hans"]
+    : csvTemplate.locales.en;
+  return {
+    filename: variant.filename,
+    headers: variant.headers,
+    // The BOM makes spreadsheet apps detect UTF-8; import strips it.
+    csv: "\uFEFF" + formatTriageCsv([variant.headers, ...variant.rows]),
+  };
+}
+
+export function saveTriageCsv(csv: BlobPart, filename: string) {
+  const url = URL.createObjectURL(
+    new Blob([csv], { type: "text/csv;charset=utf-8" }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 export function duplicateReference(
