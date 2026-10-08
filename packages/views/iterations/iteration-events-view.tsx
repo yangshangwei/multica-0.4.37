@@ -63,7 +63,7 @@ export function IterationEventsView({ wsId, events, timezone }: { wsId: string; 
       return <li key={event.id} className="break-words">
         <p className="font-medium">{eventName(event.kind, event.issue_id !== null)}</p>
         {event.issue_id && <p>{t(($) => $.iterations.identifier)}: {identifier ?? event.issue_id}{title && ` · ${title}`}</p>}
-        <p>{t(($) => $.iterations.actorLabel)}: {name ?? ([type, id].filter(Boolean).join(" · ") || t(($) => $.iterations.unknownHistory))} · <time dateTime={event.occurred_at}>{formatInTimeZone(event.occurred_at, timezone, locale, { year: "numeric" })}</time> · {timezone}</p>
+        <p>{t(($) => $.iterations.actorLabel)}: {name ?? ([type, id].filter(Boolean).join(" · ") || t(($) => $.iterations.unknownHistory))} · <time dateTime={event.occurred_at} title={timezone}>{formatInTimeZone(event.occurred_at, timezone, locale, { year: "numeric" })}</time></p>
         <p><IterationReference id={reference(event, "source_iteration_id")} catalogue={catalogue.data ?? []} /> → <IterationReference id={reference(event, "target_iteration_id")} catalogue={catalogue.data ?? []} /></p>
         {event.reason && <p className="whitespace-pre-wrap">{event.reason}</p>}
       </li>;

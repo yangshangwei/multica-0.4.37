@@ -88,6 +88,10 @@ vi.mock("sonner", () => ({
 
 import { WorkspaceTab } from "./workspace-tab";
 
+vi.mock("./workspace-planning-timezone", () => ({
+  WorkspacePlanningTimezone: ({ wsId, canManage }: { wsId: string; canManage: boolean }) => <div data-testid="workspace-planning" data-workspace={wsId} data-editable={canManage} />,
+}));
+
 const TEST_RESOURCES = {
   en: { common: enCommon, settings: enSettings },
 };
@@ -136,6 +140,8 @@ describe("WorkspaceTab — automatic updates", () => {
     render(<WorkspaceTab />, { wrapper: I18nWrapper });
     const input = screen.getByPlaceholderText("TES") as HTMLInputElement;
     expect(input.value).toBe("TES");
+    expect(screen.getByTestId("workspace-planning")).toHaveAttribute("data-workspace", "workspace-1");
+    expect(screen.getByTestId("workspace-planning")).toHaveAttribute("data-editable", "true");
     expect(screen.queryByRole("button", { name: /^Save$/ })).toBeNull();
   });
 

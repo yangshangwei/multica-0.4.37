@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api";
 import { protectProjectRequest, canAccessProject } from "./access";
 import { projectKeys } from "./queries";
+import { projectP1Keys } from "./p1-queries";
+import { iterationKeys } from "../iterations";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput } from "../types/project-p1";
 export function usePreviewProjectUpdate(wsId: string, projectId: string) {
   const qc = useQueryClient();
@@ -21,5 +23,12 @@ export function useProjectPlanningTimezone(wsId: string) {
   const qc = useQueryClient();
   return useMutation({ mutationKey: [...projectKeys.all(wsId), "timezone-write"],
     mutationFn: (timezone: string | null) => protectProjectRequest(qc, wsId, undefined, () => api.updateProjectPlanningTimezone(wsId, timezone)),
-    onSuccess: () => canAccessProject(wsId) ? qc.invalidateQueries({ queryKey: projectKeys.all(wsId) }) : undefined });
+    onSuccess: async (saved) => {
+      if (!canAccessProject(wsId)) return;
+      qc.setQueryData(projectP1Keys.timezone(wsId), saved);
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: projectKeys.all(wsId) }),
+        qc.invalidateQueries({ queryKey: iterationKeys.all(wsId) }),
+      ]);
+    } });
 }

@@ -19,7 +19,7 @@ import {
 import projects from "../locales/en/projects.json";
 import issues from "../locales/en/issues.json";
 const membership = vi.hoisted(() => ({ role: "member" }));
-const route = vi.hoisted(() => ({ pathname: "/acme/iterations", getShareableUrl: (path: string) => `https://multica.test${path}` }));
+const route = vi.hoisted(() => ({ pathname: "/acme/iterations", push: vi.fn(), getShareableUrl: (path: string) => `https://multica.test${path}` }));
 const copyLink = vi.hoisted(() => vi.fn().mockResolvedValue(true));
 vi.mock("@multica/ui/lib/clipboard", () => ({ copyText: copyLink }));
 vi.mock("../i18n", () => ({
@@ -57,9 +57,6 @@ vi.mock("@multica/core/auth", () => ({
     { getState: () => ({ user: { id: ws } }) },
   ),
 }));
-vi.mock("@multica/core/projects", () => ({
-  useProjectPlanningTimezone: () => ({ mutate: vi.fn() }),
-}));
 vi.mock("@multica/core/workspace/queries", () => ({
   memberListOptions: () => ({ queryKey: ["members"], queryFn: async () => [] }),
   agentListOptions: () => ({ queryKey: ["agents"], queryFn: async () => [] }),
@@ -83,6 +80,7 @@ vi.mock("@multica/core/api", async (importOriginal) => ({
     getSessionScope: () => "session",
     getIterationCapabilities: vi.fn(),
     getIterationSettings: vi.fn(),
+    createIteration: vi.fn(),
     listIterations: vi.fn(),
     getIteration: vi.fn(),
     getIterationIssues: vi.fn(),
@@ -141,6 +139,34 @@ function mount() {
   };
 }
 describe("iteration pagination and access", () => {
+  it("uses the saved Shanghai default for new iterations without a page timezone editor", async () => {
+    vi.mocked(api.getIterationSettings).mockResolvedValue({
+      ...settings,
+      planning_timezone: null,
+      effective_timezone: "Asia/Shanghai",
+      timezone_configured: false,
+    });
+    vi.mocked(api.createIteration).mockResolvedValue({ ...receipt, operation: "create" });
+    const { user } = mount();
+    await user.click(await screen.findByText("Iteration settings", { selector: "summary" }));
+    expect(screen.queryByLabelText("Planning timezone")).not.toBeInTheDocument();
+    await user.click(screen.getByText("Create iteration", { selector: "summary" }));
+    await user.type(screen.getByLabelText("Name"), "Shanghai plan");
+    await user.click(screen.getByRole("button", { name: "Create iteration" }));
+    await waitFor(() => expect(api.createIteration).toHaveBeenCalledWith(ws, expect.objectContaining({
+      name: "Shanghai plan",
+      confirmed_timezone: "Asia/Shanghai",
+    })));
+    await waitFor(() => expect(route.push).toHaveBeenCalledWith(`/acme/iterations/${source.id}`));
+  });
+  it.each(["UTC", "Asia/Shanghai"])("only labels a detail timezone when it differs from the workspace: %s", async (timezone) => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: { ...source, timezone }, statistics, snapshot: null });
+    mount();
+    const header = (await screen.findByRole("heading", { name: source.name })).closest("header");
+    if (timezone === settings.effective_timezone) expect(header).not.toHaveTextContent(timezone);
+    else expect(header).toHaveTextContent(timezone);
+  });
   it.each([
     ["detail", new Error("Offline")],
     ["workspace", new Error("Offline")],
@@ -161,7 +187,7 @@ describe("iteration pagination and access", () => {
     await act(async () => { await client.invalidateQueries({ queryKey: scope === "workspace" ? ["iterations", ws] : ["iterations", ws, "detail", source.id] }); });
     expect(screen.getByLabelText("Name")).toHaveValue("Unsent correction");
     expect(screen.getByRole("heading", { name: source.name })).toBeInTheDocument();
-    expect(screen.getAllByRole("alert").length).toBeGreaterThan(0);
+    expect((await screen.findAllByRole("alert")).length).toBeGreaterThan(0);
   });
   it("hides the editor and stale detail after definitive resource deletion", async () => {
     route.pathname += `/${source.id}`;

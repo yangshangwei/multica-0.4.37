@@ -1,10 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { projectOverviewOptions, projectP1Keys, useProjectPlanningTimezone } from "@multica/core/projects";
+import { projectOverviewOptions, projectP1Keys } from "@multica/core/projects";
 import type { Project, ProjectOverview as Overview, ProjectRiskSignal } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
-import { Input } from "@multica/ui/components/ui/input";
 import { useT } from "../../i18n";
 import { ProjectProgress } from "./project-progress";
 import { useProjectAccessGuard } from "./use-project-access-guard";
@@ -30,13 +29,12 @@ export function ProjectAcceptance({ overview }: { overview: Overview }) {
     </div>)}
   </div>;
 }
-export function ProjectOverviewPanel({ project, canEditTimezone, updatesSupported, onRisk, onProtectedError, targetUpdateId }: {
-  project: Project; canEditTimezone: boolean; updatesSupported: boolean; targetUpdateId?: string;
+export function ProjectOverviewPanel({ project, updatesSupported, onRisk, onProtectedError, targetUpdateId }: {
+  project: Project; updatesSupported: boolean; targetUpdateId?: string;
   onRisk: (signal: ProjectRiskSignal, version: string) => void; onProtectedError: () => void;
 }) {
   const { t } = useT("projects"); const qc = useQueryClient(); const query = useQuery(projectOverviewOptions(project.workspace_id, project.id));
   useProjectAccessGuard(query.error, project.workspace_id, project.id, onProtectedError);
-  const [timezone, setTimezone] = useState(""); const changeTimezone = useProjectPlanningTimezone(project.workspace_id);
   const stats = query.data?.statistics;
   // A minute poll only checks the planning calendar day; it does not fetch on
   // every tick. It catches DST and suspended/background-tab wakeups.
@@ -70,7 +68,7 @@ export function ProjectOverviewPanel({ project, canEditTimezone, updatesSupporte
     {query.error && <div role="alert" className="space-y-2 text-caption text-warning"><p>{t(($) => $.management.refresh_failed)}</p><Button size="sm" variant="outline" onClick={() => void query.refetch()}>{t(($) => $.management.retry)}</Button></div>}
     <section className="space-y-4"><div className="flex items-center justify-between gap-4"><h2 className="text-heading font-medium">{t(($) => $.management.overview)}</h2><Button size="sm" variant="outline" onClick={() => void query.refetch()} disabled={query.isFetching}>{t(($) => $.management.refresh)}</Button></div>
       <ProjectStatistics overview={overview} />
-      <p className="text-caption text-muted-foreground">{t(($) => $.management.calculated, { time: new Date(statistics.calculated_at).toLocaleString(), timezone: statistics.timezone, date: statistics.reference_date })}</p>
+      <p className="text-caption text-muted-foreground">{t(($) => $.management.calculated, { time: new Date(statistics.calculated_at).toLocaleString(), date: statistics.reference_date })}</p>
     </section>
     <section className="space-y-4"><h2 className="text-heading font-medium">{t(($) => $.management.health)}</h2>
       <p className={statistics.health === "risk" ? "text-destructive" : statistics.health === "attention" ? "text-warning" : "text-muted-foreground"}>{query.error ? t(($) => $.management.unavailable) : healthLabels[statistics.health]}</p>
@@ -85,12 +83,5 @@ export function ProjectOverviewPanel({ project, canEditTimezone, updatesSupporte
     </section>
     <section className="space-y-3"><h2 className="text-heading font-medium">{t(($) => $.management.acceptance)}</h2><ProjectAcceptance overview={overview} /></section>
     {updatesSupported && <ProjectProgress project={project} onProtectedError={onProtectedError} targetUpdateId={targetUpdateId} />}
-    <section className="space-y-3"><h2 className="text-heading font-medium">{t(($) => $.management.timezone)}</h2>
-      <p className="text-caption text-muted-foreground">{statistics.timezone_configured ? statistics.timezone : t(($) => $.management.utc_default)}</p>
-      {canEditTimezone && <form className="max-w-lg space-y-2" onSubmit={(event) => { event.preventDefault(); changeTimezone.mutate(timezone.trim() || null); }}>
-        <label className="text-caption" htmlFor="project-timezone">{t(($) => $.management.timezone_hint)}</label><div className="flex gap-2"><Input id="project-timezone" value={timezone} onChange={(event) => setTimezone(event.target.value)} /><Button type="submit" disabled={changeTimezone.isPending}>{t(($) => $.management.save)}</Button></div>
-        {changeTimezone.error && <p role="alert" className="text-caption text-destructive">{changeTimezone.error.message}</p>}
-      </form>}
-    </section>
   </div></div>;
 }

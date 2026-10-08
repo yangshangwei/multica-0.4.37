@@ -146,7 +146,7 @@ func (s *IterationService) Create(ctx context.Context, ws, actor pgtype.UUID, in
 		if err != nil {
 			return iteration.WriteResult{}, err
 		}
-		effective := "UTC"
+		effective := util.DefaultPlanningTimezone
 		if zone.Valid {
 			effective = zone.String
 		}

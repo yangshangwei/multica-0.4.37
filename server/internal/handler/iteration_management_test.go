@@ -20,11 +20,16 @@ import (
 func lifecycleHTTPHandler(t *testing.T) *Handler {
 	t.Helper()
 	h := iterationSettingsHandler(t)
+	// Existing lifecycle scenarios use UTC dates independently of the workspace default.
+	dbfx.Exec(t, "UPDATE workspace SET planning_timezone='UTC' WHERE id=$1", testWorkspaceID)
+	dbfx.Cleanup(t, "UPDATE workspace SET planning_timezone=NULL WHERE id=$1", testWorkspaceID)
 	dbfx.Cleanup(t, `DELETE FROM iteration_event WHERE workspace_id=$1`, testWorkspaceID)
 	dbfx.Cleanup(t, `DELETE FROM iteration_participation WHERE workspace_id=$1`, testWorkspaceID)
 	dbfx.Cleanup(t, `DELETE FROM iteration_snapshot WHERE workspace_id=$1`, testWorkspaceID)
 	dbfx.Cleanup(t, `DELETE FROM iteration WHERE workspace_id=$1`, testWorkspaceID)
-	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", enableIterationBody(uuid.NewString()))).Want(200)
+	body := enableIterationBody(uuid.NewString())
+	body["confirmed_timezone"] = "UTC"
+	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(200)
 	return h
 }
 func lifecycleHTTPRequest(method, path, id string, body any) *http.Request {

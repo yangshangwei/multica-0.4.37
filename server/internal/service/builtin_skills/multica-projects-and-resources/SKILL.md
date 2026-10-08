@@ -139,7 +139,10 @@ scope has no percentage. Parents and children are separate issues.
 `GET /api/workspaces/{workspace-id}/project-capabilities` identifies P1 support;
 `/api/projects/capabilities` is not a valid compatibility probe on old servers.
 Project overview and risk pages use a server-calculated snapshot, the explicit
-workspace planning timezone (UTC when unconfigured), and the full formal set.
+workspace planning timezone (`Asia/Shanghai` when unconfigured), and the full formal set.
+The workspace General settings contain the planning timezone editor.
+Clearing the setting restores this default; explicitly configured timezones,
+existing iteration timezones and published snapshots are preserved.
 An offline valid agent remains assigned; execution availability is separate.
 Project status, scope closure, manual health judgment and goal acceptance do
 not automatically change one another or start/stop execution.

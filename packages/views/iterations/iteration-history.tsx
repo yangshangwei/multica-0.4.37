@@ -39,12 +39,11 @@ export function IterationHistory({
       {snapshot && (
         <p className="text-muted-foreground">
           {t(($) => $.iterations.readonly)}{" "}
-          <time dateTime={snapshot.logical_ended_at}>
+          <time dateTime={snapshot.logical_ended_at} title={timezone}>
             {formatInTimeZone(snapshot.logical_ended_at, timezone, locale, {
               year: "numeric",
             })}
-          </time>{" "}
-          · {timezone}
+          </time>
         </p>
       )}
       <dl className="flex flex-wrap gap-6">
@@ -94,7 +93,7 @@ export function IterationHistory({
         <dl className="space-y-2">
           <div><dt>{t(($) => $.iterations.endType)}</dt><dd>{snapshot.end_type === "completed" ? t(($) => $.iterations.completed) : snapshot.end_type === "cancelled" ? t(($) => $.iterations.cancelled) : snapshot.end_type}</dd></div>
           <div><dt>{t(($) => $.iterations.endReason)}</dt><dd className="whitespace-pre-wrap break-words">{snapshot.reason}</dd></div>
-          <div><dt>{t(($) => $.iterations.processedAt)}</dt><dd><time dateTime={snapshot.processed_at}>{formatInTimeZone(snapshot.processed_at, timezone, locale, { year: "numeric" })}</time></dd></div>
+          <div><dt>{t(($) => $.iterations.processedAt)}</dt><dd><time dateTime={snapshot.processed_at} title={timezone}>{formatInTimeZone(snapshot.processed_at, timezone, locale, { year: "numeric" })}</time></dd></div>
         </dl>
         <details>
           <summary>{t(($) => $.iterations.destinations)}</summary>

@@ -94,7 +94,8 @@ describe("iteration chart alternative", () => {
     expect(time).toHaveTextContent("Oct 7");
     expect(time).toHaveTextContent("02:05");
     expect(time).not.toHaveTextContent("123456");
-    expect(screen.getByText(/Asia\/Shanghai/)).toBeInTheDocument();
+    expect(time).toHaveAttribute("title", "Asia/Shanghai");
+    expect(screen.queryByText(/Asia\/Shanghai/)).not.toBeInTheDocument();
     expect(screen.getAllByText("Current scope").find((node) => node.tagName === "DT")!.parentElement).toHaveTextContent(String(statistics.current));
     expect(screen.queryByText("99")).not.toBeInTheDocument();
     expect(screen.getByText("Finished")).toBeInTheDocument();

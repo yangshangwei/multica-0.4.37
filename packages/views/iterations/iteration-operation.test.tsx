@@ -260,6 +260,30 @@ describe("iteration operation interaction", () => {
     expect(screen.getByRole("dialog")).not.toHaveTextContent(alpha.title);
     expect(screen.getByRole("dialog")).not.toHaveTextContent(alpha.id);
   });
+  it.each([
+    { timezone: "Asia/Shanghai", time: "02:05 AM" },
+    { timezone: "UTC", time: "06:05 PM" },
+  ])("formats an empty workspace preview in its effective planning timezone: $timezone", async ({ timezone, time }) => {
+    vi.mocked(api.getIterationSettings).mockResolvedValue({ ...settings, effective_timezone: timezone });
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [], next_cursor: null });
+    vi.mocked(api.previewIteration).mockImplementation(async (_ws, draft) => ({
+      ...previewFor(draft),
+      previewed_at: "2026-10-06T18:05:00Z",
+      iterations: [],
+      issues: [],
+    }));
+    render(<QueryClientProvider client={new QueryClient()}>
+      <IterationOperation wsId={ws} iteration={null} settingsRevision={1} operation="disable" />
+    </QueryClientProvider>);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: projects.iterations.disable }));
+    await user.type(screen.getByLabelText("Reason"), "Disable empty workspace iterations");
+    await user.click(screen.getByRole("button", { name: "Preview changes" }));
+    await screen.findByRole("button", { name: "Confirm changes" });
+    const timestamp = screen.getByRole("dialog").querySelector("time");
+    expect(timestamp).toHaveTextContent(time);
+    expect(timestamp?.parentElement).toHaveTextContent(timezone);
+  });
   it("formats preview time in the saved source timezone instead of the reader clock", async () => {
     vi.mocked(api.previewIteration).mockImplementation(async (_ws, draft) => ({
       ...previewFor(draft),

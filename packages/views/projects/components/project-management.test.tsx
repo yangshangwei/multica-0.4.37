@@ -130,7 +130,7 @@ describe("overview refresh failure", () => {
   it("marks retained statistics stale and stops asserting current healthy results", async () => {
     const getProjectOverview = vi.fn().mockResolvedValueOnce({ ...p1Overview, statistics: { ...p1Overview.statistics, health: "clear", reasons: [] } }).mockRejectedValue(new Error("Network unavailable"));
     setApiInstance({ getProjectOverview } as unknown as ApiClient);
-    render(<ProjectOverviewPanel project={project} canEditTimezone={false} updatesSupported={false} onRisk={vi.fn()} onProtectedError={vi.fn()} />);
+    render(<ProjectOverviewPanel project={project} updatesSupported={false} onRisk={vi.fn()} onProtectedError={vi.fn()} />);
     await screen.findByText("No current risk signals");
     await userEvent.setup().click(screen.getByRole("button", { name: "Refresh" }));
     await screen.findByText("Refresh failed. These are the last available statistics.", {}, { timeout: 3000 });

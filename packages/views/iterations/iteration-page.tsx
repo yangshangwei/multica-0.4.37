@@ -4,10 +4,9 @@ import { ApiError } from "@multica/core/api";
 import { toast } from "sonner";
 import { copyText } from "@multica/ui/lib/clipboard";
 import { memberListOptions } from "@multica/core/workspace/queries";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
-import { useProjectPlanningTimezone } from "@multica/core/projects";
 import { useCurrentMember } from "@multica/core/permissions";
 import {
   iterationCapabilitiesOptions,
@@ -102,10 +101,7 @@ function IterationWorkspace({
     : null;
   const settings = useQuery(iterationSettingsOptions(wsId));
   const { role } = useCurrentMember(wsId);
-  const client = useQueryClient();
-  const changeTimezone = useProjectPlanningTimezone(wsId);
   const canManage = role === "owner" || role === "admin";
-  const [timezone, setTimezone] = useState("");
   const enable = useIterationCommand(wsId, "enable");
   if (settings.isPending)
     return <p role="status">{t(($) => $.iterations.loading)}</p>;
@@ -120,6 +116,7 @@ function IterationWorkspace({
           wsId={wsId}
           id={id}
           settingsRevision={settings.data.revision}
+          planningTimezone={settings.data.effective_timezone}
           enabled={settings.data.enabled}
           atomicHandoff={atomicHandoff}
         />
@@ -139,33 +136,6 @@ function IterationWorkspace({
         </summary>
         <div className="mt-4 space-y-3 max-w-xl">
           <p>{t(($) => $.iterations.manualModeDescription)}</p>
-          <label className="block">
-            {t(($) => $.iterations.timezone)}
-            <Input
-              value={timezone || settings.data.effective_timezone}
-              onChange={(e) => setTimezone(e.target.value)}
-              disabled={!canManage || enable.pending !== null}
-            />
-          </label>
-          {canManage && (
-            <Button
-              disabled={changeTimezone.isPending || !timezone.trim()}
-              onClick={() =>
-                changeTimezone.mutate(timezone, {
-                  onSuccess: () => {
-                    void client.invalidateQueries({
-                      queryKey: ["iterations", wsId],
-                    });
-                  },
-                })
-              }
-            >
-              {t(($) => $.iterations.saveTimezone)}
-            </Button>
-          )}
-          {changeTimezone.error && (
-            <p role="alert">{t(($) => $.iterations.error)}</p>
-          )}
           {!settings.data.enabled && (
             <>
               <p>{t(($) => $.iterations.disabled)}</p>
@@ -180,7 +150,7 @@ function IterationWorkspace({
                           request_id: crypto.randomUUID(),
                           expected_revision: settings.data!.revision,
                           confirmed_timezone:
-                            timezone || settings.data!.effective_timezone,
+                            settings.data!.effective_timezone,
                         },
                       },
                       recover: enable.pending !== null,
@@ -208,11 +178,11 @@ function IterationWorkspace({
           timezone={settings.data.effective_timezone}
         />
       )}
-      <IterationList wsId={wsId} />
+      <IterationList wsId={wsId} planningTimezone={settings.data.effective_timezone} />
     </main>
   );
 }
-function IterationList({ wsId }: { wsId: string }) {
+function IterationList({ wsId, planningTimezone }: { wsId: string; planningTimezone: string }) {
   const labels = useIterationLabels();
   const { t } = useT("projects");
   const paths = useWorkspacePaths();
@@ -311,7 +281,7 @@ function IterationList({ wsId }: { wsId: string }) {
           <h2 className="text-subtitle font-semibold">{group.label}</h2>
           <ul className="divide-y">{items.map((item) => <li key={item.id} className="py-4">
             <AppLink href={paths.iterationDetail(item.id)} title={item.name} className="font-medium line-clamp-2 break-words hover:underline">{item.name}</AppLink>
-            <p className="text-caption text-muted-foreground">{item.start_date} – {item.end_date} · {labels.status(item.status)} · {item.timezone}{item.id === upcoming && <> · {t(($) => $.iterations.upcoming)}</>}</p>
+            <p className="text-caption text-muted-foreground">{item.start_date} – {item.end_date} · {labels.status(item.status)}{item.timezone !== planningTimezone && <> · {item.timezone}</>}{item.id === upcoming && <> · {t(($) => $.iterations.upcoming)}</>}</p>
           </li>)}</ul>
         </section>;
       })}
@@ -328,12 +298,14 @@ function IterationDetail({
   wsId,
   id,
   settingsRevision,
+  planningTimezone,
   enabled,
   atomicHandoff,
 }: {
   wsId: string;
   id: string;
   settingsRevision: number;
+  planningTimezone: string;
   enabled: boolean;
   atomicHandoff: boolean;
 }) {
@@ -361,12 +333,12 @@ function IterationDetail({
           {iteration.name}
         </h1>
         <p className="text-muted-foreground">
-          {iteration.start_date} – {iteration.end_date} · {iteration.timezone} ·{" "}
+          {iteration.start_date} – {iteration.end_date}{iteration.timezone !== planningTimezone && <> · {iteration.timezone}</>} ·{" "}
           {labels.status(iteration.status)}
         </p>
         <p>{t(($) => $.iterations.coordinator)}: {members.data?.find((member) => member.user_id === iteration.coordinator_user_id)?.name ?? (iteration.coordinator_user_id ? (members.isSuccess ? t(($) => $.iterations.coordinatorMissing) : iteration.coordinator_user_id) : t(($) => $.iterations.none))} · {iteration.mode === "manual" ? t(($) => $.iterations.manualMode) : iteration.mode}</p>
         <Button variant="outline" onClick={() => { void copyText(navigation.getShareableUrl(paths.iterationDetail(iteration.id))).then((ok) => ok ? toast.success(t(($) => $.iterations.copiedLink)) : toast.error(t(($) => $.iterations.copyFailed))); }}>{t(($) => $.iterations.copyLink)}</Button>
-        {iteration.started_at && <p>{t(($) => $.iterations.actualStartedAt)}: <time dateTime={iteration.started_at}>{formatInTimeZone(iteration.started_at, iteration.timezone, locale, { year: "numeric" })}</time> · {iteration.timezone}</p>}
+        {iteration.started_at && <p>{t(($) => $.iterations.actualStartedAt)}: <time dateTime={iteration.started_at} title={iteration.timezone}>{formatInTimeZone(iteration.started_at, iteration.timezone, locale, { year: "numeric" })}</time></p>}
         <p className="whitespace-pre-wrap break-words">
           {iteration.description}
         </p>

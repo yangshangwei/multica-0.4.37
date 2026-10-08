@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"sort"
 	"time"
+
+	"github.com/multica-ai/multica/server/internal/util"
 )
 
 type Counts struct {
@@ -119,7 +121,7 @@ func CanonicalJSON(value any) ([]byte, error) {
 }
 
 func Compute(in Input) (Collection, error) {
-	zone := "UTC"
+	zone := util.DefaultPlanningTimezone
 	if in.Timezone != nil {
 		zone = *in.Timezone
 	}
@@ -218,15 +220,16 @@ func Compute(in Input) (Collection, error) {
 		snapshot.Health = "attention"
 	}
 	canonical, err := CanonicalJSON(struct {
-		Version        int
-		Project        Project
-		ReferenceDate  string
-		Timezone       *string
-		Statuses       []Status
-		Issues         []Issue
-		References     []Reference
-		LatestUpdateAt *time.Time
-	}{1, in.Project, day, in.Timezone, statuses, issues, refs, in.LatestUpdateAt})
+		Version           int
+		Project           Project
+		ReferenceDate     string
+		Timezone          *string
+		EffectiveTimezone string
+		Statuses          []Status
+		Issues            []Issue
+		References        []Reference
+		LatestUpdateAt    *time.Time
+	}{1, in.Project, day, in.Timezone, zone, statuses, issues, refs, in.LatestUpdateAt})
 	if err != nil {
 		return Collection{}, err
 	}

@@ -33,13 +33,13 @@ func iterationSettingsHandler(t *testing.T) *Handler {
 	return &h
 }
 func enableIterationBody(requestID string) map[string]any {
-	return map[string]any{"request_id": requestID, "expected_revision": 1, "confirmed_timezone": "UTC"}
+	return map[string]any{"request_id": requestID, "expected_revision": 1, "confirmed_timezone": "Asia/Shanghai"}
 }
 func TestIterationSettingsDefaultAndReleaseGate(t *testing.T) {
 	var settings iteration.Settings
 	var capabilities map[string]any
 	testutil.Call(t, testHandler.GetIterationSettings, iterationSettingsRequest("GET", "iteration-settings", nil)).Want(200).JSON(&settings)
-	if settings.Enabled || settings.Revision != 1 || settings.EffectiveTimezone != "UTC" || settings.WorkspaceID != testWorkspaceID {
+	if settings.Enabled || settings.Revision != 1 || settings.EffectiveTimezone != "Asia/Shanghai" || settings.PlanningTimezone != nil || settings.TimezoneConfigured || settings.WorkspaceID != testWorkspaceID {
 		t.Fatalf("incorrect default settings: %+v", settings)
 	}
 	if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
@@ -72,6 +72,9 @@ func TestEnableIterationSettingsDurableReplay(t *testing.T) {
 	h := iterationSettingsHandler(t)
 	id := uuid.NewString()
 	body := enableIterationBody(id)
+	stale := enableIterationBody(uuid.NewString())
+	stale["confirmed_timezone"] = "UTC"
+	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", stale)).Want(409)
 	var first, replayed iteration.WriteResult
 	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(200).JSON(&first)
 	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(200).JSON(&replayed)
@@ -112,11 +115,11 @@ func TestEnableIterationSettingsValidatesCurrentRoleAndTimezone(t *testing.T) {
 		body["confirmed_timezone"] = zone
 		testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(422)
 	}
-	dbfx.Exec(t, `UPDATE workspace SET planning_timezone='Asia/Shanghai' WHERE id=$1`, testWorkspaceID)
+	dbfx.Exec(t, `UPDATE workspace SET planning_timezone='UTC' WHERE id=$1`, testWorkspaceID)
 	t.Cleanup(func() { dbfx.Exec(t, `UPDATE workspace SET planning_timezone=NULL WHERE id=$1`, testWorkspaceID) })
 	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", enableIterationBody(uuid.NewString()))).Want(409)
 	body := enableIterationBody(uuid.NewString())
-	body["confirmed_timezone"] = "Asia/Shanghai"
+	body["confirmed_timezone"] = "UTC"
 	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(200)
 }
 

@@ -30,6 +30,8 @@ func lifecycleFixture(t *testing.T) (*testutil.Fixture, *IterationService) {
 	suffix := uuid.NewString()
 	fx.UserID = fx.User(t, "Lifecycle", suffix+"@test.invalid")
 	fx.WorkspaceID = fx.Workspace(t, "Lifecycle", suffix)
+	// Existing lifecycle scenarios use UTC dates independently of the workspace default.
+	fx.Exec(t, "UPDATE workspace SET planning_timezone='UTC' WHERE id=$1", fx.WorkspaceID)
 	fx.Member(t, fx.WorkspaceID, fx.UserID, "owner")
 	fx.InsertNoID(t, "workspace_iteration_settings", testutil.Cols{"workspace_id": fx.WorkspaceID, "enabled": true}, "workspace_id=$1", fx.WorkspaceID)
 	for _, table := range []string{"iteration_snapshot", "iteration_notification", "iteration", "iteration_participation", "iteration_event", "iteration_operation"} {
@@ -300,30 +302,50 @@ func TestIterationLifecycleNoopAndNewActiveAdmission(t *testing.T) {
 }
 
 func TestIterationLifecycleClockMidnightAndEmptyBaseline(t *testing.T) {
-	fx, s := lifecycleFixture(t)
-	iid := lifecycleCreate(t, fx, s)
-	fx.Exec(t, "UPDATE iteration SET start_date='2026-10-10',end_date='2026-10-23',timezone='UTC' WHERE id=$1", iid)
-	now := time.Date(2026, 10, 8, 23, 59, 59, 0, time.UTC)
-	s.Now = func(context.Context, pgx.Tx) (time.Time, error) { return now, nil }
-	draft := lifecycleDraft(t, fx, iid, "start")
-	draft.Start = &iteration.StartDraft{TargetID: iid, Mode: "today", TerminalChoices: []iteration.TerminalChoice{}}
-	ws, actor := lifecycleIDs(fx)
-	preview, err := s.Preview(t.Context(), ws, actor, draft, lifecycleAuth)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if preview.StartPreview.EffectiveStartDate != "2026-10-08" || preview.StartPreview.EffectiveEndDate != "2026-10-21" {
-		t.Fatalf("wrong calendar duration: %+v", preview.StartPreview)
-	}
-	now = now.Add(2 * time.Second)
-	_, err = s.Apply(t.Context(), ws, actor, ApplyIterationInput{RequestID: uuid.NewString(), PreviewHash: preview.PreviewHash, Draft: draft}, lifecycleAuth)
-	var op *iteration.OperationError
-	if !errors.As(err, &op) || op.Code != "iteration_preview_stale" {
-		t.Fatalf("midnight accepted: %v", err)
-	}
-	lifecycleApply(t, fx, s, draft)
-	if fx.Count(t, "SELECT count(*) FROM iteration WHERE id=$1 AND status='active' AND start_date='2026-10-09' AND end_date='2026-10-22'", iid) != 1 {
-		t.Fatal("today shift not committed")
+	for _, tc := range []struct {
+		name, zone string
+		hour       int
+		configured bool
+	}{
+		{"explicit UTC", "UTC", 23, true},
+		{"default Shanghai", "Asia/Shanghai", 15, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			fx, s := lifecycleFixture(t)
+			if !tc.configured {
+				fx.Exec(t, "UPDATE workspace SET planning_timezone=NULL WHERE id=$1", fx.WorkspaceID)
+			}
+			now := time.Date(2026, 10, 8, tc.hour, 59, 59, 0, time.UTC)
+			s.Now = func(context.Context, pgx.Tx) (time.Time, error) { return now, nil }
+			ws, actor := lifecycleIDs(fx)
+			input := CreateIterationInput{RequestID: uuid.NewString(), Name: "Midnight", StartDate: "2026-10-10", EndDate: "2026-10-23", ConfirmedTimezone: tc.zone}
+			created, err := s.Create(t.Context(), ws, actor, input, lifecycleAuth)
+			if err != nil {
+				t.Fatal(err)
+			}
+			iid := created.IterationIDs[0]
+			// A later workspace setting must not rewrite the saved iteration timezone.
+			fx.Exec(t, "UPDATE workspace SET planning_timezone='America/New_York' WHERE id=$1", fx.WorkspaceID)
+			draft := lifecycleDraft(t, fx, iid, "start")
+			draft.Start = &iteration.StartDraft{TargetID: iid, Mode: "today", TerminalChoices: []iteration.TerminalChoice{}}
+			preview, err := s.Preview(t.Context(), ws, actor, draft, lifecycleAuth)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if preview.StartPreview.Timezone != tc.zone || preview.StartPreview.EffectiveStartDate != "2026-10-08" || preview.StartPreview.EffectiveEndDate != "2026-10-21" {
+				t.Fatalf("wrong calendar duration or saved timezone: %+v", preview.StartPreview)
+			}
+			now = now.Add(2 * time.Second)
+			_, err = s.Apply(t.Context(), ws, actor, ApplyIterationInput{RequestID: uuid.NewString(), PreviewHash: preview.PreviewHash, Draft: draft}, lifecycleAuth)
+			var op *iteration.OperationError
+			if !errors.As(err, &op) || op.Code != "iteration_preview_stale" {
+				t.Fatalf("midnight accepted: %v", err)
+			}
+			lifecycleApply(t, fx, s, draft)
+			if fx.Count(t, "SELECT count(*) FROM iteration WHERE id=$1 AND status='active' AND start_date='2026-10-09' AND end_date='2026-10-22' AND timezone=$2", iid, tc.zone) != 1 {
+				t.Fatal("today shift not committed with saved timezone")
+			}
+		})
 	}
 }
 

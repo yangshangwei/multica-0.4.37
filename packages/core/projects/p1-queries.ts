@@ -17,6 +17,10 @@ export function projectCapabilitiesOptions(wsId: string) {
   return queryOptions({ queryKey: projectP1Keys.capabilities(wsId, api.getBaseUrl?.() ?? ""),
     queryFn: ({ signal, client }) => protectProjectRequest(client, wsId, undefined, () => api.getProjectCapabilities(wsId, { signal })), retry });
 }
+export function projectPlanningTimezoneOptions(wsId: string) {
+  return queryOptions({ queryKey: projectP1Keys.timezone(wsId),
+    queryFn: ({ signal, client }) => protectProjectRequest(client, wsId, undefined, () => api.getProjectPlanningTimezone(wsId, { signal })), retry });
+}
 export function projectOverviewOptions(wsId: string, id: string) {
   return queryOptions({ queryKey: projectP1Keys.overview(wsId, id), queryFn: ({ signal, client }) => protectProjectRequest(client, wsId, id, () => api.getProjectOverview(wsId, id, { signal })), retry });
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/iteration"
+	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -82,7 +83,7 @@ func (s *IterationService) Enable(ctx context.Context, workspaceID, actorID pgty
 		if err != nil {
 			return fail(err)
 		}
-		effective := "UTC"
+		effective := util.DefaultPlanningTimezone
 		if zone.Valid {
 			effective = zone.String
 		}
@@ -109,7 +110,7 @@ func (s *IterationService) Enable(ctx context.Context, workspaceID, actorID pgty
 // ReadIterationSettings requires the caller's current workspace/member read
 // authorization. Missing settings is the disabled revision-one default.
 func ReadIterationSettings(ctx context.Context, tx pgx.Tx, workspaceID pgtype.UUID) (iteration.Settings, error) {
-	out := iteration.Settings{WorkspaceID: uuid.UUID(workspaceID.Bytes).String(), Revision: 1, EffectiveTimezone: "UTC"}
+	out := iteration.Settings{WorkspaceID: uuid.UUID(workspaceID.Bytes).String(), Revision: 1, EffectiveTimezone: util.DefaultPlanningTimezone}
 	q := db.New(tx)
 	settings, err := q.GetIterationSettings(ctx, workspaceID)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {

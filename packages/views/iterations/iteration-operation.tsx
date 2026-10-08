@@ -99,7 +99,7 @@ export function IterationOperation({
         const result = await api.previewIteration(wsId, input);
         setDraft(result.draft);
         setPreview(result);
-        return result;
+        return { ...result, effectiveTimezone: currentSettings.effective_timezone };
       }),
   });
   async function submit() {
@@ -129,7 +129,7 @@ export function IterationOperation({
     : (previewMutation.data?.issues ?? []);
   const previewTimezones = iteration
     ? [preview?.iterations.find((item) => item.id === iteration.id)?.timezone ?? iteration.timezone]
-    : [...new Set(preview?.iterations.length ? preview.iterations.map((item) => item.timezone) : ["UTC"])];
+    : [...new Set(preview?.iterations.length ? preview.iterations.map((item) => item.timezone) : previewMutation.data ? [previewMutation.data.effectiveTimezone] : [])];
   const label = t(($) =>
     operation === "disable"
       ? $.iterations.disable

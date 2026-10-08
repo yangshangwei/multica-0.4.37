@@ -248,6 +248,75 @@ func TestTimezoneDayAndSemanticInputChanges(t *testing.T) {
 	}
 }
 
+func TestPlanningTimezoneDefaultsAndShanghaiMidnight(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		zone     *string
+		now      string
+		wantZone string
+		wantDay  string
+		wantAge  int
+		overdue  int64
+	}{
+		{"default before midnight", nil, "2026-03-09T15:59:59Z", "Asia/Shanghai", "2026-03-09", 6, 0},
+		{"default at midnight", nil, "2026-03-09T16:00:00Z", "Asia/Shanghai", "2026-03-10", 7, 1},
+		{"explicit UTC", str("UTC"), "2026-03-09T16:00:00Z", "UTC", "2026-03-09", 6, 0},
+		{"explicit New York", str("America/New_York"), "2026-03-09T16:00:00Z", "America/New_York", "2026-03-09", 6, 0},
+		{"explicit Shanghai", str("Asia/Shanghai"), "2026-03-09T16:00:00Z", "Asia/Shanghai", "2026-03-10", 7, 1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			in := sampleInput()
+			in.Timezone = tc.zone
+			var err error
+			in.Now, err = time.Parse(time.RFC3339, tc.now)
+			if err != nil {
+				t.Fatal(err)
+			}
+			in.Project.Status = "in_progress"
+			in.Project.DueDate = str("2026-03-09")
+			since := time.Date(2026, 3, 3, 12, 0, 0, 0, time.UTC)
+			in.LatestUpdateAt = &since
+			due := issue("a", "todo")
+			due.DueDate = str("2026-03-09")
+			in.Issues = []Issue{due}
+			out, err := Compute(in)
+			if err != nil {
+				t.Fatal(err)
+			}
+			s := out.Statistics
+			if s.Timezone != tc.wantZone || s.TimezoneConfigured != (tc.zone != nil) || s.ReferenceDate != tc.wantDay {
+				t.Fatalf("planning timezone: %+v", s)
+			}
+			checkCount(t, "overdue", s.Counts.Overdue, tc.overdue)
+			if s.ProjectOverdue == nil || *s.ProjectOverdue != (tc.overdue == 1) || s.ProgressAgeDays == nil || *s.ProgressAgeDays != tc.wantAge || slices.Contains(s.Reasons, "stale_progress") != (tc.wantAge >= 7) {
+				t.Fatalf("planning calendar boundaries: %+v", s)
+			}
+		})
+	}
+}
+
+func TestDefaultTimezoneInvalidatesLegacyUTCSnapshot(t *testing.T) {
+	updated := time.Date(2026, 3, 3, 18, 0, 0, 0, time.UTC)
+	in := Input{
+		Project:        Project{WorkspaceID: "ws", ID: "project", Revision: 1, Status: "in_progress"},
+		Now:            time.Date(2026, 3, 10, 12, 0, 0, 0, time.UTC),
+		LatestUpdateAt: &updated,
+	}
+	out, err := Compute(in)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// The UTC-default implementation used this version for the same input and
+	// reference date, but counted seven calendar days since the last update.
+	const legacyUTCVersion = "d90e6cc71a95fb8b4c9a5887bc0da793d0234fabd8b5d5b23ecf12a474f24af8"
+	if out.Statistics.SnapshotVersion == legacyUTCVersion {
+		t.Fatal("changed default timezone retained an outdated preview version")
+	}
+	if out.Statistics.ReferenceDate != "2026-03-10" || out.Statistics.ProgressAgeDays == nil || *out.Statistics.ProgressAgeDays != 6 {
+		t.Fatalf("unexpected Shanghai calendar: %+v", out.Statistics)
+	}
+}
+
 func TestBatchScopeCountsMatchHealthClassification(t *testing.T) {
 	categories := statusCategories([]Status{{Key: "delivered", Category: "done"}, {Key: "abandoned", Category: "cancelled"}})
 	counts := countScope(map[string]int64{"delivered": 6, "abandoned": 2, "todo": 1, "future": 1}, categories)

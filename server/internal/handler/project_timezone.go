@@ -23,7 +23,7 @@ type ProjectPlanningTimezone struct {
 }
 
 func projectPlanningTimezone(ws db.Workspace) ProjectPlanningTimezone {
-	out := ProjectPlanningTimezone{WorkspaceID: uuidToString(ws.ID), PlanningTimezone: textToPtr(ws.PlanningTimezone), EffectiveTimezone: "UTC", Configured: ws.PlanningTimezone.Valid}
+	out := ProjectPlanningTimezone{WorkspaceID: uuidToString(ws.ID), PlanningTimezone: textToPtr(ws.PlanningTimezone), EffectiveTimezone: util.DefaultPlanningTimezone, Configured: ws.PlanningTimezone.Valid}
 	if ws.PlanningTimezone.Valid {
 		out.EffectiveTimezone = ws.PlanningTimezone.String
 	}

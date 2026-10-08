@@ -483,6 +483,8 @@ func TestIterationHistoryCaptureLocksDisplayReferences(t *testing.T) {
 func TestIterationHistoryCanonicalThroughLifecycleAndIssueWriters(t *testing.T) {
 	ctx := context.Background()
 	ws, actor := parseUUID(testWorkspaceID), parseUUID(testUserID)
+	dbfx.Exec(t, "UPDATE workspace SET planning_timezone='UTC' WHERE id=$1", testWorkspaceID)
+	dbfx.Cleanup(t, "UPDATE workspace SET planning_timezone=NULL WHERE id=$1", testWorkspaceID)
 	dbfx.InsertNoID(t, "workspace_iteration_settings", testutil.Cols{"workspace_id": testWorkspaceID, "enabled": true}, "workspace_id=$1", testWorkspaceID)
 	for _, table := range []string{"iteration", "iteration_event", "iteration_participation", "iteration_operation"} {
 		dbfx.Cleanup(t, "DELETE FROM "+table+" WHERE workspace_id=$1", testWorkspaceID)

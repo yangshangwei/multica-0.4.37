@@ -1,10 +1,13 @@
 package handler
 
 import (
+	"testing"
+
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/featureflags"
+	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/pkg/featureflag"
-	"testing"
 )
 
 func TestProjectPlanningTimezoneContractAndHumanPermissions(t *testing.T) {
@@ -20,12 +23,27 @@ func TestProjectPlanningTimezoneContractAndHumanPermissions(t *testing.T) {
 	}
 	var initial ProjectPlanningTimezone
 	testutil.Call(t, testHandler.GetProjectPlanningTimezone, withURLParam(newRequest("GET", "/api/workspaces/"+testWorkspaceID+"/planning-timezone", nil), "id", testWorkspaceID)).Want(200).JSON(&initial)
-	if initial.Configured || initial.EffectiveTimezone != "UTC" || initial.PlanningTimezone != nil {
+	if initial.Configured || initial.EffectiveTimezone != "Asia/Shanghai" || initial.PlanningTimezone != nil {
 		t.Fatalf("default: %+v", initial)
 	}
-	out := call(map[string]any{"planning_timezone": "America/New_York"}, 200)
-	if !out.Configured || out.EffectiveTimezone != "America/New_York" || out.WorkspaceID != testWorkspaceID {
-		t.Fatalf("configured: %+v", out)
+	assertIterationSettings := func(zone string, configured bool) {
+		t.Helper()
+		var settings iteration.Settings
+		testutil.Call(t, testHandler.GetIterationSettings, iterationSettingsRequest("GET", "iteration-settings", nil)).Want(200).JSON(&settings)
+		if settings.EffectiveTimezone != zone || settings.TimezoneConfigured != configured || (settings.PlanningTimezone != nil) != configured {
+			t.Fatalf("iteration planning timezone: %+v", settings)
+		}
+		if configured && *settings.PlanningTimezone != zone {
+			t.Fatalf("iteration configured timezone: %+v", settings)
+		}
+	}
+	assertIterationSettings("Asia/Shanghai", false)
+	for _, zone := range []string{"UTC", "America/New_York"} {
+		out := call(map[string]any{"planning_timezone": zone}, 200)
+		if !out.Configured || out.EffectiveTimezone != zone || out.PlanningTimezone == nil || *out.PlanningTimezone != zone || out.WorkspaceID != testWorkspaceID {
+			t.Fatalf("configured: %+v", out)
+		}
+		assertIterationSettings(zone, true)
 	}
 	// Ordinary settings replacement cannot overwrite the dedicated planning field.
 	testutil.Call(t, testHandler.UpdateWorkspace, withURLParam(newRequest("PUT", "/api/workspaces/"+testWorkspaceID, map[string]any{"settings": map[string]any{}}), "id", testWorkspaceID)).Want(200)
@@ -48,9 +66,15 @@ func TestProjectPlanningTimezoneContractAndHumanPermissions(t *testing.T) {
 	r := withURLParam(newRequest("PUT", "/api/workspaces/"+testWorkspaceID+"/planning-timezone", map[string]any{"planning_timezone": "UTC"}), "id", testWorkspaceID)
 	r.Header.Set("X-User-ID", member)
 	testutil.Call(t, testHandler.UpdateProjectPlanningTimezone, r).Want(403)
-	out = call(map[string]any{"planning_timezone": nil}, 200)
-	if out.Configured || out.EffectiveTimezone != "UTC" {
+	out := call(map[string]any{"planning_timezone": nil}, 200)
+	if out.Configured || out.EffectiveTimezone != "Asia/Shanghai" || out.PlanningTimezone != nil {
 		t.Fatalf("clear: %+v", out)
+	}
+	assertIterationSettings("Asia/Shanghai", false)
+	var cleared pgtype.Text
+	dbfx.QueryRow(t, "SELECT planning_timezone FROM workspace WHERE id=$1", testWorkspaceID).Scan(&cleared)
+	if cleared.Valid {
+		t.Fatalf("clearing persisted a configured timezone: %+v", cleared)
 	}
 }
 

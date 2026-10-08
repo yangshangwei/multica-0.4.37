@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { setApiInstance } from "@multica/core/api";
 import type { ApiClient } from "@multica/core/api/client";
 import type { Project } from "@multica/core/types";
+import type { SupportedLocale } from "@multica/core/i18n";
 import { useProjectAccessStore } from "@multica/core/projects";
 import { p1Project, p1Overview } from "@multica/core/projects/test-fixtures/p1";
 import { renderWithI18n } from "../../test/i18n";
@@ -13,7 +14,7 @@ const project: Project = { ...p1Project, status: "in_progress", priority: "mediu
 let qc: QueryClient;
 beforeEach(() => { qc = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } }); useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} }); });
 afterEach(() => { qc.clear(); vi.useRealTimers(); vi.restoreAllMocks(); });
-function render() { return renderWithI18n(<QueryClientProvider client={qc}><ProjectOverviewPanel project={project} canEditTimezone={false} updatesSupported={false} onRisk={vi.fn()} onProtectedError={vi.fn()} /></QueryClientProvider>); }
+function render({ locale = "en" }: { locale?: SupportedLocale } = {}) { return renderWithI18n(<QueryClientProvider client={qc}><ProjectOverviewPanel project={project} updatesSupported={false} onRisk={vi.fn()} onProtectedError={vi.fn()} /></QueryClientProvider>, { locale }); }
 function overviewOn(day: string) { return { ...p1Overview, statistics: { ...p1Overview.statistics, reference_date: day, calculated_at: `${day}T00:00:30Z` } }; }
 it("G2 the mounted minute timer and focus recovery refresh real Query data across planning days", async () => {
   vi.useFakeTimers({ toFake: ["Date", "setInterval", "clearInterval"] });
@@ -34,4 +35,13 @@ it.each([{ completed: 10, cancelled: 0 }, { completed: 0, cancelled: 10 }])("G3 
   render(); await screen.findByText("100%");
   await waitFor(() => expect(screen.getAllByText("No acceptance recorded")).toHaveLength(2));
   expect(screen.queryByText("Passed", { exact: true })).not.toBeInTheDocument();
+});
+it.each(["en", "zh-Hans"] as const)("keeps planning timezone configuration out of the %s overview", async (locale) => {
+  setApiInstance({ getProjectOverview: vi.fn().mockResolvedValue({ ...p1Overview,
+    statistics: { ...p1Overview.statistics, timezone: "Asia/Shanghai", timezone_configured: false } }) } as unknown as ApiClient);
+  render({ locale });
+  await screen.findByText(/Reference date|基准日/);
+  expect(screen.queryByText(/Asia\/Shanghai/)).not.toBeInTheDocument();
+  expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: /Planning timezone|规划时区/ })).not.toBeInTheDocument();
 });

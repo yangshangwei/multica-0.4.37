@@ -51,7 +51,7 @@ Concurrent description edits return a version conflict. Compare the local draft 
 
 **Overview** separates completion, cancellation, open work and scope closure. Blocked, overdue, unassigned and in-review cards open the precise project risk set without inheriting personal saved-view filters. A task may appear in several risk cards but counts once in their union.
 
-Only unfinished issues due before the planning date are overdue. Workspace owners and admins set the shared planning timezone; unconfigured workspaces explicitly use UTC. Pausing a project does not freeze dates, and timezone changes do not rewrite published snapshots.
+Only unfinished issues due before the planning date are overdue. Workspace owners and admins set the shared planning timezone in **Settings → Workspace → General → Planning timezone**. Unconfigured workspaces default to `Asia/Shanghai`; clearing the setting restores this default, while explicitly configured timezones are preserved. New iterations use this timezone by default. Pausing a project does not freeze dates, and timezone changes do not rewrite existing iteration timezones or published snapshots.
 
 An offline but valid agent is still assigned; environment availability is a separate signal. Unknown states or missing data cannot produce a healthy conclusion. Failed refreshes mark retained values stale. An in-progress project without a new update for seven calendar days needs attention; correcting an old update does not reset that clock.
 
