@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { CalendarRange } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, isIterationAccessDenied } from "@multica/core/api";
 import {
@@ -16,6 +17,12 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@multica/ui/components/ui/dialog";
 import { IssuePickerModal } from "../modals/issue-picker-modal";
+import {
+  PropertyPicker,
+  PickerItem,
+  PickerEmpty,
+} from "../issues/components/pickers/property-picker";
+import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import { useIterationLabels } from "./labels";
 import { IterationError } from "./iteration-error";
 import { useT } from "../i18n";
@@ -310,28 +317,100 @@ export function IterationCandidate({
   wsId,
   value,
   onChange,
+  triggerRender,
 }: {
   wsId: string;
   value?: string | null;
   onChange: (id: string | null, revision?: number) => void;
+  triggerRender?: React.ReactElement;
 }) {
+  const { t } = useT("projects");
+  const [open, setOpen] = useState(false);
+  const [filter, setFilter] = useState("");
   const capability = useQuery(iterationCapabilitiesOptions(wsId));
   const list = useQuery({
     ...iterationChoicesOptions(wsId),
     enabled: capability.data?.enabled === true,
   });
   if (capability.data?.enabled !== true) return null;
+
+  function select(id: string | null) {
+    onChange(id, list.data?.find((item) => item.id === id)?.revision);
+    setOpen(false);
+  }
+
+  if (!triggerRender) {
+    return (
+      <IterationSelect
+        value={value ?? ""}
+        onChange={(id) => select(id || null)}
+        items={list.data ?? []}
+      />
+    );
+  }
+
+  const current = list.data?.find((item) => item.id === value);
+  const label = current?.name ?? t(($) => value ? $.iterations.noSelection : $.iterations.noIteration);
+  const triggerLabel = `${t(($) => $.iterations.title)}: ${label}`;
+  const query = filter.trim().toLowerCase();
+  const filtered = (list.data ?? []).filter(
+    (item) => item.name.toLowerCase().includes(query) || matchesPinyin(item.name, query),
+  );
+
   return (
-    <IterationSelect
-      value={value ?? ""}
-      onChange={(id) =>
-        onChange(
-          id || null,
-          list.data?.find((item) => item.id === id)?.revision,
-        )
-      }
-      items={list.data ?? []}
-    />
+    <div className="inline-flex min-w-0">
+      <PropertyPicker
+        open={open}
+        onOpenChange={setOpen}
+        triggerRender={triggerRender}
+        trigger={
+          <>
+            <CalendarRange className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
+            <span className="sr-only">{triggerLabel}</span>
+            <span className="truncate" aria-hidden>{label}</span>
+          </>
+        }
+        tooltip={triggerLabel}
+        width="w-64"
+        align="start"
+        searchable
+        searchPlaceholder={t(($) => $.iterations.search)}
+        onSearchChange={setFilter}
+        navigationResetKey={JSON.stringify([wsId, filtered.map((item) => [item.id, item.revision])])}
+      >
+        <PickerItem emptyValue selected={!value} onClick={() => select(null)}>
+          <CalendarRange className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
+          <span className="truncate text-muted-foreground">{t(($) => $.iterations.noIteration)}</span>
+        </PickerItem>
+        {list.isPending ? (
+          <p role="status" className="px-2 py-3 text-body text-muted-foreground">
+            {t(($) => $.iterations.loading)}
+          </p>
+        ) : list.error ? (
+          <div className="space-y-2 px-2 py-3 text-body">
+            <IterationError error={list.error} />
+            <Button variant="outline" size="sm" onClick={() => void list.refetch()} disabled={list.isFetching}>
+              {t(($) => $.iterations.retry)}
+            </Button>
+          </div>
+        ) : (
+          <>
+            {filtered.map((item) => (
+              <PickerItem
+                key={item.id}
+                selected={item.id === value}
+                onClick={() => select(item.id)}
+                tooltip={item.name}
+              >
+                <CalendarRange className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
+                <span className="truncate">{item.name}</span>
+              </PickerItem>
+            ))}
+            {filtered.length === 0 && <PickerEmpty />}
+          </>
+        )}
+      </PropertyPicker>
+    </div>
   );
 }
 

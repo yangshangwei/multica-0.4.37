@@ -1079,7 +1079,7 @@ export function ManualCreatePanel({
                 />
               )}
 
-              <IterationCandidate wsId={wsId} value={iterationSelection.id} onChange={(id, revision) => setIterationSelection({ id, revision })} />
+              <IterationCandidate wsId={wsId} value={iterationSelection.id} triggerRender={<PillButton />} onChange={(id, revision) => setIterationSelection({ id, revision })} />
               {iterationSelection.id && draftStatusCategory(status) === "done" && <label className="flex items-center gap-2"><input type="checkbox" checked={allowCompletedIteration} onChange={event => setAllowCompletedIteration(event.target.checked)} />{tProjects($ => $.iterations.allowCompleted)}</label>}
               {/* Project */}
               {showField.project && (
