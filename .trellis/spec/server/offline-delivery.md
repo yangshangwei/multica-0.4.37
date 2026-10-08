@@ -53,6 +53,23 @@ runtime config. For running containers, inspect `ImageManifestDescriptor` and
 confirm `docker exec <container> uname -m`; do not equate an OCI index digest
 with a config digest or treat host-default inspection as runtime proof.
 
+If an emulated frontend build exhausts V8's heap, keep the adjustment confined
+to the build RUN, for example
+`RUN NODE_OPTIONS=--max-old-space-size=4096 pnpm --filter @multica/web build`.
+Record any copied Dockerfile/build-overlay hashes; do not imply the recipe was
+byte-identical. Verify the final runtime image has no added `NODE_OPTIONS`.
+After any rebuild, refresh binary hashes and module inspection against the final
+saved/loaded image, then compare them with the running container. An earlier
+successful inspection can reference obsolete binaries when a retry changes DATE.
+
+Before creating an immutable release tag, wait for the frozen commit's current
+main CI, including the live vulnerability gate. An older clean scan does not
+cover subsequently published advisories. A dependency fix changes both server
+and bundled CLI artifacts: rebuild them, repeat native acceptance, and inspect
+the actual binaries with `go version -m` for the fixed module version. Distinguish
+scanner symbol reachability from a demonstrated exploitable application path;
+neither ambiguity nor earlier acceptance justifies bypassing the release gate.
+
 ## Good / base / bad cases
 
 - Base: plain deployment installs the new main Compose and retains its secrets.

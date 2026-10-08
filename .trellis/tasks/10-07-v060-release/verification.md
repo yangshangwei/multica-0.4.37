@@ -1,4 +1,63 @@
-# v0.6.0 verification ledger (local packages complete; release pending)
+# v0.6.1 verification ledger — published and verified
+
+Release: https://github.com/yangshangwei/multica-0.4.37/releases/tag/v0.6.1
+
+The user selected v0.6.1 after the live security gate found GO-2026-6629 in the
+old v0.6.0 candidate. The original v0.6.0 tag remains at
+`082723894306372ec1dd46ea6c08934468681e7d`. The new stable tag and published
+release use `501f4b55f1675e59e46b86d094131d44bff1efd8`, with x/text v0.41.0 and
+the corrected Windows candidate-version test. The security fix is also merged
+into the active development branch; its committed application trees match the
+release source exactly.
+
+## Final v0.6.1 delivery
+
+- Full main CI `37704376562`, canonical release CI `37709633747`, and fresh
+  Windows native acceptance `37709646248`: **success**. No vulnerability bypass.
+- Linux: **9 archive checks and 16 actual v0.5.5 → v0.6.1 upgrade checks passed**.
+  Original accounts/sessions, workspace/project/task data, upload, configuration,
+  overlays and volumes remain usable; migrations and health pass. The original
+  v0.5.5 database backup was restored into a separate rehearsal environment.
+- Windows: newly built v0.6.1 installer passed native installation, retained
+  business-state upgrade and installed automatic update from `0.5.2-rc.11.1`.
+  Downloaded installer bytes match the native report; original update metadata
+  and blockmap are published unchanged.
+- Actual Linux API/CLI and extracted Windows CLI contain **x/text v0.41.0**.
+  Final Linux saved-image, extracted-binary and running-container digests match;
+  the proof was refreshed after the last build retry.
+- Exact successful CI changelog is embedded, bundled, installed and published.
+  Feed SHA-256: `a5a26484daf3246dbaef9fc69ebc8503bca3273b076e27469f1f5c4446ee5c7e`.
+- All **22 published assets** were downloaded and independently checked against
+  staged bytes and GitHub SHA-256 digests. The original manifest has 19 entries;
+  the additive provenance clarification has its own checksum sidecar.
+- The clarification corrects one historical E2E baseline label: baseline is
+  `8ae60f71b21685d87a8a2e706d7c2de964615050`, accepted pre-fix source is
+  `082723894306372ec1dd46ea6c08934468681e7d`. Git confirms identical application
+  and E2E trees between them. Installer hashes and prior immutable assets were
+  not changed by the clarification.
+
+| Final artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `multica-server-upgrade-v0.6.1-linux-amd64.tar.gz` | 295440970 | `05b0f1705cae069ad9cabdcd6512cbfa48b6460ce097eb698943a88622dccd92` |
+| `multica-desktop-0.6.1-windows-x64.exe` | 178294871 | `23afe03d3d677153a6c953ba69848ef231935804a166150fd9c133d08c34ec9e` |
+| `multica-v0.6.1-upgrade-docs.zip` | See asset metadata | `4a2b6ef6bad43b0a15e97c80789c2980b662d96d02074c90fd58cea2783ae0b5` |
+
+Final evidence: `.artifacts/v0.6.1/{linux-package-verification.json,
+windows-package-verification.json,release-review.json}` and
+`release-publication/final-download-verification.json`. Clean handoff is
+`.artifacts/v0.6.1/delivery/`; actual downloaded copies are in
+`download-verification/`. Private rehearsal backups remain outside both.
+
+Linux uses amd64 containers on an ARM Mac, not native Linux hardware. The
+frontend needed a recorded builder-only 4 GiB heap override; source and runtime
+environment were unchanged. Source authentication guides remain exact, with
+`VERSION-NOTES.zh-CN.md` explaining v0.6.1 names. Windows is unsigned, business
+acceptance uses a synthetic provider, and automatic update proved full-download
+fallback, not differential updates. Production rollback was not performed.
+
+The following sections retain the earlier local v0.6.0 stage as historical
+evidence. Those old binaries do not contain the security fix and were not
+published as the final release.
 
 Repository: yangshangwei/multica-0.4.37. Branch: codex/projects-p1.
 Local evidence root: `.artifacts/v0.6.0/` (ignored; private fixture credentials
@@ -86,11 +145,8 @@ hardware. Backup creation was verified; database restore/production rollback was
 not performed. Prior full lint/typecheck/test/E2E evidence remains reused because
 application and packaging source were unchanged.
 
-## Still required for GitHub publication
+## Completion
 
-The requested local packages are complete. The broader release task remains open:
-no v0.6.0 tag or GitHub Release was created. This local bundle deliberately uses
-an `Unreleased` entry at the frozen commit while preserving published history.
-Formal publication must follow the canonical tag/CI changelog procedure and use
-its exact changelog bytes in a freshly verified Linux bundle. Keep the accepted
-Windows installer bytes unchanged.
+The local v0.6.0 stage was superseded by the user-approved v0.6.1 security release
+above. Formal publication and complete asset download verification are finished;
+no release work remains pending in this task.

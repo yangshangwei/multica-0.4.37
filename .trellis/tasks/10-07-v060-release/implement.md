@@ -27,3 +27,35 @@ Verify the Linux archive and rehearse v0.5.5 → v0.6.0 in the retained disposab
 amd64 Docker environment. Recheck downloaded Windows artifact hashes against
 native acceptance evidence and update metadata. Deliver a checksum manifest and
 a concise local handoff record with the actual verification limits.
+
+## 2026-10-08 formal publication continuation
+
+The user now explicitly requests GitHub Release publication. Retain the accepted
+source and Windows bytes. Fast-forward the fork's `main` to the frozen accepted
+commit, create v0.6.0 there, and push the tag to run the canonical release workflow.
+Download its exact `release-changelog` artifact for a separate formal Linux build
+and upgrade rehearsal. Preserve the prior local delivery unchanged. After CI and
+artifact checks pass, upload verified installers, documentation and checksum
+evidence to the fork's Release, with Windows update metadata uploaded last.
+Download the published files to recheck their bytes before closing the task.
+
+### New security gate after publication was requested
+
+Release CI `37702847716` failed before changelog generation or publication.
+The live advisory `GO-2026-6629` reports reachable `golang.org/x/text v0.40.0`
+(`secure/precis`) and fixes it in v0.41.0. The old binary acceptance does not
+authorize publishing that vulnerable dependency. Patch only the existing Go
+dependency and reuse the already validated Windows candidate contract-test fix
+from `7de86ce8e` in an isolated worktree. Re-run security/tests and Windows native
+acceptance, then the canonical release and Linux upgrade checks on the new SHA.
+The user is choosing a new patch release versus explicitly replacing the newly
+created, never-published v0.6.0 tag. Do not move a tag or infer this decision from
+elapsed time. Preserve prior artifacts as historical evidence, not publishable
+replacement binaries.
+
+The user selected v0.6.1. The old v0.6.0 tag remains at `082723894`; v0.6.1
+points to fixed commit `501f4b55f1675e59e46b86d094131d44bff1efd8`. Main CI
+`37704376562` completed successfully. New release run: `37709633747`; new native
+Windows acceptance: `37709646248`. All final outputs belong under
+`.artifacts/v0.6.1/`. Preserve source-guide bytes and include version-specific
+instructions explaining the older v0.6.0 filename examples where necessary.
