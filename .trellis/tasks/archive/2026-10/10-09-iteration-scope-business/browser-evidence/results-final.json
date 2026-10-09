@@ -1,0 +1,459 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "iteration-scope-business-desktop.spec.ts",
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "ISB Electron en: planned scope, exact change details, retained filters and frozen history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8302,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:33:27.920Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/planned-en-wide-5e3d537d4305f0ee1d82ae0d6dded5a2c5645c32.png"
+                    },
+                    {
+                      "name": "scope-added-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-added-en-wide-a589afb1fb19b43ebfb194f85dcf51ccfbaeca68.png"
+                    },
+                    {
+                      "name": "technical-audit-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/technical-audit-en-wide-779d7cc2ef37f02065e41a773dc091bdd55d5268.png"
+                    },
+                    {
+                      "name": "scope-metric-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-metric-en-narrow-fb9444ee9146224aa15af34a51f8d379da520f4d.png"
+                    },
+                    {
+                      "name": "scope-empty-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-empty-en-narrow-e7f81bbac57f71957e2014f908828bca195098e0.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/frozen-current-separation-en-wide-09c7a34a66d2180d8613eb3ae65697672d71e1c3.png"
+                    },
+                    {
+                      "name": "frozen-historical-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/frozen-historical-en-narrow-37ba0377b6f97fcef09bff6d9006e9b9ef862a72.png"
+                    },
+                    {
+                      "name": "frozen-current-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/frozen-current-en-narrow-6491cca1e78d38c66c6efc7083c7d95b609eb65a.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/rendered-metrics-35d63bc57986cac4d25d285d2ad114c5a5623c14.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0f725ce676e45196fd22-84260a4118aca5889c84",
+          "file": "iteration-scope-business-desktop.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Electron zh-Hans: planned scope, exact change details, retained filters and frozen history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7888,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:33:36.229Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/planned-zh-Hans-wide-a8d68115a0d774367dbdb3efbeb7843f7b791906.png"
+                    },
+                    {
+                      "name": "scope-added-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-added-zh-Hans-wide-c4c144aa904865b5abb4da503a79ab73518da9a7.png"
+                    },
+                    {
+                      "name": "technical-audit-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/technical-audit-zh-Hans-wide-3477c92b15140ce3b67d42f1d7580f8efedc33b9.png"
+                    },
+                    {
+                      "name": "scope-metric-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-metric-zh-Hans-narrow-6576bee6a97cb6b6e175c31430e4119dcca36d13.png"
+                    },
+                    {
+                      "name": "scope-empty-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-empty-zh-Hans-narrow-08dec750b9931f8b5ef573c241f06055896c291c.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/frozen-current-separation-zh-Hans-wide-8302f42991c71c9a90d1eb80580efb861eba799d.png"
+                    },
+                    {
+                      "name": "frozen-historical-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/frozen-historical-zh-Hans-narrow-d3a0fc4d53b06a45686e1c5ac01b2615f601d0d1.png"
+                    },
+                    {
+                      "name": "frozen-current-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/frozen-current-zh-Hans-narrow-495c6d8e1188ce0b5d9818bcec4050731bb290f2.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/rendered-metrics-e563f652359245f45716bf06c2a71c7f731e4c4d.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0f725ce676e45196fd22-63a5692adf71c3950e7f",
+          "file": "iteration-scope-business-desktop.spec.ts",
+          "line": 8,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "iteration-scope-business.spec.ts",
+      "file": "iteration-scope-business.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "ISB Web en: planned scope, exact change details, retained filters and frozen history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6877,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:33:44.127Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/planned-en-wide-2ed3a0efbc549486ee81124a4f5bb01574593870.png"
+                    },
+                    {
+                      "name": "scope-added-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-added-en-wide-16150fc55379d006c21735c908908ed363494d1f.png"
+                    },
+                    {
+                      "name": "technical-audit-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/technical-audit-en-wide-41306da7ba9cd1bf6aee7d3937520e017af579fd.png"
+                    },
+                    {
+                      "name": "scope-metric-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-metric-en-narrow-929e17cc3af0756179da40e3dd15a40351653274.png"
+                    },
+                    {
+                      "name": "scope-empty-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-empty-en-narrow-530fa1b382a242d99f021760143641224c9c094a.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-current-separation-en-wide-e70df25d85ee0c51ce4f50cfe2f899eabcdac595.png"
+                    },
+                    {
+                      "name": "frozen-historical-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-historical-en-narrow-92e79739bd7e4da0206577fcb16f7830c541488c.png"
+                    },
+                    {
+                      "name": "frozen-current-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-current-en-narrow-eb7952f7a2b868805756e4e62e06c2fd25831a3d.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/rendered-metrics-47bd8876e573c3b296428d13482ab3191c6628c6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-1dca83814f65dea3645d",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Web zh-Hans: planned scope, exact change details, retained filters and frozen history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7805,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:33:51.576Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/planned-zh-Hans-wide-ebc2d154600c55308ddd57d052538f1e14a1e6cd.png"
+                    },
+                    {
+                      "name": "scope-added-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-added-zh-Hans-wide-e0b5d34555e17fd7a64cf5ace42fa6be8b0206f8.png"
+                    },
+                    {
+                      "name": "technical-audit-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/technical-audit-zh-Hans-wide-7391bf52034c65767aa8822a6a50032a336708d0.png"
+                    },
+                    {
+                      "name": "scope-metric-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-metric-zh-Hans-narrow-db19572b3c3a1be1a5b52aa4a8226f0ceee5d085.png"
+                    },
+                    {
+                      "name": "scope-empty-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-empty-zh-Hans-narrow-972dc684444329ce56ad8af0c0ab2a0c73b4d7ec.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-current-separation-zh-Hans-wide-83d863aa12b21ac0002d8ce195d24f6d15f2d73a.png"
+                    },
+                    {
+                      "name": "frozen-historical-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-historical-zh-Hans-narrow-d31065a6e4bbcf269a9dabd0bf9169b2394b3258.png"
+                    },
+                    {
+                      "name": "frozen-current-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-current-zh-Hans-narrow-41e8b5a10da742945641c08aedea6332c546a7ec.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/rendered-metrics-e80781a485647f0998fddaad6f01acc2d89eefe1.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-f6710974d6b75822a599",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Web: empty planning history and cancellation before versus after a real empty start",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2539,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:33:59.390Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "empty-plan-adjustments",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/empty-plan-adjustments-07a8cf120600d1d76dfeb31c2b74ef07e7052f87.png"
+                    },
+                    {
+                      "name": "cancelled-before-start-history",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/cancelled-before-start-history-51e83fbcce9409b69bbfc32c9e431d2c3743652e.png"
+                    },
+                    {
+                      "name": "empty-started-then-cancelled",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/empty-started-then-cancelled-94b3bd79319f176898761598d78e4d2e15f2d6e7.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-confirmation/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/rendered-metrics-6632debd83437bd2b73262534316f36aa1520aea.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-63282714c5339a533979",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-09T17:33:27.337Z",
+    "duration": 34656.175,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

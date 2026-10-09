@@ -1,0 +1,18 @@
+fix(iterations): make scope changes reflect the actual commitment
+
+Planned membership was presented as post-start scope growth, and members could
+not follow the aggregate counts to the tasks or events behind them. Explain
+the lifecycle phase, preserve authoritative counters, and provide inline
+evidence with recorded scope impacts and explicit historical/current links.
+
+Use the existing complete protected reads and frozen snapshots. Keep task
+refinements local to the scope panel and preserve the main task list context.
+
+Constraint: Task counts describe scope rather than effort or capacity
+Rejected: Recompute service statistics in the client | duplicates business rules and can rewrite history
+Rejected: Reuse and overwrite the main task filters | loses the member's browsing context
+Confidence: high
+Scope-risk: moderate
+Directive: Preserve start-sequence boundaries, snapshot-only reads, and distinct task/event units
+Tested: 10564 unit tests across core/views/web/desktop; 11 lint/typecheck tasks; 5 real-API production Web/Electron scenarios; visual review 94/100; UI detector empty
+Not-tested: Windows/Linux packaged desktop and live deployment

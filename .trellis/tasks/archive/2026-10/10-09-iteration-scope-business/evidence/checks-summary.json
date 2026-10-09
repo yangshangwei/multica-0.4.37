@@ -1,0 +1,53 @@
+{
+  "implementation_commit": "6d3bf906d9639924e2d6493b3349e0d98bfafb7d",
+  "scope": "isolated base 06d91b0eb plus this task's explicit file allowlist",
+  "unit_tests": {
+    "core": {
+      "files_passed": 235,
+      "tests_passed": 2918
+    },
+    "views": {
+      "files_passed": 528,
+      "tests_passed": 6394
+    },
+    "desktop": {
+      "files_passed": 86,
+      "tests_passed": 970
+    },
+    "web": {
+      "files_passed": 36,
+      "tests_passed": 282
+    }
+  },
+  "total_tests_passed": 10564,
+  "total_files_passed": 885,
+  "lint_typecheck_tasks_passed": 11,
+  "cached_tasks": 0,
+  "production_browser_tests": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "retries": 0,
+    "web": 3,
+    "electron": 2
+  },
+  "visual_verdict": {
+    "score": 94,
+    "verdict": "pass"
+  },
+  "ui_detector_findings": 0,
+  "raw_log_sha256": {
+    "isolated-tests.log": "beeb1a42d7df5007d588003871617182faae8001b6b2f48f62309624e3738ffc",
+    "isolated-static.log": "a459cf12980c01bed73b0ada91eef731333e5207a916303c89bf1ccbc3bf82ce",
+    "e2e-final.log": "7a8ee55540d5c852cd7e1dffbd243edc1fcfc04915836bdf7255d16570ffb279",
+    "e2e-fixture-typecheck.log": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+    "web-build.log": "c4c777aac39b4080418da968b913c9600f860272c296340896f8bf0f9cdf186f",
+    "desktop-build.log": "3098b73afe807ed608d52752cfc9bda4338a8104a018ea7489c50e7c35aa019f"
+  },
+  "limitations": [
+    "No Windows/Linux packaged native verification",
+    "No live deployment",
+    "Backend unchanged; full Go unit/race suites not rerun"
+  ]
+}

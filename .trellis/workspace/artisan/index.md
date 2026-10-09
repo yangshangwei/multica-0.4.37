@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 50
-- **Last Active**: 2026-10-09
+- **Total Sessions**: 51
+- **Last Active**: 2026-10-10
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1633 | Active |
+| `journal-1.md` | ~1665 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 51 | 2026-10-10 | 迭代范围变化：业务口径、明细与验证 | `6d3bf906d9639924e2d6493b3349e0d98bfafb7d` | `codex/projects-p1` |
 | 50 | 2026-10-09 | Close iteration audit after production visual verification | `e93a758fe3ec7bd9acdbf7ec891fb940fa9255a0` | `codex/projects-p1` |
 | 49 | 2026-10-09 | 迭代进展与范围变化 UI 实现及验证 | - | `codex/projects-p1` |
 | 48 | 2026-10-08 | Publish verified v0.6.1 security release | `501f4b55f`, `2d95b3ff2`, `6ad25facc` | `codex/projects-p1` |

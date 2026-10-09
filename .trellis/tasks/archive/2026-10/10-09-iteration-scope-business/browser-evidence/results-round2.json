@@ -1,0 +1,585 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "iteration-scope-business-desktop.spec.ts",
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "ISB Electron en: planned scope, exact change details, retained filters and frozen history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11623,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"/p1-d041e688-9c7/issues/\u001b[7m01a121b4-b0f2-7301-95f0-44cf464651ec\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"/p1-d041e688-9c7/issues/\u001b[7mP1D0-3\u001b[27m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"/p1-d041e688-9c7/issues/\u001b[7m01a121b4-b0f2-7301-95f0-44cf464651ec\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"/p1-d041e688-9c7/issues/\u001b[7mP1D0-3\u001b[27m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:149:5)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:374:5)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                      "column": 5,
+                      "line": 149
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/iteration-scope-business.ts:149\n\n  147 |   if (native) {\n  148 |     // The renderer's URL never changes: Desktop owns session paths in its memory router.\n> 149 |     await expect.poll(() => page.evaluate(() => {\n      |     ^\n  150 |       const raw = localStorage.getItem(\"multica_tabs\");\n  151 |       if (!raw) return null;\n  152 |       const { state }: { state: { activeWorkspaceSlug: string; byWorkspace: Record<string, { activeTabId: string; tabs: { id: string; url: string }[] }> } } = JSON.parse(raw);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                        "column": 5,
+                        "line": 149
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"/p1-d041e688-9c7/issues/\u001b[7m01a121b4-b0f2-7301-95f0-44cf464651ec\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"/p1-d041e688-9c7/issues/\u001b[7mP1D0-3\u001b[27m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n   at fixtures/iteration-scope-business.ts:149\n\n  147 |   if (native) {\n  148 |     // The renderer's URL never changes: Desktop owns session paths in its memory router.\n> 149 |     await expect.poll(() => page.evaluate(() => {\n      |     ^\n  150 |       const raw = localStorage.getItem(\"multica_tabs\");\n  151 |       if (!raw) return null;\n  152 |       const { state }: { state: { activeWorkspaceSlug: string; byWorkspace: Record<string, { activeTabId: string; tabs: { id: string; url: string }[] }> } } = JSON.parse(raw);\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:149:5)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:374:5)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:27:30.458Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/planned-en-wide-d43567c7672935a6f1e3164727a79f83dedca172.png"
+                    },
+                    {
+                      "name": "scope-added-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-added-en-wide-d67539504d14f2b331e9617bc175f8ad2908deaf.png"
+                    },
+                    {
+                      "name": "technical-audit-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/technical-audit-en-wide-f335877b9bb7a2820c6c90058cc041b9c2a671af.png"
+                    },
+                    {
+                      "name": "scope-metric-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-metric-en-narrow-ec1c1f10cce86debd9e7b1023271e8b236326c0b.png"
+                    },
+                    {
+                      "name": "scope-empty-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-empty-en-narrow-63cd807f1aaa4574ed184b37bdb0a147505d2113.png"
+                    },
+                    {
+                      "name": "page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "failure-state",
+                      "contentType": "text/plain",
+                      "body": "aHR0cDovLzEyNy4wLjAuMTo1Njg2NS8KVG9nZ2xlIGxlZnQgc2lkZWJhcgpQClAxIGJyb3dzZXIgYWNjZXB0YW5jZQpTZWFyY2guLi4KSwpOZXcgSXNzdWUKQwpJbmJveApNeSBJc3N1ZXMKQ2hhdApXb3JrCldvcmtzcGFjZSBpc3N1ZXMKUHJvamVjdHMKSXRlcmF0aW9ucwpBSSBUZWFtCkFnZW50cwpTcXVhZHMKQXV0b3BpbG90ClJlc291cmNlcyAmIGNvbm5lY3Rpb25zClNraWxscwpNQ1AKUnVudGltZXMKQW5hbHl0aWNzClNldHRpbmdzClAxRDAtMzogU2NvcGUgaW5zZXJ0ZWQgQwpQMUQwLTMgU2NvcGUgaW5zZXJ0ZWQgQwpTY29wZSBpbnNlcnRlZCBDCgoKCgpBZGQgc3ViLWlzc3VlcwpBY3Rpdml0eQpVbnN1YnNjcmliZQpQUAoyIGFjdGl2aXRpZXMKUFAKUDEgcHJvamVjdCBvd25lcgpjcmVhdGVkIHRoaXMgaXNzdWUKanVzdCBub3cKUDEgcHJvamVjdCBvd25lcgpjaGFuZ2VkIHN0YXR1cyBmcm9tIENhbmNlbGxlZCB0byBUb2RvCsOXMgpqdXN0IG5vdwoKTGVhdmUgYSBjb21tZW50Li4uCgpQcm9wZXJ0aWVzClN0YXR1cwpUb2RvCkFzc2lnbmVlClVuYXNzaWduZWQKUHJvamVjdApObyBwcm9qZWN0CkN1cnJlbnQgaXRlcmF0aW9uCk5vIGN1cnJlbnQgaXRlcmF0aW9uCgpSb2xsb3ZlciBjb3VudDogMAoKQXNzaWduIHRvIGl0ZXJhdGlvbgpJdGVyYXRpb24gcGFydGljaXBhdGlvbiBoaXN0b3J5CkFkZCBwcm9wZXJ0eQpQdWxsIHJlcXVlc3RzCgpObyBsaW5rZWQgcHVsbCByZXF1ZXN0cyB5ZXQuIFJlZmVyZW5jZSB0aGlzIGlzc3VlJ3MgaWRlbnRpZmllciBpbiBhIFBSJ3MgYnJhbmNoIG5hbWUsIHRpdGxlLCBvciBib2R5IHRvIGF1dG8tbGluayBpdC4KCkRldGFpbHMKQ3JlYXRlZCBieQpQUApQMSBwcm9qZWN0IG93bmVyCkNyZWF0ZWQKT2N0IDEwClVwZGF0ZWQKT2N0IDEwCkNoYXQgd2l0aCB5b3VyIGFnZW50cwoKQXNrIGZvciBhIHN1bW1hcnksIHBsYW4geW91ciBkYXksIG9yIGhhbmQgb2ZmIGEgcXVpY2sgdGFzay4KCllvdSBuZWVkIGFuIGFnZW50IHRvIHN0YXJ0IGNoYXR0aW5nLgoKCg=="
+                    },
+                    {
+                      "name": "failure",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/failure-67d5a2bdf5f5f52da102b51a0a9590114553a955.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                    "column": 5,
+                    "line": 149
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0f725ce676e45196fd22-84260a4118aca5889c84",
+          "file": "iteration-scope-business-desktop.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Electron zh-Hans: planned scope, exact change details, retained filters and frozen history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 10917,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"/p1-65e33ee9-28f/issues/\u001b[7m01a121b4-ddfe-7363-b3a9-ea26766a71ca\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"/p1-65e33ee9-28f/issues/\u001b[7mP165-3\u001b[27m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"/p1-65e33ee9-28f/issues/\u001b[7m01a121b4-ddfe-7363-b3a9-ea26766a71ca\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"/p1-65e33ee9-28f/issues/\u001b[7mP165-3\u001b[27m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:149:5)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:374:5)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                      "column": 5,
+                      "line": 149
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/iteration-scope-business.ts:149\n\n  147 |   if (native) {\n  148 |     // The renderer's URL never changes: Desktop owns session paths in its memory router.\n> 149 |     await expect.poll(() => page.evaluate(() => {\n      |     ^\n  150 |       const raw = localStorage.getItem(\"multica_tabs\");\n  151 |       if (!raw) return null;\n  152 |       const { state }: { state: { activeWorkspaceSlug: string; byWorkspace: Record<string, { activeTabId: string; tabs: { id: string; url: string }[] }> } } = JSON.parse(raw);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                        "column": 5,
+                        "line": 149
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"/p1-65e33ee9-28f/issues/\u001b[7m01a121b4-ddfe-7363-b3a9-ea26766a71ca\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"/p1-65e33ee9-28f/issues/\u001b[7mP165-3\u001b[27m\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n   at fixtures/iteration-scope-business.ts:149\n\n  147 |   if (native) {\n  148 |     // The renderer's URL never changes: Desktop owns session paths in its memory router.\n> 149 |     await expect.poll(() => page.evaluate(() => {\n      |     ^\n  150 |       const raw = localStorage.getItem(\"multica_tabs\");\n  151 |       if (!raw) return null;\n  152 |       const { state }: { state: { activeWorkspaceSlug: string; byWorkspace: Record<string, { activeTabId: string; tabs: { id: string; url: string }[] }> } } = JSON.parse(raw);\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:149:5)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:374:5)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:27:42.521Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/planned-zh-Hans-wide-41929f6fcfe730114cb4c783c2de629a652c307a.png"
+                    },
+                    {
+                      "name": "scope-added-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-added-zh-Hans-wide-997eeff56d2514bcc0551e2b50fc795b388e8b6c.png"
+                    },
+                    {
+                      "name": "technical-audit-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/technical-audit-zh-Hans-wide-63b6ac6dc02edb45642310358c734034d08a5741.png"
+                    },
+                    {
+                      "name": "scope-metric-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-metric-zh-Hans-narrow-a6e0657985420e98a1ebe8b7ec9b1c74f2b13dae.png"
+                    },
+                    {
+                      "name": "scope-empty-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-empty-zh-Hans-narrow-50670958399b54be8653ee05ecc271de08940886.png"
+                    },
+                    {
+                      "name": "page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "failure-state",
+                      "contentType": "text/plain",
+                      "body": "aHR0cDovLzEyNy4wLjAuMTo1NjkzNS8K5YiH5o2i5bem5L6n6L655qCPClAKUDEgYnJvd3NlciBhY2NlcHRhbmNlCuaQnOe0oi4uLgpLCuaWsOW7uuS7u+WKoQpDCuaUtuS7tueusQrmiJHnmoTku7vliqEK6IGK5aSpCuW3peS9nArku7vliqEK6aG555uuCui/reS7owpBSSDlm6LpmJ8K5pm66IO95L2TCkFJ5bCP6ZifCuiHquWKqOWMlgrotYTmupDkuI7ov57mjqUK5oqA6IO95bqTCk1DUArov5DooYzml7YK57uf6K6hCuiuvue9rgpQMTY1LTM6IOS4tOaXtuWKoOWFpeS7u+WKoSBDClAxNjUtMyDkuLTml7bliqDlhaXku7vliqEgQwrkuLTml7bliqDlhaXku7vliqEgQwoKCgoK5re75Yqg5a2Q5Lu75YqhCuWKqOaAgQrlj5bmtojorqLpmIUKUFAKMiDmnaHliqjmgIEKUFAKUDEgcHJvamVjdCBvd25lcgrliJvlu7rkuobov5nkuKrku7vliqEK5Yia5YiaClAxIHByb2plY3Qgb3duZXIK54q25oCB5LuOIOW3suWPlua2iCDmlLnkuLog5b6F5YqeCsOXMgrliJrliJoKCueVmeS4i+ivhOiuui4uLgoK5bGe5oCnCueKtuaAgQrlvoXlip4K6LSf6LSj5Lq6CuacquWIhumFjQrpobnnm64K5peg6aG555uuCuW9k+WJjei/reS7owrml6DlvZPliY3ov63ku6MKCue0r+iuoee7k+i9rDogMAoK5a6J5o6S5Yiw6L+t5LujCui/reS7o+WPguS4juWOhuWPsgrmt7vliqDlrZfmrrUKUHVsbCBSZXF1ZXN0Cgrov5jmsqHmnInlhbPogZTnmoQgUFLjgILlnKggUFIg55qE5YiG5pSv5ZCN44CB5qCH6aKY5oiW5q2j5paH6YeM5byV55So5pys5Lu75Yqh55qEIGlkZW50aWZpZXIg5Y2z5Y+v6Ieq5Yqo5YWz6IGU44CCCgror6bmg4UK5Yib5bu66ICFClBQClAxIHByb2plY3Qgb3duZXIK5Yib5bu65pe26Ze0Ck9jdCAxMArmm7TmlrDml7bpl7QKT2N0IDEwCuWSjOS9oOeahOaZuuiDveS9k+WvueivnQoK6K6p5a6D5YGa5LiA5Lu95oC757uT44CB6KeE5YiS5L2g55qE5LiA5aSp77yM5oiW5Lqk57uZ5a6D5LiA5Liq5bCP5Lu75Yqh44CCCgrpnIDopoHlhYjmnInkuIDkuKrmmbrog73kvZPmiY3og73lvIDlp4vlr7nor53jgIIKCgo="
+                    },
+                    {
+                      "name": "failure",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/failure-e0c3436eec782c3c78580b3d7d9ca417db5c66a0.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                    "column": 5,
+                    "line": 149
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0f725ce676e45196fd22-63a5692adf71c3950e7f",
+          "file": "iteration-scope-business-desktop.spec.ts",
+          "line": 8,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "iteration-scope-business.spec.ts",
+      "file": "iteration-scope-business.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "ISB Web en: planned scope, exact change details, retained filters and frozen history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11260,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/p1-2e63cc49-2e8\\/issues\\/01a121b5-08cc-7b27-b8af-3fae5e92577a(?:[?#]|$)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:13390/p1-2e63cc49-2e8/issues/P12E-1\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    2 × unexpected value \"http://localhost:13390/p1-2e63cc49-2e8/iterations/869599ac-888a-46f2-a3a6-dea8c9fe2e17\"\u001b[22m\n\u001b[2m    7 × unexpected value \"http://localhost:13390/p1-2e63cc49-2e8/issues/P12E-1\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/p1-2e63cc49-2e8\\/issues\\/01a121b5-08cc-7b27-b8af-3fae5e92577a(?:[?#]|$)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:13390/p1-2e63cc49-2e8/issues/P12E-1\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    2 × unexpected value \"http://localhost:13390/p1-2e63cc49-2e8/iterations/869599ac-888a-46f2-a3a6-dea8c9fe2e17\"\u001b[22m\n\u001b[2m    7 × unexpected value \"http://localhost:13390/p1-2e63cc49-2e8/issues/P12E-1\"\u001b[22m\n\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:156:29)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:422:13)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business.spec.ts:11:11",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                      "column": 29,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/iteration-scope-business.ts:156\n\n  154 |       return group?.tabs.find(tab => tab.id === group.activeTabId)?.url ?? null;\n  155 |     })).toBe(path);\n> 156 |   } else await expect(page).toHaveURL(new RegExp(`${escapePattern(path)}(?:[?#]|$)`));\n      |                             ^\n  157 |   await expect(page.getByRole(\"button\", { name: task.title, exact: true })).toBeVisible();\n  158 | }\n  159 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                        "column": 29,
+                        "line": 156
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/p1-2e63cc49-2e8\\/issues\\/01a121b5-08cc-7b27-b8af-3fae5e92577a(?:[?#]|$)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:13390/p1-2e63cc49-2e8/issues/P12E-1\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    2 × unexpected value \"http://localhost:13390/p1-2e63cc49-2e8/iterations/869599ac-888a-46f2-a3a6-dea8c9fe2e17\"\u001b[22m\n\u001b[2m    7 × unexpected value \"http://localhost:13390/p1-2e63cc49-2e8/issues/P12E-1\"\u001b[22m\n\n\n   at fixtures/iteration-scope-business.ts:156\n\n  154 |       return group?.tabs.find(tab => tab.id === group.activeTabId)?.url ?? null;\n  155 |     })).toBe(path);\n> 156 |   } else await expect(page).toHaveURL(new RegExp(`${escapePattern(path)}(?:[?#]|$)`));\n      |                             ^\n  157 |   await expect(page.getByRole(\"button\", { name: task.title, exact: true })).toBeVisible();\n  158 | }\n  159 |\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:156:29)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:422:13)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business.spec.ts:11:11"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:27:53.853Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/planned-en-wide-617e2f93f137eb3792bff157ae47e59fb39e1081.png"
+                    },
+                    {
+                      "name": "scope-added-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-added-en-wide-8f7f206e9328e97c295e823ab4668e905a100a85.png"
+                    },
+                    {
+                      "name": "technical-audit-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/technical-audit-en-wide-ab01d51dfb474fd87e50a7b64cc82806e4ad1603.png"
+                    },
+                    {
+                      "name": "scope-metric-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-metric-en-narrow-a3cbd411ca8041966b51d0ec41012e2c822d576a.png"
+                    },
+                    {
+                      "name": "scope-empty-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-empty-en-narrow-4d7b301b4025c7c14add9cab5655951496bfb438.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-current-separation-en-wide-ae31b2c6695c32bf1fe5ec431b769bccc98ae7e9.png"
+                    },
+                    {
+                      "name": "frozen-historical-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-historical-en-narrow-bd272b8145ba64bb21f70145f5968cca08d1ae01.png"
+                    },
+                    {
+                      "name": "frozen-current-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-current-en-narrow-d69e4dc5d5c1c22df9cdbf42b4c89b42069d63d5.png"
+                    },
+                    {
+                      "name": "page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "failure-state",
+                      "contentType": "text/plain",
+                      "body": "aHR0cDovL2xvY2FsaG9zdDoxMzM5MC9wMS0yZTYzY2M0OS0yZTgvaXNzdWVzL1AxMkUtMQpUb2dnbGUgbGVmdCBzaWRlYmFyClNjb3BlIGV2aWRlbmNlIHByb2plY3QKUDEyRS0xIEN1cnJlbnQgdGl0bGUgYWZ0ZXIgY2xvc3VyZQpDdXJyZW50IHRpdGxlIGFmdGVyIGNsb3N1cmUKCgoKCkFkZCBzdWItaXNzdWVzCkFjdGl2aXR5ClVuc3Vic2NyaWJlClBQCjMgYWN0aXZpdGllcwpQUApQMSBwcm9qZWN0IG93bmVyCmNyZWF0ZWQgdGhpcyBpc3N1ZQpqdXN0IG5vdwpQMSBwcm9qZWN0IG93bmVyCmNoYW5nZWQgc3RhdHVzIGZyb20gVG9kbyB0byBEb25lCmp1c3Qgbm93ClBQClAxIHByb2plY3Qgb3duZXIKcmVuYW1lZCB0aGlzIGlzc3VlIGZyb20gIlNjb3BlIGJhc2VsaW5lIEEg4oCUIFVuYnJva2VuVGl0bGVVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZVVuYnJva2VuVGl0bGVVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZVVuYnJva2VuVGl0bGVVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZVVuYnJva2VuVGl0bGVVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZSIgdG8gIkN1cnJlbnQgdGl0bGUgYWZ0ZXIgY2xvc3VyZSIKanVzdCBub3cKCkxlYXZlIGEgY29tbWVudC4uLgoKQ2hhdCB3aXRoIHlvdXIgYWdlbnRzCgpBc2sgZm9yIGEgc3VtbWFyeSwgcGxhbiB5b3VyIGRheSwgb3IgaGFuZCBvZmYgYSBxdWljayB0YXNrLgoKWW91IG5lZWQgYW4gYWdlbnQgdG8gc3RhcnQgY2hhdHRpbmcuCgoK"
+                    },
+                    {
+                      "name": "failure",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/failure-831fd852fc0d2f8b41c402cbacdeaa5629dee361.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                    "column": 29,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-1dca83814f65dea3645d",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Web zh-Hans: planned scope, exact change details, retained filters and frozen history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11227,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/p1-a0295f5e-d48\\/issues\\/01a121b5-37b8-7ae1-b6a2-989c4607326e(?:[?#]|$)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:13390/p1-a0295f5e-d48/issues/P1A0-1\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    2 × unexpected value \"http://localhost:13390/p1-a0295f5e-d48/iterations/8d2da383-2088-4565-ae0a-92652c8a1c21\"\u001b[22m\n\u001b[2m    7 × unexpected value \"http://localhost:13390/p1-a0295f5e-d48/issues/P1A0-1\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/p1-a0295f5e-d48\\/issues\\/01a121b5-37b8-7ae1-b6a2-989c4607326e(?:[?#]|$)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:13390/p1-a0295f5e-d48/issues/P1A0-1\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    2 × unexpected value \"http://localhost:13390/p1-a0295f5e-d48/iterations/8d2da383-2088-4565-ae0a-92652c8a1c21\"\u001b[22m\n\u001b[2m    7 × unexpected value \"http://localhost:13390/p1-a0295f5e-d48/issues/P1A0-1\"\u001b[22m\n\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:156:29)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:422:13)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business.spec.ts:11:11",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                      "column": 29,
+                      "line": 156
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/iteration-scope-business.ts:156\n\n  154 |       return group?.tabs.find(tab => tab.id === group.activeTabId)?.url ?? null;\n  155 |     })).toBe(path);\n> 156 |   } else await expect(page).toHaveURL(new RegExp(`${escapePattern(path)}(?:[?#]|$)`));\n      |                             ^\n  157 |   await expect(page.getByRole(\"button\", { name: task.title, exact: true })).toBeVisible();\n  158 | }\n  159 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                        "column": 29,
+                        "line": 156
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/p1-a0295f5e-d48\\/issues\\/01a121b5-37b8-7ae1-b6a2-989c4607326e(?:[?#]|$)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:13390/p1-a0295f5e-d48/issues/P1A0-1\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    2 × unexpected value \"http://localhost:13390/p1-a0295f5e-d48/iterations/8d2da383-2088-4565-ae0a-92652c8a1c21\"\u001b[22m\n\u001b[2m    7 × unexpected value \"http://localhost:13390/p1-a0295f5e-d48/issues/P1A0-1\"\u001b[22m\n\n\n   at fixtures/iteration-scope-business.ts:156\n\n  154 |       return group?.tabs.find(tab => tab.id === group.activeTabId)?.url ?? null;\n  155 |     })).toBe(path);\n> 156 |   } else await expect(page).toHaveURL(new RegExp(`${escapePattern(path)}(?:[?#]|$)`));\n      |                             ^\n  157 |   await expect(page.getByRole(\"button\", { name: task.title, exact: true })).toBeVisible();\n  158 | }\n  159 |\n    at assertCurrentTask (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:156:29)\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:422:13)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business.spec.ts:11:11"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:28:06.188Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/planned-zh-Hans-wide-fe92211b830bf52438976baf461304577a2ab5b5.png"
+                    },
+                    {
+                      "name": "scope-added-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-added-zh-Hans-wide-9fa1097511a701fb043ccc5d4768423e48ad0e44.png"
+                    },
+                    {
+                      "name": "technical-audit-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/technical-audit-zh-Hans-wide-ac3a26e5231ae7fbe74578d37c858ff8dad6555b.png"
+                    },
+                    {
+                      "name": "scope-metric-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-metric-zh-Hans-narrow-719c098f0c4c94ca1daa2eefed1de74f7059084d.png"
+                    },
+                    {
+                      "name": "scope-empty-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-empty-zh-Hans-narrow-77b229d3cc98ad409b4e8f9cb02fa0716132f8ae.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-current-separation-zh-Hans-wide-9a00c3307a2a7cd23e6e073e849d167df40d3979.png"
+                    },
+                    {
+                      "name": "frozen-historical-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-historical-zh-Hans-narrow-76d187310a1f8ee48e468785afe562c7381aad31.png"
+                    },
+                    {
+                      "name": "frozen-current-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-current-zh-Hans-narrow-f6e9d586fe87fa43ea13ccc21dbbad621c1af291.png"
+                    },
+                    {
+                      "name": "page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "failure-state",
+                      "contentType": "text/plain",
+                      "body": "aHR0cDovL2xvY2FsaG9zdDoxMzM5MC9wMS1hMDI5NWY1ZS1kNDgvaXNzdWVzL1AxQTAtMQrliIfmjaLlt6bkvqfovrnmoI8K6IyD5Zu06K+B5o2u6aG555uuClAxQTAtMSDnu5PmnZ/lkI7kv67mlLnnmoTlvZPliY3moIfpopgK57uT5p2f5ZCO5L+u5pS555qE5b2T5YmN5qCH6aKYCgoKCgrmt7vliqDlrZDku7vliqEK5Yqo5oCBCuWPlua2iOiuoumYhQpQUAozIOadoeWKqOaAgQpQUApQMSBwcm9qZWN0IG93bmVyCuWIm+W7uuS6hui/meS4quS7u+WKoQrliJrliJoKUDEgcHJvamVjdCBvd25lcgrnirbmgIHku44g5b6F5YqeIOaUueS4uiDlt7LlrozmiJAK5Yia5YiaClBQClAxIHByb2plY3Qgb3duZXIK5oqK6L+Z5Liq5Lu75Yqh5LuOIuWOn+Wni+S7u+WKoSBBIOKAlCBVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZVVuYnJva2VuVGl0bGVVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZVVuYnJva2VuVGl0bGVVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZVVuYnJva2VuVGl0bGVVbmJyb2tlblRpdGxlVW5icm9rZW5UaXRsZVVuYnJva2VuVGl0bGUi6YeN5ZG95ZCN5Li6Iue7k+adn+WQjuS/ruaUueeahOW9k+WJjeagh+mimCIK5Yia5YiaCgrnlZnkuIvor4TorrouLi4KCuWSjOS9oOeahOaZuuiDveS9k+WvueivnQoK6K6p5a6D5YGa5LiA5Lu95oC757uT44CB6KeE5YiS5L2g55qE5LiA5aSp77yM5oiW5Lqk57uZ5a6D5LiA5Liq5bCP5Lu75Yqh44CCCgrpnIDopoHlhYjmnInkuIDkuKrmmbrog73kvZPmiY3og73lvIDlp4vlr7nor53jgIIKCgo="
+                    },
+                    {
+                      "name": "failure",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/failure-dc574a8493c3c63f08115d648ee11ce968855ce1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                    "column": 29,
+                    "line": 156
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-f6710974d6b75822a599",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Web: empty planning history and cancellation before versus after a real empty start",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3176,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:28:18.236Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "empty-plan-adjustments",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/empty-plan-adjustments-bf1e0942b41a014aaa0afef7520f57a4dcec4b89.png"
+                    },
+                    {
+                      "name": "cancelled-before-start-history",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/cancelled-before-start-history-4beb82cd63050ed932c52b25fdb54cc442b23d44.png"
+                    },
+                    {
+                      "name": "empty-started-then-cancelled",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/empty-started-then-cancelled-bd24ebb51e90dd6680edc1bbe71faa586a006fdf.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-final/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/rendered-metrics-9da09603c1ca2ef3be8241309f2fecf9b245f1f4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-63282714c5339a533979",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-09T17:27:29.942Z",
+    "duration": 51901.82,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}

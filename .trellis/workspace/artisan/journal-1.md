@@ -1631,3 +1631,35 @@ Closed the 19-finding iteration audit and the disable-confirmation styling follo
 ### Next Steps
 
 - The iteration audit is complete and archived; other task scopes retain their existing state.
+
+
+## Session 51: 迭代范围变化：业务口径、明细与验证
+<!-- trellis-session: v=2 fp=9254ddbfd1cc1e53 -->
+
+**Date**: 2026-10-10
+**Task**: 迭代范围变化：业务口径、明细与验证
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+完成计划阶段口径、范围影响、指标明细及技术审计分层；独立复核后在隔离工作树验收并归档。
+
+### Main Changes
+
+- 新增核心阶段/影响/明细选择器，复用既有查询、历史快照与导航；主任务筛选保持不变。
+- 新增中英文 Web/Electron 真实 API 场景，修正截图视口与任务规范地址的测试假设。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6d3bf906d9639924e2d6493b3349e0d98bfafb7d` | fix(iterations): make scope changes reflect the actual commitment |
+
+### Testing
+
+- [OK] 受影响包 10564 项单测、885 个文件全部通过；11 项 lint/typecheck 通过。
+- [OK] 生产 Web/Electron 五个场景通过，0 skipped/flaky/retries；视觉 94/100，UI detector 无发现。
+
+### Status
+
+[OK] **Completed**

@@ -1,0 +1,507 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "iteration-scope-business-desktop.spec.ts",
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "ISB Electron en: planned scope, exact change details, retained filters and frozen history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 17008,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('tabpanel', { name: 'Scope changes', exact: true }).getByRole('region', { name: 'Scope metric details', exact: true }).getByRole('link', { name: /^Open current task/ })\nExpected: \u001b[32m\"/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mhttp://127.0.0.1:53176\u001b[27m/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tabpanel', { name: 'Scope changes', exact: true }).getByRole('region', { name: 'Scope metric details', exact: true }).getByRole('link', { name: /^Open current task/ })\u001b[22m\n\u001b[2m    9 × locator resolved to <a aria-label=\"Open current task: Scope inserted C\" href=\"http://127.0.0.1:53176/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\" class=\"inline-flex min-h-7 items-center rounded text-caption text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11\">Open current task</a>\u001b[22m\n\u001b[2m      - unexpected value \"http://127.0.0.1:53176/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('tabpanel', { name: 'Scope changes', exact: true }).getByRole('region', { name: 'Scope metric details', exact: true }).getByRole('link', { name: /^Open current task/ })\nExpected: \u001b[32m\"/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mhttp://127.0.0.1:53176\u001b[27m/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tabpanel', { name: 'Scope changes', exact: true }).getByRole('region', { name: 'Scope metric details', exact: true }).getByRole('link', { name: /^Open current task/ })\u001b[22m\n\u001b[2m    9 × locator resolved to <a aria-label=\"Open current task: Scope inserted C\" href=\"http://127.0.0.1:53176/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\" class=\"inline-flex min-h-7 items-center rounded text-caption text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11\">Open current task</a>\u001b[22m\n\u001b[2m      - unexpected value \"http://127.0.0.1:53176/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[22m\n\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:343:31)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                      "column": 31,
+                      "line": 343
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/iteration-scope-business.ts:343\n\n  341 |     await metric(summary, locale, labels.added, active.statistics.added_unique).click();\n  342 |     const currentLink = detail.getByRole(\"link\", { name: new RegExp(`^${escapePattern(labels.openCurrent)}`) });\n> 343 |     await expect(currentLink).toHaveAttribute(\"href\", `/${workspace.slug}/issues/${added.id}`);\n      |                               ^\n  344 |     await currentLink.click();\n  345 |     await assertCurrentTask(page, session, added, native);\n  346 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                        "column": 31,
+                        "line": 343
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('tabpanel', { name: 'Scope changes', exact: true }).getByRole('region', { name: 'Scope metric details', exact: true }).getByRole('link', { name: /^Open current task/ })\nExpected: \u001b[32m\"/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mhttp://127.0.0.1:53176\u001b[27m/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tabpanel', { name: 'Scope changes', exact: true }).getByRole('region', { name: 'Scope metric details', exact: true }).getByRole('link', { name: /^Open current task/ })\u001b[22m\n\u001b[2m    9 × locator resolved to <a aria-label=\"Open current task: Scope inserted C\" href=\"http://127.0.0.1:53176/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\" class=\"inline-flex min-h-7 items-center rounded text-caption text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11\">Open current task</a>\u001b[22m\n\u001b[2m      - unexpected value \"http://127.0.0.1:53176/p1-78600a96-54e/issues/01a121a1-2b82-7e0d-be06-f23e8d8815ee\"\u001b[22m\n\n\n   at fixtures/iteration-scope-business.ts:343\n\n  341 |     await metric(summary, locale, labels.added, active.statistics.added_unique).click();\n  342 |     const currentLink = detail.getByRole(\"link\", { name: new RegExp(`^${escapePattern(labels.openCurrent)}`) });\n> 343 |     await expect(currentLink).toHaveAttribute(\"href\", `/${workspace.slug}/issues/${added.id}`);\n      |                               ^\n  344 |     await currentLink.click();\n  345 |     await assertCurrentTask(page, session, added, native);\n  346 |\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:343:31)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:06:08.783Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/planned-en-wide-8459d877f0b94536a41ed29dc3181b6efbf06d10.png"
+                    },
+                    {
+                      "name": "scope-added-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-added-en-wide-2d323da3374010ab7a893934bd103cd35ab3a2fe.png"
+                    },
+                    {
+                      "name": "technical-audit-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/technical-audit-en-wide-4d360b7f49d414a1da9f78df8da5099271caa70d.png"
+                    },
+                    {
+                      "name": "scope-metric-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-metric-en-narrow-39e911b53e5bf33c9da38cea7f407fd18f517a6a.png"
+                    },
+                    {
+                      "name": "scope-empty-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/scope-empty-en-narrow-fa3dbd6fd05582da90f1014208f032779b7ef3cf.png"
+                    },
+                    {
+                      "name": "page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "failure-state",
+                      "contentType": "text/plain",
+                      "body": "aHR0cDovLzEyNy4wLjAuMTo1MzE3Ni8KVG9nZ2xlIGxlZnQgc2lkZWJhcgpQClAxIGJyb3dzZXIgYWNjZXB0YW5jZQpTZWFyY2guLi4KSwpOZXcgSXNzdWUKQwpJbmJveApNeSBJc3N1ZXMKQ2hhdApXb3JrCldvcmtzcGFjZSBpc3N1ZXMKUHJvamVjdHMKSXRlcmF0aW9ucwpBSSBUZWFtCkFnZW50cwpTcXVhZHMKQXV0b3BpbG90ClJlc291cmNlcyAmIGNvbm5lY3Rpb25zClNraWxscwpNQ1AKUnVudGltZXMKQW5hbHl0aWNzClNldHRpbmdzClNjb3BlIGJ1c2luZXNzIGFjY2VwdGFuY2UKQmFjayB0byBpdGVyYXRpb25zCkFkZCBleGlzdGluZyB0YXNrcwpFbmQgaXRlcmF0aW9uClNjb3BlIGJ1c2luZXNzIGFjY2VwdGFuY2UKQWN0aXZlCk9jdCAxMCDigJMgT2N0IDIzIMK3IEFzaWEvU2hhbmdoYWkKQ29vcmRpbmF0b3I6IE5vbmUgwrcgTWFudWFsCgpBY3R1YWxseSBzdGFydGVkOiBPY3QgMTAsIDIwMjYsIDAxOjA2IEFNCgpUYXNrcwoyClByb2dyZXNzClNjb3BlIGNoYW5nZXMKU2NvcGUgYXQgc3RhcnQKMiB0YXNrcwpDdXJyZW50IGVmZmVjdGl2ZSBzY29wZQoyIHRhc2tzCk5ldCBlZmZlY3RpdmUgY2hhbmdlCjAgdGFza3MKCkNvdW50cyBjb3ZlciBjaGFuZ2VzIGFmdGVyIHRoZSBpdGVyYXRpb24gc3RhcnRlZC4gRWZmZWN0aXZlIHNjb3BlIGV4Y2x1ZGVzIGNhbmNlbGxlZCB0YXNrcy4KClRhc2tzIGFkZGVkIGFmdGVyIHN0YXJ0CjEgdGFzawpDYW5jZWxsYXRpb25zCjIgZXZlbnRzClZpZXcgYWxsIHNjb3BlIGNvdW50cwpPcmlnaW5hbCBjb21taXRtZW50CjIgdGFza3MKQ3VycmVudCBzY29wZQoyIHRhc2tzCkNhbmNlbGxlZCB0YXNrcwowIHRhc2tzClJlbW92ZWQgZHVyaW5nIGl0ZXJhdGlvbgozIGV2ZW50cwpSZS1lbnRyaWVzCjIgZXZlbnRzClJlb3BlbnMKMiBldmVudHMKU3RhcnRlZCB0YXNrcwoxIHRhc2sKRWZmZWN0aXZlIHNjb3BlIGNoYW5nZSByYXRlCjAlClRhc2tzIGFkZGVkIGFmdGVyIHN0YXJ0CkJhY2sgdG8gYWN0aXZpdHkKCkVhY2ggdGFzayBpcyBjb3VudGVkIG9uY2UgYXQgaXRzIGZpcnN0IGFkZGl0aW9uIGFmdGVyIHN0YXJ0LCBldmVuIGlmIGl0IGxhdGVyIGxlYXZlcyB0aGUgaXRlcmF0aW9uLiBUaGVzZSBhcmUgdGhlIHJlY29yZGVkIGFkZGl0aW9ucy4KCkNoYW5nZSBjYXRlZ29yeQpBbGwgY2hhbmdlcwpTZWFyY2ggdGFzayByZWNvcmRzCkNsZWFyIGZpbHRlcnMKCjEgbWF0Y2hpbmcgdGFzawoKT2N0IDEwLCAyMDI2CgpTY29wZSBpbnNlcnRlZCBDCgpFZmZlY3RpdmUgc2NvcGUgKzEKCkFkZGVkIHRvIGl0ZXJhdGlvbgoKT3BlbiBjdXJyZW50IHRhc2sKClNvdXJjZSBpdGVyYXRpb246Ck5vIGN1cnJlbnQgaXRlcmF0aW9uCkRlc3RpbmF0aW9uIGl0ZXJhdGlvbjoKU2NvcGUgYnVzaW5lc3MgYWNjZXB0YW5jZQoKQWNjZXB0IGFuIHVyZ2VudCByZXF1ZXN0IGFmdGVyIHN0YXJ0CgpQMSBwcm9qZWN0IG93bmVyCsK3CjAxOjA2IEFNCgpUZWNobmljYWwgYXVkaXQKClNob3dpbmcgMSBvZiAxIG9wZXJhdGlvbnMKCkNoYXQgd2l0aCB5b3VyIGFnZW50cwoKQXNrIGZvciBhIHN1bW1hcnksIHBsYW4geW91ciBkYXksIG9yIGhhbmQgb2ZmIGEgcXVpY2sgdGFzay4KCllvdSBuZWVkIGFuIGFnZW50IHRvIHN0YXJ0IGNoYXR0aW5nLgoKCg=="
+                    },
+                    {
+                      "name": "failure",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/attachments/failure-e1fee5f5319c4eba7a392e93288f93ebaa91f260.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-f138e--filters-and-frozen-history-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                    "column": 31,
+                    "line": 343
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0f725ce676e45196fd22-84260a4118aca5889c84",
+          "file": "iteration-scope-business-desktop.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Electron zh-Hans: planned scope, exact change details, retained filters and frozen history",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 14525,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('tabpanel', { name: '范围变化', exact: true }).getByRole('region', { name: '范围指标明细', exact: true }).getByRole('link', { name: /^打开当前任务/ })\nExpected: \u001b[32m\"/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mhttp://127.0.0.1:53290\u001b[27m/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tabpanel', { name: '范围变化', exact: true }).getByRole('region', { name: '范围指标明细', exact: true }).getByRole('link', { name: /^打开当前任务/ })\u001b[22m\n\u001b[2m    9 × locator resolved to <a aria-label=\"打开当前任务：临时加入任务 C\" href=\"http://127.0.0.1:53290/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\" class=\"inline-flex min-h-7 items-center rounded text-caption text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11\">打开当前任务</a>\u001b[22m\n\u001b[2m      - unexpected value \"http://127.0.0.1:53290/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('tabpanel', { name: '范围变化', exact: true }).getByRole('region', { name: '范围指标明细', exact: true }).getByRole('link', { name: /^打开当前任务/ })\nExpected: \u001b[32m\"/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mhttp://127.0.0.1:53290\u001b[27m/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tabpanel', { name: '范围变化', exact: true }).getByRole('region', { name: '范围指标明细', exact: true }).getByRole('link', { name: /^打开当前任务/ })\u001b[22m\n\u001b[2m    9 × locator resolved to <a aria-label=\"打开当前任务：临时加入任务 C\" href=\"http://127.0.0.1:53290/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\" class=\"inline-flex min-h-7 items-center rounded text-caption text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11\">打开当前任务</a>\u001b[22m\n\u001b[2m      - unexpected value \"http://127.0.0.1:53290/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[22m\n\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:343:31)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                      "column": 31,
+                      "line": 343
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/iteration-scope-business.ts:343\n\n  341 |     await metric(summary, locale, labels.added, active.statistics.added_unique).click();\n  342 |     const currentLink = detail.getByRole(\"link\", { name: new RegExp(`^${escapePattern(labels.openCurrent)}`) });\n> 343 |     await expect(currentLink).toHaveAttribute(\"href\", `/${workspace.slug}/issues/${added.id}`);\n      |                               ^\n  344 |     await currentLink.click();\n  345 |     await assertCurrentTask(page, session, added, native);\n  346 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                        "column": 31,
+                        "line": 343
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('tabpanel', { name: '范围变化', exact: true }).getByRole('region', { name: '范围指标明细', exact: true }).getByRole('link', { name: /^打开当前任务/ })\nExpected: \u001b[32m\"/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mhttp://127.0.0.1:53290\u001b[27m/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tabpanel', { name: '范围变化', exact: true }).getByRole('region', { name: '范围指标明细', exact: true }).getByRole('link', { name: /^打开当前任务/ })\u001b[22m\n\u001b[2m    9 × locator resolved to <a aria-label=\"打开当前任务：临时加入任务 C\" href=\"http://127.0.0.1:53290/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\" class=\"inline-flex min-h-7 items-center rounded text-caption text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11\">打开当前任务</a>\u001b[22m\n\u001b[2m      - unexpected value \"http://127.0.0.1:53290/p1-e8bccfa3-d37/issues/01a121a1-6919-7708-af8e-ddd1a67051b5\"\u001b[22m\n\n\n   at fixtures/iteration-scope-business.ts:343\n\n  341 |     await metric(summary, locale, labels.added, active.statistics.added_unique).click();\n  342 |     const currentLink = detail.getByRole(\"link\", { name: new RegExp(`^${escapePattern(labels.openCurrent)}`) });\n> 343 |     await expect(currentLink).toHaveAttribute(\"href\", `/${workspace.slug}/issues/${added.id}`);\n      |                               ^\n  344 |     await currentLink.click();\n  345 |     await assertCurrentTask(page, session, added, native);\n  346 |\n    at iterationScopeBusinessFlow (/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts:343:31)\n    at /Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/iteration-scope-business-desktop.spec.ts:10:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:06:26.562Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/planned-zh-Hans-wide-b8a4c21824d0385d1d2ef0579bd74b2143999af5.png"
+                    },
+                    {
+                      "name": "scope-added-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-added-zh-Hans-wide-8011d3183cb3c5251034e7a4cb13ac9e65b1b4d9.png"
+                    },
+                    {
+                      "name": "technical-audit-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/technical-audit-zh-Hans-wide-46f5661882e7297ec214c55791e6e112f5497dec.png"
+                    },
+                    {
+                      "name": "scope-metric-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-metric-zh-Hans-narrow-1089c6f5aeee9336f4addad1e93792e41255681c.png"
+                    },
+                    {
+                      "name": "scope-empty-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/scope-empty-zh-Hans-narrow-78f412211c95630296ce0f85e07e3739c945dc9e.png"
+                    },
+                    {
+                      "name": "page-errors",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "failure-state",
+                      "contentType": "text/plain",
+                      "body": "aHR0cDovLzEyNy4wLjAuMTo1MzI5MC8K5YiH5o2i5bem5L6n6L655qCPClAKUDEgYnJvd3NlciBhY2NlcHRhbmNlCuaQnOe0oi4uLgpLCuaWsOW7uuS7u+WKoQpDCuaUtuS7tueusQrmiJHnmoTku7vliqEK6IGK5aSpCuW3peS9nArku7vliqEK6aG555uuCui/reS7owpBSSDlm6LpmJ8K5pm66IO95L2TCkFJ5bCP6ZifCuiHquWKqOWMlgrotYTmupDkuI7ov57mjqUK5oqA6IO95bqTCk1DUArov5DooYzml7YK57uf6K6hCuiuvue9rgrojIPlm7Tlj5jljJbkuJrliqHpqozor4EK6L+U5Zue6L+t5Luj5YiX6KGoCua3u+WKoOW3suacieS7u+WKoQrnu5PmnZ/ov63ku6MK6IyD5Zu05Y+Y5YyW5Lia5Yqh6aqM6K+BCui/m+ihjOS4rQoxMOaciDEw5pelIOKAkyAxMOaciDIz5pelIMK3IEFzaWEvU2hhbmdoYWkK5Y2P6LCD5Lq6OiDml6Agwrcg5omL5YqoCgrlrp7pmYXlvIDlp4vml7bpl7Q6IDIwMjblubQxMOaciDEw5pelIDAxOjA2Cgrku7vliqEKMgrov5vlsZUK6IyD5Zu05Y+Y5YyWCuW8gOWni+aXtuacieaViOiMg+WbtAoyIOS4quS7u+WKoQrlvZPliY3mnInmlYjojIPlm7QKMiDkuKrku7vliqEK5pyJ5pWI6IyD5Zu05YeA5Y+Y5YyWCjAg5Liq5Lu75YqhCgrku4Xnu5/orqHlvIDlp4vlkI7nmoTlj5jljJbvvIzmnInmlYjojIPlm7TkuI3lkKvlt7Llj5bmtojku7vliqHjgIIKCuW8gOWni+WQjuaWsOWinuS7u+WKoQoxIOS4quS7u+WKoQrlj5bmtojmrKHmlbAKMiDmrKEK5p+l55yL5a6M5pW06IyD5Zu06K6h5pWwCuWOn+Wni+aJv+ivugoyIOS4quS7u+WKoQrlvZPliY3ojIPlm7QKMiDkuKrku7vliqEK5bey5Y+W5raI5Lu75YqhCjAg5Liq5Lu75YqhCuacn+mXtOenu+WHugozIOasoQrph43mlrDliqDlhaXmrKHmlbAKMiDmrKEK6YeN5byA5qyh5pWwCjIg5qyhCuW3suW8gOWni+S7u+WKoQoxIOS4quS7u+WKoQrmnInmlYjojIPlm7Tlj5jljJbnjocKMCUK5byA5aeL5ZCO5paw5aKe5Lu75YqhCui/lOWbnua0u+WKqAoK5q+P5Liq5Lu75Yqh5Zyo5byA5aeL5ZCO6aaW5qyh5Yqg5YWl5pe26K6h5pWw5LiA5qyh77yM5YyF5ZCr5ZCO5p2l5bey56e75Ye655qE5Lu75Yqh44CC5LiL5pa55bGV56S65b2T5pe255qE5Yqg5YWl6K6w5b2V44CCCgrlj5jljJbnsbvliKsK5YWo6YOo5Y+Y5YyWCuaQnOe0ouS7u+WKoeiusOW9lQrmuIXpmaTnrZvpgIkKCuWMuemFjSAxIOS4quS7u+WKoQoKMjAyNuW5tDEw5pyIMTDml6UKCuS4tOaXtuWKoOWFpeS7u+WKoSBDCgrmnInmlYjojIPlm7QgKzEKCuWKoOWFpei/reS7owoK5omT5byA5b2T5YmN5Lu75YqhCgrmnaXmupDov63ku6M6CuaXoOW9k+WJjei/reS7owrnm67moIfov63ku6M6CuiMg+WbtOWPmOWMluS4muWKoemqjOivgQoKQWNjZXB0IGFuIHVyZ2VudCByZXF1ZXN0IGFmdGVyIHN0YXJ0CgpQMSBwcm9qZWN0IG93bmVyCsK3CjAxOjA2CgrmioDmnK/lrqHorqEKCuW3suaYvuekuiAxIC8gMSDmrKHmk43kvZwKCuWSjOS9oOeahOaZuuiDveS9k+WvueivnQoK6K6p5a6D5YGa5LiA5Lu95oC757uT44CB6KeE5YiS5L2g55qE5LiA5aSp77yM5oiW5Lqk57uZ5a6D5LiA5Liq5bCP5Lu75Yqh44CCCgrpnIDopoHlhYjmnInkuIDkuKrmmbrog73kvZPmiY3og73lvIDlp4vlr7nor53jgIIKCgo="
+                    },
+                    {
+                      "name": "failure",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/attachments/failure-260eb743ededc3d7c6b575e6a46de9b629b4fba5.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-d-e964b--filters-and-frozen-history-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/.multica-scope-verify-9txksp_v/e2e/fixtures/iteration-scope-business.ts",
+                    "column": 31,
+                    "line": 343
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0f725ce676e45196fd22-63a5692adf71c3950e7f",
+          "file": "iteration-scope-business-desktop.spec.ts",
+          "line": 8,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "iteration-scope-business.spec.ts",
+      "file": "iteration-scope-business.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "ISB Web en: planned scope, exact change details, retained filters and frozen history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9237,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:06:41.955Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/planned-en-wide-1254b913f46374d5d9422132aa0618c10721e5b8.png"
+                    },
+                    {
+                      "name": "scope-added-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-added-en-wide-6e6b69c3b3c61186f79101b2ff95311bd92f7add.png"
+                    },
+                    {
+                      "name": "technical-audit-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/technical-audit-en-wide-a9d2e84afcccd24b4c62897ce9269fd7a9bbe550.png"
+                    },
+                    {
+                      "name": "scope-metric-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-metric-en-narrow-811c02710e005bab97c85e1a65dbbd462702c212.png"
+                    },
+                    {
+                      "name": "scope-empty-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/scope-empty-en-narrow-9822695dc69e788c9fa907be81c30338c7292cc2.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-en-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-current-separation-en-wide-c409a646f0f8f8c8920a00348c9977b06998a3b5.png"
+                    },
+                    {
+                      "name": "frozen-historical-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-historical-en-narrow-6f08ee0d17b1f885570f79b1a9739b62f977abc2.png"
+                    },
+                    {
+                      "name": "frozen-current-en-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/frozen-current-en-narrow-36857f673a418a25c038c9fc772fdaeee838f236.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-09503--filters-and-frozen-history-chromium/attachments/rendered-metrics-5c2f457e87252760ef5971fd16ec01ef67cccc02.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-1dca83814f65dea3645d",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Web zh-Hans: planned scope, exact change details, retained filters and frozen history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10652,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:06:52.017Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "planned-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/planned-zh-Hans-wide-3d96ef784825da28bec5a51ac5ea23d188a2b2fe.png"
+                    },
+                    {
+                      "name": "scope-added-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-added-zh-Hans-wide-d8087ecd12a25665e174ebb7c94a1783ce9a40dd.png"
+                    },
+                    {
+                      "name": "technical-audit-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/technical-audit-zh-Hans-wide-f963b9b099d75eec0053aad996ccf2501e359c93.png"
+                    },
+                    {
+                      "name": "scope-metric-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-metric-zh-Hans-narrow-10f7a8dc854985cf26f555e84f1351f55fbc0e25.png"
+                    },
+                    {
+                      "name": "scope-empty-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/scope-empty-zh-Hans-narrow-f06ffe419d310fcc5214b10a1a63a3551a14e403.png"
+                    },
+                    {
+                      "name": "frozen-current-separation-zh-Hans-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-current-separation-zh-Hans-wide-b05843e205d95f5a229052b3b1fd33ea3322ac71.png"
+                    },
+                    {
+                      "name": "frozen-historical-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-historical-zh-Hans-narrow-47fcb2a8779b1034a428be697afbf48d0c4c857c.png"
+                    },
+                    {
+                      "name": "frozen-current-zh-Hans-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/frozen-current-zh-Hans-narrow-85fe8ebf17f7292b07b3fe522d930a7abd13136a.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-fb7f3--filters-and-frozen-history-chromium/attachments/rendered-metrics-8c9d9b5421425d0a706108a9fa03f6231712f82b.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-f6710974d6b75822a599",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 8,
+          "column": 3
+        },
+        {
+          "title": "ISB Web: empty planning history and cancellation before versus after a real empty start",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4072,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T17:07:02.681Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "empty-plan-adjustments",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/empty-plan-adjustments-81f3566a377f85fae15b93b1629846597c363a8a.png"
+                    },
+                    {
+                      "name": "cancelled-before-start-history",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/cancelled-before-start-history-6566688f9ebc681a9837bb9601ca90bc86b00e30.png"
+                    },
+                    {
+                      "name": "empty-started-then-cancelled",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/empty-started-then-cancelled-3bd5fb39e22a494e287005dbfecc8486246df6fa.png"
+                    },
+                    {
+                      "name": "rendered-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-09-iteration-scope-business/browser-evidence/playwright-round1/iteration-scope-business-I-3606d-us-after-a-real-empty-start-chromium/attachments/rendered-metrics-7e7dea837bdc1b655a7aece65fd52c01544c76c5.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "496b6e7fe2e1b9404a76-63282714c5339a533979",
+          "file": "iteration-scope-business.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-09T17:06:07.747Z",
+    "duration": 59051.479999999996,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

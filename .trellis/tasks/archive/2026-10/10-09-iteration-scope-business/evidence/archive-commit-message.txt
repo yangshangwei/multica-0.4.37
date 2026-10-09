@@ -1,0 +1,11 @@
+docs(iterations): retain the evidence behind scope management decisions
+
+Archive the completed requirements, design, research and acceptance record so
+future changes can preserve lifecycle boundaries and truthful metric evidence.
+Keep selected screenshots and structured results in git, with raw runner output
+retained locally, and record the implementation in the developer journal.
+
+Related: 6d3bf906d9639924e2d6493b3349e0d98bfafb7d
+Confidence: high
+Scope-risk: narrow
+Tested: Archived Trellis manifests validate; all acceptance criteria complete; final source fingerprints match the tested implementation
