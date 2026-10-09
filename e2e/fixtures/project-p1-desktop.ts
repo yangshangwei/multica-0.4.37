@@ -10,7 +10,8 @@ type NativeSession = Awaited<ReturnType<typeof p1Session>> & { page: Page; deskt
 export const test = base.extend<{ native: NativeSession }>({
   native: async ({}, use, info) => {
     const root = resolve(import.meta.dirname, "../..");
-    const renderer = join(root, "apps/desktop/out/renderer");
+    const desktopOutput = process.env.MULTICA_E2E_DESKTOP_OUTPUT_DIR ?? join(root, "apps/desktop/out");
+    const renderer = join(desktopOutput, "renderer");
     const apiBase = process.env.NEXT_PUBLIC_API_URL!;
     expect(["localhost", "127.0.0.1"]).toContain(new URL(apiBase).hostname);
     const profile = await mkdtemp(join(tmpdir(), "multica-project-p1-desktop-"));
@@ -76,7 +77,7 @@ export const test = base.extend<{ native: NativeSession }>({
       desktop = await electron.launch({
         executablePath: join(root, "apps/desktop/node_modules/electron/dist", process.platform === "darwin" ? "Electron.app/Contents/MacOS/Electron" : process.platform === "win32" ? "electron.exe" : "electron"),
         args: [join(root, "e2e/fixtures/changelog-electron.cjs")],
-        env: { ...process.env, CHANGELOG_ELECTRON_PROFILE: profile, CHANGELOG_E2E_API_URL: origin, CHANGELOG_ELECTRON_RENDERER_URL: origin, CHANGELOG_ELECTRON_SYSTEM_LOCALE: "en-US" },
+        env: { ...process.env, CHANGELOG_ELECTRON_PROFILE: profile, CHANGELOG_E2E_API_URL: origin, CHANGELOG_ELECTRON_RENDERER_URL: origin, CHANGELOG_ELECTRON_PRELOAD: join(desktopOutput, "preload/index.js"), CHANGELOG_ELECTRON_SYSTEM_LOCALE: "en-US" },
       });
       page = await desktop.firstWindow();
       page.on("pageerror", (error) => errors.push(error.message));

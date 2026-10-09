@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { iterationSettingsFeedbackFlow } from "./fixtures/iterations-i1";
 import { p1Capture, p1Failure, p1NoOverflow, p1Session } from "./fixtures/project-p1";
 
 for (const copy of [
@@ -57,3 +58,18 @@ for (const copy of [
     }
   });
 }
+
+test("workspace iteration settings report normal closure without remounting", async ({ page }, info) => {
+  test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires an isolated iteration API");
+  const { api, workspace } = await p1Session(page);
+  try {
+    await page.goto(`/${workspace.slug}/issues`);
+    await iterationSettingsFeedbackFlow(page, api, workspace, info);
+  } catch (error) {
+    await info.attach("original-error", { body: String(error), contentType: "text/plain" });
+    await p1Failure(page, info).catch(() => {});
+    throw error;
+  } finally {
+    await api.deleteFeatureWorkspace(workspace.id);
+  }
+});

@@ -113,7 +113,7 @@ it("updates feedback after enable, normal disable and re-enable without remounti
   const dialog = await screen.findByRole("dialog");
   await user.type(within(dialog).getByLabelText("Reason"), "Close this workspace");
   await user.click(within(dialog).getByRole("button", { name: "Preview changes" }));
-  await user.click(await within(dialog).findByRole("button", { name: "Confirm changes" }));
+  await user.click(await within(dialog).findByRole("button", { name: "Disable all iterations" }));
   await waitFor(() => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(toggle).not.toBeChecked();
@@ -167,7 +167,7 @@ it("opens the complete disable operation and cancellation leaves the switch on",
   await user.type(within(screen.getByRole("dialog")).getByRole("textbox"), "Stop planning");
   await user.click(screen.getByRole("button", { name: "Preview changes" }));
   expect(await screen.findByText(/Alpha task/)).toBeInTheDocument();
-  await user.click(screen.getByRole("button", { name: "Confirm changes" }));
+  await user.click(screen.getByRole("button", { name: "Disable all iterations" }));
   await waitFor(() => expect(toggle).not.toBeChecked());
   expect(screen.getByRole("link", { name: "View history" })).toBeInTheDocument();
   expect(api.applyIterationOperation).toHaveBeenCalledWith(ws, expect.objectContaining({ draft: expect.objectContaining({ operation: "disable", reason: "Stop planning" }), preview_hash: "hash" }));
@@ -187,7 +187,7 @@ it("keeps enabled feedback and the reason after a rejected disable", async () =>
   const dialog = await screen.findByRole("dialog");
   await user.type(within(dialog).getByLabelText("Reason"), "Close this workspace");
   await user.click(within(dialog).getByRole("button", { name: "Preview changes" }));
-  await user.click(await within(dialog).findByRole("button", { name: "Confirm changes" }));
+  await user.click(await within(dialog).findByRole("button", { name: "Disable all iterations" }));
   expect(await within(dialog).findByRole("alert")).toBeInTheDocument();
   expect(within(dialog).getByLabelText("Reason")).toHaveValue("Close this workspace");
   expect(current.enabled).toBe(true);
@@ -195,7 +195,7 @@ it("keeps enabled feedback and the reason after a rejected disable", async () =>
   expect(status).toHaveTextContent("Iterations are enabled.");
   expect(screen.queryByText("Iterations are disabled. Saved history remains available.")).not.toBeInTheDocument();
   expect(within(dialog).getByRole("button", { name: "Preview changes" })).toBeEnabled();
-  expect(within(dialog).queryByRole("button", { name: "Confirm changes" })).not.toBeInTheDocument();
+  expect(within(dialog).queryByRole("button", { name: "Disable all iterations" })).not.toBeInTheDocument();
 
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -207,7 +207,7 @@ it("recovers the original enable request after remount even if capabilities are 
   vi.mocked(api.enableIterations).mockRejectedValue(new TypeError("Response lost"));
   const first = mount();
   await first.user.click(await ready());
-  await screen.findByRole("button", { name: "Check original request" });
+  await screen.findByRole("button", { name: /^Check request:/ });
   const original = vi.mocked(api.enableIterations).mock.calls[0]![1];
   first.unmount();
   vi.mocked(api.getIterationCapabilities).mockResolvedValue({ workspace_id: ws, schema_version: 1, supported: false, manual: false, atomic_handoff: false, enabled: false });
@@ -215,7 +215,7 @@ it("recovers the original enable request after remount even if capabilities are 
   client.clear();
   const second = mount();
   expect(await screen.findByText(/This server does not support iteration settings/)).toBeInTheDocument();
-  await second.user.click(screen.getByRole("button", { name: "Check original request" }));
+  await second.user.click(screen.getByRole("button", { name: /^Check request:/ }));
   await waitFor(() => expect(api.getIterationOperation).toHaveBeenCalledWith(ws, original.request_id));
   expect(api.enableIterations).toHaveBeenCalledTimes(1);
 });
@@ -284,13 +284,13 @@ it("retains the original disable request when realtime closes settings before a 
   const dialog = await screen.findByRole("dialog");
   await user.type(within(dialog).getByLabelText("Reason"), "Disable original request");
   await user.click(within(dialog).getByRole("button", { name: "Preview changes" }));
-  await user.click(await within(dialog).findByRole("button", { name: "Confirm changes" }));
+  await user.click(await within(dialog).findByRole("button", { name: "Disable all iterations" }));
   await waitFor(() => expect(api.applyIterationOperation).toHaveBeenCalledTimes(1));
   const original = vi.mocked(api.applyIterationOperation).mock.calls[0]![1];
   current.enabled = false;
   act(() => client.setQueryData(["iterations", ws, "settings"], { ...current }));
   await act(async () => fail());
-  await user.click(await screen.findByRole("button", { name: "Check original request" }));
+  await user.click(await within(dialog).findByRole("button", { name: "Check original request" }));
   await waitFor(() => expect(api.getIterationOperation).toHaveBeenCalledWith(ws, original.request_id));
   expect(api.applyIterationOperation).toHaveBeenCalledTimes(1);
   expect(screen.getByRole("switch", { name: "Enable iterations" })).not.toBeChecked();
@@ -309,7 +309,7 @@ it("keeps an external disable closable without allowing a stale confirmation", a
   const dialog = await screen.findByRole("dialog");
   await user.type(within(dialog).getByLabelText("Reason"), "Close this workspace");
   await user.click(within(dialog).getByRole("button", { name: "Preview changes" }));
-  await within(dialog).findByRole("button", { name: "Confirm changes" });
+  await within(dialog).findByRole("button", { name: "Disable all iterations" });
 
   current = { ...current, enabled: false, revision: current.revision + 1 };
   await act(async () => { await client.invalidateQueries({ queryKey: ["iterations", ws] }); });
@@ -318,7 +318,7 @@ it("keeps an external disable closable without allowing a stale confirmation", a
   expect(screen.queryByText("Iterations enabled.")).not.toBeInTheDocument();
   expect(screen.queryByText("Iterations are enabled.")).not.toBeInTheDocument();
   expect(screen.getByRole("dialog")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Confirm changes" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Disable all iterations" })).toBeDisabled();
   expect(screen.getByRole("button", { name: "Preview changes" })).toBeDisabled();
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

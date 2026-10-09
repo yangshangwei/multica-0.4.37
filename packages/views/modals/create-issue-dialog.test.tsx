@@ -110,6 +110,7 @@ vi.mock("./create-issue", () => ({
       <button onClick={onNeedsSpace}>request assist space</button>
       <button onClick={() => setIsExpanded?.(true)}>expand dialog</button>
       manual panel · {String(data?.anchor_comment_id ?? "ordinary")} · {data?.source_context_expanded ? "expanded" : "collapsed"}
+      <output aria-label="iteration context">{String(data?.current_iteration_id ?? "none")}:{String(data?.expected_iteration_revision ?? "none")}</output>
       <button type="button" onClick={() => onSwitchMode?.({ parent_issue_id: data?.parent_issue_id })}>
         switch agent
       </button>
@@ -162,6 +163,25 @@ describe("CreateIssueDialog sizing", () => {
     expect(mockBeginIsolatedDraft).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "switch manual" }));
     expect(screen.getByText(/manual panel · ordinary/)).toBeInTheDocument();
+  });
+
+  it("keeps a requested iteration in manual mode instead of dropping context on an agent switch", () => {
+    render(<CreateIssueDialog onClose={vi.fn()} initialMode="agent" data={{
+      workspace_id: "ws-test", current_iteration_id: "iteration-1", expected_iteration_revision: 7,
+    }} />);
+    expect(screen.getByText(/manual panel · ordinary/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "switch agent" }));
+    expect(screen.queryByText(/agent panel · ordinary/)).not.toBeInTheDocument();
+    expect(mockSetLastMode).not.toHaveBeenCalled();
+  });
+
+  it("keeps the reviewed revision for the same period and resets context for a different period", () => {
+    const seed = { workspace_id: "ws-test", current_iteration_id: "iteration-1", expected_iteration_revision: 7 };
+    const view = render(<CreateIssueDialog onClose={vi.fn()} initialMode="manual" data={seed} />);
+    view.rerender(<CreateIssueDialog onClose={vi.fn()} initialMode="manual" data={{ ...seed, expected_iteration_revision: 8 }} />);
+    expect(screen.getByLabelText("iteration context")).toHaveTextContent("iteration-1:7");
+    view.rerender(<CreateIssueDialog onClose={vi.fn()} initialMode="manual" data={{ ...seed, current_iteration_id: "iteration-2", expected_iteration_revision: 2 }} />);
+    expect(screen.getByLabelText("iteration context")).toHaveTextContent("iteration-2:2");
   });
 
   it("isolates source-context drafts and preserves source identity across mode switches", () => {

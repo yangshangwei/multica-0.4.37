@@ -260,6 +260,79 @@ func matchesHistoricalIssue(item iteration.HistoricalIssue, query url.Values) bo
 	return true
 }
 
+type iterationIssueFilterReference struct {
+	ID   *string `json:"id"`
+	Name *string `json:"name"`
+}
+
+type iterationIssueAssigneeFilter struct {
+	Type *string `json:"type"`
+	ID   *string `json:"id"`
+	Name *string `json:"name"`
+}
+
+type iterationIssueFilterOptions struct {
+	Statuses  []string                        `json:"statuses"`
+	Projects  []iterationIssueFilterReference `json:"projects"`
+	Assignees []iterationIssueAssigneeFilter  `json:"assignees"`
+	Labels    []iteration.HistoricalLabel     `json:"labels"`
+}
+
+func historyReferenceKey(value *string) string {
+	if value == nil {
+		return ""
+	}
+	return *value
+}
+
+// Choices belong to the full selected historical projection. Using today's
+// directories or a filtered task page would omit saved choices or rename them.
+func historicalIterationFilterOptions(source []iteration.HistoricalIssue) iterationIssueFilterOptions {
+	options := iterationIssueFilterOptions{
+		Statuses: []string{}, Projects: []iterationIssueFilterReference{},
+		Assignees: []iterationIssueAssigneeFilter{}, Labels: []iteration.HistoricalLabel{},
+	}
+	ordered := append([]iteration.HistoricalIssue{}, source...)
+	sort.Slice(ordered, func(i, j int) bool { return ordered[i].IssueID < ordered[j].IssueID })
+	statuses, projects, labels := map[string]bool{}, map[string]bool{}, map[string]bool{}
+	assignees := map[[2]string]bool{}
+	for _, item := range ordered {
+		if !statuses[item.StatusKey] {
+			statuses[item.StatusKey] = true
+			options.Statuses = append(options.Statuses, item.StatusKey)
+		}
+		project := historyReferenceKey(item.ProjectID)
+		if !projects[project] {
+			projects[project] = true
+			options.Projects = append(options.Projects, iterationIssueFilterReference{ID: item.ProjectID, Name: item.ProjectName})
+		}
+		assignee := [2]string{historyReferenceKey(item.AssigneeType), historyReferenceKey(item.AssigneeID)}
+		if !assignees[assignee] {
+			assignees[assignee] = true
+			options.Assignees = append(options.Assignees, iterationIssueAssigneeFilter{Type: item.AssigneeType, ID: item.AssigneeID, Name: item.AssigneeName})
+		}
+		for _, label := range item.Labels {
+			if !labels[label.ID] {
+				labels[label.ID] = true
+				options.Labels = append(options.Labels, label)
+			}
+		}
+	}
+	sort.Strings(options.Statuses)
+	sort.Slice(options.Projects, func(i, j int) bool {
+		return historyReferenceKey(options.Projects[i].ID) < historyReferenceKey(options.Projects[j].ID)
+	})
+	sort.Slice(options.Assignees, func(i, j int) bool {
+		iType, jType := historyReferenceKey(options.Assignees[i].Type), historyReferenceKey(options.Assignees[j].Type)
+		if iType != jType {
+			return iType < jType
+		}
+		return historyReferenceKey(options.Assignees[i].ID) < historyReferenceKey(options.Assignees[j].ID)
+	})
+	sort.Slice(options.Labels, func(i, j int) bool { return options.Labels[i].ID < options.Labels[j].ID })
+	return options
+}
+
 func (h *Handler) ListIterationIssues(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	query := r.URL.Query()
@@ -290,6 +363,7 @@ func (h *Handler) ListIterationIssues(w http.ResponseWriter, r *http.Request) {
 	if query.Get("scope") == "original" {
 		source = history.Original
 	}
+	filterOptions := historicalIterationFilterOptions(source)
 	selected := make([]iteration.HistoricalIssue, 0, len(source))
 	for _, item := range source {
 		if matchesHistoricalIssue(item, query) {
@@ -305,7 +379,7 @@ func (h *Handler) ListIterationIssues(w http.ResponseWriter, r *http.Request) {
 		cursor.AfterID = selected[last-1].IssueID
 		next = encodeHistoryCursor(cursor)
 	}
-	writeJSON(w, 200, map[string]any{"workspace_id": history.Iteration.WorkspaceID, "iteration_id": history.Iteration.ID, "scope_revision": history.Iteration.ScopeRevision, "items": selected[first:last], "total": total, "next_cursor": next})
+	writeJSON(w, 200, map[string]any{"workspace_id": history.Iteration.WorkspaceID, "iteration_id": history.Iteration.ID, "scope_revision": history.Iteration.ScopeRevision, "items": selected[first:last], "total": total, "next_cursor": next, "filter_options": filterOptions})
 }
 
 func (h *Handler) ListIterationEvents(w http.ResponseWriter, r *http.Request) {

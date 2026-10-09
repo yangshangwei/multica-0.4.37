@@ -6,10 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 import { iterationCapabilitiesOptions, iterationListOptions } from "@multica/core/iterations";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
+import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { AppLink } from "../navigation";
 import { useT } from "../i18n";
 import { IterationError } from "./iteration-error";
 import { useIterationLabels } from "./labels";
+import { iterationDisclosureClass } from "./iteration-presentation";
 
 export function IterationParticipation({ wsId, issueId }: { wsId: string; issueId: string }) {
   const { t } = useT("projects");
@@ -28,12 +30,12 @@ export function IterationParticipation({ wsId, issueId }: { wsId: string; issueI
       className="group/participation col-span-2 min-w-0"
       onToggle={(event) => setOpen(event.currentTarget.open)}
     >
-      <summary className="-mx-2 flex min-h-8 cursor-pointer list-none items-center gap-1 rounded-md px-2 text-caption text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring group-open/participation:text-foreground pointer-coarse:min-h-11 [&::-webkit-details-marker]:hidden">
+      <summary className={`${iterationDisclosureClass} -mx-2 flex list-none items-center gap-1 px-2 transition-colors hover:bg-accent/50 focus-visible:bg-accent/50 group-open/participation:text-foreground [&::-webkit-details-marker]:hidden`}>
         <span className="min-w-0">{t(($) => $.iterations.participation)}</span>
         <ChevronRight className="size-3 shrink-0 stroke-[2.5] transition-transform group-open/participation:rotate-90 motion-reduce:transition-none" aria-hidden />
       </summary>
       <div className="min-w-0 space-y-2 pb-3 pt-1 text-caption">
-        {history.isFetching && <p role="status" className="py-2 text-muted-foreground">{t(($) => $.iterations.loading)}</p>}
+        {open && history.isPending && <div role="status" className="space-y-2 py-2"><span className="sr-only">{t(($) => $.iterations.loading)}</span><Skeleton className="h-4 w-2/3" /><Skeleton className="h-4 w-full" /><Skeleton className="h-4 w-3/4" /></div>}
         {history.error && (
           <div className="space-y-2 text-destructive">
             <IterationError error={history.error} />

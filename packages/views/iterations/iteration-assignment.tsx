@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { CalendarRange, ChevronRight } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, isIterationAccessDenied } from "@multica/core/api";
@@ -15,6 +15,9 @@ import {
 import { issueBehavesAs } from "@multica/core/issues";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
+import { Checkbox } from "@multica/ui/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@multica/ui/components/ui/select";
+import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@multica/ui/components/ui/dialog";
 import { PropRow } from "../common/prop-row";
 import { IssuePickerModal } from "../modals/issue-picker-modal";
@@ -26,6 +29,7 @@ import {
 import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import { useIterationLabels } from "./labels";
 import { IterationError } from "./iteration-error";
+import { iterationDisclosureClass } from "./iteration-presentation";
 import { useT } from "../i18n";
 export function IterationAssignment({
   wsId,
@@ -34,6 +38,9 @@ export function IterationAssignment({
   issueIds,
   currentIterationId,
   rolloverCount,
+  expanded = false,
+  onAssigned,
+  available = true,
 }: {
   wsId: string;
   issueId?: string;
@@ -41,11 +48,14 @@ export function IterationAssignment({
   issueIds?: string[];
   currentIterationId?: string | null;
   rolloverCount?: number;
+  expanded?: boolean;
+  onAssigned?: () => void;
+  available?: boolean;
 }) {
   const capability = useQuery(iterationCapabilitiesOptions(wsId));
   if (capability.error && isIterationAccessDenied(capability.error))
     return <IterationError error={capability.error} />;
-  if (capability.data?.enabled !== true) return null;
+  if (capability.data?.enabled !== true && !expanded) return null;
   return (
     <Assignment
       key={JSON.stringify([wsId, issueId ?? null, targetId ?? null, issueIds ?? null])}
@@ -55,6 +65,9 @@ export function IterationAssignment({
       issueIds={issueIds}
       currentIterationId={currentIterationId}
       rolloverCount={rolloverCount}
+      expanded={expanded}
+      onAssigned={onAssigned}
+      available={available && capability.data?.enabled === true}
     />
   );
 }
@@ -65,6 +78,9 @@ function Assignment({
   issueIds,
   currentIterationId,
   rolloverCount,
+  expanded = false,
+  onAssigned,
+  available = true,
 }: {
   wsId: string;
   issueId?: string;
@@ -72,10 +88,14 @@ function Assignment({
   issueIds?: string[];
   currentIterationId?: string | null;
   rolloverCount?: number;
+  expanded?: boolean;
+  onAssigned?: () => void;
+  available?: boolean;
 }) {
   const { t } = useT("projects");
   const client = useQueryClient();
   const labels = useIterationLabels();
+  const allowCompletedId = useId();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [ids, setIds] = useState(issueId ?? issueIds?.join(" ") ?? "");
   const [target, setTarget] = useState<string | null>(targetId ?? null);
@@ -130,11 +150,12 @@ function Assignment({
         setPreview(result);
       }),
   });
+  const locked = !available || pending !== null || prepare.isPending || apply.isPending;
   function changed() {
     setPreview(null);
   }
   async function submit() {
-    if (!preview && !pending) return;
+    if ((!preview && !pending) || (!available && !pending)) return;
     const command = pending ?? {
       kind: "operation" as const,
       body: {
@@ -146,6 +167,11 @@ function Assignment({
     try {
       await apply.mutateAsync({ command, recover: pending !== null });
       setPreview(null);
+      if (onAssigned) {
+        setIds(issueId ?? issueIds?.join(" ") ?? "");
+        setReason("");
+        onAssigned();
+      }
     } catch (error) {
       if (definitelyRejected(error)) setPreview(null);
     }
@@ -171,16 +197,16 @@ function Assignment({
           </div>
         </PropRow>
       )}
-    <details className="group/assignment col-span-2 min-w-0">
-      <summary className="-mx-2 flex min-h-8 cursor-pointer list-none items-center gap-1 rounded-md px-2 text-caption text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring group-open/assignment:text-foreground pointer-coarse:min-h-11 [&::-webkit-details-marker]:hidden">
+    <details open={expanded || undefined} className="group/assignment col-span-2 min-w-0">
+      <summary className={expanded ? "hidden" : `${iterationDisclosureClass} -mx-2 flex list-none items-center gap-1 px-2 transition-colors hover:bg-accent/50 focus-visible:bg-accent/50 group-open/assignment:text-foreground [&::-webkit-details-marker]:hidden`}>
         <span className="min-w-0">{t(($) => $.iterations.assign)}</span>
         <ChevronRight className="size-3 shrink-0 stroke-[2.5] transition-transform group-open/assignment:rotate-90 motion-reduce:transition-none" aria-hidden />
       </summary>
-      <div className="min-w-0 space-y-3 text-caption pb-3 pt-2">
+      <div className={`min-w-0 space-y-3 text-caption ${expanded ? "" : "pb-3 pt-2"}`}>
         {(rolloverCount ?? 0) >= 3 && <p className="text-muted-foreground">{t(($) => $.iterations.rolloverReview)}</p>}
         {issueIds && <p className="text-muted-foreground">{t(($) => $.iterations.affected)}: <span className="font-medium tabular-nums text-foreground">{issueIds.length}</span></p>}
         <fieldset
-          disabled={pending !== null || prepare.isPending || apply.isPending}
+          disabled={!available || pending !== null || prepare.isPending || apply.isPending}
           className="min-w-0 space-y-3"
         >
           {!issueId && !issueIds && (
@@ -227,6 +253,7 @@ function Assignment({
           )}
           {!targetId && (
             <IterationSelect
+              disabled={locked}
               value={selectedTarget}
               onChange={(value) => {
                 setTarget(value);
@@ -246,13 +273,14 @@ function Assignment({
               }}
             />
           </label>
-          <label className="flex min-h-8 cursor-pointer items-start gap-2 py-1.5 text-caption text-muted-foreground pointer-coarse:min-h-11">
-            <input
-              type="checkbox"
-              className="mt-0.5 size-3.5 shrink-0 accent-primary outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          <label htmlFor={allowCompletedId} className="flex min-h-8 cursor-pointer items-start gap-2 py-1.5 text-caption text-muted-foreground pointer-coarse:min-h-11">
+            <Checkbox
+              id={allowCompletedId}
+              className="mt-0.5 pointer-coarse:after:-inset-3.5"
+              disabled={locked}
               checked={allowCompleted}
-              onChange={(e) => {
-                setAllowCompleted(e.target.checked);
+              onCheckedChange={(checked) => {
+                setAllowCompleted(checked);
                 changed();
               }}
             />
@@ -261,8 +289,8 @@ function Assignment({
           <Button
             size="sm"
             className="pointer-coarse:min-h-11"
-            disabled={prepare.isPending || !settings.data || !ids.trim()}
-            onClick={() => prepare.mutate()}
+            disabled={!available || prepare.isPending || !settings.data || !ids.trim()}
+            onClick={() => { if (available) prepare.mutate(); }}
           >
             {t(($) => $.iterations.preview)}
           </Button>
@@ -290,6 +318,7 @@ function Assignment({
               size="sm"
               className="pointer-coarse:min-h-11"
               disabled={
+                !available ||
                 apply.isPending ||
                 prepare.isPending ||
                 preview.complete !== true ||
@@ -297,7 +326,7 @@ function Assignment({
               }
               onClick={() => void submit()}
             >
-              {t(($) => $.iterations.confirm)}
+            {t(($) => $.iterations.assign)}
             </Button>
           </div>
         )}
@@ -318,30 +347,38 @@ export function IterationSelect({
   value,
   onChange,
   items,
+  label,
+  disabled = false,
+  descriptionId,
 }: {
   value: string;
   onChange: (id: string) => void;
   items: { id: string; name: string; status: string }[];
+  label?: string;
+  disabled?: boolean;
+  descriptionId?: string;
 }) {
   const { t } = useT("projects");
+  const id = useId();
+  const options = [
+    { value: "", label: t(($) => $.iterations.unassigned) },
+    ...items.filter((item) => ["planned", "active"].includes(item.status)).map((item) => ({ value: item.id, label: item.name })),
+  ];
   return (
-    <label className="grid min-w-0 gap-1.5 text-caption text-muted-foreground">
-      {t(($) => $.iterations.title)}
-      <select
-        className="block h-8 w-full min-w-0 truncate rounded-lg border border-input bg-background px-2.5 text-caption text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:min-h-11"
+    <div className="grid min-w-0 gap-1.5 text-caption text-muted-foreground">
+      <label htmlFor={id} className="[overflow-wrap:anywhere]">{label ?? t(($) => $.iterations.title)}</label>
+      <Select
+        items={options}
+        disabled={disabled}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onValueChange={(value) => onChange(value ?? "")}
       >
-        <option value="">{t(($) => $.iterations.unassigned)}</option>
-        {items
-          .filter((item) => ["planned", "active"].includes(item.status))
-          .map((item) => (
-            <option value={item.id} key={item.id}>
-              {item.name}
-            </option>
-          ))}
-      </select>
-    </label>
+        <SelectTrigger id={id} aria-describedby={descriptionId} className="w-full min-w-0 text-caption text-foreground pointer-coarse:min-h-11"><SelectValue /></SelectTrigger>
+        <SelectContent>
+          {options.map((option) => <SelectItem value={option.value} key={option.value} className="pointer-coarse:min-h-11 [&>span:first-child]:min-w-0 [&>span:first-child]:shrink [&>span:first-child]:whitespace-normal"><span className="[overflow-wrap:anywhere]">{option.label}</span></SelectItem>)}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
 export function IterationCandidate({
@@ -409,18 +446,19 @@ export function IterationCandidate({
         onSearchChange={setFilter}
         navigationResetKey={JSON.stringify([wsId, filtered.map((item) => [item.id, item.revision])])}
       >
-        <PickerItem emptyValue selected={!value} onClick={() => select(null)}>
+        <PickerItem hoverClassName="hover:bg-accent pointer-coarse:min-h-11" emptyValue selected={!value} onClick={() => select(null)}>
           <CalendarRange className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
           <span className="truncate text-muted-foreground">{t(($) => $.iterations.noIteration)}</span>
         </PickerItem>
         {list.isPending ? (
-          <p role="status" className="px-2 py-3 text-body text-muted-foreground">
-            {t(($) => $.iterations.loading)}
-          </p>
+          <div role="status" className="space-y-2 px-2 py-3">
+            <span className="sr-only">{t(($) => $.iterations.loading)}</span>
+            <Skeleton className="h-8 w-full" /><Skeleton className="h-8 w-3/4" />
+          </div>
         ) : list.error ? (
           <div className="space-y-2 px-2 py-3 text-body">
             <IterationError error={list.error} />
-            <Button variant="outline" size="sm" onClick={() => void list.refetch()} disabled={list.isFetching}>
+            <Button variant="outline" size="sm" className="pointer-coarse:min-h-11" onClick={() => void list.refetch()} disabled={list.isFetching}>
               {t(($) => $.iterations.retry)}
             </Button>
           </div>
@@ -428,6 +466,7 @@ export function IterationCandidate({
           <>
             {filtered.map((item) => (
               <PickerItem
+                hoverClassName="hover:bg-accent pointer-coarse:min-h-11"
                 key={item.id}
                 selected={item.id === value}
                 onClick={() => select(item.id)}
@@ -451,9 +490,9 @@ export function IterationBatchAssignment({ wsId, issueIds }: { wsId: string; iss
   const capability = useQuery(iterationCapabilitiesOptions(wsId));
   if (capability.data?.enabled !== true) return null;
   return <>
-    <Button variant="ghost" size="sm" onClick={() => setOpen(true)}>{t(($) => $.iterations.title)}</Button>
+    <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" onClick={() => setOpen(true)}>{t(($) => $.iterations.title)}</Button>
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-h-[85vh] overflow-auto">
+      <DialogContent className="max-h-[85vh] overflow-auto [&_[data-slot=dialog-close]]:pointer-coarse:min-h-11 [&_[data-slot=dialog-close]]:pointer-coarse:min-w-11">
         <DialogTitle>{t(($) => $.iterations.assign)}</DialogTitle>
         <DialogDescription>{t(($) => $.iterations.affected)}: {issueIds.length}</DialogDescription>
         <IterationAssignment wsId={wsId} issueIds={issueIds} />

@@ -39,10 +39,13 @@ export async function p1Authenticate(page: Page, api: TestApiClient, locale = "e
   const token = api.getToken();
   if (!token) throw new Error("P1 fixture authentication missing");
   await page.addInitScript(({ token, locale }) => {
+    const newSession = localStorage.getItem("multica_token") !== token;
     localStorage.setItem("multica_token", token);
-    localStorage.setItem("multica-locale", locale);
+    if (newSession) {
+      localStorage.setItem("multica-locale", locale);
+      localStorage.setItem("theme", "light");
+    }
     localStorage.setItem("multica:chat:isOpen", "false");
-    localStorage.setItem("theme", "light");
     document.cookie = "multica_logged_in=1; path=/; SameSite=Lax";
   }, { token, locale });
 }

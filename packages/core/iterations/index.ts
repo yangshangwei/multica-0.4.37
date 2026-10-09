@@ -100,8 +100,10 @@ export const iterationGroupedIssuesOptions = (
     let cursor: string | null = null;
     let revision: number | undefined;
     let total: number | undefined;
+    let filterOptions: Awaited<ReturnType<typeof api.getIterationIssues>>["filter_options"];
     do {
       const page = await api.getIterationIssues(wsId, id, { ...params, limit: "100", ...(cursor ? { cursor } : {}) }, { signal });
+      if (revision === undefined) filterOptions = page.filter_options;
       revision ??= page.scope_revision;
       total ??= page.total;
       if (page.scope_revision !== revision || page.total !== total) throw new ApiError("Iteration scope changed", 409, "Conflict", { code: "cursor_stale" });
@@ -115,7 +117,7 @@ export const iterationGroupedIssuesOptions = (
       if (cursor) cursors.add(cursor);
     } while (cursor);
     if (items.length !== total) throw new Error("Incomplete iteration grouping results");
-    return { workspace_id: wsId, iteration_id: id, scope_revision: revision, total, items };
+    return { workspace_id: wsId, iteration_id: id, scope_revision: revision, total, items, filter_options: filterOptions };
   }),
   retry: false,
 });
@@ -157,8 +159,26 @@ export const iterationEventsOptions = (
     retry: false,
   });
 export { iterationDefaultDates, iterationIsOverdue } from "./calendar";
+export { iterationTimeline, type IterationTimelineFilters } from "./timeline";
+export { iterationCatalogueOptions } from "./catalogue";
+export {
+  iterationActivityOptions,
+  projectIterationEvent,
+  groupIterationActivity,
+  iterationActivityDays,
+  type IterationEvent,
+  type IterationActivityFilter,
+  type IterationActivityKind,
+  type IterationActivityIdentity,
+  type IterationActivityActor,
+  type IterationActivityStatus,
+  type IterationActivityFacts,
+  type IterationActivityChange,
+  type IterationActivityEntry,
+  type IterationActivityGroup,
+} from "./activity";
 
-export { protectIterationRead } from "./access";
+export { protectIterationRead, hasIterationReadAccess } from "./access";
 
 export { validateIterationName } from "./validation";
 

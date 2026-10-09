@@ -155,6 +155,15 @@ export const IterationDetailSchema = z
           value.snapshot.iteration_id === value.iteration.id)),
     "Iteration detail identity mismatch",
   );
+export const IterationIssueFilterOptionsSchema = z.object({
+  statuses: z.array(z.string().min(1)),
+  projects: z.array(z.object({ id: uuid.nullable(), name: z.string().nullable() })),
+  assignees: z.array(
+    z.object({ type: z.string().min(1).nullable(), id: uuid.nullable(), name: z.string().nullable() })
+      .refine((value) => (value.id === null) === (value.type === null), "Assignee identity mismatch"),
+  ),
+  labels: z.array(z.object({ id: uuid, name: z.string() })),
+});
 export const IterationIssuesSchema = z.object({
   workspace_id: uuid,
   iteration_id: uuid,
@@ -162,6 +171,9 @@ export const IterationIssuesSchema = z.object({
   items: z.array(HistoricalIterationIssueSchema),
   total: count,
   next_cursor: z.string().nullable(),
+  // Installed clients may use older servers; optional display metadata must
+  // never prevent a valid task page from being read.
+  filter_options: IterationIssueFilterOptionsSchema.optional().catch(undefined),
 });
 export const IterationEventsSchema = z.object({
   workspace_id: uuid,

@@ -5,9 +5,30 @@ import {
   IterationWriteResultSchema,
   parseIteration,
   HistoricalIterationIssueSchema,
+  IterationIssuesSchema,
 } from "./iteration-schemas";
 const ws = "10000000-0000-4000-8000-000000000001";
 const historical = { issue_id: ws, identifier: "I1-1", title: "Frozen", project_id: null, project_name: null, assignee_type: null, assignee_id: null, assignee_name: null, status_key: "todo", status_category: "todo", was_completed_at_start: false, rollover_count: 0 };
+const issuePage = { workspace_id: ws, iteration_id: ws, scope_revision: 1, items: [historical], total: 1, next_cursor: null };
+const filterOptions = {
+  statuses: ["todo", "custom_status"],
+  projects: [{ id: ws, name: "Frozen project" }, { id: null, name: null }],
+  assignees: [{ type: "member", id: ws, name: "Frozen member" }, { type: "agent", id: ws, name: "Frozen agent" }, { type: null, id: null, name: null }],
+  labels: [{ id: ws, name: "Frozen label" }],
+};
+describe("iteration filter metadata compatibility", () => {
+  it("retains complete stored choices and permits additive metadata", () => {
+    expect(parseIteration({ ...issuePage, filter_options: { ...filterOptions, future: true } }, IterationIssuesSchema, ws).filter_options).toEqual(filterOptions);
+  });
+  it("keeps valid task pages from older servers without inventing choices", () => {
+    expect(parseIteration(issuePage, IterationIssuesSchema, ws).filter_options).toBeUndefined();
+  });
+  it.each([null, "bad", {}, { ...filterOptions, statuses: [false] }, { ...filterOptions, projects: [{ id: "bad", name: "Broken" }] }, { ...filterOptions, assignees: [{ type: null, id: ws, name: "Unknown" }] }, { ...filterOptions, labels: [{ id: ws, name: null }] }])("discards malformed optional metadata, preserving valid tasks: %j", (filter_options) => {
+    const page = parseIteration({ ...issuePage, filter_options }, IterationIssuesSchema, ws);
+    expect(page.items).toEqual([historical]);
+    expect(page.filter_options).toBeUndefined();
+  });
+});
 it("retains frozen priority and labels while old omissions remain unknown", () => {
   expect(HistoricalIterationIssueSchema.parse({ ...historical, priority: "high", labels: [{ id: ws, name: "Original label" }] })).toMatchObject({ priority: "high", labels: [{ id: ws, name: "Original label" }] });
   expect(HistoricalIterationIssueSchema.parse(historical).labels).toBeUndefined();

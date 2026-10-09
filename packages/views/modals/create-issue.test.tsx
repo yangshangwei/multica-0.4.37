@@ -16,10 +16,11 @@ import enCommon from "../locales/en/common.json";
 import enModals from "../locales/en/modals.json";
 import enEditor from "../locales/en/editor.json";
 import enIssues from "../locales/en/issues.json";
+import enProjects from "../locales/en/projects.json";
 
 const TEST_RESOURCES = {
   // `editor` carries the shared upload-gate copy ("Uploading…").
-  en: { common: enCommon, modals: enModals, editor: enEditor, issues: enIssues },
+  en: { common: enCommon, modals: enModals, editor: enEditor, issues: enIssues, projects: enProjects },
 };
 
 function I18nWrapper({ children }: { children: ReactNode }) {
@@ -56,6 +57,8 @@ const mockShowIssueLimitUpgradePrompt = vi.hoisted(() => vi.fn());
 // mocking that call; it resolves a plain server Attachment row.
 const mockApiUploadFile = vi.hoisted(() => vi.fn());
 const mockOptimizeDescription = vi.hoisted(() => vi.fn());
+const mockIterationCapabilities = vi.hoisted(() => vi.fn());
+const mockIterationList = vi.hoisted(() => vi.fn());
 
 const sourceContextPanelData = () => ({
   anchor_comment_id: "comment-source",
@@ -350,8 +353,11 @@ vi.mock("@multica/core/api", async () => {
       listProperties: mockListProperties,
       setIssueProperty: mockSetIssueProperty,
       uploadFile: mockApiUploadFile,
+      getIterationCapabilities: mockIterationCapabilities,
+      listIterations: mockIterationList,
     },
     ApiError,
+    isIterationAccessDenied: (error: unknown) => error instanceof ApiError && [401, 403].includes(error.status),
     parseWithFallback,
     DuplicateIssueErrorBodySchema,
   };
@@ -657,6 +663,8 @@ function renderModal(element: React.ReactElement) {
 describe("CreateIssueModal", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockIterationCapabilities.mockResolvedValue({ enabled: false });
+    mockIterationList.mockResolvedValue({ workspace_id: "ws-test", items: [], next_cursor: null });
     mockOptimizeDescription.mockResolvedValue({ text: "Clarified request", questions: ["Confirm scope?"] });
     mockQuickCreateStore.keepOpen = false;
     mockCreateSettingsStore.manualCreateFields = DEFAULT_MANUAL_FIELDS;
@@ -739,6 +747,74 @@ describe("CreateIssueModal", () => {
     mockSetIssueProperty.mockResolvedValue({
       properties: { "property-tier": "option-enterprise" },
     });
+  });
+
+  const iterationSeed = { workspace_id: "ws-test", current_iteration_id: "iteration-1", expected_iteration_revision: 7 };
+  const availableIteration = (revision = 7) => ({ id: "iteration-1", workspace_id: "ws-test", name: "Delivery plan", status: "planned", mode: "manual", revision });
+  function enableIterationCreation(revision = 7) {
+    mockDraftStore.draft.manual.title = "Scoped task";
+    mockIterationCapabilities.mockResolvedValue({ enabled: true });
+    mockIterationList.mockResolvedValue({ workspace_id: "ws-test", items: [availableIteration(revision)], next_cursor: null });
+  }
+
+  it("shows the same-workspace iteration and creates with the reviewed revision atomically", async () => {
+    enableIterationCreation();
+    renderModal(<CreateIssueModal onClose={vi.fn()} data={iterationSeed} />);
+    expect(await screen.findByRole("button", { name: "Iterations: Delivery plan" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Switch to Agent/i })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    await waitFor(() => expect(mockCreateIssue).toHaveBeenCalledOnce());
+    expect(mockCreateIssue).toHaveBeenCalledWith(expect.objectContaining({
+      current_iteration_id: "iteration-1", expected_iteration_revision: 7,
+    }));
+  });
+
+  it("retains a stale iteration revision and draft after rejection until an explicit selection", async () => {
+    enableIterationCreation(8);
+    mockCreateIssue.mockRejectedValueOnce(new ApiError("Iteration changed", 409, "Conflict", { code: "iteration_revision_conflict" }));
+    const close = vi.fn();
+    renderModal(<CreateIssueModal onClose={close} data={iterationSeed} />);
+    await screen.findByRole("button", { name: "Iterations: Delivery plan" });
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    await waitFor(() => expect(mockToastError).toHaveBeenCalled());
+    expect(mockCreateIssue).toHaveBeenLastCalledWith(expect.objectContaining({ expected_iteration_revision: 7 }));
+    expect(mockClearDraft).not.toHaveBeenCalled();
+    expect(close).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("button", { name: "Iterations: Delivery plan" }));
+    await userEvent.click(await screen.findByRole("button", { name: "No iteration" }));
+    await userEvent.click(screen.getByRole("button", { name: "Iterations: No iteration" }));
+    await userEvent.click(await screen.findByRole("button", { name: "Delivery plan" }));
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    await waitFor(() => expect(mockCreateIssue).toHaveBeenCalledTimes(2));
+    expect(mockCreateIssue).toHaveBeenLastCalledWith(expect.objectContaining({ expected_iteration_revision: 8 }));
+  });
+
+  it.each([
+    { ...iterationSeed, workspace_id: "other-workspace" },
+    { ...iterationSeed, expected_iteration_revision: undefined },
+    { ...iterationSeed, expected_iteration_revision: -1 },
+  ])("does not silently discard an invalid scoped iteration: %j", async seed => {
+    enableIterationCreation();
+    renderModal(<CreateIssueModal onClose={vi.fn()} data={seed} />);
+    expect(await screen.findByRole("button", { name: "Iterations: No iteration" })).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(enProjects.iterations.creationSelectionRequired);
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    expect(mockCreateIssue).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("button", { name: "Iterations: No iteration" }));
+    await userEvent.click(await screen.findByRole("button", { name: "Delivery plan" }));
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    await waitFor(() => expect(mockCreateIssue).toHaveBeenCalledOnce());
+    expect(mockCreateIssue).toHaveBeenCalledWith(expect.objectContaining({ current_iteration_id: "iteration-1", expected_iteration_revision: 7 }));
+  });
+
+  it("keeps an unavailable requested iteration visible and blocks unassigned creation", async () => {
+    enableIterationCreation();
+    mockIterationList.mockResolvedValue({ workspace_id: "ws-test", items: [], next_cursor: null });
+    renderModal(<CreateIssueModal onClose={vi.fn()} data={iterationSeed} />);
+    expect(await screen.findByRole("alert")).toHaveTextContent(enProjects.iterations.creationSelectionRequired);
+    expect(screen.getByText(/iteration-1/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
+    expect(mockCreateIssue).not.toHaveBeenCalled();
   });
 
   it.each([false, true])("records the submitted assignee only after creation is accepted (comment source: %s)", async (fromComment) => {

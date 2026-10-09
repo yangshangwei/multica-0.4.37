@@ -19,7 +19,7 @@ import {
 } from "./test-fixtures";
 import projects from "../locales/en/projects.json";
 vi.mock("../i18n", () => ({
-  useT: () => ({ t: (fn: (value: typeof projects) => string) => fn(projects) }),
+  useT: () => ({ t: (fn: (value: typeof projects) => string, variables?: Record<string, string>) => fn(projects).replace(/\{\{(\w+)\}\}/g, (_match, key: string) => variables?.[key] ?? "") }),
 }));
 vi.mock("@multica/core/auth", () => ({
   useAuthStore: Object.assign(
@@ -89,11 +89,13 @@ describe("iteration assignment scope and preview", () => {
     await user.click(await screen.findByText("Assign to iteration"));
     expect(picker.filter!({ ...alpha, status: "done" })).toBe(false);
     expect(picker.filter!({ ...alpha, status: "cancelled" })).toBe(false);
-    await user.selectOptions(screen.getByLabelText("Iterations"), targetA.id);
-    await user.click(screen.getByLabelText("Confirm adding completed work"));
+    await user.click(screen.getByRole("combobox", { name: "Iterations" }));
+    await user.click(await screen.findByRole("option", { name: targetA.name }));
+    await user.click(screen.getByRole("checkbox", { name: "Confirm adding completed work" }));
     expect(picker.filter!({ ...alpha, status: "done" })).toBe(true);
     expect(picker.filter!({ ...alpha, status: "cancelled" })).toBe(false);
-    await user.selectOptions(screen.getByLabelText("Iterations"), targetB.id);
+    await user.click(screen.getByRole("combobox", { name: "Iterations" }));
+    await user.click(await screen.findByRole("option", { name: targetB.name }));
     expect(picker.filter!({ ...alpha, status: "done" })).toBe(false);
   });
   it("previews 1000 UUID-selected tasks in two bulk requests without per-task reads", async () => {
@@ -103,7 +105,7 @@ describe("iteration assignment scope and preview", () => {
     const user = userEvent.setup();
     await user.click(await screen.findByText("Assign to iteration"));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "Assign to iteration" });
     expect(api.previewIteration).toHaveBeenCalledTimes(2);
     expect(api.getIssue).not.toHaveBeenCalled();
     expect(vi.mocked(api.previewIteration).mock.calls[1]![1].moves).toHaveLength(1000);
@@ -115,7 +117,7 @@ describe("iteration assignment scope and preview", () => {
     const user = userEvent.setup();
     await user.click(await screen.findByText("Assign to iteration"));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "Assign to iteration" });
     expect(api.getIssue).toHaveBeenCalledExactlyOnceWith(alpha.identifier);
     expect(api.previewIteration).toHaveBeenCalledTimes(2);
   });
@@ -125,7 +127,7 @@ describe("iteration assignment scope and preview", () => {
     await user.click(await screen.findByText("Assign to iteration"));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
     await screen.findByRole("alert");
-    expect(screen.queryByRole("button", { name: "Confirm changes" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Assign to iteration" })).not.toBeInTheDocument();
     expect(api.applyIterationOperation).not.toHaveBeenCalled();
   });
   it("shows processing and locks global recovery while the original request is in flight", async () => {
@@ -135,10 +137,10 @@ describe("iteration assignment scope and preview", () => {
     const user = userEvent.setup();
     await user.click(await screen.findByText("Assign to iteration"));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await user.click(await screen.findByRole("button", { name: "Confirm changes" }));
+    await user.click(await screen.findByRole("button", { name: "Assign to iteration" }));
     const recovery = await screen.findByRole("region", { name: "Unconfirmed iteration requests" });
     expect(within(recovery).getByRole("status")).toHaveTextContent("Processing changes");
-    expect(within(recovery).getByRole("button", { name: "Check original request" })).toBeDisabled();
+    expect(within(recovery).getByRole("button", { name: /Check request: Assign to iteration/ })).toBeDisabled();
     await act(async () => finish(receipt));
     await waitFor(() => expect(screen.queryByRole("region", { name: "Unconfirmed iteration requests" })).not.toBeInTheDocument());
   });
@@ -148,7 +150,7 @@ describe("iteration assignment scope and preview", () => {
     await user.click(await screen.findByText("Assign to iteration"));
     const currentRow = (await screen.findByText("Current iteration")).parentElement!;
     expect(within(currentRow).getByText(targetA.name)).toHaveAttribute("title", targetA.name);
-    expect(screen.getByLabelText("Iterations")).toHaveValue(targetA.id);
+    expect(screen.getByLabelText("Iterations")).toHaveTextContent(targetA.name);
     expect(screen.getByText(/Rolled over at least three times/)).toBeInTheDocument();
   });
   it("previews the exact batch selection without asking users to paste task IDs", async () => {
@@ -156,9 +158,10 @@ describe("iteration assignment scope and preview", () => {
     const user = userEvent.setup();
     await user.click(await screen.findByText("Assign to iteration"));
     expect(screen.queryByLabelText("Task IDs")).not.toBeInTheDocument();
-    await user.selectOptions(screen.getByLabelText("Iterations"), targetA.id);
+    await user.click(screen.getByRole("combobox", { name: "Iterations" }));
+    await user.click(await screen.findByRole("option", { name: targetA.name }));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "Assign to iteration" });
     expect(vi.mocked(api.previewIteration).mock.calls.at(-1)![1].moves.map((move) => move.issue_id)).toEqual([alpha.id, beta.id]);
   });
   it("rebinds hidden issue identity and local choices when IssueDetail changes task", async () => {
@@ -166,15 +169,15 @@ describe("iteration assignment scope and preview", () => {
     await user.click(await screen.findByText("Assign to iteration"));
     await user.type(screen.getByLabelText("Reason"), "Alpha assignment");
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "Assign to iteration" });
     rerender();
     expect(
-      screen.queryByRole("button", { name: "Confirm changes" }),
+      screen.queryByRole("button", { name: "Assign to iteration" }),
     ).not.toBeInTheDocument();
     await user.click(screen.getByText("Assign to iteration"));
     expect(screen.getByLabelText("Reason")).toHaveValue("");
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "Assign to iteration" });
     expect(api.getIssue).not.toHaveBeenCalled();
     expect(
       vi.mocked(api.previewIteration).mock.calls.at(-1)![1].moves[0]?.issue_id,
@@ -190,16 +193,18 @@ describe("iteration assignment scope and preview", () => {
     );
     const { user } = mount();
     await user.click(await screen.findByText("Assign to iteration"));
-    await user.selectOptions(screen.getByLabelText("Iterations"), targetA.id);
+    await user.click(screen.getByRole("combobox", { name: "Iterations" }));
+    await user.click(await screen.findByRole("option", { name: targetA.name }));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
     await waitFor(() => expect(api.previewIteration).toHaveBeenCalled());
     expect(screen.getByLabelText("Iterations")).toBeDisabled();
     expect(screen.getByLabelText("Reason")).toBeDisabled();
-    await user.selectOptions(screen.getByLabelText("Iterations"), targetB.id);
+    await user.click(screen.getByRole("combobox", { name: "Iterations" }));
+    expect(screen.queryByRole("option", { name: targetB.name })).not.toBeInTheDocument();
     await act(async () => finish());
-    expect(screen.getByLabelText("Iterations")).toHaveValue(targetA.id);
+    expect(screen.getByLabelText("Iterations")).toHaveTextContent(targetA.name);
     await user.click(
-      await screen.findByRole("button", { name: "Confirm changes" }),
+      await screen.findByRole("button", { name: "Assign to iteration" }),
     );
     expect(
       vi.mocked(api.applyIterationOperation).mock.calls[0]![1].draft.moves[0]

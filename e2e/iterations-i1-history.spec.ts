@@ -8,8 +8,9 @@ test("I1 filters and groups the complete scope and preserves historical priority
   const { api, workspace } = await p1Session(page);
   const base = `/api/workspaces/${workspace.id}`;
   try {
-    await api.requestJSON(`${base}/iteration-settings/enable`, { method: "POST", body: { request_id: randomUUID(), expected_revision: 1, confirmed_timezone: "UTC" } });
-    const created = await api.requestJSON<{ iteration_ids: string[] }>(`${base}/iterations`, { method: "POST", body: { request_id: randomUUID(), name: "Metadata cycle", start_date: new Date().toISOString().slice(0, 10), end_date: new Date(Date.now() + 13 * 86400000).toISOString().slice(0, 10), confirmed_timezone: "UTC" } });
+    const { effective_timezone: timezone } = await api.requestJSON<{ effective_timezone: string }>(`${base}/iteration-settings`);
+    await api.requestJSON(`${base}/iteration-settings/enable`, { method: "POST", body: { request_id: randomUUID(), expected_revision: 1, confirmed_timezone: timezone } });
+    const created = await api.requestJSON<{ iteration_ids: string[] }>(`${base}/iterations`, { method: "POST", body: { request_id: randomUUID(), name: "Metadata cycle", start_date: new Date().toISOString().slice(0, 10), end_date: new Date(Date.now() + 13 * 86400000).toISOString().slice(0, 10), confirmed_timezone: timezone } });
     const id = created.iteration_ids[0]!;
     const issues = await api.seedTableIssues(Array.from({ length: 61 }, (_, n) => ({ title: `Metadata item ${String(n).padStart(2, "0")}`, status: "todo" as const, priority: n % 2 === 0 ? "high" as const : "low" as const })));
     const special = issues[0]!;
@@ -29,11 +30,14 @@ test("I1 filters and groups the complete scope and preserves historical priority
 
     await page.goto(`/${workspace.slug}/iterations/${id}`);
     await page.locator("summary").filter({ hasText: "Filter and group tasks" }).click();
-    await page.getByRole("combobox", { name: "Group tasks by", exact: true }).selectOption("priority");
+    await page.getByRole("combobox", { name: "Group tasks by", exact: true }).click();
+    await page.getByRole("option", { name: "Priority", exact: true }).click();
     await expect(page.getByRole("heading", { name: "High (31)", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Low (30)", exact: true })).toBeVisible();
-    await page.getByRole("combobox", { name: "Priority", exact: true }).selectOption("high");
-    await page.getByRole("combobox", { name: "Label", exact: true }).selectOption(label.id);
+    await page.getByRole("combobox", { name: "Priority", exact: true }).click();
+    await page.getByRole("option", { name: "High", exact: true }).click();
+    await page.getByRole("combobox", { name: "Label", exact: true }).click();
+    await page.getByRole("option", { name: "Frozen review", exact: true }).click();
     await expect(page.getByRole("heading", { name: "High (1)", exact: true })).toBeVisible();
     await expect(page.locator("dl > div").filter({ has: page.getByText("Original commitment", { exact: true }) }).locator("dd")).toHaveText("61");
 
@@ -55,8 +59,10 @@ test("I1 filters and groups the complete scope and preserves historical priority
     await expect(page.getByRole("link", { name: "Metadata cycle", exact: true })).toBeVisible();
     await page.getByRole("link", { name: "Metadata cycle", exact: true }).click();
     await page.locator("summary").filter({ hasText: "Filter and group tasks" }).click();
-    await page.getByRole("combobox", { name: "Priority", exact: true }).selectOption("high");
-    await page.getByRole("combobox", { name: "Label", exact: true }).selectOption(label.id);
+    await page.getByRole("combobox", { name: "Priority", exact: true }).click();
+    await page.getByRole("option", { name: "High", exact: true }).click();
+    await page.getByRole("combobox", { name: "Label", exact: true }).click();
+    await page.getByRole("option", { name: "Frozen review", exact: true }).click();
     await expect(page.getByRole("button", { name: new RegExp(special.title) })).toBeVisible();
     await page.getByRole("button", { name: new RegExp(special.title) }).click();
     await expect(page.getByText("Changed live metadata", { exact: false }).first()).toBeVisible();

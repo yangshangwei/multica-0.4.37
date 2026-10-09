@@ -1,5 +1,6 @@
 "use client";
 import { IterationCandidate } from "../iterations/iteration-assignment";
+import { iterationCapabilitiesOptions, iterationChoicesOptions } from "@multica/core/iterations";
 
 import { issueStatusCategory } from "@multica/core/issues";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
@@ -224,6 +225,7 @@ export function ManualCreatePanel({
   const { t: tIssues } = useT("issues");
   const { t: tEditor } = useT("editor");
   const { t: tProjects } = useT("projects");
+  const wsId = useWorkspaceId();
   const router = useNavigation();
   const p = useWorkspacePaths();
   const workspaceName = useCurrentWorkspace()?.name;
@@ -287,7 +289,31 @@ export function ManualCreatePanel({
   const [propertyValues, setPropertyValues] = useState(draft.manual.propertyValues ?? {});
   const [customPropertyPickerId, setCustomPropertyPickerId] = useState<string | null>(null);
   const [allowCompletedIteration, setAllowCompletedIteration] = useState(false);
-  const [iterationSelection, setIterationSelection] = useState<{ id: string | null; revision?: number }>({ id: null });
+  const scopedIteration = data?.current_iteration_id != null;
+  const [iterationSelection, setIterationSelection] = useState(() => {
+    const id = data?.current_iteration_id;
+    const revision = data?.expected_iteration_revision;
+    const valid = scopedIteration && data?.workspace_id === wsId
+      && typeof id === "string" && id.trim().length > 0
+      && typeof revision === "number" && Number.isSafeInteger(revision) && revision > 0;
+    return {
+      id: valid ? id : null,
+      revision: valid ? revision : undefined,
+      workspaceId: wsId,
+      invalid: scopedIteration && !valid,
+    };
+  });
+  const iterationCapability = useQuery({ ...iterationCapabilitiesOptions(wsId), enabled: scopedIteration });
+  const iterationChoices = useQuery({ ...iterationChoicesOptions(wsId), enabled: scopedIteration });
+  const selectedIteration = iterationChoices.data?.find(item => item.id === iterationSelection.id);
+  const iterationChecking = scopedIteration && !iterationSelection.invalid
+    && iterationSelection.id !== null && (iterationCapability.isPending || iterationChoices.isPending);
+  // Keep the reviewed revision with the selection. A newer catalogue may
+  // update its name, but only an explicit picker change may rebase the write.
+  const iterationUnavailable = scopedIteration && (iterationSelection.invalid
+    || iterationSelection.workspaceId !== wsId
+    || (iterationSelection.id !== null && (iterationCapability.data?.enabled !== true
+      || !!iterationCapability.error || !!iterationChoices.error || !selectedIteration)));
   const [projectId, setProjectId] = useState<string | undefined>(() => {
     if (data && "project_id" in data) {
       return (data.project_id as string | null) ?? undefined;
@@ -330,7 +356,6 @@ export function ManualCreatePanel({
   const [childPickerOpen, setChildPickerOpen] = useState(false);
   // Fetch parent issue details for the chip (status/identifier/title).
   // List cache usually has it already, so this resolves synchronously.
-  const wsId = useWorkspaceId();
   const { categoryOf: draftStatusCategory } = useIssueStatuses(wsId);
   const { data: workspaceProperties = [] } = useQuery(propertyListOptions(wsId));
   const { data: parentIssue } = useQuery({
@@ -484,6 +509,7 @@ export function ManualCreatePanel({
     uploadGate: gate,
     normalize: () => title.trim(),
     onSubmit: async (): Promise<boolean> => {
+      if (iterationUnavailable) return false;
       // Flush the description editor's pending debounce into the store BEFORE
       // snapshotting, so a late flush of pre-submit typing cannot masquerade
       // as an edit made during the request.
@@ -784,6 +810,7 @@ export function ManualCreatePanel({
   // at the fix; otherwise hand off to the composer (single-flight + gate live
   // there).
   const handleSubmit = () => {
+    if (iterationUnavailable) return;
     if (anchorCommentId && !sourcePreview) return;
     if (!title.trim()) {
       titleEditorRef.current?.focus();
@@ -805,6 +832,7 @@ export function ManualCreatePanel({
   //   2. The parent-issue context, which is not persisted in the draft (it is a
   //      per-invocation intent from "Add sub issue"), so it rides the carry.
   const switchToAgent = () => {
+    if (scopedIteration) return;
     // Serializing mid-upload packs a description that has already lost the
     // pending image into the agent prompt, so gate the switch too.
     if (gate.isBlocked()) return;
@@ -844,13 +872,15 @@ export function ManualCreatePanel({
 
   // One state for the button and the keyboard paths, so a rendered affordance
   // can never disagree with what `handleSubmit` will actually do.
-  const submitState: "submitting" | "uploading" | "missing_title" | "source_unavailable" | "ready" =
+  const submitState: "submitting" | "uploading" | "missing_title" | "source_unavailable" | "iteration_unavailable" | "ready" =
     submitting
       ? "submitting"
       : gate.uploading
         ? "uploading"
         : anchorCommentId && !sourcePreview
           ? "source_unavailable"
+          : iterationUnavailable
+            ? "iteration_unavailable"
           : !title.trim()
             ? "missing_title"
             : "ready";
@@ -867,7 +897,7 @@ export function ManualCreatePanel({
       // keyboard and screen-reader users could never reach the tooltip that
       // explains why nothing happens. `handleSubmit` is the real gate either way.
       disabled={submitBusy}
-      aria-disabled={submitState === "missing_title" || submitState === "source_unavailable" || undefined}
+      aria-disabled={submitState === "missing_title" || submitState === "source_unavailable" || submitState === "iteration_unavailable" || undefined}
       aria-busy={submitBusy || undefined}
       // The Button base only dims/blocks on native `disabled`, so aria-disabled
       // would otherwise stay a fully lit, pressable-looking primary button.
@@ -945,6 +975,20 @@ export function ManualCreatePanel({
                 </Tooltip>
               </div>
             </div>
+
+            {scopedIteration && <div className="px-5 pb-2 text-caption">
+              {iterationSelection.id && <p className="break-words text-muted-foreground">
+                {tProjects(($) => $.iterations.title)}: {selectedIteration?.name ?? iterationSelection.id}
+              </p>}
+              {iterationChecking && <p role="status">{tProjects(($) => $.iterations.loading)}</p>}
+              {iterationUnavailable && !iterationChecking && <p role="alert" className="text-destructive">
+                {tProjects(($) => $.iterations.creationSelectionRequired)}
+              </p>}
+              {(iterationChoices.error || iterationCapability.error) && <Button type="button" size="sm" variant="ghost" onClick={() => {
+                void iterationCapability.refetch();
+                void iterationChoices.refetch();
+              }}>{tProjects(($) => $.iterations.retry)}</Button>}
+            </div>}
 
             {/* Title */}
             <div className="px-5 pb-2 shrink-0">
@@ -1079,7 +1123,10 @@ export function ManualCreatePanel({
                 />
               )}
 
-              <IterationCandidate wsId={wsId} value={iterationSelection.id} triggerRender={<PillButton />} onChange={(id, revision) => setIterationSelection({ id, revision })} />
+              <IterationCandidate wsId={wsId} value={iterationSelection.id} triggerRender={<PillButton />} onChange={(id, revision) => setIterationSelection({
+                id, revision, workspaceId: wsId,
+                invalid: id !== null && (!Number.isSafeInteger(revision) || (revision ?? 0) <= 0),
+              })} />
               {iterationSelection.id && draftStatusCategory(status) === "done" && <label className="flex items-center gap-2"><input type="checkbox" checked={allowCompletedIteration} onChange={event => setAllowCompletedIteration(event.target.checked)} />{tProjects($ => $.iterations.allowCompleted)}</label>}
               {/* Project */}
               {showField.project && (
@@ -1421,7 +1468,7 @@ export function ManualCreatePanel({
                   onSelect={(file) => descEditorRef.current?.uploadFile(file)}
                 />
               </div>
-              <button
+              {!scopedIteration && <button
                 type="button"
                 onClick={switchToAgent}
                 disabled={gate.uploading}
@@ -1432,7 +1479,7 @@ export function ManualCreatePanel({
               >
                 <ArrowLeftRight className="size-3.5 text-brand transition-transform duration-300 group-hover:rotate-180" />
                 {t(($) => $.create_issue.switch_to_agent)}
-              </button>
+              </button>}
               <label className="flex shrink-0 items-center gap-1.5 text-caption text-muted-foreground cursor-pointer select-none">
                 <Switch
                   size="sm"
@@ -1493,6 +1540,7 @@ export function CreateIssueModal(props: {
         className={manualDialogContentClass(isExpanded, needsAssistSpace)}
       >
         <ManualCreatePanel
+          key={props.data?.current_iteration_id != null ? `${props.data.workspace_id}:${props.data.current_iteration_id}` : undefined}
           {...props}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}

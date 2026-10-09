@@ -13,7 +13,10 @@ import {
 import { memberListOptions } from "@multica/core/workspace/queries";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
+import { Textarea } from "@multica/ui/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@multica/ui/components/ui/select";
 import { IterationError } from "./iteration-error";
+import { iterationDisclosureClass } from "./iteration-presentation";
 import { useT } from "../i18n";
 import { useNavigation } from "../navigation";
 import { useWorkspacePaths } from "@multica/core/paths";
@@ -53,10 +56,14 @@ export function IterationForm({
   wsId,
   timezone,
   iteration,
+  expanded = false,
+  available = true,
 }: {
   wsId: string;
   timezone: string;
   iteration?: Iteration;
+  expanded?: boolean;
+  available?: boolean;
 }) {
   const { t } = useT("projects");
   const nav = useNavigation();
@@ -88,6 +95,11 @@ export function IterationForm({
   const save = useIterationCommand(wsId, iteration?.id ?? "create");
   const pending = save.pending;
   const busy = save.isPending || refreshing;
+  const locked = !available || busy || pending !== null || resolution === "saved";
+  const coordinatorOptions = [
+    { value: "", label: t(($) => $.iterations.none) },
+    ...(members.data ?? []).map((member) => ({ value: member.user_id, label: member.name ?? member.user_id })),
+  ];
   const current = edit.baseline && edit.baseline.revision > (iteration?.revision ?? 0) ? edit.baseline : iteration;
   const status = conflict && conflict.revision > (current?.revision ?? 0) ? conflict.status : current?.status;
   const fields = edit.baseline ? changedFields(edit.baseline, edit.values, status) : {};
@@ -132,7 +144,7 @@ export function IterationForm({
     }
   }
   async function submit() {
-    if (busy || resolution) return;
+    if (busy || resolution || (!available && !pending)) return;
     if (!pending && validateIterationName(name)) {
       setNameTouched(true);
       nameInput.current?.focus();
@@ -194,8 +206,8 @@ export function IterationForm({
     `${t(($) => $.iterations.coordinator)}: ${values.coordinator_user_id ? members.data?.find((member) => member.user_id === values.coordinator_user_id)?.name ?? t(($) => $.iterations.coordinatorMissing) : t(($) => $.iterations.none)}`,
   ].join("\n");
   return (
-    <details>
-      <summary className="font-medium cursor-pointer">
+    <details open={expanded || undefined} className="group/form min-w-0">
+      <summary className={expanded ? "hidden" : iterationDisclosureClass}>
         {t(($) => (iteration ? $.iterations.edit : $.iterations.create))}
       </summary>
       <form
@@ -206,12 +218,13 @@ export function IterationForm({
         }}
       >
         <fieldset
-          disabled={busy || pending !== null || resolution === "saved"}
+          disabled={locked}
           className="space-y-4"
         >
           <label className="block">
             {t(($) => $.iterations.name)}
             <Input
+              className="pointer-coarse:min-h-11"
               ref={nameInput}
               required
               aria-invalid={nameError ? true : undefined}
@@ -247,8 +260,8 @@ export function IterationForm({
           )}
           <label className="block">
             {t(($) => $.iterations.description)}
-            <textarea
-              className="min-h-24 w-full rounded-md border bg-background p-3"
+            <Textarea
+              className="min-h-24 pointer-coarse:min-h-11"
               value={description ?? ""}
               onChange={(e) => patch({ description: e.target.value || null })}
             />
@@ -257,6 +270,7 @@ export function IterationForm({
             <label>
               {t(($) => $.iterations.startDate)}
               <Input
+                className="pointer-coarse:min-h-11"
                 type="date"
                 required
                 disabled={!!iteration && status !== "planned"}
@@ -267,6 +281,7 @@ export function IterationForm({
             <label>
               {t(($) => $.iterations.endDate)}
               <Input
+                className="pointer-coarse:min-h-11"
                 type="date"
                 required
                 disabled={
@@ -280,33 +295,36 @@ export function IterationForm({
             </label>
           </div>
           {(!iteration || ["planned", "active"].includes(status ?? "")) && overlaps.length > 0 && <p role="status">{t(($) => $.iterations.overlapWarning)} {overlaps.map((item) => item.name).join(", ")}</p>}
-          <label className="block">
-            {t(($) => $.iterations.coordinator)}
-            <select
-              disabled={
-                !!iteration && !["planned", "active"].includes(status ?? "")
-              }
+          <div className="grid min-w-0 gap-1.5">
+            <label htmlFor={`${nameFieldId}-coordinator`}>{t(($) => $.iterations.coordinator)}</label>
+            <Select
+              items={coordinatorOptions}
+              disabled={locked || (!!iteration && !["planned", "active"].includes(status ?? ""))}
               value={coordinator ?? ""}
-              onChange={(e) => patch({ coordinator_user_id: e.target.value || null })}
-              className="block w-full rounded-md border bg-background p-2"
+              onValueChange={(value) => patch({ coordinator_user_id: value || null })}
             >
-              <option value="">{t(($) => $.iterations.none)}</option>
-              {members.data?.map((member) => (
-                <option key={member.user_id} value={member.user_id}>
-                  {member.name ?? member.user_id}
-                </option>
-              ))}
-            </select>
-          </label>
+              <SelectTrigger id={`${nameFieldId}-coordinator`} className="w-full pointer-coarse:min-h-11"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {coordinatorOptions.map((option) => <SelectItem key={option.value} value={option.value} className="pointer-coarse:min-h-11 [&>span:first-child]:min-w-0 [&>span:first-child]:shrink [&>span:first-child]:whitespace-normal"><span className="[overflow-wrap:anywhere]">{option.label}</span></SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
           {iteration && (
-            <label className="block">
-              {t(($) => $.iterations.reason)}
+            <div className="space-y-1.5">
+              <div className="flex flex-wrap items-baseline gap-2">
+                <label htmlFor={`${nameFieldId}-reason`}>{t(($) => $.iterations.reason)}</label>
+                <span aria-hidden className="text-caption text-muted-foreground">{t(($) => $.iterations.audit.required)}</span>
+              </div>
               <Input
+                id={`${nameFieldId}-reason`}
+                className="pointer-coarse:min-h-11"
                 required
+                aria-describedby={`${nameFieldId}-reason-hint`}
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
-            </label>
+              <p id={`${nameFieldId}-reason-hint`} className="text-caption text-muted-foreground">{t(($) => $.iterations.audit.editReasonHint)}</p>
+            </div>
           )}
         </fieldset>
         {conflict && <RevisionConflictCompare
@@ -316,13 +334,14 @@ export function IterationForm({
           serverValue={compareValues(conflict)}
           localValue={compareValues({ ...editFields(conflict), ...fields })}
           footer={t(($) => $.iterations.rebaseHint)}
-          serverAction={<Button type="button" className="h-auto min-h-8 w-full whitespace-normal break-words py-1.5" variant="outline" disabled={busy || !!pending} onClick={() => adopt(conflict)}>{t(($) => $.management.use_server)}</Button>}
-          localAction={<Button type="button" className="h-auto min-h-8 w-full whitespace-normal break-words py-1.5" disabled={busy || !!pending} onClick={() => adopt(conflict, true)}>{t(($) => $.iterations.rebaseChanges)}</Button>}
+          serverAction={<Button type="button" className="h-auto min-h-8 w-full whitespace-normal break-words py-1.5 pointer-coarse:min-h-11" variant="outline" disabled={busy || !!pending} onClick={() => adopt(conflict)}>{t(($) => $.management.use_server)}</Button>}
+          localAction={<Button type="button" className="h-auto min-h-8 w-full whitespace-normal break-words py-1.5 pointer-coarse:min-h-11" disabled={busy || !!pending} onClick={() => adopt(conflict, true)}>{t(($) => $.iterations.rebaseChanges)}</Button>}
         />}
         {resolution === "saved" && <p role="status">{t(($) => $.iterations.savedRefresh)}</p>}
-        {resolution && !conflict && <Button type="button" disabled={busy || !!pending} onClick={() => void refresh(resolution)}>{t(($) => $.iterations.retryRefresh)}</Button>}
+        {resolution && !conflict && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={busy || !!pending} onClick={() => void refresh(resolution)}>{t(($) => $.iterations.retryRefresh)}</Button>}
         {refreshError ? <IterationError error={refreshError} /> : save.error && !conflict && <IterationError error={save.error} />}
-        <Button type="submit" disabled={busy || resolution !== null}>
+        {!available && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.iterations.pages.writesUnavailable)}</p>}
+        <Button type="submit" className="pointer-coarse:min-h-11" disabled={(!available && !pending) || busy || resolution !== null}>
           {t(($) => (iteration ? $.iterations.save : $.iterations.create))}
         </Button>
       </form>

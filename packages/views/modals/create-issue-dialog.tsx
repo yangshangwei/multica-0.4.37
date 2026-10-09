@@ -56,7 +56,10 @@ export function CreateIssueDialog({
       />
     );
   }
-  return <CreateIssueDialogBody onClose={onClose} initialMode={initialMode} data={data} />;
+  return <CreateIssueDialogBody
+    key={data?.current_iteration_id != null ? `${data.workspace_id}:${data.current_iteration_id}` : undefined}
+    onClose={onClose} initialMode={initialMode} data={data}
+  />;
 }
 
 function SourceContextCreateIssueDialog({
@@ -119,7 +122,8 @@ function CreateIssueDialogBody({
   sourceContextExpanded?: boolean;
 }) {
   const setLastMode = useCreateModeStore((s) => s.setLastMode);
-  const [mode, setMode] = useState<CreateMode>(initialMode);
+  const scopedIteration = data?.current_iteration_id != null;
+  const [mode, setMode] = useState<CreateMode>(scopedIteration ? "manual" : initialMode);
   const [panelData, setPanelData] = useState(data ?? null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [needsAssistSpace, setNeedsAssistSpace] = useState(false);
@@ -128,6 +132,7 @@ function CreateIssueDialogBody({
     : panelData;
 
   const switchTo = (next: CreateMode) => (carry?: Record<string, unknown> | null) => {
+    if (scopedIteration) return;
     setLastMode(next);
     setPanelData(carry ?? null);
     setMode(next);
@@ -145,7 +150,7 @@ function CreateIssueDialogBody({
         showCloseButton={false}
         className={className}
       >
-        {mode === "agent" ? (
+        {mode === "agent" && !scopedIteration ? (
           <AgentCreatePanel
             onClose={onClose}
             onSwitchMode={switchTo("manual")}
@@ -157,7 +162,7 @@ function CreateIssueDialogBody({
         ) : (
           <ManualCreatePanel
             onClose={onClose}
-            onSwitchMode={switchTo("agent")}
+            onSwitchMode={scopedIteration ? undefined : switchTo("agent")}
             data={effectiveData}
             isExpanded={isExpanded}
             setIsExpanded={setIsExpanded}

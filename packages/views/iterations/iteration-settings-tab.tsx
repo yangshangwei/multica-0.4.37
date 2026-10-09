@@ -15,6 +15,7 @@ import {
 } from "@multica/core/iterations";
 import { Button } from "@multica/ui/components/ui/button";
 import { Switch } from "@multica/ui/components/ui/switch";
+import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { AppLink } from "../navigation";
 import { useT } from "../i18n";
 import { SettingsCard, SettingsRow, SettingsSection, SettingsTab } from "../settings/components/settings-layout";
@@ -74,12 +75,12 @@ function WorkspaceIterationSettings({ wsId }: { wsId: string }) {
     <IterationRecovery wsId={wsId} />
     {error && <div className="space-y-2">
       <IterationError error={error} />
-      <Button variant="outline" disabled={capability.isFetching || settings.isFetching} onClick={() => void retry()}>{t(($) => $.iterations.retry)}</Button>
+      <Button variant="outline" className="pointer-coarse:min-h-11" disabled={capability.isFetching || settings.isFetching} onClick={() => void retry()}>{t(($) => $.iterations.retry)}</Button>
     </div>}
-    {capability.isPending || (supported && settings.isPending) ? <p role="status">{t(($) => $.iterations.loading)}</p> :
+    {capability.isPending || (supported && settings.isPending) ? <div role="status" className="space-y-5"><span className="sr-only">{t(($) => $.iterations.loading)}</span><Skeleton className="h-16 w-full" /><Skeleton className="h-28 w-full" /></div> :
       !supported && !error ? <div className="space-y-3">
         <p role="status" className="text-body text-muted-foreground">{t(($) => $.iterations.unsupported)}</p>
-        <Button variant="outline" disabled={capability.isFetching} onClick={() => void retry()}>{t(($) => $.iterations.retry)}</Button>
+        <Button variant="outline" className="pointer-coarse:min-h-11" disabled={capability.isFetching} onClick={() => void retry()}>{t(($) => $.iterations.retry)}</Button>
       </div> : null}
     {enable.error && !denied && <IterationError error={enable.error} />}
     {readable && <>
@@ -90,7 +91,7 @@ function WorkspaceIterationSettings({ wsId }: { wsId: string }) {
             <Switch aria-label={t(($) => $.iterations.enable)} aria-describedby={statusId} className="after:-inset-y-3.5" checked={enabled} disabled={!editable || disableOpen} onCheckedChange={(next) => void toggle(next)} />
           </SettingsRow>
           <SettingsRow label={<span id={statusId} role="status">{t(($) => enabled ? $.iterations.enabled : $.iterations.disabled)}</span>} description={enabled ? <>
-            {choices.error ? <span role="alert">{t(($) => $.iterations.counts_error)} <Button size="sm" variant="ghost" onClick={() => void choices.refetch()}>{t(($) => $.iterations.retry)}</Button></span> :
+            {choices.error ? <span role="alert">{t(($) => $.iterations.counts_error)} <Button size="sm" variant="ghost" className="pointer-coarse:min-h-11" onClick={() => void choices.refetch()}>{t(($) => $.iterations.retry)}</Button></span> :
               choices.data ? t(($) => $.iterations.counts, { active: choices.data.filter((item) => item.status === "active").length, planned: choices.data.filter((item) => item.status === "planned").length }) : <span role="status">{t(($) => $.iterations.loading)}</span>}
           </> : undefined}>
             <AppLink className="inline-flex min-h-11 items-center text-body font-medium underline underline-offset-4" href={paths.iterations()}>{t(($) => enabled ? $.iterations.manage : $.iterations.history)}</AppLink>
@@ -104,7 +105,7 @@ function WorkspaceIterationSettings({ wsId }: { wsId: string }) {
           <AppLink className="inline-flex min-h-11 items-center font-medium text-foreground underline underline-offset-4" href={`${paths.settings()}?tab=workspace`}>{t(($) => $.iterations.timezone_settings)}</AppLink>
         </div>
         {canManage && (operationBlocked || refreshBlocked) && <p role="status" className="px-0.5 text-caption text-muted-foreground">{t(($) => operationBlocked ? $.iterations.operation_block : $.iterations.refresh_block)}</p>}
-        {refreshBlocked && !error && !settings.isFetching && !capability.isFetching && <Button size="sm" variant="outline" onClick={() => void retry()}>{t(($) => $.iterations.retry)}</Button>}
+        {refreshBlocked && !error && !settings.isFetching && !capability.isFetching && <Button size="sm" variant="outline" className="pointer-coarse:min-h-11" onClick={() => void retry()}>{t(($) => $.iterations.retry)}</Button>}
       </SettingsSection>
       <p className="text-caption leading-5 text-muted-foreground">{t(($) => $.iterations.footer)}</p>
       <IterationOperation wsId={wsId} iteration={null} settingsRevision={settings.data!.revision} operation="disable" available={canManage && enabled && !operationBlocked && !refreshBlocked} open={disableOpen} onOpenChange={setDisableOpen} hideTrigger description={t(($) => $.iterations.disable_description)} />

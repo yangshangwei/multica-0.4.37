@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createInstance } from "i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { api, ApiError } from "@multica/core/api";
 import { IterationsPage } from "./iteration-page";
 import {
@@ -17,16 +18,18 @@ import {
   ws,
 } from "./test-fixtures";
 import projects from "../locales/en/projects.json";
+import chineseProjects from "../locales/zh-Hans/projects.json";
 import issues from "../locales/en/issues.json";
+import chineseIssues from "../locales/zh-Hans/issues.json";
 const membership = vi.hoisted(() => ({ role: "member" }));
+const language = vi.hoisted(() => ({ locale: "en" }));
 const route = vi.hoisted(() => ({ pathname: "/acme/iterations", push: vi.fn(), getShareableUrl: (path: string) => `https://multica.test${path}` }));
 const copyLink = vi.hoisted(() => vi.fn().mockResolvedValue(true));
 vi.mock("@multica/ui/lib/clipboard", () => ({ copyText: copyLink }));
 vi.mock("../i18n", () => ({
-  useLocale: () => "en",
-  useT: (namespace?: string) => ({
-    t: (fn: (x: unknown) => string) =>
-      fn(namespace === "issues" ? issues : projects),
+  useLocale: () => language.locale,
+  useT: (namespace: "projects" | "issues" = "projects") => ({
+    t: translations.getFixedT(language.locale, namespace),
   }),
 }));
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => ws }));
@@ -42,7 +45,9 @@ vi.mock("../navigation", () => ({
 }));
 vi.mock("@multica/core/paths", () => ({
   useWorkspacePaths: () => ({
+    root: () => "/acme/issues",
     iterations: () => "/acme/iterations",
+    settings: () => "/acme/settings",
     iterationDetail: (id: string) => `/acme/iterations/${id}`,
     issueDetail: (id: string) => `/acme/issues/${id}`,
   }),
@@ -62,7 +67,7 @@ vi.mock("@multica/core/workspace/queries", () => ({
   agentListOptions: () => ({ queryKey: ["agents"], queryFn: async () => [] }),
   squadListOptions: () => ({ queryKey: ["squads"], queryFn: async () => [] }),
 }));
-vi.mock("./iteration-assignment", () => ({ IterationAssignment: () => null }));
+vi.mock("./iteration-assignment", () => ({ IterationAssignment: () => null, IterationSelect: () => null }));
 vi.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
@@ -84,13 +89,22 @@ vi.mock("@multica/core/api", async (importOriginal) => ({
     listIterations: vi.fn(),
     getIteration: vi.fn(),
     getIterationIssues: vi.fn(),
+    getIterationEvents: vi.fn(),
     previewIteration: vi.fn(),
     applyIterationOperation: vi.fn(),
     getIterationOperation: vi.fn(),
   },
 }));
+const translations = createInstance();
+beforeAll(async () => {
+  await translations.init({
+    lng: "en", fallbackLng: "en", interpolation: { escapeValue: false },
+    resources: { en: { projects, issues }, "zh-Hans": { projects: chineseProjects, issues: chineseIssues } },
+  });
+});
 beforeEach(() => {
   membership.role = "member";
+  language.locale = "en";
   vi.resetAllMocks();
   copyLink.mockResolvedValue(true);
   route.pathname = "/acme/iterations";
@@ -116,15 +130,16 @@ beforeEach(() => {
     snapshot: null,
   });
   vi.mocked(api.getIterationIssues).mockResolvedValue(issuePage([alpha, beta]));
+  vi.mocked(api.getIterationEvents).mockResolvedValue({ workspace_id: ws, iteration_id: source.id, items: [], next_cursor: null });
   vi.mocked(api.previewIteration).mockImplementation(async (_ws, draft) =>
     previewFor(draft),
   );
 });
-function mount() {
+function mount({ mainLandmark = false }: { mainLandmark?: boolean } = {}) {
   const client = new QueryClient();
   const view = render(
     <QueryClientProvider client={client}>
-      <IterationsPage />
+      <IterationsPage mainLandmark={mainLandmark} />
     </QueryClientProvider>,
   );
   return {
@@ -133,11 +148,16 @@ function mount() {
     rerender: () =>
       view.rerender(
         <QueryClientProvider client={client}>
-          <IterationsPage />
+          <IterationsPage mainLandmark={mainLandmark} />
         </QueryClientProvider>,
       ),
   };
 }
+async function openEditor(user = userEvent.setup()) {
+  await user.click(await screen.findByRole("button", { name: "More actions" }));
+  await user.click(await screen.findByRole("menuitem", { name: "Edit iteration" }));
+}
+
 describe("iteration pagination and access", () => {
   it("uses the saved Shanghai default for new iterations without a page timezone editor", async () => {
     vi.mocked(api.getIterationSettings).mockResolvedValue({
@@ -148,24 +168,76 @@ describe("iteration pagination and access", () => {
     });
     vi.mocked(api.createIteration).mockResolvedValue({ ...receipt, operation: "create" });
     const { user } = mount();
-    await user.click(await screen.findByText("Iteration settings", { selector: "summary" }));
     expect(screen.queryByLabelText("Planning timezone")).not.toBeInTheDocument();
-    await user.click(screen.getByText("Create iteration", { selector: "summary" }));
+    await user.click(await screen.findByRole("button", { name: "Create iteration" }));
     await user.type(screen.getByLabelText("Name"), "Shanghai plan");
-    await user.click(screen.getByRole("button", { name: "Create iteration" }));
+    await user.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Create iteration" }));
     await waitFor(() => expect(api.createIteration).toHaveBeenCalledWith(ws, expect.objectContaining({
       name: "Shanghai plan",
       confirmed_timezone: "Asia/Shanghai",
     })));
     await waitFor(() => expect(route.push).toHaveBeenCalledWith(`/acme/iterations/${source.id}`));
   });
-  it.each(["UTC", "Asia/Shanghai"])("only labels a detail timezone when it differs from the workspace: %s", async (timezone) => {
+  it.each(["UTC", "Asia/Shanghai"])("always labels the saved detail timezone: %s", async (timezone) => {
     route.pathname = `/acme/iterations/${source.id}`;
     vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: { ...source, timezone }, statistics, snapshot: null });
     mount();
     const header = (await screen.findByRole("heading", { name: source.name })).closest("header");
-    if (timezone === settings.effective_timezone) expect(header).not.toHaveTextContent(timezone);
-    else expect(header).toHaveTextContent(timezone);
+    expect(header).toHaveTextContent(timezone);
+  });
+  it("keeps a frozen period's saved timezone visible after the workspace timezone changes", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({
+      workspace_id: ws,
+      iteration: { ...source, status: "completed" },
+      statistics,
+      snapshot: {
+        schema_version: 1, workspace_id: ws, iteration_id: source.id, operation_id: ws,
+        end_type: "completed", reason: "Finished", logical_ended_at: "2026-10-06T00:00:00Z",
+        processed_at: "2026-10-06T00:00:00Z", original: [], scope: [], events: [], statistics, destinations: [],
+      },
+    });
+    const { client } = mount();
+    const header = (await screen.findByRole("heading", { name: source.name })).closest("header");
+    expect(header).toHaveTextContent("UTC");
+    act(() => client.setQueryData(["iterations", ws, "settings"], { ...settings, effective_timezone: "Asia/Shanghai" }));
+    expect(header).toHaveTextContent("UTC");
+    expect(header).not.toHaveTextContent("Asia/Shanghai");
+  });
+  it.each(["workspace", "detail"])("retries a failed first %s read once without replaying writes", async (scope) => {
+    let finishRead!: () => void;
+    if (scope === "workspace") {
+      vi.mocked(api.getIterationSettings).mockRejectedValueOnce(new TypeError("Offline"))
+        .mockImplementationOnce(() => new Promise((resolve) => { finishRead = () => resolve(settings); }));
+    } else {
+      route.pathname = `/acme/iterations/${source.id}`;
+      vi.mocked(api.getIteration).mockRejectedValueOnce(new TypeError("Offline"))
+        .mockImplementationOnce(() => new Promise((resolve) => { finishRead = () => resolve({ workspace_id: ws, iteration: source, statistics, snapshot: null }); }));
+    }
+    const { user } = mount();
+    const retry = await screen.findByRole("button", { name: "Retry" });
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load iteration data. Try again.");
+    expect(screen.getByRole("link", { name: scope === "workspace" ? "Back to workspace" : "Back to iterations" }))
+      .toHaveAttribute("href", scope === "workspace" ? "/acme/issues" : "/acme/iterations");
+    await user.click(retry);
+    expect(retry).toBeDisabled();
+    await user.click(retry);
+    expect(scope === "workspace" ? api.getIterationSettings : api.getIteration).toHaveBeenCalledTimes(2);
+    await act(async () => finishRead());
+    if (scope === "workspace") await screen.findByRole("link", { name: source.name });
+    else await screen.findByRole("heading", { name: source.name });
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(api.createIteration).not.toHaveBeenCalled();
+    expect(api.applyIterationOperation).not.toHaveBeenCalled();
+    expect(api.getIterationOperation).not.toHaveBeenCalled();
+  });
+  it("treats an initial workspace access-denied 404 as permission loss, not missing data", async () => {
+    vi.mocked(api.getIterationSettings).mockRejectedValue(new ApiError("Revoked", 404, "Not Found", { code: "workspace_access_denied" }));
+    mount();
+    expect(await screen.findByRole("alert")).toHaveTextContent("You no longer have access to these iterations.");
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Back to workspace" })).toHaveAttribute("href", "/acme/issues");
+    expect(api.getIteration).not.toHaveBeenCalled();
   });
   it.each([
     ["detail", new Error("Offline")],
@@ -177,7 +249,7 @@ describe("iteration pagination and access", () => {
   ])("retains an open dirty editor through a transient %s refresh failure (%s)", async (scope, error) => {
     route.pathname += `/${source.id}`;
     const { client } = mount();
-    fireEvent.click(await screen.findByText("Edit iteration", { selector: "summary" }));
+    await openEditor();
     fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Unsent correction" } });
     vi.mocked(api.getIteration).mockRejectedValue(error);
     if (scope === "workspace") {
@@ -186,17 +258,20 @@ describe("iteration pagination and access", () => {
     }
     await act(async () => { await client.invalidateQueries({ queryKey: scope === "workspace" ? ["iterations", ws] : ["iterations", ws, "detail", source.id] }); });
     expect(screen.getByLabelText("Name")).toHaveValue("Unsent correction");
-    expect(screen.getByRole("heading", { name: source.name })).toBeInTheDocument();
-    expect((await screen.findAllByRole("alert")).length).toBeGreaterThan(0);
+    expect(screen.getByText(source.name, { selector: "h1" })).toBeInTheDocument();
+    expect((await screen.findAllByRole("alert", { hidden: true })).length).toBeGreaterThan(0);
   });
   it("hides the editor and stale detail after definitive resource deletion", async () => {
     route.pathname += `/${source.id}`;
     const { client } = mount();
-    fireEvent.click(await screen.findByText("Edit iteration", { selector: "summary" }));
+    await openEditor();
     vi.mocked(api.getIteration).mockRejectedValue(new ApiError("Deleted", 404, "Not Found", { code: "iteration_not_found" }));
     await act(async () => { await client.invalidateQueries({ queryKey: ["iterations", ws, "detail", source.id] }); });
-    expect(screen.queryByLabelText("Name")).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByLabelText("Name")).not.toBeInTheDocument());
     expect(screen.queryByRole("heading", { name: source.name })).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("The requested iteration data is no longer available.");
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Back to iterations" })).toHaveAttribute("href", "/acme/iterations");
   });
   it("keeps unknown planning modes readable without fresh manual actions", async () => {
     route.pathname += `/${source.id}`;
@@ -221,31 +296,26 @@ describe("iteration pagination and access", () => {
   });
   it("groups plans separately and marks the earliest future plan without inventing an active iteration", async () => {
     vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [targetA, { ...source, status: "completed" }], next_cursor: null });
-    mount();
-    expect(await screen.findByText("No iteration is currently active.")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Future plans" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Frozen history" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: targetA.name }).parentElement).toHaveTextContent("Upcoming");
-  });
-  it("resets a stale list cursor without refetching that stale page", async () => {
-    vi.mocked(api.listIterations).mockImplementation(async (_ws, params) => {
-      if (params?.limit === "100") return { workspace_id: ws, items: [source], next_cursor: null };
-      if (params?.cursor)
-        throw new ApiError("Cursor changed", 409, "Conflict", {
-          code: "cursor_stale",
-        });
-      return { workspace_id: ws, items: [source], next_cursor: "cursor" };
-    });
     const { user } = mount();
-    await user.click(await screen.findByRole("button", { name: "Next page" }));
-    await screen.findByRole("alert");
-    await user.click(screen.getByRole("button", { name: "Retry" }));
-    await screen.findByRole("link", { name: source.name });
-    expect(
-      vi
-        .mocked(api.listIterations)
-        .mock.calls.filter(([, params]) => params?.cursor),
-    ).toHaveLength(1);
+    expect(await screen.findByText("No iteration is currently active.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: targetA.name }).closest("article")).toHaveTextContent("Upcoming");
+    expect(api.getIteration).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("tab", { name: "Past iterations" }));
+    expect(screen.getByRole("link", { name: source.name })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: targetA.name })).not.toBeInTheDocument();
+  });
+  it("restarts a stale catalogue before exposing a partial timeline", async () => {
+    let starts = 0;
+    vi.mocked(api.listIterations).mockImplementation(async (_ws, params) => {
+      if (params?.cursor) throw new ApiError("Cursor changed", 409, "Conflict", { code: "cursor_stale" });
+      starts += 1;
+      return { workspace_id: ws, items: starts === 1 ? [targetA] : [source], next_cursor: starts === 1 ? "stale" : null };
+    });
+    mount();
+    expect(await screen.findByRole("link", { name: source.name })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: targetA.name })).not.toBeInTheDocument();
+    expect(starts).toBe(2);
+    expect(vi.mocked(api.listIterations).mock.calls.filter(([, params]) => params?.cursor)).toHaveLength(1);
   });
   it("offers a first-page retry for stale issue pagination", async () => {
     route.pathname += `/${source.id}`;
@@ -283,6 +353,9 @@ describe("iteration pagination and access", () => {
       });
     });
     await screen.findByRole("alert");
+    expect(screen.getByRole("alert")).toHaveTextContent("You no longer have access to these iterations.");
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Back to workspace" })).toHaveAttribute("href", "/acme/issues");
     expect(
       screen.queryByRole("heading", { name: source.name }),
     ).not.toBeInTheDocument();
@@ -298,49 +371,36 @@ describe("iteration pagination and access", () => {
     ).toBe(true);
     expect(window.localStorage.length).toBe(0);
   });
-  it("resets entity-local input, filters and preview when the route changes period", async () => {
+  it("resets entity-local editor input and filters when the route changes period", async () => {
     route.pathname += `/${source.id}`;
-    vi.mocked(api.getIteration).mockImplementation(async (_ws, id) => ({
-      workspace_id: ws,
-      iteration: id === source.id ? source : targetA,
-      statistics,
-      snapshot: null,
-    }));
+    vi.mocked(api.getIteration).mockImplementation(async (_ws, id) => ({ workspace_id: ws, iteration: id === source.id ? source : targetA, statistics, snapshot: null }));
     const { user, rerender, client } = mount();
-    act(() => {
-      client.setQueryData(["iterations", ws, "detail", targetA.id], {
-        workspace_id: ws,
-        iteration: targetA,
-        statistics,
-        snapshot: null,
-      });
-    });
-    await screen.findByRole("heading", { name: source.name });
-    await user.click(
-      screen.getByText("Edit iteration", { selector: "summary" }),
-    );
+    act(() => client.setQueryData(["iterations", ws, "detail", targetA.id], { workspace_id: ws, iteration: targetA, statistics, snapshot: null }));
+    await user.type(await screen.findByLabelText(projects.iterations.audit.searchTasks), "first search");
+    await openEditor(user);
     await user.clear(screen.getByLabelText("Name"));
-    await user.type(
-      screen.getByLabelText("Name"),
-      "First period unsaved draft",
-    );
-    await user.type(screen.getByLabelText("Select tasks"), "first search");
-    await user.click(screen.getByRole("button", { name: "End iteration" }));
-    await user.type(
-      within(screen.getByRole("dialog")).getByLabelText("Reason"),
-      "First period close",
-    );
-    await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await user.type(screen.getByLabelText("Name"), "First period unsaved draft");
     route.pathname = `/acme/iterations/${targetA.id}`;
     rerender();
     await screen.findByRole("heading", { name: targetA.name });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    await user.click(
-      screen.getByText("Edit iteration", { selector: "summary" }),
-    );
+    expect(screen.getByLabelText(projects.iterations.audit.searchTasks)).toHaveValue("");
+    await openEditor(user);
     expect(screen.getByLabelText("Name")).toHaveValue(targetA.name);
-    expect(screen.getByLabelText("Select tasks")).toHaveValue("");
+  });
+  it("drops the previous period's open confirmation after cached navigation", async () => {
+    route.pathname += `/${source.id}`;
+    vi.mocked(api.getIteration).mockImplementation(async (_ws, id) => ({ workspace_id: ws, iteration: id === source.id ? source : targetA, statistics, snapshot: null }));
+    const { user, rerender, client } = mount();
+    act(() => client.setQueryData(["iterations", ws, "detail", targetA.id], { workspace_id: ws, iteration: targetA, statistics, snapshot: null }));
+    await user.click(await screen.findByRole("button", { name: "End iteration" }));
+    await user.type(within(screen.getByRole("dialog")).getByLabelText(/Reason/), "First period close");
+    await user.click(screen.getByRole("button", { name: "Preview changes" }));
+    await screen.findByRole("button", { name: "End iteration" });
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    rerender();
+    await screen.findByRole("heading", { name: targetA.name });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
   it("keeps original request recovery after the realtime closed state arrives before a lost response", async () => {
     route.pathname += `/${source.id}`;
@@ -357,12 +417,12 @@ describe("iteration pagination and access", () => {
       await screen.findByRole("button", { name: "End iteration" }),
     );
     await user.type(
-      within(screen.getByRole("dialog")).getByLabelText("Reason"),
+      within(screen.getByRole("dialog")).getByLabelText(/Reason/),
       "Close original period",
     );
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
     await user.click(
-      await screen.findByRole("button", { name: "Confirm changes" }),
+      await screen.findByRole("button", { name: "End iteration" }),
     );
     await waitFor(() =>
       expect(api.applyIterationOperation).toHaveBeenCalledTimes(1),
@@ -446,7 +506,7 @@ describe("iteration pagination and access", () => {
       });
       const { user } = mount();
       await user.click(
-        await screen.findByRole("button", { name: "Check original request" }),
+        await screen.findByRole("button", { name: operation === "end" ? /^Check request: End iteration — / : /^Check request: Disable all iterations — / }),
       );
       await waitFor(() =>
         expect(api.getIterationOperation).toHaveBeenCalledWith(ws, ws),
@@ -456,56 +516,7 @@ describe("iteration pagination and access", () => {
     },
   );
 
-  it("retains disable recovery when settings become disabled before the response is lost", async () => {
-    membership.role = "owner";
-    let fail!: () => void;
-    vi.mocked(api.applyIterationOperation).mockImplementation(
-      () =>
-        new Promise((_resolve, reject) => {
-          fail = () => reject(new TypeError("Response lost"));
-        }),
-    );
-    vi.mocked(api.getIterationOperation).mockResolvedValue({
-      ...receipt,
-      operation: "disable",
-    });
-    const { user, client } = mount();
-    await user.click(
-      await screen.findByText("Iteration settings", { selector: "summary" }),
-    );
-    await user.click(
-      screen.getByRole("button", { name: "Disable all iterations" }),
-    );
-    await user.type(
-      within(screen.getByRole("dialog")).getByLabelText("Reason"),
-      "Disable original request",
-    );
-    await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await user.click(
-      await screen.findByRole("button", { name: "Confirm changes" }),
-    );
-    await waitFor(() =>
-      expect(api.applyIterationOperation).toHaveBeenCalledTimes(1),
-    );
-    const original = vi.mocked(api.applyIterationOperation).mock.calls[0]![1];
-    act(() => {
-      client.setQueryData(["iterations", ws, "settings"], {
-        ...settings,
-        enabled: false,
-      });
-    });
-    await act(async () => fail());
-    await user.click(
-      await screen.findByRole("button", { name: "Check original request" }),
-    );
-    await waitFor(() =>
-      expect(api.getIterationOperation).toHaveBeenCalledWith(
-        ws,
-        original.request_id,
-      ),
-    );
-    expect(api.applyIterationOperation).toHaveBeenCalledTimes(1);
-  });
+  // Workspace-disable recovery is covered in iteration-settings-tab.test.tsx.
 
   it("reports a rejected original request instead of inferring success from an already-closed period", async () => {
     const command = {
@@ -546,7 +557,7 @@ describe("iteration pagination and access", () => {
     );
     const { user } = mount();
     await user.click(
-      await screen.findByRole("button", { name: "Check original request" }),
+      await screen.findByRole("button", { name: /^Check request: End iteration — / }),
     );
     expect(await screen.findByRole("alert")).toHaveTextContent(
       projects.iterations.conflict,
@@ -558,5 +569,322 @@ describe("iteration pagination and access", () => {
       command.body,
     );
     expect(window.localStorage.length).toBe(0);
+  });
+});
+
+describe("approved iteration business pages", () => {
+  it("explains a blocked start on a populated planned iteration", async () => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: targetA, statistics, snapshot: null });
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [source, targetA], next_cursor: null });
+    const { client } = mount();
+    const start = await screen.findByRole("button", { name: "Start iteration" });
+    await waitFor(() => expect(start).toHaveAccessibleDescription(projects.iterations.pages.startBlocked));
+    expect(start).toBeDisabled();
+    expect(screen.getByText(projects.iterations.pages.startBlocked)).toBeVisible();
+    expect(screen.getByRole("link", { name: source.name })).toHaveAttribute("href", `/acme/iterations/${source.id}`);
+    act(() => client.setQueryData(["iterations", ws, "catalogue"], [targetA]));
+    await waitFor(() => expect(start).toBeEnabled());
+    expect(start).not.toHaveAttribute("aria-describedby");
+    expect(api.previewIteration).not.toHaveBeenCalled();
+  });
+
+  it("explains why start is unavailable while the active iteration check is pending", async () => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    let finishCatalogue!: () => void;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: targetA, statistics, snapshot: null });
+    vi.mocked(api.listIterations).mockImplementation(() => new Promise((resolve) => {
+      finishCatalogue = () => resolve({ workspace_id: ws, items: [targetA], next_cursor: null });
+    }));
+    mount();
+    const start = await screen.findByRole("button", { name: "Start iteration" });
+    expect(start).toBeDisabled();
+    expect(start).toHaveAccessibleDescription(projects.iterations.audit.startChecking);
+    expect(screen.getByText(projects.iterations.audit.startChecking)).toBeVisible();
+    await act(async () => finishCatalogue());
+    await waitFor(() => expect(start).toBeEnabled());
+  });
+
+  it("keeps start blocked after a failed check and retries that read without replaying writes", async () => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: targetA, statistics, snapshot: null });
+    vi.mocked(api.listIterations).mockRejectedValueOnce(new TypeError("Offline"))
+      .mockResolvedValueOnce({ workspace_id: ws, items: [targetA], next_cursor: null });
+    const { user } = mount();
+    const start = await screen.findByRole("button", { name: "Start iteration" });
+    await waitFor(() => expect(start).toHaveAccessibleDescription(projects.iterations.audit.startUnavailable));
+    expect(start).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(start).toBeEnabled());
+    expect(api.listIterations).toHaveBeenCalledTimes(2);
+    expect(api.previewIteration).not.toHaveBeenCalled();
+    expect(api.applyIterationOperation).not.toHaveBeenCalled();
+  });
+
+  it("labels the overview status control and filters through the shared select", async () => {
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [source, targetA], next_cursor: null });
+    const { user } = mount();
+    await user.click(await screen.findByRole("button", { name: "Filters" }));
+    const status = screen.getByRole("combobox", { name: "Status" });
+    const label = screen.getByText("Status", { selector: "label" });
+    expect(label).toBeVisible();
+    expect(label).toHaveAttribute("for", status.id);
+    await user.click(status);
+    await user.click(await screen.findByRole("option", { name: "Planned" }));
+    expect(status).toHaveTextContent("Planned");
+    expect(screen.getByRole("link", { name: targetA.name })).toBeVisible();
+    expect(screen.queryByRole("link", { name: source.name })).not.toBeInTheDocument();
+  });
+
+  it("reveals more planned iterations without describing it as page navigation", async () => {
+    const plans = Array.from({ length: 6 }, (_, index) => ({ ...targetA, id: `plan-${index}`, name: `Plan ${index}` }));
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: plans, next_cursor: null });
+    const { user } = mount();
+    const more = await screen.findByRole("button", { name: "Load more" });
+    expect(screen.getAllByRole("link", { name: /^Plan / })).toHaveLength(5);
+    await user.click(more);
+    expect(screen.getAllByRole("link", { name: /^Plan / })).toHaveLength(6);
+    expect(screen.queryByRole("button", { name: "Load more" })).not.toBeInTheDocument();
+    expect(api.listIterations).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(["overview", "detail"])("leaves the application main landmark to the shell on %s", async (surface) => {
+    if (surface === "detail") route.pathname = `/acme/iterations/${source.id}`;
+    mount();
+    await screen.findByRole("heading", { name: surface === "detail" ? source.name : "Iterations" });
+    expect(screen.queryByRole("main")).not.toBeInTheDocument();
+  });
+
+  it.each(["overview", "detail"])("owns exactly one main landmark when requested by the %s platform route", async (surface) => {
+    if (surface === "detail") route.pathname = `/acme/iterations/${source.id}`;
+    mount({ mainLandmark: true });
+    const heading = await screen.findByRole("heading", { name: surface === "detail" ? source.name : "Iterations" });
+    const landmarks = screen.getAllByRole("main");
+    expect(landmarks).toHaveLength(1);
+    expect(landmarks[0]).toContainElement(heading);
+  });
+
+  it("keeps frozen delivery and unfinished closure destinations distinct from scope events", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    const carry = { ...alpha, id: "30000000-0000-4000-8000-000000000003", identifier: "ITR-3", title: "Carry task C" };
+    const remove = { ...beta, id: "30000000-0000-4000-8000-000000000004", identifier: "ITR-4", title: "Remove task D", status: "blocked" };
+    const added = { ...alpha, id: "30000000-0000-4000-8000-000000000005", identifier: "ITR-5", title: "Added completed task", status: "done" };
+    const frozenScope = issuePage([{ ...alpha, status: "done" }, { ...beta, status: "cancelled" }, carry, remove, added]).items;
+    const frozen = {
+      ...statistics,
+      original: 4, current: 5, cancelled: 1, effective: 4, completed: 2,
+      original_completed: 1, initial_effective: 4, added_unique: 1, cancel_events: 1,
+      effective_ratio: 0.5, original_ratio: 0.25,
+      chart: [{ date: "2026-10-06", effective: 4, completed: 2, original: 4 }],
+    };
+    const snapshot = {
+      schema_version: 1 as const, workspace_id: ws, iteration_id: source.id, operation_id: ws,
+      end_type: "completed", reason: "Close frozen delivery", logical_ended_at: "2026-10-06T12:00:00Z",
+      processed_at: "2026-10-06T12:00:00Z", original: frozenScope.slice(0, 4), scope: frozenScope,
+      events: [], statistics: frozen,
+      destinations: frozenScope.map((issue) => ({
+        issue_id: issue.issue_id, target_iteration_id: issue.issue_id === carry.id ? targetA.id : null,
+        rollover_count_before: 0, rollover_count_after: issue.issue_id === carry.id ? 1 : 0,
+      })),
+    };
+    const detail = { workspace_id: ws, iteration: { ...source, status: "completed" }, statistics: { ...statistics, current: 99, effective: 98, original: 97 }, snapshot };
+    vi.mocked(api.getIteration).mockResolvedValue(detail);
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [detail.iteration, targetA], next_cursor: null });
+    const { user, client } = mount();
+    const tasks = await screen.findByRole("tabpanel", { name: /^Task snapshot/ });
+    for (const node of screen.getAllByText("Original commitment", { selector: "dt" })) expect(tasks).toContainElement(node);
+    await user.click(screen.getByRole("tab", { name: "Progress" }));
+    const progress = screen.getByRole("tabpanel", { name: "Progress" });
+    const delivery = within(progress).getByRole("region", { name: "Delivery summary" });
+    const primary = within(delivery.querySelector("dl")!);
+    const effective = primary.getByText("Effective scope completion").parentElement!;
+    const original = primary.getByText("Original commitment completion").parentElement!;
+    expect(effective).toHaveTextContent("2 / 4");
+    expect(effective).toHaveTextContent("50%");
+    expect(original).toHaveTextContent("1 / 4");
+    expect(original).toHaveTextContent("25%");
+    expect(primary.getByText("Remaining").parentElement).toHaveTextContent("2");
+    expect(primary.getAllByRole("term")).toHaveLength(3);
+    expect(within(progress).getAllByText("50%")).toHaveLength(1);
+    expect(screen.getAllByText(/This history is frozen at closure/)).toHaveLength(1);
+    const outcomes = within(progress).getByRole("region", { name: "Unfinished work at closure" });
+    expect(within(outcomes).getByText("Tasks carried over at closure").parentElement).toHaveTextContent("1");
+    expect(within(outcomes).getByText("Tasks removed at closure").parentElement).toHaveTextContent("1");
+    const unfinished = within(outcomes).getByRole("list", { name: "Unfinished work at closure" });
+    expect(within(unfinished).getAllByRole("listitem")).toHaveLength(2);
+    expect(within(unfinished).getByText("ITR-3 · Carry task C")).toBeVisible();
+    expect(await within(unfinished).findByRole("link", { name: targetA.name })).toBeVisible();
+    expect(within(unfinished).getByText("ITR-4 · Remove task D")).toBeVisible();
+    expect(within(unfinished).queryByText(alpha.title, { exact: false })).not.toBeInTheDocument();
+    expect(within(unfinished).queryByText(beta.title, { exact: false })).not.toBeInTheDocument();
+    act(() => client.setQueryData(["iterations", ws, "detail", source.id], { ...detail, statistics: { ...statistics, completed: 88, remaining: 77 } }));
+    expect(effective).toHaveTextContent("2 / 4");
+    expect(original).toHaveTextContent("1 / 4");
+    await user.click(within(progress).getByText("View closure details", { selector: "summary" }));
+    const closure = within(progress).getByText("View closure details", { selector: "summary" }).closest("details")!;
+    expect(within(closure).getAllByRole("listitem")).toHaveLength(5);
+    expect(within(closure).getByText(`ITR-1 · ${alpha.title}`)).toBeVisible();
+    await user.click(screen.getByRole("tab", { name: "Scope changes" }));
+    const scope = screen.getByRole("tabpanel", { name: "Scope changes" });
+    await user.click(within(scope).getByText("View all scope counts", { selector: "summary" }));
+    expect(within(scope).getByText("Removed during iteration").parentElement).toHaveTextContent("0 events");
+    expect(api.getIterationEvents).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("tab", { name: "Progress" }));
+    expect(within(closure).getByText(`ITR-1 · ${alpha.title}`)).toBeVisible();
+  });
+
+  it("connects the overview tabs to named panels during keyboard navigation", async () => {
+    vi.mocked(api.listIterations).mockResolvedValue({
+      workspace_id: ws,
+      items: [source, { ...targetA, name: "Past period", status: "completed" }],
+      next_cursor: null,
+    });
+    const { user } = mount();
+    const currentTab = await screen.findByRole("tab", { name: "Current and planned" });
+    const currentPanel = screen.getByRole("tabpanel", { name: "Current and planned" });
+    expect(currentTab).toHaveAttribute("aria-controls", currentPanel.id);
+    expect(await within(currentPanel).findByRole("link", { name: source.name })).toBeVisible();
+    currentTab.focus();
+    await user.keyboard("{ArrowRight}");
+    const historyTab = screen.getByRole("tab", { name: "Past iterations" });
+    expect(historyTab).toHaveFocus();
+    await user.keyboard("{Enter}");
+    const historyPanel = screen.getByRole("tabpanel", { name: "Past iterations" });
+    expect(historyTab).toHaveAttribute("aria-selected", "true");
+    expect(historyTab).toHaveAttribute("aria-controls", historyPanel.id);
+    await user.tab();
+    expect(historyPanel).toHaveFocus();
+    expect(within(historyPanel).getByRole("link", { name: "Past period" })).toBeVisible();
+    expect(screen.queryByRole("link", { name: source.name })).not.toBeInTheDocument();
+    expect(api.getIteration).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([false, true])("opens the current chart's data without loading other details (frozen=%s)", async (frozen) => {
+    const points = [
+      { date: "2026-10-01", effective: 5, completed: 0, original: 5 },
+      { date: "2026-10-02", effective: 7, completed: 2, original: 5 },
+    ];
+    vi.mocked(api.getIteration).mockResolvedValue({
+      workspace_id: ws,
+      iteration: { ...source, status: frozen ? "completed" : "active" },
+      statistics: { ...statistics, chart: frozen ? [{ date: "2026-10-03", effective: 99, completed: 98, original: 97 }] : points },
+      snapshot: frozen ? {
+        schema_version: 1, workspace_id: ws, iteration_id: source.id, operation_id: ws,
+        end_type: "completed", reason: "Finished", logical_ended_at: "2026-10-06T00:00:00Z",
+        processed_at: "2026-10-06T00:00:00Z", original: [], scope: [], events: [],
+        statistics: { ...statistics, chart: points }, destinations: [],
+      } : null,
+    });
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [source, targetA, { ...targetA, id: "history", name: "Past period", status: "completed" }], next_cursor: null });
+    const { user } = mount();
+    const disclosure = await screen.findByText("View chart data", { selector: "summary" });
+    expect(screen.getByText("Effective scope completion").parentElement).toHaveTextContent("0%");
+    expect(screen.getByRole("table", { name: "Chart data" })).not.toBeVisible();
+    disclosure.focus();
+    expect(disclosure).toHaveFocus();
+    await user.click(disclosure);
+    const table = screen.getByRole("table", { name: "Chart data" });
+    expect(table).toBeVisible();
+    expect(within(table).getAllByRole("rowheader").map((row) => row.textContent)).toEqual(points.map((point) => point.date));
+    expect(within(table).getAllByRole("row").slice(1).map((row) => within(row).getAllByRole("cell").map((cell) => cell.textContent)))
+      .toEqual([["5", "0", "5"], ["7", "2", "5"]]);
+    await user.click(screen.getByRole("tab", { name: "Past iterations" }));
+    expect(api.getIteration).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(api.getIteration).mock.calls[0]?.[1]).toBe(source.id);
+  });
+
+  it("removes cached overview chart data after its iteration is definitively missing", async () => {
+    const { user, client } = mount();
+    await user.click(await screen.findByText("View chart data", { selector: "summary" }));
+    expect(screen.getByRole("table", { name: "Chart data" })).toBeVisible();
+    vi.mocked(api.getIteration).mockRejectedValue(new ApiError("Deleted", 404, "Not Found", { code: "iteration_not_found" }));
+    await act(async () => { await client.invalidateQueries({ queryKey: ["iterations", ws, "detail", source.id] }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("The requested iteration data is no longer available.");
+    expect(screen.queryByRole("table", { name: "Chart data" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "Scope and completion over time" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+  });
+
+  it.each([["en", "Nov", "30"], ["zh-Hans", "11月", "30日"]])("keeps localized date parts together in the %s timeline", async (locale, month, day) => {
+    language.locale = locale!;
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [{ ...targetA, start_date: "2026-11-30", end_date: "2026-12-13" }], next_cursor: null });
+    mount();
+    const row = (await screen.findByRole("link", { name: targetA.name })).closest("article")!;
+    expect(within(row).getByText(month!, { selector: "time span" })).toHaveClass("whitespace-nowrap");
+    expect(within(row).getByText(day!, { selector: "time span" })).toHaveClass("whitespace-nowrap");
+    expect(row.querySelector("time")).toHaveAttribute("datetime", "2026-11-30");
+    expect(api.getIteration).not.toHaveBeenCalled();
+  });
+
+  it("keeps workspace configuration out of the timeline and exposes history separately", async () => {
+    mount();
+    await screen.findByRole("link", { name: source.name });
+    expect(screen.getByRole("tab", { name: "Current and planned" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Past iterations" })).toBeInTheDocument();
+    expect(screen.queryByText("Iteration settings", { selector: "summary" })).not.toBeInTheDocument();
+  });
+
+  it("retains task filters when moving between detail tabs", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    const { user } = mount();
+    const search = await screen.findByRole("textbox", { name: projects.iterations.audit.searchTasks });
+    await user.type(search, "Alpha");
+    await user.click(screen.getByRole("tab", { name: "Progress" }));
+    await user.click(screen.getByRole("tab", { name: /^Tasks/ }));
+    expect(screen.getByRole("textbox", { name: projects.iterations.audit.searchTasks })).toHaveValue("Alpha");
+  });
+
+  it("gives an empty planned iteration explicit existing-task and new-task actions", async () => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: targetA, statistics: { ...statistics, original: 0, current: 0, effective: 0, remaining: 0 }, snapshot: null });
+    vi.mocked(api.getIterationIssues).mockResolvedValue({ ...issuePage([]), iteration_id: targetA.id });
+    mount();
+    expect(await screen.findByRole("button", { name: "Add existing tasks" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "New task" })).toBeInTheDocument();
+  });
+});
+
+describe("iteration page review regressions", () => {
+  it("keeps the current iteration visible beyond fifty future plans", async () => {
+    const plans = Array.from({ length: 51 }, (_, index) => ({ ...targetA, id: `plan-${index}`, name: `Plan ${index}` }));
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [...plans, source], next_cursor: null });
+    mount();
+    expect(await screen.findByRole("link", { name: source.name })).toBeInTheDocument();
+  });
+  it("returns to the task action when a plan becomes empty on another tab", async () => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [targetA], next_cursor: null });
+    const planned = { workspace_id: ws, iteration: targetA, statistics, snapshot: null };
+    vi.mocked(api.getIteration).mockResolvedValue(planned);
+    const { user, client } = mount();
+    await user.click(await screen.findByRole("tab", { name: "Progress" }));
+    vi.mocked(api.getIterationIssues).mockResolvedValue({ ...issuePage([]), iteration_id: targetA.id });
+    await act(async () => {
+      client.setQueryData(["iterations", ws, "detail", targetA.id], { ...planned, statistics: { ...statistics, current: 0 } });
+      await client.invalidateQueries({ queryKey: ["iterations", ws, "issues", targetA.id] });
+    });
+    await waitFor(() => expect(screen.getByRole("button", { name: "Add existing tasks" })).toBeVisible());
+  });
+  it("keeps an edit draft while its dialog is closed to inspect progress", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    const { user } = mount();
+    await openEditor(user);
+    await user.clear(screen.getByLabelText("Name"));
+    await user.type(screen.getByLabelText("Name"), "Keep this correction");
+    await user.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await user.click(screen.getByRole("tab", { name: "Progress" }));
+    await openEditor(user);
+    expect(screen.getByLabelText("Name")).toHaveValue("Keep this correction");
+  });
+  it("locks a retained edit when another client disables iteration planning", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    const { user, client } = mount();
+    await openEditor(user);
+    await user.clear(screen.getByLabelText("Name"));
+    await user.type(screen.getByLabelText("Name"), "Unsent name");
+    act(() => client.setQueryData(["iterations", ws, "settings"], { ...settings, enabled: false }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save changes" })).toBeDisabled());
+    expect(screen.getByLabelText("Name")).toHaveValue("Unsent name");
   });
 });

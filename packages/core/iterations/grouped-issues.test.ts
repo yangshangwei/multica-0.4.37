@@ -13,6 +13,13 @@ it("groups the complete filtered set, including later pages", async () => {
   expect(result.items.map(item => item.issue_id)).toEqual(["a", "b"]);
   expect(api.getIterationIssues).toHaveBeenLastCalledWith("w", "i", { priority: "high", limit: "100", cursor: "next" }, expect.anything());
 });
+it("preserves the complete unfiltered choices from the first coherent page", async () => {
+  const filter_options = { statuses: ["todo", "later"], projects: [{ id: "project", name: "Frozen project" }], assignees: [{ type: "agent", id: "agent", name: "Frozen agent" }], labels: [{ id: "label", name: "Frozen label" }] };
+  vi.mocked(api.getIterationIssues).mockResolvedValueOnce({ ...page("a", "next"), filter_options }).mockResolvedValueOnce(page("b", null));
+  const result = await new QueryClient().fetchQuery(iterationGroupedIssuesOptions("w", "i", { search: "match" }));
+  expect(result.filter_options).toEqual(filter_options);
+  expect(result.items.map(item => item.issue_id)).toEqual(["a", "b"]);
+});
 it("rejects scope changes rather than combining old and new pages", async () => {
   vi.mocked(api.getIterationIssues).mockResolvedValueOnce(page("a", "next")).mockResolvedValueOnce(page("b", null, 2));
   await expect(new QueryClient().fetchQuery(iterationGroupedIssuesOptions("w", "i"))).rejects.toMatchObject({ status: 409 });

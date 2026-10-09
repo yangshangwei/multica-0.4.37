@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { act, render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -161,13 +161,14 @@ describe("IterationCandidate create pill", () => {
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
-  it("keeps the native selector contract for callers without a pill trigger", async () => {
+  it("keeps labelled selection and revision callbacks for callers without a pill trigger", async () => {
     const { user, onChange } = mount({ pill: false });
     const select = await screen.findByRole("combobox", { name: "Iterations" });
-    await within(select).findByRole("option", { name: targetA.name });
-    await user.selectOptions(select, targetA.id);
+    await user.click(select);
+    await user.click(await screen.findByRole("option", { name: targetA.name }));
     expect(onChange).toHaveBeenLastCalledWith(targetA.id, targetA.revision);
-    await user.selectOptions(select, "");
+    await user.click(select);
+    await user.click(await screen.findByRole("option", { name: "Remove from iteration" }));
     expect(onChange).toHaveBeenLastCalledWith(null, undefined);
   });
 });

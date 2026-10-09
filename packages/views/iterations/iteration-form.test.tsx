@@ -192,6 +192,14 @@ describe("iteration edit snapshot", () => {
   });
 });
 describe("iteration form interaction", () => {
+  it("shows and associates the required edit reason before saving", () => {
+    mountEdit();
+    expect(screen.getByLabelText("Reason")).toBeRequired();
+    expect(screen.getByLabelText("Reason")).toHaveAccessibleDescription(
+      "A reason is required to save changes.",
+    );
+    expect(screen.getByText("Required", { selector: "span" })).toBeInTheDocument();
+  });
   it("warns about overlapping open periods without moving or disabling dates", async () => {
     vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: source.workspace_id, items: [source], next_cursor: null });
     render(<QueryClientProvider client={new QueryClient()}><IterationForm wsId={source.workspace_id} timezone="UTC" /></QueryClientProvider>);

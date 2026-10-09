@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { IterationHistory } from "./iteration-history";
 import { statistics, source, ws } from "./test-fixtures";
@@ -18,7 +19,8 @@ vi.mock("recharts", () => ({
   Tooltip: () => null,
 }));
 describe("iteration chart alternative", () => {
-  it("exposes every plotted value in a labelled data table", () => {
+  it("exposes every plotted value through a focusable data disclosure", async () => {
+    const user = userEvent.setup();
     const statistics = {
       original: 5,
       current: 4,
@@ -55,17 +57,41 @@ describe("iteration chart alternative", () => {
       screen.getByRole("img", { name: "Scope and completion over time" }),
     ).toBeInTheDocument();
     const table = screen.getByRole("table", { name: "Chart data" });
+    expect(table).not.toBeVisible();
+    const disclosure = screen.getByText("View chart data", { selector: "summary" });
+    disclosure.focus();
+    expect(disclosure).toHaveFocus();
+    await user.click(disclosure);
+    expect(table).toBeVisible();
     expect(within(table).getAllByRole("row")).toHaveLength(3);
     expect(within(table).getByText("2026-10-02")).toBeInTheDocument();
     expect(within(table).getByText("2")).toBeInTheDocument();
   });
-  it("shows current scope and every scope-change counter", () => {
-    render(<IterationHistory statistics={{ ...statistics, current: 9, added_unique: 2, removed_events: 1, reentry_events: 3, cancel_events: 4, reopen_events: 5, started: 6, net_effective_change: -2 }} snapshot={null} timezone="UTC" />);
-    for (const [label, value] of [["Current scope", "9"], ["Added tasks", "2"], ["Removal events", "1"], ["Re-entry events", "3"], ["Cancellation events", "4"], ["Reopen events", "5"], ["Started tasks", "6"], ["Net effective scope change", "-2"]]) {
-      expect(screen.getAllByText(label!).find((node) => node.tagName === "DT")!.parentElement).toHaveTextContent(value!);
+  it("keeps task totals and the started count available in count details", async () => {
+    const user = userEvent.setup();
+    render(<IterationHistory statistics={{ ...statistics, current: 9, cancelled: 2, started: 6 }} snapshot={null} timezone="UTC" />);
+    const disclosure = screen.getByText("View count details", { selector: "summary" });
+    const details = disclosure.closest("details")!;
+    expect(within(details).getByText("Started tasks")).not.toBeVisible();
+    await user.click(disclosure);
+    for (const [label, value] of [["Current scope", "9"], ["Cancelled tasks", "2"], ["Started tasks", "6"]]) {
+      expect(within(details).getByText(label!).parentElement).toHaveTextContent(value!);
     }
+    expect(within(details).getByText("Started tasks")).toBeVisible();
+    // Scope event counters are covered by the Scope Changes panel suite.
+    expect(screen.queryByText("Removal events")).not.toBeInTheDocument();
   });
-  it("formats closure time on the saved iteration clock rather than raw UTC microseconds", () => {
+  it.each(["empty denominator", "missing historical rate"])("shows not-applicable rates for %s", (kind) => {
+    const values = kind === "empty denominator"
+      ? { ...statistics, original: 0, current: 0, effective: 0, remaining: 0 }
+      : { ...statistics, original_ratio: null, effective_ratio: null };
+    render(<IterationHistory statistics={values} snapshot={null} timezone="UTC" />);
+    const summary = screen.getByRole("region", { name: "Delivery summary" });
+    expect(within(summary).getAllByText("Not applicable")).toHaveLength(2);
+    expect(within(summary).queryByText("0%")).not.toBeInTheDocument();
+  });
+  it("formats closure time on the saved iteration clock and retains full closeout details", async () => {
+    const user = userEvent.setup();
     const closedAt = "2026-10-06T18:05:30.123456Z";
     render(
       <IterationHistory
@@ -96,12 +122,16 @@ describe("iteration chart alternative", () => {
     expect(time).not.toHaveTextContent("123456");
     expect(time).toHaveAttribute("title", "Asia/Shanghai");
     expect(screen.queryByText(/Asia\/Shanghai/)).not.toBeInTheDocument();
-    expect(screen.getAllByText("Current scope").find((node) => node.tagName === "DT")!.parentElement).toHaveTextContent(String(statistics.current));
+    await user.click(screen.getByText("View count details", { selector: "summary" }));
+    expect(screen.getByText("Scope at closure", { selector: "dt" }).parentElement).toHaveTextContent(String(statistics.current));
     expect(screen.queryByText("99")).not.toBeInTheDocument();
+    await user.click(screen.getByText("View closure details", { selector: "summary" }));
     expect(screen.getByText("Finished")).toBeInTheDocument();
     expect(screen.getByText("Processed at").parentElement).toHaveTextContent("Oct 7");
     expect(screen.getByText(/2 → 3/)).toBeInTheDocument();
     expect(screen.getByText(/Rolled over at least three times/)).toBeInTheDocument();
+    expect(screen.getByText("Some unfinished task destinations were not recorded.")).toBeVisible();
+    expect(screen.queryByText("Tasks removed at closure")).not.toBeInTheDocument();
   });
 });
 

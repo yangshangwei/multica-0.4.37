@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -26,7 +26,7 @@ const locale = vi.hoisted(() => ({ value: "en" }));
 vi.mock("../i18n", () => ({
   useLocale: () => locale.value === "zh" ? "zh-Hans" : "en",
   useT: (namespace?: string) => ({
-    t: (fn: (x: unknown) => string) =>
+    t: (fn: (x: unknown) => string, variables?: Record<string, string>) =>
       fn(
         namespace === "issues"
           ? locale.value === "zh"
@@ -35,7 +35,7 @@ vi.mock("../i18n", () => ({
           : locale.value === "zh"
             ? zhProjects
             : projects,
-      ),
+      ).replace(/\{\{(\w+)\}\}/g, (_match, key: string) => variables?.[key] ?? ""),
   }),
 }));
 vi.mock("@multica/core/auth", () => ({
@@ -85,7 +85,7 @@ beforeEach(() => {
   );
   vi.mocked(api.applyIterationOperation).mockResolvedValue(receipt);
 });
-function mount(operation: "end" | "start" = "end") {
+function mount(operation: "end" | "start" | "handoff" = "end") {
   const client = new QueryClient();
   render(
     <QueryClientProvider client={client}>
@@ -102,29 +102,81 @@ function mount(operation: "end" | "start" = "end") {
 async function openPreview(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByRole("button", { name: "End iteration" }));
   await user.type(screen.getByLabelText("Reason"), "End this period");
-  await user.selectOptions(
-    screen.getByLabelText("Move remaining work to"),
-    targetA.id,
-  );
+  await user.click(screen.getByRole("combobox", { name: "Move remaining work to" }));
+  await user.click(await screen.findByRole("option", { name: targetA.name }));
   await user.click(screen.getByRole("button", { name: "Preview changes" }));
-  await screen.findByRole("button", { name: "Confirm changes" });
+  await screen.findByRole("button", { name: "End iteration" });
 }
 describe("iteration operation interaction", () => {
+  it("explains the required reason while the preview action is unavailable", async () => {
+    const user = mount();
+    await user.click(screen.getByRole("button", { name: "End iteration" }));
+    expect(screen.getByLabelText("Reason")).toBeRequired();
+    expect(screen.getByRole("button", { name: "Preview changes" })).toHaveAccessibleDescription(
+      "Enter a reason before previewing this change.",
+    );
+    expect(screen.getByRole("button", { name: "Preview changes" })).toBeDisabled();
+  });
+  it("labels the start-date choice and includes the selected mode in the complete preview", async () => {
+    const user = mount("start");
+    await user.click(screen.getByRole("button", { name: "Start iteration" }));
+    await user.click(screen.getByRole("combobox", { name: "Start dates" }));
+    await user.click(await screen.findByRole("option", { name: "Start today" }));
+    await user.click(screen.getByRole("button", { name: "Preview changes" }));
+    await waitFor(() => expect(api.previewIteration).toHaveBeenCalled());
+    expect(vi.mocked(api.previewIteration).mock.calls.at(-1)![1].start?.mode).toBe("today");
+  });
+  it("names the confirmation action and separates complete task facts from the summary", async () => {
+    const user = mount();
+    await openPreview(user);
+    const dialog = screen.getByRole("dialog");
+    const summary = within(dialog).getByRole("region", { name: "Change summary" });
+    expect(summary).toHaveTextContent("Affected tasks");
+    expect(summary).toHaveTextContent("Notification recipients");
+    const tasks = within(dialog).getByRole("region", { name: "Task changes" });
+    expect(within(tasks).getAllByRole("listitem")).toHaveLength(2);
+    expect(tasks).toHaveTextContent(alpha.title);
+    expect(tasks).toHaveTextContent(beta.title);
+    expect(tasks).toHaveTextContent(targetA.name);
+    expect(within(dialog).getByRole("button", { name: "End iteration" })).toBeEnabled();
+  });
+  it("keeps already planned next-iteration work at its actual destination in the handoff summary", async () => {
+    vi.mocked(api.previewIteration).mockImplementation(async (_ws, draft) => {
+      const preview = previewFor(draft);
+      return {
+        ...preview,
+        total_affected: 3,
+        issues: [...preview.issues, { ...preview.issues[0]!, issue_id: "30000000-0000-4000-8000-000000000003", identifier: "ITR-3", title: "Task already in next plan", source_id: targetA.id }],
+      };
+    });
+    const user = mount("handoff");
+    await user.click(screen.getByRole("button", { name: "End and start next iteration" }));
+    await user.type(screen.getByLabelText("Reason"), "Finish this period and start the next");
+    await user.click(screen.getByRole("combobox", { name: "Move remaining work to" }));
+    await user.click(await screen.findByRole("option", { name: targetA.name }));
+    await user.click(screen.getByRole("button", { name: "Preview changes" }));
+    const tasks = await screen.findByRole("region", { name: "Task changes" });
+    const nextTask = within(tasks).getByText("Task already in next plan").closest("li")!;
+    expect(nextTask).toHaveTextContent("Destination iteration");
+    expect(nextTask).not.toHaveTextContent("Remove from iteration");
+    expect(within(nextTask).getAllByText(targetA.name)).toHaveLength(2);
+  });
   it("keeps individual destination labels and choices across a stale-preview refresh", async () => {
     const user = mount();
     await openPreview(user);
-    await user.selectOptions(screen.getByLabelText("Alpha task"), targetB.id);
-    expect(screen.getByLabelText("Beta task")).toHaveValue(targetA.id);
+    await user.click(screen.getByRole("combobox", { name: "Destination for Alpha task" }));
+    await user.click(await screen.findByRole("option", { name: targetB.name }));
+    expect(screen.getByLabelText("Destination for Beta task")).toHaveTextContent(targetA.name);
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "End iteration" });
     vi.mocked(api.applyIterationOperation).mockRejectedValueOnce(
       new ApiError("Changed", 409, "Conflict"),
     );
-    await user.click(screen.getByRole("button", { name: "Confirm changes" }));
+    await user.click(screen.getByRole("button", { name: "End iteration" }));
     await screen.findByRole("alert");
     expect(screen.getByLabelText("Reason")).toHaveValue("End this period");
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "End iteration" });
     expect(
       vi
         .mocked(api.previewIteration)
@@ -138,7 +190,7 @@ describe("iteration operation interaction", () => {
     vi.mocked(api.applyIterationOperation).mockRejectedValueOnce(
       new TypeError("Response lost"),
     );
-    await user.click(screen.getByRole("button", { name: "Confirm changes" }));
+    await user.click(screen.getByRole("button", { name: "End iteration" }));
     await screen.findByText(projects.iterations.unknownResult);
     expect(screen.getByLabelText("Reason")).toBeDisabled();
     const original = vi.mocked(api.applyIterationOperation).mock.calls[0]![1];
@@ -165,7 +217,7 @@ describe("iteration operation interaction", () => {
     vi.mocked(api.applyIterationOperation).mockRejectedValueOnce(
       new ApiError("Revoked", 403, "Forbidden"),
     );
-    await user.click(screen.getByRole("button", { name: "Confirm changes" }));
+    await user.click(screen.getByRole("button", { name: "End iteration" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       projects.iterations.permission,
     );
@@ -242,11 +294,11 @@ describe("iteration operation interaction", () => {
     const user = mount("start");
     await user.click(screen.getByRole("button", { name: "Start iteration" }));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "Start iteration" });
     await user.click(screen.getByRole("checkbox", { name: `Retain in starting scope: ${alpha.identifier} · ${alpha.title}` }));
     expect(screen.getByRole("checkbox", { name: `Retain in starting scope: ${beta.identifier} · ${beta.title}` })).not.toBeChecked();
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: "Start iteration" });
     expect(
       vi.mocked(api.previewIteration).mock.calls.at(-1)![1].start
         ?.terminal_choices,
@@ -279,7 +331,7 @@ describe("iteration operation interaction", () => {
     await user.click(screen.getByRole("button", { name: projects.iterations.disable }));
     await user.type(screen.getByLabelText("Reason"), "Disable empty workspace iterations");
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
-    await screen.findByRole("button", { name: "Confirm changes" });
+    await screen.findByRole("button", { name: projects.iterations.disable });
     const timestamp = screen.getByRole("dialog").querySelector("time");
     expect(timestamp).toHaveTextContent(time);
     expect(timestamp?.parentElement).toHaveTextContent(timezone);
@@ -350,24 +402,18 @@ describe("iteration operation interaction", () => {
     const user = mount();
     await user.click(screen.getByRole("button", { name: "End iteration" }));
     await user.type(screen.getByLabelText("Reason"), "Close");
-    await user.selectOptions(
-      screen.getByLabelText("Move remaining work to"),
-      targetA.id,
-    );
+    await user.click(screen.getByRole("combobox", { name: "Move remaining work to" }));
+    await user.click(await screen.findByRole("option", { name: targetA.name }));
     await user.click(screen.getByRole("button", { name: "Preview changes" }));
     await waitFor(() => expect(api.previewIteration).toHaveBeenCalledTimes(2));
     expect(screen.getByLabelText("Move remaining work to")).toBeDisabled();
     expect(screen.getByLabelText("Reason")).toBeDisabled();
-    await user.selectOptions(
-      screen.getByLabelText("Move remaining work to"),
-      targetB.id,
-    );
+    await user.click(screen.getByRole("combobox", { name: "Move remaining work to" }));
+    expect(screen.queryByRole("option", { name: targetB.name })).not.toBeInTheDocument();
     await act(async () => finish());
-    expect(screen.getByLabelText("Move remaining work to")).toHaveValue(
-      targetA.id,
-    );
+    expect(screen.getByLabelText("Move remaining work to")).toHaveTextContent(targetA.name);
     await user.click(
-      await screen.findByRole("button", { name: "Confirm changes" }),
+      await screen.findByRole("button", { name: "End iteration" }),
     );
     expect(
       vi

@@ -1,72 +1,230 @@
 "use client";
+
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import type { api } from "@multica/core/api";
+import { ArrowRight } from "lucide-react";
+import {
+  groupIterationActivity,
+  iterationActivityDays,
+  type IterationEvent,
+  type IterationActivityChange,
+  type IterationActivityEntry,
+  type IterationActivityGroup,
+  type IterationActivityIdentity,
+  type IterationActivityKind,
+  type IterationActivityStatus,
+} from "@multica/core/iterations";
+import { isIssueStatusCategory } from "@multica/core/issue-statuses";
 import { memberListOptions, agentListOptions, squadListOptions } from "@multica/core/workspace/queries";
 import { useT, useLocale } from "../i18n";
 import { formatInTimeZone } from "../common/format-in-time-zone";
+import { useStatusCategoryLabel } from "../issues/utils/status-label";
 import { IterationReference, useIterationCatalogue } from "./iteration-catalogue";
+import { iterationDisclosureClass } from "./iteration-presentation";
 
-type Event = Awaited<ReturnType<typeof api.getIterationEvents>>["items"][number];
-function record(value: unknown): Record<string, unknown> | undefined {
-  return value !== null && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
-}
-function reference(event: Event, key: string): string | null | undefined {
-  for (const value of [event.before_facts, event.after_facts]) {
-    const facts = record(value);
-    if (facts && Object.hasOwn(facts, key)) {
-      const id = facts[key];
-      return id === null ? null : typeof id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) ? id : undefined;
-    }
-  }
-  return undefined;
-}
-export function IterationEventsView({ wsId, events, timezone }: { wsId: string; events: Event[]; timezone: string }) {
+function useEventPresentation(wsId: string, groups: readonly IterationActivityGroup[]) {
   const { t } = useT("projects");
   const locale = useLocale();
-  const catalogue = useIterationCatalogue(wsId);
-  const members = useQuery(memberListOptions(wsId));
-  const agents = useQuery({ ...agentListOptions(wsId), enabled: events.some((event) => record(event.actor)?.type === "agent") });
-  const squads = useQuery({ ...squadListOptions(wsId), enabled: events.some((event) => record(event.actor)?.type === "squad") });
-  const eventName = (kind: string, hasIssue: boolean) => {
+  const categoryLabel = useStatusCategoryLabel(t(($) => $.iterations.unknownTaskStatus));
+  const identities = groups.flatMap((group) => group.entries.flatMap((entry) => [
+    entry.actor, entry.before.assignee, entry.after.assignee, entry.before.coordinator, entry.after.coordinator,
+  ]));
+  const needs = (type: string) => identities.some((identity) => identity?.type === type && identity.id && !identity.name);
+  const members = useQuery({ ...memberListOptions(wsId), enabled: needs("member") });
+  const agents = useQuery({ ...agentListOptions(wsId), enabled: needs("agent") });
+  const squads = useQuery({ ...squadListOptions(wsId), enabled: needs("squad") });
+  const names = useMemo(() => ({
+    member: new Map(members.data?.map((member) => [member.user_id, member.name])),
+    agent: new Map(agents.data?.map((agent) => [agent.id, agent.name])),
+    squad: new Map(squads.data?.map((squad) => [squad.id, squad.name])),
+  }), [members.data, agents.data, squads.data]);
+  const unknown = t(($) => $.iterations.unknownHistory);
+  const identityLabel = (identity: IterationActivityIdentity | undefined, actor = false): string => {
+    if (!identity) return unknown;
+    if (identity.type === "system") return t(($) => $.iterations.activityPanel.system);
+    if (!actor && identity.id === null) return t(($) => $.iterations.activityPanel.unassigned);
+    if (identity.name) return identity.name;
+    const type = identity.type;
+    if (type === "member" || type === "agent" || type === "squad")
+      return (identity.id && names[type].get(identity.id)) || t(($) => $.iterations.activityPanel[type]);
+    if (type === "plugin") return t(($) => $.iterations.activityPanel.plugin);
+    if (type === "project") return t(($) => $.iterations.project);
+    return actor ? t(($) => $.iterations.activityPanel.unknownActor) : unknown;
+  };
+  const statusLabel = (status: IterationActivityStatus | undefined): string => {
+    if (!status) return unknown;
+    const category = status.category;
+    const key = status.key;
+    if (category) {
+      const label = isIssueStatusCategory(category) ? categoryLabel(category) : category;
+      return key && key !== category ? `${key} (${label})` : label;
+    }
+    return key ? (isIssueStatusCategory(key) ? categoryLabel(key) : key) : unknown;
+  };
+  const eventName = (kind: IterationActivityKind) => {
     switch (kind) {
       case "join": return t(($) => $.iterations.eventJoin);
       case "leave": return t(($) => $.iterations.eventLeave);
       case "reenter": return t(($) => $.iterations.eventReenter);
       case "baseline": return t(($) => $.iterations.eventBaseline);
-      case "status": case "status_changed": case "status_change": return t(($) => $.iterations.eventStatus);
-      case "delete": case "deleted": return t(($) => $.iterations.eventDelete);
-      case "cancel": return t(($) => hasIssue ? $.iterations.eventCancel : $.iterations.eventCancelled);
+      case "status": return t(($) => $.iterations.eventStatus);
+      case "delete": return t(($) => $.iterations.eventDelete);
+      case "cancelIssue": return t(($) => $.iterations.eventCancel);
       case "reopen": return t(($) => $.iterations.eventReopen);
-      case "issue_changed": return t(($) => $.iterations.eventChanged);
-      case "execution_started": return t(($) => $.iterations.eventExecution);
+      case "issueChanged": return t(($) => $.iterations.eventChanged);
+      case "executionStarted": return t(($) => $.iterations.eventExecution);
       case "create": return t(($) => $.iterations.eventCreate);
       case "edit": return t(($) => $.iterations.eventEdit);
-      case "date_edit": return t(($) => $.iterations.eventDates);
+      case "dateEdit": return t(($) => $.iterations.eventDates);
       case "start": return t(($) => $.iterations.eventStart);
-      case "end": case "completed": return t(($) => $.iterations.eventEnd);
-      case "cancelled": case "cancel_planned": return t(($) => $.iterations.eventCancelled);
+      case "end": return t(($) => $.iterations.eventEnd);
+      case "cancelIteration": return t(($) => $.iterations.eventCancelled);
       case "rollover": return t(($) => $.iterations.eventRollover);
-      case "planned_activity": return t(($) => $.iterations.eventPlan);
-      default: return `${t(($) => $.iterations.eventUnknown)} (${kind})`;
+      case "plan": return t(($) => $.iterations.eventPlan);
+      default: return t(($) => $.iterations.eventUnknown);
     }
   };
-  return <div className="space-y-3">
-    <p className="text-caption text-muted-foreground">{t(($) => $.iterations.currentNames)}</p>
-    <ul className="space-y-3">{events.map((event) => {
-      const actor = record(event.actor);
-      const type = typeof actor?.type === "string" ? actor.type : "";
-      const id = typeof actor?.user_id === "string" ? actor.user_id : typeof actor?.id === "string" ? actor.id : "";
-      const name = type === "member" ? members.data?.find((member) => member.user_id === id)?.name : type === "agent" ? agents.data?.find((agent) => agent.id === id)?.name : type === "squad" ? squads.data?.find((squad) => squad.id === id)?.name : undefined;
-      const facts = [record(event.after_facts), record(event.before_facts)];
-      const title = facts.map((value) => value?.title).find((value): value is string => typeof value === "string" && value.trim().length > 0);
-      const identifier = facts.map((value) => value?.identifier).find((value): value is string => typeof value === "string" && value.trim().length > 0);
-      return <li key={event.id} className="break-words">
-        <p className="font-medium">{eventName(event.kind, event.issue_id !== null)}</p>
-        {event.issue_id && <p>{t(($) => $.iterations.identifier)}: {identifier ?? event.issue_id}{title && ` · ${title}`}</p>}
-        <p>{t(($) => $.iterations.actorLabel)}: {name ?? ([type, id].filter(Boolean).join(" · ") || t(($) => $.iterations.unknownHistory))} · <time dateTime={event.occurred_at} title={timezone}>{formatInTimeZone(event.occurred_at, timezone, locale, { year: "numeric" })}</time></p>
-        <p><IterationReference id={reference(event, "source_iteration_id")} catalogue={catalogue.data ?? []} /> → <IterationReference id={reference(event, "target_iteration_id")} catalogue={catalogue.data ?? []} /></p>
-        {event.reason && <p className="whitespace-pre-wrap">{event.reason}</p>}
-      </li>;
-    })}</ul>
+  const fieldLabel = (field: IterationActivityChange["field"]) => {
+    switch (field) {
+      case "title": return t(($) => $.iterations.activityPanel.title);
+      case "timezone": return t(($) => $.iterations.activityPanel.timezone);
+      default: return t(($) => $.iterations[field]);
+    }
+  };
+  const changeValue = (change: IterationActivityChange, side: "before" | "after") => {
+    switch (change.field) {
+      case "status": return statusLabel(change[side]);
+      case "assignee": case "coordinator": case "project": return identityLabel(change[side]);
+      default: {
+        const value = change[side];
+        if (value === undefined) return unknown;
+        if (value === null || value === "") return t(($) => $.iterations.activityPanel.cleared);
+        if (change.field === "startDate" || change.field === "endDate")
+          return formatInTimeZone(value, "UTC", locale, { year: "numeric", hour: undefined, minute: undefined });
+        return value;
+      }
+    }
+  };
+  return { identityLabel, eventName, fieldLabel, changeValue };
+}
+type Presentation = ReturnType<typeof useEventPresentation>;
+type Catalogue = { id: string; name: string }[];
+
+function EventSummary({ entry, presentation, catalogue }: { entry: IterationActivityEntry; presentation: Presentation; catalogue: Catalogue }) {
+  const { t } = useT("projects");
+  return <div className="min-w-0 space-y-2 [overflow-wrap:anywhere]">
+    {entry.issue && <p className="font-medium">
+      {entry.issue.identifier && <span className="mr-2 text-caption text-muted-foreground">{entry.issue.identifier}</span>}
+      {entry.issue.title ?? (entry.issue.identifier ? null : t(($) => $.iterations.activityPanel.unnamedTask))}
+    </p>}
+    <p className={entry.issue ? "text-caption text-muted-foreground" : "font-medium"}>{presentation.eventName(entry.kind)}</p>
+    {entry.movement && <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-caption">
+      <span><span className="sr-only">{t(($) => $.iterations.source)}: </span><IterationReference id={entry.movement.source} catalogue={catalogue} /></span>
+      <ArrowRight className="size-3.5 text-muted-foreground" aria-hidden="true" />
+      <span><span className="sr-only">{t(($) => $.iterations.destination)}: </span><IterationReference id={entry.movement.target} catalogue={catalogue} /></span>
+    </p>}
+    {entry.changes.length > 0 && <dl className="space-y-1.5 text-caption">
+      {entry.changes.map((change) => <div key={change.field} className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <dt className="text-muted-foreground">{presentation.fieldLabel(change.field)}</dt>
+        <dd className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+          <span className="min-w-0 whitespace-pre-wrap"><span className="sr-only">{t(($) => $.iterations.activityPanel.before)}: </span>{presentation.changeValue(change, "before")}</span>
+          <ArrowRight className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+          <span className="min-w-0 whitespace-pre-wrap"><span className="sr-only">{t(($) => $.iterations.activityPanel.after)}: </span>{presentation.changeValue(change, "after")}</span>
+        </dd>
+      </div>)}
+    </dl>}
+    {entry.event.reason && <p className="whitespace-pre-wrap text-caption">{entry.event.reason}</p>}
   </div>;
+}
+
+function EventMeta({ at, actor, timezone }: { at: string; actor: string; timezone: string }) {
+  const locale = useLocale();
+  return <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-caption text-muted-foreground [overflow-wrap:anywhere]">
+    <span>{actor}</span><span aria-hidden="true">·</span>
+    <time dateTime={at} title={timezone} className="tabular-nums">{formatInTimeZone(at, timezone, locale, { month: undefined, day: undefined })}</time>
+  </p>;
+}
+
+function EventDetails({ entry, timezone }: { entry: IterationActivityEntry; timezone: string }) {
+  const { t } = useT("projects");
+  const locale = useLocale();
+  const event = entry.event;
+  const raw = (value: unknown) => value === undefined ? t(($) => $.iterations.unknownHistory) : JSON.stringify(value, null, 2);
+  return <details>
+    <summary className={iterationDisclosureClass}>{t(($) => $.iterations.activityPanel.eventDetails)}</summary>
+    <div className="mt-2 space-y-4">
+      <dl className="grid min-w-0 gap-x-6 gap-y-3 text-caption sm:grid-cols-2">
+        {[
+          [t(($) => $.iterations.activityPanel.eventId), event.id],
+          [t(($) => $.iterations.activityPanel.operationId), event.operation_id],
+          [t(($) => $.iterations.activityPanel.sequence), event.sequence],
+          [t(($) => $.iterations.activityPanel.kind), event.kind],
+          ...(event.issue_id ? [[t(($) => $.iterations.issueId), event.issue_id]] : []),
+        ].map(([label, value]) => <div key={label} className="min-w-0 space-y-1">
+          <dt className="text-muted-foreground">{label}</dt><dd className="select-text [overflow-wrap:anywhere]">{value}</dd>
+        </div>)}
+        {[
+          [t(($) => $.iterations.activityPanel.occurredAt), event.occurred_at],
+          [t(($) => $.iterations.activityPanel.sampledAt), event.sampled_at],
+        ].map(([label, value]) => <div key={label} className="space-y-1">
+          <dt className="text-muted-foreground">{label}</dt><dd><time dateTime={value} title={timezone}>{formatInTimeZone(value!, timezone, locale, { year: "numeric" })}</time></dd>
+        </div>)}
+      </dl>
+      <p className="text-caption text-muted-foreground">{t(($) => $.iterations.currentNames)}</p>
+      <details>
+        <summary className={iterationDisclosureClass}>{t(($) => $.iterations.audit.rawFacts)}</summary>
+        <dl className="mt-3 min-w-0 space-y-4 text-caption">
+        {[
+          [t(($) => $.iterations.actorLabel), raw(event.actor)],
+          [t(($) => $.iterations.activityPanel.beforeFacts), raw(event.before_facts)],
+          [t(($) => $.iterations.activityPanel.afterFacts), raw(event.after_facts)],
+        ].map(([label, value]) => <div key={label} className="min-w-0 space-y-1">
+          <dt className="text-muted-foreground">{label}</dt><dd><pre className="min-w-0 select-text whitespace-pre-wrap rounded-md bg-muted p-3 font-mono [overflow-wrap:anywhere]">{value}</pre></dd>
+        </div>)}
+        </dl>
+      </details>
+    </div>
+  </details>;
+}
+
+export function IterationActivityTimeline({ wsId, groups, timezone }: { wsId: string; groups: IterationActivityGroup[]; timezone: string }) {
+  const { t } = useT("projects");
+  const locale = useLocale();
+  const presentation = useEventPresentation(wsId, groups);
+  const hasReferences = groups.some((group) => group.entries.some((entry) => entry.movement && (entry.movement.source || entry.movement.target)));
+  const catalogue = useIterationCatalogue(wsId, hasReferences);
+  return <div className="min-w-0 space-y-7">
+    {iterationActivityDays(groups, timezone).map((day) => <section key={day.id} className="space-y-4">
+      <h2 className="text-caption font-semibold">{formatInTimeZone(day.groups[0]!.occurredAt, timezone, locale, { year: "numeric", hour: undefined, minute: undefined })}</h2>
+      <ol className="space-y-5">
+        {day.groups.map((group) => {
+          const first = group.entries[0]!;
+          const multiple = group.entries.length > 1;
+          const actors = [...new Set(group.entries.map((entry) => presentation.identityLabel(entry.actor, true)))].join(", ");
+          return <li key={group.id} className="min-w-0 space-y-1.5">
+            {multiple ? <p className="font-medium [overflow-wrap:anywhere]">
+              {presentation.eventName(group.kind)}
+              {group.issueCount > 0 && <span className="ml-2 text-caption font-normal text-muted-foreground">{t(($) => $.iterations.activityPanel.taskCount, { count: group.issueCount })}</span>}
+            </p> : <EventSummary entry={first} presentation={presentation} catalogue={catalogue.data ?? []} />}
+            <EventMeta at={group.occurredAt} actor={actors} timezone={timezone} />
+            {multiple ? <details>
+              <summary className={iterationDisclosureClass}>{t(($) => $.iterations.activityPanel.recordDetails, { count: group.entries.length })}</summary>
+              <ol className="mt-3 space-y-5 pl-3 sm:pl-4">
+                {group.entries.map((entry) => <li key={entry.event.id} className="min-w-0 space-y-1.5">
+                  <EventSummary entry={entry} presentation={presentation} catalogue={catalogue.data ?? []} />
+                  <EventMeta at={entry.event.occurred_at} actor={presentation.identityLabel(entry.actor, true)} timezone={timezone} />
+                  <EventDetails entry={entry} timezone={timezone} />
+                </li>)}
+              </ol>
+            </details> : <EventDetails entry={first} timezone={timezone} />}
+          </li>;
+        })}
+      </ol>
+    </section>)}
+  </div>;
+}
+
+/** Embedded consumers keep access to all events; page-only filtering lives in the panel. */
+export function IterationEventsView({ wsId, events, timezone }: { wsId: string; events: IterationEvent[]; timezone: string }) {
+  return <IterationActivityTimeline wsId={wsId} groups={groupIterationActivity(events)} timezone={timezone} />;
 }
