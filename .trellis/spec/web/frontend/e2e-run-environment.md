@@ -163,3 +163,24 @@ checks that cross-origin `Retry-After` reaches the password form's cooldown.
 Report exact test identities and actual executions separately from code branch
 coverage. Inventory entries, conditional skips, route mocks, and HTTP-only
 integration tests must not be presented as full browser or native coverage.
+
+## Responsive captures and stable task navigation
+
+For an app with internal scroll containers, use `page.setViewportSize` to keep
+Playwright's viewport state aligned with Chromium, then apply any touch
+emulation. A raw CDP device-metrics override combined with a `fullPage: true`
+screenshot can restore the old context viewport and pointer state: a 680px
+capture may crop a desktop layout, and subsequent "narrow" steps may run at
+1280px. Use a viewport screenshot (`fullPage: false`, `scale: "css"`) for this
+case and assert width/height/coarse-pointer/touch-points both before and after
+capture. Check the PNG dimensions too. A pre-capture no-overflow assertion alone
+does not prove what the saved image shows. The dedicated scope-business fixture
+owns this bounded helper; do not change the shared screenshot helper silently.
+
+Task links have two valid representations to test separately. Desktop AppLink
+emits an absolute shareable URL, while Web can use a relative href; compare the
+normalized full URL against the expected origin and task path. After a click,
+`IssueDetailRoute` replaces the UUID segment with the API's human-readable task
+identifier. Wait for that stable canonical route plus the expected task title,
+including the desktop memory-router path. Accepting the transient UUID can
+make a routing assertion race the normal canonicalization effect.

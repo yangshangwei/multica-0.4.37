@@ -178,6 +178,19 @@ export {
   type IterationActivityGroup,
 } from "./activity";
 
+export {
+  iterationScopePhase,
+  projectIterationScopeActivity,
+  selectIterationScopeMetric,
+  selectIterationScopeIssues,
+  type IterationScopePhase,
+  type IterationScopeImpact,
+  type IterationScopeMetric,
+  type IterationScopeTask,
+  type IterationScopeProjection,
+  type IterationScopeMetricSelection,
+} from "./scope";
+
 export { protectIterationRead, hasIterationReadAccess } from "./access";
 
 export { validateIterationName } from "./validation";

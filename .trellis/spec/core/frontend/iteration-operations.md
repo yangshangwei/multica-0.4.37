@@ -197,7 +197,7 @@ destinations are separate facts, even when their labels mention the same task.
 - `projectIterationEvent(event)` owns stored-fact decoding;
   `groupIterationActivity(events, "scope" | "all")` owns operation grouping;
   `iterationActivityDays(groups, timezone)` owns contiguous saved-clock dates.
-- `IterationEventsPanel({ wsId, id, timezone, statistics, snapshot })` renders
+- `IterationEventsPanel({ wsId, id, timezone, iteration, statistics, snapshot })` renders
   scope counters and activity. `IterationProgressChart` keeps
   `showCompletionRate=true` for the overview; Progress passes false because its
   delivery summary already exposes the rate.
@@ -304,6 +304,123 @@ const groups = groupIterationActivity(history.data ?? [], filter);
 
 The view must still distinguish undefined/loading/error from a successful empty
 collection; the second example is the grouping step, not an empty-state policy.
+
+### Phase-aware scope explanation and metric evidence
+
+#### Scope and trigger
+
+Use this contract when changing the scope summary, activity impact, metric
+drilldowns or planning/closed presentation. The Go statistics remain authoritative;
+these helpers select and explain their evidence rather than replaying a second
+statistics reducer in the client.
+
+#### Signatures
+
+`packages/core/iterations/scope.ts` exports:
+
+- `iterationScopePhase(iteration, snapshot)` returns planned, active, completed,
+  cancelled-before-start, cancelled-after-start or unknown presentation.
+- `projectIterationScopeActivity({ iteration, statistics, snapshot, events })`
+  returns phase, start sequence, the chosen input statistics, decoded entries
+  with typed impacts/metric membership, and evidence completeness.
+- `selectIterationScopeMetric(metric, projection)` returns an original/current
+  scope request, distinct added-task evidence, occurrence IDs or unavailable.
+- `selectIterationScopeIssues(items, filter, expectedCount)` selects all,
+  effective or cancelled tasks from one complete collection and returns its
+  cardinality/known-category completeness.
+
+The exact TypeScript unions are exported from the iterations index. Reuse
+`projectIterationEvent` for stored-fact decoding; JSX must not parse raw facts.
+
+#### Contracts
+
+An actual start is established by lifecycle/start facts, never by a positive
+initial count or by the planned calendar dates. An empty commitment is valid.
+Planned periods show planned membership and explain when commitment is formed;
+do not render initial zero/net growth as post-start changes. Keep Planning
+adjustments accessible after a plan is emptied. A plan cancelled before starting
+has no frozen commitment; a valid closed snapshot owns final values and wording.
+
+Partition activity at the single start marker by sequence. Pre-start deletion,
+`planned_activity`, baseline formation and lifecycle anchors do not claim
+post-start effective changes. Quantified transitions require matching saved task
+identity and known status categories; missing fields are unknown, not zero.
+Closure release leaves occur after snapshot capture and are not frozen changes.
+
+Added tasks use the first canonical post-start join, deduplicated by task identity,
+and remain in that metric after later removal. Reentries do not add a distinct
+task. Leave/delete, reentry, cancellation and reopen counts are occurrences.
+Cancelled-to-done restores effective scope but is not a reopen count; done-to-todo
+is a reopen with zero effective delta. Net change opens contributing activity,
+not an invented set whose size is the absolute net value. Compare the sum of
+already-proven deltas with the authoritative net only as an evidence check.
+
+Live activity and detail statistics have no common event collection revision.
+Matching evidence counts do not prove an atomic same-version read. Exact live
+original/current task sets use the existing lazy complete grouped-issue query
+and must match the detail's `scope_revision` plus the selected metric count.
+Frozen task sets come directly from snapshot arrays and make no live scope read.
+Do not infer the sticky `started` task set from status: its full execution facts
+are not available in the historical issue DTO.
+
+Metric selection/refinements remain local to the scope panel, without resetting
+the already-mounted Tasks filters. Searching/refining never changes whole-period
+summary counters. Preserve operation context, but distinguish matching record
+count from operation count and distinct task count. Minimal activity task links
+open current records using their real IDs; historical labels stay frozen. Full
+historical rows can reuse the explicit current-comparison disclosure. Technical
+audit and raw facts remain closed native disclosures.
+
+#### Validation and error matrix
+
+| Condition | Required result |
+| --- | --- |
+| Planned two-task period | Planned tasks 2, no initial 0/net +2/post-start added 0 |
+| Started with empty baseline | Real initial 0 and normal started semantics |
+| Cancelled before starting | Planning cancellation wording, no fabricated snapshot |
+| Unknown/malformed phase, facts or identity | Neutral/unavailable evidence, never a fabricated delta/list |
+| Metric cardinality or net-evidence mismatch | Preserve server counter and explain incomplete evidence |
+| Live task collection revision mismatch | Request current detail/list and do not claim exact membership |
+| Temporary read failure with authorized data | Keep detail and refinements, show retry |
+| Revoked workspace or definitive entity loss | Remove selected details as well as summary/activity |
+| Frozen period after live task rename/delete | Keep frozen labels/counts; current access is a separate action |
+
+On a same-mount live-to-frozen transition, discard the live task query's error
+and fetching presentation as well as its data source. A disabled query can
+still be manually refetched: snapshot-provided details must not expose that
+retry, and the callback itself must refuse it. The regression first fails a
+live read, then supplies a valid snapshot without remounting the panel.
+
+#### Good, base and bad cases
+
+Good: a late task added, removed, returned and removed again is one added task,
+two removal events and one reentry. A net zero can still open all contributing
+changes. Base: a plan containing two tasks shows only its plan membership.
+Bad: classifying every raw `reopen` as a reopen occurrence, treating a partial
+page as a complete task set, or using today's original-task category for the
+initial effective scope creates false business evidence.
+
+#### Tests required
+
+- `core/iterations/scope.test.ts` owns the phase, sequence, saved identity,
+  status/impact/count, null/unknown, duplicate and evidence mismatch matrices.
+- Views event/navigation tests own lazy detail wiring, revision checks,
+  refinements/reset, preserved Tasks state, empty plans, closed audit, retry and
+  selected-data eviction. Do not repeat the complete core transition matrix in DOM.
+- `e2e/iteration-scope-business*.spec.ts` reuse real API fixtures for bilingual
+  Web/Electron phases, exact metric support, keyboard/filtering, current links,
+  frozen values and bounded layout. Record actual production runs separately
+  from test discovery or static checking.
+
+#### Wrong versus correct
+
+```ts
+// Wrong: zero commitment can also mean an iteration really started empty.
+const planning = statistics.initial_effective === 0;
+
+// Correct: use lifecycle evidence, then choose the appropriate presentation.
+const phase = iterationScopePhase(iteration, snapshot);
+```
 
 
 ## Iteration filters and accessible controls

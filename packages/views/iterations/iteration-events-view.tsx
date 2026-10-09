@@ -13,7 +13,9 @@ import {
   type IterationActivityIdentity,
   type IterationActivityKind,
   type IterationActivityStatus,
+  type IterationScopeImpact,
 } from "@multica/core/iterations";
+import { useWorkspacePaths } from "@multica/core/paths";
 import { isIssueStatusCategory } from "@multica/core/issue-statuses";
 import { memberListOptions, agentListOptions, squadListOptions } from "@multica/core/workspace/queries";
 import { useT, useLocale } from "../i18n";
@@ -21,6 +23,7 @@ import { formatInTimeZone } from "../common/format-in-time-zone";
 import { useStatusCategoryLabel } from "../issues/utils/status-label";
 import { IterationReference, useIterationCatalogue } from "./iteration-catalogue";
 import { iterationDisclosureClass } from "./iteration-presentation";
+import { AppLink } from "../navigation";
 
 function useEventPresentation(wsId: string, groups: readonly IterationActivityGroup[]) {
   const { t } = useT("projects");
@@ -110,14 +113,26 @@ function useEventPresentation(wsId: string, groups: readonly IterationActivityGr
 type Presentation = ReturnType<typeof useEventPresentation>;
 type Catalogue = { id: string; name: string }[];
 
-function EventSummary({ entry, presentation, catalogue }: { entry: IterationActivityEntry; presentation: Presentation; catalogue: Catalogue }) {
+function EventSummary({ entry, presentation, catalogue, impact }: { entry: IterationActivityEntry; presentation: Presentation; catalogue: Catalogue; impact?: IterationScopeImpact }) {
   const { t } = useT("projects");
+  const paths = useWorkspacePaths();
+  const impactLabel = impact?.kind === "effective" ? impact.delta === 0 ? t(($) => $.iterations.activityPanel.scopeUnchanged) : t(($) => $.iterations.activityPanel.effectiveImpact, { delta: `${impact.delta > 0 ? "+" : ""}${impact.delta}` })
+    : impact?.kind === "planning" ? t(($) => $.iterations.activityPanel.planningImpact)
+      : impact?.kind === "baseline" ? t(($) => $.iterations.activityPanel.baselineImpact)
+        : impact?.kind === "unknown" ? t(($) => $.iterations.activityPanel.unknownImpact) : null;
+  const restored = impact?.kind === "effective" && impact.delta === 1 && entry.before.status?.category === "cancelled";
   return <div className="min-w-0 space-y-2 [overflow-wrap:anywhere]">
-    {entry.issue && <p className="font-medium">
-      {entry.issue.identifier && <span className="mr-2 text-caption text-muted-foreground">{entry.issue.identifier}</span>}
-      {entry.issue.title ?? (entry.issue.identifier ? null : t(($) => $.iterations.activityPanel.unnamedTask))}
-    </p>}
-    <p className={entry.issue ? "text-caption text-muted-foreground" : "font-medium"}>{presentation.eventName(entry.kind)}</p>
+    <div className="flex min-w-0 flex-wrap items-baseline gap-x-4 gap-y-1">
+      {entry.issue && <p className="min-w-0 font-medium">
+        {entry.issue.identifier && <span className="mr-2 text-caption text-muted-foreground">{entry.issue.identifier}</span>}
+        {entry.issue.title ?? (entry.issue.identifier ? null : t(($) => $.iterations.activityPanel.unnamedTask))}
+      </p>}
+      {impactLabel && <span className="text-caption text-muted-foreground tabular-nums">{impactLabel}</span>}
+    </div>
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+      <p className={entry.issue ? "text-caption text-muted-foreground" : "font-medium"}>{restored ? t(($) => $.iterations.activityPanel.restoredTask) : presentation.eventName(entry.kind)}</p>
+      {impact && entry.issue && <AppLink href={paths.issueDetail(entry.issue.id)} aria-label={t(($) => $.iterations.activityPanel.currentTaskLink, { task: entry.issue.identifier || entry.issue.title || t(($) => $.iterations.activityPanel.unnamedTask) })} className="inline-flex min-h-7 items-center rounded text-caption text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11">{t(($) => $.iterations.openCurrent)}</AppLink>}
+    </div>
     {entry.movement && <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-caption">
       <span><span className="sr-only">{t(($) => $.iterations.source)}: </span><IterationReference id={entry.movement.source} catalogue={catalogue} /></span>
       <ArrowRight className="size-3.5 text-muted-foreground" aria-hidden="true" />
@@ -187,7 +202,13 @@ function EventDetails({ entry, timezone }: { entry: IterationActivityEntry; time
   </details>;
 }
 
-export function IterationActivityTimeline({ wsId, groups, timezone }: { wsId: string; groups: IterationActivityGroup[]; timezone: string }) {
+export function IterationActivityTimeline({ wsId, groups, timezone, impacts, matchingEventIds }: {
+  wsId: string;
+  groups: IterationActivityGroup[];
+  timezone: string;
+  impacts?: ReadonlyMap<string, IterationScopeImpact>;
+  matchingEventIds?: ReadonlySet<string>;
+}) {
   const { t } = useT("projects");
   const locale = useLocale();
   const presentation = useEventPresentation(wsId, groups);
@@ -201,20 +222,24 @@ export function IterationActivityTimeline({ wsId, groups, timezone }: { wsId: st
           const first = group.entries[0]!;
           const multiple = group.entries.length > 1;
           const actors = [...new Set(group.entries.map((entry) => presentation.identityLabel(entry.actor, true)))].join(", ");
+          const matched = matchingEventIds ? group.entries.filter((entry) => matchingEventIds.has(entry.event.id)) : null;
+          const record = (entry: IterationActivityEntry) => <li key={entry.event.id} className="min-w-0 space-y-1.5">
+            <EventSummary entry={entry} presentation={presentation} catalogue={catalogue.data ?? []} impact={impacts?.get(entry.event.id)} />
+            <EventMeta at={entry.event.occurred_at} actor={presentation.identityLabel(entry.actor, true)} timezone={timezone} />
+            <EventDetails entry={entry} timezone={timezone} />
+          </li>;
           return <li key={group.id} className="min-w-0 space-y-1.5">
             {multiple ? <p className="font-medium [overflow-wrap:anywhere]">
               {presentation.eventName(group.kind)}
-              {group.issueCount > 0 && <span className="ml-2 text-caption font-normal text-muted-foreground">{t(($) => $.iterations.activityPanel.taskCount, { count: group.issueCount })}</span>}
-            </p> : <EventSummary entry={first} presentation={presentation} catalogue={catalogue.data ?? []} />}
+              {matched ? <span className="ml-2 text-caption font-normal text-muted-foreground">{t(($) => $.iterations.activityPanel.matchingRecords, { count: matched.length })}</span>
+                : group.issueCount > 0 && <span className="ml-2 text-caption font-normal text-muted-foreground">{t(($) => $.iterations.activityPanel.taskCount, { count: group.issueCount })}</span>}
+            </p> : <EventSummary entry={first} presentation={presentation} catalogue={catalogue.data ?? []} impact={impacts?.get(first.event.id)} />}
             <EventMeta at={group.occurredAt} actor={actors} timezone={timezone} />
+            {multiple && matched && <ol className="space-y-5 py-3 pl-3 sm:pl-4">{matched.map(record)}</ol>}
             {multiple ? <details>
-              <summary className={iterationDisclosureClass}>{t(($) => $.iterations.activityPanel.recordDetails, { count: group.entries.length })}</summary>
+              <summary className={iterationDisclosureClass}>{t(($) => matched ? $.iterations.activityPanel.fullOperation : $.iterations.activityPanel.recordDetails, { count: group.entries.length })}</summary>
               <ol className="mt-3 space-y-5 pl-3 sm:pl-4">
-                {group.entries.map((entry) => <li key={entry.event.id} className="min-w-0 space-y-1.5">
-                  <EventSummary entry={entry} presentation={presentation} catalogue={catalogue.data ?? []} />
-                  <EventMeta at={entry.event.occurred_at} actor={presentation.identityLabel(entry.actor, true)} timezone={timezone} />
-                  <EventDetails entry={entry} timezone={timezone} />
-                </li>)}
+                {group.entries.map(record)}
               </ol>
             </details> : <EventDetails entry={first} timezone={timezone} />}
           </li>;

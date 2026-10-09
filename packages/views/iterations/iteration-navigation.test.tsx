@@ -842,6 +842,60 @@ describe("approved iteration business pages", () => {
     expect(await screen.findByRole("button", { name: "Add existing tasks" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "New task" })).toBeInTheDocument();
   });
+
+  it("keeps the empty plan's adjustment history and page identity reachable", async () => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: targetA, statistics: { ...statistics, original: 0, current: 0, effective: 0, initial_effective: 0 }, snapshot: null });
+    vi.mocked(api.getIterationIssues).mockResolvedValue({ ...issuePage([]), iteration_id: targetA.id });
+    vi.mocked(api.getIterationEvents).mockResolvedValue({ workspace_id: ws, iteration_id: targetA.id, next_cursor: null, items: [{ id: ws, sequence: 1, operation_id: ws, iteration_id: targetA.id, issue_id: alpha.id, kind: "planned_activity", actor: null, before_facts: { title: "Removed from plan", source_iteration_id: targetA.id, target_iteration_id: null }, after_facts: null, occurred_at: source.started_at!, sampled_at: source.started_at!, reason: "Planning changed" }] });
+    const { user } = mount();
+    await user.click(await screen.findByRole("tab", { name: "Planning adjustments" }));
+    const panel = screen.getByRole("tabpanel", { name: "Planning adjustments" });
+    expect(await within(panel).findByText("Removed from plan")).toBeVisible();
+    expect(within(panel).getByRole("button", { name: "View Planned tasks: 0 tasks" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: targetA.name, level: 1 })).toBeVisible();
+  });
+
+  it("keeps the main task search while opening and clearing independent scope details", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    const { user } = mount();
+    const taskSearch = await screen.findByRole("textbox", { name: projects.iterations.audit.searchTasks });
+    await user.type(taskSearch, "Alpha");
+    await user.click(screen.getByRole("tab", { name: "Scope changes" }));
+    await user.click(screen.getByRole("button", { name: "View Current effective scope: 2 tasks" }));
+    const detail = within(screen.getByRole("region", { name: "Scope metric details" }));
+    await user.type(await detail.findByRole("textbox", { name: "Search task records" }), "Beta");
+    await user.click(detail.getByRole("button", { name: "Back to activity" }));
+    await user.click(screen.getByRole("tab", { name: /^Tasks/ }));
+    expect(screen.getByRole("textbox", { name: projects.iterations.audit.searchTasks })).toHaveValue("Alpha");
+    expect(taskSearch).toBeInTheDocument();
+  });
+
+  it("uses the frozen header and read-only task actions despite stale active metadata", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: source, statistics, snapshot: {
+      schema_version: 1, workspace_id: ws, iteration_id: source.id, operation_id: ws, end_type: "completed", reason: "Finished",
+      logical_ended_at: "2026-10-06T12:00:00Z", processed_at: "2026-10-06T12:00:00Z", original: issuePage([alpha, beta]).items,
+      scope: issuePage([alpha, beta]).items, statistics, events: [], destinations: [],
+    } });
+    mount();
+    expect(await screen.findByText(projects.iterations.completed, { selector: "[data-slot=badge]" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: projects.iterations.end })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Add existing tasks" })).not.toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /^Task snapshot/ })).toBeVisible();
+  });
+
+  it("does not present delivery statistics for a plan cancelled before starting", async () => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: { ...targetA, status: "cancelled" }, statistics: { ...statistics, original: 0, current: 0, effective: 0 }, snapshot: null });
+    vi.mocked(api.getIterationIssues).mockResolvedValue({ ...issuePage([]), iteration_id: targetA.id });
+    const { user } = mount();
+    await user.click(await screen.findByRole("tab", { name: "Progress" }));
+    const progress = within(screen.getByRole("tabpanel", { name: "Progress" }));
+    expect(progress.getByText(projects.iterations.activityPanel.cancelledPlanHint)).toBeVisible();
+    expect(progress.queryByText("Delivery summary")).not.toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Planning adjustments" })).toBeVisible();
+  });
 });
 
 describe("iteration page review regressions", () => {
@@ -851,7 +905,7 @@ describe("iteration page review regressions", () => {
     mount();
     expect(await screen.findByRole("link", { name: source.name })).toBeInTheDocument();
   });
-  it("returns to the task action when a plan becomes empty on another tab", async () => {
+  it("keeps planning adjustments reachable when a plan becomes empty on another tab", async () => {
     route.pathname = `/acme/iterations/${targetA.id}`;
     vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [targetA], next_cursor: null });
     const planned = { workspace_id: ws, iteration: targetA, statistics, snapshot: null };
@@ -863,7 +917,11 @@ describe("iteration page review regressions", () => {
       client.setQueryData(["iterations", ws, "detail", targetA.id], { ...planned, statistics: { ...statistics, current: 0 } });
       await client.invalidateQueries({ queryKey: ["iterations", ws, "issues", targetA.id] });
     });
+    expect(screen.getByRole("tab", { name: "Progress" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Planning adjustments" })).toBeVisible();
+    await user.click(screen.getByRole("tab", { name: /^Tasks/ }));
     await waitFor(() => expect(screen.getByRole("button", { name: "Add existing tasks" })).toBeVisible());
+    expect(screen.getByRole("button", { name: "New task" })).toBeVisible();
   });
   it("keeps an edit draft while its dialog is closed to inspect progress", async () => {
     route.pathname = `/acme/iterations/${source.id}`;

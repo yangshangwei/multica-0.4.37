@@ -224,7 +224,7 @@ describe("iteration complete details", () => {
     expect(screen.getByText("Earlier frozen title")).toBeVisible();
     screen.getAllByText(alpha.id).forEach((id) => expect(id).not.toBeVisible());
     const unnamed = screen.getByText("Task title not recorded").closest("li")!;
-    await user.click(within(unnamed).getByText("Event details", { selector: "summary" }));
+    await user.click(within(unnamed).getByText("Technical audit", { selector: "summary" }));
     expect(within(unnamed).getByText(alpha.id)).toBeVisible();
     expect(api.getIssue).not.toHaveBeenCalled();
   });
