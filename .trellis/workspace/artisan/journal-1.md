@@ -1562,3 +1562,72 @@ Published v0.6.1 with rebuilt Linux and Windows packages after fixing the live x
 ### Next Steps
 
 - No release work remains. For deployment, use v0.6.1 assets and the included Chinese instructions; old local v0.6.0 binaries lack the security fix.
+
+
+## Session 49: 迭代进展与范围变化 UI 实现及验证
+
+**Date**: 2026-10-09
+**Task**: 迭代进展与范围变化 UI 实现及验证
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+落实已批准的 impeccable 审计方案，完成两条实现线与独立代码检查；环境切为受限后保留待交互核验及提交状态。
+
+### Main Changes
+
+- Progress: compact header, frozen 2/4 and 1/4 delivery summaries, unfinished closure destinations, sparse chart states and accessible disclosures.
+- Scope activity: complete guarded traversal, semantic changes, operation/day grouping, scope/all filtering and recoverable browsing.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Core iterations: 120 passed; views iterations plus locale parity: 194 passed; package lint has 0 errors with 27 existing warnings.
+- [OK] Workspace typecheck: 9/9 passed; Impeccable detector: 0 findings; 8 real light/dark wide/narrow screenshots captured.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Resume task 10-09-iteration-progress-scope-ui after localhost browser access and git write permission are available: finish Enter/Space and All activity browser checks, clean task-only window, review scoped commit and archive.
+
+
+## Session 50: Close iteration audit after production visual verification
+
+**Date**: 2026-10-09
+**Task**: Close iteration audit after production visual verification
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Closed the 19-finding iteration audit and the disable-confirmation styling follow-up after verifying the selected commit in an isolated checkout.
+
+### Main Changes
+
+- Completed accessible status colors, panel focus, labels, recovery names, confirmation hierarchy, shared controls, touch targets and compact filter metadata.
+- Included the iteration page, progress and creation-context prerequisites while preserving unrelated desktop-core, Gantt, rollout and release changes.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e93a758fe3ec7bd9acdbf7ec891fb940fa9255a0` | (see git log) |
+
+### Testing
+
+- [OK] 457 iteration and creation-context tests; 9 workspace typechecks; core/ui/views lint with no errors; Go history/filter tests and vet; 62 UI export checks.
+- [OK] 4 production Electron/Chromium E2E tests passed in 43.4 seconds; 19 screenshots; independent visual verdict 95/100; disable contrast 5.79:1 light and 5.55:1 dark; 44px coarse-pointer target.
+- [OK] Standalone production Next.js browser E2E, physical touch devices and full screen-reader traversal were not rerun.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- The iteration audit is complete and archived; other task scopes retain their existing state.
