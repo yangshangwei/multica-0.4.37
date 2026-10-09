@@ -1,0 +1,174 @@
+{
+  "recordedAt": "2026-10-08T23:19:31.184Z",
+  "implementation": "implemented",
+  "taskStatus": "in_progress",
+  "checks": {
+    "coreIterations": {
+      "files": 11,
+      "tests": 120,
+      "result": "passed",
+      "source": "activity_implementation"
+    },
+    "viewsIterationsAndLocaleParity": {
+      "files": 13,
+      "tests": 194,
+      "result": "passed",
+      "source": "activity_implementation"
+    },
+    "packageTypecheck": {
+      "packages": [
+        "core",
+        "views"
+      ],
+      "result": "passed"
+    },
+    "packageLint": {
+      "errors": 0,
+      "existingViewsWarnings": 27,
+      "result": "passed"
+    },
+    "workspaceTypecheck": {
+      "tasks": 9,
+      "result": "passed",
+      "source": "iteration_quality_check"
+    },
+    "e2eDiscovery": {
+      "tests": 5,
+      "executed": false
+    },
+    "impeccableDetector": {
+      "findings": 0,
+      "exitCode": 0
+    },
+    "diffWhitespace": {
+      "result": "passed"
+    },
+    "trellisContextValidation": {
+      "implement": 8,
+      "check": 8,
+      "result": "passed"
+    }
+  },
+  "visual": {
+    "captures": 8,
+    "viewports": [
+      "1360x1040",
+      "900x900"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "source": "real Electron page with retained hand-test fixture",
+    "independentVerdict": {
+      "score": 95,
+      "verdict": "pass",
+      "category_match": true,
+      "differences": [],
+      "suggestions": [],
+      "reasoning": "Independent reviewer inspected all eight real screenshots against the original and approved design: clear delivery/closeout hierarchy, semantic grouped scope activity, and no visible clipping or horizontal overflow in light/dark wide/narrow layouts. This verdict covers screenshots, not the pending live interaction checks."
+    }
+  },
+  "remaining": {
+    "browserInteraction": "Arrow-only activation expectation was invalid for the existing manual-activation Tabs; corrected Enter/Space verification was blocked by connect EPERM 127.0.0.1:9244 after the environment permissions changed. Do not classify the first assertion as an implementation defect.",
+    "fullActivityBrowserFlow": "Not reached in the live script; covered by component/pure tests, pending live confirmation.",
+    "git": "Current environment marks .git read-only; no staging or commit attempted after the change.",
+    "temporaryWindowCleanup": "The latest task-only window could not be closed after local CDP access became blocked; metadata is in /tmp/multica-iteration-verify.R1ngwl/session.json.",
+    "englishVisual": "Chinese was captured in both themes and widths; English has passing DOM/localization coverage but live English inspection remains pending."
+  },
+  "files": [
+    {
+      "file": "packages/core/iterations/activity.ts",
+      "sha256": "e775e98f96ce7c3b33392234d5858cfb2816e3dea817b66051f1df1e17ec9158"
+    },
+    {
+      "file": "packages/core/iterations/activity.test.ts",
+      "sha256": "c2ef90060c0444897253c6588bbe61aff4fced3c500aca1939373d0d1802536d"
+    },
+    {
+      "file": "packages/core/iterations/index.ts",
+      "sha256": "77b2698618884898ff1c3b988ef26bfc351ec72084f9b60400447dc977013340"
+    },
+    {
+      "file": "packages/views/iterations/iteration-page.tsx",
+      "sha256": "ed7bf8393fc9c77e404e50dc680a10cf955bdc83a9d726be6c2134a6fb7d5e3a"
+    },
+    {
+      "file": "packages/views/iterations/iteration-history.tsx",
+      "sha256": "5b7271b32070d9ebc03faaf6b2b496830706359917a3b8074ae469d63e79a001"
+    },
+    {
+      "file": "packages/views/iterations/iteration-progress.tsx",
+      "sha256": "0dfc4883d63a5cc8ec766a782718d143e0b56635c5352d53eae0ff2bbe9e62a4"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events.tsx",
+      "sha256": "477f8c1c446543681c3cd62e91ef9fd3ba96c0c89077dfb49434baf70fd96d39"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events-view.tsx",
+      "sha256": "de1f2e281a3aa7fcc0f3a20221aa03fa720dc7301d270fa2517a389931d3fb75"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events.test.tsx",
+      "sha256": "d878e9462e0ea62f23a7e85d276ca25934c12d79c1fdb9ea78bab9ac750d7a0a"
+    },
+    {
+      "file": "packages/views/iterations/iteration-details.test.tsx",
+      "sha256": "9ed016b7ece0bd045cee2eb9aec5718440ecade42b394399ceb68c592e81d616"
+    },
+    {
+      "file": "packages/views/iterations/iteration-history.test.tsx",
+      "sha256": "dc63b25feb3d43caef00f412fd33e6683cf816ceb464229c7e19819107358719"
+    },
+    {
+      "file": "packages/views/iterations/iteration-chart-closeout.test.tsx",
+      "sha256": "c3355c4cf69145521fbf54c1d7d2d2bd9bf273a9071fb49ddbd3f35610f0ff6c"
+    },
+    {
+      "file": "packages/views/iterations/iteration-navigation.test.tsx",
+      "sha256": "8d44e26dc640a88b88220b07ec9ca6095336d93c8fa5c57156aea7994d4a1d9e"
+    },
+    {
+      "file": "packages/views/iterations/iteration-progress.test.tsx",
+      "sha256": "c21f6f5bcb52e414267f190d0dd94966bfd5019c05fd82118cf549d0b3480330"
+    },
+    {
+      "file": "packages/views/locales/en/projects.json",
+      "sha256": "bcb50e0c55c2c5c606b987983efdc34dad627d5fd737e39a208660990ab7618e"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/projects.json",
+      "sha256": "85dee3521212101782d5da7d5c6e076effe0cb992bfbbd14d9027ded2abce027"
+    },
+    {
+      "file": "e2e/fixtures/iterations-i1.ts",
+      "sha256": "85bf071b9b360fb2d4a339ec7141d0eb05554ea09cb02f7c7c483d61d303615c"
+    },
+    {
+      "file": "e2e/iterations-i1.spec.ts",
+      "sha256": "c602c2bf1e788e08158b2d10f0b90c5b439e372c984f6e3b4ae46e4d47e28103"
+    },
+    {
+      "file": "e2e/iterations-i1-desktop.spec.ts",
+      "sha256": "c13fd53c330331d364cd964c8d5e9f12d4f6eb310e5c8fc681621d010850992c"
+    },
+    {
+      "file": ".trellis/spec/core/frontend/iteration-operations.md",
+      "sha256": "94946d0439f39b7aaebb1e45f6e2c91f63a9690ecc121078a98401821d9d32be"
+    },
+    {
+      "file": ".trellis/spec/core/frontend/index.md",
+      "sha256": "c7f1f7f1a6dba10135f2cfeefdbea01142eaa021097866a8cd081cb3a2d8ea33"
+    },
+    {
+      "file": ".trellis/spec/views/frontend/index.md",
+      "sha256": "81ef9d04e6411997b8c6e244526216ff883b11d3c52461f6676a57d609f573e1"
+    }
+  ],
+  "ownershipReview": {
+    "coreIndex": "Only activity exports and hasIterationReadAccess were added.",
+    "locales": "Both locale files are identical to baseline after removing progressPanel/activityPanel.",
+    "unrelatedChanges": "Preserved; no files staged by this session."
+  }
+}

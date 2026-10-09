@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "errors": [],
+  "states": {
+    "first-use": {
+      "checked": false,
+      "readonly": false,
+      "unsupported": false
+    },
+    "disabled-history": {
+      "checked": false,
+      "readonly": false,
+      "unsupported": false
+    },
+    "readonly": {
+      "checked": true,
+      "readonly": true,
+      "unsupported": false
+    },
+    "old-server": {
+      "checked": true,
+      "readonly": false,
+      "unsupported": true
+    }
+  },
+  "narrowLayout": {
+    "scroll": 320,
+    "client": 320
+  },
+  "checks": [
+    "disable cancellation preserves enable",
+    "timezone dirty blocks toggling",
+    "timezone cancel restores saved value",
+    "timezone save releases toggle",
+    "disable requires reason",
+    "disabled history remains accessible",
+    "re-enable does not revive periods",
+    "all five state previews render",
+    "light/dark screenshots",
+    "320px content without overflow"
+  ],
+  "scope": "Design prototype only; no product/backend acceptance performed"
+}

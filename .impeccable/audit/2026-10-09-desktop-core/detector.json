@@ -1,0 +1,114 @@
+[
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/attachment-preview-modal.test.tsx",
+    "line": 189,
+    "snippet": "<img>"
+  },
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/attachment-preview-modal.test.tsx",
+    "line": 218,
+    "snippet": "<img>"
+  },
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/attachment.test.tsx",
+    "line": 211,
+    "snippet": "<img>"
+  },
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/attachment.test.tsx",
+    "line": 685,
+    "snippet": "<img>"
+  },
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/attachment.test.tsx",
+    "line": 717,
+    "snippet": "<img>"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card — the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/styles/prose.css",
+    "line": 366,
+    "snippet": "border-left: 3px solid color-mix(in srgb, var(--muted-foreground) 30%, transparent)",
+    "importedBy": [
+      "index.css"
+    ]
+  },
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/utils/mermaid-export.test.ts",
+    "line": 17,
+    "snippet": "<img>"
+  },
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/issue-detail.tsx",
+    "line": 3096,
+    "snippet": "<img>",
+    "importedBy": [
+      "issue-detail-route.tsx",
+      "issue-detail.test.tsx",
+      "triage-page.tsx"
+    ]
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card — the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/markdown/Markdown.tsx",
+    "line": 351,
+    "snippet": "border-l-4",
+    "importedBy": [
+      "StreamingMarkdown.tsx"
+    ]
+  },
+  {
+    "antipattern": "bounce-easing",
+    "name": "Bounce or elastic easing",
+    "description": "Bounce and elastic easing feel dated and tacky. Real objects decelerate smoothly — use exponential easing (ease-out-quart/quint/expo) instead.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/styles/base.css",
+    "line": 101,
+    "snippet": "cubic-bezier(0.5, 1.5, 0.4, 1)",
+    "advisory": true
+  }
+]

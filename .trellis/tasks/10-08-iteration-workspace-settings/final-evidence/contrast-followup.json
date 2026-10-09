@@ -1,0 +1,39 @@
+{
+  "validation_worktree": "/Volumes/artisan/code/2026/multica-iteration-closeout-20261009",
+  "file": "packages/views/iterations/iteration-page.tsx",
+  "line": 88,
+  "before_sha256": "384293a16a410fde3bb1dab33b4bd0431105a1a7f4120e2322ed92ccd5111593",
+  "after_sha256": "559179cc56b0d1b67f37396afd1ea050af04ab507684d886b0abf1b1865b72bb",
+  "change": "Empty-plan glyph text-muted-foreground/50 -> text-faint-foreground; no other source change",
+  "red_evidence": "Main session frozen full-check failure in apps/web/app/text-contrast.test.ts:517; not rerun before the mechanical fix",
+  "checks": [
+    {
+      "command": "pnpm -C apps/web exec vitest run app/text-contrast.test.ts --maxWorkers=2",
+      "exit_code": 0,
+      "tests_passed": 23,
+      "log": "contrast-followup-web.log"
+    },
+    {
+      "command": "pnpm -C packages/views exec vitest run iterations/iteration-navigation.test.tsx iterations/iteration-chart-closeout.test.tsx --maxWorkers=2",
+      "exit_code": 0,
+      "tests_passed": 42,
+      "log": "contrast-followup-views.log"
+    },
+    {
+      "command": "pnpm -C packages/views exec eslint iterations/iteration-page.tsx",
+      "exit_code": 0,
+      "log": "contrast-followup-lint.log"
+    },
+    {
+      "command": "pnpm --filter @multica/views typecheck",
+      "exit_code": 0,
+      "log": "contrast-followup-typecheck.log"
+    },
+    {
+      "command": "git diff --check -- packages/views/iterations/iteration-page.tsx",
+      "exit_code": 0
+    }
+  ],
+  "source_edits_stopped": true,
+  "full_checks_or_services_started": false
+}

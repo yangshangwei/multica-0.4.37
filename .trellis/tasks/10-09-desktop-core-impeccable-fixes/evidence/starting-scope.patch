@@ -1,0 +1,4106 @@
+diff --git a/apps/desktop/src/renderer/src/components/desktop-layout.test.tsx b/apps/desktop/src/renderer/src/components/desktop-layout.test.tsx
+index aea75a987..69d676b10 100755
+--- a/apps/desktop/src/renderer/src/components/desktop-layout.test.tsx
++++ b/apps/desktop/src/renderer/src/components/desktop-layout.test.tsx
+@@ -1,6 +1,6 @@
+ import type { ReactNode } from "react";
+-import { describe, expect, it, vi } from "vitest";
+-import { render } from "@testing-library/react";
++import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
++import { act, fireEvent, render } from "@testing-library/react";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { I18nProvider } from "@multica/core/i18n/react";
+ import { useSidebar } from "@multica/ui/components/ui/sidebar";
+@@ -12,6 +12,26 @@ import { RESOURCES } from "@multica/views/locales";
+ // desktop-layout.workspace-gate.test.tsx.
+ const WORKSPACES = [{ id: "ws-1", slug: "acme" }];
+ 
++let reducedMotion = false;
++let mediaEvents = new EventTarget();
++
++beforeEach(() => {
++  reducedMotion = false;
++  mediaEvents = new EventTarget();
++  vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
++    media: query,
++    get matches() { return query === "(prefers-reduced-motion: reduce)" && reducedMotion; },
++    onchange: null,
++    addEventListener: mediaEvents.addEventListener.bind(mediaEvents),
++    removeEventListener: mediaEvents.removeEventListener.bind(mediaEvents),
++    addListener: () => {},
++    removeListener: () => {},
++    dispatchEvent: mediaEvents.dispatchEvent.bind(mediaEvents),
++  }));
++});
++
++afterEach(() => vi.restoreAllMocks());
++
+ // The shell is the only thing under test here, so everything it mounts around
+ // the sidebar is stubbed out. What survives is the pair that has to agree:
+ // `WindowToolbar`'s own trigger, and the `hasExternalTrigger` the provider
+@@ -127,4 +147,32 @@ describe("DesktopShell sidebar trigger", () => {
+       "true",
+     );
+   });
++
++  it.each(["at launch", "while running"])("applies final geometry when reduced motion is enabled %s", async (when) => {
++    reducedMotion = when === "at launch";
++    const { container, getByTestId } = renderShell();
++    const header = container.querySelector("header")!;
++    const dragRegion = header.firstElementChild as HTMLElement;
++    const canvas = getByTestId("page-content").parentElement!;
++    const trigger = container.querySelector("[data-slot='sidebar-trigger']")!;
++
++    if (when === "while running") {
++      act(() => {
++        reducedMotion = true;
++        mediaEvents.dispatchEvent(new Event("change"));
++      });
++    }
++
++    for (const [padding, margin] of [[184, 8], [0, 2]]) {
++      fireEvent.click(trigger);
++      for (let frame = 0; frame < 5; frame++) {
++        await act(async () => {
++          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
++        });
++        expect(header.style.paddingLeft).toBe(`${padding}px`);
++        expect(dragRegion.style.left).toBe(`${padding}px`);
++        expect(canvas.style.marginLeft).toBe(`${margin}px`);
++      }
++    }
++  });
+ });
+diff --git a/apps/desktop/src/renderer/src/components/desktop-layout.tsx b/apps/desktop/src/renderer/src/components/desktop-layout.tsx
+index 0de55639b..1ba1bb535 100755
+--- a/apps/desktop/src/renderer/src/components/desktop-layout.tsx
++++ b/apps/desktop/src/renderer/src/components/desktop-layout.tsx
+@@ -40,6 +40,7 @@ import { UpdateNotificationNavigationBridge } from "./update-notification";
+ 
+ const TOP_BAR_HEIGHT_CLASS = "h-12";
+ const WINDOW_TOOLBAR_CLEARANCE = 184;
++const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+ const toolbarMotion = {
+   type: "spring",
+   stiffness: 420,
+@@ -47,6 +48,18 @@ const toolbarMotion = {
+   mass: 0.8,
+ } as const;
+ 
++// Motion's hook snapshots at mount; the desktop shell also needs to respond
++// when the OS preference changes while the window stays open.
++function subscribeToReducedMotion(onChange: () => void) {
++  const query = window.matchMedia(REDUCED_MOTION_QUERY);
++  query.addEventListener("change", onChange);
++  return () => query.removeEventListener("change", onChange);
++}
++
++function getReducedMotionPreference() {
++  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
++}
++
+ function WindowToolbar() {
+   const { canGoBack, canGoForward, goBack, goForward } = useTabHistory();
+   const navButtonClassName =
+@@ -119,7 +132,7 @@ function useNativeNavigationGestures() {
+ // The main area's top bar doubles as a window drag region. When the sidebar
+ // is not occupying main-flow width, leave room for the fixed window toolbar
+ // so tabs do not land beneath the traffic lights / navigation controls.
+-function MainTopBar() {
++function MainTopBar({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
+   const { state, isCompact } = useSidebar();
+   const sidebarHidden = state === "collapsed" || isCompact;
+ 
+@@ -128,14 +141,14 @@ function MainTopBar() {
+       animate={{ paddingLeft: sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0 }}
+       className={cn("relative shrink-0 flex items-center gap-2", TOP_BAR_HEIGHT_CLASS)}
+       initial={false}
+-      transition={toolbarMotion}
++      transition={shouldReduceMotion ? { duration: 0 } : toolbarMotion}
+     >
+       <motion.div
+         aria-hidden
+         animate={{ left: sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0 }}
+         className="absolute inset-y-0 right-0"
+         initial={false}
+-        transition={toolbarMotion}
++        transition={shouldReduceMotion ? { duration: 0 } : toolbarMotion}
+         style={{ WebkitAppRegion: "drag" } as React.CSSProperties}
+       />
+       <div className="relative z-10 flex h-full min-w-0 max-w-full items-center">
+@@ -148,7 +161,10 @@ function MainTopBar() {
+ // The canvas hugs the expanded sidebar with a hairline gap. When the sidebar
+ // leaves the main flow, the left margin must grow to mirror the fixed mr-2 so
+ // the floating canvas sits symmetrically inside the window frame.
+-function MainCanvas({ children }: { children: React.ReactNode }) {
++function MainCanvas({ children, shouldReduceMotion }: {
++  children: React.ReactNode;
++  shouldReduceMotion: boolean;
++}) {
+   const { state, isCompact } = useSidebar();
+   const sidebarHidden = state === "collapsed" || isCompact;
+ 
+@@ -157,7 +173,7 @@ function MainCanvas({ children }: { children: React.ReactNode }) {
+       animate={{ marginLeft: sidebarHidden ? 8 : 2 }}
+       className="relative flex flex-1 min-h-0 flex-col overflow-hidden mr-2 mb-2 rounded-xl bg-page-canvas ring-1 ring-surface-border shadow-[var(--surface-shadow)]"
+       initial={false}
+-      transition={toolbarMotion}
++      transition={shouldReduceMotion ? { duration: 0 } : toolbarMotion}
+     >
+       {children}
+     </motion.div>
+@@ -226,6 +242,11 @@ export function DesktopShell() {
+   useInternalLinkHandler();
+   useNativeNavigationGestures();
+   useNavigationInputBindings();
++  const shouldReduceMotion = useSyncExternalStore(
++    subscribeToReducedMotion,
++    getReducedMotionPreference,
++    () => false,
++  );
+ 
+   // Reactive read of current workspace slug from the platform singleton.
+   // On first mount, it is null until WorkspaceRouteLayout (inside the tab
+@@ -299,8 +320,8 @@ export function DesktopShell() {
+             )}
+             {/* Right side: header + content container */}
+             <div className="flex flex-1 min-w-0 flex-col">
+-              <MainTopBar />
+-              <MainCanvas>
++              <MainTopBar shouldReduceMotion={shouldReduceMotion} />
++              <MainCanvas shouldReduceMotion={shouldReduceMotion}>
+                 {/* Same indicator, same anchor as web: DashboardLayout puts it
+                     at the top of SidebarInset, and MainCanvas is desktop's
+                     equivalent relative/overflow-hidden content box. Desktop
+diff --git a/apps/desktop/src/renderer/src/components/tab-bar.tsx b/apps/desktop/src/renderer/src/components/tab-bar.tsx
+index e366fc231..ea3a96703 100755
+--- a/apps/desktop/src/renderer/src/components/tab-bar.tsx
++++ b/apps/desktop/src/renderer/src/components/tab-bar.tsx
+@@ -7,7 +7,7 @@ import {
+   type RefObject,
+ } from "react";
+ import { motion, useReducedMotion } from "motion/react";
+-import { X, Plus, Pin, PinOff, ListX, AppWindow } from "lucide-react";
++import { X, Plus, Pin, PinOff, ListX, AppWindow, ArrowLeft, ArrowRight } from "lucide-react";
+ import {
+   DndContext,
+   PointerSensor,
+@@ -43,6 +43,7 @@ import {
+   ResourceLeadingVisual,
+ } from "@multica/views/layout";
+ import { parseIssueWindowPath } from "../../../shared/issue-window";
++import { useT } from "@multica/views/i18n";
+ 
+ const TAB_SCROLL_FADE_SIZE = 24;
+ const TAB_ENTRY_EASE = [0.22, 1, 0.36, 1] as const;
+@@ -182,6 +183,9 @@ function SortableTabItem({
+   isActive,
+   isOnly,
+   canCloseOthers,
++  canMoveLeft,
++  canMoveRight,
++  onMove,
+   isNew,
+   shouldReduceMotion,
+   showSeparator,
+@@ -195,6 +199,9 @@ function SortableTabItem({
+    */
+   isOnly: boolean;
+   canCloseOthers: boolean;
++  canMoveLeft: boolean;
++  canMoveRight: boolean;
++  onMove: (direction: -1 | 1) => void;
+   isNew: boolean;
+   shouldReduceMotion: boolean;
+   /**
+@@ -203,6 +210,7 @@ function SortableTabItem({
+    */
+   showSeparator: boolean;
+ }) {
++  const { t } = useT("desktop");
+   const setActiveTab = useTabStore((s) => s.setActiveTab);
+   const closeTab = useTabStore((s) => s.closeTab);
+   const closeOtherTabs = useTabStore((s) => s.closeOtherTabs);
+@@ -294,6 +302,13 @@ function SortableTabItem({
+       {...attributes}
+       {...listeners}
+       onClick={handleClick}
++      onKeyDown={(event) => {
++        if (!event.altKey || !event.shiftKey || event.ctrlKey || event.metaKey) return;
++        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
++        event.preventDefault();
++        event.stopPropagation();
++        onMove(event.key === "ArrowLeft" ? -1 : 1);
++      }}
+       // Browser convention: middle click closes the tab. Pinned (and sole)
+       // tabs suppress the close affordance, so middle click follows suit.
+       onAuxClick={(e) => {
+@@ -302,6 +317,8 @@ function SortableTabItem({
+         handleClose(e);
+       }}
+       aria-label={tab.pinned ? `${title} (pinned)` : title}
++      aria-current={isActive ? "page" : undefined}
++      aria-keyshortcuts="Alt+Shift+ArrowLeft Alt+Shift+ArrowRight"
+       data-tab-active={isActive ? "true" : undefined}
+       data-tab-entering={isEntering ? "true" : undefined}
+       title={tab.pinned ? `${title} (pinned)` : undefined}
+@@ -429,6 +446,14 @@ function SortableTabItem({
+                 </>
+               )}
+             </ContextMenuItem>
++            <ContextMenuItem disabled={!canMoveLeft} onClick={() => onMove(-1)}>
++              <ArrowLeft />
++              {t(($) => $.tabs.move_left)}
++            </ContextMenuItem>
++            <ContextMenuItem disabled={!canMoveRight} onClick={() => onMove(1)}>
++              <ArrowRight />
++              {t(($) => $.tabs.move_right)}
++            </ContextMenuItem>
+             <ContextMenuSeparator />
+             <ContextMenuItem
+               variant="destructive"
+@@ -555,12 +580,14 @@ function NewTabButton() {
+ }
+ 
+ export function TabBar() {
++  const { t } = useT("desktop");
+   const group = useActiveGroup();
+   const moveTab = useTabStore((s) => s.moveTab);
+   const activeWorkspaceSlug = useTabStore((s) => s.activeWorkspaceSlug);
+   const shouldReduceMotion = useReducedMotion() ?? false;
+   const tabScrollRef = useRef<HTMLDivElement>(null);
+   const previousTabsRef = useRef<TabSnapshot | null>(null);
++  const movedTabFocusRef = useRef<string | null>(null);
+   const tabFadeStyle = useScrollFade(
+     tabScrollRef,
+     TAB_SCROLL_FADE_SIZE,
+@@ -604,6 +631,16 @@ export function TabBar() {
+       ids: new Set(currentTabIds),
+     };
+ 
++    const movedTabId = movedTabFocusRef.current;
++    if (movedTabId && tabScrollRef.current) {
++      movedTabFocusRef.current = null;
++      getTabElement(tabScrollRef.current, movedTabId)
++        ?.querySelector<HTMLButtonElement>("button")
++        ?.focus({ preventScroll: true });
++      keepTabVisible(tabScrollRef.current, movedTabId);
++      return;
++    }
++
+     if (newlyAddedIds.length > 0) {
+       if (newlyAddedIds.includes(activeTabId)) {
+         keepTabVisible(
+@@ -648,10 +685,21 @@ export function TabBar() {
+     if (from !== -1 && to !== -1) moveTab(from, to);
+   };
+ 
++  const handleMoveTab = (tabId: string, direction: -1 | 1) => {
++    const from = tabs.findIndex((tab) => tab.id === tabId);
++    const to = from + direction;
++    const source = tabs[from];
++    const destination = tabs[to];
++    if (!source || !destination || source.pinned !== destination.pinned) return;
++    movedTabFocusRef.current = tabId;
++    moveTab(from, to);
++  };
++
+   return (
+     <div className="flex h-full w-full min-w-0 max-w-full items-center justify-start gap-0.5 px-2">
+       <div className="relative flex h-full min-w-0 flex-1 items-center">
+         <DndContext
++          accessibility={{ screenReaderInstructions: { draggable: t(($) => $.tabs.reorder_hint) } }}
+           sensors={sensors}
+           collisionDetection={closestCenter}
+           modifiers={[restrictToHorizontalAxis, restrictToParentElement]}
+@@ -678,6 +726,9 @@ export function TabBar() {
+                       canCloseOthers={tabs.some(
+                         (candidate) => candidate.id !== tab.id && !candidate.pinned,
+                       )}
++                      canMoveLeft={index > 0 && tabs[index - 1].pinned === tab.pinned}
++                      canMoveRight={index < tabs.length - 1 && tabs[index + 1].pinned === tab.pinned}
++                      onMove={(direction) => handleMoveTab(tab.id, direction)}
+                       isNew={addedTabIdSet.has(tab.id)}
+                       shouldReduceMotion={shouldReduceMotion}
+                       showSeparator={
+diff --git a/packages/ui/styles/tokens.css b/packages/ui/styles/tokens.css
+index 8b795c07f..b7fcd17f8 100755
+--- a/packages/ui/styles/tokens.css
++++ b/packages/ui/styles/tokens.css
+@@ -34,6 +34,8 @@
+     --color-success: var(--success);
+     --color-warning: var(--warning);
+     --color-info: var(--info);
++    --color-gantt-bar-foreground: var(--gantt-bar-foreground);
++    --color-gantt-warning-foreground: var(--gantt-warning-foreground);
+     /* Skill category tones: one hue per fixed skill category. Used only via
+        the skill presentation icon / sidebar so the palette stays coherent. */
+     --color-skill-research: var(--skill-research);
+@@ -220,6 +222,11 @@
+     --success: oklch(0.55 0.16 145);
+     --warning: oklch(0.75 0.16 85);
+     --info: oklch(0.55 0.18 250);
++    /* Solid Gantt status fills need their own text pair: light success
++       requires full white for AA; warning and dark-mode fills need dark ink.
++       Keep these separate from global status/primary tokens. */
++    --gantt-bar-foreground: oklch(1 0 0);
++    --gantt-warning-foreground: oklch(0.21 0.006 285.885);
+     --skill-research: oklch(0.55 0.18 300);
+     --skill-design: oklch(0.55 0.16 330);
+     --skill-engineering: oklch(0.55 0.16 255);
+@@ -298,6 +305,7 @@
+     --success: oklch(0.65 0.15 145);
+     --warning: oklch(0.70 0.16 85);
+     --info: oklch(0.65 0.18 250);
++    --gantt-bar-foreground: oklch(0.21 0.006 285.885);
+     --skill-research: oklch(0.72 0.16 300);
+     --skill-design: oklch(0.72 0.16 330);
+     --skill-engineering: oklch(0.72 0.16 255);
+diff --git a/packages/views/agents/components/agent-overview-pane.test.tsx b/packages/views/agents/components/agent-overview-pane.test.tsx
+index c8b53ba01..4ead17214 100755
+--- a/packages/views/agents/components/agent-overview-pane.test.tsx
++++ b/packages/views/agents/components/agent-overview-pane.test.tsx
+@@ -1,7 +1,9 @@
+ // @vitest-environment jsdom
+ 
+ import { describe, it, expect, vi, beforeEach } from "vitest";
+-import { act, fireEvent, render, screen } from "@testing-library/react";
++import { useState } from "react";
++import { act, fireEvent, render, screen, within } from "@testing-library/react";
++import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import type { Agent, AgentRuntime } from "@multica/core/types";
+ import { configStore } from "@multica/core/config";
+@@ -29,7 +31,13 @@ vi.mock("./agent-access-settings", () => ({
+   AgentAccessSettings: () => <div>agent-access-settings</div>,
+ }));
+ vi.mock("./tabs/instructions-tab", () => ({
+-  InstructionsTab: () => <div>instructions-tab</div>,
++  InstructionsTab: ({ onDirtyChange }: { onDirtyChange: (dirty: boolean) => void }) => {
++    const [draft, setDraft] = useState("");
++    return <input aria-label="Instructions draft" value={draft} onChange={(event) => {
++      setDraft(event.target.value);
++      onDirtyChange(event.target.value !== "");
++    }} />;
++  },
+ }));
+ vi.mock("./tabs/skills-tab", () => ({
+   SkillsTab: () => <div>skills-tab</div>,
+@@ -173,6 +181,8 @@ function renderPane(
+     view,
+     navIntent,
+     onNavIntentHandled,
++    searchParams,
++    hash = "",
+     queryClient = new QueryClient({
+       defaultOptions: { queries: { retry: false } },
+     }),
+@@ -181,6 +191,8 @@ function renderPane(
+     view?: DetailTab;
+     navIntent?: DetailTab;
+     onNavIntentHandled?: () => void;
++    searchParams?: URLSearchParams;
++    hash?: string;
+     queryClient?: QueryClient;
+   } = {},
+ ) {
+@@ -189,8 +201,8 @@ function renderPane(
+     replace: vi.fn(),
+     back: vi.fn(),
+     pathname: "/acme/agents/agent-1",
+-    searchParams: new URLSearchParams(view ? { view } : {}),
+-    hash: "",
++    searchParams: searchParams ?? new URLSearchParams(view ? { view } : {}),
++    hash,
+     getShareableUrl: (path) => path,
+   };
+   const result = render(
+@@ -236,6 +248,67 @@ beforeEach(() => {
+   telegramListingRef.current = { installations: [], configured: false };
+ });
+ 
++describe("AgentOverviewPane keyboard navigation", () => {
++  it("roves top tabs with arrows and Home/End, activating only on Enter or Space", async () => {
++    const user = userEvent.setup();
++    const { navigation } = renderPane([makeRuntime("claude")], {
++      searchParams: new URLSearchParams("context=review"),
++      hash: "#notes",
++    });
++    const list = screen.getByRole("tablist", { name: "Agent page" });
++    const overview = within(list).getByRole("tab", { name: "Overview" });
++    const work = within(list).getByRole("tab", { name: "Work" });
++    expect(within(list).getAllByRole("tab").filter((tab) => tab.tabIndex === 0)).toHaveLength(1);
++    overview.focus();
++    await user.keyboard("{ArrowRight}");
++    expect(work).toHaveFocus();
++    expect(overview).toHaveAttribute("aria-selected", "true");
++    expect(navigation.replace).not.toHaveBeenCalled();
++    await user.keyboard("{End}");
++    expect(within(list).getByRole("tab", { name: "Settings" })).toHaveFocus();
++    await user.keyboard("{Home}{ArrowRight}{Enter}");
++    expect(work).toHaveAttribute("aria-selected", "true");
++    const panel = screen.getByRole("tabpanel", { name: "Work" });
++    expect(work).toHaveAttribute("aria-controls", panel.id);
++    expect(panel).toHaveTextContent("actor-issues-panel");
++    expect(navigation.replace).toHaveBeenLastCalledWith("/acme/agents/agent-1?context=review&view=work#notes");
++    await user.keyboard("{Home} ");
++    expect(overview).toHaveAttribute("aria-selected", "true");
++  });
++
++  it("keeps a dirty editor mounted while secondary tabs receive focus and honors discard/cancel", async () => {
++    const user = userEvent.setup();
++    const { navigation } = renderPane([makeRuntime("claude")], { view: "instructions" });
++    const editor = screen.getByRole("textbox", { name: "Instructions draft" });
++    fireEvent.change(editor, { target: { value: "Keep this draft" } });
++    const instructions = screen.getByRole("tab", { name: "Instructions" });
++    const skills = screen.getByRole("tab", { name: "Skills" });
++    instructions.focus();
++    await user.keyboard("{ArrowDown}");
++    expect(skills).toHaveFocus();
++    expect(instructions).toHaveAttribute("aria-selected", "true");
++    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
++    expect(screen.getByRole("textbox", { name: "Instructions draft" })).toBe(editor);
++
++    await user.keyboard("{End}");
++    expect(screen.getByRole("tab", { name: "MCP" })).toHaveFocus();
++    await user.keyboard("{Home}{ArrowDown}{Enter}");
++    expect(screen.getByRole("alertdialog")).toBeInTheDocument();
++    expect(editor).toHaveValue("Keep this draft");
++    expect(navigation.replace).not.toHaveBeenCalled();
++    await user.click(screen.getByRole("button", { name: "Keep editing" }));
++    expect(editor).toHaveValue("Keep this draft");
++    expect(instructions).toHaveAttribute("aria-selected", "true");
++
++    skills.focus();
++    await user.keyboard(" ");
++    await user.click(screen.getByRole("button", { name: "Discard changes" }));
++    expect(screen.getByRole("tabpanel", { name: "Skills" })).toHaveTextContent("skills-tab");
++    expect(screen.queryByRole("textbox", { name: "Instructions draft" })).not.toBeInTheDocument();
++    expect(navigation.replace).toHaveBeenLastCalledWith("/acme/agents/agent-1?view=skills");
++  });
++});
++
+ describe("AgentOverviewPane MCP tab visibility", () => {
+   it.each([
+     ["Claude", "claude"],
+diff --git a/packages/views/agents/components/agent-overview-pane.tsx b/packages/views/agents/components/agent-overview-pane.tsx
+index f5235f890..7b4532ed0 100755
+--- a/packages/views/agents/components/agent-overview-pane.tsx
++++ b/packages/views/agents/components/agent-overview-pane.tsx
+@@ -27,6 +27,8 @@ import {
+   AlertDialogTitle,
+ } from "@multica/ui/components/ui/alert-dialog";
+ import { cn } from "@multica/ui/lib/utils";
++import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
++import { useIsMobile } from "@multica/ui/hooks/use-mobile";
+ import { ActivityTab } from "./tabs/activity-tab";
+ import { InstructionsTab } from "./tabs/instructions-tab";
+ import { SkillsTab } from "./tabs/skills-tab";
+@@ -152,6 +154,7 @@ export function AgentOverviewPane({
+   onNavIntentHandled,
+ }: AgentOverviewPaneProps) {
+   const { t } = useT("agents");
++  const isMobile = useIsMobile();
+   const wsId = useWorkspaceId();
+   const navigation = useNavigation();
+   const urlView = navigation.searchParams.get("view");
+@@ -256,7 +259,7 @@ export function AgentOverviewPane({
+       if (next === "overview") params.delete("view");
+       else params.set("view", next);
+       const query = params.toString();
+-      navigation.replace(`${navigation.pathname}${query ? `?${query}` : ""}`);
++      navigation.replace(`${navigation.pathname}${query ? `?${query}` : ""}${navigation.hash}`);
+     },
+     [navigation],
+   );
+@@ -340,179 +343,187 @@ export function AgentOverviewPane({
+   const isSecondaryLayout = secondaryTabs.length > 0 && activeSecondaryTab != null;
+ 
+   return (
+-    <div className="flex min-h-0 flex-1 flex-col bg-background">
++    <Tabs
++      value={activeSection}
++      onValueChange={(value) => {
++        const section = TOP_TABS.find((tab) => tab.id === value);
++        if (section) requestSection(section.id);
++      }}
++      className="min-h-0 flex-1 flex-col gap-0 bg-background"
++    >
+       <div
+         className="shrink-0 overflow-x-auto border-b px-4 sm:px-6"
+-        role="tablist"
+-        aria-label={t(($) => $.tabs.page_navigation_aria)}
+       >
+-        <div className="mx-auto flex max-w-[1440px] items-center gap-6">
++        <TabsList
++          variant="line"
++          activateOnFocus={false}
++          aria-label={t(($) => $.tabs.page_navigation_aria)}
++          className="mx-auto flex w-full max-w-[1440px] justify-start gap-6 p-0 data-[orientation=horizontal]:h-auto"
++        >
+           {TOP_TABS.map((tab) => (
+-            <button
++            <TabsTrigger
+               key={tab.id}
+-              type="button"
+-              role="tab"
+-              aria-selected={activeSection === tab.id}
+-              onClick={() => requestSection(tab.id)}
+-              className={cn(
+-                "relative shrink-0 py-3 text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+-                activeSection === tab.id
+-                  ? "text-foreground after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-foreground"
+-                  : "text-muted-foreground hover:text-foreground",
+-              )}
++              value={tab.id}
++              className="h-auto flex-none rounded-none border-0 px-0 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-[orientation=horizontal]:after:bottom-0"
+             >
+               {t(($) => $.tabs[tab.labelKey])}
+-            </button>
++            </TabsTrigger>
+           ))}
+-        </div>
++        </TabsList>
+       </div>
+ 
+       {/* Overview/Work scroll as one page. Sidebar views split scrolling on
+           md+ (nav rail pinned, content pane scrolls) like settings-page.tsx;
+           below md the rail is a horizontal strip and the page scrolls whole. */}
+-      <div
+-        className={cn(
+-          "min-h-0 flex-1 overflow-y-auto",
+-          isSecondaryLayout && "md:overflow-hidden",
+-        )}
+-      >
+-        {effectiveView === "overview" && (
+-          <div className="mx-auto max-w-[1440px] p-4 sm:p-6">
+-            <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+-              <ActivityTab agent={agent} showPerformance={false} />
+-              <AgentOverviewSummary
+-                agent={agent}
+-                runtime={runtime}
+-                owner={owner}
+-              />
+-            </div>
+-          </div>
+-        )}
+-
+-        {effectiveView === "work" && (
+-          <div className="flex min-h-[620px] flex-col">
+-            <ActorIssuesPanel actorType="agent" actorId={agent.id} />
+-          </div>
+-        )}
+-
+-        {secondaryTabs.length > 0 && activeSecondaryTab && (
+-          <div className="flex min-h-full flex-col md:h-full md:flex-row">
+-            {/* Content-surface color, no shell tint — same rule as the settings
+-                nav: in-card panels must not break the desktop tab merge (MUL-4439). */}
+-            <aside className="shrink-0 overflow-x-auto border-b border-surface-border p-2 md:w-52 md:overflow-y-auto md:border-b-0 md:border-r md:p-4">
+-              <div
+-                className="flex w-max min-w-full items-center gap-1 md:w-full md:flex-col md:items-stretch"
+-                role="tablist"
+-                aria-orientation="vertical"
+-                aria-label={t(($) => $.tabs.section_navigation_aria)}
+-              >
+-                {secondaryTabs.map((tab) => {
+-                  const active = effectiveView === tab.id;
+-                  return (
+-                    <button
+-                      key={tab.id}
+-                      type="button"
+-                      role="tab"
+-                      aria-selected={active}
+-                      onClick={() => requestView(tab.id)}
+-                      className={cn(
+-                        "flex h-8 shrink-0 items-center rounded-md px-2.5 text-left text-caption transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-full",
+-                        active
+-                          ? "bg-surface-selected font-medium text-surface-selected-foreground hover:bg-surface-selected"
+-                          : "text-muted-foreground hover:bg-surface-hover hover:text-foreground",
+-                      )}
+-                    >
+-                      {t(($) => $.tabs[tab.labelKey])}
+-                    </button>
+-                  );
+-                })}
+-              </div>
+-            </aside>
+-
+-            <section className="min-w-0 flex-1 md:overflow-y-auto">
+-              <div className="mx-auto w-full max-w-3xl p-4 sm:p-6 md:p-8">
+-                <header>
+-                  <h2 className="text-title-sm font-medium text-balance">
+-                    {t(($) => $.tabs[activeSecondaryTab.labelKey])}
+-                  </h2>
+-                </header>
+-
+-                <div className="mt-6">
+-                  {effectiveView === "instructions" && (
+-                    <InstructionsTab
+-                      agent={agent}
+-                      onSave={(updates) => onUpdate(agent.id, updates)}
+-                      onDirtyChange={setActiveDirty}
+-                    />
+-                  )}
+-                  {effectiveView === "skills" && (
+-                    <SkillsTab
+-                      agent={agent}
+-                      runtime={runtime}
+-                      currentUserId={currentUserId}
+-                      canEdit={canEdit}
+-                    />
+-                  )}
+-                  {effectiveView === "mcp_config" && (
+-                    <McpConfigTab
+-                      agent={agent}
+-                      runtime={runtime}
+-                      currentUserId={currentUserId}
+-                      canEdit={canEdit}
+-                      onSave={(updates) => onUpdate(agent.id, updates)}
+-                      onDirtyChange={setActiveDirty}
+-                    />
+-                  )}
+-                  {effectiveView === "composio_mcp" && (
+-                    <AgentMcpTab agent={agent} />
+-                  )}
+-                  {effectiveView === "integrations" && (
+-                    <IntegrationsTab agent={agent} />
+-                  )}
+-                  {effectiveView === "general" && (
+-                    <AgentDetailInspector
+-                      agent={agent}
+-                      runtime={runtime}
+-                      runtimes={runtimes}
+-                      members={members}
+-                      currentUserId={currentUserId ?? null}
+-                      canEdit={canEdit}
+-                      onUpdate={onUpdate}
+-                    />
+-                  )}
+-                  {effectiveView === "access" && (
+-                    <AgentAccessSettings
+-                      agent={agent}
+-                      members={members}
+-                      currentUserId={currentUserId ?? null}
+-                      onDirtyChange={setActiveDirty}
+-                      onUpdate={onUpdate}
+-                    />
+-                  )}
+-                  {effectiveView === "env" && (
+-                    <EnvTab agent={agent} onDirtyChange={setActiveDirty} />
+-                  )}
+-                  {effectiveView === "custom_args" && (
+-                    <CustomArgsTab
+-                      agent={agent}
+-                      runtimeDevice={runtime ?? undefined}
+-                      onSave={(updates) => onUpdate(agent.id, updates)}
+-                      onDirtyChange={setActiveDirty}
+-                    />
+-                  )}
+-                  {effectiveView === "runtime_config" && (
+-                    <RuntimeConfigTab
+-                      agent={agent}
+-                      onSave={(updates) => onUpdate(agent.id, updates)}
+-                      onDirtyChange={setActiveDirty}
+-                    />
+-                  )}
++      {TOP_TABS.map((section) => (
++        <TabsContent
++          key={section.id}
++          value={section.id}
++          keepMounted
++          className={cn(
++            "min-h-0 flex-1 overflow-y-auto",
++            isSecondaryLayout && "md:overflow-hidden",
++          )}
++        >
++          {activeSection === section.id && <>
++            {effectiveView === "overview" && (
++              <div className="mx-auto max-w-[1440px] p-4 sm:p-6">
++                <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
++                  <ActivityTab agent={agent} showPerformance={false} />
++                  <AgentOverviewSummary
++                    agent={agent}
++                    runtime={runtime}
++                    owner={owner}
++                  />
+                 </div>
+               </div>
+-            </section>
+-          </div>
+-        )}
+-      </div>
++            )}
++
++            {effectiveView === "work" && (
++              <div className="flex min-h-[620px] flex-col">
++                <ActorIssuesPanel actorType="agent" actorId={agent.id} />
++              </div>
++            )}
++
++            {secondaryTabs.length > 0 && activeSecondaryTab && (
++              <Tabs
++                value={effectiveView}
++                onValueChange={(value) => {
++                  if (typeof value === "string" && isDetailTab(value)) requestView(value);
++                }}
++                orientation={isMobile ? "horizontal" : "vertical"}
++                className="min-h-full flex-col gap-0 md:h-full md:flex-row"
++              >
++                {/* Content-surface color, no shell tint — same rule as the settings
++                nav: in-card panels must not break the desktop tab merge (MUL-4439). */}
++                <aside className="shrink-0 overflow-x-auto border-b border-surface-border p-2 md:w-52 md:overflow-y-auto md:border-b-0 md:border-r md:p-4">
++                  <TabsList
++                    activateOnFocus={false}
++                    className="flex w-max min-w-full justify-start gap-1 rounded-none bg-transparent p-0 data-[orientation=horizontal]:h-auto md:w-full md:items-stretch"
++                    aria-label={t(($) => $.tabs.section_navigation_aria)}
++                  >
++                    {secondaryTabs.map((tab) => (
++                      <TabsTrigger
++                        key={tab.id}
++                        value={tab.id}
++                        className="h-8 flex-none justify-start border-0 px-2.5 py-0 text-left text-caption font-normal after:hidden hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-active:bg-surface-selected data-active:font-medium data-active:text-surface-selected-foreground data-active:hover:bg-surface-selected dark:data-active:bg-surface-selected dark:data-active:text-surface-selected-foreground group-data-[variant=default]/tabs-list:data-active:shadow-none md:w-full"
++                      >
++                        {t(($) => $.tabs[tab.labelKey])}
++                      </TabsTrigger>
++                    ))}
++                  </TabsList>
++                </aside>
++
++                {secondaryTabs.map((tab) => (
++                  <TabsContent key={tab.id} value={tab.id} keepMounted render={<section />} className="min-w-0 flex-1 md:overflow-y-auto">
++                    {effectiveView === tab.id && (
++                      <div className="mx-auto w-full max-w-3xl p-4 sm:p-6 md:p-8">
++                        <header>
++                          <h2 className="text-title-sm font-medium text-balance">
++                            {t(($) => $.tabs[activeSecondaryTab.labelKey])}
++                          </h2>
++                        </header>
++
++                        <div className="mt-6">
++                          {effectiveView === "instructions" && (
++                            <InstructionsTab
++                              agent={agent}
++                              onSave={(updates) => onUpdate(agent.id, updates)}
++                              onDirtyChange={setActiveDirty}
++                            />
++                          )}
++                          {effectiveView === "skills" && (
++                            <SkillsTab
++                              agent={agent}
++                              runtime={runtime}
++                              currentUserId={currentUserId}
++                              canEdit={canEdit}
++                            />
++                          )}
++                          {effectiveView === "mcp_config" && (
++                            <McpConfigTab
++                              agent={agent}
++                              runtime={runtime}
++                              currentUserId={currentUserId}
++                              canEdit={canEdit}
++                              onSave={(updates) => onUpdate(agent.id, updates)}
++                              onDirtyChange={setActiveDirty}
++                            />
++                          )}
++                          {effectiveView === "composio_mcp" && (
++                            <AgentMcpTab agent={agent} />
++                          )}
++                          {effectiveView === "integrations" && (
++                            <IntegrationsTab agent={agent} />
++                          )}
++                          {effectiveView === "general" && (
++                            <AgentDetailInspector
++                              agent={agent}
++                              runtime={runtime}
++                              runtimes={runtimes}
++                              members={members}
++                              currentUserId={currentUserId ?? null}
++                              canEdit={canEdit}
++                              onUpdate={onUpdate}
++                            />
++                          )}
++                          {effectiveView === "access" && (
++                            <AgentAccessSettings
++                              agent={agent}
++                              members={members}
++                              currentUserId={currentUserId ?? null}
++                              onDirtyChange={setActiveDirty}
++                              onUpdate={onUpdate}
++                            />
++                          )}
++                          {effectiveView === "env" && (
++                            <EnvTab agent={agent} onDirtyChange={setActiveDirty} />
++                          )}
++                          {effectiveView === "custom_args" && (
++                            <CustomArgsTab
++                              agent={agent}
++                              runtimeDevice={runtime ?? undefined}
++                              onSave={(updates) => onUpdate(agent.id, updates)}
++                              onDirtyChange={setActiveDirty}
++                            />
++                          )}
++                          {effectiveView === "runtime_config" && (
++                            <RuntimeConfigTab
++                              agent={agent}
++                              onSave={(updates) => onUpdate(agent.id, updates)}
++                              onDirtyChange={setActiveDirty}
++                            />
++                          )}
++                        </div>
++                      </div>
++                    )}
++                  </TabsContent>
++                ))}
++              </Tabs>
++            )}
++          </>}
++        </TabsContent>
++      ))}
+ 
+       {pendingView !== null && (
+         <AlertDialog
+@@ -544,6 +555,6 @@ export function AgentOverviewPane({
+           </AlertDialogContent>
+         </AlertDialog>
+       )}
+-    </div>
++    </Tabs>
+   );
+ }
+diff --git a/packages/views/agents/components/agents-page.test.tsx b/packages/views/agents/components/agents-page.test.tsx
+index 6fe73f199..b730af0af 100755
+--- a/packages/views/agents/components/agents-page.test.tsx
++++ b/packages/views/agents/components/agents-page.test.tsx
+@@ -1,6 +1,7 @@
+ import React from "react";
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import { fireEvent, screen, within } from "@testing-library/react";
++import userEvent from "@testing-library/user-event";
+ import type { Agent, AgentRoleTemplate, Squad, SquadTemplate, SquadMember } from "@multica/core/types";
+ import type { AgentActivity } from "@multica/core/agents";
+ import { renderWithI18n } from "../../test/i18n";
+@@ -317,6 +318,43 @@ beforeEach(() => {
+   };
+ });
+ 
++describe("AgentsPage accessible selection", () => {
++  it("selects named rows and all filtered agents by keyboard without navigating", async () => {
++    const user = userEvent.setup();
++    const adapter = makeAdapter({ openInNewTab: vi.fn() });
++    renderPage(adapter);
++    const alpha = screen.getByRole("checkbox", { name: "Select Alpha Agent" });
++    const beta = screen.getByRole("checkbox", { name: "Select Beta Agent" });
++    const all = screen.getByRole("checkbox", { name: "Select all agents" });
++
++    expect(alpha.parentElement?.closest("button")).toBeNull();
++    expect(all.parentElement?.closest("button")).toBeNull();
++    expect(alpha).toHaveClass("focus-visible:opacity-100");
++    expect(all).toHaveClass("focus-visible:opacity-100");
++    alpha.focus();
++    await user.keyboard(" ");
++    expect(alpha).toBeChecked();
++    expect(beta).not.toBeChecked();
++    expect(all).toBePartiallyChecked();
++    expect(alpha).toHaveFocus();
++
++    all.focus();
++    await user.keyboard(" ");
++    expect(alpha).toBeChecked();
++    expect(beta).toBeChecked();
++    expect(all).toBeChecked();
++    await user.keyboard(" ");
++    expect(alpha).not.toBeChecked();
++    expect(beta).not.toBeChecked();
++    expect(all).not.toBeChecked();
++
++    fireEvent.click(alpha, { metaKey: true });
++    fireEvent(alpha, new MouseEvent("auxclick", { bubbles: true, button: 1 }));
++    expect(adapter.push).not.toHaveBeenCalled();
++    expect(adapter.openInNewTab).not.toHaveBeenCalled();
++  });
++});
++
+ const REVIEW_TEMPLATE: AgentRoleTemplate = {
+   key: "code-reviewer", version: 1, name: "Reviewer", title: "Code reviewer",
+   description: "Review changes and report actionable findings.", instructions: "Review the diff.",
+diff --git a/packages/views/agents/components/agents-page.tsx b/packages/views/agents/components/agents-page.tsx
+index 52e4dda8f..aee8d59c8 100755
+--- a/packages/views/agents/components/agents-page.tsx
++++ b/packages/views/agents/components/agents-page.tsx
+@@ -390,30 +390,21 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
+ 
+ function CheckboxCell({
+   checked,
++  label,
+   onToggle,
+ }: {
+   checked: boolean;
++  label: string;
+   onToggle: () => void;
+ }) {
+   return (
+-    <ListGridCell className="hidden justify-center px-0 @2xl:flex">
+-      <button
+-        type="button"
+-        aria-pressed={checked}
+-        onClick={(e) => {
+-          e.stopPropagation();
+-          onToggle();
+-        }}
+-        className={`-m-1.5 flex items-center p-1.5 ${
+-          checked ? "" : "opacity-0 transition-opacity group-hover/row:opacity-100"
+-        }`}
+-      >
+-        <Checkbox
+-          checked={checked}
+-          tabIndex={-1}
+-          className="pointer-events-none"
+-        />
+-      </button>
++    <ListGridCell {...rowLinkInteractiveProps} className="hidden justify-center px-0 @2xl:flex">
++      <Checkbox
++        aria-label={label}
++        checked={checked}
++        onCheckedChange={onToggle}
++        className="opacity-0 transition-opacity group-hover/row:opacity-100 focus-visible:opacity-100 data-checked:opacity-100"
++      />
+     </ListGridCell>
+   );
+ }
+@@ -695,27 +686,16 @@ function AgentListHeader({
+   const { t } = useT("agents");
+   const sorted = (field: AgentSortField) =>
+     sortField === field ? sortDirection : false;
+-  const anySelected = allSelected || someSelected;
+   return (
+     <ListGridHeader>
+       <div className="hidden items-center justify-center @2xl:flex">
+-        <button
+-          type="button"
+-          aria-pressed={allSelected}
+-          onClick={onToggleAll}
+-          className={`-m-1.5 flex items-center p-1.5 ${
+-            anySelected
+-              ? ""
+-              : "opacity-0 transition-opacity group-hover/header:opacity-100"
+-          }`}
+-        >
+-          <Checkbox
+-            checked={allSelected}
+-            indeterminate={someSelected && !allSelected}
+-            tabIndex={-1}
+-            className="pointer-events-none"
+-          />
+-        </button>
++        <Checkbox
++          aria-label={t(($) => $.selection.select_all)}
++          checked={allSelected}
++          indeterminate={someSelected && !allSelected}
++          onCheckedChange={onToggleAll}
++          className="opacity-0 transition-opacity group-hover/header:opacity-100 focus-visible:opacity-100 data-checked:opacity-100 data-indeterminate:opacity-100"
++        />
+       </div>
+       <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
+         {t(($) => $.columns.agent)}
+@@ -1327,6 +1307,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
+                     >
+                       <CheckboxCell
+                         checked={selectedIds.has(row.agent.id)}
++                        label={t(($) => $.selection.select_agent, { name: row.agent.name })}
+                         onToggle={() => toggleSelected(row.agent.id)}
+                       />
+                       <NameCell row={row} showOwner={scope !== "mine" && !isColVisible("owner")} showStatusDot={!isColVisible("status")} />
+diff --git a/packages/views/chat/components/chat-fab.tsx b/packages/views/chat/components/chat-fab.tsx
+index e2dfd0276..7b6ee0d42 100755
+--- a/packages/views/chat/components/chat-fab.tsx
++++ b/packages/views/chat/components/chat-fab.tsx
+@@ -62,8 +62,12 @@ export function ChatFab() {
+   return (
+     <Tooltip>
+       <TooltipTrigger
++        data-chat-launcher=""
+         onClick={handleClick}
+         aria-label={tooltip}
++        aria-haspopup="dialog"
++        aria-controls="floating-chat-window"
++        aria-expanded={isOpen}
+         className={cn(
+           // Geometry comes from the shared tokens so the clearance pages
+           // reserve for this corner is derived from the same numbers.
+diff --git a/packages/views/chat/components/chat-input.tsx b/packages/views/chat/components/chat-input.tsx
+index 6391f1af2..313538360 100755
+--- a/packages/views/chat/components/chat-input.tsx
++++ b/packages/views/chat/components/chat-input.tsx
+@@ -55,6 +55,9 @@ function isAttachmentReferenced(content: string, attachment: Attachment): boolea
+ }
+ 
+ interface ChatInputProps {
++  /** Close transient pickers when the floating window hides, while retaining
++   * the editor instance and its pending draft/upload work. */
++  isVisible?: boolean;
+   onSend: (
+     content: string,
+     attachmentIds: string[] | undefined,
+@@ -147,6 +150,7 @@ interface ChatInputProps {
+ }
+ 
+ export function ChatInput({
++  isVisible = true,
+   onSend,
+   restoreDraftRequest,
+   conversationStarterRequest,
+@@ -650,7 +654,7 @@ export function ChatInput({
+         )}
+         aria-disabled={noAgent || undefined}
+       >
+-        {selectedProject && (
++        {isVisible && selectedProject && (
+           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-3 pt-2">
+             <div
+               className={cn(
+@@ -715,7 +719,7 @@ export function ChatInput({
+             showBubbleMenu
+           />
+         </div>
+-        {(uploadEnabled || projectSelectionEnabled || leftAdornment) && (
++        {isVisible && (uploadEnabled || projectSelectionEnabled || leftAdornment) && (
+           <div className="absolute bottom-1.5 left-1.5 flex items-center gap-1">
+             {(uploadEnabled || projectSelectionEnabled) && (
+               <ChatAddMenu
+@@ -731,7 +735,7 @@ export function ChatInput({
+             {leftAdornment}
+           </div>
+         )}
+-        <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
++        {isVisible && <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
+           <SubmitButton
+             onClick={submit}
+             disabled={hasNothingToSend || submitting || !!disabled || !!noAgent}
+@@ -763,7 +767,7 @@ export function ChatInput({
+             stopTooltip={t(($) => $.input.stop_tooltip)}
+             stopAriaLabel={t(($) => $.input.stop_tooltip)}
+           />
+-        </div>
++        </div>}
+         {uploadEnabled && isDragOver && <FileDropOverlay />}
+       </div>
+     </div>
+diff --git a/packages/views/chat/components/chat-queue.test.tsx b/packages/views/chat/components/chat-queue.test.tsx
+index 11687a1fd..99d99a33d 100755
+--- a/packages/views/chat/components/chat-queue.test.tsx
++++ b/packages/views/chat/components/chat-queue.test.tsx
+@@ -13,9 +13,10 @@ function renderQueue(headStatus = "running", sendNowDisabled = false) {
+     onRemove: vi.fn<(taskId: string) => Promise<void>>().mockResolvedValue(),
+     onClear: vi.fn<() => Promise<void>>().mockResolvedValue(),
+   };
+-  const view = render(
++  const ui = (isVisible = true) => (
+     <I18nProvider locale="en" resources={TEST_RESOURCES}>
+       <ChatQueue
++        isVisible={isVisible}
+         headStatus={headStatus}
+         sendNowDisabled={sendNowDisabled}
+         tasks={[
+@@ -34,12 +35,24 @@ function renderQueue(headStatus = "running", sendNowDisabled = false) {
+         ]}
+         {...callbacks}
+       />
+-    </I18nProvider>,
++    </I18nProvider>
+   );
+-  return { ...callbacks, container: view.container };
++  const view = render(ui());
++  return { ...callbacks, container: view.container, setVisible: (visible: boolean) => view.rerender(ui(visible)) };
+ }
+ 
+ describe("ChatQueue", () => {
++  it("closes its portalled action menu when chat hides while retaining the queue", async () => {
++    const actions = renderQueue();
++    fireEvent.click(screen.getAllByLabelText("More queue actions")[0]!);
++    expect(await screen.findByRole("menuitem", { name: "Edit queued message" })).toBeInTheDocument();
++    actions.setVisible(false);
++    await waitFor(() => expect(screen.queryByRole("menuitem", { name: "Edit queued message" })).not.toBeInTheDocument());
++    expect(screen.getByText("First follow-up")).toBeInTheDocument();
++    expect(actions.onRemove).not.toHaveBeenCalled();
++    expect(actions.onClear).not.toHaveBeenCalled();
++  });
++
+   it("renders a standalone queue card without a separate header", () => {
+     const { container } = renderQueue();
+ 
+diff --git a/packages/views/chat/components/chat-queue.tsx b/packages/views/chat/components/chat-queue.tsx
+index a936d656a..8e795c302 100755
+--- a/packages/views/chat/components/chat-queue.tsx
++++ b/packages/views/chat/components/chat-queue.tsx
+@@ -23,6 +23,7 @@ import { useT } from "../../i18n";
+ import { CHAT_COLUMN, CHAT_GUTTER } from "./chat-column";
+ 
+ interface ChatQueueProps {
++  isVisible?: boolean;
+   tasks: ChatQueuedTask[];
+   headStatus: string | undefined;
+   onSendNow: (taskId: string) => Promise<void> | void;
+@@ -36,6 +37,7 @@ interface ChatQueueProps {
+ }
+ 
+ export function ChatQueue({
++  isVisible = true,
+   tasks,
+   headStatus,
+   onSendNow,
+@@ -158,7 +160,7 @@ export function ChatQueue({
+                         <Trash2 aria-hidden="true" />
+                       )}
+                     </Button>
+-                    <DropdownMenu>
++                    {isVisible && <DropdownMenu>
+                       <DropdownMenuTrigger
+                         render={
+                           <Button
+@@ -201,7 +203,7 @@ export function ChatQueue({
+                           {t(($) => $.queue.clear)}
+                         </DropdownMenuItem>
+                       </DropdownMenuContent>
+-                    </DropdownMenu>
++                    </DropdownMenu>}
+                   </div>
+                 </div>
+               );
+diff --git a/packages/views/chat/components/chat-window.tsx b/packages/views/chat/components/chat-window.tsx
+index b13748d44..567fbfe4a 100755
+--- a/packages/views/chat/components/chat-window.tsx
++++ b/packages/views/chat/components/chat-window.tsx
+@@ -94,6 +94,10 @@ export function ChatWindow() {
+   const { t } = useT("chat");
+   const wsId = useWorkspaceId();
+   const isOpen = useChatStore((s) => s.isOpen);
++  const isExpanded = useChatStore((s) => s.isExpanded);
++  const windowRef = useRef<HTMLDivElement>(null);
++  const { renderWidth, renderHeight, isAtMax, boundsReady, isDragging, toggleExpand, startDrag } = useChatResize(windowRef);
++  const isVisible = isOpen && (isExpanded || boundsReady);
+   const activeSessionId = useChatStore((s) => s.activeSessionId);
+   const { data: quickActionsPending = null } = useQuery(
+     chatQuickActionsPendingOptions(activeSessionId ?? ""),
+@@ -182,7 +186,7 @@ export function ChatWindow() {
+   } = useChatTaskActions(activeSessionId, enqueueLocalRestore);
+   // Nonce handed to ChatInput to pull focus into the compose box: when a new
+   // chat starts (⊕ or switching agent), and whenever the window itself opens.
+-  const { focusRequest, requestInputFocus } = useChatInputFocus(isOpen);
++  const { focusRequest, requestInputFocus, onFocusCapture } = useChatInputFocus(isOpen, windowRef, isVisible);
+   const [conversationStarterRequest, setConversationStarterRequest] = useState<{
+     id: number;
+     content: string;
+@@ -748,17 +752,10 @@ export function ChatWindow() {
+     setOpen(false);
+   }, [activeSessionId, pendingTaskId, setOpen]);
+ 
+-  const isExpanded = useChatStore((s) => s.isExpanded);
+-
+-  const windowRef = useRef<HTMLDivElement>(null);
+-  const { renderWidth, renderHeight, isAtMax, boundsReady, isDragging, toggleExpand, startDrag } = useChatResize(windowRef);
+-
+   // Show the list (vs empty state) as soon as there's anything to display —
+   // a real message, or a pending task whose timeline will stream in.
+   const hasMessages = messages.length > 0 || !!pendingTaskId;
+ 
+-  const isVisible = isOpen && (isExpanded || boundsReady);
+-
+   // Small screens drop the floating-card form entirely — a 90%-of-375px
+   // "window" is all chrome and no content, so the panel goes full-screen
+   // (Lark/IM-style) and the resize/expand affordances disappear with it.
+@@ -789,7 +786,7 @@ export function ChatWindow() {
+   const keyboard = useVisualViewportKeyboard();
+   const containerStyle: React.CSSProperties = {
+     transformOrigin: "bottom right",
+-    pointerEvents: isOpen ? "auto" : "none",
++    pointerEvents: isVisible ? "auto" : "none",
+     ...(isMobile
+       ? {
+           // Full-screen panel anchored to the visible bottom edge;
+@@ -825,6 +822,13 @@ export function ChatWindow() {
+   return (
+     <motion.div
+       ref={windowRef}
++      id="floating-chat-window"
++      role="dialog"
++      aria-label={t(($) => $.page.title)}
++      aria-hidden={!isVisible}
++      inert={!isVisible}
++      tabIndex={-1}
++      onFocusCapture={onFocusCapture}
+       className={containerClass}
+       style={containerStyle}
+       initial={{ opacity: 0, scale: 0.95, ...motionSize }}
+@@ -842,7 +846,7 @@ export function ChatWindow() {
+     >
+       {!isMobile && <ChatResizeHandles onDragStart={startDrag} />}
+       {/* Header — ⊕ new + session dropdown | window tools */}
+-      <div className="flex items-center justify-between border-b px-4 py-2.5 gap-2">
++      {isVisible && <div className="flex items-center justify-between border-b px-4 py-2.5 gap-2">
+         <div className="flex items-center gap-1 min-w-0">
+           <Tooltip>
+             <TooltipTrigger
+@@ -851,6 +855,7 @@ export function ChatWindow() {
+                   variant="ghost"
+                   size="icon-sm"
+                   className="rounded-full text-muted-foreground"
++                  aria-label={t(($) => $.window.new_chat_tooltip)}
+                   onClick={handleNewChat}
+                 />
+               }
+@@ -877,6 +882,7 @@ export function ChatWindow() {
+                     variant="ghost"
+                     size="icon-sm"
+                     className="text-muted-foreground"
++                    aria-label={isExpanded || isAtMax ? t(($) => $.window.restore_tooltip) : t(($) => $.window.expand_tooltip)}
+                     onClick={toggleExpand}
+                   />
+                 }
+@@ -895,6 +901,7 @@ export function ChatWindow() {
+                   variant="ghost"
+                   size="icon-sm"
+                   className="text-muted-foreground"
++                  aria-label={t(($) => $.window.minimize_tooltip)}
+                   onClick={handleMinimize}
+                 />
+               }
+@@ -904,7 +911,7 @@ export function ChatWindow() {
+             <TooltipContent side="top">{t(($) => $.window.minimize_tooltip)}</TooltipContent>
+           </Tooltip>
+         </div>
+-      </div>
++      </div>}
+ 
+       {/* Messages / skeleton / empty state */}
+       {showSkeleton ? (
+@@ -972,6 +979,7 @@ export function ChatWindow() {
+       )}
+ 
+       <ChatQueue
++        isVisible={isVisible}
+         tasks={queuedTasks}
+         headStatus={pendingTask?.status}
+         onSendNow={handleSendQueuedTaskNow}
+@@ -985,6 +993,7 @@ export function ChatWindow() {
+        *  agent has been archived (read-only); locked out entirely when there's
+        *  no agent (the EmptyState above carries the CTA). */}
+       <ChatInput
++        isVisible={isVisible}
+         onSend={handleSend}
+         restoreDraftRequest={restoreDraftRequest}
+         conversationStarterRequest={conversationStarterRequest}
+diff --git a/packages/views/chat/components/use-chat-input-focus.test.ts b/packages/views/chat/components/use-chat-input-focus.test.ts
+index 9f35bd560..54a4fa70b 100755
+--- a/packages/views/chat/components/use-chat-input-focus.test.ts
++++ b/packages/views/chat/components/use-chat-input-focus.test.ts
+@@ -1,18 +1,38 @@
+-import { describe, expect, it } from "vitest";
++import { createRef } from "react";
++import { afterEach, describe, expect, it } from "vitest";
+ import { act, renderHook } from "@testing-library/react";
+ import { useChatInputFocus } from "./use-chat-input-focus";
+ 
++const detachedElements: HTMLElement[] = [];
++afterEach(() => { for (const element of detachedElements.splice(0)) element.remove(); });
++
++function focusElements() {
++  const origin = document.createElement("button");
++  const other = document.createElement("button");
++  const launcher = document.createElement("button");
++  launcher.dataset.chatLauncher = "";
++  const window = document.createElement("div");
++  window.tabIndex = -1;
++  const composer = document.createElement("textarea");
++  window.append(composer);
++  document.body.append(origin, other, launcher, window);
++  detachedElements.push(origin, other, launcher, window);
++  return { origin, other, launcher, composer, windowRef: { current: window } };
++}
++
+ describe("useChatInputFocus", () => {
+   it("stays inert on mount, whether the window starts closed or open", () => {
+-    expect(renderHook(() => useChatInputFocus(false)).result.current.focusRequest).toBe(0);
++    const windowRef = createRef<HTMLElement>();
++    expect(renderHook(() => useChatInputFocus(false, windowRef, false)).result.current.focusRequest).toBe(0);
+     // A persisted "open" preference must not steal focus from the page the user
+     // just loaded — ChatWindow is mounted (hidden) even while closed.
+-    expect(renderHook(() => useChatInputFocus(true)).result.current.focusRequest).toBe(0);
++    expect(renderHook(() => useChatInputFocus(true, windowRef, true)).result.current.focusRequest).toBe(0);
+   });
+ 
+   it("requests focus on every closed → open transition", () => {
++    const windowRef = createRef<HTMLElement>();
+     const { result, rerender } = renderHook(
+-      ({ isOpen }: { isOpen: boolean }) => useChatInputFocus(isOpen),
++      ({ isOpen }: { isOpen: boolean }) => useChatInputFocus(isOpen, windowRef, isOpen),
+       { initialProps: { isOpen: false } },
+     );
+ 
+@@ -32,11 +52,69 @@ describe("useChatInputFocus", () => {
+   });
+ 
+   it("lets callers bump the nonce for new chats and agent switches", () => {
+-    const { result } = renderHook(() => useChatInputFocus(true));
++    const windowRef = createRef<HTMLElement>();
++    const { result } = renderHook(() => useChatInputFocus(true, windowRef, true));
+ 
+     act(() => result.current.requestInputFocus());
+     expect(result.current.focusRequest).toBe(1);
+     act(() => result.current.requestInputFocus());
+     expect(result.current.focusRequest).toBe(2);
+   });
++
++  it("waits for a requested window to become visible before focusing the composer", () => {
++    const { origin, windowRef } = focusElements();
++    origin.focus();
++    const { result, rerender } = renderHook(
++      ({ isOpen, visible }) => useChatInputFocus(isOpen, windowRef, visible),
++      { initialProps: { isOpen: false, visible: false } },
++    );
++    rerender({ isOpen: true, visible: false });
++    expect(result.current.focusRequest).toBe(0);
++    expect(origin).toHaveFocus();
++    rerender({ isOpen: true, visible: true });
++    expect(result.current.focusRequest).toBe(1);
++  });
++
++  it("does not turn a persisted open window's initial measurement into a focus request", () => {
++    const { origin, windowRef } = focusElements();
++    origin.focus();
++    const { result, rerender } = renderHook(
++      ({ visible }) => useChatInputFocus(true, windowRef, visible),
++      { initialProps: { visible: false } },
++    );
++    rerender({ visible: true });
++    expect(result.current.focusRequest).toBe(0);
++    expect(origin).toHaveFocus();
++  });
++
++  it("restores the shortcut's original focus when closing from chat", () => {
++    const { origin, composer, windowRef } = focusElements();
++    const { rerender } = renderHook(({ open }) => useChatInputFocus(open, windowRef, open), { initialProps: { open: false } });
++    origin.focus();
++    rerender({ open: true });
++    composer.focus();
++    rerender({ open: false });
++    expect(origin).toHaveFocus();
++  });
++
++  it("leaves unrelated focus alone when the window closes", () => {
++    const { origin, other, windowRef } = focusElements();
++    const { rerender } = renderHook(({ open }) => useChatInputFocus(open, windowRef, open), { initialProps: { open: false } });
++    origin.focus();
++    rerender({ open: true });
++    other.focus();
++    rerender({ open: false });
++    expect(other).toHaveFocus();
++  });
++
++  it("falls back to the remounted launcher when the opener no longer exists", () => {
++    const { origin, composer, launcher, windowRef } = focusElements();
++    const { rerender } = renderHook(({ open }) => useChatInputFocus(open, windowRef, open), { initialProps: { open: false } });
++    origin.focus();
++    rerender({ open: true });
++    origin.remove();
++    composer.focus();
++    rerender({ open: false });
++    expect(launcher).toHaveFocus();
++  });
+ });
+diff --git a/packages/views/chat/components/use-chat-input-focus.ts b/packages/views/chat/components/use-chat-input-focus.ts
+index 6ba9a2eac..6d5da3989 100755
+--- a/packages/views/chat/components/use-chat-input-focus.ts
++++ b/packages/views/chat/components/use-chat-input-focus.ts
+@@ -1,6 +1,6 @@
+ "use client";
+ 
+-import { useCallback, useEffect, useRef, useState } from "react";
++import { useCallback, useLayoutEffect, useRef, useState, type FocusEventHandler, type RefObject } from "react";
+ 
+ /**
+  * Owns the floating window's composer-focus nonce.
+@@ -10,29 +10,72 @@ import { useCallback, useEffect, useRef, useState } from "react";
+  * moments that mean "you are about to type something new" — a fresh chat, an
+  * agent switch, a project-context change.
+  *
+- * Opening the window is one of those moments (MUL-5522): the whole point of the
+- * toggle shortcut is reaching chat without a mouse, so landing in a window you
+- * still have to click into would defeat it — and the same courtesy applies to
+- * opening it from the FAB.
++ * Opening the window is one of those moments (MUL-5522). Wait for its measured
++ * bounds before focusing, because a not-yet-visible window is inert. Closing
++ * returns focus to the opener only while focus still belongs to chat, including
++ * its portalled controls. The FAB remounts on close and is the fallback when
++ * the original opener has gone away.
+  *
+  * The ref is seeded with the mount-time value so only a real closed → open
+  * transition focuses. ChatWindow stays mounted while closed and `isOpen` is
+  * restored from storage, so treating mount as an open event would let a
+  * persisted "open" preference steal focus from whatever page the user loaded.
+  */
+-export function useChatInputFocus(isOpen: boolean): {
++export function useChatInputFocus(
++  isOpen: boolean,
++  windowRef: RefObject<HTMLElement | null>,
++  isVisible: boolean,
++): {
+   focusRequest: number;
+   requestInputFocus: () => void;
++  onFocusCapture: FocusEventHandler<HTMLElement>;
+ } {
+   const [focusRequest, setFocusRequest] = useState(0);
+   const requestInputFocus = useCallback(() => setFocusRequest((n) => n + 1), []);
+ 
+   const wasOpenRef = useRef(isOpen);
+-  useEffect(() => {
++  const openerRef = useRef<HTMLElement | null>(null);
++  const lastFocusedRef = useRef<HTMLElement | null>(null);
++  const pendingFocusRef = useRef(false);
++  const onFocusCapture = useCallback<FocusEventHandler<HTMLElement>>((event) => {
++    if (isOpen && event.target instanceof HTMLElement) lastFocusedRef.current = event.target;
++  }, [isOpen]);
++
++  useLayoutEffect(() => {
+     const wasOpen = wasOpenRef.current;
+     wasOpenRef.current = isOpen;
+-    if (isOpen && !wasOpen) requestInputFocus();
+-  }, [isOpen, requestInputFocus]);
++    if (isOpen && !wasOpen) {
++      const active = document.activeElement;
++      openerRef.current = active instanceof HTMLElement && active !== document.body && !windowRef.current?.contains(active)
++        ? active
++        : null;
++      pendingFocusRef.current = true;
++    }
++    if (!isOpen && wasOpen) {
++      pendingFocusRef.current = false;
++      const active = document.activeElement;
++      // Applying inert may already have blurred the composer to body. React's
++      // focus capture also records descendants rendered through a portal.
++      const ownsFocus = windowRef.current?.contains(active) || active === lastFocusedRef.current ||
++        (active === document.body && lastFocusedRef.current !== null);
++      if (ownsFocus) {
++        const opener = openerRef.current;
++        const target = opener?.isConnected && !opener.closest("[inert], [hidden], [aria-hidden='true']") && !opener.matches(":disabled")
++          ? opener
++          : document.querySelector<HTMLElement>("[data-chat-launcher]");
++        target?.focus({ preventScroll: true });
++      }
++      openerRef.current = null;
++      lastFocusedRef.current = null;
++    }
++    if (isVisible && pendingFocusRef.current) {
++      pendingFocusRef.current = false;
++      // A disabled composer cannot take focus; the named window remains a
++      // useful starting point for its other actions in that case.
++      windowRef.current?.focus({ preventScroll: true });
++      requestInputFocus();
++    }
++  }, [isOpen, isVisible, requestInputFocus, windowRef]);
+ 
+-  return { focusRequest, requestInputFocus };
++  return { focusRequest, requestInputFocus, onFocusCapture };
+ }
+diff --git a/packages/views/inbox/components/inbox-page.tsx b/packages/views/inbox/components/inbox-page.tsx
+index 0d1fa74f9..af736cb30 100755
+--- a/packages/views/inbox/components/inbox-page.tsx
++++ b/packages/views/inbox/components/inbox-page.tsx
+@@ -55,6 +55,7 @@ import { ErrorBoundary } from "@multica/ui/components/common/error-boundary";
+ import { useNavigation, useReportNavigating } from "../../navigation";
+ import { toast } from "sonner";
+ import {
++  AlertCircle,
+   MoreHorizontal,
+   Inbox,
+   CheckCheck,
+@@ -84,6 +85,7 @@ import {
+ import { useIsCompact } from "@multica/ui/hooks/use-mobile";
+ import { cn } from "@multica/ui/lib/utils";
+ import { PAGE_GUTTER, PageHeader } from "../../layout/page-header";
++import { CollectionPageState } from "../../layout/collection-page";
+ import { useTimeAgo } from "./inbox-list-item";
+ import { InboxList } from "./inbox-list";
+ import { InboxFilterMenu } from "./inbox-filter-menu";
+@@ -120,23 +122,29 @@ export function InboxPage() {
+   }, [urlView]);
+ 
+   const wsId = useWorkspaceId();
+-  const { data: rawItems = [], isLoading: loading } = useQuery(inboxListOptions(wsId));
++  const inboxQuery = useQuery(inboxListOptions(wsId));
++  const { data: rawItems = [] } = inboxQuery;
+   const items = useMemo(() => deduplicateInboxItems(rawItems), [rawItems]);
+ 
+   // Fetched in both views, not just the archived one: the main list's entry
+   // into the archive is labelled with this count, so it has to be known before
+   // the user goes there.
++  const archivedQuery = useQuery(archivedInboxListOptions(wsId));
+   const {
+     data: rawArchivedItems = [],
+     isLoading: archivedLoading,
+     isError: archivedError,
+-  } = useQuery(archivedInboxListOptions(wsId));
++  } = archivedQuery;
+   const archivedItems = useMemo(
+     () => deduplicateArchivedInboxItems(rawArchivedItems),
+     [rawArchivedItems],
+   );
+ 
+   const isArchivedView = view === "archived";
++  const viewQuery = isArchivedView ? archivedQuery : inboxQuery;
++  const viewError = viewQuery.isError;
++  const viewHasData = viewQuery.data !== undefined;
++  const viewLoadFailed = viewError && !viewHasData;
+   const viewItems = isArchivedView ? archivedItems : items;
+   const filters = useInboxFilters(wsId);
+   const clearFilters = useInboxFilterStore((state) => state.clearFilters);
+@@ -235,7 +243,7 @@ export function InboxPage() {
+   // Whether the list currently on screen has finished its first load. The
+   // fallback and drain effects below both key on this, and getting it wrong in
+   // the archived view means acting on an empty list that simply hasn't arrived.
+-  const viewLoading = isArchivedView ? archivedLoading : loading;
++  const viewLoading = viewQuery.isLoading;
+ 
+   // Shared inbox links (?issue=<id>) may point to notifications not in this
+   // user's inbox (archived, or never received). Fall back to the issue page
+@@ -244,7 +252,7 @@ export function InboxPage() {
+   // and `onInboxIssueDeleted` pruned the cache), the issue detail would 404
+   // too — clear the selection and stay on /inbox instead.
+   useEffect(() => {
+-    if (viewLoading) return;
++    if (viewLoading || viewError || !viewHasData) return;
+     if (!selectedKey) return;
+     if (selected) return;
+     if (selectionFilteredOut) return;
+@@ -255,6 +263,8 @@ export function InboxPage() {
+     replace(wsPaths.issueDetail(selectedKey));
+   }, [
+     viewLoading,
++    viewError,
++    viewHasData,
+     selectedKey,
+     selected,
+     selectionFilteredOut,
+@@ -589,13 +599,17 @@ export function InboxPage() {
+     </button>
+   );
+ 
+-  const list = archivedError && isArchivedView ? (
+-    <div className="flex-1 min-h-0 overflow-y-auto">
+-      <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+-        <Archive className="mb-3 h-8 w-8 text-faint-foreground" />
+-        <p className="text-body">{t(($) => $.errors.archived_load_failed)}</p>
+-      </div>
+-    </div>
++  const list = viewLoadFailed ? (
++    <CollectionPageState
++      icon={AlertCircle}
++      role="alert"
++      title={isArchivedView ? t(($) => $.errors.archived_load_failed) : t(($) => $.errors.load_failed)}
++      actions={
++        <Button variant="outline" size="sm" disabled={viewQuery.isFetching} onClick={() => void viewQuery.refetch()}>
++          {t(($) => $.errors.retry)}
++        </Button>
++      }
++    />
+   ) : (
+     <InboxContextMenuProvider
+       view={view}
+@@ -633,10 +647,20 @@ export function InboxPage() {
+     </InboxContextMenuProvider>
+   );
+ 
++  const refreshError = viewError && viewHasData ? (
++    <div role="alert" className="flex shrink-0 flex-wrap items-center gap-2 px-3 py-2 text-caption text-muted-foreground">
++      <span>{t(($) => $.errors.refresh_failed)}</span>
++      <Button variant="outline" size="sm" disabled={viewQuery.isFetching} onClick={() => void viewQuery.refetch()}>
++        {t(($) => $.errors.retry)}
++      </Button>
++    </div>
++  ) : null;
++
+   const listPanel = (
+     <>
+       {listHeader}
+       {isArchivedView && archivedBackRow}
++      {refreshError}
+       {list}
+     </>
+   );
+@@ -818,6 +842,10 @@ export function InboxPage() {
+     </div>
+   ) : null;
+ 
++  if (viewLoadFailed) {
++    return <div className="flex flex-1 flex-col min-h-0">{listPanel}</div>;
++  }
++
+   // -- Compact layout: list / detail toggle -----------------------------------
+ 
+   if (isCompact) {
+@@ -855,7 +883,7 @@ export function InboxPage() {
+       // no-op, and pointed both scroll restoration and the timeline
+       // virtualizer at an element that never scrolls. This wrapper only has to
+       // give the detail a definite height to fill.
+-      return <div className="flex flex-1 flex-col min-h-0">{detailContent}</div>;
++      return <div className="flex flex-1 flex-col min-h-0">{refreshError}{detailContent}</div>;
+     }
+ 
+     if (detailItem) {
+@@ -864,6 +892,7 @@ export function InboxPage() {
+       return (
+         <div className="flex flex-1 flex-col min-h-0">
+           {compactBackBar}
++          {refreshError}
+           <div className="flex-1 min-h-0 overflow-y-auto">{detailContent}</div>
+         </div>
+       );
+diff --git a/packages/views/issues/components/gantt-view.test.tsx b/packages/views/issues/components/gantt-view.test.tsx
+index 63a1d85d0..509bc4add 100755
+--- a/packages/views/issues/components/gantt-view.test.tsx
++++ b/packages/views/issues/components/gantt-view.test.tsx
+@@ -1,6 +1,7 @@
+ import { createStore } from "zustand/vanilla";
+-import { describe, expect, it, vi, beforeAll, afterAll } from "vitest";
+-import { screen } from "@testing-library/react";
++import { describe, expect, it, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
++import { act, fireEvent, screen, within } from "@testing-library/react";
++import userEvent from "@testing-library/user-event";
+ import {
+   type IssueViewState,
+   viewStoreSlice,
+@@ -31,10 +32,11 @@ vi.mock("../../navigation", () => ({
+   AppLink: ({
+     children,
+     href,
++    newTabTitle: _newTabTitle,
++    ...props
+   }: {
+-    children: React.ReactNode;
+-    href: string;
+-  }) => <a href={href}>{children}</a>,
++    newTabTitle?: string;
++  } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a href={href} {...props}>{children}</a>,
+   useNavigation: () => ({ push: vi.fn(), pathname: "/issues" }),
+   resolveClickIntent: () => "push",
+   useIntentNavigate: () => () => {},
+@@ -77,20 +79,29 @@ const ISSUE = {
+   updated_at: "2026-03-01T00:00:00Z",
+ } as unknown as Issue;
+ 
+-function renderGantt(locale: "en" | "zh-Hans") {
++function renderGantt(locale: "en" | "zh-Hans", issues: Issue[] = [ISSUE]) {
+   const store = createStore<IssueViewState>()(viewStoreSlice);
+-  return renderWithI18n(
++  const result = renderWithI18n(
+     <ViewStoreProvider store={store}>
+       <IssueContextMenuProvider>
+-        <GanttView issues={[ISSUE]} />
++        <GanttView issues={issues} />
+       </IssueContextMenuProvider>
+     </ViewStoreProvider>,
+     { locale },
+   );
++  return { ...result, store };
++}
++
++function mockViewport() {
++  vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(900);
++  vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(900);
++  vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(360);
++  vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(360);
+ }
+ 
+ describe("GanttView date localization", () => {
+   beforeAll(() => {
++    mockViewport();
+     // The browser speaks English while the UI does not. Dates must follow the
+     // UI language, not this — see useLocale in packages/views/i18n.
+     vi.stubGlobal("navigator", {
+@@ -103,6 +114,7 @@ describe("GanttView date localization", () => {
+   });
+ 
+   afterAll(() => {
++    vi.restoreAllMocks();
+     vi.useRealTimers();
+     vi.unstubAllGlobals();
+   });
+@@ -133,3 +145,154 @@ describe("GanttView date localization", () => {
+     expect(container.textContent ?? "").not.toMatch(/年/);
+   });
+ });
++
++describe("GanttView visible window", () => {
++  let rowCount = 1;
++  const originalScrollTo = HTMLElement.prototype.scrollTo;
++
++  beforeEach(() => {
++    vi.useFakeTimers({ toFake: ["Date"] });
++    vi.setSystemTime(new Date("2026-03-04T12:00:00Z"));
++    rowCount = 1;
++    // Keep the real virtualizer. Only provide the viewport/layout APIs that
++    // jsdom lacks, so scroll events must actually change the rendered window.
++    mockViewport();
++    vi.spyOn(HTMLElement.prototype, "scrollHeight", "get").mockImplementation(
++      () => 56 + rowCount * 36,
++    );
++    HTMLElement.prototype.scrollTo = function (options?: ScrollToOptions | number, y?: number) {
++      const next = typeof options === "number" ? y ?? this.scrollTop : options?.top ?? this.scrollTop;
++      if (next !== this.scrollTop) {
++        this.scrollTop = next;
++        this.dispatchEvent(new Event("scroll"));
++      }
++    };
++  });
++
++  afterEach(() => {
++    vi.restoreAllMocks();
++    vi.useRealTimers();
++    HTMLElement.prototype.scrollTo = originalScrollTo;
++  });
++
++  function manyIssues(count: number): Issue[] {
++    rowCount = count;
++    return Array.from({ length: count }, (_, index) => ({
++      ...ISSUE,
++      id: `issue-${index + 1}`,
++      identifier: `MUL-${index + 1}`,
++      title: `Scheduled issue ${index + 1}`,
++      position: index,
++    }));
++  }
++
++  it("bounds date DOM across a ten-year range and reaches the last dates at every zoom", () => {
++    const { container } = renderGantt("en", [{
++      ...ISSUE,
++      start_date: "2020-01-01",
++      due_date: "2030-12-31",
++    }]);
++    const scroller = container.querySelector<HTMLDivElement>(".overflow-auto")!;
++
++    expect(container.querySelectorAll("*").length).toBeLessThan(750);
++    expect(screen.queryByText("Dec 2030")).not.toBeInTheDocument();
++    for (const zoom of ["Day", "Week", "Month"]) {
++      fireEvent.click(screen.getByRole("button", { name: zoom }));
++      const canvas = scroller.firstElementChild as HTMLElement;
++      const width = Number.parseFloat(canvas.style.minWidth);
++      expect(width).toBeGreaterThan(20_000);
++      fireEvent.scroll(scroller, { target: { scrollLeft: width - 900 } });
++      expect(screen.getByText("Dec 2030")).toBeInTheDocument();
++      expect(container.querySelectorAll("*").length).toBeLessThan(750);
++      fireEvent.scroll(scroller, { target: { scrollLeft: 0 } });
++      expect(screen.getByText("Jan 2020")).toBeInTheDocument();
++    }
++  });
++
++  it("keeps the UTC today column centered beyond the sticky issue labels when zoom changes", () => {
++    const { container } = renderGantt("en", [{
++      ...ISSUE,
++      start_date: "2026-03-04",
++      due_date: "2026-03-04",
++    }]);
++    const scroller = container.querySelector<HTMLDivElement>(".overflow-auto")!;
++    for (const [zoom, width] of [["Day", 36], ["Week", 14], ["Month", 6]] as const) {
++      fireEvent.click(screen.getByRole("button", { name: zoom }));
++      const bar = screen.getByRole("link", { name: "MUL-1: Ship the thing" });
++      expect(bar).toHaveStyle({ width: `${width}px` });
++      expect(Number.parseFloat(bar.style.left) - scroller.scrollLeft).toBeCloseTo((900 - 320) / 2);
++    }
++  });
++
++  it("bounds a thousand rows while scrolling and sorting still reaches every issue", () => {
++    const issues = manyIssues(1000);
++    const { container, store } = renderGantt("en", issues);
++    const scroller = container.querySelector<HTMLDivElement>(".overflow-auto")!;
++    const issueLink = (number: number) => screen.queryByRole("link", {
++      name: new RegExp(`MUL-${number}\\s*Scheduled issue ${number}$`),
++    });
++
++    expect(issueLink(1)).toBeInTheDocument();
++    expect(issueLink(1000)).not.toBeInTheDocument();
++    expect(container.querySelectorAll("*").length).toBeLessThan(2000);
++    fireEvent.scroll(scroller, { target: { scrollTop: 999 * 36 } });
++    expect(issueLink(1000)).toBeInTheDocument();
++    expect(issueLink(1)).not.toBeInTheDocument();
++    expect(container.querySelectorAll("*").length).toBeLessThan(2000);
++
++    act(() => store.setState({ sortBy: "position", sortDirection: "desc" }));
++    fireEvent.scroll(scroller, { target: { scrollTop: 0 } });
++    expect(issueLink(1000)).toBeInTheDocument();
++    expect(issueLink(1)).not.toBeInTheDocument();
++    expect(screen.getAllByRole("link").length).toBeLessThan(60);
++    fireEvent.scroll(scroller, { target: { scrollTop: 999 * 36 } });
++    expect(issueLink(1)).toBeInTheDocument();
++  });
++
++  it("retains a focused row and supports keyboard access beyond the mounted window", () => {
++    const { container } = renderGantt("en", manyIssues(1000));
++    const scroller = container.querySelector<HTMLDivElement>(".overflow-auto")!;
++    const first = screen.getByRole("link", { name: /MUL-1\s*Scheduled issue 1$/ });
++    act(() => first.focus());
++    fireEvent.scroll(scroller, { target: { scrollTop: 500 * 36 } });
++    expect(first).toHaveFocus();
++    expect(container.querySelectorAll("*").length).toBeLessThan(2000);
++
++    fireEvent.keyDown(first, { key: "End" });
++    const last = screen.getByRole("link", { name: /MUL-1000\s*Scheduled issue 1000$/ });
++    expect(last).toHaveFocus();
++    expect(scroller.scrollTop).toBeGreaterThan(900 * 36);
++    fireEvent.keyDown(last, { key: "Home" });
++    expect(screen.getByRole("link", { name: /MUL-1\s*Scheduled issue 1$/ })).toHaveFocus();
++  });
++
++  it("continues Tab and Shift+Tab across the row window", async () => {
++    const user = userEvent.setup();
++    renderGantt("en", manyIssues(100));
++    const lastMountedRow = screen.getAllByRole("listitem").at(-1)!;
++    const lastPosition = Number(lastMountedRow.getAttribute("aria-posinset"));
++    const lastLink = within(lastMountedRow).getAllByRole("link").at(-1)!;
++    act(() => lastLink.focus());
++
++    await user.tab();
++    const nextPosition = lastPosition + 1;
++    expect(screen.getByRole("link", {
++      name: new RegExp(`MUL-${nextPosition}\\s*Scheduled issue ${nextPosition}$`),
++    })).toHaveFocus();
++    await user.tab({ shift: true });
++    expect(lastLink).toHaveFocus();
++  });
++
++  it("focuses Home on an already mounted first row without leaving a pending focus request", async () => {
++    const user = userEvent.setup();
++    renderGantt("en", manyIssues(100));
++    const firstRow = screen.getAllByRole("listitem")[0]!;
++    const links = within(firstRow).getAllByRole("link");
++    act(() => links.at(-1)!.focus());
++
++    fireEvent.keyDown(links.at(-1)!, { key: "Home" });
++    expect(links[0]).toHaveFocus();
++    await user.click(screen.getByRole("button", { name: "Month" }));
++    expect(screen.getByRole("button", { name: "Month" })).toHaveFocus();
++  });
++});
+diff --git a/packages/views/issues/components/gantt-view.tsx b/packages/views/issues/components/gantt-view.tsx
+index 419bd4a33..b089bfc79 100755
+--- a/packages/views/issues/components/gantt-view.tsx
++++ b/packages/views/issues/components/gantt-view.tsx
+@@ -1,7 +1,8 @@
+ "use client";
+ 
+-import { useEffect, useMemo, useRef } from "react";
++import { useCallback, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+ import { useQuery } from "@tanstack/react-query";
++import { defaultRangeExtractor, useVirtualizer, type Range as VirtualRange } from "@tanstack/react-virtual";
+ import { useWorkspaceId } from "@multica/core/hooks";
+ import { useWorkspacePaths } from "@multica/core/paths";
+ import { useViewStore, useViewStoreApi } from "@multica/core/issues/stores/view-store-context";
+@@ -72,6 +73,7 @@ function isWeekStartUTC(d: Date): boolean {
+ const ROW_HEIGHT = 36;
+ const HEADER_HEIGHT = 56;
+ const LEFT_COL_WIDTH = 320;
++const DATE_OVERSCAN_PX = 120;
+ 
+ const DAY_PX_BY_ZOOM: Record<GanttZoom, number> = {
+   day: 36,
+@@ -117,26 +119,33 @@ function GanttAxis({
+   zoom,
+   todayOffsetDays,
+   width,
++  visibleDays,
+ }: {
+   range: Range;
+   dayPx: number;
+   zoom: GanttZoom;
+   todayOffsetDays: number;
+   width: number;
++  visibleDays: number[];
+ }) {
+   const locale = useLocale();
+   const totalDays = daysBetween(range.start, range.end);
+ 
+   const monthBlocks = useMemo(() => {
+     const out: { label: string; left: number; width: number }[] = [];
+-    let cursor = startOfDayUTC(range.start);
+-    while (cursor.getTime() < range.end.getTime()) {
++    let cursor = addDays(range.start, visibleDays[0] ?? 0);
++    const windowEnd = addDays(range.start, (visibleDays.at(-1) ?? -1) + 1);
++    while (cursor.getTime() < windowEnd.getTime()) {
++      const monthStart = new Date(
++        Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth(), 1),
++      );
+       const monthEnd = new Date(
+         Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1),
+       );
++      const blockStart = monthStart.getTime() < range.start.getTime() ? range.start : monthStart;
+       const blockEnd = monthEnd.getTime() > range.end.getTime() ? range.end : monthEnd;
+-      const startDays = daysBetween(range.start, cursor);
+-      const widthDays = daysBetween(cursor, blockEnd);
++      const startDays = daysBetween(range.start, blockStart);
++      const widthDays = daysBetween(blockStart, blockEnd);
+       out.push({
+         label: cursor.toLocaleDateString(locale, {
+           month: "short",
+@@ -149,7 +158,7 @@ function GanttAxis({
+       cursor = monthEnd;
+     }
+     return out;
+-  }, [range, dayPx, locale]);
++  }, [range, dayPx, locale, visibleDays]);
+ 
+   return (
+     <div
+@@ -158,9 +167,9 @@ function GanttAxis({
+     >
+       {/* Month row */}
+       <div className="relative h-7 border-b">
+-        {monthBlocks.map((b, i) => (
++        {monthBlocks.map((b) => (
+           <div
+-            key={i}
++            key={b.left}
+             className="absolute top-0 bottom-0 flex items-center px-2 text-caption font-medium text-foreground"
+             style={{ left: b.left, width: b.width }}
+           >
+@@ -170,7 +179,7 @@ function GanttAxis({
+       </div>
+       {/* Day / week ticks */}
+       <div className="relative h-7">
+-        {Array.from({ length: totalDays }, (_, i) => {
++        {visibleDays.map((i) => {
+           const date = addDays(range.start, i);
+           const isMonth = isMonthStartUTC(date);
+           const isWeek = isWeekStartUTC(date);
+@@ -242,19 +251,22 @@ function BackgroundLayer({
+   dayPx,
+   height,
+   todayOffsetDays,
++  visibleDays,
+ }: {
+   range: Range;
+   dayPx: number;
+   height: number;
+   todayOffsetDays: number;
++  visibleDays: number[];
+ }) {
+   const totalDays = daysBetween(range.start, range.end);
+   return (
+     <div
++      aria-hidden="true"
+       className="pointer-events-none absolute inset-0"
+       style={{ height, width: totalDays * dayPx }}
+     >
+-      {Array.from({ length: totalDays }, (_, i) => {
++      {visibleDays.map((i) => {
+         const date = addDays(range.start, i);
+         const weekend = isWeekendUTC(date);
+         const isMonth = isMonthStartUTC(date);
+@@ -295,14 +307,14 @@ function BackgroundLayer({
+ // the color of the category it behaves as. Keying this by IssueStatus made the
+ // lookup `undefined` for every custom key, so the bar lost its color entirely.
+ // (MUL-6243)
+-const STATUS_BAR_BG: Record<IssueStatusCategory, string> = {
+-  backlog: "bg-muted-foreground/60",
+-  todo: "bg-muted-foreground/70",
+-  in_progress: "bg-warning",
+-  in_review: "bg-success",
+-  done: "bg-info",
+-  blocked: "bg-destructive",
+-  cancelled: "bg-muted-foreground/40",
++const STATUS_BAR_COLORS: Record<IssueStatusCategory, string> = {
++  backlog: "bg-muted text-foreground",
++  todo: "bg-muted text-foreground",
++  in_progress: "bg-warning text-gantt-warning-foreground",
++  in_review: "bg-success text-gantt-bar-foreground",
++  done: "bg-info text-gantt-bar-foreground",
++  blocked: "bg-destructive text-gantt-bar-foreground",
++  cancelled: "bg-muted text-foreground",
+ };
+ 
+ // ---------------------------------------------------------------------------
+@@ -314,11 +326,19 @@ function ScheduledRow({
+   range,
+   dayPx,
+   totalDays,
++  index,
++  rowCount,
++  top,
++  onFocus,
+ }: {
+   issue: Issue;
+   range: Range;
+   dayPx: number;
+   totalDays: number;
++  index: number;
++  rowCount: number;
++  top: number;
++  onFocus: () => void;
+ }) {
+   const { t } = useT("issues");
+   const locale = useLocale();
+@@ -366,14 +386,21 @@ function ScheduledRow({
+   return (
+     <IssueActionsContextMenu issue={issue}>
+       <div
+-        className="flex border-b border-foreground/5 hover:bg-accent/30 transition-colors"
+-        style={{ height: ROW_HEIGHT }}
++        role="listitem"
++        aria-posinset={index + 1}
++        aria-setsize={rowCount}
++        data-gantt-row-index={index}
++        onFocusCapture={onFocus}
++        onContextMenuCapture={onFocus}
++        className="absolute inset-x-0 flex border-b border-foreground/5 hover:bg-accent/30 transition-colors"
++        style={{ height: ROW_HEIGHT, top }}
+       >
+         {/* Sticky label cell */}
+         <AppLink
+           href={p.issueDetail(issue.id)}
+           newTabTitle={issue.identifier}
+-          className="sticky left-0 z-[1] flex shrink-0 items-center gap-2 border-r bg-background px-3 text-body min-w-0"
++          data-gantt-issue-link=""
++          className="sticky left-0 z-[1] flex shrink-0 items-center gap-2 border-r bg-background px-3 text-body min-w-0 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring"
+           style={{ width: LEFT_COL_WIDTH }}
+         >
+           <StatusIcon
+@@ -408,18 +435,19 @@ function ScheduledRow({
+                   <AppLink
+                     href={p.issueDetail(issue.id)}
+                     newTabTitle={issue.identifier}
++                    aria-label={`${issue.identifier}: ${issue.title}`}
+                     className={cn(
+-                      "absolute top-1/2 -translate-y-1/2 transition-opacity hover:opacity-90",
++                      "absolute top-1/2 -translate-y-1/2 hover:ring-2 hover:ring-foreground/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                       bar.isMarker
+                         ? "h-3 w-3 rotate-45 rounded-[2px]"
+                         : "h-5 rounded-md",
+-                      STATUS_BAR_BG[issueStatusCategory(issue) ?? "todo"],
++                      STATUS_BAR_COLORS[issueStatusCategory(issue) ?? "todo"],
+                       inverted && "ring-2 ring-destructive ring-offset-1 ring-offset-background",
+                     )}
+                     style={{ left: bar.left, width: bar.width }}
+                   >
+                     {!bar.isMarker && bar.width > 60 && (
+-                      <span className="block truncate px-2 py-[2px] text-micro leading-4 text-white">
++                      <span className="block truncate px-2 py-[2px] text-micro leading-4">
+                         {issue.title}
+                       </span>
+                     )}
+@@ -484,12 +512,117 @@ export function GanttView({ issues }: { issues: Issue[] }) {
+   const todayOffsetDays = daysBetween(range.start, today);
+ 
+   const scrollRef = useRef<HTMLDivElement | null>(null);
+-  useEffect(() => {
++  const [viewport, setViewport] = useState({ left: 0, width: 0 });
++  const hasIssues = scheduled.length > 0;
++
++  useLayoutEffect(() => {
+     const el = scrollRef.current;
+     if (!el) return;
+-    const target = Math.max(0, LEFT_COL_WIDTH + todayOffsetDays * dayPx - 240);
+-    el.scrollLeft = target;
+-  }, [todayOffsetDays, dayPx]);
++    // Keep today in the exposed timeline, beyond the sticky label column.
++    el.scrollLeft = Math.max(
++      0,
++      todayOffsetDays * dayPx - Math.max(0, el.clientWidth - LEFT_COL_WIDTH) / 2,
++    );
++    const syncViewport = () => {
++      const left = el.scrollLeft;
++      const width = el.clientWidth;
++      setViewport((current) => current.left === left && current.width === width
++        ? current
++        : { left, width });
++    };
++    syncViewport();
++    const observer = new ResizeObserver(syncViewport);
++    observer.observe(el);
++    el.addEventListener("scroll", syncViewport, { passive: true });
++    return () => {
++      observer.disconnect();
++      el.removeEventListener("scroll", syncViewport);
++    };
++  }, [todayOffsetDays, dayPx, hasIssues]);
++
++  // Arithmetic bounds avoid even allocating a per-day measurement array for
++  // dates outside the viewport. The full width still represents every date.
++  const visibleDays = useMemo(() => {
++    const first = Math.max(0, Math.floor((viewport.left - DATE_OVERSCAN_PX) / dayPx));
++    const last = Math.min(totalDays, Math.ceil(
++      (viewport.left + Math.max(0, viewport.width - LEFT_COL_WIDTH) + DATE_OVERSCAN_PX) / dayPx,
++    ));
++    return Array.from({ length: Math.max(0, last - first) }, (_, i) => first + i);
++  }, [dayPx, totalDays, viewport]);
++
++  const [focusedIssueId, setFocusedIssueId] = useState<string | null>(null);
++  const focusedIndex = useMemo(
++    () => scheduled.findIndex((issue) => issue.id === focusedIssueId),
++    [scheduled, focusedIssueId],
++  );
++  const getRowKey = useCallback((index: number) => scheduled[index]!.id, [scheduled]);
++  const rowRange = useCallback((window: VirtualRange) => {
++    const indexes = defaultRangeExtractor(window);
++    // Scrolling must never unmount the current keyboard/context-menu target.
++    if (focusedIndex >= 0 && !indexes.includes(focusedIndex)) {
++      indexes.push(focusedIndex);
++      indexes.sort((a, b) => a - b);
++    }
++    return indexes;
++  }, [focusedIndex]);
++  const rowVirtualizer = useVirtualizer({
++    count: scheduled.length,
++    getScrollElement: () => scrollRef.current,
++    getItemKey: getRowKey,
++    estimateSize: () => ROW_HEIGHT,
++    scrollMargin: HEADER_HEIGHT,
++    scrollPaddingStart: HEADER_HEIGHT,
++    overscan: 5,
++    rangeExtractor: rowRange,
++  });
++
++  const pendingFocus = useRef<{ index: number; last: boolean } | null>(null);
++  const focusPendingRow = useCallback(() => {
++    const pending = pendingFocus.current;
++    if (!pending) return;
++    const row = scrollRef.current?.querySelector<HTMLElement>(
++      `[data-gantt-row-index="${pending.index}"]`,
++    );
++    if (!row) return;
++    const links = row.querySelectorAll<HTMLAnchorElement>("a[href]");
++    const target = pending.last ? links[links.length - 1] : links[0];
++    if (target) {
++      pendingFocus.current = null;
++      target.focus({ preventScroll: !pending.last });
++    }
++  }, []);
++  useLayoutEffect(focusPendingRow);
++
++  const handleRowKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
++    if (event.altKey || event.ctrlKey || event.metaKey || !(event.target instanceof HTMLAnchorElement)) return;
++    const row = event.target.closest<HTMLElement>("[data-gantt-row-index]");
++    if (!row) return;
++    const index = Number(row.dataset.ganttRowIndex);
++    let next: number;
++    let last = false;
++    switch (event.key) {
++      case "ArrowDown": next = index + 1; break;
++      case "ArrowUp": next = index - 1; break;
++      case "Home": next = 0; break;
++      case "End": next = scheduled.length - 1; break;
++      case "Tab": {
++        const links = row.querySelectorAll<HTMLAnchorElement>("a[href]");
++        const edge = event.shiftKey ? links[0] : links[links.length - 1];
++        if (event.target !== edge) return;
++        next = index + (event.shiftKey ? -1 : 1);
++        last = event.shiftKey;
++        break;
++      }
++      default: return;
++    }
++    const issue = scheduled[next];
++    if (!issue) return;
++    event.preventDefault();
++    pendingFocus.current = { index: next, last };
++    setFocusedIssueId(issue.id);
++    rowVirtualizer.scrollToIndex(next, { align: "auto" });
++    focusPendingRow();
++  };
+ 
+   if (scheduled.length === 0) {
+     return (
+@@ -538,7 +671,7 @@ export function GanttView({ issues }: { issues: Issue[] }) {
+       </div>
+ 
+       {/* Body — single scroll container drives both vertical + horizontal */}
+-      <div ref={scrollRef} className="flex-1 min-h-0 overflow-auto">
++      <div ref={scrollRef} className="flex-1 min-h-0 overflow-auto" role="region" tabIndex={0} aria-label={t(($) => $.gantt.timeline_label)}>
+         <div style={{ minWidth: LEFT_COL_WIDTH + timelineWidth }}>
+           {/* Sticky header row */}
+           <div className="sticky top-0 z-20 flex">
+@@ -556,11 +689,18 @@ export function GanttView({ issues }: { issues: Issue[] }) {
+               zoom={zoom}
+               todayOffsetDays={todayOffsetDays}
+               width={timelineWidth}
++              visibleDays={visibleDays}
+             />
+           </div>
+ 
+           {/* Scheduled rows + background overlay */}
+-          <div className="relative">
++          <div
++            role="list"
++            aria-label={t(($) => $.gantt.timeline_label)}
++            className="relative"
++            style={{ height: rowVirtualizer.getTotalSize() }}
++            onKeyDown={handleRowKeyDown}
++          >
+             {/* Background gridlines + today line spanning all rows. Positioned
+                 starting after the left label column. */}
+             <div
+@@ -572,15 +712,20 @@ export function GanttView({ issues }: { issues: Issue[] }) {
+                 dayPx={dayPx}
+                 height={scheduled.length * ROW_HEIGHT}
+                 todayOffsetDays={todayOffsetDays}
++                visibleDays={visibleDays}
+               />
+             </div>
+-            {scheduled.map((issue) => (
++            {rowVirtualizer.getVirtualItems().map((row) => (
+               <ScheduledRow
+-                key={issue.id}
+-                issue={issue}
++                key={row.key}
++                issue={scheduled[row.index]!}
+                 range={range}
+                 dayPx={dayPx}
+                 totalDays={totalDays}
++                index={row.index}
++                rowCount={scheduled.length}
++                top={row.start - HEADER_HEIGHT}
++                onFocus={() => setFocusedIssueId(scheduled[row.index]!.id)}
+               />
+             ))}
+           </div>
+diff --git a/packages/views/issues/components/list-row.tsx b/packages/views/issues/components/list-row.tsx
+index 00525307b..1da94ab5e 100755
+--- a/packages/views/issues/components/list-row.tsx
++++ b/packages/views/issues/components/list-row.tsx
+@@ -25,6 +25,8 @@ import { LabelChip } from "../../labels/label-chip";
+ import { CustomStatusChip } from "./custom-status-chip";
+ import { IssueAgentActivityIndicator } from "./issue-agent-activity-indicator";
+ import { useIssueSurfaceSelection } from "../surface/selection-context";
++import { Checkbox } from "@multica/ui/components/ui/checkbox";
++import { useT } from "../../i18n";
+ 
+ export interface ChildProgress {
+   done: number;
+@@ -54,6 +56,7 @@ function ListRowContent({
+   containerProps?: Record<string, unknown>;
+   checkboxProps?: Pick<React.HTMLAttributes<HTMLDivElement>, "onClick" | "onMouseDown" | "onPointerDown">;
+ }) {
++  const { t } = useT("issues");
+   const selection = useIssueSurfaceSelection();
+   const selected = selection.selectedIds.has(issue.id);
+   const toggle = selection.toggle;
+@@ -92,15 +95,13 @@ function ListRowContent({
+         >
+           <PriorityIcon
+             priority={issue.priority}
+-            className={selected ? "hidden" : "group-hover/row:hidden"}
++            className={selected ? "opacity-0" : "group-hover/row:opacity-0 group-focus-within/row:opacity-0"}
+           />
+-          <input
+-            type="checkbox"
++          <Checkbox
++            aria-label={t(($) => $.table.select_issue, { identifier: issue.identifier })}
+             checked={selected}
+-            onChange={() => toggle(issue.id)}
+-            className={`absolute inset-0 cursor-pointer accent-primary ${
+-              selected ? "" : "hidden group-hover/row:block"
+-            }`}
++            onCheckedChange={() => toggle(issue.id)}
++            className="absolute inset-0 opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 data-checked:opacity-100"
+           />
+         </div>
+         <AppLink
+diff --git a/packages/views/issues/components/list-view.test.tsx b/packages/views/issues/components/list-view.test.tsx
+index 60dc7c127..76385a94c 100755
+--- a/packages/views/issues/components/list-view.test.tsx
++++ b/packages/views/issues/components/list-view.test.tsx
+@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import { I18nProvider } from "@multica/core/i18n/react";
+ import type { Issue, IssueStatus, IssueStatusCategory } from "@multica/core/types";
++import { useIssueSelectionStore } from "@multica/core/issues/stores/selection-store";
+ import { ListView } from "./list-view";
+ import { IssueContextMenuProvider } from "../actions";
+ import { ScrollRestorationProvider } from "../../platform";
+@@ -276,3 +277,47 @@ describe("ListView custom statuses", () => {
+     expect(screen.getByText("Waiting on the reporter")).toBeInTheDocument();
+   });
+ });
++
++describe("ListView keyboard selection", () => {
++  beforeEach(() => {
++    mockViewState.listCollapsedStatuses = [];
++    useIssueSelectionStore.getState().clear();
++  });
++
++  it("reaches named group and row checkboxes by Tab and selects with Space", async () => {
++    const user = userEvent.setup();
++    renderListView();
++
++    const group = screen.getByRole("checkbox", {
++      name: "Select all loaded issues in Todo",
++    });
++    const first = screen.getByRole("checkbox", { name: "Select MUL-1" });
++    const second = screen.getByRole("checkbox", { name: "Select MUL-2" });
++
++    await user.tab();
++    expect(group).toHaveFocus();
++    await user.tab();
++    expect(screen.getByRole("button", { expanded: true })).toHaveFocus();
++    await user.tab();
++    expect(first).toHaveFocus();
++    await user.keyboard(" ");
++
++    expect(first).toBeChecked();
++    expect(second).not.toBeChecked();
++    expect(group).toBePartiallyChecked();
++    expect(mockViewState.listCollapsedStatuses).toEqual([]);
++    expect(first).toHaveFocus();
++
++    await user.tab({ shift: true });
++    await user.tab({ shift: true });
++    expect(group).toHaveFocus();
++    await user.keyboard(" ");
++    expect(group).toBeChecked();
++    expect(first).toBeChecked();
++    expect(second).toBeChecked();
++    await user.keyboard(" ");
++    expect(group).not.toBeChecked();
++    expect(first).not.toBeChecked();
++    expect(second).not.toBeChecked();
++  });
++});
+diff --git a/packages/views/issues/components/list-view.tsx b/packages/views/issues/components/list-view.tsx
+index 43a5b6798..eca1e2ea8 100755
+--- a/packages/views/issues/components/list-view.tsx
++++ b/packages/views/issues/components/list-view.tsx
+@@ -17,6 +17,7 @@ import {
+ import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
+ import { Virtuoso } from "react-virtuoso";
+ import { Button } from "@multica/ui/components/ui/button";
++import { Checkbox } from "@multica/ui/components/ui/checkbox";
+ import type { Issue, IssueStatusCategory, Project } from "@multica/core/types";
+ import { useViewStore } from "@multica/core/issues/stores/view-store-context";
+ import { StatusHeading } from "./status-heading";
+@@ -554,20 +555,17 @@ function StatusAccordionItem({
+         }`}
+       >
+         <div className="pl-3 flex items-center">
+-          <input
+-            type="checkbox"
++          <Checkbox
++            aria-label={t(($) => $.list.select_group, { status: t(($) => $.status[status]) })}
+             checked={allSelected}
+-            ref={(el) => {
+-              if (el) el.indeterminate = someSelected && !allSelected;
+-            }}
+-            onChange={() => {
++            indeterminate={someSelected && !allSelected}
++            onCheckedChange={() => {
+               if (allSelected) {
+                 deselect(issueIds);
+               } else {
+                 select(issueIds);
+               }
+             }}
+-            className="cursor-pointer accent-primary"
+           />
+         </div>
+         <Accordion.Trigger className="group/trigger flex flex-1 items-center gap-2 px-2 h-full text-left outline-none cursor-pointer">
+diff --git a/packages/views/locales/en/agents.json b/packages/views/locales/en/agents.json
+index 0c1d957c2..1a13420f7 100755
+--- a/packages/views/locales/en/agents.json
++++ b/packages/views/locales/en/agents.json
+@@ -92,6 +92,10 @@
+     "task_count_other": "{{count}} tasks",
+     "owned_by_you": "Owned by you"
+   },
++  "selection": {
++    "select_all": "Select all agents",
++    "select_agent": "Select {{name}}"
++  },
+   "activity_tooltip": {
+     "created_today": "Created today",
+     "created_days_ago_one": "Created {{count}} day ago",
+diff --git a/packages/views/locales/en/desktop.json b/packages/views/locales/en/desktop.json
+index 487ca501e..63e69c245 100644
+--- a/packages/views/locales/en/desktop.json
++++ b/packages/views/locales/en/desktop.json
+@@ -1,4 +1,9 @@
+ {
++  "tabs": {
++    "move_left": "Move left",
++    "move_right": "Move right",
++    "reorder_hint": "Press Alt+Shift+Left Arrow or Alt+Shift+Right Arrow to move this tab. You can also use Move left or Move right in its context menu."
++  },
+   "close_behavior": {
+     "title": "When closing Multica",
+     "description": "Choose what happens when you close the main window.",
+diff --git a/packages/views/locales/en/inbox.json b/packages/views/locales/en/inbox.json
+index 50fe9659f..179b825a2 100755
+--- a/packages/views/locales/en/inbox.json
++++ b/packages/views/locales/en/inbox.json
+@@ -99,6 +99,9 @@
+     "unarchived": "Notification restored"
+   },
+   "errors": {
++    "load_failed": "Could not load notifications",
++    "refresh_failed": "Could not refresh notifications. Previously loaded notifications are still shown.",
++    "retry": "Retry",
+     "source_context_retry_failed": "Could not retry with the original context",
+     "source_context_retry_unavailable": "This context can no longer be retried. Start again from the branch point.",
+     "mark_read_failed": "Failed to mark as read",
+diff --git a/packages/views/locales/en/issues.json b/packages/views/locales/en/issues.json
+index 9452d81c0..6cd31737e 100755
+--- a/packages/views/locales/en/issues.json
++++ b/packages/views/locales/en/issues.json
+@@ -263,6 +263,7 @@
+   },
+   "gantt": {
+     "header_issue": "Issue",
++    "timeline_label": "Issue timeline",
+     "zoom_day": "Day",
+     "zoom_week": "Week",
+     "zoom_month": "Month",
+@@ -296,6 +297,7 @@
+   },
+   "list": {
+     "empty_status": "No issues",
++    "select_group": "Select all loaded issues in {{status}}",
+     "add_issue_tooltip": "Add issue"
+   },
+   "swimlane": {
+diff --git a/packages/views/locales/en/projects.json b/packages/views/locales/en/projects.json
+index 53821fa6f..ebad04275 100755
+--- a/packages/views/locales/en/projects.json
++++ b/packages/views/locales/en/projects.json
+@@ -3,6 +3,8 @@
+     "title": "Projects",
+     "new_project": "New project",
+     "empty": "No projects yet",
++    "load_error": "Could not load projects",
++    "refresh_error": "Could not refresh projects. Previously loaded projects are still shown.",
+     "create_first": "Create your first project",
+     "view_compact": "Compact",
+     "view_comfortable": "Comfortable",
+@@ -21,6 +23,8 @@
+     "empty_hint": "Choose a repository and an execution squad to get your first issue moving."
+   },
+   "table": {
++    "select_project": "Select {{name}}",
++    "select_all": "Select all visible projects",
+     "name": "Name",
+     "priority": "Priority",
+     "status": "Status",
+@@ -58,6 +62,8 @@
+   },
+   "detail": {
+     "not_found": "Project not found",
++    "load_error": "Could not load this project",
++    "refresh_error": "Could not refresh this project. Previously loaded content and your edits are still available.",
+     "breadcrumb_fallback": "Projects",
+     "title_placeholder": "Project title",
+     "icon_tooltip": "Change icon",
+@@ -571,6 +577,60 @@
+     "allValues": "All",
+     "missingSelection": "Selected value has no matches",
+     "openCurrent": "Open current task",
++    "activityPanel": {
++      "summary": "Effective scope summary",
++      "initialEffective": "Initial effective scope",
++      "currentEffective": "Current effective scope",
++      "finalEffective": "Effective scope at closure",
++      "netChange": "Net effective change",
++      "addedUnique": "Distinct tasks added",
++      "cancellations": "Cancellations",
++      "countDetails": "View all scope counts",
++      "finalScope": "Scope at closure",
++      "removedDuring": "Removed during iteration",
++      "reentries": "Re-entries",
++      "reopens": "Reopens",
++      "taskCount_one": "{{count}} task",
++      "taskCount_other": "{{count}} tasks",
++      "eventCount_one": "{{count}} event",
++      "eventCount_other": "{{count}} events",
++      "scopeFilter": "Scope changes",
++      "allFilter": "All activity",
++      "filterLabel": "Activity filter",
++      "loading": "Loading activity...",
++      "empty": "No activity recorded yet.",
++      "noMatches": "No scope changes recorded.",
++      "readError": "Could not load activity. Try again.",
++      "refreshError": "Could not refresh activity. Previously loaded records are still shown.",
++      "showMore": "Show more activity",
++      "recordCount_one": "{{count}} record",
++      "recordCount_other": "{{count}} records",
++      "showing": "Showing {{shown}} of {{total}} operations",
++      "recordDetails_one": "View {{count}} record",
++      "recordDetails_other": "View {{count}} records",
++      "eventDetails": "Event details",
++      "eventId": "Event ID",
++      "operationId": "Operation ID",
++      "sequence": "Sequence",
++      "kind": "Recorded event type",
++      "occurredAt": "Occurred at",
++      "sampledAt": "Sampled at",
++      "beforeFacts": "Before facts",
++      "afterFacts": "After facts",
++      "unnamedTask": "Task title not recorded",
++      "unknownActor": "Actor not recorded",
++      "member": "Member",
++      "agent": "Agent",
++      "squad": "Squad",
++      "plugin": "Plugin",
++      "system": "Multica",
++      "unassigned": "Unassigned",
++      "cleared": "Cleared",
++      "title": "Title",
++      "timezone": "Timezone",
++      "before": "Before",
++      "after": "After"
++    },
+     "eventJoin": "Added to iteration",
+     "eventLeave": "Removed from iteration",
+     "eventReenter": "Re-entered iteration",
+@@ -592,6 +652,56 @@
+     "eventCancelled": "Iteration cancelled",
+     "eventRollover": "Tasks carried over",
+     "unassignedState": "No current iteration",
+-    "actualStartedAt": "Actually started"
++    "actualStartedAt": "Actually started",
++    "progressPanel": {
++      "deliverySummary": "Delivery summary",
++      "countDetails": "View count details",
++      "effectiveScopeHint": "Effective scope excludes cancelled tasks.",
++      "scopeAtClosure": "Scope at closure",
++      "originalCompleted": "Original tasks completed",
++      "noChartData": "No daily progress data was recorded.",
++      "singleDay": "Only one day was recorded.",
++      "unfinishedDestinations": "Unfinished work at closure",
++      "carriedAtClosure": "Tasks carried over at closure",
++      "removedAtClosure": "Tasks removed at closure",
++      "carriedTo": "Carried to",
++      "removed": "Removed from iteration at closure",
++      "noUnfinished": "No unfinished work at closure.",
++      "missingDestinations": "Some unfinished task destinations were not recorded.",
++      "closeoutDetails": "View closure details",
++      "closedAt": "Closed at"
++    },
++    "pages": {
++      "openTab": "Current and planned",
++      "historyTab": "Past iterations",
++      "readError": "Could not load iteration data. Try again.",
++      "accessDenied": "You no longer have access to these iterations.",
++      "notFound": "The requested iteration data is no longer available.",
++      "backToWorkspace": "Back to workspace",
++      "filters": "Filters",
++      "clearFilters": "Clear filters",
++      "timeline": "Iteration timeline",
++      "unallocated": "{{count}} unallocated days",
++      "noMatches": "No matching tasks or iterations.",
++      "disabledHistory": "Iteration planning is disabled. Your saved history remains available.",
++      "countUnit": "Counts represent tasks. Cancelled tasks are excluded from effective scope.",
++      "viewIteration": "View iteration",
++      "viewChartData": "View chart data",
++      "more": "More actions",
++      "addExisting": "Add existing tasks",
++      "newTask": "New task",
++      "emptyLead": "Choose the work your team plans to deliver in this period.",
++      "emptyDescription": "Add existing tasks or create new ones for this iteration. Starting it records your original commitment.",
++      "manualHint": "Iterations start manually. Planned dates do not advance the cycle automatically.",
++      "startBlocked": "Another iteration is active. End it before starting this one.",
++      "progress": "Progress",
++      "scopeChanges": "Scope changes",
++      "detailTabs": "Iteration details",
++      "frozenTasks": "Task snapshot",
++      "notStarted": "Not started",
++      "noChart": "Progress and original commitment are available after the iteration starts.",
++      "writesUnavailable": "This iteration cannot currently be changed. Your draft has been kept."
++    },
++    "creationSelectionRequired": "Choose an available iteration in this workspace before creating the task."
+   }
+ }
+diff --git a/packages/views/locales/zh-Hans/agents.json b/packages/views/locales/zh-Hans/agents.json
+index bd08dc0c9..3d5fb1487 100755
+--- a/packages/views/locales/zh-Hans/agents.json
++++ b/packages/views/locales/zh-Hans/agents.json
+@@ -89,6 +89,10 @@
+     "task_count_other": "{{count}} 个 task",
+     "owned_by_you": "你拥有的智能体"
+   },
++  "selection": {
++    "select_all": "选择所有智能体",
++    "select_agent": "选择 {{name}}"
++  },
+   "activity_tooltip": {
+     "created_today": "今天创建",
+     "created_days_ago_other": "{{count}} 天前创建",
+diff --git a/packages/views/locales/zh-Hans/desktop.json b/packages/views/locales/zh-Hans/desktop.json
+index cc117e625..65a3775cb 100644
+--- a/packages/views/locales/zh-Hans/desktop.json
++++ b/packages/views/locales/zh-Hans/desktop.json
+@@ -1,4 +1,9 @@
+ {
++  "tabs": {
++    "move_left": "向左移动",
++    "move_right": "向右移动",
++    "reorder_hint": "按 Alt+Shift+左方向键或 Alt+Shift+右方向键移动此标签页，也可以使用右键菜单中的向左移动或向右移动。"
++  },
+   "close_behavior": {
+     "title": "关闭 Multica 时",
+     "description": "选择关闭主窗口时的行为。",
+diff --git a/packages/views/locales/zh-Hans/inbox.json b/packages/views/locales/zh-Hans/inbox.json
+index 58a1489c3..d60afffbb 100755
+--- a/packages/views/locales/zh-Hans/inbox.json
++++ b/packages/views/locales/zh-Hans/inbox.json
+@@ -97,6 +97,9 @@
+     "unarchived": "已恢复通知"
+   },
+   "errors": {
++    "load_failed": "无法加载通知",
++    "refresh_failed": "无法刷新通知，当前仍显示上次加载的通知。",
++    "retry": "重试",
+     "source_context_retry_failed": "无法使用原始上下文重试",
+     "source_context_retry_unavailable": "该上下文已无法重试，请从派生起点重新发起。",
+     "mark_read_failed": "标为已读失败",
+diff --git a/packages/views/locales/zh-Hans/issues.json b/packages/views/locales/zh-Hans/issues.json
+index b07122172..f5f4d4e88 100755
+--- a/packages/views/locales/zh-Hans/issues.json
++++ b/packages/views/locales/zh-Hans/issues.json
+@@ -260,6 +260,7 @@
+   },
+   "gantt": {
+     "header_issue": "任务",
++    "timeline_label": "任务时间轴",
+     "zoom_day": "日",
+     "zoom_week": "周",
+     "zoom_month": "月",
+@@ -293,6 +294,7 @@
+   },
+   "list": {
+     "empty_status": "无任务",
++    "select_group": "选择 {{status}} 组中已加载的所有任务",
+     "add_issue_tooltip": "新建任务"
+   },
+   "swimlane": {
+diff --git a/packages/views/locales/zh-Hans/projects.json b/packages/views/locales/zh-Hans/projects.json
+index ce5226afa..075e6d7ad 100755
+--- a/packages/views/locales/zh-Hans/projects.json
++++ b/packages/views/locales/zh-Hans/projects.json
+@@ -3,6 +3,8 @@
+     "title": "项目",
+     "new_project": "新建项目",
+     "empty": "还没有项目",
++    "load_error": "无法加载项目",
++    "refresh_error": "无法刷新项目，当前仍显示上次加载的项目。",
+     "create_first": "创建第一个项目",
+     "view_compact": "紧凑视图",
+     "view_comfortable": "舒适视图",
+@@ -20,6 +22,8 @@
+     "empty_hint": "添加仓库并选择执行AI小队，开始处理第一条任务。"
+   },
+   "table": {
++    "select_project": "选择 {{name}}",
++    "select_all": "选择当前列表中的所有项目",
+     "name": "名称",
+     "priority": "优先级",
+     "status": "状态",
+@@ -57,6 +61,8 @@
+   },
+   "detail": {
+     "not_found": "未找到该项目",
++    "load_error": "无法加载该项目",
++    "refresh_error": "无法刷新该项目，已保留上次加载的内容和你的输入。",
+     "breadcrumb_fallback": "项目",
+     "title_placeholder": "项目标题",
+     "icon_tooltip": "更换图标",
+@@ -569,6 +575,56 @@
+     "allValues": "全部",
+     "missingSelection": "所选值暂无匹配项",
+     "openCurrent": "打开当前任务",
++    "activityPanel": {
++      "summary": "有效范围摘要",
++      "initialEffective": "初始有效范围",
++      "currentEffective": "当前有效范围",
++      "finalEffective": "结束时有效范围",
++      "netChange": "有效范围净变化",
++      "addedUnique": "新增不同任务",
++      "cancellations": "取消次数",
++      "countDetails": "查看完整范围计数",
++      "finalScope": "结束时范围",
++      "removedDuring": "期间移出",
++      "reentries": "重新加入次数",
++      "reopens": "重开次数",
++      "taskCount_other": "{{count}} 个任务",
++      "eventCount_other": "{{count}} 次",
++      "scopeFilter": "范围变化",
++      "allFilter": "全部活动",
++      "filterLabel": "筛选活动",
++      "loading": "正在加载活动...",
++      "empty": "暂无活动记录。",
++      "noMatches": "暂无范围变化。",
++      "readError": "无法加载活动，请重试。",
++      "refreshError": "无法刷新活动，仍显示上次加载的记录。",
++      "showMore": "显示更多活动",
++      "recordCount_other": "{{count}} 条记录",
++      "showing": "已显示 {{shown}} / {{total}} 次操作",
++      "recordDetails_other": "查看 {{count}} 条记录",
++      "eventDetails": "事件详情",
++      "eventId": "事件 ID",
++      "operationId": "操作 ID",
++      "sequence": "顺序号",
++      "kind": "原始事件类型",
++      "occurredAt": "发生时间",
++      "sampledAt": "采样时间",
++      "beforeFacts": "修改前记录",
++      "afterFacts": "修改后记录",
++      "unnamedTask": "未记录任务标题",
++      "unknownActor": "未记录操作者",
++      "member": "成员",
++      "agent": "智能体",
++      "squad": "AI小队",
++      "plugin": "插件",
++      "system": "Multica",
++      "unassigned": "未分配",
++      "cleared": "已清空",
++      "title": "标题",
++      "timezone": "时区",
++      "before": "修改前",
++      "after": "修改后"
++    },
+     "eventJoin": "加入迭代",
+     "eventLeave": "移出迭代",
+     "eventReenter": "重新加入迭代",
+@@ -590,6 +646,56 @@
+     "eventCancelled": "迭代取消",
+     "eventRollover": "任务结转",
+     "unassignedState": "无当前迭代",
+-    "actualStartedAt": "实际开始时间"
++    "actualStartedAt": "实际开始时间",
++    "progressPanel": {
++      "deliverySummary": "交付结果",
++      "countDetails": "查看统计明细",
++      "effectiveScopeHint": "有效范围不含已取消任务。",
++      "scopeAtClosure": "结束时范围",
++      "originalCompleted": "原始承诺中已完成",
++      "noChartData": "尚无逐日进展记录。",
++      "singleDay": "仅记录了这一天的数据。",
++      "unfinishedDestinations": "关闭时未完成任务去向",
++      "carriedAtClosure": "结束时结转任务",
++      "removedAtClosure": "结束时移出任务",
++      "carriedTo": "结转至",
++      "removed": "结束时移出迭代",
++      "noUnfinished": "关闭时没有未完成任务。",
++      "missingDestinations": "部分未完成任务的去向未记录。",
++      "closeoutDetails": "查看结束详情",
++      "closedAt": "关闭时间"
++    },
++    "pages": {
++      "openTab": "当前与计划",
++      "historyTab": "历史迭代",
++      "readError": "暂时无法加载迭代数据，请重试。",
++      "accessDenied": "你已无权访问这些迭代。",
++      "notFound": "请求的迭代数据已不可用。",
++      "backToWorkspace": "返回工作空间",
++      "filters": "筛选",
++      "clearFilters": "清除筛选",
++      "timeline": "迭代时间线",
++      "unallocated": "{{count}} 天未安排迭代",
++      "noMatches": "没有符合条件的任务或迭代。",
++      "disabledHistory": "迭代规划已关闭，已有历史记录仍可查看。",
++      "countUnit": "统计按任务数计算，有效范围不含已取消任务。",
++      "viewIteration": "查看迭代",
++      "viewChartData": "查看图表数据",
++      "more": "更多操作",
++      "addExisting": "添加已有任务",
++      "newTask": "新建任务",
++      "emptyLead": "为这段时间，选好团队准备交付的工作。",
++      "emptyDescription": "添加已有任务，或创建新任务安排到本期。开始迭代时，会记录最初的交付承诺。",
++      "manualHint": "本期需要手动开始，计划日期不会自动推进周期。",
++      "startBlocked": "当前已有进行中的迭代，结束后才能开始本期。",
++      "progress": "进展",
++      "scopeChanges": "范围变化",
++      "detailTabs": "迭代详情",
++      "frozenTasks": "任务快照",
++      "notStarted": "尚未开始",
++      "noChart": "开始迭代后展示原始承诺和进展趋势。",
++      "writesUnavailable": "当前暂不能修改此迭代，已保留你的输入。"
++    },
++    "creationSelectionRequired": "创建任务前，请选择此工作空间中可用的迭代。"
+   }
+ }
+diff --git a/packages/views/projects/components/project-detail.test.tsx b/packages/views/projects/components/project-detail.test.tsx
+index e943b935d..234aefe5e 100755
+--- a/packages/views/projects/components/project-detail.test.tsx
++++ b/packages/views/projects/components/project-detail.test.tsx
+@@ -1,13 +1,13 @@
+ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+-import { act, fireEvent, screen } from "@testing-library/react";
++import { act, fireEvent, screen, waitFor } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import type { Agent, Issue, Project, Squad } from "@multica/core/types";
+ import { renderWithI18n } from "../../test/i18n";
+ import { NavigationProvider, type NavigationAdapter } from "../../navigation";
+ import { ProjectDetail } from "./project-detail";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+-import { setApiInstance } from "@multica/core/api";
++import { ApiError, setApiInstance } from "@multica/core/api";
+ import type { ApiClient } from "@multica/core/api/client";
+ import { projectKeys } from "@multica/core/projects/queries";
+ import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, useProjectAccessStore, useProjectProgressDraftStore, writeProjectProgressDraft } from "@multica/core/projects";
+@@ -397,6 +397,7 @@ beforeEach(() => {
+   mocks.openCreateIssue.mockReset();
+   mocks.linkIssue.mockReset().mockResolvedValue(UNLINKED_ISSUE);
+   mocks.pickerProps = null;
++  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
+ });
+ 
+ describe("ProjectDetail task workspace", () => {
+@@ -537,6 +538,76 @@ describe("ProjectDetail project deletion", () => {
+ 
+ vi.mock("./project-description", () => ({ ProjectDescription: () => <div /> }));
+ 
++describe("ProjectDetail query recovery", () => {
++  const project: Project = { ...p1Project, workspace_id: "workspace-1", status: "in_progress", priority: "medium", lead_type: "member" };
++
++  function renderRecovery(getProject: ReturnType<typeof vi.fn>, cached = false) {
++    mocks.realQueries = true;
++    const server = "https://project-recovery.test";
++    const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
++    setApiInstance({ getBaseUrl: () => server, getProject } as unknown as ApiClient);
++    useProjectProgressDraftStore.getState().clearDraft();
++    if (cached) client.setQueryData(projectKeys.detail(project.workspace_id, project.id), project);
++    client.setQueryData(projectP1Keys.capabilities(project.workspace_id, server), { overview: true, updates: true });
++    client.setQueryData(projectP1Keys.overview(project.workspace_id, project.id), { ...p1Overview, project_id: project.id, workspace_id: project.workspace_id });
++    client.setQueryData([...projectP1Keys.updates(project.workspace_id, project.id), null], { items: [], next_cursor: null });
++    for (const key of ["members", "agents", "squads", "pins"]) client.setQueryData([key], []);
++    const view = renderWithI18n(
++      <QueryClientProvider client={client}>
++        <NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: `/test-workspace/projects/${project.id}`, searchParams: new URLSearchParams("section=overview"), hash: "", getShareableUrl: (path) => path }}>
++          <ProjectDetail projectId={project.id} />
++        </NavigationProvider>
++      </QueryClientProvider>,
++    );
++    return { ...view, client };
++  }
++
++  it("retries an initial service failure without presenting the project as missing", async () => {
++    const getProject = vi.fn().mockRejectedValueOnce(new ApiError("Unavailable", 500, "Internal Server Error")).mockResolvedValue(project);
++    const view = renderRecovery(getProject);
++    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load this project");
++    expect(screen.queryByText("Project not found")).not.toBeInTheDocument();
++    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
++    expect(await screen.findByRole("button", { name: "Write progress" })).toBeInTheDocument();
++    expect(getProject).toHaveBeenCalledTimes(2);
++    view.unmount();
++    view.client.clear();
++  });
++
++  it.each([
++    [404, "Not Found", "Project not found"],
++    [403, "Forbidden", "You no longer have access to this project."],
++  ])("keeps a genuine %i response distinct from a retryable failure", async (status, statusText, message) => {
++    const view = renderRecovery(vi.fn().mockRejectedValue(new ApiError("Unavailable", status, statusText)));
++    expect(await screen.findByText(message)).toBeInTheDocument();
++    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
++    expect(screen.queryByRole("button", { name: "Write progress" })).not.toBeInTheDocument();
++    view.unmount();
++    view.client.clear();
++  });
++
++  it("keeps the mounted progress editor and its draft through a cached failure and retry", async () => {
++    const user = userEvent.setup();
++    const getProject = vi.fn().mockRejectedValueOnce(new Error("Offline")).mockResolvedValue(project);
++    const view = renderRecovery(getProject, true);
++    await user.click(screen.getByRole("button", { name: "Write progress" }));
++    const editor = screen.getByRole("textbox", { name: "Progress editor" });
++    await user.type(editor, "Unsent progress stays here");
++    await act(async () => { await view.client.refetchQueries({ queryKey: projectKeys.detail(project.workspace_id, project.id), exact: true }); });
++    expect(await screen.findByRole("alert")).toHaveTextContent("Could not refresh this project");
++    expect(screen.getByRole("textbox", { name: "Progress editor" })).toBe(editor);
++    expect(editor).toHaveValue("Unsent progress stays here");
++    expect(editor).toHaveFocus();
++    await user.click(screen.getByRole("button", { name: "Retry" }));
++    await waitFor(() => expect(screen.queryByText(/Could not refresh this project/)).not.toBeInTheDocument());
++    expect(screen.getByRole("textbox", { name: "Progress editor" })).toBe(editor);
++    expect(editor).toHaveValue("Unsent progress stays here");
++    expect(getProject).toHaveBeenCalledTimes(2);
++    view.unmount();
++    view.client.clear();
++  });
++});
++
+ 
+ it("isolates cached same-tab overview navigation and flushes outgoing text under its own project", async () => {
+   mocks.realQueries = true;
+diff --git a/packages/views/projects/components/project-detail.tsx b/packages/views/projects/components/project-detail.tsx
+index f6b383d68..5e0e4e350 100755
+--- a/packages/views/projects/components/project-detail.tsx
++++ b/packages/views/projects/components/project-detail.tsx
+@@ -3,13 +3,14 @@ import { ProjectIterations } from "../../iterations/project-iterations";
+ 
+ import { useMemo, useState, useCallback, useRef, useEffect } from "react";
+ import { useDefaultLayout, usePanelRef } from "react-resizable-panels";
+-import { Check, ChevronRight, Link2, MoreHorizontal, PanelRight, Pin, PinOff, Trash2, UserMinus } from "lucide-react";
++import { AlertCircle, Check, ChevronRight, Link2, MoreHorizontal, PanelRight, Pin, PinOff, Trash2, UserMinus } from "lucide-react";
+ import { useQuery } from "@tanstack/react-query";
+ import { cn } from "@multica/ui/lib/utils";
+ import { copyText } from "@multica/ui/lib/clipboard";
+ import { toast } from "sonner";
+ import type { ProjectStatus, ProjectPriority, ProjectRiskSignal } from "@multica/core/types";
+ import { useAuthStore } from "@multica/core/auth";
++import { ApiError } from "@multica/core/api";
+ import { projectDetailOptions } from "@multica/core/projects/queries";
+ import { useUpdateProject, useDeleteProject } from "@multica/core/projects/mutations";
+ import { pinListOptions } from "@multica/core/pins";
+@@ -66,6 +67,7 @@ import {
+ import { ProjectIcon } from "./project-icon";
+ import { ProjectIconPicker } from "./project-icon-picker";
+ import { BreadcrumbHeader } from "../../layout/breadcrumb-header";
++import { CollectionPageState } from "../../layout/collection-page";
+ import {
+   AnimatedRightSidebar,
+   getAnimatedRightSidebarInitialOpen,
+@@ -120,7 +122,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
+   const wsPaths = useWorkspacePaths();
+   const router = useNavigation();
+   const userId = useAuthStore((s) => s.user?.id);
+-  const { data: project, isLoading, error: projectError } = useQuery(projectDetailOptions(wsId, projectId));
++  const { data: project, isLoading, error: projectError, refetch: refetchProject, isFetching: projectFetching } = useQuery(projectDetailOptions(wsId, projectId));
+   const capabilities = useQuery(projectCapabilitiesOptions(wsId));
+   const [accessLost, setAccessLost] = useState(false);
+   const deletedTexts = useProjectAccessStore((state) => state.deleted[JSON.stringify([wsId, projectId])]);
+@@ -281,10 +283,25 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
+     );
+   }
+ 
+-  if (!project) {
++  if (projectError instanceof ApiError && projectError.status === 404) {
+     return <div className="flex items-center justify-center h-full text-muted-foreground">{t(($) => $.detail.not_found)}</div>;
+   }
+ 
++  if (!project) {
++    return (
++      <CollectionPageState
++        icon={AlertCircle}
++        role="alert"
++        title={t(($) => $.detail.load_error)}
++        actions={
++          <Button variant="outline" size="sm" disabled={projectFetching} onClick={() => void refetchProject()}>
++            {t(($) => $.management.retry)}
++          </Button>
++        }
++      />
++    );
++  }
++
+   const issueMetrics = getProjectIssueMetrics(project);
+   const statusCfg = PROJECT_STATUS_CONFIG[project.status] ?? PROJECT_STATUS_CONFIG.planned;
+ 
+@@ -589,8 +606,16 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
+             }
+           />
+ 
++          {projectError && (
++            <div role="alert" className="flex shrink-0 flex-wrap items-center gap-2 px-4 py-2 text-caption text-muted-foreground">
++              <span>{t(($) => $.detail.refresh_error)}</span>
++              <Button variant="outline" size="sm" disabled={projectFetching} onClick={() => void refetchProject()}>
++                {t(($) => $.management.retry)}
++              </Button>
++            </div>
++          )}
+           <ProjectIterations wsId={wsId} projectId={projectId} />
+-          <ProjectSquadSection key={project.id} project={project} />
++          <ProjectSquadSection key={`squad:${project.id}`} project={project} />
+           <div className="flex items-center gap-2 border-b px-4 py-2">
+             {capabilities.data?.overview === true && <Button size="sm" variant={section === "overview" ? "secondary" : "ghost"} onClick={goOverview}>{t(($) => $.management.overview)}</Button>}
+             <Button size="sm" variant={section === "issues" ? "secondary" : "ghost"} onClick={() => router.push(wsPaths.projectDetail(projectId, "issues"))}>{t(($) => $.management.issues)}</Button>
+diff --git a/packages/views/projects/components/projects-page.test.tsx b/packages/views/projects/components/projects-page.test.tsx
+index 6cd2a6cd5..87b5c3ad5 100755
+--- a/packages/views/projects/components/projects-page.test.tsx
++++ b/packages/views/projects/components/projects-page.test.tsx
+@@ -8,7 +8,10 @@ import { NavigationProvider, type NavigationAdapter } from "../../navigation";
+ import { ProjectsPage } from "./projects-page";
+ 
+ const mocks = vi.hoisted(() => ({
+-  projects: [] as Project[],
++  projects: [] as Project[] | undefined,
++  projectError: null as Error | null,
++  projectFetching: false,
++  refetchProjects: vi.fn(),
+   members: [] as Array<{ user_id: string; name: string; role: string }>,
+   agents: [] as Array<{ id: string; name: string; archived_at: string | null }>,
+   pins: [] as Array<{ item_type: string; item_id: string }>,
+@@ -37,7 +40,14 @@ vi.mock("@tanstack/react-query", () => ({
+   useQuery: (options: { queryKey?: readonly unknown[] }) => {
+     const key = options.queryKey?.[0];
+     if (key === "projects") {
+-      return { data: mocks.projects, isLoading: false };
++      return {
++        data: mocks.projects,
++        isLoading: false,
++        error: mocks.projectError,
++        isError: !!mocks.projectError,
++        isFetching: mocks.projectFetching,
++        refetch: mocks.refetchProjects,
++      };
+     }
+     if (key === "members") {
+       return { data: mocks.members, isLoading: false };
+@@ -218,12 +228,12 @@ function makeAdapter(
+ }
+ 
+ function renderProjects(adapter = makeAdapter()) {
+-  renderWithI18n(
++  const view = renderWithI18n(
+     <NavigationProvider value={adapter}>
+       <ProjectsPage />
+     </NavigationProvider>,
+   );
+-  return adapter;
++  return { ...view, adapter };
+ }
+ 
+ function projectRow() {
+@@ -234,6 +244,9 @@ function projectRow() {
+ 
+ beforeEach(() => {
+   mocks.projects = [PROJECT];
++  mocks.projectError = null;
++  mocks.projectFetching = false;
++  mocks.refetchProjects.mockReset();
+   mocks.members = [
+     { user_id: "user-1", name: "User One", role: "admin" },
+   ];
+@@ -261,14 +274,52 @@ describe("ProjectsPage compact row navigation", () => {
+     expect(mocks.openModal).toHaveBeenCalledWith("create-project");
+   });
+ 
+-  it("renders the project name as text, not a title link", () => {
+-    renderProjects();
+-
++  it("provides a keyboard title link after the row selection control", async () => {
++    const user = userEvent.setup();
++    const { adapter } = renderProjects();
+     const row = projectRow();
+-    expect(within(row).getByText(PROJECT.title).tagName).toBe("SPAN");
+-    expect(
+-      within(row).queryByRole("link", { name: PROJECT.title }),
+-    ).not.toBeInTheDocument();
++    const link = within(row).getByRole("link", { name: PROJECT.title });
++    expect(link).toHaveAttribute("href", "/test-workspace/projects/project-1");
++
++    within(row).getByRole("checkbox", { name: "Select Launch Plan" }).focus();
++    await user.tab();
++    expect(link).toHaveFocus();
++    await user.keyboard("{Enter}");
++    expect(adapter.push).toHaveBeenCalledExactlyOnceWith("/test-workspace/projects/project-1");
++  });
++
++  it("navigates once for each title click and desktop modifier click", async () => {
++    const user = userEvent.setup();
++    const push = vi.fn();
++    const openInNewTab = vi.fn();
++    renderProjects(makeAdapter({ push, openInNewTab }));
++    const link = screen.getByRole("link", { name: PROJECT.title });
++    await user.click(link);
++    expect(push).toHaveBeenCalledExactlyOnceWith("/test-workspace/projects/project-1");
++
++    fireEvent.click(link, { metaKey: true });
++    fireEvent.click(link, { ctrlKey: true });
++    fireEvent(link, new MouseEvent("auxclick", { bubbles: true, button: 1, cancelable: true }));
++    expect(openInNewTab).toHaveBeenCalledTimes(3);
++    for (const nth of [1, 2, 3]) {
++      expect(openInNewTab).toHaveBeenNthCalledWith(nth, "/test-workspace/projects/project-1", PROJECT.title);
++    }
++    expect(push).toHaveBeenCalledTimes(1);
++  });
++
++  it("leaves native web title modifier clicks to the anchor without opening a second tab", () => {
++    const { adapter } = renderProjects();
++    const open = vi.spyOn(window, "open").mockReturnValue(null);
++    const link = screen.getByRole("link", { name: PROJECT.title });
++    const click = new MouseEvent("click", { bubbles: true, metaKey: true, cancelable: true });
++    const middleClick = new MouseEvent("auxclick", { bubbles: true, button: 1, cancelable: true });
++    fireEvent(link, click);
++    fireEvent(link, middleClick);
++    expect(click.defaultPrevented).toBe(false);
++    expect(middleClick.defaultPrevented).toBe(false);
++    expect(adapter.push).not.toHaveBeenCalled();
++    expect(open).not.toHaveBeenCalled();
++    open.mockRestore();
+   });
+ 
+   it("navigates from the row surface", async () => {
+@@ -288,7 +339,7 @@ describe("ProjectsPage compact row navigation", () => {
+     renderProjects(makeAdapter({ push }));
+     const row = projectRow();
+ 
+-    await user.click(within(row).getByRole("button", { pressed: false }));
++    await user.click(within(row).getByRole("checkbox", { name: "Select Launch Plan" }));
+     await user.click(within(row).getByRole("button", { name: "Project actions" }));
+     await user.click(within(row).getAllByRole("button", { name: "In Progress" })[0]!);
+     await user.click(within(row).getAllByRole("button", { name: "High" })[0]!);
+@@ -353,4 +404,57 @@ describe("ProjectsPage compact row navigation", () => {
+   });
+ });
+ 
++describe("ProjectsPage selection and recovery", () => {
++  it("offers one named checkbox per selection with keyboard mixed-state behavior", async () => {
++    const user = userEvent.setup();
++    mocks.projects = [PROJECT, { ...PROJECT, id: "project-2", title: "Release Checklist" }];
++    const { adapter } = renderProjects();
++    const all = screen.getByRole("checkbox", { name: "Select all visible projects" });
++    const first = screen.getByRole("checkbox", { name: "Select Launch Plan" });
++    const second = screen.getByRole("checkbox", { name: "Select Release Checklist" });
++    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
++    expect(first.closest("button")).toBeNull();
++    expect(first.tabIndex).toBe(0);
++    all.focus();
++    await user.keyboard(" ");
++    expect(all).toBeChecked();
++    expect(first).toBeChecked();
++    expect(second).toBeChecked();
++    first.focus();
++    await user.keyboard(" ");
++    expect(first).not.toBeChecked();
++    expect(all).toBePartiallyChecked();
++    expect(first).toHaveFocus();
++    expect(adapter.push).not.toHaveBeenCalled();
++  });
++
++  it("shows retry for an initial failure instead of inviting creation in an empty list", async () => {
++    mocks.projects = undefined;
++    mocks.projectError = new Error("Offline");
++    renderProjects();
++    expect(screen.getByRole("alert")).toHaveTextContent("Could not load projects");
++    expect(screen.queryByText("No projects yet")).not.toBeInTheDocument();
++    expect(screen.queryByRole("button", { name: "Create your first project" })).not.toBeInTheDocument();
++    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
++    expect(mocks.refetchProjects).toHaveBeenCalledOnce();
++  });
++
++  it("retains cached rows, filters, and selection after a failed refresh", async () => {
++    const user = userEvent.setup();
++    const view = renderProjects();
++    const row = projectRow();
++    await user.click(within(row).getByRole("checkbox", { name: "Select Launch Plan" }));
++    await user.type(screen.getByRole("textbox", { name: "Search projects..." }), "Launch");
++    mocks.projectError = new Error("Offline");
++    view.rerender(<NavigationProvider value={view.adapter}><ProjectsPage /></NavigationProvider>);
++    expect(screen.getByRole("alert")).toHaveTextContent("Could not refresh projects");
++    expect(projectRow()).toBe(row);
++    expect(screen.getByRole("checkbox", { name: "Select Launch Plan" })).toBeChecked();
++    expect(screen.getByRole("textbox", { name: "Search projects..." })).toHaveValue("Launch");
++    expect(screen.queryByText("No projects yet")).not.toBeInTheDocument();
++    await user.click(screen.getByRole("button", { name: "Retry" }));
++    expect(mocks.refetchProjects).toHaveBeenCalledOnce();
++  });
++});
++
+ vi.mock("./project-property-recovery", () => ({ useProjectPropertyEditor: (project: Project) => ({ send: (data: object) => mocks.updateProject({ id: project.id, ...data }), recovery: null }) }));
+diff --git a/packages/views/projects/components/projects-page.tsx b/packages/views/projects/components/projects-page.tsx
+index 47ee920c5..b0eeb5ae4 100755
+--- a/packages/views/projects/components/projects-page.tsx
++++ b/packages/views/projects/components/projects-page.tsx
+@@ -4,6 +4,7 @@ import { useMemo, useState, type MouseEvent } from "react";
+ import {
+   ArrowDown,
+   ArrowUp,
++  AlertCircle,
+   ChevronDown,
+   ExternalLink,
+   Filter,
+@@ -41,7 +42,7 @@ import { useAuthStore } from "@multica/core/auth";
+ import { useActorName } from "@multica/core/workspace/hooks";
+ import { memberListOptions } from "@multica/core/workspace/queries";
+ import { useModalStore } from "@multica/core/modals";
+-import { AppLink, useIntentNavigate, useRowLink } from "../../navigation";
++import { AppLink, rowLinkInteractiveProps, useIntentNavigate, useRowLink } from "../../navigation";
+ import { ActorAvatar } from "../../common/actor-avatar";
+ import { FILTER_ITEM_CLASS, HoverCheck } from "../../common/hover-check";
+ import { Skeleton } from "@multica/ui/components/ui/skeleton";
+@@ -338,27 +339,22 @@ function ProjectRowActions({
+ 
+ function CheckboxCell({
+   checked,
++  name,
+   onToggle,
+ }: {
+   checked: boolean;
++  name: string;
+   onToggle: () => void;
+ }) {
++  const { t } = useT("projects");
+   return (
+-    <ListGridCell className="justify-center px-0">
+-      <button
+-        type="button"
+-        aria-pressed={checked}
+-        onClick={(e) => {
+-          stopRowNavigation(e);
+-          onToggle();
+-        }}
+-        onAuxClick={stopRowNavigation}
+-        className={`-m-1.5 flex items-center p-1.5 ${
+-          checked ? "" : "opacity-0 transition-opacity group-hover/row:opacity-100"
+-        }`}
+-      >
+-        <Checkbox checked={checked} tabIndex={-1} className="pointer-events-none" />
+-      </button>
++    <ListGridCell {...rowLinkInteractiveProps} className="justify-center px-0">
++      <Checkbox
++        checked={checked}
++        aria-label={t(($) => $.table.select_project, { name })}
++        onCheckedChange={onToggle}
++        className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
++      />
+     </ListGridCell>
+   );
+ }
+@@ -392,12 +388,17 @@ function ProjectTableRow({
+       {...rowLink(rowHref, project.title)}
+     >
+       {propertyEditor.recovery}
+-      <CheckboxCell checked={selected} onToggle={onToggleSelect} />
++      <CheckboxCell checked={selected} name={project.title} onToggle={onToggleSelect} />
+       <ListGridCell className="gap-2">
+         <ProjectIcon project={project} size="sm" />
+-        <span className="min-w-0 truncate text-body font-medium">
++        <AppLink
++          href={rowHref}
++          newTabTitle={project.title}
++          {...rowLinkInteractiveProps}
++          className="min-w-0 truncate rounded-sm text-body font-medium outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
++        >
+           {project.title}
+-        </span>
++        </AppLink>
+       </ListGridCell>
+ 
+       {/* status — core column, always visible */}
+@@ -493,25 +494,16 @@ function ProjectTableHeader({
+   const { t } = useT("projects");
+   const sorted = (field: ProjectSortField) =>
+     sortField === field ? sortDirection : false;
+-  const anySelected = allSelected || someSelected;
+   return (
+     <ListGridHeader>
+       <div className="flex items-center justify-center">
+-        <button
+-          type="button"
+-          aria-pressed={allSelected}
+-          onClick={onToggleAll}
+-          className={`-m-1.5 flex items-center p-1.5 ${
+-            anySelected ? "" : "opacity-0 transition-opacity group-hover/header:opacity-100"
+-          }`}
+-        >
+-          <Checkbox
+-            checked={allSelected}
+-            indeterminate={someSelected && !allSelected}
+-            tabIndex={-1}
+-            className="pointer-events-none"
+-          />
+-        </button>
++        <Checkbox
++          checked={allSelected}
++          indeterminate={someSelected && !allSelected}
++          aria-label={t(($) => $.table.select_all)}
++          onCheckedChange={onToggleAll}
++          className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
++        />
+       </div>
+       <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
+         {t(($) => $.table.name)}
+@@ -815,7 +807,8 @@ export function ProjectsPage() {
+   const isCompact = viewMode === "compact";
+   const isColVisible = (key: ProjectColumnKey) => !hiddenColumns.includes(key);
+ 
+-  const { data: projects = [], isLoading } = useQuery(projectListOptions(wsId));
++  const projectQuery = useQuery(projectListOptions(wsId));
++  const { data: projects = [], isLoading } = projectQuery;
+   const { data: members = [] } = useQuery(memberListOptions(wsId));
+   const { data: pins = [] } = useQuery({
+     ...pinListOptions(wsId, currentUser?.id ?? ""),
+@@ -931,7 +924,8 @@ export function ProjectsPage() {
+ 
+   if (scopeDenied) return <p role="alert" className="p-6">{t(($) => $.management.permission_lost)}</p>;
+ 
+-  const showEmpty = !isLoading && projects.length === 0;
++  const loadFailed = projectQuery.isError && projectQuery.data === undefined;
++  const showEmpty = !isLoading && !loadFailed && projects.length === 0;
+   const countBadge = (n: number) => (
+     <span className="ml-auto pl-3 text-caption text-muted-foreground">{n}</span>
+   );
+@@ -952,7 +946,27 @@ export function ProjectsPage() {
+         }
+       />
+ 
+-      {showEmpty ? (
++      {projectQuery.isError && !loadFailed && (
++        <div role="alert" className="flex shrink-0 flex-wrap items-center gap-2 px-6 py-2 text-caption text-muted-foreground">
++          <span>{t(($) => $.page.refresh_error)}</span>
++          <Button variant="outline" size="sm" disabled={projectQuery.isFetching} onClick={() => void projectQuery.refetch()}>
++            {t(($) => $.management.retry)}
++          </Button>
++        </div>
++      )}
++
++      {loadFailed ? (
++        <CollectionPageState
++          icon={AlertCircle}
++          role="alert"
++          title={t(($) => $.page.load_error)}
++          actions={
++            <Button variant="outline" size="sm" disabled={projectQuery.isFetching} onClick={() => void projectQuery.refetch()}>
++              {t(($) => $.management.retry)}
++            </Button>
++          }
++        />
++      ) : showEmpty ? (
+         <CollectionPageState
+           icon={FolderKanban}
+           title={t(($) => $.page.empty)}
+diff --git a/packages/views/skills/components/file-tree.test.tsx b/packages/views/skills/components/file-tree.test.tsx
+index 3ff6a6dc6..48acfa340 100755
+--- a/packages/views/skills/components/file-tree.test.tsx
++++ b/packages/views/skills/components/file-tree.test.tsx
+@@ -2,15 +2,25 @@
+  * @vitest-environment jsdom
+  */
+ import { afterEach, describe, expect, it, vi } from "vitest";
++import type { ComponentProps, ReactElement } from "react";
+ import { cleanup, screen } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { renderWithI18n } from "../../test/i18n";
+ import { FileTree, type FileTreeActions } from "./file-tree";
++import { Tabs, TabsList } from "@multica/ui/components/ui/tabs";
+ 
+ afterEach(cleanup);
+ 
+ const PATHS = ["SKILL.md", "references/api.md", "notes.txt"];
+ 
++function renderTree(tree: ReactElement<ComponentProps<typeof FileTree>>) {
++  return renderWithI18n(
++    <Tabs value={tree.props.selectedPath} orientation="vertical">
++      <TabsList aria-label="Skill files">{tree}</TabsList>
++    </Tabs>,
++  );
++}
++
+ function makeActions(overrides: Partial<FileTreeActions> = {}): FileTreeActions {
+   return {
+     onEdit: vi.fn(),
+@@ -24,7 +34,7 @@ function makeActions(overrides: Partial<FileTreeActions> = {}): FileTreeActions
+ 
+ describe("FileTree row actions", () => {
+   it("offers none without actions, so a read-only tree stays read-only", async () => {
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree filePaths={PATHS} selectedPath="SKILL.md" onSelect={vi.fn()} />,
+     );
+ 
+@@ -32,7 +42,7 @@ describe("FileTree row actions", () => {
+   });
+ 
+   it("withholds rename and delete from the reserved file, but not edit", async () => {
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree
+         filePaths={PATHS}
+         selectedPath="SKILL.md"
+@@ -55,7 +65,7 @@ describe("FileTree row actions", () => {
+ 
+   it("edits the row acted on", async () => {
+     const onEdit = vi.fn();
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree
+         filePaths={PATHS}
+         selectedPath="SKILL.md"
+@@ -73,7 +83,7 @@ describe("FileTree row actions", () => {
+   });
+ 
+   it("keeps the menu trigger's widened hit area inside the trigger", async () => {
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree
+         filePaths={PATHS}
+         selectedPath="SKILL.md"
+@@ -96,7 +106,7 @@ describe("FileTree row actions", () => {
+ 
+   it("deletes the row acted on, not whichever file happens to be open", async () => {
+     const onDelete = vi.fn();
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree
+         filePaths={PATHS}
+         selectedPath="SKILL.md"
+@@ -113,7 +123,7 @@ describe("FileTree row actions", () => {
+ 
+   it("renames in place and reports the new path", async () => {
+     const onRename = vi.fn();
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree
+         filePaths={PATHS}
+         selectedPath="notes.txt"
+@@ -136,7 +146,7 @@ describe("FileTree row actions", () => {
+ 
+   it("keeps a rejected path in the editor rather than committing it", async () => {
+     const onRename = vi.fn();
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree
+         filePaths={PATHS}
+         selectedPath="notes.txt"
+@@ -160,11 +170,35 @@ describe("FileTree row actions", () => {
+     expect(onRename).not.toHaveBeenCalled();
+     expect(screen.getByRole("alert")).toHaveTextContent("already exists");
+   });
++
++  it("keeps navigation keys inside an unselected middle file's rename field until the user commits", async () => {
++    const user = userEvent.setup();
++    const onRename = vi.fn();
++    renderTree(
++      <FileTree
++        filePaths={PATHS}
++        selectedPath="SKILL.md"
++        onSelect={vi.fn()}
++        actions={makeActions({ onRename })}
++      />,
++    );
++    await user.click(screen.getByRole("button", { name: /api\.md/ }));
++    await user.click(await screen.findByRole("menuitem", { name: "Rename" }));
++    const input = screen.getByRole("textbox");
++    await user.clear(input);
++    await user.type(input, "references/renamed.md");
++    await user.keyboard("{ArrowDown}{Home}{End}");
++    expect(input).toHaveFocus();
++    expect(input).toHaveValue("references/renamed.md");
++    expect(onRename).not.toHaveBeenCalled();
++    await user.keyboard("{Enter}");
++    expect(onRename).toHaveBeenCalledExactlyOnceWith("references/api.md", "references/renamed.md");
++  });
+ });
+ 
+ describe("FileTree entry points", () => {
+   it("opens the same menu from a right-click on the row", async () => {
+-    await renderWithI18n(
++    await renderTree(
+       <FileTree
+         filePaths={PATHS}
+         selectedPath="SKILL.md"
+diff --git a/packages/views/skills/components/file-tree.tsx b/packages/views/skills/components/file-tree.tsx
+index 839360f02..c5b21e364 100755
+--- a/packages/views/skills/components/file-tree.tsx
++++ b/packages/views/skills/components/file-tree.tsx
+@@ -14,6 +14,7 @@ import {
+   Trash2,
+ } from "lucide-react";
+ import { Input } from "@multica/ui/components/ui/input";
++import { TabsTrigger } from "@multica/ui/components/ui/tabs";
+ import {
+   DropdownMenu,
+   DropdownMenuContent,
+@@ -137,6 +138,7 @@ function TreeNodeItem({
+       <div>
+         <button
+           type="button"
++          aria-expanded={expanded}
+           onClick={() => setExpanded(!expanded)}
+           className="flex h-8 w-full items-center gap-1.5 rounded-md pr-2.5 text-left text-caption text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+           style={{ paddingLeft: `${depth * 12 + 10}px` }}
+@@ -203,22 +205,20 @@ function TreeNodeItem({
+           : undefined
+       }
+     >
+-      <button
+-        type="button"
+-        role="tab"
+-        aria-selected={isSelected}
++      <TabsTrigger
++        value={node.path}
+         onClick={() => onSelect(node.path)}
+         className={cn(
+-          "flex h-8 min-w-0 flex-1 items-center gap-2 rounded-md pr-2.5 text-left text-caption transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
++          "h-8 min-w-0 flex-1 justify-start gap-2 border-0 py-0 pr-2.5 text-left text-caption font-normal after:hidden data-active:bg-transparent data-active:text-surface-selected-foreground dark:data-active:bg-transparent dark:data-active:text-surface-selected-foreground group-data-[variant=default]/tabs-list:data-active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+           isSelected
+             ? "font-medium text-surface-selected-foreground"
+             : "text-muted-foreground group-hover/row:text-foreground",
+         )}
+         style={{ paddingLeft: `${depth * 12 + 10}px` }}
+       >
+-        <Icon className="h-3.5 w-3.5 shrink-0" />
++        <Icon className="size-3.5 shrink-0" />
+         <span className="truncate">{node.name}</span>
+-      </button>
++      </TabsTrigger>
+       {actions && (
+         <DropdownMenu>
+           <DropdownMenuTrigger
+@@ -327,6 +327,7 @@ function RenameRow({
+         }}
+         onBlur={submit}
+         onKeyDown={(event) => {
++          event.stopPropagation();
+           if (event.key === "Enter") submit();
+           if (event.key === "Escape") onDone();
+         }}
+@@ -369,8 +370,8 @@ export function FileTree({
+     );
+   }
+ 
+-  // No `role="tablist"` here: the caller owns the list semantics so a rail
+-  // split into "main" + "supporting" groups stays a single tab list.
++  // The caller supplies the shared Tabs root and TabsList so a rail split
++  // into "main" + "supporting" groups has one keyboard navigation sequence.
+   return (
+     <div className="flex flex-col gap-0.5">
+       {tree.map((node) => (
+diff --git a/packages/views/skills/components/skill-detail-page.test.tsx b/packages/views/skills/components/skill-detail-page.test.tsx
+index 49299ed93..7ea3fc4ed 100755
+--- a/packages/views/skills/components/skill-detail-page.test.tsx
++++ b/packages/views/skills/components/skill-detail-page.test.tsx
+@@ -1,7 +1,7 @@
+ // @vitest-environment jsdom
+ 
+ import { describe, it, expect, vi, beforeEach } from "vitest";
+-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
++import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import type { Skill } from "@multica/core/types";
+@@ -126,6 +126,7 @@ const baseSkill: Skill = {
+ function renderPage(
+   searchParams = new URLSearchParams(),
+   locale: SupportedLocale = "en",
++  hash = "",
+ ) {
+   const queryClient = new QueryClient({
+     defaultOptions: { queries: { retry: false } },
+@@ -137,7 +138,7 @@ function renderPage(
+     back: vi.fn(),
+     pathname: "/acme/skills/skill-1",
+     searchParams,
+-    hash: "",
++    hash,
+     getShareableUrl: (path) => path,
+   };
+   const page = (language: SupportedLocale) => (
+@@ -177,6 +178,70 @@ beforeEach(() => {
+ });
+ 
+ describe("SkillDetailPage tabs", () => {
++  it("keeps navigation keys inside the add-file input", async () => {
++    const user = userEvent.setup();
++    renderPage(new URLSearchParams("view=files"));
++    await user.click(await screen.findByRole("button", { name: "New file" }));
++    const input = screen.getByPlaceholderText("templates/review.md");
++    await user.type(input, "draft.txt");
++    await user.keyboard("{ArrowDown}{Home}{End}");
++    expect(input).toHaveFocus();
++    expect(input).toHaveValue("draft.txt");
++    expect(screen.getByRole("tab", { name: "SKILL.md" })).toHaveAttribute("aria-selected", "true");
++  });
++
++  it("supports manual keyboard activation and associated panels without losing either editor draft", async () => {
++    const user = userEvent.setup();
++    const { replace } = renderPage(new URLSearchParams("context=review"), "en", "#notes");
++    const overview = await screen.findByRole("tab", { name: "Overview" });
++    const files = screen.getByRole("tab", { name: "Files 2" });
++    const list = overview.closest('[role="tablist"]')!;
++    const description = screen.getByRole("textbox", { name: "Description" });
++    fireEvent.change(description, { target: { value: "Keep description draft" } });
++    expect(within(list as HTMLElement).getAllByRole("tab").filter((tab) => tab.tabIndex === 0)).toHaveLength(1);
++    overview.focus();
++    await user.keyboard("{ArrowRight}");
++    expect(files).toHaveFocus();
++    expect(overview).toHaveAttribute("aria-selected", "true");
++    expect(screen.getByRole("textbox", { name: "Description" })).toBe(description);
++    expect(replace).not.toHaveBeenCalled();
++    await user.keyboard("{Home}{End} ");
++    expect(files).toHaveAttribute("aria-selected", "true");
++    expect(files).toHaveAttribute("aria-controls", screen.getByRole("tabpanel", { name: "Files 2" }).id);
++    expect(replace).toHaveBeenLastCalledWith("/acme/skills/skill-1?context=review&view=files#notes");
++
++    await user.click(screen.getByRole("button", { name: "Edit" }));
++    fireEvent.change(screen.getByRole("textbox", { name: /SKILL\.md/ }), { target: { value: "Keep file draft" } });
++    files.focus();
++    await user.keyboard("{ArrowLeft}{Enter}");
++    expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("Keep description draft");
++    expect(replace).toHaveBeenLastCalledWith("/acme/skills/skill-1?context=review#notes");
++    await user.keyboard("{ArrowRight}{Enter}");
++    expect(screen.getByRole("textbox", { name: /SKILL\.md/ })).toHaveValue("Keep file draft");
++    expect(screen.getAllByRole("textbox", { name: /SKILL\.md/ })).toHaveLength(1);
++  });
++
++  it("roves file tabs across the main/supporting groups and preserves unsaved file content", async () => {
++    const user = userEvent.setup();
++    renderPage(new URLSearchParams("view=files"));
++    await user.click(await screen.findByRole("button", { name: "Edit" }));
++    const editor = screen.getByRole("textbox", { name: /SKILL\.md/ });
++    fireEvent.change(editor, { target: { value: "Unpublished main file" } });
++    const main = screen.getByRole("tab", { name: "SKILL.md" });
++    const supporting = screen.getByRole("tab", { name: "patterns.md" });
++    main.focus();
++    await user.keyboard("{ArrowDown}");
++    expect(supporting).toHaveFocus();
++    expect(main).toHaveAttribute("aria-selected", "true");
++    expect(screen.getByRole("textbox", { name: /SKILL\.md/ })).toBe(editor);
++    await user.keyboard("{Home}{End}{Enter}");
++    expect(supporting).toHaveAttribute("aria-selected", "true");
++    expect(supporting).toHaveAttribute("aria-controls", screen.getByRole("tabpanel", { name: "patterns.md" }).id);
++    supporting.focus();
++    await user.keyboard("{ArrowUp} ");
++    expect(screen.getByRole("textbox", { name: /SKILL\.md/ })).toHaveValue("Unpublished main file");
++  });
++
+   it("opens on Overview and exposes exactly two tabs", async () => {
+     renderPage();
+     const tabs = await screen.findAllByRole("tab", { name: /Overview|Files/ });
+diff --git a/packages/views/skills/components/skill-detail-page.tsx b/packages/views/skills/components/skill-detail-page.tsx
+index a2eb68ba1..70e790b4a 100755
+--- a/packages/views/skills/components/skill-detail-page.tsx
++++ b/packages/views/skills/components/skill-detail-page.tsx
+@@ -64,6 +64,7 @@ import {
+ import { Input } from "@multica/ui/components/ui/input";
+ import { Skeleton } from "@multica/ui/components/ui/skeleton";
+ import { Textarea } from "@multica/ui/components/ui/textarea";
++import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
+ import {
+   Tooltip,
+   TooltipContent,
+@@ -251,6 +252,7 @@ function AddFileInline({
+           setError("");
+         }}
+         onKeyDown={(e) => {
++          e.stopPropagation();
+           if (e.key === "Enter") submit();
+           if (e.key === "Escape") onCancel();
+         }}
+@@ -637,15 +639,15 @@ function FilesTab({
+     : undefined;
+ 
+   return (
+-    <div className="flex min-h-full flex-col md:h-full md:flex-row">
++    <Tabs value={selectedPath} orientation="vertical" className="min-h-full flex-col gap-0 md:h-full md:flex-row">
+       {/* The file list IS the second-level navigation, so it uses the same
+           rail treatment as the agent detail page's capability/settings nav
+           instead of inventing a third sidebar style. */}
+-      <aside
+-        role="tablist"
+-        aria-orientation="vertical"
++      <TabsList
++        render={<aside />}
++        activateOnFocus={false}
+         aria-label={t(($) => $.detail.files.list_aria)}
+-        className="shrink-0 border-b border-surface-border p-3 md:w-52 md:overflow-y-auto md:border-b-0 md:border-r md:p-4"
++        className="block w-full shrink-0 rounded-none border-b border-surface-border bg-transparent p-3 md:w-52 md:overflow-y-auto md:border-b-0 md:border-r md:p-4"
+       >
+         <p className="px-2.5 pb-1 text-micro font-semibold uppercase tracking-wider text-muted-foreground">
+           {t(($) => $.detail.files.main)}
+@@ -694,83 +696,94 @@ function FilesTab({
+               {t(($) => $.detail.files.add_file)}
+             </Button>
+           ))}
+-      </aside>
+-
+-      <section className="flex min-h-[32rem] min-w-0 flex-1 flex-col md:min-h-0">
+-        <div className="flex h-10 shrink-0 items-center gap-3 border-b px-3 sm:px-4">
+-          <span className="truncate font-mono text-caption text-muted-foreground">
+-            {selectedPath}
+-          </span>
+-          <div className="ml-auto flex shrink-0 items-center gap-1">
+-            {isMd && (
+-              // The second segment is named for what it does for THIS viewer:
+-              // "Edit" when the pane it opens accepts typing, "Plain text"
+-              // when the same pane is read-only. Same mode either way — only
+-              // the promise differs, and offering an edit the page would
+-              // refuse is the thing this rail is careful not to do.
+-              <div
+-                role="group"
+-                aria-label={t(($) => $.detail.files.mode_aria)}
+-                className="flex items-center gap-0.5 rounded-md bg-muted p-0.5"
+-              >
+-                {(["preview", "raw"] as const).map((value) => (
+-                  <button
+-                    key={value}
+-                    type="button"
+-                    aria-pressed={mode === value}
+-                    onClick={() => onModeChange(value)}
+-                    className={cn(
+-                      "h-6 rounded px-2 text-caption font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+-                      mode === value
+-                        ? "bg-surface text-foreground shadow-sm"
+-                        : "text-muted-foreground hover:text-foreground",
+-                    )}
++      </TabsList>
++
++      {filePaths.map((path) => (
++        <TabsContent
++          key={path}
++          value={path}
++          keepMounted
++          render={<section />}
++          aria-label={path}
++          className="flex min-h-[32rem] min-w-0 flex-1 flex-col data-[hidden]:hidden md:min-h-0"
++        >
++          {selectedPath === path && <>
++            <div className="flex h-10 shrink-0 items-center gap-3 border-b px-3 sm:px-4">
++              <span className="truncate font-mono text-caption text-muted-foreground">
++                {selectedPath}
++              </span>
++              <div className="ml-auto flex shrink-0 items-center gap-1">
++                {isMd && (
++                  // The second segment is named for what it does for THIS viewer:
++                  // "Edit" when the pane it opens accepts typing, "Plain text"
++                  // when the same pane is read-only. Same mode either way — only
++                  // the promise differs, and offering an edit the page would
++                  // refuse is the thing this rail is careful not to do.
++                  <div
++                    role="group"
++                    aria-label={t(($) => $.detail.files.mode_aria)}
++                    className="flex items-center gap-0.5 rounded-md bg-muted p-0.5"
+                   >
+-                    {value === "preview"
+-                      ? t(($) => $.detail.files.mode_preview)
+-                      : canEdit
+-                        ? t(($) => $.detail.files.mode_edit)
+-                        : t(($) => $.detail.files.mode_raw)}
+-                  </button>
+-                ))}
++                    {(["preview", "raw"] as const).map((value) => (
++                      <button
++                        key={value}
++                        type="button"
++                        aria-pressed={mode === value}
++                        onClick={() => onModeChange(value)}
++                        className={cn(
++                          "h-6 rounded px-2 text-caption font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
++                          mode === value
++                            ? "bg-surface text-foreground shadow-sm"
++                            : "text-muted-foreground hover:text-foreground",
++                        )}
++                      >
++                        {value === "preview"
++                          ? t(($) => $.detail.files.mode_preview)
++                          : canEdit
++                            ? t(($) => $.detail.files.mode_edit)
++                            : t(($) => $.detail.files.mode_raw)}
++                      </button>
++                    ))}
++                  </div>
++                )}
++                {selectedPath !== SKILL_MD && canEdit && (
++                  <Tooltip>
++                    <TooltipTrigger
++                      render={
++                        <Button
++                          type="button"
++                          variant="ghost"
++                          size="icon-sm"
++                          onClick={() => onDeleteFile()}
++                          className="text-muted-foreground hover:text-destructive"
++                          aria-label={t(($) => $.detail.delete_file)}
++                        >
++                          <Trash2 className="h-3.5 w-3.5" />
++                        </Button>
++                      }
++                    />
++                    <TooltipContent>{t(($) => $.detail.delete_file)}</TooltipContent>
++                  </Tooltip>
++                )}
+               </div>
+-            )}
+-            {selectedPath !== SKILL_MD && canEdit && (
+-              <Tooltip>
+-                <TooltipTrigger
+-                  render={
+-                    <Button
+-                      type="button"
+-                      variant="ghost"
+-                      size="icon-sm"
+-                      onClick={() => onDeleteFile()}
+-                      className="text-muted-foreground hover:text-destructive"
+-                      aria-label={t(($) => $.detail.delete_file)}
+-                    >
+-                      <Trash2 className="h-3.5 w-3.5" />
+-                    </Button>
+-                  }
+-                />
+-                <TooltipContent>{t(($) => $.detail.delete_file)}</TooltipContent>
+-              </Tooltip>
+-            )}
+-          </div>
+-        </div>
++            </div>
+ 
+-        <div className="min-h-0 flex-1">
+-          <FileViewer
+-            key={selectedPath}
+-            path={selectedPath}
+-            content={selectedContent}
+-            mode={mode}
+-            readOnly={!canEdit}
+-            autoFocus={focusEditor}
+-            onChange={onContentChange}
+-            onFocusHandled={onFocusHandled}
+-          />
+-        </div>
+-      </section>
+-    </div>
++            <div className="min-h-0 flex-1">
++              <FileViewer
++                key={selectedPath}
++                path={selectedPath}
++                content={selectedContent}
++                mode={mode}
++                readOnly={!canEdit}
++                autoFocus={focusEditor}
++                onChange={onContentChange}
++                onFocusHandled={onFocusHandled}
++              />
++            </div>
++          </>}
++        </TabsContent>
++      ))}
++    </Tabs>
+   );
+ }
+ 
+@@ -865,7 +878,7 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
+       if (next === "overview") params.delete("view");
+       else params.set("view", next);
+       const query = params.toString();
+-      navigation.replace(`${navigation.pathname}${query ? `?${query}` : ""}`);
++      navigation.replace(`${navigation.pathname}${query ? `?${query}` : ""}${navigation.hash}`);
+     },
+     [navigation],
+   );
+@@ -1229,7 +1242,13 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
+   return (
+     // relative: positioning anchor for the floating save pill (page-centered,
+     // same rule as the skills list batch toolbar).
+-    <div className="relative flex flex-1 min-h-0 flex-col">
++    <Tabs
++      value={activeView}
++      onValueChange={(value) => {
++        if (typeof value === "string" && isDetailView(value)) selectView(value);
++      }}
++      className="relative min-h-0 flex-1 flex-col gap-0"
++    >
+       <BreadcrumbHeader
+         segments={[{ href: paths.skills(), label: t(($) => $.page.title) }]}
+         leaf={
+@@ -1333,28 +1352,23 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
+ 
+       <div
+         className="shrink-0 overflow-x-auto border-b px-4 sm:px-6"
+-        role="tablist"
+-        aria-label={t(($) => $.detail.tabs.aria)}
+       >
+-        <div className="mx-auto flex max-w-[1440px] items-center gap-6">
++        <TabsList
++          variant="line"
++          activateOnFocus={false}
++          aria-label={t(($) => $.detail.tabs.aria)}
++          className="mx-auto flex w-full max-w-[1440px] justify-start gap-6 p-0 data-[orientation=horizontal]:h-auto"
++        >
+           {TABS.map((tab) => (
+-            <button
++            <TabsTrigger
+               key={tab.id}
+-              type="button"
+-              role="tab"
+-              aria-selected={activeView === tab.id}
+-              onClick={() => selectView(tab.id)}
+-              className={cn(
+-                "relative shrink-0 py-3 text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+-                activeView === tab.id
+-                  ? "text-foreground after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-foreground"
+-                  : "text-muted-foreground hover:text-foreground",
+-              )}
++              value={tab.id}
++              className="h-auto flex-none rounded-none border-0 px-0 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-[orientation=horizontal]:after:bottom-0"
+             >
+               {tab.label}
+-            </button>
++            </TabsTrigger>
+           ))}
+-        </div>
++        </TabsList>
+       </div>
+ 
+       {conflictPending && canEdit && (
+@@ -1375,48 +1389,53 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
+         </div>
+       )}
+ 
+-      <div
+-        className={cn(
+-          "min-h-0 flex-1 overflow-y-auto",
+-          activeView === "files" && "md:overflow-hidden",
+-        )}
+-      >
+-        {activeView === "overview" ? (
+-          <OverviewTab
+-            skill={skill}
+-            name={name}
+-            description={description}
+-            presentationMeta={presentationMeta}
+-            canEdit={canEdit}
+-            creatorName={creator?.name ?? null}
+-            skillAgents={skillAgents}
+-            onNameChange={setName}
+-            onDescriptionChange={setDescription}
+-            onPresentationChange={setPresentationMeta}
+-            onAddToAgents={() => setShowAddToAgents(true)}
+-          />
+-        ) : (
+-          <FilesTab
+-            filePaths={filePaths}
+-            selectedPath={selectedPath}
+-            selectedContent={selectedContent}
+-            mode={fileMode}
+-            canEdit={canEdit}
+-            addingFile={addingFile}
+-            focusEditor={focusPath === selectedPath}
+-            onSelectPath={setSelectedPath}
+-            onModeChange={setFileMode}
+-            onStartAddFile={() => setAddingFile(true)}
+-            onAddFile={handleAddFile}
+-            onCancelAddFile={() => setAddingFile(false)}
+-            onDeleteFile={handleDeleteFile}
+-            onRenameFile={handleRenameFile}
+-            onEditFile={handleEditFile}
+-            onContentChange={handleFileContentChange}
+-            onFocusHandled={handleFocusHandled}
+-          />
+-        )}
+-      </div>
++      {TABS.map((tab) => (
++        <TabsContent
++          key={tab.id}
++          value={tab.id}
++          keepMounted
++          className={cn(
++            "min-h-0 flex-1 overflow-y-auto",
++            activeView === "files" && "md:overflow-hidden",
++          )}
++        >
++          {activeView === tab.id && (activeView === "overview" ? (
++            <OverviewTab
++              skill={skill}
++              name={name}
++              description={description}
++              presentationMeta={presentationMeta}
++              canEdit={canEdit}
++              creatorName={creator?.name ?? null}
++              skillAgents={skillAgents}
++              onNameChange={setName}
++              onDescriptionChange={setDescription}
++              onPresentationChange={setPresentationMeta}
++              onAddToAgents={() => setShowAddToAgents(true)}
++            />
++          ) : (
++            <FilesTab
++              filePaths={filePaths}
++              selectedPath={selectedPath}
++              selectedContent={selectedContent}
++              mode={fileMode}
++              canEdit={canEdit}
++              addingFile={addingFile}
++              focusEditor={focusPath === selectedPath}
++              onSelectPath={setSelectedPath}
++              onModeChange={setFileMode}
++              onStartAddFile={() => setAddingFile(true)}
++              onAddFile={handleAddFile}
++              onCancelAddFile={() => setAddingFile(false)}
++              onDeleteFile={handleDeleteFile}
++              onRenameFile={handleRenameFile}
++              onEditFile={handleEditFile}
++              onContentChange={handleFileContentChange}
++              onFocusHandled={handleFocusHandled}
++            />
++          ))}
++        </TabsContent>
++      ))}
+ 
+       {/* Page-level so it covers edits made on either tab. Dirty-only and
+           floating, matching the skills list batch toolbar; anchored to the
+@@ -1477,12 +1496,12 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
+             <DialogDescription>
+               {skillAgents.length > 0
+                 ? t(($) => $.detail.delete_dialog.description_with_agents, {
+-                    name: presentation.name,
+-                    count: skillAgents.length,
+-                  })
++                  name: presentation.name,
++                  count: skillAgents.length,
++                })
+                 : t(($) => $.detail.delete_dialog.description_no_agents, {
+-                    name: presentation.name,
+-                  })}
++                  name: presentation.name,
++                })}
+             </DialogDescription>
+           </DialogHeader>
+           <div className="rounded-md bg-destructive/10 px-3 py-2 text-caption text-destructive">
+@@ -1536,6 +1555,6 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
+         // draft must be replaced instead of tripping the conflict banner.
+         onRefreshed={(updated) => adoptServerVersion(updated)}
+       />
+-    </div>
++    </Tabs>
+   );
+ }
+diff --git a/packages/views/triage/triage-page.test.tsx b/packages/views/triage/triage-page.test.tsx
+index fb0f6a177..4d7476135 100644
+--- a/packages/views/triage/triage-page.test.tsx
++++ b/packages/views/triage/triage-page.test.tsx
+@@ -8,6 +8,7 @@ const state = vi.hoisted(() => ({
+   replace: vi.fn(),
+   params: new URLSearchParams("issue=a"),
+   rows: ["a", "b"],
++  total: 2,
+ }));
+ vi.mock("../i18n", () => ({
+   useT: () => ({
+@@ -143,7 +144,7 @@ vi.mock("@tanstack/react-query", async (original) => ({
+       };
+     if (kind === "list")
+       return {
+-        data: { items: state.rows.map(item), total: state.rows.length },
++        data: { items: state.rows.map(item), total: state.total },
+       };
+     if (kind === "detail") return { data: item("a") };
+     if (kind === "history") return { data: { entries: [], total: 0 } };
+@@ -154,6 +155,7 @@ vi.mock("@tanstack/react-query", async (original) => ({
+ beforeEach(() => {
+   state.enabled = true;
+   state.rows = ["a", "b"];
++  state.total = 2;
+   state.params = new URLSearchParams("issue=a");
+   state.replace.mockClear();
+ });
+@@ -220,3 +222,14 @@ it("adopts external route changes instead of pinning the original filters", () =
+     "external",
+   );
+ });
++
++it("reserves the chat launcher corner while enabled pagination advances the queue", () => {
++  state.total = 101;
++  render(<TriagePage />);
++
++  const next = screen.getByRole("button", { name: en.next });
++  expect(next).toBeEnabled();
++  expect(next.parentElement?.parentElement).toHaveClass("pe-chat-launcher");
++  fireEvent.click(next);
++  expect(state.replace).toHaveBeenCalledWith("/acme/triage?issue=a&offset=50");
++});
+diff --git a/packages/views/triage/triage-page.tsx b/packages/views/triage/triage-page.tsx
+index 18c462c2a..da54f59eb 100644
+--- a/packages/views/triage/triage-page.tsx
++++ b/packages/views/triage/triage-page.tsx
+@@ -883,7 +883,7 @@ function Pagination({
+ }) {
+   const { t } = useT("triage");
+   return (
+-    <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-surface-border px-3 py-2">
++    <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-surface-border ps-3 pe-chat-launcher py-2">
+       <span className="text-caption text-muted-foreground">
+         {t(($) => $.total, { count: total })}
+       </span>

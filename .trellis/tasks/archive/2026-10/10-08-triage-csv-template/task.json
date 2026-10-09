@@ -1,0 +1,33 @@
+{
+  "id": "triage-csv-template",
+  "name": "triage-csv-template",
+  "title": "分拣台：CSV 导入模板与格式提示",
+  "description": "在导入 CSV 对话框提供可下载的中英文模板，并在显著位置说明表头、必填字段与取值格式。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-08",
+  "completedAt": "2026-10-09",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "75816890742e1cd107c7a437334d784547b3db8b",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "Implementation and recorded acceptance are complete. CSV templates and format guidance were committed in 4b239d614; Chinese priority normalization was committed in 758168907. Task status synchronized at the user's request on 2026-10-09. Verification is recorded in prd.md and both commit messages; no product code changed or tests rerun during this administrative update. Narrow windows, English rendering and the native save dialog were not manually verified.",
+  "meta": {
+    "implementation_commits": [
+      "4b239d6142288e40b3d78d5b51f5b8357601ca23",
+      "75816890742e1cd107c7a437334d784547b3db8b"
+    ],
+    "acceptance_status": "completed",
+    "verification_source": "prd.md acceptance checklist and implementation commit trailers"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "scope": "Design prototype only",
+  "errors": [],
+  "narrowViews": [
+    {
+      "state": "overview",
+      "client": 320,
+      "scroll": 320
+    },
+    {
+      "state": "current",
+      "client": 320,
+      "scroll": 320
+    },
+    {
+      "state": "empty",
+      "client": 320,
+      "scroll": 320
+    },
+    {
+      "state": "history",
+      "client": 320,
+      "scroll": 320
+    }
+  ],
+  "checks": [
+    "timeline navigation",
+    "keyboard tab navigation",
+    "history read-only controls",
+    "planned empty has blocked start while active exists",
+    "add existing task leaves empty state",
+    "current statistics follow added task",
+    "progress data table available",
+    "end freezes actual date and ends chart at recorded date",
+    "rollover does not automatically start next",
+    "new iteration stays planned",
+    "dark and 320px layouts"
+  ]
+}

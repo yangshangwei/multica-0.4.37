@@ -1,0 +1,189 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "分拣台"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "Skills" [level=1]
+  - paragraph:
+    - text: 工作空间里任何智能体都能使用的指令。
+    - link "了解更多 →":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/docs/skills
+  - button "新建 skill"
+- tablist "技能库视图":
+  - tab "工作空间 skills": 工作空间 skills 4
+  - tab "skill 市场" [selected]: skill 市场 15
+- tabpanel "skill 市场":
+  - textbox "搜索模板":
+    - /placeholder: 搜索模板...
+  - tablist "模板来源":
+    - tab "全部" [selected]: 全部 15
+    - tab "部署提供": 部署提供 0
+    - tab "平台内置": 平台内置 15
+  - group "分类":
+    - button "全部" [pressed]
+    - button "需求与规划"
+    - button "设计与架构"
+    - button "测试与质量"
+    - button "发布与运维"
+    - button "协作与知识"
+  - paragraph: 本部署暂未提供共享模板。
+  - status: 找到 15 个模板
+  - list:
+    - listitem:
+      - article:
+        - button "预览 智能体评测": 智能体评测 对比智能体的正确性、安全性、成本、延迟与表现变化。 测试与质量 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 架构决策记录": 架构决策记录 梳理技术决策及取舍，起草可留档的 ADR。 设计与架构 平台内置 预览模板
+        - text: 工作空间已有 1 个相关 skill
+        - link "查看 skill":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/skills/03e1d6b5-f4ac-4b35-be57-0af15089b4c7
+    - listitem:
+      - article:
+        - button "预览 代码审查": 代码审查 审查变更中的缺陷、兼容性和失败场景。 测试与质量 平台内置 预览模板
+        - text: 工作空间已有 1 个相关 skill
+        - link "查看 skill":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/skills/402e5fe8-43a5-4443-87f1-3d3f7c0f51ba
+    - listitem:
+      - article:
+        - button "预览 根因分析": 根因分析 复现故障、验证假设，给出有证据的根因结论。 测试与质量 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 文档更新": 文档更新 梳理变更影响，补齐与代码一致的文档。 协作与知识 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 体验验证": 体验验证 验证关键使用流程、无障碍和跨平台体验。 测试与质量 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 事故学习": 事故学习 梳理故障事实与未知项，形成有负责人的改进任务。 测试与质量 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 迁移审查": 迁移审查 检查迁移兼容性、重试和回滚准备。 发布与运维 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 进展报告": 进展报告 核实任务进展，整理可追溯的周期报告。 协作与知识 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 发布检查": 发布检查 检查发布条件，准备回滚，并在执行前取得审批。 发布与运维 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 可靠性工程": 可靠性工程 评估运行信号、可靠性目标和恢复能力。 发布与运维 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 需求澄清": 需求澄清 厘清目标、疑问和验收条件，拆分可执行工作。 需求与规划 平台内置 预览模板
+        - text: 工作空间已有 1 个相关 skill
+        - link "查看 skill":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/skills/cdab14f6-9d37-4827-86a8-2d8082388cb0
+    - listitem:
+      - article:
+        - button "预览 发布后与 Canary 验证": 发布后与 Canary 验证 对照基线观察上线结果，记录指标和回滚结论。 发布与运维 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 安全审查": 安全审查 检查安全风险，提交有依据的审查发现。 测试与质量 平台内置 预览模板
+        - text: 尚未从此模板创建
+    - listitem:
+      - article:
+        - button "预览 测试报告": 测试报告 汇总验证结果、测试证据和未覆盖范围。 测试与质量 平台内置 预览模板
+        - text: 工作空间已有 1 个相关 skill
+        - link "查看 skill":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/skills/0229ae17-ffc4-4174-92cf-11d8278b0173
+- button
+- button "新对话"
+- button
+- button
+- link "特性交付负责人":
+  - img "特性交付负责人"
+- heading "与 特性交付负责人 对话" [level=3]
+- paragraph: 把一个特性按澄清、设计、实现、测试、审查的顺序逐个交给合适的成员。
+- paragraph: 让它做一份总结、规划你的一天，或交给它一个小任务。
+- button "你能帮我做什么？"
+- button "建议第一个任务"
+- button "推荐一个操作"
+- link "自定义开场建议":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/agents/71d50e57-c332-4d58-a953-1036c2d8fcb9?view=instructions&focus=conversation_starters
+- paragraph: 给 特性交付负责人 发消息…
+- button "添加"
+- button "特性交付负责人 状态：在线 特性交付负责人":
+  - link "特性交付负责人 状态：在线":
+    - img "特性交付负责人"
+  - text: 特性交付负责人
+- button "发送" [disabled]
+- button "问 Multica"
+- region "Notifications alt+T"

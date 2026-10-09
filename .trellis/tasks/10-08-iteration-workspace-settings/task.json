@@ -1,0 +1,33 @@
+{
+  "id": "iteration-workspace-settings",
+  "name": "iteration-workspace-settings",
+  "title": "迭代设置：工作空间内启用与管理",
+  "description": "参照分拣台设置，为桌面端及共享 Web 界面设计迭代设置页，以工作空间管理员操作替代部署配置控制，并保留安全关闭和历史查看。",
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "iteration-settings",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-08",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "10-08-iteration-pages-design"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/iterations/iteration-page.tsx",
+    "packages/views/settings/components/settings-nav.ts",
+    "packages/views/settings/components/settings-page.tsx",
+    "server/internal/handler/iteration_settings.go"
+  ],
+  "notes": "User approved latest business pages and independent settings preview on 2026-10-08. Preserve concurrent pre-existing timezone/project changes. Implement/check authorized.",
+  "meta": {}
+}

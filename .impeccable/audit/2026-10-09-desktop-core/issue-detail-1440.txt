@@ -1,0 +1,151 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "分拣台"
+  - 'button "DQA-2: 手测-A 登录提示优化（结束后改名）"':
+    - img
+    - text: "DQA-2: 手测-A 登录提示优化（结束后改名）"
+  - status
+  - button "New tab"
+- banner:
+  - link "手测-发布闭环":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/projects/81515af5-42d6-444d-b962-30d26fb3e944
+  - link "DQA-2 手测-A 登录提示优化（结束后改名）":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/issues/01a11b01-aeea-74ba-a443-e35c6988643e
+  - button
+  - button
+  - button
+- button "手测-A 登录提示优化（结束后改名）"
+- paragraph: 添加描述...
+- button
+- button "添加附件"
+- button "添加子任务"
+- heading "动态" [level=2]
+- button "取消订阅"
+- button "杨":
+  - link "杨"
+- button "3 条动态"
+- img
+- text: 杨尚伟 状态从 待办 改为 已完成 16 小时前
+- link "杨"
+- text: 杨尚伟 把这个任务从"手测-A 登录提示优化"重命名为"手测-A 登录提示优化（结束后改名）" 15 小时前
+- img
+- text: 杨尚伟 状态从 已完成 改为 待办 15 小时前
+- button "留下评论...":
+  - paragraph: 留下评论...
+- button "添加附件"
+- button "发送" [disabled]
+- separator
+- button "属性"
+- text: 状态
+- button "待办":
+  - img
+  - text: 待办
+- text: 负责人
+- button "杨 杨尚伟":
+  - link "杨"
+  - text: 杨尚伟
+- text: 项目
+- button "手测-发布闭环"
+- text: 当前迭代 无当前迭代
+- paragraph: "累计结转: 0"
+- group: 安排到迭代
+- group: 迭代参与历史
+- text: 优先级
+- button "高":
+  - img
+  - text: 高
+- button "添加字段"
+- button "Pull Request"
+- paragraph: 还没有关联的 PR。在 PR 的分支名、标题或正文里引用本任务的 identifier 即可自动关联。
+- button "详情"
+- text: 创建者
+- link "杨"
+- text: 杨尚伟 创建时间 Oct 8 更新时间 Oct 8
+- button
+- button "新对话"
+- button
+- button
+- link "特性交付负责人":
+  - img "特性交付负责人"
+- heading "与 特性交付负责人 对话" [level=3]
+- paragraph: 把一个特性按澄清、设计、实现、测试、审查的顺序逐个交给合适的成员。
+- paragraph: 让它做一份总结、规划你的一天，或交给它一个小任务。
+- button "你能帮我做什么？"
+- button "建议第一个任务"
+- button "推荐一个操作"
+- link "自定义开场建议":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/agents/71d50e57-c332-4d58-a953-1036c2d8fcb9?view=instructions&focus=conversation_starters
+- paragraph: 给 特性交付负责人 发消息…
+- button "添加"
+- button "特性交付负责人 状态：在线 特性交付负责人":
+  - link "特性交付负责人 状态：在线":
+    - img "特性交付负责人"
+  - text: 特性交付负责人
+- button "发送" [disabled]
+- button "问 Multica"
+- region "Notifications alt+T"

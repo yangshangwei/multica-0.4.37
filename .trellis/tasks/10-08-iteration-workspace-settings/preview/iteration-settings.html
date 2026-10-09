@@ -1,0 +1,200 @@
+<style>
+#iteration-settings-preview { --it-bg:light-dark(#fafafa,#171719); --it-panel:light-dark(#fff,#202023); --it-text:light-dark(#18181b,#f4f4f5); --it-muted:light-dark(#71717a,#a8a8b0); --it-line:light-dark(#e4e4e7,#38383e); --it-selected:light-dark(#ededf0,#303036); --it-danger:light-dark(#b42318,#f7a099); --it-danger-bg:light-dark(#fff5f4,#3a2223); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; font-size:14px; line-height:1.5; color:var(--it-text); }
+#iteration-settings-preview * { box-sizing:border-box; }
+#iteration-settings-preview [hidden] { display:none!important; }
+#iteration-settings-preview .it-demo { color:var(--it-muted); font-size:12px; padding:0 0 10px; }
+#iteration-settings-preview .it-window { background:var(--it-bg); border:1px solid var(--it-line); border-radius:12px; overflow:hidden; }
+#iteration-settings-preview .it-top { display:flex; align-items:center; gap:9px; height:48px; padding:0 22px; border-bottom:1px solid var(--it-line); font-weight:600; }
+#iteration-settings-preview .it-top small { margin-left:auto; font-size:12px; color:var(--it-muted); font-weight:400; }
+#iteration-settings-preview .it-layout { display:grid; grid-template-columns:174px minmax(0,1fr); }
+#iteration-settings-preview .it-nav { padding:24px 14px; border-right:1px solid var(--it-line); }
+#iteration-settings-preview .it-nav-label { font-size:12px; color:var(--it-muted); margin:4px 10px 8px; }
+#iteration-settings-preview .it-nav-label:not(:first-child) { margin-top:26px; }
+#iteration-settings-preview .it-nav-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:6px; color:var(--it-muted); }
+#iteration-settings-preview .it-nav-item.it-active { background:var(--it-selected); color:var(--it-text); font-weight:600; }
+#iteration-settings-preview i,#iteration-settings-preview svg { width:16px; height:16px; flex-shrink:0; }
+#iteration-settings-preview .it-content { padding:34px 36px 36px; min-width:0; }
+#iteration-settings-preview h2 { font-size:24px; line-height:1.3; letter-spacing:-.025em; margin:0; font-weight:600; color:var(--it-text); }
+#iteration-settings-preview h3 { font-size:14px; font-weight:600; margin:0 0 5px; color:var(--it-text); }
+#iteration-settings-preview p { margin:0; }
+#iteration-settings-preview .it-description { margin-top:8px; color:var(--it-muted); line-height:1.7; }
+#iteration-settings-preview .it-section { margin-top:28px; }
+#iteration-settings-preview .it-section-caption { font-size:12px; color:var(--it-muted); line-height:1.7; margin-bottom:12px; }
+#iteration-settings-preview .it-card { border:1px solid var(--it-line); border-radius:12px; background:var(--it-panel); overflow:hidden; }
+#iteration-settings-preview .it-row { padding:18px 18px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+#iteration-settings-preview .it-row + .it-row { border-top:1px solid var(--it-line); }
+#iteration-settings-preview .it-label { font-weight:500; display:block; }
+#iteration-settings-preview .it-hint { display:block; margin-top:4px; color:var(--it-muted); font-size:12px; line-height:1.7; }
+#iteration-settings-preview .it-switch { appearance:none; -webkit-appearance:none; border:0; border-radius:99px; width:36px; height:21px; background:var(--it-line); cursor:pointer; flex-shrink:0; margin:0; position:relative; }
+#iteration-settings-preview .it-switch::before { content:""; display:block; height:17px; width:17px; border-radius:99px; background:var(--it-panel); position:absolute; top:2px; left:2px; transition:transform .15s; }
+#iteration-settings-preview .it-switch:checked { background:var(--it-text); }
+#iteration-settings-preview .it-switch:checked::before { transform:translateX(15px); background:var(--it-bg); }
+#iteration-settings-preview .it-switch:disabled { opacity:.4; cursor:not-allowed; }
+#iteration-settings-preview .it-status-row { padding:12px 18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--it-muted); background:var(--it-bg); border-top:1px solid var(--it-line); }
+#iteration-settings-preview button { font:inherit; color:var(--it-text); cursor:pointer; }
+#iteration-settings-preview .it-link { appearance:none; border:0; background:none; padding:0; text-decoration:underline; text-underline-offset:3px; font-size:12px; }
+#iteration-settings-preview .it-value { white-space:nowrap; font-size:13px; }
+#iteration-settings-preview select,#iteration-settings-preview textarea { font:inherit; color:var(--it-text); background:var(--it-panel); border:1px solid var(--it-line); border-radius:7px; padding:9px 10px; }
+#iteration-settings-preview select { width:246px; max-width:100%; }
+#iteration-settings-preview textarea { display:block; resize:vertical; width:100%; min-height:78px; margin-top:8px; }
+#iteration-settings-preview select:disabled { opacity:.6; }
+#iteration-settings-preview .it-timezone-row { flex-wrap:wrap; gap:12px; }
+#iteration-settings-preview .it-actions { margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+#iteration-settings-preview .it-button { border:1px solid var(--it-line); background:var(--it-panel); color:var(--it-text); padding:8px 14px; border-radius:7px; font-weight:500; }
+#iteration-settings-preview .it-button.it-primary { border-color:var(--it-text); background:var(--it-text); color:var(--it-bg); }
+#iteration-settings-preview .it-button.it-danger { border-color:var(--it-danger); background:var(--it-danger); color:var(--it-bg); }
+#iteration-settings-preview .it-button:disabled { opacity:.38; cursor:not-allowed; }
+#iteration-settings-preview .it-feedback { font-size:12px; color:var(--it-muted); }
+#iteration-settings-preview .it-note { display:flex; align-items:flex-start; gap:8px; color:var(--it-muted); font-size:12px; line-height:1.8; margin-top:28px; }
+#iteration-settings-preview .it-note svg { margin-top:3px; }
+#iteration-settings-preview .it-notice { margin-top:18px; padding:12px 14px; border:1px solid var(--it-line); background:var(--it-panel); border-radius:8px; color:var(--it-muted); font-size:12px; line-height:1.7; }
+#iteration-settings-preview dialog { width:560px; max-width:calc(100% - 24px); max-height:90%; padding:26px; border:1px solid var(--it-line); border-radius:12px; background:var(--it-panel); color:var(--it-text); box-shadow:0 18px 70px #0002; }
+#iteration-settings-preview dialog::backdrop { background:#0005; }
+#iteration-settings-preview dialog h2 { font-size:20px; }
+#iteration-settings-preview .it-impact { margin:20px 0; width:100%; border-collapse:collapse; font-size:13px; }
+#iteration-settings-preview .it-impact td { padding:12px 0; border-bottom:1px solid var(--it-line); vertical-align:top; }
+#iteration-settings-preview .it-impact td:first-child { width:43%; font-weight:500; padding-right:12px; }
+#iteration-settings-preview .it-impact td:last-child { color:var(--it-muted); }
+#iteration-settings-preview .it-dialog-note { background:var(--it-danger-bg); padding:12px; border-radius:7px; font-size:12px; line-height:1.8; margin:18px 0; }
+#iteration-settings-preview .it-dialog-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:22px; flex-wrap:wrap; }
+#iteration-settings-preview .it-error { font-size:12px; color:var(--it-danger); margin-top:8px; }
+@media(max-width:700px) { #iteration-settings-preview .it-layout { grid-template-columns:142px minmax(0,1fr); } #iteration-settings-preview .it-content { padding:26px 22px; } }
+@media(max-width:520px) { #iteration-settings-preview .it-layout { display:block; } #iteration-settings-preview .it-nav { display:none; } #iteration-settings-preview .it-content { padding:24px 18px; } #iteration-settings-preview .it-top { padding:0 18px; } #iteration-settings-preview .it-top small { font-size:11px; } #iteration-settings-preview .it-row { gap:14px; padding:16px; } #iteration-settings-preview select { width:100%; font-size:16px; } #iteration-settings-preview .it-timezone-row { align-items:stretch; flex-direction:column; } #iteration-settings-preview .it-button { min-height:40px; } }
+@media(prefers-reduced-motion:reduce) { #iteration-settings-preview .it-switch::before { transition:none; } }
+</style>
+<div id="iteration-settings-preview" aria-label="迭代设置页面方案">
+  <div class="it-demo">交互预览 · 示例数据</div>
+  <div class="it-window">
+    <div class="it-top"><i data-lucide="settings" aria-hidden="true"></i>设置<small>工作空间 / 迭代</small></div>
+    <div class="it-layout">
+      <nav class="it-nav" aria-label="设置导航">
+        <div class="it-nav-label">账户</div>
+        <span class="it-nav-item"><i data-lucide="user" aria-hidden="true"></i>个人资料</span>
+        <span class="it-nav-item"><i data-lucide="sliders-horizontal" aria-hidden="true"></i>偏好设置</span>
+        <span class="it-nav-item"><i data-lucide="bell" aria-hidden="true"></i>通知</span>
+        <div class="it-nav-label">工作空间</div>
+        <span class="it-nav-item"><i data-lucide="settings" aria-hidden="true"></i>通用</span>
+        <span class="it-nav-item"><i data-lucide="users" aria-hidden="true"></i>成员</span>
+        <span class="it-nav-item"><i data-lucide="tag" aria-hidden="true"></i>标签</span>
+        <span class="it-nav-item"><i data-lucide="inbox" aria-hidden="true"></i>分拣台</span>
+        <span class="it-nav-item it-active" aria-current="page"><i data-lucide="calendar-range" aria-hidden="true"></i>迭代</span>
+        <div class="it-nav-label">任务</div>
+        <span class="it-nav-item"><i data-lucide="circle-dot" aria-hidden="true"></i>任务状态</span>
+        <span class="it-nav-item"><i data-lucide="sliders-horizontal" aria-hidden="true"></i>属性</span>
+      </nav>
+      <main class="it-content">
+        <h2>迭代设置</h2>
+        <p class="it-description">按周期安排任务，跟踪范围变化，并在结束时处理未完成的工作。</p>
+        <p id="it-permission" class="it-notice" hidden>仅工作空间所有者和管理员可以修改这些设置。你仍可查看迭代与历史记录。</p>
+        <p id="it-unsupported" class="it-notice" hidden>当前连接的服务版本暂不支持迭代管理，请升级后端服务后使用。</p>
+        <div id="it-controls">
+          <section class="it-section" aria-label="迭代管理">
+            <div class="it-card">
+              <div class="it-row">
+                <div><label class="it-label" for="it-enabled">启用迭代</label><span class="it-hint">允许成员创建迭代、安排任务和查看周期进展。</span></div>
+                <input id="it-enabled" class="it-switch" type="checkbox" role="switch" checked aria-describedby="it-status">
+              </div>
+              <div class="it-status-row"><span id="it-status">当前有 1 个进行中迭代、2 个计划迭代。</span><button class="it-link" id="it-manage" type="button">管理迭代</button></div>
+              <div class="it-row">
+                <div><span class="it-label">周期管理方式</span><span class="it-hint">由成员手动开始和结束，同时最多一个进行中迭代。</span></div><span class="it-value">手动</span>
+              </div>
+            </div>
+            <p id="it-toggle-result" class="it-feedback" style="margin-top:10px" aria-live="polite"></p>
+          </section>
+          <section class="it-section" aria-labelledby="it-timezone-heading">
+            <h3 id="it-timezone-heading">规划时区</h3>
+            <p class="it-section-caption">与项目规划共用。修改只影响后续创建的迭代，已有迭代保留原时区。</p>
+            <div class="it-card"><div class="it-row it-timezone-row"><label class="it-label" for="it-timezone">工作空间时区</label><select id="it-timezone"><option value="Asia/Shanghai">北京时间 · Asia/Shanghai</option><option value="UTC">协调世界时 · UTC</option><option value="Asia/Tokyo">东京时间 · Asia/Tokyo</option><option value="America/Los_Angeles">洛杉矶时间 · America/Los_Angeles</option></select></div></div>
+            <div class="it-actions"><button id="it-save" class="it-button it-primary" disabled type="button">保存时区</button><button id="it-discard" class="it-button" hidden type="button">取消修改</button><span id="it-timezone-result" class="it-feedback" aria-live="polite"></span></div>
+          </section>
+          <div class="it-note"><i data-lucide="info" aria-hidden="true"></i><p>安排、开始或关闭迭代，都不会启动或停止智能体执行。<br>关闭前会展示影响范围，已有历史记录始终保留。</p></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <dialog id="it-close-dialog" aria-labelledby="it-close-title" aria-describedby="it-close-description">
+    <h2 id="it-close-title">关闭迭代管理</h2>
+    <p id="it-close-description" class="it-description">确认后，将一次性处理当前工作空间中的迭代安排。</p>
+    <table class="it-impact" aria-label="关闭影响预览"><tbody id="it-impact-rows"></tbody></table>
+    <div class="it-dialog-note">任务本身、项目归属和负责人保持不变，进行中的执行继续运行。再次启用不会恢复已结束或已取消的迭代。</div>
+    <label class="it-label" for="it-reason">关闭原因</label>
+    <textarea id="it-reason" placeholder="例如：团队暂时改用项目里程碑管理" maxlength="1000"></textarea>
+    <p id="it-reason-error" class="it-error" role="alert" hidden>请填写关闭原因，便于团队之后查看。</p>
+    <div class="it-dialog-actions"><button id="it-close-cancel" class="it-button" type="button">保持启用</button><button id="it-close-confirm" class="it-button it-danger" type="button">确认关闭</button></div>
+  </dialog>
+  <dialog id="it-periods-dialog" aria-labelledby="it-periods-title">
+    <h2 id="it-periods-title">迭代</h2>
+    <div id="it-periods-content"></div>
+    <div class="it-dialog-actions"><button id="it-periods-back" class="it-button" type="button">返回设置</button></div>
+  </dialog>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('iteration-settings-preview');
+  const byId = id => root.querySelector('#' + id);
+  const demo = { scenario:'enabled' };
+  let enabled = true, canEdit = true, supported = true, active = 1, planned = 2, history = true;
+  let savedTimezone = 'Asia/Shanghai';
+  const toggle = byId('it-enabled');
+  const timezone = byId('it-timezone');
+  const closeDialog = byId('it-close-dialog');
+  const periodsDialog = byId('it-periods-dialog');
+  function render() {
+    const dirty = timezone.value !== savedTimezone;
+    toggle.checked = enabled;
+    toggle.disabled = !canEdit || dirty;
+    timezone.disabled = !canEdit;
+    byId('it-save').disabled = !canEdit || !dirty;
+    byId('it-discard').hidden = !canEdit || !dirty;
+    byId('it-permission').hidden = canEdit || !supported;
+    byId('it-unsupported').hidden = supported;
+    byId('it-controls').hidden = !supported;
+    byId('it-status').textContent = enabled ? (active || planned ? `当前有 ${active} 个进行中迭代、${planned} 个计划迭代。` : (history ? '已启用，当前没有进行中或计划迭代。' : '已启用，可以创建第一个迭代。')) : (history ? '已关闭，已有历史记录仍可查看。' : '尚未启用。开启后仅对当前工作空间生效。');
+    byId('it-manage').hidden = !enabled && !history;
+    byId('it-manage').textContent = enabled ? '管理迭代' : '查看历史';
+    if (dirty) byId('it-timezone-result').textContent = '有未保存的修改';
+    if (dirty) byId('it-toggle-result').textContent = '请先保存或取消时区修改，再切换迭代状态。';
+  }
+  function applyScenario() {
+    closeDialog.close(); periodsDialog.close();
+    canEdit = demo.scenario !== 'readonly'; supported = demo.scenario !== 'old-server';
+    enabled = !['first-use','disabled-history'].includes(demo.scenario);
+    active = enabled ? 1 : 0; planned = enabled ? 2 : 0; history = demo.scenario !== 'first-use';
+    savedTimezone = 'Asia/Shanghai'; timezone.value = savedTimezone;
+    byId('it-toggle-result').textContent = ''; byId('it-timezone-result').textContent = '';
+    render();
+  }
+  toggle.addEventListener('change', () => {
+    if (!canEdit) return;
+    if (!enabled) {
+      enabled = true; byId('it-toggle-result').textContent = '迭代已启用。'; render();
+    } else {
+      toggle.checked = true;
+      byId('it-impact-rows').innerHTML = active || planned ? `<tr><td>进行中迭代 · ${active} 个</td><td>结束并保留历史快照</td></tr><tr><td>计划迭代 · ${planned} 个</td><td>取消并保留记录</td></tr><tr><td>当前安排 · 24 条任务</td><td>清除当前迭代归属</td></tr>` : '<tr><td>当前安排</td><td>没有需要结束或取消的迭代</td></tr>';
+      byId('it-reason').value = ''; byId('it-reason-error').hidden = true;
+      closeDialog.showModal();
+    }
+  });
+  timezone.addEventListener('change', () => { byId('it-timezone-result').textContent = ''; byId('it-toggle-result').textContent = ''; render(); });
+  byId('it-save').addEventListener('click', () => { savedTimezone = timezone.value; byId('it-timezone-result').textContent = '规划时区已保存'; byId('it-toggle-result').textContent = ''; render(); });
+  byId('it-discard').addEventListener('click', () => { timezone.value = savedTimezone; byId('it-timezone-result').textContent = ''; byId('it-toggle-result').textContent = ''; render(); });
+  byId('it-close-cancel').addEventListener('click', () => { closeDialog.close(); render(); });
+  closeDialog.addEventListener('cancel', () => render());
+  byId('it-close-confirm').addEventListener('click', () => {
+    if (!byId('it-reason').value.trim()) { byId('it-reason-error').hidden = false; byId('it-reason').focus(); return; }
+    history = history || !!active || !!planned; active = 0; planned = 0; enabled = false;
+    closeDialog.close(); byId('it-toggle-result').textContent = '迭代管理已关闭，历史记录已保留。'; render();
+  });
+  byId('it-manage').addEventListener('click', () => {
+    byId('it-periods-title').textContent = enabled ? '迭代' : '迭代历史';
+    byId('it-periods-content').innerHTML = `<p class="it-description">示例工作空间的周期记录</p><table class="it-impact"><tbody>${active ? '<tr><td>十月第一期</td><td>进行中 · 10 月 1 日 — 10 月 14 日</td></tr>' : ''}${planned ? '<tr><td>十月第二期</td><td>计划中 · 10 月 15 日 — 10 月 28 日</td></tr><tr><td>十一月第一期</td><td>计划中 · 10 月 29 日 — 11 月 11 日</td></tr>' : ''}${history ? '<tr><td>九月第二期</td><td>已结束 · 历史快照可查看</td></tr>' : '<tr><td>尚无迭代</td><td>启用后可创建第一个迭代</td></tr>'}</tbody></table>`;
+    periodsDialog.showModal();
+  });
+  byId('it-periods-back').addEventListener('click', () => periodsDialog.close());
+  render();
+  if (globalThis.Tweak) {
+    const tweak = new Tweak({ container:root, onChange:applyScenario });
+    tweak.addSelect(demo,'scenario',{ label:'业务状态',options:[{label:'已启用 · 有迭代',value:'enabled'},{label:'首次使用',value:'first-use'},{label:'已关闭 · 保留历史',value:'disabled-history'},{label:'普通成员 · 只读',value:'readonly'},{label:'旧服务 · 不支持',value:'old-server'}] });
+  }
+})();
+</script>

@@ -1,0 +1,239 @@
+<style>
+#iteration-pages-preview { --ip-bg:light-dark(#fbfbfc,#171719); --ip-panel:light-dark(#ffffff,#202024); --ip-text:light-dark(#18181b,#f2f2f5); --ip-muted:light-dark(#777780,#a1a1ab); --ip-line:light-dark(#e9e9ed,#333339); --ip-hover:light-dark(#f3f3f6,#29292e); --ip-violet:light-dark(#6866dc,#9996ff); --ip-violet-soft:light-dark(#f0effd,#2b2945); --ip-scope:light-dark(#8b8b98,#a7a7b3); --ip-original:light-dark(#b8b8c2,#686872); --ip-amber:light-dark(#b88015,#e8b75d); --ip-danger:light-dark(#b42318,#f2a49e); color:var(--ip-text); font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft Yahei",sans-serif; }
+#iteration-pages-preview * { box-sizing:border-box; }
+#iteration-pages-preview [hidden] { display:none!important; }
+#iteration-pages-preview button,#iteration-pages-preview input,#iteration-pages-preview select,#iteration-pages-preview textarea { font:inherit; }
+#iteration-pages-preview button { cursor:pointer; color:inherit; }
+#iteration-pages-preview button:disabled { cursor:not-allowed; opacity:.45; }
+#iteration-pages-preview .ip-demo { color:var(--ip-muted); font-size:12px; margin:0 0 10px; }
+#iteration-pages-preview .ip-window { background:var(--ip-bg); border:1px solid var(--ip-line); border-radius:10px; overflow:hidden; min-height:700px; }
+#iteration-pages-preview .ip-toolbar { display:flex; min-height:56px; padding:10px 24px; align-items:center; justify-content:space-between; gap:14px; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-breadcrumb { display:flex; align-items:center; gap:10px; min-width:0; }
+#iteration-pages-preview .ip-breadcrumb strong { font-weight:600; white-space:nowrap; }
+#iteration-pages-preview .ip-breadcrumb button { background:none; border:0; padding:3px 0; color:var(--ip-muted); }
+#iteration-pages-preview .ip-slash { color:var(--ip-muted); }
+#iteration-pages-preview .ip-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+#iteration-pages-preview .ip-button { border:1px solid var(--ip-line); border-radius:7px; background:var(--ip-panel); padding:7px 12px; display:inline-flex; align-items:center; gap:7px; white-space:nowrap; font-size:13px; font-weight:500; }
+#iteration-pages-preview .ip-button.ip-primary { background:var(--ip-text); color:var(--ip-bg); border-color:var(--ip-text); }
+#iteration-pages-preview .ip-button.ip-quiet { background:transparent; border-color:transparent; color:var(--ip-muted); }
+#iteration-pages-preview .ip-button:hover { filter:brightness(.96); }
+#iteration-pages-preview i,#iteration-pages-preview svg[data-lucide] { width:16px; height:16px; flex-shrink:0; }
+#iteration-pages-preview .ip-segmentbar { display:flex; align-items:center; justify-content:space-between; padding:0 26px; border-bottom:1px solid var(--ip-line); min-height:48px; gap:12px; }
+#iteration-pages-preview .ip-tabs { display:flex; gap:24px; }
+#iteration-pages-preview .ip-tab { border:0; background:none; border-bottom:2px solid transparent; padding:14px 0 12px; color:var(--ip-muted); font-size:13px; }
+#iteration-pages-preview .ip-tab[aria-selected="true"] { color:var(--ip-text); font-weight:600; border-color:var(--ip-text); }
+#iteration-pages-preview .ip-small { color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-filter { display:flex; gap:12px; align-items:center; padding:14px 26px; border-bottom:1px solid var(--ip-line); flex-wrap:wrap; }
+#iteration-pages-preview input,#iteration-pages-preview select,#iteration-pages-preview textarea { border:1px solid var(--ip-line); background:var(--ip-panel); color:var(--ip-text); padding:9px 11px; border-radius:7px; min-width:0; }
+#iteration-pages-preview .ip-filter input { width:210px; }
+#iteration-pages-preview .ip-timeline { padding:24px 30px 40px 28px; }
+#iteration-pages-preview .ip-period { display:grid; grid-template-columns:70px 1fr; position:relative; }
+#iteration-pages-preview .ip-date { color:var(--ip-muted); font-size:12px; text-align:right; padding:25px 24px 0 0; position:relative; }
+#iteration-pages-preview .ip-date::after { content:""; position:absolute; right:-4px; top:30px; width:8px; height:8px; border:2px solid var(--ip-original); background:var(--ip-bg); border-radius:50%; z-index:1; }
+#iteration-pages-preview .ip-period-body { border-left:1px solid var(--ip-line); padding-left:26px; min-width:0; }
+#iteration-pages-preview .ip-period.ip-current .ip-period-body { border-left:1px solid var(--ip-violet); }
+#iteration-pages-preview .ip-period.ip-current .ip-date::after { background:var(--ip-violet); border-color:var(--ip-violet); }
+#iteration-pages-preview .ip-period-head { min-height:94px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:15px 0; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-period-name { padding:0; border:0; background:none; display:flex; gap:12px; align-items:center; text-align:left; }
+#iteration-pages-preview .ip-period-name:hover .ip-name { text-decoration:underline; text-underline-offset:4px; }
+#iteration-pages-preview .ip-name { display:block; font-size:16px; font-weight:600; }
+#iteration-pages-preview .ip-subline { display:block; font-size:12px; color:var(--ip-muted); margin-top:3px; }
+#iteration-pages-preview .ip-state-icon { width:23px; height:23px; border:1.5px solid var(--ip-scope); display:inline-flex; align-items:center; justify-content:center; border-radius:50%; flex-shrink:0; color:var(--ip-muted); }
+#iteration-pages-preview .ip-state-icon svg { width:12px; height:12px; }
+#iteration-pages-preview .ip-state-icon.ip-dashed { border-style:dashed; }
+#iteration-pages-preview .ip-current .ip-state-icon { color:var(--ip-violet); border-color:var(--ip-violet); }
+#iteration-pages-preview .ip-period-meta { display:flex; align-items:center; gap:22px; white-space:nowrap; font-size:13px; }
+#iteration-pages-preview .ip-badge { display:inline-flex; align-items:center; padding:3px 9px; background:var(--ip-hover); border-radius:99px; font-size:12px; font-weight:500; white-space:nowrap; }
+#iteration-pages-preview .ip-badge.ip-live { background:var(--ip-violet-soft); color:var(--ip-violet); }
+#iteration-pages-preview .ip-gap { display:grid; grid-template-columns:70px 1fr; }
+#iteration-pages-preview .ip-gap-body { border-left:1px solid var(--ip-line); padding:16px 0 16px 28px; color:var(--ip-muted); font-size:12px; display:flex; gap:9px; align-items:center; }
+#iteration-pages-preview .ip-gap-body span:last-child { margin-left:3px; opacity:.8; }
+#iteration-pages-preview .ip-current .ip-period-head { border-bottom:0; padding-top:20px; }
+#iteration-pages-preview .ip-chart-layout { display:grid; grid-template-columns:minmax(0,1fr) 140px; gap:28px; align-items:center; padding:8px 0 8px; }
+#iteration-pages-preview .ip-plot { min-width:0; }
+#iteration-pages-preview .ip-chart { width:100%; height:235px; display:block; overflow:visible; }
+#iteration-pages-preview .ip-chart text { fill:var(--ip-muted); font-family:inherit; font-size:11px; }
+#iteration-pages-preview .ip-legend { display:flex; flex-direction:column; gap:14px; font-size:12px; }
+#iteration-pages-preview .ip-legend-row { display:flex; align-items:center; gap:8px; }
+#iteration-pages-preview .ip-legend-row strong { margin-left:auto; font-size:14px; font-weight:500; }
+#iteration-pages-preview .ip-swatch { width:9px; height:9px; border-radius:2px; background:var(--ip-scope); flex-shrink:0; }
+#iteration-pages-preview .ip-swatch.ip-done { background:var(--ip-violet); }
+#iteration-pages-preview .ip-swatch.ip-base { background:var(--ip-original); }
+#iteration-pages-preview .ip-rate { color:var(--ip-muted); font-size:12px; padding-left:17px; margin-top:-8px; }
+#iteration-pages-preview .ip-chart-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding:7px 0 18px; color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-textlink { background:transparent; border:0; padding:0; color:var(--ip-muted); text-decoration:underline; text-underline-offset:3px; font-size:12px; }
+#iteration-pages-preview .ip-empty-list { padding:90px 22px; text-align:center; color:var(--ip-muted); }
+#iteration-pages-preview .ip-detail-top { padding:28px 34px 0; }
+#iteration-pages-preview h2 { margin:0; font-size:26px; line-height:1.3; letter-spacing:-.025em; font-weight:600; color:var(--ip-text); }
+#iteration-pages-preview h3 { margin:0; font-size:15px; font-weight:600; color:var(--ip-text); }
+#iteration-pages-preview p { margin:0; }
+#iteration-pages-preview .ip-title-line { display:flex; align-items:center; gap:12px; }
+#iteration-pages-preview .ip-summary { color:var(--ip-muted); margin-top:9px; }
+#iteration-pages-preview .ip-detail-meta { display:flex; flex-wrap:wrap; gap:10px 20px; color:var(--ip-muted); font-size:12px; margin-top:15px; }
+#iteration-pages-preview .ip-detail-meta span { display:inline-flex; align-items:center; gap:6px; }
+#iteration-pages-preview .ip-stats { display:flex; gap:30px; flex-wrap:wrap; margin-top:27px; padding-bottom:24px; }
+#iteration-pages-preview .ip-stat { min-width:70px; }
+#iteration-pages-preview .ip-stat dt { color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-stat dd { margin:5px 0 0; font-size:23px; font-weight:500; line-height:1.3; font-variant-numeric:tabular-nums; }
+#iteration-pages-preview .ip-detail-tabs { margin:0 34px; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-count { margin-left:6px; color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-detail-content { padding:22px 34px 34px; min-height:365px; }
+#iteration-pages-preview .ip-group-head { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; padding:10px 0; }
+#iteration-pages-preview .ip-group-head.ip-done-color { color:var(--ip-violet); }
+#iteration-pages-preview .ip-task { display:grid; grid-template-columns:20px 70px minmax(0,1fr) 112px 52px; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--ip-line); font-size:13px; }
+#iteration-pages-preview .ip-task svg { color:var(--ip-muted); width:15px; }
+#iteration-pages-preview .ip-task .ip-done-icon { color:var(--ip-violet); }
+#iteration-pages-preview .ip-task-id { color:var(--ip-muted); font-size:11px; }
+#iteration-pages-preview .ip-task-title { border:0; padding:0; background:none; text-align:left; overflow-wrap:anywhere; }
+#iteration-pages-preview .ip-project { color:var(--ip-muted); font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#iteration-pages-preview .ip-assignee { color:var(--ip-muted); font-size:11px; display:flex; align-items:center; gap:4px; }
+#iteration-pages-preview .ip-avatar { width:21px; height:21px; background:var(--ip-hover); border-radius:50%; display:grid; place-items:center; font-size:10px; }
+#iteration-pages-preview .ip-empty { min-height:495px; padding:60px 70px; display:flex; align-items:center; }
+#iteration-pages-preview .ip-empty-inner { max-width:590px; }
+#iteration-pages-preview .ip-empty-icon { width:48px; height:48px; border:3px dotted var(--ip-original); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--ip-original); margin-bottom:28px; }
+#iteration-pages-preview .ip-empty-icon svg { width:22px; height:22px; }
+#iteration-pages-preview .ip-empty p { color:var(--ip-muted); margin-top:17px; font-size:15px; line-height:1.9; }
+#iteration-pages-preview .ip-empty .ip-actions { margin-top:26px; }
+#iteration-pages-preview .ip-empty-foot { font-size:12px!important; margin-top:18px!important; }
+#iteration-pages-preview .ip-snapshot { background:var(--ip-hover); border-radius:6px; padding:11px 14px; margin-top:20px; color:var(--ip-muted); font-size:12px; display:flex; align-items:center; gap:8px; }
+#iteration-pages-preview .ip-event { display:grid; grid-template-columns:86px 1fr; gap:18px; padding:17px 0; border-bottom:1px solid var(--ip-line); font-size:13px; }
+#iteration-pages-preview .ip-event time { color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-event p { color:var(--ip-muted); font-size:12px; margin-top:5px; }
+#iteration-pages-preview details { margin-top:18px; font-size:12px; color:var(--ip-muted); }
+#iteration-pages-preview summary { cursor:pointer; }
+#iteration-pages-preview .ip-data { width:100%; border-collapse:collapse; margin-top:12px; font-size:12px; }
+#iteration-pages-preview .ip-data th,#iteration-pages-preview .ip-data td { padding:8px; text-align:left; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-feedback { font-size:12px; padding:10px 26px; color:var(--ip-muted); border-bottom:1px solid var(--ip-line); background:var(--ip-hover); }
+#iteration-pages-preview dialog { width:510px; max-width:calc(100% - 24px); max-height:90%; padding:26px; border:1px solid var(--ip-line); border-radius:12px; color:var(--ip-text); background:var(--ip-panel); box-shadow:0 18px 65px #0002; }
+#iteration-pages-preview dialog::backdrop { background:#0005; }
+#iteration-pages-preview dialog h2 { font-size:20px; }
+#iteration-pages-preview .ip-form { display:grid; gap:16px; margin-top:22px; }
+#iteration-pages-preview .ip-form label { display:grid; gap:6px; font-size:13px; }
+#iteration-pages-preview .ip-form textarea { min-height:75px; resize:vertical; }
+#iteration-pages-preview .ip-dialog-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:22px; }
+#iteration-pages-preview .ip-select-task { display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--ip-line); align-items:center; font-size:13px; }
+#iteration-pages-preview .ip-select-task input { accent-color:var(--ip-violet); }
+#iteration-pages-preview .ip-dialog-description { color:var(--ip-muted); font-size:13px; margin-top:10px; line-height:1.8; }
+@media(max-width:760px){#iteration-pages-preview .ip-period-meta { gap:10px; } #iteration-pages-preview .ip-chart-layout { gap:15px; grid-template-columns:minmax(0,1fr) 120px; } #iteration-pages-preview .ip-detail-top,#iteration-pages-preview .ip-detail-content { padding-left:24px; padding-right:24px; } #iteration-pages-preview .ip-detail-tabs { margin:0 24px; } #iteration-pages-preview .ip-task { grid-template-columns:18px 60px minmax(0,1fr) 45px; } #iteration-pages-preview .ip-project { display:none; } }
+@media(max-width:540px){#iteration-pages-preview .ip-window{min-height:650px;} #iteration-pages-preview .ip-toolbar { padding:10px 15px; flex-wrap:wrap; } #iteration-pages-preview .ip-toolbar>.ip-actions { margin-left:auto; } #iteration-pages-preview .ip-segmentbar { padding:0 16px; } #iteration-pages-preview .ip-segmentbar>.ip-small { display:none; } #iteration-pages-preview .ip-timeline { padding:10px 16px 26px 10px; } #iteration-pages-preview .ip-period,#iteration-pages-preview .ip-gap { grid-template-columns:42px 1fr; } #iteration-pages-preview .ip-date { padding-right:13px; font-size:10px; } #iteration-pages-preview .ip-period-body { padding-left:17px; } #iteration-pages-preview .ip-gap-body { padding-left:17px; font-size:11px; flex-wrap:wrap; gap:5px; } #iteration-pages-preview .ip-gap-body span:last-child { display:none; } #iteration-pages-preview .ip-period-head { align-items:flex-start; min-height:100px; padding:21px 0 17px; flex-wrap:wrap; gap:9px; } #iteration-pages-preview .ip-period-meta { margin-left:35px; } #iteration-pages-preview .ip-name { font-size:15px; } #iteration-pages-preview .ip-subline { font-size:11px; } #iteration-pages-preview .ip-chart-layout { display:flex; flex-direction:column; gap:10px; align-items:stretch; } #iteration-pages-preview .ip-chart { height:210px; } #iteration-pages-preview .ip-legend { flex-direction:row; flex-wrap:wrap; gap:12px; } #iteration-pages-preview .ip-legend-row { gap:5px; font-size:11px; } #iteration-pages-preview .ip-legend-row strong { margin-left:2px; font-size:12px; } #iteration-pages-preview .ip-rate { padding-left:0; margin-top:0; } #iteration-pages-preview .ip-chart-foot { margin-top:10px; line-height:1.8; } #iteration-pages-preview .ip-chart-foot .ip-button { width:100%; justify-content:center; } #iteration-pages-preview .ip-empty { min-height:435px; padding:45px 25px; } #iteration-pages-preview .ip-empty p { font-size:14px; } #iteration-pages-preview .ip-empty .ip-actions { align-items:stretch; flex-direction:column; } #iteration-pages-preview .ip-empty .ip-button { justify-content:center; } #iteration-pages-preview .ip-empty-icon { margin-bottom:24px; } #iteration-pages-preview h2 { font-size:23px; } #iteration-pages-preview .ip-stats { gap:17px; } #iteration-pages-preview .ip-stat { min-width:60px; } #iteration-pages-preview .ip-stat dd { font-size:20px; } #iteration-pages-preview .ip-task { grid-template-columns:16px 55px minmax(0,1fr); gap:6px; } #iteration-pages-preview .ip-assignee { display:none; } #iteration-pages-preview .ip-detail-top,#iteration-pages-preview .ip-detail-content { padding-left:20px; padding-right:20px; } #iteration-pages-preview .ip-detail-tabs { margin:0 20px; } #iteration-pages-preview .ip-event { grid-template-columns:58px 1fr; gap:10px; } #iteration-pages-preview .ip-filter { padding:12px 16px; } #iteration-pages-preview input,#iteration-pages-preview select,#iteration-pages-preview textarea { font-size:16px; } }
+</style>
+<div id="iteration-pages-preview" aria-label="迭代总览与详情设计">
+<div class="ip-demo">交互预览 · 示例数据，日期为 2026 年 10 月 12 日</div>
+<div class="ip-window">
+<header class="ip-toolbar"><div class="ip-breadcrumb" id="ip-breadcrumb"></div><div class="ip-actions" id="ip-toolbar-actions"></div></header>
+<div id="ip-feedback" class="ip-feedback" role="status" hidden></div>
+<div id="ip-page"></div>
+</div>
+<dialog id="ip-dialog" aria-labelledby="ip-dialog-title"><h2 id="ip-dialog-title"></h2><div id="ip-dialog-body"></div><div class="ip-dialog-actions"><button type="button" class="ip-button" id="ip-dialog-cancel">取消</button><button type="button" class="ip-button ip-primary" id="ip-dialog-confirm">确认</button></div></dialog>
+</div>
+<script>
+(() => {
+const root=document.getElementById('iteration-pages-preview');
+const $=id=>root.querySelector('#'+id);
+const icon=name=>`<i data-lucide="${name}" aria-hidden="true"></i>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const periods=[
+{id:'p3',name:'迭代 3',start:'2026-11-30',end:'2026-12-13',status:'planned',description:'打磨体验，整理年底交付。',tasks:[]},
+{id:'p2',name:'迭代 2',start:'2026-11-02',end:'2026-11-15',status:'planned',description:'',tasks:[]},
+{id:'p1',name:'迭代 1',start:'2026-10-05',end:'2026-10-18',status:'active',description:'完善团队交付流程，让任务安排与迭代复盘更清楚。',tasks:[]},
+{id:'h1',name:'九月第二期',start:'2026-09-21',end:'2026-10-04',status:'completed',description:'完成基础协作体验的第一轮改进。',tasks:[]}
+];
+const taskNames=['支持批量安排任务到迭代','完善项目概览的进展说明','修复任务列表筛选状态','调整成员邀请流程','统一任务详情日期展示','补齐迭代相关通知','优化任务描述编辑体验','增加工作空间时区选择','迭代结束预览与未完成任务结转','补充迭代范围变化记录','适配桌面端迭代导航','完善异常状态与恢复提示','验证窗口缩放和深色模式','调整首页快捷入口'];
+periods[2].tasks=taskNames.map((name,i)=>({id:'MUL-'+(121+i),name,status:i<8?'done':i<11?'active':i<13?'todo':'cancelled',project:i%3===0?'团队协作':'迭代管理',person:i%2===0?'林然':'小周'}));
+periods[3].tasks=taskNames.slice(0,11).map((name,i)=>({id:'MUL-'+(101+i),name,status:i<9?'done':'todo',project:'团队协作',person:'林然'}));
+let page='overview',selectedId='p1',detailTab='tasks',listTab='open',query='',statusFilter='',filterOpen=false;
+let dialogAction=null,observer=null;
+const demo={page:'overview'};
+const labelStatus=s=>({planned:'已计划',active:'进行中',completed:'已结束',cancelled:'已取消'}[s]||'未知状态');
+const shortDate=s=>{const a=s.split('-');return Number(a[1])+'月'+Number(a[2])+'日'};
+const dateSpan=p=>shortDate(p.start)+' — '+shortDate(p.end);
+const current=()=>periods.find(p=>p.status==='active');
+const chosen=()=>periods.find(p=>p.id===selectedId)||periods[2];
+const countStats=p=>p.id==='p1'?{original:12,current:p.tasks.length,effective:p.tasks.filter(t=>t.status!=='cancelled').length,completed:p.tasks.filter(t=>t.status==='done').length,remaining:p.tasks.filter(t=>!['done','cancelled'].includes(t.status)).length,originalDone:7,cancelled:p.tasks.filter(t=>t.status==='cancelled').length}:p.id==='h1'?{original:10,current:11,effective:11,completed:9,remaining:2,originalDone:9,cancelled:0}:{original:p.status==='planned'?null:p.tasks.length,current:p.tasks.length,effective:p.tasks.filter(t=>t.status!=='cancelled').length,completed:p.tasks.filter(t=>t.status==='done').length,remaining:p.tasks.filter(t=>!['done','cancelled'].includes(t.status)).length,originalDone:0,cancelled:0};
+const series=p=>p.id==='h1'?{effective:[10,10,10,10,11,11,11,11,11,11,11,11,11,11],done:[0,1,1,2,3,3,4,5,5,6,7,7,8,9],original:10}:{effective:[12,12,12,14,14,13,13,countStats(p).effective],done:[0,1,3,3,4,6,7,countStats(p).completed],original:12};
+function chartMarkup(p){const s=countStats(p);return `<div class="ip-chart-layout"><div class="ip-plot"><svg class="ip-chart" data-chart-period="${p.id}" role="img" aria-label="按任务数统计的有效范围与完成趋势，原始承诺以虚线表示"></svg></div><div class="ip-legend"><div class="ip-legend-row"><span class="ip-swatch"></span>有效范围<strong>${s.effective} 条</strong></div><div class="ip-legend-row"><span class="ip-swatch ip-done"></span>已完成<strong>${s.completed} 条</strong></div><div class="ip-rate">完成率 ${s.effective?(s.completed/s.effective*100).toFixed(1)+'%':'不适用'}</div><div class="ip-legend-row"><span class="ip-swatch ip-base"></span>原始承诺<strong>${s.original} 条</strong></div></div></div>`;}
+function drawCharts(){
+root.querySelectorAll('svg[data-chart-period]').forEach(svg=>{
+ const p=periods.find(p=>p.id===svg.dataset.chartPeriod);if(!p)return;
+ const values=series(p),w=Math.max(svg.getBoundingClientRect().width,180),h=svg.getBoundingClientRect().height||235;
+ const totalDays=['completed','cancelled'].includes(p.status)?values.effective.length-1:13;
+ const left=28,right=8,top=27,bottom=29,plotW=w-left-right,plotH=h-top-bottom,max=Math.max(16,...values.effective);
+ const x=i=>left+i/totalDays*plotW,y=v=>top+plotH-v/max*plotH;
+ const points=arr=>arr.map((v,i)=>`${x(i)},${y(v)}`).join(' ');
+ const id='ip-hatch-'+p.id+'-'+(page==='overview'?'overview':detailTab);
+ const endKnown=values.effective.length-1,nowX=x(endKnown);
+ svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+ const dateAt=i=>{const [yr,mo,day]=p.start.split('-').map(Number);const d=new Date(Date.UTC(yr,mo-1,day+i));return(d.getUTCMonth()+1)+'月'+d.getUTCDate()+'日'};
+ svg.innerHTML=`<defs><pattern id="${id}" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 8 L8 0" stroke="var(--ip-line)" stroke-width="1"/></pattern></defs><text x="0" y="12">任务数</text>${endKnown<totalDays?`<rect x="${nowX}" y="${top}" width="${x(totalDays)-nowX}" height="${plotH}" fill="url(#${id})"/><text x="${nowX+(x(totalDays)-nowX)/2}" y="${top+16}" text-anchor="middle">尚未发生</text>`:''}${[0,8,16].map(n=>`<line x1="${left}" x2="${w-right}" y1="${y(n)}" y2="${y(n)}" stroke="var(--ip-line)" stroke-width="1"/><text x="${left-8}" y="${y(n)+4}" text-anchor="end">${n}</text>`).join('')}<line x1="${x(0)}" x2="${x(totalDays)}" y1="${y(values.original)}" y2="${y(values.original)}" stroke="var(--ip-original)" stroke-width="1.5" stroke-dasharray="4 4"/><polyline points="${points(values.effective)}" fill="none" stroke="var(--ip-scope)" stroke-width="2" stroke-linejoin="round"/><polyline points="${points(values.done)}" fill="none" stroke="var(--ip-violet)" stroke-width="2.5" stroke-linejoin="round"/>${endKnown<totalDays?`<line x1="${nowX}" x2="${nowX}" y1="${top}" y2="${y(0)}" stroke="var(--ip-original)" stroke-width="1"/>`:''}<circle cx="${nowX}" cy="${y(values.done[endKnown])}" r="3.5" fill="var(--ip-violet)" stroke="var(--ip-bg)" stroke-width="2"/>${[0,Math.round(totalDays/2),totalDays].map((d,i)=>`<text x="${x(d)}" y="${h-7}" text-anchor="${i===0?'start':i===2?'end':'middle'}">${dateAt(d)}</text>`).join('')}`;
+});}
+function bindCharts(){if(observer)observer.disconnect();drawCharts();observer=new ResizeObserver(drawCharts);root.querySelectorAll('.ip-plot').forEach(el=>observer.observe(el));}
+function refreshIcons(){if(globalThis.lucide)lucide.createIcons({attrs:{width:16,height:16}});}
+function showPeriod(id){selectedId=id;page='detail';detailTab='tasks';render();}
+function showFeedback(message){$('ip-feedback').textContent=message;$('ip-feedback').hidden=false;}
+function overview(){
+const upcoming=periods.filter(p=>p.status==='planned').sort((a,b)=>a.start.localeCompare(b.start))[0]?.id;
+const all=periods.filter(p=>listTab==='open'?['planned','active'].includes(p.status):['completed','cancelled'].includes(p.status)).sort((a,b)=>b.start.localeCompare(a.start));
+const shown=all.filter(p=>(!query||p.name.includes(query))&&(!statusFilter||p.status===statusFilter));
+let rows='';
+shown.forEach((p,i)=>{
+const next=shown[i+1];const isCurrent=p.status==='active';
+rows+=`<article class="ip-period ${isCurrent?'ip-current':''}"><div class="ip-date">${shortDate(p.start).replace('月','月<br>')}</div><div class="ip-period-body"><div class="ip-period-head"><button class="ip-period-name" type="button" data-period="${p.id}"><span class="ip-state-icon ${p.status==='planned'?'ip-dashed':''}">${icon(p.status==='completed'?'check':'play')}</span><span><span class="ip-name">${esc(p.name)}</span><span class="ip-subline">${dateSpan(p)}</span></span></button><div class="ip-period-meta"><span class="ip-badge ${isCurrent?'ip-live':''}">${isCurrent?'当前':p.id===upcoming?'即将开始':labelStatus(p.status)}</span>${isCurrent?`<span class="ip-small">当前范围 ${countStats(p).current} 条</span>`:''}</div></div>${isCurrent?`${chartMarkup(p)}<div class="ip-chart-foot"><span>含 ${countStats(p).cancelled} 条已取消任务，有效范围不计取消任务</span><button type="button" class="ip-button ip-quiet" data-period="${p.id}">查看迭代 ${icon('arrow-right')}</button></div>`:''}</div></article>`;
+if(next&&!query&&!statusFilter&&listTab==='open'){
+ const days=Math.round((Date.parse(p.start+'T00:00:00Z')-Date.parse(next.end+'T00:00:00Z'))/86400000)-1;
+ if(days>0)rows+=`<div class="ip-gap"><span></span><div class="ip-gap-body">${icon('pause-circle')}<span>${days} 天未安排迭代</span><span>日期之间的空档</span></div></div>`;
+}
+});
+return `<div class="ip-segmentbar"><div class="ip-tabs" role="tablist" aria-label="迭代分组"><button type="button" class="ip-tab" role="tab" aria-selected="${listTab==='open'}" data-list="open">当前与计划</button><button type="button" class="ip-tab" role="tab" aria-selected="${listTab==='history'}" data-list="history">历史迭代</button></div><span class="ip-small">按各迭代保存的日期展示</span></div>${filterOpen?`<div class="ip-filter"><input id="ip-search" aria-label="搜索迭代" placeholder="搜索迭代名称" value="${esc(query)}"><select id="ip-status-filter" aria-label="筛选状态"><option value="">全部状态</option>${['planned','active','completed','cancelled'].map(s=>`<option value="${s}" ${statusFilter===s?'selected':''}>${labelStatus(s)}</option>`).join('')}</select></div>`:''}<section class="ip-timeline" aria-label="迭代时间线">${rows||'<div class="ip-empty-list">没有符合条件的迭代。</div>'}</section>`;
+}
+function tasksMarkup(p){let out='';for(const [status,name,ico]of[['active','进行中','circle-play'],['todo','待办','circle'],['done','已完成','circle-check'],['cancelled','已取消','circle-x']]){const group=p.tasks.filter(t=>t.status===status);if(!group.length)continue;out+=`<section><div class="ip-group-head ${status==='done'?'ip-done-color':''}">${icon(ico)} ${name}<span class="ip-count">${group.length}</span></div>${group.map(t=>`<div class="ip-task">${icon(ico)}<span class="ip-task-id">${t.id}</span><button class="ip-task-title" type="button" data-task="${t.id}">${esc(t.name)}</button><span class="ip-project">${t.project}</span><span class="ip-assignee"><span class="ip-avatar">${t.person[0]}</span>${t.person}</span></div>`).join('')}</section>`;}return out;}
+function dataTable(p){const v=series(p);return `<details><summary>查看图表数据与统计口径</summary><p style="margin-top:10px">完成率 = 已完成 ÷ 有效范围；原始交付率 = 原始承诺中已完成 ÷ 原始承诺。分母为 0 时显示不适用。</p><table class="ip-data"><thead><tr><th>记录日</th><th>有效范围</th><th>已完成</th><th>原始承诺</th></tr></thead><tbody>${v.effective.map((n,i)=>`<tr><td>第 ${i+1} 天</td><td>${n}</td><td>${v.done[i]}</td><td>${v.original}</td></tr>`).join('')}</tbody></table></details>`;}
+function detail(){
+const p=chosen(),s=countStats(p),historical=['completed','cancelled'].includes(p.status),empty=p.tasks.length===0;
+let head=`<div class="ip-detail-top"><div class="ip-title-line"><h2>${esc(p.name)}</h2><span class="ip-badge ${p.status==='active'?'ip-live':''}">${labelStatus(p.status)}</span></div>${p.description?`<p class="ip-summary">${esc(p.description)}</p>`:''}<div class="ip-detail-meta"><span>${icon('calendar-days')}${dateSpan(p)}</span><span>${icon('globe-2')}Asia/Shanghai</span><span>${icon('user-round')}协调人：${p.id==='p1'?'林然':'未指定'}</span></div>${historical?`<div class="ip-snapshot">${icon('lock-keyhole')}结束快照 · ${shortDate(p.actualEnd||p.end)}留存，后续任务变化不会改写本期统计。</div>`:''}</div>`;
+if(empty)return `<div class="ip-detail-top"><div class="ip-detail-meta" style="margin-top:0"><span class="ip-badge">${labelStatus(p.status)}</span><span>${icon('calendar-days')}${dateSpan(p)}</span><span>Asia/Shanghai</span></div></div><section class="ip-empty"><div class="ip-empty-inner"><div class="ip-empty-icon">${icon('play')}</div><h2>${esc(p.name)}</h2><p>为这段时间，选好团队准备交付的工作。</p><p>添加已有任务，或创建新任务安排到本期。<br>开始迭代时，会记录最初的交付承诺。</p><div class="ip-actions"><button type="button" class="ip-button ip-primary" data-action="add">${icon('plus')}添加已有任务</button><button type="button" class="ip-button" data-action="new-task">新建任务</button></div><p class="ip-empty-foot">本期尚未开始，计划日期不会自动触发执行。</p></div></section>`;
+head+=`<dl class="ip-stats" style="margin-left:34px;margin-right:34px">${[['原始承诺',s.original===null?'未开始':s.original],['当前范围',s.current],['有效范围',s.effective],['已完成',s.completed],['剩余',s.remaining]].map(([label,n])=>`<div class="ip-stat"><dt>${label}</dt><dd>${n}</dd></div>`).join('')}</dl><div class="ip-tabs ip-detail-tabs" role="tablist" aria-label="迭代详情"><button type="button" class="ip-tab" role="tab" aria-selected="${detailTab==='tasks'}" data-detail-tab="tasks">${historical?'任务快照':'任务'}<span class="ip-count">${p.tasks.length}</span></button><button type="button" class="ip-tab" role="tab" aria-selected="${detailTab==='progress'}" data-detail-tab="progress">进展</button><button type="button" class="ip-tab" role="tab" aria-selected="${detailTab==='events'}" data-detail-tab="events">范围变化</button></div>`;
+let content=tasksMarkup(p);
+if(detailTab==='progress')content=p.status==='planned'?'<div class="ip-empty-list">开始迭代后展示原始承诺和进展趋势。</div>':`${chartMarkup(p)}<div class="ip-chart-foot"><span>原始交付率 ${s.original?(s.originalDone/s.original*100).toFixed(1)+'%':'不适用'} · 已取消 ${s.cancelled} 条</span><span>${historical?'历史快照':'更新至 10 月 12 日'}</span></div>${dataTable(p)}`;
+if(detailTab==='events')content=p.id==='p1'?`<div class="ip-event"><time>10月12日<br>15:40</time><div>林然完成了「增加工作空间时区选择」<p>MUL-128 · 当前已完成 8 条</p></div></div><div class="ip-event"><time>10月10日<br>11:12</time><div>取消「调整首页快捷入口」<p>有效范围减为 13 条；保留原始承诺。</p></div></div><div class="ip-event"><time>10月8日<br>16:20</time><div>将 1 条任务移出本期<p>原因：依赖外部接口，待条件具备后再安排。</p></div></div><div class="ip-event"><time>10月8日<br>10:15</time><div>新增 3 条任务到本期<p>新增记录单独保留，不覆盖开始时的承诺。</p></div></div><div class="ip-event"><time>10月5日<br>09:00</time><div>开始迭代，记录 12 条原始承诺<p>手动开始 · 协调人林然</p></div></div>`:`<div class="ip-event"><time>${shortDate(p.end)}</time><div>${historical?'结束迭代并保留历史快照':'计划中的任务安排'}<p>${historical?'未完成任务的去向随快照保留。':'计划阶段的变更不计为期中范围新增。'}</p></div></div>`;
+return head+`<div class="ip-detail-content">${content}</div>`;
+}
+function render(){
+if(observer)observer.disconnect();
+const p=chosen();
+$('ip-breadcrumb').innerHTML=page==='overview'?`${icon('calendar-range')}<strong>迭代</strong>`:`<button type="button" id="ip-back">迭代</button><span class="ip-slash">/</span><strong>${esc(p.name)}</strong>`;
+$('ip-toolbar-actions').innerHTML=page==='overview'?`<button type="button" class="ip-button ip-quiet" id="ip-filter-button">${icon('list-filter')}筛选</button><button type="button" class="ip-button" data-action="new-period">${icon('plus')}新建迭代</button>`:['completed','cancelled'].includes(p.status)?`<span class="ip-small">${icon('lock-keyhole')} 历史记录</span>`:`${p.tasks.length?`<button type="button" class="ip-button" data-action="add">${icon('plus')}添加任务</button>`:''}${p.status==='active'?'<button type="button" class="ip-button" data-action="end">结束迭代</button>':`<button type="button" class="ip-button" data-action="start" ${current()?'disabled data-tooltip="请先结束当前进行中的迭代"':''}>开始迭代</button>`}`;
+$('ip-page').innerHTML=page==='overview'?overview():detail();
+root.querySelectorAll('[data-period]').forEach(b=>b.onclick=()=>showPeriod(b.dataset.period));
+root.querySelectorAll('[data-list]').forEach(b=>b.onclick=()=>{listTab=b.dataset.list;query='';statusFilter='';render();});
+root.querySelectorAll('[data-detail-tab]').forEach(b=>b.onclick=()=>{detailTab=b.dataset.detailTab;render();});
+root.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>action(b.dataset.action));
+root.querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>openTask(b.dataset.task));
+if($('ip-back'))$('ip-back').onclick=()=>{page='overview';render();};
+if($('ip-filter-button'))$('ip-filter-button').onclick=()=>{filterOpen=!filterOpen;render();};
+if($('ip-search'))$('ip-search').onchange=e=>{query=e.target.value;render();};
+if($('ip-status-filter'))$('ip-status-filter').onchange=e=>{statusFilter=e.target.value;render();};
+root.querySelectorAll('.ip-tabs').forEach(group=>group.onkeydown=event=>{
+if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+const buttons=[...group.querySelectorAll('button')],index=buttons.indexOf(document.activeElement);if(index<0)return;
+event.preventDefault();const offset=event.key==='ArrowLeft'?-1:1;
+const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+offset+buttons.length)%buttons.length;
+const target=buttons[next],key=target.dataset.list?'list':'detailTab',value=target.dataset[key];target.click();
+root.querySelector(key==='list'?`[data-list="${value}"]`:`[data-detail-tab="${value}"]`)?.focus();
+});
+refreshIcons();bindCharts();
+}
+function openDialog(title,body,confirm,onConfirm){$('ip-dialog-title').textContent=title;$('ip-dialog-body').innerHTML=body;$('ip-dialog-confirm').textContent=confirm;$('ip-dialog-confirm').hidden=!onConfirm;dialogAction=onConfirm;refreshIcons();$('ip-dialog').showModal();}
+function action(kind){const p=chosen();
+ if(kind==='add')openDialog(`添加任务到${p.name}`,`<p class="ip-dialog-description">选择尚未安排迭代的正式任务。</p>${['梳理下一期交付清单','补充关键路径的回归检查','完善成员协作说明'].map((name,i)=>`<label class="ip-select-task"><input type="checkbox" name="ip-pick" value="${i}"><span><span class="ip-small">MUL-${201+i}</span><br>${name}</span></label>`).join('')}`,'添加到迭代',()=>{const inputs=[...root.querySelectorAll('input[name="ip-pick"]:checked')];if(!inputs.length)return;const names=['梳理下一期交付清单','补充关键路径的回归检查','完善成员协作说明'];inputs.forEach(i=>{const id='MUL-'+(201+Number(i.value));if(!p.tasks.some(t=>t.id===id))p.tasks.push({id,name:names[Number(i.value)],status:'todo',project:'团队协作',person:'林然'});});$('ip-dialog').close();render();showFeedback(`已将 ${inputs.length} 条任务安排到${p.name}（演示）。`);});
+ if(kind==='new-task')openDialog('新建任务',`<p class="ip-dialog-description">当前迭代：${esc(p.name)}</p><div class="ip-form"><label>任务名称<input id="ip-new-task-name" placeholder="准备交付什么？"></label></div>`,'创建并加入',()=>{const name=$('ip-new-task-name').value.trim();if(!name){$('ip-new-task-name').focus();return;}p.tasks.push({id:'MUL-'+(300+p.tasks.length),name,status:'todo',project:'未指定项目',person:'林然'});$('ip-dialog').close();render();showFeedback('任务已创建并安排到本期（演示）。');});
+ if(kind==='new-period')openDialog('新建迭代','<div class="ip-form"><label>迭代名称<input id="ip-period-name" placeholder="例如：十二月第二期"></label><label>开始日期<input id="ip-period-start" type="date" value="2026-12-14"></label><label>结束日期<input id="ip-period-end" type="date" value="2026-12-27"></label><p class="ip-small">Asia/Shanghai · 创建后为已计划，需要手动开始。</p></div>','创建迭代',()=>{const name=$('ip-period-name').value.trim(),start=$('ip-period-start').value,end=$('ip-period-end').value;if(!name||!start||end<start)return;periods.push({id:'new'+periods.length,name,start,end,status:'planned',description:'',tasks:[]});$('ip-dialog').close();page='overview';listTab='open';render();showFeedback('迭代已创建为计划，未自动开始（演示）。');});
+ if(kind==='end'){const s=countStats(p);openDialog(`结束${p.name}`,`<p class="ip-dialog-description">已完成 ${s.completed} 条，有效范围内还有 ${s.remaining} 条未完成任务。结束会保留本期快照，正在运行的执行会继续。</p><div class="ip-form"><label>未完成任务的去向<select id="ip-rollover"><option value="">暂不安排到下一期</option>${periods.filter(v=>v.status==='planned').map(v=>`<option value="${v.id}">${esc(v.name)}</option>`).join('')}</select></label><label>结束说明<textarea id="ip-end-reason" placeholder="记录本期交付和未完成原因"></textarea></label></div>`,'确认结束',()=>{if(!$('ip-end-reason').value.trim()){$('ip-end-reason').focus();return;}const target=periods.find(v=>v.id===$('ip-rollover').value);if(target)target.tasks.push(...p.tasks.filter(t=>!['done','cancelled'].includes(t.status)).map(t=>({...t})));p.actualEnd='2026-10-12';p.status='completed';$('ip-dialog').close();render();showFeedback('已结束并保留本期快照。下一期不会自动开始（演示）。');});}
+ if(kind==='start')openDialog(`开始${p.name}`,`<p class="ip-dialog-description">将记录本期 ${p.tasks.length} 条任务作为原始承诺。计划日期：${dateSpan(p)}。</p><p class="ip-dialog-description">开始前需确认实际日期及任务范围；已有进行中迭代时，必须先结束当前迭代。</p>`,'',null);
+}
+function openTask(id){const task=chosen().tasks.find(t=>t.id===id);if(!task)return;openDialog(task.id,`<p style="margin-top:20px;font-size:17px;font-weight:500">${esc(task.name)}</p><p class="ip-dialog-description">${task.project} · ${task.person} · ${task.status==='done'?'已完成':task.status==='active'?'进行中':task.status==='cancelled'?'已取消':'待办'}</p>`,'',null);}
+$('ip-dialog-cancel').onclick=()=>{$('ip-dialog').close();};
+$('ip-dialog-confirm').onclick=()=>{if(dialogAction)dialogAction();};
+render();
+if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:()=>{page=demo.page==='overview'?'overview':'detail';selectedId=demo.page==='empty'?'p2':demo.page==='history'?'h1':'p1';detailTab='tasks';render();}});tweak.addSelect(demo,'page',{label:'查看页面',options:[{label:'时间线总览',value:'overview'},{label:'当前迭代 · 有任务',value:'current'},{label:'计划迭代 · 空状态',value:'empty'},{label:'历史迭代 · 快照',value:'history'}]});}
+})();
+</script>

@@ -1,0 +1,104 @@
+{
+  "validation_worktree": "/Volumes/artisan/code/2026/multica-iteration-closeout-20261009",
+  "environment": "check-20261008182302-93606",
+  "api_port": 18792,
+  "web_port": 13712,
+  "files": [
+    {
+      "path": "e2e/projects-p1-lifecycle.spec.ts",
+      "before_sha256": "c298f17bcb8953c468406b03aa9937e6eb16d83f953bc98eb131b32e93dc86e9",
+      "after_sha256": "8423992c8a621508e55ae567d47c23a22e246cafa5098a75cf64223b7ec4f979"
+    },
+    {
+      "path": "e2e/projects-p1-risk.spec.ts",
+      "before_sha256": "015e8a846ed9ee065a9749d3010dbe5606a3f58455328b3a5a6b232e47d915e6",
+      "after_sha256": "426dfbb24b8cada45c4dc38387b5cd94e7c07f7fdb3abd457e8641d9a6da919d"
+    }
+  ],
+  "shared_fixture_unchanged": "1f634b69c11e65248bc0e7da8a5cf856e11027aa48c03841dad8a872af313ba4",
+  "product_source_changed": false,
+  "source_edits_stopped": true,
+  "e2e": {
+    "exit_code": 0,
+    "tests_passed": 8,
+    "skipped": 0,
+    "flaky": 0,
+    "duration_seconds": 16.7,
+    "executions": [
+      {
+        "title": "P1-L11 an owner selects and changes the shared planning timezone and restores the Shanghai default",
+        "status": "passed",
+        "retry": 0
+      },
+      {
+        "title": "P1-L12 the picker excludes invalid timezones and rejected writes leave planning unchanged",
+        "status": "passed",
+        "retry": 0
+      },
+      {
+        "title": "P1-L13 loss of timezone write permission preserves readable project and local progress",
+        "status": "passed",
+        "retry": 0
+      },
+      {
+        "title": "P1-L15 Chinese compact editing supports keyboard preview and an unobstructed publish button",
+        "status": "passed",
+        "retry": 0
+      },
+      {
+        "title": "P1-R01 blocked drilldown shows exactly its formal risk IDs despite personal filters",
+        "status": "passed",
+        "retry": 0
+      },
+      {
+        "title": "P1-R02 overdue drilldown shows exactly its formal risk IDs despite personal filters",
+        "status": "passed",
+        "retry": 0
+      },
+      {
+        "title": "P1-R03 unassigned drilldown shows exactly its formal risk IDs despite personal filters",
+        "status": "passed",
+        "retry": 0
+      },
+      {
+        "title": "P1-R04 in_review drilldown shows exactly its formal risk IDs despite personal filters",
+        "status": "passed",
+        "retry": 0
+      }
+    ],
+    "report": "report-02.json",
+    "log": "attempt-02.log",
+    "command": "bash scripts/dev-env.sh exec check-20261008182302-93606 -- env MULTICA_RUN_I1_E2E=1 PLAYWRIGHT_JSON_OUTPUT_NAME=/Volumes/artisan/code/2026/multica-iteration-closeout-20261009/.omx/state/iteration-closeout-20261009/p1-e2e-followup/report-02.json pnpm exec playwright test e2e/projects-p1-lifecycle.spec.ts e2e/projects-p1-risk.spec.ts --grep 'P1-L11|P1-L12|P1-L13|P1-L15|P1-R0[1-4]' --workers=1 --retries=0 --output=.omx/state/iteration-closeout-20261009/p1-e2e-followup/results-02 --reporter=line,json"
+  },
+  "static_checks": [
+    {
+      "command": "pnpm exec eslint --config packages/eslint-config/base.js e2e/projects-p1-lifecycle.spec.ts e2e/projects-p1-risk.spec.ts",
+      "exit_code": 0,
+      "log": "eslint.log"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --target ESNext --module ESNext --moduleResolution Bundler --lib ESNext,DOM --esModuleInterop --strict --skipLibCheck e2e/projects-p1-lifecycle.spec.ts e2e/projects-p1-risk.spec.ts",
+      "exit_code": 0,
+      "log": "typecheck.log"
+    },
+    {
+      "command": "git diff --check -- e2e/projects-p1-lifecycle.spec.ts e2e/projects-p1-risk.spec.ts",
+      "exit_code": 0
+    }
+  ],
+  "preserved_evidence": [
+    "red-evidence.log",
+    "red-evidence-source.json",
+    "attempt-01.log",
+    "report-01.json",
+    "results-01"
+  ],
+  "alignment": [
+    "L11 uses workspace General settings, explicitly saves UTC then London and restores unconfigured Asia/Shanghai.",
+    "L12 proves invalid option absence/no UI write, real API 422 without state change, then successful valid UI save.",
+    "L13 uses an already-mounted second settings page so a real role-loss 403 preserves selected timezone, readable project and local progress draft.",
+    "L15 targets the actual publish confirmation button within the Chinese progress preview and preserves the nine-point hit test.",
+    "R01-R04 preserve UI reference_date and every risk ID/count/filter assertion; saved computation timezone is checked in actual risk/overview/planning API metadata. Browser-local calculated_at presentation is intentionally unchanged."
+  ],
+  "first_attempt_note": "5 passed, 3 failed solely because SelectTrigger text includes decorative \u25bc; the existing select-value child is now asserted exactly."
+}

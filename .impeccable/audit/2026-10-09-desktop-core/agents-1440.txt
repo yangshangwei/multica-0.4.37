@@ -1,0 +1,271 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "分拣台"
+  - button "智能体"
+  - status
+  - button "New tab"
+- banner:
+  - heading "智能体" [level=1]
+  - text: "6"
+  - paragraph:
+    - text: 能领取任务、留下评论、推进状态的 AI 队友。
+    - link "了解更多 →":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/docs/agents
+  - button "审批"
+  - button "新建智能体"
+- textbox "搜索智能体..."
+- button "我的 6" [pressed]
+- button "全部 6"
+- button "已归档 0"
+- button "更多筛选"
+- button "显示"
+- button "全部分类" [pressed]
+- button "专业角色 5"
+- button "统筹角色 1"
+- button "分类": 全部分类
+- button "AI小队": 全部小队
+- table:
+  - row "智能体 所属小队 状态 最近活跃":
+    - button:
+      - checkbox
+    - columnheader "智能体":
+      - button "智能体"
+    - columnheader "所属小队"
+    - columnheader "状态"
+    - columnheader
+    - columnheader
+    - columnheader
+    - columnheader "最近活跃":
+      - button "最近活跃"
+    - columnheader
+    - columnheader
+    - columnheader
+  - rowgroup:
+    - text: 专业角色 5
+    - row "测试工程师 测试工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 决定用什么证明改动可用，把它自动化，并用最小用例复现缺陷。 特性交付小队 在线 30 天内无活动 行操作":
+      - cell:
+        - button:
+          - checkbox
+      - cell "测试工程师 测试工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 决定用什么证明改动可用，把它自动化，并用最小用例复现缺陷。":
+        - link "测试工程师":
+          - img "测试工程师"
+        - link "测试工程师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/c899355f-62ca-4cce-a14f-312bc700bf65
+        - text: 决定用什么证明改动可用，把它自动化，并用最小用例复现缺陷。
+      - cell "特性交付小队":
+        - link "特性交付小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/df088e6a-8fd0-4cbc-b0ad-5a05983f3485
+      - cell "在线"
+      - cell
+      - cell
+      - cell
+      - cell "30 天内无活动"
+      - cell
+      - cell
+      - cell
+      - cell "行操作":
+        - button "行操作"
+    - row "产品分析师 产品分析师 个人 · 仅 owner 和其授权的人可以运行该智能体 把模糊的需求变成可判断的需求：澄清问题、验收标准、风险和拆分建议。 特性交付小队 在线 30 天内无活动 行操作":
+      - cell:
+        - button:
+          - checkbox
+      - cell "产品分析师 产品分析师 个人 · 仅 owner 和其授权的人可以运行该智能体 把模糊的需求变成可判断的需求：澄清问题、验收标准、风险和拆分建议。":
+        - link "产品分析师":
+          - img "产品分析师"
+        - link "产品分析师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/89f1e93a-7576-49cc-9bcc-6ffa0a3072b8
+        - text: 把模糊的需求变成可判断的需求：澄清问题、验收标准、风险和拆分建议。
+      - cell "特性交付小队":
+        - link "特性交付小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/df088e6a-8fd0-4cbc-b0ad-5a05983f3485
+      - cell "在线"
+      - cell
+      - cell
+      - cell
+      - cell "30 天内无活动"
+      - cell
+      - cell
+      - cell
+      - cell "行操作":
+        - button "行操作"
+    - row "代码审查员 代码审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 只读 diff，按文件、行号、严重级别报告问题，并说明每个问题会导致什么后果。 特性交付小队 在线 30 天内无活动 行操作":
+      - cell:
+        - button:
+          - checkbox
+      - cell "代码审查员 代码审查员 个人 · 仅 owner 和其授权的人可以运行该智能体 只读 diff，按文件、行号、严重级别报告问题，并说明每个问题会导致什么后果。":
+        - link "代码审查员":
+          - img "代码审查员"
+        - link "代码审查员":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/03427b65-2505-4f2b-af1d-b0e8bc261731
+        - text: 只读 diff，按文件、行号、严重级别报告问题，并说明每个问题会导致什么后果。
+      - cell "特性交付小队":
+        - link "特性交付小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/df088e6a-8fd0-4cbc-b0ad-5a05983f3485
+      - cell "在线"
+      - cell
+      - cell
+      - cell
+      - cell "30 天内无活动"
+      - cell
+      - cell
+      - cell
+      - cell "行操作":
+        - button "行操作"
+    - row "架构师 架构师 个人 · 仅 owner 和其授权的人可以运行该智能体 给出技术方案：边界、接口、数据流，以及做出选择的取舍理由。 特性交付小队 在线 30 天内无活动 行操作":
+      - cell:
+        - button:
+          - checkbox
+      - cell "架构师 架构师 个人 · 仅 owner 和其授权的人可以运行该智能体 给出技术方案：边界、接口、数据流，以及做出选择的取舍理由。":
+        - link "架构师":
+          - img "架构师"
+        - link "架构师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/460daa12-27b0-439e-8a9e-6f64a1cbcff3
+        - text: 给出技术方案：边界、接口、数据流，以及做出选择的取舍理由。
+      - cell "特性交付小队":
+        - link "特性交付小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/df088e6a-8fd0-4cbc-b0ad-5a05983f3485
+      - cell "在线"
+      - cell
+      - cell
+      - cell
+      - cell "30 天内无活动"
+      - cell
+      - cell
+      - cell
+      - cell "行操作":
+        - button "行操作"
+    - row "实现工程师 实现工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 在隔离分支上实现代码和测试，并说明改了什么、如何验证。 特性交付小队 在线 30 天内无活动 行操作":
+      - cell:
+        - button:
+          - checkbox
+      - cell "实现工程师 实现工程师 个人 · 仅 owner 和其授权的人可以运行该智能体 在隔离分支上实现代码和测试，并说明改了什么、如何验证。":
+        - link "实现工程师":
+          - img "实现工程师"
+        - link "实现工程师":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/a078d926-86d9-4a95-88a7-f31893a7abe3
+        - text: 在隔离分支上实现代码和测试，并说明改了什么、如何验证。
+      - cell "特性交付小队":
+        - link "特性交付小队":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/df088e6a-8fd0-4cbc-b0ad-5a05983f3485
+      - cell "在线"
+      - cell
+      - cell
+      - cell
+      - cell "30 天内无活动"
+      - cell
+      - cell
+      - cell
+      - cell "行操作":
+        - button "行操作"
+    - text: 统筹角色 1
+    - row "特性交付负责人 特性交付负责人 个人 · 仅 owner 和其授权的人可以运行该智能体 把一个特性按澄清、设计、实现、测试、审查的顺序逐个交给合适的成员。 特性交付小队 · 队长 在线 30 天内无活动 行操作":
+      - cell:
+        - button:
+          - checkbox
+      - cell "特性交付负责人 特性交付负责人 个人 · 仅 owner 和其授权的人可以运行该智能体 把一个特性按澄清、设计、实现、测试、审查的顺序逐个交给合适的成员。":
+        - link "特性交付负责人":
+          - img "特性交付负责人"
+        - link "特性交付负责人":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/agents/71d50e57-c332-4d58-a953-1036c2d8fcb9
+        - text: 把一个特性按澄清、设计、实现、测试、审查的顺序逐个交给合适的成员。
+      - cell "特性交付小队 · 队长":
+        - link "特性交付小队 · 队长":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/squads/df088e6a-8fd0-4cbc-b0ad-5a05983f3485
+      - cell "在线"
+      - cell
+      - cell
+      - cell
+      - cell "30 天内无活动"
+      - cell
+      - cell
+      - cell
+      - cell "行操作":
+        - button "行操作"
+- button
+- button "新对话"
+- button
+- button
+- link "特性交付负责人":
+  - img "特性交付负责人"
+- heading "与 特性交付负责人 对话" [level=3]
+- paragraph: 把一个特性按澄清、设计、实现、测试、审查的顺序逐个交给合适的成员。
+- paragraph: 让它做一份总结、规划你的一天，或交给它一个小任务。
+- button "你能帮我做什么？"
+- button "建议第一个任务"
+- button "推荐一个操作"
+- link "自定义开场建议":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/agents/71d50e57-c332-4d58-a953-1036c2d8fcb9?view=instructions&focus=conversation_starters
+- paragraph: 给 特性交付负责人 发消息…
+- button "添加"
+- button "特性交付负责人 状态：在线 特性交付负责人":
+  - link "特性交付负责人 状态：在线":
+    - img "特性交付负责人"
+  - text: 特性交付负责人
+- button "发送" [disabled]
+- button "问 Multica"
+- region "Notifications alt+T"

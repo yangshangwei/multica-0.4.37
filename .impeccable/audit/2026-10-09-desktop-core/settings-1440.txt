@@ -1,0 +1,137 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "分拣台"
+  - button "设置"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- tablist "设置":
+  - group "个人设置":
+    - heading "个人设置" [level=2]
+    - tab "个人资料" [selected]
+    - tab "偏好设置"
+    - tab "通知"
+    - tab "快捷键"
+    - tab "API Token"
+  - group "工作空间管理":
+    - heading "工作空间管理" [level=2]
+    - tab "常规"
+    - tab "成员"
+    - tab "标签"
+    - tab "分拣台"
+    - tab "迭代"
+  - group "任务配置":
+    - heading "任务配置" [level=2]
+    - tab "任务状态"
+    - tab "属性"
+    - tab "快捷操作"
+  - group "连接与扩展":
+    - heading "连接与扩展" [level=2]
+    - tab "代码仓库"
+    - tab "集成"
+    - tab "MCP"
+  - group "桌面应用":
+    - heading "桌面应用" [level=2]
+    - tab "守护进程"
+    - tab "服务器连接"
+    - tab "更新"
+- tabpanel "个人资料":
+  - banner:
+    - heading "个人资料" [level=2]
+  - heading "个人信息" [level=3]
+  - text: 头像 点击上传头像
+  - button "更换头像": 杨
+  - text: 姓名
+  - textbox "姓名": 杨尚伟
+  - text: 关于你 会随 task 一起发送给为你工作的智能体——角色、技术栈、偏好，任何你会在第一天告诉新同事的内容。
+  - textbox "关于你":
+    - /placeholder: 例如：后端工程师（Go + Postgres）。喜欢简洁的 PR，改动同时附上测试。
+  - text: 0/2000
+- button
+- button "新对话"
+- button
+- button
+- link "特性交付负责人":
+  - img "特性交付负责人"
+- heading "与 特性交付负责人 对话" [level=3]
+- paragraph: 把一个特性按澄清、设计、实现、测试、审查的顺序逐个交给合适的成员。
+- paragraph: 让它做一份总结、规划你的一天，或交给它一个小任务。
+- button "你能帮我做什么？"
+- button "建议第一个任务"
+- button "推荐一个操作"
+- link "自定义开场建议":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/agents/71d50e57-c332-4d58-a953-1036c2d8fcb9?view=instructions&focus=conversation_starters
+- paragraph: 给 特性交付负责人 发消息…
+- button "添加"
+- button "特性交付负责人 状态：在线 特性交付负责人":
+  - link "特性交付负责人 状态：在线":
+    - img "特性交付负责人"
+  - text: 特性交付负责人
+- button "发送" [disabled]
+- button "问 Multica"
+- region "Notifications alt+T"

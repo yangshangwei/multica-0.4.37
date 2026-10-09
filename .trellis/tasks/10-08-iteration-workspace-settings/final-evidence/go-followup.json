@@ -1,0 +1,34 @@
+{
+  "validation_worktree": "/Volumes/artisan/code/2026/multica-iteration-closeout-20261009",
+  "files": [
+    {
+      "path": "server/cmd/server/iteration_settings_route_test.go",
+      "before_sha256": "357f23983602d94e3bb63d8098ec081d9bb2a1acb6b8bd1bf4f58a007b9bc22f",
+      "after_sha256": "66741c5422fc22eb69f6c2d2b23af35a9c81e222a424b23813fffb0774946cea"
+    },
+    {
+      "path": "server/internal/handler/project_health_test.go",
+      "before_sha256": "47f3cac20423f30248787876d9ebae68adfaafc147c8a19dc3efa2fa571a4bc5",
+      "after_sha256": "e96b5687d6183d0cdc08e1d1cf9b6d833a93bc0b7f0bea48c1f2084f0f6b11b2"
+    }
+  ],
+  "production_code_changed": false,
+  "helpers_changed": false,
+  "source_edits_stopped": true,
+  "db_env_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/state/iteration-closeout-20261009/go-followup.env",
+  "regression_command": "bash ../scripts/go-test-with-agent-cli-guard.sh go test -race -p 1 ./cmd/server ./internal/handler -run '^(TestIterationSettingsRoutesRequireWorkspaceOptIn|TestProjectHealthRiskOverlapPaginationAndLiveContinuation)$' -count=1 -v",
+  "regression_workdir": "server",
+  "regression_exit_code": 0,
+  "tests_passed": 2,
+  "tests_skipped": 0,
+  "static_checks": {
+    "go vet ./cmd/server ./internal/handler": 0,
+    "gofmt": 0,
+    "git diff --check": 0
+  },
+  "findings": [
+    "The settings route now verifies implemented capability plus default-disabled workspace, unauthenticated 401, member reads and forbidden writes without persisted effects, and explicit owner opt-in using the returned timezone/revision.",
+    "The health fixture now pins UTC and restores the prior workspace timezone, keeping overdue=2, union=2 and the full live-pagination assertions unchanged. At the original failure timestamp Shanghai was the next day relative to UTC."
+  ],
+  "database_cleanup_owner": "main"
+}

@@ -1,0 +1,1632 @@
+<!doctype html>
+<html lang="en" data-visualize-standalone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Iteration Pages</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Iteration Pages" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Iteration Pages&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --icon-size: 16px;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --corner-shape: round;
+  --radius: var(--border-radius-lg, 10px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: var(--visualize-paint-gutter, 0px);
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--corner-shape);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  margin-block: 6px;
+  border: 0;
+  background: var(--border);
+}
+
+.nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress {
+  display: flex;
+  height: 8px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 8px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar:only-child {
+  border-radius: var(--radius-full);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.nav-link,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn,
+.nav-link {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover,
+.nav-link:not(:disabled):not([aria-disabled=&quot;true&quot;]):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.nav-pills .nav-link {
+  min-width: 0;
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.nav-justified .nav-link {
+  flex: 1 1 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.nav-pills .nav-link.active {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.btn:disabled,
+.nav-link:disabled,
+.nav-link[aria-disabled=&quot;true&quot;] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: var(--corner-shape);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .nav-link,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keep small-screen WebKit from zooming when a text field receives focus. */
+  .form-control,
+  .form-select {
+    font-size: max(16px, var(--font-size-normal));
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    height: 44px;
+  }
+
+  .form-range::-moz-range-track {
+    height: 44px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    margin-top: 12px;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: var(--icon-size) !important;
+  height: var(--icon-size) !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;style&gt;
+#iteration-pages-preview { --ip-bg:light-dark(#fbfbfc,#171719); --ip-panel:light-dark(#ffffff,#202024); --ip-text:light-dark(#18181b,#f2f2f5); --ip-muted:light-dark(#777780,#a1a1ab); --ip-line:light-dark(#e9e9ed,#333339); --ip-hover:light-dark(#f3f3f6,#29292e); --ip-violet:light-dark(#6866dc,#9996ff); --ip-violet-soft:light-dark(#f0effd,#2b2945); --ip-scope:light-dark(#8b8b98,#a7a7b3); --ip-original:light-dark(#b8b8c2,#686872); --ip-amber:light-dark(#b88015,#e8b75d); --ip-danger:light-dark(#b42318,#f2a49e); color:var(--ip-text); font:14px/1.55 -apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;PingFang SC&quot;,&quot;Microsoft Yahei&quot;,sans-serif; }
+#iteration-pages-preview * { box-sizing:border-box; }
+#iteration-pages-preview [hidden] { display:none!important; }
+#iteration-pages-preview button,#iteration-pages-preview input,#iteration-pages-preview select,#iteration-pages-preview textarea { font:inherit; }
+#iteration-pages-preview button { cursor:pointer; color:inherit; }
+#iteration-pages-preview button:disabled { cursor:not-allowed; opacity:.45; }
+#iteration-pages-preview .ip-demo { color:var(--ip-muted); font-size:12px; margin:0 0 10px; }
+#iteration-pages-preview .ip-window { background:var(--ip-bg); border:1px solid var(--ip-line); border-radius:10px; overflow:hidden; min-height:700px; }
+#iteration-pages-preview .ip-toolbar { display:flex; min-height:56px; padding:10px 24px; align-items:center; justify-content:space-between; gap:14px; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-breadcrumb { display:flex; align-items:center; gap:10px; min-width:0; }
+#iteration-pages-preview .ip-breadcrumb strong { font-weight:600; white-space:nowrap; }
+#iteration-pages-preview .ip-breadcrumb button { background:none; border:0; padding:3px 0; color:var(--ip-muted); }
+#iteration-pages-preview .ip-slash { color:var(--ip-muted); }
+#iteration-pages-preview .ip-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+#iteration-pages-preview .ip-button { border:1px solid var(--ip-line); border-radius:7px; background:var(--ip-panel); padding:7px 12px; display:inline-flex; align-items:center; gap:7px; white-space:nowrap; font-size:13px; font-weight:500; }
+#iteration-pages-preview .ip-button.ip-primary { background:var(--ip-text); color:var(--ip-bg); border-color:var(--ip-text); }
+#iteration-pages-preview .ip-button.ip-quiet { background:transparent; border-color:transparent; color:var(--ip-muted); }
+#iteration-pages-preview .ip-button:hover { filter:brightness(.96); }
+#iteration-pages-preview i,#iteration-pages-preview svg[data-lucide] { width:16px; height:16px; flex-shrink:0; }
+#iteration-pages-preview .ip-segmentbar { display:flex; align-items:center; justify-content:space-between; padding:0 26px; border-bottom:1px solid var(--ip-line); min-height:48px; gap:12px; }
+#iteration-pages-preview .ip-tabs { display:flex; gap:24px; }
+#iteration-pages-preview .ip-tab { border:0; background:none; border-bottom:2px solid transparent; padding:14px 0 12px; color:var(--ip-muted); font-size:13px; }
+#iteration-pages-preview .ip-tab[aria-selected=&quot;true&quot;] { color:var(--ip-text); font-weight:600; border-color:var(--ip-text); }
+#iteration-pages-preview .ip-small { color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-filter { display:flex; gap:12px; align-items:center; padding:14px 26px; border-bottom:1px solid var(--ip-line); flex-wrap:wrap; }
+#iteration-pages-preview input,#iteration-pages-preview select,#iteration-pages-preview textarea { border:1px solid var(--ip-line); background:var(--ip-panel); color:var(--ip-text); padding:9px 11px; border-radius:7px; min-width:0; }
+#iteration-pages-preview .ip-filter input { width:210px; }
+#iteration-pages-preview .ip-timeline { padding:24px 30px 40px 28px; }
+#iteration-pages-preview .ip-period { display:grid; grid-template-columns:70px 1fr; position:relative; }
+#iteration-pages-preview .ip-date { color:var(--ip-muted); font-size:12px; text-align:right; padding:25px 24px 0 0; position:relative; }
+#iteration-pages-preview .ip-date::after { content:&quot;&quot;; position:absolute; right:-4px; top:30px; width:8px; height:8px; border:2px solid var(--ip-original); background:var(--ip-bg); border-radius:50%; z-index:1; }
+#iteration-pages-preview .ip-period-body { border-left:1px solid var(--ip-line); padding-left:26px; min-width:0; }
+#iteration-pages-preview .ip-period.ip-current .ip-period-body { border-left:1px solid var(--ip-violet); }
+#iteration-pages-preview .ip-period.ip-current .ip-date::after { background:var(--ip-violet); border-color:var(--ip-violet); }
+#iteration-pages-preview .ip-period-head { min-height:94px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:15px 0; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-period-name { padding:0; border:0; background:none; display:flex; gap:12px; align-items:center; text-align:left; }
+#iteration-pages-preview .ip-period-name:hover .ip-name { text-decoration:underline; text-underline-offset:4px; }
+#iteration-pages-preview .ip-name { display:block; font-size:16px; font-weight:600; }
+#iteration-pages-preview .ip-subline { display:block; font-size:12px; color:var(--ip-muted); margin-top:3px; }
+#iteration-pages-preview .ip-state-icon { width:23px; height:23px; border:1.5px solid var(--ip-scope); display:inline-flex; align-items:center; justify-content:center; border-radius:50%; flex-shrink:0; color:var(--ip-muted); }
+#iteration-pages-preview .ip-state-icon svg { width:12px; height:12px; }
+#iteration-pages-preview .ip-state-icon.ip-dashed { border-style:dashed; }
+#iteration-pages-preview .ip-current .ip-state-icon { color:var(--ip-violet); border-color:var(--ip-violet); }
+#iteration-pages-preview .ip-period-meta { display:flex; align-items:center; gap:22px; white-space:nowrap; font-size:13px; }
+#iteration-pages-preview .ip-badge { display:inline-flex; align-items:center; padding:3px 9px; background:var(--ip-hover); border-radius:99px; font-size:12px; font-weight:500; white-space:nowrap; }
+#iteration-pages-preview .ip-badge.ip-live { background:var(--ip-violet-soft); color:var(--ip-violet); }
+#iteration-pages-preview .ip-gap { display:grid; grid-template-columns:70px 1fr; }
+#iteration-pages-preview .ip-gap-body { border-left:1px solid var(--ip-line); padding:16px 0 16px 28px; color:var(--ip-muted); font-size:12px; display:flex; gap:9px; align-items:center; }
+#iteration-pages-preview .ip-gap-body span:last-child { margin-left:3px; opacity:.8; }
+#iteration-pages-preview .ip-current .ip-period-head { border-bottom:0; padding-top:20px; }
+#iteration-pages-preview .ip-chart-layout { display:grid; grid-template-columns:minmax(0,1fr) 140px; gap:28px; align-items:center; padding:8px 0 8px; }
+#iteration-pages-preview .ip-plot { min-width:0; }
+#iteration-pages-preview .ip-chart { width:100%; height:235px; display:block; overflow:visible; }
+#iteration-pages-preview .ip-chart text { fill:var(--ip-muted); font-family:inherit; font-size:11px; }
+#iteration-pages-preview .ip-legend { display:flex; flex-direction:column; gap:14px; font-size:12px; }
+#iteration-pages-preview .ip-legend-row { display:flex; align-items:center; gap:8px; }
+#iteration-pages-preview .ip-legend-row strong { margin-left:auto; font-size:14px; font-weight:500; }
+#iteration-pages-preview .ip-swatch { width:9px; height:9px; border-radius:2px; background:var(--ip-scope); flex-shrink:0; }
+#iteration-pages-preview .ip-swatch.ip-done { background:var(--ip-violet); }
+#iteration-pages-preview .ip-swatch.ip-base { background:var(--ip-original); }
+#iteration-pages-preview .ip-rate { color:var(--ip-muted); font-size:12px; padding-left:17px; margin-top:-8px; }
+#iteration-pages-preview .ip-chart-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding:7px 0 18px; color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-textlink { background:transparent; border:0; padding:0; color:var(--ip-muted); text-decoration:underline; text-underline-offset:3px; font-size:12px; }
+#iteration-pages-preview .ip-empty-list { padding:90px 22px; text-align:center; color:var(--ip-muted); }
+#iteration-pages-preview .ip-detail-top { padding:28px 34px 0; }
+#iteration-pages-preview h2 { margin:0; font-size:26px; line-height:1.3; letter-spacing:-.025em; font-weight:600; color:var(--ip-text); }
+#iteration-pages-preview h3 { margin:0; font-size:15px; font-weight:600; color:var(--ip-text); }
+#iteration-pages-preview p { margin:0; }
+#iteration-pages-preview .ip-title-line { display:flex; align-items:center; gap:12px; }
+#iteration-pages-preview .ip-summary { color:var(--ip-muted); margin-top:9px; }
+#iteration-pages-preview .ip-detail-meta { display:flex; flex-wrap:wrap; gap:10px 20px; color:var(--ip-muted); font-size:12px; margin-top:15px; }
+#iteration-pages-preview .ip-detail-meta span { display:inline-flex; align-items:center; gap:6px; }
+#iteration-pages-preview .ip-stats { display:flex; gap:30px; flex-wrap:wrap; margin-top:27px; padding-bottom:24px; }
+#iteration-pages-preview .ip-stat { min-width:70px; }
+#iteration-pages-preview .ip-stat dt { color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-stat dd { margin:5px 0 0; font-size:23px; font-weight:500; line-height:1.3; font-variant-numeric:tabular-nums; }
+#iteration-pages-preview .ip-detail-tabs { margin:0 34px; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-count { margin-left:6px; color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-detail-content { padding:22px 34px 34px; min-height:365px; }
+#iteration-pages-preview .ip-group-head { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; padding:10px 0; }
+#iteration-pages-preview .ip-group-head.ip-done-color { color:var(--ip-violet); }
+#iteration-pages-preview .ip-task { display:grid; grid-template-columns:20px 70px minmax(0,1fr) 112px 52px; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--ip-line); font-size:13px; }
+#iteration-pages-preview .ip-task svg { color:var(--ip-muted); width:15px; }
+#iteration-pages-preview .ip-task .ip-done-icon { color:var(--ip-violet); }
+#iteration-pages-preview .ip-task-id { color:var(--ip-muted); font-size:11px; }
+#iteration-pages-preview .ip-task-title { border:0; padding:0; background:none; text-align:left; overflow-wrap:anywhere; }
+#iteration-pages-preview .ip-project { color:var(--ip-muted); font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#iteration-pages-preview .ip-assignee { color:var(--ip-muted); font-size:11px; display:flex; align-items:center; gap:4px; }
+#iteration-pages-preview .ip-avatar { width:21px; height:21px; background:var(--ip-hover); border-radius:50%; display:grid; place-items:center; font-size:10px; }
+#iteration-pages-preview .ip-empty { min-height:495px; padding:60px 70px; display:flex; align-items:center; }
+#iteration-pages-preview .ip-empty-inner { max-width:590px; }
+#iteration-pages-preview .ip-empty-icon { width:48px; height:48px; border:3px dotted var(--ip-original); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--ip-original); margin-bottom:28px; }
+#iteration-pages-preview .ip-empty-icon svg { width:22px; height:22px; }
+#iteration-pages-preview .ip-empty p { color:var(--ip-muted); margin-top:17px; font-size:15px; line-height:1.9; }
+#iteration-pages-preview .ip-empty .ip-actions { margin-top:26px; }
+#iteration-pages-preview .ip-empty-foot { font-size:12px!important; margin-top:18px!important; }
+#iteration-pages-preview .ip-snapshot { background:var(--ip-hover); border-radius:6px; padding:11px 14px; margin-top:20px; color:var(--ip-muted); font-size:12px; display:flex; align-items:center; gap:8px; }
+#iteration-pages-preview .ip-event { display:grid; grid-template-columns:86px 1fr; gap:18px; padding:17px 0; border-bottom:1px solid var(--ip-line); font-size:13px; }
+#iteration-pages-preview .ip-event time { color:var(--ip-muted); font-size:12px; }
+#iteration-pages-preview .ip-event p { color:var(--ip-muted); font-size:12px; margin-top:5px; }
+#iteration-pages-preview details { margin-top:18px; font-size:12px; color:var(--ip-muted); }
+#iteration-pages-preview summary { cursor:pointer; }
+#iteration-pages-preview .ip-data { width:100%; border-collapse:collapse; margin-top:12px; font-size:12px; }
+#iteration-pages-preview .ip-data th,#iteration-pages-preview .ip-data td { padding:8px; text-align:left; border-bottom:1px solid var(--ip-line); }
+#iteration-pages-preview .ip-feedback { font-size:12px; padding:10px 26px; color:var(--ip-muted); border-bottom:1px solid var(--ip-line); background:var(--ip-hover); }
+#iteration-pages-preview dialog { width:510px; max-width:calc(100% - 24px); max-height:90%; padding:26px; border:1px solid var(--ip-line); border-radius:12px; color:var(--ip-text); background:var(--ip-panel); box-shadow:0 18px 65px #0002; }
+#iteration-pages-preview dialog::backdrop { background:#0005; }
+#iteration-pages-preview dialog h2 { font-size:20px; }
+#iteration-pages-preview .ip-form { display:grid; gap:16px; margin-top:22px; }
+#iteration-pages-preview .ip-form label { display:grid; gap:6px; font-size:13px; }
+#iteration-pages-preview .ip-form textarea { min-height:75px; resize:vertical; }
+#iteration-pages-preview .ip-dialog-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:22px; }
+#iteration-pages-preview .ip-select-task { display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--ip-line); align-items:center; font-size:13px; }
+#iteration-pages-preview .ip-select-task input { accent-color:var(--ip-violet); }
+#iteration-pages-preview .ip-dialog-description { color:var(--ip-muted); font-size:13px; margin-top:10px; line-height:1.8; }
+@media(max-width:760px){#iteration-pages-preview .ip-period-meta { gap:10px; } #iteration-pages-preview .ip-chart-layout { gap:15px; grid-template-columns:minmax(0,1fr) 120px; } #iteration-pages-preview .ip-detail-top,#iteration-pages-preview .ip-detail-content { padding-left:24px; padding-right:24px; } #iteration-pages-preview .ip-detail-tabs { margin:0 24px; } #iteration-pages-preview .ip-task { grid-template-columns:18px 60px minmax(0,1fr) 45px; } #iteration-pages-preview .ip-project { display:none; } }
+@media(max-width:540px){#iteration-pages-preview .ip-window{min-height:650px;} #iteration-pages-preview .ip-toolbar { padding:10px 15px; flex-wrap:wrap; } #iteration-pages-preview .ip-toolbar&gt;.ip-actions { margin-left:auto; } #iteration-pages-preview .ip-segmentbar { padding:0 16px; } #iteration-pages-preview .ip-segmentbar&gt;.ip-small { display:none; } #iteration-pages-preview .ip-timeline { padding:10px 16px 26px 10px; } #iteration-pages-preview .ip-period,#iteration-pages-preview .ip-gap { grid-template-columns:42px 1fr; } #iteration-pages-preview .ip-date { padding-right:13px; font-size:10px; } #iteration-pages-preview .ip-period-body { padding-left:17px; } #iteration-pages-preview .ip-gap-body { padding-left:17px; font-size:11px; flex-wrap:wrap; gap:5px; } #iteration-pages-preview .ip-gap-body span:last-child { display:none; } #iteration-pages-preview .ip-period-head { align-items:flex-start; min-height:100px; padding:21px 0 17px; flex-wrap:wrap; gap:9px; } #iteration-pages-preview .ip-period-meta { margin-left:35px; } #iteration-pages-preview .ip-name { font-size:15px; } #iteration-pages-preview .ip-subline { font-size:11px; } #iteration-pages-preview .ip-chart-layout { display:flex; flex-direction:column; gap:10px; align-items:stretch; } #iteration-pages-preview .ip-chart { height:210px; } #iteration-pages-preview .ip-legend { flex-direction:row; flex-wrap:wrap; gap:12px; } #iteration-pages-preview .ip-legend-row { gap:5px; font-size:11px; } #iteration-pages-preview .ip-legend-row strong { margin-left:2px; font-size:12px; } #iteration-pages-preview .ip-rate { padding-left:0; margin-top:0; } #iteration-pages-preview .ip-chart-foot { margin-top:10px; line-height:1.8; } #iteration-pages-preview .ip-chart-foot .ip-button { width:100%; justify-content:center; } #iteration-pages-preview .ip-empty { min-height:435px; padding:45px 25px; } #iteration-pages-preview .ip-empty p { font-size:14px; } #iteration-pages-preview .ip-empty .ip-actions { align-items:stretch; flex-direction:column; } #iteration-pages-preview .ip-empty .ip-button { justify-content:center; } #iteration-pages-preview .ip-empty-icon { margin-bottom:24px; } #iteration-pages-preview h2 { font-size:23px; } #iteration-pages-preview .ip-stats { gap:17px; } #iteration-pages-preview .ip-stat { min-width:60px; } #iteration-pages-preview .ip-stat dd { font-size:20px; } #iteration-pages-preview .ip-task { grid-template-columns:16px 55px minmax(0,1fr); gap:6px; } #iteration-pages-preview .ip-assignee { display:none; } #iteration-pages-preview .ip-detail-top,#iteration-pages-preview .ip-detail-content { padding-left:20px; padding-right:20px; } #iteration-pages-preview .ip-detail-tabs { margin:0 20px; } #iteration-pages-preview .ip-event { grid-template-columns:58px 1fr; gap:10px; } #iteration-pages-preview .ip-filter { padding:12px 16px; } #iteration-pages-preview input,#iteration-pages-preview select,#iteration-pages-preview textarea { font-size:16px; } }
+&lt;/style&gt;
+&lt;div id=&quot;iteration-pages-preview&quot; aria-label=&quot;迭代总览与详情设计&quot;&gt;
+&lt;div class=&quot;ip-demo&quot;&gt;交互预览 · 示例数据，日期为 2026 年 10 月 12 日&lt;/div&gt;
+&lt;div class=&quot;ip-window&quot;&gt;
+&lt;header class=&quot;ip-toolbar&quot;&gt;&lt;div class=&quot;ip-breadcrumb&quot; id=&quot;ip-breadcrumb&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ip-actions&quot; id=&quot;ip-toolbar-actions&quot;&gt;&lt;/div&gt;&lt;/header&gt;
+&lt;div id=&quot;ip-feedback&quot; class=&quot;ip-feedback&quot; role=&quot;status&quot; hidden&gt;&lt;/div&gt;
+&lt;div id=&quot;ip-page&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;dialog id=&quot;ip-dialog&quot; aria-labelledby=&quot;ip-dialog-title&quot;&gt;&lt;h2 id=&quot;ip-dialog-title&quot;&gt;&lt;/h2&gt;&lt;div id=&quot;ip-dialog-body&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ip-dialog-actions&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;ip-button&quot; id=&quot;ip-dialog-cancel&quot;&gt;取消&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;ip-button ip-primary&quot; id=&quot;ip-dialog-confirm&quot;&gt;确认&lt;/button&gt;&lt;/div&gt;&lt;/dialog&gt;
+&lt;/div&gt;
+&lt;script&gt;
+(() =&gt; {
+const root=document.getElementById(&#x27;iteration-pages-preview&#x27;);
+const $=id=&gt;root.querySelector(&#x27;#&#x27;+id);
+const icon=name=&gt;`&lt;i data-lucide=&quot;${name}&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;`;
+const esc=s=&gt;String(s).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,c=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#39;&#x27;}[c]));
+const periods=[
+{id:&#x27;p3&#x27;,name:&#x27;迭代 3&#x27;,start:&#x27;2026-11-30&#x27;,end:&#x27;2026-12-13&#x27;,status:&#x27;planned&#x27;,description:&#x27;打磨体验，整理年底交付。&#x27;,tasks:[]},
+{id:&#x27;p2&#x27;,name:&#x27;迭代 2&#x27;,start:&#x27;2026-11-02&#x27;,end:&#x27;2026-11-15&#x27;,status:&#x27;planned&#x27;,description:&#x27;&#x27;,tasks:[]},
+{id:&#x27;p1&#x27;,name:&#x27;迭代 1&#x27;,start:&#x27;2026-10-05&#x27;,end:&#x27;2026-10-18&#x27;,status:&#x27;active&#x27;,description:&#x27;完善团队交付流程，让任务安排与迭代复盘更清楚。&#x27;,tasks:[]},
+{id:&#x27;h1&#x27;,name:&#x27;九月第二期&#x27;,start:&#x27;2026-09-21&#x27;,end:&#x27;2026-10-04&#x27;,status:&#x27;completed&#x27;,description:&#x27;完成基础协作体验的第一轮改进。&#x27;,tasks:[]}
+];
+const taskNames=[&#x27;支持批量安排任务到迭代&#x27;,&#x27;完善项目概览的进展说明&#x27;,&#x27;修复任务列表筛选状态&#x27;,&#x27;调整成员邀请流程&#x27;,&#x27;统一任务详情日期展示&#x27;,&#x27;补齐迭代相关通知&#x27;,&#x27;优化任务描述编辑体验&#x27;,&#x27;增加工作空间时区选择&#x27;,&#x27;迭代结束预览与未完成任务结转&#x27;,&#x27;补充迭代范围变化记录&#x27;,&#x27;适配桌面端迭代导航&#x27;,&#x27;完善异常状态与恢复提示&#x27;,&#x27;验证窗口缩放和深色模式&#x27;,&#x27;调整首页快捷入口&#x27;];
+periods[2].tasks=taskNames.map((name,i)=&gt;({id:&#x27;MUL-&#x27;+(121+i),name,status:i&lt;8?&#x27;done&#x27;:i&lt;11?&#x27;active&#x27;:i&lt;13?&#x27;todo&#x27;:&#x27;cancelled&#x27;,project:i%3===0?&#x27;团队协作&#x27;:&#x27;迭代管理&#x27;,person:i%2===0?&#x27;林然&#x27;:&#x27;小周&#x27;}));
+periods[3].tasks=taskNames.slice(0,11).map((name,i)=&gt;({id:&#x27;MUL-&#x27;+(101+i),name,status:i&lt;9?&#x27;done&#x27;:&#x27;todo&#x27;,project:&#x27;团队协作&#x27;,person:&#x27;林然&#x27;}));
+let page=&#x27;overview&#x27;,selectedId=&#x27;p1&#x27;,detailTab=&#x27;tasks&#x27;,listTab=&#x27;open&#x27;,query=&#x27;&#x27;,statusFilter=&#x27;&#x27;,filterOpen=false;
+let dialogAction=null,observer=null;
+const demo={page:&#x27;overview&#x27;};
+const labelStatus=s=&gt;({planned:&#x27;已计划&#x27;,active:&#x27;进行中&#x27;,completed:&#x27;已结束&#x27;,cancelled:&#x27;已取消&#x27;}[s]||&#x27;未知状态&#x27;);
+const shortDate=s=&gt;{const a=s.split(&#x27;-&#x27;);return Number(a[1])+&#x27;月&#x27;+Number(a[2])+&#x27;日&#x27;};
+const dateSpan=p=&gt;shortDate(p.start)+&#x27; — &#x27;+shortDate(p.end);
+const current=()=&gt;periods.find(p=&gt;p.status===&#x27;active&#x27;);
+const chosen=()=&gt;periods.find(p=&gt;p.id===selectedId)||periods[2];
+const countStats=p=&gt;p.id===&#x27;p1&#x27;?{original:12,current:p.tasks.length,effective:p.tasks.filter(t=&gt;t.status!==&#x27;cancelled&#x27;).length,completed:p.tasks.filter(t=&gt;t.status===&#x27;done&#x27;).length,remaining:p.tasks.filter(t=&gt;![&#x27;done&#x27;,&#x27;cancelled&#x27;].includes(t.status)).length,originalDone:7,cancelled:p.tasks.filter(t=&gt;t.status===&#x27;cancelled&#x27;).length}:p.id===&#x27;h1&#x27;?{original:10,current:11,effective:11,completed:9,remaining:2,originalDone:9,cancelled:0}:{original:p.status===&#x27;planned&#x27;?null:p.tasks.length,current:p.tasks.length,effective:p.tasks.filter(t=&gt;t.status!==&#x27;cancelled&#x27;).length,completed:p.tasks.filter(t=&gt;t.status===&#x27;done&#x27;).length,remaining:p.tasks.filter(t=&gt;![&#x27;done&#x27;,&#x27;cancelled&#x27;].includes(t.status)).length,originalDone:0,cancelled:0};
+const series=p=&gt;p.id===&#x27;h1&#x27;?{effective:[10,10,10,10,11,11,11,11,11,11,11,11,11,11],done:[0,1,1,2,3,3,4,5,5,6,7,7,8,9],original:10}:{effective:[12,12,12,14,14,13,13,countStats(p).effective],done:[0,1,3,3,4,6,7,countStats(p).completed],original:12};
+function chartMarkup(p){const s=countStats(p);return `&lt;div class=&quot;ip-chart-layout&quot;&gt;&lt;div class=&quot;ip-plot&quot;&gt;&lt;svg class=&quot;ip-chart&quot; data-chart-period=&quot;${p.id}&quot; role=&quot;img&quot; aria-label=&quot;按任务数统计的有效范围与完成趋势，原始承诺以虚线表示&quot;&gt;&lt;/svg&gt;&lt;/div&gt;&lt;div class=&quot;ip-legend&quot;&gt;&lt;div class=&quot;ip-legend-row&quot;&gt;&lt;span class=&quot;ip-swatch&quot;&gt;&lt;/span&gt;有效范围&lt;strong&gt;${s.effective} 条&lt;/strong&gt;&lt;/div&gt;&lt;div class=&quot;ip-legend-row&quot;&gt;&lt;span class=&quot;ip-swatch ip-done&quot;&gt;&lt;/span&gt;已完成&lt;strong&gt;${s.completed} 条&lt;/strong&gt;&lt;/div&gt;&lt;div class=&quot;ip-rate&quot;&gt;完成率 ${s.effective?(s.completed/s.effective*100).toFixed(1)+&#x27;%&#x27;:&#x27;不适用&#x27;}&lt;/div&gt;&lt;div class=&quot;ip-legend-row&quot;&gt;&lt;span class=&quot;ip-swatch ip-base&quot;&gt;&lt;/span&gt;原始承诺&lt;strong&gt;${s.original} 条&lt;/strong&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;`;}
+function drawCharts(){
+root.querySelectorAll(&#x27;svg[data-chart-period]&#x27;).forEach(svg=&gt;{
+ const p=periods.find(p=&gt;p.id===svg.dataset.chartPeriod);if(!p)return;
+ const values=series(p),w=Math.max(svg.getBoundingClientRect().width,180),h=svg.getBoundingClientRect().height||235;
+ const totalDays=[&#x27;completed&#x27;,&#x27;cancelled&#x27;].includes(p.status)?values.effective.length-1:13;
+ const left=28,right=8,top=27,bottom=29,plotW=w-left-right,plotH=h-top-bottom,max=Math.max(16,...values.effective);
+ const x=i=&gt;left+i/totalDays*plotW,y=v=&gt;top+plotH-v/max*plotH;
+ const points=arr=&gt;arr.map((v,i)=&gt;`${x(i)},${y(v)}`).join(&#x27; &#x27;);
+ const id=&#x27;ip-hatch-&#x27;+p.id+&#x27;-&#x27;+(page===&#x27;overview&#x27;?&#x27;overview&#x27;:detailTab);
+ const endKnown=values.effective.length-1,nowX=x(endKnown);
+ svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${w} ${h}`);
+ const dateAt=i=&gt;{const [yr,mo,day]=p.start.split(&#x27;-&#x27;).map(Number);const d=new Date(Date.UTC(yr,mo-1,day+i));return(d.getUTCMonth()+1)+&#x27;月&#x27;+d.getUTCDate()+&#x27;日&#x27;};
+ svg.innerHTML=`&lt;defs&gt;&lt;pattern id=&quot;${id}&quot; width=&quot;8&quot; height=&quot;8&quot; patternUnits=&quot;userSpaceOnUse&quot;&gt;&lt;path d=&quot;M0 8 L8 0&quot; stroke=&quot;var(--ip-line)&quot; stroke-width=&quot;1&quot;/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;text x=&quot;0&quot; y=&quot;12&quot;&gt;任务数&lt;/text&gt;${endKnown&lt;totalDays?`&lt;rect x=&quot;${nowX}&quot; y=&quot;${top}&quot; width=&quot;${x(totalDays)-nowX}&quot; height=&quot;${plotH}&quot; fill=&quot;url(#${id})&quot;/&gt;&lt;text x=&quot;${nowX+(x(totalDays)-nowX)/2}&quot; y=&quot;${top+16}&quot; text-anchor=&quot;middle&quot;&gt;尚未发生&lt;/text&gt;`:&#x27;&#x27;}${[0,8,16].map(n=&gt;`&lt;line x1=&quot;${left}&quot; x2=&quot;${w-right}&quot; y1=&quot;${y(n)}&quot; y2=&quot;${y(n)}&quot; stroke=&quot;var(--ip-line)&quot; stroke-width=&quot;1&quot;/&gt;&lt;text x=&quot;${left-8}&quot; y=&quot;${y(n)+4}&quot; text-anchor=&quot;end&quot;&gt;${n}&lt;/text&gt;`).join(&#x27;&#x27;)}&lt;line x1=&quot;${x(0)}&quot; x2=&quot;${x(totalDays)}&quot; y1=&quot;${y(values.original)}&quot; y2=&quot;${y(values.original)}&quot; stroke=&quot;var(--ip-original)&quot; stroke-width=&quot;1.5&quot; stroke-dasharray=&quot;4 4&quot;/&gt;&lt;polyline points=&quot;${points(values.effective)}&quot; fill=&quot;none&quot; stroke=&quot;var(--ip-scope)&quot; stroke-width=&quot;2&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;polyline points=&quot;${points(values.done)}&quot; fill=&quot;none&quot; stroke=&quot;var(--ip-violet)&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;${endKnown&lt;totalDays?`&lt;line x1=&quot;${nowX}&quot; x2=&quot;${nowX}&quot; y1=&quot;${top}&quot; y2=&quot;${y(0)}&quot; stroke=&quot;var(--ip-original)&quot; stroke-width=&quot;1&quot;/&gt;`:&#x27;&#x27;}&lt;circle cx=&quot;${nowX}&quot; cy=&quot;${y(values.done[endKnown])}&quot; r=&quot;3.5&quot; fill=&quot;var(--ip-violet)&quot; stroke=&quot;var(--ip-bg)&quot; stroke-width=&quot;2&quot;/&gt;${[0,Math.round(totalDays/2),totalDays].map((d,i)=&gt;`&lt;text x=&quot;${x(d)}&quot; y=&quot;${h-7}&quot; text-anchor=&quot;${i===0?&#x27;start&#x27;:i===2?&#x27;end&#x27;:&#x27;middle&#x27;}&quot;&gt;${dateAt(d)}&lt;/text&gt;`).join(&#x27;&#x27;)}`;
+});}
+function bindCharts(){if(observer)observer.disconnect();drawCharts();observer=new ResizeObserver(drawCharts);root.querySelectorAll(&#x27;.ip-plot&#x27;).forEach(el=&gt;observer.observe(el));}
+function refreshIcons(){if(globalThis.lucide)lucide.createIcons({attrs:{width:16,height:16}});}
+function showPeriod(id){selectedId=id;page=&#x27;detail&#x27;;detailTab=&#x27;tasks&#x27;;render();}
+function showFeedback(message){$(&#x27;ip-feedback&#x27;).textContent=message;$(&#x27;ip-feedback&#x27;).hidden=false;}
+function overview(){
+const upcoming=periods.filter(p=&gt;p.status===&#x27;planned&#x27;).sort((a,b)=&gt;a.start.localeCompare(b.start))[0]?.id;
+const all=periods.filter(p=&gt;listTab===&#x27;open&#x27;?[&#x27;planned&#x27;,&#x27;active&#x27;].includes(p.status):[&#x27;completed&#x27;,&#x27;cancelled&#x27;].includes(p.status)).sort((a,b)=&gt;b.start.localeCompare(a.start));
+const shown=all.filter(p=&gt;(!query||p.name.includes(query))&amp;&amp;(!statusFilter||p.status===statusFilter));
+let rows=&#x27;&#x27;;
+shown.forEach((p,i)=&gt;{
+const next=shown[i+1];const isCurrent=p.status===&#x27;active&#x27;;
+rows+=`&lt;article class=&quot;ip-period ${isCurrent?&#x27;ip-current&#x27;:&#x27;&#x27;}&quot;&gt;&lt;div class=&quot;ip-date&quot;&gt;${shortDate(p.start).replace(&#x27;月&#x27;,&#x27;月&lt;br&gt;&#x27;)}&lt;/div&gt;&lt;div class=&quot;ip-period-body&quot;&gt;&lt;div class=&quot;ip-period-head&quot;&gt;&lt;button class=&quot;ip-period-name&quot; type=&quot;button&quot; data-period=&quot;${p.id}&quot;&gt;&lt;span class=&quot;ip-state-icon ${p.status===&#x27;planned&#x27;?&#x27;ip-dashed&#x27;:&#x27;&#x27;}&quot;&gt;${icon(p.status===&#x27;completed&#x27;?&#x27;check&#x27;:&#x27;play&#x27;)}&lt;/span&gt;&lt;span&gt;&lt;span class=&quot;ip-name&quot;&gt;${esc(p.name)}&lt;/span&gt;&lt;span class=&quot;ip-subline&quot;&gt;${dateSpan(p)}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;&lt;div class=&quot;ip-period-meta&quot;&gt;&lt;span class=&quot;ip-badge ${isCurrent?&#x27;ip-live&#x27;:&#x27;&#x27;}&quot;&gt;${isCurrent?&#x27;当前&#x27;:p.id===upcoming?&#x27;即将开始&#x27;:labelStatus(p.status)}&lt;/span&gt;${isCurrent?`&lt;span class=&quot;ip-small&quot;&gt;当前范围 ${countStats(p).current} 条&lt;/span&gt;`:&#x27;&#x27;}&lt;/div&gt;&lt;/div&gt;${isCurrent?`${chartMarkup(p)}&lt;div class=&quot;ip-chart-foot&quot;&gt;&lt;span&gt;含 ${countStats(p).cancelled} 条已取消任务，有效范围不计取消任务&lt;/span&gt;&lt;button type=&quot;button&quot; class=&quot;ip-button ip-quiet&quot; data-period=&quot;${p.id}&quot;&gt;查看迭代 ${icon(&#x27;arrow-right&#x27;)}&lt;/button&gt;&lt;/div&gt;`:&#x27;&#x27;}&lt;/div&gt;&lt;/article&gt;`;
+if(next&amp;&amp;!query&amp;&amp;!statusFilter&amp;&amp;listTab===&#x27;open&#x27;){
+ const days=Math.round((Date.parse(p.start+&#x27;T00:00:00Z&#x27;)-Date.parse(next.end+&#x27;T00:00:00Z&#x27;))/86400000)-1;
+ if(days&gt;0)rows+=`&lt;div class=&quot;ip-gap&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;div class=&quot;ip-gap-body&quot;&gt;${icon(&#x27;pause-circle&#x27;)}&lt;span&gt;${days} 天未安排迭代&lt;/span&gt;&lt;span&gt;日期之间的空档&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;`;
+}
+});
+return `&lt;div class=&quot;ip-segmentbar&quot;&gt;&lt;div class=&quot;ip-tabs&quot; role=&quot;tablist&quot; aria-label=&quot;迭代分组&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;ip-tab&quot; role=&quot;tab&quot; aria-selected=&quot;${listTab===&#x27;open&#x27;}&quot; data-list=&quot;open&quot;&gt;当前与计划&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;ip-tab&quot; role=&quot;tab&quot; aria-selected=&quot;${listTab===&#x27;history&#x27;}&quot; data-list=&quot;history&quot;&gt;历史迭代&lt;/button&gt;&lt;/div&gt;&lt;span class=&quot;ip-small&quot;&gt;按各迭代保存的日期展示&lt;/span&gt;&lt;/div&gt;${filterOpen?`&lt;div class=&quot;ip-filter&quot;&gt;&lt;input id=&quot;ip-search&quot; aria-label=&quot;搜索迭代&quot; placeholder=&quot;搜索迭代名称&quot; value=&quot;${esc(query)}&quot;&gt;&lt;select id=&quot;ip-status-filter&quot; aria-label=&quot;筛选状态&quot;&gt;&lt;option value=&quot;&quot;&gt;全部状态&lt;/option&gt;${[&#x27;planned&#x27;,&#x27;active&#x27;,&#x27;completed&#x27;,&#x27;cancelled&#x27;].map(s=&gt;`&lt;option value=&quot;${s}&quot; ${statusFilter===s?&#x27;selected&#x27;:&#x27;&#x27;}&gt;${labelStatus(s)}&lt;/option&gt;`).join(&#x27;&#x27;)}&lt;/select&gt;&lt;/div&gt;`:&#x27;&#x27;}&lt;section class=&quot;ip-timeline&quot; aria-label=&quot;迭代时间线&quot;&gt;${rows||&#x27;&lt;div class=&quot;ip-empty-list&quot;&gt;没有符合条件的迭代。&lt;/div&gt;&#x27;}&lt;/section&gt;`;
+}
+function tasksMarkup(p){let out=&#x27;&#x27;;for(const [status,name,ico]of[[&#x27;active&#x27;,&#x27;进行中&#x27;,&#x27;circle-play&#x27;],[&#x27;todo&#x27;,&#x27;待办&#x27;,&#x27;circle&#x27;],[&#x27;done&#x27;,&#x27;已完成&#x27;,&#x27;circle-check&#x27;],[&#x27;cancelled&#x27;,&#x27;已取消&#x27;,&#x27;circle-x&#x27;]]){const group=p.tasks.filter(t=&gt;t.status===status);if(!group.length)continue;out+=`&lt;section&gt;&lt;div class=&quot;ip-group-head ${status===&#x27;done&#x27;?&#x27;ip-done-color&#x27;:&#x27;&#x27;}&quot;&gt;${icon(ico)} ${name}&lt;span class=&quot;ip-count&quot;&gt;${group.length}&lt;/span&gt;&lt;/div&gt;${group.map(t=&gt;`&lt;div class=&quot;ip-task&quot;&gt;${icon(ico)}&lt;span class=&quot;ip-task-id&quot;&gt;${t.id}&lt;/span&gt;&lt;button class=&quot;ip-task-title&quot; type=&quot;button&quot; data-task=&quot;${t.id}&quot;&gt;${esc(t.name)}&lt;/button&gt;&lt;span class=&quot;ip-project&quot;&gt;${t.project}&lt;/span&gt;&lt;span class=&quot;ip-assignee&quot;&gt;&lt;span class=&quot;ip-avatar&quot;&gt;${t.person[0]}&lt;/span&gt;${t.person}&lt;/span&gt;&lt;/div&gt;`).join(&#x27;&#x27;)}&lt;/section&gt;`;}return out;}
+function dataTable(p){const v=series(p);return `&lt;details&gt;&lt;summary&gt;查看图表数据与统计口径&lt;/summary&gt;&lt;p style=&quot;margin-top:10px&quot;&gt;完成率 = 已完成 ÷ 有效范围；原始交付率 = 原始承诺中已完成 ÷ 原始承诺。分母为 0 时显示不适用。&lt;/p&gt;&lt;table class=&quot;ip-data&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;记录日&lt;/th&gt;&lt;th&gt;有效范围&lt;/th&gt;&lt;th&gt;已完成&lt;/th&gt;&lt;th&gt;原始承诺&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;${v.effective.map((n,i)=&gt;`&lt;tr&gt;&lt;td&gt;第 ${i+1} 天&lt;/td&gt;&lt;td&gt;${n}&lt;/td&gt;&lt;td&gt;${v.done[i]}&lt;/td&gt;&lt;td&gt;${v.original}&lt;/td&gt;&lt;/tr&gt;`).join(&#x27;&#x27;)}&lt;/tbody&gt;&lt;/table&gt;&lt;/details&gt;`;}
+function detail(){
+const p=chosen(),s=countStats(p),historical=[&#x27;completed&#x27;,&#x27;cancelled&#x27;].includes(p.status),empty=p.tasks.length===0;
+let head=`&lt;div class=&quot;ip-detail-top&quot;&gt;&lt;div class=&quot;ip-title-line&quot;&gt;&lt;h2&gt;${esc(p.name)}&lt;/h2&gt;&lt;span class=&quot;ip-badge ${p.status===&#x27;active&#x27;?&#x27;ip-live&#x27;:&#x27;&#x27;}&quot;&gt;${labelStatus(p.status)}&lt;/span&gt;&lt;/div&gt;${p.description?`&lt;p class=&quot;ip-summary&quot;&gt;${esc(p.description)}&lt;/p&gt;`:&#x27;&#x27;}&lt;div class=&quot;ip-detail-meta&quot;&gt;&lt;span&gt;${icon(&#x27;calendar-days&#x27;)}${dateSpan(p)}&lt;/span&gt;&lt;span&gt;${icon(&#x27;globe-2&#x27;)}Asia/Shanghai&lt;/span&gt;&lt;span&gt;${icon(&#x27;user-round&#x27;)}协调人：${p.id===&#x27;p1&#x27;?&#x27;林然&#x27;:&#x27;未指定&#x27;}&lt;/span&gt;&lt;/div&gt;${historical?`&lt;div class=&quot;ip-snapshot&quot;&gt;${icon(&#x27;lock-keyhole&#x27;)}结束快照 · ${shortDate(p.actualEnd||p.end)}留存，后续任务变化不会改写本期统计。&lt;/div&gt;`:&#x27;&#x27;}&lt;/div&gt;`;
+if(empty)return `&lt;div class=&quot;ip-detail-top&quot;&gt;&lt;div class=&quot;ip-detail-meta&quot; style=&quot;margin-top:0&quot;&gt;&lt;span class=&quot;ip-badge&quot;&gt;${labelStatus(p.status)}&lt;/span&gt;&lt;span&gt;${icon(&#x27;calendar-days&#x27;)}${dateSpan(p)}&lt;/span&gt;&lt;span&gt;Asia/Shanghai&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;section class=&quot;ip-empty&quot;&gt;&lt;div class=&quot;ip-empty-inner&quot;&gt;&lt;div class=&quot;ip-empty-icon&quot;&gt;${icon(&#x27;play&#x27;)}&lt;/div&gt;&lt;h2&gt;${esc(p.name)}&lt;/h2&gt;&lt;p&gt;为这段时间，选好团队准备交付的工作。&lt;/p&gt;&lt;p&gt;添加已有任务，或创建新任务安排到本期。&lt;br&gt;开始迭代时，会记录最初的交付承诺。&lt;/p&gt;&lt;div class=&quot;ip-actions&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;ip-button ip-primary&quot; data-action=&quot;add&quot;&gt;${icon(&#x27;plus&#x27;)}添加已有任务&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;ip-button&quot; data-action=&quot;new-task&quot;&gt;新建任务&lt;/button&gt;&lt;/div&gt;&lt;p class=&quot;ip-empty-foot&quot;&gt;本期尚未开始，计划日期不会自动触发执行。&lt;/p&gt;&lt;/div&gt;&lt;/section&gt;`;
+head+=`&lt;dl class=&quot;ip-stats&quot; style=&quot;margin-left:34px;margin-right:34px&quot;&gt;${[[&#x27;原始承诺&#x27;,s.original===null?&#x27;未开始&#x27;:s.original],[&#x27;当前范围&#x27;,s.current],[&#x27;有效范围&#x27;,s.effective],[&#x27;已完成&#x27;,s.completed],[&#x27;剩余&#x27;,s.remaining]].map(([label,n])=&gt;`&lt;div class=&quot;ip-stat&quot;&gt;&lt;dt&gt;${label}&lt;/dt&gt;&lt;dd&gt;${n}&lt;/dd&gt;&lt;/div&gt;`).join(&#x27;&#x27;)}&lt;/dl&gt;&lt;div class=&quot;ip-tabs ip-detail-tabs&quot; role=&quot;tablist&quot; aria-label=&quot;迭代详情&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;ip-tab&quot; role=&quot;tab&quot; aria-selected=&quot;${detailTab===&#x27;tasks&#x27;}&quot; data-detail-tab=&quot;tasks&quot;&gt;${historical?&#x27;任务快照&#x27;:&#x27;任务&#x27;}&lt;span class=&quot;ip-count&quot;&gt;${p.tasks.length}&lt;/span&gt;&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;ip-tab&quot; role=&quot;tab&quot; aria-selected=&quot;${detailTab===&#x27;progress&#x27;}&quot; data-detail-tab=&quot;progress&quot;&gt;进展&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;ip-tab&quot; role=&quot;tab&quot; aria-selected=&quot;${detailTab===&#x27;events&#x27;}&quot; data-detail-tab=&quot;events&quot;&gt;范围变化&lt;/button&gt;&lt;/div&gt;`;
+let content=tasksMarkup(p);
+if(detailTab===&#x27;progress&#x27;)content=p.status===&#x27;planned&#x27;?&#x27;&lt;div class=&quot;ip-empty-list&quot;&gt;开始迭代后展示原始承诺和进展趋势。&lt;/div&gt;&#x27;:`${chartMarkup(p)}&lt;div class=&quot;ip-chart-foot&quot;&gt;&lt;span&gt;原始交付率 ${s.original?(s.originalDone/s.original*100).toFixed(1)+&#x27;%&#x27;:&#x27;不适用&#x27;} · 已取消 ${s.cancelled} 条&lt;/span&gt;&lt;span&gt;${historical?&#x27;历史快照&#x27;:&#x27;更新至 10 月 12 日&#x27;}&lt;/span&gt;&lt;/div&gt;${dataTable(p)}`;
+if(detailTab===&#x27;events&#x27;)content=p.id===&#x27;p1&#x27;?`&lt;div class=&quot;ip-event&quot;&gt;&lt;time&gt;10月12日&lt;br&gt;15:40&lt;/time&gt;&lt;div&gt;林然完成了「增加工作空间时区选择」&lt;p&gt;MUL-128 · 当前已完成 8 条&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ip-event&quot;&gt;&lt;time&gt;10月10日&lt;br&gt;11:12&lt;/time&gt;&lt;div&gt;取消「调整首页快捷入口」&lt;p&gt;有效范围减为 13 条；保留原始承诺。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ip-event&quot;&gt;&lt;time&gt;10月8日&lt;br&gt;16:20&lt;/time&gt;&lt;div&gt;将 1 条任务移出本期&lt;p&gt;原因：依赖外部接口，待条件具备后再安排。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ip-event&quot;&gt;&lt;time&gt;10月8日&lt;br&gt;10:15&lt;/time&gt;&lt;div&gt;新增 3 条任务到本期&lt;p&gt;新增记录单独保留，不覆盖开始时的承诺。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ip-event&quot;&gt;&lt;time&gt;10月5日&lt;br&gt;09:00&lt;/time&gt;&lt;div&gt;开始迭代，记录 12 条原始承诺&lt;p&gt;手动开始 · 协调人林然&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;`:`&lt;div class=&quot;ip-event&quot;&gt;&lt;time&gt;${shortDate(p.end)}&lt;/time&gt;&lt;div&gt;${historical?&#x27;结束迭代并保留历史快照&#x27;:&#x27;计划中的任务安排&#x27;}&lt;p&gt;${historical?&#x27;未完成任务的去向随快照保留。&#x27;:&#x27;计划阶段的变更不计为期中范围新增。&#x27;}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;`;
+return head+`&lt;div class=&quot;ip-detail-content&quot;&gt;${content}&lt;/div&gt;`;
+}
+function render(){
+if(observer)observer.disconnect();
+const p=chosen();
+$(&#x27;ip-breadcrumb&#x27;).innerHTML=page===&#x27;overview&#x27;?`${icon(&#x27;calendar-range&#x27;)}&lt;strong&gt;迭代&lt;/strong&gt;`:`&lt;button type=&quot;button&quot; id=&quot;ip-back&quot;&gt;迭代&lt;/button&gt;&lt;span class=&quot;ip-slash&quot;&gt;/&lt;/span&gt;&lt;strong&gt;${esc(p.name)}&lt;/strong&gt;`;
+$(&#x27;ip-toolbar-actions&#x27;).innerHTML=page===&#x27;overview&#x27;?`&lt;button type=&quot;button&quot; class=&quot;ip-button ip-quiet&quot; id=&quot;ip-filter-button&quot;&gt;${icon(&#x27;list-filter&#x27;)}筛选&lt;/button&gt;&lt;button type=&quot;button&quot; class=&quot;ip-button&quot; data-action=&quot;new-period&quot;&gt;${icon(&#x27;plus&#x27;)}新建迭代&lt;/button&gt;`:[&#x27;completed&#x27;,&#x27;cancelled&#x27;].includes(p.status)?`&lt;span class=&quot;ip-small&quot;&gt;${icon(&#x27;lock-keyhole&#x27;)} 历史记录&lt;/span&gt;`:`${p.tasks.length?`&lt;button type=&quot;button&quot; class=&quot;ip-button&quot; data-action=&quot;add&quot;&gt;${icon(&#x27;plus&#x27;)}添加任务&lt;/button&gt;`:&#x27;&#x27;}${p.status===&#x27;active&#x27;?&#x27;&lt;button type=&quot;button&quot; class=&quot;ip-button&quot; data-action=&quot;end&quot;&gt;结束迭代&lt;/button&gt;&#x27;:`&lt;button type=&quot;button&quot; class=&quot;ip-button&quot; data-action=&quot;start&quot; ${current()?&#x27;disabled data-tooltip=&quot;请先结束当前进行中的迭代&quot;&#x27;:&#x27;&#x27;}&gt;开始迭代&lt;/button&gt;`}`;
+$(&#x27;ip-page&#x27;).innerHTML=page===&#x27;overview&#x27;?overview():detail();
+root.querySelectorAll(&#x27;[data-period]&#x27;).forEach(b=&gt;b.onclick=()=&gt;showPeriod(b.dataset.period));
+root.querySelectorAll(&#x27;[data-list]&#x27;).forEach(b=&gt;b.onclick=()=&gt;{listTab=b.dataset.list;query=&#x27;&#x27;;statusFilter=&#x27;&#x27;;render();});
+root.querySelectorAll(&#x27;[data-detail-tab]&#x27;).forEach(b=&gt;b.onclick=()=&gt;{detailTab=b.dataset.detailTab;render();});
+root.querySelectorAll(&#x27;[data-action]&#x27;).forEach(b=&gt;b.onclick=()=&gt;action(b.dataset.action));
+root.querySelectorAll(&#x27;[data-task]&#x27;).forEach(b=&gt;b.onclick=()=&gt;openTask(b.dataset.task));
+if($(&#x27;ip-back&#x27;))$(&#x27;ip-back&#x27;).onclick=()=&gt;{page=&#x27;overview&#x27;;render();};
+if($(&#x27;ip-filter-button&#x27;))$(&#x27;ip-filter-button&#x27;).onclick=()=&gt;{filterOpen=!filterOpen;render();};
+if($(&#x27;ip-search&#x27;))$(&#x27;ip-search&#x27;).onchange=e=&gt;{query=e.target.value;render();};
+if($(&#x27;ip-status-filter&#x27;))$(&#x27;ip-status-filter&#x27;).onchange=e=&gt;{statusFilter=e.target.value;render();};
+root.querySelectorAll(&#x27;.ip-tabs&#x27;).forEach(group=&gt;group.onkeydown=event=&gt;{
+if(![&#x27;ArrowLeft&#x27;,&#x27;ArrowRight&#x27;,&#x27;Home&#x27;,&#x27;End&#x27;].includes(event.key))return;
+const buttons=[...group.querySelectorAll(&#x27;button&#x27;)],index=buttons.indexOf(document.activeElement);if(index&lt;0)return;
+event.preventDefault();const offset=event.key===&#x27;ArrowLeft&#x27;?-1:1;
+const next=event.key===&#x27;Home&#x27;?0:event.key===&#x27;End&#x27;?buttons.length-1:(index+offset+buttons.length)%buttons.length;
+const target=buttons[next],key=target.dataset.list?&#x27;list&#x27;:&#x27;detailTab&#x27;,value=target.dataset[key];target.click();
+root.querySelector(key===&#x27;list&#x27;?`[data-list=&quot;${value}&quot;]`:`[data-detail-tab=&quot;${value}&quot;]`)?.focus();
+});
+refreshIcons();bindCharts();
+}
+function openDialog(title,body,confirm,onConfirm){$(&#x27;ip-dialog-title&#x27;).textContent=title;$(&#x27;ip-dialog-body&#x27;).innerHTML=body;$(&#x27;ip-dialog-confirm&#x27;).textContent=confirm;$(&#x27;ip-dialog-confirm&#x27;).hidden=!onConfirm;dialogAction=onConfirm;refreshIcons();$(&#x27;ip-dialog&#x27;).showModal();}
+function action(kind){const p=chosen();
+ if(kind===&#x27;add&#x27;)openDialog(`添加任务到${p.name}`,`&lt;p class=&quot;ip-dialog-description&quot;&gt;选择尚未安排迭代的正式任务。&lt;/p&gt;${[&#x27;梳理下一期交付清单&#x27;,&#x27;补充关键路径的回归检查&#x27;,&#x27;完善成员协作说明&#x27;].map((name,i)=&gt;`&lt;label class=&quot;ip-select-task&quot;&gt;&lt;input type=&quot;checkbox&quot; name=&quot;ip-pick&quot; value=&quot;${i}&quot;&gt;&lt;span&gt;&lt;span class=&quot;ip-small&quot;&gt;MUL-${201+i}&lt;/span&gt;&lt;br&gt;${name}&lt;/span&gt;&lt;/label&gt;`).join(&#x27;&#x27;)}`,&#x27;添加到迭代&#x27;,()=&gt;{const inputs=[...root.querySelectorAll(&#x27;input[name=&quot;ip-pick&quot;]:checked&#x27;)];if(!inputs.length)return;const names=[&#x27;梳理下一期交付清单&#x27;,&#x27;补充关键路径的回归检查&#x27;,&#x27;完善成员协作说明&#x27;];inputs.forEach(i=&gt;{const id=&#x27;MUL-&#x27;+(201+Number(i.value));if(!p.tasks.some(t=&gt;t.id===id))p.tasks.push({id,name:names[Number(i.value)],status:&#x27;todo&#x27;,project:&#x27;团队协作&#x27;,person:&#x27;林然&#x27;});});$(&#x27;ip-dialog&#x27;).close();render();showFeedback(`已将 ${inputs.length} 条任务安排到${p.name}（演示）。`);});
+ if(kind===&#x27;new-task&#x27;)openDialog(&#x27;新建任务&#x27;,`&lt;p class=&quot;ip-dialog-description&quot;&gt;当前迭代：${esc(p.name)}&lt;/p&gt;&lt;div class=&quot;ip-form&quot;&gt;&lt;label&gt;任务名称&lt;input id=&quot;ip-new-task-name&quot; placeholder=&quot;准备交付什么？&quot;&gt;&lt;/label&gt;&lt;/div&gt;`,&#x27;创建并加入&#x27;,()=&gt;{const name=$(&#x27;ip-new-task-name&#x27;).value.trim();if(!name){$(&#x27;ip-new-task-name&#x27;).focus();return;}p.tasks.push({id:&#x27;MUL-&#x27;+(300+p.tasks.length),name,status:&#x27;todo&#x27;,project:&#x27;未指定项目&#x27;,person:&#x27;林然&#x27;});$(&#x27;ip-dialog&#x27;).close();render();showFeedback(&#x27;任务已创建并安排到本期（演示）。&#x27;);});
+ if(kind===&#x27;new-period&#x27;)openDialog(&#x27;新建迭代&#x27;,&#x27;&lt;div class=&quot;ip-form&quot;&gt;&lt;label&gt;迭代名称&lt;input id=&quot;ip-period-name&quot; placeholder=&quot;例如：十二月第二期&quot;&gt;&lt;/label&gt;&lt;label&gt;开始日期&lt;input id=&quot;ip-period-start&quot; type=&quot;date&quot; value=&quot;2026-12-14&quot;&gt;&lt;/label&gt;&lt;label&gt;结束日期&lt;input id=&quot;ip-period-end&quot; type=&quot;date&quot; value=&quot;2026-12-27&quot;&gt;&lt;/label&gt;&lt;p class=&quot;ip-small&quot;&gt;Asia/Shanghai · 创建后为已计划，需要手动开始。&lt;/p&gt;&lt;/div&gt;&#x27;,&#x27;创建迭代&#x27;,()=&gt;{const name=$(&#x27;ip-period-name&#x27;).value.trim(),start=$(&#x27;ip-period-start&#x27;).value,end=$(&#x27;ip-period-end&#x27;).value;if(!name||!start||end&lt;start)return;periods.push({id:&#x27;new&#x27;+periods.length,name,start,end,status:&#x27;planned&#x27;,description:&#x27;&#x27;,tasks:[]});$(&#x27;ip-dialog&#x27;).close();page=&#x27;overview&#x27;;listTab=&#x27;open&#x27;;render();showFeedback(&#x27;迭代已创建为计划，未自动开始（演示）。&#x27;);});
+ if(kind===&#x27;end&#x27;){const s=countStats(p);openDialog(`结束${p.name}`,`&lt;p class=&quot;ip-dialog-description&quot;&gt;已完成 ${s.completed} 条，有效范围内还有 ${s.remaining} 条未完成任务。结束会保留本期快照，正在运行的执行会继续。&lt;/p&gt;&lt;div class=&quot;ip-form&quot;&gt;&lt;label&gt;未完成任务的去向&lt;select id=&quot;ip-rollover&quot;&gt;&lt;option value=&quot;&quot;&gt;暂不安排到下一期&lt;/option&gt;${periods.filter(v=&gt;v.status===&#x27;planned&#x27;).map(v=&gt;`&lt;option value=&quot;${v.id}&quot;&gt;${esc(v.name)}&lt;/option&gt;`).join(&#x27;&#x27;)}&lt;/select&gt;&lt;/label&gt;&lt;label&gt;结束说明&lt;textarea id=&quot;ip-end-reason&quot; placeholder=&quot;记录本期交付和未完成原因&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/div&gt;`,&#x27;确认结束&#x27;,()=&gt;{if(!$(&#x27;ip-end-reason&#x27;).value.trim()){$(&#x27;ip-end-reason&#x27;).focus();return;}const target=periods.find(v=&gt;v.id===$(&#x27;ip-rollover&#x27;).value);if(target)target.tasks.push(...p.tasks.filter(t=&gt;![&#x27;done&#x27;,&#x27;cancelled&#x27;].includes(t.status)).map(t=&gt;({...t})));p.actualEnd=&#x27;2026-10-12&#x27;;p.status=&#x27;completed&#x27;;$(&#x27;ip-dialog&#x27;).close();render();showFeedback(&#x27;已结束并保留本期快照。下一期不会自动开始（演示）。&#x27;);});}
+ if(kind===&#x27;start&#x27;)openDialog(`开始${p.name}`,`&lt;p class=&quot;ip-dialog-description&quot;&gt;将记录本期 ${p.tasks.length} 条任务作为原始承诺。计划日期：${dateSpan(p)}。&lt;/p&gt;&lt;p class=&quot;ip-dialog-description&quot;&gt;开始前需确认实际日期及任务范围；已有进行中迭代时，必须先结束当前迭代。&lt;/p&gt;`,&#x27;&#x27;,null);
+}
+function openTask(id){const task=chosen().tasks.find(t=&gt;t.id===id);if(!task)return;openDialog(task.id,`&lt;p style=&quot;margin-top:20px;font-size:17px;font-weight:500&quot;&gt;${esc(task.name)}&lt;/p&gt;&lt;p class=&quot;ip-dialog-description&quot;&gt;${task.project} · ${task.person} · ${task.status===&#x27;done&#x27;?&#x27;已完成&#x27;:task.status===&#x27;active&#x27;?&#x27;进行中&#x27;:task.status===&#x27;cancelled&#x27;?&#x27;已取消&#x27;:&#x27;待办&#x27;}&lt;/p&gt;`,&#x27;&#x27;,null);}
+$(&#x27;ip-dialog-cancel&#x27;).onclick=()=&gt;{$(&#x27;ip-dialog&#x27;).close();};
+$(&#x27;ip-dialog-confirm&#x27;).onclick=()=&gt;{if(dialogAction)dialogAction();};
+render();
+if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:()=&gt;{page=demo.page===&#x27;overview&#x27;?&#x27;overview&#x27;:&#x27;detail&#x27;;selectedId=demo.page===&#x27;empty&#x27;?&#x27;p2&#x27;:demo.page===&#x27;history&#x27;?&#x27;h1&#x27;:&#x27;p1&#x27;;detailTab=&#x27;tasks&#x27;;render();}});tweak.addSelect(demo,&#x27;page&#x27;,{label:&#x27;查看页面&#x27;,options:[{label:&#x27;时间线总览&#x27;,value:&#x27;overview&#x27;},{label:&#x27;当前迭代 · 有任务&#x27;,value:&#x27;current&#x27;},{label:&#x27;计划迭代 · 空状态&#x27;,value:&#x27;empty&#x27;},{label:&#x27;历史迭代 · 快照&#x27;,value:&#x27;history&#x27;}]});}
+})();
+&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerdown&quot;, handlePointer);
+    document.removeEventListener(&quot;pointercancel&quot;, handlePointer);
+    document.removeEventListener(&quot;click&quot;, handleTouchClick);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerdown&quot;, handlePointer);
+  document.addEventListener(&quot;pointercancel&quot;, handlePointer);
+  document.addEventListener(&quot;click&quot;, handleTouchClick);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-tabs&quot;&gt;
+(() =&gt; {
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
+  const selectTab = (selected) =&gt; {
+    const panelId = selected.getAttribute(&quot;aria-controls&quot;);
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
+      const active = tab === selected;
+      tab.classList.toggle(&quot;active&quot;, active);
+      tab.setAttribute(&quot;aria-selected&quot;, String(active));
+      const id = tab.getAttribute(&quot;aria-controls&quot;);
+      const panel = id &amp;&amp; document.getElementById(id);
+      if (panel != null) {
+        panel.hidden = id !== panelId;
+        if (!panel.hidden &amp;&amp; selected.id) {
+          panel.setAttribute(&quot;aria-labelledby&quot;, selected.id);
+        }
+      }
+    }
+  };
+  const interact = (event) =&gt; {
+    const tab = event.target?.closest?.(selector);
+    if (event.defaultPrevented || tab == null || tab.matches(disabled)) {
+      return;
+    }
+    if (event.type === &quot;click&quot;) {
+      selectTab(tab);
+      return;
+    }
+    const tabs = Array.from(
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
+    ).filter((candidate) =&gt; !candidate.matches(disabled));
+    const current = tabs.indexOf(tab);
+    let next;
+    if (event.key === &quot;ArrowRight&quot; || event.key === &quot;ArrowDown&quot;) {
+      next = (current + 1) % tabs.length;
+    } else if (event.key === &quot;ArrowLeft&quot; || event.key === &quot;ArrowUp&quot;) {
+      next = (current + tabs.length - 1) % tabs.length;
+    } else if (event.key === &quot;Home&quot;) {
+      next = 0;
+    } else if (event.key === &quot;End&quot;) {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    tabs[next].focus();
+    selectTab(tabs[next]);
+  };
+
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
+    const selected =
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
+    if (selected != null) {
+      selectTab(selected);
+    }
+  }
+  document.addEventListener(&quot;click&quot;, interact);
+  document.addEventListener(&quot;keydown&quot;, interact);
+  window.addEventListener(&quot;pagehide&quot;, () =&gt; {
+    document.removeEventListener(&quot;click&quot;, interact);
+    document.removeEventListener(&quot;keydown&quot;, interact);
+  }, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>

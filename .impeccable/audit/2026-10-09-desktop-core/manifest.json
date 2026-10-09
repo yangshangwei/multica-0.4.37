@@ -1,0 +1,130 @@
+{
+  "completed_at": "2026-10-09T02:50:03.849418+00:00",
+  "commit": "7e1eb8058e9a839fa2f04b169ed058282cb92bd8",
+  "branch": "codex/projects-p1",
+  "score": 13,
+  "max_score": 20,
+  "findings": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 4,
+    "P3": 0
+  },
+  "environment": {
+    "platform": "macOS",
+    "electron": "39.8.7",
+    "renderer": "http://localhost:5666",
+    "backend": "http://localhost:18572",
+    "viewports": [
+      [
+        1440,
+        1000
+      ],
+      [
+        900,
+        700
+      ]
+    ],
+    "native_zoom": 2,
+    "effective_zoom_viewport": [
+      720,
+      500
+    ]
+  },
+  "scope": "read-only technical audit; independent profile and native IPC test fixture; current working copy",
+  "cleanup": {
+    "audit_window_closed": true,
+    "temporary_auth_profile_removed": true,
+    "original_profile_untouched": true
+  },
+  "detector": {
+    "raw_findings": 10,
+    "verified_product_issues_from_detector": 0
+  },
+  "checks": {
+    "views_typecheck": "exit 0",
+    "scoped_views_eslint": "exit 0, 0 errors, 9 warnings",
+    "tests": "not run"
+  },
+  "screenshots": 32,
+  "files_sha256": {
+    "a11y-evidence.json": "b88e6391d69f470a02c78f4a31604f028f04a8b78e971b5d151f06cfe0646ed0",
+    "agent-detail-1440.txt": "cbdb60f010d989e77f06205b6dbab98159e37fc82ffef0cc0c2c6707ba829653",
+    "agent-tabs-keyboard.json": "28e821a90e644e8d1d3c3bdec6a7abbc1f831fc71767777c7287036236903997",
+    "agents-1440.txt": "38e17597e74077065649fe5dcff18926bde4e91fe82cce50b7364c8964d92900",
+    "baseline-metrics-2.json": "6b21576dbe7a9110111a395bba62d134fc798fb34b6ac8f0ee21fc1b982fc4c8",
+    "detector.json": "9a2d8406984cea27b3bc988f9c702c39fa546ebf6506495ab827ab6d0424f46e",
+    "failure-evidence.json": "a5e20d18ab313fe786be06fd435ec2797ead2f5dd8193b7e96b02107a7f48168",
+    "gantt-token-contrast.json": "757dca52b88888e6ddaa61b516af77b55e8c79ae94ad646c09ef417caa4e3ce0",
+    "hidden-chat-focus.json": "07f0343a662492b8bb24fa6075a95bf58ce1a213b79e0e458b3defbfa92dbde3",
+    "inbox-1440.txt": "7923d79d540288a775d2cbc48ecb905f05fb227839f594966caf7102b021eb01",
+    "inbox-500.txt": "57418643d6a0cc72f85309b93c64019df0cb7b090c1c82e9dc1b9c0e437cdfa4",
+    "issue-detail-1440.txt": "bb22fb3f51c423f74c382cd74ef4ffbbeb7c84d177ae5f2a3dc75f214c6b34f6",
+    "issues-1440.txt": "3b14eafbefbfa34e19cc7b2c5d7f8760b74f5a33327d3e85d6476766940582ad",
+    "issues-list-1440.txt": "a836b7713899104f30a0012328157e00afd602122e90bb1742d053e47810f938",
+    "iterations-1440.txt": "19589c0d9acb37357b8fba0f7a2108d961001e338a8363fe585d045209c48738",
+    "my-issues-1440.txt": "390db8eff165078af4ae5a0f76d06a182ed4cca333c049418ec0c94cb9ad028a",
+    "narrow-metrics.json": "d57262b07715dae936d737c272a237f32aca7c8a32d221ab8d00c66b1278826a",
+    "projects-1440.txt": "9b0e59fa7fde23885b375d3b6afdb50c8afc5ba46f327f3209bba4cbe6952e0a",
+    "projects-500.txt": "fe59c69f2b85712ecdeeaa88a5b3456ff32007eab4fb9a77df04f4fde8fb692f",
+    "reduced-motion.json": "46336a217838b0fd1131ef1a933f72d931e87392aafac730f24ec193fa44b310",
+    "runtimes-1440.txt": "2ffee7f12c11b2a04c269a2f847b873bd72bbcd1291c12d65f997520a9cec10d",
+    "screenshots/01-desktop-current.png": "4081503858c032dd1e5f03ef177c2e4f2c689f085f113a8239ff16c19f75078a",
+    "screenshots/agent-detail-1440.png": "db66fb92089278fb95eb05a817d192ac56153820844e0edbfb9436d7c78db043",
+    "screenshots/agents-1440.png": "1cb21511f88ef92db2466b0d4f24c6c61b6b1a5535eea06ace37a6e7383f0996",
+    "screenshots/agents-900.png": "4bab37e6e455e23de52d80ba7946579f133814db372ba6182ae71356aefd4f81",
+    "screenshots/agents-dark-1440.png": "50859a2c0494bbfb11660865475b1a0e3884aa7ef9c447a76b34b573a0bd8157",
+    "screenshots/agents-keyboard-focus-1440.png": "917bd749736862251b0f1bf64ba51f94dbfde03510f970c49d48b554f51b852d",
+    "screenshots/inbox-1440.png": "d0d125ef6e6c4d5dec9cd6ba9c8ae1ce19416f5b2fa3faf3129b662115e3df00",
+    "screenshots/inbox-500.png": "9d8014df17aabe72a34c4e1e31f7d0736067c63b08c79763dea40de35eaa86b7",
+    "screenshots/inbox-900.png": "1b2540511406637ec079c1cbf9664deb9e63fddc69182d0f63da2a000e2d52f2",
+    "screenshots/issue-detail-1440.png": "42f811a323fc4ab4a04d42a12194625540788a9268388930f26bbb8195dbfa30",
+    "screenshots/issues-900.png": "14521d5b48f180191d22c30f0fa6e236bd10883de1b720c59d41f46df57ea1cf",
+    "screenshots/issues-dark-1440.png": "0d4a77be855191bae0407a91082825bf41013fcaa664d94bc0e1d1b3324fdceb",
+    "screenshots/issues-list-1440.png": "758a332338753ce30b9351d9a440961bc227df6f3777a07ddf9fe5f562485e95",
+    "screenshots/iteration-detail-1440.png": "9467eb13ea8824e3fcc79060b6ccbe9cea334d7efb06e871a4330b4763254868",
+    "screenshots/iteration-events-1440.png": "a4893461e59368c22fc0bed7b913bde210a9f06d377c60981dc0235f0ce3c94e",
+    "screenshots/iteration-progress-1440.png": "ba671c86ddd37f691bb60694514dcfa9b7aad6854046b03d5d46f25dcf5e3ae6",
+    "screenshots/iterations-1440.png": "f92a6f05b5ebde6bfb7869e184d9e5417727373409af3815b24d86a5f27790ce",
+    "screenshots/iterations-900.png": "b4addfac1d6b043ffc9c7cafeb80d174b785d3bc1dcd3fc28ce5e0fff2fb170a",
+    "screenshots/my-issues-1440.png": "084d36e1b0608d88bab1f0dbd59212fe03a4521f48ecd509ddb04d5d8dc3d86b",
+    "screenshots/project-detail-1440.png": "69efa833f17dd3451b329f47e5be3a36eece4590a0ca39638807f99f597c9c29",
+    "screenshots/projects-1440.png": "4dcb9607739dd8b63dd75373d72a03f3139b4ed12ef20c6e017b82c248d59e08",
+    "screenshots/projects-500.png": "bd66e5a13c04bd3c6e221b5b636ef2d43ec6ccab0630f85f6f3fba39ba20c329",
+    "screenshots/projects-900.png": "3aca22be60e931ddbf46538db284c44224f397ea1e6989607f7572bee3d90d6a",
+    "screenshots/runtimes-1440.png": "9b38f4621f554441349fe28216d23583c3df20782b2b8a6c76ec68a367186289",
+    "screenshots/settings-1440.png": "578ebd9fa97e8f94837be03f71bbc40a9865d8a305f039348ea36ba344177f6d",
+    "screenshots/settings-900.png": "ad6b277a18e31a903f2e73535e19118cc4962750ec464824489b80208691eb2f",
+    "screenshots/settings-dark-1440.png": "5b927a92fd75f8671b0d9ca85e50d545fa2edf4d106c33e40222c501c5f81136",
+    "screenshots/settings-native-200pct.png": "5fdaf5bfd48d369a4bd7d9651617136059b10d3b0ff2541d997e455cca44b0b0",
+    "screenshots/skills-1440.png": "45ebb27c688b0793ae9ddaebc564b25bb75333905de279fea3b872bef97f6de9",
+    "screenshots/skills-900.png": "0ec72c7480a2f71fc1abf43b17f7c637482868bb04002bb26e50c45827deec0c",
+    "screenshots/triage-1440.png": "ea6eb54ac676127c8b63c752f6fb744bec85309dfcde23cfec5fca34a573f81a",
+    "screenshots/triage-900.png": "17a26741d0253e0516c752246a507b9e4ea021f5da608ab307ea6cb797c27ed7",
+    "scripts/boot.mjs": "2ccb8b9536e5b33b3830a5c41d0da749c5d7379c0e9e28a566a95f0c4e8af0a6",
+    "scripts/harness.cjs": "f479806e893dc5b1b8866bd19c90f0451de29dd22c4b8f1028710fdec8ed8101",
+    "scripts/run.mjs": "172429b246671a1359465ac444e621c7d5b72f201ba89bffe1cb0be871b1a2e5",
+    "settings-1440.txt": "e3e55c8129a294a91d92c97097a32ce3497879ada51ab8fe0db8dccf4f064223",
+    "skills-1440.txt": "41d428c3eef697d91b03efa05fe7474c26b0145de13bedd585c601f7d646f55c",
+    "triage-1440.txt": "362e8ff166e5615fd230b7b69ccc91c2ed9ade1665df3ef65750e6350ee34e8b",
+    "triage-fab-overlap.json": "a6fb4af64d1660333abbe680b863883b2e7796f3d4e7c86ffd4a02a7085f13ea",
+    "zoom-evidence.json": "74498d0fdcfcfa7679a852014d646177c8eeae44489764ce384f1fca924a5ed6"
+  },
+  "reviewed_source_sha256": {
+    "apps/desktop/src/renderer/src/components/desktop-layout.tsx": "cf4fc94ed67c830b1b63efed677d8640345343f47cf53d3aa37ba3b6dc5e1537",
+    "apps/desktop/src/renderer/src/components/tab-bar.tsx": "27aab8585e9b2262087b556478031c2d6caadd4ccb466a3f30fb5fa5b20a15b3",
+    "packages/views/agents/components/agent-overview-pane.tsx": "b7da6335443bedf6bc0d82f6e27543675d31a5b6874dfb0c27411f6c18ba7055",
+    "packages/views/agents/components/agents-page.tsx": "8f7bc60ff378cf365362046b560a4aa9e9937fdfda91c2ce8580fae195e7bfbc",
+    "packages/views/chat/components/chat-fab.tsx": "63bae6db1dce01d7a75394f3eddab8abde256f36828346348b0ba91648c3a9d1",
+    "packages/views/chat/components/chat-window.tsx": "feb4b1d3cc2a42ceb9790423879c598ab14609781d37467ac885d4a31cf23594",
+    "packages/views/inbox/components/inbox-page.tsx": "bf20ce40e35dbe2b79f2136563f1e7f5b79920efa4b720d877dd9251d207efc4",
+    "packages/views/issues/components/gantt-view.tsx": "75c0774a37dfaa9871d86d6f47d6937a1eea01f97dc691cb1ea74785bfa6374e",
+    "packages/views/issues/components/list-row.tsx": "d37abc8eb4213d3754533373853c0e4695dd78fa274ed98ca779a6e7ff4ee610",
+    "packages/views/issues/components/list-view.tsx": "7a95b95c4032c4eef4a7e2715ca553e9548ea80c37baab1ce6a02cec10bf6301",
+    "packages/views/navigation/use-row-link.ts": "b7f42827706277a0720d6d3963ff4d4f69029cead96484ee72e4e3f04cc81b74",
+    "packages/views/projects/components/project-detail.tsx": "31a5269b53b0c998d0a6cb29f9203073b58d8aaf95b322a07167660a74d08d60",
+    "packages/views/projects/components/projects-page.tsx": "abda20606e0c89f4bd2f3d4e44642ba1751b80256409b964c244d526d9241b9d",
+    "packages/views/skills/components/skill-detail-page.tsx": "6345fd48239007f7da856b11d9a8eafbffdb9a344a8f90c7ed2ec9f7183b3b30",
+    "packages/views/triage/triage-page.tsx": "a126d22cf450db1a4c7c9506ac838fa08087826ec5cfb1117d2b88c98a9b7ae3"
+  }
+}

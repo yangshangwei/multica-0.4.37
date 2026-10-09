@@ -1,0 +1,18 @@
+[
+  {
+    "name": "projects",
+    "initialAlert": "无法加载项目重试",
+    "failures": 4,
+    "retried": true,
+    "retainedRow": true,
+    "successfulContent": "\"\n- banner:\n  - button \"分拣台\"\n  - button \"项目\"\n  - status\n  - button \"New tab\"\n- banner:\n  - heading \"项目\" [level=1]\n  - text: \"1\"\n  - button \"新建项目\"\n- textbox \"搜索项目...\"\n- button \"筛选\"\n- button \"创建时间\"\n- button \"表格\"\n- table:\n  - row \"选择当前列表中的所有项目 名称 状态 优先级 进度 负责人 创建时间\":\n    - checkbox \"选择当前列表中的所有项目\"\n    - columnheader \"名称\":\n      - button \"名称\"\n    - columnheader \"状态\":\n      - button \"状态\"\n    - columnheader \"优先级\":\n      - button \"优先级\"\n    - columnheader \"进度\":\n      - button \"进度\"\n    - columnheader \"负责人\"\n    - columnheader\n    - columnheader \"创建时间\":\n      - button \"创建时间\"\n  - row \"选择 手测-发布闭环 手测-发布闭环 已完成 无优先级 2/5 杨 杨尚伟 今天 项目操作\":\n    - cell \"选择 手测-发布闭环\":\n      - checkbox \"选择 手测-发布闭环\"\n    - cell \"手测-发布闭环\":\n      - link \"手测-发布闭环\":\n        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/81515af5-42d6-444d-b962-30d26fb3e944\n    - cell \"已完成\":\n      - button \"已完成\"\n    - cell \"无优先级\":\n      - button \"无优先级\":\n        - img\n        - text: 无优先级\n    - cell \"2/5\":\n      - img\n      - text: 2/5\n    - cell \"杨 杨尚伟\":\n      - button \"杨 杨尚伟\":\n        - link \"杨\"\n        - text: 杨尚伟\n    - cell\n    - cell \"今天\"\n    - cell \"项目操作\":\n      - button \"项目操作\"\n- button \"问 Multica\"\n- region \"Notifications alt+T\""
+  },
+  {
+    "name": "inbox",
+    "initialAlert": "无法加载通知重试",
+    "failures": 4,
+    "retried": true,
+    "retainedRow": true,
+    "successfulContent": "s\n  - listitem:\n    - link \"MCP\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp\n  - listitem:\n    - link \"运行时\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes\n- list:\n  - listitem:\n    - link \"统计\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/usage\n  - listitem:\n    - link \"设置\":\n      - /url: http://localhost:18572/desktop-qa-1008-1743/settings\n- button \"帮助\"\n- button \"切换左侧边栏\"\n- banner:\n  - button \"分拣台\"\n  - button \"收件箱\"\n  - status\n  - button \"New tab\"\n- banner:\n  - heading \"收件箱\" [level=1]\n  - button \"筛选收件箱\"\n  - button\n- button \"Triage batch completed 分拣动态 13 小时\":\n  - text: Triage batch completed\n  - paragraph: 分拣动态\n  - text: 13 小时\n- button \"Triage batch completed 分拣动态 17 小时\":\n  - text: Triage batch completed\n  - paragraph: 分拣动态\n  - text: 17 小时\n- 'button \"CSV import: desktop-retained-import.csv 分拣动态 17 小时\"':\n  - text: \"CSV import: desktop-retained-import.csv\"\n  - paragraph: 分拣动态\n  - text: 17 小时\n- button \"手测-第1期 迭代 17 小时\":\n  - text: 手测-第1期\n  - paragraph: 迭代\n  - text: 17 小时\n- button \"手测-第1期 迭代 18 小时\":\n  - text: 手测-第1期\n  - paragraph: 迭代\n  - text: 18 小时\n- separator\n- paragraph: 选择一条通知查看详情\n- button \"问 Multica\"\n- region \"Notifications alt+T\""
+  }
+]
