@@ -1663,3 +1663,41 @@ Closed the 19-finding iteration audit and the disable-confirmation styling follo
 ### Status
 
 [OK] **Completed**
+
+
+## Session 52: Trace triage history with a timeline and visible filters
+<!-- trellis-session: v=2 fp=9643e17a89564dd3 -->
+
+**Date**: 2026-10-10
+**Task**: Trace triage history with a timeline and visible filters
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Implemented the approved date-grouped timeline and applied-filter feedback; preserved audit identity and snapshot details; completed independent review and browser verification.
+
+### Main Changes
+
+- Added compact date groups, adjacent times and historical action labels in the shared Web/Desktop page.
+- Added visible applied conditions, clear filters, distinct empty results and first-page recovery without losing filters.
+- Archived Trellis task 10-10-triage-history-timeline and captured its executable presentation contracts.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c6e647d90` | feat(triage): make review history easier to trace |
+
+### Testing
+
+- [OK] 122 focused Vitest tests across 13 files; views, Web and Desktop typechecks; scoped ESLint and diff checks passed.
+- [OK] 12 final Playwright captures and interaction checks passed; no overflow or runtime errors; minimum sampled caption contrast 5.71:1.
+- [OK] Independent Trellis review passed; final Impeccable detector returned no findings; visual verdict 95/100.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- The approved implementation scope is complete.

@@ -14,7 +14,7 @@ The user approved the timeline + filter-feedback increment after the review. The
 - [x] Run the focused triage suite and locale parity; run views typecheck and scoped lint. Fix task-caused failures.
 - [x] Dispatch independent Trellis check on the finished diff; integrate safe findings.
 - [x] Render actual components with real styles, inspect wide/narrow + locales in one batch, run the Impeccable detector, record visual verdict; if necessary make one correction batch and confirmation.
-- [ ] Record evidence in `verification.md`; update a small task-relevant spec; review/stage only owned files and commit using Conventional + Lore intent/trailers; archive and journal the completed task.
+- [x] Record evidence in `verification.md`; update a small task-relevant spec; review/stage only owned files and commit using Conventional + Lore intent/trailers; archive and journal the completed task.
 
 ## Validation commands
 
