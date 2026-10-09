@@ -1,0 +1,14 @@
+{
+  "score": 88,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "Live long-title overflow was detected in the first visual batch and has been corrected; the strengthened panel-overflow check passes.",
+    "The new destructive confirmation button tint yields only 3.98:1 contrast with the fill token as its text color."
+  ],
+  "suggestions": [
+    "Pair destructive controls with a separate readable foreground token without changing their fill color.",
+    "Confirm final state colors after finite theme transitions finish."
+  ],
+  "reasoning": "Core layout, named controls, focus and coarse geometry now match the approved repair. Measured destructive text contrast is the remaining release issue."
+}

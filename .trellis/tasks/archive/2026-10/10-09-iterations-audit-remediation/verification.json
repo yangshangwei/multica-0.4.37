@@ -1,0 +1,671 @@
+{
+  "recordedAt": "2026-10-09T09:52:31.513370+00:00",
+  "baseCommit": "7e1eb8058e9a839fa2f04b169ed058282cb92bd8",
+  "verifiedCandidateTree": "ffe6613f0ee4f89200ed0c73085374aa90471b44",
+  "implementation": "complete",
+  "audit": {
+    "score": 19,
+    "outOf": 20,
+    "originalFindingsResolved": 19,
+    "disableStyleFollowup": "verified",
+    "p0": 0,
+    "p1": 0,
+    "p2": 0,
+    "p3": 0
+  },
+  "checks": {
+    "viewsAndLocale": {
+      "files": 15,
+      "tests": 224,
+      "result": "passed"
+    },
+    "coreAndApi": {
+      "files": 13,
+      "tests": 167,
+      "result": "passed"
+    },
+    "creationContext": {
+      "files": 2,
+      "tests": 66,
+      "result": "passed"
+    },
+    "nativeE2E": {
+      "tests": 4,
+      "result": "passed",
+      "elapsedSeconds": 43.4,
+      "mode": "isolated candidate API and production Electron renderer"
+    },
+    "workspaceTypecheck": {
+      "tasks": 9,
+      "result": "passed"
+    },
+    "lint": {
+      "packages": [
+        "core",
+        "ui",
+        "views"
+      ],
+      "result": "passed",
+      "notes": "0 errors; 30 pre-existing warnings outside this task."
+    },
+    "goHistoryAndVet": {
+      "result": "passed",
+      "database": "task-only iteration audit Go database"
+    },
+    "uiExports": {
+      "files": 62,
+      "result": "passed"
+    },
+    "diffWhitespace": {
+      "result": "passed"
+    }
+  },
+  "renderedMetrics": {
+    "lightContrast": {
+      "warning": {
+        "color": "oklch(0.5 0.1 85)",
+        "foreground": [
+          125,
+          94,
+          7
+        ],
+        "background": [
+          251,
+          251,
+          251
+        ],
+        "ratio": 5.837998451791441
+      },
+      "badge": {
+        "color": "oklch(0.48 0.14 255)",
+        "foreground": [
+          25,
+          93,
+          170
+        ],
+        "background": [
+          229,
+          237,
+          246
+        ],
+        "ratio": 5.576743404132188
+      }
+    },
+    "darkContrast": {
+      "warning": {
+        "color": "oklch(0.78 0.13 85)",
+        "foreground": [
+          221,
+          176,
+          73
+        ],
+        "background": [
+          17,
+          17,
+          20
+        ],
+        "ratio": 9.317504652298007
+      },
+      "badge": {
+        "color": "oklch(0.75 0.14 255)",
+        "foreground": [
+          110,
+          177,
+          255
+        ],
+        "background": [
+          24,
+          32,
+          44
+        ],
+        "ratio": 7.330132089847634
+      }
+    },
+    "panelFocus": {
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineOffset": "-2px"
+    },
+    "filterOpeningTaskRequests": [],
+    "coarsePointer": {
+      "coarse": true,
+      "width": 680,
+      "touchPoints": 5
+    },
+    "headerTargets": [
+      {
+        "name": "Add existing tasks",
+        "height": 44,
+        "width": 153.703125
+      },
+      {
+        "name": "End iteration",
+        "height": 44,
+        "width": 100.09375
+      },
+      {
+        "name": "Copy link",
+        "height": 44,
+        "width": 44
+      },
+      {
+        "name": "More actions",
+        "height": 44,
+        "width": 44
+      }
+    ],
+    "comparison": {
+      "height": 102,
+      "whiteSpace": "normal"
+    },
+    "Cancel iterationContrast": {
+      "light": {
+        "color": "oklch(0.49 0.19 27.325)",
+        "foreground": [
+          179,
+          20,
+          24
+        ],
+        "background": [
+          253,
+          229,
+          231
+        ],
+        "ratio": 5.788184269624453
+      },
+      "dark": {
+        "color": "oklch(0.78 0.15 22.216)",
+        "foreground": [
+          255,
+          141,
+          139
+        ],
+        "background": [
+          75,
+          44,
+          47
+        ],
+        "ratio": 5.548259695758517
+      }
+    },
+    "Delete unused iterationContrast": {
+      "light": {
+        "color": "oklch(0.49 0.19 27.325)",
+        "foreground": [
+          179,
+          20,
+          24
+        ],
+        "background": [
+          253,
+          229,
+          231
+        ],
+        "ratio": 5.788184269624453
+      },
+      "dark": {
+        "color": "oklch(0.78 0.15 22.216)",
+        "foreground": [
+          255,
+          141,
+          139
+        ],
+        "background": [
+          75,
+          44,
+          47
+        ],
+        "ratio": 5.548259695758517
+      }
+    },
+    "disablePreview-light-wide": {
+      "contrast": {
+        "color": "oklch(0.49 0.19 27.325)",
+        "foreground": [
+          179,
+          20,
+          24
+        ],
+        "background": [
+          253,
+          229,
+          231
+        ],
+        "ratio": 5.788184269624453
+      },
+      "destructiveForeground": {
+        "token": "oklch(49% .19 27.325)",
+        "color": "oklch(0.49 0.19 27.325)"
+      },
+      "target": {
+        "x": 322,
+        "y": 844.375,
+        "width": 156.375,
+        "height": 32
+      },
+      "viewport": {
+        "width": 1380,
+        "height": 965,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "overflow": {
+        "dialogScrollWidth": 757,
+        "dialogClientWidth": 757,
+        "documentScrollWidth": 1380
+      }
+    },
+    "disablePreview-dark-wide": {
+      "contrast": {
+        "color": "oklch(0.78 0.15 22.216)",
+        "foreground": [
+          255,
+          141,
+          139
+        ],
+        "background": [
+          75,
+          44,
+          47
+        ],
+        "ratio": 5.548259695758517
+      },
+      "destructiveForeground": {
+        "token": "oklch(78% .15 22.216)",
+        "color": "oklch(0.78 0.15 22.216)"
+      },
+      "target": {
+        "x": 322,
+        "y": 844.375,
+        "width": 156.375,
+        "height": 32
+      },
+      "viewport": {
+        "width": 1380,
+        "height": 965,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "overflow": {
+        "dialogScrollWidth": 757,
+        "dialogClientWidth": 757,
+        "documentScrollWidth": 1380
+      }
+    },
+    "disablePreview-light-coarse-narrow": {
+      "contrast": {
+        "color": "oklch(0.49 0.19 27.325)",
+        "foreground": [
+          179,
+          20,
+          24
+        ],
+        "background": [
+          253,
+          229,
+          231
+        ],
+        "ratio": 5.788184269624453
+      },
+      "destructiveForeground": {
+        "token": "oklch(49% .19 27.325)",
+        "color": "oklch(0.49 0.19 27.325)"
+      },
+      "target": {
+        "x": 16,
+        "y": 772.5,
+        "width": 156.375,
+        "height": 44
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "overflow": {
+        "dialogScrollWidth": 680,
+        "dialogClientWidth": 680,
+        "documentScrollWidth": 680
+      }
+    },
+    "disablePreview-dark-coarse-narrow": {
+      "contrast": {
+        "color": "oklch(0.78 0.15 22.216)",
+        "foreground": [
+          255,
+          141,
+          139
+        ],
+        "background": [
+          75,
+          44,
+          47
+        ],
+        "ratio": 5.548259695758517
+      },
+      "destructiveForeground": {
+        "token": "oklch(78% .15 22.216)",
+        "color": "oklch(0.78 0.15 22.216)"
+      },
+      "target": {
+        "x": 16,
+        "y": 772.5,
+        "width": 156.375,
+        "height": 44
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "overflow": {
+        "dialogScrollWidth": 669,
+        "dialogClientWidth": 669,
+        "documentScrollWidth": 680
+      }
+    },
+    "dateColorScheme": [
+      "dark",
+      "dark"
+    ],
+    "locales": [
+      "en",
+      "zh-Hans"
+    ],
+    "nextIteration": "27269717-5463-4a13-8a01-83f740285f0c",
+    "fixture": {
+      "workspace": "b858bdfc-4341-4926-b75e-8044df9d618f",
+      "period": "b05e8631-417d-4f09-8aa7-cc011c410168",
+      "timezone": "Asia/Shanghai"
+    }
+  },
+  "visualVerdict": {
+    "score": 95,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [],
+    "suggestions": [],
+    "reasoning": "已实际检查四张 disable-preview 浅深色/宽窄屏截图，以及 cancel-preview-light-wide、overview-light-wide、create-form-zh-dark-narrow；停用按钮与取消按钮的危险样式一致，文字、长标题换行及现有界面层级清晰。渲染数据进一步确认文字对比度为 5.788:1/5.548:1、粗指针按钮高 44px，未发现本轮范围内的阻塞视觉问题。"
+  },
+  "screenshots": 19,
+  "sourceFiles": [
+    {
+      "file": ".trellis/spec/core/frontend/iteration-operations.md",
+      "sha256": "8bd5cbed8aa745858cacfd88c0699ec15ad737434f6da525a110aa105479a7e5"
+    },
+    {
+      "file": "apps/desktop/src/renderer/src/routes.tsx",
+      "sha256": "5dcdf0aecc7df54a0bac12a2917a8930ea30c5f020695411b2018f2affd86474"
+    },
+    {
+      "file": "docs/audits/2026-10-09-iterations-impeccable-remediation.md",
+      "sha256": "4d47ee3b80169c0280d1980aec3036c8e68b9a99cfa20df860f27e594435eff1"
+    },
+    {
+      "file": "docs/plans/2026-10-09-iterations-audit-remediation.md",
+      "sha256": "0ce4e0ed2244b963733e08c006ea485ebeb53a76152837639ab6cb161f471cf8"
+    },
+    {
+      "file": "e2e/fixtures/iterations-i1.ts",
+      "sha256": "5c86ac5e4a8aebc6768a25bb184dabdb851603144b5e2e7fd4630e4325e484c9"
+    },
+    {
+      "file": "e2e/fixtures/project-p1-desktop.ts",
+      "sha256": "203775c50aff5e4bbc1a9c83bbe18604c0174490a5d92f7e2f7081894d39083f"
+    },
+    {
+      "file": "e2e/fixtures/project-p1.ts",
+      "sha256": "d7bae3849d67bf7ff5bbb2f1b322329aee275b852d74b7c5b52d156bc98110b4"
+    },
+    {
+      "file": "e2e/iteration-settings.spec.ts",
+      "sha256": "70f5ef26c1395204944aa4893f077466c7ca8780861d6b81aee84a506d5ec469"
+    },
+    {
+      "file": "e2e/iterations-audit-desktop.spec.ts",
+      "sha256": "72f65208cd83a0d4ec395d46ad283d007aa50d81b22a4d4ddbca2dc198c34ccd"
+    },
+    {
+      "file": "e2e/iterations-i1-desktop.spec.ts",
+      "sha256": "38646edbff2c4fd0298dad838c38388df5e9d60820ca7ed3602a92e036c48e91"
+    },
+    {
+      "file": "e2e/iterations-i1-history.spec.ts",
+      "sha256": "ddec1f7b97cfef5efd1f838a6a03aa18b84b36efdb07467e24e16fae78e4dfb2"
+    },
+    {
+      "file": "e2e/iterations-i1.spec.ts",
+      "sha256": "13addb973beb1892a513291e8e566c58eac9f18b41c98f9e7e7f4e5e4ad02a3a"
+    },
+    {
+      "file": "packages/core/api/iteration-schemas.test.ts",
+      "sha256": "65ee2572ed443bc9b10553dc656559874f1dbee353c7852bade54e6adacc792c"
+    },
+    {
+      "file": "packages/core/api/iteration-schemas.ts",
+      "sha256": "4b8439ce0a1c9ec4612c0d7798c25664927b1442ff037a9c808243444c3371f3"
+    },
+    {
+      "file": "packages/core/iterations/activity.test.ts",
+      "sha256": "c2ef90060c0444897253c6588bbe61aff4fced3c500aca1939373d0d1802536d"
+    },
+    {
+      "file": "packages/core/iterations/activity.ts",
+      "sha256": "e775e98f96ce7c3b33392234d5858cfb2816e3dea817b66051f1df1e17ec9158"
+    },
+    {
+      "file": "packages/core/iterations/catalogue.test.ts",
+      "sha256": "e4bece28f24fd2ba4e4c7daa0bc99c7ce38bc5fd4e4d05afef8a76068ad7ebe4"
+    },
+    {
+      "file": "packages/core/iterations/catalogue.ts",
+      "sha256": "60ebb8591ccfd0ec325e52339e3220629206a96b2903da10572e747d24f14645"
+    },
+    {
+      "file": "packages/core/iterations/grouped-issues.test.ts",
+      "sha256": "b57f25e448294b8c60fc973288ec1dc56cf5818158c3d837a90b64fefb2fc5b4"
+    },
+    {
+      "file": "packages/core/iterations/index.ts",
+      "sha256": "1c99637be3fad6b89327aa6c6f4af5e297e0e50b2aaf7b51d2b59afc74061c87"
+    },
+    {
+      "file": "packages/core/iterations/timeline.test.ts",
+      "sha256": "bd7afa81c8a70cfa000d201dea934afe9c6626888fc2d5232c5b8eeaa274201e"
+    },
+    {
+      "file": "packages/core/iterations/timeline.ts",
+      "sha256": "0f2f5256eebc33732f741b337555607e4b546f5a2d1c253566b3a90d5deac1b7"
+    },
+    {
+      "file": "packages/ui/components/ui/button.tsx",
+      "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+    },
+    {
+      "file": "packages/ui/components/ui/dialog.tsx",
+      "sha256": "38185191ff84c6e01e6330029f60fff7839490d4d7a0f0152fe59cf0367221ed"
+    },
+    {
+      "file": "packages/ui/components/ui/dropdown-menu.tsx",
+      "sha256": "124266f0e2f76b6d15cc6d6c1fc45e1d78e7b79dd7929a72d916bf5811e6e267"
+    },
+    {
+      "file": "packages/ui/components/ui/tabs.tsx",
+      "sha256": "2b22cc14a1129b80fd87758794ffa2e49a104f540a004fd755bf625cf4fcfef6"
+    },
+    {
+      "file": "packages/ui/styles/tokens.css",
+      "sha256": "c9fdf39094c7da9ea5418a118130108ce7d03bc07ba8b7abeddef3787b4c83f4"
+    },
+    {
+      "file": "packages/views/iterations/iteration-assignment.test.tsx",
+      "sha256": "7da8c401b8f3b153e6c8d7ec1fac156b4328827d78b05d87d110ec65bcebdf0a"
+    },
+    {
+      "file": "packages/views/iterations/iteration-assignment.tsx",
+      "sha256": "931cd6d875cd99b912e006908499142f21ee99f561e64aedb6219cd311f37eb4"
+    },
+    {
+      "file": "packages/views/iterations/iteration-candidate.test.tsx",
+      "sha256": "c248443fd1d6a7dc7746b95e0ec62a8ec7f90a15ef96e64f653f4c2292871c98"
+    },
+    {
+      "file": "packages/views/iterations/iteration-catalogue.tsx",
+      "sha256": "4d12112314c574a9395c51ff1f984ec6ebfa8a6b631e7df51583c8ed0a42ad63"
+    },
+    {
+      "file": "packages/views/iterations/iteration-chart-closeout.test.tsx",
+      "sha256": "c3355c4cf69145521fbf54c1d7d2d2bd9bf273a9071fb49ddbd3f35610f0ff6c"
+    },
+    {
+      "file": "packages/views/iterations/iteration-current-comparison.tsx",
+      "sha256": "1083b5e89a211169fcebf0b50ad8968e8a9851b671f6c12cf610480b5507c314"
+    },
+    {
+      "file": "packages/views/iterations/iteration-details.test.tsx",
+      "sha256": "0521fc520bf84a3d99719021db479e1a069cd12fa66676b2dd5dff5ae835c150"
+    },
+    {
+      "file": "packages/views/iterations/iteration-error.tsx",
+      "sha256": "dacc26a47501fd392891d5aa6ddb494b0c4e93bd35073e17e10c10c2e78668a9"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events-view.tsx",
+      "sha256": "82e234d7ffb1b9a9aca2414958c8cc7f0b137420816a707f472230dae19e9b23"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events.test.tsx",
+      "sha256": "d878e9462e0ea62f23a7e85d276ca25934c12d79c1fdb9ea78bab9ac750d7a0a"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events.tsx",
+      "sha256": "daf8f6500ab73a8e87afbde950bed218466ca858b170a7c5891d4c40e212575d"
+    },
+    {
+      "file": "packages/views/iterations/iteration-form.test.tsx",
+      "sha256": "c48db49ae576656d66403bfcbd4f528042e15555ace92279b8e0dc3db277d674"
+    },
+    {
+      "file": "packages/views/iterations/iteration-form.tsx",
+      "sha256": "6ef0fa2f27ae3156719b251330ddf9581ee036486b2ecd95e93abb29a46ee4ad"
+    },
+    {
+      "file": "packages/views/iterations/iteration-history.test.tsx",
+      "sha256": "dc63b25feb3d43caef00f412fd33e6683cf816ceb464229c7e19819107358719"
+    },
+    {
+      "file": "packages/views/iterations/iteration-history.tsx",
+      "sha256": "9db279de95f6a3f0b803dbb97868f3893e7ed5d86a2b726453829da3eead8911"
+    },
+    {
+      "file": "packages/views/iterations/iteration-issue-list.tsx",
+      "sha256": "9b75c00d532cd6318f19d8c60d458a48384a1bcc56c2f70cae6b2f2c1ddad4fa"
+    },
+    {
+      "file": "packages/views/iterations/iteration-navigation.test.tsx",
+      "sha256": "93128189e1b79e402d172edb5858363469412d1f9b117de24b8375898d5dda0c"
+    },
+    {
+      "file": "packages/views/iterations/iteration-operation.test.tsx",
+      "sha256": "7f0bedb742631bdbda444c11e531b19f048c9d986c2759acdf258e689672dfda"
+    },
+    {
+      "file": "packages/views/iterations/iteration-operation.tsx",
+      "sha256": "6cd3a8a34dd1a7e09e3c1c62a5a048c801e0ef5eee9b3d43f3f2b80e542bf472"
+    },
+    {
+      "file": "packages/views/iterations/iteration-overview.tsx",
+      "sha256": "5fcc88705e382d6a9e3626a897b48c2487ce8b63f81dd54136e15f8b49ccbf76"
+    },
+    {
+      "file": "packages/views/iterations/iteration-page.tsx",
+      "sha256": "9bdb5b1d2a9b2fc44182d4031731b5d8fe8df7ff75e00316a56aae00c8d33b11"
+    },
+    {
+      "file": "packages/views/iterations/iteration-participation.tsx",
+      "sha256": "5fdf978786569b8af7dc1fcc877741bd89233501de308334d82c2d3fd3705c78"
+    },
+    {
+      "file": "packages/views/iterations/iteration-presentation.ts",
+      "sha256": "b3127ed819943665d4acd8bd84c2a603fea23577e6acc677449f40f8fa256b22"
+    },
+    {
+      "file": "packages/views/iterations/iteration-progress.test.tsx",
+      "sha256": "c21f6f5bcb52e414267f190d0dd94966bfd5019c05fd82118cf549d0b3480330"
+    },
+    {
+      "file": "packages/views/iterations/iteration-progress.tsx",
+      "sha256": "0dfc4883d63a5cc8ec766a782718d143e0b56635c5352d53eae0ff2bbe9e62a4"
+    },
+    {
+      "file": "packages/views/iterations/iteration-recovery.test.tsx",
+      "sha256": "54d08edc073f9c8497ce9b9f722da460a52127edfb1ee3268c5089aa5bac76d6"
+    },
+    {
+      "file": "packages/views/iterations/iteration-recovery.tsx",
+      "sha256": "a5c13f01415e396ef7a15e584705435576ed84cd623be5bc89e48d5e94e4b797"
+    },
+    {
+      "file": "packages/views/iterations/iteration-settings-tab.test.tsx",
+      "sha256": "38a925360270d642c320d5c094f886c264fbc8f68f6ecfc4cb49ec527f61129b"
+    },
+    {
+      "file": "packages/views/iterations/iteration-settings-tab.tsx",
+      "sha256": "634bb904a59c9f308a0852f7f454fa002d359d2de8cc45a1d24f9a9de4818e45"
+    },
+    {
+      "file": "packages/views/iterations/project-iterations.test.tsx",
+      "sha256": "7e4af95e37c1ab24c6987f2db03dd6280e2565a3e4325686a2707b0c9966a4e0"
+    },
+    {
+      "file": "packages/views/iterations/project-iterations.tsx",
+      "sha256": "f754686565cb394ab80c10bfaa8032c28937b4bb69ab86d19771233532872633"
+    },
+    {
+      "file": "packages/views/locales/en/projects.json",
+      "sha256": "09acc483e5c62f68bcc1015f2cca147d34918ce0a573752f5361aa472b740006"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/projects.json",
+      "sha256": "eb34e0fdf551767a73acb49718386a72d72e855b18e30bd61693891c36a73938"
+    },
+    {
+      "file": "packages/views/modals/create-issue-dialog.test.tsx",
+      "sha256": "50a1c3f6f0c3f33a84fc9ca47b57b5b015d9e462a8dfae5e0fd274b28ce6b780"
+    },
+    {
+      "file": "packages/views/modals/create-issue-dialog.tsx",
+      "sha256": "15ca7d2fd4819c0f151ab4dbf180f44e377e9706245d6041433b2152da98e6c3"
+    },
+    {
+      "file": "packages/views/modals/create-issue.test.tsx",
+      "sha256": "993dfd22156754a092dc3a83384a12297b62baa121e84490f4a918adcb755600"
+    },
+    {
+      "file": "packages/views/modals/create-issue.tsx",
+      "sha256": "9357a82b81a388eb0b398f80fec2ae6f26407959ffa9e89f0f5363d9e0dcf008"
+    },
+    {
+      "file": "server/internal/handler/iteration_filter_options_test.go",
+      "sha256": "4f3aebdd0bef9561d5b9abef473ed0048790c21a469bdba2b4a0822c2cded902"
+    },
+    {
+      "file": "server/internal/handler/iteration_history.go",
+      "sha256": "a80096ed7b2e4df270441a72d209ce720af27b12c0cb49f61b9b1d5848dd5ddc"
+    }
+  ],
+  "coverageLimits": [
+    "Production Electron/Chromium rendering; standalone production Next.js browser E2E not rerun.",
+    "680px coarse-pointer emulation; no physical touch-device or full screen-reader traversal."
+  ],
+  "workflowRemaining": null,
+  "commit": "e93a758fe3ec7bd9acdbf7ec891fb940fa9255a0",
+  "workflow": {
+    "implementationCommit": "e93a758fe3ec7bd9acdbf7ec891fb940fa9255a0",
+    "archivePath": ".trellis/tasks/archive/2026-10/10-09-iterations-audit-remediation",
+    "journalSession": 50,
+    "status": "completed"
+  }
+}

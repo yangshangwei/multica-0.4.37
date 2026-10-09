@@ -1,0 +1,459 @@
+{
+  "recordedAt": "2026-10-09T08:12:53.145481+00:00",
+  "commit": "7e1eb8058e9a839fa2f04b169ed058282cb92bd8",
+  "implementation": "complete",
+  "audit": {
+    "score": 19,
+    "outOf": 20,
+    "originalFindingsResolved": 19,
+    "p0": 0,
+    "p1": 0,
+    "p2": 0,
+    "p3": 0,
+    "coverageLimits": [
+      "Actual production Desktop renderer tested; standalone production Next.js browser run not executed.",
+      "680px coarse-pointer emulation tested; physical touch devices and assistive-reader traversal not tested."
+    ],
+    "nativeDateScheme": [
+      "dark",
+      "dark"
+    ]
+  },
+  "checks": {
+    "viewsAndLocale": {
+      "files": 15,
+      "tests": 224,
+      "result": "passed"
+    },
+    "coreAndApi": {
+      "files": 13,
+      "tests": 169,
+      "result": "passed"
+    },
+    "mechanicalBlockingTest": {
+      "tests": 12,
+      "result": "passed"
+    },
+    "nativeE2E": {
+      "tests": 4,
+      "result": "passed",
+      "mode": "isolated API + separate production Electron renderer build",
+      "elapsedSeconds": 23.6
+    },
+    "workspaceTypecheck": {
+      "tasks": 9,
+      "result": "passed"
+    },
+    "lint": {
+      "packages": [
+        "core",
+        "ui",
+        "views"
+      ],
+      "result": "passed",
+      "notes": "Pre-existing unrelated warnings remain; task-scoped lint is clean."
+    },
+    "goHistoryAndVet": {
+      "result": "passed",
+      "database": "task-only multica_iterations_audit_20261009_go"
+    },
+    "uiExports": {
+      "files": 62,
+      "result": "passed"
+    },
+    "diffWhitespace": {
+      "result": "passed"
+    },
+    "detector": {
+      "result": "passed",
+      "findings": 0,
+      "limit": "Tailwind contrast/layout verified separately."
+    }
+  },
+  "renderedMetrics": {
+    "lightContrast": {
+      "warning": {
+        "color": "oklch(0.5 0.1 85)",
+        "foreground": [
+          125,
+          94,
+          7
+        ],
+        "background": [
+          251,
+          251,
+          251
+        ],
+        "ratio": 5.837998451791441
+      },
+      "badge": {
+        "color": "oklch(0.48 0.14 255)",
+        "foreground": [
+          25,
+          93,
+          170
+        ],
+        "background": [
+          229,
+          237,
+          246
+        ],
+        "ratio": 5.576743404132188
+      }
+    },
+    "darkContrast": {
+      "warning": {
+        "color": "oklch(0.78 0.13 85)",
+        "foreground": [
+          221,
+          176,
+          73
+        ],
+        "background": [
+          17,
+          17,
+          20
+        ],
+        "ratio": 9.317504652298007
+      },
+      "badge": {
+        "color": "oklch(0.75 0.14 255)",
+        "foreground": [
+          110,
+          177,
+          255
+        ],
+        "background": [
+          24,
+          32,
+          44
+        ],
+        "ratio": 7.330132089847634
+      }
+    },
+    "panelFocus": {
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineOffset": "-2px"
+    },
+    "filterOpeningTaskRequests": [],
+    "coarsePointer": {
+      "coarse": true,
+      "width": 680,
+      "touchPoints": 5
+    },
+    "headerTargets": [
+      {
+        "name": "Add existing tasks",
+        "height": 44,
+        "width": 153.703125
+      },
+      {
+        "name": "End iteration",
+        "height": 44,
+        "width": 100.09375
+      },
+      {
+        "name": "Copy link",
+        "height": 44,
+        "width": 44
+      },
+      {
+        "name": "More actions",
+        "height": 44,
+        "width": 44
+      }
+    ],
+    "comparison": {
+      "height": 102,
+      "whiteSpace": "normal"
+    },
+    "Cancel iterationContrast": {
+      "light": {
+        "color": "oklch(0.49 0.19 27.325)",
+        "foreground": [
+          179,
+          20,
+          24
+        ],
+        "background": [
+          253,
+          229,
+          231
+        ],
+        "ratio": 5.788184269624453
+      },
+      "dark": {
+        "color": "oklch(0.78 0.15 22.216)",
+        "foreground": [
+          255,
+          141,
+          139
+        ],
+        "background": [
+          75,
+          44,
+          47
+        ],
+        "ratio": 5.548259695758517
+      }
+    },
+    "Delete unused iterationContrast": {
+      "light": {
+        "color": "oklch(0.49 0.19 27.325)",
+        "foreground": [
+          179,
+          20,
+          24
+        ],
+        "background": [
+          253,
+          229,
+          231
+        ],
+        "ratio": 5.788184269624453
+      },
+      "dark": {
+        "color": "oklch(0.78 0.15 22.216)",
+        "foreground": [
+          255,
+          141,
+          139
+        ],
+        "background": [
+          75,
+          44,
+          47
+        ],
+        "ratio": 5.548259695758517
+      }
+    },
+    "dateColorScheme": [
+      "dark",
+      "dark"
+    ],
+    "locales": [
+      "en",
+      "zh-Hans"
+    ],
+    "nextIteration": "2bfd8eb9-2551-40d9-b39c-8188d2413a0b",
+    "fixture": {
+      "workspace": "8e1eb3ba-eed8-47e1-932f-f7f5f9e40e48",
+      "period": "f2015262-ea1b-40ff-9dca-3d6c22c3761b",
+      "timezone": "Asia/Shanghai"
+    }
+  },
+  "sourceFiles": [
+    {
+      "file": ".trellis/spec/core/frontend/iteration-operations.md",
+      "sha256": "96b2abf3086f0796b41139b1bc7b17231e0c852dd69d1b24adeff04001736909"
+    },
+    {
+      "file": "apps/desktop/src/renderer/src/routes.tsx",
+      "sha256": "5dcdf0aecc7df54a0bac12a2917a8930ea30c5f020695411b2018f2affd86474"
+    },
+    {
+      "file": "docs/audits/2026-10-09-iterations-impeccable-remediation.md",
+      "sha256": "a6faa1e6022bf72298abbadf0abc944ac0e70098360a7178ace73a224c30ca82"
+    },
+    {
+      "file": "docs/plans/2026-10-09-iterations-audit-remediation.md",
+      "sha256": "a8be55e5bf09fa3658b03858498e7a309a9ba5d866aaad558098012d0f87f7d2"
+    },
+    {
+      "file": "e2e/fixtures/iterations-i1.ts",
+      "sha256": "5c86ac5e4a8aebc6768a25bb184dabdb851603144b5e2e7fd4630e4325e484c9"
+    },
+    {
+      "file": "e2e/fixtures/project-p1-desktop.ts",
+      "sha256": "203775c50aff5e4bbc1a9c83bbe18604c0174490a5d92f7e2f7081894d39083f"
+    },
+    {
+      "file": "e2e/fixtures/project-p1.ts",
+      "sha256": "d7bae3849d67bf7ff5bbb2f1b322329aee275b852d74b7c5b52d156bc98110b4"
+    },
+    {
+      "file": "e2e/iteration-settings.spec.ts",
+      "sha256": "6794bb67cffc54aa3ec24addad22406033201eed1cce19e152c823613d9417ae"
+    },
+    {
+      "file": "e2e/iterations-audit-desktop.spec.ts",
+      "sha256": "8947c9c4a04c763fe3fcc164a42c291db27bf41605157234534ded96e6f4ac3e"
+    },
+    {
+      "file": "e2e/iterations-i1-desktop.spec.ts",
+      "sha256": "38646edbff2c4fd0298dad838c38388df5e9d60820ca7ed3602a92e036c48e91"
+    },
+    {
+      "file": "e2e/iterations-i1-history.spec.ts",
+      "sha256": "ddec1f7b97cfef5efd1f838a6a03aa18b84b36efdb07467e24e16fae78e4dfb2"
+    },
+    {
+      "file": "e2e/iterations-i1.spec.ts",
+      "sha256": "13addb973beb1892a513291e8e566c58eac9f18b41c98f9e7e7f4e5e4ad02a3a"
+    },
+    {
+      "file": "packages/core/api/iteration-schemas.ts",
+      "sha256": "4b8439ce0a1c9ec4612c0d7798c25664927b1442ff037a9c808243444c3371f3"
+    },
+    {
+      "file": "packages/core/iterations/grouped-issues.test.ts",
+      "sha256": "b57f25e448294b8c60fc973288ec1dc56cf5818158c3d837a90b64fefb2fc5b4"
+    },
+    {
+      "file": "packages/core/iterations/index.ts",
+      "sha256": "1c99637be3fad6b89327aa6c6f4af5e297e0e50b2aaf7b51d2b59afc74061c87"
+    },
+    {
+      "file": "packages/ui/components/ui/button.tsx",
+      "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+    },
+    {
+      "file": "packages/ui/components/ui/dropdown-menu.tsx",
+      "sha256": "124266f0e2f76b6d15cc6d6c1fc45e1d78e7b79dd7929a72d916bf5811e6e267"
+    },
+    {
+      "file": "packages/ui/components/ui/tabs.tsx",
+      "sha256": "2b22cc14a1129b80fd87758794ffa2e49a104f540a004fd755bf625cf4fcfef6"
+    },
+    {
+      "file": "packages/ui/styles/tokens.css",
+      "sha256": "05630d735fa01842b3c43c888b107ec7ac638eeafe7333884ba4ec305fbe5183"
+    },
+    {
+      "file": "packages/views/agents/components/agent-batch-toolbar.test.tsx",
+      "sha256": "feda569997d4ec3db1e97752a6499a16eb80e27c0ba2343276cd018ed0236683"
+    },
+    {
+      "file": "packages/views/iterations/iteration-assignment.test.tsx",
+      "sha256": "7da8c401b8f3b153e6c8d7ec1fac156b4328827d78b05d87d110ec65bcebdf0a"
+    },
+    {
+      "file": "packages/views/iterations/iteration-assignment.tsx",
+      "sha256": "931cd6d875cd99b912e006908499142f21ee99f561e64aedb6219cd311f37eb4"
+    },
+    {
+      "file": "packages/views/iterations/iteration-candidate.test.tsx",
+      "sha256": "c248443fd1d6a7dc7746b95e0ec62a8ec7f90a15ef96e64f653f4c2292871c98"
+    },
+    {
+      "file": "packages/views/iterations/iteration-catalogue.tsx",
+      "sha256": "4d12112314c574a9395c51ff1f984ec6ebfa8a6b631e7df51583c8ed0a42ad63"
+    },
+    {
+      "file": "packages/views/iterations/iteration-current-comparison.tsx",
+      "sha256": "1083b5e89a211169fcebf0b50ad8968e8a9851b671f6c12cf610480b5507c314"
+    },
+    {
+      "file": "packages/views/iterations/iteration-details.test.tsx",
+      "sha256": "0521fc520bf84a3d99719021db479e1a069cd12fa66676b2dd5dff5ae835c150"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events-view.tsx",
+      "sha256": "82e234d7ffb1b9a9aca2414958c8cc7f0b137420816a707f472230dae19e9b23"
+    },
+    {
+      "file": "packages/views/iterations/iteration-events.tsx",
+      "sha256": "daf8f6500ab73a8e87afbde950bed218466ca858b170a7c5891d4c40e212575d"
+    },
+    {
+      "file": "packages/views/iterations/iteration-form.test.tsx",
+      "sha256": "c48db49ae576656d66403bfcbd4f528042e15555ace92279b8e0dc3db277d674"
+    },
+    {
+      "file": "packages/views/iterations/iteration-form.tsx",
+      "sha256": "6ef0fa2f27ae3156719b251330ddf9581ee036486b2ecd95e93abb29a46ee4ad"
+    },
+    {
+      "file": "packages/views/iterations/iteration-history.tsx",
+      "sha256": "9db279de95f6a3f0b803dbb97868f3893e7ed5d86a2b726453829da3eead8911"
+    },
+    {
+      "file": "packages/views/iterations/iteration-issue-list.tsx",
+      "sha256": "9b75c00d532cd6318f19d8c60d458a48384a1bcc56c2f70cae6b2f2c1ddad4fa"
+    },
+    {
+      "file": "packages/views/iterations/iteration-navigation.test.tsx",
+      "sha256": "93128189e1b79e402d172edb5858363469412d1f9b117de24b8375898d5dda0c"
+    },
+    {
+      "file": "packages/views/iterations/iteration-operation.test.tsx",
+      "sha256": "7f0bedb742631bdbda444c11e531b19f048c9d986c2759acdf258e689672dfda"
+    },
+    {
+      "file": "packages/views/iterations/iteration-operation.tsx",
+      "sha256": "d9310aa8a15a1560900ad31e2b7239aef9d35e2c780453ed871c46fdcf6018b7"
+    },
+    {
+      "file": "packages/views/iterations/iteration-overview.tsx",
+      "sha256": "5fcc88705e382d6a9e3626a897b48c2487ce8b63f81dd54136e15f8b49ccbf76"
+    },
+    {
+      "file": "packages/views/iterations/iteration-page.tsx",
+      "sha256": "9bdb5b1d2a9b2fc44182d4031731b5d8fe8df7ff75e00316a56aae00c8d33b11"
+    },
+    {
+      "file": "packages/views/iterations/iteration-participation.tsx",
+      "sha256": "5fdf978786569b8af7dc1fcc877741bd89233501de308334d82c2d3fd3705c78"
+    },
+    {
+      "file": "packages/views/iterations/iteration-presentation.ts",
+      "sha256": "b3127ed819943665d4acd8bd84c2a603fea23577e6acc677449f40f8fa256b22"
+    },
+    {
+      "file": "packages/views/iterations/iteration-recovery.test.tsx",
+      "sha256": "54d08edc073f9c8497ce9b9f722da460a52127edfb1ee3268c5089aa5bac76d6"
+    },
+    {
+      "file": "packages/views/iterations/iteration-recovery.tsx",
+      "sha256": "a5c13f01415e396ef7a15e584705435576ed84cd623be5bc89e48d5e94e4b797"
+    },
+    {
+      "file": "packages/views/iterations/iteration-settings-tab.test.tsx",
+      "sha256": "38a925360270d642c320d5c094f886c264fbc8f68f6ecfc4cb49ec527f61129b"
+    },
+    {
+      "file": "packages/views/iterations/iteration-settings-tab.tsx",
+      "sha256": "634bb904a59c9f308a0852f7f454fa002d359d2de8cc45a1d24f9a9de4818e45"
+    },
+    {
+      "file": "packages/views/iterations/project-iterations.test.tsx",
+      "sha256": "7e4af95e37c1ab24c6987f2db03dd6280e2565a3e4325686a2707b0c9966a4e0"
+    },
+    {
+      "file": "packages/views/iterations/project-iterations.tsx",
+      "sha256": "f754686565cb394ab80c10bfaa8032c28937b4bb69ab86d19771233532872633"
+    },
+    {
+      "file": "packages/views/locales/en/projects.json",
+      "sha256": "72ab8ab40f92937464494b10276961d7e29933af201e0b82c0eda8c0ae17f27f"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/projects.json",
+      "sha256": "1ec18ed2b3a986d047e7493dfa07cedeb517c79aa1928aa6f218c15b644c4e2f"
+    },
+    {
+      "file": "server/internal/handler/iteration_filter_options_test.go",
+      "sha256": "4f3aebdd0bef9561d5b9abef473ed0048790c21a469bdba2b4a0822c2cded902"
+    },
+    {
+      "file": "server/internal/handler/iteration_history.go",
+      "sha256": "a80096ed7b2e4df270441a72d209ce720af27b12c0cb49f61b9b1d5848dd5ddc"
+    }
+  ],
+  "workflowRemaining": "Commit scope review: pre-existing changes are intertwined with the audited implementation; no code has been staged or committed.",
+  "visualVerdict": {
+    "score": 95,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [],
+    "suggestions": [],
+    "reasoning": "Independent native Trellis review inspected all 15 final screenshots. The corrected real ThemeProvider state makes both date calendar icons clear; no other visual defect was confirmed in the reviewed images."
+  },
+  "cleanup": {
+    "ownedBaselineWindow": "closed",
+    "testNativeWindowsAndWorkspaces": "cleaned by fixture finally blocks",
+    "ownedApi": "stopped; task-only data/provenance retained",
+    "existingListeners": "preserved"
+  }
+}

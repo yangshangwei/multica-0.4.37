@@ -1,0 +1,91 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "分拣台"
+  - button "迭代"
+  - status
+  - button "New tab"
+- main:
+  - heading "迭代" [level=1]
+  - link "迭代设置":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/settings?tab=iterations
+  - button "筛选"
+  - button "创建迭代"
+  - tablist "迭代":
+    - tab "当前与计划" [selected]
+    - tab "历史迭代"
+  - tabpanel "当前与计划":
+    - region "迭代时间线":
+      - status: 当前没有进行中的迭代。
+      - article:
+        - time: 10月 15日
+        - link "手测-第2期":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/iterations/33a9d925-f3b6-43d9-86e3-c1617fab3d39
+        - paragraph: 10月15日 – 10月21日
+        - text: 即将开始
+- button "问 Multica"
+- region "Notifications alt+T"
