@@ -24,7 +24,7 @@ import { useIterationLabels } from "./labels";
 import { IterationError, isDefinitiveReadError } from "./iteration-error";
 import { IterationOperation } from "./iteration-operation";
 import { IterationForm } from "./iteration-form";
-import { IterationAssignment } from "./iteration-assignment";
+import { IterationAddExisting } from "./iteration-add-existing";
 import { IterationRecovery } from "./iteration-recovery";
 import { IterationEventsPanel } from "./iteration-events";
 import { IterationIssueList } from "./iteration-issue-list";
@@ -126,7 +126,7 @@ function IterationDetail({ wsId, id, settingsRevision, enabled, atomicHandoff }:
       <TabsContent value="events" keepMounted className="pt-5 data-hidden:hidden">{eventsVisited && <IterationEventsPanel wsId={wsId} id={id} timezone={iteration.timezone} statistics={statistics} snapshot={snapshot} />}</TabsContent>
     </Tabs>
     <Dialog open={editOpen} onOpenChange={setEditOpen}>{editVisited && <DialogContent keepMounted className="max-h-[85vh] overflow-auto sm:max-w-2xl"><DialogHeader><DialogTitle>{t(($) => $.iterations.edit)}</DialogTitle></DialogHeader><IterationForm wsId={wsId} timezone={iteration.timezone} iteration={iteration} expanded available={enabled && known} /></DialogContent>}</Dialog>
-    <Dialog open={assignmentOpen} onOpenChange={setAssignmentOpen}>{assignmentVisited && <DialogContent keepMounted className="max-h-[85vh] overflow-auto sm:max-w-2xl"><DialogHeader><DialogTitle>{t(($) => $.iterations.pages.addExisting)}</DialogTitle><DialogDescription>{iteration.name}</DialogDescription></DialogHeader><IterationAssignment wsId={wsId} targetId={id} expanded available={assignable} onAssigned={() => setAssignmentOpen(false)} /></DialogContent>}</Dialog>
+    <Dialog open={assignmentOpen} onOpenChange={setAssignmentOpen}>{assignmentVisited && <DialogContent keepMounted className="max-h-[85vh] overflow-auto sm:max-w-xl"><DialogHeader><DialogTitle>{t(($) => $.iterations.pages.addExisting)}</DialogTitle><DialogDescription className="[overflow-wrap:anywhere]">{iteration.name}</DialogDescription></DialogHeader><IterationAddExisting wsId={wsId} iteration={iteration} open={assignmentOpen} available={assignable} onAdded={() => setAssignmentOpen(false)} /></DialogContent>}</Dialog>
     {(["start", "cancel", "delete", "end", "handoff"] as const).map((value) => <IterationOperation key={value} wsId={wsId} iteration={iteration} settingsRevision={settingsRevision} operation={value} available={operationAvailable(value)} open={operation === value} onOpenChange={(open) => setOperation(open ? value : null)} hideTrigger />)}
   </div>;
 }

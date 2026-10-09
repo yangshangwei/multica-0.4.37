@@ -183,6 +183,18 @@ export { protectIterationRead, hasIterationReadAccess } from "./access";
 export { validateIterationName } from "./validation";
 
 export {
+  classifyIterationCandidate,
+  parseIssueReferences,
+  iterationCandidateSearchOptions,
+  iterationUnplannedCandidatesOptions,
+  ISSUE_REFERENCE_LIMIT,
+  UNPLANNED_CANDIDATE_LIMIT,
+  type IterationCandidateBlock,
+  type IterationCandidateState,
+  type IterationCandidateResults,
+} from "./candidates";
+
+export {
   usePendingIterationCommands,
   type PendingIterationCommand,
 } from "./command";

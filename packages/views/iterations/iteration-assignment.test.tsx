@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { api } from "@multica/core/api";
-import type { Issue } from "@multica/core/types";
 import type { IterationPreview } from "@multica/core/iterations";
 import { IterationRecovery } from "./iteration-recovery";
 import { IterationAssignment } from "./iteration-assignment";
@@ -41,8 +40,6 @@ vi.mock("@multica/core/api", async (importOriginal) => ({
     applyIterationOperation: vi.fn(),
   },
 }));
-const picker = vi.hoisted(() => ({ filter: undefined as ((issue: Issue) => boolean) | undefined }));
-vi.mock("../modals/issue-picker-modal", () => ({ IssuePickerModal: ({ filterIssue }: { filterIssue: (issue: Issue) => boolean }) => { picker.filter = filterIssue; return null; } }));
 beforeEach(() => {
   vi.resetAllMocks();
   window.localStorage.clear();
@@ -82,22 +79,6 @@ function mount() {
   };
 }
 describe("iteration assignment scope and preview", () => {
-  it("hides terminal candidates unless completed work is explicitly added to an active iteration", async () => {
-    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [{ ...targetA, status: "active" }, targetB], next_cursor: null });
-    render(<QueryClientProvider client={new QueryClient()}><IterationAssignment wsId={ws} /></QueryClientProvider>);
-    const user = userEvent.setup();
-    await user.click(await screen.findByText("Assign to iteration"));
-    expect(picker.filter!({ ...alpha, status: "done" })).toBe(false);
-    expect(picker.filter!({ ...alpha, status: "cancelled" })).toBe(false);
-    await user.click(screen.getByRole("combobox", { name: "Iterations" }));
-    await user.click(await screen.findByRole("option", { name: targetA.name }));
-    await user.click(screen.getByRole("checkbox", { name: "Confirm adding completed work" }));
-    expect(picker.filter!({ ...alpha, status: "done" })).toBe(true);
-    expect(picker.filter!({ ...alpha, status: "cancelled" })).toBe(false);
-    await user.click(screen.getByRole("combobox", { name: "Iterations" }));
-    await user.click(await screen.findByRole("option", { name: targetB.name }));
-    expect(picker.filter!({ ...alpha, status: "done" })).toBe(false);
-  });
   it("previews 1000 UUID-selected tasks in two bulk requests without per-task reads", async () => {
     const tasks = Array.from({ length: 1000 }, (_, index) => ({ ...alpha, id: `30000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}` }));
     vi.mocked(api.previewIteration).mockImplementation(async (_ws, draft) => previewFor(draft, tasks));

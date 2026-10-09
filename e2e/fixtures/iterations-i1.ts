@@ -55,10 +55,16 @@ export async function iterationClosureFlow(page: Page, api: TestApiClient, works
   const remaining = await api.createIssue("I1 remaining delivery task", { status: "todo" });
   await page.getByRole("button", { name: "Add existing tasks", exact: true }).click();
   const assignment = page.getByRole("dialog");
-  await assignment.getByLabel("Task ID", { exact: true }).fill(`${finished.id}, ${remaining.id}`);
-  await assignment.getByLabel("Reason", { exact: true }).fill("Customer delivery commitment");
-  await assignment.getByRole("button", { name: "Preview changes", exact: true }).click();
-  await assignment.getByRole("button", { name: "Assign to iteration", exact: true }).click();
+  // Unplanned open work is offered before typing; planned work is not.
+  const unplanned = assignment.getByRole("region", { name: "Open tasks without an iteration", exact: true });
+  await expect(unplanned.getByRole("checkbox", { name: /I1 completed delivery task/ })).toBeVisible();
+  await expect(unplanned.getByRole("checkbox", { name: /I1 remaining delivery task/ })).toBeVisible();
+  if (handoff) await expect(unplanned.getByText("Existing next-period commitment", { exact: false })).toHaveCount(0);
+  // A pasted ID list resolves exactly; unassigned work joining a plan needs no reason.
+  await assignment.getByRole("textbox", { name: "Search tasks", exact: true }).fill(`${finished.id}, ${remaining.id}`);
+  await assignment.getByRole("button", { name: "Select all 2 available tasks", exact: true }).click();
+  await expect(assignment.getByLabel("Reason", { exact: true })).toHaveCount(0);
+  await assignment.getByRole("button", { name: "Add 2 tasks", exact: true }).click();
   await expect(assignment).toBeHidden();
   await expect.poll(async () => (await api.requestJSON<Detail>(`${base}/iterations/${first.id}`)).statistics.original).toBe(0);
 
