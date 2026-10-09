@@ -153,6 +153,18 @@ describe("ApiClient edit guards", () => {
     const query = new URL(String(fetchMock.mock.calls[0]![0])).searchParams;
     expect(query.get("status_category")).toBe("in_review");
   });
+
+  it("sends the unplanned-work facets the iteration picker relies on", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ issues: [], total: 0 }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    await new ApiClient("https://api.example.test").listIssues({ include_no_iteration: true, status_categories: ["todo", "blocked"] });
+    const query = new URL(String(fetchMock.mock.calls[0]![0])).searchParams;
+    expect(query.get("include_no_iteration")).toBe("true");
+    expect(query.get("status_categories")).toBe("todo,blocked");
+  });
 });
 
 describe("ApiClient pull-request response schema", () => {

@@ -171,6 +171,9 @@ export interface ListIssuesParams {
   creator_filters?: IssueActorRef[];
   project_ids?: string[];
   include_no_project?: boolean;
+  /** Restrict the window to issues outside every iteration. Older backends
+   *  ignore it, so callers must still check `current_iteration_id`. */
+  include_no_iteration?: boolean;
   label_ids?: string[];
   /** Restrict the window to root issues instead of filtering loaded pages. */
   top_level_only?: boolean;

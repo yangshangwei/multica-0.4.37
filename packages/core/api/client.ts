@@ -1365,6 +1365,7 @@ export class ApiClient {
     // issueListOptions pages one bucket per category; without this every
     // bucket fetched the same unfiltered first page.
     if (params?.status_category) search.set("status_category", params.status_category);
+    if (params?.status_categories?.length) search.set("status_categories", params.status_categories.join(","));
     if (params?.priority) search.set("priority", params.priority);
     if (params?.priorities?.length) search.set("priorities", params.priorities.join(","));
     if (params?.assignee_id) search.set("assignee_id", params.assignee_id);
@@ -1381,6 +1382,7 @@ export class ApiClient {
     }
     if (params?.project_ids?.length) search.set("project_ids", params.project_ids.join(","));
     if (params?.include_no_project) search.set("include_no_project", "true");
+    if (params?.include_no_iteration) search.set("include_no_iteration", "true");
     if (params?.label_ids?.length) search.set("label_ids", params.label_ids.join(","));
     if (params?.top_level_only) search.set("top_level_only", "true");
     // No `.length` guard on purpose: an empty ids array must still send

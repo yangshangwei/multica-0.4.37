@@ -1419,6 +1419,13 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 		}
 		where = append(where, "("+strings.Join(ors, " OR ")+")")
 	}
+	// include_no_iteration narrows the window to issues outside every
+	// iteration, so the iteration picker can offer unplanned work without
+	// paging the whole workspace. Like the other facets it is ignored by the
+	// open_only path above.
+	if r.URL.Query().Get("include_no_iteration") == "true" {
+		where = append(where, "i.current_iteration_id IS NULL")
+	}
 
 	labelIDs, ok := parseUUIDParamList(w, r.URL.Query().Get("label_ids"), "label_ids")
 	if !ok {
