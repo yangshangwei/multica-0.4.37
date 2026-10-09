@@ -23,6 +23,7 @@ import { useT } from "../../i18n";
 import { CHAT_COLUMN, CHAT_GUTTER } from "./chat-column";
 
 interface ChatQueueProps {
+  isVisible?: boolean;
   tasks: ChatQueuedTask[];
   headStatus: string | undefined;
   onSendNow: (taskId: string) => Promise<void> | void;
@@ -36,6 +37,7 @@ interface ChatQueueProps {
 }
 
 export function ChatQueue({
+  isVisible = true,
   tasks,
   headStatus,
   onSendNow,
@@ -158,7 +160,7 @@ export function ChatQueue({
                         <Trash2 aria-hidden="true" />
                       )}
                     </Button>
-                    <DropdownMenu>
+                    {isVisible && <DropdownMenu>
                       <DropdownMenuTrigger
                         render={
                           <Button
@@ -201,7 +203,7 @@ export function ChatQueue({
                           {t(($) => $.queue.clear)}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu>}
                   </div>
                 </div>
               );

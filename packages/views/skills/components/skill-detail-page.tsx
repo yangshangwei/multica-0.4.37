@@ -64,6 +64,7 @@ import {
 import { Input } from "@multica/ui/components/ui/input";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Textarea } from "@multica/ui/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -251,6 +252,7 @@ function AddFileInline({
           setError("");
         }}
         onKeyDown={(e) => {
+          e.stopPropagation();
           if (e.key === "Enter") submit();
           if (e.key === "Escape") onCancel();
         }}
@@ -637,15 +639,15 @@ function FilesTab({
     : undefined;
 
   return (
-    <div className="flex min-h-full flex-col md:h-full md:flex-row">
+    <Tabs value={selectedPath} orientation="vertical" className="min-h-full flex-col gap-0 md:h-full md:flex-row">
       {/* The file list IS the second-level navigation, so it uses the same
           rail treatment as the agent detail page's capability/settings nav
           instead of inventing a third sidebar style. */}
-      <aside
-        role="tablist"
-        aria-orientation="vertical"
+      <TabsList
+        render={<aside />}
+        activateOnFocus={false}
         aria-label={t(($) => $.detail.files.list_aria)}
-        className="shrink-0 border-b border-surface-border p-3 md:w-52 md:overflow-y-auto md:border-b-0 md:border-r md:p-4"
+        className="block w-full shrink-0 rounded-none border-b border-surface-border bg-transparent p-3 md:w-52 md:overflow-y-auto md:border-b-0 md:border-r md:p-4"
       >
         <p className="px-2.5 pb-1 text-micro font-semibold uppercase tracking-wider text-muted-foreground">
           {t(($) => $.detail.files.main)}
@@ -694,83 +696,94 @@ function FilesTab({
               {t(($) => $.detail.files.add_file)}
             </Button>
           ))}
-      </aside>
+      </TabsList>
 
-      <section className="flex min-h-[32rem] min-w-0 flex-1 flex-col md:min-h-0">
-        <div className="flex h-10 shrink-0 items-center gap-3 border-b px-3 sm:px-4">
-          <span className="truncate font-mono text-caption text-muted-foreground">
-            {selectedPath}
-          </span>
-          <div className="ml-auto flex shrink-0 items-center gap-1">
-            {isMd && (
-              // The second segment is named for what it does for THIS viewer:
-              // "Edit" when the pane it opens accepts typing, "Plain text"
-              // when the same pane is read-only. Same mode either way — only
-              // the promise differs, and offering an edit the page would
-              // refuse is the thing this rail is careful not to do.
-              <div
-                role="group"
-                aria-label={t(($) => $.detail.files.mode_aria)}
-                className="flex items-center gap-0.5 rounded-md bg-muted p-0.5"
-              >
-                {(["preview", "raw"] as const).map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    aria-pressed={mode === value}
-                    onClick={() => onModeChange(value)}
-                    className={cn(
-                      "h-6 rounded px-2 text-caption font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                      mode === value
-                        ? "bg-surface text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground",
-                    )}
+      {filePaths.map((path) => (
+        <TabsContent
+          key={path}
+          value={path}
+          keepMounted
+          render={<section />}
+          aria-label={path}
+          className="flex min-h-[32rem] min-w-0 flex-1 flex-col data-[hidden]:hidden md:min-h-0"
+        >
+          {selectedPath === path && <>
+            <div className="flex h-10 shrink-0 items-center gap-3 border-b px-3 sm:px-4">
+              <span className="truncate font-mono text-caption text-muted-foreground">
+                {selectedPath}
+              </span>
+              <div className="ml-auto flex shrink-0 items-center gap-1">
+                {isMd && (
+                  // The second segment is named for what it does for THIS viewer:
+                  // "Edit" when the pane it opens accepts typing, "Plain text"
+                  // when the same pane is read-only. Same mode either way — only
+                  // the promise differs, and offering an edit the page would
+                  // refuse is the thing this rail is careful not to do.
+                  <div
+                    role="group"
+                    aria-label={t(($) => $.detail.files.mode_aria)}
+                    className="flex items-center gap-0.5 rounded-md bg-muted p-0.5"
                   >
-                    {value === "preview"
-                      ? t(($) => $.detail.files.mode_preview)
-                      : canEdit
-                        ? t(($) => $.detail.files.mode_edit)
-                        : t(($) => $.detail.files.mode_raw)}
-                  </button>
-                ))}
+                    {(["preview", "raw"] as const).map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        aria-pressed={mode === value}
+                        onClick={() => onModeChange(value)}
+                        className={cn(
+                          "h-6 rounded px-2 text-caption font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          mode === value
+                            ? "bg-surface text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                      >
+                        {value === "preview"
+                          ? t(($) => $.detail.files.mode_preview)
+                          : canEdit
+                            ? t(($) => $.detail.files.mode_edit)
+                            : t(($) => $.detail.files.mode_raw)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {selectedPath !== SKILL_MD && canEdit && (
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          onClick={() => onDeleteFile()}
+                          className="text-muted-foreground hover:text-destructive"
+                          aria-label={t(($) => $.detail.delete_file)}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      }
+                    />
+                    <TooltipContent>{t(($) => $.detail.delete_file)}</TooltipContent>
+                  </Tooltip>
+                )}
               </div>
-            )}
-            {selectedPath !== SKILL_MD && canEdit && (
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={() => onDeleteFile()}
-                      className="text-muted-foreground hover:text-destructive"
-                      aria-label={t(($) => $.detail.delete_file)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  }
-                />
-                <TooltipContent>{t(($) => $.detail.delete_file)}</TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-        </div>
+            </div>
 
-        <div className="min-h-0 flex-1">
-          <FileViewer
-            key={selectedPath}
-            path={selectedPath}
-            content={selectedContent}
-            mode={mode}
-            readOnly={!canEdit}
-            autoFocus={focusEditor}
-            onChange={onContentChange}
-            onFocusHandled={onFocusHandled}
-          />
-        </div>
-      </section>
-    </div>
+            <div className="min-h-0 flex-1">
+              <FileViewer
+                key={selectedPath}
+                path={selectedPath}
+                content={selectedContent}
+                mode={mode}
+                readOnly={!canEdit}
+                autoFocus={focusEditor}
+                onChange={onContentChange}
+                onFocusHandled={onFocusHandled}
+              />
+            </div>
+          </>}
+        </TabsContent>
+      ))}
+    </Tabs>
   );
 }
 
@@ -865,7 +878,7 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
       if (next === "overview") params.delete("view");
       else params.set("view", next);
       const query = params.toString();
-      navigation.replace(`${navigation.pathname}${query ? `?${query}` : ""}`);
+      navigation.replace(`${navigation.pathname}${query ? `?${query}` : ""}${navigation.hash}`);
     },
     [navigation],
   );
@@ -1229,7 +1242,13 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
   return (
     // relative: positioning anchor for the floating save pill (page-centered,
     // same rule as the skills list batch toolbar).
-    <div className="relative flex flex-1 min-h-0 flex-col">
+    <Tabs
+      value={activeView}
+      onValueChange={(value) => {
+        if (typeof value === "string" && isDetailView(value)) selectView(value);
+      }}
+      className="relative min-h-0 flex-1 flex-col gap-0"
+    >
       <BreadcrumbHeader
         segments={[{ href: paths.skills(), label: t(($) => $.page.title) }]}
         leaf={
@@ -1333,28 +1352,23 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
 
       <div
         className="shrink-0 overflow-x-auto border-b px-4 sm:px-6"
-        role="tablist"
-        aria-label={t(($) => $.detail.tabs.aria)}
       >
-        <div className="mx-auto flex max-w-[1440px] items-center gap-6">
+        <TabsList
+          variant="line"
+          activateOnFocus={false}
+          aria-label={t(($) => $.detail.tabs.aria)}
+          className="mx-auto flex w-full max-w-[1440px] justify-start gap-6 p-0 data-[orientation=horizontal]:h-auto"
+        >
           {TABS.map((tab) => (
-            <button
+            <TabsTrigger
               key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={activeView === tab.id}
-              onClick={() => selectView(tab.id)}
-              className={cn(
-                "relative shrink-0 py-3 text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-                activeView === tab.id
-                  ? "text-foreground after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
+              value={tab.id}
+              className="h-auto flex-none rounded-none border-0 px-0 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-[orientation=horizontal]:after:bottom-0"
             >
               {tab.label}
-            </button>
+            </TabsTrigger>
           ))}
-        </div>
+        </TabsList>
       </div>
 
       {conflictPending && canEdit && (
@@ -1375,48 +1389,53 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
         </div>
       )}
 
-      <div
-        className={cn(
-          "min-h-0 flex-1 overflow-y-auto",
-          activeView === "files" && "md:overflow-hidden",
-        )}
-      >
-        {activeView === "overview" ? (
-          <OverviewTab
-            skill={skill}
-            name={name}
-            description={description}
-            presentationMeta={presentationMeta}
-            canEdit={canEdit}
-            creatorName={creator?.name ?? null}
-            skillAgents={skillAgents}
-            onNameChange={setName}
-            onDescriptionChange={setDescription}
-            onPresentationChange={setPresentationMeta}
-            onAddToAgents={() => setShowAddToAgents(true)}
-          />
-        ) : (
-          <FilesTab
-            filePaths={filePaths}
-            selectedPath={selectedPath}
-            selectedContent={selectedContent}
-            mode={fileMode}
-            canEdit={canEdit}
-            addingFile={addingFile}
-            focusEditor={focusPath === selectedPath}
-            onSelectPath={setSelectedPath}
-            onModeChange={setFileMode}
-            onStartAddFile={() => setAddingFile(true)}
-            onAddFile={handleAddFile}
-            onCancelAddFile={() => setAddingFile(false)}
-            onDeleteFile={handleDeleteFile}
-            onRenameFile={handleRenameFile}
-            onEditFile={handleEditFile}
-            onContentChange={handleFileContentChange}
-            onFocusHandled={handleFocusHandled}
-          />
-        )}
-      </div>
+      {TABS.map((tab) => (
+        <TabsContent
+          key={tab.id}
+          value={tab.id}
+          keepMounted
+          className={cn(
+            "min-h-0 flex-1 overflow-y-auto",
+            activeView === "files" && "md:overflow-hidden",
+          )}
+        >
+          {activeView === tab.id && (activeView === "overview" ? (
+            <OverviewTab
+              skill={skill}
+              name={name}
+              description={description}
+              presentationMeta={presentationMeta}
+              canEdit={canEdit}
+              creatorName={creator?.name ?? null}
+              skillAgents={skillAgents}
+              onNameChange={setName}
+              onDescriptionChange={setDescription}
+              onPresentationChange={setPresentationMeta}
+              onAddToAgents={() => setShowAddToAgents(true)}
+            />
+          ) : (
+            <FilesTab
+              filePaths={filePaths}
+              selectedPath={selectedPath}
+              selectedContent={selectedContent}
+              mode={fileMode}
+              canEdit={canEdit}
+              addingFile={addingFile}
+              focusEditor={focusPath === selectedPath}
+              onSelectPath={setSelectedPath}
+              onModeChange={setFileMode}
+              onStartAddFile={() => setAddingFile(true)}
+              onAddFile={handleAddFile}
+              onCancelAddFile={() => setAddingFile(false)}
+              onDeleteFile={handleDeleteFile}
+              onRenameFile={handleRenameFile}
+              onEditFile={handleEditFile}
+              onContentChange={handleFileContentChange}
+              onFocusHandled={handleFocusHandled}
+            />
+          ))}
+        </TabsContent>
+      ))}
 
       {/* Page-level so it covers edits made on either tab. Dirty-only and
           floating, matching the skills list batch toolbar; anchored to the
@@ -1477,12 +1496,12 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
             <DialogDescription>
               {skillAgents.length > 0
                 ? t(($) => $.detail.delete_dialog.description_with_agents, {
-                    name: presentation.name,
-                    count: skillAgents.length,
-                  })
+                  name: presentation.name,
+                  count: skillAgents.length,
+                })
                 : t(($) => $.detail.delete_dialog.description_no_agents, {
-                    name: presentation.name,
-                  })}
+                  name: presentation.name,
+                })}
             </DialogDescription>
           </DialogHeader>
           <div className="rounded-md bg-destructive/10 px-3 py-2 text-caption text-destructive">
@@ -1536,6 +1555,6 @@ export function SkillDetailPage({ skillId }: { skillId: string }) {
         // draft must be replaced instead of tripping the conflict banner.
         onRefreshed={(updated) => adoptServerVersion(updated)}
       />
-    </div>
+    </Tabs>
   );
 }

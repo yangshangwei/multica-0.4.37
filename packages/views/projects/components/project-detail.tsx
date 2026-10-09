@@ -3,13 +3,14 @@ import { ProjectIterations } from "../../iterations/project-iterations";
 
 import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import { useDefaultLayout, usePanelRef } from "react-resizable-panels";
-import { Check, ChevronRight, Link2, MoreHorizontal, PanelRight, Pin, PinOff, Trash2, UserMinus } from "lucide-react";
+import { AlertCircle, Check, ChevronRight, Link2, MoreHorizontal, PanelRight, Pin, PinOff, Trash2, UserMinus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@multica/ui/lib/utils";
 import { copyText } from "@multica/ui/lib/clipboard";
 import { toast } from "sonner";
 import type { ProjectStatus, ProjectPriority, ProjectRiskSignal } from "@multica/core/types";
 import { useAuthStore } from "@multica/core/auth";
+import { ApiError } from "@multica/core/api";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { useUpdateProject, useDeleteProject } from "@multica/core/projects/mutations";
 import { pinListOptions } from "@multica/core/pins";
@@ -66,6 +67,7 @@ import {
 import { ProjectIcon } from "./project-icon";
 import { ProjectIconPicker } from "./project-icon-picker";
 import { BreadcrumbHeader } from "../../layout/breadcrumb-header";
+import { CollectionPageState } from "../../layout/collection-page";
 import {
   AnimatedRightSidebar,
   getAnimatedRightSidebarInitialOpen,
@@ -120,7 +122,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const wsPaths = useWorkspacePaths();
   const router = useNavigation();
   const userId = useAuthStore((s) => s.user?.id);
-  const { data: project, isLoading, error: projectError } = useQuery(projectDetailOptions(wsId, projectId));
+  const { data: project, isLoading, error: projectError, refetch: refetchProject, isFetching: projectFetching } = useQuery(projectDetailOptions(wsId, projectId));
   const capabilities = useQuery(projectCapabilitiesOptions(wsId));
   const [accessLost, setAccessLost] = useState(false);
   const deletedTexts = useProjectAccessStore((state) => state.deleted[JSON.stringify([wsId, projectId])]);
@@ -281,8 +283,23 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
     );
   }
 
-  if (!project) {
+  if (projectError instanceof ApiError && projectError.status === 404) {
     return <div className="flex items-center justify-center h-full text-muted-foreground">{t(($) => $.detail.not_found)}</div>;
+  }
+
+  if (!project) {
+    return (
+      <CollectionPageState
+        icon={AlertCircle}
+        role="alert"
+        title={t(($) => $.detail.load_error)}
+        actions={
+          <Button variant="outline" size="sm" disabled={projectFetching} onClick={() => void refetchProject()}>
+            {t(($) => $.management.retry)}
+          </Button>
+        }
+      />
+    );
   }
 
   const issueMetrics = getProjectIssueMetrics(project);
@@ -589,8 +606,16 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
             }
           />
 
+          {projectError && (
+            <div role="alert" className="flex shrink-0 flex-wrap items-center gap-2 px-4 py-2 text-caption text-muted-foreground">
+              <span>{t(($) => $.detail.refresh_error)}</span>
+              <Button variant="outline" size="sm" disabled={projectFetching} onClick={() => void refetchProject()}>
+                {t(($) => $.management.retry)}
+              </Button>
+            </div>
+          )}
           <ProjectIterations wsId={wsId} projectId={projectId} />
-          <ProjectSquadSection key={project.id} project={project} />
+          <ProjectSquadSection key={`squad:${project.id}`} project={project} />
           <div className="flex items-center gap-2 border-b px-4 py-2">
             {capabilities.data?.overview === true && <Button size="sm" variant={section === "overview" ? "secondary" : "ghost"} onClick={goOverview}>{t(($) => $.management.overview)}</Button>}
             <Button size="sm" variant={section === "issues" ? "secondary" : "ghost"} onClick={() => router.push(wsPaths.projectDetail(projectId, "issues"))}>{t(($) => $.management.issues)}</Button>

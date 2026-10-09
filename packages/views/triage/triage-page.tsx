@@ -883,7 +883,7 @@ function Pagination({
 }) {
   const { t } = useT("triage");
   return (
-    <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-surface-border px-3 py-2">
+    <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-surface-border ps-3 pe-chat-launcher py-2">
       <span className="text-caption text-muted-foreground">
         {t(($) => $.total, { count: total })}
       </span>

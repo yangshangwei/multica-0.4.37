@@ -27,7 +27,8 @@ import { AccessPicker, type AccessChange } from "./inspector/access-picker";
 import type { AgentListRow } from "./agents-page";
 
 /**
- * Floating batch-toolbar for the agents list page. Renders archive/restore
+ * Batch-toolbar for the agents list page; floats on wide screens and stays in
+ * the page's footer flow on compact screens. Renders archive/restore
  * actions (existing) and a "Set access scope" action (new, MUL-4302 / 2026-07-14)
  * that opens a single confirmation dialog with an embedded AccessPicker.
  *
@@ -140,10 +141,10 @@ export function AgentBatchToolbar({
         {rows.length > 0 && (
           <div
             key="agent-batch-toolbar"
-            className="absolute bottom-6 left-1/2 z-50 -translate-x-1/2 max-md:above-chat-launcher"
+            className="w-full min-w-0 shrink-0 px-3 py-2 pe-chat-launcher md:absolute md:bottom-6 md:left-1/2 md:z-50 md:w-max md:max-w-[calc(100%-2rem)] md:-translate-x-1/2 md:p-0"
           >
             <motion.div
-              className="flex items-center gap-1 rounded-lg border bg-background px-2 py-1.5 shadow-lg"
+              className="flex min-w-0 flex-wrap items-center gap-1 rounded-lg border bg-background px-2 py-1.5 shadow-lg"
               initial={{
                 opacity: 0,
                 transform: shouldReduceMotion
@@ -171,59 +172,65 @@ export function AgentBatchToolbar({
                 },
               }}
             >
-        <div className="mr-1 flex items-center gap-1.5 border-r pl-1 pr-2">
-          <span className="text-body font-medium">
-            {t(($) => $.actions.selected, { count: rows.length })}
-          </span>
-          <button
-            type="button"
-            aria-label={t(($) => $.actions.clear_selection)}
-            onClick={onClear}
-            className="rounded p-0.5 transition-colors hover:bg-accent"
-          >
-            <X className="size-3.5 text-muted-foreground" />
-          </button>
-        </div>
+              {/* The compact footer may wrap actions onto a second row, where a
+                  trailing divider would dangle; spacing separates them there. */}
+              <div className="mr-1 flex shrink-0 items-center gap-1.5 whitespace-nowrap pl-1 pr-2 md:border-r">
+                <span className="text-body font-medium">
+                  {t(($) => $.actions.selected, { count: rows.length })}
+                </span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={t(($) => $.actions.clear_selection)}
+                  onClick={onClear}
+                  className="text-muted-foreground"
+                >
+                  <X className="size-3.5" />
+                </Button>
+              </div>
 
-        {anyArchived && (
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled={!allManageable || busy}
-            onClick={() =>
-              runBatch(
-                (id) => api.restoreAgent(id),
-                rows.filter((r) => !!r.agent.archived_at),
-              )
-            }
-          >
-            <ArchiveRestore className="mr-1 size-3.5" />
-            {t(($) => $.row_actions.restore)}
-          </Button>
-        )}
-        {anyActive && (
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled={!anyOwned || busy}
-            onClick={() => setAccessDialogOpen(true)}
-          >
-            {t(($) => $.row_actions.set_access)}
-          </Button>
-        )}
-        {/* Archive sits last: it is the destructive action, kept furthest from
-            the other batch actions. */}
-        {anyActive && (
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled={!allManageable || busy}
-            onClick={() => setConfirmArchive(true)}
-          >
-            <Archive className="mr-1 size-3.5" />
-            {t(($) => $.row_actions.archive)}
-          </Button>
-        )}
+              <div className="flex min-w-0 flex-wrap items-center gap-1">
+                {anyArchived && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={!allManageable || busy}
+                    onClick={() =>
+                      runBatch(
+                        (id) => api.restoreAgent(id),
+                        rows.filter((r) => !!r.agent.archived_at),
+                      )
+                    }
+                  >
+                    <ArchiveRestore className="mr-1 size-3.5" />
+                    {t(($) => $.row_actions.restore)}
+                  </Button>
+                )}
+                {anyActive && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={!anyOwned || busy}
+                    onClick={() => setAccessDialogOpen(true)}
+                  >
+                    {t(($) => $.row_actions.set_access)}
+                  </Button>
+                )}
+                {/* Archive sits last: it is the destructive action, kept furthest
+                    from the other batch actions. */}
+                {anyActive && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={!allManageable || busy}
+                    onClick={() => setConfirmArchive(true)}
+                  >
+                    <Archive className="mr-1 size-3.5" />
+                    {t(($) => $.row_actions.archive)}
+                  </Button>
+                )}
+              </div>
             </motion.div>
           </div>
         )}

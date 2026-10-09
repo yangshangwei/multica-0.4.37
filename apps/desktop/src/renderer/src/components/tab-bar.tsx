@@ -7,7 +7,7 @@ import {
   type RefObject,
 } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { X, Plus, Pin, PinOff, ListX, AppWindow } from "lucide-react";
+import { X, Plus, Pin, PinOff, ListX, AppWindow, ArrowLeft, ArrowRight } from "lucide-react";
 import {
   DndContext,
   PointerSensor,
@@ -43,6 +43,7 @@ import {
   ResourceLeadingVisual,
 } from "@multica/views/layout";
 import { parseIssueWindowPath } from "../../../shared/issue-window";
+import { useT } from "@multica/views/i18n";
 
 const TAB_SCROLL_FADE_SIZE = 24;
 const TAB_ENTRY_EASE = [0.22, 1, 0.36, 1] as const;
@@ -182,6 +183,9 @@ function SortableTabItem({
   isActive,
   isOnly,
   canCloseOthers,
+  canMoveLeft,
+  canMoveRight,
+  onMove,
   isNew,
   shouldReduceMotion,
   showSeparator,
@@ -195,6 +199,9 @@ function SortableTabItem({
    */
   isOnly: boolean;
   canCloseOthers: boolean;
+  canMoveLeft: boolean;
+  canMoveRight: boolean;
+  onMove: (direction: -1 | 1) => void;
   isNew: boolean;
   shouldReduceMotion: boolean;
   /**
@@ -203,6 +210,7 @@ function SortableTabItem({
    */
   showSeparator: boolean;
 }) {
+  const { t } = useT("desktop");
   const setActiveTab = useTabStore((s) => s.setActiveTab);
   const closeTab = useTabStore((s) => s.closeTab);
   const closeOtherTabs = useTabStore((s) => s.closeOtherTabs);
@@ -294,6 +302,13 @@ function SortableTabItem({
       {...attributes}
       {...listeners}
       onClick={handleClick}
+      onKeyDown={(event) => {
+        if (!event.altKey || !event.shiftKey || event.ctrlKey || event.metaKey) return;
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        event.stopPropagation();
+        onMove(event.key === "ArrowLeft" ? -1 : 1);
+      }}
       // Browser convention: middle click closes the tab. Pinned (and sole)
       // tabs suppress the close affordance, so middle click follows suit.
       onAuxClick={(e) => {
@@ -302,6 +317,8 @@ function SortableTabItem({
         handleClose(e);
       }}
       aria-label={tab.pinned ? `${title} (pinned)` : title}
+      aria-current={isActive ? "page" : undefined}
+      aria-keyshortcuts="Alt+Shift+ArrowLeft Alt+Shift+ArrowRight"
       data-tab-active={isActive ? "true" : undefined}
       data-tab-entering={isEntering ? "true" : undefined}
       title={tab.pinned ? `${title} (pinned)` : undefined}
@@ -429,6 +446,14 @@ function SortableTabItem({
                 </>
               )}
             </ContextMenuItem>
+            <ContextMenuItem disabled={!canMoveLeft} onClick={() => onMove(-1)}>
+              <ArrowLeft />
+              {t(($) => $.tabs.move_left)}
+            </ContextMenuItem>
+            <ContextMenuItem disabled={!canMoveRight} onClick={() => onMove(1)}>
+              <ArrowRight />
+              {t(($) => $.tabs.move_right)}
+            </ContextMenuItem>
             <ContextMenuSeparator />
             <ContextMenuItem
               variant="destructive"
@@ -555,12 +580,14 @@ function NewTabButton() {
 }
 
 export function TabBar() {
+  const { t } = useT("desktop");
   const group = useActiveGroup();
   const moveTab = useTabStore((s) => s.moveTab);
   const activeWorkspaceSlug = useTabStore((s) => s.activeWorkspaceSlug);
   const shouldReduceMotion = useReducedMotion() ?? false;
   const tabScrollRef = useRef<HTMLDivElement>(null);
   const previousTabsRef = useRef<TabSnapshot | null>(null);
+  const movedTabFocusRef = useRef<string | null>(null);
   const tabFadeStyle = useScrollFade(
     tabScrollRef,
     TAB_SCROLL_FADE_SIZE,
@@ -603,6 +630,16 @@ export function TabBar() {
       workspaceSlug: activeWorkspaceSlug,
       ids: new Set(currentTabIds),
     };
+
+    const movedTabId = movedTabFocusRef.current;
+    if (movedTabId && tabScrollRef.current) {
+      movedTabFocusRef.current = null;
+      getTabElement(tabScrollRef.current, movedTabId)
+        ?.querySelector<HTMLButtonElement>("button")
+        ?.focus({ preventScroll: true });
+      keepTabVisible(tabScrollRef.current, movedTabId);
+      return;
+    }
 
     if (newlyAddedIds.length > 0) {
       if (newlyAddedIds.includes(activeTabId)) {
@@ -648,10 +685,21 @@ export function TabBar() {
     if (from !== -1 && to !== -1) moveTab(from, to);
   };
 
+  const handleMoveTab = (tabId: string, direction: -1 | 1) => {
+    const from = tabs.findIndex((tab) => tab.id === tabId);
+    const to = from + direction;
+    const source = tabs[from];
+    const destination = tabs[to];
+    if (!source || !destination || source.pinned !== destination.pinned) return;
+    movedTabFocusRef.current = tabId;
+    moveTab(from, to);
+  };
+
   return (
     <div className="flex h-full w-full min-w-0 max-w-full items-center justify-start gap-0.5 px-2">
       <div className="relative flex h-full min-w-0 flex-1 items-center">
         <DndContext
+          accessibility={{ screenReaderInstructions: { draggable: t(($) => $.tabs.reorder_hint) } }}
           sensors={sensors}
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis, restrictToParentElement]}
@@ -678,6 +726,9 @@ export function TabBar() {
                       canCloseOthers={tabs.some(
                         (candidate) => candidate.id !== tab.id && !candidate.pinned,
                       )}
+                      canMoveLeft={index > 0 && tabs[index - 1].pinned === tab.pinned}
+                      canMoveRight={index < tabs.length - 1 && tabs[index + 1].pinned === tab.pinned}
+                      onMove={(direction) => handleMoveTab(tab.id, direction)}
                       isNew={addedTabIdSet.has(tab.id)}
                       shouldReduceMotion={shouldReduceMotion}
                       showSeparator={

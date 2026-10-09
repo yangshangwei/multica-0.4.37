@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createRef, useState } from "react";
 import type { Attachment } from "@multica/core/types";
 import type { UploadResult } from "@multica/core/hooks/use-file-upload";
+import { renderWithI18n } from "../test/i18n";
 
 const mockFocus = vi.hoisted(() => vi.fn());
 const mockSetContent = vi.hoisted(() => vi.fn());
@@ -192,6 +193,26 @@ describe("ContentEditor", () => {
     fireEvent.mouseDown(screen.getByTestId("prosemirror"));
 
     expect(mockFocus).not.toHaveBeenCalled();
+  });
+
+  it("dismisses a link hover portal when its retained host becomes inert", async () => {
+    const view = renderWithI18n(<div><ContentEditor value="[Reference](https://example.com)" /></div>);
+    const editorNode = screen.getByTestId("prosemirror");
+    const link = document.createElement("a");
+    link.href = "https://example.com";
+    link.textContent = "Reference";
+    editorNode.append(link);
+    vi.useFakeTimers();
+    fireEvent.mouseOver(link);
+    await act(async () => { vi.advanceTimersByTime(300); });
+    vi.useRealTimers();
+    await waitFor(() => expect(document.querySelector(".link-hover-card")).toBeVisible());
+    view.rerender(<div inert aria-hidden="true"><ContentEditor isVisible={false} value="[Reference](https://example.com)" /></div>);
+    expect(screen.getByTestId("prosemirror")).toBe(editorNode);
+    expect(document.querySelector(".link-hover-card")).not.toBeInTheDocument();
+    view.rerender(<div><ContentEditor value="[Reference](https://example.com)" /></div>);
+    expect(screen.getByTestId("prosemirror")).toBe(editorNode);
+    expect(document.querySelector(".link-hover-card")).not.toBeInTheDocument();
   });
 
   it("syncs editor content when value changes externally and editor is unfocused", () => {

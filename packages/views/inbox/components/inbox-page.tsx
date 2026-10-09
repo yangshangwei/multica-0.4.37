@@ -55,6 +55,7 @@ import { ErrorBoundary } from "@multica/ui/components/common/error-boundary";
 import { useNavigation, useReportNavigating } from "../../navigation";
 import { toast } from "sonner";
 import {
+  AlertCircle,
   MoreHorizontal,
   Inbox,
   CheckCheck,
@@ -84,6 +85,7 @@ import {
 import { useIsCompact } from "@multica/ui/hooks/use-mobile";
 import { cn } from "@multica/ui/lib/utils";
 import { PAGE_GUTTER, PageHeader } from "../../layout/page-header";
+import { CollectionPageState } from "../../layout/collection-page";
 import { useTimeAgo } from "./inbox-list-item";
 import { InboxList } from "./inbox-list";
 import { InboxFilterMenu } from "./inbox-filter-menu";
@@ -120,23 +122,29 @@ export function InboxPage() {
   }, [urlView]);
 
   const wsId = useWorkspaceId();
-  const { data: rawItems = [], isLoading: loading } = useQuery(inboxListOptions(wsId));
+  const inboxQuery = useQuery(inboxListOptions(wsId));
+  const { data: rawItems = [] } = inboxQuery;
   const items = useMemo(() => deduplicateInboxItems(rawItems), [rawItems]);
 
   // Fetched in both views, not just the archived one: the main list's entry
   // into the archive is labelled with this count, so it has to be known before
   // the user goes there.
+  const archivedQuery = useQuery(archivedInboxListOptions(wsId));
   const {
     data: rawArchivedItems = [],
     isLoading: archivedLoading,
     isError: archivedError,
-  } = useQuery(archivedInboxListOptions(wsId));
+  } = archivedQuery;
   const archivedItems = useMemo(
     () => deduplicateArchivedInboxItems(rawArchivedItems),
     [rawArchivedItems],
   );
 
   const isArchivedView = view === "archived";
+  const viewQuery = isArchivedView ? archivedQuery : inboxQuery;
+  const viewError = viewQuery.isError;
+  const viewHasData = viewQuery.data !== undefined;
+  const viewLoadFailed = viewError && !viewHasData;
   const viewItems = isArchivedView ? archivedItems : items;
   const filters = useInboxFilters(wsId);
   const clearFilters = useInboxFilterStore((state) => state.clearFilters);
@@ -235,7 +243,7 @@ export function InboxPage() {
   // Whether the list currently on screen has finished its first load. The
   // fallback and drain effects below both key on this, and getting it wrong in
   // the archived view means acting on an empty list that simply hasn't arrived.
-  const viewLoading = isArchivedView ? archivedLoading : loading;
+  const viewLoading = viewQuery.isLoading;
 
   // Shared inbox links (?issue=<id>) may point to notifications not in this
   // user's inbox (archived, or never received). Fall back to the issue page
@@ -244,7 +252,7 @@ export function InboxPage() {
   // and `onInboxIssueDeleted` pruned the cache), the issue detail would 404
   // too — clear the selection and stay on /inbox instead.
   useEffect(() => {
-    if (viewLoading) return;
+    if (viewLoading || viewError || !viewHasData) return;
     if (!selectedKey) return;
     if (selected) return;
     if (selectionFilteredOut) return;
@@ -255,6 +263,8 @@ export function InboxPage() {
     replace(wsPaths.issueDetail(selectedKey));
   }, [
     viewLoading,
+    viewError,
+    viewHasData,
     selectedKey,
     selected,
     selectionFilteredOut,
@@ -589,13 +599,17 @@ export function InboxPage() {
     </button>
   );
 
-  const list = archivedError && isArchivedView ? (
-    <div className="flex-1 min-h-0 overflow-y-auto">
-      <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-        <Archive className="mb-3 h-8 w-8 text-faint-foreground" />
-        <p className="text-body">{t(($) => $.errors.archived_load_failed)}</p>
-      </div>
-    </div>
+  const list = viewLoadFailed ? (
+    <CollectionPageState
+      icon={AlertCircle}
+      role="alert"
+      title={isArchivedView ? t(($) => $.errors.archived_load_failed) : t(($) => $.errors.load_failed)}
+      actions={
+        <Button variant="outline" size="sm" disabled={viewQuery.isFetching} onClick={() => void viewQuery.refetch()}>
+          {t(($) => $.errors.retry)}
+        </Button>
+      }
+    />
   ) : (
     <InboxContextMenuProvider
       view={view}
@@ -633,10 +647,20 @@ export function InboxPage() {
     </InboxContextMenuProvider>
   );
 
+  const refreshError = viewError && viewHasData ? (
+    <div role="alert" className="flex shrink-0 flex-wrap items-center gap-2 px-3 py-2 text-caption text-muted-foreground">
+      <span>{t(($) => $.errors.refresh_failed)}</span>
+      <Button variant="outline" size="sm" disabled={viewQuery.isFetching} onClick={() => void viewQuery.refetch()}>
+        {t(($) => $.errors.retry)}
+      </Button>
+    </div>
+  ) : null;
+
   const listPanel = (
     <>
       {listHeader}
       {isArchivedView && archivedBackRow}
+      {refreshError}
       {list}
     </>
   );
@@ -818,6 +842,10 @@ export function InboxPage() {
     </div>
   ) : null;
 
+  if (viewLoadFailed) {
+    return <div className="flex flex-1 flex-col min-h-0">{listPanel}</div>;
+  }
+
   // -- Compact layout: list / detail toggle -----------------------------------
 
   if (isCompact) {
@@ -855,7 +883,7 @@ export function InboxPage() {
       // no-op, and pointed both scroll restoration and the timeline
       // virtualizer at an element that never scrolls. This wrapper only has to
       // give the detail a definite height to fill.
-      return <div className="flex flex-1 flex-col min-h-0">{detailContent}</div>;
+      return <div className="flex flex-1 flex-col min-h-0">{refreshError}{detailContent}</div>;
     }
 
     if (detailItem) {
@@ -864,6 +892,7 @@ export function InboxPage() {
       return (
         <div className="flex flex-1 flex-col min-h-0">
           {compactBackBar}
+          {refreshError}
           <div className="flex-1 min-h-0 overflow-y-auto">{detailContent}</div>
         </div>
       );

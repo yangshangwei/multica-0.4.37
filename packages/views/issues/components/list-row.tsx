@@ -25,6 +25,8 @@ import { LabelChip } from "../../labels/label-chip";
 import { CustomStatusChip } from "./custom-status-chip";
 import { IssueAgentActivityIndicator } from "./issue-agent-activity-indicator";
 import { useIssueSurfaceSelection } from "../surface/selection-context";
+import { Checkbox } from "@multica/ui/components/ui/checkbox";
+import { useT } from "../../i18n";
 
 export interface ChildProgress {
   done: number;
@@ -54,6 +56,7 @@ function ListRowContent({
   containerProps?: Record<string, unknown>;
   checkboxProps?: Pick<React.HTMLAttributes<HTMLDivElement>, "onClick" | "onMouseDown" | "onPointerDown">;
 }) {
+  const { t } = useT("issues");
   const selection = useIssueSurfaceSelection();
   const selected = selection.selectedIds.has(issue.id);
   const toggle = selection.toggle;
@@ -92,15 +95,13 @@ function ListRowContent({
         >
           <PriorityIcon
             priority={issue.priority}
-            className={selected ? "hidden" : "group-hover/row:hidden"}
+            className={selected ? "opacity-0" : "group-hover/row:opacity-0 group-focus-within/row:opacity-0"}
           />
-          <input
-            type="checkbox"
+          <Checkbox
+            aria-label={t(($) => $.table.select_issue, { identifier: issue.identifier })}
             checked={selected}
-            onChange={() => toggle(issue.id)}
-            className={`absolute inset-0 cursor-pointer accent-primary ${
-              selected ? "" : "hidden group-hover/row:block"
-            }`}
+            onCheckedChange={() => toggle(issue.id)}
+            className="absolute inset-0 opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 data-checked:opacity-100"
           />
         </div>
         <AppLink

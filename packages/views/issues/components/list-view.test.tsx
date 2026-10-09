@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
 import type { Issue, IssueStatus, IssueStatusCategory } from "@multica/core/types";
+import { useIssueSelectionStore } from "@multica/core/issues/stores/selection-store";
 import { ListView } from "./list-view";
 import { IssueContextMenuProvider } from "../actions";
 import { ScrollRestorationProvider } from "../../platform";
@@ -274,5 +275,49 @@ describe("ListView custom statuses", () => {
     renderListView([custom], ["in_review"]);
 
     expect(screen.getByText("Waiting on the reporter")).toBeInTheDocument();
+  });
+});
+
+describe("ListView keyboard selection", () => {
+  beforeEach(() => {
+    mockViewState.listCollapsedStatuses = [];
+    useIssueSelectionStore.getState().clear();
+  });
+
+  it("reaches named group and row checkboxes by Tab and selects with Space", async () => {
+    const user = userEvent.setup();
+    renderListView();
+
+    const group = screen.getByRole("checkbox", {
+      name: "Select all loaded issues in Todo",
+    });
+    const first = screen.getByRole("checkbox", { name: "Select MUL-1" });
+    const second = screen.getByRole("checkbox", { name: "Select MUL-2" });
+
+    await user.tab();
+    expect(group).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole("button", { expanded: true })).toHaveFocus();
+    await user.tab();
+    expect(first).toHaveFocus();
+    await user.keyboard(" ");
+
+    expect(first).toBeChecked();
+    expect(second).not.toBeChecked();
+    expect(group).toBePartiallyChecked();
+    expect(mockViewState.listCollapsedStatuses).toEqual([]);
+    expect(first).toHaveFocus();
+
+    await user.tab({ shift: true });
+    await user.tab({ shift: true });
+    expect(group).toHaveFocus();
+    await user.keyboard(" ");
+    expect(group).toBeChecked();
+    expect(first).toBeChecked();
+    expect(second).toBeChecked();
+    await user.keyboard(" ");
+    expect(group).not.toBeChecked();
+    expect(first).not.toBeChecked();
+    expect(second).not.toBeChecked();
   });
 });

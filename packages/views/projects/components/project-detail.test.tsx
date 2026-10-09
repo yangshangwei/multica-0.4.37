@@ -1,13 +1,13 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { act, fireEvent, screen } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { Agent, Issue, Project, Squad } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { ProjectDetail } from "./project-detail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { setApiInstance } from "@multica/core/api";
+import { ApiError, setApiInstance } from "@multica/core/api";
 import type { ApiClient } from "@multica/core/api/client";
 import { projectKeys } from "@multica/core/projects/queries";
 import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, useProjectAccessStore, useProjectProgressDraftStore, writeProjectProgressDraft } from "@multica/core/projects";
@@ -397,6 +397,7 @@ beforeEach(() => {
   mocks.openCreateIssue.mockReset();
   mocks.linkIssue.mockReset().mockResolvedValue(UNLINKED_ISSUE);
   mocks.pickerProps = null;
+  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
 });
 
 describe("ProjectDetail task workspace", () => {
@@ -536,6 +537,76 @@ describe("ProjectDetail project deletion", () => {
 });
 
 vi.mock("./project-description", () => ({ ProjectDescription: () => <div /> }));
+
+describe("ProjectDetail query recovery", () => {
+  const project: Project = { ...p1Project, workspace_id: "workspace-1", status: "in_progress", priority: "medium", lead_type: "member" };
+
+  function renderRecovery(getProject: ReturnType<typeof vi.fn>, cached = false) {
+    mocks.realQueries = true;
+    const server = "https://project-recovery.test";
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+    setApiInstance({ getBaseUrl: () => server, getProject } as unknown as ApiClient);
+    useProjectProgressDraftStore.getState().clearDraft();
+    if (cached) client.setQueryData(projectKeys.detail(project.workspace_id, project.id), project);
+    client.setQueryData(projectP1Keys.capabilities(project.workspace_id, server), { overview: true, updates: true });
+    client.setQueryData(projectP1Keys.overview(project.workspace_id, project.id), { ...p1Overview, project_id: project.id, workspace_id: project.workspace_id });
+    client.setQueryData([...projectP1Keys.updates(project.workspace_id, project.id), null], { items: [], next_cursor: null });
+    for (const key of ["members", "agents", "squads", "pins"]) client.setQueryData([key], []);
+    const view = renderWithI18n(
+      <QueryClientProvider client={client}>
+        <NavigationProvider value={{ push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: `/test-workspace/projects/${project.id}`, searchParams: new URLSearchParams("section=overview"), hash: "", getShareableUrl: (path) => path }}>
+          <ProjectDetail projectId={project.id} />
+        </NavigationProvider>
+      </QueryClientProvider>,
+    );
+    return { ...view, client };
+  }
+
+  it("retries an initial service failure without presenting the project as missing", async () => {
+    const getProject = vi.fn().mockRejectedValueOnce(new ApiError("Unavailable", 500, "Internal Server Error")).mockResolvedValue(project);
+    const view = renderRecovery(getProject);
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load this project");
+    expect(screen.queryByText("Project not found")).not.toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("button", { name: "Write progress" })).toBeInTheDocument();
+    expect(getProject).toHaveBeenCalledTimes(2);
+    view.unmount();
+    view.client.clear();
+  });
+
+  it.each([
+    [404, "Not Found", "Project not found"],
+    [403, "Forbidden", "You no longer have access to this project."],
+  ])("keeps a genuine %i response distinct from a retryable failure", async (status, statusText, message) => {
+    const view = renderRecovery(vi.fn().mockRejectedValue(new ApiError("Unavailable", status, statusText)));
+    expect(await screen.findByText(message)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Write progress" })).not.toBeInTheDocument();
+    view.unmount();
+    view.client.clear();
+  });
+
+  it("keeps the mounted progress editor and its draft through a cached failure and retry", async () => {
+    const user = userEvent.setup();
+    const getProject = vi.fn().mockRejectedValueOnce(new Error("Offline")).mockResolvedValue(project);
+    const view = renderRecovery(getProject, true);
+    await user.click(screen.getByRole("button", { name: "Write progress" }));
+    const editor = screen.getByRole("textbox", { name: "Progress editor" });
+    await user.type(editor, "Unsent progress stays here");
+    await act(async () => { await view.client.refetchQueries({ queryKey: projectKeys.detail(project.workspace_id, project.id), exact: true }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not refresh this project");
+    expect(screen.getByRole("textbox", { name: "Progress editor" })).toBe(editor);
+    expect(editor).toHaveValue("Unsent progress stays here");
+    expect(editor).toHaveFocus();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(screen.queryByText(/Could not refresh this project/)).not.toBeInTheDocument());
+    expect(screen.getByRole("textbox", { name: "Progress editor" })).toBe(editor);
+    expect(editor).toHaveValue("Unsent progress stays here");
+    expect(getProject).toHaveBeenCalledTimes(2);
+    view.unmount();
+    view.client.clear();
+  });
+});
 
 
 it("isolates cached same-tab overview navigation and flushes outgoing text under its own project", async () => {

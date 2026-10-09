@@ -62,8 +62,12 @@ export function ChatFab() {
   return (
     <Tooltip>
       <TooltipTrigger
+        data-chat-launcher=""
         onClick={handleClick}
         aria-label={tooltip}
+        aria-haspopup="dialog"
+        aria-controls="floating-chat-window"
+        aria-expanded={isOpen}
         className={cn(
           // Geometry comes from the shared tokens so the clearance pages
           // reserve for this corner is derived from the same numbers.

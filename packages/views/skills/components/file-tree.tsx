@@ -14,6 +14,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { Input } from "@multica/ui/components/ui/input";
+import { TabsTrigger } from "@multica/ui/components/ui/tabs";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -137,6 +138,7 @@ function TreeNodeItem({
       <div>
         <button
           type="button"
+          aria-expanded={expanded}
           onClick={() => setExpanded(!expanded)}
           className="flex h-8 w-full items-center gap-1.5 rounded-md pr-2.5 text-left text-caption text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           style={{ paddingLeft: `${depth * 12 + 10}px` }}
@@ -203,22 +205,20 @@ function TreeNodeItem({
           : undefined
       }
     >
-      <button
-        type="button"
-        role="tab"
-        aria-selected={isSelected}
+      <TabsTrigger
+        value={node.path}
         onClick={() => onSelect(node.path)}
         className={cn(
-          "flex h-8 min-w-0 flex-1 items-center gap-2 rounded-md pr-2.5 text-left text-caption transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "h-8 min-w-0 flex-1 justify-start gap-2 border-0 py-0 pr-2.5 text-left text-caption font-normal after:hidden data-active:bg-transparent data-active:text-surface-selected-foreground dark:data-active:bg-transparent dark:data-active:text-surface-selected-foreground group-data-[variant=default]/tabs-list:data-active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           isSelected
             ? "font-medium text-surface-selected-foreground"
             : "text-muted-foreground group-hover/row:text-foreground",
         )}
         style={{ paddingLeft: `${depth * 12 + 10}px` }}
       >
-        <Icon className="h-3.5 w-3.5 shrink-0" />
+        <Icon className="size-3.5 shrink-0" />
         <span className="truncate">{node.name}</span>
-      </button>
+      </TabsTrigger>
       {actions && (
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -327,6 +327,7 @@ function RenameRow({
         }}
         onBlur={submit}
         onKeyDown={(event) => {
+          event.stopPropagation();
           if (event.key === "Enter") submit();
           if (event.key === "Escape") onDone();
         }}
@@ -369,8 +370,8 @@ export function FileTree({
     );
   }
 
-  // No `role="tablist"` here: the caller owns the list semantics so a rail
-  // split into "main" + "supporting" groups stays a single tab list.
+  // The caller supplies the shared Tabs root and TabsList so a rail split
+  // into "main" + "supporting" groups has one keyboard navigation sequence.
   return (
     <div className="flex flex-col gap-0.5">
       {tree.map((node) => (

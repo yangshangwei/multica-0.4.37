@@ -58,6 +58,10 @@ function useLinkHover(containerRef: React.RefObject<HTMLElement | null>, disable
     clearTimeout(hideTimer.current);
   }, []);
 
+  useEffect(() => {
+    if (disabled) setState({ visible: false, href: "", anchorEl: null });
+  }, [disabled]);
+
   // Container mouse events — detect <a> hover
   useEffect(() => {
     const container = containerRef.current;
@@ -120,7 +124,7 @@ function useLinkHover(containerRef: React.RefObject<HTMLElement | null>, disable
     }, HIDE_DELAY);
   }, []);
 
-  return { ...state, cardRef, onCardEnter, onCardLeave };
+  return { ...state, visible: state.visible && !disabled, cardRef, onCardEnter, onCardLeave };
 }
 
 // ---------------------------------------------------------------------------

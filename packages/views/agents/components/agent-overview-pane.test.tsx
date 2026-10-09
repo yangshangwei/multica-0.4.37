@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { useState } from "react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Agent, AgentRuntime } from "@multica/core/types";
 import { configStore } from "@multica/core/config";
@@ -29,7 +31,13 @@ vi.mock("./agent-access-settings", () => ({
   AgentAccessSettings: () => <div>agent-access-settings</div>,
 }));
 vi.mock("./tabs/instructions-tab", () => ({
-  InstructionsTab: () => <div>instructions-tab</div>,
+  InstructionsTab: ({ onDirtyChange }: { onDirtyChange: (dirty: boolean) => void }) => {
+    const [draft, setDraft] = useState("");
+    return <input aria-label="Instructions draft" value={draft} onChange={(event) => {
+      setDraft(event.target.value);
+      onDirtyChange(event.target.value !== "");
+    }} />;
+  },
 }));
 vi.mock("./tabs/skills-tab", () => ({
   SkillsTab: () => <div>skills-tab</div>,
@@ -173,6 +181,8 @@ function renderPane(
     view,
     navIntent,
     onNavIntentHandled,
+    searchParams,
+    hash = "",
     queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     }),
@@ -181,6 +191,8 @@ function renderPane(
     view?: DetailTab;
     navIntent?: DetailTab;
     onNavIntentHandled?: () => void;
+    searchParams?: URLSearchParams;
+    hash?: string;
     queryClient?: QueryClient;
   } = {},
 ) {
@@ -189,8 +201,8 @@ function renderPane(
     replace: vi.fn(),
     back: vi.fn(),
     pathname: "/acme/agents/agent-1",
-    searchParams: new URLSearchParams(view ? { view } : {}),
-    hash: "",
+    searchParams: searchParams ?? new URLSearchParams(view ? { view } : {}),
+    hash,
     getShareableUrl: (path) => path,
   };
   const result = render(
@@ -234,6 +246,67 @@ beforeEach(() => {
   dingtalkListingRef.current = { installations: [], configured: false };
   wecomListingRef.current = { installations: [], configured: false };
   telegramListingRef.current = { installations: [], configured: false };
+});
+
+describe("AgentOverviewPane keyboard navigation", () => {
+  it("roves top tabs with arrows and Home/End, activating only on Enter or Space", async () => {
+    const user = userEvent.setup();
+    const { navigation } = renderPane([makeRuntime("claude")], {
+      searchParams: new URLSearchParams("context=review"),
+      hash: "#notes",
+    });
+    const list = screen.getByRole("tablist", { name: "Agent page" });
+    const overview = within(list).getByRole("tab", { name: "Overview" });
+    const work = within(list).getByRole("tab", { name: "Work" });
+    expect(within(list).getAllByRole("tab").filter((tab) => tab.tabIndex === 0)).toHaveLength(1);
+    overview.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(work).toHaveFocus();
+    expect(overview).toHaveAttribute("aria-selected", "true");
+    expect(navigation.replace).not.toHaveBeenCalled();
+    await user.keyboard("{End}");
+    expect(within(list).getByRole("tab", { name: "Settings" })).toHaveFocus();
+    await user.keyboard("{Home}{ArrowRight}{Enter}");
+    expect(work).toHaveAttribute("aria-selected", "true");
+    const panel = screen.getByRole("tabpanel", { name: "Work" });
+    expect(work).toHaveAttribute("aria-controls", panel.id);
+    expect(panel).toHaveTextContent("actor-issues-panel");
+    expect(navigation.replace).toHaveBeenLastCalledWith("/acme/agents/agent-1?context=review&view=work#notes");
+    await user.keyboard("{Home} ");
+    expect(overview).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("keeps a dirty editor mounted while secondary tabs receive focus and honors discard/cancel", async () => {
+    const user = userEvent.setup();
+    const { navigation } = renderPane([makeRuntime("claude")], { view: "instructions" });
+    const editor = screen.getByRole("textbox", { name: "Instructions draft" });
+    fireEvent.change(editor, { target: { value: "Keep this draft" } });
+    const instructions = screen.getByRole("tab", { name: "Instructions" });
+    const skills = screen.getByRole("tab", { name: "Skills" });
+    instructions.focus();
+    await user.keyboard("{ArrowDown}");
+    expect(skills).toHaveFocus();
+    expect(instructions).toHaveAttribute("aria-selected", "true");
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Instructions draft" })).toBe(editor);
+
+    await user.keyboard("{End}");
+    expect(screen.getByRole("tab", { name: "MCP" })).toHaveFocus();
+    await user.keyboard("{Home}{ArrowDown}{Enter}");
+    expect(screen.getByRole("alertdialog")).toBeInTheDocument();
+    expect(editor).toHaveValue("Keep this draft");
+    expect(navigation.replace).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Keep editing" }));
+    expect(editor).toHaveValue("Keep this draft");
+    expect(instructions).toHaveAttribute("aria-selected", "true");
+
+    skills.focus();
+    await user.keyboard(" ");
+    await user.click(screen.getByRole("button", { name: "Discard changes" }));
+    expect(screen.getByRole("tabpanel", { name: "Skills" })).toHaveTextContent("skills-tab");
+    expect(screen.queryByRole("textbox", { name: "Instructions draft" })).not.toBeInTheDocument();
+    expect(navigation.replace).toHaveBeenLastCalledWith("/acme/agents/agent-1?view=skills");
+  });
 });
 
 describe("AgentOverviewPane MCP tab visibility", () => {

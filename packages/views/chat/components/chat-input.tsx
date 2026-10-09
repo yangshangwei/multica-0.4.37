@@ -55,6 +55,9 @@ function isAttachmentReferenced(content: string, attachment: Attachment): boolea
 }
 
 interface ChatInputProps {
+  /** Close transient pickers when the floating window hides, while retaining
+   * the editor instance and its pending draft/upload work. */
+  isVisible?: boolean;
   onSend: (
     content: string,
     attachmentIds: string[] | undefined,
@@ -147,6 +150,7 @@ interface ChatInputProps {
 }
 
 export function ChatInput({
+  isVisible = true,
   onSend,
   restoreDraftRequest,
   conversationStarterRequest,
@@ -650,7 +654,7 @@ export function ChatInput({
         )}
         aria-disabled={noAgent || undefined}
       >
-        {selectedProject && (
+        {isVisible && selectedProject && (
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-3 pt-2">
             <div
               className={cn(
@@ -684,6 +688,7 @@ export function ChatInput({
         )}
         <div className="flex-1 min-h-0 overflow-y-auto px-3 py-2">
           <ContentEditor
+            isVisible={isVisible}
             // See the editorKey / draftKey split note above — editor identity
             // intentionally tracks neither the session nor the agent.
             key={editorKey}
@@ -715,7 +720,7 @@ export function ChatInput({
             showBubbleMenu
           />
         </div>
-        {(uploadEnabled || projectSelectionEnabled || leftAdornment) && (
+        {isVisible && (uploadEnabled || projectSelectionEnabled || leftAdornment) && (
           <div className="absolute bottom-1.5 left-1.5 flex items-center gap-1">
             {(uploadEnabled || projectSelectionEnabled) && (
               <ChatAddMenu
@@ -731,7 +736,7 @@ export function ChatInput({
             {leftAdornment}
           </div>
         )}
-        <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
+        {isVisible && <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
           <SubmitButton
             onClick={submit}
             disabled={hasNothingToSend || submitting || !!disabled || !!noAgent}
@@ -763,7 +768,7 @@ export function ChatInput({
             stopTooltip={t(($) => $.input.stop_tooltip)}
             stopAriaLabel={t(($) => $.input.stop_tooltip)}
           />
-        </div>
+        </div>}
         {uploadEnabled && isDragOver && <FileDropOverlay />}
       </div>
     </div>

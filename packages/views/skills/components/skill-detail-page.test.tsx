@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Skill } from "@multica/core/types";
@@ -126,6 +126,7 @@ const baseSkill: Skill = {
 function renderPage(
   searchParams = new URLSearchParams(),
   locale: SupportedLocale = "en",
+  hash = "",
 ) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -137,7 +138,7 @@ function renderPage(
     back: vi.fn(),
     pathname: "/acme/skills/skill-1",
     searchParams,
-    hash: "",
+    hash,
     getShareableUrl: (path) => path,
   };
   const page = (language: SupportedLocale) => (
@@ -177,6 +178,70 @@ beforeEach(() => {
 });
 
 describe("SkillDetailPage tabs", () => {
+  it("keeps navigation keys inside the add-file input", async () => {
+    const user = userEvent.setup();
+    renderPage(new URLSearchParams("view=files"));
+    await user.click(await screen.findByRole("button", { name: "New file" }));
+    const input = screen.getByPlaceholderText("templates/review.md");
+    await user.type(input, "draft.txt");
+    await user.keyboard("{ArrowDown}{Home}{End}");
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue("draft.txt");
+    expect(screen.getByRole("tab", { name: "SKILL.md" })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("supports manual keyboard activation and associated panels without losing either editor draft", async () => {
+    const user = userEvent.setup();
+    const { replace } = renderPage(new URLSearchParams("context=review"), "en", "#notes");
+    const overview = await screen.findByRole("tab", { name: "Overview" });
+    const files = screen.getByRole("tab", { name: "Files 2" });
+    const list = overview.closest('[role="tablist"]')!;
+    const description = screen.getByRole("textbox", { name: "Description" });
+    fireEvent.change(description, { target: { value: "Keep description draft" } });
+    expect(within(list as HTMLElement).getAllByRole("tab").filter((tab) => tab.tabIndex === 0)).toHaveLength(1);
+    overview.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(files).toHaveFocus();
+    expect(overview).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("textbox", { name: "Description" })).toBe(description);
+    expect(replace).not.toHaveBeenCalled();
+    await user.keyboard("{Home}{End} ");
+    expect(files).toHaveAttribute("aria-selected", "true");
+    expect(files).toHaveAttribute("aria-controls", screen.getByRole("tabpanel", { name: "Files 2" }).id);
+    expect(replace).toHaveBeenLastCalledWith("/acme/skills/skill-1?context=review&view=files#notes");
+
+    await user.click(screen.getByRole("button", { name: "Edit" }));
+    fireEvent.change(screen.getByRole("textbox", { name: /SKILL\.md/ }), { target: { value: "Keep file draft" } });
+    files.focus();
+    await user.keyboard("{ArrowLeft}{Enter}");
+    expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("Keep description draft");
+    expect(replace).toHaveBeenLastCalledWith("/acme/skills/skill-1?context=review#notes");
+    await user.keyboard("{ArrowRight}{Enter}");
+    expect(screen.getByRole("textbox", { name: /SKILL\.md/ })).toHaveValue("Keep file draft");
+    expect(screen.getAllByRole("textbox", { name: /SKILL\.md/ })).toHaveLength(1);
+  });
+
+  it("roves file tabs across the main/supporting groups and preserves unsaved file content", async () => {
+    const user = userEvent.setup();
+    renderPage(new URLSearchParams("view=files"));
+    await user.click(await screen.findByRole("button", { name: "Edit" }));
+    const editor = screen.getByRole("textbox", { name: /SKILL\.md/ });
+    fireEvent.change(editor, { target: { value: "Unpublished main file" } });
+    const main = screen.getByRole("tab", { name: "SKILL.md" });
+    const supporting = screen.getByRole("tab", { name: "patterns.md" });
+    main.focus();
+    await user.keyboard("{ArrowDown}");
+    expect(supporting).toHaveFocus();
+    expect(main).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("textbox", { name: /SKILL\.md/ })).toBe(editor);
+    await user.keyboard("{Home}{End}{Enter}");
+    expect(supporting).toHaveAttribute("aria-selected", "true");
+    expect(supporting).toHaveAttribute("aria-controls", screen.getByRole("tabpanel", { name: "patterns.md" }).id);
+    supporting.focus();
+    await user.keyboard("{ArrowUp} ");
+    expect(screen.getByRole("textbox", { name: /SKILL\.md/ })).toHaveValue("Unpublished main file");
+  });
+
   it("opens on Overview and exposes exactly two tabs", async () => {
     renderPage();
     const tabs = await screen.findAllByRole("tab", { name: /Overview|Files/ });

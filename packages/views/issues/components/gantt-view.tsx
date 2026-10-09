@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { defaultRangeExtractor, useVirtualizer, type Range as VirtualRange } from "@tanstack/react-virtual";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useViewStore, useViewStoreApi } from "@multica/core/issues/stores/view-store-context";
@@ -72,6 +73,7 @@ function isWeekStartUTC(d: Date): boolean {
 const ROW_HEIGHT = 36;
 const HEADER_HEIGHT = 56;
 const LEFT_COL_WIDTH = 320;
+const DATE_OVERSCAN_PX = 120;
 
 const DAY_PX_BY_ZOOM: Record<GanttZoom, number> = {
   day: 36,
@@ -117,26 +119,33 @@ function GanttAxis({
   zoom,
   todayOffsetDays,
   width,
+  visibleDays,
 }: {
   range: Range;
   dayPx: number;
   zoom: GanttZoom;
   todayOffsetDays: number;
   width: number;
+  visibleDays: number[];
 }) {
   const locale = useLocale();
   const totalDays = daysBetween(range.start, range.end);
 
   const monthBlocks = useMemo(() => {
     const out: { label: string; left: number; width: number }[] = [];
-    let cursor = startOfDayUTC(range.start);
-    while (cursor.getTime() < range.end.getTime()) {
+    let cursor = addDays(range.start, visibleDays[0] ?? 0);
+    const windowEnd = addDays(range.start, (visibleDays.at(-1) ?? -1) + 1);
+    while (cursor.getTime() < windowEnd.getTime()) {
+      const monthStart = new Date(
+        Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth(), 1),
+      );
       const monthEnd = new Date(
         Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1),
       );
+      const blockStart = monthStart.getTime() < range.start.getTime() ? range.start : monthStart;
       const blockEnd = monthEnd.getTime() > range.end.getTime() ? range.end : monthEnd;
-      const startDays = daysBetween(range.start, cursor);
-      const widthDays = daysBetween(cursor, blockEnd);
+      const startDays = daysBetween(range.start, blockStart);
+      const widthDays = daysBetween(blockStart, blockEnd);
       out.push({
         label: cursor.toLocaleDateString(locale, {
           month: "short",
@@ -149,7 +158,7 @@ function GanttAxis({
       cursor = monthEnd;
     }
     return out;
-  }, [range, dayPx, locale]);
+  }, [range, dayPx, locale, visibleDays]);
 
   return (
     <div
@@ -158,9 +167,9 @@ function GanttAxis({
     >
       {/* Month row */}
       <div className="relative h-7 border-b">
-        {monthBlocks.map((b, i) => (
+        {monthBlocks.map((b) => (
           <div
-            key={i}
+            key={b.left}
             className="absolute top-0 bottom-0 flex items-center px-2 text-caption font-medium text-foreground"
             style={{ left: b.left, width: b.width }}
           >
@@ -170,7 +179,7 @@ function GanttAxis({
       </div>
       {/* Day / week ticks */}
       <div className="relative h-7">
-        {Array.from({ length: totalDays }, (_, i) => {
+        {visibleDays.map((i) => {
           const date = addDays(range.start, i);
           const isMonth = isMonthStartUTC(date);
           const isWeek = isWeekStartUTC(date);
@@ -242,19 +251,22 @@ function BackgroundLayer({
   dayPx,
   height,
   todayOffsetDays,
+  visibleDays,
 }: {
   range: Range;
   dayPx: number;
   height: number;
   todayOffsetDays: number;
+  visibleDays: number[];
 }) {
   const totalDays = daysBetween(range.start, range.end);
   return (
     <div
+      aria-hidden="true"
       className="pointer-events-none absolute inset-0"
       style={{ height, width: totalDays * dayPx }}
     >
-      {Array.from({ length: totalDays }, (_, i) => {
+      {visibleDays.map((i) => {
         const date = addDays(range.start, i);
         const weekend = isWeekendUTC(date);
         const isMonth = isMonthStartUTC(date);
@@ -295,14 +307,14 @@ function BackgroundLayer({
 // the color of the category it behaves as. Keying this by IssueStatus made the
 // lookup `undefined` for every custom key, so the bar lost its color entirely.
 // (MUL-6243)
-const STATUS_BAR_BG: Record<IssueStatusCategory, string> = {
-  backlog: "bg-muted-foreground/60",
-  todo: "bg-muted-foreground/70",
-  in_progress: "bg-warning",
-  in_review: "bg-success",
-  done: "bg-info",
-  blocked: "bg-destructive",
-  cancelled: "bg-muted-foreground/40",
+const STATUS_BAR_COLORS: Record<IssueStatusCategory, string> = {
+  backlog: "bg-muted text-foreground",
+  todo: "bg-muted text-foreground",
+  in_progress: "bg-warning text-gantt-warning-foreground",
+  in_review: "bg-success text-gantt-bar-foreground",
+  done: "bg-info text-gantt-bar-foreground",
+  blocked: "bg-destructive text-gantt-bar-foreground",
+  cancelled: "bg-muted text-foreground",
 };
 
 // ---------------------------------------------------------------------------
@@ -314,11 +326,19 @@ function ScheduledRow({
   range,
   dayPx,
   totalDays,
+  index,
+  rowCount,
+  top,
+  onFocus,
 }: {
   issue: Issue;
   range: Range;
   dayPx: number;
   totalDays: number;
+  index: number;
+  rowCount: number;
+  top: number;
+  onFocus: () => void;
 }) {
   const { t } = useT("issues");
   const locale = useLocale();
@@ -366,14 +386,21 @@ function ScheduledRow({
   return (
     <IssueActionsContextMenu issue={issue}>
       <div
-        className="flex border-b border-foreground/5 hover:bg-accent/30 transition-colors"
-        style={{ height: ROW_HEIGHT }}
+        role="listitem"
+        aria-posinset={index + 1}
+        aria-setsize={rowCount}
+        data-gantt-row-index={index}
+        onFocusCapture={onFocus}
+        onContextMenuCapture={onFocus}
+        className="absolute inset-x-0 flex border-b border-foreground/5 hover:bg-accent/30 transition-colors"
+        style={{ height: ROW_HEIGHT, top }}
       >
         {/* Sticky label cell */}
         <AppLink
           href={p.issueDetail(issue.id)}
           newTabTitle={issue.identifier}
-          className="sticky left-0 z-[1] flex shrink-0 items-center gap-2 border-r bg-background px-3 text-body min-w-0"
+          data-gantt-issue-link=""
+          className="sticky left-0 z-[1] flex shrink-0 items-center gap-2 border-r bg-background px-3 text-body min-w-0 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring"
           style={{ width: LEFT_COL_WIDTH }}
         >
           <StatusIcon
@@ -408,18 +435,19 @@ function ScheduledRow({
                   <AppLink
                     href={p.issueDetail(issue.id)}
                     newTabTitle={issue.identifier}
+                    aria-label={`${issue.identifier}: ${issue.title}`}
                     className={cn(
-                      "absolute top-1/2 -translate-y-1/2 transition-opacity hover:opacity-90",
+                      "absolute top-1/2 -translate-y-1/2 hover:ring-2 hover:ring-foreground/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                       bar.isMarker
                         ? "h-3 w-3 rotate-45 rounded-[2px]"
                         : "h-5 rounded-md",
-                      STATUS_BAR_BG[issueStatusCategory(issue) ?? "todo"],
+                      STATUS_BAR_COLORS[issueStatusCategory(issue) ?? "todo"],
                       inverted && "ring-2 ring-destructive ring-offset-1 ring-offset-background",
                     )}
                     style={{ left: bar.left, width: bar.width }}
                   >
                     {!bar.isMarker && bar.width > 60 && (
-                      <span className="block truncate px-2 py-[2px] text-micro leading-4 text-white">
+                      <span className="block truncate px-2 py-[2px] text-micro leading-4">
                         {issue.title}
                       </span>
                     )}
@@ -484,12 +512,117 @@ export function GanttView({ issues }: { issues: Issue[] }) {
   const todayOffsetDays = daysBetween(range.start, today);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
+  const [viewport, setViewport] = useState({ left: 0, width: 0 });
+  const hasIssues = scheduled.length > 0;
+
+  useLayoutEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    const target = Math.max(0, LEFT_COL_WIDTH + todayOffsetDays * dayPx - 240);
-    el.scrollLeft = target;
-  }, [todayOffsetDays, dayPx]);
+    // Keep today in the exposed timeline, beyond the sticky label column.
+    el.scrollLeft = Math.max(
+      0,
+      todayOffsetDays * dayPx - Math.max(0, el.clientWidth - LEFT_COL_WIDTH) / 2,
+    );
+    const syncViewport = () => {
+      const left = el.scrollLeft;
+      const width = el.clientWidth;
+      setViewport((current) => current.left === left && current.width === width
+        ? current
+        : { left, width });
+    };
+    syncViewport();
+    const observer = new ResizeObserver(syncViewport);
+    observer.observe(el);
+    el.addEventListener("scroll", syncViewport, { passive: true });
+    return () => {
+      observer.disconnect();
+      el.removeEventListener("scroll", syncViewport);
+    };
+  }, [todayOffsetDays, dayPx, hasIssues]);
+
+  // Arithmetic bounds avoid even allocating a per-day measurement array for
+  // dates outside the viewport. The full width still represents every date.
+  const visibleDays = useMemo(() => {
+    const first = Math.max(0, Math.floor((viewport.left - DATE_OVERSCAN_PX) / dayPx));
+    const last = Math.min(totalDays, Math.ceil(
+      (viewport.left + Math.max(0, viewport.width - LEFT_COL_WIDTH) + DATE_OVERSCAN_PX) / dayPx,
+    ));
+    return Array.from({ length: Math.max(0, last - first) }, (_, i) => first + i);
+  }, [dayPx, totalDays, viewport]);
+
+  const [focusedIssueId, setFocusedIssueId] = useState<string | null>(null);
+  const focusedIndex = useMemo(
+    () => scheduled.findIndex((issue) => issue.id === focusedIssueId),
+    [scheduled, focusedIssueId],
+  );
+  const getRowKey = useCallback((index: number) => scheduled[index]!.id, [scheduled]);
+  const rowRange = useCallback((window: VirtualRange) => {
+    const indexes = defaultRangeExtractor(window);
+    // Scrolling must never unmount the current keyboard/context-menu target.
+    if (focusedIndex >= 0 && !indexes.includes(focusedIndex)) {
+      indexes.push(focusedIndex);
+      indexes.sort((a, b) => a - b);
+    }
+    return indexes;
+  }, [focusedIndex]);
+  const rowVirtualizer = useVirtualizer({
+    count: scheduled.length,
+    getScrollElement: () => scrollRef.current,
+    getItemKey: getRowKey,
+    estimateSize: () => ROW_HEIGHT,
+    scrollMargin: HEADER_HEIGHT,
+    scrollPaddingStart: HEADER_HEIGHT,
+    overscan: 5,
+    rangeExtractor: rowRange,
+  });
+
+  const pendingFocus = useRef<{ index: number; last: boolean } | null>(null);
+  const focusPendingRow = useCallback(() => {
+    const pending = pendingFocus.current;
+    if (!pending) return;
+    const row = scrollRef.current?.querySelector<HTMLElement>(
+      `[data-gantt-row-index="${pending.index}"]`,
+    );
+    if (!row) return;
+    const links = row.querySelectorAll<HTMLAnchorElement>("a[href]");
+    const target = pending.last ? links[links.length - 1] : links[0];
+    if (target) {
+      pendingFocus.current = null;
+      target.focus({ preventScroll: !pending.last });
+    }
+  }, []);
+  useLayoutEffect(focusPendingRow);
+
+  const handleRowKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.altKey || event.ctrlKey || event.metaKey || !(event.target instanceof HTMLAnchorElement)) return;
+    const row = event.target.closest<HTMLElement>("[data-gantt-row-index]");
+    if (!row) return;
+    const index = Number(row.dataset.ganttRowIndex);
+    let next: number;
+    let last = false;
+    switch (event.key) {
+      case "ArrowDown": next = index + 1; break;
+      case "ArrowUp": next = index - 1; break;
+      case "Home": next = 0; break;
+      case "End": next = scheduled.length - 1; break;
+      case "Tab": {
+        const links = row.querySelectorAll<HTMLAnchorElement>("a[href]");
+        const edge = event.shiftKey ? links[0] : links[links.length - 1];
+        if (event.target !== edge) return;
+        next = index + (event.shiftKey ? -1 : 1);
+        last = event.shiftKey;
+        break;
+      }
+      default: return;
+    }
+    const issue = scheduled[next];
+    if (!issue) return;
+    event.preventDefault();
+    pendingFocus.current = { index: next, last };
+    setFocusedIssueId(issue.id);
+    rowVirtualizer.scrollToIndex(next, { align: "auto" });
+    focusPendingRow();
+  };
 
   if (scheduled.length === 0) {
     return (
@@ -538,7 +671,7 @@ export function GanttView({ issues }: { issues: Issue[] }) {
       </div>
 
       {/* Body — single scroll container drives both vertical + horizontal */}
-      <div ref={scrollRef} className="flex-1 min-h-0 overflow-auto">
+      <div ref={scrollRef} className="flex-1 min-h-0 overflow-auto" role="region" tabIndex={0} aria-label={t(($) => $.gantt.timeline_label)}>
         <div style={{ minWidth: LEFT_COL_WIDTH + timelineWidth }}>
           {/* Sticky header row */}
           <div className="sticky top-0 z-20 flex">
@@ -556,11 +689,18 @@ export function GanttView({ issues }: { issues: Issue[] }) {
               zoom={zoom}
               todayOffsetDays={todayOffsetDays}
               width={timelineWidth}
+              visibleDays={visibleDays}
             />
           </div>
 
           {/* Scheduled rows + background overlay */}
-          <div className="relative">
+          <div
+            role="list"
+            aria-label={t(($) => $.gantt.timeline_label)}
+            className="relative"
+            style={{ height: rowVirtualizer.getTotalSize() }}
+            onKeyDown={handleRowKeyDown}
+          >
             {/* Background gridlines + today line spanning all rows. Positioned
                 starting after the left label column. */}
             <div
@@ -572,15 +712,20 @@ export function GanttView({ issues }: { issues: Issue[] }) {
                 dayPx={dayPx}
                 height={scheduled.length * ROW_HEIGHT}
                 todayOffsetDays={todayOffsetDays}
+                visibleDays={visibleDays}
               />
             </div>
-            {scheduled.map((issue) => (
+            {rowVirtualizer.getVirtualItems().map((row) => (
               <ScheduledRow
-                key={issue.id}
-                issue={issue}
+                key={row.key}
+                issue={scheduled[row.index]!}
                 range={range}
                 dayPx={dayPx}
                 totalDays={totalDays}
+                index={row.index}
+                rowCount={scheduled.length}
+                top={row.start - HEADER_HEIGHT}
+                onFocus={() => setFocusedIssueId(scheduled[row.index]!.id)}
               />
             ))}
           </div>

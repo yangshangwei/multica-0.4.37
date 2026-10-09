@@ -4,6 +4,7 @@ import { useMemo, useState, type MouseEvent } from "react";
 import {
   ArrowDown,
   ArrowUp,
+  AlertCircle,
   ChevronDown,
   ExternalLink,
   Filter,
@@ -41,7 +42,7 @@ import { useAuthStore } from "@multica/core/auth";
 import { useActorName } from "@multica/core/workspace/hooks";
 import { memberListOptions } from "@multica/core/workspace/queries";
 import { useModalStore } from "@multica/core/modals";
-import { AppLink, useIntentNavigate, useRowLink } from "../../navigation";
+import { AppLink, rowLinkInteractiveProps, useIntentNavigate, useRowLink } from "../../navigation";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { FILTER_ITEM_CLASS, HoverCheck } from "../../common/hover-check";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
@@ -338,27 +339,22 @@ function ProjectRowActions({
 
 function CheckboxCell({
   checked,
+  name,
   onToggle,
 }: {
   checked: boolean;
+  name: string;
   onToggle: () => void;
 }) {
+  const { t } = useT("projects");
   return (
-    <ListGridCell className="justify-center px-0">
-      <button
-        type="button"
-        aria-pressed={checked}
-        onClick={(e) => {
-          stopRowNavigation(e);
-          onToggle();
-        }}
-        onAuxClick={stopRowNavigation}
-        className={`-m-1.5 flex items-center p-1.5 ${
-          checked ? "" : "opacity-0 transition-opacity group-hover/row:opacity-100"
-        }`}
-      >
-        <Checkbox checked={checked} tabIndex={-1} className="pointer-events-none" />
-      </button>
+    <ListGridCell {...rowLinkInteractiveProps} className="justify-center px-0">
+      <Checkbox
+        checked={checked}
+        aria-label={t(($) => $.table.select_project, { name })}
+        onCheckedChange={onToggle}
+        className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
+      />
     </ListGridCell>
   );
 }
@@ -392,12 +388,17 @@ function ProjectTableRow({
       {...rowLink(rowHref, project.title)}
     >
       {propertyEditor.recovery}
-      <CheckboxCell checked={selected} onToggle={onToggleSelect} />
+      <CheckboxCell checked={selected} name={project.title} onToggle={onToggleSelect} />
       <ListGridCell className="gap-2">
         <ProjectIcon project={project} size="sm" />
-        <span className="min-w-0 truncate text-body font-medium">
+        <AppLink
+          href={rowHref}
+          newTabTitle={project.title}
+          {...rowLinkInteractiveProps}
+          className="min-w-0 truncate rounded-sm text-body font-medium outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
+        >
           {project.title}
-        </span>
+        </AppLink>
       </ListGridCell>
 
       {/* status — core column, always visible */}
@@ -493,25 +494,16 @@ function ProjectTableHeader({
   const { t } = useT("projects");
   const sorted = (field: ProjectSortField) =>
     sortField === field ? sortDirection : false;
-  const anySelected = allSelected || someSelected;
   return (
     <ListGridHeader>
       <div className="flex items-center justify-center">
-        <button
-          type="button"
-          aria-pressed={allSelected}
-          onClick={onToggleAll}
-          className={`-m-1.5 flex items-center p-1.5 ${
-            anySelected ? "" : "opacity-0 transition-opacity group-hover/header:opacity-100"
-          }`}
-        >
-          <Checkbox
-            checked={allSelected}
-            indeterminate={someSelected && !allSelected}
-            tabIndex={-1}
-            className="pointer-events-none"
-          />
-        </button>
+        <Checkbox
+          checked={allSelected}
+          indeterminate={someSelected && !allSelected}
+          aria-label={t(($) => $.table.select_all)}
+          onCheckedChange={onToggleAll}
+          className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
+        />
       </div>
       <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
         {t(($) => $.table.name)}
@@ -815,7 +807,8 @@ export function ProjectsPage() {
   const isCompact = viewMode === "compact";
   const isColVisible = (key: ProjectColumnKey) => !hiddenColumns.includes(key);
 
-  const { data: projects = [], isLoading } = useQuery(projectListOptions(wsId));
+  const projectQuery = useQuery(projectListOptions(wsId));
+  const { data: projects = [], isLoading } = projectQuery;
   const { data: members = [] } = useQuery(memberListOptions(wsId));
   const { data: pins = [] } = useQuery({
     ...pinListOptions(wsId, currentUser?.id ?? ""),
@@ -931,7 +924,8 @@ export function ProjectsPage() {
 
   if (scopeDenied) return <p role="alert" className="p-6">{t(($) => $.management.permission_lost)}</p>;
 
-  const showEmpty = !isLoading && projects.length === 0;
+  const loadFailed = projectQuery.isError && projectQuery.data === undefined;
+  const showEmpty = !isLoading && !loadFailed && projects.length === 0;
   const countBadge = (n: number) => (
     <span className="ml-auto pl-3 text-caption text-muted-foreground">{n}</span>
   );
@@ -952,7 +946,27 @@ export function ProjectsPage() {
         }
       />
 
-      {showEmpty ? (
+      {projectQuery.isError && !loadFailed && (
+        <div role="alert" className="flex shrink-0 flex-wrap items-center gap-2 px-6 py-2 text-caption text-muted-foreground">
+          <span>{t(($) => $.page.refresh_error)}</span>
+          <Button variant="outline" size="sm" disabled={projectQuery.isFetching} onClick={() => void projectQuery.refetch()}>
+            {t(($) => $.management.retry)}
+          </Button>
+        </div>
+      )}
+
+      {loadFailed ? (
+        <CollectionPageState
+          icon={AlertCircle}
+          role="alert"
+          title={t(($) => $.page.load_error)}
+          actions={
+            <Button variant="outline" size="sm" disabled={projectQuery.isFetching} onClick={() => void projectQuery.refetch()}>
+              {t(($) => $.management.retry)}
+            </Button>
+          }
+        />
+      ) : showEmpty ? (
         <CollectionPageState
           icon={FolderKanban}
           title={t(($) => $.page.empty)}

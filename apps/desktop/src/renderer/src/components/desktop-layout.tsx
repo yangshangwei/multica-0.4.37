@@ -1,6 +1,6 @@
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "motion/react";
+import { animate, motion, useMotionValue, type MotionStyle } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@multica/ui/lib/utils";
 import {
@@ -40,12 +40,43 @@ import { UpdateNotificationNavigationBridge } from "./update-notification";
 
 const TOP_BAR_HEIGHT_CLASS = "h-12";
 const WINDOW_TOOLBAR_CLEARANCE = 184;
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const toolbarMotion = {
   type: "spring",
   stiffness: 420,
   damping: 38,
   mass: 0.8,
 } as const;
+
+// Motion's hook snapshots at mount; the desktop shell also needs to respond
+// when the OS preference changes while the window stays open.
+function subscribeToReducedMotion(onChange: () => void) {
+  const query = window.matchMedia(REDUCED_MOTION_QUERY);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+function getReducedMotionPreference() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function useShellGeometry(target: number, shouldReduceMotion: boolean) {
+  const value = useMotionValue(target);
+
+  useLayoutEffect(() => {
+    if (shouldReduceMotion) {
+      // Changing transition options does not cancel an in-flight spring
+      // whose target is unchanged. Jump also stops it and resets velocity.
+      value.jump(target);
+      return;
+    }
+    if (value.get() === target) return;
+    const animation = animate(value, target, toolbarMotion);
+    return () => animation.stop();
+  }, [target, shouldReduceMotion, value]);
+
+  return value;
+}
 
 function WindowToolbar() {
   const { canGoBack, canGoForward, goBack, goForward } = useTabHistory();
@@ -119,24 +150,23 @@ function useNativeNavigationGestures() {
 // The main area's top bar doubles as a window drag region. When the sidebar
 // is not occupying main-flow width, leave room for the fixed window toolbar
 // so tabs do not land beneath the traffic lights / navigation controls.
-function MainTopBar() {
+function MainTopBar({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
   const { state, isCompact } = useSidebar();
   const sidebarHidden = state === "collapsed" || isCompact;
+  const toolbarOffset = useShellGeometry(
+    sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0,
+    shouldReduceMotion,
+  );
 
   return (
     <motion.header
-      animate={{ paddingLeft: sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0 }}
+      style={{ paddingLeft: toolbarOffset }}
       className={cn("relative shrink-0 flex items-center gap-2", TOP_BAR_HEIGHT_CLASS)}
-      initial={false}
-      transition={toolbarMotion}
     >
       <motion.div
         aria-hidden
-        animate={{ left: sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0 }}
         className="absolute inset-y-0 right-0"
-        initial={false}
-        transition={toolbarMotion}
-        style={{ WebkitAppRegion: "drag" } as React.CSSProperties}
+        style={{ left: toolbarOffset, WebkitAppRegion: "drag" } as MotionStyle}
       />
       <div className="relative z-10 flex h-full min-w-0 max-w-full items-center">
         <TabBar />
@@ -148,16 +178,18 @@ function MainTopBar() {
 // The canvas hugs the expanded sidebar with a hairline gap. When the sidebar
 // leaves the main flow, the left margin must grow to mirror the fixed mr-2 so
 // the floating canvas sits symmetrically inside the window frame.
-function MainCanvas({ children }: { children: React.ReactNode }) {
+function MainCanvas({ children, shouldReduceMotion }: {
+  children: React.ReactNode;
+  shouldReduceMotion: boolean;
+}) {
   const { state, isCompact } = useSidebar();
   const sidebarHidden = state === "collapsed" || isCompact;
+  const marginLeft = useShellGeometry(sidebarHidden ? 8 : 2, shouldReduceMotion);
 
   return (
     <motion.div
-      animate={{ marginLeft: sidebarHidden ? 8 : 2 }}
+      style={{ marginLeft }}
       className="relative flex flex-1 min-h-0 flex-col overflow-hidden mr-2 mb-2 rounded-xl bg-page-canvas ring-1 ring-surface-border shadow-[var(--surface-shadow)]"
-      initial={false}
-      transition={toolbarMotion}
     >
       {children}
     </motion.div>
@@ -226,6 +258,11 @@ export function DesktopShell() {
   useInternalLinkHandler();
   useNativeNavigationGestures();
   useNavigationInputBindings();
+  const shouldReduceMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionPreference,
+    () => false,
+  );
 
   // Reactive read of current workspace slug from the platform singleton.
   // On first mount, it is null until WorkspaceRouteLayout (inside the tab
@@ -299,8 +336,8 @@ export function DesktopShell() {
             )}
             {/* Right side: header + content container */}
             <div className="flex flex-1 min-w-0 flex-col">
-              <MainTopBar />
-              <MainCanvas>
+              <MainTopBar shouldReduceMotion={shouldReduceMotion} />
+              <MainCanvas shouldReduceMotion={shouldReduceMotion}>
                 {/* Same indicator, same anchor as web: DashboardLayout puts it
                     at the top of SidebarInset, and MainCanvas is desktop's
                     equivalent relative/overflow-hidden content box. Desktop

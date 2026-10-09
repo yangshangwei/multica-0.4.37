@@ -96,13 +96,13 @@ import { matchesPinyin } from "../../editor/extensions/pinyin-match";
 // Same conventions as the skills/autopilots lists (see list-grid.tsx):
 // deterministic var-width tracks, two-zone responsiveness (≥@2xl WYSIWYG
 // with min-width + horizontal-scroll escape valve; <@2xl static core set of
-// name + status, toggles don't apply).
+// selection + name + status, column toggles don't apply).
 //
 // Agents are identity-type entities (few, avatar + persona), so rows are
 // the TWO-LINE form: avatar left, name + description right, 64px tall —
 // the documented exception to the single-line management-list rule.
 const GRID_COLS =
-  "grid-cols-[0.75rem_minmax(120px,1fr)_var(--agc-status-mobile)_1.75rem_0.75rem] " +
+  "grid-cols-[0.75rem_1rem_minmax(120px,1fr)_var(--agc-status-mobile)_1.75rem_0.75rem] " +
   "@2xl:grid-cols-[0.75rem_1rem_minmax(200px,1fr)_15rem_var(--agc-status-desktop)_var(--agc-owner)_var(--agc-access)_var(--agc-runtime)_var(--agc-lastactive)_var(--agc-runs)_var(--agc-model)_var(--agc-created)_1.75rem_0.75rem]";
 
 // Two-line rows; the virtualizer's fixed-size contract.
@@ -390,30 +390,21 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
 
 function CheckboxCell({
   checked,
+  label,
   onToggle,
 }: {
   checked: boolean;
+  label: string;
   onToggle: () => void;
 }) {
   return (
-    <ListGridCell className="hidden justify-center px-0 @2xl:flex">
-      <button
-        type="button"
-        aria-pressed={checked}
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggle();
-        }}
-        className={`-m-1.5 flex items-center p-1.5 ${
-          checked ? "" : "opacity-0 transition-opacity group-hover/row:opacity-100"
-        }`}
-      >
-        <Checkbox
-          checked={checked}
-          tabIndex={-1}
-          className="pointer-events-none"
-        />
-      </button>
+    <ListGridCell {...rowLinkInteractiveProps} className="justify-center px-0">
+      <Checkbox
+        aria-label={label}
+        checked={checked}
+        onCheckedChange={onToggle}
+        className="opacity-0 transition-opacity group-hover/row:opacity-100 focus-visible:opacity-100 data-checked:opacity-100"
+      />
     </ListGridCell>
   );
 }
@@ -695,27 +686,16 @@ function AgentListHeader({
   const { t } = useT("agents");
   const sorted = (field: AgentSortField) =>
     sortField === field ? sortDirection : false;
-  const anySelected = allSelected || someSelected;
   return (
     <ListGridHeader>
-      <div className="hidden items-center justify-center @2xl:flex">
-        <button
-          type="button"
-          aria-pressed={allSelected}
-          onClick={onToggleAll}
-          className={`-m-1.5 flex items-center p-1.5 ${
-            anySelected
-              ? ""
-              : "opacity-0 transition-opacity group-hover/header:opacity-100"
-          }`}
-        >
-          <Checkbox
-            checked={allSelected}
-            indeterminate={someSelected && !allSelected}
-            tabIndex={-1}
-            className="pointer-events-none"
-          />
-        </button>
+      <div className="flex items-center justify-center">
+        <Checkbox
+          aria-label={t(($) => $.selection.select_all)}
+          checked={allSelected}
+          indeterminate={someSelected && !allSelected}
+          onCheckedChange={onToggleAll}
+          className="opacity-0 transition-opacity group-hover/header:opacity-100 focus-visible:opacity-100 data-checked:opacity-100 data-indeterminate:opacity-100"
+        />
       </div>
       <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
         {t(($) => $.columns.agent)}
@@ -802,7 +782,7 @@ function LoadingSkeleton() {
       )}
     >
       <ListGridHeader>
-        <span aria-hidden="true" className="hidden @2xl:inline" />
+        <span aria-hidden="true" />
         <ListGridHeaderCell>
           <Skeleton className="h-3 w-12" />
         </ListGridHeaderCell>
@@ -833,7 +813,7 @@ function LoadingSkeleton() {
       </ListGridHeader>
       {Array.from({ length: 5 }).map((_, i) => (
         <ListGridRow key={i} className="h-16 hover:bg-transparent">
-          <span aria-hidden="true" className="hidden @2xl:inline" />
+          <span aria-hidden="true" />
           <ListGridCell className="gap-3">
             <Skeleton className="size-8 rounded-full" />
             <div className="min-w-0 flex-1 space-y-1.5">
@@ -1228,7 +1208,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   return (
     // relative: positioning anchor for the batch toolbar (page-centered,
     // not viewport-centered).
-    <div className="relative flex flex-1 min-h-0 flex-col">
+    <div className="relative flex flex-1 min-h-0 flex-col max-md:overflow-y-auto">
       <PageHeaderBar
         totalCount={totalCount}
         onCreate={() => navigation.push(paths.newAgent())}
@@ -1280,7 +1260,10 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
           )}
           <div
             ref={listScrollRef}
-            className="min-h-0 flex-1 overflow-auto @container"
+            // Keep the header, a group heading and one row scrollable when the
+            // compact footer wraps. The page can scroll in shorter windows.
+            className={`min-h-0 flex-1 overflow-auto @container${selectedRows.length > 0 ? " max-md:min-h-[calc(var(--agent-row-height)+4.5rem)]" : ""}`}
+            style={{ "--agent-row-height": `${ROW_HEIGHT}px` } as React.CSSProperties}
           >
             <ListGrid
               className={`${GRID_COLS} @2xl:min-w-[var(--agc-minw)]`}
@@ -1327,6 +1310,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
                     >
                       <CheckboxCell
                         checked={selectedIds.has(row.agent.id)}
+                        label={t(($) => $.selection.select_agent, { name: row.agent.name })}
                         onToggle={() => toggleSelected(row.agent.id)}
                       />
                       <NameCell row={row} showOwner={scope !== "mine" && !isColVisible("owner")} showStatusDot={!isColVisible("status")} />

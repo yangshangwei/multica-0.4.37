@@ -94,6 +94,10 @@ export function ChatWindow() {
   const { t } = useT("chat");
   const wsId = useWorkspaceId();
   const isOpen = useChatStore((s) => s.isOpen);
+  const isExpanded = useChatStore((s) => s.isExpanded);
+  const windowRef = useRef<HTMLDivElement>(null);
+  const { renderWidth, renderHeight, isAtMax, boundsReady, isDragging, toggleExpand, startDrag } = useChatResize(windowRef);
+  const isVisible = isOpen && (isExpanded || boundsReady);
   const activeSessionId = useChatStore((s) => s.activeSessionId);
   const { data: quickActionsPending = null } = useQuery(
     chatQuickActionsPendingOptions(activeSessionId ?? ""),
@@ -182,7 +186,7 @@ export function ChatWindow() {
   } = useChatTaskActions(activeSessionId, enqueueLocalRestore);
   // Nonce handed to ChatInput to pull focus into the compose box: when a new
   // chat starts (⊕ or switching agent), and whenever the window itself opens.
-  const { focusRequest, requestInputFocus } = useChatInputFocus(isOpen);
+  const { focusRequest, requestInputFocus, onFocusCapture } = useChatInputFocus(isOpen, windowRef, isVisible);
   const [conversationStarterRequest, setConversationStarterRequest] = useState<{
     id: number;
     content: string;
@@ -748,16 +752,9 @@ export function ChatWindow() {
     setOpen(false);
   }, [activeSessionId, pendingTaskId, setOpen]);
 
-  const isExpanded = useChatStore((s) => s.isExpanded);
-
-  const windowRef = useRef<HTMLDivElement>(null);
-  const { renderWidth, renderHeight, isAtMax, boundsReady, isDragging, toggleExpand, startDrag } = useChatResize(windowRef);
-
   // Show the list (vs empty state) as soon as there's anything to display —
   // a real message, or a pending task whose timeline will stream in.
   const hasMessages = messages.length > 0 || !!pendingTaskId;
-
-  const isVisible = isOpen && (isExpanded || boundsReady);
 
   // Small screens drop the floating-card form entirely — a 90%-of-375px
   // "window" is all chrome and no content, so the panel goes full-screen
@@ -789,7 +786,7 @@ export function ChatWindow() {
   const keyboard = useVisualViewportKeyboard();
   const containerStyle: React.CSSProperties = {
     transformOrigin: "bottom right",
-    pointerEvents: isOpen ? "auto" : "none",
+    pointerEvents: isVisible ? "auto" : "none",
     ...(isMobile
       ? {
           // Full-screen panel anchored to the visible bottom edge;
@@ -825,6 +822,13 @@ export function ChatWindow() {
   return (
     <motion.div
       ref={windowRef}
+      id="floating-chat-window"
+      role="dialog"
+      aria-label={t(($) => $.page.title)}
+      aria-hidden={!isVisible}
+      inert={!isVisible}
+      tabIndex={-1}
+      onFocusCapture={onFocusCapture}
       className={containerClass}
       style={containerStyle}
       initial={{ opacity: 0, scale: 0.95, ...motionSize }}
@@ -842,7 +846,7 @@ export function ChatWindow() {
     >
       {!isMobile && <ChatResizeHandles onDragStart={startDrag} />}
       {/* Header — ⊕ new + session dropdown | window tools */}
-      <div className="flex items-center justify-between border-b px-4 py-2.5 gap-2">
+      {isVisible && <div className="flex items-center justify-between border-b px-4 py-2.5 gap-2">
         <div className="flex items-center gap-1 min-w-0">
           <Tooltip>
             <TooltipTrigger
@@ -851,6 +855,7 @@ export function ChatWindow() {
                   variant="ghost"
                   size="icon-sm"
                   className="rounded-full text-muted-foreground"
+                  aria-label={t(($) => $.window.new_chat_tooltip)}
                   onClick={handleNewChat}
                 />
               }
@@ -877,6 +882,7 @@ export function ChatWindow() {
                     variant="ghost"
                     size="icon-sm"
                     className="text-muted-foreground"
+                    aria-label={isExpanded || isAtMax ? t(($) => $.window.restore_tooltip) : t(($) => $.window.expand_tooltip)}
                     onClick={toggleExpand}
                   />
                 }
@@ -895,6 +901,7 @@ export function ChatWindow() {
                   variant="ghost"
                   size="icon-sm"
                   className="text-muted-foreground"
+                  aria-label={t(($) => $.window.minimize_tooltip)}
                   onClick={handleMinimize}
                 />
               }
@@ -904,7 +911,7 @@ export function ChatWindow() {
             <TooltipContent side="top">{t(($) => $.window.minimize_tooltip)}</TooltipContent>
           </Tooltip>
         </div>
-      </div>
+      </div>}
 
       {/* Messages / skeleton / empty state */}
       {showSkeleton ? (
@@ -972,6 +979,7 @@ export function ChatWindow() {
       )}
 
       <ChatQueue
+        isVisible={isVisible}
         tasks={queuedTasks}
         headStatus={pendingTask?.status}
         onSendNow={handleSendQueuedTaskNow}
@@ -985,6 +993,7 @@ export function ChatWindow() {
        *  agent has been archived (read-only); locked out entirely when there's
        *  no agent (the EmptyState above carries the CTA). */}
       <ChatInput
+        isVisible={isVisible}
         onSend={handleSend}
         restoreDraftRequest={restoreDraftRequest}
         conversationStarterRequest={conversationStarterRequest}

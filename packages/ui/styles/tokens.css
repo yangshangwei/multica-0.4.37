@@ -31,10 +31,15 @@
     --color-input: var(--input);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
-    --color-destructive-foreground: var(--destructive-foreground);    --color-success: var(--success);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-success: var(--success);
     --color-warning: var(--warning);
-    --color-warning-foreground: var(--warning-foreground);    --color-info: var(--info);
-    --color-info-foreground: var(--info-foreground);    /* Skill category tones: one hue per fixed skill category. Used only via
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-gantt-bar-foreground: var(--gantt-bar-foreground);
+    --color-gantt-warning-foreground: var(--gantt-warning-foreground);
+    /* Skill category tones: one hue per fixed skill category. Used only via
        the skill presentation icon / sidebar so the palette stays coherent. */
     --color-skill-research: var(--skill-research);
     --color-skill-design: var(--skill-design);
@@ -194,7 +199,8 @@
     --accent-foreground: oklch(0.21 0.006 285.885);
     --destructive: oklch(0.577 0.245 27.325);
     /* Tinted destructive controls require darker ink than their fill token. */
-    --destructive-foreground: oklch(0.49 0.19 27.325);    --border: oklch(0.945 0.003 286.32);
+    --destructive-foreground: oklch(0.49 0.19 27.325);
+    --border: oklch(0.945 0.003 286.32);
     --input: oklch(0.92 0.004 286.32);
     --ring: oklch(0.705 0.015 286.067);
     /* Brand-derived blue gradient (h=255 = brand hue). chart-1 equals brand
@@ -222,8 +228,15 @@
     --warning: oklch(0.75 0.16 85);
     /* Text tones are independent from status/chart fills. These clear AA
        on the page and raised surfaces, including a 10% chart-1 badge tint. */
-    --warning-foreground: oklch(0.50 0.10 85);    --info: oklch(0.55 0.18 250);
-    --info-foreground: oklch(0.48 0.14 255);    --skill-research: oklch(0.55 0.18 300);
+    --warning-foreground: oklch(0.50 0.10 85);
+    --info: oklch(0.55 0.18 250);
+    --info-foreground: oklch(0.48 0.14 255);
+    /* Solid Gantt status fills need their own text pair: light success
+       requires full white for AA; warning and dark-mode fills need dark ink.
+       Keep these separate from global status/primary tokens. */
+    --gantt-bar-foreground: oklch(1 0 0);
+    --gantt-warning-foreground: oklch(0.21 0.006 285.885);
+    --skill-research: oklch(0.55 0.18 300);
     --skill-design: oklch(0.55 0.16 330);
     --skill-engineering: oklch(0.55 0.16 255);
     --skill-quality: oklch(0.58 0.15 150);
@@ -276,7 +289,8 @@
     --accent: oklch(0.274 0.006 286.033);
     --accent-foreground: oklch(0.985 0 0);
     --destructive: oklch(0.704 0.191 22.216);
-    --destructive-foreground: oklch(0.78 0.15 22.216);    --border: oklch(1 0 0 / 6%);
+    --destructive-foreground: oklch(0.78 0.15 22.216);
+    --border: oklch(1 0 0 / 6%);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.552 0.016 285.938);
     /* Dark mode mirrors light mode's "primary → secondary" gradient on the
@@ -300,8 +314,11 @@
     --brand-foreground: oklch(0.985 0 0);
     --success: oklch(0.65 0.15 145);
     --warning: oklch(0.70 0.16 85);
-    --warning-foreground: oklch(0.78 0.13 85);    --info: oklch(0.65 0.18 250);
-    --info-foreground: oklch(0.75 0.14 255);    --skill-research: oklch(0.72 0.16 300);
+    --warning-foreground: oklch(0.78 0.13 85);
+    --info: oklch(0.65 0.18 250);
+    --info-foreground: oklch(0.75 0.14 255);
+    --gantt-bar-foreground: oklch(0.21 0.006 285.885);
+    --skill-research: oklch(0.72 0.16 300);
     --skill-design: oklch(0.72 0.16 330);
     --skill-engineering: oklch(0.72 0.16 255);
     --skill-quality: oklch(0.74 0.14 150);

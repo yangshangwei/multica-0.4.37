@@ -8,6 +8,7 @@ const state = vi.hoisted(() => ({
   replace: vi.fn(),
   params: new URLSearchParams("issue=a"),
   rows: ["a", "b"],
+  total: 2,
 }));
 vi.mock("../i18n", () => ({
   useT: () => ({
@@ -143,7 +144,7 @@ vi.mock("@tanstack/react-query", async (original) => ({
       };
     if (kind === "list")
       return {
-        data: { items: state.rows.map(item), total: state.rows.length },
+        data: { items: state.rows.map(item), total: state.total },
       };
     if (kind === "detail") return { data: item("a") };
     if (kind === "history") return { data: { entries: [], total: 0 } };
@@ -154,6 +155,7 @@ vi.mock("@tanstack/react-query", async (original) => ({
 beforeEach(() => {
   state.enabled = true;
   state.rows = ["a", "b"];
+  state.total = 2;
   state.params = new URLSearchParams("issue=a");
   state.replace.mockClear();
 });
@@ -219,4 +221,15 @@ it("adopts external route changes instead of pinning the original filters", () =
   expect(screen.getByRole("textbox", { name: en.search })).toHaveValue(
     "external",
   );
+});
+
+it("reserves the chat launcher corner while enabled pagination advances the queue", () => {
+  state.total = 101;
+  render(<TriagePage />);
+
+  const next = screen.getByRole("button", { name: en.next });
+  expect(next).toBeEnabled();
+  expect(next.parentElement?.parentElement).toHaveClass("pe-chat-launcher");
+  fireEvent.click(next);
+  expect(state.replace).toHaveBeenCalledWith("/acme/triage?issue=a&offset=50");
 });

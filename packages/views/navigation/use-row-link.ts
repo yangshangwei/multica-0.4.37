@@ -12,12 +12,13 @@ import { useNavigation } from "./context";
  * `<a>`) given that row's href. Calling it per row keeps it outside the
  * rules-of-hooks trap of invoking `useNavigation` inside a `.map()`.
  *
- * The whole row navigates on click — the row is the click target, so the
- * name cell stays plain text (no nested `<a>`, which would be a redundant
- * second entry point). Interactive cells (checkbox, kebab, inline editors)
- * must stop propagation so interacting with them never reaches these
- * handlers — spread `rowLinkInteractiveProps` on them rather than wiring
- * `onClick` alone, because the row handles `auxclick` too.
+ * The whole row provides pointer navigation. Its name cell should also
+ * expose an AppLink for direct keyboard navigation. Nested links and other
+ * interactive cells (checkbox, kebab, inline editors) must stop propagation
+ * so activating them never reaches these handlers — spread
+ * `rowLinkInteractiveProps` rather than wiring `onClick` alone, because the
+ * row handles `auxclick` too. For Checkbox, isolate the containing cell so
+ * the primitive's sibling hidden input cannot trigger row navigation.
  *
  * Mirrors AppLink's modifier semantics via `resolveClickIntent`: a plain left
  * click pushes; cmd/ctrl (or a middle click) opens a background tab on

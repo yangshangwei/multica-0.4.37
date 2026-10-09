@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { describe, expect, it, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { useSidebar } from "@multica/ui/components/ui/sidebar";
@@ -11,6 +11,26 @@ import { RESOURCES } from "@multica/views/locales";
 // the sidebar under test never renders. Gating behaviour itself is covered by
 // desktop-layout.workspace-gate.test.tsx.
 const WORKSPACES = [{ id: "ws-1", slug: "acme" }];
+
+let reducedMotion = false;
+let mediaEvents = new EventTarget();
+
+beforeEach(() => {
+  reducedMotion = false;
+  mediaEvents = new EventTarget();
+  vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+    media: query,
+    get matches() { return query === "(prefers-reduced-motion: reduce)" && reducedMotion; },
+    onchange: null,
+    addEventListener: mediaEvents.addEventListener.bind(mediaEvents),
+    removeEventListener: mediaEvents.removeEventListener.bind(mediaEvents),
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: mediaEvents.dispatchEvent.bind(mediaEvents),
+  }));
+});
+
+afterEach(() => vi.restoreAllMocks());
 
 // The shell is the only thing under test here, so everything it mounts around
 // the sidebar is stubbed out. What survives is the pair that has to agree:
@@ -126,5 +146,71 @@ describe("DesktopShell sidebar trigger", () => {
       "data-external-trigger",
       "true",
     );
+  });
+
+  it.each(["at launch", "while running"])("applies final geometry when reduced motion is enabled %s", async (when) => {
+    reducedMotion = when === "at launch";
+    const { container, getByTestId } = renderShell();
+    const header = container.querySelector("header")!;
+    const dragRegion = header.firstElementChild as HTMLElement;
+    const canvas = getByTestId("page-content").parentElement!;
+    const trigger = container.querySelector("[data-slot='sidebar-trigger']")!;
+
+    if (when === "while running") {
+      act(() => {
+        reducedMotion = true;
+        mediaEvents.dispatchEvent(new Event("change"));
+      });
+    }
+
+    for (const [padding, margin] of [[184, 8], [0, 2]]) {
+      fireEvent.click(trigger);
+      for (let frame = 0; frame < 5; frame++) {
+        await act(async () => {
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        });
+        expect(header.style.paddingLeft).toBe(`${padding}px`);
+        expect(dragRegion.style.left).toBe(`${padding}px`);
+        expect(canvas.style.marginLeft).toBe(`${margin}px`);
+      }
+    }
+  });
+
+  it("finishes an in-flight animation when reduced motion is enabled and restores ordinary motion afterward", async () => {
+    const { container, getByTestId } = renderShell();
+    const header = container.querySelector("header")!;
+    const dragRegion = header.firstElementChild as HTMLElement;
+    const canvas = getByTestId("page-content").parentElement!;
+    const trigger = container.querySelector("[data-slot='sidebar-trigger']")!;
+    const nextFrame = async () => {
+      await act(async () => {
+        await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      });
+    };
+
+    fireEvent.click(trigger);
+    for (let frame = 0; frame < 5 && !Number.parseFloat(header.style.paddingLeft); frame++) {
+      await nextFrame();
+    }
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(184);
+
+    act(() => {
+      reducedMotion = true;
+      mediaEvents.dispatchEvent(new Event("change"));
+    });
+    await nextFrame();
+    expect(header.style.paddingLeft).toBe("184px");
+    expect(dragRegion.style.left).toBe("184px");
+    expect(canvas.style.marginLeft).toBe("8px");
+
+    act(() => {
+      reducedMotion = false;
+      mediaEvents.dispatchEvent(new Event("change"));
+    });
+    fireEvent.click(trigger);
+    await nextFrame();
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(184);
   });
 });

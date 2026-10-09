@@ -1,14 +1,23 @@
 import React from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, screen, within } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ApiError, setApiInstance } from "@multica/core/api";
+import type { ApiClient } from "@multica/core/api/client";
+import { useProjectAccessStore } from "@multica/core/projects";
+import { projectKeys } from "@multica/core/projects/queries";
 import type { Project } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { ProjectsPage } from "./projects-page";
 
 const mocks = vi.hoisted(() => ({
-  projects: [] as Project[],
+  realQueries: false,
+  projects: [] as Project[] | undefined,
+  projectError: null as Error | null,
+  projectFetching: false,
+  refetchProjects: vi.fn(),
   members: [] as Array<{ user_id: string; name: string; role: string }>,
   agents: [] as Array<{ id: string; name: string; archived_at: string | null }>,
   pins: [] as Array<{ item_type: string; item_id: string }>,
@@ -22,7 +31,7 @@ const mocks = vi.hoisted(() => ({
     sortField: "name",
     sortDirection: "asc",
     hiddenColumns: [] as string[],
-    filters: { statuses: [], priorities: [], leads: [] },
+    filters: { statuses: [] as string[], priorities: [] as string[], leads: [] as string[] },
     setViewMode: vi.fn(),
     toggleSort: vi.fn(),
     setSortField: vi.fn(),
@@ -33,11 +42,22 @@ const mocks = vi.hoisted(() => ({
   },
 }));
 
-vi.mock("@tanstack/react-query", () => ({
+vi.mock("@tanstack/react-query", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@tanstack/react-query")>();
+  return {
+  ...actual,
   useQuery: (options: { queryKey?: readonly unknown[] }) => {
+    if (mocks.realQueries) return actual.useQuery(options as Parameters<typeof actual.useQuery>[0]);
     const key = options.queryKey?.[0];
     if (key === "projects") {
-      return { data: mocks.projects, isLoading: false };
+      return {
+        data: mocks.projects,
+        isLoading: false,
+        error: mocks.projectError,
+        isError: !!mocks.projectError,
+        isFetching: mocks.projectFetching,
+        refetch: mocks.refetchProjects,
+      };
     }
     if (key === "members") {
       return { data: mocks.members, isLoading: false };
@@ -50,16 +70,18 @@ vi.mock("@tanstack/react-query", () => ({
     }
     return { data: [], isLoading: false };
   },
-}));
+}; });
 
-vi.mock("@multica/core/projects", () => ({
-  projectListOptions: () => ({ queryKey: ["projects"] }),
-  useProjectAccessStore: Object.assign((selector: (state: unknown) => unknown) => selector({ denied: {} }), { getState: () => ({ denied: {} }) }),
+vi.mock("@multica/core/projects", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/projects")>();
+  return {
+  ...actual,
+  projectListOptions: (wsId: string) => mocks.realQueries ? actual.projectListOptions(wsId) : { queryKey: ["projects"] },
   useUpdateProject: () => ({ mutate: mocks.updateProject }),
   useDeleteProject: () => ({ mutate: mocks.deleteProject }),
   useProjectViewStore: (selector: (state: unknown) => unknown) =>
     selector(mocks.projectViewState),
-}));
+}; });
 
 vi.mock("@multica/core/pins", () => ({
   pinListOptions: () => ({ queryKey: ["pins"] }),
@@ -218,12 +240,12 @@ function makeAdapter(
 }
 
 function renderProjects(adapter = makeAdapter()) {
-  renderWithI18n(
+  const view = renderWithI18n(
     <NavigationProvider value={adapter}>
       <ProjectsPage />
     </NavigationProvider>,
   );
-  return adapter;
+  return { ...view, adapter };
 }
 
 function projectRow() {
@@ -233,7 +255,12 @@ function projectRow() {
 }
 
 beforeEach(() => {
+  mocks.realQueries = false;
+  useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
   mocks.projects = [PROJECT];
+  mocks.projectError = null;
+  mocks.projectFetching = false;
+  mocks.refetchProjects.mockReset();
   mocks.members = [
     { user_id: "user-1", name: "User One", role: "admin" },
   ];
@@ -251,6 +278,29 @@ beforeEach(() => {
   mocks.projectViewState.filters = { statuses: [], priorities: [], leads: [] };
 });
 
+const clients: QueryClient[] = [];
+afterEach(() => { for (const client of clients.splice(0)) client.clear(); });
+
+function renderQueryProjects(listProjects: ReturnType<typeof vi.fn>, cached?: Project[]) {
+  mocks.realQueries = true;
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+  clients.push(client);
+  setApiInstance({ listProjects } as unknown as ApiClient);
+  if (cached) client.setQueryData(projectKeys.list("workspace-1"), { projects: cached });
+  client.setQueryData(["members"], mocks.members);
+  client.setQueryData(["agents"], mocks.agents);
+  client.setQueryData(["pins"], mocks.pins);
+  const adapter = makeAdapter();
+  const view = renderWithI18n(
+    <QueryClientProvider client={client}>
+      <NavigationProvider value={adapter}>
+        <ProjectsPage />
+      </NavigationProvider>
+    </QueryClientProvider>,
+  );
+  return { ...view, client, adapter };
+}
+
 describe("ProjectsPage compact row navigation", () => {
   it("guides a new workspace into its first project", async () => {
     const user = userEvent.setup();
@@ -261,14 +311,52 @@ describe("ProjectsPage compact row navigation", () => {
     expect(mocks.openModal).toHaveBeenCalledWith("create-project");
   });
 
-  it("renders the project name as text, not a title link", () => {
-    renderProjects();
-
+  it("provides a keyboard title link after the row selection control", async () => {
+    const user = userEvent.setup();
+    const { adapter } = renderProjects();
     const row = projectRow();
-    expect(within(row).getByText(PROJECT.title).tagName).toBe("SPAN");
-    expect(
-      within(row).queryByRole("link", { name: PROJECT.title }),
-    ).not.toBeInTheDocument();
+    const link = within(row).getByRole("link", { name: PROJECT.title });
+    expect(link).toHaveAttribute("href", "/test-workspace/projects/project-1");
+
+    within(row).getByRole("checkbox", { name: "Select Launch Plan" }).focus();
+    await user.tab();
+    expect(link).toHaveFocus();
+    await user.keyboard("{Enter}");
+    expect(adapter.push).toHaveBeenCalledExactlyOnceWith("/test-workspace/projects/project-1");
+  });
+
+  it("navigates once for each title click and desktop modifier click", async () => {
+    const user = userEvent.setup();
+    const push = vi.fn();
+    const openInNewTab = vi.fn();
+    renderProjects(makeAdapter({ push, openInNewTab }));
+    const link = screen.getByRole("link", { name: PROJECT.title });
+    await user.click(link);
+    expect(push).toHaveBeenCalledExactlyOnceWith("/test-workspace/projects/project-1");
+
+    fireEvent.click(link, { metaKey: true });
+    fireEvent.click(link, { ctrlKey: true });
+    fireEvent(link, new MouseEvent("auxclick", { bubbles: true, button: 1, cancelable: true }));
+    expect(openInNewTab).toHaveBeenCalledTimes(3);
+    for (const nth of [1, 2, 3]) {
+      expect(openInNewTab).toHaveBeenNthCalledWith(nth, "/test-workspace/projects/project-1", PROJECT.title);
+    }
+    expect(push).toHaveBeenCalledTimes(1);
+  });
+
+  it("leaves native web title modifier clicks to the anchor without opening a second tab", () => {
+    const { adapter } = renderProjects();
+    const open = vi.spyOn(window, "open").mockReturnValue(null);
+    const link = screen.getByRole("link", { name: PROJECT.title });
+    const click = new MouseEvent("click", { bubbles: true, metaKey: true, cancelable: true });
+    const middleClick = new MouseEvent("auxclick", { bubbles: true, button: 1, cancelable: true });
+    fireEvent(link, click);
+    fireEvent(link, middleClick);
+    expect(click.defaultPrevented).toBe(false);
+    expect(middleClick.defaultPrevented).toBe(false);
+    expect(adapter.push).not.toHaveBeenCalled();
+    expect(open).not.toHaveBeenCalled();
+    open.mockRestore();
   });
 
   it("navigates from the row surface", async () => {
@@ -288,7 +376,7 @@ describe("ProjectsPage compact row navigation", () => {
     renderProjects(makeAdapter({ push }));
     const row = projectRow();
 
-    await user.click(within(row).getByRole("button", { pressed: false }));
+    await user.click(within(row).getByRole("checkbox", { name: "Select Launch Plan" }));
     await user.click(within(row).getByRole("button", { name: "Project actions" }));
     await user.click(within(row).getAllByRole("button", { name: "In Progress" })[0]!);
     await user.click(within(row).getAllByRole("button", { name: "High" })[0]!);
@@ -350,6 +438,136 @@ describe("ProjectsPage compact row navigation", () => {
     }
     expect(push).not.toHaveBeenCalled();
     open.mockRestore();
+  });
+});
+
+describe("ProjectsPage selection and recovery", () => {
+  it("offers one named checkbox per selection with keyboard mixed-state behavior", async () => {
+    const user = userEvent.setup();
+    mocks.projects = [PROJECT, { ...PROJECT, id: "project-2", title: "Release Checklist" }];
+    const { adapter } = renderProjects();
+    const all = screen.getByRole("checkbox", { name: "Select all visible projects" });
+    const first = screen.getByRole("checkbox", { name: "Select Launch Plan" });
+    const second = screen.getByRole("checkbox", { name: "Select Release Checklist" });
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
+    expect(first.closest("button")).toBeNull();
+    expect(first.tabIndex).toBe(0);
+    all.focus();
+    await user.keyboard(" ");
+    expect(all).toBeChecked();
+    expect(first).toBeChecked();
+    expect(second).toBeChecked();
+    first.focus();
+    await user.keyboard(" ");
+    expect(first).not.toBeChecked();
+    expect(all).toBePartiallyChecked();
+    expect(first).toHaveFocus();
+    expect(adapter.push).not.toHaveBeenCalled();
+  });
+
+  it("shows retry for an initial failure instead of inviting creation in an empty list", async () => {
+    mocks.projects = undefined;
+    mocks.projectError = new Error("Offline");
+    renderProjects();
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load projects");
+    expect(screen.queryByText("No projects yet")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Create your first project" })).not.toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+    expect(mocks.refetchProjects).toHaveBeenCalledOnce();
+  });
+
+  it("retains cached rows, filters, and selection after a failed refresh", async () => {
+    const user = userEvent.setup();
+    const view = renderProjects();
+    const row = projectRow();
+    await user.click(within(row).getByRole("checkbox", { name: "Select Launch Plan" }));
+    await user.type(screen.getByRole("textbox", { name: "Search projects..." }), "Launch");
+    mocks.projectError = new Error("Offline");
+    view.rerender(<NavigationProvider value={view.adapter}><ProjectsPage /></NavigationProvider>);
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not refresh projects");
+    expect(projectRow()).toBe(row);
+    expect(screen.getByRole("checkbox", { name: "Select Launch Plan" })).toBeChecked();
+    expect(screen.getByRole("textbox", { name: "Search projects..." })).toHaveValue("Launch");
+    expect(screen.queryByText("No projects yet")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(mocks.refetchProjects).toHaveBeenCalledOnce();
+  });
+});
+
+describe("ProjectsPage real query recovery", () => {
+  it("recovers from a cold 500 through Retry and the production query projection", async () => {
+    const listProjects = vi.fn()
+      .mockRejectedValueOnce(new ApiError("Unavailable", 500, "Internal Server Error"))
+      .mockResolvedValue({ projects: [PROJECT] });
+    const { adapter } = renderQueryProjects(listProjects);
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load projects");
+    expect(screen.queryByText("No projects yet")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Create your first project" })).not.toBeInTheDocument();
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("link", { name: PROJECT.title })).toHaveAttribute("href", "/test-workspace/projects/project-1");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(listProjects).toHaveBeenCalledTimes(2);
+    expect(listProjects).toHaveBeenLastCalledWith(undefined, expect.objectContaining({ workspaceId: "workspace-1", signal: expect.any(AbortSignal) }));
+    expect(adapter.push).not.toHaveBeenCalled();
+    expect(adapter.replace).not.toHaveBeenCalled();
+  });
+
+  it("keeps filtered rows and keyboard selection mounted through cached 500 and a delayed retry", async () => {
+    const projects = [PROJECT, { ...PROJECT, id: "project-2", title: "Release Checklist", status: "completed" as const }];
+    mocks.projectViewState.filters.statuses = [PROJECT.status];
+    const response = { projects };
+    let finishRetry!: (value: typeof response) => void;
+    const retryResponse = new Promise<typeof response>((resolve) => { finishRetry = resolve; });
+    const listProjects = vi.fn()
+      .mockRejectedValueOnce(new ApiError("Unavailable", 500, "Internal Server Error"))
+      .mockReturnValueOnce(retryResponse);
+    const { client, adapter } = renderQueryProjects(listProjects, projects);
+    const user = userEvent.setup();
+    const row = projectRow();
+    const selection = screen.getByRole("checkbox", { name: "Select Launch Plan" });
+    selection.focus();
+    await user.keyboard(" ");
+    const search = screen.getByRole("textbox", { name: "Search projects..." });
+    await user.type(search, "Launch");
+    await act(async () => { await client.refetchQueries({ queryKey: projectKeys.list("workspace-1"), exact: true }); });
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not refresh projects");
+    expect(projectRow()).toBe(row);
+    expect(selection).toBeChecked();
+    expect(screen.getByRole("textbox", { name: "Search projects..." })).toBe(search);
+    expect(search).toHaveValue("Launch");
+    expect(search).toHaveFocus();
+    expect(screen.queryByRole("link", { name: "Release Checklist" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(screen.getByRole("button", { name: "Retry" })).toBeDisabled();
+    expect(projectRow()).toBe(row);
+    expect(selection).toBeChecked();
+
+    await act(async () => { finishRetry(response); });
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+    expect(projectRow()).toBe(row);
+    expect(selection).toBeChecked();
+    expect(screen.getByRole("textbox", { name: "Search projects..." })).toBe(search);
+    expect(search).toHaveValue("Launch");
+    expect(mocks.projectViewState.filters.statuses).toEqual([PROJECT.status]);
+    expect(listProjects).toHaveBeenCalledTimes(2);
+    expect(adapter.push).not.toHaveBeenCalled();
+    expect(adapter.replace).not.toHaveBeenCalled();
+  });
+
+  it("hides cached rows and selection when a real refresh revokes workspace access", async () => {
+    const listProjects = vi.fn().mockRejectedValue(new ApiError("Forbidden", 403, "Forbidden"));
+    const { client } = renderQueryProjects(listProjects, [PROJECT]);
+    await userEvent.setup().click(screen.getByRole("checkbox", { name: "Select Launch Plan" }));
+    await act(async () => { await client.refetchQueries({ queryKey: projectKeys.list("workspace-1"), exact: true }); });
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("You no longer have access to this project.");
+    expect(screen.queryByRole("link", { name: PROJECT.title })).not.toBeInTheDocument();
+    expect(screen.queryByRole("checkbox", { name: "Select Launch Plan" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+    expect(client.getQueryData(projectKeys.list("workspace-1"))).toBeUndefined();
+    expect(listProjects).toHaveBeenCalledOnce();
   });
 });
 

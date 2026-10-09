@@ -1,6 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { Agent, AgentRoleTemplate, Squad, SquadTemplate, SquadMember } from "@multica/core/types";
 import type { AgentActivity } from "@multica/core/agents";
 import { renderWithI18n } from "../../test/i18n";
@@ -315,6 +316,60 @@ beforeEach(() => {
     squads: [],
     categories: [],
   };
+});
+
+describe("AgentsPage accessible selection", () => {
+  it("names the select-all scope and keeps filtered-out agents unselected", async () => {
+    const user = userEvent.setup();
+    const adapter = makeAdapter();
+    renderPage(adapter);
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "Alpha" } });
+    const all = screen.getByRole("checkbox", { name: "Select all listed agents" });
+    all.focus();
+    await user.keyboard(" ");
+    expect(screen.getByRole("checkbox", { name: "Select Alpha Agent" })).toBeChecked();
+    expect(screen.queryByRole("checkbox", { name: "Select Beta Agent" })).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "" } });
+    expect(screen.getByRole("checkbox", { name: "Select Alpha Agent" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Select Beta Agent" })).not.toBeChecked();
+    expect(all).toBePartiallyChecked();
+    expect(adapter.push).not.toHaveBeenCalled();
+  });
+
+  it("selects named rows and all filtered agents by keyboard without navigating", async () => {
+    const user = userEvent.setup();
+    const adapter = makeAdapter({ openInNewTab: vi.fn() });
+    renderPage(adapter);
+    const alpha = screen.getByRole("checkbox", { name: "Select Alpha Agent" });
+    const beta = screen.getByRole("checkbox", { name: "Select Beta Agent" });
+    const all = screen.getByRole("checkbox", { name: "Select all listed agents" });
+
+    expect(alpha.parentElement?.closest("button")).toBeNull();
+    expect(all.parentElement?.closest("button")).toBeNull();
+    expect(alpha).toHaveClass("focus-visible:opacity-100");
+    expect(all).toHaveClass("focus-visible:opacity-100");
+    alpha.focus();
+    await user.keyboard(" ");
+    expect(alpha).toBeChecked();
+    expect(beta).not.toBeChecked();
+    expect(all).toBePartiallyChecked();
+    expect(alpha).toHaveFocus();
+
+    all.focus();
+    await user.keyboard(" ");
+    expect(alpha).toBeChecked();
+    expect(beta).toBeChecked();
+    expect(all).toBeChecked();
+    await user.keyboard(" ");
+    expect(alpha).not.toBeChecked();
+    expect(beta).not.toBeChecked();
+    expect(all).not.toBeChecked();
+
+    fireEvent.click(alpha, { metaKey: true });
+    fireEvent(alpha, new MouseEvent("auxclick", { bubbles: true, button: 1 }));
+    expect(adapter.push).not.toHaveBeenCalled();
+    expect(adapter.openInNewTab).not.toHaveBeenCalled();
+  });
 });
 
 const REVIEW_TEMPLATE: AgentRoleTemplate = {

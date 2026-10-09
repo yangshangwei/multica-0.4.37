@@ -3,6 +3,8 @@
     "title": "Projects",
     "new_project": "New project",
     "empty": "No projects yet",
+    "load_error": "Could not load projects",
+    "refresh_error": "Could not refresh projects. Previously loaded projects are still shown.",
     "create_first": "Create your first project",
     "view_compact": "Compact",
     "view_comfortable": "Comfortable",
@@ -21,6 +23,8 @@
     "empty_hint": "Choose a repository and an execution squad to get your first issue moving."
   },
   "table": {
+    "select_project": "Select {{name}}",
+    "select_all": "Select all visible projects",
     "name": "Name",
     "priority": "Priority",
     "status": "Status",
@@ -58,6 +62,8 @@
   },
   "detail": {
     "not_found": "Project not found",
+    "load_error": "Could not load this project",
+    "refresh_error": "Could not refresh this project. Previously loaded content and your edits are still available.",
     "breadcrumb_fallback": "Projects",
     "title_placeholder": "Project title",
     "icon_tooltip": "Change icon",

@@ -13,9 +13,10 @@ function renderQueue(headStatus = "running", sendNowDisabled = false) {
     onRemove: vi.fn<(taskId: string) => Promise<void>>().mockResolvedValue(),
     onClear: vi.fn<() => Promise<void>>().mockResolvedValue(),
   };
-  const view = render(
+  const ui = (isVisible = true) => (
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
       <ChatQueue
+        isVisible={isVisible}
         headStatus={headStatus}
         sendNowDisabled={sendNowDisabled}
         tasks={[
@@ -34,12 +35,24 @@ function renderQueue(headStatus = "running", sendNowDisabled = false) {
         ]}
         {...callbacks}
       />
-    </I18nProvider>,
+    </I18nProvider>
   );
-  return { ...callbacks, container: view.container };
+  const view = render(ui());
+  return { ...callbacks, container: view.container, setVisible: (visible: boolean) => view.rerender(ui(visible)) };
 }
 
 describe("ChatQueue", () => {
+  it("closes its portalled action menu when chat hides while retaining the queue", async () => {
+    const actions = renderQueue();
+    fireEvent.click(screen.getAllByLabelText("More queue actions")[0]!);
+    expect(await screen.findByRole("menuitem", { name: "Edit queued message" })).toBeInTheDocument();
+    actions.setVisible(false);
+    await waitFor(() => expect(screen.queryByRole("menuitem", { name: "Edit queued message" })).not.toBeInTheDocument());
+    expect(screen.getByText("First follow-up")).toBeInTheDocument();
+    expect(actions.onRemove).not.toHaveBeenCalled();
+    expect(actions.onClear).not.toHaveBeenCalled();
+  });
+
   it("renders a standalone queue card without a separate header", () => {
     const { container } = renderQueue();
 

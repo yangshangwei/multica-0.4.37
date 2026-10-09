@@ -2,6 +2,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
@@ -89,7 +90,7 @@ function makeRow(
   };
 }
 
-function renderToolbar(rows: AgentListRow[]) {
+function renderToolbar(rows: AgentListRow[], onClear = vi.fn()) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const ui = (nextRows: AgentListRow[]) => (
     <QueryClientProvider client={qc}>
@@ -98,7 +99,7 @@ function renderToolbar(rows: AgentListRow[]) {
           rows={nextRows}
           members={[]}
           currentUserId="user-1"
-          onClear={() => {}}
+          onClear={onClear}
         />
       </I18nProvider>
     </QueryClientProvider>
@@ -113,6 +114,8 @@ function renderToolbar(rows: AgentListRow[]) {
 beforeEach(() => {
   updateAgentSpy.mockClear();
   updateAgentSpy.mockResolvedValue({});
+  archiveSpy.mockClear();
+  restoreSpy.mockClear();
 });
 
 describe("AgentBatchToolbar — action order", () => {
@@ -130,6 +133,77 @@ describe("AgentBatchToolbar — action order", () => {
       .filter((text): text is string => !!text);
 
     expect(actions).toEqual(["Restore", "Set access scope", "Archive"]);
+  });
+});
+
+describe("AgentBatchToolbar — keyboard actions", () => {
+  it.each([" ", "{Enter}"])(
+    "clears selection once with %s without writing agents",
+    async (key) => {
+      const user = userEvent.setup();
+      const onClear = vi.fn();
+      renderToolbar([makeRow("a", "user-1")], onClear);
+
+      await user.tab();
+      expect(
+        screen.getByRole("button", { name: "Clear selection" }),
+      ).toHaveFocus();
+      await user.keyboard(key);
+
+      expect(onClear).toHaveBeenCalledTimes(1);
+      expect(updateAgentSpy).not.toHaveBeenCalled();
+      expect(archiveSpy).not.toHaveBeenCalled();
+      expect(restoreSpy).not.toHaveBeenCalled();
+    },
+  );
+
+  it("keeps mixed lifecycle actions in keyboard order and restores only archived agents", async () => {
+    const user = userEvent.setup();
+    const onClear = vi.fn();
+    renderToolbar([
+      makeRow("a", "user-1", { archived_at: "2026-01-01T00:00:00Z" }),
+      makeRow("b", "user-1"),
+    ], onClear);
+
+    for (const name of ["Clear selection", "Restore", "Set access scope", "Archive"]) {
+      await user.tab();
+      expect(screen.getByRole("button", { name })).toHaveFocus();
+    }
+    await user.tab({ shift: true });
+    await user.tab({ shift: true });
+    expect(screen.getByRole("button", { name: "Restore" })).toHaveFocus();
+    await user.keyboard("{Enter}");
+
+    await waitFor(() => expect(onClear).toHaveBeenCalledTimes(1));
+    expect(restoreSpy).toHaveBeenCalledTimes(1);
+    expect(restoreSpy).toHaveBeenCalledWith("a");
+    expect(archiveSpy).not.toHaveBeenCalled();
+    expect(updateAgentSpy).not.toHaveBeenCalled();
+  });
+
+  it("requires archive confirmation by keyboard and archives only active agents", async () => {
+    const user = userEvent.setup();
+    const onClear = vi.fn();
+    renderToolbar([
+      makeRow("a", "user-1", { archived_at: "2026-01-01T00:00:00Z" }),
+      makeRow("b", "user-1"),
+    ], onClear);
+
+    for (let i = 0; i < 4; i++) await user.tab();
+    expect(screen.getByRole("button", { name: "Archive" })).toHaveFocus();
+    await user.keyboard("{Enter}");
+
+    await screen.findByRole("dialog");
+    expect(archiveSpy).not.toHaveBeenCalled();
+    const confirm = screen.getByRole("button", { name: "Archive" });
+    confirm.focus();
+    await user.keyboard("{Enter}");
+
+    await waitFor(() => expect(onClear).toHaveBeenCalledTimes(1));
+    expect(archiveSpy).toHaveBeenCalledTimes(1);
+    expect(archiveSpy).toHaveBeenCalledWith("b");
+    expect(restoreSpy).not.toHaveBeenCalled();
+    expect(updateAgentSpy).not.toHaveBeenCalled();
   });
 });
 

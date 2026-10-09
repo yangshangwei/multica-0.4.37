@@ -24,12 +24,13 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
+| [Desktop Core Interaction](./desktop-core-accessibility.md) | Hidden-chat focus/portals, collection recovery/selection, detail tabs, shell motion and bounded Gantt | Active |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Built-in Skill Localization](./builtin-skill-localization.md) | Display identity, bilingual search, and raw instruction preservation | Active |
 | [Skill Presentation](./skill-presentation.md) | Category / icon in `config.presentation`, workspace labels, parity and rollout rules, batch label management | Active |
 | [Skill Template Discovery](./skill-market-discovery.md) | Workspace/template separation, catalog entry, source filtering, copy navigation and focus | Active |
 | [MCP Market](./mcp-market.md) | Trusted recipes, workspace instances, explicit assignment, agent-context reuse and failure recovery | Active |
-| [Iteration Operations](../../core/frontend/iteration-operations.md) | Preview identity, recovery after closure, revoked data and desktop route integration | Active |
+| [Iteration Operations](../../core/frontend/iteration-operations.md) | Progress/scope presentation, complete activity, frozen facts, preview identity, recovery and desktop routes | Active |
 
 ---
 

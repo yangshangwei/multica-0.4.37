@@ -120,6 +120,8 @@ function hasUploadingNode(editor: Editor): boolean {
 // ---------------------------------------------------------------------------
 
 interface ContentEditorBaseProps {
+  /** Hide transient editor overlays while retaining its document and uploads. */
+  isVisible?: boolean;
   /**
    * `baseMarkdown` is the last authoritative controlled value this editor
    * actually adopted before producing `markdown`. A dirty-editor realtime
@@ -357,6 +359,7 @@ interface ContentEditorRef {
 const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
   function ContentEditor(
     {
+      isVisible = true,
       defaultValue,
       value,
       onUpdate,
@@ -974,7 +977,7 @@ const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
 
     // Link hover card — disabled when BubbleMenu is active (has selection)
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const hoverDisabled = !editor?.state.selection.empty;
+    const hoverDisabled = !isVisible || !editor?.state.selection.empty;
     const hover = useLinkHover(wrapperRef, hoverDisabled);
 
     const handleContainerMouseDown = (event: ReactMouseEvent<HTMLDivElement>) => {
@@ -998,7 +1001,7 @@ const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
           onMouseDown={handleContainerMouseDown}
         >
           <EditorContent className="flex flex-1 flex-col" editor={editor} />
-          {showBubbleMenu && (
+          {isVisible && showBubbleMenu && (
             <EditorBubbleMenu editor={editor} currentIssueId={currentIssueId} />
           )}
           <LinkHoverCard {...hover} />

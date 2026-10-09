@@ -2,14 +2,24 @@
  * @vitest-environment jsdom
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
+import type { ComponentProps, ReactElement } from "react";
 import { cleanup, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithI18n } from "../../test/i18n";
 import { FileTree, type FileTreeActions } from "./file-tree";
+import { Tabs, TabsList } from "@multica/ui/components/ui/tabs";
 
 afterEach(cleanup);
 
 const PATHS = ["SKILL.md", "references/api.md", "notes.txt"];
+
+function renderTree(tree: ReactElement<ComponentProps<typeof FileTree>>) {
+  return renderWithI18n(
+    <Tabs value={tree.props.selectedPath} orientation="vertical">
+      <TabsList aria-label="Skill files">{tree}</TabsList>
+    </Tabs>,
+  );
+}
 
 function makeActions(overrides: Partial<FileTreeActions> = {}): FileTreeActions {
   return {
@@ -24,7 +34,7 @@ function makeActions(overrides: Partial<FileTreeActions> = {}): FileTreeActions 
 
 describe("FileTree row actions", () => {
   it("offers none without actions, so a read-only tree stays read-only", async () => {
-    await renderWithI18n(
+    await renderTree(
       <FileTree filePaths={PATHS} selectedPath="SKILL.md" onSelect={vi.fn()} />,
     );
 
@@ -32,7 +42,7 @@ describe("FileTree row actions", () => {
   });
 
   it("withholds rename and delete from the reserved file, but not edit", async () => {
-    await renderWithI18n(
+    await renderTree(
       <FileTree
         filePaths={PATHS}
         selectedPath="SKILL.md"
@@ -55,7 +65,7 @@ describe("FileTree row actions", () => {
 
   it("edits the row acted on", async () => {
     const onEdit = vi.fn();
-    await renderWithI18n(
+    await renderTree(
       <FileTree
         filePaths={PATHS}
         selectedPath="SKILL.md"
@@ -73,7 +83,7 @@ describe("FileTree row actions", () => {
   });
 
   it("keeps the menu trigger's widened hit area inside the trigger", async () => {
-    await renderWithI18n(
+    await renderTree(
       <FileTree
         filePaths={PATHS}
         selectedPath="SKILL.md"
@@ -96,7 +106,7 @@ describe("FileTree row actions", () => {
 
   it("deletes the row acted on, not whichever file happens to be open", async () => {
     const onDelete = vi.fn();
-    await renderWithI18n(
+    await renderTree(
       <FileTree
         filePaths={PATHS}
         selectedPath="SKILL.md"
@@ -113,7 +123,7 @@ describe("FileTree row actions", () => {
 
   it("renames in place and reports the new path", async () => {
     const onRename = vi.fn();
-    await renderWithI18n(
+    await renderTree(
       <FileTree
         filePaths={PATHS}
         selectedPath="notes.txt"
@@ -136,7 +146,7 @@ describe("FileTree row actions", () => {
 
   it("keeps a rejected path in the editor rather than committing it", async () => {
     const onRename = vi.fn();
-    await renderWithI18n(
+    await renderTree(
       <FileTree
         filePaths={PATHS}
         selectedPath="notes.txt"
@@ -160,11 +170,35 @@ describe("FileTree row actions", () => {
     expect(onRename).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toHaveTextContent("already exists");
   });
+
+  it("keeps navigation keys inside an unselected middle file's rename field until the user commits", async () => {
+    const user = userEvent.setup();
+    const onRename = vi.fn();
+    renderTree(
+      <FileTree
+        filePaths={PATHS}
+        selectedPath="SKILL.md"
+        onSelect={vi.fn()}
+        actions={makeActions({ onRename })}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: /api\.md/ }));
+    await user.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    const input = screen.getByRole("textbox");
+    await user.clear(input);
+    await user.type(input, "references/renamed.md");
+    await user.keyboard("{ArrowDown}{Home}{End}");
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue("references/renamed.md");
+    expect(onRename).not.toHaveBeenCalled();
+    await user.keyboard("{Enter}");
+    expect(onRename).toHaveBeenCalledExactlyOnceWith("references/api.md", "references/renamed.md");
+  });
 });
 
 describe("FileTree entry points", () => {
   it("opens the same menu from a right-click on the row", async () => {
-    await renderWithI18n(
+    await renderTree(
       <FileTree
         filePaths={PATHS}
         selectedPath="SKILL.md"
