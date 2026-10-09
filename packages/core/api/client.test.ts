@@ -142,6 +142,17 @@ describe("ApiClient edit guards", () => {
     expect(parsedLegacy.issues[0]).not.toHaveProperty("revision");
     await expect(client.listIssues()).resolves.toEqual({ issues: [], total: 0 });
   });
+
+  it("sends the single status category each list bucket pages by", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ issues: [], total: 0 }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    await new ApiClient("https://api.example.test").listIssues({ status_category: "in_review", limit: 50 });
+    const query = new URL(String(fetchMock.mock.calls[0]![0])).searchParams;
+    expect(query.get("status_category")).toBe("in_review");
+  });
 });
 
 describe("ApiClient pull-request response schema", () => {

@@ -1362,6 +1362,9 @@ export class ApiClient {
     if (params?.q?.trim()) search.set("q", params.q.trim());
     if (params?.status) search.set("status", params.status);
     if (params?.statuses?.length) search.set("statuses", params.statuses.join(","));
+    // issueListOptions pages one bucket per category; without this every
+    // bucket fetched the same unfiltered first page.
+    if (params?.status_category) search.set("status_category", params.status_category);
     if (params?.priority) search.set("priority", params.priority);
     if (params?.priorities?.length) search.set("priorities", params.priorities.join(","));
     if (params?.assignee_id) search.set("assignee_id", params.assignee_id);
