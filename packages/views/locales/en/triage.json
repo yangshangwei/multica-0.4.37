@@ -115,6 +115,29 @@
   "retry_execution": "Retry execution",
   "execution_queued": "Execution queued",
   "history_empty": "No review history yet",
+  "history_page_empty": "No records on this page",
+  "history_first_page": "Return to first page",
+  "history_no_matches": "No matching history",
+  "history_no_matches_description": "Try changing or clearing the filters.",
+  "history_filters": {
+    "label": "Applied history filters",
+    "search": "Search",
+    "condition": "{{label}}: {{value}}"
+  },
+  "history_timeline": {
+    "unknown_date": "Date unavailable",
+    "unknown_time": "Time unavailable",
+    "actions": {
+      "accept": "Accepted",
+      "accept_and_execute": "Accepted and requested execution",
+      "reject": "Rejected",
+      "duplicate": "Marked duplicate",
+      "snooze": "Snoozed",
+      "unsnooze": "Returned to ready queue",
+      "reopen": "Reopened review",
+      "assign_reviewer": "Assigned reviewer"
+    }
+  },
   "changes": "Field changes",
   "before": "Before",
   "after": "After",

@@ -9,6 +9,7 @@ import {
   nextTriageSelection,
   TRIAGE_CSV_FIELDS,
   triageCsvTemplate,
+  triageHistoryFilters,
 } from "./triage-ui";
 
 describe("triage input boundaries", () => {
@@ -71,6 +72,42 @@ describe("triage input boundaries", () => {
     expect(nextTriageSelection(["a", "b", "c"], "b")).toBe("c");
     expect(nextTriageSelection(["a", "b"], "b")).toBe("a");
     expect(nextTriageSelection(["a"], "a")).toBe("");
+  });
+});
+
+describe("applied history filters", () => {
+  it("reads exactly the history fields without reinterpreting date-only bounds", () => {
+    const params = new URLSearchParams({
+      view: "history",
+      q: "launch plan",
+      source: "csv",
+      result: "accept",
+      processed_by: "member-1",
+      processed_after: "2026-10-01",
+      processed_before: "2026-10-09",
+      offset: "50",
+      priority: "high",
+      reviewer_id: "queue-reviewer",
+      from: "saved-link",
+    });
+    expect(triageHistoryFilters(params)).toEqual([
+      { key: "q", value: "launch plan" },
+      { key: "source", value: "csv" },
+      { key: "result", value: "accept" },
+      { key: "processed_by", value: "member-1" },
+      { key: "processed_after", value: "2026-10-01" },
+      { key: "processed_before", value: "2026-10-09" },
+    ]);
+  });
+
+  it("ignores empty conditions and retains unfamiliar applied values", () => {
+    expect(triageHistoryFilters(new URLSearchParams("q=&source=&offset=50"))).toEqual([]);
+    expect(
+      triageHistoryFilters(new URLSearchParams("source=future-source&result=future-action")),
+    ).toEqual([
+      { key: "source", value: "future-source" },
+      { key: "result", value: "future-action" },
+    ]);
   });
 });
 

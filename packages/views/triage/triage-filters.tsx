@@ -9,7 +9,7 @@ import { labelListOptions } from "@multica/core/labels/queries";
 import { Input } from "@multica/ui/components/ui/input";
 import { useT } from "../i18n";
 import { TriageSelect, TriageField } from "./triage-fields";
-import { TRIAGE_CONTROL } from "./triage-ui";
+import { TRIAGE_CONTROL, TRIAGE_HISTORY_ACTIONS } from "./triage-ui";
 
 export function TriageFilters({
   wsId,
@@ -84,18 +84,10 @@ export function TriageFilters({
             t(($) => $.result),
             [
               any,
-              ...(
-                [
-                  "accept",
-                  "accept_and_execute",
-                  "reject",
-                  "duplicate",
-                  "snooze",
-                  "unsnooze",
-                  "reopen",
-                  "assign_reviewer",
-                ] as const
-              ).map((value) => ({ value, label: t(($) => $[value]) })),
+              ...TRIAGE_HISTORY_ACTIONS.map((value) => ({
+                value,
+                label: t(($) => $[value]),
+              })),
             ],
           )}
           {select(

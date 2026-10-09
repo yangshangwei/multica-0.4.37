@@ -115,6 +115,29 @@
   "retry_execution": "重试执行",
   "execution_queued": "已进入执行队列",
   "history_empty": "暂无审核记录",
+  "history_page_empty": "当前页没有审核记录",
+  "history_first_page": "返回第一页",
+  "history_no_matches": "没有符合筛选条件的审核记录",
+  "history_no_matches_description": "可调整或清除筛选条件后重试。",
+  "history_filters": {
+    "label": "已应用的审核历史筛选",
+    "search": "搜索",
+    "condition": "{{label}}：{{value}}"
+  },
+  "history_timeline": {
+    "unknown_date": "日期不可用",
+    "unknown_time": "时间不可用",
+    "actions": {
+      "accept": "已接受",
+      "accept_and_execute": "接受并请求执行",
+      "reject": "已拒绝",
+      "duplicate": "标记为重复",
+      "snooze": "设为稍后处理",
+      "unsnooze": "返回可处理队列",
+      "reopen": "重新审核",
+      "assign_reviewer": "指定审核人"
+    }
+  },
   "changes": "字段变化",
   "before": "变更前",
   "after": "变更后",

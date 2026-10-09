@@ -1,0 +1,43 @@
+{
+  "id": "triage-history-timeline",
+  "name": "triage-history-timeline",
+  "title": "分拣台审核历史：时间轴与筛选反馈",
+  "description": "按时间追溯审核经过，以日期分组的紧凑时间轴和可见的筛选反馈改善 Web/Desktop 历史阅读效率。",
+  "status": "in_progress",
+  "dev_type": "frontend",
+  "scope": "triage",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-10",
+  "completedAt": null,
+  "branch": "codex/projects-p1",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/triage/triage-history-timeline.tsx",
+    "packages/views/triage/triage-history-dates.ts",
+    "packages/views/triage/triage-history-filter-summary.tsx",
+    "packages/views/triage/triage-history.tsx",
+    "packages/views/triage/triage-page.tsx",
+    "packages/views/triage/triage-filters.tsx",
+    "packages/views/triage/triage-ui.ts",
+    "packages/views/locales/en/triage.json",
+    "packages/views/locales/zh-Hans/triage.json"
+  ],
+  "notes": "Approved time-based tracing and timeline + filter feedback after the Impeccable review; all acceptance criteria verified. See verification.md.",
+  "meta": {
+    "verification": {
+      "tests": 122,
+      "test_files": 13,
+      "visual_score": 95,
+      "independent_review": "pass"
+    }
+  }
+}

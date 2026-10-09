@@ -49,14 +49,20 @@ import { TriageBatchDialog } from "./triage-batch-dialog";
 import { TriageImportDialog } from "./triage-import-dialog";
 import {
   TriageItemHistory,
-  TriageHistoryRecord,
   TriageExecutionStatus,
   TriageDuplicateTarget,
 } from "./triage-history";
+import { TriageHistoryTimeline } from "./triage-history-timeline";
+import { TriageHistoryFilterSummary } from "./triage-history-filter-summary";
 import { TriageSelect } from "./triage-fields";
 import { TriageFilters } from "./triage-filters";
 import { useTriageRoute } from "./use-triage-route";
-import { nextTriageSelection, TRIAGE_CONTROL } from "./triage-ui";
+import {
+  nextTriageSelection,
+  TRIAGE_CONTROL,
+  TRIAGE_HISTORY_FILTER_KEYS,
+  triageHistoryFilters,
+} from "./triage-ui";
 
 const EMPTY_TRIAGE_ITEMS: TriageItem[] = [];
 
@@ -189,6 +195,13 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
     focusRow(next);
   };
   const filtered = !!q || FILTERS.some((key) => params.has(key));
+  const historyFilters = triageHistoryFilters(params);
+  const clearHistoryFilters = () =>
+    changeParams(
+      Object.fromEntries(
+        [...TRIAGE_HISTORY_FILTER_KEYS, "offset"].map((key) => [key, ""]),
+      ),
+    );
   const total =
     view === "history" ? (history.data?.total ?? 0) : (list.data?.total ?? 0);
   const queue = (
@@ -714,6 +727,13 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               </div>
             )}
           </div>
+          {view === "history" && (
+            <TriageHistoryFilterSummary
+              filters={historyFilters}
+              members={members}
+              onClear={clearHistoryFilters}
+            />
+          )}
           {filtersOpen && (
             <TriageFilters
               wsId={wsId}
@@ -749,45 +769,48 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
                   ) : history.isError ? (
                     <p role="alert">{history.error.message}</p>
                   ) : !history.data?.entries.length ? (
-                    <h2
-                      ref={emptyRef}
-                      tabIndex={-1}
-                      className="p-6 text-center text-muted-foreground"
-                    >
-                      {t(($) => $.history_empty)}
-                    </h2>
-                  ) : (
-                    history.data.entries.map((entry) => (
-                      <div
-                        key={entry.id}
-                        className="mx-auto max-w-4xl border-b border-surface-border py-3"
+                    <div className="flex min-h-48 flex-col items-center justify-center gap-3 p-6 text-center">
+                      <h2
+                        ref={emptyRef}
+                        tabIndex={-1}
+                        className="text-body font-medium"
                       >
-                        <div className="flex flex-wrap items-center gap-2">
+                        {total > 0
+                          ? t(($) => $.history_page_empty)
+                          : historyFilters.length > 0
+                            ? t(($) => $.history_no_matches)
+                            : t(($) => $.history_empty)}
+                      </h2>
+                      {total > 0 ? (
+                        <Button
+                          variant="outline"
+                          className={TRIAGE_CONTROL}
+                          onClick={() => changeParams({ offset: "" })}
+                        >
+                          {t(($) => $.history_first_page)}
+                        </Button>
+                      ) : historyFilters.length > 0 ? (
+                        <>
+                          <p className="text-caption text-muted-foreground">
+                            {t(($) => $.history_no_matches_description)}
+                          </p>
                           <Button
-                            variant="link"
-                            className={`${TRIAGE_CONTROL} h-auto whitespace-normal p-0 text-left`}
-                            onClick={() =>
-                              entry.kind === "import" && entry.batch_id
-                                ? setImportOpen({ batchId: entry.batch_id })
-                                : entry.issue_id &&
-                                  changeParams({ issue: entry.issue_id })
-                            }
+                            variant="outline"
+                            className={TRIAGE_CONTROL}
+                            onClick={clearHistoryFilters}
                           >
-                            {entry.kind === "import"
-                              ? t(($) => $.import_history, {
-                                  filename: entry.filename,
-                                })
-                              : `${entry.identifier ?? ""} ${entry.title}`}
+                            {t(($) => $.clear_filters)}
                           </Button>
-                          {entry.counts && (
-                            <span className="text-caption">
-                              {t(($) => $.csv_results, { ...entry.counts })}
-                            </span>
-                          )}
-                        </div>
-                        <TriageHistoryRecord wsId={wsId} entry={entry} />
-                      </div>
-                    ))
+                        </>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <TriageHistoryTimeline
+                      wsId={wsId}
+                      entries={history.data.entries}
+                      onOpenIssue={(issueId) => changeParams({ issue: issueId })}
+                      onOpenImport={(batchId) => setImportOpen({ batchId })}
+                    />
                   )}
                 </div>
                 <Pagination

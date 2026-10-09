@@ -94,6 +94,40 @@ export function nextTriageSelection(ids: string[], current: string): string {
 export const TRIAGE_CONTROL =
   "min-h-11 md:min-h-8 [@media(pointer:coarse)]:min-h-11";
 
+export const TRIAGE_HISTORY_ACTIONS = [
+  "accept",
+  "accept_and_execute",
+  "reject",
+  "duplicate",
+  "snooze",
+  "unsnooze",
+  "reopen",
+  "assign_reviewer",
+] as const;
+
+export const TRIAGE_HISTORY_FILTER_KEYS = [
+  "q",
+  "source",
+  "result",
+  "processed_by",
+  "processed_after",
+  "processed_before",
+] as const;
+
+export type TriageHistoryFilter = {
+  key: (typeof TRIAGE_HISTORY_FILTER_KEYS)[number];
+  value: string;
+};
+
+export function triageHistoryFilters(
+  params: URLSearchParams,
+): TriageHistoryFilter[] {
+  return TRIAGE_HISTORY_FILTER_KEYS.flatMap((key) => {
+    const value = params.get(key);
+    return value ? [{ key, value }] : [];
+  });
+}
+
 export const TRIAGE_HISTORY_FIELDS = [
   "title",
   "description",

@@ -16,9 +16,11 @@ import { useStatusLabel } from "../issues/utils/status-label";
 import { memberListOptions } from "@multica/core/workspace/queries";
 import { useCurrentMember } from "@multica/core/permissions";
 import { Button } from "@multica/ui/components/ui/button";
+import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../i18n";
 import {
   TRIAGE_CONTROL,
+  TRIAGE_HISTORY_ACTIONS,
   triageSnapshotChanges,
   type TriageHistoryField,
 } from "./triage-ui";
@@ -29,6 +31,42 @@ export function TriageHistoryRecord({
 }: {
   wsId: string;
   entry: TriageAction | TriageHistoryEntry;
+}) {
+  const { t, i18n } = useT("triage");
+  const knownAction = TRIAGE_HISTORY_ACTIONS.find(
+    (name) => name === entry.action,
+  );
+  return (
+    <article className="space-y-2 py-3 text-body">
+      <div className="flex flex-wrap justify-between gap-x-3 gap-y-1">
+        <span className="font-medium">
+          {knownAction
+            ? t(($) => $[knownAction])
+            : entry.action === "import"
+              ? t(($) => $.import_csv)
+              : t(($) => $.unknown)}
+        </span>
+        <time
+          className="text-caption text-muted-foreground"
+          dateTime={entry.created_at}
+        >
+          {new Date(entry.created_at).toLocaleString(i18n.language)}
+        </time>
+      </div>
+      <TriageHistoryContent wsId={wsId} entry={entry} />
+    </article>
+  );
+}
+
+/** Shared snapshot presentation for global and single-item review history. */
+export function TriageHistoryContent({
+  wsId,
+  entry,
+  compact = false,
+}: {
+  wsId: string;
+  entry: TriageAction | TriageHistoryEntry;
+  compact?: boolean;
 }) {
   const { t, i18n } = useT("triage");
   const { data: members = [] } = useQuery(memberListOptions(wsId));
@@ -132,50 +170,31 @@ export function TriageHistoryRecord({
     return value;
   };
 
-  const actionNames = [
-    "accept",
-    "accept_and_execute",
-    "reject",
-    "duplicate",
-    "snooze",
-    "unsnooze",
-    "reopen",
-    "assign_reviewer",
-  ] as const;
-  const knownAction = actionNames.find((name) => name === entry.action);
   const source = entry.after.source ?? entry.before.source;
   return (
-    <article className="space-y-2 py-3 text-body">
-      <div className="flex flex-wrap justify-between gap-x-3 gap-y-1">
-        <span className="font-medium">
-          {knownAction
-            ? t(($) => $[knownAction])
-            : entry.action === "import"
-              ? t(($) => $.import_csv)
-              : t(($) => $.unknown)}
-        </span>
-        <time
-          className="text-caption text-muted-foreground"
-          dateTime={entry.created_at}
-        >
-          {new Date(entry.created_at).toLocaleString(i18n.language)}
-        </time>
-      </div>
-      <p className="text-caption text-muted-foreground">
-        {actor?.name ?? actor?.email ?? t(($) => $.unknown)}
-        {"round" in entry && ` · ${t(($) => $.round, { round: entry.round })}`}
-      </p>
-      {(source === "manual" || source === "csv") && (
+    <div className="min-w-0 space-y-2 [overflow-wrap:anywhere]">
+      <div className={compact ? "flex flex-wrap gap-x-3 gap-y-1" : "space-y-2"}>
         <p className="text-caption text-muted-foreground">
-          {t(($) => $[source])}
+          {actor?.name ?? actor?.email ?? t(($) => $.unknown)}
+          {"round" in entry && ` · ${t(($) => $.round, { round: entry.round })}`}
         </p>
-      )}
+        {(source === "manual" || source === "csv") && (
+          <p className="text-caption text-muted-foreground">
+            {t(($) => $[source])}
+          </p>
+        )}
+      </div>
       {entry.reason && (
-        <p className="whitespace-pre-wrap break-words">{entry.reason}</p>
+        <p className="max-w-prose whitespace-pre-wrap">{entry.reason}</p>
       )}
       {changes.length > 0 && (
         <details>
-          <summary className="min-h-8 cursor-pointer text-caption text-muted-foreground">
+          <summary
+            className={cn(
+              TRIAGE_CONTROL,
+              "w-fit max-w-full cursor-pointer rounded-sm text-caption text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            )}
+          >
             {t(($) => $.changes)}
           </summary>
           <p className="mt-2 text-caption text-muted-foreground">
@@ -186,13 +205,13 @@ export function TriageHistoryRecord({
               <div key={change.field} className="space-y-1">
                 <dt className="font-medium">{fieldLabel(change.field)}</dt>
                 <dd className="grid min-w-0 gap-2 sm:grid-cols-2">
-                  <div className="min-w-0 whitespace-pre-wrap break-words">
+                  <div className="min-w-0 whitespace-pre-wrap">
                     <span className="text-muted-foreground">
                       {t(($) => $.before)}:{" "}
                     </span>
                     {formatValue(change.field, change.before, entry.before)}
                   </div>
-                  <div className="min-w-0 whitespace-pre-wrap break-words">
+                  <div className="min-w-0 whitespace-pre-wrap">
                     <span className="text-muted-foreground">
                       {t(($) => $.after)}:{" "}
                     </span>
@@ -204,7 +223,7 @@ export function TriageHistoryRecord({
           </dl>
         </details>
       )}
-    </article>
+    </div>
   );
 }
 
