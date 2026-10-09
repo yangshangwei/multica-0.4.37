@@ -430,7 +430,8 @@
       "plugins": "Plugins",
       "mcp": "MCP",
       "billing": "Billing",
-      "triage": "Triage"
+      "triage": "Triage",
+      "iterations": "Iterations"
     }
   },
   "plugins": {
@@ -794,7 +795,9 @@
       "reset": "Restore default",
       "saved": "Planning timezone saved",
       "load_error": "Could not load the planning timezone.",
-      "retry": "Retry"
+      "retry": "Retry",
+      "confirming": "Confirming the saved timezone...",
+      "changed": "The saved timezone changed. Review it before saving again."
     }
   },
   "delete_workspace_dialog": {
@@ -1454,5 +1457,30 @@
     "expiry_7d": "7 days",
     "expiry_30d": "30 days",
     "expiry_never": "Never"
+  },
+  "iterations": {
+    "title": "Iteration settings",
+    "description": "Plan tasks in cycles, track scope changes, and decide what happens to unfinished work.",
+    "enable": "Enable iterations",
+    "enable_description": "Enabling iterations does not create a cycle or start any executions.",
+    "enabled": "Iterations are enabled.",
+    "disabled": "Iterations are disabled. Saved history remains available.",
+    "manage": "Manage iterations",
+    "history": "View history",
+    "counts": "{{active}} active · {{planned}} planned",
+    "counts_error": "Could not load the current iteration counts.",
+    "mode": "Cycle management",
+    "manual": "Manual",
+    "manual_description": "Members start and end each iteration. Only one iteration can be active at a time.",
+    "readonly": "Only workspace owners and administrators can change these settings.",
+    "loading": "Loading iteration settings...",
+    "retry": "Retry",
+    "unsupported": "This server does not support iteration settings. Upgrade the server to manage iterations here.",
+    "timezone_description": "New iterations use the workspace timezone: {{timezone}}.",
+    "timezone_settings": "Change in workspace settings",
+    "refresh_block": "Confirm the saved settings before changing iteration availability.",
+    "operation_block": "An iteration operation is being processed or needs recovery.",
+    "footer": "Starting, ending, or disabling iterations does not start or stop executions. History is preserved.",
+    "disable_description": "Active iterations will end and planned iterations will be cancelled. Current task assignments will be cleared. Enabling again will not restore these cycles."
   }
 }

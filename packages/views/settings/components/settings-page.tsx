@@ -1,5 +1,6 @@
 "use client";
 
+import { IterationSettingsTab } from "../../iterations/iteration-settings-tab";
 import { TriageSettingsTab } from "../../triage/triage-settings-tab";
 
 import React from "react";
@@ -247,6 +248,7 @@ export function SettingsPage({ extraDesktopTabs }: SettingsPageProps = {}) {
           <TabsContent aria-label={activeLabel} value="tokens"><TokensTab /></TabsContent>
           <TabsContent aria-label={activeLabel} value="workspace"><WorkspaceTab /></TabsContent>
           <TabsContent aria-label={activeLabel} value="triage"><TriageSettingsTab /></TabsContent>
+          <TabsContent aria-label={activeLabel} value="iterations"><IterationSettingsTab /></TabsContent>
           <TabsContent aria-label={activeLabel} value="members"><MembersTab /></TabsContent>
           {/* Flag-gated tabs render their content unconditionally: validTabs
               already excludes a gated value, so the panel can never activate

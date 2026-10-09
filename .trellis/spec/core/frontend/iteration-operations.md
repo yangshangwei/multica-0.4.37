@@ -97,3 +97,23 @@ Canonical tests: views `iteration-form.test.tsx` covers baseline/conflict, statu
 post-commit refresh and exact retry; `iteration-navigation.test.tsx` covers parent
 query errors retaining the editor. Core command/access suites remain the owners
 of request persistence and authorization epochs.
+
+## Workspace settings and business-page composition
+
+- `IterationSettingsTab` is always discoverable at `settings?tab=iterations`.
+  Use `supported/manual` for version compatibility and `settings.enabled` for
+  the persisted workspace choice. Do not reintroduce `iterations_i1` or a
+  client-owned enablement flag.
+- `WorkspacePlanningTimezone` is edited only in workspace General settings
+  (`settings?tab=workspace`), because projects and new iterations share this
+  workspace value. Iteration settings show `settings.effective_timezone` as
+  read-only context and link to that editor; do not mount another timezone form
+  or make iteration availability depend on an editor callback. Enable sends
+  the displayed saved value as `confirmed_timezone`; loading, failed refreshes
+  and pending operations still block the switch. A stale-timezone rejection
+  refreshes settings before another enable attempt. Read the effective timezone
+  from the server (the shared fallback is currently `Asia/Shanghai`), never
+  infer UTC from a missing value. Existing iterations keep their saved timezone.
+- `IterationOperation` controlled `open/onOpenChange/hideTrigger` supports the
+  switch and action menus without replacing complete preview/recovery logic.
+  `IterationRecovery` stays outside supported/enabled and tab visibility gates.

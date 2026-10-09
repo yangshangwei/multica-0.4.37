@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { setApiInstance } from "@multica/core/api";
@@ -58,6 +58,18 @@ it("keeps a failed save editable and allows the draft to be cancelled", async ()
   expect(screen.getByRole("combobox")).toHaveTextContent("Asia/Shanghai");
 });
 
+it("preserves the timezone draft when another administrator changes the saved value", async () => {
+  const { user } = mount();
+  await user.click(await screen.findByRole("combobox"));
+  await user.click(await screen.findByRole("option", { name: "Europe/Paris" }));
+  getTimezone.mockResolvedValue({ ...defaultTimezone, planning_timezone: "UTC", effective_timezone: "UTC", configured: true });
+  await act(async () => { await client.invalidateQueries({ queryKey: ["projects", "ws", "planning-timezone"] }); });
+  expect(screen.getByRole("combobox")).toHaveTextContent("Europe/Paris");
+  await user.click(screen.getByRole("button", { name: "Save timezone" }));
+  expect(await screen.findByText("Planning timezone saved")).toBeInTheDocument();
+  expect(updateTimezone).toHaveBeenCalledWith("ws", "Europe/Paris");
+});
+
 it("shows members the saved value without editing actions", async () => {
   getTimezone.mockResolvedValue({ ...defaultTimezone, planning_timezone: "Europe/Paris", effective_timezone: "Europe/Paris", configured: true });
   mount(false);
@@ -86,4 +98,64 @@ it("drops the old draft when switching workspaces", async () => {
   expect(await screen.findByRole("combobox")).toHaveTextContent("Europe/Paris");
   expect(screen.queryByRole("button", { name: "Save timezone" })).not.toBeInTheDocument();
   expect(updateTimezone).not.toHaveBeenCalled();
+});
+
+it("confirms an unknown save by reading the shared setting without resubmitting", async () => {
+  updateTimezone.mockImplementation(async () => {
+    getTimezone.mockResolvedValue({ ...defaultTimezone, configured: true, planning_timezone: "UTC", effective_timezone: "UTC" });
+    throw new TypeError("Response lost");
+  });
+  const { user } = mount();
+  await user.click(await screen.findByRole("combobox"));
+  await user.click(await screen.findByRole("option", { name: "UTC" }));
+  await user.click(screen.getByRole("button", { name: "Save timezone" }));
+  expect(await screen.findByText("Planning timezone saved")).toBeInTheDocument();
+  expect(updateTimezone).toHaveBeenCalledTimes(1);
+  expect(screen.queryByRole("button", { name: "Save timezone" })).not.toBeInTheDocument();
+});
+
+it("locks uncertain saves until a successful read and retains the draft on failed refresh", async () => {
+  updateTimezone.mockImplementation(async () => {
+    getTimezone.mockRejectedValue(new Error("Still offline"));
+    throw new TypeError("Response lost");
+  });
+  const { user } = mount();
+  await user.click(await screen.findByRole("combobox"));
+  await user.click(await screen.findByRole("option", { name: "UTC" }));
+  await user.click(screen.getByRole("button", { name: "Save timezone" }));
+  await screen.findByText(/Could not load the planning timezone/, {}, { timeout: 4000 });
+  const retry = screen.getByRole("button", { name: "Retry" });
+  expect(screen.getByRole("combobox")).toHaveTextContent("UTC");
+  expect(screen.getByRole("combobox")).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Save timezone" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+  getTimezone.mockResolvedValue(defaultTimezone);
+  await user.click(retry);
+  await waitFor(() => expect(screen.getByRole("combobox")).toBeEnabled());
+  expect(screen.getByRole("combobox")).toHaveTextContent("UTC");
+  expect(screen.getByRole("button", { name: "Save timezone" })).toBeEnabled();
+  expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled();
+  expect(updateTimezone).toHaveBeenCalledTimes(1);
+});
+
+it("keeps confirmation retry available after an incidental successful refresh", async () => {
+  updateTimezone.mockImplementation(async () => {
+    getTimezone.mockRejectedValue(new Error("Still offline"));
+    throw new TypeError("Response lost");
+  });
+  const { user } = mount();
+  await user.click(await screen.findByRole("combobox"));
+  await user.click(await screen.findByRole("option", { name: "UTC" }));
+  await user.click(screen.getByRole("button", { name: "Save timezone" }));
+  await screen.findByText(/Could not load the planning timezone/, {}, { timeout: 4000 });
+
+  getTimezone.mockResolvedValue({ ...defaultTimezone, planning_timezone: "UTC", effective_timezone: "UTC", configured: true });
+  await act(async () => { await client.invalidateQueries({ queryKey: ["projects", "ws", "planning-timezone"] }); });
+  await waitFor(() => expect(screen.queryByText(/Could not load the planning timezone/)).not.toBeInTheDocument());
+  expect(screen.getByRole("combobox")).toBeDisabled();
+  await user.click(screen.getByRole("button", { name: "Retry" }));
+  await waitFor(() => expect(screen.getByRole("combobox")).toBeEnabled());
+  expect(await screen.findByText("Planning timezone saved")).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
+  expect(updateTimezone).toHaveBeenCalledTimes(1);
 });

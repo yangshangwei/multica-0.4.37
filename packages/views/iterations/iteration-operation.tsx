@@ -29,8 +29,16 @@ export function IterationOperation({
   iteration,
   operation,
   available = true,
+  open: controlledOpen,
+  onOpenChange,
+  hideTrigger = false,
+  description,
 }: {
   wsId: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
+  description?: string;
   available?: boolean;
   iteration: Iteration | null;
   settingsRevision: number;
@@ -40,7 +48,12 @@ export function IterationOperation({
   const locale = useLocale();
   const labels = useIterationLabels();
   const client = useQueryClient();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  function setOpen(next: boolean) {
+    setInternalOpen(next);
+    onOpenChange?.(next);
+  }
   const [reason, setReason] = useState("");
   const [target, setTarget] = useState("");
   const [mode, setMode] = useState<"scheduled" | "today">("scheduled");
@@ -149,10 +162,10 @@ export function IterationOperation({
     setDraft(null);
     setPreview(null);
   }
-  if (!available && !pending && !apply.isPending && !apply.error) return null;
+  if (!open && !available && !pending && !apply.isPending && !apply.error) return null;
   return (
     <>
-      {available && (
+      {available && !hideTrigger && (
         <Button variant="outline" onClick={() => setOpen(true)}>
           {label}
         </Button>
@@ -164,7 +177,7 @@ export function IterationOperation({
             <DialogDescription>
               {accessDenied
                 ? t(($) => $.iterations.settings)
-                : (iteration?.name ?? t(($) => $.iterations.settings))}
+                : (description ?? iteration?.name ?? t(($) => $.iterations.settings))}
             </DialogDescription>
           </DialogHeader>
           <fieldset

@@ -430,7 +430,8 @@
       "plugins": "Plugins",
       "mcp": "MCP",
       "billing": "账单与套餐",
-      "triage": "分拣台"
+      "triage": "分拣台",
+      "iterations": "迭代"
     }
   },
   "plugins": {
@@ -792,7 +793,9 @@
       "reset": "恢复默认",
       "saved": "规划时区已保存",
       "load_error": "无法加载规划时区。",
-      "retry": "重试"
+      "retry": "重试",
+      "confirming": "正在确认已保存的时区...",
+      "changed": "已保存的时区发生变化，请检查后重新保存。"
     }
   },
   "delete_workspace_dialog": {
@@ -1451,5 +1454,30 @@
     "expiry_7d": "7 天",
     "expiry_30d": "30 天",
     "expiry_never": "永久有效"
+  },
+  "iterations": {
+    "title": "迭代设置",
+    "description": "按周期安排任务，跟踪范围变化，并在结束时处理未完成的工作。",
+    "enable": "启用迭代",
+    "enable_description": "启用后不会自动创建周期、安排任务或启动执行。",
+    "enabled": "迭代已启用。",
+    "disabled": "迭代未启用，已有历史仍可查看。",
+    "manage": "管理迭代",
+    "history": "查看历史",
+    "counts": "{{active}} 个进行中 · {{planned}} 个计划中",
+    "counts_error": "无法加载当前迭代数量。",
+    "mode": "周期管理方式",
+    "manual": "手动",
+    "manual_description": "成员手动开始和结束迭代，同时最多有一个进行中的迭代。",
+    "readonly": "仅工作空间所有者或管理员可修改这些设置。",
+    "loading": "正在加载迭代设置...",
+    "retry": "重试",
+    "unsupported": "当前服务不支持迭代设置，请升级服务后管理迭代。",
+    "timezone_description": "新建迭代使用工作空间时区：{{timezone}}",
+    "timezone_settings": "前往修改",
+    "refresh_block": "请先确认已保存的设置，再启用或关闭迭代。",
+    "operation_block": "迭代操作正在处理或等待恢复结果。",
+    "footer": "开始、结束或关闭迭代不会启动或停止执行，历史记录会保留。",
+    "disable_description": "进行中的迭代将结束，计划中的迭代将取消，任务当前迭代归属会清除。再次启用不会恢复这些周期。"
   }
 }

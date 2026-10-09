@@ -30,6 +30,7 @@ vi.mock("./keyboard-shortcuts-tab", stub("KeyboardShortcutsTab"));
 vi.mock("./plugins-tab", stub("PluginsTab"));
 vi.mock("./billing-tab", stub("BillingTab"));
 vi.mock("./mcp-tab", stub("McpTab"));
+vi.mock("../../iterations/iteration-settings-tab", stub("IterationSettingsTab"));
 
 const replace = vi.fn();
 const navigationState = { search: "", hash: "" };
@@ -347,4 +348,11 @@ describe("SettingsPage workspace subscription feature flag", () => {
     expect(screen.getByRole("tab", { name: "Billing" })).toBeInTheDocument();
     expect(screen.getByText("BillingTab")).toBeInTheDocument();
   });
+});
+
+it("opens the discoverable iteration settings from its public URL", () => {
+  navigationState.search = "tab=iterations";
+  renderWithI18n(<SettingsPage />);
+  expect(screen.getByRole("tab", { name: "Iterations" })).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByText("IterationSettingsTab")).toBeInTheDocument();
 });

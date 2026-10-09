@@ -5,6 +5,7 @@ import {
   Blocks,
   Cable,
   CircleDot,
+  Repeat,
   CreditCard,
   FolderGit2,
   Key,
@@ -103,6 +104,7 @@ export const SETTINGS_NAV_GROUPS: readonly SettingsNavGroupDef[] = [
       { key: "members", icon: Users },
       { key: "labels", icon: Tag },
       { key: "triage", icon: Inbox },
+      { key: "iterations", icon: Repeat },
       {
         key: "billing",
         icon: CreditCard,
