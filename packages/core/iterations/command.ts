@@ -1,3 +1,4 @@
+import { refreshIterationSettingsDependents } from "./realtime";
 import {
   notifyPendingIterations,
   pendingIterationRevision,
@@ -214,6 +215,8 @@ export function useIterationCommand(wsId: string, scope: string) {
         setPending(null);
         await client.invalidateQueries({ queryKey: ["iterations", wsId] });
         assertCurrentContext();
+        await refreshIterationSettingsDependents(client, wsId);
+        assertCurrentContext();
         await client.invalidateQueries({ queryKey: ["issues", wsId] });
         assertCurrentContext();
         return result;
@@ -226,8 +229,11 @@ export function useIterationCommand(wsId: string, scope: string) {
           setPending(null);
           if (isIterationAccessDenied(error))
             clearIterationReadAccess(client, wsId);
-          else
+          else {
             await client.invalidateQueries({ queryKey: ["iterations", wsId] });
+            assertCurrentContext();
+            await refreshIterationSettingsDependents(client, wsId);
+          }
         }
         throw error;
       } finally {

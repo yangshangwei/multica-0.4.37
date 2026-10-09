@@ -1,6 +1,6 @@
 "use client";
 
-import { iterationManagementEvent } from "../iterations/realtime";
+import { iterationManagementEvent, refreshIterationSettingsDependents } from "../iterations/realtime";
 import { projectManagementEvent } from "../projects/realtime";
 import { clearProtectedProjectContent, markProjectDeleted, isProjectDeletePending } from "../projects/access";
 
@@ -1017,7 +1017,14 @@ export function useRealtimeSync(
     // Filtering by actor_id would block other tabs of the same user.
     // Instead, both mutations and WS handlers use dedup checks to be idempotent.
 
-    const unsubIterationUpdated = ws.on("iteration:updated", () => { const wsId = getCurrentWsId(); if (wsId) { qc.invalidateQueries({ queryKey: ["iterations", wsId] }); qc.invalidateQueries({ queryKey: ["issues", wsId] }); } });
+    const unsubIterationUpdated = ws.on("iteration:updated", () => {
+      const wsId = getCurrentWsId();
+      if (wsId) {
+        void qc.invalidateQueries({ queryKey: ["iterations", wsId] });
+        void qc.invalidateQueries({ queryKey: ["issues", wsId] });
+        void refreshIterationSettingsDependents(qc, wsId);
+      }
+    });
     const unsubTriageUpdated = ws.on("triage:updated", (payload) => onTriageUpdated(qc, payload));
 
     const unsubIssueUpdated = ws.on("issue:updated", (p) => {

@@ -37,7 +37,7 @@ func lifecycleFixture(t *testing.T) (*testutil.Fixture, *IterationService) {
 	for _, table := range []string{"iteration_snapshot", "iteration_notification", "iteration", "iteration_participation", "iteration_event", "iteration_operation"} {
 		fx.Cleanup(t, "DELETE FROM "+table+" WHERE workspace_id=$1", fx.WorkspaceID)
 	}
-	return fx, &IterationService{TxStarter: pool, Available: func(context.Context) bool { return true }, AuthorizeIssues: func(context.Context, pgx.Tx, []db.Issue) error { return nil }}
+	return fx, &IterationService{TxStarter: pool, AuthorizeIssues: func(context.Context, pgx.Tx, []db.Issue) error { return nil }}
 }
 func lifecycleAuth(context.Context, pgx.Tx) error { return nil }
 func lifecycleIDs(fx *testutil.Fixture) (pgtype.UUID, pgtype.UUID) {

@@ -36,7 +36,10 @@ for (const [index, signal] of (["blocked", "overdue", "unassigned", "in_review"]
       await expect(risk).toContainText("All matching formal issues, including sub-issues. Personal and saved-view filters do not apply.");
       const reference = (await p1Overview(api, project.id)).statistics;
       await expect(risk).toContainText(reference.reference_date);
-      await expect(risk).toContainText(reference.timezone);
+      const planning = await api.requestJSON<{ effective_timezone: string }>(`/api/workspaces/${workspace.id}/planning-timezone`);
+      expect(first.overview.statistics.reference_date).toBe(reference.reference_date);
+      expect(first.overview.statistics.timezone).toBe(planning.effective_timezone);
+      expect(reference.timezone).toBe(planning.effective_timezone);
       if (signal === "unassigned") {
         await risk.getByRole("button", { name: "Table", exact: true }).click();
         await expect(risk.getByRole("row").filter({ hasText: "Undated unassigned child" })).toContainText("No due date");

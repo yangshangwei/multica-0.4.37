@@ -20,6 +20,28 @@ async function openProject(page: Page, session: Session, project: P1Project) {
   await page.goto(`/${session.workspace.slug}/projects/${project.id}?section=overview`);
   await page.getByRole("heading", { name: "Overview", exact: true }).waitFor();
 }
+const planningTimezone = (page: Page) => page.getByRole("combobox", { name: "Planning timezone", exact: true });
+const planningTimezoneValue = (page: Page) => planningTimezone(page).locator('[data-slot="select-value"]');
+async function openPlanningSettings(page: Page, session: Session) {
+  await page.goto(`/${session.workspace.slug}/settings?tab=workspace`);
+  await expect(planningTimezone(page)).toBeEnabled();
+}
+async function choosePlanningTimezone(page: Page, timezone: string) {
+  await planningTimezone(page).click();
+  await page.getByRole("option", { name: timezone, exact: true }).click();
+  await expect(planningTimezoneValue(page)).toHaveText(timezone);
+}
+async function savePlanningTimezone(page: Page, session: Session, timezone: string | null) {
+  const saved = page.waitForResponse((response) => response.request().method() === "PUT"
+    && new URL(response.url()).pathname === `/api/workspaces/${session.workspace.id}/planning-timezone`);
+  await page.getByRole("button", { name: timezone === null ? "Restore default" : "Save timezone", exact: true }).click();
+  const response = await saved;
+  expect(response.status()).toBe(200);
+  expect(response.request().postDataJSON()).toEqual({ planning_timezone: timezone });
+  expect(await response.json()).toMatchObject({ planning_timezone: timezone, effective_timezone: timezone ?? "Asia/Shanghai", configured: timezone !== null });
+  await expect(planningTimezoneValue(page)).toHaveText(timezone ?? "Asia/Shanghai");
+  await expect(page.getByText("Planning timezone saved", { exact: true })).toBeVisible();
+}
 async function openDelete(page: Page) {
   await page.locator("button").filter({ has: page.locator("svg.lucide-ellipsis") }).click();
   await page.getByRole("menuitem", { name: "Delete project", exact: true }).click();
@@ -185,30 +207,47 @@ test("P1-L10 unsupported capabilities retain the description and hide unsafe edi
   expect((await p1.api.requestJSON<P1Project>(`/api/projects/${project.id}`)).description).toBe(project.description);
 });
 
-test("P1-L11 an owner changes the shared planning timezone and can reset it to UTC", async ({ page, p1 }) => {
+test("P1-L11 an owner selects and changes the shared planning timezone and restores the Shanghai default", async ({ page, p1 }) => {
   const project = await p1Project(p1.api);
   await openProject(page, p1, project);
-  await page.getByLabel(timezoneLabel).fill("Asia/Shanghai");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect.poll(async () => (await p1Overview(p1.api, project.id)).statistics.timezone).toBe("Asia/Shanghai");
+  await openPlanningSettings(page, p1);
+  await expect(planningTimezoneValue(page)).toHaveText("Asia/Shanghai");
+  expect(await p1.api.requestJSON(`/api/workspaces/${p1.workspace.id}/planning-timezone`)).toMatchObject({ planning_timezone: null, effective_timezone: "Asia/Shanghai", configured: false });
+  for (const timezone of ["UTC", "Europe/London"]) {
+    await choosePlanningTimezone(page, timezone);
+    await savePlanningTimezone(page, p1, timezone);
+    await expect.poll(async () => (await p1Overview(p1.api, project.id)).statistics.timezone).toBe(timezone);
+  }
   await page.reload();
-  await expect(page.getByText("Asia/Shanghai", { exact: true })).toBeVisible();
-  await page.getByLabel(timezoneLabel).fill("");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(page.getByText("Planning timezone is not configured; UTC is used.", { exact: true })).toBeVisible();
-  expect((await p1Overview(p1.api, project.id)).statistics.timezone).toBe("UTC");
+  await expect(planningTimezoneValue(page)).toHaveText("Europe/London");
+  await savePlanningTimezone(page, p1, null);
+  await expect(page.getByRole("button", { name: "Restore default", exact: true })).toHaveCount(0);
+  expect((await p1Overview(p1.api, project.id)).statistics.timezone).toBe("Asia/Shanghai");
 });
 
-test("P1-L12 invalid timezone input remains editable and leaves server planning unchanged", async ({ page, p1 }) => {
+test("P1-L12 the picker excludes invalid timezones and rejected writes leave planning unchanged", async ({ page, p1 }) => {
   const project = await p1Project(p1.api);
-  await openProject(page, p1, project);
-  await page.getByLabel(timezoneLabel).fill("Not/A_Real_Zone");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(page.getByRole("alert")).toBeVisible();
-  await expect(page.getByLabel(timezoneLabel)).toHaveValue("Not/A_Real_Zone");
-  expect((await p1Overview(p1.api, project.id)).statistics.timezone).toBe("UTC");
-  await page.getByLabel(timezoneLabel).fill("Europe/London");
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  const path = `/api/workspaces/${p1.workspace.id}/planning-timezone`;
+  let writes = 0;
+  page.on("request", (request) => { if (request.method() === "PUT" && new URL(request.url()).pathname === path) writes++; });
+  await openPlanningSettings(page, p1);
+  const original = await p1.api.requestJSON(path);
+  await planningTimezone(page).click();
+  await expect(page.getByRole("option", { name: "Not/A_Real_Zone", exact: true })).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(planningTimezoneValue(page)).toHaveText("Asia/Shanghai");
+  await expect(page.getByRole("button", { name: "Save timezone", exact: true })).toHaveCount(0);
+  expect(writes).toBe(0);
+  // The selector cannot create arbitrary values; the API still rejects an invalid caller value.
+  const rejected = await p1Raw(p1.api, p1.workspace.id, path, "PUT", { planning_timezone: "Not/A_Real_Zone" });
+  expect(rejected.status).toBe(422);
+  expect(await rejected.json()).toMatchObject({ code: "validation_failed", field_errors: [{ field: "planning_timezone" }] });
+  expect(await p1.api.requestJSON(path)).toEqual(original);
+  expect((await p1Overview(p1.api, project.id)).statistics.timezone).toBe("Asia/Shanghai");
+  await expect(planningTimezone(page)).toBeEnabled();
+  await choosePlanningTimezone(page, "Europe/London");
+  await savePlanningTimezone(page, p1, "Europe/London");
+  expect(writes).toBe(1);
   await expect.poll(async () => (await p1Overview(p1.api, project.id)).statistics.timezone).toBe("Europe/London");
 });
 
@@ -217,17 +256,28 @@ test("P1-L13 loss of timezone write permission preserves readable project and lo
   await openProject(page, p1, project);
   await page.getByRole("button", { name: "Write progress", exact: true }).click();
   await composer(page).locator('[contenteditable="true"]').fill("My draft must survive an operation denial");
-  await p1DB("UPDATE member SET role='member' WHERE workspace_id=$1 AND user_id=$2", [p1.workspace.id, p1.owner.id]);
+  const settingsPage = await page.context().newPage();
+  let demoted = false;
   try {
-    await page.getByLabel(timezoneLabel).fill("Asia/Shanghai");
-    const failure = page.waitForResponse((r) => r.request().method() === "PUT" && r.url().endsWith("/planning-timezone"));
-    await page.getByRole("button", { name: "Save", exact: true }).click();
+    await p1Authenticate(settingsPage, p1.api);
+    await openPlanningSettings(settingsPage, p1);
+    await choosePlanningTimezone(settingsPage, "UTC");
+    await p1DB("UPDATE member SET role='member' WHERE workspace_id=$1 AND user_id=$2", [p1.workspace.id, p1.owner.id]);
+    demoted = true;
+    const failure = settingsPage.waitForResponse((r) => r.request().method() === "PUT" && r.url().endsWith("/planning-timezone"));
+    await settingsPage.getByRole("button", { name: "Save timezone", exact: true }).click();
     const response = await failure;
     expect(response.status()).toBe(403);
     expect(await response.json()).toMatchObject({ code: "project_permission_denied" });
+    await expect(planningTimezoneValue(settingsPage)).toHaveText("UTC");
+    expect(await p1.api.requestJSON(`/api/workspaces/${p1.workspace.id}/planning-timezone`)).toMatchObject({ planning_timezone: null, effective_timezone: "Asia/Shanghai" });
     await expect(composer(page).locator('[contenteditable="true"]')).toContainText("My draft must survive an operation denial");
     await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
-  } finally { await p1DB("UPDATE member SET role='owner' WHERE workspace_id=$1 AND user_id=$2", [p1.workspace.id, p1.owner.id]); }
+    expect((await p1.api.requestJSON<P1Project>(`/api/projects/${project.id}`)).id).toBe(project.id);
+  } finally {
+    if (demoted) await p1DB("UPDATE member SET role='owner' WHERE workspace_id=$1 AND user_id=$2", [p1.workspace.id, p1.owner.id]);
+    await settingsPage.close();
+  }
 });
 
 test("P1-L14 real workspace revocation clears visible drafts even without WebSocket delivery", async ({ browser, p1 }, info) => {
@@ -313,7 +363,7 @@ for (const [revocation, revoke] of Object.entries(revocations)) {
   });
 }
 
-test("P1-L15 Chinese compact editing supports keyboard preview and an unobstructed save button", async ({ page, p1 }, info) => {
+test("P1-L15 Chinese compact editing supports keyboard preview and an unobstructed publish button", async ({ page, p1 }, info) => {
   const project = await p1Project(p1.api);
   await p1.api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
   await page.context().addCookies([{ name: "multica-locale", value: "zh-Hans", url: process.env.PLAYWRIGHT_BASE_URL! }]);
@@ -325,16 +375,17 @@ test("P1-L15 Chinese compact editing supports keyboard preview and an unobstruct
   await editor.locator('[contenteditable="true"]').fill("客户验收记录已复核，下一步完成交付。");
   await editor.getByRole("button", { name: "预览发布", exact: true }).focus();
   await page.keyboard.press("Enter");
-  await editor.getByRole("button", { name: "发布", exact: true }).scrollIntoViewIfNeeded();
+  const publish = editor.getByRole("button", { name: "发布", exact: true });
+  await expect(publish).toBeEnabled();
+  await publish.scrollIntoViewIfNeeded();
   await p1NoOverflow(page);
-  const save = page.getByRole("button", { name: "保存", exact: true });
-  await save.evaluate((element) => element.scrollIntoView({ block: "center" }));
-  expect(await save.evaluate((element) => {
+  await publish.evaluate((element) => element.scrollIntoView({ block: "center" }));
+  expect(await publish.evaluate((element) => {
     const box = element.getBoundingClientRect();
     return [0.25, 0.5, 0.75].every((x) => [0.25, 0.5, 0.75].every((y) => {
       const target = document.elementFromPoint(box.x + box.width * x, box.y + box.height * y);
       return target === element || element.contains(target);
     }));
   })).toBe(true);
-  await p1Capture(page, info, "chinese-compact-keyboard-and-save");
+  await p1Capture(page, info, "chinese-compact-keyboard-and-publish");
 });

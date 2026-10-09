@@ -493,7 +493,7 @@ func TestIterationHistoryCanonicalThroughLifecycleAndIssueWriters(t *testing.T) 
 		_, err := db.New(tx).GetMemberByUserAndWorkspace(ctx, db.GetMemberByUserAndWorkspaceParams{WorkspaceID: ws, UserID: actor})
 		return err
 	}
-	svc := service.IterationService{TxStarter: testPool, Available: func(context.Context) bool { return true }, AuthorizeIssues: func(_ context.Context, _ pgx.Tx, issues []db.Issue) error {
+	svc := service.IterationService{TxStarter: testPool, AuthorizeIssues: func(_ context.Context, _ pgx.Tx, issues []db.Issue) error {
 		for _, issue := range issues {
 			if issue.WorkspaceID != ws {
 				return errors.New("foreign issue")

@@ -2,7 +2,7 @@
 
 The I1 APIs use complete server previews and durable request identities. Shared
 implementation lives in `packages/core/iterations` and `packages/views/iterations`;
-Web and Desktop only wire routes/platform adapters. Rollout defaults off.
+Web and Desktop only wire routes/platform adapters. The service supports I1 without a deployment flag; each workspace starts disabled and is enabled by a human owner/admin in Settings → Iterations.
 
 ## Request and permission boundaries
 
@@ -118,6 +118,9 @@ of request persistence and authorization epochs.
 - `IterationOperation` controlled `open/onOpenChange/hideTrigger` supports the
   switch and action menus without replacing complete preview/recovery logic.
   `IterationRecovery` stays outside supported/enabled and tab visibility gates.
+- Successful commands and `iteration:updated` refresh iterations and triage
+  settings' `iteration_assignment` capability; shared timezone queries must also
+  remain current. New enable publishes only after commit, not on receipt replay.
 - `iterationCatalogueOptions` is the single complete metadata traversal, including
   repeated identity/cursor detection and one full restart on `cursor_stale`.
   Do not give the same cache key a weaker view-local query function.
@@ -175,9 +178,8 @@ hidden background role; do not remove the assertion or disable modal isolation
 to make a default visible-role locator succeed.
 
 Canonical regressions: core `catalogue.test.ts`, `timeline.test.ts`; views
-`iteration-navigation.test.tsx`, `iteration-settings-tab.test.tsx`; normal settings
-feedback in `e2e/iteration-settings.spec.ts` and original-request recovery in
-`e2e/iterations-i1-desktop.spec.ts`.
+`iteration-navigation.test.tsx`, `iteration-settings-tab.test.tsx`; real settings
+recovery and sibling-client refresh in `e2e/iteration-settings.spec.ts`.
 
 ## Progress and complete scope activity
 

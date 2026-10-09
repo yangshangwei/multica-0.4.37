@@ -400,15 +400,40 @@ func TestIterationOverdueScanBoundedAndDrains(t *testing.T) {
 	}
 }
 
-func TestIterationNotificationWorkerReleaseOff(t *testing.T) {
-	ctx, cancel := context.WithCancel(t.Context())
-	defer cancel()
-	checked := false
-	s := &IterationService{Available: func(context.Context) bool { checked = true; cancel(); return false }}
-	// No transaction starter: release-disabled startup must never reach storage.
-	s.RunIterationNotifications(ctx, func(db.InboxItem) { t.Fatal("release-disabled worker published") })
-	if !checked {
-		t.Fatal("worker did not check release gate")
+func TestIterationNotificationWorkerResumesPersistedDelivery(t *testing.T) {
+	for _, name := range []string{"enabled", "disabled"} {
+		t.Run(name, func(t *testing.T) {
+			fx, setup := lifecycleFixture(t)
+			iid := lifecycleCreate(t, fx, setup)
+			ws, _ := lifecycleIDs(fx)
+			fx.Cleanup(t, "DELETE FROM inbox_item WHERE workspace_id=$1", fx.WorkspaceID)
+			fx.Exec(t, "UPDATE workspace_iteration_settings SET enabled=$2 WHERE workspace_id=$1", fx.WorkspaceID, name == "enabled")
+			if err := EnqueueIterationNotifications(t.Context(), db.New(fx.Pool), ws, util.MustParseUUID(iid), util.MustParseUUID(uuid.NewString()), "dates_changed", []string{fx.UserID}); err != nil {
+				t.Fatal(err)
+			}
+			// Startup must resume retained outbox work without rollout configuration,
+			// including historical notifications after a workspace was disabled.
+			s := &IterationService{TxStarter: fx.Pool}
+			ctx, cancel := context.WithTimeout(t.Context(), 2*time.Second)
+			defer cancel()
+			published := 0
+			s.RunIterationNotifications(ctx, func(item db.InboxItem) {
+				published++
+				if n := fx.Count(t, "SELECT count(*) FROM iteration_notification WHERE id=$1 AND status='delivered'", item.ID); n != 1 {
+					t.Fatal("worker published before delivery committed")
+				}
+				cancel()
+			})
+			if published != 1 {
+				t.Fatalf("worker did not resume persisted delivery: %d", published)
+			}
+			if err := s.DeliverIterationNotifications(t.Context(), func(db.InboxItem) { published++ }); err != nil {
+				t.Fatal(err)
+			}
+			if published != 1 || fx.Count(t, "SELECT count(*) FROM inbox_item WHERE workspace_id=$1", ws) != 1 {
+				t.Fatalf("worker did not deliver exactly once: %d", published)
+			}
+		})
 	}
 }
 

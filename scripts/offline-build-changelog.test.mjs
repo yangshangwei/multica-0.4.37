@@ -8,17 +8,19 @@ import { scratch, scripts, seed } from "./changelog-test-helpers.mjs";
 
 const composeAvailable = spawnSync("docker", ["compose", "version"], { encoding: "utf8" }).status === 0;
 
-test("self-host configuration preserves rollout defaults and forwards explicit administration settings", { skip: !composeAvailable }, () => {
-  const defaults = { FF_PROJECTS_P1: "true", FF_ITERATIONS_I1: "false", MULTICA_PLATFORM_ADMIN_ENABLED: "false", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "false", MULTICA_DEPLOYMENT_ID: "" };
-  for (const settings of [defaults, { ...defaults, FF_PROJECTS_P1: "false", FF_ITERATIONS_I1: "true", MULTICA_PLATFORM_ADMIN_ENABLED: "true", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "true", MULTICA_DEPLOYMENT_ID: "00000000-0000-4000-8000-000000000001" }]) {
+test("self-host configuration keeps iterations workspace-owned and forwards administration settings", { skip: !composeAvailable }, () => {
+  const defaults = { FF_PROJECTS_P1: "true", MULTICA_PLATFORM_ADMIN_ENABLED: "false", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "false", MULTICA_DEPLOYMENT_ID: "" };
+  for (const settings of [defaults, { ...defaults, FF_PROJECTS_P1: "false", MULTICA_PLATFORM_ADMIN_ENABLED: "true", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "true", MULTICA_DEPLOYMENT_ID: "00000000-0000-4000-8000-000000000001" }]) {
     const env = { ...process.env, JWT_SECRET: "fixture-secret" };
     for (const name of Object.keys(defaults)) delete env[name];
     if (settings !== defaults) Object.assign(env, settings);
+    env.FF_ITERATIONS_I1 = settings === defaults ? "false" : "true";
     const result = spawnSync("docker", ["compose", "--env-file", "/dev/null", "-f", resolve(scripts, "../docker-compose.selfhost.yml"), "config", "--format", "json"], { env, encoding: "utf8" });
     assert.equal(result.status, 0, result.stderr);
     const actual = JSON.parse(result.stdout).services.backend.environment;
     for (const [name, expected] of Object.entries(settings)) assert.equal(actual[name], expected, name);
     assert.equal(actual.MULTICA_AUTH_MODE, env.MULTICA_AUTH_MODE || "legacy");
+    assert.equal(Object.hasOwn(actual, "FF_ITERATIONS_I1"), false);
   }
 });
 

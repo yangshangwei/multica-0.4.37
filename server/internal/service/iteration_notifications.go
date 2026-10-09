@@ -44,19 +44,17 @@ func (s *IterationService) RunIterationNotifications(ctx context.Context, onDeli
 		if ctx.Err() != nil {
 			return
 		}
-		if s.Available != nil && s.Available(ctx) {
-			if now := time.Now().UTC(); !now.Before(nextReminderScan) {
-				nextReminderScan = now.Add(time.Minute)
-				if err := s.EnqueueIterationOverdueReminders(ctx, now); err != nil && ctx.Err() == nil {
-					slog.WarnContext(ctx, "iteration reminder scan deferred")
-				}
-				if counts, err := s.IterationNotificationCounts(ctx); err == nil {
-					slog.InfoContext(ctx, "iteration notification queue", "pending", counts.Pending, "dead_letter", counts.DeadLetter)
-				}
+		if now := time.Now().UTC(); !now.Before(nextReminderScan) {
+			nextReminderScan = now.Add(time.Minute)
+			if err := s.EnqueueIterationOverdueReminders(ctx, now); err != nil && ctx.Err() == nil {
+				slog.WarnContext(ctx, "iteration reminder scan deferred")
 			}
-			if err := s.DeliverIterationNotifications(ctx, onDelivered); err != nil && ctx.Err() == nil {
-				slog.WarnContext(ctx, "iteration notification scan deferred")
+			if counts, err := s.IterationNotificationCounts(ctx); err == nil {
+				slog.InfoContext(ctx, "iteration notification queue", "pending", counts.Pending, "dead_letter", counts.DeadLetter)
 			}
+		}
+		if err := s.DeliverIterationNotifications(ctx, onDelivered); err != nil && ctx.Err() == nil {
+			slog.WarnContext(ctx, "iteration notification scan deferred")
 		}
 		select {
 		case <-ctx.Done():

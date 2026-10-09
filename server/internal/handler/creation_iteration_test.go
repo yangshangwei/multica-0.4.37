@@ -166,17 +166,17 @@ func TestTriageIterationInvalidMembershipFailsClosed(t *testing.T) {
 	}
 }
 
-func TestTriageIterationExplicitAssignmentUnsupported(t *testing.T) {
+func TestTriageIterationExplicitAssignmentRequiresEnabledWorkspace(t *testing.T) {
 	_, iterationID := iterationIssueFixture(t)
 	syncCreationIterationCounter(t)
 	triageEnableForTest(t)
 	item := triageCreateForTest(t)
-	triageActionForTest(t, item, "accept", map[string]any{"fields": map[string]any{"current_iteration_id": iterationID}}, 400)
+	triageActionForTest(t, item, "accept", map[string]any{"fields": map[string]any{"current_iteration_id": iterationID}}, 409)
 	var admission string
 	var unassociated bool
 	dbfx.QueryRow(t, `SELECT admission_status,current_iteration_id IS NULL FROM issue WHERE id=$1`, item.Issue.ID).Scan(&admission, &unassociated)
 	if admission != "pending" || !unassociated {
-		t.Fatal("unsupported assignment changed intake")
+		t.Fatal("disabled assignment changed intake")
 	}
 }
 

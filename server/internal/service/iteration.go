@@ -16,7 +16,6 @@ import (
 
 type IterationService struct {
 	TxStarter TxStarter
-	Available func(context.Context) bool
 	// AuthorizeIssues checks current task-level rights after the complete row set
 	// is locked. New management transports must provide it for nonempty sets.
 	AuthorizeIssues func(context.Context, pgx.Tx, []db.Issue) error
@@ -63,9 +62,6 @@ func (s *IterationService) Enable(ctx context.Context, workspaceID, actorID pgty
 	key := iteration.OperationKey{WorkspaceID: uuid.UUID(workspaceID.Bytes).String(), ActorUserID: uuid.UUID(actorID.Bytes).String(), RequestID: input.RequestID, Operation: "enable"}
 	return iteration.RunOperation(ctx, iterationTransactionStarter{s.TxStarter}, key, input, authorize, func(ctx context.Context, tx pgx.Tx, _ pgtype.UUID) (iteration.WriteResult, error) {
 		fail := func(err error) (iteration.WriteResult, error) { return iteration.WriteResult{}, err }
-		if s.Available == nil || !s.Available(ctx) {
-			return fail(&iteration.OperationError{Status: 422, Code: "iteration_disabled", Message: "Iteration management is not available"})
-		}
 		q := db.New(tx)
 		if err := q.EnsureIterationSettings(ctx, workspaceID); err != nil {
 			return fail(err)

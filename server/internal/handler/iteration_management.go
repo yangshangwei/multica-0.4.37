@@ -11,7 +11,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
-	"github.com/multica-ai/multica/server/internal/featureflags"
 	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -39,7 +38,7 @@ func (h *Handler) iterationManagementScope(r *http.Request) (pgtype.UUID, pgtype
 		}
 		return nil
 	}
-	svc := &service.IterationService{TxStarter: h.TxStarter, Available: func(ctx context.Context) bool { return featureflags.IterationsI1Enabled(ctx, h.FeatureFlags) }, AuthorizeIssues: func(_ context.Context, _ pgx.Tx, issues []db.Issue) error {
+	svc := &service.IterationService{TxStarter: h.TxStarter, AuthorizeIssues: func(_ context.Context, _ pgx.Tx, issues []db.Issue) error {
 		// Current membership is held by the owner. Existing issue maintenance is
 		// workspace-wide for human members; planning does not invoke an assignee.
 		for _, issue := range issues {

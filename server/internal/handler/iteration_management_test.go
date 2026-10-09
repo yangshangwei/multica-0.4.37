@@ -103,9 +103,13 @@ func TestIterationLifecycleHTTPManualFlow(t *testing.T) {
 		t.Fatal("moving out erased original commitment")
 	}
 }
-func TestIterationLifecycleHTTPReleaseAndRawValidation(t *testing.T) {
-	body := service.CreateIterationInput{RequestID: uuid.NewString(), Name: "Closed release", StartDate: "2026-10-06", EndDate: "2026-10-19", ConfirmedTimezone: "UTC"}
-	testutil.Call(t, testHandler.CreateIteration, lifecycleHTTPRequest("POST", "iterations", "", body)).Want(422)
+func TestIterationLifecycleHTTPDisabledWorkspaceAndRawValidation(t *testing.T) {
+	body := service.CreateIterationInput{RequestID: uuid.NewString(), Name: "Disabled workspace", StartDate: "2026-10-06", EndDate: "2026-10-19", ConfirmedTimezone: "UTC"}
+	var problem map[string]any
+	testutil.Call(t, testHandler.CreateIteration, lifecycleHTTPRequest("POST", "iterations", "", body)).Want(422).JSON(&problem)
+	if problem["code"] != "iteration_disabled" {
+		t.Fatalf("wrong workspace-disabled refusal: %v", problem)
+	}
 	h := lifecycleHTTPHandler(t)
 	bad := map[string]any{"operation": "move", "expected_settings_revision": 9007199254740992.0, "moves": []any{}}
 	testutil.Call(t, h.PreviewIterationOperation, lifecycleHTTPRequest("POST", "iteration-previews", "", bad)).Want(400)

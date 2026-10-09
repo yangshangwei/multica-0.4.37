@@ -7,9 +7,6 @@ import (
 )
 
 const (
-	// IterationsI1 is a closed-by-default server rollout gate. It must remain off
-	// until the complete lifecycle, history, closure and client gates pass.
-	IterationsI1 = "iterations_i1"
 	// ProjectsP1 gates new progress writes and discovery, never description CAS or retained history reads.
 	ProjectsP1 = "projects_p1"
 	// BillingWorkspaceSubscriptions gates the workspace-scoped entitlement,
@@ -72,8 +69,4 @@ func EvaluateFrontendPublicFlags(ctx context.Context, flags *featureflag.Service
 	out[agentSkillTogglesCompat] = true
 	out[resourceLabelsCompat] = true
 	return out
-}
-
-func IterationsI1Enabled(ctx context.Context, flags *featureflag.Service) bool {
-	return flags.IsEnabled(ctx, IterationsI1, false)
 }

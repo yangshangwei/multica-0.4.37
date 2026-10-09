@@ -199,6 +199,7 @@ test("upgrade retains the new main Compose and the ordered overlay command witho
   writeFileSync(main, previous);
   const overlays = [join(f.deployment, "resource publishing.yml"), join(f.deployment, "operator's $settings.yml")];
   cpSync(resolve(scripts, "../docker-compose.resource-publishing.yml"), overlays[0]);
+  // Retired environment overrides remain operator-owned; newer backends ignore this gate.
   const override = "services:\n  backend:\n    environment:\n      FF_ITERATIONS_I1: 'true'\n    volumes:\n      - ./overlay-feed:/app/data/changelog:ro\n";
   writeFileSync(overlays[1], override);
   f.withoutNode.REAL_COMPOSE_BINARY = spawnSync("which", ["docker"], { encoding: "utf8" }).stdout.trim();

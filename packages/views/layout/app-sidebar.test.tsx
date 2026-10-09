@@ -3,8 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@multica/core/api";
 import { AppSidebar } from "./app-sidebar";
 
-const { appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+const { iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
   appForeground: { current: true },
+  iterationCapability: { current: { supported: true, manual: true, enabled: false } },
+  triageSettings: { current: { enabled: false } },
   sidebarState: { setOpenMobile: vi.fn() },
   chatSessions: { current: [] as { id?: string; unread_count?: number }[] },
   chatStore: { current: { activeSessionId: null as string | null, isOpen: false } },
@@ -141,6 +143,8 @@ vi.mock("@multica/core/paths", async (importOriginal) => ({
     skills: () => "/acme/skills",
     mcp: () => "/acme/mcp",
     settings: () => "/acme/settings",
+    iterations: () => "/acme/iterations",
+    triage: () => "/acme/triage",
     issueDetail: (id: string) => `/acme/issues/${id}`,
     projectDetail: (id: string) => `/acme/projects/${id}`,
   }),
@@ -185,6 +189,8 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@tanstack/react-query")>()),
   useMutation: () => ({ isPending: false, mutate: vi.fn() }),
   useQuery: ({ queryKey }: { queryKey: readonly unknown[] }) => {
+    if (queryKey[0] === "iterations") return { data: iterationCapability.current };
+    if (queryKey[0] === "triage" && queryKey[2] === "settings") return { data: triageSettings.current };
     if (queryKey[0] === "pins") return { data: pins.current };
     if (queryKey[0] === "issue") return detail.current;
     if (queryKey[0] === "inbox" && queryKey[1] === "unread-summary") return { data: summary.current };
@@ -542,4 +548,26 @@ describe("version slot", () => {
     render(<AppSidebar />);
     expect(screen.getByTestId("help-launcher")).toBeEmptyDOMElement();
   });
+});
+
+it.each([
+  { supported: true, manual: true, enabled: true, visible: true },
+  { supported: true, manual: true, enabled: false, visible: false },
+  { supported: true, manual: false, enabled: true, visible: false },
+  { supported: false, manual: true, enabled: true, visible: false },
+])("shows daily iteration navigation only when confirmed usable: %j", ({ visible, ...capability }) => {
+  iterationCapability.current = capability;
+  const { container } = render(<AppSidebar />);
+  expect(!!container.querySelector('button[data-href="/acme/iterations"]')).toBe(visible);
+});
+
+// Triage is a low-frequency destination, so it closes the Work group after the
+// daily issues / projects / iterations rows.
+it("lists triage last in the work group", () => {
+  iterationCapability.current = { supported: true, manual: true, enabled: true };
+  triageSettings.current = { enabled: true };
+  const workHrefs = ["/acme/issues", "/acme/projects", "/acme/iterations", "/acme/triage"];
+  const { container } = render(<AppSidebar />);
+  const rendered = Array.from(container.querySelectorAll("button[data-href]"), (button) => button.getAttribute("data-href"));
+  expect(rendered.filter((href) => workHrefs.includes(href ?? ""))).toEqual(workHrefs);
 });

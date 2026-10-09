@@ -1,10 +1,11 @@
 # Iteration facts in existing issue transactions
 
-I1 is under implementation. W01 ordinary updates, W02 public content updates
-and W03/W04 system status updates record facts; W15 workspace deletion explicitly
-purges history. Do not enable
-capabilities or infer full writer coverage from the schema. Gate evidence lives
-in the I1 foundation task.
+I1 implements manual iteration management, history and workspace-owned settings.
+W01 ordinary updates, W02 public content updates and W03/W04 system status
+updates record facts; W15 workspace deletion explicitly purges history. Keep
+writer coverage tied to real-path regression evidence, not schema presence.
+The original foundation task retains the historical gate evidence; current
+availability follows the workspace contract at the end of this document.
 
 ## Transaction ownership and locks
 
@@ -138,11 +139,12 @@ entity is required to recover a stored result. Stored references and numeric
 counters are validated before returning them to clients. Member revocation
 removes protected I1 notifications atomically under the recipient fence.
 
-Explicit generic batch/Plugin iteration writes and release-disabled HTTP
-assignment return428, including null; omission preserves current membership.
+Explicit generic batch/Plugin iteration writes return428, including null;
+omission preserves current membership. Workspace-disabled explicit assignment
+returns409 under the existing transaction checks.
 Confirmed ordinary HTTP create/update now use the LG borrowed membership
-writer described below. The release gate remains off; gate ledgers, not the
-existence of these helpers, establish readiness.
+writer described below. The former deployment rollout gate has been retired;
+workspace settings and current authorization remain authoritative.
 
 ## FG operation boundary and read pipeline
 
@@ -151,9 +153,9 @@ FG acceptance is recorded in the foundation task's `fg-verification.md`.
 member/catalog/I1 fences, loads durable requests before mutable-state checks,
 and persists the mutation and validated result in one commit. Only the exact
 request uniqueness conflict is recoverable; unknown commit responses retain
-the old request ID for explicit reconciliation. Settings enable is the current
-production integration. The release flag stays off and atomic_handoff remains
-false until its later implementation/acceptance.
+the old request ID for explicit reconciliation. Settings enable and the full lifecycle now share this production integration.
+Capabilities advertise manual/atomic_handoff support independently of the
+workspace enabled state.
 
 For W01 with no attachments, current-iteration and issue locking reads share a
 second pgx batch only after the existing fence batch and status validation.
@@ -173,7 +175,9 @@ grant set, not a later allow-list read that could observe an unheld new grant.
 
 These rules apply when changing period management, ordinary issue assignment,
 T1 acceptance or historical reads. CG owns actual close/handoff/disable and
-outbox delivery. Keep `iterations_i1` default off and `atomic_handoff=false`.
+outbox delivery. I1 capability is implemented; workspace enablement remains
+default-off. No deployment flag may suppress history, operation recovery or
+completed notification outbox work.
 
 ### Signatures
 
@@ -227,7 +231,8 @@ live availability is separate. Never repair bad snapshots from live joins.
 
 CG evidence is in the I1 parent `cg-verification.md`. End, active cancel,
 handoff and whole-workspace disable use the same persistent operation owner.
-Rollout still defaults off; `atomic_handoff` is advertised only when supported.
+New workspaces remain disabled until an administrator enables them;
+`atomic_handoff` describes implemented support independently of that choice.
 
 Capture frozen history before releasing membership, but stage its payload in
 memory until all writes finish. Insert the immutable snapshot exactly once
@@ -258,7 +263,8 @@ or invoke agents.
 
 | Condition | Result |
 | --- | --- |
-| Release-off explicit assignment or client rollover | 428 |
+| Explicit generic batch/plugin iteration writes or client-supplied rollover | 428 |
+| Confirmed ordinary or triage assignment while workspace disabled | 409 |
 | Missing create target revision or update issue revision | 428 |
 | Mixed membership/ordinary edits, malformed acknowledgment | 400 |
 | Duplicate raw management keys, Unicode-fold aliases, unknown fields | 400 |
@@ -281,7 +287,7 @@ Use real isolated PostgreSQL with the agent CLI guard. Lifecycle tests cover
 single active, complete sets, stale/unauthorized rollback, terminal choices,
 reentry, midnight/backclock, replay and unchanged running execution. HTTP/T1
 tests cover current grants, one enqueue, duplicate/Unicode envelopes, JWT scope
-and release-off routes. History A–J asserts O8/current9/effective8/completed5/
+and workspace-disabled routes. History A–J asserts O8/current9/effective8/completed5/
 original_completed4 and 62.5%/50%, including deleted originals and frozen reads.
 See lifecycle/history task `verification.md` for commands and gate limits.
 
@@ -315,3 +321,79 @@ before an ordinary HTTP completion outside the period. Verify A and B each
 appear once, D/OD remain 5/4 after F completes, and no source-period event is
 added. A comment omitting F from synthetic input is not evidence that a real
 external writer leaves the source commitment unchanged.
+
+
+## Workspace-owned availability
+
+### Scope and trigger
+
+Apply this contract when changing iteration discovery, workspace enable/disable,
+ordinary or triage assignment, or the notification runner. The deployment gate
+`iterations_i1` and `IterationService.Available` have been removed. Capability,
+workspace choice and current authorization are separate facts.
+
+### Signatures
+
+- `GET /api/workspaces/{id}/iteration-capabilities` retains schema version 1.
+- `GET /api/workspaces/{id}/iteration-settings` reads the persisted choice and
+  effective planning timezone.
+- `POST /api/workspaces/{id}/iteration-settings/enable` carries `request_id`,
+  `expected_revision` and `confirmed_timezone`.
+- Disable uses the existing `iteration-previews` and `iteration-operations`
+  routes, complete preview hash and original durable request identity.
+
+### Request, response and environment contracts
+
+Capabilities return implemented `supported/manual/atomic_handoff=true`, with
+`enabled` read from workspace settings. Missing settings means disabled/revision
+1. There is no migration that changes an existing workspace choice; a leftover
+`FF_ITERATIONS_I1` environment value no longer affects these capabilities.
+
+`EnableIterationSettings` retains stable human actor and owner/admin checks in
+the transaction. It publishes through `writeIterationResult` only for a newly
+committed operation. A stored enable/disable receipt is replayed before mutable
+settings checks and never republishes the original event.
+
+Whole-workspace disable retains its complete-set transaction: freeze active
+history, cancel planned periods, clear current memberships and persist settings,
+receipt and notification outbox atomically. It does not rewrite issue status,
+project, assignee, cumulative rollover or running executions. Re-enable never
+resurrects closed periods.
+
+### Validation and error matrix
+
+| Condition | Contract |
+| --- | --- |
+| Missing/false old deployment environment variable | No effect on supported capability or saved workspace choice |
+| New workspace / missing settings row | Disabled until explicit administrator enable |
+| Ordinary or triage assignment while workspace disabled | Existing workspace-disabled conflict |
+| Enable by non-admin or machine credential | Forbidden |
+| Stale settings revision/timezone or confirmation hash | 409; require a fresh explicit intent/preview |
+| Disable affects more than 2,000 issues | 413; no partial operation |
+| Lost response after enable/disable | Query original request, replay identical identity only if absent |
+| Old enabled=true row formerly hidden by rollout | Becomes usable; pending outbox delivery may resume |
+
+### Good, base and bad cases
+
+- Good: an administrator explicitly enables the saved timezone; only after the
+  transaction commits do other clients refresh their iteration capability.
+- Base: a new workspace is supported but disabled, with a discoverable settings
+  entry and no generated periods or executions.
+- Bad: treat a replayed old enable receipt as a new enable after another client
+  disabled the workspace, or infer a missing request's success from live state.
+
+### Tests required
+
+Handler `iteration_settings_test.go` covers absent/false old flags, preserved
+choices, current authority, stale revisions/timezones and receipt replay without
+repeating a post-commit event. Service lifecycle/closure suites cover the whole
+disable transaction, limit rejection, frozen history and unchanged execution.
+`iteration_notifications_test.go` covers retained outbox delivery. Real settings
+E2E checks sibling-client refresh and recovery using the original request ID.
+
+### Wrong versus correct
+
+Wrong: replace the old deployment flag with a client-owned boolean, weaken human
+authorization, or stop delivering already committed outbox work when disabled.
+Correct: derive support from the implementation, enabled state from workspace
+settings and each operation's authority from its existing transactional fences.

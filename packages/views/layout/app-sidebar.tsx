@@ -160,10 +160,10 @@ const personalNav: NavItem[] = [
 ];
 
 const workNav: NavItem[] = [
-  { key: "iterations", labelKey: "iterations" },
-  { key: "triage", labelKey: "triage" },
   { key: "issues", labelKey: "issues" },
   { key: "projects", labelKey: "projects" },
+  { key: "iterations", labelKey: "iterations" },
+  { key: "triage", labelKey: "triage" },
 ];
 
 const aiTeamNav: NavItem[] = [
@@ -889,7 +889,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
             <SidebarGroupLabel>{t(($) => $.sidebar.work_group)}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
-                {workNav.filter((item) => (item.key !== "triage" || triageSettings?.enabled === true) && (item.key !== "iterations" || iterationCapability?.supported === true)).map((item) => {
+                {workNav.filter((item) => (item.key !== "triage" || triageSettings?.enabled === true) && (item.key !== "iterations" || (iterationCapability?.supported === true && iterationCapability.manual === true && iterationCapability.enabled === true))).map((item) => {
                   const href = p[item.key]();
                   return (
                     <NavRow

@@ -528,3 +528,16 @@ describe("useRealtimeSync — workspace:deleted self-initiated suppression", () 
     expect(defaultStorage.getItem("multica_issue_draft:delete-me")).toBeNull();
   });
 });
+
+it("refreshes iteration settings dependencies when another client changes availability", () => {
+  const qc = new QueryClient();
+  const ws = createMockWs();
+  renderHook(() => useRealtimeSync(ws, createStores()), { wrapper: createWrapper(qc) });
+  const invalidate = vi.spyOn(qc, "invalidateQueries");
+  const handler = vi.mocked(ws.on).mock.calls.find(([event]) => event === "iteration:updated");
+  expect(handler).toBeDefined();
+  (handler![1] as (payload: unknown) => void)({ workspace_id: "ws-1" });
+  expect(invalidate).toHaveBeenCalledWith({ queryKey: ["triage", "ws-1", "settings"] });
+  expect(invalidate).toHaveBeenCalledWith({ queryKey: ["projects", "ws-1", "planning-timezone"] });
+  qc.clear();
+});

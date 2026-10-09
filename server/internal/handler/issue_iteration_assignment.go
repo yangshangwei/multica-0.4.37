@@ -11,7 +11,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
-	"github.com/multica-ai/multica/server/internal/featureflags"
 	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -72,9 +71,6 @@ func (h *Handler) parseIssueIterationCreate(r *http.Request, req CreateIssueRequ
 		}
 		return nil, nil
 	}
-	if !featureflags.IterationsI1Enabled(r.Context(), h.FeatureFlags) {
-		return nil, iterationAPIError(428, "iteration_confirmation_required", "Iteration assignment is not available")
-	}
 	target, err := parseIssueIterationTarget(req.CurrentIterationID)
 	if err != nil {
 		return nil, err
@@ -100,9 +96,6 @@ func (h *Handler) parseIssueIterationCreate(r *http.Request, req CreateIssueRequ
 	return input, nil
 }
 func (h *Handler) lockIssueIterationSettings(ctx context.Context, tx pgx.Tx, ws pgtype.UUID) error {
-	if !featureflags.IterationsI1Enabled(ctx, h.FeatureFlags) {
-		return iterationAPIError(422, "iteration_disabled", "Iteration assignment is not available")
-	}
 	settings, err := db.New(tx).LockIterationSettings(ctx, ws)
 	if errors.Is(err, pgx.ErrNoRows) || (err == nil && !settings.Enabled) {
 		return iterationAPIError(422, "iteration_disabled", "Iterations are disabled")
@@ -214,10 +207,6 @@ func parseIssueIterationUpdateFields(body []byte) (map[string]json.RawMessage, i
 func (h *Handler) updateIssueIterationAssignment(w http.ResponseWriter, r *http.Request, before db.Issue, body []byte, req UpdateIssueRequest) {
 	if len(req.IterationRolloverCount) > 0 {
 		writeIterationAPIError(w, iterationAPIError(428, "iteration_confirmation_required", "iteration_rollover_count is server-owned"))
-		return
-	}
-	if !featureflags.IterationsI1Enabled(r.Context(), h.FeatureFlags) {
-		rejectUnconfirmedIterationWrite(w, req.CurrentIterationID)
 		return
 	}
 	fields, input, err := parseIssueIterationUpdateFields(body)

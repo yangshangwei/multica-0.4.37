@@ -68,7 +68,14 @@ func TestProjectHealthFormalGoldenScope(t *testing.T) {
 
 func TestProjectHealthRiskOverlapPaginationAndLiveContinuation(t *testing.T) {
 	id := healthProject(t)
-	yesterday := time.Now().UTC().AddDate(0, 0, -1).Format(time.DateOnly)
+	// This test exercises risk overlap and pagination, so its UTC-relative
+	// dates need an explicit UTC workspace rather than the shared fallback.
+	var previousTimezone pgtype.Text
+	dbfx.QueryRow(t, "SELECT planning_timezone FROM workspace WHERE id=$1", testWorkspaceID).Scan(&previousTimezone)
+	dbfx.Cleanup(t, "UPDATE workspace SET planning_timezone=$2 WHERE id=$1", testWorkspaceID, previousTimezone)
+	dbfx.Exec(t, "UPDATE workspace SET planning_timezone='UTC' WHERE id=$1", testWorkspaceID)
+	now := time.Now().UTC()
+	yesterday := now.AddDate(0, 0, -1).Format(time.DateOnly)
 	parentID, childID := uuid.NewString(), uuid.NewString()
 	if parentID > childID {
 		parentID, childID = childID, parentID
@@ -76,7 +83,7 @@ func TestProjectHealthRiskOverlapPaginationAndLiveContinuation(t *testing.T) {
 	// The cursor is ordered by ID, not by fixture insertion time.
 	parent := dbfx.Issue(t, "risk parent", testutil.Cols{"id": parentID, "project_id": id, "status": "blocked", "due_date": yesterday})
 	child := dbfx.Issue(t, "risk child", testutil.Cols{"id": childID, "project_id": id, "parent_issue_id": parent, "status": "todo", "due_date": yesterday})
-	dbfx.Issue(t, "due today", testutil.Cols{"project_id": id, "due_date": time.Now().UTC().Format(time.DateOnly), "assignee_type": "member", "assignee_id": testUserID})
+	dbfx.Issue(t, "due today", testutil.Cols{"project_id": id, "due_date": now.Format(time.DateOnly), "assignee_type": "member", "assignee_id": testUserID})
 	initial := overview(t, id)
 	healthCount(t, "overdue", initial.Statistics.Counts.Overdue, 2)
 	healthCount(t, "union", initial.Statistics.Counts.RiskUnion, 2)

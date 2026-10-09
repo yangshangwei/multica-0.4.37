@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/multica-ai/multica/server/internal/featureflags"
 	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -48,9 +47,7 @@ func (h *Handler) GetIterationCapabilities(w http.ResponseWriter, r *http.Reques
 		writeIterationAPIError(w, err)
 		return
 	}
-	available := featureflags.IterationsI1Enabled(r.Context(), h.FeatureFlags)
-	// CG verifies the atomic workflow; discovery still follows the closed rollout gate.
-	writeJSON(w, 200, map[string]any{"workspace_id": uuidToString(ws), "schema_version": iteration.SchemaVersion, "supported": available, "enabled": available && settings.Enabled, "manual": true, "atomic_handoff": available})
+	writeJSON(w, 200, map[string]any{"workspace_id": uuidToString(ws), "schema_version": iteration.SchemaVersion, "supported": true, "enabled": settings.Enabled, "manual": true, "atomic_handoff": true})
 }
 
 func (h *Handler) EnableIterationSettings(w http.ResponseWriter, r *http.Request) {
@@ -87,11 +84,11 @@ func (h *Handler) EnableIterationSettings(w http.ResponseWriter, r *http.Request
 		}
 		return nil
 	}
-	svc := service.IterationService{TxStarter: h.TxStarter, Available: func(ctx context.Context) bool { return featureflags.IterationsI1Enabled(ctx, h.FeatureFlags) }}
+	svc := service.IterationService{TxStarter: h.TxStarter}
 	result, err := svc.Enable(r.Context(), ws, actor, input, authorize)
 	if err != nil {
 		writeIterationAPIError(w, err)
 		return
 	}
-	writeJSON(w, 200, result)
+	h.writeIterationResult(w, r, result, false)
 }

@@ -20,9 +20,12 @@ accept ordered, repeated overlays. Relative paths resolve from `DIR`.
   overlay order. `compose-command.txt` records a quoted command prefix; it is
   not an automatic overlay loader. Operators must explicitly preserve the list.
 - Existing secrets, authentication choice and data volumes remain intact.
-- Compose defaults match backend semantics: `FF_PROJECTS_P1=true`,
-  `FF_ITERATIONS_I1=false`, platform administration and managed installations off.
-  Enabling I1 still requires an explicit workspace owner/admin action.
+- Compose defaults match backend semantics: `FF_PROJECTS_P1=true`, platform
+  administration and managed installations off. Iterations have no deployment
+  gate; they require an explicit workspace owner/admin action in settings.
+  Existing enabled rows are preserved, including ones hidden by an old flag.
+  Operator overlays may retain obsolete `FF_ITERATIONS_I1` values; preserve
+  operator files while documenting that newer backends ignore that key.
 
 ## Validation and errors
 

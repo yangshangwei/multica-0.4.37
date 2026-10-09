@@ -18,7 +18,6 @@ import (
 	"github.com/multica-ai/multica/server/internal/daemonws"
 	"github.com/multica-ai/multica/server/internal/dbstartup"
 	"github.com/multica-ai/multica/server/internal/events"
-	"github.com/multica-ai/multica/server/internal/featureflags"
 	"github.com/multica-ai/multica/server/internal/handler"
 	"github.com/multica-ai/multica/server/internal/integrations/wecom"
 	"github.com/multica-ai/multica/server/internal/logger"
@@ -654,7 +653,6 @@ func main() {
 	go h.RunProjectUpdateNotifications(sweepCtx)
 	iterationNotifications := &service.IterationService{
 		TxStarter: pool,
-		Available: func(ctx context.Context) bool { return featureflags.IterationsI1Enabled(ctx, flags) },
 	}
 	go iterationNotifications.RunIterationNotifications(sweepCtx, h.PublishIterationInbox)
 	autopilotCtx, autopilotCancel := context.WithCancel(context.Background())

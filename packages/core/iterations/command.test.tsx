@@ -314,3 +314,28 @@ describe("iteration recovery identity fences", () => {
     },
   );
 });
+
+it("refreshes settings dependencies after a confirmed local command", async () => {
+  const client = new QueryClient();
+  const invalidate = vi.spyOn(client, "invalidateQueries");
+  vi.mocked(api.createIteration).mockResolvedValue(receipt);
+  const hook = renderHook(() => useIterationCommand("w", "create"), {
+    wrapper: ({ children }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>,
+  });
+  await act(async () => { await hook.result.current.mutateAsync({ command }); });
+  expect(invalidate).toHaveBeenCalledWith({ queryKey: ["triage", "w", "settings"] });
+  expect(invalidate).toHaveBeenCalledWith({ queryKey: ["projects", "w", "planning-timezone"] });
+  client.clear();
+});
+
+it("refreshes the shared timezone after a rejected command before a new intent", async () => {
+  const client = new QueryClient();
+  const invalidate = vi.spyOn(client, "invalidateQueries");
+  vi.mocked(api.createIteration).mockRejectedValue(new ApiError("Timezone changed", 409, "Conflict"));
+  const hook = renderHook(() => useIterationCommand("w", "create"), {
+    wrapper: ({ children }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>,
+  });
+  await act(async () => { await expect(hook.result.current.mutateAsync({ command })).rejects.toThrow(); });
+  expect(invalidate).toHaveBeenCalledWith({ queryKey: ["projects", "w", "planning-timezone"] });
+  client.clear();
+});

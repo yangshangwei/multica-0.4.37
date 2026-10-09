@@ -89,9 +89,6 @@ func (s *IterationService) lifecycleTime(ctx context.Context, tx pgx.Tx) (time.T
 	return iteration.SampleBusinessTime(ctx, tx, nil)
 }
 func (s *IterationService) lifecycleSettings(ctx context.Context, tx pgx.Tx, ws pgtype.UUID, lock bool) (db.WorkspaceIterationSetting, error) {
-	if s.Available == nil || !s.Available(ctx) {
-		return db.WorkspaceIterationSetting{}, iterationFailure(422, "iteration_disabled", "Iteration management is unavailable")
-	}
 	var settings db.WorkspaceIterationSetting
 	var err error
 	if lock {

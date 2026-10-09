@@ -97,14 +97,24 @@ func TestIssueIterationAssignmentUpdateCASReasonAndNoop(t *testing.T) {
 func TestIssueIterationAssignmentDisabledAndServerOwnedFields(t *testing.T) {
 	h, iid := issueIterationAssignmentFixture(t)
 	issueID := dbfx.Issue(t, "Existing task")
-	for _, field := range []string{"current_iteration_id", "CURRENT_ITERATION_ID", "iteration_rollover_count"} {
+	for _, field := range []string{"current_iteration_id", "CURRENT_ITERATION_ID"} {
 		t.Run(field, func(t *testing.T) {
-			testutil.Call(t, testHandler.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issueID, map[string]any{field: nil, "expected_revision": 1}), "id", issueID)).Want(428)
+			testutil.Call(t, testHandler.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issueID, map[string]any{field: nil, "expected_revision": 1}), "id", issueID)).Want(200)
 		})
 	}
 	testutil.Call(t, h.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issueID, map[string]any{"iteration_rollover_count": 1, "expected_revision": 1}), "id", issueID)).Want(428)
 	dbfx.Exec(t, "UPDATE workspace_iteration_settings SET enabled=false WHERE workspace_id=$1", testWorkspaceID)
-	testutil.Call(t, h.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issueID, map[string]any{"current_iteration_id": iid, "expected_revision": 1}), "id", issueID)).Want(422)
+	for _, target := range []any{nil, iid} {
+		testutil.Call(t, h.UpdateIssue, withURLParam(newRequest("PUT", "/api/issues/"+issueID, map[string]any{"current_iteration_id": target, "expected_revision": 1}), "id", issueID)).Want(422)
+		body := map[string]any{"title": "Disabled assignment", "current_iteration_id": target}
+		if target != nil {
+			body["expected_iteration_revision"] = 1
+		}
+		testutil.Call(t, h.CreateIssue, newRequest("POST", "/api/issues", body)).Want(422)
+	}
+	if n := dbfx.Count(t, "SELECT count(*) FROM issue WHERE workspace_id=$1 AND title='Disabled assignment'", testWorkspaceID); n != 0 {
+		t.Fatal("disabled assignment created an issue")
+	}
 }
 func TestIssueIterationAssignmentCreateNullIsExplicitlyUnassociated(t *testing.T) {
 	h, _ := issueIterationAssignmentFixture(t)

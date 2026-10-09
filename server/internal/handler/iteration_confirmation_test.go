@@ -13,9 +13,15 @@ func TestIssueIterationFieldsRequireConfirmedOperation(t *testing.T) {
 			t.Run(endpoint+"/"+field, func(t *testing.T) {
 				issueID, iterationID := iterationIssueFixture(t)
 				dbfx.Exec(t, `UPDATE workspace SET issue_counter=(SELECT COALESCE(MAX(number),0) FROM issue WHERE workspace_id=$1) WHERE id=$1`, testWorkspaceID)
-				body := map[string]any{field: nil, "title": "Must not silently ignore iteration intent"}
+				title := "Must not silently ignore iteration intent"
+				body := map[string]any{field: nil, "title": title}
 				if field == "iteration_rollover_count" {
 					body[field] = 9
+				} else if endpoint == "create" {
+					body[field] = iterationID
+				}
+				if endpoint == "update" {
+					delete(body, "title")
 				}
 				var response *testutil.Response
 				switch endpoint {
@@ -34,7 +40,7 @@ func TestIssueIterationFieldsRequireConfirmedOperation(t *testing.T) {
 				if n := dbfx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND title='Original commitment' AND current_iteration_id=$2 AND iteration_rollover_count=2 AND revision=1`, issueID, iterationID); n != 1 {
 					t.Fatal("unconfirmed request mutated existing issue")
 				}
-				if n := dbfx.Count(t, `SELECT count(*) FROM issue WHERE workspace_id=$1 AND title=$2`, testWorkspaceID, body["title"]); n != 0 {
+				if n := dbfx.Count(t, `SELECT count(*) FROM issue WHERE workspace_id=$1 AND title=$2`, testWorkspaceID, title); n != 0 {
 					t.Fatal("unconfirmed request created or changed an issue")
 				}
 			})
