@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-10T12:01:53.627134+00:00",
+  "commit": "cfa0254ebf643924da9a20eacbecd50aac7d3fee",
+  "source_fingerprint": "777255c583cb28ec93bb1419aca2be06de09fd564e8a2c820b386536b6236dca",
+  "build_command": "python3 /tmp/multica-iteration-density-20261010T115735Z-82e616/run.py exec pnpm --filter @multica/desktop exec electron-vite build --outDir /tmp/multica-iteration-density-20261010T115735Z-82e616/desktop-out",
+  "output_root": "/tmp/multica-iteration-density-20261010T115735Z-82e616/desktop-out",
+  "api_url": "http://localhost:18573",
+  "api_pid": 98640,
+  "source_file_count": 1480,
+  "source_unchanged_after_native_tests": true,
+  "build_exit_code": 0,
+  "compiled_assets": {
+    "renderer/index.html": "0c70418c1a2e165a22a1373df2b0b003de6c9ae8caca8cb7d83bdf8289fef6de",
+    "main/index.js": "71bf967f46af7d9d87ba877da8685ec0bebdf6eeeed8b56753c83eea90bf3f95",
+    "preload/index.js": "09b9473aa3881fe9c8f6d0b8f7de167a1c3b028dbac1db13b00986f54339bc7a",
+    "renderer/assets/index-BwzCQQHb.js": "57f22f9878ec6547a6d247c1be313c127789a568820e35bcaf521037868aac98",
+    "renderer/assets/index-BIp1CKVz.css": "b9a4baf6bda8e2dbffe80fcc02cb9147b4820dda2b7fab229f57bfe618d4d0dd"
+  },
+  "warnings": [
+    "Existing CSS optimizer does not recognize ::highlight pseudo-elements.",
+    "Task-owned output directory is outside the project root; no pre-existing output was emptied.",
+    "pnpm reports legacy package.json pnpm settings as ignored; no dependency configuration was changed."
+  ]
+}

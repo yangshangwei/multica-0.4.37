@@ -1,0 +1,29 @@
+{
+  "scope": "iteration-task-tab-density",
+  "runtime_mode": null,
+  "iteration": 1,
+  "score": 93,
+  "threshold": 90,
+  "threshold_passed": true,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "The planned summary is now one row and the search/filter/grouping controls occupy a bounded toolbar.",
+    "The first task is at y=387.5 in the new 2048x1088 synthetic fixture; the supplied reference task began near y=790. The reference zoom was not instrumented, so this is an image-level comparison.",
+    "Blocked status and assignee have stable wide columns and wrap below the title in the 680px capture.",
+    "Active conditions stay visible with individual remove actions and reset on narrow screens."
+  ],
+  "suggestions": [],
+  "reasoning": "The first batched inspection preserves the incumbent dark product UI while satisfying the approved density and scanability changes. Both locales show unclipped controls and meaningful filter state; native focus, reset, 44px coarse targets and panel overflow assertions passed.",
+  "next_actions": [],
+  "reference_images": [
+    ".trellis/tasks/archive/2026-10/10-10-iteration-task-tab-density/research/task-tab-before.png"
+  ],
+  "generated_screenshots": [
+    ".trellis/tasks/archive/2026-10/10-10-iteration-task-tab-density/verification/tasks-en-planned-wide.png",
+    ".trellis/tasks/archive/2026-10/10-10-iteration-task-tab-density/verification/tasks-en-filtered-narrow.png",
+    ".trellis/tasks/archive/2026-10/10-10-iteration-task-tab-density/verification/tasks-zh-Hans-planned-wide.png",
+    ".trellis/tasks/archive/2026-10/10-10-iteration-task-tab-density/verification/tasks-zh-Hans-filtered-narrow.png"
+  ],
+  "completed": true
+}
