@@ -31,9 +31,6 @@ vi.mock("./triage-execution-preview", () => ({
   useTriageExecutionPrerequisites: () => ({ canExecute: false }),
   TriageExecutionSummary: () => null,
 }));
-vi.mock("../modals/issue-picker-modal", () => ({
-  IssuePickerModal: () => null,
-}));
 vi.mock("./triage-fields", () => ({
   TriageField: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>

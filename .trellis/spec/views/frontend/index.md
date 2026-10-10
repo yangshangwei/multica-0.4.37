@@ -26,6 +26,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
 | [Desktop Core Interaction](./desktop-core-accessibility.md) | Hidden-chat focus/portals, collection recovery/selection, detail tabs, shell motion and bounded Gantt | Active |
 | [Triage History](./triage-history.md) | Date-grouped event identity, snapshot reuse, applied filters and truthful empty-page recovery | Active |
+| [Triage Duplicate Picker](./triage-duplicate-picker.md) | Focus-open formal task candidates, complete pagination, scoped references and keyboard/retry behavior | Active |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Built-in Skill Localization](./builtin-skill-localization.md) | Display identity, bilingual search, and raw instruction preservation | Active |
 | [Skill Presentation](./skill-presentation.md) | Category / icon in `config.presentation`, workspace labels, parity and rollout rules, batch label management | Active |

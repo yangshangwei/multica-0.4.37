@@ -59,6 +59,18 @@ describe("triage input boundaries", () => {
       duplicateReference("https://example.test/other/issues/OTHER-1", "acme"),
     ).toThrow();
   });
+  it.each(["ACM-12", "1A-12", "123-12", "A123456789-12", "acm-12",
+    "a56e8429-ff4e-4eec-8743-93907c5e7469"])("accepts the task identity %s", (reference) => {
+    expect(duplicateReference(` ${reference} `, "acme")).toBe(reference);
+    expect(duplicateReference(`/acme/issues/${reference}`, "acme")).toBe(reference);
+  });
+  it.each(["", "Fix login", "login", "ACM-0", "TOOLONGPREFIX-1",
+    "https://example.test/acme/issues/a-title", "/acme/issues/ACM-1/extra",
+    "/acme/issues/ACM-1%2Fextra", "javascript://example.test/acme/issues/ACM-1"])(
+    "rejects a search title or invalid reference %s", (reference) => {
+      expect(() => duplicateReference(reference, "acme")).toThrow();
+    },
+  );
   it("offers future local-calendar instants rather than date-only values", () => {
     const now = new Date(2026, 9, 4, 22, 15);
     const presets = snoozePresets(now);

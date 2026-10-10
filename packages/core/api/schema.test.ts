@@ -190,6 +190,16 @@ describe("ApiClient schema fallback", () => {
       expect(issue.properties).toEqual({});
     });
 
+    it("targets the captured workspace and clears an ambient slug during exact lookup", async () => {
+      stubFetchJson(validIssue);
+      const client = new ApiClient("https://api.example.test");
+      await client.getIssue("MUL-1", { workspaceId: "ws-1" });
+      expect(vi.mocked(fetch).mock.calls[0]?.[1]?.headers).toMatchObject({
+        "X-Workspace-ID": "ws-1",
+        "X-Workspace-Slug": "",
+      });
+    });
+
     it("rejects a 200 body that is not a usable issue (no truthy issue with an undefined id)", async () => {
       stubFetchJson({ not: "an issue" });
       const client = new ApiClient("https://api.example.test");

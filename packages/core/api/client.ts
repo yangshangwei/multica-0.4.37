@@ -1699,10 +1699,10 @@ export class ApiClient {
    * an ApiError 404, so `issueIdentifierOptions` propagates it instead of
    * caching it as "no such issue".
    */
-  async getIssue(id: string, options?: { signal?: AbortSignal }): Promise<Issue> {
+  async getIssue(id: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<Issue> {
     const raw = await this.fetch<unknown>(
       `/api/issues/${encodeURIComponent(id)}`,
-      options?.signal ? { signal: options.signal } : undefined,
+      workspaceRequestInit(options),
     );
     const issue = parseWithFallback<Issue | null>(raw, IssueSchema, null, {
       endpoint: "GET /api/issues/:id",

@@ -62,17 +62,25 @@ export function duplicateReference(
   workspaceSlug: string,
 ): string {
   const input = value.trim();
-  if (!input.includes("/")) return input;
-  const url = new URL(input, "https://multica.invalid");
-  const parts = url.pathname.split("/").filter(Boolean).map(decodeURIComponent);
-  if (
-    parts.length !== 3 ||
-    parts[0] !== workspaceSlug ||
-    parts[1] !== "issues"
-  ) {
+  let reference = input;
+  if (input.includes("/")) {
+    const url = new URL(input, "https://multica.invalid");
+    const parts = url.pathname.split("/").filter(Boolean).map(decodeURIComponent);
+    if (
+      !["http:", "https:"].includes(url.protocol) ||
+      parts.length !== 3 ||
+      parts[0] !== workspaceSlug ||
+      parts[1] !== "issues"
+    ) {
+      throw new Error("invalid_duplicate_link");
+    }
+    reference = parts[2]!;
+  }
+  if (!/^[a-z\d]{1,10}-[1-9]\d*$/i.test(reference) &&
+      !/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/i.test(reference)) {
     throw new Error("invalid_duplicate_link");
   }
-  return parts[2]!;
+  return reference;
 }
 
 export function snoozePresets(now = new Date()) {

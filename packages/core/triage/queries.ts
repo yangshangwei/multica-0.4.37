@@ -1,5 +1,5 @@
-import { queryOptions } from "@tanstack/react-query";
-import { api } from "../api";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
+import { api, ApiError } from "../api";
 import type { TriageHistoryParams, TriageListParams } from "../types/triage";
 
 export const triageKeys = {
@@ -12,7 +12,45 @@ export const triageKeys = {
   itemHistory: (wsId: string, id: string) => [...triageKeys.all(wsId), "item-history", id] as const,
   history: (wsId: string, params: TriageHistoryParams = {}) => [...triageKeys.all(wsId), "history", params] as const,
   import: (wsId: string, id: string) => [...triageKeys.all(wsId), "import", id] as const,
+  duplicateTargets: (wsId: string, q: string) => [...triageKeys.all(wsId), "duplicate-targets", q] as const,
 };
+
+export function triageDuplicateTargetsOptions(wsId: string, search: string) {
+  const q = search.trim();
+  const isReference = /^[a-z\d]{1,10}-[1-9]\d*$/i.test(q) ||
+    /^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/i.test(q);
+  return infiniteQueryOptions({
+    queryKey: triageKeys.duplicateTargets(wsId, q),
+    initialPageParam: 0,
+    queryFn: async ({ pageParam, signal }) => {
+      if (isReference) {
+        try {
+          // Exact lookup supports numeric workspace prefixes and prevents a
+          // pasted link from also matching unrelated titles containing its number.
+          const issue = await api.getIssue(q, { workspaceId: wsId, signal });
+          return { issues: [issue], total: 1 };
+        } catch (error) {
+          if (error instanceof ApiError && error.status === 404) return { issues: [], total: 0 };
+          throw error;
+        }
+      }
+      return api.listIssues({
+        workspace_id: wsId,
+        q,
+        limit: 30,
+        offset: pageParam,
+        sort_by: "created_at",
+        sort_direction: "desc",
+      });
+    },
+    // Use the server window, before excluding the current task locally.
+    getNextPageParam: (page, _pages, offset) =>
+      page.issues.length > 0 && offset + page.issues.length < page.total
+        ? offset + page.issues.length
+        : undefined,
+    enabled: wsId.length > 0,
+  });
+}
 
 export function triageSettingsOptions(wsId: string) {
   return queryOptions({ queryKey: triageKeys.settings(wsId), queryFn: ({ signal }) => api.getTriageSettings(wsId, { signal }), enabled: wsId.length > 0, staleTime: 30_000 });

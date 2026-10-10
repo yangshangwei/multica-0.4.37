@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentWorkspace } from "@multica/core/paths";
 import {
   createTriageRequestId,
-  isFormalAdmission,
   triageDetailOptions,
   useTriageAction,
   type TriageItem,
@@ -26,7 +25,7 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Textarea } from "@multica/ui/components/ui/textarea";
-import { IssuePickerModal } from "../modals/issue-picker-modal";
+import { TriageDuplicatePicker } from "./triage-duplicate-picker";
 import {
   TriageFieldsEditor,
   TriageField,
@@ -122,7 +121,6 @@ export function TriageActionDialog({
   const [revision, setRevision] = useState(item.issue.revision);
   const [reason, setReason] = useState("");
   const [target, setTarget] = useState("");
-  const [searchOpen, setSearchOpen] = useState(false);
   const [until, setUntil] = useState("");
   const [reviewer, setReviewer] = useState(item.reviewer_id);
   const [fields, setFields] = useState<TriageFields>({
@@ -273,31 +271,14 @@ export function TriageActionDialog({
               {t(($) => $.duplicate_hint)}
             </p>
             <TriageField label={t(($) => $.duplicate_target)}>
-              <Input
-                aria-label={t(($) => $.duplicate_target)}
+              <TriageDuplicatePicker
+                wsId={wsId}
+                workspaceSlug={workspace?.slug ?? ""}
+                excludeId={item.issue.id}
                 value={target}
-                onChange={(e) => setTarget(e.target.value)}
+                onChange={setTarget}
               />
             </TriageField>
-            <Button
-              variant="outline"
-              className={TRIAGE_CONTROL}
-              onClick={() => setSearchOpen(true)}
-            >
-              {t(($) => $.duplicate_search)}
-            </Button>
-            <IssuePickerModal
-              open={searchOpen}
-              onOpenChange={setSearchOpen}
-              title={t(($) => $.duplicate_search)}
-              description={t(($) => $.duplicate_hint)}
-              excludeIds={[item.issue.id]}
-              filterIssue={(issue) => isFormalAdmission(issue.admission_status)}
-              onSelect={(issue) => {
-                setTarget(issue.identifier);
-                setSearchOpen(false);
-              }}
-            />
           </>
         )}
         {(needsReason || accepts || action === "duplicate") && (
