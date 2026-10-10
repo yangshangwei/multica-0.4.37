@@ -1,0 +1,147 @@
+ M .cursor/hooks.json
+ M .env.example
+ M .trellis/.template-hashes.json
+ M .trellis/spec/core/frontend/index.md
+ M .trellis/spec/core/frontend/iteration-operations.md
+ M .trellis/spec/server/iterations.md
+ M .trellis/spec/server/offline-delivery.md
+ M .trellis/spec/views/frontend/index.md
+ M .trellis/workspace/artisan/index.md
+ M .trellis/workspace/artisan/journal-1.md
+ M apps/desktop/src/renderer/src/components/desktop-layout.test.tsx
+ M apps/desktop/src/renderer/src/components/desktop-layout.tsx
+ M apps/desktop/src/renderer/src/components/tab-bar.tsx
+ M apps/web/next-env.d.ts
+ M docker-compose.selfhost.yml
+ M docs/offline-upgrade.zh-CN.md
+ M e2e/fixtures/iterations-i1.ts
+ M e2e/iteration-settings.spec.ts
+ M e2e/iterations-i1-desktop.spec.ts
+ M e2e/iterations-i1-history.spec.ts
+ M e2e/iterations-i1.spec.ts
+ M e2e/projects-p1-lifecycle.spec.ts
+ M e2e/projects-p1-risk.spec.ts
+ M packages/core/iterations/command.test.tsx
+ M packages/core/iterations/command.ts
+ M packages/core/iterations/index.ts
+ M packages/core/iterations/realtime.ts
+ M packages/core/realtime/use-realtime-sync-ws-instance.test.tsx
+ M packages/core/realtime/use-realtime-sync.ts
+ M packages/ui/components/ui/dialog.tsx
+ M packages/ui/styles/tokens.css
+ M packages/views/agents/components/agent-overview-pane.test.tsx
+ M packages/views/agents/components/agent-overview-pane.tsx
+ M packages/views/agents/components/agents-page.test.tsx
+ M packages/views/agents/components/agents-page.tsx
+ M packages/views/chat/components/chat-fab.tsx
+ M packages/views/chat/components/chat-input.tsx
+ M packages/views/chat/components/chat-queue.test.tsx
+ M packages/views/chat/components/chat-queue.tsx
+ M packages/views/chat/components/chat-window.tsx
+ M packages/views/chat/components/use-chat-input-focus.test.ts
+ M packages/views/chat/components/use-chat-input-focus.ts
+ M packages/views/inbox/components/inbox-page.tsx
+ M packages/views/issues/components/gantt-view.test.tsx
+ M packages/views/issues/components/gantt-view.tsx
+ M packages/views/issues/components/list-row.tsx
+ M packages/views/issues/components/list-view.test.tsx
+ M packages/views/issues/components/list-view.tsx
+ M packages/views/iterations/iteration-assignment.tsx
+ M packages/views/iterations/iteration-catalogue.tsx
+ M packages/views/iterations/iteration-details.test.tsx
+ M packages/views/iterations/iteration-error.tsx
+ M packages/views/iterations/iteration-events-view.tsx
+ M packages/views/iterations/iteration-form.tsx
+ M packages/views/iterations/iteration-history.test.tsx
+ M packages/views/iterations/iteration-history.tsx
+ M packages/views/iterations/iteration-issue-list.tsx
+ M packages/views/iterations/iteration-navigation.test.tsx
+ M packages/views/iterations/iteration-page.tsx
+ M packages/views/layout/app-sidebar.test.tsx
+ M packages/views/layout/app-sidebar.tsx
+ M packages/views/locales/en/agents.json
+ M packages/views/locales/en/desktop.json
+ M packages/views/locales/en/inbox.json
+ M packages/views/locales/en/issues.json
+ M packages/views/locales/en/projects.json
+ M packages/views/locales/zh-Hans/agents.json
+ M packages/views/locales/zh-Hans/desktop.json
+ M packages/views/locales/zh-Hans/inbox.json
+ M packages/views/locales/zh-Hans/issues.json
+ M packages/views/locales/zh-Hans/projects.json
+ M packages/views/modals/create-issue-dialog.test.tsx
+ M packages/views/modals/create-issue-dialog.tsx
+ M packages/views/modals/create-issue.test.tsx
+ M packages/views/modals/create-issue.tsx
+ M packages/views/projects/components/project-detail.test.tsx
+ M packages/views/projects/components/project-detail.tsx
+ M packages/views/projects/components/projects-page.test.tsx
+ M packages/views/projects/components/projects-page.tsx
+ M packages/views/skills/components/file-tree.test.tsx
+ M packages/views/skills/components/file-tree.tsx
+ M packages/views/skills/components/skill-detail-page.test.tsx
+ M packages/views/skills/components/skill-detail-page.tsx
+ M packages/views/triage/triage-page.test.tsx
+ M packages/views/triage/triage-page.tsx
+ M scripts/offline-build-changelog.test.mjs
+ M scripts/offline-changelog.test.mjs
+ M server/cmd/server/iteration_settings_route_test.go
+ M server/cmd/server/main.go
+ M server/internal/featureflags/keys.go
+ M server/internal/handler/creation_iteration_test.go
+ M server/internal/handler/issue_iteration_assignment.go
+ M server/internal/handler/issue_iteration_assignment_test.go
+ M server/internal/handler/iteration_confirmation_test.go
+ M server/internal/handler/iteration_history_test.go
+ M server/internal/handler/iteration_management.go
+ M server/internal/handler/iteration_management_test.go
+ M server/internal/handler/iteration_settings.go
+ M server/internal/handler/iteration_settings_test.go
+ M server/internal/handler/project_health_test.go
+ M server/internal/handler/triage_iteration.go
+ M server/internal/service/iteration.go
+ M server/internal/service/iteration_lifecycle_metadata.go
+ M server/internal/service/iteration_lifecycle_test.go
+ M server/internal/service/iteration_notifications.go
+ M server/internal/service/iteration_notifications_test.go
+?? .agents/skills/trellis-before-dev/
+?? .agents/skills/trellis-brainstorm/
+?? .agents/skills/trellis-break-loop/
+?? .agents/skills/trellis-channel/
+?? .agents/skills/trellis-check/
+?? .agents/skills/trellis-continue/
+?? .agents/skills/trellis-finish-work/
+?? .agents/skills/trellis-meta/
+?? .agents/skills/trellis-session-insight/
+?? .agents/skills/trellis-spec-bootstrap/
+?? .agents/skills/trellis-start/
+?? .agents/skills/trellis-update-spec/
+?? .codex/
+?? .impeccable/audit/
+?? .impeccable/critique/2026-10-08T16-00-27Z__packages-views-iterations-iteration-page-tsx.md
+?? .impeccable/critique/evidence/
+?? .trellis/tasks/10-05-iterations-i1-verification/browser-evidence/history-metadata-final.png
+?? .trellis/tasks/10-08-iteration-pages-design/
+?? .trellis/tasks/10-08-iteration-workspace-settings/
+?? .trellis/tasks/10-09-desktop-core-impeccable-fixes/
+?? .trellis/tasks/10-09-iteration-progress-scope-ui/
+?? .trellis/tasks/archive/2026-10/10-08-triage-csv-template/
+?? apps/desktop/src/renderer/src/components/tab-bar.accessibility.test.tsx
+?? docs/audits/2026-10-09-desktop-core-impeccable.md
+?? docs/plans/2026-10-09-desktop-audit-remediation.md
+?? docs/qa/core-e2e-test-plan-2026-10-08.md
+?? docs/qa/desktop-manual-qa-2026-10-08.md
+?? packages/core/iterations/activity.test.ts
+?? packages/core/iterations/activity.ts
+?? packages/core/iterations/catalogue.test.ts
+?? packages/core/iterations/catalogue.ts
+?? packages/core/iterations/timeline.test.ts
+?? packages/core/iterations/timeline.ts
+?? packages/views/chat/components/chat-window.test.tsx
+?? packages/views/inbox/components/inbox-page-recovery.test.tsx
+?? packages/views/iterations/iteration-chart-closeout.test.tsx
+?? packages/views/iterations/iteration-events.test.tsx
+?? packages/views/iterations/iteration-events.tsx
+?? packages/views/iterations/iteration-overview.tsx
+?? packages/views/iterations/iteration-progress.test.tsx
+?? packages/views/iterations/iteration-progress.tsx

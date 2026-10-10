@@ -1,0 +1,14 @@
+{
+  "score": 86,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "agents-450-light.png and agents-450-dark.png: at an effective 450px viewport / native 200% zoom, the selected-count text is squeezed into roughly four vertical lines. The toolbar occupies approximately x=199–699, y=374–558 in the 900×700 capture, covering the lower All squads filter and the Agent/Status header.",
+    "agents-450-english.png: the selected toolbar occupies approximately x=100–794, y=454–562 in the 900×700 capture, covering the Agent/Status header and part of the Specialists group label. The selection column and keyboard focus ring remain visible."
+  ],
+  "suggestions": [
+    "Limit the repair to AgentBatchToolbar's compact presentation: prevent the selected-count group from shrinking/character wrapping, bound the toolbar to the content width, and wrap action groups deliberately while retaining the existing chat-launcher clearance. Avoid changing shared tokens, selection behavior, dialogs or batch mutations.",
+    "Re-capture the selected-agent state after motion settles at the effective 450px viewport in Chinese light/dark and English. Confirm readable count/actions, visible selection focus and unobscured filters/column and group headers."
+  ],
+  "reasoning": "The reviewed selection, detail Tabs, chat draft and desktop shell screenshots retain the incumbent Operate layout and neutral theme, with visible focus. The compact agent bulk toolbar has a concrete wrapping/occlusion defect, so this pre-edit gate requires revision; this is a screenshot verdict, not a new 20-point audit."
+}

@@ -1,0 +1,71 @@
+{
+  "task": "10-09-desktop-core-impeccable-fixes",
+  "title": "桌面核心页面 impeccable 审计修复",
+  "status": "verified",
+  "verified_at": "2026-10-10",
+  "implementation_commit": "ee5922c9efbb0a097b603965c8f7347239dbd14f",
+  "visual": {
+    "round": 2,
+    "score": 93,
+    "verdict": "pass",
+    "evidence": "evidence/visual-verdict.json",
+    "progress_state": ".omx/state/desktop-core-impeccable-fixes/ralph-progress.json"
+  },
+  "checks": [
+    {
+      "name": "workspace typecheck",
+      "result": "pass",
+      "command": "pnpm typecheck",
+      "evidence": "evidence/final-workspace-typecheck.log",
+      "fresh_run": true
+    },
+    {
+      "name": "views and desktop tests",
+      "result": "pass",
+      "evidence": [
+        "evidence/final-views-tests.log",
+        "evidence/final-desktop-tests.log"
+      ]
+    },
+    {
+      "name": "scoped lint",
+      "result": "pass",
+      "evidence": [
+        "evidence/final-views-lint.log",
+        "evidence/final-desktop-lint.log"
+      ]
+    },
+    {
+      "name": "working tree whitespace",
+      "result": "pass",
+      "command": "git diff --check",
+      "fresh_run": true
+    },
+    {
+      "name": "native Electron and visual acceptance",
+      "result": "pass",
+      "evidence": [
+        "evidence/visual-verdict.json",
+        "evidence/toolbar-browser-confirmation.json",
+        "evidence/recovery-browser.json",
+        "evidence/gantt-browser.json"
+      ]
+    }
+  ],
+  "source_hashes": "evidence/final-source-hashes.json",
+  "scope": {
+    "unrelated_dirty_files": [
+      "apps/web/next-env.d.ts"
+    ],
+    "known_non_blocking_polish": [
+      "wrapped English compact toolbar divider",
+      "shared rounded focus treatment for nested detail tabs/file tree",
+      "pre-existing hardcoded desktop tab menu labels"
+    ]
+  },
+  "limitations": [
+    "No production build or performance benchmark was run.",
+    "No full VoiceOver/NVDA workflow or Windows/Linux real-machine run was performed.",
+    "Right detail-panel animation remains outside this task scope."
+  ]
+}
