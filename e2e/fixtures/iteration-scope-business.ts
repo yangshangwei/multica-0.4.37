@@ -35,7 +35,7 @@ const copy = {
     search: "Search task records", taskSearch: "Search tasks", category: "Change category", removed: "Removed",
     clear: "Clear filters", allChanges: "All changes", allActivity: "All activity", noMatches: "No matching activity.",
     noTasks: "No matching tasks.", audit: "Technical audit", project: "Project", assignee: "Assignee",
-    filterTasks: "Filter and group tasks", priority: "Priority", high: "High",
+    filterTasks: "Filter tasks", priority: "Priority", high: "High",
     compare: "Compare with current task", historical: "Historical value", latest: "Current value", openCurrent: "Open current task",
     cancelledPlan: "This plan was cancelled before a commitment was recorded. Its planning history remains available.",
   },
@@ -49,7 +49,7 @@ const copy = {
     search: "搜索任务记录", taskSearch: "搜索任务", category: "变化类别", removed: "移出",
     clear: "清除筛选", allChanges: "全部变化", allActivity: "全部活动", noMatches: "没有匹配的活动。",
     noTasks: "没有匹配的任务。", audit: "技术审计", project: "项目", assignee: "负责人",
-    filterTasks: "筛选与分组任务", priority: "优先级", high: "高",
+    filterTasks: "筛选任务", priority: "优先级", high: "高",
     compare: "对照当前任务", historical: "历史值", latest: "当前值", openCurrent: "打开当前任务",
     cancelledPlan: "此计划在确定承诺前已取消，计划调整记录仍可查看。",
   },
@@ -73,7 +73,7 @@ async function selectOption(page: Page, control: Locator, option: string) {
   await page.getByRole("option", { name: option, exact: true }).click();
 }
 
-async function scopeAPI(api: TestApiClient, workspace: Session["workspace"]) {
+export async function scopeAPI(api: TestApiClient, workspace: Session["workspace"]) {
   const base = `/api/workspaces/${workspace.id}`;
   const settings = await api.requestJSON<{ revision: number; effective_timezone: string }>(`${base}/iteration-settings`);
   await api.requestJSON(`${base}/iteration-settings/enable`, {
@@ -163,7 +163,7 @@ function readViewport(page: Page) {
   return page.evaluate(() => ({ width: innerWidth, height: innerHeight, coarse: matchMedia("(pointer: coarse)").matches, touchPoints: navigator.maxTouchPoints }));
 }
 
-async function setScopeViewport(page: Page, cdp: CDPSession, viewport: ScopeViewport) {
+export async function setScopeViewport(page: Page, cdp: CDPSession, viewport: ScopeViewport) {
   // Keep Playwright's viewport state aligned with Chromium. CDP-only device
   // metrics can be overwritten when Playwright captures or restores a viewport.
   await page.setViewportSize({ width: viewport.width, height: viewport.height });
@@ -171,7 +171,7 @@ async function setScopeViewport(page: Page, cdp: CDPSession, viewport: ScopeView
   await expect.poll(() => readViewport(page)).toEqual(viewport);
 }
 
-async function captureLayout(page: Page, info: TestInfo, name: string, expectedViewport: ScopeViewport, panel: Locator, detail?: Locator, controls: Locator[] = []) {
+export async function captureLayout(page: Page, info: TestInfo, name: string, expectedViewport: ScopeViewport, panel: Locator, detail?: Locator, controls: Locator[] = []) {
   await page.evaluate(() => document.fonts.ready);
   const viewport = await readViewport(page);
   const expectedSize = { width: expectedViewport.width, height: expectedViewport.height };
@@ -268,8 +268,9 @@ export async function iterationScopeBusinessFlow(page: Page, session: Session, i
     await page.getByRole("tab", { name: labels.tasks }).click();
     const tasks = page.getByRole("tabpanel", { name: labels.tasks });
     await tasks.getByRole("textbox", { name: labels.taskSearch, exact: true }).fill(alpha.title);
-    await disclosure(tasks, labels.filterTasks).click();
-    await selectOption(page, tasks.getByRole("combobox", { name: labels.priority, exact: true }), labels.high);
+    await tasks.getByRole("button", { name: labels.filterTasks, exact: true }).click();
+    await selectOption(page, page.getByRole("dialog", { name: labels.filterTasks, exact: true }).getByRole("combobox", { name: labels.priority, exact: true }), labels.high);
+    await page.keyboard.press("Escape");
     await expect(tasks.getByRole("link", { name: new RegExp(escapePattern(alpha.title)) })).toBeVisible();
     await page.getByRole("tab", { name: labels.planning, exact: true }).click();
     await harness.lifecycle(period.id, "start");
@@ -361,7 +362,9 @@ export async function iterationScopeBusinessFlow(page: Page, session: Session, i
     await expect(detail.getByText(added.title, { exact: true }).first()).toBeVisible();
     await page.getByRole("tab", { name: labels.tasks }).click();
     await expect(tasks.getByRole("textbox", { name: labels.taskSearch, exact: true })).toHaveValue(alpha.title);
-    await expect(tasks.getByRole("combobox", { name: labels.priority, exact: true }).locator('[data-slot="select-value"]')).toHaveText(labels.high);
+    await tasks.getByRole("button", { name: labels.filterTasks, exact: true }).click();
+    await expect(page.getByRole("dialog", { name: labels.filterTasks, exact: true }).getByRole("combobox", { name: labels.priority, exact: true }).locator('[data-slot="select-value"]')).toHaveText(labels.high);
+    await page.keyboard.press("Escape");
     await expect(tasks.getByRole("link", { name: new RegExp(escapePattern(alpha.title)) })).toBeVisible();
     await expect(tasks.getByRole("link", { name: new RegExp(escapePattern(beta.title)) })).toHaveCount(0);
 

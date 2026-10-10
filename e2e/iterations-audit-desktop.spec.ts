@@ -4,8 +4,95 @@ import { expect, type Locator } from "@playwright/test";
 import { test } from "./fixtures/project-p1-desktop";
 import { iterationDateRange } from "./fixtures/iterations-i1";
 import { p1DB } from "./fixtures/project-p1";
+import { captureLayout, scopeAPI, setScopeViewport } from "./fixtures/iteration-scope-business";
 
 test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires an isolated local iteration API");
+
+for (const locale of ["en", "zh-Hans"] as const) {
+  test(`iteration task toolbar: planned hierarchy and visible refinements (${locale})`, async ({ native }, info) => {
+    test.setTimeout(120_000);
+    const { page, api, workspace, owner } = native;
+    const zh = locale === "zh-Hans";
+    const copy = {
+      iterations: zh ? "迭代" : "Iterations", tasks: zh ? /^任务/ : /^Tasks/,
+      planned: zh ? "计划任务" : "Planned tasks", filters: zh ? "筛选任务" : "Filter tasks",
+      search: zh ? "搜索任务" : "Search tasks", group: zh ? "任务分组方式" : "Group tasks by",
+      status: zh ? "状态" : "Status", blocked: zh ? "已阻塞" : "Blocked",
+      priority: zh ? "优先级" : "Priority", high: zh ? "高" : "High",
+      scope: zh ? "当前范围" : "Current scope", reset: zh ? "重置全部筛选" : "Reset all filters",
+      progress: zh ? "进展" : "Progress", remove: zh ? /^移除.+筛选$/ : /^Remove .+ filter$/,
+    };
+    const harness = await scopeAPI(api, workspace);
+    const period = await harness.create(zh ? "任务列表验收" : "Task list acceptance");
+    const blocked = await api.createIssue(zh ? "阻塞的导出按钮" : "Blocked export button", { status: "blocked", priority: "high" });
+    const assigned = await api.createIssue(zh ? "检查任务展示" : "Review task presentation", { status: "todo", priority: "low", assignee_type: "member", assignee_id: owner.id });
+    await harness.move([blocked.id, assigned.id], period.id, "Prepare the compact task-list fixture");
+    await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
+    await page.evaluate(value => {
+      localStorage.setItem("multica-locale", value);
+      localStorage.setItem("theme", "dark");
+    }, locale);
+    await page.reload();
+    const cdp = await page.context().newCDPSession(page);
+    const wide = { width: 2048, height: 1088, coarse: false, touchPoints: 0 };
+    const narrow = { width: 680, height: 900, coarse: true, touchPoints: 5 };
+    const layouts = [];
+    try {
+      await setScopeViewport(page, cdp, wide);
+      await page.getByRole("link", { name: copy.iterations, exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
+      await page.getByRole("link", { name: period.name, exact: true }).click();
+      const panel = page.getByRole("tabpanel", { name: copy.tasks });
+      const search = panel.getByRole("textbox", { name: copy.search, exact: true });
+      const filters = panel.getByRole("button", { name: copy.filters, exact: true });
+      const grouping = panel.getByRole("combobox", { name: copy.group, exact: true });
+      const plannedCount = panel.getByText(copy.planned, { exact: true }).locator("..").locator("dd");
+      await expect(panel.getByRole("link", { name: blocked.title, exact: true })).toBeVisible();
+      await expect(plannedCount).toHaveText("2");
+      await expect(panel.getByRole("combobox", { name: copy.scope, exact: true })).toHaveCount(0);
+      const firstTask = await panel.getByRole("link", { name: blocked.title, exact: true }).boundingBox();
+      const searchBounds = await search.boundingBox();
+      expect(firstTask!.y).toBeLessThan(wide.height / 2);
+      expect(searchBounds!.width).toBeGreaterThanOrEqual(240);
+      expect(searchBounds!.width).toBeLessThanOrEqual(320);
+      layouts.push(await captureLayout(page, info, `tasks-${locale}-planned-wide`, wide, panel, undefined, [search, filters, grouping]));
+
+      // Exercise real popup focus, non-empty filtering and query-backed recovery.
+      await grouping.click();
+      await page.getByRole("option", { name: copy.status, exact: true }).click();
+      await filters.focus();
+      await page.keyboard.press("Enter");
+      const popup = page.getByRole("dialog", { name: copy.filters, exact: true });
+      await popup.getByRole("combobox", { name: copy.status, exact: true }).click();
+      await page.getByRole("option", { name: copy.blocked, exact: true }).click();
+      await popup.getByRole("combobox", { name: copy.priority, exact: true }).click();
+      await page.getByRole("option", { name: copy.high, exact: true }).click();
+      await page.keyboard.press("Escape");
+      await expect(popup).toBeHidden();
+      await expect(filters).toBeFocused();
+      await expect(panel.getByRole("button", { name: copy.remove })).toHaveCount(2);
+      await expect(panel.getByRole("link", { name: assigned.title, exact: true })).toHaveCount(0);
+      await expect(panel.getByRole("link", { name: blocked.title, exact: true })).toBeVisible();
+      await expect(plannedCount).toHaveText("2");
+
+      await page.getByRole("tab", { name: copy.progress, exact: true }).click();
+      await page.getByRole("tab", { name: copy.tasks }).click();
+      await expect(panel.getByRole("button", { name: copy.remove })).toHaveCount(2);
+      await setScopeViewport(page, cdp, narrow);
+      layouts.push(await captureLayout(page, info, `tasks-${locale}-filtered-narrow`, narrow, panel, undefined, [search, filters, grouping, ...await panel.getByRole("button", { name: copy.remove }).all()]));
+      await panel.getByRole("button", { name: copy.remove }).filter({ hasText: copy.priority }).click();
+      await expect(panel.getByRole("button", { name: copy.remove })).toHaveCount(1);
+      await panel.getByRole("button", { name: copy.reset, exact: true }).click();
+      await expect(panel.getByRole("button", { name: copy.remove })).toHaveCount(0);
+      await expect(grouping.locator('[data-slot="select-value"]')).toHaveText(copy.status);
+      await expect(panel.getByRole("link", { name: assigned.title, exact: true })).toBeVisible();
+      await expect(plannedCount).toHaveText("2");
+      expect((await harness.detail(period.id)).statistics.current).toBe(2);
+      await writeFile(info.outputPath("task-toolbar-metrics.json"), JSON.stringify({ locale, firstTask, searchBounds, layouts }, null, 2));
+    } finally {
+      await cdp.detach();
+    }
+  });
+}
 
 test("iteration audit: actual contrast, focus, controls, touch, history and responsive rendering", async ({ native }, info) => {
   test.setTimeout(180_000);
@@ -110,10 +197,13 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   const taskRequests: string[] = [];
   const observe = (request: { url(): string }) => { if (request.url().includes(`/iterations/${period}/issues?`)) taskRequests.push(request.url()); };
   page.on("request", observe);
-  await main.locator("summary").filter({ hasText: "Filter and group tasks" }).click();
-  await main.getByRole("combobox", { name: "Status", exact: true }).click();
+  const filterTrigger = main.getByRole("button", { name: "Filter tasks", exact: true });
+  await filterTrigger.click();
+  await page.getByRole("dialog", { name: "Filter tasks", exact: true }).getByRole("combobox", { name: "Status", exact: true }).click();
   await expect(page.getByRole("option", { name: "Todo", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
+  await page.keyboard.press("Escape");
+  await expect(filterTrigger).toBeFocused();
   page.off("request", observe);
   metrics.filterOpeningTaskRequests = taskRequests;
   expect(taskRequests).toHaveLength(0);

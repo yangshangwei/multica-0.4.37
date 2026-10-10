@@ -29,15 +29,16 @@ test("I1 filters and groups the complete scope and preserves historical priority
     await apply({ ...common, operation: "start", iteration_id: id, expected_iteration_revision: detail.iteration.revision, expected_scope_revision: detail.iteration.scope_revision, moves: [], start: { target_id: id, mode: "scheduled", terminal_choices: [] } });
 
     await page.goto(`/${workspace.slug}/iterations/${id}`);
-    await page.locator("summary").filter({ hasText: "Filter and group tasks" }).click();
     await page.getByRole("combobox", { name: "Group tasks by", exact: true }).click();
     await page.getByRole("option", { name: "Priority", exact: true }).click();
     await expect(page.getByRole("heading", { name: "High (31)", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Low (30)", exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Filter tasks", exact: true }).click();
     await page.getByRole("combobox", { name: "Priority", exact: true }).click();
     await page.getByRole("option", { name: "High", exact: true }).click();
     await page.getByRole("combobox", { name: "Label", exact: true }).click();
     await page.getByRole("option", { name: "Frozen review", exact: true }).click();
+    await page.keyboard.press("Escape");
     await expect(page.getByRole("heading", { name: "High (1)", exact: true })).toBeVisible();
     await expect(page.locator("dl > div").filter({ has: page.getByText("Original commitment", { exact: true }) }).locator("dd")).toHaveText("61");
 
@@ -58,11 +59,12 @@ test("I1 filters and groups the complete scope and preserves historical priority
     await page.locator("summary").filter({ hasText: "Iteration participation" }).click();
     await expect(page.getByRole("link", { name: "Metadata cycle", exact: true })).toBeVisible();
     await page.getByRole("link", { name: "Metadata cycle", exact: true }).click();
-    await page.locator("summary").filter({ hasText: "Filter and group tasks" }).click();
+    await page.getByRole("button", { name: "Filter tasks", exact: true }).click();
     await page.getByRole("combobox", { name: "Priority", exact: true }).click();
     await page.getByRole("option", { name: "High", exact: true }).click();
     await page.getByRole("combobox", { name: "Label", exact: true }).click();
     await page.getByRole("option", { name: "Frozen review", exact: true }).click();
+    await page.keyboard.press("Escape");
     await expect(page.getByRole("button", { name: new RegExp(special.title) })).toBeVisible();
     await page.getByRole("button", { name: new RegExp(special.title) }).click();
     await expect(page.getByText("Changed live metadata", { exact: false }).first()).toBeVisible();

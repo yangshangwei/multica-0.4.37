@@ -333,7 +333,7 @@ describe("iteration pagination and access", () => {
     await screen.findByRole("alert");
     await user.click(screen.getByRole("button", { name: "Retry" }));
     await screen.findByRole("link", {
-      name: `${alpha.identifier} · ${alpha.title}`,
+      name: alpha.title,
     });
   });
   it("removes history from the view and query cache when access is revoked", async () => {
@@ -826,12 +826,63 @@ describe("approved iteration business pages", () => {
 
   it("retains task filters when moving between detail tabs", async () => {
     route.pathname = `/acme/iterations/${source.id}`;
+    vi.mocked(api.getIterationIssues).mockImplementation(async (_ws, _id, params) => issuePage(params?.search ? [alpha] : [alpha, beta]));
     const { user } = mount();
     const search = await screen.findByRole("textbox", { name: projects.iterations.audit.searchTasks });
+    const tasks = screen.getByRole("tabpanel", { name: /^Tasks/ });
+    expect(within(tasks).queryByText(/Matching tasks:/)).not.toBeInTheDocument();
     await user.type(search, "Alpha");
+    await waitFor(() => expect(within(tasks).getByRole("status")).toHaveTextContent("Matching tasks: 1"));
+    expect(within(tasks).getByText("Current scope", { selector: "dt" }).parentElement).toHaveTextContent("2");
+    await user.click(screen.getByRole("button", { name: "About task counts" }));
+    expect(await screen.findByText(projects.iterations.overallScope)).toBeVisible();
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "Filter tasks" }));
+    await user.click(screen.getByRole("combobox", { name: "Priority" }));
+    await user.click(await screen.findByRole("option", { name: "High" }));
+    await user.keyboard("{Escape}");
     await user.click(screen.getByRole("tab", { name: "Progress" }));
     await user.click(screen.getByRole("tab", { name: /^Tasks/ }));
     expect(screen.getByRole("textbox", { name: projects.iterations.audit.searchTasks })).toHaveValue("Alpha");
+    expect(screen.getByRole("button", { name: "Remove Priority: High filter" })).toBeVisible();
+  });
+
+  // The lifecycle matrix is owned by core/iterations/scope.test.ts; these assert page-to-list wiring.
+  it.each(["planned", "cancelled", "future-status"])("does not offer an original commitment for an unstarted %s period", async (status) => {
+    route.pathname = `/acme/iterations/${targetA.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: { ...targetA, status }, statistics, snapshot: null });
+    mount();
+    await screen.findByRole("textbox", { name: projects.iterations.audit.searchTasks });
+    expect(screen.queryByRole("combobox", { name: "Current scope" })).not.toBeInTheDocument();
+    const tasks = screen.getByRole("tabpanel", { name: /^Tasks/ });
+    expect(within(tasks).queryByRole("heading", { name: "Tasks" })).not.toBeInTheDocument();
+    if (status === "planned") expect(within(tasks).getByText("Planned tasks").parentElement).toHaveTextContent("2");
+  });
+
+  it("offers the original commitment after an actual start with a zero baseline", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: source, statistics: { ...statistics, original: 0, initial_effective: 0 }, snapshot: null });
+    const { user } = mount();
+    await user.click(await screen.findByRole("combobox", { name: "Current scope" }));
+    await user.click(await screen.findByRole("option", { name: "Original commitment" }));
+    await waitFor(() => expect(api.getIterationIssues).toHaveBeenLastCalledWith(ws, source.id, { scope: "original" }, expect.anything()));
+    expect(screen.getByText("Original commitment", { selector: "dt" }).parentElement).toHaveTextContent("0");
+  });
+
+  it("returns to current scope when start facts become unavailable without losing task refinements", async () => {
+    route.pathname = `/acme/iterations/${source.id}`;
+    const { user, client } = mount();
+    await user.type(await screen.findByRole("textbox", { name: projects.iterations.audit.searchTasks }), "Alpha");
+    await user.click(screen.getByRole("combobox", { name: "Current scope" }));
+    await user.click(await screen.findByRole("option", { name: "Original commitment" }));
+    await waitFor(() => expect(api.getIterationIssues).toHaveBeenLastCalledWith(ws, source.id, { scope: "original", search: "Alpha" }, expect.anything()));
+    act(() => client.setQueryData(["iterations", ws, "detail", source.id], { workspace_id: ws, iteration: { ...source, started_at: null }, statistics, snapshot: null }));
+    await waitFor(() => expect(screen.queryByRole("combobox", { name: "Current scope" })).not.toBeInTheDocument());
+    expect(screen.getByRole("textbox", { name: projects.iterations.audit.searchTasks })).toHaveValue("Alpha");
+    expect(screen.queryByText(/Matching tasks:/)).toBeInTheDocument();
+    await user.clear(screen.getByRole("textbox", { name: projects.iterations.audit.searchTasks }));
+    await user.type(screen.getByRole("textbox", { name: projects.iterations.audit.searchTasks }), "Beta");
+    await waitFor(() => expect(api.getIterationIssues).toHaveBeenLastCalledWith(ws, source.id, { search: "Beta" }, expect.anything()));
   });
 
   it("gives an empty planned iteration explicit existing-task and new-task actions", async () => {
@@ -841,6 +892,7 @@ describe("approved iteration business pages", () => {
     mount();
     expect(await screen.findByRole("button", { name: "Add existing tasks" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "New task" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: projects.iterations.audit.searchTasks })).toBeVisible();
   });
 
   it("keeps the empty plan's adjustment history and page identity reachable", async () => {

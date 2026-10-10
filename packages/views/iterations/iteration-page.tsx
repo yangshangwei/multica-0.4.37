@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { CalendarDays, ChevronLeft, Copy, LockKeyhole, MoreHorizontal, Play, Plus, UserRound } from "lucide-react";
+import { CalendarDays, ChevronLeft, Copy, Info, LockKeyhole, MoreHorizontal, Play, Plus, UserRound } from "lucide-react";
 import { isIterationAccessDenied } from "@multica/core/api";
 import { toast } from "sonner";
 import { copyText } from "@multica/ui/lib/clipboard";
@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@multica/ui/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@multica/ui/components/ui/tabs";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
+import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@multica/ui/components/ui/popover";
 import { AppLink, useNavigation } from "../navigation";
 import { useT, useLocale } from "../i18n";
 import { formatInTimeZone } from "../common/format-in-time-zone";
@@ -124,9 +125,12 @@ function IterationDetail({ wsId, id, settingsRevision, enabled, atomicHandoff }:
     <Tabs value={tab} onValueChange={(value) => { const next = String(value); setTab(next); if (next === "progress") setProgressVisited(true); if (next === "events") setEventsVisited(true); }} className="gap-0 px-5 pb-8 sm:px-8">
       <div className="border-b"><TabsList variant="line" className="data-[orientation=horizontal]:h-12 gap-5" aria-label={t(($) => $.iterations.pages.detailTabs)}><TabsTrigger value="tasks" className="pointer-coarse:min-h-11">{t(($) => snapshot ? $.iterations.pages.frozenTasks : $.iterations.issues)} <span className="text-caption text-muted-foreground">{statistics.current}</span></TabsTrigger><TabsTrigger value="progress" className="pointer-coarse:min-h-11">{t(($) => $.iterations.pages.progress)}</TabsTrigger><TabsTrigger value="events" className="pointer-coarse:min-h-11">{t(($) => planning ? $.iterations.activityPanel.planningAdjustments : $.iterations.pages.scopeChanges)}</TabsTrigger></TabsList></div>
       <TabsContent value="tasks" keepMounted className="pt-5 data-hidden:hidden">
-        {!isEmptyPlan && taskCounters.length > 0 && <dl className="mb-6 flex flex-wrap gap-x-8 gap-y-4">{taskCounters.map(([label, value]) => <div key={label}><dt className="text-caption text-muted-foreground">{label}</dt><dd className="mt-1 text-title-lg font-medium tabular-nums">{value}</dd></div>)}</dl>}
-        {!isEmptyPlan && (planning || phase === "unknown") && <p className="mb-6 max-w-prose text-body text-muted-foreground">{t(($) => phase === "planned" ? $.iterations.activityPanel.planHint : phase === "cancelledBeforeStart" ? $.iterations.activityPanel.cancelledPlanHint : $.iterations.activityPanel.unknownPhase)}</p>}
-        <IterationIssueList wsId={wsId} id={id} historical={snapshot !== null} emptyState={isEmptyPlan ? emptyState : undefined} />
+        <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          {taskCounters.length > 0 && <dl className="flex flex-wrap gap-x-5 gap-y-2">{taskCounters.map(([label, value]) => <div key={label} className="flex items-baseline gap-2"><dt className="text-caption text-muted-foreground">{label}</dt><dd className="text-body font-semibold tabular-nums">{value}</dd></div>)}</dl>}
+          {(planning || phase === "unknown") && <p className="text-caption text-muted-foreground">{t(($) => phase === "planned" ? $.iterations.taskList.planHint : phase === "cancelledBeforeStart" ? $.iterations.activityPanel.cancelledPlanHint : $.iterations.taskList.unknownPhase)}</p>}
+          {taskCounters.length > 0 && <Popover><PopoverTrigger render={<Button variant="ghost" size="icon-sm" className="text-muted-foreground pointer-coarse:min-h-11 pointer-coarse:min-w-11" aria-label={t(($) => $.iterations.taskList.countsHelp)} />}><Info aria-hidden /></PopoverTrigger><PopoverContent align="start" className="max-w-[calc(100vw-2rem)]"><PopoverTitle className="sr-only">{t(($) => $.iterations.taskList.countsHelp)}</PopoverTitle><p className="text-caption">{t(($) => $.iterations.overallScope)}</p></PopoverContent></Popover>}
+        </div>
+        <IterationIssueList wsId={wsId} id={id} historical={snapshot !== null} phase={phase} emptyState={isEmptyPlan ? emptyState : undefined} />
       </TabsContent>
       <TabsContent value="progress" keepMounted className="pt-5 data-hidden:hidden">{progressVisited && (planning || phase === "unknown" ? <p className="py-12 text-body text-muted-foreground">{t(($) => phase === "planned" ? $.iterations.pages.noChart : phase === "cancelledBeforeStart" ? $.iterations.activityPanel.cancelledPlanHint : $.iterations.activityPanel.unknownPhase)}</p> : <IterationHistory wsId={wsId} statistics={statistics} snapshot={snapshot} timezone={iteration.timezone} showSummary={false} showEvents={false} />)}</TabsContent>
       <TabsContent value="events" keepMounted className="pt-5 data-hidden:hidden">{eventsVisited && <IterationEventsPanel wsId={wsId} id={id} iteration={iteration} timezone={iteration.timezone} statistics={statistics} snapshot={snapshot} />}</TabsContent>

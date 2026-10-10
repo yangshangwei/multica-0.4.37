@@ -32,6 +32,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Skill Template Discovery](./skill-market-discovery.md) | Workspace/template separation, catalog entry, source filtering, copy navigation and focus | Active |
 | [MCP Market](./mcp-market.md) | Trusted recipes, workspace instances, explicit assignment, agent-context reuse and failure recovery | Active |
 | [Iteration Operations](../../core/frontend/iteration-operations.md) | Progress/scope presentation, complete activity, frozen facts, preview identity, recovery and desktop routes | Active |
+| [Iteration Task List](./iteration-task-list.md) | Compact toolbar, phase-gated scope, visible conditions/reset, and historical task-row semantics | Active |
 
 ---
 
