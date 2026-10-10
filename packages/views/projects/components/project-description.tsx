@@ -12,6 +12,7 @@ import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { ContentEditor, type ContentEditorRef } from "../../editor";
 import { RevisionConflictCompare } from "../../issues/components/revision-conflict-compare";
 import { useT } from "../../i18n";
+import "./project-description.css";
 
 export function ProjectDescription({ project, supported }: { project: Project; supported: boolean }) {
   const generation = useRef(projectSessionGeneration()).current;
@@ -67,8 +68,8 @@ export function ProjectDescription({ project, supported }: { project: Project; s
     local.current = conflict.description; editor.current?.adoptContent(conflict.description); clearProjectDescriptionDraft(draftKey); editor.current?.focus(); setConflict(undefined); setError(undefined);
   };
   if (unavailable) return null;
-  return <div className="space-y-3">
-    {supported ? <ContentEditor ref={editor} value={draft?.body ?? controlledDescription} debounceMs={0} flushPendingOnUnmount
+  return <div className="min-w-0 max-w-full space-y-3">
+    {supported ? <ContentEditor ref={editor} className="project-description-editor" value={draft?.body ?? controlledDescription} debounceMs={0} flushPendingOnUnmount
       onUpdate={(markdown, baseline) => {
         // A clean editor may adopt a newer query version. A dirty editor's
         // baseline stays tied to the previous revision until acknowledgement.
@@ -78,7 +79,7 @@ export function ProjectDescription({ project, supported }: { project: Project; s
         writeProjectDescriptionDraft(draftKey, { body: markdown, baseBody: save.current?.body ?? project.description ?? "", revision: save.current?.revision ?? project.description_revision ?? 0 });
         save.current?.enqueue(markdown, 1000);
       }} placeholder={t(($) => $.detail.description_placeholder)} />
-      : <><div className="whitespace-pre-wrap break-words text-caption">{project.description}</div><p className="text-caption text-muted-foreground">{t(($) => $.management.description_unsupported)}</p></>}
+      : <><div className="whitespace-pre-wrap break-words text-label leading-relaxed">{project.description}</div><p className="text-caption text-muted-foreground">{t(($) => $.management.description_unsupported)}</p></>}
     {conflict && <RevisionConflictCompare title={t(($) => $.management.conflict)} serverLabel={t(($) => $.management.server_version)} localLabel={t(($) => $.management.local_version)}
       serverValue={conflict.description} localValue={pendingText()} serverAction={<Button size="sm" variant="outline" className="h-auto min-h-7 w-full whitespace-normal break-words py-1.5 text-center leading-snug" onClick={acceptServer}>{t(($) => $.management.use_server)}</Button>}
       localAction={<Button size="sm" className="h-auto min-h-7 w-full whitespace-normal break-words py-1.5 text-center leading-snug" onClick={() => { save.current?.adopt(conflict.description, conflict.revision); setConflict(undefined); setError(undefined); save.current?.enqueue(pendingText()); editor.current?.focus(); }}>{t(($) => $.management.save_merge)}</Button>} />}

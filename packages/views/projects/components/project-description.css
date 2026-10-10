@@ -1,0 +1,50 @@
+/* Keep sidebar prose subordinate to the project title without changing other editors. */
+.rich-text-editor.project-description-editor {
+  min-width: 0;
+  max-width: 100%;
+  font-size: var(--text-label);
+  line-height: 1.625;
+}
+
+.rich-text-editor.project-description-editor h1 {
+  font-size: var(--text-title-sm);
+}
+
+.rich-text-editor.project-description-editor h2 {
+  font-size: var(--text-body);
+}
+
+.rich-text-editor.project-description-editor :is(h3, h4, h5) {
+  font-size: var(--text-label);
+}
+
+.rich-text-editor.project-description-editor :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 1rem;
+  margin-bottom: 0.375rem;
+}
+
+/* Nested paragraphs keep the shared list, table, and blockquote spacing. */
+.rich-text-editor.project-description-editor > p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rich-text-editor.project-description-editor :is(code, th, td) {
+  font-size: var(--text-label);
+}
+
+/* Cloned inline padding can extend wrapped paths past a narrow editor edge. */
+.rich-text-editor.project-description-editor :not(pre) > code {
+  box-decoration-break: slice;
+  -webkit-box-decoration-break: slice;
+}
+
+.rich-text-editor.project-description-editor > :first-child,
+.rich-text-editor.project-description-editor blockquote > :first-child {
+  margin-top: 0;
+}
+
+.rich-text-editor.project-description-editor > :last-child,
+.rich-text-editor.project-description-editor blockquote > :last-child {
+  margin-bottom: 0;
+}
