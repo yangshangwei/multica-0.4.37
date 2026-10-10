@@ -166,6 +166,15 @@ integration tests must not be presented as full browser or native coverage.
 
 ## Responsive captures and stable task navigation
 
+Wait for a Base UI popup to become visible before asserting an option is absent
+or sending Escape. An absent-option assertion can pass before the popup opens;
+the queued opening can then outlive Escape and the next trigger click closes it.
+After dismissal, wait for the listbox/menu to close (and for an exiting portal
+to detach before measuring overflow at a new width). Assert the real closed
+state and focus return rather than sleeping or forcing the next click.
+`projects-p1-lifecycle.spec.ts`, `agent-category-grouping.spec.ts`, and
+`iterations-audit-desktop.spec.ts` exercise these boundaries.
+
 For an app with internal scroll containers, use `page.setViewportSize` to keep
 Playwright's viewport state aligned with Chromium, then apply any touch
 emulation. A raw CDP device-metrics override combined with a `fullPage: true`

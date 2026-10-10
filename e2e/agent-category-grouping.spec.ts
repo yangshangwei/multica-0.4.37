@@ -87,6 +87,8 @@ test("saved categories drive the default directory, counts and filters after leg
     await page.getByRole("button", { name: "分类", exact: true }).click();
     await page.getByRole("menuitemcheckbox", { name: /^研发\s*1$/ }).click();
     await page.keyboard.press("Escape");
+    // Wait for the desktop-positioned menu to finish its exit before resizing.
+    await expect(page.getByRole("menu", { includeHidden: true })).toHaveCount(0);
     await expect(row).toBeVisible();
     await expect(agentRow(page, "安全审查员")).toHaveCount(0);
     await page.getByRole("button", { name: "全部分类", exact: true }).click();

@@ -100,6 +100,8 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   const evidence = info.outputPath("audit-evidence");
   await mkdir(evidence, { recursive: true });
   const metrics: Record<string, unknown> = {};
+  const wideViewport = await page.evaluate(() => ({ width: innerWidth, height: innerHeight }));
+  await page.setViewportSize(wideViewport);
   const base = `/api/workspaces/${workspace.id}`;
   const settings = await api.requestJSON<{ revision: number; effective_timezone: string }>(`${base}/iteration-settings`);
   const timezone = settings.effective_timezone;
@@ -141,7 +143,17 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   const capture = async (name: string) => {
     await page.evaluate(() => document.fonts.ready);
     const path = `${evidence}/${name}.png`;
-    await page.screenshot({ path, animations: "disabled" });
+    const viewport = page.viewportSize();
+    expect(viewport).not.toBeNull();
+    const readViewport = () => page.evaluate(() => ({ width: innerWidth, height: innerHeight, devicePixelRatio, coarse: matchMedia("(pointer: coarse)").matches, touchPoints: navigator.maxTouchPoints }));
+    const before = await readViewport();
+    expect(before).toMatchObject(viewport!);
+    const png = await page.screenshot({ path, fullPage: false, scale: "css", animations: "disabled" });
+    const image = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
+    expect(image).toEqual(viewport);
+    const after = await readViewport();
+    expect(after).toEqual(before);
+    metrics[`${name}Capture`] = { viewport, before, after, image };
     await info.attach(name, { path, contentType: "image/png" });
   };
   const setTheme = async (theme: "light" | "dark") => {
@@ -176,7 +188,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   await expect(main.locator("select")).toHaveCount(0);
   for (const theme of ["light", "dark"] as const) {
     await setTheme(theme);
-    await main.locator('[data-slot="badge"]').evaluate(async node => { getComputedStyle(node).color; await Promise.all(node.getAnimations().map(animation => animation.finished.catch(() => {}))); });
+    await main.locator('[data-slot="badge"]').evaluate(async node => { void getComputedStyle(node).color; await Promise.all(node.getAnimations().map(animation => animation.finished.catch(() => {}))); });
     const warning = await contrast(main.getByText("Past planned end date — this iteration remains active.", { exact: true }));
     const badge = await contrast(main.locator('[data-slot="badge"]'));
     metrics[`${theme}Contrast`] = { warning, badge };
@@ -199,17 +211,24 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   page.on("request", observe);
   const filterTrigger = main.getByRole("button", { name: "Filter tasks", exact: true });
   await filterTrigger.click();
-  await page.getByRole("dialog", { name: "Filter tasks", exact: true }).getByRole("combobox", { name: "Status", exact: true }).click();
+  const filterDialog = page.getByRole("dialog", { name: "Filter tasks", exact: true });
+  const statusFilter = filterDialog.getByRole("combobox", { name: "Status", exact: true });
+  await statusFilter.click();
   await expect(page.getByRole("option", { name: "Todo", exact: true })).toBeVisible();
+  await expect(page.getByRole("option", { name: "All", exact: true })).toBeFocused();
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("listbox")).toBeHidden();
+  await expect(statusFilter).toHaveAttribute("aria-expanded", "false");
+  await expect(statusFilter).toBeFocused();
   await page.keyboard.press("Escape");
+  await expect(filterDialog).toBeHidden();
   await expect(filterTrigger).toBeFocused();
   page.off("request", observe);
   metrics.filterOpeningTaskRequests = taskRequests;
   expect(taskRequests).toHaveLength(0);
 
   const cdp = await page.context().newCDPSession(page);
-  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 680, height: 900, deviceScaleFactor: 1, mobile: true });
+  await page.setViewportSize({ width: 680, height: 900 });
   await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
   metrics.coarsePointer = await page.evaluate(() => ({ coarse: matchMedia("(pointer: coarse)").matches, width: innerWidth, touchPoints: navigator.maxTouchPoints }));
   expect(metrics.coarsePointer).toMatchObject({ coarse: true, touchPoints: 5 });
@@ -223,7 +242,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   await capture("progress-light-narrow");
   await main.getByRole("tab", { name: "Scope changes", exact: true }).click();
   await capture("scope-light-narrow");
-  await cdp.send("Emulation.clearDeviceMetricsOverride");
+  await page.setViewportSize(wideViewport);
   await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
   await main.getByRole("button", { name: "End iteration", exact: true }).click();
   const dialog = page.getByRole("dialog");
@@ -241,12 +260,12 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   await main.getByRole("tab", { name: /^Task snapshot/ }).click();
   await main.getByRole("button", { name: new RegExp(first.title) }).click();
   await expect(main.getByRole("heading", { name: "Historical value", exact: true })).toBeVisible();
-  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 680, height: 900, deviceScaleFactor: 1, mobile: false });
+  await page.setViewportSize({ width: 680, height: 900 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   metrics.comparison = await main.getByRole("button", { name: new RegExp(first.title) }).evaluate(node => ({ height: node.getBoundingClientRect().height, whiteSpace: getComputedStyle(node).whiteSpace }));
   expect(metrics.comparison).toMatchObject({ whiteSpace: "normal" });
   await capture("history-comparison-light-narrow");
-  await cdp.send("Emulation.clearDeviceMetricsOverride");
+  await page.setViewportSize(wideViewport);
   await sidebarIterations().click();
   await capture("overview-light-wide");
   await page.getByRole("button", { name: "Create iteration", exact: true }).click();
@@ -266,7 +285,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
     const colors: Record<string, unknown> = {};
     for (const theme of ["light", "dark"] as const) {
       await setTheme(theme);
-      await confirm.evaluate(async node => { getComputedStyle(node).color; await Promise.all(node.getAnimations().map(animation => animation.finished.catch(() => {}))); });
+      await confirm.evaluate(async node => { void getComputedStyle(node).color; await Promise.all(node.getAnimations().map(animation => animation.finished.catch(() => {}))); });
       const measured = await contrast(confirm);
       colors[theme] = measured;
       expect(measured.ratio).toBeGreaterThanOrEqual(4.5);
@@ -289,14 +308,14 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   await expect(disableConfirm).toBeEnabled();
   for (const size of ["wide", "coarse-narrow"] as const) {
     if (size === "coarse-narrow") {
-      await cdp.send("Emulation.setDeviceMetricsOverride", { width: 680, height: 900, deviceScaleFactor: 1, mobile: true });
+      await page.setViewportSize({ width: 680, height: 900 });
       await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
     }
     for (const theme of ["light", "dark"] as const) {
       await setTheme(theme);
       await disableConfirm.scrollIntoViewIfNeeded();
       await disableDialog.evaluate(async node => {
-        getComputedStyle(node).color;
+        void getComputedStyle(node).color;
         await Promise.all(node.getAnimations({ subtree: true }).filter(animation => Number.isFinite(animation.effect?.getComputedTiming().endTime)).map(animation => animation.finished.catch(() => {})));
       });
       const measured = await contrast(disableConfirm);
@@ -334,7 +353,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   }
   await page.keyboard.press("Escape");
   await expect(disableDialog).toBeHidden();
-  await cdp.send("Emulation.clearDeviceMetricsOverride");
+  await page.setViewportSize(wideViewport);
   await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
   await setTheme("light");
   await expect(page.getByRole("switch", { name: "Enable iterations", exact: true })).toBeChecked();
@@ -343,7 +362,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   await page.reload();
   await page.getByRole("link", { name: "迭代", exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
   await expect(page.getByRole("heading", { name: "迭代", exact: true })).toBeVisible();
-  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 680, height: 900, deviceScaleFactor: 1, mobile: false });
+  await page.setViewportSize({ width: 680, height: 900 });
   await setTheme("dark");
   await capture("overview-zh-dark-narrow");
   await page.getByRole("button", { name: "创建迭代", exact: true }).click();

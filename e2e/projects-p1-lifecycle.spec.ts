@@ -233,8 +233,11 @@ test("P1-L12 the picker excludes invalid timezones and rejected writes leave pla
   await openPlanningSettings(page, p1);
   const original = await p1.api.requestJSON(path);
   await planningTimezone(page).click();
+  // Check the available options only after the asynchronous popup has opened.
+  await expect(page.getByRole("listbox")).toBeVisible();
   await expect(page.getByRole("option", { name: "Not/A_Real_Zone", exact: true })).toHaveCount(0);
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("listbox")).toBeHidden();
   await expect(planningTimezoneValue(page)).toHaveText("Asia/Shanghai");
   await expect(page.getByRole("button", { name: "Save timezone", exact: true })).toHaveCount(0);
   expect(writes).toBe(0);

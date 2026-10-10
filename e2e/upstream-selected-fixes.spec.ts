@@ -179,12 +179,12 @@ test.describe("selectively merged upstream regressions", () => {
         body: fullComment,
         details: { comment_id: comment.id },
       });
-      const archiveResponse = page.waitForResponse((response) =>
-        isApiResponse(response, "/api/inbox/archived"));
       await page.goto("/" + scenario.workspace.slug + "/inbox?view=archived", {
         waitUntil: "domcontentloaded",
       });
-      const archiveList: InboxNotification[] = await (await archiveResponse).json();
+      // Archiving also refetches the old document's list; navigation can discard
+      // that response body before this assertion reads it.
+      const archiveList = await scenario.api.requestJSON<InboxNotification[]>("/api/inbox/archived");
       expect(archiveList.find((item) => item.id === notification.id)).toMatchObject({
         body: preview,
         details: { comment_id: comment.id },
