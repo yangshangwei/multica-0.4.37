@@ -142,6 +142,15 @@ another mutation or client can already have disabled the workspace. Same-mount
 enable → normal disable → re-enable is the canonical feedback regression; a
 response-loss test that reloads the page does not cover that mutation lifetime.
 
+A rejected enable command can leave its own 401/403/404 mutation error after
+protected capability/settings queries recover. Keep a visible access error and
+read-only Retry while that command error exists. Clear only the rejected enable
+error after an explicit retry successfully re-reads both supported capability
+and current settings; a failed read must keep protected content hidden. Never
+replay the enable request or clear an unknown-result command to restore the
+settings panel. `iteration-settings-tab.test.tsx` owns the regression for a
+permission downgrade, failed reauthorization and background query recovery.
+
 Business-page first reads and background refreshes have different presentation
 needs, but neither may turn an error into zero statistics. A temporary first-read
 failure offers a disabled-while-fetching Retry plus safe navigation. A cached

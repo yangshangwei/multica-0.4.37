@@ -43,7 +43,7 @@ function WorkspaceIterationSettings({ wsId }: { wsId: string }) {
   const processing = useIsMutating({ mutationKey: ["iterations", wsId, "command"] }) > 0;
   const [disableOpen, setDisableOpen] = useState(false);
   const timezone = settings.data?.effective_timezone;
-  const error = capability.error ?? settings.error;
+  const error = capability.error ?? settings.error ?? (isIterationAccessDenied(enable.error) ? enable.error : null);
   const denied = isIterationAccessDenied(error) || isIterationAccessDenied(enable.error);
   const readable = supported && !!settings.data && !denied;
   const enabled = settings.data?.enabled === true;
@@ -53,7 +53,10 @@ function WorkspaceIterationSettings({ wsId }: { wsId: string }) {
   const retry = async () => {
     const current = await capability.refetch();
     if (current.data?.supported === true && current.data.manual === true && !current.error) {
-      await settings.refetch();
+      const refreshed = await settings.refetch();
+      if (refreshed.data && !refreshed.error && isIterationAccessDenied(enable.error)) {
+        enable.reset();
+      }
     }
   };
   async function toggle(next: boolean) {

@@ -257,6 +257,54 @@ it("locks editing if the administrator role is lost while the tab is open", asyn
   expect(api.enableIterations).not.toHaveBeenCalled();
 });
 
+it("restores read-only settings after a rejected enable and successful access retry", async () => {
+  vi.mocked(api.enableIterations).mockImplementationOnce(async () => {
+    identity.role = "member";
+    throw new ApiError("Administrator permission lost", 403, "Forbidden");
+  });
+  const { user } = mount();
+  await user.click(await ready());
+  await waitFor(() => expect(screen.queryByRole("switch")).not.toBeInTheDocument());
+
+  vi.mocked(api.getIterationCapabilities).mockRejectedValueOnce(new Error("Offline"));
+  await user.click(await screen.findByRole("button", { name: "Retry" }));
+  await waitFor(() => expect(client.getQueryState(["iterations", ws, "capabilities", "settings-test"])?.fetchStatus).toBe("idle"));
+  expect(screen.queryByRole("switch")).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "View history" })).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole("button", { name: "Retry" }));
+  const toggle = await screen.findByRole("switch", { name: "Enable iterations" });
+  expect(toggle).toHaveAttribute("aria-disabled", "true");
+  expect(toggle).not.toBeChecked();
+  expect(screen.getByRole("link", { name: "View history" })).toBeInTheDocument();
+  expect(screen.getByText("New iterations use the workspace timezone: Asia/Shanghai.")).toBeInTheDocument();
+  expect(api.enableIterations).toHaveBeenCalledTimes(1);
+  expect(api.getIterationOperation).not.toHaveBeenCalled();
+});
+
+it("keeps access retry available when background reads recover after a forbidden enable", async () => {
+  vi.mocked(api.enableIterations).mockImplementationOnce(async () => {
+    identity.role = "member";
+    throw new ApiError("Administrator permission lost", 403, "Forbidden");
+  });
+  const { user } = mount();
+  await user.click(await ready());
+  await screen.findByRole("button", { name: "Retry" });
+  await waitFor(() => expect(client.isMutating()).toBe(0));
+  await act(async () => {
+    await client.refetchQueries({ queryKey: ["iterations", ws, "capabilities"] });
+  });
+  await act(async () => {
+    await client.refetchQueries({ queryKey: ["iterations", ws, "settings"] });
+  });
+  expect(client.getQueryState(["iterations", ws, "settings"])?.status).toBe("success");
+  expect(screen.queryByRole("switch")).not.toBeInTheDocument();
+  await user.click(await screen.findByRole("button", { name: "Retry" }));
+  expect(await screen.findByRole("switch", { name: "Enable iterations" })).toHaveAttribute("aria-disabled", "true");
+  expect(api.enableIterations).toHaveBeenCalledTimes(1);
+  expect(api.getIterationOperation).not.toHaveBeenCalled();
+});
+
 it("retains the last read timezone but blocks changes until failed settings refresh is retried", async () => {
   const { user } = mount();
   const toggle = await ready();
