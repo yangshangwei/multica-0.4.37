@@ -1761,3 +1761,34 @@ Implemented the approved date-grouped timeline and applied-filter feedback; pres
 ### Next Steps
 
 - 继续收口其他仍处于 in_progress 的 Trellis 任务，优先处理有明确验收剩余项的任务。
+
+
+## Session 54: Compact iteration Tasks with visible refinements
+<!-- trellis-session: v=2 fp=da309d9b92dfc1e1 -->
+
+**Date**: 2026-10-10
+**Task**: Compact iteration Tasks with visible refinements
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Implemented the four reviewed task-tab improvements and archived their evidence. Whole-period statistics and frozen history retain their contracts.
+
+### Main Changes
+
+- Bounded search, compact planning context, independent grouping, removable filter summaries, and clearer task rows.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `8d0449426` | fix(iterations): keep task controls from obscuring iteration work |
+
+### Testing
+
+- [OK] 10659 JS/TS tests passed with bounded concurrency; 5 native Electron tests; lint, typecheck, export checks and visual verdict passed.
+- [OK] Reference-sized native fixture places the first task at y=387.5 and search at 288px; both locales and narrow/coarse layouts verified.
+
+### Status
+
+[OK] **Completed**

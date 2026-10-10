@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 53
+- **Total Sessions**: 54
 - **Last Active**: 2026-10-10
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~1763 | Active |
+| `journal-1.md` | ~1794 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 54 | 2026-10-10 | Compact iteration Tasks with visible refinements | `8d0449426` | `codex/projects-p1` |
 | 53 | 2026-10-10 | 完成迭代详情进展与范围变化优化 | `b2403ae5f` | `codex/projects-p1` |
 | 52 | 2026-10-10 | Trace triage history with a timeline and visible filters | `c6e647d90` | `codex/projects-p1` |
 | 51 | 2026-10-10 | 迭代范围变化：业务口径、明细与验证 | `6d3bf906d9639924e2d6493b3349e0d98bfafb7d` | `codex/projects-p1` |

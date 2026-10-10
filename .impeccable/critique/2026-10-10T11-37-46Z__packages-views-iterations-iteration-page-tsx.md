@@ -2,7 +2,7 @@
 target: 迭代详情页任务标签：搜索与筛选空间、任务列表层级
 total_score: 25
 max_score: 40
-na_heuristics: 
+na_heuristics: ""
 p0_count: 0
 p1_count: 0
 target_identity: "file:/Volumes/artisan/code/2026/multica-0.4.37/packages/views/iterations/iteration-page.tsx"
