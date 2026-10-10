@@ -1701,3 +1701,63 @@ Implemented the approved date-grouped timeline and applied-filter feedback; pres
 ### Next Steps
 
 - The approved implementation scope is complete.
+
+## Session 2026-10-10: 桌面核心页面 impeccable 审计修复收尾
+
+**Task**: `10-09-desktop-core-impeccable-fixes`
+**Status**: verified; archive pending
+
+### Completion
+
+- 最终独立视觉复核第 2 轮为 **93/100 · pass**；窄屏智能体批量工具条的计数换行与表头遮挡已关闭。
+- 新增 `verification.json` 汇总最终证据、限制和无关工作区变更。
+- 新增 `evidence/final-source-hashes.json`，核对基线记录的 49 个源码/测试文件；17 个文件相对任务基线发生预期变化。
+- `.omx/state/desktop-core-impeccable-fixes/ralph-progress.json` 已从旧的 86/revise 更新到 93/pass。
+- 新鲜 `pnpm typecheck`：9/9 成功；新鲜 `git diff --check`：通过。
+
+### Changed task records
+
+- `.trellis/tasks/10-09-desktop-core-impeccable-fixes/implement.md`
+- `.trellis/tasks/10-09-desktop-core-impeccable-fixes/task.json`
+- `.trellis/tasks/10-09-desktop-core-impeccable-fixes/verification.json`
+- `.trellis/tasks/10-09-desktop-core-impeccable-fixes/evidence/final-source-hashes.json`
+
+### Remaining limits
+
+生产构建、生产性能基准、VoiceOver/NVDA 全流程和 Windows/Linux 真机验收未运行；右侧详情栏内部动效及视觉报告中列出的非阻塞 polish 保持独立范围。工作区另有 `apps/web/next-env.d.ts` 以及其他任务的未提交变更，收尾提交只应包含本任务归档与本条日志。
+
+
+## Session 53: 完成迭代详情进展与范围变化优化
+<!-- trellis-session: v=2 fp=9e8807408a2dc331 -->
+
+**Date**: 2026-10-10
+**Task**: 完成迭代详情进展与范围变化优化
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+补齐 AC-10 的生产 Desktop 英文/中文交互与视觉证据，完成聚焦回归后归档 Trellis 任务。
+
+### Main Changes
+
+- 更新任务验收记录，保留 20 个双语双主题双视口截图及 16/16 活动记录覆盖证据。
+- 归档 10-09-iteration-progress-scope-ui；未触碰其他任务修改和 apps/web/next-env.d.ts。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b2403ae5f` | Record the completed iteration detail hierarchy with verified bilingual evidence |
+
+### Testing
+
+- [OK] Core iterations 223/223；views iterations 与 locale parity 249/249。
+- [OK] @multica/core 与 @multica/views typecheck 通过；live metrics 记录键盘、筛选、溢出检查通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续收口其他仍处于 in_progress 的 Trellis 任务，优先处理有明确验收剩余项的任务。
