@@ -6,11 +6,14 @@ import { toast } from "sonner";
 import type { Issue, Project } from "@multica/core/types";
 import type { IssueScope } from "@multica/core/issues/surface/scope";
 import { useUpdateIssue } from "@multica/core/issues/mutations";
+import { projectIssueCandidatesOptions } from "@multica/core/projects/queries";
+import { isFormalAdmission } from "@multica/core/triage";
 import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../../i18n";
 import { IssueSurface } from "../../issues/surface/issue-surface";
 import type { IssueCreateDefaults } from "../../issues/surface/types";
 import { IssuePickerModal } from "../../modals/issue-picker-modal";
+import { useStatusLabel } from "../../issues/utils/status-label";
 
 const NO_EXCLUDED_ISSUES: string[] = [];
 
@@ -20,11 +23,12 @@ export function ProjectIssueSurface({ project, scope, fallbackCreateDefaults }: 
   fallbackCreateDefaults?: IssueCreateDefaults;
 }) {
   const { t } = useT("projects");
+  const getStatusLabel = useStatusLabel(project.workspace_id);
   const [linkOpen, setLinkOpen] = useState(false);
   const { mutateAsync: updateIssue } = useUpdateIssue();
   const isEmptyProject = project.issue_count === 0;
   const canLinkIssue = useCallback((issue: Issue) =>
-    issue.workspace_id === project.workspace_id && issue.project_id === null,
+    issue.workspace_id === project.workspace_id && issue.project_id === null && isFormalAdmission(issue.admission_status),
   [project.workspace_id]);
   const linkIssue = async (issue: Issue) => {
     if (!canLinkIssue(issue)) {
@@ -84,12 +88,15 @@ export function ProjectIssueSurface({ project, scope, fallbackCreateDefaults }: 
       </div>}
     />
     <IssuePickerModal
+      key={`${project.workspace_id}:${project.id}`}
       open={linkOpen}
       onOpenChange={setLinkOpen}
       title={t(($) => $.detail.link_existing_title)}
       description={t(($) => $.detail.link_existing_hint)}
       excludeIds={NO_EXCLUDED_ISSUES}
       filterIssue={canLinkIssue}
+      browseOptions={(search) => projectIssueCandidatesOptions(project.workspace_id, search)}
+      getStatusLabel={getStatusLabel}
       onSelect={linkIssue}
     />
   </>;

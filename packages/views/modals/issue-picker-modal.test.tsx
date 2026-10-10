@@ -1,14 +1,18 @@
 import { useState, type ComponentProps } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import userEvent from "@testing-library/user-event";
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Issue } from "@multica/core/types";
+import { projectIssueCandidatesOptions } from "@multica/core/projects/queries";
 import { renderWithI18n } from "../test/i18n";
 import { IssuePickerModal } from "./issue-picker-modal";
 
-const mocks = vi.hoisted(() => ({ searchIssues: vi.fn() }));
+const mocks = vi.hoisted(() => ({ searchIssues: vi.fn(), listIssues: vi.fn(), getIssue: vi.fn() }));
 
-vi.mock("@multica/core/api", () => ({
-  api: { searchIssues: mocks.searchIssues },
+vi.mock("@multica/core/api", async (original) => ({
+  ...(await original<typeof import("@multica/core/api")>()),
+  api: { searchIssues: mocks.searchIssues, listIssues: mocks.listIssues, getIssue: mocks.getIssue },
 }));
 
 function issue(overrides: Partial<Issue> = {}): Issue {
@@ -58,7 +62,7 @@ const pickerProps = {
 function Picker({
   onOpenChange,
   ...props
-}: Pick<ComponentProps<typeof IssuePickerModal>, "onSelect" | "onOpenChange">) {
+}: Pick<ComponentProps<typeof IssuePickerModal>, "onSelect" | "onOpenChange" | "browseOptions">) {
   const [open, setOpen] = useState(true);
   return (
     <IssuePickerModal
@@ -199,6 +203,7 @@ describe("IssuePickerModal", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByRole("combobox")).not.toBeDisabled();
     expect(screen.getByRole("combobox")).toHaveValue("");
+    expect(screen.getByRole("combobox")).toHaveAccessibleName(pickerProps.title);
   });
 
   it("combines optional candidate filtering with excluded IDs", async () => {
@@ -237,5 +242,147 @@ describe("IssuePickerModal", () => {
 
     expect(screen.queryByRole("option")).not.toBeInTheDocument();
     expect(screen.getByText("No issues found.")).toBeInTheDocument();
+  });
+});
+
+const browseOptions = (search: string) => projectIssueCandidatesOptions("workspace-1", search);
+
+function BrowsePicker(props: Pick<ComponentProps<typeof IssuePickerModal>, "onSelect" | "onOpenChange">) {
+  const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } }));
+  return <QueryClientProvider client={client}>
+    <Picker {...props} browseOptions={browseOptions} />
+  </QueryClientProvider>;
+}
+
+describe("IssuePickerModal browsing", () => {
+  beforeEach(() => {
+    mocks.listIssues.mockReset().mockResolvedValue({ issues: [issue()], total: 1 });
+    mocks.getIssue.mockReset();
+    mocks.searchIssues.mockReset();
+  });
+
+  it("loads candidates immediately and selects a row with the keyboard", async () => {
+    const onSelect = vi.fn();
+    const onOpenChange = vi.fn();
+    const user = userEvent.setup();
+    renderWithI18n(<BrowsePicker onSelect={onSelect} onOpenChange={onOpenChange} />);
+
+    await screen.findByRole("option", { name: /Link this issue/ });
+    expect(screen.getByRole("combobox")).toHaveValue("");
+    expect(screen.getByRole("combobox")).toHaveAccessibleName(pickerProps.title);
+    expect(screen.getByRole("listbox")).toHaveAccessibleName("Eligible issues");
+    expect(mocks.searchIssues).not.toHaveBeenCalled();
+    expect(screen.queryByText("Type to search issues")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("{ArrowDown}{Enter}");
+
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith(issue());
+    expect(onOpenChange).toHaveBeenCalledExactlyOnceWith(false);
+  });
+
+  it("hides previous candidates while a new search waits and restores browsing after clearing", async () => {
+    const oldSearch = deferred<{ issues: Issue[]; total: number }>();
+    mocks.listIssues.mockImplementation(async (params: { q: string }) => {
+      if (params.q === "old") return oldSearch.promise;
+      return { issues: [params.q === "latest" ? issue({ id: "latest", title: "Latest result" }) : issue()], total: 1 };
+    });
+    renderWithI18n(<BrowsePicker onSelect={vi.fn()} onOpenChange={vi.fn()} />);
+    await screen.findByRole("option", { name: /Link this issue/ });
+    const input = screen.getByRole("combobox");
+
+    fireEvent.change(input, { target: { value: "old" } });
+    expect(screen.queryByRole("option")).not.toBeInTheDocument();
+    await waitFor(() => expect(mocks.listIssues).toHaveBeenCalledWith(expect.objectContaining({ q: "old" })));
+    fireEvent.change(input, { target: { value: "latest" } });
+    await screen.findByRole("option", { name: /Latest result/ });
+    await act(async () => oldSearch.resolve({ issues: [issue({ id: "stale", title: "Stale result" })], total: 1 }));
+    expect(screen.queryByText("Stale result")).not.toBeInTheDocument();
+
+    fireEvent.change(input, { target: { value: "" } });
+    await screen.findByRole("option", { name: /Link this issue/ });
+    expect(screen.queryByText("Latest result")).not.toBeInTheDocument();
+  });
+
+  it("loads more pages and retries a failed next page without discarding available candidates", async () => {
+    mocks.listIssues.mockResolvedValueOnce({ issues: [issue()], total: 2 })
+      .mockRejectedValueOnce(new Error("Offline"))
+      .mockResolvedValueOnce({ issues: [issue({ id: "second", title: "Second candidate" })], total: 2 });
+    const onSelect = vi.fn();
+    const user = userEvent.setup();
+    renderWithI18n(<BrowsePicker onSelect={onSelect} onOpenChange={vi.fn()} />);
+    await screen.findByRole("option", { name: /Link this issue/ });
+    const more = screen.getByRole("button", { name: "Load more" });
+    more.focus();
+    await user.keyboard("{Enter}");
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load more issues.");
+    expect(screen.getByRole("option", { name: /Link this issue/ })).toBeInTheDocument();
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(screen.getByRole("combobox")).toHaveFocus();
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(screen.getByRole("combobox")).toHaveFocus();
+    await screen.findByRole("option", { name: /Second candidate/ });
+
+    expect(screen.getAllByRole("option")).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: "Load more" })).not.toBeInTheDocument();
+    expect(mocks.listIssues.mock.calls.map(([params]) => params.offset)).toEqual([0, 1, 1]);
+  });
+
+  it("distinguishes initial loading, recoverable errors and an empty eligible list", async () => {
+    const firstPage = deferred<{ issues: Issue[]; total: number }>();
+    mocks.listIssues.mockReturnValueOnce(firstPage.promise)
+      .mockResolvedValueOnce({ issues: [], total: 0 });
+    renderWithI18n(<BrowsePicker onSelect={vi.fn()} onOpenChange={vi.fn()} />);
+    expect(screen.getByRole("status")).toHaveTextContent("Loading issues...");
+    await act(async () => firstPage.reject(new Error("Offline")));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load issues.");
+    expect(screen.queryByText("No eligible issues available.")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByText("No eligible issues available.")).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("keeps the modal open when linking fails and disables all controls during selection", async () => {
+    const selection = deferred<boolean>();
+    const onSelect = vi.fn().mockReturnValueOnce(selection.promise).mockResolvedValueOnce(true);
+    const onOpenChange = vi.fn();
+    mocks.listIssues.mockResolvedValue({ issues: [issue()], total: 2 });
+    renderWithI18n(<BrowsePicker onSelect={onSelect} onOpenChange={onOpenChange} />);
+    const option = await screen.findByRole("option", { name: /Link this issue/ });
+    fireEvent.click(option);
+
+    expect(screen.getByRole("combobox")).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Load more" })).toBeDisabled();
+    fireEvent.click(option);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    await act(async () => selection.resolve(false));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    fireEvent.click(option);
+    await waitFor(() => expect(onOpenChange).toHaveBeenCalledExactlyOnceWith(false));
+  });
+
+  it("drops a closed session's in-flight search and reopens with the default candidates", async () => {
+    const stale = deferred<{ issues: Issue[]; total: number }>();
+    mocks.listIssues.mockImplementation(async (params: { q: string }) =>
+      params.q ? stale.promise : { issues: [issue()], total: 1 });
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
+    const props = { ...pickerProps, browseOptions, onSelect: vi.fn(), onOpenChange: vi.fn() };
+    const renderPicker = (open: boolean) => <QueryClientProvider client={client}>
+      <IssuePickerModal {...props} open={open} />
+    </QueryClientProvider>;
+    const { rerender } = renderWithI18n(renderPicker(true));
+    await screen.findByRole("option", { name: /Link this issue/ });
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "stale" } });
+    await waitFor(() => expect(mocks.listIssues).toHaveBeenCalledWith(expect.objectContaining({ q: "stale" })));
+
+    rerender(renderPicker(false));
+    rerender(renderPicker(true));
+    await act(async () => stale.resolve({ issues: [issue({ id: "stale", title: "Stale result" })], total: 1 }));
+
+    await screen.findByRole("option", { name: /Link this issue/ });
+    expect(screen.getByRole("combobox")).toHaveValue("");
+    expect(screen.queryByText("Stale result")).not.toBeInTheDocument();
+    client.clear();
   });
 });

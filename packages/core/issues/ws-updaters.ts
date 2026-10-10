@@ -401,6 +401,8 @@ export function onIssueCreated(
   qc.invalidateQueries({ queryKey: issueKeys.myAssigneeGroupsAll(wsId) });
   if (issue.project_id) {
     qc.invalidateQueries({ queryKey: projectKeys.all(wsId) });
+  } else {
+    qc.invalidateQueries({ queryKey: projectKeys.issueCandidates(wsId) });
   }
   // Refresh every Project Gantt cache that might be observing this issue.
   // We invalidate the whole prefix rather than the issue's own project
