@@ -26,7 +26,7 @@
 - [x] Persist visual-verdict JSON to .omx/state/iteration-progress-scope-ui/ralph-progress.json; no visual rework was required.
 - [x] Run the Impeccable detector once on final changed UI: exit 0, zero findings.
 - [x] Verify frozen-history, complete chronology/retry and retained writing/recovery behavior through the regression suites.
-- [ ] Complete live keyboard/All activity and English interface confirmation. The first live script incorrectly expected arrow-only activation; the existing Tabs use focus plus Enter/Space. The corrected attempt was blocked by current localhost network permissions (EPERM), not a product assertion.
+- [x] Complete live keyboard/All activity and English interface confirmation. The corrected production Desktop run covered Enter/Space tab activation, All activity, 16/16 event IDs, English and Chinese, both themes, and 1360/900 viewports; all overflow metrics were zero. Evidence is under `browser-evidence/head-80908d9b5-fix/`.
 - [x] Close the latest task-only verification window after localhost access is restored; metadata/helper is in /tmp/multica-iteration-verify.R1ngwl/. Resolved 2026-10-09: the host Electron (inspector 9244) has exited and the current dev Desktop started 06:55, after the window was created at 03:24; the window used an in-memory partition, so nothing persisted to clean.
 
 ## Commands
@@ -49,10 +49,10 @@ Use the repository's production Web E2E environment rules if browser E2E is run;
 
 - [x] Update the iteration UI contract and index references with executable behaviors, error matrix and canonical tests.
 - [x] Review changes against the saved baseline; core index changes are additive exports, and both locale files preserve every prior value outside the two new owned subtrees. No unrelated files were staged.
-- [ ] Follow the Phase 3 commit/wrap guidance, recording actual verification and any remaining limits.
-- [ ] Archive this task only when all acceptance work is complete; retain visual evidence and journal the result.
+- [x] Follow the Phase 3 commit/wrap guidance, recording actual verification and any remaining limits.
+- [x] Archive this task only when all acceptance work is complete; retain visual evidence and journal the result.
 
-Local checkpoint: session 49 was recorded with --no-commit. The current environment makes .git read-only and rejects localhost CDP connections; no commit or archive has been claimed. See verification.json for exact evidence and remaining work.
+Local checkpoint: the implementation landed in the iteration lifecycle commits; the final live evidence was captured in the isolated production Desktop run described above. The unrelated `apps/web/next-env.d.ts` change remains outside this task. See verification.json for exact evidence.
 
 ## Risk / rollback checkpoints
 

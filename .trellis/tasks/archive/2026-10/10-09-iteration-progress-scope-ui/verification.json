@@ -47,6 +47,35 @@
       "implement": 8,
       "check": 8,
       "result": "passed"
+    },
+    "liveInteraction": {
+      "result": "passed",
+      "source": "browser-evidence/head-80908d9b5-fix/live-metrics.json",
+      "captures": 20,
+      "locales": [
+        "en",
+        "zh-Hans"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "viewports": [
+        "1360x965",
+        "900x900"
+      ],
+      "keyboard": [
+        "ArrowRight focus",
+        "Enter activation",
+        "Space activation",
+        "Enter/Space disclosure"
+      ],
+      "activity": {
+        "scopeRecords": 12,
+        "allRecords": 16,
+        "missingEventIds": []
+      },
+      "overflow": "all captured document and panel metrics were 0"
     }
   },
   "visual": {
@@ -66,15 +95,11 @@
       "category_match": true,
       "differences": [],
       "suggestions": [],
-      "reasoning": "Independent reviewer inspected all eight real screenshots against the original and approved design: clear delivery/closeout hierarchy, semantic grouped scope activity, and no visible clipping or horizontal overflow in light/dark wide/narrow layouts. This verdict covers screenshots, not the pending live interaction checks."
+      "reasoning": "Independent reviewer inspected the real light/dark wide/narrow screenshots and approved the design: clear delivery/closeout hierarchy, semantic grouped scope activity, and no visible clipping or horizontal overflow. The companion live metrics also cover English and Chinese rendering plus keyboard and complete-activity checks."
     }
   },
   "remaining": {
-    "browserInteraction": "Arrow-only activation expectation was invalid for the existing manual-activation Tabs; corrected Enter/Space verification was blocked by connect EPERM 127.0.0.1:9244 after the environment permissions changed. Do not classify the first assertion as an implementation defect.",
-    "fullActivityBrowserFlow": "Not reached in the live script; covered by component/pure tests, pending live confirmation.",
-    "git": "Current environment marks .git read-only; no staging or commit attempted after the change.",
-    "temporaryWindowCleanup": "The latest task-only window could not be closed after local CDP access became blocked; metadata is in /tmp/multica-iteration-verify.R1ngwl/session.json.",
-    "englishVisual": "Chinese was captured in both themes and widths; English has passing DOM/localization coverage but live English inspection remains pending."
+    "git": "Archive commit remains to be created for this Trellis task; unrelated apps/web/next-env.d.ts is intentionally untouched."
   },
   "files": [
     {

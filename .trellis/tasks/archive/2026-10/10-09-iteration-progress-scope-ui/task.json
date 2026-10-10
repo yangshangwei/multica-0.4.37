@@ -3,7 +3,7 @@
   "name": "iteration-progress-scope-ui",
   "title": "迭代详情：进展与范围变化的信息层级优化",
   "description": "落实 impeccable 审计方案：聚焦交付结果、分层展示范围变化与结束去向，改善事件语义和浏览恢复，保留冻结统计口径。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": "frontend",
   "scope": "iterations",
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-09",
-  "completedAt": null,
+  "completedAt": "2026-10-10",
   "branch": null,
   "base_branch": "main",
   "worktree_path": null,
@@ -31,7 +31,7 @@
     "packages/views/locales/en/projects.json",
     "packages/views/locales/zh-Hans/projects.json"
   ],
-  "notes": "Implementation, independent review, scoped tests, workspace typecheck, lint, detector and screenshot review passed. Keep in_progress: current restricted environment prevents final live interaction confirmation and git commit/archive.",
+  "notes": "Implementation, independent review, scoped tests, workspace typecheck, lint, detector, live production Desktop keyboard/activity checks, and bilingual light/dark 1360/900 screenshot review passed. Ready for archive; apps/web/next-env.d.ts is unrelated and remains uncommitted.",
   "meta": {
     "approved_audit": ".impeccable/critique/2026-10-08T16-00-27Z__packages-views-iterations-iteration-page-tsx.md",
     "user_authorization": "创建 Trellis 任务，推进开发",
@@ -41,14 +41,17 @@
     "visual_score": 95,
     "visual_verdict": "pass",
     "test_count": 314,
-    "remaining": [
-      "live-interaction-and-english-visual-check",
-      "temporary-verification-window-cleanup",
-      "git-commit-and-archive"
-    ],
+    "remaining": [],
     "environment_limitations": [
       "localhost CDP connect EPERM 127.0.0.1:9244",
       ".git is read-only"
-    ]
+    ],
+    "live_verification": {
+      "source": "browser-evidence/head-80908d9b5-fix/live-metrics.json",
+      "captures": 20,
+      "event_records": 16,
+      "missing_event_ids": [],
+      "overflow": "zero in all document and panel captures"
+    }
   }
 }
