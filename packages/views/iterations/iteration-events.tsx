@@ -10,14 +10,14 @@ import {
   type IterationActivityFilter, type IterationScopeMetric, type IterationScopeProjection,
 } from "@multica/core/iterations";
 import { Button } from "@multica/ui/components/ui/button";
-import { Input } from "@multica/ui/components/ui/input";
-import { Label } from "@multica/ui/components/ui/label";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { useLocale, useT } from "../i18n";
 import { IterationError } from "./iteration-error";
 import { IterationActivityTimeline } from "./iteration-events-view";
 import { iterationDisclosureClass } from "./iteration-presentation";
 import { IterationScopeDetails, IterationScopeSelect } from "./iteration-scope-details";
+import { IterationSearch } from "./iteration-search";
+import { IterationTerm, type IterationTermKey } from "./iteration-term";
 
 type Detail = Awaited<ReturnType<typeof api.getIteration>>;
 type Props = {
@@ -51,8 +51,10 @@ function activityCategory(item: IterationScopeProjection["events"][number]): Cat
   }
 }
 
-function ScopeMetric({ metric, label, value, selected, detailId, onSelect, primary = false }: {
+function ScopeMetric({ metric, term, closed, label, value, selected, detailId, onSelect, primary = false }: {
   metric: IterationScopeMetric;
+  term: IterationTermKey;
+  closed: boolean;
   label: string;
   value: string;
   selected: boolean;
@@ -62,7 +64,7 @@ function ScopeMetric({ metric, label, value, selected, detailId, onSelect, prima
 }) {
   const { t } = useT("projects");
   return <div className="min-w-0 space-y-1">
-    <dt className="text-caption text-muted-foreground">{label}</dt>
+    <dt className="text-caption text-muted-foreground"><IterationTerm term={term} closed={closed}>{label}</IterationTerm></dt>
     <dd><Button variant="ghost" aria-label={t(($) => $.iterations.activityPanel.viewMetric, { metric: label, value })} aria-pressed={selected} aria-controls={detailId} onClick={() => onSelect(metric)} className={`-ml-2 h-auto min-h-8 whitespace-normal px-2 py-1 text-left tabular-nums aria-pressed:bg-muted aria-pressed:font-semibold aria-pressed:underline aria-pressed:underline-offset-4 pointer-coarse:min-h-11 ${primary ? "text-title font-semibold" : "text-body"}`}>{value}</Button></dd>
   </div>;
 }
@@ -122,13 +124,26 @@ function IterationEventsContent({ wsId, id, iteration, timezone, statistics, sna
     reopen_events: t(($) => $.iterations.activityPanel.reopens),
     net_effective_change: t(($) => $.iterations.activityPanel.netChange),
   };
+  const metricTerms: Record<IterationScopeMetric, IterationTermKey> = {
+    original: "original",
+    current: phase === "planned" ? "planned" : snapshot ? "finalScope" : "current",
+    initial_effective: "initialEffective",
+    effective: snapshot ? "finalEffective" : "effective",
+    cancelled: "cancelled",
+    added_unique: "addedUnique",
+    removed_events: "removedEvents",
+    reentry_events: "reentryEvents",
+    cancel_events: "cancelEvents",
+    reopen_events: "reopenEvents",
+    net_effective_change: "netChange",
+  };
   const taskCount = (count: number) => t(($) => $.iterations.activityPanel.taskCount, { count });
   const metricValue = (value: IterationScopeMetric) => value.endsWith("_events")
     ? t(($) => $.iterations.activityPanel.eventCount, { count: counters[value] })
     : `${value === "net_effective_change" && counters[value] > 0 ? "+" : ""}${taskCount(counters[value])}`;
   const clearRefinements = () => { setCategory("all"); setSearch(""); setVisibleCount(GROUP_BATCH_SIZE); };
   const selectMetric = (next: IterationScopeMetric) => { setMetric(next); setDetailResetKey((value) => value + 1); clearRefinements(); };
-  const renderMetric = (value: IterationScopeMetric, primary = false) => <ScopeMetric key={value} metric={value} label={metricLabels[value]} value={metricValue(value)} selected={metric === value} detailId={detailId} onSelect={selectMetric} primary={primary} />;
+  const renderMetric = (value: IterationScopeMetric, primary = false) => <ScopeMetric key={value} metric={value} term={metricTerms[value]} closed={!!snapshot} label={metricLabels[value]} value={metricValue(value)} selected={metric === value} detailId={detailId} onSelect={selectMetric} primary={primary} />;
   const categoryOptions: { value: Category; label: string }[] = [
     { value: "all", label: t(($) => $.iterations.activityPanel.categoryAll) },
     { value: "joined", label: t(($) => $.iterations.activityPanel.categoryJoined) },
@@ -163,18 +178,22 @@ function IterationEventsContent({ wsId, id, iteration, timezone, statistics, sna
   ) : <div className="min-w-0 space-y-5">
     {!snapshot && activity.error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-caption">{t(($) => $.iterations.activityPanel.refreshError)}</p>{retry}</div>}
     {eventSelection && !eventSelection.complete && <p role="alert" className="max-w-prose text-caption">{t(($) => $.iterations.activityPanel.incomplete)}</p>}
-    {!metric && <div role="group" aria-label={t(($) => $.iterations.activityPanel.filterLabel)} className="flex flex-wrap gap-1">
-      {(["scope", "all"] as const).map((value) => <Button key={value} variant="ghost" aria-pressed={filter === value} className="aria-pressed:bg-muted aria-pressed:font-semibold pointer-coarse:min-h-11" onClick={() => setFilter(value)}>{t(($) => value === "all" ? $.iterations.activityPanel.allFilter : planning ? $.iterations.activityPanel.planningAdjustments : $.iterations.activityPanel.scopeFilter)}</Button>)}
-    </div>}
-    <div className="grid items-end gap-3 sm:grid-cols-[minmax(8rem,1fr)_minmax(12rem,2fr)_auto]">
-      <IterationScopeSelect id={`${controlId}-category`} label={t(($) => $.iterations.activityPanel.categoryLabel)} value={category} options={categoryOptions} onValueChange={(value) => { setCategory(value); setVisibleCount(GROUP_BATCH_SIZE); }} />
-      <div className="min-w-0 space-y-2"><Label htmlFor={`${controlId}-search`}>{t(($) => $.iterations.activityPanel.searchTasks)}</Label><Input id={`${controlId}-search`} value={search} placeholder={t(($) => $.iterations.activityPanel.searchPlaceholder)} className="pointer-coarse:min-h-11" onChange={(event) => { setSearch(event.target.value); setVisibleCount(GROUP_BATCH_SIZE); }} /></div>
-      <Button variant="ghost" className="justify-self-start pointer-coarse:min-h-11" disabled={!search && category === "all"} onClick={clearRefinements}>{t(($) => $.iterations.pages.clearFilters)}</Button>
-    </div>
-    <p role="status" className="text-caption text-muted-foreground tabular-nums">{t(($) => eventSelection?.kind === "tasks"
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        {!metric && <div role="group" aria-label={t(($) => $.iterations.activityPanel.filterLabel)} className="flex flex-wrap gap-1">
+          {(["scope", "all"] as const).map((value) => <Button key={value} variant="ghost" size="sm" aria-pressed={filter === value} className="text-muted-foreground aria-pressed:bg-muted aria-pressed:font-semibold aria-pressed:text-foreground pointer-coarse:min-h-11" onClick={() => setFilter(value)}>{t(($) => value === "all" ? $.iterations.activityPanel.allFilter : planning ? $.iterations.activityPanel.planningAdjustments : $.iterations.activityPanel.scopeFilter)}</Button>)}
+        </div>}
+        <p role="status" className="text-caption text-muted-foreground tabular-nums">{t(($) => eventSelection?.kind === "tasks"
       ? eventSelection.complete ? $.iterations.activityPanel.matchingTasks : $.iterations.activityPanel.availableTasks
       : eventSelection && !eventSelection.complete ? $.iterations.activityPanel.availableRecords
         : refined ? $.iterations.activityPanel.matchingRecords : $.iterations.activityPanel.recordCount, { count })}</p>
+      </div>
+      <div className="ml-auto flex max-w-full flex-wrap items-center gap-1.5">
+        <IterationScopeSelect compact id={`${controlId}-category`} label={t(($) => $.iterations.activityPanel.categoryLabel)} value={category} options={categoryOptions} onValueChange={(value) => { setCategory(value); setVisibleCount(GROUP_BATCH_SIZE); }} />
+        <IterationSearch id={`${controlId}-search`} label={t(($) => $.iterations.activityPanel.searchTasks)} placeholder={t(($) => $.iterations.activityPanel.searchPlaceholder)} value={search} onChange={(value) => { setSearch(value); setVisibleCount(GROUP_BATCH_SIZE); }} />
+        {(search || category !== "all") && <Button variant="ghost" size="sm" className="text-muted-foreground pointer-coarse:min-h-11" onClick={clearRefinements}>{t(($) => $.iterations.pages.clearFilters)}</Button>}
+      </div>
+    </div>
     {events.length === 0 && !metric ? <p className="py-5 text-muted-foreground">{t(($) => $.iterations.activityPanel.empty)}</p>
       : groups.length === 0 ? <p className="py-5 text-muted-foreground">{t(($) => eventSelection && !eventSelection.complete && !search && category === "all" ? $.iterations.activityPanel.unavailable : refined ? $.iterations.activityPanel.noMatchingActivity : $.iterations.activityPanel.noMatches)}</p>
         : <IterationActivityTimeline wsId={wsId} groups={visible} timezone={timezone} impacts={impacts} matchingEventIds={refined ? matchingIds : undefined} />}
@@ -202,8 +221,8 @@ function IterationEventsContent({ wsId, id, iteration, timezone, statistics, sna
           <summary className={iterationDisclosureClass}>{t(($) => $.iterations.activityPanel.countDetails)}</summary>
           <dl className="mt-3 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
             {(["original", "current", "cancelled", "removed_events", "reentry_events", "reopen_events"] as const).map((value) => renderMetric(value))}
-            <div className="space-y-1"><dt className="text-caption text-muted-foreground">{t(($) => $.iterations.startedCount)}</dt><dd className="tabular-nums">{taskCount(counters.started)}</dd></div>
-            <div className="space-y-1"><dt className="text-caption text-muted-foreground">{t(($) => $.iterations.netChangeRatio)}</dt><dd className="tabular-nums">{counters.net_effective_change_ratio === null ? t(($) => $.iterations.notApplicable) : new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 1 }).format(counters.net_effective_change_ratio)}</dd></div>
+            <div className="space-y-1"><dt className="text-caption text-muted-foreground"><IterationTerm term="started" closed={!!snapshot}>{t(($) => $.iterations.startedCount)}</IterationTerm></dt><dd className="tabular-nums">{taskCount(counters.started)}</dd></div>
+            <div className="space-y-1"><dt className="text-caption text-muted-foreground"><IterationTerm term="netChangeRatio" closed={!!snapshot}>{t(($) => $.iterations.netChangeRatio)}</IterationTerm></dt><dd className="tabular-nums">{counters.net_effective_change_ratio === null ? t(($) => $.iterations.notApplicable) : new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 1 }).format(counters.net_effective_change_ratio)}</dd></div>
           </dl>
         </details>
       </>}

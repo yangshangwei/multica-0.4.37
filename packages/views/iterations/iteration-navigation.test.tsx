@@ -692,18 +692,18 @@ describe("approved iteration business pages", () => {
     vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [detail.iteration, targetA], next_cursor: null });
     const { user, client } = mount();
     const tasks = await screen.findByRole("tabpanel", { name: /^Task snapshot/ });
-    for (const node of screen.getAllByText("Original commitment", { selector: "dt" })) expect(tasks).toContainElement(node);
+    for (const node of screen.getAllByRole("button", { name: "Original commitment" })) expect(tasks).toContainElement(node);
     await user.click(screen.getByRole("tab", { name: "Progress" }));
     const progress = screen.getByRole("tabpanel", { name: "Progress" });
     const delivery = within(progress).getByRole("region", { name: "Delivery summary" });
     const primary = within(delivery.querySelector("dl")!);
-    const effective = primary.getByText("Effective scope completion").parentElement!;
-    const original = primary.getByText("Original commitment completion").parentElement!;
+    const effective = primary.getByRole("button", { name: "Effective scope completion" }).closest("div")!;
+    const original = primary.getByRole("button", { name: "Original commitment completion" }).closest("div")!;
     expect(effective).toHaveTextContent("2 / 4");
     expect(effective).toHaveTextContent("50%");
     expect(original).toHaveTextContent("1 / 4");
     expect(original).toHaveTextContent("25%");
-    expect(primary.getByText("Remaining").parentElement).toHaveTextContent("2");
+    expect(primary.getByRole("button", { name: "Remaining" }).closest("div")).toHaveTextContent("2");
     expect(primary.getAllByRole("term")).toHaveLength(3);
     expect(within(progress).getAllByText("50%")).toHaveLength(1);
     expect(screen.getAllByText(/This history is frozen at closure/)).toHaveLength(1);
@@ -727,7 +727,7 @@ describe("approved iteration business pages", () => {
     await user.click(screen.getByRole("tab", { name: "Scope changes" }));
     const scope = screen.getByRole("tabpanel", { name: "Scope changes" });
     await user.click(within(scope).getByText("View all scope counts", { selector: "summary" }));
-    expect(within(scope).getByText("Removed during iteration").parentElement).toHaveTextContent("0 events");
+    expect(within(scope).getByRole("button", { name: "Removed during iteration" }).closest("div")).toHaveTextContent("0 events");
     expect(api.getIterationEvents).not.toHaveBeenCalled();
     await user.click(screen.getByRole("tab", { name: "Progress" }));
     expect(within(closure).getByText(`ITR-1 · ${alpha.title}`)).toBeVisible();
@@ -778,7 +778,7 @@ describe("approved iteration business pages", () => {
     vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [source, targetA, { ...targetA, id: "history", name: "Past period", status: "completed" }], next_cursor: null });
     const { user } = mount();
     const disclosure = await screen.findByText("View chart data", { selector: "summary" });
-    expect(screen.getByText("Effective scope completion").parentElement).toHaveTextContent("0%");
+    expect(screen.getByRole("button", { name: "Effective scope completion" }).closest("div")).toHaveTextContent("0%");
     expect(screen.getByRole("table", { name: "Chart data" })).not.toBeVisible();
     disclosure.focus();
     expect(disclosure).toHaveFocus();
@@ -833,7 +833,7 @@ describe("approved iteration business pages", () => {
     expect(within(tasks).queryByText(/Matching tasks:/)).not.toBeInTheDocument();
     await user.type(search, "Alpha");
     await waitFor(() => expect(within(tasks).getByRole("status")).toHaveTextContent("Matching tasks: 1"));
-    expect(within(tasks).getByText("Current scope", { selector: "dt" }).parentElement).toHaveTextContent("2");
+    expect(within(tasks).getByRole("button", { name: "Current scope" }).closest("div")).toHaveTextContent("2");
     await user.click(screen.getByRole("button", { name: "About task counts" }));
     expect(await screen.findByText(projects.iterations.overallScope)).toBeVisible();
     await user.keyboard("{Escape}");
@@ -856,7 +856,7 @@ describe("approved iteration business pages", () => {
     expect(screen.queryByRole("combobox", { name: "Current scope" })).not.toBeInTheDocument();
     const tasks = screen.getByRole("tabpanel", { name: /^Tasks/ });
     expect(within(tasks).queryByRole("heading", { name: "Tasks" })).not.toBeInTheDocument();
-    if (status === "planned") expect(within(tasks).getByText("Planned tasks").parentElement).toHaveTextContent("2");
+    if (status === "planned") expect(within(tasks).getByRole("button", { name: "Planned tasks" }).closest("div")).toHaveTextContent("2");
   });
 
   it("offers the original commitment after an actual start with a zero baseline", async () => {
@@ -866,7 +866,21 @@ describe("approved iteration business pages", () => {
     await user.click(await screen.findByRole("combobox", { name: "Current scope" }));
     await user.click(await screen.findByRole("option", { name: "Original commitment" }));
     await waitFor(() => expect(api.getIterationIssues).toHaveBeenLastCalledWith(ws, source.id, { scope: "original" }, expect.anything()));
-    expect(screen.getByText("Original commitment", { selector: "dt" }).parentElement).toHaveTextContent("0");
+    expect(screen.getByRole("button", { name: "Original commitment" }).closest("div")).toHaveTextContent("0");
+  });
+
+  it.each(["en", "zh-Hans"])("explains the original task counter in %s and preserves scope selection", async (locale) => {
+    language.locale = locale;
+    const labels = locale === "en" ? projects : chineseProjects;
+    route.pathname = `/acme/iterations/${source.id}`;
+    const { user } = mount();
+    const label = await screen.findByRole("button", { name: labels.iterations.original });
+    await user.hover(label);
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(labels.iterations.termHelp.original);
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("combobox", { name: labels.iterations.scope }));
+    await user.click(await screen.findByRole("option", { name: labels.iterations.original }));
+    await waitFor(() => expect(api.getIterationIssues).toHaveBeenLastCalledWith(ws, source.id, { scope: "original" }, expect.anything()));
   });
 
   it("returns to current scope when start facts become unavailable without losing task refinements", async () => {

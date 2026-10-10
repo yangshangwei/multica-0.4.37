@@ -52,8 +52,8 @@ for (const locale of ["en", "zh-Hans"] as const) {
       const firstTask = await panel.getByRole("link", { name: blocked.title, exact: true }).boundingBox();
       const searchBounds = await search.boundingBox();
       expect(firstTask!.y).toBeLessThan(wide.height / 2);
-      expect(searchBounds!.width).toBeGreaterThanOrEqual(240);
-      expect(searchBounds!.width).toBeLessThanOrEqual(320);
+      expect(searchBounds!.width).toBeGreaterThanOrEqual(160);
+      expect(searchBounds!.width).toBeLessThanOrEqual(224);
       layouts.push(await captureLayout(page, info, `tasks-${locale}-planned-wide`, wide, panel, undefined, [search, filters, grouping]));
 
       // Exercise real popup focus, non-empty filtering and query-backed recovery.

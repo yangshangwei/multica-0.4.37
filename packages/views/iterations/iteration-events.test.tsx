@@ -82,6 +82,16 @@ const snapshot = (overrides: Partial<NonNullable<Props["snapshot"]>> = {}): NonN
 });
 
 describe("business scope details", () => {
+  it("explains the net change label while keeping the metric value available for drilldown", async () => {
+    const { user } = mount();
+    await screen.findByText("No activity recorded yet.");
+    const label = screen.getByRole("button", { name: projects.iterations.activityPanel.netChange });
+    await user.hover(label);
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(projects.iterations.termHelp.netChange);
+    await user.click(screen.getByRole("button", { name: /^View Net effective change:/ }));
+    expect(screen.getByRole("region", { name: "Scope metric details" })).toBeVisible();
+  });
+
   const planned = { ...source, status: "planned", started_at: null };
   const start = () => event(1, { kind: "start", issue_id: null, before_facts: null, after_facts: null });
   const join = (sequence: number, title = "Late task") => event(sequence, {
@@ -401,14 +411,14 @@ describe("iteration activity panel", () => {
     const { user, rerender } = mount({ statistics: { ...statistics, effective: 99 }, snapshot: snapshot({ statistics: frozen }) });
     const summary = screen.getByRole("region", { name: "Effective scope summary" });
     for (const [label, value] of [["Scope at start", "4 tasks"], ["Effective scope at closure", "4 tasks"], ["Net effective change", "0 tasks"], ["Tasks added after start", "1 task"], ["Cancellations", "1 event"]]) {
-      expect(within(summary).getByText(label!).parentElement).toHaveTextContent(value!);
+      expect(within(summary).getByRole("button", { name: label! }).closest("div")).toHaveTextContent(value!);
     }
     const disclosure = screen.getByText("View all scope counts", { selector: "summary" });
     const counts = disclosure.closest("details")!;
     expect(within(counts).getByText("Removed during iteration")).not.toBeVisible();
     await user.click(disclosure);
     for (const [label, value] of [["Scope at closure", "5 tasks"], ["Cancelled tasks", "1 task"], ["Removed during iteration", "0 events"], ["Re-entries", "2 events"], ["Reopens", "3 events"], ["Started tasks", "6 tasks"], ["Effective scope change rate", "0%"]]) {
-      expect(within(counts).getByText(label!).parentElement).toHaveTextContent(value!);
+      expect(within(counts).getByRole("button", { name: label! }).closest("div")).toHaveTextContent(value!);
     }
     rerender({ statistics: { ...statistics, effective: 98, removed_events: 97 }, snapshot: snapshot({ statistics: frozen }) });
     expect(screen.queryByText(/9[789] tasks/)).not.toBeInTheDocument();

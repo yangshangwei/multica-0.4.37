@@ -27,7 +27,7 @@ describe("iteration progress data density", () => {
     expect(screen.getByText("No daily progress data was recorded.")).toBeVisible();
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
     expect(chart).not.toHaveBeenCalled();
-    expect(screen.getByText("Effective scope completion").parentElement).toHaveTextContent("0%");
+    expect(screen.getByRole("button", { name: "Effective scope completion" }).closest("div")).toHaveTextContent("0%");
   });
 
   it("shows a single saved date and its actual values without inventing a trend", () => {
@@ -43,7 +43,7 @@ describe("iteration progress data density", () => {
     expect(summary.querySelector("time")).toHaveAttribute("datetime", "2026-10-06");
     expect(summary.querySelector("time")).toHaveTextContent("Oct 6");
     for (const [label, value] of [["Effective scope", "4"], ["Completed", "2"], ["Original commitment", "5"]]) {
-      expect(within(summary).getByText(label!).parentElement).toHaveTextContent(value!);
+      expect(within(summary).getByRole("button", { name: label! }).closest("div")).toHaveTextContent(value!);
     }
     expect(within(summary).queryByText("99")).not.toBeInTheDocument();
     expect(screen.queryByRole("img")).not.toBeInTheDocument();

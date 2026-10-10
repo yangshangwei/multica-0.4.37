@@ -141,10 +141,10 @@ describe("iteration complete details", () => {
     expect(rolled).toHaveTextContent(`${projects.iterations.rollover}: 1`);
     expect(rolled).not.toHaveTextContent(projects.iterations.rolloverReview);
   });
-  it("labels task search visibly with a matching accessible name and placeholder", async () => {
+  it("keeps compact task search visible with a matching accessible name and placeholder", async () => {
     const user = mount(<IterationIssueList wsId={ws} id={source.id} historical={false} phase="active" />);
     const search = screen.getByRole("textbox", { name: "Search tasks" });
-    expect(screen.getByText("Search tasks", { selector: "label" })).toBeVisible();
+    expect(search).toBeVisible();
     expect(search).toHaveAttribute("placeholder", "Search tasks");
     await user.type(search, "Alpha");
     await waitFor(() => expect(api.getIterationIssues).toHaveBeenLastCalledWith(ws, source.id, { search: "Alpha" }, expect.anything()));

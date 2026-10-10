@@ -7,6 +7,7 @@ import type { api } from "@multica/core/api";
 import { isIssueStatusCategory } from "@multica/core/issue-statuses";
 import { useT, useLocale } from "../i18n";
 import { iterationDisclosureClass } from "./iteration-presentation";
+import { IterationTerm, type IterationTermKey } from "./iteration-term";
 type Detail = Awaited<ReturnType<typeof api.getIteration>>;
 export function IterationHistory({
   statistics: currentStatistics,
@@ -36,6 +37,16 @@ export function IterationHistory({
           style: "percent",
           maximumFractionDigits: 1,
         }).format(value);
+  const counters: [IterationTermKey, string, number][] = [
+    [snapshot ? "finalScope" : "current", t(($) => snapshot ? $.iterations.progressPanel.scopeAtClosure : $.iterations.currentCount), statistics.current],
+    ["original", t(($) => $.iterations.original), statistics.original],
+    [snapshot ? "finalEffective" : "effective", t(($) => $.iterations.effective), statistics.effective],
+    ["completed", t(($) => $.iterations.done), statistics.completed],
+    ["originalCompleted", t(($) => $.iterations.progressPanel.originalCompleted), statistics.original_completed],
+    ["remaining", t(($) => $.iterations.remaining), statistics.remaining],
+    ["cancelled", t(($) => $.iterations.cancelledCount), statistics.cancelled],
+    ["started", t(($) => $.iterations.startedCount), statistics.started],
+  ];
   return (
     <section className="min-w-0 space-y-7">
       {showSummary && <h2 className="text-title-sm font-semibold">
@@ -43,7 +54,7 @@ export function IterationHistory({
       </h2>}
       {snapshot && showSummary && (
         <p className="text-caption text-muted-foreground">
-          {t(($) => $.iterations.readonly)}{" "}
+          <IterationTerm term="frozen">{t(($) => $.iterations.readonly)}</IterationTerm>{" "}
           <time dateTime={snapshot.logical_ended_at} title={timezone}>
             {formatInTimeZone(snapshot.logical_ended_at, timezone, locale, {
               year: "numeric",
@@ -54,15 +65,15 @@ export function IterationHistory({
       <section aria-label={t(($) => $.iterations.progressPanel.deliverySummary)}>
         <dl className="flex flex-wrap gap-x-10 gap-y-5">
           <div>
-            <dt className="text-caption text-muted-foreground">{t(($) => $.iterations.effectiveRate)}</dt>
+            <dt className="text-caption text-muted-foreground"><IterationTerm term="effectiveRate" closed={!!snapshot}>{t(($) => $.iterations.effectiveRate)}</IterationTerm></dt>
             <dd className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums"><span className="text-title-lg font-semibold">{statistics.completed} / {statistics.effective}</span><span className="text-body">{percent(statistics.effective_ratio, statistics.effective)}</span></dd>
           </div>
           <div>
-            <dt className="text-caption text-muted-foreground">{t(($) => $.iterations.originalRate)}</dt>
+            <dt className="text-caption text-muted-foreground"><IterationTerm term="originalRate" closed={!!snapshot}>{t(($) => $.iterations.originalRate)}</IterationTerm></dt>
             <dd className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums"><span className="text-title-lg font-semibold">{statistics.original_completed} / {statistics.original}</span><span className="text-body">{percent(statistics.original_ratio, statistics.original)}</span></dd>
           </div>
           <div>
-            <dt className="text-caption text-muted-foreground">{t(($) => $.iterations.remaining)}</dt>
+            <dt className="text-caption text-muted-foreground"><IterationTerm term="remaining" closed={!!snapshot}>{t(($) => $.iterations.remaining)}</IterationTerm></dt>
             <dd className="mt-1 text-title-lg font-semibold tabular-nums">{statistics.remaining}</dd>
           </div>
         </dl>
@@ -70,16 +81,7 @@ export function IterationHistory({
           <summary className={iterationDisclosureClass}>{t(($) => $.iterations.progressPanel.countDetails)}</summary>
           <p className="mt-2 text-caption text-muted-foreground">{t(($) => $.iterations.countHint)} {t(($) => $.iterations.progressPanel.effectiveScopeHint)}</p>
           <dl className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-body @2xl:grid-cols-4">
-            {[
-              [t(($) => snapshot ? $.iterations.progressPanel.scopeAtClosure : $.iterations.currentCount), statistics.current],
-              [t(($) => $.iterations.original), statistics.original],
-              [t(($) => $.iterations.effective), statistics.effective],
-              [t(($) => $.iterations.done), statistics.completed],
-              [t(($) => $.iterations.progressPanel.originalCompleted), statistics.original_completed],
-              [t(($) => $.iterations.remaining), statistics.remaining],
-              [t(($) => $.iterations.cancelledCount), statistics.cancelled],
-              [t(($) => $.iterations.startedCount), statistics.started],
-            ].map(([label, value]) => <div key={label}><dt className="text-caption text-muted-foreground">{label}</dt><dd className="mt-1 tabular-nums">{value}</dd></div>)}
+            {counters.map(([term, label, value]) => <div key={term}><dt className="text-caption text-muted-foreground"><IterationTerm term={term} closed={!!snapshot}>{label}</IterationTerm></dt><dd className="mt-1 tabular-nums">{value}</dd></div>)}
           </dl>
         </details>
       </section>
@@ -114,7 +116,7 @@ export function IterationHistory({
               return <li key={destination.issue_id} className="[overflow-wrap:anywhere]">
                 <p>{issue ? `${issue.identifier} · ${issue.title}` : destination.issue_id}</p>
                 <p>{t(($) => $.iterations.source)}: <IterationReference id={snapshot.iteration_id} catalogue={catalogue.data ?? []} /> · {t(($) => $.iterations.destination)}: <IterationReference id={destination.target_iteration_id} catalogue={catalogue.data ?? []} /></p>
-                <p>{t(($) => $.iterations.rollover)}: {destination.rollover_count_before} → {destination.rollover_count_after}</p>
+                <p><IterationTerm term="rollover" closed>{t(($) => $.iterations.rollover)}</IterationTerm>: {destination.rollover_count_before} → {destination.rollover_count_after}</p>
                 {destination.rollover_count_after >= 3 && <p>{t(($) => $.iterations.rolloverReview)}</p>}
               </li>;
             })}

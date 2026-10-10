@@ -6,7 +6,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { api } from "@multica/core/api";
 import { iterationIssuesOptions, iterationGroupedIssuesOptions, hasIterationReadAccess, type IterationScopePhase } from "@multica/core/iterations";
 import { useWorkspacePaths } from "@multica/core/paths";
-import { Input } from "@multica/ui/components/ui/input";
 import { Button } from "@multica/ui/components/ui/button";
 import { Label } from "@multica/ui/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@multica/ui/components/ui/select";
@@ -19,13 +18,15 @@ import { priorityLabel } from "../issues/utils/priority-label";
 import { IterationCurrentComparison } from "./iteration-current-comparison";
 import { IterationError, isDefinitiveReadError } from "./iteration-error";
 import { useIterationLabels } from "./labels";
+import { IterationSearch } from "./iteration-search";
+import { IterationTerm, type IterationTermKey } from "./iteration-term";
 
 type HistoricalIssue = Awaited<ReturnType<typeof api.getIterationIssues>>["items"][number];
 type Grouping = "none" | "status" | "assignee" | "project" | "priority" | "label";
 type Scope = "current" | "original";
-type IssueListProps = { wsId: string; id: string; historical: boolean; phase: IterationScopePhase; emptyState?: ReactNode };
+type IssueListProps = { wsId: string; id: string; historical: boolean; phase: IterationScopePhase; emptyState?: ReactNode; summary?: ReactNode };
 
-function TaskSelect<Value extends string>({ id, label, value, options, onValueChange, disabled, describedBy }: {
+function TaskSelect<Value extends string>({ id, label, value, options, onValueChange, disabled, describedBy, compact = false, term, closed = false }: {
   id: string;
   label: string;
   value: Value;
@@ -33,11 +34,15 @@ function TaskSelect<Value extends string>({ id, label, value, options, onValueCh
   onValueChange: (value: Value) => void;
   disabled?: boolean;
   describedBy?: string;
+  compact?: boolean;
+  term?: IterationTermKey;
+  closed?: boolean;
 }) {
-  return <div className="min-w-0 space-y-1.5">
-    <Label htmlFor={id} className="text-caption">{label}</Label>
+  const triggerClassName = compact ? "w-full min-w-0 border-transparent px-2 text-caption text-muted-foreground hover:bg-muted hover:text-foreground pointer-coarse:min-h-11 dark:bg-transparent" : "w-full min-w-0 pointer-coarse:min-h-11";
+  return <div className={compact ? "min-w-0 max-w-full" : "min-w-0 space-y-1.5"}>
+    <Label htmlFor={id} className={compact ? "sr-only" : "text-caption"}>{label}</Label>
     <Select items={options} value={value} onValueChange={(next) => { if (next !== null) onValueChange(next); }} disabled={disabled}>
-      <SelectTrigger id={id} className="w-full min-w-0 pointer-coarse:min-h-11" aria-describedby={describedBy}><SelectValue /></SelectTrigger>
+      {term ? <IterationTerm term={term} closed={closed} render={<SelectTrigger id={id} className={triggerClassName} aria-describedby={describedBy} />}><SelectValue /></IterationTerm> : <SelectTrigger id={id} className={triggerClassName} aria-describedby={describedBy}><SelectValue /></SelectTrigger>}
       <SelectContent alignItemWithTrigger={false}>{options.map((option) => <SelectItem key={option.value} value={option.value} className="pointer-coarse:min-h-11"><span className="min-w-0 whitespace-normal [overflow-wrap:anywhere]">{option.label}</span></SelectItem>)}</SelectContent>
     </Select>
   </div>;
@@ -47,7 +52,7 @@ export function IterationIssueList(props: IssueListProps) {
   return <IterationIssueListContent key={`${props.wsId}:${props.id}`} {...props} />;
 }
 
-function IterationIssueListContent({ wsId, id, historical, phase, emptyState }: IssueListProps) {
+function IterationIssueListContent({ wsId, id, historical, phase, emptyState, summary }: IssueListProps) {
   const { t } = useT("projects");
   const { t: issueT } = useT("issues");
   const client = useQueryClient();
@@ -155,13 +160,12 @@ function IterationIssueListContent({ wsId, id, historical, phase, emptyState }: 
   const showReset = hasRefinements || (!showEmptyPlan && !result.error && data?.total === 0);
   return (
     <section className="@container space-y-3">
-      <div className="flex flex-wrap items-end gap-3">
-        <div className="w-72 max-w-full min-w-0 space-y-1.5">
-          <Label htmlFor={`${controlId}-search`} className="text-caption">{t(($) => $.iterations.audit.searchTasks)}</Label>
-          <Input id={`${controlId}-search`} placeholder={t(($) => $.iterations.audit.searchTasks)} className="pointer-coarse:min-h-11" value={search} onChange={(event) => { setSearch(event.target.value); resetPagination(); }} />
-        </div>
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        {summary && <div className="min-w-0 flex-1 basis-64">{summary}</div>}
+        <div className="ml-auto flex max-w-full flex-wrap items-center gap-1.5">
+        <IterationSearch id={`${controlId}-search`} label={t(($) => $.iterations.audit.searchTasks)} value={search} onChange={(value) => { setSearch(value); resetPagination(); }} />
         <Popover>
-          <PopoverTrigger render={<Button variant="ghost" className="pointer-coarse:min-h-11" aria-label={t(($) => $.iterations.filterTasks)} />}>
+          <PopoverTrigger render={<Button variant="ghost" size="sm" className="text-muted-foreground pointer-coarse:min-h-11" aria-label={t(($) => $.iterations.filterTasks)} />}>
             <Filter aria-hidden />{t(($) => $.iterations.filterTasks)}{appliedFilters.length > 0 && <span aria-hidden className="rounded bg-muted px-1.5 tabular-nums">{appliedFilters.length}</span>}
           </PopoverTrigger>
           <PopoverContent align="start" className="max-h-[min(32rem,var(--available-height))] w-80 max-w-[calc(100vw-2rem)] overflow-y-auto p-4">
@@ -176,8 +180,9 @@ function IterationIssueListContent({ wsId, id, historical, phase, emptyState }: 
             {data && !choices && <p id={`${controlId}-unavailable`} className="text-caption text-muted-foreground">{t(($) => $.iterations.audit.advancedFiltersUnavailable)}</p>}
           </PopoverContent>
         </Popover>
-        <div className="w-44 max-w-full"><TaskSelect id={`${controlId}-group`} label={t(($) => $.iterations.groupTasks)} value={groupBy} options={groupOptions} onValueChange={(value) => { setGroupBy(value); resetPagination(); }} /></div>
-        {canCompareScopes && <div className="w-48 max-w-full"><TaskSelect id={`${controlId}-scope`} label={t(($) => $.iterations.scope)} value={scope} options={scopeOptions} onValueChange={(value) => { setScope(value); resetPagination(); }} /></div>}
+        <div className="max-w-40"><TaskSelect compact id={`${controlId}-group`} label={t(($) => $.iterations.groupTasks)} value={groupBy} options={groupOptions} onValueChange={(value) => { setGroupBy(value); resetPagination(); }} /></div>
+        {canCompareScopes && <div className="max-w-48"><TaskSelect compact id={`${controlId}-scope`} label={t(($) => $.iterations.scope)} value={scope} term={scope === "original" ? "original" : historical ? "finalScope" : "current"} closed={historical} options={scopeOptions} onValueChange={(value) => { setScope(value); resetPagination(); }} /></div>}
+        </div>
       </div>
       {showReset && <div className="flex flex-wrap items-center gap-2">
         {appliedFilters.length > 0 && <span className="text-caption text-muted-foreground">{issueT(($) => $.filters.active_count, { count: appliedFilters.length })}</span>}
@@ -195,7 +200,7 @@ function IterationIssueListContent({ wsId, id, historical, phase, emptyState }: 
             <div className="flex flex-wrap gap-x-3 gap-y-1 text-caption text-muted-foreground [overflow-wrap:anywhere]">
               <span>{issue.identifier}</span>
               {issue.project_id !== null && <span>{issue.project_name ?? unknown}</span>}
-              {issue.rollover_count > 0 && <span>{t(($) => $.iterations.rollover)}: {issue.rollover_count}</span>}
+              {issue.rollover_count > 0 && <span><IterationTerm term="rollover" closed={historical}>{t(($) => $.iterations.rollover)}</IterationTerm>: {issue.rollover_count}</span>}
             </div>
             {issue.rollover_count >= 3 && <p className="text-caption text-warning-foreground">{t(($) => $.iterations.rolloverReview)}</p>}
           </div>

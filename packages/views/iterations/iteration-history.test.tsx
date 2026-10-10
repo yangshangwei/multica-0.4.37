@@ -19,6 +19,16 @@ vi.mock("recharts", () => ({
   Tooltip: () => null,
 }));
 describe("iteration chart alternative", () => {
+  it("explains completion rates without changing the displayed calculation", async () => {
+    const user = userEvent.setup();
+    render(<IterationHistory statistics={{ ...statistics, original: 4, original_completed: 1, original_ratio: 0.25 }} snapshot={null} timezone="UTC" />);
+    const rate = screen.getByRole("button", { name: "Original commitment completion" });
+    await user.hover(rate);
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(projects.iterations.termHelp.originalRate);
+    expect(rate.closest("div")).toHaveTextContent("1 / 4");
+    expect(rate.closest("div")).toHaveTextContent("25%");
+  });
+
   it("exposes every plotted value through a focusable data disclosure", async () => {
     const user = userEvent.setup();
     const statistics = {
@@ -75,7 +85,7 @@ describe("iteration chart alternative", () => {
     expect(within(details).getByText("Started tasks")).not.toBeVisible();
     await user.click(disclosure);
     for (const [label, value] of [["Current scope", "9"], ["Cancelled tasks", "2"], ["Started tasks", "6"]]) {
-      expect(within(details).getByText(label!).parentElement).toHaveTextContent(value!);
+      expect(within(details).getByRole("button", { name: label! }).closest("div")).toHaveTextContent(value!);
     }
     expect(within(details).getByText("Started tasks")).toBeVisible();
     // Scope event counters are covered by the Scope Changes panel suite.
@@ -123,7 +133,7 @@ describe("iteration chart alternative", () => {
     expect(time).toHaveAttribute("title", "Asia/Shanghai");
     expect(screen.queryByText(/Asia\/Shanghai/)).not.toBeInTheDocument();
     await user.click(screen.getByText("View count details", { selector: "summary" }));
-    expect(screen.getByText("Scope at closure", { selector: "dt" }).parentElement).toHaveTextContent(String(statistics.current));
+    expect(screen.getByRole("button", { name: "Scope at closure" }).closest("div")).toHaveTextContent(String(statistics.current));
     expect(screen.queryByText("99")).not.toBeInTheDocument();
     await user.click(screen.getByText("View closure details", { selector: "summary" }));
     expect(screen.getByText("Finished")).toBeInTheDocument();

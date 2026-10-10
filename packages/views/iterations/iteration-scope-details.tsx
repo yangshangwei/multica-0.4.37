@@ -4,7 +4,6 @@ import { useId, useState } from "react";
 import type { api } from "@multica/core/api";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
-import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@multica/ui/components/ui/select";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
@@ -12,20 +11,22 @@ import { useT } from "../i18n";
 import { AppLink } from "../navigation";
 import { IterationCurrentComparison } from "./iteration-current-comparison";
 import { useIterationLabels } from "./labels";
+import { IterationSearch } from "./iteration-search";
 
 type HistoricalIssue = Awaited<ReturnType<typeof api.getIterationIssues>>["items"][number];
 
-export function IterationScopeSelect<Value extends string>({ id, label, value, options, onValueChange }: {
+export function IterationScopeSelect<Value extends string>({ id, label, value, options, onValueChange, compact = false }: {
   id: string;
   label: string;
   value: Value;
   options: { value: Value; label: string }[];
   onValueChange: (value: Value) => void;
+  compact?: boolean;
 }) {
-  return <div className="min-w-0 space-y-2">
-    <Label htmlFor={id}>{label}</Label>
+  return <div className={compact ? "min-w-0 max-w-48" : "min-w-0 space-y-2"}>
+    <Label htmlFor={id} className={compact ? "sr-only" : undefined}>{label}</Label>
     <Select items={options} value={value} onValueChange={(next) => { if (next !== null) onValueChange(next); }}>
-      <SelectTrigger id={id} className="w-full min-w-0 pointer-coarse:min-h-11"><SelectValue /></SelectTrigger>
+      <SelectTrigger id={id} className={compact ? "w-full min-w-0 border-transparent px-2 text-caption text-muted-foreground hover:bg-muted hover:text-foreground pointer-coarse:min-h-11 dark:bg-transparent" : "w-full min-w-0 pointer-coarse:min-h-11"}><SelectValue /></SelectTrigger>
       <SelectContent alignItemWithTrigger={false}>{options.map((option) => <SelectItem key={option.value} value={option.value} className="pointer-coarse:min-h-11"><span className="min-w-0 whitespace-normal [overflow-wrap:anywhere]">{option.label}</span></SelectItem>)}</SelectContent>
     </Select>
   </div>;
@@ -76,13 +77,15 @@ export function IterationScopeDetails({ wsId, data, historical, stale, error, lo
     {!!error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-caption">{t(($) => $.iterations.activityPanel.detailRefreshError)}</p>{retry}</div>}
     {!data.complete && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="max-w-prose text-caption">{t(($) => $.iterations.activityPanel.incomplete)}</p>{retry}</div>}
     {data.complete && <p className="max-w-prose text-caption text-muted-foreground">{t(($) => historical ? $.iterations.activityPanel.historicalTaskHint : $.iterations.activityPanel.currentTaskHint)}</p>}
-    <div className="grid items-end gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(12rem,2fr)_minmax(8rem,1fr)_minmax(8rem,1fr)_auto]">
-      <div className="min-w-0 space-y-2"><Label htmlFor={`${controlId}-search`}>{t(($) => $.iterations.activityPanel.searchTasks)}</Label><Input id={`${controlId}-search`} value={search} placeholder={t(($) => $.iterations.activityPanel.searchPlaceholder)} onChange={(event) => setSearch(event.target.value)} className="pointer-coarse:min-h-11" /></div>
-      <IterationScopeSelect id={`${controlId}-project`} label={t(($) => $.iterations.project)} value={project} options={options(projects, project)} onValueChange={setProject} />
-      <IterationScopeSelect id={`${controlId}-assignee`} label={t(($) => $.iterations.assignee)} value={assignee} options={options(assignees, assignee)} onValueChange={setAssignee} />
-      <Button variant="ghost" className="justify-self-start pointer-coarse:min-h-11" disabled={!search && !project && !assignee} onClick={() => { setSearch(""); setProject(""); setAssignee(""); }}>{t(($) => $.iterations.pages.clearFilters)}</Button>
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+      <p role="status" className="text-caption text-muted-foreground tabular-nums">{t(($) => data.complete ? $.iterations.activityPanel.matchingTasks : $.iterations.activityPanel.availableTasks, { count: matches?.length ?? 0 })}</p>
+      <div className="ml-auto flex max-w-full flex-wrap items-center gap-1.5">
+        <div className="flex min-w-0 max-w-full items-center gap-1"><span aria-hidden className="shrink-0 text-caption text-muted-foreground">{t(($) => $.iterations.project)}</span><IterationScopeSelect compact id={`${controlId}-project`} label={t(($) => $.iterations.project)} value={project} options={options(projects, project)} onValueChange={setProject} /></div>
+        <div className="flex min-w-0 max-w-full items-center gap-1"><span aria-hidden className="shrink-0 text-caption text-muted-foreground">{t(($) => $.iterations.assignee)}</span><IterationScopeSelect compact id={`${controlId}-assignee`} label={t(($) => $.iterations.assignee)} value={assignee} options={options(assignees, assignee)} onValueChange={setAssignee} /></div>
+        <IterationSearch id={`${controlId}-search`} label={t(($) => $.iterations.activityPanel.searchTasks)} placeholder={t(($) => $.iterations.activityPanel.searchPlaceholder)} value={search} onChange={setSearch} />
+        {(search || project || assignee) && <Button variant="ghost" size="sm" className="text-muted-foreground pointer-coarse:min-h-11" onClick={() => { setSearch(""); setProject(""); setAssignee(""); }}>{t(($) => $.iterations.pages.clearFilters)}</Button>}
+      </div>
     </div>
-    <p role="status" className="text-caption text-muted-foreground tabular-nums">{t(($) => data.complete ? $.iterations.activityPanel.matchingTasks : $.iterations.activityPanel.availableTasks, { count: matches?.length ?? 0 })}</p>
     {matches?.length === 0 ? <p className="py-5 text-muted-foreground">{t(($) => !data.complete && !search && !project && !assignee ? $.iterations.activityPanel.unavailable : $.iterations.activityPanel.noMatchingTasks)}</p> : <ul className="space-y-5">{matches?.map((issue) => <li key={issue.issue_id} className="min-w-0 space-y-2 [overflow-wrap:anywhere]">
       {historical ? <p className="font-medium"><span className="mr-2 text-caption text-muted-foreground">{issue.identifier}</span><span>{issue.title}</span></p>
         : <AppLink href={paths.issueDetail(issue.issue_id)} aria-label={t(($) => $.iterations.activityPanel.currentTaskLink, { task: `${issue.identifier} ${issue.title}` })} className="inline-flex min-h-8 max-w-full flex-wrap items-baseline gap-x-2 rounded font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground pointer-coarse:min-h-11"><span className="text-caption text-muted-foreground">{issue.identifier}</span><span>{issue.title}</span></AppLink>}

@@ -3,6 +3,7 @@
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { api } from "@multica/core/api";
 import { useT, useLocale } from "../i18n";
+import { IterationTerm } from "./iteration-term";
 
 type Statistics = Awaited<ReturnType<typeof api.getIteration>>["statistics"];
 
@@ -16,14 +17,14 @@ export function IterationChartTable({ statistics }: { statistics: Statistics }) 
         </caption>
         <thead>
           <tr>
-            {[
-              t(($) => $.iterations.date),
-              t(($) => $.iterations.effective),
-              t(($) => $.iterations.done),
-              t(($) => $.iterations.original),
-            ].map((label) => (
-              <th scope="col" className="p-2 text-left" key={label}>
-                {label}
+            <th scope="col" className="p-2 text-left">{t(($) => $.iterations.date)}</th>
+            {([
+              ["effective", t(($) => $.iterations.effective)],
+              ["completed", t(($) => $.iterations.done)],
+              ["original", t(($) => $.iterations.original)],
+            ] as const).map(([term, label]) => (
+              <th scope="col" className="p-2 text-left" key={term}>
+                <IterationTerm term={term}>{label}</IterationTerm>
               </th>
             ))}
           </tr>
@@ -59,9 +60,9 @@ export function IterationProgressChart({ statistics, showCompletionRate = true }
   const legend = <dl className={`flex flex-wrap gap-x-6 gap-y-3 text-caption ${compact ? "" : "@2xl:flex-col @2xl:gap-4"}`}>
     {series.map((item) => <div key={item.key} className="flex items-center gap-2">
       {!compact && <svg aria-hidden width="20" height="10" className="shrink-0"><line x1="0" y1="5" x2="20" y2="5" stroke={item.color} strokeWidth={item.width} strokeDasharray={item.dash} /></svg>}
-      <dt className="text-muted-foreground">{item.label}</dt><dd className="ml-auto font-medium tabular-nums">{(singlePoint ?? statistics)[item.key]}</dd>
+      <dt className="text-muted-foreground"><IterationTerm term={item.key}>{item.label}</IterationTerm></dt><dd className="ml-auto font-medium tabular-nums">{(singlePoint ?? statistics)[item.key]}</dd>
     </div>)}
-    {showCompletionRate && <div><dt className="text-muted-foreground">{t(($) => $.iterations.effectiveRate)}</dt><dd className="font-medium tabular-nums">{statistics.effective_ratio === null || statistics.effective === 0 ? t(($) => $.iterations.notApplicable) : new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 1 }).format(statistics.effective_ratio)}</dd></div>}
+    {showCompletionRate && <div><dt className="text-muted-foreground"><IterationTerm term="effectiveRate">{t(($) => $.iterations.effectiveRate)}</IterationTerm></dt><dd className="font-medium tabular-nums">{statistics.effective_ratio === null || statistics.effective === 0 ? t(($) => $.iterations.notApplicable) : new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 1 }).format(statistics.effective_ratio)}</dd></div>}
   </dl>;
 
   if (statistics.chart.length === 0) return <div className="space-y-3 py-3">
