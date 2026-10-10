@@ -131,6 +131,9 @@ describe("iteration assignment scope and preview", () => {
     await user.click(await screen.findByText("Assign to iteration"));
     const currentRow = (await screen.findByText("Current iteration")).parentElement!;
     expect(within(currentRow).getByText(targetA.name)).toHaveAttribute("title", targetA.name);
+    const rolloverLabel = screen.getByRole("button", { name: "Carry-over count" });
+    await user.hover(rolloverLabel);
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(projects.iterations.termHelp.rollover);
     expect(screen.getByLabelText("Iterations")).toHaveTextContent(targetA.name);
     expect(screen.getByText(/Rolled over at least three times/)).toBeInTheDocument();
   });

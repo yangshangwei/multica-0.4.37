@@ -339,7 +339,7 @@ describe("iteration complete details", () => {
   });
   it("keeps participation links available when planning is disabled", async () => {
     const user = mount(<IterationParticipation wsId={ws} issueId={alpha.id} />);
-    const disclosure = await screen.findByText("Iteration participation history");
+    const disclosure = await screen.findByText("Iteration history");
     expect(api.listIterations).not.toHaveBeenCalled();
     await user.click(disclosure);
     expect(await screen.findByRole("link", { name: source.name })).toHaveAttribute("href", `/iterations/${source.id}`);

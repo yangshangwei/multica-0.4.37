@@ -28,6 +28,7 @@ import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import { useIterationLabels } from "./labels";
 import { IterationError } from "./iteration-error";
 import { iterationDisclosureClass } from "./iteration-presentation";
+import { IterationTerm } from "./iteration-term";
 import { useT } from "../i18n";
 // Moves one task (IssueDetail) or a batch selection; adding existing tasks to
 // a chosen iteration lives in IterationAddExisting.
@@ -154,8 +155,8 @@ function Assignment({
   return (
     <>
       {issueId && currentIterationId !== undefined && (
-        <PropRow label={t(($) => $.iterations.currentGroup)} interactive={false}>
-          <div className="min-w-0 py-1.5">
+        <>
+          <PropRow label={t(($) => $.iterations.currentGroup)} interactive={false}>
             <div className="flex min-w-0 items-center gap-1.5">
               <CalendarRange className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
               <span
@@ -165,11 +166,16 @@ function Assignment({
                 {currentIterationName}
               </span>
             </div>
-            <p className="mt-0.5 whitespace-normal pl-5 text-caption text-muted-foreground">
-              {t(($) => $.iterations.rollover)}: {rolloverCount ?? t(($) => $.iterations.unknownHistory)}
-            </p>
-          </div>
-        </PropRow>
+          </PropRow>
+          <PropRow
+            label={<IterationTerm term="rollover">{t(($) => $.iterations.rolloverCount)}</IterationTerm>}
+            interactive={false}
+          >
+            <span className="tabular-nums text-muted-foreground">
+              {rolloverCount ?? t(($) => $.iterations.unknownHistory)}
+            </span>
+          </PropRow>
+        </>
       )}
     <details className="group/assignment col-span-2 min-w-0">
       <summary className={`${iterationDisclosureClass} -mx-2 flex list-none items-center gap-1 px-2 transition-colors hover:bg-accent/50 focus-visible:bg-accent/50 group-open/assignment:text-foreground [&::-webkit-details-marker]:hidden`}>
