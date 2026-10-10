@@ -188,7 +188,7 @@ function TreeNodeItem({
   return (
     <div
       className={cn(
-        "group/row relative flex items-center rounded-md",
+        "group/row relative flex items-center rounded-md has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
         isSelected
           ? "bg-surface-selected"
           : "hover:bg-surface-hover",
@@ -209,7 +209,7 @@ function TreeNodeItem({
         value={node.path}
         onClick={() => onSelect(node.path)}
         className={cn(
-          "h-8 min-w-0 flex-1 justify-start gap-2 border-0 py-0 pr-2.5 text-left text-caption font-normal after:hidden data-active:bg-transparent data-active:text-surface-selected-foreground dark:data-active:bg-transparent dark:data-active:text-surface-selected-foreground group-data-[variant=default]/tabs-list:data-active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "h-8 min-w-0 flex-1 justify-start gap-2 rounded-md border-0 py-0 pr-2.5 text-left text-caption font-normal after:hidden data-active:bg-transparent data-active:text-surface-selected-foreground dark:data-active:bg-transparent dark:data-active:text-surface-selected-foreground group-data-[variant=default]/tabs-list:data-active:shadow-none focus-visible:outline-none focus-visible:ring-0",
           isSelected
             ? "font-medium text-surface-selected-foreground"
             : "text-muted-foreground group-hover/row:text-foreground",
@@ -242,7 +242,7 @@ function TreeNodeItem({
                 // file name. Selecting a supporting file opened this menu
                 // instead (MUL-5654). opacity-0 does not opt out of hit
                 // testing, so the row was unclickable even before hover.
-                className="relative mr-1 shrink-0 rounded p-0.5 text-faint-foreground opacity-0 transition-opacity after:absolute after:-inset-1 hover:text-foreground group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
+                className="relative mr-1 shrink-0 rounded p-0.5 text-faint-foreground opacity-0 transition-opacity after:absolute after:-inset-1 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
                 onClick={(event) => event.stopPropagation()}
               >
                 <MoreHorizontal className="h-3.5 w-3.5" />

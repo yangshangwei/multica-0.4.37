@@ -6,8 +6,10 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
+import { I18nProvider } from "@multica/core/i18n/react";
 import { useScrollFade } from "@multica/ui/hooks/use-scroll-fade";
 import { SIDEBAR_WRAPPER_FILL_CLASS } from "@multica/ui/components/ui/sidebar";
+import { RESOURCES } from "@multica/views/locales";
 
 type MockTab = {
   id: string;
@@ -94,6 +96,14 @@ vi.mock("@multica/views/layout", () => ({
 
 import { TabBar } from "./tab-bar";
 
+function TabBarWithI18n() {
+  return (
+    <I18nProvider locale="en" resources={RESOURCES}>
+      <TabBar />
+    </I18nProvider>
+  );
+}
+
 function reset() {
   state.activeWorkspaceSlug = "acme";
   state.byWorkspace = {
@@ -149,13 +159,13 @@ describe("TabBar hover action buttons", () => {
       { id: "tA", url: "/acme/issues", title: "Issues", pinned: true },
       { id: "tB", url: "/acme/projects", title: "Projects", pinned: false },
     ];
-    const { getAllByLabelText } = render(<TabBar />);
+    const { getAllByLabelText } = render(<TabBarWithI18n />);
     expect(getAllByLabelText("Unpin tab")).toHaveLength(1);
     expect(getAllByLabelText("Pin tab")).toHaveLength(1);
   });
 
   it("clicking the Pin button calls togglePin for the tab", () => {
-    const { getAllByLabelText } = render(<TabBar />);
+    const { getAllByLabelText } = render(<TabBarWithI18n />);
     const pinButtons = getAllByLabelText("Pin tab");
     fireEvent.click(pinButtons[1]); // click Pin on tB (Projects)
     expect(state.togglePin).toHaveBeenCalledWith("tB");
@@ -166,7 +176,7 @@ describe("TabBar hover action buttons", () => {
       { id: "tA", url: "/acme/issues", title: "Issues", pinned: true },
       { id: "tB", url: "/acme/projects", title: "Projects", pinned: false },
     ];
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     fireEvent.click(getByLabelText("Unpin tab"));
     expect(state.togglePin).toHaveBeenCalledWith("tA");
   });
@@ -176,7 +186,7 @@ describe("TabBar hover action buttons", () => {
       { id: "tA", url: "/acme/issues", title: "Issues", pinned: true },
       { id: "tB", url: "/acme/projects", title: "Projects", pinned: false },
     ];
-    const { queryAllByLabelText } = render(<TabBar />);
+    const { queryAllByLabelText } = render(<TabBarWithI18n />);
     // Only the unpinned tab exposes a Close affordance — pinned tab requires
     // explicit Unpin first (RFC §3 D3c FINAL).
     expect(queryAllByLabelText("Close tab")).toHaveLength(1);
@@ -186,7 +196,7 @@ describe("TabBar hover action buttons", () => {
     state.byWorkspace.acme.tabs = [
       { id: "tA", url: "/acme/issues", title: "Issues", pinned: true },
     ];
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     const pinnedTab = getByLabelText("Issues (pinned)");
     expect(within(pinnedTab).getByText("Issues")).toBeTruthy();
   });
@@ -199,7 +209,7 @@ describe("TabBar hover action buttons", () => {
       { id: "tA", url: "/acme/autopilots", title: "Autopilots", pinned: false },
       { id: "tB", url: "/acme/projects/proj-1", title: "Project", pinned: false },
     ];
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     expect(
       getByLabelText("Autopilots").querySelector('[data-testid="tab-leading"]'),
     ).toBeTruthy();
@@ -215,7 +225,7 @@ describe("TabBar hover action buttons", () => {
       { id: "tA", url: "/acme/issues", title: "Issues", pinned: true },
       { id: "tB", url: "/acme/projects", title: "Projects", pinned: false },
     ];
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     const pinnedTab = getByLabelText("Issues (pinned)");
     // The leading slot is the resource visual (size-3.5), not a Pin glyph. The
     // only Pin lives in the size-2.5 hover action button.
@@ -232,7 +242,7 @@ describe("TabBar active-tab title persistence", () => {
       { id: "tB", url: "/acme/projects", title: "Projects", pinned: false },
     ];
     state.byWorkspace.acme.activeTabId = "tA";
-    render(<TabBar />);
+    render(<TabBarWithI18n />);
     expect(state.updateTab).toHaveBeenCalledWith("tA", { title: "MUL-1: Fixed" });
     expect(state.updateTab).not.toHaveBeenCalledWith("tB", expect.anything());
     expect(state.updateTab).toHaveBeenCalledTimes(1);
@@ -242,7 +252,7 @@ describe("TabBar active-tab title persistence", () => {
     // Active tab's persisted title equals the resolved title.
     pres.title = "Issues";
     state.byWorkspace.acme.activeTabId = "tA"; // tA.title === "Issues"
-    render(<TabBar />);
+    render(<TabBarWithI18n />);
     expect(state.updateTab).not.toHaveBeenCalled();
   });
 });
@@ -250,7 +260,7 @@ describe("TabBar active-tab title persistence", () => {
 describe("TabBar merged-tab chrome", () => {
   // Keep the fill inside the translucent keyline so the merged border is even.
   it("keeps the active tab's page-canvas fill out from under its keyline", () => {
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     const cap = getByLabelText("Issues")
       .closest("[data-tab-frame]")
       ?.querySelector(".rounded-t-lg");
@@ -268,7 +278,7 @@ describe("TabBar merged-tab chrome", () => {
   // appear here or in the gradient — a pinned one is exactly the regression this
   // covers. The wrapper's end of the contract is covered in packages/views.
   it("paints each flare on the sidebar wrapper's own fill", () => {
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     const flares = getByLabelText("Issues")
       .closest("[data-tab-frame]")
       ?.querySelectorAll('[style*="radial-gradient"]');
@@ -291,7 +301,7 @@ describe("TabBar merged-tab chrome", () => {
   // masked out of the flare entirely, and the mask has to close before the arc's
   // anti-aliasing starts (r - 1.2) or the arc loses the backing it needs.
   it("punches the notch out rather than filling it with strip colour", () => {
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     const flares = getByLabelText("Issues")
       .closest("[data-tab-frame]")
       ?.querySelectorAll<HTMLElement>('[style*="radial-gradient"]');
@@ -311,7 +321,7 @@ describe("TabBar merged-tab chrome", () => {
   });
 
   it("draws the merged cap only on the active tab", () => {
-    const { getByLabelText } = render(<TabBar />);
+    const { getByLabelText } = render(<TabBarWithI18n />);
     expect(
       getByLabelText("Projects")
         .closest("[data-tab-frame]")
@@ -329,7 +339,7 @@ describe("TabBar overflow", () => {
       pinned: index === 0,
     }));
 
-    const { container, getByLabelText } = render(<TabBar />);
+    const { container, getByLabelText } = render(<TabBarWithI18n />);
     const tabBar = container.firstElementChild;
     const tabScroller = container.querySelector("[data-tab-scroll-container]");
 
@@ -388,7 +398,7 @@ describe("TabBar overflow", () => {
     }));
     state.byWorkspace.acme.activeTabId = "t0";
 
-    const { container, getByLabelText, rerender } = render(<TabBar />);
+    const { container, getByLabelText, rerender } = render(<TabBarWithI18n />);
     const tabScroller = container.querySelector(
       "[data-tab-scroll-container]",
     ) as HTMLDivElement;
@@ -409,7 +419,7 @@ describe("TabBar overflow", () => {
     tabScroller.scrollLeft = 40;
 
     state.byWorkspace.acme.activeTabId = "t5";
-    rerender(<TabBar />);
+    rerender(<TabBarWithI18n />);
 
     expect(tabScroller.scrollLeft).toBe(222);
   });
@@ -435,7 +445,7 @@ describe("TabBar overflow", () => {
         return { left: 120, right: 248 } as DOMRect;
       });
 
-    const { container, getByLabelText, rerender } = render(<TabBar />);
+    const { container, getByLabelText, rerender } = render(<TabBarWithI18n />);
     const tabScroller = container.querySelector(
       "[data-tab-scroll-container]",
     ) as HTMLDivElement;
@@ -462,7 +472,7 @@ describe("TabBar overflow", () => {
       },
     ];
     state.byWorkspace.acme.activeTabId = "t6";
-    rerender(<TabBar />);
+    rerender(<TabBarWithI18n />);
 
     expect(getByLabelText("Tab 6")).toHaveAttribute(
       "data-tab-entering",
@@ -493,7 +503,7 @@ describe("TabBar overflow", () => {
         return { left: 120, right: 248 } as DOMRect;
       });
 
-    const { container, rerender } = render(<TabBar />);
+    const { container, rerender } = render(<TabBarWithI18n />);
     const tabScroller = container.querySelector(
       "[data-tab-scroll-container]",
     ) as HTMLDivElement;
@@ -517,7 +527,7 @@ describe("TabBar overflow", () => {
         pinned: false,
       },
     ];
-    rerender(<TabBar />);
+    rerender(<TabBarWithI18n />);
 
     expect(tabScroller.scrollLeft).toBe(40);
     expect(scrollTo).not.toHaveBeenCalled();
@@ -539,7 +549,7 @@ describe("TabBar context menu", () => {
       },
     ];
 
-    const { findByText, getByLabelText } = render(<TabBar />);
+    const { findByText, getByLabelText } = render(<TabBarWithI18n />);
     fireEvent.contextMenu(getByLabelText("MUL-1: Fix tabs"));
     fireEvent.click(await findByText("Open as new window"));
 
@@ -559,7 +569,7 @@ describe("TabBar context menu", () => {
       },
     ];
 
-    const { findByText, getByLabelText, queryByText } = render(<TabBar />);
+    const { findByText, getByLabelText, queryByText } = render(<TabBarWithI18n />);
     fireEvent.contextMenu(getByLabelText("Issues"));
     await findByText("Pin tab");
 
@@ -573,7 +583,7 @@ describe("TabBar context menu", () => {
       { id: "tC", url: "/acme/agents", title: "Agents", pinned: false },
     ];
 
-    const { findByText, getByLabelText } = render(<TabBar />);
+    const { findByText, getByLabelText } = render(<TabBarWithI18n />);
     fireEvent.contextMenu(getByLabelText("Projects"));
     fireEvent.click(await findByText("Close other tabs"));
 

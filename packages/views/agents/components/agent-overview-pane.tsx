@@ -364,7 +364,7 @@ export function AgentOverviewPane({
             <TabsTrigger
               key={tab.id}
               value={tab.id}
-              className="h-auto flex-none rounded-none border-0 px-0 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-[orientation=horizontal]:after:bottom-0"
+              className="h-auto flex-none rounded-md border-0 px-0 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[orientation=horizontal]:after:bottom-0"
             >
               {t(($) => $.tabs[tab.labelKey])}
             </TabsTrigger>

@@ -346,8 +346,8 @@ function SortableTabItem({
         onClick={handleTogglePin}
         onPointerDown={stopDragOnAction}
         role="button"
-        aria-label={tab.pinned ? "Unpin tab" : "Pin tab"}
-        title={tab.pinned ? "Unpin tab" : "Pin tab"}
+        aria-label={tab.pinned ? t(($) => $.tabs.unpin) : t(($) => $.tabs.pin)}
+        title={tab.pinned ? t(($) => $.tabs.unpin) : t(($) => $.tabs.pin)}
         className="hidden size-3.5 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors group-hover:flex hover:bg-muted-foreground/20 hover:text-foreground"
       >
         {tab.pinned ? <PinOff className="size-2.5" /> : <Pin className="size-2.5" />}
@@ -357,7 +357,7 @@ function SortableTabItem({
           onClick={handleClose}
           onPointerDown={stopDragOnAction}
           role="button"
-          aria-label="Close tab"
+          aria-label={t(($) => $.tabs.close)}
           className="hidden size-3.5 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors group-hover:flex hover:bg-muted-foreground/20 hover:text-foreground"
         >
           <X className="size-2.5" />
@@ -428,7 +428,7 @@ function SortableTabItem({
               <>
                 <ContextMenuItem onClick={handleOpenAsWindow}>
                   <AppWindow />
-                  Open as new window
+                  {t(($) => $.tabs.open_new_window)}
                 </ContextMenuItem>
                 <ContextMenuSeparator />
               </>
@@ -437,12 +437,12 @@ function SortableTabItem({
               {tab.pinned ? (
                 <>
                   <PinOff />
-                  Unpin tab
+                  {t(($) => $.tabs.unpin)}
                 </>
               ) : (
                 <>
                   <Pin />
-                  Pin tab
+                  {t(($) => $.tabs.pin)}
                 </>
               )}
             </ContextMenuItem>
@@ -461,7 +461,7 @@ function SortableTabItem({
               onClick={() => closeTab(tab.id)}
             >
               <X />
-              Close tab
+              {t(($) => $.tabs.close)}
             </ContextMenuItem>
             <ContextMenuItem
               variant="destructive"
@@ -469,7 +469,7 @@ function SortableTabItem({
               onClick={() => closeOtherTabs(tab.id)}
             >
               <ListX />
-              Close other tabs
+              {t(($) => $.tabs.close_others)}
             </ContextMenuItem>
           </ContextMenuContent>
         </ContextMenu>

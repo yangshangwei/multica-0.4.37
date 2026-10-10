@@ -174,7 +174,7 @@ export function AgentBatchToolbar({
             >
               {/* The compact footer may wrap actions onto a second row, where a
                   trailing divider would dangle; spacing separates them there. */}
-              <div className="mr-1 flex shrink-0 items-center gap-1.5 whitespace-nowrap pl-1 pr-2 md:border-r">
+              <div className="mr-1 flex shrink-0 items-center gap-1.5 whitespace-nowrap pl-1 pr-2">
                 <span className="text-body font-medium">
                   {t(($) => $.actions.selected, { count: rows.length })}
                 </span>
@@ -190,7 +190,7 @@ export function AgentBatchToolbar({
                 </Button>
               </div>
 
-              <div className="flex min-w-0 flex-wrap items-center gap-1">
+              <div className="flex min-w-0 flex-wrap items-center gap-1 md:border-l md:pl-2">
                 {anyArchived && (
                   <Button
                     variant="ghost"
