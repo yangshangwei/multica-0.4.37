@@ -1,0 +1,1029 @@
+{
+  "base": "cfa0254ebf643924da9a20eacbecd50aac7d3fee",
+  "application_patch": "settings access retry",
+  "static_tasks_passed": 15,
+  "ui_exports": "passed",
+  "typescript": {
+    "packages": {
+      "core": 2918,
+      "docs": 62,
+      "views": 6417,
+      "web": 282,
+      "desktop": 970
+    },
+    "files": 897,
+    "passed": 10649
+  },
+  "go_race": {
+    "passing_packages": 70,
+    "packages": [
+      "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "github.com/multica-ai/multica/server/cmd/migrate",
+      "github.com/multica-ai/multica/server/cmd/multica",
+      "github.com/multica-ai/multica/server/cmd/server",
+      "github.com/multica-ai/multica/server/internal/analytics",
+      "github.com/multica-ai/multica/server/internal/attribution",
+      "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "github.com/multica-ai/multica/server/internal/auth",
+      "github.com/multica-ai/multica/server/internal/changelog",
+      "github.com/multica-ai/multica/server/internal/channelmedia",
+      "github.com/multica-ai/multica/server/internal/cli",
+      "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "github.com/multica-ai/multica/server/internal/daemon",
+      "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "github.com/multica-ai/multica/server/internal/daemonws",
+      "github.com/multica-ai/multica/server/internal/dbstartup",
+      "github.com/multica-ai/multica/server/internal/docs",
+      "github.com/multica-ai/multica/server/internal/entitlement",
+      "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "github.com/multica-ai/multica/server/internal/events",
+      "github.com/multica-ai/multica/server/internal/featureflags",
+      "github.com/multica-ai/multica/server/internal/handler",
+      "github.com/multica-ai/multica/server/internal/installation",
+      "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "github.com/multica-ai/multica/server/internal/issueguard",
+      "github.com/multica-ai/multica/server/internal/issuestatus",
+      "github.com/multica-ai/multica/server/internal/iteration",
+      "github.com/multica-ai/multica/server/internal/logger",
+      "github.com/multica-ai/multica/server/internal/metrics",
+      "github.com/multica-ai/multica/server/internal/middleware",
+      "github.com/multica-ai/multica/server/internal/migrations",
+      "github.com/multica-ai/multica/server/internal/projecthealth",
+      "github.com/multica-ai/multica/server/internal/realtime",
+      "github.com/multica-ai/multica/server/internal/scheduler",
+      "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "github.com/multica-ai/multica/server/internal/selfexec",
+      "github.com/multica-ai/multica/server/internal/service",
+      "github.com/multica-ai/multica/server/internal/skill",
+      "github.com/multica-ai/multica/server/internal/storage",
+      "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "github.com/multica-ai/multica/server/internal/testutil",
+      "github.com/multica-ai/multica/server/internal/triagecsv",
+      "github.com/multica-ai/multica/server/internal/util",
+      "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "github.com/multica-ai/multica/server/pkg/composio",
+      "github.com/multica-ai/multica/server/pkg/db/generated",
+      "github.com/multica-ai/multica/server/pkg/dbid",
+      "github.com/multica-ai/multica/server/pkg/featureflag",
+      "github.com/multica-ai/multica/server/pkg/llm",
+      "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "github.com/multica-ai/multica/server/pkg/redact",
+      "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "github.com/multica-ai/multica/server/pkg/agent"
+    ],
+    "vet": "passed"
+  },
+  "builds": {
+    "electron": "passed",
+    "web": "production",
+    "final_build_id": "nf4RwU_mxZr1djMT90Sw2"
+  },
+  "initial_browser": {
+    "startTime": "2026-10-10T11:53:25.183Z",
+    "duration": 931797.104,
+    "expected": 265,
+    "skipped": 50,
+    "unexpected": 4,
+    "flaky": 0
+  },
+  "final_browser": {
+    "startTime": "2026-10-10T12:19:02.059Z",
+    "duration": 782257.693,
+    "expected": 269,
+    "skipped": 50,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "iteration_cases": [
+    {
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "title": "ISB Electron en: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "title": "ISB Electron zh-Hans: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "title": "ISB Web en: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "title": "ISB Web zh-Hans: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "title": "ISB Web: empty planning history and cancellation before versus after a real empty start",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace planning timezone has one editor (en)",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace planning timezone has one editor (zh-Hans)",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace iteration settings survive lost closure responses and update another client",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace iteration settings report normal closure without remounting",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-audit-desktop.spec.ts",
+      "title": "iteration audit: actual contrast, focus, controls, touch, history and responsive rendering",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "title": "I1 Electron manual planning, atomic carryover and immutable history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "title": "I1 Electron settings report normal closure without remounting",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "title": "I1 Electron atomic handoff preserves existing next-period commitments",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-history.spec.ts",
+      "title": "I1 filters and groups the complete scope and preserves historical priority, labels and participation",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "title": "I1 Web manual planning, atomic carryover and immutable history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "title": "I1 Web starts the chosen next period atomically and disables the complete workspace",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "title": "I1 Web retries detail reads, creates work in the searched iteration and opens chart data by keyboard",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    }
+  ],
+  "conditional_skips": [
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "first resource page screenshot",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned API, Web, database and managed storage",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/admin-resource-publishing.spec.ts",
+            "line": 164,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "localized responsive states and deployment-disabled feedback",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned API, Web, database and managed storage",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/admin-resource-publishing.spec.ts",
+            "line": 164,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned API, Web, database and managed storage",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/admin-resource-publishing.spec.ts",
+            "line": 164,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "auth-device.spec.ts",
+      "title": "device login authenticates a distinct user without granting another user's workspace",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a dedicated API with MULTICA_DEVICE_AUTH_ENABLED=true",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/auth-device.spec.ts",
+            "line": 6,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "changelog-desktop.spec.ts",
+      "title": "desktop Help, tab restoration and updater action use the in-app reader",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires built desktop preload and a local renderer/API fixture",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/changelog-desktop.spec.ts",
+            "line": 8,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "changelog.spec.ts",
+      "title": "generated publication reaches an open reader and a fresh client without restart",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned CHANGELOG_E2E_API_URL and CHANGELOG_E2E_FEED",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/changelog.spec.ts",
+            "line": 100,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "desktop-settings.spec.ts",
+      "title": "desktop Help selects Updates by keyboard and grouped settings show the stopped daemon in Chinese",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires built desktop preload and a local renderer/API fixture",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/desktop-settings.spec.ts",
+            "line": 30,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "refines a vague feature, preserves folded answers, merges and undoes, then persists exactly once",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "handles 0 dynamic clarification questions and undo",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "handles 1 dynamic clarification questions and undo",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "preserves edits during generation, supports cancellation and real provider failure",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "creates the unchanged manual draft after a refinement failure",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "manual keeps creation reachable at desktop and phone widths with long content",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "agent keeps creation reachable at desktop and phone widths with long content",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "title": "agent creation queues the refined prompt through the real API without executing a daemon",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "mcp-desktop.spec.ts",
+      "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a local password-mode API and freshly built desktop renderer/preload",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/mcp-desktop.spec.ts",
+            "line": 59,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "mcp-market.spec.ts",
+      "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned directory mounted by the local API",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/mcp-market.spec.ts",
+            "line": 72,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-binding-desktop.spec.ts",
+      "title": "an existing Desktop account binds password login without losing its history",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a local password-mode server and migration window",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-binding-desktop.spec.ts",
+            "line": 11,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "invalid username preserves registration fields and can be corrected without restarting",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "five-character password error can be corrected to the supported six-character minimum",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "overlong pasted password is rejected and accepts the corrected 128-character boundary",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "whitespace-only display name reaches server validation and keeps credentials for correction",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "duplicate username after normalization leaves the original identity and password intact",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "incorrect password preserves the login form and a corrected retry restores the same identity",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "unknown account gives a generic error and can sign in after the account is created",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "lost registration response offers sign-in recovery for the account the server already created",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "network failure during login keeps credentials and succeeds after connection recovery",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "temporary authentication service failure preserves the form and permits a real retry",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "Retry-After disables login submissions until cooldown ends without discarding credentials",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "title": "pending registration locks the form and ignores repeated native submissions",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-migration.spec.ts",
+      "title": "legacy setup returns to the original identity and workspace",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-migration.spec.ts",
+            "line": 10,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-migration.spec.ts",
+      "title": "temporary recovery returns to the original identity and workspace",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-migration.spec.ts",
+            "line": 10,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-registration.spec.ts",
+      "title": "confirmed password registers without email and a second device keeps the same identity",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-registration.spec.ts",
+            "line": 6,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-registration.spec.ts",
+      "title": "confirmation requires an exact match and password visibility stays independent",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-registration.spec.ts",
+            "line": 6,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "password-server-switch.spec.ts",
+      "title": "Electron server switch clears same-host credentials and closes issue windows",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Opt-in isolated password acceptance",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/password-server-switch.spec.ts",
+            "line": 17,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "platform-admin-accounts.spec.ts",
+      "title": "account controls, lost response recovery, forced password change and observer UI",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned password-mode production build",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/platform-admin-accounts.spec.ts",
+            "line": 22,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "platform-admin-controls.spec.ts",
+      "title": "admission receipts and original-key recovery survive a lost cancellation response and reload",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/platform-admin-controls.spec.ts",
+            "line": 9,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "platform-admin-executions.spec.ts",
+      "title": "private metadata, filters, cursor, attempt detail and original content permissions",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/platform-admin-executions.spec.ts",
+            "line": 9,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "platform-admin-installations-read.spec.ts",
+      "title": "real enrollment and binding keep client, daemon and engine status separate",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/platform-admin-installations-read.spec.ts",
+            "line": 12,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "platform-admin-observability.spec.ts",
+      "title": "windowed metrics, active alerts, original-key recovery and observer boundaries",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production snapshot",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/platform-admin-observability.spec.ts",
+            "line": 14,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "platform-admin.spec.ts",
+      "title": "zero-workspace cookie access, ordinary-user denial, and live role revocation",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned password deployment and bootstrapped administrator",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/platform-admin.spec.ts",
+            "line": 34,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic local recommendation provider",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/quick-create-actor-picker-phase2.spec.ts",
+            "line": 68,
+            "column": 7
+          }
+        }
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "actual Electron renderer adopts suggestions without running a daemon",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated desktop renderer and provider",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/quick-create-actor-picker-phase2.spec.ts",
+            "line": 100,
+            "column": 7
+          }
+        }
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires deterministic local provider",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/quick-create-actor-picker-phase2.spec.ts",
+            "line": 116,
+            "column": 7
+          }
+        }
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "title": "desktop renderer supports picker search and pinning without starting a daemon",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the built desktop renderer/preload and isolated local API fixture",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/quick-create-actor-picker.spec.ts",
+            "line": 429,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "retained-languages-desktop.spec.ts",
+      "title": "Desktop keeps retained languages after upgrading ja preferences",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires built Desktop renderer/preload and explicit isolated API/database configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/retained-languages-desktop.spec.ts",
+            "line": 10,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "retained-languages-desktop.spec.ts",
+      "title": "Desktop keeps retained languages after upgrading ko preferences",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires built Desktop renderer/preload and explicit isolated API/database configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/retained-languages-desktop.spec.ts",
+            "line": 10,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "skill labels remain typed and idempotent while issue labels still work",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/upstream-backports-cli.spec.ts",
+            "line": 160,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "comment updates preserve UTF-8 files and reject stale revisions",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/upstream-backports-cli.spec.ts",
+            "line": 160,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "an unrelated member and an outsider cannot update another member's comment",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/e2e/upstream-backports-cli.spec.ts",
+            "line": 160,
+            "column": 8
+          }
+        }
+      ]
+    }
+  ],
+  "visual": {
+    "passed": 1,
+    "captures": 12,
+    "score": 95
+  },
+  "later_integration": {
+    "head": "774b43b00a2156412e93fbf6085ad9838edf4d15",
+    "browser": {
+      "startTime": "2026-10-10T12:56:25.299Z",
+      "duration": 111689.636,
+      "expected": 19,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "evidence": "integration/summary.json"
+  },
+  "logs": {
+    "full-check-final.log": "0203da1bdb7a97a67696e6f1d49bf13df030b240c9a53663b4f91a982c559d5f",
+    "browser-final.log": "aae6a6dafbdc954a6ffe31186dc1d54c2c6db27e23d7faad446be4ba6e25606e",
+    "playwright-initial.json": "8cc5886b10ab5eb50746ede9d82382d09da1dc9a935d6a09e03f829d814b8dc8",
+    "playwright-final.json": "f46073cc6fd3f5c0285e1046b886d9994eb9fb2de410ec6d309dbb33aa9cc99f",
+    "source-manifest-final.json": "0be1bad15b036924317fd4c90fca92b530e695b46eab2682f17dc6e7b727153d",
+    "verified-code.patch": "a9ac3e82912ba04483e9a336c27039ab30455423c337c443d9a8db755688e33c"
+  }
+}

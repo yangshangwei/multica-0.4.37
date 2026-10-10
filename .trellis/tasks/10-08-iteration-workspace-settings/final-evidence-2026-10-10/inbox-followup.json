@@ -1,0 +1,29 @@
+{
+  "case": "keeps the full Chinese and emoji comment behind active and archived Inbox previews",
+  "before": {
+    "source": "../playwright-initial.json",
+    "status": "failed",
+    "error": "response.json: Protocol error (Network.getResponseBody): No resource with given identifier found",
+    "evidence": "initial-trace-evidence.json"
+  },
+  "after": {
+    "startTime": "2026-10-10T12:14:30.156Z",
+    "duration": 14344.667000000001,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "verification": {
+    "eslint_exit": 0,
+    "strict_tsc_exit": 0,
+    "diff_check_exit": 0
+  },
+  "file": "e2e/upstream-selected-fixes.spec.ts",
+  "sha256": "e962782aa27e3602d8ea30da9157b55a49dd7c49e532f7b0c327e46838a04adb",
+  "root_validation_equal": true,
+  "environment": "check-20261010113128-53712",
+  "production_web_build_id": "VKgzfzDH9uF-BEs7OfIt1",
+  "commit": "cfa0254eb",
+  "patch": "test-synchronization.patch"
+}

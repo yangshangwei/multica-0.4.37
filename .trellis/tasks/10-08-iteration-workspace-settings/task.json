@@ -12,10 +12,10 @@
   "assignee": "artisan",
   "createdAt": "2026-10-08",
   "completedAt": null,
-  "branch": null,
+  "branch": "codex/projects-p1",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": null,
+  "commit": "51b625cac9dabb2398e4161b74e0be85b9cbaf77",
   "pr_url": null,
   "subtasks": [],
   "children": [
@@ -28,6 +28,13 @@
     "packages/views/settings/components/settings-page.tsx",
     "server/internal/handler/iteration_settings.go"
   ],
-  "notes": "User approved latest business pages and independent settings preview on 2026-10-08. Preserve concurrent pre-existing timezone/project changes. Implement/check authorized.",
-  "meta": {}
+  "notes": "User approved latest business pages and independent settings preview on 2026-10-08. Preserve concurrent pre-existing timezone/project changes. Implement/check authorized. Final local acceptance passed on 2026-10-10: baseline 269 browser cases, current combined iteration run 19/19 and final audit 1/1. No deployment performed.",
+  "meta": {
+    "closeout_commits": [
+      "c9eaa4643",
+      "51b625cac"
+    ],
+    "verification": "verification.md",
+    "acceptance": "passed"
+  }
 }

@@ -1,7 +1,7 @@
 <!-- Approved by user on 2026-10-08: 确认无误，请继续推进. Implementation is authorized for business pages and the independent settings page shown in the final preview. -->
 # 迭代业务页方案
 
-状态：实施收尾中；用户已于 2026-10-09 授权按父任务 [closeout-plan.md](../10-08-iteration-workspace-settings/closeout-plan.md) 完成修复、验证、提交和归档。此前的规划状态由该授权取代。
+状态：2026-10-10 实现与验收完成。完整基线检查已通过；当前 `774b43b00` 加权限恢复／测试同步补丁的合并回归通过。最终源码身份、检查范围和交付记录见 verification.md。
 
 原型用于评审布局和主要动作，可能缩减筛选选项、历史字段和生命周期细节；它不取代本文对完整现有能力的保留要求。当前演示统计口径为 original=12、current=14、cancelled=1、effective=13、completed=8、remaining=5、original_completed=7，全部是任务数；图只含 effective/completed/original。
 
@@ -73,10 +73,12 @@
 | --- | --- |
 | 有效范围、完成、剩余 | `effective`、`completed`、`remaining`，直接展示服务器任务数，不从已过滤任务列表重算。 |
 | 完成率 | `effective_ratio` / `original_ratio`；null 显示不适用。 |
-| 曲线 | `chart[].date/effective/completed/original`；original 虚线，图例文字与线型同时区分。 |
+| 曲线／单日值 | `chart[].date/effective/completed/original`；多日图中 original 虚线，图例文字与线型同时区分。仅单日时直接显示真实日期与数值，并保留完整数据表；不补造曲线或未来点。 |
 | 时间范围 | 日期按周期保存时区理解；只绘制响应点到 `calculated_at` 对应的数据截止日期，不在计划结束日填充未来值。 |
-| 完整统计 | 保留 current、original、cancelled、added_unique、removed_events、reentry_events、cancel_events、reopen_events、started、净变化及比例等现有指标，放在进展标签的统计详情中。started 是累计统计，不创建对应历史曲线。 |
+| 交付与范围统计 | 进展保留 completed/effective、original_completed/original、started 等交付指标；added_unique、removed_events、reentry_events、cancel_events、reopen_events、净变化归范围变化。各值继续来自服务端统计，started 不创建历史曲线。 |
 | 可访问表格 | 图旁“查看数据表”可展开同一数据源，保留 caption、列／行表头；键盘可到达，无需依赖悬浮提示或颜色。 |
+
+后续 `6d3bf906d` 的范围语义完善适用于本设计：计划和开始前取消使用 Planning adjustments，不显示初始承诺、净增加或交付统计；已真实开始的零承诺周期仍显示实际统计。详情阶段及表头优先快照，即使目录暂时仍 active；关闭去向与周期内范围变更分开。
 
 计划详情的无数据进展使用解释性空状态。统计响应无效时沿用 schema 边界错误；不以默认 0 修饰失败。已冻结历史的现时名称引用可单独标注，但任务当时名称、类别、标签和负责人不得用当前资料替换。
 

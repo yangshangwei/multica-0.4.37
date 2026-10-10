@@ -1,0 +1,41 @@
+[
+  {
+    "command": "pnpm -C packages/views exec vitest run iterations/iteration-settings-tab.test.tsx iterations/iteration-details.test.tsx iterations/iteration-navigation.test.tsx layout/app-sidebar.test.tsx --maxWorkers=2",
+    "exit": 0,
+    "tests": 140,
+    "files": 4,
+    "log": "views-tests.log"
+  },
+  {
+    "command": "pnpm --filter @multica/views typecheck",
+    "exit": 0,
+    "log": "views-typecheck.log"
+  },
+  {
+    "command": "pnpm --filter @multica/views lint",
+    "exit": 0,
+    "warnings": 27,
+    "errors": 0,
+    "log": "views-lint.log"
+  },
+  {
+    "command": "node packages/views/node_modules/eslint/bin/eslint.js --config packages/eslint-config/base.js e2e/agent-category-grouping.spec.ts e2e/iterations-audit-desktop.spec.ts e2e/projects-p1-lifecycle.spec.ts e2e/upstream-selected-fixes.spec.ts",
+    "exit": 0,
+    "warnings": 0,
+    "errors": 0,
+    "log": "e2e-lint-final.log"
+  },
+  {
+    "command": "pnpm exec tsc --noEmit --skipLibCheck --module esnext --moduleResolution bundler --target es2022 --esModuleInterop --types node e2e/agent-category-grouping.spec.ts e2e/iterations-audit-desktop.spec.ts e2e/projects-p1-lifecycle.spec.ts e2e/upstream-selected-fixes.spec.ts",
+    "exit": 0,
+    "log": "e2e-typecheck-final.log"
+  },
+  {
+    "command": "pnpm exec playwright test e2e/agent-category-grouping.spec.ts e2e/iterations-audit-desktop.spec.ts e2e/projects-p1-lifecycle.spec.ts e2e/upstream-selected-fixes.spec.ts --list",
+    "exit": 0,
+    "discovered_tests": 26,
+    "files": 4,
+    "browser_execution": false,
+    "log": "e2e-discovery.log"
+  }
+]

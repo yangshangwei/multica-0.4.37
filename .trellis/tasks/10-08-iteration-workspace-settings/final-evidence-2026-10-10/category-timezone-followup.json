@@ -1,0 +1,82 @@
+{
+  "baseline_commit": "cfa0254eb",
+  "production_environment": "check-20261010113128-53712",
+  "api_port": 18842,
+  "frontend_port": 13762,
+  "web_build_id": "-NOwuAWTNGIT2eyBgth8m",
+  "runs": {
+    "before": {
+      "startTime": "2026-10-10T12:01:51.152Z",
+      "duration": 39554.913,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "after": {
+      "startTime": "2026-10-10T12:04:04.090Z",
+      "duration": 35092.085,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "p1-before": {
+      "startTime": "2026-10-10T12:04:56.256Z",
+      "duration": 22563.751,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "p1-after": {
+      "startTime": "2026-10-10T12:06:52.600Z",
+      "duration": 90513.805,
+      "expected": 9,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "verification": {
+    "scoped_eslint": {
+      "exit_code": 0,
+      "log": "final-lint.log"
+    },
+    "scoped_strict_tsc": {
+      "exit_code": 0,
+      "log": "final-typecheck.log"
+    },
+    "git_diff_check": {
+      "exit_code": 0
+    }
+  },
+  "files": {
+    "e2e/agent-category-grouping.spec.ts": {
+      "sha256": "6c13731e83da28975a41d1d7219efa94a1e0409ac577bf86d4f01134e502b137",
+      "root_validation_equal": true
+    },
+    "e2e/projects-p1-lifecycle.spec.ts": {
+      "sha256": "8af8cb77cec89af4008dba05cfb9268c4116a76a96e97ece5d0007d8ec6a5e93",
+      "root_validation_equal": true
+    }
+  },
+  "patch": "test-synchronization.patch",
+  "category_root_cause": {
+    "body_scroll_width": 390,
+    "document_scroll_width": 1416,
+    "inner_width": 390,
+    "overflow_source": "exiting category dropdown portal at x=1274..1415.78125",
+    "next_frame_ms": 8.9,
+    "later_frames_without_overflow": 40
+  },
+  "p1_root_cause": {
+    "initial_click_ms": 740.1,
+    "escape_ms": 751.2,
+    "popup_first_open_ms": 800.7,
+    "later_trigger_click_ms": 885.2,
+    "popup_closed_pointer_none_ms": 902.8,
+    "explanation": "Escape preceded asynchronous initial open; the later choosePlanningTimezone click closed that still-open popup."
+  },
+  "scope": "Five test synchronization lines; no product source, fixture, service, environment, task metadata or spec edits."
+}

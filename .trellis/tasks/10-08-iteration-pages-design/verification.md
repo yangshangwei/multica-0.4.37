@@ -1,11 +1,18 @@
-# Business-page closeout verification
+# 迭代业务页最终验收
 
-Implementation and targeted verification are complete. The parent still owns the final combined browser rerun, scoped commit and archival, currently blocked by the session's read-only Git and restricted network profile.
+状态：2026-10-10 实现及最终验收完成，与父任务一起完成本地交付。
 
-Delivered: saved-timezone detail labels; temporary first-read retry and safe return; definitive-error eviction; one shared statistics table with overview disclosure; associated overview tab panels; locale date grouping; preserved filters, editing drafts and frozen statistics.
+时间线总览、完整目录、分标签详情、计划空状态、任务选择／新建归属、真实进展数据表、范围变化及冻结历史均已实现。保留后续提交的共享时区单入口、范围语义细化与紧凑任务工具栏。本轮权限恢复修复位于父任务设置页，沿用原生命周期、任务归属与历史协议。
 
-The independent candidate passed the complete non-mobile TypeScript and guarded Go stages. Seven of eight iteration browser cases passed in the original complete browser run; the eighth was corrected to scope its error locator away from Next's route announcer and then passed with the actual retry, membership and keyboard assertions intact. The separate final screenshot scenario passed and its visual verdict is 95/pass.
+完整基线 `cfa0254eb` 加修复通过非移动端 10,649 项单测、70 个 Go 包 race/vet、静态检查及 269 项完整浏览器用例；50 项其他条件场景跳过，迭代相关 17 项全部通过。当前 `774b43b00` 加补丁重建生产 Web/Electron 后，包含后续工具栏改进的 19 项迭代集成全部通过，0 失败／跳过／重试；独立复核 140 项通过。各阶段覆盖重叠，不能相加。
 
-See [parent verification](../10-08-iteration-workspace-settings/verification.md), [criterion matrix](acceptance-matrix.md), [independent review](../10-08-iteration-workspace-settings/research/final-check.md), and [final screenshots](../10-08-iteration-workspace-settings/final-evidence/screens/overview-data.png).
+真实截图覆盖双语、深浅色、宽窄窗口；当前视觉评分 96/pass，真实 Electron 审计同时检查键盘、触控、对比度、截图尺寸与冻结事实。源码哈希、命令、构建身份、截图和剩余交付边界统一见[父最终验收](../10-08-iteration-workspace-settings/verification.md)及其 final-evidence-2026-10-10/integration/。
 
-This is not a claim that the latest concurrently modified root tree has completed a fresh full run. The task remains `in_progress` until the parent completes its final Git handoff.
+[验收矩阵](acceptance-matrix.md)全部通过；[10-09 历史记录](verification-2026-10-09.md)保留当时的验证边界。任务提交与归档信息记录在 task.json。没有新增依赖、数据库迁移或待实现项；本次未执行远端发布及 Windows/Linux 安装包验收。
+
+## 本地提交
+
+- `c9eaa4643`：权限拒绝后的只读恢复与回归／规范。
+- `51b625cac`：浏览器同步、截图身份及 E2E 静态修正。
+
+应用与测试文件已按验证哈希核对；父子归档及 journal 在工作提交之后记录。

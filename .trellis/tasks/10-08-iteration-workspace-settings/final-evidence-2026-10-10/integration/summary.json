@@ -1,0 +1,242 @@
+{
+  "source": {
+    "head": "774b43b00a2156412e93fbf6085ad9838edf4d15",
+    "copied_files": {
+      "packages/views/iterations/iteration-settings-tab.tsx": "3991173f771a0b9c1fa9be233167ae1f55cb774a9186c95d7bffa1948fb574b1",
+      "packages/views/iterations/iteration-settings-tab.test.tsx": "49ea8afc22ccd6c360d692193dccb58faeeb4e092f24dd5d611be15040e1e6e5",
+      "e2e/agent-category-grouping.spec.ts": "6c13731e83da28975a41d1d7219efa94a1e0409ac577bf86d4f01134e502b137",
+      "e2e/iterations-audit-desktop.spec.ts": "fb3976a2e37e22e17f0fec7de4e4a08163743ec90d9da2a18f5e0a4dafd9354d",
+      "e2e/projects-p1-lifecycle.spec.ts": "8af8cb77cec89af4008dba05cfb9268c4116a76a96e97ece5d0007d8ec6a5e93",
+      "e2e/upstream-selected-fixes.spec.ts": "e962782aa27e3602d8ea30da9157b55a49dd7c49e532f7b0c327e46838a04adb"
+    },
+    "validation_checkout": "/Volumes/artisan/code/2026/multica-iteration-integrated-20261010"
+  },
+  "stats": {
+    "startTime": "2026-10-10T12:56:25.299Z",
+    "duration": 111689.636,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "cases": [
+    {
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "title": "ISB Electron en: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "title": "ISB Electron zh-Hans: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "title": "ISB Web en: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "title": "ISB Web zh-Hans: planned scope, exact change details, retained filters and frozen history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "title": "ISB Web: empty planning history and cancellation before versus after a real empty start",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace planning timezone has one editor (en)",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace planning timezone has one editor (zh-Hans)",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace iteration settings survive lost closure responses and update another client",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "title": "workspace iteration settings report normal closure without remounting",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-audit-desktop.spec.ts",
+      "title": "iteration task toolbar: planned hierarchy and visible refinements (en)",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-audit-desktop.spec.ts",
+      "title": "iteration task toolbar: planned hierarchy and visible refinements (zh-Hans)",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-audit-desktop.spec.ts",
+      "title": "iteration audit: actual contrast, focus, controls, touch, history and responsive rendering",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "title": "I1 Electron manual planning, atomic carryover and immutable history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "title": "I1 Electron settings report normal closure without remounting",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "title": "I1 Electron atomic handoff preserves existing next-period commitments",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1-history.spec.ts",
+      "title": "I1 filters and groups the complete scope and preserves historical priority, labels and participation",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "title": "I1 Web manual planning, atomic carryover and immutable history",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "title": "I1 Web starts the chosen next period atomically and disables the complete workspace",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "title": "I1 Web retries detail reads, creates work in the searched iteration and opens chart data by keyboard",
+      "status": "expected",
+      "results": [
+        "passed"
+      ]
+    }
+  ],
+  "command": "MULTICA_RUN_I1_E2E=1 bash scripts/dev-env.sh exec -- pnpm exec playwright test --config .omx/integration/playwright.config.ts",
+  "exit_code": 0,
+  "builds": {
+    "desktop": {
+      "command": "pnpm --filter @multica/desktop exec electron-vite build",
+      "exit_code": 0
+    },
+    "web": {
+      "mode": "production",
+      "exit_code": 0,
+      "build_id": "4Irca0JlQQf9fzsaedDvu"
+    }
+  },
+  "logs": {
+    "resume-desktop-build.log": "187e594cfbf25172e61a430e3cf4078f4fe1764ad5036da54746f637a82cbb7b",
+    "resume-up.log": "5fce5c017cd1367ecb25c9c23fc1b26bd3fedc65fafb7bece4a326ac000e35fd",
+    "resume-browser.log": "f82ebf0eb40337a3090fb87a4184eedadbc2c082651ecacc2be65d4074625c6d",
+    "playwright-report.json": "7de5541f8ebc3bce1c06be78f219eb676260b2ece84fe94ec30f747f1829794d"
+  },
+  "screens": {
+    "tasks-en-planned-wide.png": "6b4397b7dd1e48f7faba60c7e1eae2b2e69ace227bed36c1d2978dd0f64ead25",
+    "tasks-zh-Hans-filtered-narrow.png": "23e3e608c8add52771f01ee2da06758c996781e6e88aa4280447ecce8dd2dc69",
+    "settings-light-wide.png": "533519c9a8290af9b46b4e70a0f9b52c53a3aa0680f22c4dadd60859cfe5ccc4",
+    "overview-zh-dark-narrow.png": "a8a89a883fe1a6cf7eaa26740d46ca3e2d75dd9b468050300f0499e4618806c6",
+    "progress-light-narrow.png": "9de2927aef1eaee4b8e98a4abc8a1181e30f08454d7e917ebe96c5febeff7381"
+  },
+  "visual": {
+    "score": 96,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [],
+    "suggestions": [],
+    "reasoning": "最新任务工具栏与已验收宽屏英文／窄屏中文参考一致；设置卡片、时间线、进展及保存时区延续已批准层级。数据场景和平台外壳差异符合预期；真实 Electron 窄屏截图无截断或页面溢出，自动审计同时验证焦点、对比度、触控与截图尺寸。"
+  },
+  "post_review_audit": {
+    "stats": {
+      "startTime": "2026-10-10T13:06:43.352Z",
+      "duration": 12134.602,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "exit_code": 0,
+    "change": "Three void prefixes preserve existing computed-style reads while satisfying ESLint. Application source/build unchanged.",
+    "command": "MULTICA_RUN_I1_E2E=1 bash scripts/dev-env.sh exec -- pnpm exec playwright test --config .omx/integration/playwright.config.ts --grep \"iteration audit: actual\" --reporter=line,json",
+    "final_files": {
+      "head": "774b43b00a2156412e93fbf6085ad9838edf4d15",
+      "sha256": {
+        "packages/views/iterations/iteration-settings-tab.tsx": "3991173f771a0b9c1fa9be233167ae1f55cb774a9186c95d7bffa1948fb574b1",
+        "packages/views/iterations/iteration-settings-tab.test.tsx": "49ea8afc22ccd6c360d692193dccb58faeeb4e092f24dd5d611be15040e1e6e5",
+        "e2e/agent-category-grouping.spec.ts": "6c13731e83da28975a41d1d7219efa94a1e0409ac577bf86d4f01134e502b137",
+        "e2e/iterations-audit-desktop.spec.ts": "d1aa5ea0617d1fd96546c2a33ef19391cef0195783b058eb1401f4c2c099363d",
+        "e2e/projects-p1-lifecycle.spec.ts": "8af8cb77cec89af4008dba05cfb9268c4116a76a96e97ece5d0007d8ec6a5e93",
+        "e2e/upstream-selected-fixes.spec.ts": "e962782aa27e3602d8ea30da9157b55a49dd7c49e532f7b0c327e46838a04adb"
+      },
+      "changed_during_review": [
+        "e2e/iterations-audit-desktop.spec.ts"
+      ]
+    },
+    "logs": {
+      "audit-final.log": "e4c802e8230dfb2e212636925979b18a40905056cb07392733e553fc53199d1a",
+      "audit-final-report.json": "6a30e5d3dd9ef579989cd5c72c43e0503d1db4a177b456f8086a986135af45ac"
+    }
+  }
+}

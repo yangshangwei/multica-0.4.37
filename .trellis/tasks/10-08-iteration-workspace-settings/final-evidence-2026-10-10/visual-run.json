@@ -1,0 +1,180 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual",
+        "testIgnore": [],
+        "testMatch": [
+          "iteration-final-visual.spec.ts"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "iteration-final-visual.spec.ts",
+      "file": "iteration-final-visual.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "supplemental iteration acceptance captures at 1440px and 900px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8374,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-10T12:05:02.158Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "settings-en-light-1440",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/settings-en-light-1440-5c36e7e95061d0d6e20c0174f547365d83d28cf0.png"
+                    },
+                    {
+                      "name": "overview-en-light-1440",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/overview-en-light-1440-b0b80096146f18a12b3b96aef56a3a2c1d124c57.png"
+                    },
+                    {
+                      "name": "current-en-light-1440",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/current-en-light-1440-1434aa0eb0faedd9272cb9e34ae537477b057270.png"
+                    },
+                    {
+                      "name": "progress-table-en-light-1440",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/progress-table-en-light-1440-a5ae1f29fda1c42ea6f86a24c68ceb4152e3b8f4.png"
+                    },
+                    {
+                      "name": "settings-zh-Hans-light-1440",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/settings-zh-Hans-light-1440-80fd6d2fcc2ea97f81c7905f4f8a684176da1a1d.png"
+                    },
+                    {
+                      "name": "overview-zh-Hans-light-1440",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/overview-zh-Hans-light-1440-1c3c20bb95c8b9a54c2cd87efad712b4c3ad266f.png"
+                    },
+                    {
+                      "name": "settings-zh-Hans-light-900",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/settings-zh-Hans-light-900-8e92f43c7492d8550bbf03edae9352993f15d10b.png"
+                    },
+                    {
+                      "name": "overview-zh-Hans-light-900",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/overview-zh-Hans-light-900-ff08c7aaf706073fdad56259630faa4696358862.png"
+                    },
+                    {
+                      "name": "settings-zh-Hans-dark-900",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/settings-zh-Hans-dark-900-819847c3b21bccbab3dcf3ef389fc51e584319f9.png"
+                    },
+                    {
+                      "name": "overview-zh-Hans-dark-900",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/overview-zh-Hans-dark-900-306085c3602f4afda14ff9f88086288c8e4189c8.png"
+                    },
+                    {
+                      "name": "current-zh-Hans-dark-900",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/current-zh-Hans-dark-900-5bdd3500991263fa1d68a276704587a7d5374fe3.png"
+                    },
+                    {
+                      "name": "progress-table-zh-Hans-dark-900",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/progress-table-zh-Hans-dark-900-fbdab0db2d19d47be1248750fe5e367bda1db895.png"
+                    },
+                    {
+                      "name": "capture-metrics",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-iteration-final-20261010/.omx/iteration-final-visual/artifacts/iteration-final-visual-sup-ab18c-aptures-at-1440px-and-900px/attachments/capture-metrics-a7d86706668ea12a2c6d06ba2dda12ade7defaaf.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b7da0b69b36c791dbce-719d65fe7ef0fad7cae3",
+          "file": "iteration-final-visual.spec.ts",
+          "line": 119,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T12:05:01.603Z",
+    "duration": 9440.434000000001,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

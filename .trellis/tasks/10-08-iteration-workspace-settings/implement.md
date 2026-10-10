@@ -1,7 +1,7 @@
 <!-- Approved by user on 2026-10-08: 确认无误，请继续推进. Implementation is authorized for business pages and the independent settings page shown in the final preview. -->
 # 实施与验证计划
 
-状态：实施收尾中；用户已于 2026-10-09 授权按父任务 [closeout-plan.md](../10-08-iteration-workspace-settings/closeout-plan.md) 完成修复、验证、提交和归档。此前的规划状态由该授权取代。
+状态：2026-10-10 实现与验收完成。完整基线检查已通过；当前 `774b43b00` 加权限恢复／测试同步补丁的合并回归通过。最终源码身份、检查范围和交付记录见 verification.md。
 
 ## 实施前提
 
@@ -11,47 +11,47 @@
 
 ## 1. 固定行为与基线
 
-- [ ] 对照 research/contract.md 重新确认 gate 引用和原有测试；运行相关现有用例。
-- [ ] 增加有意义的失败回归：无部署标志也可由管理员启用，但默认禁用及权限不变；设置入口可发现；关闭恢复不受 enabled 状态影响。
-- [ ] 用共享组件测试覆盖交互状态，用后端集成测试覆盖事务/权限，不跨层重复完整矩阵。
+- [x] 对照 research/contract.md 重新确认 gate 引用和原有测试；运行相关现有用例。
+- [x] 增加有意义的失败回归：无部署标志也可由管理员启用，但默认禁用及权限不变；设置入口可发现；关闭恢复不受 enabled 状态影响。
+- [x] 用共享组件测试覆盖交互状态，用后端集成测试覆盖事务/权限，不跨层重复完整矩阵。
 
 ## 2. 后端与部署合同
 
 责任范围：server/internal/featureflags、相关 iteration handler/service、server/cmd/server/main.go 及对应 tests；部署配置和现行交付文档由主会话整合。
 
-- [ ] 删除 iterations_i1 helper、Available 字段和各运行入口 gate；保留所有 workspace enabled、身份与权限判断。
-- [ ] 保持既有能力接口形状，不添加迁移；验证 env 缺失/false 与 DB enabled false/true 的组合。
-- [ ] 启用发布提交后的 iteration:updated，复用现有广播和幂等语义；验证分拣能力与跨客户端更新。
-- [ ] 更新对应 gate 测试 fixture，保留 stale revision/timezone、越权、未知回执、整集关闭和通知去重测试。
+- [x] 删除 iterations_i1 helper、Available 字段和各运行入口 gate；保留所有 workspace enabled、身份与权限判断。
+- [x] 保持既有能力接口形状，不添加迁移；验证 env 缺失/false 与 DB enabled false/true 的组合。
+- [x] 启用发布提交后的 iteration:updated，复用现有广播和幂等语义；验证分拣能力与跨客户端更新。
+- [x] 更新对应 gate 测试 fixture，保留 stale revision/timezone、越权、未知回执、整集关闭和通知去重测试。
 
 ## 3. 共享设置页面与数据刷新
 
 责任范围：packages/views/iterations、packages/views/settings、相关 locales、packages/core/iterations/projects/triage/realtime，以及相关 tests。
 
-- [ ] 添加 IterationSettingsTab 并注册 ?tab=iterations，在分拣台之后加入导航。
-- [ ] 使用既有 Settings*、Switch、TimezoneSelect 和语义样式，按 design.md 完成所有状态及中英文文案。
-- [ ] 启停独立提交；时区保存/取消独立；脏草稿和未知结果不允许发起相冲突的操作。
-- [ ] 复用 IterationOperation preview/apply，只做必要的触发器适配；保留完整明细、2,000 条限制、原因和恢复。
-- [ ] 设置页挂载独立恢复组件；本地/WS refresh 涵盖 iteration settings、capabilities、分拣迭代能力与共享项目时区。
-- [ ] 旧列表页移除重复配置控件，改为设置链接；启用条件控制工作侧边栏，关闭后历史仍可从设置进入。
-- [ ] 复用已有 SettingsPage 平台路由，无需新增桌面业务路由/全局窗口 overlay。
+- [x] 添加 IterationSettingsTab 并注册 ?tab=iterations，在分拣台之后加入导航。
+- [x] 使用既有 Settings*、Switch 和语义样式，按 design.md 完成所有状态及中英文文案；TimezoneSelect 仅保留在常规设置。
+- [x] 启停独立提交；时区保存/取消由常规设置唯一编辑器负责；迭代页读取保存值，刷新失败、陈旧确认和未知结果阻止冲突操作。
+- [x] 复用 IterationOperation preview/apply，只做必要的触发器适配；保留完整明细、2,000 条限制、原因和恢复。
+- [x] 设置页挂载独立恢复组件；本地/WS refresh 涵盖 iteration settings、capabilities、分拣迭代能力与共享项目时区。
+- [x] 旧列表页移除重复配置控件，改为设置链接；启用条件控制工作侧边栏，关闭后历史仍可从设置进入。
+- [x] 复用已有 SettingsPage 平台路由，无需新增桌面业务路由/全局窗口 overlay。
 
 ## 4. 集成与验证
 
-- [ ] 组件：设置目录/直达、启停、时区草稿、只读、能力缺失、权限丢失、并发刷新、关闭取消与确认、恢复流程。
-- [ ] 后端：human/admin/member 边界、状态保留、disabled assignment、全量预览/超限、原子回滚、历史和执行不变、同请求回执恢复与通知去重。
-- [ ] API：原响应 schema 继续通过 malformed-response 和旧服务回退测试；不把撤权 404 当作版本差异。
-- [ ] Web/Desktop：运行生产构建的真实路径，启用、创建一期、安排任务、关闭、读历史、重启客户端恢复、两个客户端状态同步。
-- [ ] 覆盖英文/中文、深色/浅色、窄窗口、键盘焦点与开关状态；按 visual-verdict 留存截图结果。
-- [ ] 对受影响包运行 pnpm lint、pnpm typecheck、pnpm test；Go 运行相关 go test 和 go vet；静态包边界分析按 package.json/Makefile 实际脚本执行。风险需要时扩大到 make check。
-- [ ] 不重复跑与本改动无关的全量矩阵；只对新变化、失败或未覆盖的风险追加检查。
+- [x] 组件：设置目录/直达、启停、时区草稿、只读、能力缺失、权限丢失、并发刷新、关闭取消与确认、恢复流程。
+- [x] 后端：human/admin/member 边界、状态保留、disabled assignment、全量预览/超限、原子回滚、历史和执行不变、同请求回执恢复与通知去重。
+- [x] API：原响应 schema 继续通过 malformed-response 和旧服务回退测试；不把撤权 404 当作版本差异。
+- [x] Web/Desktop：运行生产构建的真实路径，启用、创建一期、安排任务、关闭、读历史、重启客户端恢复、两个客户端状态同步。
+- [x] 覆盖英文/中文、深色/浅色、窄窗口、键盘焦点与开关状态；按 visual-verdict 留存截图结果。
+- [x] 对受影响包运行 pnpm lint、pnpm typecheck、pnpm test；Go 运行相关 go test 和 go vet；静态包边界分析按 package.json/Makefile 实际脚本执行。风险需要时扩大到 make check。
+- [x] 不重复跑与本改动无关的全量矩阵；只对新变化、失败或未覆盖的风险追加检查。
 
 ## 5. 文档与收尾
 
-- [ ] 清理 .env.example、docker-compose.selfhost.yml 的旧 gate，更新离线脚本 fixture 和当前升级指引。
-- [ ] 更新 .trellis/spec/core/frontend/iteration-operations.md、server/iterations.md、server/offline-delivery.md；旧 task/release 证据保持历史原貌。
-- [ ] 明确告知旧 enabled=true 空间重新可见和已有通知可能继续处理，禁止自动批量开关工作空间。
-- [ ] 用 trellis-check 独立复核后再进入提交/收尾阶段；提交遵守 Lore trailers 与本仓库 Conventional 前缀。
+- [x] 清理 .env.example、docker-compose.selfhost.yml 的旧 gate，更新离线脚本 fixture 和当前升级指引。
+- [x] 更新 .trellis/spec/core/frontend/iteration-operations.md、server/iterations.md、server/offline-delivery.md；旧 task/release 证据保持历史原貌。
+- [x] 明确告知旧 enabled=true 空间重新可见和已有通知可能继续处理，禁止自动批量开关工作空间。
+- [x] 用 trellis-check 独立复核后再进入提交/收尾阶段；提交遵守 Lore trailers 与本仓库 Conventional 前缀。
 
 ## 回退边界
 
