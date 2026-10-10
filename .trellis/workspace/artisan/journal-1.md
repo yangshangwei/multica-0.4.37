@@ -1816,3 +1816,25 @@ Implemented the four reviewed task-tab improvements and archived their evidence.
 ### Status
 
 [OK] **Completed**
+
+
+## Session 56: Triage duplicate target picker
+<!-- trellis-session: v=2 fp=c2b80143047ce42a -->
+
+**Date**: 2026-10-10
+**Task**: Triage duplicate target picker
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Completed the shared Web/Desktop triage duplicate picker: focus opens all eligible formal tasks through pagination; title/identifier/scoped-link lookup, keyboard selection, explicit submission, retry, and bilingual narrow layouts are covered. Replaced the standalone search modal. Verified production Web and Electron renderer builds, 4/4 Web/Desktop × en/zh-Hans browser scenarios, core 2922 tests, focused views 41 tests, core/views typechecks, UI exports, views lint (0 errors; 27 pre-existing warnings), and diff whitespace. Task archived after the isolated Lore work commit; unrelated concurrent edits were preserved.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c13954cd4` | Let triage duplicate targets be browsable from the input |
+
+### Status
+
+[OK] **Completed**
