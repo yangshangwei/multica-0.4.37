@@ -8,7 +8,7 @@
 
 视觉依据是用户提供的现有弹窗，以及 `packages/ui/styles/tokens.css`、共享 Dialog/Tabs/Button 组件。本次是局部适配，不更换产品设计语言。保留单列、白色浮层、浅灰命令区和中性色按钮；警告用现有 warning 语义，成功用 success 语义。
 
-[全部设计稿与可编辑源文件](../../../docs/design/2026-10-11-add-computer/README.md)
+[全部设计稿与可编辑源文件](../../../../../docs/design/2026-10-11-add-computer/README.md)
 
 ## 阅读顺序与结构
 
