@@ -84,7 +84,7 @@ it("preserves file cards, mentions and code through AI apply/undo and returns fo
   expect(editor.querySelector(".mention")).toHaveTextContent("@Alice");
   expect(editor.querySelector("pre")).toHaveTextContent("const result = compute(1, 2);");
 
-  await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+  await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
   await screen.findByRole("button", { name: "Undo" });
   expect(optimize).toHaveBeenCalledWith(expect.objectContaining({ text: originalSerialized, mode: "manual" }), { workspaceId: "workspace-1", signal: expect.any(AbortSignal), onText: expect.any(Function) });
   expect(editor).toHaveTextContent("Review the report and explain the result.");
@@ -100,7 +100,7 @@ it("preserves file cards, mentions and code through AI apply/undo and returns fo
 
   let resolve!: (value: { text: string; questions: string[] }) => void;
   optimize.mockReturnValueOnce(new Promise<{ text: string; questions: string[] }>((done) => { resolve = done; }));
-  await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+  await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
   await userEvent.type(screen.getByRole("textbox", { name: "Issue title" }), "My title");
   await act(async () => { resolve({ text: optimized, questions: [] }); });
   expect(editor).toHaveTextContent("Review the report and explain the result.");

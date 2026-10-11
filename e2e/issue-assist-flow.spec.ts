@@ -45,7 +45,7 @@ async function open(page: Page, slug: string, mode: "manual" | "agent" = "manual
 async function refine(page: Page, dialog: Locator, editor: Locator, sentinel: string) {
   await editor.fill(`I want a team weekly report feature. ${sentinel}`);
   const response = page.waitForResponse((res) => responseFor(res, optimizePath));
-  await dialog.getByRole("button", { name: "Help me refine", exact: true }).click();
+  await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
   expect((await response).status()).toBe(200);
   await expect(editor).toHaveText(refined);
 }
@@ -61,7 +61,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await page.setViewportSize({ width: 1280, height: 900 });
       const { dialog, editor } = await open(page, workspace.slug);
       const title = "Weekly report " + suffix;
-      await dialog.getByRole("textbox", { name: "Issue title", exact: true }).fill(title);
+      await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
       await refine(page, dialog, editor, "E2E_ASSIST_TWO");
       await expect(dialog.getByRole("button", { name: "Key details · 2", exact: true })).toHaveAttribute("aria-expanded", "true");
       await dialog.getByLabel(questions[0], { exact: true }).fill("Team members write it; their team lead reads it.");
@@ -119,19 +119,19 @@ test.describe("AI refinement through real server and task creation", () => {
       const { dialog, editor } = await open(page, workspace.slug);
       await editor.fill("Weekly reports E2E_ASSIST_DELAY");
       const done = page.waitForResponse((res) => responseFor(res, optimizePath));
-      await dialog.getByRole("button", { name: "Help me refine", exact: true }).click();
+      await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       await editor.fill("Keep my later edit about monthly reports.");
       await done;
       await expect(dialog.getByRole("status")).toHaveText("Content changed. Optimize again to use your latest edits.");
       await expect(editor).toHaveText("Keep my later edit about monthly reports.");
       await dialog.getByRole("button", { name: "Discard", exact: true }).click();
       await editor.fill("Cancel this E2E_ASSIST_DELAY");
-      await dialog.getByRole("button", { name: "Help me refine", exact: true }).click();
+      await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
-      await expect(dialog.getByRole("button", { name: "Help me refine", exact: true })).toBeEnabled();
+      await expect(dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ })).toBeEnabled();
       await expect(editor).toHaveText("Cancel this E2E_ASSIST_DELAY");
       await editor.fill("Preserve this draft E2E_ASSIST_FAIL");
-      await dialog.getByRole("button", { name: "Help me refine", exact: true }).click();
+      await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");
       await expect(editor).toHaveText("Preserve this draft E2E_ASSIST_FAIL");
       await editor.fill("Retry with complete requirements E2E_ASSIST_ZERO");
@@ -146,10 +146,10 @@ test.describe("AI refinement through real server and task creation", () => {
       const { dialog, editor } = await open(page, workspace.slug);
       const title = `Preserved report ${suffix}`;
       const failedDraft = "Preserve my original report requirements E2E_ASSIST_FAIL";
-      await dialog.getByRole("textbox", { name: "Issue title", exact: true }).fill(title);
+      await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
       await editor.fill(failedDraft);
       const optimized = page.waitForResponse((res) => responseFor(res, optimizePath));
-      await dialog.getByRole("button", { name: "Help me refine", exact: true }).click();
+      await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       const draftMarkdown: string = (await optimized).request().postDataJSON().text;
       expect(draftMarkdown.replaceAll("\\_", "_")).toBe(failedDraft);
       await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");

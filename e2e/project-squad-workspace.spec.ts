@@ -92,7 +92,7 @@ test("keeps project work visible with 1, 8 and 20 squads and persists explicit d
     await page.locator("main").getByRole("button", { name: "New Issue", exact: true }).click();
     let issueDialog = page.getByRole("dialog", { name: "New Issue", exact: true });
     await expect(issueDialog).toBeVisible();
-    await issueDialog.getByRole("textbox", { name: "Issue title", exact: true }).fill("Validate the customer release");
+    await issueDialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill("Validate the customer release");
     const created = page.waitForResponse((response) => response.request().method() === "POST" && /\/api\/issues$/.test(response.url()));
     await issueDialog.getByRole("button", { name: "Create Issue", exact: true }).click();
     const createdResponse = await created;

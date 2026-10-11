@@ -245,7 +245,7 @@ test("failed manual creation retains title and description and retry creates exa
   const dialog = page.getByRole("dialog", { name: "New Issue", exact: true });
   const title = "Retain manual issue draft";
   const description = "The complete description must survive the rejected request.";
-  const titleInput = dialog.getByRole("textbox", { name: "Issue title", exact: true });
+  const titleInput = dialog.getByRole("textbox", { name: "Title (required)", exact: true });
   const editor = dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]');
   await titleInput.fill(title);
   await editor.fill(description);

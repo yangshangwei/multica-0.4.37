@@ -178,7 +178,7 @@ test.describe("workspace built-in defaults", () => {
       await page.getByRole("button", { name: "Issues", exact: true }).click();
       await page.locator("main").getByRole("button", { name: "New Issue", exact: true }).click();
       const issueDialog = page.getByRole("dialog");
-      await issueDialog.getByRole("textbox", { name: "Issue title", exact: true }).fill("Verify the starter workflow");
+      await issueDialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill("Verify the starter workflow");
       await expect(issueDialog.getByRole("button", { name: "Create Issue", exact: true })).toBeEnabled();
       await page.screenshot({ path: info.outputPath("incumbent-issue-dialog-reference.png"), animations: "disabled" });
       const createdIssue = page.waitForResponse((response) => response.request().method() === "POST" && /\/api\/issues$/.test(response.url()));

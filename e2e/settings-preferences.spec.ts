@@ -137,7 +137,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await page.getByRole("button", { name: "High", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "High", exact: true })).toBeVisible();
   const title = "Priority selected through the hidden-field menu";
-  await dialog.getByRole("textbox", { name: "Issue title", exact: true }).fill(title);
+  await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
   const created = page.waitForResponse((response) =>
     new URL(response.url()).pathname === "/api/issues" && response.request().method() === "POST",
   );

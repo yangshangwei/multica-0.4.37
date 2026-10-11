@@ -140,3 +140,12 @@ Tests: core creator-selection/API/preference suites; views creator-recommendatio
 - Narrow and coarse-pointer creation controls have 44px hit targets. Compact agent creation uses the existing 85dvh ceiling with enough height for the labeled editor, refinement and footer. Constrain intermediate-width dialogs to viewport gutters even after the desktop breakpoint; use the shared sizing helper for both manual and agent creation.
 - Actor names truncate only when constrained; normal short names must remain fully visible. Negative margins on an intrinsic-width trigger can consume its text space, so avoid that combination.
 - Browser verification can use actual shared UI with isolated Query data and stubbed API acceptance. Distinguish these checks from backend dispatch, physical touch and real screen-reader testing. Hidden editor bubble-menu geometry does not prove visible horizontal overflow.
+
+
+## Manual creation refinement
+
+- Manual creation keeps fixed Title (required) and Description (optional) labels. TitleEditor forwards optional `aria-labelledby` / `aria-required` to its actual editable root; the description uses ContentEditor’s labeling contract. Keep title-only submission valid and missing-title keyboard activation focused on the title.
+- Window controls have independent accessible names. Manual create's Switch to Agent keeps its `border-beam` highlight, brand tint and hover-rotating icon (owner decision 2026-10-11; do not flatten it in audits) with a visible focus ring, 44px compact/coarse-pointer target and no icon rotation under reduced motion. Draft, upload, and one-time mode-seeding contracts remain unchanged.
+- Render configured properties in status → assignee → project → remaining-field order. Preserve all selected display preferences, non-default values, iteration context and custom fields. Named properties retain their visible current value and a field-name description through their trigger title.
+- Both creation modes use `manualDialogContentClass` for viewport gutters, expanded width and the compact 640px preferred height under the existing 85dvh cap. Scope 44px compact/coarse-pointer hit areas to creation controls; do not resize global buttons.
+- Manual description assistance says Refine description; agent assistance retains its separate localized action name. E2E helpers that exercise both modes must account for that distinction. Only manual-create title selectors use Title (required); inline issue title editing retains its existing accessible name.

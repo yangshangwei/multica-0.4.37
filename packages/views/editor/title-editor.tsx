@@ -24,6 +24,8 @@ import "./title-editor.css";
 interface TitleEditorProps {
   defaultValue?: string;
   placeholder?: string;
+  "aria-labelledby"?: string;
+  "aria-required"?: boolean;
   className?: string;
   autoFocus?: boolean;
   onSubmit?: () => void;
@@ -121,6 +123,8 @@ const TitleEditor = forwardRef<TitleEditorRef, TitleEditorProps>(
     {
       defaultValue = "",
       placeholder: placeholderText = "",
+      "aria-labelledby": ariaLabelledBy,
+      "aria-required": ariaRequired,
       className,
       autoFocus = false,
       onSubmit,
@@ -185,6 +189,8 @@ const TitleEditor = forwardRef<TitleEditorRef, TitleEditorProps>(
           role: "textbox",
           "aria-multiline": "false",
           "aria-label": placeholderText || t(($) => $.title_editor.title_aria_label),
+          ...(ariaLabelledBy ? { "aria-labelledby": ariaLabelledBy } : {}),
+          ...(ariaRequired !== undefined ? { "aria-required": String(ariaRequired) } : {}),
         },
       },
       onUpdate: ({ editor: ed }) => {

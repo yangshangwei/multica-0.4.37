@@ -118,7 +118,7 @@ for (const locale of ["en", "zh-Hans"] as const) {
       await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });
       await page.getByRole("button", { name: zh ? "新建任务" : "New Issue", exact: true }).first().click();
       const dialog = page.getByRole("dialog", { name: zh ? "新建任务" : "New Issue", exact: true });
-      const title = dialog.getByRole("textbox", { name: zh ? "任务标题" : "Issue title", exact: true });
+      const title = dialog.getByRole("textbox", { name: zh ? "标题（必填）" : "Title (required)", exact: true });
       await title.fill("Preserve my manual draft");
       const unassigned = zh ? "未分配" : "Unassigned";
       await dialog.getByRole("button", { name: unassigned, exact: true }).click();

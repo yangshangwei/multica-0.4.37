@@ -113,7 +113,7 @@ test("manual issue status, priority and comment persist through refresh and conf
     const { dialog, editor } = await openCreate(page, workspace.slug);
     const title = `Weekly report ${suffix}`;
     const description = "Team members submit progress and blockers for their manager.";
-    await dialog.getByRole("textbox", { name: "Issue title", exact: true }).fill(title);
+    await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
     await editor.fill(description);
     const created = page.waitForResponse((response) => matches(response, "/api/issues"));
     await dialog.getByRole("button", { name: "Create Issue", exact: true }).click();

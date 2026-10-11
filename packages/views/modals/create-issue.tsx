@@ -3,7 +3,7 @@ import { IterationCandidate } from "../iterations/iteration-assignment";
 import { iterationCapabilitiesOptions, iterationChoicesOptions } from "@multica/core/iterations";
 
 import { issueStatusCategory } from "@multica/core/issues";
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useId, useLayoutEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AppLink, resolveClickIntent, useNavigation } from "../navigation";
 import {
@@ -225,6 +225,8 @@ export function ManualCreatePanel({
   const { t: tIssues } = useT("issues");
   const { t: tEditor } = useT("editor");
   const { t: tProjects } = useT("projects");
+  const titleLabelId = useId();
+  const descriptionLabelId = useId();
   const wsId = useWorkspaceId();
   const router = useNavigation();
   const p = useWorkspacePaths();
@@ -903,7 +905,7 @@ export function ManualCreatePanel({
       // would otherwise stay a fully lit, pressable-looking primary button.
       // Deliberately no `pointer-events-none`: this control still has to hover
       // its tooltip and take the click that focuses the title.
-      className="justify-self-end aria-disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:active:translate-y-0"
+      className="justify-self-end aria-disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:active:translate-y-0 max-sm:min-h-11 pointer-coarse:min-h-11"
     >
       {submitState === "submitting" ? (
         t(($) => $.create_issue.submitting)
@@ -935,44 +937,30 @@ export function ManualCreatePanel({
 
             {/* Header */}
             <div className="flex items-center justify-between px-5 pt-3 pb-2 shrink-0">
-              <div className="flex items-center gap-1.5 text-caption">
-                <span className="text-muted-foreground">{workspaceName}</span>
-                <ChevronRight className="size-3 text-faint-foreground" />
-                <span className="font-medium">{t(($) => $.create_issue.manual_breadcrumb)}</span>
+              <div className="flex min-w-0 items-center gap-1.5 text-caption">
+                <span className="truncate text-muted-foreground" title={workspaceName}>{workspaceName}</span>
+                <ChevronRight aria-hidden className="size-3 shrink-0 text-faint-foreground" />
+                <span className="shrink-0 font-medium">{t(($) => $.create_issue.manual_breadcrumb)}</span>
               </div>
-              <div className="flex items-center gap-1">
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <button
-                        type="button"
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        className="rounded-sm p-1.5 opacity-70 hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
-                      >
-                        {isExpanded ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
-                      </button>
-                    }
-                  />
-                  <TooltipContent side="bottom">
-                    {isExpanded
-                      ? t(($) => $.common.collapse_tooltip)
-                      : t(($) => $.common.expand_tooltip)}
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <button
-                        type="button"
-                        onClick={onClose}
-                        className="rounded-sm p-1.5 opacity-70 hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
-                      >
-                        <XIcon className="size-4" />
-                      </button>
-                    }
-                  />
-                  <TooltipContent side="bottom">{t(($) => $.common.close)}</TooltipContent>
-                </Tooltip>
+              <div className="flex shrink-0 items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  aria-label={isExpanded ? t(($) => $.common.collapse_tooltip) : t(($) => $.common.expand_tooltip)}
+                  title={isExpanded ? t(($) => $.common.collapse_tooltip) : t(($) => $.common.expand_tooltip)}
+                  className="flex size-8 items-center justify-center rounded-sm opacity-70 hover:opacity-100 hover:bg-accent/60 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-sm:size-11 pointer-coarse:size-11"
+                >
+                  {isExpanded ? <Minimize2 aria-hidden className="size-4" /> : <Maximize2 aria-hidden className="size-4" />}
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label={t(($) => $.common.close)}
+                  title={t(($) => $.common.close)}
+                  className="flex size-8 items-center justify-center rounded-sm opacity-70 hover:opacity-100 hover:bg-accent/60 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-sm:size-11 pointer-coarse:size-11"
+                >
+                  <XIcon aria-hidden className="size-4" />
+                </button>
               </div>
             </div>
 
@@ -992,9 +980,12 @@ export function ManualCreatePanel({
 
             {/* Title */}
             <div className="px-5 pb-2 shrink-0">
+              <p id={titleLabelId} className="mb-1 text-caption text-muted-foreground">{t(($) => $.create_issue.title_label)}</p>
               <TitleEditor
                 key={formResetKey}
                 ref={titleEditorRef}
+                aria-labelledby={titleLabelId}
+                aria-required
                 autoFocus
                 defaultValue={draft.manual.title}
                 placeholder={t(($) => $.create_issue.title_placeholder)}
@@ -1007,9 +998,11 @@ export function ManualCreatePanel({
 
             {/* Description — takes remaining space */}
             <div ref={descriptionScrollRef} {...descDropZoneProps} className="relative flex flex-col flex-1 min-h-0 overflow-y-auto px-5">
+              <p id={descriptionLabelId} className="mb-1 text-caption text-muted-foreground">{t(($) => $.create_issue.description_label)}</p>
               <div ref={descriptionContentRef} className="flex min-h-[140px] flex-auto shrink-0 flex-col [&>div]:min-h-0">
                 <ContentEditor
                   ref={descEditorRef}
+                  aria-labelledby={descriptionLabelId}
                   defaultValue={draft.manual.description}
                   placeholder={t(($) => $.create_issue.description_placeholder)}
                   onUpdate={(md) => setManual({ description: md })}
@@ -1067,28 +1060,16 @@ export function ManualCreatePanel({
 
             {/* Property toolbar — each field renders per the Settings → Preferences
                 selection (see showField above). */}
-            <div className="flex items-center gap-1.5 px-4 py-2 shrink-0 flex-wrap">
+            <div role="group" aria-label={t(($) => $.create_issue.properties_label)} className="flex items-center gap-1.5 px-4 py-2 shrink-0 flex-wrap [&_button]:max-sm:min-h-11 [&_button]:max-sm:min-w-11 [&_button]:pointer-coarse:min-h-11 [&_button]:pointer-coarse:min-w-11 [&_button]:focus-visible:outline-none [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-ring [&_button]:focus-visible:ring-inset">
               {/* Status */}
               {showField.status && (
                 <StatusPicker
                   status={status}
                   onUpdate={(u) => { if (u.status) updateStatus(u.status); }}
-                  triggerRender={<PillButton />}
+                  triggerRender={<PillButton title={tIssues(($) => $.detail.prop_status)} />}
                   align="start"
                   open={fieldPickerOpen === "status" ? true : undefined}
                   onOpenChange={(open) => setFieldPickerOpen(open ? "status" : null)}
-                />
-              )}
-
-              {/* Priority */}
-              {showField.priority && (
-                <PriorityPicker
-                  priority={priority}
-                  onUpdate={(u) => { if (u.priority) updatePriority(u.priority); }}
-                  triggerRender={<PillButton />}
-                  align="start"
-                  open={fieldPickerOpen === "priority" ? true : undefined}
-                  onOpenChange={(open) => setFieldPickerOpen(open ? "priority" : null)}
                 />
               )}
 
@@ -1102,9 +1083,39 @@ export function ManualCreatePanel({
                     u.assignee_type ?? undefined,
                     u.assignee_id ?? undefined,
                   )}
-                  triggerRender={<PillButton />}
+                  triggerRender={<PillButton title={tIssues(($) => $.detail.prop_assignee)} />}
                   open={fieldPickerOpen === "assignee" ? true : undefined}
                   onOpenChange={(open) => setFieldPickerOpen(open ? "assignee" : null)}
+                />
+              )}
+
+              {/* Project */}
+              {showField.project && (
+                <ProjectPicker
+                  projectId={projectId ?? null}
+                  onUpdate={(u) => updateProject(u.project_id ?? undefined)}
+                  triggerRender={
+                    <ClearablePillButton
+                      title={tIssues(($) => $.detail.prop_project)}
+                      onClear={projectId ? () => updateProject(undefined) : undefined}
+                      clearLabel={tProjects(($) => $.picker.clear_aria)}
+                    />
+                  }
+                  align="start"
+                  open={fieldPickerOpen === "project" ? true : undefined}
+                  onOpenChange={(open) => setFieldPickerOpen(open ? "project" : null)}
+                />
+              )}
+
+              {/* Priority */}
+              {showField.priority && (
+                <PriorityPicker
+                  priority={priority}
+                  onUpdate={(u) => { if (u.priority) updatePriority(u.priority); }}
+                  triggerRender={<PillButton title={tIssues(($) => $.detail.prop_priority)} />}
+                  align="start"
+                  open={fieldPickerOpen === "priority" ? true : undefined}
+                  onOpenChange={(open) => setFieldPickerOpen(open ? "priority" : null)}
                 />
               )}
 
@@ -1128,23 +1139,6 @@ export function ManualCreatePanel({
                 invalid: id !== null && (!Number.isSafeInteger(revision) || (revision ?? 0) <= 0),
               })} />
               {iterationSelection.id && draftStatusCategory(status) === "done" && <label className="flex items-center gap-2"><input type="checkbox" checked={allowCompletedIteration} onChange={event => setAllowCompletedIteration(event.target.checked)} />{tProjects($ => $.iterations.allowCompleted)}</label>}
-              {/* Project */}
-              {showField.project && (
-                <ProjectPicker
-                  projectId={projectId ?? null}
-                  onUpdate={(u) => updateProject(u.project_id ?? undefined)}
-                  triggerRender={
-                    <ClearablePillButton
-                      onClear={projectId ? () => updateProject(undefined) : undefined}
-                      clearLabel={tProjects(($) => $.picker.clear_aria)}
-                    />
-                  }
-                  align="start"
-                  open={fieldPickerOpen === "project" ? true : undefined}
-                  onOpenChange={(open) => setFieldPickerOpen(open ? "project" : null)}
-                />
-              )}
-
               {/* Stage — only relevant when creating a sub-issue under a parent */}
               {parentIssueId && (
                 <StagePicker
@@ -1464,6 +1458,7 @@ export function ManualCreatePanel({
               <div className="flex min-h-7 items-center gap-2 sm:mr-auto">
                 <FileUploadButton
                   size="sm"
+                  className="max-sm:size-11 pointer-coarse:size-11"
                   multiple
                   onSelect={(file) => descEditorRef.current?.uploadFile(file)}
                 />
@@ -1480,7 +1475,7 @@ export function ManualCreatePanel({
                 <ArrowLeftRight aria-hidden className="size-3.5 text-brand transition-transform duration-300 group-hover:rotate-180 motion-reduce:transition-none" />
                 {t(($) => $.create_issue.switch_to_agent)}
               </button>}
-              <label className="flex shrink-0 items-center gap-1.5 text-caption text-muted-foreground cursor-pointer select-none">
+              <label className="flex min-h-7 shrink-0 items-center gap-1.5 text-caption text-muted-foreground cursor-pointer select-none max-sm:min-h-11 pointer-coarse:min-h-11">
                 <Switch
                   size="sm"
                   checked={keepOpen}
@@ -1516,8 +1511,8 @@ export function manualDialogContentClass(isExpanded: boolean, needsAssistSpace =
     "!transition-all !duration-300 !ease-out motion-reduce:!transition-none",
     "!w-full !max-w-[calc(100vw-1.5rem)] !max-h-[85dvh]",
     isExpanded
-      ? "!h-5/6 sm:!max-w-4xl"
-      : cn(needsAssistSpace ? "!h-[600px]" : "!h-[440px]", "sm:!max-w-2xl"),
+      ? "!h-5/6 sm:!max-w-[min(56rem,calc(100vw-1.5rem))]"
+      : cn(needsAssistSpace ? "!h-[600px]" : "!h-[440px]", "max-sm:!h-[640px] sm:!max-w-[min(42rem,calc(100vw-1.5rem))]"),
   );
 }
 

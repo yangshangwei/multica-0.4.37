@@ -178,7 +178,7 @@
   },
   "create_issue": {
     "ai_optimize": {
-      "description": "帮我完善",
+      "description": "完善描述",
       "instructions": "帮我完善",
       "empty_hint": "输入任务描述后可完善。",
       "generating": "正在完善...",
@@ -392,6 +392,9 @@
       "use_named": "使用 {{name}}",
       "use": "使用此助手",
       "empty_hint": "先描述任务，再为你推荐。"
-    }
+    },
+    "title_label": "标题（必填）",
+    "description_label": "描述（选填）",
+    "properties_label": "任务属性"
   }
 }

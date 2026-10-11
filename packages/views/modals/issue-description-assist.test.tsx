@@ -53,7 +53,7 @@ beforeEach(() => {
 describe("IssueDescriptionAssist", () => {
   it("preserves answers while collapsed and restores them after merging and undo", async () => {
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     await userEvent.type(screen.getByRole("textbox", { name: "Which version?" }), "Version 2");
     const toggle = screen.getByRole("button", { name: "Key details · 1" });
     await userEvent.click(toggle);
@@ -75,7 +75,7 @@ describe("IssueDescriptionAssist", () => {
     const onNeedsSpace = vi.fn();
     const onRevealEditor = vi.fn();
     const view = setup({ onNeedsSpace, onRevealEditor });
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     const { onText } = optimize.mock.calls[0]![0] as { onText: (text: string) => void };
     act(() => { onText("A"); onText("AB"); });
     expect(onNeedsSpace).toHaveBeenCalledTimes(1);
@@ -92,7 +92,7 @@ describe("IssueDescriptionAssist", () => {
     const otherField = document.createElement("input");
     document.body.append(otherField);
     try {
-      await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+      await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
       otherField.focus();
       await act(async () => { response.resolve({ text: "Improved request", questions: [] }); });
       expect(otherField).toHaveFocus();
@@ -104,7 +104,7 @@ describe("IssueDescriptionAssist", () => {
 
   it("stops reporting AI completion after the adopted draft is edited", async () => {
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     view.type("My revised content");
     view.rerender(view.element({ ...view.props, value: "My revised content" }));
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
@@ -113,7 +113,7 @@ describe("IssueDescriptionAssist", () => {
   it("automatically fills the validated draft and merges at most two answers into the latest text", async () => {
     optimize.mockResolvedValue({ text: "Improved request", questions: ["Which version?", "Which platform?", "Extra question?"] });
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     expect(view.read()).toBe("Improved request");
     expect(screen.queryByText("Extra question?")).not.toBeInTheDocument();
     await userEvent.type(screen.getByRole("textbox", { name: "Which version?" }), "Version 2");
@@ -135,7 +135,7 @@ describe("IssueDescriptionAssist", () => {
   it("flushes the live editor, previews questions separately, and undoes normalized adoption", async () => {
     const view = setup({ title: "Task title" });
     view.type("Newest request with [file](https://example.test/file)");
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     expect(optimize).toHaveBeenCalledWith(expect.objectContaining({ text: "Newest request with [file](https://example.test/file)", title: "Task title", mode: "manual", signal: expect.any(AbortSignal) }));
     expect(view.onChange).toHaveBeenLastCalledWith(view.read());
     expect(await screen.findByText("Which version?")).toBeInTheDocument();
@@ -151,7 +151,7 @@ describe("IssueDescriptionAssist", () => {
     const response = deferred();
     optimize.mockReturnValueOnce(response.promise);
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     const { onText } = optimize.mock.calls[0]![0] as { onText?: (text: string) => void };
     const partial = "## Draft\n![image](https://example.test/tracker.png)";
     act(() => { onText?.("## Draft"); });
@@ -173,7 +173,7 @@ describe("IssueDescriptionAssist", () => {
     const response = deferred();
     optimize.mockReturnValueOnce(response.promise);
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     const { onText } = optimize.mock.calls[0]![0] as { onText?: (text: string) => void };
     act(() => { onText?.("Provisional text"); });
     expect(screen.getByText("Provisional text")).toBeInTheDocument();
@@ -190,7 +190,7 @@ describe("IssueDescriptionAssist", () => {
     const response = deferred();
     optimize.mockReturnValueOnce(response.promise);
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     let queued: string | null = "Original request";
     view.editorRef.current.flushPendingUpdate.mockImplementation(() => {
       const result = queued;
@@ -210,7 +210,7 @@ describe("IssueDescriptionAssist", () => {
     const response = deferred();
     optimize.mockReturnValueOnce(response.promise);
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     view.type("Newer unsaved edit");
     await act(async () => { response.resolve({ text: "Improved request", questions: [] }); });
     expect(view.read()).toBe("Newer unsaved edit");
@@ -221,7 +221,7 @@ describe("IssueDescriptionAssist", () => {
 
   it("protects newer edits from undo", async () => {
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     await screen.findByRole("button", { name: "Undo" });
     view.type("Edit after adoption");
     await userEvent.click(screen.getByRole("button", { name: "Undo" }));
@@ -234,7 +234,7 @@ describe("IssueDescriptionAssist", () => {
     const second = deferred();
     optimize.mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     const signal = optimize.mock.calls[0]![0].signal as AbortSignal;
     const { onText } = optimize.mock.calls[0]![0] as { onText?: (text: string) => void };
     act(() => { onText?.("Provisional cancelled text"); });
@@ -242,8 +242,8 @@ describe("IssueDescriptionAssist", () => {
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(signal.aborted).toBe(true);
     expect(screen.queryByText("Provisional cancelled text")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Help me refine" })).toHaveFocus();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    expect(screen.getByRole("button", { name: "Refine description" })).toHaveFocus();
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     const current = optimize.mock.calls[1]![0] as { onText?: (text: string) => void };
     act(() => { current.onText?.("Current stream text"); });
     act(() => { onText?.("Late cancelled stream text"); });
@@ -258,7 +258,7 @@ describe("IssueDescriptionAssist", () => {
   it("aborts when its creation panel unmounts", async () => {
     optimize.mockReturnValue(deferred().promise);
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     const signal = optimize.mock.calls[0]![0].signal as AbortSignal;
     const { onText } = optimize.mock.calls[0]![0] as { onText?: (text: string) => void };
     view.unmount();
@@ -271,7 +271,7 @@ describe("IssueDescriptionAssist", () => {
   it("keeps failures inline and can regenerate from the latest text", async () => {
     optimize.mockRejectedValueOnce(new Error("Private provider diagnostics"));
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Optimization failed. Try again or create with your current content.");
     expect(screen.queryByText("Private provider diagnostics")).not.toBeInTheDocument();
     view.type("Latest edit");
@@ -285,7 +285,7 @@ describe("IssueDescriptionAssist", () => {
   it("explains unavailable AI without exposing server diagnostics", async () => {
     optimize.mockRejectedValueOnce(new ApiError("Private provider details", 503, "Unavailable"));
     const view = setup();
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("AI optimization is unavailable. You can still create with your current content.");
     expect(view.read()).toBe("Original request");
     expect(screen.queryByText("Private provider details")).not.toBeInTheDocument();
@@ -293,9 +293,9 @@ describe("IssueDescriptionAssist", () => {
 
   it("disables empty input and rechecks uploads at invocation time", async () => {
     const view = setup({ value: "", isBlocked: () => true });
-    expect(screen.getByRole("button", { name: "Help me refine" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Refine description" })).toBeDisabled();
     view.rerender(view.element({ ...view.props, value: "Original request" }));
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     expect(optimize).not.toHaveBeenCalled();
   });
 
@@ -304,7 +304,7 @@ describe("IssueDescriptionAssist", () => {
     optimize.mockReturnValueOnce(response.promise);
     let blocked = false;
     const view = setup({ isBlocked: () => blocked });
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     if (gate === "upload") blocked = true;
     else view.rerender(view.element({ ...view.props, submitting: true }));
     await act(async () => { response.resolve({ text: "Improved request", questions: [] }); });

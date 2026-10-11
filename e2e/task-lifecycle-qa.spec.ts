@@ -38,7 +38,7 @@ test("persists a manually created feature request through edits, workflow, comme
     await page.getByRole("button", { name: "New Issue", exact: true }).click();
     const title = `Team weekly report ${suffix}`;
     const description = "Let team members write a weekly report and share progress with their manager.";
-    const titleInput = page.getByRole("textbox", { name: "Issue title", exact: true });
+    const titleInput = page.getByRole("textbox", { name: "Title (required)", exact: true });
     await titleInput.fill(title);
     const dialog = page.getByRole("dialog").filter({ has: titleInput });
     await dialog.locator('.ProseMirror[contenteditable="true"]:not([aria-label="Issue title"])').fill(description);

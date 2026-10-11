@@ -376,7 +376,7 @@ vi.mock("../editor", async () => {
   const composer = await vi.importActual<typeof import("../editor/use-composer-submit")>(
     "../editor/use-composer-submit",
   );
-  const ContentEditor = forwardRef(({ defaultValue, onUpdate, onSubmit, onUploadFile, onUploadingChange, placeholder, attachments }: any, ref: any) => {
+  const ContentEditor = forwardRef(({ defaultValue, onUpdate, onSubmit, onUploadFile, onUploadingChange, placeholder, attachments, "aria-labelledby": ariaLabelledBy }: any, ref: any) => {
     const valueRef = useRef(defaultValue || "");
     const [value, setValue] = useState(defaultValue || "");
     // Mirrors the real editor's `uploading` node attrs: the placeholder is in
@@ -418,6 +418,7 @@ vi.mock("../editor", async () => {
           value={value}
           placeholder={placeholder}
           data-attachments-count={attachments?.length ?? 0}
+          aria-labelledby={ariaLabelledBy}
           onChange={(e) => {
             valueRef.current = e.target.value;
             setValue(e.target.value);
@@ -438,7 +439,7 @@ vi.mock("../editor", async () => {
   // configured `send` chord (default Mod+Enter) is `onSubmitShortcut`. The
   // real component never routes plain Enter to onSubmitShortcut.
   const TitleEditor = forwardRef(
-    ({ defaultValue, placeholder, onChange, onSubmit, onSubmitShortcut }: any, ref: any) => {
+    ({ defaultValue, placeholder, onChange, onSubmit, onSubmitShortcut, "aria-labelledby": ariaLabelledBy, "aria-required": ariaRequired }: any, ref: any) => {
       const [value, setValue] = useState(defaultValue || "");
       const inputRef = useRef<HTMLInputElement>(null);
       useImperativeHandle(ref, () => ({
@@ -449,6 +450,8 @@ vi.mock("../editor", async () => {
       return (
         <input
           ref={inputRef}
+          aria-labelledby={ariaLabelledBy}
+          aria-required={ariaRequired}
           value={value}
           placeholder={placeholder}
           onChange={(e) => {
@@ -749,6 +752,14 @@ describe("CreateIssueModal", () => {
     });
   });
 
+  it("labels the required title, optional description and window controls", () => {
+    renderModal(<CreateIssueModal onClose={vi.fn()} />);
+    expect(screen.getByRole("textbox", { name: "Title (required)" })).toHaveAttribute("aria-required", "true");
+    expect(screen.getByRole("textbox", { name: "Description (optional)" })).not.toHaveAttribute("aria-required", "true");
+    expect(screen.getByRole("button", { name: "Expand" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+  });
+
   const iterationSeed = { workspace_id: "ws-test", current_iteration_id: "iteration-1", expected_iteration_revision: 7 };
   const availableIteration = (revision = 7) => ({ id: "iteration-1", workspace_id: "ws-test", name: "Delivery plan", status: "planned", mode: "manual", revision });
   function enableIterationCreation(revision = 7) {
@@ -857,12 +868,12 @@ describe("CreateIssueModal", () => {
     mockDraftStore.draft.manual.description = "Original description";
     const onClose = vi.fn();
     renderModal(<CreateIssueModal onClose={onClose} />);
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     await screen.findByRole("button", { name: "Undo" });
     await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
     await waitFor(() => expect(screen.queryByText("Clarified request")).not.toBeInTheDocument());
     expect(screen.getByPlaceholderText("Add description...")).toHaveValue("");
-    expect(screen.getByRole("button", { name: "Help me refine" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Refine description" })).toBeDisabled();
     expect(onClose).not.toHaveBeenCalled();
   });
 
@@ -870,7 +881,7 @@ describe("CreateIssueModal", () => {
     mockDraftStore.draft.manual.title = "Original title";
     mockDraftStore.draft.manual.description = "Original description";
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     await screen.findByRole("button", { name: "Undo" });
     expect(mockCreateIssue).not.toHaveBeenCalled();
     expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Clarified request");
@@ -881,7 +892,7 @@ describe("CreateIssueModal", () => {
   it("writes adopted AI text to the manual draft and supports undo", async () => {
     mockDraftStore.draft.manual.description = "Original description";
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
+    await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     await screen.findByRole("button", { name: "Undo" });
     expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Clarified request");
     expect(mockDraftStore.draft.manual.description).toBe("Clarified request");
@@ -2036,7 +2047,7 @@ describe("CreateIssueModal", () => {
         // DialogContent's own `max-w-[calc(100%-2rem)]` and the card runs
         // edge to edge on a phone.
         expect(className).toContain("!max-w-[calc(100vw-1.5rem)]");
-        expect(className).toContain(isExpanded ? "sm:!max-w-4xl" : "sm:!max-w-2xl");
+        expect(className).toContain(isExpanded ? "sm:!max-w-[min(56rem,calc(100vw-1.5rem))]" : "sm:!max-w-[min(42rem,calc(100vw-1.5rem))]");
       }
     });
 

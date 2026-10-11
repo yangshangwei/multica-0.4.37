@@ -180,7 +180,7 @@
   },
   "create_issue": {
     "ai_optimize": {
-      "description": "Help me refine",
+      "description": "Refine description",
       "instructions": "Help me refine",
       "empty_hint": "Write a description first to refine it.",
       "generating": "Refining...",
@@ -395,6 +395,9 @@
       "use_named": "Use {{name}}",
       "use": "Use assistant",
       "empty_hint": "Describe the task first to get suggestions."
-    }
+    },
+    "title_label": "Title (required)",
+    "description_label": "Description (optional)",
+    "properties_label": "Task properties"
   }
 }
