@@ -524,3 +524,35 @@ const choices = result.data?.filter_options;
 For Select assertions, assert the selected `data-slot=select-value` text rather than the entire trigger's textContent, which also contains the decorative icon. Isolated Desktop E2E may set `MULTICA_E2E_DESKTOP_OUTPUT_DIR` to a separate production build; do not overwrite a running checkout's output. Authentication fixture scripts initialize locale/theme only for a new token, retaining a user's choices across reloads within that same synthetic session.
 
 When testing themes, exercise the real ThemeProvider preference handler so React state, the dark class and native color-scheme change together. Manually toggling only the class leaves date icons in the wrong native palette and creates a false contrast finding; assert the actual date input color-scheme before accepting dark-mode captures.
+
+## Task-reference prefix parity
+
+**Scope and signatures.** `parseIssueReferences` and
+`iterationCandidateSearchOptions` recognize pasted issue identifiers; backend
+`parseQueryNumber` extracts numbers for search. Workspace issue prefixes permit
+1–10 ASCII alphanumerics, including digit-first and entirely numeric prefixes.
+
+**Contract.** Iteration identifiers use `^[a-z\d]{1,10}-[1-9]\d*$` with the
+case-insensitive flag, matching project and triage pickers. Preserve UUID
+recognition, input order, case-insensitive deduplication and the 50-reference
+limit. Backend search retains its existing positive-integer parsing, including
+bare numbers and padded positive numbers, while accepting the same prefix class.
+
+**Validation and errors.** `123-1`, `3D-2` and `A1-3` take exact `getIssue`
+lookups; `123-1 login` remains text search. Do not treat an overlong prefix,
+zero/negative issue number or mixed prose as a canonical pasted identifier.
+Continue propagating non-404 lookup failures rather than calling them missing.
+
+**Good/base/bad.** Single and batched numeric prefixes resolve like letter-only
+ones. UUID aliases still deduplicate by returned task ID. Requiring the prefix
+to begin with a letter incorrectly routes a valid reference to title search.
+
+**Required tests.** Core `iterations/candidates.test.ts` owns the parser matrix,
+exact fetch/text-search wiring and alias deduplication. Backend
+`TestParseQueryNumber` owns prefix bounds and existing numeric search semantics.
+Run handler package tests only against an isolated test database because its
+`TestMain` initializes database fixtures even for pure-test filters.
+
+**Wrong versus correct.** Wrong: `[A-Za-z][A-Za-z0-9]*` for prefixes. Correct:
+the workspace's bounded alphanumeric prefix contract, with the positive issue
+number rule appropriate to the parser's existing interface.
