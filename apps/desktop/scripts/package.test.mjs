@@ -525,6 +525,16 @@ describe("electron-builder.yml packaging config", () => {
     expect(entries.length).toBeGreaterThan(0);
     expect(entries).toContain("!dist/**");
   });
+
+  // A deny-list let local env files and tool state (.env.development.local,
+  // .gstack, .omc, .turbo) into a v0.6.5 release candidate's app.asar. Only
+  // the runtime inputs may be included; everything else is excluded by
+  // omission, so a stray file in the build checkout cannot ship.
+  it("includes only the runtime inputs", () => {
+    const entries = readFilesBlock(readFileSync(configPath, "utf-8"));
+    const included = entries.filter((entry) => !entry.startsWith("!"));
+    expect(included.sort()).toEqual(["out/**", "package.json", "resources/**"]);
+  });
 });
 
 describe("desktopVersionOverride", () => {
