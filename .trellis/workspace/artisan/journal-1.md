@@ -1882,3 +1882,40 @@ Follow-up verification after archival: full Go race suite passed on a fresh migr
 ### Status
 
 [OK] **Completed**
+
+
+## Session 59: 完成三系统添加电脑与真实连接确认
+<!-- trellis-session: v=2 fp=38c40c492cf47039 -->
+
+**Date**: 2026-10-11
+**Task**: 完成三系统添加电脑与真实连接确认
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+完成已批准的 Web/Desktop 添加电脑设计：三系统与内网安装配置、安全命令、可靠电脑基线、复制与恢复交互；404 项定向测试、类型/后端/部署检查及生产版浏览器验收通过，任务已归档。
+
+### Main Changes
+
+- 按系统 CLI 配置贯通 server/core/Compose/Helm/离线说明；旧 Unix 命令兼容。
+- WS 仅刷新查询；成功使用可靠新电脑事实，拒绝畸形工作空间身份。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `eead23764` | feat(runtimes): prevent setup mismatches when adding another computer |
+| `9f184d273` | docs(runtimes): keep approved design records aligned with completed setup |
+
+### Testing
+
+- [OK] 404 TS 定向测试；9 包类型检查；Go config20/docs12；offline58 pass/3 opt-in skip；Helm/Compose。
+- [OK] 生产 Web 中英文、390px、真实剪贴板和错误恢复通过；视觉94/100。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 三系统真实双机、原生 Electron 与辅助技术验收未执行，边界见归档任务 verification.md。
