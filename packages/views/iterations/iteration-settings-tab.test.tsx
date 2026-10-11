@@ -294,10 +294,9 @@ it("keeps access retry available when background reads recover after a forbidden
   await act(async () => {
     await client.refetchQueries({ queryKey: ["iterations", ws, "capabilities"] });
   });
-  await act(async () => {
-    await client.refetchQueries({ queryKey: ["iterations", ws, "settings"] });
-  });
-  expect(client.getQueryState(["iterations", ws, "settings"])?.status).toBe("success");
+  // Settings stay disabled until the recovered capability renders, so a direct
+  // refetch here would be skipped; wait for the observer's own recovery read.
+  await waitFor(() => expect(client.getQueryState(["iterations", ws, "settings"])?.status).toBe("success"));
   expect(screen.queryByRole("switch")).not.toBeInTheDocument();
   await user.click(await screen.findByRole("button", { name: "Retry" }));
   expect(await screen.findByRole("switch", { name: "Enable iterations" })).toHaveAttribute("aria-disabled", "true");
