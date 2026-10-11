@@ -50,12 +50,12 @@ export interface AvailabilityVisual {
 export const availabilityConfig: Record<AgentAvailability, AvailabilityVisual> = {
   online: {
     dotClass: "bg-success",
-    textClass: "text-success",
+    textClass: "text-success-foreground",
     icon: CircleDot,
   },
   unstable: {
     dotClass: "bg-warning",
-    textClass: "text-warning",
+    textClass: "text-warning-foreground",
     icon: PlugZap,
   },
   offline: {
