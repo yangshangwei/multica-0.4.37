@@ -1919,3 +1919,37 @@ Follow-up verification after archival: full Go race suite passed on a fresh migr
 ### Next Steps
 
 - 三系统真实双机、原生 Electron 与辅助技术验收未执行，边界见归档任务 verification.md。
+
+
+## Session 60: Complete pending-task creation accessibility
+<!-- trellis-session: v=2 fp=ef2c57f839bc2836 -->
+
+**Date**: 2026-10-11
+**Task**: Complete pending-task creation accessibility
+**Branch**: `codex/projects-p1`
+
+### Summary
+
+Completed and independently reviewed the triage creation form: accessible candidate fields, localized field errors, responsive actions, upload/retry preservation, shared deferred trigger names and isolated field IDs.
+
+### Main Changes
+
+- Archived 10-11-triage-create-dialog-a11y-polish and captured executable frontend contracts.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `574dff832` | fix(triage): keep pending task creation clear and recoverable |
+
+### Testing
+
+- [OK] 99 related Vitest files / 1620 tests; final focused 6 files / 43 tests; views/UI typechecks; scoped ESLint; final detector returned []; four viewport/theme browser scenarios and keyboard/error/retry checks passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Optional follow-up: physical-device and real screen-reader acceptance; no required work remains in this task.
