@@ -1475,9 +1475,9 @@ export function ManualCreatePanel({
                 aria-disabled={gate.uploading || undefined}
                 aria-busy={gate.uploading || undefined}
                 title={t(($) => $.create_issue.switch_to_agent_tooltip)}
-                className="border-beam group flex shrink-0 items-center gap-1.5 justify-self-end text-caption px-2 py-1 rounded-sm text-muted-foreground bg-brand/5 hover:bg-brand/10 hover:text-foreground transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                className="border-beam group flex min-h-7 shrink-0 items-center gap-1.5 justify-self-end text-caption px-2 py-1 rounded-sm text-muted-foreground bg-brand/5 hover:bg-brand/10 hover:text-foreground transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 max-sm:min-h-11 pointer-coarse:min-h-11"
               >
-                <ArrowLeftRight className="size-3.5 text-brand transition-transform duration-300 group-hover:rotate-180" />
+                <ArrowLeftRight aria-hidden className="size-3.5 text-brand transition-transform duration-300 group-hover:rotate-180 motion-reduce:transition-none" />
                 {t(($) => $.create_issue.switch_to_agent)}
               </button>}
               <label className="flex shrink-0 items-center gap-1.5 text-caption text-muted-foreground cursor-pointer select-none">
