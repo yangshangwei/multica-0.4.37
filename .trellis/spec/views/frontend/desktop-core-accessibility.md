@@ -79,6 +79,40 @@ the full daily DOM. Category-based bars pair existing semantic fills with
 | Reduced motion turns on mid-spring | All geometry owners snap on the next frame |
 | Reorder reaches pin/group edge | No crossing; menu boundary disabled and shortcut no-op |
 
+## Core page audit fixes
+
+- Task identifier resolution distinguishes transient failures from definitive
+  401/403/404 responses. UUID and identifier caches must obey the same access
+  decision; a retry cannot replace a retained editor with a skeleton.
+- Chat sessions and messages expose separate loading/error/retry states in both
+  the full page and floating window. Query timestamps keep cold retry controls
+  mounted while Query returns to pending. Failed reads do not clear the active
+  session, composer draft or authorized history. Triage queue, history and
+  settings follow the same retained-content recovery contract.
+- Project search remains reachable at 450 CSS px and 200% native zoom. Clearing
+  search restores input focus. Every icon-only action has a localized name;
+  row actions reveal on keyboard focus, and the task properties Sheet is named.
+- Status fills and text colors are independent: use warning/info/success
+  foreground tokens for small status text. Measure both themes and selected/
+  hover backgrounds; do not reduce the opacity of an entire text badge.
+- Manual task ordering exposes adjacent up/down actions on list, board and
+  swimlane surfaces. Actions use the same rank/move anchors as dragging, honor
+  sort direction, and stop before an unknown pagination boundary. Sorted views
+  do not offer manual order actions. Lane moves preserve hidden preference
+  entries and cannot cross pinned/orphan boundaries. Announce settlement and
+  preserve focus through virtual row remounts without reclaiming toolbar focus.
+- Compact scope selection exposes saved views and invokes the same builtin
+  actions as the wide ViewBar, including clearing the active saved view.
+- Project batch deletion awaits every outcome, prevents duplicate submission,
+  removes successful IDs from selection, and retains failed selections with a
+  localized summary. Never close the confirmation or clear selection on dispatch.
+
+Canonical regressions: `canonical-id.test.tsx`, task detail/route suites,
+`triage-page-recovery.test.tsx`, chat window/page suites, project list/detail
+suites, `adjacent-order.test.ts`, `reorder-controls.test.tsx`, compact selector,
+list/board/swimlane and surface controller suites. Native evidence lives in
+`.impeccable/audit/2026-10-11-desktop-core/`.
+
 ## Good / base / bad cases
 
 - Good: cached project refresh fails, the same filtered row/checkbox/editor

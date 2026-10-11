@@ -1,0 +1,19 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "项目"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "项目" [level=1]
+  - text: "2"
+  - button "新建项目"
+- button
+- button
+- button
+- paragraph: 没有匹配的项目
+- button "问 Multica"
+- region "Notifications alt+T"

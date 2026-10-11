@@ -1,0 +1,13 @@
+[
+  {
+    "antipattern": "bounce-easing",
+    "name": "Bounce or elastic easing",
+    "description": "Bounce and elastic easing feel dated and tacky. Real objects decelerate smoothly — use exponential easing (ease-out-quart/quint/expo) instead.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/styles/base.css",
+    "line": 101,
+    "snippet": "cubic-bezier(0.5, 1.5, 0.4, 1)",
+    "advisory": true
+  }
+]

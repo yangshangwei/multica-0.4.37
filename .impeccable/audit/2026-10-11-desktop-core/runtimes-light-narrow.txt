@@ -1,0 +1,23 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "运行时"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "运行时" [level=1]
+  - text: "2"
+  - paragraph:
+    - text: 为智能体跑 CLI 会话的机器和云端 worker。
+    - link "了解更多 →":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/docs/daemon-runtimes
+  - button "添加电脑"
+- link "Changelog acceptance 本地守护进程 本机 离线":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes/local%3Aplaceholder
+- link "yangshangweideMac-mini.local daemon 019fef71... 在线":
+  - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes/local%3A019fef71-c14f-757e-9ad2-a9750d306456
+- button "问 Multica"
+- region "Notifications alt+T"

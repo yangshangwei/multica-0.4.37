@@ -1,0 +1,127 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱 2":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "收件箱"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "收件箱" [level=1]
+  - text: "2"
+  - button "筛选收件箱"
+  - button
+- button "Triage item ready for review — 手测-R 拒绝与重新审核 分拣动态 18 分钟":
+  - text: Triage item ready for review — 手测-R 拒绝与重新审核
+  - img
+  - paragraph: 分拣动态
+  - text: 18 分钟
+- button "手测-第2期 迭代 1 小时":
+  - text: 手测-第2期
+  - paragraph: 迭代
+  - text: 1 小时
+- button "架构师 1111 提及了你 1 小时":
+  - link "架构师":
+    - img "架构师"
+  - text: "1111"
+  - img
+  - paragraph: 提及了你
+  - text: 1 小时
+- button "小阿孚 吞吞吐吐 状态设为 已阻塞 1 小时":
+  - link "小阿孚":
+    - img "小阿孚": 孚
+  - text: 吞吞吐吐
+  - img
+  - paragraph:
+    - text: 状态设为
+    - img
+    - text: 已阻塞
+  - text: 1 小时
+- button "Triage batch completed 分拣动态 2 天":
+  - text: Triage batch completed
+  - paragraph: 分拣动态
+  - text: 2 天
+- button "Triage batch completed 分拣动态 2 天":
+  - text: Triage batch completed
+  - paragraph: 分拣动态
+  - text: 2 天
+- 'button "CSV import: desktop-retained-import.csv 分拣动态 2 天"':
+  - text: "CSV import: desktop-retained-import.csv"
+  - paragraph: 分拣动态
+  - text: 2 天
+- button "手测-第1期 迭代 2 天":
+  - text: 手测-第1期
+  - paragraph: 迭代
+  - text: 2 天
+- button "手测-第1期 迭代 2 天":
+  - text: 手测-第1期
+  - paragraph: 迭代
+  - text: 2 天
+- separator
+- paragraph: 选择一条通知查看详情
+- button "问 Multica"
+- region "Notifications alt+T"

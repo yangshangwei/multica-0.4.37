@@ -1,0 +1,942 @@
+[
+  {
+    "route": "projects",
+    "theme": "light",
+    "checked": 53,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.606 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 3.48,
+        "floor": 4.5
+      },
+      {
+        "text": "进行中",
+        "class": "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-caption font-medium cursor-pointer hover:opacity-80 transition-opacity bg-warning text-white",
+        "color": "rgb(255, 255, 255)",
+        "background": [
+          220,
+          164,
+          0,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 2.25,
+        "floor": 4.5
+      },
+      {
+        "text": "高",
+        "class": "text-caption text-warning",
+        "color": "oklch(0.75 0.16 85)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 2.17,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          244,
+          244,
+          245,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.38,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      }
+    ]
+  },
+  {
+    "route": "iterations",
+    "theme": "light",
+    "checked": 73,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.606 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 3.48,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          244,
+          244,
+          245,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.38,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      }
+    ]
+  },
+  {
+    "route": "agents",
+    "theme": "light",
+    "checked": 111,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.606 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 3.48,
+        "floor": 4.5
+      },
+      {
+        "text": "孚",
+        "class": "",
+        "color": "oklch(0.58 0.15 150)",
+        "background": [
+          223.5254901960784,
+          238.478431372549,
+          229.48235294117646,
+          1
+        ],
+        "fontSize": 14.4,
+        "ratio": 3.35,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      },
+      {
+        "text": "在线",
+        "class": "truncate text-caption text-success",
+        "color": "oklch(0.55 0.16 145)",
+        "background": [
+          251,
+          251,
+          251,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 4.4,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          244,
+          244,
+          245,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.38,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      }
+    ]
+  },
+  {
+    "route": "issues",
+    "theme": "light",
+    "checked": 86,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.606 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 3.48,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          244,
+          244,
+          245,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.38,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.505 0.016 285.938)",
+        "background": [
+          243,
+          243,
+          244,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.33,
+        "floor": 4.5
+      }
+    ]
+  },
+  {
+    "route": "projects",
+    "theme": "dark",
+    "checked": 53,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.6 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 4.47,
+        "floor": 4.5
+      },
+      {
+        "text": "进行中",
+        "class": "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-caption font-medium cursor-pointer hover:opacity-80 transition-opacity bg-warning text-white",
+        "color": "rgb(255, 255, 255)",
+        "background": [
+          203,
+          148,
+          0,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 2.7,
+        "floor": 4.5
+      },
+      {
+        "text": "已完成",
+        "class": "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-caption font-medium cursor-pointer hover:opacity-80 transition-opacity bg-info text-white",
+        "color": "rgb(255, 255, 255)",
+        "background": [
+          15,
+          146,
+          247,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 3.24,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          39,
+          39,
+          42,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.68,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      }
+    ]
+  },
+  {
+    "route": "iterations",
+    "theme": "dark",
+    "checked": 73,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.6 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 4.47,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          39,
+          39,
+          42,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.68,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      }
+    ]
+  },
+  {
+    "route": "agents",
+    "theme": "dark",
+    "checked": 111,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.6 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 4.47,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          39,
+          39,
+          42,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.68,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      }
+    ]
+  },
+  {
+    "route": "issues",
+    "theme": "dark",
+    "checked": 86,
+    "failures": [
+      {
+        "text": "切换左侧边栏",
+        "class": "sr-only",
+        "color": "oklch(0.6 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 4.47,
+        "floor": 4.5
+      }
+    ],
+    "samples": [
+      {
+        "text": "桌",
+        "class": "inline-flex shrink-0 items-center justify-center border bg-muted font-semibold text-muted-foreground h-5 w-5 text-caption rounded-full",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          39,
+          39,
+          42,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 5.68,
+        "floor": 4.5
+      },
+      {
+        "text": "工作",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "0",
+        "class": "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:font-medium data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 text-body text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 14,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "AI 团队",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      },
+      {
+        "text": "资源与连接",
+        "class": "flex h-8 shrink-0 items-center rounded-md px-2 text-caption font-medium text-muted-foreground ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "color": "oklch(0.705 0.015 286.067)",
+        "background": [
+          24,
+          24,
+          27,
+          1
+        ],
+        "fontSize": 12,
+        "ratio": 6.75,
+        "floor": 4.5
+      }
+    ]
+  }
+]

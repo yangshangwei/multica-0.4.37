@@ -1,0 +1,46 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "我的任务"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "我的任务" [level=1]
+- button "全部"
+- button "已分配"
+- button "我创建的"
+- button "我的智能体和AI小队"
+- status
+- button "视图"
+- button "0 个智能体工作中"
+- button "筛选"
+- button "显示"
+- button "泳道"
+- button "加载更多失败——重试"
+- img
+- text: 待规划 0
+- button "隐藏列"
+- img
+- text: 待办 0
+- button "隐藏列"
+- img
+- text: 进行中 0
+- button "隐藏列"
+- img
+- text: 审核中 0
+- button "隐藏列"
+- img
+- text: 已完成 0
+- button "隐藏列"
+- img
+- text: 已阻塞 0
+- button "隐藏列"
+- img
+- text: 已取消 0
+- button "隐藏列"
+- status
+- button "问 Multica"
+- region "Notifications alt+T"

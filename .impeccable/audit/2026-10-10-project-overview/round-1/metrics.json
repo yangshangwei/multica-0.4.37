@@ -1,0 +1,42 @@
+{
+  "fixture": "actual ProjectOverviewPanel with synthetic in-memory API",
+  "cases": [
+    {
+      "name": "zh-light-wide",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "bodyWidth": 1280,
+      "overflow": []
+    },
+    {
+      "name": "en-dark-wide",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "bodyWidth": 1280,
+      "overflow": []
+    },
+    {
+      "name": "zh-light-narrow-long",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "bodyWidth": 390,
+      "overflow": []
+    },
+    {
+      "name": "en-dark-narrow-long",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "bodyWidth": 390,
+      "overflow": []
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,143 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- list:
+  - listitem:
+    - button "桌 桌面手测 10-08（保留数据）"
+- list:
+  - listitem:
+    - button "搜索..."
+  - listitem:
+    - button "新建任务"
+- list:
+  - listitem:
+    - link "收件箱 2":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/inbox
+  - listitem:
+    - link "我的任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/my-issues
+  - listitem:
+    - link "聊天":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/chat
+- text: 工作
+- list:
+  - listitem:
+    - link "任务":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/issues
+  - listitem:
+    - link "项目":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/projects
+  - listitem:
+    - link "迭代":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/iterations
+  - listitem:
+    - link "分拣台 1":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/triage
+- text: AI 团队
+- list:
+  - listitem:
+    - link "智能体":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/agents
+  - listitem:
+    - link "AI小队":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/squads
+  - listitem:
+    - link "自动化":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/autopilots
+- text: 资源与连接
+- list:
+  - listitem:
+    - link "技能库":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/skills
+  - listitem:
+    - link "MCP":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/mcp
+  - listitem:
+    - link "运行时":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/runtimes
+- list:
+  - listitem:
+    - link "统计":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/usage
+  - listitem:
+    - link "设置":
+      - /url: http://localhost:18572/desktop-qa-1008-1743/settings
+- button "帮助"
+- button "切换左侧边栏"
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "项目"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "项目" [level=1]
+  - text: "2"
+  - button "新建项目"
+- textbox "搜索项目..."
+- button "筛选"
+- button "创建时间"
+- button "表格"
+- table:
+  - row "选择当前列表中的所有项目 名称 状态 优先级 进度 负责人 创建时间":
+    - checkbox "选择当前列表中的所有项目"
+    - columnheader "名称":
+      - button "名称"
+    - columnheader "状态":
+      - button "状态"
+    - columnheader "优先级":
+      - button "优先级"
+    - columnheader "进度":
+      - button "进度"
+    - columnheader "负责人"
+    - columnheader
+    - columnheader "创建时间":
+      - button "创建时间"
+  - row "选择 test test 进行中 高 0/2 杨 杨尚伟 今天 项目操作":
+    - cell "选择 test":
+      - checkbox "选择 test"
+    - cell "test":
+      - link "test":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/b20ddb80-a706-4519-af91-46f047d4fe55
+    - cell "进行中":
+      - button "进行中"
+    - cell "高":
+      - button "高":
+        - img
+        - text: 高
+    - cell "0/2":
+      - img
+      - text: 0/2
+    - cell "杨 杨尚伟":
+      - button "杨 杨尚伟":
+        - link "杨"
+        - text: 杨尚伟
+    - cell
+    - cell "今天"
+    - cell "项目操作":
+      - button "项目操作"
+  - row "选择 手测-发布闭环 手测-发布闭环 已完成 无优先级 2/5 杨 杨尚伟 2 天前 项目操作":
+    - cell "选择 手测-发布闭环":
+      - checkbox "选择 手测-发布闭环"
+    - cell "手测-发布闭环":
+      - link "手测-发布闭环":
+        - /url: http://localhost:18572/desktop-qa-1008-1743/projects/81515af5-42d6-444d-b962-30d26fb3e944
+    - cell "已完成":
+      - button "已完成"
+    - cell "无优先级":
+      - button "无优先级":
+        - img
+        - text: 无优先级
+    - cell "2/5":
+      - img
+      - text: 2/5
+    - cell "杨 杨尚伟":
+      - button "杨 杨尚伟":
+        - link "杨"
+        - text: 杨尚伟
+    - cell
+    - cell "2 天前"
+    - cell "项目操作":
+      - button "项目操作"
+- button "问 Multica"
+- region "Notifications alt+T"

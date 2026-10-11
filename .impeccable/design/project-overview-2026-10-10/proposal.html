@@ -1,0 +1,353 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>项目概览 · 设计方案</title><style>
+/* Multica design tokens — shared across Web + Desktop */
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+    --font-serif: var(--font-serif);
+    --font-mono: var(--font-mono);
+    --color-app-shell: var(--app-shell);
+    --color-page-canvas: var(--page-canvas);
+    --color-surface: var(--surface);
+    --color-surface-foreground: var(--surface-foreground);
+    --color-surface-raised: var(--surface-raised);
+    --color-surface-hover: var(--surface-hover);
+    --color-surface-selected: var(--surface-selected);
+    --color-surface-selected-foreground: var(--surface-selected-foreground);
+    --color-surface-border: var(--surface-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-gantt-bar-foreground: var(--gantt-bar-foreground);
+    --color-gantt-warning-foreground: var(--gantt-warning-foreground);
+    /* Skill category tones: one hue per fixed skill category. Used only via
+       the skill presentation icon / sidebar so the palette stays coherent. */
+    --color-skill-research: var(--skill-research);
+    --color-skill-design: var(--skill-design);
+    --color-skill-engineering: var(--skill-engineering);
+    --color-skill-quality: var(--skill-quality);
+    --color-skill-operations: var(--skill-operations);
+    --color-skill-writing: var(--skill-writing);
+    --color-skill-data: var(--skill-data);
+    --color-skill-other: var(--skill-other);
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-faint-foreground: var(--faint-foreground);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Type scale — the only font sizes product UI may use.
+ *
+ * There was no `--text-*` token here before, so sizes grew ad hoc: 51 distinct
+ * font sizes across web + desktop, 370 of them written as arbitrary values,
+ * including half-pixel steps (10.5 / 11.5 / 12.5 / 13.5 / 14.5 / 15.5px) that
+ * nobody chose deliberately — they appeared because there was no step to reach
+ * for. Hierarchy does not come from having more sizes; past a handful, every
+ * extra size makes the hierarchy blurrier, because two values a pixel apart
+ * read as "the same, but wrong" rather than as two levels.
+ *
+ * The steps are named for the role the text plays, not for a t-shirt size.
+ * That is what keeps the scale from drifting again: "what is this text for"
+ * has an answer a reader can check, "is this sm or base" does not.
+ *
+ * Six of the ten steps replace Tailwind's default scale and deliberately keep
+ * that scale's exact size/line-height pairs, so `text-sm` -> `text-body` moves
+ * nothing on screen. Only the steps that fill the old gaps — micro (11), label
+ * (13), body-lg (15) — are new sizes; those are the gaps the arbitrary values
+ * were papering over. Every step carries its own line-height so leading cannot
+ * fragment the way size did; a `leading-*` utility still wins where a specific
+ * block needs to override it.
+ *
+ * Landing-page display type (rem/clamp, 2.2-6.4rem) is marketing typography on
+ * a separate ramp and stays out of this scale on purpose. */
+@theme {
+    /* counters, badges, timestamps, overline labels */
+    --text-micro: 11px;
+    --text-micro--line-height: 15px;
+    /* secondary and helper text — was text-xs */
+    --text-caption: 12px;
+    --text-caption--line-height: 16px;
+    /* dense labels: table headers, metadata rows */
+    --text-label: 13px;
+    --text-label--line-height: 18px;
+    /* UI body, the workhorse — was text-sm */
+    --text-body: 14px;
+    --text-body--line-height: 20px;
+    /* roomier body: dialog copy, onboarding prose */
+    --text-body-lg: 15px;
+    --text-body-lg--line-height: 22px;
+    /* small headings — was text-base */
+    --text-title-sm: 16px;
+    --text-title-sm--line-height: 24px;
+    /* section headings — was text-lg */
+    --text-title: 18px;
+    --text-title--line-height: 28px;
+    /* card and dialog titles — was text-xl */
+    --text-title-lg: 20px;
+    --text-title-lg--line-height: 28px;
+    /* page titles — was text-2xl */
+    --text-display-sm: 24px;
+    --text-display-sm--line-height: 32px;
+    /* hero numbers and empty-state headlines — was text-3xl (30px) */
+    --text-display: 36px;
+    --text-display--line-height: 40px;
+}
+
+:root {
+    color-scheme: light;
+    /* Surface system: the app shell is the quiet outer frame; the page canvas
+       is where lists, boards, and conversations live; surfaces are reserved
+       for bounded content groups; raised surfaces are ephemeral overlays. */
+    --app-shell: oklch(0.964435 0.001327 286.375);
+    --page-canvas: oklch(0.988087 0 0);
+    --surface: oklch(1 0 0);
+    --surface-foreground: oklch(0.141 0.005 285.823);
+    --surface-raised: oklch(1 0 0);
+    --surface-hover: oklch(0.967 0.001 286.375);
+    --surface-selected: oklch(0.95 0.002 286.375);
+    --surface-selected-foreground: oklch(0.141 0.005 285.823);
+    --surface-border: oklch(0.92 0.004 286.32);
+    --surface-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 1px 1px rgb(15 23 42 / 0.03);
+    --floating-shadow: 0 16px 40px rgb(15 23 42 / 0.14), 0 3px 10px rgb(15 23 42 / 0.08);
+
+    /* The chat launcher is an overlay pinned to the dashboard's bottom-right
+       corner on every workspace page, so that corner is not available to page
+       content. Its geometry lives here rather than in the button so that the
+       clearance is derived from it: anything reaching that corner — a footer's
+       action buttons, a floating toolbar — reserves --chat-launcher-clearance
+       and stays correct if the launcher ever moves or changes size. */
+    --chat-launcher-size: 2.5rem;
+    --chat-launcher-inset: 0.5rem;
+    --chat-launcher-clearance: calc(
+      var(--chat-launcher-size) + var(--chat-launcher-inset) * 2
+    );
+    /* Menus (dropdown/context/select/popover) hover just above their trigger,
+       so they carry a lighter shadow than window-level overlays (dialogs,
+       sheets), which keep --floating-shadow. */
+    --menu-shadow: 0 8px 24px rgb(15 23 42 / 0.08), 0 2px 6px rgb(15 23 42 / 0.05);
+    --background: var(--page-canvas);
+    --foreground: oklch(0.141 0.005 285.823);
+    --card: var(--surface);
+    --card-foreground: oklch(0.141 0.005 285.823);
+    --popover: var(--surface-raised);
+    --popover-foreground: oklch(0.141 0.005 285.823);
+    --primary: oklch(0.21 0.006 285.885);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.967 0.001 286.375);
+    --secondary-foreground: oklch(0.21 0.006 285.885);
+    --muted: oklch(0.967 0.001 286.375);
+    /* Lightness is pinned by WCAG AA, not by taste: muted text sits on every
+       light surface we have, and the darkest of them — --sidebar-accent, the
+       nav hover state — is the binding constraint. At the old 0.552 that pair
+       was 3.98:1; 0.505 clears 4.5:1 on all of app-shell / page-canvas /
+       sidebar / sidebar-accent / muted / surface-selected / surface, with the
+       worst case at 4.88:1. Raise it and the nav labels fail again. Hue and
+       chroma are unchanged so the neutral ramp keeps its cast. */
+    --muted-foreground: oklch(0.505 0.016 285.938);
+    /* The quiet step below muted, for marks that are not text: disclosure
+       chevrons, separator glyphs, the em dash standing in for an empty cell,
+       the large icon in an empty state. It exists because the alternative
+       people reached for was alpha — 152 call sites of
+       text-muted-foreground/30..80 — and alpha on light surfaces lands
+       between 1.5:1 and 3.8:1, which fails even the 3:1 floor for non-text.
+       0.606 is the lightest step that still clears 3:1 (WCAG 1.4.11) on every
+       surface, worst case --sidebar-accent at 3.19:1. Deliberately NOT valid
+       for text: text has one floor, --muted-foreground, and there is no room
+       for a third readable step (AA caps a lighter text tone at L 0.523 here,
+       0.018 away from muted — a difference no one can see). */
+    --faint-foreground: oklch(0.606 0.016 285.938);
+    --accent: oklch(0.967 0.001 286.375);
+    --accent-foreground: oklch(0.21 0.006 285.885);
+    --destructive: oklch(0.577 0.245 27.325);
+    /* Tinted destructive controls require darker ink than their fill token. */
+    --destructive-foreground: oklch(0.49 0.19 27.325);
+    --border: oklch(0.945 0.003 286.32);
+    --input: oklch(0.92 0.004 286.32);
+    --ring: oklch(0.705 0.015 286.067);
+    /* Brand-derived blue gradient (h=255 = brand hue). chart-1 equals brand
+       so the most important series visually anchors to the product colour;
+       chart-2..5 step lighter + less saturated so a stacked bar reads
+       "primary → secondary → tertiary" at a glance instead of fighting
+       for attention as five equally-weighted greys. */
+    --chart-1: oklch(0.55 0.16 255);
+    --chart-2: oklch(0.66 0.13 255);
+    --chart-3: oklch(0.76 0.10 255);
+    --chart-4: oklch(0.85 0.06 255);
+    --chart-5: oklch(0.92 0.03 255);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.964435 0.001327 286.375);
+    --sidebar-foreground: oklch(0.141 0.005 285.823);
+    --sidebar-primary: oklch(0.21 0.006 285.885);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.935 0.003 286.375);
+    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+    --sidebar-border: oklch(0.92 0.004 286.32);
+    --sidebar-ring: oklch(0.705 0.015 286.067);
+    --brand: oklch(0.55 0.16 255);
+    --brand-foreground: oklch(0.985 0 0);
+    --success: oklch(0.55 0.16 145);
+    --warning: oklch(0.75 0.16 85);
+    /* Text tones are independent from status/chart fills. These clear AA
+       on the page and raised surfaces, including a 10% chart-1 badge tint. */
+    --warning-foreground: oklch(0.50 0.10 85);
+    --info: oklch(0.55 0.18 250);
+    --info-foreground: oklch(0.48 0.14 255);
+    /* Solid Gantt status fills need their own text pair: light success
+       requires full white for AA; warning and dark-mode fills need dark ink.
+       Keep these separate from global status/primary tokens. */
+    --gantt-bar-foreground: oklch(1 0 0);
+    --gantt-warning-foreground: oklch(0.21 0.006 285.885);
+    --skill-research: oklch(0.55 0.18 300);
+    --skill-design: oklch(0.55 0.16 330);
+    --skill-engineering: oklch(0.55 0.16 255);
+    --skill-quality: oklch(0.58 0.15 150);
+    --skill-operations: oklch(0.60 0.18 35);
+    --skill-writing: oklch(0.62 0.15 70);
+    --skill-data: oklch(0.55 0.13 190);
+    --skill-other: oklch(0.55 0.02 286);
+    --scrollbar-thumb: oklch(0 0 0 / 10%);
+    --scrollbar-thumb-hover: oklch(0 0 0 / 18%);
+    --scrollbar-track: transparent;
+    /* In-page find (Cmd/Ctrl+F) match tints, painted via the CSS Custom
+       Highlight API. Bright fill + dark text so matches stay legible in
+       both themes; the active match steps to orange. */
+    --find-match: oklch(0.92 0.15 100);
+    --find-match-active: oklch(0.82 0.17 62);
+    --find-match-foreground: oklch(0.22 0.03 92);
+}
+
+.dark {
+    color-scheme: dark;
+    --app-shell: oklch(0.155 0.005 285.823);
+    --page-canvas: oklch(0.18 0.005 285.823);
+    --surface: oklch(0.21 0.006 285.885);
+    --surface-foreground: oklch(0.985 0 0);
+    --surface-raised: oklch(0.235 0.007 285.885);
+    --surface-hover: oklch(0.274 0.006 286.033);
+    --surface-selected: oklch(0.3 0.006 286.033);
+    --surface-selected-foreground: oklch(0.985 0 0);
+    --surface-border: oklch(1 0 0 / 10%);
+    --surface-shadow: 0 1px 2px rgb(0 0 0 / 0.2), 0 1px 1px rgb(0 0 0 / 0.16);
+    --floating-shadow: 0 20px 48px rgb(0 0 0 / 0.46), 0 4px 12px rgb(0 0 0 / 0.28);
+    --menu-shadow: 0 10px 28px rgb(0 0 0 / 0.3), 0 2px 8px rgb(0 0 0 / 0.18);
+    --background: var(--page-canvas);
+    --foreground: oklch(0.985 0 0);
+    --card: var(--surface);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: var(--surface-raised);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.92 0.004 286.32);
+    --primary-foreground: oklch(0.21 0.006 285.885);
+    --secondary: oklch(0.274 0.006 286.033);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.274 0.006 286.033);
+    --muted-foreground: oklch(0.705 0.015 286.067);
+    /* Same role as light mode, mirrored: fainter means darker here. 0.60 is
+       the darkest step still clearing 3:1 on every dark surface, worst case
+       --surface-selected at 3.45:1. The step away from muted (0.105 L) matches
+       light mode's, so a chevron reads equally quiet in both themes. */
+    --faint-foreground: oklch(0.60 0.015 286.067);
+    --accent: oklch(0.274 0.006 286.033);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --destructive-foreground: oklch(0.78 0.15 22.216);
+    --border: oklch(1 0 0 / 6%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.552 0.016 285.938);
+    /* Dark mode mirrors light mode's "primary → secondary" gradient on the
+       brand hue, but flips the lightness curve: the most important series
+       is the brightest (so it pops on the dark background) and trailing
+       series get progressively darker / less saturated. */
+    --chart-1: oklch(0.72 0.16 255);
+    --chart-2: oklch(0.62 0.13 255);
+    --chart-3: oklch(0.52 0.10 255);
+    --chart-4: oklch(0.42 0.06 255);
+    --chart-5: oklch(0.32 0.03 255);
+    --sidebar: oklch(0.21 0.006 285.885);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.274 0.006 286.033);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.552 0.016 285.938);
+    --brand: oklch(0.65 0.16 255);
+    --brand-foreground: oklch(0.985 0 0);
+    --success: oklch(0.65 0.15 145);
+    --warning: oklch(0.70 0.16 85);
+    --warning-foreground: oklch(0.78 0.13 85);
+    --info: oklch(0.65 0.18 250);
+    --info-foreground: oklch(0.75 0.14 255);
+    --gantt-bar-foreground: oklch(0.21 0.006 285.885);
+    --skill-research: oklch(0.72 0.16 300);
+    --skill-design: oklch(0.72 0.16 330);
+    --skill-engineering: oklch(0.72 0.16 255);
+    --skill-quality: oklch(0.74 0.14 150);
+    --skill-operations: oklch(0.72 0.16 35);
+    --skill-writing: oklch(0.76 0.14 70);
+    --skill-data: oklch(0.72 0.12 190);
+    --skill-other: oklch(0.72 0.02 286);
+    --scrollbar-thumb: oklch(1 0 0 / 8%);
+    --scrollbar-thumb-hover: oklch(1 0 0 / 18%);
+    --scrollbar-track: transparent;
+    --find-match: oklch(0.82 0.16 100);
+    --find-match-active: oklch(0.76 0.18 60);
+    --find-match-foreground: oklch(0.18 0.02 92);
+}
+
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 -apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--page-canvas);color:var(--foreground)}button,summary{font:inherit}button{cursor:pointer}svg{flex:none;vertical-align:middle}button,summary{color:inherit}button:focus-visible,summary:focus-visible{outline:2px solid var(--brand);outline-offset:3px}::selection{background:var(--surface-selected)}
+.preview{padding:12px 24px;background:var(--app-shell);color:var(--muted-foreground);font-size:12px;display:flex;justify-content:space-between;gap:16px}.breadcrumb{display:flex;gap:10px;align-items:center;padding:16px 24px;border-bottom:1px solid var(--border)}.muted{color:var(--muted-foreground)}.tabbar{display:flex;gap:8px;padding:10px 24px;border-bottom:1px solid var(--border)}.tab{display:flex;align-items:center;gap:7px;padding:5px 12px;border-radius:6px}.tab.active{background:var(--surface-selected);font-weight:600}.canvas{max-width:1024px;padding:28px 32px 40px;margin:auto}.section-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}h1{font-size:18px;line-height:28px;margin:0;font-weight:600}h2{font-size:16px;line-height:24px;margin:0;display:flex;align-items:center;gap:8px;font-weight:600}h2>svg{color:var(--muted-foreground)}.updated{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted-foreground)}.stats{display:grid;grid-template-columns:repeat(4,1fr) 1.9fr;gap:24px;align-items:center;padding:0 0 26px}.stat-label{display:flex;gap:6px;align-items:center;color:var(--muted-foreground);font-size:12px}.num{font-size:24px;line-height:32px;font-variant-numeric:tabular-nums;margin-top:5px}.scope{padding-left:24px;border-left:1px solid var(--border)}.scope-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.scope-top strong{font-size:18px;font-weight:600}.bar{height:7px;display:flex;gap:3px;margin:9px 0 8px;border-radius:4px;overflow:hidden}.bar>*{height:100%}.done{background:var(--success);width:20%}.cancelled{background:var(--faint-foreground);width:20%}.open{background:var(--border);width:60%}.legend{font-size:11px;color:var(--muted-foreground)}.summary-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:24px 0;margin-bottom:28px}.health-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:20px;border-radius:5px;padding:2px 7px;white-space:nowrap}.danger{color:var(--destructive-foreground);background:color-mix(in oklch,var(--destructive) 8%,var(--surface))}.warning{color:var(--warning-foreground);background:color-mix(in oklch,var(--warning) 10%,var(--surface))}.neutral{color:var(--muted-foreground);background:var(--muted)}.signals{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.signal{border:1px solid var(--border);border-radius:7px;background:var(--surface);padding:9px 8px;text-align:left}.signal:hover{background:var(--surface-hover)}.signal-label{font-size:12px;display:flex;align-items:center;gap:5px;color:var(--muted-foreground)}.signal b{display:block;font-size:18px;font-weight:600;line-height:26px;margin:4px 0 0 21px;font-variant-numeric:tabular-nums}.signal.red svg{color:var(--destructive)}.signal.amber svg{color:var(--warning-foreground)}.attention-note{display:flex;align-items:flex-start;gap:7px;color:var(--warning-foreground);font-size:12px;line-height:20px;margin:14px 0 8px}.attention-note svg{margin-top:2px}.subtle{border:0;background:transparent;padding:0;color:var(--muted-foreground);font-size:12px;text-align:left}.plain-details>summary{list-style:none;display:flex;align-items:center;gap:5px;color:var(--muted-foreground);cursor:pointer;font-size:12px;width:fit-content}.plain-details>summary::-webkit-details-marker{display:none}.plain-details[open]>summary .chev{transform:rotate(180deg)}.plain-details ul{font-size:12px;color:var(--muted-foreground);padding-left:20px;margin:8px 0 0}.acceptance{border-left:1px solid var(--border);padding-left:28px}.acceptance h2{margin-bottom:16px}.accept-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;margin:9px 0}.accept-copy{font-size:12px;color:var(--muted-foreground);margin:10px 0 0;max-width:31em}.accept-copy strong{color:var(--warning-foreground);font-weight:500}.actions{display:flex;gap:8px}.btn{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--border);background:var(--surface);padding:6px 10px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap}.btn:hover{background:var(--surface-hover)}.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}.progress-header{margin-bottom:20px}.timeline{position:relative;padding-left:40px}.timeline:before{content:'';position:absolute;left:12px;top:25px;bottom:0;width:1px;background:var(--border)}.node{position:absolute;top:0;left:0;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--muted);color:var(--muted-foreground);outline:5px solid var(--page-canvas)}.entry-top{display:flex;align-items:center;flex-wrap:wrap;gap:8px}.entry-kind{font-weight:600}.old-label{font-size:12px;color:var(--warning-foreground);display:inline-flex;align-items:center;gap:4px}.entry-tools{margin-left:auto;display:flex;gap:12px;align-items:center}.entry-meta{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground);margin:10px 0 12px;flex-wrap:wrap}.avatar{display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--muted);align-items:center;justify-content:center;font-size:11px}.entry-body{font-size:14px;line-height:1.7;max-width:46em;margin:0 0 12px}.detail-row{display:flex;flex-wrap:wrap;gap:16px;padding:13px 0 0;border-top:1px solid var(--border);margin-top:16px}.detail-row details{font-size:12px;max-width:100%}.detail-row p{margin:8px 0;max-width:40em;line-height:1.7}.endnote{font-size:12px;color:var(--muted-foreground);margin:24px 0 0 40px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);max-width:calc(100% - 32px);padding:10px 16px;background:var(--primary);color:var(--primary-foreground);border-radius:8px;font-size:13px}.toast:empty{display:none}.small{font-size:12px}
+@media(max-width:760px){.canvas{padding:22px 18px}.summary-grid{grid-template-columns:1fr;gap:24px}.acceptance{border-left:0;border-top:1px solid var(--border);padding:22px 0 0}.stats{grid-template-columns:repeat(4,1fr);gap:18px}.scope{grid-column:1/-1;padding-left:0;border-left:0}.section-top{align-items:flex-start;flex-wrap:wrap;gap:10px}.entry-tools{margin-left:0}.preview{padding:10px 18px;flex-wrap:wrap;gap:4px}.updated{flex-wrap:wrap}.entry-body{font-size:14px}.timeline{padding-left:36px}.health-head{flex-wrap:wrap}.actions{flex-wrap:wrap}.signals{gap:6px}.signal{padding:9px 6px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style><body>
+<div class="preview"><span>项目概览 · 设计方案</span><span>使用截图数据，操作仅作演示</span></div>
+<div class="breadcrumb"><span class="muted">项目</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right muted" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg><strong>手测-发布闭环</strong></div>
+<div class="tabbar"><span class="tab active"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>概览</span><span class="tab muted"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-todo" aria-hidden="true"><path d="M13 5h8"></path><path d="M13 12h8"></path><path d="M13 19h8"></path><path d="m3 17 2 2 4-4"></path><rect x="3" y="4" width="6" height="6" rx="1"></rect></svg>任务</span></div>
+<main class="canvas"><div class="section-top"><h1>项目概览</h1><div class="updated"><span>统计于 10月10日 22:53</span><span title="统计基准日：2026-10-10"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></span><button class="subtle" data-demo="刷新统计时，保留现有过期标识与失败重试行为。" aria-label="刷新统计"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg></button></div></div>
+<div class="stats"><div><div class="stat-label">正式任务</div><div class="num">5</div></div><div><div class="stat-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>实际完成</div><div class="num">1</div></div><div><div class="stat-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-minus" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path></svg>取消</div><div class="num">1</div></div><div><div class="stat-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" aria-hidden="true"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path><path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"></path><path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"></path><path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"></path></svg>未结束</div><div class="num">3</div></div><div class="scope"><div class="scope-top"><span class="small">范围闭合</span><strong>40%</strong></div><div class="bar" role="img" aria-label="正式任务 5 个：完成 1 个，取消 1 个，未结束 3 个；范围闭合 40%"><div class="done"></div><div class="cancelled"></div><div class="open"></div></div><div class="legend">完成 1 + 取消 1 / 共 5 个任务</div></div></div>
+<div class="summary-grid"><section><div class="health-head"><h2><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>系统健康</h2><span class="badge danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>有风险</span></div><div class="signals">
+<button class="signal red" data-demo="查看全部阻塞任务：正式实现沿用已有风险下钻。" aria-label="查看1个阻塞任务"><span class="signal-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ban" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M4.929 4.929 19.07 19.071"></path></svg>阻塞</span><b>1</b></button><button class="signal amber" data-demo="查看全部逾期任务：正式实现沿用已有风险下钻。" aria-label="查看2个逾期任务"><span class="signal-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock-alert" aria-hidden="true"><path d="M12 6v6l4 2"></path><path d="M20 12v5"></path><path d="M20 21h.01"></path><path d="M21.25 8.2A10 10 0 1 0 16 21.16"></path></svg>逾期</span><b>2</b></button><button class="signal " data-demo="查看全部未分配任务：正式实现沿用已有风险下钻。" aria-label="查看1个未分配任务"><span class="signal-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-x" aria-hidden="true"><path d="M2 21a8 8 0 0 1 11.873-7"></path><circle cx="10" cy="8" r="5"></circle><path d="m17 17 5 5"></path><path d="m22 17-5 5"></path></svg>未分配</span><b>1</b></button><button class="signal " data-demo="查看全部待验收任务：正式实现沿用已有风险下钻。" aria-label="查看1个待验收任务"><span class="signal-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-check" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="m9 14 2 2 4-4"></path></svg>待验收</span><b>1</b></button>
+</div><p class="attention-note"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>项目已完成，仍有 3 个未结束任务。</p><details class="plain-details"><summary>查看判定依据 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down chev" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary><ul><li>存在阻塞任务。</li><li>存在逾期任务。</li><li>部分任务缺少有效负责人。</li><li>存在待验收任务。</li><li>已结束项目仍有未结束任务。</li></ul><p class="small muted">风险可能重叠，不能将这些数量相加作为风险任务总数。</p></details></section>
+<section class="acceptance"><h2><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>目标验收</h2><div class="accept-row"><span>当前描述</span><span class="badge neutral"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" aria-hidden="true"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path><path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"></path><path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"></path><path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"></path></svg>尚未验收</span></div><div class="accept-row"><span class="muted">最近一次 · 描述版本 2</span><span class="badge warning"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dot" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="1"></circle></svg>部分通过</span></div><p class="accept-copy"><strong>针对旧版本，请复核。</strong><br>旧记录保留；当前描述尚无验收记录。</p></section></div>
+<section><div class="section-top progress-header"><h2><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-history" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg>项目进展</h2><div class="actions"><button class="btn" data-demo="记录验收：沿用现有验收表单与描述版本校验。"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-check" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="m9 14 2 2 4-4"></path></svg>记录验收</button><button class="btn primary" data-demo="记录进展：沿用现有编辑、预览和发布流程。"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>记录进展</button></div></div>
+<article class="timeline"><span class="node"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-check" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="m9 14 2 2 4-4"></path></svg></span><div class="entry-top"><span class="entry-kind">目标验收</span><span class="badge warning">部分通过</span><span class="old-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>需复核</span><div class="entry-tools"><button class="subtle" data-demo="展示这条记录的完整修订历史。">修订历史</button><button class="subtle" data-demo="更多操作中保留更正入口。" aria-label="记录的更多操作"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis" aria-hidden="true"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button></div></div><div class="entry-meta"><span class="avatar">杨</span><span>杨尚伟</span><span>·</span><time datetime="2026-10-08T18:46:39+08:00">10月8日 18:46</time><span>·</span><span>第 1 版</span><span>·</span><span>描述版本 2</span></div><p class="entry-body">阶段验收：A、E 满足本次验收要求；C、D 尚未交付，B 已从范围中取消。</p><div class="detail-row"><details class="plain-details"><summary><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-checks" aria-hidden="true"><path d="M13 5h8"></path><path d="M13 12h8"></path><path d="M13 19h8"></path><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path></svg>验收范围 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down chev" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary><p>A、E 的交付结果；其余任务不在本次通过范围。</p></details><details class="plain-details"><summary><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>可复核说明 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down chev" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary><p>原有说明、证据与描述快照在此按组展示。本示意未取得截图外的完整记录，不补造正文。</p></details><details class="plain-details"><summary><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-no-axes-column" aria-hidden="true"><path d="M5 21v-6"></path><path d="M12 21V3"></path><path d="M19 21V9"></path></svg>发布时统计 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down chev" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary><p>展示记录发布时保存的统计快照，保留原时间，不替换成当前 40% 的统计。</p></details></div></article><p class="endnote">图标区分记录类型；长正文折叠，验收结果与需复核提示始终可见。</p></section></main><div class="toast" role="status"></div>
+<script>let timer;document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',()=>{document.querySelector('.toast').textContent=b.dataset.demo;clearTimeout(timer);timer=setTimeout(()=>document.querySelector('.toast').textContent='',4200)}));</script></body></html>

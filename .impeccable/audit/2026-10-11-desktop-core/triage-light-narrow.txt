@@ -1,0 +1,30 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "分拣台"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "分拣台" [level=1]
+  - button "导入 CSV"
+  - button "创建待分拣任务"
+- tablist "分拣台":
+  - tab "可处理 1" [selected]
+  - tab "全部未决 1"
+  - tab "稍后处理 0"
+  - tab "审核历史"
+- tabpanel "可处理 1":
+  - region "分拣队列":
+    - textbox "搜索标题或编号"
+    - button "筛选"
+    - combobox "排序": 最早进入优先
+    - checkbox "选择 手测-R 拒绝与重新审核"
+    - button "DQA-4 手测-R 拒绝与重新审核": 手测-R 拒绝与重新审核 DQA-4 · 手动投递 · 2026/10/8 分拣责任人：杨尚伟 恢复时间：2026/10/11 00:19:55
+    - text: 共 1 条
+    - button "上一页" [disabled]
+    - button "下一页" [disabled]
+- button "问 Multica"
+- region "Notifications alt+T"

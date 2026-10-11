@@ -1,0 +1,10 @@
+{
+  "dialogs": [
+    {
+      "role": "dialog",
+      "ariaLabel": null,
+      "labelledBy": null
+    }
+  ],
+  "snapshot": "- banner:\n  - status\n- region \"Notifications alt+T\"\n- dialog:\n  - button \"属性\"\n  - text: 状态\n  - button \"待办\":\n    - img\n    - text: 待办\n  - text: 负责人\n  - button \"杨 杨尚伟\":\n    - link \"杨\"\n    - text: 杨尚伟\n  - text: 项目\n  - button \"无项目\"\n  - text: 当前迭代 Test3\n  - button \"结转次数\"\n  - text: \"0\"\n  - group: 安排到迭代\n  - group: 迭代历史\n  - button \"添加字段\"\n  - button \"Pull Request\"\n  - paragraph: 还没有关联的 PR。在 PR 的分支名、标题或正文里引用本任务的 identifier 即可自动关联。\n  - button \"详情\"\n  - text: 创建者\n  - link \"杨\"\n  - text: 杨尚伟 创建时间 Oct 10 更新时间 Oct 10"
+}

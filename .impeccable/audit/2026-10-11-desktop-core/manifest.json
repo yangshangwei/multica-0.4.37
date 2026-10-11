@@ -1,0 +1,107 @@
+{
+  "completed_at": "2026-10-10T16:47:30.058185+00:00",
+  "start_commit": "f79662a56",
+  "end_commit": "ba96dfe206b6a4117dd7986f0458e1682eaccab1",
+  "score": 11,
+  "max_score": 20,
+  "dimensions": {
+    "accessibility": 2,
+    "performance": 3,
+    "theming": 2,
+    "responsive": 2,
+    "implementation_integrity": 2
+  },
+  "findings": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 4,
+    "P3": 0
+  },
+  "verification": {
+    "tests": {
+      "files": 9,
+      "passed": 154
+    },
+    "baseline_routes": 11,
+    "baseline_screenshots": 33,
+    "screenshots_including_details_and_contact_sheets": 46,
+    "report_links_valid": true,
+    "json_files_valid": true
+  },
+  "environment": {
+    "electron": "39.8.7",
+    "renderer": "http://localhost:5666",
+    "backend": "http://localhost:18572",
+    "backend_commit": "f3c3b395c",
+    "viewports": [
+      [
+        1440,
+        1000
+      ],
+      [
+        900,
+        700
+      ]
+    ],
+    "native_zoom": 2,
+    "zoom_css_viewport": [
+      720,
+      500
+    ],
+    "native_ipc": "test fixture; real renderer/preload/shell"
+  },
+  "detector": {
+    "raw_findings": 1,
+    "verified_core_page_findings": 0,
+    "excluded": "onboarding completion bounce easing"
+  },
+  "cleanup": {
+    "audit_window_closed": true,
+    "temporary_profile_removed": true,
+    "product_code_edited": false,
+    "trellis_task_created": false
+  },
+  "limits": [
+    "No production performance baseline",
+    "No full WCAG certification or VoiceOver",
+    "No Windows/Linux or physical touch device run",
+    "No destructive business action executed",
+    "Concurrent workspace changes occurred"
+  ],
+  "source_sha256": {
+    "packages/core/issues/canonical-id.ts": "386775135e07cdc6a6d73edf4ba3a2fb0274f1ce97b5251d05ee3866b92a79cc",
+    "packages/views/issues/components/issue-detail-route.tsx": "da50f633e35374c209f32cd480c750dd23a36d78580f2ffaee2128444a1ba389",
+    "packages/views/issues/components/issue-detail.tsx": "352036a9529d16f6c3f9ce95c6665959054a0efec89888d06b2a1aa662ed03ab",
+    "packages/views/projects/components/projects-page.tsx": "6946a72ea1cea76393a2ae10187b5b8eb7ad6bf108d4bb360359ca2471876ede",
+    "packages/views/projects/components/project-detail.tsx": "5aa5b366f2588dc9507825fb3bb083e45fb43de09ecc107f9fe3733db1c785b9",
+    "packages/views/projects/components/project-badge.tsx": "763dc3e57a50095613ecb205384bf12c3292ada7cf4ce8f16d45a31fa9287595",
+    "packages/core/projects/config.ts": "8c2d7078a63f142c0f3138fbdabb051923176b9ec4634ab156a7acc2c2a54991",
+    "packages/core/projects/mutations.ts": "93ccb3cf8f20aa426da247875903c0c4de586aaeda2bf008c7488b6391284cca",
+    "packages/core/query-client.ts": "9ba6d87c6efd322f50a8682845fb730400ba4f3c8d6741b3f376c122496ec488",
+    "packages/views/issues/components/batch-action-toolbar.tsx": "c75aaf3e60a4a1e75247de8fab8777728c410b0c9fd87d2318221f5cfaa59389",
+    "packages/views/issues/components/list-view.tsx": "370992281b6414f47a8c84257fce6c195b50bdd7d6d23097832ab6f8aa3f5783",
+    "packages/views/issues/components/board-view.tsx": "e31cf0af88324ad879b3d0763f07e15fcb5466fd04398cd594051fdc6ff839b0",
+    "packages/views/issues/components/swimlane-view.tsx": "c7493dc53dc4be1588199f49507554ed065bd608c211cb3bbd332d556197b308",
+    "packages/views/issues/components/issues-header.tsx": "5c2980744141b31674ba2ff5f73b91302c74558eb61419c1cddb59c1dfc5867e",
+    "packages/views/my-issues/components/my-issues-header.tsx": "630b82c12259967780056a74e26f99b2835c8dcf1b58e8f4fa97b86f551a6cf2",
+    "packages/views/issues/surface/issue-surface.tsx": "36f69c95e894e5d10648479579cd0f7058f2e42daf4777f3f3ceb3229a698e4d",
+    "packages/views/triage/triage-page.tsx": "c9f79f35710382f14cbf3708875fcd7cce14ae02f39f27e746696530ffae8be7",
+    "packages/views/chat/components/use-chat-controller.ts": "6dbf46c2acb5b89972e1d5b0bacc0af02343b27e6a9785cda0f5f336db657748",
+    "packages/views/chat/components/chat-thread-list.tsx": "66254f6fbfc0ef8221aace09b6d5367d9994f3b06a8460423cc819da457b8ead",
+    "packages/views/inbox/components/inbox-page.tsx": "14d97ae0c584b808b1feb6ed85bfa6da8a3e84b80fa751f625b8037d4330c2c1",
+    "packages/ui/styles/tokens.css": "05630d735fa01842b3c43c888b107ec7ac638eeafe7333884ba4ec305fbe5183"
+  },
+  "evidence_sha256": {
+    "issue-failure.json": "540ad6bb619c849ae880aceadcd7694666a3f7a8d24097ff84437e2ed13951c1",
+    "chat-failure.json": "200f6be80aa0d8e582a64117e0cedc9be2e5303611e75082208c401cc81b7d8e",
+    "contrast-evidence.json": "89dcc26d42aeff6f116cebd5f681c3891f2ed826a000e4a668c13a17464c41d5",
+    "triage-cached-failure.json": "c2fe388edee3e0915ed9978b03e6459f5bb740aa5031909dbdd3d2356be2fe65",
+    "issue-dialog-evidence.json": "192dede72028549137f18b184c967db9d2cc69105f83d6649f81300acb9c2dbe",
+    "project-interaction-evidence.json": "191ee284069e56244691bb32cf167653cbff8dc4780e0499dd6f6ae21a9b7dcd",
+    "triage-failure.json": "af97b1e73fc9b2a4a22605b84357b28ce8f977d4f79943e1794c93630e70a953",
+    "project-keyboard-focus.json": "93442b91f47055d970d24e30952ccf499b4dd26fdceffd194f8ee11d454c5f57",
+    "narrow-metrics.json": "85c2b02be251ffedf782391892a94deaa1c5d578fbf24539a8c06340f1c5dcb2",
+    "native-zoom-captures.json": "8567562fc127beeb07c0a2fe508c0ee3e9a476b19433db56698a3ff910b08fe0",
+    "detector.json": "d8d36a2a3c687e43f55f34c3dd4f320c0e59670b0f8071b3c6d5d60d089a1df0"
+  }
+}

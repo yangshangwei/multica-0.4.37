@@ -1,0 +1,63 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "收件箱"
+  - button "技能库"
+  - status
+  - button "New tab"
+- banner:
+  - heading "收件箱" [level=1]
+  - text: "2"
+  - button "筛选收件箱"
+  - button
+- button "Triage item ready for review — 手测-R 拒绝与重新审核 分拣动态 19 分钟":
+  - text: Triage item ready for review — 手测-R 拒绝与重新审核
+  - img
+  - paragraph: 分拣动态
+  - text: 19 分钟
+- button "手测-第2期 迭代 1 小时":
+  - text: 手测-第2期
+  - paragraph: 迭代
+  - text: 1 小时
+- button "架构师 1111 归档 提及了你 1 小时":
+  - link "架构师":
+    - img "架构师"
+  - text: "1111"
+  - button "归档"
+  - img
+  - paragraph: 提及了你
+  - text: 1 小时
+- button "小阿孚 吞吞吐吐 状态设为 已阻塞 1 小时":
+  - link "小阿孚":
+    - img "小阿孚": 孚
+  - text: 吞吞吐吐
+  - img
+  - paragraph:
+    - text: 状态设为
+    - img
+    - text: 已阻塞
+  - text: 1 小时
+- button "Triage batch completed 分拣动态 2 天":
+  - text: Triage batch completed
+  - paragraph: 分拣动态
+  - text: 2 天
+- button "Triage batch completed 分拣动态 2 天":
+  - text: Triage batch completed
+  - paragraph: 分拣动态
+  - text: 2 天
+- 'button "CSV import: desktop-retained-import.csv 分拣动态 2 天"':
+  - text: "CSV import: desktop-retained-import.csv"
+  - paragraph: 分拣动态
+  - text: 2 天
+- button "手测-第1期 迭代 2 天":
+  - text: 手测-第1期
+  - paragraph: 迭代
+  - text: 2 天
+- button "手测-第1期 迭代 2 天":
+  - text: 手测-第1期
+  - paragraph: 迭代
+  - text: 2 天
+- button "问 Multica"
+- region "Notifications alt+T"

@@ -1,0 +1,58 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "分拣台 (pinned)": 分拣台
+  - button "迭代"
+  - button "技能库"
+  - status
+  - button "New tab"
+- main:
+  - heading "迭代" [level=1]
+  - link "迭代设置":
+    - /url: http://localhost:18572/desktop-qa-1008-1743/settings?tab=iterations
+  - button "筛选"
+  - button "创建迭代"
+  - tablist "迭代":
+    - tab "当前与计划" [selected]
+    - tab "历史迭代"
+  - tabpanel "当前与计划":
+    - region "迭代时间线":
+      - article:
+        - time: 10月 10日
+        - link "迭代Test":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/iterations/9d318239-fdff-4171-bad1-99f5e05f9866
+        - paragraph: 10月10日 – 10月23日
+        - text: 计划中
+      - article:
+        - time: 10月 10日
+        - link "Test3":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/iterations/56b68d6f-99d2-4ff2-8edf-be758dc11680
+        - paragraph: 10月10日 – 10月23日
+        - text: 即将开始
+      - article:
+        - time: 10月 10日
+        - link "手测-第2期":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/iterations/33a9d925-f3b6-43d9-86e3-c1617fab3d39
+        - paragraph: 10月10日 – 10月16日
+        - text: 当前迭代 当前范围 4
+        - img "范围与完成趋势":
+          - application: 10月10日 10月11日 0 1 2 3 4
+        - term:
+          - button "有效范围"
+        - definition: "4"
+        - term:
+          - button "已完成"
+        - definition: "0"
+        - term:
+          - button "原始承诺"
+        - definition: "3"
+        - term:
+          - button "有效范围完成率"
+        - definition: 0%
+        - group: 查看图表数据
+        - paragraph: 已取消任务 0 · 统计按任务数计算，有效范围不含已取消任务。
+        - link "查看迭代":
+          - /url: http://localhost:18572/desktop-qa-1008-1743/iterations/33a9d925-f3b6-43d9-86e3-c1617fab3d39
+- button "问 Multica"
+- region "Notifications alt+T"
