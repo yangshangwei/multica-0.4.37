@@ -15,13 +15,15 @@ import {
   type DragOverEvent,
 } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
-import { Virtuoso } from "react-virtuoso";
+import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
 import { Button } from "@multica/ui/components/ui/button";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import type { Issue, IssueStatusCategory, Project } from "@multica/core/types";
 import { useViewStore } from "@multica/core/issues/stores/view-store-context";
 import { StatusHeading } from "./status-heading";
 import { ListRow, DraggableListRow, type ChildProgress } from "./list-row";
+import { adjacentOrder, type OrderDirection } from "../utils/adjacent-order";
+import { useReorderAnnouncement } from "./reorder-controls";
 import { useDragSettle } from "./use-drag-settle";
 import { ListLoadMoreFooter } from "./list-load-more-footer";
 import { useT } from "../../i18n";
@@ -83,7 +85,7 @@ function ListViewImpl({
   projectMap?: Map<string, Project>;
   statusPagination: IssueStatusPagination;
   projectId?: string;
-  onMoveIssue?: (issueId: string, updates: DragMoveUpdates, onSettled?: () => void) => void;
+  onMoveIssue?: (issueId: string, updates: DragMoveUpdates, onSettled?: (error?: unknown) => void) => void;
   onCreateIssue?: (defaults: IssueCreateDefaults) => void;
 }) {
   const listCollapsedStatuses = useViewStore(
@@ -93,7 +95,9 @@ function ListViewImpl({
     (s) => s.toggleListCollapsed
   );
   const sortBy = useViewStore((s) => s.sortBy);
+  const sortDirection = useViewStore((s) => s.sortDirection);
   const { t } = useT("issues");
+  const { announce, announcement } = useReorderAnnouncement();
 
   const sortFieldKey = sortBy === "created_at" ? "created" : sortBy;
   const sortLabel = sortBy !== "position"
@@ -314,6 +318,27 @@ function ListViewImpl({
     [issues, groups, onMoveIssue, groupIds, groupMap, sortBy, beginSettle, setColumns, columnsRef, isDraggingRef],
   );
 
+  const handleOrderMove = useCallback((issueId: string, direction: OrderDirection) => {
+    if (sortBy !== "position" || !onMoveIssue || isDraggingRef.current || isSettlingRef.current) return;
+    const groupId = findColumn(columnsRef.current, issueId, groupIds);
+    const group = groupId ? groupMap.get(groupId) : undefined;
+    const issue = issueMapRef.current.get(issueId);
+    if (!groupId || !group?.status || !issue) return;
+    const ids = adjacentOrder(columnsRef.current[groupId] ?? [], issueId, direction, statusPagination[group.status].hasMore);
+    if (!ids) return;
+    const rankedIds = sortDirection === "desc" ? ids.toReversed() : ids;
+    const settled = beginSettle();
+    setColumns({ ...columnsRef.current, [groupId]: ids });
+    announce(issue.identifier);
+    onMoveIssue(issueId, {
+      position: computePosition(rankedIds, issueId, issueMapRef.current),
+      ...getMoveAnchors(rankedIds, issueId),
+    }, (error) => {
+      settled();
+      announce(issue.identifier, ids.indexOf(issueId) + 1, error);
+    });
+  }, [sortBy, sortDirection, onMoveIssue, isDraggingRef, isSettlingRef, columnsRef, groupIds, groupMap, statusPagination, beginSettle, setColumns, announce]);
+
   // dnd-kit fires onDragCancel — never onDragEnd — when an active drag is
   // aborted: pointercancel, window resize, tab hide, or Escape. Touch browsers
   // hit that path constantly, because a scroll gesture that starts on a row
@@ -380,6 +405,8 @@ function ListViewImpl({
             isExpanded={isExpanded}
             sortLabel={sortLabel}
             scrollParent={scrollEl}
+            onOrderMove={sortBy === "position" ? handleOrderMove : undefined}
+            orderPending={isSettlingRef.current}
           />
         );
       })}
@@ -388,8 +415,9 @@ function ListViewImpl({
 
   if (!dragEnabled) {
     return (
-      <div ref={attachScroller} data-tab-scroll-root="list" className="flex-1 min-h-0 overflow-y-auto p-2 pt-0">
+      <div ref={attachScroller} data-tab-scroll-root="list" data-reorder-scope="" className="flex-1 min-h-0 overflow-y-auto p-2 pt-0">
         {content}
+        {announcement}
       </div>
     );
   }
@@ -403,8 +431,9 @@ function ListViewImpl({
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <div ref={attachScroller} data-tab-scroll-root="list" className="flex-1 min-h-0 overflow-y-auto p-2 pt-0">
+      <div ref={attachScroller} data-tab-scroll-root="list" data-reorder-scope="" className="flex-1 min-h-0 overflow-y-auto p-2 pt-0">
         {content}
+        {announcement}
       </div>
 
       <DragOverlay dropAnimation={null}>
@@ -432,6 +461,8 @@ function StatusAccordionItem({
   isExpanded,
   sortLabel,
   scrollParent,
+  onOrderMove,
+  orderPending,
 }: {
   status: IssueStatusCategory;
   issueIds: string[];
@@ -445,6 +476,8 @@ function StatusAccordionItem({
   isExpanded: boolean;
   sortLabel: string | null;
   scrollParent: HTMLElement | null;
+  onOrderMove?: (id: string, direction: OrderDirection) => void;
+  orderPending?: boolean;
 }) {
   const { t } = useT("issues");
   const selection = useIssueSurfaceSelection();
@@ -470,6 +503,7 @@ function StatusAccordionItem({
   });
 
   const disableSorting = !!sortLabel;
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
 
   // The infinite-scroll sentinel rides Virtuoso's Footer so it sits at the true
   // end of the virtualized rows and still fires loadMore when scrolled to it.
@@ -493,7 +527,7 @@ function StatusAccordionItem({
   );
 
   const computeItemKey = (_index: number, issue: Issue) => issue.id;
-  const itemContent = (_index: number, issue: Issue) =>
+  const itemContent = (index: number, issue: Issue) =>
     dragEnabled ? (
       <DraggableListRow
         issue={issue}
@@ -502,6 +536,16 @@ function StatusAccordionItem({
           issue.project_id ? projectMap?.get(issue.project_id) : undefined
         }
         disableSorting={disableSorting}
+        reorder={onOrderMove ? {
+          index,
+          count: issues.length,
+          hasMore: page.hasMore,
+          disabled: orderPending,
+          onMove: (direction) => {
+            onOrderMove(issue.id, direction);
+            virtuosoRef.current?.scrollIntoView({ index: index + direction });
+          },
+        } : undefined}
       />
     ) : (
       <ListRow
@@ -526,6 +570,7 @@ function StatusAccordionItem({
     isExpanded && issues.length > 0 ? (
       scrollParent ? (
         <Virtuoso
+          ref={virtuosoRef}
           customScrollParent={scrollParent}
           data={issues}
           computeItemKey={computeItemKey}

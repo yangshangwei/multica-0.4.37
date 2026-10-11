@@ -27,6 +27,7 @@ import { IssueAgentActivityIndicator } from "./issue-agent-activity-indicator";
 import { useIssueSurfaceSelection } from "../surface/selection-context";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { useT } from "../../i18n";
+import { ReorderControls, type ReorderOptions } from "./reorder-controls";
 
 export interface ChildProgress {
   done: number;
@@ -46,6 +47,7 @@ function ListRowContent({
   containerStyle,
   containerProps,
   checkboxProps,
+  reorder,
 }: {
   issue: Issue;
   childProgress?: ChildProgress;
@@ -54,6 +56,7 @@ function ListRowContent({
   containerRef?: Ref<HTMLDivElement>;
   containerStyle?: React.CSSProperties;
   containerProps?: Record<string, unknown>;
+  reorder?: ReorderOptions;
   checkboxProps?: Pick<React.HTMLAttributes<HTMLDivElement>, "onClick" | "onMouseDown" | "onPointerDown">;
 }) {
   const { t } = useT("issues");
@@ -178,6 +181,7 @@ function ListRowContent({
             />
           )}
         </AppLink>
+        {reorder && <ReorderControls id={issue.id} name={issue.identifier} {...reorder} />}
       </div>
     </IssueActionsContextMenu>
   );
@@ -216,14 +220,15 @@ export const DraggableListRow = memo(function DraggableListRow({
   childProgress,
   project,
   disableSorting,
+  reorder,
 }: {
   issue: Issue;
   childProgress?: ChildProgress;
   project?: Project;
   disableSorting?: boolean;
+  reorder?: ReorderOptions;
 }) {
   const {
-    attributes,
     listeners,
     setNodeRef,
     transform,
@@ -249,7 +254,8 @@ export const DraggableListRow = memo(function DraggableListRow({
       isDragging={isDragging}
       containerRef={setNodeRef}
       containerStyle={style}
-      containerProps={{ ...attributes, ...listeners }}
+      containerProps={listeners}
+      reorder={reorder}
       checkboxProps={{ onClick: stopDrag, onMouseDown: stopDrag, onPointerDown: stopDrag }}
     />
   );

@@ -42,6 +42,8 @@ import type {
   IssueGroupBranches,
   IssueGroupPageState,
 } from "../surface/use-issue-group-branches";
+import { adjacentOrder, type OrderDirection } from "../utils/adjacent-order";
+import { useReorderAnnouncement } from "./reorder-controls";
 import { useDragSettle } from "./use-drag-settle";
 import { useBoardDragPan } from "./use-board-drag-pan";
 import { useT } from "../../i18n";
@@ -257,7 +259,7 @@ function BoardViewImpl({
   issues: Issue[];
   visibleStatuses: IssueStatusCategory[];
   hiddenStatuses: IssueStatusCategory[];
-  onMoveIssue: (issueId: string, updates: DragMoveUpdates, onSettled?: () => void) => void;
+  onMoveIssue: (issueId: string, updates: DragMoveUpdates, onSettled?: (error?: unknown) => void) => void;
   childProgressMap?: Map<string, ChildProgress>;
   projectMap?: Map<string, Project>;
   /** When set, the per-column "+" pre-fills the project on the create form. */
@@ -267,8 +269,10 @@ function BoardViewImpl({
   groupBranches?: IssueGroupBranches;
 }) {
   const { t } = useT("issues");
+  const { announce, announcement } = useReorderAnnouncement();
   const storeGrouping = useViewStore((s) => s.grouping);
   const sortBy = useViewStore((s) => s.sortBy);
+  const sortDirection = useViewStore((s) => s.sortDirection);
   const boardWsId = useWorkspaceId();
   const { data: workspaceProperties = [] } = useQuery(propertyListOptions(boardWsId));
   const groupingPropertyId = propertyIdFromViewKey(storeGrouping);
@@ -668,6 +672,28 @@ function BoardViewImpl({
     [groupedIssues, groups, grouping, groupingOptionIds, onMoveIssue, groupIds, groupMap, sortBy, beginSettle, columnsRef, isDraggingRef, setColumns, applyPropertyGroupValue],
   );
 
+  const handleOrderMove = useCallback((issueId: string, direction: OrderDirection) => {
+    if (sortBy !== "position" || isDraggingRef.current || isSettlingRef.current) return;
+    const groupId = findColumn(columnsRef.current, issueId, groupIds);
+    const group = groupId ? groupMap.get(groupId) : undefined;
+    const issue = issueMapRef.current.get(issueId);
+    if (!groupId || !group || !issue) return;
+    const page = groupPagination?.[groupId] ?? (group.status ? statusPagination?.[group.status] : undefined);
+    const ids = adjacentOrder(columnsRef.current[groupId] ?? [], issueId, direction, page?.hasMore);
+    if (!ids) return;
+    const rankedIds = sortDirection === "desc" ? ids.toReversed() : ids;
+    const settled = beginSettle();
+    setColumns({ ...columnsRef.current, [groupId]: ids });
+    announce(issue.identifier);
+    onMoveIssue(issueId, {
+      position: computePosition(rankedIds, issueId, issueMapRef.current),
+      ...getMoveAnchors(rankedIds, issueId),
+    }, (error) => {
+      settled();
+      announce(issue.identifier, ids.indexOf(issueId) + 1, error);
+    });
+  }, [sortBy, sortDirection, isDraggingRef, isSettlingRef, columnsRef, groupIds, groupMap, groupPagination, statusPagination, beginSettle, setColumns, announce, onMoveIssue]);
+
   // An aborted drag (pointercancel, window resize, tab hide, Escape) fires
   // onDragCancel instead of onDragEnd. Releasing the drag lock here keeps the
   // column mirror resyncing with the cache afterwards — see the same handler in
@@ -689,6 +715,7 @@ function BoardViewImpl({
     >
       <div
         ref={pan.ref}
+        data-reorder-scope=""
         onPointerDown={pan.onPointerDown}
         onPointerMove={pan.onPointerMove}
         onPointerUp={pan.onPointerUp}
@@ -724,6 +751,8 @@ function BoardViewImpl({
                 projectId={projectId}
                 onCreateIssue={onCreateIssue}
                 sortLabel={sortLabel}
+                onOrderMove={sortBy === "position" ? handleOrderMove : undefined}
+                orderPending={isSettlingRef.current}
               />
             ) : (
               groupPagination?.[group.id] ? (
@@ -738,6 +767,8 @@ function BoardViewImpl({
                   projectId={projectId}
                   onCreateIssue={onCreateIssue}
                   sortLabel={sortLabel}
+                  onOrderMove={sortBy === "position" ? handleOrderMove : undefined}
+                  orderPending={isSettlingRef.current}
                 />
               ) : (
                 <BoardColumn
@@ -751,6 +782,8 @@ function BoardViewImpl({
                   onCreateIssue={onCreateIssue}
                   totalCount={group.totalCount}
                   sortLabel={sortLabel}
+                  onOrderMove={sortBy === "position" ? handleOrderMove : undefined}
+                  orderPending={isSettlingRef.current}
                 />
               )
             ),
@@ -774,6 +807,7 @@ function BoardViewImpl({
         )}
       </div>
 
+      {announcement}
       <DragOverlay dropAnimation={null}>
         {activeIssue ? (
           <div style={{ width: BOARD_CARD_WIDTH }} className="rotate-1 cursor-grabbing opacity-90 shadow-lg shadow-black/10">
@@ -804,6 +838,8 @@ const ServerPaginatedBoardColumn = memo(function ServerPaginatedBoardColumn({
   projectId,
   onCreateIssue,
   sortLabel,
+  onOrderMove,
+  orderPending,
 }: {
   group: BoardColumnGroup;
   issueIds: string[];
@@ -814,6 +850,8 @@ const ServerPaginatedBoardColumn = memo(function ServerPaginatedBoardColumn({
   projectId?: string;
   onCreateIssue?: (defaults: IssueCreateDefaults) => void;
   sortLabel?: string | null;
+  onOrderMove?: (id: string, direction: OrderDirection) => void;
+  orderPending?: boolean;
 }) {
   const footer = page ? (
     <ListLoadMoreFooter
@@ -836,6 +874,9 @@ const ServerPaginatedBoardColumn = memo(function ServerPaginatedBoardColumn({
       projectId={projectId}
       onCreateIssue={onCreateIssue}
       sortLabel={sortLabel}
+      onOrderMove={onOrderMove}
+      orderPending={orderPending}
+      hasMore={page?.hasMore}
       footer={footer}
     />
   );

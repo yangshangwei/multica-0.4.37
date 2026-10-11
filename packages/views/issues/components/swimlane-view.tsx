@@ -18,7 +18,9 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Virtuoso } from "react-virtuoso";
+import { adjacentOrder, type OrderDirection } from "../utils/adjacent-order";
+import { ReorderControls, useReorderAnnouncement, type ReorderOptions } from "./reorder-controls";
+import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
 import { ChevronRight, EyeOff, GripVertical, MoreHorizontal, Pencil, Plus } from "lucide-react";
 import { useQuery, useQueries, useQueryClient } from "@tanstack/react-query";
 import type {
@@ -632,7 +634,7 @@ function SwimLaneViewImpl({
   onMoveIssue: (
     issueId: string,
     updates: SwimLaneMoveUpdates,
-    onSettled?: () => void,
+    onSettled?: (error?: unknown) => void,
   ) => void;
   childProgressMap?: Map<string, ChildProgress>;
   projectMap?: Map<string, Project>;
@@ -642,6 +644,8 @@ function SwimLaneViewImpl({
   groupBranches?: IssueGroupBranches;
 }) {
   const { t } = useT("issues");
+  const { announce, announcement } = useReorderAnnouncement();
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
   const paths = useWorkspacePaths();
   const viewStoreApi = useViewStoreApi();
   const viewBaseline = useViewBaseline();
@@ -1142,6 +1146,59 @@ function SwimLaneViewImpl({
     [cellSet, laneByKey],
   );
 
+  const moveLane = useCallback((activeRawId: string, overRawId: string) => {
+    // Visible non-pinned lanes, in current render order.
+    const visibleOrder = laneGroups
+      .filter((g) => !g.isPinned && !g.isOrphan)
+      .map((g) => g.rawId);
+    const fromIdx = visibleOrder.indexOf(activeRawId);
+    const toIdx = visibleOrder.indexOf(overRawId);
+    if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
+    const visibleNext = arrayMove(visibleOrder, fromIdx, toIdx);
+
+    // Merge into the persisted order without clobbering entries that
+    // aren't currently visible (e.g. hidden by a status filter).
+    // Walk stored, overwriting each visible slot with the next id
+    // from `visibleNext`; non-visible entries pass through verbatim.
+    // Any remaining `visibleNext` ids (visible lanes that weren't
+    // in stored at all) get appended at the end.
+    const stored =
+      viewStoreApi.getState().swimlaneOrders[swimlaneGrouping] ?? [];
+    const visibleSet = new Set(visibleOrder);
+    let cursor = 0;
+    const merged = stored.map((id) =>
+      visibleSet.has(id) ? visibleNext[cursor++]! : id,
+    );
+    for (const id of visibleNext.slice(cursor)) merged.push(id);
+
+    viewStoreApi.getState().setSwimlaneOrder(merged);
+  }, [laneGroups, swimlaneGrouping, viewStoreApi]);
+
+  const handleOrderMove = useCallback((issueId: string, direction: OrderDirection) => {
+    if (sortBy !== "position" || isDraggingRef.current || isSettlingRef.current) return;
+    const cell = findCellIn(localCellsRef.current, cellSet, issueId);
+    if (!cell) return;
+    const lane = laneByKey.get(cell.laneKey);
+    const issue = issueMapRef.current.get(issueId);
+    if (!lane || lane.isOrphan || !issue) return;
+    const pageKey = lane.serverCellKeys?.[cell.status];
+    const ids = adjacentOrder(localCellsRef.current[cell.laneKey]?.[cell.status] ?? [], issueId, direction,
+      pageKey ? groupBranches?.pagination[pageKey]?.hasMore : false);
+    if (!ids) return;
+    const rankedIds = sortDirection === "desc" ? ids.toReversed() : ids;
+    isSettlingRef.current = true;
+    setLocalCells((current) => ({ ...current, [cell.laneKey]: { ...current[cell.laneKey], [cell.status]: ids } }));
+    announce(issue.identifier);
+    onMoveIssue(issueId, {
+      position: computePosition(rankedIds, issueId, issueMapRef.current),
+      ...getMoveAnchors(rankedIds, issueId),
+    }, (error) => {
+      isSettlingRef.current = false;
+      setSettleVersion((value) => value + 1);
+      announce(issue.identifier, ids.indexOf(issueId) + 1, error);
+    });
+  }, [sortBy, sortDirection, cellSet, laneByKey, groupBranches, announce, onMoveIssue]);
+
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
@@ -1167,31 +1224,7 @@ function SwimLaneViewImpl({
         overLaneRef &&
         activeLaneRef.rawId !== overLaneRef.rawId
       ) {
-        // Visible non-pinned lanes, in current render order.
-        const visibleOrder = laneGroups
-          .filter((g) => !g.isPinned && !g.isOrphan)
-          .map((g) => g.rawId);
-        const fromIdx = visibleOrder.indexOf(activeLaneRef.rawId);
-        const toIdx = visibleOrder.indexOf(overLaneRef.rawId);
-        if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
-        const visibleNext = arrayMove(visibleOrder, fromIdx, toIdx);
-
-        // Merge into the persisted order without clobbering entries that
-        // aren't currently visible (e.g. hidden by a status filter).
-        // Walk stored, overwriting each visible slot with the next id
-        // from `visibleNext`; non-visible entries pass through verbatim.
-        // Any remaining `visibleNext` ids (visible lanes that weren't
-        // in stored at all) get appended at the end.
-        const stored =
-          viewStoreApi.getState().swimlaneOrders[swimlaneGrouping] ?? [];
-        const visibleSet = new Set(visibleOrder);
-        let cursor = 0;
-        const merged = stored.map((id) =>
-          visibleSet.has(id) ? visibleNext[cursor++]! : id,
-        );
-        for (const id of visibleNext.slice(cursor)) merged.push(id);
-
-        viewStoreApi.getState().setSwimlaneOrder(merged);
+        moveLane(activeLaneRef.rawId, overLaneRef.rawId);
         return;
       }
       if (activeLaneRef || overLaneRef) return;
@@ -1303,7 +1336,7 @@ function SwimLaneViewImpl({
         },
       );
     },
-    [cells, cellSet, laneByKey, laneGroups, onMoveIssue, swimlaneGrouping, viewStoreApi],
+    [cells, cellSet, laneByKey, onMoveIssue, moveLane],
   );
 
   // Grid template: one column per status, fixed width COLUMN_WIDTH, gap COLUMN_GAP.
@@ -1368,6 +1401,7 @@ function SwimLaneViewImpl({
     setLocalCells(cells);
   }, [cells]);
 
+  const movableLanes = orderedLanes.filter((lane) => !lane.isPinned && !lane.isOrphan);
   const computeLaneKey = (_index: number, lane: LaneGroup) => lane.key;
   const renderLane = (index: number, lane: LaneGroup) => (
     <div className={index === 0 ? undefined : "pt-4"}>
@@ -1386,6 +1420,22 @@ function SwimLaneViewImpl({
         projectId={projectId}
         onCreateIssue={onCreateIssue}
         groupPagination={groupBranches?.pagination}
+        onOrderMove={sortBy === "position" ? handleOrderMove : undefined}
+        orderPending={isSettlingRef.current}
+        laneReorder={!lane.isPinned && !lane.isOrphan ? {
+          index: movableLanes.indexOf(lane),
+          count: movableLanes.length,
+          hasMore: groupBranches?.hasMoreGroups,
+          onMove: (direction) => {
+            const ids = adjacentOrder(movableLanes.map((entry) => entry.rawId), lane.rawId, direction, groupBranches?.hasMoreGroups);
+            if (!ids) return;
+            const target = movableLanes[movableLanes.indexOf(lane) + direction];
+            if (!target) return;
+            moveLane(lane.rawId, target.rawId);
+            announce(lane.title, ids.indexOf(lane.rawId) + 1);
+            virtuosoRef.current?.scrollIntoView({ index: index + direction });
+          },
+        } : undefined}
       />
     </div>
   );
@@ -1399,7 +1449,7 @@ function SwimLaneViewImpl({
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <div ref={attachScroller} data-tab-scroll-root="swimlane" className="flex flex-1 min-h-0 gap-4 overflow-auto p-4">
+      <div ref={attachScroller} data-tab-scroll-root="swimlane" data-reorder-scope="" className="flex flex-1 min-h-0 gap-4 overflow-auto p-4">
         <div className="flex shrink-0 flex-col" style={{ width: `${trackWidth}px` }}>
         {groupBranches?.isError && laneGroups.length === 0 && (
           <button
@@ -1491,6 +1541,7 @@ function SwimLaneViewImpl({
               survive the measurement frame (MUL-4750). */}
           {scrollEl ? (
             <Virtuoso
+              ref={virtuosoRef}
               customScrollParent={scrollEl}
               data={orderedLanes}
               computeItemKey={computeLaneKey}
@@ -1519,6 +1570,7 @@ function SwimLaneViewImpl({
         )}
       </div>
 
+      {announcement}
       <DragOverlay dropAnimation={null}>
         {activeIssue ? (
           <div className="w-[280px] rotate-2 scale-105 cursor-grabbing opacity-90 shadow-lg shadow-black/10">
@@ -1567,6 +1619,9 @@ function DraggableSwimLane({
   projectId,
   onCreateIssue,
   groupPagination,
+  onOrderMove,
+  orderPending,
+  laneReorder,
 }: {
   lane: LaneGroup;
   grouping: SwimlaneGrouping;
@@ -1582,9 +1637,12 @@ function DraggableSwimLane({
   projectId?: string;
   onCreateIssue?: (defaults: IssueCreateDefaults) => void;
   groupPagination?: Record<string, IssueGroupPageState>;
+  onOrderMove?: (id: string, direction: OrderDirection) => void;
+  orderPending?: boolean;
+  laneReorder?: ReorderOptions;
 }) {
   const { t } = useT("issues");
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const { listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: laneIdFor(grouping, lane.rawId),
     disabled: lane.isPinned,
   });
@@ -1612,7 +1670,6 @@ function DraggableSwimLane({
           here so the whole header row is the drag surface. */}
       <div
         className="mb-2 flex w-full items-center gap-2 rounded-md px-1 py-1"
-        {...attributes}
         {...listeners}
       >
         {!lane.isPinned && (
@@ -1655,6 +1712,7 @@ function DraggableSwimLane({
             {laneTotal}
           </span>
         </button>
+        {laneReorder && <ReorderControls id={lane.key} name={lane.title} {...laneReorder} />}
         {lane.parentIssue && (
           <DeferredTooltip
             content={t(($) => $.swimlane.open_parent)}
@@ -1689,6 +1747,8 @@ function DraggableSwimLane({
                 projectId={projectId}
                 onCreateIssue={onCreateIssue}
                 readOnly={lane.isOrphan}
+                onOrderMove={onOrderMove}
+                orderPending={orderPending}
                 page={
                   lane.serverCellKeys?.[status]
                     ? groupPagination?.[lane.serverCellKeys[status]!]
@@ -1714,6 +1774,8 @@ function SwimLaneCell({
   projectId,
   onCreateIssue,
   readOnly = false,
+  onOrderMove,
+  orderPending,
   page,
 }: {
   cellId: string;
@@ -1732,6 +1794,8 @@ function SwimLaneCell({
    * belong to parents we don't have loaded.
    */
   readOnly?: boolean;
+  onOrderMove?: (id: string, direction: OrderDirection) => void;
+  orderPending?: boolean;
   page?: IssueGroupPageState;
 }) {
   // The orphan cell stays enabled in the collision graph so that drops
@@ -1771,10 +1835,17 @@ function SwimLaneCell({
         }`}
       >
         <SortableContext items={issueIds} strategy={verticalListSortingStrategy}>
-          {resolvedIssues.map((issue) => (
+          {resolvedIssues.map((issue, index) => (
             <DraggableBoardCard
               key={issue.id}
               issue={issue}
+              reorder={onOrderMove && !readOnly ? {
+                index,
+                count: resolvedIssues.length,
+                hasMore: page?.hasMore,
+                disabled: orderPending,
+                onMove: (direction) => onOrderMove(issue.id, direction),
+              } : undefined}
               childProgress={childProgressMap.get(issue.id)}
               project={
                 issue.project_id ? projectMap?.get(issue.project_id) : undefined

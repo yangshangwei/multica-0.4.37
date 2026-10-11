@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SwimLaneView } from "./swimlane-view";
 import { IssueContextMenuProvider } from "../actions";
@@ -133,7 +134,7 @@ type SwimlaneGroupingMock = "parent" | "project" | "assignee";
 // flip grouping must set both `swimlaneGrouping` and the matching slice
 // in `swimlaneOrders` / `collapsedSwimlanes`.
 const mockViewState: {
-  sortBy: "position";
+  sortBy: "position" | "priority";
   sortDirection: "asc";
   cardProperties: Record<string, boolean>;
   swimlaneGrouping: SwimlaneGroupingMock;
@@ -245,10 +246,10 @@ vi.mock("@dnd-kit/utilities", () => ({
 // virtualized swimlane exposes its lanes/cells/cards to the DOM, matching the
 // non-virtualized behavior these tests assert.
 vi.mock("react-virtuoso", () => ({
-  Virtuoso: ({ data, itemContent, components }: any) => (
+  Virtuoso: ({ data, itemContent, components, computeItemKey }: any) => (
     <div data-testid="virtuoso-mock">
       {(data ?? []).map((item: any, i: number) => (
-        <div key={i}>{itemContent(i, item)}</div>
+        <div key={computeItemKey?.(i, item) ?? i}>{itemContent(i, item)}</div>
       ))}
       {components?.Footer ? <components.Footer /> : null}
     </div>
@@ -389,6 +390,7 @@ function renderWithI18n(ui: React.ReactNode) {
 describe("SwimLaneView", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockViewState.sortBy = "position";
     mockViewState.swimlaneGrouping = "parent";
     mockViewState.swimlaneOrders = { parent: [], project: [], assignee: [] };
     mockViewState.collapsedSwimlanes = { parent: [], project: [], assignee: [] };
@@ -402,6 +404,29 @@ describe("SwimLaneView", () => {
     mockViewState.agentRunningFilter = false;
     mockListChildrenByParents.mockResolvedValue({ issues: [] });
     mockGetAgentTaskSnapshot.mockResolvedValue([]);
+  });
+
+  it("moves a child with keyboard controls without rewriting its status or parent", async () => {
+    const user = userEvent.setup();
+    const move = vi.fn();
+    const sibling = { ...mockIssues[1]!, id: "child-2", identifier: "PROJ-22", position: 400 };
+    renderWithI18n(<SwimLaneView issues={[...mockIssues, sibling]} onMoveIssue={move} />);
+    const up = screen.getByRole("button", { name: "Move PROJ-22 up" });
+    up.focus();
+    await user.keyboard("{Enter}");
+    expect(move).toHaveBeenCalledWith("child-2", {
+      position: 199, before_id: null, after_id: "child-1",
+    }, expect.any(Function));
+    expect(screen.getByRole("status")).toHaveTextContent("Moving PROJ-22");
+    act(() => move.mock.calls[0]![2](new Error("offline")));
+    expect(screen.getByRole("status")).toHaveTextContent(enIssues.page.move_failed);
+    expect(screen.getByRole("button", { name: "Move PROJ-22 up" })).toHaveFocus();
+  });
+
+  it("hides task order actions in a sorted swimlane", () => {
+    mockViewState.sortBy = "priority";
+    renderWithI18n(<SwimLaneView issues={mockIssues} onMoveIssue={vi.fn()} />);
+    expect(screen.queryByRole("button", { name: /Move PROJ-/ })).toBeNull();
   });
 
   it("renders status columns as headers", () => {
@@ -1110,6 +1135,21 @@ describe("SwimLaneView", () => {
       updated_at: "2026-01-01T00:00:00Z",
     },
   ];
+
+  it("moves lanes without dragging while retaining hidden order entries and pinned boundaries", async () => {
+    const user = userEvent.setup();
+    mockViewState.swimlaneOrders.parent = ["hidden-before", "parent-1", "hidden-between", "parent-2"];
+    const move = vi.fn();
+    renderWithI18n(<SwimLaneView issues={multiParentIssues} onMoveIssue={move} />);
+    const upButtons = screen.getAllByRole("button", { name: /^Move Parent.* up$/ });
+    expect(upButtons[0]).toHaveAttribute("aria-disabled", "true");
+    upButtons[1]!.focus();
+    await user.keyboard("{Enter}");
+    expect(mockSetSwimlaneOrder).toHaveBeenCalledWith(["hidden-before", "parent-2", "hidden-between", "parent-1"]);
+    expect(move).not.toHaveBeenCalled();
+    expect(screen.getByRole("status")).toHaveTextContent("position 1");
+    expect(screen.queryByRole("button", { name: /Move No parent/ })).toBeNull();
+  });
 
   it("persists lane order via setSwimlaneOrder when a lane is dragged onto another", () => {
     renderWithI18n(

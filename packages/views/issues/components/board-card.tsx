@@ -30,6 +30,7 @@ import { IssueAgentActivityIndicator } from "./issue-agent-activity-indicator";
 import { CustomStatusChip, useIsCustomStatus } from "./custom-status-chip";
 import { useIssueSurfaceActionsOptional } from "../surface/actions-context";
 import { useT } from "../../i18n";
+import { ReorderControls, type ReorderOptions } from "./reorder-controls";
 
 function formatDate(date: string): string {
   return formatDateOnly(date, { month: "short", day: "numeric" }, "en-US");
@@ -323,15 +324,16 @@ export const DraggableBoardCard = memo(function DraggableBoardCard({
   childProgress,
   project,
   disableSorting,
+  reorder,
 }: {
   issue: Issue;
   childProgress?: ChildProgress;
   project?: Project;
   disableSorting?: boolean;
+  reorder?: ReorderOptions;
 }) {
   const p = useWorkspacePaths();
   const {
-    attributes,
     listeners,
     setNodeRef,
     transform,
@@ -355,9 +357,8 @@ export const DraggableBoardCard = memo(function DraggableBoardCard({
         ref={setNodeRef}
         style={style}
         data-board-card=""
-        {...attributes}
         {...listeners}
-        className={`group/card ${isDragging ? "opacity-30" : ""}`}
+        className={`group/card relative ${isDragging ? "opacity-30" : ""}`}
       >
         <AppLink
           href={p.issueDetail(issue.id)}
@@ -371,6 +372,11 @@ export const DraggableBoardCard = memo(function DraggableBoardCard({
             project={project}
           />
         </AppLink>
+        {reorder && (
+          <div className="absolute right-1 top-1 rounded-md bg-surface opacity-100 [@media(hover:hover)]:opacity-0 group-hover/card:opacity-100 group-focus-within/card:opacity-100">
+            <ReorderControls id={issue.id} name={issue.identifier} {...reorder} />
+          </div>
+        )}
       </div>
     </IssueActionsContextMenu>
   );

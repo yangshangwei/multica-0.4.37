@@ -143,10 +143,10 @@ vi.mock("@dnd-kit/utilities", () => ({
 // jsdom has no layout, so the real Virtuoso measures a 0-height viewport and
 // renders nothing. Render rows inline so the panel's contents are assertable.
 vi.mock("react-virtuoso", () => ({
-  Virtuoso: ({ data, itemContent }: any) => (
+  Virtuoso: ({ data, itemContent, computeItemKey }: any) => (
     <div data-testid="virtuoso-mock">
       {(data ?? []).map((item: any, i: number) => (
-        <div key={i}>{itemContent(i, item)}</div>
+        <div key={computeItemKey?.(i, item) ?? i}>{itemContent(i, item)}</div>
       ))}
     </div>
   ),
@@ -194,6 +194,7 @@ const PAGINATION = {
 function renderListView(
   issues: Issue[] = ISSUES,
   visibleStatuses: IssueStatusCategory[] = ["todo"],
+  onMoveIssue = vi.fn(),
 ) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
@@ -207,7 +208,7 @@ function renderListView(
               issues={issues}
               visibleStatuses={visibleStatuses}
               statusPagination={PAGINATION}
-              onMoveIssue={vi.fn()}
+              onMoveIssue={onMoveIssue}
             />
           </ScrollRestorationProvider>
         </IssueContextMenuProvider>
@@ -319,5 +320,46 @@ describe("ListView keyboard selection", () => {
     expect(group).not.toBeChecked();
     expect(first).not.toBeChecked();
     expect(second).not.toBeChecked();
+  });
+});
+
+
+describe("ListView non-drag ordering", () => {
+  beforeEach(() => {
+    mockViewState.sortBy = "position";
+    mockViewState.sortDirection = "asc";
+    mockViewState.listCollapsedStatuses = [];
+  });
+
+  it("moves a row by keyboard, sends sibling anchors and retains focus on failure", async () => {
+    const user = userEvent.setup();
+    const move = vi.fn();
+    renderListView(ISSUES, ["todo"], move);
+    const up = screen.getByRole("button", { name: "Move MUL-2 up" });
+    up.focus();
+    await user.keyboard("{Enter}");
+    expect(move).toHaveBeenCalledWith("issue-2", {
+      position: 0, before_id: null, after_id: "issue-1",
+    }, expect.any(Function));
+    await act(async () => move.mock.calls[0]![2](new Error("offline")));
+    expect(screen.getByRole("status")).toHaveTextContent(enIssues.page.move_failed);
+    expect(screen.getByRole("button", { name: "Move MUL-2 up" })).toHaveFocus();
+  });
+
+  it("uses ascending rank anchors while moving upward in a descending manual view", async () => {
+    const user = userEvent.setup();
+    mockViewState.sortDirection = "desc";
+    const move = vi.fn();
+    renderListView([...ISSUES].reverse(), ["todo"], move);
+    await user.click(screen.getByRole("button", { name: "Move MUL-1 up" }));
+    expect(move).toHaveBeenCalledWith("issue-1", {
+      position: 3, before_id: "issue-2", after_id: null,
+    }, expect.any(Function));
+  });
+
+  it("does not expose manual order actions in a sorted view", () => {
+    mockViewState.sortBy = "priority";
+    renderListView();
+    expect(screen.queryByRole("button", { name: /Move MUL-/ })).toBeNull();
   });
 });

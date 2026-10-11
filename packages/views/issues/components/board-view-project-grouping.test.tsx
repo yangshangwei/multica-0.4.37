@@ -8,7 +8,8 @@
  * as the "no assignee" column.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, screen } from "@testing-library/react";
+import { cleanup, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ViewStoreProvider } from "@multica/core/issues/stores/view-store-context";
 import { getIssueSurfaceViewStore } from "@multica/core/issues/stores/surface-view-store";
@@ -196,14 +197,19 @@ describe("Board grouped by project", () => {
   function render({
     descriptors = [NO_PROJECT_DESCRIPTOR, ...PROJECT_DESCRIPTORS],
     issues = ISSUES,
+    onMoveIssue = vi.fn(),
+    sortBy = "position",
   }: {
     descriptors?: IssueGroupBranches["descriptors"];
     issues?: Issue[];
+    onMoveIssue?: React.ComponentProps<typeof BoardView>["onMoveIssue"];
+    sortBy?: "position" | "priority";
   } = {}) {
     const store = getIssueSurfaceViewStore(
       `board-project-${Math.floor(Math.random() * 1e9)}`,
     );
     store.getState().setGrouping("project");
+    store.getState().setSortBy(sortBy);
     // Cards carry their own project chip by default, which would put the same
     // title in two places and make "the column header says X" unprovable.
     if (store.getState().cardProperties.project) {
@@ -217,7 +223,7 @@ describe("Board grouped by project", () => {
             issues={issues}
             visibleStatuses={["todo"]}
             hiddenStatuses={[]}
-            onMoveIssue={() => {}}
+            onMoveIssue={onMoveIssue}
             projectMap={
               new Map([[ACME_ID, makeProject(ACME_ID, "Acme Corp", "🚀")]])
             }
@@ -228,6 +234,28 @@ describe("Board grouped by project", () => {
       </QueryClientProvider>,
     );
   }
+
+  it("reorders by pointer within the project without changing its project or status", async () => {
+    const user = userEvent.setup();
+    const move = vi.fn();
+    const issues = [makeIssue("first", ACME_ID), { ...makeIssue("second", ACME_ID), position: 2 }];
+    render({ issues, onMoveIssue: move });
+    await user.click(screen.getByRole("button", { name: "Move MUL-second up" }));
+    expect(move).toHaveBeenCalledWith("second", {
+      position: 0, before_id: null, after_id: "first",
+    }, expect.any(Function));
+    expect(screen.getByRole("button", { name: "Move MUL-second down" })).toHaveAttribute("aria-disabled", "true");
+    act(() => move.mock.calls[0]![2](new Error("offline")));
+    expect(screen.getByText("Failed to move issue")).toHaveAttribute("role", "status");
+    expect(screen.getAllByRole("link").map((link) => link.textContent)).toEqual([
+      expect.stringContaining("Task first"), expect.stringContaining("Task second"),
+    ]);
+  });
+
+  it("does not offer manual moves while cards use a field sort", () => {
+    render({ sortBy: "priority" });
+    expect(screen.queryByRole("button", { name: /Move MUL-/ })).toBeNull();
+  });
 
   it("titles each column with its project, never with its id", () => {
     render();

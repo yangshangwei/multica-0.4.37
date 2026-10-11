@@ -1,7 +1,7 @@
 "use client";
 
-import { memo, useCallback, useMemo, useState, type ReactNode } from "react";
-import { Virtuoso } from "react-virtuoso";
+import { memo, useCallback, useMemo, useState, useRef, type ReactNode } from "react";
+import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
 import { EyeOff, FolderMinus, MoreHorizontal, Plus, UserMinus } from "lucide-react";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -23,6 +23,7 @@ import { useViewStoreApi } from "@multica/core/issues/stores/view-store-context"
 import { useViewBaseline } from "../surface/view-baseline-context";
 import { StatusHeading } from "./status-heading";
 import { DraggableBoardCard } from "./board-card";
+import type { OrderDirection } from "../utils/adjacent-order";
 import type { ChildProgress } from "./list-row";
 import { useT } from "../../i18n";
 import { ActorAvatar } from "../../common/actor-avatar";
@@ -105,6 +106,9 @@ export const BoardColumn = memo(function BoardColumn({
   projectId,
   onCreateIssue,
   sortLabel,
+  onOrderMove,
+  orderPending,
+  hasMore,
 }: {
   group: BoardColumnGroup;
   issueIds: string[];
@@ -117,7 +121,11 @@ export const BoardColumn = memo(function BoardColumn({
   projectId?: string;
   onCreateIssue?: (defaults: IssueCreateDefaults) => void;
   sortLabel?: string | null;
+  onOrderMove?: (id: string, direction: OrderDirection) => void;
+  orderPending?: boolean;
+  hasMore?: boolean;
 }) {
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
   const status = group.status;
   const cfg = status ? STATUS_CONFIG[status] : null;
   const { setNodeRef, isOver } = useDroppable({ id: group.id });
@@ -181,6 +189,16 @@ export const BoardColumn = memo(function BoardColumn({
           issue.project_id ? projectMap?.get(issue.project_id) : undefined
         }
         disableSorting={!!sortLabel}
+        reorder={onOrderMove ? {
+          index,
+          count: resolvedIssues.length,
+          hasMore,
+          disabled: orderPending,
+          onMove: (direction) => {
+            onOrderMove(issue.id, direction);
+            virtuosoRef.current?.scrollIntoView({ index: index + direction });
+          },
+        } : undefined}
       />
     </div>
   );
@@ -294,6 +312,7 @@ export const BoardColumn = memo(function BoardColumn({
                 </>
               ) : scrollEl ? (
                 <Virtuoso
+                  ref={virtuosoRef}
                   customScrollParent={scrollEl}
                   data={resolvedIssues}
                   computeItemKey={computeItemKey}

@@ -577,10 +577,13 @@ describe("useIssueSurfaceController", () => {
     );
 
     const options = updateIssueMutate.mock.calls[0]?.[1] as
-      | { onSettled?: () => void }
+      | { onSettled?: (issue: unknown, error: unknown) => void }
       | undefined;
-    options?.onSettled?.();
-    expect(onSettled).toHaveBeenCalled();
+    options?.onSettled?.({}, null);
+    expect(onSettled).toHaveBeenLastCalledWith(null);
+    const failure = new Error("offline");
+    options?.onSettled?.(undefined, failure);
+    expect(onSettled).toHaveBeenLastCalledWith(failure);
   });
 
   it("exposes surface actions and surface-local selection", async () => {

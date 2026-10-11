@@ -37,7 +37,7 @@ export interface IssueSurfaceActionController {
   moveIssue: (
     issueId: string,
     updates: MoveIssueUpdates,
-    onSettled?: () => void,
+    onSettled?: (error?: unknown) => void,
   ) => void;
 }
 
@@ -84,7 +84,7 @@ export function useIssueSurfaceActions({
     (
       issueId: string,
       updates: MoveIssueUpdates,
-      onSettled?: () => void,
+      onSettled?: (error?: unknown) => void,
     ) => {
       const { before_id, after_id, ...optimisticUpdates } = updates;
       updateIssueMutation.mutate(
@@ -103,7 +103,7 @@ export function useIssueSurfaceActions({
                 : t(($) => $.detail.toast_move_issue_failed),
             );
           },
-          onSettled,
+          onSettled: (_issue, error) => onSettled?.(error),
         },
       );
     },
