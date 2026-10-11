@@ -133,7 +133,12 @@ func (f *platformAdminCredentialFile) durable(expected platformAdminCredentials)
 		}
 		// Only this invocation's exclusive staging file is ever removed. A final
 		// file survives every rollback, sync failure, and uncertain commit.
-		defer removeInitializationFile(f.directory, tempName)
+		published := false
+		defer func() {
+			if !published {
+				_ = removeInitializationFile(f.directory, tempName)
+			}
+		}()
 		data, err := json.MarshalIndent(expected, "", "  ")
 		if err == nil {
 			err = f.writeFile(temp, append(data, '\n'))
@@ -148,9 +153,9 @@ func (f *platformAdminCredentialFile) durable(expected platformAdminCredentials)
 		if err = f.publish(f.directory, tempName, f.name); err != nil {
 			return errors.New("credentials_file_publish_failed")
 		}
-		if err = removeInitializationFile(f.directory, tempName); err != nil {
-			return errors.New("credentials_file_publish_failed")
-		}
+		// Exclusive rename consumes the staging name atomically. Do not unlink
+		// that name afterward: it no longer belongs to this invocation.
+		published = true
 	}
 	// Reopen and validate the final inode, including on retry after a failed
 	// directory sync. Existence alone is never treated as durable publication.
