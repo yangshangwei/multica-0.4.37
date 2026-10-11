@@ -27,6 +27,50 @@ accept ordered, repeated overlays. Relative paths resolve from `DIR`.
   Operator overlays may retain obsolete `FF_ITERATIONS_I1` values; preserve
   operator files while documenting that newer backends ignore that key.
 
+### First-time platform administration
+
+The operator procedure lives in
+`docs/offline-upgrade.zh-CN.md#platform-administration`. Keep it in both upgrade
+guide copies (`README.md` and `操作文档.md`) produced by
+`scripts/build-offline-upgrade.sh`, and link it from the desktop delivery checklist.
+Ordinary upgrades do not enable administration or change authentication mode.
+After migration health succeeds, an eligible password/admin deployment invokes
+the bundled `initialize-platform-admin.sh`; an existing platform role or retained
+initialization history suppresses creation. Device-account deployments must plan
+the existing password migration first. Signup need not be enabled.
+
+The full console needs password mode, the administration/managed-installation
+switches, and a stable deployment UUID. A successful administrator login alone
+does not prove the console works: overview and installation reads return
+`installation_unavailable` without `MULTICA_DEPLOYMENT_ID`. Generate it only when
+absent; never reuse a development deployment's UUID or credentials in examples.
+Recreate the backend with the original ordered Compose files after env changes.
+
+Automatic initialization runs `/app/server platform-admin initialize
+--credentials-file ABS_PATH --reason ...` in a one-off container from the selected
+backend image. Preserve all overlay order, runtime database/network settings and
+operator UID/GID. A temporary structured override adds the private deployment
+bind; no permanent credential mount, host Node/Go dependency, port publishing or
+image pull is needed. Never source `.env` or log full resolved Compose JSON.
+
+The CLI must durably publish and sync `admin-initial-password.txt` (0600) and its
+parent before committing account/credential/role/marker/audit. Reused valid files
+must be synced again. Keep this file and `.admin-initial-password.*` staging
+artifacts out of Git, build contexts and bundles. stdout carries only versioned,
+nonsecret status JSON. A pending committed account without matching local
+credentials returns `credentials_unavailable`, including a second maintenance
+host; never claim delivered credentials or regenerate a password in that case.
+Initialization failure prevents a whole-upgrade success report but does not undo
+already upgraded services or migrations. The standalone helper is the retry path.
+
+The explicit `platform-admin bootstrap --user UUID --reason ...` still grants an
+existing ready account without setting its password and requires no effective
+super administrator. Preserve its existing password-mode-only preconditions;
+manual preservation markers may have no deployment UUID. Both paths retain a
+permanent marker across role removal, account recovery and future upgrades.
+Verify first-change restriction, rejection of an unchanged temporary password,
+authenticated role and overview/account pages as well as migration health.
+
 ## Validation and errors
 
 Missing/unreadable overlays and CR/LF paths fail before image loading or backup.

@@ -1,0 +1,48 @@
+{
+  "id": "admin-auto-initialization",
+  "name": "admin-auto-initialization",
+  "title": "升级时自动初始化专用超级管理员",
+  "description": "在密码模式且后台已启用的部署中首次创建 platform_admin，生成独立随机初始密码并要求首次改密；重复升级保留已有管理员和凭据。",
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "platform-admin",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-11",
+  "completedAt": null,
+  "branch": "codex/admin-auto-initialization",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-admin-auto-init",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "server/cmd/server/platform_admin.go",
+    "server/internal/service/platform_admin.go",
+    "server/internal/handler/auth_password.go",
+    "scripts/offline-upgrade.sh",
+    "scripts/offline-bundle.sh",
+    "packages/views/auth/password-error.ts",
+    "docs/offline-upgrade.zh-CN.md"
+  ],
+  "notes": "User explicitly approved implementation of the reviewed plan on 2026-10-11. Keep unrelated concurrent iteration/triage/actor-picker edits untouched.",
+  "meta": {
+    "planning_review": "completed",
+    "implementation_approval": "approved",
+    "planning_artifacts": [
+      "prd.md",
+      "design.md",
+      "implement.md",
+      "implement.jsonl",
+      "check.jsonl",
+      "research/auth-contracts.md",
+      "research/upgrade-integration.md",
+      "research/plan-review.md"
+    ],
+    "integration_branch": "codex/projects-p1"
+  }
+}

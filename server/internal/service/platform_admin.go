@@ -292,6 +292,11 @@ func (s *PlatformAdminService) ChangeRole(ctx context.Context, p PlatformRoleCha
 	if err != nil {
 		return result, err
 	}
+	if p.Role != nil {
+		if _, err = PreservePlatformAdminInitializationInTx(ctx, tx, p.OrganizationID); err != nil {
+			return result, err
+		}
+	}
 	if err = EnsureEffectiveSuperAdmin(ctx, tx); err != nil {
 		return result, err
 	}
@@ -576,6 +581,9 @@ func (s *PlatformAdminService) Bootstrap(ctx context.Context, p PlatformAdminBoo
 	before, _ := json.Marshal(roleAuditState{Role: beforeRole, AuthVersion: credential.SessionVersion - 1})
 	after, _ := json.Marshal(roleAuditState{Role: &role, AuthVersion: credential.SessionVersion})
 	if err = recordRoleAudit(ctx, q, op, p.RequestID, before, after); err != nil {
+		return PlatformRoleChangeResult{}, err
+	}
+	if _, err = PreservePlatformAdminInitializationInTx(ctx, tx, p.OrganizationID); err != nil {
 		return PlatformRoleChangeResult{}, err
 	}
 	if err = EnsureEffectiveSuperAdmin(ctx, tx); err != nil {

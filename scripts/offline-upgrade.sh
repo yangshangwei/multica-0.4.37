@@ -94,6 +94,8 @@ DEPLOYMENT_DIR="$(cd "$DEPLOYMENT_DIR" 2>/dev/null && pwd)" || die "deployment d
 [ -f "$PACKAGE_DIR/docker-compose.selfhost.yml" ] || die "missing package compose file"
 [ -f "$PACKAGE_DIR/MANIFEST.txt" ] || die "missing package manifest"
 [ -f "$PACKAGE_DIR/install-changelog.sh" ] || die "missing package changelog installer"
+[ -f "$PACKAGE_DIR/initialize-platform-admin.sh" ] || die "missing package administrator initializer"
+[ -f "$PACKAGE_DIR/scripts/admin-init-compose.mjs" ] || die "missing package administrator Compose helper"
 # Resolve overlays before Docker calls or backup creation. Never evaluate paths
 # or source .env; spaces and shell metacharacters must remain literal argv.
 overlay_args=()
@@ -253,6 +255,13 @@ if [ "$healthy" -ne 1 ]; then
   echo "Backend did not become healthy. Recent logs:" >&2
   "${compose[@]}" logs --tail=120 backend >&2 || true
   fail_upgrade
+fi
+
+echo "==> Checking deployment administrator initialization"
+if ! MULTICA_BACKEND_IMAGE="$BACKEND_IMAGE" MULTICA_WEB_IMAGE="$WEB_IMAGE" MULTICA_IMAGE_TAG="$IMAGE_TAG" \
+  bash "$PACKAGE_DIR/initialize-platform-admin.sh" --deployment-dir "$DEPLOYMENT_DIR" \
+    --web-image "$WEB_IMAGE:$IMAGE_TAG" --backend-image "$BACKEND_IMAGE:$IMAGE_TAG" "${publisher_args[@]+"${publisher_args[@]}"}"; then
+  die "services were upgraded, but administrator initialization is incomplete. Containers and database were not rolled back; backup: $BACKUP_DIR. Retry initialize-platform-admin.sh --deployment-dir with the same directory and every --compose-file overlay."
 fi
 
 echo ""

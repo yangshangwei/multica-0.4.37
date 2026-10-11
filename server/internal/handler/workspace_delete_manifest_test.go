@@ -49,6 +49,7 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"organization":                       workspaceDeleteKeep,
 	"organization_workspace":             workspaceDelete,
 	"platform_role_binding":              workspaceDeleteKeep,
+	"platform_admin_initialization":      workspaceDeleteKeep,
 	"activity_log":                       workspaceDelete,
 	"agent":                              workspaceDelete,
 	"agent_approval_request":             workspaceDelete,

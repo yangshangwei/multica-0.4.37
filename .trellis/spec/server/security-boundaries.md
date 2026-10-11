@@ -257,6 +257,42 @@ The pre-listener `platform-admin bootstrap --user <UUID> --reason <reason>`
 command initializes an existing completed password account, atomically revokes
 its old credentials, and records a deployment-operator audit.
 
+The deployment-only `platform-admin initialize --credentials-file ABS_PATH
+--reason TEXT` command creates a new restricted `platform_admin` only in password
+mode with administration enabled. It does not reuse an existing username, take
+an arbitrary role/user ID, change signup policy, or run on ordinary API startup.
+The dedicated initial-create transaction may have zero effective administrators
+until its first password change; never relax ordinary last-admin protection.
+
+- `platform_admin_initialization` is a permanent database-scoped decision, not a
+  count of currently effective administrators. Any existing platform role or
+  retained successful super-admin grant suppresses automatic creation, including
+  observers, disabled/restricted identities and revoked historical grants.
+  Global marker lookup rejects organization/deployment drift. Manual grants
+  preserve the same marker without overwriting an automatic record or requiring
+  a newly configured deployment UUID.
+- CLI file/transaction coordination publishes and syncs the private initial
+  password before user/credential/role/marker/operation/audit commit. The service
+  borrows the transaction and receives only a precomputed KDF hash. Compute KDFs
+  before locks, recheck snapshots under the platform lock, and re-sync reused
+  intent files plus their parent before commit. Reconcile uncertain commits on
+  a fresh connection under the same lock rather than generating a new password.
+- A committed pending credential with no matching local file returns non-success
+  `credentials_unavailable`, also on a different maintenance host. After a real
+  password change/recovery, the marker prevents replacement and no initial file
+  is needed. External loss of the only initial file requires explicit existing
+  recovery, including last-admin break-glass where applicable.
+- Marker retention outlives account/role/audit cleanup. Both created and
+  preservation-only records block destructive down migration under the existing
+  deterministic table-lock fence. Keep test marker tables in private schemas.
+
+Forced password changes reject an identical current/new password with HTTP 400
+`password_unchanged` only after current-password verification and locked current
+hash/version/restriction recheck. Compare exact strings without trimming. Rejection
+does not change the hash, version, restriction or cookies; ordinary non-forced
+same-value changes retain their existing behavior. The shared password error
+mapper owns localized display and must not trigger session-expiry handling.
+
 - Platform authorization permits only complete password JWT/cookie sessions.
   `GetPlatformAdminAccount` reads password version, account state, and role in
   one snapshot; separate reads can combine an old version with a newly granted

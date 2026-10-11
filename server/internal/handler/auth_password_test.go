@@ -302,14 +302,67 @@ func TestPasswordTemporaryCredentialRestriction(t *testing.T) {
 	if !temporary.User.RequiresPasswordChange {
 		t.Fatal("temporary session not restricted")
 	}
+	before, err := testHandler.Queries.GetPasswordCredential(t.Context(), parseUUID(registered.User.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	wrong := passwordCall(t, "POST", "/api/me/password/change", map[string]string{"current_password": "wrong temporary password", "new_password": "wrong temporary password"}, temporary.Token, testHandler.PasswordChange).Want(401)
+	if wrong.Map()["code"] != "invalid_credentials" {
+		t.Fatal("same-password validation bypassed current-password verification")
+	}
+	unchanged := passwordCall(t, "POST", "/api/me/password/change", map[string]string{"current_password": "correct horse battery staple", "new_password": "correct horse battery staple"}, temporary.Token, testHandler.PasswordChange).Want(400)
+	if unchanged.Map()["code"] != "password_unchanged" {
+		t.Fatal("same temporary password did not produce password_unchanged")
+	}
+	after, err := testHandler.Queries.GetPasswordCredential(t.Context(), parseUUID(registered.User.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if after.PasswordHash != before.PasswordHash || after.SessionVersion != before.SessionVersion || !after.MustChangePassword {
+		t.Fatal("same temporary password changed the hash, version or restriction")
+	}
+	if len(unchanged.Result().Cookies()) != 0 {
+		t.Fatal("same temporary password changed session cookies")
+	}
 	passwordCall(t, "POST", "/api/cli-token", nil, temporary.Token, testHandler.IssueCliToken).Want(403)
 	passwordCall(t, "GET", "/api/workspaces", nil, temporary.Token, func(w http.ResponseWriter, r *http.Request) { t.Fatal("temporary session reached business handler") }).Want(403)
 	var changed LoginResponse
-	passwordCall(t, "POST", "/api/me/password/change", map[string]string{"current_password": "correct horse battery staple", "new_password": "new correct horse battery staple"}, temporary.Token, testHandler.PasswordChange).Want(200).JSON(&changed)
+	// Passwords are compared exactly; a trailing space is a valid difference.
+	passwordCall(t, "POST", "/api/me/password/change", map[string]string{"current_password": "correct horse battery staple", "new_password": "correct horse battery staple "}, temporary.Token, testHandler.PasswordChange).Want(200).JSON(&changed)
 	if changed.User.RequiresPasswordChange {
 		t.Fatal("password change did not clear restriction")
 	}
+	after, err = testHandler.Queries.GetPasswordCredential(t.Context(), parseUUID(registered.User.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if after.PasswordHash == before.PasswordHash || after.SessionVersion != before.SessionVersion+1 || after.MustChangePassword {
+		t.Fatal("different password did not update the credential and clear restriction")
+	}
+	passwordCall(t, "POST", "/auth/login", map[string]string{"username": registered.User.Username, "password": "correct horse battery staple"}, "", testHandler.PasswordLogin).Want(401)
+	passwordCall(t, "POST", "/auth/login", map[string]string{"username": registered.User.Username, "password": "correct horse battery staple "}, "", testHandler.PasswordLogin).Want(200)
 	passwordCall(t, "GET", "/api/me", nil, temporary.Token, testHandler.GetMe).Want(401)
+	passwordCall(t, "GET", "/api/me", nil, changed.Token, testHandler.GetMe).Want(200)
+}
+
+func TestPasswordOrdinaryChangeAllowsSamePassword(t *testing.T) {
+	passwordTestSetup(t)
+	registered := passwordRegister(t, fmt.Sprintf("same%d", time.Now().UnixNano()))
+	before, err := testHandler.Queries.GetPasswordCredential(t.Context(), parseUUID(registered.User.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var changed LoginResponse
+	passwordCall(t, "POST", "/api/me/password/change", map[string]string{"current_password": "correct horse battery staple", "new_password": "correct horse battery staple"}, registered.Token, testHandler.PasswordChange).Want(200).JSON(&changed)
+	after, err := testHandler.Queries.GetPasswordCredential(t.Context(), parseUUID(registered.User.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if after.PasswordHash == before.PasswordHash || after.SessionVersion != before.SessionVersion+1 || after.MustChangePassword || changed.User.RequiresPasswordChange {
+		t.Fatal("ordinary same-value password change did not preserve its existing credential behavior")
+	}
+	passwordCall(t, "POST", "/auth/login", map[string]string{"username": registered.User.Username, "password": "correct horse battery staple"}, "", testHandler.PasswordLogin).Want(200)
+	passwordCall(t, "GET", "/api/me", nil, registered.Token, testHandler.GetMe).Want(401)
 	passwordCall(t, "GET", "/api/me", nil, changed.Token, testHandler.GetMe).Want(200)
 }
 

@@ -1388,6 +1388,16 @@ type PinnedItem struct {
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
 }
 
+type PlatformAdminInitialization struct {
+	OrganizationID           pgtype.UUID        `json:"organization_id"`
+	DeploymentID             pgtype.UUID        `json:"deployment_id"`
+	InitializationID         pgtype.UUID        `json:"initialization_id"`
+	State                    string             `json:"state"`
+	UserID                   pgtype.UUID        `json:"user_id"`
+	InitialCredentialVersion pgtype.Int8        `json:"initial_credential_version"`
+	CreatedAt                pgtype.Timestamptz `json:"created_at"`
+}
+
 type PlatformRoleBinding struct {
 	UserID    pgtype.UUID        `json:"user_id"`
 	Role      string             `json:"role"`

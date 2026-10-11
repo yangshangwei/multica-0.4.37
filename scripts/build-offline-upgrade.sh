@@ -60,6 +60,12 @@ PACKAGE_DIR="$OUT_DIR/$PACKAGE_NAME"
 ARCHIVE="$OUT_DIR/$PACKAGE_NAME.tar.gz"
 
 mkdir -p "$OUT_DIR"
+if [ -d "$PACKAGE_DIR" ]; then
+  if ! private_files="$(find -H "$PACKAGE_DIR" \( -name 'admin-initial-password.txt' -o -name '.admin-initial-password.*' -o -name '.admin-initialization-compose.*' \) -print -quit)" || [ -n "$private_files" ]; then
+    echo "ERROR: package directory contains private administrator initialization files; choose a clean output directory" >&2
+    exit 1
+  fi
+fi
 rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR"
 
@@ -83,8 +89,13 @@ package:
   guide:    操作文档.md
 MANIFEST
 
+if ! private_files="$(find -H "$PACKAGE_DIR" \( -name 'admin-initial-password.txt' -o -name '.admin-initial-password.*' -o -name '.admin-initialization-compose.*' \) -print -quit)" || [ -n "$private_files" ]; then
+  echo "ERROR: refusing to archive private administrator initialization files" >&2
+  exit 1
+fi
 rm -f "$ARCHIVE"
-tar -czf "$ARCHIVE" -C "$OUT_DIR" "$PACKAGE_NAME"
+tar --exclude='admin-initial-password.txt' --exclude='.admin-initial-password.*' --exclude='.admin-initialization-compose.*' \
+  -czf "$ARCHIVE" -C "$OUT_DIR" "$PACKAGE_NAME"
 
 if command -v shasum >/dev/null 2>&1; then
   sha256="$(shasum -a 256 "$ARCHIVE" | awk '{print $1}')"

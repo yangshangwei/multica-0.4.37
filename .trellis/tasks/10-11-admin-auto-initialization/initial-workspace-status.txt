@@ -1,0 +1,33 @@
+ M .trellis/spec/server/iterations.md
+ M .trellis/spec/server/offline-delivery.md
+ M .trellis/spec/server/triage.md
+ M .trellis/spec/views/frontend/quick-create-actor-picker.md
+ M docs/desktop-intranet-update-runbook.zh-CN.md
+ M docs/offline-upgrade.zh-CN.md
+ M docs/triage.zh-CN.md
+ M e2e/issue-assist-flow.spec.ts
+ M e2e/quick-create-actor-picker-phase2.spec.ts
+ M e2e/quick-create-actor-picker.spec.ts
+ M e2e/upstream-selected-fixes.spec.ts
+ M packages/views/locales/en/modals.json
+ M packages/views/locales/zh-Hans/modals.json
+ M packages/views/modals/quick-create-actor-picker.test.tsx
+ M packages/views/modals/quick-create-issue.tsx
+ M server/internal/handler/creation_iteration_test.go
+ M server/internal/handler/issue_iteration_assignment.go
+ M server/internal/handler/issue_iteration_assignment_test.go
+ M server/internal/handler/iteration_management_test.go
+ M server/internal/handler/iteration_settings_test.go
+ M server/internal/handler/triage.go
+ M server/internal/handler/triage_acceptance_test.go
+ M server/internal/handler/triage_iteration.go
+ M server/internal/handler/triage_iteration_assignment_test.go
+ M server/internal/handler/triage_test.go
+ M server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md
+ M server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md
+ M server/internal/service/iteration.go
+ M server/internal/service/iteration_lifecycle_metadata.go
+?? .trellis/tasks/10-11-admin-auto-initialization/
+?? server/internal/migrations/workspace_feature_defaults_test.go
+?? server/migrations/567_workspace_feature_defaults.down.sql
+?? server/migrations/567_workspace_feature_defaults.up.sql
