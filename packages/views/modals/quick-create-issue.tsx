@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeftRight,
   CalendarDays,
@@ -124,6 +124,7 @@ export function AgentCreatePanel({
   const { t } = useT("modals");
   const { t: tIssues } = useT("issues");
   const { t: tProjects } = useT("projects");
+  const promptLabelId = useId();
   const sendShortcut = useShortcut("send");
   const workspaceName = useCurrentWorkspace()?.name;
   const workspacePaths = useWorkspacePaths();
@@ -650,22 +651,22 @@ export function AgentCreatePanel({
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-3 pb-2 shrink-0">
-          <div className="flex items-center gap-1.5 text-caption">
-            <span className="text-muted-foreground">{workspaceName}</span>
-            <ChevronRight className="size-3 text-faint-foreground" />
-            <span className="font-medium">{t(($) => $.create_issue.agent_breadcrumb)}</span>
+          <div className="flex min-w-0 items-center gap-1.5 text-caption">
+            <span className="truncate text-muted-foreground" title={workspaceName}>{workspaceName}</span>
+            <ChevronRight aria-hidden className="size-3 shrink-0 text-faint-foreground" />
+            <span className="shrink-0 font-medium">{t(($) => $.create_issue.agent_breadcrumb)}</span>
           </div>
           {/* Native `title` instead of Base UI Tooltip — Tooltip opens on
               keyboard focus, and the dialog's focus trap briefly lands focus
               on the first focusable element on mount, causing the tooltip to
               auto-pop every open. Same workaround applies to expand. */}
-          <div className="flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1">
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
               title={isExpanded ? t(($) => $.common.collapse_tooltip) : t(($) => $.common.expand_tooltip)}
               aria-label={isExpanded ? t(($) => $.common.collapse_tooltip) : t(($) => $.common.expand_tooltip)}
-              className="rounded-sm p-1.5 opacity-70 hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
+              className="flex size-8 items-center justify-center rounded-sm opacity-70 max-sm:size-11 pointer-coarse:size-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
             >
               {isExpanded ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
             </button>
@@ -674,7 +675,7 @@ export function AgentCreatePanel({
               onClick={onClose}
               title={t(($) => $.common.close)}
               aria-label={t(($) => $.common.close)}
-              className="rounded-sm p-1.5 opacity-70 hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
+              className="flex size-8 items-center justify-center rounded-sm opacity-70 max-sm:size-11 pointer-coarse:size-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:opacity-100 hover:bg-accent/60 transition-all cursor-pointer"
             >
               <XIcon className="size-4" />
             </button>
@@ -686,55 +687,59 @@ export function AgentCreatePanel({
             quick-create flow with the squad's Operating Protocol layered
             on top, so a squad pick is "ask this squad to file the issue". */}
         <div ref={creatorRef} className="px-5 pt-1 pb-2 shrink-0">
-          <QuickCreateActorPicker
-            actor={actor}
-            visibleAgents={visibleAgents}
-            visibleSquads={visibleSquads}
-            selectedAgent={selectedAgent}
-            selectedSquad={selectedSquad}
-            favoriteActors={favoriteActors}
-            recentActors={recentActors}
-            preferencesReady={preferencesReady}
-            defaultActor={defaultActor}
-            onSetDefault={(ref) => {
-              const scope = captureQuickCreateScope(wsId, userId);
-              if (scope) setDefaultActor(ref, scope);
-            }}
-            projectActors={projectActors}
-            projectState={projectId ? {
-              pending: projectsQuery.isPending === true,
-              error: projectsQuery.isError === true,
-              hasData: projectsQuery.data !== undefined,
-              onRetry: () => { void projectsQuery.refetch(); },
-            } : undefined}
-            onToggleFavorite={(ref) => {
-              const scope = captureQuickCreateScope(wsId, userId);
-              if (scope) toggleFavoriteActor(ref, scope);
-            }}
-            agentState={{
-              pending: agentsQuery.isPending === true || membersQuery.isPending === true,
-              error: agentsQuery.isError === true || membersQuery.isError === true,
-              hasData: agentsQuery.data !== undefined && membersQuery.data !== undefined,
-              onRetry: () => { void agentsQuery.refetch(); void membersQuery.refetch(); },
-            }}
-            squadState={{
-              pending: squadsQuery.isPending === true,
-              error: squadsQuery.isError === true,
-              hasData: squadsQuery.data !== undefined,
-              onRetry: () => { void squadsQuery.refetch(); },
-            }}
-            onPick={pickActor}
-          />
           <CreatorRecommendations key={wsId} wsId={wsId} value={recommendationText} projectId={projectId} actor={actor}
             identityKey={`${wsId}:${userId}:${authStatus}:${resetGeneration}`} editorRef={editorRef} actors={recommendationActors} onNeedsSpace={onNeedsSpace}
             onPick={(next) => {
               creatorRef.current?.querySelector<HTMLButtonElement>("button[data-slot=popover-trigger]")?.focus();
               pickActor(next);
-            }} />
+            }}>
+            <QuickCreateActorPicker
+              actor={actor}
+              visibleAgents={visibleAgents}
+              visibleSquads={visibleSquads}
+              selectedAgent={selectedAgent}
+              selectedSquad={selectedSquad}
+              favoriteActors={favoriteActors}
+              recentActors={recentActors}
+              preferencesReady={preferencesReady}
+              defaultActor={defaultActor}
+              onSetDefault={(ref) => {
+                const scope = captureQuickCreateScope(wsId, userId);
+                if (scope) setDefaultActor(ref, scope);
+              }}
+              projectActors={projectActors}
+              projectState={projectId ? {
+                pending: projectsQuery.isPending === true,
+                error: projectsQuery.isError === true,
+                hasData: projectsQuery.data !== undefined,
+                onRetry: () => { void projectsQuery.refetch(); },
+              } : undefined}
+              onToggleFavorite={(ref) => {
+                const scope = captureQuickCreateScope(wsId, userId);
+                if (scope) toggleFavoriteActor(ref, scope);
+              }}
+              agentState={{
+                pending: agentsQuery.isPending === true || membersQuery.isPending === true,
+                error: agentsQuery.isError === true || membersQuery.isError === true,
+                hasData: agentsQuery.data !== undefined && membersQuery.data !== undefined,
+                onRetry: () => { void agentsQuery.refetch(); void membersQuery.refetch(); },
+              }}
+              squadState={{
+                pending: squadsQuery.isPending === true,
+                error: squadsQuery.isError === true,
+                hasData: squadsQuery.data !== undefined,
+                onRetry: () => { void squadsQuery.refetch(); },
+              }}
+              onPick={pickActor}
+            />
+          </CreatorRecommendations>
+          <p className="mt-1 text-caption text-muted-foreground">
+            {t(($) => $.create_issue.actor_picker.creator_hint)}
+          </p>
         </div>
 
         {selectedAgent && versionBlocked && (
-          <div className="mx-5 mb-2 shrink-0 rounded-md border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-caption text-amber-700 dark:text-amber-300">
+          <div role="status" className="mx-5 mb-2 shrink-0 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-caption text-warning-foreground">
             {versionCheck.state === "missing"
               ? t(($) => $.create_issue.agent.version_missing, { min: versionCheck.min })
               : t(($) => $.create_issue.agent.version_below, {
@@ -756,9 +761,11 @@ export function AgentCreatePanel({
           ref={descriptionScrollRef}
           className="relative px-5 pb-3 flex flex-col flex-1 min-h-0 overflow-y-auto"
         >
-          <div ref={descriptionContentRef} className="flex min-h-[140px] flex-auto shrink-0 flex-col [&>div]:min-h-0">
+          <p id={promptLabelId} className="mb-2 text-label font-medium">{t(($) => $.create_issue.agent.prompt_label)}</p>
+          <div ref={descriptionContentRef} className="flex min-h-28 flex-auto shrink-0 flex-col [&>div]:min-h-0">
             <ContentEditor
               ref={editorRef}
+              aria-labelledby={promptLabelId}
               defaultValue={initialPrompt}
               placeholder={anchorCommentId
                 ? t(($) => $.create_issue.agent.source_context_prompt_placeholder)
@@ -820,7 +827,7 @@ export function AgentCreatePanel({
         )}
 
         {error && (
-          <div className="px-5 pb-2 text-caption text-destructive">{error}</div>
+          <div role="alert" className="px-5 pb-2 text-caption text-destructive">{error}</div>
         )}
 
         {/* Property toolbar — the project is visible by default; priority and
@@ -842,6 +849,7 @@ export function AgentCreatePanel({
               onUpdate={(u) => commitProject(u.project_id ?? null)}
               triggerRender={
                 <ClearablePillButton
+                  className="max-sm:min-h-11 pointer-coarse:min-h-11 [&>button]:max-sm:min-h-11 [&>button]:pointer-coarse:min-h-11"
                   onClear={projectId !== null ? () => commitProject(null) : undefined}
                   clearLabel={tProjects(($) => $.picker.clear_aria)}
                 />
@@ -862,7 +870,7 @@ export function AgentCreatePanel({
                   setShared({ priority: updates.priority });
                 }
               }}
-              triggerRender={<PillButton />}
+              triggerRender={<PillButton className="max-sm:min-h-11 pointer-coarse:min-h-11" />}
               align="start"
               open={fieldPickerOpen === "priority" ? true : undefined}
               onOpenChange={(open) => setFieldPickerOpen(open ? "priority" : null)}
@@ -878,7 +886,7 @@ export function AgentCreatePanel({
                 setDueDate(next);
                 setShared({ dueDate: next });
               }}
-              triggerRender={<PillButton />}
+              triggerRender={<PillButton className="max-sm:min-h-11 pointer-coarse:min-h-11" />}
               align="start"
               open={fieldPickerOpen === "due_date" ? true : undefined}
               onOpenChange={(open) => setFieldPickerOpen(open ? "due_date" : null)}
@@ -888,6 +896,7 @@ export function AgentCreatePanel({
             <DropdownMenuTrigger
               render={
                 <PillButton
+                  className="max-sm:min-h-11 max-sm:min-w-11 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
                   aria-label={t(($) => $.create_issue.agent.more_fields_aria)}
                   title={t(($) => $.create_issue.agent.more_fields_aria)}
                 >
@@ -960,11 +969,12 @@ export function AgentCreatePanel({
                 for the first to land just to attach the next is busywork. */}
             <FileUploadButton
               size="sm"
+              className="max-sm:size-11 pointer-coarse:size-11"
               multiple
               onSelect={(file) => editorRef.current?.uploadFile(file)}
             />
             {keepOpen && sentCount > 0 && (
-              <span className="text-caption text-emerald-600 dark:text-emerald-400">
+              <span role="status" className="text-caption text-success-foreground">
                 {t(($) => $.create_issue.agent.sent_count, { count: sentCount })}
               </span>
             )}
@@ -976,12 +986,12 @@ export function AgentCreatePanel({
             aria-disabled={gate.uploading || undefined}
             aria-busy={gate.uploading || undefined}
             title={t(($) => $.create_issue.switch_to_manual_tooltip)}
-            className="flex shrink-0 items-center gap-1.5 justify-self-end text-caption px-2 py-1 rounded-sm text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex shrink-0 items-center gap-1.5 justify-self-end min-h-7 text-caption px-2 py-1 rounded-sm text-muted-foreground max-sm:min-h-11 pointer-coarse:min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:text-foreground hover:bg-accent/60 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ArrowLeftRight className="size-3.5" />
             {t(($) => $.create_issue.switch_to_manual)}
           </button>
-          <label className="flex shrink-0 items-center gap-1.5 text-caption text-muted-foreground cursor-pointer select-none">
+          <label className="flex min-h-7 shrink-0 items-center gap-1.5 text-caption text-muted-foreground cursor-pointer select-none max-sm:min-h-11 pointer-coarse:min-h-11">
             <Switch
               size="sm"
               checked={keepOpen}
@@ -1002,8 +1012,8 @@ export function AgentCreatePanel({
                 : undefined
             }
             className={cn(
-              "justify-self-end min-w-28",
-              justSent && "!bg-emerald-600 !text-white",
+              "justify-self-end min-w-28 max-sm:min-h-11 pointer-coarse:min-h-11",
+              justSent && "bg-success/10 text-success-foreground",
             )}
           >
             {submitting ? t(($) => $.create_issue.agent.sending) : gate.uploading ? t(($) => $.create_issue.agent.uploading) : justSent ? (

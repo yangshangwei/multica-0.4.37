@@ -36,7 +36,7 @@ function Harness(props: Partial<QuickCreateActorPickerProps>) {
 }
 
 async function openPicker(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole("button", { name: /Creation assistant/ }));
+  await user.click(screen.getByRole("button", { name: /Send to/ }));
   return screen.findByPlaceholderText("Search names or responsibilities...");
 }
 
@@ -168,7 +168,7 @@ describe("QuickCreateActorPicker", () => {
     await user.keyboard("{Escape}");
     expect(input).not.toBeInTheDocument();
     expect(screen.getByRole("dialog", {name: "Create an issue"})).toBeInTheDocument();
-    expect(screen.getByRole("button", {name: /Creation assistant/})).toHaveFocus();
+    expect(screen.getByRole("button", {name: /Send to/})).toHaveFocus();
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog", {name: "Create an issue"})).not.toBeInTheDocument();
   });
@@ -220,7 +220,7 @@ describe("QuickCreateActorPicker", () => {
     expect(reopened).toHaveValue("");
     expect(screen.getByRole("button", { name: "All" })).toHaveAttribute("aria-pressed", "true");
     await user.keyboard("{Escape}");
-    expect(screen.getByRole("button", { name: /Creation assistant/ })).toHaveFocus();
+    expect(screen.getByRole("button", { name: /Send to/ })).toHaveFocus();
   });
 
   it("types to select the first result, ignores IME, and arrows skip all pin controls", async () => {

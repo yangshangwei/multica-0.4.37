@@ -182,7 +182,7 @@
     "ai_optimize": {
       "description": "Help me refine",
       "instructions": "Help me refine",
-      "empty_hint": "Enter content to optimize.",
+      "empty_hint": "Write a description first to refine it.",
       "generating": "Refining...",
       "cancel": "Cancel",
       "undo": "Undo",
@@ -204,7 +204,7 @@
       "details": "Additional details",
       "blocked": "Draft kept unchanged while uploading or creating. Try again when finished.",
       "questions_pending": "{{count}} to add",
-      "replacement_hint": "Replaces your draft. You can undo.",
+      "replacement_hint": "Replaces the description. You can undo.",
       "answered_one": "Added {{count}} detail",
       "answered_other": "Added {{count}} details"
     },
@@ -271,36 +271,36 @@
       "description": "Search for an issue to add as a sub-issue of the new issue"
     },
     "scenarios": {
-      "product-analyst": "For example: We want to add project member invitations. Please map the administrator and invitee flows, define permission, expiry, and duplicate invitation rules, document acceptance criteria, and list the requirements that still need clarification.",
-      "architect": "For example: We plan to add real-time issue notifications. Please compare polling, SSE, and WebSocket against the current architecture, design the data flow, reconnection, and permission checks, assess the scope of changes, and prepare a technical proposal for review.",
-      "implementer": "For example: Please implement name search and pagination for the project member list using the approved design and existing API and component patterns. Handle empty results and request failures, add relevant tests, and report the code changes and validation results.",
-      "qa-engineer": "For example: The member invitation feature is ready for testing. Please cover sending, expiry, duplicate acceptance, and insufficient permissions, verify core flows and edge cases, document reproducible defects, and report test results and remaining coverage risks.",
-      "diagnostician": "For example: The issue list loads slowly in projects with many members. Please reproduce the problem, trace query, network, and rendering time, provide evidence that identifies the bottleneck, and recommend fixes and a way to validate them.",
-      "code-reviewer": "For example: Please review the changes for bulk issue editing, focusing on permissions, partial failures, concurrent updates, and test coverage. List evidence-backed findings by severity, identify their code locations, and explain what needs attention before merging.",
-      "security-reviewer": "For example: We added a file upload API. Please review authentication, project access, file type validation, and download links, check for unauthorized access and sensitive data exposure, and provide verifiable findings, remediation advice, and security test cases.",
-      "release-engineer": "For example: We plan to release new member permissions. Please check version changes, build artifacts, and test results, document deployment order, configuration dependencies, and rollback steps, and prepare a release checklist with the conditions still required before deployment.",
-      "technical-writer": "For example: The project now supports issue automation rules. Please write a getting-started guide based on the implementation, explain triggers, configuration, and troubleshooting, provide an example a development team can follow, and check that the documentation matches actual behavior.",
-      "progress-reporter": "For example: Please summarize this week's progress on member invitations using issue, code review, and test records. Distinguish completed, unverified, and blocked work, list dependencies and owners, outline the next steps, and cite the sources behind the summary.",
-      "reliability-engineer": "For example: The notification service occasionally sends duplicate messages. Please examine monitoring, retries, and idempotency, assess the impact and alerting gaps, propose reliability improvements and validation metrics, and document a failure drill for the test environment.",
-      "agent-evaluator": "For example: We changed our code review agent's instructions. Please build evaluation cases with real defects, clean code, and ambiguous requirements, compare missed defects, false positives, and supporting evidence before and after the change, and recommend whether to adopt it.",
-      "experience-validation-engineer": "For example: We redesigned issue creation. Please walk through project selection, content entry, submission, and failure recovery as a first-time user, check keyboard access, narrow layouts, and feedback messages, and document usability problems with reproduction steps.",
-      "migration-reviewer": "For example: We plan to add a new status field to historical issues. Please review the database migration, backfill, and compatibility with older clients, check locking, failure recovery, and rollback limits, and list required pre-release validation scenarios and blockers.",
-      "feature-delivery": "For example: Please coordinate the squad to deliver project member invitations. Have analysis define permissions and acceptance criteria, architecture confirm the API design, implementation build the feature, and testing and code review verify it. Summarize each stage's deliverables, blockers, and open questions.",
-      "bug-fix": "For example: Users sometimes see stale issues after switching projects. Please coordinate the squad to establish the impact and reproduction steps, diagnose the cause, assign the fix and regression testing, and summarize the evidence, code changes, and validation results.",
-      "review-gate": "For example: This release introduces file uploads. Please coordinate code, security, and test reviews, check the user experience and any migration risks, consolidate duplicate findings, and provide evidence-backed blockers and a recommendation on merging.",
-      "discovery": "For example: We want a cross-project progress view for our development team. Please coordinate product analysis and architecture to define users, scenarios, and data boundaries, compare approaches and costs, and prepare requirements, technical recommendations, and open questions for review.",
-      "docs": "For example: The new version adds issue automation rules. Please coordinate the squad to verify the feature, have the writer prepare a configuration guide and development workflow example, and arrange a review of the steps and APIs. Summarize documentation changes and unresolved questions.",
-      "maintenance": "For example: Upgrading a database driver caused intermittent integration test failures. Please coordinate the squad to diagnose the cause, assess security and compatibility risks, handle only this upgrade, arrange the fix and regression checks, and document how to roll it back.",
-      "release": "For example: Member permissions are ready for release. Please coordinate the squad to consolidate test and review findings, check release notes, deployment dependencies, migration steps, and rollback plans, arrange pre-release checks, and report readiness and outstanding blockers.",
-      "incident": "For example: Error rates on the production issue creation API suddenly increased. Please coordinate the squad to establish impact, prepare rollback or mitigation options with required approvals, verify recovery from the user's side, then assign root-cause investigation to the diagnostician and document the timeline and follow-up work.",
-      "mika": "For example: We want to add project member invitations. Please help clarify requirements and acceptance criteria, find suitable agents or squads in the workspace, organize the work into clear issues, and identify missing information and next steps.",
-      "custom_agent": "For example: {{name}}, given your responsibilities ({{description}}), please assess which parts of a new project member invitation feature you can handle. Identify the requirements, code, or test material you need, and outline deliverables and next steps within your scope.",
-      "custom_squad": "For example: {{name}}, given the squad's responsibilities ({{description}}), please assess the collaboration needed for a new project member invitation feature. Define member assignments, required material, acceptance checks, deliverables within your scope, and support needed from other roles.",
-      "generic_agent": "For example: {{name}}, we plan to add project member invitations. Please first explain which parts you can help with, identify missing requirements, code, and test information, and outline deliverables, validation, and next steps.",
-      "generic_squad": "For example: {{name}}, we plan to add project member invitations. Please first check member responsibilities to establish what the squad can handle, list required material, suggested assignments, and acceptance checks, and identify support needed from other roles and next steps."
+      "product-analyst": "For example: Clarify the member invitation flow, permissions, and acceptance criteria.",
+      "architect": "For example: Design real-time task notifications, including reconnects and permission checks.",
+      "implementer": "For example: Add search and pagination to the project member list, with tests.",
+      "qa-engineer": "For example: Test member invitations for expiry, duplicate acceptance, and permissions.",
+      "diagnostician": "For example: Find why the task list slows down with many members and propose a verified fix.",
+      "code-reviewer": "For example: Review task bulk editing for permissions, partial failures, and test coverage.",
+      "security-reviewer": "For example: Review file uploads for access control and unsafe file handling.",
+      "release-engineer": "For example: Prepare the member permissions release checklist, dependencies, and rollback steps.",
+      "technical-writer": "For example: Write a getting-started guide for task automation with a working example.",
+      "progress-reporter": "For example: Summarize this week’s invitation feature progress, blockers, and next steps.",
+      "reliability-engineer": "For example: Investigate duplicate notifications and propose retry and deduplication safeguards.",
+      "agent-evaluator": "For example: Compare two code-review prompts using missed defects and false positives.",
+      "experience-validation-engineer": "For example: Check task creation for keyboard access, narrow layouts, and failure recovery.",
+      "migration-reviewer": "For example: Review a new task status migration for backfill, compatibility, and rollback risks.",
+      "feature-delivery": "For example: Coordinate the squad to deliver member invitations, from requirements through testing.",
+      "bug-fix": "For example: Coordinate investigation, repair, and regression testing for stale tasks after switching projects.",
+      "review-gate": "For example: Coordinate code, security, and test reviews for the file upload release.",
+      "discovery": "For example: Clarify the users, scope, and technical options for a cross-project progress view.",
+      "docs": "For example: Coordinate writing and review of the task automation configuration guide.",
+      "maintenance": "For example: Investigate intermittent tests after a database driver upgrade and verify a fix.",
+      "release": "For example: Coordinate release readiness checks for member permissions, including rollback.",
+      "incident": "For example: Coordinate investigation and recovery for a spike in task creation errors.",
+      "mika": "For example: Turn member invitation requirements into clear tasks and suggest suitable agents.",
+      "custom_agent": "For example: {{name}}, apply your responsibilities ({{description}}) to member invitations and identify deliverables.",
+      "custom_squad": "For example: {{name}}, use the squad’s responsibilities ({{description}}) to plan member invitation work.",
+      "generic_agent": "For example: {{name}}, assess the member invitation requirements and identify what you can deliver.",
+      "generic_squad": "For example: {{name}}, plan the squad’s roles and acceptance checks for member invitations."
     },
     "agent": {
-      "created_by": "Creation assistant",
+      "created_by": "Send to",
       "select_agent_aria": "Select agent",
       "pick_an_agent": "Pick an agent…",
       "no_agents": "No agents or squads available.",
@@ -326,7 +326,8 @@
       "error_agent_unavailable_fallback": "Agent is unavailable. Pick another agent.",
       "error_daemon_version": "This agent's daemon CLI ({{current}}) is below the required {{min}}. Upgrade the daemon to use Create with agent.",
       "error_unknown": "Failed to submit. Try again.",
-      "sub_issue_of": "Sub-issue of {{identifier}}"
+      "sub_issue_of": "Sub-issue of {{identifier}}",
+      "prompt_label": "Task description"
     },
     "actor_picker": {
       "mika": "小阿孚",
@@ -376,11 +377,11 @@
       "project_loading": "Loading project squads...",
       "project_failed": "Could not load project squads.",
       "retry_project": "Retry project",
-      "creator_hint": "Creates issues and defaults assignment to your selection. An assignee explicitly named in your request takes precedence.",
+      "creator_hint": "Assigned to your selection by default. You can name someone else in the request.",
       "no_project_matches": "No project squads match this filter."
     },
     "creator_recommendations": {
-      "choose": "Help me choose",
+      "choose": "Suggest an agent",
       "loading": "Finding suitable assistants...",
       "cancel": "Cancel",
       "dismiss": "Dismiss recommendations",
@@ -392,7 +393,8 @@
       "empty": "No clear responsibility match found. You can still search or choose manually.",
       "evidence": "Responsibility evidence:",
       "use_named": "Use {{name}}",
-      "use": "Use assistant"
+      "use": "Use assistant",
+      "empty_hint": "Describe the task first to get suggestions."
     }
   }
 }

@@ -21,8 +21,20 @@ function ui(value=text,available=actors,overrides: Partial<ComponentProps<typeof
 }
 beforeEach(()=>{text="Investigate a failure";pick.mockReset();call.mockReset().mockResolvedValue({recommendations:[{actor_type:"agent",actor_id:"a",reason:"Investigate failures"}]});});
 describe("creator suggestions",()=>{
+ it("explains the empty-description prerequisite and enables suggestions after typing",()=>{
+  text="";
+  const view=render(ui());
+  const button=screen.getByRole("button",{name:"Suggest an agent"});
+  expect(button).toBeDisabled();
+  expect(button).toHaveAccessibleDescription("Describe the task first to get suggestions.");
+  expect(screen.getByText("Describe the task first to get suggestions.")).toBeVisible();
+  text="Investigate a failure";view.rerender(ui());
+  expect(button).toBeEnabled();
+  expect(screen.queryByText("Describe the task first to get suggestions.")).not.toBeInTheDocument();
+  expect(call).not.toHaveBeenCalled();
+ });
  it("drops evidence after its saved responsibility changes, even if the quote remains",async()=>{
-  const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
+  const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   await screen.findByRole("button",{name:"Use Ada"});
   view.rerender(ui(text,[{...actors[0]!,description:"Do not Investigate failures"}]));
   expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();
@@ -30,8 +42,8 @@ describe("creator suggestions",()=>{
 
  it("only requests on click and only selects on explicit adoption",async()=>{
   const needsSpace=vi.fn();render(ui(text,actors,{onNeedsSpace:needsSpace}));expect(call).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
-  fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
+  fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
+  fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   expect(call).toHaveBeenCalledTimes(1);expect(needsSpace).toHaveBeenCalledTimes(1);
   await screen.findByText("Investigate failures");expect(pick).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button",{name:"Use Ada"}));
@@ -39,22 +51,22 @@ describe("creator suggestions",()=>{
  });
  it("aborts on edited text and ignores a provider that resolves after cancellation",async()=>{
   let resolve!:(value:unknown)=>void;call.mockImplementation(()=>new Promise(r=>{resolve=r}));
-  const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
+  const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   const signal=call.mock.calls[0]![0].signal as AbortSignal;
   text="Write documentation";view.rerender(ui());expect(signal.aborted).toBe(true);
   await act(async()=>resolve({recommendations:[{actor_type:"agent",actor_id:"a",reason:"Investigate failures"}]}));
   expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();expect(pick).not.toHaveBeenCalled();
  });
  it("checks live editor text before adopting even before the debounced prop changes",async()=>{
-  render(ui());fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
+  render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   await screen.findByRole("button",{name:"Use Ada"});text="Changed immediately";
   fireEvent.click(screen.getByRole("button",{name:"Use Ada"}));expect(pick).not.toHaveBeenCalled();
  });
  it("omits no-longer-eligible actors and keeps failure distinct from no matches",async()=>{
-  const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
+  const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   await screen.findByRole("button",{name:"Use Ada"});view.rerender(ui(text,[]));
   expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();
-  call.mockRejectedValueOnce(new Error("failed"));fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
+  call.mockRejectedValueOnce(new Error("failed"));fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   await waitFor(()=>expect(screen.getByRole("alert")).toBeInTheDocument());expect(pick).not.toHaveBeenCalled();
  });
 });
@@ -62,7 +74,7 @@ describe("creator suggestions",()=>{
 
 it.each([{projectId:"other-project"},{actor:{type:"agent" as const,id:"a"}},{identityKey:"ws:user:next-login"},{wsId:"other-workspace"}])("discards a pending response when its context changes: %j",async(overrides)=>{
  let resolve!:(value:unknown)=>void;call.mockImplementationOnce(()=>new Promise(r=>{resolve=r}));
- const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));
+ const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
  const signal=call.mock.calls[0]![0].signal as AbortSignal;
  view.rerender(ui(text,actors,overrides));expect(signal.aborted).toBe(true);
  await act(async()=>resolve({recommendations:[{actor_type:"agent",actor_id:"a",reason:"Investigate failures"}]}));

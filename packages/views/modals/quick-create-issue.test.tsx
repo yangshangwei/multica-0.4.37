@@ -455,7 +455,7 @@ vi.mock("@multica/ui/components/ui/dialog", () => ({
 
 // The real primitive interaction matrix lives in quick-create-actor-picker.test.tsx.
 // This suite owns parent selection, draft and submission wiring only.
-vi.mock("./creator-recommendations", () => ({ CreatorRecommendations: () => null }));
+vi.mock("./creator-recommendations", () => ({ CreatorRecommendations: ({ children }: { children?: ReactNode }) => <>{children}</> }));
 
 vi.mock("./quick-create-actor-picker", () => ({
   QuickCreateActorPicker: ({ actor, visibleAgents, visibleSquads, onPick }: {
@@ -627,7 +627,7 @@ describe("AgentCreatePanel", () => {
       renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
         data: sourceContext ? sourceContextPanelData : undefined });
       await userEvent.click(screen.getByRole("button", { name: /^Create$/i }));
-      await screen.findByText("Temporarily unavailable");
+      expect(await screen.findByRole("alert")).toHaveTextContent("Temporarily unavailable");
       expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
     });
   }

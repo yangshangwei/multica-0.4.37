@@ -18,7 +18,7 @@ it("does not retain private recommendation variables in the global mutation cach
    actors={[{type:"agent",id:"a",name:"Ada",description:"Diagnose failures"}]} onPick={vi.fn()}/>
  </I18nProvider></QueryClientProvider>);
  try {
-  fireEvent.click(screen.getByRole("button",{name:"Help me choose"}));await screen.findByRole("button",{name:"Use Ada"});
+  fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));await screen.findByRole("button",{name:"Use Ada"});
   await waitFor(()=>expect(client.getMutationCache().getAll()).toHaveLength(0));
   expect(screen.getByRole("button",{name:"Use Ada"})).toBeInTheDocument();
  } finally {view.unmount();client.clear();}

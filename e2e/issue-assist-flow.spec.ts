@@ -203,7 +203,7 @@ test.describe("AI refinement through real server and task creation", () => {
         method: "POST", body: { name: "Weekly reporter " + suffix, runtime_id: runtime.id, visibility: "workspace" },
       });
       const { dialog, editor } = await open(page, workspace.slug, "agent");
-      await dialog.getByRole("button", { name: /Creation assistant/ }).click();
+      await dialog.getByRole("button", { name: /Send to/ }).click();
       await page.locator("button[data-picker-item]").filter({ hasText: agent.name }).click();
       await refine(page, dialog, editor, "E2E_ASSIST_ONE");
       // Unanswered clarifications must never block task creation.

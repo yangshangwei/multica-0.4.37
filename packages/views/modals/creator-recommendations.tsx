@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Sparkles, X } from "lucide-react";
 import { ApiError } from "@multica/core/api";
 import { useRecommendIssueCreators } from "@multica/core/issues/mutations";
@@ -15,6 +15,7 @@ type Context = { text: string; projectId: string | null; actorKey: string; ident
 type Request = { controller: AbortController; context: Context; scope: QuickCreateScope; descriptions: Map<string, string> };
 type Result = { context: Context; scope: QuickCreateScope; descriptions: Map<string, string>; items: IssueCreatorRecommendation[] };
 interface Props {
+  children?: ReactNode;
   wsId: string;
   value: string;
   projectId: string | null;
@@ -28,6 +29,7 @@ interface Props {
 
 export function CreatorRecommendations(props: Props) {
   const { t } = useT("modals");
+  const hintId = useId();
   const { mutateAsync, reset } = useRecommendIssueCreators(props.wsId);
   const latest = useRef(props);
   useLayoutEffect(() => { latest.current = props; });
@@ -81,15 +83,19 @@ export function CreatorRecommendations(props: Props) {
     return actor && actor.description === result.descriptions.get(actorKey(actor)) && actor.description.includes(item.reason) ? [{ ...item, name: actor.name }] : [];
   }) ?? [];
   const tooLong = Array.from(props.value.trim()).length > 20000;
-  return <div className="mt-1" data-testid="creator-recommendations">
-    <div className="flex items-center gap-2">
-      <Button ref={button} type="button" variant="ghost" size="sm" disabled={!props.value.trim() || tooLong} aria-disabled={pending}
+  const empty = !props.value.trim();
+  return <div data-testid="creator-recommendations">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      {props.children && <div className="min-w-0 max-w-full">{props.children}</div>}
+      <Button ref={button} type="button" variant="ghost" size="sm" className="max-sm:min-h-11 pointer-coarse:min-h-11" disabled={empty || tooLong} aria-disabled={pending}
+        aria-describedby={empty || tooLong ? hintId : undefined}
         onClick={() => { void start(); }}><Sparkles aria-hidden className="size-3.5" />{t(($) => $.create_issue.creator_recommendations.choose)}</Button>
+      {empty && <span id={hintId} className="text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.empty_hint)}</span>}
       {pending && <><span role="status" className="text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.loading)}</span>
-        <button type="button" className="text-caption underline" onClick={() => { button.current?.focus(); clear(); }}>{t(($) => $.create_issue.creator_recommendations.cancel)}</button></>}
-      {result && <button type="button" aria-label={t(($) => $.create_issue.creator_recommendations.dismiss)} className="rounded p-1 focus-visible:ring-2 focus-visible:ring-ring" onClick={() => { button.current?.focus(); clear(); }}><X aria-hidden className="size-3.5" /></button>}
+        <button type="button" className="min-h-7 text-caption underline max-sm:min-h-11 pointer-coarse:min-h-11" onClick={() => { button.current?.focus(); clear(); }}>{t(($) => $.create_issue.creator_recommendations.cancel)}</button></>}
+      {result && <button type="button" aria-label={t(($) => $.create_issue.creator_recommendations.dismiss)} className="flex size-7 items-center justify-center rounded focus-visible:ring-2 focus-visible:ring-ring max-sm:size-11 pointer-coarse:size-11" onClick={() => { button.current?.focus(); clear(); }}><X aria-hidden className="size-3.5" /></button>}
     </div>
-    {tooLong && <p className="text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.too_long)}</p>}
+    {tooLong && <p id={hintId} className="text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.too_long)}</p>}
     {error && <p role="alert" className="text-caption text-muted-foreground">{error === "unavailable" ? t(($) => $.create_issue.creator_recommendations.unavailable)
       : error === "busy" ? t(($) => $.create_issue.creator_recommendations.busy) : error === "timeout" ? t(($) => $.create_issue.creator_recommendations.timeout) : t(($) => $.create_issue.creator_recommendations.failed)}</p>}
     {result && items.length === 0 && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.empty)}</p>}
@@ -97,7 +103,7 @@ export function CreatorRecommendations(props: Props) {
       {items.map((item) => <li key={`${item.actor_type}:${item.actor_id}`} className="flex items-start justify-between gap-3 py-2">
         <div className="min-w-0"><p className="truncate text-body font-medium">{item.name} <span className="text-caption font-normal text-muted-foreground">{item.actor_type === "agent" ? t(($) => $.create_issue.actor_picker.agent) : t(($) => $.create_issue.actor_picker.squad)}</span></p>
           <p className="break-words text-caption text-muted-foreground">{t(($) => $.create_issue.creator_recommendations.evidence)} <span>{item.reason}</span></p></div>
-        <Button type="button" size="sm" variant="outline" aria-label={t(($) => $.create_issue.creator_recommendations.use_named, { name: item.name })}
+        <Button type="button" size="sm" variant="outline" className="max-sm:min-h-11 pointer-coarse:min-h-11" aria-label={t(($) => $.create_issue.creator_recommendations.use_named, { name: item.name })}
           onClick={() => {
             if (!matches(result.context, result.scope) || !latest.current.actors.some((actor) => actor.type === item.actor_type && actor.id === item.actor_id && actor.description === result.descriptions.get(actorKey(actor)) && actor.description.includes(item.reason))) { clear(); return; }
             props.onPick({ type: item.actor_type, id: item.actor_id }); clear();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Lock, Pin, PinOff, UserMinus } from "lucide-react";
+import { ArrowLeft, ChevronDown, Lock, Pin, PinOff, UserMinus } from "lucide-react";
 import type { Agent, MemberWithUser, Squad } from "@multica/core/types";
 import type { QuickCreateActorRef } from "@multica/core/issues/stores/quick-create-store";
 import { ActorAvatar } from "../common/actor-avatar";
@@ -220,12 +220,13 @@ export function QuickCreateActorPicker({
   return <PropertyPicker open={open} onOpenChange={changeOpen} width="w-96 max-w-[calc(100vw-24px)] max-h-(--available-height)" align={align} side={side} searchable
     searchInputRef={searchRef} searchPlaceholder={t(($) => $.create_issue.actor_picker.search_placeholder)}
     onSearchChange={(value) => { setQuery(value); setLimit(ACTOR_PAGE_SIZE); }} navigationResetKey={navigationResetKey}
-    triggerRender={triggerRender}
-    trigger={trigger ?? <span title={t(($) => $.create_issue.actor_picker.creator_hint)} className="flex min-w-0 items-center gap-2 text-caption text-muted-foreground hover:text-foreground transition-colors">
+    triggerRender={triggerRender ?? (!trigger ? <button type="button" className="flex min-h-8 w-fit max-w-full items-center rounded-md px-2 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-sm:min-h-11 pointer-coarse:min-h-11" /> : undefined)}
+    trigger={trigger ?? <span className="flex min-w-0 items-center gap-2 whitespace-nowrap text-caption text-muted-foreground">
       <span className="shrink-0">{t(($) => $.create_issue.agent.created_by)}</span>{" "}
       {actor && display ? <span className="flex min-w-0 items-center gap-1.5 text-foreground">
-        <ActorAvatar actorType={actor.type} actorId={actor.id} size="sm" /><span className="truncate">{display.name}</span>
+        <ActorAvatar actorType={actor.type} actorId={actor.id} size="sm" /><span className="truncate" title={display.name}>{display.name}</span>
       </span> : <span>{t(($) => $.create_issue.agent.pick_an_agent)}</span>}
+      <ChevronDown aria-hidden className="size-3.5 shrink-0" />
     </span>}
     header={<div>
       <p className="px-4 pt-2 text-caption text-muted-foreground">{chat ? chat.hint : typeFilter === "coordination" || selected?.leadsSquads.length

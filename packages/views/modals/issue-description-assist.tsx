@@ -205,7 +205,7 @@ export function IssueDescriptionAssist({
         {!suggestion && !error && (
           <Button
             type="button" variant="ghost" size="sm"
-            className="min-h-11 text-muted-foreground sm:min-h-7"
+            className="min-h-11 text-muted-foreground sm:min-h-7 pointer-coarse:min-h-11"
             ref={(button) => {
               if (!button || !returnFocusRef.current) return;
               returnFocusRef.current = false;
@@ -222,8 +222,8 @@ export function IssueDescriptionAssist({
             {pending ? t(($) => $.create_issue.ai_optimize.cancel) : label}
           </Button>
         )}
-        {empty && <span id={hintId} className="sr-only">{t(($) => $.create_issue.ai_optimize.empty_hint)}</span>}
-        <span id={replacementHintId} className={!status && !error && !suggestion && !pending ? "text-caption text-muted-foreground" : "sr-only"}>
+        {empty && <span id={hintId} className="text-caption text-muted-foreground">{t(($) => $.create_issue.ai_optimize.empty_hint)}</span>}
+        <span id={replacementHintId} className={!empty && !status && !error && !suggestion && !pending ? "text-caption text-muted-foreground" : "sr-only"}>
           {t(($) => $.create_issue.ai_optimize.replacement_hint)}
         </span>
         <div className="ml-auto flex min-w-0 items-center gap-1">
