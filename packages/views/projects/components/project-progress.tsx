@@ -11,6 +11,8 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
+import { ChevronDown, ClipboardCheck, History, ShieldAlert, TrendingUp } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { ContentEditor, type ContentEditorRef } from "../../editor";
 import { RevisionConflictCompare } from "../../issues/components/revision-conflict-compare";
 import { useWorkspacePaths } from "@multica/core/paths";
@@ -47,36 +49,63 @@ function EvidenceLink({ evidence, revision }: { evidence: ProjectEvidenceView; r
   if (evidence.input.kind === "execution" && evidence.input.id) return <ExecutionEvidence evidence={evidence} revision={revision} />;
   return evidence.href ? <a className="underline underline-offset-2" href={evidence.href} target="_blank" rel="noopener noreferrer">{evidence.label ?? evidence.input.url}</a> : <span>{evidence.input.url}</span>;
 }
+function UpdateOutcome({ revision, descriptionRevision }: { revision: ProjectUpdateRevision; descriptionRevision: Project["description_revision"] }) {
+  const { t } = useT("projects");
+  const conclusions = { passed: t(($) => $.management.passed), partial: t(($) => $.management.partial), failed: t(($) => $.management.failed) };
+  const judgments = { on_track: t(($) => $.management.on_track), attention: t(($) => $.management.attention), risk: t(($) => $.management.risk) };
+  const outcomeClass = { passed: "text-success", partial: "text-warning-foreground", failed: "text-destructive", on_track: "text-success", attention: "text-warning-foreground", risk: "text-destructive" };
+  return <>
+    {revision.health_judgment && <span className={outcomeClass[revision.health_judgment]}><span className="text-muted-foreground">{t(($) => $.management.judgment)}: </span><span className="font-medium">{judgments[revision.health_judgment]}</span></span>}
+    {revision.acceptance && <>
+      <span className={`font-medium ${outcomeClass[revision.acceptance.conclusion]}`}>{conclusions[revision.acceptance.conclusion]}</span>
+      <span className="text-muted-foreground">{t(($) => $.management.description_version, { revision: revision.acceptance.description_revision })}</span>
+      {revision.acceptance.description_revision !== descriptionRevision && <span className="text-warning-foreground">{t(($) => $.management.stale_acceptance)}</span>}
+    </>}
+  </>;
+}
 function UpdateBody({ revision }: { revision: ProjectUpdateRevision }) {
   const { t } = useT("projects");
   const availability = { available: "", changed: t(($) => $.management.changed), deleted: t(($) => $.management.deleted), inaccessible: t(($) => $.management.inaccessible), unverified: t(($) => $.management.unverified) };
-  const conclusion = { passed: t(($) => $.management.passed), partial: t(($) => $.management.partial), failed: t(($) => $.management.failed) };
-  const judgments = { on_track: t(($) => $.management.on_track), attention: t(($) => $.management.attention), risk: t(($) => $.management.risk) };
-  return <div className="space-y-3 text-caption">
-    <div className="whitespace-pre-wrap break-words">{revision.body}</div>
-    {revision.health_judgment && <p>{t(($) => $.management.judgment)}: {judgments[revision.health_judgment]}</p>}
-    {revision.acceptance && <div className="space-y-1"><p className="font-medium">{conclusion[revision.acceptance.conclusion]} · {t(($) => $.management.description_version, { revision: revision.acceptance.description_revision })}</p>
-      <p className="whitespace-pre-wrap">{revision.acceptance.scope}</p><p className="whitespace-pre-wrap">{revision.acceptance.explanation}</p>
-      <details><summary className="cursor-pointer text-muted-foreground">{t(($) => $.management.server_version)}</summary><pre className="max-h-60 overflow-auto whitespace-pre-wrap font-sans">{revision.acceptance.description_snapshot}</pre></details>
-    </div>}
-    {revision.evidence.length > 0 && <ul className="space-y-1">{revision.evidence.map((evidence, index) => <li key={index}>
-      <EvidenceLink evidence={evidence} revision={revision} />
-      <span className="ml-2 text-muted-foreground">{availability[evidence.availability]}</span>
-    </li>)}</ul>}
-    {revision.statistics_snapshot && <div className="text-muted-foreground">{t(($) => $.management.snapshot)} · {new Date(revision.statistics_snapshot.calculated_at).toLocaleString()}
-      <p>{t(($) => $.management.total)} {revision.statistics_snapshot.counts.total ?? t(($) => $.management.na)} · {t(($) => $.management.completed)} {revision.statistics_snapshot.counts.completed ?? t(($) => $.management.na)} · {t(($) => $.management.cancelled)} {revision.statistics_snapshot.counts.cancelled ?? t(($) => $.management.na)}</p>
-    </div>}
-    {revision.correction_reason && <p className="text-muted-foreground">{t(($) => $.management.correction_reason)}: {revision.correction_reason}</p>}
+  const body = revision.body.trim();
+  const bodySummary = body.split(/\r?\n/, 1)[0]?.slice(0, 240) ?? "";
+  const hasBodyDetails = body !== bodySummary;
+  const hasDetails = hasBodyDetails || Boolean(revision.acceptance || revision.evidence.length > 0 || revision.statistics_snapshot || revision.correction_reason);
+  return <div className="min-w-0 space-y-2 text-caption [overflow-wrap:anywhere]">
+    <p className="max-w-prose whitespace-pre-wrap leading-relaxed">{bodySummary || t(($) => $.management.none)}{hasBodyDetails && "…"}</p>
+    {hasDetails && <details className="group/update">
+      <summary className="flex min-h-8 w-fit cursor-pointer list-none items-center gap-1.5 rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [@media(pointer:coarse)]:min-h-11 [&::-webkit-details-marker]:hidden"><span>{t(($) => $.management.details)}</span><ChevronDown className="size-3.5 shrink-0 group-open/update:rotate-180" aria-hidden="true" /></summary>
+      <div className="mt-3 space-y-4">
+        {hasBodyDetails && <div className="max-w-prose whitespace-pre-wrap leading-relaxed">{revision.body}</div>}
+        {revision.acceptance && <div className="space-y-3">
+          <dl className="space-y-3">
+            <div><dt className="text-muted-foreground">{t(($) => $.management.scope)}</dt><dd className="mt-1 max-w-prose whitespace-pre-wrap">{revision.acceptance.scope}</dd></div>
+            {revision.acceptance.explanation && <div><dt className="text-muted-foreground">{t(($) => $.management.explanation)}</dt><dd className="mt-1 max-w-prose whitespace-pre-wrap">{revision.acceptance.explanation}</dd></div>}
+          </dl>
+          <details className="group/snapshot">
+            <summary className="flex min-h-8 w-fit cursor-pointer list-none items-center gap-1.5 rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [@media(pointer:coarse)]:min-h-11 [&::-webkit-details-marker]:hidden"><span>{t(($) => $.management.server_version)}</span><ChevronDown className="size-3.5 shrink-0 group-open/snapshot:rotate-180" aria-hidden="true" /></summary>
+            <pre className="mt-2 max-h-60 overflow-auto whitespace-pre-wrap font-sans">{revision.acceptance.description_snapshot}</pre>
+          </details>
+        </div>}
+        {revision.evidence.length > 0 && <div className="space-y-1"><p className="text-muted-foreground">{t(($) => $.management.evidence)}</p><ul className="space-y-1">{revision.evidence.map((evidence, index) => <li key={index}>
+          <EvidenceLink evidence={evidence} revision={revision} />
+          <span className="ml-2 text-muted-foreground">{availability[evidence.availability]}</span>
+        </li>)}</ul></div>}
+        {revision.statistics_snapshot && <div className="space-y-1 tabular-nums"><p className="text-muted-foreground">{t(($) => $.management.snapshot)} · <time dateTime={revision.statistics_snapshot.calculated_at}>{new Date(revision.statistics_snapshot.calculated_at).toLocaleString()}</time></p>
+          <p>{t(($) => $.management.total)} {revision.statistics_snapshot.counts.total ?? t(($) => $.management.na)} · {t(($) => $.management.completed)} {revision.statistics_snapshot.counts.completed ?? t(($) => $.management.na)} · {t(($) => $.management.cancelled)} {revision.statistics_snapshot.counts.cancelled ?? t(($) => $.management.na)}</p>
+        </div>}
+        {revision.correction_reason && <div className="space-y-1"><p className="text-muted-foreground">{t(($) => $.management.correction_reason)}</p><p className="max-w-prose whitespace-pre-wrap">{revision.correction_reason}</p></div>}
+      </div>
+    </details>}
   </div>;
 }
 function UpdateHistory({ project, updateId, onProtectedError }: { project: Project; updateId: string; onProtectedError: () => void }) {
   const { t } = useT("projects"); const [cursor, setCursor] = useState<string>();
   const query = useQuery(projectUpdateRevisionsOptions(project.workspace_id, project.id, updateId, cursor));
   useProjectAccessGuard(query.error, project.workspace_id, project.id, onProtectedError);
-  return <div className="space-y-4 rounded-md border p-4">
-    <h3 className="font-medium">{t(($) => $.management.history)}</h3>
+  return <div className="min-w-0 space-y-4 border-t pt-4">
+    <h3 className="flex items-center gap-2 text-caption font-medium"><History className="size-3.5 text-muted-foreground" aria-hidden="true" />{t(($) => $.management.history)}</h3>
     {query.error && <p role="alert">{query.error.message}</p>}
-    {query.data?.items.map((revision) => <article key={revision.revision} className="space-y-2"><p className="text-caption text-muted-foreground">{t(($) => $.management.revision, { revision: revision.revision })} · <HistoricalName member={revision.editor} /> · {new Date(revision.created_at).toLocaleString()}</p><UpdateBody revision={revision} /></article>)}
+    {query.data?.items.map((revision) => <article key={revision.revision} className="min-w-0 space-y-2"><p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">{t(($) => $.management.revision, { revision: revision.revision })} · <HistoricalName member={revision.editor} /> · <time dateTime={revision.created_at}>{new Date(revision.created_at).toLocaleString()}</time></p><div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-caption"><UpdateOutcome revision={revision} descriptionRevision={project.description_revision} /></div><UpdateBody revision={revision} /></article>)}
     <div className="flex gap-2">{cursor && <Button size="sm" variant="outline" onClick={() => setCursor(undefined)}>{t(($) => $.management.previous)}</Button>}{query.data?.next_cursor && <Button size="sm" variant="outline" onClick={() => setCursor(query.data!.next_cursor!)}>{t(($) => $.management.next)}</Button>}</div>
   </div>;
 }
@@ -199,16 +228,43 @@ export function ProjectProgress({ project, onProtectedError, targetUpdateId }: {
   const { t } = useT("projects"); const [cursor, setCursor] = useState<string>(); const [composer, setComposer] = useState<ProjectUpdateDraft | null>(null); const [history, setHistory] = useState<string>();
   const query = useQuery(projectUpdatesOptions(project.workspace_id, project.id, cursor));
   useProjectAccessGuard(query.error, project.workspace_id, project.id, onProtectedError);
-  return <section className="space-y-4"><div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-heading font-medium">{t(($) => $.management.updates)}</h2><div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => setComposer(emptyProjectUpdateDraft())}>{t(($) => $.management.new_update)}</Button><Button size="sm" variant="outline" onClick={() => setComposer({ ...emptyProjectUpdateDraft(), kind: "acceptance", acceptance: { conclusion: "passed", scope: "", explanation: "" }, expected_description_revision: project.description_revision ?? null })}>{t(($) => $.management.new_acceptance)}</Button></div></div>
+  const typePresentations: Record<string, { label: string; Icon: LucideIcon }> = {
+    progress: { label: t(($) => $.management.progress), Icon: TrendingUp },
+    risk: { label: t(($) => $.management.manual_risk), Icon: ShieldAlert },
+    acceptance: { label: t(($) => $.management.acceptance), Icon: ClipboardCheck },
+  };
+  return <section className="space-y-4"><div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-heading font-medium">{t(($) => $.management.updates)}</h2><div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" onClick={() => setComposer(emptyProjectUpdateDraft())}>{t(($) => $.management.new_update)}</Button><Button size="sm" variant="outline" onClick={() => setComposer({ ...emptyProjectUpdateDraft(), kind: "acceptance", acceptance: { conclusion: "passed", scope: "", explanation: "" }, expected_description_revision: project.description_revision ?? null })}>{t(($) => $.management.new_acceptance)}</Button></div></div>
     {targetUpdateId && <UpdateHistory project={project} updateId={targetUpdateId} onProtectedError={onProtectedError} />}
     {composer && <ProjectUpdateComposer key={composer.update_id ?? "create"} project={project} initial={composer} onClose={() => setComposer(null)} onProtectedError={onProtectedError} />}
     {query.isPending && <p role="status">{t(($) => $.management.loading)}</p>}
     {query.error && <div role="alert"><p>{t(($) => $.management.load_error)}</p><Button onClick={() => void query.refetch()}>{t(($) => $.management.retry)}</Button></div>}
     {query.data?.items.length === 0 && <p className="text-caption text-muted-foreground">{t(($) => $.management.no_updates)}</p>}
-    {query.data?.items.map((update) => <article key={update.id} className="space-y-3 border-t pt-4"><div className="flex flex-wrap items-center justify-between gap-2"><p className="text-caption text-muted-foreground"><HistoricalName member={update.author} /> · {new Date(update.published_at).toLocaleString()} · {t(($) => $.management.revision, { revision: update.current_revision })}</p><div className="flex gap-1"><Button variant="ghost" size="sm" onClick={() => setComposer(correctionDraft(update))}>{t(($) => $.management.correct)}</Button><Button variant="ghost" size="sm" onClick={() => setHistory(history === update.id ? undefined : update.id)}>{t(($) => $.management.history)}</Button></div></div>
-      <UpdateBody revision={update.current} />{update.current.acceptance && update.current.acceptance.description_revision !== project.description_revision && <p className="text-caption text-warning">{t(($) => $.management.stale_acceptance)}</p>}
-      {history === update.id && <UpdateHistory project={project} updateId={update.id} onProtectedError={onProtectedError} />}
-    </article>)}
+    {query.data?.items.length ? <ol>
+      {query.data.items.map((update) => {
+        const presentation = typePresentations[String(update.current.kind)] ?? { label: t(($) => $.management.updates), Icon: History };
+        const TypeIcon = presentation.Icon;
+        return <li key={update.id} className="relative min-w-0 pb-6 pl-9 before:absolute before:bottom-0 before:left-3 before:top-6 before:w-px before:bg-border last:pb-0 last:before:hidden">
+          <span className="absolute left-0 top-0 flex size-6 items-center justify-center rounded-full border border-border bg-background text-muted-foreground" aria-hidden="true"><TypeIcon className="size-3.5" /></span>
+          <article className="min-w-0 space-y-3">
+            <header className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0 space-y-1">
+                <div className="flex min-h-6 flex-wrap items-baseline gap-x-2 gap-y-1 text-caption [overflow-wrap:anywhere]">
+                  <span className="text-caption font-medium">{presentation.label}</span>
+                  <UpdateOutcome revision={update.current} descriptionRevision={project.description_revision} />
+                </div>
+                <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]"><HistoricalName member={update.author} /> · <time dateTime={update.published_at}>{new Date(update.published_at).toLocaleString()}</time> · {t(($) => $.management.revision, { revision: update.current_revision })}</p>
+              </div>
+              <div className="flex w-full shrink-0 flex-wrap gap-1 sm:w-auto sm:justify-end">
+                <Button className="[@media(pointer:coarse)]:min-h-11" variant="ghost" size="sm" onClick={() => setComposer(correctionDraft(update))}>{t(($) => $.management.correct)}</Button>
+                <Button className="[@media(pointer:coarse)]:min-h-11" variant="ghost" size="sm" aria-expanded={history === update.id} onClick={() => setHistory(history === update.id ? undefined : update.id)}><History className="size-3.5" aria-hidden="true" />{t(($) => $.management.history)}</Button>
+              </div>
+            </header>
+            <UpdateBody revision={update.current} />
+            {history === update.id && <UpdateHistory project={project} updateId={update.id} onProtectedError={onProtectedError} />}
+          </article>
+        </li>;
+      })}
+    </ol> : null}
     <div className="flex gap-2">{cursor && <Button size="sm" variant="outline" onClick={() => setCursor(undefined)}>{t(($) => $.management.previous)}</Button>}{query.data?.next_cursor && <Button size="sm" variant="outline" onClick={() => setCursor(query.data!.next_cursor!)}>{t(($) => $.management.next)}</Button>}</div>
   </section>;
 }

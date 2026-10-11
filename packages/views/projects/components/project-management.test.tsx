@@ -12,7 +12,7 @@ import { ProjectDescription } from "./project-description";
 import { ProjectProgress } from "./project-progress";
 import { ProjectOverviewPanel } from "./project-overview";
 import { ProjectRiskIssues } from "./project-risk-issues";
-import { p1Project, p1Preview, p1WriteResult, p1Overview } from "@multica/core/projects/test-fixtures/p1";
+import { p1Project, p1Preview, p1WriteResult, p1Overview, p1Revision, p1Member } from "@multica/core/projects/test-fixtures/p1";
 
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "11111111-1111-4111-8111-111111111111" }));
 vi.mock("@multica/core/paths", () => ({ useWorkspacePaths: () => ({ issueDetail: (id: string) => `/issues/${id}` }) }));
@@ -65,6 +65,26 @@ describe("project goal editor", () => {
 });
 
 describe("manual project progress", () => {
+  it("presents updates as typed timeline entries with progressive disclosure", async () => {
+    const current = {
+      ...p1Revision,
+      kind: "acceptance",
+      body: "Current summary\nMore context stays available in the details.",
+      acceptance: { conclusion: "passed", description_revision: 1, description_snapshot: "Goal snapshot", scope: "Release scope", explanation: "Verified against the release checks." },
+    };
+    setApiInstance({ getBaseUrl: () => "https://test.example", listProjectUpdates: vi.fn().mockResolvedValue({ items: [{ workspace_id: project.workspace_id, project_id: project.id, id: p1Revision.update_id, author: p1Member, published_at: p1Revision.created_at, current_revision: 1, current }], next_cursor: null }) } as unknown as ApiClient);
+    render(<ProjectProgress project={project} onProtectedError={vi.fn()} />);
+    expect(await screen.findByText("Acceptance")).toBeInTheDocument();
+    expect(screen.getByText("Passed")).toBeInTheDocument();
+    expect(screen.getByText("Current summary…")).toBeInTheDocument();
+    const details = screen.getByText("View details", { exact: true }).closest("details");
+    expect(details).toBeInTheDocument();
+    expect(details).not.toHaveAttribute("open");
+    await userEvent.setup().click(screen.getByText("View details", { exact: true }));
+    expect(details).toHaveAttribute("open");
+    expect(screen.getByText(/More context stays available in the details/)).toBeInTheDocument();
+  });
+
   it("previews, keeps failed input, and retries the exact publication intent", async () => {
     const previewProjectUpdate = vi.fn(async (_ws, _id, draft: ProjectUpdateDraft) => ({ ...p1Preview, draft }));
     const createProjectUpdate = vi.fn().mockRejectedValueOnce(new Error("Connection lost")).mockResolvedValueOnce(p1WriteResult);

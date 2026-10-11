@@ -85,6 +85,7 @@ it("FR07 issue evidence uses the source workspace route and execution uses its a
   const getProjectExecutionEvidence = vi.fn().mockResolvedValue({ task: { id: executionId }, messages: [] });
   install({ getProjectExecutionEvidence, listProjectUpdates: vi.fn().mockResolvedValue({ items: [{ workspace_id: project.workspace_id, project_id: project.id, id: P1_UPDATE_ID, author: p1Member, published_at: p1Revision.created_at, current_revision: 1, current: { ...p1Revision, evidence: [evidence("issue", project.id), evidence("execution", executionId)] } }], next_cursor: null }) });
   render(<ProjectProgress project={project} onProtectedError={vi.fn()} />);
+  fireEvent.click(await screen.findByText("View details", { exact: true }));
   expect(await screen.findByRole("link", { name: "issue" })).toHaveAttribute("href", `/source-workspace/issues/${project.id}`);
   fireEvent.click(screen.getByRole("button", { name: "execution" }));
   await screen.findByRole("dialog");
