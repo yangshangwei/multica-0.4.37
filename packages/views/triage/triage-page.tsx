@@ -624,11 +624,11 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
       )}
       <TriageExecutionStatus wsId={wsId} issueId={item.issue.id} />
       <details>
-        <summary className="min-h-8 cursor-pointer text-caption text-muted-foreground [@media(pointer:coarse)]:min-h-11">
+        <summary className="min-h-8 cursor-pointer rounded-sm text-caption text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [@media(pointer:coarse)]:min-h-11">
           {t(($) => $.history)}
         </summary>
-        <div className="max-h-64 space-y-2 overflow-y-auto break-words">
-          <p className="text-caption">
+        <div className="max-h-64 space-y-4 overflow-y-auto break-words pb-1 pr-2 pt-2">
+          <p className="text-caption text-muted-foreground">
             {t(($) => $.first_entered, {
               date: new Date(item.first_entered_at).toLocaleString(
                 i18n.language,

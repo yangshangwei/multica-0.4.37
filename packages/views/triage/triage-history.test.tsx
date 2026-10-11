@@ -99,7 +99,8 @@ it("retains the actor, round, reason and snapshot values behind a native disclos
   const user = userEvent.setup();
   render(<TriageHistoryRecord wsId="ws" entry={record} />);
 
-  expect(screen.getByRole("article")).toHaveTextContent("Avery · Round 2");
+  expect(screen.getByRole("article")).toHaveTextContent("Round 2");
+  expect(screen.getByRole("article")).toHaveTextContent("Avery");
   expect(screen.getByText(en.csv)).toBeVisible();
   expect(screen.getByText(/Keep the original reasoning/)).toHaveTextContent(
     "Including the second line.",
@@ -139,7 +140,8 @@ it("keeps single-item failed execution attached to its original decision and ret
 
   expect(screen.getByRole("status")).toHaveTextContent(en.execution_failed);
   expect(screen.getByText("Runtime disconnected")).toBeVisible();
-  expect(screen.getByRole("article")).toHaveTextContent("Avery · Round 2");
+  expect(screen.getByRole("article")).toHaveTextContent("Round 2");
+  expect(screen.getByRole("article")).toHaveTextContent("Avery");
   await user.click(screen.getByRole("button", { name: en.retry_execution }));
   expect(state.retry).toHaveBeenCalledExactlyOnceWith("decision-1");
 });

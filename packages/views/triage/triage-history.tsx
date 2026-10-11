@@ -1,4 +1,16 @@
 "use client";
+import type { ReactNode } from "react";
+import {
+  Check,
+  CircleHelp,
+  Clock3,
+  Copy,
+  Inbox,
+  Play,
+  RotateCcw,
+  UserRoundCheck,
+  X,
+} from "lucide-react";
 import { ApiError } from "@multica/core/api";
 import { issueDetailOptions } from "@multica/core/issues/queries";
 import { useWorkspacePaths } from "@multica/core/paths";
@@ -25,35 +37,62 @@ import {
   type TriageHistoryField,
 } from "./triage-ui";
 
+function historyAppearance(action: string) {
+  switch (action) {
+    case "accept":
+      return { Icon: Check, tone: "text-success-foreground" };
+    case "accept_and_execute":
+      return { Icon: Play, tone: "text-success-foreground" };
+    case "reject":
+      return { Icon: X, tone: "text-destructive-foreground" };
+    case "reopen":
+      return { Icon: RotateCcw, tone: "text-info-foreground" };
+    case "snooze":
+      return { Icon: Clock3, tone: "text-warning-foreground" };
+    case "duplicate":
+      return { Icon: Copy, tone: "text-muted-foreground" };
+    case "unsnooze":
+      return { Icon: Inbox, tone: "text-muted-foreground" };
+    case "assign_reviewer":
+      return { Icon: UserRoundCheck, tone: "text-muted-foreground" };
+    default:
+      return { Icon: CircleHelp, tone: "text-muted-foreground" };
+  }
+}
+
 export function TriageHistoryRecord({
   wsId,
   entry,
+  children,
 }: {
   wsId: string;
   entry: TriageAction | TriageHistoryEntry;
+  children?: ReactNode;
 }) {
-  const { t, i18n } = useT("triage");
+  const { t } = useT("triage");
   const knownAction = TRIAGE_HISTORY_ACTIONS.find(
     (name) => name === entry.action,
   );
   return (
-    <article className="space-y-2 py-3 text-body">
-      <div className="flex flex-wrap justify-between gap-x-3 gap-y-1">
-        <span className="font-medium">
+    <article className="min-w-0 space-y-2 text-body [overflow-wrap:anywhere]">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span
+          className={cn("font-semibold", historyAppearance(entry.action).tone)}
+        >
           {knownAction
-            ? t(($) => $[knownAction])
+            ? t(($) => $.history_timeline.actions[knownAction])
             : entry.action === "import"
               ? t(($) => $.import_csv)
               : t(($) => $.unknown)}
         </span>
-        <time
-          className="text-caption text-muted-foreground"
-          dateTime={entry.created_at}
-        >
-          {new Date(entry.created_at).toLocaleString(i18n.language)}
-        </time>
+        {"round" in entry && (
+          <span className="rounded bg-muted px-1.5 py-0.5 text-caption font-medium text-muted-foreground">
+            {t(($) => $.round, { round: entry.round })}
+          </span>
+        )}
       </div>
-      <TriageHistoryContent wsId={wsId} entry={entry} />
+      <TriageHistoryContent wsId={wsId} entry={entry} variant="item" />
+      {children}
     </article>
   );
 }
@@ -63,10 +102,12 @@ export function TriageHistoryContent({
   wsId,
   entry,
   compact = false,
+  variant = "default",
 }: {
   wsId: string;
   entry: TriageAction | TriageHistoryEntry;
   compact?: boolean;
+  variant?: "default" | "item";
 }) {
   const { t, i18n } = useT("triage");
   const { data: members = [] } = useQuery(memberListOptions(wsId));
@@ -171,13 +212,37 @@ export function TriageHistoryContent({
   };
 
   const source = entry.after.source ?? entry.before.source;
+  const itemDate = variant === "item" ? new Date(entry.created_at) : null;
   return (
     <div className="min-w-0 space-y-2 [overflow-wrap:anywhere]">
-      <div className={compact ? "flex flex-wrap gap-x-3 gap-y-1" : "space-y-2"}>
+      <div
+        className={
+          variant === "item"
+            ? "flex flex-wrap items-baseline gap-x-3 gap-y-1"
+            : compact
+              ? "flex flex-wrap gap-x-3 gap-y-1"
+              : "space-y-2"
+        }
+      >
         <p className="text-caption text-muted-foreground">
           {actor?.name ?? actor?.email ?? t(($) => $.unknown)}
-          {"round" in entry && ` · ${t(($) => $.round, { round: entry.round })}`}
+          {variant !== "item" &&
+            "round" in entry &&
+            ` · ${t(($) => $.round, { round: entry.round })}`}
         </p>
+        {itemDate &&
+          (Number.isNaN(itemDate.getTime()) ? (
+            <span className="text-caption text-muted-foreground">
+              {t(($) => $.history_timeline.unknown_time)}
+            </span>
+          ) : (
+            <time
+              className="text-caption tabular-nums text-muted-foreground"
+              dateTime={entry.created_at}
+            >
+              {itemDate.toLocaleString(i18n.language, { timeZoneName: "short" })}
+            </time>
+          ))}
         {(source === "manual" || source === "csv") && (
           <p className="text-caption text-muted-foreground">
             {t(($) => $[source])}
@@ -249,41 +314,53 @@ export function TriageItemHistory({
           {t(($) => $.history_empty)}
         </p>
       ) : (
-        query.data.events.map((event) => (
-          <div key={event.id}>
-            {(event.execution_status === "failed" ||
-              event.execution_status === "pending") && (
-              <div className="space-y-2 rounded-md bg-muted p-3" role="status">
-                <p className="font-medium">
-                  {event.execution_status === "failed"
-                    ? t(($) => $.execution_failed)
-                    : t(($) => $.execution_pending)}
-                </p>
-                {event.execution_error && (
-                  <p className="text-caption text-destructive">
-                    {event.execution_error}
-                  </p>
-                )}
-                {userId === event.actor_id && (
-                  <Button
-                    variant="outline"
-                    className={TRIAGE_CONTROL}
-                    disabled={retry.isPending}
-                    onClick={() => retry.mutate(event.id)}
-                  >
-                    {t(($) => $.retry_execution)}
-                  </Button>
-                )}
-              </div>
-            )}
-            {event.execution_status === "queued" && (
-              <p className="text-caption text-muted-foreground">
-                {t(($) => $.execution_queued)}
-              </p>
-            )}
-            <TriageHistoryRecord wsId={wsId} entry={event} />
-          </div>
-        ))
+        <ol aria-label={t(($) => $.history)}>
+          {query.data.events.map((event) => {
+            const { Icon, tone } = historyAppearance(event.action);
+            return (
+              <li key={event.id} className="group/event relative pb-5 pl-9 last:pb-0">
+                <div aria-hidden="true" className="absolute inset-y-0 left-0 w-6">
+                  <span className="absolute bottom-0 left-3 top-3 border-l border-surface-border group-last/event:hidden" />
+                  <span className={cn("relative flex size-6 items-center justify-center rounded-full bg-background", tone)}>
+                    <Icon className="size-4" />
+                  </span>
+                </div>
+                <TriageHistoryRecord wsId={wsId} entry={event}>
+                  {(event.execution_status === "failed" ||
+                    event.execution_status === "pending") && (
+                    <div className="space-y-2 rounded-md bg-muted p-3" role="status">
+                      <p className="font-medium">
+                        {event.execution_status === "failed"
+                          ? t(($) => $.execution_failed)
+                          : t(($) => $.execution_pending)}
+                      </p>
+                      {event.execution_error && (
+                        <p className="text-caption text-destructive">
+                          {event.execution_error}
+                        </p>
+                      )}
+                      {userId === event.actor_id && (
+                        <Button
+                          variant="outline"
+                          className={TRIAGE_CONTROL}
+                          disabled={retry.isPending}
+                          onClick={() => retry.mutate(event.id)}
+                        >
+                          {t(($) => $.retry_execution)}
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                  {event.execution_status === "queued" && (
+                    <p className="text-caption text-muted-foreground">
+                      {t(($) => $.execution_queued)}
+                    </p>
+                  )}
+                </TriageHistoryRecord>
+              </li>
+            );
+          })}
+        </ol>
       )}
       {retry.isError && (
         <p role="alert" className="text-destructive">
