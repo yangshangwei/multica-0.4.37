@@ -219,19 +219,27 @@ export function useChatController(opts?: { isActive?: boolean }) {
   const { data: members = [], isSuccess: membersLoaded } = useQuery(
     memberListOptions(wsId),
   );
-  const { data: sessions = [], isSuccess: sessionsLoaded } = useQuery(
-    chatSessionsOptions(wsId),
-  );
+  const sessionsQuery = useQuery(chatSessionsOptions(wsId));
+  const { data: sessions = [], isSuccess: sessionsLoaded } = sessionsQuery;
+  const sessionsError = sessionsQuery.isError ||
+    (sessionsQuery.isFetching && sessionsQuery.errorUpdatedAt > sessionsQuery.dataUpdatedAt);
   const { data: projects = [], isSuccess: projectsLoaded } = useQuery(
     projectListOptions(wsId),
   );
   const {
     data: rawMessagePages,
     isLoading: messagesLoading,
+    isError: messagesIsError,
+    errorUpdatedAt: messagesErrorUpdatedAt,
+    dataUpdatedAt: messagesDataUpdatedAt,
+    isFetching: messagesFetching,
+    refetch: refetchMessages,
     fetchNextPage: fetchOlderMessages,
     hasNextPage: hasOlderMessages,
     isFetchingNextPage: isFetchingOlderMessages,
   } = useInfiniteQuery(chatMessagesPageOptions(activeSessionId ?? ""));
+  const messagesError = messagesIsError ||
+    (messagesFetching && messagesErrorUpdatedAt > messagesDataUpdatedAt);
 
   const messagePages = activeSessionId ? rawMessagePages?.pages ?? [] : [];
   const allMessages = [...messagePages].reverse().flatMap((page) => page.messages);
@@ -830,6 +838,11 @@ export function useChatController(opts?: { isActive?: boolean }) {
     availableAgents,
     agentsSettled,
     sessions,
+    sessionsLoading: sessionsQuery.isLoading,
+    sessionsError,
+    sessionsFetching: sessionsQuery.isFetching,
+    sessionsHaveData: sessionsQuery.data !== undefined,
+    refetchSessions: sessionsQuery.refetch,
     projects,
     activeSessionId,
     selectedAgentId,
@@ -848,6 +861,10 @@ export function useChatController(opts?: { isActive?: boolean }) {
     availability,
     // messages
     messages,
+    messagesError: !!activeSessionId && messagesError,
+    messagesFetching,
+    messagesHaveData: rawMessagePages !== undefined,
+    refetchMessages,
     pendingTask,
     pendingTaskId,
     showSkeleton,

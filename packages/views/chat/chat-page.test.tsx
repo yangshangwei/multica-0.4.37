@@ -98,6 +98,7 @@ const storeRef = vi.hoisted(() => ({
 const storeListeners = vi.hoisted(() => new Set<() => void>());
 const availableAgentsRef = vi.hoisted(() => ({ current: [] as Agent[] }));
 const agentsSettledRef = vi.hoisted(() => ({ current: true }));
+const recovery = vi.hoisted(() => ({ sessionsError: false, messagesError: false, sessionsLoading: false, refetchSessions: vi.fn(), refetchMessages: vi.fn() }));
 const mockStartNewChat = vi.hoisted(() => vi.fn());
 const mockToastError = vi.hoisted(() => vi.fn());
 const mockSetActiveSession = vi.hoisted(() =>
@@ -127,6 +128,7 @@ vi.mock("./components/use-chat-controller", async () => {
   const { useSyncExternalStore } = await import("react");
   return {
     useChatController: () => ({
+      ...recovery,
       wsId: "ws-1",
       user: { id: "user-1" },
       agents: availableAgentsRef.current,
@@ -239,6 +241,9 @@ beforeEach(() => {
   availableAgentsRef.current = [agent];
   agentsSettledRef.current = true;
   layout.width = DESKTOP;
+  recovery.sessionsError = false;
+  recovery.messagesError = false;
+  recovery.sessionsLoading = false;
 });
 
 describe("ChatPage ?agent= deep link", () => {
@@ -369,5 +374,33 @@ describe("ChatPage responsive layout", () => {
       screen.getByRole("button", { name: "select-thread" }),
     ).toBeInTheDocument();
     expect(screen.getByText("chat-input")).toBeInTheDocument();
+  });
+});
+
+
+// Cold/cached retry and retained drafts use the real QueryClient in chat-window.test.tsx.
+describe("ChatPage recovery wiring", () => {
+  it("shows a retry for failed history instead of the empty list", () => {
+    recovery.sessionsError = true;
+    renderPage("");
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load conversations");
+    expect(screen.queryByText("select-thread")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(recovery.refetchSessions).toHaveBeenCalledOnce();
+  });
+  it("shows loading before history is known", () => {
+    recovery.sessionsLoading = true;
+    renderPage("");
+    expect(screen.getByRole("status")).toHaveTextContent("Loading conversations");
+    expect(screen.queryByText("select-thread")).not.toBeInTheDocument();
+  });
+  it("keeps the composer and retries failed messages", () => {
+    recovery.messagesError = true;
+    renderPage("?session=session-1");
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load messages");
+    expect(screen.queryByText("chat-empty-state")).not.toBeInTheDocument();
+    expect(screen.getByText("chat-input")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(recovery.refetchMessages).toHaveBeenCalledOnce();
   });
 });

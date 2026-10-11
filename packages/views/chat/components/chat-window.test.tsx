@@ -12,6 +12,11 @@ import { renderWithI18n } from "../../test/i18n";
 import { ChatWindow } from "./chat-window";
 import { ChatFab } from "./chat-fab";
 
+const requests = vi.hoisted(() => ({ sessions: vi.fn(), messages: vi.fn() }));
+vi.mock("@multica/core/api", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/api")>(),
+  api: { listChatSessions: requests.sessions, listChatMessagesPage: requests.messages, listChatDraftRestores: vi.fn().mockResolvedValue([]) },
+}));
 vi.mock("@multica/core/chat", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@multica/core/chat")>();
   return {
@@ -41,7 +46,8 @@ vi.mock("@multica/core/logger", async (importOriginal) => {
 });
 vi.mock("./use-chat-project-context-support", () => ({ useChatProjectContextSupport: () => true }));
 vi.mock("./use-chat-context-items", () => ({ useChatContextItems: () => [] }));
-vi.mock("./chat-message-list", () => ({ ChatMessageList: () => null, ChatMessageSkeleton: () => null }));
+vi.mock("../../common/actor-avatar", () => ({ ActorAvatar: () => null }));
+vi.mock("./chat-message-list", () => ({ ChatMessageList: ({ messages }: { messages: { id: string; content: string }[] }) => <div>{messages.map((message) => <p key={message.id}>{message.content}</p>)}</div>, ChatMessageSkeleton: () => <p>Loading messages</p> }));
 vi.mock("./chat-empty-state", () => ({ EmptyState: () => <p>Start a conversation</p> }));
 vi.mock("./new-chat-button", () => ({ AgentPicker: () => <button type="button">Choose an agent</button> }));
 vi.mock("../../editor", async () => ({
@@ -77,7 +83,7 @@ vi.mock("./use-chat-resize", () => ({
 const clients: QueryClient[] = [];
 const initialStore = useChatStore.getState();
 
-function renderChat(withProject = false) {
+function renderChat(withProject = false, cold = false) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
   clients.push(client);
   client.setQueryData(workspaceKeys.agents("ws-1"), [{ id: "agent-1", name: "Multica", runtime_id: "runtime-1", owner_id: "user-1", archived_at: null }]);
@@ -85,20 +91,21 @@ function renderChat(withProject = false) {
   const projects = withProject ? [{ id: "project-1", title: "Launch Plan", icon: null, status: "in_progress" }] : [];
   client.setQueryData(projectKeys.list("ws-1"), { projects });
   if (withProject) useChatStore.setState({ selectedProjectId: "project-1" });
-  client.setQueryData(chatKeys.sessions("ws-1"), []);
+  if (!cold) client.setQueryData(chatKeys.sessions("ws-1"), []);
   client.setQueryData(chatKeys.pendingTasks("ws-1"), { tasks: [] });
   client.setQueryData(chatKeys.pendingTasksHasAny("ws-1"), { has_pending: false });
-  return renderWithI18n(
+  const view = renderWithI18n(
     <QueryClientProvider client={client}>
       <button type="button">Page action</button>
       <ChatWindow />
       <ChatFab />
     </QueryClientProvider>,
   );
+  return { ...view, client };
 }
 
-beforeEach(() => { useChatStore.setState(initialStore, true); });
-afterEach(() => { for (const client of clients.splice(0)) client.clear(); });
+beforeEach(() => { useChatStore.setState(initialStore, true); requests.sessions.mockReset(); requests.messages.mockReset(); });
+afterEach(() => { for (const client of clients.splice(0)) client.clear(); vi.restoreAllMocks(); });
 
 describe("ChatWindow visibility and focus", () => {
   // Focus transition and readiness cases live in use-chat-input-focus.test.ts.
@@ -193,5 +200,80 @@ describe("ChatWindow visibility and focus", () => {
     await user.click(screen.getByRole("button", { name: "Ask Multica" }));
     expect(screen.getByRole("textbox", { name: "Chat message" })).toBe(composer);
     expect(composer).toHaveValue("Formatted draft");
+  });
+});
+
+
+describe("Chat history query recovery", () => {
+  it("distinguishes a cold failure from empty history and disables retry while fetching", async () => {
+    let resolveRetry!: (sessions: []) => void;
+    const request = requests.sessions
+      .mockRejectedValueOnce(new Error("Offline"))
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveRetry = resolve; }));
+    const user = userEvent.setup();
+    renderChat(false, true);
+    await user.click(screen.getByRole("button", { name: "Ask Multica" }));
+    await user.click(screen.getByRole("button", { name: "New chat", expanded: false }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load conversations");
+    expect(screen.queryByText("No previous chats")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(screen.getByRole("button", { name: "Retrying…" })).toBeDisabled();
+    await act(async () => { resolveRetry([]); });
+    expect(await screen.findByText("No previous chats")).toBeInTheDocument();
+    expect(request).toHaveBeenCalledTimes(2);
+  });
+
+  it("preserves the history row and composer draft after a cached refresh failure", async () => {
+    const session = { id: "session-1", agent_id: "agent-1", title: "Keep this conversation", status: "active", updated_at: "2026-10-11T00:00:00Z", has_unread: false };
+    requests.sessions.mockRejectedValueOnce(new Error("Offline")).mockResolvedValue([]);
+    const user = userEvent.setup();
+    const { client } = renderChat();
+    act(() => { client.setQueryData(chatKeys.sessions("ws-1"), [session]); });
+    await user.click(screen.getByRole("button", { name: "Ask Multica" }));
+    const editor = screen.getByRole("textbox", { name: "Chat message" });
+    await user.type(editor, "Keep my draft");
+    await user.click(screen.getByRole("button", { name: "New chat", expanded: false }));
+    const row = screen.getByText(session.title);
+    await act(async () => { await client.refetchQueries({ queryKey: chatKeys.sessions("ws-1"), exact: true }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not refresh conversations");
+    expect(screen.getByText(session.title)).toBe(row);
+    expect(screen.getByRole("textbox", { name: "Chat message" })).toBe(editor);
+    expect(editor).toHaveValue("Keep my draft");
+    expect(screen.queryByText("No previous chats")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByText("No previous chats")).toBeInTheDocument();
+    expect(editor).toHaveValue("Keep my draft");
+  });
+});
+
+
+// Real QueryClient owns the cold/cached retry lifecycle; page tests only check wiring.
+describe("Chat message query recovery", () => {
+  it.each([false, true])("retries messages without replacing the draft (cached: %s)", async (cached) => {
+    const user = userEvent.setup();
+    const { client } = renderChat();
+    const messagePage = { messages: [{ id: "message-1", content: "Retained message", role: "user", created_at: "2026-10-11T00:00:00Z" }], has_more: false };
+    requests.messages.mockRejectedValueOnce(new Error("Offline")).mockResolvedValue(messagePage);
+    act(() => {
+      client.setQueryData(chatKeys.sessions("ws-1"), [{ id: "session-1", agent_id: "agent-1", title: "Existing conversation", status: "active", has_unread: false }]);
+      client.setQueryData(chatKeys.pendingTask("session-1"), {});
+      if (cached) client.setQueryData(chatKeys.messagesPage("session-1"), { pages: [messagePage], pageParams: [null] });
+      useChatStore.getState().setActiveSession("session-1");
+    });
+    await user.click(screen.getByRole("button", { name: "Ask Multica" }));
+    const editor = screen.getByRole("textbox", { name: "Chat message" });
+    await user.type(editor, "Unsent reply");
+    const message = cached ? screen.getByText("Retained message") : null;
+    if (cached) await act(async () => { await client.refetchQueries({ queryKey: chatKeys.messagesPage("session-1"), exact: true }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent(cached ? "Could not refresh messages" : "Could not load messages");
+    expect(screen.queryByText("Start a conversation")).not.toBeInTheDocument();
+    if (cached) expect(screen.getByText("Retained message")).toBe(message);
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+    expect(screen.getByText("Retained message")).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Chat message" })).toBe(editor);
+    expect(editor).toHaveValue("Unsent reply");
+    expect(useChatStore.getState().activeSessionId).toBe("session-1");
+    expect(requests.messages).toHaveBeenCalledTimes(2);
   });
 });

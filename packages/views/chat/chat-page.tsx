@@ -27,6 +27,7 @@ import { ChatInput } from "./components/chat-input";
 import { ChatQueue } from "./components/chat-queue";
 import { ChatThreadList } from "./components/chat-thread-list";
 import { ChatSessionHeader } from "./components/chat-session-header";
+import { ChatQueryFeedback } from "./components/chat-query-feedback";
 import { EmptyState } from "./components/chat-empty-state";
 import { NewChatButton } from "./components/new-chat-button";
 import { useChatController } from "./components/use-chat-controller";
@@ -225,13 +226,21 @@ export function ChatPage() {
 
   const listBody = (
     <div className="px-2 py-1">
-      <ChatThreadList
+      <ChatQueryFeedback
+        kind="sessions"
+        loading={c.sessionsLoading}
+        failed={c.sessionsError}
+        hasData={c.sessionsHaveData}
+        retrying={c.sessionsFetching}
+        onRetry={() => void c.refetchSessions()}
+      />
+      {(c.sessions.length > 0 || (!c.sessionsLoading && !c.sessionsError)) && <ChatThreadList
         sessions={c.sessions}
         agents={c.agents}
         activeSessionId={c.activeSessionId}
         onSelectSession={handleSelect}
         onArchive={handleArchive}
-      />
+      />}
     </div>
   );
 
@@ -251,6 +260,13 @@ export function ChatPage() {
           onArchive={handleArchive}
         />
       )}
+      <ChatQueryFeedback
+        kind="messages"
+        failed={c.messagesError}
+        hasData={c.messagesHaveData}
+        retrying={c.messagesFetching}
+        onRetry={() => void c.refetchMessages()}
+      />
       {c.showSkeleton ? (
         <ChatMessageSkeleton />
       ) : c.hasMessages ? (
@@ -282,6 +298,8 @@ export function ChatPage() {
           }
           quickActionsPendingMessageId={quickActionsPending?.message_id ?? null}
         />
+      ) : c.messagesError ? (
+        <div className="flex-1" />
       ) : (
         <EmptyState
           agent={c.activeAgent}

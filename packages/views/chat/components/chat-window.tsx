@@ -67,6 +67,7 @@ import { useChatInputFocus } from "./use-chat-input-focus";
 import { ChatMessageList, ChatMessageSkeleton } from "./chat-message-list";
 import { ChatInput } from "./chat-input";
 import { ChatQueue } from "./chat-queue";
+import { ChatQueryFeedback } from "./chat-query-feedback";
 import { EmptyState } from "./chat-empty-state";
 import { SessionRenameInput } from "./session-rename-input";
 import { ChatResizeHandles } from "./chat-resize-handles";
@@ -119,19 +120,27 @@ export function ChatWindow() {
   const { data: members = [] } = useQuery(memberListOptions(wsId));
   // Single sessions cache — eliminates the separate active/all queries
   // that used to drift during the WS-invalidate window.
-  const { data: sessions = [], isSuccess: sessionsLoaded } = useQuery(
-    chatSessionsOptions(wsId),
-  );
+  const sessionsQuery = useQuery(chatSessionsOptions(wsId));
+  const { data: sessions = [], isSuccess: sessionsLoaded } = sessionsQuery;
+  const sessionsError = sessionsQuery.isError ||
+    (sessionsQuery.isFetching && sessionsQuery.errorUpdatedAt > sessionsQuery.dataUpdatedAt);
   const { data: projects = [], isSuccess: projectsLoaded } = useQuery(
     projectListOptions(wsId),
   );
   const {
     data: rawMessagePages,
     isLoading: messagesLoading,
+    isError: messagesIsError,
+    errorUpdatedAt: messagesErrorUpdatedAt,
+    dataUpdatedAt: messagesDataUpdatedAt,
+    isFetching: messagesFetching,
+    refetch: refetchMessages,
     fetchNextPage: fetchOlderMessages,
     hasNextPage: hasOlderMessages,
     isFetchingNextPage: isFetchingOlderMessages,
   } = useInfiniteQuery(chatMessagesPageOptions(activeSessionId ?? ""));
+  const messagesError = messagesIsError ||
+    (messagesFetching && messagesErrorUpdatedAt > messagesDataUpdatedAt);
   // When no active session, always show empty — don't use stale cache.
   // Page 0 contains the latest chronological window; later cursor pages are
   // older chronological windows. Reverse pages so older fetched pages render
@@ -866,6 +875,11 @@ export function ChatWindow() {
           </Tooltip>
           <SessionDropdown
             sessions={sessions}
+            loading={sessionsQuery.isLoading}
+            failed={sessionsError}
+            hasData={sessionsQuery.data !== undefined}
+            retrying={sessionsQuery.isFetching}
+            onRetry={() => void sessionsQuery.refetch()}
             // Use the full agent list (incl. archived) so historical
             // sessions can still resolve their avatar.
             agents={agents}
@@ -913,6 +927,13 @@ export function ChatWindow() {
         </div>
       </div>}
 
+      <ChatQueryFeedback
+        kind="messages"
+        failed={!!activeSessionId && messagesError}
+        hasData={rawMessagePages !== undefined}
+        retrying={messagesFetching}
+        onRetry={() => void refetchMessages()}
+      />
       {/* Messages / skeleton / empty state */}
       {showSkeleton ? (
         <ChatMessageSkeleton />
@@ -945,6 +966,8 @@ export function ChatWindow() {
           }
           quickActionsPendingMessageId={quickActionsPending?.message_id ?? null}
         />
+      ) : activeSessionId && messagesError ? (
+        <div className="flex-1" />
       ) : (
         <EmptyState
           agent={activeAgent}
@@ -1100,11 +1123,21 @@ interface SessionRowAction extends RowActionItem {
  * ⊕ button, not inside this dropdown.
  */
 function SessionDropdown({
+  loading,
+  failed,
+  hasData,
+  retrying,
+  onRetry,
   sessions,
   agents,
   activeSessionId,
   onSelectSession,
 }: {
+  loading: boolean;
+  failed: boolean;
+  hasData: boolean;
+  retrying: boolean;
+  onRetry: () => void;
   sessions: ChatSession[];
   agents: Agent[];
   activeSessionId: string | null;
@@ -1526,7 +1559,8 @@ function SessionDropdown({
           className="max-h-96 w-auto min-w-[max(16rem,var(--anchor-width,16rem))] max-w-96 gap-0 overflow-y-auto p-1"
           onClick={(e) => e.stopPropagation()}
         >
-          {historySessions.length === 0 ? (
+          <ChatQueryFeedback kind="sessions" loading={loading} failed={failed} hasData={hasData} retrying={retrying} onRetry={onRetry} />
+          {historySessions.length === 0 ? !loading && !failed && (
             <div className="px-2 py-1.5 text-caption text-muted-foreground">
               {t(($) => $.window.no_previous)}
             </div>
