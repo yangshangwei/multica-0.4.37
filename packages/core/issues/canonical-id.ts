@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Issue } from "../types";
+import { ApiError } from "../api";
 import { issueDetailOptions, issueKeys } from "./queries";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -30,6 +31,11 @@ export interface CanonicalIssue {
    * that never settles on "not found".
    */
   notFound: boolean;
+  accessDenied: boolean;
+  /** Identifier resolution errors; the UUID detail observer owns its errors. */
+  error: Error | null;
+  isFetching: boolean;
+  refetch: () => Promise<unknown>;
 }
 
 /**
@@ -91,16 +97,23 @@ export function useCanonicalIssue(wsId: string, routeId: string): CanonicalIssue
     );
   }, [qc, wsId, loadedIdentifier, loadedIssue, routeId]);
 
-  // Read the resolution query's own settled state rather than "pending and no
-  // data": a failed resolution must present as terminally not-found, never as
-  // still-resolving, or the caller flips back to a loading frame and the
-  // remount loop described on `notFound` starts.
-  const failed = resolveEnabled && resolve.isError;
+  // Transient failures retain authorized data. Definitive failures must win
+  // over both identifier and UUID caches, including address-bar rewriting.
+  const error = resolveEnabled ? resolve.error : null;
+  const notFound = error instanceof ApiError && error.status === 404;
+  const accessDenied = error instanceof ApiError && [401, 403].includes(error.status);
+  const detailUnavailable = detail.error instanceof ApiError && [401, 403, 404].includes(detail.error.status);
 
   return {
     canonicalId,
-    issue: detail.data,
-    isResolving: resolveEnabled && !failed && resolve.data === undefined,
-    notFound: failed,
+    issue: notFound || accessDenied || detailUnavailable ? undefined : detail.data,
+    // Keep the retry control mounted during a cold retry, when Query changes
+    // from error back to pending but retains its last error timestamp.
+    isResolving: resolveEnabled && resolve.isPending && resolve.errorUpdatedAt === 0,
+    notFound,
+    accessDenied,
+    error,
+    isFetching: resolveEnabled && resolve.isFetching,
+    refetch: resolve.refetch,
   };
 }

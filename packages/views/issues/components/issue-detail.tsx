@@ -41,7 +41,7 @@ import { BreadcrumbHeader, type BreadcrumbSegment } from "../../layout/breadcrum
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Button } from "@multica/ui/components/ui/button";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@multica/ui/components/ui/resizable";
-import { Sheet, SheetContent } from "@multica/ui/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle } from "@multica/ui/components/ui/sheet";
 import { useIsMobile } from "@multica/ui/hooks/use-mobile";
 import { ContentEditor, type ContentEditorRef, TitleEditor, type TitleEditorRef, useFileDropZone, FileDropOverlay, useLazyEditor, useEditorUpload, ImageSequenceProvider } from "../../editor";
 import { collectImageSequence, type ImageSequenceBlock } from "@multica/core/attachments/image-sequence";
@@ -71,7 +71,7 @@ import { STATUS_CONFIG } from "@multica/core/issues/config";
 import { formatDateOnly, isPastDateOnly } from "@multica/core/issues/date";
 import { useUpdateIssue } from "@multica/core/issues/mutations";
 import { toast } from "sonner";
-import { errorCode } from "@multica/core/api";
+import { ApiError, errorCode } from "@multica/core/api";
 import { StatusIcon, PriorityIcon, StatusPicker, PriorityPicker, StagePicker, StartDatePicker, DueDatePicker, AssigneePicker, LabelPicker } from ".";
 import { maxSiblingStage } from "./pickers/stage-picker";
 import { CustomPropertyValueEditor, CustomPropertyValueDisplay } from "./pickers/custom-property-picker";
@@ -999,6 +999,8 @@ interface IssueDetailProps {
    * the surface the reader arrived from, so only the host can spell that trip.
    */
   leadingAction?: ReactNode;
+  /** A retained identifier resolution can fail independently of UUID data. */
+  resolutionError?: { isRetrying: boolean; onRetry: () => void };
 }
 
 // ---------------------------------------------------------------------------
@@ -1039,6 +1041,35 @@ export function IssueNotFound({
           <Button variant="outline" size="sm" onClick={() => backOrReplace(paths.issues())}>
             <ChevronLeft className="mr-1 h-3.5 w-3.5" />
             {t(($) => $.detail.back)}
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function IssueLoadError({
+  retained = false,
+  accessDenied = false,
+  isRetrying,
+  onRetry,
+  leading,
+}: {
+  retained?: boolean;
+  accessDenied?: boolean;
+  isRetrying: boolean;
+  onRetry: () => void;
+  leading?: ReactNode;
+}) {
+  const { t } = useT("issues");
+  return (
+    <div className={retained ? "shrink-0 border-b border-surface-border" : "flex min-h-0 flex-1 flex-col"}>
+      {leading && <div className={cn("flex h-12 shrink-0 items-center gap-2 border-b", PAGE_GUTTER)}>{leading}</div>}
+      <div role="alert" className={cn("flex flex-wrap items-center gap-3 px-4 py-3 text-body", !retained && "flex-1 justify-center content-center")}>
+        <p>{accessDenied ? t(($) => $.detail.access_denied) : retained ? t(($) => $.detail.refresh_failed) : t(($) => $.detail.load_failed)}</p>
+        {!accessDenied && (
+          <Button variant="outline" size="sm" disabled={isRetrying} onClick={onRetry}>
+            {isRetrying ? t(($) => $.detail.retrying) : t(($) => $.detail.retry)}
           </Button>
         )}
       </div>
@@ -1120,7 +1151,7 @@ export function IssueDetailSkeleton({ leading }: { leading?: ReactNode } = {}) {
 // IssueDetail
 // ---------------------------------------------------------------------------
 
-export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", highlightCommentId, highlightRequestToken, leadingAction }: IssueDetailProps) {
+export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", highlightCommentId, highlightRequestToken, leadingAction, resolutionError }: IssueDetailProps) {
   const { t } = useT("issues");
   const timeAgo = useTimeAgo();
   const id = issueId;
@@ -1342,7 +1373,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
   // Issue data from TQ — uses detail query, seeded from list cache if available.
   // Only seed when description is present; the list API omits it, so a partial
   // list row must not masquerade as a hydrated issue detail.
-  const { data: issue = null, isLoading: issueLoading, refetch: refetchIssue } = useQuery({
+  const issueQuery = useQuery({
     ...issueDetailOptions(wsId, id),
     // List rows and issue-created realtime payloads intentionally omit the
     // detail-only source-context snapshot. They can still seed this query via
@@ -1355,6 +1386,11 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
       return cached?.description != null ? cached : undefined;
     },
   });
+  const issueUnavailable = issueQuery.error instanceof ApiError && [401, 403, 404].includes(issueQuery.error.status);
+  const issueNotFound = issueQuery.error instanceof ApiError && issueQuery.error.status === 404;
+  const issue = issueUnavailable ? null : (issueQuery.data ?? null);
+  const issueLoading = issueQuery.isLoading;
+  const refetchIssue = issueQuery.refetch;
   const executionAllowed = issue != null && isFormalAdmission(issue.admission_status);
   const { t: triageT } = useT("triage");
   const openCommentSubIssue = useCallback((commentId: string) => {
@@ -1402,13 +1438,14 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
     if (
       hadIssueRef.current &&
       !issueLoading &&
+      (!issueQuery.isError || issueNotFound) &&
       !firedDeleteCallbackRef.current &&
       onDelete
     ) {
       firedDeleteCallbackRef.current = true;
       onDelete();
     }
-  }, [issue, issueLoading, onDelete]);
+  }, [issue, issueLoading, issueQuery.isError, issueNotFound, onDelete]);
 
   // Custom hooks — encapsulate timeline, reactions, subscribers
   const {
@@ -2249,6 +2286,14 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
     [resolvedIssueId, resolvedIssueIdentifier],
   );
 
+  if (issueUnavailable && !issueNotFound) {
+    return <IssueLoadError accessDenied isRetrying={false} onRetry={() => void refetchIssue()} leading={leadingAction} />;
+  }
+
+  if (!issue && !issueNotFound && (issueQuery.isError || issueQuery.errorUpdatedAt > 0)) {
+    return <IssueLoadError isRetrying={issueQuery.isFetching} onRetry={() => void refetchIssue()} leading={leadingAction} />;
+  }
+
   if (loading) {
     return <IssueDetailSkeleton leading={leadingAction} />;
   }
@@ -2803,6 +2848,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                       size="icon-sm"
                       className="text-muted-foreground"
                       onClick={() => { handleUpdateField({ status: "done" }); onDone?.(); }}
+                      aria-label={t(($) => $.detail.mark_done_tooltip)}
                     >
                       <CircleCheck />
                     </Button>
@@ -2820,6 +2866,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                       size="icon-sm"
                       className="text-muted-foreground"
                       onClick={() => { onDone(); }}
+                      aria-label={t(($) => $.detail.archive_tooltip)}
                     >
                       <Archive />
                     </Button>
@@ -2836,6 +2883,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                     size="icon-sm"
                     className={cn("text-muted-foreground", actions.isPinned && "text-foreground")}
                     onClick={actions.togglePin}
+                    aria-label={actions.isPinned ? t(($) => $.detail.unpin_tooltip) : t(($) => $.detail.pin_tooltip)}
                   >
                     {actions.isPinned ? <PinOff /> : <Pin />}
                   </Button>
@@ -2851,12 +2899,12 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
               // to the list we came from, falling back to all issues.
               onDeletedFallbackPath={onDelete ? undefined : paths.issues()}
               trigger={
-                <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
+                <Button variant="ghost" size="icon-sm" className="text-muted-foreground" aria-label={t(($) => $.detail.actions_tooltip)}>
                   <MoreHorizontal />
                 </Button>
               }
             /> : <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t(($) => $.actions.copy_link)}><MoreHorizontal /></Button>} />
+              <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t(($) => $.detail.actions_tooltip)}><MoreHorizontal /></Button>} />
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={actions.copyLink}>{t(($) => $.actions.copy_link)}</DropdownMenuItem>
                 <DropdownMenuItem variant="destructive" onClick={() => actions.openDeleteConfirm({ onDeletedFallbackPath: onDelete ? undefined : paths.issues() })}>{t(($) => $.actions.delete_issue)}</DropdownMenuItem>
@@ -2870,6 +2918,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                     size="icon-sm"
                     className={sidebarOpen ? "" : "text-muted-foreground"}
                     onClick={handleToggleSidebar}
+                    aria-label={t(($) => $.detail.sidebar_tooltip)}
                   >
                     <PanelRight />
                   </Button>
@@ -2880,6 +2929,17 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             </>
           }
         />
+
+        {(issueQuery.isError || resolutionError) && (
+          <IssueLoadError
+            retained
+            isRetrying={issueQuery.isFetching || resolutionError?.isRetrying === true}
+            onRetry={() => {
+              if (issueQuery.isError) void refetchIssue();
+              resolutionError?.onRetry();
+            }}
+          />
+        )}
 
         {!executionAllowed && (
           <div role="status" className="shrink-0 border-b border-surface-border bg-muted/40 px-4 py-3 text-body">
@@ -3093,7 +3153,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
                 // `attachment_ids`. After reload it's absent from
                 // `issueAttachments`, the renderer can't resolve it to a
                 // freshly-signed `download_url`, and the persisted auth-gated
-                // download endpoint fails to load as a native <img> on clients
+                // download endpoint fails to load as a native image element on clients
                 // whose origin isn't the API host (Desktop/Electron, mobile
                 // webview) — while still working on web via the cookie/proxy.
                 // This mirrors the comment/reply/chat composers, which already
@@ -3577,6 +3637,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
         {detailContent}
         <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
           <SheetContent side="right" showCloseButton={false} className="w-[320px] overflow-y-auto p-4">
+            <SheetTitle className="sr-only">{t(($) => $.detail.section_properties)}</SheetTitle>
             {sidebarContent}
           </SheetContent>
         </Sheet>

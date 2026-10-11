@@ -2,10 +2,10 @@
  * @vitest-environment jsdom
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { setApiInstance } from "../api";
+import { ApiError, setApiInstance } from "../api";
 import type { ApiClient } from "../api/client";
 import type { Issue } from "../types";
 import { createQueryClient } from "../query-client";
@@ -141,7 +141,7 @@ describe("useCanonicalIssue", () => {
   });
 
   it("reports a nonexistent identifier as terminally not-found", async () => {
-    getIssue.mockRejectedValue(new Error("issue not found"));
+    getIssue.mockRejectedValue(new ApiError("issue not found", 404, "Not Found"));
 
     const { result } = renderHook(() => useCanonicalIssue("ws-1", "ZZZ-134"), {
       wrapper: createWrapper(qc),
@@ -168,7 +168,7 @@ describe("useCanonicalIssue", () => {
       // 1 can only mean a remount refetched.
       defaultOptions: { queries: { staleTime: Infinity, retry: false } },
     });
-    getIssue.mockRejectedValue(new Error("issue not found"));
+    getIssue.mockRejectedValue(new ApiError("issue not found", 404, "Not Found"));
 
     const { result, rerender } = renderHook(() => useCanonicalIssue("ws-1", "ZZZ-134"), {
       wrapper: createWrapper(noRetry),
@@ -194,5 +194,40 @@ describe("useCanonicalIssue", () => {
     expect(result.current.canonicalId).toBeNull();
     expect(result.current.isResolving).toBe(false);
     expect(getIssue).not.toHaveBeenCalled();
+  });
+
+  it("keeps a failed identifier request retryable without claiming deletion", async () => {
+    qc.setDefaultOptions({ queries: { staleTime: Infinity, retry: false } });
+    const failure = new ApiError("server error", 500, "Internal Server Error");
+    getIssue.mockRejectedValue(failure);
+    const { result } = renderHook(() => useCanonicalIssue("ws-1", "TRS-134"), {
+      wrapper: createWrapper(qc),
+    });
+    await waitFor(() => expect(result.current.error).toBe(failure));
+    expect(result.current.notFound).toBe(false);
+    expect(result.current.isResolving).toBe(false);
+    expect(result.current.canonicalId).toBeNull();
+
+    getIssue.mockResolvedValue(issue);
+    await act(async () => { await result.current.refetch(); });
+    await waitFor(() => expect(result.current.issue).toEqual(issue));
+    expect(result.current.error).toBeNull();
+  });
+
+  it.each([403, 404])("does not expose cached identifier data after HTTP %s", async (status) => {
+    qc.setDefaultOptions({ queries: { staleTime: Infinity, retry: false } });
+    qc.setQueryData(issueKeys.detail("ws-1", "TRS-134"), issue);
+    qc.setQueryData(issueKeys.detail("ws-1", ISSUE_UUID), issue);
+    const { result } = renderHook(() => useCanonicalIssue("ws-1", "TRS-134"), {
+      wrapper: createWrapper(qc),
+    });
+    await waitFor(() => expect(result.current.issue).toEqual(issue));
+    getIssue.mockRejectedValue(new ApiError("unavailable", status, "Unavailable"));
+    await act(async () => {
+      await qc.invalidateQueries({ queryKey: issueKeys.detail("ws-1", "TRS-134"), exact: true });
+    });
+    await waitFor(() => expect(result.current.issue).toBeUndefined());
+    expect(result.current.notFound).toBe(status === 404);
+    expect(result.current.accessDenied).toBe(status === 403);
   });
 });

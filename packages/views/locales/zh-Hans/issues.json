@@ -419,6 +419,7 @@
       "hint_close": "关闭"
     },
     "sidebar_tooltip": "切换右侧边栏",
+    "actions_tooltip": "任务操作",
     "find": {
       "placeholder": "在任务中查找...",
       "count": "{{current}}/{{total}}",
@@ -436,7 +437,12 @@
     "workdir_path_copy_failed": "复制本地 workdir 路径失败",
     "workdir_path_unavailable": "暂无本地 workdir — 这个任务还没被本地智能体运行过",
     "unsubscribe_subtree_succeeded": "已取消订阅此任务及其子任务。",
-    "subscription_update_failed": "无法更新订阅状态，请重试。"
+    "subscription_update_failed": "无法更新订阅状态，请重试。",
+    "load_failed": "无法加载任务，请重试。",
+    "refresh_failed": "无法刷新任务，已保留当前内容。",
+    "access_denied": "你已无权访问此任务。",
+    "retry": "重试",
+    "retrying": "正在重试..."
   },
   "timeline": {
     "loading": "加载中…"

@@ -427,6 +427,7 @@
       "hint_close": "close"
     },
     "sidebar_tooltip": "Toggle right sidebar",
+    "actions_tooltip": "Issue actions",
     "find": {
       "placeholder": "Find in issue...",
       "count": "{{current}}/{{total}}",
@@ -442,7 +443,12 @@
     "project_directory_path_copied": "Project directory path copied",
     "project_directory_path_copied_with_branch": "Project directory path copied — work is on {{branch}}",
     "workdir_path_copy_failed": "Failed to copy workdir path",
-    "workdir_path_unavailable": "No local workdir yet — issue has not been run by a local agent"
+    "workdir_path_unavailable": "No local workdir yet — issue has not been run by a local agent",
+    "load_failed": "Could not load this issue. Try again.",
+    "refresh_failed": "Could not refresh this issue. Your current content is preserved.",
+    "access_denied": "You no longer have access to this issue.",
+    "retry": "Retry",
+    "retrying": "Retrying..."
   },
   "timeline": {
     "loading": "Loading..."

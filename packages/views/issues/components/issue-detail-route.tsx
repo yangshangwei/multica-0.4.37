@@ -5,7 +5,7 @@ import { useCanonicalIssue } from "@multica/core/issues/canonical-id";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useNavigation } from "../../navigation";
-import { IssueDetail, IssueDetailSkeleton, IssueNotFound } from "./issue-detail";
+import { IssueDetail, IssueDetailSkeleton, IssueNotFound, IssueLoadError } from "./issue-detail";
 
 interface IssueDetailRouteProps {
   /**
@@ -76,7 +76,7 @@ function useCommentHighlightHash(): { hash: string; commentId?: string } {
  */
 export function IssueDetailRoute({ routeId, onDelete }: IssueDetailRouteProps) {
   const wsId = useWorkspaceId();
-  const { canonicalId, issue, isResolving, notFound } = useCanonicalIssue(wsId, routeId);
+  const { canonicalId, issue, isResolving, notFound, accessDenied, error, isFetching, refetch } = useCanonicalIssue(wsId, routeId);
   const highlight = useCommentHighlightHash();
 
   useCanonicalIssueUrl(routeId, issue?.identifier, highlight.hash);
@@ -87,13 +87,17 @@ export function IssueDetailRoute({ routeId, onDelete }: IssueDetailRouteProps) {
   // `IssueDetail` would mount a second observer on the query that just failed,
   // refetch it, and restart this component's resolve/remount cycle — an
   // unbounded request loop that never settles. See `CanonicalIssue.notFound`.
-  if (notFound || !canonicalId) return <IssueNotFound showBackLink={!onDelete} />;
+  if (notFound) return <IssueNotFound showBackLink={!onDelete} />;
+  if (accessDenied || !canonicalId) {
+    return <IssueLoadError accessDenied={accessDenied} isRetrying={isFetching} onRetry={() => void refetch()} />;
+  }
 
   return (
     <IssueDetail
       issueId={canonicalId}
       onDelete={onDelete}
       highlightCommentId={highlight.commentId}
+      resolutionError={error ? { isRetrying: isFetching, onRetry: () => void refetch() } : undefined}
     />
   );
 }

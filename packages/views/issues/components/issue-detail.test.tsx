@@ -4,6 +4,8 @@ import { act, fireEvent, render, screen, waitFor, within } from "@testing-librar
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Issue, IssueStatusEntry, Label, TimelineEntry } from "@multica/core/types";
 import { issueStatusKeys } from "@multica/core/issue-statuses";
+import { ApiError } from "@multica/core/api";
+import { issueKeys } from "@multica/core/issues/queries";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { toast } from "sonner";
 import { useResolvedExpandStore } from "@multica/core/issues/stores/resolved-expand-store";
@@ -119,6 +121,7 @@ vi.mock("../../navigation", () => ({
   ),
   useNavigation: () => ({
     push: vi.fn(),
+    replace: vi.fn(),
     pathname: "/issues/issue-1",
     getShareableUrl: (p: string) => `https://app.multica.com${p}`,
   }),
@@ -598,6 +601,7 @@ const mockTimeline: TimelineEntry[] = [
 // ---------------------------------------------------------------------------
 
 import { IssueDetail, groupSubIssuesByStage } from "./issue-detail";
+import { IssueDetailRoute } from "./issue-detail-route";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -715,6 +719,74 @@ describe("IssueDetail (shared)", () => {
     // Reset project mock — individual tests override per case. Default fixture
     // has project_id: null so getProject is not invoked.
     mockApiObj.getProject.mockReset();
+  });
+
+  it.each(["cb240efb-154c-42a8-ae92-42b02676feca", "TES-1"])("retries a cold HTTP 500 at route %s without claiming deletion", async (routeId) => {
+    const queryClient = createTestQueryClient();
+    const issue = { ...mockIssue, id: "cb240efb-154c-42a8-ae92-42b02676feca" };
+    mockApiObj.getIssue.mockRejectedValue(new ApiError("server error", 500, "Internal Server Error"));
+    render(
+      <I18nProvider locale="en" resources={TEST_RESOURCES}>
+        <QueryClientProvider client={queryClient}><IssueDetailRoute routeId={routeId} /></QueryClientProvider>
+      </I18nProvider>,
+    );
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load this issue");
+    expect(screen.queryByText(enIssues.detail.not_found)).not.toBeInTheDocument();
+    let finish!: (value: Issue) => void;
+    mockApiObj.getIssue.mockImplementation(() => new Promise<Issue>((resolve) => { finish = resolve; }));
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Retrying..." })).toBeDisabled());
+    mockApiObj.getIssue.mockResolvedValue(issue);
+    await act(async () => { finish(issue); });
+    expect(await screen.findByDisplayValue(mockIssue.description!)).toBeVisible();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    queryClient.clear();
+  });
+
+  it.each(["cb240efb-154c-42a8-ae92-42b02676feca", "TES-1"])("retains the same editor during a cached HTTP 500 at route %s", async (routeId) => {
+    const queryClient = createTestQueryClient();
+    const issue = { ...mockIssue, id: "cb240efb-154c-42a8-ae92-42b02676feca" };
+    mockApiObj.getIssue.mockResolvedValue(issue);
+    render(
+      <I18nProvider locale="en" resources={TEST_RESOURCES}>
+        <QueryClientProvider client={queryClient}><IssueDetailRoute routeId={routeId} /></QueryClientProvider>
+      </I18nProvider>,
+    );
+    const editor = await screen.findByDisplayValue(mockIssue.description!);
+    const mounts = contentEditorMounts.count;
+    mockApiObj.getIssue.mockRejectedValue(new ApiError("server error", 500, "Internal Server Error"));
+    await act(async () => { await queryClient.invalidateQueries({ queryKey: issueKeys.detail("ws-1", routeId), exact: true }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not refresh this issue");
+    expect(screen.getByDisplayValue(mockIssue.description!)).toBe(editor);
+    expect(contentEditorMounts.count).toBe(mounts);
+    mockApiObj.getIssue.mockResolvedValue(issue);
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+    expect(screen.getByDisplayValue(mockIssue.description!)).toBe(editor);
+    queryClient.clear();
+  });
+
+  it.each([403, 404])("hides an already loaded issue after definitive HTTP %s", async (status) => {
+    const queryClient = createTestQueryClient();
+    render(
+      <I18nProvider locale="en" resources={TEST_RESOURCES}>
+        <QueryClientProvider client={queryClient}><IssueDetail issueId="issue-1" /></QueryClientProvider>
+      </I18nProvider>,
+    );
+    await screen.findByDisplayValue(mockIssue.description!);
+    mockApiObj.getIssue.mockRejectedValue(new ApiError("unavailable", status, "Unavailable"));
+    await act(async () => { await queryClient.invalidateQueries({ queryKey: issueKeys.detail("ws-1", "issue-1"), exact: true }); });
+    await waitFor(() => expect(screen.queryByDisplayValue(mockIssue.description!)).not.toBeInTheDocument());
+    expect(screen.getByText(status === 404 ? enIssues.detail.not_found : "You no longer have access to this issue.")).toBeVisible();
+    queryClient.clear();
+  });
+
+  it("names the compact properties dialog", async () => {
+    mockViewport.isMobile = true;
+    renderIssueDetail();
+    await screen.findByDisplayValue(mockIssue.description!);
+    fireEvent.click(screen.getByRole("button", { name: enIssues.detail.sidebar_tooltip }));
+    expect(await screen.findByRole("dialog", { name: enIssues.detail.section_properties })).toBeVisible();
   });
 
   it("explains nonformal admission on a direct task link and removes execution controls", async () => {
@@ -1281,7 +1353,7 @@ describe("IssueDetail (shared)", () => {
   });
 
   it("shows 'not found' message when issue does not exist", async () => {
-    mockApiObj.getIssue.mockRejectedValue(new Error("Not found"));
+    mockApiObj.getIssue.mockRejectedValue(new ApiError("Not found", 404, "Not Found"));
 
     renderIssueDetail("nonexistent-id");
 
@@ -1293,7 +1365,7 @@ describe("IssueDetail (shared)", () => {
   });
 
   it("shows 'Back' button when issue is not found and no onDelete prop", async () => {
-    mockApiObj.getIssue.mockRejectedValue(new Error("Not found"));
+    mockApiObj.getIssue.mockRejectedValue(new ApiError("Not found", 404, "Not Found"));
 
     renderIssueDetail("nonexistent-id");
 
