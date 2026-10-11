@@ -49,6 +49,15 @@ export const test = base.extend<{ progress: ProgressCase }>({
 
 export const progressComposer = (page: Page) => page.locator('[aria-label="Write progress"]');
 export const progressEditor = (page: Page) => progressComposer(page).locator('[contenteditable="true"]');
+/** One published update or history revision, found by text shown in its summary. */
+export const progressEntry = (scope: Page | Locator, text: string) => scope.locator("article").filter({ hasText: text });
+/** Statistics, evidence, acceptance details and correction reasons sit in a
+ * collapsed "View details" disclosure; open it the way a reader would. */
+export async function openProgressDetails(entry: Locator) {
+  const summary = entry.locator("summary").filter({ hasText: /^View details$/ });
+  await summary.click();
+  await expect(summary.locator("xpath=..")).toHaveAttribute("open", "");
+}
 export async function openProgress(page: Page, workspace: { slug: string }, project: P1Project, acceptance = false) {
   await page.goto(`/${workspace.slug}/projects/${project.id}?section=overview`);
   await page.getByRole("button", { name: acceptance ? "Record acceptance" : "Write progress", exact: true }).click();

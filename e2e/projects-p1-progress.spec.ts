@@ -2,8 +2,8 @@ import { expect } from "@playwright/test";
 import { p1Capture, p1Member, p1Overview, p1Raw, type P1Project } from "./fixtures/project-p1";
 import {
   test, addProgressEvidence, addProgressMention, correctProgressInUI, fillAcceptance,
-  openProgress, passProgressDebounceWindow, previewProgress, progressAgentTaskCount,
-  progressComposer, progressDraft, progressEditor, progressNotifications, progressOutboxCount,
+  openProgress, openProgressDetails, passProgressDebounceWindow, previewProgress, progressAgentTaskCount,
+  progressComposer, progressDraft, progressEditor, progressEntry, progressNotifications, progressOutboxCount,
   progressRevisions, progressUpdates, publishProgress, seedProgress, seedProgressAgent,
   seedProgressExecution, withProgressMemberPage, type ProgressPreview, type ProgressWrite,
 } from "./fixtures/project-p1-progress";
@@ -78,6 +78,7 @@ test("P1-P03 ordinary publication preserves its server statistics snapshot after
   expect(updates[0]!.current.statistics_snapshot?.counts.completed).toBe(1);
   await api.requestJSON(`/api/issues/${issue.id}`, { method: "PUT", body: { status: "todo" } });
   await page.reload();
+  await openProgressDetails(progressEntry(page, "Customer delivery is ready for review"));
   await expect(page.getByText("Statistics at publication", { exact: false })).toBeVisible();
   expect((await progressUpdates(api, project.id))[0]!.current.statistics_snapshot?.counts.completed).toBe(1);
   expect((await p1Overview(api, project.id)).statistics.counts.completed).toBe(0);
@@ -173,7 +174,9 @@ test("P1-P07 correction requires a reason and retains immutable original text an
   await expect(progressComposer(page)).toHaveCount(0);
   await page.getByRole("button", { name: "Revision history", exact: true }).click();
   await expect(page.getByText("Original delivery agreement", { exact: true })).toBeVisible();
-  await expect(page.getByText(reason, { exact: false }).first()).toBeVisible();
+  const corrected = progressEntry(page.getByRole("heading", { name: "Revision history", exact: true }).locator(".."), "Delivery agreement with corrected date");
+  await openProgressDetails(corrected);
+  await expect(corrected.getByText(reason, { exact: true })).toBeVisible();
   const revisions = await progressRevisions(api, project.id, original.update_id);
   expect(revisions.map((revision) => revision.revision)).toEqual([2, 1]);
   expect(revisions[0]!.correction_reason).toBe(reason); expect(revisions[1]!.body).toBe("Original delivery agreement");
@@ -267,6 +270,7 @@ test("P1-P12 execution evidence opens its real authorized revision-scoped transc
   expect((await publishProgress(page, project.id)).status()).toBe(201);
   await expect(progressComposer(page)).toHaveCount(0);
   const update = (await progressUpdates(api, project.id))[0]!;
+  await openProgressDetails(progressEntry(page, "Review the completed synthetic execution"));
   const read = page.waitForResponse((response) => response.url().endsWith(`/updates/${update.id}/revisions/1/executions/${execution.id}`));
   await page.getByRole("button", { name: `Execution ${execution.id}`, exact: true }).click();
   const response = await read; expect(response.status()).toBe(200);
@@ -295,6 +299,10 @@ test("P1-P13 a real notification opens an older update without exposing its priv
     await expect(memberPage).toHaveURL(new RegExp(`update=${target.update_id}`));
     expect(new URL(memberPage.url()).pathname).toBe(`/${workspace.slug}/projects/${project.id}`);
     await expect(memberPage.getByText(targetBody, { exact: true }).first()).toBeVisible();
+    // Evidence is inside the collapsed details; open it so the absence check sees the rendered evidence row.
+    const targetEntry = progressEntry(memberPage.getByRole("heading", { name: "Revision history", exact: true }).locator(".."), targetBody);
+    await openProgressDetails(targetEntry);
+    await expect(targetEntry.getByText("Source is no longer accessible", { exact: true })).toBeVisible();
     await expect(memberPage.getByRole("button", { name: `Execution ${execution.id}`, exact: true })).toHaveCount(0);
     const denied = await p1Raw(reviewer.api, workspace.id, `/api/projects/${project.id}/updates/${target.update_id}/revisions/1/executions/${execution.id}`, "GET");
     expect(denied.status).toBe(403); expect((await denied.json()).code).toBe("project_evidence_forbidden");

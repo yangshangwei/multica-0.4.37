@@ -146,7 +146,7 @@ test("manual issue status, priority and comment persist through refresh and conf
     await expect(page.getByRole("button", { name: "High", exact: true })).toBeVisible();
     await expect(page.locator(`#comment-body-${saved.id}`)).toHaveText(comment);
     await page.screenshot({ path: info.outputPath("persisted-issue.png") });
-    const actions = page.locator('main button[data-slot="dropdown-menu-trigger"]:not([aria-label]):has(svg.lucide-ellipsis)');
+    const actions = page.getByRole("main").getByRole("button", { name: "Issue actions", exact: true });
     await actions.click();
     await page.getByRole("menuitem", { name: "Delete issue", exact: true }).click();
     const confirmation = page.getByRole("alertdialog", { name: "Delete issue", exact: true });

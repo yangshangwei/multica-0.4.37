@@ -29,12 +29,16 @@ async function fixture(page: Page) {
   return { api, workspace };
 }
 
-async function enable(api: TestApiClient) {
+async function setEnabled(api: TestApiClient, enabled: boolean) {
   const settings = await api.requestJSON<{ revision: number }>("/api/triage/settings");
-  await api.requestJSON("/api/triage/settings", {
+  return api.requestJSON<{ enabled: boolean }>("/api/triage/settings", {
     method: "PUT",
-    body: { enabled: true, acceptance_status: "todo", require_priority: false, responsibility_mode: "none", responsibility_member_id: null, expected_revision: settings.revision },
+    body: { enabled, acceptance_status: "todo", require_priority: false, responsibility_mode: "none", responsibility_member_id: null, expected_revision: settings.revision },
   });
+}
+
+async function enable(api: TestApiClient) {
+  await setEnabled(api, true);
 }
 
 async function pending(api: TestApiClient, title: string) {
@@ -47,6 +51,8 @@ test("triage settings, manual intake and ordinary acceptance preserve the execut
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   try {
+    // Workspaces without saved settings default to enabled; start from an explicit opt-out.
+    expect(await setEnabled(api, false)).toMatchObject({ enabled: false });
     await page.goto(`/${workspace.slug}/settings?tab=triage`);
     await expect(page.getByRole("switch", { name: "Enable triage", exact: true })).not.toBeChecked();
     await page.getByRole("switch", { name: "Enable triage", exact: true }).click();
