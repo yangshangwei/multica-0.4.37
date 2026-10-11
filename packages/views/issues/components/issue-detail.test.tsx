@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef, useState, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useRef, useState, useImperativeHandle, type ComponentProps } from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -616,12 +616,15 @@ function createTestQueryClient() {
   });
 }
 
-function renderIssueDetail(issueId = "issue-1") {
+function renderIssueDetail(
+  issueId = "issue-1",
+  props: Omit<ComponentProps<typeof IssueDetail>, "issueId"> = {},
+) {
   const queryClient = createTestQueryClient();
   return render(
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
       <QueryClientProvider client={queryClient}>
-        <IssueDetail issueId={issueId} />
+        <IssueDetail issueId={issueId} {...props} />
       </QueryClientProvider>
     </I18nProvider>,
   );
@@ -797,6 +800,70 @@ describe("IssueDetail (shared)", () => {
     expect(screen.queryByText(enIssues.detail.add_sub_issues)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /run again/i })).not.toBeInTheDocument();
     expect(await screen.findByText("Started working on this")).toBeVisible();
+  });
+
+  it("keeps triage review context beside the editable title without duplicate navigation or execution controls", async () => {
+    const pendingIssue: Issue = { ...mockIssue, admission_status: "pending", parent_issue_id: "parent-1" };
+    mockApiObj.getIssue.mockImplementation((issueId: string) => Promise.resolve(
+      issueId === "parent-1"
+        ? { ...mockIssue, id: "parent-1", identifier: "TES-2", title: "Parent issue" }
+        : pendingIssue,
+    ));
+    mockApiObj.updateIssue.mockResolvedValue({ ...pendingIssue, title: "Reviewed title" });
+    renderIssueDetail("issue-1", {
+      presentation: "triage",
+      defaultSidebarOpen: false,
+      leadingAction: <button>Back to queue</button>,
+      reviewContext: <div role="status">Round 1 · Manual submission</div>,
+    });
+
+    const title = await screen.findByRole("button", { name: mockIssue.title });
+    const header = screen.getByRole("banner");
+    expect(within(header).getByRole("link", { name: "TES-1" })).toHaveAttribute("href", "/test/issues/issue-1");
+    expect(within(header).queryByRole("link", { name: "TES-2" })).not.toBeInTheDocument();
+    expect(screen.queryByText("TES-1 Implement authentication")).not.toBeInTheDocument();
+    expect(screen.queryByText(enTriage.admission_hint)).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: enTriage.review_link })).not.toBeInTheDocument();
+    const context = screen.getByText("Round 1 · Manual submission");
+    expect(screen.getAllByText("Round 1 · Manual submission")).toHaveLength(1);
+    expect(title.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const description = screen.getByDisplayValue(mockIssue.description!);
+    expect(context.compareDocumentPosition(description) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(header).getByRole("button", { name: "Back to queue" })).toBeVisible();
+    expect(within(header).getByRole("button", { name: enIssues.detail.pin_tooltip })).toBeVisible();
+    expect(within(header).getByRole("button", { name: enIssues.detail.sidebar_tooltip })).toBeVisible();
+    expect(await within(header).findByRole("button", { name: /Comment threads/ })).toBeVisible();
+    expect(screen.queryByText(enIssues.detail.add_sub_issues)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /run again/i })).not.toBeInTheDocument();
+    expect(await screen.findByText("Started working on this")).toBeVisible();
+
+    fireEvent.keyDown(title, { key: "Enter" });
+    const editor = await screen.findByTestId("title-editor");
+    fireEvent.change(editor, { target: { value: "Reviewed title" } });
+    fireEvent.blur(editor);
+    await waitFor(() => expect(mockApiObj.updateIssue).toHaveBeenCalledWith(
+      "issue-1",
+      expect.objectContaining({ title: "Reviewed title", title_base: mockIssue.title }),
+    ));
+    expect(screen.getByText("Round 1 · Manual submission")).toBeVisible();
+  });
+
+  it.each(["loading", "not-found"] as const)("keeps the triage back action available in the %s state", async (state) => {
+    if (state === "loading") {
+      mockApiObj.getIssue.mockReturnValue(new Promise(() => {}));
+    } else {
+      mockApiObj.getIssue.mockRejectedValue(new ApiError("Not found", 404, "Not Found"));
+    }
+    const goBack = vi.fn();
+    renderIssueDetail("issue-1", {
+      presentation: "triage",
+      leadingAction: <button onClick={goBack}>Back to queue</button>,
+    });
+    if (state === "not-found") {
+      await screen.findByText(enIssues.detail.not_found);
+    }
+    fireEvent.click(screen.getByRole("button", { name: "Back to queue" }));
+    expect(goBack).toHaveBeenCalledOnce();
   });
 
   it("opens source-context creation from both a root comment and a reply", async () => {

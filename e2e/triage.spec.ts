@@ -227,7 +227,8 @@ test("explicit execution shows the real executor and resource context before que
     await api.requestJSON(`/api/projects/${project.id}/resources`, { method: "POST", body: { resource_type: "github_repo", resource_ref: { url: "https://example.invalid/triage/demo.git" }, label: "Review repository" } });
     const item = await api.requestJSON<Item>("/api/triage/items", { method: "POST", body: { request_id: randomUUID(), title: "Explicit execution context", candidate_project_id: project.id, candidate_assignee_type: "agent", candidate_assignee_id: agent.id } });
     await page.goto(`/${workspace.slug}/triage?issue=${item.issue.id}`);
-    await page.getByRole("button", { name: "Accept and execute", exact: true }).click();
+    await page.getByRole("button", { name: "Acceptance options", exact: true }).click();
+    await page.getByRole("menuitem", { name: "Accept and execute", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog.getByText("Triage execution fixture", { exact: true }).last()).toBeVisible();
     await expect(dialog.getByText("Customer feedback delivery", { exact: true }).last()).toBeVisible();

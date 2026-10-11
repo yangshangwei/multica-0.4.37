@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { TriageHistoryEntry } from "@multica/core/triage";
 import { beforeEach, expect, it, vi } from "vitest";
 import en from "../locales/en/triage.json";
@@ -6,6 +7,11 @@ import { TriagePage } from "./triage-page";
 
 const state = vi.hoisted(() => ({
   enabled: true,
+  compact: false,
+  role: "member" as string | null,
+  admissionStatus: "pending",
+  reviewerId: null as string | null,
+  snoozedUntil: null as string | null,
   replace: vi.fn(),
   params: new URLSearchParams("issue=a"),
   rows: ["a", "b"],
@@ -34,7 +40,7 @@ vi.mock("@multica/core/paths", () => ({
   }),
 }));
 vi.mock("@multica/core/permissions", () => ({
-  useCurrentMember: () => ({ role: "member" }),
+  useCurrentMember: () => ({ role: state.role }),
 }));
 vi.mock("../navigation", () => ({
   useNavigation: () => ({ searchParams: state.params, replace: state.replace }),
@@ -49,11 +55,12 @@ vi.mock("../navigation", () => ({
   ),
 }));
 vi.mock("../layout/page-header", () => ({
+  PAGE_GUTTER: "px-4",
   PageHeader: ({ children }: { children: React.ReactNode }) => (
     <header>{children}</header>
   ),
 }));
-vi.mock("@multica/ui/hooks/use-mobile", () => ({ useIsCompact: () => false }));
+vi.mock("@multica/ui/hooks/use-mobile", () => ({ useIsCompact: () => state.compact }));
 vi.mock("@multica/ui/components/ui/resizable", () => ({
   ResizablePanelGroup: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
@@ -64,10 +71,25 @@ vi.mock("@multica/ui/components/ui/resizable", () => ({
   ResizableHandle: () => null,
 }));
 vi.mock("../issues/components/issue-detail", () => ({
-  IssueDetail: () => <input aria-label="Description" />,
+  IssueDetail: ({
+    reviewContext,
+    leadingAction,
+  }: {
+    reviewContext?: React.ReactNode;
+    leadingAction?: React.ReactNode;
+  }) => (
+    <section aria-label="Task detail">
+      {leadingAction}
+      {reviewContext}
+      <input aria-label="Description" />
+    </section>
+  ),
 }));
-vi.mock("./triage-fields", () => ({ TriageSelect: () => null }));
-vi.mock("./triage-filters", () => ({ TriageFilters: () => null }));
+vi.mock("./triage-filters", () => ({
+  TriageFilters: ({ history }: { history: boolean }) => (
+    <div role="group" aria-label={history ? "History filters" : "Queue filters"} />
+  ),
+}));
 vi.mock("./triage-history", () => ({
   TriageItemHistory: () => null,
   TriageHistoryRecord: () => null,
@@ -92,7 +114,11 @@ vi.mock("./triage-import-dialog", () => ({
     </div>
   ),
 }));
-vi.mock("./triage-batch-dialog", () => ({ TriageBatchDialog: () => null }));
+vi.mock("./triage-batch-dialog", () => ({
+  TriageBatchDialog: ({ items }: { items: { issue: { title: string } }[] }) => (
+    <div role="dialog">{items.map((item) => item.issue.title).join(", ")}</div>
+  ),
+}));
 vi.mock("./triage-action-dialog", () => ({
   TriageActionDialog: ({
     action,
@@ -128,13 +154,17 @@ vi.mock("@tanstack/react-query", async (original) => ({
         id,
         identifier: `MUL-${id}`,
         title: `Task ${id}`,
-        admission_status: "pending",
+        admission_status: state.admissionStatus,
+        priority: "none",
         revision: 1,
       },
       entered_at: "2026-10-04T10:00:00Z",
       first_entered_at: "2026-10-04T10:00:00Z",
       source: "manual",
       round: 1,
+      reviewer_id: state.reviewerId,
+      reviewer_valid: true,
+      snoozed_until: state.snoozedUntil,
     });
     if (kind === "settings")
       return {
@@ -169,6 +199,11 @@ vi.mock("@tanstack/react-query", async (original) => ({
 
 beforeEach(() => {
   state.enabled = true;
+  state.compact = false;
+  state.role = "member";
+  state.admissionStatus = "pending";
+  state.reviewerId = null;
+  state.snoozedUntil = null;
   state.rows = ["a", "b"];
   state.total = 2;
   state.historyEntries = [];
@@ -198,6 +233,118 @@ it("runs queue shortcuts only from queue focus and advances only after a confirm
   expect(state.replace).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Confirm decision" }));
   expect(state.replace).toHaveBeenCalledWith("/acme/triage?issue=b");
+});
+
+it("keeps search, sort and expanded filters with the queue", () => {
+  render(<TriagePage />);
+  const queue = screen.getByRole("region", { name: en.queue_label });
+  const search = within(queue).getByRole("textbox", { name: en.search });
+  expect(within(queue).getByRole("combobox", { name: en.sort })).toBeVisible();
+  fireEvent.click(within(queue).getByRole("button", { name: en.filters }));
+  expect(within(queue).getByRole("group", { name: "Queue filters" })).toBeVisible();
+  search.focus();
+  fireEvent.keyDown(search, { key: "3" });
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+it("keeps compact review focused on detail and restores queue controls with Back", () => {
+  state.compact = true;
+  render(<TriagePage />);
+  expect(screen.queryByRole("textbox", { name: en.search })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: en.filters })).not.toBeInTheDocument();
+  const detail = screen.getByRole("region", { name: "Task detail" });
+  fireEvent.click(within(detail).getByRole("button", { name: en.back }));
+  expect(state.replace).toHaveBeenCalledExactlyOnceWith("/acme/triage");
+  expect(screen.getByRole("textbox", { name: en.search })).toBeVisible();
+  expect(screen.queryByRole("region", { name: "Task detail" })).not.toBeInTheDocument();
+});
+
+it("does not run queue decision shortcuts while a closed sort picker has focus", () => {
+  render(<TriagePage />);
+  const sort = screen.getByRole("combobox", { name: en.sort });
+  sort.focus();
+  fireEvent.keyDown(sort, { key: "3" });
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(state.replace).not.toHaveBeenCalled();
+});
+
+it("opens the explicit execute decision through the acceptance menu by keyboard", async () => {
+  const user = userEvent.setup();
+  render(<TriagePage />);
+  expect(screen.queryByRole("button", { name: en.accept_and_execute })).not.toBeInTheDocument();
+  const trigger = screen.getByRole("button", { name: en.accept_options });
+  trigger.focus();
+  await user.keyboard("{ArrowDown}");
+  expect(screen.getByRole("menuitem", { name: en.accept_and_execute })).toHaveFocus();
+  await user.keyboard("{Escape}");
+  expect(trigger).toHaveFocus();
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  await user.keyboard("{ArrowDown}");
+  const execute = screen.getByRole("menuitem", { name: en.accept_and_execute });
+  expect(execute).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(screen.getByText("Action accept_and_execute")).toBeVisible();
+  expect(state.replace).not.toHaveBeenCalled();
+});
+
+it("places reviewer assignment in review context and labels the queue reviewer", () => {
+  state.reviewerId = "reviewer-1";
+  render(<TriagePage />);
+  const detail = screen.getByRole("region", { name: "Task detail" });
+  expect(within(detail).getByText(en.pending)).toBeVisible();
+  const reviewer = within(detail).getByRole("button", { name: en.assign_reviewer });
+  expect(reviewer).toHaveTextContent("Reviewer: Avery");
+  expect(screen.getByRole("button", { name: /MUL-a Task a/ })).toHaveTextContent("Reviewer: Avery");
+  expect(screen.queryByText(en.priorities.none)).not.toBeInTheDocument();
+  fireEvent.click(reviewer);
+  expect(screen.getByText("Action assign_reviewer")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Confirm decision" }));
+  expect(state.replace).not.toHaveBeenCalled();
+});
+
+it("keeps selected queue items available to batch review", () => {
+  render(<TriagePage />);
+  fireEvent.click(screen.getByRole("checkbox", { name: "Select Task b" }));
+  fireEvent.click(screen.getByRole("button", { name: en.batch }));
+  expect(screen.getByRole("dialog")).toHaveTextContent("Task b");
+  expect(screen.getByRole("dialog")).not.toHaveTextContent("Task a");
+});
+
+it("returns from full-width history detail without losing history conditions", () => {
+  state.params = new URLSearchParams("view=history&issue=a&q=launch&offset=50");
+  render(<TriagePage />);
+  expect(screen.queryByRole("region", { name: en.queue_label })).not.toBeInTheDocument();
+  expect(screen.getByRole("textbox", { name: en.search })).toHaveValue("launch");
+  const detail = screen.getByRole("region", { name: "Task detail" });
+  fireEvent.click(within(detail).getByRole("button", { name: en.history }));
+  expect(state.replace).toHaveBeenCalledExactlyOnceWith(
+    "/acme/triage?view=history&q=launch&offset=50",
+  );
+});
+
+it("keeps reviewer and review actions unavailable without membership", () => {
+  state.role = null;
+  render(<TriagePage />);
+  for (const name of [en.accept, en.reject, en.duplicate, en.snooze, en.assign_reviewer]) {
+    expect(screen.queryByRole("button", { name })).not.toBeInTheDocument();
+  }
+  const row = screen.getByRole("button", { name: /MUL-a Task a/ });
+  row.focus();
+  fireEvent.keyDown(row, { key: "1" });
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+it.each([
+  { admission: "pending", action: "unsnooze", label: en.unsnooze },
+  { admission: "rejected", action: "reopen", label: en.reopen },
+])("preserves $action recovery", ({ admission, action, label }) => {
+  state.admissionStatus = admission;
+  state.snoozedUntil = "2026-10-12T10:00:00Z";
+  render(<TriagePage />);
+  fireEvent.click(screen.getByRole("button", { name: label }));
+  expect(screen.getByText(`Action ${action}`)).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Confirm decision" }));
+  expect(state.replace).not.toHaveBeenCalled();
 });
 
 it("opens a notification batch deep link and clears it on close", () => {

@@ -980,6 +980,9 @@ interface IssueDetailProps {
   onDone?: () => void;
   defaultSidebarOpen?: boolean;
   layoutId?: string;
+  /** Triage hosts the review controls and admission context beside the title. */
+  presentation?: "default" | "triage";
+  reviewContext?: ReactNode;
   /** When set, the issue detail will auto-scroll to this comment and briefly highlight it. */
   highlightCommentId?: string;
   /**
@@ -1086,7 +1089,7 @@ export function IssueLoadError({
  * an identifier URL to its issue — the two waits are indistinguishable to the
  * user, and rendering the same skeleton keeps them that way.
  */
-export function IssueDetailSkeleton({ leading }: { leading?: ReactNode } = {}) {
+export function IssueDetailSkeleton({ leading, presentation = "default" }: { leading?: ReactNode; presentation?: "default" | "triage" } = {}) {
   return (
     <div className="flex flex-1 min-h-0 flex-col">
       {/* The way back is real from the first frame, not once the issue lands:
@@ -1104,10 +1107,15 @@ export function IssueDetailSkeleton({ leading }: { leading?: ReactNode } = {}) {
       <div className="flex flex-1 min-h-0">
         {/* Same scrollbar-gutter as the loaded scroller below, so the skeleton
             column doesn't shift sideways when real content mounts. */}
-        <div className="flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]">
+        <div className={cn("flex-1 overflow-y-auto", presentation === "triage" ? "[scrollbar-gutter:stable]" : "[scrollbar-gutter:stable_both-edges]")}>
           {/* Gutters match the loaded column exactly (see its comment), so the
               skeleton doesn't reflow sideways when real content mounts. */}
-          <div className="mx-auto w-full max-w-4xl px-3 py-6 space-y-6 md:px-8 md:py-8">
+          <div className={cn(
+            "w-full max-w-4xl space-y-6",
+            presentation === "triage"
+              ? cn(PAGE_GUTTER, "py-5 md:py-6")
+              : "mx-auto px-3 py-6 md:px-8 md:py-8",
+          )}>
             <Skeleton className="h-8 w-3/4" />
             <div className="space-y-2">
               <Skeleton className="h-4 w-full" />
@@ -1151,7 +1159,7 @@ export function IssueDetailSkeleton({ leading }: { leading?: ReactNode } = {}) {
 // IssueDetail
 // ---------------------------------------------------------------------------
 
-export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", highlightCommentId, highlightRequestToken, leadingAction, resolutionError }: IssueDetailProps) {
+export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = true, layoutId = "multica_issue_detail_layout", presentation = "default", reviewContext, highlightCommentId, highlightRequestToken, leadingAction, resolutionError }: IssueDetailProps) {
   const { t } = useT("issues");
   const timeAgo = useTimeAgo();
   const id = issueId;
@@ -2295,7 +2303,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
   }
 
   if (loading) {
-    return <IssueDetailSkeleton leading={leadingAction} />;
+    return <IssueDetailSkeleton leading={leadingAction} presentation={presentation} />;
   }
 
   if (!issue) {
@@ -2807,14 +2815,14 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
         )}
         <BreadcrumbHeader
           leading={leadingAction}
-          segments={breadcrumbSegments}
+          segments={presentation === "triage" ? [] : breadcrumbSegments}
           leaf={
             <AppLink
               href={paths.issueDetail(issue.id)}
               className="flex min-w-0 transition-opacity hover:opacity-80"
             >
               <span className="truncate font-medium text-foreground">
-                {issue.identifier} {issue.title}
+                {issue.identifier}{presentation !== "triage" && ` ${issue.title}`}
               </span>
             </AppLink>
           }
@@ -2941,7 +2949,7 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
           />
         )}
 
-        {!executionAllowed && (
+        {!executionAllowed && presentation !== "triage" && (
           <div role="status" className="shrink-0 border-b border-surface-border bg-muted/40 px-4 py-3 text-body">
             <p>{triageT(($) => $.admission_hint)}</p>
             <AppLink
@@ -2958,11 +2966,12 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             `scrollbar-width: thin` carves ~11px off the right side only, so the
             centered column reads 32px left vs 43px right (MUL-4404). Mirroring
             the gutter restores symmetry; overlay-scrollbar platforms reserve
-            nothing and render unchanged. */}
+            nothing and render unchanged. Triage is left aligned with its host
+            header and footer, so only the right scrollbar gutter is reserved. */}
         <div
           ref={attachScrollContainer}
           data-tab-scroll-root={scrollContainerKey}
-          className="relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]"
+          className={cn("relative flex-1 overflow-y-auto", presentation === "triage" ? "[scrollbar-gutter:stable]" : "[scrollbar-gutter:stable_both-edges]")}
         >
         {/* Gutters: 32px is a comfortable reading margin on a desktop column
             but eats 16% of a 393px phone, so below `md` they drop to 12px.
@@ -2970,7 +2979,12 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             of the scroll: below `md` the composer is not pinned (see
             `useStickyComposer`), so it lands here — right where the launcher
             floats — once the reader scrolls to the bottom. */}
-        <div className="mx-auto w-full max-w-4xl px-3 py-6 max-md:pb-chat-launcher md:px-8 md:py-8">
+        <div className={cn(
+          "w-full max-w-4xl max-md:pb-chat-launcher",
+          presentation === "triage"
+            ? cn(PAGE_GUTTER, "py-5 md:py-6")
+            : "mx-auto px-3 py-6 md:px-8 md:py-8",
+        )}>
           {titleLazy.active && (
             <div className={titleLazy.ready ? undefined : "hidden"}>
               <TitleEditor
@@ -3024,6 +3038,9 @@ export function IssueDetail({ issueId, onDelete, onDone, defaultSidebarOpen = tr
             >
               {issue.title}
             </div>
+          )}
+          {presentation === "triage" && reviewContext && (
+            <div className="mt-3">{reviewContext}</div>
           )}
           {titleConflictDraft !== null ? (
             <RevisionConflictCompare

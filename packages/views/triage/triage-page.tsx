@@ -1,6 +1,7 @@
 "use client";
 import { useDeferredValue, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { ApiError } from "@multica/core/api";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useCurrentMember } from "@multica/core/permissions";
@@ -22,6 +23,7 @@ import {
 import { memberListOptions } from "@multica/core/workspace/queries";
 import {
   ArrowLeft,
+  ChevronDown,
   Inbox,
   Plus,
   Upload,
@@ -30,6 +32,12 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@multica/ui/components/ui/dropdown-menu";
 import { useIsCompact } from "@multica/ui/hooks/use-mobile";
 import { cn } from "@multica/ui/lib/utils";
 import { ErrorBoundary } from "@multica/ui/components/common/error-boundary";
@@ -39,7 +47,7 @@ import {
   ResizableHandle,
 } from "@multica/ui/components/ui/resizable";
 import { AppLink, useNavigation } from "../navigation";
-import { PageHeader } from "../layout/page-header";
+import { PageHeader, PAGE_GUTTER } from "../layout/page-header";
 import { PriorityIcon } from "../issues/components/priority-icon";
 import { IssueDetail } from "../issues/components/issue-detail";
 import { useT } from "../i18n";
@@ -65,6 +73,26 @@ import {
 } from "./triage-ui";
 
 const EMPTY_TRIAGE_ITEMS: TriageItem[] = [];
+
+function isTriageUnavailable(error: unknown) {
+  return error instanceof ApiError && [401, 403, 404].includes(error.status);
+}
+
+function TriageLoadError({ message, isFetching, onRetry }: {
+  message: string;
+  isFetching: boolean;
+  onRetry?: () => void;
+}) {
+  const { t } = useT("triage");
+  return (
+    <div role="alert" className="flex shrink-0 flex-wrap items-center gap-3 px-4 py-3 text-body">
+      <p>{message}</p>
+      {onRetry && <Button variant="outline" className={TRIAGE_CONTROL} disabled={isFetching} onClick={onRetry}>
+        {isFetching ? t(($) => $.retrying) : t(($) => $.retry)}
+      </Button>}
+    </div>
+  );
+}
 
 const VIEWS = ["ready", "all", "snoozed", "history"] as const;
 const FILTERS = [
@@ -100,7 +128,6 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
   const { role } = useCurrentMember(wsId);
   const supported = settings.data?.supported === true;
   const enabled = settings.data?.enabled === true;
-  const canReview = enabled && role !== null;
   const view = VIEWS.find((v) => v === params.get("view")) ?? "ready";
   const selectedId = params.get("issue") ?? "";
   const q = useDeferredValue(params.get("q") ?? "");
@@ -137,6 +164,15 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
     ...triageDetailOptions(wsId, selectedId),
     enabled: supported && !!selectedId,
   });
+  const listUnavailable = isTriageUnavailable(list.error);
+  const historyUnavailable = isTriageUnavailable(history.error);
+  const accessLost = isTriageUnavailable(settings.error) || (view === "history" ? historyUnavailable : listUnavailable);
+  const canReview = enabled && role !== null && !accessLost;
+  const listFailed = list.isError || (list.isFetching && list.errorUpdatedAt > list.dataUpdatedAt);
+  const historyFailed = history.isError || (history.isFetching && history.errorUpdatedAt > history.dataUpdatedAt);
+  const settingsFailed = settings.isError || (settings.isFetching && settings.errorUpdatedAt > settings.dataUpdatedAt);
+  const hasListData = list.data !== undefined && !listUnavailable;
+  const hasHistoryData = history.data !== undefined && !historyUnavailable;
   const { data: members = [] } = useQuery(memberListOptions(wsId));
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
@@ -154,10 +190,16 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
   const historyScrollRef = useRef(0);
   const emptyRef = useRef<HTMLHeadingElement>(null);
   const [focusTarget, setFocusTarget] = useState<string | null>(null);
-  const rows = list.data?.items ?? EMPTY_TRIAGE_ITEMS;
-  const item = detail.data;
+  const rows = listUnavailable ? EMPTY_TRIAGE_ITEMS : (list.data?.items ?? EMPTY_TRIAGE_ITEMS);
+  const item = accessLost || isTriageUnavailable(detail.error) ? undefined : detail.data;
   const pending = item?.issue.admission_status === "pending";
   const focusRow = (id: string) => setFocusTarget(id);
+  useEffect(() => {
+    if (!accessLost) return;
+    setSelected(new Set());
+    setAction(null);
+    setBatchOpen(false);
+  }, [accessLost]);
   useEffect(() => {
     if (focusTarget === null || action !== null) return;
     const button = [
@@ -204,13 +246,85 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
     );
   const total =
     view === "history" ? (history.data?.total ?? 0) : (list.data?.total ?? 0);
+  const filterControls = (
+    <>
+      <div
+        className={cn(
+          "flex shrink-0 gap-2 px-4 py-3",
+          view === "history" ? "items-center" : "flex-col",
+        )}
+      >
+        <Input
+          className={cn("min-w-0", TRIAGE_CONTROL)}
+          aria-label={t(($) => $.search)}
+          placeholder={t(($) => $.search)}
+          value={params.get("q") ?? ""}
+          onChange={(event) => {
+            setSelected(new Set());
+            changeParams({ q: event.target.value, offset: "" });
+          }}
+        />
+        <div className="flex min-w-0 items-center gap-2">
+          <Button
+            variant={filtersOpen ? "secondary" : "outline"}
+            className={TRIAGE_CONTROL}
+            aria-label={t(($) => $.filters)}
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          >
+            <SlidersHorizontal className="size-4" aria-hidden="true" />
+            {t(($) => $.filters)}
+          </Button>
+          {view !== "history" && (
+            <div className="min-w-0 flex-1">
+              <TriageSelect
+                label={t(($) => $.sort)}
+                value={sort}
+                onChange={(value) => changeParams({ sort: value, offset: "" })}
+                options={[
+                  { value: "oldest", label: t(($) => $.oldest) },
+                  { value: "newest", label: t(($) => $.newest) },
+                  { value: "priority", label: t(($) => $.priority_sort) },
+                ]}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      {view === "history" && (
+        <TriageHistoryFilterSummary
+          filters={historyFilters}
+          members={members}
+          onClear={clearHistoryFilters}
+        />
+      )}
+      {filtersOpen && (
+        <div
+          className={cn(
+            "min-h-0 overflow-y-auto",
+            view !== "history" && "max-h-72 [&>div]:grid-cols-1",
+          )}
+        >
+          <TriageFilters
+            wsId={wsId}
+            params={params}
+            history={view === "history"}
+            onChange={(key, value) => {
+              setSelected(new Set());
+              changeParams({ [key]: value, offset: "" });
+            }}
+          />
+        </div>
+      )}
+    </>
+  );
   const queue = (
     <div
       ref={queueRef}
       role="region"
       aria-label={t(($) => $.queue_label)}
       tabIndex={-1}
-      className="flex h-full min-h-0 flex-col"
+      className="flex h-full min-h-0 min-w-0 flex-col"
       onKeyDown={(event) => {
         if (
           event.defaultPrevented ||
@@ -223,6 +337,8 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           createOpen ||
           importSelection ||
           isEditableShortcutTarget(event.target) ||
+          (event.target instanceof Element &&
+            event.target.closest('[role="combobox"]')) ||
           isPortalLayerShortcutTarget(event.target)
         )
           return;
@@ -267,7 +383,8 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
         }
       }}
     >
-      {selected.size > 0 && (
+      {filterControls}
+      {selected.size > 0 && !accessLost && (
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-surface-border p-3">
           <span className="text-caption">
             {t(($) => $.selected, { count: selected.size })}
@@ -282,8 +399,15 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           </Button>
         </div>
       )}
+      {listFailed && (
+        <TriageLoadError
+          message={listUnavailable ? t(($) => $.access_denied) : hasListData ? t(($) => $.queue_refresh_failed) : t(($) => $.queue_load_failed)}
+          isFetching={list.isFetching}
+          onRetry={listUnavailable ? undefined : () => void list.refetch()}
+        />
+      )}
       <div
-        className="min-h-0 flex-1 overflow-y-auto"
+        className="min-h-0 flex-1 overflow-y-auto border-t border-surface-border"
         ref={(node) => {
           if (node) node.scrollTop = queueScrollRef.current;
         }}
@@ -291,18 +415,11 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           queueScrollRef.current = event.currentTarget.scrollTop;
         }}
       >
-        {list.isPending && enabled ? (
+        {list.isPending && !listFailed && enabled ? (
           <p className="p-6" role="status">
             {t(($) => $.loading)}
           </p>
-        ) : list.isError ? (
-          <div className="p-6" role="alert">
-            <p>{list.error.message}</p>
-            <Button onClick={() => void list.refetch()}>
-              {t(($) => $.retry)}
-            </Button>
-          </div>
-        ) : rows.length === 0 ? (
+        ) : listFailed && !hasListData ? null : rows.length === 0 ? (
           <div className="flex h-full min-h-48 flex-col items-center justify-center gap-3 p-6 text-center">
             <Inbox
               className="size-7 text-muted-foreground"
@@ -338,7 +455,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               <div
                 key={row.issue.id}
                 className={cn(
-                  "flex items-start gap-2 border-b border-surface-border px-3 py-1 hover:bg-accent/50",
+                  "flex items-start gap-2 border-b border-surface-border px-4 py-1 hover:bg-accent/50",
                   selectedId === row.issue.id &&
                     "bg-accent text-accent-foreground hover:bg-accent",
                 )}
@@ -368,20 +485,16 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
                   className="min-h-11 min-w-0 flex-1 space-y-1 rounded-md py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   onClick={() => changeParams({ issue: row.issue.id })}
                 >
-                  <span className="flex flex-wrap items-baseline gap-x-2">
-                    <span className="text-caption text-muted-foreground">
-                      {row.issue.identifier}
-                    </span>
-                    <span
-                      className={cn(
-                        "break-words text-body",
-                        selectedId === row.issue.id && "font-semibold",
-                      )}
-                    >
-                      {row.issue.title}
-                    </span>
+                  <span
+                    className={cn(
+                      "block break-words text-body font-medium",
+                      selectedId === row.issue.id && "font-semibold",
+                    )}
+                  >
+                    {row.issue.title}
                   </span>
                   <span className="block text-caption text-muted-foreground">
+                    {row.issue.identifier} ·{" "}
                     {row.source === "csv"
                       ? t(($) => $.csv)
                       : row.source === "manual"
@@ -390,15 +503,24 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
                     ·{" "}
                     {new Date(row.entered_at).toLocaleDateString(i18n.language)}
                   </span>
-                  <span className="flex items-center gap-1.5 text-caption text-muted-foreground">
-                    <PriorityIcon priority={row.issue.priority ?? "none"} />
-                    {t(($) => $.priorities[row.issue.priority ?? "none"])}
-                  </span>
-                  {row.reviewer_id && (
-                    <span className="block text-caption text-muted-foreground">
-                      {row.reviewer_valid
-                        ? (reviewer?.name ?? t(($) => $.unknown))
-                        : t(($) => $.invalid_reviewer)}
+                  {((row.issue.priority && row.issue.priority !== "none") ||
+                    row.reviewer_id) && (
+                    <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                      {row.issue.priority && row.issue.priority !== "none" && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <PriorityIcon priority={row.issue.priority} />
+                          {t(($) => $.priorities[row.issue.priority])}
+                        </span>
+                      )}
+                      {row.reviewer_id && (
+                        <span className="break-words">
+                          {row.reviewer_valid
+                            ? t(($) => $.reviewer_name, {
+                                name: reviewer?.name ?? t(($) => $.unknown),
+                              })
+                            : t(($) => $.invalid_reviewer)}
+                        </span>
+                      )}
                     </span>
                   )}
                   {row.snoozed_until && (
@@ -426,86 +548,121 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
       />
     </div>
   );
-  const detailPane = selectedId ? (
-    <div className="flex h-full min-h-0 flex-col">
+  const reviewer = members.find((member) => member.user_id === item?.reviewer_id);
+  const reviewerLabel =
+    item?.reviewer_id && item.reviewer_valid !== true
+      ? t(($) => $.invalid_reviewer)
+      : t(($) => $.reviewer_name, {
+          name: item?.reviewer_id
+            ? (reviewer?.name ?? t(($) => $.unknown))
+            : t(($) => $.unassigned),
+        });
+  const admissionLabels: Record<string, string> = {
+    pending: t(($) => $.pending),
+    accepted: t(($) => $.accepted),
+    rejected: t(($) => $.rejected),
+    duplicate: t(($) => $.marked_duplicate),
+    not_required: t(($) => $.not_required),
+  };
+  const reviewContext = item ? (
+    <div className="min-w-0 space-y-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="rounded-md bg-muted px-2 py-1 text-caption font-medium">
+          {admissionLabels[item.issue.admission_status] ?? t(($) => $.unknown)}
+        </span>
+        <span className="text-caption text-muted-foreground">
+          {t(($) => $.round, { round: item.round })} ·{" "}
+          {item.source === "csv" ? t(($) => $.csv) : t(($) => $.manual)}
+        </span>
+        {item.issue.priority && item.issue.priority !== "none" && (
+          <span className="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+            <PriorityIcon priority={item.issue.priority} />
+            {t(($) => $.priorities[item.issue.priority])}
+          </span>
+        )}
+        {pending && canReview ? (
+          <Button
+            variant="ghost"
+            className={cn(
+              TRIAGE_CONTROL,
+              "h-auto max-w-full whitespace-normal text-left text-caption text-muted-foreground",
+            )}
+            aria-label={t(($) => $.assign_reviewer)}
+            onClick={() => setAction("assign_reviewer")}
+          >
+            {reviewerLabel}
+            <ChevronDown className="size-3.5" aria-hidden="true" />
+          </Button>
+        ) : item.reviewer_id ? (
+          <span className="break-words text-caption text-muted-foreground">
+            {reviewerLabel}
+          </span>
+        ) : null}
+      </div>
+      {item.filename && (
+        <p className="break-all text-caption text-muted-foreground">
+          {item.filename} ·{" "}
+          {t(($) => $.row_number, { row: item.row_number })}
+        </p>
+      )}
+      {item.snoozed_until && (
+        <p className="text-caption">
+          {t(($) => $.snoozed_until, {
+            date: new Date(item.snoozed_until).toLocaleString(
+              i18n.language,
+              { timeZoneName: "short" },
+            ),
+          })}
+        </p>
+      )}
+      {item.duplicate_identifier && (
+        <TriageDuplicateTarget
+          wsId={wsId}
+          identifier={item.duplicate_identifier}
+          issueId={item.duplicate_issue_id}
+        />
+      )}
+      <TriageExecutionStatus wsId={wsId} issueId={item.issue.id} />
+      <details>
+        <summary className="min-h-8 cursor-pointer text-caption text-muted-foreground [@media(pointer:coarse)]:min-h-11">
+          {t(($) => $.history)}
+        </summary>
+        <div className="max-h-64 space-y-2 overflow-y-auto break-words">
+          <p className="text-caption">
+            {t(($) => $.first_entered, {
+              date: new Date(item.first_entered_at).toLocaleString(
+                i18n.language,
+              ),
+            })}
+          </p>
+          {item.external_id && (
+            <p className="text-caption">
+              {t(($) => $.external_id)}: {item.external_id}
+            </p>
+          )}
+          {item.source_url && /^https?:\/\//i.test(item.source_url) && (
+            <a
+              className="text-caption underline"
+              href={item.source_url}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {t(($) => $.source_url)}
+            </a>
+          )}
+          <TriageItemHistory wsId={wsId} issueId={item.issue.id} />
+        </div>
+      </details>
+    </div>
+  ) : null;
+  const detailPane = selectedId && (accessLost || isTriageUnavailable(detail.error)) ? (
+    <TriageLoadError message={t(($) => $.access_denied)} isFetching={false} />
+  ) : selectedId ? (
+    <div className="flex h-full min-h-0 min-w-0 flex-col">
       {detail.isError && (
         <p role="alert" className="p-4">
           {detail.error.message}
         </p>
-      )}
-      {item && (
-        <div className="shrink-0 space-y-2 border-b border-surface-border p-3">
-          <div className="flex flex-wrap items-center gap-2">
-            {compact && (
-              <Button
-                variant="ghost"
-                className={TRIAGE_CONTROL}
-                onClick={() => changeParams({ issue: "" })}
-              >
-                <ArrowLeft className="size-4" />
-                {t(($) => $.back)}
-              </Button>
-            )}
-            <span className="text-caption text-muted-foreground">
-              {t(($) => $.round, { round: item.round })} ·{" "}
-              {item.source === "csv" ? t(($) => $.csv) : t(($) => $.manual)}
-            </span>
-            {item.filename && (
-              <span className="break-all text-caption text-muted-foreground">
-                {item.filename} ·{" "}
-                {t(($) => $.row_number, { row: item.row_number })}
-              </span>
-            )}
-          </div>
-          {item.snoozed_until && (
-            <p className="text-caption">
-              {t(($) => $.snoozed_until, {
-                date: new Date(item.snoozed_until).toLocaleString(
-                  i18n.language,
-                  { timeZoneName: "short" },
-                ),
-              })}
-            </p>
-          )}
-          {item.duplicate_identifier && (
-            <TriageDuplicateTarget
-              wsId={wsId}
-              identifier={item.duplicate_identifier}
-              issueId={item.duplicate_issue_id}
-            />
-          )}
-          <TriageExecutionStatus wsId={wsId} issueId={item.issue.id} />
-          <details>
-            <summary className="min-h-8 cursor-pointer text-caption text-muted-foreground">
-              {t(($) => $.history)}
-            </summary>
-            <div className="max-h-64 overflow-y-auto">
-              <p className="text-caption">
-                {t(($) => $.first_entered, {
-                  date: new Date(item.first_entered_at).toLocaleString(
-                    i18n.language,
-                  ),
-                })}
-              </p>
-              {item.external_id && (
-                <p className="text-caption">
-                  {t(($) => $.external_id)}: {item.external_id}
-                </p>
-              )}
-              {item.source_url && /^https?:\/\//i.test(item.source_url) && (
-                <a
-                  className="text-caption underline"
-                  href={item.source_url}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  {t(($) => $.source_url)}
-                </a>
-              )}
-              <TriageItemHistory wsId={wsId} issueId={item.issue.id} />
-            </div>
-          </details>
-        </div>
       )}
       <div className="flex min-h-0 flex-1 flex-col">
         <ErrorBoundary key={selectedId}>
@@ -513,6 +670,20 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
             issueId={selectedId}
             defaultSidebarOpen={false}
             layoutId="triage-issue-detail"
+            presentation="triage"
+            reviewContext={reviewContext}
+            leadingAction={
+              compact || view === "history" ? (
+                <Button
+                  variant="ghost"
+                  className={TRIAGE_CONTROL}
+                  onClick={() => changeParams({ issue: "" })}
+                >
+                  <ArrowLeft className="size-4" aria-hidden="true" />
+                  {view === "history" ? t(($) => $.history) : t(($) => $.back)}
+                </Button>
+              ) : undefined
+            }
             onDelete={() => {
               changeParams({ issue: "" });
               focusRow("");
@@ -520,45 +691,65 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           />
         </ErrorBoundary>
       </div>
-      {item && (
-        <div className="shrink-0 border-t border-surface-border bg-background p-3">
-          {" "}
+      {item &&
+        ((pending && canReview) ||
+          item.issue.admission_status === "rejected" ||
+          item.issue.admission_status === "duplicate") && (
+        <div className={cn("shrink-0 border-t border-surface-border bg-background py-3", PAGE_GUTTER)}>
           {pending && canReview && (
-            <div className="flex flex-wrap gap-2">
-              {(
-                [
-                  "accept",
-                  "duplicate",
-                  "reject",
-                  "snooze",
-                  "assign_reviewer",
-                ] as const
-              ).map((name) => (
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 pe-chat-launcher">
+              <div className="flex min-w-0 flex-wrap gap-2">
+                {(["duplicate", "reject", "snooze"] as const).map((name) => (
+                  <Button
+                    key={name}
+                    variant="outline"
+                    className={TRIAGE_CONTROL}
+                    onClick={() => setAction(name)}
+                  >
+                    {t(($) => $[name])}
+                  </Button>
+                ))}
+                {item.snoozed_until && (
+                  <Button
+                    variant="ghost"
+                    className={cn(TRIAGE_CONTROL, "h-auto whitespace-normal")}
+                    onClick={() => setAction("unsnooze")}
+                  >
+                    {t(($) => $.unsnooze)}
+                  </Button>
+                )}
+              </div>
+              <div className="ms-auto flex shrink-0 items-center">
                 <Button
-                  key={name}
-                  variant={name === "accept" ? "default" : "outline"}
-                  className={TRIAGE_CONTROL}
-                  onClick={() => setAction(name)}
+                  className={cn(TRIAGE_CONTROL, "rounded-e-none")}
+                  onClick={() => setAction("accept")}
                 >
-                  {t(($) => $[name])}
+                  {t(($) => $.accept)}
                 </Button>
-              ))}
-              <Button
-                variant="outline"
-                className={TRIAGE_CONTROL}
-                onClick={() => setAction("accept_and_execute")}
-              >
-                {t(($) => $.accept_and_execute)}
-              </Button>
-              {item.snoozed_until && (
-                <Button
-                  variant="ghost"
-                  className={TRIAGE_CONTROL}
-                  onClick={() => setAction("unsnooze")}
-                >
-                  {t(($) => $.unsnooze)}
-                </Button>
-              )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button
+                        className={cn(
+                          TRIAGE_CONTROL,
+                          "rounded-s-none border-s-primary-foreground/25 px-2 [@media(pointer:coarse)]:min-w-11",
+                        )}
+                        aria-label={t(($) => $.accept_options)}
+                      />
+                    }
+                  >
+                    <ChevronDown className="size-4" aria-hidden="true" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" side="top">
+                    <DropdownMenuItem
+                      className={TRIAGE_CONTROL}
+                      onClick={() => setAction("accept_and_execute")}
+                    >
+                      {t(($) => $.accept_and_execute)}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           )}
           {(item.issue.admission_status === "rejected" ||
@@ -586,7 +777,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
         <h1 className="min-w-0 flex-1 text-body font-semibold">
           {t(($) => $.title)}
         </h1>
-        {enabled && (
+        {enabled && !accessLost && (
           <>
             <Button
               variant="ghost"
@@ -601,6 +792,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               </span>
             </Button>
             <Button
+              variant="outline"
               className={TRIAGE_CONTROL}
               aria-label={t(($) => $.create)}
               onClick={() => setCreateOpen(true)}
@@ -612,21 +804,21 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           </>
         )}
       </PageHeader>
-      {settings.isPending ? (
+      {settings.isPending && !settingsFailed ? (
         <p role="status" className="p-6">
           {t(($) => $.loading)}
         </p>
-      ) : settings.isError ? (
-        <div role="alert" className="p-6">
-          <p>{settings.error.message}</p>
-          <Button onClick={() => void settings.refetch()}>
-            {t(($) => $.retry)}
-          </Button>
-        </div>
+      ) : settingsFailed && (settings.data === undefined || isTriageUnavailable(settings.error)) ? (
+        <TriageLoadError
+          message={isTriageUnavailable(settings.error) ? t(($) => $.access_denied) : t(($) => $.settings_load_failed)}
+          isFetching={settings.isFetching}
+          onRetry={isTriageUnavailable(settings.error) ? undefined : () => void settings.refetch()}
+        />
       ) : !supported ? (
         <p className="p-6">{t(($) => $.unsupported)}</p>
       ) : (
         <>
+          {settingsFailed && <TriageLoadError message={t(($) => $.settings_refresh_failed)} isFetching={settings.isFetching} onRetry={() => void settings.refetch()} />}
           {!enabled && (
             <div className="space-y-1 border-b border-surface-border px-4 py-3 text-body">
               <p>{t(($) => $.disabled)}</p>
@@ -639,7 +831,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
             </div>
           )}
           <div
-            className="flex shrink-0 flex-wrap items-center gap-1 border-b border-surface-border px-4 py-1"
+            className={cn("flex shrink-0 items-center gap-1 overflow-x-auto border-b border-surface-border py-1 [&>button]:shrink-0", PAGE_GUTTER)}
             role="tablist"
             aria-label={t(($) => $.title)}
           >
@@ -688,63 +880,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               </Button>
             ))}
           </div>
-          <div className="flex shrink-0 items-center gap-2 px-4 py-2">
-            <Input
-              className={cn("min-w-0 flex-1", TRIAGE_CONTROL)}
-              aria-label={t(($) => $.search)}
-              placeholder={t(($) => $.search)}
-              value={params.get("q") ?? ""}
-              onChange={(e) => {
-                setSelected(new Set());
-                changeParams({ q: e.target.value, offset: "" });
-              }}
-            />
-            <Button
-              variant={filtersOpen ? "secondary" : "outline"}
-              className={TRIAGE_CONTROL}
-              aria-label={t(($) => $.filters)}
-              aria-expanded={filtersOpen}
-              onClick={() => setFiltersOpen(!filtersOpen)}
-            >
-              <SlidersHorizontal className="size-4" />
-              <span className="hidden sm:inline">{t(($) => $.filters)}</span>
-              <span className="sr-only sm:hidden">{t(($) => $.filters)}</span>
-            </Button>
-            {view !== "history" && (
-              <div className="w-36 shrink-0 sm:w-44">
-                <TriageSelect
-                  label={t(($) => $.sort)}
-                  value={sort}
-                  onChange={(value) =>
-                    changeParams({ sort: value, offset: "" })
-                  }
-                  options={[
-                    { value: "oldest", label: t(($) => $.oldest) },
-                    { value: "newest", label: t(($) => $.newest) },
-                    { value: "priority", label: t(($) => $.priority_sort) },
-                  ]}
-                />
-              </div>
-            )}
-          </div>
-          {view === "history" && (
-            <TriageHistoryFilterSummary
-              filters={historyFilters}
-              members={members}
-              onClear={clearHistoryFilters}
-            />
-          )}
-          {filtersOpen && (
-            <TriageFilters
-              wsId={wsId}
-              params={params}
-              history={view === "history"}
-              onChange={(key, value) => {
-                setSelected(new Set());
-                changeParams({ [key]: value, offset: "" });
-              }}
-            />
-          )}
+          {view === "history" && !(compact && selectedId) && filterControls}
           <div
             id="triage-view-panel"
             role="tabpanel"
@@ -753,6 +889,13 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           >
             {view === "history" && !selectedId ? (
               <div className="flex h-full flex-col">
+                {historyFailed && (
+                  <TriageLoadError
+                    message={historyUnavailable ? t(($) => $.access_denied) : hasHistoryData ? t(($) => $.history_refresh_failed) : t(($) => $.history_load_failed)}
+                    isFetching={history.isFetching}
+                    onRetry={historyUnavailable ? undefined : () => void history.refetch()}
+                  />
+                )}
                 <div
                   className="min-h-0 flex-1 overflow-y-auto px-4"
                   ref={(node) => {
@@ -762,13 +905,11 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
                     historyScrollRef.current = event.currentTarget.scrollTop;
                   }}
                 >
-                  {history.isPending ? (
+                  {history.isPending && !historyFailed ? (
                     <p role="status" className="p-6">
                       {t(($) => $.loading)}
                     </p>
-                  ) : history.isError ? (
-                    <p role="alert">{history.error.message}</p>
-                  ) : !history.data?.entries.length ? (
+                  ) : historyFailed && !hasHistoryData ? null : !history.data?.entries.length ? (
                     <div className="flex min-h-48 flex-col items-center justify-center gap-3 p-6 text-center">
                       <h2
                         ref={emptyRef}
@@ -819,6 +960,8 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
                   onChange={(next) => changeParams({ offset: String(next) })}
                 />
               </div>
+            ) : view === "history" ? (
+              detailPane
             ) : compact ? (
               selectedId ? (
                 detailPane
@@ -827,22 +970,17 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               )
             ) : (
               <ResizablePanelGroup orientation="horizontal">
-                <ResizablePanel defaultSize="36%" minSize="25%">
-                  {view === "history" ? (
-                    <div className="p-4">
-                      <Button
-                        variant="outline"
-                        onClick={() => changeParams({ issue: "" })}
-                      >
-                        {t(($) => $.history)}
-                      </Button>
-                    </div>
-                  ) : (
-                    queue
-                  )}
+                <ResizablePanel
+                  defaultSize="380px"
+                  minSize="320px"
+                  maxSize="480px"
+                  groupResizeBehavior="preserve-pixel-size"
+                  className="border-r border-surface-border"
+                >
+                  {queue}
                 </ResizablePanel>
                 <ResizableHandle />
-                <ResizablePanel defaultSize="64%" minSize="40%">
+                <ResizablePanel minSize="40%">
                   {detailPane}
                 </ResizablePanel>
               </ResizablePanelGroup>
@@ -850,7 +988,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           </div>
         </>
       )}
-      {createOpen && (
+      {createOpen && !accessLost && (
         <TriageCreateDialog
           wsId={wsId}
           onClose={() => setCreateOpen(false)}
@@ -869,7 +1007,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           onSuccess={afterDecision}
         />
       )}
-      {batchOpen && (
+      {batchOpen && !accessLost && (
         <TriageBatchDialog
           wsId={wsId}
           items={rows.filter((row) => selected.has(row.issue.id))}
@@ -881,7 +1019,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           }
         />
       )}
-      {importSelection && (
+      {importSelection && !accessLost && (
         <TriageImportDialog
           wsId={wsId}
           batchId={importSelection.batchId}
