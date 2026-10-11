@@ -89,7 +89,11 @@ Linux `renameat2(RENAME_NOREPLACE)`, macOS `renameatx_np(RENAME_EXCL)`. Successf
 publication consumes the staging name; do not unlink that name afterward.
 Retain 0600, owner, no-follow and single-link validation, and sync both the final
 file and directory before the database can commit. Unsupported operations fail
-closed; there is no hardlink fallback.
+closed; there is no hardlink fallback. The deployment directory is bind-mounted,
+so the rename runs on the host kernel and filesystem: they must support
+`RENAME_NOREPLACE` (mainline Linux 3.15+), otherwise initialization reports
+`credentials_file_publish_failed` and writes nothing. Confirm the host before
+an offline upgrade rather than reintroducing a two-step publication.
 
 **Validation and errors.** An existing final path must never be overwritten.
 A published valid file is reusable with unchanged bytes after an interrupted
