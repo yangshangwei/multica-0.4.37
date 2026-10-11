@@ -597,7 +597,11 @@ const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
         // after typing `1.`) parses into a caretless, schema-invalid item;
         // repair it so the mounted editor has a real cursor in the list.
         repairEmptyListItems(ed);
-        lastEmittedRef.current = normalizeEditorMarkdown(ed);
+        // Creation is deferred, so user input may already have queued a save.
+        // Do not acknowledge that unsent text as the autosave/unmount baseline.
+        if (debounceRef.current === undefined) {
+          lastEmittedRef.current = normalizeEditorMarkdown(ed);
+        }
         if (focusOnReadyRef.current) {
           focusOnReadyRef.current = false;
           ed.commands.focus("end");
