@@ -13,8 +13,9 @@ import (
 
 func TestIterationSettingsRoutesRequireWorkspaceOptIn(t *testing.T) {
 	fx := testutil.New(testPool, testWorkspaceID, testUserID)
-	fx.Cleanup(t, `DELETE FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID)
 	fx.Cleanup(t, `DELETE FROM iteration_operation WHERE workspace_id=$1`, testWorkspaceID)
+	// Missing settings default to enabled; opt-in applies after an explicit opt-out.
+	fx.InsertNoID(t, "workspace_iteration_settings", testutil.Cols{"workspace_id": testWorkspaceID, "enabled": false}, "workspace_id=$1", testWorkspaceID)
 	request := func(method, path, token string, body any, want int) map[string]any {
 		raw, _ := json.Marshal(body)
 		req, err := http.NewRequestWithContext(t.Context(), method, testServer.URL+"/api/workspaces/"+testWorkspaceID+"/"+path, bytes.NewReader(raw))
@@ -61,12 +62,12 @@ func TestIterationSettingsRoutesRequireWorkspaceOptIn(t *testing.T) {
 		t.Fatal(err)
 	}
 	if readable := request("GET", "iteration-settings", token, nil, 200); readable["enabled"] != false {
-		t.Fatalf("member read changed default settings: %v", readable)
+		t.Fatalf("member read changed saved settings: %v", readable)
 	}
 	request("GET", "iteration-capabilities", token, nil, 200)
 	request("POST", "iteration-settings/enable", token, body, 403)
-	if n := fx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
-		t.Fatal("reads or unauthorized enable created settings")
+	if n := fx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1 AND NOT enabled AND revision=1`, testWorkspaceID); n != 1 {
+		t.Fatal("reads or unauthorized enable changed settings")
 	}
 	if n := fx.Count(t, `SELECT count(*) FROM iteration_operation WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
 		t.Fatal("unauthorized enable persisted an operation")

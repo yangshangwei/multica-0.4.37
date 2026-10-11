@@ -13,6 +13,8 @@ import (
 
 func TestIterationLifecycleRoutesRespectScopeAndClosedRelease(t *testing.T) {
 	fx := testutil.New(testPool, testWorkspaceID, testUserID)
+	// Missing settings default to enabled; closed release needs an explicit opt-out.
+	fx.InsertNoID(t, "workspace_iteration_settings", testutil.Cols{"workspace_id": testWorkspaceID, "enabled": false}, "workspace_id=$1", testWorkspaceID)
 	period := fx.Insert(t, "iteration", testutil.Cols{"workspace_id": testWorkspaceID, "name": "JWT period", "timezone": "UTC", "start_date": "2026-10-06", "end_date": "2026-10-19", "created_by": testUserID})
 	other := fx.Workspace(t, "Foreign period space", uuid.NewString())
 	foreign := testutil.New(testPool, other, testUserID)
