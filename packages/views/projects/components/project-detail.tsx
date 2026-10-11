@@ -559,7 +559,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
               <DropdownMenu>
                 <DropdownMenuTrigger
                   render={
-                    <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
+                    <Button variant="ghost" size="icon-sm" aria-label={t(($) => $.page.row_menu)} className="text-muted-foreground">
                       <MoreHorizontal />
                     </Button>
                   }
@@ -593,6 +593,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                     <Button
                       variant={sidebarOpen ? "secondary" : "ghost"}
                       size="icon-sm"
+                      aria-label={t(($) => $.detail.sidebar_tooltip)}
                       className={sidebarOpen ? "" : "text-muted-foreground"}
                       onClick={handleToggleSidebar}
                     >

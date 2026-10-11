@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type MouseEvent } from "react";
+import { useMemo, useRef, useState, type MouseEvent } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -254,7 +254,7 @@ function ProjectRowActions({
             <button
               type="button"
               aria-label={t(($) => $.page.row_menu)}
-              className="flex size-7 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-accent-foreground group-hover/row:opacity-100 data-popup-open:bg-accent data-popup-open:opacity-100 data-popup-open:text-accent-foreground"
+              className="flex size-7 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-accent-foreground focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background group-hover/row:opacity-100 data-popup-open:bg-accent data-popup-open:opacity-100 data-popup-open:text-accent-foreground"
             >
               <MoreHorizontal className="size-4" />
             </button>
@@ -690,19 +690,41 @@ function ProjectBatchToolbar({
   pinnedIds,
   canDelete,
   onClear,
+  onDeleted,
 }: {
   rows: Project[];
   pinnedIds: Set<string>;
   canDelete: boolean;
   onClear: () => void;
+  onDeleted: (ids: string[]) => void;
 }) {
   const { t } = useT("projects");
   const createPin = useCreatePin();
   const deleteProject = useDeleteProject();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  if (rows.length === 0) return null;
+  if (rows.length === 0 && !isDeleting) return null;
   const anyUnpinned = rows.some((p) => !pinnedIds.has(p.id));
+
+  const handleDelete = async () => {
+    if (isDeleting) return;
+    setIsDeleting(true);
+    const ids = rows.map((project) => project.id);
+    const results = await Promise.allSettled(ids.map((id) => deleteProject.mutateAsync(id)));
+    const deletedIds = ids.filter((_id, index) => results[index]?.status === "fulfilled");
+    const failedCount = ids.length - deletedIds.length;
+    onDeleted(deletedIds);
+    setIsDeleting(false);
+    setConfirmDelete(false);
+    if (failedCount === 0) {
+      toast.success(t(($) => $.delete_dialog.batch_success, { count: deletedIds.length }));
+    } else if (deletedIds.length === 0) {
+      toast.error(t(($) => $.delete_dialog.batch_failed, { count: failedCount }));
+    } else {
+      toast.error(t(($) => $.delete_dialog.batch_partial, { deleted: deletedIds.length, count: failedCount }));
+    }
+  };
 
   return (
     <>
@@ -715,6 +737,7 @@ function ProjectBatchToolbar({
             type="button"
             aria-label={t(($) => $.page.clear_selection)}
             onClick={onClear}
+            disabled={isDeleting}
             className="rounded p-0.5 transition-colors hover:bg-accent"
           >
             <X className="size-3.5 text-muted-foreground" />
@@ -724,6 +747,7 @@ function ProjectBatchToolbar({
           <Button
             variant="ghost"
             size="sm"
+            disabled={isDeleting}
             onClick={() => {
               for (const p of rows) {
                 if (!pinnedIds.has(p.id)) {
@@ -742,6 +766,7 @@ function ProjectBatchToolbar({
             variant="ghost"
             size="sm"
             className="text-destructive hover:text-destructive"
+            disabled={isDeleting}
             onClick={() => setConfirmDelete(true)}
           >
             <Trash2 className="mr-1 size-3.5" />
@@ -750,27 +775,24 @@ function ProjectBatchToolbar({
         )}
       </div>
 
-      <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>
-        <DialogContent className="sm:max-w-md">
+      <Dialog open={confirmDelete} onOpenChange={(open) => { if (!isDeleting) setConfirmDelete(open); }}>
+        <DialogContent className="sm:max-w-md" showCloseButton={!isDeleting} aria-busy={isDeleting}>
           <DialogHeader>
             <DialogTitle>{t(($) => $.delete_dialog.title)}</DialogTitle>
             <DialogDescription>{t(($) => $.delete_dialog.description)}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button type="button" variant="outline" size="sm" onClick={() => setConfirmDelete(false)}>
+            <Button type="button" variant="outline" size="sm" disabled={isDeleting} onClick={() => setConfirmDelete(false)}>
               {t(($) => $.delete_dialog.cancel)}
             </Button>
             <Button
               type="button"
               variant="destructive"
               size="sm"
-              onClick={() => {
-                for (const p of rows) deleteProject.mutate(p.id);
-                setConfirmDelete(false);
-                onClear();
-              }}
+              disabled={isDeleting}
+              onClick={() => void handleDelete()}
             >
-              {t(($) => $.delete_dialog.confirm)}
+              {isDeleting ? t(($) => $.delete_dialog.deleting) : t(($) => $.delete_dialog.confirm)}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -829,6 +851,7 @@ export function ProjectsPage() {
   }, [pins]);
 
   const [search, setSearch] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(new Set());
   const toggleSelected = (id: string) =>
     setSelectedIds((prev) => {
@@ -981,16 +1004,28 @@ export function ProjectsPage() {
         <>
           {/* Toolbar */}
           <div className={PAGE_TOOLBAR}>
-            <div className="flex min-w-0 items-center gap-2">
-              <div className="relative hidden md:block">
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <div className="relative min-w-0 flex-1 md:w-56 md:flex-none">
                 <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
                 <Input
+                  ref={searchRef}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   aria-label={t(($) => $.page.search_placeholder)}
                   placeholder={t(($) => $.page.search_placeholder)}
-                  className="h-8 w-56 pl-8 text-body"
+                  className="h-8 w-full pl-8 pr-8 text-body"
                 />
+                {search.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label={t(($) => $.toolbar.clear_search)}
+                    className="absolute right-0.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+                    onClick={() => { setSearch(""); searchRef.current?.focus(); }}
+                  >
+                    <X className="size-3.5" />
+                  </Button>
+                )}
               </div>
               {(hasActiveFilters || search.trim().length > 0) && (
                 <span
@@ -1010,6 +1045,7 @@ export function ProjectsPage() {
                     <Button
                       variant={hasActiveFilters ? "default" : "outline"}
                       size="sm"
+                      aria-label={hasActiveFilters ? t(($) => $.toolbar.filter_active_count, { count: activeFilterCount }) : t(($) => $.toolbar.filter_label)}
                       className={
                         hasActiveFilters
                           ? "h-8 w-8 gap-1 bg-brand px-0 text-white hover:bg-brand/90 md:w-auto md:px-2.5"
@@ -1026,22 +1062,6 @@ export function ProjectsPage() {
                         </>
                       ) : (
                         <span className="hidden md:inline">{t(($) => $.toolbar.filter_label)}</span>
-                      )}
-                      {hasActiveFilters && (
-                        <span
-                          role="button"
-                          tabIndex={-1}
-                          aria-label={t(($) => $.toolbar.clear_filters)}
-                          className="-mr-1 ml-0.5 hidden rounded-sm p-0.5 hover:bg-white/20 md:inline-flex"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            clearFilters();
-                          }}
-                          onPointerDown={(e) => e.stopPropagation()}
-                        >
-                          <X className="size-3" />
-                        </span>
                       )}
                     </Button>
                   }
@@ -1114,6 +1134,11 @@ export function ProjectsPage() {
                   </DropdownMenuSub>
                 </DropdownMenuContent>
               </DropdownMenu>
+              {hasActiveFilters && (
+                <Button variant="ghost" size="icon-sm" aria-label={t(($) => $.toolbar.clear_filters)} onClick={clearFilters}>
+                  <X className="size-3.5" />
+                </Button>
+              )}
 
               {/* Display (sort + columns). Always present — view mode is a
                   pure presentation choice and must not reshape the toolbar.
@@ -1125,7 +1150,7 @@ export function ProjectsPage() {
                       render={
                         <TooltipTrigger
                           render={
-                            <Button variant="outline" size="sm" className="h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5">
+                            <Button variant="outline" size="sm" aria-label={t(($) => $.toolbar.display_current, { value: sortLabel(sortField) })} className="h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5">
                               {sortDirection === "asc" ? <ArrowUp className="size-3.5" /> : <ArrowDown className="size-3.5" />}
                               <span className="hidden md:inline">{sortLabel(sortField)}</span>
                             </Button>
@@ -1200,6 +1225,7 @@ export function ProjectsPage() {
                           <Button
                             variant="outline"
                             size="sm"
+                            aria-label={t(($) => $.toolbar.view_current, { value: isCompact ? t(($) => $.page.view_table) : t(($) => $.page.view_cards) })}
                             className="h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5"
                           >
                             {isCompact ? (
@@ -1246,6 +1272,14 @@ export function ProjectsPage() {
             <div className="flex flex-1 flex-col items-center justify-center py-24 text-muted-foreground">
               <Search className="mb-3 h-10 w-10 opacity-30" />
               <p className="text-body">{t(($) => $.page.no_matches)}</p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-3"
+                onClick={() => { setSearch(""); clearFilters(); searchRef.current?.focus(); }}
+              >
+                {t(($) => $.toolbar.reset_search_filters)}
+              </Button>
             </div>
           ) : isCompact ? (
             <div className="min-h-0 flex-1 overflow-auto @container">
@@ -1303,6 +1337,11 @@ export function ProjectsPage() {
             pinnedIds={pinnedProjectIds}
             canDelete={isWorkspaceAdmin}
             onClear={() => setSelectedIds(new Set())}
+            onDeleted={(ids) => setSelectedIds((previous) => {
+              const remaining = new Set(previous);
+              for (const id of ids) remaining.delete(id);
+              return remaining;
+            })}
           />
         </>
       )}

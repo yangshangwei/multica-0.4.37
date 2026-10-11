@@ -454,6 +454,12 @@ describe("ProjectDetail task workspace", () => {
 });
 
 describe("ProjectDetail sharing", () => {
+  it("names its icon-only project and sidebar actions", () => {
+    renderProjectDetail();
+    expect(screen.getByRole("button", { name: "Project actions" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Toggle right sidebar" })).toBeInTheDocument();
+  });
+
   it("supplies its configured invocable squad to ordinary project issue creation", () => {
     renderProjectDetail();
     expect(JSON.parse(screen.getByLabelText("Project issue defaults").textContent || "null")).toEqual({

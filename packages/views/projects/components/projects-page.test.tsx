@@ -23,6 +23,9 @@ const mocks = vi.hoisted(() => ({
   pins: [] as Array<{ item_type: string; item_id: string }>,
   updateProject: vi.fn(),
   deleteProject: vi.fn(),
+  deleteProjectAsync: vi.fn(),
+  toastSuccess: vi.fn(),
+  toastError: vi.fn(),
   createPin: vi.fn(),
   deletePin: vi.fn(),
   openModal: vi.fn(),
@@ -78,7 +81,7 @@ vi.mock("@multica/core/projects", async (importOriginal) => {
   ...actual,
   projectListOptions: (wsId: string) => mocks.realQueries ? actual.projectListOptions(wsId) : { queryKey: ["projects"] },
   useUpdateProject: () => ({ mutate: mocks.updateProject }),
-  useDeleteProject: () => ({ mutate: mocks.deleteProject }),
+  useDeleteProject: () => ({ mutate: mocks.deleteProject, mutateAsync: mocks.deleteProjectAsync }),
   useProjectViewStore: (selector: (state: unknown) => unknown) =>
     selector(mocks.projectViewState),
 }; });
@@ -123,6 +126,10 @@ vi.mock("@multica/core/modals", () => ({
   useModalStore: {
     getState: () => ({ open: mocks.openModal }),
   },
+}));
+
+vi.mock("sonner", () => ({
+  toast: { success: mocks.toastSuccess, error: mocks.toastError },
 }));
 
 vi.mock("@multica/ui/components/ui/dropdown-menu", () => ({
@@ -268,6 +275,9 @@ beforeEach(() => {
   mocks.pins = [];
   mocks.updateProject.mockClear();
   mocks.deleteProject.mockClear();
+  mocks.deleteProjectAsync.mockReset().mockResolvedValue(undefined);
+  mocks.toastSuccess.mockReset();
+  mocks.toastError.mockReset();
   mocks.createPin.mockClear();
   mocks.deletePin.mockClear();
   mocks.openModal.mockClear();
@@ -276,6 +286,9 @@ beforeEach(() => {
   mocks.projectViewState.sortDirection = "asc";
   mocks.projectViewState.hiddenColumns = [];
   mocks.projectViewState.filters = { statuses: [], priorities: [], leads: [] };
+  mocks.projectViewState.clearFilters.mockReset().mockImplementation(() => {
+    mocks.projectViewState.filters = { statuses: [], priorities: [], leads: [] };
+  });
 });
 
 const clients: QueryClient[] = [];
@@ -442,6 +455,39 @@ describe("ProjectsPage compact row navigation", () => {
 });
 
 describe("ProjectsPage selection and recovery", () => {
+  it("names the compact filter, display, and view controls", () => {
+    renderProjects();
+    expect(screen.getByRole("button", { name: "Filter" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Display: Name" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "View: Table" })).toBeInTheDocument();
+  });
+
+  it("clears only the search from its inline action and returns focus to the input", async () => {
+    const user = userEvent.setup();
+    mocks.projectViewState.filters.statuses = [PROJECT.status];
+    renderProjects();
+    const search = screen.getByRole("textbox", { name: "Search projects..." });
+    await user.type(search, "no-such-project");
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(search).toHaveValue("");
+    expect(search).toHaveFocus();
+    expect(screen.getByRole("link", { name: PROJECT.title })).toBeInTheDocument();
+    expect(mocks.projectViewState.clearFilters).not.toHaveBeenCalled();
+  });
+
+  it("resets search and filters from the no-match state", async () => {
+    const user = userEvent.setup();
+    mocks.projectViewState.filters.statuses = ["completed"];
+    const view = renderProjects();
+    const search = screen.getByRole("textbox", { name: "Search projects..." });
+    await user.type(search, "missing");
+    await user.click(screen.getByRole("button", { name: "Reset search and filters" }));
+    view.rerender(<NavigationProvider value={view.adapter}><ProjectsPage /></NavigationProvider>);
+    expect(search).toHaveValue("");
+    expect(mocks.projectViewState.clearFilters).toHaveBeenCalledOnce();
+    expect(screen.getByRole("link", { name: PROJECT.title })).toBeInTheDocument();
+  });
+
   it("offers one named checkbox per selection with keyboard mixed-state behavior", async () => {
     const user = userEvent.setup();
     mocks.projects = [PROJECT, { ...PROJECT, id: "project-2", title: "Release Checklist" }];
@@ -491,6 +537,72 @@ describe("ProjectsPage selection and recovery", () => {
     expect(screen.queryByText("No projects yet")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry" }));
     expect(mocks.refetchProjects).toHaveBeenCalledOnce();
+  });
+});
+
+describe("ProjectsPage batch deletion", () => {
+  async function confirmBatchDelete() {
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("checkbox", { name: "Select all visible projects" }));
+    await user.click(screen.getAllByRole("button", { name: "Delete" }).at(-1)!);
+    const dialog = screen.getByRole("dialog", { name: "Delete project" });
+    await user.click(within(dialog).getByRole("button", { name: "Delete" }));
+    return { user, dialog };
+  }
+
+  it("waits for every result, blocks duplicate submission and retains only failed selections", async () => {
+    let finishFirst!: () => void;
+    let failSecond!: (error: Error) => void;
+    mocks.projects = [PROJECT, { ...PROJECT, id: "project-2", title: "Release Checklist" }];
+    mocks.deleteProjectAsync
+      .mockReturnValueOnce(new Promise<void>((resolve) => { finishFirst = resolve; }))
+      .mockReturnValueOnce(new Promise<void>((_resolve, reject) => { failSecond = reject; }));
+    renderProjects();
+    const { user, dialog } = await confirmBatchDelete();
+
+    expect(mocks.deleteProjectAsync).toHaveBeenCalledTimes(2);
+    expect(within(dialog).getByRole("button", { name: "Deleting..." })).toBeDisabled();
+    expect(within(dialog).getByRole("button", { name: "Cancel" })).toBeDisabled();
+    await user.click(within(dialog).getByRole("button", { name: "Deleting..." }));
+    await user.keyboard("{Escape}");
+    expect(dialog).toBeInTheDocument();
+    expect(mocks.deleteProjectAsync).toHaveBeenCalledTimes(2);
+
+    await act(async () => { finishFirst(); });
+    expect(dialog).toBeInTheDocument();
+    expect(mocks.toastSuccess).not.toHaveBeenCalled();
+    expect(mocks.toastError).not.toHaveBeenCalled();
+
+    await act(async () => { failSecond(new Error("Offline")); });
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(screen.getByRole("checkbox", { name: "Select Launch Plan" })).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Select Release Checklist" })).toBeChecked();
+    expect(mocks.toastError).toHaveBeenCalledWith("1 deleted. 1 could not be deleted and remains selected. Try again.");
+    expect(mocks.toastSuccess).not.toHaveBeenCalled();
+
+    await user.click(screen.getAllByRole("button", { name: "Delete" }).at(-1)!);
+    await user.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Delete" }));
+    await waitFor(() => expect(mocks.deleteProjectAsync).toHaveBeenCalledTimes(3));
+    expect(mocks.deleteProjectAsync).toHaveBeenLastCalledWith("project-2");
+  });
+
+  it("reports all-success only after deletion and clears those selections", async () => {
+    renderProjects();
+    await confirmBatchDelete();
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(screen.getByRole("checkbox", { name: "Select Launch Plan" })).not.toBeChecked();
+    expect(mocks.toastSuccess).toHaveBeenCalledWith("1 project deleted");
+    expect(mocks.toastError).not.toHaveBeenCalled();
+  });
+
+  it("keeps every failed project selected and reports a retryable failure", async () => {
+    mocks.deleteProjectAsync.mockRejectedValue(new Error("Offline"));
+    renderProjects();
+    await confirmBatchDelete();
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(screen.getByRole("checkbox", { name: "Select Launch Plan" })).toBeChecked();
+    expect(mocks.toastError).toHaveBeenCalledWith("1 project could not be deleted and remains selected. Try again.");
+    expect(mocks.toastSuccess).not.toHaveBeenCalled();
   });
 });
 

@@ -158,7 +158,14 @@
     "title": "Delete project",
     "description": "This will delete the project. Issues will not be deleted but will be unlinked.",
     "confirm": "Delete",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "deleting": "Deleting...",
+    "batch_success_one": "{{count}} project deleted",
+    "batch_success_other": "{{count}} projects deleted",
+    "batch_failed_one": "{{count}} project could not be deleted and remains selected. Try again.",
+    "batch_failed_other": "{{count}} projects could not be deleted and remain selected. Try again.",
+    "batch_partial_one": "{{deleted}} deleted. {{count}} could not be deleted and remains selected. Try again.",
+    "batch_partial_other": "{{deleted}} deleted. {{count}} could not be deleted and remain selected. Try again."
   },
   "picker": {
     "no_project": "No project",
@@ -175,15 +182,19 @@
     "filter_active_count_one": "{{count}} filter",
     "filter_active_count_other": "{{count}} filters",
     "clear_filters": "Clear filters",
+    "clear_search": "Clear search",
+    "reset_search_filters": "Reset search and filters",
     "section_status": "Status",
     "section_priority": "Priority",
     "section_lead": "Lead",
     "display": "Display",
+    "display_current": "Display: {{value}}",
     "sort_by": "Sort by",
     "direction_asc": "Ascending",
     "direction_desc": "Descending",
     "section_columns": "Columns",
-    "view": "View"
+    "view": "View",
+    "view_current": "View: {{value}}"
   },
   "execution_squad": {
     "label": "Execution squad",

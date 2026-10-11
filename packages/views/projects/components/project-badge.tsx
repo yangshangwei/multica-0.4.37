@@ -32,7 +32,7 @@ export function ProjectStatusBadge({ project, handleUpdate, triggerClassName, al
       <DropdownMenuTrigger
         render={
           <button type="button" className={cn(
-            "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-caption font-medium cursor-pointer hover:opacity-80 transition-opacity",
+            "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-caption font-medium cursor-pointer hover:ring-1 hover:ring-current focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             statusCfg.badgeBg, statusCfg.badgeText,
             triggerClassName
           )}>
