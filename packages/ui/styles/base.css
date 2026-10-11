@@ -240,6 +240,99 @@
   }
 }
 
+/* Pen sheen: the hand-made counterpart to the border beam (e.g. "switch to
+ * manual" in agent create). Instead of a looping multi-color ring, a single
+ * neutral glint crosses the host every few seconds and then rests; on hover
+ * or keyboard focus the pencil icon taps twice and an underline is drawn
+ * beneath the label. The glint sits behind the label (isolation + z-index -1)
+ * so text contrast never drops, and the host clips it with overflow: hidden.
+ * Mark the icon with `.pen-sheen-icon` and wrap the label in
+ * `.pen-sheen-stroke`. Colors come from tokens, so dark mode only re-weights
+ * the glint. */
+@keyframes pen-sheen-sweep {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  32%, 100% { transform: translateX(260%) skewX(-20deg); }
+}
+
+@keyframes pen-sheen-tap {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(1px, 1px) rotate(-12deg); }
+  50% { transform: translate(0, 0) rotate(0deg); }
+  75% { transform: translate(1px, 1px) rotate(-8deg); }
+}
+
+.pen-sheen {
+  --pen-sheen-edge: color-mix(in oklab, var(--foreground) 7%, transparent);
+  --pen-sheen-core: color-mix(in oklab, var(--surface-raised) 95%, transparent);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.dark .pen-sheen {
+  --pen-sheen-edge: transparent;
+  --pen-sheen-core: color-mix(in oklab, var(--foreground) 7%, transparent);
+}
+
+.pen-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 45%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--pen-sheen-edge) 30%,
+    var(--pen-sheen-core) 50%,
+    var(--pen-sheen-edge) 70%,
+    transparent
+  );
+  transform: translateX(-120%) skewX(-20deg);
+  animation: pen-sheen-sweep 4.2s cubic-bezier(0.4, 0, 0.2, 1) 1.2s infinite;
+  pointer-events: none;
+}
+
+.pen-sheen-icon {
+  transform-origin: 15% 85%;
+}
+
+.pen-sheen:hover:not(:disabled) .pen-sheen-icon,
+.pen-sheen:focus-visible .pen-sheen-icon {
+  animation: pen-sheen-tap 0.6s ease-in-out;
+}
+
+.pen-sheen-stroke {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
+  transition: background-size 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pen-sheen:hover:not(:disabled) .pen-sheen-stroke,
+.pen-sheen:focus-visible .pen-sheen-stroke {
+  background-size: 100% 1px;
+}
+
+.pen-sheen:disabled::after {
+  animation: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pen-sheen::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  .pen-sheen:hover:not(:disabled) .pen-sheen-icon,
+  .pen-sheen:focus-visible .pen-sheen-icon {
+    animation: none;
+  }
+
+  .pen-sheen-stroke {
+    transition: none;
+  }
+}
+
 /* Sidebar: open triggers (dropdown/popover) get active background */
 [data-sidebar="menu-button"][data-popup-open] {
   background-color: var(--sidebar-accent);

@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowLeftRight,
   CalendarDays,
   Check,
   ChevronRight,
@@ -10,6 +9,7 @@ import {
   Maximize2,
   Minimize2,
   MoreHorizontal,
+  PencilLine,
   Settings2,
   X as XIcon,
 } from "lucide-react";
@@ -986,10 +986,10 @@ export function AgentCreatePanel({
             aria-disabled={gate.uploading || undefined}
             aria-busy={gate.uploading || undefined}
             title={t(($) => $.create_issue.switch_to_manual_tooltip)}
-            className="flex shrink-0 items-center gap-1.5 justify-self-end min-h-7 text-caption px-2 py-1 rounded-sm text-muted-foreground max-sm:min-h-11 pointer-coarse:min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:text-foreground hover:bg-accent/60 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            className="pen-sheen flex shrink-0 items-center gap-1.5 justify-self-end min-h-7 text-caption px-2 py-1 rounded-sm text-muted-foreground bg-muted/80 max-sm:min-h-11 pointer-coarse:min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:text-foreground hover:bg-muted transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <ArrowLeftRight className="size-3.5" />
-            {t(($) => $.create_issue.switch_to_manual)}
+            <PencilLine aria-hidden className="pen-sheen-icon size-3.5" />
+            <span className="pen-sheen-stroke">{t(($) => $.create_issue.switch_to_manual)}</span>
           </button>
           <label className="flex min-h-7 shrink-0 items-center gap-1.5 text-caption text-muted-foreground cursor-pointer select-none max-sm:min-h-11 pointer-coarse:min-h-11">
             <Switch
