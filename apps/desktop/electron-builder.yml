@@ -3,11 +3,15 @@ productName: Multica
 directories:
   buildResources: build
 files:
-  - "!**/.vscode/*"
-  - "!src/*"
-  - "!electron.vite.config.*"
-  - "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}"
-  - "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
+  # Allowlist the runtime inputs instead of excluding known dev files. The
+  # electron-builder default packs everything in apps/desktop, so a deny-list
+  # silently shipped whatever was lying around in the build checkout: local
+  # env files (.env.development.local, .env.staging), agent/tool state
+  # (.gstack, .omc, .turbo), scripts/ and test/. Production dependencies are
+  # added from node_modules regardless of this list.
+  - "out/**"
+  - "resources/**"
+  - "package.json"
   # Never repack the electron-builder output directory into the app.
   # Multi-arch release builds (scripts/package.mjs) run each target in the
   # same apps/desktop dir with per-arch output at dist/<platform>-<arch>.
