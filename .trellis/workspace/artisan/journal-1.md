@@ -1838,3 +1838,25 @@ Completed the shared Web/Desktop triage duplicate picker: focus opens all eligib
 ### Status
 
 [OK] **Completed**
+
+
+## Session 57: Admin auto initialization implementation
+<!-- trellis-session: v=2 fp=e5ac36c554ff0b1b -->
+
+**Date**: 2026-10-11
+**Task**: Admin auto initialization implementation
+**Branch**: `codex/admin-auto-initialization`
+
+### Summary
+
+Implemented deployment-only administrator auto initialization with durable private random credentials, permanent database marker, atomic account/role/audit writes, safe retries and forced different first password. Added Compose/offline upgrade integration and packaging secret exclusions, synchronized docs/specs. Verified task-owned Go service/CLI/handler/migration tests, go vet, Node helper/offline tests, shell syntax, docs generation, lint/typecheck and password UI regressions. Full make test exposed unrelated daemon/realtime/session environment failures; real old-deployment Docker/browser acceptance remains a release-stage check. Preserved unrelated next-env and inbox test changes.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d0e63f477` | Automate first platform administrator initialization |
+
+### Status
+
+[OK] **Completed**
