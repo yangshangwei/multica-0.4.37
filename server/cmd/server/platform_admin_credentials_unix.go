@@ -41,9 +41,6 @@ func checkInitializationFile(file *os.File) error {
 	}
 	return nil
 }
-func publishInitializationFile(directory *os.File, temp, name string) error {
-	return unix.Linkat(int(directory.Fd()), temp, int(directory.Fd()), name, 0)
-}
 func removeInitializationFile(directory *os.File, name string) error {
 	return unix.Unlinkat(int(directory.Fd()), name, 0)
 }

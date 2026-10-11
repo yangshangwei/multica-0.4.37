@@ -78,6 +78,39 @@ permanent marker across role removal, account recovery and future upgrades.
 Verify first-change restriction, rejection of an unchanged temporary password,
 authenticated role and overview/account pages as well as migration health.
 
+### Credential publication interrupted by process exit
+
+**Scope and signatures.** `platformAdminCredentialFile.durable` and
+`publishInitializationFile(directory, stagingName, finalName)` in `cmd/server`
+must tolerate process termination immediately after the publication syscall.
+
+**Contract.** Publish by an exclusive atomic rename against the pinned directory:
+Linux `renameat2(RENAME_NOREPLACE)`, macOS `renameatx_np(RENAME_EXCL)`. Successful
+publication consumes the staging name; do not unlink that name afterward.
+Retain 0600, owner, no-follow and single-link validation, and sync both the final
+file and directory before the database can commit. Unsupported operations fail
+closed; there is no hardlink fallback.
+
+**Validation and errors.** An existing final path must never be overwritten.
+A published valid file is reusable with unchanged bytes after an interrupted
+process; unsafe files still return `credentials_file_unsafe`. Existing unsafe
+hardlinked files from older versions require operator inspection, not automatic
+link deletion or weaker validation.
+
+**Good/base/bad.** A crash after rename leaves one private final file that retry
+can sync. Ordinary creation and retry preserve the same credential identity.
+Linking then unlinking leaves a two-link inode when interrupted and is invalid.
+
+**Required tests.** `TestPlatformAdminCredentialFileInterruptedPublication`
+exits a child immediately after the real syscall, bypassing `TestMain` so the
+child cannot seed or delete database fixtures. Assert unchanged retry bytes and
+no staging name; retain no-clobber, unsafe-file and fsync-failure tests.
+
+**Wrong versus correct.** Wrong: `Linkat(staging, final)` followed by
+`Unlinkat(staging)`. Correct: exclusive rename, reopen/validate, then file and
+directory fsync. A recoverable error test with deferred cleanup alone does not
+prove recovery after process termination.
+
 ## Validation and errors
 
 Missing/unreadable overlays and CR/LF paths fail before image loading or backup.
