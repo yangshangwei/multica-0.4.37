@@ -406,7 +406,13 @@ test("administrator helper uses installed Compose, ordered overlays and literal 
   assert.ok(Object.hasOwn(actual.networks, "operator"));
   const mount = actual.volumes.find((volume) => volume.target === "/deployment-admin-init");
   assert.equal(mount.source.replace(/\$\$/g, "$"), deployment);
-  assert.equal(mount.bind.create_host_path, false);
+  // Assert create_host_path on the overlay we hand to Compose, not on its
+  // resolved JSON: each Compose line drops its own default from `config
+  // --format json` (2.38 omits false, 5.x omits true), so an absent key means
+  // opposite things across the versions operators and CI run.
+  const overlayMount = JSON.parse(readFileSync(f.env.DOCKER_LOG + ".admin-overlay", "utf8")).services.backend.volumes
+    .find((volume) => volume.target === "/deployment-admin-init");
+  assert.equal(overlayMount.bind.create_host_path, false);
   const rawLog = readFileSync(f.env.DOCKER_LOG, "utf8").slice(logOffset);
   const calls = rawLog.trim().split("\n").map(JSON.parse);
   const runs = calls.filter((argv) => argv[0] === "compose" && argv.includes("run"));
