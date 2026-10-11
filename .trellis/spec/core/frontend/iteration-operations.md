@@ -2,7 +2,10 @@
 
 The I1 APIs use complete server previews and durable request identities. Shared
 implementation lives in `packages/core/iterations` and `packages/views/iterations`;
-Web and Desktop only wire routes/platform adapters. The service supports I1 without a deployment flag; each workspace starts disabled and is enabled by a human owner/admin in Settings → Iterations.
+Web and Desktop only wire routes/platform adapters. The service supports I1 without
+a deployment flag. New workspaces and workspaces without a settings row start
+enabled. An explicit saved opt-out remains disabled; a human owner/admin can change
+the choice in Settings → Iterations.
 
 ## Request and permission boundaries
 
