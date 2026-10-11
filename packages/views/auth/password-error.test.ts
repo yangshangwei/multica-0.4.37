@@ -2,6 +2,8 @@
 import { describe, expect, it } from "vitest";
 import { ApiError } from "@multica/core/api";
 import { passwordErrorDetails } from "./password-error";
+import en from "../locales/en/auth.json";
+import zh from "../locales/zh-Hans/auth.json";
 
 const input = { username: "11052", name: "Test User", password: "a long password", registering: true };
 const failure = (code: string, message = "Validation failed") => new ApiError(message, 400, "Bad Request", { code, error: message });
@@ -37,6 +39,13 @@ describe("password error details", () => {
 
   it("prefers a modern code over a conflicting message", () => {
     expect(passwordErrorDetails(failure("username_taken", "name must contain 1–80 characters"), input)).toEqual({ key: "username_taken" });
+  });
+
+  it("localizes the forced-change same-password rejection in both supported languages", () => {
+    const detail = passwordErrorDetails(failure("password_unchanged"), { ...input, registering: false });
+    expect(detail).toEqual({ key: "password_unchanged" });
+    expect(en.password[detail.key]).toBe("Choose a password different from your temporary password.");
+    expect(zh.password[detail.key]).toBe("请设置与临时密码不同的新密码。");
   });
 
   it.each([null, "Bad request", { code: 12 }, { code: "future_code", error: "Do not display this" }])("keeps unknown API bodies localized: %j", (body) => {

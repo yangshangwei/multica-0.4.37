@@ -166,6 +166,39 @@ describe('password form', () => {
     expect(screen.getByLabelText('New password')).toHaveValue('new123');
   });
 
+  it('preserves the restricted session and inputs when the temporary password is reused', async () => {
+    const api = new ApiClient('http://localhost');
+    const change = vi.spyOn(api, 'changePassword').mockRejectedValue(new ApiError('Choose a different password', 400, 'Bad Request', {code: 'password_unchanged'}));
+    const list = vi.spyOn(api, 'listWorkspaces').mockResolvedValue([]);
+    const issueToken = vi.spyOn(api, 'issueCliToken').mockResolvedValue({token: 'must not be issued'});
+    const storage = {getItem: () => 'restricted-session', setItem: vi.fn(), removeItem: vi.fn()};
+    api.setToken('restricted-session');
+    setApiInstance(api);
+    const store = createAuthStore({api, storage});
+    const restrictedUser = {...EMPTY_USER, id: 'admin', requires_password_change: true};
+    store.getState().setUser(restrictedUser);
+    registerAuthStore(store);
+    const done = vi.fn();
+    const tokenObtained = vi.fn();
+    render(<I18nProvider locale="zh-Hans" resources={{'zh-Hans': {auth: zh}}}><QueryClientProvider client={new QueryClient()}><PasswordForm mode="change" onSuccess={done} onTokenObtained={tokenObtained} cliCallback={{url: 'http://localhost/callback', state: 'pending'}}/></QueryClientProvider></I18nProvider>);
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText('当前密码'), ' temporary123 ');
+    await user.type(screen.getByLabelText('新密码'), ' temporary123 ');
+    await user.click(screen.getByRole('button', {name: '设置新密码'}));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('请设置与临时密码不同的新密码。');
+    expect(change).toHaveBeenCalledExactlyOnceWith(' temporary123 ', ' temporary123 ');
+    expect(screen.getByLabelText('当前密码')).toHaveValue(' temporary123 ');
+    expect(screen.getByLabelText('新密码')).toHaveValue(' temporary123 ');
+    expect(store.getState()).toMatchObject({user: restrictedUser, status: 'password_change_required', expired: false});
+    expect(storage.setItem).not.toHaveBeenCalled();
+    expect(storage.removeItem).not.toHaveBeenCalled();
+    expect(tokenObtained).not.toHaveBeenCalled();
+    expect(done).not.toHaveBeenCalled();
+    expect(list).not.toHaveBeenCalled();
+    expect(issueToken).not.toHaveBeenCalled();
+  });
+
   it('completes admin login without requesting workspaces', async () => {
     const api = new ApiClient('http://localhost');
     vi.spyOn(api, 'passwordLogin').mockResolvedValue({token: 'session', user: {...EMPTY_USER, id: 'admin'}});

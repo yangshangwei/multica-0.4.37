@@ -49,7 +49,7 @@ func newPlatformAdminRouterFixture(t *testing.T) *platformAdminRouterFixture {
 	})
 	// Auth and admin mutations must never see another test package's platform
 	// roles, organizations, or credentials. The remaining router is production.
-	for _, table := range []string{"user", "user_password_credential", "platform_role_binding", "organization", "organization_workspace", "admin_operation", "admin_audit_event", "personal_access_token", "task_token", "daemon_token", "workspace", "member", "agent", "agent_runtime", "agent_task_queue"} {
+	for _, table := range []string{"user", "user_password_credential", "platform_role_binding", "platform_admin_initialization", "organization", "organization_workspace", "admin_operation", "admin_audit_event", "personal_access_token", "task_token", "daemon_token", "workspace", "member", "agent", "agent_runtime", "agent_task_queue"} {
 		dst, src := pgx.Identifier{schema, table}.Sanitize(), pgx.Identifier{"public", table}.Sanitize()
 		if _, err := testPool.Exec(context.Background(), "CREATE TABLE "+dst+" (LIKE "+src+" INCLUDING ALL)"); err != nil {
 			t.Fatalf("clone router fixture %s: %v", table, err)

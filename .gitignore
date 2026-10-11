@@ -18,6 +18,9 @@ dist-electron
 !apps/desktop/build/**
 
 # env
+admin-initial-password.txt
+.admin-initial-password.*
+.admin-initialization-compose.*
 .env*
 /updates.env
 !.env.example

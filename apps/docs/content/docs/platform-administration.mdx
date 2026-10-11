@@ -18,15 +18,41 @@ MULTICA_PASSWORD_LIMITER_MODE=single
 MULTICA_MANAGED_INSTALLATIONS_ENABLED=true
 ```
 
-Keep `MULTICA_CLOUD_URL` empty. `single` supports one API process. Multiple API replicas must use `MULTICA_PASSWORD_LIMITER_MODE=shared` and the same `REDIS_URL`; a Redis outage rejects password attempts. Configuration changes require an API restart. Managed installation reporting requires compatible Desktop and daemon versions.
+Keep `MULTICA_CLOUD_URL` empty. `single` supports one API process. Multiple API replicas must use `MULTICA_PASSWORD_LIMITER_MODE=shared` and the same `REDIS_URL`; a Redis outage rejects password attempts. After changing Docker environment settings, recreate the backend container so it receives the new values; `docker compose restart` keeps its old environment. Managed installation reporting requires compatible Desktop and daemon versions.
 
-Create a named password account and finish any required password change. On the trusted API host, use the server executable with the deployment's normal database and password-mode configuration:
+## First administrator after an offline upgrade
+
+When password mode and platform administration are already enabled, the offline upgrade script initializes a dedicated `platform_admin` account after migration health succeeds. It only creates an account when no existing platform role or successful administrator initialization history is present. Signup may remain disabled. Upgrades do not switch authentication modes or enable administration automatically.
+
+The initial password is random for each deployment. The maintenance command saves it in `admin-initial-password.txt` in the deployment directory, with mode `0600` and the operator's ownership, before committing the new account. For the usual deployment directory, read it on the server as the same operating-system user who ran the upgrade:
+
+```sh
+cat /opt/multica/admin-initial-password.txt
+```
+
+Use the JSON file's `username` and `initial_password` at the Web login page. Choose a different password at the mandatory first-change screen, then open `/admin`. Until that change succeeds, the temporary session cannot access business data, administer the platform, or mint unrestricted credentials. The initial password and temporary sessions become invalid after the change.
+
+If administration is enabled after upgrading, or initialization needs a retry, run the bundled maintenance helper:
+
+```sh
+bash /opt/multica-upgrade/initialize-platform-admin.sh --deployment-dir /opt/multica
+```
+
+Pass each existing overlay with `--compose-file` in its original order. The helper uses the installed Compose configuration and loaded images; host Node.js or Go is not required. It reports a nonsecret result and the credential path when the initial password is available, never the password itself.
+
+Repeat upgrades and API restarts do not reset passwords or recreate administrators. Existing administrators and observers are preserved, and a same-name ordinary account is never silently promoted. After changing the password, the initial file is obsolete and may be removed; retain the database's initialization record. Do not include generated password files in backups intended for public distribution, images, logs, or upgrade packages.
+
+If a still-restricted account exists but the matching file is unavailable, initialization reports `credentials_unavailable`. Check the original initialization host first; if the file is lost, use explicit account recovery below. It will not invent a new password or reset the account during an upgrade. A failed initialization leaves the upgraded services and database in place and prevents a whole-upgrade success report.
+
+## Explicitly authorize an existing account
+
+The original manual bootstrap remains available when a deployment operator deliberately selects an existing account. Finish any required password setup first, then use the server executable on the trusted API host with that deployment's database and password-mode configuration:
 
 ```sh
 server platform-admin bootstrap --user USER_UUID --reason "Initialize deployment administration"
 ```
 
-Select the existing account by UUID. Bootstrap does not promote the first registrant or select an account by display name. It records an operation and audit event, advances the account's authorization version, and revokes previous credentials. Sign in again with the password, then open `/admin`. Keep a second named super administrator for recovery.
+Select the existing account by UUID. Bootstrap requires that no effective super administrator exists; otherwise use an existing administrator to grant access in the console. It does not promote the first registrant or select an account by display name. It records an operation, audit and permanent initialization marker, advances the account's authorization version, and revokes previous credentials. Sign in again with the password, then open `/admin`. Keep a second named super administrator for recovery.
 
 ## Roles and private content
 

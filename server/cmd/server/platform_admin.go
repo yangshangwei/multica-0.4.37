@@ -20,6 +20,9 @@ import (
 // runPlatformAdmin runs before listeners and workers. It never chooses an
 // account implicitly or makes an HTTP request with deployment privileges.
 func runPlatformAdmin(args []string) error {
+	if len(args) > 0 && args[0] == "initialize" {
+		return runPlatformAdminInitialize(args[1:], os.Stdout)
+	}
 	if !auth.PasswordMode() {
 		return errors.New("platform-admin requires MULTICA_AUTH_MODE=password")
 	}

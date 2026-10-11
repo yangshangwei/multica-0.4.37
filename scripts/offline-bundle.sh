@@ -146,6 +146,13 @@ DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 mkdir -p "$OUT_DIR"
 
+# A reused output directory may belong to an installed deployment. Refuse to
+# package its private credentials; never delete or overwrite them to proceed.
+if ! private_files="$(find -H "$OUT_DIR" \( -name 'admin-initial-password.txt' -o -name '.admin-initial-password.*' -o -name '.admin-initialization-compose.*' \) -print -quit)" || [ -n "$private_files" ]; then
+  echo "ERROR: bundle output contains private administrator initialization files; choose a clean output directory" >&2
+  exit 1
+fi
+
 # Stage a validated artifact inside Docker's context without modifying the
 # checked-in fallback. The exact bytes also travel in the offline package.
 command -v node >/dev/null 2>&1 || { echo "Node 22 is required on the bundle build machine" >&2; exit 1; }
@@ -156,11 +163,13 @@ node scripts/publish-changelog.mjs --input "$CHANGELOG_INPUT" --destination "$CH
 CHANGELOG_ARTIFACT_PATH="${CHANGELOG_BUILD_DIR#"$ROOT_DIR"/}/changelog.json"
 mkdir -p "$OUT_DIR/changelog" "$OUT_DIR/scripts"
 cp "$CHANGELOG_BUILD_DIR/changelog.json" "$OUT_DIR/changelog/changelog.json"
-for helper in changelog-lib.mjs publish-changelog.mjs install-changelog.mjs; do
+for helper in changelog-lib.mjs publish-changelog.mjs install-changelog.mjs admin-init-compose.mjs; do
   cp "scripts/$helper" "$OUT_DIR/scripts/$helper"
 done
 cp scripts/install-changelog.sh "$OUT_DIR/install-changelog.sh"
 chmod 0755 "$OUT_DIR/install-changelog.sh"
+cp scripts/initialize-platform-admin.sh "$OUT_DIR/initialize-platform-admin.sh"
+chmod 0755 "$OUT_DIR/initialize-platform-admin.sh"
 
 # Compose interpolates the whole file before it builds anything, and the backend
 # service declares JWT_SECRET with `:?` so an unset value aborts. The real secret
@@ -369,6 +378,10 @@ endpoint. With no egress, assigning an issue to an agent will not run it until
 an internal OpenAI-compatible gateway is reachable.
 README
 
+if ! private_files="$(find -H "$OUT_DIR" \( -name 'admin-initial-password.txt' -o -name '.admin-initial-password.*' -o -name '.admin-initialization-compose.*' \) -print -quit)" || [ -n "$private_files" ]; then
+  echo "ERROR: refusing to distribute private administrator initialization files" >&2
+  exit 1
+fi
 echo ""
 echo "✓ Bundle ready in $OUT_DIR"
 ls -1 "$OUT_DIR"

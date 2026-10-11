@@ -89,7 +89,7 @@ func newPlatformAdminFixture(t *testing.T) *platformAdminFixture {
 	})
 	// Every table written by role mutation or credential revocation is local.
 	// Global last-admin counts must not include another package's fixtures.
-	for _, table := range []string{"user", "user_password_credential", "platform_role_binding", "organization", "organization_workspace", "admin_operation", "admin_audit_event", "personal_access_token", "task_token", "daemon_token", "agent_runtime", "agent_task_queue"} {
+	for _, table := range []string{"user", "user_password_credential", "platform_role_binding", "platform_admin_initialization", "organization", "organization_workspace", "admin_operation", "admin_audit_event", "personal_access_token", "task_token", "daemon_token", "agent_runtime", "agent_task_queue"} {
 		qualified := pgx.Identifier{schema, table}.Sanitize()
 		source := pgx.Identifier{"public", table}.Sanitize()
 		if _, err := base.Exec(context.Background(), "CREATE TABLE "+qualified+" (LIKE "+source+" INCLUDING ALL)"); err != nil {

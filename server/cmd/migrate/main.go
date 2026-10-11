@@ -120,6 +120,8 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"569_platform_admin_initialization_org":                     "platform_admin_initialization_org_uidx",
+	"570_platform_admin_initialization_singleton":               "platform_admin_initialization_singleton_uidx",
 	"551_iteration_settings_workspace":                          "iteration_settings_workspace",
 	"552_iteration_id":                                          "iteration_id",
 	"553_iteration_single_active":                               "iteration_single_active",

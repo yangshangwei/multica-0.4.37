@@ -1838,3 +1838,47 @@ Completed the shared Web/Desktop triage duplicate picker: focus opens all eligib
 ### Status
 
 [OK] **Completed**
+
+
+## Session 57: Admin auto initialization implementation
+<!-- trellis-session: v=2 fp=e5ac36c554ff0b1b -->
+
+**Date**: 2026-10-11
+**Task**: Admin auto initialization implementation
+**Branch**: `codex/admin-auto-initialization`
+
+### Summary
+
+Implemented deployment-only administrator auto initialization with durable private random credentials, permanent database marker, atomic account/role/audit writes, safe retries and forced different first password. Added Compose/offline upgrade integration and packaging secret exclusions, synchronized docs/specs. Verified task-owned Go service/CLI/handler/migration tests, go vet, Node helper/offline tests, shell syntax, docs generation, lint/typecheck and password UI regressions. Full make test exposed unrelated daemon/realtime/session environment failures; real old-deployment Docker/browser acceptance remains a release-stage check. Preserved unrelated next-env and inbox test changes.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d0e63f477` | Automate first platform administrator initialization |
+
+### Status
+
+[OK] **Completed**
+
+
+## Session 58: Admin auto initialization verification follow-up
+<!-- trellis-session: v=2 fp=fcfecf905b191c36 -->
+
+**Date**: 2026-10-11
+**Task**: Admin auto initialization verification follow-up
+**Branch**: `codex/admin-auto-initialization`
+
+### Summary
+
+Follow-up verification after archival: full Go race suite passed on a fresh migrated database through migration 570 with legacy auth and administration disabled, and go vet ./... passed; database was dropped. Production Web browser acceptance passed 1/1 against an isolated password/admin deployment at commit d0e63f477, covering initialization, credential delivery, forced different password, restricted session, admin overview/accounts, revocation, and post-change retry. Bounded TypeScript tests passed all five workspaces (desktop 86 files/970 tests included). The original parallel pnpm test run had one unrelated 5s CoreProvider timeout; bounded concurrency rerun passed. Temporary environment/worktree removed; unrelated next-env and inbox changes remain dirty.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d0e63f477` | Automate first platform administrator initialization |
+
+### Status
+
+[OK] **Completed**

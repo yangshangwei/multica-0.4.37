@@ -407,6 +407,10 @@ func (h *Handler) PasswordChange(w http.ResponseWriter, r *http.Request) {
 		passwordError(w, 401, "session_revoked", "Session is no longer valid")
 		return
 	}
+	if current.MustChangePassword && req.Current == req.New {
+		passwordError(w, http.StatusBadRequest, "password_unchanged", "Choose a password different from your temporary password")
+		return
+	}
 	current, err = q.ChangePasswordCredential(r.Context(), db.ChangePasswordCredentialParams{UserID: uid, PasswordHash: hash, SessionVersion: session.Version})
 	if err != nil {
 		passwordDBError(w, err)

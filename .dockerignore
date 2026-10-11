@@ -13,6 +13,9 @@ server/tmp
 .gitignore
 
 # Environment
+**/admin-initial-password.txt
+**/.admin-initial-password.*
+**/.admin-initialization-compose.*
 .env
 .env.*
 !.env.example

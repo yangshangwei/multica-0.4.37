@@ -101,6 +101,12 @@ PACKAGE_DIR="$OUT_DIR/$PACKAGE_NAME"
 ARCHIVE="$OUT_DIR/$PACKAGE_NAME.tar.gz"
 
 mkdir -p "$OUT_DIR"
+if [ -d "$PACKAGE_DIR" ]; then
+  if ! private_files="$(find -H "$PACKAGE_DIR" \( -name 'admin-initial-password.txt' -o -name '.admin-initial-password.*' -o -name '.admin-initialization-compose.*' \) -print -quit)" || [ -n "$private_files" ]; then
+    echo "ERROR: package directory contains private administrator initialization files; choose a clean output directory" >&2
+    exit 1
+  fi
+fi
 rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR/desktop"
 

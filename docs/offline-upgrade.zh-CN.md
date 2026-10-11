@@ -31,7 +31,7 @@
 | --- | --- | --- |
 | `FF_PROJECTS_P1` | `true` | 项目概览/进展默认可用；设 `false` 停止新进展写入并撤下入口，保留历史和描述版本校验 |
 | 工作空间迭代 | 默认关闭 | 所有者或管理员在“设置 → 工作空间 → 迭代”中启用，无需环境变量 |
-| `MULTICA_PLATFORM_ADMIN_ENABLED` | `false` | 仅密码模式下按需启用；还需初始化超级管理员，工作空间管理员不自动拥有平台权限 |
+| `MULTICA_PLATFORM_ADMIN_ENABLED` | `false` | 仅密码模式下按需启用；升级脚本按[7.5 节](#platform-administration)自动初始化首次管理员，已有平台账号和权限保留 |
 | `MULTICA_MANAGED_INSTALLATIONS_ENABLED` | `false` | 仅按需启用；要求密码模式和有效、固定的 `MULTICA_DEPLOYMENT_ID` UUID |
 | `MULTICA_DEPLOYMENT_ID` | 空 | 已有值必须保留，不能每次升级生成新的 UUID |
 | `MULTICA_ADMIN_*_RETENTION_DAYS` | 空 | 三项已声明的管理保留期现在可传入；只展示策略，不启用自动清理 |
@@ -86,7 +86,7 @@ cd /opt/multica-upgrade
 4. 备份当前 `.env`、旧主 Compose、已有命令记录和本次传入的覆盖文件；
 5. 校验变更说明，在日志目录中原子替换 `changelog.json`，并保存日志路径和选定的镜像配置；
 6. 保存新版主 Compose 和完整命令记录，再启动后端和前端；
-7. 等待 `/healthz` 返回成功。
+7. 等待 `/healthz` 返回成功；密码模式且后台已开启时，执行一次性管理员初始化，再报告升级完成。
 
 脚本更新 `/opt/multica/.env` 中的 `MULTICA_BACKEND_IMAGE`、`MULTICA_WEB_IMAGE`、`MULTICA_IMAGE_TAG`、`CHANGELOG_FILE` 和 `CHANGELOG_DIRECTORY`，保留其余设置、文件权限和 Docker 数据卷。镜像选择会持久保存，之后在部署目录直接执行 `docker compose -f docker-compose.selfhost.yml up -d --pull never` 仍会使用本次升级的版本，无需重新传入镜像环境变量。
 
@@ -276,11 +276,158 @@ curl -fsS http://127.0.0.1:8080/api/config
 
 源码开发环境把配置写入启动时实际读取的 `.env` 或 `.env.worktree`，然后重新启动 API。认证方式由运行中的 API 决定，不需要仅为切换配置重新打桌面安装包；已安装客户端仍须具备对应功能。
 
-### 7.5 每次打包升级必须核对
+<a id="platform-administration"></a>
+
+### 7.5 旧环境首次开启平台管理后台
+
+**升级包不会自动开启后台或改变认证模式。** 当业务部署已经使用密码模式并开启后台时，新版升级脚本会在迁移和健康检查成功后自动初始化专用管理员。没有既有平台角色或管理员初始化历史时，创建用户名 `platform_admin`，生成本部署独立的随机初始密码，保存到业务部署目录的 `admin-initial-password.txt`。没有所有部署通用的默认密码。
+
+已有管理员、观察者或保留的成功初始化记录时，脚本保留现状，不重置密码、不重复创建。后台入口位于 Web 的 `/admin`；新账号必须先完成强制改密，才能执行管理操作。
+
+如果仍使用设备自动登录，先按 7.3 节安排原账号迁移，再切换密码模式；不要为了开启后台直接跳过迁移。已使用密码登录的环境保留原有认证设置，补齐缺少的管理配置即可。
+
+#### 7.5.1 补齐服务端 ENV 配置
+
+先备份业务部署的 `/opt/multica/.env`，修改已有同名项，缺少时再增加。以下为单个 API 进程的完整配置：
+
+```dotenv
+MULTICA_AUTH_MODE=password
+MULTICA_DEVICE_AUTH_ENABLED=false
+MULTICA_CLOUD_URL=
+MULTICA_PASSWORD_LIMITER_MODE=single
+MULTICA_PLATFORM_ADMIN_ENABLED=true
+MULTICA_MANAGED_INSTALLATIONS_ENABLED=true
+MULTICA_DEPLOYMENT_ID=<本部署固定的UUID>
+```
+
+多个 API 副本继续使用 `shared` 限流和同一个 `REDIS_URL`，不要照抄 `single`。保留现有 `JWT_SECRET`、数据库密码、集成密钥及账号迁移窗口设置。
+
+| 配置 | 用途 |
+| --- | --- |
+| `MULTICA_PLATFORM_ADMIN_ENABLED` | 开启平台管理后台；不会给任何账号自动授权 |
+| `MULTICA_MANAGED_INSTALLATIONS_ENABLED` | 开启受管终端注册与上报能力；需要兼容的桌面端和守护进程 |
+| `MULTICA_DEPLOYMENT_ID` | 标识这一套部署，总览和安装查询也需要它；只开启后台开关仍可能返回 `installation_unavailable` |
+
+**已有部署 UUID 必须沿用。** 仅当该部署从未配置过 UUID 时，在目标 Linux 服务器执行一次：
+
+```bash
+cat /proc/sys/kernel/random/uuid
+```
+
+把输出填写到 `MULTICA_DEPLOYMENT_ID`，替换上面的占位值，并随部署配置一起备份。之后升级、重启或新增副本都使用同一个值。不要复制开发机或其他部署的 UUID；也不要把开发机的管理员密码、账号 UUID 写入交付文档。
+
+`.env` 中不需要填写管理员用户名或密码。初始化通过服务器上的部署维护命令完成，`ALLOW_SIGNUP=false` 时同样可用，无需临时开放普通注册。账号、密码哈希、平台角色和永久初始化记录保存在数据库中，初始明文密码仅写入宿主机的受限文件。
+
+#### 7.5.2 重建后端并确认配置生效
+
+以下命令在 Bash 中执行。若部署使用 Compose 覆盖文件，将原来的每个 `-f /实际路径/覆盖文件.yml` 按原顺序加入数组，保持与 `compose-command.txt` 一致；后面的重建、查询和初始化都使用同一数组。
+
+```bash
+cd /opt/multica
+compose=(docker compose
+  --project-directory /opt/multica
+  --env-file /opt/multica/.env
+  -f /opt/multica/docker-compose.selfhost.yml
+)
+
+"${compose[@]}" up -d --pull never --no-deps --force-recreate backend
+
+curl -fsS http://127.0.0.1:8080/healthz
+curl -fsS http://127.0.0.1:8080/api/config
+```
+
+使用实际后端端口替换 `8080`。等待 `/healthz` 成功后再进行账号初始化；它尚未就绪时查看后端日志，确认迁移是否成功。只执行 `restart` 不会读取新的容器环境变量；Shell 中残留的同名 `export` 也可能覆盖 `.env`，应按 7.4 节核对。
+
+`/api/config` 应返回：
+
+| 字段 | 预期 |
+| --- | --- |
+| `auth_mode` | `password` |
+| `password_auth_available` | `true` |
+| `platform_admin_available` | `true` |
+| `managed_installation_supported` | `true` |
+| `deployment_id` | 与该部署 `.env` 中保存的 UUID 一致 |
+
+#### 7.5.3 创建专用账号并初始化超级管理员
+
+如果执行升级时上述配置已经生效，`offline-upgrade.sh` 会自动完成这一步。若升级后才开启后台，或初始化阶段失败后需要重试，在服务器使用同一个升级包执行：
+
+```bash
+bash /opt/multica-upgrade/initialize-platform-admin.sh \
+  --deployment-dir /opt/multica
+```
+
+已有 Compose 覆盖文件时，与升级命令一样，按原顺序追加每个 `--compose-file`。脚本使用部署目录里已安装的主 Compose 和实际镜像，不重新构建或从公网拉取，也不需要宿主机安装 Node.js 或 Go。
+
+查看非秘密回执：`initialized` 表示首次账号已创建且密码文件可用；`already_initialized` 表示永久记录已存在；`preserved_existing_admin` 表示保留原有平台管理配置。仅在回执确认初始凭据文件可用时，按提示读取该文件；账号已改密后，旧文件中的初始密码不再有效。
+
+在运行升级脚本的同一操作系统账号下读取初始密码：
+
+```bash
+cat /opt/multica/admin-initial-password.txt
+```
+
+文件为 JSON，登录使用其中的 `username` 和 `initial_password`。文件权限为 `0600`，其他系统账号不能直接读取；不要将内容粘贴到普通日志、工单、仓库或升级包中。路径跟随 `--deployment-dir`，不是升级包解压目录。
+
+初始化先同步密码文件，再提交账号、角色和记录。重复执行会核对原有意图，不生成另一密码；普通 API 重启也不会创建账号。初始化失败时，服务可能已升级，但脚本不会报告整次升级成功。保留回执和原文件，修复原因后重试上述维护脚本，不必重复导入镜像。
+
+#### 7.5.4 首次改密与登录验收
+
+使用文件中的初始密码登录 **实际 Web 地址的 `/login?next=%2Fadmin`**，按提示设置与初始密码不同的新密码。完成改密前不能访问后台或业务数据；完成后进入 `/admin`，初始密码和此前受限会话均失效。
+
+不要填写 API 端口；从其他电脑访问时使用服务器的实际 IP 或域名，`127.0.0.1` 指向访问者自己。没有生成新账号的既有部署继续使用原来的管理员登录。
+
+- 在浏览器开发者工具的网络面板中确认已登录请求 `/api/admin/me` 返回 `200`，`role` 为 `super_admin`。
+- 确认总览和账号列表正常加载，对应 `/api/admin/overview`、`/api/admin/users` 返回 `200`。没有受管终端时数量可以为零，但不应出现数据加载失败。
+- 验证初始密码已不能再次登录；妥善保存新密码。完成改密后可删除失效的初始密码文件，再次升级不会重新创建它。
+- 保存本次配置变更、非秘密初始化回执和验收结果。后续升级保留数据库、`JWT_SECRET`、固定部署 UUID 和永久初始化记录；停用或撤销管理员后也不会自动重建。
+
+| 现象 | 处理 |
+| --- | --- |
+| `platform_admin_available=false` 或跳过初始化 | 核对密码模式、后台开关、Compose 变量传入及实际容器是否已重建 |
+| 已登录，但总览返回 `installation_unavailable` | 检查固定 `MULTICA_DEPLOYMENT_ID` 是否有效并已进入后端容器；不要重新生成已有 UUID |
+| 保留已有管理员，未生成密码文件 | 使用既有管理员；观察者或历史管理员也不会被自动替换 |
+| `platform_admin` 已被普通账号占用 | 不会自动提权或改密。核实账号后按 7.5.5 节显式授权，或由已有超级管理员处理 |
+| 密码文件权限、内容、部署标识或意图不匹配 | 保留原文件，核对实际部署和文件归属；不要覆盖文件来强行重试 |
+| `credentials_unavailable` | 已创建的待改密账号没有匹配的本地密码文件；先核对原初始化主机。确已丢失时，对回执中的账号 UUID 执行现有密码恢复流程，不会自动重置；最后一位管理员的恢复仍需 `--break-glass` |
+| 首次改密被拒绝 | 新密码必须与初始密码不同；保留当前页面并重新提交符合要求的新密码 |
+| 升级提示管理员初始化未完成 | 先核对服务健康和回执，修复后单独重试初始化脚本；不要删除初始化记录或重新建账号 |
+
+#### 7.5.5 保留人工授权方式
+
+需要明确选择已有账号作为管理员时，仍可使用原来的人工 `bootstrap`。先通过 Web 建立密码账号并完成必要改密；该命令不创建用户、不设置密码，仅在没有有效超级管理员时向指定账号授权。已有超级管理员时优先在后台授予权限。
+
+在服务器查询刚注册账号的 UUID。下面使用随部署运行的 `postgres` 容器，只读取账号标识，不读取密码；将 SQL 中的 `platform_admin` 换成实际注册的用户名：
+
+```bash
+"${compose[@]}" exec -T postgres sh -c \
+  'exec psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1' <<'SQL'
+BEGIN READ ONLY;
+SELECT u.id, c.username, u.name
+FROM "user" AS u
+JOIN user_password_credential AS c ON c.user_id = u.id
+WHERE c.username = 'platform_admin';
+COMMIT;
+SQL
+```
+
+核对结果恰好对应目标账号，再把 `USER_UUID` 替换成查询到的完整 UUID。若后端使用外部数据库，应在后端实际连接的数据库中执行上述只读查询，不要查询另一套本地数据库。
+
+```bash
+"${compose[@]}" exec -T backend /app/server platform-admin bootstrap \
+  --user USER_UUID \
+  --reason "Initialize deployment administration"
+```
+
+人工授权会撤销目标账号的旧凭据，之后重新输入其密码登录。首个注册用户、工作空间 owner/admin 都不会自动获得平台权限。人工授权也会保留永久初始化记录，后续自动升级不会再生成一个额外管理员。
+
+### 7.6 每次打包升级必须核对
 
 - [ ] 本次交付说明写明：保持原认证模式，还是计划从设备模式迁移到密码模式。
-- [ ] 升级文档包含两组配置、限流选择、旧账号迁移、应用配置和验收步骤；示例与本次发布的实际代码一致。
-- [ ] 使用 `scripts/build-offline-upgrade.sh` 或 `make offline-upgrade-bundle` 打包。脚本会把本文件复制为包内的 `README.md` 和 `操作文档.md`；解包确认两份均包含本节，而不是旧版说明。
+- [ ] 升级文档包含两组配置、限流选择、旧账号迁移、应用配置和验收步骤；首次开启后台时，按 7.5 节验证自动初始化、私有密码文件、首次改密和后台访问。
+- [ ] 使用 `scripts/build-offline-upgrade.sh` 或 `make offline-upgrade-bundle` 打包。脚本会把本文件复制为包内的 `README.md` 和 `操作文档.md`；解包确认两份均与源文档一致，包含认证迁移及“旧环境首次开启平台管理后台”完整步骤。
+- [ ] 管理配置使用目标部署已有或首次生成的固定 UUID；示例中没有开发机的真实 UUID、账号凭据或数据库密码。普通升级仍保持原认证方式和后台开关。
+- [ ] 升级包包含独立初始化脚本及其辅助文件，不包含 `admin-initial-password.txt` 或 `.admin-initial-password.*` 暂存文件；验证重复升级保留既有凭据。
 - [ ] 仅发布桌面安装包时，随交付说明附上本节或对应服务端升级手册，并明确桌面升级不会自行切换认证模式。
 - [ ] 记录切换前后 `/api/config`、实际登录验收和需要迁移的账号处理结果。迁移窗口使用本次部署确定的时间，不沿用过期示例。
 
@@ -308,4 +455,4 @@ P1 的项目概览和进展默认可用。迭代由每个工作空间独立管�
 
 后台资源发布保持关闭，包内 `docker-compose.resource-publishing.yml` 仅供选择启用。已有密码模式且已初始化超级管理员、确实要启用时，将此文件保存到部署目录（已有文件先备份并核对，勿覆盖定制），然后在所有 Compose 命令中追加 `-f /opt/multica/docker-compose.resource-publishing.yml`，在以后升级时追加对应 `--compose-file`。它设置 `MULTICA_RESOURCE_PUBLISH_DIR=/app/data/resources` 并挂载专用 `managed_resources` 卷；只在 `.env` 设置目录不会创建挂载。详见同包的 [后台资源发布说明](admin-resource-publishing.zh-CN.md)。
 
-保留现有认证时，不要为了启用资源发布直接切换旧设备账号；需要切换的部署必须先完成第七节账号迁移。平台管理只开启开关还不够，需要用同一部署的数据库和配置初始化已有的完整密码账号，例如在后端容器中运行 `/app/server platform-admin bootstrap --user USER_UUID --reason "Initialize deployment administration"`，然后重新登录。部署管理开关和资源发布卷都不会在普通升级中自动打开。
+保留现有认证时，不要为了启用资源发布直接切换旧设备账号；需要切换的部署必须先完成第七节账号迁移。首次启用平台管理按 [7.5 节](#platform-administration)完成配置、账号授权和登录验收。部署管理开关和资源发布卷都不会在普通升级中自动打开。

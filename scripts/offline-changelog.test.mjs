@@ -16,7 +16,7 @@ function offlineFixture(t, directory) {
   mkdirSync(join(cwd, "apps/desktop/scripts"), { recursive: true });
   cpSync(resolve(scripts, "../apps/desktop/scripts/update-artifacts.mjs"), join(cwd, "apps/desktop/scripts/update-artifacts.mjs"));
   symlinkSync(resolve(scripts, "../apps/desktop/node_modules"), join(cwd, "apps/desktop/node_modules"), "dir");
-  for (const name of ["offline-bundle.sh", "offline-installer.sh", "build-offline-upgrade.sh", "offline-upgrade.sh", "changelog-lib.mjs", "publish-changelog.mjs", "install-changelog.sh", "install-changelog.mjs"]) {
+  for (const name of ["offline-bundle.sh", "offline-installer.sh", "build-offline-upgrade.sh", "offline-upgrade.sh", "changelog-lib.mjs", "publish-changelog.mjs", "install-changelog.sh", "install-changelog.mjs", "initialize-platform-admin.sh", "admin-init-compose.mjs"]) {
     const source = join(scripts, name);
     if (existsSync(source)) cpSync(source, join(cwd, "scripts", name));
   }
@@ -28,7 +28,7 @@ function offlineFixture(t, directory) {
   cpSync(resolve(scripts, "../docs/mcp-intranet-setup.md"), join(cwd, "docs/mcp-intranet-setup.md"));
   const fake = join(cwd, "bin/docker");
   writeFileSync(fake, `#!${process.execPath}
-import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 const args = process.argv.slice(2);
@@ -52,6 +52,7 @@ else if (args[0] === 'run') {
     const mount = mounts.find((item) => arg.startsWith(item.dst + '/'));
     return mount ? mount.src + arg.slice(mount.dst.length) : arg;
   });
+  if (args.includes('--input-type=module')) mapped.unshift('--input-type=module');
   const child = spawnSync(${JSON.stringify(process.execPath)}, mapped, { stdio: 'inherit', env: process.env });
   process.exit(child.status ?? 1);
 } else if (args[0] === 'compose' && args.includes('build')) {
@@ -66,7 +67,7 @@ else if (args[0] === 'run') {
 } else if (args[0] === 'compose' && args.includes('config')) {
   const env = readFileSync(args[args.indexOf('--env-file') + 1], 'utf8');
   const values = {};
-  for (const key of ['CHANGELOG_FILE', 'CHANGELOG_DIRECTORY']) {
+  for (const key of ['CHANGELOG_FILE', 'CHANGELOG_DIRECTORY', 'MULTICA_AUTH_MODE', 'MULTICA_PLATFORM_ADMIN_ENABLED']) {
     const line = env.split('\\n').findLast((line) => line.startsWith(key + '='));
     let value = line?.slice(key.length + 1) ?? '';
     if (value.startsWith('"')) value = JSON.parse(value).replace(/\\$\\$/g, '$');
@@ -74,13 +75,30 @@ else if (args[0] === 'run') {
     values[key] = value;
   }
   const source = resolve(args[args.indexOf('--project-directory') + 1], values.CHANGELOG_DIRECTORY || './changelog').replace(/\\$/g, () => '$$');
-  process.stdout.write(JSON.stringify({ services: { backend: { image: (process.env.MULTICA_BACKEND_IMAGE || 'multica-backend') + ':' + (process.env.MULTICA_IMAGE_TAG || 'dev'), environment: { CHANGELOG_FILE: values.CHANGELOG_FILE }, volumes: [{ type: 'bind', source, target: '/app/data/changelog' }] }, frontend: { image: (process.env.MULTICA_WEB_IMAGE || 'multica-web') + ':' + (process.env.MULTICA_IMAGE_TAG || 'dev') } } }));
+  process.stdout.write(JSON.stringify({ services: { backend: { image: (process.env.MULTICA_BACKEND_IMAGE || 'multica-backend') + ':' + (process.env.MULTICA_IMAGE_TAG || 'dev'), environment: { ...values }, volumes: [{ type: 'bind', source, target: '/app/data/changelog' }] }, frontend: { image: (process.env.MULTICA_WEB_IMAGE || 'multica-web') + ':' + (process.env.MULTICA_IMAGE_TAG || 'dev') } } }));
+} else if (args[0] === 'compose' && args.includes('run')) {
+  if (process.env.FAIL_INITIALIZE === '1') { process.stderr.write('ERROR: credentials_unavailable\\n'); process.exit(47); }
+  if (process.env.REAL_COMPOSE_BINARY) {
+    const resolved = spawnSync(process.env.REAL_COMPOSE_BINARY, [...args.slice(0, args.indexOf('run')), 'config', '--format', 'json'], { encoding: 'utf8', env: process.env });
+    if (resolved.status !== 0) { process.stderr.write(resolved.stderr); process.exit(48); }
+    writeFileSync(process.env.DOCKER_LOG + '.admin-resolved', resolved.stdout);
+  }
+  const file = args.flatMap((arg, index) => arg === '-f' ? [args[index + 1]] : []).at(-1);
+  const overlay = JSON.parse(readFileSync(file, 'utf8'));
+  writeFileSync(process.env.DOCKER_LOG + '.admin-overlay', JSON.stringify(overlay));
+  writeFileSync(process.env.DOCKER_LOG + '.admin-overlay-mode', String(statSync(file).mode & 0o777));
+  const directory = overlay.services.backend.volumes[0].source.replace(/\\$\\$/g, '$');
+  const credentials = directory + '/admin-initial-password.txt';
+  const existed = existsSync(credentials);
+  if (!existed) writeFileSync(credentials, 'private-initial-password\\n', { mode: 0o600, flag: 'wx' });
+  if (process.env.FAIL_INITIALIZE === 'after_file') { process.stderr.write('ERROR: transaction_failed\\n'); process.exit(49); }
+  process.stdout.write(JSON.stringify({ schema_version: 1, status: existed ? 'already_initialized' : 'initialized', credentials_file: '/deployment-admin-init/admin-initial-password.txt' }) + '\\n');
 } else if (args[0] === 'compose' && args.includes('port')) process.stdout.write('127.0.0.1:8080\\n');
 else if (args[0] === 'compose' && args.includes('exec')) process.stdout.write('fixture database dump\\n');
 else if (args[0] === 'compose' && args.includes('up') && process.env.FAIL_UP === '1') process.exit(46);
 `);
   chmodSync(fake, 0o755);
-  writeFileSync(join(cwd, "bin/curl"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
+  writeFileSync(join(cwd, "bin/curl"), '#!/bin/sh\nprintf \'["fixture-health"]\\n\' >> "$DOCKER_LOG"\nexit 0\n', { mode: 0o755 });
   const env = { ...process.env, PATH: `${join(cwd, "bin")}:${process.env.PATH}`, VERSION: "v1.0.0-fixture", COMMIT: "fixture", DOCKER_LOG: join(cwd, "docker.log"), JWT_SECRET: "fixture-secret" };
   return { cwd, env };
 }
@@ -110,7 +128,8 @@ test("offline bundle carries exact feed and every publisher helper, then install
   const output = join(fixture.cwd, "bundle");
   const built = bash(fixture.cwd, fixture.env, "scripts/offline-bundle.sh", "--output", output, "--platform", "linux/amd64");
   assert.equal(built.status, 0, built.stderr);
-  for (const path of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/publish-changelog.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docker-compose.resource-publishing.yml", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(existsSync(join(output, path)), `bundle missing ${path}`);
+  for (const path of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/publish-changelog.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "initialize-platform-admin.sh", "scripts/admin-init-compose.mjs", "docker-compose.resource-publishing.yml", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(existsSync(join(output, path)), `bundle missing ${path}`);
+  assert.equal(statSync(join(output, "initialize-platform-admin.sh")).mode & 0o777, 0o755);
   assert.equal(readFileSync(fixture.env.DOCKER_LOG + ".embedded", "utf8"), readFileSync(join(output, "changelog/changelog.json"), "utf8"));
   assert.deepEqual(readdirSync(join(fixture.cwd, ".changelog-build")), [], "own Docker context staging is cleaned");
   const deployment = join(fixture.cwd, "deployment");
@@ -137,7 +156,7 @@ test("upgrade archive includes publication tools and upgrade performs the handof
   assert.equal(built.status, 0, built.stderr);
   const archive = readdirSync(join(fixture.cwd, "upgrade")).find((name) => name.endsWith(".tar.gz"));
   const listing = spawnSync("tar", ["-tzf", join(fixture.cwd, "upgrade", archive)], { encoding: "utf8" });
-  for (const file of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "docker-compose.resource-publishing.yml", "admin-resource-publishing.zh-CN.md", "mcp-catalog-publishing.md", "mcp-intranet-setup.md", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(listing.stdout.includes(file), `archive omitted ${file}`);
+  for (const file of ["changelog/changelog.json", "scripts/changelog-lib.mjs", "scripts/install-changelog.mjs", "install-changelog.sh", "initialize-platform-admin.sh", "scripts/admin-init-compose.mjs", "docker-compose.resource-publishing.yml", "admin-resource-publishing.zh-CN.md", "mcp-catalog-publishing.md", "mcp-intranet-setup.md", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md", "mcp-templates/README.txt", "skill-templates/README.txt"]) assert.ok(listing.stdout.includes(file), `archive omitted ${file}`);
   const packageDir = join(fixture.cwd, "upgrade", archive.slice(0, -7));
   for (const file of ["README.md", "操作文档.md", "admin-resource-publishing.zh-CN.md", "mcp-catalog-publishing.md", "mcp-intranet-setup.md", "docs/admin-resource-publishing.zh-CN.md", "docs/mcp-catalog-publishing.md"]) {
     const content = readFileSync(join(packageDir, file), "utf8");
@@ -287,6 +306,7 @@ test("upgrade failures retain backups and never claim container or database roll
       assert.equal(readFileSync(join(f.backup, "docker-compose.selfhost.yml"), "utf8"), oldCompose);
       const current = readFileSync(join(f.deployment, ".env"), "utf8");
       const calls = readFileSync(f.env.DOCKER_LOG, "utf8").trim().split("\n").map(JSON.parse);
+      assert.equal(calls.some((args) => args[0] === "compose" && args.includes("run")), false, "initialization must wait for a successful health check");
       if (failure === "FAIL_CONTAINER") {
         assert.equal(current, f.originalEnv);
         assert.equal(readFileSync(join(f.deployment, "docker-compose.selfhost.yml"), "utf8"), oldCompose);
@@ -324,6 +344,147 @@ test("missing image execution or malformed bundled feed leaves existing feed and
   }
 });
 
+test("administrator helper skips disabled deployments without host Node or deployment writes", async (t) => {
+  for (const [mode, enabled, status] of [["legacy", "true", "skipped_mode_disabled"], ["password", "false", "skipped_admin_disabled"]]) {
+    await t.test(status, (t) => {
+      const f = upgradeFixture(t);
+      const envBytes = f.originalEnv + `MULTICA_AUTH_MODE=${mode}\nMULTICA_PLATFORM_ADMIN_ENABLED=${enabled}\n`;
+      writeFileSync(join(f.deployment, ".env"), envBytes);
+      const before = readdirSync(f.deployment);
+      const logOffset = readFileSync(f.env.DOCKER_LOG, "utf8").length;
+      assert.notEqual(spawnSync("node", ["--version"], { env: f.withoutNode }).status, 0);
+      const result = bash(f.packageDir, f.withoutNode, "initialize-platform-admin.sh", "--deployment-dir", f.deployment);
+      assert.equal(result.status, 0, result.stderr);
+      assert.deepEqual(JSON.parse(result.stdout), { schema_version: 1, status });
+      assert.deepEqual(readdirSync(f.deployment), before);
+      assert.equal(readFileSync(join(f.deployment, ".env"), "utf8"), envBytes);
+      const calls = readFileSync(f.env.DOCKER_LOG, "utf8").slice(logOffset).trim().split("\n").map(JSON.parse);
+      assert.equal(calls.some((args) => args[0] === "compose" && args.includes("run")), false);
+      assert.equal(calls.some((args) => args.includes("--mount")), false);
+    });
+  }
+});
+
+test("administrator helper uses installed Compose, ordered overlays and literal unusual paths for safe retries", { skip: !composeAvailable }, (t) => {
+  const f = upgradeFixture(t);
+  const deployment = join(f.cwd, 'operator\'s $notes $${literal} "quote",disk:1\\data');
+  cpSync(f.deployment, deployment, { recursive: true });
+  const overlays = [join(deployment, 'first "settings",1.yml'), join(deployment, "last $settings:2.yml")];
+  const image = "registry.intranet:5000/custom-backend:installed";
+  writeFileSync(overlays[0], JSON.stringify({ services: { backend: { environment: {
+    MULTICA_AUTH_MODE: "password", MULTICA_PLATFORM_ADMIN_ENABLED: "true", ALLOW_SIGNUP: "false", DATABASE_URL: "postgres://fixture:private-db@postgres/fixture",
+  } } } }));
+  writeFileSync(overlays[1], JSON.stringify({ services: { backend: { image, environment: { MULTICA_DEPLOYMENT_ID: "eeeeeeee-1111-2222-3333-444444444444" }, networks: { operator: null } } }, networks: { operator: {} } }));
+  // Standalone maintenance needs the installed main file, never a stale
+  // packaged main, and does not need to load/build/save images again.
+  rmSync(join(f.packageDir, "docker-compose.selfhost.yml"));
+  f.withoutNode.REAL_COMPOSE_BINARY = spawnSync("which", ["docker"], { encoding: "utf8" }).stdout.trim();
+  f.withoutNode.CHANGELOG_DIRECTORY = "./custom-feed";
+  const beforeEnv = readFileSync(join(deployment, ".env"), "utf8");
+  const logOffset = readFileSync(f.env.DOCKER_LOG, "utf8").length;
+  const args = ["initialize-platform-admin.sh", "--deployment-dir", deployment, "--compose-file", 'first "settings",1.yml', "--compose-file", overlays[1], "--backend-image", image];
+  const first = bash(f.packageDir, f.withoutNode, ...args);
+  assert.equal(first.status, 0, first.stderr);
+  assert.equal(JSON.parse(first.stdout).status, "initialized");
+  const credentials = join(deployment, "admin-initial-password.txt");
+  const bytes = readFileSync(credentials);
+  const second = bash(f.packageDir, f.withoutNode, ...args);
+  assert.equal(second.status, 0, second.stderr);
+  assert.deepEqual(JSON.parse(second.stdout), { schema_version: 1, status: "already_initialized", credentials_file: credentials });
+  assert.deepEqual(readFileSync(credentials), bytes);
+  assert.equal(statSync(credentials).mode & 0o777, 0o600);
+  assert.equal(statSync(credentials).uid, process.getuid());
+  assert.equal(readFileSync(f.env.DOCKER_LOG + ".admin-overlay-mode", "utf8"), String(0o600));
+  assert.equal(readFileSync(join(deployment, ".env"), "utf8"), beforeEnv);
+  assert.equal(readdirSync(deployment).some((name) => name.startsWith(".admin-initialization-compose.")), false);
+  const actual = JSON.parse(readFileSync(f.env.DOCKER_LOG + ".admin-resolved", "utf8")).services.backend;
+  assert.equal(actual.image, image);
+  assert.equal(actual.environment.DATABASE_URL, "postgres://fixture:private-db@postgres/fixture");
+  assert.equal(actual.environment.ALLOW_SIGNUP, "false");
+  assert.equal(actual.environment.MULTICA_PLATFORM_ADMIN_ENABLED, "true");
+  assert.equal(actual.user, `${process.getuid()}:${process.getgid()}`);
+  assert.ok(Object.hasOwn(actual.networks, "operator"));
+  const mount = actual.volumes.find((volume) => volume.target === "/deployment-admin-init");
+  assert.equal(mount.source.replace(/\$\$/g, "$"), deployment);
+  assert.equal(mount.bind.create_host_path, false);
+  const rawLog = readFileSync(f.env.DOCKER_LOG, "utf8").slice(logOffset);
+  const calls = rawLog.trim().split("\n").map(JSON.parse);
+  const runs = calls.filter((argv) => argv[0] === "compose" && argv.includes("run"));
+  assert.equal(runs.length, 2);
+  for (const argv of runs) {
+    const files = argv.flatMap((arg, index) => arg === "-f" ? [argv[index + 1]] : []);
+    assert.deepEqual(files.slice(0, 3), [join(deployment, "docker-compose.selfhost.yml"), ...overlays]);
+    assert.deepEqual(argv.slice(argv.indexOf("run")), ["run", "--no-deps", "--pull", "never", "--rm", "-T", "--entrypoint", "/app/server", "backend", "platform-admin", "initialize", "--credentials-file", "/deployment-admin-init/admin-initial-password.txt", "--reason", "Offline deployment administrator initialization"]);
+  }
+  assert.equal(calls.some((argv) => ["load", "pull", "save"].includes(argv[0]) || argv.includes("up") || argv.includes("build") || argv.includes("--service-ports")), false);
+  for (const secret of ["private-initial-password", "private-db", "preserve-secret"]) assert.equal((rawLog + first.stdout + first.stderr + second.stdout + second.stderr).includes(secret), false);
+});
+
+test("administrator helper rejects invalid paths, missing overlays and conflicting reserved mounts", { skip: !composeAvailable }, async (t) => {
+  const f = upgradeFixture(t);
+  f.withoutNode.REAL_COMPOSE_BINARY = spawnSync("which", ["docker"], { encoding: "utf8" }).stdout.trim();
+  f.withoutNode.CHANGELOG_DIRECTORY = "./custom-feed";
+  const overlay = join(f.deployment, "conflict.json");
+  writeFileSync(overlay, JSON.stringify({ services: { backend: { environment: { MULTICA_AUTH_MODE: "password", MULTICA_PLATFORM_ADMIN_ENABLED: "true" }, volumes: [{ type: "bind", source: f.deployment, target: "/deployment-admin-init" }] } } }));
+  for (const [name, args, message] of [
+    ["newline", ["--deployment-dir", f.deployment + "\n"], /single-line/],
+    ["overlay", ["--deployment-dir", f.deployment, "--compose-file", "missing.yml"], /missing or unreadable/],
+    ["conflict", ["--deployment-dir", f.deployment, "--compose-file", overlay], /reserved_mount_conflict/],
+  ]) {
+    await t.test(name, () => {
+      const logOffset = readFileSync(f.env.DOCKER_LOG, "utf8").length;
+      const result = bash(f.packageDir, f.withoutNode, "initialize-platform-admin.sh", ...args);
+      assert.notEqual(result.status, 0);
+      assert.match(result.stderr, message);
+      assert.equal(existsSync(join(f.deployment, "admin-initial-password.txt")), false);
+      assert.equal(readdirSync(f.deployment).some((file) => file.startsWith(".admin-initialization-compose.")), false);
+      const calls = readFileSync(f.env.DOCKER_LOG, "utf8").slice(logOffset).trim().split("\n").filter(Boolean).map(JSON.parse);
+      assert.equal(calls.some((argv) => argv[0] === "compose" && argv.includes("run")), false);
+      if (name !== "conflict") assert.deepEqual(calls, []);
+    });
+  }
+});
+
+test("upgrade initializes only after health and retains upgraded state on initialization failure", async (t) => {
+  for (const failure of [false, true]) {
+    await t.test(failure ? "initialization fails after file publication" : "initialization completes", (t) => {
+      const f = upgradeFixture(t);
+      const enabled = f.originalEnv + "MULTICA_AUTH_MODE=password\nMULTICA_PLATFORM_ADMIN_ENABLED=true\nALLOW_SIGNUP=false\n";
+      writeFileSync(join(f.deployment, ".env"), enabled);
+      const environment = { ...f.withoutNode, FAIL_INITIALIZE: failure ? "after_file" : "0" };
+      const upgraded = bash(f.packageDir, environment, "offline-upgrade.sh", "--deployment-dir", f.deployment, "--backup-dir", f.backup, "--yes");
+      const calls = readFileSync(f.env.DOCKER_LOG, "utf8").trim().split("\n").map(JSON.parse);
+      const health = calls.findIndex((argv) => argv[0] === "fixture-health");
+      const initialize = calls.findIndex((argv) => argv[0] === "compose" && argv.includes("run"));
+      assert.ok(health >= 0 && initialize > health);
+      assert.equal(readFileSync(join(f.backup, ".env"), "utf8"), enabled);
+      assert.ok(existsSync(join(f.backup, "database.sql")));
+      const overlay = JSON.parse(readFileSync(f.env.DOCKER_LOG + ".admin-overlay", "utf8"));
+      assert.equal(overlay.services.backend.image, "multica-backend:v0.4.45");
+      const config = readFileSync(join(f.deployment, ".env"), "utf8");
+      assert.match(config, /^MULTICA_IMAGE_TAG=['"]?v0\.4\.45['"]?$/m);
+      assert.match(config, /^ALLOW_SIGNUP=false$/m);
+      assert.equal(readdirSync(f.deployment).some((file) => file.startsWith(".admin-initialization-compose.")), false);
+      const credentials = join(f.deployment, "admin-initial-password.txt");
+      const before = readFileSync(credentials);
+      assert.equal((upgraded.stdout + upgraded.stderr).includes("private-initial-password"), false);
+      if (failure) {
+        assert.notEqual(upgraded.status, 0);
+        assert.match(upgraded.stderr, /services were upgraded, but administrator initialization is incomplete/);
+        assert.match(upgraded.stderr, /not rolled back/);
+        assert.equal(upgraded.stdout.includes("✓ Upgrade completed"), false);
+        const retried = bash(f.packageDir, f.withoutNode, "initialize-platform-admin.sh", "--deployment-dir", f.deployment);
+        assert.equal(retried.status, 0, retried.stderr);
+        assert.equal(JSON.parse(retried.stdout).status, "already_initialized");
+        assert.deepEqual(readFileSync(credentials), before);
+      } else {
+        assert.equal(upgraded.status, 0, upgraded.stderr);
+        assert.ok(upgraded.stdout.indexOf('"status":"initialized"') < upgraded.stdout.indexOf("✓ Upgrade completed"));
+      }
+    });
+  }
+});
+
 test("combined archive rejects an unapproved prerelease before starting builds", (t) => {
   const fixture = offlineFixture(t);
   writeFileSync(join(fixture.cwd, "bin/pnpm"), "#!/bin/sh\nexit 92\n", { mode: 0o755 });
@@ -332,6 +493,25 @@ test("combined archive rejects an unapproved prerelease before starting builds",
   assert.match(built.stderr, /stable VERSION or add --allow-prerelease/);
   assert.equal(existsSync(fixture.env.DOCKER_LOG), false, "no Docker build may start for a rejected desktop version");
   assert.equal(existsSync(join(fixture.cwd, "combined")), false);
+});
+
+test("combined archive preserves existing private initialization files before cleanup", async (t) => {
+  for (const name of ["admin-initial-password.txt", ".admin-initial-password.fixture", ".admin-initialization-compose.fixture"]) {
+    await t.test(name, (t) => {
+      const f = offlineFixture(t);
+      const packageDir = join(f.cwd, "combined/multica-offline-v1.0.0-fixture-linux-amd64-win-ia32");
+      mkdirSync(join(packageDir, "server"), { recursive: true });
+      const file = join(packageDir, "server", name);
+      writeFileSync(file, "existing-private-file");
+      writeFileSync(join(f.cwd, "bin/pnpm"), "#!/bin/sh\nexit 92\n", { mode: 0o755 });
+      const built = bash(f.cwd, f.env, "scripts/offline-installer.sh", "--output", "combined", "--desktop-target", "win-ia32", "--allow-prerelease");
+      assert.notEqual(built.status, 0);
+      assert.match(built.stderr, /private administrator initialization files/);
+      assert.equal(readFileSync(file, "utf8"), "existing-private-file");
+      assert.equal(existsSync(f.env.DOCKER_LOG), false);
+      assert.equal(existsSync(packageDir + ".tar.gz"), false);
+    });
+  }
 });
 
 test("combined desktop/server archive forwards an explicit cumulative artifact and includes complete desktop update files", (t) => {
@@ -359,7 +539,7 @@ writeFileSync(directory + '/builder-debug.yml', 'debug');
   assert.equal(built.status, 0, built.stderr);
   const archive = readdirSync(join(fixture.cwd, "combined")).find((name) => name.endsWith(".tar.gz"));
   const listing = spawnSync("tar", ["-tzf", join(fixture.cwd, "combined", archive)], { encoding: "utf8" });
-  for (const file of ["server/changelog/changelog.json", "server/install-changelog.sh", "server/scripts/install-changelog.mjs", "server/docs/mcp-catalog-publishing.md", "server/mcp-templates/README.txt", "server/skill-templates/README.txt", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe.blockmap", "desktop/latest-ia32.yml"]) assert.ok(listing.stdout.includes(file), `combined archive omitted ${file}`);
+  for (const file of ["server/changelog/changelog.json", "server/install-changelog.sh", "server/scripts/install-changelog.mjs", "server/initialize-platform-admin.sh", "server/scripts/admin-init-compose.mjs", "server/docs/mcp-catalog-publishing.md", "server/mcp-templates/README.txt", "server/skill-templates/README.txt", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe", "desktop/multica-desktop-1.0.0-fixture-windows-ia32.exe.blockmap", "desktop/latest-ia32.yml"]) assert.ok(listing.stdout.includes(file), `combined archive omitted ${file}`);
   assert.equal(listing.stdout.includes("builder-debug.yml"), false);
   const packageDir = join(fixture.cwd, "combined", archive.slice(0, -7));
   assert.equal(readFileSync(join(packageDir, "server/changelog/changelog.json"), "utf8"), readFileSync(input, "utf8"));

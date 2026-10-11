@@ -70,6 +70,7 @@ export function passwordErrorDetails(error: unknown, input: PasswordErrorInput):
     }
     case "username_taken":
     case "invalid_credentials":
+    case "password_unchanged":
     case "signup_disabled":
     case "invalid_request":
       return { key: code };

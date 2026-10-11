@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, symlinkSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
@@ -59,7 +59,7 @@ function fixture(t) {
   for (const directory of ["scripts", "bin", "docs", "server/internal/changelog/content"]) {
     mkdirSync(join(cwd, directory), { recursive: true });
   }
-  for (const name of ["offline-bundle.sh", "build-offline-upgrade.sh", "offline-upgrade.sh", "changelog-lib.mjs", "publish-changelog.mjs", "install-changelog.sh", "install-changelog.mjs"]) {
+  for (const name of ["offline-bundle.sh", "build-offline-upgrade.sh", "offline-upgrade.sh", "changelog-lib.mjs", "publish-changelog.mjs", "install-changelog.sh", "install-changelog.mjs", "initialize-platform-admin.sh", "admin-init-compose.mjs"]) {
     cpSync(join(scripts, name), join(cwd, "scripts", name));
   }
   for (const name of ["docker-compose.selfhost.yml", "docker-compose.selfhost.build.yml", "docker-compose.resource-publishing.yml", ".env.example"]) {
@@ -227,4 +227,65 @@ else process.exit(26);
   assert.match(readFileSync(join(packageDir, "MANIFEST.txt"), "utf8"), /^version:  v0\.4\.45$/m);
   assert.equal(calls(f).find(({ args }) => args.includes("build")).version, "v0.4.45");
   assert.equal(readFileSync(f.env.DOCKER_LOG + ".describe-count", "utf8"), "1");
+});
+
+test("bundles never copy private administrator credentials from the checkout", (t) => {
+  const f = fixture(t);
+  const privateNames = ["admin-initial-password.txt", ".admin-initial-password.fixture", ".admin-initialization-compose.fixture"];
+  for (const name of privateNames) writeFileSync(join(f.cwd, name), "private-generated-password");
+  const result = bash(f, "scripts/build-offline-upgrade.sh", "--output", "upgrade");
+  assert.equal(result.status, 0, result.stderr);
+  const archive = join(f.cwd, "upgrade/multica-server-upgrade-v0.4.45-linux-amd64.tar.gz");
+  const listing = spawnSync("tar", ["-tzf", archive], { encoding: "utf8" });
+  assert.equal(listing.status, 0, listing.stderr);
+  for (const name of privateNames) assert.equal(listing.stdout.includes(name), false);
+  assert.equal((result.stdout + result.stderr).includes("private-generated-password"), false);
+  for (const file of ["initialize-platform-admin.sh", "scripts/admin-init-compose.mjs"]) assert.ok(listing.stdout.includes(file));
+});
+
+test("reused build directories reject private initialization files before deleting or building", async (t) => {
+  for (const script of ["offline-bundle.sh", "build-offline-upgrade.sh"]) {
+    for (const name of ["admin-initial-password.txt", ".admin-initial-password.fixture", ".admin-initialization-compose.fixture"]) {
+      await t.test(`${script}: ${name}`, (t) => {
+        const f = fixture(t);
+        const output = join(f.cwd, "output");
+        const packageDir = script === "offline-bundle.sh" ? output : join(output, "multica-server-upgrade-v0.4.45-linux-amd64");
+        mkdirSync(join(packageDir, "nested"), { recursive: true });
+        const file = join(packageDir, "nested", name);
+        writeFileSync(file, "existing-private-file");
+        const result = bash(f, `scripts/${script}`, "--output", output);
+        assert.notEqual(result.status, 0);
+        assert.match(result.stderr, /private administrator initialization files/);
+        assert.equal(readFileSync(file, "utf8"), "existing-private-file");
+        assert.equal(existsSync(packageDir + ".tar.gz"), false);
+        const commands = existsSync(f.env.DOCKER_LOG) ? calls(f) : [];
+        assert.equal(commands.some(({ args }) => args.includes("build") || args.includes("save") || args.includes("pull")), false);
+      });
+    }
+  }
+});
+
+test("git and Docker exclusions cover initial credentials and both staging prefixes at every depth", () => {
+  const names = ["admin-initial-password.txt", ".admin-initial-password.fixture", ".admin-initialization-compose.fixture"];
+  const paths = names.flatMap((name) => [name, `nested/deployment/${name}`]);
+  const checked = spawnSync("git", ["check-ignore", "--no-index", "--stdin"], { cwd: resolve(scripts, ".."), input: paths.join("\n") + "\n", encoding: "utf8" });
+  assert.equal(checked.status, 0, checked.stderr);
+  assert.deepEqual(checked.stdout.trim().split("\n"), paths);
+  const dockerRules = readFileSync(resolve(scripts, "../.dockerignore"), "utf8").split("\n");
+  for (const pattern of ["**/admin-initial-password.txt", "**/.admin-initial-password.*", "**/.admin-initialization-compose.*"]) assert.ok(dockerRules.includes(pattern), `missing recursive Docker exclusion: ${pattern}`);
+});
+
+test("a symlinked bundle output cannot bypass private-file checks", (t) => {
+  const f = fixture(t);
+  const deployment = join(f.cwd, "deployed");
+  mkdirSync(deployment);
+  const credentials = join(deployment, "admin-initial-password.txt");
+  writeFileSync(credentials, "private-initial-password");
+  const output = join(f.cwd, "bundle");
+  symlinkSync(deployment, output, "dir");
+  const result = bash(f, "scripts/offline-bundle.sh", "--output", output);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /private administrator initialization files/);
+  assert.equal(readFileSync(credentials, "utf8"), "private-initial-password");
+  assert.equal(calls(f).some(({ args }) => args.includes("build") || args.includes("save")), false);
 });
