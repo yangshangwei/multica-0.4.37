@@ -18,6 +18,7 @@ import {
   PickerSection,
   PickerEmpty,
   PICKER_TRIGGER_CLASS,
+  usePickerTrigger,
 } from "./property-picker";
 import { useT } from "../../../i18n";
 import { matchesPinyin } from "../../../editor/extensions/pinyin-match";
@@ -53,6 +54,7 @@ interface AssigneePickerProps {
   onUpdate: (updates: Partial<UpdateIssueRequest>) => void;
   trigger?: React.ReactNode;
   triggerRender?: React.ReactElement<Record<string, unknown>>;
+  triggerAriaLabel?: string;
   open?: boolean;
   onOpenChange?: (v: boolean) => void;
   align?: "start" | "center" | "end";
@@ -67,6 +69,7 @@ interface AssigneePickerProps {
  * itself), so trigger-less callers stay eager.
  */
 export function AssigneePicker(props: AssigneePickerProps) {
+  const accessibleTrigger = usePickerTrigger(props);
   const hasDeferredTriggerContent =
     props.trigger !== undefined || props.triggerRender?.props.children != null;
   const canDefer =
@@ -78,8 +81,7 @@ export function AssigneePicker(props: AssigneePickerProps) {
   }
   return (
     <DeferredPopup
-      trigger={props.trigger}
-      triggerRender={props.triggerRender}
+      {...accessibleTrigger}
       triggerClassName={PICKER_TRIGGER_CLASS}
     >
       {(open, onOpenChange) => (
@@ -96,6 +98,7 @@ function AssigneePickerImpl({
   onUpdate,
   trigger: customTrigger,
   triggerRender,
+  triggerAriaLabel,
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
   align,
@@ -160,6 +163,8 @@ function AssigneePickerImpl({
       }}
       width="w-64"
       align={align}
+      triggerAriaLabel={triggerAriaLabel}
+      triggerAriaDescription={triggerAriaLabel ? triggerLabel : undefined}
       searchable
       searchPlaceholder={t(($) => $.pickers.assignee.search_placeholder)}
       onSearchChange={setFilter}

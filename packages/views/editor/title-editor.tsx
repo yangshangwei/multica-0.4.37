@@ -25,7 +25,9 @@ interface TitleEditorProps {
   defaultValue?: string;
   placeholder?: string;
   "aria-labelledby"?: string;
+  "aria-describedby"?: string;
   "aria-required"?: boolean;
+  "aria-invalid"?: boolean;
   className?: string;
   autoFocus?: boolean;
   onSubmit?: () => void;
@@ -124,7 +126,9 @@ const TitleEditor = forwardRef<TitleEditorRef, TitleEditorProps>(
       defaultValue = "",
       placeholder: placeholderText = "",
       "aria-labelledby": ariaLabelledBy,
+      "aria-describedby": ariaDescribedBy,
       "aria-required": ariaRequired,
+      "aria-invalid": ariaInvalid,
       className,
       autoFocus = false,
       onSubmit,
@@ -190,7 +194,9 @@ const TitleEditor = forwardRef<TitleEditorRef, TitleEditorProps>(
           "aria-multiline": "false",
           "aria-label": placeholderText || t(($) => $.title_editor.title_aria_label),
           ...(ariaLabelledBy ? { "aria-labelledby": ariaLabelledBy } : {}),
+          ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}),
           ...(ariaRequired !== undefined ? { "aria-required": String(ariaRequired) } : {}),
+          ...(ariaInvalid !== undefined ? { "aria-invalid": String(ariaInvalid) } : {}),
         },
       },
       onUpdate: ({ editor: ed }) => {

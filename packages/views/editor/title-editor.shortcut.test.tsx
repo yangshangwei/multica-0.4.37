@@ -32,14 +32,18 @@ describe("TitleEditor send chord (real editor)", () => {
   it("connects a required title to its visible label without replacing the editor", async () => {
     const host = (required: boolean) => <>
       <p id="title-label">Title (required)</p>
-      <TitleEditor defaultValue="Unfinished title" aria-labelledby="title-label" aria-required={required} />
+      <p id="title-help">Enter a short title.</p>
+      <TitleEditor defaultValue="Unfinished title" aria-labelledby="title-label" aria-describedby="title-help" aria-required={required} aria-invalid={required} />
     </>;
     const view = render(host(true));
     const title = await screen.findByRole("textbox", { name: "Title (required)" });
     expect(title).toHaveAttribute("contenteditable", "true");
     expect(title).toHaveAttribute("aria-required", "true");
+    expect(title).toHaveAttribute("aria-invalid", "true");
+    expect(title).toHaveAttribute("aria-describedby", "title-help");
     view.rerender(host(false));
     await waitFor(() => expect(title).toHaveAttribute("aria-required", "false"));
+    expect(title).toHaveAttribute("aria-invalid", "false");
     expect(screen.getByRole("textbox", { name: "Title (required)" })).toBe(title);
     expect(title).toHaveTextContent("Unfinished title");
   });

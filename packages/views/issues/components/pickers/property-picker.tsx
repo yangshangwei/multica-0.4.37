@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect, useLayoutEffect } from "react";
+import { cloneElement, isValidElement, useState, useCallback, useRef, useEffect, useLayoutEffect, useId } from "react";
 import { Check } from "lucide-react";
 import {
   Popover,
@@ -35,6 +35,47 @@ const isEmptyItem = (el: HTMLButtonElement | undefined) =>
 export const PICKER_TRIGGER_CLASS =
   "flex items-center gap-1.5 cursor-pointer rounded px-1 -mx-1 hover:bg-accent/30 transition-colors overflow-hidden";
 
+/** Keep named cold triggers and their mounted popovers equivalent. */
+export function usePickerTrigger<T extends React.ReactElement>({
+  trigger,
+  triggerRender,
+  triggerAriaLabel,
+  triggerAriaDescription,
+}: {
+  trigger?: React.ReactNode;
+  triggerRender?: T;
+  triggerAriaLabel?: string;
+  triggerAriaDescription?: string;
+}) {
+  const valueId = useId();
+  if (!triggerAriaLabel) return { trigger, triggerRender };
+
+  const render = isValidElement<Record<string, unknown> & { children?: React.ReactNode }>(triggerRender)
+    ? triggerRender
+    : null;
+  // Base UI gives render-element children precedence over trigger content.
+  // Resolve that first so custom children cannot discard the description ID.
+  const visibleContent = render?.props.children ?? trigger;
+  const content = triggerAriaDescription !== undefined ? (
+    <>
+      <span id={valueId} className="sr-only">{triggerAriaDescription}</span>
+      {visibleContent}
+    </>
+  ) : (
+    <span id={valueId} className="contents">{visibleContent}</span>
+  );
+  const ariaProps = {
+    "aria-label": triggerAriaLabel,
+    "aria-describedby": valueId,
+  };
+  return {
+    trigger: content,
+    triggerRender: render
+      ? cloneElement(render, ariaProps, content)
+      : <button type="button" className={PICKER_TRIGGER_CLASS} {...ariaProps}>{content}</button>,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // PropertyPicker — generic Popover shell with optional search
 // ---------------------------------------------------------------------------
@@ -44,6 +85,8 @@ export function PropertyPicker({
   onOpenChange,
   trigger,
   triggerRender,
+  triggerAriaLabel,
+  triggerAriaDescription,
   width = "w-48",
   align = "end",
   side = "bottom",
@@ -61,6 +104,8 @@ export function PropertyPicker({
   onOpenChange: (v: boolean) => void;
   trigger: React.ReactNode;
   triggerRender?: React.ReactElement;
+  triggerAriaLabel?: string;
+  triggerAriaDescription?: string;
   width?: string;
   align?: "start" | "center" | "end";
   side?: React.ComponentProps<typeof PopoverContent>["side"];
@@ -92,6 +137,7 @@ export function PropertyPicker({
   const { t } = useT("issues");
   const placeholder = searchPlaceholder ?? t(($) => $.filters.placeholder);
   const filterAria = t(($) => $.pickers.filter_options_aria);
+  const accessibleTrigger = usePickerTrigger({ trigger, triggerRender, triggerAriaLabel, triggerAriaDescription });
   const [query, setQuery] = useState("");
   const highlightedIndex = useRef(-1);
   const navigation = useRef<{ key: string | undefined; items: HTMLButtonElement[] }>({ key: navigationResetKey, items: [] });
@@ -200,10 +246,10 @@ export function PropertyPicker({
 
   const popoverTrigger = (
     <PopoverTrigger
-      className={triggerRender ? undefined : PICKER_TRIGGER_CLASS}
-      render={triggerRender}
+      className={accessibleTrigger.triggerRender ? undefined : PICKER_TRIGGER_CLASS}
+      render={accessibleTrigger.triggerRender}
     >
-      {trigger}
+      {accessibleTrigger.trigger}
     </PopoverTrigger>
   );
 

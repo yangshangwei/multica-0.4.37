@@ -39,6 +39,7 @@ interface LabelPickerProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   align?: "start" | "center" | "end";
+  triggerAriaLabel?: string;
   /** Open the picker on first mount. Used by progressive-disclosure
    *  sidebars so a newly-added field immediately enters edit state. */
   defaultOpen?: boolean;
@@ -94,6 +95,7 @@ export function LabelPicker({
   open: controlledOpen,
   onOpenChange,
   align = "start",
+  triggerAriaLabel,
   defaultOpen = false,
   triggerRender,
 }: LabelPickerProps) {
@@ -222,6 +224,7 @@ export function LabelPicker({
         }}
         width="w-80"
         align={align}
+        triggerAriaLabel={triggerAriaLabel}
         searchable
         searchPlaceholder={t(($) => $.pickers.label.search_placeholder)}
         onSearchChange={setFilter}

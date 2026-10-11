@@ -13,6 +13,7 @@ interface FileUploadButtonProps {
   className?: string;
   size?: "sm" | "default";
   multiple?: boolean;
+  showLabel?: boolean;
 }
 
 function FileUploadButton({
@@ -21,6 +22,7 @@ function FileUploadButton({
   className,
   size = "default",
   multiple = false,
+  showLabel = false,
 }: FileUploadButtonProps) {
   const { t } = useTranslation("ui");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +43,7 @@ function FileUploadButton({
       <Button
         type="button"
         variant="ghost"
-        size={buttonSize}
+        size={showLabel ? size : buttonSize}
         onClick={() => inputRef.current?.click()}
         disabled={disabled}
         aria-label={attachLabel}
@@ -49,6 +51,7 @@ function FileUploadButton({
         className={cn("text-muted-foreground", className)}
       >
         <Paperclip className={iconSize} />
+        {showLabel && <span>{attachLabel}</span>}
       </Button>
       <input
         ref={inputRef}

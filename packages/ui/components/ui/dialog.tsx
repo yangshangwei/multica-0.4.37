@@ -44,10 +44,12 @@ function DialogContent({
   children,
   showCloseButton = true,
   keepMounted = false,
+  closeLabel = "Close",
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
   keepMounted?: boolean
+  closeLabel?: string
 }) {
   return (
     <DialogPortal keepMounted={keepMounted}>
@@ -71,10 +73,11 @@ function DialogContent({
                 size="icon-sm"
               />
             }
+            aria-label={closeLabel}
           >
             <XIcon
             />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{closeLabel}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Popup>

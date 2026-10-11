@@ -13,14 +13,14 @@ function EarlyEnter({ enabled, input }: { enabled: boolean; input: React.RefObje
   return null;
 }
 
-function Harness({ reset = true, earlyEnter = false, onPick = vi.fn() }: { reset?: boolean; earlyEnter?: boolean; onPick?: (name: string) => void }) {
+function Harness({ reset = true, earlyEnter = false, onPick = vi.fn(), triggerAriaLabel }: { reset?: boolean; earlyEnter?: boolean; onPick?: (name: string) => void; triggerAriaLabel?: string }) {
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState("initial");
   const input = useRef<HTMLInputElement>(null);
   const names = mode === "swap" ? ["Grace"] : mode === "more" ? ["Ada", "Grace", "Linus"] : ["Ada", "Grace"];
   return <I18nProvider locale="en" resources={{ en: { issues: enIssues } }}>
-    <PropertyPicker open={open} onOpenChange={setOpen} trigger="Open" searchable searchPlaceholder="Search"
+    <PropertyPicker open={open} onOpenChange={setOpen} trigger="Open" triggerAriaLabel={triggerAriaLabel} searchable searchPlaceholder="Search"
       onSearchChange={setQuery} searchInputRef={input}
       navigationResetKey={reset ? `${mode === "more" ? "initial" : mode}:${query}` : undefined}
       header={<><button onClick={() => setMode("swap")}>Swap</button><button onClick={() => setMode("more")}>More</button><button onClick={() => input.current?.focus()}>Focus search</button></>}>
@@ -31,6 +31,25 @@ function Harness({ reset = true, earlyEnter = false, onPick = vi.fn() }: { reset
 }
 
 describe("PropertyPicker optional external navigation reset", () => {
+  it.each([undefined, "Project without decoration"])("keeps custom render children and their selected description (%s)", (description) => {
+    render(<I18nProvider locale="en" resources={{ en: { issues: enIssues } }}>
+      <PropertyPicker open={false} onOpenChange={() => {}} trigger="Generated fallback"
+        triggerRender={<button><span>Selected project</span></button>}
+        triggerAriaLabel="Candidate project" triggerAriaDescription={description}>
+        <span>Options</span>
+      </PropertyPicker>
+    </I18nProvider>);
+    const trigger = screen.getByRole("button", { name: "Candidate project" });
+    expect(trigger).toHaveTextContent("Selected project");
+    expect(trigger).toHaveAccessibleDescription(description ?? "Selected project");
+    expect(screen.queryByText("Generated fallback")).not.toBeInTheDocument();
+  });
+
+  it("exposes the field name on the trigger when provided", () => {
+    render(<Harness triggerAriaLabel="Candidate project" />);
+    expect(screen.getByRole("button", { name: "Candidate project" })).toHaveAccessibleDescription("Open");
+  });
+
   it("blocks stale index and unique-result Enter after an external change until a new arrow", async () => {
     const user = userEvent.setup(); const onPick = vi.fn();
     render(<Harness onPick={onPick} />);

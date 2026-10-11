@@ -133,6 +133,7 @@ interface ContentEditorBaseProps {
   "aria-label"?: string;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
   className?: string;
   debounceMs?: number;
   onSubmit?: () => void;
@@ -370,6 +371,7 @@ const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabelledBy,
       "aria-describedby": ariaDescribedBy,
+      "aria-invalid": ariaInvalid,
       className,
       debounceMs = 300,
       onSubmit,
@@ -694,6 +696,7 @@ const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
           ...(ariaLabel ? { "aria-label": ariaLabel } : {}),
           ...(ariaLabelledBy ? { "aria-labelledby": ariaLabelledBy } : {}),
           ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}),
+          ...(ariaInvalid !== undefined ? { "aria-invalid": String(ariaInvalid) } : {}),
         },
       },
     });

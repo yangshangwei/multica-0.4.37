@@ -20,6 +20,7 @@ export function ProjectPicker({
   projectId,
   onUpdate,
   triggerRender,
+  triggerAriaLabel,
   align = "start",
   defaultOpen = false,
   open: controlledOpen,
@@ -29,6 +30,7 @@ export function ProjectPicker({
   projectId: string | null;
   onUpdate: (updates: Partial<UpdateIssueRequest>) => void;
   triggerRender?: React.ReactElement;
+  triggerAriaLabel?: string;
   align?: "start" | "center" | "end";
   /** Open the dropdown on first mount. Used by progressive-disclosure
    *  sidebars so a newly-added field immediately enters edit state. */
@@ -77,6 +79,7 @@ export function ProjectPicker({
         onOpenChange={setOpen}
         width="w-52"
         align={align}
+        triggerAriaLabel={triggerAriaLabel}
         searchable
         searchPlaceholder={t(($) => $.picker.search_placeholder)}
         onSearchChange={setFilter}

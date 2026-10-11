@@ -5,7 +5,7 @@ import type { IssuePriority, UpdateIssueRequest } from "@multica/core/types";
 import { PRIORITY_DISPLAY_ORDER, PRIORITY_CONFIG } from "@multica/core/issues/config";
 import { PriorityIcon } from "../priority-icon";
 import { DeferredPopup } from "../../../common/deferred-popup";
-import { PropertyPicker, PickerItem, PICKER_TRIGGER_CLASS } from "./property-picker";
+import { PropertyPicker, PickerItem, PICKER_TRIGGER_CLASS, usePickerTrigger } from "./property-picker";
 import { useT } from "../../../i18n";
 
 interface PriorityPickerProps {
@@ -19,6 +19,7 @@ interface PriorityPickerProps {
   onUpdate: (updates: Partial<UpdateIssueRequest>) => void;
   trigger?: React.ReactNode;
   triggerRender?: React.ReactElement<Record<string, unknown>>;
+  triggerAriaLabel?: string;
   open?: boolean;
   onOpenChange?: (v: boolean) => void;
   align?: "start" | "center" | "end";
@@ -33,6 +34,7 @@ interface PriorityPickerProps {
  * on first interaction. See `DeferredPopup` for why.
  */
 export function PriorityPicker(props: PriorityPickerProps) {
+  const accessibleTrigger = usePickerTrigger(props);
   const hasDeferredTriggerContent =
     props.trigger !== undefined || props.triggerRender?.props.children != null;
   const canDefer =
@@ -45,8 +47,7 @@ export function PriorityPicker(props: PriorityPickerProps) {
   }
   return (
     <DeferredPopup
-      trigger={props.trigger}
-      triggerRender={props.triggerRender}
+      {...accessibleTrigger}
       triggerClassName={PICKER_TRIGGER_CLASS}
     >
       {(open, onOpenChange) => (
@@ -61,6 +62,7 @@ function PriorityPickerImpl({
   onUpdate,
   trigger: customTrigger,
   triggerRender,
+  triggerAriaLabel,
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
   align,
@@ -77,6 +79,7 @@ function PriorityPickerImpl({
       onOpenChange={setOpen}
       width="w-44"
       align={align}
+      triggerAriaLabel={triggerAriaLabel}
       triggerRender={triggerRender}
       trigger={
         customTrigger ??
