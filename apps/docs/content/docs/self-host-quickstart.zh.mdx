@@ -182,7 +182,7 @@ curl -fsS https://api.example.com/readyz
 curl -fsS https://app.example.com/api/config | grep -o '"daemon_server_url":"[^"]*"'
 ```
 
-最后一条命令输出 `daemon_server_url`——daemon 连接 API 用的地址：设了 `MULTICA_DAEMON_SERVER_URL` 时用它，其次是 `MULTICA_PUBLIC_URL`，否则用 app URL（`MULTICA_APP_URL`，未设置时回退到 `FRONTEND_ORIGIN`）。当 `MULTICA_APP_URL` 和 `FRONTEND_ORIGIN` 都没设时，这个字段会整个从响应里省略（上面的 grep 无输出）——即使设了 `MULTICA_DAEMON_SERVER_URL` 或 `MULTICA_PUBLIC_URL` 也是如此。如果输出的是 `localhost`，说明 `.env` 里还是本地默认值：不要依赖从 `.env.example` 复制来的 `${FRONTEND_PORT}` 引用，把 `FRONTEND_ORIGIN` 和 `MULTICA_APP_URL` 显式设置为成员实际访问的地址，然后重建容器。
+最后一条命令输出 `daemon_server_url`——daemon 连接 API 用的地址：设了 `MULTICA_DAEMON_SERVER_URL` 时用它，其次是 `MULTICA_PUBLIC_URL`，否则用 app URL（`MULTICA_APP_URL`，未设置时回退到 `FRONTEND_ORIGIN`）。只配置 API 地址、缺少 Web 地址时，接口会保留已有 API 地址，让客户端提示配置不完整。“添加电脑”需要两个地址都是目标电脑可访问的 HTTP(S) 地址，才会显示连接命令。如果输出的是 `localhost`，说明 `.env` 里还是本地默认值：不要依赖从 `.env.example` 复制来的 `${FRONTEND_PORT}` 引用，把 `FRONTEND_ORIGIN` 和 `MULTICA_APP_URL` 显式设置为目标电脑可访问的地址，然后重建容器。
 
 <Callout type="warning">
 `docker compose restart` 只重启现有容器，不会重新读取 `.env`。修改配置后，重新读取 `.env` 需要运行 `docker compose -f docker-compose.selfhost.yml up -d`。
@@ -221,14 +221,19 @@ docker compose -f docker-compose.selfhost.yml logs backend \
 
 先安装 Multica CLI。安装包由管理员从内部分发渠道提供（与服务器镜像同源的发布产物），获取后把 `multica` 放入 `PATH` 中的目录；具体地址由管理员提供。
 
-如果服务器完全不能访问 GitHub，请在服务端 `.env` 设置
-`MULTICA_CLI_INSTALL_COMMAND`，把“添加电脑”弹窗中的第一条命令替换为内网制品库命令，例如：
+如果执行电脑不能访问公网，请在服务端 `.env` 为各系统配置内网安装命令，例如：
 
 ```dotenv
-MULTICA_CLI_INSTALL_COMMAND=curl -fsSL https://packages.internal/multica/install.sh | bash
+MULTICA_CLI_INSTALL_COMMAND_WINDOWS=irm 'https://packages.internal/multica/install.ps1' | iex
+MULTICA_CLI_INSTALL_COMMAND_MACOS=curl -fsSL 'https://packages.internal/multica/install.sh' | bash
+MULTICA_CLI_INSTALL_COMMAND_LINUX=curl -fsSL 'https://packages.internal/multica/install.sh' | bash
 ```
 
-该命令只会展示并复制到用户剪贴板，不会由服务端执行。也可以把离线压缩包或安装器放到内网后，将对应的完整安装命令填入此变量。
+这些命令由无需认证的 `/api/config` 返回，只用于展示和复制，服务端不会执行。不要填入令牌、密码或其他凭据。也可以填写内网离线压缩包或安装器的完整安装命令；地址由管理员提供。修改后运行 `docker compose -f docker-compose.selfhost.yml up -d backend` 重建后端。
+
+显式系统命令优先。旧 `MULTICA_CLI_INSTALL_COMMAND` 保留给旧客户端，并作为新版 macOS/Linux 的备用命令；它不适用于 Windows。只要配置了任一自定义来源，未配置的系统就显示安装说明，不会转向公网。四项均为空时才使用公开安装脚本。Helm 对应 `backend.config.cliInstallCommands.windows`、`.macos`、`.linux` 和旧 `backend.config.cliInstallCommand`。
+
+在“添加电脑”中选择目标系统，再到目标电脑执行命令。AI 编程工具安装在 WSL 中时选择 Linux，在 WSL 内执行；macOS/Linux 使用已安装并登录这些工具的系统账号。
 
 如果 Multica 服务也在这台电脑上，运行：
 

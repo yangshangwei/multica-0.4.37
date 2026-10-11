@@ -38,6 +38,10 @@ require_rendered_value "$default_config" 'MULTICA_CLOUD_URL: ""'
 require_rendered_value "$default_config" 'MULTICA_DATABASE_STARTUP_TIMEOUT: "3m"'
 require_rendered_value "$default_config" 'MULTICA_DATABASE_CONNECT_TIMEOUT: "5s"'
 require_rendered_value "$default_config" 'CHANGELOG_FILE: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_WINDOWS: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_MACOS: ""'
+require_rendered_value "$default_config" 'MULTICA_CLI_INSTALL_COMMAND_LINUX: ""'
 # A chart install must not put every device into a workspace nobody chose: with
 # no slug, device auth establishes the identity and the client runs onboarding,
 # where the member names their own workspace (ART-7). The old default shipped
@@ -77,6 +81,19 @@ capacity_config="$(
     --set-string backend.config.cloud.url=https://multica-cloud.internal
 )"
 require_rendered_value "$capacity_config" 'MULTICA_CLOUD_URL: "https://multica-cloud.internal"'
+
+install_config="$(
+  helm template multica "$CHART_DIR" \
+    --show-only templates/configmap.yaml \
+    --set-string backend.config.cliInstallCommand='legacy installer' \
+    --set-string backend.config.cliInstallCommands.windows='windows installer' \
+    --set-string backend.config.cliInstallCommands.macos='macos installer' \
+    --set-string backend.config.cliInstallCommands.linux='linux installer'
+)"
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND: "legacy installer"'
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_WINDOWS: "windows installer"'
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_MACOS: "macos installer"'
+require_rendered_value "$install_config" 'MULTICA_CLI_INSTALL_COMMAND_LINUX: "linux installer"'
 
 # The opt-in direction: an operator whose intranet really is one shared space
 # names the slug, and that name has to reach the backend for any device to join

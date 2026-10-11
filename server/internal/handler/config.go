@@ -51,6 +51,9 @@ type AppConfig struct {
 	// may distribute a tarball, a package-manager command, or an internal
 	// installer script.
 	CliInstallCommand string `json:"cli_install_command,omitempty"`
+	// CliInstallCommands contains public, operator-supplied commands for each
+	// target OS. Never populate these commands with credentials or user data.
+	CliInstallCommands map[string]string `json:"cli_install_commands,omitempty"`
 
 	// MessagingIntegrationsEnabled is the deployment policy for external
 	// messaging providers. Emit this field even when false so clients can
@@ -141,6 +144,14 @@ func (h *Handler) GetConfig(w http.ResponseWriter, r *http.Request) {
 	config.CdnSigned = h.CFSigner != nil
 	config.DaemonServerURL, config.DaemonAppURL = daemonSetupURLsFromEnv()
 	config.CliInstallCommand = strings.TrimSpace(os.Getenv("MULTICA_CLI_INSTALL_COMMAND"))
+	for _, platform := range []string{"windows", "macos", "linux"} {
+		if command := strings.TrimSpace(os.Getenv("MULTICA_CLI_INSTALL_COMMAND_" + strings.ToUpper(platform))); command != "" {
+			if config.CliInstallCommands == nil {
+				config.CliInstallCommands = make(map[string]string)
+			}
+			config.CliInstallCommands[platform] = command
+		}
+	}
 	config.MessagingIntegrationsEnabled = !h.cfg.MessagingIntegrationsDisabled
 	config.VCSIntegrationAvailable = h.cfg.VCSIntegrationEnabled
 	config.AuthMode = "legacy"
@@ -183,7 +194,9 @@ func daemonSetupURLsFromEnv() (string, string) {
 	}
 	appURL := resolveFrontendAppURL()
 	if appURL == "" {
-		return "", ""
+		// Preserve partial self-host configuration so clients can request the
+		// missing app URL instead of offering a managed-cloud setup command.
+		return serverURL, ""
 	}
 
 	if serverURL == "" {

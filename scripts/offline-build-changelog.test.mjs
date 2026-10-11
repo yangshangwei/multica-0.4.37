@@ -8,6 +8,28 @@ import { scratch, scripts, seed } from "./changelog-test-helpers.mjs";
 
 const composeAvailable = spawnSync("docker", ["compose", "version"], { encoding: "utf8" }).status === 0;
 
+test("self-host configuration forwards complete and partial platform install commands", { skip: !composeAvailable }, () => {
+  const defaults = {
+    MULTICA_CLI_INSTALL_COMMAND: "",
+    MULTICA_CLI_INSTALL_COMMAND_WINDOWS: "",
+    MULTICA_CLI_INSTALL_COMMAND_MACOS: "",
+    MULTICA_CLI_INSTALL_COMMAND_LINUX: "",
+  };
+  const configured = {
+    MULTICA_CLI_INSTALL_COMMAND: "curl -fsSL 'https://packages.internal/legacy.sh' | bash",
+    MULTICA_CLI_INSTALL_COMMAND_WINDOWS: "irm 'https://packages.internal/install.ps1' | iex",
+    MULTICA_CLI_INSTALL_COMMAND_MACOS: "curl -fsSL 'https://packages.internal/macos.sh' | bash",
+    MULTICA_CLI_INSTALL_COMMAND_LINUX: "curl -fsSL 'https://packages.internal/linux.sh' | bash",
+  };
+  for (const settings of [defaults, configured, { ...defaults, MULTICA_CLI_INSTALL_COMMAND_WINDOWS: configured.MULTICA_CLI_INSTALL_COMMAND_WINDOWS }]) {
+    const env = { ...process.env, JWT_SECRET: "fixture-secret", ...settings };
+    const result = spawnSync("docker", ["compose", "--env-file", "/dev/null", "-f", resolve(scripts, "../docker-compose.selfhost.yml"), "config", "--format", "json"], { env, encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    const actual = JSON.parse(result.stdout).services.backend.environment;
+    for (const [name, expected] of Object.entries(settings)) assert.equal(actual[name], expected, name);
+  }
+});
+
 test("self-host configuration keeps iterations workspace-owned and forwards administration settings", { skip: !composeAvailable }, () => {
   const defaults = { FF_PROJECTS_P1: "true", MULTICA_PLATFORM_ADMIN_ENABLED: "false", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "false", MULTICA_DEPLOYMENT_ID: "" };
   for (const settings of [defaults, { ...defaults, FF_PROJECTS_P1: "false", MULTICA_PLATFORM_ADMIN_ENABLED: "true", MULTICA_MANAGED_INSTALLATIONS_ENABLED: "true", MULTICA_DEPLOYMENT_ID: "00000000-0000-4000-8000-000000000001" }]) {

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="736" height="940" viewBox="0 0 736 940">
+<rect width="736" height="940" fill="#ededf0"/>
+<rect x="48" y="28" width="640" height="824" rx="14" fill="white"/>
+<text x="76" y="58" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="22" font-weight="600" fill="#18181b">添加电脑</text>
+<polyline points="648,62 660,74" fill="none" stroke="#18181b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="660,62 648,74" fill="none" stroke="#18181b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="76" y="98" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" font-weight="400" fill="#62626e">选择目标电脑的系统，再到那台电脑上运行以下命令。</text>
+<text x="76" y="145" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" font-weight="600" fill="#18181b">目标电脑系统</text>
+<rect x="76" y="171" width="584" height="44" rx="8" fill="#f4f4f5"/>
+<text x="142.5" y="185" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" font-weight="400" fill="#62626e">Windows</text>
+<text x="343.5" y="185" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" font-weight="400" fill="#62626e">macOS</text>
+<rect x="466" y="175" width="190" height="36" rx="6" fill="white" stroke="#d4d4d8"/>
+<text x="543.0" y="185" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" font-weight="600" fill="#18181b">Linux</text>
+<text x="76" y="231" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" font-weight="400" fill="#62626e">在目标电脑上打开终端，或通过 SSH 连接。</text>
+<text x="76" y="255" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">请使用已安装并登录 AI 编程工具的系统账号。</text>
+<text x="76" y="300" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="16" font-weight="600" fill="#18181b">1. 安装 Multica CLI</text>
+<rect x="76" y="329" width="584" height="105" rx="9" fill="#f4f4f5"/>
+<polyline points="92,343 96,347 92,351" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="99,352 104,352" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="112" y="342" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">终端</text>
+<rect x="578" y="337" width="68" height="29" rx="5" fill="white" stroke="#e4e4e7"/>
+<rect x="593" y="347" width="10" height="12" rx="2" fill="white" stroke="#62626e"/>
+<polyline points="589,353 589,344 598,344" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="345" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="600" fill="#18181b">复制</text>
+<text x="92" y="377" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">curl -fsSL https://raw.githubusercontent.com/</text>
+<text x="92" y="399" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica-ai/multica/main/scripts/install.sh | bash</text>
+<text x="76" y="466" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="16" font-weight="600" fill="#18181b">2. 登录并连接电脑</text>
+<rect x="76" y="495" width="584" height="128" rx="9" fill="#f4f4f5"/>
+<polyline points="92,509 96,513 92,517" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="99,518 104,518" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="112" y="508" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">终端</text>
+<rect x="578" y="503" width="68" height="29" rx="5" fill="white" stroke="#e4e4e7"/>
+<rect x="593" y="513" width="10" height="12" rx="2" fill="white" stroke="#62626e"/>
+<polyline points="589,519 589,510 598,510" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="511" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="600" fill="#18181b">复制</text>
+<text x="92" y="543" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica setup self-host</text>
+<text x="92" y="565" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">  --server-url https://api.example.com</text>
+<text x="92" y="587" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">  --app-url https://app.example.com</text>
+<text x="76" y="639" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">按提示完成登录，守护进程会在后台运行。</text>
+<circle cx="85" cy="687" r="7" fill="#e4e4e7"/>
+<circle cx="85" cy="687" r="5.5" fill="white"/>
+<polyline points="85,683 85,687 88,688" fill="none" stroke="#62626e" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="101" y="680" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" font-weight="600" fill="#18181b">等待电脑连接</text>
+<text x="101" y="705" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">连接成功后，这里会自动更新。</text>
+<polyline points="79,752 84,757 79,762" fill="none" stroke="#62626e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="98" y="749" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" font-weight="400" fill="#62626e">没有浏览器或还没连接上？</text>
+<polyline points="48,782 688,782" fill="none" stroke="#e4e4e7" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="76" y="809" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">关闭窗口不会停止已连接的电脑。</text>
+<rect x="588" y="800" width="72" height="34" rx="7" fill="white" stroke="#e4e4e7"/>
+<text x="610.0" y="809" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" font-weight="600" fill="#18181b">关闭</text>
+<text x="76" y="879" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">Linux 已选状态 · 设计稿</text>
+<text x="76" y="902" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">域名仅作展示；命令视觉换行，复制时仍为完整单行。</text>
+</svg>

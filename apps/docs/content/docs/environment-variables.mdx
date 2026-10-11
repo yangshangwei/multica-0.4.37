@@ -78,6 +78,24 @@ Files are limited to 2 MiB. Unreadable or invalid content preserves the process'
 `MULTICA_DAEMON_SERVER_URL` is returned by the unauthenticated `/api/config` endpoint and is visible to clients. Treat it as public configuration; never put credentials, tokens, or other secrets in it.
 </Callout>
 
+### CLI installation sources
+
+| Variable | Default | Description |
+|---|---|---|
+| `MULTICA_CLI_INSTALL_COMMAND_WINDOWS` | empty | Complete Windows PowerShell install command |
+| `MULTICA_CLI_INSTALL_COMMAND_MACOS` | empty | Complete macOS terminal install command |
+| `MULTICA_CLI_INSTALL_COMMAND_LINUX` | empty | Complete Linux / WSL terminal install command |
+| `MULTICA_CLI_INSTALL_COMMAND` | empty | Legacy command for older clients; macOS/Linux fallback in new clients |
+
+The Add a computer dialog uses an explicit system command first. Once any custom
+source is configured, a missing system shows installation help instead of
+falling back to public downloads. All four empty means public installers.
+These values are returned through the unauthenticated `/api/config` endpoint
+as `cli_install_commands` and `cli_install_command`; never include credentials.
+The server displays them without executing them. After editing Compose `.env`,
+recreate the backend. Helm uses `backend.config.cliInstallCommands.windows`,
+`.macos`, `.linux` and `backend.config.cliInstallCommand`.
+
 When the frontend and API run on different hosts and the browser talks to the API domain directly, you must set `COOKIE_DOMAIN` — otherwise the browser cannot read the CSRF cookie: every write request returns `403 CSRF validation failed` while reads work fine. Use the narrowest parent domain that covers both hosts (`.agent.example.com` over `.example.com`). It spreads the sign-in session cookie to every host under that domain, which is only acceptable when all of those hosts are operated by the same trusted party. After changing it, clear the old cookies on both hosts and sign in again. If you follow the same-origin recipe in the [self-host quickstart](/self-host-quickstart#3-choose-how-to-access) (the browser only visits the app domain), keep it empty. Do not use an IP address — browsers ignore cookies whose Domain is an IP.
 
 <Callout type="warning">

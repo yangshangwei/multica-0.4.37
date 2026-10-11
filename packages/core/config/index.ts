@@ -1,5 +1,8 @@
 import { createStore } from "zustand/vanilla";
 import { useStore } from "zustand";
+import type { CliInstallCommands } from "../api/schemas";
+
+export type { CliInstallCommands } from "../api/schemas";
 
 interface ConfigState {
   cdnDomain: string;
@@ -12,8 +15,9 @@ interface ConfigState {
   daemonServerUrl: string;
   daemonAppUrl: string;
   // Complete command published by a self-hosted operator for installing the
-  // CLI from an internal artifact source. Empty means use the public default.
+  // CLI from an internal artifact source, retained for Unix compatibility.
   cliInstallCommand: string;
+  cliInstallCommands: CliInstallCommands;
   // Self-host gate (#3433): when true, every "Create workspace" affordance
   // must be hidden. Defaults to false so unknown / older servers behave like
   // the managed-cloud case.
@@ -70,6 +74,7 @@ interface ConfigState {
     daemonServerUrl?: string;
     daemonAppUrl?: string;
     cliInstallCommand?: string;
+    cliInstallCommands?: CliInstallCommands;
   }) => void;
   setFeatureFlags: (flags?: Record<string, boolean>) => void;
   setServerVersion: (version?: string) => void;
@@ -85,6 +90,7 @@ export const configStore = createStore<ConfigState>((set) => ({
   daemonServerUrl: "",
   daemonAppUrl: "",
   cliInstallCommand: "",
+  cliInstallCommands: {},
   workspaceCreationDisabled: false,
   vcsIntegrationAvailable: false,
   messagingIntegrationsEnabled: false,
@@ -125,7 +131,8 @@ export const configStore = createStore<ConfigState>((set) => ({
     daemonServerUrl = "",
     daemonAppUrl = "",
     cliInstallCommand = "",
-  }) => set({ daemonServerUrl, daemonAppUrl, cliInstallCommand }),
+    cliInstallCommands = {},
+  }) => set({ daemonServerUrl, daemonAppUrl, cliInstallCommand, cliInstallCommands }),
   setFeatureFlags: (flags = {}) => set({ featureFlags: { ...flags } }),
   setServerVersion: (version = "") => set({ serverVersion: version }),
   setLocalWorktreeSupported: (supported = false) =>

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 
 	"github.com/multica-ai/multica/server/internal/auth"
@@ -107,6 +108,58 @@ func TestGetConfigIncludesRuntimeAuthConfig(t *testing.T) {
 	}
 	if cfg.CliInstallCommand != "curl -fsSL https://packages.internal/multica/install.sh | bash" {
 		t.Fatalf("cli_install_command: got %q", cfg.CliInstallCommand)
+	}
+}
+
+func TestGetConfigPlatformInstallCommands(t *testing.T) {
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND", " legacy installer ")
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND_WINDOWS", " windows installer ")
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND_MACOS", " macos installer ")
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND_LINUX", " linux installer ")
+	req := httptest.NewRequest(http.MethodGet, "/api/config", nil)
+	var cfg map[string]json.RawMessage
+	testutil.Call(t, testHandler.GetConfig, req).Want(http.StatusOK).JSON(&cfg)
+	var commands map[string]string
+	if err := json.Unmarshal(cfg["cli_install_commands"], &commands); err != nil {
+		t.Fatalf("decode platform commands: %v", err)
+	}
+	want := map[string]string{"windows": "windows installer", "macos": "macos installer", "linux": "linux installer"}
+	if !reflect.DeepEqual(commands, want) {
+		t.Fatalf("platform commands: got %v, want %v", commands, want)
+	}
+	if string(cfg["cli_install_command"]) != `"legacy installer"` {
+		t.Fatalf("legacy command must remain available: %s", cfg["cli_install_command"])
+	}
+
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND_WINDOWS", "")
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND_MACOS", "  ")
+	cfg = nil
+	testutil.Call(t, testHandler.GetConfig, req).Want(http.StatusOK).JSON(&cfg)
+	commands = nil
+	if err := json.Unmarshal(cfg["cli_install_commands"], &commands); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(commands, map[string]string{"linux": "linux installer"}) {
+		t.Fatalf("empty platform commands must be omitted: %v", commands)
+	}
+
+	t.Setenv("MULTICA_CLI_INSTALL_COMMAND_LINUX", "")
+	cfg = nil
+	testutil.Call(t, testHandler.GetConfig, req).Want(http.StatusOK).JSON(&cfg)
+	if _, present := cfg["cli_install_commands"]; present {
+		t.Fatal("unconfigured platform commands must be omitted")
+	}
+}
+
+func TestGetConfigPreservesServerURLWithoutAppURL(t *testing.T) {
+	t.Setenv("MULTICA_DAEMON_SERVER_URL", " https://api.internal.example/ ")
+	t.Setenv("MULTICA_PUBLIC_URL", "")
+	t.Setenv("MULTICA_APP_URL", "")
+	t.Setenv("FRONTEND_ORIGIN", "")
+	var cfg AppConfig
+	testutil.Call(t, testHandler.GetConfig, httptest.NewRequest(http.MethodGet, "/api/config", nil)).Want(http.StatusOK).JSON(&cfg)
+	if cfg.DaemonServerURL != "https://api.internal.example" || cfg.DaemonAppURL != "" {
+		t.Fatalf("incomplete self-host config must survive for client validation: server=%q app=%q", cfg.DaemonServerURL, cfg.DaemonAppURL)
 	}
 }
 

@@ -319,6 +319,7 @@ import {
   CommentsListSchema,
   CommentTriggerPreviewSchema,
   IssueTriggerPreviewSchema,
+  AgentRuntimeListSchema,
   CloudRuntimeNodeListSchema,
   CloudRuntimeNodeSchema,
   AgentBuilderRuntimeSwitchSchema,
@@ -2456,9 +2457,20 @@ export class ApiClient {
     // workspace_id alone is not enough: the server resolves the workspace from
     // the slug header first, so a caller listing another workspace's runtimes
     // must override the header too.
-    return this.fetch(`/api/runtimes?${search}`, {
+    const raw = await this.fetch<unknown>(`/api/runtimes?${search}`, {
       headers: workspaceHeader(workspaceSlug),
     });
+    const runtimes = parseWithFallback<AgentRuntime[] | null>(
+      raw,
+      AgentRuntimeListSchema,
+      null,
+      { endpoint: "GET /api/runtimes" },
+    );
+    // A genuine empty list establishes the Add a computer baseline. Treating
+    // an invalid response as [] would incorrectly report existing computers
+    // as newly connected after the next successful refresh.
+    if (runtimes === null) throw new Error("Invalid runtime inventory response");
+    return runtimes;
   }
 
   async listCloudRuntimeNodes(

@@ -33,6 +33,11 @@ Confirm the install:
 multica version
 ```
 
+In Add a computer, select the target computer's system before copying commands.
+For an agent installed in WSL, select Linux and run the commands inside WSL.
+Self-hosted administrators can publish a separate internal installer command
+for each system; see [CLI installation sources](/environment-variables#cli-installation-sources).
+
 ## First connection
 
 Connect to Multica Cloud:
@@ -56,13 +61,32 @@ multica auth status
 multica daemon status
 ```
 
-If you only need to sign in again without overwriting other configuration, run `multica login`. On a machine without a browser, create a personal access token in the web settings first, then enter it with:
+Both self-hosted URLs must be HTTP(S) addresses reachable from the target
+computer. The Add a computer dialog requests corrected configuration for
+loopback, wildcard, incomplete or credential-bearing URLs.
+
+If you only need to sign in again without overwriting other configuration, run
+`multica login`. On a machine without a browser, create a personal access token
+in the web settings. Configure the addresses before signing in:
+
+```bash
+multica config set server_url 'https://api.example.com'
+multica config set app_url 'https://app.example.com'
+```
+
+Run the interactive token sign-in separately:
 
 ```bash
 multica login --token
 ```
 
 The command prompts you to paste the token in the terminal, keeping the full value out of shell history.
+
+Wait for successful sign-in, then start the daemon in a separate command:
+
+```bash
+multica daemon start
+```
 
 ## Choosing a workspace
 

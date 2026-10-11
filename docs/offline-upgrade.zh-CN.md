@@ -35,8 +35,12 @@
 | `MULTICA_MANAGED_INSTALLATIONS_ENABLED` | `false` | 仅按需启用；要求密码模式和有效、固定的 `MULTICA_DEPLOYMENT_ID` UUID |
 | `MULTICA_DEPLOYMENT_ID` | 空 | 已有值必须保留，不能每次升级生成新的 UUID |
 | `MULTICA_ADMIN_*_RETENTION_DAYS` | 空 | 三项已声明的管理保留期现在可传入；只展示策略，不启用自动清理 |
+| `MULTICA_CLI_INSTALL_COMMAND_WINDOWS` / `_MACOS` / `_LINUX` | 空 | 为各系统提供完整内网安装命令；有自定义来源时，未配置系统不会回退公网 |
+| `MULTICA_CLI_INSTALL_COMMAND` | 空 | 保留旧客户端命令；新版仅作为 macOS/Linux 的备用命令 |
 
 `JWT_SECRET`、数据库账号密码、各集成加密密钥、公开 URL、端口及客户端身份文件均须保留。Web 和 Windows Desktop 应配套更新：新版 Desktop 的浏览器登录需要新版 Web 返回一次性 `desktop_state`。先完成服务端/Web 升级与登录验收，再发布桌面更新。
+
+“添加电脑”中的安装命令是公开配置，由 `/api/config` 返回，不得包含密码、令牌或其他凭据。修改现有 `.env` 中对应项后，沿用原 Compose 覆盖文件顺序重建后端。目标电脑访问 API 和 Web 的地址应为可达的 HTTP(S) 地址，不能使用服务器自身的 `localhost`、回环或通配地址。
 
 ## 一、把升级包传入服务器
 

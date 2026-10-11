@@ -366,18 +366,31 @@ Install the desktop package, then write `desktop.json` on each machine — `~/.m
 `wsUrl` matters as much as `apiUrl`: with only the API pointed at your server, requests work but live updates keep dialling the cloud, so the app looks like it needs a manual refresh for everything.
 
 If the web UI's **添加电脑 / Add a computer** dialog must work without GitHub,
-set `MULTICA_CLI_INSTALL_COMMAND` in the server environment to the complete
-command served by your internal artifact repository, then recreate the backend
-container. For example:
+publish a complete install command for each target system in the server
+environment, then recreate the backend container. For example:
 
 ```dotenv
-MULTICA_CLI_INSTALL_COMMAND=curl -fsSL https://packages.internal/multica/install.sh | bash
+MULTICA_CLI_INSTALL_COMMAND_WINDOWS=irm 'https://packages.internal/multica/install.ps1' | iex
+MULTICA_CLI_INSTALL_COMMAND_MACOS=curl -fsSL 'https://packages.internal/multica/install.sh' | bash
+MULTICA_CLI_INSTALL_COMMAND_LINUX=curl -fsSL 'https://packages.internal/multica/install.sh' | bash
 ```
 
-The value is displayed and copied as-is; it is never executed by the server.
-If it is empty, the dialog keeps the public GitHub installer command. You can
-also distribute the CLI archive or an offline installer manually and set this
-to the corresponding internal command.
+These values are public through `/api/config` and are displayed and copied
+as-is; the server never executes them. Do not include credentials or tokens.
+You can also publish complete commands for an internal CLI archive or offline
+installer. In Helm, use `backend.config.cliInstallCommands.windows`, `.macos`
+and `.linux`.
+
+`MULTICA_CLI_INSTALL_COMMAND` remains available for older clients and as a
+macOS/Linux fallback in new clients (`backend.config.cliInstallCommand` in
+Helm). Explicit system commands take priority. Once any custom source is set,
+an unconfigured system shows an installation-help link instead of downloading
+from GitHub. Public installers are used only when all four settings are empty.
+
+Select the target computer's system in the dialog. For an agent installed in
+WSL, select Linux and run the commands inside WSL. Both service URLs must be
+HTTP(S) addresses reachable from that computer; loopback addresses, wildcard
+hosts and URLs containing credentials do not produce connection commands.
 
 ### What does not work offline
 

@@ -21,8 +21,10 @@
 export const DOCS_SLUGS = {
   agents: "agents",
   autopilots: "autopilots",
+  cli: "cli",
   daemonRuntimes: "daemon-runtimes",
   installAgentRuntime: "install-agent-runtime",
+  selfHostQuickstart: "self-host-quickstart",
   skills: "skills",
 } as const;
 

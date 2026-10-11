@@ -739,6 +739,12 @@ export const EMPTY_ISSUE_PROPERTIES_RESPONSE: IssuePropertiesResponse = {
   properties: {},
 };
 
+export interface CliInstallCommands {
+  windows?: string;
+  macos?: string;
+  linux?: string;
+}
+
 export interface AppConfigResponse {
   managed_installation_supported?: boolean;
   deployment_id?: string;
@@ -762,6 +768,8 @@ export interface AppConfigResponse {
   daemon_app_url?: string;
   /** Operator-provided CLI install command for internal/offline distributions. */
   cli_install_command?: string;
+  /** Explicit platform commands take priority over the legacy Unix command. */
+  cli_install_commands?: CliInstallCommands;
   workspace_creation_disabled?: boolean;
   /** Whether this deployment offers the self-hosted Git provider integration
    * (self-host only; off on the managed cloud). Absent/false hides the whole
@@ -956,6 +964,12 @@ const OptionalStringSchema = z.preprocess(
   z.string().optional(),
 );
 
+const CliInstallCommandsSchema = z.object({
+  windows: OptionalStringSchema,
+  macos: OptionalStringSchema,
+  linux: OptionalStringSchema,
+}).catch({});
+
 const BooleanWithDefaultSchema = (fallback: boolean) =>
   z.preprocess(
     (value) => (typeof value === "boolean" ? value : undefined),
@@ -988,6 +1002,7 @@ export const AppConfigSchema = z.object({
   daemon_server_url: OptionalStringSchema,
   daemon_app_url: OptionalStringSchema,
   cli_install_command: OptionalStringSchema,
+  cli_install_commands: CliInstallCommandsSchema,
   workspace_creation_disabled: BooleanWithDefaultSchema(false).optional(),
   vcs_integration_available: BooleanWithDefaultSchema(false).optional(),
   // Omission means an older server; malformed supplied values fail closed.
@@ -1008,6 +1023,7 @@ export const EMPTY_APP_CONFIG: AppConfigResponse = {
   daemon_server_url: "",
   daemon_app_url: "",
   cli_install_command: "",
+  cli_install_commands: {},
   workspace_creation_disabled: false,
   vcs_integration_available: false,
   messaging_integrations_enabled: false,
@@ -1619,6 +1635,31 @@ export const ChildIssueProgressResponseSchema = z.object({
     )
     .default([]),
 }).loose();
+
+// Identity and connection facts must not be fabricated from an incomplete
+// inventory. Older optional display fields may safely default; future provider
+// and state strings remain available for downstream unknown-state handling.
+export const AgentRuntimeSchema = z.object({
+  id: z.string().trim().min(1),
+  workspace_id: z.string().trim().min(1),
+  daemon_id: z.string().trim().min(1).nullable().default(null),
+  name: z.string(),
+  custom_name: OptionalStringSchema.transform((value) => value ?? null),
+  runtime_mode: z.string().min(1),
+  provider: z.string().min(1),
+  launch_header: OptionalStringSchema.transform((value) => value ?? ""),
+  status: z.string().min(1),
+  device_info: OptionalStringSchema.transform((value) => value ?? ""),
+  metadata: z.record(z.string(), z.unknown()).catch({}),
+  owner_id: z.string().trim().min(1).nullable(),
+  visibility: OptionalStringSchema.transform((value) => value ?? "private"),
+  profile_id: OptionalStringSchema.transform((value) => value ?? null),
+  last_seen_at: OptionalStringSchema.transform((value) => value ?? null),
+  created_at: OptionalStringSchema.transform((value) => value ?? ""),
+  updated_at: OptionalStringSchema.transform((value) => value ?? ""),
+}).loose();
+
+export const AgentRuntimeListSchema = z.array(AgentRuntimeSchema);
 
 export const CloudRuntimeNodeSchema = z.object({
   id: z.string(),

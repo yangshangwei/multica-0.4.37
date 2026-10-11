@@ -317,6 +317,13 @@ MULTICA_APP_URL=http://<server-host>:3000
 MULTICA_DEVICE_AUTH_ENABLED=true
 \`\`\`
 
+To publish internal CLI installers in Add a computer, set
+\`MULTICA_CLI_INSTALL_COMMAND_WINDOWS\`, \`MULTICA_CLI_INSTALL_COMMAND_MACOS\`
+and \`MULTICA_CLI_INSTALL_COMMAND_LINUX\` to complete, non-secret commands.
+\`MULTICA_CLI_INSTALL_COMMAND\` remains a macOS/Linux fallback and supports
+older clients. Any custom source disables public downloads for missing systems.
+The commands are public through \`/api/config\`; do not include credentials.
+
 Start it:
 
 \`\`\`bash

@@ -166,6 +166,36 @@ describe("remembered Desktop password login", () => {
   });
 });
 
+describe("AuthInitializer daemon setup config", () => {
+  it("loads platform install commands and clears them on a later older-server boot", async () => {
+    const commands = { windows: "windows installer", macos: "macos installer", linux: "linux installer" };
+    const first = renderInitializer({
+      api: makeApi({ getConfig: vi.fn().mockResolvedValue({
+        daemon_server_url: "https://api.internal",
+        daemon_app_url: "https://app.internal",
+        cli_install_command: "legacy installer",
+        cli_install_commands: commands,
+      }) }),
+    });
+    await waitFor(() => expect(configStore.getState()).toMatchObject({
+      daemonServerUrl: "https://api.internal",
+      daemonAppUrl: "https://app.internal",
+      cliInstallCommand: "legacy installer",
+      cliInstallCommands: commands,
+    }));
+    first.unmount();
+    const second = renderInitializer({ api: makeApi() });
+    await waitFor(() => expect(configStore.getState()).toMatchObject({
+      daemonServerUrl: "",
+      daemonAppUrl: "",
+      cliInstallCommand: "",
+      cliInstallCommands: {},
+    }));
+    expect(Object.keys(configStore.getState().cliInstallCommands)).toHaveLength(0);
+    second.unmount();
+  });
+});
+
 describe("AuthInitializer messaging deployment policy", () => {
   it.each([
     ["network failure", new TypeError("fetch failed")],

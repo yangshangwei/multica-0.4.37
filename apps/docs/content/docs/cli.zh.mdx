@@ -17,6 +17,8 @@ CLI 安装包由管理员从内部分发渠道提供，覆盖 macOS、Linux 和 
 multica version
 ```
 
+在“添加电脑”中先选择目标电脑的系统，再复制命令。AI 编程工具安装在 WSL 中时选择 Linux，并在 WSL 内执行。管理员可以为各系统提供单独的内网安装命令，详见[CLI 安装来源](/environment-variables#cli-安装来源)。
+
 ## 第一次连接
 
 连接 Multica Cloud：
@@ -40,13 +42,28 @@ multica auth status
 multica daemon status
 ```
 
-如果只需要重新登录，不想覆盖其他配置，运行 `multica login`。没有浏览器的环境可以先在 Web 设置中创建个人访问令牌，再输入：
+自托管的两个地址都必须是目标电脑可访问的 HTTP(S) 地址。“添加电脑”遇到回环、通配主机、配置不完整或含凭据的地址时，会先提示修正配置。
+
+如果只需要重新登录，不想覆盖其他配置，运行 `multica login`。没有浏览器时，先在 Web 设置中创建个人访问令牌，并在目标电脑配置地址：
+
+```bash
+multica config set server_url 'https://api.example.com'
+multica config set app_url 'https://app.example.com'
+```
+
+单独执行交互式令牌登录：
 
 ```bash
 multica login --token
 ```
 
 命令会在终端中提示粘贴令牌，避免把完整值留在 shell history 中。
+
+等待登录成功后，再单独启动守护进程：
+
+```bash
+multica daemon start
+```
 
 ## 选择工作空间
 

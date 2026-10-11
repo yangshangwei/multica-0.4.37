@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="736" height="1006" viewBox="0 0 736 1006">
+<rect width="736" height="1006" fill="#ededf0"/>
+<rect x="48" y="28" width="640" height="888" rx="14" fill="white"/>
+<text x="76" y="58" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="20" font-weight="600" fill="#18181b">没有浏览器或还没连接上？</text>
+<polyline points="648,62 660,74" fill="none" stroke="#62626e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="660,62 648,74" fill="none" stroke="#62626e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="76" y="100" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" font-weight="400" fill="#62626e">在当前电脑的「设置 → API 令牌」中创建令牌。</text>
+<text x="76" y="128" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" font-weight="400" fill="#62626e">再到目标电脑上按顺序执行以下步骤。</text>
+<text x="76" y="177" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="16" font-weight="600" fill="#18181b">1. 配置服务地址</text>
+<rect x="76" y="206" width="584" height="105" rx="9" fill="#f4f4f5"/>
+<polyline points="92,220 96,224 92,228" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="99,229 104,229" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="112" y="219" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">PowerShell / 终端</text>
+<rect x="578" y="214" width="68" height="29" rx="5" fill="white" stroke="#e4e4e7"/>
+<rect x="593" y="224" width="10" height="12" rx="2" fill="white" stroke="#62626e"/>
+<polyline points="589,230 589,221 598,221" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="222" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="600" fill="#18181b">复制</text>
+<text x="92" y="254" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica config set server_url https://api.example.com</text>
+<text x="92" y="276" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica config set app_url https://app.example.com</text>
+<text x="76" y="349" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="16" font-weight="600" fill="#18181b">2. 使用令牌登录</text>
+<rect x="76" y="378" width="584" height="83" rx="9" fill="#f4f4f5"/>
+<polyline points="92,392 96,396 92,400" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="99,401 104,401" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="112" y="391" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">PowerShell / 终端</text>
+<rect x="578" y="386" width="68" height="29" rx="5" fill="white" stroke="#e4e4e7"/>
+<rect x="593" y="396" width="10" height="12" rx="2" fill="white" stroke="#62626e"/>
+<polyline points="589,402 589,393 598,393" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="394" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="600" fill="#18181b">复制</text>
+<text x="92" y="426" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica login --token</text>
+<text x="76" y="477" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">出现提示时粘贴令牌，等待登录成功。</text>
+<text x="76" y="526" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="16" font-weight="600" fill="#18181b">3. 启动守护进程</text>
+<rect x="76" y="555" width="584" height="83" rx="9" fill="#f4f4f5"/>
+<polyline points="92,569 96,573 92,577" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="99,578 104,578" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="112" y="568" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">PowerShell / 终端</text>
+<rect x="578" y="563" width="68" height="29" rx="5" fill="white" stroke="#e4e4e7"/>
+<rect x="593" y="573" width="10" height="12" rx="2" fill="white" stroke="#62626e"/>
+<polyline points="589,579 589,570 598,570" fill="none" stroke="#62626e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="571" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="600" fill="#18181b">复制</text>
+<text x="92" y="603" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica daemon start</text>
+<text x="76" y="654" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">登录成功后再执行此命令。</text>
+<text x="76" y="703" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="16" font-weight="600" fill="#18181b">执行后仍未显示？</text>
+<text x="76" y="739" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" font-weight="400" fill="#62626e">确认目标电脑能访问服务地址，并已安装、登录 AI 编程工具。</text>
+<rect x="76" y="772" width="584" height="68" rx="8" fill="#f4f4f5"/>
+<text x="92" y="785" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica daemon status</text>
+<text x="92" y="809" dominant-baseline="text-before-edge" font-family="Menlo,monospace" font-size="12" font-weight="400" fill="#18181b">multica daemon logs -f</text>
+<text x="76" y="863" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">先查连接状态，再查看日志中的具体错误。</text>
+<text x="76" y="951" dominant-baseline="text-before-edge" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="400" fill="#62626e">帮助展开态 · 独立画板仅用于展示，实际仍在原弹窗中展开</text>
+</svg>

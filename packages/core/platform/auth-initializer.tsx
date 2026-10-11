@@ -97,6 +97,7 @@ export function AuthInitializer({
           daemonServerUrl: cfg.daemon_server_url,
           daemonAppUrl: cfg.daemon_app_url,
           cliInstallCommand: cfg.cli_install_command,
+          cliInstallCommands: cfg.cli_install_commands,
         });
         configStore.getState().setFeatureFlags(cfg.feature_flags);
         configStore.getState().setServerVersion(cfg.server_version);

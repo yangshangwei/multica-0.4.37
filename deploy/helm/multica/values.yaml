@@ -127,6 +127,14 @@ backend:
     databaseConnectTimeout: 5s
     appEnv: production
     appUrl: http://multica.dev.lan
+    # Public, complete install commands. Never include credentials; a custom
+    # source disables public installer fallback for missing target systems.
+    # The legacy command applies to macOS/Linux and older clients.
+    cliInstallCommand: ""
+    cliInstallCommands:
+      windows: ""
+      macos: ""
+      linux: ""
     frontendOrigin: http://multica.dev.lan
     corsAllowedOrigins: ""
     cookieDomain: ""

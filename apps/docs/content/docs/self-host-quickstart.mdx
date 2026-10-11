@@ -181,7 +181,7 @@ curl -fsS https://api.example.com/readyz
 curl -fsS https://app.example.com/api/config | grep -o '"daemon_server_url":"[^"]*"'
 ```
 
-The last command prints `daemon_server_url`, the URL daemons use to reach the API: `MULTICA_DAEMON_SERVER_URL` when set, then `MULTICA_PUBLIC_URL`, otherwise the app URL — `MULTICA_APP_URL`, falling back to `FRONTEND_ORIGIN`. When neither `MULTICA_APP_URL` nor `FRONTEND_ORIGIN` is set, the field is omitted from the response entirely (so the grep prints nothing), even if `MULTICA_DAEMON_SERVER_URL` or `MULTICA_PUBLIC_URL` is set. If it prints a `localhost` address, `.env` still carries local defaults: set `FRONTEND_ORIGIN` and `MULTICA_APP_URL` explicitly to the public URLs instead of relying on the `${FRONTEND_PORT}` references copied from `.env.example`, then recreate the containers.
+The last command prints `daemon_server_url`, the URL daemons use to reach the API: `MULTICA_DAEMON_SERVER_URL` when set, then `MULTICA_PUBLIC_URL`, otherwise the app URL — `MULTICA_APP_URL`, falling back to `FRONTEND_ORIGIN`. An API URL configured without an app URL remains in the response so the client can identify the incomplete self-host configuration. The Add a computer dialog requires both reachable HTTP(S) URLs before showing connection commands. If it prints a `localhost` address, `.env` still carries local defaults: set `FRONTEND_ORIGIN` and `MULTICA_APP_URL` explicitly to URLs reachable from the target computer instead of relying on the `${FRONTEND_PORT}` references copied from `.env.example`, then recreate the containers.
 
 <Callout type="warning">
 `docker compose restart` only restarts existing containers and does not re-read `.env`. After changing configuration, run `docker compose -f docker-compose.selfhost.yml up -d` to re-read `.env`.
@@ -231,6 +231,19 @@ curl -fsSL https://raw.githubusercontent.com/multica-ai/multica/main/scripts/ins
 ```powershell
 irm https://raw.githubusercontent.com/multica-ai/multica/main/scripts/install.ps1 | iex
 ```
+
+On an isolated network, set `MULTICA_CLI_INSTALL_COMMAND_WINDOWS`,
+`MULTICA_CLI_INSTALL_COMMAND_MACOS` and `MULTICA_CLI_INSTALL_COMMAND_LINUX` to
+complete install commands served by your internal distribution channel, then
+recreate the backend. These commands are public configuration: never include
+credentials. Explicit system commands take priority over the legacy
+`MULTICA_CLI_INSTALL_COMMAND`, which remains a macOS/Linux fallback and supports
+older clients. Once any custom source is configured, missing systems show help
+instead of falling back to GitHub. See [environment variables](/environment-variables).
+
+In Add a computer, select the target system; for WSL, select Linux and execute
+the commands inside WSL. Use the system account that already has the AI coding
+tools installed and signed in.
 
 If the Multica service runs on this same computer:
 

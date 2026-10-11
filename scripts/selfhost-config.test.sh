@@ -60,6 +60,16 @@ require_config "$config" 'SMTP_FROM_EMAIL: multica@example.com'
 require_config "$config" 'MULTICA_DATABASE_STARTUP_TIMEOUT: 3m'
 require_config "$config" 'MULTICA_DATABASE_CONNECT_TIMEOUT: 5s'
 
+# All install variables must cross Compose's backend allowlist, including the
+# legacy Unix source. Complete command preservation is covered in
+# offline-build-changelog.test.mjs using the resolved Compose JSON.
+while IFS= read -r install_var; do
+  if ! grep -Eq "^[[:space:]]+${install_var}: \\\$\{${install_var}:-" docker-compose.selfhost.yml; then
+    echo "$install_var is documented but not mapped into the backend service."
+    exit 1
+  fi
+done < <(grep -oE '^MULTICA_CLI_INSTALL_COMMAND[A-Z_]*' .env.example)
+
 # The backend environment is an explicit allowlist, so a variable documented in
 # .env.example but missing here silently never reaches the container: the
 # operator configures it, the server never sees it, and nothing reports the gap.

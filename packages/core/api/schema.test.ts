@@ -21,8 +21,9 @@ afterEach(() => {
 });
 
 // These tests cover the five failure modes that white-screened the desktop
-// app in past incidents. The contract is: a malformed response degrades to
-// an empty/safe shape, never throws into React.
+// app in past incidents. Most malformed responses degrade to an empty/safe
+// shape. Runtime inventory must reject incomplete data: an empty fallback
+// would be indistinguishable from a trustworthy empty computer baseline.
 describe("ApiClient schema fallback", () => {
   describe("VCS connections", () => {
     it("falls back to an empty list when the connections response is malformed", async () => {
@@ -680,7 +681,125 @@ describe("ApiClient schema fallback", () => {
     });
   });
 
+  describe("listRuntimes", () => {
+    const runtime = {
+      id: "runtime-1",
+      workspace_id: "ws-1",
+      daemon_id: "daemon-1",
+      name: "Claude (laptop)",
+      runtime_mode: "local",
+      provider: "claude",
+      status: "online",
+      owner_id: "user-1",
+    };
+
+    it("accepts a genuine empty inventory", async () => {
+      stubFetchJson([]);
+      await expect(new ApiClient("https://api.example.test").listRuntimes()).resolves.toEqual([]);
+    });
+
+    it("preserves identity and future providers while defaulting older optional fields", async () => {
+      stubFetchJson([{ ...runtime, provider: "future-provider", metadata: null, future_field: true }]);
+      await expect(new ApiClient("https://api.example.test").listRuntimes()).resolves.toEqual([{
+        ...runtime,
+        provider: "future-provider",
+        launch_header: "",
+        device_info: "",
+        custom_name: null,
+        profile_id: null,
+        metadata: {},
+        visibility: "private",
+        last_seen_at: null,
+        created_at: "",
+        updated_at: "",
+        future_field: true,
+      }]);
+    });
+
+    it.each([null, {}, { runtimes: [] }, 123, [null], [runtime, { id: "incomplete" }]])(
+      "rejects an incomplete inventory instead of creating an empty baseline: %j",
+      async (response) => {
+        stubFetchJson(response);
+        await expect(new ApiClient("https://api.example.test").listRuntimes()).rejects.toThrow("Invalid runtime inventory response");
+      },
+    );
+
+    it.each(["id", "workspace_id", "name", "runtime_mode", "provider", "status", "owner_id"])(
+      "rejects missing or malformed %s without inventing a connection fact",
+      async (field) => {
+        for (const value of [undefined, 123, {}]) {
+          stubFetchJson([{ ...runtime, [field]: value }]);
+          await expect(new ApiClient("https://api.example.test").listRuntimes()).rejects.toThrow("Invalid runtime inventory response");
+        }
+      },
+    );
+
+    it.each([
+      { id: "" }, { id: "   " }, { workspace_id: "" }, { workspace_id: "   " },
+    ])("rejects an empty identity or workspace scope: %j", async (identity) => {
+      stubFetchJson([{ ...runtime, ...identity }]);
+      await expect(new ApiClient("https://api.example.test").listRuntimes()).rejects.toThrow("Invalid runtime inventory response");
+    });
+
+    it("rejects incomplete initial workspace scope before accepting the corrected inventory", async () => {
+      const client = new ApiClient("https://api.example.test");
+      stubFetchJson([{ ...runtime, workspace_id: undefined }]);
+      await expect(client.listRuntimes({ workspace_id: "ws-1", owner: "me" }))
+        .rejects.toThrow("Invalid runtime inventory response");
+
+      stubFetchJson([runtime]);
+      await expect(client.listRuntimes({ workspace_id: "ws-1", owner: "me" }))
+        .resolves.toMatchObject([runtime]);
+    });
+
+    it("retains unknown server enums without assigning an online local state", async () => {
+      stubFetchJson([{ ...runtime, runtime_mode: "future-mode", status: "future-status", owner_id: null }]);
+      const runtimes = await new ApiClient("https://api.example.test").listRuntimes();
+      expect(runtimes[0]).toMatchObject({ runtime_mode: "future-mode", status: "future-status", owner_id: null });
+    });
+  });
+
   describe("getConfig", () => {
+    it("keeps valid platform install commands when another field is malformed", async () => {
+      stubFetchJson({
+        cli_install_command: "legacy installer",
+        cli_install_commands: {
+          windows: "irm https://packages.internal/install.ps1 | iex",
+          macos: { invalid: true },
+          linux: "curl -fsSL https://packages.internal/install.sh | bash",
+          future_os: 123,
+        },
+      });
+      const config = await new ApiClient("https://api.example.test").getConfig();
+      expect(config.cli_install_command).toBe("legacy installer");
+      expect(config.cli_install_commands).toEqual({
+        windows: "irm https://packages.internal/install.ps1 | iex",
+        macos: undefined,
+        linux: "curl -fsSL https://packages.internal/install.sh | bash",
+      });
+    });
+
+    it.each([undefined, null, "wrong-shape", [], 123])(
+      "defaults absent or malformed platform commands without dropping other config: %j",
+      async (commands) => {
+        stubFetchJson({
+          daemon_server_url: "https://api.internal",
+          cli_install_commands: commands,
+          cli_install_command: "legacy installer",
+        });
+        const config = await new ApiClient("https://api.example.test").getConfig();
+        expect(config.cli_install_commands).toEqual({});
+        expect(config.daemon_server_url).toBe("https://api.internal");
+        expect(config.cli_install_command).toBe("legacy installer");
+      },
+    );
+
+    it("accepts all three platform install commands independently", async () => {
+      const commands = { windows: "windows installer", macos: "macos installer", linux: "linux installer" };
+      stubFetchJson({ cli_install_commands: commands });
+      expect((await new ApiClient("https://api.example.test").getConfig()).cli_install_commands).toEqual(commands);
+    });
+
     it("drops malformed daemon setup URLs instead of throwing", async () => {
       stubFetchJson({
         cdn_domain: "cdn.example.com",

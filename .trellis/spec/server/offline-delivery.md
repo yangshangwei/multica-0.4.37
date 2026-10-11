@@ -20,6 +20,13 @@ accept ordered, repeated overlays. Relative paths resolve from `DIR`.
   overlay order. `compose-command.txt` records a quoted command prefix; it is
   not an automatic overlay loader. Operators must explicitly preserve the list.
 - Existing secrets, authentication choice and data volumes remain intact.
+- CLI installer settings are public complete commands: preserve
+  `MULTICA_CLI_INSTALL_COMMAND` and forward `_WINDOWS`, `_MACOS` and `_LINUX`
+  variants through Compose, Helm and offline templates. New clients use the
+  legacy value only for Unix and never fall back to GitHub for an unconfigured
+  system when any internal source exists. Keep the source and embedded docs in
+  sync; the full contract lives in
+  [Add a computer](../views/frontend/connect-remote-computer.md).
 - Compose defaults match backend semantics: `FF_PROJECTS_P1=true`, platform
   administration and managed installations off. Iterations have no deployment
   gate; they require an explicit workspace owner/admin action in settings.
