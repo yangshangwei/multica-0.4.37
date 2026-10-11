@@ -24,6 +24,10 @@ An issue's `admission_status` is separate from its workflow `status`. Only
 issue creation keeps its existing behavior. Explicit manual/CSV triage intake
 creates a pending issue, with project/assignee stored only as candidates.
 
+Triage is enabled by default when a workspace has no saved settings. Existing
+saved choices, including disabled, are preserved; a human owner/admin can turn
+it off in workspace settings. Ordinary issues do not enter triage automatically.
+
 Agents with existing Contributor creation authority may explicitly submit to
 `POST /api/triage/items` in an enabled workspace. This does not grant review
 authority: accepting, rejecting, marking duplicate, snoozing, reopening, batch
@@ -84,8 +88,10 @@ separate confirmed writes. Membership changes do not start or stop execution.
 Observer agents cannot arrange iterations. I1 remains under implementation;
 these server contracts do not imply that its lifecycle UI is released.
 
-Iteration discovery and settings are workspace-scoped. The server rollout gate
-is off by default, and `atomic_handoff=false` means end-and-start is unavailable.
+Iteration discovery and settings are workspace-scoped. Missing settings default
+to enabled, while existing saved choices are preserved. A human owner/admin can
+disable iterations through the existing preview-and-confirm flow. Capability
+describes implemented support; `atomic_handoff=false` means end-and-start is unavailable.
 Enabling settings requires a human owner/admin, a request ID, the current settings
 revision and explicit confirmation of the shared planning timezone. It does not
 create or start a period. Never treat settings enable as permission to perform

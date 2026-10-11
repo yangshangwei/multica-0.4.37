@@ -168,6 +168,7 @@ func TestTriageIterationInvalidMembershipFailsClosed(t *testing.T) {
 
 func TestTriageIterationExplicitAssignmentRequiresEnabledWorkspace(t *testing.T) {
 	_, iterationID := iterationIssueFixture(t)
+	dbfx.InsertNoID(t, "workspace_iteration_settings", testutil.Cols{"workspace_id": testWorkspaceID, "enabled": false}, "workspace_id=$1", testWorkspaceID)
 	syncCreationIterationCounter(t)
 	triageEnableForTest(t)
 	item := triageCreateForTest(t)

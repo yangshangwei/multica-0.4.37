@@ -19,7 +19,7 @@ import (
 
 func lifecycleHTTPHandler(t *testing.T) *Handler {
 	t.Helper()
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	// Existing lifecycle scenarios use UTC dates independently of the workspace default.
 	dbfx.Exec(t, "UPDATE workspace SET planning_timezone='UTC' WHERE id=$1", testWorkspaceID)
 	dbfx.Cleanup(t, "UPDATE workspace SET planning_timezone=NULL WHERE id=$1", testWorkspaceID)
@@ -104,12 +104,14 @@ func TestIterationLifecycleHTTPManualFlow(t *testing.T) {
 	}
 }
 func TestIterationLifecycleHTTPDisabledWorkspaceAndRawValidation(t *testing.T) {
+	hDisabled := disabledIterationSettingsHandler(t)
 	body := service.CreateIterationInput{RequestID: uuid.NewString(), Name: "Disabled workspace", StartDate: "2026-10-06", EndDate: "2026-10-19", ConfirmedTimezone: "UTC"}
 	var problem map[string]any
-	testutil.Call(t, testHandler.CreateIteration, lifecycleHTTPRequest("POST", "iterations", "", body)).Want(422).JSON(&problem)
+	testutil.Call(t, hDisabled.CreateIteration, lifecycleHTTPRequest("POST", "iterations", "", body)).Want(422).JSON(&problem)
 	if problem["code"] != "iteration_disabled" {
 		t.Fatalf("wrong workspace-disabled refusal: %v", problem)
 	}
+	dbfx.Exec(t, `DELETE FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID)
 	h := lifecycleHTTPHandler(t)
 	bad := map[string]any{"operation": "move", "expected_settings_revision": 9007199254740992.0, "moves": []any{}}
 	testutil.Call(t, h.PreviewIterationOperation, lifecycleHTTPRequest("POST", "iteration-previews", "", bad)).Want(400)

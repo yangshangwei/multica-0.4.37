@@ -91,12 +91,19 @@ func (s *IterationService) lifecycleTime(ctx context.Context, tx pgx.Tx) (time.T
 func (s *IterationService) lifecycleSettings(ctx context.Context, tx pgx.Tx, ws pgtype.UUID, lock bool) (db.WorkspaceIterationSetting, error) {
 	var settings db.WorkspaceIterationSetting
 	var err error
+	q := db.New(tx)
 	if lock {
-		settings, err = db.New(tx).LockIterationSettings(ctx, ws)
+		if err = q.EnsureIterationSettings(ctx, ws); err != nil {
+			return settings, err
+		}
+		settings, err = q.LockIterationSettings(ctx, ws)
 	} else {
-		settings, err = db.New(tx).GetIterationSettings(ctx, ws)
+		settings, err = q.GetIterationSettings(ctx, ws)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return db.WorkspaceIterationSetting{WorkspaceID: ws, Enabled: true, Revision: 1}, nil
+		}
 	}
-	if errors.Is(err, pgx.ErrNoRows) || (err == nil && !settings.Enabled) {
+	if err == nil && !settings.Enabled {
 		return settings, iterationFailure(422, "iteration_disabled", "Iterations are disabled")
 	}
 	return settings, err

@@ -175,9 +175,9 @@ grant set, not a later allow-list read that could observe an unheld new grant.
 
 These rules apply when changing period management, ordinary issue assignment,
 T1 acceptance or historical reads. CG owns actual close/handoff/disable and
-outbox delivery. I1 capability is implemented; workspace enablement remains
-default-off. No deployment flag may suppress history, operation recovery or
-completed notification outbox work.
+outbox delivery. I1 capability is implemented; workspace enablement defaults
+to on unless saved settings disable it. No deployment flag may suppress history,
+operation recovery or completed notification outbox work.
 
 ### Signatures
 
@@ -231,7 +231,7 @@ live availability is separate. Never repair bad snapshots from live joins.
 
 CG evidence is in the I1 parent `cg-verification.md`. End, active cancel,
 handoff and whole-workspace disable use the same persistent operation owner.
-New workspaces remain disabled until an administrator enables them;
+New workspaces default to enabled; administrators can explicitly disable them.
 `atomic_handoff` describes implemented support independently of that choice.
 
 Capture frozen history before releasing membership, but stage its payload in
@@ -345,8 +345,10 @@ workspace choice and current authorization are separate facts.
 ### Request, response and environment contracts
 
 Capabilities return implemented `supported/manual/atomic_handoff=true`, with
-`enabled` read from workspace settings. Missing settings means disabled/revision
-1. There is no migration that changes an existing workspace choice; a leftover
+`enabled` read from workspace settings. Missing settings means enabled/revision
+1, including lifecycle and assignment checks. New settings rows use the same
+database default. The forward default migration preserves every existing saved
+workspace choice, including false; a leftover
 `FF_ITERATIONS_I1` environment value no longer affects these capabilities.
 
 `EnableIterationSettings` retains stable human actor and owner/admin checks in
@@ -365,7 +367,7 @@ resurrects closed periods.
 | Condition | Contract |
 | --- | --- |
 | Missing/false old deployment environment variable | No effect on supported capability or saved workspace choice |
-| New workspace / missing settings row | Disabled until explicit administrator enable |
+| New workspace / missing settings row | Enabled at revision 1; explicit administrator disable remains available |
 | Ordinary or triage assignment while workspace disabled | Existing workspace-disabled conflict |
 | Enable by non-admin or machine credential | Forbidden |
 | Stale settings revision/timezone or confirmation hash | 409; require a fresh explicit intent/preview |
@@ -377,8 +379,8 @@ resurrects closed periods.
 
 - Good: an administrator explicitly enables the saved timezone; only after the
   transaction commits do other clients refresh their iteration capability.
-- Base: a new workspace is supported but disabled, with a discoverable settings
-  entry and no generated periods or executions.
+- Base: a new workspace is supported and enabled, with visible iteration
+  navigation and no generated periods or executions.
 - Bad: treat a replayed old enable receipt as a new enable after another client
   disabled the workspace, or infer a missing request's success from live state.
 

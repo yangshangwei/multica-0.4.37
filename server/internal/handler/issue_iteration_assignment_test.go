@@ -31,6 +31,8 @@ func issueIterationAssignmentFixture(t *testing.T) (*Handler, string) {
 }
 func TestIssueIterationAssignmentCreateAndDuplicateRetry(t *testing.T) {
 	h, iid := issueIterationAssignmentFixture(t)
+	// Assignment must also honor the default when settings have not been saved.
+	dbfx.Exec(t, `DELETE FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID)
 	title := "Confirmed create " + uuid.NewString()
 	dbfx.Cleanup(t, "DELETE FROM issue WHERE workspace_id=$1 AND title=$2", testWorkspaceID, title)
 	body := map[string]any{"title": title, "current_iteration_id": iid, "expected_iteration_revision": 1}

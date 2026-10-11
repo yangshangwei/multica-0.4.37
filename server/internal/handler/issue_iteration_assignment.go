@@ -96,8 +96,12 @@ func (h *Handler) parseIssueIterationCreate(r *http.Request, req CreateIssueRequ
 	return input, nil
 }
 func (h *Handler) lockIssueIterationSettings(ctx context.Context, tx pgx.Tx, ws pgtype.UUID) error {
-	settings, err := db.New(tx).LockIterationSettings(ctx, ws)
-	if errors.Is(err, pgx.ErrNoRows) || (err == nil && !settings.Enabled) {
+	q := db.New(tx)
+	if err := q.EnsureIterationSettings(ctx, ws); err != nil {
+		return err
+	}
+	settings, err := q.LockIterationSettings(ctx, ws)
+	if err == nil && !settings.Enabled {
 		return iterationAPIError(422, "iteration_disabled", "Iterations are disabled")
 	}
 	return err

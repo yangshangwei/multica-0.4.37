@@ -54,17 +54,46 @@ func triageActionForTest(t *testing.T, item TriageItem, action string, extra map
 	return out
 }
 func TestTriageDefaultAndHumanGate(t *testing.T) {
+	triageEnableForTest(t)
+	// Keep fixture cleanup while exercising a workspace with no saved settings.
+	dbfx.Exec(t, `DELETE FROM workspace_triage_settings WHERE workspace_id=$1`, testWorkspaceID)
 	var settings TriageSettings
 	testutil.Call(t, testHandler.GetTriageSettings, newRequest("GET", "/api/triage/settings", nil)).Want(200).JSON(&settings)
-	if settings.Enabled || !settings.Supported {
-		t.Fatalf("new workspace must be supported and off: %+v", settings)
+	if !settings.Enabled || !settings.Supported || !settings.IterationAssignment || settings.Revision != 1 {
+		t.Fatalf("new workspace must support triage and iterations by default: %+v", settings)
 	}
-	testutil.Call(t, testHandler.CreateTriageItem, newRequest("POST", "/api/triage/items", triageInputForTest())).Want(409)
-	triageEnableForTest(t)
+	if n := dbfx.Count(t, `SELECT count(*) FROM workspace_triage_settings WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
+		t.Fatal("settings discovery must remain read-only")
+	}
 	item := triageCreateForTest(t)
 	r := withURLParam(newRequest("POST", "/api/triage/items/actions", map[string]any{"request_id": uuidToString(dbid.NewV7()), "expected_revision": item.Issue.Revision, "action": "accept"}), "id", item.Issue.ID)
 	r.Header.Set("X-Actor-Source", "task_token")
 	testutil.Call(t, testHandler.ActOnTriageItem, r).Want(http.StatusForbidden)
+}
+
+func TestTriageDefaultCanBeDisabledAndReenabled(t *testing.T) {
+	ws := dbfx.Workspace(t, "Default triage", "triage-default-"+uuidToString(dbid.NewV7()))
+	dbfx.Member(t, ws, testUserID, "owner")
+	dbfx.Cleanup(t, `DELETE FROM workspace_triage_settings WHERE workspace_id=$1`, ws)
+	request := func(method, path string, body any) *http.Request {
+		r := newRequest(method, path, body)
+		r.Header.Set("X-Workspace-ID", ws)
+		return r
+	}
+	var settings TriageSettings
+	input := map[string]any{"enabled": false, "acceptance_status": "todo", "responsibility_mode": "none", "expected_revision": 1}
+	testutil.Call(t, testHandler.UpdateTriageSettings, request("PUT", "/api/triage/settings", input)).Want(200)
+	testutil.Call(t, testHandler.GetTriageSettings, request("GET", "/api/triage/settings", nil)).Want(200).JSON(&settings)
+	if settings.Enabled || settings.Revision != 2 {
+		t.Fatalf("explicit opt-out was not preserved: %+v", settings)
+	}
+	testutil.Call(t, testHandler.CreateTriageItem, request("POST", "/api/triage/items", triageInputForTest())).Want(409)
+	input["enabled"], input["expected_revision"] = true, settings.Revision
+	testutil.Call(t, testHandler.UpdateTriageSettings, request("PUT", "/api/triage/settings", input)).Want(200)
+	testutil.Call(t, testHandler.GetTriageSettings, request("GET", "/api/triage/settings", nil)).Want(200).JSON(&settings)
+	if !settings.Enabled || settings.Revision != 3 {
+		t.Fatalf("explicit enable was not preserved: %+v", settings)
+	}
 }
 func TestTriageAtomicAdmissionAndHistory(t *testing.T) {
 	triageEnableForTest(t)

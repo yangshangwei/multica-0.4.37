@@ -17,6 +17,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/iteration"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/pkg/featureflag"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -31,6 +32,13 @@ func iterationSettingsHandler(t *testing.T) *Handler {
 	dbfx.Cleanup(t, `DELETE FROM iteration_operation WHERE workspace_id=$1`, testWorkspaceID)
 	dbfx.Cleanup(t, `DELETE FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID)
 	return &h
+}
+
+func disabledIterationSettingsHandler(t *testing.T) *Handler {
+	t.Helper()
+	h := iterationSettingsHandler(t)
+	dbfx.InsertNoID(t, "workspace_iteration_settings", testutil.Cols{"workspace_id": testWorkspaceID, "enabled": false}, "workspace_id=$1", testWorkspaceID)
+	return h
 }
 func enableIterationBody(requestID string) map[string]any {
 	return map[string]any{"request_id": requestID, "expected_revision": 1, "confirmed_timezone": "Asia/Shanghai"}
@@ -54,11 +62,11 @@ func TestIterationSettingsDefaultAndEnableWithoutDeploymentFlag(t *testing.T) {
 			var settings iteration.Settings
 			var capabilities map[string]any
 			testutil.Call(t, h.GetIterationSettings, iterationSettingsRequest("GET", "iteration-settings", nil)).Want(200).JSON(&settings)
-			if settings.Enabled || settings.Revision != 1 || settings.EffectiveTimezone != "Asia/Shanghai" || settings.PlanningTimezone != nil || settings.TimezoneConfigured || settings.WorkspaceID != testWorkspaceID {
+			if !settings.Enabled || settings.Revision != 1 || settings.EffectiveTimezone != "Asia/Shanghai" || settings.PlanningTimezone != nil || settings.TimezoneConfigured || settings.WorkspaceID != testWorkspaceID {
 				t.Fatalf("incorrect default settings: %+v", settings)
 			}
 			testutil.Call(t, h.GetIterationCapabilities, iterationSettingsRequest("GET", "iteration-capabilities", nil)).Want(200).JSON(&capabilities)
-			if capabilities["supported"] != true || capabilities["enabled"] != false || capabilities["atomic_handoff"] != true || capabilities["manual"] != true || capabilities["workspace_id"] != testWorkspaceID || capabilities["schema_version"] != float64(1) {
+			if capabilities["supported"] != true || capabilities["enabled"] != true || capabilities["atomic_handoff"] != true || capabilities["manual"] != true || capabilities["workspace_id"] != testWorkspaceID || capabilities["schema_version"] != float64(1) {
 				t.Fatalf("incorrect capability contract: %v", capabilities)
 			}
 			if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
@@ -72,8 +80,8 @@ func TestIterationSettingsDefaultAndEnableWithoutDeploymentFlag(t *testing.T) {
 			tasksBefore := dbfx.Count(t, taskCountSQL, testWorkspaceID)
 			testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", enableIterationBody(uuid.NewString()))).Want(200)
 			testutil.Call(t, h.GetIterationSettings, iterationSettingsRequest("GET", "iteration-settings", nil)).Want(200).JSON(&settings)
-			if !settings.Enabled || settings.Revision != 2 {
-				t.Fatalf("workspace did not enable: %+v", settings)
+			if !settings.Enabled || settings.Revision != 1 {
+				t.Fatalf("already-enabled default changed: %+v", settings)
 			}
 			for table, before := range counts {
 				if n := dbfx.Count(t, "SELECT count(*) FROM "+table+" WHERE workspace_id=$1", testWorkspaceID); n != before {
@@ -117,8 +125,52 @@ func TestIterationCapabilitiesUsePersistedWorkspaceState(t *testing.T) {
 		}
 	}
 }
-func TestEnableIterationSettingsDurableReplay(t *testing.T) {
+
+func TestIterationDefaultCanBeDisabledAndReenabled(t *testing.T) {
 	h := iterationSettingsHandler(t)
+	dbfx.Cleanup(t, `DELETE FROM iteration_notification WHERE workspace_id=$1`, testWorkspaceID)
+	reason := "Hide iterations"
+	draft := iteration.Draft{Operation: "disable", ExpectedSettingsRevision: 1, Reason: &reason, Moves: []iteration.Move{}}
+	var preview iteration.Preview
+	testutil.Call(t, h.PreviewIterationOperation, iterationSettingsRequest("POST", "iteration-previews", draft)).Want(200).JSON(&preview)
+	if !preview.Complete || len(preview.InvalidItems) != 0 || preview.PreviewHash == "" {
+		t.Fatalf("default workspace cannot preview disable: %+v", preview)
+	}
+	if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
+		t.Fatal("preview created settings")
+	}
+	testutil.Call(t, h.ApplyIterationOperation, iterationSettingsRequest("POST", "iteration-operations", service.ApplyIterationInput{RequestID: uuid.NewString(), Draft: preview.Draft, PreviewHash: preview.PreviewHash})).Want(200)
+	var settings iteration.Settings
+	testutil.Call(t, h.GetIterationSettings, iterationSettingsRequest("GET", "iteration-settings", nil)).Want(200).JSON(&settings)
+	if settings.Enabled || settings.Revision != 2 {
+		t.Fatalf("explicit opt-out was not preserved: %+v", settings)
+	}
+	body := enableIterationBody(uuid.NewString())
+	body["expected_revision"] = settings.Revision
+	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(200)
+	testutil.Call(t, h.GetIterationSettings, iterationSettingsRequest("GET", "iteration-settings", nil)).Want(200).JSON(&settings)
+	if !settings.Enabled || settings.Revision != 3 {
+		t.Fatalf("explicit enable was not preserved: %+v", settings)
+	}
+}
+
+func TestIterationDefaultAllowsFirstCreate(t *testing.T) {
+	h := iterationSettingsHandler(t)
+	dbfx.Cleanup(t, `DELETE FROM iteration_event WHERE workspace_id=$1`, testWorkspaceID)
+	dbfx.Cleanup(t, `DELETE FROM iteration WHERE workspace_id=$1`, testWorkspaceID)
+	var result iteration.WriteResult
+	input := service.CreateIterationInput{RequestID: uuid.NewString(), Name: "First iteration", StartDate: "2026-10-11", EndDate: "2026-10-24", ConfirmedTimezone: "Asia/Shanghai"}
+	testutil.Call(t, h.CreateIteration, iterationSettingsRequest("POST", "iterations", input)).Want(201).JSON(&result)
+	if len(result.IterationIDs) != 1 {
+		t.Fatalf("default workspace did not create an iteration: %+v", result)
+	}
+	if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1 AND enabled AND revision=1`, testWorkspaceID); n != 1 {
+		t.Fatal("first write did not persist the enabled default")
+	}
+}
+
+func TestEnableIterationSettingsDurableReplay(t *testing.T) {
+	h := disabledIterationSettingsHandler(t)
 	h.Bus = events.New()
 	var published []events.Event
 	h.Bus.Subscribe(protocol.EventIterationUpdated, func(event events.Event) {
@@ -165,7 +217,7 @@ func TestEnableIterationSettingsDurableReplay(t *testing.T) {
 	}
 }
 func TestEnableIterationSettingsValidatesCurrentRoleAndTimezone(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	user := dbfx.User(t, "Settings member", uuid.NewString()+"@example.invalid")
 	dbfx.Member(t, testWorkspaceID, user, "member")
 	req := iterationSettingsRequest("POST", "iteration-settings/enable", enableIterationBody(uuid.NewString()))
@@ -265,7 +317,7 @@ func (tx *iterationEnableFaultTx) Commit(ctx context.Context) error {
 func TestEnableIterationSettingsAtomicFailureRetryAndUnknownCommit(t *testing.T) {
 	for _, mode := range []string{"rollback", "retry", "exhaust", "unknown"} {
 		t.Run(mode, func(t *testing.T) {
-			h := iterationSettingsHandler(t)
+			h := disabledIterationSettingsHandler(t)
 			h.Bus = events.New()
 			published := 0
 			h.Bus.Subscribe(protocol.EventIterationUpdated, func(events.Event) { published++ })
@@ -279,8 +331,8 @@ func TestEnableIterationSettingsAtomicFailureRetryAndUnknownCommit(t *testing.T)
 			testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(want)
 			switch mode {
 			case "rollback", "exhaust":
-				if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
-					t.Fatal("failed operation left settings")
+				if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1 AND NOT enabled AND revision=1`, testWorkspaceID); n != 1 {
+					t.Fatal("failed operation changed the saved opt-out")
 				}
 				if mode == "exhaust" && state.starts != 3 {
 					t.Fatalf("retry budget=%d", state.starts)
@@ -312,7 +364,7 @@ func TestEnableIterationSettingsAtomicFailureRetryAndUnknownCommit(t *testing.T)
 	}
 }
 func TestEnableIterationSettingsRejectsMalformedEnvelope(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	for _, raw := range []string{`{}`, `{"request_id":"bad","expected_revision":1,"confirmed_timezone":"UTC"}`, `{"request_id":"` + uuid.NewString() + `","expected_revision":9007199254740992,"confirmed_timezone":"UTC"}`, `{"request_id":"` + uuid.NewString() + `","expected_revision":1,"confirmed_timezone":"UTC","extra":true}`} {
 		var body map[string]any
 		_ = json.Unmarshal([]byte(raw), &body)
@@ -331,7 +383,7 @@ func (tx *iterationEnableFaultTx) Rollback(ctx context.Context) error {
 }
 
 func TestEnableIterationSettingsCannotPromoteLegacyAgentWhileWaiting(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	agent := dbfx.Agent(t, "Legacy settings actor", testRuntimeID)
 	task := dbfx.Task(t, agent, testutil.Cols{"status": "running", "runtime_id": testRuntimeID})
 	state := &iterationEnableFaultState{onBegin: func() { dbfx.Exec(t, `DELETE FROM agent_task_queue WHERE id=$1`, task) }}
@@ -346,7 +398,7 @@ func TestEnableIterationSettingsCannotPromoteLegacyAgentWhileWaiting(t *testing.
 }
 
 func TestEnableIterationSettingsConcurrentSameRequest(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	id := uuid.NewString()
 	results := make(chan *testutil.Response, 2)
 	start := make(chan struct{})
@@ -379,7 +431,7 @@ func TestEnableIterationSettingsConcurrentSameRequest(t *testing.T) {
 }
 
 func TestEnableIterationSettingsRecoversRealRequestUniqueConflict(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", enableIterationBody(uuid.NewString()))).Want(200)
 	body := enableIterationBody(uuid.NewString())
 	body["expected_revision"] = 2
@@ -398,7 +450,7 @@ func TestEnableIterationSettingsRecoversRealRequestUniqueConflict(t *testing.T) 
 func TestEnableIterationSettingsReauthorizesRetryAndDoesNotRetryOtherUnique(t *testing.T) {
 	for _, mode := range []string{"retry", "other_unique"} {
 		t.Run(mode, func(t *testing.T) {
-			h := iterationSettingsHandler(t)
+			h := disabledIterationSettingsHandler(t)
 			state := &iterationEnableFaultState{mode: mode}
 			want := 503
 			if mode == "retry" {
@@ -415,15 +467,15 @@ func TestEnableIterationSettingsReauthorizesRetryAndDoesNotRetryOtherUnique(t *t
 			if state.operations != 1 {
 				t.Fatal("forbidden or unrelated-unique write retried")
 			}
-			if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID); n != 0 {
-				t.Fatal("retry retained partial settings")
+			if n := dbfx.Count(t, `SELECT count(*) FROM workspace_iteration_settings WHERE workspace_id=$1 AND NOT enabled AND revision=1`, testWorkspaceID); n != 1 {
+				t.Fatal("retry changed the saved opt-out")
 			}
 		})
 	}
 }
 
 func TestEnableIterationSettingsRetainsTimezoneThroughCommit(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	reached, release := make(chan struct{}, 1), make(chan struct{})
@@ -455,7 +507,7 @@ func TestEnableIterationSettingsRetainsTimezoneThroughCommit(t *testing.T) {
 }
 
 func TestEnableIterationSettingsReplayDoesNotReenableDisabledWorkspace(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	body := enableIterationBody(uuid.NewString())
 	var initial, replayed iteration.WriteResult
 	testutil.Call(t, h.EnableIterationSettings, iterationSettingsRequest("POST", "iteration-settings/enable", body)).Want(200).JSON(&initial)
@@ -472,7 +524,7 @@ func TestEnableIterationSettingsReplayDoesNotReenableDisabledWorkspace(t *testin
 }
 
 func TestEnableIterationSettingsAdminAndCloudCredentialBoundary(t *testing.T) {
-	h := iterationSettingsHandler(t)
+	h := disabledIterationSettingsHandler(t)
 	admin := dbfx.User(t, "Iteration admin", uuid.NewString()+"@example.invalid")
 	dbfx.Member(t, testWorkspaceID, admin, "admin")
 	body := enableIterationBody(uuid.NewString())

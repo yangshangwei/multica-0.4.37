@@ -273,7 +273,7 @@ func (h *Handler) GetTriageSettings(w http.ResponseWriter, r *http.Request) {
 
 	s, err := h.Queries.GetTriageSettings(r.Context(), ws)
 	if errors.Is(err, pgx.ErrNoRows) {
-		writeJSON(w, 200, TriageSettings{IterationAssignment: assignment, Supported: true, AcceptanceStatus: "todo", ResponsibilityMode: "none", Revision: 1})
+		writeJSON(w, 200, TriageSettings{IterationAssignment: assignment, Supported: true, Enabled: true, AcceptanceStatus: "todo", ResponsibilityMode: "none", Revision: 1})
 		return
 	}
 	if err != nil {

@@ -104,9 +104,9 @@ func (s *IterationService) Enable(ctx context.Context, workspaceID, actorID pgty
 }
 
 // ReadIterationSettings requires the caller's current workspace/member read
-// authorization. Missing settings is the disabled revision-one default.
+// authorization. Missing settings is the enabled revision-one default.
 func ReadIterationSettings(ctx context.Context, tx pgx.Tx, workspaceID pgtype.UUID) (iteration.Settings, error) {
-	out := iteration.Settings{WorkspaceID: uuid.UUID(workspaceID.Bytes).String(), Revision: 1, EffectiveTimezone: util.DefaultPlanningTimezone}
+	out := iteration.Settings{WorkspaceID: uuid.UUID(workspaceID.Bytes).String(), Enabled: true, Revision: 1, EffectiveTimezone: util.DefaultPlanningTimezone}
 	q := db.New(tx)
 	settings, err := q.GetIterationSettings(ctx, workspaceID)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {

@@ -36,8 +36,11 @@ func (h *Handler) lockTriageIterationTarget(ctx context.Context, tx pgx.Tx, ws p
 		return db.Iteration{}, err
 	}
 	q := h.Queries.WithTx(tx)
+	if err := q.EnsureIterationSettings(ctx, ws); err != nil {
+		return db.Iteration{}, err
+	}
 	settings, err := q.LockIterationSettings(ctx, ws)
-	if errors.Is(err, pgx.ErrNoRows) || err == nil && !settings.Enabled {
+	if err == nil && !settings.Enabled {
 		return db.Iteration{}, triageErr(409, "iterations are disabled")
 	}
 	if err != nil {
@@ -72,7 +75,7 @@ func triageIterationError(err error) error {
 func (h *Handler) triageIterationAssignmentSupported(ctx context.Context, q *db.Queries, ws pgtype.UUID) (bool, error) {
 	settings, err := q.GetIterationSettings(ctx, ws)
 	if errors.Is(err, pgx.ErrNoRows) {
-		return false, nil
+		return true, nil
 	}
 	if err != nil {
 		return false, err

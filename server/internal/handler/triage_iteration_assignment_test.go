@@ -22,6 +22,10 @@ func TestTriageIterationAcceptanceSharesActionAndTransaction(t *testing.T) {
 		t.Run(action, func(t *testing.T) {
 			h := lifecycleHTTPHandler(t)
 			target := lifecycleHTTPCreate(t, h, "Reviewed work")
+			if action == "accept" {
+				// A missing settings row still permits confirmed assignment.
+				dbfx.Exec(t, `DELETE FROM workspace_iteration_settings WHERE workspace_id=$1`, testWorkspaceID)
+			}
 			triageEnableForTest(t)
 			input := triageInputForTest()
 			project := dbfx.Project(t, "Triage iteration project")

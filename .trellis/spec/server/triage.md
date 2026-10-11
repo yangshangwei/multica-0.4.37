@@ -29,7 +29,7 @@ Authoritative sources: `internal/admission/admission.go`,
 
 ## Actor and configuration boundaries
 
-No settings row means supported and disabled, default acceptance `todo`, no
+No settings row means supported and enabled, default acceptance `todo`, no
 priority requirement, and responsibility `none`. Only human owner/admin actors
 may configure triage; any current human member may review. Check both machine
 credential class and `resolveActor`: legacy agent headers on a human PAT are
@@ -159,7 +159,8 @@ Apply the complete ordered migration sequence: 513 adds tables/admission,
 514–534 each build one concurrent index, 535 adds persisted comment eligibility
 and the execution fence. No foreign keys or cascade actions; do not group
 concurrent-index files in a transaction. Existing issues default to
-`not_required`, and rollout remains disabled until a human admin enables it.
+`not_required`. Triage is enabled by default for missing/new settings; the
+forward default migration preserves all existing saved choices, including false.
 
 Only a settings-endpoint 404 means unsupported on a new client. Permission and
 network errors remain errors. Existing HTTP/realtime Issue DTOs carry admission;

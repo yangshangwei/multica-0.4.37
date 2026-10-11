@@ -34,10 +34,10 @@ type triageAcceptanceHistory struct {
 	Total   int                  `json:"total"`
 }
 
-func TestTriageAcceptanceEnableDoesNotBackfillOrdinaryProjectWork(t *testing.T) {
+func TestTriageAcceptanceDefaultAndEnableDoNotBackfillOrdinaryProjectWork(t *testing.T) {
 	settings := testutil.Decode[TriageSettings](t, testHandler.GetTriageSettings, newRequest("GET", "/api/triage/settings", nil), 200)
-	if settings.Enabled {
-		t.Fatal("fresh workspace is enabled")
+	if !settings.Enabled {
+		t.Fatal("fresh workspace must enable triage by default")
 	}
 	project := dbfx.Project(t, "Ordinary project before and after triage")
 	create := func(title string) IssueResponse {
@@ -45,7 +45,7 @@ func TestTriageAcceptanceEnableDoesNotBackfillOrdinaryProjectWork(t *testing.T) 
 		t.Cleanup(func() { deleteTestIssue(t, issue.ID) })
 		return issue
 	}
-	before := create("Ordinary work before triage")
+	before := create("Ordinary work with default triage")
 	// Register the shared cleanup before exercising the real administrative API.
 	triageEnableForTest(t)
 	dbfx.Exec(t, `UPDATE workspace_triage_settings SET enabled=false WHERE workspace_id=$1`, testWorkspaceID)
