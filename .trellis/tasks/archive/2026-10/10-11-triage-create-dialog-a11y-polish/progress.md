@@ -40,7 +40,7 @@ Trellis review reports no remaining findings. The form reuses shared picker
 trigger preparation for eager/deferred paths and retains existing business APIs,
 request identity, upload flow and acceptance wording. No dependencies were added.
 
-Work is ready for the code/spec commit, task archive and journal record.
+Code/spec work committed as `574dff832`. All task acceptance checks passed; the task is ready for archive and journal recording.
 
 ## Verification limits
 
