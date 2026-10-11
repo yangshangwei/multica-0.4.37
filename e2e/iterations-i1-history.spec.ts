@@ -8,8 +8,9 @@ test("I1 filters and groups the complete scope and preserves historical priority
   const { api, workspace } = await p1Session(page);
   const base = `/api/workspaces/${workspace.id}`;
   try {
-    const { effective_timezone: timezone } = await api.requestJSON<{ effective_timezone: string }>(`${base}/iteration-settings`);
-    await api.requestJSON(`${base}/iteration-settings/enable`, { method: "POST", body: { request_id: randomUUID(), expected_revision: 1, confirmed_timezone: timezone } });
+    const { effective_timezone: timezone, revision } = await api.requestJSON<{ effective_timezone: string; revision: number }>(`${base}/iteration-settings`);
+    // Enabling an already-enabled default workspace keeps its revision; use the one the server returns.
+    const enabled = await api.requestJSON<{ result: { settings_revision: number } }>(`${base}/iteration-settings/enable`, { method: "POST", body: { request_id: randomUUID(), expected_revision: revision, confirmed_timezone: timezone } });
     const created = await api.requestJSON<{ iteration_ids: string[] }>(`${base}/iterations`, { method: "POST", body: { request_id: randomUUID(), name: "Metadata cycle", start_date: new Date().toISOString().slice(0, 10), end_date: new Date(Date.now() + 13 * 86400000).toISOString().slice(0, 10), confirmed_timezone: timezone } });
     const id = created.iteration_ids[0]!;
     const issues = await api.seedTableIssues(Array.from({ length: 61 }, (_, n) => ({ title: `Metadata item ${String(n).padStart(2, "0")}`, status: "todo" as const, priority: n % 2 === 0 ? "high" as const : "low" as const })));
@@ -22,7 +23,7 @@ test("I1 filters and groups the complete scope and preserves historical priority
       expect(preview.invalid_items).toEqual([]);
       await api.requestJSON(`${base}/iteration-operations`, { method: "POST", body: { request_id: randomUUID(), draft: preview.draft, preview_hash: preview.preview_hash } });
     }
-    const common = { expected_settings_revision: 2, reason: "Verify complete historical scope", start: null };
+    const common = { expected_settings_revision: enabled.result.settings_revision, reason: "Verify complete historical scope", start: null };
     await apply({ ...common, operation: "move", iteration_id: null, expected_iteration_revision: null, expected_scope_revision: null, moves: issues.map(issue => ({ issue_id: issue.id, expected_issue_revision: issue.id === special.id ? specialCurrent.revision : 1, expected_source_id: null, target_id: id, allow_completed: false })) });
     const getPeriod = () => api.requestJSON<{ iteration: { revision: number; scope_revision: number }; snapshot: unknown }>(`${base}/iterations/${id}`);
     let detail = await getPeriod();
@@ -56,7 +57,7 @@ test("I1 filters and groups the complete scope and preserves historical priority
     expect((await getPeriod()).snapshot).toEqual(frozen);
 
     await page.goto(`/${workspace.slug}/issues/${special.id}`);
-    await page.locator("summary").filter({ hasText: "Iteration participation" }).click();
+    await page.locator("summary").filter({ hasText: /^Iteration history$/ }).click();
     await expect(page.getByRole("link", { name: "Metadata cycle", exact: true })).toBeVisible();
     await page.getByRole("link", { name: "Metadata cycle", exact: true }).click();
     await page.getByRole("button", { name: "Filter tasks", exact: true }).click();
