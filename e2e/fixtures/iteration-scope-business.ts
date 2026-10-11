@@ -27,28 +27,28 @@ const NARROW_VIEWPORT: ScopeViewport = { width: 680, height: 900, coarse: false,
 const copy = {
   en: {
     iterations: "Iterations", past: "Past iterations", tasks: /^Tasks/,
-    planned: "Planned tasks", planning: "Planning adjustments", scope: "Scope changes",
+    planned: "Planned tasks", planning: "Scope changes", scope: "Scope changes",
     summary: "Effective scope summary", start: "Scope at start", current: "Current effective scope",
     final: "Effective scope at closure", net: "Net effective change", added: "Tasks added after start",
     cancellations: "Cancellations", removals: "Removed during iteration", reentries: "Re-entries", reopens: "Reopens",
     allCounts: "View all scope counts", detail: "Scope metric details", back: "Back to activity",
     search: "Search task records", taskSearch: "Search tasks", category: "Change category", removed: "Removed",
     clear: "Clear filters", allChanges: "All changes", allActivity: "All activity", noMatches: "No matching activity.",
-    noTasks: "No matching tasks.", audit: "Technical audit", project: "Project", assignee: "Assignee",
+    noTasks: "No matching tasks.", activityDetails: "Details", audit: "Technical audit", project: "Project", assignee: "Assignee",
     filterTasks: "Filter tasks", priority: "Priority", high: "High",
     compare: "Compare with current task", historical: "Historical value", latest: "Current value", openCurrent: "Open current task",
     cancelledPlan: "This plan was cancelled before a commitment was recorded. Its planning history remains available.",
   },
   "zh-Hans": {
     iterations: "迭代", past: "历史迭代", tasks: /^任务/,
-    planned: "计划任务", planning: "计划调整", scope: "范围变化",
+    planned: "计划任务", planning: "范围变更", scope: "范围变更",
     summary: "有效范围摘要", start: "开始时有效范围", current: "当前有效范围",
     final: "结束时有效范围", net: "有效范围净变化", added: "开始后新增任务",
     cancellations: "取消次数", removals: "期间移出", reentries: "重新加入次数", reopens: "重开次数",
     allCounts: "查看完整范围计数", detail: "范围指标明细", back: "返回活动",
     search: "搜索任务记录", taskSearch: "搜索任务", category: "变化类别", removed: "移出",
     clear: "清除筛选", allChanges: "全部变化", allActivity: "全部活动", noMatches: "没有匹配的活动。",
-    noTasks: "没有匹配的任务。", audit: "技术审计", project: "项目", assignee: "负责人",
+    noTasks: "没有匹配的任务。", activityDetails: "详情", audit: "技术审计", project: "项目", assignee: "负责人",
     filterTasks: "筛选任务", priority: "优先级", high: "高",
     compare: "对照当前任务", historical: "历史值", latest: "当前值", openCurrent: "打开当前任务",
     cancelledPlan: "此计划在确定承诺前已取消，计划调整记录仍可查看。",
@@ -323,6 +323,10 @@ export async function iterationScopeBusinessFlow(page: Page, session: Session, i
       await expect(detail.getByText(event.id, { exact: true })).toBeHidden();
     }
     for (const event of events.filter(event => event.kind !== "leave")) await expect(detail.getByText(event.id, { exact: true })).toHaveCount(0);
+    await expect(audits.first()).toBeHidden();
+    await detail.getByRole("button", { name: new RegExp(`^${escapePattern(labels.activityDetails)}[:：]`) }).first().focus();
+    await page.keyboard.press("Enter");
+    await expect(audits.first()).toBeVisible();
     await audits.first().focus();
     await page.keyboard.press("Enter");
     await expect(detail.getByText(removals[0]!.id, { exact: true })).toBeVisible();
@@ -452,6 +456,7 @@ export async function iterationEmptyPlanFlow(page: Page, session: Session, info:
   await expect(metric(summary, "en", labels.planned, 0)).toBeVisible();
   await planning.getByRole("textbox", { name: labels.search, exact: true }).fill(task.title);
   await expect(planning.getByRole("status")).toHaveText("2 matching records");
+  await planning.locator("details").filter({ has: page.getByText("Keep the adjustment after emptying the plan", { exact: true }) }).locator(":scope > summary").click();
   await expect(planning.getByText("Keep the adjustment after emptying the plan", { exact: true })).toBeVisible();
   layouts.push(await captureLayout(page, info, "empty-plan-adjustments", WIDE_VIEWPORT, planning));
 

@@ -2,6 +2,7 @@
 
 import { useId, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ArrowRight } from "lucide-react";
 import { api, ApiError, isIterationAccessDenied } from "@multica/core/api";
 import { isIssueStatusCategory } from "@multica/core/issue-statuses";
 import {
@@ -13,7 +14,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { useLocale, useT } from "../i18n";
 import { IterationError } from "./iteration-error";
-import { IterationActivityTimeline } from "./iteration-events-view";
+import { IterationActivityTimeline, IterationScopeChangeLedger } from "./iteration-events-view";
 import { iterationDisclosureClass } from "./iteration-presentation";
 import { IterationScopeDetails, IterationScopeSelect } from "./iteration-scope-details";
 import { IterationSearch } from "./iteration-search";
@@ -175,7 +176,7 @@ function IterationEventsContent({ wsId, id, iteration, timezone, statistics, sna
   const activityContent = events === undefined ? (
     activity.error || activity.errorUpdatedAt > 0 ? <div className="space-y-3"><p role="alert">{t(($) => $.iterations.activityPanel.readError)}</p>{retry}</div>
       : <div role="status" className="space-y-5"><span className="sr-only">{t(($) => $.iterations.activityPanel.loading)}</span>{Array.from({ length: 3 }, (_, index) => <div key={index} className="space-y-2"><Skeleton className="h-5 w-2/3" /><Skeleton className="h-4 w-1/3" /><Skeleton className="h-8 w-full" /></div>)}</div>
-  ) : <div className="min-w-0 space-y-5">
+  ) : <div className="min-w-0 space-y-4">
     {!snapshot && activity.error && <div className="flex flex-wrap items-center gap-3"><p role="alert" className="text-caption">{t(($) => $.iterations.activityPanel.refreshError)}</p>{retry}</div>}
     {eventSelection && !eventSelection.complete && <p role="alert" className="max-w-prose text-caption">{t(($) => $.iterations.activityPanel.incomplete)}</p>}
     <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -196,7 +197,9 @@ function IterationEventsContent({ wsId, id, iteration, timezone, statistics, sna
     </div>
     {events.length === 0 && !metric ? <p className="py-5 text-muted-foreground">{t(($) => $.iterations.activityPanel.empty)}</p>
       : groups.length === 0 ? <p className="py-5 text-muted-foreground">{t(($) => eventSelection && !eventSelection.complete && !search && category === "all" ? $.iterations.activityPanel.unavailable : refined ? $.iterations.activityPanel.noMatchingActivity : $.iterations.activityPanel.noMatches)}</p>
-        : <IterationActivityTimeline wsId={wsId} groups={visible} timezone={timezone} impacts={impacts} matchingEventIds={refined ? matchingIds : undefined} />}
+        : filter === "scope" && !metric
+          ? <IterationScopeChangeLedger wsId={wsId} groups={visible} timezone={timezone} impacts={impacts} matchingEventIds={refined ? matchingIds : undefined} />
+          : <IterationActivityTimeline wsId={wsId} groups={visible} timezone={timezone} impacts={impacts} matchingEventIds={refined ? matchingIds : undefined} />}
     {groups.length > 0 && <div className="flex flex-wrap items-center gap-3">
       {visible.length < groups.length && <Button variant="outline" className="pointer-coarse:min-h-11" onClick={() => setVisibleCount((value) => value + GROUP_BATCH_SIZE)}>{t(($) => $.iterations.activityPanel.showMore)}</Button>}
       <p className="text-caption text-muted-foreground tabular-nums">{t(($) => $.iterations.activityPanel.showing, { shown: visible.length, total: groups.length })}</p>
@@ -208,13 +211,18 @@ function IterationEventsContent({ wsId, id, iteration, timezone, statistics, sna
   const scopeData = scopeSelection && scopeSource && metric && !staleScope ? selectIterationScopeIssues(scopeSource, scopeSelection.filter, counters[metric]) : undefined;
   const refreshScope = () => { if (snapshot === null) void Promise.all([client.invalidateQueries({ queryKey: iterationDetailOptions(wsId, id).queryKey }), taskRead.refetch()]); };
 
-  return <div className="min-w-0 space-y-6 text-body">
+  return <div className="@container min-w-0 space-y-6 text-body">
     <section aria-label={t(($) => $.iterations.activityPanel.summary)} className="space-y-4">
-      {phase === "planned" && <><dl>{renderMetric("current", true)}</dl><p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.iterations.activityPanel.planHint)}</p></>}
+      {(planning || started) && <section aria-label={t(($) => $.iterations.activityPanel.diffSummary)} className="grid grid-cols-[minmax(0,1fr)_1rem_minmax(0,1fr)] items-center gap-x-4 gap-y-3 rounded-md bg-muted/30 px-4 py-3 @xl:flex @xl:flex-wrap @xl:gap-x-6">
+        <dl>{planning ? <div className="space-y-1"><dt className="text-caption text-muted-foreground">{t(($) => $.iterations.activityPanel.initialCommitment)}</dt><dd className="min-h-8 py-1 text-title font-semibold">{t(($) => $.iterations.activityPanel.notEstablished)}</dd></div> : renderMetric("initial_effective", true)}</dl>
+        <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+        <dl>{phase === "cancelledBeforeStart" ? <div className="space-y-1"><dt className="text-caption text-muted-foreground">{t(($) => $.iterations.activityPanel.plannedTasks)}</dt><dd className="min-h-8 py-1 text-title font-semibold tabular-nums">{taskCount(counters.current)}</dd></div> : renderMetric(planning ? "current" : "effective", true)}</dl>
+        {started && <dl className="col-span-full">{renderMetric("net_effective_change", true)}</dl>}
+      </section>}
+      {phase === "planned" && <p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.iterations.activityPanel.planHint)}</p>}
       {phase === "cancelledBeforeStart" && <><p className="font-medium">{t(($) => $.iterations.activityPanel.cancelledBeforeStart)}</p><p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.iterations.activityPanel.cancelledPlanHint)}</p></>}
       {phase === "unknown" && <p className="max-w-prose text-caption text-muted-foreground">{t(($) => $.iterations.activityPanel.unknownPhase)}</p>}
       {started && <>
-        <dl className="flex flex-wrap gap-x-8 gap-y-4">{(["initial_effective", "effective", "net_effective_change"] as const).map((value) => renderMetric(value, true))}</dl>
         <p className="max-w-prose text-caption text-muted-foreground">{t(($) => phase === "cancelledAfterStart" ? $.iterations.activityPanel.cancelledAfterStart : snapshot ? $.iterations.activityPanel.closedWindowHint : $.iterations.activityPanel.windowHint)}</p>
         <dl className="flex flex-wrap gap-x-8 gap-y-2">{renderMetric("added_unique")}{renderMetric("cancel_events")}</dl>
         <details>

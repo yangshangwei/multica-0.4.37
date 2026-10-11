@@ -74,6 +74,11 @@ function mount(initial: Partial<Props> = {}) {
   const view = render(node(initial));
   return { client, user: userEvent.setup(), rerender: (props: Partial<Props>) => view.rerender(node(props)) };
 }
+function recordDetails(row: HTMLElement) {
+  const disclosure = within(row).getByRole("button", { name: /^Details:/ });
+  const content = document.getElementById(disclosure.getAttribute("aria-controls")!)!;
+  return { disclosure, content };
+}
 const snapshot = (overrides: Partial<NonNullable<Props["snapshot"]>> = {}): NonNullable<Props["snapshot"]> => ({
   schema_version: 1, workspace_id: ws, iteration_id: source.id, operation_id: ws,
   end_type: "completed", reason: "Finished", logical_ended_at: "2026-10-07T01:00:00Z", processed_at: "2026-10-07T01:00:00Z",
@@ -112,7 +117,12 @@ describe("business scope details", () => {
     expect(within(scopeSummary()).queryByText("Scope at start")).not.toBeInTheDocument();
     expect(within(scopeSummary()).queryByText("Net effective change")).not.toBeInTheDocument();
     expect(within(scopeSummary()).queryByText("Tasks added after start")).not.toBeInTheDocument();
-    expect(await screen.findByRole("button", { name: "Planning adjustments" })).toHaveAttribute("aria-pressed", "true");
+    expect(await screen.findByRole("button", { name: "Scope changes" })).toHaveAttribute("aria-pressed", "true");
+    const diff = within(screen.getByRole("region", { name: "Scope diff" }));
+    expect(diff.getByText("Not established")).toBeVisible();
+    expect(diff.getByRole("button", { name: "View Planned tasks: 2 tasks" })).toBeVisible();
+    expect(screen.getByRole("columnheader", { name: "Change" })).toBeVisible();
+    expect(screen.getByText("Added to plan")).toBeVisible();
     expect(api.getIterationIssues).not.toHaveBeenCalled();
   });
 
@@ -121,8 +131,9 @@ describe("business scope details", () => {
     mount({ iteration: { ...planned, status: "cancelled" }, statistics: { ...statistics, original: 0, current: 0, effective: 0 } });
     expect(scopeSummary()).toHaveTextContent("Cancelled before starting");
     expect(within(scopeSummary()).queryByRole("button")).not.toBeInTheDocument();
-    expect(await screen.findByRole("button", { name: "Planning adjustments" })).toBeVisible();
+    expect(await screen.findByRole("button", { name: "Scope changes" })).toBeVisible();
     expect(screen.queryByText("Effective scope at closure")).not.toBeInTheDocument();
+    expect(screen.queryByText("Pending start")).not.toBeInTheDocument();
   });
 
   it("classifies planned cancellations and restorations without counting them as post-start changes", async () => {
@@ -143,13 +154,13 @@ describe("business scope details", () => {
     await user.click(category);
     await user.click(await screen.findByRole("option", { name: "Cancelled" }));
     expect(screen.getByRole("status")).toHaveTextContent("1 matching record");
-    expect(screen.getByText("Planned cancellation", { selector: "p" })).toBeVisible();
-    expect(screen.queryByText("Unknown transition", { selector: "p" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Open current task:.*Planned cancellation/ })).toBeVisible();
+    expect(screen.queryByRole("link", { name: /Open current task:.*Unknown transition/ })).not.toBeInTheDocument();
     await user.click(category);
     await user.click(await screen.findByRole("option", { name: "Restored or reopened" }));
     expect(screen.getByRole("status")).toHaveTextContent("2 matching records");
-    expect(screen.getByText("Planned restoration", { selector: "p" })).toBeVisible();
-    expect(screen.getByText("Planned reopening", { selector: "p" })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Open current task:.*Planned restoration/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Open current task:.*Planned reopening/ })).toBeVisible();
     expect(within(scopeSummary()).queryByText("Tasks added after start")).not.toBeInTheDocument();
     expect(screen.queryByText(/^Effective scope [+-]/)).not.toBeInTheDocument();
   });
@@ -292,7 +303,8 @@ describe("business scope details", () => {
     });
     vi.mocked(api.getIterationEvents).mockResolvedValue(page([{ ...start(), operation_id: operation }, baseline(2, alpha), baseline(3, beta)]));
     const { user } = mount();
-    await screen.findByText("View 3 records", { selector: "summary" });
+    const ledger = await screen.findByRole("table", { name: "Scope changes" });
+    expect(within(ledger).getByRole("cell", { name: "Iteration started 3 records" })).toBeVisible();
     await user.type(screen.getByRole("textbox", { name: "Search task records" }), "ITR-1");
     expect(screen.getByRole("status")).toHaveTextContent("1 matching record");
     const full = screen.getByText("View all 3 operation records", { selector: "summary" }).closest("details")!;
@@ -304,19 +316,68 @@ describe("business scope details", () => {
     expect(within(full).getByText(event(3).id)).not.toBeVisible();
   });
 
+  it("totals a batch's impact and retains all records when the ledger is filtered", async () => {
+    const second = { ...join(3, beta.title), operation_id: ws, issue_id: beta.id, after_facts: { issue_id: beta.id, title: beta.title, identifier: beta.identifier, status_category: "todo" } };
+    vi.mocked(api.getIterationEvents).mockResolvedValue(page([start(), { ...join(2, alpha.title), operation_id: ws }, second]));
+    const { user } = mount({ statistics: { ...statistics, added_unique: 2, current: 4, effective: 4, net_effective_change: 2 } });
+    const ledger = await screen.findByRole("table", { name: "Scope changes" });
+    const row = within(ledger).getByRole("cell", { name: "Added to scope 2 records" }).closest("tr")!;
+    expect(within(row).getByRole("cell", { name: "Effective scope +2" })).toBeVisible();
+    expect(within(row).getByRole("cell", { name: "2 tasks" })).toBeVisible();
+    expect(within(screen.getByRole("region", { name: "Scope diff" })).getByRole("button", { name: "View Net effective change: +2 tasks" })).toBeVisible();
+    await user.type(screen.getByRole("textbox", { name: "Search task records" }), "ITR-1");
+    expect(within(ledger).getByRole("cell", { name: "Effective scope +1" })).toBeVisible();
+    const disclosure = within(ledger).getByText("View all 2 operation records", { selector: "summary" });
+    const full = within(disclosure.closest("details")!);
+    expect(full.getByText(beta.title)).not.toBeVisible();
+    await user.click(disclosure);
+    expect(full.getByText(beta.title)).toBeVisible();
+    expect(full.getAllByText("Technical audit", { selector: "summary" })).toHaveLength(2);
+  });
+
+  it("names saved planning and cancellation changes independently of the current iteration phase", async () => {
+    vi.mocked(api.getIterationEvents).mockResolvedValue(page([
+      { ...join(1), kind: "planned_activity" }, { ...start(), id: event(2).id, sequence: 2, operation_id: event(2).operation_id },
+      event(3, { kind: "issue_changed", before_facts: { issue_id: alpha.id, title: alpha.title, status_category: "todo" }, after_facts: { issue_id: alpha.id, title: alpha.title, status_category: "cancelled" } }),
+    ]));
+    mount();
+    const ledger = await screen.findByRole("table", { name: "Scope changes" });
+    expect(within(ledger).getByRole("cell", { name: "Added to plan" })).toBeVisible();
+    expect(within(ledger).getByRole("cell", { name: "Task cancelled" })).toBeVisible();
+    expect(within(ledger).getByRole("cell", { name: "Effective scope -1" })).toBeVisible();
+  });
+
+  it("does not present a partial batch total as a known scope impact", async () => {
+    vi.mocked(api.getIterationEvents).mockResolvedValue(page([start(), { ...join(2), operation_id: ws }, { ...event(3), operation_id: ws }]));
+    mount();
+    const ledger = await screen.findByRole("table", { name: "Scope changes" });
+    const row = within(ledger).getByRole("cell", { name: "Added to scope 2 records" }).closest("tr")!;
+    expect(within(row).getByRole("cell", { name: "Scope impact not recorded" })).toBeVisible();
+    expect(within(row).queryByText("Effective scope +1")).not.toBeInTheDocument();
+  });
+
+  it("uses the latest saved task title when an operation contains several records for the same task", async () => {
+    vi.mocked(api.getIterationEvents).mockResolvedValue(page([start(), { ...join(2, "Earlier saved title"), operation_id: ws }, { ...join(3, "Latest saved title"), operation_id: ws }]));
+    mount();
+    const ledger = await screen.findByRole("table", { name: "Scope changes" });
+    expect(within(ledger).getByRole("link", { name: /Latest saved title/ })).toBeVisible();
+    expect(within(ledger).queryByRole("link", { name: /Earlier saved title/ })).not.toBeInTheDocument();
+  });
+
   it("counts added tasks once while preserving removal and re-entry occurrences and their audits", async () => {
     vi.mocked(api.getIterationEvents).mockResolvedValue(page([start(), join(2), leave(3), { ...join(4), kind: "reenter" }, leave(5), { ...join(6), kind: "reenter" }]));
     const { user } = mount({ statistics: { ...statistics, original: 0, initial_effective: 0, current: 1, effective: 1, added_unique: 1, removed_events: 2, reentry_events: 2, net_effective_change: 1 } });
     await screen.findAllByText("Late task", { selector: "p" });
     await user.click(metric("Tasks added after start"));
     expect(within(details()).getByRole("status")).toHaveTextContent("1 matching task");
-    expect(within(details()).getByText("Late task", { selector: "p" })).toBeVisible();
+    expect(within(details()).getByRole("link", { name: /Open current task:.*Late task/ })).toBeVisible();
     await user.click(screen.getByText("View all scope counts", { selector: "summary" }));
     await user.click(metric("Re-entries"));
     expect(within(details()).getByRole("status")).toHaveTextContent("2 matching records");
     const audits = within(details()).getAllByText("Technical audit", { selector: "summary" });
     expect(audits).toHaveLength(2);
     expect(screen.getByText(event(6).id)).not.toBeVisible();
+    await user.click(within(details()).getAllByRole("button", { name: /^Details:/ })[0]!);
     await user.click(audits[0]!);
     expect(screen.getByText(event(6).id)).toBeVisible();
   });
@@ -328,8 +389,8 @@ describe("business scope details", () => {
     await user.click(metric("Net effective change"));
     const detail = within(details());
     expect(detail.getByRole("status")).toHaveTextContent("2 matching records");
-    expect(detail.getByText("Effective scope +1")).toBeVisible();
-    expect(detail.getByText("Effective scope -1")).toBeVisible();
+    expect(detail.getByText("Effective scope +1", { selector: "span" })).toBeVisible();
+    expect(detail.getByText("Effective scope -1", { selector: "span" })).toBeVisible();
     await user.click(detail.getByRole("combobox", { name: "Change category" }));
     await user.click(await screen.findByRole("option", { name: "Removed" }));
     await user.type(detail.getByRole("textbox", { name: "Search task records" }), "ITR-1");
@@ -378,32 +439,131 @@ describe("business scope details", () => {
 });
 
 describe("iteration activity panel", () => {
+  it("keeps separate planned updates readable without repeated planning labels or current-task links", async () => {
+    const facts = { title: "Saved planning task", identifier: "OLD-7" };
+    const changes = [
+      event(1, { kind: "planned_activity", actor: { type: "member", name: "Ada", id: ws }, before_facts: { ...facts, status_category: "todo" }, after_facts: { ...facts, status_category: "in_progress" }, occurred_at: "2026-10-06T15:21:00Z" }),
+      event(2, { kind: "planned_activity", actor: { type: "member", name: "Ada", id: ws }, before_facts: { ...facts, assignee_type: "member", assignee_id: ws, assignee_name: "Tester" }, after_facts: { ...facts, assignee_type: "agent", assignee_id: beta.id, assignee_name: "Assistant" }, occurred_at: "2026-10-06T15:22:00Z" }),
+      event(3, { kind: "planned_activity", actor: { type: "agent", name: "Assistant", id: beta.id }, before_facts: { ...facts, status_category: "in_progress" }, after_facts: { ...facts, status_category: "blocked" }, occurred_at: "2026-10-06T15:23:00Z" }),
+    ];
+    vi.mocked(api.getIterationEvents).mockResolvedValue(page(changes));
+    const { user } = mount({ iteration: { ...source, status: "planned", started_at: null } });
+    await user.click(await screen.findByRole("button", { name: "All activity" }));
+    const links = screen.getAllByRole("link", { name: /Open current task:.*OLD-7/ });
+    expect(links).toHaveLength(3);
+    const rows = links.map((link) => link.closest("tr")!);
+    expect(rows.map((row) => row.querySelector("time")?.getAttribute("datetime"))).toEqual(changes.toReversed().map((change) => change.occurred_at));
+    for (const link of links) expect(link).toHaveAttribute("href", `/issues/${alpha.id}`);
+    expect(within(rows[0]!).getByText("Blocked")).toBeVisible();
+    expect(within(rows[0]!).getByText("Assistant")).toBeVisible();
+    expect(within(rows[1]!).getByText("Tester")).toBeVisible();
+    expect(within(rows[1]!).getByText("Assistant")).toBeVisible();
+    expect(within(rows[1]!).getByText("Ada")).toBeVisible();
+    expect(within(rows[2]!).getByText("Todo")).toBeVisible();
+    for (const label of ["Planning adjustment", "Plan updated", "Open current task"]) {
+      screen.queryAllByText(label, { exact: true }).forEach((node) => expect(node).not.toBeVisible());
+    }
+    expect(api.getIssue).not.toHaveBeenCalled();
+  });
+
+  it("labels daily tables from external saved-date headings and preserves contiguous date groups", async () => {
+    vi.mocked(api.getIterationEvents).mockResolvedValue(page([
+      event(1, { occurred_at: "2026-10-06T16:05:00Z" }),
+      event(2, { occurred_at: "2026-10-05T18:05:00Z" }),
+      event(3, { occurred_at: "2026-10-06T15:05:00Z" }),
+      event(4, { occurred_at: "2026-10-06T18:05:00Z" }),
+    ]));
+    const { user } = mount();
+    await user.click(await screen.findByRole("button", { name: "All activity" }));
+    const activity = screen.getByRole("group", { name: "All activity" });
+    const headings = within(activity).getAllByRole("heading", { level: 2 });
+    const tables = within(activity).getAllByRole("table");
+    expect(tables).toHaveLength(3);
+    expect(headings.map((heading) => heading.textContent)).toEqual(["Oct 7, 2026", "Oct 6, 2026", "Oct 7, 2026"]);
+    expect(new Set(headings.map((heading) => heading.id)).size).toBe(3);
+    for (const [index, table] of tables.entries()) {
+      expect(headings[index]!.closest("table")).toBeNull();
+      expect(table).toHaveAttribute("aria-labelledby", headings[index]!.id);
+      expect(table).toHaveAccessibleName(headings[index]!.textContent!);
+    }
+    expect(headings.map((heading) => heading.querySelector("time")?.getAttribute("datetime"))).toEqual(["2026-10-07", "2026-10-06", "2026-10-07"]);
+    expect(tables.map((table) => within(table).getAllByRole("link", { name: /^Open current task:/ }).map((link) => link.textContent))).toEqual([
+      ["Historical task 4"], ["Historical task 3", "Historical task 2"], ["Historical task 1"],
+    ]);
+  });
+
+  it("keeps the technical audit behind contextual event details without losing original facts", async () => {
+    vi.mocked(api.getIterationEvents).mockResolvedValue(page([event(1, { reason: "Prioritized for the launch after customer feedback" })]));
+    const { user } = mount();
+    await user.click(await screen.findByRole("button", { name: "All activity" }));
+    const activity = screen.getByRole("group", { name: "All activity" });
+    const table = within(activity).getByRole("table", { name: "Oct 7, 2026" });
+    expect(within(table).getAllByRole("columnheader").map((header) => header.textContent)).toEqual(["Task", "Change", "Actor", "Time", "Details"]);
+    const row = within(table).getByRole("link", { name: /Open current task:.*Historical task 1/ }).closest("tr")!;
+    const { disclosure, content } = recordDetails(row);
+    expect(disclosure).toHaveAttribute("aria-expanded", "false");
+    expect(within(content).getByText("Prioritized for the launch after customer feedback")).not.toBeVisible();
+    expect(disclosure.getAttribute("aria-label")).toContain("Historical task 1");
+    const audit = within(content).getByText("Technical audit", { selector: "summary" });
+    expect(audit).not.toBeVisible();
+    disclosure.focus();
+    await user.keyboard("{Enter}");
+    expect(disclosure).toHaveAttribute("aria-expanded", "true");
+    expect(audit).toBeVisible();
+    expect(within(content).getByText("Prioritized for the launch after customer feedback")).toBeVisible();
+    expect(within(content).getByRole("link", { name: source.name })).toBeVisible();
+    expect(within(content).getByText(event(1).id)).not.toBeVisible();
+    await user.click(audit);
+    expect(within(content).getByText(event(1).id)).toBeVisible();
+    expect(within(content).getByText(event(1).operation_id)).toBeVisible();
+    disclosure.focus();
+    await user.keyboard(" ");
+    expect(disclosure).toHaveAttribute("aria-expanded", "false");
+    expect(within(content).getByText(event(1).id)).not.toBeVisible();
+  });
+
   it("filters a complete chronology and reveals every original record in a cross-page operation", async () => {
     const operation = event(1).operation_id;
     const baseline = event(1, { kind: "baseline", after_facts: { title: "Frozen commitment" } });
     const start = event(2, { kind: "start", issue_id: null, operation_id: operation, after_facts: null });
     const edit = event(3, { kind: "issue_changed", before_facts: { title: "Draft" }, after_facts: { title: "Updated title" } });
     vi.mocked(api.getIterationEvents).mockResolvedValueOnce(page([baseline], "next")).mockResolvedValueOnce(page([start, edit, event(4)]));
-    const { user } = mount();
-    expect(await screen.findByText("Historical task 4")).toBeVisible();
-    expect(screen.queryByText("Updated title")).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Oct 7, 2026" })).toBeVisible();
-    const disclosure = screen.getByText("View 2 records", { selector: "summary" });
+    const { client, user } = mount();
+    await waitFor(() => expect(screen.getAllByText("Historical task 4").some((node) => node.closest("details") === null)).toBe(true));
+    expect(screen.queryByText("Updated title", { selector: "p" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "All activity" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "All activity" })).toHaveAttribute("aria-pressed", "true"));
+    const disclosure = screen.getByRole("button", { name: "View 2 records" });
     expect(screen.getByText("Frozen commitment")).not.toBeVisible();
     disclosure.focus();
     expect(disclosure).toHaveFocus();
     await user.click(disclosure);
     expect(screen.getByText("Frozen commitment")).toBeVisible();
-    expect(screen.getByText("Original commitment recorded")).toBeVisible();
-    const all = screen.getByRole("button", { name: "All activity" });
-    all.focus();
-    await user.keyboard("{Enter}");
-    expect(all).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByText("Updated title", { selector: "p" })).toBeVisible();
+    expect(screen.getByText("Original commitment recorded", { selector: "p" })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Open current task:.*Updated title/ })).toBeVisible();
     expect(screen.getByRole("status")).toHaveTextContent("4 records");
+    await user.click(recordDetails(screen.getByRole("link", { name: /Open current task:.*Historical task 4/ }).closest("tr")!).disclosure);
     await user.click(screen.getAllByText("Technical audit", { selector: "summary" })[0]!);
     expect(screen.getByText(event(4).id)).toBeVisible();
     expect(api.getIssue).not.toHaveBeenCalled();
+    await user.click(disclosure);
+    await user.type(screen.getByRole("textbox", { name: "Search task records" }), "Frozen commitment");
+    expect(screen.getByRole("status")).toHaveTextContent("1 matching record");
+    const fullOperation = screen.getByRole("button", { name: "View all 2 operation records" });
+    expect(fullOperation).toHaveAttribute("aria-expanded", "false");
+    const fullHistory = document.getElementById(fullOperation.getAttribute("aria-controls")!)!;
+    expect(within(fullHistory).getAllByRole("listitem", { hidden: true })).toHaveLength(2);
+    expect(within(fullHistory).getByText("Iteration started", { selector: "p" })).not.toBeVisible();
+    expect(screen.getByRole("link", { name: /Open current task:.*Frozen commitment/ })).toBeVisible();
+    await user.click(fullOperation);
+    expect(within(fullHistory).getByText("Iteration started", { selector: "p" })).toBeVisible();
+    expect(within(fullHistory).getAllByText("Technical audit", { selector: "summary" })).toHaveLength(2);
+    const revised = event(5, { kind: "issue_changed", operation_id: operation, before_facts: { title: "Frozen commitment" }, after_facts: { title: "Frozen commitment revised" } });
+    await act(async () => { client.setQueryData(iterationActivityOptions(ws, source.id).queryKey, [baseline, start, edit, event(4), revised]); });
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("2 matching records"));
+    const filteredRow = screen.getByRole("button", { name: "View all 3 operation records" }).closest("tr")!;
+    expect(within(filteredRow).getByRole("link", { name: "Open current task: Frozen commitment revised" })).toHaveAttribute("href", `/issues/${alpha.id}`);
+    expect(within(filteredRow).queryByRole("link", { name: "Open current task: Frozen commitment" })).not.toBeInTheDocument();
   });
 
   it("keeps every authoritative count available with explicit task/event units and snapshot precedence", async () => {
@@ -429,13 +589,16 @@ describe("iteration activity panel", () => {
     const items = Array.from({ length: 15 }, (_, index) => event(index + 1));
     vi.mocked(api.getIterationEvents).mockResolvedValue(page(items));
     const { client, user } = mount();
+    await user.click(await screen.findByRole("button", { name: "All activity" }));
     await screen.findByText("Historical task 15");
     expect(screen.queryByText("Historical task 1")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Show more activity" }));
     expect(screen.getByText("Historical task 1")).toBeVisible();
     expect(screen.getByText("Historical task 15")).toBeVisible();
     await user.click(screen.getByRole("button", { name: "All activity" }));
-    await user.click(within(screen.getByText("Historical task 15").closest("li")!).getByText("Technical audit", { selector: "summary" }));
+    const history = recordDetails(screen.getByText("Historical task 15").closest("tr")!);
+    await user.click(history.disclosure);
+    await user.click(within(history.content).getByText("Technical audit", { selector: "summary" }));
     expect(screen.getByText(event(15).id)).toBeVisible();
     vi.mocked(api.getIterationEvents).mockRejectedValue(new ApiError("Busy", 429, "Too Many Requests"));
     await act(() => client.invalidateQueries({ queryKey: iterationActivityOptions(ws, source.id).queryKey }));
@@ -456,7 +619,7 @@ describe("iteration activity panel", () => {
   it.each([403, 404])("removes protected rows and scope data after a definitive %s", async (status) => {
     vi.mocked(api.getIterationEvents).mockResolvedValue(page([event(1)]));
     const { client } = mount();
-    await screen.findByText("Historical task 1");
+    await screen.findByRole("link", { name: "Historical task 1" });
     vi.mocked(api.getIterationEvents).mockRejectedValue(new ApiError("Unavailable", status, "Unavailable"));
     await act(() => client.invalidateQueries({ queryKey: iterationActivityOptions(ws, source.id).queryKey }));
     expect(await screen.findByRole("alert")).toBeVisible();
@@ -484,7 +647,8 @@ describe("iteration activity panel", () => {
     expect(await screen.findByText("No scope changes recorded.")).toBeVisible();
     expect(screen.queryByText("No activity recorded yet.")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "All activity" }));
-    expect(screen.getByText("Future event", { selector: "p" })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Open current task:.*Future event/ })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: /^Details:/ }));
     await user.click(screen.getByText("Technical audit", { selector: "summary" }));
     expect(screen.getByText("future_kind")).toBeVisible();
   });
@@ -496,7 +660,7 @@ describe("iteration activity panel", () => {
     const { user, rerender } = mount();
     await screen.findByText("No scope changes recorded.");
     await user.click(screen.getByRole("button", { name: "All activity" }));
-    expect(screen.getByText("First iteration", { selector: "p" })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Open current task:.*First iteration/ })).toBeVisible();
     rerender({ id: targetA.id });
     await screen.findByText("No scope changes recorded.");
     expect(screen.getByRole("button", { name: "Scope changes" })).toHaveAttribute("aria-pressed", "true");
@@ -514,11 +678,12 @@ describe("iteration activity panel", () => {
     const { user } = mount();
     await screen.findByText("暂无范围变化。");
     await user.click(screen.getByRole("button", { name: "全部活动" }));
-    expect(screen.getByText("保存的标题", { selector: "p" })).toBeVisible();
-    expect(screen.getByText(chineseIssues.status.todo)).toBeVisible();
-    expect(screen.getByText(chineseIssues.status.done)).toBeVisible();
-    expect(screen.getByText("陈安")).toBeVisible();
-    expect(screen.getByText(/未分配/)).toBeVisible();
+    expect(screen.getByRole("link", { name: /打开当前任务.*保存的标题/ })).toBeVisible();
+    const row = screen.getByRole("link", { name: /打开当前任务.*保存的标题/ }).closest("tr")!;
+    expect(within(row).getByText(chineseIssues.status.todo)).toBeVisible();
+    expect(within(row).getByText(chineseIssues.status.done)).toBeVisible();
+    expect(within(row).getByText("陈安")).toBeVisible();
+    expect(within(row).getByText(/未分配/)).toBeVisible();
     expect(screen.queryByText(/Unknown Agent/)).not.toBeInTheDocument();
     expect(screen.queryByText(ws)).not.toBeInTheDocument();
     expect(api.getIssue).not.toHaveBeenCalled();

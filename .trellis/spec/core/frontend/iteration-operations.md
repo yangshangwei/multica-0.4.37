@@ -230,8 +230,39 @@ Keep non-contiguous equal dates separate rather than reordering sequence.
 The default scope filter includes membership changes, cancellations, baseline
 and lifecycle anchors, and transitions across cancelled status. A reopen from
 cancelled changes effective scope; done-to-todo changes completion only. Planned
-membership activity retains its planning group label; ordinary metadata changes
-remain available under All activity. Unknown kinds remain inspectable.
+membership activity retains its planning wording even after the iteration starts;
+ordinary metadata changes remain available under All activity. Unknown kinds
+remain inspectable.
+
+Scope changes use a responsive operation ledger, with change, task, impact,
+actor and time columns. Sum every known effective delta in the displayed operation
+or matching subset; do not present a partial total when an impact is unknown.
+Keep lifecycle anchors and every original operation record in the disclosure,
+including records excluded by search. Distinguish record, operation and task
+counts. All activity uses a named group of responsive daily tables with task,
+change, actor, time and disclosure columns and row separators. Each contiguous
+date group has a heading outside its table, followed by an independently bordered
+table named by that heading. Separate date sections with whitespace so dates
+cannot be mistaken for task rows; preserve contiguous sequence order even when
+the same date reappears after a backdated operation.
+Use the full available tab width, matching Tasks and Progress: scope summary,
+toolbar, scope ledger and daily activity tables share the parent content edges.
+Do not independently center or cap this panel or its activity wrappers. Preview
+wrappers must not conceal the production layout. Give each activity table the same subtle border
+and corner treatment as the scope ledger. Saved task titles link
+to the current task with an explicit accessible name, and concrete before/after
+changes take precedence over generic planning labels. Actor and saved-clock
+time remain visible on every record. Do not merge separate operations by task
+or nearby time. On narrow containers, stack the same row without horizontal
+overflow. Long reasons and full business context live in the expanded row.
+Single-record and full-operation disclosure buttons expose their expanded state
+and controlled region; task links and disclosure controls act independently.
+Expanded rows retain nested native Technical audit and raw-fact disclosures.
+All controls remain keyboard reachable and visible without hover. Multi-record
+and filtered operations retain every original record under their full-operation
+disclosure. The initial/current comparison
+reuses clickable metrics once: unstarted plans have no initial commitment,
+and closed comparisons use the frozen scope and counters.
 
 Historical titles, status/category and before/after values come from saved
 facts. Explicit null means cleared/unassigned; absent or malformed values mean

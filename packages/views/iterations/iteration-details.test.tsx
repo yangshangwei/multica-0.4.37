@@ -15,7 +15,7 @@ import issues from "../locales/en/issues.json";
 
 const completeState = vi.hoisted(() => ({ label: false, custom: false, groupReads: 0 }));
 vi.mock("@multica/core/issue-statuses/hooks", () => ({ useIssueStatuses: () => ({ entryOf: (key: string) => ({ name: key === "qa" ? "QA" : "Review" }) }) }));
-vi.mock("../navigation", () => ({ AppLink: ({ href, children }: { href: string; children: React.ReactNode }) => <a href={href}>{children}</a> }));
+vi.mock("../navigation", () => ({ AppLink: (props: React.ComponentProps<"a">) => <a {...props} /> }));
 vi.mock("@multica/core/paths", () => ({ useWorkspacePaths: () => ({ iterationDetail: (id: string) => `/iterations/${id}`, issueDetail: (id: string) => `/issues/${id}` }) }));
 vi.mock("@multica/core/auth", () => ({ useAuthStore: Object.assign((select: (state: { user: { id: string } }) => unknown) => select({ user: { id: ws } }), { getState: () => ({ user: { id: ws } }) }) }));
 vi.mock("@multica/core/api", async (original) => ({
@@ -273,29 +273,31 @@ describe("iteration complete details", () => {
   it("distinguishes cancelling an iteration from cancelling a task in audit labels", async () => {
     const event = { id: ws, sequence: 1, iteration_id: source.id, issue_id: null, operation_id: ws, kind: "cancel", actor: { type: "member", id: ws }, occurred_at: "2026-10-06T18:05:00Z", sampled_at: "2026-10-06T18:05:00Z", before_facts: null, after_facts: null, reason: "Schedule changed" };
     mount(<IterationEventsView wsId={ws} events={[event, { ...event, id: alpha.id, sequence: 2, operation_id: alpha.id, issue_id: alpha.id }]} timezone="UTC" />);
-    expect(screen.getByText("Iteration cancelled")).toBeVisible();
-    expect(screen.getByText("Task cancelled")).toBeVisible();
+    expect(screen.getByText("Iteration cancelled", { selector: "p" })).toBeVisible();
+    expect(screen.getByText("Task cancelled", { selector: "p" })).toBeVisible();
   });
   it("renders actor, saved-clock time and named membership transitions, preserving unknown history", async () => {
     const event = { id: ws, sequence: 1, iteration_id: source.id, issue_id: alpha.id, operation_id: ws, kind: "join", actor: { type: "member", id: ws }, occurred_at: "2026-10-06T18:05:00Z", sampled_at: "2026-10-06T18:05:00Z", before_facts: null, after_facts: { source_iteration_id: null, target_iteration_id: source.id }, reason: "Prioritized for launch" };
     mount(<IterationEventsView wsId={ws} events={[event, { ...event, id: alpha.id, sequence: 2, operation_id: alpha.id, kind: "issue_changed", before_facts: {}, after_facts: {} }]} timezone="Asia/Shanghai" />);
     expect(await screen.findByRole("link", { name: source.name })).toHaveAttribute("href", `/iterations/${source.id}`);
-    expect(screen.getByText("Added to iteration")).toBeInTheDocument();
+    expect(screen.getByText("Added to iteration", { selector: "p" })).toBeVisible();
     expect(screen.getAllByText("Prioritized for launch")).toHaveLength(2);
-    const moved = screen.getByText("Added to iteration").closest("li")!;
+    const moved = screen.getByText("Added to iteration", { selector: "p" }).closest("tr")!;
     expect(within(moved).getByText("Member")).toBeVisible();
     expect(moved.querySelector("time")).toHaveTextContent("02:05");
     expect(moved.querySelector("time")).toHaveAttribute("title", "Asia/Shanghai");
     expect(screen.getByRole("heading", { name: "Oct 7, 2026" })).toBeVisible();
-    const changed = screen.getByText("Task updated").closest("li")!;
+    const changed = screen.getByText("Task updated", { selector: "p" }).closest("tr")!;
     expect(within(changed).queryByText("Not recorded in this snapshot")).not.toBeInTheDocument();
-    expect(within(changed).queryByRole("link")).not.toBeInTheDocument();
-    expect(screen.getByText("No current iteration")).toBeInTheDocument();
+    expect(within(changed).getByRole("link", { name: /Open current task/ })).toHaveAttribute("href", `/issues/${alpha.id}`);
+    expect(within(changed).queryByRole("link", { name: source.name })).not.toBeInTheDocument();
+    expect(screen.getAllByText("No current iteration").some((node) => !node.closest("[hidden]"))).toBe(true);
   });
   it("keeps missing references visible for an actual legacy membership change", () => {
     mount(<IterationEventsView wsId={ws} events={[{ id: ws, sequence: 1, iteration_id: source.id, issue_id: alpha.id, operation_id: ws, kind: "join", actor: null, occurred_at: "2026-10-06T18:05:00Z", sampled_at: "2026-10-06T18:05:00Z", before_facts: null, after_facts: { source_iteration_id: null }, reason: null }]} timezone="UTC" />);
-    expect(screen.getByText("Not recorded in this snapshot")).toBeVisible();
-    expect(screen.getByText("No current iteration")).toBeVisible();
+    const row = screen.getByRole("button", { name: /^Details:/ }).closest("tr")!;
+    expect(within(row).getByText("Not recorded in this snapshot")).toBeVisible();
+    expect(within(row).getByText("No current iteration")).toBeVisible();
   });
   it("identifies event tasks from frozen facts and safely falls back without fetching current tasks", async () => {
     const event = { id: ws, sequence: 1, iteration_id: source.id, issue_id: alpha.id, operation_id: ws, kind: "issue_changed", actor: { type: "member", id: ws }, occurred_at: "2026-10-06T18:05:00Z", sampled_at: "2026-10-06T18:05:00Z", before_facts: { title: "Earlier frozen title" }, after_facts: { identifier: "OLD-1", title: "Frozen updated title" }, reason: null };
@@ -306,11 +308,14 @@ describe("iteration complete details", () => {
     ]} timezone="UTC" />);
     expect(screen.getByText("OLD-1").parentElement).toHaveTextContent("Frozen updated title");
     expect(screen.getByText("Deleted frozen title")).toBeVisible();
-    expect(screen.getByText("Earlier frozen title")).toBeVisible();
+    expect(within(screen.getByRole("link", { name: /Open current task:.*Frozen updated title/ }).closest("tr")!).getByText("Earlier frozen title")).toBeVisible();
     screen.getAllByText(alpha.id).forEach((id) => expect(id).not.toBeVisible());
-    const unnamed = screen.getByText("Task title not recorded").closest("li")!;
-    await user.click(within(unnamed).getByText("Technical audit", { selector: "summary" }));
-    expect(within(unnamed).getByText(alpha.id)).toBeVisible();
+    const unnamed = screen.getByText("Task title not recorded").closest("tr")!;
+    const disclosure = within(unnamed).getByRole("button", { name: /^Details:/ });
+    await user.click(disclosure);
+    const content = document.getElementById(disclosure.getAttribute("aria-controls")!)!;
+    await user.click(within(content).getByText("Technical audit", { selector: "summary" }));
+    expect(within(content).getByText(alpha.id)).toBeVisible();
     expect(api.getIssue).not.toHaveBeenCalled();
   });
   it("groups the entire filtered result, including rows beyond the visible page", async () => {

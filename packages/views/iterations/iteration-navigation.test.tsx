@@ -913,11 +913,12 @@ describe("approved iteration business pages", () => {
     route.pathname = `/acme/iterations/${targetA.id}`;
     vi.mocked(api.getIteration).mockResolvedValue({ workspace_id: ws, iteration: targetA, statistics: { ...statistics, original: 0, current: 0, effective: 0, initial_effective: 0 }, snapshot: null });
     vi.mocked(api.getIterationIssues).mockResolvedValue({ ...issuePage([]), iteration_id: targetA.id });
-    vi.mocked(api.getIterationEvents).mockResolvedValue({ workspace_id: ws, iteration_id: targetA.id, next_cursor: null, items: [{ id: ws, sequence: 1, operation_id: ws, iteration_id: targetA.id, issue_id: alpha.id, kind: "planned_activity", actor: null, before_facts: { title: "Removed from plan", source_iteration_id: targetA.id, target_iteration_id: null }, after_facts: null, occurred_at: source.started_at!, sampled_at: source.started_at!, reason: "Planning changed" }] });
+    vi.mocked(api.getIterationEvents).mockResolvedValue({ workspace_id: ws, iteration_id: targetA.id, next_cursor: null, items: [{ id: ws, sequence: 1, operation_id: ws, iteration_id: targetA.id, issue_id: alpha.id, kind: "planned_activity", actor: null, before_facts: { title: "Removed task", source_iteration_id: targetA.id, target_iteration_id: null }, after_facts: null, occurred_at: source.started_at!, sampled_at: source.started_at!, reason: "Planning changed" }] });
     const { user } = mount();
-    await user.click(await screen.findByRole("tab", { name: "Planning adjustments" }));
-    const panel = screen.getByRole("tabpanel", { name: "Planning adjustments" });
-    expect(await within(panel).findByText("Removed from plan")).toBeVisible();
+    await user.click(await screen.findByRole("tab", { name: "Scope changes" }));
+    const panel = screen.getByRole("tabpanel", { name: "Scope changes" });
+    expect(await within(panel).findByRole("cell", { name: "Removed from plan" })).toBeVisible();
+    expect(within(panel).getByRole("link", { name: "Removed task" })).toBeVisible();
     expect(within(panel).getByRole("button", { name: "View Planned tasks: 0 tasks" })).toBeVisible();
     expect(screen.getByRole("heading", { name: targetA.name, level: 1 })).toBeVisible();
   });
@@ -960,7 +961,7 @@ describe("approved iteration business pages", () => {
     const progress = within(screen.getByRole("tabpanel", { name: "Progress" }));
     expect(progress.getByText(projects.iterations.activityPanel.cancelledPlanHint)).toBeVisible();
     expect(progress.queryByText("Delivery summary")).not.toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Planning adjustments" })).toBeVisible();
+    expect(screen.getByRole("tab", { name: "Scope changes" })).toBeVisible();
   });
 });
 
@@ -984,7 +985,7 @@ describe("iteration page review regressions", () => {
       await client.invalidateQueries({ queryKey: ["iterations", ws, "issues", targetA.id] });
     });
     expect(screen.getByRole("tab", { name: "Progress" })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByRole("tab", { name: "Planning adjustments" })).toBeVisible();
+    expect(screen.getByRole("tab", { name: "Scope changes" })).toBeVisible();
     await user.click(screen.getByRole("tab", { name: /^Tasks/ }));
     await waitFor(() => expect(screen.getByRole("button", { name: "Add existing tasks" })).toBeVisible());
     expect(screen.getByRole("button", { name: "New task" })).toBeVisible();
