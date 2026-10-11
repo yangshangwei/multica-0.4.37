@@ -553,6 +553,7 @@ export function InboxPage() {
               variant="ghost"
               size="icon-sm"
               className="text-muted-foreground"
+              aria-label={t(($) => $.menu.actions_aria)}
             />
           }
         >

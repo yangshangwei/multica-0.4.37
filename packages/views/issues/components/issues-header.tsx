@@ -98,6 +98,7 @@ import { useViewStore, useViewStoreApi } from "@multica/core/issues/stores/view-
 import { FilterChipsBar } from "./filter-chips-bar";
 import { SaveViewDialog, type SaveViewScope } from "./save-view-dialog";
 import { ViewBar } from "./view-bar";
+import { CompactViewSelector } from "./compact-view-selector";
 import { toast } from "sonner";
 import { useActiveIssueView } from "@multica/core/issue-views/use-active-view";
 import { useAuthStore } from "@multica/core/auth";
@@ -1149,7 +1150,18 @@ export function IssuesHeader({
     agents: "agents_description",
   };
 
-  const scopeLabel = t(($) => $.scope[SCOPE_LABEL_KEY[scope]]);
+  const builtins = SCOPE_VALUES.map((s) => ({
+  key: s,
+  label: t(($) => $.scope[SCOPE_LABEL_KEY[s]]),
+  description: t(($) => $.scope[SCOPE_DESC_KEY[s]]),
+  active: !activeView && scope === s,
+  onSelect: () => {
+    // Built-in tabs exit any open saved view; the surface
+    // returns to its untouched per-tab state.
+    if (activeView) setActive(null);
+    setScope(s);
+  },
+}));
 
   return (
     <>
@@ -1162,18 +1174,7 @@ export function IssuesHeader({
             <ViewBar
               wsId={headerWsId}
               scope={viewListScope}
-              builtins={SCOPE_VALUES.map((s) => ({
-                key: s,
-                label: t(($) => $.scope[SCOPE_LABEL_KEY[s]]),
-                description: t(($) => $.scope[SCOPE_DESC_KEY[s]]),
-                active: !activeView && scope === s,
-                onSelect: () => {
-                  // Built-in tabs exit any open saved view; the surface
-                  // returns to its untouched per-tab state.
-                  if (activeView) setActive(null);
-                  setScope(s);
-                },
-              }))}
+              builtins={builtins}
               views={views}
               viewsReady={viewsReady}
               activeView={activeView}
@@ -1190,29 +1191,12 @@ export function IssuesHeader({
           )}
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                variant="outline"
-                size="sm"
-                className="shrink-0 gap-1 text-muted-foreground md:hidden"
-              >
-                <span className="truncate">{scopeLabel}</span>
-                <ChevronDown className="size-3 text-muted-foreground" />
-              </Button>
-            }
-          />
-          <DropdownMenuContent align="start" className="w-auto">
-            <DropdownMenuRadioGroup value={scope} onValueChange={(value) => setScope(value as IssuesScope)}>
-              {SCOPE_VALUES.map((s) => (
-                <DropdownMenuRadioItem key={s} value={s}>
-                  {t(($) => $.scope[SCOPE_LABEL_KEY[s]])}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <CompactViewSelector
+          builtins={builtins}
+          views={saveViewScope ? views : []}
+          activeView={activeView}
+          onSelectView={(view) => setActive(view.id)}
+        />
 
         <div className="flex max-w-full flex-wrap items-center justify-end gap-1">
           {agentRunningFilter && (

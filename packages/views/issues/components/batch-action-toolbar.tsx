@@ -216,6 +216,7 @@ export function BatchActionToolbar({
           <button
             type="button"
             onClick={clear}
+            aria-label={t(($) => $.batch.clear_selection)}
             className="rounded p-0.5 hover:bg-accent transition-colors"
           >
             <X className="size-3.5 text-muted-foreground" />

@@ -2,8 +2,9 @@ vi.mock("../../iterations/iteration-assignment", () => ({
   IterationBatchAssignment: ({ issueIds }: { issueIds: string[] }) => <button aria-label="Iteration batch selection" data-issue-ids={issueIds.join(",")}>Iterations</button>,
 }));
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import type { Issue } from "@multica/core/types";
+import enIssues from "../../locales/en/issues.json";
 import { BatchActionToolbar } from "./batch-action-toolbar";
 
 // Mutable selection state shared with the store mock below. The real toolbar
@@ -11,7 +12,7 @@ import { BatchActionToolbar } from "./batch-action-toolbar";
 // this selection, so each test sets `selection.selectedIds` before rendering.
 const selection = vi.hoisted(() => ({
   selectedIds: new Set<string>(),
-  clear: () => {},
+  clear: vi.fn(),
 }));
 
 vi.mock("@multica/core/issues/stores/selection-store", () => ({
@@ -25,7 +26,7 @@ vi.mock("@multica/core/issues/mutations", () => ({
 }));
 
 vi.mock("../../i18n", () => ({
-  useT: () => ({ t: () => "label" }),
+  useT: () => ({ t: (selector: (value: typeof import("../../locales/en/issues.json")) => unknown) => selector(enIssues) }),
 }));
 
 // Render each picker as a probe that surfaces the value the toolbar passed in,
@@ -88,6 +89,13 @@ beforeEach(() => {
 });
 
 describe("BatchActionToolbar picker wiring", () => {
+  it("names and activates the clear-selection button", () => {
+    selection.selectedIds = new Set(["a"]);
+    render(<BatchActionToolbar issues={[makeIssue({ id: "a" })]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Clear selection" }));
+    expect(selection.clear).toHaveBeenCalled();
+  });
+
   it("passes only resolved selected tasks to the iteration entry", () => {
     selection.selectedIds = new Set(["a", "stale"]);
     render(<BatchActionToolbar issues={[makeIssue({ id: "a" }), makeIssue({ id: "b" })]} />);

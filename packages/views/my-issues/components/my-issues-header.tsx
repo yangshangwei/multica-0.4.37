@@ -1,15 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { Button } from "@multica/ui/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@multica/ui/components/ui/dropdown-menu";
 import type {
   Issue,
   IssueTableFacetSpec,
@@ -33,6 +24,7 @@ import { useActiveIssueView } from "@multica/core/issue-views/use-active-view";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { baselineFromQuery } from "@multica/core/issue-views/baseline";
 import { ViewBar } from "../../issues/components/view-bar";
+import { CompactViewSelector } from "../../issues/components/compact-view-selector";
 import type { IssueView } from "@multica/core/api/schemas";
 
 /** My Issues tab → saved-view scope_variant (API vocabulary). */
@@ -96,26 +88,26 @@ export function MyIssuesHeader({
   const toggleAgentRunningFilter = useViewStore(
     (s) => s.toggleAgentRunningFilter,
   );
-  const scopeLabel = SCOPES.find((s) => s.value === scope)?.label ?? SCOPES[0]?.label;
+  const builtins = SCOPES.map((s) => ({
+  key: s.value,
+  label: s.label,
+  description: s.description,
+  active: !activeView && scope === s.value,
+  onSelect: () => {
+    if (activeView) setActive(null);
+    onScopeChange(s.value);
+  },
+}));
 
   return (
     <>
     <div className={cn("min-h-12 shrink-0 py-2 [-webkit-overflow-scrolling:touch]", PAGE_GUTTER)}>
-      <div className="flex w-full min-w-0 items-start justify-between gap-2">
+      <div className="flex w-full min-w-0 flex-wrap items-start justify-between gap-2">
         <div className="hidden min-w-0 flex-1 md:block">
           <ViewBar
             wsId={wsId}
             scope={{ scope_type: "my" }}
-            builtins={SCOPES.map((s) => ({
-              key: s.value,
-              label: s.label,
-              description: s.description,
-              active: !activeView && scope === s.value,
-              onSelect: () => {
-                if (activeView) setActive(null);
-                onScopeChange(s.value);
-              },
-            }))}
+            builtins={builtins}
             views={views}
             viewsReady={viewsReady}
             activeView={activeView}
@@ -131,34 +123,14 @@ export function MyIssuesHeader({
           />
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                variant="outline"
-                size="sm"
-                className="shrink-0 gap-1 text-muted-foreground md:hidden"
-              >
-                <span className="truncate">{scopeLabel}</span>
-                <ChevronDown className="size-3 text-muted-foreground" />
-              </Button>
-            }
-          />
-          <DropdownMenuContent align="start" className="w-auto">
-            <DropdownMenuRadioGroup
-              value={scope}
-              onValueChange={(value) => onScopeChange(value as MyIssuesScope)}
-            >
-              {SCOPES.map((s) => (
-                <DropdownMenuRadioItem key={s.value} value={s.value}>
-                  {s.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <CompactViewSelector
+          builtins={builtins}
+          views={views}
+          activeView={activeView}
+          onSelectView={(view) => setActive(view.id)}
+        />
 
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex max-w-full flex-wrap items-center justify-end gap-1">
           {agentRunningFilter && (
             <span className="mr-1 hidden text-caption text-muted-foreground md:inline">
               {tIssues(($) => $.agent_activity.filter_active_label)}
