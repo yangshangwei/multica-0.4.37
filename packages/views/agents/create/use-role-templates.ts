@@ -14,24 +14,26 @@ import { useLocale } from "../../i18n";
  * identical for every workspace on the server, and keying it per workspace would
  * refetch the same payload on every switch.
  */
-export function useRoleTemplates() {
+export function useRoleTemplates(options?: { enabled?: boolean }) {
   const locale = useLocale();
   const language = templateLanguageFor(locale);
   return useQuery({
     queryKey: ["agent-role-templates", language],
     queryFn: () => api.listAgentRoleTemplates(language),
     staleTime: 30 * 60 * 1000,
+    enabled: options?.enabled ?? true,
   });
 }
 
 /** The squad templates, same caching rationale as the role templates. */
-export function useSquadTemplates() {
+export function useSquadTemplates(options?: { enabled?: boolean }) {
   const locale = useLocale();
   const language = templateLanguageFor(locale);
   return useQuery({
     queryKey: ["squad-templates", language],
     queryFn: () => api.listSquadTemplates(language),
     staleTime: 30 * 60 * 1000,
+    enabled: options?.enabled ?? true,
   });
 }
 

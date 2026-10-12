@@ -1,8 +1,15 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Check, Search } from "lucide-react";
-import type { Agent } from "@multica/core/types";
+import type { Agent, AgentRoleTemplate, SquadTemplate } from "@multica/core/types";
+import {
+  AGENT_CATEGORY_PRESET_ORDER,
+  buildAgentRoleMetadata,
+  resolveAgentDirectoryCategory,
+  resolveAgentRole,
+  type AgentDirectoryCategory,
+} from "@multica/core/agents";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 import { Button } from "@multica/ui/components/ui/button";
@@ -10,11 +17,13 @@ import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { cn } from "@multica/ui/lib/utils";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { descriptionPreview } from "../issues/components/description-preview";
 
 export type McpAgentChoice = Pick<Agent, "id" | "name"> &
-  Partial<Pick<Agent, "description" | "avatar_url">>;
+  Partial<Pick<Agent, "description" | "avatar_url" | "category" | "template_key">>;
+
+type CategoryOption = AgentDirectoryCategory & { count: number };
 
 export function McpAgentPicker({
   agents,
@@ -25,6 +34,13 @@ export function McpAgentPicker({
   showTools,
   onSelectionChange,
   onClearSelection,
+  roleTemplates,
+  squadTemplates,
+  rolesReady = true,
+  metadataPending = false,
+  metadataError = false,
+  directoryReady = true,
+  onRetryMetadata,
 }: {
   agents: readonly McpAgentChoice[];
   selected: ReadonlySet<string>;
@@ -34,18 +50,75 @@ export function McpAgentPicker({
   showTools: boolean;
   onSelectionChange: (agentIds: readonly string[], checked: boolean) => void;
   onClearSelection: () => void;
+  roleTemplates?: readonly AgentRoleTemplate[];
+  squadTemplates?: readonly SquadTemplate[];
+  rolesReady?: boolean;
+  metadataPending?: boolean;
+  metadataError?: boolean;
+  directoryReady?: boolean;
+  onRetryMetadata?: () => void;
 }) {
   const { t } = useT("settings");
+  const { t: tAgents } = useT("agents");
+  const locale = useLocale();
   const [search, setSearch] = useState("");
   const [selectedOnly, setSelectedOnly] = useState(false);
+  const [category, setCategory] = useState<AgentDirectoryCategory | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const id = useId();
   const query = search.trim().toLowerCase();
-  const visible = agents.filter((agent) =>
+  const roleMetadata = useMemo(
+    () => buildAgentRoleMetadata(roleTemplates ?? [], squadTemplates ?? []),
+    [roleTemplates, squadTemplates],
+  );
+  const classified = useMemo(() => agents.map((agent) => ({
+    agent,
+    category: resolveAgentDirectoryCategory(
+      agent,
+      resolveAgentRole(agent, roleMetadata),
+      rolesReady,
+    ),
+  })), [agents, roleMetadata, rolesReady]);
+  const categoriesIncomplete = classified.some((row) => row.category === null);
+  const completeClassification = directoryReady && rolesReady && !metadataPending && !metadataError;
+  const categories = useMemo(() => {
+    const represented = new Map<string, CategoryOption>();
+    for (const { category: resolved } of classified) {
+      if (!resolved) continue;
+      const existing = represented.get(resolved.key);
+      if (existing) existing.count += 1;
+      else represented.set(resolved.key, { ...resolved, count: 1 });
+    }
+    // Retain a selected chip while metadata/directory recovery cannot prove removal.
+    if (category && !completeClassification && !represented.has(category.key)) {
+      represented.set(category.key, { ...category, count: 0 });
+    }
+    return [
+      ...AGENT_CATEGORY_PRESET_ORDER.flatMap((preset) => {
+        const entry = represented.get(`preset:${preset}`);
+        return entry ? [entry] : [];
+      }),
+      ...[...represented.values()]
+        .filter((entry) => entry.preset === null)
+        .sort((a, b) => a.name.localeCompare(b.name, locale)),
+    ];
+  }, [classified, category, completeClassification, locale]);
+  const categoryName = (entry: AgentDirectoryCategory) => {
+    const preset = entry.preset;
+    return preset ? tAgents(($) => $.discovery.roles[preset]) : entry.name;
+  };
+  useEffect(() => {
+    if (category && completeClassification && !categories.some((entry) => entry.key === category.key)) {
+      setCategory(null);
+    }
+  }, [categories, category, completeClassification]);
+  const visible = classified.filter(({ agent, category: resolved }) =>
+    (!category || resolved?.key === category.key) &&
     (!selectedOnly || selected.has(agent.id) || succeeded.has(agent.id)) &&
     (!query || agent.name.toLowerCase().includes(query) ||
       (typeof agent.description === "string" && agent.description.toLowerCase().includes(query))),
-  );
+  ).map(({ agent }) => agent);
+  const resultsIncomplete = categoriesIncomplete && category?.preset != null;
   const visibleIds = new Set(visible.map((agent) => agent.id));
   const unfinished = agents.filter((agent) => selected.has(agent.id) && !succeeded.has(agent.id));
   const unfinishedResults = visible.filter((agent) => !succeeded.has(agent.id));
@@ -60,8 +133,8 @@ export function McpAgentPicker({
   };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3" data-slot="mcp-agent-picker">
-      <div className="shrink-0 space-y-3" data-slot="mcp-agent-toolbar">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3" data-slot="mcp-agent-picker">
+      <div className="min-w-0 shrink-0 space-y-3" data-slot="mcp-agent-toolbar">
         {showTools ? (
           <div className="flex items-center gap-2">
             <div className="relative min-w-0 flex-1">
@@ -85,8 +158,55 @@ export function McpAgentPicker({
             ) : null}
           </div>
         ) : null}
+        {showTools ? (
+          <div className="-mx-1 overflow-x-auto px-1 py-1" data-slot="mcp-agent-categories">
+            <div role="group" aria-label={t(($) => $.mcp.market.agents_categories)} className="flex min-w-max gap-2 [&_[data-slot=button]]:focus-visible:border-foreground [&_[data-slot=button]]:focus-visible:ring-foreground pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11">
+              <Button
+                size="sm"
+                variant="ghost"
+                aria-pressed={!category}
+                disabled={disabled}
+                onClick={() => { if (!disabled) setCategory(null); }}
+                className={category ? "text-muted-foreground" : "bg-accent font-semibold text-accent-foreground hover:bg-accent hover:text-accent-foreground"}
+              >
+                {t(($) => $.mcp.market.agents_category_all, { count: agents.length })}
+              </Button>
+              {categories.map((entry) => (
+                <Button
+                  key={entry.key}
+                  size="sm"
+                  variant="ghost"
+                  aria-pressed={category?.key === entry.key}
+                  disabled={disabled}
+                  onClick={() => { if (!disabled) setCategory(entry); }}
+                  className={category?.key === entry.key ? "bg-accent font-semibold text-accent-foreground hover:bg-accent hover:text-accent-foreground" : "text-muted-foreground"}
+                >
+                  {t(($) => $.mcp.market.agents_category_count, {
+                    name: categoryName(entry),
+                    total: `${entry.count}${categoriesIncomplete && entry.preset ? "+" : ""}`,
+                  })}
+                </Button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+        {showTools && metadataPending && !metadataError ? (
+          <p role="status" className="text-caption text-muted-foreground">
+            {t(($) => $.mcp.market.agents_categories_loading)}
+          </p>
+        ) : null}
+        {showTools && metadataError ? (
+          <div role="alert" className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
+            <span>{t(($) => $.mcp.market.agents_categories_error)}</span>
+            {onRetryMetadata ? (
+              <Button size="sm" variant="outline" disabled={disabled} onClick={onRetryMetadata}>
+                {t(($) => $.mcp.market.retry)}
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
         <div role="status" aria-live="polite" aria-atomic="true" className="flex flex-wrap gap-x-3 gap-y-1 text-caption text-muted-foreground tabular-nums">
-          <span>{t(($) => $.mcp.market.agents_results_count, { count: visible.length })}</span>
+          <span>{t(($) => resultsIncomplete ? $.mcp.market.agents_results_count_incomplete : $.mcp.market.agents_results_count, { count: visible.length })}</span>
           <span className="font-medium text-foreground">{t(($) => $.mcp.market.agents_selected_count, { count: unfinished.length })}</span>
           {assignedCount > 0 ? <span>{t(($) => $.mcp.market.agents_assigned_count, { count: assignedCount })}</span> : null}
           {hiddenSelectedCount > 0 ? <span>{t(($) => $.mcp.market.agents_hidden_selected_count, { count: hiddenSelectedCount })}</span> : null}
@@ -137,11 +257,17 @@ export function McpAgentPicker({
         ) : null}
         {visible.length === 0 ? (
           <p className="px-4 py-8 text-center text-caption text-muted-foreground">
-            {query
-              ? selectedOnly
-                ? t(($) => $.mcp.market.agents_selected_no_matches)
-                : t(($) => $.mcp.market.agents_no_matches)
-              : t(($) => $.mcp.market.agents_selected_empty)}
+            {resultsIncomplete
+              ? t(($) => $.mcp.market.agents_categories_incomplete)
+              : category
+                ? selectedOnly
+                  ? t(($) => $.mcp.market.agents_selected_category_no_matches)
+                  : t(($) => $.mcp.market.agents_category_no_matches)
+                : query
+                  ? selectedOnly
+                    ? t(($) => $.mcp.market.agents_selected_no_matches)
+                    : t(($) => $.mcp.market.agents_no_matches)
+                  : t(($) => $.mcp.market.agents_selected_empty)}
           </p>
         ) : visible.map((agent) => {
           const assigned = succeeded.has(agent.id);

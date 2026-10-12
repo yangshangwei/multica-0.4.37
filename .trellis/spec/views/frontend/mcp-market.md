@@ -109,6 +109,28 @@ recipes publishable even when they contain no credential keywords.
   are separate local projections: never replace the directory used to compute
   `pendingIds` with filtered results. Hidden selected IDs still submit; IDs that
   become archived, internal or absent on refresh do not count or submit.
+- Category chips are a third local projection over that same eligible directory.
+  Resolve each row with `resolveAgentDirectoryCategory`: a saved nonblank
+  category wins, recognized `template_key` provenance supplies specialist or
+  coordinator fallback, and an unrecognized/template-free row is general
+  purpose. The chip inventory and counts are computed before search or
+  selected-only filtering, include represented presets in
+  `AGENT_CATEGORY_PRESET_ORDER`, and preserve the original custom category
+  name. The All chip always counts eligible rows and no squad/system chip is
+  added.
+- Category, query and selected-only state compose only for rendering. Bulk
+  select/deselect acts on visible unfinished rows; assignment still submits
+  the parent-controlled selected IDs across hidden categories. A metadata
+  refresh error keeps cached classifications and explicit categories usable;
+  when template fallback is unresolved, preset counts/results are marked
+  incomplete rather than reported as a definitive empty result. Retry must not
+  clear category, query or selection state. Reset a category only after a
+  complete directory/catalog result proves that category disappeared.
+- The saved general picker may enable the existing role/squad template queries
+  only when an eligible row has a template key and no explicit category.
+  Preserve their locale-scoped query keys, stale time and cached data on
+  refresh failure. Contextual single-agent discovery does not enable metadata
+  queries or render category chrome.
 - Search covers the full name and saved description. Reuse `descriptionPreview`
   only for the inert two-line display snippet; its 300-character cap must not
   truncate search. Use the query-free UI `ActorAvatar` with
@@ -195,3 +217,10 @@ recipes publishable even when they contain no credential keywords.
 - `e2e/mcp-market.spec.ts`: real API setup for all sixteen recipes, required/secret inputs, rename, resume,
   contextual reuse, partial failure and a member-owned agent; no real provider
   process or MCP tool execution is started by these tests.
+- Category regression coverage lives in `packages/views/mcp/mcp-agent-picker.test.tsx`
+  and `mcp-market.test.tsx`; template-query enablement/cache behavior is covered
+  by `agents/create/use-role-templates.queries.test.tsx`. The production component
+  fixture under `.omx/artifacts/mcp-agent-category-filters/` verifies English and
+  Chinese, light and dark themes, wide/narrow/coarse-pointer layouts, long custom
+  labels, independent list scrolling, hidden cross-category selections, scoped
+  bulk operations, retry/failure recovery and zero browser errors.

@@ -9,7 +9,9 @@ import type {
   WorkspaceMcpServer,
 } from "@multica/core/types";
 import { errorCode } from "@multica/core/api";
+import { getAgentCategory } from "@multica/core/agents";
 import { isUsableMcpTemplate, matchesMcpTemplate } from "./mcp-catalog";
+import { useRoleTemplates, useSquadTemplates } from "../agents/create/use-role-templates";
 import { agentListOptions } from "@multica/core/workspace/queries";
 import {
   useAssignWorkspaceMcpServer,
@@ -163,6 +165,25 @@ export function McpSetupDialog({
           !agent.archived_at &&
           !agent.system_key,
       );
+  const metadataEnabled = !!saved && !agentContext && choices.some(
+    (agent) => !getAgentCategory(agent) && !!agent.template_key,
+  );
+  const roleTemplatesQuery = useRoleTemplates({ enabled: metadataEnabled });
+  const squadTemplatesQuery = useSquadTemplates({ enabled: metadataEnabled });
+  const metadataPending = metadataEnabled && (
+    (roleTemplatesQuery.isPending && roleTemplatesQuery.data === undefined) ||
+    (squadTemplatesQuery.isPending && squadTemplatesQuery.data === undefined)
+  );
+  const metadataError = metadataEnabled && (roleTemplatesQuery.isError || squadTemplatesQuery.isError);
+  // Cached catalogs still classify rows when a background refresh fails.
+  const rolesReady = !metadataEnabled || (
+    roleTemplatesQuery.data !== undefined && squadTemplatesQuery.data !== undefined
+  );
+  const retryMetadata = () => {
+    if (!metadataEnabled) return;
+    void roleTemplatesQuery.refetch();
+    void squadTemplatesQuery.refetch();
+  };
   const related =
     servers?.filter(
       (server) => template && matchesMcpTemplate(server, template),
@@ -582,6 +603,13 @@ export function McpSetupDialog({
                   showTools={!agentContext}
                   onSelectionChange={changeSelection}
                   onClearSelection={clearSelection}
+                  roleTemplates={roleTemplatesQuery.data}
+                  squadTemplates={squadTemplatesQuery.data}
+                  rolesReady={rolesReady}
+                  metadataPending={metadataPending}
+                  metadataError={metadataError}
+                  directoryReady={!!agentContext || (!agents.isPending && !agents.isError && !malformedAgents)}
+                  onRetryMetadata={retryMetadata}
                 />
               ) : null}
             </>

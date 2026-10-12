@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -26,6 +26,10 @@ const mocks = vi.hoisted(() => ({
   refetch: vi.fn(),
   queryOptions: vi.fn(),
   agents: [] as unknown[],
+  roleTemplates: [] as unknown[] | undefined,
+  squadTemplates: [] as unknown[] | undefined,
+  metadataError: false,
+  metadataQueries: vi.fn(),
 }));
 vi.mock("@multica/core/api", async (importOriginal) => ({
   ...await importOriginal<typeof import("@multica/core/api")>(),
@@ -51,6 +55,26 @@ vi.mock("@multica/core/workspace/mutations", () => ({
     mutateAsync: mocks.assign,
     isPending: false,
   }),
+}));
+vi.mock("../agents/create/use-role-templates", () => ({
+  useRoleTemplates: (options: { enabled?: boolean }) => {
+    mocks.metadataQueries("roles", options);
+    return ({
+    data: mocks.roleTemplates,
+    isPending: false,
+    isError: mocks.metadataError,
+    refetch: mocks.refetch,
+    });
+  },
+  useSquadTemplates: (options: { enabled?: boolean }) => {
+    mocks.metadataQueries("squads", options);
+    return ({
+    data: mocks.squadTemplates,
+    isPending: false,
+    isError: mocks.metadataError,
+    refetch: mocks.refetch,
+    });
+  },
 }));
 vi.mock("@multica/core/workspace/queries", () => ({
   agentListOptions: () => ({
@@ -90,12 +114,9 @@ const documentationTemplates: McpServerTemplate[] = [
   },
 ];
 function Wrapper({ children }: { children: ReactNode }) {
+  const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false } } }));
   return (
-    <QueryClientProvider
-      client={
-        new QueryClient({ defaultOptions: { queries: { retry: false } } })
-      }
-    >
+    <QueryClientProvider client={client}>
       <I18nProvider
         locale="en"
         resources={{ en: { settings: enSettings, agents: enAgents } }}
@@ -150,6 +171,7 @@ describe("MCP market", () => {
     vi.clearAllMocks();
     mocks.templatesPending = false;
     mocks.templatesError = false;
+    mocks.metadataError = false;
     mocks.refetch.mockImplementation(async () => ({ data: mocks.templates, isError: mocks.templatesError }));
     mocks.agents = [
       { id: "a", name: "Ada" },
@@ -164,6 +186,14 @@ describe("MCP market", () => {
         category: "reasoning",
       },
     ];
+    mocks.roleTemplates = [{ key: "reviewer", title: "Reviewer", name: "Reviewer" }];
+    mocks.squadTemplates = [{
+      key: "delivery",
+      title: "Delivery",
+      name: "Delivery",
+      leader: { template_key: "delivery-lead", title: "Delivery lead", name: "Lead" },
+      members: [],
+    }];
     mocks.create.mockResolvedValue({
       id: "saved",
       name: "playwright",
@@ -704,6 +734,7 @@ describe("MCP market", () => {
     for (const name of ["Select results", "Deselect results", "Clear selection", "Clear search", "Show selected only", "Assign selected"]) {
       expect(screen.getByRole("button", { name })).toBeDisabled();
     }
+    within(screen.getByRole("group", { name: "Agent categories" })).getAllByRole("button").forEach((button) => expect(button).toBeDisabled());
     expect(screen.getByRole("checkbox", { name: "Ada" })).toHaveAttribute("aria-disabled", "true");
     await user.click(screen.getByRole("button", { name: "Clear selection" }));
     expect(screen.getByRole("status")).toHaveTextContent("Selected: 2");
@@ -718,6 +749,7 @@ describe("MCP market", () => {
     for (const name of ["Select results", "Deselect results", "Clear selection", "Show selected only", "Assign selected"]) {
       expect(screen.getByRole("button", { name })).toBeDisabled();
     }
+    within(screen.getByRole("group", { name: "Agent categories" })).getAllByRole("button").forEach((button) => expect(button).toBeDisabled());
     expect(mocks.assign).not.toHaveBeenCalled();
   });
   it.each([false, true])("retains the contextual singleton and its unsupported=%s assignment guard", async (unsupported) => {
@@ -727,6 +759,8 @@ describe("MCP market", () => {
     expect(ada).not.toBeChecked();
     expect(screen.queryByRole("searchbox", { name: "Search agents" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Select results" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Agent categories" })).toBeNull();
+    expect(mocks.metadataQueries.mock.calls.every(([, options]) => options.enabled === false)).toBe(true);
     await user.click(ada);
     const submit = screen.getByRole("button", { name: "Assign selected" });
     if (unsupported) {
@@ -883,6 +917,117 @@ describe("MCP market", () => {
     await user.click(screen.getByRole("button", { name: "Save and continue" }));
     expect(await screen.findByRole("checkbox", { name: "Ada" })).toBeVisible();
     expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+  });
+
+  it("filters the saved assignment directory by real agent categories without changing hidden selection payloads", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [
+      { id: "specialist", name: "Renamed reviewer", template_key: "reviewer" },
+      { id: "coordinator", name: "Renamed lead", template_key: "delivery-lead" },
+      { id: "custom", name: "Custom category", category: "Research", template_key: "reviewer" },
+    ];
+    mocks.assign.mockResolvedValueOnce({ succeeded: ["specialist", "coordinator", "custom"], failed: [] });
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Renamed reviewer" });
+
+    expect(screen.getByRole("group", { name: "Agent categories" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "All (3)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Specialists (1)" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Coordinators (1)" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Research (1)" })).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: "Specialists (1)" }));
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.click(screen.getByRole("button", { name: "Coordinators (1)" }));
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.click(screen.getByRole("button", { name: "Research (1)" }));
+    expect(screen.getByRole("checkbox", { name: "Custom category" })).toBeVisible();
+    expect(screen.queryByRole("checkbox", { name: "Renamed reviewer" })).toBeNull();
+    await user.click(screen.getByRole("checkbox", { name: "Custom category" }));
+    await user.click(screen.getByRole("button", { name: "All (3)" }));
+    expect(screen.getByRole("checkbox", { name: "Custom category" })).toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Coordinators (1)" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Selected outside this view: 2");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["specialist", "coordinator", "custom"] });
+  });
+
+  it("gates metadata requests to saved eligible rows that need template classification", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [{ id: "specialist", name: "Renamed reviewer", template_key: "reviewer", category: "  " }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    expect(mocks.metadataQueries.mock.calls.every(([, options]) => options.enabled === false)).toBe(true);
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    await screen.findByRole("button", { name: "Specialists (1)" });
+    expect(mocks.metadataQueries).toHaveBeenCalledWith("roles", { enabled: true });
+    expect(mocks.metadataQueries).toHaveBeenCalledWith("squads", { enabled: true });
+  });
+
+  it("does not enable metadata for explicit, untemplated, archived or system choices", async () => {
+    mocks.agents = [
+      { id: "plain", name: "Personal helper" },
+      { id: "explicit", name: "Research helper", template_key: "reviewer", category: "Research" },
+      { id: "archived", name: "Archived reviewer", template_key: "reviewer", archived_at: "2026-10-12" },
+      { id: "system", name: "System reviewer", template_key: "reviewer", system_key: "internal" },
+    ];
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Personal helper" });
+    expect(mocks.metadataQueries.mock.calls.every(([, options]) => options.enabled === false)).toBe(true);
+  });
+
+  it("keeps initial metadata errors recoverable without losing query/category/selection, then uses cached catalogs on refresh errors", async () => {
+    const user = userEvent.setup();
+    const roles = mocks.roleTemplates;
+    const squads = mocks.squadTemplates;
+    mocks.roleTemplates = undefined;
+    mocks.squadTemplates = undefined;
+    mocks.metadataError = true;
+    mocks.agents = [
+      { id: "specialist", name: "Renamed reviewer", template_key: "reviewer", description: "Payments review" },
+      { id: "custom", name: "Research helper", category: "Research", description: "Payments research" },
+    ];
+    const view = renderAssignment();
+    await screen.findByRole("checkbox", { name: "Renamed reviewer" });
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not refresh category information.");
+    expect(screen.queryByRole("button", { name: "General-purpose agents (2)" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Research (1)" }));
+    await user.type(screen.getByRole("searchbox"), "payments");
+    await user.click(screen.getByRole("checkbox", { name: "Research helper" }));
+    mocks.refetch.mockImplementation(async () => {
+      mocks.roleTemplates = roles;
+      mocks.squadTemplates = squads;
+      mocks.metadataError = false;
+      return {};
+    });
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(mocks.refetch).toHaveBeenCalledTimes(2);
+    view.rerender(
+      <McpSetupDialog workspaceId="ws" initialServer={{ id: "saved", workspace_id: "ws", name: "playwright", transport: "stdio", created_at: "", updated_at: "" }} servers={[]} canManage onClose={vi.fn()} />,
+    );
+    expect(screen.getByRole("searchbox")).toHaveValue("payments");
+    expect(screen.getByRole("button", { name: "Research (1)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("checkbox", { name: "Research helper" })).toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Specialists (1)" }));
+    mocks.metadataError = true;
+    view.rerender(
+      <McpSetupDialog workspaceId="ws" initialServer={{ id: "saved", workspace_id: "ws", name: "playwright", transport: "stdio", created_at: "", updated_at: "" }} servers={[]} canManage onClose={vi.fn()} />,
+    );
+    expect(screen.getByRole("checkbox", { name: "Renamed reviewer" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Specialists (1)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Retry" })).toBeVisible();
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 1");
+  });
+
+  it("does not introduce squad or system categories in the saved assignment picker", async () => {
+    mocks.agents = [
+      { id: "a", name: "Ada", system_key: "mika" },
+      { id: "b", name: "Builder", template_key: "reviewer" },
+    ];
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Builder" });
+    expect(screen.queryByRole("button", { name: /squad|system/i })).toBeNull();
+    expect(screen.queryByText(/squad|system/i)).toBeNull();
   });
   it("can save and skip without assigning any agent", async () => {
     const user = userEvent.setup();
