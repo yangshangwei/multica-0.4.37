@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Check, ExternalLink, Loader2 } from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
 import type {
   Agent,
   McpServerTemplate,
@@ -16,7 +16,6 @@ import {
   useCreateWorkspaceMcpServerFromTemplate,
 } from "@multica/core/workspace/mutations";
 import { Button } from "@multica/ui/components/ui/button";
-import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +28,7 @@ import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { useT } from "../i18n";
 import type { McpCustomPreset } from "./mcp-market";
+import { McpAgentPicker, type McpAgentChoice } from "./mcp-agent-picker";
 
 function templateInputValue(values: Record<string, string>, key: string): string {
   const value = Object.prototype.hasOwnProperty.call(values, key) ? values[key] : undefined;
@@ -153,7 +153,7 @@ export function McpSetupDialog({
   });
   const malformedAgents =
     agents.data !== undefined && !Array.isArray(agents.data);
-  const choices = agentContext
+  const choices: McpAgentChoice[] = agentContext
     ? [agentContext.agent]
     : (Array.isArray(agents.data) ? agents.data : []).filter(
         (agent) =>
@@ -198,6 +198,28 @@ export function McpSetupDialog({
     (agentId) =>
       !succeeded.has(agentId) && choices.some((agent) => agent.id === agentId),
   );
+  const selectionDisabled = !canAssign || busy || agentContext?.unsupported === true;
+  const changeSelection = (agentIds: readonly string[], checked: boolean) => {
+    if (operation.current || !canAssign || agentContext?.unsupported) return;
+    setSelected((previous) => {
+      const next = new Set(previous);
+      for (const agentId of agentIds) {
+        if (succeeded.has(agentId)) continue;
+        if (checked) {
+          if (choices.some((agent) => agent.id === agentId)) next.add(agentId);
+        } else {
+          next.delete(agentId);
+        }
+      }
+      return next;
+    });
+  };
+  const clearSelection = () => {
+    if (operation.current || !canAssign || agentContext?.unsupported) return;
+    setSelected((previous) =>
+      new Set([...previous].filter((agentId) => succeeded.has(agentId))),
+    );
+  };
 
   const save = async () => {
     if (operation.current || !canManage || !available || failure || !actionable || !servers || !template)
@@ -324,7 +346,9 @@ export function McpSetupDialog({
           </DialogDescription>
         </DialogHeader>
         <div
-          className="min-h-0 space-y-5 overflow-y-auto px-5 pb-5"
+          className={saved
+            ? "flex min-h-0 flex-1 flex-col gap-4 px-5 pb-5"
+            : "min-h-0 space-y-5 overflow-y-auto px-5 pb-5"}
           data-slot="mcp-setup-scroll-area"
         >
           {!saved ? (
@@ -508,102 +532,65 @@ export function McpSetupDialog({
             </>
           ) : (
             <>
-              <p className="text-caption leading-5 text-muted-foreground">
-                {t(($) => $.mcp.market.assignment_note)}
-              </p>
-              <McpConflictNotice name={saved.name} context={agentContext} />
-              {!agentContext && agents.isPending ? (
-                <p role="status" className="text-caption text-muted-foreground">
-                  {t(($) => $.mcp.market.agents_loading)}
+              <div className="shrink-0 space-y-2">
+                <p className="text-caption leading-5 text-muted-foreground">
+                  {t(($) => $.mcp.market.assignment_note)}
                 </p>
-              ) : null}
-              {!agentContext && (agents.isError || malformedAgents) ? (
-                <div role="alert" className="space-y-2">
-                  <p className="text-caption">
-                    {t(($) => $.mcp.market.agents_error)}
+                <McpConflictNotice name={saved.name} context={agentContext} />
+                {!agentContext && agents.isPending ? (
+                  <p role="status" className="text-caption text-muted-foreground">
+                    {t(($) => $.mcp.market.agents_loading)}
                   </p>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => void agents.refetch()}
-                  >
-                    {t(($) => $.mcp.market.retry)}
-                  </Button>
-                </div>
-              ) : null}
-              {!agentContext &&
-              !agents.isPending &&
-              !agents.isError &&
-              !malformedAgents &&
-              choices.length === 0 ? (
-                <p className="text-caption text-muted-foreground">
-                  {t(($) => $.mcp.market.agents_empty)}
-                </p>
-              ) : null}
-              {failures.length > 0 ? (
-                <p role="alert" className="text-caption">
-                  {t(($) => $.mcp.market.partial_failure)}
-                </p>
-              ) : null}
-              <div className="space-y-2">
-                {choices.map((agent) => {
-                  const failure = failures.find(
-                    (item) => item.agentId === agent.id,
-                  );
-                  return (
-                    <div key={agent.id} className="rounded-lg border p-3">
-                      <div className="flex min-w-0 items-center gap-3">
-                        <Checkbox
-                          className="pointer-coarse:after:-inset-3.5"
-                          id={`${id}-${agent.id}`}
-                          checked={selected.has(agent.id)}
-                          disabled={
-                            !canAssign ||
-                            busy ||
-                            succeeded.has(agent.id) ||
-                            agentContext?.unsupported
-                          }
-                          onCheckedChange={(checked) =>
-                            setSelected((previous) => {
-                              const next = new Set(previous);
-                              if (checked) next.add(agent.id);
-                              else next.delete(agent.id);
-                              return next;
-                            })
-                          }
-                        />
-                        <Label
-                          htmlFor={`${id}-${agent.id}`}
-                          className="min-w-0 flex-1 text-body [overflow-wrap:anywhere] pointer-coarse:min-h-11"
-                        >
-                          {agent.name}
-                        </Label>
-                        {succeeded.has(agent.id) ? (
-                          <span className="flex shrink-0 items-center gap-1 text-caption text-muted-foreground">
-                            <Check className="size-3" aria-hidden="true" />
-                            {t(($) => $.mcp.market.assigned)}
-                          </span>
-                        ) : null}
-                      </div>
-                      {failure ? (
-                        <p
-                          role="alert"
-                          className="mt-2 break-words text-caption text-destructive"
-                        >
-                          {failure.message}
-                        </p>
-                      ) : null}
-                    </div>
-                  );
-                })}
+                ) : null}
+                {!agentContext && (agents.isError || malformedAgents) ? (
+                  <div role="alert" className="space-y-2">
+                    <p className="text-caption">
+                      {t(($) => $.mcp.market.agents_error)}
+                    </p>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={busy}
+                      onClick={() => void agents.refetch()}
+                    >
+                      {t(($) => $.mcp.market.retry)}
+                    </Button>
+                  </div>
+                ) : null}
+                {!agentContext &&
+                !agents.isPending &&
+                !agents.isError &&
+                !malformedAgents &&
+                choices.length === 0 ? (
+                  <p className="text-caption text-muted-foreground">
+                    {t(($) => $.mcp.market.agents_empty)}
+                  </p>
+                ) : null}
+                {failures.length > 0 ? (
+                  <p role="alert" className="text-caption">
+                    {t(($) => $.mcp.market.partial_failure)}
+                  </p>
+                ) : null}
               </div>
+              {choices.length > 0 ? (
+                <McpAgentPicker
+                  agents={choices}
+                  selected={selected}
+                  succeeded={succeeded}
+                  failures={failures}
+                  disabled={selectionDisabled}
+                  showTools={!agentContext}
+                  onSelectionChange={changeSelection}
+                  onClearSelection={clearSelection}
+                />
+              ) : null}
             </>
           )}
           {error ? (
             <p
               role="alert"
               id={`${id}-error`}
-              className="text-caption text-destructive"
+              className="shrink-0 text-caption text-destructive [overflow-wrap:anywhere]"
             >
               {error}
             </p>
@@ -639,15 +626,16 @@ export function McpSetupDialog({
           ) : null}
           {saved && pendingIds.some((agentId) => failedIds.has(agentId)) ? (
             <Button
-              disabled={!canAssign || busy || agentContext?.unsupported}
+              disabled={selectionDisabled}
               onClick={() => void assignSelected(true)}
             >
+              {busy ? <Loader2 className="size-4 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : null}
               {t(($) => $.mcp.market.retry_failed)}
             </Button>
           ) : null}
-          {saved && pendingIds.some((agentId) => !failedIds.has(agentId)) ? (
+          {saved ? (
             <Button
-              disabled={!canAssign || busy || agentContext?.unsupported}
+              disabled={selectionDisabled || !pendingIds.some((agentId) => !failedIds.has(agentId))}
               onClick={() => void assignSelected(false)}
             >
               {busy ? (

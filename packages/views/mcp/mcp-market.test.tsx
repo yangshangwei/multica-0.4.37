@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
@@ -26,6 +26,10 @@ const mocks = vi.hoisted(() => ({
   refetch: vi.fn(),
   queryOptions: vi.fn(),
   agents: [] as unknown[],
+}));
+vi.mock("@multica/core/api", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/api")>(),
+  api: { getBaseUrl: () => "https://multica.test" },
 }));
 vi.mock("../settings/hooks/use-mcp-server-templates", () => ({
   useMcpServerTemplates: (_ws: string, options: unknown) => {
@@ -115,6 +119,29 @@ function renderCatalog(
     >
       <p>Workspace inventory</p>
     </McpLibraryCatalog>,
+    { wrapper: Wrapper },
+  );
+}
+function renderAssignment(
+  canManage = true,
+  agentContext?: Parameters<typeof McpSetupDialog>[0]["agentContext"],
+) {
+  return render(
+    <McpSetupDialog
+      workspaceId="ws"
+      initialServer={{
+        id: "saved",
+        workspace_id: "ws",
+        name: "playwright",
+        transport: "stdio",
+        created_at: "",
+        updated_at: "",
+      }}
+      servers={[]}
+      canManage={canManage}
+      agentContext={agentContext}
+      onClose={vi.fn()}
+    />,
     { wrapper: Wrapper },
   );
 }
@@ -525,6 +552,18 @@ describe("MCP market", () => {
       "aria-disabled",
       "true",
     );
+    const search = screen.getByRole("searchbox", { name: "Search agents" });
+    await user.type(search, "Ada");
+    expect(screen.queryByRole("checkbox", { name: "Ben" })).toBeNull();
+    expect(screen.getByText("Ben: Permission changed")).toBeVisible();
+    expect(screen.getByText(enSettings.mcp.market.partial_failure)).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Clear selection" }));
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toBeChecked();
+    expect(screen.queryByRole("button", { name: "Retry failed" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(screen.getByRole("checkbox", { name: "Ben" })).not.toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.type(search, "Ada");
     await user.click(screen.getByRole("button", { name: "Retry failed" }));
     await waitFor(() =>
       expect(mocks.assign).toHaveBeenLastCalledWith({
@@ -534,6 +573,171 @@ describe("MCP market", () => {
     );
     expect(mocks.create).toHaveBeenCalledTimes(1);
     expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
+  });
+  it("searches full descriptions and submits hidden selections by ID after clearing no matches", async () => {
+    const user = userEvent.setup();
+    const description = `${"General documentation. ".repeat(20)}Database migration specialist`;
+    mocks.agents = [
+      { id: "a", name: "Ada", description: "Interface design" },
+      { id: "b", name: "Ben", description, avatar_url: "/uploads/ben.png" },
+      { id: "c", name: "Ada", description: "Release operations" },
+    ];
+    renderAssignment();
+    const ada = (await screen.findAllByRole("checkbox", { name: "Ada" }))[0]!;
+    expect(screen.getByRole("button", { name: "Assign selected" })).toBeDisabled();
+    await user.click(ada);
+    const search = screen.getByRole("searchbox", { name: "Search agents" });
+    const status = screen.getByRole("status");
+    await user.type(search, "  MIGRATION specialist  ");
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+    const ben = screen.getByRole("checkbox", { name: "Ben" });
+    expect(ben).toHaveAccessibleDescription(description);
+    expect(within(ben.closest("label")!).getByAltText("Ben")).toHaveAttribute("src", "https://multica.test/uploads/ben.png");
+    expect(search).toHaveFocus();
+    await user.click(ben);
+    expect(status).toHaveTextContent("Selected: 2");
+    expect(status).toHaveTextContent("Selected outside this view: 1");
+    await user.clear(search);
+    await user.type(search, "missing-agent");
+    expect(screen.getByText("No agents match your search.")).toBeVisible();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    expect(status).toHaveTextContent("Selected: 2");
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(search).toHaveFocus();
+    expect(screen.getAllByRole("checkbox", { name: "Ada" })[0]).toBeChecked();
+    expect(screen.getAllByRole("checkbox", { name: "Ada" })[1]).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Ben" })).toBeChecked();
+    await user.type(search, "Ben");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["a", "b"] });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it("scopes bulk selection to current results and keeps selected review independent of search", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [
+      { id: "a", name: "Ada", description: "Design" },
+      { id: "b", name: "Ben", description: "Deployment" },
+      { id: "c", name: "Cai", description: "Deployment" },
+    ];
+    renderAssignment();
+    const ada = await screen.findByRole("checkbox", { name: "Ada" });
+    await user.click(screen.getByText("Ada"));
+    expect(ada).toBeChecked();
+    const search = screen.getByRole("searchbox", { name: "Search agents" });
+    await user.type(search, "deployment");
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(2);
+    expect(screen.getByRole("checkbox", { name: "Ben" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Cai" })).toBeChecked();
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 3");
+    await user.click(screen.getByRole("button", { name: "Deselect results" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 1");
+    await user.click(screen.getByRole("button", { name: "Show selected only" }));
+    expect(screen.getByRole("button", { name: "Show selected only" })).toHaveAttribute("aria-pressed", "true");
+    expect(search).toHaveValue("deployment");
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Clear selection" }));
+    expect(screen.getByText("No selected agents to show.")).toBeVisible();
+    expect(screen.getByRole("button", { name: "Assign selected" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Show selected only" }));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
+    screen.getAllByRole("checkbox").forEach((checkbox) => expect(checkbox).not.toBeChecked());
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("excludes selected agents that become archived, system-owned or removed from counts and submission", async () => {
+    const user = userEvent.setup();
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    mocks.agents = [
+      { id: "a", name: "Ada" },
+      { id: "b", name: "Ben" },
+      { id: "c", name: "Cai" },
+    ];
+    mocks.assign.mockResolvedValueOnce({ succeeded: ["d"], failed: [] });
+    render(
+      <QueryClientProvider client={client}>
+        <I18nProvider locale="en" resources={{ en: { settings: enSettings, agents: enAgents } }}>
+          <McpSetupDialog
+            workspaceId="ws"
+            initialServer={{ id: "saved", workspace_id: "ws", name: "playwright", transport: "stdio", created_at: "", updated_at: "" }}
+            servers={[]}
+            canManage
+            onClose={vi.fn()}
+          />
+        </I18nProvider>
+      </QueryClientProvider>,
+    );
+    await screen.findByRole("checkbox", { name: "Ada" });
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    const status = screen.getByRole("status");
+    expect(status).toHaveTextContent("Selected: 3");
+
+    await act(async () => {
+      client.setQueryData(["agents"], [
+        { id: "a", name: "Ada", archived_at: "2026-10-12T00:00:00Z" },
+        { id: "b", name: "Ben", system_key: "internal" },
+        { id: "d", name: "Dee" },
+      ]);
+    });
+    await waitFor(() => expect(status).toHaveTextContent("Selected: 0"));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+    expect(screen.getByRole("checkbox", { name: "Dee" })).not.toBeChecked();
+    expect(screen.getByRole("button", { name: "Assign selected" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    expect(status).toHaveTextContent("Selected: 1");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["d"] });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it("disables every selection control while an assignment awaits confirmation", async () => {
+    const user = userEvent.setup();
+    let finishAssignment!: (value: { succeeded: string[]; failed: { agentId: string; message: string }[] }) => void;
+    mocks.assign.mockReturnValueOnce(new Promise((resolve) => { finishAssignment = resolve; }));
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Ada" });
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.type(screen.getByRole("searchbox", { name: "Search agents" }), "Ada");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(screen.getByRole("searchbox", { name: "Search agents" })).toBeDisabled();
+    for (const name of ["Select results", "Deselect results", "Clear selection", "Clear search", "Show selected only", "Assign selected"]) {
+      expect(screen.getByRole("button", { name })).toBeDisabled();
+    }
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toHaveAttribute("aria-disabled", "true");
+    await user.click(screen.getByRole("button", { name: "Clear selection" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 2");
+    await act(async () => { finishAssignment({ succeeded: ["a", "b"], failed: [] }); });
+    expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
+    expect(screen.getByRole("status")).toHaveTextContent("Assigned: 2");
+  });
+  it("keeps workspace selection and search disabled without management permission", async () => {
+    renderAssignment(false);
+    expect(await screen.findByRole("checkbox", { name: "Ada" })).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("searchbox", { name: "Search agents" })).toBeDisabled();
+    for (const name of ["Select results", "Deselect results", "Clear selection", "Show selected only", "Assign selected"]) {
+      expect(screen.getByRole("button", { name })).toBeDisabled();
+    }
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it.each([false, true])("retains the contextual singleton and its unsupported=%s assignment guard", async (unsupported) => {
+    const user = userEvent.setup();
+    renderAssignment(false, { agent: { id: "a", name: "Ada" }, managedNames: new Set(), runtimeNames: new Set(), unsupported });
+    const ada = screen.getByRole("checkbox", { name: "Ada" });
+    expect(ada).not.toBeChecked();
+    expect(screen.queryByRole("searchbox", { name: "Search agents" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Select results" })).toBeNull();
+    await user.click(ada);
+    const submit = screen.getByRole("button", { name: "Assign selected" });
+    if (unsupported) {
+      expect(ada).toHaveAttribute("aria-disabled", "true");
+      expect(submit).toBeDisabled();
+      expect(mocks.assign).not.toHaveBeenCalled();
+    } else {
+      expect(submit).toBeEnabled();
+      await user.click(submit);
+      expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["a"] });
+    }
   });
   it("retains the assignment step when the new saved configuration updates the library", async () => {
     const user = userEvent.setup();

@@ -102,6 +102,37 @@ recipes publishable even when they contain no credential keywords.
 - Exclude archived and internal/system agents from assignment options. A failed
   or malformed agent list is an error with retry, not an empty successful list.
 
+## Agent selection
+
+- `McpAgentPicker` receives the full eligible directory and parent-controlled
+  selection, confirmed successes and failures. Search and selected-only review
+  are separate local projections: never replace the directory used to compute
+  `pendingIds` with filtered results. Hidden selected IDs still submit; IDs that
+  become archived, internal or absent on refresh do not count or submit.
+- Search covers the full name and saved description. Reuse `descriptionPreview`
+  only for the inert two-line display snippet; its 300-character cap must not
+  truncate search. Use the query-free UI `ActorAvatar` with
+  `resolvePublicFileUrl`, without directory/profile navigation or runtime joins.
+- Select/Deselect results operate only on visible unfinished eligible IDs.
+  Selecting results unions them with hidden choices; Clear selection removes
+  unfinished choices without deleting confirmation/failure records. Selected
+  counts intersect with eligible unfinished IDs; selected-only review can retain
+  confirmed rows, which stay checked and disabled.
+- Keep the search/selection toolbar and footer outside the list scroll owner.
+  Global failure/result feedback stays visible; filtered-out per-agent failure
+  details remain inside the bounded list scroll owner. Busy, permission and
+  unsupported-runtime guards cover all selection controls and submission.
+- Whole-row `Label` controls keep the checkbox named only by the agent name,
+  with description/status wired through `aria-describedby`. Give each row a
+  positioned ancestor (`relative`) so its absolute `sr-only` full description
+  stays inside the list clip. Without it, long lists inflate the dialog's scroll
+  extent and focus can scroll its heading/tools away. The visual Checkbox root
+  does not contain its sibling hidden input or the row description.
+- Do not combine `block` with `line-clamp-2`: overriding its required display
+  makes the long-description preview expand beyond two lines. Verify dialog
+  scroll offsets, heading/search/footer bounds and preview height after mouse,
+  label and keyboard selection, not only the initial viewport.
+
 ## Error and visual contracts
 
 - Preserve available catalog data on refresh failure; expose retry separately.
