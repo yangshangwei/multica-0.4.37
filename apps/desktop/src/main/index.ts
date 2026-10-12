@@ -16,6 +16,7 @@ import { createRendererWebPreferences } from "./renderer-web-preferences";
 import { installRendererFileAccess } from "./renderer-file-access";
 import { getAppVersion } from "./app-version";
 import { loadRuntimeConfig, saveRuntimeConfig } from "./runtime-config-loader";
+import { openRuntimeConfigEditorFromWindow } from "./runtime-config-editor";
 import {
   deviceIdentityFilePath,
   loadOrCreateDeviceIdentity,
@@ -828,6 +829,15 @@ if (!gotTheLock) {
         return { ok: false, category: "network", message: error instanceof Error ? error.message : "Could not connect to server" };
       }
     });
+
+    ipcMain.handle("runtime-config:open-editor", (event) =>
+      openRuntimeConfigEditorFromWindow({
+        sourceWindow: BrowserWindow.fromWebContents(event.sender),
+        mainWindow,
+        issueWindows,
+        openMainEditor: () => dispatchToMainRenderer("runtime-config:edit", null),
+      }),
+    );
 
     ipcMain.handle("runtime-config:save", async (event, input: unknown) => {
       if (!mainWindow || event.sender !== mainWindow.webContents || !input || typeof input !== "object") {

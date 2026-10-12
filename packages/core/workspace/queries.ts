@@ -1,5 +1,6 @@
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { api } from "../api";
+import { RECOVERY_REQUEST_TIMEOUT_MS } from "../api/request-lifecycle";
 import type { Agent, Skill, Squad, Workspace } from "../types";
 
 export const workspaceKeys = {
@@ -31,7 +32,7 @@ export const workspaceKeys = {
 export function workspaceListOptions() {
   return queryOptions({
     queryKey: workspaceKeys.list(),
-    queryFn: () => api.listWorkspaces(),
+    queryFn: ({ signal }) => api.listWorkspaces({ signal, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS }),
   });
 }
 

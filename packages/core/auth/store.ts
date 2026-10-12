@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import type { User, StorageAdapter } from "../types";
 import { identify as identifyAnalytics, resetAnalytics } from "../analytics";
-import type { ApiClient } from "../api/client";
+import type { ApiClient, ApiRequestOptions } from "../api/client";
+import type { AuthRecoveryState } from "./recovery";
 import { setCurrentWorkspace } from "../platform/workspace-storage";
 
 export interface AuthStoreOptions {
@@ -38,6 +39,7 @@ export interface AuthState {
   isLoading: boolean;
   status: AuthStatus;
   retryGeneration: number;
+  recovery: AuthRecoveryState | null;
   /**
    * The last transition to `unauthenticated` was the server rejecting our
    * credential, not the user asking to leave. Purely presentational — the
@@ -51,7 +53,7 @@ export interface AuthState {
   verifyCode: (email: string, code: string) => Promise<User>;
   loginWithGoogle: (code: string, redirectUri: string) => Promise<User>;
   loginWithToken: (token: string) => Promise<User>;
-  loginWithDevice: (deviceId: string, deviceName?: string) => Promise<User>;
+  loginWithDevice: (deviceId: string, deviceName?: string, options?: ApiRequestOptions) => Promise<User>;
   loginWithPassword: (username: string, password: string) => Promise<User>;
   registerPassword: (username: string, password: string, name: string) => Promise<User>;
   setupPassword: (username: string, password: string, name: string) => Promise<User>;
@@ -74,7 +76,7 @@ export function createAuthStore(options: AuthStoreOptions) {
       const status = userAuthStatus(user);
       if (status === "authenticated") onLogin?.();
       identifyAnalytics(user.id, { ...(user.email ? {email: user.email} : {}), name: user.name });
-      set({ user, isLoading: false, status, expired: false });
+      set({ user, isLoading: false, status, expired: false, recovery: null });
       return user;
     };
     return ({
@@ -82,12 +84,17 @@ export function createAuthStore(options: AuthStoreOptions) {
     isLoading: true,
     status: "authenticating",
     retryGeneration: 0,
+    recovery: null,
     expired: false,
 
     retryAuthentication: () => {
+      if (get().recovery?.isRetrying) return;
       set((state) => ({
         isLoading: true,
-        status: "authenticating",
+        status: state.status === "recovering" ? "recovering" : "authenticating",
+        recovery: state.status === "recovering"
+          ? { isRetrying: true, nextRetryAt: null, failure: state.recovery?.failure ?? null }
+          : null,
         retryGeneration: state.retryGeneration + 1,
       }));
     },
@@ -105,7 +112,7 @@ export function createAuthStore(options: AuthStoreOptions) {
       }
       if (userAuthStatus(user) === "authenticated") onLogin?.();
       identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
-      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
       return user;
     },
 
@@ -117,7 +124,7 @@ export function createAuthStore(options: AuthStoreOptions) {
       }
       if (userAuthStatus(user) === "authenticated") onLogin?.();
       identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
-      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
       return user;
     },
 
@@ -127,7 +134,7 @@ export function createAuthStore(options: AuthStoreOptions) {
       const user = await api.getMe();
       if (userAuthStatus(user) === "authenticated") onLogin?.();
       identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
-      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
       return user;
     },
 
@@ -136,8 +143,11 @@ export function createAuthStore(options: AuthStoreOptions) {
      * session without anyone typing anything. Only call this after
      * /api/config declared `device_auth_available` — elsewhere it is a 403.
      */
-    loginWithDevice: async (deviceId: string, deviceName?: string) => {
-      const { token, user } = await api.deviceLogin(deviceId, deviceName);
+    loginWithDevice: async (deviceId: string, deviceName?: string, requestOptions?: ApiRequestOptions) => {
+      const { token, user } = await (requestOptions
+        ? api.deviceLogin(deviceId, deviceName, requestOptions)
+        : api.deviceLogin(deviceId, deviceName));
+      requestOptions?.signal?.throwIfAborted();
       // The client parses this response with a fallback rather than throwing,
       // so a drifted or truncated body arrives here as an empty session.
       // Persisting that would leave the app looking signed in and 401ing on
@@ -151,7 +161,7 @@ export function createAuthStore(options: AuthStoreOptions) {
       }
       if (userAuthStatus(user) === "authenticated") onLogin?.();
       identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
-      set({ user, isLoading: false, status: userAuthStatus(user) });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
       return user;
     },
 
@@ -175,6 +185,7 @@ export function createAuthStore(options: AuthStoreOptions) {
         isLoading: false,
         status: "unauthenticated",
         expired: false,
+        recovery: null,
       });
     },
 
@@ -213,7 +224,10 @@ export function createAuthStore(options: AuthStoreOptions) {
       // Past here we are ending a session, which happens once no matter how
       // many in-flight requests learn the credential is dead — and does not
       // happen at all when there was no session to end.
-      if (get().status === "unauthenticated") return;
+      if (get().status === "unauthenticated") {
+        set({ recovery: null });
+        return;
+      }
 
       // Cookie mode leaves the workspace singleton alone: there the URL owns
       // workspace identity and the login route overwrites it on the next
@@ -226,16 +240,17 @@ export function createAuthStore(options: AuthStoreOptions) {
         isLoading: false,
         status: "unauthenticated",
         expired: hadCredential,
+        recovery: null,
       });
     },
 
     setUser: (user: User) => {
-      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
     },
 
     refreshMe: async () => {
       const user = await api.getMe();
-      set({ user, isLoading: false, status: userAuthStatus(user), expired: false });
+      set({ user, isLoading: false, status: userAuthStatus(user), expired: false, recovery: null });
     },
   });
   });

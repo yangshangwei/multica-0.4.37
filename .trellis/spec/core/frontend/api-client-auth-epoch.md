@@ -112,3 +112,9 @@ caller-provided upload cancellation signal is combined with the endpoint
 signal; test cancellation and reason propagation rather than signal identity.
 A frozen client cannot start a new upload. Regression coverage lives in
 `api/endpoint-uploads.test.ts`.
+
+Selected boot requests additionally share a caller/deadline signal through body
+parsing. Check cancellation before credential rotation, user publication and
+unauthorized side effects: an obsolete StrictMode request must not reject the
+active session. See [connection recovery](../../desktop/frontend/connection-recovery.md)
+for the request options, ephemeral retry metadata and regression contracts.
