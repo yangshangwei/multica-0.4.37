@@ -31,7 +31,10 @@ export function UserLocaleSync() {
     }
     if (locale === i18n.language) return;
     adapter.persist(locale as SupportedLocale);
-    if (typeof window !== "undefined") window.location.reload();
+    if (typeof window !== "undefined") {
+      if (adapter.reload) adapter.reload();
+      else window.location.reload();
+    }
   }, [userLanguage, i18n.language, adapter]);
 
   return null;

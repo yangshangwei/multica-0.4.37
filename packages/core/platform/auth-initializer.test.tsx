@@ -243,6 +243,104 @@ describe("AuthInitializer messaging deployment policy", () => {
 });
 
 describe("AuthInitializer recovery", () => {
+  it("reaches actionable timeout recovery on a hanging boot and resumes after the server returns", async () => {
+    vi.useFakeTimers();
+    let available = false;
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (!available) return new Promise<Response>(() => {});
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      if (url.endsWith("/api/me")) return Promise.resolve(Response.json(fakeUser));
+      if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage({ multica_token: "saved-secret" });
+    const api = new ApiClient("https://api.example.test");
+    const { onLogout, unmount } = renderInitializer({ api, storage });
+    await act(async () => { await vi.advanceTimersByTimeAsync(10_000); });
+    expect(useAuthStore.getState()).toMatchObject({
+      status: "recovering",
+      recovery: { isRetrying: false, nextRetryAt: Date.now() + 1_000, failure: { kind: "timeout", occurredAt: Date.now() } },
+    });
+    expect(storage.getItem("multica_token")).toBe("saved-secret");
+    expect(onLogout).not.toHaveBeenCalled();
+    available = true;
+    await act(async () => { await vi.advanceTimersByTimeAsync(1_000); });
+    expect(useAuthStore.getState().status).toBe("authenticated");
+    expect(useAuthStore.getState().recovery).toBeNull();
+    unmount();
+  });
+
+  it("retains the recovery surface and last failure during a manual retry without overlap", async () => {
+    let finish!: (user: User) => void;
+    const getMe = vi.fn().mockRejectedValueOnce(new ApiError("fixture-secret", 503, "Unavailable"))
+      .mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    const { unmount } = renderInitializer({ api: makeApi({ getMe }) });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("recovering"));
+    const failure = useAuthStore.getState().recovery?.failure;
+    expect(failure).toMatchObject({ kind: "server", status: 503 });
+    expect(JSON.stringify(useAuthStore.getState().recovery)).not.toContain("fixture-secret");
+    act(() => {
+      useAuthStore.getState().retryAuthentication();
+      useAuthStore.getState().retryAuthentication();
+    });
+    expect(getMe).toHaveBeenCalledTimes(2);
+    expect(useAuthStore.getState()).toMatchObject({ status: "recovering", recovery: { isRetrying: true, nextRetryAt: null, failure } });
+    act(() => useAuthStore.getState().retryAuthentication());
+    expect(getMe).toHaveBeenCalledTimes(2);
+    await act(async () => { finish(fakeUser); });
+    expect(useAuthStore.getState().recovery).toBeNull();
+    unmount();
+  });
+
+  it("keeps a newer login when an old successful identity response arrives", async () => {
+    let finish!: (response: Response) => void;
+    const currentUser = { ...fakeUser, id: "new-user" };
+    const request = vi.fn((url: string, _init?: RequestInit) => {
+      if (url.endsWith("/api/me")) return new Promise<Response>(resolve => { finish = resolve; });
+      if (url.endsWith("/auth/verify-code")) return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", request);
+    const api = new ApiClient("https://api.example.test");
+    const getMe = vi.spyOn(api, "getMe");
+    const { unmount } = renderInitializer({ api });
+    await act(async () => { await useAuthStore.getState().verifyCode("new@example.test", "123456"); });
+    await act(async () => {
+      finish(Response.json(fakeUser));
+      await getMe.mock.results[0]!.value.catch(() => {});
+    });
+    expect(useAuthStore.getState().user).toEqual(currentUser);
+    const identityCall = request.mock.calls.find(([url]) => url.endsWith("/api/me"));
+    expect((identityCall?.[1] as RequestInit | undefined)?.signal?.aborted).toBe(true);
+    unmount();
+  });
+
+  it("cancels device body parsing on disposal before persisting a session", async () => {
+    let finish!: (body: unknown) => void;
+    const response = Response.json({});
+    const parsing = vi.spyOn(response, "json").mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({ device_auth_available: true }));
+      if (url.endsWith("/auth/device")) return Promise.resolve(response);
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage();
+    const api = new ApiClient("https://api.example.test");
+    const deviceLogin = vi.spyOn(api, "deviceLogin");
+    const { unmount, onLogin } = renderInitializer({ api, storage, deviceAuth: { deviceId: "isolated-device" } });
+    await waitFor(() => expect(parsing).toHaveBeenCalledOnce());
+    unmount();
+    await act(async () => {
+      finish({ token: "late-secret", user: fakeUser });
+      await deviceLogin.mock.results[0]!.value.catch(() => {});
+    });
+    expect(storage.getItem("multica_token")).toBeNull();
+    expect(useAuthStore.getState().user).toBeNull();
+    expect(onLogin).not.toHaveBeenCalled();
+  });
+
   it.each([
     { mode: "bearer", cookieAuth: false, status: 401 },
     { mode: "bearer", cookieAuth: false, status: 404 },
@@ -688,7 +786,7 @@ describe("AuthInitializer device auth", () => {
     await waitFor(() => {
       expect(useAuthStore.getState().status).toBe("authenticated");
     });
-    expect(deviceLogin).toHaveBeenCalledWith(deviceAuth.deviceId, deviceAuth.deviceName);
+    expect(deviceLogin).toHaveBeenCalledWith(deviceAuth.deviceId, deviceAuth.deviceName, { signal: expect.anything(), timeoutMs: 10_000 });
     expect(storage.snapshot().multica_token).toBe("device-jwt");
     expect(useAuthStore.getState().user).toEqual(fakeUser);
     expect(onLogin).toHaveBeenCalled();
@@ -794,7 +892,7 @@ describe("AuthInitializer device auth in cookie mode", () => {
     configStore.setState({ deviceAuthAvailable: false });
   });
 
-  it("restores device login when StrictMode's canceled identity request rejects the shared credential first", async () => {
+  it("restores device login when StrictMode's canceled identity request returns a late rejection first", async () => {
     const releaseIdentity: Array<(response: Response) => void> = [];
     vi.stubGlobal("fetch", vi.fn((url: string) => {
       if (url.endsWith("/api/me")) {
@@ -828,7 +926,7 @@ describe("AuthInitializer device auth in cookie mode", () => {
       releaseIdentity[0]!(Response.json({ error: "unauthorized" }, { status: 401 }));
       await getMe.mock.results[0]!.value.catch(() => {});
     });
-    expect(onUnauthorized).toHaveBeenCalledOnce();
+    expect(onUnauthorized).not.toHaveBeenCalled();
     expect(deviceLogin).not.toHaveBeenCalled();
 
     await act(async () => {
@@ -838,7 +936,7 @@ describe("AuthInitializer device auth in cookie mode", () => {
 
     await waitFor(() => expect(deviceLogin).toHaveBeenCalledOnce());
     await waitFor(() => expect(useAuthStore.getState().status).toBe("authenticated"));
-    expect(deviceLogin).toHaveBeenCalledWith(deviceAuth.deviceId, deviceAuth.deviceName);
+    expect(deviceLogin).toHaveBeenCalledWith(deviceAuth.deviceId, deviceAuth.deviceName, { signal: expect.anything(), timeoutMs: 10_000 });
     expect(useAuthStore.getState().user).toMatchObject(fakeUser);
     expect(storage.getItem("multica_token")).toBeNull();
   });
@@ -867,6 +965,7 @@ describe("AuthInitializer device auth in cookie mode", () => {
     expect(deviceLogin).toHaveBeenCalledWith(
       deviceAuth.deviceId,
       deviceAuth.deviceName,
+      { signal: expect.anything(), timeoutMs: 10_000 },
     );
     expect(useAuthStore.getState().user).toEqual(fakeUser);
     expect(onLogin).toHaveBeenCalled();

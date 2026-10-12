@@ -21,6 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [ApiClient authEpoch](./api-client-auth-epoch.md) | Isolating a stale 401 from the current session | Active |
+| [Connection Recovery](../../desktop/frontend/connection-recovery.md) | Recovery request deadlines/cancellation, transient auth metadata and workspace query errors | Active |
 | [Iteration Operations](./iteration-operations.md) | Complete previews/activity, frozen progress and scope semantics, recovery, permission epochs and routing | Active |
 
 ---

@@ -11,6 +11,7 @@ export const MAIN_RENDERER_MESSAGE_CHANNELS = [
   "invite:open",
   "inbox:open",
   "settings:open",
+  "runtime-config:edit",
 ] as const;
 
 export type MainRendererMessageChannel =

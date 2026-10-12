@@ -11,6 +11,7 @@ export {
 } from "./client";
 export type {
   ApiClientOptions,
+  ApiRequestOptions,
   SkillRequestOptions,
   ClientRuntimeSnapshot,
   ClientUsageRequest,

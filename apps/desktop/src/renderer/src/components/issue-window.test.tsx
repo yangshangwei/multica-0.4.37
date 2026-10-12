@@ -1,18 +1,28 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { AuthRecoveryState } from "@multica/core/auth";
 
 const state = vi.hoisted(() => ({
   workspaces: [] as { id: string; slug: string }[],
   ready: false,
   unavailable: false,
   isFetching: false,
+  error: new TypeError("offline"),
+  errorUpdatedAt: 1_792_000_000_000,
   refetch: vi.fn(),
 }));
 
-vi.mock("@multica/core/auth", () => ({
-  useAuthStore: (selector: (auth: { user: { id: string } }) => unknown) =>
-    selector({ user: { id: "user-1" } }),
-}));
+vi.mock("@multica/core/auth", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/auth")>();
+  const auth = { user: { id: "user-1" } };
+  return {
+    ...actual,
+    useAuthStore: Object.assign(
+      (selector: (value: typeof auth) => unknown) => selector(auth),
+      { getState: () => auth },
+    ),
+  };
+});
 
 vi.mock("@multica/core/workspace", () => ({
   useWorkspaceList: () => ({
@@ -20,6 +30,8 @@ vi.mock("@multica/core/workspace", () => ({
     ready: state.ready,
     unavailable: state.unavailable,
     isFetching: state.isFetching,
+    error: state.error,
+    errorUpdatedAt: state.errorUpdatedAt,
     refetch: state.refetch,
   }),
 }));
@@ -54,18 +66,21 @@ vi.mock("../pages/issue-detail-page", () => ({
   IssueDetailPage: () => <div data-testid="issue-detail" />,
 }));
 
-vi.mock("../pages/auth-recovery", () => ({
-  DesktopAuthRecoveryPage: ({
+// Boundary behavior and main-window handoff live in connection-recovery-boundary.test.tsx.
+vi.mock("./connection-recovery-boundary", () => ({
+  DesktopConnectionRecoveryBoundary: ({
     onRetry,
-    isRetrying,
+    recovery,
+    children,
   }: {
     onRetry: () => void;
-    isRetrying: boolean;
-  }) => (
-    <button type="button" disabled={isRetrying} onClick={onRetry}>
+    recovery: AuthRecoveryState | null;
+    children: React.ReactNode;
+  }) => recovery ? (
+    <button type="button" disabled={recovery.isRetrying} onClick={onRetry}>
       Retry workspace list
     </button>
-  ),
+  ) : children,
 }));
 
 vi.mock("../platform/issue-window-navigation", () => ({
@@ -89,7 +104,7 @@ beforeEach(() => {
   state.ready = false;
   state.unavailable = false;
   state.isFetching = false;
-  state.refetch.mockReset();
+  state.refetch.mockReset().mockResolvedValue({});
 });
 
 describe("IssueWindow", () => {
@@ -119,6 +134,7 @@ describe("IssueWindow", () => {
     });
     fireEvent.click(retry);
     expect(state.refetch).toHaveBeenCalledOnce();
+    expect(state.refetch).toHaveBeenCalledWith({ cancelRefetch: false });
     expect(screen.queryByTestId("workspace-loading")).toBeNull();
   });
 });

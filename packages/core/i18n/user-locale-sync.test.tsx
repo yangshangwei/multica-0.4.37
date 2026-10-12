@@ -27,9 +27,9 @@ const adapter: LocaleAdapter = {
   persist,
 };
 
-function mountSync() {
+function mountSync(localeAdapter: LocaleAdapter = adapter) {
   return render(
-    <LocaleAdapterProvider adapter={adapter}>
+    <LocaleAdapterProvider adapter={localeAdapter}>
       <UserLocaleSync />
     </LocaleAdapterProvider>,
   );
@@ -53,6 +53,26 @@ afterEach(() => {
 });
 
 describe("UserLocaleSync", () => {
+  it("lets the platform coordinate refresh after persisting the normalized preference", () => {
+    state.user.language = "ja";
+    state.i18n.language = "zh-Hans";
+    const platformReload = vi.fn(() => {
+      expect(persist).toHaveBeenCalledExactlyOnceWith("en");
+    });
+    mountSync({ ...adapter, reload: platformReload });
+    expect(platformReload).toHaveBeenCalledOnce();
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("does not request a platform refresh when the preference already matches", () => {
+    state.user.language = "en";
+    const platformReload = vi.fn();
+    mountSync({ ...adapter, reload: platformReload });
+    expect(persist).not.toHaveBeenCalled();
+    expect(platformReload).not.toHaveBeenCalled();
+    expect(reload).not.toHaveBeenCalled();
+  });
+
   it.each(["ja", "ko"])("normalizes old server preference %s and converges after reload", (language) => {
     state.user.language = language;
     state.i18n.language = "zh-Hans";

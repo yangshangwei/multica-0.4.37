@@ -4,7 +4,8 @@ import { useCallback, useEffect, useRef, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { getApi } from "../api";
 import { ApiError } from "../api/client";
-import { useAuthStore, userAuthStatus } from "../auth";
+import { useAuthStore, userAuthStatus, classifyConnectionFailure } from "../auth";
+import { RECOVERY_REQUEST_TIMEOUT_MS } from "../api/request-lifecycle";
 import {
   captureSignupSource,
   identify as identifyAnalytics,
@@ -58,6 +59,8 @@ export function AuthInitializer({
   const retryGeneration = useAuthStore((state) => state.retryGeneration);
   const configLoadedRef = useRef(false);
   const configRequestRef = useRef<Promise<boolean> | null>(null);
+  const configAbortRef = useRef<AbortController | null>(null);
+  const configFailureRef = useRef<unknown>(null);
   const authRecoveryPendingRef = useRef(false);
   const retryConfigRef = useRef<() => void>(() => {});
 
@@ -65,9 +68,12 @@ export function AuthInitializer({
     if (configLoadedRef.current) return Promise.resolve(true);
     if (configRequestRef.current) return configRequestRef.current;
 
+    const controller = new AbortController();
+    configAbortRef.current = controller;
     const request = getApi()
-      .getConfig()
+      .getConfig({ signal: controller.signal, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS })
       .then((cfg) => {
+        controller.signal.throwIfAborted();
         if (cfg.cdn_domain) {
           configStore.getState().setCdnConfig({
             cdnDomain: cfg.cdn_domain,
@@ -125,9 +131,15 @@ export function AuthInitializer({
         configLoadedRef.current = true;
         return true;
       })
-      .catch(() => false)
+      .catch((error: unknown) => {
+        if (!controller.signal.aborted) configFailureRef.current = error;
+        return false;
+      })
       .finally(() => {
-        configRequestRef.current = null;
+        if (configRequestRef.current === request) {
+          configRequestRef.current = null;
+          configAbortRef.current = null;
+        }
       });
     configRequestRef.current = request;
     return request;
@@ -203,6 +215,9 @@ export function AuthInitializer({
 
     return () => {
       cancelled = true;
+      configAbortRef.current?.abort();
+      configAbortRef.current = null;
+      configRequestRef.current = null;
       retryConfigRef.current = () => {};
       window.removeEventListener("online", retryNow);
       if (retryTimer !== undefined) clearTimeout(retryTimer);
@@ -211,6 +226,9 @@ export function AuthInitializer({
 
   useEffect(() => {
     const api = getApi();
+    const controller = new AbortController();
+    const requestOptions = { signal: controller.signal, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS };
+    let requestScope = api.getSessionScope?.();
     let cancelled = false;
     let settled = false;
     let inFlight = false;
@@ -231,6 +249,7 @@ export function AuthInitializer({
         isLoading: false,
         status: userAuthStatus(user),
         expired: false,
+        recovery: null,
       });
       identifyAnalytics(user.id, { ...(user.email ? { email: user.email } : {}), name: user.name });
       if (authRecoveryPendingRef.current) {
@@ -261,11 +280,14 @@ export function AuthInitializer({
 
     const scheduleRetry = (attempt: () => Promise<void>) => {
       if (cancelled || settled) return;
-      const delay = RECOVERY_RETRY_DELAYS_MS[retryIndex];
+      const delay = RECOVERY_RETRY_DELAYS_MS[retryIndex]!;
       retryIndex = Math.min(
         retryIndex + 1,
         RECOVERY_RETRY_DELAYS_MS.length - 1,
       );
+      useAuthStore.setState((state) => ({
+        recovery: { isRetrying: false, nextRetryAt: Date.now() + delay, failure: state.recovery?.failure ?? null },
+      }));
       retryTimer = setTimeout(() => {
         retryTimer = undefined;
         void attempt();
@@ -292,10 +314,16 @@ export function AuthInitializer({
         retryTimer = undefined;
       }
       inFlight = true;
+      requestScope = api.getSessionScope?.();
+      if (useAuthStore.getState().status === "recovering") {
+        useAuthStore.setState((state) => ({
+          recovery: { isRetrying: true, nextRetryAt: null, failure: state.recovery?.failure ?? null },
+        }));
+      }
 
       try {
-        const user = await api.getMe();
-        if (cancelled) return;
+        const user = await api.getMe(requestOptions);
+        if (cancelled || settled || requestScope !== api.getSessionScope?.()) return;
 
         // Identity verification and workspace loading are separate concerns
         // on both platforms. Publish the verified user immediately; route and
@@ -305,7 +333,7 @@ export function AuthInitializer({
         onAuthSuccess(user);
         if (userAuthStatus(user) === "authenticated") warmWorkspaces();
       } catch (err) {
-        if (cancelled) return;
+        if (cancelled || settled || requestScope !== api.getSessionScope?.()) return;
         if (err instanceof ApiError && err.status === 401) {
           if (err.isStaleAuthResponse) {
             // A newer login owns the session now. Stop this boot attempt
@@ -340,6 +368,7 @@ export function AuthInitializer({
           user: null,
           isLoading: true,
           status: "recovering",
+          recovery: { isRetrying: false, nextRetryAt: null, failure: classifyConnectionFailure(err) },
         });
         scheduleRetry(attempt);
       } finally {
@@ -366,6 +395,12 @@ export function AuthInitializer({
       }
       inFlight = true;
       deviceAuthAttempted = true;
+      requestScope = api.getSessionScope?.();
+      if (useAuthStore.getState().status === "recovering") {
+        useAuthStore.setState((state) => ({
+          recovery: { isRetrying: true, nextRetryAt: null, failure: state.recovery?.failure ?? null },
+        }));
+      }
 
       try {
         // The capability is a server declaration, never a probe: /auth/device
@@ -374,9 +409,9 @@ export function AuthInitializer({
         // usually means the server is not up yet — so it retries instead of
         // falling through to a login page the user cannot get past.
         if (!(await loadConfig())) {
-          throw new Error("app config unavailable");
+          throw configFailureRef.current ?? new Error("app config unavailable");
         }
-        if (cancelled) return;
+        if (cancelled || settled || requestScope !== api.getSessionScope?.()) return;
         if (!configStore.getState().deviceAuthAvailable) {
           settled = true;
           window.removeEventListener("online", retryNow);
@@ -387,13 +422,13 @@ export function AuthInitializer({
         // loginWithDevice publishes the user, identifies analytics and fires
         // onLogin itself, so this path only settles and warms the workspace
         // list the way the getMe path does.
-        await useAuthStore.getState().loginWithDevice(deviceId, deviceName);
+        await useAuthStore.getState().loginWithDevice(deviceId, deviceName, requestOptions);
         if (cancelled) return;
         settled = true;
         window.removeEventListener("online", retryNow);
         warmWorkspaces();
       } catch (err) {
-        if (cancelled) return;
+        if (cancelled || settled || requestScope !== api.getSessionScope?.()) return;
         // A 4xx is an answer: the switch is off, or this id is not acceptable.
         // Retrying changes neither, so stop at the login page.
         if (err instanceof ApiError && err.status >= 400 && err.status < 500) {
@@ -412,6 +447,7 @@ export function AuthInitializer({
           user: null,
           isLoading: true,
           status: "recovering",
+          recovery: { isRetrying: false, nextRetryAt: null, failure: classifyConnectionFailure(err) },
         });
         scheduleRetry(attemptDeviceAuth);
       } finally {
@@ -444,6 +480,20 @@ export function AuthInitializer({
       void resume();
     };
 
+    // A login/logout can complete while startup or body parsing is pending.
+    // Abort that old work before its success or transient catch can publish.
+    // Same-credential 401 teardown keeps its device-auth handoff intact.
+    const unsubscribe = useAuthStore.subscribe((state, previous) => {
+      if (cancelled || settled) return;
+      const replacedUser = state.user !== null && state.user !== previous.user;
+      const loggedOut = state.status === "unauthenticated" && requestScope !== api.getSessionScope?.();
+      if (!replacedUser && !loggedOut) return;
+      settled = true;
+      controller.abort();
+      window.removeEventListener("online", retryNow);
+      if (retryTimer !== undefined) clearTimeout(retryTimer);
+    });
+
     if (!cookieAuth) {
       const token = storage.getItem("multica_token");
       if (token) {
@@ -469,6 +519,8 @@ export function AuthInitializer({
 
     return () => {
       cancelled = true;
+      controller.abort();
+      unsubscribe();
       window.removeEventListener("online", retryNow);
       if (retryTimer !== undefined) clearTimeout(retryTimer);
     };

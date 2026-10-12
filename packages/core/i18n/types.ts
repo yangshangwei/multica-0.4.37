@@ -9,4 +9,6 @@ export interface LocaleAdapter {
   getUserChoice(): string | null;
   getSystemPreferences(): string[];
   persist(locale: SupportedLocale): void;
+  /** Overrides browser reload when the platform needs to coordinate it. */
+  reload?(): void;
 }
