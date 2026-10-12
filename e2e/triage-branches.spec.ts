@@ -131,6 +131,8 @@ async function request(fixture: Fixture, path: string, method: string, body: unk
 test.describe("Triage browser + real API branch coverage", () => {
   test("disabled triage hides intake and rejects a direct submission without creating work", async ({ page, triage }) => {
     const { api, workspace } = triage;
+    // Workspaces without saved settings default to enabled; opt out explicitly.
+    expect(await configure(api, { enabled: false })).toMatchObject({ enabled: false });
     await page.goto(`/${workspace.slug}/triage`);
     await expect(page.getByText("Triage is disabled. History remains available.", { exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "Create pending task", exact: true })).toHaveCount(0);

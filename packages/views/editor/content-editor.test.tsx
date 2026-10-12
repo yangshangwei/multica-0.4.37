@@ -91,7 +91,10 @@ const emitTransaction = () => {
   for (const listener of [...transactionListeners.current]) listener();
 };
 const latestEditorOptions = vi.hoisted<{
-  current?: { onUpdate?: (args: { editor: unknown }) => void };
+  current?: {
+    onCreate?: (args: { editor: unknown }) => void;
+    onUpdate?: (args: { editor: unknown }) => void;
+  };
 }>(() => ({}));
 
 vi.mock("@tiptap/react", () => ({
@@ -240,6 +243,37 @@ describe("ContentEditor", () => {
 
     expect(mockSetContent).not.toHaveBeenCalled();
   });
+
+  it.each(["autosave", "unmount"] as const)(
+    "preserves input before deferred creation through %s",
+    (delivery) => {
+      vi.useFakeTimers();
+      // Tiptap exposes the editable DOM before its zero-delay create event.
+      // Hold the mock's synchronous event and deliver it in that real order.
+      onCreateFired.value = true;
+      const onUpdate = vi.fn();
+      const { unmount } = render(
+        <ContentEditor defaultValue="" onUpdate={onUpdate} debounceMs={300} flushPendingOnUnmount />,
+      );
+      setTimeout(() => {
+        latestEditorOptions.current?.onCreate?.({ editor: editorRef.current });
+      }, 0);
+
+      const text = "Navigation must retain this final draft sentence";
+      act(() => {
+        editorState.markdown = text;
+        latestEditorOptions.current?.onUpdate?.({ editor: editorRef.current });
+        vi.advanceTimersByTime(0);
+      });
+
+      if (delivery === "autosave") act(() => vi.advanceTimersByTime(300));
+      else unmount();
+
+      expect(onUpdate).toHaveBeenCalledExactlyOnceWith(text, "");
+      act(() => vi.advanceTimersByTime(300));
+      expect(onUpdate).toHaveBeenCalledTimes(1);
+    },
+  );
 
   it("does not parse the initial defaultValue twice when markdown round-trip canonicalizes it", () => {
     // useEditor already parsed defaultValue through its `content` option. The

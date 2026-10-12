@@ -5,6 +5,49 @@ import (
 	"testing"
 )
 
+func TestParseQueryNumber(t *testing.T) {
+	tests := []struct {
+		query string
+		want  int
+		ok    bool
+	}{
+		{"MUL-123", 123, true},
+		{"mul-123", 123, true},
+		{"123-1", 1, true},
+		{"3D-2", 2, true},
+		{"a1-3", 3, true},
+		{"0-1", 1, true},
+		{"1234567890-42", 42, true},
+		{" 3d-2 ", 2, true},
+		{"123", 123, true},
+		{" 42 ", 42, true},
+		{"MUL-001", 1, true},
+		{"", 0, false},
+		{"login page", 0, false},
+		{"123-1 login", 0, false},
+		{"123-1 3D-2", 0, false},
+		{"30000000-0000-4000-8000-000000000001", 0, false},
+		{"ABCDEFGHIJK-1", 0, false},
+		{"12345678901-1", 0, false},
+		{"A_B-1", 0, false},
+		{"MUL-", 0, false},
+		{"123-0", 0, false},
+		{"MUL-0", 0, false},
+		{"123--1", 0, false},
+		{"0", 0, false},
+		{"-1", 0, false},
+		{"MUL-999999999999999999999999", 0, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.query, func(t *testing.T) {
+			got, ok := parseQueryNumber(tt.query)
+			if got != tt.want || ok != tt.ok {
+				t.Errorf("parseQueryNumber(%q) = (%d, %t), want (%d, %t)", tt.query, got, ok, tt.want, tt.ok)
+			}
+		})
+	}
+}
+
 func TestBuildSearchQuery_SingleTerm(t *testing.T) {
 	query, args := buildSearchQuery("Hello", []string{"Hello"}, 0, false, false, []string{"done", "cancelled"})
 

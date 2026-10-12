@@ -1,13 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { expect, test } from "@playwright/test";
 import { p1Session, p1Failure, p1Capture, p1NoOverflow } from "./fixtures/project-p1";
-import { iterationClosureFlow, iterationDateRange } from "./fixtures/iterations-i1";
+import { iterationClosureFlow, iterationDateRange, iterationOptOut } from "./fixtures/iterations-i1";
 
 test("I1 Web manual planning, atomic carryover and immutable history", async ({ page }, info) => {
   test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires isolated I1 test API fixture");
   test.setTimeout(180_000);
   const { api, workspace } = await p1Session(page);
   try {
+    await iterationOptOut(api, workspace);
     await page.goto(`/${workspace.slug}/issues`);
     await iterationClosureFlow(page, api, workspace, info);
     await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
@@ -34,6 +35,7 @@ test("I1 Web starts the chosen next period atomically and disables the complete 
   test.setTimeout(180_000);
   const { api, workspace } = await p1Session(page);
   try {
+    await iterationOptOut(api, workspace);
     await page.goto(`/${workspace.slug}/issues`);
     await iterationClosureFlow(page, api, workspace, info, { handoff: true });
   } catch (error) {

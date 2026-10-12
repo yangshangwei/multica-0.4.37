@@ -42,10 +42,11 @@ test("P1-C01 convergence performance: two real pages observe 30 due-date, assign
       const readiness = pages.map(async (client) => {
         await client.waitForFunction((counts) => {
           const labels: Record<string, string> = { total: "Formal issues", completed: "Completed", cancelled: "Cancelled", open: "Open" };
+          // Risk cards render label and count in separate spans; their accessible name joins them.
           return Object.entries(labels).every(([key, label]) => {
             const cell = Array.from(document.querySelectorAll("dl > div")).find((entry) => entry.querySelector("dt")?.textContent?.trim() === label);
             return cell?.querySelector("dd")?.textContent?.trim() === String(counts[key]);
-          }) && ["overdue", "unassigned"].every((key) => Array.from(document.querySelectorAll("button")).some((button) => button.textContent?.replace(/\s+/g, " ").trim() === `${key === "overdue" ? "Overdue" : "Unassigned"} ${counts[key]}`));
+          }) && ["overdue", "unassigned"].every((key) => Array.from(document.querySelectorAll("button")).some((button) => button.getAttribute("aria-label") === `${key === "overdue" ? "Overdue" : "Unassigned"} ${counts[key]}`));
         }, expected, { timeout: 15_000, polling: 20 });
         await expect.poll(() => {
           const value = observed.get(client);

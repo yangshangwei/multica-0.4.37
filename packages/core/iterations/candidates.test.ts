@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { QueryClient } from "@tanstack/react-query";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { api, ApiError } from "../api";
 import type { Issue } from "../types";
 import {
@@ -16,6 +16,8 @@ vi.mock("../api", async (original) => ({
   ...(await original<typeof import("../api")>()),
   api: { searchIssues: vi.fn(), getIssue: vi.fn(), listIssues: vi.fn() },
 }));
+
+beforeEach(() => vi.resetAllMocks());
 
 const planned = { id: "target", status: "planned" };
 const active = { id: "target", status: "active" };
@@ -45,6 +47,10 @@ describe("classifyIterationCandidate", () => {
 });
 
 describe("parseIssueReferences", () => {
+  it.each(["123-1", "3D-2", "A1-3", "0-1", "1234567890-42"])("recognizes the workspace prefix in %s", (reference) => {
+    expect(parseIssueReferences(reference)).toEqual({ tokens: [reference], truncated: false });
+  });
+
   it("treats identifiers and UUIDs separated by Latin or Chinese punctuation as a list", () => {
     expect(parseIssueReferences("MUL-1, mul-2，MUL-3、30000000-0000-4000-8000-000000000001\nMUL-1")).toEqual({
       tokens: ["MUL-1", "mul-2", "MUL-3", "30000000-0000-4000-8000-000000000001"],
@@ -52,19 +58,43 @@ describe("parseIssueReferences", () => {
     });
   });
 
-  it.each(["", "  ", "login page", "MUL-1 login", "MUL-"])("searches text for %j", (query) => {
+  it("deduplicates numeric and mixed prefixes without changing their order or case", () => {
+    expect(parseIssueReferences("123-1; 3d-2；A1-3 3D-2 123-1")).toEqual({
+      tokens: ["123-1", "3d-2", "A1-3"],
+      truncated: false,
+    });
+  });
+
+  it.each(["", "  ", "login page", "MUL-1 login", "123-1 login", "MUL-", "123-0", "MUL-01", "123--1", "ABCDEFGHIJK-1", "12345678901-1"])("searches text for %j", (query) => {
     expect(parseIssueReferences(query)).toBeNull();
   });
 
   it("caps a pasted list and says so", () => {
-    const list = Array.from({ length: ISSUE_REFERENCE_LIMIT + 1 }, (_, index) => `MUL-${index + 1}`).join(" ");
-    expect(parseIssueReferences(list)).toMatchObject({ truncated: true, tokens: expect.arrayContaining([`MUL-${ISSUE_REFERENCE_LIMIT}`]) });
+    const list = Array.from({ length: ISSUE_REFERENCE_LIMIT + 1 }, (_, index) => `123-${index + 1}`).join(" ");
+    expect(parseIssueReferences(list)).toMatchObject({ truncated: true, tokens: expect.arrayContaining([`123-${ISSUE_REFERENCE_LIMIT}`]) });
     expect(parseIssueReferences(list)!.tokens).toHaveLength(ISSUE_REFERENCE_LIMIT);
   });
 });
 
 describe("iterationCandidateSearchOptions", () => {
   const issue = (id: string, workspace_id = "ws") => ({ id, workspace_id }) as Issue;
+
+  it.each(["123-1", "3D-2"])("resolves %s through exact lookup", async (reference) => {
+    vi.mocked(api.getIssue).mockResolvedValue(issue("one"));
+    const result = await new QueryClient().fetchQuery(iterationCandidateSearchOptions("ws", reference));
+    expect(api.getIssue).toHaveBeenCalledExactlyOnceWith(reference, { signal: expect.any(AbortSignal) });
+    expect(api.searchIssues).not.toHaveBeenCalled();
+    expect(result).toEqual({ issues: [issue("one")], missing: [], truncated: false });
+  });
+
+  it("resolves numeric and mixed references with UUID aliases once per unique task", async () => {
+    const uuid = "30000000-0000-4000-8000-000000000001";
+    vi.mocked(api.getIssue).mockImplementation(async (reference) => issue(reference === "3d-2" ? "two" : uuid));
+    const result = await new QueryClient().fetchQuery(iterationCandidateSearchOptions("ws", `123-1 3d-2 3D-2 ${uuid}`));
+    expect(vi.mocked(api.getIssue).mock.calls.map(([reference]) => reference)).toEqual(["123-1", "3d-2", uuid]);
+    expect(api.searchIssues).not.toHaveBeenCalled();
+    expect(result).toEqual({ issues: [issue(uuid), issue("two")], missing: [], truncated: false });
+  });
 
   it("resolves a pasted list exactly and reports what did not resolve", async () => {
     vi.mocked(api.getIssue).mockImplementation(async (id) => {
@@ -82,10 +112,11 @@ describe("iterationCandidateSearchOptions", () => {
     await expect(new QueryClient().fetchQuery(iterationCandidateSearchOptions("ws", "MUL-1"))).rejects.toThrow("Offline");
   });
 
-  it("searches text including closed tasks and keeps only this workspace", async () => {
+  it.each(["login", "123-1 login"])("searches text %j including closed tasks and keeps only this workspace", async (query) => {
     vi.mocked(api.searchIssues).mockResolvedValue({ issues: [issue("a"), issue("b", "elsewhere")], total: 2 } as Awaited<ReturnType<typeof api.searchIssues>>);
-    const result = await new QueryClient().fetchQuery(iterationCandidateSearchOptions("ws", " login "));
-    expect(vi.mocked(api.searchIssues).mock.calls[0]![0]).toMatchObject({ q: "login", include_closed: true });
+    const result = await new QueryClient().fetchQuery(iterationCandidateSearchOptions("ws", ` ${query} `));
+    expect(vi.mocked(api.searchIssues).mock.calls[0]![0]).toMatchObject({ q: query, include_closed: true });
+    expect(api.getIssue).not.toHaveBeenCalled();
     expect(result.issues.map((value) => value.id)).toEqual(["a"]);
   });
 });

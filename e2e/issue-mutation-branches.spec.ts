@@ -136,9 +136,7 @@ async function chooseProperty(page: Page, current: string, next: string) {
 }
 
 async function openDelete(page: Page) {
-  await page.locator(
-    'main button[data-slot="dropdown-menu-trigger"]:not([aria-label]):has(svg.lucide-ellipsis)',
-  ).click();
+  await page.getByRole("main").getByRole("button", { name: "Issue actions", exact: true }).click();
   await page.getByRole("menuitem", { name: "Delete issue", exact: true }).click();
   const dialog = page.getByRole("alertdialog", { name: "Delete issue", exact: true });
   await expect(dialog).toBeVisible();

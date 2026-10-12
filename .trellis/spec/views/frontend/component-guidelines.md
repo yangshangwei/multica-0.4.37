@@ -286,6 +286,35 @@ uncertain retry require the same temporary password with unchanged reason/userna
 Do not weaken forced change, session/token revocation, target-role/self guards or
 concurrent account-version checks when changing this form.
 
+### Editor initialization must preserve pending input
+
+Tiptap defers its `create` event until after mounting the editable DOM. A user
+update can therefore arrive before `ContentEditor.onCreate`. Initialization must
+not acknowledge that edited document as already delivered: doing so makes both
+the debounce and the unmount flush skip the pending text.
+
+Keep the last-delivered content and original edit baseline distinct from the live
+document. Only delivering a change through the outgoing callback may acknowledge
+pending input. Initial content normalization must retain any user update that
+arrived before `create`; do not change the debounce or require users to wait for
+initialization before typing. Unmount delivery remains opt-in through
+`flushPendingOnUnmount`; callers that cancel by unmounting keep their existing
+discard behavior.
+
+| Event order | Required result |
+|---|---|
+| Mount → create without an edit | Initialize without emitting a spurious save |
+| Update → create → debounce | Deliver the edited text with its original baseline |
+| Update → create → unmount before debounce, with `flushPendingOnUnmount` | Flush the same pending text once |
+| Create → update | Preserve ordinary autosave and unmount behavior |
+
+Wrong: unconditionally copying the current document into `lastEmittedRef` during
+`onCreate` after an update. Correct: preserve the pending update while initializing
+the editor's content baseline. `editor/content-editor.test.tsx` owns deterministic
+regressions for the delayed-create orders; a mock that always fires `create`
+synchronously cannot cover them. The P1-L14 and P1-P05 browser cases verify draft
+retention with the real editor; do not add waits that hide this input window.
+
 ### Project overview identity owns editor lifetime
 
 `ProjectDetail` keys `ProjectOverviewPanel` by workspace/project identity. Cached

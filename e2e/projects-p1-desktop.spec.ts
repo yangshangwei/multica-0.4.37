@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 import { test, openNativeProject } from "./fixtures/project-p1-desktop";
-import { progressDraft, seedProgress } from "./fixtures/project-p1-progress";
+import { openProgressDetails, progressDraft, progressEntry, seedProgress } from "./fixtures/project-p1-progress";
 import { p1Project, p1Capture, p1NoOverflow, p1Overview } from "./fixtures/project-p1";
 
 test("P1-D01 native navigation opens the exact project risk list from the keyboard", async ({ native }) => {
@@ -67,7 +67,9 @@ test("P1-D04 native revision history renders the original and corrected progress
   await page.getByRole("button", { name: "Revision history", exact: true }).click();
   const history = page.getByRole("heading", { name: "Revision history", exact: true }).locator("..");
   await expect(history.getByText("Original native milestone", { exact: true })).toBeVisible();
-  await expect(history.getByText("Correct the native delivery date", { exact: false })).toBeVisible();
+  const corrected = progressEntry(history, "Corrected native milestone");
+  await openProgressDetails(corrected);
+  await expect(corrected.getByText("Correct the native delivery date", { exact: false })).toBeVisible();
   await p1Capture(page, info, "native-revision-history");
 });
 

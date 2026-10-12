@@ -59,7 +59,7 @@ export function classifyIterationCandidate(
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const IDENTIFIER = /^[A-Za-z][A-Za-z0-9]*-\d+$/;
+const IDENTIFIER = /^[a-z\d]{1,10}-[1-9]\d*$/i;
 export const ISSUE_REFERENCE_LIMIT = 50;
 
 /**

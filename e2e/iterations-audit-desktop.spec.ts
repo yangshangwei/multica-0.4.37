@@ -45,7 +45,8 @@ for (const locale of ["en", "zh-Hans"] as const) {
       const search = panel.getByRole("textbox", { name: copy.search, exact: true });
       const filters = panel.getByRole("button", { name: copy.filters, exact: true });
       const grouping = panel.getByRole("combobox", { name: copy.group, exact: true });
-      const plannedCount = panel.getByText(copy.planned, { exact: true }).locator("..").locator("dd");
+      // The label is an explanatory term button inside <dt>; its count is the sibling <dd>.
+      const plannedCount = panel.locator("dl > div").filter({ has: page.locator("dt").getByText(copy.planned, { exact: true }) }).locator("dd");
       await expect(panel.getByRole("link", { name: blocked.title, exact: true })).toBeVisible();
       await expect(plannedCount).toHaveText("2");
       await expect(panel.getByRole("combobox", { name: copy.scope, exact: true })).toHaveCount(0);
@@ -105,7 +106,8 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   const base = `/api/workspaces/${workspace.id}`;
   const settings = await api.requestJSON<{ revision: number; effective_timezone: string }>(`${base}/iteration-settings`);
   const timezone = settings.effective_timezone;
-  await api.requestJSON(`${base}/iteration-settings/enable`, { method: "POST", body: { request_id: randomUUID(), expected_revision: settings.revision, confirmed_timezone: timezone } });
+  // Enabling an already-enabled default workspace keeps its revision; use the one the server returns.
+  const enabled = await api.requestJSON<{ result: { settings_revision: number } }>(`${base}/iteration-settings/enable`, { method: "POST", body: { request_id: randomUUID(), expected_revision: settings.revision, confirmed_timezone: timezone } });
   const dates = iterationDateRange(timezone);
   const create = async (name: string) => {
     const receipt = await api.requestJSON<{ iteration_ids: string[] }>(`${base}/iterations`, { method: "POST", body: { request_id: randomUUID(), name, start_date: dates.startDate, end_date: dates.endDate, confirmed_timezone: timezone } });
@@ -120,7 +122,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
   const detail = () => api.requestJSON<{ iteration: { revision: number; scope_revision: number } }>(`${base}/iterations/${period}`);
   const apply = async (operation: string, moves: unknown[], start: unknown = null) => {
     const current = await detail();
-    const input = { operation, iteration_id: operation === "move" ? null : period, expected_settings_revision: settings.revision + 1, expected_iteration_revision: operation === "move" ? null : current.iteration.revision, expected_scope_revision: operation === "move" ? null : current.iteration.scope_revision, reason: "Isolated audit fixture", moves, start };
+    const input = { operation, iteration_id: operation === "move" ? null : period, expected_settings_revision: enabled.result.settings_revision, expected_iteration_revision: operation === "move" ? null : current.iteration.revision, expected_scope_revision: operation === "move" ? null : current.iteration.scope_revision, reason: "Isolated audit fixture", moves, start };
     const preview = await api.requestJSON<{ draft: unknown; preview_hash: string; invalid_items: unknown[] }>(`${base}/iteration-previews`, { method: "POST", body: input });
     expect(preview.invalid_items).toEqual([]);
     await api.requestJSON(`${base}/iteration-operations`, { method: "POST", body: { request_id: randomUUID(), draft: preview.draft, preview_hash: preview.preview_hash } });

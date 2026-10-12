@@ -1,9 +1,23 @@
+import { randomUUID } from "node:crypto";
 import { expect, type Page, type TestInfo } from "@playwright/test";
 import type { TestApiClient } from "../fixtures";
 import { p1Capture, p1NoOverflow } from "./project-p1";
 
 type Period = { id: string; name: string; status: string; revision: number };
 type Detail = { iteration: Period; statistics: { original: number; completed: number }; snapshot: unknown };
+
+/** Workspaces without saved settings default to enabled (migration 567). Cases
+ * that begin from the disabled state opt out explicitly, as an administrator would. */
+export async function iterationOptOut(api: TestApiClient, workspace: { id: string }) {
+  const base = `/api/workspaces/${workspace.id}`;
+  const settings = await api.requestJSON<{ enabled: boolean; revision: number }>(`${base}/iteration-settings`);
+  expect(settings.enabled).toBe(true);
+  const draft = { operation: "disable", iteration_id: null, expected_iteration_revision: null, expected_scope_revision: null, expected_settings_revision: settings.revision, reason: "Start from an explicit opt-out", moves: [], start: null };
+  const preview = await api.requestJSON<{ draft: unknown; preview_hash: string; invalid_items: unknown[] }>(`${base}/iteration-previews`, { method: "POST", body: draft });
+  expect(preview.invalid_items).toEqual([]);
+  await api.requestJSON(`${base}/iteration-operations`, { method: "POST", body: { request_id: randomUUID(), draft: preview.draft, preview_hash: preview.preview_hash } });
+  expect(await api.requestJSON(`${base}/iteration-settings`)).toMatchObject({ enabled: false });
+}
 
 export function iterationDateRange(timezone: string) {
   const parts = new Intl.DateTimeFormat("en-CA", { timeZone: timezone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
@@ -156,10 +170,14 @@ export async function iterationClosureFlow(page: Page, api: TestApiClient, works
   await page.getByRole("tab", { name: "Scope changes", exact: true }).click();
   const events = page.getByRole("tabpanel", { name: "Scope changes", exact: true });
   await events.getByRole("button", { name: "All activity", exact: true }).click();
-  const startOperation = events.locator("li").filter({ hasText: "Iteration started" }).first();
-  await startOperation.locator("summary").filter({ hasText: /^View \d+ records?$/ }).focus();
+  // Activity groups are table rows; "View N records" expands the row named by aria-controls.
+  const startOperation = events.getByRole("row").filter({ hasText: "Iteration started" }).first();
+  const recordsToggle = startOperation.getByRole("button", { name: /^View \d+ records?$/ });
+  const startRecords = events.locator(`[id="${await recordsToggle.getAttribute("aria-controls")}"]`);
+  await recordsToggle.focus();
   await page.keyboard.press("Enter");
-  const frozenTaskEvent = startOperation.getByText(/I1 completed delivery task$/).first();
+  await expect(recordsToggle).toHaveAttribute("aria-expanded", "true");
+  const frozenTaskEvent = startRecords.getByText(/I1 completed delivery task$/).first();
   await expect(frozenTaskEvent).toBeVisible();
   await expect(events).not.toContainText("Changed after closure");
   await frozenTaskEvent.scrollIntoViewIfNeeded();

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { expect, test } from "@playwright/test";
-import { iterationSettingsFeedbackFlow } from "./fixtures/iterations-i1";
+import { iterationOptOut, iterationSettingsFeedbackFlow } from "./fixtures/iterations-i1";
 import { p1Authenticate, p1Capture, p1Failure, p1NoOverflow, p1Session } from "./fixtures/project-p1";
 
 for (const copy of [
@@ -20,6 +20,7 @@ for (const copy of [
     const { api, workspace } = await p1Session(page, copy.locale);
     const base = `/api/workspaces/${workspace.id}`;
     try {
+      await iterationOptOut(api, workspace);
       await page.goto(`/${workspace.slug}/settings?tab=iterations`);
       const changeTimezone = page.getByRole("link", { name: copy.changeTimezone, exact: true });
       await expect(changeTimezone).toHaveAttribute("href", `/${workspace.slug}/settings?tab=workspace`);
@@ -67,6 +68,7 @@ test("workspace iteration settings survive lost closure responses and update ano
   const base = `/api/workspaces/${workspace.id}`;
   const peer = await context.newPage();
   try {
+    await iterationOptOut(api, workspace);
     const capability = await api.requestJSON<{ supported: boolean; enabled: boolean }>(`${base}/iteration-capabilities`);
     expect(capability).toMatchObject({ supported: true, enabled: false });
     await p1Authenticate(peer, api);
@@ -146,6 +148,7 @@ test("workspace iteration settings report normal closure without remounting", as
   test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires an isolated iteration API");
   const { api, workspace } = await p1Session(page);
   try {
+    await iterationOptOut(api, workspace);
     await page.goto(`/${workspace.slug}/issues`);
     await iterationSettingsFeedbackFlow(page, api, workspace, info);
   } catch (error) {
