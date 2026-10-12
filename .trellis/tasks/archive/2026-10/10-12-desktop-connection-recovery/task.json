@@ -15,7 +15,7 @@
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "0c6afec4c4c077e009ece2858908f6076404129e",
+  "commit": "f14da8a30556cd592a1ad9fe9bed9b4a6f93b13d",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -65,5 +65,15 @@
     ".trellis/spec/desktop/frontend/connection-recovery.md"
   ],
   "notes": "Verified 2030 related tests, six isolated native Electron groups, independent review and final visual score 93. Recovery editing also defers server/OS language refresh until explicit Back.",
-  "meta": {}
+  "meta": {
+    "integration": {
+      "source_commit": "0c6afec4c4c077e009ece2858908f6076404129e",
+      "implementation_commit": "f14da8a30556cd592a1ad9fe9bed9b4a6f93b13d",
+      "base_commit": "5af9e3f49fc08885edc5c88f7788da3321d2ab0c",
+      "branch": "codex/desktop-connection-recovery-main",
+      "local_tests": 2030,
+      "native_groups": 6,
+      "unrelated_mcp_changes_excluded": true
+    }
+  }
 }

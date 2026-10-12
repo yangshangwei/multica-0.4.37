@@ -8,7 +8,7 @@ The already approved user-visible design is the scope; these artifacts formalize
 4. [x] Integrate; run core/desktop tests and affected typecheck/lint.
 5. [x] Isolated Electron acceptance and screenshots; persist visual-verdict JSON; run Impeccable detector once over final UI.
 6. [x] Independent trellis-check review; resolve findings and rerun affected checks.
-7. [ ] Update specs, record acceptance, commit only task-owned files using Lore trailers, archive/journal via Trellis.
+7. [x] Update specs, record acceptance, commit only task-owned files using Lore trailers, archive/journal via Trellis.
 
 ## Ownership and change boundary
 - Core: packages/core/auth/, platform/auth-initializer*, relevant api methods/tests, workspace/hooks* and query request wiring, plus the optional i18n locale-adapter reload contract needed to preserve A4 input. No desktop/locales.
