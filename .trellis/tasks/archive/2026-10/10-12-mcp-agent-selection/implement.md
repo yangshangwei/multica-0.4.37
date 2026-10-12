@@ -12,7 +12,7 @@
 - [x] Run picker and all existing MCP/locale suites; views typecheck/lint and applicable repository static checks.
 - [x] Validate actual shared components in a task-owned browser fixture; collect wide/narrow, light/dark and localized screenshot/interaction evidence. Persist visual-verdict before another visual edit.
 - [x] Dispatch independent Trellis check/review; resolve task-local findings and rerun affected checks.
-- [ ] Update the existing MCP spec with the selection/filter invariants, record evidence, commit task-owned files with Lore-compatible conventional intent and archive/journal safely.
+- [x] Update the existing MCP spec with the selection/filter invariants, record evidence, commit task-owned files with Lore-compatible conventional intent and archive/journal safely.
 
 ## Commands
 
