@@ -57,3 +57,41 @@ Implemented bounded boot requests, live recovery metadata, shared workspace reco
 ### Status
 
 [OK] **Completed**
+
+
+## Session 66: MCP agent category filters
+<!-- trellis-session: v=2 fp=2cc1f4923c4f3dc0 -->
+
+**Date**: 2026-10-12
+**Task**: MCP agent category filters
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Implemented and verified category filtering in the shared MCP agent assignment picker. Category chips use explicit saved categories and existing template provenance, preserve hidden selections across category/search projections, and keep All/explicit categories usable while metadata recovers.
+
+### Main Changes
+
+- Added represented category chips and full-directory counts to the shared MCP picker.
+- Gated existing role/squad template catalog queries to eligible template-backed rows and preserved retry/cache behavior.
+- Recorded bilingual copy, focused regressions, production browser evidence, and the MCP spec contract.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6642de425` | Make MCP assignment choices easier to classify |
+
+### Testing
+
+- [OK] pnpm --filter @multica/views test: 546 files, 6694 tests passed.
+- [OK] pnpm typecheck and pnpm lint passed with existing warnings only.
+- [OK] Production component fixture passed five responsive locale/theme scenarios with zero browser errors.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Knip still reports the repository baseline unused files/dependencies; clean it in a separate task.
