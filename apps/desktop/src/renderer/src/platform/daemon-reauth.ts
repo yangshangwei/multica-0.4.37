@@ -2,14 +2,12 @@ import { useAuthStore } from "@multica/core/auth";
 import { toast } from "sonner";
 
 /**
- * Re-establish the local daemon's credentials after it failed to authenticate
- * (daemon state "auth_expired", surfaced by daemon-manager's token probe — see
- * #3512).
+ * Re-establish the local daemon's credentials from Settings or the
+ * "auth_expired" recovery action.
  *
- * The desktop owns the daemon's PAT: it mints one from the user's session token
- * and caches it per profile. A stale/revoked cached PAT is the common cause (and
- * merely restarting the app reuses the same bad PAT), so the main process drops
- * the cached token, mints a fresh one, and restarts the daemon.
+ * The desktop owns the daemon's PAT, minted from the user's session and cached
+ * per profile. The main process mints a fresh token before replacing the cache
+ * and restarting the daemon, preserving the old credential if minting fails.
  *
  * Failure handling is deliberately conservative — we only force a full re-login
  * when the session token itself is rejected (a real 401). A transient failure
