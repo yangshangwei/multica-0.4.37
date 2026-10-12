@@ -81,6 +81,31 @@ concurrency-safe, so calling it for a pre-existing workspace is a cheap self-hea
 
 ## Isolated Electron browser acceptance
 
+### Password migration must refresh the daemon's own credential
+
+Password setup/change preserves the user ID but revokes existing PATs. A matching
+`.desktop-user-id` therefore does not prove a cached daemon PAT is still valid.
+`syncToken` probes that exact cached token with `GET /api/me`; only HTTP 401
+triggers an automatic `POST /api/tokens` using the current renderer session.
+Keep the cached PAT on 2xx, 403, 5xx, and network failures. Never treat an
+inconclusive probe as permission to rotate credentials or log out the user.
+
+Manual `daemon:reauthenticate` requests a fresh PAT before replacing the profile.
+Mint failure must preserve the existing token, owner sidecar and running process.
+When a credential changes for the same user, restart through the existing
+lifecycle gate so the daemon loads it. Async probes and queued credential work
+must not cross a logout, server change or newer session.
+
+A CLI startup failure can precede the ten-second polling grace period. Probe on
+that failure and expose `auth_expired` only for a definitive rejection. Keep the
+Settings → Daemon sign-in action visible even when stopped; a lingering
+`starting` state must not disable manual recovery. The main lifecycle gate
+serializes that action with an in-flight start.
+
+Regressions: `daemon-manager-auth.test.ts` exercises the real manager and IPC
+handlers with isolated disk/network/process fixtures; `daemon-settings-tab.test.tsx`
+checks the persistent action, pending state and external-daemon boundary.
+
 ### Desktop daemon subprocesses use the selected server profile
 
 Start, stop, and local runtime probes must use `desktopSpawnEnv()` from

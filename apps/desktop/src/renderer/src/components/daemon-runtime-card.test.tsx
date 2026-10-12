@@ -119,7 +119,7 @@ describe("DaemonRuntimeActions — language selection", () => {
     ["stopped", "启动"],
     ["recovery_paused", "启动"],
     ["cli_not_found", "重试安装"],
-    ["auth_expired", "重新登录"],
+    ["auth_expired", "重新连接此设备"],
     ["starting", "启动中..."],
     ["stopping", "停止中..."],
     ["installing_cli", "正在安装 CLI..."],

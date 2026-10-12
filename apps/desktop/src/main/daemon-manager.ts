@@ -319,24 +319,29 @@ async function fetchHealthAtPort(
  * a 2xx means it's fine, and a thrown request means the network is the problem,
  * not auth. See classifyAuthProbe for the full rule set.
  */
-async function probeTokenValidity(profile: string): Promise<AuthProbeResult> {
-  if (!targetApiBaseUrl) return "unknown";
-  const cfg = await readProfileConfig(profile);
-  const token = typeof cfg.token === "string" ? cfg.token : "";
+async function probeTokenValidity(profile: string, cachedToken?: string): Promise<AuthProbeResult> {
+  const target = targetApiBaseUrl;
+  if (!target) return "unknown";
+  let token = cachedToken;
+  if (token === undefined) {
+    const cfg = await readProfileConfig(profile);
+    token = typeof cfg.token === "string" ? cfg.token : "";
+  }
   if (!token) return classifyAuthProbe({ noToken: true });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 4_000);
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4_000);
-    const res = await fetch(`${targetApiBaseUrl.replace(/\/+$/, "")}/api/me`, {
+    const res = await fetch(`${target.replace(/\/+$/, "")}/api/me`, {
       headers: { Authorization: `Bearer ${token}` },
       credentials: "omit",
       redirect: "error",
       signal: controller.signal,
     });
-    clearTimeout(timeout);
     return classifyAuthProbe({ status: res.status });
   } catch {
     return classifyAuthProbe({ networkError: true });
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -461,8 +466,15 @@ async function fetchHealth(): Promise<DaemonStatus> {
       startingSince !== null &&
       Date.now() - startingSince >= AUTH_PROBE_GRACE_MS
     ) {
+      const generation = managedGeneration;
+      const attempt = startingSince;
+      const target = targetApiBaseUrl;
       authProbeDone = true;
-      if ((await probeTokenValidity(active.name)) === "auth_expired") {
+      const result = await probeTokenValidity(active.name);
+      if (generation !== managedGeneration || attempt !== startingSince || activeProfile?.name !== active.name || target !== targetApiBaseUrl || serverSwitchBlocked() || daemonQuitting) {
+        return { state: currentState };
+      }
+      if (result === "auth_expired") {
         authExpired = true;
       }
     }
@@ -804,19 +816,20 @@ async function mintPat(jwt: string): Promise<string> {
  * - Input from the renderer is the user's JWT (from localStorage) plus the
  *   current user's id, so we can detect session changes.
  * - If the profile already has a cached PAT (`mul_...`) AND the sidecar user
- *   id matches the caller, reuse it — minting fresh on every launch would
- *   accumulate garbage in the user's tokens page.
+ *   id matches the caller, reuse it unless the server explicitly rejects it.
+ *   Network/5xx failures cannot prove revocation and must not rotate it.
  * - On user mismatch (or first run) call POST /api/tokens with the JWT to
  *   mint a fresh PAT, overwriting any stale cached PAT. This is the critical
  *   path: without it, a previous user's PAT would be used by a new session.
  * - If the caller happens to pass a PAT directly, write it through.
- * - Reports a user mismatch to the caller; the IPC boundary owns the gated
+ * - Reports credential changes to the caller; the IPC boundary owns the gated
  *   restart so internal callers such as reauthenticate never re-enter it.
  */
 async function syncToken(
   tokenFromRenderer: string,
   userId: string,
-): Promise<{ active: ActiveProfile; userChanged: boolean }> {
+  forceRefresh = false,
+): Promise<{ active: ActiveProfile; userChanged: boolean; tokenChanged: boolean; assertCurrent: () => void }> {
   const active = await ensureActiveProfile();
   if (!active) {
     // Writing here would land the token and server_url in the user's default
@@ -824,8 +837,17 @@ async function syncToken(
     // reaching this branch is a real error rather than a normal startup race.
     throw new Error("daemon profile is not resolved yet; token sync skipped");
   }
+  const target = targetApiBaseUrl;
+  let generation = managedGeneration;
+  const assertCurrent = () => {
+    if (generation !== managedGeneration || target !== targetApiBaseUrl || activeProfile?.name !== active.name || serverSwitchBlocked() || daemonQuitting) {
+      throw new Error("Daemon credential sync was superseded");
+    }
+  };
   const config = await readProfileConfig(active.name);
+  const previousToken = config.token;
   const previousUserId = await readProfileUserId(active.name);
+  assertCurrent();
   const userChanged = Boolean(previousUserId) && previousUserId !== userId;
   const sameUserWithCachedPat =
     !userChanged &&
@@ -833,10 +855,16 @@ async function syncToken(
     typeof config.token === "string" &&
     config.token.startsWith("mul_");
 
+  let reuseCachedPat = sameUserWithCachedPat && !forceRefresh && !tokenFromRenderer.startsWith("mul_");
+  if (reuseCachedPat) {
+    reuseCachedPat = (await probeTokenValidity(active.name, config.token as string)) !== "auth_expired";
+    assertCurrent();
+  }
+
   let finalToken: string;
   if (tokenFromRenderer.startsWith("mul_")) {
     finalToken = tokenFromRenderer;
-  } else if (sameUserWithCachedPat) {
+  } else if (reuseCachedPat) {
     finalToken = config.token as string;
   } else {
     try {
@@ -850,35 +878,51 @@ async function syncToken(
     }
   }
 
+  assertCurrent();
   config.token = finalToken;
-  if (targetApiBaseUrl) config.server_url = targetApiBaseUrl;
+  if (target) config.server_url = target;
   await writeProfileConfig(active.name, config);
+  assertCurrent();
   await writeProfileUserId(active.name, userId);
+  assertCurrent();
   const previousDeploymentId = typeof config.management_deployment_id === "string" ? config.management_deployment_id : undefined;
   try {
-    await configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
+    const preparation = configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
+    generation = managedGeneration;
+    await preparation;
   } catch (error) {
-    if (sameUserWithCachedPat && isAuthStatusError(error)) {
+    assertCurrent();
+    if (reuseCachedPat && isAuthStatusError(error)) {
       finalToken = await mintPat(tokenFromRenderer);
+      assertCurrent();
       config.token = finalToken;
       await writeProfileConfig(active.name, config);
-      await configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
+      assertCurrent();
+      const preparation = configureManagedSession(tokenFromRenderer, userId, finalToken, active, previousDeploymentId);
+      generation = managedGeneration;
+      await preparation;
     } else { throw error; }
   }
+  assertCurrent();
 
-  return { active, userChanged };
+  return { active, userChanged, tokenChanged: previousToken !== finalToken, assertCurrent };
 }
 
-async function restartDaemonAfterUserSwitch(
+async function restartDaemonAfterCredentialChange(
   active: ActiveProfile,
+  assertCurrent: () => void,
 ): Promise<void> {
   // If we just rotated credentials onto a running daemon, restart it so the
   // in-memory token in the Go process matches the new config.
   const existing = await fetchHealthAtPort(active.port);
+  assertCurrent();
   if (managedSession) {
     setDesiredDaemonRunning(true);
     const session = managedSession;
-    await lifecycleOperations.runForeground(() => reconcileManagedSession(active, session));
+    await lifecycleOperations.runForeground(() => {
+      assertCurrent();
+      return reconcileManagedSession(active, session);
+    });
     return;
   }
   if (daemonStatusAlive(existing?.status)) {
@@ -886,19 +930,21 @@ async function restartDaemonAfterUserSwitch(
     // already loaded the old token at startup, so it must be restarted to
     // pick up the rotated credentials.
     console.log(
-      "[daemon] user switched — restarting daemon with new credentials",
+      "[daemon] credentials changed — restarting daemon with new credentials",
     );
     // Credential rotation is a one-shot login intent, not poll-driven
     // maintenance: wait for bootstrap/recovery instead of dropping it.
-    const restarted = await lifecycleOperations.runForeground(() =>
-      restartDaemon(),
-    );
+    const restarted = await lifecycleOperations.runForeground(() => {
+      assertCurrent();
+      return restartDaemon(assertCurrent);
+    });
     if (!restarted.success) {
       console.warn(
-        `[daemon] restart-on-user-switch failed: ${restarted.error ?? "unknown error"}`,
+        `[daemon] restart after credential change failed: ${restarted.error ?? "unknown error"}`,
       );
     }
   }
+  assertCurrent();
 }
 
 async function loadPrefs(): Promise<DaemonPrefs> {
@@ -946,9 +992,9 @@ function errorMessage(err: unknown): string {
 }
 
 /**
- * Recover the local daemon from the "auth_expired" state. Drops the stale
- * cached PAT, mints a fresh one from the current session token, and restarts
- * the daemon so it loads the new credential.
+ * Mint a fresh PAT from the current session before replacing cached credentials,
+ * then restart the daemon so it loads the new credential. A failed mint leaves
+ * the existing profile and running process intact.
  *
  * Failures are classified rather than collapsed: a 401 from the mint means the
  * session token itself is dead (`session_invalid` → the renderer drives a full
@@ -961,22 +1007,22 @@ async function reauthenticate(
   userId: string,
 ): Promise<ReauthResult> {
   try {
-    await clearToken();
-    // syncToken mints a fresh PAT because clearToken just removed any cache.
-    await syncToken(token, userId);
+    const { assertCurrent } = await syncToken(token, userId, true);
+    assertCurrent();
+    const restart = await restartDaemon(assertCurrent);
+    assertCurrent();
+    if (!restart.success) {
+      return {
+        ok: false,
+        reason: "transient",
+        message: restart.error ?? "failed to restart daemon",
+      };
+    }
+    return { ok: true };
   } catch (err) {
     if (isAuthStatusError(err)) return { ok: false, reason: "session_invalid" };
     return { ok: false, reason: "transient", message: errorMessage(err) };
   }
-  const restart = await restartDaemon();
-  if (!restart.success) {
-    return {
-      ok: false,
-      reason: "transient",
-      message: restart.error ?? "failed to restart daemon",
-    };
-  }
-  return { ok: true };
 }
 
 function successfulRuntimeProbe(
@@ -1160,6 +1206,13 @@ async function startDaemon(
   currentState = "starting";
   // Begin a fresh auth-probe window for this attempt.
   startingSince = Date.now();
+  const startupStartedAt = startingSince;
+  const startupTarget = targetApiBaseUrl;
+  const isCurrentStart = () =>
+    startupStartedAt === startingSince && startupTarget === targetApiBaseUrl &&
+    startupGeneration === managedGeneration && startupSession === managedSession &&
+    activeProfile?.name === active.name && !serverSwitchBlocked() && !daemonQuitting &&
+    (!managedStartupGuard || managedStartupGuard());
   authProbeDone = false;
   authExpired = false;
   sendStatus({ state: "starting" });
@@ -1182,17 +1235,26 @@ async function startDaemon(
       bin,
       args,
       { timeout: DAEMON_START_EXEC_TIMEOUT_MS, env: desktopSpawnEnv() },
-      (err) => {
+      async (err) => {
         if (err) {
-          currentState = "stopped";
-          sendStatus({ state: "stopped" });
+          // A rejected login can make the CLI exit before the polling grace
+          // window. Validate the token instead of inferring auth from stderr.
+          if (isCurrentStart() && !authExpired) {
+            authProbeDone = true;
+            const result = await probeTokenValidity(active.name);
+            if (isCurrentStart()) authExpired = result === "auth_expired";
+          }
+          if (isCurrentStart()) {
+            currentState = authExpired ? "auth_expired" : "stopped";
+            sendStatus({ state: currentState, profile: active.name });
+          }
           resolve({ success: false, error: err.message });
           return;
         }
         // Stay in "starting" until pollOnce confirms /health — the CLI
         // returning 0 only means the supervisor was spawned, not that the
         // daemon process is already listening.
-        scheduleStatusRefresh();
+        if (isCurrentStart()) scheduleStatusRefresh();
         resolve({ success: true });
       },
     );
@@ -1208,7 +1270,7 @@ async function startDaemon(
  * /health and decide whether the daemon runs somewhere the app can't drive
  * (WSL2 etc.). Done per call rather than off the poll cache, so a lifecycle op
  * never shells out to a CLI that can't reach the daemon's process — even on
- * paths that didn't just poll (e.g. restart-on-user-switch in syncToken, which
+ * paths that didn't just poll (e.g. credential rotation in syncToken, which
  * calls restartDaemon directly). See #3916.
  */
 async function lifecycleBlockedByForeignDaemon(): Promise<boolean> {
@@ -1220,7 +1282,7 @@ async function lifecycleBlockedByForeignDaemon(): Promise<boolean> {
   );
 }
 
-async function stopDaemon(): Promise<{ success: boolean; error?: string }> {
+async function stopDaemon(assertCurrent?: () => void): Promise<{ success: boolean; error?: string }> {
   // Central lifecycle guard: a daemon running in an environment we can't drive
   // (e.g. Linux in WSL2 behind a Windows desktop) can't be stopped by the
   // native CLI — it would act on the host process namespace and no-op, while
@@ -1235,6 +1297,7 @@ async function stopDaemon(): Promise<{ success: boolean; error?: string }> {
 
   const active = await ensureActiveProfile();
   if (!active) return { success: true };
+  assertCurrent?.();
   currentState = "stopping";
   // An explicit stop is a clean reset — drop any pending auth-failure verdict.
   authExpired = false;
@@ -1257,13 +1320,21 @@ async function stopDaemon(): Promise<{ success: boolean; error?: string }> {
   });
 }
 
-async function restartDaemon(): Promise<{ success: boolean; error?: string }> {
+async function restartDaemon(assertCurrent?: () => void): Promise<{ success: boolean; error?: string }> {
+  assertCurrent?.();
+  const generation = managedGeneration;
+  const target = targetApiBaseUrl;
+  const profile = activeProfile;
+  const startupGuard = assertCurrent
+    ? () => generation === managedGeneration && target === targetApiBaseUrl && profile === activeProfile
+    : undefined;
   if (daemonQuitting || serverSwitchBlocked()) return { success: false, error: "Desktop is quitting or switching servers" };
   // Same central, live-preflighted guard as stopDaemon: we can neither stop nor
   // start a daemon we don't manage, so don't try (user-switch, reauth,
   // first-workspace, and any future restart caller all route through here).
   // #3916.
   if (await lifecycleBlockedByForeignDaemon()) return { success: true };
+  assertCurrent?.();
   try { if (managedPreparation) await managedPreparation; } catch { return { success: false, error: managedSetupError ?? "Managed setup is unavailable" }; }
   if (managedSetupError) return { success: false, error: managedSetupError };
   if (managedSession) {
@@ -1276,9 +1347,11 @@ async function restartDaemon(): Promise<{ success: boolean; error?: string }> {
     }
     try { await managedSession.createHandoff(); } catch { return { success: false, error: "Managed restart proof could not be prepared" }; }
   }
-  const stopResult = await stopDaemon();
+  assertCurrent?.();
+  const stopResult = await stopDaemon(assertCurrent);
+  assertCurrent?.();
   if (!stopResult.success) return stopResult;
-  return startDaemon();
+  return startDaemon(undefined, undefined, startupGuard);
 }
 
 async function managedProfileRequiresConfirmedExit(profile: string): Promise<boolean> {
@@ -1630,9 +1703,10 @@ export function setupDaemonManager(
       if (serverSwitchBlocked()) throw new Error("Server switch in progress");
       const operation = (async () => {
         const result = await syncToken(token, userId);
-        if ((result.userChanged || managedSession !== null) && !serverSwitchBlocked()) {
-          await restartDaemonAfterUserSwitch(result.active);
+        if ((result.userChanged || result.tokenChanged || managedSession !== null) && !serverSwitchBlocked()) {
+          await restartDaemonAfterCredentialChange(result.active, result.assertCurrent);
         }
+        result.assertCurrent();
       })();
       pendingCredentialOperations.add(operation);
       try { await operation; } finally { pendingCredentialOperations.delete(operation); }
@@ -1646,9 +1720,14 @@ export function setupDaemonManager(
     "daemon:reauthenticate",
     async (_event, token: string, userId: string): Promise<ReauthResult> => {
       if (serverSwitchBlocked()) throw new Error("Server switch in progress");
+      const generation = managedGeneration;
+      const target = targetApiBaseUrl;
+      const profile = activeProfile;
       setDesiredDaemonRunning(true, true);
       return lifecycleOperations.runForeground(() => {
-        if (serverSwitchBlocked()) throw new Error("Server switch in progress");
+        if (generation !== managedGeneration || target !== targetApiBaseUrl || profile !== activeProfile || serverSwitchBlocked() || daemonQuitting) {
+          return Promise.resolve<ReauthResult>({ ok: false, reason: "transient", message: "Daemon reauthentication was superseded" });
+        }
         return reauthenticate(token, userId);
       });
     },

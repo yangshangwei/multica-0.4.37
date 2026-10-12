@@ -1,6 +1,7 @@
 import { MANAGEMENT_PENDING_LABEL_KEYS } from "../../../shared/daemon-types";
 import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { AlertCircle, Info, LogIn } from "lucide-react";
+import { useAuthStore } from "@multica/core/auth";
 import { Button } from "@multica/ui/components/ui/button";
 import { Switch } from "@multica/ui/components/ui/switch";
 import { cn } from "@multica/ui/lib/utils";
@@ -52,19 +53,30 @@ export function DaemonSettingsTab() {
   const [cliInstalled, setCliInstalled] = useState<boolean | null>(null);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<DaemonStatus>({ state: "stopped" });
+  const [statusLoading, setStatusLoading] = useState(true);
   const [reauthLoading, setReauthLoading] = useState(false);
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     window.daemonAPI.getPrefs().then(setPrefs);
     window.daemonAPI.isCliInstalled().then(setCliInstalled);
-    window.daemonAPI.getStatus().then(setStatus);
-    return window.daemonAPI.onStatusChange(setStatus);
+    window.daemonAPI.getStatus().then((nextStatus) => {
+      setStatus(nextStatus);
+      setStatusLoading(false);
+    });
+    return window.daemonAPI.onStatusChange((nextStatus) => {
+      setStatus(nextStatus);
+      setStatusLoading(false);
+    });
   }, []);
 
   const handleReauth = useCallback(async () => {
     setReauthLoading(true);
-    await reauthenticateDaemon();
-    setReauthLoading(false);
+    try {
+      await reauthenticateDaemon();
+    } finally {
+      setReauthLoading(false);
+    }
   }, []);
 
   const updatePref = useCallback(
@@ -94,6 +106,12 @@ export function DaemonSettingsTab() {
   // its process. Auto-start/auto-stop can't work, so disable them and say why
   // rather than letting the toggles silently no-op. See #3916.
   const externallyManaged = status.externallyManaged === true;
+  const hasSession = Boolean(user && localStorage.getItem("multica_token"));
+  const isTransitioning =
+    status.state === "stopping" ||
+    status.state === "installing_cli";
+  const reauthDisabled =
+    reauthLoading || statusLoading || externallyManaged || !hasSession || isTransitioning;
   const uptime = formatUptime(status.uptime).replace(
     /(\d+(?:\.\d+)?)(h|m|s)\b/g,
     (_, value: string, unit: "h" | "m" | "s") =>
@@ -117,15 +135,6 @@ export function DaemonSettingsTab() {
               {t(($) => $.desktop.daemon.auth_expired_description)}
             </p>
           </div>
-          <Button
-            size="sm"
-            className="shrink-0"
-            onClick={handleReauth}
-            disabled={reauthLoading}
-          >
-            <LogIn className="size-3.5 mr-1.5" />
-            {t(($) => $.desktop.daemon.sign_in_again)}
-          </Button>
         </div>
       )}
 
@@ -162,6 +171,23 @@ export function DaemonSettingsTab() {
             onCheckedChange={(checked) => updatePref("autoStop", checked)}
             disabled={saving || externallyManaged}
           />
+        </SettingsRow>
+
+        <SettingsRow
+          label={t(($) => $.desktop.daemon.sign_in_again)}
+          description={t(($) => $.desktop.daemon.sign_in_again_description)}
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleReauth}
+            disabled={reauthDisabled}
+          >
+            <LogIn className="mr-1.5 size-3.5" />
+            {reauthLoading
+              ? t(($) => $.desktop.daemon.sign_in_again_loading)
+              : t(($) => $.desktop.daemon.sign_in_again)}
+          </Button>
         </SettingsRow>
 
         <SettingsRow
