@@ -1953,3 +1953,35 @@ Completed and independently reviewed the triage creation form: accessible candid
 ### Next Steps
 
 - Optional follow-up: physical-device and real screen-reader acceptance; no required work remains in this task.
+
+
+## Session 62: MCP 智能体选择页优化
+<!-- trellis-session: v=2 fp=1c8e285e190a3147 -->
+
+**Date**: 2026-10-12
+**Task**: MCP 智能体选择页优化
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成 MCP 保存后智能体选择页优化：搜索、按结果批量选择、已选查看与数量反馈，保留显式分配和失败重试。
+
+### Main Changes
+
+- 共享选择组件复用头像与描述预览；固定搜索工具栏和操作区，列表独立滚动。
+- 记录筛选不影响提交、刷新排除失效 ID、可访问描述定位及两行截断契约。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d57117dc1` | feat(mcp): make large agent selections easier to review |
+
+### Testing
+
+- [OK] 248 项 MCP/语言回归与 12 项核心分配测试通过；全仓库 typecheck 9/9、lint 6/6；Knip 无新增。
+- [OK] 生产组件浏览器夹具覆盖 80 个模拟智能体、宽窄屏、中英文、明暗主题、长文本、键盘与失败重试；视觉复核 94/100。
+
+### Status
+
+[OK] **Completed**
