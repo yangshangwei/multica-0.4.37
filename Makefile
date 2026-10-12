@@ -399,6 +399,9 @@ migrate-down: ## Create the target DB if needed, then roll back database migrati
 	@bash scripts/ensure-postgres.sh "$(ENV_FILE)"
 	cd server && go run ./cmd/migrate down
 
+seed: ## Populate the local workspace with desktop business scenarios (ARGS=--dry-run or --reset)
+	@node scripts/seed-rich-test-data.mjs $(ARGS)
+
 sqlc: ## Regenerate sqlc code
 	cd server && go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate
 

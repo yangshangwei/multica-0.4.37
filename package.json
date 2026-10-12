@@ -24,6 +24,8 @@
     "test": "turbo test --filter=!@multica/mobile",
     "lint": "turbo lint --filter=!@multica/mobile",
     "knip": "knip",
+    "seed": "node scripts/seed-rich-test-data.mjs",
+    "test:seed": "node --test scripts/seed-rich-test-data.test.mjs",
     "check:ui-exports": "node scripts/check-ui-wildcard-exports.mjs",
     "clean": "turbo clean && rm -rf node_modules",
     "ui:add": "cd packages/ui && npx shadcn@latest add",

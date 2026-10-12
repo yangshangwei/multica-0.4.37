@@ -17,6 +17,7 @@
 | [Built-in Template Registries](./builtin-templates.md) | Autopilot template content contracts: `{{date}}` issue titles, server-decided fields | Active |
 | [Project execution squads](./project-execution-squad.md) | Project setup, authority, atomic materialization and UI recovery contracts | Active |
 | [Local directory snapshots](./local-directory-snapshots.md) | Git index timestamps, private-index fallback and user-work preservation | Active |
+| [Development fixtures](./development-fixtures.md) | Retained Desktop QA data, consumer contracts, idempotency and scoped cleanup | Active |
 
 ## See Also
 
