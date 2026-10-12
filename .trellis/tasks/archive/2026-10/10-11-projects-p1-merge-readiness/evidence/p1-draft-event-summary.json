@@ -1,0 +1,140 @@
+{
+  "baseline_commit": "6a892c3d0",
+  "stats": {
+    "startTime": "2026-10-11T22:39:07.229Z",
+    "duration": 31845.865999999998,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "event_order_counts": {
+    "create -> update": 9,
+    "update -> create": 1
+  },
+  "selection": "One representative success and every failure; full events are retained in the ignored local report directory.",
+  "cases": [
+    {
+      "status": "passed",
+      "events": [
+        {
+          "id": 0,
+          "event": "attached",
+          "initialized": false,
+          "markdown": "",
+          "draft_persisted": false,
+          "at_ms": 1246.9
+        },
+        {
+          "id": 0,
+          "event": "create",
+          "initialized": false,
+          "markdown": "",
+          "draft_persisted": false,
+          "at_ms": 1262
+        },
+        {
+          "id": 0,
+          "event": "update",
+          "initialized": true,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": false,
+          "at_ms": 1275.7
+        },
+        {
+          "id": 0,
+          "event": "blur",
+          "initialized": true,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": false,
+          "at_ms": 1299.9
+        },
+        {
+          "id": 0,
+          "event": "destroy",
+          "initialized": true,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": true,
+          "at_ms": 1333.3
+        },
+        {
+          "id": 1,
+          "event": "attached",
+          "initialized": false,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": true,
+          "at_ms": 1497.2
+        },
+        {
+          "id": 1,
+          "event": "create",
+          "initialized": false,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": true,
+          "at_ms": 1500.2
+        }
+      ]
+    },
+    {
+      "status": "failed",
+      "events": [
+        {
+          "id": 0,
+          "event": "attached",
+          "initialized": false,
+          "markdown": "",
+          "draft_persisted": false,
+          "at_ms": 1071.1
+        },
+        {
+          "id": 0,
+          "event": "update",
+          "initialized": false,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": false,
+          "at_ms": 1084
+        },
+        {
+          "id": 0,
+          "event": "create",
+          "initialized": false,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": false,
+          "at_ms": 1098.9
+        },
+        {
+          "id": 0,
+          "event": "blur",
+          "initialized": true,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": false,
+          "at_ms": 1124.8
+        },
+        {
+          "id": 0,
+          "event": "destroy",
+          "initialized": true,
+          "markdown": "Navigation must retain this final draft sentence",
+          "draft_persisted": false,
+          "at_ms": 1167.4
+        },
+        {
+          "id": 1,
+          "event": "attached",
+          "initialized": false,
+          "markdown": "",
+          "draft_persisted": false,
+          "at_ms": 1376.3
+        },
+        {
+          "id": 1,
+          "event": "create",
+          "initialized": false,
+          "markdown": "",
+          "draft_persisted": false,
+          "at_ms": 1380.1
+        }
+      ]
+    }
+  ]
+}
