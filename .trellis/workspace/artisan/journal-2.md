@@ -27,3 +27,33 @@ Implemented bounded boot requests, live recovery metadata, shared workspace reco
 ### Status
 
 [OK] **Completed**
+
+
+## Session 65: 丰富当前后端与桌面业务测试数据
+<!-- trellis-session: v=2 fp=2329d15c9880a9f5 -->
+
+**Date**: 2026-10-12
+**Task**: 丰富当前后端与桌面业务测试数据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+当前 desktop-qa-1008-1743 新增44条任务及5项目、计划迭代、标签/评论/通知/聊天/合成执行。原有15任务与项目/迭代/评论/设置逐条保留。幂等重跑无新增，13安全测试、31真实API、9原生Electron页面、lint/typecheck通过。模拟运行时离线，验证临时数据库已清理。
+
+### Main Changes
+
+- 新增make seed与pnpm seed/test:seed入口，无新依赖
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ede5ae202` | test(seed): retain realistic scenarios for desktop business acceptance |
+
+### Testing
+
+- [OK] 13/13隔离schema安全测试；31 API；9 Electron页面；lint/typecheck
+
+### Status
+
+[OK] **Completed**
