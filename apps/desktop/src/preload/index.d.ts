@@ -42,6 +42,9 @@ interface DesktopAPI {
     | { ok: false; category: "invalid" | "dns" | "tls" | "timeout" | "http" | "redirect" | "network"; message: string }
   >;
   onRuntimeConfigReset: (callback: () => Promise<void>) => () => void;
+  /** Focus main and request its endpoint editor without changing configuration. */
+  openRuntimeConfigEditor: () => Promise<{ ok: boolean }>;
+  onRuntimeConfigEditorOpen: (callback: () => void) => () => void;
   saveRuntimeConfig: (input: { apiUrl: string; appUrl?: string; wsUrl?: string }) => Promise<
     | { ok: true; config: RuntimeConfig }
     | { ok: false; message: string }

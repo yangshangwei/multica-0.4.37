@@ -16,7 +16,8 @@ import { ModalRegistry } from "@multica/views/modals/registry";
 import { WorkspacePresencePrefetch } from "@multica/views/layout";
 import { DragStrip } from "@multica/views/platform";
 import type { IssueWindowContext } from "../../../shared/issue-window";
-import { DesktopAuthRecoveryPage } from "../pages/auth-recovery";
+import { DesktopConnectionRecoveryBoundary } from "./connection-recovery-boundary";
+import { useWorkspaceConnectionRecovery } from "../hooks/use-workspace-connection-recovery";
 import { IssueDetailPage } from "../pages/issue-detail-page";
 import { IssueWindowNavigationProvider } from "../platform/issue-window-navigation";
 
@@ -42,42 +43,25 @@ export function IssueWindow({ context }: { context: IssueWindowContext }) {
 function IssueWindowRoute() {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const user = useAuthStore((state) => state.user);
-  const { workspaces, ready, unavailable, isFetching, refetch } =
-    useWorkspaceList({
-      enabled: !!user && !!workspaceSlug,
-    });
+  const enabled = !!user && !!workspaceSlug;
+  const list = useWorkspaceList({ enabled });
+  const { workspaces, ready } = list;
+  const { recovery, retry } = useWorkspaceConnectionRecovery(list, enabled);
   const workspace = workspaces.find((item) => item.slug === workspaceSlug);
 
   if (workspace && workspaceSlug) {
     setCurrentWorkspace(workspaceSlug, workspace.id);
   }
 
-  if (unavailable) {
-    return (
-      <DesktopAuthRecoveryPage
-        isRetrying={isFetching}
-        onRetry={() => {
-          void refetch();
-        }}
-      />
-    );
-  }
-
-  if (!ready) {
-    return (
+  return (
+    <DesktopConnectionRecoveryBoundary recovery={recovery} onRetry={retry}>
+      {!ready ? (
       <IssueWindowFrame>
         <div className="flex min-h-0 flex-1 items-center justify-center">
           <MulticaIcon className="size-6 animate-pulse" />
         </div>
       </IssueWindowFrame>
-    );
-  }
-
-  if (!workspace || !workspaceSlug) {
-    return <IssueWindowUnavailable />;
-  }
-
-  return (
+      ) : !workspace || !workspaceSlug ? <IssueWindowUnavailable /> : (
     <WorkspaceSlugProvider slug={workspaceSlug}>
       <IssueWindowNavigationProvider>
         <WorkspacePresencePrefetch />
@@ -87,6 +71,8 @@ function IssueWindowRoute() {
         <ModalRegistry />
       </IssueWindowNavigationProvider>
     </WorkspaceSlugProvider>
+      )}
+    </DesktopConnectionRecoveryBoundary>
   );
 }
 

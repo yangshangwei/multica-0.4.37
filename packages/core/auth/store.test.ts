@@ -38,11 +38,38 @@ describe("authStore", () => {
     const api = makeApi();
     const store = createAuthStore({ api, storage });
 
-    store.setState({ isLoading: true, status: "recovering" });
+    const failure = { kind: "server" as const, occurredAt: 1, status: 503 };
+    store.setState({ isLoading: true, status: "recovering", recovery: { isRetrying: false, nextRetryAt: 1_000, failure } });
     store.getState().retryAuthentication();
 
-    expect(store.getState().status).toBe("authenticating");
+    expect(store.getState().status).toBe("recovering");
     expect(store.getState().retryGeneration).toBe(1);
+    expect(store.getState().recovery).toEqual({ isRetrying: true, nextRetryAt: null, failure });
+    store.getState().retryAuthentication();
+    expect(store.getState().retryGeneration).toBe(1);
+  });
+
+  it.each(["logout", "sessionExpired"] as const)("clears recovery metadata on %s", (action) => {
+    const store = createAuthStore({ api: makeApi(), storage: makeStorage({ multica_token: "saved-token" }) });
+    store.setState({ status: "recovering", recovery: { isRetrying: true, nextRetryAt: null, failure: { kind: "timeout", occurredAt: 1 } } });
+    store.getState()[action]();
+    expect(store.getState().recovery).toBeNull();
+  });
+
+  it("does not publish a canceled device login even when its API response resolves late", async () => {
+    let finish!: (response: { token: string; user: User }) => void;
+    const api = { setToken: vi.fn(), deviceLogin: vi.fn(() => new Promise(resolve => { finish = resolve; })) } as unknown as ApiClient;
+    const storage = makeStorage();
+    const onLogin = vi.fn();
+    const store = createAuthStore({ api, storage, onLogin });
+    const controller = new AbortController();
+    const outcome = store.getState().loginWithDevice("device-id", "Test device", { signal: controller.signal }).catch((error: unknown) => error);
+    controller.abort();
+    finish({ token: "late-secret", user: fakeUser });
+    expect(await outcome).toMatchObject({ name: "AbortError" });
+    expect(storage.getItem("multica_token")).toBeNull();
+    expect(store.getState().user).toBeNull();
+    expect(onLogin).not.toHaveBeenCalled();
   });
 
   it("explicit logout still clears credentials and publishes unauthenticated state", () => {

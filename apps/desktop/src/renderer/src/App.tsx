@@ -4,7 +4,7 @@ import { clearClientSessionData } from "@multica/core/platform";
 import { WindowOverlay } from "./components/window-overlay";
 import { CoreProvider } from "@multica/core/platform";
 import { pickLocale, type SupportedLocale } from "@multica/core/i18n";
-import { useAuthStore } from "@multica/core/auth";
+import { useAuthStore, type AuthRecoveryState } from "@multica/core/auth";
 import { useWelcomeStore } from "@multica/core/onboarding";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { useWorkspaceList } from "@multica/core/workspace";
@@ -15,8 +15,9 @@ import { ThemeProvider } from "@multica/ui/components/common/theme-provider";
 import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
 import { Toaster } from "@multica/ui/components/ui/sonner";
 import { DesktopLoginPage } from "./pages/login";
-import { DesktopAuthRecoveryPage } from "./pages/auth-recovery";
 import { DesktopEndpointSetupPage } from "./pages/endpoint-setup";
+import { DesktopConnectionRecoveryBoundary } from "./components/connection-recovery-boundary";
+import { useWorkspaceConnectionRecovery } from "./hooks/use-workspace-connection-recovery";
 import { DesktopShell } from "./components/desktop-layout";
 import { UpdateNotification, UpdateNotificationNavigationProvider } from "./components/update-notification";
 import { IssueWindow } from "./components/issue-window";
@@ -25,7 +26,7 @@ import { useWindowOverlayStore } from "./stores/window-overlay-store";
 import { useOpenSettingsShortcut } from "./hooks/use-open-settings-shortcut";
 import { useDaemonIPCBridge } from "./platform/daemon-ipc-bridge";
 import { syncDaemonOnLogin } from "./platform/daemon-login-sync";
-import { createDesktopLocaleAdapter } from "./platform/i18n-adapter";
+import { createDesktopLocaleAdapter, createDesktopLocaleReload } from "./platform/i18n-adapter";
 import { captureEvent } from "@multica/core/analytics";
 import { RESOURCES } from "@multica/views/locales";
 import { DesktopClientUsageReporter } from "./platform/client-usage-reporter";
@@ -47,6 +48,12 @@ import {
 const HTML_LANG: Record<SupportedLocale, string> = {
   en: "en",
   "zh-Hans": "zh-CN",
+};
+
+const PENDING_AUTH_RECOVERY: AuthRecoveryState = {
+  isRetrying: false,
+  nextRetryAt: null,
+  failure: null,
 };
 
 
@@ -89,32 +96,39 @@ function IssueWindowContent() {
   const user = useAuthStore((state) => state.user);
   const isLoading = useAuthStore((state) => state.isLoading);
   const authStatus = useAuthStore((state) => state.status);
+  const authRecovery = useAuthStore((state) => state.recovery);
+  const retryAuthentication = useAuthStore((state) => state.retryAuthentication);
   const context = window.desktopAPI.windowContext ?? { kind: "main" as const };
 
   if (context.kind !== "issue") return null;
-  if (authStatus === "recovering") return <DesktopAuthRecoveryPage />;
-  if (isLoading) {
-    return (
+  return (
+    <DesktopConnectionRecoveryBoundary
+      recovery={authStatus === "recovering" ? authRecovery ?? PENDING_AUTH_RECOVERY : null}
+      onRetry={retryAuthentication}
+    >
+      {isLoading ? (
       <div className="flex h-screen items-center justify-center">
         <MulticaIcon className="size-6 animate-pulse" />
       </div>
-    );
-  }
-
-  if (user?.requires_account_setup || user?.requires_password_change) return <DesktopLoginPage />;
-  return user ? <IssueWindow context={context} /> : <DesktopLoginPage />;
+      ) : user?.requires_account_setup || user?.requires_password_change
+        ? <DesktopLoginPage />
+        : user ? <IssueWindow context={context} /> : <DesktopLoginPage />}
+    </DesktopConnectionRecoveryBoundary>
+  );
 }
 
-function AppContent() {
+function AppContent({ onServerEditorOpenChange }: { onServerEditorOpenChange: (open: boolean) => void }) {
   const user = useAuthStore((s) => s.user);
   const isLoading = useAuthStore((s) => s.isLoading);
   const authStatus = useAuthStore((s) => s.status);
+  const authRecovery = useAuthStore((s) => s.recovery);
+  const retryAuthentication = useAuthStore((s) => s.retryAuthentication);
   const qc = useQueryClient();
   const restricted = user?.requires_account_setup === true || user?.requires_password_change === true;
   useEffect(() => window.desktopAPI.onRuntimeConfigReset(async () => {
     api.invalidateSession();
     await qc.cancelQueries();
-    useAuthStore.setState({user: null, status: "unauthenticated", isLoading: false, expired: false});
+    useAuthStore.setState({user: null, status: "unauthenticated", isLoading: false, expired: false, recovery: null});
     tearDownOnSessionExpiry(sessionTeardown);
     clearClientSessionData(qc);
     localStorage.removeItem("multica_token");
@@ -171,7 +185,7 @@ function AppContent() {
         // (setCurrentWorkspace, persist namespace) are synced later by
         // WorkspaceRouteLayout when the URL resolves.
         if (useAuthStore.getState().status !== "authenticated") return;
-        const wsList = await api.listWorkspaces();
+        const wsList = await api.listWorkspaces({ timeoutMs: 10_000 });
         qc.setQueryData(workspaceKeys.list(), wsList);
       } catch {
         // Token invalid or expired — user stays on login page
@@ -209,15 +223,14 @@ function AppContent() {
   // account switches (user A logout → user B login) should not trigger a
   // daemon restart here — daemon-manager already restarts on user change
   // via syncToken.
+  const workspaceListEnabled = !!user && !restricted && !bootstrapping && authStatus === "authenticated";
+  const workspaceList = useWorkspaceList({ enabled: workspaceListEnabled });
   const {
     workspaces,
     ready: workspaceListReady,
-    unavailable: workspaceListUnavailable,
-    isFetching: workspaceListRetrying,
-    refetch: retryWorkspaceList,
-  } = useWorkspaceList({
-    enabled: !!user && !restricted,
-  });
+  } = workspaceList;
+  const { recovery: workspaceRecovery, retry: retryWorkspaceList } =
+    useWorkspaceConnectionRecovery(workspaceList, workspaceListEnabled);
   const wsCount = workspaces.length;
   const hasOnboarded = useHasOnboarded();
 
@@ -335,31 +348,19 @@ function AppContent() {
     }
   }, [user, workspaceListReady, wsCount]);
 
-  if (authStatus === "recovering") {
-    return <DesktopAuthRecoveryPage />;
-  }
-  if (isLoading || bootstrapping) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <MulticaIcon className="size-6 animate-pulse" />
-      </div>
-    );
-  }
-
-  if (restricted) return <WindowOverlay />;
-
-  if (workspaceListUnavailable) {
-    return (
-      <DesktopAuthRecoveryPage
-        isRetrying={workspaceListRetrying}
-        onRetry={() => {
-          void retryWorkspaceList();
-        }}
-      />
-    );
-  }
-
-  return user ? <DesktopShell /> : <DesktopLoginPage />;
+  return (
+    <DesktopConnectionRecoveryBoundary
+      recovery={authStatus === "recovering" ? authRecovery ?? PENDING_AUTH_RECOVERY : workspaceRecovery}
+      onRetry={authStatus === "recovering" ? retryAuthentication : retryWorkspaceList}
+      onEditorOpenChange={onServerEditorOpenChange}
+    >
+      {isLoading || bootstrapping ? (
+        <div className="flex h-screen items-center justify-center">
+          <MulticaIcon className="size-6 animate-pulse" />
+        </div>
+      ) : restricted ? <WindowOverlay /> : user ? <DesktopShell /> : <DesktopLoginPage />}
+    </DesktopConnectionRecoveryBoundary>
+  );
 }
 
 // Binds the teardown steps to this renderer's real stores and IPC. Which of
@@ -441,11 +442,15 @@ export default function App() {
     [deviceIdentity],
   );
 
-  // Locale resolution happens once at app boot. Switching language goes
-  // through window.location.reload() to avoid hydration mismatch.
+  const localeReload = useMemo(
+    () => createDesktopLocaleReload(() => window.location.reload()),
+    [],
+  );
+  // Locale resolution happens once at app boot. The adapter waits for an
+  // open recovery editor to be dismissed before requesting a locale reload.
   const localeAdapter = useMemo(
-    () => createDesktopLocaleAdapter(systemLocale),
-    [systemLocale],
+    () => createDesktopLocaleAdapter(systemLocale, localeReload.reload),
+    [systemLocale, localeReload],
   );
   const locale = useMemo(() => pickLocale(localeAdapter), [localeAdapter]);
   const resources = useMemo(
@@ -476,7 +481,7 @@ export default function App() {
       });
       if (next === locale) return;
       localeAdapter.persist(next);
-      window.location.reload();
+      localeAdapter.reload?.();
     });
   }, [localeAdapter, locale]);
 
@@ -511,7 +516,7 @@ export default function App() {
           {windowContext.kind === "issue" ? (
             <IssueWindowContent />
           ) : (
-            <AppContent />
+            <AppContent onServerEditorOpenChange={localeReload.onEditorOpenChange} />
           )}
         </CoreProvider>
       ) : (

@@ -1,5 +1,7 @@
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
+import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
+export type { ApiRequestOptions } from "./request-lifecycle";
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
 import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
   ProjectRiskPageSchema, ProjectUpdatesPageSchema, ProjectUpdateRevisionsPageSchema, ProjectUpdatePreviewSchema,
@@ -1153,20 +1155,24 @@ export class ApiClient {
 
     this.logger.info(`→ ${method} ${path}`, { rid });
 
+    const signal = init?.signal ? AbortSignal.any([init.signal, this.endpointController.signal]) : this.endpointController.signal;
+    signal.throwIfAborted();
     const res = await fetch(`${this.baseUrl}${path}`, {
       ...init,
       headers,
-      signal: init?.signal ? AbortSignal.any([init.signal, this.endpointController.signal]) : this.endpointController.signal,
+      signal,
       credentials: this.options.identity?.platform === "desktop" ? "omit" : "include",
       redirect: "error",
     });
 
     if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
+    signal.throwIfAborted();
     if (!res.ok) {
       const passwordAttempt = path === "/auth/login" || path === "/api/me/password/change";
       if (res.status === 401 && !passwordAttempt) this.handleUnauthorized(sentEpoch);
       const { message, body } = await this.parseErrorBody(res, `API error: ${res.status} ${res.statusText}`);
       if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
+      signal.throwIfAborted();
       const invalidPassword = passwordAttempt &&
         body !== null && typeof body === "object" && "code" in body && body.code === "invalid_credentials";
       if (res.status === 401 && passwordAttempt && !invalidPassword) this.handleUnauthorized(sentEpoch);
@@ -1208,7 +1214,12 @@ export class ApiClient {
     }
     const data = await res.json();
     if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
+    init?.signal?.throwIfAborted();
     return data as T;
+  }
+
+  private fetchBounded<T>(path: string, init?: RequestInit, options?: ApiRequestOptions): Promise<T> {
+    return withRequestDeadline(options, this.endpointController.signal, signal => this.fetch<T>(path, { ...init, signal }));
   }
 
   private async passwordSession(path: string, body: Record<string, string>): Promise<LoginResponse> {
@@ -1275,11 +1286,14 @@ export class ApiClient {
    * `device_auth_available` in /api/config accept this; everywhere else it is
    * a 403, which is why callers read that flag first instead of probing.
    */
-  async deviceLogin(deviceId: string, deviceName?: string): Promise<LoginResponse> {
-    const raw = await this.fetch<unknown>("/auth/device", {
+  async deviceLogin(deviceId: string, deviceName?: string, options?: ApiRequestOptions): Promise<LoginResponse> {
+    const scope = this.getSessionScope();
+    const raw = await this.fetchBounded<unknown>("/auth/device", {
       method: "POST",
       body: JSON.stringify({ device_id: deviceId, device_name: deviceName ?? "" }),
-    });
+    }, options);
+    options?.signal?.throwIfAborted();
+    if (scope !== this.getSessionScope()) throw new DOMException("Authentication attempt superseded", "AbortError");
     // Same credential rotation as verifyCode, for the intranet device path.
     this.bumpAuthEpoch();
     this.credentialEpoch += 1;
@@ -1297,8 +1311,8 @@ export class ApiClient {
     return this.fetch("/api/cli-token", { method: "POST" });
   }
 
-  async getMe(): Promise<User> {
-    const raw = await this.fetch<unknown>("/api/me");
+  async getMe(options?: ApiRequestOptions): Promise<User> {
+    const raw = await this.fetchBounded<unknown>("/api/me", undefined, options);
     const user = parseWithFallback(raw, UserSchema, EMPTY_USER, {
       endpoint: "GET /api/me", redact: true,
     });
@@ -3362,16 +3376,16 @@ export class ApiClient {
   }
 
   // App Config
-  async getConfig(): Promise<AppConfigResponse> {
-    const raw = await this.fetch<unknown>("/api/config");
+  async getConfig(options?: ApiRequestOptions): Promise<AppConfigResponse> {
+    const raw = await this.fetchBounded<unknown>("/api/config", undefined, options);
     return parseWithFallback<AppConfigResponse>(raw, AppConfigSchema, EMPTY_APP_CONFIG, {
       endpoint: "GET /api/config",
     });
   }
 
   // Workspaces
-  async listWorkspaces(): Promise<Workspace[]> {
-    return this.fetch("/api/workspaces");
+  async listWorkspaces(options?: ApiRequestOptions): Promise<Workspace[]> {
+    return this.fetchBounded("/api/workspaces", undefined, options);
   }
 
   async getWorkspace(id: string): Promise<Workspace> {

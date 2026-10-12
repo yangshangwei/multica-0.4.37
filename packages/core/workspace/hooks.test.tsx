@@ -52,8 +52,9 @@ describe("useWorkspaceList", () => {
   });
 
   it("does not treat an initial request failure as an authoritative empty list", async () => {
+    const failure = new Error("temporarily unavailable");
     setApiInstance({
-      listWorkspaces: () => Promise.reject(new Error("temporarily unavailable")),
+      listWorkspaces: () => Promise.reject(failure),
     } as unknown as ApiClient);
 
     const { result } = renderHook(() => useWorkspaceList(), {
@@ -63,6 +64,20 @@ describe("useWorkspaceList", () => {
     await waitFor(() => expect(result.current.unavailable).toBe(true));
     expect(result.current.ready).toBe(false);
     expect(result.current.workspaces).toEqual([]);
+    expect(result.current.error).toBe(failure);
+    expect(result.current.errorUpdatedAt).toBeGreaterThan(0);
+  });
+
+  it("cancels a bounded initial request when its last observer unmounts", async () => {
+    const listWorkspaces = vi.fn((_options: { signal: AbortSignal; timeoutMs: number }) => new Promise<Workspace[]>(() => {}));
+    setApiInstance({ listWorkspaces } as unknown as ApiClient);
+    const { unmount } = renderHook(() => useWorkspaceList(), { wrapper: createWrapper(qc) });
+    await waitFor(() => expect(listWorkspaces).toHaveBeenCalledOnce());
+    const options = listWorkspaces.mock.calls[0]?.[0] as { signal: AbortSignal; timeoutMs: number };
+    expect(options.timeoutMs).toBe(10_000);
+    expect(options.signal.aborted).toBe(false);
+    unmount();
+    expect(options.signal.aborted).toBe(true);
   });
 
   it("keeps cached data authoritative when a background refetch fails", async () => {

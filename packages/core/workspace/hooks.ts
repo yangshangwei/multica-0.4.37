@@ -51,6 +51,8 @@ export function useWorkspaceList({ enabled = true }: { enabled?: boolean } = {})
     ready,
     unavailable: enabled && !ready && query.isLoadingError,
     isFetching: query.isFetching,
+    error: query.error,
+    errorUpdatedAt: query.errorUpdatedAt,
     refetch: query.refetch,
   };
 }

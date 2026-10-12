@@ -6,6 +6,18 @@ import {
 } from "./main-renderer-messages";
 
 describe("MainRendererMessageQueue", () => {
+  it("keeps a server-editor handoff until main subscribes, including window recreation", () => {
+    const queue = new MainRendererMessageQueue();
+    const send = vi.fn();
+    queue.enqueue("runtime-config:edit", null, send);
+    queue.resetReady();
+    expect(send).not.toHaveBeenCalled();
+    expect(parseMainRendererChannelState({ channel: "runtime-config:edit", ready: true }))
+      .toEqual({ channel: "runtime-config:edit", ready: true });
+    queue.setReady("runtime-config:edit", true, send);
+    expect(send).toHaveBeenCalledExactlyOnceWith("runtime-config:edit", null);
+  });
+
   it("holds messages until their matching listener is ready", () => {
     const queue = new MainRendererMessageQueue();
     const send = vi.fn();

@@ -143,6 +143,9 @@ const desktopAPI = {
   /** Validated runtime endpoint config, or a blocking config error. */
   runtimeConfig,
   testRuntimeConfig: (apiUrl: string) => ipcRenderer.invoke("runtime-config:test", apiUrl),
+  openRuntimeConfigEditor: () => ipcRenderer.invoke("runtime-config:open-editor"),
+  onRuntimeConfigEditorOpen: (callback: () => void) =>
+    subscribeToMainRendererChannel("runtime-config:edit", () => callback()),
   onRuntimeConfigReset: (callback: () => Promise<void>): (() => void) => {
     const listener = (_event: Electron.IpcRendererEvent, id: number) => {
       void Promise.resolve().then(callback).then(
