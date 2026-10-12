@@ -75,6 +75,7 @@
 | 64 | 2026-10-12 | Recovery-only main integration verification | `f14da8a30` | `codex/desktop-connection-recovery-main` |
 | 63 | 2026-10-12 | Desktop connection recovery and native acceptance | `0c6afec4c` | `codex/cross-workspace-collaboration` |
 | 62 | 2026-10-12 | MCP 智能体选择页优化 | `d57117dc1` | `codex/cross-workspace-collaboration` |
+| 61 | 2026-10-12 | Complete projects-p1 merge readiness | `c9229c4a3`, `8ca432f0c`, `0d1c9ca58`, `327a53948` | `codex/projects-p1-merge-readiness` |
 | 60 | 2026-10-11 | Complete pending-task creation accessibility | `574dff832` | `codex/projects-p1` |
 | 59 | 2026-10-11 | 完成三系统添加电脑与真实连接确认 | `eead23764`, `9f184d273` | `codex/projects-p1` |
 | 58 | 2026-10-11 | Admin auto initialization verification follow-up | `d0e63f477` | `codex/admin-auto-initialization` |

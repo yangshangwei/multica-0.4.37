@@ -1970,6 +1970,21 @@ Completed and independently reviewed the triage creation form: accessible candid
 
 - 共享选择组件复用头像与描述预览；固定搜索工具栏和操作区，列表独立滚动。
 - 记录筛选不影响提交、刷新排除失效 ID、可访问描述定位及两行截断契约。
+## Session 61: Complete projects-p1 merge readiness
+<!-- trellis-session: v=2 fp=49ce35d4fde005e9 -->
+
+**Date**: 2026-10-12
+**Task**: Complete projects-p1 merge readiness
+**Branch**: `codex/projects-p1-merge-readiness`
+
+### Summary
+
+Completed the approved readiness corrections and merged PR #3; PR/main CI and Mobile Verify passed, local main matches the tested tree, and the task is archived.
+
+### Main Changes
+
+- Preserved early editor input using the existing pending-update state; added deterministic autosave and unmount regressions without weakening E2E assertions.
+- Synchronized iteration-default guidance and concurrent main fixes, retained all source history, and archived the review and acceptance evidence.
 
 ### Git Commits
 
@@ -1981,6 +1996,16 @@ Completed and independently reviewed the triage creation form: accessible candid
 
 - [OK] 248 项 MCP/语言回归与 12 项核心分配测试通过；全仓库 typecheck 9/9、lint 6/6；Knip 无新增。
 - [OK] 生产组件浏览器夹具覆盖 80 个模拟智能体、宽窄屏、中英文、明暗主题、长文本、键盘与失败重试；视觉复核 94/100。
+| `c9229c4a3` | fix(editor): preserve drafts entered before initialization completes |
+| `8ca432f0c` | docs(iterations): keep settings guidance consistent with saved workspace choices |
+| `0d1c9ca58` | chore(merge): retain concurrent main fixes before final integration |
+| `327a53948` | fix: preserve early editor input and numeric task references |
+
+### Testing
+
+- [OK] make check: 15 static tasks, 10970 TS tests, 70 Go race package results (42 cached), go vet, production build, 258 E2E passes and 70 conditional skips.
+- [OK] Dedicated I1 Web/Electron: 19 of the previously skipped cases passed. Draft stability: 20/20 executions with zero retries. Remaining conditional E2E coverage: 51 cases.
+- [OK] PR #3: all 16 checks passed. Merge commit 327a53948: CI and Mobile Verify passed; candidate and main file trees are identical.
 
 ### Status
 
@@ -2007,3 +2032,6 @@ Prepared an isolated recovery-only branch on latest main, preserving the unrelat
 ### Status
 
 [OK] **Completed**
+### Next Steps
+
+- No required work remains for this task; retain the archived evidence on the task branch.
