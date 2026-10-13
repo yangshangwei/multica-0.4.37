@@ -1,7 +1,23 @@
 import csvTemplate from "./triage-csv-template.json";
 
 export function decodeTriageCsv(buffer: ArrayBuffer): string {
-  return new TextDecoder("utf-8", { fatal: true }).decode(buffer);
+  const bytes = new Uint8Array(buffer);
+  // A BOM declares the encoding; malformed content must never fall back.
+  if (bytes[0] === 0xff && bytes[1] === 0xfe) {
+    return new TextDecoder("utf-16le", { fatal: true }).decode(buffer);
+  }
+  if (bytes[0] === 0xfe && bytes[1] === 0xff) {
+    return new TextDecoder("utf-16be", { fatal: true }).decode(buffer);
+  }
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(buffer);
+  } catch (error) {
+    if (bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) {
+      throw error;
+    }
+    // Excel and WPS may export BOM-less GBK, a subset of GB18030.
+    return new TextDecoder("gb18030", { fatal: true }).decode(buffer);
+  }
 }
 
 // Canonical mapping targets accepted by server/internal/triagecsv. The

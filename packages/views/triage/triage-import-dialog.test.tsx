@@ -183,11 +183,43 @@ it("offers the format guide and template before the first upload, then compacts 
     }
   }
 });
-it("rejects invalid UTF-8 before uploading a preview", async () => {
+// The encoding matrix is canonical in triage-ui.test.ts; these tests cover
+// decoded preview payloads and the dialog's read/decode error wiring.
+it("uploads a GBK file as an exact Unicode preview payload", async () => {
+  render(<TriageImportDialog wsId="ws" onClose={vi.fn()} />);
+  fireEvent.change(screen.getByLabelText(en.choose_file), {
+    target: {
+      files: [file(new Uint8Array([
+        0x74, 0x69, 0x74, 0x6c, 0x65, 0x0a, 0xd6, 0xd0, 0xce, 0xc4,
+      ]))],
+    },
+  });
+  await waitFor(() => expect(mocks.preview).toHaveBeenCalledOnce());
+  expect(mocks.preview).toHaveBeenCalledWith({
+    request_id: expect.any(String),
+    filename: "tasks.csv",
+    csv: "title\n中文",
+    mapping: undefined,
+  });
+});
+it("rejects invalid encoding before uploading a preview", async () => {
   render(<TriageImportDialog wsId="ws" onClose={vi.fn()} />);
   fireEvent.change(screen.getByLabelText(en.choose_file), {
     target: { files: [file(new Uint8Array([0xff]))] },
   });
-  expect(await screen.findByRole("alert")).toHaveTextContent(en.invalid_utf8);
+  expect(await screen.findByRole("alert")).toHaveTextContent(en.invalid_encoding);
+  expect(mocks.preview).not.toHaveBeenCalled();
+});
+it("reports file read failures separately from encoding errors", async () => {
+  const unreadable = new File(["title\nTask 1"], "tasks.csv", { type: "text/csv" });
+  Object.defineProperty(unreadable, "arrayBuffer", {
+    value: vi.fn().mockRejectedValue(new Error("File is no longer available")),
+  });
+  render(<TriageImportDialog wsId="ws" onClose={vi.fn()} />);
+  fireEvent.change(screen.getByLabelText(en.choose_file), {
+    target: { files: [unreadable] },
+  });
+  expect(await screen.findByRole("alert")).toHaveTextContent(en.file_read_failed);
+  expect(screen.getByLabelText(en.choose_file)).toBeEnabled();
   expect(mocks.preview).not.toHaveBeenCalled();
 });

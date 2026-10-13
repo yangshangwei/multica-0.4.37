@@ -119,10 +119,24 @@ that check for trigger and coalesced comments as well as current issue admission
 
 Use native `encoding/csv`, strict UTF-8 with optional BOM, maximum 5 MiB and
 1,000 data rows. Reject whole-file encoding/size/parse/header failures without
-truncation. Browser decoding uses fatal UTF-8; server rejects already-lossy
-replacement characters. Validate title ≤500 runes, description ≤1 MiB, external
+truncation. The browser normalizes supported file encodings to a Unicode CSV
+string before sending UTF-8 JSON; server rejects already-lossy replacement
+characters. Validate title ≤500 runes, description ≤1 MiB, external
 ID ≤1,000 UTF-8 bytes, valid date-only values and date order. Preserve original
 cells for failure export, including invalid NUL cells through byte-safe storage.
+
+`decodeTriageCsv(buffer: ArrayBuffer): string` in `packages/views/triage/triage-ui.ts`
+honors a UTF-8 or UTF-16 LE/BE BOM. Without a BOM, try strict UTF-8 first, then
+strict GB18030 (also covers GBK/GB2312 from Excel/WPS). Every decoder uses
+`fatal: true`: never use lossy `File.text()` or replacement decoding. Malformed
+BOM-declared data must fail without trying a different encoding. BOM-only files
+decode to empty text and receive the server's missing-header error. Do not guess
+unmarked UTF-16 or additional legacy encodings. CSV quoting and line endings are
+preserved, and the server's byte limit applies to the normalized UTF-8 CSV.
+Keep file read failures (`file_read_failed`) separate from decode failures
+(`invalid_encoding`); neither may send a preview request. The canonical byte
+matrix is in `triage-ui.test.ts`; `triage-import-dialog.test.tsx` covers exact
+Unicode preview upload and read/decode error wiring.
 
 Mapping is source header → canonical field; duplicate target mappings fail.
 Priority cells accept the canonical values in any letter case plus the zh-Hans

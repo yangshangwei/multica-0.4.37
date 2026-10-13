@@ -13,13 +13,66 @@ import {
 } from "./triage-ui";
 
 describe("triage input boundaries", () => {
-  it("rejects invalid UTF-8 instead of silently replacing bytes", () => {
-    expect(() =>
-      decodeTriageCsv(new Uint8Array([0xff, 0xfe]).buffer),
-    ).toThrow();
-    expect(
-      decodeTriageCsv(new TextEncoder().encode("title\n中文").buffer),
-    ).toBe("title\n中文");
+  it.each(["", "\uFEFF"])("prefers UTF-8 with BOM prefix %j", (prefix) => {
+    const csv = "title\n中文 é 😀";
+    expect(decodeTriageCsv(new TextEncoder().encode(prefix + csv).buffer)).toBe(csv);
+  });
+  it.each([
+    {
+      encoding: "GBK with English headers",
+      bytes: [0x74, 0x69, 0x74, 0x6c, 0x65, 0x0a, 0xd6, 0xd0, 0xce, 0xc4],
+      csv: "title\n中文",
+    },
+    {
+      encoding: "GBK with Chinese headers",
+      bytes: [0xb1, 0xea, 0xcc, 0xe2, 0x0a, 0xd6, 0xd0, 0xce, 0xc4],
+      csv: "标题\n中文",
+    },
+    {
+      encoding: "GB18030 four-byte characters",
+      bytes: [0x74, 0x69, 0x74, 0x6c, 0x65, 0x0a, 0x94, 0x39, 0xfc, 0x36],
+      csv: "title\n😀",
+    },
+    {
+      encoding: "UTF-16 LE with BOM",
+      bytes: [
+        0xff, 0xfe, 0x07, 0x68, 0x98, 0x98, 0x0a, 0x00,
+        0x2d, 0x4e, 0x87, 0x65, 0x3d, 0xd8, 0x00, 0xde,
+      ],
+      csv: "标题\n中文😀",
+    },
+    {
+      encoding: "UTF-16 BE with BOM",
+      bytes: [
+        0xfe, 0xff, 0x68, 0x07, 0x98, 0x98, 0x00, 0x0a,
+        0x4e, 0x2d, 0x65, 0x87, 0xd8, 0x3d, 0xde, 0x00,
+      ],
+      csv: "标题\n中文😀",
+    },
+  ])("decodes $encoding without changing CSV content", ({ bytes, csv }) => {
+    expect(decodeTriageCsv(new Uint8Array(bytes).buffer)).toBe(csv);
+  });
+  it.each([
+    { name: "empty file", bytes: [] },
+    { name: "UTF-8 BOM", bytes: [0xef, 0xbb, 0xbf] },
+    { name: "UTF-16 LE BOM", bytes: [0xff, 0xfe] },
+    { name: "UTF-16 BE BOM", bytes: [0xfe, 0xff] },
+  ])("decodes $name as empty content", ({ bytes }) => {
+    expect(decodeTriageCsv(new Uint8Array(bytes).buffer)).toBe("");
+  });
+  it.each([
+    { name: "invalid byte", bytes: [0xff] },
+    { name: "truncated GBK character", bytes: [0xd6] },
+    { name: "truncated GB18030 character", bytes: [0x81, 0x30, 0x81] },
+    { name: "invalid GB18030 character", bytes: [0x81, 0x30, 0x81, 0x2f] },
+    { name: "odd UTF-16 LE payload", bytes: [0xff, 0xfe, 0x74] },
+    { name: "odd UTF-16 BE payload", bytes: [0xfe, 0xff, 0x00] },
+    { name: "unpaired UTF-16 LE surrogate", bytes: [0xff, 0xfe, 0x00, 0xd8] },
+    { name: "unpaired UTF-16 BE surrogate", bytes: [0xfe, 0xff, 0xdc, 0x00] },
+    // These bytes are valid GB18030, but their BOM declares UTF-8.
+    { name: "malformed BOM-declared UTF-8", bytes: [0xef, 0xbb, 0xbf, 0xc3, 0xa9, 0xd6] },
+  ])("rejects $name instead of replacing or reinterpreting bytes", ({ bytes }) => {
+    expect(() => decodeTriageCsv(new Uint8Array(bytes).buffer)).toThrow();
   });
   it("keeps quoted CSV content intact for server parsing", () => {
     const csv = 'title,description\n"A,B","line 1\nline 2"';
