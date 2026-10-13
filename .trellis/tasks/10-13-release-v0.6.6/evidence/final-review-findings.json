@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "review_status": "passed_with_declared_limits",
+  "reviewed_at": "2026-10-13T11:43:03.536533+00:00",
+  "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+  "local_release_gate": "passed",
+  "release_blocking_findings": [],
+  "remaining_final_checks": [],
+  "fixed_findings": [
+    {
+      "severity": "low",
+      "files": [
+        ".artifacts/release-v0.6.6/checks-evidence/checks-summary.json",
+        "dist/release/v0.6.6/verification-v0.6.6.json",
+        "dist/release/v0.6.6/multica-v0.6.6-upgrade-docs.zip",
+        "dist/release/v0.6.6/SHA256SUMS-v0.6.6.txt"
+      ],
+      "issue": "Summary omitted the singular Desktop ESLint warning, reporting30 instead of31.",
+      "fix": "Regression owner corrected singular/plural parsing; parent regenerated portable summary, ZIP and checksums; reviewer verified UI3 + Desktop1 + Views27 against original log and final report."
+    }
+  ],
+  "not_fixed_findings": [
+    {
+      "severity": "informational",
+      "kind": "existing_source_lint_warnings",
+      "count": 31,
+      "blocking": false,
+      "reason": "Lint exits0 with no errors. Existing hook dependency/unused directive warnings are outside the release-only frozen-source scope."
+    }
+  ],
+  "acceptance_limits": [
+    {
+      "kind": "native_windows",
+      "blocking_for_local_delivery": false,
+      "details": "Installer, Desktop and CLI are unsigned. Native GUI/install/upgrade/profile retention, elevation, SmartScreen and Authenticode trust were not exercised."
+    },
+    {
+      "kind": "target_environment",
+      "blocking_for_local_delivery": false,
+      "details": "Linux amd64 ran under Docker Desktop emulation on ARM macOS with synthetic data. Real intranet/production and target filesystem qualification remain outside local acceptance."
+    },
+    {
+      "kind": "selected_test_scope",
+      "blocking_for_local_delivery": false,
+      "details": "Selected release/source-delta checks passed; four explicit opt-in Docker smoke tests remain skipped. This is not whole-repository/mobile acceptance."
+    }
+  ],
+  "verification": {
+    "lint": "pass,0errors31existingwarnings",
+    "typecheck": "pass",
+    "go_vet": "pass",
+    "selected_tests": "pass; four opt-in Node Docker smoke tests explicitly skipped",
+    "cmd_server_actual_events": {
+      "top_level": 25,
+      "run": 63,
+      "pass": 63,
+      "fail": 0,
+      "skip": 0
+    },
+    "linux_upgrade_and_fresh_admin": "pass, three scenarios with actual runtime evidence",
+    "windows_artifact_and_http": "pass",
+    "final_checksum_coverage": "21entries,22files; manifest excludes itself",
+    "docs_zip": "13safe regular files, exact delivered bytes",
+    "private_fixture_scan": "13known private values, zero leaks in delivered text and non-image archive files",
+    "recorded_command_log_digests": 26
+  },
+  "final_manifest_sha256": "16bb956f47141d967534f8575b65beed5e667abaf144cc2bd3e1aee95fcfec9d",
+  "parent_document_and_spec_review": {
+    "result": "pass",
+    "files": [
+      "docs/offline-upgrade.zh-CN.md",
+      "docs/releases/v0.6.6-upgrade.zh-CN.md",
+      ".trellis/spec/server/offline-delivery.md"
+    ],
+    "detail": "Generic guide exact bytes; version notes differ only by correct relative-link rebasing; new named-Go-test contract matches actual TestMain early exit."
+  },
+  "recovery_trace_review": {
+    "result": "pass",
+    "evidence": "recovery-trace-review.json",
+    "detail": "Historical executed wrapper and exact harness snapshots preserved; failed final snapshot remains failed, successful recovery and independent fresh change flow are distinct."
+  },
+  "changed_files": [
+    ".artifacts/release-v0.6.6/final-review/audit-artifacts.py",
+    ".artifacts/release-v0.6.6/final-review/audit-final-delivery.py",
+    ".artifacts/release-v0.6.6/final-review/checks-evidence-integrity.json",
+    ".artifacts/release-v0.6.6/final-review/feed-and-metadata-audit.json",
+    ".artifacts/release-v0.6.6/final-review/final-delivery-audit.json",
+    ".artifacts/release-v0.6.6/final-review/findings.json",
+    ".artifacts/release-v0.6.6/final-review/harness-correction-review.json",
+    ".artifacts/release-v0.6.6/final-review/independent-artifact-audit.json",
+    ".artifacts/release-v0.6.6/final-review/recovery-trace-review.json",
+    ".artifacts/release-v0.6.6/final-review/report.md"
+  ],
+  "scope": "Reviewer writes only final-review evidence. No shared application source, other agent harness, deliverable or executable bytes changed by reviewer."
+}

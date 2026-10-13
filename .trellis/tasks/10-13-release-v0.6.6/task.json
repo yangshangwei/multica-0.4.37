@@ -1,0 +1,33 @@
+{
+  "id": "release-v0.6.6",
+  "name": "release-v0.6.6",
+  "title": "制作 v0.6.6 内网升级包与 Windows x64 安装包",
+  "description": "参考 v0.6.5 交付流程，构建并校验 Linux amd64 服务端离线升级包、Windows x64 安装器、更新元数据及中文升级文档。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-13",
+  "completedAt": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "Local v0.6.6 delivery verified complete: 22 files / 21 checksums; password/device upgrades and fresh administrator pass. Original 16 regression failures resolved by unchanged reruns; previously skipped cmd/server rerun proves 25 top-level / 63 pass events. Native Windows remains unsigned/unverified per approved local-delivery scope. No application source change, remote release or production deployment.",
+  "meta": {
+    "release_source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+    "delivery_path": "dist/release/v0.6.6/",
+    "resumed_at": "2026-10-13T11:20:49.926560+00:00",
+    "quality_gate": "passed_with_declared_limits",
+    "manifest_sha256": "16bb956f47141d967534f8575b65beed5e667abaf144cc2bd3e1aee95fcfec9d",
+    "verification_report": "evidence/verification-v0.6.6.json"
+  }
+}

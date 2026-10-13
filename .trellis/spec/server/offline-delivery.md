@@ -184,6 +184,14 @@ including inner image and outer archive checksums and both source-guide copies.
 For a multi-platform local database tag, assert the saved and running target
 variants rather than weakening architecture checks after a host-default mismatch.
 
+For `go -C server test -json ./cmd/server -run '^TestPlatformAdmin'`, verify
+database readiness before starting and require named test `run`/`pass` events
+in the JSON output. Its `TestMain` can print `Skipping integration tests:` and
+exit zero when PostgreSQL is unreachable or still recovering (`57P03`), without
+running a single test. A package-level `pass` alone is not acceptance evidence.
+Retain that skipped attempt, restore database readiness, and rerun the same
+selection; report actual executed, passed, failed and skipped test counts.
+
 ## Wrong versus correct
 
 Wrong: edit `.env` and run `docker compose restart backend`.
