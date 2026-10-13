@@ -47,7 +47,10 @@
       "done": "已完成。",
       "blocked": "被外部依赖阻塞。",
       "cancelled": "决定不做。"
-    }
+    },
+    "moving": "正在移动 {{name}}...",
+    "moved": "已将 {{name}} 移至分类内第 {{position}} 位。",
+    "hide_archived_to_reorder": "隐藏已归档状态后，即可调整状态顺序。"
   },
   "quick_actions": {
     "title": "快捷操作",
@@ -724,7 +727,12 @@
       "granted": "当前浏览器可以弹出通知横幅。",
       "denied": "已被浏览器拦截。请在浏览器设置中为本站点开启通知权限。",
       "enabled_badge": "已启用"
-    }
+    },
+    "loading": "正在加载通知设置...",
+    "load_failed": "无法加载通知设置，请重试后查看或修改。",
+    "refresh_failed": "无法刷新通知设置，当前显示上次加载的设置。",
+    "retry": "重试",
+    "retrying": "正在重试..."
   },
   "tokens": {
     "title": "API Token",
@@ -1479,7 +1487,8 @@
     "expiry_24h": "24 小时",
     "expiry_7d": "7 天",
     "expiry_30d": "30 天",
-    "expiry_never": "永久有效"
+    "expiry_never": "永久有效",
+    "actions_for": "{{name}} 的成员操作"
   },
   "iterations": {
     "title": "迭代设置",

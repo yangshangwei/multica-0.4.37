@@ -136,9 +136,10 @@ export function UsageSection({ runtime }: { runtime: AgentRuntime }) {
   // hourly rollup on the same `tz` we pass here, so every frontend window
   // calculation shares one axis with the server.
   const tz = useViewingTimezone();
-  const { data: usage = [], isLoading: loading } = useQuery(
+  const usageQuery = useQuery(
     runtimeUsageOptions(runtimeId, 180, tz),
   );
+  const usage = usageQuery.data ?? [];
   const [dim, setDim] = useState<Exclude<WhenTab, "heatmap">>("daily");
   const [days, setDays] = useState<TimeRange>(30);
   // Subscribe so the KPI cards (which call estimateCost at render-time, not
@@ -147,8 +148,19 @@ export function UsageSection({ runtime }: { runtime: AgentRuntime }) {
   // subscribe on their own and pass pricings as a memo dep there.
   useCustomPricingStore((s) => s.pricings);
 
-  if (loading) return <UsageSkeleton />;
-  if (usage.length === 0) return <UsageEmpty />;
+  const failed = usageQuery.isError || (usageQuery.isFetching && usageQuery.errorUpdatedAt > usageQuery.dataUpdatedAt);
+  const feedback = failed ? (
+    <UsageReadError
+      message={usageQuery.data === undefined
+          ? t(($) => $.usage.load_failed)
+          : t(($) => $.usage.refresh_failed)}
+      retrying={usageQuery.isFetching}
+      onRetry={() => void usageQuery.refetch()}
+    />
+  ) : null;
+
+  if (usageQuery.data === undefined) return feedback ?? <UsageSkeleton />;
+  if (usage.length === 0) return <div className="space-y-5">{feedback}<UsageEmpty /></div>;
 
   // Slice the cached 180-day window into the user's selected sub-window AND
   // the immediately prior window of equal length. The KPI delta ("+18% vs
@@ -183,6 +195,7 @@ export function UsageSection({ runtime }: { runtime: AgentRuntime }) {
 
   return (
     <div className="space-y-5">
+      {feedback}
       {/* Page-wide period selector. Lives at the top because it controls
           basically everything below: the KPI numbers and labels, the
           daily / weekly chart window, and the cost-by aggregations. The
@@ -671,10 +684,12 @@ function CostByBlock({
 
   // by-agent is server-side aggregation (fetched lazily on tab activation).
   // by-model derives from the daily cache the parent already has — free.
-  const { data: byAgentRows = [] } = useQuery({
+  const byAgentQuery = useQuery({
     ...runtimeUsageByAgentOptions(runtimeId, days, tz),
     enabled: tab === "agent",
   });
+  const byAgentRows = byAgentQuery.data ?? [];
+  const byAgentFailed = byAgentQuery.isError || (byAgentQuery.isFetching && byAgentQuery.errorUpdatedAt > byAgentQuery.dataUpdatedAt);
 
   const wsId = useWorkspaceId();
   const { data: agents = [] } = useQuery(agentListOptions(wsId));
@@ -690,7 +705,7 @@ function CostByBlock({
 
   const caption =
     tab === "agent"
-      ? t(($) => $.usage.cost_by_caption_agent, { count: byAgent.length })
+      ? byAgentQuery.data === undefined ? "" : t(($) => $.usage.cost_by_caption_agent, { count: byAgent.length })
       : t(($) => $.usage.cost_by_caption_model, { count: byModel.length });
 
   return (
@@ -716,7 +731,19 @@ function CostByBlock({
         <span className="text-caption text-muted-foreground">{caption}</span>
       </div>
       <div className="pt-4">
-        {tab === "agent" && (
+        {tab === "agent" && byAgentFailed && (
+          <UsageReadError
+            message={byAgentQuery.data === undefined
+              ? t(($) => $.usage.agents_load_failed)
+              : t(($) => $.usage.agents_refresh_failed)}
+            retrying={byAgentQuery.isFetching}
+            onRetry={() => void byAgentQuery.refetch()}
+          />
+        )}
+        {tab === "agent" && !byAgentFailed && byAgentQuery.data === undefined && (
+          <p role="status" className="text-caption text-muted-foreground">{t(($) => $.usage.agents_loading)}</p>
+        )}
+        {tab === "agent" && byAgentQuery.data !== undefined && (
           <CostByList
             rows={byAgent}
             renderKey={(key) => {
@@ -878,9 +905,23 @@ function DailyBreakdownTable({ usage }: { usage: RuntimeUsage[] }) {
 // Loading + empty states
 // ---------------------------------------------------------------------------
 
-function UsageSkeleton() {
+function UsageReadError({ message, retrying, onRetry }: { message: string; retrying: boolean; onRetry: () => void }) {
+  const { t } = useT("runtimes");
   return (
-    <div className="space-y-5">
+    <div role="alert" className="flex flex-wrap items-center gap-3 text-body">
+      <p className="min-w-0 flex-1 basis-48 text-muted-foreground">{message}</p>
+      <Button variant="outline" size="sm" disabled={retrying} onClick={onRetry}>
+        {retrying ? t(($) => $.usage.retrying) : t(($) => $.usage.retry)}
+      </Button>
+    </div>
+  );
+}
+
+function UsageSkeleton() {
+  const { t } = useT("runtimes");
+  return (
+    <div role="status" className="space-y-5">
+      <span className="sr-only">{t(($) => $.usage.loading)}</span>
       <Skeleton className="h-28 rounded-lg" />
       <Skeleton className="h-56 rounded-lg" />
       <Skeleton className="h-32" />
