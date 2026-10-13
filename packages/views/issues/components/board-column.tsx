@@ -135,6 +135,7 @@ export const BoardColumn = memo(function BoardColumn({
   const viewBaseline = useViewBaseline();
   const statusFixedByView = !!status && viewBaseline?.status.has(status) === true;
   const { t } = useT("issues");
+  const columnTitle = status ? t(($) => $.status[status]) : group.title;
 
   // Resolve IDs to Issue objects, preserving parent-provided order
   const resolvedIssues = useMemo(
@@ -218,7 +219,7 @@ export const BoardColumn = memo(function BoardColumn({
             <DeferredPopup
               ariaHasPopup="menu"
               triggerRender={
-                <Button variant="ghost" size="icon-sm" className="rounded-full text-muted-foreground">
+                <Button variant="ghost" size="icon-sm" className="rounded-full text-muted-foreground" aria-label={t(($) => $.board.column_actions, { column: columnTitle })}>
                   <MoreHorizontal className="size-3.5" />
                 </Button>
               }
@@ -227,7 +228,7 @@ export const BoardColumn = memo(function BoardColumn({
                 <DropdownMenu open={open} onOpenChange={onOpenChange}>
                   <DropdownMenuTrigger
                     render={
-                      <Button variant="ghost" size="icon-sm" className="rounded-full text-muted-foreground">
+                      <Button variant="ghost" size="icon-sm" className="rounded-full text-muted-foreground" aria-label={t(($) => $.board.column_actions, { column: columnTitle })}>
                         <MoreHorizontal className="size-3.5" />
                       </Button>
                     }
@@ -254,6 +255,7 @@ export const BoardColumn = memo(function BoardColumn({
                   variant="ghost"
                   size="icon-sm"
                   className="rounded-full text-muted-foreground"
+                  aria-label={t(($) => $.board.add_issue_to_column, { column: columnTitle })}
                   onClick={() => {
                     const data = {
                       ...(group.createData ?? {}),

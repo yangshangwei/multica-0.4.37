@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { WorkspaceSlugProvider } from "@multica/core/paths";
 import { buildIssueStatusCatalog } from "@multica/core/issue-statuses";
@@ -115,6 +116,7 @@ function renderRow(props: {
   view: "inbox" | "archived";
   adapter?: NavigationAdapter;
   onClick?: () => void;
+  isSelected?: boolean;
 }) {
   return render(
     <WorkspaceSlugProvider slug="acme">
@@ -122,7 +124,7 @@ function renderRow(props: {
         <InboxListItem
           item={props.item}
           view={props.view}
-          isSelected={false}
+          isSelected={props.isSelected ?? false}
           onClick={props.onClick ?? vi.fn()}
           onAction={vi.fn()}
         />
@@ -196,15 +198,15 @@ describe("InboxListItem issue activity", () => {
 });
 
 describe("InboxListItem keyboard semantics", () => {
-  it("is a role=button host, so its own controls stay reachable", () => {
-    // Interactive descendants of a real <button> are invalid HTML and are not
-    // exposed to screen readers — the row carries an action button and a menu.
-    const { container } = renderRow({ item: item(), view: "inbox" });
+  it("exposes the current item through a native title button with independent controls", () => {
+    renderRow({ item: item(), view: "inbox", isSelected: true });
 
-    const row = screen.getByTestId("actor-avatar").closest('[role="button"]')!;
-    expect(row.tagName).toBe("DIV");
-    expect(row.getAttribute("tabindex")).toBe("0");
-    expect(container.querySelector("button")).not.toBeNull();
+    const row = screen.getByRole("listitem");
+    const selection = screen.getByRole("button", { name: "Issue title" });
+    expect(selection).toHaveAttribute("aria-current", "true");
+    expect(selection.tagName).toBe("BUTTON");
+    expect(selection.querySelector("button, a, [role=button]")).toBeNull();
+    expect(row.querySelectorAll("button")).toHaveLength(2);
   });
 
   it("gates the archive affordance on hover capability, not viewport width", () => {
@@ -214,7 +216,7 @@ describe("InboxListItem keyboard semantics", () => {
     // problem the compact menu exists to solve.
     const { container } = renderRow({ item: item(), view: "inbox" });
 
-    const actionButton = container.querySelector("button")!;
+    const actionButton = container.querySelector('button[aria-label="label"]')!;
 
     expect(actionButton.className).toContain(
       "[@media(hover:hover)]:group-hover:inline-flex",
@@ -222,14 +224,15 @@ describe("InboxListItem keyboard semantics", () => {
     expect(actionButton.className).not.toMatch(/(^|\s)(sm|md|lg|xl|2xl):group-/);
   });
 
-  it("activates on Enter like the button it replaces", () => {
+  it("activates on Enter and Space with native button behavior", async () => {
     const onClick = vi.fn();
     renderRow({ item: item(), view: "inbox", onClick });
 
-    const row = screen.getByTestId("actor-avatar").closest('[role="button"]')!;
-    fireEvent.keyDown(row, { key: "Enter" });
+    const selection = screen.getByRole("button", { name: "Issue title" });
+    selection.focus();
+    await userEvent.setup().keyboard("{Enter} ");
 
-    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledTimes(2);
   });
 
   it("leaves keys pressed inside its own controls alone", () => {
@@ -237,7 +240,7 @@ describe("InboxListItem keyboard semantics", () => {
     const onClick = vi.fn();
     const { container } = renderRow({ item: item(), view: "inbox", onClick });
 
-    fireEvent.keyDown(container.querySelector("button")!, { key: "Enter" });
+    fireEvent.keyDown(container.querySelector('button[aria-label="label"]')!, { key: "Enter" });
 
     expect(onClick).not.toHaveBeenCalled();
   });
@@ -259,7 +262,7 @@ describe("InboxListItem keyboard semantics", () => {
       </WorkspaceSlugProvider>,
     );
 
-    fireEvent.click(container.querySelector("button")!);
+    fireEvent.click(container.querySelector('button[aria-label="label"]')!);
 
     expect(onAction).toHaveBeenCalledTimes(1);
     expect(onClick).not.toHaveBeenCalled();
@@ -272,7 +275,7 @@ describe("InboxListItem link semantics", () => {
     const push = vi.fn();
     renderRow({ item: item(), view: "inbox", onClick, adapter: makeAdapter({ push }) });
 
-    fireEvent.click(screen.getByTestId("actor-avatar").closest('[role="button"]')!);
+    fireEvent.click(screen.getByRole("listitem"));
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(push).not.toHaveBeenCalled();
   });
@@ -287,7 +290,7 @@ describe("InboxListItem link semantics", () => {
       adapter: makeAdapter({ openInNewTab }),
     });
 
-    fireEvent.click(screen.getByTestId("actor-avatar").closest('[role="button"]')!, {
+    fireEvent.click(screen.getByRole("listitem"), {
       metaKey: true,
     });
     expect(openInNewTab).toHaveBeenCalledWith("/acme/issues/issue-1", undefined);
@@ -298,7 +301,7 @@ describe("InboxListItem link semantics", () => {
     const openInNewTab = vi.fn();
     renderRow({ item: item(), view: "inbox", adapter: makeAdapter({ openInNewTab }) });
 
-    const row = screen.getByTestId("actor-avatar").closest('[role="button"]')!;
+    const row = screen.getByRole("listitem");
     const event = new MouseEvent("auxclick", {
       bubbles: true,
       button: 1,
@@ -320,7 +323,7 @@ describe("InboxListItem link semantics", () => {
       adapter: makeAdapter({ openInNewTab }),
     });
 
-    fireEvent.click(screen.getByTestId("actor-avatar").closest('[role="button"]')!, {
+    fireEvent.click(screen.getByRole("listitem"), {
       metaKey: true,
     });
     expect(onClick).toHaveBeenCalledTimes(1);

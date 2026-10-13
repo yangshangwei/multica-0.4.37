@@ -4,32 +4,44 @@ import type { Label } from "@multica/core/types";
 import { X } from "lucide-react";
 import { useT } from "../i18n";
 
-/**
- * Map a label's `#rrggbb` color to a readable text color.
- *
- * Uses the ITU-R BT.601 perceived-luminance formula: colors above the
- * threshold get dark text (#111827), colors below get light text (#f9fafb).
- * This works for both pastel and saturated palettes without a hard lookup
- * table.
- *
- * The malformed-hex fallback returns dark-on-default which is readable on
- * the default `backgroundColor` rendering path — better than pure black
- * which disappears on dark chips.
- *
- * SECURITY INVARIANT: `LabelChip` applies `style={{ backgroundColor: color }}`
- * directly, trusting the backend's color format. The backend's
- * `normalizeColor` regex pins the value to `^#?[0-9a-fA-F]{6}$`. If that regex
- * ever loosens (named colors, `url(...)`, etc.), this becomes an injection
- * vector.
- */
-function contrastTextColor(hex: string): string {
-  const h = hex.replace("#", "");
-  if (h.length !== 6) return "#111827";
-  const r = parseInt(h.slice(0, 2), 16) / 255;
-  const g = parseInt(h.slice(2, 4), 16) / 255;
-  const b = parseInt(h.slice(4, 6), 16) / 255;
-  const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-  return luminance > 0.55 ? "#111827" : "#f9fafb";
+function relativeLuminance(hex: string): number {
+  const linear = (offset: number) => {
+    const channel = parseInt(hex.slice(offset, offset + 2), 16) / 255;
+    return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * linear(1) + 0.7152 * linear(3) + 0.0722 * linear(5);
+}
+
+const TEXT_CANDIDATES = ["#111827", "#f9fafb"].map((color) => ({
+  color,
+  luminance: relativeLuminance(color),
+}));
+
+/** Preserve valid label fills and guarantee WCAG AA contrast for small text. */
+export function labelChipColors(hex: string) {
+  // The API accepts optional-# six-digit hex. Invalid values need an opaque
+  // fill as well as a foreground; inheriting a page background is not safe.
+  const backgroundColor = /^#?[0-9a-f]{6}$/i.test(hex)
+    ? `#${hex.replace("#", "").toLowerCase()}`
+    : "#6b7280";
+  const luminance = relativeLuminance(backgroundColor);
+  let color = "#000000";
+  let bestContrast = 0;
+  for (const candidate of TEXT_CANDIDATES) {
+    const contrast = (Math.max(luminance, candidate.luminance) + 0.05)
+      / (Math.min(luminance, candidate.luminance) + 0.05);
+    if (contrast > bestContrast) {
+      color = candidate.color;
+      bestContrast = contrast;
+    }
+  }
+  if (bestContrast < 4.5) {
+    // At least one of black/white reaches 4.5 for every opaque sRGB fill.
+    color = (luminance + 0.05) / 0.05 >= 1.05 / (luminance + 0.05)
+      ? "#000000"
+      : "#ffffff";
+  }
+  return { backgroundColor, color };
 }
 
 interface LabelChipProps {
@@ -52,7 +64,7 @@ interface LabelChipProps {
  */
 export function LabelChip({ label, onRemove, className, fullName }: LabelChipProps) {
   const { t } = useT("labels");
-  const textColor = contrastTextColor(label.color);
+  const colors = labelChipColors(label.color);
   const nameClass = fullName ? "break-all" : "truncate max-w-[12rem]";
   return (
     <span
@@ -61,7 +73,7 @@ export function LabelChip({ label, onRemove, className, fullName }: LabelChipPro
       // its content width and the parent clips it mid-shape; with it the inner
       // name truncates and the chip keeps its rounded ends.
       className={`inline-flex min-w-0 items-center gap-1 rounded-full px-2 py-0.5 text-caption font-medium ${className ?? ""}`}
-      style={{ backgroundColor: label.color, color: textColor }}
+      style={colors}
       // aria-label exposes the full name to screen readers when the span
       // visually truncates. title stays for sighted hover-tooltip.
       aria-label={label.name}

@@ -2,9 +2,11 @@
  * @vitest-environment jsdom
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { IssueStatusEntry } from "@multica/core/types";
 import en from "../../locales/en/settings.json";
+import enIssues from "../../locales/en/issues.json";
 import { IssueStatusesTab } from "./issue-statuses-tab";
 
 const reorderMutate = vi.hoisted(() => vi.fn());
@@ -40,9 +42,9 @@ vi.mock("../../issues/utils/status-label", () => ({
   useStatusLabel: () => (key: string) => key,
 }));
 vi.mock("../../i18n", () => ({
-  useT: () => ({
+  useT: (namespace: string) => ({
     t: (accessor: (dict: unknown) => string, params?: Record<string, unknown>) => {
-      const template = accessor(en);
+      const template = accessor(namespace === "issues" ? enIssues : en);
       if (!params) return template;
       return template.replace(/\{\{(\w+)\}\}/g, (_, k: string) => String(params[k] ?? ""));
     },
@@ -164,5 +166,101 @@ describe("IssueStatusesTab", () => {
     expect(
       screen.getByLabelText(en.issue_statuses.actions.reorder.replace("{{name}}", "QA")),
     ).toBeInTheDocument();
+  });
+
+  it("moves by keyboard, prevents repeat submissions and keeps focus at the boundary", async () => {
+    const user = userEvent.setup();
+    catalog = [
+      BUILT_IN_IN_REVIEW,
+      entry({ key: "qa", name: "QA", position: 1 }),
+      entry({ key: "uat", name: "UAT", position: 2 }),
+    ];
+    render(<IssueStatusesTab />);
+
+    const move = screen.getByRole("button", { name: "Move UAT up" });
+    move.focus();
+    await user.keyboard("{Enter}");
+    expect(reorderMutate).toHaveBeenCalledTimes(1);
+    expect(reorderMutate.mock.calls[0]![0]).toMatchObject({
+      category: "in_review", ordered: [{ id: "uat" }, { id: "qa" }],
+    });
+    expect(move).toHaveFocus();
+    expect(move).toHaveAttribute("aria-disabled", "true");
+    fireEvent.click(screen.getByRole("button", { name: "Move UAT down" }));
+    expect(reorderMutate).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      reorderMutate.mock.calls[0]![1].onSuccess();
+      reorderMutate.mock.calls[0]![1].onSettled();
+    });
+    await waitFor(() => expect(screen.getByText(/UAT moved to position 1/)).toHaveAttribute("role", "status"));
+    expect(move).toHaveFocus();
+    await user.keyboard(" ");
+    expect(reorderMutate).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps category boundaries and archived rows out of the order mutation", async () => {
+    catalog = [
+      BUILT_IN_IN_REVIEW,
+      entry({ key: "qa", name: "QA", position: 1 }),
+      entry({ key: "uat", name: "UAT", position: 2 }),
+      entry({ key: "retired", name: "Retired", position: 3, archived_at: "2026-01-01" }),
+      entry({ key: "todo_custom", name: "Queued", category: "todo" }),
+    ];
+    render(<IssueStatusesTab />);
+    await userEvent.click(screen.getByRole("switch"));
+    expect(screen.getByText("Retired")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Move Retired up" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Move Queued up" })).toBeNull();
+    const boundary = screen.getByRole("button", { name: "Move QA up" });
+    expect(boundary).toHaveAttribute("aria-disabled", "true");
+    fireEvent.click(boundary);
+    expect(reorderMutate).not.toHaveBeenCalled();
+    // Mixed active/archived views are read-only for ordering. The real Query
+    // normalization regression lives in issue-statuses-ordering.test.tsx.
+    await userEvent.click(screen.getByRole("switch"));
+    fireEvent.click(screen.getByRole("button", { name: "Move QA down" }));
+    expect(reorderMutate.mock.calls[0]![0]).toMatchObject({
+      ordered: [{ id: "uat" }, { id: "qa" }],
+    });
+    expect(screen.queryByText("Retired")).toBeNull();
+  });
+
+  it("restores the prior order and announces a failed save without moving focus", () => {
+    catalog = [
+      BUILT_IN_IN_REVIEW,
+      entry({ key: "qa", name: "QA", position: 1 }),
+      entry({ key: "uat", name: "UAT", position: 2 }),
+    ];
+    render(<IssueStatusesTab />);
+    const move = screen.getByRole("button", { name: "Move UAT up" });
+    move.focus();
+    fireEvent.click(move);
+    act(() => {
+      reorderMutate.mock.calls[0]![1].onError(new Error("offline"));
+      reorderMutate.mock.calls[0]![1].onSettled();
+    });
+    expect(screen.getByText(en.issue_statuses.reorder_failed)).toHaveAttribute("role", "status");
+    expect(move).toHaveFocus();
+    expect(move).toHaveAttribute("aria-disabled", "false");
+    expect(screen.getByRole("button", { name: "Move QA up" })).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("cannot move across a visible archived row", async () => {
+    catalog = [
+      BUILT_IN_IN_REVIEW,
+      entry({ key: "qa", name: "QA", position: 1 }),
+      entry({ key: "retired", name: "Retired", position: 2, archived_at: "2026-01-01" }),
+      entry({ key: "uat", name: "UAT", position: 3 }),
+    ];
+    render(<IssueStatusesTab />);
+    await userEvent.click(screen.getByRole("switch"));
+    const before = screen.getByRole("button", { name: "Move QA down" });
+    const after = screen.getByRole("button", { name: "Move UAT up" });
+    expect(before).toHaveAttribute("aria-disabled", "true");
+    expect(after).toHaveAttribute("aria-disabled", "true");
+    fireEvent.click(before);
+    fireEvent.click(after);
+    expect(reorderMutate).not.toHaveBeenCalled();
   });
 });

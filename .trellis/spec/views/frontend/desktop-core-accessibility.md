@@ -107,6 +107,59 @@ the full daily DOM. Category-based bars pair existing semantic fills with
   removes successful IDs from selection, and retains failed selections with a
   localized summary. Never close the confirmation or clear selection on dispatch.
 
+### Core audit recovery and keyboard details
+
+- Filter inputs inside Base UI menus isolate text-editing keys from menu
+  typeahead. Preserve Escape/Tab outside composition; IME candidate keys and
+  composition Enter must neither activate a menu item nor commit a scalar filter.
+- `labelChipColors(hex)` normalizes optional-`#` six-digit colors and chooses a
+  foreground with WCAG relative-luminance contrast >=4.5. Malformed colors need
+  an opaque fallback fill as well as a readable foreground. The former 0.55
+  perceived-brightness threshold is not a contrast guarantee.
+- Inbox uses a named semantic list and native selection buttons marked with
+  `aria-current`; avatar/menu/archive controls remain independent siblings.
+  Arrow navigation focuses the actual target button. At a virtual boundary,
+  park focus on the list only until that target mounts, and cancel the handoff
+  when another control acquires focus. Expose row position and total count.
+- Project disclosures have stable `aria-controls`/`aria-expanded`; retaining
+  the description editor while collapsed must also forward `isVisible=false`
+  so formatting/link portals close. Compact project Sheets have a SheetTitle.
+- Custom status ordering uses the existing adjacent-order controls and retains
+  focus through pending/boundary states. Disable dragging and adjacent ordering
+  while archived rows are displayed, and explain how to hide them: the actual
+  mutation normalizes every active position to 1..n, so a local slice check
+  cannot guarantee the visual order around unchanged archived positions.
+- Gantt recovery notices precede the shared empty/content split, including
+  `isScopeEmpty=true`. Notification preferences and both runtime usage queries
+  distinguish initial loading/failure, successful empty data, and cached refresh
+  failure. Query timestamps keep Retry mounted while a cold retry is pending;
+  pending retries disable repeat submission and cached refreshes retain content.
+- `projectGanttIssuesOptions(wsId, projectId, assigneeTypes)` erases the exact
+  cached query snapshot on 401/403/404, not merely the current rendered array.
+  A subsequent 500 or remount cannot restore denied rows; a successful fetch
+  can supply new data. Capture that Query before awaiting the request and check
+  `signal.aborted` before clearing: a cancelled older request must not erase a
+  newer successful result on the same Query object.
+
+Additional validation cases:
+
+| Situation | Required behavior |
+|---|---|
+| Cached Gantt success -> 403 -> Retry -> 500 | No denied task rows reappear |
+| Remount after access loss, new fetch pending | No previous snapshot is shown |
+| Cancelled Gantt request later rejects 403 | New successful snapshot survives |
+| Empty project with cached empty schedule, refresh fails | Retry notice remains reachable |
+| Archived status rows are shown | All ordering paths disabled with explanation |
+| Inbox arrow crosses the virtual mount boundary | Named target receives focus/current state |
+
+Regression owners: `issues-header.search-filter.test.tsx`,
+`issues-header.property-filter.test.tsx`, `labels/label-chip.test.ts`,
+`inbox-list.test.tsx`, `inbox-list-item.test.tsx`, `project-detail.test.tsx`,
+`issue-statuses-ordering.test.tsx`, `notifications-tab.test.tsx`,
+`usage-section-recovery.test.tsx`, `issue-surface.test.tsx`, and
+`packages/core/issues/queries.test.ts`. Native evidence:
+`.impeccable/audit/2026-10-13-core/remediation-native.json`.
+
 Canonical regressions: `canonical-id.test.tsx`, task detail/route suites,
 `triage-page-recovery.test.tsx`, chat window/page suites, project list/detail
 suites, `adjacent-order.test.ts`, `reorder-controls.test.tsx`, compact selector,

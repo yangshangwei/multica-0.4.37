@@ -15,6 +15,7 @@ import { p1Overview, p1Preview, p1Project } from "@multica/core/projects/test-fi
 
 const mocks = vi.hoisted(() => ({
   role: "admin",
+  mobile: false,
   realQueries: false,
   editorEmitted: vi.fn(),
   copyText: vi.fn(),
@@ -138,7 +139,7 @@ vi.mock("react-resizable-panels", () => ({
 }));
 
 vi.mock("@multica/ui/hooks/use-mobile", () => ({
-  useIsMobile: () => false,
+  useIsMobile: () => mocks.mobile,
 }));
 
 vi.mock("@multica/ui/components/ui/resizable", () => ({
@@ -183,13 +184,6 @@ vi.mock("@multica/ui/components/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipTrigger: ({ render }: { render: React.ReactNode }) => <>{render}</>,
   TooltipContent: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
-}));
-
-vi.mock("@multica/ui/components/ui/sheet", () => ({
-  Sheet: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  SheetContent: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
 }));
@@ -362,7 +356,7 @@ const UNLINKED_ISSUE: Issue = {
   metadata: {}, properties: {}, created_at: "2026-09-28T00:00:00Z", updated_at: "2026-09-28T00:00:00Z",
 };
 
-function renderProjectDetail() {
+function renderProjectDetail(locale: "en" | "zh-Hans" = "en") {
   const adapter: NavigationAdapter = {
     push: mocks.push,
     replace: vi.fn(),
@@ -373,15 +367,17 @@ function renderProjectDetail() {
     getShareableUrl: mocks.getShareableUrl,
   };
 
-  renderWithI18n(
+  return renderWithI18n(
     <NavigationProvider value={adapter}>
       <ProjectDetail projectId={PROJECT.id} />
     </NavigationProvider>,
+    { locale },
   );
 }
 
 beforeEach(() => {
   mocks.role = "admin";
+  mocks.mobile = false;
   mocks.realQueries = false;
   mocks.editorEmitted.mockClear();
   mocks.project = PROJECT;
@@ -542,7 +538,58 @@ describe("ProjectDetail project deletion", () => {
   });
 });
 
-vi.mock("./project-description", () => ({ ProjectDescription: () => <div /> }));
+vi.mock("./project-description", () => ({
+  ProjectDescription: ({ isVisible = true }: { isVisible?: boolean }) => <textarea aria-label="Project description draft" data-visible={isVisible} />,
+}));
+
+describe("ProjectDetail sidebar accessibility", () => {
+  it.each(["Properties", "Scope closure", "Description"])("exposes stable disclosure state for %s", async (name) => {
+    renderProjectDetail();
+    const toggle = screen.getByRole("button", { name });
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    const regionId = toggle.getAttribute("aria-controls")!;
+    const region = document.getElementById(regionId);
+    expect(region).toBeVisible();
+
+    await userEvent.setup().click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(document.getElementById(regionId)).toBe(region);
+    expect(region).not.toBeVisible();
+
+    await userEvent.setup().click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(document.getElementById(regionId)).toBe(region);
+    expect(region).toBeVisible();
+  });
+
+  it("keeps the description editor and pending input when collapsed", async () => {
+    renderProjectDetail();
+    const user = userEvent.setup();
+    const editor = screen.getByRole("textbox", { name: "Project description draft" });
+    await user.type(editor, "Unpublished project context");
+    const toggle = screen.getByRole("button", { name: "Description" });
+    await user.click(toggle);
+    expect(editor).not.toBeVisible();
+    expect(editor).toHaveAttribute("data-visible", "false");
+    await user.click(toggle);
+    expect(screen.getByRole("textbox", { name: "Project description draft" })).toBe(editor);
+    expect(editor).toHaveValue("Unpublished project context");
+    expect(editor).toHaveAttribute("data-visible", "true");
+  });
+
+  it.each([
+    ["en", "Toggle right sidebar", `Properties for ${PROJECT.title}`],
+    ["zh-Hans", "切换右侧边栏", `${PROJECT.title}的属性`],
+  ] as const)("names the compact properties Sheet in %s", async (locale, toggleName, dialogName) => {
+    mocks.mobile = true;
+    renderProjectDetail(locale);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: toggleName }));
+    expect(await screen.findByRole("dialog", { name: dialogName })).toBeVisible();
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  });
+});
 
 describe("ProjectDetail query recovery", () => {
   const project: Project = { ...p1Project, workspace_id: "workspace-1", status: "in_progress", priority: "medium", lead_type: "member" };

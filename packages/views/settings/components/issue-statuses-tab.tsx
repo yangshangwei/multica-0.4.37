@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Archive,
@@ -80,6 +80,8 @@ import {
 } from "@multica/ui/components/ui/tooltip";
 import { ColorPicker, COLOR_PICKER_PRESETS } from "../../common/color-picker";
 import { StatusIcon } from "../../issues/components/status-icon";
+import { ReorderControls, type ReorderOptions } from "../../issues/components/reorder-controls";
+import { adjacentOrder, type OrderDirection } from "../../issues/utils/adjacent-order";
 import { useStatusLabel } from "../../issues/utils/status-label";
 import { useT } from "../../i18n";
 import { SettingsTab } from "./settings-layout";
@@ -127,6 +129,8 @@ export function IssueStatusesTab() {
   const [createCategory, setCreateCategory] = useState<IssueStatusCategory | null>(null);
   const [editing, setEditing] = useState<IssueStatusEntry | null>(null);
   const [pendingArchive, setPendingArchive] = useState<IssueStatusEntry | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+  const archivedOrderingHintId = useId();
 
   const { data: statuses = [], isLoading } = useQuery(issueStatusListOptions(wsId));
   const { data: members = [] } = useQuery(memberListOptions(wsId));
@@ -162,14 +166,24 @@ export function IssueStatusesTab() {
       description={t(($) => $.issue_statuses.description)}
     >
       <div className="space-y-4">
+        <span role="status" aria-live="polite" aria-atomic="true" className="sr-only">{announcement}</span>
         {/* Offered only once the workspace has something archived. A permanently
             disabled "Show archived (0)" is a control that can never do
             anything. */}
         {archivedCount > 0 && (
           <label className="flex items-center justify-end gap-2 text-caption text-muted-foreground">
             {t(($) => $.issue_statuses.show_archived, { count: archivedCount })}
-            <Switch checked={showArchived} onCheckedChange={setShowArchived} />
+            <Switch
+              checked={showArchived}
+              onCheckedChange={setShowArchived}
+              aria-describedby={showArchived && isAdmin ? archivedOrderingHintId : undefined}
+            />
           </label>
+        )}
+        {showArchived && isAdmin && (
+          <p id={archivedOrderingHintId} className="text-caption text-muted-foreground">
+            {t(($) => $.issue_statuses.hide_archived_to_reorder)}
+          </p>
         )}
 
         {isLoading ? (
@@ -188,9 +202,11 @@ export function IssueStatusesTab() {
                 builtIn={group.builtIn}
                 custom={group.custom}
                 canManage={isAdmin}
+                showArchived={showArchived}
                 onCreate={() => setCreateCategory(group.category)}
                 onEdit={setEditing}
                 onArchive={setPendingArchive}
+                onAnnounce={setAnnouncement}
               />
             ))}
           </div>
@@ -218,17 +234,21 @@ function CategorySection({
   builtIn,
   custom,
   canManage,
+  showArchived,
   onCreate,
   onEdit,
   onArchive,
+  onAnnounce,
 }: {
   category: IssueStatusCategory;
   builtIn: IssueStatusEntry | undefined;
   custom: IssueStatusEntry[];
   canManage: boolean;
+  showArchived: boolean;
   onCreate: () => void;
   onEdit: (status: IssueStatusEntry) => void;
   onArchive: (status: IssueStatusEntry) => void;
+  onAnnounce: (message: string) => void;
 }) {
   const { t } = useT("settings");
   const wsId = useWorkspaceId();
@@ -238,36 +258,55 @@ function CategorySection({
   // Local order so the drag reads as instant even before the optimistic cache
   // write settles; resynced whenever the server list changes.
   const [order, setOrder] = useState(custom);
+  const orderInFlight = useRef(false);
+  // The mutation compacts every active position to 1..n. Allowing even a
+  // same-segment move with archived rows shown could cross their frozen ranks.
+  const reorderDisabled = reorder.isPending || showArchived || order.some((entry) => entry.archived_at);
   useEffect(() => setOrder(custom), [custom]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-    const from = order.findIndex((s) => s.id === active.id);
-    const to = order.findIndex((s) => s.id === over.id);
-    if (from < 0 || to < 0) return;
+  const move = (from: number, to: number) => {
+    if (!canManage || reorderDisabled || orderInFlight.current || from < 0 || to < 0 || from === to) return;
+    const entry = order[from];
+    if (!entry || !order[to]) return;
     const next = arrayMove(order, from, to);
+    orderInFlight.current = true;
     setOrder(next);
-    // ACTIVE rows only. With "show archived" on, `order` also holds archived
-    // rows; sending those made the server reject the request, and before the
-    // write became atomic that rejection landed AFTER the active rows had
-    // already been reordered. Archived rows are frozen, so their absence from
-    // the payload is also what the user sees.
+    onAnnounce(t(($) => $.issue_statuses.moving, { name: entry.name }));
+    // Only active custom rows reach this path; archived entries keep their
+    // stored positions and are excluded from the atomic reorder request.
     reorder.mutate(
       { category, ordered: next.filter((entry) => !entry.archived_at) },
       {
+        onSuccess: () => onAnnounce(t(($) => $.issue_statuses.moved, {
+          name: entry.name,
+          position: next.filter((s) => !s.archived_at).findIndex((s) => s.id === entry.id) + 1,
+        })),
         onError: (error) => {
           setOrder(custom);
+          onAnnounce(t(($) => $.issue_statuses.reorder_failed));
           toast.error(
             error instanceof Error ? error.message : t(($) => $.issue_statuses.reorder_failed),
           );
         },
+        onSettled: () => {
+          orderInFlight.current = false;
+        },
       },
     );
+  };
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    if (!over) return;
+    move(order.findIndex((s) => s.id === active.id), order.findIndex((s) => s.id === over.id));
+  };
+
+  const moveAdjacent = (id: string, direction: OrderDirection) => {
+    const nextIds = adjacentOrder(order.map((s) => s.id), id, direction);
+    if (nextIds) move(order.findIndex((s) => s.id === id), nextIds.indexOf(id));
   };
 
   // Only rows that can actually move are draggable. A single custom status has
@@ -276,7 +315,7 @@ function CategorySection({
   const canReorder = canManage && sortableIds.length > 1;
 
   return (
-    <section className="border-b border-surface-border last:border-b-0">
+    <section data-reorder-scope className="border-b border-surface-border last:border-b-0">
       {/* Label plus the one action the header owns. The category glyph is the
           same glyph the built-in row renders directly below it, so it said
           nothing the eye had not already read. */}
@@ -313,12 +352,18 @@ function CategorySection({
         )}
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={sortableIds} strategy={verticalListSortingStrategy}>
-            {order.map((entry) => (
+            {order.map((entry, index) => (
               <CustomStatusRow
                 key={entry.id}
                 entry={entry}
                 canManage={canManage}
                 canReorder={canReorder && !entry.archived_at}
+                reorderOptions={{
+                  index,
+                  count: order.length,
+                  disabled: reorderDisabled,
+                  onMove: (direction) => moveAdjacent(entry.id, direction),
+                }}
                 onEdit={() => onEdit(entry)}
                 onArchive={() => onArchive(entry)}
               />
@@ -359,19 +404,21 @@ function CustomStatusRow({
   entry,
   canManage,
   canReorder,
+  reorderOptions,
   onEdit,
   onArchive,
 }: {
   entry: IssueStatusEntry;
   canManage: boolean;
   canReorder: boolean;
+  reorderOptions: ReorderOptions;
   onEdit: () => void;
   onArchive: () => void;
 }) {
   const { t } = useT("settings");
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: entry.id,
-    disabled: !canReorder,
+    disabled: !canReorder || reorderOptions.disabled,
   });
 
   const archived = Boolean(entry.archived_at);
@@ -393,6 +440,7 @@ function CustomStatusRow({
           className="absolute left-0 top-1/2 flex w-4 -translate-y-1/2 cursor-grab justify-center text-faint-foreground opacity-0 transition-opacity group-hover/row:opacity-100 focus-visible:opacity-100 active:cursor-grabbing"
           {...attributes}
           {...listeners}
+          tabIndex={-1}
         >
           <GripVertical className="size-4" />
         </button>
@@ -426,6 +474,7 @@ function CustomStatusRow({
           <p className="truncate text-caption text-muted-foreground">{entry.description}</p>
         )}
       </div>
+      {canReorder && <ReorderControls id={entry.id} name={entry.name} {...reorderOptions} />}
       {canManage && !archived && (
         <DropdownMenu>
           <DropdownMenuTrigger

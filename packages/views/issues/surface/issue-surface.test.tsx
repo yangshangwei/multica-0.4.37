@@ -11,7 +11,8 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { setApiInstance } from "@multica/core/api";
+import { ApiError, setApiInstance } from "@multica/core/api";
+import { issueKeys } from "@multica/core/issues/queries";
 import { useModalStore } from "@multica/core/modals";
 import type { ApiClient } from "@multica/core/api/client";
 import {
@@ -56,6 +57,7 @@ vi.mock("@tanstack/react-virtual", () => ({
   useVirtualizer: ({ count, estimateSize }: any) => ({
     getVirtualItems: () =>
       Array.from({ length: count }, (_, index) => ({
+        key: index,
         index,
         start: index * estimateSize(),
         end: (index + 1) * estimateSize(),
@@ -86,6 +88,7 @@ vi.mock("@multica/core/auth", () => ({
 vi.mock("../../i18n", () => ({
   // TableView also reads `i18n.language` for its date formatting.
   useT: () => ({ t: mockTranslate, i18n: { language: "en" } }),
+  useLocale: () => "en",
   useTimeAgo: () => () => "now",
 }));
 
@@ -1063,5 +1066,142 @@ describe("IssueSurface — status catalog failure", () => {
     // Still no blocking error, and the surface never stopped fetching.
     expect(screen.queryByRole("alert")).toBeNull();
     expect(rowRequests.length).toBeGreaterThanOrEqual(before);
+  });
+});
+
+// Native evidence: .impeccable/audit/2026-10-13-core/gantt-failure.json.
+// Keep this at the surface boundary: actual Query failures must reach the
+// canvas without changing its identity during a recoverable refresh.
+describe("IssueSurface — Gantt read recovery", () => {
+  let qc: QueryClient;
+  const scheduled = { ...makeIssue("scheduled", "Scheduled delivery", "gantt-recovery"), start_date: "2026-10-12", due_date: "2026-10-20" };
+  const listIssues = vi.fn<() => Promise<ListIssuesResponse>>();
+  const key = issueKeys.projectGantt("ws-1", "gantt-recovery");
+
+  beforeEach(() => {
+    mockWsId.current = "ws-1";
+    qc = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+    pruneIssueSurfaceViewStates([]);
+    mockTranslate.mockImplementation(((selector: (value: unknown) => unknown) => {
+      const path: string[] = [];
+      const probe: unknown = new Proxy({}, { get: (_target, property) => { path.push(String(property)); return probe; } });
+      selector(probe);
+      return path.join(".");
+    }) as unknown as () => string);
+    listIssues.mockReset();
+    setApiInstance({
+      listIssues,
+      listIssueStatuses: async () => ({ statuses: [], categories: [], total: 0 }),
+      listProjects: async () => [],
+      getWorkspaceWorkingAgents: async () => [],
+      getChildIssueProgress: async () => [],
+    } as unknown as ApiClient);
+  });
+
+  afterEach(() => {
+    cleanup();
+    qc.clear();
+    pruneIssueSurfaceViewStates([]);
+    mockTranslate.mockImplementation(() => "translated");
+    vi.restoreAllMocks();
+  });
+
+  function mountGantt(isScopeEmpty = false) {
+    return render(<QueryClientProvider client={qc}>
+      <IssueSurface scope={{ type: "project", projectId: "gantt-recovery" }} modes={["gantt"]}
+        isScopeEmpty={isScopeEmpty}
+        renderLoading={() => <div data-testid="gantt-loading" />} batchToolbar="never" />
+    </QueryClientProvider>);
+  }
+
+  it("keeps the cold failure and disabled retry visible until scheduled tasks load", async () => {
+    let completeRetry!: (value: ListIssuesResponse) => void;
+    listIssues.mockRejectedValueOnce(new Error("offline"))
+      .mockImplementationOnce(() => new Promise(resolve => { completeRetry = resolve; }));
+    mountGantt();
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("gantt.load_failed");
+    expect(screen.queryByText("gantt.empty")).not.toBeInTheDocument();
+    const retry = screen.getByRole("button", { name: "detail.retry" });
+    fireEvent.click(retry);
+    await waitFor(() => expect(retry).toBeDisabled());
+    expect(screen.getByRole("alert")).toBe(alert);
+    expect(screen.queryByTestId("gantt-loading")).not.toBeInTheDocument();
+    fireEvent.click(retry);
+    expect(listIssues).toHaveBeenCalledTimes(2);
+    await act(async () => completeRetry({ issues: [scheduled], total: 1 }));
+    await screen.findAllByText("Scheduled delivery");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("retains the same canvas row and focus across failed refresh and retry", async () => {
+    listIssues.mockResolvedValueOnce({ issues: [scheduled], total: 1 })
+      .mockRejectedValueOnce(new Error("temporary refresh failure"))
+      .mockResolvedValueOnce({ issues: [scheduled], total: 1 });
+    mountGantt();
+    const title = (await screen.findAllByText("Scheduled delivery"))[0]!;
+    const link = title.closest("a")!;
+    link.focus();
+    await act(async () => { await qc.invalidateQueries({ queryKey: key }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("gantt.refresh_failed");
+    expect(screen.getAllByText("Scheduled delivery")[0]).toBe(title);
+    expect(link).toHaveFocus();
+    fireEvent.click(screen.getByRole("button", { name: "detail.retry" }));
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+    expect(screen.getAllByText("Scheduled delivery")[0]).toBe(title);
+  });
+
+  it.each([401, 403, 404])("hides cached rows after a definitive %s response", async (status) => {
+    listIssues.mockResolvedValueOnce({ issues: [scheduled], total: 1 })
+      .mockRejectedValueOnce(new ApiError("No longer available", status, "Unavailable"));
+    mountGantt();
+    await screen.findAllByText("Scheduled delivery");
+    await act(async () => { await qc.invalidateQueries({ queryKey: key }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("gantt.load_failed");
+    expect(screen.queryAllByText("Scheduled delivery")).toHaveLength(0);
+    expect(screen.queryByText("gantt.empty")).not.toBeInTheDocument();
+  });
+
+  it("uses the genuine empty state only after a successful empty read", async () => {
+    listIssues.mockResolvedValueOnce({ issues: [], total: 0 });
+    mountGantt();
+    await screen.findByText("gantt.empty");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("does not resurrect denied cached tasks after a transient retry failure or remount", async () => {
+    let finishRemount!: (value: ListIssuesResponse) => void;
+    listIssues.mockResolvedValueOnce({ issues: [scheduled], total: 1 })
+      .mockRejectedValueOnce(new ApiError("Access revoked", 403, "Forbidden"))
+      .mockRejectedValueOnce(new Error("Server unavailable"))
+      .mockImplementationOnce(() => new Promise(resolve => { finishRemount = resolve; }));
+    const mounted = mountGantt();
+    await screen.findAllByText("Scheduled delivery");
+    await act(async () => { await qc.invalidateQueries({ queryKey: key }); });
+    await screen.findByRole("alert");
+    fireEvent.click(screen.getByRole("button", { name: "detail.retry" }));
+    await waitFor(() => expect(listIssues).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(screen.getByRole("button", { name: "detail.retry" })).toBeEnabled());
+    expect(screen.queryAllByText("Scheduled delivery")).toHaveLength(0);
+    mounted.unmount();
+    mountGantt();
+    await waitFor(() => expect(listIssues).toHaveBeenCalledTimes(4));
+    expect(screen.queryAllByText("Scheduled delivery")).toHaveLength(0);
+    await act(async () => finishRemount({ issues: [scheduled], total: 1 }));
+    await screen.findAllByText("Scheduled delivery");
+    expect(listIssues).toHaveBeenCalledTimes(4);
+  });
+
+  it("keeps refresh recovery reachable when the project and cached schedule are empty", async () => {
+    listIssues.mockResolvedValueOnce({ issues: [], total: 0 })
+      .mockRejectedValueOnce(new Error("Refresh unavailable"))
+      .mockResolvedValueOnce({ issues: [], total: 0 });
+    mountGantt(true);
+    await screen.findByText("detail.empty_issues_title");
+    await act(async () => { await qc.invalidateQueries({ queryKey: key }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("gantt.refresh_failed");
+    fireEvent.click(screen.getByRole("button", { name: "detail.retry" }));
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+    expect(screen.getByText("detail.empty_issues_title")).toBeInTheDocument();
   });
 });

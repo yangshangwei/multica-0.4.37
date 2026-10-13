@@ -419,7 +419,22 @@ export function projectGanttIssuesOptions(
 ) {
   return queryOptions({
     queryKey: issueKeys.projectGantt(wsId, projectId, assigneeTypes),
-    queryFn: () => fetchProjectGanttIssues(projectId, assigneeTypes),
+    queryFn: async ({ client, queryKey, signal }) => {
+      const query = client.getQueryCache().find({ queryKey, exact: true });
+      try {
+        return await fetchProjectGanttIssues(projectId, assigneeTypes);
+      } catch (error) {
+        if (!signal.aborted && error instanceof ApiError && [401, 403, 404].includes(error.status)) {
+          // Clear the active snapshot, not just its rendered projection. A later
+          // transient retry or remount must not resurrect data already denied.
+          query?.setState({
+            data: undefined,
+            dataUpdatedAt: 0,
+          });
+        }
+        throw error;
+      }
+    },
   });
 }
 

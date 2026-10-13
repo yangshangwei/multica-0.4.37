@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useId, useRef } from "react";
 import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
 import { StatusIcon } from "../../issues/components";
 import {
@@ -14,7 +15,6 @@ import { getInboxDisplayTitle, getInboxDestination } from "./inbox-display";
 import { useInboxContextMenu } from "./inbox-context-menu";
 import { useStatusLabel } from "../../issues/utils/status-label";
 import { InboxRowMenu } from "./inbox-row-menu";
-import { handleRowActivationKey } from "../../common/row-actions-menu";
 import { useT } from "../../i18n";
 import { paths, useWorkspaceSlug } from "@multica/core/paths";
 import { resolveClickIntent, useIntentNavigate } from "../../navigation";
@@ -42,6 +42,9 @@ export function InboxListItem({
   isSelected,
   onClick,
   onAction,
+  position,
+  totalCount,
+  onSelectionMount,
 }: {
   item: InboxItem;
   view: InboxView;
@@ -50,6 +53,9 @@ export function InboxListItem({
   // Archive in the main list, unarchive in the archived one — the row action is
   // always the reversal of the current view, so the two lists share this row.
   onAction: () => void;
+  position?: number;
+  totalCount?: number;
+  onSelectionMount?: (id: string, button: HTMLButtonElement | null) => void;
 }) {
   const { t } = useT("inbox");
   const timeAgo = useTimeAgo();
@@ -66,6 +72,13 @@ export function InboxListItem({
   const issueHref = slug ? getInboxDestination(item, paths.workspace(slug)) : null;
   const intentNavigate = useIntentNavigate();
   const displayTitle = getInboxDisplayTitle(item);
+  const detailId = useId();
+  const timeId = useId();
+  const selectionButton = useRef<HTMLButtonElement | null>(null);
+  const attachSelection = useCallback((button: HTMLButtonElement | null) => {
+    selectionButton.current = button;
+    onSelectionMount?.(item.id, button);
+  }, [item.id, onSelectionMount]);
   const isArchivedView = view === "archived";
   // Archiving deliberately leaves `read` untouched so unarchiving restores the
   // real unread state, so archived rows would otherwise keep an unread marker
@@ -85,14 +98,17 @@ export function InboxListItem({
   const statusColor = item.issue_status ? statusColorOf(item.issue_status) : null;
 
   return (
-    // A div, not a <button>: the row carries its own controls (the action
-    // button, the compact menu), and interactive descendants of a <button>
-    // are invalid HTML that screen readers cannot reach. `role="button"` plus
-    // the Enter/Space handler keeps the row's own keyboard behavior.
+    // The title selects this notification. Other row controls remain siblings
+    // rather than descendants of a button/listbox option, where assistive
+    // technology can lose their independent semantics.
     <div
-      role="button"
-      tabIndex={0}
+      role="listitem"
+      aria-posinset={position}
+      aria-setsize={totalCount}
       onClick={(e) => {
+        if (e.defaultPrevented) return;
+        const control = e.target instanceof Element ? e.target.closest("button, a, input, [role=button]") : null;
+        if (control && control !== selectionButton.current) return;
         // Plain click keeps the master-detail selection; a modifier click on
         // a row that references an issue opens that issue as its own tab.
         if (issueHref) {
@@ -102,9 +118,10 @@ export function InboxListItem({
             return;
           }
         }
+        // Safari does not focus a button on pointer activation.
+        selectionButton.current?.focus({ preventScroll: true });
         onClick();
       }}
-      onKeyDown={(e) => handleRowActivationKey(e, onClick)}
       onAuxClick={(e) => {
         if (e.defaultPrevented || e.button !== 1 || !issueHref) return;
         e.preventDefault();
@@ -116,7 +133,7 @@ export function InboxListItem({
       onContextMenu={
         openContextMenu ? (e) => openContextMenu(item, e) : undefined
       }
-      className={`group flex w-full cursor-default select-none items-center gap-3 rounded-md px-2 py-2.5 text-left outline-none transition-colors focus-visible:ring-1 focus-visible:ring-ring ${
+      className={`group flex w-full cursor-default select-none items-center gap-3 rounded-md px-2 py-2.5 text-left outline-none transition-colors has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring ${
         isSelected
           ? "bg-accent"
           : "hover:bg-accent/50 data-[popup-open]:bg-accent/50"
@@ -134,11 +151,16 @@ export function InboxListItem({
             {showUnread && (
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
             )}
-            <span
-              className={`truncate text-body ${showUnread ? "font-medium" : "text-muted-foreground"}`}
+            <button
+              ref={attachSelection}
+              type="button"
+              data-inbox-selection={item.id}
+              aria-current={isSelected ? "true" : undefined}
+              aria-describedby={`${detailId} ${timeId}`}
+              className={`truncate text-left text-body outline-none ${showUnread ? "font-medium" : "text-muted-foreground"}`}
             >
               {displayTitle}
-            </span>
+            </button>
           </div>
           <div className="flex shrink-0 items-center gap-1">
             {/* Pointer-only affordance: revealed on hover, and on keyboard
@@ -178,7 +200,7 @@ export function InboxListItem({
           </div>
         </div>
         <div className="mt-0.5 flex items-center justify-between gap-2">
-          <p className={`min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-caption ${showUnread ? "text-muted-foreground" : "text-muted-foreground"}`}>
+          <p id={detailId} className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-caption text-muted-foreground">
             <InboxDetailLabel item={item} />
           </p>
           <div className="flex shrink-0 items-center gap-1.5">
@@ -193,7 +215,7 @@ export function InboxListItem({
                 hoverCard={false}
               />
             )}
-            <span className={`text-caption ${showUnread ? "text-muted-foreground" : "text-muted-foreground"}`}>
+            <span id={timeId} className="text-caption text-muted-foreground">
               {timeAgo(item.created_at)}
             </span>
           </div>
