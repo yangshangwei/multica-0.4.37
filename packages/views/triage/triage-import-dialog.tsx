@@ -193,11 +193,17 @@ export function TriageImportDialog({
     setReading(true);
     setError("");
     try {
+      let buffer: ArrayBuffer;
+      try {
+        buffer = await selectedFile.arrayBuffer();
+      } catch {
+        throw new Error(t(($) => $.file_read_failed));
+      }
       let csv: string;
       try {
-        csv = decodeTriageCsv(await selectedFile.arrayBuffer());
+        csv = decodeTriageCsv(buffer);
       } catch {
-        throw new Error(t(($) => $.invalid_utf8));
+        throw new Error(t(($) => $.invalid_encoding));
       }
       const source = { name: selectedFile.name, csv };
       setFile(source);
