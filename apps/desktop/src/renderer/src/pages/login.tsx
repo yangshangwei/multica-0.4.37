@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Loader2, Server } from "lucide-react";
+import { Loader2, Server, Shield } from "lucide-react";
 import { LoginPage } from "@multica/views/auth";
 import { DragStrip } from "@multica/views/platform";
 import { useT } from "@multica/views/i18n";
@@ -18,15 +18,16 @@ import { useConfigStore } from "@multica/core/config";
 import { api } from "@multica/core/api";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { DesktopEndpointSetupPage } from "./endpoint-setup";
+import styles from "./login.module.css";
 
 /**
  * Post-logout / pre-login page for a desktop build that only ever talks to the
  * backend named in `desktop.json`. Three things make it different from the web
  * login page:
  *
- * 1. The connected deployment is the title, and its address sits in the card
- *    footer with a live reachability dot. A private deployment must not look
- *    like the managed cloud.
+ * 1. The title names the sign-in action; the connected deployment's address
+ *    sits in the card footer with a live reachability dot. A private deployment
+ *    must not look like the managed cloud.
  * 2. Sign-in methods are rendered from what the server DECLARED in /api/config,
  *    never from what this client can imagine: Google only with a client id, and
  *    a deployment with intranet device auth gets a single "continue as this
@@ -107,35 +108,36 @@ function ServerIdentity({
       />
       <div className="min-w-0 flex-1 space-y-1">
         <p className="text-caption break-all">{apiUrl}</p>
-        <p className="text-caption flex flex-wrap items-center gap-1.5 text-muted-foreground">
-          <span aria-hidden className={`size-1.5 shrink-0 rounded-full ${dot}`} />
-          {status}
-          {reachability.kind === "unreachable" && (
-            <>
-              <span aria-hidden>·</span>
-              <button
-                type="button"
-                onClick={onRetry}
-                className="text-primary underline underline-offset-4"
-              >
-                {t(($) => $.desktop.signin.retry)}
-              </button>
-            </>
-          )}
-        </p>
-        {reachability.kind === "unreachable" && reachability.message && (
-          <p className="text-caption break-words text-destructive">
-            {reachability.message}
+        <div role="status" aria-atomic="true" className="space-y-1">
+          <p className="text-caption flex items-start gap-1.5 text-muted-foreground">
+            <span aria-hidden className={`mt-1.5 size-1.5 shrink-0 rounded-full ${dot}`} />
+            {status}
           </p>
+          {reachability.kind === "unreachable" && reachability.message && (
+            <p className="text-caption [overflow-wrap:anywhere] text-destructive">
+              {reachability.message}
+            </p>
+          )}
+        </div>
+        {reachability.kind === "unreachable" && (
+          <Button
+            type="button"
+            variant="link"
+            onClick={onRetry}
+            className="h-auto min-h-6 px-1 text-caption underline underline-offset-4 max-sm:min-h-11 max-sm:min-w-11 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
+          >
+            {t(($) => $.desktop.signin.retry)}
+          </Button>
         )}
       </div>
-      <button
+      <Button
         type="button"
+        variant="link"
         onClick={onChangeServer}
-        className="text-caption shrink-0 text-primary underline underline-offset-4"
+        className="h-auto min-h-6 px-1 text-caption underline underline-offset-4 max-sm:min-h-11 pointer-coarse:min-h-11"
       >
         {t(($) => $.desktop.signin.change_server)}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -233,9 +235,9 @@ export function DesktopLoginPage() {
   // dashboard shell, which is not mounted while nobody is signed in.
   if (changingServer) {
     return (
-      <div className="flex h-screen flex-col">
+      <div className={`${styles.scene} flex h-screen flex-col`}>
         <DragStrip />
-        <div className="flex-1 overflow-y-auto">
+        <div className={`${styles.serverEditor} flex-1 overflow-y-auto`}>
           <DesktopEndpointSetupPage
             embedded
             initialApiUrl={config.apiUrl}
@@ -258,7 +260,7 @@ export function DesktopLoginPage() {
   // Intranet device auth: no email form, because no code would ever arrive.
   if (deviceAuthAvailable && device) {
     return (
-      <div className="flex h-screen flex-col">
+      <div className={`${styles.scene} flex h-screen flex-col`}>
         <DragStrip />
         <main className="flex flex-1 items-center justify-center p-8">
           <Card className="w-full max-w-sm">
@@ -308,12 +310,20 @@ export function DesktopLoginPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className={`${styles.scene} flex h-screen flex-col`}>
       <DragStrip />
       <LoginPage
+        className="min-h-0 flex-1"
         logo={<MulticaIcon bordered size="lg" />}
-        title={t(($) => $.desktop.signin.title, { host })}
-        description={t(($) => $.desktop.signin.description)}
+        title={t(($) => $.desktop.signin.title)}
+        description={
+          <span className="inline-flex max-w-full items-center justify-center gap-2 text-body leading-6">
+            <Shield aria-hidden="true" className="size-4 shrink-0" />
+            <span className="min-w-0 text-balance">
+              {t(($) => $.desktop.signin.description)}
+            </span>
+          </span>
+        }
         onSuccess={() => {
           // Auth store update triggers AppContent re-render → shows DesktopShell.
           // Initial workspace navigation happens in routes.tsx via IndexRedirect.

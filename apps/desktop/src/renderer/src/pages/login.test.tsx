@@ -98,11 +98,11 @@ describe("DesktopLoginPage", () => {
     });
   });
 
-  it("names the connected deployment instead of the managed cloud", async () => {
+  it("keeps the sign-in title simple and identifies the deployment in the footer", async () => {
     renderPage();
 
     expect(
-      screen.getByText("Sign in to multica.example.com"),
+      screen.getByText("Sign in", { exact: true }),
     ).toBeInTheDocument();
     expect(screen.queryByText(/^sign in to multica$/i)).not.toBeInTheDocument();
     expect(screen.getByText("https://multica.example.com")).toBeInTheDocument();
@@ -143,8 +143,28 @@ describe("DesktopLoginPage", () => {
     ).toBeInTheDocument();
   });
 
+  it("keeps password login scoped to the deployment and announces connection changes", async () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      authMode: "password",
+      passwordAuthAvailable: true,
+      passwordSignupAvailable: true,
+    });
+    let finishProbe!: (result: { ok: boolean; latencyMs: number }) => void;
+    mocks.testRuntimeConfig.mockImplementationOnce(() => new Promise((resolve) => { finishProbe = resolve; }));
+    renderPage();
+
+    expect(screen.getByRole("heading", { level: 1, name: "Sign in" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    const status = screen.getByRole("status");
+    expect(status).toHaveAttribute("aria-atomic", "true");
+    expect(status).toHaveTextContent("Checking connection");
+    finishProbe({ ok: true, latencyMs: 12 });
+    await waitFor(() => expect(status).toHaveTextContent("Connected"));
+  });
+
   it("offers a retry when the server cannot be reached, without blocking sign-in", async () => {
-    mocks.testRuntimeConfig.mockResolvedValue({
+    mocks.testRuntimeConfig.mockResolvedValueOnce({
       ok: false,
       category: "network",
       message: "Connection refused",
@@ -155,6 +175,10 @@ describe("DesktopLoginPage", () => {
       await screen.findByText("Cannot reach this server"),
     ).toBeInTheDocument();
     expect(screen.getByText(/connection refused/i)).toBeInTheDocument();
+    const status = screen.getByRole("status");
+    expect(status).toHaveTextContent("Cannot reach this server");
+    expect(status).toHaveTextContent("Connection refused");
+    expect(status).not.toContainElement(screen.getByRole("button", { name: /retry/i }));
     // The probe is advisory — a deployment behind a redirecting proxy fails it
     // and still signs in, so the action stays reachable.
     expect(
@@ -166,6 +190,8 @@ describe("DesktopLoginPage", () => {
     await waitFor(() =>
       expect(mocks.testRuntimeConfig).toHaveBeenCalledTimes(2),
     );
+    await waitFor(() => expect(status).toHaveTextContent("Connected"));
+    expect(screen.queryByRole("button", { name: /retry/i })).not.toBeInTheDocument();
   });
 
   // -------------------------------------------------------------------------
@@ -249,7 +275,7 @@ describe("DesktopLoginPage", () => {
     fireEvent.click(screen.getByRole("button", { name: /back to sign-in/i }));
 
     expect(
-      screen.getByText("Sign in to multica.example.com"),
+      screen.getByText("Sign in", { exact: true }),
     ).toBeInTheDocument();
   });
 });
