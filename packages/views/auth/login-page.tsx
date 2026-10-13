@@ -14,6 +14,7 @@ import { Alert, AlertDescription } from "@multica/ui/components/ui/alert";
 import { Input } from "@multica/ui/components/ui/input";
 import { Button } from "@multica/ui/components/ui/button";
 import { Label } from "@multica/ui/components/ui/label";
+import { cn } from "@multica/ui/lib/utils";
 import {
   InputOTP,
   InputOTPGroup,
@@ -46,12 +47,13 @@ interface CliCallbackConfig {
 }
 
 interface LoginPageProps {
+  /** Let platform shells size the page below native window controls. */
+  className?: string;
   /** Pre-workspace destinations can proceed without a workspace bootstrap. */
   skipWorkspaceBootstrap?: boolean;
   /** Logo element rendered above the title */
   logo?: ReactNode;
-  /** Overrides the sign-in step's title. Desktop passes the backend host so a
-   *  private deployment stops looking like the managed cloud. */
+  /** Overrides the sign-in step's title. Deployment details belong in the footer. */
   title?: ReactNode;
   /** Overrides the sign-in step's description. */
   description?: ReactNode;
@@ -130,6 +132,7 @@ export function LoginPage(props: LoginPageProps) {
 }
 
 function LegacyLoginPage({
+  className,
   logo,
   title,
   description,
@@ -337,8 +340,8 @@ function LegacyLoginPage({
 
   if (step === "cli_confirm" && existingUser) {
     return (
-      <div className="flex min-h-svh items-center justify-center">
-        <Card className="w-full max-w-sm">
+      <div className={cn("flex min-h-svh flex-col items-center overflow-y-auto px-4 py-6", className)}>
+        <Card className="my-auto w-full max-w-sm shrink-0">
           <CardHeader className="text-center">
             {logo && <div className="mx-auto mb-4">{logo}</div>}
             <CardTitle className="text-display-sm">
@@ -381,8 +384,8 @@ function LegacyLoginPage({
 
   if (step === "code") {
     return (
-      <div className="flex min-h-svh items-center justify-center">
-        <Card className="w-full max-w-sm">
+      <div className={cn("flex min-h-svh flex-col items-center overflow-y-auto px-4 py-6", className)}>
+        <Card className="my-auto w-full max-w-sm shrink-0">
           <CardHeader className="text-center">
             {logo && <div className="mx-auto mb-4">{logo}</div>}
             <CardTitle className="text-display-sm">
@@ -457,8 +460,8 @@ function LegacyLoginPage({
   // -------------------------------------------------------------------------
 
   return (
-    <div className="flex min-h-svh items-center justify-center">
-      <Card className="w-full max-w-sm">
+    <div className={cn("flex min-h-svh flex-col items-center overflow-y-auto px-4 py-6", className)}>
+      <Card className="my-auto w-full max-w-sm shrink-0">
         <CardHeader className="text-center">
           {logo && <div className="mx-auto mb-4">{logo}</div>}
           <CardTitle className="text-display-sm break-words">

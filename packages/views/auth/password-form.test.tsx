@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
@@ -13,6 +13,37 @@ import zh from "../locales/zh-Hans/auth.json";
 import { PasswordForm } from "./password-form";
 
 describe('password form', () => {
+  it('keeps deployment context separate from the sign-in action and creation guidance', async () => {
+    const api = new ApiClient('http://localhost');
+    const login = vi.spyOn(api, 'passwordLogin').mockResolvedValue({token: 'session', user: {...EMPTY_USER, id: 'u1'}});
+    vi.spyOn(api, 'listWorkspaces').mockResolvedValue([]);
+    setApiInstance(api);
+    registerAuthStore(createAuthStore({api, storage: {getItem: () => null, setItem: vi.fn(), removeItem: vi.fn()}}));
+    configStore.getState().setAuthConfig({allowSignup: true, passwordSignupAvailable: true});
+    const done = vi.fn();
+    render(<I18nProvider locale="zh-Hans" resources={{'zh-Hans': {auth: zh}}}><QueryClientProvider client={new QueryClient()}><PasswordForm title="登录 intranet.example.com" description="使用你在该部署上的账号登录。" onSuccess={done}/></QueryClientProvider></I18nProvider>);
+    const user = userEvent.setup();
+
+    expect(screen.getByRole('heading', {level: 1, name: '登录 intranet.example.com'})).toBeInTheDocument();
+    expect(screen.getByText('使用你在该部署上的账号登录。')).toBeInTheDocument();
+    expect(screen.getByLabelText('用户名')).not.toHaveAttribute('aria-describedby');
+    expect(screen.queryByText(zh.password.username_help)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', {name: '登录'})).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', {name: '创建账号'}));
+    expect(screen.getByRole('heading', {level: 1, name: '创建账号'})).toBeInTheDocument();
+    expect(screen.getByLabelText('用户名')).toHaveAccessibleDescription(zh.password.username_help);
+    expect(screen.queryByText('使用你在该部署上的账号登录。')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', {name: '已有账号，返回登录'}));
+    expect(screen.getByRole('heading', {level: 1, name: '登录 intranet.example.com'})).toBeInTheDocument();
+    expect(screen.queryByText(zh.password.username_help)).not.toBeInTheDocument();
+
+    await user.type(screen.getByLabelText('用户名'), '0011052');
+    await user.type(screen.getByLabelText('密码'), 'secret123{Enter}');
+    await waitFor(() => expect(done).toHaveBeenCalledOnce());
+    expect(login).toHaveBeenCalledExactlyOnceWith('0011052', 'secret123');
+  });
+
   it('registers with matching passwords, supports visibility, and preserves onboarding', async () => {
     const api = new ApiClient('http://localhost');
     const register = vi.spyOn(api,'registerPassword').mockResolvedValue({token:'session',user:{...EMPTY_USER,id:'u1'}});
@@ -99,8 +130,7 @@ describe('password form', () => {
     const confirmation = screen.getByLabelText('确认密码');
     await user.type(confirmation, 'abc123');
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    // user-event does not find submit buttons outside the form; Enter is checked in the browser.
-    fireEvent.submit(confirmation.closest('form')!);
+    await user.keyboard('{Enter}');
     expect(screen.getByRole('alert')).toHaveTextContent('两次输入的密码不一致，请重新输入。');
     expect(confirmation).toHaveAccessibleDescription('两次输入的密码不一致，请重新输入。');
     expect(confirmation).toHaveAttribute('aria-invalid', 'true');

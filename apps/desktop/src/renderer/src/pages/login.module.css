@@ -1,0 +1,60 @@
+.scene {
+  --login-canvas: oklch(0.952 0.007 260);
+  --login-edge: oklch(0.902 0.012 260);
+  --login-plane-light: oklch(0.992 0.002 260);
+  --login-plane-shade: oklch(0.979 0.004 260);
+  position: relative;
+  isolation: isolate;
+}
+
+:global(.dark) .scene {
+  --login-canvas: oklch(0.19 0.01 260);
+  --login-edge: oklch(0.15 0.014 260);
+  --login-plane-light: oklch(0.235 0.012 260);
+  --login-plane-shade: oklch(0.215 0.01 260);
+}
+
+/* Keep the backdrop behind the drag strip and controls without clipping
+   the page's scrollable content in short windows. */
+.scene::before,
+.scene::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.scene::before {
+  inset: 0;
+  background: linear-gradient(
+    148deg,
+    var(--login-canvas) 0%,
+    var(--login-canvas) 40%,
+    var(--login-edge) 100%
+  );
+}
+
+.scene::after {
+  left: calc(50% - 670px);
+  top: -30vh;
+  width: 50vw;
+  height: 160vh;
+  transform: rotate(24deg);
+  transform-origin: center;
+  background: linear-gradient(
+    90deg,
+    var(--login-plane-light),
+    var(--login-plane-shade)
+  );
+}
+
+.serverEditor > div {
+  background: transparent;
+}
+
+@media (max-width: 640px) {
+  .scene::after {
+    width: 260px;
+    left: -130px;
+  }
+}
