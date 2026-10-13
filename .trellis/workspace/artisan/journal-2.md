@@ -95,3 +95,39 @@ Implemented and verified category filtering in the shared MCP agent assignment p
 ### Next Steps
 
 - Knip still reports the repository baseline unused files/dependencies; clean it in a separate task.
+
+
+## Session 67: 内网静态下载页与首次安装指导
+<!-- trellis-session: v=2 fp=f1692dc37447d725 -->
+
+**Date**: 2026-10-13
+**Task**: 内网静态下载页与首次安装指导
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+基于现有下载页交付 Nginx 静态版本，自动跟随 Windows x64 发布，支持业务地址复制和完整中文首次使用指导。
+
+### Main Changes
+
+- 静态深色首屏和浅色平台列表，其他平台待开放，纯内网运行。
+- 发布流程从已校验安装包生成 download.json，配置保留并支持失败重试。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `35cc68ca2` | feat(desktop): let intranet users install without a manual handoff |
+
+### Testing
+
+- [OK] 166 项测试、Desktop 类型检查、lint 和内嵌脚本检查通过；有 1 条既有 lint 告警。
+- [OK] 隔离 Nginx/Chromium 验证下载摘要、Range、新版刷新、HTTP 复制、错误重试、窄屏和重启持久化。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 部署现有内网 Nginx；配置业务 URL，使用正式 Windows 安装包完成原生验收。
