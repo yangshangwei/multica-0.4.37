@@ -1,0 +1,20 @@
+{
+  "archive": "dist/desktop-download-qa/multica-desktop-download-service.tar.gz",
+  "bytes": 46998,
+  "sha256": "b484ae6f3524d3d8bc9270564f840e9a1a764da18cecc2d98d9b3d54b2502981",
+  "files": [
+    "README.md",
+    "docker-compose.desktop-updates.yml",
+    "deploy/desktop-updates/nginx.conf",
+    "deploy/desktop-updates/download.html",
+    "deploy/desktop-updates/download-config.example.json",
+    "deploy/desktop-updates/updates.env.example",
+    "scripts/desktop-updates.sh",
+    "docs/desktop-intranet-update-runbook.zh-CN.md",
+    "docs/desktop-updates-local.zh-CN.md",
+    "docs/offline-upgrade.zh-CN.md"
+  ],
+  "matchesSource": true,
+  "includesInstaller": false,
+  "sourceCommit": "35cc68ca288cddd67b4a25c6b7d4b6c84fa3c7ad"
+}
