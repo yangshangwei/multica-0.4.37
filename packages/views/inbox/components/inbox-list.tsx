@@ -74,6 +74,9 @@ export function InboxList({
   // A callback ref into state hands the element over once it mounts and
   // triggers the re-render that lets Virtuoso attach to it.
   const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
+  const scrollRootRef = useRef<HTMLDivElement | null>(null);
+  const selectionButtons = useRef(new Map<string, HTMLButtonElement>());
+  const pendingFocus = useRef<string | null>(null);
   // Pull-based scroll restoration (MUL-4741): assign the saved offset at
   // ref-attach (the seed's estimate spacer gives the container a truthful
   // height on the first commit, so the assignment sticks pre-paint) and feed
@@ -82,6 +85,7 @@ export function InboxList({
   const restoreScrollRef = useRestoredScrollRef("list");
   const attachScrollEl = useCallback(
     (el: HTMLDivElement | null) => {
+      scrollRootRef.current = el;
       setScrollEl(el);
       restoreScrollRef(el);
     },
@@ -90,25 +94,25 @@ export function InboxList({
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const isArchivedView = view === "archived";
 
-  // Keyboard focus for the list lives on the scroll container, not on a row:
-  // virtualization unmounts the row the user clicked as soon as it scrolls
-  // out, and focus falling back to <body> would silently stop the next arrow
-  // key from reaching this handler. `preventScroll` because focusing a box
-  // scrolls every scrollable ancestor to reveal it, which on desktop shoves
-  // the shell around (#3929).
-  const focusList = useCallback(() => {
-    scrollEl?.focus({ preventScroll: true });
-  }, [scrollEl]);
-
-  const selectItem = useCallback(
-    (item: InboxItem) => {
-      // Safari does not focus a clicked row control, so the container has to
-      // be focused explicitly or the arrow keys would stay dead after a click.
-      focusList();
-      onSelect(item);
-    },
-    [focusList, onSelect],
-  );
+  // Real row buttons own focus. Park it on the named list only while a virtual
+  // destination is absent or the focused row scrolls out of the mounted range.
+  // A later focus move cancels the handoff, including controls within the list.
+  const registerSelection = useCallback((id: string, button: HTMLButtonElement | null) => {
+    const root = scrollRootRef.current;
+    if (!button) {
+      const previous = selectionButtons.current.get(id);
+      if (root?.isConnected && previous === document.activeElement) {
+        root.focus({ preventScroll: true });
+      }
+      selectionButtons.current.delete(id);
+      return;
+    }
+    selectionButtons.current.set(id, button);
+    if (pendingFocus.current === id && document.activeElement === root) {
+      pendingFocus.current = null;
+      button.focus({ preventScroll: true });
+    }
+  }, []);
 
   // Arrow keys move the selection instead of scrolling the container — what
   // every mail-style list does (MUL-5622). Bound to the scroll container
@@ -122,15 +126,18 @@ export function InboxList({
     if (event.defaultPrevented || isImeComposing(event)) return;
     if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
     if (isEditableShortcutTarget(event.target)) return;
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    // Archive/menu buttons and avatar links own their keyboard interaction.
+    if (target !== scrollEl && !target.hasAttribute("data-inbox-selection")) return;
 
     // Claim the key even at the ends of the list: falling through to the
     // native scroll there would move the viewport away from the selected row.
     event.preventDefault();
-    focusList();
-
-    const current = items.findIndex(
-      (item) => (item.issue_id ?? item.id) === selectedKey,
-    );
+    const focusedId = target.dataset.inboxSelection;
+    const current = items.findIndex((item) => focusedId
+      ? item.id === focusedId
+      : (item.issue_id ?? item.id) === selectedKey);
     const step = event.key === "ArrowDown" ? 1 : -1;
     // Nothing selected yet: Down enters the list at the top, Up at the bottom.
     const nextIndex =
@@ -142,6 +149,10 @@ export function InboxList({
     if (nextIndex === current) return;
     const nextItem = items[nextIndex];
     if (!nextItem) return;
+
+    const nextButton = selectionButtons.current.get(nextItem.id);
+    pendingFocus.current = nextButton ? null : nextItem.id;
+    (nextButton ?? scrollEl)?.focus({ preventScroll: true });
 
     // Virtuoso's own scrollIntoView, never the DOM element's: the target row
     // may not be mounted, and the native call scrolls ancestors too. It is a
@@ -202,12 +213,15 @@ export function InboxList({
   }
 
   const computeItemKey = (_index: number, item: InboxItem) => item.id;
-  const itemContent = (_index: number, item: InboxItem) => (
+  const itemContent = (index: number, item: InboxItem) => (
     <InboxListItem
       item={item}
       view={view}
       isSelected={(item.issue_id ?? item.id) === selectedKey}
-      onClick={() => selectItem(item)}
+      position={index + 1}
+      totalCount={items.length}
+      onSelectionMount={registerSelection}
+      onClick={() => onSelect(item)}
       onAction={() => onAction(item.id)}
     />
   );
@@ -220,10 +234,18 @@ export function InboxList({
     <div
       ref={attachScrollEl}
       data-tab-scroll-root="list"
+      role="list"
+      aria-label={isArchivedView ? t(($) => $.list.archived_title) : t(($) => $.page.title)}
       // Programmatically focusable only: the rows already carry their own tab
       // stops, so a tabbable container would just add a redundant one.
       tabIndex={-1}
       onKeyDown={handleKeyDown}
+      onFocusCapture={(event) => {
+        if (event.target !== event.currentTarget) pendingFocus.current = null;
+      }}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) pendingFocus.current = null;
+      }}
       className="flex-1 min-h-0 overflow-y-auto outline-none"
     >
       <div className="px-2 py-1">

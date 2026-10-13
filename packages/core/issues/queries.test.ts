@@ -575,3 +575,28 @@ describe("issueIdentifierOptions", () => {
     ]);
   });
 });
+
+it("does not let a cancelled Gantt failure erase a newer successful schedule", async () => {
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const options = projectGanttIssuesOptions(WS_ID, PROJECT_ID);
+  let denyOld!: (reason: Error) => void;
+  let oldStarted!: () => void;
+  const started = new Promise<void>(resolve => { oldStarted = resolve; });
+  const fresh = makeIssue(2);
+  const listIssues = vi.fn()
+    .mockImplementationOnce(() => { oldStarted(); return new Promise<ListIssuesResponse>((_resolve, reject) => { denyOld = reject; }); })
+    .mockResolvedValueOnce({ issues: [fresh], total: 1 });
+  installFakeApi(listIssues);
+  client.setQueryData(options.queryKey, [makeIssue(1)]);
+  const oldFetch = client.fetchQuery(options).catch(() => undefined);
+  await started;
+  await client.cancelQueries({ queryKey: options.queryKey, exact: true });
+  await client.fetchQuery(options);
+  denyOld(new ApiError("Old access revoked", 403, "Forbidden"));
+  await oldFetch;
+  // The underlying transport ignores cancellation; let its rejection reach
+  // the query function after the new request has already committed.
+  await new Promise(resolve => setTimeout(resolve, 0));
+  expect(client.getQueryData(options.queryKey)).toEqual([fresh]);
+  client.clear();
+});

@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { ApiError } from "@multica/core/api";
 import type { Issue, Project } from "@multica/core/types";
 import { ALL_STATUSES } from "@multica/core/issues/config";
 import { projectListOptions } from "@multica/core/projects/queries";
@@ -51,6 +52,13 @@ function ganttCanvasRows(issues: Issue[], showCompleted: boolean): Issue[] {
   return dated.filter((i) => !issueBehavesAsAny(i, ["done", "cancelled"]));
 }
 
+export interface GanttRecoveryState {
+  failed: boolean;
+  hasData: boolean;
+  isFetching: boolean;
+  retry: () => void;
+}
+
 export interface IssueSurfaceData {
   surfaceIssues: Issue[];
   projectIssues: Issue[];
@@ -62,6 +70,7 @@ export interface IssueSurfaceData {
   ganttWorkingScopeIssues: Issue[] | undefined;
   filteredGanttIssues: Issue[];
   ganttIssues: Issue[];
+  ganttRecovery: GanttRecoveryState;
   visibleStatuses: IssueStatusCategory[];
   hiddenStatuses: IssueStatusCategory[];
   statusPagination: IssueStatusPagination;
@@ -150,6 +159,14 @@ export function useIssueSurfaceData({
     ...issueSurfaceGanttOptions(wsId, projectId ?? "", queryPlan),
     enabled: usesGantt,
   });
+  const ganttUnavailable = ganttIssuesQuery.error instanceof ApiError &&
+    [401, 403, 404].includes(ganttIssuesQuery.error.status);
+  const ganttFailed = usesGantt && (ganttIssuesQuery.isError ||
+    (ganttIssuesQuery.isFetching && ganttIssuesQuery.errorUpdatedAt > ganttIssuesQuery.dataUpdatedAt));
+  const { refetch: refetchGantt } = ganttIssuesQuery;
+  const retryGantt = useCallback(() => {
+    void refetchGantt({ cancelRefetch: false });
+  }, [refetchGantt]);
   const workingFilterContext = useMemo(
     () => ({ runningIssueIds: workingIssueIDs }),
     [workingIssueIDs],
@@ -165,7 +182,7 @@ export function useIssueSurfaceData({
   // board / swimlane columns, header facet counts, batch selection, and the
   // isEmpty check. The status filter narrows this set like any other status —
   // it no longer unlocks an otherwise-hidden bucket.
-  const ganttIssues = ganttIssuesQuery.data ?? EMPTY_ISSUES;
+  const ganttIssues = ganttUnavailable ? EMPTY_ISSUES : ganttIssuesQuery.data ?? EMPTY_ISSUES;
   const surfaceIssues = usesGantt
     ? ganttIssues
     : usesTable
@@ -402,7 +419,7 @@ export function useIssueSurfaceData({
     (serverGroupBranches.enabled
       ? serverGroupBranches.isLoading
       : usesGantt
-        ? ganttIssuesQuery.isLoading
+        ? ganttIssuesQuery.isLoading && !ganttFailed
         : serverStatusBranches.enabled
           ? serverStatusBranches.isLoading
           : false);
@@ -424,6 +441,12 @@ export function useIssueSurfaceData({
     ganttWorkingScopeIssues,
     filteredGanttIssues,
     ganttIssues,
+    ganttRecovery: {
+      failed: ganttFailed,
+      hasData: ganttIssuesQuery.data !== undefined && !ganttUnavailable,
+      isFetching: ganttIssuesQuery.isFetching,
+      retry: retryGantt,
+    },
     visibleStatuses,
     hiddenStatuses,
     statusPagination: serverStatusBranches.pagination,

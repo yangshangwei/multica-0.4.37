@@ -14,7 +14,7 @@ import { RevisionConflictCompare } from "../../issues/components/revision-confli
 import { useT } from "../../i18n";
 import "./project-description.css";
 
-export function ProjectDescription({ project, supported }: { project: Project; supported: boolean }) {
+export function ProjectDescription({ project, supported, isVisible = true }: { project: Project; supported: boolean; isVisible?: boolean }) {
   const generation = useRef(projectSessionGeneration()).current;
   const unavailable = useProjectAccessStore((state) => generation !== projectSessionGeneration() || !!state.denied[JSON.stringify([project.workspace_id, "*"])] || !!state.denied[JSON.stringify([project.workspace_id, project.id])] || !!state.deleted[JSON.stringify([project.workspace_id, project.id])]);
   const { t } = useT("projects"); const qc = useQueryClient(); const update = useUpdateProject();
@@ -69,7 +69,7 @@ export function ProjectDescription({ project, supported }: { project: Project; s
   };
   if (unavailable) return null;
   return <div className="min-w-0 max-w-full space-y-3">
-    {supported ? <ContentEditor ref={editor} className="project-description-editor" value={draft?.body ?? controlledDescription} debounceMs={0} flushPendingOnUnmount
+    {supported ? <ContentEditor ref={editor} className="project-description-editor" value={draft?.body ?? controlledDescription} debounceMs={0} flushPendingOnUnmount isVisible={isVisible}
       onUpdate={(markdown, baseline) => {
         // A clean editor may adopt a newer query version. A dirty editor's
         // baseline stays tied to the previous revision until acknowledgement.

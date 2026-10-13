@@ -33,6 +33,8 @@ import { ListView } from "../components/list-view";
 import { SwimLaneView } from "../components/swimlane-view";
 import { TableView } from "../components/table-view";
 import { useT } from "../../i18n";
+import { CollectionPageState } from "../../layout/collection-page";
+import type { GanttRecoveryState } from "./use-issue-surface-data";
 import { IssueContextMenuProvider } from "../actions";
 import { IssueSurfaceActionsProvider } from "./actions-context";
 import { IssueSurfaceSelectionProvider } from "./selection-context";
@@ -250,7 +252,8 @@ function IssueSurfaceContent({
   const scopeIsEmpty = isScopeEmpty === true && !hasTableSearch;
   const hideEmptyProjectHeader = scopeIsEmpty && scope.type === "project" &&
     (!scope.actorKind || scope.actorKind === "all") && !viewBaseline &&
-    !controller.hasActiveFilters && !controller.isLoading && !controller.isStatusCatalogError;
+    !controller.hasActiveFilters && !controller.isLoading && !controller.isStatusCatalogError &&
+    !controller.ganttRecovery.failed;
 
   return (
     <IssueSurfaceActionsProvider actions={controller.actions}>
@@ -283,12 +286,17 @@ function IssueSurfaceContent({
             }
           />
         )}
+        {controller.ganttRecovery.failed && controller.ganttRecovery.hasData && (
+          <GanttLoadNotice recovery={controller.ganttRecovery} />
+        )}
         {/* A failed status catalog precedes loading/empty/content on purpose.
             Row fetching is suspended while it is down (a custom status filter
             cannot be routed without it), so every branch below would render an
             unexplained empty surface with no way out. (MUL-6243) */}
         {controller.isStatusCatalogError ? (
           <StatusCatalogErrorState onRetry={controller.retryStatusCatalog} />
+        ) : controller.ganttRecovery.failed && !controller.ganttRecovery.hasData ? (
+          <GanttLoadNotice recovery={controller.ganttRecovery} />
         ) : controller.isLoading ? (
           renderLoading ? (
             renderLoading(renderContext)
@@ -392,6 +400,26 @@ function IssueSurfaceContent({
       </IssueSurfaceSelectionProvider>
       </IssueContextMenuProvider>
     </IssueSurfaceActionsProvider>
+  );
+}
+
+function GanttLoadNotice({ recovery }: { recovery: GanttRecoveryState }) {
+  const { t } = useT("issues");
+  const retry = (
+    <Button variant="outline" size="sm" disabled={recovery.isFetching} onClick={recovery.retry}>
+      {t(($) => $.detail.retry)}
+    </Button>
+  );
+  if (!recovery.hasData) {
+    return <CollectionPageState icon={AlertTriangle} role="alert"
+      title={t(($) => $.gantt.load_failed)} actions={retry} className="flex-1" />;
+  }
+  return (
+    <div role="alert" className="flex shrink-0 flex-wrap items-center gap-3 px-4 py-3 text-caption text-muted-foreground">
+      <AlertTriangle aria-hidden="true" className="size-4 shrink-0" />
+      <p className="min-w-0 flex-1">{t(($) => $.gantt.refresh_failed)}</p>
+      {retry}
+    </div>
   );
 }
 

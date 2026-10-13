@@ -47,7 +47,10 @@
       "done": "Completed.",
       "blocked": "Stalled on an external dependency.",
       "cancelled": "Decided not to do."
-    }
+    },
+    "moving": "Moving {{name}}...",
+    "moved": "{{name}} moved to position {{position}} in its category.",
+    "hide_archived_to_reorder": "Hide archived statuses to reorder active statuses."
   },
   "quick_actions": {
     "title": "Quick Actions",
@@ -726,7 +729,12 @@
       "granted": "This browser can show notification banners.",
       "denied": "Blocked by your browser. Enable notifications for this site in your browser settings.",
       "enabled_badge": "Enabled"
-    }
+    },
+    "loading": "Loading notification settings...",
+    "load_failed": "Could not load notification settings. Retry to view or change them.",
+    "refresh_failed": "Could not refresh notification settings. Showing your last loaded settings.",
+    "retry": "Retry",
+    "retrying": "Retrying..."
   },
   "tokens": {
     "title": "API Tokens",
@@ -1482,7 +1490,8 @@
     "expiry_24h": "24 hours",
     "expiry_7d": "7 days",
     "expiry_30d": "30 days",
-    "expiry_never": "Never"
+    "expiry_never": "Never",
+    "actions_for": "Actions for {{name}}"
   },
   "iterations": {
     "title": "Iteration settings",

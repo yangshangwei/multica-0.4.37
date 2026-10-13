@@ -1,7 +1,7 @@
 "use client";
 import { ProjectIterations } from "../../iterations/project-iterations";
 
-import { useMemo, useState, useCallback, useRef, useEffect } from "react";
+import { useMemo, useState, useCallback, useRef, useEffect, useId } from "react";
 import { useDefaultLayout, usePanelRef } from "react-resizable-panels";
 import { AlertCircle, Check, ChevronRight, Link2, MoreHorizontal, PanelRight, Pin, PinOff, Trash2, UserMinus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -45,7 +45,7 @@ import type { IssueCreateDefaults } from "../../issues/surface/types";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Button } from "@multica/ui/components/ui/button";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@multica/ui/components/ui/resizable";
-import { Sheet, SheetContent } from "@multica/ui/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle } from "@multica/ui/components/ui/sheet";
 import { useIsMobile } from "@multica/ui/hooks/use-mobile";
 import {
   DropdownMenu,
@@ -192,6 +192,9 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const [propertiesOpen, setPropertiesOpen] = useState(true);
   const [progressOpen, setProgressOpen] = useState(true);
   const [descriptionOpen, setDescriptionOpen] = useState(true);
+  const propertiesId = useId();
+  const progressId = useId();
+  const descriptionId = useId();
 
   // Sidebar panel
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({
@@ -349,11 +352,13 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           type="button"
           className={`flex w-full items-center gap-1 rounded-md px-2 py-1 text-caption font-medium transition-colors mb-2 hover:bg-accent/70 ${propertiesOpen ? "" : "text-muted-foreground hover:text-foreground"}`}
           onClick={() => setPropertiesOpen(!propertiesOpen)}
+          aria-expanded={propertiesOpen}
+          aria-controls={propertiesId}
         >
           {t(($) => $.detail.section_properties)}
           <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${propertiesOpen ? "rotate-90" : ""}`} />
         </button>
-        {propertiesOpen && <div className="space-y-0.5 pl-2">
+        <div id={propertiesId} hidden={!propertiesOpen} className="space-y-0.5 pl-2">
           <PropRow label={t(($) => $.table.status)}>
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -476,7 +481,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           <PropRow label={t(($) => $.detail.prop_due_date)}>
             <ProjectDueDatePicker dueDate={project.due_date} onUpdate={handleUpdateField} />
           </PropRow>
-        </div>}
+        </div>
       </div>
 
       {/* Progress */}
@@ -488,11 +493,14 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
               type="button"
               className={`flex w-full items-center gap-1 rounded-md px-2 py-1 text-caption font-medium transition-colors mb-2 hover:bg-accent/70 ${progressOpen ? "" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setProgressOpen(!progressOpen)}
+              aria-expanded={progressOpen}
+              aria-controls={progressId}
             >
               {t(($) => $.detail.section_progress)}
               <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${progressOpen ? "rotate-90" : ""}`} />
             </button>
-            {progressOpen && <div className="pl-2 flex items-center gap-3">
+            <div id={progressId} hidden={!progressOpen}>
+            <div className="pl-2 flex items-center gap-3">
               <div className="relative h-2 flex-1 rounded-full bg-muted overflow-hidden">
                 <div
                   className="absolute inset-y-0 left-0 rounded-full bg-emerald-500 transition-all"
@@ -502,7 +510,8 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
               <span className="text-caption text-muted-foreground tabular-nums shrink-0">
                 {issueMetrics.closedCount}/{issueMetrics.totalCount}
               </span>
-            </div>}
+            </div>
+            </div>
           </div>
         );
       })()}
@@ -513,16 +522,18 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           type="button"
           className={`flex w-full items-center gap-1 rounded-md px-2 py-1 text-caption font-medium transition-colors mb-2 hover:bg-accent/70 ${descriptionOpen ? "" : "text-muted-foreground hover:text-foreground"}`}
           onClick={() => setDescriptionOpen(!descriptionOpen)}
+          aria-expanded={descriptionOpen}
+          aria-controls={descriptionId}
         >
           {t(($) => $.detail.section_description)}
           <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${descriptionOpen ? "rotate-90" : ""}`} />
         </button>
-        {descriptionOpen && <div className="pl-2">
-          <ProjectDescription key={project.id} project={project} supported={capabilities.data?.description_cas === true} />
+        <div id={descriptionId} hidden={!descriptionOpen} className="pl-2">
+          <ProjectDescription key={project.id} project={project} supported={capabilities.data?.description_cas === true} isVisible={descriptionOpen} />
           <p className="mt-1 px-2 text-caption text-muted-foreground">
             {t(($) => $.detail.description_hint)}
           </p>
-        </div>}
+        </div>
       </div>
 
       {/* Resources */}
@@ -651,6 +662,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         {isMobile && (
           <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
             <SheetContent side="right" showCloseButton={false} className="w-[320px] overflow-y-auto p-4">
+              <SheetTitle className="sr-only">{t(($) => $.detail.properties_title, { title: project.title })}</SheetTitle>
               {sidebarContent}
             </SheetContent>
           </Sheet>

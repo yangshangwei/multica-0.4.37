@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { cloneElement, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -132,6 +132,14 @@ type LocalDateRange = {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+function isolateFilterInputKeys(event: KeyboardEvent<HTMLInputElement>) {
+  // Keep text editing and IME candidate controls out of Base UI's typeahead
+  // and list navigation. Outside composition, Escape/Tab retain menu behavior.
+  const composing = event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229;
+  if (!composing && (event.key === "Escape" || event.key === "Tab")) return;
+  event.stopPropagation();
+}
 
 function getActiveFilterCount(
   state: {
@@ -356,6 +364,7 @@ function ActorSubContent({
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={isolateFilterInputKeys}
           placeholder={t(($) => $.filters.placeholder)}
           className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
           autoFocus
@@ -527,6 +536,7 @@ function ProjectSubContent({
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={isolateFilterInputKeys}
           placeholder={t(($) => $.filters.placeholder)}
           className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
           autoFocus
@@ -618,6 +628,7 @@ function LabelSubContent({
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={isolateFilterInputKeys}
           placeholder={t(($) => $.filters.placeholder)}
           className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
           autoFocus
@@ -798,16 +809,10 @@ function PropertyFilterOptions({
               if (!movedToMenuItem) commitValue(draft);
             }}
             onKeyDown={(event) => {
-              // Base UI's menu popup merges typeahead + list-navigation handlers
-              // onto the role="menu" element and stopEvent()s every printable
-              // key — without stopping propagation, the input would swallow no
-              // characters at all (and arrow keys on number/date inputs would
-              // be hijacked). Escape/Tab are left for the menu to close/move
-              // focus; Enter commits and still needs stopPropagation so it does
-              // not bubble up and activate the highlighted "No value" item.
-              if (event.key === "Escape" || event.key === "Tab") return;
-              if (event.key === "Enter") commitValue(draft);
-              event.stopPropagation();
+              isolateFilterInputKeys(event);
+              if (event.key === "Enter" && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) {
+                commitValue(draft);
+              }
             }}
             disabled={locked}
             placeholder={placeholder}

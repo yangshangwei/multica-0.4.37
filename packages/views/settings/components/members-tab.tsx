@@ -189,7 +189,12 @@ function MemberRow({
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <Button variant="ghost" size="icon-sm" disabled={busy}>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                disabled={busy}
+                aria-label={t(($) => $.members.actions_for, { name: member.name || member.username || member.email })}
+              >
                 <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
               </Button>
             }

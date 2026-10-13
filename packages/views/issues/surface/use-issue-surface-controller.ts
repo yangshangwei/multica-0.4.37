@@ -48,7 +48,7 @@ import {
   useIssueSurfaceActions,
   type MoveIssueUpdates,
 } from "./use-issue-surface-actions";
-import { useIssueSurfaceData } from "./use-issue-surface-data";
+import { useIssueSurfaceData, type GanttRecoveryState } from "./use-issue-surface-data";
 import {
   useIssueStatusBranches,
   type IssueStatusPagination,
@@ -85,6 +85,7 @@ export interface IssueSurfaceController {
   filteredGanttIssues: Issue[];
   sort: IssueSortParam;
   ganttIssues: Issue[];
+  ganttRecovery: GanttRecoveryState;
   visibleStatuses: IssueStatusCategory[];
   hiddenStatuses: IssueStatusCategory[];
   /** Exact server counts plus cursor controls for List/status Board. */

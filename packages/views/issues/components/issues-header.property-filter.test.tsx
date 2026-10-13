@@ -121,6 +121,20 @@ describe("IssueFilterMenu scalar property filter", () => {
     expect(store.getState().propertyFilters).toEqual({ [PROP]: ["hello"] });
   });
 
+  it("does not commit an IME candidate confirmation as the finished filter", async () => {
+    const { store } = renderFilterMenu([textProperty(PROP, "Note")]);
+    await openPropertySubmenu("Note");
+    const input = screen.getByRole("textbox");
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "中文" } });
+    fireEvent.keyDown(input, { key: "Enter", isComposing: true, keyCode: 229 });
+    expect(store.getState().propertyFilters).toEqual({});
+
+    fireEvent.compositionEnd(input, { data: "中文" });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(store.getState().propertyFilters).toEqual({ [PROP]: ["中文"] });
+  });
+
   it("commits the value when focus blurs to a non-menu element", async () => {
     const { store } = renderFilterMenu([textProperty(PROP, "Note")]);
     await openPropertySubmenu("Note");

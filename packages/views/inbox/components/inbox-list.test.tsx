@@ -1,194 +1,210 @@
-import { forwardRef, useImperativeHandle } from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { forwardRef, useImperativeHandle, useState } from "react";
+import { act, fireEvent, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { buildIssueStatusCatalog } from "@multica/core/issue-statuses";
 import type { InboxItem } from "@multica/core/types";
+import { NavigationProvider, type NavigationAdapter } from "../../navigation";
+import { renderWithI18n } from "../../test/i18n";
 import { InboxList } from "./inbox-list";
 
-// jsdom has no layout, so the real Virtuoso measures a 0-height viewport and
-// renders nothing. The mock renders every row inline and exposes the handle
-// methods the list drives, so the keyboard behaviour is observable.
-const scrollIntoView = vi.hoisted(() => vi.fn());
+// Model Virtuoso's mount boundary and deferred destination mount. Browser
+// acceptance owns actual geometry; these tests exercise real row controls and
+// focus ownership while the virtualizer removes and replaces their DOM nodes.
+const virtual = vi.hoisted(() => ({
+  scrollIntoView: vi.fn(),
+  windowSize: Infinity,
+  deferMount: false,
+  mountPending: null as (() => void) | null,
+}));
 
 vi.mock("react-virtuoso", () => ({
   Virtuoso: forwardRef(function MockVirtuoso(
-    {
-      data,
-      itemContent,
-    }: {
+    { data, itemContent }: {
       data: InboxItem[];
       itemContent: (index: number, item: InboxItem) => React.ReactNode;
     },
     ref: React.Ref<unknown>,
   ) {
-    useImperativeHandle(ref, () => ({ scrollIntoView }));
-    return (
-      <div>
-        {data.map((item, index) => (
-          <div key={item.id}>{itemContent(index, item)}</div>
-        ))}
-      </div>
-    );
+    const [start, setStart] = useState(0);
+    useImperativeHandle(ref, () => ({
+      scrollIntoView: (options: { index: number }) => {
+        virtual.scrollIntoView(options);
+        const mount = () => setStart(Math.floor(options.index / virtual.windowSize) * virtual.windowSize || 0);
+        if (virtual.deferMount) virtual.mountPending = mount;
+        else mount();
+      },
+    }));
+    return <div>{data.slice(start, start + virtual.windowSize).map((item, index) => (
+      <div key={item.id}>{itemContent(start + index, item)}</div>
+    ))}</div>;
   }),
 }));
 
-// The row renders avatars, hover cards, and a status icon — none of which this
-// file is about. Keep it a bare button carrying the two things the list reads.
-vi.mock("./inbox-list-item", () => ({
-  InboxListItem: ({
-    item,
-    isSelected,
-    onClick,
-  }: {
-    item: InboxItem;
-    isSelected: boolean;
-    onClick: () => void;
-  }) => (
-    <button type="button" data-selected={isSelected} onClick={onClick}>
-      {item.id}
-    </button>
-  ),
+vi.mock("@multica/core/issue-statuses/hooks", () => ({
+  useIssueStatuses: () => buildIssueStatusCatalog(undefined),
 }));
-
-vi.mock("../../i18n", () => ({ useT: () => ({ t: () => "Inbox" }) }));
+vi.mock("../../issues/components", () => ({ StatusIcon: () => null }));
+vi.mock("../../issues/components/issue-agent-activity-indicator", () => ({ IssueAgentActivityIndicator: () => null }));
+vi.mock("../../common/actor-avatar", () => ({ ActorAvatar: () => <span /> }));
+vi.mock("./inbox-detail-label", () => ({ InboxDetailLabel: () => <span>New comment</span> }));
+vi.mock("./inbox-row-menu", () => ({
+  InboxRowMenu: () => <button type="button" onClick={(event) => event.stopPropagation()}>Notification actions</button>,
+}));
 
 function item(id: string, overrides: Partial<InboxItem> = {}): InboxItem {
   return {
-    id,
-    workspace_id: "workspace-1",
-    recipient_type: "member",
-    recipient_id: "member-1",
-    actor_type: "agent",
-    actor_id: "agent-1",
-    type: "new_comment",
-    severity: "info",
-    issue_id: `issue-${id}`,
-    title: "Issue title",
-    body: null,
-    issue_status: null,
-    read: true,
-    archived: false,
-    created_at: "2026-06-15T08:00:00Z",
-    details: null,
+    id, workspace_id: "workspace-1", recipient_type: "member", recipient_id: "member-1",
+    actor_type: "agent", actor_id: "agent-1", type: "new_comment", severity: "info",
+    issue_id: `issue-${id}`, title: `Issue ${id}`, body: null, issue_status: null,
+    read: true, archived: false, created_at: "2026-06-15T08:00:00Z", details: null,
     ...overrides,
   };
 }
+const items = [item("a"), item("b"), item("c"), item("d")];
+const adapter: NavigationAdapter = {
+  push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/", hash: "",
+  searchParams: new URLSearchParams(), getShareableUrl: (path) => path,
+};
 
-const items = [item("a"), item("b"), item("c")];
-
-function renderList(selectedKey: string, onSelect = vi.fn()) {
-  const utils = render(
-    <InboxList
-      items={items}
-      view="inbox"
-      selectedKey={selectedKey}
-      archivedCount={0}
-      onSelect={onSelect}
-      onAction={vi.fn()}
-      onOpenArchived={vi.fn()}
-    />,
-  );
-  // The scroll container owns the key handler; it is the row's closest
-  // ancestor with an overflow style.
-  const scroller = utils.container.querySelector(".overflow-y-auto") as HTMLElement;
-  return { ...utils, scroller, onSelect };
+function renderList(selectedKey: string, onSelect = vi.fn(), data = items) {
+  const onAction = vi.fn();
+  function Harness() {
+    const [selected, setSelected] = useState(selectedKey);
+    return <NavigationProvider value={adapter}>
+      <button type="button" onClick={() => setSelected("")}>Dismiss detail</button>
+      <InboxList items={data} view="inbox" selectedKey={selected} archivedCount={0}
+        onSelect={(next) => { onSelect(next); setSelected(next.issue_id ?? next.id); }}
+        onAction={onAction} onOpenArchived={vi.fn()} />
+    </NavigationProvider>;
+  }
+  const utils = renderWithI18n(<Harness />);
+  const scroller = screen.getByRole("list", { name: "Inbox" });
+  return { ...utils, scroller, onSelect, onAction };
 }
-
-/** Press a key on the list, reporting whether the native scroll was claimed. */
-function press(scroller: HTMLElement, key: string, init: KeyboardEventInit = {}) {
-  return !fireEvent.keyDown(scroller, { key, ...init });
+const primary = (id: string) => screen.getByRole("button", { name: `Issue ${id}` });
+function press(target: HTMLElement, key: string, init: KeyboardEventInit = {}) {
+  return !fireEvent.keyDown(target, { key, ...init });
 }
 
 beforeEach(() => {
-  scrollIntoView.mockClear();
+  virtual.scrollIntoView.mockClear();
+  virtual.windowSize = Infinity;
+  virtual.deferMount = false;
+  virtual.mountPending = null;
 });
 
 describe("InboxList keyboard navigation", () => {
-  it("moves the selection down instead of scrolling", () => {
-    const { scroller, onSelect } = renderList("issue-a");
-
-    const prevented = press(scroller, "ArrowDown");
-
-    expect(onSelect).toHaveBeenCalledWith(items[1]);
-    expect(prevented).toBe(true);
+  it("moves current state and DOM focus with arrow keys", () => {
+    const { onSelect } = renderList("issue-a");
+    primary("a").focus();
+    expect(press(primary("a"), "ArrowDown")).toBe(true);
+    expect(onSelect).toHaveBeenLastCalledWith(items[1]);
+    expect(primary("b")).toHaveFocus();
+    expect(primary("b")).toHaveAttribute("aria-current", "true");
+    expect(primary("a")).not.toHaveAttribute("aria-current");
+    expect(press(primary("b"), "ArrowUp")).toBe(true);
+    expect(primary("a")).toHaveFocus();
+    expect(primary("a")).toHaveAttribute("aria-current", "true");
+    expect(virtual.scrollIntoView).toHaveBeenCalledWith({ index: 1 });
   });
 
-  it("moves the selection up", () => {
-    const { scroller, onSelect } = renderList("issue-b");
-
-    press(scroller, "ArrowUp");
-
-    expect(onSelect).toHaveBeenCalledWith(items[0]);
+  it.each([["ArrowDown", "a"], ["ArrowUp", "d"]])("enters an unselected list with %s", (key, id) => {
+    const { scroller } = renderList("");
+    scroller.focus();
+    press(scroller, key!);
+    expect(primary(id!)).toHaveFocus();
+    expect(primary(id!)).toHaveAttribute("aria-current", "true");
   });
 
-  it("enters the list from either end when nothing is selected", () => {
-    const down = renderList("");
-    press(down.scroller, "ArrowDown");
-    expect(down.onSelect).toHaveBeenCalledWith(items[0]);
-
-    const up = renderList("");
-    press(up.scroller, "ArrowUp");
-    expect(up.onSelect).toHaveBeenCalledWith(items[2]);
-  });
-
-  it("stops at the ends of the list and still claims the key", () => {
-    // Falling through to the native scroll at the last row would move the
-    // viewport away from the row that stays selected.
-    const { scroller, onSelect } = renderList("issue-c");
-
-    const prevented = press(scroller, "ArrowDown");
-
+  it("stops at the ends and retains row focus", () => {
+    const { onSelect } = renderList("issue-d");
+    primary("d").focus();
+    expect(press(primary("d"), "ArrowDown")).toBe(true);
     expect(onSelect).not.toHaveBeenCalled();
-    expect(prevented).toBe(true);
+    expect(primary("d")).toHaveFocus();
   });
 
-  it("scrolls the newly selected row into view", () => {
-    // Virtuoso's own scrollIntoView, so a row that virtualization has not
-    // mounted still gets there — and only when it is off-screen.
-    const { scroller } = renderList("issue-a");
-
-    press(scroller, "ArrowDown");
-
-    expect(scrollIntoView).toHaveBeenCalledWith({ index: 1 });
+  it("starts at the focused row after Tab, not the prior selection", () => {
+    renderList("issue-a");
+    primary("c").focus();
+    press(primary("c"), "ArrowDown");
+    expect(primary("d")).toHaveFocus();
+    expect(primary("d")).toHaveAttribute("aria-current", "true");
   });
 
-  it("leaves modified arrow keys alone", () => {
-    // Shift+Down extends a selection and Alt/Cmd+Down are OS/browser scroll
-    // accelerators; none of them mean "next notification".
-    const { scroller, onSelect } = renderList("issue-a");
-
-    expect(press(scroller, "ArrowDown", { shiftKey: true })).toBe(false);
-    expect(press(scroller, "ArrowDown", { metaKey: true })).toBe(false);
-    expect(press(scroller, "ArrowDown", { altKey: true })).toBe(false);
+  it("ignores modified keys and IME composition", () => {
+    const { onSelect } = renderList("issue-a");
+    primary("a").focus();
+    for (const modifier of [{ shiftKey: true }, { metaKey: true }, { ctrlKey: true }, { altKey: true }, { keyCode: 229 }]) {
+      expect(press(primary("a"), "ArrowDown", modifier)).toBe(false);
+    }
     expect(onSelect).not.toHaveBeenCalled();
   });
 
-  it("leaves the key to a text field inside the list", () => {
-    const { scroller, onSelect } = renderList("issue-a");
+  it("keeps archive, menu and text-field input independent", async () => {
+    const { scroller, onSelect, onAction } = renderList("issue-a");
+    const row = primary("b").closest('[role="listitem"]') as HTMLElement;
+    const archive = within(row).getByRole("button", { name: "Archive" });
+    const menu = within(row).getByRole("button", { name: "Notification actions" });
+    for (const control of [archive, menu]) {
+      control.focus();
+      expect(press(control, "ArrowDown")).toBe(false);
+      expect(control).toHaveFocus();
+    }
+    await userEvent.setup().click(archive);
+    expect(onAction).toHaveBeenCalledWith("b");
     const input = document.createElement("input");
     scroller.appendChild(input);
-
-    press(input, "ArrowDown");
-
+    expect(press(input, "ArrowDown")).toBe(false);
     expect(onSelect).not.toHaveBeenCalled();
   });
 
-  it("ignores an arrow key that composition already owns", () => {
-    // During IME composition the arrow key walks the candidate list.
-    const { scroller, onSelect } = renderList("issue-a");
-
-    press(scroller, "ArrowDown", { keyCode: 229 });
-
-    expect(onSelect).not.toHaveBeenCalled();
+  it("focuses the real row on click and leaves detail dismissal focus alone", async () => {
+    renderList("");
+    fireEvent.click(primary("b"));
+    expect(primary("b")).toHaveFocus();
+    expect(primary("b")).toHaveAttribute("aria-current", "true");
+    const dismiss = screen.getByRole("button", { name: "Dismiss detail" });
+    await userEvent.setup().click(dismiss);
+    expect(dismiss).toHaveFocus();
+    expect(primary("b")).not.toHaveAttribute("aria-current");
   });
 
-  it("focuses the container on click so the arrow keys work right after", () => {
-    // Safari does not focus a <button> on click, and virtualization can unmount
-    // the clicked row — either way the keydown would stop reaching the list.
-    const { scroller, onSelect } = renderList("");
+  it("keeps notification-only identity and exposes virtual list positions", () => {
+    renderList("notice", vi.fn(), [item("notice", { issue_id: null })]);
+    const selection = primary("notice");
+    expect(selection).toHaveAttribute("aria-current", "true");
+    const row = selection.closest('[role="listitem"]');
+    expect(row).toHaveAttribute("aria-posinset", "1");
+    expect(row).toHaveAttribute("aria-setsize", "1");
+  });
 
-    fireEvent.click(screen.getByText("b"));
+  it("mounts and focuses the next and previous rows across virtual boundaries", () => {
+    virtual.windowSize = 2;
+    renderList("issue-b");
+    primary("b").focus();
+    press(primary("b"), "ArrowDown");
+    expect(screen.queryByRole("button", { name: "Issue b" })).not.toBeInTheDocument();
+    expect(primary("c")).toHaveFocus();
+    expect(primary("c")).toHaveAttribute("aria-current", "true");
+    expect(primary("c").closest('[role="listitem"]')).toHaveAttribute("aria-posinset", "3");
+    press(primary("c"), "ArrowUp");
+    expect(primary("b")).toHaveFocus();
+    expect(primary("b")).toHaveAttribute("aria-current", "true");
+  });
 
-    expect(onSelect).toHaveBeenCalledWith(items[1]);
-    expect(document.activeElement).toBe(scroller);
+  it("does not reclaim focus when a pending virtual row mounts after detail dismissal", async () => {
+    virtual.windowSize = 2;
+    virtual.deferMount = true;
+    renderList("issue-b");
+    primary("b").focus();
+    press(primary("b"), "ArrowDown");
+    const dismiss = screen.getByRole("button", { name: "Dismiss detail" });
+    await userEvent.setup().click(dismiss);
+    act(() => virtual.mountPending?.());
+    expect(primary("c")).toBeInTheDocument();
+    expect(dismiss).toHaveFocus();
+    expect(primary("c")).not.toHaveAttribute("aria-current");
   });
 });
