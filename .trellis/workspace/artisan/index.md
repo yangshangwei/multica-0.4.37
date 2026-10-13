@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 67
+- **Total Sessions**: 68
 - **Last Active**: 2026-10-13
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~133 | Active |
+| `journal-2.md` | ~167 | Active |
 | `journal-1.md` | ~1987 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 68 | 2026-10-13 | Complete v0.6.6 offline delivery | `f90c3fe13` | `codex/cross-workspace-collaboration` |
 | 67 | 2026-10-13 | 内网静态下载页与首次安装指导 | `35cc68ca2` | `codex/cross-workspace-collaboration` |
 | 66 | 2026-10-12 | MCP agent category filters | `6642de425` | `codex/cross-workspace-collaboration` |
 | 65 | 2026-10-12 | 丰富当前后端与桌面业务测试数据 | `ede5ae202` | `codex/cross-workspace-collaboration` |

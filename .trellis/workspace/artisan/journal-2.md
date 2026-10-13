@@ -131,3 +131,37 @@ Implemented and verified category filtering in the shared MCP agent assignment p
 ### Next Steps
 
 - 部署现有内网 Nginx；配置业务 URL，使用正式 Windows 安装包完成原生验收。
+
+
+## Session 68: Complete v0.6.6 offline delivery
+<!-- trellis-session: v=2 fp=4be2a5b8a211fb8b -->
+
+**Date**: 2026-10-13
+**Task**: Complete v0.6.6 offline delivery
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Finished frozen-source Linux amd64 and Windows x64 delivery in dist/release/v0.6.6. Verified password/device upgrades, fresh administrator, artifact/feed integrity, source regressions and all 21 checksums; retained native Windows and real-environment limits.
+
+### Main Changes
+
+- Finalized matching upgrade guides, portable verification reports and checksums; archived the approved release task.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f90c3fe13` | docs(release): make the v0.6.6 offline handoff verifiable |
+
+### Testing
+
+- [OK] Final independent review passed: 22 files, 13 documentation ZIP members; source lint/typecheck/vet and selected regressions; actual cmd/server 25 top-level / 63 pass events.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Target Windows installation/upgrade and real intranet acceptance remain deployment-side checks; Windows payload is unsigned.
