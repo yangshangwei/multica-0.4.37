@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="下载 Multica Windows 客户端，按指引连接业务服务器、注册或登录并进入工作空间。">
+  <title>下载与安装 · Multica</title>
+  <style>
+    /* Standalone subset of the existing Web landing download page:
+       hero.tsx, all-platforms.tsx, shared.tsx and packages/ui/styles/tokens.css.
+       Keep the dark hero, serif display and light platform rows in sync with
+       that visual baseline. Local font stacks avoid a font/CDN dependency. */
+    :root {
+      --page: #fff;
+      --ink: #0a0d12;
+      --muted: #53565b;
+      --surface: #f7f7f8;
+      --border: #e2e3e4;
+      --hero: #05070b;
+      --hero-ink: #fff;
+      --hero-muted: #b9c0cf;
+      --focus: #385fc0;
+      --error: #9b302c;
+      --text-caption: 12px;
+      --text-label: 13px;
+      --text-body: 14px;
+      --text-body-lg: 15px;
+      --text-title-sm: 16px;
+      --text-title: 18px;
+      --text-title-lg: 20px;
+      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Songti SC", SimSun, serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 24px; }
+    body { margin: 0; color: var(--ink); background: var(--page); font: var(--text-body)/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+    a { color: inherit; text-underline-offset: 4px; }
+    button { font: inherit; cursor: pointer; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+    ::selection { color: var(--page); background: var(--focus); }
+    svg { flex-shrink: 0; vertical-align: middle; }
+    p { margin: 0; }
+    h1, h2, h3 { margin: 0; text-wrap: balance; }
+    h2 { font: 400 clamp(2.2rem, 4vw, 2.6rem)/1.15 var(--serif); letter-spacing: -.03em; }
+    h3 { font-size: var(--text-title-sm); line-height: 1.5; font-weight: 600; }
+    .container { max-width: 920px; margin: 0 auto; padding: 0 32px; }
+    .skip-link { position: absolute; top: 12px; left: 12px; z-index: 10; padding: 10px 16px; background: var(--page); color: var(--ink); transform: translateY(-160%); border-radius: 8px; }
+    .skip-link:focus { transform: translateY(0); }
+    .site-header { position: absolute; top: 0; inset-inline: 0; z-index: 1; color: var(--hero-ink); }
+    .header-inner { max-width: 1320px; min-height: 76px; margin: auto; padding: 12px 32px; display: flex; align-items: center; gap: 32px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; font-size: var(--text-title-lg); font-weight: 600; letter-spacing: .04em; text-decoration: none; }
+    /* Same eight-point mark as packages/ui/components/common/multica-icon.tsx. */
+    .brand-mark { width: 20px; height: 20px; background: currentColor; clip-path: polygon(45% 62.1%,45% 100%,55% 100%,55% 62.1%,81.8% 88.9%,88.9% 81.8%,62.1% 55%,100% 55%,100% 45%,62.1% 45%,88.9% 18.2%,81.8% 11.1%,55% 37.9%,55% 0%,45% 0%,45% 37.9%,18.2% 11.1%,11.1% 18.2%,37.9% 45%,0% 45%,0% 55%,37.9% 55%,11.1% 81.8%,18.2% 88.9%); }
+    .site-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    .site-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 9px; color: var(--hero-muted); font-size: var(--text-label); text-decoration: none; }
+    .site-nav a:hover { color: var(--hero-ink); background: #ffffff14; }
+    .header-link { margin-left: auto; }
+    .site-header :focus-visible, .hero :focus-visible { outline-color: #a7bdff; }
+    .hero { color: var(--hero-ink); background: radial-gradient(ellipse 70% 50% at 50% 0%, #5078ff2e, transparent 60%), radial-gradient(ellipse 50% 40% at 50% 80%, #ff5a5a14, transparent 60%), var(--hero); padding: 160px 24px 100px; text-align: center; }
+    .hero h1 { max-width: 880px; margin: auto; font: 400 clamp(3rem, 6vw, 5rem)/1.02 var(--serif); letter-spacing: -.035em; }
+    .hero-description { max-width: 620px; margin: 28px auto 0; font-size: var(--text-title); color: #e0e3ea; }
+    .hero-action { margin-top: 40px; }
+    .button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 1px solid transparent; border-radius: 12px; background: var(--ink); color: var(--page); font-size: var(--text-body); font-weight: 600; line-height: 1.4; text-decoration: none; }
+    .button:hover { background: #2c3038; }
+    .button-light { background: var(--page); color: var(--ink); }
+    .button-light:hover { background: #ebedf1; }
+    .header-link { min-height: 42px; padding: 10px 16px; border-radius: 11px; font-size: var(--text-label); }
+    .button[aria-disabled="true"] { background: #ffffff14; border-color: #ffffff26; color: var(--hero-muted); cursor: not-allowed; }
+    .hero-hint { margin-top: 20px; color: var(--hero-muted); font-size: var(--text-label); }
+    .download-status { max-width: 620px; min-height: 24px; margin: 20px auto 0; color: var(--hero-muted); font-size: var(--text-label); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+    .retry { min-height: 44px; margin-top: 8px; padding: 8px 12px; background: transparent; border: 0; border-radius: 8px; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+    .retry:hover { background: #a2abb314; }
+    button:disabled { cursor: not-allowed; opacity: .6; }
+    .section { padding: 88px 0; }
+    .section-intro { margin-top: 18px; color: var(--muted); max-width: 68ch; font-size: var(--text-body-lg); }
+    .platform-list { margin: 36px 0 0; padding: 0; list-style: none; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .platform-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 20px 24px; }
+    .platform-row + .platform-row { border-top: 1px solid var(--border); }
+    .platform-name { display: flex; align-items: center; gap: 12px; min-width: 220px; font-weight: 500; }
+    .os-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #0a0d120d; }
+    .format { display: inline-flex; align-items: center; min-height: 40px; padding: 7px 14px; border: 1px solid #c5c7ca; border-radius: 8px; font-size: var(--text-label); font-weight: 500; text-decoration: none; }
+    .format:hover { background: var(--surface); border-color: var(--muted); }
+    .format[aria-disabled="true"] { color: var(--muted); cursor: not-allowed; background: var(--surface); }
+    .pending { color: var(--muted); font-size: var(--text-label); padding: 7px 14px; border-radius: 8px; background: var(--surface); }
+    .server-section { background: var(--surface); }
+    .server-controls { display: flex; align-items: flex-start; gap: 16px; margin-top: 28px; }
+    .server-address { flex: 1; min-width: 0; margin: 0; padding: 14px 18px; background: var(--page); border: 1px solid #a7a9ad; border-radius: 12px; }
+    .server-address code { display: block; font: var(--text-body-lg)/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; overflow-wrap: anywhere; white-space: pre-wrap; user-select: text; }
+    .server-controls .button { flex-shrink: 0; }
+    .status { margin-top: 16px; color: var(--muted); overflow-wrap: anywhere; }
+    .copy-status { min-height: 24px; margin-top: 8px; }
+    [data-state="unavailable"] > .container > .status { color: var(--error); }
+    .steps { list-style: none; margin: 40px 0 0; padding: 0; counter-reset: install; }
+    .steps > li { counter-increment: install; position: relative; padding-left: 56px; }
+    .steps > li + li { margin-top: 32px; }
+    .steps > li::before { content: counter(install); position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 32px; height: 32px; background: var(--surface); border-radius: 50%; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .steps p { margin-top: 8px; max-width: 72ch; color: var(--muted); }
+    .steps strong { color: var(--ink); font-weight: 600; }
+    .faq-section { padding-top: 0; }
+    .faq-list { margin-top: 36px; border-top: 1px solid var(--border); }
+    details { border-bottom: 1px solid var(--border); }
+    summary { min-height: 60px; padding: 18px 4px; cursor: pointer; font-weight: 500; }
+    summary::marker { color: var(--muted); }
+    details p { padding: 0 4px 22px 22px; max-width: 72ch; color: var(--muted); }
+    .footer { border-top: 1px solid var(--border); padding: 28px 0; color: var(--muted); font-size: var(--text-label); }
+    .footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+    .no-script { padding: 16px 24px; margin: 0; text-align: center; background: var(--surface); }
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      .header-inner { padding: 16px 20px; gap: 10px 16px; flex-wrap: wrap; }
+      .brand { font-size: var(--text-title); }
+      .site-nav { margin-left: auto; gap: 0; }
+      .site-nav a { padding: 8px; }
+      .header-link { display: none; }
+      .hero { padding: 148px 20px 72px; }
+      .hero-description { font-size: var(--text-title-sm); }
+      .section { padding: 60px 0; }
+      .faq-section { padding-top: 0; }
+      .platform-row { padding: 18px; gap: 8px 16px; }
+      .platform-name { min-width: min(220px, 100%); }
+      .server-controls { flex-direction: column; align-items: stretch; }
+      .server-address { flex: auto; }
+      .server-controls .button { align-self: flex-start; }
+      .steps > li { padding-left: 44px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- OS shapes reused from apps/web/features/landing/components/download/os-icons.tsx. -->
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <symbol id="os-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.5 10.5 4.5v6.75H3V5.5Zm0 7.25h7.5v6.75L3 18.5v-5.75Zm8.75-8.4L21 3v9H11.75V4.35ZM11.75 12h9.25v9L11.75 19.65V12Z"/></symbol>
+      <symbol id="os-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.37 12.8c.02-1.9 1.56-2.83 1.63-2.87-.89-1.3-2.28-1.48-2.77-1.5-1.18-.12-2.3.69-2.9.69-.6 0-1.52-.68-2.5-.66-1.28.02-2.47.74-3.13 1.88-1.33 2.3-.34 5.7.96 7.57.63.92 1.38 1.94 2.36 1.9.95-.04 1.31-.61 2.45-.61 1.14 0 1.47.61 2.47.59 1.02-.02 1.66-.93 2.29-1.84.72-1.06 1.02-2.1 1.04-2.15-.02-.01-2-.77-2.02-3.05-.02-1.9 1.55-2.81 1.63-2.87zm-2.05-5.24c.52-.63.88-1.52.78-2.4-.75.03-1.66.5-2.2 1.12-.48.55-.9 1.44-.79 2.32.84.06 1.69-.42 2.21-1.04z"/></symbol>
+      <symbol id="os-linux" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c-2.4 0-4 1.9-4 4.6 0 1.2.3 2.3.8 3.2-.7.7-1.3 1.8-1.6 3-.4 1.4-.7 3.3-1.8 4.4-.6.6-1 .9-1 1.6 0 .9.8 1.3 2 1.6 1.5.3 2.6.1 3.6-.3.6-.2 1.3-.4 2-.4s1.4.2 2 .4c1 .4 2.1.6 3.6.3 1.2-.3 2-.7 2-1.6 0-.7-.4-1-1-1.6-1.1-1.1-1.4-3-1.8-4.4-.3-1.2-.9-2.3-1.6-3 .5-.9.8-2 .8-3.2 0-2.7-1.6-4.6-4-4.6Zm-1.5 5.2c.3 0 .5.3.5.8s-.2.8-.5.8-.5-.3-.5-.8.2-.8.5-.8Zm3 0c.3 0 .5.3.5.8s-.2.8-.5.8-.5-.3-.5-.8.2-.8.5-.8Zm-3 2.6c.7.5 1.5.8 1.5.8s.8-.3 1.5-.8c0 .6-.7 1-1.5 1s-1.5-.4-1.5-1Z"/></symbol>
+    </defs>
+  </svg>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#download" aria-label="Multica 下载首页"><span class="brand-mark" aria-hidden="true"></span>multica</a>
+      <nav class="site-nav" aria-label="页面导航">
+        <a href="#all-platforms">下载</a>
+        <a href="#install">安装指导</a>
+        <a href="#faq">常见问题</a>
+      </nav>
+      <a class="button button-light header-link" href="#server">连接服务器</a>
+    </div>
+  </header>
+  <main id="main">
+    <section id="download" class="hero" data-state="loading" aria-labelledby="download-title">
+      <h1 id="download-title">Multica for Windows</h1>
+      <p class="hero-description">下载 Windows 客户端，按下方指引开始使用。</p>
+      <div class="hero-action">
+        <a id="download-primary" class="button button-light" data-download aria-disabled="true" tabindex="-1" aria-describedby="download-status" aria-label="下载 Windows x64 安装包（.exe）">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          下载（.exe）
+        </a>
+      </div>
+      <p class="hero-hint">适用于 Windows 64 位（x64）</p>
+      <p id="download-status" class="download-status" role="status">正在获取当前版本…</p>
+      <button id="retry-download" class="retry" type="button" hidden>重新获取下载信息</button>
+    </section>
+    <noscript><p class="no-script">请启用浏览器 JavaScript 以获取当前安装包和服务器地址。下方安装指导仍可阅读。</p></noscript>
+    <section id="all-platforms" class="section" aria-labelledby="platforms-title">
+      <div class="container">
+        <h2 id="platforms-title">所有平台</h2>
+        <p class="section-intro">当前提供 Windows x64 安装包，其他平台待开放。</p>
+        <ul class="platform-list">
+          <li class="platform-row" data-pending="mac-arm64"><span class="platform-name"><span class="os-icon"><svg width="18" height="18" aria-hidden="true"><use href="#os-apple"/></svg></span>macOS · Apple Silicon</span><span class="pending">待开放</span></li>
+          <li class="platform-row" data-pending="mac-x64"><span class="platform-name"><span class="os-icon"><svg width="18" height="18" aria-hidden="true"><use href="#os-apple"/></svg></span>macOS · Intel</span><span class="pending">待开放</span></li>
+          <li class="platform-row"><span class="platform-name"><span class="os-icon"><svg width="18" height="18" aria-hidden="true"><use href="#os-windows"/></svg></span>Windows · x64</span><a class="format" data-download aria-disabled="true" tabindex="-1" aria-describedby="download-status" aria-label="下载 Windows x64 安装包（.exe）">.exe</a></li>
+          <li class="platform-row" data-pending="linux-x86"><span class="platform-name"><span class="os-icon"><svg width="18" height="18" aria-hidden="true"><use href="#os-linux"/></svg></span>Linux · x86</span><span class="pending">待开放</span></li>
+          <li class="platform-row" data-pending="linux-arm64"><span class="platform-name"><span class="os-icon"><svg width="18" height="18" aria-hidden="true"><use href="#os-linux"/></svg></span>Linux · ARM64</span><span class="pending">待开放</span></li>
+        </ul>
+      </div>
+    </section>
+    <section id="server" class="section server-section" data-state="loading" aria-labelledby="server-title">
+      <div class="container">
+        <h2 id="server-title">连接业务服务器</h2>
+        <p class="section-intro">安装后，在客户端的服务器设置中填写下方地址。此地址用于连接工作空间，与安装包下载地址不同。</p>
+        <div class="server-controls">
+          <div class="server-address"><code id="server-url" tabindex="0" aria-label="业务服务器地址" hidden></code><span id="server-placeholder">正在获取服务器地址…</span></div>
+          <button id="copy-server" class="button" type="button" disabled>复制地址</button>
+        </div>
+        <p id="server-status" class="status" role="status">地址由内网管理员提供。</p>
+        <button id="retry-server" class="retry" type="button" hidden>重新获取服务器地址</button>
+        <p id="copy-status" class="status copy-status" role="status"></p>
+      </div>
+    </section>
+    <section id="install" class="section" aria-labelledby="install-title">
+      <div class="container">
+        <h2 id="install-title">从安装到工作台</h2>
+        <p class="section-intro">首次使用，按以下步骤完成。已有账号可以直接登录。</p>
+        <ol class="steps">
+          <li><h3>下载安装包</h3><p>在本页点击 <strong>下载（.exe）</strong>，等待下载完成。首期安装包适用于 Windows 64 位（x64）；可在 Windows「设置 → 系统 → 系统信息」中查看系统类型。</p></li>
+          <li><h3>安装并打开 Multica</h3><p>打开下载的安装包，按安装向导完成安装，再从桌面快捷方式或开始菜单打开 Multica。若安装被系统或组织策略阻止，请联系内网管理员确认安装包来源与安装权限。</p></li>
+          <li><h3>测试并保存服务器地址</h3><p>复制上方的<a href="#server">业务服务器地址</a>，填写到客户端首次启动的服务器设置中。先进行连接测试，成功后保存并继续；连接失败时核对协议、主机、端口及内网连接。</p></li>
+          <li><h3>注册新账号，或使用已有账号登录</h3><p><strong>首次使用：</strong>进入注册入口，填写用户名、姓名、密码和确认密码，按表单提示提交。注册成功后会自动登录，无需再登录一次。</p><p><strong>已有账号：</strong>输入用户名和密码登录。如果没有注册入口，请联系内网管理员确认是否已开放自助注册。</p></li>
+          <li><h3>加入或创建工作空间</h3><p><strong>已收到邀请：</strong>按客户端提示接受工作空间邀请，加入团队。若邀请未出现或失效，请联系邀请人或内网管理员核实账号与邀请。</p><p><strong>没有邀请：</strong>按上手引导创建工作空间；如果团队已有工作空间，也可以先联系团队成员获取邀请。</p></li>
+          <li><h3>完成引导，进入工作台</h3><p>完成客户端剩余的上手引导，进入已加入或新建的工作空间。遇到运行时或 AI 工具连接步骤时，可使用客户端的稍后处理入口。看到工作空间内的工作台后，即完成首次安装与接入。</p></li>
+        </ol>
+      </div>
+    </section>
+    <section id="faq" class="section faq-section" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 id="faq-title">常见问题</h2>
+        <div class="faq-list">
+          <details><summary>下载按钮不可用，或安装包下载失败？</summary><p>先确认已连接内网，再点击页面上的「重新获取下载信息」或刷新页面重试。若仍无法下载，请联系内网管理员检查当前安装包是否已发布完整。下载中断时，重新下载完成后再打开安装包。</p></details>
+          <details><summary>Windows 阻止安装，或提示权限不足？</summary><p>保留提示内容，联系内网管理员确认安装包来源、系统架构和安装权限，并按组织的软件安装流程处理。不要使用来源不明的替代安装包。</p></details>
+          <details><summary>客户端无法连接服务器？</summary><p>核对填写的是本页提供的业务服务器地址，包含完整协议和端口，不要填写浏览器中的下载页面地址。确认内网连接后重新测试；若地址未显示、证书异常或连接持续失败，请联系内网管理员。</p></details>
+          <details><summary>为什么没有注册入口？</summary><p>注册入口取决于业务环境是否启用了密码登录和自助注册。本页面不能修改该设置，请联系内网管理员确认开放情况；已有账号可以直接登录。</p></details>
+          <details><summary>用户名或密码有误，无法注册或登录？</summary><p>按客户端表单提示检查用户名、姓名及密码要求；注册时两次密码须一致。登录时检查用户名、大小写和输入法。如提示需要等待，请在提示时间后重试；忘记密码或仍无法登录时，请联系内网管理员处理。</p></details>
+          <details><summary>登录后没有工作空间，或仍停留在引导中？</summary><p>有邀请时接受邀请加入团队；没有邀请时按引导创建工作空间，或联系团队成员发送邀请。继续完成客户端要求的上手步骤，运行时连接可稍后处理。若邀请无效或无法创建，请联系内网管理员。</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="container"><span>Multica · 桌面客户端下载与安装</span><a href="#download">返回下载</a></div></footer>
+  <script>
+    (() => {
+      "use strict";
+      const MAX_JSON_BYTES = 16 * 1024;
+      const REQUEST_TIMEOUT_MS = 10000;
+      // Mirrors update-artifacts.mjs; the standalone browser cannot import Node helpers.
+      const versionPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
+      const byId = (id) => document.getElementById(id);
+      const downloadLinks = document.querySelectorAll("[data-download]");
+      const downloadRetry = byId("retry-download");
+      const serverRetry = byId("retry-server");
+      const copyButton = byId("copy-server");
+      const serverAddress = byId("server-url");
+
+      async function request(name, method = "GET") {
+        const url = new URL(name, window.location.href);
+        if (url.origin !== window.location.origin || !["http:", "https:"].includes(url.protocol)) throw new Error("Invalid resource URL");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+        try {
+          const response = await fetch(url.href, { method, cache: "no-store", redirect: "error", credentials: "same-origin", signal: controller.signal });
+          if (response.status !== 200 || response.redirected || (response.url && response.url !== url.href)) throw new Error("Resource unavailable");
+          if (method === "HEAD") {
+            const encoding = response.headers.get("content-encoding");
+            if (encoding && encoding !== "identity") throw new Error("Unexpected installer encoding");
+            return response.headers;
+          }
+          const length = response.headers.get("content-length");
+          if (length !== null && (!/^\d+$/.test(length) || Number(length) > MAX_JSON_BYTES)) throw new Error("Response too large");
+          if (!response.body) throw new Error("Empty response");
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder("utf-8", { fatal: true });
+          let bytes = 0;
+          let content = "";
+          try {
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              bytes += value.byteLength;
+              if (bytes > MAX_JSON_BYTES) throw new Error("Response too large");
+              content += decoder.decode(value, { stream: true });
+            }
+            return JSON.parse(content + decoder.decode());
+          } finally {
+            reader.releaseLock();
+          }
+        } finally {
+          clearTimeout(timeout);
+          controller.abort();
+        }
+      }
+
+      function validateRelease(value) {
+        if (!value || value.schemaVersion !== 1 || value.platform !== "windows" || value.arch !== "x64"
+          || typeof value.version !== "string" || value.version.length > 128 || !versionPattern.test(value.version)
+          || value.file !== `multica-desktop-${value.version}-windows-x64.exe`
+          || !Number.isSafeInteger(value.size) || value.size <= 0) throw new Error("Invalid release");
+        return value;
+      }
+
+      function validateServer(value) {
+        if (!value || value.schemaVersion !== 1 || typeof value.serverUrl !== "string") throw new Error("Invalid configuration");
+        const address = value.serverUrl;
+        if (address.length > 2048 || !/^https?:\/\//i.test(address) || /\s|\\/.test(address)) throw new Error("Invalid server address");
+        const url = new URL(address);
+        if (!["http:", "https:"].includes(url.protocol) || !url.hostname || url.username || url.password) throw new Error("Invalid server address");
+        return address;
+      }
+
+      async function loadDownload() {
+        const restoreFocus = document.activeElement === downloadRetry;
+        byId("download").dataset.state = "loading";
+        downloadRetry.disabled = true;
+        byId("download-status").textContent = "正在获取当前版本…";
+        for (const link of downloadLinks) {
+          link.removeAttribute("href");
+          link.removeAttribute("download");
+          link.setAttribute("aria-disabled", "true");
+          link.tabIndex = -1;
+        }
+        try {
+          const release = validateRelease(await request("./download.json"));
+          const headers = await request(`./${release.file}`, "HEAD");
+          const length = headers.get("content-length");
+          if (!length || !/^\d+$/.test(length) || Number(length) !== release.size) throw new Error("Installer size mismatch");
+          for (const link of downloadLinks) {
+            link.href = `./${release.file}`;
+            link.setAttribute("download", release.file);
+            link.removeAttribute("aria-disabled");
+            link.removeAttribute("tabindex");
+          }
+          byId("download").dataset.state = "available";
+          const size = release.size < 1024 * 1024 ? `${Math.ceil(release.size / 1024)} KB` : `${(release.size / (1024 * 1024)).toFixed(1)} MB`;
+          byId("download-status").textContent = `当前版本 ${release.version} · ${size}`;
+          downloadRetry.hidden = true;
+          if (restoreFocus) byId("download-primary").focus();
+        } catch {
+          byId("download").dataset.state = "unavailable";
+          byId("download-status").textContent = "下载信息暂不可用。请重试；若仍失败，请联系内网管理员。下方安装指导仍可阅读。";
+          downloadRetry.hidden = false;
+        } finally {
+          downloadRetry.disabled = false;
+        }
+      }
+
+      async function loadServer() {
+        const restoreFocus = document.activeElement === serverRetry;
+        byId("server").dataset.state = "loading";
+        serverRetry.disabled = true;
+        copyButton.disabled = true;
+        serverAddress.hidden = true;
+        serverAddress.textContent = "";
+        byId("server-placeholder").hidden = false;
+        byId("server-placeholder").textContent = "正在获取服务器地址…";
+        byId("copy-status").textContent = "";
+        try {
+          serverAddress.textContent = validateServer(await request("./download-config.json"));
+          serverAddress.hidden = false;
+          byId("server-placeholder").hidden = true;
+          byId("server-status").textContent = "复制后粘贴到客户端，也可以选中地址手动复制。";
+          byId("server").dataset.state = "available";
+          serverRetry.hidden = true;
+          copyButton.disabled = false;
+          if (restoreFocus) copyButton.focus();
+        } catch {
+          byId("server-placeholder").textContent = "服务器地址暂不可用";
+          byId("server-status").textContent = "请重试；若地址仍未显示，请联系内网管理员确认业务服务器地址。";
+          byId("server").dataset.state = "unavailable";
+          serverRetry.hidden = false;
+        } finally {
+          serverRetry.disabled = false;
+        }
+      }
+
+      function selectAddress() {
+        serverAddress.focus();
+        const range = document.createRange();
+        range.selectNodeContents(serverAddress);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+
+      async function copyAddress() {
+        if (copyButton.disabled) return;
+        copyButton.disabled = true;
+        byId("copy-status").textContent = "正在复制…";
+        let copied = false;
+        try {
+          if (navigator.clipboard?.writeText) {
+            try {
+              await navigator.clipboard.writeText(serverAddress.textContent);
+              copied = true;
+            } catch { /* HTTP/permission restrictions fall back to visible selection. */ }
+          }
+          if (!copied) {
+            selectAddress();
+            try { copied = document.execCommand?.("copy") === true; } catch { /* Keep selection for manual copy. */ }
+          }
+          byId("copy-status").textContent = copied
+            ? "已复制业务服务器地址。请粘贴到客户端的服务器设置中。"
+            : "未能自动复制，地址已选中。请按 Ctrl+C（macOS：⌘C），或长按地址复制。";
+        } finally {
+          copyButton.disabled = false;
+        }
+      }
+
+      downloadRetry.addEventListener("click", () => void loadDownload());
+      serverRetry.addEventListener("click", () => void loadServer());
+      copyButton.addEventListener("click", () => void copyAddress());
+      void loadDownload();
+      void loadServer();
+    })();
+  </script>
+</body>
+</html>

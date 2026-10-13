@@ -20,7 +20,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
-| [Intranet Updates](./intranet-updates.md) | Release publication, local Nginx storage and installed-client validation | Filled |
+| [Intranet Updates](./intranet-updates.md) | Release publication, Nginx static download page, first-install data contracts and installed-client validation | Filled |
 | [Close Behavior](./close-behavior.md) | Windows/Linux close button semantics: minimize-to-tray vs quit vs ask; prefs, tray, prompt, settings | Filled |
 | [Renderer File Access](./renderer-file-access.md) | Native local-file denial for untrusted HTML and real Electron verification | Active |
 | [Connection Recovery](./connection-recovery.md) | Bounded boot requests, truthful retry state, persistent server editing and child-window handoff | Active |

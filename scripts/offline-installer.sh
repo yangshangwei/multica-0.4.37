@@ -157,10 +157,14 @@ the server endpoint on first launch. The installer and server images were built
 from the same revision. The macOS package is ad-hoc signed and not notarized
 without Apple credentials, so Gatekeeper may require right-click → Open.
 
-The directory also includes generated `latest*.yml`, update ZIPs and blockmaps.
+The directory also includes generated `latest*.yml`, update ZIPs and blockmaps,
+plus `download.json` for a Windows x64 release's static download page.
 Keep the original names and bytes together when transferring them to an intranet
-update server. Publish installers first and atomically replace metadata last;
-do not upload this entire offline archive as an update installer.
+update server. Publish complete installers and companion files first, atomically
+replace the corresponding YAML next, and install `download.json` last when
+present. Preserve the administrator's separate `download-config.json` and back
+up the previous YAML and download projection together. Do not upload this entire
+offline archive as an update installer.
 README
 
 if command -v shasum >/dev/null 2>&1; then
