@@ -275,3 +275,52 @@ Completed F01-F17 settings remediation, independent review and native Electron a
 ### Next Steps
 
 - No remaining work in the agreed task scope; live backend writes, native Windows/Linux and spoken screen-reader checks were not exercised.
+
+
+## Session 72: Commit completed collaboration and automation slices
+<!-- trellis-session: v=2 fp=a714606fa8dae3f7 -->
+
+**Date**: 2026-10-14
+**Task**: Commit completed collaboration and automation slices
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Committed completed implementation slices and preserved existing archival moves; verified checks while keeping unfinished product acceptance and unrelated audit/diagnostic work explicit.
+
+### Main Changes
+
+- packages/core/api and collaboration plus server handlers/services/SQL: R29 recipient resolution, transaction eligibility and R42 metadata editing; reuse ordinary property validation instead of keeping a duplicate handler validator.
+- server source_context service/handler and regression tests: reject collaboration capture before projecting content or copying attachments; ordinary child controls remain valid.
+- packages/views/autopilots/locales/platform and Web/Desktop adapters: preserve template origin/focus and improve guidance and blank entry targets; accompanying specs committed.
+- apps/docs content, embedded server docs and DocsNav: complete authentication/triage/iteration guidance and accessible navigation; source and generated bundle committed together.
+- Three views test files: preserve ApiError exports, use semantic inbox listitem and await pointer activation before filter typing. No production workaround, sleeps, test retries or assertion weakening.
+- Preserved six existing archive moves and obsolete admin-init duplicate removal, repaired 46 archival context references, and retained selected authoritative task/audit evidence. Bookkeeping commit: f09aefab0df3486ab93dd897e34909382c010028.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `57f6163f454af6d17f3f4bb352b71b06fa4c8f25` | feat(collaboration): preserve authority when editing fields and choosing recipients |
+| `c29e05c8f63864e13b037a643b35a20180cbfef1` | fix(collaboration): prevent private source capture from bypassing collaboration rules |
+| `e5fe7b909c6d3987fed1a06d033edb5dd17bd3e8` | fix(autopilots): preserve template intent and keyboard focus through creation |
+| `5d6966b4baa1480a9b251558f79da4785a0f3a1f` | docs: make authentication and work management guidance complete and readable |
+| `14642c42ff763384ae49191916385a3390a6deec` | test(views): keep committed page regressions aligned with current contracts |
+
+### Testing
+
+- [OK] Full TS lint/typecheck: 15 tasks passed, no cached results; post-fix views typecheck and scoped lint also passed; UI wildcard exports and whitespace checks passed.
+- [OK] Final frontend coverage totals 954 files / 11728 tests: core 254/3406, docs 9/62, views 561/6880, web 36/283, desktop 94/1097. Final full views run exit 0; failed mock/selector and virtual-focus versions were corrected before the passing run.
+- [OK] Guarded isolated-DB Go race matrix: service 428, handler 152, router 19, util 115 = 714 cases passed, 0 skips; all 44 newly added top-level regressions executed; full go vet passed.
+- [OK] sqlc v1.31.1 private generation: 93 Go files byte-match. Docs build and Go embed tests pass; 98 docs bundle files byte-match and 32 source links/images resolve.
+- [OK] Archive preservation: 145 original files retained, 46 repaired JSONL references resolve; 58 JSON and 16 JSONL evidence files validate. Remaining 428 untracked files match the pre-review snapshot exactly.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Collaboration task remains in progress: full P1-P8, Web/Desktop flow, controlled-comment UI and native/real-AI acceptance remain open; creation/execution gates preserved.
+- Automation task remains in progress: historical visual verdict is revise/88, final accepted native visual verdict and complete fresh matrix remain open.
+- Windows runtime-offline planning and raw audit/runtime harness/patch files remain untracked. Only local commits were requested; no push, merge, release or deploy.
