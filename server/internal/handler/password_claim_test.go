@@ -81,7 +81,7 @@ func TestPasswordBlockedTaskAndDaemonMintRejectsReset(t *testing.T) {
 	if _, err = q.ChangePasswordCredential(ctx, db.ChangePasswordCredentialParams{UserID: uid, PasswordHash: "reset-hash-not-used-for-login", SessionVersion: 1}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err = auth.RevokePasswordCredentials(ctx, tx, uid); err != nil {
+	if _, err = auth.RevokePasswordCredentials(ctx, tx, uid, "password:2"); err != nil {
 		t.Fatal(err)
 	}
 	if err = tx.Commit(ctx); err != nil {

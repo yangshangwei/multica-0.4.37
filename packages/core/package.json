@@ -9,6 +9,7 @@
     "test": "vitest run"
   },
   "exports": {
+    "./collaboration": "./collaboration/index.ts",
     "./triage": "./triage/index.ts",
     "./triage/queries": "./triage/queries.ts",
     "./triage/mutations": "./triage/mutations.ts",

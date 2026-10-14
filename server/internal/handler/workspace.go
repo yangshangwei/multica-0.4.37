@@ -1128,6 +1128,15 @@ func (h *Handler) DeleteWorkspace(w http.ResponseWriter, r *http.Request) {
 		failWorkspaceDelete(w, r, workspaceID, "lock workspace", err)
 		return
 	}
+	shared, err := qtx.WorkspaceHasCollaborationRecords(r.Context(), requester.WorkspaceID)
+	if err != nil {
+		failWorkspaceDelete(w, r, workspaceID, "check retained collaboration", err)
+		return
+	}
+	if shared {
+		writeJSON(w, http.StatusConflict, map[string]string{"error": "This workspace contains collaboration records.", "code": "workspace_has_collaboration_records"})
+		return
+	}
 
 	if _, err := qtx.LockChatSessionsByWorkspace(r.Context(), requester.WorkspaceID); err != nil {
 		failWorkspaceDelete(w, r, workspaceID, "lock chat sessions", err)

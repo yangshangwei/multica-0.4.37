@@ -1,0 +1,3221 @@
+{
+  "date": "2026-10-14",
+  "scope": "verified continuation tranche; complete collaboration feature acceptance remains pending",
+  "base_head": "bb2d9f481e466bced1c39371230d658ce6c41060",
+  "requirements": 58,
+  "acceptance_criteria": 89,
+  "end_to_end_acceptance_passed": 0,
+  "creation_enabled": false,
+  "positive_resume_implemented": false,
+  "native_termination_verified": false,
+  "test_log_directory": "/tmp/multica-collab-20261014-yOusnI",
+  "go_suites": {
+    "integration-collaboration.jsonl": {
+      "sha256": "6bc7736052bb0f0759e41eb5f409709aa72b7c89f6706d205ec94b6a71f04634",
+      "top_level_pass": 127,
+      "subtest_pass": 215,
+      "failed": 0,
+      "skipped": 0,
+      "race": true,
+      "packages": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/collaboration",
+          "elapsed_seconds": 1.577,
+          "result": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/middleware",
+          "elapsed_seconds": 1.5230000000000001,
+          "result": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "elapsed_seconds": 124.473,
+          "result": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "elapsed_seconds": 10.232,
+          "result": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "elapsed_seconds": 2.918,
+          "result": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/migrations",
+          "elapsed_seconds": 2.146,
+          "result": "pass"
+        }
+      ]
+    },
+    "ordinary-and-account-controls.jsonl": {
+      "sha256": "8ac74931464038b60696ce478d40da8141f473967821d463d0e1b0fecf463d25",
+      "top_level_pass": 129,
+      "subtest_pass": 105,
+      "failed": 0,
+      "skipped": 0,
+      "race": true,
+      "packages": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "elapsed_seconds": 105.925,
+          "result": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "elapsed_seconds": 7.4879999999999995,
+          "result": "pass"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "elapsed_seconds": 48.791,
+          "result": "pass"
+        }
+      ]
+    },
+    "fanout-final-fairness.jsonl": {
+      "sha256": "185a27a66f1a94e588a985baf3d9b4c7ffcaec4eda3a56547de219d0eacf72f8",
+      "top_level_pass": 11,
+      "subtest_pass": 18,
+      "failed": 0,
+      "skipped": 0,
+      "race": true,
+      "packages": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "elapsed_seconds": 64.083,
+          "result": "pass"
+        }
+      ]
+    }
+  },
+  "go_unique": {
+    "top_level_pass": 259,
+    "subtest_pass": 323,
+    "failed": 0,
+    "skipped": 0
+  },
+  "core": {
+    "files": 40,
+    "tests": 1061,
+    "failed": 0,
+    "log": "core-api-regression.log",
+    "sha256": "c6d092480088d506028dc36d2503746fd7a8a696009a129c44ed7e51bd94d95c"
+  },
+  "workspace_typecheck": {
+    "tasks_passed": 9,
+    "includes_mobile": false,
+    "log": "workspace-typecheck.log"
+  },
+  "lint": "core lint independently passed",
+  "go_vet": "passed, repeated for service/server/migrations after final repair",
+  "sqlc": {
+    "generated_files": 94,
+    "regeneration_changed_files": []
+  },
+  "database_migration": 619,
+  "independent_review": "research/verification-integration-review-2026-10-14.md",
+  "source_sha256": {
+    "packages/core/api/client.ts": "fabcc1afab85ac682eca0dd18a77284d02c6f39e6e4c6bd68b4a5d1d766ced22",
+    "packages/core/package.json": "30be73285c2d489514e9488c0b603e4a27b71f38bce8e557630b4fabe6d0aa62",
+    "server/cmd/server/main.go": "4eee29365abaea037d63908de662658cf82be248155905fba362224fb390b484",
+    "server/cmd/server/main_test.go": "fb0eb67bc266cdfe52ad6dd481580ff19a1848d3b7c38596a5324e42e2ebaf1f",
+    "server/cmd/server/router.go": "0db64a1fad14d1c7e1ff88a1461dcfea0e6da27c493daab7b7f5e591a96b23d4",
+    "server/internal/auth/password_revoke.go": "32a56a4f89a317ee27898996c2fdf7e80a6a639067df7d7ae8aa465dbc981e48",
+    "server/internal/handler/auth_password.go": "dff65b4ae923433b8342102a384687dd484df0c3b94f990e6b7dd87e28cc9737",
+    "server/internal/handler/auth_password_test.go": "4f01007be35188c31bc055153da0e154fa9fe858af6462793222b55c8e5b86e1",
+    "server/internal/handler/comment.go": "11e5fa8b343072c351847734e3188d09dc173a75f0ffc07e2cb5397c35df285f",
+    "server/internal/handler/handler.go": "ca0a8e3167e0f4fb7d232e0081f56f9e67c37b3eb2b4c10c3855f1b83e3b9f86",
+    "server/internal/handler/issue.go": "9f1a2ba50d37a57ce1358b7a6bec0356a44e600d67c8c2c4b939b17059cdbe43",
+    "server/internal/handler/password_claim_test.go": "8dcf83d70196d7d10b416ea6913cb164e48740f3604fbc2cbf55619f74d4f764",
+    "server/internal/handler/search_test.go": "ddc3d3366dde65f2eed5e028171634d18b399593b8d750651a4c613dd514b45d",
+    "server/internal/handler/workspace.go": "f3ff75784b9dfb0648ffac9277a5d2e24867efa4b841094293fe7ff33b3f37d7",
+    "server/internal/middleware/auth.go": "892c8a4527f15d8decae8fa4b147cf9ede91bd6462a44e6b30aae91524cc28fe",
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md": "3b98e98740bc51e2febe33666eb259c91ef04367bbea7682248059c14cbeb1dd",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md": "370fc68965da03e3fba6d8b73a33afc6a56776773e5552809a0c8c51fd1cde69",
+    "server/internal/service/platform_account.go": "b775e9acae66af4b356c820a50e40fdeb919dc314f8c7e66c47220c82fca56b9",
+    "server/internal/service/platform_admin.go": "bd918179c66cffc46d30e7d0ffd063ad65e0e527f9fa0f3c9378d559562fb878",
+    "server/internal/service/platform_admin_test.go": "6cb6394738026dbca5ce52d5513346b8fabcee2370f2663daf0edfcbce6017ab",
+    "server/internal/service/platform_password_recovery.go": "1877b2f689c4a403f2d65da81056b809ebaf628770eb8dd5c6682e8f79fe6a02",
+    "server/pkg/db/generated/agent.sql.go": "14da1f4cb93c7e9e11fee92c70c108df119bb34a512211493b750b221cded85d",
+    "server/pkg/db/generated/comment.sql.go": "cf445d07451c994a0a3e617df9cdec7a582f5560840509c3883a341e8cb4e9ff",
+    "server/pkg/db/generated/issue.sql.go": "4b23e184115abb9745693e90234f24b58cb7a1d3a0a25461519f93985b9f0a41",
+    "server/pkg/db/generated/models.go": "70e4d76b2e65167bdefde23e3e29b8eedfa6c756c832952adcc0b483d7af0c88",
+    "server/pkg/db/queries/issue.sql": "e9b98aa41fd8e047e1e2b605b0d349cfd22810537b13767f28a2b91ef1ca5000",
+    "packages/core/api/collaboration-lifecycle.test.ts": "b0c9d0b06232a9bd76e1cbea9f465bb1e1b1bd6d42c547670d6e3d55a6cdbae6",
+    "packages/core/api/collaboration-workflow.test.ts": "2d3b8f9db646703bff91e8d1d7ce39f29f98c98fad7a2fa40c515cee74e7278f",
+    "packages/core/api/collaboration.test.ts": "a5b4dbb676fb3a412ee765ea5e5f1c6444e0d111964b27947d64963f09a40e0e",
+    "packages/core/collaboration/edit-schema.test.ts": "0d188f7e812a7e8952b70a817931ddd47389ef3c23d4b9f09e797ae500da4664",
+    "packages/core/collaboration/handoff-schema.test.ts": "9f000f1a7d683180c79ca947f0bee016a3fbf52b6a5aa380754bce82e508fdb8",
+    "packages/core/collaboration/index.ts": "0a8f90fdbecb6192b3cada571c51da1424bced869519b6f1b7ce7f98ca66c1f8",
+    "packages/core/collaboration/lifecycle-schema.test.ts": "2da80ebeb1d4f0c04a467f3de9d6e612c1358b7bf5b35e89c6ef3c85578f4319",
+    "packages/core/collaboration/schema.test.ts": "9a406a1595d29be8a27c51233147b17d97cbb736c2760e56e8222d181e6e62b1",
+    "packages/core/collaboration/schema.ts": "a03ef3c93625d8610eef99127e55bbae2cc737e8ced9703961da4eaf1952ae88",
+    "packages/core/collaboration/test-fixtures.ts": "4f1350f269dfc5c112176ceb30a95edb6ec9ce9e7e2d413594badf36813dd8b1",
+    "server/cmd/server/collaboration_edit_routes_test.go": "906e7f43b841b1d77b109ddb098ff11d62740f54f69da3b10e9f1a3caef6e3d1",
+    "server/cmd/server/collaboration_handoff_routes_test.go": "da47541f7d57fcf53014eeb10408ed06b930908d517c34fbc7713de57381781b",
+    "server/cmd/server/collaboration_lifecycle_routes_test.go": "237fd69fb0bee14ace36004d1156e95ed26bfe89881ceff3264f93c066d93f6a",
+    "server/cmd/server/collaboration_routes_test.go": "f49f9071b669e019ce8db0785ab6fe6ac4caf0f47067b02a9b7d5eaf3e0ce703",
+    "server/cmd/server/collaboration_workflow_routes_test.go": "a4fe04b4c1d471dcf0900206da672806b688cbd82eb35efd6f934eb6d6a7dd92",
+    "server/internal/auth/principal.go": "17bc6cb0b668493956761464ca7166f445e27538f749c1e80bbed5ac436ced6d",
+    "server/internal/collaboration/access.go": "a168ab81a233633fc6cdb5771c52fff2176157e0a30ef58d815370a64635778c",
+    "server/internal/collaboration/access_test.go": "d0863327ec3b27cbffca4c7c0f421d17ce8831887d7043d010a612f47edc1554",
+    "server/internal/handler/auth_password_collaboration_test.go": "747aba8c9ddbdb39716731ed59f28c8a66ef9f35e5890e13279ee92d9299cd3b",
+    "server/internal/handler/collaboration.go": "1c1baee8709fce620350a75e66a3e55a5734728dc2eddac6ffc492e4336ece4c",
+    "server/internal/handler/collaboration_boundary.go": "97564a7927fb53add400a1a9d7e0c7e45dfff5f836f09a9d42c28227d0663a16",
+    "server/internal/handler/collaboration_boundary_test.go": "70a8b3214f79b917418aa7d66cbfc22a37a8067d778a1aa73f857dc9f5de1290",
+    "server/internal/handler/collaboration_edit.go": "9ac16db6eba8700c7bf6366b966c1de69df992ba36bbd0c8fd110e74a242b677",
+    "server/internal/handler/collaboration_edit_test.go": "272f85fb28bcf02aebdba4730a8695865f7b80db070201d574da69117056f39c",
+    "server/internal/handler/collaboration_handoff_test.go": "8a798b883622c2e5293df5c7b2a528f2c760a09e9af341c8c59395a30e422abd",
+    "server/internal/handler/collaboration_lifecycle.go": "247e5456852224a3b74f51fe8e56813ad261724dec7938331e4bf59105e3d472",
+    "server/internal/handler/collaboration_test.go": "62f71ba54903e0621a80cb2622e123ac2bcf853e82c44144cef4cf20610801f8",
+    "server/internal/handler/collaboration_workbench.go": "32f3c15ff27d98834310c5f5b22174ec78ed67afcc086a3fd45a8656c1fe8c5b",
+    "server/internal/handler/collaboration_workflow.go": "5d26f1d562d89dfc4088bb01a0c2ca1de1ec578c626db08133a23f729f2b49a0",
+    "server/internal/middleware/auth_principal_test.go": "13dca44a7990fca09fa64e520b653f2b87ba6de990d9a2c9210c87bb5be7225f",
+    "server/internal/migrations/collaboration_account_invalidation_test.go": "4cedc9dd9955dece29301d5909202d931e6b4cbf5667a5b653e7223cd0bfefc4",
+    "server/internal/migrations/collaboration_schema_test.go": "f18cf339da58c479a2bd8fb6edd4efb6281acd2202c7131518acea7169e981df",
+    "server/internal/service/collaboration.go": "3e83737b8db1ea272c25e34b59727011e731b8fad890238daf6f9dc682c2ef63",
+    "server/internal/service/collaboration_account_invalidation_test.go": "af6f2efdbd8edef0f89e5a07c52e3c2649054bfaf9945d685c3698584a37dd83",
+    "server/internal/service/collaboration_account_reconciliation.go": "7eea32b868b155204177cc979e848c9dc2801cb487dfe2d67c672ce0f20bdade",
+    "server/internal/service/collaboration_account_reconciliation_fairness_test.go": "ce7d23002f56c33286e847f818177b3a53dce27190806f73bd1eeacccd063614",
+    "server/internal/service/collaboration_account_reconciliation_review_test.go": "9361522a62117ff6ff901532bb883c0898bc1dedb5c469c1202b2b0708c66c9f",
+    "server/internal/service/collaboration_account_reconciliation_test.go": "39c7e8fe19b2bd5a488c203d6b30b88bf164b618bffc2f8c5720a01674690d04",
+    "server/internal/service/collaboration_edit.go": "f301d8519241a89b666abab94dd597082c9fc4aa7dd932bb80966d3faba6b77d",
+    "server/internal/service/collaboration_edit_test.go": "9532156f80a9310427766fe788a1431422e2f84dfb69a267908e600c438e69f8",
+    "server/internal/service/collaboration_handoff.go": "21ceb49ec3f02b5557e9d2da5498cb2449b6ca78c22a5d29366b11ed715d68b5",
+    "server/internal/service/collaboration_handoff_status_test.go": "74750c196b6843c4ac38d7e2964a472bbdd00eaea4ce25e0e906af05eda665d6",
+    "server/internal/service/collaboration_handoff_test.go": "08a41d1a627528a437c1ee5a130fc12d4b1e7b1760b200f4fef114bce2dbaecd",
+    "server/internal/service/collaboration_lifecycle.go": "f5d67ce5f35dfd4a5c244e7a7616e8557bcf4e49a5e44fdd966b962ed6a2372e",
+    "server/internal/service/collaboration_lifecycle_test.go": "12045a3b2a9aab36973c6c989e56ffd6abdaac74f0751114ba3fc1c031f614ee",
+    "server/internal/service/collaboration_queue.go": "7c7205d6c5f69ae16c2131267a62eecf6048d910d058137a07816ca658390160",
+    "server/internal/service/collaboration_queue_test.go": "5f0c4b7d442dbb05baa6f05553bcea9eb5cdfbcb9fe3ef455e304fded4a07d53",
+    "server/internal/service/collaboration_test.go": "489abcb9c65538e85b279811f574cf67b60428e5445a02fb5bdb7f9311281e0f",
+    "server/internal/service/collaboration_workbench.go": "ab164ed9d4f00d2c308f8686701649d31d810a27aa19c2b7c975a24b5f3ac275",
+    "server/internal/service/collaboration_workflow.go": "ee51a6a719b27ab9aea4d0119eddc16a579439856adefb0c8075b987855d4bf9",
+    "server/internal/service/collaboration_workflow_test.go": "48a7726f02511a0ef4481ddd81ce878fcb8978e9b7a59ae60b3abb26e1a8c3d0",
+    "server/migrations/571_collaboration_schema.down.sql": "2a3dc366f7c5e8486f73f41c9be5344b04cf42817a417d31395c73f7647bbf2b",
+    "server/migrations/571_collaboration_schema.up.sql": "d799d35327b530b72fd366354bcb9c8fac9c63d748faa1a0bffd461f7dc61b5f",
+    "server/migrations/572_issue_handoff_id.down.sql": "4022b311697f18199ef15dd6f898345e11fcd51eddfe2d92c89d401f97633b95",
+    "server/migrations/572_issue_handoff_id.up.sql": "329550d4ce2460e277b01eb147e9eda259a7b8e8481c578a35c7b5c740a25c3d",
+    "server/migrations/573_collaboration_session_id.down.sql": "53ac072ac8e922620aa4e8ddacc61423f9212c8bff7501e92e18bd506cea713e",
+    "server/migrations/573_collaboration_session_id.up.sql": "a4cc48f7c309412b66ab0535d050a73203b88b9d0fe01f156dec4c6268bfbd6b",
+    "server/migrations/574_collaboration_grant_id.down.sql": "a5673899cc43d22dec0c406dd27c0cacb5755a04c48af0f3e38edcf2d1802325",
+    "server/migrations/574_collaboration_grant_id.up.sql": "3e0f3586504bc80f5a751ed25c05e63914c2e03368b8c4cec4a379a60ca8259e",
+    "server/migrations/575_collaboration_command_id.down.sql": "2951c2135d10d5996132d42305f21732bc013a67fda0d8356d5fb63a2e98c8e0",
+    "server/migrations/575_collaboration_command_id.up.sql": "3c66016717b9d1cfce654cde7d959466a748bba2adac792c670bcafd64036b16",
+    "server/migrations/576_collaboration_run_id.down.sql": "bdfd0ce55a9e4a3d70db8d624cdb970e2ab0c6772f532f32342ca4497c071499",
+    "server/migrations/576_collaboration_run_id.up.sql": "7e8c7d8dd4ce2772623da0e79bb9be2ec4e57251af36683758268affb751a429",
+    "server/migrations/577_collaboration_run_event_id.down.sql": "985ce1475aa7dbffe64f960cafa7993a975cd632584f9fcc05ea8ad1c3ae5e74",
+    "server/migrations/577_collaboration_run_event_id.up.sql": "724dd7f92934576b502e4e53cbde48c60d753d10e0f2d280630b813d8af50dd1",
+    "server/migrations/578_collaboration_operation_id.down.sql": "44985bed5a65a91f9666e7da3d87212762fc849d0f8ae6b0ad64e3c018bf483d",
+    "server/migrations/578_collaboration_operation_id.up.sql": "8702e436c27c0a29f9986b79d05afb15a9d8c14b09c331207e912d2acbb5c7cd",
+    "server/migrations/579_collaboration_event_id.down.sql": "d8c4f975351642d7e3842a4f30f50bc44ac838ce4c50386c09df5b9d14b52d69",
+    "server/migrations/579_collaboration_event_id.up.sql": "5b4c3ec2b3566f28cb54fcbd5c201ca858e1d4fe7caef77447bc9cb1f2bd994b",
+    "server/migrations/580_collaboration_notification_id.down.sql": "16c3183a4bed6d647cb585bf4190e866e90f32f5d2a72f6b7d6f9be70389d0ff",
+    "server/migrations/580_collaboration_notification_id.up.sql": "53d9ec85127f3c4bd92162d3a1fd36dd43e354aade1611059f6937752fb6be5d",
+    "server/migrations/581_collaboration_attachment_id.down.sql": "3bdf7eabec1e1f4c18b2b08df5ead58254f1d5d8751b115e4660f76e952c4840",
+    "server/migrations/581_collaboration_attachment_id.up.sql": "59791689b685c3f5aa2d09e4efc97fb0849cd489e22c5bc5e8abe7d0aa980790",
+    "server/migrations/582_collaboration_termination_id.down.sql": "13d9b19bf11ecd3f9794c87e365913b6de87b6418429d1eeb8f4a394b4206b5e",
+    "server/migrations/582_collaboration_termination_id.up.sql": "bcd467bde2880267f70268b300914da129bcac1df8c669f46c3edbc8edc868a5",
+    "server/migrations/583_collaboration_runtime_enrollment_id.down.sql": "772169af87390d8c969af879ab01b7e871414e2a1e2d0093d2814f2143441763",
+    "server/migrations/583_collaboration_runtime_enrollment_id.up.sql": "1b2fc616791049ce771f82ecef8347b22c94d1787f5723568f5cddaa9a3b4cf5",
+    "server/migrations/584_collaboration_runtime_challenge_id.down.sql": "bf7e46ac97a12941ef3e3c21abb451e0a38595c53541e3e644a8c621da7aafda",
+    "server/migrations/584_collaboration_runtime_challenge_id.up.sql": "6d1a67b2b97fe13f214cd46327819d2d305a3332b25cc151557089b4a1ff5d92",
+    "server/migrations/585_collaboration_execution_gate_id.down.sql": "6e9034a03dcd31a890b0c1e5840eb150efa5216a755ca958d6ac0e0c0730578f",
+    "server/migrations/585_collaboration_execution_gate_id.up.sql": "058d507ead2e89f80145717c7617ce6f4967a5aad2c82262bea037e1ccfb4a09",
+    "server/migrations/586_issue_collaboration_issue.down.sql": "eef8cae9958171abc5a5ef782e4b4f792912244fa1e90484588dbd67252453bc",
+    "server/migrations/586_issue_collaboration_issue.up.sql": "35df5a1981360196e90b47131e273d3f2b0206edfadad47c7f74307d70a0fb51",
+    "server/migrations/587_issue_participant_identity.down.sql": "24d1f4c52d35ac43f68bfa54662b14ed58a1a0181ddea1b3a18194a1bfda7b8a",
+    "server/migrations/587_issue_participant_identity.up.sql": "09e01aec9bc60a9c59f4be6ac26ef4aeea3296aae3c9b430957711eecbcc4641",
+    "server/migrations/588_issue_participant_viewer.down.sql": "16efe5e6afb155ddde89b6750937748cd416638aa9c08cc487fbdb43c36ddc24",
+    "server/migrations/588_issue_participant_viewer.up.sql": "23db7115b8f65577a816f68c292c25706a876864b5d17f01ffaee7f8e5c780f2",
+    "server/migrations/589_issue_handoff_history.down.sql": "b4ed4e1388395e1c8f7d5b004eddd562b0bcb0dfaf7145e805c80897d4b2bf1a",
+    "server/migrations/589_issue_handoff_history.up.sql": "d7b083de2acc5d760155418cd835c53007e0cd36613ee8aeb4aba08ae8b1112d",
+    "server/migrations/590_collaboration_session_issue.down.sql": "ef00c4d933640b1c7464deb9572a5a7888dba47dfd5e569089424fcc42af7c09",
+    "server/migrations/590_collaboration_session_issue.up.sql": "30bc2c56f0984d775136a128e8fdfd0fce67d00daa872699cdb63158c3fed3af",
+    "server/migrations/591_collaboration_command_sequence.down.sql": "8037f2eebe951282525d49ef9d5ead73b1a7212cb7e3a2c6a4dd30f1e11cde11",
+    "server/migrations/591_collaboration_command_sequence.up.sql": "3ee1d3d2acbabe889dbb229f67853495b6daed30742c50908a2739ca65c63179",
+    "server/migrations/592_collaboration_command_waiting.down.sql": "23d5f09ab94f401e5e2a62d284d982574716082a80d2cd9508f782402faca36e",
+    "server/migrations/592_collaboration_command_waiting.up.sql": "f94a75e41c0fdb28521ca5ae65c10a03f90793f0b2a723cfb0590d758bcf9774",
+    "server/migrations/593_collaboration_run_command.down.sql": "503f69cf48105aa26885cfce14eeabcad57eb848b49d0abe8a4aa35312dc46bc",
+    "server/migrations/593_collaboration_run_command.up.sql": "26423ebba4ba0611586218b52eda513110cb1620b9abf97db719599871072009",
+    "server/migrations/594_collaboration_run_task.down.sql": "d7cdc5216add39040a105a93e8e42dc9da87b86e9edfb4a9ece601408cece0f7",
+    "server/migrations/594_collaboration_run_task.up.sql": "ff7a153bf5c219bc0dfa92449e252e73e6fc2e5b8109d736e759c31ea46ec97a",
+    "server/migrations/595_collaboration_run_unsettled.down.sql": "714e42cac8cb050908c0a5609d9100bbe46c07ecd8e502b0c022447a219bc855",
+    "server/migrations/595_collaboration_run_unsettled.up.sql": "9e34536b81621e780c6b2f73bd0f38e8999fe5199e0770f0f502376f919a60fa",
+    "server/migrations/596_collaboration_run_event_producer.down.sql": "23ab8c5eef37d2c9d5813a298f0a600586e4135e3d3c6bd1221708a574698cdd",
+    "server/migrations/596_collaboration_run_event_producer.up.sql": "929b6951173728f3504c27d49eab0eef79503fd98554084de31049ac2484d4f6",
+    "server/migrations/597_collaboration_run_event_sequence.down.sql": "05f54ab011109f2b34ed8feb546de6d8fa1fa7c6fbdda6dd010c781116af0604",
+    "server/migrations/597_collaboration_run_event_sequence.up.sql": "485198013e099be47edcde2643ee4c730715b7d93852e6b3880dc5e95c1e6b8c",
+    "server/migrations/598_collaboration_operation_request.down.sql": "045f6ee89adc7aef0e8bdc08da8e999c9af3818dab4a7e1f104d97b0a63081c8",
+    "server/migrations/598_collaboration_operation_request.up.sql": "be9a7750a98b1778073e344780e01ef22ceeac4bfdca200416cf72b3fbfdba25",
+    "server/migrations/599_collaboration_event_sequence.down.sql": "d9dbef11571486f40443bcf9606b04c7a0933b94f7029ed297819b29f8ceabeb",
+    "server/migrations/599_collaboration_event_sequence.up.sql": "a88425727f6a34f0713c8908ce58b91637dae2ab7ba853aaa306da655105a808",
+    "server/migrations/600_collaboration_event_outbox.down.sql": "6e132e1f044834d8a4a02d8096576234d51edf27709a66abd6ede2bf8ae79b6a",
+    "server/migrations/600_collaboration_event_outbox.up.sql": "4a61498f2137fd12c2a5bd055d432103b594107e933358de608aedab6d87a964",
+    "server/migrations/601_collaboration_notification_recipient_event.down.sql": "0a7a2524bf300ad964f5967b956bdfb8976e751e363cf62caee7f859bb0497cc",
+    "server/migrations/601_collaboration_notification_recipient_event.up.sql": "07b5eb5388e0a6bb4a6d60999b897a2ab4b2c713bdd0d03a98ac487cb22cf5e3",
+    "server/migrations/602_collaboration_notification_inbox.down.sql": "8fc3e9fe42b3673d50dff281a6a4c554c421df2c87998249fa1fab254a998d4b",
+    "server/migrations/602_collaboration_notification_inbox.up.sql": "7c768da61a711747531b3912e5ef90e2f52c4645fd833d8d489a93caf4130aef",
+    "server/migrations/603_collaboration_attachment_object.down.sql": "810dd82c94bfb39a9445c4976a16f82a01563b515319cb57c139aba55af593dc",
+    "server/migrations/603_collaboration_attachment_object.up.sql": "a35e86a7604f0d3699c2ac7a9c6178d74a7f0460db82d46b65d8f0cd4feb9b25",
+    "server/migrations/604_collaboration_attachment_issue.down.sql": "c592ab92353752947df874f60c30c0e2597619d9ec8b621a5481ece25d8841c4",
+    "server/migrations/604_collaboration_attachment_issue.up.sql": "d5ef0191f5ee8a3b1d8952a79fdb5b7bd2b108ebab010fd214918d7ed622f419",
+    "server/migrations/605_collaboration_attachment_draft.down.sql": "2aa8df81cecaa6cc48617ba8c2f8a9a57b82c0dc9e47f757ffdc4d3500f448db",
+    "server/migrations/605_collaboration_attachment_draft.up.sql": "aa90a79421b2848cf2dedf51aeefa7631ba21eaac7b9ddae9c043628cafaf706",
+    "server/migrations/606_collaboration_attachment_reference_identity.down.sql": "3fd6a0960e90c26264f75690db4bd93ed195ab0298189b1679fa0a8400b97949",
+    "server/migrations/606_collaboration_attachment_reference_identity.up.sql": "db1bead700100b5b465688df254671ffe520f47b66ed4344be905a8cddb48a3d",
+    "server/migrations/607_collaboration_attachment_reference_target.down.sql": "904d16c11af166e3d4e69fe475510854d2aeed615ac9560f78fc704ec3017aa5",
+    "server/migrations/607_collaboration_attachment_reference_target.up.sql": "5db505c346d9e03063e6e0e577d9c8a85c02ce2420f9e7f8c790bb15b3554e50",
+    "server/migrations/608_collaboration_termination_run.down.sql": "08ccacf0c5a83d689d6f74bdd558bbdafbe3e6e9274a484337c32f7c69ed49a9",
+    "server/migrations/608_collaboration_termination_run.up.sql": "7b38663708faf93de73177ae46361e38d9f8da9d87145a176036e0b906111b4f",
+    "server/migrations/609_collaboration_termination_token.down.sql": "24ed6174a1eb8f19db27b99956f0eb8ab2e113fd4d62bfaee07e81aae7434262",
+    "server/migrations/609_collaboration_termination_token.up.sql": "84365772696100ad9210f59a0c72c7705c3b655dbf5fa513138ec7461c9f520d",
+    "server/migrations/610_collaboration_account_fence_user.down.sql": "1bd9686eca57042208211c7745b448e86caa78ca0eefe5483146006542f938c6",
+    "server/migrations/610_collaboration_account_fence_user.up.sql": "85b66623b897f2a9c06d5018b29dc58716afae1b3d2c2a4e9e2ed1e587504b20",
+    "server/migrations/611_collaboration_runtime_enrollment_active_runtime.down.sql": "e9de686043c3ae8b4e8773de91c0c7582ed0cc00ced2b0ee5e70335534954fd0",
+    "server/migrations/611_collaboration_runtime_enrollment_active_runtime.up.sql": "94cd36eccaa587ecf0356df2a6b683475f5b2fbc50ff2ed0fa7f3185b6a3f253",
+    "server/migrations/612_collaboration_default_gate.down.sql": "dc1a224d70a1d1102ab3f61d6e09959d9f9cb1277861d76ce253b5eb74a80771",
+    "server/migrations/612_collaboration_default_gate.up.sql": "fa3bccf956e3d326f64007ab498b32e45c683d7567e13000318812f6590fcb5c",
+    "server/migrations/613_collaboration_account_invalidation.down.sql": "5c12624d4b1beebecf7f624a97b46a17c91e8b7d3b5d02d8cfea5008918ae61b",
+    "server/migrations/613_collaboration_account_invalidation.up.sql": "d8244a7f1f16a768ed129f6c474d780165152a445cef76926ba0b072e4de079f",
+    "server/migrations/614_collaboration_account_invalidation_credential.down.sql": "ff1dfb5958e27fefe0c6bdc5447b4f364ee44d8f7459b00e08c6035172114cd5",
+    "server/migrations/614_collaboration_account_invalidation_credential.up.sql": "d7ce55bb89c3ab1e408677e45b0f3346d1e23e5f4fc2e2db69516a1d6818310b",
+    "server/migrations/615_collaboration_account_invalidation_epoch.down.sql": "d301023bbba8852b88fc95b5a0afb4ea430e05c0f3e8accc4f3b4f69082a5466",
+    "server/migrations/615_collaboration_account_invalidation_epoch.up.sql": "7ccf5b5baa75ab4165d0f8e68af86527501233ce0581ee7a74c33dba888c85bb",
+    "server/migrations/616_collaboration_account_invalidation_pending.down.sql": "7684251e5d72ffede4038ffdc2cbbf048a3f1a64faba7c01a2e213d68993d83c",
+    "server/migrations/616_collaboration_account_invalidation_pending.up.sql": "c06201d12dff431c4cf3d5bc54cc33a2e7f8acfea323dce6c3692b33d9ed24fa",
+    "server/migrations/617_collaboration_account_invalidation_progress.down.sql": "82a6439f2842f43b8cc091ab0d3579fc1fd120599bfef245b3865fb0e558bee8",
+    "server/migrations/617_collaboration_account_invalidation_progress.up.sql": "5dbfe9779e7955ff9b6e3c3136a9a805fadbffc17f5819a405005b5a8e610f49",
+    "server/migrations/618_collaboration_account_invalidation_attempt.down.sql": "d786717aa2f3f7e333148dae15745e978a4872814c2b0227020000bdbe7cc7bf",
+    "server/migrations/618_collaboration_account_invalidation_attempt.up.sql": "0dbf9f9f0279b3826c4f5df7dfa6e04d32e1376d4c188a0af0ec1abe0ab3c31b",
+    "server/migrations/619_collaboration_account_invalidation_poll.down.sql": "40243e23668bc90a83d32a75c1f8dd614b6a71d0be2e4d8c9eb11d9ca7df33a3",
+    "server/migrations/619_collaboration_account_invalidation_poll.up.sql": "a308cc4ee8b3a615633513076bea918b815de0734e5762b2673234662f913d19",
+    "server/pkg/db/generated/collaboration.sql.go": "e26a89d7942598ef1006050b8edc4ea3cee702885023a772fe8a680e1342642f",
+    "server/pkg/db/generated/collaboration_edit.sql.go": "0d3bb5f8a1f38e906258c468972496932a8735e4b4c8d1fbef68167c05fb5ac8",
+    "server/pkg/db/generated/collaboration_invalidation.sql.go": "22e2fbbee74ef1023bb48b95c3e54a2ed274ddcc79212bfb72d6c6b9965ed4a2",
+    "server/pkg/db/generated/collaboration_lifecycle.sql.go": "fec07b4fa617a380971b600e9f8e863da6958a72ce5b022f3513e6925f2e7582",
+    "server/pkg/db/generated/collaboration_reconciliation.sql.go": "18e5c5112c431d29b996ea49dfa51c744fec475048467e36a5ff2981b6ec161e",
+    "server/pkg/db/generated/collaboration_workflow.sql.go": "a1fc3dbdac2efb888596df10773c2b7d868f882c1eb0fc4950a18c69ff49e998",
+    "server/pkg/db/queries/collaboration.sql": "0910f792aba2518e4e983022b7222ad06cc6c2313e005e9f4c9696127421e610",
+    "server/pkg/db/queries/collaboration_edit.sql": "da922603858c0b8ed930d149b2545360e55671f3901e4d54cf5f367a06701bad",
+    "server/pkg/db/queries/collaboration_invalidation.sql": "0d58d339f1a4a4157823655f08fd865a606f066e7a8a7860f1a6ce35e78f1ab9",
+    "server/pkg/db/queries/collaboration_lifecycle.sql": "6587ea928394baee976ec10f31714ca961088229ad1b35d80e8dc5bcd329de34",
+    "server/pkg/db/queries/collaboration_reconciliation.sql": "da5608e0cf15ec4aa9ac337bd02c696295912e5fd2e6359e8235e967d33c03a6",
+    "server/pkg/db/queries/collaboration_workflow.sql": "3d5f5c78c849a218b073aed8ec8c9960d99f98242f760afb9374e568957de0b8"
+  },
+  "go_test_results": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationEditRouteRetainsStatusWireAndExternalAuthority",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationHandoffRoutesReturnInformationAndSubmitAcceptance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationLifecycleRoutesKeepCreatorAuthorityAfterSourceDeparture",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesDenyLegacyAgentContext",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesDenyLegacyAgentContext/legacy",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesDenyLegacyAgentContext/legacy/jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesDenyLegacyAgentContext/legacy/pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesDenyLegacyAgentContext/password",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesDenyLegacyAgentContext/password/jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesDenyLegacyAgentContext/password/pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRoutesUseAuthenticatedAccountWithoutSourceMembership",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationWorkflowRoutesPreserveResponsibilityAndMinimalRecovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestDeleteWorkspaceRequiresOwner",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMachineCredentialHumanCallerStillMints",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMachineCredentialTaskTokenCannotMintHumanCredentials",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMachineCredentialTaskTokenCannotMintHumanCredentials/cli_token_jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMachineCredentialTaskTokenCannotMintHumanCredentials/create_pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMachineCredentialTaskTokenCannotMintHumanCredentials/list_pats",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMachineCredentialTaskTokenCannotMintHumanCredentials/renew_pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMachineCredentialTaskTokenCannotMintHumanCredentials/revoke_pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestMainUsesRouterOwnedBackgroundServices",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAccountRouterDirectoryProjectionAndStableCursor",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAccountRouterDisableRestoreRevokesOnlyTargetAndPreservesMembership",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAccountRouterDisconnectsTargetWebSocketOnly",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAccountRouterRecoveryReturnsNoCredentialsAndRequiresPasswordChange",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminBootstrapRejectsAmbiguousOperatorInput",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileFailureAndResync",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileFailureAndResync/directory_sync",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileFailureAndResync/file_sync",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileFailureAndResync/publish",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileFailureAndResync/write",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileInterruptedPublication",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileNoClobberPublication",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileRandomPrivateAndStable",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles/directory",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles/hardlink",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles/public",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles/symlink",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles/unknown",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeAuditFailureLeavesReusableFile",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeConcurrentSameAndDifferentPaths",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeConcurrentSameAndDifferentPaths/different_hosts",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeConcurrentSameAndDifferentPaths/same_host",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeIdempotentAndMissingCredentials",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeReconcilesUncertainCommitWithoutReplay",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeReconcilesUncertainCommitWithoutReplay/committed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeReconcilesUncertainCommitWithoutReplay/rolled_back",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeSkipsWithoutDatabaseOrFile",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeSkipsWithoutDatabaseOrFile/classic",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeSkipsWithoutDatabaseOrFile/password",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminInitializeSyncFailurePreventsCommitAndRetainsIntent",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCookieWritesRequireBoundCSRF",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/cloud_pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/expired_super_jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/forged_identity_and_role_headers",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/missing_credential",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/observer_cookie",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/observer_jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/plugin_callback_token",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/plugin_installation_token",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/recovery_super_jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/stale_super_jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/super_cookie_no_workspace",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/super_daemon_token",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/super_jwt_no_workspace",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/super_pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/super_task_token",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/super_unrelated_workspace_header",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/unknown_credential",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/workspace_admin_cookie",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterCredentialMatrix/workspace_admin_jwt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterDatabaseFailureIsUnavailable",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterMissingOrInactiveOrganizationIsUnavailable",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterMissingOrInactiveOrganizationIsUnavailable/inactive",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterMissingOrInactiveOrganizationIsUnavailable/missing",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterRejectsDisabledFeatureAndOtherAuthMode",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterRejectsDisabledFeatureAndOtherAuthMode/classic_auth",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestPlatformAdminRouterRejectsDisabledFeatureAndOtherAuthMode/feature_disabled",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "test": "TestCollaborationAccessKeepsMembershipAndParticipationIndependent",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "test": "TestCreatorKeepsLifecycleAfterLeavingSourceWorkspace",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "test": "TestExternalHandlerCannotReopenThroughOrdinaryStatusChange",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "test": "TestLegacyAgentHintsOnlyRemoveHumanCollaborationAuthority",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "test": "TestMachineAndRestrictedIdentitiesCannotAcquireHumanRights",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "test": "TestPrincipalRequiresAuthenticationContext",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchDeleteIssueIterationKeepsUnselectedChildrenAndHistory",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchDeleteIssueIterationRollsBackEarlierDelete",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchDeleteIssueIterationSamplesAfterAllParticipationLocks",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchDeleteParentAndChildPublishesOnlySurvivingDetach",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssueCancelStatusDoesNotCancelActiveTasks",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssuePreservesMarkedChannelMedia",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssueReassignDoesNotCancelActiveTasks",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssuesInvalidPriorityReturns400",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssuesInvalidStatusReturns400",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssuesProjectStaysInWorkspace",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssuesProjectStaysInWorkspace/cross-workspace_project_changes_no_row",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssuesProjectStaysInWorkspace/same-workspace_project_is_accepted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssuesProjectStaysInWorkspace/unparseable_project_is_rejected",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_AutopilotRunAssign",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_AutopilotRunAssign/assigns_every_issue_when_the_run's_human_holds_rights",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_AutopilotRunAssign/assigns_nothing_when_the_run's_human_holds_no_rights",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_AutopilotRunAssign/assigns_nothing_when_the_run_carries_no_human",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_ContributorAgentMayChangeStatus",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_HumanIsUnaffectedByAgentPolicy",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects/empty_later_object",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects/mixed_case",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects/null_before_object",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects/null_between_objects",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects/null_later_object",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects/reversed_case",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_MergesRepeatedUpdatesObjects/same_key",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_ObserverAgentCannotChangeAssignee",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_ObserverAgentCannotChangeStatus",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_ObserverAgentCannotUnassignWithExplicitNull",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_ObserverAgentMayStillEditText",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_RepeatedUpdatesCannotHideObserverUnassignment",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateIssues_UndeclaredAgentIsUnaffected",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateNoMutationReturnsZero",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateNoMutationReturnsZero/updates_empty_object",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateNoMutationReturnsZero/updates_misnamed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateNoMutationReturnsZero/updates_missing",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateNoMutationReturnsZero/updates_unknown_field_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateStageOnly",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBatchUpdateValidUpdatesPersistAndCount",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_CancelledDemotedAheadOfRelevance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_CancelledDirectHitExempt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_CommentRankTiers",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_CommentSubqueryWorkspaceScope",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_CustomTerminalStatuses",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_DescriptionRankTiers",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_DoneNotDemotedAheadOfRelevance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_IncludeClosed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_MultiTerm",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_SingleTerm",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_SingleTermNoAllTermTiers",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_SpecialChars",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestBuildSearchQuery_WithNumber",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationAccountReadIgnoresAmbientWorkspaceAndKeepsPrivateIdentity",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPExternalHandlerAndExactVersions",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPresenceAndClearing",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPresenceAndClearing/date_null_clears",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPresenceAndClearing/empty_date_clears",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPresenceAndClearing/empty_text_is_saved",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPresenceAndClearing/legacy_midnight",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPresenceAndClearing/omitted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPresenceAndClearing/text_null_is_untouched",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPPreservesStatusPatchAndRejectsMixedIntent",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPRejectsMachineBeforeDependencies",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/assignee",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/bad_date",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/description_array",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/fraction",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/iteration",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/labels",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/leading_zero",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_date",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_version",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/overflow",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/position",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/priority",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/project",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/properties",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/stage",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationEditHTTPStrictFieldsAndVersions/title_object",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationInformationRequestRejectsNonStringStatusConfirmation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationIssueProjectsCalendarDatesForExternalParticipant",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationMachineReferencesDoNotRevealStatusOrPrivateOrdering",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationMachineSearchAndListKeepOnlyReferences",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationMachineSearchAndListKeepOnlyReferences/#00",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationMachineSearchAndListKeepOnlyReferences/cloud_pat",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationMachineSearchAndListKeepOnlyReferences/future_machine",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationMachineSearchAndListKeepOnlyReferences/missing_context",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationMachineSearchAndListKeepOnlyReferences/task_token",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationTransferRejectsDirectedStatusFields",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationTransferRejectsDirectedStatusFields/expected_status",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationTransferRejectsDirectedStatusFields/expected_status#01",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationTransferRejectsDirectedStatusFields/expected_status#02",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationTransferRejectsDirectedStatusFields/status_options_version",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationTransferRejectsDirectedStatusFields/status_options_version#01",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationTransferRejectsDirectedStatusFields/status_options_version#02",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCustomTerminalStatusCountsAsTerminalInSQL",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCustomTerminalStatusCountsAsTerminalInSQL/duplicate_guard_treats_it_as_closed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCustomTerminalStatusCountsAsTerminalInSQL/open_issue_listing_excludes_it",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCustomTerminalStatusCountsAsTerminalInSQL/project_completion_counts_it_as_done",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestCustomTerminalStatusCountsAsTerminalInSQL/sub-issue_progress_counts_it_as_done",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceIterationCleanupRollsBackWithIssueDeletion",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceMcpServer_SweepsBindings",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceRemovesIterationHistoryAndKeepsNeighbour",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceTasks_FencesConcurrentEnqueueAndReassignment",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceTasks_IsSelfSufficientWithoutCascades",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceTasks_PagesOwnersBeyondOnePage",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceTasks_PagesPastTheBatchSize",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspaceWaitsForIterationWriterAndSweepsCommittedFacts",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_CleansResourceLabelAssignments",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_CollectsTasksThroughEveryOwnershipPath",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_DirtyTriggersHaveTeardownGuard",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_FailsFastWhenRollupLockHeld",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_OwnerSucceeds",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_PreservesOtherWorkspaceData",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_PrunesDraftRestoresOfCascadedSessions",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_RequiresOwner",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_RollsBackResourceLabelCleanup",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_SucceedsWhenRollupLockIsFree",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeleteWorkspace_SweepsRestoreCommittedByAConcurrentFinalizer",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestLegacyCollaborationCommentAndRerunPathsStayInert",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestLegacyIssueDetailDoesNotExposeCollaborationToMachine",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestLegacyIssueWritesCannotBypassCollaborationLifecycle",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestListEndpointsCarryStatusCategory",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestListEndpointsCarryStatusCategory/get_carries_category",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestListEndpointsCarryStatusCategory/list_carries_category_for_every_custom_row",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestListEndpointsCarryStatusCategory/the_resolver_amortizes_repeated_lookups",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestListFilterByCategoryReturnsCustomStatusIssues",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordCollaborationInvalidationChangeAndOrdinaryControls",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordCollaborationInvalidationLegacySetup",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestPasswordCollaborationInvalidationRejectedChangePreservesAuthority",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestSearchIssues_AllCancelledSortBelowAllLive",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestSearchIssues_CancelledExactTitleStaysOnTop",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestSearchIssues_CancelledIdentifierLookupStaysOnTop",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestSearchIssues_CancelledLosesToLiveWorkDespiteBetterRelevance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestSearchIssues_DoneStillRanksOnRelevance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestWorkspaceWithCollaborationHistoryCannotBeDeleted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cached_pat/agent_and_task",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cached_pat/agent_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cached_pat/human",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cached_pat/malformed_pair",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cached_pat/task_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cookie/agent_and_task",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cookie/agent_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cookie/human",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cookie/malformed_pair",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/cookie/task_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/jwt/agent_and_task",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/jwt/agent_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/jwt/human",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/jwt/malformed_pair",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthLegacyAgentHintsCannotAcquireCollaborationRights/jwt/task_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "test": "TestAuthStampsTrustedPrincipalInsteadOfClientActorHeaders",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationAccountInvalidationMigrationsPreserveRevocation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestCollaborationSchemaRetainsIdentityAndExecutionBarriers",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAcceptanceRefusesDisabledCreator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAcceptanceRefusesRevokedCreator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccessRevocationFallsBackOnlyToCurrentSourceMembership",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationAdministrativeCredentialWriters",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationAdministrativeCredentialWriters/bootstrap",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationAdministrativeCredentialWriters/deployment_recovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationAdministrativeCredentialWriters/role_elevation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationBorrowedTransactionReplay",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationDisableRestoreRejectsOldIntent",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationDoesNotCreateOrdinaryAccountFence",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationDoesNotWaitForSourceIssue",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationFailuresRollBackSecurityChange",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/audit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/epoch_exhausted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/outbox",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationLegacyAccount",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountInvalidationWaitsForFirstParticipationUserFence",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationAtomicFailures",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationAtomicFailures/commit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationAtomicFailures/cursor",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationAtomicFailures/event",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationAtomicFailures/unknown_commit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationBusySourceKeepsCursor",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationBusySourceKeepsCursor/issue",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationBusySourceKeepsCursor/session",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationBusySourceKeepsCursor/workspace",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationDisableRestore",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationIndependentAccountAfterFailure",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationIndependentAccountAfterFailure/busy",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationIndependentAccountAfterFailure/missing_source",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationMakesProgressBeyondFailedPass",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationMultipleConsumers",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationProgressRollbackGuard",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationProgressRollbackGuard/617_collaboration_account_invalidation_progress",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationProgressRollbackGuard/618_collaboration_account_invalidation_attempt",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationProgressRollbackGuard/619_collaboration_account_invalidation_poll",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationReportsSchedulingFailure",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationRotationSurvivesWorkerRestart",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStartupAndShutdown",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStopEvidence",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStopEvidence/closed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStopEvidence/first_forced_root",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStopEvidence/never_launched_author",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStopEvidence/never_launched_owner",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStopEvidence/started_without_permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationAccountReconciliationStopEvidence/success_without_permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreateIsAtomicIdempotentAndScoped",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreateRejectsUntrustedPrincipalBeforeDependencies",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreateRollbackAndConcurrentReplay",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationFailureRollsBackEveryOwnedRecord",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CompleteCollaborationCreation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationEvent",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationNotification",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationParticipant",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationSession",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateIssueCollaboration",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationGateAndSourceAuthority",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationReceiptSurvivesSourceDepartureAndHandlerDisable",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationCreationUnknownCommitRecoversOriginalIdentity",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/request_information/category",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/request_information/name",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/request_information/updated_at",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/return_information/category",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/return_information/name",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/return_information/updated_at",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/submit_acceptance/category",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/submit_acceptance/name",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRejectChangedCatalogWithSameTarget/submit_acceptance/updated_at",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRequireStatusConfirmation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRequireStatusConfirmation/request_information",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRequireStatusConfirmation/return_information",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedHandoffsRequireStatusConfirmation/submit_acceptance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedStatusCannotKeepArchivedCurrentKey",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedStatusCannotKeepArchivedCurrentKey/request_information",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedStatusCannotKeepArchivedCurrentKey/submit_acceptance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedStatusOptionsUseSourceCatalog",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedStatusOptionsUseSourceCatalog/request_information",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedStatusOptionsUseSourceCatalog/return_information",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationDirectedStatusOptionsUseSourceCatalog/submit_acceptance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditAndTransferSerializeAtCommit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditAndTransferSerializeAtCommit/edit_first",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditAndTransferSerializeAtCommit/transfer_first",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditConcurrentIdentityAndRevision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditDoesNotNeedOpenExecutionOrBusinessState",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditInt64OverflowRollsBack",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditInt64OverflowRollsBack/collaboration_revision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditInt64OverflowRollsBack/event_sequence",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditInt64OverflowRollsBack/issue_revision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditNoopAndDateValidation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRechecksDeactivationAfterAccountLock",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRechecksDeactivationAfterAccountLock/disabled_account",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRechecksDeactivationAfterAccountLock/revoked_account_epoch",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRecordsCurrentActorAndImmutableExecution",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRecordsCurrentActorAndImmutableExecution/creator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRecordsCurrentActorAndImmutableExecution/departed_source_creator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRecordsCurrentActorAndImmutableExecution/external_handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRecordsIterationTitleWithoutDateFacts",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/agent_actor",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/cloud",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/disabled",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/former_handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/participant",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/restricted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/revoked_source_member",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/source_member",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/source_owner",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/task",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRejectsNonEditors/unknown",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether/INSERT_INTO_collaboration_event",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether/INSERT_INTO_iteration_event",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether/UPDATE_collaboration_operation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether/UPDATE_collaboration_session_SET_event_seq",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether/UPDATE_issue_SET_title",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether/UPDATE_issue_collaboration_SET_revision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditRequiredWritesRollbackTogether/UPDATE_iteration_SET_scope_revision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditStaleVersionsAndExactRecovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationEditUnknownCommitAndRefusedKeysNeverReapply",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationChainReturnsLayerByLayer",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRechecksCatalogAfterLockWait",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_collaboration_event",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_collaboration_notification",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_issue_handoff",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/INSERT_INTO_issue_participant",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_collaboration_operation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_AS_i_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_SET_assignee_type",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_collaboration_SET_active_information_request_id_=_$1",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRequiredWritesRollback/UPDATE_issue_collaboration_SET_revision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationRequestRolesAndClosedIssue",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationReturnRefusesUnavailableRequester",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationReturnRefusesUnavailableRequester/disabled",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationReturnRefusesUnavailableRequester/removed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationInformationReturnShowsReplacedStatus",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleAuthorityAndExplicitReopen",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleAuthorityAndExplicitReopen/disabled_creator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleAuthorityAndExplicitReopen/handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleAuthorityAndExplicitReopen/revoked_creator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleAuthorityAndExplicitReopen/source_admin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_never_permitted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/cancel_preserves_first_stop",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleCloseAndReopenPreservePermanentQueue/complete_permitted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleConcurrentCloseAndSubmission",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleConcurrentSameRequestHasOneEffect",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleIterationFailureRollsBackCloseAndReopen",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleIterationFailureRollsBackCloseAndReopen/complete",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleIterationFailureRollsBackCloseAndReopen/reopen",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait/catalog",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait/former_handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRechecksCatalogAndPermitAfterLockWait/permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers/INSERT_INTO_collaboration_event",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers/UPDATE_collaboration_command_SET_state",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers/UPDATE_collaboration_operation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers/UPDATE_collaboration_run",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers/UPDATE_collaboration_session_SET_queue_state",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers/UPDATE_issue_AS_i_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleRequiredWritesRollbackAndLostCommitRecovers/UPDATE_issue_collaboration_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationLifecycleVersionsRemainExact",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelRechecksStateAfterSessionLock",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder/author",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder/creator",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder/former_handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder/handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder/other_participant",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder/revoked",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueCancelUsesCurrentRolesAndPreservesOrder/source_member",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueConcurrentSameKeyAndLargeSequence",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueConcurrentSubmissionKeepsImmutableFIFO",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueEventRollbackAndUnknownCommitRecovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueReceiptOmitsAbsentCommandSequence",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine/account_epoch",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine/closed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine/lifecycle_epoch",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine/machine",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine/participant_epoch",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine/source_member_only",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueRejectsStaleIdentityAndMachine/unknown_status",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed/pointer",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueResumeTreatsEitherBarrierAsUnconfirmed/run",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStaleStopCannotReachNextRun",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/business_success_without_proof",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_running_without_permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_started_without_permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/inconsistent_success_without_permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/never_permitted",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/permitted_without_started",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationQueueStopPreservesBarrierAfterAnyPermit/unrecognized_progress_without_permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationReturnDigestBindsNestedRequestIdentity",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationStatusCatalogRowsRemainLockedUntilCommit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationStatusChangesOnlyStatusAndRecordsIteration",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationStatusOptionsAreScopedAndRefusalsReplay",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationStatusOptionsRequireEligibleRoleAndActualCatalog",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationStatusRefusalReplayDoesNotRestoreIneligibleOptions",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationStatusRefusalReplayDoesNotRestoreIneligibleOptions/ended",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationStatusRefusalReplayDoesNotRestoreIneligibleOptions/revoked_manager",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowConcurrentIdentityAndRevision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/closed_session",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/closed_transfer",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/disabled_target",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/former_handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/missing_target",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/source_departure",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/source_member",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/stale_epoch",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/stale_revision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowCurrentAuthorityAndPersistentRefusals/unknown_status",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/idle_active_owner",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/leaving_author",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/leaving_owner",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/unrelated_participant",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowInviteTransferPreservesExecution",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowLostCommitRecoveryAndRefusedKey",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowLostLeaveReplyRecoversWithoutObjectAccess",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowNotificationsAndWorkbench",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock/former_handler",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock/target_disabled",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRechecksPermitUnderSessionLock",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/contradictory_running_without_permit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/never_permitted_author",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/never_permitted_owner_other_author",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/permitted_author",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/permitted_owner_other_author",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/preserve_first_stop",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowReplaysExactLargeVersionsAndDisabledRefusal",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_collaboration_event",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_collaboration_notification",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_issue_handoff",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_command_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_grant_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_operation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_run_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_session_SET_active_grant_id",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_termination_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_SET_assignee_type",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_collaboration_SET_revision",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_participant_SET",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowTransferRecordsIterationAndSupersedesInformation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCollaborationWorkflowVoluntaryLeaveAndMinimalRecovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestDeleteWorkspacePluginDataClearsEveryPluginTable",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountConcurrentMutualDisablePreservesOneAdmin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountDenialsAndAuditFailureAreAtomic",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountDisableRestoreKeepsHistoryAndNeverRevivesCredentials",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountLegacyDisableRestoreRevokesMigrationSession",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountRecoveryReplayNeverRehashesSecret",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountRestorePreservesForcedPasswordChange",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAccountRevokedActorCannotFinishQueuedChange",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminAuditFailureRollsBackRoleVersionAndCredentials",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminAuthorizationCannotCombineOldVersionWithNewRole",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminBootstrapIsSerializedAndRequiresNewLogin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminCommonOperationCreationRechecksActorAndIsIdempotent",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminConcurrentMutualDemotionLeavesOneEffectiveAdmin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminDisabledAndRecoveryAdminsDoNotSatisfyLastAdminProtection",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminGrantRevokesOldCredentialsAndPersistsOneOperation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationCreatesAtomicRestrictedIdentity",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationManualBootstrapNeedsNoNewConfiguration",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationNeverAdoptsUsername",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/after_audit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/before_audit",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/bootstrap_history",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/disabled",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/observer",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/orphan_role",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/pending",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationPreservesEveryAdministrationEvidence/ready",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRejectsIdentityDrift",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRejectsIdentityDrift/deployment",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRejectsIdentityDrift/organization",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRetainsTerminalMarkerAfterMaintenance",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRetainsTerminalMarkerAfterMaintenance/change",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRetainsTerminalMarkerAfterMaintenance/delete",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRetainsTerminalMarkerAfterMaintenance/disable",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRetainsTerminalMarkerAfterMaintenance/recover",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRetainsTerminalMarkerAfterMaintenance/revoke",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRoleGrantPreservesHistory",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRollsBackEveryRequiredWrite",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRollsBackEveryRequiredWrite/admin_audit_event",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRollsBackEveryRequiredWrite/admin_operation",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRollsBackEveryRequiredWrite/platform_admin_initialization",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRollsBackEveryRequiredWrite/platform_role_binding",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRollsBackEveryRequiredWrite/user",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminInitializationRollsBackEveryRequiredWrite/user_password_credential",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminLastSuperAdminAndExpectedState",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminMissingOrInactiveOrganizationIsUnavailable",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminMissingOrInactiveOrganizationIsUnavailable/inactive",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminMissingOrInactiveOrganizationIsUnavailable/missing",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminPromotionAdvancesVersionAndOverflowRollsBack",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRejectedPasswordAndObserverCannotMutate",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRejectsNonHumanFullSessionsBeforeDatabase",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRejectsNonHumanFullSessionsBeforeDatabase/password_recovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRejectsNonHumanFullSessionsBeforeDatabase/password_setup",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRejectsNonHumanFullSessionsBeforeDatabase/personal_access_token",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRejectsNonHumanFullSessionsBeforeDatabase/task_token",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRejectsNonHumanFullSessionsBeforeDatabase/unknown_credential",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRevocationAfterPasswordVerificationFencesQueuedWrite",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminRolePayloadHashExcludesPasswordAndRequestID",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminSelfDemotionWithAnotherAdminCommits",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistCannotBeBootstrapped",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistCannotBeBootstrapped/email",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistCannotBeBootstrapped/user_id",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistDoesNotCountAsEffective",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistDoesNotCountAsEffective/email_bootstrap",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistDoesNotCountAsEffective/email_last_admin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistDoesNotCountAsEffective/email_recovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistDoesNotCountAsEffective/user_id_bootstrap",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistDoesNotCountAsEffective/user_id_last_admin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistDoesNotCountAsEffective/user_id_recovery",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistRejectsAuthorizationAndGrant",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistRejectsAuthorizationAndGrant/email",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminTemporaryDenylistRejectsAuthorizationAndGrant/user_id",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminUnavailableModeFailsClosed",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformAdminUncertainCommitCanBeRecoveredWithoutApplyingTwice",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformPasswordRecoveryAuditFailureRollsBack",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformPasswordRecoveryConcurrentAdminsPreserveOneEffectiveAdmin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformPasswordRecoveryDigestExcludesPasswordHash",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformPasswordRecoveryLastAdminRequiresBreakGlass",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformPasswordRecoveryPreservesOtherAdmin",
+      "result": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestPlatformPasswordRecoveryRejectsBreakGlassForOrdinaryAccount",
+      "result": "pass"
+    }
+  ]
+}

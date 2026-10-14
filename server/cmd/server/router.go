@@ -1603,6 +1603,21 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/changelog", h.GetChangelog)
 
 		r.Get("/api/me", h.GetMe)
+		r.Get("/api/me/workbench", h.GetCollaborationWorkbench)
+		// Public collaboration creation remains unregistered until all workflow
+		// and runtime guards are ready. These routes use object/account authority.
+		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)
+		r.Get("/api/collaboration/creations/{requestId}", h.GetCollaborationCreation)
+		r.Post("/api/collaboration/issues/{id}/participants", h.InviteCollaborationParticipant)
+		r.Post("/api/collaboration/issues/{id}/handoffs", h.TransferCollaborationIssue)
+		r.Post("/api/collaboration/issues/{id}/information-returns", h.ReturnCollaborationInformation)
+		r.Post("/api/collaboration/issues/{id}/acceptance-submissions", h.SubmitCollaborationAcceptance)
+		r.Post("/api/collaboration/issues/{id}/participants/{userID}/remove", h.RemoveCollaborationParticipant)
+		r.Post("/api/collaboration/issues/{id}/leave", h.LeaveCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/operations/{requestId}", h.GetCollaborationOperation)
+		r.Get("/api/collaboration/issues/{id}/status-options", h.GetCollaborationStatusOptions)
+		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
+		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
 		r.Post("/api/installations/challenges", h.InstallationChallenge)
 		r.Post("/api/installations/enroll", h.EnrollInstallation)
 		r.Get("/api/installations/{id}/binding", h.InstallationBindingHint)

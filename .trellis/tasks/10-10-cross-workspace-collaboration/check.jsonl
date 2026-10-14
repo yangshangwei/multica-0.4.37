@@ -1,4 +1,4 @@
-{"file": ".trellis/spec/server/security-boundaries.md", "reason": "跨账号控制必须保持任务凭据、真实发起人、私有智能体调用和事务边界"}
-{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "统一 Desktop、CLI、Server、daemon 的授权、事件、队列状态和协议契约"}
-{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/discussion.md", "reason": "本轮需求决策演进、最终选择、源码调研与未定设计事项"}
-{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/audit-2026-10-10.md", "reason": "需求审计：4 项 P1 与 3 项 P2 未决契约、代码约束和新增验收建议；不可将建议视为用户已批准"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/research/design-contracts.md", "reason": "核对当前决策和来源证据；服务端检查前必须另读 .trellis/spec/server/security-boundaries.md 全文和对应层规范，历史审阅不能覆盖新决定"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/research/execution-contract.md", "reason": "核对准入/锁序、故障窗口、proof/outcome、冻结/恢复及认证边界；实施计划定义 AC 归属，历史报告按需读"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md", "reason": "完整验收标准及 R 映射，结合 implement.md 的单一主验证归属逐项检查"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/research/data-contract.md", "reason": "核对 D02 数据、身份版本、唯一性及迁移约束，不能因主设计使用附表而遗漏检查"}

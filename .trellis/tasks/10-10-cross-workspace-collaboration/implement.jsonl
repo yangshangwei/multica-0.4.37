@@ -1,4 +1,4 @@
-{"file": ".trellis/spec/server/security-boundaries.md", "reason": "跨账号控制必须保持任务凭据、真实发起人、私有智能体调用和事务边界"}
-{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "统一 Desktop、CLI、Server、daemon 的授权、事件、队列状态和协议契约"}
-{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/discussion.md", "reason": "本轮需求决策演进、最终选择、源码调研与未定设计事项"}
-{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/audit-2026-10-10.md", "reason": "需求审计：4 项 P1 与 3 项 P2 未决契约、代码约束和新增验收建议；不可将建议视为用户已批准"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/research/design-contracts.md", "reason": "当前设计索引与决策修订；服务端实施前必须另读 .trellis/spec/server/security-boundaries.md 全文和对应层规范，不以摘要替代规范"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/research/execution-contract.md", "reason": "准入、锁序、无许可结算、nonce/proof、维护及身份契约；主文档自动加载，完整研究和各层规范按阶段读取"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md", "reason": "PRD 的完整 AC 验收附表；按实施计划逐项实现，不因拆分文件遗漏既有要求"}
+{"file": ".trellis/tasks/10-10-cross-workspace-collaboration/research/data-contract.md", "reason": "主设计 D02 的完整数据字段、版本与迁移/索引约束，无损拆出后仍须完整实现"}

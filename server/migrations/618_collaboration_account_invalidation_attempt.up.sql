@@ -1,0 +1,1 @@
+ALTER TABLE collaboration_account_invalidation ADD COLUMN last_attempted_at timestamptz;

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_runtime_enrollment_active_runtime_idx ON collaboration_runtime_enrollment (runtime_id) WHERE revoked_at IS NULL;

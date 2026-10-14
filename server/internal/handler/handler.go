@@ -247,6 +247,11 @@ type Handler struct {
 	PluginService          *service.PluginService
 	IssueService           *service.IssueService
 	AutopilotService       *service.AutopilotService
+
+	// CollaborationAccountReconciler drains retained invalidations even when
+	// collaboration creation and execution are disabled.
+	CollaborationAccountReconciler *service.CollaborationAccountReconciler
+
 	// Entitlements supplies workspace-scoped commercial gates. A nil provider
 	// preserves self-hosted behavior without extra reads.
 	Entitlements entitlement.Provider
@@ -608,6 +613,7 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 		cfg:             cfg,
 		changelogReader: changelog.New(cfg.ChangelogFile, cfg.ServerVersion),
 	}
+	h.CollaborationAccountReconciler = service.NewCollaborationAccountReconciler(queries, txStarter)
 	h.WebhookDeliveryWorker = NewWebhookDeliveryWorker(h)
 
 	// GitHub API snapshot pipeline for PR cards (MUL-5265). Built
@@ -1100,6 +1106,12 @@ func (h *Handler) isWorkspaceEntity(ctx context.Context, userType, userID, works
 }
 
 func (h *Handler) loadIssueForUser(w http.ResponseWriter, r *http.Request, issueID string) (db.Issue, bool) {
+	return h.loadIssueForUserWithCollaborationUpdate(w, r, issueID, false)
+}
+
+// Only UpdateIssue opts out of the generic write refusal, because it checks
+// the full request body and permits exactly the R58 position operation.
+func (h *Handler) loadIssueForUserWithCollaborationUpdate(w http.ResponseWriter, r *http.Request, issueID string, checkedUpdate bool) (db.Issue, bool) {
 	if _, ok := requireUserID(w, r); !ok {
 		return db.Issue{}, false
 	}
@@ -1114,6 +1126,9 @@ func (h *Handler) loadIssueForUser(w http.ResponseWriter, r *http.Request, issue
 	// silently returns false for non-identifier strings, falling through to
 	// the UUID path below.
 	if issue, ok := h.resolveIssueByIdentifier(r.Context(), issueID, workspaceID); ok {
+		if !checkedUpdate && h.rejectLegacyCollaborationAccess(w, r, issue) {
+			return db.Issue{}, false
+		}
 		return issue, true
 	}
 
@@ -1135,6 +1150,9 @@ func (h *Handler) loadIssueForUser(w http.ResponseWriter, r *http.Request, issue
 	})
 	if err != nil {
 		writeError(w, http.StatusNotFound, "issue not found")
+		return db.Issue{}, false
+	}
+	if !checkedUpdate && h.rejectLegacyCollaborationAccess(w, r, issue) {
 		return db.Issue{}, false
 	}
 	return issue, true

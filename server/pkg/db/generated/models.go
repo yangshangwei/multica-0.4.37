@@ -668,6 +668,229 @@ type ClientUsageDaily struct {
 	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
 }
 
+type CollaborationAccountFence struct {
+	UserID    pgtype.UUID        `json:"user_id"`
+	Epoch     int64              `json:"epoch"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+}
+
+type CollaborationAccountInvalidation struct {
+	UserID            pgtype.UUID        `json:"user_id"`
+	AccountEpoch      int64              `json:"account_epoch"`
+	RevocationKey     string             `json:"revocation_key"`
+	CredentialVersion pgtype.Int8        `json:"credential_version"`
+	Reason            string             `json:"reason"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	ReconciledAt      pgtype.Timestamptz `json:"reconciled_at"`
+	LastIssueID       pgtype.UUID        `json:"last_issue_id"`
+	LastAttemptedAt   pgtype.Timestamptz `json:"last_attempted_at"`
+}
+
+type CollaborationAttachment struct {
+	ID             pgtype.UUID        `json:"id"`
+	IssueID        pgtype.UUID        `json:"issue_id"`
+	DraftID        pgtype.UUID        `json:"draft_id"`
+	UploaderUserID pgtype.UUID        `json:"uploader_user_id"`
+	StorageKey     string             `json:"storage_key"`
+	Version        int64              `json:"version"`
+	Name           string             `json:"name"`
+	ContentType    string             `json:"content_type"`
+	SizeBytes      int64              `json:"size_bytes"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	DeliveredAt    pgtype.Timestamptz `json:"delivered_at"`
+}
+
+type CollaborationAttachmentReference struct {
+	AttachmentID      pgtype.UUID        `json:"attachment_id"`
+	ReferenceKind     string             `json:"reference_kind"`
+	ReferenceID       pgtype.UUID        `json:"reference_id"`
+	ReferenceRevision int64              `json:"reference_revision"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	RemovedAt         pgtype.Timestamptz `json:"removed_at"`
+}
+
+type CollaborationCommand struct {
+	ID               pgtype.UUID        `json:"id"`
+	SessionID        pgtype.UUID        `json:"session_id"`
+	Seq              int64              `json:"seq"`
+	AuthorUserID     pgtype.UUID        `json:"author_user_id"`
+	ParticipantEpoch int64              `json:"participant_epoch"`
+	AuthorAuthEpoch  int64              `json:"author_auth_epoch"`
+	LifecycleEpoch   int64              `json:"lifecycle_epoch"`
+	Content          string             `json:"content"`
+	Attachments      []byte             `json:"attachments"`
+	State            string             `json:"state"`
+	Reason           pgtype.Text        `json:"reason"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationEvent struct {
+	ID          pgtype.UUID        `json:"id"`
+	IssueID     pgtype.UUID        `json:"issue_id"`
+	EventSeq    int64              `json:"event_seq"`
+	ActorUserID pgtype.UUID        `json:"actor_user_id"`
+	Kind        string             `json:"kind"`
+	Payload     []byte             `json:"payload"`
+	OutboxState string             `json:"outbox_state"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationExecutionGate struct {
+	ID                int16       `json:"id"`
+	Enabled           bool        `json:"enabled"`
+	CreationEnabled   bool        `json:"creation_enabled"`
+	Epoch             int64       `json:"epoch"`
+	FreezeOperationID pgtype.UUID `json:"freeze_operation_id"`
+	FreezeProgress    pgtype.UUID `json:"freeze_progress"`
+}
+
+type CollaborationGrant struct {
+	ID                   pgtype.UUID        `json:"id"`
+	IssueID              pgtype.UUID        `json:"issue_id"`
+	OwnerUserID          pgtype.UUID        `json:"owner_user_id"`
+	OwnerAuthEpoch       int64              `json:"owner_auth_epoch"`
+	ExecutionWorkspaceID pgtype.UUID        `json:"execution_workspace_id"`
+	AgentID              pgtype.UUID        `json:"agent_id"`
+	RuntimeID            pgtype.UUID        `json:"runtime_id"`
+	IdentityKind         string             `json:"identity_kind"`
+	InstallationID       pgtype.UUID        `json:"installation_id"`
+	BindingID            pgtype.UUID        `json:"binding_id"`
+	BindingEpoch         int64              `json:"binding_epoch"`
+	Epoch                int64              `json:"epoch"`
+	ConsentedAt          pgtype.Timestamptz `json:"consented_at"`
+	RevokedAt            pgtype.Timestamptz `json:"revoked_at"`
+	RevocationReason     pgtype.Text        `json:"revocation_reason"`
+}
+
+type CollaborationNotification struct {
+	ID              pgtype.UUID        `json:"id"`
+	RecipientUserID pgtype.UUID        `json:"recipient_user_id"`
+	IssueID         pgtype.UUID        `json:"issue_id"`
+	EventSeq        int64              `json:"event_seq"`
+	Kind            string             `json:"kind"`
+	IsMention       bool               `json:"is_mention"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	ReadAt          pgtype.Timestamptz `json:"read_at"`
+	ArchivedAt      pgtype.Timestamptz `json:"archived_at"`
+}
+
+type CollaborationOperation struct {
+	ID              pgtype.UUID        `json:"id"`
+	ScopeKind       string             `json:"scope_kind"`
+	ScopeID         pgtype.UUID        `json:"scope_id"`
+	ActorUserID     pgtype.UUID        `json:"actor_user_id"`
+	RequestID       string             `json:"request_id"`
+	Kind            string             `json:"kind"`
+	PayloadHash     string             `json:"payload_hash"`
+	ResultCode      pgtype.Text        `json:"result_code"`
+	Result          []byte             `json:"result"`
+	ResolvedIssueID pgtype.UUID        `json:"resolved_issue_id"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	CompletedAt     pgtype.Timestamptz `json:"completed_at"`
+}
+
+type CollaborationRun struct {
+	ID                   pgtype.UUID        `json:"id"`
+	SessionID            pgtype.UUID        `json:"session_id"`
+	CommandID            pgtype.UUID        `json:"command_id"`
+	TaskID               pgtype.UUID        `json:"task_id"`
+	GrantID              pgtype.UUID        `json:"grant_id"`
+	GrantEpoch           int64              `json:"grant_epoch"`
+	ResourceEpoch        int64              `json:"resource_epoch"`
+	ExecutionWorkspaceID pgtype.UUID        `json:"execution_workspace_id"`
+	RuntimeID            pgtype.UUID        `json:"runtime_id"`
+	InstallationID       pgtype.UUID        `json:"installation_id"`
+	BindingID            pgtype.UUID        `json:"binding_id"`
+	BindingEpoch         int64              `json:"binding_epoch"`
+	Fence                int64              `json:"fence"`
+	ClaimGeneration      int64              `json:"claim_generation"`
+	LaunchNonce          pgtype.UUID        `json:"launch_nonce"`
+	ProgressState        string             `json:"progress_state"`
+	BusinessOutcome      pgtype.Text        `json:"business_outcome"`
+	ForcedDisposition    pgtype.Text        `json:"forced_disposition"`
+	DispositionReason    pgtype.Text        `json:"disposition_reason"`
+	ProofState           string             `json:"proof_state"`
+	AuthorizedAttemptSeq int64              `json:"authorized_attempt_seq"`
+	SealedAttemptSeq     pgtype.Int8        `json:"sealed_attempt_seq"`
+	RecordingIncomplete  bool               `json:"recording_incomplete"`
+	CreatedAt            pgtype.Timestamptz `json:"created_at"`
+	StartedAt            pgtype.Timestamptz `json:"started_at"`
+	SettledAt            pgtype.Timestamptz `json:"settled_at"`
+}
+
+type CollaborationRunEvent struct {
+	ID              pgtype.UUID        `json:"id"`
+	IssueID         pgtype.UUID        `json:"issue_id"`
+	RunID           pgtype.UUID        `json:"run_id"`
+	ProducerEventID string             `json:"producer_event_id"`
+	Seq             int64              `json:"seq"`
+	Kind            string             `json:"kind"`
+	Payload         []byte             `json:"payload"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationRuntimeChallenge struct {
+	ID                   pgtype.UUID        `json:"id"`
+	DeploymentID         pgtype.UUID        `json:"deployment_id"`
+	OwnerUserID          pgtype.UUID        `json:"owner_user_id"`
+	ExecutionWorkspaceID pgtype.UUID        `json:"execution_workspace_id"`
+	RuntimeID            pgtype.UUID        `json:"runtime_id"`
+	InstallationID       pgtype.UUID        `json:"installation_id"`
+	PublicKey            []byte             `json:"public_key"`
+	PayloadHash          string             `json:"payload_hash"`
+	ExpiresAt            pgtype.Timestamptz `json:"expires_at"`
+	ConsumedAt           pgtype.Timestamptz `json:"consumed_at"`
+	CreatedAt            pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationRuntimeEnrollment struct {
+	ID                   pgtype.UUID        `json:"id"`
+	DeploymentID         pgtype.UUID        `json:"deployment_id"`
+	OwnerUserID          pgtype.UUID        `json:"owner_user_id"`
+	ExecutionWorkspaceID pgtype.UUID        `json:"execution_workspace_id"`
+	RuntimeID            pgtype.UUID        `json:"runtime_id"`
+	InstallationID       pgtype.UUID        `json:"installation_id"`
+	PublicKey            []byte             `json:"public_key"`
+	BindingEpoch         int64              `json:"binding_epoch"`
+	Capabilities         []byte             `json:"capabilities"`
+	RevokedAt            pgtype.Timestamptz `json:"revoked_at"`
+	CreatedAt            pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationSession struct {
+	ID             pgtype.UUID        `json:"id"`
+	IssueID        pgtype.UUID        `json:"issue_id"`
+	QueueState     string             `json:"queue_state"`
+	ControlVersion int64              `json:"control_version"`
+	EventSeq       int64              `json:"event_seq"`
+	NextCommandSeq int64              `json:"next_command_seq"`
+	ResourceEpoch  int64              `json:"resource_epoch"`
+	ActiveGrantID  pgtype.UUID        `json:"active_grant_id"`
+	ActiveRunID    pgtype.UUID        `json:"active_run_id"`
+	PauseReason    string             `json:"pause_reason"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+}
+
+type CollaborationTermination struct {
+	ID              pgtype.UUID        `json:"id"`
+	IssueID         pgtype.UUID        `json:"issue_id"`
+	RunID           pgtype.UUID        `json:"run_id"`
+	Fence           int64              `json:"fence"`
+	LaunchNonce     pgtype.UUID        `json:"launch_nonce"`
+	DeploymentID    pgtype.UUID        `json:"deployment_id"`
+	InstallationID  pgtype.UUID        `json:"installation_id"`
+	IdentityKind    string             `json:"identity_kind"`
+	PublicKey       []byte             `json:"public_key"`
+	TokenHash       string             `json:"token_hash"`
+	StopRequestedAt pgtype.Timestamptz `json:"stop_requested_at"`
+	RevokedAt       pgtype.Timestamptz `json:"revoked_at"`
+	ReceiptID       pgtype.Text        `json:"receipt_id"`
+	ReceiptDigest   pgtype.Text        `json:"receipt_digest"`
+	Proof           []byte             `json:"proof"`
+	ConfirmedAt     pgtype.Timestamptz `json:"confirmed_at"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+}
+
 type Comment struct {
 	ID               pgtype.UUID        `json:"id"`
 	IssueID          pgtype.UUID        `json:"issue_id"`
@@ -687,6 +910,7 @@ type Comment struct {
 	ViaPluginID      pgtype.UUID        `json:"via_plugin_id"`
 	Revision         int64              `json:"revision"`
 	DispatchEligible bool               `json:"dispatch_eligible"`
+	DeletedAt        pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type CommentReaction struct {
@@ -980,11 +1204,35 @@ type Issue struct {
 	IterationRolloverCount int32              `json:"iteration_rollover_count"`
 }
 
+type IssueCollaboration struct {
+	IssueID                    pgtype.UUID        `json:"issue_id"`
+	Revision                   int64              `json:"revision"`
+	AuthorityEpoch             int64              `json:"authority_epoch"`
+	LifecycleEpoch             int64              `json:"lifecycle_epoch"`
+	ActiveInformationRequestID pgtype.UUID        `json:"active_information_request_id"`
+	CreatedAt                  pgtype.Timestamptz `json:"created_at"`
+}
+
 type IssueDependency struct {
 	ID               pgtype.UUID `json:"id"`
 	IssueID          pgtype.UUID `json:"issue_id"`
 	DependsOnIssueID pgtype.UUID `json:"depends_on_issue_id"`
 	Type             string      `json:"type"`
+}
+
+type IssueHandoff struct {
+	ID              pgtype.UUID        `json:"id"`
+	IssueID         pgtype.UUID        `json:"issue_id"`
+	ActorUserID     pgtype.UUID        `json:"actor_user_id"`
+	FromUserID      pgtype.UUID        `json:"from_user_id"`
+	ToUserID        pgtype.UUID        `json:"to_user_id"`
+	Purpose         string             `json:"purpose"`
+	Note            string             `json:"note"`
+	RequesterUserID pgtype.UUID        `json:"requester_user_id"`
+	ParentRequestID pgtype.UUID        `json:"parent_request_id"`
+	PreviousStatus  string             `json:"previous_status"`
+	Resolution      string             `json:"resolution"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
 }
 
 type IssueLabel struct {
@@ -996,6 +1244,15 @@ type IssueLabel struct {
 	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
 	ResourceType string             `json:"resource_type"`
 	Description  string             `json:"description"`
+}
+
+type IssueParticipant struct {
+	IssueID          pgtype.UUID        `json:"issue_id"`
+	UserID           pgtype.UUID        `json:"user_id"`
+	Epoch            int64              `json:"epoch"`
+	JoinedAt         pgtype.Timestamptz `json:"joined_at"`
+	RevokedAt        pgtype.Timestamptz `json:"revoked_at"`
+	RevocationReason pgtype.Text        `json:"revocation_reason"`
 }
 
 type IssueProperty struct {

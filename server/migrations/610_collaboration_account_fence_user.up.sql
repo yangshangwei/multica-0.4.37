@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_account_fence_user_idx ON collaboration_account_fence (user_id);

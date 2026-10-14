@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_runtime_challenge_id_idx ON collaboration_runtime_challenge (id);

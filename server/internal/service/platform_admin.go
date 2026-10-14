@@ -311,7 +311,7 @@ func (s *PlatformAdminService) ChangeRole(ctx context.Context, p PlatformRoleCha
 			return result, err
 		}
 		version = bumped.SessionVersion
-		result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID)
+		result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID, "admin:"+util.UUIDToString(op.ID))
 		if err != nil {
 			return PlatformRoleChangeResult{}, err
 		}
@@ -561,10 +561,6 @@ func (s *PlatformAdminService) Bootstrap(ctx context.Context, p PlatformAdminBoo
 	if err = q.SetPlatformRole(ctx, db.SetPlatformRoleParams{UserID: p.TargetUserID, Role: PlatformRoleSuperAdmin}); err != nil {
 		return result, err
 	}
-	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID)
-	if err != nil {
-		return PlatformRoleChangeResult{}, err
-	}
 	role := PlatformRoleSuperAdmin
 	hash, err := roleChangeHash(PlatformRoleChangeParams{TargetUserID: p.TargetUserID, Role: &role, ExpectedRole: beforeRole, ExpectedAuthVersion: credential.SessionVersion - 1, Reason: p.Reason})
 	if err != nil {
@@ -575,6 +571,10 @@ func (s *PlatformAdminService) Bootstrap(ctx context.Context, p PlatformAdminBoo
 		Kind: "user.role.bootstrap", IdempotencyKey: pgtype.UUID{Bytes: uuid.New(), Valid: true}, PayloadHash: hash,
 		Reason: strings.TrimSpace(p.Reason), State: "applied", ResultCode: "role_changed", AppliedAt: pgtype.Timestamptz{Time: time.Now(), Valid: true},
 	})
+	if err != nil {
+		return PlatformRoleChangeResult{}, err
+	}
+	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID, "admin:"+util.UUIDToString(op.ID))
 	if err != nil {
 		return PlatformRoleChangeResult{}, err
 	}

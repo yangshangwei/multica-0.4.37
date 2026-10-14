@@ -16,6 +16,22 @@ For building mention links, load `multica-mentioning` instead — not this skill
 Every contract below is traced to source in
 `references/working-on-issues-source-map.md`.
 
+## Collaboration tasks require their own workflow
+
+Collaboration creation remains disabled during implementation. On
+`unsupported_collaboration_action`, do not retry ordinary issue/comment writes,
+deletion, batches or rerun through another legacy endpoint, or turn a comment
+into execution. Mixed batches refuse before changing their ordinary companions.
+Machine credentials cannot read collaboration through ordinary issue details;
+source membership alone does not grant shared AI control.
+
+Human source members may change position alone without advancing collaboration
+revision. This does not authorize other changes. The ordinary-task contracts
+below do not describe shared FIFO or collaboration lifecycle APIs. Dedicated
+human edits and handoffs preserve their original versions and idempotency key;
+an outdated status confirmation requires a new explicit human decision, not an
+agent retry with newly fetched versions.
+
 ## Triage admission precedes formal issue work
 
 An issue's `admission_status` is separate from its workflow `status`. Only

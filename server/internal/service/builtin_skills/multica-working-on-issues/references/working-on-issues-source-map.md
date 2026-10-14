@@ -8,6 +8,17 @@ line movement into a misleading contract.
 
 ## Triage admission and human decisions
 
+Collaboration overrides for protected objects:
+
+| Behavior | Source |
+|---|---|
+| Legacy issue mutations and private machine detail access are refused for collaboration; position-only updates use a separate checked path | `server/internal/handler/handler.go` (`loadIssueForUser`, `loadIssueForUserWithCollaborationUpdate`); `server/internal/handler/collaboration_boundary.go` |
+| Mixed update/delete batches refuse before mutation/cancellation; legacy comment writes and rerun cannot bypass the collaboration service | `server/internal/handler/issue.go` (`BatchUpdateIssues`, `BatchDeleteIssues`); `server/internal/handler/comment.go`; `server/internal/handler/task_lifecycle.go` (`RerunIssue` using the guarded loader) |
+| Verified credential class and separate membership/participation control authority; reorder does not advance collaboration revision | `server/internal/auth/principal.go`; `server/internal/collaboration/access.go`; `server/internal/service/collaboration.go` (`Reorder`) |
+| Human edits and directed handoffs reuse original versions/keys; stale status confirmations stay refused and never cause ordinary AI dispatch | `server/internal/service/collaboration_edit.go`; `server/internal/service/collaboration_handoff.go`; `server/internal/service/collaboration_lifecycle.go` |
+| Public creation stays unregistered and disabled by default | `server/cmd/server/router.go`; `server/migrations/571_collaboration_schema.up.sql`; `server/migrations/612_collaboration_default_gate.up.sql` |
+| Boundary regressions and ordinary-task controls | `server/internal/handler/collaboration_boundary_test.go`; `server/internal/handler/issue_batch_test.go` |
+
 | Behavior | Source |
 |---|---|
 | Only `not_required` and `accepted` are formal; unknown values fail closed; execution checks read persisted state | `server/internal/admission/admission.go` (`Formal`, `Check`); `server/internal/service/issue_admission.go` (`checkIssueExecution`) |

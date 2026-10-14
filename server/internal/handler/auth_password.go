@@ -325,7 +325,7 @@ func (h *Handler) PasswordSetup(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
-	revocation, err := auth.RevokePasswordCredentials(r.Context(), tx, uid)
+	revocation, err := auth.RevokePasswordCredentials(r.Context(), tx, uid, "password:"+strconv.FormatInt(credential.SessionVersion, 10))
 	if err != nil {
 		passwordDBError(w, err)
 		return
@@ -416,7 +416,7 @@ func (h *Handler) PasswordChange(w http.ResponseWriter, r *http.Request) {
 		passwordDBError(w, err)
 		return
 	}
-	revocation, err := auth.RevokePasswordCredentials(r.Context(), tx, uid)
+	revocation, err := auth.RevokePasswordCredentials(r.Context(), tx, uid, "password:"+strconv.FormatInt(current.SessionVersion, 10))
 	if err != nil {
 		passwordDBError(w, err)
 		return

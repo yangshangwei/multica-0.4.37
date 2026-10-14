@@ -628,17 +628,28 @@ func parseQueryNumber(q string) (int, bool) {
 
 // searchResult holds a raw row from the dynamic search query.
 type searchResult struct {
-	issue                 db.Issue
-	totalCount            int64
-	matchSource           string
-	matchedCommentContent string
+	issue                  db.Issue
+	totalCount             int64
+	matchSource            string
+	matchedCommentContent  string
+	collaborationReference bool
 }
 
 // buildSearchQuery builds a dynamic SQL query for issue search.
 // It uses LOWER(column) LIKE for case-insensitive matching compatible with pg_bigm 1.2 GIN indexes.
 // Search patterns are lowercased in Go to avoid redundant LOWER() on the pattern side in SQL.
 // LIKE patterns are pre-built in Go (e.g. "%html%") so pg_bigm can extract bigrams from a single parameter value.
-func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, includeClosed bool, terminalStatusKeys []string) (string, []any) {
+func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, includeClosed bool, terminalStatusKeys []string, machine bool) (string, []any) {
+	descriptionColumn := "i.description"
+	commentAccess := ""
+	referenceColumn := "false"
+	updatedColumn := "i.updated_at"
+	if machine {
+		referenceColumn = collaborationReferencePredicate
+		descriptionColumn = "CASE WHEN " + referenceColumn + " THEN NULL ELSE i.description END"
+		commentAccess = " AND NOT (" + referenceColumn + ")"
+		updatedColumn = "CASE WHEN " + referenceColumn + " THEN NULL ELSE i.updated_at END"
+	}
 	// Lowercase in Go so SQL only needs LOWER() on the column side.
 	phrase = strings.ToLower(phrase)
 	for i, t := range terms {
@@ -692,7 +703,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	// this workspace's comments and the plan uses the supporting
 	// idx_comment_workspace (migration 135). See MUL-4059 EXPLAIN reports.
 	phraseMatch := fmt.Sprintf(
-		"(LOWER(i.title) LIKE %s OR LOWER(COALESCE(i.description, '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
+		"(LOWER(i.title) LIKE %s OR LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
 		phraseContainsParam, phraseContainsParam, wsParam, phraseContainsParam,
 	)
 	whereParts = append(whereParts, phraseMatch)
@@ -703,7 +714,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		var termConditions []string
 		for _, tp := range termContainsParams {
 			termConditions = append(termConditions, fmt.Sprintf(
-				"(LOWER(i.title) LIKE %s OR LOWER(COALESCE(i.description, '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
+				"(LOWER(i.title) LIKE %s OR LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
 				tp, tp, wsParam, tp,
 			))
 		}
@@ -723,7 +734,11 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		// Negate only known terminal keys so an unknown legacy key remains
 		// searchable instead of disappearing from the default result set.
 		terminalStatusesParam := nextArg(terminalStatusKeys)
-		whereClause += fmt.Sprintf(" AND NOT (i.status = ANY(%s::text[]))", terminalStatusesParam)
+		if machine {
+			whereClause += fmt.Sprintf(" AND (%s OR NOT (i.status = ANY(%s::text[])))", referenceColumn, terminalStatusesParam)
+		} else {
+			whereClause += fmt.Sprintf(" AND NOT (i.status = ANY(%s::text[]))", terminalStatusesParam)
+		}
 	}
 
 	// --- ORDER BY clause ---
@@ -754,20 +769,20 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	}
 
 	// Tier 5: Description contains phrase
-	rankCases = append(rankCases, fmt.Sprintf("WHEN LOWER(COALESCE(i.description, '')) LIKE %s THEN 5", phraseContainsParam))
+	rankCases = append(rankCases, fmt.Sprintf("WHEN LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s THEN 5", phraseContainsParam))
 
 	// Tier 6: Description matches all words (multi-word only)
 	if len(termContainsParams) > 1 {
 		var descTerms []string
 		for _, tp := range termContainsParams {
-			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE(i.description, '')) LIKE %s", tp))
+			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s", tp))
 		}
 		rankCases = append(rankCases, fmt.Sprintf("WHEN (%s) THEN 6", strings.Join(descTerms, " AND ")))
 	}
 
 	// Tier 7: Comment contains phrase. Same workspace_id-in-subquery
 	// contract as the WHERE clause; see the phraseMatch comment above.
-	rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s) THEN 7", wsParam, phraseContainsParam))
+	rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND LOWER(c.content) LIKE %s) THEN 7", wsParam, phraseContainsParam))
 
 	// Tier 8: Comment matches all words (multi-word only)
 	if len(termContainsParams) > 1 {
@@ -775,7 +790,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		for _, tp := range termContainsParams {
 			commentTerms = append(commentTerms, fmt.Sprintf("LOWER(c.content) LIKE %s", tp))
 		}
-		rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND (%s)) THEN 8", wsParam, strings.Join(commentTerms, " AND ")))
+		rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND (%s)) THEN 8", wsParam, strings.Join(commentTerms, " AND ")))
 	}
 
 	rankExpr := "CASE " + strings.Join(rankCases, " ") + " ELSE 9 END"
@@ -818,10 +833,15 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		strings.Join(directHitParts, " OR "),
 	)
 
+	if machine {
+		cancelledRank = "CASE WHEN " + referenceColumn + " THEN 0 ELSE (" + cancelledRank + ") END"
+		statusRank = "CASE WHEN " + referenceColumn + " THEN 0 ELSE (" + statusRank + ") END"
+	}
+
 	// --- match_source expression ---
 	matchSourceExpr := fmt.Sprintf(`CASE
 		WHEN LOWER(i.title) LIKE %s THEN 'title'
-		WHEN LOWER(COALESCE(i.description, '')) LIKE %s THEN 'description'
+		WHEN LOWER(COALESCE(`+descriptionColumn+`, '')) LIKE %s THEN 'description'
 		ELSE 'comment'
 	END`, phraseContainsParam, phraseContainsParam)
 
@@ -831,12 +851,12 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		var descTerms []string
 		for _, tp := range termContainsParams {
 			titleTerms = append(titleTerms, fmt.Sprintf("LOWER(i.title) LIKE %s", tp))
-			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE(i.description, '')) LIKE %s", tp))
+			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s", tp))
 		}
 		matchSourceExpr = fmt.Sprintf(`CASE
 			WHEN LOWER(i.title) LIKE %s THEN 'title'
 			WHEN (%s) THEN 'title'
-			WHEN LOWER(COALESCE(i.description, '')) LIKE %s THEN 'description'
+			WHEN LOWER(COALESCE(`+descriptionColumn+`, '')) LIKE %s THEN 'description'
 			WHEN (%s) THEN 'description'
 			ELSE 'comment'
 		END`,
@@ -853,7 +873,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	// scoping.
 	commentSubquery := fmt.Sprintf(`COALESCE(
 		(SELECT c.content FROM comment c
-		 WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s
+		 WHERE c.issue_id = i.id`+commentAccess+` AND c.workspace_id = %s AND LOWER(c.content) LIKE %s
 		 ORDER BY c.created_at DESC LIMIT 1),
 		''
 	)`, wsParam, phraseContainsParam)
@@ -865,7 +885,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		}
 		commentSubquery = fmt.Sprintf(`COALESCE(
 			(SELECT c.content FROM comment c
-			 WHERE c.issue_id = i.id AND c.workspace_id = %s AND (LOWER(c.content) LIKE %s OR (%s))
+			 WHERE c.issue_id = i.id`+commentAccess+` AND c.workspace_id = %s AND (LOWER(c.content) LIKE %s OR (%s))
 			 ORDER BY c.created_at DESC LIMIT 1),
 			''
 		)`, wsParam, phraseContainsParam, strings.Join(commentTerms, " AND "))
@@ -874,17 +894,18 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	limitParam := nextArg(nil)  // placeholder
 	offsetParam := nextArg(nil) // placeholder
 
-	query := fmt.Sprintf(`SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
+	query := fmt.Sprintf(`SELECT i.id, i.workspace_id, i.title, `+descriptionColumn+`, i.status, i.priority,
 		i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
 		i.parent_issue_id, i.acceptance_criteria, i.context_refs, i.position,
 		i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id,
 		i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count,
+		`+referenceColumn+` AS collaboration_reference,
 		COUNT(*) OVER() AS total_count,
 		%s AS match_source,
 		%s AS matched_comment_content
 	FROM issue i
 	WHERE i.workspace_id = %s AND %s
-	ORDER BY %s, %s, %s, i.updated_at DESC
+	ORDER BY %s, %s, %s, `+updatedColumn+` DESC, i.id
 	LIMIT %s OFFSET %s`,
 		matchSourceExpr,
 		commentSubquery,
@@ -945,7 +966,7 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 		terminalStatusKeys = resolvedKeys
 	}
 
-	sqlQuery, args := buildSearchQuery(q, terms, queryNum, hasNum, includeClosed, terminalStatusKeys)
+	sqlQuery, args := buildSearchQuery(q, terms, queryNum, hasNum, includeClosed, terminalStatusKeys, collaborationMachineRequest(r))
 	// Fill placeholder args: $4 = workspace_id, last two = limit, offset
 	args[3] = wsUUID
 	args[len(args)-2] = limit
@@ -979,6 +1000,7 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 				&sr.issue.ProjectID,
 				&sr.issue.Revision, &sr.issue.AdmissionStatus,
 				&sr.issue.CurrentIterationID, &sr.issue.IterationRolloverCount,
+				&sr.collaborationReference,
 				&sr.totalCount,
 				&sr.matchSource,
 				&sr.matchedCommentContent,
@@ -1015,8 +1037,12 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 
 	prefix := h.getIssuePrefix(ctx, wsUUID)
 	fillSearch := h.newStatusCategoryFiller(ctx, wsUUID)
-	resp := make([]SearchIssueResponse, len(results))
+	resp := make([]any, len(results))
 	for i, sr := range results {
+		if sr.collaborationReference {
+			resp[i] = collaborationReferenceResponse(sr.issue.ID, sr.issue.WorkspaceID, sr.issue.Number, sr.issue.Title, prefix)
+			continue
+		}
 		sir := SearchIssueResponse{
 			IssueResponse: issueToResponse(sr.issue, prefix),
 			MatchSource:   sr.matchSource,
@@ -1070,6 +1096,11 @@ func (h *Handler) QueryIssues(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	machine := collaborationMachineRequest(r)
+	referenceColumn := "false"
+	if machine {
+		referenceColumn = collaborationReferencePredicate
+	}
 
 	workspaceID := h.resolveWorkspaceID(r)
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
@@ -1167,6 +1198,7 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 		}
 		issues, err := h.Queries.ListOpenIssues(ctx, db.ListOpenIssuesParams{
 			WorkspaceID:        wsUUID,
+			MachinePrincipal:   machine,
 			TerminalStatusKeys: terminalStatusKeys,
 			Priority:           priorityFilter,
 			AssigneeID:         assigneeFilter,
@@ -1183,21 +1215,28 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 		}
 
 		prefix := h.getIssuePrefix(ctx, wsUUID)
-		ids := make([]pgtype.UUID, len(issues))
-		for i, issue := range issues {
-			ids[i] = issue.ID
+		ids := make([]pgtype.UUID, 0, len(issues))
+		for _, issue := range issues {
+			if !issue.CollaborationReference {
+				ids = append(ids, issue.ID)
+			}
 		}
 		labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
 		fillOpen := h.newStatusCategoryFiller(ctx, wsUUID)
-		resp := make([]IssueResponse, len(issues))
+		resp := make([]any, len(issues))
 		for i, issue := range issues {
-			resp[i] = openIssueRowToResponse(issue, prefix)
-			fillOpen(&resp[i])
-			labels := labelsMap[resp[i].ID]
+			if issue.CollaborationReference {
+				resp[i] = collaborationReferenceResponse(issue.ID, issue.WorkspaceID, issue.Number, issue.Title, prefix)
+				continue
+			}
+			item := openIssueRowToResponse(issue, prefix)
+			fillOpen(&item)
+			labels := labelsMap[item.ID]
 			if labels == nil {
 				labels = []LabelResponse{}
 			}
-			resp[i].Labels = &labels
+			item.Labels = &labels
+			resp[i] = item
 		}
 
 		writeJSON(w, http.StatusOK, map[string]any{
@@ -1324,6 +1363,9 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 
 	// Build dynamic SQL — same approach as ListGroupedIssues.
 	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
+	if machine && !collaborationReferenceFiltersAllowed(r) {
+		where = append(where, "NOT ("+collaborationReferencePredicate+")")
+	}
 	args := []any{wsUUID}
 	addArg := func(v any) string {
 		args = append(args, v)
@@ -1507,6 +1549,9 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	if !sortIsExpr {
 		orderBy = "i." + sortCol
 	}
+	if machine && sortCol != "title" {
+		orderBy = "CASE WHEN " + collaborationReferencePredicate + " THEN NULL ELSE (" + orderBy + ") END"
+	}
 	orderBy += " " + sortDir
 	if sortCol == "start_date" || sortCol == "due_date" || sortCol == "last_activity_at" || sortIsProperty {
 		// Property values are sparse: issues without one sort last in both
@@ -1519,7 +1564,11 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	if sortCol == "last_activity_at" {
 		orderBy += ", i.id DESC"
 	} else {
-		orderBy += ", i.created_at DESC, i.id DESC"
+		if machine {
+			orderBy += ", CASE WHEN " + collaborationReferencePredicate + " THEN NULL ELSE i.created_at END DESC, i.id DESC"
+		} else {
+			orderBy += ", i.created_at DESC, i.id DESC"
+		}
 	}
 
 	offsetRef := addArg(int64(offset))
@@ -1528,7 +1577,8 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	query := fmt.Sprintf(`SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
        i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
        i.parent_issue_id, i.position, i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id, i.metadata, i.stage, i.properties,
-	   i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count
+	   i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count,
+       `+referenceColumn+` AS collaboration_reference
 FROM issue i
 WHERE %s
 ORDER BY %s
@@ -1543,8 +1593,10 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 	defer rows.Close()
 
 	var issues []db.ListIssuesRow
+	var references []bool
 	for rows.Next() {
 		var row db.ListIssuesRow
+		var reference bool
 		if err := rows.Scan(
 			&row.ID,
 			&row.WorkspaceID,
@@ -1570,12 +1622,14 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 			&row.Properties,
 			&row.Revision, &row.AdmissionStatus,
 			&row.CurrentIterationID, &row.IterationRolloverCount,
+			&reference,
 		); err != nil {
 			slog.Warn("ListIssues scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "failed to list issues")
 			return
 		}
 		issues = append(issues, row)
+		references = append(references, reference)
 	}
 	if err := rows.Err(); err != nil {
 		slog.Warn("ListIssues rows failed", "error", err)
@@ -1593,21 +1647,29 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 	}
 
 	prefix := h.getIssuePrefix(ctx, wsUUID)
-	ids := make([]pgtype.UUID, len(issues))
+	ids := make([]pgtype.UUID, 0, len(issues))
 	for i, issue := range issues {
-		ids[i] = issue.ID
+		if !references[i] {
+			ids = append(ids, issue.ID)
+		}
 	}
 	labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
-	resp := make([]IssueResponse, len(issues))
+	resp := make([]any, len(issues))
+	fill := h.newStatusCategoryFiller(ctx, wsUUID)
 	for i, issue := range issues {
-		resp[i] = issueListRowToResponse(issue, prefix)
-		labels := labelsMap[resp[i].ID]
+		if references[i] {
+			resp[i] = collaborationReferenceResponse(issue.ID, issue.WorkspaceID, issue.Number, issue.Title, prefix)
+			continue
+		}
+		item := issueListRowToResponse(issue, prefix)
+		fill(&item)
+		labels := labelsMap[item.ID]
 		if labels == nil {
 			labels = []LabelResponse{}
 		}
-		resp[i].Labels = &labels
+		item.Labels = &labels
+		resp[i] = item
 	}
-	h.fillStatusCategories(ctx, wsUUID, resp)
 
 	writeJSON(w, http.StatusOK, map[string]any{
 		"issues": resp,
@@ -1809,6 +1871,10 @@ func (h *Handler) ListGroupedIssues(w http.ResponseWriter, r *http.Request) {
 	}
 
 	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
+	if collaborationMachineRequest(r) {
+		// Group dimensions and totals are private to the collaboration.
+		where = append(where, "NOT ("+collaborationReferencePredicate+")")
+	}
 	args := []any{wsUUID}
 	addArg := func(v any) string {
 		args = append(args, v)
@@ -3759,7 +3825,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 
 func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	prevIssue, ok := h.loadIssueForUser(w, r, id)
+	prevIssue, ok := h.loadIssueForUserWithCollaborationUpdate(w, r, id, true)
 	if !ok {
 		return
 	}
@@ -3776,6 +3842,9 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	var req UpdateIssueRequest
 	if err := json.Unmarshal(bodyBytes, &req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+	if h.handleLegacyCollaborationUpdate(w, r, prevIssue, bodyBytes, req) {
 		return
 	}
 
@@ -4339,7 +4408,6 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-
 	// Deleting work is at least as much a decision about direction as moving it,
 	// and an Observer is told it may not do either. Contributor rather than
 	// Operator: an issue is workspace data, and the Operator level is reserved for
@@ -4685,6 +4753,9 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	if h.rejectLegacyCollaborationBatch(w, r, wsUUID, req.IssueIDs) {
+		return
+	}
 	// Status is validated against this workspace's catalog, so it has to wait
 	// for wsUUID above. One check for the whole batch — every issue in it
 	// shares the workspace — and a rejection rather than a silent skip, so a
@@ -5010,6 +5081,9 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 	}
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
 	if !ok {
+		return
+	}
+	if h.rejectLegacyCollaborationBatch(w, r, wsUUID, req.IssueIDs) {
 		return
 	}
 	issues := make([]db.Issue, 0, len(req.IssueIDs))
