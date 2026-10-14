@@ -1,0 +1,154 @@
+[
+  {
+    "action": "in-flow",
+    "immediate": {
+      "tag": "BUTTON",
+      "label": null,
+      "title": "文档同步检查"
+    },
+    "settled": {
+      "tag": "BODY",
+      "label": null,
+      "title": null
+    },
+    "trace": [
+      {
+        "time": 312467.700000003,
+        "kind": "focusin",
+        "tag": "BUTTON",
+        "label": "返回"
+      },
+      {
+        "time": 312468.59999999404,
+        "kind": "keydown",
+        "key": "Enter",
+        "meta": false,
+        "tag": "BUTTON",
+        "label": "返回"
+      },
+      {
+        "time": 312472.09999999404,
+        "kind": "focusout",
+        "tag": "BUTTON",
+        "label": "返回"
+      },
+      {
+        "time": 312474.09999999404,
+        "kind": "focusin",
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      },
+      {
+        "time": 312477,
+        "kind": "keyup",
+        "key": "Enter",
+        "meta": false,
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      },
+      {
+        "time": 312487.59999999404,
+        "kind": "focusout",
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      }
+    ]
+  },
+  {
+    "action": "native-keyboard",
+    "immediate": {
+      "tag": "BODY",
+      "label": null,
+      "title": null
+    },
+    "settled": {
+      "tag": "BODY",
+      "label": null,
+      "title": null
+    },
+    "trace": [
+      {
+        "time": 312972.799999997,
+        "kind": "keydown",
+        "key": "Meta",
+        "meta": true,
+        "tag": "BODY",
+        "label": null,
+        "title": ""
+      },
+      {
+        "time": 312973.700000003,
+        "kind": "keydown",
+        "key": "ArrowLeft",
+        "meta": true,
+        "tag": "BODY",
+        "label": null,
+        "title": ""
+      },
+      {
+        "time": 312983.200000003,
+        "kind": "focusin",
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      },
+      {
+        "time": 312988,
+        "kind": "keyup",
+        "key": "ArrowLeft",
+        "meta": true,
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      },
+      {
+        "time": 312990,
+        "kind": "focusout",
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      },
+      {
+        "time": 312992,
+        "kind": "keyup",
+        "key": "Meta",
+        "meta": false,
+        "tag": "BODY",
+        "label": null,
+        "title": "工作日仓库巡检"
+      }
+    ]
+  },
+  {
+    "action": "native-adapter",
+    "immediate": {
+      "tag": "BODY",
+      "label": null,
+      "title": null
+    },
+    "settled": {
+      "tag": "BODY",
+      "label": null,
+      "title": null
+    },
+    "trace": [
+      {
+        "time": 313497.90000000596,
+        "kind": "focusin",
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      },
+      {
+        "time": 313502.200000003,
+        "kind": "focusout",
+        "tag": "BUTTON",
+        "label": null,
+        "title": "文档同步检查"
+      }
+    ]
+  }
+]

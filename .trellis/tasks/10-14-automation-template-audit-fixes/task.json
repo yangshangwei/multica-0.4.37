@@ -20,9 +20,35 @@
   "subtasks": [],
   "children": [],
   "parent": null,
-  "relatedFiles": [],
-  "notes": "",
+  "relatedFiles": [
+    "apps/desktop/src/renderer/src/platform/tab-coordinator.test.ts",
+    "apps/desktop/src/renderer/src/platform/tab-coordinator.ts",
+    "apps/web/platform/scroll-restoration.test.tsx",
+    "apps/web/platform/scroll-restoration.tsx",
+    "packages/views/autopilots/components/autopilot-template-catalog.test.tsx",
+    "packages/views/autopilots/components/autopilot-template-catalog.tsx",
+    "packages/views/autopilots/components/autopilots-page.test.tsx",
+    "packages/views/autopilots/components/autopilots-page.tsx",
+    "packages/views/autopilots/components/template-create-autopilot-page.test.tsx",
+    "packages/views/autopilots/components/template-create-autopilot-page.tsx",
+    "packages/views/locales/en/autopilots.json",
+    "packages/views/locales/zh-Hans/autopilots.json",
+    "packages/views/platform/scroll-restoration.test.tsx",
+    "packages/views/platform/scroll-restoration.tsx",
+    ".trellis/spec/views/frontend/automation-template-discovery.md"
+  ],
+  "notes": "A01–A07 passed final native acceptance on 2026-10-15 (96/100). A staged Desktop route regression found during acceptance was fixed and verified. See verification-2026-10-15.md for source/build provenance, coverage and limits.",
   "meta": {
-    "approval": "user_requested_task_and_implementation_after_audit"
+    "approval": "user_requested_task_and_implementation_after_audit",
+    "final_native_acceptance": {
+      "date": "2026-10-15",
+      "verdict": "pass",
+      "score": 96,
+      "matrix_cases": 16,
+      "back_cases": 8,
+      "focus_owner_cases": 8,
+      "touch_cases": 4,
+      "report": "verification-2026-10-15.md"
+    }
   }
 }

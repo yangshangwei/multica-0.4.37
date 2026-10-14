@@ -74,6 +74,12 @@ writes use the adapter-bound tab, even if another tab becomes active.
   control/dialog, and never reapply the handoff on a later refetch.
 - Key the create shell by semantic picker/configure phase. Its retained Back
   button otherwise blocks restoration; a click-only blur misses native Back.
+- A Desktop tab URL can change before its router replaces the outgoing page.
+  After all hooks, the template page must render no flow when that URL leaves
+  its dedicated template route. Otherwise an intermediate picker consumes the
+  destination list's focus token and is immediately deleted. Compare equivalent
+  pathnames with trailing slashes removed and case ignored, matching the
+  Desktop router's accepted route aliases.
 - After a creation response supplies a valid nonempty automation ID, clear only
   the origin's pending-focus key before navigating. The origin is
   `paths.autopilots()` for `initialReturnTo === "autopilots"`, otherwise
@@ -88,6 +94,8 @@ writes use the adapter-bound tab, even if another tab becomes active.
 | Situation | Required behavior |
 | --- | --- |
 | Return through in-flow or native Back | Same category, scroll and original card focus |
+| Destination URL published before outgoing page unmounts | Keep the destination handoff until its real catalog mounts |
+| Native toolbar Back remains focused | Preserve that deliberate owner and consume the stale gallery handoff |
 | Templates still loading or failed | Wait; never restore against skeletons |
 | Target removed, other templates remain | Focus active filter |
 | Successful empty registry | Focus existing blank action |
@@ -112,13 +120,18 @@ writes use the adapter-bound tab, even if another tab becomes active.
   explicit All/zero, removed target, empty registry and focus-owner protection.
 - `template-create-autopilot-page.test.tsx`: keep the real page mounted across
   both Back paths; use route-plus-entry-key state to test confirmed, rejected
-  and unreadable creation from both origins.
+  and unreadable creation from both origins. Stage the navigation URL and
+  mounted route separately: the outgoing route must not consume the destination
+  token; the final catalog must retain category/scroll and focus the original
+  card. Preserve the accepted trailing-slash and case-insensitive aliases.
 - Shared and Web `platform/scroll-restoration.test.tsx`: forwarding, unchanged
   defaults and explicit-origin isolation.
 - Desktop `platform/tab-coordinator.test.ts`: owning-tab isolation, including
   cleanup while that tab is inactive.
 - Browser evidence must measure actual focus contrast and touch target geometry.
-  Native zoom is distinct from a smaller emulated viewport.
+  Native zoom is distinct from a smaller emulated viewport. Check focus after
+  the destination route commits, including that the focused card stays connected;
+  an immediate `focusin` on a temporary outgoing picker is not acceptance.
 
 ### Wrong vs correct
 

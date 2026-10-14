@@ -21,6 +21,16 @@ Independent review reproduced two additional lifecycle cases within A02. Key the
 
 The existing writer cannot target the empty-list origin while configuration is on another pathname. Extend `ScrollRestorationAdapter.setViewState` and `useViewStateWriter` with an optional third `routePathname` argument. Default writes retain current behavior. Web resolves `routePathname ?? renderedPathname`; Desktop writes the explicit path on the adapter-bound tab while preserving its current default routing. Use the trusted workspace path builder for the creation origin.
 
+Final native acceptance also exposed a staged Desktop navigation: the live tab
+URL changes before the router replaces the outgoing template page. That page
+must render no flow outside `paths.newAutopilotTemplate()`; otherwise its
+temporary picker consumes the destination list's pending focus before being
+unmounted. Keep hooks unconditional and apply a render guard after them,
+preserving the Desktop router's trailing-slash and case-insensitive aliases. A
+canonical regression publishes the destination URL separately from mounting
+the destination catalog. Native assertions must check settled, connected focus
+after the final route commit, not only the first focus event.
+
 Additional required files are `packages/views/platform/scroll-restoration.tsx`, `apps/web/platform/scroll-restoration.tsx`, `apps/desktop/src/renderer/src/platform/tab-coordinator.ts`, and their adjacent tests. This is a concrete origin-cleanup requirement; no NavigationAdapter or store change is needed. Rejected alternatives: a global pending-focus store (parallel lifecycle state), URL flags (new routing surface), and clearing only the current path (leaves the empty-list token stale).
 
 Use existing semantic foreground tokens for solid local focus rings, leaving shared `--ring` and Button defaults unchanged. Measure real computed contrast on all adjacent surfaces.

@@ -107,6 +107,15 @@ export function TemplateCreateAutopilotPage(defaults: AutopilotTemplateDefaults)
     templates !== undefined &&
     template === null;
 
+  // Desktop can publish the destination URL before unmounting this route.
+  // An outgoing picker must not consume that destination's saved focus.
+  if (
+    navigation.pathname.replace(/\/+$/, "").toLowerCase() !==
+    paths.newAutopilotTemplate().toLowerCase()
+  ) {
+    return null;
+  }
+
   return (
     <AutopilotCreateShell
       key={template ? "configure" : "picker"}

@@ -1,0 +1,15 @@
+Error: expect(received).toEqual(expected) // deep equality
+
+- Expected  - 2
++ Received  + 2
+
+  Object {
+    "label": null,
+-   "tag": "BUTTON",
+-   "title": "文档同步检查",
++   "tag": "BODY",
++   "title": null,
+  }
+    at Proxy.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/matchers/expect.js:213:24)
+    at eval (eval at <anonymous> (file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-14-automation-template-audit-fixes/evidence/final-native/probe.mjs:76:9), <anonymous>:69:27)
+    at async file:///Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-14-automation-template-audit-fixes/evidence/final-native/probe.mjs:76:3

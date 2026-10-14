@@ -8,16 +8,29 @@ The prior turn delivered the concrete audit and recommendations; the subsequent 
 
 - [x] Read repository contract, audit evidence and relevant specs.
 - [x] Create task and converge PRD/design for A01–A07.
-- [ ] Incorporate bounded layout/output-semantics research.
-- [ ] Validate curated context and activate task.
-- [ ] Dispatch one Trellis implement agent with exclusive product-file ownership.
-- [ ] Add failing behavioral regressions for focus return, missing target, delayed data/refetch and empty blank-entry wiring.
-- [ ] Implement local focus treatment/restoration, bilingual guidance, recommendation placement and compact blank entry.
-- [ ] Run targeted tests, scoped lint and views typecheck.
-- [ ] Main session runs batched native UI verification and visual verdict before the next edit.
-- [ ] Run one post-change impeccable detector and independent Trellis check review.
-- [ ] Fix material findings in one batch and confirm affected evidence.
+- [x] Incorporate bounded layout/output-semantics research.
+- [x] Validate curated context and activate task.
+- [x] Dispatch one Trellis implement agent with exclusive product-file ownership.
+- [x] Add failing behavioral regressions for focus return, missing target, delayed data/refetch and empty blank-entry wiring.
+- [x] Implement local focus treatment/restoration, bilingual guidance, recommendation placement and compact blank entry.
+- [x] Run targeted tests, scoped lint and views typecheck.
+- [x] Main session runs batched native UI verification and visual verdict before the next edit.
+- [x] Run one post-change impeccable detector and independent Trellis check review.
+- [x] Fix material findings in one batch and confirm affected evidence.
 - [ ] Update automation discovery spec, task evidence/journal, commit and complete the workflow.
+
+## Final native continuation — 2026-10-15
+
+- [x] Recover the committed implementation and remaining native acceptance scope.
+- [x] Build isolated production Electron renderer/preload with source and artifact hashes.
+- [x] Reproduce the outgoing-route focus gap after the initial 16-case layout matrix.
+- [x] Record a revise/88 verdict, the focus deletion trace and the bounded repair.
+- [x] Add a failing staged-navigation regression, then guard the departing template route.
+- [x] Verify 41 focused page/catalog cases, then all 123 scoped views cases, lint and typecheck.
+- [x] Rebuild and pass 8 bilingual Back paths, 4 toolbar-owner paths, 4 refetch-owner paths and 4 coarse touch paths.
+- [x] Confirm the final 16-case native matrix and accepted screenshot verdict (96/pass).
+- [x] Update the discovery spec with staged route ownership and settled-focus verification.
+- [ ] Commit only task-owned changes, archive this task and record the journal.
 
 ## Commands
 

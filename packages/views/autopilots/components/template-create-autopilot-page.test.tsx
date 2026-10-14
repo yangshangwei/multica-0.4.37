@@ -212,10 +212,13 @@ function renderPage(
       else viewState.set(scopedKey, value);
     },
   };
-  const page = (nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>) => (
+  const page = (
+    nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>,
+    mountedPathname = route.pathname,
+  ) => (
     <QueryClientProvider client={qc}>
       <ScrollRestorationProvider adapter={adapter}>
-        {route.pathname === "/acme/autopilots" ? (
+        {mountedPathname === "/acme/autopilots" ? (
           // Empty-list navigation wiring is covered by autopilots-page.test.tsx.
           <AutopilotTemplateCatalog templates={TEMPLATES} loading={false} failed={false} onRetry={() => {}} onPick={() => {}} />
         ) : fromRoute ? <TemplateCreateAutopilotRoute /> : <TemplateCreateAutopilotPage {...nextProps} />}
@@ -223,7 +226,14 @@ function renderPage(
     </QueryClientProvider>
   );
   const result = renderWithI18n(page(props));
-  return { ...result, qc, rerenderPage: (nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>) => result.rerender(page(nextProps)) };
+  return {
+    ...result,
+    qc,
+    rerenderPage: (
+      nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>,
+      mountedPathname = route.pathname,
+    ) => result.rerender(page(nextProps, mountedPathname)),
+  };
 }
 
 const AGENTS = [{
@@ -314,6 +324,52 @@ describe("autopilot template picker", () => {
     await waitFor(() => expect(screen.getByRole("button", { name: /Workday repo audit/ })).toHaveFocus());
     expect(screen.getByRole("region", { name: "Start from a template" }).scrollTop).toBe(168);
     expect(screen.getByRole("button", { name: "Repository maintenance 2" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("preserves the empty gallery focus handoff until the outgoing template route unmounts", async () => {
+    const originPath = "/acme/autopilots";
+    const templatePath = "/acme/autopilots/new/template";
+    const pendingFocusKey = `${originPath}::autopilot-template-focus`;
+    const viewState = new Map<string, string>();
+    route.pathname = originPath;
+    const { rerenderPage } = renderPage({}, true, viewState);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Repository maintenance 2" }));
+    screen.getByRole("region", { name: "Start from a template" }).scrollTop = 142;
+    screen.getByRole("button", { name: /Hourly queue check/ }).focus();
+    await user.keyboard("{Enter}");
+    expect(viewState.get(pendingFocusKey)).toBe("hourly-queue-check");
+
+    route.pathname = templatePath;
+    searchParams.value = new URLSearchParams("template=hourly-queue-check&return_to=autopilots");
+    rerenderPage({});
+    await screen.findByRole("button", { name: enAutopilots.template_picker.enable });
+    screen.getByRole("button", { name: "Go back" }).focus();
+    await user.keyboard("{Enter}");
+    expect(mockReplace).toHaveBeenCalledWith(originPath);
+
+    // Desktop publishes the destination URL before its router replaces the
+    // outgoing page. That page must not consume the destination's handoff.
+    route.pathname = originPath;
+    searchParams.value = new URLSearchParams();
+    rerenderPage({}, templatePath);
+    expect(viewState.get(pendingFocusKey)).toBe("hourly-queue-check");
+    expect(screen.queryByRole("region", { name: "Start from a template" })).not.toBeInTheDocument();
+
+    rerenderPage({});
+    await waitFor(() => expect(screen.getByRole("button", { name: /Hourly queue check/ })).toHaveFocus());
+    expect(screen.getByRole("region", { name: "Start from a template" }).scrollTop).toBe(142);
+    expect(screen.getByRole("button", { name: "Repository maintenance 2" })).toHaveAttribute("aria-pressed", "true");
+    expect(viewState.has(pendingFocusKey)).toBe(false);
+  });
+
+  it.each([
+    "/acme/autopilots/new/template/",
+    "/acme/AUTOPILOTS/NEW/TEMPLATE",
+  ])("keeps the picker reachable at the equivalent route %s", async (pathname) => {
+    route.pathname = pathname;
+    renderPage({}, true);
+    expect(await screen.findByRole("button", { name: /Workday repo audit/ })).toBeInTheDocument();
   });
 
   it.each([
