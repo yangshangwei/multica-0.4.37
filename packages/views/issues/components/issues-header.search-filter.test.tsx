@@ -47,8 +47,8 @@ function renderFilterMenu() {
 }
 
 async function openSearch(section: string) {
-  fireEvent.click(screen.getByRole("button", { name: "Filter" }));
-  fireEvent.click(await screen.findByRole("menuitem", { name: section }));
+  await userEvent.click(screen.getByRole("button", { name: "Filter" }));
+  await userEvent.click(await screen.findByRole("menuitem", { name: section }));
   await screen.findByRole("menuitemcheckbox", { name: "alpha beta" });
   const input = screen.getByRole("textbox");
   await userEvent.click(input);
