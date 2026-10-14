@@ -76,6 +76,7 @@ import {
 import { api, errorCode } from "@multica/core/api";
 import { useLocale, useT } from "../../i18n";
 import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 import { formatStripeMinorAmount } from "./billing-format";
 import {
   isSingleSeatInvitePreview,
@@ -376,26 +377,46 @@ export function MembersTab() {
   const qc = useQueryClient();
   const wsId = useWorkspaceId();
   const navigation = useOptionalNavigation();
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const { data: invitations = [] } = useQuery(invitationListOptions(wsId));
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const membersState = getSettingsQueryState(membersQuery);
+  const members = membersState.hasData ? membersQuery.data ?? [] : [];
+  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
+  const canManageWorkspace = currentMember?.role === "owner" || currentMember?.role === "admin";
+  const isOwner = currentMember?.role === "owner";
+  const ownerCount = members.filter((m) => m.role === "owner").length;
+  const invitationsQuery = useQuery({
+    ...invitationListOptions(wsId),
+    enabled: canManageWorkspace,
+  });
+  const invitationsState = getSettingsQueryState(invitationsQuery);
+  const invitations = invitationsState.hasData ? invitationsQuery.data ?? [] : [];
+  const canManageInvitations = canManageWorkspace && invitationsState.hasData;
 
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<MemberRole>("member");
   const [inviteLoading, setInviteLoading] = useState(false);
+  const invitePendingRef = useRef(false);
+  const purchasePendingRef = useRef(false);
   const [inviteSeatPurchase, setInviteSeatPurchase] =
     useState<InviteSeatPurchase | null>(null);
   const dispatchedInvitePurchaseKey = useRef<string | null>(null);
   const [memberActionId, setMemberActionId] = useState<string | null>(null);
+  const memberPendingRef = useRef(false);
   const [invitationActionId, setInvitationActionId] = useState<string | null>(null);
   const [shareLinkActionId, setShareLinkActionId] = useState<string | null>(null);
   const [shareLinkLoading, setShareLinkLoading] = useState(false);
+  const shareLinkPendingRef = useRef(false);
+  const shareLinkRevokePendingRef = useRef(false);
   const [shareLinkRole, setShareLinkRole] = useState<MemberRole>("member");
   const [shareLinkExpiry, setShareLinkExpiry] = useState<string>("168"); // default 7 days
+  const [confirmPending, setConfirmPending] = useState(false);
+  const confirmPendingRef = useRef(false);
   const [confirmAction, setConfirmAction] = useState<{
+    kind: "member" | "invitation";
     title: string;
     description: string;
     variant?: "destructive";
-    onConfirm: () => Promise<void>;
+    onConfirm: () => Promise<boolean>;
   } | null>(null);
   const previewSeatPurchase = usePreviewWorkspaceSeatPurchase();
   const purchaseSeats = usePurchaseWorkspaceSeats(wsId);
@@ -409,13 +430,19 @@ export function MembersTab() {
       inviteSeatPurchase?.phase === "waiting" ? 2_000 : false,
   });
 
-  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
-  const canManageWorkspace = currentMember?.role === "owner" || currentMember?.role === "admin";
-  const isOwner = currentMember?.role === "owner";
-  const ownerCount = members.filter((m) => m.role === "owner").length;
   // Only owners/admins may list share links; skip the request for plain
   // members (the server would 403) once the current member's role is known.
-  const { data: shareLinks = [] } = useQuery(shareLinkListOptions(wsId, canManageWorkspace));
+  const shareLinksQuery = useQuery(shareLinkListOptions(wsId, canManageWorkspace));
+  const shareLinksState = getSettingsQueryState(shareLinksQuery);
+  const shareLinks = shareLinksState.hasData ? shareLinksQuery.data ?? [] : [];
+  const canManageShareLinks = canManageWorkspace && shareLinksState.hasData;
+
+  useEffect(() => {
+    if (!canManageWorkspace) setConfirmAction(null);
+    else if (!canManageInvitations) {
+      setConfirmAction((current) => current?.kind === "invitation" ? null : current);
+    }
+  }, [canManageWorkspace, canManageInvitations]);
 
   const sendInvitation = useCallback(
     async (email: string, role: MemberRole) => {
@@ -432,9 +459,11 @@ export function MembersTab() {
   );
 
   const handleInviteMember = async () => {
-    if (!workspace) return;
+    if (!workspace || !canManageInvitations || invitePendingRef.current || inviteSeatPurchase) return;
     const email = inviteEmail.trim();
+    if (!email) return;
     const role = inviteRole;
+    invitePendingRef.current = true;
     setInviteLoading(true);
     try {
       await sendInvitation(email, role);
@@ -514,12 +543,15 @@ export function MembersTab() {
       }
       toast.error(e instanceof Error ? e.message : t(($) => $.members.toast_invitation_failed));
     } finally {
+      invitePendingRef.current = false;
       setInviteLoading(false);
     }
   };
 
   const handlePurchaseSeatAndInvite = async () => {
     if (
+      !canManageInvitations ||
+      purchasePendingRef.current ||
       !inviteSeatPurchase ||
       (inviteSeatPurchase.phase !== "review" &&
         !(inviteSeatPurchase.phase === "error" && inviteSeatPurchase.retryable))
@@ -531,6 +563,7 @@ export function MembersTab() {
       setInviteSeatPurchase(null);
       return;
     }
+    purchasePendingRef.current = true;
     // A transient failure may happen after the purchase succeeded and the
     // first invitation dispatch ran. Reusing the same idempotency key is safe,
     // but the dispatch guard must be reopened for the retried invitation.
@@ -589,6 +622,8 @@ export function MembersTab() {
         error: message,
         retryable: seatPurchaseCanRetryWithSameQuote(code),
       });
+    } finally {
+      purchasePendingRef.current = false;
     }
   };
 
@@ -601,6 +636,7 @@ export function MembersTab() {
   useEffect(() => {
     const purchase = inviteSeatPurchase;
     if (
+      !canManageInvitations ||
       purchase?.phase !== "waiting" ||
       purchase.workspaceId !== wsId ||
       purchase.submittedAt == null ||
@@ -647,6 +683,7 @@ export function MembersTab() {
         });
       });
   }, [
+    canManageInvitations,
     inviteSeatPurchase,
     seatPurchaseSummary.data,
     seatPurchaseSummary.dataUpdatedAt,
@@ -679,8 +716,9 @@ export function MembersTab() {
   }, [inviteSeatPurchase?.phase, inviteSeatPurchase?.submittedAt, t]);
 
   const handleRevokeInvitation = (invitation: Invitation) => {
-    if (!workspace) return;
+    if (!workspace || !canManageInvitations || confirmPendingRef.current) return;
     setConfirmAction({
+      kind: "invitation",
       title: t(($) => $.members.revoke_invitation_title),
       description: t(($) => $.members.revoke_invitation_description, { email: invitation.invitee_email }),
       variant: "destructive",
@@ -688,10 +726,12 @@ export function MembersTab() {
         setInvitationActionId(invitation.id);
         try {
           await api.revokeInvitation(workspace.id, invitation.id);
-          qc.invalidateQueries({ queryKey: workspaceKeys.invitations(wsId) });
+          await qc.invalidateQueries({ queryKey: workspaceKeys.invitations(wsId) });
           toast.success(t(($) => $.members.toast_invitation_revoked));
+          return true;
         } catch (e) {
           toast.error(e instanceof Error ? e.message : t(($) => $.members.toast_invitation_revoke_failed));
+          return false;
         } finally {
           setInvitationActionId(null);
         }
@@ -700,34 +740,41 @@ export function MembersTab() {
   };
 
   const handleRoleChange = async (memberId: string, role: MemberRole) => {
-    if (!workspace) return;
+    if (!workspace || !canManageWorkspace || memberPendingRef.current || confirmPendingRef.current) return;
+    memberPendingRef.current = true;
     setMemberActionId(memberId);
     try {
       await api.updateMember(workspace.id, memberId, { role });
-      qc.invalidateQueries({ queryKey: workspaceKeys.members(wsId) });
+      await qc.invalidateQueries({ queryKey: workspaceKeys.members(wsId) });
       toast.success(t(($) => $.members.toast_role_updated));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t(($) => $.members.toast_role_failed));
     } finally {
+      memberPendingRef.current = false;
       setMemberActionId(null);
     }
   };
 
   const handleRemoveMember = (member: MemberWithUser) => {
-    if (!workspace) return;
+    if (!workspace || !canManageWorkspace || memberPendingRef.current || confirmPendingRef.current) return;
     setConfirmAction({
+      kind: "member",
       title: t(($) => $.members.remove_member_title, { name: member.name }),
       description: t(($) => $.members.remove_member_description, { name: member.name, workspace: workspace.name }),
       variant: "destructive",
       onConfirm: async () => {
+        memberPendingRef.current = true;
         setMemberActionId(member.id);
         try {
           await api.deleteMember(workspace.id, member.id);
-          qc.invalidateQueries({ queryKey: workspaceKeys.members(wsId) });
+          await qc.invalidateQueries({ queryKey: workspaceKeys.members(wsId) });
           toast.success(t(($) => $.members.toast_member_removed));
+          return true;
         } catch (e) {
           toast.error(e instanceof Error ? e.message : t(($) => $.members.toast_member_remove_failed));
+          return false;
         } finally {
+          memberPendingRef.current = false;
           setMemberActionId(null);
         }
       },
@@ -735,21 +782,24 @@ export function MembersTab() {
   };
 
   const handleCreateShareLink = async () => {
-    if (!workspace) return;
+    if (!workspace || !canManageShareLinks || shareLinkPendingRef.current) return;
+    shareLinkPendingRef.current = true;
     setShareLinkLoading(true);
     try {
       await api.createShareLink(workspace.id, { role: shareLinkRole, expires_in: parseInt(shareLinkExpiry) || undefined });
-      qc.invalidateQueries({ queryKey: workspaceKeys.shareLinks(wsId) });
+      await qc.invalidateQueries({ queryKey: workspaceKeys.shareLinks(wsId) });
       toast.success(t(($) => $.members.toast_share_link_created));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t(($) => $.members.toast_share_link_failed));
     } finally {
+      shareLinkPendingRef.current = false;
       setShareLinkLoading(false);
     }
   };
 
   const handleRevokeShareLink = (link: ShareLink) => {
-    if (!workspace) return;
+    if (!workspace || !canManageShareLinks || shareLinkRevokePendingRef.current) return;
+    shareLinkRevokePendingRef.current = true;
     setShareLinkActionId(link.id);
     api.revokeShareLink(workspace.id, link.id)
       .then(() => {
@@ -759,7 +809,23 @@ export function MembersTab() {
       .catch((e) => {
         toast.error(e instanceof Error ? e.message : t(($) => $.members.toast_share_link_revoke_failed));
       })
-      .finally(() => setShareLinkActionId(null));
+      .finally(() => {
+        shareLinkRevokePendingRef.current = false;
+        setShareLinkActionId(null);
+      });
+  };
+
+  const handleConfirmation = async () => {
+    if (!confirmAction || !canManageWorkspace || confirmPendingRef.current || memberPendingRef.current) return;
+    if (confirmAction.kind === "invitation" && !canManageInvitations) return;
+    confirmPendingRef.current = true;
+    setConfirmPending(true);
+    try {
+      if (await confirmAction.onConfirm()) setConfirmAction(null);
+    } finally {
+      confirmPendingRef.current = false;
+      setConfirmPending(false);
+    }
   };
 
   const handleCopyShareLink = (link: ShareLink) => {
@@ -790,9 +856,15 @@ export function MembersTab() {
 
   return (
     <SettingsTab title={t(($) => $.page.tabs.members)}>
-      <SettingsSection title={t(($) => $.members.section_title, { count: members.length })}>
+      <SettingsSection title={membersState.hasData ? t(($) => $.members.section_title, { count: members.length }) : undefined}>
+        <SettingsQueryFeedback
+          query={membersQuery}
+          loadingMessage={t(($) => $.members.loading)}
+          errorMessage={t(($) => $.members.load_failed)}
+          refreshMessage={t(($) => $.members.refresh_failed)}
+        />
 
-        {canManageWorkspace && (
+        {canManageInvitations && (
           <Card>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2">
@@ -807,10 +879,14 @@ export function MembersTab() {
                   spellCheck={false}
                   aria-label={t(($) => $.members.invite_email_placeholder)}
                   value={inviteEmail}
+                  disabled={inviteLoading || inviteSeatPurchase !== null}
                   onChange={(e) => setInviteEmail(e.target.value)}
                   placeholder={t(($) => $.members.invite_email_placeholder)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && inviteEmail.trim()) handleInviteMember();
+                    if (e.key === "Enter" && !e.nativeEvent.isComposing && e.nativeEvent.keyCode !== 229) {
+                      e.preventDefault();
+                      void handleInviteMember();
+                    }
                   }}
                 />
                 <Select
@@ -819,9 +895,10 @@ export function MembersTab() {
                     label: roleConfig[value].label,
                   }))}
                   value={inviteRole}
+                  disabled={inviteLoading || inviteSeatPurchase !== null}
                   onValueChange={(value) => setInviteRole(value as MemberRole)}
                 >
-                  <SelectTrigger size="sm">
+                  <SelectTrigger size="sm" aria-label={t(($) => $.members.invite_role_label)}>
                     <SelectValue>{() => roleConfig[inviteRole].label}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -831,7 +908,7 @@ export function MembersTab() {
                 </Select>
                 <Button
                   onClick={handleInviteMember}
-                  disabled={inviteLoading || !inviteEmail.trim()}
+                  disabled={inviteLoading || inviteSeatPurchase !== null || !inviteEmail.trim()}
                 >
                   {inviteLoading ? t(($) => $.members.inviting) : t(($) => $.members.invite_button)}
                 </Button>
@@ -840,7 +917,7 @@ export function MembersTab() {
           </Card>
         )}
 
-        {members.length > 0 ? (
+        {membersState.hasData && (members.length > 0 ? (
           <SettingsCard>
             {members.map((m) => (
               <div key={m.id}>
@@ -850,7 +927,7 @@ export function MembersTab() {
                   canManageOwners={isOwner}
                   ownerCount={ownerCount}
                   isSelf={m.user_id === user?.id}
-                  busy={memberActionId === m.id}
+                  busy={memberActionId !== null || confirmPending}
                   onRoleChange={(role) => handleRoleChange(m.id, role)}
                   onRemove={() => handleRemoveMember(m)}
                 />
@@ -859,28 +936,43 @@ export function MembersTab() {
           </SettingsCard>
         ) : (
           <p className="text-body text-muted-foreground">{t(($) => $.members.no_members)}</p>
-        )}
+        ))}
       </SettingsSection>
 
-      {invitations.length > 0 && (
-        <SettingsSection title={t(($) => $.members.pending_title, { count: invitations.length })}>
+      {canManageWorkspace && (!invitationsState.hasData || invitationsState.failed || invitations.length > 0) && (
+        <SettingsSection title={invitationsState.hasData ? t(($) => $.members.pending_title, { count: invitations.length }) : t(($) => $.members.pending_heading)}>
+          <SettingsQueryFeedback
+            query={invitationsQuery}
+            loadingMessage={t(($) => $.members.invitations_loading)}
+            errorMessage={t(($) => $.members.invitations_load_failed)}
+            refreshMessage={t(($) => $.members.invitations_refresh_failed)}
+          />
+          {invitationsState.hasData && invitations.length > 0 && (
           <SettingsCard>
             {invitations.map((inv) => (
               <div key={inv.id}>
                 <InvitationRow
                   invitation={inv}
-                  canManage={canManageWorkspace}
+                  canManage={canManageInvitations}
                   onRevoke={() => handleRevokeInvitation(inv)}
-                  busy={invitationActionId === inv.id}
+                  busy={invitationActionId !== null || confirmPending}
                 />
               </div>
             ))}
           </SettingsCard>
+          )}
         </SettingsSection>
       )}
 
       {canManageWorkspace && (
-        <SettingsSection title={t(($) => $.members.share_links_title, { count: shareLinks.length })}>
+        <SettingsSection title={shareLinksState.hasData ? t(($) => $.members.share_links_title, { count: shareLinks.length }) : t(($) => $.members.share_links_heading)}>
+          <SettingsQueryFeedback
+            query={shareLinksQuery}
+            loadingMessage={t(($) => $.members.share_links_loading)}
+            errorMessage={t(($) => $.members.share_links_load_failed)}
+            refreshMessage={t(($) => $.members.share_links_refresh_failed)}
+          />
+          {canManageShareLinks && <>
           <Card>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2">
@@ -896,9 +988,10 @@ export function MembersTab() {
                       label: roleConfig[value].label,
                     }))}
                     value={shareLinkRole}
+                    disabled={shareLinkLoading}
                     onValueChange={(value) => setShareLinkRole(value as MemberRole)}
                   >
-                    <SelectTrigger size="sm">
+                    <SelectTrigger size="sm" aria-label={t(($) => $.members.share_link_role_label)}>
                       <SelectValue>{() => roleConfig[shareLinkRole].label}</SelectValue>
                     </SelectTrigger>
                     <SelectContent className="min-w-0">
@@ -917,9 +1010,10 @@ export function MembersTab() {
                       { value: "0", label: t(($) => $.members.expiry_never) },
                     ]}
                     value={shareLinkExpiry}
+                    disabled={shareLinkLoading}
                     onValueChange={(v) => v && setShareLinkExpiry(v)}
                   >
-                    <SelectTrigger size="sm">
+                    <SelectTrigger size="sm" aria-label={t(($) => $.members.share_link_expiry_label)}>
                       <SelectValue>{() => {
                         const opts: Record<string, string> = {
                           "24": t(($) => $.members.expiry_24h),
@@ -951,18 +1045,19 @@ export function MembersTab() {
                   <ShareLinkRow
                     link={link}
                     onRevoke={() => handleRevokeShareLink(link)}
-                    busy={shareLinkActionId === link.id}
+                    busy={shareLinkActionId !== null}
                     onCopy={() => handleCopyShareLink(link)}
                   />
                 </div>
               ))}
             </SettingsCard>
           )}
+          </>}
         </SettingsSection>
       )}
 
       <AlertDialog
-        open={inviteSeatPurchase !== null}
+        open={inviteSeatPurchase !== null && canManageInvitations}
         onOpenChange={(open) => {
           if (
             !open &&
@@ -1074,20 +1169,21 @@ export function MembersTab() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <AlertDialog open={!!confirmAction} onOpenChange={(v) => { if (!v) setConfirmAction(null); }}>
+      <AlertDialog open={!!confirmAction && canManageWorkspace && (confirmAction.kind !== "invitation" || canManageInvitations)} onOpenChange={(v) => {
+        if (!v && !confirmPendingRef.current) setConfirmAction(null);
+      }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{confirmAction?.title}</AlertDialogTitle>
             <AlertDialogDescription>{confirmAction?.description}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t(($) => $.members.confirm_cancel)}</AlertDialogCancel>
+            <AlertDialogCancel disabled={confirmPending}>{t(($) => $.members.confirm_cancel)}</AlertDialogCancel>
             <AlertDialogAction
               variant={confirmAction?.variant === "destructive" ? "destructive" : "default"}
-              onClick={async () => {
-                await confirmAction?.onConfirm();
-                setConfirmAction(null);
-              }}
+              disabled={confirmPending}
+              aria-busy={confirmPending}
+              onClick={handleConfirmation}
             >
               {t(($) => $.members.confirm_action)}
             </AlertDialogAction>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { Input } from "@multica/ui/components/ui/input";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { toast } from "sonner";
@@ -41,6 +41,7 @@ export function AccountTab() {
   const [profileDescription, setProfileDescription] = useState(
     user?.profile_description ?? "",
   );
+  const nameErrorId = useId();
 
   useEffect(() => {
     setProfileName(user?.name ?? "");
@@ -51,6 +52,7 @@ export function AccountTab() {
   }, [user?.id]);
 
   const descriptionTooLong = profileDescription.length > MAX_PROFILE_DESCRIPTION_LEN;
+  const nameMissing = !profileName.trim();
 
   const draft = useMemo(
     () => ({ name: profileName, profileDescription }),
@@ -87,7 +89,7 @@ export function AccountTab() {
           ? error.message
           : t(($) => $.account.toast_profile_failed),
       ),
-    enabled: !!user && !!profileName.trim() && !descriptionTooLong,
+    enabled: !!user && !nameMissing && !descriptionTooLong,
     isEqual: profilesEqual,
   });
 
@@ -96,7 +98,11 @@ export function AccountTab() {
       <SettingsSection
         title={t(($) => $.account.section_profile)}
         action={
-          <SettingsSaveState
+          (nameMissing || descriptionTooLong) && !profilesEqual(draft, savedDraft) ? (
+            <span role="status" className="text-caption text-muted-foreground">
+              {t(($) => $.auto_save.unsaved)}
+            </span>
+          ) : <SettingsSaveState
             status={autoSave.status}
             savingLabel={t(($) => $.auto_save.saving)}
             savedLabel={t(($) => $.auto_save.saved)}
@@ -129,6 +135,7 @@ export function AccountTab() {
                         ? error.message
                         : t(($) => $.account.toast_avatar_failed),
                     );
+                    throw error;
                   }
                 }}
               />
@@ -139,15 +146,25 @@ export function AccountTab() {
             label={t(($) => $.account.name_label)}
             size="text"
           >
-            <Input
-              type="text"
-              name="profile-name"
-              autoComplete="name"
-              aria-label={t(($) => $.account.name_label)}
-              value={profileName}
-              onChange={(event) => setProfileName(event.target.value)}
-              onBlur={autoSave.flush}
-            />
+            <div>
+              <Input
+                type="text"
+                name="profile-name"
+                autoComplete="name"
+                aria-label={t(($) => $.account.name_label)}
+                required
+                aria-invalid={nameMissing}
+                aria-describedby={nameMissing ? nameErrorId : undefined}
+                value={profileName}
+                onChange={(event) => setProfileName(event.target.value)}
+                onBlur={autoSave.flush}
+              />
+              {nameMissing && (
+                <p id={nameErrorId} className="mt-1 text-caption text-destructive">
+                  {t(($) => $.account.name_required)}
+                </p>
+              )}
+            </div>
           </SettingsRow>
 
           <SettingsRow

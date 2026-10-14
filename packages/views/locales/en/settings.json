@@ -50,7 +50,9 @@
     },
     "moving": "Moving {{name}}...",
     "moved": "{{name}} moved to position {{position}} in its category.",
-    "hide_archived_to_reorder": "Hide archived statuses to reorder active statuses."
+    "hide_archived_to_reorder": "Hide archived statuses to reorder active statuses.",
+    "load_failed": "Could not load statuses.",
+    "refresh_failed": "Could not refresh statuses."
   },
   "quick_actions": {
     "title": "Quick Actions",
@@ -97,13 +99,16 @@
     "prompt_hint": "Sent as written. The agent already sees the issue.",
     "template_not_supported": "Variables aren’t supported yet — remove {{token}}. The agent already reads this issue.",
     "delete_title": "Delete this quick action?",
-    "delete_description": "It disappears from every issue sidebar. Past runs stay in the execution log. Archive instead if you may want it back."
+    "delete_description": "It disappears from every issue sidebar. Past runs stay in the execution log. Archive instead if you may want it back.",
+    "load_failed": "Could not load quick actions.",
+    "refresh_failed": "Could not refresh quick actions."
   },
   "auto_save": {
     "saving": "Saving…",
     "saved": "Saved",
     "failed": "Couldn't save",
-    "toast_saved": "Changes saved"
+    "toast_saved": "Changes saved",
+    "unsaved": "Unsaved changes"
   },
   "preferences": {
     "general_title": "General",
@@ -262,7 +267,8 @@
       "zoom_out": "Zoom out",
       "reset_zoom": "Reset zoom",
       "close_dialog": "Close dialog or menu"
-    }
+    },
+    "current_binding": "Current shortcut: {{shortcut}}"
   },
   "chat": {
     "floating_title": "Floating window",
@@ -426,7 +432,9 @@
       "version": "Template version {{version}}",
       "source": "Template: {{name}}",
       "assign": "Assign",
-      "assign_server": "Assign {{name}}"
+      "assign_server": "Assign {{name}}",
+      "workspace_loading": "Loading shared servers...",
+      "workspace_refresh_error": "Could not refresh shared servers. Previously loaded servers are still shown."
     }
   },
   "page": {
@@ -622,7 +630,9 @@
       "cancel": "Cancel",
       "confirm": "Archive property",
       "failed": "Couldn't archive property"
-    }
+    },
+    "load_failed": "Could not load properties.",
+    "refresh_failed": "Could not refresh properties."
   },
   "labels": {
     "title": "Labels",
@@ -668,7 +678,9 @@
       "cancel": "Cancel",
       "confirm": "Delete label",
       "failed": "Couldn't delete label"
-    }
+    },
+    "load_failed": "Could not load labels.",
+    "refresh_failed": "Could not refresh labels."
   },
   "account": {
     "section_profile": "Personal information",
@@ -684,7 +696,8 @@
     "toast_avatar_updated": "Avatar updated",
     "toast_avatar_failed": "Failed to upload avatar",
     "toast_profile_updated": "Profile updated",
-    "toast_profile_failed": "Failed to update profile"
+    "toast_profile_failed": "Failed to update profile",
+    "name_required": "Enter your name to save these changes."
   },
   "notifications": {
     "title": "Inbox Notifications",
@@ -741,7 +754,12 @@
     "description": "Personal access tokens allow the CLI and external integrations to authenticate with your account. Use one via multica login --token, or as a Bearer token when calling the API.",
     "security_note": "A token grants full access to your account — treat it like a password.",
     "empty": "No API tokens yet. Create one above to get started.",
-    "load_failed": "Could not load your API tokens. Reload the page to try again.",
+    "loading": "Loading API tokens...",
+    "load_failed": "Could not load your API tokens. Try again.",
+    "refresh_failed": "Could not refresh your API tokens. Previously loaded tokens are still shown.",
+    "expiry_label": "Token expiry",
+    "revoking": "Revoking...",
+    "create_response_invalid": "Could not confirm the new token. Check your token list before creating another token.",
     "name_placeholder": "Token name (e.g. My CLI)",
     "expiry": {
       "30": "30 days",
@@ -830,7 +848,8 @@
       "retry": "Retry",
       "confirming": "Confirming the saved timezone...",
       "changed": "The saved timezone changed. Review it before saving again."
-    }
+    },
+    "name_required": "Enter a workspace name to save these changes."
   },
   "delete_workspace_dialog": {
     "title": "Delete workspace",
@@ -911,7 +930,9 @@
         "name": "Telegram",
         "description": "Talk to agents and follow their replies in Telegram."
       }
-    }
+    },
+    "load_failed": "Could not load {{provider}} settings.",
+    "refresh_failed": "Could not refresh {{provider}} settings. Previously loaded settings are still shown."
   },
   "github": {
     "section_title": "GitHub",
@@ -996,7 +1017,8 @@
     "rotate_confirm_action": "Regenerate",
     "rotating": "Regenerating...",
     "toast_rotated": "Webhook secret regenerated",
-    "toast_rotate_failed": "Could not regenerate webhook secret"
+    "toast_rotate_failed": "Could not regenerate webhook secret",
+    "copy_field": "Copy {{field}}"
   },
   "lark": {
     "section_title": "Lark",
@@ -1101,7 +1123,11 @@
     "last_used": "Last used {{when}}",
     "last_used_never": "Never used",
     "expired": "Token expired",
-    "reconnect": "Reconnect"
+    "reconnect": "Reconnect",
+    "refresh_failed": "Could not refresh Composio toolkits. Previously loaded toolkits are still shown.",
+    "connections_loading": "Loading connections...",
+    "connections_refresh_failed": "Could not refresh connections. Previously loaded connections are still shown.",
+    "search_label": "Search Composio toolkits"
   },
   "slack": {
     "section_title": "Slack",
@@ -1158,6 +1184,7 @@
     "groups_inactive": "Long inactive ({{count}})",
     "groups_load_more": "Load more",
     "groups_error": "Could not load DingTalk groups.",
+    "groups_refresh_failed": "Could not refresh bot groups. Previously loaded groups are still shown.",
     "groups_retry": "Retry",
     "group_untitled": "Untitled DingTalk group",
     "groups_count": "{{count}}",
@@ -1341,7 +1368,11 @@
     "delete_confirm_action": "Delete repository",
     "manage_hint": "Only admins and owners can manage repositories.",
     "toast_saved": "Repositories saved",
-    "toast_save_failed": "Failed to save repositories"
+    "toast_save_failed": "Failed to save repositories",
+    "github_installations_loading": "Loading GitHub connections...",
+    "github_installations_load_failed": "Could not load GitHub connections.",
+    "github_installations_refresh_failed": "Could not refresh GitHub connections.",
+    "github_refresh_failed": "Could not refresh repositories from GitHub."
   },
   "desktop": {
     "tabs": {
@@ -1417,6 +1448,7 @@
       "up_to_date": "You're on the latest version.",
       "downloading": "v{{version}} is downloading in the background — you'll be notified when it's ready to install.",
       "check_now": "Check now",
+      "check_failed": "Could not check for updates. Try again.",
       "checking": "Checking…"
     }
   },
@@ -1491,7 +1523,21 @@
     "expiry_7d": "7 days",
     "expiry_30d": "30 days",
     "expiry_never": "Never",
-    "actions_for": "Actions for {{name}}"
+    "actions_for": "Actions for {{name}}",
+    "loading": "Loading members...",
+    "load_failed": "Could not load workspace members.",
+    "refresh_failed": "Could not refresh workspace members.",
+    "invite_role_label": "Invitation role",
+    "pending_heading": "Pending invitations",
+    "invitations_loading": "Loading invitations...",
+    "invitations_load_failed": "Could not load invitations.",
+    "invitations_refresh_failed": "Could not refresh invitations.",
+    "share_links_heading": "Share links",
+    "share_links_loading": "Loading share links...",
+    "share_links_load_failed": "Could not load share links.",
+    "share_links_refresh_failed": "Could not refresh share links.",
+    "share_link_role_label": "Share link role",
+    "share_link_expiry_label": "Share link expiration"
   },
   "iterations": {
     "title": "Iteration settings",
@@ -1517,5 +1563,13 @@
     "operation_block": "An iteration operation is being processed or needs recovery.",
     "footer": "Starting, ending, or disabling iterations does not start or stop executions. History is preserved.",
     "disable_description": "Active iterations will end and planned iterations will be cancelled. Current task assignments will be cleared. Enabling again will not restore these cycles."
+  },
+  "query_feedback": {
+    "retry": "Retry",
+    "retrying": "Retrying...",
+    "access_denied": "You do not have access to these settings.",
+    "permissions_loading": "Loading workspace permissions...",
+    "permissions_load_failed": "Could not load workspace permissions.",
+    "permissions_refresh_failed": "Could not refresh workspace permissions."
   }
 }

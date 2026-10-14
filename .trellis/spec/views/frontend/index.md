@@ -16,6 +16,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 |-------|-------------|--------|
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | Active |
+| [Settings Recovery](./settings-recovery.md) | Query access loss, awaited saves, token secrecy, settings accessibility and native verification | Active |
 | [Add a computer](./connect-remote-computer.md) | Per-system installers, safe commands, inventory baselines and factual connection states | Active |
 | [Workspace Naming](./workspace-naming.md) | Series catalog, personal preference and manual URL/prefix ownership | Active |
 | [Automation Template Discovery](./automation-template-discovery.md) | Empty-state routing, template semantics and two-step gallery restoration | Active |

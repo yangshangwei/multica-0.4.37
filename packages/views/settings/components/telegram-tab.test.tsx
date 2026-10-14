@@ -37,7 +37,8 @@ vi.mock("@tanstack/react-query", () => ({
     if (key.includes("members")) return { data: membersRef.current, isLoading: false };
     if (key.includes("installations")) {
       return {
-        data: telegramQueryLoadingRef.current ? undefined : installationsRef.current,
+        data: telegramQueryLoadingRef.current || telegramQueryErrorRef.current
+          ? undefined : installationsRef.current,
         isLoading: telegramQueryLoadingRef.current,
         isError: telegramQueryErrorRef.current,
       };

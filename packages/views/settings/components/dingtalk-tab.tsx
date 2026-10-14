@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useInfiniteQuery, useQuery, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Info, Trash2 } from "lucide-react";
 import { cn } from "@multica/ui/lib/utils";
@@ -41,6 +41,8 @@ import { DingTalkMark } from "./dingtalk-mark";
 import { useActorName } from "@multica/core/workspace/hooks";
 import {
   dingtalkGroupsOptions,
+  dingtalkInactiveGroupsOptions,
+  dingtalkAgentInactiveGroupsOptions,
   dingtalkInstallationsOptions,
   dingtalkKeys,
 } from "@multica/core/dingtalk";
@@ -49,9 +51,11 @@ import type {
   DingTalkGroup,
   DingTalkGroupBot,
   DingTalkInstallation,
+  ListDingTalkGroupsResponse,
 } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { useT, useTimeAgo } from "../../i18n";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 const dingTalkChatManagePermission = "qyapi_chat_manage";
 
@@ -213,9 +217,7 @@ export function DingTalkBotGroups({
   groups,
   inactiveCount = 0,
   canForget = false,
-  isLoading,
-  isError,
-  onRetry,
+  query,
   showDescription = true,
   className,
 }: {
@@ -225,9 +227,7 @@ export function DingTalkBotGroups({
   groups: DingTalkGroup[];
   inactiveCount?: number;
   canForget?: boolean;
-  isLoading: boolean;
-  isError: boolean;
-  onRetry: () => void;
+  query: UseQueryResult<ListDingTalkGroupsResponse>;
   showDescription?: boolean;
   className?: string;
 }) {
@@ -235,26 +235,24 @@ export function DingTalkBotGroups({
   const timeAgo = useTimeAgo();
   const qc = useQueryClient();
   const [inactiveExpanded, setInactiveExpanded] = useState(false);
-  const [forgetTarget, setForgetTarget] = useState<DingTalkGroup | null>(null);
+  const [forgetTarget, setForgetTarget] = useState<{
+    group: DingTalkGroup;
+    inactive: boolean;
+  } | null>(null);
   const [forgetting, setForgetting] = useState(false);
+  const queryState = getSettingsQueryState(query);
   const inactiveQuery = useInfiniteQuery({
-    queryKey: agentId
-      ? dingtalkKeys.agentInactiveGroups(workspaceId, agentId, installationId)
-      : dingtalkKeys.inactiveGroups(workspaceId, installationId),
-    initialPageParam: 0,
-    queryFn: ({ pageParam }) => {
-      const params = {
-        activity: "inactive" as const,
-        installationId,
-        offset: pageParam,
-      };
-      return agentId
-        ? api.listAgentDingTalkGroups(agentId, params)
-        : api.listDingTalkGroups(workspaceId, params);
-    },
-    getNextPageParam: (page) => page.next_offset,
-    enabled: inactiveExpanded && inactiveCount > 0,
+    ...(agentId
+      ? dingtalkAgentInactiveGroupsOptions(workspaceId, agentId, installationId)
+      : dingtalkInactiveGroupsOptions(workspaceId, installationId)),
+    enabled: queryState.hasData && inactiveExpanded && inactiveCount > 0,
   });
+  const inactiveState = getSettingsQueryState(inactiveQuery);
+  const canForgetTarget = canForget && queryState.hasData &&
+    (!forgetTarget?.inactive || inactiveState.hasData);
+  useEffect(() => {
+    if (!canForgetTarget) setForgetTarget(null);
+  }, [canForgetTarget]);
 
   const collectObserved = (source: DingTalkGroup[]) => source
     .flatMap((group) => {
@@ -286,17 +284,17 @@ export function DingTalkBotGroups({
     });
   const observed = collectObserved(groups);
   const inactiveObserved = collectObserved(
-    inactiveQuery.data?.pages.flatMap((page) => page.groups) ?? [],
+    inactiveState.hasData ? inactiveQuery.data?.pages.flatMap((page) => page.groups) ?? [] : [],
   );
 
   async function handleForget() {
-    if (!forgetTarget || forgetting) return;
+    if (!canForgetTarget || !forgetTarget || forgetting) return;
     setForgetting(true);
     try {
       await api.forgetDingTalkGroup(
         workspaceId,
         installationId,
-        forgetTarget.conversation_id,
+        forgetTarget.group.conversation_id,
       );
       await qc.invalidateQueries({ queryKey: dingtalkKeys.groups(workspaceId) });
       toast.success(t(($) => $.dingtalk.group_forget_success));
@@ -314,6 +312,7 @@ export function DingTalkBotGroups({
 
   const renderObserved = (
     entries: Array<{ group: DingTalkGroup; bot: DingTalkGroupBot }>,
+    inactive = false,
   ) => (
     <div>
       {entries.map(({ group, bot }) => (
@@ -331,7 +330,7 @@ export function DingTalkBotGroups({
                 <button
                   type="button"
                   className="pointer-events-none shrink-0 text-micro text-muted-foreground opacity-0 underline-offset-2 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 hover:text-foreground hover:underline focus-visible:pointer-events-auto focus-visible:opacity-100"
-                  onClick={() => setForgetTarget(group)}
+                  onClick={() => setForgetTarget({ group, inactive })}
                 >
                   {t(($) => $.dingtalk.group_forget)}
                 </button>
@@ -387,7 +386,7 @@ export function DingTalkBotGroups({
         <h4 className="text-body font-medium text-pretty">
           {t(($) => $.dingtalk.groups_title)}
         </h4>
-        {!isLoading && !isError && (
+        {queryState.hasData && (
           <span className="rounded-full bg-muted px-2 py-0.5 text-micro tabular-nums text-muted-foreground">
             {t(($) => $.dingtalk.groups_count, { count: observed.length })}
           </span>
@@ -398,24 +397,13 @@ export function DingTalkBotGroups({
           {t(($) => $.dingtalk.groups_description)}
         </p>
       )}
-      {isLoading ? (
-        <p className="text-caption text-muted-foreground">
-          {t(($) => $.dingtalk.groups_loading)}
-        </p>
-      ) : isError ? (
-        <div className="flex items-center justify-between gap-3" role="alert">
-          <p className="text-caption text-muted-foreground">
-            {t(($) => $.dingtalk.groups_error)}
-          </p>
-          <button
-            type="button"
-            className="shrink-0 text-caption font-medium underline-offset-2 hover:underline"
-            onClick={onRetry}
-          >
-            {t(($) => $.dingtalk.groups_retry)}
-          </button>
-        </div>
-      ) : observed.length === 0 ? (
+      <SettingsQueryFeedback
+        query={query}
+        loadingMessage={t(($) => $.dingtalk.groups_loading)}
+        errorMessage={t(($) => $.dingtalk.groups_error)}
+        refreshMessage={t(($) => $.dingtalk.groups_refresh_failed)}
+      />
+      {queryState.hasData && (observed.length === 0 ? (
         <p className="text-caption text-muted-foreground">
           {inactiveCount > 0
             ? t(($) => $.dingtalk.groups_no_recent)
@@ -423,8 +411,8 @@ export function DingTalkBotGroups({
         </p>
       ) : (
         renderObserved(observed)
-      )}
-      {!isLoading && !isError && inactiveCount > 0 && (
+      ))}
+      {queryState.hasData && inactiveCount > 0 && (
         <div className="border-t pt-2">
           <button
             type="button"
@@ -439,28 +427,24 @@ export function DingTalkBotGroups({
           </button>
           {inactiveExpanded && (
             <div className="pt-1">
-              {inactiveQuery.isLoading ? (
-                <p className="py-2 text-caption text-muted-foreground">
-                  {t(($) => $.dingtalk.groups_loading)}
-                </p>
-              ) : inactiveQuery.isError ? (
-                <button
-                  type="button"
-                  className="py-2 text-caption font-medium underline-offset-2 hover:underline"
-                  onClick={() => void inactiveQuery.refetch()}
-                >
-                  {t(($) => $.dingtalk.groups_retry)}
-                </button>
-              ) : (
+              <SettingsQueryFeedback
+                query={inactiveQuery}
+                loadingMessage={t(($) => $.dingtalk.groups_loading)}
+                errorMessage={t(($) => $.dingtalk.groups_error)}
+                refreshMessage={t(($) => $.dingtalk.groups_refresh_failed)}
+              />
+              {inactiveState.hasData && (
                 <>
-                  {renderObserved(inactiveObserved)}
+                  {renderObserved(inactiveObserved, true)}
                   {inactiveQuery.hasNextPage && (
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      disabled={inactiveQuery.isFetchingNextPage}
-                      onClick={() => void inactiveQuery.fetchNextPage()}
+                      disabled={inactiveQuery.isFetching}
+                      onClick={() => {
+                        if (!inactiveQuery.isFetching) void inactiveQuery.fetchNextPage({ cancelRefetch: false });
+                      }}
                     >
                       {inactiveQuery.isFetchingNextPage
                         ? t(($) => $.dingtalk.groups_loading)
@@ -474,7 +458,7 @@ export function DingTalkBotGroups({
         </div>
       )}
       <AlertDialog
-        open={!!forgetTarget}
+        open={canForgetTarget && !!forgetTarget}
         onOpenChange={(open) => {
           if (!open && !forgetting) setForgetTarget(null);
         }}
@@ -515,19 +499,28 @@ export function DingTalkTab() {
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
 
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(membersQuery);
+  const currentMember = memberState.hasData
+    ? membersQuery.data?.find((m) => m.user_id === user?.id) ?? null
+    : null;
   const canManage =
     currentMember?.role === "owner" || currentMember?.role === "admin";
 
-  const { data, isLoading } = useQuery({
+  const installationsQuery = useQuery({
     ...dingtalkInstallationsOptions(wsId),
+    enabled: !!wsId && !!currentMember,
   });
+  const installationState = getSettingsQueryState(installationsQuery);
+  const { data, isLoading } = installationsQuery;
   const installations = data?.installations ?? [];
-  const { data: visibleAgents = [], isLoading: agentsLoading } = useQuery({
+  const configured = data?.configured === true;
+  const agentsQuery = useQuery({
     ...agentListOptions(wsId),
-    enabled: !canManage && !!wsId,
+    enabled: configured && !canManage && !!currentMember && !!wsId,
   });
+  const agentState = getSettingsQueryState(agentsQuery);
+  const visibleAgents = agentState.hasData ? agentsQuery.data ?? [] : [];
   const visibleAgentIDs = new Set(visibleAgents.map((agent) => agent.id));
   // New servers already filter this response. Keep the client-side join as a
   // compatibility guard for older servers that returned every workspace
@@ -539,30 +532,29 @@ export function DingTalkTab() {
           installation.agent_available !== false &&
           visibleAgentIDs.has(installation.agent_id),
       );
-  const configured = data?.configured === true;
-  const {
-    data: groupsData,
-    isLoading: groupsLoading,
-    isError: groupsError,
-    refetch: retryGroups,
-  } = useQuery({
+  const groupsQuery = useQuery({
     ...dingtalkGroupsOptions(wsId),
     enabled:
+      !!currentMember &&
+      installationState.hasData &&
       configured &&
       displayedInstallations.some(
         (installation) => installation.status === "active",
       ),
   });
+  const groupsState = getSettingsQueryState(groupsQuery);
+  const groupsData = groupsState.hasData ? groupsQuery.data : undefined;
+  const groupsLoading = groupsQuery.isLoading;
   const groupDiscoverySupported =
     groupsData?.group_discovery_supported === true;
   const showGroupDiscovery =
-    groupDiscoverySupported || groupsLoading || groupsError;
+    groupDiscoverySupported || groupsLoading || groupsState.failed;
 
   const [disconnectTarget, setDisconnectTarget] = useState<string | null>(null);
   const [disconnecting, setDisconnecting] = useState(false);
 
   async function handleDisconnect() {
-    if (!disconnectTarget || disconnecting) return;
+    if (!canManage || !disconnectTarget || disconnecting) return;
     setDisconnecting(true);
     try {
       await api.deleteDingTalkInstallation(wsId, disconnectTarget);
@@ -578,8 +570,42 @@ export function DingTalkTab() {
     }
   }
 
+  const feedback = <>
+    <SettingsQueryFeedback
+      query={membersQuery}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />
+    {currentMember ? (
+      <>
+        <SettingsQueryFeedback
+          query={installationsQuery}
+          loadingMessage={t(($) => $.dingtalk.loading)}
+          errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.dingtalk.section_title) })}
+          refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.dingtalk.section_title) })}
+        />
+        {configured && !canManage && installationState.hasData ? (
+          <SettingsQueryFeedback
+            query={agentsQuery}
+            loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+            errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+            refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+          />
+        ) : null}
+      </>
+    ) : memberState.hasData ? (
+      <p role="alert" className="text-body text-muted-foreground">{t(($) => $.query_feedback.access_denied)}</p>
+    ) : null}
+  </>;
+
+  if (!currentMember || !installationState.hasData || (configured && !canManage && !agentState.hasData)) {
+    return <div className="space-y-3">{feedback}</div>;
+  }
+
   return (
     <div className="space-y-8">
+      {feedback}
       {!configured ? (
         <Card>
           <CardContent className="space-y-2">
@@ -608,7 +634,7 @@ export function DingTalkTab() {
               </p>
             )}
           </div>
-          {isLoading || (!canManage && agentsLoading) ? (
+          {isLoading ? (
             <Card>
               <CardContent>
                 <p className="text-body text-muted-foreground">{t(($) => $.dingtalk.loading)}</p>
@@ -638,11 +664,9 @@ export function DingTalkTab() {
                     groups={groupsData?.groups ?? []}
                     botIdentity={groupsData?.bot_identities?.[inst.id]}
                     inactiveCount={groupsData?.inactive_group_counts?.[inst.id] ?? 0}
-                    groupsLoading={groupsLoading}
-                    groupsError={groupsError}
+                    groupsQuery={groupsQuery}
                     groupDiscoverySupported={groupDiscoverySupported}
                     showGroupDiscovery={showGroupDiscovery}
-                    onRetryGroups={() => void retryGroups()}
                   />
                 ))}
               </CardContent>
@@ -652,7 +676,7 @@ export function DingTalkTab() {
       )}
 
       <AlertDialog
-        open={!!disconnectTarget}
+        open={canManage && !!disconnectTarget}
         onOpenChange={(v) => {
           if (!v && !disconnecting) setDisconnectTarget(null);
         }}
@@ -690,11 +714,9 @@ function InstallationRow({
   groups,
   botIdentity: suppliedBotIdentity,
   inactiveCount,
-  groupsLoading,
-  groupsError,
+  groupsQuery,
   groupDiscoverySupported,
   showGroupDiscovery,
-  onRetryGroups,
 }: {
   workspaceId: string;
   installation: DingTalkInstallation;
@@ -703,11 +725,9 @@ function InstallationRow({
   groups: DingTalkGroup[];
   botIdentity?: DingTalkGroupBot;
   inactiveCount: number;
-  groupsLoading: boolean;
-  groupsError: boolean;
+  groupsQuery: UseQueryResult<ListDingTalkGroupsResponse>;
   groupDiscoverySupported: boolean;
   showGroupDiscovery: boolean;
-  onRetryGroups: () => void;
 }) {
   const { t, i18n } = useT("settings");
   const { getAgentName } = useActorName();
@@ -751,7 +771,7 @@ function InstallationRow({
                     botIdentityIssue={botIdentity?.bot_identity_issue ?? ""}
                     linkedIdentityIDs={linkedIdentityIDs}
                     showBotIdentity={
-                      groupDiscoverySupported && !groupsLoading
+                      groupDiscoverySupported && !groupsQuery.isLoading
                     }
                     showPermissionHelp={canManage}
                   />
@@ -788,9 +808,7 @@ function InstallationRow({
           groups={groups}
           inactiveCount={inactiveCount}
           canForget={canManage}
-          isLoading={groupsLoading}
-          isError={groupsError}
-          onRetry={onRetryGroups}
+          query={groupsQuery}
           showDescription={false}
           className="space-y-3 pt-5"
         />

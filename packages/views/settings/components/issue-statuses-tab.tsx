@@ -82,9 +82,9 @@ import { ColorPicker, COLOR_PICKER_PRESETS } from "../../common/color-picker";
 import { StatusIcon } from "../../issues/components/status-icon";
 import { ReorderControls, type ReorderOptions } from "../../issues/components/reorder-controls";
 import { adjacentOrder, type OrderDirection } from "../../issues/utils/adjacent-order";
-import { useStatusLabel } from "../../issues/utils/status-label";
 import { useT } from "../../i18n";
 import { SettingsTab } from "./settings-layout";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 /**
  * Workspace issue status catalog management (MUL-6243).
@@ -123,6 +123,7 @@ const EMPTY_DRAFT: StatusDraft = {
 
 export function IssueStatusesTab() {
   const { t } = useT("settings");
+  const { t: tIssues } = useT("issues");
   const wsId = useWorkspaceId();
 
   const [showArchived, setShowArchived] = useState(false);
@@ -132,14 +133,26 @@ export function IssueStatusesTab() {
   const [announcement, setAnnouncement] = useState("");
   const archivedOrderingHintId = useId();
 
-  const { data: statuses = [], isLoading } = useQuery(issueStatusListOptions(wsId));
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
+  const catalogQuery = useQuery(issueStatusListOptions(wsId));
+  const memberQuery = useQuery(memberListOptions(wsId));
+  const catalogState = getSettingsQueryState(catalogQuery);
+  const memberState = getSettingsQueryState(memberQuery);
+  const { data: statuses = [] } = catalogQuery;
+  const { data: members = [] } = memberQuery;
   const currentUser = useAuthStore((s) => s.user);
   const myRole = useMemo(() => {
     if (!currentUser) return null;
     return members.find((m) => m.user_id === currentUser.id)?.role ?? null;
   }, [members, currentUser]);
-  const isAdmin = myRole === "owner" || myRole === "admin";
+  const isAdmin = memberState.hasData && (myRole === "owner" || myRole === "admin");
+  const hasCatalog = catalogState.hasData && memberState.hasData;
+  const categoryLabel = (category: IssueStatusCategory) => tIssues(($) => $.status[category]);
+  useEffect(() => {
+    if (!catalogState.accessDenied && !memberState.accessDenied) return;
+    setCreateCategory(null);
+    setEditing(null);
+    setPendingArchive(null);
+  }, [catalogState.accessDenied, memberState.accessDenied]);
 
   const groups = useMemo(
     () =>
@@ -165,32 +178,41 @@ export function IssueStatusesTab() {
       title={t(($) => $.issue_statuses.title)}
       description={t(($) => $.issue_statuses.description)}
     >
+      <SettingsQueryFeedback
+        query={catalogQuery}
+        loadingMessage={t(($) => $.issue_statuses.loading)}
+        errorMessage={t(($) => $.issue_statuses.load_failed)}
+        refreshMessage={t(($) => $.issue_statuses.refresh_failed)}
+      />
+      <SettingsQueryFeedback
+        query={memberQuery}
+        loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+        errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+        refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+      />
       <div className="space-y-4">
         <span role="status" aria-live="polite" aria-atomic="true" className="sr-only">{announcement}</span>
         {/* Offered only once the workspace has something archived. A permanently
             disabled "Show archived (0)" is a control that can never do
             anything. */}
-        {archivedCount > 0 && (
+        {hasCatalog && archivedCount > 0 && (
           <label className="flex items-center justify-end gap-2 text-caption text-muted-foreground">
             {t(($) => $.issue_statuses.show_archived, { count: archivedCount })}
             <Switch
               checked={showArchived}
               onCheckedChange={setShowArchived}
+              aria-label={t(($) => $.issue_statuses.show_archived, { count: archivedCount })}
               aria-describedby={showArchived && isAdmin ? archivedOrderingHintId : undefined}
             />
           </label>
         )}
-        {showArchived && isAdmin && (
+        {hasCatalog && showArchived && isAdmin && (
           <p id={archivedOrderingHintId} className="text-caption text-muted-foreground">
             {t(($) => $.issue_statuses.hide_archived_to_reorder)}
           </p>
         )}
 
-        {isLoading ? (
-          <div className="rounded-lg border border-surface-border bg-card px-4 py-12 text-center text-body text-muted-foreground">
-            {t(($) => $.issue_statuses.loading)}
-          </div>
-        ) : (
+        {hasCatalog && (
           // One list, not seven cards: the categories are sections of a single
           // workflow, and seven separate borders made them read as seven
           // unrelated settings.
@@ -199,6 +221,7 @@ export function IssueStatusesTab() {
               <CategorySection
                 key={group.category}
                 category={group.category}
+                label={categoryLabel(group.category)}
                 builtIn={group.builtIn}
                 custom={group.custom}
                 canManage={isAdmin}
@@ -214,23 +237,26 @@ export function IssueStatusesTab() {
       </div>
 
       <StatusEditorDialog
-        open={createCategory !== null}
+        open={hasCatalog && isAdmin && createCategory !== null}
         onOpenChange={(open) => !open && setCreateCategory(null)}
         category={createCategory}
+        labelOf={categoryLabel}
       />
       <StatusEditorDialog
-        open={Boolean(editing)}
+        open={hasCatalog && isAdmin && Boolean(editing)}
         onOpenChange={(open) => !open && setEditing(null)}
         category={editing?.category ?? null}
         status={editing}
+        labelOf={categoryLabel}
       />
-      <ArchiveStatusDialog status={pendingArchive} onClose={() => setPendingArchive(null)} />
+      <ArchiveStatusDialog status={hasCatalog && isAdmin ? pendingArchive : null} onClose={() => setPendingArchive(null)} />
     </SettingsTab>
   );
 }
 
 function CategorySection({
   category,
+  label,
   builtIn,
   custom,
   canManage,
@@ -241,6 +267,7 @@ function CategorySection({
   onAnnounce,
 }: {
   category: IssueStatusCategory;
+  label: string;
   builtIn: IssueStatusEntry | undefined;
   custom: IssueStatusEntry[];
   canManage: boolean;
@@ -251,8 +278,6 @@ function CategorySection({
   onAnnounce: (message: string) => void;
 }) {
   const { t } = useT("settings");
-  const wsId = useWorkspaceId();
-  const labelOf = useStatusLabel(wsId);
   const reorder = useReorderIssueStatuses();
 
   // Local order so the drag reads as instant even before the optimistic cache
@@ -321,7 +346,7 @@ function CategorySection({
           nothing the eye had not already read. */}
       <div className="flex items-center justify-between gap-2 bg-muted/20 px-4 py-1.5">
         <span className="text-caption font-medium text-muted-foreground">
-          {labelOf(category)}
+          {label}
         </span>
         {canManage && (
           <Tooltip>
@@ -346,7 +371,7 @@ function CategorySection({
         {builtIn && (
           <BuiltInRow
             entry={builtIn}
-            label={labelOf(builtIn.key)}
+            label={label}
             behavior={t(($) => $.issue_statuses.categories[category])}
           />
         )}
@@ -509,15 +534,16 @@ function StatusEditorDialog({
   onOpenChange,
   category,
   status,
+  labelOf,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   category: IssueStatusCategory | null;
   status?: IssueStatusEntry | null;
+  labelOf: (category: IssueStatusCategory) => string;
 }) {
   const { t } = useT("settings");
-  const wsId = useWorkspaceId();
-  const labelOf = useStatusLabel(wsId);
+  const categoryLabelId = useId();
   const create = useCreateIssueStatus();
   const update = useUpdateIssueStatus();
   const [draft, setDraft] = useState<StatusDraft>(EMPTY_DRAFT);
@@ -634,7 +660,7 @@ function StatusEditorDialog({
             )}
           </div>
           <div className="space-y-2">
-            <FieldLabel>{t(($) => $.issue_statuses.editor.category)}</FieldLabel>
+            <FieldLabel id={categoryLabelId}>{t(($) => $.issue_statuses.editor.category)}</FieldLabel>
             {/* Immutable after creation: changing it would silently rewrite the
                 platform behavior of every issue already on this status. */}
             <Select
@@ -646,7 +672,7 @@ function StatusEditorDialog({
               }
               disabled={Boolean(status)}
             >
-              <SelectTrigger>
+              <SelectTrigger aria-labelledby={categoryLabelId}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

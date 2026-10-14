@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Copy, GitBranch, RefreshCw, Trash2 } from "lucide-react";
@@ -30,6 +30,7 @@ import { vcsConnectionsOptions } from "@multica/core/vcs";
 import { api } from "@multica/core/api";
 import type { ConnectVCSResponse, VCSProvider } from "@multica/core/types";
 import { useT } from "../../i18n";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 const PROVIDERS: VCSProvider[] = ["forgejo", "gitea", "gitlab"];
 const PROVIDER_LABELS: Record<VCSProvider, string> = {
@@ -48,7 +49,9 @@ export function VCSTab() {
   const wsId = useWorkspaceId();
   const qc = useQueryClient();
 
-  const { data } = useQuery(vcsConnectionsOptions(wsId));
+  const connectionsQuery = useQuery(vcsConnectionsOptions(wsId));
+  const { hasData } = getSettingsQueryState(connectionsQuery);
+  const data = hasData ? connectionsQuery.data : undefined;
   const connections = data?.connections ?? [];
   const configured = data?.configured === true;
   const canManage = data?.can_manage === true;
@@ -64,7 +67,7 @@ export function VCSTab() {
   const [deleting, setDeleting] = useState(false);
 
   async function handleConnect() {
-    if (connecting || !instanceUrl.trim() || !token.trim()) return;
+    if (!canManage || connecting || !instanceUrl.trim() || !token.trim()) return;
     setConnecting(true);
     try {
       const resp = await api.connectVCS(wsId, {
@@ -85,7 +88,7 @@ export function VCSTab() {
   }
 
   async function handleRotateWebhook() {
-    if (!rotateTarget || rotating) return;
+    if (!canManage || !rotateTarget || rotating) return;
     setRotating(true);
     try {
       const resp = await api.rotateVCSWebhook(wsId, rotateTarget);
@@ -101,7 +104,7 @@ export function VCSTab() {
   }
 
   async function handleDelete() {
-    if (!deleteTarget || deleting) return;
+    if (!canManage || !deleteTarget || deleting) return;
     setDeleting(true);
     try {
       await api.deleteVCSConnection(wsId, deleteTarget);
@@ -125,9 +128,21 @@ export function VCSTab() {
     }
   }
 
+  const feedback = (
+    <SettingsQueryFeedback
+      query={connectionsQuery}
+      loadingMessage={t(($) => $.integrations.loading)}
+      errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.integrations.providers.vcs.name) })}
+      refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.integrations.providers.vcs.name) })}
+    />
+  );
+
+  if (!hasData) return feedback;
+
   return (
     <div className="space-y-6">
       <p className="text-body text-muted-foreground">{t(($) => $.vcs.page_description)}</p>
+      {feedback}
 
       {connections.length > 0 && (
         <div className="space-y-3">
@@ -182,16 +197,16 @@ export function VCSTab() {
               label={t(($) => $.vcs.webhook_url_label)}
               value={justConnected.webhook_url || justConnected.webhook_path}
               onCopy={copy}
-              copyLabel={t(($) => $.vcs.copy)}
+              copyLabel={t(($) => $.vcs.copy_field, { field: t(($) => $.vcs.webhook_url_label) })}
             />
             <CopyField
               label={t(($) => $.vcs.webhook_secret_label)}
               value={justConnected.webhook_secret}
               onCopy={copy}
-              copyLabel={t(($) => $.vcs.copy)}
+              copyLabel={t(($) => $.vcs.copy_field, { field: t(($) => $.vcs.webhook_secret_label) })}
               mono
             />
-            <p className="text-caption text-amber-600 dark:text-amber-500">
+            <p className="text-caption text-warning-foreground">
               {t(($) => $.vcs.webhook_secret_warning)}
             </p>
           </CardContent>
@@ -273,7 +288,7 @@ export function VCSTab() {
       )}
 
       <AlertDialog
-        open={!!rotateTarget}
+        open={canManage && !!rotateTarget}
         onOpenChange={(v) => {
           if (!v && !rotating) setRotateTarget(null);
         }}
@@ -297,7 +312,7 @@ export function VCSTab() {
       </AlertDialog>
 
       <AlertDialog
-        open={!!deleteTarget}
+        open={canManage && !!deleteTarget}
         onOpenChange={(v) => {
           if (!v && !deleting) setDeleteTarget(null);
         }}
@@ -336,11 +351,13 @@ function CopyField({
   copyLabel: string;
   mono?: boolean;
 }) {
+  const id = useId();
   return (
     <div className="space-y-1.5">
-      <Label className="text-caption">{label}</Label>
+      <Label htmlFor={id} className="text-caption">{label}</Label>
       <div className="flex items-center gap-2">
         <Input
+          id={id}
           readOnly
           value={value}
           className={mono ? "min-w-0 font-mono text-caption" : "min-w-0 text-caption"}
@@ -351,6 +368,7 @@ function CopyField({
           className="shrink-0"
           onClick={() => onCopy(value)}
           title={copyLabel}
+          aria-label={copyLabel}
         >
           <Copy className="h-3 w-3" />
         </Button>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2, Copy, Check, Info } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@multica/ui/components/ui/tooltip";
 import type { PersonalAccessToken } from "@multica/core/types";
@@ -36,19 +37,36 @@ import {
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { copyText } from "@multica/ui/lib/clipboard";
 import { toast } from "sonner";
-import { api } from "@multica/core/api";
+import { errorCode } from "@multica/core/api";
+import {
+  personalAccessTokensOptions,
+  useAuthStore,
+  useCreatePersonalAccessToken,
+  useRevokePersonalAccessToken,
+} from "@multica/core/auth";
 import { useT } from "../../i18n";
 import { SettingsSection, SettingsTab } from "./settings-layout";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 const EXPIRY_KEYS = ["30", "90", "365", "never"] as const;
 
 export function TokensTab() {
+  const userId = useAuthStore((state) => state.user?.id ?? null);
+  return <TokenSettings key={userId} userId={userId} />;
+}
+
+function TokenSettings({ userId }: { userId: string | null }) {
   const { t } = useT("settings");
+  const queryClient = useQueryClient();
+  const tokenOptions = personalAccessTokensOptions(userId);
+  const tokensQuery = useQuery(tokenOptions);
+  const tokenState = getSettingsQueryState(tokensQuery);
+  const tokens = tokenState.hasData ? tokensQuery.data ?? [] : [];
+  const canManage = !!userId && tokenState.hasData;
   const expiryItems = EXPIRY_KEYS.map((value) => ({
     value,
     label: t(($) => $.tokens.expiry[value]),
   }));
-  const [tokens, setTokens] = useState<PersonalAccessToken[]>([]);
   const [tokenName, setTokenName] = useState("");
   const [tokenExpiry, setTokenExpiry] = useState("90");
   const [tokenCreating, setTokenCreating] = useState(false);
@@ -58,49 +76,64 @@ export function TokensTab() {
   const [storedConfirmed, setStoredConfirmed] = useState(false);
   const [tokenRevoking, setTokenRevoking] = useState<string | null>(null);
   const [revokeConfirmId, setRevokeConfirmId] = useState<string | null>(null);
-  const [tokensLoading, setTokensLoading] = useState(true);
-  const [tokensLoadFailed, setTokensLoadFailed] = useState(false);
-
-  const loadTokens = useCallback(async () => {
-    try {
-      const list = await api.listPersonalAccessTokens();
-      setTokens(list);
-      setTokensLoadFailed(false);
-    } catch (e) {
-      setTokensLoadFailed(true);
-      toast.error(e instanceof Error ? e.message : t(($) => $.tokens.toast_load_failed));
-    } finally {
-      setTokensLoading(false);
-    }
-  }, [t]);
-
-  useEffect(() => { loadTokens(); }, [loadTokens]);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [revokeError, setRevokeError] = useState<string | null>(null);
+  const writingRef = useRef(false);
+  const writing = tokenCreating || tokenRevoking !== null;
+  const createTokenMutation = useCreatePersonalAccessToken((token) => {
+    if (useAuthStore.getState().user?.id !== userId) return;
+    setNewToken(token);
+    setTokenName("");
+    setTokenExpiry("90");
+  });
+  const revokeTokenMutation = useRevokePersonalAccessToken();
 
   const handleCreateToken = async () => {
+    if (!canManage || !tokenName.trim() || writingRef.current || newToken) return;
+    writingRef.current = true;
     setTokenCreating(true);
+    setCreateError(null);
     try {
       const expiresInDays = tokenExpiry === "never" ? undefined : Number(tokenExpiry);
-      const result = await api.createPersonalAccessToken({ name: tokenName, expires_in_days: expiresInDays });
-      setNewToken(result.token);
-      setTokenName("");
-      setTokenExpiry("90");
-      await loadTokens();
+      await createTokenMutation.mutateAsync({ name: tokenName.trim(), expires_in_days: expiresInDays });
+      if (useAuthStore.getState().user?.id !== userId) return;
+      await tokensQuery.refetch();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : t(($) => $.tokens.toast_create_failed));
+      if (useAuthStore.getState().user?.id !== userId) return;
+      const invalidResponse = errorCode(e) === "invalid_personal_access_token";
+      const message = invalidResponse ? t(($) => $.tokens.create_response_invalid)
+        : e instanceof Error && e.message ? e.message : t(($) => $.tokens.toast_create_failed);
+      setCreateError(message);
+      toast.error(message);
+      if (invalidResponse) await tokensQuery.refetch();
     } finally {
+      writingRef.current = false;
       setTokenCreating(false);
     }
   };
 
   const handleRevokeToken = async (id: string) => {
+    if (!canManage || writingRef.current) return;
+    writingRef.current = true;
     setTokenRevoking(id);
+    setRevokeError(null);
     try {
-      await api.revokePersonalAccessToken(id);
-      await loadTokens();
+      await revokeTokenMutation.mutateAsync(id);
+      if (useAuthStore.getState().user?.id !== userId) return;
+      queryClient.setQueryData<PersonalAccessToken[]>(tokenOptions.queryKey, (previous) =>
+        previous?.filter((token) => token.id !== id),
+      );
+      await queryClient.invalidateQueries({ queryKey: tokenOptions.queryKey });
+      if (useAuthStore.getState().user?.id !== userId) return;
       toast.success(t(($) => $.tokens.toast_revoked));
+      setRevokeConfirmId(null);
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : t(($) => $.tokens.toast_revoke_failed));
+      if (useAuthStore.getState().user?.id !== userId) return;
+      const message = e instanceof Error && e.message ? e.message : t(($) => $.tokens.toast_revoke_failed);
+      setRevokeError(message);
+      toast.error(message);
     } finally {
+      writingRef.current = false;
       setTokenRevoking(null);
     }
   };
@@ -122,6 +155,7 @@ export function TokensTab() {
   };
 
   const closeCreatedDialog = () => {
+    if (!storedConfirmed) return;
     setNewToken(null);
     setTokenCopied(false);
     setCommandCopied(false);
@@ -139,6 +173,12 @@ export function TokensTab() {
           </>
         }
       >
+        <SettingsQueryFeedback
+          query={tokensQuery}
+          loadingMessage={t(($) => $.tokens.loading)}
+          errorMessage={t(($) => $.tokens.load_failed)}
+          refreshMessage={t(($) => $.tokens.refresh_failed)}
+        />
         <Card>
           <CardContent className="space-y-3">
             <div className="grid gap-3 sm:grid-cols-[1fr_120px_auto]">
@@ -146,6 +186,7 @@ export function TokensTab() {
                 type="text"
                 name="token-name"
                 autoComplete="off"
+                disabled={!canManage || writing}
                 aria-label={t(($) => $.tokens.name_placeholder)}
                 value={tokenName}
                 onChange={(e) => setTokenName(e.target.value)}
@@ -154,11 +195,12 @@ export function TokensTab() {
               <Select
                 items={expiryItems}
                 value={tokenExpiry}
+                disabled={!canManage || writing}
                 onValueChange={(v) => { if (v) setTokenExpiry(v); }}
               >
                 <SelectTrigger
                   size="sm"
-                  aria-label={t(($) => $.tokens.title)}
+                  aria-label={t(($) => $.tokens.expiry_label)}
                 ><SelectValue /></SelectTrigger>
                 <SelectContent>
                   {expiryItems.map((item) => (
@@ -166,14 +208,15 @@ export function TokensTab() {
                   ))}
                 </SelectContent>
               </Select>
-              <Button onClick={handleCreateToken} disabled={tokenCreating || !tokenName.trim()}>
+              <Button onClick={handleCreateToken} disabled={!canManage || writing || !tokenName.trim()}>
                 {tokenCreating ? t(($) => $.tokens.creating) : t(($) => $.tokens.create)}
               </Button>
             </div>
+            {createError && <p role="alert" className="text-caption text-destructive">{createError}</p>}
           </CardContent>
         </Card>
 
-        {tokensLoading ? (
+        {!tokenState.hasData && !tokenState.failed ? (
           <div className="space-y-2">
             {Array.from({ length: 2 }).map((_, i) => (
               <Card key={i}>
@@ -187,11 +230,11 @@ export function TokensTab() {
               </Card>
             ))}
           </div>
-        ) : tokens.length === 0 ? (
+        ) : !tokenState.hasData ? null : tokens.length === 0 ? (
           <Card>
             <CardContent>
               <p className="text-caption text-muted-foreground">
-                {tokensLoadFailed ? t(($) => $.tokens.load_failed) : t(($) => $.tokens.empty)}
+                {t(($) => $.tokens.empty)}
               </p>
             </CardContent>
           </Card>
@@ -223,8 +266,8 @@ export function TokensTab() {
                         <Button
                           variant="ghost"
                           size="icon-sm"
-                          onClick={() => setRevokeConfirmId(token.id)}
-                          disabled={tokenRevoking === token.id}
+                          onClick={() => { setRevokeError(null); setRevokeConfirmId(token.id); }}
+                          disabled={writing}
                           aria-label={t(($) => $.tokens.revoke_aria, { name: token.name })}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -240,7 +283,7 @@ export function TokensTab() {
         )}
       </SettingsSection>
 
-      <AlertDialog open={!!revokeConfirmId} onOpenChange={(v) => { if (!v) setRevokeConfirmId(null); }}>
+      <AlertDialog open={canManage && !!revokeConfirmId} onOpenChange={(v) => { if (!v && !writingRef.current) setRevokeConfirmId(null); }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t(($) => $.tokens.revoke_dialog.title)}</AlertDialogTitle>
@@ -248,22 +291,26 @@ export function TokensTab() {
               {t(($) => $.tokens.revoke_dialog.description)}
             </AlertDialogDescription>
           </AlertDialogHeader>
+          {revokeError && <p role="alert" className="text-caption text-destructive">{revokeError}</p>}
           <AlertDialogFooter>
-            <AlertDialogCancel>{t(($) => $.tokens.revoke_dialog.cancel)}</AlertDialogCancel>
+            <AlertDialogCancel disabled={writing}>{t(($) => $.tokens.revoke_dialog.cancel)}</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
+              disabled={writing}
               onClick={async () => {
                 if (revokeConfirmId) await handleRevokeToken(revokeConfirmId);
-                setRevokeConfirmId(null);
               }}
             >
-              {t(($) => $.tokens.revoke_dialog.confirm)}
+              {tokenRevoking ? t(($) => $.tokens.revoking) : t(($) => $.tokens.revoke_dialog.confirm)}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      <Dialog open={!!newToken} onOpenChange={(v) => { if (!v) closeCreatedDialog(); }}>
+      <Dialog open={canManage && !!newToken} onOpenChange={(v, details) => {
+        if (!v && !storedConfirmed) { details.cancel(); return; }
+        if (!v) closeCreatedDialog();
+      }}>
         <DialogContent className="sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>{t(($) => $.tokens.created_dialog.title)}</DialogTitle>

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
@@ -249,6 +249,31 @@ describe("GitHubTab", () => {
     expect(mockSetQueryData).not.toHaveBeenCalled();
     expect(screen.getByRole("switch", { name: /enable github features/i })).toHaveAttribute("aria-checked", "true");
     expect(screen.getByRole("switch", { name: /enable github features/i })).not.toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("makes every competing GitHub control unavailable until a setting save settles", async () => {
+    const user = userEvent.setup();
+    let finishSave!: (value: typeof workspaceRef.current) => void;
+    mockUpdateWorkspace.mockReturnValue(new Promise((resolve) => { finishSave = resolve; }));
+    installationsRef.current.installations = [{ id: "inst-42", account_login: "acme" }];
+    render(<GitHubTab />, { wrapper: I18nWrapper });
+
+    await user.click(screen.getByRole("switch", { name: "Pull Request sidebar" }));
+
+    for (const control of screen.getAllByRole("switch")) {
+      expect(control).toHaveAttribute("aria-disabled", "true");
+    }
+    expect(screen.getByRole("button", { name: "Disconnect" })).toBeDisabled();
+    expect(screen.getByRole("status")).toHaveTextContent(enSettings.auto_save.saving);
+    await user.click(screen.getByRole("switch", { name: "Co-authored-by trailer" }));
+    expect(mockUpdateWorkspace).toHaveBeenCalledTimes(1);
+
+    await act(async () => finishSave(workspaceRef.current));
+    expect(screen.getByRole("switch", { name: "Co-authored-by trailer" })).not.toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("button", { name: "Disconnect" })).toBeEnabled();
+    await user.click(screen.getByRole("switch", { name: "Co-authored-by trailer" }));
+    expect(mockUpdateWorkspace).toHaveBeenCalledTimes(2);
+    await act(async () => finishSave(workspaceRef.current));
   });
 
   it("opens the configured GitHub installation URL from Connect", async () => {

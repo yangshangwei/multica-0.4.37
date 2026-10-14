@@ -63,6 +63,7 @@ import { cn } from "@multica/ui/lib/utils";
 import { AgentPicker } from "../../autopilots/components/pickers/agent-picker";
 import { useT } from "../../i18n";
 import { SettingsTab } from "./settings-layout";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 // Quick Actions catalog (MUL-5465).
 //
@@ -73,7 +74,7 @@ import { SettingsTab } from "./settings-layout";
 //
 // Layout deliberately mirrors the Labels and Properties tabs: same search +
 // primary-action row, same bordered card, same responsive column grid that
-// collapses to stacked rows under `md`, same overflow menu. These three are
+// collapses to stacked rows when the content is narrow, same overflow menu. These three are
 // the workspace's "catalog of small named things" and reading as one surface
 // matters more than any per-tab cleverness.
 
@@ -148,7 +149,7 @@ function TargetLine({ action, t }: { action: QuickAction; t: QuickActionsT }) {
   }
   const mismatched = action.visibility === "public" && action.target_public !== true;
   return (
-    <span className={cn("inline-flex items-center gap-1", mismatched && "text-warning")}>
+    <span className={cn("inline-flex items-center gap-1", mismatched && "text-warning-foreground")}>
       {mismatched ? <TriangleAlert className="size-3" /> : null}
       {action.target_name}
       {action.target_public !== true ? ` · ${t(($) => $.quick_actions.target_private)}` : ""}
@@ -188,12 +189,20 @@ function toFormState(action: QuickAction): FormState {
 export function QuickActionsTab() {
   const { t } = useT("settings");
   const wsId = useWorkspaceId();
-  const { data: actions = [], isLoading } = useQuery(quickActionListOptions(wsId, true));
+  const catalogQuery = useQuery(quickActionListOptions(wsId, true));
+  const { data: actions = [] } = catalogQuery;
+  const { hasData, accessDenied } = getSettingsQueryState(catalogQuery);
 
   const [query, setQuery] = useState("");
   const [editing, setEditing] = useState<QuickAction | null>(null);
   const [creating, setCreating] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<QuickAction | null>(null);
+  useEffect(() => {
+    if (!accessDenied) return;
+    setCreating(false);
+    setEditing(null);
+    setDeleteTarget(null);
+  }, [accessDenied]);
 
   const createMutation = useCreateQuickAction();
   const updateMutation = useUpdateQuickAction();
@@ -248,25 +257,32 @@ export function QuickActionsTab() {
       title={t(($) => $.quick_actions.title)}
       description={t(($) => $.quick_actions.description)}
     >
-      <div className="space-y-5">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative w-full sm:max-w-sm">
+      <div className="@container/catalog space-y-5">
+        <div className="flex flex-col gap-3 @2xl/catalog:flex-row @2xl/catalog:items-center @2xl/catalog:justify-between">
+          <div className="relative w-full @2xl/catalog:max-w-sm">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t(($) => $.quick_actions.search_placeholder)}
+              aria-label={t(($) => $.quick_actions.search_placeholder)}
               className="pl-9"
             />
           </div>
-          <Button className="gap-2" onClick={() => setCreating(true)}>
+          <Button className="gap-2" disabled={!hasData} onClick={() => setCreating(true)}>
             <Plus className="size-4" />
             {t(($) => $.quick_actions.add)}
           </Button>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-surface-border bg-card">
-          <div className="hidden grid-cols-[minmax(10rem,1fr)_minmax(9rem,1fr)_6rem_5rem_7rem_2rem] gap-4 border-b border-surface-border bg-muted/20 px-4 py-2.5 text-caption font-medium text-muted-foreground md:grid">
+        <SettingsQueryFeedback
+          query={catalogQuery}
+          loadingMessage={t(($) => $.quick_actions.loading)}
+          errorMessage={t(($) => $.quick_actions.load_failed)}
+          refreshMessage={t(($) => $.quick_actions.refresh_failed)}
+        />
+        {hasData && <div className="overflow-hidden rounded-lg border border-surface-border bg-card">
+          <div className="hidden grid-cols-[minmax(10rem,1fr)_minmax(9rem,1fr)_6rem_5rem_7rem_2rem] gap-4 border-b border-surface-border bg-muted/20 px-4 py-2.5 text-caption font-medium text-muted-foreground @3xl/catalog:grid">
             <span>{t(($) => $.quick_actions.columns.name)}</span>
             <span>{t(($) => $.quick_actions.columns.target)}</span>
             <span>{t(($) => $.quick_actions.columns.visibility)}</span>
@@ -275,11 +291,7 @@ export function QuickActionsTab() {
             <span />
           </div>
 
-          {isLoading ? (
-            <div className="px-4 py-12 text-center text-body text-muted-foreground">
-              {t(($) => $.quick_actions.loading)}
-            </div>
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="px-4 py-12 text-center">
               <Zap className="mx-auto size-6 text-faint-foreground" />
               <p className="mt-3 text-body font-medium">
@@ -300,10 +312,7 @@ export function QuickActionsTab() {
                 return (
                   <div
                     key={action.id}
-                    className={cn(
-                      "grid gap-2 px-4 py-3 md:grid-cols-[minmax(10rem,1fr)_minmax(9rem,1fr)_6rem_5rem_7rem_2rem] md:items-center md:gap-4",
-                      action.status !== "active" && "opacity-60",
-                    )}
+                    className="grid min-w-0 gap-2 px-4 py-3 @3xl/catalog:grid-cols-[minmax(10rem,1fr)_minmax(9rem,1fr)_6rem_5rem_7rem_2rem] @3xl/catalog:items-center @3xl/catalog:gap-4"
                   >
                     <div className="flex min-w-0 items-center gap-2">
                       <Zap className="size-3.5 shrink-0 text-muted-foreground" />
@@ -314,7 +323,7 @@ export function QuickActionsTab() {
                         </Badge>
                       ) : null}
                     </div>
-                    <div className="min-w-0 truncate text-caption text-muted-foreground md:text-body">
+                    <div className="min-w-0 truncate text-caption text-muted-foreground @3xl/catalog:text-body">
                       <TargetLine action={action} t={t} />
                     </div>
                     <div className="min-w-0">
@@ -322,8 +331,8 @@ export function QuickActionsTab() {
                     </div>
                     <span
                       className={cn(
-                        "text-caption tabular-nums text-muted-foreground md:text-body",
-                        stale && "text-warning",
+                        "text-caption tabular-nums text-muted-foreground @3xl/catalog:text-body",
+                        stale && "text-warning-foreground",
                       )}
                     >
                       {action.use_count === 0
@@ -377,11 +386,11 @@ export function QuickActionsTab() {
               })}
             </div>
           )}
-        </div>
+        </div>}
       </div>
 
       <QuickActionDialog
-        open={creating || editing !== null}
+        open={hasData && (creating || editing !== null)}
         action={editing}
         onOpenChange={(open) => {
           if (!open) {
@@ -413,7 +422,7 @@ export function QuickActionsTab() {
         }}
       />
 
-      <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+      <AlertDialog open={hasData && deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t(($) => $.quick_actions.delete_title)}</AlertDialogTitle>

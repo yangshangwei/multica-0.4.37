@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { AppLink } from "../navigation";
-import { useCurrentMember } from "@multica/core/permissions";
+import { useAuthStore } from "@multica/core/auth";
+import { memberListOptions } from "@multica/core/workspace/queries";
 import {
   triageSettingsOptions,
   triageCountsOptions,
@@ -20,6 +21,7 @@ import {
   SettingsRow,
 } from "../settings/components/settings-layout";
 import { useT } from "../i18n";
+import { getSettingsQueryState, SettingsQueryFeedback } from "../settings/components/settings-query-feedback";
 import {
   AcceptanceStatusSelect,
   ReviewerSelect,
@@ -34,39 +36,57 @@ export function TriageSettingsTab() {
 
 function WorkspaceTriageSettings({ wsId }: { wsId: string }) {
   const { t } = useT("triage");
+  const { t: settingsT } = useT("settings");
   const paths = useWorkspacePaths();
+  const userId = useAuthStore((state) => state.user?.id);
+  const members = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(members);
+  const currentMember = memberState.hasData
+    ? members.data?.find((member) => member.user_id === userId) ?? null
+    : null;
+  const role = currentMember?.role ?? null;
   const settings = useQuery(triageSettingsOptions(wsId));
+  const settingsState = getSettingsQueryState(settings);
+  const hasSettings = currentMember !== null && settingsState.hasData;
   const counts = useQuery({
     ...triageCountsOptions(wsId),
-    enabled: settings.data?.supported === true,
+    enabled: hasSettings && settings.data?.supported === true,
   });
-  const { role } = useCurrentMember(wsId);
   const mutation = useUpdateTriageSettings(wsId);
   const [draft, setDraft] = useState<TriageSettings | null>(null);
   const value = draft ?? settings.data;
-  const editable =
+  const editable = hasSettings &&
     (role === "owner" || role === "admin") && !mutation.isPending;
+  useEffect(() => {
+    if (!hasSettings) setDraft(null);
+  }, [hasSettings]);
   const patch = (next: Partial<TriageSettings>) =>
-    value && setDraft({ ...value, ...next });
+    editable && value && setDraft({ ...value, ...next });
   return (
     <SettingsTab
       title={t(($) => $.settings)}
       description={t(($) => $.settings_description)}
     >
-      {settings.isPending ? (
-        <p role="status">{t(($) => $.loading)}</p>
-      ) : settings.isError ? (
-        <div role="alert">
-          {settings.error.message}
-          <Button onClick={() => void settings.refetch()}>
-            {t(($) => $.retry)}
-          </Button>
-        </div>
-      ) : value?.supported !== true ? (
+      <SettingsQueryFeedback
+        query={members}
+        loadingMessage={settingsT(($) => $.query_feedback.permissions_loading)}
+        errorMessage={settingsT(($) => $.query_feedback.permissions_load_failed)}
+        refreshMessage={settingsT(($) => $.query_feedback.permissions_refresh_failed)}
+      />
+      {memberState.hasData && !currentMember && (
+        <p role="alert">{settingsT(($) => $.query_feedback.access_denied)}</p>
+      )}
+      <SettingsQueryFeedback
+        query={settings}
+        loadingMessage={t(($) => $.loading)}
+        errorMessage={t(($) => $.settings_load_failed)}
+        refreshMessage={t(($) => $.settings_refresh_failed)}
+      />
+      {hasSettings && (value?.supported !== true ? (
         <p>{t(($) => $.unsupported)}</p>
       ) : (
         <>
-          {!editable && !mutation.isPending && <p>{t(($) => $.admin_only)}</p>}
+          {role === "member" && <p>{t(($) => $.admin_only)}</p>}
           <SettingsSection description={t(($) => $.sources)}>
             <SettingsCard>
               <SettingsRow label={t(($) => $.enable)}>
@@ -172,6 +192,7 @@ function WorkspaceTriageSettings({ wsId }: { wsId: string }) {
                   !value.responsibility_member_id)
               }
               onClick={async () => {
+                if (!editable || !draft) return;
                 try {
                   await mutation.mutateAsync({
                     enabled: value.enabled,
@@ -199,7 +220,7 @@ function WorkspaceTriageSettings({ wsId }: { wsId: string }) {
             </p>
           )}
         </>
-      )}
+      ))}
     </SettingsTab>
   );
 }

@@ -42,6 +42,7 @@ import { api, ApiError } from "@multica/core/api";
 import type { LarkInstallation, LarkInstallStatusResponse } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { useT } from "../../i18n";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 // MUL-3083: the Lark (international, open.larksuite.com) "connect a Bot"
 // entry is temporarily hidden while its install → inbound pipeline is
@@ -68,15 +69,20 @@ export function LarkTab() {
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
 
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(membersQuery);
+  const currentMember = memberState.hasData
+    ? membersQuery.data?.find((m) => m.user_id === user?.id) ?? null
+    : null;
   const canManage =
     currentMember?.role === "owner" || currentMember?.role === "admin";
 
-  const { data, isLoading } = useQuery({
+  const installationsQuery = useQuery({
     ...larkInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && !!currentMember,
   });
+  const installationState = getSettingsQueryState(installationsQuery);
+  const { data, isLoading } = installationsQuery;
   const installations = data?.installations ?? [];
   const configured = data?.configured === true;
   // install_supported tracks whether the device-flow install path is
@@ -91,7 +97,7 @@ export function LarkTab() {
   const [disconnecting, setDisconnecting] = useState(false);
 
   async function handleDisconnect() {
-    if (!disconnectTarget || disconnecting) return;
+    if (!canManage || !disconnectTarget || disconnecting) return;
     setDisconnecting(true);
     try {
       await api.deleteLarkInstallation(wsId, disconnectTarget);
@@ -105,8 +111,30 @@ export function LarkTab() {
     }
   }
 
+  const feedback = <>
+    <SettingsQueryFeedback
+      query={membersQuery}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />
+    {currentMember ? (
+      <SettingsQueryFeedback
+        query={installationsQuery}
+        loadingMessage={t(($) => $.lark.loading)}
+        errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.lark.section_title) })}
+        refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.lark.section_title) })}
+      />
+    ) : memberState.hasData ? (
+      <p role="alert" className="text-body text-muted-foreground">{t(($) => $.query_feedback.access_denied)}</p>
+    ) : null}
+  </>;
+
+  if (!currentMember || !installationState.hasData) return <div className="space-y-3">{feedback}</div>;
+
   return (
     <div className="space-y-8">
+      {feedback}
       {!configured ? (
         <Card>
           <CardContent className="space-y-2">
@@ -174,7 +202,7 @@ export function LarkTab() {
       )}
 
       <AlertDialog
-        open={!!disconnectTarget}
+        open={canManage && !!disconnectTarget}
         onOpenChange={(v) => {
           if (!v && !disconnecting) setDisconnectTarget(null);
         }}

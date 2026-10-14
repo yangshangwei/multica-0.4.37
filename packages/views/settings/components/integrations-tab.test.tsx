@@ -14,16 +14,18 @@ const state = vi.hoisted(() => ({
   members: { data: [{ user_id: "user-1" }], isPending: false, isError: false },
   vcs: { data: { connections: [], configured: true }, isPending: false, isError: false },
   composioError: null as Error | null,
+  composioData: undefined as unknown[] | undefined,
+  retryGitHub: vi.fn(),
   workspace: { settings: {} as Record<string, unknown> },
 }));
 vi.mock("@tanstack/react-query", async (importOriginal) => ({
   ...await importOriginal<typeof import("@tanstack/react-query")>(),
   useQuery: (opts: { queryKey: readonly unknown[]; enabled?: boolean }) => {
     state.calls.push(opts);
-    if (opts.queryKey.includes("github")) return state.github;
+    if (opts.queryKey.includes("github")) return { ...state.github, refetch: state.retryGitHub };
     if (opts.queryKey.includes("members")) return state.members;
     if (opts.queryKey.includes("vcs")) return state.vcs;
-    return { error: opts.enabled === false ? null : state.composioError };
+    return { data: state.composioData, error: opts.enabled === false ? null : state.composioError };
   },
 }));
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "workspace-1" }));
@@ -67,6 +69,7 @@ beforeEach(() => {
   state.github = { data: { installations: [], configured: true }, isPending: false, isError: false };
   state.members = { data: [{ user_id: "user-1" }], isPending: false, isError: false };
   state.composioError = null;
+  state.composioData = undefined;
   state.workspace.settings = {};
   configStore.getState().setFeatureFlags({ [COMPOSIO_MCP_APPS_FLAG]: false });
   configStore.getState().setAuthConfig({ allowSignup: true, vcsIntegrationAvailable: true, messagingIntegrationsEnabled: false });
@@ -164,6 +167,24 @@ describe("Settings integration catalog", () => {
     renderTab();
     expect(screen.queryByTestId("composio-tab")).toBeNull();
     expect(screen.queryByRole("heading", { name: "Composio" })).toBeNull();
+  });
+
+  it("retains the Composio surface when a configured deployment temporarily returns 503", () => {
+    configStore.getState().setFeatureFlags({ [COMPOSIO_MCP_APPS_FLAG]: true });
+    state.composioData = [];
+    state.composioError = new ApiError("unavailable", 503, "Service Unavailable");
+    renderTab();
+    expect(screen.getByTestId("composio-tab")).toBeInTheDocument();
+  });
+
+  it("offers a failed connection-status retry outside the provider navigation link", async () => {
+    state.github.isError = true;
+    renderTab();
+    const retry = within(screen.getByRole("alert")).getByRole("button", { name: "Retry" });
+    expect(screen.getByRole("link", { name: "GitHub" })).not.toContainElement(retry);
+    await userEvent.click(retry);
+    expect(state.retryGitHub).toHaveBeenCalledWith({ cancelRefetch: false });
+    expect(push).not.toHaveBeenCalled();
   });
 
   it("keeps GitHub connection and master-off states independent", () => {

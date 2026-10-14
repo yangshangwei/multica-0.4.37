@@ -25,6 +25,7 @@ describe("DesktopBehaviorSettingsTab", () => {
     );
 
     const trigger = await screen.findByRole("combobox");
+    expect(trigger).toHaveAccessibleName("关闭 Multica 时");
     expect(trigger).toHaveTextContent("最小化到系统托盘");
     expect(screen.getByText("当前系统不支持系统托盘，此选项不可用。")).toBeInTheDocument();
 

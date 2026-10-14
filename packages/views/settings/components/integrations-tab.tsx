@@ -28,6 +28,7 @@ import { TelegramTab } from "./telegram-tab";
 import { SettingsSection, SettingsTab } from "./settings-layout";
 import { IntegrationChannelIcon } from "./integration-channel-icon";
 import { buildSettingsHref, getRequestedIntegration } from "./settings-integration-navigation";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 const PROVIDER_TABS = {
   github: GitHubTab, vcs: VCSTab, lark: LarkTab, slack: SlackTab,
@@ -49,7 +50,8 @@ export function IntegrationsTab() {
   const vcsAvailable = useConfigStore((s) => s.vcsIntegrationAvailable);
   const composioEnabled = useFeatureEnabled(COMPOSIO_MCP_APPS_FLAG, false);
   const composioToolkits = useQuery({ ...composioToolkitsOptions(), enabled: composioEnabled });
-  const composioUnconfigured = composioToolkits.error instanceof ApiError && composioToolkits.error.status === 503;
+  const composioUnconfigured = composioToolkits.data === undefined &&
+    composioToolkits.error instanceof ApiError && composioToolkits.error.status === 503;
   const requested = getRequestedIntegration(navigation.searchParams);
   const availableProviders: Provider[] = ["github", ...(vcsAvailable ? ["vcs" as const] : []), ...(messagingEnabled ? CHANNELS : [])];
   // Config loads independently of auth. Keep gated deep links intact so a
@@ -103,12 +105,14 @@ export function IntegrationsTab() {
         {groups.filter((group) => group.entries.length > 0).map((group) => (
           <SettingsSection key={group.id} title={t(($) => $.integrations.groups[group.id].title)} description={t(($) => $.integrations.groups[group.id].description)}>
             <div className="grid grid-cols-1 gap-3 @2xl:grid-cols-2">
-              {group.entries.map((entry) => (
-                <IntegrationCard key={entry.id} entry={entry} href={entry.planned ? undefined : buildSettingsHref(navigation, "integrations", entry.id)} registerRef={(element) => {
-                  if (element) cardRefs.current.set(entry.id, element);
-                  else cardRefs.current.delete(entry.id);
-                }} />
-              ))}
+              {group.entries.map((entry) => {
+                const CatalogCard = entry.id === "github" ? GitHubIntegrationCard
+                  : entry.id === "vcs" ? VCSIntegrationCard : IntegrationCard;
+                return <CatalogCard key={entry.id} entry={entry} href={entry.planned ? undefined : buildSettingsHref(navigation, "integrations", entry.id)} registerRef={(element) => {
+                    if (element) cardRefs.current.set(entry.id, element);
+                    else cardRefs.current.delete(entry.id);
+                  }} />;
+              })}
             </div>
           </SettingsSection>
         ))}
@@ -122,11 +126,14 @@ export function IntegrationsTab() {
   );
 }
 
-function IntegrationCard({ entry, href, registerRef }: {
+type IntegrationCardProps = {
   entry: CatalogEntry;
   href?: string;
   registerRef: (element: HTMLAnchorElement | null) => void;
-}) {
+  status?: ReactNode;
+};
+
+function IntegrationCard({ entry, href, registerRef, status }: IntegrationCardProps) {
   const { t } = useT("settings");
   const id = useId();
   const content = <>
@@ -138,8 +145,7 @@ function IntegrationCard({ entry, href, registerRef }: {
         <span id={`${id}-title`} className="text-body font-semibold">{t(($) => $.integrations.providers[entry.id].name)}</span>
         <span id={`${id}-status`} className="inline-flex flex-wrap gap-1">
         {entry.planned && <StatusBadge>{t(($) => $.integrations.planned)}</StatusBadge>}
-        {entry.id === "github" && <GitHubCatalogStatus />}
-        {entry.id === "vcs" && <VCSCatalogStatus />}
+        {status}
         </span>
       </span>
       <span id={`${id}-description`} className="block text-caption leading-5 text-muted-foreground">{t(($) => $.integrations.providers[entry.id].description)}</span>
@@ -161,7 +167,7 @@ function ProviderIcon({ id }: { id: Provider }) {
 }
 
 function StatusBadge({ children, connected = false }: { children: ReactNode; connected?: boolean }) {
-  return <span className={cn("rounded px-1.5 py-0.5 text-micro font-medium", connected ? "bg-success/10 text-success" : "bg-muted text-muted-foreground")}>{children}</span>;
+  return <span className={cn("rounded px-1.5 py-0.5 text-micro font-medium", connected ? "bg-success/10 text-success-foreground" : "bg-muted text-muted-foreground")}>{children}</span>;
 }
 
 function ConnectionStatus({ pending, error, connected, configured }: {
@@ -172,28 +178,56 @@ function ConnectionStatus({ pending, error, connected, configured }: {
   return <StatusBadge connected={!pending && !error && connected}>{t(($) => $.integrations[label])}</StatusBadge>;
 }
 
-function GitHubCatalogStatus() {
+function GitHubIntegrationCard(props: IntegrationCardProps) {
   const { t } = useT("settings");
   const wsId = useWorkspaceId();
   const workspace = useCurrentWorkspace();
   const user = useAuthStore((s) => s.user);
   const members = useQuery(memberListOptions(wsId));
-  const canView = members.data?.some((member) => member.user_id === user?.id) === true;
+  const memberState = getSettingsQueryState(members);
+  const canView = memberState.hasData && members.data?.some((member) => member.user_id === user?.id) === true;
   const installations = useQuery({ ...githubInstallationsOptions(wsId), enabled: !!wsId && canView });
-  return <>
-    <ConnectionStatus
-      pending={members.isPending || (canView && installations.isPending)}
-      error={members.isError || installations.isError || (!members.isPending && !canView)}
-      connected={(installations.data?.installations?.length ?? 0) > 0}
-      configured={installations.data?.configured === true}
-    />
-    {" "}
-    {workspace && !deriveGitHubSettings(workspace).enabled && <StatusBadge>{t(($) => $.integrations.features_off)}</StatusBadge>}
-  </>;
+  const installationState = getSettingsQueryState(installations);
+  return <div className="space-y-2">
+    <IntegrationCard {...props} status={<>
+      <ConnectionStatus
+        pending={members.isPending || (canView && installations.isPending)}
+        error={memberState.failed || installationState.failed || (!members.isPending && !canView)}
+        connected={installationState.hasData && (installations.data?.installations?.length ?? 0) > 0}
+        configured={installations.data?.configured === true}
+      />
+      {" "}
+      {workspace && !deriveGitHubSettings(workspace).enabled && <StatusBadge>{t(($) => $.integrations.features_off)}</StatusBadge>}
+    </>} />
+    {memberState.failed && <SettingsQueryFeedback
+      query={members}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />}
+    {canView && installationState.failed && <SettingsQueryFeedback
+      query={installations}
+      loadingMessage={t(($) => $.integrations.loading)}
+      errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.github.section_title) })}
+      refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.github.section_title) })}
+    />}
+  </div>;
 }
 
-function VCSCatalogStatus() {
+function VCSIntegrationCard(props: IntegrationCardProps) {
+  const { t } = useT("settings");
   const wsId = useWorkspaceId();
   const connections = useQuery(vcsConnectionsOptions(wsId));
-  return <ConnectionStatus pending={connections.isPending} error={connections.isError} connected={(connections.data?.connections?.length ?? 0) > 0} configured={connections.data?.configured === true} />;
+  const state = getSettingsQueryState(connections);
+  return <div className="space-y-2">
+    <IntegrationCard {...props} status={
+      <ConnectionStatus pending={connections.isPending} error={state.failed} connected={state.hasData && (connections.data?.connections?.length ?? 0) > 0} configured={connections.data?.configured === true} />
+    } />
+    {state.failed && <SettingsQueryFeedback
+      query={connections}
+      loadingMessage={t(($) => $.integrations.loading)}
+      errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.integrations.providers.vcs.name) })}
+      refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.integrations.providers.vcs.name) })}
+    />}
+  </div>;
 }

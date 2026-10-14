@@ -106,6 +106,14 @@ vi.mock("@multica/core/dingtalk", () => ({
     queryKey: ["dingtalk", "groups", "agent", agentId],
     queryFn: vi.fn(),
   }),
+  dingtalkInactiveGroupsOptions: (wsId: string, installationId: string) => ({
+    queryKey: ["dingtalk", "groups", wsId, "inactive", installationId],
+    queryFn: vi.fn(),
+  }),
+  dingtalkAgentInactiveGroupsOptions: (wsId: string, agentId: string, installationId: string) => ({
+    queryKey: ["dingtalk", "groups", wsId, "agent", agentId, "inactive", installationId],
+    queryFn: vi.fn(),
+  }),
   dingtalkKeys: {
     groups: (wsId: string) => ["dingtalk", "groups", wsId],
     inactiveGroups: (wsId: string, installationId: string) =>

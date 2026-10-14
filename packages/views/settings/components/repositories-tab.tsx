@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GitBranch, LoaderCircle, Plus, Search, Trash2 } from "lucide-react";
 import { Input } from "@multica/ui/components/ui/input";
 import { Button } from "@multica/ui/components/ui/button";
@@ -63,8 +63,13 @@ import {
 } from "./settings-layout";
 import { useAutoSave } from "./use-auto-save";
 import { GitHubMark } from "./github-mark";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 const EMPTY_REPOSITORIES: WorkspaceRepo[] = [];
+
+function repositoriesValid(repositories: WorkspaceRepo[]) {
+  return repositories.every((repo) => repo.url.trim().length > 0);
+}
 
 function repositoriesEqual(left: WorkspaceRepo[], right: WorkspaceRepo[]) {
   if (left.length !== right.length) return false;
@@ -112,12 +117,17 @@ export function RepositoriesTab() {
   const wsId = useWorkspaceId();
   const queryClient = useQueryClient();
   const navigation = useNavigation();
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const membersState = getSettingsQueryState(membersQuery);
+  const members = membersState.hasData ? membersQuery.data ?? [] : [];
   const [repositories, setRepositories] = useState<WorkspaceRepo[]>(
     workspace?.repos ?? EMPTY_REPOSITORIES,
   );
   const [pendingRemovalIndex, setPendingRemovalIndex] = useState<number | null>(null);
+  const [removing, setRemoving] = useState(false);
+  const removingRef = useRef(false);
   const [connectingGitHub, setConnectingGitHub] = useState(false);
+  const connectingGitHubRef = useRef(false);
   const [githubPickerOpen, setGitHubPickerOpen] = useState(false);
   const [selectedInstallationID, setSelectedInstallationID] = useState("");
   const [selectedRepositories, setSelectedRepositories] = useState<
@@ -128,14 +138,14 @@ export function RepositoriesTab() {
   const currentMember = members.find((member) => member.user_id === user?.id) ?? null;
   const canManageWorkspace =
     currentMember?.role === "owner" || currentMember?.role === "admin";
-  const {
-    data: githubData,
-    isPending: githubInstallationsPending,
-    isFetching: githubInstallationsFetching,
-  } = useQuery({
+  const githubInstallationsQuery = useQuery({
     ...githubInstallationsOptions(wsId),
     enabled: !!wsId && canManageWorkspace,
   });
+  const githubInstallationsState = getSettingsQueryState(githubInstallationsQuery);
+  const githubData = githubInstallationsState.hasData ? githubInstallationsQuery.data : undefined;
+  const githubInstallationsPending = githubInstallationsQuery.isPending;
+  const githubInstallationsFetching = githubInstallationsQuery.isFetching;
   const githubInstallations = useMemo(
     () => githubData?.installations ?? [],
     [githubData?.installations],
@@ -151,7 +161,7 @@ export function RepositoriesTab() {
   const vcsAvailable = useConfigStore((s) => s.vcsIntegrationAvailable);
   const repoProvider = useRepoProvider(wsId);
   const showVCSConnect =
-    vcsAvailable && !githubConnectConfigured && githubInstallations.length === 0;
+    vcsAvailable && githubInstallationsState.hasData && !githubConnectConfigured && githubInstallations.length === 0;
   const vcsProviderName =
     repoProvider.kind === "git" || repoProvider.kind === "github"
       ? "GitLab"
@@ -169,12 +179,13 @@ export function RepositoriesTab() {
       githubBrowseConfigured &&
       !!selectedInstallationID,
   });
+  const githubRepositoriesState = getSettingsQueryState(githubRepositoriesQuery);
   const githubRepositories = useMemo(
     () =>
-      githubRepositoriesQuery.data?.pages.flatMap(
+      githubRepositoriesState.hasData ? githubRepositoriesQuery.data?.pages.flatMap(
         (page) => page.repositories,
-      ) ?? [],
-    [githubRepositoriesQuery.data?.pages],
+      ) ?? [] : [],
+    [githubRepositoriesQuery.data?.pages, githubRepositoriesState.hasData],
   );
   const existingRepositoryIdentities = useMemo(
     () =>
@@ -195,10 +206,20 @@ export function RepositoriesTab() {
 
   useEffect(() => {
     setRepositories(workspace?.repos ?? EMPTY_REPOSITORIES);
+    setPendingRemovalIndex(null);
     // A cache update after auto-save replaces the Workspace object. Keying on
     // identity prevents that response from wiping a newer local keystroke.
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally keyed on workspace identity
   }, [workspace?.id]);
+
+  useEffect(() => {
+    if (!canManageWorkspace || githubInstallationsState.accessDenied) {
+      setGitHubPickerOpen(false);
+      setSelectedRepositories(new Map());
+      setRepositorySearch("");
+    }
+    if (!canManageWorkspace) setPendingRemovalIndex(null);
+  }, [canManageWorkspace, githubInstallationsState.accessDenied]);
 
   useEffect(() => {
     if (
@@ -218,7 +239,7 @@ export function RepositoriesTab() {
     if ((!connected && !githubError) || !canManageWorkspace) return;
     if (
       !githubError &&
-      (githubInstallationsPending || githubInstallationsFetching)
+      (githubInstallationsPending || githubInstallationsFetching || !githubInstallationsState.hasData)
     ) {
       return;
     }
@@ -243,6 +264,7 @@ export function RepositoriesTab() {
     githubInstallations,
     githubInstallationsFetching,
     githubInstallationsPending,
+    githubInstallationsState.hasData,
     navigation,
     t,
   ]);
@@ -261,7 +283,7 @@ export function RepositoriesTab() {
     },
     [queryClient, workspace],
   );
-  const allUrlsValid = repositories.every((repo) => repo.url.trim().length > 0);
+  const allUrlsValid = repositoriesValid(repositories);
   const autoSave = useAutoSave({
     value: draft,
     savedValue: savedRepositories,
@@ -276,7 +298,8 @@ export function RepositoriesTab() {
           ? error.message
           : t(($) => $.repositories.toast_save_failed),
       ),
-    enabled: !!workspace && canManageWorkspace && allUrlsValid,
+    enabled: !!workspace && canManageWorkspace,
+    isValid: repositoriesValid,
     isEqual: repositoriesEqual,
   });
 
@@ -285,6 +308,7 @@ export function RepositoriesTab() {
     field: keyof WorkspaceRepo,
     value: string,
   ) => {
+    if (!canManageWorkspace || removingRef.current) return;
     setRepositories((current) =>
       current.map((repo, repoIndex) =>
         repoIndex === index ? { ...repo, [field]: value } : repo,
@@ -293,10 +317,12 @@ export function RepositoriesTab() {
   };
 
   const addRepository = () => {
+    if (!canManageWorkspace || removingRef.current) return;
     setRepositories((current) => [...current, { url: "" }]);
   };
 
   const openGitHubPicker = () => {
+    if (!canManageWorkspace || !githubInstallationsState.hasData || removingRef.current) return;
     setSelectedInstallationID(
       selectedInstallationID || githubInstallations[0]?.id || "",
     );
@@ -304,10 +330,12 @@ export function RepositoriesTab() {
   };
 
   const handleGitHubAction = async () => {
+    if (!canManageWorkspace || !githubInstallationsState.hasData || connectingGitHubRef.current || removingRef.current) return;
     if (githubInstallations.length > 0) {
       openGitHubPicker();
       return;
     }
+    connectingGitHubRef.current = true;
     setConnectingGitHub(true);
     try {
       const response = await api.getGitHubConnectURL(wsId, "repositories");
@@ -323,6 +351,7 @@ export function RepositoriesTab() {
           : t(($) => $.repositories.github_connect_failed),
       );
     } finally {
+      connectingGitHubRef.current = false;
       setConnectingGitHub(false);
     }
   };
@@ -346,6 +375,7 @@ export function RepositoriesTab() {
   };
 
   const importGitHubRepositories = () => {
+    if (!canManageWorkspace || !githubRepositoriesState.hasData || removingRef.current) return;
     if (!allUrlsValid) {
       toast.error(t(($) => $.repositories.complete_manual_entry_first));
       return;
@@ -369,20 +399,41 @@ export function RepositoriesTab() {
     }
     const next = [...repositories, ...additions];
     setRepositories(next);
-    autoSave.saveNow(next);
+    void autoSave.saveNow(next);
     closeGitHubPicker();
   };
 
-  const removeRepository = (index: number) => {
+  const removeRepository = async (index: number) => {
+    if (!canManageWorkspace || removingRef.current) return;
     const next = repositories.filter((_, repoIndex) => repoIndex !== index);
-    setRepositories(next);
-    autoSave.saveNow(next);
+    if (!repositoriesValid(next)) {
+      toast.error(t(($) => $.repositories.complete_manual_entry_first));
+      return;
+    }
+    removingRef.current = true;
+    setRemoving(true);
+    try {
+      if (await autoSave.saveNow(next)) {
+        setRepositories(next);
+        setPendingRemovalIndex(null);
+      }
+    } finally {
+      removingRef.current = false;
+      setRemoving(false);
+    }
   };
 
   if (!workspace) return null;
 
   return (
     <SettingsTab title={t(($) => $.page.tabs.repositories)}>
+      <SettingsQueryFeedback
+        query={membersQuery}
+        loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+        errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+        refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+      />
+      {!membersState.accessDenied && <>
       <SettingsSection
         description={t(($) => $.repositories.description)}
         action={
@@ -394,6 +445,14 @@ export function RepositoriesTab() {
           />
         }
       >
+        {canManageWorkspace && (
+          <SettingsQueryFeedback
+            query={githubInstallationsQuery}
+            loadingMessage={t(($) => $.repositories.github_installations_loading)}
+            errorMessage={t(($) => $.repositories.github_installations_load_failed)}
+            refreshMessage={t(($) => $.repositories.github_installations_refresh_failed)}
+          />
+        )}
         <SettingsCard>
           {repositories.length === 0 ? (
             <div className="px-4 py-8 text-center text-caption text-muted-foreground">
@@ -417,7 +476,7 @@ export function RepositoriesTab() {
                   updateRepository(index, "url", event.target.value)
                 }
                 onBlur={autoSave.flush}
-                disabled={!canManageWorkspace}
+                disabled={!canManageWorkspace || removing}
                 aria-invalid={!repository.url.trim()}
                 placeholder={t(($) => $.repositories.url_placeholder)}
                 className="font-mono text-caption"
@@ -432,7 +491,7 @@ export function RepositoriesTab() {
                   updateRepository(index, "description", event.target.value)
                 }
                 onBlur={autoSave.flush}
-                disabled={!canManageWorkspace}
+                disabled={!canManageWorkspace || removing}
                 placeholder={t(($) => $.repositories.description_placeholder)}
               />
               {canManageWorkspace ? (
@@ -441,7 +500,10 @@ export function RepositoriesTab() {
                   size="icon-sm"
                   aria-label={t(($) => $.repositories.delete_aria)}
                   className="justify-self-end text-muted-foreground hover:text-destructive"
-                  onClick={() => setPendingRemovalIndex(index)}
+                  disabled={removing}
+                  onClick={() => {
+                    if (!removingRef.current) setPendingRemovalIndex(index);
+                  }}
                 >
                   <Trash2 className="size-3.5" />
                 </Button>
@@ -452,21 +514,22 @@ export function RepositoriesTab() {
           {canManageWorkspace ? (
             <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3.5">
               <div className="flex flex-wrap items-center gap-2">
-                <Button variant="outline" size="sm" onClick={addRepository}>
+                <Button variant="outline" size="sm" onClick={addRepository} disabled={removing}>
                   <Plus className="size-3.5" />
                   {t(($) => $.repositories.add)}
                 </Button>
                 {showVCSConnect ? (
-                  <Button size="sm" onClick={openIntegrations}>
+                  <Button size="sm" onClick={openIntegrations} disabled={removing}>
                     <GitBranch className="size-3.5" />
                     {t(($) => $.repositories.connect_vcs, { provider: vcsProviderName })}
                   </Button>
-                ) : (
+                ) : githubInstallationsState.hasData ? (
                 <Button
                   size="sm"
                   onClick={handleGitHubAction}
                   disabled={
                     connectingGitHub ||
+                    removing ||
                     !githubBrowseConfigured ||
                     (!githubConnectConfigured &&
                       githubInstallations.length === 0)
@@ -486,7 +549,7 @@ export function RepositoriesTab() {
                     ? t(($) => $.repositories.choose_from_github)
                     : t(($) => $.repositories.connect_github)}
                 </Button>
-                )}
+                ) : null}
               </div>
               {!allUrlsValid ? (
                 <span className="text-caption text-muted-foreground">
@@ -494,16 +557,17 @@ export function RepositoriesTab() {
                 </span>
               ) : null}
             </div>
-          ) : (
+          ) : currentMember?.role === "member" ? (
             <div className="px-4 py-3 text-caption text-muted-foreground">
               {t(($) => $.repositories.manage_hint)}
             </div>
-          )}
+          ) : null}
         </SettingsCard>
       </SettingsSection>
+      </>}
 
       <Dialog
-        open={githubPickerOpen}
+        open={githubPickerOpen && canManageWorkspace && githubInstallationsState.hasData}
         onOpenChange={(open) => {
           if (!open) closeGitHubPicker();
         }}
@@ -572,16 +636,15 @@ export function RepositoriesTab() {
           </div>
 
           <div className="min-h-0 flex-1 overflow-y-auto border-y">
-            {githubRepositoriesQuery.isPending ? (
-              <div className="flex items-center justify-center gap-2 px-6 py-12 text-body text-muted-foreground">
-                <LoaderCircle className="size-4 animate-spin" />
-                {t(($) => $.repositories.github_loading)}
-              </div>
-            ) : githubRepositoriesQuery.isError ? (
-              <div className="px-6 py-12 text-center text-body text-muted-foreground">
-                {t(($) => $.repositories.github_load_failed)}
-              </div>
-            ) : filteredGitHubRepositories.length === 0 ? (
+            <div className="px-6 py-4 empty:hidden">
+              <SettingsQueryFeedback
+                query={githubRepositoriesQuery}
+                loadingMessage={t(($) => $.repositories.github_loading)}
+                errorMessage={t(($) => $.repositories.github_load_failed)}
+                refreshMessage={t(($) => $.repositories.github_refresh_failed)}
+              />
+            </div>
+            {githubRepositoriesState.hasData && (filteredGitHubRepositories.length === 0 ? (
               <div className="px-6 py-12 text-center text-body text-muted-foreground">
                 {repositorySearch
                   ? t(($) => $.repositories.github_no_search_results)
@@ -646,15 +709,17 @@ export function RepositoriesTab() {
                   );
                 })}
               </div>
-            )}
+            ))}
 
-            {githubRepositoriesQuery.hasNextPage ? (
+            {githubRepositoriesState.hasData && githubRepositoriesQuery.hasNextPage ? (
               <div className="flex justify-center border-t p-3">
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => githubRepositoriesQuery.fetchNextPage()}
-                  disabled={githubRepositoriesQuery.isFetchingNextPage}
+                  onClick={() => {
+                    if (!githubRepositoriesQuery.isFetching) void githubRepositoriesQuery.fetchNextPage({ cancelRefetch: false });
+                  }}
+                  disabled={githubRepositoriesQuery.isFetching}
                 >
                   {githubRepositoriesQuery.isFetchingNextPage
                     ? t(($) => $.repositories.github_loading)
@@ -675,7 +740,7 @@ export function RepositoriesTab() {
             </Button>
             <Button
               onClick={importGitHubRepositories}
-              disabled={selectedRepositories.size === 0 || !allUrlsValid}
+              disabled={selectedRepositories.size === 0 || !allUrlsValid || !githubRepositoriesState.hasData}
             >
               {t(($) => $.repositories.github_import)}
             </Button>
@@ -684,9 +749,9 @@ export function RepositoriesTab() {
       </Dialog>
 
       <AlertDialog
-        open={pendingRemovalIndex !== null}
+        open={pendingRemovalIndex !== null && canManageWorkspace}
         onOpenChange={(open) => {
-          if (!open) setPendingRemovalIndex(null);
+          if (!open && !removingRef.current) setPendingRemovalIndex(null);
         }}
       >
         <AlertDialogContent>
@@ -699,16 +764,17 @@ export function RepositoriesTab() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>
+            <AlertDialogCancel disabled={removing}>
               {t(($) => $.repositories.delete_confirm_cancel)}
             </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
+              disabled={removing}
+              aria-busy={removing}
               onClick={() => {
                 if (pendingRemovalIndex !== null) {
-                  removeRepository(pendingRemovalIndex);
+                  void removeRepository(pendingRemovalIndex);
                 }
-                setPendingRemovalIndex(null);
               }}
             >
               {t(($) => $.repositories.delete_confirm_action)}

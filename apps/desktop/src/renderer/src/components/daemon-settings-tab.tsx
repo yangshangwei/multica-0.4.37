@@ -156,6 +156,7 @@ export function DaemonSettingsTab() {
           description={t(($) => $.desktop.daemon.auto_start_description)}
         >
           <Switch
+            aria-label={t(($) => $.desktop.daemon.auto_start_title)}
             checked={prefs.autoStart}
             onCheckedChange={(checked) => updatePref("autoStart", checked)}
             disabled={saving || externallyManaged}
@@ -167,6 +168,7 @@ export function DaemonSettingsTab() {
           description={t(($) => $.desktop.daemon.auto_stop_description)}
         >
           <Switch
+            aria-label={t(($) => $.desktop.daemon.auto_stop_title)}
             checked={prefs.autoStop}
             onCheckedChange={(checked) => updatePref("autoStop", checked)}
             disabled={saving || externallyManaged}

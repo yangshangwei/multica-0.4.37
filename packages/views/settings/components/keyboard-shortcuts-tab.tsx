@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { Keyboard, RotateCcw, Search, X } from "lucide-react";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
@@ -17,6 +17,7 @@ import {
 import { cn } from "@multica/ui/lib/utils";
 import {
   findShortcutConflict,
+  formatShortcut,
   createShortcutChord,
   isReservedShortcut,
   isShortcutAllowedForAction,
@@ -260,6 +261,7 @@ function ShortcutRow({
   onReset: () => void;
 }) {
   const { t } = useT("settings");
+  const bindingDescriptionId = useId();
   const label = t(($) => $.shortcuts.actions[action.id].label);
   const description = t(($) => $.shortcuts.actions[action.id].description);
   const errorText = error?.kind === "reserved"
@@ -291,6 +293,11 @@ function ShortcutRow({
       size="select-wide"
     >
       <div className="flex flex-col items-stretch gap-1.5 sm:items-end">
+        <span id={bindingDescriptionId} className="sr-only">
+          {t(($) => $.shortcuts.current_binding, {
+            shortcut: shortcut ? formatShortcut(shortcut) : t(($) => $.shortcuts.unassigned),
+          })}
+        </span>
         <div className="flex items-center justify-end gap-1.5">
           <button
             type="button"
@@ -303,6 +310,7 @@ function ShortcutRow({
               error && "border-destructive text-destructive ring-destructive/20",
             )}
             aria-label={t(($) => $.shortcuts.record_aria, { action: label })}
+            aria-describedby={bindingDescriptionId}
             aria-pressed={recording}
           >
             {recording ? (

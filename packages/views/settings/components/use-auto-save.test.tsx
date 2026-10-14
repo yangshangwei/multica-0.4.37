@@ -1,5 +1,5 @@
 import { StrictMode } from "react";
-import { act, render, waitFor } from "@testing-library/react";
+import { act, render, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { useAutoSave } from "./use-auto-save";
 
@@ -99,5 +99,75 @@ describe("useAutoSave success feedback", () => {
     await act(async () => second.resolve());
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith("second"));
     expect(onSuccess).toHaveBeenCalledTimes(1);
+  });
+
+  it("lets a confirmed caller await failure and retry without clearing its target", async () => {
+    const pending = deferred<void>();
+    const onSave = vi.fn().mockReturnValueOnce(pending.promise).mockResolvedValue(undefined);
+    const { result } = renderHook(() => useAutoSave({
+      value: "original", savedValue: "original", onSave,
+      isEqual: (left, right) => left === right,
+    }));
+    let settled = false;
+    let save!: Promise<unknown>;
+    act(() => {
+      save = Promise.resolve(result.current.saveNow("removed")).then((saved) => {
+        settled = true;
+        return saved;
+      });
+    });
+    await act(async () => { await Promise.resolve(); });
+    expect(settled).toBe(false);
+
+    await act(async () => pending.reject(new Error("offline")));
+    await expect(save).resolves.toBe(false);
+    expect(result.current.status).toBe("error");
+    await act(async () => { expect(await result.current.saveNow("removed")).toBe(true); });
+    expect(onSave).toHaveBeenCalledTimes(2);
+  });
+
+  it("settles a queued confirmation only after its own serialized write finishes", async () => {
+    const first = deferred<void>();
+    const second = deferred<void>();
+    const onSave = vi.fn().mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
+    const { result } = renderHook(() => useAutoSave({
+      value: "original", savedValue: "original", onSave,
+      isEqual: (left, right) => left === right,
+    }));
+    let settled = false;
+    let confirmation!: Promise<unknown>;
+    act(() => {
+      void result.current.saveNow("edited");
+      confirmation = Promise.resolve(result.current.saveNow("removed")).then((saved) => {
+        settled = true;
+        return saved;
+      });
+    });
+    await act(async () => { await Promise.resolve(); });
+    expect(settled).toBe(false);
+    expect(onSave).toHaveBeenCalledTimes(1);
+    await act(async () => first.resolve());
+    expect(onSave).toHaveBeenLastCalledWith("removed");
+    expect(settled).toBe(false);
+    await act(async () => second.resolve());
+    await expect(confirmation).resolves.toBe(true);
+  });
+
+  it("waits before restoring the previous value when an earlier write is still in flight", async () => {
+    const first = deferred<void>();
+    const onSave = vi.fn().mockReturnValueOnce(first.promise).mockResolvedValue(undefined);
+    const { result } = renderHook(() => useAutoSave({
+      value: "original", savedValue: "original", onSave,
+      isEqual: (left, right) => left === right,
+    }));
+    let restore!: Promise<boolean>;
+    act(() => {
+      void result.current.saveNow("added");
+      restore = result.current.saveNow("original");
+    });
+    expect(onSave).toHaveBeenCalledTimes(1);
+    await act(async () => first.resolve());
+    await expect(restore).resolves.toBe(true);
+    expect(onSave).toHaveBeenLastCalledWith("original");
   });
 });

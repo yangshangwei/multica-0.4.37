@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AlertCircle, ArrowDownToLine, Check, Loader2 } from "lucide-react";
 import { Button } from "@multica/ui/components/ui/button";
 import { Switch } from "@multica/ui/components/ui/switch";
@@ -19,6 +19,7 @@ export function UpdatesSettingsTab() {
   const [automaticUpdates, setAutomaticUpdates] = useState(true);
   const [preferencesReady, setPreferencesReady] = useState(false);
   const [savingPreference, setSavingPreference] = useState(false);
+  const checkingRef = useRef(false);
   const currentVersion = window.desktopAPI.appInfo.version;
 
   useEffect(() => {
@@ -60,18 +61,27 @@ export function UpdatesSettingsTab() {
   );
 
   const handleCheck = useCallback(async () => {
+    // aria-disabled preserves native focus, so also guard synchronous activation.
+    if (checkingRef.current) return;
+    checkingRef.current = true;
     setState({ status: "checking" });
-    const result = await window.updater.checkForUpdates();
-    if (!result.ok) {
-      setState({ status: "error", message: result.error });
-      return;
+    try {
+      const result = await window.updater.checkForUpdates();
+      if (!result.ok) {
+        setState({ status: "error", message: result.error });
+        return;
+      }
+      setState(
+        result.available
+          ? { status: "available", latestVersion: result.latestVersion }
+          : { status: "up-to-date" },
+      );
+    } catch {
+      setState({ status: "error", message: t(($) => $.desktop.updates.check_failed) });
+    } finally {
+      checkingRef.current = false;
     }
-    setState(
-      result.available
-        ? { status: "available", latestVersion: result.latestVersion }
-        : { status: "up-to-date" },
-    );
-  }, []);
+  }, [t]);
 
   return (
     <SettingsTab
@@ -103,6 +113,7 @@ export function UpdatesSettingsTab() {
           description={
             <>
               <p>{t(($) => $.desktop.updates.check_section_description)}</p>
+              <div role="status" aria-live="polite" aria-atomic="true">
               {state.status === "up-to-date" && (
                 <p className="mt-2 inline-flex items-center gap-1.5">
                   <Check className="size-3.5 text-success" />
@@ -123,14 +134,16 @@ export function UpdatesSettingsTab() {
                   {state.message}
                 </p>
               )}
+              </div>
             </>
           }
         >
           <Button
             variant="outline"
             size="sm"
+            className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
             onClick={handleCheck}
-            disabled={state.status === "checking"}
+            aria-disabled={state.status === "checking"}
           >
             {state.status === "checking" ? (
               <>
