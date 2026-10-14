@@ -1,0 +1,43 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+> @multica/docs@0.2.0 build /Volumes/artisan/code/2026/multica-0.4.37/apps/docs
+> next build
+
+   ▲ Next.js 15.5.18
+
+[MDX] updated map file in 57.95362499999999ms
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 9.2s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/99) ...
+   Generating static pages (24/99)
+   Generating static pages (49/99)
+   Generating static pages (74/99)
+ ✓ Generating static pages (99/99)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /_not-found                            998 B         103 kB
+├ ● /[lang]                              1.14 kB         146 kB
+├   ├ /en
+├   └ /zh
+├ ● /[lang]/[...slug]                      454 B         145 kB
+├   ├ /en/agents-create
+├   ├ /en/agents
+├   ├ /en/assigning-issues
+├   └ [+89 more paths]
+├ ƒ /api/search                          2.93 kB         105 kB
+└ ○ /sitemap.xml                           124 B         102 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/752-0b5a9b162f986293.js       45.9 kB
+  ├ chunks/b17dc159-8c05c47896afef7a.js  54.2 kB
+  └ other shared chunks (total)           2.1 kB
+
+
+ƒ Middleware                             32.5 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

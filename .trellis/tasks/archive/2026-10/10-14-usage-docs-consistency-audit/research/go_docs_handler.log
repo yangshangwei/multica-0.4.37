@@ -1,0 +1,28 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/10/14 20:24:08 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestGetDocsManifestReportsServerVersion
+--- PASS: TestGetDocsManifestReportsServerVersion (0.00s)
+=== RUN   TestGetDocsManifestEntriesAllResolve
+--- PASS: TestGetDocsManifestEntriesAllResolve (0.00s)
+=== RUN   TestGetDocsPageReturnsRequestedSlug
+--- PASS: TestGetDocsPageReturnsRequestedSlug (0.00s)
+=== RUN   TestGetDocsPageRejectsMissingSlug
+--- PASS: TestGetDocsPageRejectsMissingSlug (0.00s)
+=== RUN   TestGetDocsPageRefusesUnpublishedSlugs
+--- PASS: TestGetDocsPageRefusesUnpublishedSlugs (0.00s)
+=== RUN   TestServeDocsAssetServesPublishedImage
+--- PASS: TestServeDocsAssetServesPublishedImage (0.00s)
+=== RUN   TestServeDocsAssetRefusesUnpublishedPaths
+--- PASS: TestServeDocsAssetRefusesUnpublishedPaths (0.00s)
+=== RUN   TestServeDocsAssetRefusesEncodedTraversal
+--- PASS: TestServeDocsAssetRefusesEncodedTraversal (0.00s)
+=== RUN   TestDocsEndpointsHonorIfNoneMatch
+--- PASS: TestDocsEndpointsHonorIfNoneMatch (0.00s)
+=== RUN   TestDocsManifestETagTracksServerVersion
+--- PASS: TestDocsManifestETagTracksServerVersion (0.00s)
+=== RUN   TestDocsCacheControlByResource
+--- PASS: TestDocsCacheControlByResource (0.00s)
+=== RUN   TestGetDocsPageTOCCarriesHeadingIDs
+--- PASS: TestGetDocsPageTOCCarriesHeadingIDs (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	0.938s
