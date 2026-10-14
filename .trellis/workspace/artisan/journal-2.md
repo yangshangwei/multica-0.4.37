@@ -236,3 +236,42 @@ Session summary was not supplied.
 ### Next Steps
 
 - 本任务无剩余修订；后续正常发布时交付新嵌入包，现场登录、真实工具与长时断线未在本轮验证。
+
+
+## Session 71: Settings audit remediation
+<!-- trellis-session: v=2 fp=6c01724d167a2a57 -->
+
+**Date**: 2026-10-14
+**Task**: Settings audit remediation
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Completed F01-F17 settings remediation, independent review and native Electron acceptance.
+
+### Main Changes
+
+- Unified settings read recovery and protected cached data through denial, retry cancellation and remounts.
+- Retained invalid drafts and failed confirmations; protected PAT parsing, cache secrecy, pending actions and native updater focus.
+- Archived reproducible evidence and staged only PAT hunks in the concurrently edited API client.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f3e1161a46fab6cab448a4fb44575c5464a2f37c` | fix(core): keep settings data trustworthy across failures |
+| `6ccd5e643485bafb2408c343d3bca289f319e0f4` | fix(settings): preserve edits and make failed actions recoverable |
+
+### Testing
+
+- [OK] 907 tests passed: 783 views, 105 core and 19 desktop.
+- [OK] Core, views, Web and desktop node/renderer TypeScript checks, scoped ESLint and 27 UI detector targets passed.
+- [OK] Electron fixtures verified all 17 findings, 18 catalog layout combinations and light/dark contrast; owned processes/profiles cleaned.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work in the agreed task scope; live backend writes, native Windows/Linux and spoken screen-reader checks were not exercised.
