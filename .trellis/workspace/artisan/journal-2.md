@@ -200,3 +200,39 @@ Session summary was not supplied.
 ### Next Steps
 
 - 继续P1剩余来源字段与P3私有内容/实时；P4运行身份和可信终结证明完成后再实现P5正向Resume/FIFO及双端P8验收
+
+
+## Session 70: Close usage documentation consistency gaps
+<!-- trellis-session: v=2 fp=ac5b6a1144afe7ee -->
+
+**Date**: 2026-10-14
+**Task**: Close usage documentation consistency gaps
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+关闭使用说明审计的 D01–D18：修订 18 篇中文文档和英文规范、同步文档包并完成独立复核。保留其他会话修改，任务已归档。
+
+### Main Changes
+
+- 修正导入、触发、离线回收、认证、权限、协作、工具能力及开发规范；标明旧截图差异。
+- 文档目录仅提交本轮摘要修改；已有分拣台、迭代、认证等文档 WIP 留给原会话。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4d7399b7470506aa72a6e66fa5db264c76baf5c8` | docs: prevent misleading usage instructions |
+
+### Testing
+
+- [OK] 62 项文档测试、12 项 Docs handler、Go docs/vet、docs typecheck、MDX 和生产构建通过。
+- [OK] 39 页、58 资源、98 文件逐字节一致；252 内部链接、43 锚点、57 图片引用无错误；隔离测试数据库已清理。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务无剩余修订；后续正常发布时交付新嵌入包，现场登录、真实工具与长时断线未在本轮验证。
