@@ -165,3 +165,38 @@ Finished frozen-source Linux amd64 and Windows x64 delivery in dist/release/v0.6
 ### Next Steps
 
 - Target Windows installation/upgrade and real intranet acceptance remain deployment-side checks; Windows payload is unsigned.
+
+
+## Session 69: 跨空间协作：编辑、交接确认与持久撤权
+<!-- trellis-session: v=2 fp=8c08c7f474539db0 -->
+
+**Date**: 2026-10-14
+**Task**: 跨空间协作：编辑、交接确认与持久撤权
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Session summary was not supplied.
+
+### Main Changes
+
+- 继续既有58项需求任务，完成R41/R48编辑、D04定向状态确认、账号失效消费和跨批次饥饿修复；创建与正向执行仍关闭
+- 独立复核关闭legacy agent人类令牌边界，新增真实DB并发、回滚、重启和调度失败证据；同步规范与任务进度
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `cc85172d98ad11a3e4e123f379639431f8df0f08` | feat(collaboration): preserve authority through handoffs and account revocation |
+
+### Testing
+
+- [OK] 259个Go顶层测试及323个子项通过，1061个core测试通过，9项workspace typecheck、core lint、Go vet、sqlc一致性及迁移619验证通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续P1剩余来源字段与P3私有内容/实时；P4运行身份和可信终结证明完成后再实现P5正向Resume/FIFO及双端P8验收

@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-2.md`
-- **Total Sessions**: 68
-- **Last Active**: 2026-10-13
+- **Total Sessions**: 69
+- **Last Active**: 2026-10-14
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-2.md` | ~167 | Active |
+| `journal-2.md` | ~202 | Active |
 | `journal-1.md` | ~1987 | Archived |
 <!-- @@@/auto:active-documents -->
 
@@ -30,6 +30,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 69 | 2026-10-14 | 跨空间协作：编辑、交接确认与持久撤权 | `cc85172d98ad11a3e4e123f379639431f8df0f08` | `codex/cross-workspace-collaboration` |
 | 68 | 2026-10-13 | Complete v0.6.6 offline delivery | `f90c3fe13` | `codex/cross-workspace-collaboration` |
 | 67 | 2026-10-13 | 内网静态下载页与首次安装指导 | `35cc68ca2` | `codex/cross-workspace-collaboration` |
 | 66 | 2026-10-12 | MCP agent category filters | `6642de425` | `codex/cross-workspace-collaboration` |
