@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"sort"
 	"strings"
 	"time"
@@ -59,6 +60,7 @@ var (
 	ErrSourceContextInvalid          = errors.New("source context invalid comment thread")
 	ErrSourceContextTooLarge         = errors.New("source context too large")
 	ErrSourceContextRetryUnavailable = errors.New("source context retry unavailable")
+	ErrSourceContextCollaboration    = errors.New("collaboration issues cannot be captured as source context")
 )
 
 func validateSourceContextAgentBytes(snapshotBytes int, prompt string) error {
@@ -265,6 +267,17 @@ func BuildSourceIssueSnapshot(ctx context.Context, q *db.Queries, workspaceID, i
 	}
 	if err != nil {
 		return SourceContextIssueSnapshot{}, nil, fmt.Errorf("load source issue: %w", err)
+	}
+	// R56 applies to this resolved source, including direct service callers.
+	// Check before assembling any body, attachment or thread projection. An
+	// ordinary child may still capture its own content; its parent is not the
+	// source. Collaboration creation is atomic and ordinary conversion is absent.
+	shared, err := q.IsCollaborationIssue(ctx, issue.ID)
+	if err != nil {
+		return SourceContextIssueSnapshot{}, nil, collaborationError(http.StatusServiceUnavailable, "collaboration_unavailable")
+	}
+	if shared {
+		return SourceContextIssueSnapshot{}, nil, ErrSourceContextCollaboration
 	}
 	workspace, err := q.GetWorkspace(ctx, workspaceID)
 	if err != nil {

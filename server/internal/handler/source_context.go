@@ -845,6 +845,15 @@ func (h *Handler) createAgentCommentSubIssue(w http.ResponseWriter, r *http.Requ
 }
 
 func (h *Handler) writeSourceContextError(w http.ResponseWriter, err error, limits service.SourceContextLimitUsage) {
+	if errors.Is(err, service.ErrSourceContextCollaboration) {
+		writeUnsupportedCollaborationAction(w)
+		return
+	}
+	var collaborationErr *service.CollaborationError
+	if errors.As(err, &collaborationErr) {
+		writeCollaborationError(w, err)
+		return
+	}
 	if writeIssueAdmissionError(w, err) {
 		return
 	}

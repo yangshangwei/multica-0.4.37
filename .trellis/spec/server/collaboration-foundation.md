@@ -27,9 +27,20 @@ are not proven by the foundation tests.
 - `ListWorkbench(ctx, CollaborationWorkbenchQuery)` keeps current responsibility
   and active participation separate. Its page and count use the same authorized
   database snapshot, including when the viewer has no workspace membership.
-- `EditIssue(ctx, CollaborationEditParams)` edits title/body/calendar dates using
-  the shared workflow owner; `PATCH /api/collaboration/issues/{id}` accepts either
+- `EditIssue(ctx, CollaborationEditParams)` edits title/body/calendar dates,
+  priority, the label set and custom-property values using the shared workflow
+  owner; `PATCH /api/collaboration/issues/{id}` accepts either
   metadata or the existing status operation, never both in one request.
+- `FieldOptions(ctx, issueID)` serves `GET .../issues/{id}/field-options` to a
+  current creator/handler. `IssueFields(ctx, access)` projects selected labels,
+  values and only their referenced definitions for an authorized detail read.
+- `ResolveRecipient(ctx, CollaborationRecipientQuery)` serves
+  `POST /api/collaboration/recipients/resolve`. It identifies one account in an
+  explicit authorized issue or creation context; it never enrolls or transfers.
+- `collaborationRecipientEligible(ctx, q, target, source)` borrows a writer's
+  queries after its sorted user locks; resolution alone never authorizes a write.
+- `BuildSourceIssueSnapshot(ctx, q, workspaceID, issueID)` rejects a resolved
+  collaboration source before projecting body, attachments or comment threads.
 - `StatusOptions(ctx, issueID, action)` projects lifecycle/manual status choices
   and the prescribed target for `request_information`, `return_information`, or
   `submit_acceptance`. Directed writes carry `expected_status` and
@@ -186,6 +197,25 @@ never changes session execution. Removal returns a removed handler to creator;
 creator cannot leave, and a handler must transfer before leaving. Re-enrollment
 advances the revoked participant epoch and never revives old commands/grants.
 
+Creation, invitation and directed responsibility changes recheck recipient
+eligibility under the same user locks used by password setup/recovery/change.
+Known UUIDs cannot bypass disabled, setup-only or password-restricted account
+checks. Creation refuses an unavailable handler with `account_unavailable`;
+workflow writes persist `target_unavailable` or `return_target_unavailable`.
+Lookup failure rolls the write back; a completed original key still recovers its
+receipt after the target becomes restricted. Enrollment eligibility does not
+change existing notification recipients. Password-mode route fixtures must give
+human control targets completed credentials as well as the authenticated actor.
+
+R56 capture denial lives in `BuildSourceIssueSnapshot`, before body, attachment
+or thread assembly, and therefore covers preview, manual/agent creation and
+direct service writers. A resolved collaboration source returns
+`ErrSourceContextCollaboration`, mapped to `unsupported_collaboration_action`;
+relation lookup failure returns 503 `collaboration_unavailable` before copying
+or scheduling. An ordinary child of a collaboration issue may still capture its
+own ordinary content: check the resolved source, not its parent. Entry hiding
+and complete controlled-comment UI remain separate work.
+
 Workflow HTTP input carries Idempotency-Key and four positive int64 strings:
 expected_collaboration_revision/lifecycle_epoch/participant_epoch/account_epoch
 (each epoch key has the expected_ prefix). Detail write_context contains the
@@ -236,6 +266,60 @@ unknown display values, never automatic clear instructions. Both metadata and
 status PATCH use one strict JSON decoder; explicit null fields count when
 rejecting a mixed operation.
 
+R42 adds `priority`, `label_ids` and `properties` to this metadata operation.
+Missing or outer-null fields preserve their current value. `label_ids: []`
+replaces the selected set with no labels. A `properties` object patches only its
+UUID keys; a null value removes that key, including an archived definition's
+value. An empty object is a no-op. Label UUIDs normalize and deduplicate; two
+property keys that normalize to the same UUID are rejected. All definitions and
+labels must belong to the source workspace and issue resource type.
+
+The ordinary and collaboration paths share `util.ValidateIssuePropertyValue`
+and its actor-reference helpers. The collaboration boundary maps validation
+errors to fixed codes, because ordinary diagnostics include private values or
+option hints. It retains the 16 KiB properties budget and uses PostgreSQL JSONB
+equality for no-op detection; `1` versus `1.0` must not manufacture history.
+Archived fields reject new values but permit clearing and retain old read
+references. Value/label writes, revision, history, I1 facts and the original
+operation receipt commit together; they do not change explicit command input.
+
+The workflow's I1 source fence already serializes label writers. Property
+writers intersect the ordinary `prop:<UUID>` advisory locks using sorted
+try-locks, then source-scoped definition/member `FOR SHARE NOWAIT` locks. A busy
+intersection rolls back and retries the whole existing workflow; never block
+on a property writer while retaining an opposing issue lock. Optional new
+fields are omitted from the internal digest when absent so pre-R42 successful
+metadata requests can still recover their original receipt.
+
+Field options return issue/source IDs, an exact collaboration revision, minimal
+issue labels and active property definitions (`id/name/type/icon/config/archived`).
+They do not return member directories, usage counts or configuration management
+rights. Detail returns `labels`, `properties` and exactly the referenced
+`property_definitions`, including archived definitions. Authorization, issue
+values, revision and these field projections use one repeatable-read snapshot.
+Core treats missing newer fields as unknown, not empty/clear instructions, and
+rejects malformed present definitions or values instead of defaulting them away.
+
+Recipient input is `{kind, value, issue_id? , source_workspace_id?}` with kind
+`username|email|user_id`. Exactly one context field must be present with a UUID;
+explicit null, duplicate keys and unknown fields are invalid. Username/email
+normalization follows authentication, including historical whitespace. Query
+matching is exact, bounded to two rows to detect ambiguity, and never a global
+directory or name search. Context authority is checked before and after the
+lookup. An existing issue requires current invite/transfer authority; a creation
+context requires source membership and an open creation gate before candidate
+lookup. Closed creation does not disable lookup for existing authorized issues.
+
+The recipient response is `{issue_id, source_workspace_id, recipient}`; the
+summary includes only `user_id/name/avatar_url/external`. Creation uses a null
+issue ID. Lookup does not allocate fences, operations, participants or grants.
+The handler uses the existing bounded password limiter with separate hashed
+actor/IP namespaces (20/60 lookups per minute), never a searched email as a key.
+Limiter/backend failures return unavailable; throttling includes `Retry-After`.
+Core uses the private collaboration transport and validates the requested
+context, plus the exact target UUID for user-ID searches. Confirmation remains
+a read: subsequent mutation must revalidate its target under its own locks.
+
 The shared stopRun helper distinguishes a cancellation intent from its final
 disposition: only proven never-launched work can be cancelled; any possibly live
 run is stopped. Existing forced roots remain unchanged. This matters for
@@ -271,6 +355,16 @@ participant removal racing a launch permit, even without a started report.
 | Acceptance submitted by the creator-handler | 409 already_creator |
 | PATCH mixes metadata and status, including explicit null | 400 invalid_request; no writes |
 | Active creator/handler edits content/dates without source membership | Allowed after current role/version checks |
+| Priority, label or property IDs/values invalid | 400 fixed field error; no partial edit |
+| New value for an archived property | 400 property_archived; clearing remains allowed |
+| Complete property bag exceeds 16 KiB | 400 properties_too_large; all fields roll back |
+| Readable nonmanager requests field options or resolves a recipient | 403 forbidden |
+| Recipient context absent, null or mixed | 400 invalid_recipient_context |
+| Recipient JSON has duplicate/unknown fields | 400 invalid_recipient_query |
+| Exact recipient has no eligible match | 404 recipient_not_found |
+| Multiple normalized historical accounts match | 409 recipient_ambiguous |
+| Recipient lookup budget exhausted | 429 rate_limited with Retry-After |
+| Limiter or lookup backend unavailable | 503 collaboration_unavailable |
 | Older invalidation encounters freshly authorized work | Preserve work at or above the intent epoch |
 | One account's source cannot be reconciled | Retain cursor, report failure, process other accounts within the bound |
 
@@ -284,6 +378,15 @@ participant removal racing a launch permit, even without a started report.
   stop for the old run while retaining a fresh command and its unknown barrier.
 - Good: a status name changes without changing its key; the directed handoff
   refuses the displayed old digest and requires a new explicit request.
+- Good: an external current handler edits a source label/property through the
+  issue route while ordinary workspace configuration remains inaccessible.
+- Good: a recipient was resolved while the user could invite, but a role change
+  during the lookup suppresses the result; the lookup writes no participants.
+- Good: password recovery takes the target user lock first; a waiting transfer
+  rechecks eligibility and refuses without changing responsibility.
+- Base: an ordinary child of a collaboration issue captures its own content.
+- Bad: passing a known UUID or a prebuilt source capture to bypass current
+  recipient eligibility or the collaboration source boundary.
 - Bad: treating a creator's source departure as participant revocation, calling
   ordinary rerun to resume a shared queue, or equating PGID disappearance with
   proof that detached descendants ended.
@@ -332,6 +435,25 @@ participant removal racing a launch permit, even without a started report.
   required-write rollback, exact versions and untouched explicit AI input.
   `cmd/server/collaboration_edit_routes_test.go` verifies the shared PATCH route;
   core edit schema/API tests cover malformed/private/stale-session responses.
+- `internal/service/collaboration_fields_test.go` and the handler counterpart:
+  source-definition contention, property types/clears/archived references,
+  full-write rollback, JSONB no-ops, pre-R42 receipt recovery and a deterministic
+  detail snapshot race. Ordinary property tests must pass after validator reuse.
+  Core `fields-schema.test.ts`/`collaboration-fields.test.ts` cover malformed
+  present definitions, older absent fields, scope matching and private logging.
+- `internal/service/collaboration_recipients_test.go` and the handler counterpart:
+  exact normalization, historical ambiguity, current role/source/gate checks,
+  restricted candidates, zero lookup side effects and closed limiter failures.
+  Core recipient tests must reject a valid-shaped reply for a different target
+  UUID or context. The existing authenticated edit/legacy-agent route tests
+  exercise both new endpoints without borrowing source workspace membership.
+- `internal/service/collaboration_recipient_eligibility_test.go`: known UUID
+  writes versus actual password recovery, setup-only targets, required-query
+  rollback, original-key recovery and unchanged notification recipients.
+- `internal/service/source_context_collaboration_test.go` and handler counterpart:
+  preview, both creation modes and prebuilt capture reject before projection,
+  attachment copy or agent lookup; relation failures fail closed. An ordinary
+  child and workspace-scoped ordinary capture remain valid controls.
 - `internal/service/collaboration_account_reconciliation_test.go`: actual
   disable/restore writer, old/fresh epochs, multiple consumers, bounded cursor
   restart, held/missing-source fairness, unknown commit and required-write
@@ -368,3 +490,16 @@ private ordering or HTTP error logs untouched.
 
 Correct: apply machine reference projection before matching/counting and protect
 both schema and transport logs; test with private-only sentinel text.
+
+Wrong: fetch source workspace directories for an external editor, interpret
+missing field data as an empty patch, or use a lookup result as write authority.
+
+Correct: request issue-scoped options, preserve omitted values and the original
+request identity, and revalidate current actor/target/definitions in the write.
+
+Wrong: use the resolver's candidate as lasting authority, or reject capture only
+in the HTTP preview after a service has projected private source content.
+
+Correct: recheck the recipient inside the writer's locked transaction; reject
+the resolved source inside `BuildSourceIssueSnapshot` before projection, and map
+the bounded error consistently at every HTTP caller.
