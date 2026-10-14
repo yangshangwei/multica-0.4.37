@@ -145,7 +145,11 @@ func (s *CollaborationService) RequestInformation(ctx context.Context, p Collabo
 		if p.TargetUserID == t.actor || p.TargetUserID == t.handler() {
 			return t.result("invalid_information_target", http.StatusConflict), nil
 		}
-		if !t.validTarget(p.TargetUserID) {
+		eligible, err := t.eligibleRecipient(ctx, p.TargetUserID)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if !eligible {
 			return t.result("target_unavailable", http.StatusConflict), nil
 		}
 		if refusal, err := t.validateStatus(ctx, "request_information", p.ExpectedStatus, p.StatusOptionsVersion); refusal != nil || err != nil {
@@ -207,7 +211,14 @@ func (s *CollaborationService) ReturnInformation(ctx context.Context, p Collabor
 		}
 		// A departed or disabled requester is not re-invited; someone with
 		// transfer authority chooses an ordinary transfer instead.
-		if !requester.Valid || !participant || !t.validTarget(requester) {
+		if !requester.Valid || !participant {
+			return t.result("return_target_unavailable", http.StatusConflict), nil
+		}
+		eligible, err := t.eligibleRecipient(ctx, requester)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if !eligible {
 			return t.result("return_target_unavailable", http.StatusConflict), nil
 		}
 		if refusal, err := t.validateStatus(ctx, "return_information", p.ExpectedStatus, p.StatusOptionsVersion); refusal != nil || err != nil {
@@ -266,7 +277,14 @@ func (s *CollaborationService) SubmitAcceptance(ctx context.Context, p Collabora
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
-		if !participant || !t.validTarget(creator) {
+		if !participant {
+			return t.result("target_unavailable", http.StatusConflict), nil
+		}
+		eligible, err := t.eligibleRecipient(ctx, creator)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if !eligible {
 			return t.result("target_unavailable", http.StatusConflict), nil
 		}
 		if refusal, err := t.validateStatus(ctx, "submit_acceptance", p.ExpectedStatus, p.StatusOptionsVersion); refusal != nil || err != nil {

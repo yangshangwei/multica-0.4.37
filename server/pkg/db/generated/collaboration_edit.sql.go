@@ -25,13 +25,60 @@ func (q *Queries) AdvanceCollaborationEditRevision(ctx context.Context, issueID 
 	return revision, err
 }
 
+const clearCollaborationIssueLabels = `-- name: ClearCollaborationIssueLabels :exec
+DELETE FROM issue_to_label il
+USING issue i, issue_collaboration c
+WHERE il.issue_id = i.id AND c.issue_id = i.id
+  AND i.id = $1::uuid
+  AND i.workspace_id = $2::uuid
+`
+
+type ClearCollaborationIssueLabelsParams struct {
+	IssueID     pgtype.UUID `json:"issue_id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Metadata replaces the complete label set under the source I1 and issue
+// fences. The issue revision is advanced once by UpdateCollaborationIssueFields.
+func (q *Queries) ClearCollaborationIssueLabels(ctx context.Context, arg ClearCollaborationIssueLabelsParams) error {
+	_, err := q.db.Exec(ctx, clearCollaborationIssueLabels, arg.IssueID, arg.WorkspaceID)
+	return err
+}
+
+const insertCollaborationIssueLabels = `-- name: InsertCollaborationIssueLabels :execrows
+INSERT INTO issue_to_label (issue_id, label_id)
+SELECT i.id, l.id
+FROM issue i
+JOIN issue_collaboration c ON c.issue_id = i.id
+JOIN issue_label l ON l.workspace_id = i.workspace_id AND l.resource_type = 'issue'
+WHERE i.id = $1::uuid
+  AND i.workspace_id = $2::uuid
+  AND l.id = ANY($3::uuid[])
+`
+
+type InsertCollaborationIssueLabelsParams struct {
+	IssueID     pgtype.UUID   `json:"issue_id"`
+	WorkspaceID pgtype.UUID   `json:"workspace_id"`
+	LabelIds    []pgtype.UUID `json:"label_ids"`
+}
+
+func (q *Queries) InsertCollaborationIssueLabels(ctx context.Context, arg InsertCollaborationIssueLabelsParams) (int64, error) {
+	result, err := q.db.Exec(ctx, insertCollaborationIssueLabels, arg.IssueID, arg.WorkspaceID, arg.LabelIds)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected(), nil
+}
+
 const updateCollaborationIssueFields = `-- name: UpdateCollaborationIssueFields :one
 UPDATE issue SET title = $1::text,
     description = $2::text,
     start_date = $3::date,
     due_date = $4::date,
+    priority = $5::text,
+    properties = $6::jsonb,
     revision = revision + 1, updated_at = clock_timestamp()
-WHERE id = $5::uuid AND workspace_id = $6::uuid
+WHERE id = $7::uuid AND workspace_id = $8::uuid
   AND EXISTS (SELECT 1 FROM issue_collaboration c WHERE c.issue_id = issue.id)
 RETURNING id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count
 `
@@ -41,6 +88,8 @@ type UpdateCollaborationIssueFieldsParams struct {
 	Description pgtype.Text `json:"description"`
 	StartDate   pgtype.Date `json:"start_date"`
 	DueDate     pgtype.Date `json:"due_date"`
+	Priority    string      `json:"priority"`
+	Properties  []byte      `json:"properties"`
 	IssueID     pgtype.UUID `json:"issue_id"`
 	WorkspaceID pgtype.UUID `json:"workspace_id"`
 }
@@ -54,6 +103,8 @@ func (q *Queries) UpdateCollaborationIssueFields(ctx context.Context, arg Update
 		arg.Description,
 		arg.StartDate,
 		arg.DueDate,
+		arg.Priority,
+		arg.Properties,
 		arg.IssueID,
 		arg.WorkspaceID,
 	)

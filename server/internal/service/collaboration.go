@@ -217,6 +217,13 @@ func (s *CollaborationService) CreateInTx(ctx context.Context, tx pgx.Tx, p Coll
 		}
 		return empty, err
 	}
+	eligible, err := collaborationRecipientEligible(ctx, q, p.HandlerID, p.SourceWorkspaceID)
+	if err != nil {
+		return empty, err
+	}
+	if !eligible {
+		return empty, collaborationError(http.StatusForbidden, "account_unavailable")
+	}
 	op, err := q.CreateCollaborationOperation(ctx, db.CreateCollaborationOperationParams{ScopeKind: "create", ScopeID: p.SourceWorkspaceID, ActorUserID: actorID, RequestID: p.RequestID, Kind: "create", PayloadHash: payloadHash})
 	if err != nil {
 		return empty, err

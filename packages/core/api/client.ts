@@ -2,9 +2,9 @@ import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, I
 import { z } from "zod";
 import { PersonalAccessTokenListSchema, CreatePersonalAccessTokenResponseSchema } from "./personal-access-token-schemas";
 import {
-  parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions,
+  parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions, parseCollaborationRecipient, parseCollaborationFieldOptions,
   type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
-  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput,
+  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput, type CollaborationRecipientInput,
   type CollaborationStatusAction, type CollaborationLifecycleAction, type CollaborationStatusInput, type CollaborationLifecycleInput,
 } from "../collaboration/schema";
 import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
@@ -909,6 +909,26 @@ export class ApiClient {
     return issue && sameResourceIdentity(issue.source_workspace.id, sourceWorkspaceId) ? issue : null;
   }
 
+  async resolveCollaborationRecipient(input: CollaborationRecipientInput, options?: { signal?: AbortSignal }) {
+    const { issueId, sourceWorkspaceId, kind, value } = input;
+    if (!((typeof issueId === "string" && sourceWorkspaceId === undefined) ||
+      (typeof sourceWorkspaceId === "string" && issueId === undefined))) {
+      throw new TypeError("Recipient lookup requires exactly one context");
+    }
+    const raw = await this.fetchCollaboration("/api/collaboration/recipients/resolve", {
+      method: "POST",
+      signal: options?.signal,
+      body: JSON.stringify({ kind, value, issue_id: issueId, source_workspace_id: sourceWorkspaceId }),
+    });
+    const result = parseCollaborationRecipient(raw);
+    if (!result) return null;
+    if (kind === "user_id" && !sameResourceIdentity(result.recipient.user_id, value.trim())) return null;
+    const matchesScope = issueId !== undefined
+      ? result.issue_id !== null && sameResourceIdentity(result.issue_id, issueId)
+      : sourceWorkspaceId !== undefined && result.issue_id === null && sameResourceIdentity(result.source_workspace_id, sourceWorkspaceId);
+    return matchesScope ? result : null;
+  }
+
   async getCollaborationWorkbench(params: { view?: "current" | "participating"; cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
     const query = new URLSearchParams({ view: params.view ?? "current" });
     if (params.limit !== undefined) query.set("limit", String(params.limit));
@@ -924,6 +944,7 @@ export class ApiClient {
       target_user_id?: string; purpose?: string; note?: string; information_request_id?: string; expected_status?: string;
       action?: CollaborationLifecycleAction; status?: string; status_options_version?: string;
       title?: string; description?: string; start_date?: string | null; due_date?: string | null;
+      priority?: CollaborationEditInput["priority"]; label_ids?: CollaborationEditInput["labelIds"]; properties?: CollaborationEditInput["properties"];
     },
     options?: { signal?: AbortSignal },
     method: "POST" | "PATCH" = "POST",
@@ -1000,6 +1021,12 @@ export class ApiClient {
     return statusOptions?.action === action ? statusOptions : null;
   }
 
+  async getCollaborationFieldOptions(id: string, options?: { signal?: AbortSignal }) {
+    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/field-options`, { signal: options?.signal });
+    const fieldOptions = parseCollaborationFieldOptions(raw);
+    return fieldOptions && sameResourceIdentity(fieldOptions.issue_id, id) ? fieldOptions : null;
+  }
+
   async changeCollaborationStatus(id: string, input: CollaborationStatusInput, options?: { signal?: AbortSignal }) {
     return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}`, input, {
       status: input.status,
@@ -1013,6 +1040,9 @@ export class ApiClient {
       description: input.description,
       start_date: input.startDate,
       due_date: input.dueDate,
+      priority: input.priority,
+      label_ids: input.labelIds,
+      properties: input.properties,
     }, options, "PATCH");
   }
 

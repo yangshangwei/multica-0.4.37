@@ -14,6 +14,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"github.com/multica-ai/multica/server/internal/util"
 
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -343,20 +344,20 @@ func TestIssuePropertyValues(t *testing.T) {
 
 func TestValidatePropertyValueUnit(t *testing.T) {
 	textDef := makePropertyDef("text", nil)
-	if _, err := validatePropertyValue(textDef, json.RawMessage(`"  "`)); err == nil {
+	if _, err := util.ValidateIssuePropertyValue(textDef, json.RawMessage(`"  "`)); err == nil {
 		t.Fatalf("blank text accepted")
 	}
-	if _, err := validatePropertyValue(textDef, json.RawMessage(`"`+strings.Repeat("x", 2001)+`"`)); err == nil {
+	if _, err := util.ValidateIssuePropertyValue(textDef, json.RawMessage(`"`+strings.Repeat("x", 2001)+`"`)); err == nil {
 		t.Fatalf("overlong text accepted")
 	}
-	if _, err := validatePropertyValue(textDef, json.RawMessage(`null`)); err == nil {
+	if _, err := util.ValidateIssuePropertyValue(textDef, json.RawMessage(`null`)); err == nil {
 		t.Fatalf("null accepted")
 	}
 	boolDef := makePropertyDef("checkbox", nil)
-	if _, err := validatePropertyValue(boolDef, json.RawMessage(`"true"`)); err == nil {
+	if _, err := util.ValidateIssuePropertyValue(boolDef, json.RawMessage(`"true"`)); err == nil {
 		t.Fatalf("string into checkbox accepted")
 	}
-	if _, err := validatePropertyValue(boolDef, json.RawMessage(`false`)); err != nil {
+	if _, err := util.ValidateIssuePropertyValue(boolDef, json.RawMessage(`false`)); err != nil {
 		t.Fatalf("false rejected: %v", err)
 	}
 }
@@ -771,7 +772,7 @@ func decodePropertiesBag(t *testing.T, w *httptest.ResponseRecorder) map[string]
 
 func TestParseActorRefUnit(t *testing.T) {
 	memberID := uuid.NewString()
-	ref, err := parseActorRef("member:" + memberID)
+	ref, err := util.ParseIssuePropertyActorRef("member:" + memberID)
 	if err != nil {
 		t.Fatalf("member reference rejected: %v", err)
 	}
@@ -793,7 +794,7 @@ func TestParseActorRefUnit(t *testing.T) {
 		"urn:uuid:" + canonical,
 		strings.ReplaceAll(canonical, "-", ""),
 	} {
-		got, err := parseActorRef("member:" + variant)
+		got, err := util.ParseIssuePropertyActorRef("member:" + variant)
 		if err != nil {
 			t.Fatalf("uuid variant %q rejected: %v", variant, err)
 		}
@@ -821,7 +822,7 @@ func TestParseActorRefUnit(t *testing.T) {
 		{"nested kind", "member:agent:" + uuid.NewString(), "must be a UUID"},
 	}
 	for _, tc := range cases {
-		_, err := parseActorRef(tc.value)
+		_, err := util.ParseIssuePropertyActorRef(tc.value)
 		if err == nil || !strings.Contains(err.Error(), tc.want) {
 			t.Fatalf("%s: expected error containing %q, got %v", tc.name, tc.want, err)
 		}
@@ -838,14 +839,14 @@ func TestParseActorRefListUnit(t *testing.T) {
 	second := "member:22222222-2222-4222-8222-222222222222"
 	third := "member:00000000-0000-4000-8000-000000000000"
 
-	if _, err := parseActorRefList(nil); err == nil {
+	if _, err := util.ParseIssuePropertyActorRefList(nil); err == nil {
 		t.Fatalf("nil list accepted")
 	}
-	if _, err := parseActorRefList([]any{}); err == nil {
+	if _, err := util.ParseIssuePropertyActorRefList([]any{}); err == nil {
 		t.Fatalf("empty array accepted")
 	}
 
-	refs, err := parseActorRefList([]any{first, second, third, second})
+	refs, err := util.ParseIssuePropertyActorRefList([]any{first, second, third, second})
 	if err != nil {
 		t.Fatalf("valid list rejected: %v", err)
 	}
@@ -868,18 +869,18 @@ func TestParseActorRefListUnit(t *testing.T) {
 	for i := 0; i < maxPropertyActorValues+1; i++ {
 		over = append(over, "member:"+uuid.NewString())
 	}
-	_, err = parseActorRefList(over)
+	_, err = util.ParseIssuePropertyActorRefList(over)
 	if err == nil || !strings.Contains(err.Error(), fmt.Sprintf("more than %d", maxPropertyActorValues)) {
 		t.Fatalf("over-cap list: expected cap error, got %v", err)
 	}
-	if refs, err := parseActorRefList(over[:maxPropertyActorValues]); err != nil || len(refs) != maxPropertyActorValues {
+	if refs, err := util.ParseIssuePropertyActorRefList(over[:maxPropertyActorValues]); err != nil || len(refs) != maxPropertyActorValues {
 		t.Fatalf("list at the cap rejected: %d refs, %v", len(refs), err)
 	}
 
-	if _, err := parseActorRefList([]any{first, 42}); err == nil {
+	if _, err := util.ParseIssuePropertyActorRefList([]any{first, 42}); err == nil {
 		t.Fatalf("non-string element accepted")
 	}
-	if _, err := parseActorRefList([]any{first, "squad:" + uuid.NewString()}); err == nil {
+	if _, err := util.ParseIssuePropertyActorRefList([]any{first, "squad:" + uuid.NewString()}); err == nil {
 		t.Fatalf("unknown kind inside a list accepted")
 	}
 }
@@ -892,7 +893,7 @@ func TestValidatePropertyValueActorUnit(t *testing.T) {
 	memberRef := "member:99999999-9999-4999-8999-999999999999"
 	secondRef := "member:00000000-0000-4000-8000-000000000000"
 
-	stored, err := validatePropertyValue(actorDef, json.RawMessage(`"`+memberRef+`"`))
+	stored, err := util.ValidateIssuePropertyValue(actorDef, json.RawMessage(`"`+memberRef+`"`))
 	if err != nil {
 		t.Fatalf("actor value rejected: %v", err)
 	}
@@ -911,7 +912,7 @@ func TestValidatePropertyValueActorUnit(t *testing.T) {
 		`"agent:` + uuid.NewString() + `"`,
 		`"squad:` + uuid.NewString() + `"`,
 	} {
-		if _, err := validatePropertyValue(actorDef, json.RawMessage(raw)); err == nil {
+		if _, err := util.ValidateIssuePropertyValue(actorDef, json.RawMessage(raw)); err == nil {
 			t.Fatalf("actor accepted %s", raw)
 		}
 	}
@@ -924,13 +925,13 @@ func TestValidatePropertyValueActorUnit(t *testing.T) {
 		`[3]`,
 		`null`,
 	} {
-		if _, err := validatePropertyValue(multiDef, json.RawMessage(raw)); err == nil {
+		if _, err := util.ValidateIssuePropertyValue(multiDef, json.RawMessage(raw)); err == nil {
 			t.Fatalf("multi_actor accepted %s", raw)
 		}
 	}
 
 	// Duplicates collapse and the caller's order survives.
-	stored, err = validatePropertyValue(multiDef, json.RawMessage(
+	stored, err = util.ValidateIssuePropertyValue(multiDef, json.RawMessage(
 		`["`+memberRef+`","`+secondRef+`","`+memberRef+`"]`))
 	if err != nil {
 		t.Fatalf("multi_actor value rejected: %v", err)

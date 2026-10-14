@@ -22,7 +22,7 @@ import (
 func editString(value string) *string { return &value }
 
 func editParams(f *collaborationQueueFixture, revision int64) CollaborationEditParams {
-	return CollaborationEditParams{CollaborationWorkflowRequest: workflowRequest(f, revision), Title: editString("Edited title")}
+	return CollaborationEditParams{CollaborationWorkflowRequest: workflowRequest(f, revision), Title: editString("Edited title"), Priority: editString("urgent")}
 }
 
 func TestCollaborationEditRecordsCurrentActorAndImmutableExecution(t *testing.T) {
@@ -47,6 +47,9 @@ func TestCollaborationEditRecordsCurrentActorAndImmutableExecution(t *testing.T)
 			f.fx.Exec(t, `UPDATE issue_collaboration SET active_information_request_id=$2 WHERE issue_id=$1`, f.issue.Issue.ID, requestID)
 			notifications := f.fx.Count(t, `SELECT count(*) FROM collaboration_notification WHERE issue_id=$1`, f.issue.Issue.ID)
 			p := editParams(f, 1)
+			label, property := fieldLabel(t, f), fieldProperty(t, f, "checkbox")
+			p.LabelIDs = fieldLabelIDs(label)
+			p.Properties = map[string]json.RawMessage{property: json.RawMessage(`true`)}
 			p.Title, p.Description = editString("Edited\x00 title"), editString("New body\x00 with @AI")
 			p.SetStartDate, p.SetDueDate = true, true
 			p.StartDate, p.DueDate = editString(""), editString("2026-10-31T00:00:00Z")
@@ -56,7 +59,7 @@ func TestCollaborationEditRecordsCurrentActorAndImmutableExecution(t *testing.T)
 				t.Fatalf("authorized edit: %+v %v", r, err)
 			}
 			access, err := f.svc.ResolveIssueAccess(f.ctx, nil, f.issue.Issue.ID)
-			if err != nil || access.Issue.Title != "Edited title" || access.Issue.Description.String != "New body with @AI" || access.Issue.StartDate.Valid ||
+			if err != nil || access.Issue.Title != "Edited title" || access.Issue.Priority != "urgent" || access.Issue.Description.String != "New body with @AI" || access.Issue.StartDate.Valid ||
 				!access.Issue.DueDate.Valid || access.Issue.DueDate.Time.Format(time.DateOnly) != "2026-10-31" || access.Issue.Revision != f.issue.Issue.Revision+1 {
 				t.Fatalf("wrong persisted edit: %+v %v", access.Issue, err)
 			}
@@ -138,11 +141,16 @@ func TestCollaborationEditRejectsNonEditors(t *testing.T) {
 				kind = "unknown"
 			}
 			ctx := auth.WithAuthenticatedPrincipal(context.Background(), auth.AuthenticatedPrincipal{UserID: actor, Kind: kind, Restricted: role == "restricted", AgentActor: role == "agent_actor"})
-			_, err := f.svc.EditIssue(ctx, editParams(f, 1))
+			p := editParams(f, 1)
+			label, property := fieldLabel(t, f), fieldProperty(t, f, "checkbox")
+			p.LabelIDs = fieldLabelIDs(label)
+			p.Properties = map[string]json.RawMessage{property: json.RawMessage(`true`)}
+			_, err := f.svc.EditIssue(ctx, p)
 			if !collaborationErrorCode(err, want) {
 				t.Fatalf("%s edit: %v", role, err)
 			}
-			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND title=$2 AND description=$3`, f.issue.Issue.ID, f.issue.Issue.Title, f.issue.Issue.Description.String) != 1 ||
+			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND title=$2 AND description=$3 AND priority=$4 AND properties='{}'::jsonb`, f.issue.Issue.ID, f.issue.Issue.Title, f.issue.Issue.Description.String, f.issue.Issue.Priority) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM issue_to_label WHERE issue_id=$1`, f.issue.Issue.ID) != 0 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='issue_edited'`, f.issue.Issue.ID) != 0 {
 				t.Fatal("unauthorized editor changed content or history")
 			}
@@ -403,10 +411,14 @@ func TestCollaborationEditRequiredWritesRollbackTogether(t *testing.T) {
 			f.fx.QueryRow(t, `SELECT event_seq FROM collaboration_session WHERE id=$1`, f.issue.SessionID).Scan(&eventSeq)
 			f.svc.TxStarter = workflowFaultStarter{TxStarter: f.pool, needle: needle}
 			p := editParams(f, 1)
+			property, label := fieldProperty(t, f, "checkbox"), fieldLabel(t, f)
+			p.LabelIDs = fieldLabelIDs(label)
+			p.Properties = map[string]json.RawMessage{property: json.RawMessage(`true`)}
 			if _, err := f.svc.EditIssue(f.ctx, p); err == nil {
 				t.Fatal("required edit write failure reported success")
 			}
-			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND title=$2 AND revision=$3`, f.issue.Issue.ID, f.issue.Issue.Title, f.issue.Issue.Revision) != 1 ||
+			if f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND title=$2 AND revision=$3 AND priority=$4 AND properties='{}'::jsonb`, f.issue.Issue.ID, f.issue.Issue.Title, f.issue.Issue.Revision, f.issue.Issue.Priority) != 1 ||
+				f.fx.Count(t, `SELECT count(*) FROM issue_to_label WHERE issue_id=$1`, f.issue.Issue.ID) != 0 ||
 				f.fx.Count(t, `SELECT count(*) FROM issue_collaboration WHERE issue_id=$1 AND revision=1`, f.issue.Issue.ID) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_session WHERE id=$1 AND event_seq=$2`, f.issue.SessionID, eventSeq) != 1 ||
 				f.fx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='issue_edited'`, f.issue.Issue.ID) != 0 ||
@@ -432,12 +444,15 @@ func TestCollaborationEditRecordsIterationTitleWithoutDateFacts(t *testing.T) {
 		t.Fatal("title edit lost the existing iteration recorder's actual actor and facts")
 	}
 	p = CollaborationEditParams{CollaborationWorkflowRequest: workflowRequest(f, 2), Description: editString("Content-only change"), SetDueDate: true, DueDate: editString("2026-11-01")}
+	property, label := fieldProperty(t, f, "checkbox"), fieldLabel(t, f)
+	p.Priority, p.LabelIDs = editString("low"), fieldLabelIDs(label)
+	p.Properties = map[string]json.RawMessage{property: json.RawMessage(`true`)}
 	if _, err := f.svc.EditIssue(collaborationContext(f.handler), p); err != nil {
 		t.Fatal(err)
 	}
 	if f.fx.Count(t, `SELECT count(*) FROM iteration_event WHERE iteration_id=$1`, iid) != 1 ||
 		f.fx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND current_iteration_id=$2 AND iteration_rollover_count=0`, f.issue.Issue.ID, iid) != 1 {
-		t.Fatal("description/date edits manufactured iteration activity or changed membership")
+		t.Fatal("content/date/field edits manufactured iteration activity or changed membership")
 	}
 }
 

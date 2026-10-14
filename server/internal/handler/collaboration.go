@@ -28,6 +28,7 @@ type CollaborationWriteContext struct {
 }
 
 type CollaborationIssueResponse struct {
+	service.CollaborationIssueFields
 	ID              string  `json:"id"`
 	Title           string  `json:"title"`
 	Description     string  `json:"description"`
@@ -89,6 +90,34 @@ func (h *Handler) collaborationAccountSummary(ctx context.Context, userID, works
 }
 
 func (h *Handler) collaborationIssueResponse(ctx context.Context, access service.CollaborationIssueAccess) (CollaborationIssueResponse, error) {
+	// Values, referenced definitions, role/version and source summaries must
+	// come from one snapshot; a concurrent edit must not splice them together.
+	tx, err := h.TxStarter.Begin(ctx)
+	if err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	defer tx.Rollback(ctx)
+	if _, err = tx.Exec(ctx, "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"); err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	scoped := *h
+	scoped.Queries, scoped.DB = h.Queries.WithTx(tx), tx
+	svc := service.NewCollaborationService(scoped.Queries, h.TxStarter, h.IssueService)
+	access, err = svc.ResolveIssueAccess(ctx, scoped.Queries, access.Issue.ID)
+	if err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	out, err := scoped.collaborationIssueResponseInSnapshot(ctx, access)
+	if err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	return out, nil
+}
+
+func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, access service.CollaborationIssueAccess) (CollaborationIssueResponse, error) {
 	var out CollaborationIssueResponse
 	i := access.Issue
 	if i.CreatorType != "member" || !i.AssigneeType.Valid || i.AssigneeType.String != "member" || !i.AssigneeID.Valid {
@@ -120,6 +149,10 @@ func (h *Handler) collaborationIssueResponse(ctx context.Context, access service
 	out.Session.ControlVersion = strconv.FormatInt(access.ControlVersion, 10)
 	out.Capabilities = access.Capabilities
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	out.CollaborationIssueFields, err = svc.IssueFields(ctx, access)
+	if err != nil {
+		return out, err
+	}
 	request, err := svc.InformationRequestView(ctx, access)
 	if err != nil || request == nil {
 		return out, err

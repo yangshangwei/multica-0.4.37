@@ -143,6 +143,13 @@ func TestCollaborationRoutesDenyLegacyAgentContext(t *testing.T) {
 			fx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": actor}, "user_id=$1", actor)
 			invited := fx.User(t, "Human invitation control", uuid.NewString()+"@example.invalid")
 			denied := fx.User(t, "Agent invitation target", uuid.NewString()+"@example.invalid")
+			if mode == "password" {
+				for _, target := range []string{invited, denied} {
+					fx.InsertNoID(t, "user_password_credential", testutil.Cols{
+						"user_id": target, "username": "recipient_" + uuid.NewString(), "password_hash": "unused-by-versioned-token-authentication",
+					}, "user_id=$1", target)
+				}
+			}
 			fx.Cleanup(t, `DELETE FROM collaboration_account_fence WHERE user_id=ANY($1::uuid[])`, []string{invited, denied})
 			for _, table := range []string{"issue_participant", "collaboration_event", "collaboration_notification"} {
 				fx.Cleanup(t, "DELETE FROM "+table+" WHERE issue_id=$1", issue)
@@ -182,6 +189,10 @@ func TestCollaborationRoutesDenyLegacyAgentContext(t *testing.T) {
 					}
 					call(t, credential.token, http.MethodGet, base+"/operations/"+key, "", nil, false).Want(http.StatusOK)
 					call(t, credential.token, http.MethodGet, base, "", nil, true).Want(http.StatusNotFound)
+					call(t, credential.token, http.MethodGet, base+"/field-options", "", nil, true).Want(http.StatusNotFound)
+					call(t, credential.token, http.MethodPost, "/api/collaboration/recipients/resolve", "", map[string]any{
+						"kind": "user_id", "value": invited, "issue_id": issue,
+					}, true).Want(http.StatusForbidden)
 					call(t, credential.token, http.MethodGet, "/api/me/workbench", "", nil, true).Want(http.StatusForbidden)
 					call(t, credential.token, http.MethodGet, base+"/operations/"+key, "", nil, true).Want(http.StatusNotFound)
 					call(t, credential.token, http.MethodPost, base+"/participants", uuid.NewString(), body("2", denied), true).Want(http.StatusForbidden)

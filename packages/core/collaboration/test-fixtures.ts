@@ -16,3 +16,15 @@ export const collaborationIssueFixture = {
   session: { id, queue_state: "paused", control_version: "9007199254740995" },
   capabilities,
 };
+
+export const collaborationFieldOptionsFixture = {
+  issue_id: id,
+  source_workspace_id: id,
+  collaboration_revision: collaborationIssueFixture.collaboration_revision,
+  labels: [{ id: "00000000-0000-4000-8000-000000000002", name: "Bug", color: "#112233" }],
+  properties: [{
+    id: "00000000-0000-4000-8000-000000000003",
+    name: "Impact", type: "select", icon: "", archived: false,
+    config: { options: [{ id: "option-one", name: "First", color: "#445566" }] },
+  }],
+};

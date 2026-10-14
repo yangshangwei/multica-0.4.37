@@ -70,6 +70,35 @@ func TestCollaborationEditHTTPExternalHandlerAndExactVersions(t *testing.T) {
 	}
 }
 
+func TestCollaborationEditHTTPSourceFields(t *testing.T) {
+	issue := collaborationEditFixture(t)
+	external := dbfx.User(t, "External field editor", "field-editor-"+uuid.NewString()+"@example.test")
+	dbfx.InsertNoID(t, "issue_participant", testutil.Cols{"issue_id": issue, "user_id": external}, "issue_id=$1 AND user_id=$2", issue, external)
+	dbfx.InsertNoID(t, "collaboration_account_fence", testutil.Cols{"user_id": external}, "user_id=$1", external)
+	dbfx.Exec(t, `UPDATE issue SET assignee_id=$2 WHERE id=$1`, issue, external)
+	label := dbfx.Insert(t, "issue_label", testutil.Cols{"workspace_id": testWorkspaceID, "resource_type": "issue", "name": "Collaboration " + uuid.NewString(), "color": "#123456"})
+	property := dbfx.Insert(t, "issue_property", testutil.Cols{"workspace_id": testWorkspaceID, "name": "Field " + uuid.NewString(), "type": "number"})
+	dbfx.Cleanup(t, `DELETE FROM issue_to_label WHERE issue_id=$1`, issue)
+	body := collaborationEditBodyValues()
+	body["priority"] = "urgent"
+	body["label_ids"] = []string{strings.ToUpper(label), label}
+	body["properties"] = map[string]any{strings.ToUpper(property): 42}
+	key := uuid.NewString()
+	out := testutil.Call(t, testHandler.UpdateCollaborationIssue, collaborationEditRequest(issue, external, key, body)).Want(http.StatusOK).Map()
+	if out["code"] != "issue_edited" || out["collaboration_revision"] != "2" || len(out) != 2 {
+		t.Fatalf("source field edit did not return the existing minimal receipt: %+v", out)
+	}
+	if dbfx.Count(t, `SELECT count(*) FROM issue WHERE id=$1 AND priority='urgent' AND properties=jsonb_build_object($2::text,42) AND revision=2`, issue, property) != 1 ||
+		dbfx.Count(t, `SELECT count(*) FROM issue_to_label WHERE issue_id=$1 AND label_id=$2`, issue, label) != 1 ||
+		dbfx.Count(t, `SELECT count(*) FROM member WHERE workspace_id=$1 AND user_id=$2`, testWorkspaceID, external) != 0 {
+		t.Fatal("source fields did not commit canonically or invented membership")
+	}
+	testutil.Call(t, testHandler.UpdateCollaborationIssue, collaborationEditRequest(issue, external, key, body)).Want(http.StatusOK)
+	if dbfx.Count(t, `SELECT count(*) FROM collaboration_event WHERE issue_id=$1 AND kind='issue_edited'`, issue) != 1 {
+		t.Fatal("field replay duplicated history")
+	}
+}
+
 func TestCollaborationEditHTTPPresenceAndClearing(t *testing.T) {
 	for _, tc := range []struct {
 		name               string
@@ -111,7 +140,7 @@ func TestCollaborationEditHTTPStrictFieldsAndVersions(t *testing.T) {
 		name, field string
 		value       any
 	}{
-		{"assignee", "assignee_id", nil}, {"project", "project_id", uuid.NewString()}, {"priority", "priority", "urgent"},
+		{"assignee", "assignee_id", nil}, {"project", "project_id", uuid.NewString()}, {"priority", "priority", "private-invalid-priority"},
 		{"properties", "properties", map[string]any{"custom": "x"}}, {"labels", "labels", []string{"x"}},
 		{"position", "position", 1}, {"iteration", "current_iteration_id", nil}, {"stage", "stage", 2},
 		{"title_object", "title", map[string]any{}}, {"description_array", "description", []string{}},
@@ -174,6 +203,9 @@ func TestCollaborationEditHTTPPreservesStatusPatchAndRejectsMixedIntent(t *testi
 		{"description": nil, "status": "in_progress", "status_options_version": options.StatusOptionsVersion},
 		{"start_date": nil, "status_options_version": options.StatusOptionsVersion},
 		{"due_date": "2026-10-31", "status": nil},
+		{"priority": nil, "status": "in_progress"},
+		{"label_ids": nil, "status_options_version": options.StatusOptionsVersion},
+		{"properties": nil, "status": nil},
 	} {
 		body := collaborationEditBodyValues()
 		for key, value := range fields {

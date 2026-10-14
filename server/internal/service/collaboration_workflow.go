@@ -72,7 +72,11 @@ func (t *collaborationWorkflowTx) result(code string, status int) CollaborationW
 
 func (s *CollaborationService) InviteParticipant(ctx context.Context, p CollaborationParticipantParams) (CollaborationWorkflowReceipt, error) {
 	return s.mutateCollaborationWorkflow(ctx, p.CollaborationWorkflowRequest, p.TargetUserID, "invite_participant", p, func(t *collaborationWorkflowTx) (CollaborationWorkflowReceipt, error) {
-		if !t.validTarget(p.TargetUserID) {
+		eligible, err := t.eligibleRecipient(ctx, p.TargetUserID)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if !eligible {
 			return t.result("target_unavailable", http.StatusConflict), nil
 		}
 		joined, err := t.enroll(ctx, p.TargetUserID)
@@ -94,7 +98,11 @@ func (s *CollaborationService) Transfer(ctx context.Context, p CollaborationTran
 		if !collaboration.NonterminalCategory(t.access.StatusCategory) {
 			return t.result("status_unavailable", http.StatusConflict), nil
 		}
-		if !t.validTarget(p.TargetUserID) {
+		eligible, err := t.eligibleRecipient(ctx, p.TargetUserID)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if !eligible {
 			return t.result("target_unavailable", http.StatusConflict), nil
 		}
 		if t.access.Issue.AssigneeID == p.TargetUserID {
@@ -134,6 +142,13 @@ func (s *CollaborationService) Leave(ctx context.Context, p CollaborationWorkflo
 func (t *collaborationWorkflowTx) validTarget(id pgtype.UUID) bool {
 	u, ok := t.users[id]
 	return ok && !u.DisabledAt.Valid && !auth.IsTemporarilyDisabledUser(util.UUIDToString(u.ID), u.Email.String)
+}
+
+func (t *collaborationWorkflowTx) eligibleRecipient(ctx context.Context, id pgtype.UUID) (bool, error) {
+	if !t.validTarget(id) {
+		return false, nil
+	}
+	return collaborationRecipientEligible(ctx, t.q, id, t.access.Issue.WorkspaceID)
 }
 
 func (t *collaborationWorkflowTx) enroll(ctx context.Context, target pgtype.UUID) (bool, error) {

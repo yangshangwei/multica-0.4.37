@@ -21,6 +21,11 @@ type CollaborationEditParams struct {
 	DueDate      *string
 	SetStartDate bool
 	SetDueDate   bool
+	// Omit absent new fields from the digest so pre-R42 metadata operations
+	// retain their original payload identity. A present empty label set clears.
+	Priority   *string                    `json:"Priority,omitempty"`
+	LabelIDs   *[]pgtype.UUID             `json:"LabelIDs,omitempty"`
+	Properties map[string]json.RawMessage `json:"Properties,omitempty"`
 }
 
 func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEditParams) (CollaborationWorkflowReceipt, error) {
@@ -61,7 +66,15 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 		}
 		startUnchanged := before.StartDate.Valid == after.StartDate.Valid && (!after.StartDate.Valid || before.StartDate.Time.Equal(after.StartDate.Time))
 		dueUnchanged := before.DueDate.Valid == after.DueDate.Valid && (!after.DueDate.Valid || before.DueDate.Time.Equal(after.DueDate.Time))
-		if before.Title == after.Title && before.Description == after.Description && startUnchanged && dueUnchanged {
+		fields, refusal, err := t.prepareFieldEdit(ctx, p, &after)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if refusal != "" {
+			return t.result(refusal, http.StatusBadRequest), nil
+		}
+		if before.Title == after.Title && before.Description == after.Description && startUnchanged && dueUnchanged &&
+			before.Priority == after.Priority && !fields.labelsChanged && !fields.propertiesChanged {
 			return t.result("unchanged", http.StatusOK), nil
 		}
 
@@ -72,9 +85,15 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 		after, err = t.q.UpdateCollaborationIssueFields(ctx, db.UpdateCollaborationIssueFieldsParams{
 			IssueID: before.ID, WorkspaceID: before.WorkspaceID, Title: after.Title, Description: after.Description,
 			StartDate: after.StartDate, DueDate: after.DueDate,
+			Priority: after.Priority, Properties: after.Properties,
 		})
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
+		}
+		if fields.labelsChanged {
+			if err = t.replaceFieldLabels(ctx, fields.afterLabels); err != nil {
+				return CollaborationWorkflowReceipt{}, err
+			}
 		}
 		actor, err := json.Marshal(map[string]any{"type": "member", "id": t.actor, "user_id": t.actor})
 		if err != nil {
@@ -94,7 +113,7 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 			return CollaborationWorkflowReceipt{}, err
 		}
 		payload, err := json.Marshal(map[string]any{
-			"before": collaborationEditedValues(before), "after": collaborationEditedValues(after),
+			"before": collaborationEditedValues(before, fields.beforeLabels), "after": collaborationEditedValues(after, fields.afterLabels),
 			"edited_at": util.TimestampToNanoPtr(after.UpdatedAt), "receipt": receipt, "request_id": t.operation.RequestID,
 		})
 		if err != nil {
@@ -109,7 +128,8 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 	})
 }
 
-func collaborationEditedValues(issue db.Issue) map[string]any {
+func collaborationEditedValues(issue db.Issue, labels []db.IssueLabel) map[string]any {
 	return map[string]any{"title": issue.Title, "description": util.TextToPtr(issue.Description),
-		"start_date": util.DateToPtr(issue.StartDate), "due_date": util.DateToPtr(issue.DueDate)}
+		"start_date": util.DateToPtr(issue.StartDate), "due_date": util.DateToPtr(issue.DueDate),
+		"priority": issue.Priority, "labels": collaborationFieldLabels(labels), "properties": json.RawMessage(issue.Properties)}
 }

@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
+import type { IssuePriority } from "../types/issue";
+import { ISSUE_PROPERTY_TYPES, parseActorRef, type IssuePropertyValue } from "../types/property";
 
 const decimal = /^[1-9][0-9]{0,18}$/;
 const positiveVersion = z.string().regex(decimal).refine(
@@ -25,6 +27,99 @@ const sourceWorkspaceSummary = z.object({
   identifier: z.string().catch(""),
 });
 
+export const CollaborationRecipientSchema = z.object({
+  issue_id: z.string().uuid().nullable(),
+  source_workspace_id: z.string().uuid(),
+  recipient: accountSummary,
+});
+
+export type CollaborationRecipient = z.infer<typeof CollaborationRecipientSchema>;
+
+/** Resolution only confirms an account; invitation and transfer remain explicit writes. */
+export type CollaborationRecipientInput = {
+  kind: "username" | "email" | "user_id";
+  value: string;
+} & (
+  | { issueId: string; sourceWorkspaceId?: never }
+  | { sourceWorkspaceId: string; issueId?: never }
+);
+
+const labelSummary = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  color: z.string(),
+});
+
+const labelSummaries = z.array(labelSummary).refine(
+  (items) => new Set(items.map((item) => item.id.toLowerCase())).size === items.length,
+  "Label identities must be unique",
+);
+
+// Ordinary catalog schemas default missing fields and drop unsupported values.
+// Editing a private issue requires a complete, unambiguous definition instead.
+const propertyDefinition = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  type: z.enum(ISSUE_PROPERTY_TYPES),
+  icon: z.string().catch(""),
+  config: z.object({
+    options: z.array(z.object({ id: z.string().min(1), name: z.string(), color: z.string() })).optional(),
+  }),
+  archived: z.boolean(),
+}).refine(
+  (definition) => {
+    const options = definition.config.options;
+    if (definition.type !== "select" && definition.type !== "multi_select") return options === undefined;
+    return options !== undefined && options.length > 0 && new Set(options.map((option) => option.id)).size === options.length;
+  },
+  "Property options must match the definition type and have unique identities",
+);
+
+const propertyDefinitions = z.array(propertyDefinition).refine(
+  (items) => new Set(items.map((item) => item.id.toLowerCase())).size === items.length,
+  "Property identities must be unique",
+);
+
+export type CollaborationPropertyDefinition = z.infer<typeof propertyDefinition>;
+export type CollaborationLabel = z.infer<typeof labelSummary>;
+
+const propertyValues = z.record(
+  z.string().uuid(), z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]),
+).refine(
+  (values) => new Set(Object.keys(values).map((id) => id.toLowerCase())).size === Object.keys(values).length,
+  "Property value identities must be unique",
+);
+
+const actorValue = z.string().refine((value) => {
+  const reference = parseActorRef(value);
+  return reference !== null && z.uuid().safeParse(reference.id).success;
+}, "Actor reference must contain a member UUID");
+
+function propertyValueMatchesDefinition(value: IssuePropertyValue, definition: CollaborationPropertyDefinition): boolean {
+  switch (definition.type) {
+    case "text":
+    case "url": return typeof value === "string";
+    case "number": return typeof value === "number";
+    case "checkbox": return typeof value === "boolean";
+    case "date": return z.iso.date().safeParse(value).success;
+    case "select": return typeof value === "string" && definition.config.options?.some((option) => option.id === value) === true;
+    case "multi_select": return Array.isArray(value) && value.length > 0 && value.every((id) => definition.config.options?.some((option) => option.id === id) === true);
+    case "actor": return actorValue.safeParse(value).success;
+    case "multi_actor": return Array.isArray(value) && value.every((item) => actorValue.safeParse(item).success);
+    default: return false;
+  }
+}
+
+export const CollaborationFieldOptionsSchema = z.object({
+  issue_id: z.string().uuid(),
+  source_workspace_id: z.string().uuid(),
+  collaboration_revision: positiveVersion,
+  labels: labelSummaries,
+  properties: propertyDefinitions.refine((items) => items.every((item) => item.archived === false), "Editing options must be active"),
+});
+
+export type CollaborationFieldOptions = z.infer<typeof CollaborationFieldOptionsSchema>;
+
 // The open top of the information request chain. A malformed present value
 // makes the issue unavailable: its requester decides where a return lands.
 const informationRequest = z.object({
@@ -48,6 +143,10 @@ export const CollaborationIssueSchema = z.object({
   status: z.string().min(1),
   status_category: statusCategory,
   priority: z.string(),
+  // Missing metadata is unknown on older servers, never an empty edit baseline.
+  labels: labelSummaries.optional(),
+  properties: propertyValues.optional(),
+  property_definitions: propertyDefinitions.optional(),
   source_workspace: sourceWorkspaceSummary,
   creator: accountSummary,
   handler: accountSummary,
@@ -75,7 +174,17 @@ export const CollaborationIssueSchema = z.object({
     submit_acceptance: z.boolean().catch(false),
   }),
   current_information_request: informationRequest.nullish(),
-});
+}).refine((issue) => {
+  const values = issue.properties;
+  const definitions = issue.property_definitions;
+  if (values === undefined || definitions === undefined) return values === undefined && definitions === undefined;
+  const byId = new Map(definitions.map((definition) => [definition.id.toLowerCase(), definition]));
+  const entries = Object.entries(values);
+  return entries.length === definitions.length && entries.every(([id, value]) => {
+    const definition = byId.get(id.toLowerCase());
+    return definition !== undefined && propertyValueMatchesDefinition(value, definition);
+  });
+}, "Current property values require matching definitions and value types");
 
 export type CollaborationIssue = z.infer<typeof CollaborationIssueSchema>;
 
@@ -174,12 +283,17 @@ export interface CollaborationAcceptanceInput extends CollaborationWriteInput, C
   note: string;
 }
 
-/** Omit untouched dates; null or an empty string explicitly clears a date. */
+/** Omit untouched fields. Dates clear with null/empty; metadata null preserves. */
 export interface CollaborationEditInput extends CollaborationWriteInput {
   title?: string;
   description?: string;
   startDate?: string | null;
   dueDate?: string | null;
+  priority?: IssuePriority | null;
+  /** Replaces the complete label set; [] clears it, null preserves it. */
+  labelIds?: string[] | null;
+  /** A per-definition patch; null at a key clears it, outer null preserves all. */
+  properties?: Record<string, IssuePropertyValue | null> | null;
 }
 
 export interface CollaborationStatusInput extends CollaborationWriteInput {
@@ -217,6 +331,20 @@ export function parseCollaborationOperation(data: unknown): CollaborationOperati
 export function parseCollaborationStatusOptions(data: unknown): CollaborationStatusOptions | null {
   return parseWithFallback<CollaborationStatusOptions | null>(data, CollaborationStatusOptionsSchema, null, {
     endpoint: "collaboration status options",
+    redact: true,
+  });
+}
+
+export function parseCollaborationRecipient(data: unknown): CollaborationRecipient | null {
+  return parseWithFallback<CollaborationRecipient | null>(data, CollaborationRecipientSchema, null, {
+    endpoint: "collaboration recipient resolution",
+    redact: true,
+  });
+}
+
+export function parseCollaborationFieldOptions(data: unknown): CollaborationFieldOptions | null {
+  return parseWithFallback<CollaborationFieldOptions | null>(data, CollaborationFieldOptionsSchema, null, {
+    endpoint: "collaboration field options",
     redact: true,
   });
 }

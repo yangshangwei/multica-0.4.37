@@ -1608,6 +1608,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		// and runtime guards are ready. These routes use object/account authority.
 		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)
 		r.Get("/api/collaboration/creations/{requestId}", h.GetCollaborationCreation)
+		r.Post("/api/collaboration/recipients/resolve", h.ResolveCollaborationRecipient)
 		r.Post("/api/collaboration/issues/{id}/participants", h.InviteCollaborationParticipant)
 		r.Post("/api/collaboration/issues/{id}/handoffs", h.TransferCollaborationIssue)
 		r.Post("/api/collaboration/issues/{id}/information-returns", h.ReturnCollaborationInformation)
@@ -1616,6 +1617,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/api/collaboration/issues/{id}/leave", h.LeaveCollaborationIssue)
 		r.Get("/api/collaboration/issues/{id}/operations/{requestId}", h.GetCollaborationOperation)
 		r.Get("/api/collaboration/issues/{id}/status-options", h.GetCollaborationStatusOptions)
+		r.Get("/api/collaboration/issues/{id}/field-options", h.GetCollaborationFieldOptions)
 		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
 		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
 		r.Post("/api/installations/challenges", h.InstallationChallenge)
