@@ -1,0 +1,23 @@
+{
+  "command": [
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "2",
+    "./internal/handler/",
+    "-run",
+    "Docs",
+    "-count=1",
+    "-v"
+  ],
+  "workdir": "server",
+  "at": "2026-10-14T12:24:08.580Z",
+  "exit_code": 0,
+  "duration_seconds": 10.324,
+  "database": "multica_docs_audit_20261014_a2c7a8fb",
+  "log": "research/go_docs_handler.log",
+  "passed_tests": 12,
+  "skipping_detected": false
+}

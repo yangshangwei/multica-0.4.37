@@ -1,0 +1,170 @@
+{
+  "verified_at": "2026-10-14T12:29:36.489078+00:00",
+  "basis": "current shared working tree, including pre-existing Chinese documentation updates",
+  "head_before_work_commit": "e7323b33d4f8b493aaddbb50604eb6b0d54bf006",
+  "source_count": 19,
+  "chinese_source_count": 18,
+  "sources_sha256": {
+    "apps/docs/content/docs/agents-create.zh.mdx": "c2c01b87580910d75d216369c28bed4e3be208e92328cde180b69c4a74b53911",
+    "apps/docs/content/docs/cli.zh.mdx": "6dd42605b79bd39a74d1391113f919ceb7e39125ee1e224934d5ac63ec1b2372",
+    "apps/docs/content/docs/comments.zh.mdx": "baecb9dd7b922b72fe7d1409e3cb5e1921c0039bd9c198c3be09ca72567ad8ee",
+    "apps/docs/content/docs/daemon-runtimes.zh.mdx": "add2dd21dc30085e24dede091575dde99613e1ae4eb807a2ca4b210a11c32a3a",
+    "apps/docs/content/docs/desktop-app.zh.mdx": "3f27a7404e26e35ab81bf6c1de4793fa0aedf875895a9ab63809432455f8633f",
+    "apps/docs/content/docs/developers/conventions.mdx": "b4f79276ee044bb31c3b8760fc5c8b4d5093a08842e66effb0f9cea93d007e08",
+    "apps/docs/content/docs/developers/conventions.zh.mdx": "55e7fbf3908df6e539f115ba603ce7d08664d39a28e342ea840272dfb301f14b",
+    "apps/docs/content/docs/environment-variables.zh.mdx": "e00e20658fa3c8e6e3cb72dd38f15bb1b1fe6b519e6c3a504782204a8de3a52a",
+    "apps/docs/content/docs/install-agent-runtime.zh.mdx": "7a8f577beb7861c705a203e6ed49a6e2af3ca8d3cdb1c523e33df9117ffaf0d0",
+    "apps/docs/content/docs/members-roles.zh.mdx": "07aef6ec1dc75fdcd1a70452194871f94b4d74a428d201809d51781da158be99",
+    "apps/docs/content/docs/project-resources.zh.mdx": "344b46e4eeb76161f6f6df2feef7f77a32c49040c6f6124be260933a373c274d",
+    "apps/docs/content/docs/providers.zh.mdx": "5eb7bd681718c6d05170b5a14dd27ef68edf1694d8533dd9fbaebc44fe32ffa2",
+    "apps/docs/content/docs/security-model.zh.mdx": "8a70a4efff5c866fae83edf5f5a16aa6432e3b07b1830e44a7914d11feac216b",
+    "apps/docs/content/docs/self-host-quickstart.zh.mdx": "a6da098053cea0e6d181ebec0ca9fe13118508ee67272da381a2c7323aa681b0",
+    "apps/docs/content/docs/skills.zh.mdx": "eaf9019e48d27e9767a1db13f77472b786c8cd8829ce83590f6100423d04eb18",
+    "apps/docs/content/docs/squads.zh.mdx": "034a27371520b809ba7a68852d5a2879c1178d5453c248afd00faf9ede8b19d6",
+    "apps/docs/content/docs/tasks.zh.mdx": "8ac6908821caec88e2bea4d8b85e4c445fd8378f374af798d5bc8682e012c944",
+    "apps/docs/content/docs/triggering-agents.zh.mdx": "738445578810c244de51be2071df35789237666f8cd0a6f91bf9816a7b55a6f3",
+    "apps/docs/content/docs/tutorial.zh.mdx": "75149bef5a99ee856574c89cf279afb007630551383b19dba9a989807ba59c9a"
+  },
+  "changed_bundle_files": [
+    "server/internal/docs/content/manifest.json",
+    "server/internal/docs/content/pages/agents-create.json",
+    "server/internal/docs/content/pages/cli.json",
+    "server/internal/docs/content/pages/comments.json",
+    "server/internal/docs/content/pages/daemon-runtimes.json",
+    "server/internal/docs/content/pages/desktop-app.json",
+    "server/internal/docs/content/pages/developers/conventions.json",
+    "server/internal/docs/content/pages/environment-variables.json",
+    "server/internal/docs/content/pages/install-agent-runtime.json",
+    "server/internal/docs/content/pages/members-roles.json",
+    "server/internal/docs/content/pages/project-resources.json",
+    "server/internal/docs/content/pages/providers.json",
+    "server/internal/docs/content/pages/security-model.json",
+    "server/internal/docs/content/pages/self-host-quickstart.json",
+    "server/internal/docs/content/pages/skills.json",
+    "server/internal/docs/content/pages/squads.json",
+    "server/internal/docs/content/pages/tasks.json",
+    "server/internal/docs/content/pages/triggering-agents.json",
+    "server/internal/docs/content/pages/tutorial.json"
+  ],
+  "bundle_file_count": 98,
+  "published_page_count": 39,
+  "internal_links": 252,
+  "anchors": 43,
+  "image_references": 57,
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/docs",
+        "test"
+      ],
+      "workdir": ".",
+      "at": "2026-10-14T12:23:31.351635+00:00",
+      "exit_code": 0,
+      "duration_seconds": 1.065,
+      "log": "research/docs_tests.log"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/docs",
+        "mdx"
+      ],
+      "workdir": ".",
+      "at": "2026-10-14T12:23:31.150062+00:00",
+      "exit_code": 0,
+      "duration_seconds": 0.867,
+      "log": "research/docs_mdx.log"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/docs",
+        "build"
+      ],
+      "at": "2026-10-14T12:24:21.657514+00:00",
+      "exit_code": 0,
+      "duration_seconds": 23.474,
+      "log": "research/docs_build.log"
+    },
+    {
+      "command": [
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "test",
+        "-p",
+        "2",
+        "./internal/docs/...",
+        "-count=1",
+        "-v"
+      ],
+      "workdir": "server",
+      "at": "2026-10-14T12:23:31.880226+00:00",
+      "exit_code": 0,
+      "duration_seconds": 1.594,
+      "log": "research/go_docs.log"
+    },
+    {
+      "command": [
+        "go",
+        "vet",
+        "./internal/docs/..."
+      ],
+      "workdir": "server",
+      "at": "2026-10-14T12:23:30.465871+00:00",
+      "exit_code": 0,
+      "duration_seconds": 0.179,
+      "log": "research/go_docs_vet.log"
+    },
+    {
+      "command": [
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "test",
+        "-p",
+        "2",
+        "./internal/handler/",
+        "-run",
+        "Docs",
+        "-count=1",
+        "-v"
+      ],
+      "workdir": "server",
+      "at": "2026-10-14T12:24:08.580Z",
+      "exit_code": 0,
+      "duration_seconds": 10.324,
+      "database": "multica_docs_audit_20261014_a2c7a8fb",
+      "log": "research/go_docs_handler.log",
+      "passed_tests": 12,
+      "skipping_detected": false
+    }
+  ],
+  "typecheck": {
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/docs",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "performed_by": "trellis-check sub-agent",
+    "evidence": "research/remediation-review.md"
+  },
+  "semantic_review": "research/remediation-review.md",
+  "database_cleanup": "research/remediation-database.json",
+  "limitations": [
+    "No live deployment, real provider calls, 3-hour disconnect, Redis outage, or installed-client verification.",
+    "Existing pnpm configuration warning retained; no dependency or package-manager changes.",
+    "Verification uses the shared working tree. Pre-existing triage/iterations/auth-setup and other documentation changes remain outside the work commit."
+  ],
+  "preexisting_manifest_pages_in_head": 37,
+  "work_commit": "4d7399b7470506aa72a6e66fa5db264c76baf5c8",
+  "staged_manifest_scope": "Only the members-roles description; prior triage/iterations entries and auth-setup description remain unstaged.",
+  "archive_path": ".trellis/tasks/archive/2026-10/10-14-usage-docs-consistency-audit",
+  "logs_normalization": "Trailing whitespace and final blank lines removed for committed evidence; command results unchanged."
+}

@@ -1,0 +1,774 @@
+{
+  "date": "2026-10-14",
+  "basis": "current working tree, including pre-existing uncommitted changes",
+  "findings": [
+    {
+      "id": "D01",
+      "priority": "P1",
+      "kind": "功能承诺不符",
+      "title": "内网 URL 导入和更新 skill 的流程没有实现",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/skills.zh.mdx",
+          "line": 33,
+          "claim": "从内网可达的 URL 导入 skill 压缩包",
+          "source_excerpt": "| **从 URL 导入** | 从内网可达的 URL 导入 skill 压缩包，例如托管在内网 Git 服务上的地址。 |"
+        },
+        {
+          "path": "apps/docs/content/docs/skills.zh.mdx",
+          "line": 60,
+          "claim": "来源地址（必须是内网可达地址，例如内网 Git 服务上托管的压缩包）",
+          "source_excerpt": "从 URL 导入的 skill 会记住它的来源地址（必须是内网可达地址，例如内网 Git 服务上托管的压缩包）。要拉取最新版本，在 skill 页面点击**更新**（或在列表行菜单里选「从来源更新」），也可以用 CLI："
+        },
+        {
+          "path": "apps/docs/content/docs/cli.zh.mdx",
+          "line": 150,
+          "claim": "内网 Git 服务上的 skill 压缩包",
+          "source_excerpt": "`--url` 的地址必须是内网可达地址，例如内网 Git 服务上托管的 skill 压缩包；本地文件用 `--file` 导入。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/handler/skill.go",
+          "line": 995,
+          "note": "detectImportSource 只识别 skills.sh、clawhub.ai、github.com；其他普通内网域名返回 unsupported source",
+          "source_excerpt": "func detectImportSource(raw string) (importSource, string, error) {"
+        },
+        {
+          "path": "server/internal/handler/skill_refresh.go",
+          "line": 57,
+          "note": "refresh 只处理既定的三类来源，并复用来源识别",
+          "source_excerpt": "func refreshableOriginSource(originType string) (importSource, bool) {"
+        }
+      ],
+      "actual": "任意可达的内网 Git/压缩包 URL 不会因为网络可达而获得支持；普通内网域名会在下载前被拒绝。",
+      "impact": "按使用说明执行 URL 导入或后续更新会失败。",
+      "correction": "当前版本应指导用户将压缩包下载到本机，使用本地导入或 multica skill import --file；部署模板和运行时复制也可使用。任意内网 URL 支持需要另行实现。"
+    },
+    {
+      "id": "D02",
+      "priority": "P1",
+      "kind": "触发边界错误",
+      "title": "backlog 被误写为所有触发方式的暂停开关",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/triggering-agents.zh.mdx",
+          "line": 15,
+          "claim": "四种方式共用以下规则",
+          "source_excerpt": "四种方式共用以下规则："
+        },
+        {
+          "path": "apps/docs/content/docs/triggering-agents.zh.mdx",
+          "line": 19,
+          "claim": "处于 backlog 的 issue 不会触发执行",
+          "source_excerpt": "- 处于 `backlog` 的 issue 不会触发执行；把它移到 `todo` 后，已分配的智能体才会开始。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/service/issue_trigger.go",
+          "line": 129,
+          "note": "仅分配和离开 backlog 的状态变更路径检查 backlog",
+          "source_excerpt": "\tcase in.IsCreate || in.AssigneeChanged:"
+        },
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 2096,
+          "note": "评论入队检查正式接纳与评论资格，没有 backlog 门禁",
+          "source_excerpt": "func (h *Handler) resolveCommentTriggerEnqueue(ctx context.Context, issue db.Issue, trigger commentAgentTrigger, triggerCommentID pgtype.UUID, getEscalationDelay func() time.Duration) (DispatchStatus, DispatchReasonCode) {"
+        },
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 3170,
+          "note": "显式提及在权限、归档、运行能力检查后产生触发目标",
+          "source_excerpt": "\t\tagent, err := h.Queries.GetAgentInWorkspace(ctx, db.GetAgentInWorkspaceParams{"
+        }
+      ],
+      "actual": "普通正式任务在 backlog 状态下，显式 @智能体或符合路由条件的回复仍可启动执行；待分拣记录有独立门禁。",
+      "impact": "用户可能在准备中的任务里提及智能体，意外启动本机执行。",
+      "correction": "把 backlog 规则限定到分配与状态变更。明确评论触发的例外；需要完全静默的评论使用 /note 或取消触发预览中的目标。"
+    },
+    {
+      "id": "D03",
+      "priority": "P1",
+      "kind": "超时策略过时",
+      "title": "运行时离线被误写为几分钟内结束执行",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/tasks.zh.mdx",
+          "line": 155,
+          "claim": "失去心跳的运行时最迟约 3 分钟被判为离线，其上的 task 随之失败",
+          "source_excerpt": "| `running` | AI 编程工具正在执行 | 不设固定时长上限；以运行时心跳判定存活，心跳每 15 秒一次，失去心跳的运行时最迟约 3 分钟被判为离线，其上的 task 随之失败 |"
+        },
+        {
+          "path": "apps/docs/content/docs/tasks.zh.mdx",
+          "line": 153,
+          "claim": "dispatched 停留超过 5 分钟按失败处理",
+          "source_excerpt": "| `dispatched` | 运行时已领取，正在启动工具 | 停留超过 **5 分钟**按失败处理 |"
+        },
+        {
+          "path": "apps/docs/content/docs/daemon-runtimes.zh.mdx",
+          "line": 64,
+          "claim": "正在执行的 task 会在运行时被判为离线后失败",
+          "source_excerpt": "- 正在执行的 task 会失败；符合条件的 issue 或对话 task 可以自动重试。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/cmd/server/runtime_sweeper.go",
+          "line": 38,
+          "note": "默认重连宽限为 3 小时，与 UI 离线标记分开",
+          "source_excerpt": "\tdefaultRuntimeReconnectGrace = 3 * time.Hour"
+        },
+        {
+          "path": "server/pkg/db/queries/runtime.sql",
+          "line": 260,
+          "note": "在途任务需运行时失联超过重连宽限才进入失败集合",
+          "source_excerpt": "-- name: FailTasksForOfflineRuntimes :many"
+        },
+        {
+          "path": "server/pkg/db/queries/agent.sql",
+          "line": 1485,
+          "note": "dispatched 超时还要求准备租约缺失/过期，并满足运行时健康或宽限已过",
+          "source_excerpt": "    status = 'dispatched'"
+        }
+      ],
+      "actual": "网络中断导致离线标记后，默认仍保留在途执行 3 小时供重连；真正的 daemon 重启有单独回收路径。有效准备租约也会延缓 dispatched 超时。",
+      "impact": "维护者会错误预期几分钟后失败/重试，可能重复派发或把正常保留中的任务当成故障。",
+      "correction": "分别说明心跳可见性、重连宽限、准备租约、实际重启回收；引用环境变量页已正确给出的 MULTICA_RUNTIME_RECONNECT_GRACE=3h。"
+    },
+    {
+      "id": "D04",
+      "priority": "P1",
+      "kind": "默认操作流程错误",
+      "title": "快速上手和桌面安装仍把邮箱登录当成默认路径",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/self-host-quickstart.zh.mdx",
+          "line": 193,
+          "claim": "输入邮箱获取验证码",
+          "source_excerpt": "打开本机的 `http://localhost:3000`，或刚才配置的 `https://app.example.com`，输入邮箱获取验证码。"
+        },
+        {
+          "path": "apps/docs/content/docs/desktop-app.zh.mdx",
+          "line": 33,
+          "claim": "安装后使用和 Web 版相同的邮箱登录",
+          "source_excerpt": "安装后使用和 Web 版相同的邮箱登录。登录后，Desktop 会启动自己内置的 Multica CLI，并检测本机已有的 AI 编程工具。"
+        }
+      ],
+      "code": [
+        {
+          "path": "docker-compose.selfhost.yml",
+          "line": 118,
+          "note": "认证模式默认 legacy",
+          "source_excerpt": "      MULTICA_AUTH_MODE: ${MULTICA_AUTH_MODE:-legacy}"
+        },
+        {
+          "path": "docker-compose.selfhost.yml",
+          "line": 137,
+          "note": "设备认证开关默认留空",
+          "source_excerpt": "      MULTICA_DEVICE_AUTH_ENABLED: ${MULTICA_DEVICE_AUTH_ENABLED:-}"
+        },
+        {
+          "path": "server/internal/handler/auth_device.go",
+          "line": 99,
+          "note": "开关未设置时，非官方云默认启用设备身份",
+          "source_excerpt": "func DeviceAuthEnabledFromEnv() bool {"
+        },
+        {
+          "path": "packages/core/platform/auth-initializer.tsx",
+          "line": 425,
+          "note": "客户端自动执行设备身份登录",
+          "source_excerpt": "        await useAuthStore.getState().loginWithDevice(deviceId, deviceName, requestOptions);"
+        },
+        {
+          "path": "server/internal/auth/password_config.go",
+          "line": 10,
+          "note": "另有 password 模式",
+          "source_excerpt": "func PasswordMode() bool { return strings.TrimSpace(os.Getenv(\"MULTICA_AUTH_MODE\")) == \"password\" }"
+        }
+      ],
+      "actual": "默认自托管通过设备身份进入；显式 password 部署使用用户名和密码。只有关闭设备入口等相应配置后才按邮箱验证码流程操作。",
+      "impact": "新部署用户找不到教程所说的邮箱入口，也可能错误理解清理设备数据后的账号关系。",
+      "correction": "按部署认证模式分三条流程，并链接当前已经更新的 auth-setup 页面。"
+    },
+    {
+      "id": "D05",
+      "priority": "P2",
+      "kind": "权限描述错误",
+      "title": "普通成员中的智能体 owner 也能管理自己的环境变量",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/agents-create.zh.mdx",
+          "line": 164,
+          "claim": "只有工作空间 owner、admin 可以解锁和修改",
+          "source_excerpt": "**`custom_env` 的值在 Multica 服务器的数据库里是明文存储的**，不属于\"只留在本机\"的数据。agent list/get 接口不再返回任何 env 值，只返回键的数量；只有工作空间 `owner`、`admin` 可以解锁和修改，并且每次读取或修改都会留下审计记录。运行中的智能体不能调用管理接口读取其他智能体的变量。"
+        },
+        {
+          "path": "apps/docs/content/docs/cli.zh.mdx",
+          "line": 268,
+          "claim": "env get/set ... 仅 owner 和 admin",
+          "source_excerpt": "| | `env get/set <agent-id>` | 读写自定义环境变量（仅 owner 和 admin） | |"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/handler/agent_env.go",
+          "line": 97,
+          "note": "接受工作空间 member 角色后继续判断智能体所有权",
+          "source_excerpt": "\tmember, ok := h.requireWorkspaceRole(w, r, workspaceID, \"agent not found\", \"owner\", \"admin\", \"member\")"
+        },
+        {
+          "path": "server/internal/handler/agent_env.go",
+          "line": 121,
+          "note": "工作空间 owner/admin 或智能体的人类 owner 均可管理",
+          "source_excerpt": "func canManageAgentEnv(agent db.Agent, member db.Member) bool {"
+        },
+        {
+          "path": "server/internal/handler/agent_env.go",
+          "line": 92,
+          "note": "智能体 actor 仍被管理接口拒绝",
+          "source_excerpt": "\tif actorType == \"agent\" {"
+        }
+      ],
+      "actual": "权限包括智能体的人类 owner，哪怕其工作空间角色只是 member；运行中的智能体 actor 不可读写管理接口。",
+      "impact": "普通成员被误导为无法查看或轮换自己的凭据，文档也低估了实际可读主体。",
+      "correction": "写明“智能体的人类 owner，以及工作空间 owner/admin”，保留明文存储与审计说明。"
+    },
+    {
+      "id": "D06",
+      "priority": "P2",
+      "kind": "能力表过时",
+      "title": "Oh-My-Pi 的 Multica 托管 MCP 已受支持",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/providers.zh.mdx",
+          "line": 40,
+          "claim": "Oh-My-Pi 的 Multica 管理 MCP 列为 —",
+          "source_excerpt": "| Oh-My-Pi | `omp` | ✓ | — | `.omp/skills/` |"
+        }
+      ],
+      "code": [
+        {
+          "path": "packages/core/agents/mcp-support.ts",
+          "line": 29,
+          "note": "omp 位于 MCP 支持集合",
+          "source_excerpt": "  \"omp\","
+        },
+        {
+          "path": "server/internal/daemon/execenv/omp_mcp.go",
+          "line": 10,
+          "note": "为 omp 写入 .omp/mcp.json",
+          "source_excerpt": "func prepareOmpMcpConfig(workDir, provider string, raw json.RawMessage, manifest *sidecarManifest) error {"
+        },
+        {
+          "path": "server/internal/daemon/execenv/execenv.go",
+          "line": 609,
+          "note": "执行准备调用 OMP MCP 配置写入",
+          "source_excerpt": "\tif err := prepareOmpMcpConfig(workDir, params.Provider, params.McpConfig, manifest); err != nil {"
+        }
+      ],
+      "actual": "前端和运行时都支持为 Oh-My-Pi 注入托管 MCP；已有同名配置文件会明确报冲突。",
+      "impact": "用户会错误排除可以完成 MCP 工作流的工具。",
+      "correction": "将能力表改为支持；如解释文件行为，注明 .omp/mcp.json 的覆盖冲突限制。"
+    },
+    {
+      "id": "D07",
+      "priority": "P2",
+      "kind": "支持范围遗漏",
+      "title": "工具清单和模型例外缺少 ZeroClaw",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/install-agent-runtime.zh.mdx",
+          "line": 14,
+          "claim": "Multica 当前会检测以下命令；表中没有 ZeroClaw",
+          "source_excerpt": "Multica 当前会检测以下命令："
+        },
+        {
+          "path": "apps/docs/content/docs/providers.zh.mdx",
+          "line": 21,
+          "claim": "工具能力表没有 ZeroClaw",
+          "source_excerpt": "| 工具 | 检测命令 | 会话恢复 | Multica 管理 MCP | Skill 注入位置 |"
+        },
+        {
+          "path": "apps/docs/content/docs/providers.zh.mdx",
+          "line": 57,
+          "claim": "模型由运行时管理的例外仅列 QwenPaw 和 MiniMax Code",
+          "source_excerpt": "QwenPaw 和 MiniMax Code 是例外：它们不接受在 Multica 侧选择的模型，因此选择框不可用，显示为\"由运行时管理\"。请改在工具自身的配置里选择模型。模型列表为空属于正常情况，并不表示运行时离线。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/daemon/agents_probe.go",
+          "line": 303,
+          "note": "检测 MULTICA_ZEROCLAW_PATH / zeroclaw",
+          "source_excerpt": "\tif e, ok := probe(\"MULTICA_ZEROCLAW_PATH\", \"zeroclaw\", \"\"); ok {"
+        },
+        {
+          "path": "server/pkg/agent/version.go",
+          "line": 21,
+          "note": "最低版本 0.8.0",
+          "source_excerpt": "\t\"zeroclaw\": \"0.8.0\",   // persistent ACP sessions and session/resume were added in 0.8.0"
+        },
+        {
+          "path": "server/pkg/agent/models.go",
+          "line": 406,
+          "note": "ZeroClaw 不接受 Multica 侧模型选择",
+          "source_excerpt": "func ModelSelectionSupported(providerType string) bool {"
+        },
+        {
+          "path": "server/pkg/agent/zeroclaw.go",
+          "line": 241,
+          "note": "不使用 Multica 注入的 MCP，由工具自身管理",
+          "source_excerpt": "\t\tb.cfg.Logger.Warn(\"zeroclaw ignores MCP servers supplied by Multica; its ACP server reads MCP only from its own config-dir ([[mcp.servers]] + [mcp_bundles.*] + agents.<alias>.mcp_bundles with acp_enable_mcp = true)\","
+        }
+      ],
+      "actual": "ZeroClaw 已是内置支持的运行时，模型由工具配置管理，且有版本与会话能力要求。",
+      "impact": "界面出现支持列表没有的工具，用户无法解释模型选择不可用及安装版本要求。",
+      "correction": "补齐检测命令、最低版本、模型/MCP/会话条件；与环境变量页已有的 ZeroClaw 说明对齐。"
+    },
+    {
+      "id": "D08",
+      "priority": "P2",
+      "kind": "关键入口遗漏",
+      "title": "成员说明遗漏分享邀请，并把邮箱邀请的限制泛化",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/members-roles.zh.mdx",
+          "line": 29,
+          "claim": "在设置 → 成员中输入邮箱...发送邀请",
+          "source_excerpt": "`owner` 和 `admin` 在设置 → 成员中输入邮箱、选择角色后发送邀请。邀请只能授予 `admin` 或 `member`；`owner` 需要先加入工作空间，再由现有 `owner` 提升。"
+        },
+        {
+          "path": "apps/docs/content/docs/members-roles.zh.mdx",
+          "line": 35,
+          "claim": "邀请链接只出现在邮件里，产品界面中没有查看或复制它的入口",
+          "source_excerpt": "邀请链接只出现在邮件里，产品界面中没有查看或复制它的入口。邮件发送失败时邀请记录仍然存在，可以撤销后重新发送。"
+        }
+      ],
+      "code": [
+        {
+          "path": "packages/views/settings/components/members-tab.tsx",
+          "line": 312,
+          "note": "ShareLinkRow 展示链接并提供复制",
+          "source_excerpt": "function ShareLinkRow({"
+        },
+        {
+          "path": "packages/views/settings/components/members-tab.tsx",
+          "line": 778,
+          "note": "支持创建、撤销与复制分享链接",
+          "source_excerpt": "  const handleCreateShareLink = async () => {"
+        },
+        {
+          "path": "packages/views/settings/components/members-tab.tsx",
+          "line": 961,
+          "note": "成员页有分享链接区域",
+          "source_excerpt": "        <SettingsSection title={shareLinksState.hasData ? t(($) => $.members.share_links_title, { count: shareLinks.length }) : t(($) => $.members.share_links_heading)}>"
+        },
+        {
+          "path": "server/cmd/server/router.go",
+          "line": 1787,
+          "note": "注册分享链接创建、列表、撤销 API",
+          "source_excerpt": "\t\t\t\t\tr.Post(\"/share-links\", h.CreateShareLink)"
+        }
+      ],
+      "actual": "邮箱定向邀请之外，owner/admin 可以在界面创建、查看、复制和撤销分享邀请链接；密码账号通过这种链接加入。",
+      "impact": "无邮件或密码模式部署的管理员可能误认为产品没有可用的邀请途径。",
+      "correction": "分别介绍邮箱定向邀请与分享链接，包括角色、有效期和撤销；“无法复制”最多限定到邮件邀请本身。"
+    },
+    {
+      "id": "D09",
+      "priority": "P2",
+      "kind": "触发边界遗漏",
+      "title": "@all 不能覆盖同条评论里的显式智能体提及",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/comments.zh.mdx",
+          "line": 32,
+          "claim": "@all ... 不触发任何智能体",
+          "source_excerpt": "| **@all** | 通知全部工作空间成员，不触发任何智能体。 |"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 2666,
+          "note": "先解析并返回显式 @agent/@squad，之后才判断 @all",
+          "source_excerpt": "\t// EXPLICIT @agent / @squad mentions are a direct request and win over the"
+        },
+        {
+          "path": "server/internal/handler/comment_trigger_preview_test.go",
+          "line": 1109,
+          "note": "已有回归用例明确要求 @all 加显式 @agent 仍然入队",
+          "source_excerpt": "func TestPreviewCommentTriggers_AllPlusExplicitAgentMentionStillTriggers(t *testing.T) {"
+        }
+      ],
+      "actual": "@all 自身不启动智能体，并阻止隐式兜底；同条评论明确提及的智能体或小队仍会执行。",
+      "impact": "将 @all 理解成整条评论的静默开关，会造成意外执行。",
+      "correction": "补上“仅抑制隐式路由，不抑制显式 @智能体/@小队”的边界；引用预览和 /note。"
+    },
+    {
+      "id": "D10",
+      "priority": "P2",
+      "kind": "重要副作用遗漏",
+      "title": "编辑触发评论会取消旧内容对应的未完成执行",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/comments.zh.mdx",
+          "line": 52,
+          "claim": "编辑评论后 ... 按新内容重新计算触发",
+          "source_excerpt": "编辑评论后，Multica 会按新内容重新计算触发。编辑时新增的 @提及同样会创建执行任务；保存前输入框下方会显示触发预览。"
+        },
+        {
+          "path": "apps/docs/content/docs/comments.zh.mdx",
+          "line": 55,
+          "claim": "内容有误时编辑即可",
+          "source_excerpt": "删除评论无法撤销。删除顶层评论时，其下所有回复一并删除。内容有误时编辑即可。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 3381,
+          "note": "严格内容编辑在事务中取消由原评论触发的执行",
+          "source_excerpt": "\t\tif err == nil && oldContent != req.Content && strictContentEdit {"
+        },
+        {
+          "path": "server/pkg/db/queries/agent.sql",
+          "line": 754,
+          "note": "取消 queued、dispatched、running、waiting_local_directory、deferred，包括合并批次包含该评论的任务",
+          "source_excerpt": "-- name: CancelAgentTasksByTriggerComment :many"
+        },
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 3433,
+          "note": "之后恢复其他仍有效评论并按新正文重新计算触发",
+          "source_excerpt": "\tretriggerEditedComment := func() []CommentTriggerOutcome {"
+        }
+      ],
+      "actual": "内容编辑不只是改变显示文本；旧内容关联的在途任务可被取消，再重新组织剩余评论和新内容的执行。",
+      "impact": "用户修改错字或补充说明时，可能中断已经运行的工作。",
+      "correction": "明确提醒编辑/删除触发评论可能取消旧执行；需要不中断地补充要求时，建议新增评论。"
+    },
+    {
+      "id": "D11",
+      "priority": "P2",
+      "kind": "协作路由错误",
+      "title": "小队页声称显式转交其他智能体时仍自动唤醒队长",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/squads.zh.mdx",
+          "line": 94,
+          "claim": "智能体发结果时顺手 @了另一个智能体，队长仍会被唤醒",
+          "source_excerpt": "成员发的 `@` 评论不唤醒队长，是因为直接 `@` 已经是明确的交接，再唤醒队长只会多一轮空转。例外：智能体发结果时顺手 `@` 了另一个智能体，队长仍会被唤醒，以便协调整条线程。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 2673,
+          "note": "存在显式 agent/squad 提及时直接返回相应目标",
+          "source_excerpt": "\tif hasAgentOrSquadMention(mentions) {"
+        },
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 2683,
+          "note": "队长隐式兜底位于该提前返回之后",
+          "source_excerpt": "\tif actorType != \"member\" {"
+        },
+        {
+          "path": "server/internal/handler/comment.go",
+          "line": 3204,
+          "note": "显式提及分支只加入对应目标，不追加原队长",
+          "source_excerpt": "\t\tadd(commentAgentTrigger{Agent: agent, Source: commentTriggerSourceMentionAgent, AlreadyPending: hasPending})"
+        }
+      ],
+      "actual": "就这条评论而言，显式路由优先，不会额外唤醒未被提及的原队长。无显式路由的成员结果评论才可能走队长兜底。",
+      "impact": "依赖所述例外设计的交接流程，可能等不到队长的预期跟进。",
+      "correction": "移除过时例外，解释显式路由与队长兜底的优先级；需要队长参与时明确提及。"
+    },
+    {
+      "id": "D12",
+      "priority": "P2",
+      "kind": "认证模式范围错误",
+      "title": "Redis 限流说明未区分邮箱认证和密码认证",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/environment-variables.zh.mdx",
+          "line": 157,
+          "claim": "未设置 Redis ... 认证限流不生效",
+          "source_excerpt": "| `REDIS_URL` | 空 | 用于共享限流、实时事件和 token cache；未设置时实时事件和邀请限流回退到进程内存，认证限流不生效 |"
+        },
+        {
+          "path": "apps/docs/content/docs/environment-variables.zh.mdx",
+          "line": 169,
+          "claim": "Redis 临时不可用，认证限流仍选择放行",
+          "source_excerpt": "认证限流需要配置 `REDIS_URL`；未配置时，启动日志会提示认证限流已关闭。邀请限流在没有 Redis 时仍使用进程内存，配置 Redis 后则在多个副本间共享额度。如果已配置的 Redis 临时不可用，认证限流仍选择放行，而邀请创建会返回可重试的 `503`，不会在失去防护时发送邮件。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/auth/password_limiter.go",
+          "line": 54,
+          "note": "shared 模式要求 Redis；其他有效模式使用内存 bucket",
+          "source_excerpt": "\tnow := time.Now()"
+        },
+        {
+          "path": "server/internal/handler/auth_password.go",
+          "line": 33,
+          "note": "限流器失败返回 503；超限返回 429",
+          "source_excerpt": "func (h *Handler) passwordLimit(w http.ResponseWriter, r *http.Request, limits ...auth.PasswordLimit) bool {"
+        },
+        {
+          "path": "server/internal/auth/password_config.go",
+          "line": 44,
+          "note": "密码部署必须选择 single 或 shared",
+          "source_excerpt": "\tswitch os.Getenv(\"MULTICA_PASSWORD_LIMITER_MODE\") {"
+        }
+      ],
+      "actual": "password/single 不依赖 Redis 也有限流；password/shared 的 Redis 失败会拒绝认证，不会放行。文档的描述只能限定在 legacy 邮箱相关路径。",
+      "impact": "部署者会误判密码登录的防护和 Redis 故障时的实际可用性。",
+      "correction": "分模式列出限流后端、开关和故障策略，链接 auth-setup 的准确说明。"
+    },
+    {
+      "id": "D13",
+      "priority": "P2",
+      "kind": "隔离条件遗漏",
+      "title": "独立工作目录并不覆盖 local_directory 的原地模式",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/security-model.zh.mdx",
+          "line": 38,
+          "claim": "每个任务 ... 拥有独立 workdir，并发任务不会在同一份 checkout 上打架",
+          "source_excerpt": "- **每任务独立工作目录。** 每个任务在 `~/multica_workspaces/` 下拥有独立 workdir，并发任务不会在同一份 checkout 上打架。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/internal/daemon/execenv/execenv.go",
+          "line": 492,
+          "note": "LocalWorkDir 不为空时直接使用用户路径作为 workDir",
+          "source_excerpt": "\t// Create directory tree. For the standard flow the agent's workdir is"
+        },
+        {
+          "path": "server/internal/handler/project_resource.go",
+          "line": 119,
+          "note": "in_place 明确直接写用户工作副本，只做按目录串行",
+          "source_excerpt": "\t// localDirectoryModeInPlace runs the agent directly in the user's"
+        }
+      ],
+      "actual": "普通托管执行与 worktree 执行拥有独立工作目录；local_directory/in_place 直接读写关联目录，串行互斥并不等于独立副本。",
+      "impact": "只读安全模型页的用户会高估本地目录模式对工作副本的保护。",
+      "correction": "为独立 workdir 说明增加适用条件，明确原地模式的例外并链接项目资源页。"
+    },
+    {
+      "id": "D14",
+      "priority": "P2",
+      "kind": "连接条件错误",
+      "title": "Desktop 并没有禁止远程 HTTP 连接",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/desktop-app.zh.mdx",
+          "line": 152,
+          "claim": "远程自托管实例未使用 HTTPS ... Desktop 无法建立连接",
+          "source_excerpt": "Desktop 只能连接浏览器和执行电脑都能访问的地址。远程自托管实例未使用 HTTPS 或未代理 WebSocket 时，Desktop 无法建立连接；完整配置见[自托管快速上手](/self-host-quickstart#3-选择访问方式)。"
+        }
+      ],
+      "code": [
+        {
+          "path": "apps/desktop/src/shared/runtime-config.ts",
+          "line": 167,
+          "note": "正式配置解析允许 http 和 https，不限定环回地址",
+          "source_excerpt": "function normalizeHttpUrl(value: string, field: string): string {"
+        },
+        {
+          "path": "apps/desktop/src/shared/runtime-config.test.ts",
+          "line": 84,
+          "note": "使用非环回 HTTP 地址验证配置",
+          "source_excerpt": "    [\"http://10.10.10.20:8080\", \"http://10.10.10.20:18080/desktop\"],"
+        },
+        {
+          "path": "apps/desktop/src/main/server-switch.ts",
+          "line": 22,
+          "note": "连接探测直接请求配置地址的 /health 与 /api/config，没有额外 HTTPS 门禁",
+          "source_excerpt": "export async function probeServer(apiUrl: string, request: typeof fetch = fetch): Promise<void> {"
+        }
+      ],
+      "actual": "客户端允许可达的 HTTP API 地址并推导 ws；HTTPS 是部署安全建议，未使用它并非一律无法连接的技术条件。",
+      "impact": "内网用户会把可工作的 HTTP 配置误判为客户端不支持，排障方向错误。",
+      "correction": "区分安全建议和连接所需条件；保留 HTTPS 建议，准确说明 API 可达性与 WebSocket 配置。"
+    },
+    {
+      "id": "D15",
+      "priority": "P2",
+      "kind": "开发契约描述错误",
+      "title": "API 命名转换和 Query key 示例与代码不符",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/developers/conventions.zh.mdx",
+          "line": 69,
+          "claim": "api client 在边界处转成 camelCase；TS 代码内部一律 camelCase",
+          "source_excerpt": "- 网络上 API 响应是 `snake_case`，api client 在边界处转成 `camelCase`。**TS 代码内部一律 camelCase**"
+        },
+        {
+          "path": "apps/docs/content/docs/developers/conventions.zh.mdx",
+          "line": 72,
+          "claim": "issueKeys.detail(id)",
+          "source_excerpt": "- TanStack Query key：用 `<feature>/queries.ts` 里的工厂函数，例如 `issueKeys.detail(id)`"
+        }
+      ],
+      "code": [
+        {
+          "path": "packages/core/api/client.ts",
+          "line": 1875,
+          "note": "IssueSchema 解析后直接返回，无键名转换",
+          "source_excerpt": "  async getIssue(id: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<Issue> {"
+        },
+        {
+          "path": "packages/core/api/schemas.ts",
+          "line": 1274,
+          "note": "schema 保留 workspace_id 等 snake_case 键",
+          "source_excerpt": "export const IssueSchema = z.object({"
+        },
+        {
+          "path": "packages/core/types/issue.ts",
+          "line": 161,
+          "note": "内部 Issue 类型也使用 snake_case",
+          "source_excerpt": "export interface Issue {"
+        },
+        {
+          "path": "packages/core/issues/queries.ts",
+          "line": 118,
+          "note": "实际调用签名 detail(wsId, id)",
+          "source_excerpt": "  detail: (wsId: string, id: string) =>"
+        }
+      ],
+      "actual": "API/domain 数据保留 snake_case；本地变量通常用 camelCase。详情查询键必须含工作空间 ID。",
+      "impact": "照文档读取字段会得到 undefined；复制示例会缺参数并丢失工作空间维度。",
+      "correction": "准确区分数据字段与本地变量命名；将 Query key 示例修正为 issueKeys.detail(wsId, id)。"
+    },
+    {
+      "id": "D16",
+      "priority": "P2",
+      "kind": "开发契约描述错误",
+      "title": "状态与角色的显示规则已本地化，规范页仍要求英文",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/developers/conventions.zh.mdx",
+          "line": 213,
+          "claim": "角色名 + 状态名（小写英文，不翻）",
+          "source_excerpt": "### 角色名 + 状态名（小写英文，不翻）"
+        },
+        {
+          "path": "apps/docs/content/docs/developers/conventions.zh.mdx",
+          "line": 220,
+          "claim": "UI 里展示这些值时保持英文",
+          "source_excerpt": "UI 里展示这些值时保持英文（必要时用 code-style 包起来）："
+        }
+      ],
+      "code": [
+        {
+          "path": "packages/views/issues/utils/status-label.ts",
+          "line": 22,
+          "note": "内置状态使用 i18n",
+          "source_excerpt": "export function useStatusLabel(wsId: string) {"
+        },
+        {
+          "path": "packages/views/locales/zh-Hans/issues.json",
+          "line": 86,
+          "note": "待规划、进行中、审核中等中文标签",
+          "source_excerpt": "    \"backlog\": \"待规划\","
+        },
+        {
+          "path": "packages/views/locales/zh-Hans/members.json",
+          "line": 3,
+          "note": "所有者、管理员、成员的中文角色名",
+          "source_excerpt": "    \"owner\": \"所有者\","
+        }
+      ],
+      "actual": "内部 key 和 CLI 参数保持英文；用户可见的内置状态、角色使用当前界面语言，自定义状态使用用户设置的名字。",
+      "impact": "遵守旧规范会把已经本地化的界面改回英文，产生新的不一致。",
+      "correction": "把标识符与展示标签分开规定，与 issues.zh.mdx:91 的现有说明一致。"
+    },
+    {
+      "id": "D17",
+      "priority": "P3",
+      "kind": "命令目录遗漏",
+      "title": "号称全部顶层命令的 CLI 目录缺少 approval",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/cli.zh.mdx",
+          "line": 233,
+          "claim": "下表覆盖当前全部顶层命令",
+          "source_excerpt": "下表覆盖当前全部顶层命令，按 CLI 自身的分组排列。所有命令都接受全局 flag `--server-url`、`--workspace-id`、`--profile` 和 `--debug`。`--output` 是逐命令注册的 flag，默认格式因命令而异：`list` 类默认表格，`get`、`create` 类多默认 JSON。完整参数以 `multica <command> --help` 为准。"
+        }
+      ],
+      "code": [
+        {
+          "path": "server/cmd/multica/main.go",
+          "line": 85,
+          "note": "注册 approval 顶层命令",
+          "source_excerpt": "\trootCmd.AddCommand(approvalCmd)"
+        },
+        {
+          "path": "server/cmd/multica/cmd_approval.go",
+          "line": 29,
+          "note": "提供高风险动作审批申请与跟踪",
+          "source_excerpt": "var approvalCmd = &cobra.Command{"
+        },
+        {
+          "path": "server/cmd/multica/cmd_approval.go",
+          "line": 275,
+          "note": "注册 request/list/get/executed/cancel 子命令",
+          "source_excerpt": "\tapprovalCmd.AddCommand(approvalRequestCmd)"
+        }
+      ],
+      "actual": "approval 已是顶层命令，但完整目录没有列出它。",
+      "impact": "读者无法从完整参考找到申请和跟踪审批的入口。",
+      "correction": "补入 approval 及其子命令，并说明批准/驳回通过人类界面完成。"
+    },
+    {
+      "id": "D18",
+      "priority": "P3",
+      "kind": "教程界面名称过时",
+      "title": "教程的运行时和技能入口仍沿用旧导航",
+      "docs": [
+        {
+          "path": "apps/docs/content/docs/tutorial.zh.mdx",
+          "line": 43,
+          "claim": "侧边栏底部的 配置 → 运行时",
+          "source_excerpt": "教程用 Multica Desktop 演示：安装并登录后，它会自动把这台电脑注册为运行时，并检测已安装的 AI 编程工具（安装包由管理员从内部分发渠道提供，见[桌面应用](/desktop-app)）。打开侧边栏底部的 **配置 → 运行时**，确认这台电脑已经在线："
+        },
+        {
+          "path": "apps/docs/content/docs/tutorial.zh.mdx",
+          "line": 269,
+          "claim": "打开 Skills 页面",
+          "source_excerpt": "![工作空间的 Skills 页面](/images/docs/tutorial-skills-list.webp)"
+        }
+      ],
+      "code": [
+        {
+          "path": "packages/views/layout/app-sidebar.tsx",
+          "line": 175,
+          "note": "技能、MCP、运行时归入 resourceNav",
+          "source_excerpt": "const resourceNav: NavItem[] = ["
+        },
+        {
+          "path": "packages/views/layout/app-sidebar.tsx",
+          "line": 931,
+          "note": "渲染资源分组",
+          "source_excerpt": "            <SidebarGroupLabel>{t(($) => $.sidebar.resources_group)}</SidebarGroupLabel>"
+        },
+        {
+          "path": "packages/views/locales/zh-Hans/layout.json",
+          "line": 61,
+          "note": "当前分组名为资源与连接",
+          "source_excerpt": "    \"resources_group\": \"资源与连接\","
+        }
+      ],
+      "actual": "当前中文界面使用“资源与连接 → 运行时”和“技能库”等入口名称。",
+      "impact": "新用户难以按原文定位操作入口。",
+      "correction": "按当前导航更新教程中的目的地名称，并在修订时人工核对旧截图。"
+    }
+  ]
+}

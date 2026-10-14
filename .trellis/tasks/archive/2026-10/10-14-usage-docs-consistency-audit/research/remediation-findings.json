@@ -1,0 +1,216 @@
+{
+  "baseline": "research/findings.json",
+  "scope": "D01–D18 documentation remediation, including D13 linked page and authoritative English conventions",
+  "findings": [
+    {
+      "id": "D01",
+      "priority": "P1",
+      "title": "内网 URL 导入和更新 skill 的流程没有实现",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/skills.zh.mdx",
+        "apps/docs/content/docs/cli.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-runtime.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D02",
+      "priority": "P1",
+      "title": "backlog 被误写为所有触发方式的暂停开关",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/triggering-agents.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-runtime.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D03",
+      "priority": "P1",
+      "title": "运行时离线被误写为几分钟内结束执行",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/tasks.zh.mdx",
+        "apps/docs/content/docs/daemon-runtimes.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-runtime.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D04",
+      "priority": "P1",
+      "title": "快速上手和桌面安装仍把邮箱登录当成默认路径",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/self-host-quickstart.zh.mdx",
+        "apps/docs/content/docs/desktop-app.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-deployment.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D05",
+      "priority": "P2",
+      "title": "普通成员中的智能体 owner 也能管理自己的环境变量",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/agents-create.zh.mdx",
+        "apps/docs/content/docs/cli.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-runtime.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D06",
+      "priority": "P2",
+      "title": "Oh-My-Pi 的 Multica 托管 MCP 已受支持",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/providers.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-runtime.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D07",
+      "priority": "P2",
+      "title": "工具清单和模型例外缺少 ZeroClaw",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/install-agent-runtime.zh.mdx",
+        "apps/docs/content/docs/providers.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-runtime.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D08",
+      "priority": "P2",
+      "title": "成员说明遗漏分享邀请，并把邮箱邀请的限制泛化",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/members-roles.zh.mdx",
+        "apps/docs/content/docs/tutorial.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-collaboration.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D09",
+      "priority": "P2",
+      "title": "@all 不能覆盖同条评论里的显式智能体提及",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/comments.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-collaboration.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D10",
+      "priority": "P2",
+      "title": "编辑触发评论会取消旧内容对应的未完成执行",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/comments.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-collaboration.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D11",
+      "priority": "P2",
+      "title": "小队页声称显式转交其他智能体时仍自动唤醒队长",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/squads.zh.mdx",
+        "apps/docs/content/docs/tutorial.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-collaboration.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D12",
+      "priority": "P2",
+      "title": "Redis 限流说明未区分邮箱认证和密码认证",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/environment-variables.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-deployment.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D13",
+      "priority": "P2",
+      "title": "独立工作目录并不覆盖 local_directory 的原地模式",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/security-model.zh.mdx",
+        "apps/docs/content/docs/project-resources.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-deployment.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D14",
+      "priority": "P2",
+      "title": "Desktop 并没有禁止远程 HTTP 连接",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/desktop-app.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-deployment.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D15",
+      "priority": "P2",
+      "title": "API 命名转换和 Query key 示例与代码不符",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/developers/conventions.zh.mdx",
+        "apps/docs/content/docs/developers/conventions.mdx"
+      ],
+      "implementation_record": "research/remediation-deployment.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D16",
+      "priority": "P2",
+      "title": "状态与角色的显示规则已本地化，规范页仍要求英文",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/developers/conventions.zh.mdx",
+        "apps/docs/content/docs/developers/conventions.mdx"
+      ],
+      "implementation_record": "research/remediation-deployment.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D17",
+      "priority": "P3",
+      "title": "号称全部顶层命令的 CLI 目录缺少 approval",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/cli.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-runtime.md",
+      "review": "research/remediation-review.md"
+    },
+    {
+      "id": "D18",
+      "priority": "P3",
+      "title": "教程的运行时和技能入口仍沿用旧导航",
+      "status": "closed",
+      "sources": [
+        "apps/docs/content/docs/tutorial.zh.mdx"
+      ],
+      "implementation_record": "research/remediation-collaboration.md",
+      "review": "research/remediation-review.md"
+    }
+  ],
+  "verified_at": "2026-10-14T12:29:36.489078+00:00",
+  "verification": "research/remediation-final-verification.json"
+}
