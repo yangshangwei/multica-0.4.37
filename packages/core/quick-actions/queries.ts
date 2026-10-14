@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 /**
  * Quick action catalog queries (MUL-5465).
@@ -16,9 +17,10 @@ export const quickActionKeys = {
 };
 
 export function quickActionListOptions(wsId: string, includeArchived = false) {
+  const queryFn = withQueryAccessBoundary(() => api.listQuickActions({ includeArchived }));
   return queryOptions({
     queryKey: quickActionKeys.list(wsId, includeArchived),
-    queryFn: () => api.listQuickActions({ includeArchived }),
+    queryFn,
     select: (data) => data.quick_actions,
   });
 }

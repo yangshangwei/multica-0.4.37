@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 export const vcsKeys = {
   all: (wsId: string) => ["vcs", wsId] as const,
@@ -9,6 +10,6 @@ export const vcsKeys = {
 export const vcsConnectionsOptions = (wsId: string) =>
   queryOptions({
     queryKey: vcsKeys.connections(wsId),
-    queryFn: () => api.listVCSConnections(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listVCSConnections(wsId)),
     enabled: !!wsId,
   });

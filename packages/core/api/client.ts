@@ -1,5 +1,6 @@
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
+import { PersonalAccessTokenListSchema, CreatePersonalAccessTokenResponseSchema } from "./personal-access-token-schemas";
 import {
   parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions,
   type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
@@ -4238,18 +4239,37 @@ export class ApiClient {
 
   // Personal Access Tokens
   async listPersonalAccessTokens(): Promise<PersonalAccessToken[]> {
-    return this.fetch("/api/tokens");
+    const raw = await this.fetch<unknown>("/api/tokens").catch((error: unknown) => {
+      // JSON syntax errors may include raw credential text in their message.
+      if (error instanceof SyntaxError) return null;
+      throw error;
+    });
+    const tokens = parseWithFallback<PersonalAccessToken[] | null>(raw, PersonalAccessTokenListSchema, null, {
+      endpoint: "GET /api/tokens", redact: true,
+    });
+    if (tokens === null) throw new Error("Invalid API token list response");
+    return tokens;
   }
 
   async createPersonalAccessToken(data: CreatePersonalAccessTokenRequest): Promise<CreatePersonalAccessTokenResponse> {
-    return this.fetch("/api/tokens", {
+    const raw = await this.fetch<unknown>("/api/tokens", {
       method: "POST",
       body: JSON.stringify(data),
+    }).catch((error: unknown) => {
+      if (error instanceof SyntaxError) return null;
+      throw error;
     });
+    const token = parseWithFallback<CreatePersonalAccessTokenResponse | null>(raw, CreatePersonalAccessTokenResponseSchema, null, {
+      endpoint: "POST /api/tokens", redact: true,
+    });
+    if (token === null) {
+      throw new ApiError("Invalid API token creation response", 502, "Bad Gateway", { code: "invalid_personal_access_token" });
+    }
+    return token;
   }
 
   async revokePersonalAccessToken(id: string): Promise<void> {
-    await this.fetch(`/api/tokens/${id}`, { method: "DELETE" });
+    await this.fetch(`/api/tokens/${encodeURIComponent(id)}`, { method: "DELETE" });
   }
 
   // File Upload & Attachments

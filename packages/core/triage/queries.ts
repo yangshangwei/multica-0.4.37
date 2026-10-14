@@ -1,5 +1,6 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { api, ApiError } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 import type { TriageHistoryParams, TriageListParams } from "../types/triage";
 
 export const triageKeys = {
@@ -53,7 +54,7 @@ export function triageDuplicateTargetsOptions(wsId: string, search: string) {
 }
 
 export function triageSettingsOptions(wsId: string) {
-  return queryOptions({ queryKey: triageKeys.settings(wsId), queryFn: ({ signal }) => api.getTriageSettings(wsId, { signal }), enabled: wsId.length > 0, staleTime: 30_000 });
+  return queryOptions({ queryKey: triageKeys.settings(wsId), queryFn: withQueryAccessBoundary(({ signal }) => api.getTriageSettings(wsId, { signal })), enabled: wsId.length > 0, staleTime: 30_000 });
 }
 export function triageListOptions(wsId: string, params: TriageListParams = {}) {
   return queryOptions({

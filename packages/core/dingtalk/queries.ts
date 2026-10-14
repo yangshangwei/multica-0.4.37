@@ -1,5 +1,6 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 /** Query key namespace for everything DingTalk-installation-related. Realtime
  * sync invalidates `installations(wsId)` on `dingtalk_installation:*` events so
@@ -20,14 +21,15 @@ export const dingtalkKeys = {
 export const dingtalkInstallationsOptions = (wsId: string) =>
   queryOptions({
     queryKey: dingtalkKeys.installations(wsId),
-    queryFn: () => api.listDingTalkInstallations(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listDingTalkInstallations(wsId)),
     enabled: !!wsId,
   });
 
-export const dingtalkGroupsOptions = (wsId: string) =>
-  queryOptions({
+export const dingtalkGroupsOptions = (wsId: string) => {
+  const queryFn = withQueryAccessBoundary(() => api.listDingTalkGroups(wsId));
+  return queryOptions({
     queryKey: dingtalkKeys.groups(wsId),
-    queryFn: () => api.listDingTalkGroups(wsId),
+    queryFn,
     enabled: !!wsId,
     // Group discovery arrives through DingTalk Stream callbacks rather than an
     // HTTP mutation, so refresh lightly while the permission-filtered Settings
@@ -38,11 +40,13 @@ export const dingtalkGroupsOptions = (wsId: string) =>
         ? 5_000
         : false,
   });
+};
 
-export const dingtalkAgentGroupsOptions = (wsId: string, agentId: string) =>
-  queryOptions({
+export const dingtalkAgentGroupsOptions = (wsId: string, agentId: string) => {
+  const queryFn = withQueryAccessBoundary(() => api.listAgentDingTalkGroups(agentId));
+  return queryOptions({
     queryKey: dingtalkKeys.agentGroups(wsId, agentId),
-    queryFn: () => api.listAgentDingTalkGroups(agentId),
+    queryFn,
     enabled: !!wsId && !!agentId,
     // Agent detail uses a separate cache and a permission-scoped endpoint; it
     // must never borrow the admin workspace inventory and filter it client-side.
@@ -52,35 +56,42 @@ export const dingtalkAgentGroupsOptions = (wsId: string, agentId: string) =>
         ? 5_000
         : false,
   });
+};
 
-export const dingtalkInactiveGroupsOptions = (wsId: string, installationId: string) =>
-  infiniteQueryOptions({
-    queryKey: dingtalkKeys.inactiveGroups(wsId, installationId),
+export const dingtalkInactiveGroupsOptions = (wsId: string, installationId: string) => {
+  // Both scopes feed the same panel; keep options composable while the key
+  // factories retain their exact tuples and workspace/agent separation.
+  const queryKey: readonly string[] = dingtalkKeys.inactiveGroups(wsId, installationId);
+  return infiniteQueryOptions({
+    queryKey,
     initialPageParam: 0,
-    queryFn: ({ pageParam }) =>
-      api.listDingTalkGroups(wsId, {
+    queryFn: (context) =>
+      withQueryAccessBoundary(() => api.listDingTalkGroups(wsId, {
         activity: "inactive",
         installationId,
-        offset: pageParam,
-      }),
+        offset: context.pageParam,
+      }))(context),
     getNextPageParam: (page) => page.next_offset,
     enabled: !!wsId && !!installationId,
   });
+};
 
 export const dingtalkAgentInactiveGroupsOptions = (
   wsId: string,
   agentId: string,
   installationId: string,
-) =>
-  infiniteQueryOptions({
-    queryKey: dingtalkKeys.agentInactiveGroups(wsId, agentId, installationId),
+) => {
+  const queryKey: readonly string[] = dingtalkKeys.agentInactiveGroups(wsId, agentId, installationId);
+  return infiniteQueryOptions({
+    queryKey,
     initialPageParam: 0,
-    queryFn: ({ pageParam }) =>
-      api.listAgentDingTalkGroups(agentId, {
+    queryFn: (context) =>
+      withQueryAccessBoundary(() => api.listAgentDingTalkGroups(agentId, {
         activity: "inactive",
         installationId,
-        offset: pageParam,
-      }),
+        offset: context.pageParam,
+      }))(context),
     getNextPageParam: (page) => page.next_offset,
     enabled: !!wsId && !!agentId && !!installationId,
   });
+};

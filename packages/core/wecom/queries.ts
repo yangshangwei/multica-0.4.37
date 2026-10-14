@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 /**
  * Query key namespace for everything wecom-installation-related. Realtime sync
@@ -15,6 +16,6 @@ export const wecomKeys = {
 export const wecomInstallationsOptions = (wsId: string) =>
   queryOptions({
     queryKey: wecomKeys.installations(wsId),
-    queryFn: () => api.listWecomInstallations(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listWecomInstallations(wsId)),
     enabled: !!wsId,
   });

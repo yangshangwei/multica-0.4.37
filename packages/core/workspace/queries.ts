@@ -1,6 +1,7 @@
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { api } from "../api";
 import { RECOVERY_REQUEST_TIMEOUT_MS } from "../api/request-lifecycle";
+import { withQueryAccessBoundary } from "../query-access";
 import type { Agent, Skill, Squad, Workspace } from "../types";
 
 export const workspaceKeys = {
@@ -47,15 +48,17 @@ export function workspaceBySlugOptions(slug: string) {
 export function memberListOptions(wsId: string) {
   return queryOptions({
     queryKey: workspaceKeys.members(wsId),
-    queryFn: () => api.listMembers(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listMembers(wsId)),
   });
 }
 
 export function agentListOptions(wsId: string) {
+  const queryFn = withQueryAccessBoundary(() =>
+    api.listAgents({ workspace_id: wsId, include_archived: true }),
+  );
   return queryOptions({
     queryKey: workspaceKeys.agents(wsId),
-    queryFn: () =>
-      api.listAgents({ workspace_id: wsId, include_archived: true }),
+    queryFn,
     // Projected unstable can age offline without an event; polling online also
     // covers a missed demotion. Offline recovery is event/reconnect-driven.
     refetchInterval: (query) =>
@@ -225,14 +228,14 @@ export function selectSkillAssignments(
 export function invitationListOptions(wsId: string) {
   return queryOptions({
     queryKey: workspaceKeys.invitations(wsId),
-    queryFn: () => api.listWorkspaceInvitations(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listWorkspaceInvitations(wsId)),
   });
 }
 
 export function shareLinkListOptions(wsId: string, enabled = true) {
   return queryOptions({
     queryKey: workspaceKeys.shareLinks(wsId),
-    queryFn: () => api.listShareLinks(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listShareLinks(wsId)),
     enabled: enabled && !!wsId,
   });
 }
@@ -259,7 +262,7 @@ export function assigneeFrequencyOptions(wsId: string) {
 export function workspaceMcpServersOptions(wsId: string) {
   return queryOptions({
     queryKey: workspaceKeys.mcpServers(wsId),
-    queryFn: () => api.listWorkspaceMcpServers(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listWorkspaceMcpServers(wsId)),
     enabled: wsId !== "",
   });
 }

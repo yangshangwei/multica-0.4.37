@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 /** Query key namespace for everything Telegram-installation-related. Realtime
  * sync invalidates `installations(wsId)` on `telegram_installation:*` events
@@ -12,6 +13,6 @@ export const telegramKeys = {
 export const telegramInstallationsOptions = (wsId: string) =>
   queryOptions({
     queryKey: telegramKeys.installations(wsId),
-    queryFn: () => api.listTelegramInstallations(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listTelegramInstallations(wsId)),
     enabled: !!wsId,
   });
