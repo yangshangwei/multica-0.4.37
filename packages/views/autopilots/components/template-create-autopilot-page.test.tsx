@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { EMPTY_CREATE_AUTOPILOT_FROM_TEMPLATE_RESPONSE } from "@multica/core/api/schemas";
 import type { AutopilotTemplate } from "@multica/core/types";
+import { ScrollRestorationProvider } from "../../platform/scroll-restoration";
 import { renderWithI18n } from "../../test/i18n";
 import enAutopilots from "../../locales/en/autopilots.json";
 
@@ -24,6 +25,7 @@ const mockListSquads = vi.hoisted(() => vi.fn());
 const mockListProjects = vi.hoisted(() => vi.fn());
 const mockListMembers = vi.hoisted(() => vi.fn());
 const searchParams = vi.hoisted(() => ({ value: new URLSearchParams() }));
+const route = vi.hoisted(() => ({ pathname: "/acme/autopilots/new/template" }));
 
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "ws-test" }));
 
@@ -51,6 +53,7 @@ vi.mock("../../navigation", () => ({
   useNavigation: () => ({
     push: mockPush,
     replace: mockReplace,
+    pathname: route.pathname,
     searchParams: searchParams.value,
   }),
   useBackOrReplace: () => vi.fn(),
@@ -141,6 +144,7 @@ vi.mock("./pickers/timezone-picker", () => ({
 }));
 
 import { TemplateCreateAutopilotPage, TemplateCreateAutopilotRoute } from "./template-create-autopilot-page";
+import { AutopilotTemplateCatalog } from "./autopilot-template-catalog";
 
 const TEMPLATES: AutopilotTemplate[] = [
   {
@@ -193,11 +197,29 @@ const TEMPLATES: AutopilotTemplate[] = [
   },
 ];
 
-function renderPage(props: ComponentProps<typeof TemplateCreateAutopilotPage> = {}, fromRoute = false) {
+function renderPage(
+  props: ComponentProps<typeof TemplateCreateAutopilotPage> = {},
+  fromRoute = false,
+  viewState = new Map<string, string>(),
+) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const adapter = {
+    get: () => undefined,
+    getViewState: (key: string) => viewState.get(`${route.pathname}::${key}`),
+    setViewState: (key: string, value: string | undefined, pathname = route.pathname) => {
+      const scopedKey = `${pathname}::${key}`;
+      if (value === undefined) viewState.delete(scopedKey);
+      else viewState.set(scopedKey, value);
+    },
+  };
   const page = (nextProps: ComponentProps<typeof TemplateCreateAutopilotPage>) => (
     <QueryClientProvider client={qc}>
-      {fromRoute ? <TemplateCreateAutopilotRoute /> : <TemplateCreateAutopilotPage {...nextProps} />}
+      <ScrollRestorationProvider adapter={adapter}>
+        {route.pathname === "/acme/autopilots" ? (
+          // Empty-list navigation wiring is covered by autopilots-page.test.tsx.
+          <AutopilotTemplateCatalog templates={TEMPLATES} loading={false} failed={false} onRetry={() => {}} onPick={() => {}} />
+        ) : fromRoute ? <TemplateCreateAutopilotRoute /> : <TemplateCreateAutopilotPage {...nextProps} />}
+      </ScrollRestorationProvider>
     </QueryClientProvider>
   );
   const result = renderWithI18n(page(props));
@@ -219,6 +241,7 @@ const PROJECTS = [{ id: "project-1", workspace_id: "ws-test", title: "Fleet", ic
 beforeEach(() => {
   vi.clearAllMocks();
   searchParams.value = new URLSearchParams();
+  route.pathname = "/acme/autopilots/new/template";
   mockListTemplates.mockResolvedValue(TEMPLATES);
   mockListAgents.mockResolvedValue(AGENTS);
   mockListSquads.mockResolvedValue(SQUADS);
@@ -261,6 +284,89 @@ describe("autopilot template picker", () => {
     await screen.findByText(TEMPLATES[0]!.description);
     await userEvent.setup().click(screen.getByRole("button", { name: "Go back" }));
     expect(mockReplace).toHaveBeenCalledWith("/acme/autopilots");
+  });
+
+  it.each(["in-flow", "native"] as const)("restores the originating card after %s Back while the shell Back button is focused", async (backType) => {
+    const { rerenderPage } = renderPage({}, true);
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole("button", { name: "Repository maintenance 2" }));
+    screen.getByRole("region", { name: "Start from a template" }).scrollTop = 168;
+    screen.getByRole("button", { name: /Workday repo audit/ }).focus();
+    await user.keyboard("{Enter}");
+    expect(mockPush).toHaveBeenCalledWith("/acme/autopilots/new/template?template=workday-repo-audit");
+
+    searchParams.value = new URLSearchParams("template=workday-repo-audit");
+    rerenderPage({});
+    await screen.findByText(TEMPLATES[0]!.description);
+    const back = screen.getByRole("button", { name: "Go back" });
+    back.focus();
+    if (backType === "in-flow") {
+      await user.keyboard("{Enter}");
+      expect(mockReplace).toHaveBeenCalledWith("/acme/autopilots/new/template");
+    } else {
+      // Native Back changes the route without invoking the shell's handler.
+      expect(mockReplace).not.toHaveBeenCalled();
+    }
+    expect(back).toHaveFocus();
+
+    searchParams.value = new URLSearchParams();
+    rerenderPage({});
+    await waitFor(() => expect(screen.getByRole("button", { name: /Workday repo audit/ })).toHaveFocus());
+    expect(screen.getByRole("region", { name: "Start from a template" }).scrollTop).toBe(168);
+    expect(screen.getByRole("button", { name: "Repository maintenance 2" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it.each([
+    ["picker", "success"], ["empty-list", "success"],
+    ["picker", "rejected"], ["empty-list", "rejected"],
+    ["picker", "unreadable"], ["empty-list", "unreadable"],
+  ] as const)("keeps return focus only while creation is unconfirmed (%s origin, %s)", async (origin, outcome) => {
+    if (outcome === "success") {
+      mockCreateFromTemplate.mockResolvedValueOnce({ autopilot: { id: "ap-1" }, trigger: { id: "tr-1" } });
+    } else if (outcome === "rejected") {
+      mockCreateFromTemplate.mockRejectedValueOnce(new Error("Unable to create automation"));
+    } else {
+      mockCreateFromTemplate.mockResolvedValueOnce(EMPTY_CREATE_AUTOPILOT_FROM_TEMPLATE_RESPONSE);
+    }
+    const defaults: ComponentProps<typeof TemplateCreateAutopilotPage> = {
+      initialAssigneeType: "agent",
+      initialAssigneeId: "agent-1",
+      initialReturnTo: origin === "empty-list" ? "autopilots" : undefined,
+    };
+    const originPath = origin === "empty-list" ? "/acme/autopilots" : "/acme/autopilots/new/template";
+    route.pathname = originPath;
+    const viewState = new Map<string, string>();
+    const first = renderPage(defaults, false, viewState);
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole("button", { name: "Repository maintenance 2" }));
+    screen.getByRole("region", { name: "Start from a template" }).scrollTop = 168;
+    await user.click(screen.getByRole("button", { name: /Workday repo audit/ }));
+    route.pathname = "/acme/autopilots/new/template";
+    searchParams.value = new URLSearchParams("template=workday-repo-audit");
+    first.rerenderPage(defaults);
+    const enable = await screen.findByRole("button", { name: enAutopilots.template_picker.enable });
+    await waitFor(() => expect(enable).toBeEnabled());
+    mockPush.mockClear();
+    await user.click(enable);
+
+    if (outcome === "success") {
+      await waitFor(() => expect(mockPush).toHaveBeenCalledWith("/acme/autopilots/ap-1"));
+      first.unmount();
+      searchParams.value = new URLSearchParams();
+      route.pathname = originPath;
+      renderPage(defaults, false, viewState);
+      await screen.findByRole("button", { name: /Workday repo audit/ });
+      expect(document.body).toHaveFocus();
+    } else {
+      expect(mockPush).not.toHaveBeenCalled();
+      expect(toast.success).not.toHaveBeenCalled();
+      searchParams.value = new URLSearchParams();
+      route.pathname = originPath;
+      first.rerenderPage(defaults);
+      expect(await screen.findByRole("button", { name: /Workday repo audit/ })).toHaveFocus();
+    }
+    expect(screen.getByRole("region", { name: "Start from a template" }).scrollTop).toBe(168);
+    expect(screen.getByRole("button", { name: "Repository maintenance 2" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("retries a failed template load without losing the blank creation entry", async () => {

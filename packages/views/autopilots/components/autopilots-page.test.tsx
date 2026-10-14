@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithI18n } from "../../test/i18n";
@@ -46,7 +46,9 @@ describe("automation catalog entry", () => {
     expect(push).toHaveBeenCalledWith("/acme/autopilots/new/template?template=daily-change-review&return_to=autopilots");
     expect(screen.queryByText("No autopilots yet")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Browse templates" })).not.toBeInTheDocument();
-    await userEvent.setup().click(screen.getByRole("button", { name: "Start from scratch" }));
+    const gallery = screen.getByRole("region", { name: "Start from a template" });
+    expect(screen.getAllByRole("button", { name: "Start from scratch" })).toHaveLength(1);
+    await userEvent.setup().click(within(gallery).getByRole("button", { name: "Start from scratch" }));
     expect(screen.getByRole("dialog")).toHaveTextContent("Custom automation");
   });
 

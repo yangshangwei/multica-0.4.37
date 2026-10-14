@@ -24,6 +24,40 @@ function scrollContainer(el: HTMLElement, top: number) {
 }
 
 describe("WebScrollRestorationProvider", () => {
+  it("clears only the named origin entry while preserving current-route writes", () => {
+    const origin = "/acme/autopilots";
+    function ViewStateProbe({ focusKey }: { focusKey: string }) {
+      const focus = useRestoredViewState("pending-focus");
+      const group = useRestoredViewState("template-group");
+      const write = useViewStateWriter();
+      return <>
+        <output data-testid="focus">{focus ?? "none"}</output>
+        <output data-testid="group">{group ?? "none"}</output>
+        <button onClick={() => {
+          write("pending-focus", focusKey);
+          write("template-group", "maintenance");
+        }}>Save current route</button>
+        <button onClick={() => write("pending-focus", undefined, origin)}>Clear origin focus</button>
+      </>;
+    }
+    const page = (focusKey: string) => <WebScrollRestorationProvider><ViewStateProbe focusKey={focusKey} /></WebScrollRestorationProvider>;
+    route.pathname = origin;
+    const view = render(page("source-card"));
+    fireEvent.click(screen.getByRole("button", { name: "Save current route" }));
+
+    route.pathname = "/acme/autopilots/new/template";
+    view.rerender(page("current-card"));
+    fireEvent.click(screen.getByRole("button", { name: "Save current route" }));
+    fireEvent.click(screen.getByRole("button", { name: "Clear origin focus" }));
+    view.rerender(page("current-card"));
+    expect(screen.getByTestId("focus")).toHaveTextContent("current-card");
+
+    route.pathname = origin;
+    view.rerender(page("source-card"));
+    expect(screen.getByTestId("focus")).toHaveTextContent("none");
+    expect(screen.getByTestId("group")).toHaveTextContent("maintenance");
+  });
+
   it("reads the rendered route's view state before browser history commits", () => {
     function ViewStateProbe() {
       const value = useRestoredViewState("template-group");

@@ -35,6 +35,8 @@ import { useDescribeSchedule } from "./schedule-editor/describe";
 const GROUPS = ["all", "maintenance", "collaboration", "reporting"] as const;
 type TemplateGroup = (typeof GROUPS)[number];
 
+const CATALOG_FOCUS = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
 // Reuse the skill library's category palette and light/dark theme tokens.
 const GROUP_ICON_TONES: Record<TemplateGroup, string> = {
   all: "bg-skill-other/12 text-skill-other",
@@ -84,9 +86,13 @@ export function AutopilotTemplateCatalog({
   const describe = useDescribeSchedule();
   const restoredGroup = useRestoredViewState("autopilot-template-group");
   const restoredScrollTop = useRestoredViewState("autopilot-template-scroll");
+  const pendingTemplateKey = useRestoredViewState("autopilot-template-focus");
   const writeViewState = useViewStateWriter();
   const restoreScroll = useRestoredScrollRef("autopilot-templates");
   const scrollElement = useRef<HTMLElement | null>(null);
+  const templateButtons = useRef(new Map<string, HTMLButtonElement>());
+  const selectedFilter = useRef<HTMLButtonElement | null>(null);
+  const blankButton = useRef<HTMLButtonElement | null>(null);
   const didRestore = useRef(false);
   const attachScroll = useCallback((element: HTMLElement | null) => {
     scrollElement.current = element;
@@ -96,7 +102,16 @@ export function AutopilotTemplateCatalog({
     const savedTop = restoredScrollTop === undefined ? undefined : Number(restoredScrollTop);
     if (savedTop !== undefined && Number.isFinite(savedTop) && savedTop >= 0) element.scrollTop = savedTop;
     else restoreScroll(element);
-  }, [loading, failed, restoredScrollTop, restoreScroll]);
+
+    if (!pendingTemplateKey) return;
+    // Consume the handoff even if a dialog or another control now owns focus.
+    // Refetches and later visits must not revive this return target.
+    writeViewState("autopilot-template-focus", undefined);
+    const doc = element.ownerDocument;
+    if (doc.activeElement && doc.activeElement !== doc.body) return;
+    const target = templateButtons.current.get(pendingTemplateKey) ?? selectedFilter.current ?? blankButton.current;
+    target?.focus({ preventScroll: true });
+  }, [loading, failed, restoredScrollTop, restoreScroll, pendingTemplateKey, writeViewState]);
   const [selectedGroup, setSelectedGroup] = useState(
     () => GROUPS.find((group) => group === restoredGroup) ?? "all",
   );
@@ -120,7 +135,7 @@ export function AutopilotTemplateCatalog({
     <section ref={attachScroll} data-tab-scroll-root="autopilot-templates" aria-labelledby={headingId} aria-busy={loading} className="min-h-0 flex-1 overflow-y-auto @container">
       <div className="mx-auto w-full max-w-[70rem] px-4 py-8 @sm:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
+          <div className="min-w-0 max-w-[70ch]">
             <h2 id={headingId} className="text-display-sm font-semibold tracking-tight">
               {t(($) => $.template_picker.title)}
             </h2>
@@ -129,7 +144,7 @@ export function AutopilotTemplateCatalog({
             </p>
           </div>
           {onStartBlank && (
-            <Button type="button" variant="outline" onClick={onStartBlank} className="min-h-11 @sm:min-h-9">
+            <Button ref={blankButton} type="button" variant="outline" onClick={onStartBlank} className={cn("min-h-11 @lg:pointer-fine:min-h-9", CATALOG_FOCUS)}>
               <Plus className="size-3.5" aria-hidden="true" />
               {t(($) => $.page.start_blank)}
             </Button>
@@ -139,7 +154,7 @@ export function AutopilotTemplateCatalog({
         {failed ? (
           <div role="alert" className="mt-8 flex flex-wrap items-center gap-3 text-body text-muted-foreground">
             <p>{t(($) => $.template_picker.load_failed)}</p>
-            <Button type="button" variant="outline" onClick={onRetry}>
+            <Button type="button" variant="outline" onClick={onRetry} className={CATALOG_FOCUS}>
               {t(($) => $.page.retry)}
             </Button>
           </div>
@@ -158,6 +173,7 @@ export function AutopilotTemplateCatalog({
                   key={key}
                   type="button"
                   variant="ghost"
+                  ref={group === key ? selectedFilter : undefined}
                   aria-label={`${t(($) => $.catalog.groups[key])} ${counts[key]}`}
                   aria-pressed={group === key}
                   onClick={() => {
@@ -165,7 +181,8 @@ export function AutopilotTemplateCatalog({
                     writeViewState("autopilot-template-group", key);
                   }}
                   className={cn(
-                    "min-h-11 gap-2 px-3 @sm:min-h-9",
+                    "min-h-11 gap-2 px-3 @sm:pointer-fine:min-h-9",
+                    CATALOG_FOCUS,
                     group === key
                       ? "bg-surface-selected font-semibold text-foreground hover:bg-surface-selected"
                       : "font-normal text-muted-foreground",
@@ -191,17 +208,22 @@ export function AutopilotTemplateCatalog({
                   <li key={template.key} className="flex min-w-0">
                     <button
                       type="button"
+                      ref={(element) => {
+                        if (element) templateButtons.current.set(template.key, element);
+                        else templateButtons.current.delete(template.key);
+                      }}
                       onClick={() => {
                         // The configure step shares this pathname. Desktop's
                         // plain-scroll capture is replaced when that step leaves,
                         // so keep the gallery position in the view-state channel.
                         writeViewState("autopilot-template-group", group);
                         writeViewState("autopilot-template-scroll", String(scrollElement.current?.scrollTop ?? 0));
+                        writeViewState("autopilot-template-focus", template.key);
                         onPick(template.key);
                       }}
-                      className="flex w-full min-w-0 flex-col rounded-lg border border-surface-border bg-surface p-5 text-left transition-colors hover:border-muted-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none"
+                      className={cn("flex w-full min-w-0 flex-col rounded-lg border border-surface-border bg-surface p-5 text-left transition-colors hover:border-muted-foreground hover:bg-surface-hover motion-reduce:transition-none", CATALOG_FOCUS)}
                     >
-                      <span className="flex items-center gap-3 text-title-sm font-semibold">
+                      <span className="flex items-center gap-3">
                         <span
                           aria-hidden="true"
                           className={cn(
@@ -211,13 +233,15 @@ export function AutopilotTemplateCatalog({
                         >
                           <Icon className="size-5" />
                         </span>
-                        <span className="min-w-0 break-words">{template.title}</span>
+                        <span className="min-w-0 break-words">
+                          <span className="block text-title-sm font-semibold">{template.title}</span>
+                          {template.key === "workday-repo-audit" && (
+                            <span className="mt-0.5 block text-caption font-medium text-foreground">{t(($) => $.catalog.recommended)}</span>
+                          )}
+                        </span>
                       </span>
                       <span className="mt-3 line-clamp-2 text-body text-muted-foreground">{template.description}</span>
                       <span className="mt-auto flex w-full flex-col gap-3 pt-4">
-                        {template.key === "workday-repo-audit" && (
-                          <span className="text-caption text-muted-foreground">{t(($) => $.catalog.recommended)}</span>
-                        )}
                         <span className="flex items-start gap-1.5 text-caption text-muted-foreground">
                           <Clock className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
                           <span className="min-w-0 break-words">{describe(parseCron(template.cron_expression, browserTimezone())) ?? template.cron_expression}</span>
@@ -235,7 +259,6 @@ export function AutopilotTemplateCatalog({
                 );
               })}
             </ul>
-            <p className="mt-6 text-caption text-muted-foreground">{t(($) => $.catalog.hint)}</p>
           </>
         )}
       </div>
