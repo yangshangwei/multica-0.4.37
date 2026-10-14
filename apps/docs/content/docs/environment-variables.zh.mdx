@@ -20,7 +20,7 @@ MULTICA_APP_URL=https://multica.example.com
 MULTICA_PUBLIC_URL=https://api.multica.example.com
 ```
 
-还需要配置 SMTP 邮件服务，否则验证码和邀请只会写入服务端日志。
+默认自托管使用设备身份登录，无需邮件服务。使用邮箱验证码或发送邮件邀请时，配置管理员提供的内网 SMTP；未配置任何邮件服务时，相关邮件只写入服务端日志。登录方式与启用条件见[登录与注册](/auth-setup)。
 
 <Callout type="warning">
 `JWT_SECRET` 在生产环境为必填：当 `APP_ENV=production` 时，后端会在密钥为空或等于已知占位值时拒绝启动（用 `openssl rand -hex 32` 生成）。也不要在生产环境设置 `MULTICA_DEV_VERIFICATION_CODE`。
@@ -154,19 +154,27 @@ MULTICA_PUBLIC_URL=https://api.multica.example.com
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
-| `REDIS_URL` | 空 | 用于共享限流、实时事件和 token cache；未设置时实时事件和邀请限流回退到进程内存，认证限流不生效 |
+| `REDIS_URL` | 空 | 用于共享限流、实时事件和 token cache；未设置时实时事件使用进程内存，限流策略见下表 |
 | `REDIS_DISABLE_CLIENT_NAME` | `false` | 托管 Redis 禁止 `CLIENT SETNAME` 时设为 `true` |
-| `RATE_LIMIT_AUTH` | `5` | 单 IP 每分钟发送验证码的次数 |
-| `RATE_LIMIT_AUTH_VERIFY` | `20` | 单 IP 每分钟验证验证码的次数 |
-| `RATE_LIMIT_INVITATION_ACTOR_10M` | `10` | 每位邀请人在 10 分钟滑动窗口内可创建的工作空间邀请数；设为 `0` 可关闭此项限流 |
-| `RATE_LIMIT_INVITATION_WORKSPACE_24H` | `50` | 同一工作空间内所有管理员在 24 小时滑动窗口内可创建的邀请总数；设为 `0` 可关闭此项限流 |
+| `MULTICA_PASSWORD_LIMITER_MODE` | 空，密码模式必填 | `single` 使用进程内存，仅适合单 API 实例；`shared` 供多副本共享限流，必须配置 `REDIS_URL` |
+| `RATE_LIMIT_AUTH` | `5` | `legacy` 模式单 IP 每分钟申请邮箱验证码或 Google 登录的次数，各接口独立计数 |
+| `RATE_LIMIT_AUTH_VERIFY` | `20` | `legacy` 模式单 IP 每分钟验证邮箱验证码或设备身份登录的次数，各接口独立计数 |
+| `RATE_LIMIT_INVITATION_ACTOR_10M` | `10` | 每位邀请人在 10 分钟滑动窗口内可创建的工作空间邮箱邀请数；设为 `0` 可关闭此项限流 |
+| `RATE_LIMIT_INVITATION_WORKSPACE_24H` | `50` | 同一工作空间内所有管理员在 24 小时滑动窗口内可创建的邮箱邀请总数；设为 `0` 可关闭此项限流 |
 | `RATE_LIMIT_INVITATION_RECIPIENT_24H` | `6` | 同一规范化收件邮箱跨工作空间在 24 小时滑动窗口内可收到的邀请数；设为 `0` 可关闭此项限流 |
 | `RATE_LIMIT_TRUSTED_PROXIES` | 空 | 允许提供 `X-Forwarded-For` 的代理 CIDR，逗号分隔 |
-| `MULTICA_TRUSTED_PROXIES` | 空 | 自动化 webhook 与实时连接使用的可信代理 CIDR |
+| `MULTICA_TRUSTED_PROXIES` | 空 | 密码认证、自动化 webhook 与实时连接使用的可信代理 CIDR |
 
 反向代理后的部署需要填写真实代理网段。不要直接信任所有来源，否则客户端可以伪造转发 IP。
 
-认证限流需要配置 `REDIS_URL`；未配置时，启动日志会提示认证限流已关闭。邀请限流在没有 Redis 时仍使用进程内存，配置 Redis 后则在多个副本间共享额度。如果已配置的 Redis 临时不可用，认证限流仍选择放行，而邀请创建会返回可重试的 `503`，不会在失去防护时发送邮件。
+| 请求与配置 | 未配置 Redis | 运行中 Redis 不可用 |
+|---|---|---|
+| `legacy` 邮箱、Google 和设备身份登录 | 上述逐 IP 限流关闭 | 跳过这一层限流，继续进行认证校验 |
+| `password` + `single` | 进程内存限流仍生效 | 限流继续使用进程内存 |
+| `password` + `shared` | 配置校验失败，无法启动 | 密码请求返回可重试的 `503`，不会放行或回退到内存 |
+| 工作空间邮箱邀请 | 使用进程内存限流 | 限流预检查失败时返回可重试的 `503`，不会发送邮件 |
+
+密码请求超出额度返回 `429`；限流器异常返回 `503`。`RATE_LIMIT_AUTH` 和 `RATE_LIMIT_AUTH_VERIFY` 不控制密码认证；邮箱验证码自身的有效期和发送间隔也不依赖这层 Redis 限流。密码模式的完整配置见[登录与注册](/auth-setup#开启密码登录)。
 
 ## 外部集成
 

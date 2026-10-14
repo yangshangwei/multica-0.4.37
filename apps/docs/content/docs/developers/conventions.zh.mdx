@@ -66,10 +66,10 @@ Web 和 Desktop 都有的逻辑，**必须**抽到共享包。"小段重复"也�
 
 ### TypeScript
 
-- 网络上 API 响应是 `snake_case`，api client 在边界处转成 `camelCase`。**TS 代码内部一律 camelCase**
+- API 响应与领域数据保留 `snake_case` 字段，例如 `issue.workspace_id`；API client 校验响应，不统一转换键名。本地变量和参数使用 `camelCase`
 - 类型：`PascalCase`（`Issue`、`AgentRuntime`），不加 `IPrefix`，不加 `_t` 后缀
 - 枚举：优先用 string literal union，需要 runtime 迭代时才用 `enum`
-- TanStack Query key：用 `<feature>/queries.ts` 里的工厂函数，例如 `issueKeys.detail(id)`
+- TanStack Query key：用 `<feature>/queries.ts` 里的工厂函数；工作空间范围的 key 必须包含 `wsId`，例如 `issueKeys.detail(wsId, id)`
 
 ### API 边界
 
@@ -116,7 +116,7 @@ Conventional 格式：`feat(scope)`、`fix(scope)`、`refactor(scope)`、`docs`�
 Multica 的产品名词分两类：
 
 - **日常词** —— 用户会直接说出口的词。**完整翻译成中文**，是不是数据库实体都一样：`issue` → 任务、`workspace` → 工作空间、`project` → 项目。
-- **Multica 专有词** —— 中文里没有对应词的概念（`skill`），或用户可能要照着敲、照着比对的 schema 标识符（`todo`、`in_progress`、`task_id`）。**用小写英文**呈现，读起来像类型名。
+- **Multica 专有词与标识符** —— 中文里没有对应词的概念（`skill`），或用户可能要照着敲、照着比对的 schema 标识符（`todo`、`in_progress`、`task_id`），保留小写英文。角色和内置状态的界面标签按下文规则本地化。
 
 其余规则以 `apps/docs/content/docs/*.zh.mdx` 为准 —— docs 是已经实战 20+ 篇的 CN voice 标准。但 docs 正文里的 `issue` 还没换成「任务」，正在单独清理；这个词以下面的表格为准，不要参考那些页面。
 
@@ -210,17 +210,25 @@ Multica 的 workspace 在当前中文界面和文档中统一称为**工作空�
 | Empty / Failed / Success | 空 / 失败 / 成功 |
 | Error / Warning | 错误 / 警告 |
 
-### 角色名 + 状态名（小写英文，不翻）
+### 角色与状态：标识符和显示名
 
-这些是 schema-level 标识符，中文环境也保持小写英文：
+API、数据库、CLI 参数和代码中的标识符保持英文，不随界面语言改变：
 
 - 角色：`owner` / `admin` / `member`
-- Issue 状态：`backlog` / `todo` / `in_progress` / `in_review` / `done` / `blocked` / `cancelled`
+- 内置任务状态：`backlog` / `todo` / `in_progress` / `in_review` / `done` / `blocked` / `cancelled`
 
-UI 里展示这些值时保持英文（必要时用 code-style 包起来）：
+界面和描述界面操作的文档使用当前语言的显示名：
 
-- "你需要 owner 权限"
-- "已切换到 in_progress"
+| 标识符 | 中文显示 |
+| --- | --- |
+| `owner` / `admin` / `member` | 所有者 / 管理员 / 成员 |
+| `backlog` / `todo` | 待规划 / 待办 |
+| `in_progress` / `in_review` | 进行中 / 审核中 |
+| `done` / `blocked` / `cancelled` | 已完成 / 已阻塞 / 已取消 |
+
+例如："你需要所有者权限"、"已切换到进行中"。角色使用对应的 locale 标签，不直接展示原始 key。
+
+任务状态显示使用 `useStatusLabel(wsId)`：内置状态通过 i18n 显示；自定义状态保留工作空间设置的名称，不做自动翻译。遇到尚未加载或未知的自定义状态时，helper 回退到原始 key。
 
 ### 词组组合规则
 
