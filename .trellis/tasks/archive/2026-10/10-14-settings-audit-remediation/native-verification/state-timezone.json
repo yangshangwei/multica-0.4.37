@@ -1,0 +1,22 @@
+{
+  "id": "timezone",
+  "recordedAt": "2026-10-14T12:13:18.656Z",
+  "fixture": "Memory-only API responses and writes in the disposable renderer.",
+  "evidence": {
+    "screenshot": "screenshots/state-timezone-pending.png",
+    "ax": "ax/state-timezone-pending.txt"
+  },
+  "requests": [
+    "Europe/London",
+    "Asia/Tokyo"
+  ],
+  "finalTimezone": "Asia/Tokyo",
+  "status": "pass",
+  "cleanup": {
+    "restored": true,
+    "methods": 2,
+    "queries": 1,
+    "safetyPresent": true
+  },
+  "completedAt": "2026-10-14T12:13:21.518Z"
+}

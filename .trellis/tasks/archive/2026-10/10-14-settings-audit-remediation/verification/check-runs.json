@@ -1,0 +1,157 @@
+{
+  "recordedAt": "2026-10-14T12:44:41.272539+00:00",
+  "runs": [
+    {
+      "id": "core-tests",
+      "command": "pnpm -C packages/core test query-access.test.ts api/personal-access-tokens.test.ts auth/token-queries.test.tsx workspace/queries.test.ts workspace/mutations.test.tsx workspace/mcp-template-queries.test.ts labels properties quick-actions issue-statuses triage/queries.test.ts dingtalk/queries.test.ts github/settings.test.ts --maxWorkers=2",
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\n> @multica/core@0.0.0 test /Volumes/artisan/code/2026/multica-0.4.37/packages/core\n> vitest run query-access.test.ts api/personal-access-tokens.test.ts auth/token-queries.test.tsx workspace/queries.test.ts workspace/mutations.test.tsx workspace/mcp-template-queries.test.ts labels properties quick-actions issue-statuses triage/queries.test.ts dingtalk/queries.test.ts github/settings.test.ts --maxWorkers=2\n\n\n RUN  v4.1.0 /Volumes/artisan/code/2026/multica-0.4.37/packages/core\n\n\n Test Files  13 passed (13)\n      Tests  105 passed (105)\n   Start at  20:16:54\n   Duration  4.45s (transform 1.15s, setup 0ms, import 3.47s, tests 1.64s, environment 2.57s)\n\n"
+    },
+    {
+      "id": "views-tests",
+      "command": "pnpm -C packages/views test settings triage common/avatar-upload-control.test.tsx locales/parity.test.ts agents/components/tabs/integrations-tab.test.tsx --maxWorkers=2",
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\n> @multica/views@0.0.0 test /Volumes/artisan/code/2026/multica-0.4.37/packages/views\n> vitest run settings triage common/avatar-upload-control.test.tsx locales/parity.test.ts agents/components/tabs/integrations-tab.test.tsx --maxWorkers=2\n\n\n RUN  v4.1.0 /Volumes/artisan/code/2026/multica-0.4.37/packages/views\n\n\n Test Files  58 passed (58)\n      Tests  783 passed (783)\n   Start at  20:16:54\n   Duration  46.76s (transform 4.46s, setup 1.63s, import 20.71s, tests 53.32s, environment 13.95s)\n\n"
+    },
+    {
+      "id": "desktop-tests",
+      "command": "pnpm -C apps/desktop test daemon-settings-tab desktop-behavior-settings-tab updates-settings-tab --maxWorkers=2",
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\n> @multica/desktop@0.1.0 test /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop\n> vitest run daemon-settings-tab desktop-behavior-settings-tab updates-settings-tab --maxWorkers=2\n\n\n RUN  v4.1.0 /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop\n\n\n Test Files  3 passed (3)\n      Tests  19 passed (19)\n   Start at  20:16:54\n   Duration  5.26s (transform 4.24s, setup 243ms, import 6.81s, tests 809ms, environment 1.46s)\n\n"
+    },
+    {
+      "id": "core-typecheck",
+      "command": "pnpm -C packages/core typecheck",
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\n> @multica/core@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/core\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "views-typecheck",
+      "command": "pnpm -C packages/views typecheck",
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\n> @multica/views@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/views\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "desktop-typecheck",
+      "command": "pnpm -C apps/desktop typecheck",
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\n> @multica/desktop@0.1.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop\n> pnpm run typecheck:node && pnpm run typecheck:web\n\n\n> @multica/desktop@0.1.0 typecheck:node /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop\n> tsc --noEmit -p tsconfig.node.json --composite false\n\n\n> @multica/desktop@0.1.0 typecheck:web /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop\n> tsc --noEmit -p tsconfig.web.json --composite false\n\n"
+    },
+    {
+      "id": "web-typecheck",
+      "command": "pnpm -C apps/web typecheck",
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\n> @multica/web@0.4.40 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/web\n> tsc --noEmit\n\n"
+    },
+    {
+      "id": "core-lint",
+      "command": [
+        "pnpm",
+        "-C",
+        "packages/core",
+        "exec",
+        "eslint",
+        "api/client.ts",
+        "api/personal-access-token-schemas.ts",
+        "api/personal-access-tokens.test.ts",
+        "auth/index.ts",
+        "auth/token-queries.test.tsx",
+        "auth/token-queries.ts",
+        "composio/queries.ts",
+        "dingtalk/queries.test.ts",
+        "dingtalk/queries.ts",
+        "github/queries.ts",
+        "issue-statuses/queries.ts",
+        "labels/queries.ts",
+        "lark/queries.ts",
+        "properties/queries.ts",
+        "query-access.test.ts",
+        "query-access.ts",
+        "quick-actions/queries.ts",
+        "slack/queries.ts",
+        "telegram/queries.ts",
+        "triage/queries.ts",
+        "vcs/queries.ts",
+        "wecom/queries.ts",
+        "workspace/queries.ts"
+      ],
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n"
+    },
+    {
+      "id": "views-lint",
+      "command": [
+        "pnpm",
+        "-C",
+        "packages/views",
+        "exec",
+        "eslint",
+        "agents/components/tabs/integrations-tab.test.tsx",
+        "agents/components/tabs/integrations-tab.tsx",
+        "settings/components/account-tab.test.tsx",
+        "settings/components/account-tab.tsx",
+        "settings/components/catalog-recovery.test.tsx",
+        "settings/components/composio-tab.tsx",
+        "settings/components/dingtalk-tab.test.tsx",
+        "settings/components/dingtalk-tab.tsx",
+        "settings/components/github-tab.test.tsx",
+        "settings/components/github-tab.tsx",
+        "settings/components/integrations-tab.test.tsx",
+        "settings/components/integrations-tab.tsx",
+        "settings/components/issue-statuses-recovery.test.tsx",
+        "settings/components/issue-statuses-tab.tsx",
+        "settings/components/keyboard-shortcuts-tab.test.tsx",
+        "settings/components/keyboard-shortcuts-tab.tsx",
+        "settings/components/labels-tab.tsx",
+        "settings/components/lark-tab.tsx",
+        "settings/components/mcp-tab.test.tsx",
+        "settings/components/mcp-tab.tsx",
+        "settings/components/members-tab.test.tsx",
+        "settings/components/members-tab.tsx",
+        "settings/components/preferences-tab.test.tsx",
+        "settings/components/preferences-tab.tsx",
+        "settings/components/properties-tab.tsx",
+        "settings/components/provider-settings-recovery.test.tsx",
+        "settings/components/quick-actions-tab.tsx",
+        "settings/components/repositories-tab.recovery.test.tsx",
+        "settings/components/repositories-tab.tsx",
+        "settings/components/settings-query-feedback.test.ts",
+        "settings/components/settings-query-feedback.tsx",
+        "settings/components/slack-tab.tsx",
+        "settings/components/telegram-tab.test.tsx",
+        "settings/components/telegram-tab.tsx",
+        "settings/components/tokens-tab.test.tsx",
+        "settings/components/tokens-tab.tsx",
+        "settings/components/use-auto-save.test.tsx",
+        "settings/components/use-auto-save.ts",
+        "settings/components/vcs-tab.tsx",
+        "settings/components/wecom-tab.tsx",
+        "settings/components/workspace-tab.recovery.test.tsx",
+        "settings/components/workspace-tab.tsx",
+        "triage/triage-settings-recovery.test.tsx",
+        "triage/triage-settings-tab.test.tsx",
+        "triage/triage-settings-tab.tsx"
+      ],
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n"
+    },
+    {
+      "id": "desktop-lint",
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/desktop",
+        "exec",
+        "eslint",
+        "src/renderer/src/components/daemon-settings-tab.test.tsx",
+        "src/renderer/src/components/daemon-settings-tab.tsx",
+        "src/renderer/src/components/desktop-behavior-settings-tab.test.tsx",
+        "src/renderer/src/components/desktop-behavior-settings-tab.tsx",
+        "src/renderer/src/components/updates-settings-tab.test.tsx",
+        "src/renderer/src/components/updates-settings-tab.tsx"
+      ],
+      "exitCode": 0,
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n"
+    }
+  ]
+}

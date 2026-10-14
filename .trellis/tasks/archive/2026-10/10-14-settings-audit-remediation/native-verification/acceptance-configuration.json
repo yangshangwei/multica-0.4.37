@@ -1,0 +1,47 @@
+{
+  "recordedAt": "2026-10-14T11:34:05.783Z",
+  "exercises": [
+    {
+      "name": "probe-status-loop.js",
+      "exitCode": 0
+    },
+    {
+      "name": "probe-configuration.js",
+      "exitCode": 0
+    }
+  ],
+  "checks": [
+    {
+      "id": "F01-bounded-status-recovery",
+      "status": "pass",
+      "evidence": "probe-status-loop-response500.json"
+    },
+    {
+      "id": "F04-bounded-property-dialog",
+      "status": "pass",
+      "evidence": "probe-configuration-results.json"
+    },
+    {
+      "id": "F06-shortcut-current-values",
+      "status": "pass",
+      "evidence": "probe-configuration-results.json"
+    },
+    {
+      "id": "F05-property-type",
+      "status": "pass",
+      "evidence": "probe-configuration-results.json"
+    },
+    {
+      "id": "F05-status-category",
+      "status": "pass",
+      "evidence": "probe-configuration-results.json"
+    },
+    {
+      "id": "F07-warning-contrast",
+      "status": "pass",
+      "evidence": "probe-configuration-results.json"
+    }
+  ],
+  "completedAt": "2026-10-14T11:34:23.422Z",
+  "status": "pass"
+}

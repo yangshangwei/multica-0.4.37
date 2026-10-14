@@ -1,0 +1,217 @@
+diff --git a/packages/core/api/client.ts b/packages/core/api/client.ts
+index 94887bd7b..6d779a320 100755
+--- a/packages/core/api/client.ts
++++ b/packages/core/api/client.ts
+@@ -1,5 +1,11 @@
+ import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
+ import { z } from "zod";
++import {
++  parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions,
++  type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
++  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationEditInput,
++  type CollaborationStatusAction, type CollaborationLifecycleAction, type CollaborationStatusInput, type CollaborationLifecycleInput,
++} from "../collaboration/schema";
+ import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
+ export type { ApiRequestOptions } from "./request-lifecycle";
+ import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
+@@ -868,6 +874,155 @@ export class ApiClient {
+     return `${this.endpointEpoch}:${this.credentialEpoch}`;
+   }
+ 
++  private async fetchCollaboration(path: string, options?: RequestInit): Promise<unknown> {
++    const scope = this.getSessionScope();
++    const authEpoch = this.authEpoch;
++    try {
++      const data = await this.fetch<unknown>(path, options);
++      if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) {
++        throw new DOMException("Collaboration request superseded", "AbortError");
++      }
++      return data;
++    } catch (error) {
++      if (scope !== this.getSessionScope()) {
++        throw new DOMException("Collaboration request superseded", "AbortError");
++      }
++      options?.signal?.throwIfAborted();
++      // JSON parser errors can contain response text. Let the schema produce
++      // a redacted unavailable result without exposing that private content.
++      if (error instanceof SyntaxError) return undefined;
++      throw error;
++    }
++  }
++
++  async getCollaborationIssue(id: string, options?: { signal?: AbortSignal }) {
++    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}`, { signal: options?.signal });
++    const issue = parseCollaborationIssue(raw);
++    return issue && sameResourceIdentity(issue.id, id) ? issue : null;
++  }
++
++  async getCollaborationCreation(sourceWorkspaceId: string, requestId: string, options?: { signal?: AbortSignal }) {
++    const query = new URLSearchParams({ source_workspace_id: sourceWorkspaceId });
++    const raw = await this.fetchCollaboration(`/api/collaboration/creations/${encodeURIComponent(requestId)}?${query}`, { signal: options?.signal });
++    const issue = parseCollaborationIssue(raw);
++    return issue && sameResourceIdentity(issue.source_workspace.id, sourceWorkspaceId) ? issue : null;
++  }
++
++  async getCollaborationWorkbench(params: { view?: "current" | "participating"; cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
++    const query = new URLSearchParams({ view: params.view ?? "current" });
++    if (params.limit !== undefined) query.set("limit", String(params.limit));
++    if (params.cursor !== undefined) query.set("cursor", params.cursor);
++    const raw = await this.fetchCollaboration(`/api/me/workbench?${query}`, { signal: options?.signal });
++    return parseCollaborationWorkbench(raw);
++  }
++
++  private async writeCollaborationOperation(
++    path: string,
++    input: CollaborationWriteInput,
++    fields: {
++      target_user_id?: string; purpose?: string; note?: string; information_request_id?: string; expected_status?: string;
++      action?: CollaborationLifecycleAction; status?: string; status_options_version?: string;
++      title?: string; description?: string; start_date?: string | null; due_date?: string | null;
++    },
++    options?: { signal?: AbortSignal },
++    method: "POST" | "PATCH" = "POST",
++  ) {
++    const raw = await this.fetchCollaboration(path, {
++      method,
++      signal: options?.signal,
++      headers: { "Idempotency-Key": input.requestId },
++      body: JSON.stringify({
++        expected_collaboration_revision: input.expectedCollaborationRevision,
++        expected_lifecycle_epoch: input.expectedLifecycleEpoch,
++        expected_participant_epoch: input.expectedParticipantEpoch,
++        expected_account_epoch: input.expectedAccountEpoch,
++        ...fields,
++      }),
++    });
++    return parseCollaborationOperation(raw);
++  }
++
++  async addCollaborationParticipant(id: string, input: CollaborationParticipantInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/participants`, input, {
++      target_user_id: input.targetUserId,
++    }, options);
++  }
++
++  async createCollaborationHandoff(id: string, input: CollaborationHandoffInput, options?: { signal?: AbortSignal }) {
++    if (input.purpose === "transfer" && ("expectedStatus" in input || "statusOptionsVersion" in input)) {
++      throw new TypeError("Transfer does not accept status confirmation fields");
++    }
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs`, input, {
++      target_user_id: input.targetUserId,
++      purpose: input.purpose,
++      note: input.note,
++      ...(input.purpose === "information" ? { expected_status: input.expectedStatus, status_options_version: input.statusOptionsVersion } : {}),
++    }, options);
++  }
++
++  /** The recipient comes from the request on the server, never from the client. */
++  async returnCollaborationInformation(id: string, input: CollaborationInformationReturnInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/information-returns`, input, {
++      information_request_id: input.informationRequestId,
++      expected_status: input.expectedStatus,
++      status_options_version: input.statusOptionsVersion,
++      note: input.note,
++    }, options);
++  }
++
++  /** Hands the stage result to the creator. It never completes the issue. */
++  async submitCollaborationAcceptance(id: string, input: CollaborationAcceptanceInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/acceptance-submissions`, input, {
++      expected_status: input.expectedStatus,
++      status_options_version: input.statusOptionsVersion,
++      note: input.note,
++    }, options);
++  }
++
++  async removeCollaborationParticipant(id: string, userId: string, input: CollaborationWriteInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/participants/${encodeURIComponent(userId)}/remove`, input, {}, options);
++  }
++
++  async leaveCollaborationIssue(id: string, input: CollaborationWriteInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/leave`, input, {}, options);
++  }
++
++  async getCollaborationOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
++    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal });
++    return parseCollaborationOperation(raw);
++  }
++
++  async getCollaborationStatusOptions(id: string, action: CollaborationStatusAction, options?: { signal?: AbortSignal }) {
++    const query = new URLSearchParams({ action });
++    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/status-options?${query}`, { signal: options?.signal });
++    const statusOptions = parseCollaborationStatusOptions(raw);
++    return statusOptions?.action === action ? statusOptions : null;
++  }
++
++  async changeCollaborationStatus(id: string, input: CollaborationStatusInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}`, input, {
++      status: input.status,
++      status_options_version: input.statusOptionsVersion,
++    }, options, "PATCH");
++  }
++
++  async editCollaborationIssue(id: string, input: CollaborationEditInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}`, input, {
++      title: input.title,
++      description: input.description,
++      start_date: input.startDate,
++      due_date: input.dueDate,
++    }, options, "PATCH");
++  }
++
++  async changeCollaborationLifecycle(id: string, input: CollaborationLifecycleInput, options?: { signal?: AbortSignal }) {
++    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/lifecycle`, input, {
++      action: input.action,
++      status: input.status,
++      status_options_version: input.statusOptionsVersion,
++    }, options);
++  }
++
+   async getAdminMe(options?: { signal?: AbortSignal }) {
+     const raw = await this.fetch<unknown>("/api/admin/me", { signal: options?.signal });
+     return parseAdminMe(raw);
+@@ -1127,6 +1282,8 @@ export class ApiClient {
+     const rid = createRequestId();
+     const start = Date.now();
+     const method = init?.method ?? "GET";
++    const collaborationRequest = path.startsWith("/api/collaboration/") || /^\/api\/me\/(?:workbench|collaboration-notifications)(?:[/?]|$)/.test(path);
++    const logPath = collaborationRequest ? path.split("?", 1)[0] : path;
+ 
+     // Captured where the headers are built: this is the credential the
+     // request speaks for, and the 401 handler below compares it against the
+@@ -1140,7 +1297,7 @@ export class ApiClient {
+       ...((init?.headers as Record<string, string>) ?? {}),
+     };
+ 
+-    if (path.startsWith("/api/admin/")) {
++    if (path.startsWith("/api/admin/") || collaborationRequest) {
+       for (const name of Object.keys(headers)) {
+         if (["x-workspace-id", "x-workspace-slug"].includes(name.toLowerCase())) delete headers[name];
+       }
+@@ -1153,7 +1310,7 @@ export class ApiClient {
+       headers["X-Installation-Proof"] = metadata.proof;
+     }
+ 
+-    this.logger.info(`→ ${method} ${path}`, { rid });
++    this.logger.info(`→ ${method} ${logPath}`, { rid });
+ 
+     const signal = init?.signal ? AbortSignal.any([init.signal, this.endpointController.signal]) : this.endpointController.signal;
+     signal.throwIfAborted();
+@@ -1185,7 +1342,7 @@ export class ApiClient {
+       // Session rejection has a recovery path; console.error would open the
+       // development error overlay while the application returns to sign-in.
+       const logLevel = status === 401 || status === 404 ? "warn" : "error";
+-      this.logger[logLevel](`← ${status} ${path}`, { rid, duration: `${Date.now() - start}ms`, error: path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
++      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: collaborationRequest ? "Collaboration request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
+       throw new ApiError(
+         message,
+         status,
+@@ -1198,7 +1355,7 @@ export class ApiClient {
+       );
+     }
+ 
+-    this.logger.info(`← ${res.status} ${path}`, { rid, duration: `${Date.now() - start}ms` });
++    this.logger.info(`← ${res.status} ${logPath}`, { rid, duration: `${Date.now() - start}ms` });
+     return res;
+   }
+ 

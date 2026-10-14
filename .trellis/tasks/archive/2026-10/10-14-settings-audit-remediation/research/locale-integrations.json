@@ -1,0 +1,44 @@
+{
+  "packages/views/locales/en/settings.json": {
+    "integrations": {
+      "load_failed": "Could not load {{provider}} settings.",
+      "refresh_failed": "Could not refresh {{provider}} settings. Previously loaded settings are still shown."
+    },
+    "composio": {
+      "refresh_failed": "Could not refresh Composio toolkits. Previously loaded toolkits are still shown.",
+      "connections_loading": "Loading connections...",
+      "connections_refresh_failed": "Could not refresh connections. Previously loaded connections are still shown.",
+      "search_label": "Search Composio toolkits"
+    },
+    "mcp": {
+      "market": {
+        "workspace_loading": "Loading shared servers...",
+        "workspace_refresh_error": "Could not refresh shared servers. Previously loaded servers are still shown."
+      }
+    },
+    "vcs": {
+      "copy_field": "Copy {{field}}"
+    }
+  },
+  "packages/views/locales/zh-Hans/settings.json": {
+    "integrations": {
+      "load_failed": "无法加载 {{provider}} 设置。",
+      "refresh_failed": "无法刷新 {{provider}} 设置，仍显示上次加载的内容。"
+    },
+    "composio": {
+      "refresh_failed": "无法刷新 Composio 工具包，仍显示上次加载的内容。",
+      "connections_loading": "正在加载连接...",
+      "connections_refresh_failed": "无法刷新连接，仍显示上次加载的内容。",
+      "search_label": "搜索 Composio 工具包"
+    },
+    "mcp": {
+      "market": {
+        "workspace_loading": "正在加载共享服务器...",
+        "workspace_refresh_error": "无法刷新共享服务器，仍显示上次加载的内容。"
+      }
+    },
+    "vcs": {
+      "copy_field": "复制 {{field}}"
+    }
+  }
+}

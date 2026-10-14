@@ -1,0 +1,60 @@
+{
+  "packages/views/locales/en/settings.json": {
+    "query_feedback": {
+      "retry": "Retry",
+      "retrying": "Retrying...",
+      "access_denied": "You do not have access to these settings.",
+      "permissions_loading": "Loading workspace permissions...",
+      "permissions_load_failed": "Could not load workspace permissions.",
+      "permissions_refresh_failed": "Could not refresh workspace permissions."
+    },
+    "labels": {
+      "load_failed": "Could not load labels.",
+      "refresh_failed": "Could not refresh labels."
+    },
+    "properties": {
+      "load_failed": "Could not load properties.",
+      "refresh_failed": "Could not refresh properties."
+    },
+    "quick_actions": {
+      "load_failed": "Could not load quick actions.",
+      "refresh_failed": "Could not refresh quick actions."
+    },
+    "issue_statuses": {
+      "load_failed": "Could not load statuses.",
+      "refresh_failed": "Could not refresh statuses."
+    },
+    "shortcuts": {
+      "current_binding": "Current shortcut: {{shortcut}}"
+    }
+  },
+  "packages/views/locales/zh-Hans/settings.json": {
+    "query_feedback": {
+      "retry": "重试",
+      "retrying": "正在重试...",
+      "access_denied": "你没有访问这些设置的权限。",
+      "permissions_loading": "正在加载工作空间权限...",
+      "permissions_load_failed": "无法加载工作空间权限。",
+      "permissions_refresh_failed": "无法刷新工作空间权限。"
+    },
+    "labels": {
+      "load_failed": "无法加载标签。",
+      "refresh_failed": "无法刷新标签。"
+    },
+    "properties": {
+      "load_failed": "无法加载属性。",
+      "refresh_failed": "无法刷新属性。"
+    },
+    "quick_actions": {
+      "load_failed": "无法加载快捷操作。",
+      "refresh_failed": "无法刷新快捷操作。"
+    },
+    "issue_statuses": {
+      "load_failed": "无法加载状态。",
+      "refresh_failed": "无法刷新状态。"
+    },
+    "shortcuts": {
+      "current_binding": "当前快捷键：{{shortcut}}"
+    }
+  }
+}

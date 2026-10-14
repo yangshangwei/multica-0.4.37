@@ -1,0 +1,22 @@
+{
+  "id": "triage",
+  "recordedAt": "2026-10-14T12:05:14.984Z",
+  "fixture": "Memory-only API responses and writes in the disposable renderer.",
+  "retained": {
+    "sameNode": true,
+    "focused": true,
+    "checked": "true"
+  },
+  "evidence": {
+    "screenshot": "screenshots/state-triage-retained-error.png",
+    "ax": "ax/state-triage-retained-error.txt"
+  },
+  "status": "pass",
+  "cleanup": {
+    "restored": true,
+    "methods": 3,
+    "queries": 2,
+    "safetyPresent": true
+  },
+  "completedAt": "2026-10-14T12:05:17.949Z"
+}

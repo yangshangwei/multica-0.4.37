@@ -1,0 +1,85 @@
+{
+  "recordedAt": "2026-10-14T11:34:06.997Z",
+  "fixture": "In-memory fetch Response(500), real ApiClient and Query observers",
+  "reads": [
+    {
+      "time": 200796,
+      "status": 500
+    },
+    {
+      "time": 201810.69999998808,
+      "status": 500
+    }
+  ],
+  "trace": [
+    {
+      "time": 200782.09999999404,
+      "type": "added",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 0
+    },
+    {
+      "time": 200782.09999999404,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 0
+    },
+    {
+      "time": 200795.09999999404,
+      "type": "observerAdded",
+      "status": "pending",
+      "fetch": "idle",
+      "observers": 1
+    },
+    {
+      "time": 200795.09999999404,
+      "type": "updated",
+      "action": "fetch",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 1
+    },
+    {
+      "time": 200808.59999999404,
+      "type": "observerResultsUpdated",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 1
+    },
+    {
+      "time": 200808.59999999404,
+      "type": "updated",
+      "action": "failed",
+      "status": "pending",
+      "fetch": "fetching",
+      "observers": 1
+    },
+    {
+      "time": 201811.59999999404,
+      "type": "observerResultsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 1
+    },
+    {
+      "time": 201811.69999998808,
+      "type": "updated",
+      "action": "error",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 1
+    },
+    {
+      "time": 201826.39999999106,
+      "type": "observerOptionsUpdated",
+      "status": "error",
+      "fetch": "idle",
+      "observers": 1
+    }
+  ],
+  "panel": "任务状态\n\n定义任务流转的工作流。每个状态的行为由它所属的分类决定。\n\n无法加载状态。\n\n重试",
+  "confirmed": false,
+  "intervalMs": 1014.6999999880791
+}

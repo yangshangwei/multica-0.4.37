@@ -1,0 +1,23 @@
+{
+  "id": "mcp",
+  "recordedAt": "2026-10-14T12:05:09.844Z",
+  "fixture": "Memory-only API responses and writes in the disposable renderer.",
+  "transient": {
+    "sameNode": true,
+    "focused": true,
+    "value": "Native retained MCP draft"
+  },
+  "evidence": {
+    "screenshot": "screenshots/state-mcp-retained-500.png",
+    "ax": "ax/state-mcp-retained-500.txt"
+  },
+  "deniedSnapshotStayedAbsent": true,
+  "status": "pass",
+  "cleanup": {
+    "restored": true,
+    "methods": 1,
+    "queries": 2,
+    "safetyPresent": true
+  },
+  "completedAt": "2026-10-14T12:05:14.982Z"
+}

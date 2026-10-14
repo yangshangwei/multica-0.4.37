@@ -1,0 +1,24 @@
+{
+  "id": "token",
+  "recordedAt": "2026-10-14T12:15:18.636Z",
+  "fixture": "Memory-only API responses and writes in the disposable renderer.",
+  "unacknowledgedDismissalsBlocked": [
+    "escape",
+    "backdrop",
+    "close",
+    "done"
+  ],
+  "evidence": {
+    "screenshot": "screenshots/state-token-revoke-failure.png",
+    "ax": "ax/state-token-revoke-failure.txt"
+  },
+  "revokeRequests": 2,
+  "status": "pass",
+  "cleanup": {
+    "restored": true,
+    "methods": 4,
+    "queries": 2,
+    "safetyPresent": true
+  },
+  "completedAt": "2026-10-14T12:15:21.440Z"
+}

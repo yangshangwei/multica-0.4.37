@@ -1,0 +1,11 @@
+{
+  "score": 96,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "The property dialog now stays within the native viewport, with its title and final actions fixed around a scrollable form body.",
+    "The 450 CSS px footer stacks the existing actions while preserving the established typography, colors and card treatment."
+  ],
+  "suggestions": [],
+  "reasoning": "Compared the original clipped 200% screenshot with the current 200% and 900x700 captures. The bounded dialog fixes the audited geometry while retaining the existing visual system; focus/scroll probes separately verify all fields and actions are reachable."
+}

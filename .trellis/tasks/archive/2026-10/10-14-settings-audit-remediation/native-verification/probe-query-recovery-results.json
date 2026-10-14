@@ -1,0 +1,125 @@
+{
+  "recordedAt": "2026-10-14T11:51:34.096Z",
+  "cases": [
+    {
+      "case": "cold-labels",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 2,
+      "panel": "标签\n\n分别管理工作空间中用于整理任务和 skill 的标签。两类标签相互独立。\n\n任务\nSkill\n新建标签\n\n无法加载标签。\n\n重试",
+      "alerts": 1,
+      "retryButtons": 1,
+      "queries": [
+        {
+          "key": [
+            "labels",
+            "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+            "list",
+            "issue"
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": false
+    },
+    {
+      "case": "cold-properties",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 2,
+      "panel": "属性\n\n为该工作空间的任务定义类型化的自定义属性。属性值设置在每个任务上，智能体可读写。\n\n显示已归档\n新建属性\n\n无法加载属性。\n\n重试",
+      "alerts": 1,
+      "retryButtons": 1,
+      "queries": [
+        {
+          "key": [
+            "properties",
+            "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+            "list",
+            true
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": false
+    },
+    {
+      "case": "cold-quick-actions",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 2,
+      "panel": "快捷操作\n\n预先配置好执行的智能体和提示词，之后在任意任务侧边栏一键触发。\n\n新建快捷操作\n\n无法加载快捷操作。\n\n重试",
+      "alerts": 1,
+      "retryButtons": 1,
+      "queries": [
+        {
+          "key": [
+            "quick-actions",
+            "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+            "list",
+            true
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": false
+    },
+    {
+      "case": "cold-issue-statuses",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 2,
+      "panel": "任务状态\n\n定义任务流转的工作流。每个状态的行为由它所属的分类决定。\n\n无法加载状态。\n\n重试",
+      "alerts": 1,
+      "retryButtons": 1,
+      "queries": [
+        {
+          "key": [
+            "issue-statuses",
+            "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+            "list"
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": false
+    },
+    {
+      "case": "cold-members",
+      "fixture": "HTTP 500 on a read-only GET",
+      "requests": 3,
+      "panel": "成员\n\n无法加载工作空间成员。\n\n重试",
+      "alerts": 1,
+      "retryButtons": 1,
+      "queries": [
+        {
+          "key": [
+            "workspaces",
+            "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+            "members"
+          ],
+          "status": "error",
+          "hasData": false
+        }
+      ],
+      "findingConfirmed": false,
+      "workspaceFallback": "常规\n\n无法加载工作空间权限。\n\n正在重试...\n工作空间信息\n工作空间标志\n点击图标上传新图片\n北\n名称\n描述\n上下文\nSlug\n任务前缀\n用于任务编号，例如 POLA-123。\n规划设置\n规划时区\n用于项目日期计算和新建迭代。已有迭代保留原时区。\nAsia/Shanghai\n\n只有管理员和所有者可以修改工作空间设置。",
+      "workspaceEnabledButtons": [
+        {
+          "name": "正在重试...",
+          "disabled": true
+        },
+        {
+          "name": "北",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "case": "mcp-cached-refresh",
+      "fixture": "HTTP 500 on MCP GET with existing cache",
+      "requests": 0,
+      "probeError": "locator.click: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^重命名 MCP Server/ }).first()\u001b[22m\n"
+    }
+  ]
+}

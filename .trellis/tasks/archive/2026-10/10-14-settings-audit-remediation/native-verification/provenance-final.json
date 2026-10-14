@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-14T12:26:50.782599+00:00",
+  "sourceManifest": "../verification/source.json",
+  "sourceFileCount": 76,
+  "head": "e7323b33d4f8b493aaddbb50604eb6b0d54bf006",
+  "sourceUnchangedSinceFinalChecks": true,
+  "electron": "39.8.7",
+  "node": "v22.23.2",
+  "api": "http://localhost:18572",
+  "renderer": "http://localhost:5666",
+  "viewportAndZoom": [
+    [
+      1440,
+      1000,
+      1
+    ],
+    [
+      900,
+      900,
+      1
+    ],
+    [
+      900,
+      700,
+      1
+    ],
+    [
+      900,
+      1000,
+      2
+    ]
+  ],
+  "nativeControlFixtures": "scripts/harness.cjs, scripts/resume-boot.mjs",
+  "mutationGuard": "scripts/acceptance-safety.mjs",
+  "workCommits": [
+    "f3e1161a46fab6cab448a4fb44575c5464a2f37c",
+    "6ccd5e643485bafb2408c343d3bca289f319e0f4"
+  ]
+}

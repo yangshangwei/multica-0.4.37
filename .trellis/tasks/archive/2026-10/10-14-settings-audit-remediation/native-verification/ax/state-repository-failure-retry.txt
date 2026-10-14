@@ -1,0 +1,10 @@
+- banner:
+  - status
+- region "Notifications alt+T":
+  - list:
+    - listitem: Native acceptance repository save failed
+- alertdialog "删除代码仓库？":
+  - heading "删除代码仓库？" [level=2]
+  - paragraph: 此代码仓库将立即从工作空间中移除。
+  - button "取消"
+  - button "删除仓库"

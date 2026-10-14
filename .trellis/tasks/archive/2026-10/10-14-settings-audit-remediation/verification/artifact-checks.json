@@ -1,0 +1,15 @@
+{
+  "patches": [
+    {
+      "file": "research/preexisting-api.patch",
+      "syntax": "pass",
+      "note": "Unified-diff blank context lines intentionally contain their leading space."
+    },
+    {
+      "file": "verification/pat-only.patch",
+      "syntax": "pass",
+      "note": "Unified-diff blank context lines intentionally contain their leading space."
+    }
+  ],
+  "whitespaceExclusion": "Unified-diff data (*.patch) only; all code, prose and other artifacts are checked."
+}

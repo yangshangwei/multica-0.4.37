@@ -1,0 +1,68 @@
+{
+  "packages/views/locales/en/settings.json": {
+    "auto_save": {
+      "unsaved": "Unsaved changes"
+    },
+    "account": {
+      "name_required": "Enter your name to save these changes."
+    },
+    "workspace": {
+      "name_required": "Enter a workspace name to save these changes."
+    },
+    "members": {
+      "loading": "Loading members...",
+      "load_failed": "Could not load workspace members.",
+      "refresh_failed": "Could not refresh workspace members.",
+      "invite_role_label": "Invitation role",
+      "pending_heading": "Pending invitations",
+      "invitations_loading": "Loading invitations...",
+      "invitations_load_failed": "Could not load invitations.",
+      "invitations_refresh_failed": "Could not refresh invitations.",
+      "share_links_heading": "Share links",
+      "share_links_loading": "Loading share links...",
+      "share_links_load_failed": "Could not load share links.",
+      "share_links_refresh_failed": "Could not refresh share links.",
+      "share_link_role_label": "Share link role",
+      "share_link_expiry_label": "Share link expiration"
+    },
+    "repositories": {
+      "github_installations_loading": "Loading GitHub connections...",
+      "github_installations_load_failed": "Could not load GitHub connections.",
+      "github_installations_refresh_failed": "Could not refresh GitHub connections.",
+      "github_refresh_failed": "Could not refresh repositories from GitHub."
+    }
+  },
+  "packages/views/locales/zh-Hans/settings.json": {
+    "auto_save": {
+      "unsaved": "有未保存的修改"
+    },
+    "account": {
+      "name_required": "请填写姓名后保存修改。"
+    },
+    "workspace": {
+      "name_required": "请填写工作空间名称后保存修改。"
+    },
+    "members": {
+      "loading": "正在加载成员...",
+      "load_failed": "无法加载工作空间成员。",
+      "refresh_failed": "无法刷新工作空间成员。",
+      "invite_role_label": "受邀成员角色",
+      "pending_heading": "待处理的邀请",
+      "invitations_loading": "正在加载邀请...",
+      "invitations_load_failed": "无法加载邀请。",
+      "invitations_refresh_failed": "无法刷新邀请。",
+      "share_links_heading": "分享链接",
+      "share_links_loading": "正在加载分享链接...",
+      "share_links_load_failed": "无法加载分享链接。",
+      "share_links_refresh_failed": "无法刷新分享链接。",
+      "share_link_role_label": "分享链接角色",
+      "share_link_expiry_label": "分享链接有效期"
+    },
+    "repositories": {
+      "github_installations_loading": "正在加载 GitHub 连接...",
+      "github_installations_load_failed": "无法加载 GitHub 连接。",
+      "github_installations_refresh_failed": "无法刷新 GitHub 连接。",
+      "github_refresh_failed": "无法刷新 GitHub 仓库。"
+    }
+  }
+}

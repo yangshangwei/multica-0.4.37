@@ -1,0 +1,11 @@
+- banner:
+  - status
+- region "Notifications alt+T":
+  - list:
+    - listitem: Native acceptance revoke failure
+- alertdialog "吊销 token":
+  - heading "吊销 token" [level=2]
+  - paragraph: 该 token 将被永久吊销且不再可用。此操作不可撤销。
+  - alert: Native acceptance revoke failure
+  - button "取消"
+  - button "吊销"

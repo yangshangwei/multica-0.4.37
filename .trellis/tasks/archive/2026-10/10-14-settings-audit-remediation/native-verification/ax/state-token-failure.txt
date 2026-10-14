@@ -1,0 +1,8 @@
+- banner:
+  - status
+- region "Notifications alt+T"
+- alertdialog "吊销 token":
+  - heading "吊销 token" [level=2]
+  - paragraph: 该 token 将被永久吊销且不再可用。此操作不可撤销。
+  - button "取消" [disabled]
+  - button "正在吊销..." [disabled]
