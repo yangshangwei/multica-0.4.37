@@ -17,7 +17,7 @@ The prior turn delivered the concrete audit and recommendations; the subsequent 
 - [x] Main session runs batched native UI verification and visual verdict before the next edit.
 - [x] Run one post-change impeccable detector and independent Trellis check review.
 - [x] Fix material findings in one batch and confirm affected evidence.
-- [ ] Update automation discovery spec, task evidence/journal, commit and complete the workflow.
+- [x] Update automation discovery spec, task evidence/journal, commit and complete the workflow.
 
 ## Final native continuation — 2026-10-15
 
@@ -30,7 +30,7 @@ The prior turn delivered the concrete audit and recommendations; the subsequent 
 - [x] Rebuild and pass 8 bilingual Back paths, 4 toolbar-owner paths, 4 refetch-owner paths and 4 coarse touch paths.
 - [x] Confirm the final 16-case native matrix and accepted screenshot verdict (96/pass).
 - [x] Update the discovery spec with staged route ownership and settled-focus verification.
-- [ ] Commit only task-owned changes, archive this task and record the journal.
+- [x] Commit only task-owned changes, archive this task and record the journal.
 
 ## Commands
 

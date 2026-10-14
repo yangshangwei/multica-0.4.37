@@ -357,3 +357,39 @@ Committed completed implementation slices and preserved existing archival moves;
 ### Next Steps
 
 - 本任务按用户要求结束追踪；如后续重开排查，仍需验证 Windows 现场恢复及原始凭据失效原因。
+
+
+## Session 74: Complete automation template native acceptance
+<!-- trellis-session: v=2 fp=a01a2c8b1bc69d57 -->
+
+**Date**: 2026-10-15
+**Task**: Complete automation template native acceptance
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Closed A01–A07 after a 96/100 native visual verdict, including an additional staged Desktop route focus repair discovered during acceptance.
+
+### Main Changes
+
+- Prevented the outgoing template route from consuming the destination gallery focus handoff; preserved route aliases and added a staged navigation regression.
+- Retained final native screenshots, measured contrast, build/source hashes and the independent review; archived the completed task with valid context references.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c98c14ad4beb43a613237288e617af7405e81306` | fix(autopilots): preserve return focus through desktop route commits |
+
+### Testing
+
+- [OK] Final scoped views: 123 tests passed; focused page/catalog: 41 passed. ESLint, typechecks, UI export check and diff checks passed.
+- [OK] Native Electron: 16 layout cases, 8 Back paths, 8 focus-owner cases and 4 synthetic-touch cases passed; visual verdict 96/pass; no runtime/request errors or write/execution side effects.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work in the agreed task scope. Physical touch, native Windows/Linux, spoken screen readers, production performance and live automation execution were outside this acceptance.
