@@ -1,21 +1,90 @@
 ---
 title: 登录与注册
-description: 配置邮箱验证码和新用户注册范围。
+description: 了解设备身份、用户名密码和邮箱验证码登录，配置注册范围与登录有效期。
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
-Multica 默认使用邮箱验证码登录。已经存在的用户始终可以再次登录；注册限制只决定是否允许创建新账号。
+Multica 的登录方式由部署维护人员在服务端配置。Web 和桌面端会显示当前部署支持的入口，用户不能在登录页切换部署的认证模式。
+
+## 登录方式
+
+| `MULTICA_AUTH_MODE` | 登录方式 |
+|---|---|
+| `legacy`（默认） | 自托管部署默认开启设备身份登录；也支持配置邮箱验证码和 Google 登录 |
+| `password` | 仅使用用户名和密码，不提供邮箱验证码、Google 或设备身份登录 |
+
+在 `legacy` 模式下，`MULTICA_DEVICE_AUTH_ENABLED` 可以显式开启或关闭设备身份登录。需要用户通过邮箱登录时，设置 `MULTICA_DEVICE_AUTH_ENABLED=false`。
+
+## 用户名和密码
+
+### 开启密码登录
+
+新建的单 API 实例部署可以使用以下配置。已有账号的部署切换模式前，先安排下文的账号绑定或迁移。
+
+```dotenv
+MULTICA_AUTH_MODE=password
+MULTICA_DEVICE_AUTH_ENABLED=false
+MULTICA_CLOUD_URL=
+MULTICA_PASSWORD_LIMITER_MODE=single
+ALLOW_SIGNUP=true
+```
+
+密码模式要求关闭设备身份登录，并将 `MULTICA_CLOUD_URL` 留空。`single` 只适用于一个 API 实例；运行多个 API 副本时，使用 `MULTICA_PASSWORD_LIMITER_MODE=shared`，并让所有副本连接同一个 `REDIS_URL`。共享限流所用的 Redis 不可用时，密码请求会被拒绝。
+
+### 创建账号并登录
+
+部署开放注册时，在登录页点击 **创建账号**，填写以下内容后提交：
+
+| 字段 | 要求 |
+|---|---|
+| 用户名 | 3–32 位英文字母、数字或下划线；支持纯数字，不区分大小写，可使用工号 |
+| 姓名 | 去除首尾空白后为 1–80 个字符，用于成员列表、任务和评论展示 |
+| 密码 | 6–128 个字符，支持空格和粘贴 |
+| 确认密码 | 与密码一致 |
+
+之后可在 Web 或桌面端使用同一用户名和密码登录。`ALLOW_SIGNUP=false` 会关闭自主注册，不影响已有密码账号登录；没有 **创建账号** 入口时，请联系部署维护人员开通账号。
+
+### 旧账号绑定和密码重置
+
+从设备身份或邮箱登录切换到密码模式时，应由部署维护人员安排账号绑定或迁移，以保留原账号的工作空间和历史数据。新注册的账号不会自动获得旧账号的数据。迁移的完整操作见离线升级包随附的操作文档。
+
+如果界面提示 **设置登录账号**，按提示为原账号填写用户名、姓名和密码。收到临时密码后，首次登录会要求 **设置新密码**，完成后才能继续使用。忘记密码时，请联系部署维护人员重置。
+
+修改密码会退出其他设备。账号绑定或改密也可能中断当前账号运行环境上的执行，且不会自动重试，操作前请安排好正在进行的工作。
+
+## 设备身份登录
+
+自托管部署在 `legacy` 模式下默认开启设备身份登录，Web 和桌面端均支持，无需输入邮箱或密码。客户端会生成并保存一个稳定的随机身份标识，它不依赖硬件序列号。
+
+| 客户端 | 身份保存范围 |
+|---|---|
+| Web | 当前浏览器用户配置中的本站点数据 |
+| 桌面端 | 当前 Electron 应用的用户数据目录 |
+
+清除站点数据、删除桌面端用户数据或更换浏览器用户配置，可能产生新身份，不会自动恢复旧身份关联的数据。
+
+首次进入时，按上手引导创建工作空间。如果管理员配置了 `MULTICA_DEVICE_AUTH_WORKSPACE`，新设备会直接加入指定的共享工作空间。
+
+`ALLOW_SIGNUP`、`ALLOWED_EMAILS` 和 `ALLOWED_EMAIL_DOMAINS` 都不能关闭设备账号的自动创建。需要关闭此入口时，设置 `MULTICA_DEVICE_AUTH_ENABLED=false` 并使服务端配置生效。
+
+<Callout type="warning">
+设备身份登录依赖网络访问边界：能访问 API 的客户端就能创建身份，并加入已配置的共享工作空间。请仅在受控内网中启用。
+</Callout>
 
 ## 邮箱验证码
 
-用户输入邮箱后，Multica 会发送一个 6 位验证码。验证码 10 分钟内有效，验证成功后浏览器获得登录 cookie。
+邮箱验证码仅用于 `legacy` 模式。用户输入邮箱并申请验证码后，Multica 会发送一个 6 位验证码，10 分钟内有效；同一邮箱再次申请需间隔 60 秒。验证成功后浏览器获得登录 cookie。
 
-邮件通过 SMTP 发送。
+已有邮箱账号再次登录不受注册限制。
+
+邮件优先通过 SMTP 发送；未设置 `SMTP_HOST` 时，可使用配置了 `RESEND_API_KEY` 的 Resend；两者都未配置时仅写入日志。SMTP 发送失败不会自动改用 Resend 或日志发送。
+
+Resend 和 Google 登录是需要公网连接的可选能力，内网无法直接使用。
 
 ### 使用 SMTP
 
-最少需要设置主机和发件地址：
+最少需要设置主机和发件地址。将示例替换为管理员提供的内网邮件服务配置：
 
 ```dotenv
 SMTP_HOST=smtp.example.com
@@ -33,7 +102,7 @@ SMTP_FROM_EMAIL=noreply@example.com
 | STARTTLS | `SMTP_PORT=587`，默认会在服务器支持时升级 TLS |
 | 隐式 TLS | `SMTP_PORT=465`，或显式设置 `SMTP_TLS=implicit` |
 
-如果没有设置 `SMTP_FROM_EMAIL`，建议显式设置，避免发件地址不符合内网邮件网关的要求。私有 CA 或自签证书需要把 CA 加入容器信任库；`SMTP_TLS_INSECURE=true` 会跳过证书校验，只应在可信内网中临时使用。
+如果没有设置 `SMTP_FROM_EMAIL`，会使用 `RESEND_FROM_EMAIL`；两者至少设置一个，否则 SMTP 无法发送邮件。发件地址还需符合内网邮件网关的要求。私有 CA 或自签证书需要把 CA 加入容器信任库；`SMTP_TLS_INSECURE=true` 会跳过证书校验，只应在可信内网中临时使用。
 
 有些严格的 relay 还要求合法的 EHLO 名称：
 
@@ -43,20 +112,20 @@ SMTP_EHLO_NAME=mail.example.com
 
 ### 无邮件服务时的行为
 
-服务器仍可启动，但验证码和邀请链接只会写入日志，不会发送邮件。这适合本地开发，不适合生产环境。
+未配置 SMTP 和 Resend 时，服务器仍可启动，但验证码和邀请链接只会写入日志，不会发送邮件。这适合本地开发，不适合生产环境。
 
-启动日志会说明当前使用的是 `SMTP relay` 还是 `DEV mode`。
+启动日志会说明当前使用的是 `SMTP relay`、`Resend API` 还是 `DEV mode`。
 
 ## 本地固定验证码
 
-本地自动化测试可以设置固定验证码：
+测试 `legacy` 模式的邮箱登录时，可以设置固定验证码：
 
 ```dotenv
 APP_ENV=development
 MULTICA_DEV_VERIFICATION_CODE=888888
 ```
 
-验证码必须是 6 位数字。`APP_ENV=production` 时固定验证码会被忽略。
+验证码必须是 6 位数字。仍需先在登录页输入邮箱并申请验证码，再填写固定值；注册限制和重发间隔仍然生效。`APP_ENV=production` 时固定验证码会被忽略。
 
 <Callout type="warning">
 不要在多人可访问的实例中启用固定验证码。生产环境的组合是 `APP_ENV=production` 加空的 `MULTICA_DEV_VERIFICATION_CODE`。
@@ -64,7 +133,15 @@ MULTICA_DEV_VERIFICATION_CODE=888888
 
 ## 注册范围控制
 
-三个变量共同决定新账号能否创建：
+注册限制取决于登录方式：
+
+| 登录方式 | 新账号的注册规则 |
+|---|---|
+| `legacy` 邮箱验证码 / Google | 按下面的邮箱白名单与 `ALLOW_SIGNUP` 判断 |
+| `password` 用户名密码 | 只看 `ALLOW_SIGNUP`，不使用邮箱白名单 |
+| 设备身份登录 | 不受 `ALLOW_SIGNUP` 和两个邮箱白名单限制；由 `MULTICA_DEVICE_AUTH_ENABLED` 控制入口 |
+
+以下三个变量及判断顺序仅针对 `legacy` 模式下的邮箱账号：
 
 | 变量 | 作用 |
 |---|---|
@@ -72,7 +149,7 @@ MULTICA_DEV_VERIFICATION_CODE=888888
 | `ALLOWED_EMAIL_DOMAINS` | 允许的邮箱域名，多个值用逗号分隔 |
 | `ALLOW_SIGNUP` | 未配置任何白名单时，是否允许注册；默认 `true` |
 
-判断顺序如下：
+创建邮箱账号时的判断顺序如下：
 
 1. 邮箱命中 `ALLOWED_EMAILS`，允许；
 2. 或域名命中 `ALLOWED_EMAIL_DOMAINS`，允许；
@@ -97,22 +174,47 @@ ALLOWED_EMAILS=partner@example.net
 
 ## 邀请与注册限制
 
-邀请不会自动绕过注册限制：
+`legacy` 模式下，邮箱邀请不会自动绕过邮箱账号的注册限制：
 
 - 对方已经有 Multica 账号时，可以登录并接受邀请；
 - 对方还没有账号时，邮箱必须符合上面的注册规则。
 
-在关闭开放注册的实例中邀请新成员时，先把对方邮箱加入 `ALLOWED_EMAILS`。账号创建并接受邀请后，可以再从名单中移除。
+通过邮箱邀请新成员且已关闭开放注册时，先把对方邮箱加入 `ALLOWED_EMAILS`。账号创建并接受邀请后，可以再从名单中移除。
+
+纯密码账号先按本部署的规则注册并登录，再通过 owner 或 admin 在 **设置 → 成员 → 分享链接** 中生成的有效链接加入工作空间。关闭密码注册时，分享链接不能代替注册，也不会绕过 `ALLOW_SIGNUP`；添加邮箱白名单同样不会开放密码注册。
 
 ## 登录有效期
 
-浏览器登录默认保持 30 天。可以用 `AUTH_TOKEN_TTL` 调整，支持 Go duration 或正整数秒数：
+登录会话默认有效期为 30 天，密码登录也适用。可以用 `AUTH_TOKEN_TTL` 调整，支持 Go duration（如 `720h`、`720h30m`）或正整数秒数：
 
 ```dotenv
 AUTH_TOKEN_TTL=720h
 ```
 
-修改后需要重启 API 服务。这个值只影响之后签发的登录 cookie 和 JWT，不会延长已经签发的令牌。
+原生运行 API 时，将变量传给 API 进程并重启服务。这个值只影响之后签发的登录 cookie 和 JWT，不会改变已经签发的令牌的有效期。
+
+当前 `docker-compose.selfhost.yml` 未将 `AUTH_TOKEN_TTL` 传入容器，仅修改 `.env` 并执行 `restart` 不会生效。需要把下面的片段合入原文件的 `backend.environment`，保留原有环境变量和其他字段：
+
+```yaml
+services:
+  backend:
+    environment:
+      AUTH_TOKEN_TTL: ${AUTH_TOKEN_TTL:-720h}
+```
+
+保存 `.env` 和 Compose 配置后，在部署目录重建 API 容器：
+
+```bash
+docker compose -f docker-compose.selfhost.yml up -d --no-deps --force-recreate backend
+```
+
+如果部署使用额外的 Compose overlay 文件，执行时保留原来完整的 `-f` 文件列表及顺序。
+
+## 配置生效与核对
+
+本页配置由服务端读取。原生部署修改环境变量后重启 API；Compose 部署需确认变量已列在 `backend.environment` 中，再按上面的方式重建容器。配置调整无需重建前端。服务恢复后，刷新 Web 页面，完整退出并重新打开桌面端；已安装客户端需支持对应的登录方式。
+
+部署维护人员可以查看 `/api/config` 中的 `auth_mode`、`password_auth_available`、`password_signup_available` 和 `device_auth_available`，核对登录入口与注册开关。`device_auth_available` 未返回或为 `false` 时，表示设备身份登录未开放。
 
 ## 接下来
 
