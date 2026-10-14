@@ -324,3 +324,36 @@ Committed completed implementation slices and preserved existing archival moves;
 - Collaboration task remains in progress: full P1-P8, Web/Desktop flow, controlled-comment UI and native/real-AI acceptance remain open; creation/execution gates preserved.
 - Automation task remains in progress: historical visual verdict is revise/88, final accepted native visual verdict and complete fresh matrix remain open.
 - Windows runtime-offline planning and raw audit/runtime harness/patch files remain untracked. Only local commits were requested; no push, merge, release or deploy.
+
+
+## Session 73: Archive runtime-offline investigation at user request
+<!-- trellis-session: v=2 fp=6e1f1db6356e083f -->
+
+**Date**: 2026-10-15
+**Task**: Archive runtime-offline investigation at user request
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按用户要求归档 10-14-runtime-offline-after-reopen，结束本任务追踪；保留诊断、已有修复证据及未完成的 Windows 现场验收记录。
+
+### Main Changes
+
+- 归档 9 份任务资料，更新 4 处任务内研究引用；在任务、PRD 和实施计划中注明用户要求归档及 AC4/AC5 未完成。
+
+### Git Commits
+
+(No product-code commits; task archival recorded separately.)
+
+### Testing
+
+- [OK] 归档前后文件清单一致，4 份设计/研究/验证资料哈希不变；10 条 JSONL 引用可解析，任务已从活跃列表移除，git diff --check 通过。
+- 本轮仅做任务归档，未运行产品测试或 Windows 现场验收。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务按用户要求结束追踪；如后续重开排查，仍需验证 Windows 现场恢复及原始凭据失效原因。
