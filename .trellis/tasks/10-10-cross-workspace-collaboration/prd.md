@@ -92,4 +92,4 @@
 
 ## 规划产物与证据
 
-O02 状态映射见[设计](design.md) D04 与[源码核查](research/status-and-access-contracts.md)；O05 并发协议见 D06–D08 和[执行协议](research/execution-contract.md)。[实施计划](implement.md) 分配每项 AC，[研究索引](research/design-contracts.md)保留证据，审阅与确认过程见[讨论记录](discussion.md)。已授权完成最新技术复审后实施，产品测试尚未执行。
+O02 状态映射见[设计](design.md) D04 与[源码核查](research/status-and-access-contracts.md)；O05 并发协议见 D06–D08 和[执行协议](research/execution-contract.md)。[实施计划](implement.md) 分配每项 AC，[研究索引](research/design-contracts.md)保留证据，审阅与确认过程见[讨论记录](discussion.md)。已授权完成技术复审后实施，阶段实现与实际验证见[进度](progress.md)；完整产品验收仍未完成。

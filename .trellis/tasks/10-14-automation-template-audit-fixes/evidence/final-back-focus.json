@@ -1,0 +1,41 @@
+[
+  {
+    "origin": "empty-list",
+    "action": "in-flow",
+    "before": {
+      "scroll": 142,
+      "group": "仓库维护 4"
+    },
+    "after": {
+      "scroll": 142,
+      "group": "仓库维护 4",
+      "focus": "文档同步检查"
+    }
+  },
+  {
+    "origin": "creation-gallery",
+    "action": "in-flow",
+    "before": {
+      "scroll": 150,
+      "group": "仓库维护 4"
+    },
+    "after": {
+      "scroll": 150,
+      "group": "仓库维护 4",
+      "focus": "文档同步检查"
+    }
+  },
+  {
+    "origin": "creation-gallery",
+    "action": "native-back",
+    "before": {
+      "scroll": 150,
+      "group": "仓库维护 4"
+    },
+    "after": {
+      "scroll": 150,
+      "group": "仓库维护 4",
+      "focus": "文档同步检查"
+    }
+  }
+]

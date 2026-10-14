@@ -52,6 +52,8 @@ R36（2026-10-13 已确认）：发起人退出来源空间后，账号及本单
 
 编辑按 R41/R42/R48/D08，值和前后值、操作者、时间及事件同事务保存，不改 command 或派发；R48 日期解析/清空沿用普通任务。R42 仅投影本单所需来源选项，写时重验定义，不开放配置管理。R43 保留评论 UUID、版本历史及删除墓碑，回复锚点不变；锁内重验作者/评论权限/版本，删除后不接受编辑，重试沿用 D08。旧 API/Plugin/空间 admin 无旁路；resolve/unresolve 与表情回应按 R57 记录真实操作者、保持每线程单一解决记录，旧回应通知对协作单跳过；已交付附件按 R44 留存，私有未绑定 draft 仅本人可清理。
 
+R42 接线约定（2026-10-14）：PATCH 的 `priority`、`label_ids`、`properties` 缺省或外层 null 均保留旧值；空标签数组替换为空集合，属性对象按定义 UUID 局部修改，键值 null 清除该值（含已归档定义）。标签 ID 归一化去重，归一化后冲突的属性键拒绝。复用普通字段值校验和 16 KiB 存储限制，数据库 JSONB 相等视为无变化。字段选项只给当前发起人/处理人，详情只带所选标签和值引用的最小定义；详情授权、字段与版本取自同一数据库快照。新增内部摘要字段在缺省时省略，以保留原有标题/日期请求的幂等回执恢复能力。
+
 评论持久版本/墓碑、collaboration_event 编辑历史及附件永久归属/多引用按数据契约实施。R57 解决/取消解决与评论编辑/删除共用 issue 锁，锁后重验权限再清旧解决并写目标；仅两条 UPDATE 放在事务里不能防止两个不同目标并发成为已解决。普通评论/回应复用现有表，协作分支禁止硬删除及自动触发。
 
 执行记录保持 `originator_user_id=accountable_user_id=command.author_user_id`；另记不可变 creator、当前 handler、资源 owner 和供应商账号来源，不能为了通过私有 agent 校验将作者改成 owner。用量归属描述执行资源账号，不引入跨人自动结算或凭据共享。
@@ -174,6 +176,7 @@ Server 按协议/provider/OS 与实际 containment 准入；未满足显示升�
 | `PUT .../iteration` | R50 仅迭代归属：expected_revision，切换/移出带 iteration_reason，不混入其他字段 |
 | `GET /api/collaboration/creations/{requestId}?source_workspace_id=...` | 仅真实 creator 查询创建幂等结果，无需预先知道 issue UUID |
 | `POST /api/collaboration/recipients/resolve` | 精确账号查找，无写入 |
+| `GET /api/collaboration/issues/{uuid}/field-options` | R42：当前发起人/处理人的本单编辑选项；返回本单/来源 ID、协作版本、issue 标签和有效字段定义，不返回账号目录、使用统计或配置管理数据 |
 | `GET /api/collaboration/issues/{uuid}` 及 timeline/runs/messages | 最小来源摘要、creator/handler、参与/能力/版本、状态选项、队列及历史；R49–R51 的项目/父/子任务/迭代引用按查看者来源权限裁剪 |
 | `PATCH /api/collaboration/issues/{uuid}` | R41/R42/R47–R49、R58 `stage` 字段白名单（`position` 走普通排序写入，不推进协作版本）；版本、幂等、历史及来源选项校验，status 仅非终态且带 status_options_version |
 | `POST .../handoffs`、`information-returns`、`acceptance-submissions` | 明确业务意图、目标或 request ID、revision、幂等键 |
@@ -192,6 +195,8 @@ Server 按协议/provider/OS 与实际 containment 准入；未满足显示升�
 | 专用 daemon collaboration claim/launch/event/proof 路由与等价 WS RPC | 完整 purpose、run/fence/nonce 检查；终结路径独立窄认证 |
 
 错误码区分 forbidden/not_found、stale_revision、stale_execution、stop_unconfirmed、grant_required、runtime_upgrade_required、issue_closed、status_unavailable、idempotency_conflict、unsupported_collaboration_action。无访问依据的对象不泄漏存在性；关键协议损坏返回 unavailable，不能解释为空列表或已停止。
+
+R29 请求明确携带 `kind`、完整 `value` 以及恰好一个非 null 的 `issue_id` 或 `source_workspace_id`；不接受重复/未知字段。返回 `{issue_id, source_workspace_id, recipient}`，创建上下文中的 issue_id 为 null，recipient 沿用最小 AccountSummary。现有单据在查询前后均重验邀请/转交能力；创建上下文先查来源成员和创建开关，再查目标。查询没有参与、责任或授权写入，关闭创建不影响已有单据内的合法查找。复用有界认证限流器的独立 actor/IP 命名空间，后端故障拒绝；精确匹配无可用账号为 `recipient_not_found`，历史归一化歧义为 `recipient_ambiguous`。core 核对上下文和账号 ID 查询的目标身份，保存原输入，确认结果不代替后续写事务的目标校验。
 
 通知使用稳定 UUID；列表、未读数、read/archive 均按真实 recipient 限定，不以来源成员身份替代。R55 只解析当前参与者：新评论对每个接收人仅一条通知，提及只改变该条展示；评论/正文编辑按锁内前后有效提及差集，仅新增提及者收到 mention_added，不向全体广播编辑。操作者排除，@all 展开当前参与者，@AI/非法或非参与者提及不触发执行、订阅或新权限。投递身份在原事务固定，同一 event/recipient 幂等；重试不按后来成员名单重新投递。评论编辑新增提及沿用讨论 §49 的已定规则。
 
