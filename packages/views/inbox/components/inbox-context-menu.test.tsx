@@ -107,8 +107,7 @@ function renderRow({
       </InboxContextMenuProvider>,
     ),
   );
-  const row = screen.getByText(entry.title).closest('[role="button"]');
-  if (!row) throw new Error("inbox row button not found");
+  const row = screen.getByRole("listitem");
   return { rowActions, row };
 }
 
