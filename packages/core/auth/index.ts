@@ -2,6 +2,11 @@ export { createAuthStore, userAuthStatus } from "./store";
 export type { AuthStoreOptions, AuthState, AuthStatus } from "./store";
 export { sanitizeNextUrl } from "./utils";
 export { classifyConnectionFailure } from "./recovery";
+export {
+  personalAccessTokensOptions,
+  useCreatePersonalAccessToken,
+  useRevokePersonalAccessToken,
+} from "./token-queries";
 export type { ConnectionFailure, AuthRecoveryState } from "./recovery";
 
 import type { createAuthStore as CreateAuthStoreFn } from "./store";

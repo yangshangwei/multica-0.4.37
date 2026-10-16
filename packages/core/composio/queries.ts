@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 /** Query-key namespace for Composio integration data. */
 export const composioKeys = {
@@ -14,7 +15,7 @@ export const composioKeys = {
 export const composioToolkitsOptions = () =>
   queryOptions({
     queryKey: composioKeys.toolkits(),
-    queryFn: () => api.listComposioToolkits(),
+    queryFn: withQueryAccessBoundary(() => api.listComposioToolkits()),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -22,5 +23,5 @@ export const composioToolkitsOptions = () =>
 export const composioConnectionsOptions = () =>
   queryOptions({
     queryKey: composioKeys.connections(),
-    queryFn: () => api.listComposioConnections(),
+    queryFn: withQueryAccessBoundary(() => api.listComposioConnections()),
   });

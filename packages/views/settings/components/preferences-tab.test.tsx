@@ -245,6 +245,7 @@ describe("PreferencesTab — Timezone section", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     userRef.current = null;
+    mockSetUser.mockReset();
   });
 
   // Base UI Select portals its popup onto document.body; unmount each
@@ -305,6 +306,55 @@ describe("PreferencesTab — Timezone section", () => {
       expect(mockToastError).toHaveBeenCalledTimes(1);
     });
     expect(mockSetUser).not.toHaveBeenCalled();
+  });
+
+  it("blocks a second timezone choice until the accepted write settles", async () => {
+    userRef.current = { id: "user-1", timezone: "Asia/Shanghai" };
+    let finishFirst!: (value: { id: string; timezone: string }) => void;
+    mockUpdateMe.mockReturnValueOnce(new Promise((resolve) => { finishFirst = resolve; }));
+    mockSetUser.mockImplementation((value) => { userRef.current = value; });
+    const user = userEvent.setup();
+    render(<PreferencesTab />, { wrapper: I18nWrapper });
+
+    await pickTimezone(user, "Asia/Tokyo");
+    const trigger = screen.getByRole("combobox", { name: "Viewing Timezone" });
+    expect(trigger).toBeDisabled();
+    expect(screen.getByRole("status")).toHaveTextContent("Saving");
+    await user.click(trigger);
+    await user.keyboard("{ArrowDown}{Enter}");
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+    expect(mockUpdateMe).toHaveBeenCalledTimes(1);
+    expect(mockSetUser).not.toHaveBeenCalled();
+
+    await act(async () => finishFirst({ id: "user-1", timezone: "Asia/Tokyo" }));
+    await waitFor(() => expect(trigger).toBeEnabled());
+    expect(trigger).toHaveTextContent("Asia/Tokyo");
+    mockUpdateMe.mockResolvedValueOnce({ id: "user-1", timezone: "Europe/Paris" });
+    await pickTimezone(user, "Europe/Paris");
+    await waitFor(() => expect(trigger).toHaveTextContent("Europe/Paris"));
+    expect(mockUpdateMe).toHaveBeenCalledTimes(2);
+    expect(mockSetUser).toHaveBeenLastCalledWith({ id: "user-1", timezone: "Europe/Paris" });
+  });
+
+  it("unlocks the stored timezone after a delayed failure and accepts a retry", async () => {
+    userRef.current = { id: "user-1", timezone: "Asia/Shanghai" };
+    let rejectFirst!: (error: Error) => void;
+    mockUpdateMe.mockReturnValueOnce(new Promise((_resolve, reject) => { rejectFirst = reject; }));
+    mockSetUser.mockImplementation((value) => { userRef.current = value; });
+    const user = userEvent.setup();
+    render(<PreferencesTab />, { wrapper: I18nWrapper });
+    await pickTimezone(user, "Asia/Tokyo");
+    const trigger = screen.getByRole("combobox", { name: "Viewing Timezone" });
+    expect(trigger).toBeDisabled();
+
+    await act(async () => rejectFirst(new Error("offline")));
+    await waitFor(() => expect(trigger).toBeEnabled());
+    expect(trigger).toHaveTextContent("Asia/Shanghai");
+    expect(mockToastSuccess).not.toHaveBeenCalled();
+    mockUpdateMe.mockResolvedValueOnce({ id: "user-1", timezone: "Asia/Tokyo" });
+    await pickTimezone(user, "Asia/Tokyo");
+    await waitFor(() => expect(trigger).toHaveTextContent("Asia/Tokyo"));
+    expect(mockUpdateMe).toHaveBeenCalledTimes(2);
   });
 
   it("clearing the preference sends an empty-string timezone", async () => {

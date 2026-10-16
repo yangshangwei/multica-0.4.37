@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { LogOut } from "lucide-react";
 import { Input } from "@multica/ui/components/ui/input";
 import { Textarea } from "@multica/ui/components/ui/textarea";
@@ -47,6 +47,7 @@ import {
 } from "./settings-layout";
 import { useAutoSave } from "./use-auto-save";
 import { WorkspacePlanningTimezone } from "./workspace-planning-timezone";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 interface WorkspaceDetailsDraft {
   name: string;
@@ -76,10 +77,12 @@ export function WorkspaceTab() {
   // external delete of the workspace we're on). The `!workspace` guard
   // below renders null for that window; a throwing hook would crash first.
   const wsId = workspace?.id;
-  const { data: members = [], isFetched: membersFetched } = useQuery({
+  const membersQuery = useQuery({
     ...memberListOptions(wsId ?? ""),
     enabled: !!wsId,
   });
+  const membersState = getSettingsQueryState(membersQuery);
+  const members = membersState.hasData ? membersQuery.data ?? [] : [];
   const qc = useQueryClient();
   const leaveWorkspace = useLeaveWorkspace();
   const deleteWorkspace = useDeleteWorkspace();
@@ -135,16 +138,22 @@ export function WorkspaceTab() {
   const [prefixSaveStatus, setPrefixSaveStatus] =
     useState<SettingsSaveStatus>("idle");
   const [actionId, setActionId] = useState<string | null>(null);
+  const actionPendingRef = useRef(false);
+  const [confirmPending, setConfirmPending] = useState(false);
+  const confirmPendingRef = useRef(false);
+  const nameErrorId = useId();
   const [confirmAction, setConfirmAction] = useState<{
+    kind: "prefix" | "leave";
     title: string;
     description: string;
     variant?: "destructive";
-    onConfirm: () => Promise<void>;
+    onConfirm: () => Promise<boolean>;
   } | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
   const canManageWorkspace = currentMember?.role === "owner" || currentMember?.role === "admin";
+  const hasMembership = canManageWorkspace || currentMember?.role === "member";
   const isOwner = currentMember?.role === "owner";
   // Mirror the backend invariant (server/internal/handler/workspace.go:569):
   // a workspace must always have at least one owner, so the sole owner can't
@@ -153,6 +162,17 @@ export function WorkspaceTab() {
   const ownerCount = members.filter((m) => m.role === "owner").length;
   const isSoleOwner = isOwner && ownerCount <= 1;
   const isSoleMember = members.length <= 1;
+  const nameMissing = !name.trim();
+
+  useEffect(() => {
+    if (!hasMembership) {
+      setConfirmAction(null);
+      setDeleteDialogOpen(false);
+    } else {
+      if (!canManageWorkspace) setConfirmAction((current) => current?.kind === "prefix" ? null : current);
+      if (!isOwner) setDeleteDialogOpen(false);
+    }
+  }, [canManageWorkspace, hasMembership, isOwner]);
 
   // Reset form state only when the user switches to a different workspace.
   // Keying on workspace?.id (not the object ref) avoids wiping unsaved edits
@@ -213,12 +233,12 @@ export function WorkspaceTab() {
           ? error.message
           : t(($) => $.workspace.toast_save_failed),
       ),
-    enabled: !!workspace && canManageWorkspace && !!name.trim(),
+    enabled: !!workspace && canManageWorkspace && !nameMissing,
     isEqual: workspaceDetailsEqual,
   });
 
   const performPrefixSave = async (nextPrefix: string) => {
-    if (!workspace) return;
+    if (!workspace || !canManageWorkspace) return false;
     setPrefixSaveStatus("saving");
     try {
       const updated = await api.updateWorkspace(workspace.id, {
@@ -234,6 +254,7 @@ export function WorkspaceTab() {
       toast.success(t(($) => $.workspace.toast_saved), {
         id: "settings-auto-save",
       });
+      return true;
     } catch (error) {
       setPrefixSaveStatus("error");
       toast.error(
@@ -241,13 +262,15 @@ export function WorkspaceTab() {
           ? error.message
           : t(($) => $.workspace.toast_save_failed),
       );
+      return false;
     }
   };
 
   const handlePrefixBlur = () => {
-    if (!workspace || prefixInvalid || !prefixChanged) return;
+    if (!workspace || !canManageWorkspace || confirmPendingRef.current || actionPendingRef.current || prefixInvalid || !prefixChanged) return;
     const nextPrefix = normalizedPrefix;
     setConfirmAction({
+      kind: "prefix",
       title: t(($) => $.workspace.prefix_confirm_title),
       description: t(($) => $.workspace.prefix_confirm_description, {
         oldPrefix: workspace.issue_prefix,
@@ -259,27 +282,46 @@ export function WorkspaceTab() {
   };
 
   const handleLeaveWorkspace = () => {
-    if (!workspace) return;
+    if (!workspace || !hasMembership || isSoleOwner || actionPendingRef.current || confirmPendingRef.current) return;
     setConfirmAction({
+      kind: "leave",
       title: t(($) => $.workspace.leave_confirm_title),
       description: t(($) => $.workspace.leave_confirm_description, { name: workspace.name }),
       variant: "destructive",
       onConfirm: async () => {
+        actionPendingRef.current = true;
         setActionId("leave");
         navigateAwayFromCurrentWorkspace();
         try {
           await leaveWorkspace.mutateAsync(workspace.id);
+          return true;
         } catch (e) {
           toast.error(e instanceof Error ? e.message : t(($) => $.workspace.toast_leave_failed));
+          return false;
         } finally {
+          actionPendingRef.current = false;
           setActionId(null);
         }
       },
     });
   };
 
+  const handleConfirmation = async () => {
+    if (!confirmAction || !hasMembership || confirmPendingRef.current || actionPendingRef.current) return;
+    if (confirmAction.kind === "prefix" ? !canManageWorkspace : isSoleOwner) return;
+    confirmPendingRef.current = true;
+    setConfirmPending(true);
+    try {
+      if (await confirmAction.onConfirm()) setConfirmAction(null);
+    } finally {
+      confirmPendingRef.current = false;
+      setConfirmPending(false);
+    }
+  };
+
   const handleConfirmDelete = async () => {
-    if (!workspace) return;
+    if (!workspace || !isOwner || actionPendingRef.current || confirmPendingRef.current) return;
+    actionPendingRef.current = true;
     setActionId("delete-workspace");
     // Await the DELETE with the dialog in its loading state, and only
     // navigate on success (CLAUDE.md: flows that navigate must await the
@@ -295,6 +337,7 @@ export function WorkspaceTab() {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t(($) => $.workspace.toast_delete_failed));
     } finally {
+      actionPendingRef.current = false;
       setActionId(null);
     }
   };
@@ -303,10 +346,26 @@ export function WorkspaceTab() {
 
   return (
     <SettingsTab title={t(($) => $.page.tabs.general)}>
+      <SettingsQueryFeedback
+        query={membersQuery}
+        loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+        errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+        refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+      />
+      {membersState.hasData && !hasMembership && (
+        <p role="alert" className="text-body text-muted-foreground">
+          {t(($) => $.query_feedback.access_denied)}
+        </p>
+      )}
+      {!membersState.accessDenied && <>
       <SettingsSection
         title={t(($) => $.workspace.section_general)}
         action={
-          <SettingsSaveState
+          nameMissing && !workspaceDetailsEqual(detailsDraft, savedDetails) ? (
+            <span role="status" className="text-caption text-muted-foreground">
+              {t(($) => $.auto_save.unsaved)}
+            </span>
+          ) : <SettingsSaveState
             status={
               prefixSaveStatus === "saving" || prefixSaveStatus === "error"
                 ? prefixSaveStatus
@@ -336,6 +395,7 @@ export function WorkspaceTab() {
                 ariaLabel={t(($) => $.workspace.change_logo_aria)}
                 onUploaded={async (url) => {
                   try {
+                    if (!canManageWorkspace) throw new Error(t(($) => $.query_feedback.access_denied));
                     const updated = await api.updateWorkspace(workspace.id, {
                       avatar_url: url,
                     });
@@ -353,6 +413,7 @@ export function WorkspaceTab() {
                         ? error.message
                         : t(($) => $.workspace.toast_logo_failed),
                     );
+                    throw error;
                   }
                 }}
               />
@@ -363,16 +424,26 @@ export function WorkspaceTab() {
             label={t(($) => $.workspace.name_label)}
             size="text"
           >
+            <div>
             <Input
               type="text"
               name="workspace-name"
               autoComplete="organization"
               aria-label={t(($) => $.workspace.name_label)}
+              required
+              aria-invalid={nameMissing}
+              aria-describedby={nameMissing ? nameErrorId : undefined}
               value={name}
               onChange={(event) => setName(event.target.value)}
               onBlur={detailsAutoSave.flush}
               disabled={!canManageWorkspace}
             />
+            {nameMissing && (
+              <p id={nameErrorId} className="mt-1 text-caption text-destructive">
+                {t(($) => $.workspace.name_required)}
+              </p>
+            )}
+            </div>
           </SettingsRow>
 
           <SettingsRow
@@ -449,7 +520,7 @@ export function WorkspaceTab() {
                   setIssuePrefix(normalizePrefix(event.target.value));
                 }}
                 onBlur={handlePrefixBlur}
-                disabled={!canManageWorkspace}
+                disabled={!canManageWorkspace || confirmPending}
                 maxLength={10}
                 aria-invalid={prefixInvalid}
                 className="font-mono uppercase"
@@ -457,7 +528,7 @@ export function WorkspaceTab() {
               />
           </SettingsRow>
 
-            {!canManageWorkspace && (
+            {currentMember?.role === "member" && (
               <div className="px-4 py-3 text-caption text-muted-foreground">
                 {t(($) => $.workspace.manage_hint)}
               </div>
@@ -467,10 +538,8 @@ export function WorkspaceTab() {
 
       <WorkspacePlanningTimezone key={workspace.id} wsId={workspace.id} canManage={canManageWorkspace} />
 
-      {/* Danger Zone — gated on the member query settling so the owner-only
-          Delete button and the sole-owner Leave guidance don't flash in
-          after mount. */}
-      {membersFetched && (
+      {/* A failed or pending membership read never authorizes leaving. */}
+      {hasMembership && (
         <SettingsSection
           title={
             <span className="inline-flex items-center gap-2">
@@ -494,7 +563,7 @@ export function WorkspaceTab() {
                 variant="outline"
                 size="sm"
                 onClick={handleLeaveWorkspace}
-                disabled={actionId === "leave" || isSoleOwner}
+                disabled={actionId !== null || confirmPending || isSoleOwner}
               >
                 {actionId === "leave" ? t(($) => $.workspace.leaving) : t(($) => $.workspace.leave_button)}
               </Button>
@@ -512,8 +581,10 @@ export function WorkspaceTab() {
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => setDeleteDialogOpen(true)}
-                  disabled={actionId === "delete-workspace"}
+                  onClick={() => {
+                    if (!actionPendingRef.current && !confirmPendingRef.current) setDeleteDialogOpen(true);
+                  }}
+                  disabled={actionId !== null || confirmPending}
                 >
                   {actionId === "delete-workspace" ? t(($) => $.workspace.deleting) : t(($) => $.workspace.delete_button)}
                 </Button>
@@ -522,21 +593,23 @@ export function WorkspaceTab() {
           </SettingsCard>
         </SettingsSection>
       )}
+      </>}
 
-      <AlertDialog open={!!confirmAction} onOpenChange={(v) => { if (!v) setConfirmAction(null); }}>
+      <AlertDialog open={!!confirmAction && hasMembership} onOpenChange={(v) => {
+        if (!v && !confirmPendingRef.current) setConfirmAction(null);
+      }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{confirmAction?.title}</AlertDialogTitle>
             <AlertDialogDescription>{confirmAction?.description}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t(($) => $.workspace.confirm_cancel)}</AlertDialogCancel>
+            <AlertDialogCancel disabled={confirmPending}>{t(($) => $.workspace.confirm_cancel)}</AlertDialogCancel>
             <AlertDialogAction
               variant={confirmAction?.variant === "destructive" ? "destructive" : "default"}
-              onClick={async () => {
-                await confirmAction?.onConfirm();
-                setConfirmAction(null);
-              }}
+              disabled={confirmPending}
+              aria-busy={confirmPending}
+              onClick={handleConfirmation}
             >
               {t(($) => $.workspace.confirm_action)}
             </AlertDialogAction>
@@ -547,11 +620,11 @@ export function WorkspaceTab() {
       <DeleteWorkspaceDialog
         workspaceName={workspace.name}
         loading={actionId === "delete-workspace"}
-        open={deleteDialogOpen}
+        open={deleteDialogOpen && isOwner}
         onOpenChange={(open) => {
           // Ignore close requests while the delete mutation is in flight
           // so the user can't accidentally dismiss mid-operation.
-          if (actionId === "delete-workspace" && !open) return;
+          if (actionPendingRef.current && !open) return;
           setDeleteDialogOpen(open);
         }}
         onConfirm={handleConfirmDelete}

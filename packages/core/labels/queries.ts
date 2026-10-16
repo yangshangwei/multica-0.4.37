@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 import type { LabelResourceType } from "../types";
 
 export const labelKeys = {
@@ -15,9 +16,10 @@ export const labelKeys = {
 };
 
 export function labelListOptions(wsId: string, resourceType: LabelResourceType = "issue") {
+  const queryFn = withQueryAccessBoundary(() => api.listLabels(resourceType));
   return queryOptions({
     queryKey: labelKeys.list(wsId, resourceType),
-    queryFn: () => api.listLabels(resourceType),
+    queryFn,
     select: (data) => data.labels,
   });
 }

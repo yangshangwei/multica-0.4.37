@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ExternalLink, GitCommitHorizontal, Link2, PanelRight } from "lucide-react";
@@ -32,6 +32,7 @@ import { AppLink, useNavigation } from "../../navigation";
 import { useT } from "../../i18n";
 import { GitHubMark } from "./github-mark";
 import { buildSettingsHref } from "./settings-integration-navigation";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 type SettingsKey =
   | "github_enabled"
@@ -47,21 +48,26 @@ export function GitHubTab() {
   const navigation = useNavigation();
   const user = useAuthStore((s) => s.user);
 
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(membersQuery);
+  const currentMember = memberState.hasData
+    ? membersQuery.data?.find((m) => m.user_id === user?.id) ?? null
+    : null;
   // `canView` gates the read-only installation list (every workspace member
   // sees it after MUL-2413); `canManage` gates the Connect / Disconnect
   // actions and comes from the backend response (`can_manage`) so the
   // frontend never claims management rights the server would reject.
   const canView = !!currentMember;
 
-  const { data: installationData } = useQuery({
+  const installationsQuery = useQuery({
     ...githubInstallationsOptions(wsId),
     enabled: !!wsId && canView,
   });
+  const installationState = getSettingsQueryState(installationsQuery);
+  const installationData = installationState.hasData ? installationsQuery.data : undefined;
   const installations = installationData?.installations ?? [];
   const configured = installationData?.configured ?? false;
-  const canManage = installationData?.can_manage === true;
+  const canManage = canView && installationData?.can_manage === true;
   const connected = installations.length > 0;
   const primaryInstallation = installations[0] ?? null;
 
@@ -70,9 +76,12 @@ export function GitHubTab() {
   const [connecting, setConnecting] = useState(false);
   const [disconnectTarget, setDisconnectTarget] = useState<string | null>(null);
   const [disconnecting, setDisconnecting] = useState(false);
+  const pendingRef = useRef(false);
+  const controlsPending = savingKey !== null || connecting || disconnecting;
 
   async function persistSetting(key: SettingsKey, next: boolean) {
-    if (!workspace || savingKey) return;
+    if (!workspace || !canManage || pendingRef.current) return;
+    pendingRef.current = true;
     setSavingKey(key);
     try {
       const merged = {
@@ -89,11 +98,14 @@ export function GitHubTab() {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t(($) => $.github.toast_failed));
     } finally {
+      pendingRef.current = false;
       setSavingKey(null);
     }
   }
 
   async function handleConnect() {
+    if (!canManage || !configured || pendingRef.current) return;
+    pendingRef.current = true;
     setConnecting(true);
     try {
       const resp = await api.getGitHubConnectURL(wsId);
@@ -105,12 +117,14 @@ export function GitHubTab() {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t(($) => $.github.toast_open_failed));
     } finally {
+      pendingRef.current = false;
       setConnecting(false);
     }
   }
 
   async function handleDisconnect() {
-    if (!disconnectTarget || disconnecting) return;
+    if (!disconnectTarget || !canManage || pendingRef.current) return;
+    pendingRef.current = true;
     setDisconnecting(true);
     try {
       await api.deleteGitHubInstallation(wsId, disconnectTarget);
@@ -120,6 +134,7 @@ export function GitHubTab() {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t(($) => $.github.toast_disconnect_failed));
     } finally {
+      pendingRef.current = false;
       setDisconnecting(false);
     }
   }
@@ -127,12 +142,36 @@ export function GitHubTab() {
   if (!workspace) return null;
 
   const repositoriesHref = buildSettingsHref(navigation, "repositories");
+  const feedback = <>
+    <SettingsQueryFeedback
+      query={membersQuery}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />
+    {canView ? (
+      <SettingsQueryFeedback
+        query={installationsQuery}
+        loadingMessage={t(($) => $.integrations.loading)}
+        errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.github.section_title) })}
+        refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.github.section_title) })}
+      />
+    ) : memberState.hasData ? (
+      <p role="alert" className="text-body text-muted-foreground">{t(($) => $.query_feedback.access_denied)}</p>
+    ) : null}
+  </>;
+
+  if (!canView || !installationState.hasData) return <div className="space-y-3">{feedback}</div>;
 
   // Section body for the GitHub block on the Integrations page. The section
   // heading and description come from the host (integrations-tab.tsx); the
   // h3 sub-headings stay one level below the host's h2.
   return (
     <div className="min-w-0 space-y-6 [overflow-wrap:anywhere] max-md:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-h-11 max-md:[&_[data-slot=switch]]:after:-inset-y-3.5 pointer-coarse:[&_[data-slot=switch]]:after:-inset-y-3.5">
+      {feedback}
+      <p role="status" className="text-caption text-muted-foreground">
+        {savingKey ? t(($) => $.auto_save.saving) : null}
+      </p>
       <Card>
         <CardContent>
           <div className="flex items-start justify-between gap-4">
@@ -155,7 +194,7 @@ export function GitHubTab() {
               id="github-master"
               checked={flags.enabled}
               onCheckedChange={(v) => persistSetting("github_enabled", v)}
-              disabled={!canManage || savingKey === "github_enabled"}
+              disabled={!canManage || controlsPending}
             />
           </div>
         </CardContent>
@@ -211,6 +250,7 @@ export function GitHubTab() {
                       variant="outline"
                       size="sm"
                       onClick={() => setDisconnectTarget(primaryInstallation.id)}
+                      disabled={controlsPending}
                     >
                       {t(($) => $.github.disconnect)}
                     </Button>
@@ -218,7 +258,7 @@ export function GitHubTab() {
                     <Button
                       size="sm"
                       onClick={handleConnect}
-                      disabled={connecting || !configured}
+                      disabled={controlsPending || !configured}
                       title={
                         !configured
                           ? t(($) => $.github.connect_disabled_tooltip)
@@ -266,7 +306,7 @@ export function GitHubTab() {
                 </p>
               }
               checked={flags.prSidebar}
-              disabled={!canManage || !flags.enabled || savingKey === "github_pr_sidebar_enabled"}
+              disabled={!canManage || !flags.enabled || controlsPending}
               onCheckedChange={(v) => persistSetting("github_pr_sidebar_enabled", v)}
             />
 
@@ -284,7 +324,7 @@ export function GitHubTab() {
                 </p>
               }
               checked={flags.coAuthor}
-              disabled={!canManage || !flags.enabled || savingKey === "co_authored_by_enabled"}
+              disabled={!canManage || !flags.enabled || controlsPending}
               onCheckedChange={(v) => persistSetting("co_authored_by_enabled", v)}
             />
 
@@ -298,7 +338,7 @@ export function GitHubTab() {
                 </p>
               }
               checked={flags.autoLinkPRs}
-              disabled={!canManage || !flags.enabled || savingKey === "github_auto_link_prs_enabled"}
+              disabled={!canManage || !flags.enabled || controlsPending}
               onCheckedChange={(v) => persistSetting("github_auto_link_prs_enabled", v)}
             />
           </CardContent>
@@ -328,9 +368,9 @@ export function GitHubTab() {
       </section>
 
       <AlertDialog
-        open={!!disconnectTarget}
+        open={canManage && !!disconnectTarget}
         onOpenChange={(v) => {
-          if (!v && !disconnecting) setDisconnectTarget(null);
+          if (!v && !pendingRef.current) setDisconnectTarget(null);
         }}
       >
         <AlertDialogContent>
@@ -343,10 +383,10 @@ export function GitHubTab() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="max-md:min-h-11 pointer-coarse:min-h-11" disabled={disconnecting}>
+            <AlertDialogCancel className="max-md:min-h-11 pointer-coarse:min-h-11" disabled={controlsPending}>
               {t(($) => $.github.disconnect_confirm_cancel)}
             </AlertDialogCancel>
-            <AlertDialogAction className="max-md:min-h-11 pointer-coarse:min-h-11" onClick={handleDisconnect} disabled={disconnecting}>
+            <AlertDialogAction className="max-md:min-h-11 pointer-coarse:min-h-11" onClick={handleDisconnect} disabled={controlsPending}>
               {disconnecting
                 ? t(($) => $.github.disconnecting)
                 : t(($) => $.github.disconnect_confirm_action)}

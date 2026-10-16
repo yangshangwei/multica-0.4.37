@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
   Select,
@@ -308,6 +308,8 @@ function TimezoneRow() {
   const stored = user?.timezone ?? null;
   const browser = browserTimezone();
   const value = stored ?? BROWSER_TZ_VALUE;
+  const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false);
 
   // Full IANA list (from timezoneOptions in common/timezone-select) so a
   // user needing a non-curated zone isn't stuck with ~18 common ones.
@@ -318,8 +320,10 @@ function TimezoneRow() {
   );
 
   const handleChange = async (next: string) => {
-    if (next === value) return;
+    if (!user || next === value || savingRef.current) return;
     const payload = next === BROWSER_TZ_VALUE ? "" : next;
+    savingRef.current = true;
+    setSaving(true);
     try {
       const updated = await api.updateMe({ timezone: payload });
       setUser(updated);
@@ -332,6 +336,9 @@ function TimezoneRow() {
           ? err.message
           : t(($) => $.preferences.timezone.sync_failed),
       );
+    } finally {
+      savingRef.current = false;
+      setSaving(false);
     }
   };
 
@@ -357,6 +364,7 @@ function TimezoneRow() {
           })),
         ]}
         value={value}
+        disabled={saving || !user}
         onValueChange={(next) => {
           if (next) void handleChange(next);
         }}
@@ -365,6 +373,7 @@ function TimezoneRow() {
           size="sm"
           className="w-full font-mono text-caption"
           aria-label={t(($) => $.preferences.timezone.title)}
+          aria-busy={saving}
         >
           <SelectValue>{formatTZLabel(value)}</SelectValue>
         </SelectTrigger>
@@ -379,6 +388,11 @@ function TimezoneRow() {
           ))}
         </SelectContent>
       </Select>
+      {saving && (
+        <p role="status" className="mt-1 text-caption text-muted-foreground">
+          {t(($) => $.auto_save.saving)}
+        </p>
+      )}
     </SettingsRow>
   );
 }

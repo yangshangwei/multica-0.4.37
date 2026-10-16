@@ -51,6 +51,14 @@ afterEach(() => {
 });
 
 describe("DaemonSettingsTab sign-in recovery", () => {
+  it("names both daemon preference switches from their visible row labels", async () => {
+    stubDaemonAPI({ state: "stopped" });
+    render(settings());
+    await screen.findByText("multica CLI is installed and available in PATH.");
+    expect(screen.getByRole("switch", { name: "Auto-start on launch" })).toBeChecked();
+    expect(screen.getByRole("switch", { name: "Auto-stop on quit" })).not.toBeChecked();
+  });
+
   // Session invalidation and transient failures are covered in daemon-reauth.test.ts.
   it.each([
     ["en", "Reconnect this device", "Reconnecting..."],

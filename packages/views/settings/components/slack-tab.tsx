@@ -37,6 +37,7 @@ import type { SlackInstallation } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { openExternal } from "../../platform";
 import { useT } from "../../i18n";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 // SlackTab is the workspace settings panel for Slack bot installations.
 // Listing is member-visible; the disconnect action is admin-only (the backend
@@ -52,15 +53,20 @@ export function SlackTab() {
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
 
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(membersQuery);
+  const currentMember = memberState.hasData
+    ? membersQuery.data?.find((m) => m.user_id === user?.id) ?? null
+    : null;
   const canManage =
     currentMember?.role === "owner" || currentMember?.role === "admin";
 
-  const { data, isLoading } = useQuery({
+  const installationsQuery = useQuery({
     ...slackInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && !!currentMember,
   });
+  const installationState = getSettingsQueryState(installationsQuery);
+  const { data, isLoading } = installationsQuery;
   const installations = data?.installations ?? [];
   const configured = data?.configured === true;
   // install_supported tracks whether the OAuth client credentials are wired on
@@ -73,7 +79,7 @@ export function SlackTab() {
   const [disconnecting, setDisconnecting] = useState(false);
 
   async function handleDisconnect() {
-    if (!disconnectTarget || disconnecting) return;
+    if (!canManage || !disconnectTarget || disconnecting) return;
     setDisconnecting(true);
     try {
       await api.deleteSlackInstallation(wsId, disconnectTarget);
@@ -89,8 +95,30 @@ export function SlackTab() {
     }
   }
 
+  const feedback = <>
+    <SettingsQueryFeedback
+      query={membersQuery}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />
+    {currentMember ? (
+      <SettingsQueryFeedback
+        query={installationsQuery}
+        loadingMessage={t(($) => $.slack.loading)}
+        errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.slack.section_title) })}
+        refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.slack.section_title) })}
+      />
+    ) : memberState.hasData ? (
+      <p role="alert" className="text-body text-muted-foreground">{t(($) => $.query_feedback.access_denied)}</p>
+    ) : null}
+  </>;
+
+  if (!currentMember || !installationState.hasData) return <div className="space-y-3">{feedback}</div>;
+
   return (
     <div className="space-y-8">
+      {feedback}
       {!configured ? (
         <Card>
           <CardContent className="space-y-2">
@@ -152,7 +180,7 @@ export function SlackTab() {
       )}
 
       <AlertDialog
-        open={!!disconnectTarget}
+        open={canManage && !!disconnectTarget}
         onOpenChange={(v) => {
           if (!v && !disconnecting) setDisconnectTarget(null);
         }}

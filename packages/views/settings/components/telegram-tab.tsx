@@ -37,6 +37,7 @@ import type { TelegramInstallation } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { openExternal } from "../../platform";
 import { useT } from "../../i18n";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 // TelegramTab is the workspace settings panel for Telegram bot installations,
 // mirroring SlackTab: listing is member-visible; the disconnect action is
@@ -50,15 +51,20 @@ export function TelegramTab() {
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
 
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(membersQuery);
+  const currentMember = memberState.hasData
+    ? membersQuery.data?.find((m) => m.user_id === user?.id) ?? null
+    : null;
   const canManage =
     currentMember?.role === "owner" || currentMember?.role === "admin";
 
-  const { data, isLoading, isError } = useQuery({
+  const installationsQuery = useQuery({
     ...telegramInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && !!currentMember,
   });
+  const installationState = getSettingsQueryState(installationsQuery);
+  const { data } = installationsQuery;
   const installations = data?.installations ?? [];
   const configured = data?.configured === true;
 
@@ -66,7 +72,7 @@ export function TelegramTab() {
   const [disconnecting, setDisconnecting] = useState(false);
 
   async function handleDisconnect() {
-    if (!disconnectTarget || disconnecting) return;
+    if (!canManage || !disconnectTarget || disconnecting) return;
     setDisconnecting(true);
     try {
       // Await the server before touching cache/UI (repo rule: no optimistic
@@ -84,23 +90,31 @@ export function TelegramTab() {
     }
   }
 
+  const feedback = <>
+    <SettingsQueryFeedback
+      query={membersQuery}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />
+    {currentMember ? (
+      <SettingsQueryFeedback
+        query={installationsQuery}
+        loadingMessage={t(($) => $.telegram.loading)}
+        errorMessage={t(($) => $.telegram.load_failed)}
+        refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.telegram.section_title) })}
+      />
+    ) : memberState.hasData ? (
+      <p role="alert" className="text-body text-muted-foreground">{t(($) => $.query_feedback.access_denied)}</p>
+    ) : null}
+  </>;
+
+  if (!currentMember || !installationState.hasData) return <div className="space-y-3">{feedback}</div>;
+
   return (
     <div className="space-y-8">
-      {isError ? (
-        <Card>
-          <CardContent>
-            <p className="text-body text-muted-foreground">
-              {t(($) => $.telegram.load_failed)}
-            </p>
-          </CardContent>
-        </Card>
-      ) : isLoading ? (
-        <Card>
-          <CardContent>
-            <p className="text-body text-muted-foreground">{t(($) => $.telegram.loading)}</p>
-          </CardContent>
-        </Card>
-      ) : !configured ? (
+      {feedback}
+      {!configured ? (
         <Card>
           <CardContent className="space-y-2">
             <p className="text-body font-medium">{t(($) => $.telegram.not_enabled_title)}</p>
@@ -146,7 +160,7 @@ export function TelegramTab() {
       )}
 
       <AlertDialog
-        open={!!disconnectTarget}
+        open={canManage && !!disconnectTarget}
         onOpenChange={(v) => {
           if (!v && !disconnecting) setDisconnectTarget(null);
         }}

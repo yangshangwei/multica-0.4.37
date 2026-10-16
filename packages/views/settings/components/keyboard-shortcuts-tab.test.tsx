@@ -54,6 +54,19 @@ describe("KeyboardShortcutsTab", () => {
     expect(within(recorder).getByTitle("E")).toHaveTextContent("E");
   });
 
+  it("exposes the current binding through recording, disabling and restoring", () => {
+    renderWithI18n(<KeyboardShortcutsTab />);
+    const recorder = screen.getByRole("button", { name: "Change shortcut for Open search" });
+    expect(recorder).toHaveAccessibleDescription("Current shortcut: Ctrl+K");
+    fireEvent.click(recorder);
+    fireEvent.keyDown(recorder, { key: "e", ctrlKey: true });
+    expect(recorder).toHaveAccessibleDescription("Current shortcut: Ctrl+E");
+    fireEvent.click(screen.getByRole("button", { name: "Disable Open search shortcut" }));
+    expect(recorder).toHaveAccessibleDescription("Current shortcut: Unassigned");
+    fireEvent.click(screen.getByRole("button", { name: "Reset Open search" }));
+    expect(recorder).toHaveAccessibleDescription("Current shortcut: Ctrl+K");
+  });
+
   it("only captures keys while the recorder is active", () => {
     renderWithI18n(<KeyboardShortcutsTab />);
     const recorder = screen.getByRole("button", {

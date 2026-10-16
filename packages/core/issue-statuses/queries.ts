@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 import { STATUS_CONFIG, STATUS_ORDER } from "../issues/config";
 import type { IssueStatusCategory, IssueStatusEntry } from "../types";
 
@@ -19,6 +20,7 @@ export const issueStatusKeys = {
 };
 
 export function issueStatusListOptions(wsId: string) {
+  const queryFn = withQueryAccessBoundary(() => api.listIssueStatuses(true));
   return queryOptions({
     queryKey: issueStatusKeys.list(wsId),
     // ARCHIVED entries included on purpose. Archiving retires a status from
@@ -26,7 +28,7 @@ export function issueStatusListOptions(wsId: string) {
     // keep their real name, color and category. Dropping archived rows here
     // would degrade them to a raw key with a guessed category. Pickers use
     // `activeStatuses`, which excludes them. (MUL-6243)
-    queryFn: () => api.listIssueStatuses(true),
+    queryFn,
     select: (data) => data.statuses,
     // The catalog changes only when an admin edits it, which is rare, so a
     // generous stale time keeps this off the critical path of every render

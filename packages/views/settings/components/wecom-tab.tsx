@@ -37,6 +37,7 @@ import { api } from "@multica/core/api";
 import type { WecomInstallation } from "@multica/core/types";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { useT } from "../../i18n";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 // WecomTab is the workspace settings panel for WeCom smart-bot
 // installations. Listing is member-visible; the disconnect action is
@@ -53,15 +54,20 @@ export function WecomTab() {
   const qc = useQueryClient();
   const user = useAuthStore((s) => s.user);
 
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(membersQuery);
+  const currentMember = memberState.hasData
+    ? membersQuery.data?.find((m) => m.user_id === user?.id) ?? null
+    : null;
   const canManage =
     currentMember?.role === "owner" || currentMember?.role === "admin";
 
-  const { data, isLoading } = useQuery({
+  const installationsQuery = useQuery({
     ...wecomInstallationsOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && !!currentMember,
   });
+  const installationState = getSettingsQueryState(installationsQuery);
+  const { data, isLoading } = installationsQuery;
   const installations = data?.installations ?? [];
   const configured = data?.configured === true;
   const installSupported = data?.install_supported === true;
@@ -70,7 +76,7 @@ export function WecomTab() {
   const [disconnecting, setDisconnecting] = useState(false);
 
   async function handleDisconnect() {
-    if (!disconnectTarget || disconnecting) return;
+    if (!canManage || !disconnectTarget || disconnecting) return;
     setDisconnecting(true);
     try {
       await api.deleteWecomInstallation(wsId, disconnectTarget);
@@ -86,8 +92,30 @@ export function WecomTab() {
     }
   }
 
+  const feedback = <>
+    <SettingsQueryFeedback
+      query={membersQuery}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />
+    {currentMember ? (
+      <SettingsQueryFeedback
+        query={installationsQuery}
+        loadingMessage={t(($) => $.wecom.loading)}
+        errorMessage={t(($) => $.integrations.load_failed, { provider: t(($) => $.wecom.section_title) })}
+        refreshMessage={t(($) => $.integrations.refresh_failed, { provider: t(($) => $.wecom.section_title) })}
+      />
+    ) : memberState.hasData ? (
+      <p role="alert" className="text-body text-muted-foreground">{t(($) => $.query_feedback.access_denied)}</p>
+    ) : null}
+  </>;
+
+  if (!currentMember || !installationState.hasData) return <div className="space-y-3">{feedback}</div>;
+
   return (
     <div className="space-y-8">
+      {feedback}
       {!configured ? (
         <Card>
           <CardContent className="space-y-2">
@@ -149,7 +177,7 @@ export function WecomTab() {
       )}
 
       <AlertDialog
-        open={!!disconnectTarget}
+        open={canManage && !!disconnectTarget}
         onOpenChange={(v) => {
           if (!v && !disconnecting) setDisconnectTarget(null);
         }}

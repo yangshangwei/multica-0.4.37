@@ -17,8 +17,8 @@ import {
 import { Badge } from "@multica/ui/components/ui/badge";
 import { Button } from "@multica/ui/components/ui/button";
 import { useCurrentWorkspace } from "@multica/core/paths";
-import { useCurrentMember } from "@multica/core/permissions";
-import { workspaceMcpServersOptions } from "@multica/core/workspace/queries";
+import { useAuthStore } from "@multica/core/auth";
+import { memberListOptions, workspaceMcpServersOptions } from "@multica/core/workspace/queries";
 import {
   useCreateWorkspaceMcpServer,
   useDeleteWorkspaceMcpServer,
@@ -37,6 +37,7 @@ import {
 import { McpLibraryCatalog } from "../../mcp/mcp-market";
 import { McpSetupDialog } from "../../mcp/mcp-setup-dialog";
 import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 /**
  * The workspace MCP server library (GH #6062).
@@ -92,11 +93,19 @@ function McpWorkspaceTab({ wsId, presentation }: {
   presentation: "page" | "settings";
 }) {
   const { t } = useT("settings");
-  const currentMember = useCurrentMember(wsId);
-  const canManage =
-    currentMember.role === "owner" || currentMember.role === "admin";
-
-  const serversQuery = useQuery(workspaceMcpServersOptions(wsId));
+  const user = useAuthStore((s) => s.user);
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const memberState = getSettingsQueryState(membersQuery);
+  const currentMember = memberState.hasData
+    ? membersQuery.data?.find((member) => member.user_id === user?.id)
+    : undefined;
+  const serversQuery = useQuery({
+    ...workspaceMcpServersOptions(wsId),
+    enabled: !!wsId && !!currentMember,
+  });
+  const serversState = getSettingsQueryState(serversQuery);
+  const canManage = serversState.hasData &&
+    (currentMember?.role === "owner" || currentMember?.role === "admin");
   const createServer = useCreateWorkspaceMcpServer(wsId);
   const updateServer = useUpdateWorkspaceMcpServer(wsId);
   const deleteServer = useDeleteWorkspaceMcpServer(wsId);
@@ -149,6 +158,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
     name: string,
     config: Record<string, unknown>,
   ) => {
+    if (!canManage) throw new Error(t(($) => $.query_feedback.access_denied));
     try {
       if (editingServer) {
         await updateServer.mutateAsync({ serverId: editingServer.id, config });
@@ -185,7 +195,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
   };
 
   const handleRename = async () => {
-    if (!renamingServer || renamePending) return;
+    if (!canManage || !renamingServer || renamePending) return;
     const name = renameDraft.trim();
     if (name === "") {
       setRenameError(t(($) => $.mcp.rename_required));
@@ -224,7 +234,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
   };
 
   const handleDelete = async () => {
-    if (!deletingServer) return;
+    if (!canManage || !deletingServer || deleteServer.isPending) return;
     try {
       await deleteServer.mutateAsync(deletingServer.id);
       toast.success(t(($) => $.mcp.removed_toast));
@@ -258,17 +268,37 @@ function McpWorkspaceTab({ wsId, presentation }: {
     </Button>
   );
 
+  const feedback = <>
+    <SettingsQueryFeedback
+      query={membersQuery}
+      loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+      errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+      refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+    />
+    {currentMember ? (
+      <SettingsQueryFeedback
+        query={serversQuery}
+        loadingMessage={t(($) => $.mcp.market.workspace_loading)}
+        errorMessage={t(($) => $.mcp.market.workspace_error)}
+        refreshMessage={t(($) => $.mcp.market.workspace_refresh_error)}
+      />
+    ) : memberState.hasData ? (
+      <p role="alert" className="text-body text-muted-foreground">{t(($) => $.query_feedback.access_denied)}</p>
+    ) : null}
+  </>;
+
+  if (!currentMember || !serversState.hasData) {
+    return <McpWorkspaceLayout presentation={presentation} action={null}>{feedback}</McpWorkspaceLayout>;
+  }
+
   return (
     <McpWorkspaceLayout presentation={presentation} action={customAction}>
+      {feedback}
       <McpLibraryCatalog
         presentation={presentation}
         workspaceId={wsId}
         servers={serversQuery.data}
-        loaded={
-          !serversQuery.isLoading &&
-          !serversQuery.isError &&
-          serversQuery.data !== undefined
-        }
+        loaded={serversState.hasData}
         canManage={canManage}
         onCustom={(preset) => {
           cancelRename();
@@ -283,24 +313,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
           description={t(($) => $.mcp.write_only_note)}
         >
           <SettingsCard>
-            {serversQuery.isLoading ? (
-              <div className="flex items-center justify-center py-8 text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-              </div>
-            ) : serversQuery.isError ? (
-              <div role="alert" className="space-y-3 px-4 py-6">
-                <p className="text-caption">
-                  {t(($) => $.mcp.market.workspace_error)}
-                </p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => void serversQuery.refetch()}
-                >
-                  {t(($) => $.mcp.market.retry)}
-                </Button>
-              </div>
-            ) : servers.length === 0 ? (
+            {servers.length === 0 ? (
               <div className="px-4 py-8 text-center">
                 <Server className="mx-auto h-5 w-5 text-muted-foreground" />
                 <p className="mt-3 text-body font-medium">
@@ -404,7 +417,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
               </ul>
             )}
           </SettingsCard>
-          {!canManage && !currentMember.isLoading ? (
+          {!canManage ? (
             <p className="px-0.5 text-caption text-muted-foreground">
               {t(($) => $.mcp.admin_only_note)}
             </p>
@@ -423,7 +436,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
         />
       ) : null}
       <McpServerDialog
-        open={editorOpen}
+        open={editorOpen && canManage}
         server={dialogServer}
         preset={presetDraft}
         existingNames={existingNames}
@@ -436,9 +449,9 @@ function McpWorkspaceTab({ wsId, presentation }: {
       />
 
       <AlertDialog
-        open={deletingServer !== null}
+        open={deletingServer !== null && canManage}
         onOpenChange={(open) => {
-          if (!open) setDeletingServer(null);
+          if (!open && !deleteServer.isPending) setDeletingServer(null);
         }}
       >
         <AlertDialogContent>

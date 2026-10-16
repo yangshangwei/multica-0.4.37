@@ -44,6 +44,7 @@ import { cn } from "@multica/ui/lib/utils";
 import { ColorPicker, COLOR_PICKER_PRESETS } from "../../common/color-picker";
 import { useT } from "../../i18n";
 import { SettingsTab } from "./settings-layout";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 /**
  * Label scopes this settings tab manages. Narrower than `LabelResourceType`:
@@ -76,9 +77,15 @@ export function LabelsTab() {
   const [createOpen, setCreateOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<Label | null>(null);
 
-  const { data: labels = [], isLoading } = useQuery(
-    labelListOptions(wsId, resourceType),
-  );
+  const catalogQuery = useQuery(labelListOptions(wsId, resourceType));
+  const { data: labels = [] } = catalogQuery;
+  const { hasData, accessDenied } = getSettingsQueryState(catalogQuery);
+  useEffect(() => {
+    if (!accessDenied) return;
+    setCreateOpen(false);
+    setEditing(null);
+    setPendingDelete(null);
+  }, [accessDenied]);
   const filteredLabels = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     if (!normalized) return labels;
@@ -96,7 +103,7 @@ export function LabelsTab() {
       title={t(($) => $.labels.title)}
       description={t(($) => $.labels.description)}
     >
-      <div className="space-y-5">
+      <div className="@container/catalog space-y-5">
         <div className="flex flex-wrap items-center gap-2 border-b border-surface-border pb-3">
           {RESOURCE_TYPES.map((type) => (
             <Button
@@ -116,30 +123,37 @@ export function LabelsTab() {
               <Tag className="size-3.5" />
               {t(($) => $.labels.scopes[type])}
               <span className="text-caption tabular-nums text-muted-foreground">
-                {type === resourceType ? labels.length : ""}
+                {type === resourceType && hasData ? labels.length : ""}
               </span>
             </Button>
           ))}
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative w-full sm:max-w-sm">
+        <div className="flex flex-col gap-3 @2xl/catalog:flex-row @2xl/catalog:items-center @2xl/catalog:justify-between">
+          <div className="relative w-full @2xl/catalog:max-w-sm">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t(($) => $.labels.search_placeholder)}
+              aria-label={t(($) => $.labels.search_placeholder)}
               className="pl-9"
             />
           </div>
-          <Button className="gap-2" onClick={() => setCreateOpen(true)}>
+          <Button className="gap-2" disabled={!hasData} onClick={() => setCreateOpen(true)}>
             <Plus className="size-4" />
             {t(($) => $.labels.new_label)}
           </Button>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-surface-border bg-card">
-          <div className="hidden grid-cols-[minmax(11rem,1fr)_minmax(12rem,1.4fr)_6rem_7rem_2rem] gap-4 border-b border-surface-border bg-muted/20 px-4 py-2.5 text-caption font-medium text-muted-foreground md:grid">
+        <SettingsQueryFeedback
+          query={catalogQuery}
+          loadingMessage={t(($) => $.labels.loading)}
+          errorMessage={t(($) => $.labels.load_failed)}
+          refreshMessage={t(($) => $.labels.refresh_failed)}
+        />
+        {hasData && <div className="overflow-hidden rounded-lg border border-surface-border bg-card">
+          <div className="hidden grid-cols-[minmax(11rem,1fr)_minmax(12rem,1.4fr)_6rem_7rem_2rem] gap-4 border-b border-surface-border bg-muted/20 px-4 py-2.5 text-caption font-medium text-muted-foreground @3xl/catalog:grid">
             <span>{t(($) => $.labels.columns.name)}</span>
             <span>{t(($) => $.labels.columns.description)}</span>
             <span>{t(($) => $.labels.columns.usage)}</span>
@@ -147,11 +161,7 @@ export function LabelsTab() {
             <span />
           </div>
 
-          {isLoading ? (
-            <div className="px-4 py-12 text-center text-body text-muted-foreground">
-              {t(($) => $.labels.loading)}
-            </div>
-          ) : filteredLabels.length === 0 ? (
+          {filteredLabels.length === 0 ? (
             <div className="px-4 py-12 text-center">
               <Tag className="mx-auto size-6 text-faint-foreground" />
               <p className="mt-3 text-body font-medium">
@@ -165,7 +175,7 @@ export function LabelsTab() {
               {filteredLabels.map((label) => (
                 <div
                   key={label.id}
-                  className="grid gap-2 px-4 py-3 md:grid-cols-[minmax(11rem,1fr)_minmax(12rem,1.4fr)_6rem_7rem_2rem] md:items-center md:gap-4"
+                  className="grid min-w-0 gap-2 px-4 py-3 @3xl/catalog:grid-cols-[minmax(11rem,1fr)_minmax(12rem,1.4fr)_6rem_7rem_2rem] @3xl/catalog:items-center @3xl/catalog:gap-4"
                 >
                   <div className="flex min-w-0 items-center gap-3">
                     <span
@@ -174,10 +184,10 @@ export function LabelsTab() {
                     />
                     <span className="truncate text-body font-medium">{label.name}</span>
                   </div>
-                  <p className="min-w-0 truncate text-caption text-muted-foreground md:text-body">
+                  <p className="min-w-0 truncate text-caption text-muted-foreground @3xl/catalog:text-body">
                     {label.description || "—"}
                   </p>
-                  <span className="text-caption tabular-nums text-muted-foreground md:text-body">
+                  <span className="text-caption tabular-nums text-muted-foreground @3xl/catalog:text-body">
                     {t(($) => $.labels.usage_count, { count: label.usage_count ?? 0 })}
                   </span>
                   <span className="text-caption text-muted-foreground">
@@ -213,22 +223,22 @@ export function LabelsTab() {
               ))}
             </div>
           )}
-        </div>
+        </div>}
       </div>
 
       <LabelEditorDialog
-        open={createOpen}
+        open={hasData && createOpen}
         onOpenChange={setCreateOpen}
         resourceType={resourceType}
       />
       <LabelEditorDialog
-        open={Boolean(editing)}
+        open={hasData && Boolean(editing)}
         onOpenChange={(open) => !open && setEditing(null)}
         resourceType={resourceType}
         label={editing}
       />
       <DeleteLabelDialog
-        label={pendingDelete}
+        label={hasData ? pendingDelete : null}
         onClose={() => setPendingDelete(null)}
       />
     </SettingsTab>

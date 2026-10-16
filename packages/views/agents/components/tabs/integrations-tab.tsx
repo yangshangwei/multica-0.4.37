@@ -30,6 +30,7 @@ import { WecomMark } from "../../../settings/components/wecom-mark";
 import { TelegramAgentBindButton } from "../../../settings/components/telegram-tab";
 import { TelegramMark } from "../../../settings/components/telegram-mark";
 import { useT } from "../../../i18n";
+import { getSettingsQueryState } from "../../../settings/components/settings-query-feedback";
 
 /**
  * Integrations tab on the agent detail page. Surfaces the same external-
@@ -121,22 +122,20 @@ function MessagingIntegrationsContent({ agent }: { agent: Agent }) {
     (inst) => inst.agent_id === agent.id && inst.status === "active",
   );
   const dingtalkHasActiveInstall = !!dingtalkInstallation;
-  const {
-    data: dingtalkGroupsListing,
-    isLoading: dingtalkGroupsLoading,
-    isError: dingtalkGroupsError,
-    refetch: retryDingtalkGroups,
-  } = useQuery({
+  const dingtalkGroupsQuery = useQuery({
     ...dingtalkAgentGroupsOptions(wsId, agent.id),
     enabled: !!wsId && dingtalkHasActiveInstall,
   });
+  const dingtalkGroupsState = getSettingsQueryState(dingtalkGroupsQuery);
+  const dingtalkGroupsListing = dingtalkGroupsState.hasData ? dingtalkGroupsQuery.data : undefined;
+  const dingtalkGroupsLoading = dingtalkGroupsQuery.isLoading;
   const dingtalkGroups = dingtalkGroupsListing?.groups ?? [];
   const dingtalkGroupDiscoverySupported =
     dingtalkGroupsListing?.group_discovery_supported === true;
   const showDingtalkGroupDiscovery =
     dingtalkGroupDiscoverySupported ||
     dingtalkGroupsLoading ||
-    dingtalkGroupsError;
+    dingtalkGroupsState.failed;
   const dingtalkBotIdentity = dingtalkInstallation
     ? dingtalkGroupsListing?.bot_identities?.[dingtalkInstallation.id] ??
       getDingTalkBotIdentity(dingtalkGroups, dingtalkInstallation.id)
@@ -208,9 +207,7 @@ function MessagingIntegrationsContent({ agent }: { agent: Agent }) {
                   installationId={dingtalkInstallation.id}
                   groups={dingtalkGroups}
                   inactiveCount={dingtalkGroupsListing?.inactive_group_counts?.[dingtalkInstallation.id] ?? 0}
-                  isLoading={dingtalkGroupsLoading}
-                  isError={dingtalkGroupsError}
-                  onRetry={() => void retryDingtalkGroups()}
+                  query={dingtalkGroupsQuery}
                 />
               </div>
             )}
@@ -377,9 +374,7 @@ function MessagingIntegrationsContent({ agent }: { agent: Agent }) {
               installationId={dingtalkInstallation.id}
               groups={dingtalkGroups}
               inactiveCount={dingtalkGroupsListing?.inactive_group_counts?.[dingtalkInstallation.id] ?? 0}
-              isLoading={dingtalkGroupsLoading}
-              isError={dingtalkGroupsError}
-              onRetry={() => void retryDingtalkGroups()}
+              query={dingtalkGroupsQuery}
             />
           </div>
         )}

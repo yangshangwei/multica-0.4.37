@@ -27,6 +27,7 @@ import type { ComposioToolkit } from "@multica/core/types";
 import { ComposioToolkitLogo } from "../../common/composio-toolkit-logo";
 import { useT, useTimeAgo } from "../../i18n";
 import { useNavigation } from "../../navigation";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 // ComposioTab renders the connectable Composio toolkit catalog and lets the
 // user connect / disconnect the apps their agents can act on.
@@ -45,6 +46,10 @@ export function ComposioTab() {
 
   const toolkitsQuery = useQuery(composioToolkitsOptions());
   const connectionsQuery = useQuery(composioConnectionsOptions());
+  const toolkitState = getSettingsQueryState(toolkitsQuery);
+  const connectionState = getSettingsQueryState(connectionsQuery);
+  const connections = connectionState.hasData ? connectionsQuery.data : undefined;
+  const canOperate = toolkitState.hasData && connectionState.hasData;
 
   const [query, setQuery] = useState("");
   const [connectingSlug, setConnectingSlug] = useState<string | null>(null);
@@ -99,22 +104,22 @@ export function ComposioTab() {
   // already connected (and which connection id to disconnect).
   const connectionBySlug = useMemo(() => {
     const m = new Map<string, string>();
-    for (const c of connectionsQuery.data ?? []) {
+    for (const c of connections ?? []) {
       if (c.status === "active") m.set(c.toolkit_slug, c.id);
     }
     return m;
-  }, [connectionsQuery.data]);
+  }, [connections]);
 
   // Toolkits whose latest connection is expired render a Reconnect affordance
   // instead of Connected/Connect. Backend only emits `expired` once Stage 4
   // (MUL-3719) lands, but the branch is wired up now so it lights up for free.
   const expiredBySlug = useMemo(() => {
     const m = new Set<string>();
-    for (const c of connectionsQuery.data ?? []) {
+    for (const c of connections ?? []) {
       if (c.status === "expired") m.add(c.toolkit_slug);
     }
     return m;
-  }, [connectionsQuery.data]);
+  }, [connections]);
 
   // Last-used timestamp per active connection, for the "Last used …" line on a
   // connected card. Backend leaves this null until tool-call dispatch starts
@@ -122,11 +127,11 @@ export function ComposioTab() {
   // until then.
   const lastUsedBySlug = useMemo(() => {
     const m = new Map<string, string | null>();
-    for (const c of connectionsQuery.data ?? []) {
+    for (const c of connections ?? []) {
       if (c.status === "active") m.set(c.toolkit_slug, c.last_used_at ?? null);
     }
     return m;
-  }, [connectionsQuery.data]);
+  }, [connections]);
 
   const toolkits = useMemo(() => toolkitsQuery.data ?? [], [toolkitsQuery.data]);
   const filtered = useMemo(() => {
@@ -140,13 +145,11 @@ export function ComposioTab() {
     );
   }, [toolkits, query]);
 
-  // 503 handling lives in the parent IntegrationsTab, which hides the whole
-  // Composio section when COMPOSIO_API_KEY is unset — this component only
-  // mounts when the integration is configured, so it deals with the loaded /
-  // error / empty / list states below.
+  // The parent hides an initially unconfigured deployment. A later 503 may
+  // be transient, so retain the loaded catalog and its search state here.
 
   async function handleConnect(tk: ComposioToolkit) {
-    if (connectingSlug) return;
+    if (!canOperate || connectingSlug || disconnecting) return;
     setConnectingSlug(tk.slug);
     try {
       const { redirect_url } = await api.beginComposioConnect(tk.slug);
@@ -160,7 +163,7 @@ export function ComposioTab() {
   }
 
   async function handleDisconnect() {
-    if (!disconnectTarget || disconnecting) return;
+    if (!canOperate || !disconnectTarget || disconnecting || connectingSlug) return;
     setDisconnecting(true);
     try {
       await api.deleteComposioConnection(disconnectTarget.connectionId);
@@ -180,19 +183,19 @@ export function ComposioTab() {
         <p className="text-body text-muted-foreground">{t(($) => $.composio.page_description)}</p>
       </section>
 
-      {toolkitsQuery.isLoading ? (
-        <Card>
-          <CardContent>
-            <p className="text-body text-muted-foreground">{t(($) => $.composio.loading)}</p>
-          </CardContent>
-        </Card>
-      ) : toolkitsQuery.isError ? (
-        <Card>
-          <CardContent>
-            <p className="text-body text-destructive">{t(($) => $.composio.load_failed)}</p>
-          </CardContent>
-        </Card>
-      ) : toolkits.length === 0 ? (
+      <SettingsQueryFeedback
+        query={toolkitsQuery}
+        loadingMessage={t(($) => $.composio.loading)}
+        errorMessage={t(($) => $.composio.load_failed)}
+        refreshMessage={t(($) => $.composio.refresh_failed)}
+      />
+      <SettingsQueryFeedback
+        query={connectionsQuery}
+        loadingMessage={t(($) => $.composio.connections_loading)}
+        errorMessage={t(($) => $.composio.connections_load_failed)}
+        refreshMessage={t(($) => $.composio.connections_refresh_failed)}
+      />
+      {!toolkitState.hasData ? null : toolkits.length === 0 ? (
         <Card>
           <CardContent className="space-y-2">
             <p className="text-body font-medium">{t(($) => $.composio.empty_title)}</p>
@@ -202,20 +205,12 @@ export function ComposioTab() {
       ) : (
         <section className="space-y-3">
           <Input
+            aria-label={t(($) => $.composio.search_label)}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t(($) => $.composio.search_placeholder)}
             className="max-w-xs"
           />
-          {connectionsQuery.isError && (
-            // Don't silently treat a failed connections fetch as "nothing
-            // connected" — that would hide real connections and offer Connect
-            // on something already linked. Surface it so the user knows the
-            // connected state may be incomplete; the catalog still renders.
-            <p className="text-caption text-destructive">
-              {t(($) => $.composio.connections_load_failed)}
-            </p>
-          )}
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((tk) => (
               <ToolkitCard
@@ -225,7 +220,7 @@ export function ComposioTab() {
                 expired={expiredBySlug.has(tk.slug)}
                 lastUsedAt={lastUsedBySlug.get(tk.slug) ?? null}
                 connecting={connectingSlug === tk.slug}
-                anyConnecting={connectingSlug !== null}
+                actionsDisabled={!canOperate || connectingSlug !== null || disconnecting}
                 onConnect={() => handleConnect(tk)}
                 onDisconnect={(connectionId, name) =>
                   setDisconnectTarget({ connectionId, name })
@@ -237,7 +232,7 @@ export function ComposioTab() {
       )}
 
       <AlertDialog
-        open={!!disconnectTarget}
+        open={canOperate && !!disconnectTarget}
         onOpenChange={(v) => {
           if (!v && !disconnecting) setDisconnectTarget(null);
         }}
@@ -271,7 +266,7 @@ function ToolkitCard({
   expired,
   lastUsedAt,
   connecting,
-  anyConnecting,
+  actionsDisabled,
   onConnect,
   onDisconnect,
 }: {
@@ -280,7 +275,7 @@ function ToolkitCard({
   expired: boolean;
   lastUsedAt: string | null;
   connecting: boolean;
-  anyConnecting: boolean;
+  actionsDisabled: boolean;
   onConnect: () => void;
   onDisconnect: (connectionId: string, name: string) => void;
 }) {
@@ -316,7 +311,7 @@ function ToolkitCard({
 
         {isConnected ? (
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-caption text-emerald-600">
+            <span className="inline-flex items-center gap-1 text-caption text-success-foreground">
               <Check className="h-3 w-3" />
               {t(($) => $.composio.connected)}
             </span>
@@ -324,6 +319,7 @@ function ToolkitCard({
               variant="outline"
               size="sm"
               onClick={() => onDisconnect(connectionId!, toolkit.name || toolkit.slug)}
+              disabled={actionsDisabled}
               aria-label={t(($) => $.composio.disconnect)}
             >
               <Trash2 className="h-3 w-3" />
@@ -333,11 +329,11 @@ function ToolkitCard({
           // Token-expired connection: surface the failure and let the user
           // re-run the same connect flow in one click (no disconnect step).
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-caption text-amber-600">
+            <span className="inline-flex items-center gap-1 text-caption text-warning-foreground">
               <AlertTriangle className="h-3 w-3" />
               {t(($) => $.composio.expired)}
             </span>
-            <Button size="sm" variant="outline" onClick={onConnect} disabled={anyConnecting}>
+            <Button size="sm" variant="outline" onClick={onConnect} disabled={actionsDisabled}>
               {connecting ? (
                 <Loader2 className="h-3 w-3 animate-spin" />
               ) : (
@@ -347,7 +343,7 @@ function ToolkitCard({
             </Button>
           </div>
         ) : toolkit.connectable ? (
-          <Button size="sm" onClick={onConnect} disabled={anyConnecting}>
+          <Button size="sm" onClick={onConnect} disabled={actionsDisabled}>
             {connecting ? (
               <Loader2 className="h-3 w-3 animate-spin" />
             ) : (

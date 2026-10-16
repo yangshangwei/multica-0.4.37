@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 import en from "../locales/en/triage.json";
+import enSettings from "../locales/en/settings.json";
 import { TriageSettingsTab } from "./triage-settings-tab";
 const state = vi.hoisted(() => ({
   role: "admin",
@@ -11,7 +12,9 @@ const state = vi.hoisted(() => ({
   mutate: vi.fn(),
 }));
 vi.mock("../i18n", () => ({
-  useT: () => ({ t: (selector: (value: typeof en) => string) => selector(en) }),
+  useT: (namespace: string) => ({
+    t: (selector: (value: unknown) => string) => selector(namespace === "settings" ? enSettings : en),
+  }),
 }));
 vi.mock("@multica/core/paths", () => ({
   useWorkspacePaths: () => ({ triage: () => "/acme/triage" }),
@@ -26,9 +29,13 @@ vi.mock("../navigation", () => ({
   }) => <a href={href}>{children}</a>,
 }));
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "ws" }));
-vi.mock("@multica/core/permissions", () => ({
-  useCurrentMember: () => ({ role: state.role }),
-}));
+vi.mock("@multica/core/auth", () => {
+  const auth = { user: { id: "user-1" } };
+  return { useAuthStore: Object.assign(
+    (selector: (value: typeof auth) => unknown) => selector(auth),
+    { getState: () => auth },
+  ) };
+});
 vi.mock("./triage-fields", () => ({
   AcceptanceStatusSelect: () => null,
   ReviewerSelect: () => null,
@@ -41,7 +48,9 @@ vi.mock("@multica/core/triage", async (original) => ({
 vi.mock("@tanstack/react-query", async (original) => ({
   ...(await original<typeof import("@tanstack/react-query")>()),
   useQuery: ({ queryKey }: { queryKey: string[] }) =>
-    queryKey[2] === "counts"
+    queryKey[2] === "members"
+      ? { data: [{ user_id: "user-1", role: state.role }] }
+      : queryKey[2] === "counts"
       ? { data: { pending: state.pending, ready: 0, snoozed: state.pending } }
       : {
           data: {
@@ -97,6 +106,6 @@ it("cannot disable while every unresolved task is snoozed", () => {
 it("does not mistake a network failure for unsupported triage", () => {
   state.error = new Error("Service unavailable");
   render(<TriageSettingsTab />);
-  expect(screen.getByRole("alert")).toHaveTextContent("Service unavailable");
+  expect(screen.getByRole("alert")).toHaveTextContent(en.settings_refresh_failed);
   expect(screen.queryByText(en.unsupported)).not.toBeInTheDocument();
 });

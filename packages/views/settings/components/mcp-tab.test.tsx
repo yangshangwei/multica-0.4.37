@@ -33,10 +33,13 @@ const data = vi.hoisted(() => ({
 }));
 
 vi.mock("@tanstack/react-query", () => ({
-  useQuery: () => ({ data: data.servers, isLoading: data.isLoading, refetch: data.refetch }),
+  useQuery: (options: { queryKey: readonly unknown[] }) => options.queryKey.includes("members")
+    ? { data: [{ user_id: "user-1", role: data.role }], isLoading: false }
+    : { data: data.servers, isLoading: data.isLoading, refetch: data.refetch },
 }));
 
 vi.mock("@multica/core/workspace/queries", () => ({
+  memberListOptions: () => ({ queryKey: ["workspaces", "workspace-1", "members"] }),
   mcpServerTemplateListOptions: () => ({ queryKey: ["mcp-server-templates"] }),
   workspaceMcpServersOptions: () => ({ queryKey: ["workspaces", "workspace-1", "mcp-servers"] }),
 }));
@@ -51,9 +54,13 @@ vi.mock("@multica/core/paths", () => ({
   useCurrentWorkspace: () => ({ id: data.wsId, name: "Acme", slug: "acme" }),
 }));
 
-vi.mock("@multica/core/permissions", () => ({
-  useCurrentMember: () => ({ role: data.role, isLoading: false }),
-}));
+vi.mock("@multica/core/auth", () => {
+  const state = { user: { id: "user-1" } };
+  return { useAuthStore: Object.assign(
+    (selector: (value: typeof state) => unknown) => selector(state),
+    { getState: () => state },
+  ) };
+});
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
@@ -621,12 +628,13 @@ describe("McpTab", () => {
     expect(screen.getByText(/saved URLs.*aren't shown again/)).toBeInTheDocument();
   });
 
-  it("survives a payload that is not an array", () => {
-    // Backend drift: the schema defaults the list to [], but the component
-    // must not crash if it ever arrives undefined.
+  it("keeps an unknown library distinct from a successfully loaded empty library", () => {
+    // The API schema owns malformed arrays. Undefined Query data means the
+    // library has not loaded and must not claim a successful empty result.
     data.servers = undefined as unknown as typeof data.servers;
     render(<McpTab />, { wrapper: Wrapper });
 
-    expect(screen.getByText("No shared MCP servers")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(enSettings.mcp.market.workspace_loading);
+    expect(screen.queryByText("No shared MCP servers")).not.toBeInTheDocument();
   });
 });

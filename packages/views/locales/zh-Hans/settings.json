@@ -50,7 +50,9 @@
     },
     "moving": "正在移动 {{name}}...",
     "moved": "已将 {{name}} 移至分类内第 {{position}} 位。",
-    "hide_archived_to_reorder": "隐藏已归档状态后，即可调整状态顺序。"
+    "hide_archived_to_reorder": "隐藏已归档状态后，即可调整状态顺序。",
+    "load_failed": "无法加载状态。",
+    "refresh_failed": "无法刷新状态。"
   },
   "quick_actions": {
     "title": "快捷操作",
@@ -97,13 +99,16 @@
     "prompt_hint": "原样发送。智能体本来就能看到这个任务。",
     "template_not_supported": "暂不支持变量，请删除 {{token}}。智能体本来就能读到这个任务。",
     "delete_title": "删除这条快捷操作？",
-    "delete_description": "它会从所有任务侧边栏消失，历史运行记录仍保留在执行日志中。如果以后可能还要用，建议改为归档。"
+    "delete_description": "它会从所有任务侧边栏消失，历史运行记录仍保留在执行日志中。如果以后可能还要用，建议改为归档。",
+    "load_failed": "无法加载快捷操作。",
+    "refresh_failed": "无法刷新快捷操作。"
   },
   "auto_save": {
     "saving": "正在保存…",
     "saved": "已保存",
     "failed": "保存失败",
-    "toast_saved": "更改已保存"
+    "toast_saved": "更改已保存",
+    "unsaved": "有未保存的修改"
   },
   "preferences": {
     "general_title": "常规",
@@ -262,7 +267,8 @@
       "zoom_out": "缩小",
       "reset_zoom": "重置缩放",
       "close_dialog": "关闭对话框或菜单"
-    }
+    },
+    "current_binding": "当前快捷键：{{shortcut}}"
   },
   "chat": {
     "floating_title": "悬浮窗",
@@ -426,7 +432,9 @@
       "version": "模板版本 {{version}}",
       "source": "模板：{{name}}",
       "assign": "分配",
-      "assign_server": "分配 {{name}}"
+      "assign_server": "分配 {{name}}",
+      "workspace_loading": "正在加载共享服务器...",
+      "workspace_refresh_error": "无法刷新共享服务器，仍显示上次加载的内容。"
     }
   },
   "page": {
@@ -620,7 +628,9 @@
       "cancel": "取消",
       "confirm": "归档属性",
       "failed": "归档属性失败"
-    }
+    },
+    "load_failed": "无法加载属性。",
+    "refresh_failed": "无法刷新属性。"
   },
   "labels": {
     "title": "标签",
@@ -666,7 +676,9 @@
       "cancel": "取消",
       "confirm": "删除标签",
       "failed": "无法删除标签"
-    }
+    },
+    "load_failed": "无法加载标签。",
+    "refresh_failed": "无法刷新标签。"
   },
   "account": {
     "section_profile": "个人信息",
@@ -682,7 +694,8 @@
     "toast_avatar_updated": "头像已更新",
     "toast_avatar_failed": "上传头像失败",
     "toast_profile_updated": "资料已更新",
-    "toast_profile_failed": "更新资料失败"
+    "toast_profile_failed": "更新资料失败",
+    "name_required": "请填写姓名后保存修改。"
   },
   "notifications": {
     "title": "收件箱通知",
@@ -739,7 +752,12 @@
     "description": "个人访问 token 让 CLI 和外部集成可以代表你的账号进行身份验证。可通过 multica login --token 使用，或在调用 API 时作为 Bearer token 发送。",
     "security_note": "Token 拥有你账号的完整访问权限，请像密码一样妥善保管。",
     "empty": "还没有 API token。在上方创建一个即可开始使用。",
-    "load_failed": "无法加载 API token，请刷新页面重试。",
+    "loading": "正在加载 API token...",
+    "load_failed": "无法加载 API token，请重试。",
+    "refresh_failed": "无法刷新 API token，仍显示上次加载的内容。",
+    "expiry_label": "Token 有效期",
+    "revoking": "正在吊销...",
+    "create_response_invalid": "无法确认新 token 是否创建成功。再次创建前，请先检查 token 列表。",
     "name_placeholder": "Token 名称（例如：我的 CLI）",
     "expiry": {
       "30": "30 天",
@@ -828,7 +846,8 @@
       "retry": "重试",
       "confirming": "正在确认已保存的时区...",
       "changed": "已保存的时区发生变化，请检查后重新保存。"
-    }
+    },
+    "name_required": "请填写工作空间名称后保存修改。"
   },
   "delete_workspace_dialog": {
     "title": "删除工作空间",
@@ -909,7 +928,9 @@
         "name": "Telegram",
         "description": "在 Telegram 中与智能体对话、跟进回复。"
       }
-    }
+    },
+    "load_failed": "无法加载 {{provider}} 设置。",
+    "refresh_failed": "无法刷新 {{provider}} 设置，仍显示上次加载的内容。"
   },
   "github": {
     "section_title": "GitHub",
@@ -994,7 +1015,8 @@
     "rotate_confirm_action": "重新生成",
     "rotating": "重新生成中…",
     "toast_rotated": "已重新生成 Webhook 密钥",
-    "toast_rotate_failed": "重新生成 Webhook 密钥失败"
+    "toast_rotate_failed": "重新生成 Webhook 密钥失败",
+    "copy_field": "复制 {{field}}"
   },
   "lark": {
     "section_title": "飞书",
@@ -1099,7 +1121,11 @@
     "last_used": "最近使用 {{when}}",
     "last_used_never": "从未使用",
     "expired": "令牌已过期",
-    "reconnect": "重新连接"
+    "reconnect": "重新连接",
+    "refresh_failed": "无法刷新 Composio 工具包，仍显示上次加载的内容。",
+    "connections_loading": "正在加载连接...",
+    "connections_refresh_failed": "无法刷新连接，仍显示上次加载的内容。",
+    "search_label": "搜索 Composio 工具包"
   },
   "slack": {
     "section_title": "Slack",
@@ -1156,6 +1182,7 @@
     "groups_inactive": "长期未活跃（{{count}}）",
     "groups_load_more": "加载更多",
     "groups_error": "无法加载钉群。",
+    "groups_refresh_failed": "无法刷新群组，仍显示上次加载的内容。",
     "groups_retry": "重试",
     "group_untitled": "未命名钉群",
     "groups_count": "{{count}}",
@@ -1338,7 +1365,11 @@
     "delete_confirm_action": "删除仓库",
     "manage_hint": "只有管理员和所有者可以管理代码仓库。",
     "toast_saved": "已保存代码仓库",
-    "toast_save_failed": "保存代码仓库失败"
+    "toast_save_failed": "保存代码仓库失败",
+    "github_installations_loading": "正在加载 GitHub 连接...",
+    "github_installations_load_failed": "无法加载 GitHub 连接。",
+    "github_installations_refresh_failed": "无法刷新 GitHub 连接。",
+    "github_refresh_failed": "无法刷新 GitHub 仓库。"
   },
   "desktop": {
     "tabs": {
@@ -1414,6 +1445,7 @@
       "up_to_date": "已是最新版本。",
       "downloading": "v{{version}} 正在后台下载——准备好安装时会通知你。",
       "check_now": "立即检查",
+      "check_failed": "无法检查更新，请重试。",
       "checking": "检查中..."
     }
   },
@@ -1488,7 +1520,21 @@
     "expiry_7d": "7 天",
     "expiry_30d": "30 天",
     "expiry_never": "永久有效",
-    "actions_for": "{{name}} 的成员操作"
+    "actions_for": "{{name}} 的成员操作",
+    "loading": "正在加载成员...",
+    "load_failed": "无法加载工作空间成员。",
+    "refresh_failed": "无法刷新工作空间成员。",
+    "invite_role_label": "受邀成员角色",
+    "pending_heading": "待处理的邀请",
+    "invitations_loading": "正在加载邀请...",
+    "invitations_load_failed": "无法加载邀请。",
+    "invitations_refresh_failed": "无法刷新邀请。",
+    "share_links_heading": "分享链接",
+    "share_links_loading": "正在加载分享链接...",
+    "share_links_load_failed": "无法加载分享链接。",
+    "share_links_refresh_failed": "无法刷新分享链接。",
+    "share_link_role_label": "分享链接角色",
+    "share_link_expiry_label": "分享链接有效期"
   },
   "iterations": {
     "title": "迭代设置",
@@ -1514,5 +1560,13 @@
     "operation_block": "迭代操作正在处理或等待恢复结果。",
     "footer": "开始、结束或关闭迭代不会启动或停止执行，历史记录会保留。",
     "disable_description": "进行中的迭代将结束，计划中的迭代将取消，任务当前迭代归属会清除。再次启用不会恢复这些周期。"
+  },
+  "query_feedback": {
+    "retry": "重试",
+    "retrying": "正在重试...",
+    "access_denied": "你没有访问这些设置的权限。",
+    "permissions_loading": "正在加载工作空间权限...",
+    "permissions_load_failed": "无法加载工作空间权限。",
+    "permissions_refresh_failed": "无法刷新工作空间权限。"
   }
 }

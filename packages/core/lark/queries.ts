@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 /** Query key namespace for everything Lark-installation-related. Realtime
  * sync invalidates `installations(wsId)` on `lark_installation:*` events
@@ -12,6 +13,6 @@ export const larkKeys = {
 export const larkInstallationsOptions = (wsId: string) =>
   queryOptions({
     queryKey: larkKeys.installations(wsId),
-    queryFn: () => api.listLarkInstallations(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listLarkInstallations(wsId)),
     enabled: !!wsId,
   });

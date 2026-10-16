@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 /** Query key namespace for everything Slack-installation-related. Realtime
  * sync invalidates `installations(wsId)` on `slack_installation:*` events so
@@ -13,6 +14,6 @@ export const slackKeys = {
 export const slackInstallationsOptions = (wsId: string) =>
   queryOptions({
     queryKey: slackKeys.installations(wsId),
-    queryFn: () => api.listSlackInstallations(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listSlackInstallations(wsId)),
     enabled: !!wsId,
   });

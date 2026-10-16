@@ -93,7 +93,7 @@ export function DesktopBehaviorSettingsTab() {
           disabled={saving}
           items={items}
         >
-          <SelectTrigger size="sm" className="w-full max-w-md">
+          <SelectTrigger size="sm" className="w-full max-w-md" aria-label={t(($) => $.close_behavior.title)}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

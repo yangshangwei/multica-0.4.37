@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Archive,
@@ -78,6 +78,7 @@ import {
 } from "../../common/property-icon";
 import { useT } from "../../i18n";
 import { SettingsTab } from "./settings-layout";
+import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
 const MAX_ACTIVE_PROPERTIES = 20;
 
@@ -118,12 +119,24 @@ export function PropertiesTab() {
   const [createOpen, setCreateOpen] = useState(false);
   const [pendingArchive, setPendingArchive] = useState<IssueProperty | null>(null);
 
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
+  const memberQuery = useQuery(memberListOptions(wsId));
+  const { data: members = [] } = memberQuery;
+  const memberState = getSettingsQueryState(memberQuery);
   const currentMember = members.find((m) => m.user_id === user?.id) ?? null;
-  const canManage = currentMember?.role === "owner" || currentMember?.role === "admin";
+  const canManage = memberState.hasData &&
+    (currentMember?.role === "owner" || currentMember?.role === "admin");
 
-  const { data: properties = [], isLoading } = useQuery(propertyListOptions(wsId, true));
+  const catalogQuery = useQuery(propertyListOptions(wsId, true));
+  const { data: properties = [] } = catalogQuery;
+  const catalogState = getSettingsQueryState(catalogQuery);
+  const hasCatalog = catalogState.hasData && memberState.hasData;
   const update = useUpdateProperty();
+  useEffect(() => {
+    if (!catalogState.accessDenied && !memberState.accessDenied) return;
+    setCreateOpen(false);
+    setEditing(null);
+    setPendingArchive(null);
+  }, [catalogState.accessDenied, memberState.accessDenied]);
 
   const activeCount = useMemo(
     () => properties.filter((p) => !p.archived).length,
@@ -141,33 +154,34 @@ export function PropertiesTab() {
       title={t(($) => $.properties.title)}
       description={t(($) => $.properties.description)}
     >
-      <div className="space-y-5">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative w-full sm:max-w-sm">
+      <div className="@container/catalog space-y-5">
+        <div className="flex flex-col gap-3 @2xl/catalog:flex-row @2xl/catalog:items-center @2xl/catalog:justify-between">
+          <div className="relative w-full @2xl/catalog:max-w-sm">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t(($) => $.properties.search_placeholder)}
+              aria-label={t(($) => $.properties.search_placeholder)}
               className="pl-9"
             />
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <label className="flex items-center gap-2 text-caption text-muted-foreground">
               <Switch checked={showArchived} onCheckedChange={setShowArchived} />
               {t(($) => $.properties.show_archived)}
             </label>
-            <span className="text-caption tabular-nums text-muted-foreground">
+            {hasCatalog && <span className="text-caption tabular-nums text-muted-foreground">
               {t(($) => $.properties.limit_hint, {
                 count: activeCount,
                 max: MAX_ACTIVE_PROPERTIES,
               })}
-            </span>
+            </span>}
             {canManage && (
               <Button
                 className="gap-2"
                 onClick={() => setCreateOpen(true)}
-                disabled={activeCount >= MAX_ACTIVE_PROPERTIES}
+                disabled={!hasCatalog || activeCount >= MAX_ACTIVE_PROPERTIES}
               >
                 <Plus className="size-4" />
                 {t(($) => $.properties.new_property)}
@@ -176,14 +190,26 @@ export function PropertiesTab() {
           </div>
         </div>
 
-        {!canManage && (
+        <SettingsQueryFeedback
+          query={memberQuery}
+          loadingMessage={t(($) => $.query_feedback.permissions_loading)}
+          errorMessage={t(($) => $.query_feedback.permissions_load_failed)}
+          refreshMessage={t(($) => $.query_feedback.permissions_refresh_failed)}
+        />
+        {memberState.hasData && currentMember?.role === "member" && (
           <p className="text-caption text-muted-foreground">
             {t(($) => $.properties.editor.admin_hint)}
           </p>
         )}
 
-        <div className="overflow-hidden rounded-lg border border-surface-border bg-card">
-          <div className="hidden grid-cols-[minmax(10rem,1fr)_6rem_minmax(10rem,1.4fr)_6rem_7rem_2rem] gap-4 border-b border-surface-border bg-muted/20 px-4 py-2.5 text-caption font-medium text-muted-foreground md:grid">
+        <SettingsQueryFeedback
+          query={catalogQuery}
+          loadingMessage={t(($) => $.properties.loading)}
+          errorMessage={t(($) => $.properties.load_failed)}
+          refreshMessage={t(($) => $.properties.refresh_failed)}
+        />
+        {hasCatalog && <div className="overflow-hidden rounded-lg border border-surface-border bg-card">
+          <div className="hidden grid-cols-[minmax(10rem,1fr)_6rem_minmax(10rem,1.4fr)_6rem_7rem_2rem] gap-4 border-b border-surface-border bg-muted/20 px-4 py-2.5 text-caption font-medium text-muted-foreground @4xl/catalog:grid">
             <span>{t(($) => $.properties.columns.name)}</span>
             <span>{t(($) => $.properties.columns.type)}</span>
             <span>{t(($) => $.properties.columns.options)}</span>
@@ -192,11 +218,7 @@ export function PropertiesTab() {
             <span />
           </div>
 
-          {isLoading ? (
-            <div className="px-4 py-12 text-center text-body text-muted-foreground">
-              {t(($) => $.properties.loading)}
-            </div>
-          ) : visible.length === 0 ? (
+          {visible.length === 0 ? (
             <div className="px-4 py-12 text-center">
               <SlidersHorizontal className="mx-auto size-6 text-faint-foreground" />
               <p className="mt-3 text-body font-medium">
@@ -215,7 +237,7 @@ export function PropertiesTab() {
               {visible.map((property) => (
                 <div
                   key={property.id}
-                  className="grid gap-2 px-4 py-3 md:grid-cols-[minmax(10rem,1fr)_6rem_minmax(10rem,1.4fr)_6rem_7rem_2rem] md:items-center md:gap-4"
+                  className="grid min-w-0 gap-2 px-4 py-3 @4xl/catalog:grid-cols-[minmax(10rem,1fr)_6rem_minmax(10rem,1.4fr)_6rem_7rem_2rem] @4xl/catalog:items-center @4xl/catalog:gap-4"
                 >
                   <div className="flex min-w-0 items-center gap-2">
                     <PropertyIcon property={property} />
@@ -226,7 +248,7 @@ export function PropertiesTab() {
                       </Badge>
                     )}
                   </div>
-                  <span className="text-caption text-muted-foreground md:text-body">
+                  <span className="text-caption text-muted-foreground @4xl/catalog:text-body">
                     <PropertyTypeLabel type={property.type} />
                   </span>
                   <div className="flex min-w-0 flex-wrap items-center gap-1">
@@ -251,7 +273,7 @@ export function PropertiesTab() {
                       <span className="text-caption text-muted-foreground">—</span>
                     )}
                   </div>
-                  <span className="text-caption tabular-nums text-muted-foreground md:text-body">
+                  <span className="text-caption tabular-nums text-muted-foreground @4xl/catalog:text-body">
                     {t(($) => $.properties.usage_count, { count: property.usage_count ?? 0 })}
                   </span>
                   <span className="text-caption text-muted-foreground">
@@ -312,17 +334,17 @@ export function PropertiesTab() {
               ))}
             </div>
           )}
-        </div>
+        </div>}
       </div>
 
-      <PropertyEditorDialog open={createOpen} onOpenChange={setCreateOpen} />
+      <PropertyEditorDialog open={hasCatalog && canManage && createOpen} onOpenChange={setCreateOpen} />
       <PropertyEditorDialog
-        open={Boolean(editing)}
+        open={hasCatalog && canManage && Boolean(editing)}
         onOpenChange={(open) => !open && setEditing(null)}
         property={editing}
       />
       <ArchivePropertyDialog
-        property={pendingArchive}
+        property={hasCatalog && canManage ? pendingArchive : null}
         onClose={() => setPendingArchive(null)}
       />
     </SettingsTab>
@@ -370,6 +392,7 @@ function PropertyEditorDialog({
   const update = useUpdateProperty();
   const [draft, setDraft] = useState<PropertyDraft>(EMPTY_DRAFT);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
+  const typeLabelId = useId();
 
   useEffect(() => {
     if (!open) return;
@@ -451,8 +474,8 @@ function PropertyEditorDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[calc(100dvh-2rem)] flex-col overflow-hidden sm:max-w-lg">
+        <DialogHeader className="shrink-0">
           <DialogTitle>
             {property
               ? t(($) => $.properties.editor.edit_title)
@@ -462,8 +485,8 @@ function PropertyEditorDialog({
             {t(($) => $.properties.editor.admin_hint)}
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-5 py-2">
-          <div className="grid grid-cols-[4.25rem_minmax(0,1fr)_10rem] gap-3">
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto py-2">
+          <div className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 sm:grid-cols-[4.25rem_minmax(0,1fr)_10rem]">
             <div className="space-y-2">
               <FieldLabel>{t(($) => $.properties.editor.icon)}</FieldLabel>
               <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
@@ -515,8 +538,8 @@ function PropertyEditorDialog({
                 placeholder={t(($) => $.properties.editor.name_placeholder)}
               />
             </div>
-            <div className="space-y-2">
-              <FieldLabel>{t(($) => $.properties.editor.type)}</FieldLabel>
+            <div className="col-span-2 space-y-2 sm:col-span-1">
+              <FieldLabel id={typeLabelId}>{t(($) => $.properties.editor.type)}</FieldLabel>
               {property ? (
                 <div
                   className="flex h-9 items-center rounded-md border border-surface-border px-3 text-body text-muted-foreground"
@@ -540,7 +563,7 @@ function PropertyEditorDialog({
                     }))
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger aria-labelledby={typeLabelId}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -634,7 +657,7 @@ function PropertyEditorDialog({
             </div>
           )}
         </div>
-        <DialogFooter>
+        <DialogFooter className="shrink-0">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
             {t(($) => $.properties.editor.cancel)}
           </Button>

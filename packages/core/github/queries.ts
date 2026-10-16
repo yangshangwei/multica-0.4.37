@@ -1,5 +1,6 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
 
 export const githubKeys = {
   all: (wsId: string) => ["github", wsId] as const,
@@ -12,7 +13,7 @@ export const githubKeys = {
 export const githubInstallationsOptions = (wsId: string) =>
   queryOptions({
     queryKey: githubKeys.installations(wsId),
-    queryFn: () => api.listGitHubInstallations(wsId),
+    queryFn: withQueryAccessBoundary(() => api.listGitHubInstallations(wsId)),
     enabled: !!wsId,
   });
 
@@ -22,11 +23,11 @@ export const githubInstallationRepositoriesOptions = (
 ) =>
   infiniteQueryOptions({
     queryKey: githubKeys.repositories(wsId, installationId),
-    queryFn: ({ pageParam }) =>
-      api.listGitHubInstallationRepositories(wsId, installationId, {
-        page: pageParam,
+    queryFn: (context) =>
+      withQueryAccessBoundary(() => api.listGitHubInstallationRepositories(wsId, installationId, {
+        page: context.pageParam,
         per_page: 100,
-      }),
+      }))(context),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next_page ?? undefined,
     enabled: !!wsId && !!installationId,
