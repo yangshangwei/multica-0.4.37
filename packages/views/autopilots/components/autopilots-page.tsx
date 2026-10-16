@@ -671,10 +671,10 @@ export function AutopilotsPage() {
         title={t(($) => $.page.title)}
         count={totalCount}
         actions={
-          <CollectionPageHeaderAction
+          !showEmpty && <CollectionPageHeaderAction
             icon={Plus}
-            label={showEmpty ? t(($) => $.page.start_blank) : t(($) => $.page.new_autopilot)}
-            onClick={() => showEmpty ? setCreateOpen(true) : navigation.push(wsPaths.newAutopilotTemplate())}
+            label={t(($) => $.page.new_autopilot)}
+            onClick={() => navigation.push(wsPaths.newAutopilotTemplate())}
           />
         }
       />
@@ -703,7 +703,7 @@ export function AutopilotsPage() {
           <LoadingSkeleton />
         </div>
       ) : showEmpty ? (
-        <EmptyAutopilots />
+        <EmptyAutopilots onStartBlank={() => setCreateOpen(true)} />
       ) : (
         <>
           <AutopilotListToolbar
@@ -832,7 +832,7 @@ export function AutopilotsPage() {
   );
 }
 
-function EmptyAutopilots() {
+function EmptyAutopilots({ onStartBlank }: { onStartBlank: () => void }) {
   const paths = useWorkspacePaths();
   const navigation = useNavigation();
   const { data: templates = [], isLoading, isError, refetch } = useAutopilotTemplates();
@@ -842,6 +842,7 @@ function EmptyAutopilots() {
       loading={isLoading}
       failed={isError}
       onRetry={() => void refetch()}
+      onStartBlank={onStartBlank}
       onPick={(key) => navigation.push(autopilotTemplateHref(
         paths.newAutopilotTemplate(), { initialReturnTo: "autopilots" }, key,
       ))}

@@ -39,6 +39,7 @@ import { ActorAvatar } from "../../common/actor-avatar";
 import { browserTimezone, timezoneOptions } from "../../common/timezone-select";
 import { useT, useLocale } from "../../i18n";
 import { useBackOrReplace, useNavigation } from "../../navigation";
+import { useViewStateWriter } from "../../platform/scroll-restoration";
 import { ProjectIcon } from "../../projects/components/project-icon";
 import { ProjectPicker } from "../../projects/components/project-picker";
 import { templateLanguageFor } from "../../agents/create/use-role-templates";
@@ -106,8 +107,18 @@ export function TemplateCreateAutopilotPage(defaults: AutopilotTemplateDefaults)
     templates !== undefined &&
     template === null;
 
+  // Desktop can publish the destination URL before unmounting this route.
+  // An outgoing picker must not consume that destination's saved focus.
+  if (
+    navigation.pathname.replace(/\/+$/, "").toLowerCase() !==
+    paths.newAutopilotTemplate().toLowerCase()
+  ) {
+    return null;
+  }
+
   return (
     <AutopilotCreateShell
+      key={template ? "configure" : "picker"}
       step={
         template
           ? t(($) => $.template_picker.step_configure)
@@ -279,6 +290,7 @@ function TemplateConfigureStep({
   const paths = useWorkspacePaths();
   const navigation = useNavigation();
   const describe = useDescribeSchedule();
+  const writeViewState = useViewStateWriter();
 
   const [defaults] = useState(() => ({
     projectId: initialDefaults.initialProjectId,
@@ -400,6 +412,13 @@ function TemplateConfigureStep({
         setUnreadableResponse(true);
         return;
       }
+      writeViewState(
+        "autopilot-template-focus",
+        undefined,
+        initialDefaults.initialReturnTo === "autopilots"
+          ? paths.autopilots()
+          : paths.newAutopilotTemplate(),
+      );
       toast.success(t(($) => $.dialog.toast_created));
       navigation.push(paths.autopilotDetail(created.autopilot.id));
     } catch {

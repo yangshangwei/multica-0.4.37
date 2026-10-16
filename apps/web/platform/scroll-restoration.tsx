@@ -107,8 +107,8 @@ export function WebScrollRestorationProvider({
           mementoKey(pathname, entryKey),
         );
       },
-      setViewState(entryKey, value) {
-        const key = mementoKey(pathname, entryKey);
+      setViewState(entryKey, value, routePathname) {
+        const key = mementoKey(routePathname ?? pathname, entryKey);
         if (value === undefined) savedViewState.delete(key);
         else savedViewState.set(key, value);
       },

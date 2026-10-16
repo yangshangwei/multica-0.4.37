@@ -1,10 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import {
   ScrollRestorationProvider,
   useRestoredScrollEntry,
   useRestoredScrollOffset,
   useScrollRestorationAdapter,
+  useViewStateWriter,
   type ScrollRestorationAdapter,
 } from "./scroll-restoration";
 
@@ -13,6 +14,32 @@ function makeAdapter(get: ScrollRestorationAdapter["get"]): ScrollRestorationAda
 }
 
 describe("scroll-restoration public surface", () => {
+  it("forwards an explicit origin pathname when clearing view state", () => {
+    const setViewState = vi.fn();
+    const adapter = { get: () => undefined, setViewState };
+    const { result } = renderHook(() => useViewStateWriter(), {
+      wrapper: ({ children }) => (
+        <ScrollRestorationProvider adapter={adapter}>
+          {children}
+        </ScrollRestorationProvider>
+      ),
+    });
+    result.current("pending-focus", undefined, "/acme/autopilots");
+    expect(setViewState).toHaveBeenCalledWith("pending-focus", undefined, "/acme/autopilots");
+  });
+
+  it("ignores targeted writes when a provider only supports scroll", () => {
+    const adapter = makeAdapter(() => undefined);
+    const { result } = renderHook(() => useViewStateWriter(), {
+      wrapper: ({ children }) => (
+        <ScrollRestorationProvider adapter={adapter}>
+          {children}
+        </ScrollRestorationProvider>
+      ),
+    });
+    expect(() => result.current("pending-focus", undefined, "/acme/autopilots")).not.toThrow();
+  });
+
   it("useScrollRestorationAdapter returns null without a provider", () => {
     const { result } = renderHook(() => useScrollRestorationAdapter());
     expect(result.current).toBeNull();

@@ -7,7 +7,7 @@ import {
 } from "./tab-coordinator";
 import { getActiveTab, useTabStore } from "@/stores/tab-store";
 
-describe("tab-coordinator external scroll sources", () => {
+describe("tab-coordinator restoration", () => {
   beforeEach(() => {
     __resetTabCoordinatorForTests();
     useTabStore.getState().reset();
@@ -18,6 +18,34 @@ describe("tab-coordinator external scroll sources", () => {
   function seedActiveTab(path: string, title: string): string {
     return useTabStore.getState().openTab(path, title, { activate: true });
   }
+
+  it.each([false, true])("clears the explicit origin only in the owning tab (inactive: %s)", (inactive) => {
+    const origin = "/acme/autopilots";
+    const current = "/acme/autopilots/new/template";
+    const tabId = seedActiveTab(current, "Create automation");
+    const adapter = createScrollRestorationAdapter(tabId);
+    useTabStore.getState().commitViewState(tabId, origin, "pending-focus", "source-card");
+    useTabStore.getState().commitViewState(tabId, origin, "template-group", "maintenance");
+    adapter.setViewState?.("pending-focus", "current-card");
+    expect(adapter.getViewState?.("pending-focus")).toBe("current-card");
+
+    const otherId = seedActiveTab("/acme/issues", "Issues");
+    useTabStore.getState().commitViewState(otherId, origin, "pending-focus", "other-tab-card");
+    if (inactive) {
+      adapter.setViewState?.("pending-focus", "ignored");
+      expect(adapter.getViewState?.("pending-focus")).toBeUndefined();
+    } else {
+      useTabStore.getState().setActiveTab(tabId);
+    }
+    adapter.setViewState?.("pending-focus", undefined, origin);
+
+    const tabs = useTabStore.getState().byWorkspace.acme.tabs;
+    const ownerView = tabs.find((tab) => tab.id === tabId)!.memento.view;
+    expect(ownerView[`${origin}::pending-focus`]).toBeUndefined();
+    expect(ownerView[`${origin}::template-group`]).toBe("maintenance");
+    expect(ownerView[`${current}::pending-focus`]).toBe("current-card");
+    expect(tabs.find((tab) => tab.id === otherId)!.memento.view[`${origin}::pending-focus`]).toBe("other-tab-card");
+  });
 
   it("captures external sources registered by the outgoing tab alongside DOM scroll roots", () => {
     const tabId = seedActiveTab("/acme/attachments/abc/preview", "Report");

@@ -227,14 +227,14 @@ test.describe("autopilot templates", () => {
     // Step one is the template grid. Each card carries the three layers the
     // product design calls for: outcome, title, description.
     await waitForPageText(page, "Start from a template");
-    await expect(page.getByText("Creates a task each run").first()).toBeVisible();
+    await expect(page.getByText("Creates an issue each run").first()).toBeVisible();
     await expect(page.getByText("Daily Change Review").first()).toBeVisible();
     await expect(
       page.getByText(
         "Scans recent work and flags correctness, UX, and test-coverage risks.",
       ),
     ).toBeVisible();
-    await expect(page.getByText("Follow up as needed").first()).toBeVisible();
+    await expect(page.getByText("Creates or updates issues as needed").first()).toBeVisible();
     await expect(page.getByText("Hourly Queue Check").first()).toBeVisible();
 
     await page.getByRole("button", { name: /Hourly Queue Check/ }).first().click();

@@ -82,8 +82,11 @@ export interface ScrollRestorationAdapter {
    * implementation as "nothing stored / write ignored".
    */
   getViewState?(entryKey: string): string | undefined;
-  /** Write (string) or clear (undefined) an entry for the current route. */
-  setViewState?(entryKey: string, value: string | undefined): void;
+  /**
+   * Write (string) or clear (undefined) an entry for the current route, or an
+   * explicit pathname within this adapter's tab. Omit query strings and hashes.
+   */
+  setViewState?(entryKey: string, value: string | undefined, routePathname?: string): void;
 }
 
 const ScrollRestorationContext = createContext<ScrollRestorationAdapter | null>(
@@ -167,17 +170,18 @@ export function useRestoredViewState(entryKey: string): string | undefined {
 
 /**
  * Imperative writer for view-state entries: call it when the restorable
- * state changes (pass undefined to clear). No-op without a provider or on
- * adapters that only track scroll.
+ * state changes (pass undefined to clear). An optional pathname targets another
+ * route within the same tab. No-op without a provider or on scroll-only adapters.
  */
 export function useViewStateWriter(): (
   entryKey: string,
   value: string | undefined,
+  routePathname?: string,
 ) => void {
   const adapter = useContext(ScrollRestorationContext);
   return useCallback(
-    (entryKey: string, value: string | undefined) => {
-      adapter?.setViewState?.(entryKey, value);
+    (entryKey: string, value: string | undefined, routePathname?: string) => {
+      adapter?.setViewState?.(entryKey, value, routePathname);
     },
     [adapter],
   );

@@ -145,8 +145,8 @@ export function createScrollRestorationAdapter(
       const active = getActiveTab(useTabStore.getState());
       return active?.memento.view[scrollMementoKey(routeKey, entryKey)];
     },
-    setViewState(entryKey, value) {
-      const routeKey = activeRouteKey();
+    setViewState(entryKey, value, routePathname) {
+      const routeKey = routePathname ?? activeRouteKey();
       if (routeKey === null) return;
       useTabStore.getState().commitViewState(tabId, routeKey, entryKey, value);
     },
