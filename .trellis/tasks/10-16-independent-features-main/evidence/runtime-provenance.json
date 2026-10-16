@@ -1,0 +1,63 @@
+{
+  "environment": {
+    "name": "check-20261016124645-12919",
+    "dir": "/Volumes/artisan/code/2026/multica-independent-main-merge",
+    "owner": "agent",
+    "created_at": "2026-10-16T12:46:45Z",
+    "ttl_hours": 24,
+    "expires_at": "2026-10-17T12:46:45Z",
+    "backend_port": 18573,
+    "frontend_port": 13493,
+    "desktop_renderer_port": 5667,
+    "database": "multica_check_20261016124645_12919_api",
+    "profile": "dev-check-20261016124645-12919",
+    "env_file": "/Users/artisan/.multica/dev/envs/check-20261016124645-12919/check.env",
+    "logs": "/Users/artisan/.multica/dev/envs/check-20261016124645-12919/logs",
+    "components": {
+      "api": {
+        "state": "running",
+        "address": "http://localhost:18573",
+        "detail": "pid 13217 commit 728e768e3 started 2026-10-16T12:46:48Z"
+      },
+      "web": {
+        "state": "running",
+        "address": "http://localhost:13493",
+        "detail": "pid 13495 mode production commit 728e768e3 build RuVMGXHl0M7kBSt0N3fmi"
+      },
+      "daemon": {
+        "state": "stopped",
+        "address": "dev-check-20261016124645-12919",
+        "detail": "not built"
+      },
+      "desktop": {
+        "state": "stopped",
+        "address": "http://localhost:5667",
+        "detail": ""
+      }
+    }
+  },
+  "source_at_runtime": "728e768e3 with staged six-slice changes plus the two E2E copy assertions",
+  "source_equivalence": "Product files verified unchanged after commits; commit tree recorded above",
+  "api.running.json": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=728e768e3' ./cmd/server (cwd: /Volumes/artisan/code/2026/multica-independent-main-merge/server)",
+    "source_id": "0ad3e7d448504604ce2579f7aadc014f2e8d367de46e8a7c98dc977d808e573f",
+    "configuration_id": "5be03c9b5e9bfe7d3651b1597b1d9b6fe4dd5d74e3b223385d0ff96f8503838c",
+    "commit": "728e768e3",
+    "started_at": "2026-10-16T12:46:48Z",
+    "listener_pid": 13217
+  },
+  "web.running.json": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "RuVMGXHl0M7kBSt0N3fmi",
+    "command": "pnpm --filter @multica/web exec next start --port 13493",
+    "source_id": "0ad3e7d448504604ce2579f7aadc014f2e8d367de46e8a7c98dc977d808e573f",
+    "configuration_id": "5a2345bc4dfd9bec48809a97d38b8770d7baf23d3fe288dd3b0cd539196f0106",
+    "commit": "728e768e3",
+    "started_at": "2026-10-16T12:47:42Z",
+    "listener_pid": 13495
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "source_head": "ff6bb36e3c5c9fd7cb8094f2c67652d09d7b2a33",
+  "base_main": "7906c6e93edef974e09479633b6cf2825736dd5b",
+  "six_slice_tree": "c4853267d298dc91e8a343b35f01cf66a552ac1e",
+  "typescript": {
+    "files": 943,
+    "passed": 11377,
+    "failed": 0,
+    "cached_tasks": 0
+  },
+  "static": {
+    "successful_tasks": 15,
+    "cached_tasks": 10
+  },
+  "download_script": {
+    "passed": 24,
+    "skipped": 0
+  },
+  "seed_with_database": {
+    "passed": 13,
+    "skipped": 0
+  },
+  "go_docs": "pass",
+  "image_budget": "pass",
+  "ui_exports": "pass",
+  "builds": {
+    "web": "pass",
+    "desktop": "pass",
+    "docs": "pass"
+  },
+  "e2e": {
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "includes_native_electron": true
+  },
+  "scope_note": "No collaboration code or migrations; e2e copy assertions aligned after first run.",
+  "feature_tip": "11865f7a0332bd3f917cda1807ff4ad209217087",
+  "verified_final_tree": "017a0ec6944aef7573be4d3843854802dedac9f9",
+  "changed_product_and_spec_files": 169,
+  "cleanup": "API/Web/native renderer stopped; all three API test databases and seed test database dropped",
+  "known_limits": [
+    "Native Windows/Linux not run",
+    "Real external integrations/AI execution not run; boundary mocks and local fixtures used",
+    "No remote push or deployment requested"
+  ],
+  "first_e2e": {
+    "passed": 17,
+    "failed": 2,
+    "causes": [
+      "obsolete English copy assertions",
+      "native renderer origin missing in task-only CORS config"
+    ]
+  },
+  "second_runtime": "Source identity guard stopped build when task tracking changed; final run froze tracked files and passed"
+}
