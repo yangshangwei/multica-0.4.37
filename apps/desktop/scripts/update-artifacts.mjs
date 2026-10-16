@@ -7,6 +7,7 @@ import { pathToFileURL } from "node:url";
 import { parseUpdateInfo } from "electron-updater/out/providers/Provider.js";
 
 export const metadataName = /^latest(?:-[A-Za-z0-9]+)*\.yml$/;
+const downloadName = "download.json";
 const artifactName = /^multica-desktop-[A-Za-z0-9][A-Za-z0-9._+-]*\.(?:exe|dmg|zip|AppImage|deb|rpm|7z)(?:\.blockmap)?$/;
 const versionPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 
@@ -111,16 +112,29 @@ export function updateReferences(info, allowPrerelease = false) {
 }
 
 async function validate(files, allowPrerelease) {
+  let download;
   for (const file of files.values()) {
     if (!file.metadata) continue;
     const info = parseUpdateInfo(await readFile(file.path, "utf8"), file.name, pathToFileURL(file.path));
-    for (const reference of updateReferences(info, allowPrerelease)) {
+    const references = updateReferences(info, allowPrerelease);
+    for (const reference of references) {
       const artifact = files.get(reference.name);
       if (!artifact || artifact.metadata) throw new Error(`Missing referenced update artifact: ${reference.name}`);
       if (reference.size !== undefined && reference.size !== artifact.size) throw new Error(`Update size mismatch: ${reference.name}`);
       if (reference.sha512 !== artifact.sha512) throw new Error(`Update SHA-512 mismatch: ${reference.name}`);
     }
+    if (file.name === "latest.yml") {
+      const name = `multica-desktop-${info.version}-windows-x64.exe`;
+      const installers = references.filter((reference) => reference.name.endsWith(".exe"));
+      if (installers.length !== 1 || installers[0].name !== name ||
+          !info.files.some((reference) => reference.url === name) ||
+          (info.path !== undefined && info.path !== name)) {
+        throw new Error("latest.yml must reference exactly one Windows x64 EXE matching its version");
+      }
+      download = { schemaVersion: 1, platform: "windows", arch: "x64", version: info.version, file: name, size: files.get(name).size };
+    }
   }
+  return download;
 }
 
 async function stageFiles(files, staging, allowPrerelease, publicFiles) {
@@ -132,7 +146,15 @@ async function stageFiles(files, staging, allowPrerelease, publicFiles) {
     if (!sameFile(file, await fingerprint(path))) throw new Error(`Artifact changed while copying: ${file.name}`);
   }
   const staged = await inventory(staging);
-  await validate(staged, allowPrerelease);
+  const download = await validate(staged, allowPrerelease);
+  if (download) {
+    // Source JSON is never inventoried: derive it only from staged, verified
+    // channel metadata and installer bytes, including for offline collection.
+    const path = join(staging, downloadName);
+    await writeFile(path, JSON.stringify(download, null, 2) + "\n", { flag: "wx", mode: 0o644 });
+    if (publicFiles) await chmod(path, 0o644);
+    staged.set(downloadName, { name: downloadName, path, metadata: true, ...await fingerprint(path) });
+  }
   return staged;
 }
 
@@ -166,9 +188,12 @@ async function installImmutable(file, destination) {
 
 async function expose(files, destination, replaceMetadata) {
   for (const file of files.values()) if (!file.metadata) await installImmutable(file, destination);
-  // Each channel is atomic; different platform channels may switch separately.
-  for (const file of files.values()) {
-    if (!file.metadata) continue;
+  const metadata = [...files.values()].filter((file) => file.metadata && file.name !== downloadName);
+  const download = files.get(downloadName);
+  if (download) metadata.push(download);
+  // Each channel is atomic. The download projection switches last; if its
+  // rename fails, the old projection still points at a retained installer.
+  for (const file of metadata) {
     if (replaceMetadata) await rename(file.path, join(destination, file.name));
     else await installImmutable(file, destination);
   }
@@ -179,19 +204,19 @@ export async function collectArtifacts({ source, destination, allowPrerelease = 
   const files = await inventory(paths.source);
   await validate(files, allowPrerelease);
   await directory(paths.destination);
-  await checkImmutable(files, paths.destination, false);
   const staging = join(paths.destination, `.collect-${randomUUID()}`);
   try {
     const staged = await stageFiles(files, staging, allowPrerelease, false);
+    await checkImmutable(staged, paths.destination, false);
     await expose(staged, paths.destination, false);
+    return { directory: paths.destination, files: [...staged.keys()].sort() };
   } finally {
     await rm(staging, { recursive: true, force: true });
   }
-  return { directory: paths.destination, files: [...files.keys()].sort() };
 }
 
-async function snapshotMetadata(publicDirectory, backups, id) {
-  const metadata = (await readdir(publicDirectory)).filter((name) => metadataName.test(name));
+async function snapshotMetadata(publicDirectory, backups, id, includeDownload) {
+  const metadata = (await readdir(publicDirectory)).filter((name) => metadataName.test(name) || (includeDownload && name === downloadName));
   if (metadata.length === 0) return;
   const snapshot = join(backups, id);
   await directory(snapshot, 0o700);
@@ -222,13 +247,13 @@ export async function publishArtifacts({ source, destination, allowPrerelease = 
     await directory(join(paths.destination, "staging"), 0o700);
     const files = await inventory(paths.source);
     await validate(files, allowPrerelease);
-    await checkImmutable(files, publicDirectory, true);
     const id = `${new Date().toISOString().replaceAll(":", "-")}-${randomUUID()}`;
     staging = join(paths.destination, "staging", id);
     const staged = await stageFiles(files, staging, allowPrerelease, true);
-    await snapshotMetadata(publicDirectory, backups, id);
+    await checkImmutable(staged, publicDirectory, true);
+    await snapshotMetadata(publicDirectory, backups, id, staged.has(downloadName));
     await expose(staged, publicDirectory, true);
-    return { directory: publicDirectory, files: [...files.keys()].sort() };
+    return { directory: publicDirectory, files: [...staged.keys()].sort() };
   } finally {
     try {
       if (staging) await rm(staging, { recursive: true, force: true });

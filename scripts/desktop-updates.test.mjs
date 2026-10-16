@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,7 +18,7 @@ function fixture(t) {
   const caller = join(directory, "operator work");
   const log = join(directory, "commands.jsonl");
   for (const path of [join(root, "scripts"), join(root, "deploy/desktop-updates"), bin, caller]) mkdirSync(path, { recursive: true });
-  for (const file of ["scripts/desktop-updates.sh", "docker-compose.desktop-updates.yml", "deploy/desktop-updates/nginx.conf"]) {
+  for (const file of ["scripts/desktop-updates.sh", "docker-compose.desktop-updates.yml", "deploy/desktop-updates/nginx.conf", "deploy/desktop-updates/download.html", "deploy/desktop-updates/download-config.example.json"]) {
     copyFileSync(join(repository, file), join(root, file));
   }
   const executable = (name, body) => writeFileSync(join(bin, name), `#!${process.execPath}\n${body}`, { mode: 0o755 });
@@ -97,6 +97,118 @@ test("legacy environment and default lifecycle commands work in the minimal depl
   assert.equal(f.calls().some((call) => call.command === "node"), false);
   assert.equal(f.calls().some((call) => call.args.includes("--environment")), false);
 });
+
+test("start installs the page without Node and preserves configured addresses and releases on restart", (t) => {
+  const f = fixture(t);
+  const storage = join(f.directory, "persistent releases");
+  const publicDir = join(storage, "public");
+  const env = { DESKTOP_UPDATES_STORAGE: storage };
+  rmSync(join(f.bin, "node"));
+  passed(f.run(["start"], env));
+  assert.deepEqual(readdirSync(publicDir).sort(), ["download-config.json", "download.html"]);
+  assert.equal(readFileSync(join(publicDir, "download.html"), "utf8"), readFileSync(join(f.root, "deploy/desktop-updates/download.html"), "utf8"));
+  assert.equal(JSON.parse(readFileSync(join(publicDir, "download-config.json"), "utf8")).serverUrl, "");
+  for (const file of ["download.html", "download-config.json"]) assert.equal(statSync(join(publicDir, file)).mode & 0o777, 0o644);
+  const administratorConfig = '{ "schemaVersion": 1, "serverUrl": "http://business.local:8080/path", "future": true }\n';
+  writeFileSync(join(publicDir, "download-config.json"), administratorConfig);
+  writeFileSync(join(publicDir, "download.json"), "published projection");
+  writeFileSync(join(publicDir, "latest.yml"), "existing metadata");
+  writeFileSync(join(publicDir, "older.exe"), "existing installer");
+  writeFileSync(join(f.root, "deploy/desktop-updates/download.html"), "<!doctype html><title>Updated page</title>\n");
+  passed(f.run(["stop"], env));
+  passed(f.run(["start"], env));
+  assert.match(readFileSync(join(publicDir, "download.html"), "utf8"), /Updated page/);
+  assert.equal(readFileSync(join(publicDir, "download-config.json"), "utf8"), administratorConfig);
+  assert.equal(readFileSync(join(publicDir, "download.json"), "utf8"), "published projection");
+  assert.equal(readFileSync(join(publicDir, "latest.yml"), "utf8"), "existing metadata");
+  assert.equal(readFileSync(join(publicDir, "older.exe"), "utf8"), "existing installer");
+  assert.equal(readdirSync(publicDir).some((name) => name.startsWith(".")), false);
+  assert.equal(f.calls().some((call) => call.command === "node"), false);
+});
+
+test("failed page replacement retains previous bytes and removes staging files", (t) => {
+  const f = fixture(t);
+  const storage = join(f.directory, "store");
+  const publicDir = join(storage, "public");
+  mkdirSync(publicDir, { recursive: true });
+  writeFileSync(join(publicDir, "download.html"), "previous complete page");
+  writeFileSync(join(publicDir, "download-config.json"), "administrator configuration");
+  writeFileSync(join(f.bin, "mv"), "#!/bin/sh\nexit 14\n", { mode: 0o755 });
+  assert.notEqual(f.run(["start"], { DESKTOP_UPDATES_STORAGE: storage }).status, 0);
+  assert.equal(readFileSync(join(publicDir, "download.html"), "utf8"), "previous complete page");
+  assert.equal(readFileSync(join(publicDir, "download-config.json"), "utf8"), "administrator configuration");
+  assert.deepEqual(readdirSync(publicDir).sort(), ["download-config.json", "download.html"]);
+  assert.deepEqual(f.calls(), []);
+});
+
+for (const file of ["download.html", "download-config.example.json"]) {
+  test(`start rejects a missing ${file} source before writing storage`, (t) => {
+    const f = fixture(t);
+    rmSync(join(f.root, "deploy/desktop-updates", file));
+    const result = f.run(["start"]);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /download/);
+    assert.equal(existsSync(join(f.root, "data")), false);
+    assert.deepEqual(f.calls(), []);
+  });
+}
+
+for (const target of ["storage", "public", "download.html", "download-config.json"]) {
+  test(`start refuses a ${target} symlink without writing through it`, (t) => {
+    const f = fixture(t);
+    const storage = join(f.directory, "store");
+    const external = join(f.directory, "external");
+    mkdirSync(external);
+    writeFileSync(join(external, "keep.txt"), "preserve");
+    let destination;
+    if (target === "storage") destination = storage;
+    else {
+      mkdirSync(storage);
+      if (target === "public") destination = join(storage, "public");
+      else {
+        mkdirSync(join(storage, "public"));
+        destination = join(storage, "public", target);
+      }
+    }
+    symlinkSync(external, destination);
+    const result = f.run(["start"], { DESKTOP_UPDATES_STORAGE: storage });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /[Ss]ymbolic|[Ss]ymlink/);
+    assert.deepEqual(readdirSync(external), ["keep.txt"]);
+    assert.equal(readFileSync(join(external, "keep.txt"), "utf8"), "preserve");
+    assert.deepEqual(f.calls(), []);
+    if (target === "storage") {
+      assert.notEqual(f.run(["start"], { DESKTOP_UPDATES_STORAGE: storage + "///" }).status, 0);
+      assert.deepEqual(readdirSync(external), ["keep.txt"]);
+    }
+  });
+}
+
+test("start rejects a dangling configuration symlink without creating its target", (t) => {
+  const f = fixture(t);
+  const storage = join(f.directory, "store");
+  const external = join(f.directory, "not-created.json");
+  mkdirSync(join(storage, "public"), { recursive: true });
+  symlinkSync(external, join(storage, "public/download-config.json"));
+  const result = f.run(["start"], { DESKTOP_UPDATES_STORAGE: storage });
+  assert.notEqual(result.status, 0);
+  assert.equal(existsSync(external), false);
+  assert.deepEqual(readdirSync(join(storage, "public")), ["download-config.json"]);
+  assert.deepEqual(f.calls(), []);
+});
+
+for (const file of ["download.html", "download-config.json"]) {
+  test(`start rejects a directory at ${file} without installing inside it`, (t) => {
+    const f = fixture(t);
+    const storage = join(f.directory, "store");
+    mkdirSync(join(storage, "public", file), { recursive: true });
+    const result = f.run(["start"], { DESKTOP_UPDATES_STORAGE: storage });
+    assert.notEqual(result.status, 0);
+    assert.deepEqual(readdirSync(join(storage, "public", file)), []);
+    assert.deepEqual(readdirSync(join(storage, "public")), [file]);
+    assert.deepEqual(f.calls(), []);
+  });
+}
 
 test("collect and publish forward source paths and explicit prerelease opt-in", (t) => {
   const f = fixture(t);

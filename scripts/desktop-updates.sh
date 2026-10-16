@@ -26,7 +26,9 @@ image inspect/save support (API 1.49+ and a matching CLI).
 Variables: DESKTOP_UPDATES_STORAGE, DESKTOP_UPDATES_BIND, DESKTOP_UPDATES_PORT,
 DESKTOP_UPDATES_IMAGE, DESKTOP_UPDATES_URL (required for configure/verify with
 a custom env file). Positional paths are relative to the caller; a relative
-storage path is resolved beside the Compose file.
+storage path is resolved beside the Compose file. start installs the download
+page and initializes public/download-config.json only when absent. Set its
+serverUrl to the business server; this is separate from the update URL.
 USAGE
 }
 
@@ -121,19 +123,52 @@ fi
 update_url="${DESKTOP_UPDATES_URL:-http://127.0.0.1:$DESKTOP_UPDATES_PORT/desktop}"
 
 show_endpoint() {
-  local container_id binding public_storage
+  local container_id binding public_storage endpoint
   container_id="$("${compose[@]}" ps -q desktop-updates)"
   if [ -n "$container_id" ]; then
     binding="$("${compose[@]}" port desktop-updates 8080)"
     public_storage="$(docker inspect --format '{{range .Mounts}}{{if eq .Destination "/srv/updates/desktop"}}{{.Source}}{{end}}{{end}}' "$container_id")"
     printf 'Published address: %s\nPublic storage: %s\n' "$binding" "$public_storage"
-    printf 'Desktop update URL: %s\n' "${DESKTOP_UPDATES_URL:-http://${binding/#0.0.0.0:/127.0.0.1:}/desktop}"
+    endpoint="${DESKTOP_UPDATES_URL:-http://${binding/#0.0.0.0:/127.0.0.1:}/desktop}"
+    printf 'Desktop update URL: %s\nDownload page: %s/\n' "$endpoint" "${endpoint%/}"
   fi
 }
 
+install_download_page() (
+  # Keep cleanup local and stage beside the destination for atomic renames.
+  local source_dir storage_dir public_dir temporary destination
+  source_dir="$ROOT_DIR/deploy/desktop-updates"
+  storage_dir="$DESKTOP_UPDATES_STORAGE"
+  while [ "$storage_dir" != / ] && [[ "$storage_dir" = */ ]]; do storage_dir="${storage_dir%/}"; done
+  public_dir="$storage_dir/public"
+  for destination in "$source_dir/download.html" "$source_dir/download-config.example.json"; do
+    [ -f "$destination" ] && [ ! -L "$destination" ] || die "Missing regular download page source: $destination"
+  done
+  for destination in "$storage_dir" "$public_dir"; do
+    [ ! -L "$destination" ] || die "Refusing symbolic link storage: $destination"
+    [ ! -e "$destination" ] || [ -d "$destination" ] || die "Storage is not a directory: $destination"
+  done
+  for destination in "$public_dir/download.html" "$public_dir/download-config.json"; do
+    [ ! -L "$destination" ] || die "Refusing symbolic link download file: $destination"
+    [ ! -e "$destination" ] || [ -f "$destination" ] || die "Download destination is not a regular file: $destination"
+  done
+  mkdir -p -m 0755 "$public_dir"
+  temporary="$(mktemp -d "$public_dir/.download-page.XXXXXX")"
+  trap 'rm -rf "$temporary"' EXIT
+  cp "$source_dir/download.html" "$temporary/download.html"
+  chmod 0644 "$temporary/download.html"
+  if [ ! -e "$public_dir/download-config.json" ]; then
+    cp "$source_dir/download-config.example.json" "$temporary/download-config.json"
+    chmod 0644 "$temporary/download-config.json"
+    # An atomic create never overwrites administrator configuration.
+    ln "$temporary/download-config.json" "$public_dir/download-config.json"
+  fi
+  mv -f "$temporary/download.html" "$public_dir/download.html"
+)
+
 case "$command_name" in
   start)
-    mkdir -p "$DESKTOP_UPDATES_STORAGE/public"
+    install_download_page
     "${compose[@]}" up -d --pull never --wait
     show_endpoint
     ;;

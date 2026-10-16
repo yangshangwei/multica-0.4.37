@@ -30,10 +30,12 @@ resume; disabling automatic updates or changing servers discards stale work.
   sizes and safe local references before publishing. Stable versions are the
   default; prereleases require explicit opt-in for local testing.
 - Keep publication staging, metadata snapshots and locks outside `public/`.
-  Publish complete immutable artifacts first and atomically rename metadata
-  last. Each channel switches independently; this is not a multi-channel or
+  Publish complete immutable artifacts first, atomically rename channel YAML,
+  then switch the generated Windows download projection last when present.
+  Each mutable file switches independently; this is not a multi-channel or
   power-loss transaction. Do not overwrite a versioned filename with new bytes.
-- `offline-installer.sh` must include update metadata, ZIPs and blockmaps, not
+- `offline-installer.sh` must include update metadata, the generated download
+  projection when present, ZIPs and blockmaps, not
   just a glob of installer filenames. Reject unapproved prerelease VERSION
   before expensive builds.
 - Setting `autoUpdater.channel` enables downgrades as a side effect. Explicitly
@@ -114,3 +116,99 @@ installer-only smoke cannot reveal the stale protocol left after actual GUI use.
 exactly matches the uninstalling executable, and preserves it during upgrade.
 Never delete a handler reassigned to another installation. Native business
 acceptance checks real GUI registration cleanup plus a foreign-handler fixture.
+
+## Static first-install download page
+
+### 1. Scope / Trigger
+
+Use this contract when changing the Nginx download page, its deployment kit,
+or the collect/publish output consumed by first-time installers. The existing
+Next.js `/download` remains a presentation reference; its GitHub fetch and
+all-platform completeness policy do not select an intranet Windows release.
+
+### 2. Signatures
+
+- `collectArtifacts({ source, destination, allowPrerelease })` returns every
+  exposed filename, including `download.json` when `latest.yml` is present.
+- `publishArtifacts(...)` exposes the same projection under `destination/public`.
+- `desktop-updates.sh start` atomically installs `download.html` and creates
+  `download-config.json` only if absent; its Node-free lifecycle still requires
+  only Bash, Docker and Compose.
+- `GET /desktop` returns a relative `308 /desktop/`; `/desktop/` serves the HTML.
+  Existing concrete file URLs, GET/HEAD/Range and `/health` remain supported.
+
+### 3. Contracts
+
+`download.json` is `{ schemaVersion: 1, platform: "windows", arch: "x64",
+version: string, file: string, size: positive safe integer }`. Generate it from
+staged, checksum-validated `latest.yml`; its unique EXE must be exactly
+`multica-desktop-${version}-windows-x64.exe`. Never trust source JSON. Other
+platform channels must neither replace this projection nor enable pending UI.
+
+`download-config.json` is `{ schemaVersion: 1, serverUrl: string }`. The tracked
+example has an empty URL; the deployment administrator supplies the business
+HTTP(S) endpoint without embedded credentials. Do not infer it from the download
+host/port. Publishing and page upgrades must preserve these administrator bytes.
+
+Expose immutable artifacts, then channel YAML, then the projection. Validate and
+stage before exposure. Snapshot old JSON with metadata for a Windows publication.
+If the final JSON rename fails, return failure; the prior JSON still references
+a retained installer and retry can finish. Do not claim a cross-file transaction.
+
+The HTML is self-contained and uses only same-origin data and installer requests.
+JSON requests have a 10-second timeout and 16-KiB cap. Validate shape and filename,
+then require an untransformed 200 HEAD with matching Content-Length before
+enabling downloads. Address loading is independent of release loading. Provide
+truthful clipboard feedback plus selectable text on HTTP or denied clipboard
+access. Only Windows x64 is available; Mac Apple Silicon/Intel and Linux
+x86/ARM64 stay visibly pending.
+
+### 4. Validation & Error Matrix
+
+| Condition | Required result |
+| --- | --- |
+| Wrong EXE architecture/version or bad checksum | Reject before public exposure |
+| Forged input download.json | Ignore it; regenerate from verified metadata |
+| Non-Windows publication | Preserve current Windows JSON |
+| Final projection rename fails | Nonzero/error, safe old pointer, retry succeeds |
+| Missing/malformed JSON, timeout, wrong installer HEAD | No active download link; static guide and retry remain |
+| Invalid/missing server URL | No invented address; downloading remains independent |
+| Existing administrator config | Preserve byte-for-byte on start and publication |
+| Symlink/non-file page/config target | Refuse lifecycle write; keep existing files |
+| Clipboard API unavailable/denied | Try supported copy capability, otherwise keep selected address and report manual-copy instructions |
+
+### 5. Good / Base / Bad Cases
+
+- Good: collect a verified Windows release, install its files with JSON last,
+  then refresh the browser to see that same version without editing HTML.
+- Base: a new store has no release/config yet; the page explains unavailable
+  data and still presents the installation guide.
+- Bad: copy the marketing page with its GitHub fallback, infer a filename,
+  overwrite config from the template, or expose JSON before the installer.
+
+### 6. Tests Required
+
+- `update-artifacts.test.mjs`: derived fields, hostile inputs, non-Windows
+  preservation, backups, immutable files, failed final rename and retry.
+- `download-page.test.mjs`: execute the real HTML and assert enabled links,
+  pending platforms, independent failures, bounded responses and copy feedback.
+- `scripts/desktop-updates.test.mjs`: atomic owned-file installation, config
+  preservation, argument/path handling and failed target preflight.
+- Real isolated Nginx/browser: HTML/JSON MIME, relative redirect, refresh after
+  publication, full download/206, no external requests, HTTP clipboard,
+  keyboard access, narrow layout and persistence after container restart.
+
+### 7. Wrong vs Correct
+
+Wrong: `cp -r release/* public/` and assume transfer order makes a release safe.
+
+Correct: use `publishArtifacts`; on a Node-free download server, copy verified
+installers first, replace channel YAML atomically, and replace `download.json`
+last. Restore both YAML and JSON from the same backup point when withdrawing a
+version. Existing installed clients do not downgrade automatically.
+
+Updating a bind-mounted Nginx config needs `nginx -t` and a reload; Compose up
+alone may reuse the running process. Atomic replacement of the host config file
+can also leave an existing single-file bind mount on the old inode, requiring
+container recreation. Page/version file changes use the directory mount and do
+not require a routine Nginx restart.

@@ -1,20 +1,22 @@
 # 桌面端内网部署与升级操作手册
 
-更新日期：2026-10-04。
+更新日期：2026-10-13。
 
-本手册用于首次部署桌面更新下载服务，以及后续发布新版本。内网服务器通过 Nginx 提供静态文件下载，客户端配置固定的 `updateUrl`。以后升级只发布新文件并切换更新元数据，不需要逐台修改客户端 URL，也不需要重启 Nginx。
+本手册用于首次部署桌面下载页和更新文件服务，以及后续发布新版本。内网服务器通过 Nginx 提供静态页面和文件下载，首次安装用户访问 `/desktop/`，已安装客户端使用固定的 `updateUrl`。以后升级只发布新文件并切换更新元数据和下载页版本信息，不需要逐台修改客户端 URL，也不需要重启 Nginx。
 
-本文只涉及桌面程序升级。业务服务、数据库和独立安装的 CLI 按[服务端离线升级文档](offline-upgrade.zh-CN.md)执行。
+业务服务、数据库和独立安装的 CLI 按[服务端离线升级文档](offline-upgrade.zh-CN.md)执行。下载页的安装指导面向启用密码认证和自助注册的环境；页面不会修改业务服务的认证设置。
 
 设备自动注册和用户名密码注册由业务服务端统一选择。切换配置、旧账号迁移和验收步骤见[认证方式配置与迁移](offline-upgrade.zh-CN.md#authentication-mode)。仅升级桌面程序或修改 `updateUrl` 不会切换认证模式；升级时保留用户数据目录中的 `device-identity.json` 和登录数据。
 
 ## 0. 交付内容与日常入口
 
-这一部分交付的是桌面安装包的下载和发布服务：安装包保存在宿主机，Nginx 只读提供文件，管理员先发布产物再切换 `latest*.yml`，已配置更新源的客户端自行发现和下载新版本。业务 API 不参与文件发布。
+安装包、页面和页面配置保存在宿主机，Nginx 只读提供文件。管理员先发布完整产物，再切换 `latest*.yml`，最后替换 Windows x64 下载页的 `download.json`。页面显示当前版本，已配置更新源的客户端自行发现和下载新版本。业务 API 不参与页面渲染或文件发布。
 
 | 要做的事情 | 使用入口 | 是否需要重启 |
 | --- | --- | --- |
 | 首次部署下载服务 | 本文第 2 节 | 启动独立 Nginx 容器 |
+| 给已有文件服务增加下载页 | 本文第 2.5 节 | 首次替换 Nginx 路由后检查配置并 reload |
+| 修改页面展示的业务服务器地址 | `public/download-config.json` | 无需重启；刷新页面生效 |
 | 发布新的桌面版本 | 本文第 4 节的 `collect`、`publish`、`verify` | 无需重启 Nginx；客户端安装新版需要退出或重启 |
 | 修改客户端更新源 | 本文第 5 节 | 完整退出并重新打开客户端 |
 | 修改监听、镜像或存储位置 | 修改 `updates.env`，再执行 `start` | Compose 按配置重建下载容器 |
@@ -30,7 +32,7 @@ bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env stat
 | 命令 | 用途 |
 | --- | --- |
 | `export-image OUTPUT PLATFORM` | 联网机器准备指定服务器架构的 Nginx 离线镜像归档 |
-| `start` / `stop` / `status` / `logs` | 启停和检查独立下载服务；停止保留安装包 |
+| `start` / `stop` / `status` / `logs` | 启停和检查独立下载服务；启动更新自有页面，保留业务地址配置和安装包 |
 | `collect SOURCE DESTINATION` | 从构建目录收集并校验完整发布文件 |
 | `publish SOURCE` | 校验后发布到配置的存储，保留历史文件和元数据备份 |
 | `verify METADATA --expected-version VERSION` | 从配置的 HTTP 地址实际下载并校验指定通道与版本 |
@@ -47,6 +49,8 @@ bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env stat
 | 下载服务器 | Linux，内网 IP 为 `10.10.10.20` |
 | 下载端口 | `18080` |
 | 客户端更新地址 | `http://10.10.10.20:18080/desktop` |
+| 首次安装下载页 | `http://10.10.10.20:18080/desktop/` |
+| 页面展示的业务服务器地址 | `http://10.10.10.30:8080`，单独配置为实际业务入口 |
 | Nginx 部署配置目录 | `/opt/multica-updates` |
 | 安装包持久化存储 | `/srv/multica-updates` |
 | 待发布文件目录 | `/srv/incoming/desktop-0.5.1-windows-x64` |
@@ -69,7 +73,7 @@ bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env stat
 
 ### 2.1 准备配置文件
 
-把仓库中的 [Compose 配置](../docker-compose.desktop-updates.yml)、[Nginx 配置](../deploy/desktop-updates/nginx.conf)、[管理脚本](../scripts/desktop-updates.sh) 和 [环境配置模板](../deploy/desktop-updates/updates.env.example) 复制到服务器，保留相对目录结构：
+把仓库中的 [Compose 配置](../docker-compose.desktop-updates.yml)、[Nginx 配置](../deploy/desktop-updates/nginx.conf)、[静态页面](../deploy/desktop-updates/download.html)、[页面配置模板](../deploy/desktop-updates/download-config.example.json)、[管理脚本](../scripts/desktop-updates.sh) 和 [环境配置模板](../deploy/desktop-updates/updates.env.example) 复制到服务器，保留相对目录结构：
 
 ```text
 /opt/multica-updates/
@@ -80,6 +84,8 @@ bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env stat
 └── deploy/
     └── desktop-updates/
         ├── nginx.conf
+        ├── download.html
+        ├── download-config.example.json
         └── updates.env.example
 ```
 
@@ -91,6 +97,8 @@ bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env stat
 tar -czf /tmp/multica-desktop-download-service.tar.gz \
   docker-compose.desktop-updates.yml \
   deploy/desktop-updates/nginx.conf \
+  deploy/desktop-updates/download.html \
+  deploy/desktop-updates/download-config.example.json \
   deploy/desktop-updates/updates.env.example \
   scripts/desktop-updates.sh
 ```
@@ -152,7 +160,18 @@ bash scripts/desktop-updates.sh start
 bash scripts/desktop-updates.sh status
 ```
 
-`start` 创建存储目录，使用已导入镜像启动并等待健康检查，不会从公网拉取。容器只读挂载 `public/`，停止或重建容器不会删除宿主机上的安装包。
+`start` 创建存储目录，将自有 `download.html` 原子安装到 `public/`，只在缺失时初始化 `download-config.json`，再使用已导入镜像启动并等待健康检查。页面源文件必须齐全；存储目录、`public/` 或目标文件是符号链接时拒绝写入。启动不从公网拉取，停止或重建容器不会删除宿主机上的安装包、发布信息和管理员配置。
+
+首次启动后编辑 `/srv/multica-updates/public/download-config.json`。以下地址仅为结构示例，必须替换为实际业务服务器地址；模板默认留空，避免把未知地址提供给用户：
+
+```json
+{
+  "schemaVersion": 1,
+  "serverUrl": "http://10.10.10.30:8080"
+}
+```
+
+`serverUrl` 是客户端首次连接时填写的业务 HTTP(S) 地址，允许必要的端口和路径，不包含用户名或密码。它与下载页地址、`DESKTOP_UPDATES_URL`、客户端 `updateUrl` 分开维护。业务服务器无需和下载服务器位于同一主机。配置刷新页面后生效；重复 `start`、发包和页面升级都保留此文件。维护中的配置先写同目录临时文件，再重命名替换，并保留公开可读权限 `0644`。
 
 后续管理自动复用同一份 `updates.env`。需要用其他配置时，在命令前传 `--env-file /绝对路径/updates.env`。配置文件按 Docker Compose 的 dotenv 规则读取，不会作为 Shell 执行。进程中已有的同名环境变量按 Compose 规则优先；长期运维应避免遗留的临时 `export DESKTOP_UPDATES_*` 覆盖配置文件。
 
@@ -166,7 +185,35 @@ bash scripts/desktop-updates.sh status
 curl -fsS http://10.10.10.20:18080/health
 ```
 
-预期返回 `ok`。浏览器打开 `/desktop/` 返回 `403/404` 是正常现象，因为目录列表已关闭；需要使用具体文件地址验证下载。
+预期返回 `ok`。浏览器打开 `http://10.10.10.20:18080/desktop/` 应显示深色下载首屏、浅色平台列表、业务地址、安装指导和常见问题。`/desktop` 会以相对重定向跳到 `/desktop/`，保留浏览器使用的域名、协议和端口；目录列表仍关闭，具体安装包和原 YAML 地址保持不变。
+
+此时若还没有发布 Windows x64，页面提示下载暂不可用；业务地址留空时，页面提示联系管理员配置，仍可阅读教程。页面只开放当前 Windows x64，macOS Apple Silicon、macOS Intel、Linux x86 和 ARM64 展示“待开放”。只有其他平台的旧安装包不会自动打开 Windows 下载入口。
+
+### 2.5 为已有文件服务接入下载页
+
+先备份旧 Nginx 配置，按第 2.1 节更新最小部署文件。保留原 `updates.env` 和持久化存储，不用模板覆盖配置。执行 `start` 安装页面后，检查并重载 Nginx 配置：
+
+```bash
+cd /opt/multica-updates
+bash scripts/desktop-updates.sh start
+docker compose --env-file updates.env -f docker-compose.desktop-updates.yml \
+  exec -T desktop-updates nginx -t
+docker compose --env-file updates.env -f docker-compose.desktop-updates.yml \
+  exec -T desktop-updates nginx -s reload
+```
+
+仅在 `nginx -t` 成功后执行 reload。普通 `compose up` 可能复用原容器，修改 bind-mounted 配置也不会自动让 Nginx 进程重新加载。若文件更新工具原子替换了宿主机配置，使旧容器仍绑定旧 inode，需先用 `docker compose --env-file updates.env -f docker-compose.desktop-updates.yml run --rm --no-deps desktop-updates -t` 检查新挂载配置，再用同一 Compose 配置执行 `up -d --force-recreate --pull never --wait`，然后验证页面。后续只更新页面内容或发布桌面版本无需 reload。
+
+接着按第 2.3 节填写业务地址。**只复制 HTML 不会生成下载版本信息。** 已有服务需要用新版工具重新收集当前完整 Windows x64 发布，补齐 `download.json`。不用重新构建，也不要把现有 YAML 或版本号改名。以下在有仓库依赖的发布机执行；源目录必须包含当前版本原始 `latest.yml` 及其引用的完整安装包：
+
+```bash
+bash scripts/desktop-updates.sh collect \
+  /srv/incoming/current-windows-x64 dist/current-windows-x64-with-page
+bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env \
+  publish dist/current-windows-x64-with-page
+```
+
+若发布机没有挂载 Nginx 存储，将收集输出完整转入下载服务器，按第 4.3 节手工安装。随后检查 `/desktop/download.json` 并刷新页面，确认当前版本和安装包与原发布一致。完整安装及注册流程仍需在 Windows 终端验收。
 
 ## 3. 安装包放在哪里
 
@@ -176,6 +223,9 @@ Nginx 对外提供 `/srv/multica-updates/public/` 下的文件。以 Windows x64
 /srv/multica-updates/
 ├── public/
 │   ├── latest.yml
+│   ├── download.html
+│   ├── download-config.json
+│   ├── download.json
 │   ├── multica-desktop-0.5.0-windows-x64.exe
 │   ├── multica-desktop-0.5.0-windows-x64.exe.blockmap
 │   ├── multica-desktop-0.5.1-windows-x64.exe
@@ -185,6 +235,8 @@ Nginx 对外提供 `/srv/multica-updates/public/` 下的文件。以 Windows x64
 ```
 
 发布工具管理 `staging/` 和 `backups/`，这两个目录不对客户端开放。不要将会被下次构建清空的 `apps/desktop/dist` 直接挂载为长期存储。
+
+`download.html` 由启动脚本更新；`download-config.json` 归管理员维护；`download.json` 由 Windows x64 的收集/发布工具生成，包含 `schemaVersion: 1`、`platform: "windows"`、`arch: "x64"`、版本、文件名和字节大小。不要手改版本投影或从目录里猜“最新”安装包。其他平台的发布保留已有 Windows 投影。
 
 文件与 URL 的对应关系：
 
@@ -226,7 +278,7 @@ bash scripts/desktop-updates.sh collect \
 
 `--publish never` 不上传公网发布源。构建签名仍按目标平台的正式发布要求准备，指定版本号不能替代签名和安装验收。
 
-收集工具会验证元数据引用、大小和 SHA-512。把收集出的整个目录转入内网，例如 `/srv/incoming/desktop-0.5.1-windows-x64`。多架构应逐次构建、收集到不同目录，避免后续构建清空之前的产物。
+收集工具会验证元数据引用、大小和 SHA-512，为有效的 Windows x64 发布生成 `download.json`。把收集出的整个目录转入内网，例如 `/srv/incoming/desktop-0.5.1-windows-x64`，不要漏掉该 JSON。多架构应逐次构建、收集到不同目录，避免后续构建清空之前的产物。
 
 正式升级使用高于客户端当前版本的稳定版本。`-dirty` 等预发布包仅用于明确的开发验证，不应作为正式稳定升级包。
 
@@ -242,20 +294,38 @@ bash scripts/desktop-updates.sh \
 
 脚本读取 `DESKTOP_UPDATES_STORAGE`，工具写入其 `public/` 子目录。它必须与 Nginx 挂载的是同一份存储；如果工具在另一台机器执行，需要挂载下载服务器的同一目录，并用该机器专用的 env 文件填写实际挂载路径。该存储需要支持硬链接和同目录原子重命名。不要仅因为两台机器都存在 `/srv/multica-updates`，就认为它们指向同一份文件。
 
-工具会重新校验文件，拒绝用不同内容覆盖已有的版本文件，保留旧安装包和元数据备份，先发布完整产物，最后原子替换每个平台的 YAML。不同平台的元数据分别切换，不是所有平台同时切换的事务。
+工具会重新校验文件，拒绝用不同内容覆盖已有的版本文件，保留旧安装包和对应 YAML、`download.json` 的备份。它从已校验的 Windows x64 元数据重新生成投影，不信任源目录中自行编写的 JSON；先发布完整产物，再分别原子替换各平台 YAML，最后原子替换 `download.json`。所有必要写入成功后才报告成功。各 YAML 和 JSON 分别切换，不是跨文件事务；最后一步失败时旧 JSON 仍指向保留的完整安装包，命令报错，用同一发布源重试可补齐，不会宣称所有文件已回滚。
 
 ### 4.3 下载服务器只部署 Nginx 时
 
 如果服务器没有 Node.js 和项目依赖，在发布机先完成收集与校验，再通过现有文件传输方式部署。每次只允许一个发布操作写入同一更新目录，按以下顺序执行：
 
 1. 将完整发布目录传到服务器的临时目录，先核对转入文件的大小和 SHA-512 与已验证的发布源一致。
-2. 备份当前对应平台的 `latest*.yml` 到 `public/` 之外的目录。
+2. 备份当前对应平台的 `latest*.yml`；Windows x64 同时备份已有 `download.json`，放在 `public/` 之外的同一个备份目录。记录文件缺失的情况，首次接入前可能没有 JSON。
 3. 将安装器、ZIP、blockmap 等产物完整放入 `public/`。先用隐藏的临时文件名复制，校验后再暴露正式文件名；已有同名文件内容不一致时停止发布，不覆盖。
 4. 确认元数据引用的每个文件都已到位、可读。目录通常使用 `0755`，公开文件使用 `0644`，以便容器内 UID `101` 能读取。
 5. 将新版 YAML 先复制为 `public/` 下的隐藏临时文件，再在同一文件系统内重命名替换正式 YAML；不要边传输边覆盖客户端正在读取的正式文件。
-6. 完成下一节的 HTTP 验证。
+6. Windows x64 发布最后将收集工具生成的 `download.json` 复制为同目录隐藏临时文件，设为 `0644`，再重命名替换正式 JSON。不发布 Windows x64 时不改已有投影；不要用示例 JSON 或手写文件名代替生成结果。
+7. 完成下一节的 HTTP 验证，并刷新下载页检查版本和下载按钮。
 
-不要直接同步整个目录而让 YAML 先于安装包上线，也不要使用带删除选项的同步操作清理历史安装包。发布完成后，Nginx 会直接读取新文件，不需要重启。
+第 6 步只需 Shell 文件操作，不依赖服务器上的 Node。以下在第 1–5 步已完成后执行，路径替换为实际发布目录：
+
+```bash
+(
+  set -eu
+  download_public=/srv/multica-updates/public
+  test ! -L "$download_public"
+  test ! -L "$download_public/download.json"
+  test ! -d "$download_public/download.json"
+  download_projection_tmp=$(mktemp "$download_public/.download-json.XXXXXX")
+  trap 'rm -f "$download_projection_tmp"' EXIT
+  cp /srv/incoming/desktop-0.5.1-windows-x64/download.json "$download_projection_tmp"
+  chmod 0644 "$download_projection_tmp"
+  mv -f "$download_projection_tmp" "$download_public/download.json"
+)
+```
+
+不要直接同步整个目录而让 YAML 或 JSON 先于安装包上线，也不要使用带删除选项的同步操作清理历史安装包。最后 JSON 切换失败时保留旧文件，修复传输或权限后用同一份已验证发布重试。发布完成后，Nginx 会直接读取新文件，不需要重启。
 
 ### 4.4 验证发布结果
 
@@ -293,6 +363,8 @@ curl -fsS -D - -o /dev/null -H 'Range: bytes=0-1023' \
 ```
 
 检查 YAML 中是预期版本，HEAD 返回 `200`，Range 返回 `206` 和 `Content-Range`，元数据响应包含 `Cache-Control: no-cache`。元数据中的所有引用文件都应能下载。
+
+Windows x64 还需访问 `/desktop/download.json`，确认 `version`、`file`、`size` 对应此次已验证安装包。刷新 `/desktop/` 后下载按钮应指向该包。`verify` 的 JSON 证据验证更新通道及传输，不能代替下载页交互测试；同时检查服务器地址复制、常见问题键盘展开，以及断开公网后所有内容仍可使用。内网 HTTP 或剪贴板权限被拒绝时，页面应如实反馈，并允许选中地址手动复制。
 
 至少完整下载一次安装器并核对 SHA-512。以下需验证机安装 OpenSSL，输出值应等于 YAML 中该文件的 Base64 `sha512`：
 
@@ -371,7 +443,7 @@ bash scripts/desktop-updates.sh \
 flowchart TD
     A[构建更高版本的稳定安装包和更新元数据] --> B[转入内网并校验]
     B --> C[先发布安装包和 blockmap]
-    C --> D[最后替换对应 latest YAML]
+    C --> D[替换对应 latest YAML，再替换 Windows 下载页 JSON]
     D --> E[客户端自动或手动检查更新]
     E --> F[发现更高版本，后台下载并校验]
     F --> G[下载完成，提示重启更新]
@@ -392,7 +464,8 @@ flowchart TD
 2. 将完整产物目录转入内网。
 3. 用固定的 `updates.env` 执行 `publish`。
 4. 执行 `verify <架构对应 YAML> --expected-version <版本>`。
-5. 在测试终端执行一次真正的检查更新、安装、重启和用户状态验收，记录结果。
+5. Windows x64 刷新下载页，核对当前版本、下载链接及业务地址。
+6. 在测试终端执行一次真正的检查更新、安装、重启和用户状态验收，记录结果。
 
 每次发布建议保存校验 JSON 和发布记录。以下仅在校验成功时保存最终证据文件，失败会保留错误输出并返回非零状态：
 
@@ -428,8 +501,9 @@ fi
 
 - [ ] 新版本高于已安装版本，目标系统与架构正确，签名条件已满足。
 - [ ] 安装包、ZIP、blockmap 和构建生成的 YAML 已完整收集并校验。
-- [ ] 旧安装包保留，当前 YAML 已备份。
-- [ ] 安装包先上线，对应 YAML 最后切换，发布时没有覆盖不同内容的同名版本文件。
+- [ ] 旧安装包保留，当前 YAML 和 Windows 下载页 JSON 已在同一备份点保存。
+- [ ] 安装包先上线，再切换对应 YAML，Windows x64 的 `download.json` 最后切换，发布时没有覆盖不同内容的同名版本文件。
+- [ ] 下载页仅提供当前 Windows x64，刷新后版本与安装包一致；管理员业务地址配置保持不变。
 - [ ] 从内网终端验证 YAML、完整下载校验和 Range `206`。
 - [ ] 用真实安装的旧版客户端检查、下载并安装新版，重启后版本正确。
 - [ ] 业务地址、更新地址、登录状态、更新偏好和必要的本地数据符合预期。
@@ -463,14 +537,18 @@ bash scripts/desktop-updates.sh stop
 | --- | --- |
 | `/health` 无法访问 | 检查容器状态、监听地址、防火墙和路由 |
 | `/health` 正常，但检查更新返回 404 | 检查 `updateUrl` 是否指向 `/desktop`，对应架构的 YAML 是否存在 |
+| `/health` 正常，但下载页返回 404 | 确认新版页面已由 `start` 安装；按第 2.5 节检查 Nginx 已加载新路由 |
+| 页面提示下载暂不可用 | 检查 `download.json` 存在且与 Windows x64 发布一致，安装包 HEAD 可读且长度正确；首次接入按第 2.5 节补齐投影 |
+| 页面没有业务地址 | 编辑持久化 `download-config.json` 的 `serverUrl`，不要改 `DESKTOP_UPDATES_URL` 来代替它 |
 | 安装包返回 403 | 检查挂载目录和文件权限，容器 UID `101` 需要读取权限 |
 | 文件能下载，但客户端未发现新版 | 检查版本是否更高、平台通道是否正确、是否误用预发布包，以及是否完整重启加载配置 |
 | 校验失败 | 停止切换元数据，重新转入原始产物；不要修改 YAML 来迎合损坏文件 |
 | 发布锁未释放 | 确认没有发布进程后，再按锁内记录处理遗留锁；不要绕过正在工作的发布进程 |
-| 需要撤回新版本 | 备份当前 YAML，确认旧文件仍完整，从备份恢复上一份 YAML，并再次验证下载 |
+| 最后写入 `download.json` 失败 | 视为发布失败；旧 JSON 仍指向保留的旧包，修复磁盘/权限问题后重试同一发布源 |
+| 需要撤回新版本 | 备份当前 YAML 和 JSON，确认旧包仍完整，从同一备份点分别原子恢复旧 YAML 与 `download.json`，再验证更新通道和下载页 |
 | 需要恢复客户端配置 | 完整退出客户端，用保存的配置备份恢复后重启 |
 
-恢复旧 YAML 只影响后续版本发现，不保证停止已经开始的下载，也不会让已升级客户端自动降级。已安装的问题版本优先通过更高版本的修复包恢复，必要时使用受控的手工覆盖安装。
+恢复旧 YAML 和 JSON 只影响后续版本发现及下载页入口，不保证停止已经开始的下载，也不会让已升级客户端自动降级。两份文件分别切换，回退时暂停并行发布并保留完整旧包。首次接入前没有 JSON 的备份点应恢复为“未配置下载信息”，不要随意留下另一版投影。管理员维护的 `download-config.json` 不随版本回退覆盖。已安装的问题版本优先通过更高版本的修复包恢复，必要时使用受控的手工覆盖安装。
 
 ## 9. 当前验证边界与参考资料
 
