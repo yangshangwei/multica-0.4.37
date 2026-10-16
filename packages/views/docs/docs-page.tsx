@@ -144,15 +144,15 @@ function DocsNav({
           ))}
         </div>
       ) : (
-        <ul className="space-y-4 px-2">
+        <ul className="space-y-5 px-3">
           {manifest?.groups.map((group, groupIndex) => (
             <li key={group.label ?? `group-${groupIndex}`}>
               {group.label ? (
-                <h2 className="px-2 pb-1 text-caption font-medium text-muted-foreground">
+                <h2 className="px-2 pb-1.5 text-label font-semibold text-foreground">
                   {group.label}
                 </h2>
               ) : null}
-              <ul>
+              <ul className={group.label ? "pl-3" : undefined}>
                 {group.items.map((item) => {
                   const active = item.slug === activeSlug;
                   return (
@@ -165,13 +165,15 @@ function DocsNav({
                         // background-only active state visually downgrades the
                         // selected row the moment the pointer crosses it.
                         className={cn(
-                          "block truncate rounded-md px-2 py-1.5 text-body transition-colors hover:bg-accent",
+                          "relative flex min-h-8 items-center rounded-md px-2 py-1.5 text-label transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-foreground focus-visible:outline-offset-2 pointer-coarse:min-h-11",
                           active
-                            ? "bg-accent font-medium text-accent-foreground"
-                            : "text-muted-foreground hover:text-foreground",
+                            ? "bg-accent font-medium text-accent-foreground before:absolute before:left-0.5 before:top-1/2 before:h-3 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-foreground before:content-['']"
+                            : "font-normal text-muted-foreground hover:text-foreground",
                         )}
                       >
-                        {item.title}
+                        <span className="min-w-0 whitespace-normal [overflow-wrap:anywhere]">
+                          {item.title}
+                        </span>
                       </AppLink>
                     </li>
                   );

@@ -190,9 +190,17 @@ curl -fsS https://app.example.com/api/config | grep -o '"daemon_server_url":"[^"
 
 ## 4. 登录并创建工作空间
 
-打开本机的 `http://localhost:3000`，或刚才配置的 `https://app.example.com`，输入邮箱获取验证码。
+打开本机的 `http://localhost:3000`，或刚才配置的 `https://app.example.com`。登录方式取决于当前部署配置：
 
-默认没有配置邮件服务。请求验证码后，可以从 backend 日志中读取：
+| 部署配置 | 登录流程 |
+|---|---|
+| 默认自托管：`MULTICA_AUTH_MODE=legacy`，未关闭设备身份登录 | 客户端自动使用本地保存的设备身份进入，无需输入邮箱或密码 |
+| `MULTICA_AUTH_MODE=password` | 使用用户名和密码登录；开放注册时可点击**创建账号**，否则联系管理员开通账号 |
+| `legacy` 且 `MULTICA_DEVICE_AUTH_ENABLED=false`，使用邮箱登录 | 输入邮箱获取验证码，再输入验证码登录 |
+
+首次进入后，按上手引导创建第一个工作空间。设备身份部署若配置了 `MULTICA_DEVICE_AUTH_WORKSPACE`，新设备会直接加入指定的共享工作空间。浏览器和 Desktop 分别保存设备身份；清除站点数据、删除 Desktop 用户数据或更换客户端，可能产生新身份，不会自动恢复原身份的数据。
+
+只有使用邮箱验证码、且未配置任何邮件服务时，才需要在请求验证码后从 backend 日志中读取：
 
 ```bash
 docker compose -f docker-compose.selfhost.yml logs backend \
@@ -205,7 +213,7 @@ docker compose -f docker-compose.selfhost.yml logs backend \
 [DEV] Verification code for you@example.com: 123456
 ```
 
-输入验证码并创建第一个工作空间。配置 SMTP 后，验证码通过邮件发送，成员无需读取容器日志，具体见[登录与注册配置](/auth-setup)。
+配置内网 SMTP 后，邮箱验证码通过邮件发送，成员无需读取容器日志。各认证模式的启用条件与注册限制见[登录与注册配置](/auth-setup)。
 
 <Callout type="warning">
 自托管部署默认使用 `APP_ENV=production`，不会启用固定验证码。不要在多人可访问的实例上设置 `MULTICA_DEV_VERIFICATION_CODE`。
@@ -468,7 +476,7 @@ Helm 有自己的升级路径：在 values 文件里把 `images.backend.tag` / `
 | 现象 | 先检查什么 |
 |---|---|
 | `/readyz` 没有返回 `ok` | 运行 `docker compose -f docker-compose.selfhost.yml logs backend postgres`。 |
-| 收不到验证码 | 请求一次验证码，再从 backend 日志中查找 `Verification code`。 |
+| 邮箱登录时收不到验证码 | 检查邮件服务配置；未配置邮件服务时，请求一次验证码，再从 backend 日志中查找 `Verification code`。 |
 | `setup self-host` 提示 server 不可达 | 在执行电脑上请求 `https://api.example.com/health`，确认 DNS、TLS 和反向代理都可达。返回 404 说明代理把 `/health` 转给了不转发该路径的旧版 frontend——改为直通 backend（见[故障排查](/troubleshooting#multica-setup-报告服务器不可达)）。 |
 | 守护进程没有列出 `Agents` | 确认 AI 编程工具在 `PATH` 中并已登录，然后运行 `multica daemon restart`。 |
 | issue 一直排队 | 运行 `multica daemon status`，确认守护进程正在运行并连接了工作空间。 |
@@ -477,7 +485,7 @@ Helm 有自己的升级路径：在 values 文件里把 `images.backend.tag` / `
 
 ## 接下来
 
-- [登录与注册配置](/auth-setup) — 配置邮件和注册范围。
+- [登录与注册配置](/auth-setup) — 了解设备身份、用户名密码、邮箱验证码和注册范围。
 - [环境变量](/environment-variables) — 查看完整的服务端配置。
 - 仓库中的 `SELF_HOSTING.md` — Kubernetes、升级和手动部署。
 - [桌面应用](/desktop-app) — 让 Desktop 连接自托管服务。

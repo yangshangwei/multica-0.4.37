@@ -98,6 +98,32 @@ npmjs.com, GHCR, app stores, SaaS IM platforms). Rules for `.zh.mdx` content:
 4. When deleting pages, clean the now-unused locale keys and product links in
    the same change (e.g. `help.download_desktop`, `*.byo_docs_link` were
    removed with the bot doc pages).
+5. **Reachability is not importer support.** `detectImportSource()` in
+   `server/internal/handler/skill.go` recognizes GitHub, skills.sh, and ClawHub
+   source formats; replacing one with an arbitrary intranet archive URL makes
+   the documented command fail before downloading. For offline skill delivery,
+   document local folder/archive import or `multica skill import --file`.
+   `skill refresh` also requires a supported, reachable saved source.
+
+### Content claims need source verification
+
+Bundle parity proves that readers receive the source text, not that its claims
+match the product. Before generalizing a behavior, follow the actual branch and
+keep its prerequisites in the prose:
+
+| Claim boundary | Implementation to check |
+|---|---|
+| Assignment/backlog versus comment mentions, `@all`, `/note`, and edits | `server/internal/service/issue_trigger.go`, `server/internal/handler/comment.go` |
+| Offline display versus task recovery, preparation leases, and daemon restart | `server/cmd/server/runtime_sweeper.go`, `server/pkg/db/queries/runtime.sql`, `agent.sql` |
+| Device, password, and legacy authentication; limiter failure behavior | `server/internal/handler/auth_device.go`, `server/internal/auth/password_config.go`, `password_limiter.go`, `server/cmd/server/router.go` |
+| Managed workdirs versus `local_directory/in_place`; chat directory-lock exemption | `server/internal/daemon/execenv/execenv.go`, `server/internal/daemon/local_directory.go` |
+
+Update directly linked pages that repeat the same claim. For example, changing
+the security page's directory-isolation description also requires checking the
+project-resources page. Identify old screenshots explicitly and describe the
+current entry point; an old screenshot's four choices must not override the
+five choices in the current skill creation UI. Keep English and Chinese
+`developers/conventions` aligned when correcting their shared contracts.
 
 ## 6. Good/Base/Bad Cases
 
@@ -118,6 +144,17 @@ npmjs.com, GHCR, app stores, SaaS IM platforms). Rules for `.zh.mdx` content:
   `go test ./internal/handler/ -run Docs` against a cloned template DB
   (handler fixtures need a migrated database; see project memory).
 - Grep the regenerated bundle for removed slugs — zero matches expected.
+- For a multi-page content audit, generate into a temporary output directory and
+  compare all files byte-for-byte. Check Markdown links and image references
+  against manifest pages/assets and generated TOC IDs, excluding code blocks.
+  Record semantic review separately from these structural checks. Run
+  `pnpm --filter @multica/docs typecheck` and `pnpm --filter @multica/docs build`
+  to validate the docs package and actual MDX compilation; it has no standalone
+  `lint` script.
+- Handler docs tests require the package's migrated database fixture even though
+  the endpoints themselves only read the bundle. Use an isolated clone and
+  verify named tests actually ran: an unreachable database makes the package's
+  `TestMain` print `Skipping tests` and exit successfully.
 
 ## Wrong vs Correct
 

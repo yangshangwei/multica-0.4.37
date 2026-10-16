@@ -135,19 +135,19 @@ multica agent update <agent-id> --help
 
 multica skill list
 multica skill get <skill-id>
-multica skill import --url <skill-url>
+multica skill import --file ./review-helper.skill
 multica agent skills add <agent-id> --skill-ids <skill-id>
 ```
 
 导入时遇到同名 skill，默认会停止且不修改现有内容。按意图选择：
 
 ```bash
-multica skill import --url <skill-url> --on-conflict overwrite
-multica skill import --url <skill-url> --on-conflict rename
-multica skill import --url <skill-url> --on-conflict skip
+multica skill import --file ./review-helper.skill --on-conflict overwrite
+multica skill import --file ./review-helper.skill --on-conflict rename
+multica skill import --file ./review-helper.skill --on-conflict skip
 ```
 
-`--url` 的地址必须是内网可达地址，例如内网 Git 服务上托管的 skill 压缩包；本地文件用 `--file` 导入。
+`--file` 接受本机的 `.skill` 或 `.zip` 压缩包。`--url` 仅识别 GitHub、skills.sh 和 ClawHub 的来源地址，不支持任意内网 Git 或压缩包 URL。这些公网来源在内网不可达；内网请先获取管理员提供的文件，再用 `--file` 导入。来源更新的适用条件见[更新已导入的 skill](/skills#更新已导入的-skill)。
 
 `overwrite` 只允许 skill 的创建者使用，并保留原来的 ID 与智能体绑定关系。
 
@@ -178,6 +178,7 @@ multica runtime activity <runtime-id>
 | `project` | 管理项目及其资源 |
 | `label`、`property` | 管理工作空间标签和自定义属性 |
 | `agent`、`skill`、`squad` | 管理智能体、skill 和小队 |
+| `approval` | 申请和跟踪高风险动作的人工审批，记录获批后的执行结果 |
 | `autopilot` | 管理自动化、触发器和运行历史 |
 | `workspace` | 创建、查看、切换工作空间和邀请成员 |
 | `repo` | 管理工作空间仓库，并把仓库检出到本机 |
@@ -265,7 +266,7 @@ CLI 配置文件包含可代表你访问 Multica 的令牌。不要提交到仓�
 | | `copy <agent-id>` | 复制为新智能体，原智能体不受影响 | `--name`（默认为原名加 ` (copy)`）、`--runtime-id`（复制到其他运行时时必须同时指定 `--model`）、`--no-skills`；`custom_env`、`mcp_config`、`runtime_config` 等机密配置不会复制，需用与 `create` 相同的 flag 重新提供 |
 | | `tasks <id>` | 查看智能体的 task | |
 | | `avatar <id>` | 上传头像 | |
-| | `env get/set <agent-id>` | 读写自定义环境变量（仅 owner 和 admin） | |
+| | `env get/set <agent-id>` | 读写自定义环境变量（智能体的人类所有者，或工作空间 owner/admin；智能体身份不可调用） | |
 | | `skills list/set/add <agent-id>` | 管理绑定的 skill | `--skill-ids`（`set` 全量替换，`add` 增量添加） |
 | | `mcp list/add/enable/disable/remove <agent-id>` | 给该 agent 分配工作空间 MCP 服务 | server id 从 `workspace mcp list` 获取。库里的条目在这里添加之前不会生效；`disable` 只停止下发，保留分配 |
 | `autopilot` | `list/get/create/update/delete` | 管理自动化 | `create`：`--title`、`--agent`、`--mode`（均必填）、`--project`、`--subscriber`（可重复） |
@@ -277,14 +278,22 @@ CLI 配置文件包含可代表你访问 Multica 的令牌。不要提交到仓�
 | | `member list/invite <email>` | 查看成员、发出邀请 | `invite`：`--role`（member 或 admin，默认 member） |
 | `repo` | `list/add/remove/checkout` | 管理工作空间仓库并检出到本机 | `--url`（可重复）；`checkout`：`--ref` |
 | `skill` | `list/get/create/update/delete` | 管理 skill | |
-| | `import` | 从 URL 或本地文件导入 skill | `--url` / `--file`、`--on-conflict`（`fail`、`overwrite`、`rename`、`skip`，默认 `fail`） |
+| | `import` | 从支持的来源 URL 或本地压缩包导入 skill；内网使用本地文件 | `--url` / `--file`、`--on-conflict`（`fail`、`overwrite`、`rename`、`skip`，默认 `fail`） |
+| | `refresh <skill-id>` | 从已保存且可访问的 GitHub、skills.sh 或 ClawHub 来源更新 | |
 | | `search <query>` | 搜索 skill | |
 | | `files list/upsert/delete <skill-id>` | 管理 skill 内的文件 | |
 | | `label list/add/remove <skill-id>` | 管理 skill 上的标签 | `add` / `remove`：`<label-id>` 可使用完整 UUID 或短前缀；`--output json`、`--full-id` |
 | `squad` | `list/get/create/update/delete` | 管理小队（`delete` 为归档） | |
 | | `member list/add/set-role/remove` | 管理小队成员 | |
 | | `activity <issue-id> <outcome>` | 记录队长评价 | |
+| `approval` | `request` | 为单个动作申请人工审批 | `--risk-class`、`--summary`（均必填）、`--plan` / `--plan-file`、`--issue`、`--agent-id`（人类代智能体申请时使用） |
+| | `list` | 列出审批申请；智能体只能查看自己的申请 | `--status`（`pending`、`approved`、`rejected`、`executed`、`cancelled`） |
+| | `get <approval-id>` | 查看申请及审批结果 | |
+| | `executed <approval-id>` | 记录获批动作的实际执行结果 | `--note` |
+| | `cancel <approval-id>` | 撤回不再适用的申请 | |
 | `chat` | `history`、`thread [id]` | 读取智能体当前正在处理的外部聊天会话 | `--limit`、`--before` |
+
+批准或驳回由有权管理该智能体的人在 Multica 界面中完成；CLI 不提供批准或驳回命令。`executed` 只记录结果，不会代为执行动作。登记时，申请须已获批，对应智能体须具备"运维执行"（`operator`）自主权限；只能由该智能体自己或有权管理它的人登记。
 
 ### Runtime
 

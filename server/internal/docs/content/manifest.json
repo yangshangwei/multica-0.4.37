@@ -41,7 +41,7 @@
         {
           "slug": "members-roles",
           "title": "成员与权限",
-          "description": "邀请成员，并用 owner、admin 和 member 三种角色管理工作空间权限。"
+          "description": "邀请成员，并用所有者、管理员和成员三种角色管理工作空间权限。"
         }
       ]
     },
@@ -54,6 +54,11 @@
           "description": "Issue 保存一项工作的上下文、负责人、状态和执行记录。"
         },
         {
+          "slug": "triage",
+          "title": "分拣台",
+          "description": "通过手动投递和 CSV 导入收集待分拣任务，审核后再纳入项目、迭代和智能体执行。"
+        },
+        {
           "slug": "projects",
           "title": "项目",
           "description": "用项目组织相关任务，查看共同目标、风险、进展和验收记录。"
@@ -62,6 +67,11 @@
           "slug": "project-resources",
           "title": "项目资源",
           "description": "为项目关联 Git 仓库或本地目录，让后续执行获得稳定的工作上下文。"
+        },
+        {
+          "slug": "iterations",
+          "title": "迭代管理",
+          "description": "手动规划一段时间的任务，跟踪交付与范围变化，并在结束时安排未完成工作。"
         }
       ]
     },
@@ -196,7 +206,7 @@
         {
           "slug": "auth-setup",
           "title": "登录与注册",
-          "description": "配置邮箱验证码和新用户注册范围。"
+          "description": "了解设备身份、用户名密码和邮箱验证码登录，配置注册范围与登录有效期。"
         },
         {
           "slug": "platform-administration",

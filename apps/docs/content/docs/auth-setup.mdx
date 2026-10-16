@@ -1,17 +1,84 @@
 ---
 title: Sign-in and signup
-description: Configure email verification codes, Google sign-in, and who can sign up.
+description: Choose device identity, password, or email sign-in, and configure signup restrictions and session lifetime.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
-Multica signs users in with email verification codes by default; Google OAuth can be added on top. Existing users can always sign in again — signup restrictions only decide whether new accounts can be created.
+The deployment operator configures how users sign in to Multica. Web and desktop show the options supported by that deployment; users cannot switch the deployment's authentication mode on the sign-in page.
+
+## Sign-in modes
+
+| `MULTICA_AUTH_MODE` | Available sign-in methods |
+|---|---|
+| `legacy` (default) | Device identity is enabled by default on self-hosted deployments; email verification codes and Google sign-in can also be configured |
+| `password` | Username and password only; email verification codes, Google, and device identity sign-in are unavailable |
+
+In `legacy` mode, `MULTICA_DEVICE_AUTH_ENABLED` explicitly enables or disables device identity sign-in. Set it to `false` when users should sign in through the email form.
+
+## Username and password
+
+### Enabling password sign-in
+
+A new deployment with one API instance can use the following settings. Before switching an existing deployment, arrange account binding or migration as described below.
+
+```dotenv
+MULTICA_AUTH_MODE=password
+MULTICA_DEVICE_AUTH_ENABLED=false
+MULTICA_CLOUD_URL=
+MULTICA_PASSWORD_LIMITER_MODE=single
+ALLOW_SIGNUP=true
+```
+
+Password mode requires device identity sign-in to be disabled and `MULTICA_CLOUD_URL` to be empty. Use `single` only with one API instance. For multiple API replicas, set `MULTICA_PASSWORD_LIMITER_MODE=shared` and connect every replica to the same `REDIS_URL`. Password requests are rejected if the Redis service used for shared rate limiting is unavailable.
+
+### Creating an account and signing in
+
+When signup is open, select **Create account** on the sign-in page and submit the following fields:
+
+| Field | Requirements |
+|---|---|
+| Username | 3–32 English letters, numbers, or underscores; numbers only are allowed, and names are case-insensitive. An employee ID can be used |
+| Name | 1–80 characters after trimming surrounding whitespace; displayed in member lists, issues, and comments |
+| Password | 6–128 characters; spaces and pasting are supported |
+| Confirm password | Must match the password |
+
+You can then use the same username and password on web or desktop. `ALLOW_SIGNUP=false` disables self-registration without preventing existing password accounts from signing in. If **Create account** is unavailable, contact the deployment operator to arrange an account.
+
+### Existing accounts and password recovery
+
+When switching from device identity or email sign-in, the deployment operator must arrange account binding or migration to preserve the existing account's workspaces and history. A newly registered account does not automatically receive the old account's data. See the operator guide supplied with the offline upgrade package for the full migration procedure.
+
+If prompted to **Set up your account**, enter a username, name, and password for the existing account. If you receive a temporary password, the first sign-in requires you to **Set a new password** before continuing. Contact the deployment operator if you forget your password.
+
+Changing a password signs out other devices. Account binding or password changes can also interrupt running tasks on the account's environments, and those tasks will not retry automatically. Plan around any work in progress before making the change.
+
+## Device identity sign-in
+
+Self-hosted deployments enable device identity sign-in by default in `legacy` mode. Both web and desktop support it without an email address or password. The client generates and saves a stable random identity; it does not use a hardware serial number.
+
+| Client | Where the identity is kept |
+|---|---|
+| Web | This site's data in the current browser profile |
+| Desktop | The current Electron application's user data directory |
+
+Clearing site data, deleting desktop user data, or switching browser profiles can create a new identity. It will not automatically recover data associated with the previous identity.
+
+On the first visit, complete onboarding and create a workspace. If the operator has configured `MULTICA_DEVICE_AUTH_WORKSPACE`, new devices join that shared workspace directly.
+
+`ALLOW_SIGNUP`, `ALLOWED_EMAILS`, and `ALLOWED_EMAIL_DOMAINS` do not prevent device accounts from being created. To disable this entry point, set `MULTICA_DEVICE_AUTH_ENABLED=false` and apply the server configuration.
+
+<Callout type="warning">
+Device identity sign-in relies on network access controls. Any client that can reach the API can create an identity and join the configured shared workspace. Enable it only on a controlled internal network.
+</Callout>
 
 ## Email verification codes
 
-After the user enters an email address, Multica sends a 6-digit verification code. The code is valid for 10 minutes; once it verifies, the browser receives a sign-in cookie.
+Email verification codes are available only in `legacy` mode. After the user enters an email address and requests a code, Multica sends a 6-digit verification code that is valid for 10 minutes. Requests for the same email must be at least 60 seconds apart. Once the code verifies, the browser receives a sign-in cookie.
 
-Email can be delivered through Resend or SMTP. When both are configured, `SMTP_HOST` takes priority.
+Signup restrictions do not prevent existing email accounts from signing in again.
+
+Email can be delivered through Resend or SMTP. `SMTP_HOST` takes priority; without it, a configured `RESEND_API_KEY` enables Resend. With neither configured, messages are logged only. An SMTP delivery failure does not fall back to Resend or log-only delivery.
 
 ### Using Resend
 
@@ -23,7 +90,7 @@ Email can be delivered through Resend or SMTP. When both are configured, `SMTP_H
    RESEND_FROM_EMAIL=noreply@example.com
    ```
 
-3. Restart the API service.
+3. Apply the server configuration as described below.
 
 `RESEND_FROM_EMAIL` must belong to a domain already verified in Resend.
 
@@ -47,7 +114,7 @@ Common connection modes:
 | STARTTLS | `SMTP_PORT=587`; upgrades to TLS by default when the server supports it |
 | Implicit TLS | `SMTP_PORT=465`, or set `SMTP_TLS=implicit` explicitly |
 
-If `SMTP_FROM_EMAIL` is unset, it falls back to `RESEND_FROM_EMAIL`. Private CAs or self-signed certificates require adding the CA to the container trust store; `SMTP_TLS_INSECURE=true` skips certificate verification and should only be used temporarily on a trusted internal network.
+If `SMTP_FROM_EMAIL` is unset, it falls back to `RESEND_FROM_EMAIL`. At least one must be set for SMTP delivery. Private CAs or self-signed certificates require adding the CA to the container trust store; `SMTP_TLS_INSECURE=true` skips certificate verification and should only be used temporarily on a trusted internal network.
 
 Some strict relays also require a valid EHLO name:
 
@@ -57,26 +124,28 @@ SMTP_EHLO_NAME=mail.example.com
 
 ### Behavior without an email service
 
-The server still starts, but verification codes and invitation links are only written to the log; no email is sent. This suits local development, not production.
+With neither SMTP nor Resend configured, the server still starts, but verification codes and invitation links are only written to the log; no email is sent. This suits local development, not production.
 
 The startup log states whether the current mode is `Resend API`, `SMTP relay`, or `DEV mode`.
 
 ## Fixed local verification code
 
-Local automated tests can set a fixed verification code:
+Local automated tests of email sign-in in `legacy` mode can set a fixed verification code:
 
 ```dotenv
 APP_ENV=development
 MULTICA_DEV_VERIFICATION_CODE=888888
 ```
 
-The code must be 6 digits. The fixed code is ignored when `APP_ENV=production`.
+The code must be 6 digits. First enter an email address and request a code on the sign-in page, then enter the fixed value. Signup restrictions and the resend interval still apply. The fixed code is ignored when `APP_ENV=production`.
 
 <Callout type="warning">
 Do not enable a fixed code on a publicly reachable instance. The production combination is `APP_ENV=production` with an empty `MULTICA_DEV_VERIFICATION_CODE`.
 </Callout>
 
 ## Google sign-in
+
+Google sign-in is an optional `legacy` mode feature and requires access to Google's services.
 
 1. Create an OAuth 2.0 client in the [Google Cloud Console](https://console.cloud.google.com/).
 2. Add the Multica frontend's callback URL to **Authorized redirect URIs**:
@@ -93,13 +162,21 @@ Do not enable a fixed code on a publicly reachable instance. The production comb
    GOOGLE_REDIRECT_URI=https://multica.example.com/auth/callback
    ```
 
-4. Restart the API service.
+4. Apply the server configuration as described below.
 
 The URLs in the Google Console and in `GOOGLE_REDIRECT_URI` must match exactly, including protocol, port, and trailing slash. Once configured, the sign-in page shows a Google sign-in button; the frontend image needs no rebuild.
 
 ## Signup restrictions
 
-Three variables together decide whether a new account can be created:
+Signup restrictions depend on the sign-in method:
+
+| Sign-in method | Rules for creating a new account |
+|---|---|
+| `legacy` email verification / Google | Uses the email allowlists and `ALLOW_SIGNUP` rules below |
+| `password` username and password | Uses only `ALLOW_SIGNUP`; email allowlists do not apply |
+| Device identity | Ignores `ALLOW_SIGNUP` and both email allowlists; its entry point is controlled by `MULTICA_DEVICE_AUTH_ENABLED` |
+
+The following three variables and evaluation order apply only to email accounts in `legacy` mode:
 
 | Variable | Effect |
 |---|---|
@@ -107,7 +184,7 @@ Three variables together decide whether a new account can be created:
 | `ALLOWED_EMAIL_DOMAINS` | Email domains allowed to sign up, comma-separated |
 | `ALLOW_SIGNUP` | Whether signup is allowed when no allowlist is configured; defaults to `true` |
 
-The evaluation order is:
+For a new email account, the evaluation order is:
 
 1. The email matches `ALLOWED_EMAILS` — allow.
 2. Or its domain matches `ALLOWED_EMAIL_DOMAINS` — allow.
@@ -132,22 +209,47 @@ Both allowlists also work as an explicit exception list when `ALLOW_SIGNUP=false
 
 ## Invitations and signup restrictions
 
-Invitations do not automatically bypass signup restrictions:
+In `legacy` mode, email invitations do not automatically bypass email account signup restrictions:
 
 - If the invitee already has a Multica account, they can sign in and accept the invitation.
 - If they do not, their email must satisfy the signup rules above.
 
-To invite a new member on an instance with open signup disabled, add their email to `ALLOWED_EMAILS` first. Once the account is created and the invitation accepted, you can remove the entry again.
+To invite a new member by email with open signup disabled, add their email to `ALLOWED_EMAILS` first. Once the account is created and the invitation accepted, you can remove the entry again.
+
+Users with password-only accounts first register and sign in according to the deployment's rules, then join a workspace using a valid link created by an owner or admin in **Settings → Members → Share links**. When password signup is disabled, a share link cannot create an account or bypass `ALLOW_SIGNUP`. Adding an email allowlist entry does not enable password signup either.
 
 ## Session lifetime
 
-Browser sign-ins last 30 days by default. Adjust with `AUTH_TOKEN_TTL`, which accepts a Go duration or a positive integer of seconds:
+Sign-in sessions last 30 days by default, including password sessions. Adjust with `AUTH_TOKEN_TTL`, which accepts a Go duration (such as `720h` or `720h30m`) or a positive integer of seconds:
 
 ```dotenv
 AUTH_TOKEN_TTL=720h
 ```
 
-Restart the API service after changing it. The value only affects sign-in cookies and JWTs issued afterwards; it does not extend tokens that were already issued.
+For a native API deployment, pass the variable to the API process and restart the service. The value only affects sign-in cookies and JWTs issued afterwards; it does not change the expiry of tokens that were already issued.
+
+The current `docker-compose.selfhost.yml` does not pass `AUTH_TOKEN_TTL` into the container. Editing `.env` and running `restart` alone will not apply it. Merge the following fragment into the existing `backend.environment`, preserving the existing environment variables and other fields:
+
+```yaml
+services:
+  backend:
+    environment:
+      AUTH_TOKEN_TTL: ${AUTH_TOKEN_TTL:-720h}
+```
+
+After saving `.env` and the Compose configuration, recreate the API container from the deployment directory:
+
+```bash
+docker compose -f docker-compose.selfhost.yml up -d --no-deps --force-recreate backend
+```
+
+If the deployment uses additional Compose overlay files, keep the complete original list of `-f` files in the same order when running the command.
+
+## Applying and checking configuration
+
+These settings are read by the server. Restart a native API after changing its environment. For Compose, ensure the variable is listed in `backend.environment`, then recreate the container as shown above. These configuration changes do not require rebuilding the frontend. Once the API is available again, refresh the web page, and fully quit and reopen the desktop app. Installed clients must support the selected sign-in method.
+
+Deployment operators can check `auth_mode`, `password_auth_available`, `password_signup_available`, and `device_auth_available` at `/api/config` to confirm the active sign-in and signup options. An absent or `false` `device_auth_available` means device identity sign-in is unavailable.
 
 ## Next steps
 

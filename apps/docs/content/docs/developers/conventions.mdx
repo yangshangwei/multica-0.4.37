@@ -66,10 +66,10 @@ If logic appears in both apps, it MUST be extracted to a shared package. There a
 
 ### TypeScript
 
-- API responses on the wire are `snake_case`; the api client converts to `camelCase` at the boundary. Inside TS code, **always camelCase**.
+- API responses and domain data keep their `snake_case` fields, such as `issue.workspace_id`; the API client validates responses without globally renaming keys. Local variables and parameters use `camelCase`.
 - Types: `PascalCase` (`Issue`, `AgentRuntime`); never `IPrefix`, never `_t` suffix.
 - Enums: prefer string literal unions; reserve `enum` for runtime-iterable cases.
-- TanStack Query keys: factory functions in `<feature>/queries.ts`, e.g. `issueKeys.detail(id)`.
+- TanStack Query keys: factory functions in `<feature>/queries.ts`; workspace-scoped keys must include `wsId`, e.g. `issueKeys.detail(wsId, id)`.
 
 ### API boundaries
 
@@ -118,7 +118,7 @@ Existing content and the language of user conversations remain unchanged.
 Multica's product nouns split into two categories:
 
 - **Everyday noun** — the word a user would say out loud for it. **Translate fully**, whether or not it is a database entity: `issue` → 任务, `workspace` → 工作空间, `project` → 项目.
-- **Multica-specific term** — a concept no local word carries (`skill`), or a schema-level identifier a user may have to type or match (`todo`, `in_progress`, `task_id`). Render as **lowercase English** so it reads like a type name.
+- **Multica-specific term or identifier** — keep lowercase English for a concept no local word carries (`skill`) or a schema-level identifier a user may have to type or match (`todo`, `in_progress`, `task_id`). Role and built-in status labels are localized as described below.
 
 The Chinese pages under `apps/docs/content/docs/*.zh.mdx` are the de facto voice standard for everything else on this page. They still carry the old English `issue` in prose and are being swept separately — follow the table below, not those pages, for this term.
 
@@ -212,17 +212,25 @@ Use **工作空间** for Multica's workspace in current Chinese UI and documenta
 | Empty / Failed / Success | 空 / 失败 / 成功 |
 | Error / Warning | 错误 / 警告 |
 
-### Roles and status enums (lowercase English, not translated)
+### Roles and statuses: identifiers and labels
 
-These are schema-level identifiers; render as lowercase English even in Chinese context.
+Identifiers in APIs, databases, CLI arguments, and code stay in English regardless of the interface language:
 
 - Roles: `owner` / `admin` / `member`
-- Issue status: `backlog` / `todo` / `in_progress` / `in_review` / `done` / `blocked` / `cancelled`
+- Built-in issue statuses: `backlog` / `todo` / `in_progress` / `in_review` / `done` / `blocked` / `cancelled`
 
-In UI, surface them in English (optionally `code-style` wrapped):
+The UI and documentation describing UI actions use labels in the current language:
 
-- "你需要 owner 权限"
-- "已切换到 in_progress"
+| Identifier | Chinese label |
+| --- | --- |
+| `owner` / `admin` / `member` | 所有者 / 管理员 / 成员 |
+| `backlog` / `todo` | 待规划 / 待办 |
+| `in_progress` / `in_review` | 进行中 / 审核中 |
+| `done` / `blocked` / `cancelled` | 已完成 / 已阻塞 / 已取消 |
+
+For example: "你需要所有者权限" and "已切换到进行中". Render roles using the corresponding locale labels rather than raw keys.
+
+Use `useStatusLabel(wsId)` for issue status labels: built-ins resolve through i18n; custom statuses retain the workspace-defined name without automatic translation. The helper falls back to the raw key when a custom status is unknown or has not loaded yet.
 
 ### Word combination rules
 

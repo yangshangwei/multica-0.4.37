@@ -40,6 +40,7 @@ Multica 当前会检测以下命令：
 | Reasonix | `reasonix` |
 | TRAE CLI | `traecli` |
 | Dim | `dim` |
+| ZeroClaw | `zeroclaw` |
 
 <Callout type="info">
 内网部署无法访问各工具的官方安装源。请通过内网镜像或离线安装包安装，具体地址和方式由管理员提供。各工具的官方安装文档如已离线存档，可作参考，但内网不可达。
@@ -56,6 +57,8 @@ Multica 当前会检测以下命令：
 使用 Reasonix 时，请先运行 `reasonix setup`，配置默认的模型服务和模型，再启动守护进程。
 
 使用 QwenPaw 时，请在 QwenPaw 自身的配置里选择模型服务和模型。Multica 无法在执行时覆盖 QwenPaw 的模型。
+
+使用 ZeroClaw 时，请先在工具自身配置中设置智能体、模型服务和模型。配置了多个智能体时，需设置 `[acp].default_agent`，或在 Multica 智能体的自定义参数中用 `--agent <alias>` 指定；只有一个智能体配置时可自动选择。Multica 通过 `zeroclaw acp` 调用它，不能覆盖模型或注入 MCP；会话恢复还要求配置目录可写并启用持久化会话，详见[AI 编程工具对照](/providers)。
 
 使用 MiniMax Code 时，请先安装受支持的 Node.js 版本（`>=22.19 <23` 或 `>=24 <27`），再通过内网 npm 镜像安装（镜像地址由管理员提供）：
 
@@ -79,7 +82,7 @@ npm install --global @minimax-ai/code --registry <内网 npm 镜像地址>
 - 在终端中单独启动一次工具并确认能完成请求，再启动守护进程——工具在终端中不通，守护进程调用它同样不通。
 
 <Callout type="info">
-Claude Code 需要 2.0.0 或更高版本，Codex 需要 0.100.0 或更高版本，Copilot 需要 1.0.0 或更高版本，Grok 需要 0.2.89 或更高版本，Qwen Code 需要 0.20.0 或更高版本，MiniMax Code 需要 0.1.2 或更高版本。低于最低版本时，守护进程不会注册对应运行时。
+Claude Code 需要 2.0.0 或更高版本，Codex 需要 0.100.0 或更高版本，Copilot 需要 1.0.0 或更高版本，Grok 需要 0.2.89 或更高版本，Qwen Code 需要 0.20.0 或更高版本，MiniMax Code 需要 0.1.2 或更高版本，ZeroClaw 需要 0.8.0 或更高版本。低于最低版本时，守护进程不会注册对应运行时。
 </Callout>
 
 ## 3. 确认守护进程能够找到命令
